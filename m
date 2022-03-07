@@ -1,62 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA574CF7BE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 10:49:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC484CF89A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 10:57:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KBtwW4zq6z3bWd
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 20:49:47 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W28BMBpX;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KBv5N6LMQz3bWm
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 20:57:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=W28BMBpX; dkim-atps=neutral
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.222.179;
+ helo=mail-qk1-f179.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+ receiver=<UNKNOWN>)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com
+ [209.85.222.179])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KBtvr5bV2z30Ks
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 20:49:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1646646554; x=1678182554;
- h=date:from:to:cc:subject:in-reply-to:message-id:
- references:mime-version:content-id;
- bh=zC3EygN9B67AQNPvzALqT8NwONoTEFy8bHC2L1G4njc=;
- b=W28BMBpXy598i6KxO4bY4gPGt9zVM5TTEksM0CK9+5j0ciB3OnZJve6t
- FMRaz+qPkhat8zNr6gakN/43e+5EOXlv25nbnIhzyIHdEL359ipJobi4K
- WqSqxNcdhtqVu2bi8meJgbr3kN8CDX9ctnuFpvIeOEdEQveWge1Co+DjB
- CgXKtWBuPaYckQi7PLEbRQ9jIGEMa9M0sIRzXccsckmJHKTqR+DOZJ+Wq
- aE0FPCmfK8p53EUfrLqjLzGt1BkEc1JAvc4jGghDAuyYhm7+nCQ2FWqps
- hVlLxCc++MXQo01+pupLlfUh99ByKQqvudFKTgpmmbRNAjVM9TurZizpo A==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10278"; a="254080149"
-X-IronPort-AV: E=Sophos;i="5.90,161,1643702400"; d="scan'208";a="254080149"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2022 01:48:11 -0800
-X-IronPort-AV: E=Sophos;i="5.90,161,1643702400"; d="scan'208";a="553088602"
-Received: from rabl-mobl2.ger.corp.intel.com ([10.252.54.114])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Mar 2022 01:48:03 -0800
-Date: Mon, 7 Mar 2022 11:48:01 +0200 (EET)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Lukas Wunner <lukas@wunner.de>
-Subject: Re: [RFC PATCH 6/7] serial: General support for multipoint addresses
-In-Reply-To: <20220306194001.GD19394@wunner.de>
-Message-ID: <ab43569c-6488-12a6-823-3ef09f2849d@linux.intel.com>
-References: <20220302095606.14818-1-ilpo.jarvinen@linux.intel.com>
- <20220302095606.14818-7-ilpo.jarvinen@linux.intel.com>
- <20220306194001.GD19394@wunner.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KBv4w4BNHz2yws
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 20:57:03 +1100 (AEDT)
+Received: by mail-qk1-f179.google.com with SMTP id g24so11442388qkl.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar 2022 01:57:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Y5/GrbGP30m/mBAfAcX6vDwX2g44JqlyQq0dC+zaJsw=;
+ b=aXmPB7Jr2/yVEP32SG3K7rOpR5Pa/wNB9I3OY8S5Yg0lOgFLA+mmN3v+a6AyFHlEcP
+ nKwCJsul4SfAbiGbRRw/peQPDuC2Pu2dblDTexOnl83iI2qnDbug2I/r0jCRWZNi58+6
+ WcdM/go83RaCm0/2B6uluUfbD/AKt/+Nj06DwQEFScuCHf6+IfCaoeKS/ZG0FCPjJ32A
+ ieDiE5h050Th4aWk9wXzVQ2NT4DYthblovYEsypV+L3yy9JpGZ7xU4PWVCOVJdHLKj/2
+ CtkLSmufAK4x1qM69VMB1QRO9MFTrCacMyeiEviB7lRY+TculA/JDJ8MtAeBUU8XLCnL
+ jZPw==
+X-Gm-Message-State: AOAM530Rvrxh49EiacmtXgFAGeE8vDeNJ0gQ0SJ6C4cES1B73EztNOgs
+ am5gT6M37ZZJ04940C3U0j8tNjMznS/wxA==
+X-Google-Smtp-Source: ABdhPJxFbWk4vZBGXKJGB6uz0wUwlilfEY74puJBImfDFdanjkwzS1bHeMn+cddqbvqgDjl4Fx0SXg==
+X-Received: by 2002:a05:620a:f13:b0:47a:e669:8806 with SMTP id
+ v19-20020a05620a0f1300b0047ae6698806mr6269747qkl.323.1646647020506; 
+ Mon, 07 Mar 2022 01:57:00 -0800 (PST)
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com.
+ [209.85.128.173]) by smtp.gmail.com with ESMTPSA id
+ x23-20020a05620a14b700b00648eb7f4ce5sm5742202qkj.35.2022.03.07.01.57.00
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 07 Mar 2022 01:57:00 -0800 (PST)
+Received: by mail-yw1-f173.google.com with SMTP id
+ 00721157ae682-2dc28791ecbso143362217b3.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar 2022 01:57:00 -0800 (PST)
+X-Received: by 2002:a0d:f1c7:0:b0:2db:d2bc:be11 with SMTP id
+ a190-20020a0df1c7000000b002dbd2bcbe11mr7687812ywf.62.1646647019946; Mon, 07
+ Mar 2022 01:56:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-971395012-1646646016=:1677"
-Content-ID: <cbee2ae-83f0-872e-34dd-cb9866dd3f6e@linux.intel.com>
+References: <CAHk-=wjkkYX8OvTv60+XvQkAK4Pg0QC0Hn-4+n7Q0t1+QWw7Sw@mail.gmail.com>
+ <20220307081540.2716107-1-geert@linux-m68k.org>
+In-Reply-To: <20220307081540.2716107-1-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 7 Mar 2022 10:56:48 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdW=S=BJouptLGw12CbAqeYbBYwnsdrn90C_04n6s4H7bg@mail.gmail.com>
+Message-ID: <CAMuHMdW=S=BJouptLGw12CbAqeYbBYwnsdrn90C_04n6s4H7bg@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.17-rc7
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,67 +73,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-sh@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linux-api@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
- linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
- linux-serial <linux-serial@vger.kernel.org>, Matt Turner <mattst88@gmail.com>,
- linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
- Johan Hovold <johan@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
- linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Mar 7, 2022 at 10:21 AM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> JFYI, when comparing v5.17-rc7[1] to v5.17-rc6[3], the summaries are:
+>   - build errors: +4/-1
 
---8323329-971395012-1646646016=:1677
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <07d5f9f-7fe3-3c54-6566-1873a5191970@linux.intel.com>
+  + /kisskb/src/arch/powerpc/kernel/stacktrace.c: error: implicit
+declaration of function 'nmi_cpu_backtrace'
+[-Werror=implicit-function-declaration]: 171:2 => 171:9, 171:2
+  + /kisskb/src/arch/powerpc/kernel/stacktrace.c: error: implicit
+declaration of function 'nmi_trigger_cpumask_backtrace'; did you mean
+'arch_trigger_cpumask_backtrace'?
+[-Werror=implicit-function-declaration]:  => 226:9
 
-On Sun, 6 Mar 2022, Lukas Wunner wrote:
+powerpc-gcc11/skiroot_defconfig (this is a new config)
+Seen before with powerpc-gcc5/skiroot_defconfig.
 
-> On Wed, Mar 02, 2022 at 11:56:05AM +0200, Ilpo Järvinen wrote:
-> 
-> > This change is necessary for supporting devices with RS485
-> > multipoint addressing [*].
-> 
-> If this is only used with RS485, why can't we just store the
-> addresses in struct serial_rs485 and use the existing TIOCSRS485
-> and TIOCGRS485 ioctls?  There's 20 bytes of padding left in
-> struct serial_rs485 which you could use.  No need to add more
-> user-space ABI.
+  + /kisskb/src/crypto/blake2b_generic.c: error: the frame size of
+2288 bytes is larger than 2048 bytes [-Werror=frame-larger-than=]:  =>
+109:1
 
-It could if it is agreed that serial multipoint addressing is just
-a thing in RS-485 and nowhere else? In that case, there is no point
-in adding more generic support for it.
+sparc64-gcc11/sparc-allmodconfig
 
-> > [*] Technically, RS485 is just an electronic spec and does not
-> > itself specify the 9th bit addressing mode but 9th bit seems
-> > at least "semi-standard" way to do addressing with RS485.
-> 
-> Is 9th bit addressing actually used by an Intel customer or was
-> it implemented just for feature completeness? I think this mode
-> isn't used often (I've never seen a use case myself), primarily
-> because it requires disabling parity.
+  + error: arch/powerpc/kvm/book3s_64_entry.o: relocation truncated to
+fit: R_PPC64_REL14 (stub) against symbol `machine_check_common'
+defined in .text section in arch/powerpc/kernel/head_64.o:  =>
+(.text+0x3e4)
 
-On what basis? ...The datasheet I'm looking at has a timing diagram 
-with both D8 (9th bit) and parity so I think your information must be
-incorrect. I don't have direct contacts with customers but I'm told
-it's important for other org's customers.
+powerpc-gcc5/powerpc-allyesconfig
 
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ffb217a13a2eaf6d5bd974fc83036a53ca69f1e2/ (all 100 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/7e57714cd0ad2d5bb90e50b5096a0e671dec1ef3/ (99 out of 100 configs)
 
--- 
- i.
---8323329-971395012-1646646016=:1677--
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
