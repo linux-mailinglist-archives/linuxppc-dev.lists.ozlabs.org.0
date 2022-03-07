@@ -1,58 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC01B4CEF01
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 01:45:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E7F4CEF32
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 02:42:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KBfrY4HmZz3bZy
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 11:45:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KBh6J1lf5z3bXq
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 12:42:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qq8XYFK1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nNPl9n/h;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=hbh25y@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=nNPl9n/h; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KBfqv3pzCz2x9d
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 11:44:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=qq8XYFK1; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KBfqq4n3Yz4xvS;
- Mon,  7 Mar 2022 11:44:55 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1646613897;
- bh=Zrj9TMcWdU7THoCQHnaeXqpNo4y/97gTHAtSAYR8WUs=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=qq8XYFK1jPdW29kMUi916JbqjClAoIq1X3XarZugcoOx4qgKhbLHhvrnSozRf4eK1
- qdBV0ra07kTChRVdCfpZhtp1Vqd+w04yo4KneXI0GZD7ztDMSxNrYZUL6QIpZGmqiE
- frGxrFspU9JlMQ20UoqvWxrMxMHIOLjJs8s2b7JNjX91E5WduuwHDHkhuSD6XlCE6u
- lCnGTkeK9lb39w0+dLyGhWmkZEikqsOnFSfbPl33YlUzjSFXnFIgAqfnjW0bifR9Km
- fxuOd3RYBCwJQ71QWsIOLUmNvOaD5iV08nlPXKf/V6DKsO5Uf1pXyjPbTg7N0TsGwN
- GMnhRLYMLgylw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Marc Zyngier
- <maz@kernel.org>
-Subject: Re: [PATCH] powerpc/sysdev: Use of_device_get_match_data()
-In-Reply-To: <4d569f2f-7c56-e5a0-e9e0-981cbca21468@csgroup.eu>
-References: <20220304011830.2061591-1-chi.minghao@zte.com.cn>
- <6481b730-e338-294d-3602-bb899654ed2b@csgroup.eu>
- <87o82l23rb.wl-maz@kernel.org>
- <4d569f2f-7c56-e5a0-e9e0-981cbca21468@csgroup.eu>
-Date: Mon, 07 Mar 2022 11:44:55 +1100
-Message-ID: <875yoqoak8.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KBh5b1yTpz2yws
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 12:41:52 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id t187so8024313pgb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 06 Mar 2022 17:41:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=0Fw2idvMV9mmhbkYq5zfFzJocfFBD0RDIL74FoXxZpY=;
+ b=nNPl9n/hzDpRgVPn26lEdnQq42yce2vm+LJYINOXG4Vs6xI9QWUSqVepzjfR9TZ1ed
+ 3JTgKw+MqjeMZUlrH0uasq6gkOUuHplXIAsrKBsqYmVJ28s1c15VI0q6W+MR7AO8jQ3Y
+ F6pEKgx41ApiPRuzcxufAqoXKew08qTvMuWTc4k9Wldy2yx3ILq26tJ/vDRJY5HwJpp8
+ 73Ct7R72BgxzjzKBQfaa5jnkKJNBaDHaiRNR/TXyJvMSGaqgIxRJKjv4sewudhBklo2G
+ 9tMgshuYE/uGY13Mik793WW3phc+CNc4tH0bCXvxJw6krtv1cTnFKM19muZv59RLOjPm
+ k3Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=0Fw2idvMV9mmhbkYq5zfFzJocfFBD0RDIL74FoXxZpY=;
+ b=dpccjWuK6lhVE/WPL7RrII86j4w9vBuP6OZh/r0jGR8ibwm7FfD5ifMErExm9Ztkez
+ zbigw0GyXPyc5RqYZmm8HRhgM80oUneyfaW9kAgZzpaW28hYv4q+9dfdYPcxb4oyb00h
+ 1WUcnnWXZ00KNgl7dCctFTNyFDTtaAWtLGboBKr5hFLaUA9hOGruKuttspQqDSlwEQVC
+ ksGyScLBHYylBs+XCXvBxBYBtXUqP0SpZiNSv9fwRH3f1uLuouon4Ul7ZewaRuF9weV3
+ Y/Ct+2nEYX1KfKAvQLY9yae/uMw06yDX8GGLWa+9K57z6FVfY4Q+8ka3r2kW8UMjuiAP
+ OZcw==
+X-Gm-Message-State: AOAM530g/DsChGFtduXIv4qTpZ6Zzi6nOh9uo8VEzLvmgyxSN/fnl2wE
+ jhkOPgHX3f8jW9u0cczQBi1GwWOV3YV6Mg==
+X-Google-Smtp-Source: ABdhPJzqZPGdtNsh38PDx/KkZI6yTkClYiDaRvbHiuNtDsuVA6cAjTc5vohHAo0NPZ+YnD4T8wMuRg==
+X-Received: by 2002:a05:6a00:b90:b0:4f6:b88d:ec96 with SMTP id
+ g16-20020a056a000b9000b004f6b88dec96mr10300678pfj.12.1646617309370; 
+ Sun, 06 Mar 2022 17:41:49 -0800 (PST)
+Received: from [10.11.37.162] ([103.84.139.54])
+ by smtp.gmail.com with ESMTPSA id
+ n24-20020a637218000000b0037ffc63b98csm4614537pgc.65.2022.03.06.17.41.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 06 Mar 2022 17:41:49 -0800 (PST)
+Message-ID: <146301ab-e217-6984-1dd4-0d782328d7f0@gmail.com>
+Date: Mon, 7 Mar 2022 09:41:42 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] powerpc: 8xx: fix a return value error in mpc8xx_pic_init
+Content-Language: en-US
+To: christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, peng.hao2@zte.com.cn,
+ wen.yang99@zte.com.cn
+References: <20220223070223.26845-1-hbh25y@gmail.com>
+From: Hangyu Hua <hbh25y@gmail.com>
+In-Reply-To: <20220223070223.26845-1-hbh25y@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,97 +87,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "cgel.zte@gmail.com" <cgel.zte@gmail.com>, Zeal Robot <zealci@zte.com.cn>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Minghao Chi <chi.minghao@zte.com.cn>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "paulus@samba.org" <paulus@samba.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 04/03/2022 =C3=A0 15:26, Marc Zyngier a =C3=A9crit=C2=A0:
->> On Fri, 04 Mar 2022 13:10:19 +0000,
->> Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
->>> Le 04/03/2022 =C3=A0 02:18, cgel.zte@gmail.com a =C3=A9crit=C2=A0:
->>>> From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
->>>>
->>>> Use of_device_get_match_data() to simplify the code.
->>>>
->>>> Reported-by: Zeal Robot <zealci@zte.com.cn>
->>>> Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
->>>> ---
->>>>    arch/powerpc/sysdev/fsl_msi.c | 6 +-----
->>>>    1 file changed, 1 insertion(+), 5 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_m=
-si.c
->>>> index b3475ae9f236..9d135bbb30b7 100644
->>>> --- a/arch/powerpc/sysdev/fsl_msi.c
->>>> +++ b/arch/powerpc/sysdev/fsl_msi.c
->>>> @@ -387,7 +387,6 @@ static int fsl_msi_setup_hwirq(struct fsl_msi *msi=
-, struct platform_device *dev,
->>>>    static const struct of_device_id fsl_of_msi_ids[];
->>>>    static int fsl_of_msi_probe(struct platform_device *dev)
->>>>    {
->>>> -	const struct of_device_id *match;
->>>>    	struct fsl_msi *msi;
->>>>    	struct resource res, msiir;
->>>>    	int err, i, j, irq_index, count;
->>>> @@ -397,10 +396,7 @@ static int fsl_of_msi_probe(struct platform_devic=
-e *dev)
->>>>    	u32 offset;
->>>>    	struct pci_controller *phb;
->>>>=20=20=20=20
->>>> -	match =3D of_match_device(fsl_of_msi_ids, &dev->dev);
->>>> -	if (!match)
->>>> -		return -EINVAL;
->>>> -	features =3D match->data;
->>>> +	features =3D of_device_get_match_data(&dev->dev);
->>>
->>> What happens when features is NULL ?
->>=20
->> I did jump at that one too, but as it turns out, it cannot happen, by
->> construction. All the fsl_of_msi_ids[] entries have a non-NULL .data
->> pointer, and you only enter probe if you match a fsl_of_msi_ids[]
->> entry with the DT.
->>=20
->> So the current check for a NULL match is not something that can happen
->> short of some other bug somewhere.
->>=20
->
-> Ok.
->
-> Then it would be good to have a sentence explaining that in the commit=20
-> message.
+Ping?
 
-Yes I agree. Too many of these cleanup patches assume the reviewer is
-intimately familiar with the details of the new API/helper and don't
-explain things fully in the change log.
-
-The helper is:
-
-const void *of_device_get_match_data(const struct device *dev)
-{
-	const struct of_device_id *match;
-
-	match =3D of_match_device(dev->driver->of_match_table, dev);
-	if (!match)
-		return NULL;
-
-	return match->data;
-}
-
-So as Marc says, if we're in probe then there must be a match.
-
-IMHO there should be a check for match->data being NULL. Although the
-current match table contains a non-NULL data for every element, that
-could easily change in future (although this driver will probably never
-be updated).
-
-The forward declaration of fsl_of_msi_ids should also be removed, as it
-will no longer be necessary.
-
-cheers
+On 2022/2/23 15:02, Hangyu Hua wrote:
+> mpc8xx_pic_init() should return -ENOMEM instead of 0 when
+> irq_domain_add_linear() return NULL. This cause mpc8xx_pics_init to continue
+> executing even if mpc8xx_pic_host is NULL.
+> 
+> Fixes: cc76404feaed ("powerpc/8xx: Fix possible device node reference leak")
+> Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+> ---
+>   arch/powerpc/platforms/8xx/pic.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/powerpc/platforms/8xx/pic.c b/arch/powerpc/platforms/8xx/pic.c
+> index f2ba837249d6..04a6abf14c29 100644
+> --- a/arch/powerpc/platforms/8xx/pic.c
+> +++ b/arch/powerpc/platforms/8xx/pic.c
+> @@ -153,6 +153,7 @@ int __init mpc8xx_pic_init(void)
+>   	if (mpc8xx_pic_host == NULL) {
+>   		printk(KERN_ERR "MPC8xx PIC: failed to allocate irq host!\n");
+>   		ret = -ENOMEM;
+> +		goto out;
+>   	}
+>   
+>   	ret = 0;
