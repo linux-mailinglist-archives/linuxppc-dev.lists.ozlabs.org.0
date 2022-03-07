@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBB14CF7B7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 10:48:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA574CF7BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 10:49:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KBttV5qFsz3bfH
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 20:48:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KBtwW4zq6z3bWd
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 20:49:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W28BMBpX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.17.13; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KBtt16c8Zz30N1
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 20:47:36 +1100 (AEDT)
-Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1MUokB-1nZeQH0HGz-00QmX1 for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar
- 2022 10:47:32 +0100
-Received: by mail-wr1-f47.google.com with SMTP id u1so22218926wrg.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar 2022 01:47:31 -0800 (PST)
-X-Gm-Message-State: AOAM532s+BgACQ6PBCu+hbmvAvmwGeUU7eP17d445i7mHCR81Fr2f8pQ
- moyWhrjxQ2P/+d3zPy18pTPEUZqKXl3NFn6NHGA=
-X-Google-Smtp-Source: ABdhPJzvujeXdW7p1prKOOU8a8yQhOyeVCss6MEvqtEwN6YXERPQeJhpbvFvaxt34r/1kdsTW3Zq6quU9jjULjErlQk=
-X-Received: by 2002:adf:d081:0:b0:1ef:9378:b7cc with SMTP id
- y1-20020adfd081000000b001ef9378b7ccmr8006149wrh.407.1646646451110; Mon, 07
- Mar 2022 01:47:31 -0800 (PST)
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=W28BMBpX; dkim-atps=neutral
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KBtvr5bV2z30Ks
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 20:49:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1646646554; x=1678182554;
+ h=date:from:to:cc:subject:in-reply-to:message-id:
+ references:mime-version:content-id;
+ bh=zC3EygN9B67AQNPvzALqT8NwONoTEFy8bHC2L1G4njc=;
+ b=W28BMBpXy598i6KxO4bY4gPGt9zVM5TTEksM0CK9+5j0ciB3OnZJve6t
+ FMRaz+qPkhat8zNr6gakN/43e+5EOXlv25nbnIhzyIHdEL359ipJobi4K
+ WqSqxNcdhtqVu2bi8meJgbr3kN8CDX9ctnuFpvIeOEdEQveWge1Co+DjB
+ CgXKtWBuPaYckQi7PLEbRQ9jIGEMa9M0sIRzXccsckmJHKTqR+DOZJ+Wq
+ aE0FPCmfK8p53EUfrLqjLzGt1BkEc1JAvc4jGghDAuyYhm7+nCQ2FWqps
+ hVlLxCc++MXQo01+pupLlfUh99ByKQqvudFKTgpmmbRNAjVM9TurZizpo A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10278"; a="254080149"
+X-IronPort-AV: E=Sophos;i="5.90,161,1643702400"; d="scan'208";a="254080149"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Mar 2022 01:48:11 -0800
+X-IronPort-AV: E=Sophos;i="5.90,161,1643702400"; d="scan'208";a="553088602"
+Received: from rabl-mobl2.ger.corp.intel.com ([10.252.54.114])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Mar 2022 01:48:03 -0800
+Date: Mon, 7 Mar 2022 11:48:01 +0200 (EET)
+From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Lukas Wunner <lukas@wunner.de>
+Subject: Re: [RFC PATCH 6/7] serial: General support for multipoint addresses
+In-Reply-To: <20220306194001.GD19394@wunner.de>
+Message-ID: <ab43569c-6488-12a6-823-3ef09f2849d@linux.intel.com>
+References: <20220302095606.14818-1-ilpo.jarvinen@linux.intel.com>
+ <20220302095606.14818-7-ilpo.jarvinen@linux.intel.com>
+ <20220306194001.GD19394@wunner.de>
 MIME-Version: 1.0
-References: <20220304061222.2478720-1-mpe@ellerman.id.au>
-In-Reply-To: <20220304061222.2478720-1-mpe@ellerman.id.au>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 7 Mar 2022 10:47:14 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3PWfVv_4tNoeGmoxKYYrG9=ig+33GgvJoar-BMzA0L2A@mail.gmail.com>
-Message-ID: <CAK8P3a3PWfVv_4tNoeGmoxKYYrG9=ig+33GgvJoar-BMzA0L2A@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/64e: Tie PPC_BOOK3E_64 to PPC_FSL_BOOK3E
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:tIHOc5NR/DBoDsNY9re/Y7hdqDofYcACjz2Zc7ppz9t0yy+UC9c
- q90j3W8UEnUbHZDcUOeH100ibyI5EX7G7rR8BLJAjYF2dzIV3XBuzkvfRks2JRMyexbmL1c
- 39JR27JIMqQShlkSfWAqzAw+VmKMTORNXXGwfOiyVSxl5xIZkMYhA20ejazgan7Y6a55ETo
- nORlVtm9Q+qYusYr0IjTg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:swherRwH0Xo=:BOz9Lw3hjA8Ag1Nfp6DyBw
- 62obxpWWK/2j/YMIjOIDZkVFgh8JkkCdpDKYcpwwj1V02+D0OTv64TpHoRkIxwwRf8oOCg/kp
- MoQgaG2/bIHR5J6AVxzTIUwiEuGCVIEtMxPDm5hslp2eWCHzG8pFW2b+K3+HIvi7pm5M1IMkb
- vH/w9Kyg0YlQb+1EWcDxVb7P8OmKfZUIIkj3xkuy4I5BMF1P3pjb80T0kkhlQXyHzKBtUcCzr
- x6HG/mkwftW0UjRH7d+vJNBLdakB+YN5QzltNM0ucB06HXh3vVAlWjMM8TKfrPBcIPgErFVsn
- NMc91gSPApfBvZtD09skttTiffle5HEuaBCB2t37BEtYD1JP7uTgCLtgpG4Ko5P2qzUktLgTz
- uBCKPPcifdqJ7bkDQ8rWqmiywB4olN/o7+iCBEchCjnfBxe8nAZsqZ2T8+Otgm+v55zLLGBcP
- oUh3qZw9mT1SpeEZlhWqa7+KxO/HXZ8k05DVL87lmo12i1x/kq7DGSLnorUk0pAIsuE7kbzXG
- ndrdok9HhFciRE5BFXzDFZrnfXsjHClrACbk2hLY5rB2aliiDPyAPe2kp+NyW2x5c2+xQLRrt
- wqtvN2t20sYWf9898KpYY3jR1r3aWVu2h/ukp9k5qsynlLW5sQG7WaEe50Q0chHxH18DlTKyL
- HXBii4ZZfMSqZBz+BuFp+R5XVRs3Na6jMTVzI1UJkyISqB33gNHrnXkYAhskgoiJpsJs=
+Content-Type: multipart/mixed; BOUNDARY="8323329-971395012-1646646016=:1677"
+Content-ID: <cbee2ae-83f0-872e-34dd-cb9866dd3f6e@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,65 +68,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Scott Wood <oss@buserror.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-sh@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-api@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+ linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
+ linux-serial <linux-serial@vger.kernel.org>, Matt Turner <mattst88@gmail.com>,
+ linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
+ Johan Hovold <johan@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 4, 2022 at 7:12 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> Since the IBM A2 CPU support was removed, see commit
-> fb5a515704d7 ("powerpc: Remove platforms/wsp and associated pieces"),
-> the only 64-bit Book3E CPUs we support are Freescale (NXP) ones.
->
-> However our Kconfig still allows configurating a kernel that has 64-bit
-> Book3E support, but no Freescale CPU support enabled. Such a kernel
-> would never boot, it doesn't know about any CPUs.
->
-> It also causes build errors, as reported by lkp, because
-> PPC_BARRIER_NOSPEC is not enabled in such a configuration:
->
->   powerpc64-linux-ld: arch/powerpc/net/bpf_jit_comp64.o:(.toc+0x0):
->   undefined reference to `powerpc_security_features'
->
-> To fix this, force PPC_FSL_BOOK3E to be selected whenever we are
-> building a 64-bit Book3E kernel.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/platforms/Kconfig.cputype | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index 87bc1929ee5a..e2e1fec91c6e 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -107,6 +107,7 @@ config PPC_BOOK3S_64
->
->  config PPC_BOOK3E_64
->         bool "Embedded processors"
-> +       select PPC_FSL_BOOK3E
->         select PPC_FPU # Make it a choice ?
->         select PPC_SMP_MUXED_IPI
->         select PPC_DOORBELL
-> @@ -295,7 +296,7 @@ config FSL_BOOKE
->  config PPC_FSL_BOOK3E
->         bool
->         select ARCH_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
-> -       select FSL_EMB_PERFMON
-> +       imply FSL_EMB_PERFMON
->         select PPC_SMP_MUXED_IPI
->         select PPC_DOORBELL
->         select PPC_KUEP
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-'Imply' is almost never what you want here, this only has an effect
-on the default used in 'defconfig' builds. I think this should be
-expressed using a 'default PPC_FSL_BOOK3E' in the
-FSL_EMB_PERFMON option if you actually want it to be optional,
-better otherwise leave it as 'select'.
+--8323329-971395012-1646646016=:1677
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <07d5f9f-7fe3-3c54-6566-1873a5191970@linux.intel.com>
 
-        Arnd
+On Sun, 6 Mar 2022, Lukas Wunner wrote:
+
+> On Wed, Mar 02, 2022 at 11:56:05AM +0200, Ilpo Järvinen wrote:
+> 
+> > This change is necessary for supporting devices with RS485
+> > multipoint addressing [*].
+> 
+> If this is only used with RS485, why can't we just store the
+> addresses in struct serial_rs485 and use the existing TIOCSRS485
+> and TIOCGRS485 ioctls?  There's 20 bytes of padding left in
+> struct serial_rs485 which you could use.  No need to add more
+> user-space ABI.
+
+It could if it is agreed that serial multipoint addressing is just
+a thing in RS-485 and nowhere else? In that case, there is no point
+in adding more generic support for it.
+
+> > [*] Technically, RS485 is just an electronic spec and does not
+> > itself specify the 9th bit addressing mode but 9th bit seems
+> > at least "semi-standard" way to do addressing with RS485.
+> 
+> Is 9th bit addressing actually used by an Intel customer or was
+> it implemented just for feature completeness? I think this mode
+> isn't used often (I've never seen a use case myself), primarily
+> because it requires disabling parity.
+
+On what basis? ...The datasheet I'm looking at has a timing diagram 
+with both D8 (9th bit) and parity so I think your information must be
+incorrect. I don't have direct contacts with customers but I'm told
+it's important for other org's customers.
+
+
+-- 
+ i.
+--8323329-971395012-1646646016=:1677--
