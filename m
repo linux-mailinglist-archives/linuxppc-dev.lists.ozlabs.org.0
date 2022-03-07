@@ -1,100 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6975E4CF284
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 08:21:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBB14CF7B7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 10:48:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KBqdw2Bdkz3Wtp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 18:21:56 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eCX9ekB6;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KBttV5qFsz3bfH
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Mar 2022 20:48:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=eCX9ekB6; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KBqd844hwz2xDD
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 18:21:16 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2275UL2Y019219; 
- Mon, 7 Mar 2022 07:20:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=BOwRRfZpfUhqe0Ay4uOmMd/ccJcQ+3BiIeWlO5KYAT8=;
- b=eCX9ekB6fiesq3lPR5MUldKbULRqqXcA6EVjLlXw9GwPztTzeSxkV9VWksu7qiOiAoh3
- 63Kl3M8AV7ZQudYUYRtvf7cfHnmtKg3PdZhkiTdhT211dhQUKm0Tukoo2SpoLkUt57eR
- HegXYxu7BkVFP6Ec3dVIXkfMgPBUJU38D9gr/7JQUyOvpAqu6k7i+LszLyMOHd3OtVVi
- vrsUb5+bWgSoYbvfGkKXv9ssGepVB6CTFRHhqG0X28AAsaBd3MRKHncuZV+KX0PmFP5V
- T2bV9wkhNl46h4TvU01Ex/VE41vwkYAYXFUtEgB5F+V2EIu36D6WSQc5C876R21qVBZJ mg== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3emk3037c0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Mar 2022 07:20:42 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2277Iivl027229;
- Mon, 7 Mar 2022 07:20:40 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma01fra.de.ibm.com with ESMTP id 3ekyg8bcax-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 07 Mar 2022 07:20:40 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2277Kbrb23986578
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 7 Mar 2022 07:20:37 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 91FCD42049;
- Mon,  7 Mar 2022 07:20:37 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F7C142041;
- Mon,  7 Mar 2022 07:20:25 +0000 (GMT)
-Received: from [9.43.33.192] (unknown [9.43.33.192])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  7 Mar 2022 07:20:23 +0000 (GMT)
-Message-ID: <4a2164f4-0667-ae6c-758a-9bcaca43410f@linux.ibm.com>
-Date: Mon, 7 Mar 2022 12:50:22 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v7 0/4] Add perf interface to expose nvdimm
-Content-Language: en-US
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev,
- linux-kernel@vger.kernel.org, peterz@infradead.org,
- dan.j.williams@intel.com, ira.weiny@intel.com, vishal.l.verma@intel.com
-References: <20220225143024.47947-1-kjain@linux.ibm.com>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20220225143024.47947-1-kjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0567EwIQSU6t0hKfjeXJorAMLqsmsw1o
-X-Proofpoint-GUID: 0567EwIQSU6t0hKfjeXJorAMLqsmsw1o
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.17.13; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KBtt16c8Zz30N1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Mar 2022 20:47:36 +1100 (AEDT)
+Received: from mail-wr1-f47.google.com ([209.85.221.47]) by
+ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1MUokB-1nZeQH0HGz-00QmX1 for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar
+ 2022 10:47:32 +0100
+Received: by mail-wr1-f47.google.com with SMTP id u1so22218926wrg.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Mar 2022 01:47:31 -0800 (PST)
+X-Gm-Message-State: AOAM532s+BgACQ6PBCu+hbmvAvmwGeUU7eP17d445i7mHCR81Fr2f8pQ
+ moyWhrjxQ2P/+d3zPy18pTPEUZqKXl3NFn6NHGA=
+X-Google-Smtp-Source: ABdhPJzvujeXdW7p1prKOOU8a8yQhOyeVCss6MEvqtEwN6YXERPQeJhpbvFvaxt34r/1kdsTW3Zq6quU9jjULjErlQk=
+X-Received: by 2002:adf:d081:0:b0:1ef:9378:b7cc with SMTP id
+ y1-20020adfd081000000b001ef9378b7ccmr8006149wrh.407.1646646451110; Mon, 07
+ Mar 2022 01:47:31 -0800 (PST)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-07_01,2022-03-04_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 mlxscore=0
- suspectscore=0 spamscore=0 impostorscore=0 phishscore=0 priorityscore=1501
- adultscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203070041
+References: <20220304061222.2478720-1-mpe@ellerman.id.au>
+In-Reply-To: <20220304061222.2478720-1-mpe@ellerman.id.au>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 7 Mar 2022 10:47:14 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3PWfVv_4tNoeGmoxKYYrG9=ig+33GgvJoar-BMzA0L2A@mail.gmail.com>
+Message-ID: <CAK8P3a3PWfVv_4tNoeGmoxKYYrG9=ig+33GgvJoar-BMzA0L2A@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/64e: Tie PPC_BOOK3E_64 to PPC_FSL_BOOK3E
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:tIHOc5NR/DBoDsNY9re/Y7hdqDofYcACjz2Zc7ppz9t0yy+UC9c
+ q90j3W8UEnUbHZDcUOeH100ibyI5EX7G7rR8BLJAjYF2dzIV3XBuzkvfRks2JRMyexbmL1c
+ 39JR27JIMqQShlkSfWAqzAw+VmKMTORNXXGwfOiyVSxl5xIZkMYhA20ejazgan7Y6a55ETo
+ nORlVtm9Q+qYusYr0IjTg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:swherRwH0Xo=:BOz9Lw3hjA8Ag1Nfp6DyBw
+ 62obxpWWK/2j/YMIjOIDZkVFgh8JkkCdpDKYcpwwj1V02+D0OTv64TpHoRkIxwwRf8oOCg/kp
+ MoQgaG2/bIHR5J6AVxzTIUwiEuGCVIEtMxPDm5hslp2eWCHzG8pFW2b+K3+HIvi7pm5M1IMkb
+ vH/w9Kyg0YlQb+1EWcDxVb7P8OmKfZUIIkj3xkuy4I5BMF1P3pjb80T0kkhlQXyHzKBtUcCzr
+ x6HG/mkwftW0UjRH7d+vJNBLdakB+YN5QzltNM0ucB06HXh3vVAlWjMM8TKfrPBcIPgErFVsn
+ NMc91gSPApfBvZtD09skttTiffle5HEuaBCB2t37BEtYD1JP7uTgCLtgpG4Ko5P2qzUktLgTz
+ uBCKPPcifdqJ7bkDQ8rWqmiywB4olN/o7+iCBEchCjnfBxe8nAZsqZ2T8+Otgm+v55zLLGBcP
+ oUh3qZw9mT1SpeEZlhWqa7+KxO/HXZ8k05DVL87lmo12i1x/kq7DGSLnorUk0pAIsuE7kbzXG
+ ndrdok9HhFciRE5BFXzDFZrnfXsjHClrACbk2hLY5rB2aliiDPyAPe2kp+NyW2x5c2+xQLRrt
+ wqtvN2t20sYWf9898KpYY3jR1r3aWVu2h/ukp9k5qsynlLW5sQG7WaEe50Q0chHxH18DlTKyL
+ HXBii4ZZfMSqZBz+BuFp+R5XVRs3Na6jMTVzI1UJkyISqB33gNHrnXkYAhskgoiJpsJs=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,166 +68,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: santosh@fossix.org, atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- aneesh.kumar@linux.ibm.com, vaibhav@linux.ibm.com, tglx@linutronix.de
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Scott Wood <oss@buserror.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-On 2/25/22 20:00, Kajol Jain wrote:
-> Patchset adds performance stats reporting support for nvdimm.
-> Added interface includes support for pmu register/unregister
-> functions. A structure is added called nvdimm_pmu to be used for
-> adding arch/platform specific data such as cpumask, nvdimm device
-> pointer and pmu event functions like event_init/add/read/del.
-> User could use the standard perf tool to access perf events
-> exposed via pmu.
+On Fri, Mar 4, 2022 at 7:12 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
-> Interface also defines supported event list, config fields for the
-> event attributes and their corresponding bit values which are exported
-> via sysfs. Patch 3 exposes IBM pseries platform nmem* device
-> performance stats using this interface.
+> Since the IBM A2 CPU support was removed, see commit
+> fb5a515704d7 ("powerpc: Remove platforms/wsp and associated pieces"),
+> the only 64-bit Book3E CPUs we support are Freescale (NXP) ones.
 >
-> Result from power9 pseries lpar with 2 nvdimm device:
-
-Patchset looks fine to me.
-
-Reviewed-by: Madhavan Srinivasan <maddy@in.ibm.com>
-
-
-> Ex: List all event by perf list
+> However our Kconfig still allows configurating a kernel that has 64-bit
+> Book3E support, but no Freescale CPU support enabled. Such a kernel
+> would never boot, it doesn't know about any CPUs.
 >
-> command:# perf list nmem
+> It also causes build errors, as reported by lkp, because
+> PPC_BARRIER_NOSPEC is not enabled in such a configuration:
 >
->    nmem0/cache_rh_cnt/                                [Kernel PMU event]
->    nmem0/cache_wh_cnt/                                [Kernel PMU event]
->    nmem0/cri_res_util/                                [Kernel PMU event]
->    nmem0/ctl_res_cnt/                                 [Kernel PMU event]
->    nmem0/ctl_res_tm/                                  [Kernel PMU event]
->    nmem0/fast_w_cnt/                                  [Kernel PMU event]
->    nmem0/host_l_cnt/                                  [Kernel PMU event]
->    nmem0/host_l_dur/                                  [Kernel PMU event]
->    nmem0/host_s_cnt/                                  [Kernel PMU event]
->    nmem0/host_s_dur/                                  [Kernel PMU event]
->    nmem0/med_r_cnt/                                   [Kernel PMU event]
->    nmem0/med_r_dur/                                   [Kernel PMU event]
->    nmem0/med_w_cnt/                                   [Kernel PMU event]
->    nmem0/med_w_dur/                                   [Kernel PMU event]
->    nmem0/mem_life/                                    [Kernel PMU event]
->    nmem0/poweron_secs/                                [Kernel PMU event]
->    ...
->    nmem1/mem_life/                                    [Kernel PMU event]
->    nmem1/poweron_secs/                                [Kernel PMU event]
+>   powerpc64-linux-ld: arch/powerpc/net/bpf_jit_comp64.o:(.toc+0x0):
+>   undefined reference to `powerpc_security_features'
 >
-> Patch1:
->          Introduces the nvdimm_pmu structure
-> Patch2:
->          Adds common interface to add arch/platform specific data
->          includes nvdimm device pointer, pmu data along with
->          pmu event functions. It also defines supported event list
->          and adds attribute groups for format, events and cpumask.
->          It also adds code for cpu hotplug support.
-> Patch3:
->          Add code in arch/powerpc/platform/pseries/papr_scm.c to expose
->          nmem* pmu. It fills in the nvdimm_pmu structure with pmu name,
->          capabilities, cpumask and event functions and then registers
->          the pmu by adding callbacks to register_nvdimm_pmu.
-> Patch4:
->          Sysfs documentation patch
+> To fix this, force PPC_FSL_BOOK3E to be selected whenever we are
+> building a 64-bit Book3E kernel.
 >
-> Changelog
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 > ---
-> v6 -> v7
-> - Add function call to numa_map_to_online_node function inorder to
->    get online numa node. As the node id returned by function dev_to_node
->    can be offline in some scenarios and can create issue in hotplug code
->    as reported by Nageswara R Sastry.
+>  arch/powerpc/platforms/Kconfig.cputype | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> - Add function declaration of perf_pmu_register, perf_pmu_unregister
->    and  perf_pmu_migrate_context functions in nd.h file to resolve
->    the implicit-function-declaration warning as reported by kernel test
->    robot.
->    Link: https://lore.kernel.org/all/202202241242.zqzGkguy-lkp@intel.com/
+> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+> index 87bc1929ee5a..e2e1fec91c6e 100644
+> --- a/arch/powerpc/platforms/Kconfig.cputype
+> +++ b/arch/powerpc/platforms/Kconfig.cputype
+> @@ -107,6 +107,7 @@ config PPC_BOOK3S_64
 >
-> - Add Tested-by, Acked-by and Reported-by tags from Peter Zijlstra
->    and Nageswara R Sastry.
->
-> - Link to the patchset v6: https://lkml.org/lkml/2022/2/17/857
->
-> Resend v5 -> v6
-> - No logic change, just a rebase to latest upstream and
->    tested the patchset.
->
-> - Link to the patchset Resend v5: https://lkml.org/lkml/2021/11/15/3979
->
-> v5 -> Resend v5
-> - Resend the patchset
->
-> - Link to the patchset v5: https://lkml.org/lkml/2021/9/28/643
->
-> v4 -> v5:
-> - Remove multiple variables defined in nvdimm_pmu structure include
->    name and pmu functions(event_int/add/del/read) as they are just
->    used to copy them again in pmu variable. Now we are directly doing
->    this step in arch specific code as suggested by Dan Williams.
->
-> - Remove attribute group field from nvdimm pmu structure and
->    defined these attribute groups in common interface which
->    includes format, event list along with cpumask as suggested by
->    Dan Williams.
->    Since we added static defination for attrbute groups needed in
->    common interface, removes corresponding code from papr.
->
-> - Add nvdimm pmu event list with event codes in the common interface.
->
-> - Remove Acked-by/Reviewed-by/Tested-by tags as code is refactored
->    to handle review comments from Dan.
->
-> - Make nvdimm_pmu_free_hotplug_memory function static as reported
->    by kernel test robot, also add corresponding Reported-by tag.
->
-> - Link to the patchset v4: https://lkml.org/lkml/2021/9/3/45
->
-> v3 -> v4
-> - Rebase code on top of current papr_scm code without any logical
->    changes.
->
-> - Added Acked-by tag from Peter Zijlstra and Reviewed by tag
->    from Madhavan Srinivasan.
->
-> - Link to the patchset v3: https://lkml.org/lkml/2021/6/17/605
->
-> v2 -> v3
-> - Added Tested-by tag.
->
-> - Fix nvdimm mailing list in the ABI Documentation.
->
-> - Link to the patchset v2: https://lkml.org/lkml/2021/6/14/25
->
-> v1 -> v2
-> - Fix hotplug code by adding pmu migration call
->    incase current designated cpu got offline. As
->    pointed by Peter Zijlstra.
->
-> - Removed the retun -1 part from cpu hotplug offline
->    function.
->
-> - Link to the patchset v1: https://lkml.org/lkml/2021/6/8/500
->
-> Kajol Jain (4):
->    drivers/nvdimm: Add nvdimm pmu structure
->    drivers/nvdimm: Add perf interface to expose nvdimm performance stats
->    powerpc/papr_scm: Add perf interface support
->    docs: ABI: sysfs-bus-nvdimm: Document sysfs event format entries for
->      nvdimm pmu
->
->   Documentation/ABI/testing/sysfs-bus-nvdimm |  35 +++
->   arch/powerpc/include/asm/device.h          |   5 +
->   arch/powerpc/platforms/pseries/papr_scm.c  | 225 ++++++++++++++
->   drivers/nvdimm/Makefile                    |   1 +
->   drivers/nvdimm/nd_perf.c                   | 328 +++++++++++++++++++++
->   include/linux/nd.h                         |  44 +++
->   6 files changed, 638 insertions(+)
->   create mode 100644 drivers/nvdimm/nd_perf.c
->
+>  config PPC_BOOK3E_64
+>         bool "Embedded processors"
+> +       select PPC_FSL_BOOK3E
+>         select PPC_FPU # Make it a choice ?
+>         select PPC_SMP_MUXED_IPI
+>         select PPC_DOORBELL
+> @@ -295,7 +296,7 @@ config FSL_BOOKE
+>  config PPC_FSL_BOOK3E
+>         bool
+>         select ARCH_SUPPORTS_HUGETLBFS if PHYS_64BIT || PPC64
+> -       select FSL_EMB_PERFMON
+> +       imply FSL_EMB_PERFMON
+>         select PPC_SMP_MUXED_IPI
+>         select PPC_DOORBELL
+>         select PPC_KUEP
+
+'Imply' is almost never what you want here, this only has an effect
+on the default used in 'defconfig' builds. I think this should be
+expressed using a 'default PPC_FSL_BOOK3E' in the
+FSL_EMB_PERFMON option if you actually want it to be optional,
+better otherwise leave it as 'select'.
+
+        Arnd
