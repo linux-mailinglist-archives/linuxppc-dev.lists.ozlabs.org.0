@@ -1,33 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E174D171F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 13:19:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A7B4D1722
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 13:19:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KCZBK420hz3c2s
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 23:19:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KCZC93zX1z3dNJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 23:19:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KCZ923zVxz3bWM
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Mar 2022 23:17:58 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KCZ935RJBz3bYP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Mar 2022 23:17:59 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KCZ913Gzyz4xy0;
- Tue,  8 Mar 2022 23:17:57 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KCZ940kMhz4xy3;
+ Tue,  8 Mar 2022 23:18:00 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220223015821.473097-1-mpe@ellerman.id.au>
-References: <20220223015821.473097-1-mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/code-patching: Pre-map patch area
-Message-Id: <164674126664.3322453.2623564151161334844.b4-ty@ellerman.id.au>
-Date: Tue, 08 Mar 2022 23:07:46 +1100
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <cover.1644834730.git.naveen.n.rao@linux.vnet.ibm.com>
+References: <cover.1644834730.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH powerpc/next 00/17] powerpc/bpf: Some updates and cleanups
+Message-Id: <164674128395.3322453.15857183834950930927.b4-ty@ellerman.id.au>
+Date: Tue, 08 Mar 2022 23:08:03 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,41 +44,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, pmenzel@molgen.mpg.de
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
+ Yauheni Kaliuta <yauheni.kaliuta@redhat.com>, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 23 Feb 2022 12:58:21 +1100, Michael Ellerman wrote:
-> Paul reported a warning with DEBUG_ATOMIC_SLEEP=y:
+On Mon, 14 Feb 2022 16:11:34 +0530, Naveen N. Rao wrote:
+> This is a follow-up series with the pending patches from:
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=279602&state=*
 > 
->   BUG: sleeping function called from invalid context at include/linux/sched/mm.h:256
->   in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
->   preempt_count: 0, expected: 0
->   ...
->   Call Trace:
->     dump_stack_lvl+0xa0/0xec (unreliable)
->     __might_resched+0x2f4/0x310
->     kmem_cache_alloc+0x220/0x4b0
->     __pud_alloc+0x74/0x1d0
->     hash__map_kernel_page+0x2cc/0x390
->     do_patch_instruction+0x134/0x4a0
->     arch_jump_label_transform+0x64/0x78
->     __jump_label_update+0x148/0x180
->     static_key_enable_cpuslocked+0xd0/0x120
->     static_key_enable+0x30/0x50
->     check_kvm_guest+0x60/0x88
->     pSeries_smp_probe+0x54/0xb0
->     smp_prepare_cpus+0x3e0/0x430
->     kernel_init_freeable+0x20c/0x43c
->     kernel_init+0x30/0x1a0
->     ret_from_kernel_thread+0x5c/0x64
+> Patches 1-5 and 8 are unchanged. Patch 6 is new and patch 7 has changes
+> based on discussion from the last series. Patch 9 has a small change to
+> not skip the toc load for elf v2.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/code-patching: Pre-map patch area
-      https://git.kernel.org/powerpc/c/591b4b268435f00d2f0b81f786c2c7bd5ef66416
+[01/17] powerpc/bpf: Skip branch range validation during first pass
+        https://git.kernel.org/powerpc/c/acd7408d2748533d767387cb4308692fba543658
+[02/17] powerpc/bpf: Emit a single branch instruction for known short branch ranges
+        https://git.kernel.org/powerpc/c/bafb5898de5d2f15133774cb049fe55720b9c92f
+[03/17] powerpc/bpf: Handle large branch ranges with BPF_EXIT
+        https://git.kernel.org/powerpc/c/0ffdbce6f4a89bb7c0002904d6438ec83cf05ce7
+[04/17] powerpc64/bpf: Do not save/restore LR on each call to bpf_stf_barrier()
+        https://git.kernel.org/powerpc/c/c2067f7f88830cdd020c775ffefe84a8177337af
+[05/17] powerpc64/bpf: Use r12 for constant blinding
+        https://git.kernel.org/powerpc/c/1d4866d5652f7a19dcbed0c4e366c3402c7775b7
+[06/17] powerpc64: Set PPC64_ELF_ABI_v[1|2] macros to 1
+        https://git.kernel.org/powerpc/c/4eeac2b0aaadc3d1943d348d8565f7cfb93272b9
+[07/17] powerpc64/bpf elfv2: Setup kernel TOC in r2 on entry
+        https://git.kernel.org/powerpc/c/b10cb163c4b31b03ac5014abbfd0b868913fd8e3
+[08/17] powerpc64/bpf elfv1: Do not load TOC before calling functions
+        https://git.kernel.org/powerpc/c/43d636f8b4fd2ee668e75e835fae2fcf4bc0f699
+[09/17] powerpc64/bpf: Optimize instruction sequence used for function calls
+        https://git.kernel.org/powerpc/c/feb6307289d85262c5aed04d6f192d38abba7c45
+[10/17] powerpc/bpf: Rename PPC_BL_ABS() to PPC_BL()
+        https://git.kernel.org/powerpc/c/74bbe3f08463c48a27088be4823a5803b7f7d9a1
+[11/17] powerpc64/bpf: Convert some of the uses of PPC_BPF_[LL|STL] to PPC_BPF_[LD|STD]
+        https://git.kernel.org/powerpc/c/391c271f4deb7356482d12f962a6fc018b6a3fb0
+[12/17] powerpc64/bpf: Get rid of PPC_BPF_[LL|STL|STLU] macros
+        https://git.kernel.org/powerpc/c/794abc08d75e9f2833f493090af14b748e182c5f
+[13/17] powerpc/bpf: Cleanup bpf_jit.h
+        https://git.kernel.org/powerpc/c/7b187dcdb5d348aa916dcda769313512c08e85a5
+[14/17] powerpc/bpf: Move bpf_jit64.h into bpf_jit_comp64.c
+        https://git.kernel.org/powerpc/c/576a6c3a00c1a2a3645e039b126b52f6c7755e54
+[15/17] powerpc/bpf: Use _Rn macros for GPRs
+        https://git.kernel.org/powerpc/c/036d559c0bdea75bf4840ba6780790d08572480c
+[16/17] powerpc64/bpf: Store temp registers' bpf to ppc mapping
+        https://git.kernel.org/powerpc/c/3a3fc9bf103974d9a886fa37087d5d491c806e00
+[17/17] powerpc/bpf: Simplify bpf_to_ppc() and adopt it for powerpc64
+        https://git.kernel.org/powerpc/c/49c3af43e65fbcc13860e0cf5fb2507b13e9724c
 
 cheers
