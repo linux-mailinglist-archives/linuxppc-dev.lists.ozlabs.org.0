@@ -1,41 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB8E4D16EB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 13:11:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B090D4D16F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 13:12:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KCZ1P6qfKz3bwr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 23:11:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KCZ2g4Fx3z3dNb
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 23:12:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KCZ0f6xYzz30jZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Mar 2022 23:10:42 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KCZ0j712xz3bYw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Mar 2022 23:10:45 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KCZ0d4W2hz4xvG;
- Tue,  8 Mar 2022 23:10:41 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KCZ0j5TNkz4xxx;
+ Tue,  8 Mar 2022 23:10:45 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Andrew Morton <akpm@linux-foundation.org>, Helge Deller <deller@gmx.de>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>
-In-Reply-To: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
-Message-Id: <164674125384.3322453.12551849351633372798.b4-ty@ellerman.id.au>
-Date: Tue, 08 Mar 2022 23:07:33 +1100
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com,
+ Haren Myneni <haren@linux.ibm.com>, nathanl@linux.ibm.com
+In-Reply-To: <3968502921a0ce3c332d7fe8da8545ae85fc09d0.camel@linux.ibm.com>
+References: <3968502921a0ce3c332d7fe8da8545ae85fc09d0.camel@linux.ibm.com>
+Subject: Re: [PATCH v6 0/9] powerpc/pseries/vas: NXGZIP support with DLPAR
+Message-Id: <164674126387.3322453.7027227419911490620.b4-ty@ellerman.id.au>
+Date: Tue, 08 Mar 2022 23:07:43 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,51 +43,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 15 Feb 2022 13:40:55 +0100, Christophe Leroy wrote:
-> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
-> on those three architectures because LKDTM messes up function
-> descriptors with functions.
-> 
-> This series does some cleanup in the three architectures and
-> refactors function descriptors so that it can then easily use it
-> in a generic way in LKDTM.
+On Mon, 28 Feb 2022 17:09:57 -0800, Haren Myneni wrote:
+> PowerPC provides HW compression with NX coprocessor. This feature
+> is available on both PowerNV and PowerVM and included in Linux.
+> Since each powerpc chip has one NX coprocessor, the VAS introduces
+> the concept of windows / credits to manage access to this hardware
+> resource. On powerVM, these limited resources should be available
+> across all LPARs. So the hypervisor assigns the specific credits
+> to each LPAR based on processor entitlement so that one LPAR does
+> not overload NX. The hypervisor can reject the window open request
+> to a partition if exceeds its credit limit (1 credit per window).
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[01/13] powerpc: Fix 'sparse' checking on PPC64le
-        https://git.kernel.org/powerpc/c/81df21de8fb45d3a55d41da9c7f5724797d51ce6
-[02/13] powerpc: Move and rename func_descr_t
-        https://git.kernel.org/powerpc/c/5b23cb8cc6b0aab0535253cc2aa362572bab7072
-[03/13] powerpc: Use 'struct func_desc' instead of 'struct ppc64_opd_entry'
-        https://git.kernel.org/powerpc/c/d3e32b997a4ca2e7be71cb770bcb2c000ee20b36
-[04/13] powerpc: Remove 'struct ppc64_opd_entry'
-        https://git.kernel.org/powerpc/c/0a9c5ae279c963149df9a84588281d3d607f7a1f
-[05/13] powerpc: Prepare func_desc_t for refactorisation
-        https://git.kernel.org/powerpc/c/2fd986377d546bedaf27e36554dc9090d272f15d
-[06/13] ia64: Rename 'ip' to 'addr' in 'struct fdesc'
-        https://git.kernel.org/powerpc/c/41a88b45479da873bfc5d29ba1a545a780c5329a
-[07/13] asm-generic: Define CONFIG_HAVE_FUNCTION_DESCRIPTORS
-        https://git.kernel.org/powerpc/c/a257cacc38718c83cee003487e03197f237f5c3f
-[08/13] asm-generic: Define 'func_desc_t' to commonly describe function descriptors
-        https://git.kernel.org/powerpc/c/0dc690e4ef5b901e9d4b53520854fbd5c749e09d
-[09/13] asm-generic: Refactor dereference_[kernel]_function_descriptor()
-        https://git.kernel.org/powerpc/c/e1478d8eaf27704db17a44dee4c53696ed01fc9c
-[10/13] lkdtm: Force do_nothing() out of line
-        https://git.kernel.org/powerpc/c/69b420ed8fd3917ac7073256b4929aa246b6fe31
-[11/13] lkdtm: Really write into kernel text in WRITE_KERN
-        https://git.kernel.org/powerpc/c/b64913394f123e819bffabc79a0e48f98e78dc5d
-[12/13] lkdtm: Fix execute_[user]_location()
-        https://git.kernel.org/powerpc/c/72a86433049dcfe918886645ac3d19c1eaaa67ab
-[13/13] lkdtm: Add a test for function descriptors protection
-        https://git.kernel.org/powerpc/c/5e5a6c5441654d1b9e576ce4ca8a1759e701079e
+[1/9] powerpc/pseries/vas: Use common names in VAS capability structure
+      https://git.kernel.org/powerpc/c/40562fe4fa3d94c7462ec909ab89b075e26c59ac
+[2/9] powerpc/pseries/vas: Save PID in pseries_vas_window struct
+      https://git.kernel.org/powerpc/c/976410cd2cb4c6ed53bd12c192fc46bbcc0fbce7
+[3/9] powerpc/vas: Add paste address mmap fault handler
+      https://git.kernel.org/powerpc/c/1fe3a33ba0a37e7aa0df0acbe31d5dda7610c16e
+[4/9] powerpc/vas: Return paste instruction failure if no active window
+      https://git.kernel.org/powerpc/c/b5c63d90cc2de8ac6724fec84d1d72cfebcae41d
+[5/9] powerpc/vas: Map paste address only if window is active
+      https://git.kernel.org/powerpc/c/6a8d4ca891aa5f9402973eab5d7d9cf3929678b7
+[6/9] powerpc/pseries/vas: Close windows with DLPAR core removal
+      https://git.kernel.org/powerpc/c/8ef7b9e1765a52c8023d9133a2438ac9f6da486a
+[7/9] powerpc/pseries/vas: Reopen windows with DLPAR core add
+      https://git.kernel.org/powerpc/c/c656cfe571a9b8b882e31177f554bd79141fc015
+[8/9] powerpc/pseries/vas: sysfs interface to export capabilities
+      https://git.kernel.org/powerpc/c/b903737bc522e0ef3f45a2a60c364ff547572c9b
+[9/9] powerpc/pseries/vas: Add 'update_total_credits' entry for QoS capabilities
+      https://git.kernel.org/powerpc/c/45f06eac30e5abebecc66e41e7c89d5b4413bac1
 
 cheers
