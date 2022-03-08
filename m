@@ -1,76 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635664D19EA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 15:00:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1EA4D1A7F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Mar 2022 15:28:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KCcR723DSz3bqt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 01:00:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KCd3f61ZYz3bSs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 01:28:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=T/69Wjn6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Lk+f/x7v;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a;
- helo=mail-pg1-x52a.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=T/69Wjn6; dkim-atps=neutral
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
- [IPv6:2607:f8b0:4864:20::52a])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Lk+f/x7v; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KCcF22md9z3bbN
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 00:51:34 +1100 (AEDT)
-Received: by mail-pg1-x52a.google.com with SMTP id o8so16523507pgf.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Mar 2022 05:51:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=+JzjzlDXucMUsZydIfb9gQWfLZXovxyiwNBQFRBZaHU=;
- b=T/69Wjn6Bd89L62zMAaSZkiR/9SJhGHDJoq85bPKd9Z5N9b1S0wQe5S1naonuwcNs3
- hy7tMUrI88wPRUyD5+Hf0MUiUtWA3RPgJLgE+9HLA95ZJ//Mej/xAm+F1X179J9dv2jc
- EQgH/90eRJ7Y2iaVR3BDV6o37/i1NKaRE5PllV3VZefGe62x9rh20bp68aWup7nvYqRm
- AfB4r7P+BoGx9mgYt1L56M+QAO5yDugbCbTtScw0CM5unoudC2zrkVU31EpJBWUSOVrY
- /MfeIdwSm/QIhbiLY0IH2pW4X0Prx+/dNbS8H28CnZO8iNr9+OPpiMP6OaKwRmpEtpTe
- XRcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=+JzjzlDXucMUsZydIfb9gQWfLZXovxyiwNBQFRBZaHU=;
- b=aSf2g07vm+31lzKpaxQoXrLu3WXecMIAcA/xD09OyfiPVhhSP7HjlPw1HVL+TbGzOq
- sh3F4Gm6TcGL0mtgLsLhCehMywKWyOMbtoq+kzeG1XxXggox6K2fB2ymHbF2LirM8Y4G
- jRfGWS0bxGWIdZ7uaylDBqhZtQEuHh5HHK0jgzXy3TN9JeSEn8yFxD2LlNZDXDrvkDNh
- SkE/UahOAM2FNSSPjXPlKL6aEPlT+ZJfwiGi5txKQ73y1SEye3CXxEX26W+qSXYohjWp
- B92SWq26ffAuIvvy/EbOImJBcUaM2w+CK84agKYbGxOkLNWzsMW9OXln6IxASvzrvXWz
- pZjQ==
-X-Gm-Message-State: AOAM531ClfnEYYXFk3NLhE+iQdz2j+GSW3LW/fAObWdQLRdJme1cl5LR
- NQPdQYnxrVwdP/hIIaXSYER+fZMKrU0=
-X-Google-Smtp-Source: ABdhPJzU1B0X1dxWBUY9A/TJiEp9REqU5lCN+ZqMvCtSmoKigMHxte5R0gHV2qxyVPm0YujS4nLkow==
-X-Received: by 2002:a65:5307:0:b0:374:315a:bc32 with SMTP id
- m7-20020a655307000000b00374315abc32mr14327989pgq.342.1646747493319; 
- Tue, 08 Mar 2022 05:51:33 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (61-68-211-196.tpgi.com.au. [61.68.211.196])
- by smtp.gmail.com with ESMTPSA id
- q14-20020a056a00150e00b004f741b5c071sm541737pfu.86.2022.03.08.05.51.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 08 Mar 2022 05:51:33 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 14/14] powerpc/rtas: Consolidate and improve checking for rtas
- callers
-Date: Tue,  8 Mar 2022 23:50:47 +1000
-Message-Id: <20220308135047.478297-15-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20220308135047.478297-1-npiggin@gmail.com>
-References: <20220308135047.478297-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KCd2v3vycz30FC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 01:27:50 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 228CKVWP023228; 
+ Tue, 8 Mar 2022 14:27:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=SzuB/oix1bOrcb1DwVNc3/y8KKucPYC+QX9r/E+Lhh8=;
+ b=Lk+f/x7v9Y9f/5isd9Gz4VJNGl9pCyOwIWh05ndtz4xJhx8v5CaXCXQbd3hEN27qFviI
+ XkBnZbG9HWX2pDP8csP0/ZbF6/ca4SxjgPPO0ia/0z/7FVpf4VhdYqk6FqdqQgWL00zM
+ fn8mRNBFEEc5zQRCyoB/tKca2Vw3DLtVohs9wOEmE/caMqYSG1oQLAEwi9vOxingo53Z
+ 8W+6H+ORyvzmyxFDJrzkXwhY8ht8q35pFaJ/tt/kXPC4OdE4kL/s2sFTwBztQgVgcjWC
+ iPaMcJIYwQruNjkhLg7T8nkX1EqyTtAjPlhFhzrmzIpF+7prSQEqsv2V4IEZ+AkO0Kr2 FA== 
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3enx3m5d3j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Mar 2022 14:27:40 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 228ERMk4007404;
+ Tue, 8 Mar 2022 14:27:39 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma02dal.us.ibm.com with ESMTP id 3ekyga2tvu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 08 Mar 2022 14:27:39 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 228ERbtj33554708
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 8 Mar 2022 14:27:37 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 52A13AC05E;
+ Tue,  8 Mar 2022 14:27:37 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 14974AC059;
+ Tue,  8 Mar 2022 14:27:36 +0000 (GMT)
+Received: from localhost (unknown [9.211.148.106])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Tue,  8 Mar 2022 14:27:35 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, kvm-ppc@vger.kernel.org
+Subject: Re: [RFC PATCH 2/2] KVM: PPC: Book3S HV: Provide a more accurate
+ MAX_VCPU_ID in P9
+In-Reply-To: <f5ec9d55-bac3-b571-dfad-bd501cd364b3@csgroup.eu>
+References: <20210412222656.3466987-1-farosas@linux.ibm.com>
+ <20210412222656.3466987-3-farosas@linux.ibm.com>
+ <f5ec9d55-bac3-b571-dfad-bd501cd364b3@csgroup.eu>
+Date: Tue, 08 Mar 2022 11:27:32 -0300
+Message-ID: <87lexka59n.fsf@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -Wlq7r_-9K9BG57Bfg19phKaE1tQTlgR
+X-Proofpoint-GUID: -Wlq7r_-9K9BG57Bfg19phKaE1tQTlgR
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-08_03,2022-03-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1011
+ impostorscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=970 priorityscore=1501 spamscore=0 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203080075
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,68 +102,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Laurent Dufour <ldufour@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, groug@kaod.org, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add range checking from the rtas syscall, and other error checks
-and warnings to kernel callers, so problems can be found and
-fixed.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/rtas.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+> Le 13/04/2021 =C3=A0 00:26, Fabiano Rosas a =C3=A9crit=C2=A0:
+>> The KVM_CAP_MAX_VCPU_ID capability was added by commit 0b1b1dfd52a6
+>> ("kvm: introduce KVM_MAX_VCPU_ID") to allow for vcpu ids larger than
+>> KVM_MAX_VCPU in powerpc.
+>>=20
+>> For a P9 host we depend on the guest VSMT value to know what is the
+>> maximum number of vcpu id we can support:
+>>=20
+>> kvmppc_core_vcpu_create_hv:
+>>      (...)
+>>      if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+>> -->         if (id >=3D (KVM_MAX_VCPUS * kvm->arch.emul_smt_mode)) {
+>>                      pr_devel("KVM: VCPU ID too high\n");
+>>                      core =3D KVM_MAX_VCORES;
+>>              } else {
+>>                      BUG_ON(kvm->arch.smt_mode !=3D 1);
+>>                      core =3D kvmppc_pack_vcpu_id(kvm, id);
+>>              }
+>>      } else {
+>>              core =3D id / kvm->arch.smt_mode;
+>>      }
+>>=20
+>> which means that the value being returned by the capability today for
+>> a given guest is potentially way larger than what we actually support:
+>>=20
+>> \#define KVM_MAX_VCPU_ID (MAX_SMT_THREADS * KVM_MAX_VCORES)
+>>=20
+>> If the capability is queried before userspace enables the
+>> KVM_CAP_PPC_SMT ioctl there is not much we can do, but if the emulated
+>> smt mode is already known we could provide a more accurate value.
+>>=20
+>> The only practical effect of this change today is to make the
+>> kvm_create_max_vcpus test pass for powerpc. The QEMU spapr machine has
+>> a lower max vcpu than what KVM allows so even KVM_MAX_VCPU is not
+>> reached.
+>>=20
+>> Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+>
+> This patch won't apply after commit a1c42ddedf35 ("kvm: rename=20
+> KVM_MAX_VCPU_ID to KVM_MAX_VCPU_IDS")
+>
+> Feel free to resubmit if still applicable.
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index adf4892aeecd..7f8a3fd685f9 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -428,6 +428,23 @@ static int notrace va_raw_rtas_call(struct rtas_args *args, int token,
- {
- 	int i;
- 
-+	if (!irqs_disabled()) {
-+		WARN_ON_ONCE(1);
-+		return -1;
-+	}
-+
-+	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE) {
-+		WARN_ON_ONCE(1);
-+		return -1;
-+	}
-+
-+	if (nargs >= ARRAY_SIZE(args->args)
-+	    || nret > ARRAY_SIZE(args->args)
-+	    || nargs + nret > ARRAY_SIZE(args->args)) {
-+		WARN_ON_ONCE(1);
-+		return -1;
-+	}
-+
- 	args->token = cpu_to_be32(token);
- 	args->nargs = cpu_to_be32(nargs);
- 	args->nret  = cpu_to_be32(nret);
-@@ -476,9 +493,6 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
- 	char *buff_copy = NULL;
- 	int ret;
- 
--	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
--		return -1;
--
- 	if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
- 		WARN_ON_ONCE(1);
- 		return -1;
-@@ -955,9 +969,6 @@ int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
- 	unsigned long flags;
- 	int ret;
- 
--	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
--		return -1;
--
- 	local_irq_save(flags);
- 	preempt_disable();
- 
--- 
-2.23.0
+Thanks for the reminder, Christophe.
+
+I was focusing on enabling the rest of the kvm-selftests:
+https://lore.kernel.org/r/20220120170109.948681-1-farosas@linux.ibm.com
+
+I'm preparing a v2 for that series and will try to include these patches
+as well.
 
