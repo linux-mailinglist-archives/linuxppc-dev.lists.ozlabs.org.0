@@ -1,57 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932EE4D3A75
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 20:36:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F11D4D3A9E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 20:50:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDMr40b1bz3bdg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 06:36:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDN8V2LYfz3bWj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 06:50:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ki2adnoC;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ki2adnoC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDMqc11Cpz3bM7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 06:35:36 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KDMqW0FPmz9sSh;
- Wed,  9 Mar 2022 20:35:35 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id o6gIBJ2CcNqp; Wed,  9 Mar 2022 20:35:34 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KDMqV5xT4z9sSd;
- Wed,  9 Mar 2022 20:35:34 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A8F638B780;
- Wed,  9 Mar 2022 20:35:34 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id SxGIuyvOycF8; Wed,  9 Mar 2022 20:35:34 +0100 (CET)
-Received: from [192.168.202.27] (unknown [192.168.202.27])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BF4118B763;
- Wed,  9 Mar 2022 20:35:33 +0100 (CET)
-Message-ID: <d83ff309-faf4-499c-7e97-4b3258ed5723@csgroup.eu>
-Date: Wed, 9 Mar 2022 20:35:35 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDN7p0Nh3z2xm1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 06:49:41 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 229HxuYC000354; 
+ Wed, 9 Mar 2022 19:49:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=PUls9GvFqrg30SUzlCxrpGZS+8tFoB/C3hGEZtVCvaY=;
+ b=ki2adnoCUzGSCHVwTfQ4/qzUcc/3NoMycyeqFDkeXmpafGHtSmt9BPWRSdJWNlhxf0U5
+ 5N85Y0tCenynJYUJaTPXwaPQj5XKoNCLbeZy16OQQ2PODhwGwWnWYVWswLYGY4aVcAJq
+ fPVSmEyey3z5mNebM3aj2Y4mUhe2SbCwauXe1Yf7bzeFqH6e2ryoRA27zMtLN0XQxO1D
+ Nt9IPJKBUdwrj6HEK8viewgsAO4PL1KQYuS+48+soPvPmctd2ZvnbwZbjWH3ZBfyf4GM
+ r+GDRwzFwUHP+W7pnOhxBPerm+539D66OJnO4dp6ejLikGivroyAwF8RXKTTe/ldjOu7 QA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3enu2t8ha1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Mar 2022 19:49:35 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 229JKqBp018136;
+ Wed, 9 Mar 2022 19:49:34 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3enu2t8h9p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Mar 2022 19:49:34 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 229JRtVk018425;
+ Wed, 9 Mar 2022 19:49:33 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma01wdc.us.ibm.com with ESMTP id 3ekyg9ee06-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Mar 2022 19:49:33 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 229JnX0J5243808
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 9 Mar 2022 19:49:33 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1E5B3AC05E;
+ Wed,  9 Mar 2022 19:49:33 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F25C8AC059;
+ Wed,  9 Mar 2022 19:49:31 +0000 (GMT)
+Received: from localhost (unknown [9.211.59.35])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Wed,  9 Mar 2022 19:49:31 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 6/6] KVM: PPC: Book3S HV Nested: L2 LPCR should inherit
+ L1 LPES setting
+In-Reply-To: <20220303053315.1056880-7-npiggin@gmail.com>
+References: <20220303053315.1056880-1-npiggin@gmail.com>
+ <20220303053315.1056880-7-npiggin@gmail.com>
+Date: Wed, 09 Mar 2022 16:49:28 -0300
+Message-ID: <871qzac3ef.fsf@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] powerpc/32: Stop printing the virtual memory layout
-Content-Language: fr-FR
-To: Arvind Sankar <nivedita@alum.mit.edu>, Kees Cook <keescook@chromium.org>
-References: <202003021038.8F0369D907@keescook>
- <20200305150837.835083-1-nivedita@alum.mit.edu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20200305150837.835083-1-nivedita@alum.mit.edu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: S8YgsbptDdO1jb5-OWNzXh6mUGDUUFN4
+X-Proofpoint-GUID: 2fI2TUHJWB7JQykTL-T8yjuSKbns9W7S
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-09_07,2022-03-09_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ clxscore=1015 mlxscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 phishscore=0 suspectscore=0 malwarescore=0 mlxlogscore=702
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203090104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,63 +105,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tycho Andersen <tycho@tycho.ws>, kernel-hardening@lists.openwall.com,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, "Tobin C . Harding" <me@tobin.cc>
+Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Nicholas Piggin <npiggin@gmail.com> writes:
 
+> The L1 should not be able to adjust LPES mode for the L2. Setting LPES
+> if the L0 needs it clear would cause external interrupts to be sent to
+> L2 and missed by the L0.
+>
+> Clearing LPES when it may be set, as typically happens with XIVE enabled
+> could cause a performance issue despite having no native XIVE support in
+> the guest, because it will cause mediated interrupts for the L2 to be
+> taken in HV mode, which then have to be injected.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Le 05/03/2020 à 16:08, Arvind Sankar a écrit :
-> For security, don't display the kernel's virtual memory layout.
-> 
-> Kees Cook points out:
-> "These have been entirely removed on other architectures, so let's
-> just do the same for ia32 and remove it unconditionally."
-> 
-> 071929dbdd86 ("arm64: Stop printing the virtual memory layout")
-> 1c31d4e96b8c ("ARM: 8820/1: mm: Stop printing the virtual memory layout")
-> 31833332f798 ("m68k/mm: Stop printing the virtual memory layout")
-> fd8d0ca25631 ("parisc: Hide virtual kernel memory layout")
-> adb1fe9ae2ee ("mm/page_alloc: Remove kernel address exposure in free_reserved_area()")
-> 
-> Signed-off-by: Arvind Sankar <nivedita@alum.mit.edu>
-
-This patch doesn't apply anymore.
-
-This patch is referenced in https://github.com/linuxppc/issues/issues/390
-
-> ---
->   arch/powerpc/mm/mem.c | 17 -----------------
->   1 file changed, 17 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index ef7b1119b2e2..df2c143b6bf7 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -331,23 +331,6 @@ void __init mem_init(void)
->   #endif
->   
->   	mem_init_print_info(NULL);
-> -#ifdef CONFIG_PPC32
-> -	pr_info("Kernel virtual memory layout:\n");
-> -#ifdef CONFIG_KASAN
-> -	pr_info("  * 0x%08lx..0x%08lx  : kasan shadow mem\n",
-> -		KASAN_SHADOW_START, KASAN_SHADOW_END);
-> -#endif
-> -	pr_info("  * 0x%08lx..0x%08lx  : fixmap\n", FIXADDR_START, FIXADDR_TOP);
-> -#ifdef CONFIG_HIGHMEM
-> -	pr_info("  * 0x%08lx..0x%08lx  : highmem PTEs\n",
-> -		PKMAP_BASE, PKMAP_ADDR(LAST_PKMAP));
-> -#endif /* CONFIG_HIGHMEM */
-> -	if (ioremap_bot != IOREMAP_TOP)
-> -		pr_info("  * 0x%08lx..0x%08lx  : early ioremap\n",
-> -			ioremap_bot, IOREMAP_TOP);
-> -	pr_info("  * 0x%08lx..0x%08lx  : vmalloc & ioremap\n",
-> -		VMALLOC_START, VMALLOC_END);
-> -#endif /* CONFIG_PPC32 */
->   }
->   
->   void free_initmem(void)
+Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
