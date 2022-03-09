@@ -1,58 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230624D2D57
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 11:47:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 422114D2E39
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 12:38:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KD85v6hc5z3bcW
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 21:47:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KD9DW0vBlz3bd8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 22:38:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ksce+MO2;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=jBqEWkQU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KD85H5lrWz30Dh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 21:46:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=linmq006@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ksce+MO2; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=jBqEWkQU; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KD85J0yKdz4xYy;
- Wed,  9 Mar 2022 21:46:44 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1646822804;
- bh=UNUfMtbu8jQxJ8Ldp1KCgA9gdyw7U6mYfXdtMhAz3JI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ksce+MO22Ocbz72HvCfAJVVGcoiTU526DWQbDfqV/6oa144msQGikKsMAeaAbrg+M
- WIDpNdyWPJVpJU9Vor6F+HsHbxA+GRZXGonPGbI+zNoODL3ZdsTAKZ4iMBKqiCix1L
- /f8tYlw1G/EX94rFMbYwdcdQXsNOiAHbj+2DDnFelgxJ2B7DC0SFB5FeqAKigaB6ap
- LiIHjxR7xKTvJEPzw9Jr8lQ14lLH7g3+UvxGB8f4mJK6ul8+OBMDle5O+LN/UbywQq
- N2PbIj1eWmzBF7C/hasBQKYLcWQnp2otkIuLvzX8EIKYcNVKl5xMvWhpDCZzOdMazg
- d32soOd8EXfeg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Hangyu Hua
- <hbh25y@gmail.com>, "benh@kernel.crashing.org" <benh@kernel.crashing.org>,
- "paulus@samba.org" <paulus@samba.org>, "peng.hao2@zte.com.cn"
- <peng.hao2@zte.com.cn>, "wen.yang99@zte.com.cn" <wen.yang99@zte.com.cn>
-Subject: Re: [PATCH] powerpc: 8xx: fix a return value error in mpc8xx_pic_init
-In-Reply-To: <87b40493-7630-f714-27f4-90ad2a5a7c12@csgroup.eu>
-References: <20220223070223.26845-1-hbh25y@gmail.com>
- <87o82fn6yw.fsf@mpe.ellerman.id.au>
- <87b40493-7630-f714-27f4-90ad2a5a7c12@csgroup.eu>
-Date: Wed, 09 Mar 2022 21:46:43 +1100
-Message-ID: <87ilsnmmi4.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KD63L42Gqz2xb1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 20:14:53 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id 9so1422088pll.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 09 Mar 2022 01:14:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id;
+ bh=beOK8LcrpNIYxKGHWeVR9pv2W0RzrKRTl8AZ7GHaXos=;
+ b=jBqEWkQU5UX4HEI5ow+RV02EDbId1BdW1x9Y/br/jcsO/GwOar1x2/mlXrIDYYc/9Q
+ HhRLqkbuxhyPlBwYBO8rBYy5oD3lqG9YlC3+lVdhv8+D8XI98xA4G+7x2mSmpfDJenQl
+ CxRlT+T7gPZHDCO0shUM689V+DexdKc62yZ6hlGoSA4xZHbcDq+1F29SDYGO8R8Km92v
+ wIjVVVzjzu7ttBIBaWem6u77RcLC3596PDbqoCJZjHoA8PwJbbqf+EcTb9QcoF8xtF4o
+ GTqz7Sy5L5yfWQ4HApsqXLMK3RMfvX5/XpRXucWoMFQoUbfERVU2fnE6Zyoa+KUQ+HZp
+ vfrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=beOK8LcrpNIYxKGHWeVR9pv2W0RzrKRTl8AZ7GHaXos=;
+ b=bwppa7930lXn594+E+AaPdbmehx2z866PWZn8xcXPGJ50+WNTAR34ZXEgL5Ufa2L8B
+ l5pgf1c5OYxJ+jGWFWZFF16QWXC/NANBAu0OxqkqVly+mIUAjwbi3HOQ8kwluZpi+JYZ
+ MGXlXpguDi9FrYcP2LwyVULBI8S3hyAqV4XzElqNRYFtpddLpLXXacP7rN1CKhzvhn0M
+ 89Jg9TDgUiM9qYk3l0uVAMb8vyKoz91w9sQ6H29gafX0Zj/HMty3eT9fQPATfGyGnzkl
+ 5o6QVVseYBoyU5zudMYWx14iiv0zHvwlGCgp8llQdh7wO2VMSdEvnEOvIhMRtXW2gi4n
+ 1GpA==
+X-Gm-Message-State: AOAM533goLHZLRgdLgB4URcqoWXqpoZQ3z5sRnnUoUYK1wJHBS1rT+Pi
+ qr2tE2tK3M223ZTm1Ccrk5Y=
+X-Google-Smtp-Source: ABdhPJxxLHSCqMw3qJsOgKLX0VzKOjKXq0movyQleTGzWe0eovbbdZ9wvpBmqv1zB4cE+bDlh4ZIWQ==
+X-Received: by 2002:a17:90a:3e42:b0:1bf:53ce:f1ef with SMTP id
+ t2-20020a17090a3e4200b001bf53cef1efmr9294168pjm.33.1646817291893; 
+ Wed, 09 Mar 2022 01:14:51 -0800 (PST)
+Received: from localhost.localdomain ([159.226.95.43])
+ by smtp.googlemail.com with ESMTPSA id
+ v24-20020a634818000000b0036407db4728sm1619625pga.26.2022.03.09.01.14.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 09 Mar 2022 01:14:51 -0800 (PST)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Li Yang <leoyang.li@nxp.com>, Biwen Li <biwen.li@nxp.com>,
+ Ran Wang <ran.wang_1@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] soc: fsl: rcpm: Fix refcount leak in copy_ippdexpcr1_setting
+Date: Wed,  9 Mar 2022 09:14:46 +0000
+Message-Id: <20220309091446.2420-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Mailman-Approved-At: Wed, 09 Mar 2022 22:37:31 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,91 +78,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linmq006@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 09/03/2022 =C3=A0 04:24, Michael Ellerman a =C3=A9crit=C2=A0:
->> Hangyu Hua <hbh25y@gmail.com> writes:
->>> mpc8xx_pic_init() should return -ENOMEM instead of 0 when
->>> irq_domain_add_linear() return NULL. This cause mpc8xx_pics_init to con=
-tinue
->>> executing even if mpc8xx_pic_host is NULL.
->>>
->>> Fixes: cc76404feaed ("powerpc/8xx: Fix possible device node reference l=
-eak")
->>> Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
->>> ---
->>>   arch/powerpc/platforms/8xx/pic.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/arch/powerpc/platforms/8xx/pic.c b/arch/powerpc/platforms/=
-8xx/pic.c
->>> index f2ba837249d6..04a6abf14c29 100644
->>> --- a/arch/powerpc/platforms/8xx/pic.c
->>> +++ b/arch/powerpc/platforms/8xx/pic.c
->>> @@ -153,6 +153,7 @@ int __init mpc8xx_pic_init(void)
->>=20
->> Expanding the context:
->>=20
->> 	siu_reg =3D ioremap(res.start, resource_size(&res));
->> 	if (siu_reg =3D=3D NULL) {
->> 		ret =3D -EINVAL;
->> 		goto out;
->> 	}
->>=20
->> 	mpc8xx_pic_host =3D irq_domain_add_linear(np, 64, &mpc8xx_pic_host_ops,=
- NULL);
->>>   	if (mpc8xx_pic_host =3D=3D NULL) {
->>>   		printk(KERN_ERR "MPC8xx PIC: failed to allocate irq host!\n");
->>>   		ret =3D -ENOMEM;
->>> +		goto out;
->>>   	}
->>>=20=20=20
->>>   	ret =3D 0;
->>>=20=20=20=09
->> out:
->> 	of_node_put(np);
->> 	return ret;
->> }
->>=20
->> Proper error cleanup should also undo the ioremap() if
->> irq_domain_add_linear() fails.
->
-> Uh ...
->
-> If siu_reg is NULL, you get a serious problem when __do_irq() calls=20
-> mpc8xx_get_irq()
+The of_find_compatible_node() function returns a node pointer with
+refcount incremented, We should use of_node_put() on it when done
+Add the missing of_node_put() to release the refcount.
 
-Arguably it shouldn't be assigned to ppc_md.get_irq unless
-mpc8xx_pic_init() succeeds. See eg. xics_init().
+Fixes: e95f287deed2 ("soc: fsl: handle RCPM errata A-008646 on SoC LS1021A")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/soc/fsl/rcpm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> unsigned int mpc8xx_get_irq(void)
-> {
-> 	int irq;
->
-> 	/* For MPC8xx, read the SIVEC register and shift the bits down
-> 	 * to get the irq number.
-> 	 */
-> 	irq =3D in_be32(&siu_reg->sc_sivec) >> 26;
->
-> 	if (irq =3D=3D PIC_VEC_SPURRIOUS)
-> 		return 0;
->
->          return irq_linear_revmap(mpc8xx_pic_host, irq);
->
-> }
->
->
-> So I'll leave siu_reg as is even if irq_domain_add_linear() fails.
->
-> Whatever, if we do something about that it should be done in another=20
-> patch I think.
+diff --git a/drivers/soc/fsl/rcpm.c b/drivers/soc/fsl/rcpm.c
+index 3d0cae30c769..06bd94b29fb3 100644
+--- a/drivers/soc/fsl/rcpm.c
++++ b/drivers/soc/fsl/rcpm.c
+@@ -36,6 +36,7 @@ static void copy_ippdexpcr1_setting(u32 val)
+ 		return;
+ 
+ 	regs = of_iomap(np, 0);
++	of_node_put(np);
+ 	if (!regs)
+ 		return;
+ 
+-- 
+2.17.1
 
-Yeah OK, that's becoming a bit of a larger cleanup. I'll take this patch
-as-is.
-
-cheers
