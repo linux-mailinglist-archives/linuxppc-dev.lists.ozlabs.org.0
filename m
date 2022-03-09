@@ -2,50 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECF04D2E27
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 12:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF9C4D2E32
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 12:36:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KD98V3K48z3bmP
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 22:34:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KD9Bd0Hsyz3bbr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 22:36:25 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Xjv54iyk;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KD9830yrPz30Fn
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 22:34:10 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C45AC1655;
- Wed,  9 Mar 2022 03:33:39 -0800 (PST)
-Received: from [10.163.33.203] (unknown [10.163.33.203])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A3A213FA4D;
- Wed,  9 Mar 2022 03:33:29 -0800 (PST)
-Message-ID: <70a99f28-ea69-58e3-f919-85551943c0a3@arm.com>
-Date: Wed, 9 Mar 2022 17:03:28 +0530
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Xjv54iyk; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KD99t5Kjpz30Fn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 22:35:46 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 229BJ10F030689; 
+ Wed, 9 Mar 2022 11:35:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=O2BUNUTzGb+7cQ8rm8DHMyjnM+LWM5EfmcO0Tz4pHzw=;
+ b=Xjv54iykDrpDbsZcGuj81AUJEypYqnHR1rz8TI+lyQAewWuFK9fxoso/EO3KdJA6grAw
+ 5YrgU/9v/HZ+9HDbgFacb20zYwfuR9uBPjMQzE1nzYUz/V1N3iRIPWKvKiLEcQbumj3O
+ OHqFADbes+gvcjgtT34s5k4pvZ3NFE01i2pbYp7Td8QMPsgzcEi1fXAkCRW/GXHNLYK7
+ TehAImu6qsW5fHNIgQ+pdSZ/uMl6TUaQox/pnzwUgpeiFgs7dCBQTxE3BgtbL4LCIA6N
+ +JlGmY5NeBqXseK5+0QjMuiwhVJWWTv4zGsPeMnI/PNwnIkSOR5Ew9LHDitbafgBUEXI Ug== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3enww82uda-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Mar 2022 11:35:36 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 229BXlLq014484;
+ Wed, 9 Mar 2022 11:35:33 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma02fra.de.ibm.com with ESMTP id 3ekyg90h15-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 09 Mar 2022 11:35:33 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 229BZVXD50397678
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 9 Mar 2022 11:35:31 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5DF9042047;
+ Wed,  9 Mar 2022 11:35:31 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E74E442042;
+ Wed,  9 Mar 2022 11:35:30 +0000 (GMT)
+Received: from localhost (unknown [9.43.9.116])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  9 Mar 2022 11:35:30 +0000 (GMT)
+Date: Wed, 09 Mar 2022 17:05:29 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v1 2/4] powerpc/ftrace: Refactor ftrace_{regs_}caller
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <ec286d2cc6989668a96f14543275437d2f3f0e3a.1645099283.git.christophe.leroy@csgroup.eu>
+ <9d7df9e4fc98a86051489f61d3c9bc67f92f7e27.1645099283.git.christophe.leroy@csgroup.eu>
+ <1646326634.jzerx009p9.naveen@linux.ibm.com>
+ <5c0a3a26-ee52-a4f7-9bc2-b38f27a12a76@csgroup.eu>
+In-Reply-To: <5c0a3a26-ee52-a4f7-9bc2-b38f27a12a76@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH V3 09/30] arm/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Content-Language: en-US
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
- <1646045273-9343-10-git-send-email-anshuman.khandual@arm.com>
- <Yhyqjo/4bozJB6j5@shell.armlinux.org.uk>
- <542fa048-131e-240b-cc3a-fd4fff7ce4ba@arm.com>
- <Yh1pYAOiskEQes3p@shell.armlinux.org.uk>
- <dc3c95a4-de06-9889-ce1e-f660fc9fbb95@csgroup.eu>
- <c3b60de0-38cd-160a-aa15-831349e07e23@arm.com>
- <52866c88-59f9-2d1c-6f5a-5afcaf23f2bb@csgroup.eu>
- <9caa90f5-c10d-75dd-b403-1388b7a3d296@arm.com>
- <CAMuHMdU11kaOzanhHZRH+mLTJzaz-i=PnKdK7NF9V-qx6kp8wg@mail.gmail.com>
- <b1eca2cd-36e6-3a9a-9fe7-70fc0caed7a9@arm.com>
- <CAMuHMdUPw_yBMe9XxQHHuf40it3V5mGuOA10KnMpXt124Ay8Tw@mail.gmail.com>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <CAMuHMdUPw_yBMe9XxQHHuf40it3V5mGuOA10KnMpXt124Ay8Tw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1646825481.p25t8oi12m.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EuvBYT_Q0yDRCRNv2BxaO7OCSMM--y8m
+X-Proofpoint-GUID: EuvBYT_Q0yDRCRNv2BxaO7OCSMM--y8m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-09_04,2022-03-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 impostorscore=0 spamscore=0
+ mlxlogscore=986 phishscore=0 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203090063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,216 +106,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
- "Russell King \(Oracle\)" <linux@armlinux.org.uk>,
- Christoph Hellwig <hch@infradead.org>,
- "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
- "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 3/2/22 16:44, Geert Uytterhoeven wrote:
-> Hi Anshuman,
-> 
-> On Wed, Mar 2, 2022 at 12:07 PM Anshuman Khandual
-> <anshuman.khandual@arm.com> wrote:
->> On 3/2/22 3:35 PM, Geert Uytterhoeven wrote:
->>> On Wed, Mar 2, 2022 at 10:51 AM Anshuman Khandual
->>> <anshuman.khandual@arm.com> wrote:
->>>> On 3/2/22 12:35 PM, Christophe Leroy wrote:
->>>>> Le 02/03/2022 à 04:22, Anshuman Khandual a écrit :
->>>>>> On 3/1/22 1:46 PM, Christophe Leroy wrote:
->>>>>>> Le 01/03/2022 à 01:31, Russell King (Oracle) a écrit :
->>>>>>>> On Tue, Mar 01, 2022 at 05:30:41AM +0530, Anshuman Khandual wrote:
->>>>>>>>> On 2/28/22 4:27 PM, Russell King (Oracle) wrote:
->>>>>>>>>> On Mon, Feb 28, 2022 at 04:17:32PM +0530, Anshuman Khandual wrote:
->>>>>>>>>>> This defines and exports a platform specific custom vm_get_page_prot() via
->>>>>>>>>>> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
->>>>>>>>>>> macros can be dropped which are no longer needed.
->>>>>>>>>>
->>>>>>>>>> What I would really like to know is why having to run _code_ to work out
->>>>>>>>>> what the page protections need to be is better than looking it up in a
->>>>>>>>>> table.
->>>>>>>>>>
->>>>>>>>>> Not only is this more expensive in terms of CPU cycles, it also brings
->>>>>>>>>> additional code size with it.
->>>>>>>>>>
->>>>>>>>>> I'm struggling to see what the benefit is.
->>>>>>>>>
->>>>>>>>> Currently vm_get_page_prot() is also being _run_ to fetch required page
->>>>>>>>> protection values. Although that is being run in the core MM and from a
->>>>>>>>> platform perspective __SXXX, __PXXX are just being exported for a table.
->>>>>>>>> Looking it up in a table (and applying more constructs there after) is
->>>>>>>>> not much different than a clean switch case statement in terms of CPU
->>>>>>>>> usage. So this is not more expensive in terms of CPU cycles.
->>>>>>>>
->>>>>>>> I disagree.
->>>>>>>
->>>>>>> So do I.
->>>>>>>
->>>>>>>>
->>>>>>>> However, let's base this disagreement on some evidence. Here is the
->>>>>>>> present 32-bit ARM implementation:
->>>>>>>>
->>>>>>>> 00000048 <vm_get_page_prot>:
->>>>>>>>         48:       e200000f        and     r0, r0, #15
->>>>>>>>         4c:       e3003000        movw    r3, #0
->>>>>>>>                           4c: R_ARM_MOVW_ABS_NC   .LANCHOR1
->>>>>>>>         50:       e3403000        movt    r3, #0
->>>>>>>>                           50: R_ARM_MOVT_ABS      .LANCHOR1
->>>>>>>>         54:       e7930100        ldr     r0, [r3, r0, lsl #2]
->>>>>>>>         58:       e12fff1e        bx      lr
->>>>>>>>
->>>>>>>> That is five instructions long.
->>>>>>>
->>>>>>> On ppc32 I get:
->>>>>>>
->>>>>>> 00000094 <vm_get_page_prot>:
->>>>>>>         94: 3d 20 00 00     lis     r9,0
->>>>>>>                     96: R_PPC_ADDR16_HA     .data..ro_after_init
->>>>>>>         98: 54 84 16 ba     rlwinm  r4,r4,2,26,29
->>>>>>>         9c: 39 29 00 00     addi    r9,r9,0
->>>>>>>                     9e: R_PPC_ADDR16_LO     .data..ro_after_init
->>>>>>>         a0: 7d 29 20 2e     lwzx    r9,r9,r4
->>>>>>>         a4: 91 23 00 00     stw     r9,0(r3)
->>>>>>>         a8: 4e 80 00 20     blr
->>>>>>>
->>>>>>>
->>>>>>>>
->>>>>>>> Please show that your new implementation is not more expensive on
->>>>>>>> 32-bit ARM. Please do so by building a 32-bit kernel, and providing
->>>>>>>> the disassembly.
->>>>>>>
->>>>>>> With your series I get:
->>>>>>>
->>>>>>> 00000000 <vm_get_page_prot>:
->>>>>>>      0:     3d 20 00 00     lis     r9,0
->>>>>>>                     2: R_PPC_ADDR16_HA      .rodata
->>>>>>>      4:     39 29 00 00     addi    r9,r9,0
->>>>>>>                     6: R_PPC_ADDR16_LO      .rodata
->>>>>>>      8:     54 84 16 ba     rlwinm  r4,r4,2,26,29
->>>>>>>      c:     7d 49 20 2e     lwzx    r10,r9,r4
->>>>>>>     10:     7d 4a 4a 14     add     r10,r10,r9
->>>>>>>     14:     7d 49 03 a6     mtctr   r10
->>>>>>>     18:     4e 80 04 20     bctr
->>>>>>>     1c:     39 20 03 15     li      r9,789
->>>>>>>     20:     91 23 00 00     stw     r9,0(r3)
->>>>>>>     24:     4e 80 00 20     blr
->>>>>>>     28:     39 20 01 15     li      r9,277
->>>>>>>     2c:     91 23 00 00     stw     r9,0(r3)
->>>>>>>     30:     4e 80 00 20     blr
->>>>>>>     34:     39 20 07 15     li      r9,1813
->>>>>>>     38:     91 23 00 00     stw     r9,0(r3)
->>>>>>>     3c:     4e 80 00 20     blr
->>>>>>>     40:     39 20 05 15     li      r9,1301
->>>>>>>     44:     91 23 00 00     stw     r9,0(r3)
->>>>>>>     48:     4e 80 00 20     blr
->>>>>>>     4c:     39 20 01 11     li      r9,273
->>>>>>>     50:     4b ff ff d0     b       20 <vm_get_page_prot+0x20>
->>>>>>>
->>>>>>>
->>>>>>> That is definitely more expensive, it implements a table of branches.
->>>>>>
->>>>>> Okay, will split out the PPC32 implementation that retains existing
->>>>>> table look up method. Also planning to keep that inside same file
->>>>>> (arch/powerpc/mm/mmap.c), unless you have a difference preference.
->>>>>
->>>>> My point was not to get something specific for PPC32, but to amplify on
->>>>> Russell's objection.
->>>>>
->>>>> As this is bad for ARM and bad for PPC32, do we have any evidence that
->>>>> your change is good for any other architecture ?
->>>>>
->>>>> I checked PPC64 and there is exactly the same drawback. With the current
->>>>> implementation it is a small function performing table read then a few
->>>>> adjustment. After your change it is a bigger function implementing a
->>>>> table of branches.
->>>>
->>>> I am wondering if this would not be the case for any other switch case
->>>> statement on the platform ? Is there something specific/different just
->>>> on vm_get_page_prot() implementation ? Are you suggesting that switch
->>>> case statements should just be avoided instead ?
->>>>
->>>>>
->>>>> So, as requested by Russell, could you look at the disassembly for other
->>>>> architectures and show us that ARM and POWERPC are the only ones for
->>>>> which your change is not optimal ?
->>>>
->>>> But the primary purpose of this series is not to guarantee optimized
->>>> code on platform by platform basis, while migrating from a table based
->>>> look up method into a switch case statement.
->>>>
->>>> But instead, the purposes is to remove current levels of unnecessary
->>>> abstraction while converting a vm_flags access combination into page
->>>> protection. The switch case statement for platform implementation of
->>>> vm_get_page_prot() just seemed logical enough. Christoph's original
->>>> suggestion patch for x86 had the same implementation as well.
->>>>
->>>> But if the table look up is still better/preferred method on certain
->>>> platforms like arm or ppc32, will be happy to preserve that.
->>>
->>> I doubt the switch() variant would give better code on any platform.
->>>
->>> What about using tables everywhere, using designated initializers
->>> to improve readability?
+Christophe Leroy wrote:
+>=20
+>=20
+> Le 03/03/2022 =C3=A0 17:59, Naveen N. Rao a =C3=A9crit=C2=A0:
+>> Christophe Leroy wrote:
 >>
->> Designated initializers ? Could you please be more specific. A table look
->> up on arm platform would be something like this and arm_protection_map[]
->> needs to be updated with user_pgprot like before. Just wondering how a
->> designated initializer will help here.
-> 
-> It's more readable than the original:
-> 
->     pgprot_t protection_map[16] __ro_after_init = {
->             __P000, __P001, __P010, __P011, __P100, __P101, __P110, __P111,
->             __S000, __S001, __S010, __S011, __S100, __S101, __S110, __S111
->     };
-> 
->>
->> static pgprot_t arm_protection_map[16] __ro_after_init = {
->>        [VM_NONE]                                       = __PAGE_NONE,
->>        [VM_READ]                                       = __PAGE_READONLY,
->>        [VM_WRITE]                                      = __PAGE_COPY,
->>        [VM_WRITE | VM_READ]                            = __PAGE_COPY,
->>        [VM_EXEC]                                       = __PAGE_READONLY_EXEC,
->>        [VM_EXEC | VM_READ]                             = __PAGE_READONLY_EXEC,
->>        [VM_EXEC | VM_WRITE]                            = __PAGE_COPY_EXEC,
->>        [VM_EXEC | VM_WRITE | VM_READ]                  = __PAGE_COPY_EXEC,
->>        [VM_SHARED]                                     = __PAGE_NONE,
->>        [VM_SHARED | VM_READ]                           = __PAGE_READONLY,
->>        [VM_SHARED | VM_WRITE]                          = __PAGE_SHARED,
->>        [VM_SHARED | VM_WRITE | VM_READ]                = __PAGE_SHARED,
->>        [VM_SHARED | VM_EXEC]                           = __PAGE_READONLY_EXEC,
->>        [VM_SHARED | VM_EXEC | VM_READ]                 = __PAGE_READONLY_EXEC,
->>        [VM_SHARED | VM_EXEC | VM_WRITE]                = __PAGE_SHARED_EXEC,
->>        [VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]      = __PAGE_SHARED_EXEC
->> };
-> 
-> Yeah, like that.
-> 
-> Seems like you already made such a conversion in
-> https://lore.kernel.org/all/1645425519-9034-3-git-send-email-anshuman.khandual@arm.com/
+>> The ability to disable ftrace in certain code paths through=20
+>> paca_struct->ftrace_enabled will also be relevant on ppc32 - it will be=20
+>> nice if it can be introduced there.
+>=20
+> Ah ? I understood from commit ea678ac627e0 ("powerpc64/ftrace: Add a=20
+> field in paca to disable ftrace in unsafe code paths") that it was for=20
+> when it runs in real mode. PPC32 doesn't run any C code in real mode.
 
-Will rework the series in two different phases as mentioned on the other thread.
+It likely isn't necessary in that case.
+
+>=20
+> Are there any other situations that real_mode where we'd like to disable=20
+> it ? If so we could use the thread_struct as we don't have paca on PPC32.
+
+For ppc64, we use this flag to disable certain paths in kvm, kexec,=20
+mce/hmi and idle/hotplug. If none of those are problematic on ppc32,=20
+then this isn't necessary.
+
+
+Thanks,
+- Naveen
+
