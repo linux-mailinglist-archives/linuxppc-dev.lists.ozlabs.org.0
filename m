@@ -1,98 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C994D2604
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 02:24:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589934D2609
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 02:28:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KCvcl41DRz3bbG
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 12:24:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KCvj81XYHz3bNs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 12:28:28 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Mw1b8S2P;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VcN2Ghyc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Mw1b8S2P; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=VcN2Ghyc; dkim-atps=neutral
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KCvby0BGwz30H3
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 12:23:57 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2290uMKL007900; 
- Wed, 9 Mar 2022 01:23:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=lOTmQlCRUmcoW8PwOeHvgAUjYbbv+uP78u9ku8Y/wKs=;
- b=Mw1b8S2P4nk/8/HClVgCoy3I3E/H2YPwAZ39+o7SOJtKtbCsmc/kPfFUBmgIxkMrMPw3
- OYAidGa7OLuxMOuDGRgr/8qsuB1KwoO4LWPYxnhBhAwx1XUGHVx1CFhxJSXpX1Mp8HYx
- 4rvZU0c6Lp0gjZUmbe9fmAoUujhAFh9rledvTVvn+sUn4TtfLL/JQXP7LUGjK9Ag8Y8s
- JvN3spHYgNBAOqjPfqwOZQJPEQL2vZMI72Smr0ff6CK0kVaBnlI5TyCKngxwiOBo8nX5
- Q1on0n2IUBCAe8IZWIiArBOYumIeQvYwnwjPuJFswnLA90kER/yvo5dv+FfQ7QI6R7CF 6w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3eny18r9c0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Mar 2022 01:23:49 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22918bBB026203;
- Wed, 9 Mar 2022 01:23:48 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3eny18r9bp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Mar 2022 01:23:48 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2291CfdL016744;
- Wed, 9 Mar 2022 01:23:47 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma03dal.us.ibm.com with ESMTP id 3emy8h4t8v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Mar 2022 01:23:47 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2291NkEE39453162
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Mar 2022 01:23:46 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 075A57805C;
- Wed,  9 Mar 2022 01:23:46 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A42DE7805F;
- Wed,  9 Mar 2022 01:23:43 +0000 (GMT)
-Received: from farosas.linux.ibm.com.com (unknown [9.211.148.106])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  9 Mar 2022 01:23:43 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org
-Subject: [RFC PATCH] KVM: PPC: Book3S HV: Add KVM_CAP_PPC_GTSE
-Date: Tue,  8 Mar 2022 22:23:38 -0300
-Message-Id: <20220309012338.2527143-1-farosas@linux.ibm.com>
-X-Mailer: git-send-email 2.34.1
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DzijlCT9TcaGoPGc_cQLGzSf3hFoNWR6
-X-Proofpoint-ORIG-GUID: M_f2-IvAeabATHK4MAc9PPpOUBQ9AJS5
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KCvhV68SRz2x9R
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 12:27:53 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1646789276; x=1678325276;
+ h=date:from:to:cc:subject:message-id:mime-version:
+ content-transfer-encoding;
+ bh=aLQ+XDvAenEfBQXN17KQ81NBYCLyeYvt0Nz13ZkYvhc=;
+ b=VcN2GhycCy0Xt3uAiupS1lgARNfot+KXJ631xFtO8p+eUIIKiyB0cYTG
+ nWWJhGvV1mvlpUdbOSk3Nn9x9rPVL2b3Z6ujCt25ebUycrb9DgdKU2eP+
+ +DIT8ONDTVinXmRlsIHFb4ubezxMX2hIDhRg8RGmT8oTyEUwaoJfBZUGV
+ 1drzlgDuQ3SJJOi0XkjEPyoXBQIsYdiUXUn54zeLZjZj0H00MMI2HhHL8
+ iGDAZ3a2OqsmX2lS2ALa0zX+AdayqI6uKvXr7JlTxO5e9PjrVxNgURoc1
+ eSVX5eQbF/9mstaf+nTbd6bO3qiIFqq6hiA8qIU2WbFzGM5j+a9TDLuDw A==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10280"; a="235467705"
+X-IronPort-AV: E=Sophos;i="5.90,165,1643702400"; d="scan'208";a="235467705"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Mar 2022 17:26:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,165,1643702400"; d="scan'208";a="643861177"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+ by orsmga004.jf.intel.com with ESMTP; 08 Mar 2022 17:26:46 -0800
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1nRl6D-0002KL-HW; Wed, 09 Mar 2022 01:26:45 +0000
+Date: Wed, 09 Mar 2022 09:25:58 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS 1a76e520ee1831a81dabf8a9a58c6453f700026e
+Message-ID: <62280226.0YSQTbe+PMjenb/I%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-08_09,2022-03-04_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 mlxlogscore=999 phishscore=0 mlxscore=0 spamscore=0
- clxscore=1011 priorityscore=1501 impostorscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203090003
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,94 +67,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, danielhb413@gmail.com, npiggin@gmail.com,
- clg@kaod.org, linuxppc-dev@lists.ozlabs.org, david@gibson.dropbear.id.au
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch adds a new KVM capability to address a crash we're
-currently having inside the nested guest kernel when running with
-GTSE disabled in the nested hypervisor.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 1a76e520ee1831a81dabf8a9a58c6453f700026e  powerpc/64e: Tie PPC_BOOK3E_64 to PPC_FSL_BOOK3E
 
-The summary is:
+elapsed time: 724m
 
-We allow any guest a cmdline override of GTSE for migration
-purposes. The nested guest does not know it needs to use the option
-and tries to run 'tlbie' with LPCR_GTSE=0.
+configs tested: 128
+configs skipped: 3
 
-The details are a bit more intricate:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-QEMU always sets GTSE=1 in OV5 even before calling KVM. At prom_init,
-guests use the OV5 value to set MMU_FTR_GTSE. This setting can be
-overridden by 'radix_hcall_invalidate=on' in the kernel cmdline. The
-option itself depends on the availability of
-FW_FEATURE_RPT_INVALIDATE, which is tied to QEMU's cap-rpt-invalidate
-capability.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                          randconfig-c001
+powerpc                    klondike_defconfig
+sh                   secureedge5410_defconfig
+openrisc                 simple_smp_defconfig
+m68k                          multi_defconfig
+powerpc                         ps3_defconfig
+parisc                              defconfig
+mips                     loongson1b_defconfig
+m68k                        m5307c3_defconfig
+powerpc64                           defconfig
+xtensa                  cadence_csp_defconfig
+powerpc                  storcenter_defconfig
+arm                         vf610m4_defconfig
+sh                        sh7757lcr_defconfig
+nios2                         3c120_defconfig
+sh                          r7785rp_defconfig
+parisc                generic-64bit_defconfig
+powerpc                     rainier_defconfig
+sh                           se7722_defconfig
+m68k                             alldefconfig
+arm                         s3c6400_defconfig
+arm                         cm_x300_defconfig
+sh                   sh7724_generic_defconfig
+h8300                    h8300h-sim_defconfig
+m68k                        stmark2_defconfig
+sh                          rsk7201_defconfig
+arm                          pxa3xx_defconfig
+xtensa                    xip_kc705_defconfig
+sh                           se7721_defconfig
+powerpc                 mpc834x_itx_defconfig
+um                           x86_64_defconfig
+m68k                       m5249evb_defconfig
+arm                            hisi_defconfig
+riscv                               defconfig
+sh                           se7206_defconfig
+xtensa                          iss_defconfig
+ia64                                defconfig
+arm                  randconfig-c002-20220308
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nds32                             allnoconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                        randconfig-a015
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+arc                  randconfig-r043-20220308
+riscv                randconfig-r042-20220308
+s390                 randconfig-r044-20220308
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                             i386_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                                  kexec
 
-The MMU_FTR_GTSE flag leads guests to set PROC_TABLE_GTSE in their
-process tables and after H_REGISTER_PROC_TBL, both QEMU and KVM will
-set LPCR_GTSE=1 for that guest. Unless the guest uses the cmdline
-override, in which case:
+clang tested configs:
+x86_64                        randconfig-c007
+riscv                randconfig-c006-20220308
+powerpc              randconfig-c003-20220308
+i386                          randconfig-c001
+arm                  randconfig-c002-20220308
+mips                 randconfig-c004-20220308
+mips                        workpad_defconfig
+mips                       lemote2f_defconfig
+powerpc                    ge_imp3a_defconfig
+mips                         tb0219_defconfig
+arm                           spitz_defconfig
+x86_64                           allyesconfig
+arm                         hackkit_defconfig
+mips                        omega2p_defconfig
+arm                         orion5x_defconfig
+powerpc                      walnut_defconfig
+arm                          pcm027_defconfig
+arm                          imote2_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220308
+hexagon              randconfig-r041-20220308
 
-  MMU_FTR_GTSE=0 -> PROC_TABLE_GTSE=0 -> LPCR_GTSE=0
-
-We don't allow the nested hypervisor to set some LPCR bits for its
-nested guests, so if the nested HV has LPCR_GTSE=0, its nested guests
-will also have LPCR_GTSE=0. But since the only thing that can really
-flip GTSE is the cmdline override, if a nested guest runs without it,
-then the sequence goes:
-
-  MMU_FTR_GTSE=1 -> PROC_TABLE_GTSE=1 -> LPCR_GTSE=0.
-
-With LPCR_GTSE=0 the HW will treat 'tlbie' as HV privileged.
-
-How the new capability helps:
-
-By having QEMU consult KVM on what the correct GTSE value is, we can
-have the nested hypervisor return the same value that it is currently
-using. QEMU will then put the correct value in the device-tree for the
-nested guest and MMU_FTR_GTSE will match LPCR_GTSE.
-
-Fixes: b87cc116c7e1 ("KVM: PPC: Book3S HV: Add KVM_CAP_PPC_RPT_INVALIDATE capability")
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
 ---
-This supersedes the previous RFC: "KVM: PPC: Book3s HV: Allow setting
-GTSE for the nested guest"*. Aneesh explained to me that we don't want
-to allow L1 and L2 GTSE values to differ.
-
-*- https://lore.kernel.org/r/20220304182657.2489303-1-farosas@linux.ibm.com
----
- arch/powerpc/kvm/powerpc.c | 3 +++
- include/uapi/linux/kvm.h   | 1 +
- 2 files changed, 4 insertions(+)
-
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index 2ad0ccd202d5..dd08b3b729cd 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -677,6 +677,9 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_PPC_RPT_INVALIDATE:
- 		r = 1;
- 		break;
-+	case KVM_CAP_PPC_GTSE:
-+		r = mmu_has_feature(MMU_FTR_GTSE);
-+		break;
- #endif
- 	default:
- 		r = 0;
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index 507ee1f2aa96..cc581e345d2a 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1135,6 +1135,7 @@ struct kvm_ppc_resize_hpt {
- #define KVM_CAP_XSAVE2 208
- #define KVM_CAP_SYS_ATTRIBUTES 209
- #define KVM_CAP_PPC_AIL_MODE_3 210
-+#define KVM_CAP_PPC_GTSE 211
- 
- #ifdef KVM_CAP_IRQ_ROUTING
- 
--- 
-2.34.1
-
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
