@@ -1,99 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60AA4D3530
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 18:18:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E354D3533
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 18:26:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDJnT40pkz3bYS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 04:18:37 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r/cY+Lem;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDJyK4kZjz3bkv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 04:26:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=r/cY+Lem; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDJmk72G4z2yK2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 04:17:58 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 229FZ3ML016110; 
- Wed, 9 Mar 2022 17:17:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=ZHpv2X3iT7f560O2rekYKw5kkhmaUfq+CpDPbumgezA=;
- b=r/cY+Lem+lPzRr2Y1CbF2jNGs0JeQI8rX6usD2W12ic9VwiH6Zij8tezdj5WWCLnpPQj
- EWpG2xwqTHTEKMCePG2BqP1T+KYk5w9oAmWJl/LyBqm4Q6f/G2izFSNXml3aVwOsPD1Q
- xm0hZfY95oP/O0obh6FHSWsa54lsGM8lgTGnXX4EI8Gf2Q4qOIFkUxCD1PcZDxb08wZ8
- gGArntS4+GlPytQHMh6lHxJHNXEqO7qJFKqaB391f5jHXgy5xlvV5ieAiC25YTr6bqTn
- AAeO0grq5pL38TfD2DxIRmWvrEgrNtO32rH6BBJsgMQD2LIwKMFrzhucLbwRz9qtgd1O 7A== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3epwy33y67-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Mar 2022 17:17:48 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 229GuBlR022575;
- Wed, 9 Mar 2022 17:17:48 GMT
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3epwy33y5q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Mar 2022 17:17:48 +0000
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 229HDr5N016177;
- Wed, 9 Mar 2022 17:17:47 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma01wdc.us.ibm.com with ESMTP id 3ekyg9dnkq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 09 Mar 2022 17:17:47 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 229HHkSl7602560
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 9 Mar 2022 17:17:46 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C33F9AC059;
- Wed,  9 Mar 2022 17:17:46 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F36AAC05F;
- Wed,  9 Mar 2022 17:17:45 +0000 (GMT)
-Received: from localhost (unknown [9.211.59.35])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
- Wed,  9 Mar 2022 17:17:45 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/6] KVM: PPC: Book3S HV P9: Split !nested case out from
- guest entry
-In-Reply-To: <20220303053315.1056880-5-npiggin@gmail.com>
-References: <20220303053315.1056880-1-npiggin@gmail.com>
- <20220303053315.1056880-5-npiggin@gmail.com>
-Date: Wed, 09 Mar 2022 14:17:41 -0300
-Message-ID: <875yonavuy.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDJxx187jz2yQC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 04:25:55 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KDJxs1FTwz9sSh;
+ Wed,  9 Mar 2022 18:25:53 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 61sbSPcpHskw; Wed,  9 Mar 2022 18:25:53 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KDJxs0Sy2z9sSX;
+ Wed,  9 Mar 2022 18:25:53 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F1AC18B780;
+ Wed,  9 Mar 2022 18:25:52 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ty9wnmXBYP6S; Wed,  9 Mar 2022 18:25:52 +0100 (CET)
+Received: from [192.168.202.27] (unknown [192.168.202.27])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9973C8B763;
+ Wed,  9 Mar 2022 18:25:52 +0100 (CET)
+Message-ID: <c7b22d4b-3580-2b8c-4c6e-a5ba0771c027@csgroup.eu>
+Date: Wed, 9 Mar 2022 18:25:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Gai3EooIAq1uPd6v75z_CjAZZIn-0cBa
-X-Proofpoint-ORIG-GUID: xhcPWp-9fE59dSoEEgSFX99Il1ZvMMoo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-09_07,2022-03-09_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- clxscore=1015 malwarescore=0 spamscore=0 suspectscore=0 phishscore=0
- mlxlogscore=821 lowpriorityscore=0 adultscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203090096
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2 1/4] powerpc/instruction_dump: Fix kernel crash with
+ show_instructions
+Content-Language: fr-FR
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+References: <20200524093822.423487-1-aneesh.kumar@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20200524093822.423487-1-aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,17 +64,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin <npiggin@gmail.com> writes:
 
-> The differences between nested and !nested will become larger in
-> later changes so split them out for readability.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Reviewed-by: Fabiano Rosas <farosas@linux.ibm.com>
+Le 24/05/2020 à 11:38, Aneesh Kumar K.V a écrit :
+> With Hard Lockup watchdog, we can hit a BUG() if we take a watchdog
+> interrupt when in OPAL mode. This happens in show_instructions()
+> where the kernel takes the watchdog NMI IPI with MSR_IR == 0.
+> With that show_instructions() updates the variable pc in the loop
+> and the second iterations will result in BUG().
+> 
+> We hit the BUG_ON due the below check in  __va()
+> 
+>   #define __va(x)								\
+> ({									\
+> 	VIRTUAL_BUG_ON((unsigned long)(x) >= PAGE_OFFSET);		\
+> 	(void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET);	\
+> })
+> 
+> Fixes: 4dd7554a6456 ("powerpc/64: Add VIRTUAL_BUG_ON checks for __va and __pa addresses")
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+
+If still relevant, this series needs rebase.
+
+Patch 1 was applied with changes, at least patch 3 won't apply
+
+Thanks
+Christophe
+
+
+> ---
+>   arch/powerpc/kernel/process.c | 21 ++++++++++++---------
+>   1 file changed, 12 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index 048d64c4e115..93bf4a766707 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -1253,29 +1253,32 @@ struct task_struct *__switch_to(struct task_struct *prev,
+>   static void show_instructions(struct pt_regs *regs)
+>   {
+>   	int i;
+> +	unsigned long nip = regs->nip;
+>   	unsigned long pc = regs->nip - (NR_INSN_TO_PRINT * 3 / 4 * sizeof(int));
+>   
+>   	printk("Instruction dump:");
+>   
+> +#if !defined(CONFIG_BOOKE)
+> +	/* If executing with the IMMU off, adjust pc rather
+> +	 * than print XXXXXXXX.
+> +	 */
+> +	if (!(regs->msr & MSR_IR)) {
+> +		pc = (unsigned long)phys_to_virt(pc);
+> +		nip = (unsigned long)phys_to_virt(regs->nip);
+> +	}
+> +#endif
+> +
+>   	for (i = 0; i < NR_INSN_TO_PRINT; i++) {
+>   		int instr;
+>   
+>   		if (!(i % 8))
+>   			pr_cont("\n");
+>   
+> -#if !defined(CONFIG_BOOKE)
+> -		/* If executing with the IMMU off, adjust pc rather
+> -		 * than print XXXXXXXX.
+> -		 */
+> -		if (!(regs->msr & MSR_IR))
+> -			pc = (unsigned long)phys_to_virt(pc);
+> -#endif
+> -
+>   		if (!__kernel_text_address(pc) ||
+>   		    probe_kernel_address((const void *)pc, instr)) {
+>   			pr_cont("XXXXXXXX ");
+>   		} else {
+> -			if (regs->nip == pc)
+> +			if (nip == pc)
+>   				pr_cont("<%08x> ", instr);
+>   			else
+>   				pr_cont("%08x ", instr);
