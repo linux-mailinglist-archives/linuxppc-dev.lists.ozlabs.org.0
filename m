@@ -2,58 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1075B4D3965
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 20:02:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 119214D3981
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 20:05:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDM5c6bH8z3bc4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 06:02:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=padBPJSw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDM9D6QxTz3bhK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 06:05:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=h08.hostsharing.net (client-ip=2a01:4f8:150:2161:1:b009:f23e:0;
+ helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=padBPJSw; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net
+ [IPv6:2a01:4f8:150:2161:1:b009:f23e:0])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDM4y13qGz30hj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 06:02:09 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDM8n5glpz2yQC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 06:05:27 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net
+ [IPv6:2a01:37:1000::53df:5f1c:0])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 592A4617CF;
- Wed,  9 Mar 2022 19:02:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B078C340E8;
- Wed,  9 Mar 2022 19:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1646852526;
- bh=AcspJPuA9dNvJicZK/m3TDHAU3/5ThUWIdTSCDAT74c=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=padBPJSwctZLSS5FlBkT17NAXaJT6Jme+aHd6O9qpHWjAaoXMOfsrF1s4MlXpCilJ
- g01VVX3j2ShVXz6lWLD+AdKeHafB58+XgrqzN/jFfLBO0N0Ve46+4FIlxlJ38xqe+X
- zPh7SlnB3e1bfqDey4YXVAUjy3VKs+NuMLQ/KNnE796RIY9oRhO19jL2d0oK2TxIAN
- bqOadgOZCAI0rIKOK4oVOyKjmXvvZTMFpSnmcNhguGyYA9zYB3zwAeTTRrqC97AgMm
- zN8iUX7QMCce5auwQTv8tu398rvPbjZftWkwj90zSuo6cGNMQ8/5Kf8MD4sh3ETXVQ
- mZDbmdqKFog6g==
-Date: Wed, 9 Mar 2022 12:01:59 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Fangrui Song <maskray@google.com>
-Subject: Re: [PATCH] powerpc: Replace ppc64 DT_RELACOUNT usage with
- DT_RELASZ/24
-Message-ID: <Yij5p+TanPYnUM5V@dev-arch.thelio-3990X>
-References: <20220309055118.1551013-1-maskray@google.com>
+ (Client CN "*.hostsharing.net",
+ Issuer "RapidSSL TLS DV RSA Mixed SHA256 2020 CA-1" (verified OK))
+ by bmailout3.hostsharing.net (Postfix) with ESMTPS id 4A151100BA624;
+ Wed,  9 Mar 2022 20:05:21 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+ id 278F54C5886; Wed,  9 Mar 2022 20:05:21 +0100 (CET)
+Date: Wed, 9 Mar 2022 20:05:21 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [RFC PATCH 6/7] serial: General support for multipoint addresses
+Message-ID: <20220309190521.GA9832@wunner.de>
+References: <20220302095606.14818-1-ilpo.jarvinen@linux.intel.com>
+ <20220302095606.14818-7-ilpo.jarvinen@linux.intel.com>
+ <20220306194001.GD19394@wunner.de>
+ <ab43569c-6488-12a6-823-3ef09f2849d@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20220309055118.1551013-1-maskray@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ab43569c-6488-12a6-823-3ef09f2849d@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,164 +54,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, llvm@lists.linux.dev,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-sh@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-api@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+ linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
+ linux-serial <linux-serial@vger.kernel.org>, Matt Turner <mattst88@gmail.com>,
+ linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
+ Johan Hovold <johan@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 08, 2022 at 09:51:18PM -0800, Fangrui Song wrote:
-> DT_RELACOUNT is an ELF dynamic tag inherited from SunOS indicating the
-> number of R_*_RELATIVE relocations. It is optional but {ld.lld,ld.lld}
-
-                                                         ^ ld.{bfd,lld} ?
-
-> -z combreloc always creates it (if non-zero) to slightly speed up glibc
-> ld.so relocation resolving by avoiding R_*R_PPC64_RELATIVE type
-> comparison. The tag is otherwise nearly unused in the wild and I'd
-> recommend that software avoids using it.
+On Mon, Mar 07, 2022 at 11:48:01AM +0200, Ilpo Järvinen wrote:
+> On Sun, 6 Mar 2022, Lukas Wunner wrote:
+> > On Wed, Mar 02, 2022 at 11:56:05AM +0200, Ilpo Järvinen wrote:
+> > > This change is necessary for supporting devices with RS485
+> > > multipoint addressing [*].
+> > 
+> > If this is only used with RS485, why can't we just store the
+> > addresses in struct serial_rs485 and use the existing TIOCSRS485
+> > and TIOCGRS485 ioctls?  There's 20 bytes of padding left in
+> > struct serial_rs485 which you could use.  No need to add more
+> > user-space ABI.
 > 
-> lld>=14.0.0 (since commit da0e5b885b25cf4ded0fa89b965dc6979ac02ca9)
-> underestimates DT_RELACOUNT for ppc64 when position-independent long
-> branch thunks are used. Correcting it needs non-trivial arch-specific
-> complexity which I'd prefer to avoid. Since our code always compares the
-> relocation type with R_PPC64_RELATIVE, replacing every occurrence of
-> DT_RELACOUNT with DT_RELASZ/sizeof(Elf64_Rela)=DT_RELASZ/24 is a correct
-> alternative.
-> 
-> DT_RELASZ is in practice bounded by an uint32_t. Dividing x by 24 can be
-> implemented as (uint32_t)(x*0xaaaaaaab) >> 4.
-> 
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1581
-> Reported-by: Nathan Chancellor <nathan@kernel.org>
-> Signed-off-by: Fangrui Song <maskray@google.com>
+> It could if it is agreed that serial multipoint addressing is just
+> a thing in RS-485 and nowhere else? In that case, there is no point
+> in adding more generic support for it.
 
-Thank you a lot for the fix! I tested this with several different
-configurations with tip of tree LLVM and they all booted in QEMU. I also
-tested one configuration with GCC 5.4 (we support GCC 5.x as a minimum)
-and it booted as well.
+It's just that the above-quoted sentence in the commit message
+specifically mentions RS485.  If you intend to use it with RS232
+as well, that should be made explicit, otherwise one wonders why
+it wasn't integrated into struct serial_rs485.
 
-Tested-by: Nathan Chancellor <nathan@kernel.org>
+I have no idea how common 9th bit addressing mode is with RS232.
+Goggle turns up links saying it's mainly used with RS485, "but also
+RS232".  Since RS232 isn't a bus but a point-to-point link,
+9th bit addressing doesn't seem to make as much sense.
 
-> ---
->  arch/powerpc/boot/crt0.S       | 28 +++++++++++++++++-----------
->  arch/powerpc/kernel/reloc_64.S | 15 +++++++++------
->  2 files changed, 26 insertions(+), 17 deletions(-)
+
+> > > [*] Technically, RS485 is just an electronic spec and does not
+> > > itself specify the 9th bit addressing mode but 9th bit seems
+> > > at least "semi-standard" way to do addressing with RS485.
+> > 
+> > Is 9th bit addressing actually used by an Intel customer or was
+> > it implemented just for feature completeness? I think this mode
+> > isn't used often (I've never seen a use case myself), primarily
+> > because it requires disabling parity.
 > 
-> diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
-> index feadee18e271..1c96ebe7ef1a 100644
-> --- a/arch/powerpc/boot/crt0.S
-> +++ b/arch/powerpc/boot/crt0.S
-> @@ -8,7 +8,7 @@
->  #include "ppc_asm.h"
->  
->  RELA = 7
-> -RELACOUNT = 0x6ffffff9
-> +RELASZ = 8
->  
->  	.data
->  	/* A procedure descriptor used when booting this as a COFF file.
-> @@ -65,7 +65,7 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
->  	subf	r11,r11,r12	/* runtime - linktime offset */
->  
->  	/* The dynamic section contains a series of tagged entries.
-> -	 * We need the RELA and RELACOUNT entries. */
-> +	 * We need the RELA and RELASZ entries. */
->  	li	r9,0
->  	li	r0,0
->  9:	lwz	r8,0(r12)	/* get tag */
-> @@ -75,18 +75,21 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
->  	bne	11f
->  	lwz	r9,4(r12)	/* get RELA pointer in r9 */
->  	b	12f
-> -11:	addis	r8,r8,(-RELACOUNT)@ha
-> -	cmpwi	r8,RELACOUNT@l
-> +11:	cmpwi	r8,RELASZ
->  	bne	12f
-> -	lwz	r0,4(r12)	/* get RELACOUNT value in r0 */
-> +	lwz	r0,4(r12)	/* get RELASZ / 24 in r0 */
-> +	lis     r8,0xaaaa
-> +	ori     r8,r8,0xaaab
-> +	mulhwu  r0,r0,r8
-> +	srwi    r0,r0,4
->  12:	addi	r12,r12,8
->  	b	9b
->  
->  	/* The relocation section contains a list of relocations.
->  	 * We now do the R_PPC_RELATIVE ones, which point to words
->  	 * which need to be initialized with addend + offset.
-> -	 * The R_PPC_RELATIVE ones come first and there are RELACOUNT
-> -	 * of them. */
-> +	 * The R_PPC_RELATIVE ones come first and there are at most
-> +         * RELASZ/24 of them. */
->  10:	/* skip relocation if we don't have both */
->  	cmpwi	r0,0
->  	beq	3f
-> @@ -160,14 +163,17 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
->  	bne	10f
->  	ld	r13,8(r11)       /* get RELA pointer in r13 */
->  	b	11f
-> -10:	addis	r12,r12,(-RELACOUNT)@ha
-> -	cmpdi	r12,RELACOUNT@l
-> +10:	cmpdi	r12,RELASZ
->  	bne	11f
-> -	ld	r8,8(r11)       /* get RELACOUNT value in r8 */
-> +	ld	r8,8(r11)       /* get RELASZ / 24 in r8 */
-> +	lis     r0,0xaaaa
-> +	ori     r0,r0,0xaaab
-> +	mulhwu  r8,r8,r0
-> +	srwi    r8,r8,4
->  11:	addi	r11,r11,16
->  	b	9b
->  12:
-> -	cmpdi	r13,0            /* check we have both RELA and RELACOUNT */
-> +	cmpdi	r13,0            /* check we have both RELA and RELASZ */
->  	cmpdi	cr1,r8,0
->  	beq	3f
->  	beq	cr1,3f
-> diff --git a/arch/powerpc/kernel/reloc_64.S b/arch/powerpc/kernel/reloc_64.S
-> index 02d4719bf43a..362be759609f 100644
-> --- a/arch/powerpc/kernel/reloc_64.S
-> +++ b/arch/powerpc/kernel/reloc_64.S
-> @@ -8,7 +8,7 @@
->  #include <asm/ppc_asm.h>
->  
->  RELA = 7
-> -RELACOUNT = 0x6ffffff9
-> +RELASZ = 8
->  R_PPC64_RELATIVE = 22
->  
->  /*
-> @@ -27,7 +27,7 @@ _GLOBAL(relocate)
->  	add	r10,r10,r12	/* r10 has runtime addr of _stext */
->  
->  	/*
-> -	 * Scan the dynamic section for the RELA and RELACOUNT entries.
-> +	 * Scan the dynamic section for the RELA and RELASZ entries.
->  	 */
->  	li	r7,0
->  	li	r8,0
-> @@ -38,13 +38,16 @@ _GLOBAL(relocate)
->  	bne	2f
->  	ld	r7,8(r11)	/* get RELA pointer in r7 */
->  	b	3f
-> -2:	addis	r6,r6,(-RELACOUNT)@ha
-> -	cmpdi	r6,RELACOUNT@l
-> +2:	cmpdi	r6,RELASZ
->  	bne	3f
-> -	ld	r8,8(r11)	/* get RELACOUNT value in r8 */
-> +	ld	r8,8(r11)	/* get RELA / 24 in r8 */
-> +	lis     r0,0xaaaa
-> +	ori     r0,r0,0xaaab
-> +	mulhwu  r8,r8,r0
-> +	srwi    r8,r8,4
->  3:	addi	r11,r11,16
->  	b	1b
-> -4:	cmpdi	r7,0		/* check we have both RELA and RELACOUNT */
-> +4:	cmpdi	r7,0		/* check we have both RELA and RELASZ */
->  	cmpdi	cr1,r8,0
->  	beq	6f
->  	beq	cr1,6f
-> -- 
-> 2.35.1.616.g0bdcbb4464-goog
-> 
+> On what basis? ...The datasheet I'm looking at has a timing diagram 
+> with both D8 (9th bit) and parity so I think your information must be
+> incorrect.
+
+E.g. the discussion here says that 9th bit addressing requires that
+parity is disabled or the character size is reduced to 7-bit:
+
+https://www.microchip.com/forums/m299904.aspx
+
+I guess that applies only to some UARTs, the Synopsys databook doesn't
+mention any such constraints.
+
+Thanks,
+
+Lukas
