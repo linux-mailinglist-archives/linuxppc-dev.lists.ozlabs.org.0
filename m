@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50054D2BBF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 10:23:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCC14D2C02
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 10:30:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KD6Dg50K6z3bgh
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 20:22:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KD6PN27F4z3bZy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Mar 2022 20:30:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,44 +14,53 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KD6DH1ZSHz2xtv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 20:22:36 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KD6Ny5GpXz2ywb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Mar 2022 20:30:08 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KD6DC1RGGz9sSX;
- Wed,  9 Mar 2022 10:22:35 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4KD6Nv0b01z9sSV;
+ Wed,  9 Mar 2022 10:30:07 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id alQAWZ3kP2SI; Wed,  9 Mar 2022 10:22:35 +0100 (CET)
+ with ESMTP id ooq6_0FsSdGe; Wed,  9 Mar 2022 10:30:07 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KD6DC0WVLz9sSV;
- Wed,  9 Mar 2022 10:22:35 +0100 (CET)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KD6Nt6qh0z9sSR;
+ Wed,  9 Mar 2022 10:30:06 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F3A048B77E;
- Wed,  9 Mar 2022 10:22:34 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D7EB78B77E;
+ Wed,  9 Mar 2022 10:30:06 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xVav9NaNiTXZ; Wed,  9 Mar 2022 10:22:34 +0100 (CET)
-Received: from [192.168.202.3] (unknown [192.168.202.3])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 629838B763;
- Wed,  9 Mar 2022 10:22:34 +0100 (CET)
-Message-ID: <1c6276d5-6e9e-3ad4-a7d5-c5a70031259f@csgroup.eu>
-Date: Wed, 9 Mar 2022 10:22:36 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v2 1/3] powerpc/mce: Bug fixes for MCE handling in kernel
- space
-Content-Language: fr-FR
-To: Balbir Singh <bsingharora@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20180405071500.22320-1-bsingharora@gmail.com>
- <20180405071500.22320-2-bsingharora@gmail.com>
+ with ESMTP id pOpmT6DffnpU; Wed,  9 Mar 2022 10:30:06 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.3])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 88E9C8B763;
+ Wed,  9 Mar 2022 10:30:06 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2299Tscg3598467
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Wed, 9 Mar 2022 10:29:54 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2299TqDE3598460;
+ Wed, 9 Mar 2022 10:29:52 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20180405071500.22320-2-bsingharora@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: Remove find_current_mm_pte()
+Date: Wed,  9 Mar 2022 10:29:50 +0100
+Message-Id: <ec79f462a3bfa8365b7df505e574d5d85246bc68.1646818177.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1646818188; l=2526; s=20211009;
+ h=from:subject:message-id; bh=h44Sg5AgvIMvJpGkxPGM0gq65QXd16xNa43MAsRSfio=;
+ b=oHkiv4ZIEp7UvFFwzb2z/ajNVIwFcw+hXyjZMtTPV39nDHiMTygEQApsjKlwdgTeYlYy4PBdfQ2k
+ JJCXgKLsAox3Wfh8ffT2Z/AwuimMsc2zUcKoli3ayLGN2lw+AZsE
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,109 +73,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oohall@gmail.com, npiggin@gmail.com, linux-nvdimm@lists.01.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Last usage of find_current_mm_pte() was removed by
+commit 15759cb054ef ("powerpc/perf/callchain: Use
+__get_user_pages_fast in read_user_stack_slow")
 
+Remove it.
 
-Le 05/04/2018 à 09:14, Balbir Singh a écrit :
-> The code currently assumes PAGE_SHIFT as the shift value of
-> the pfn, this works correctly (mostly) for user space pages,
-> but the correct thing to do is
-> 
-> 1. Extract the shift value returned via the pte-walk API's
-> 2. Use the shift value to access the instruction address.
-> 
-> Note, the final physical address still use PAGE_SHIFT for
-> computation. handle_ierror() is not modified and handle_derror()
-> is modified just for extracting the correct instruction
-> address.
-> 
-> This is largely due to __find_linux_pte() returning pfn's
-> shifted by pdshift. The code is much more generic and can
-> handle shift values returned.
-> 
-> Fixes: ba41e1e1ccb9 ("powerpc/mce: Hookup derror (load/store) UE errors")
-> 
-> Signed-off-by: Balbir Singh <bsingharora@gmail.com>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/include/asm/pte-walk.h | 25 -------------------------
+ arch/powerpc/mm/book3s64/pgtable.c  |  4 ++--
+ 2 files changed, 2 insertions(+), 27 deletions(-)
 
-Series superseded by 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=126132&state=*
+diff --git a/arch/powerpc/include/asm/pte-walk.h b/arch/powerpc/include/asm/pte-walk.h
+index 714a35f0d425..73c22c579a79 100644
+--- a/arch/powerpc/include/asm/pte-walk.h
++++ b/arch/powerpc/include/asm/pte-walk.h
+@@ -60,29 +60,4 @@ static inline phys_addr_t ppc_find_vmap_phys(unsigned long addr)
+ 	return pa;
+ }
+ 
+-/*
+- * This is what we should always use. Any other lockless page table lookup needs
+- * careful audit against THP split.
+- */
+-static inline pte_t *find_current_mm_pte(pgd_t *pgdir, unsigned long ea,
+-					 bool *is_thp, unsigned *hshift)
+-{
+-	pte_t *pte;
+-
+-	VM_WARN(!arch_irqs_disabled(), "%s called with irq enabled\n", __func__);
+-	VM_WARN(pgdir != current->mm->pgd,
+-		"%s lock less page table lookup called on wrong mm\n", __func__);
+-	pte = __find_linux_pte(pgdir, ea, is_thp, hshift);
+-
+-#if defined(CONFIG_DEBUG_VM) &&						\
+-	!(defined(CONFIG_HUGETLB_PAGE) || defined(CONFIG_TRANSPARENT_HUGEPAGE))
+-	/*
+-	 * We should not find huge page if these configs are not enabled.
+-	 */
+-	if (hshift)
+-		WARN_ON(*hshift);
+-#endif
+-	return pte;
+-}
+-
+ #endif /* _ASM_POWERPC_PTE_WALK_H */
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 79ce3c22a29d..41a41357799d 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -98,14 +98,14 @@ static void do_serialize(void *arg)
+ }
+ 
+ /*
+- * Serialize against find_current_mm_pte which does lock-less
++ * Serialize against __find_linux_pte() which does lock-less
+  * lookup in page tables with local interrupts disabled. For huge pages
+  * it casts pmd_t to pte_t. Since format of pte_t is different from
+  * pmd_t we want to prevent transit from pmd pointing to page table
+  * to pmd pointing to huge page (and back) while interrupts are disabled.
+  * We clear pmd to possibly replace it with page table pointer in
+  * different code paths. So make sure we wait for the parallel
+- * find_current_mm_pte to finish.
++ * __find_linux_pte() to finish.
+  */
+ void serialize_against_pte_lookup(struct mm_struct *mm)
+ {
+-- 
+2.34.1
 
-> ---
->   arch/powerpc/kernel/mce_power.c | 26 ++++++++++++++++----------
->   1 file changed, 16 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/mce_power.c b/arch/powerpc/kernel/mce_power.c
-> index fe6fc63251fe..bd9754def479 100644
-> --- a/arch/powerpc/kernel/mce_power.c
-> +++ b/arch/powerpc/kernel/mce_power.c
-> @@ -36,7 +36,8 @@
->    * Convert an address related to an mm to a PFN. NOTE: we are in real
->    * mode, we could potentially race with page table updates.
->    */
-> -static unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr)
-> +static unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr,
-> +		unsigned int *shift)
->   {
->   	pte_t *ptep;
->   	unsigned long flags;
-> @@ -49,13 +50,15 @@ static unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr)
->   
->   	local_irq_save(flags);
->   	if (mm == current->mm)
-> -		ptep = find_current_mm_pte(mm->pgd, addr, NULL, NULL);
-> +		ptep = find_current_mm_pte(mm->pgd, addr, NULL, shift);
->   	else
-> -		ptep = find_init_mm_pte(addr, NULL);
-> +		ptep = find_init_mm_pte(addr, shift);
->   	local_irq_restore(flags);
->   	if (!ptep || pte_special(*ptep))
->   		return ULONG_MAX;
-> -	return pte_pfn(*ptep);
-> +	if (!*shift)
-> +		*shift = PAGE_SHIFT;
-> +	return (pte_val(*ptep) & PTE_RPN_MASK) >> *shift;
->   }
->   
->   /* flush SLBs and reload */
-> @@ -353,15 +356,16 @@ static int mce_find_instr_ea_and_pfn(struct pt_regs *regs, uint64_t *addr,
->   	unsigned long pfn, instr_addr;
->   	struct instruction_op op;
->   	struct pt_regs tmp = *regs;
-> +	unsigned int shift;
->   
-> -	pfn = addr_to_pfn(regs, regs->nip);
-> +	pfn = addr_to_pfn(regs, regs->nip, &shift);
->   	if (pfn != ULONG_MAX) {
-> -		instr_addr = (pfn << PAGE_SHIFT) + (regs->nip & ~PAGE_MASK);
-> +		instr_addr = (pfn << shift) + (regs->nip & ((1 << shift) - 1));
->   		instr = *(unsigned int *)(instr_addr);
->   		if (!analyse_instr(&op, &tmp, instr)) {
-> -			pfn = addr_to_pfn(regs, op.ea);
-> +			pfn = addr_to_pfn(regs, op.ea, &shift);
->   			*addr = op.ea;
-> -			*phys_addr = (pfn << PAGE_SHIFT);
-> +			*phys_addr = (pfn << shift);
->   			return 0;
->   		}
->   		/*
-> @@ -435,12 +439,14 @@ static int mce_handle_ierror(struct pt_regs *regs,
->   			if (mce_err->severity == MCE_SEV_ERROR_SYNC &&
->   				table[i].error_type == MCE_ERROR_TYPE_UE) {
->   				unsigned long pfn;
-> +				unsigned int shift;
->   
->   				if (get_paca()->in_mce < MAX_MCE_DEPTH) {
-> -					pfn = addr_to_pfn(regs, regs->nip);
-> +					pfn = addr_to_pfn(regs, regs->nip,
-> +							&shift);
->   					if (pfn != ULONG_MAX) {
->   						*phys_addr =
-> -							(pfn << PAGE_SHIFT);
-> +							(pfn << shift);
->   						handled = 1;
->   					}
->   				}
