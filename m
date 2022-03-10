@@ -2,59 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B62F4D45CD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 12:36:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 903E54D4684
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 13:12:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDn8H036Hz308B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 22:36:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDnxK3ljtz30CT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 23:12:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VJ8IdfaH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=YPXOwpjR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org;
- receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDnwh0Rshz2yxW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 23:11:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=VJ8IdfaH; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=YPXOwpjR; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDn721xXQz2xKR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 22:35:26 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 42C1361625;
- Thu, 10 Mar 2022 11:35:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84ED5C340E9;
- Thu, 10 Mar 2022 11:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1646912122;
- bh=L1YRU57z+t1MV+KfRtHvqyjYc86lOQpafAuQ+QMnSkU=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=VJ8IdfaHULgmtZbnG12wBjgsKUabfVGLpNiMjU4HwmiBJPUB4G45haTmR7eJecfrE
- 7/VEEts2D4wpUDV9H+16U+SxgXOFTqQinFlZrkiOHEIOK5g5bk3tcxUBDmaQdmVXXx
- Qk408BeOg5XDYK+cyUNZfBeUrfF2V6+WCRBRNAQ9INFHSMZmHb4aywv/VAniF/osPs
- MC8dMCIuBuyB8p2/mLZgDc7qaQWnfAh50GokZ9/VYNRmlVyYtIwQ7VcBT7hEk6BM2O
- 6Fc28SkLDNNlaktdI9eyovVZ55ewbl31QgjpxIQ+gpx/YOAkXdzfr5Eovl4mO/ggcB
- kkvXes9LVW2+w==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, perex@perex.cz,
- tiwai@suse.com, nicoleotsuka@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>,
- alsa-devel@alsa-project.org, festevam@gmail.com, lgirdwood@gmail.com
-In-Reply-To: <1646817523-26800-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1646817523-26800-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_spdif: keep all TxClk sources by txclk array
-Message-Id: <164691212026.13798.15345880576925268759.b4-ty@kernel.org>
-Date: Thu, 10 Mar 2022 11:35:20 +0000
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KDnwg3sqFz4xLV;
+ Thu, 10 Mar 2022 23:11:31 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1646914291;
+ bh=GBRd8YJKb3OnktFjwi8q5B6pu5AWUowYszeQTm5tAYw=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=YPXOwpjRlM4rb5MbPSJhGPsmZOiU8kdmAiyO6dSeZTZginhacKfCH+QdjGUYNHKVr
+ abQIIKqrzKH3j69DrFDgoYnUprXzvYWc3UcM+Vl2+MuuNFC1ruKFEYlYAT1CAZvPWH
+ n8rAKTHmq7erX4GNIilSh4m5H0OiFOtvKi4K57B/goiVTw1H4VFrZhQk7XgvxJPE4a
+ YhIa+kC0GFZYJrDicih7mr5npkBu2IRTrGeOJC37j1cEh7eAsos6pnsSOK83nj9K2A
+ eFfkj3z1paD3oOBWKIxspmOOaVtTehVxe0ieWVEroYXo7kEkRmL1GJWrsKhTW8QBG9
+ J82+Q0Eg8JYRg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Kajol Jain
+ <kjain@linux.ibm.com>
+Subject: Re: [PATCH 16/20] selftest/powerpc/pmu/: Add selftest for mmcr1
+ pmcxsel/unit/cache fields
+In-Reply-To: <4c7785cf-3b92-c273-35ea-fc95131fac46@csgroup.eu>
+References: <20220127072012.662451-1-kjain@linux.ibm.com>
+ <20220127072012.662451-17-kjain@linux.ibm.com>
+ <4c7785cf-3b92-c273-35ea-fc95131fac46@csgroup.eu>
+Date: Thu, 10 Mar 2022 23:11:30 +1100
+Message-ID: <87czium2h9.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,45 +63,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "atrajeev@linux.vnet.ibm.com" <atrajeev@linux.vnet.ibm.com>,
+ "maddy@linux.vnet.ibm.com" <maddy@linux.vnet.ibm.com>,
+ "rnsastry@linux.ibm.com" <rnsastry@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 9 Mar 2022 17:18:43 +0800, Shengjiu Wang wrote:
-> From: Viorel Suman <viorel.suman@nxp.com>
-> 
-> Use txclk array to keep all TxClk sources instead of keeping
-> clocks per rate - need to do this in order to avoid multiple
-> prepare_enable/disable_unprepare of the same clock during
-> suspend/resume.
-> 
-> [...]
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 27/01/2022 =C3=A0 08:20, Kajol Jain a =C3=A9crit=C2=A0:
+>> From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>>=20
+>> The testcase uses event code "0x1340000001c040" to verify
+>> the settings for different fields in Monitor Mode Control
+>> Register 1 (MMCR1). The fields include PMCxSEL, PMCXCOMB
+>> PMCxUNIT, cache. Checks if these fields are translated
+>> correctly via perf interface to MMCR1
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>
+> I see the series has been accepted but this patch has been left over.
+>
+> Any reason ?
 
-Applied to
+Yeah it's flakey. It counts cache loads but the workload it runs doesn't
+necessarily cause any, so it sometimes fails. I've reported that
+privately to Kajol.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/1] ASoC: fsl_spdif: keep all TxClk sources by txclk array
-      commit: 5bd998af5b69cf21fd4db5eaf7e9db85a4a35295
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+cheers
