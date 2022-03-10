@@ -1,76 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C504D459E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 12:24:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDC94D45C8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 12:35:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDmtS1yW5z3bb3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 22:24:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDn7c4dlpz3bVM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 22:35:56 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Pu1cHo7u;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SjxVeEe3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Pu1cHo7u; 
+ header.s=k20201202 header.b=SjxVeEe3; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDmsj5zNmz2yP9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 22:23:53 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDn7050hNz2xKR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 22:35:24 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 360EBB82489
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 11:23:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F0501C340E8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 11:23:47 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id A3D1C61585;
+ Thu, 10 Mar 2022 11:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DF3C340E8;
+ Thu, 10 Mar 2022 11:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1646911428;
- bh=8Z4s01ZRE/aJLFGT0BfKBuWC49tV3EG8Tn3+iXtIpkY=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=Pu1cHo7unn7suOYUoENiROacxNGRKFA3ma8NJ18uUdkIlSLazGO0r0PTJoOqd2T6t
- yLbfA4lSKXs1/b1q5hvCI9rpbPsMu+YrJrFS976MR9SMUPHpc6AK2zKDUmr87yBfFg
- CZrNLdeMWDAdEJP1phpdZ2qRtQ7YM4O0KOwH8iW/fbchh3rN1q/ceqjtGLngTx9d6z
- RJr4xm2b6rF/ZtlfX7WJkXT7CcXnXTGoetEXjSFn4FJApIP2zMdNGMmd/zombXN5f6
- FtgVJbW/LzB8D5rkBC5myzMGHwZQyGqoobbqWbE/HptXhqqGr10smSYjnzTKaE9qjD
- 0ck4RQkcT9YFg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id DE40DC05FCE; Thu, 10 Mar 2022 11:23:47 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215658] arch/powerpc/mm/mmu_context.o Assembler messages:
- Error: unrecognized opcode: `dssall' (PowerMac G4)
-Date: Thu, 10 Mar 2022 11:23:47 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: christophe.leroy@csgroup.eu
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-215658-206035-6PyqED4Rrb@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-215658-206035@https.bugzilla.kernel.org/>
-References: <bug-215658-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ s=k20201202; t=1646912120;
+ bh=TWvMPTJzJ27GVP5gpFDJ0b1Mu0lLmlwPszikGKU7gBE=;
+ h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+ b=SjxVeEe3tindzUNM1tmZ9KNYMK0v6ASZA/EP3CEWuJevKVaibwyTz/JylOfKN49Ch
+ vajwUmReDfpo9oUzy9cmeuD+ZjDuZxo7PIms1b7lgKWNYjMVIZmjqmnE7VUoTpHJH4
+ bV1dVMg0luDW1Z0EetyLJUBmzsmxbeZROjO60vCEY7MOedZWPk2SfmdYMR4AVVkty6
+ 2h3faUwC0+5+bX2jWGgq8KqNwANm25FAu6kpFp88VEzrCPXvaJZfx+onlYqDkdC2WB
+ b0bogAhhXetSurArqeFqRRSR3pm/ygoB8LYRyke36XtQFUX5h/brgWkwt50zcSMfi/
+ ezbFSUgwrivRw==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, perex@perex.cz,
+ tiwai@suse.com, nicoleotsuka@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ alsa-devel@alsa-project.org, festevam@gmail.com, lgirdwood@gmail.com
+In-Reply-To: <1646822293-26965-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1646822293-26965-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_rpmsg: Remove SET_SYSTEM_SLEEP_PM_OPS callback
+Message-Id: <164691211764.13798.1783261167562942909.b4-ty@kernel.org>
+Date: Thu, 10 Mar 2022 11:35:17 +0000
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,30 +64,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215658
+On Wed, 9 Mar 2022 18:38:13 +0800, Shengjiu Wang wrote:
+> For sound need to be continuously output at suspend with rpmsg
+> sound card, so need to keep the clock always on at suspend,
+> then suspend & resume callback is not needed.
+> 
+> 
 
-Christophe Leroy (christophe.leroy@csgroup.eu) changed:
+Applied to
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |christophe.leroy@csgroup.eu
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
---- Comment #1 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
-This description is puzzling.
+Thanks!
 
-Commit d51f86cfd8e3 ("powerpc/mm: Switch obsolete dssall to .long") is not =
-in
-v5.16.12
+[1/1] ASoC: fsl_rpmsg: Remove SET_SYSTEM_SLEEP_PM_OPS callback
+      commit: 8b1d3b733f3e6acaab6c6bc9968ee0e058900a7e
 
-For me, applying that commit to v5.16.12 should fix your problem, not the
-reverse.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
---=20
-You may reply to this email to add a comment.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
