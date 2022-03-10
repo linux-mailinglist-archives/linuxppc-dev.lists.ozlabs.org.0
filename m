@@ -2,100 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0134D4701
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 13:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D324D47D8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 14:14:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDpLg082sz3bTh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 23:30:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDqKP4KNkz3bW3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 00:14:33 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=L/9onr5m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Kd3PDT/W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=L/9onr5m; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=Kd3PDT/W; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDqJl3lLFz2xtp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 00:13:59 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDpKy1j3dz2xtv
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 23:29:57 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22AAooOD021462; 
- Thu, 10 Mar 2022 12:29:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=TzToPHVNALCunRXh9JUk1SMieMaPtIuIU3Y1haC8P/g=;
- b=L/9onr5mIgNnd5LSoTrzSsKN7KWkiJqoyEUpId6xYf1SWKzMdmkBw6fj3vapjaj7Qn9u
- +rlIksPgpiVrTmbfGXz31dXzMkLg3Reo3xLCscXjbI1W2EBXmoPpi/flhBoGxoc7qZBn
- HGwJb11CmYenGhV1P2n2+g0gfZ3cVNUc+Woa3K0H1c0Zb775O30JOPvZtqBosmaHqJS2
- 6LgKH1Ez8GbVYmmecl2tpRN7nskNHrAyBHL0UBwTAv5DIWmJdkHAGa7DwPJY/XUlRlwT
- xCE5EsSIKf2HM8Dfjj39q/RBwYB44AE8CgsVoG6xQpYAxAs3vm0l0ai1C5u4h8Xekvpj 5w== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3eqfxfsy1a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Mar 2022 12:29:48 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22ACRquT012770;
- Thu, 10 Mar 2022 12:29:46 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 3ekyg92ry5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 10 Mar 2022 12:29:46 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 22ACThNf42270988
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 10 Mar 2022 12:29:43 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BCEA942045;
- Thu, 10 Mar 2022 12:29:43 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0776F42041;
- Thu, 10 Mar 2022 12:29:37 +0000 (GMT)
-Received: from [9.43.127.73] (unknown [9.43.127.73])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 10 Mar 2022 12:29:36 +0000 (GMT)
-Message-ID: <477b9bb3-a919-1ceb-28d8-89f4f02fd6a6@linux.ibm.com>
-Date: Thu, 10 Mar 2022 17:59:34 +0530
+ by dfw.source.kernel.org (Postfix) with ESMTPS id D8AAD61A34;
+ Thu, 10 Mar 2022 13:13:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D35C340E8;
+ Thu, 10 Mar 2022 13:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1646918035;
+ bh=t2XbWwQwvFMkiF2+x62xGVRkeCafGaXLEBPkGZlDV0E=;
+ h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+ b=Kd3PDT/WHiC0r1y03Q9M9UNClYYdwsirULQWFXWuwXuGjnNLph6HgKPPd/A8QeImb
+ EinmR0G3aeTUv1e9T3mu4l9gFOM8zVDD/eF+2pbBvdOuewP8bI4espTABMiHg6CGzF
+ FPBMA6BuWGslBd0AOh1pO1+Fn+IupyZRzK/Cm4wsUZ3WtZi97iN+Cb8B6xmEczAxDc
+ isEuU5Vqg1F60Jud761jRazT83SfiDMiyQ7MKCk5MUUX71un25KK7XpFETsY9m/3bA
+ t/OcZ5PgchwWdbxi+JDpaOHXPiDtMgDXxukd0wCWnXDzWY34OWm+P0PQYz0esItPiV
+ 3OKywL0t0lepQ==
+From: Mark Brown <broonie@kernel.org>
+To: s.hauer@pengutronix.de, linux-arm-kernel@lists.infradead.org,
+ shawnguo@kernel.org, linux-imx@nxp.com, tiwai@suse.com, xobs@kosagi.com,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ Wang Wensheng <wangwensheng4@huawei.com>, nicoleotsuka@gmail.com,
+ shengjiu.wang@gmail.com, festevam@gmail.com, linux-kernel@vger.kernel.org,
+ lgirdwood@gmail.com, perex@perex.cz, kernel@pengutronix.de,
+ Xiubo.Lee@gmail.com
+In-Reply-To: <20220310091902.129299-1-wangwensheng4@huawei.com>
+References: <20220310091902.129299-1-wangwensheng4@huawei.com>
+Subject: Re: [PATCH -next] ASoC: imx-es8328: Fix error return code in
+ imx_es8328_probe()
+Message-Id: <164691803138.2018412.9652252221395822627.b4-ty@kernel.org>
+Date: Thu, 10 Mar 2022 13:13:51 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH 16/20] selftest/powerpc/pmu/: Add selftest for mmcr1
- pmcxsel/unit/cache fields
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <20220127072012.662451-1-kjain@linux.ibm.com>
- <20220127072012.662451-17-kjain@linux.ibm.com>
- <4c7785cf-3b92-c273-35ea-fc95131fac46@csgroup.eu>
- <87czium2h9.fsf@mpe.ellerman.id.au>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <87czium2h9.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dnlVsZHh6f8Nk0lxs8uGq4wA1_NRtW3e
-X-Proofpoint-ORIG-GUID: dnlVsZHh6f8Nk0lxs8uGq4wA1_NRtW3e
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.816,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-10_03,2022-03-09_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0
- mlxscore=0 spamscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203100065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,45 +69,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "atrajeev@linux.vnet.ibm.com" <atrajeev@linux.vnet.ibm.com>,
- "maddy@linux.vnet.ibm.com" <maddy@linux.vnet.ibm.com>,
- "rnsastry@linux.ibm.com" <rnsastry@linux.ibm.com>
+Cc: xuqiang36@huawei.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 3/10/22 17:41, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 27/01/2022 à 08:20, Kajol Jain a écrit :
->>> From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>>
->>> The testcase uses event code "0x1340000001c040" to verify
->>> the settings for different fields in Monitor Mode Control
->>> Register 1 (MMCR1). The fields include PMCxSEL, PMCXCOMB
->>> PMCxUNIT, cache. Checks if these fields are translated
->>> correctly via perf interface to MMCR1
->>>
->>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->>
->> I see the series has been accepted but this patch has been left over.
->>
->> Any reason ?
+On Thu, 10 Mar 2022 09:19:02 +0000, Wang Wensheng wrote:
+> Fix to return a negative error code from the error handling case instead
+> of 0, as done elsewhere in this function.
 > 
-> Yeah it's flakey. It counts cache loads but the workload it runs doesn't
-> necessarily cause any, so it sometimes fails. I've reported that
-> privately to Kajol.
 > 
 
-Hi Christophe,
-     As Michael mentioned, with the current workload we used in this
-patch, the testcase was failing sometimes as required cache load not
-happening everytime. We will send this patch separately with proper
-workload in next version.
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/1] ASoC: imx-es8328: Fix error return code in imx_es8328_probe()
+      commit: 3b891513f95cba3944e72c1139ea706d04f3781b
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Kajol Jain
-
-> cheers
+Mark
