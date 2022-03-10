@@ -1,55 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDC94D45C8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 12:35:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B62F4D45CD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 12:36:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDn7c4dlpz3bVM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 22:35:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDn8H036Hz308B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 22:36:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SjxVeEe3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VJ8IdfaH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=SjxVeEe3; 
+ header.s=k20201202 header.b=VJ8IdfaH; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDn7050hNz2xKR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 22:35:24 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDn721xXQz2xKR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 22:35:26 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id A3D1C61585;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 42C1361625;
+ Thu, 10 Mar 2022 11:35:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84ED5C340E9;
  Thu, 10 Mar 2022 11:35:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DF3C340E8;
- Thu, 10 Mar 2022 11:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1646912120;
- bh=TWvMPTJzJ27GVP5gpFDJ0b1Mu0lLmlwPszikGKU7gBE=;
+ s=k20201202; t=1646912122;
+ bh=L1YRU57z+t1MV+KfRtHvqyjYc86lOQpafAuQ+QMnSkU=;
  h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=SjxVeEe3tindzUNM1tmZ9KNYMK0v6ASZA/EP3CEWuJevKVaibwyTz/JylOfKN49Ch
- vajwUmReDfpo9oUzy9cmeuD+ZjDuZxo7PIms1b7lgKWNYjMVIZmjqmnE7VUoTpHJH4
- bV1dVMg0luDW1Z0EetyLJUBmzsmxbeZROjO60vCEY7MOedZWPk2SfmdYMR4AVVkty6
- 2h3faUwC0+5+bX2jWGgq8KqNwANm25FAu6kpFp88VEzrCPXvaJZfx+onlYqDkdC2WB
- b0bogAhhXetSurArqeFqRRSR3pm/ygoB8LYRyke36XtQFUX5h/brgWkwt50zcSMfi/
- ezbFSUgwrivRw==
+ b=VJ8IdfaHULgmtZbnG12wBjgsKUabfVGLpNiMjU4HwmiBJPUB4G45haTmR7eJecfrE
+ 7/VEEts2D4wpUDV9H+16U+SxgXOFTqQinFlZrkiOHEIOK5g5bk3tcxUBDmaQdmVXXx
+ Qk408BeOg5XDYK+cyUNZfBeUrfF2V6+WCRBRNAQ9INFHSMZmHb4aywv/VAniF/osPs
+ MC8dMCIuBuyB8p2/mLZgDc7qaQWnfAh50GokZ9/VYNRmlVyYtIwQ7VcBT7hEk6BM2O
+ 6Fc28SkLDNNlaktdI9eyovVZ55ewbl31QgjpxIQ+gpx/YOAkXdzfr5Eovl4mO/ggcB
+ kkvXes9LVW2+w==
 From: Mark Brown <broonie@kernel.org>
 To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, perex@perex.cz,
  tiwai@suse.com, nicoleotsuka@gmail.com, Shengjiu Wang <shengjiu.wang@nxp.com>,
  alsa-devel@alsa-project.org, festevam@gmail.com, lgirdwood@gmail.com
-In-Reply-To: <1646822293-26965-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1646822293-26965-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_rpmsg: Remove SET_SYSTEM_SLEEP_PM_OPS callback
-Message-Id: <164691211764.13798.1783261167562942909.b4-ty@kernel.org>
-Date: Thu, 10 Mar 2022 11:35:17 +0000
+In-Reply-To: <1646817523-26800-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1646817523-26800-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_spdif: keep all TxClk sources by txclk array
+Message-Id: <164691212026.13798.15345880576925268759.b4-ty@kernel.org>
+Date: Thu, 10 Mar 2022 11:35:20 +0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -69,12 +71,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 9 Mar 2022 18:38:13 +0800, Shengjiu Wang wrote:
-> For sound need to be continuously output at suspend with rpmsg
-> sound card, so need to keep the clock always on at suspend,
-> then suspend & resume callback is not needed.
+On Wed, 9 Mar 2022 17:18:43 +0800, Shengjiu Wang wrote:
+> From: Viorel Suman <viorel.suman@nxp.com>
 > 
+> Use txclk array to keep all TxClk sources instead of keeping
+> clocks per rate - need to do this in order to avoid multiple
+> prepare_enable/disable_unprepare of the same clock during
+> suspend/resume.
 > 
+> [...]
 
 Applied to
 
@@ -82,8 +87,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: fsl_rpmsg: Remove SET_SYSTEM_SLEEP_PM_OPS callback
-      commit: 8b1d3b733f3e6acaab6c6bc9968ee0e058900a7e
+[1/1] ASoC: fsl_spdif: keep all TxClk sources by txclk array
+      commit: 5bd998af5b69cf21fd4db5eaf7e9db85a4a35295
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
