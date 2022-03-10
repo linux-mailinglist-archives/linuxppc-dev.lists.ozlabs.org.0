@@ -2,48 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15614D46C0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 13:23:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 489694D4703
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 13:31:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KDp9y41QJz30J7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 23:23:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KDpMK0xXbz30CL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Mar 2022 23:31:09 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KdptwUPf;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=leemhuis.info (client-ip=2a01:488:42:1000:50ed:8234::;
- helo=wp530.webpack.hosteurope.de; envelope-from=regressions@leemhuis.info;
- receiver=<UNKNOWN>)
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de
- [IPv6:2a01:488:42:1000:50ed:8234::])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KDp9V1Jvdz2ypn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 23:22:37 +1100 (AEDT)
-Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149]
- helo=[192.168.66.200]); authenticated
- by wp530.webpack.hosteurope.de running ExIM with esmtpsa
- (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- id 1nSHoO-0000Ms-7H; Thu, 10 Mar 2022 13:22:32 +0100
-Message-ID: <09086ab6-10ff-6334-6148-2fab9df64f9a@leemhuis.info>
-Date: Thu, 10 Mar 2022 13:22:20 +0100
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=KdptwUPf; dkim-atps=neutral
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KDpLg2gPWz30RT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 23:30:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1646915435; x=1678451435;
+ h=date:from:to:cc:subject:in-reply-to:message-id:
+ references:mime-version;
+ bh=KpU7qHsFQttScVYV4Sy+C7cKf/dHAGOyV91juLQL6gk=;
+ b=KdptwUPf5/tvnjZpAFms6t1JBthFZUSwXzkro8AQm07L+kpZDnLgUz4U
+ LfQD+FchUBifWcfvpA8jB5ncHVhea8fSNKRKDhXlPusPn3jr9tktvZOj3
+ dsPXpMEBCmFnOaIqCp1HehwRvj5STN7Z+CIy+ktLKd3yTB3CuO0XdQUsD
+ V2avj3WX965Rs/SawMnj/0hXmkAcipcm3yr2SO3e0AgYz/sbXyiin6BC+
+ SuLvGm7xkMug70r0YeCOsBSoQi4B7nbXLRLWbbJ8P7J3ZsyNyOJKNCcp2
+ pjmN4t7NihMx+O5Np+6Q2t0vxISCG/ySPPID/YctpxgDKsQ+AqDcRN34U g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10281"; a="279974514"
+X-IronPort-AV: E=Sophos;i="5.90,170,1643702400"; d="scan'208";a="279974514"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2022 04:29:31 -0800
+X-IronPort-AV: E=Sophos;i="5.90,170,1643702400"; d="scan'208";a="554624288"
+Received: from mborg-mobl.ger.corp.intel.com ([10.252.33.144])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2022 04:29:23 -0800
+Date: Thu, 10 Mar 2022 14:29:21 +0200 (EET)
+From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Lukas Wunner <lukas@wunner.de>
+Subject: Re: [RFC PATCH 6/7] serial: General support for multipoint addresses
+In-Reply-To: <20220309190521.GA9832@wunner.de>
+Message-ID: <6feb796a-ea58-9a6-f2f9-a11ca72acfd@linux.intel.com>
+References: <20220302095606.14818-1-ilpo.jarvinen@linux.intel.com>
+ <20220302095606.14818-7-ilpo.jarvinen@linux.intel.com>
+ <20220306194001.GD19394@wunner.de>
+ <ab43569c-6488-12a6-823-3ef09f2849d@linux.intel.com>
+ <20220309190521.GA9832@wunner.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: Bug 215658 - arch/powerpc/mm/mmu_context.o Assembler messages:
- Error: unrecognized opcode: `dssall' (PowerMac G4)
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Alexey Kardashevskiy <aik@ozlabs.ru>, Michael Ellerman <mpe@ellerman.id.au>
-References: <831731e2-6769-3d36-0cdf-721437452fcc@leemhuis.info>
- <1367d2de-bc44-fb96-c1ef-fd4cf0fb82f4@csgroup.eu>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <1367d2de-bc44-fb96-c1ef-fd4cf0fb82f4@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de; regressions@leemhuis.info; 1646914958;
- d259ba8e; 
-X-HE-SMSGID: 1nSHoO-0000Ms-7H
+Content-Type: multipart/mixed; boundary="8323329-24784813-1646915371=:1973"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,88 +69,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, linux-sh@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-api@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+ linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
+ linux-serial <linux-serial@vger.kernel.org>, Matt Turner <mattst88@gmail.com>,
+ linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
+ Johan Hovold <johan@kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mips@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10.03.22 12:22, Christophe Leroy wrote:
-> Le 10/03/2022 Ã  11:39, Thorsten Leemhuis a Ã©critÂ :
->> Hi, this is your Linux kernel regression tracker.
->>
->> I noticed a regression report in bugzilla.kernel.org that afaics nobody
->> acted upon since it was reported about a week ago, that's why I decided
->> to forward it to the lists and a few relevant people to the CC. To quote
->> from the ticket:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-24784813-1646915371=:1973
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+
+On Wed, 9 Mar 2022, Lukas Wunner wrote:
+
+> On Mon, Mar 07, 2022 at 11:48:01AM +0200, Ilpo Järvinen wrote:
+> > On Sun, 6 Mar 2022, Lukas Wunner wrote:
+> > > On Wed, Mar 02, 2022 at 11:56:05AM +0200, Ilpo Järvinen wrote:
+> > > > This change is necessary for supporting devices with RS485
+> > > > multipoint addressing [*].
+> > > 
+> > > If this is only used with RS485, why can't we just store the
+> > > addresses in struct serial_rs485 and use the existing TIOCSRS485
+> > > and TIOCGRS485 ioctls?  There's 20 bytes of padding left in
+> > > struct serial_rs485 which you could use.  No need to add more
+> > > user-space ABI.
+> > 
+> > It could if it is agreed that serial multipoint addressing is just
+> > a thing in RS-485 and nowhere else? In that case, there is no point
+> > in adding more generic support for it.
 > 
-> I already looked at it when the ticket was opened and that's a bit puzzling.
+> It's just that the above-quoted sentence in the commit message
+> specifically mentions RS485.
 
-Yeah, same here, but I decided I to pick it up, as that's what I'm here for.
+That sentence is just to justify why addressing mode is needed,
+not to take a stance on whether it is only used with RS485 or not.
 
-> With v5.16.12 and the config file in the bug report I have no such problem:
+> If you intend to use it with RS232
+> as well, that should be made explicit, otherwise one wonders why
+> it wasn't integrated into struct serial_rs485.
 > 
->    CC      arch/powerpc/mm/fault.o
->    CC      arch/powerpc/mm/mem.o
-> [...]
+> I have no idea how common 9th bit addressing mode is with RS232.
+> Goggle turns up links saying it's mainly used with RS485, "but also
+> RS232".  Since RS232 isn't a bus but a point-to-point link,
+> 9th bit addressing doesn't seem to make as much sense.
 
-Maybe it's one of those bugs related to the version of binutils?
+While I don't know any better, I can image though that with an 
+RS232-to-RS485 converter, it could make some sense.
 
-> The bug is puzzling because it says the problem is introduced by commit 
-> d51f86cfd8e3 ("powerpc/mm: Switch obsolete dssall to .long") whereas the 
-> purpose of that commit is exactly to fix the issue you are reporting.
->
-> And as far as I can see that commit is not in v5.16.12, so my feeling is 
-> that somethings wrong with the bug report.
-> 
-> By the way I think that cherry-picking that commit into v5.16.12 should 
-> fix it.
+If I put them back to serial_rs485 / rs485 config, it's basically just 
+where I initially started from with this patchset (offlist).
 
-Maybe that's what he had meant to be writing? Maybe your comment in the
-ticket will lead to some enlightenment.
 
-Thx for looking into this.
+-- 
+ i.
 
-Ciao, Thorsten
-
->>> 5.16.12 kernel build for my G4 DP on my Talos II fails with:
->>>
->>> [...]
->>>    CC      arch/powerpc/mm/init_32.o
->>>    CC      arch/powerpc/mm/pgtable_32.o
->>>    CC      arch/powerpc/mm/pgtable-frag.o
->>>    CC      arch/powerpc/mm/ioremap.o
->>>    CC      arch/powerpc/mm/ioremap_32.o
->>>    CC      arch/powerpc/mm/init-common.o
->>>    CC      arch/powerpc/mm/mmu_context.o
->>> {standard input}: Assembler messages:
->>> {standard input}:30: Error: unrecognized opcode: `dssall'
->>> make[2]: *** [scripts/Makefile.build:287: arch/powerpc/mm/mmu_context.o] Fehler 1
->>> make[1]: *** [scripts/Makefile.build:549: arch/powerpc/mm] Fehler 2
->>> make: *** [Makefile:1846: arch/powerpc] Error 2
->>>
->>> This seems to have been introduced by commit d51f86cfd8e378d4907958db77da3074f6dce3ba "powerpc/mm: Switch obsolete dssall to .long"
->>>
->>> Reverting this commit fixes the build for my G4.
->>
->> Could somebody take a look into this? Or was this discussed somewhere
->> else already? Or even fixed?
->>
->> Anyway, to get this tracked:
->>
->> #regzbot introduced: d51f86cfd8e378d4907958db77da3074f6dce3ba
->> #regzbot from: Erhard F <erhard_f@mailbox.org>
->> #regzbot title:  arch/powerpc/mm/mmu_context.o Assembler messages:
->> Error: unrecognized opcode: `dssall' (PowerMac G4)
->> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215658
->>
->> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
->>
->> P.S.: As the Linux kernel's regression tracker I'm getting a lot of
->> reports on my table. I can only look briefly into most of them and lack
->> knowledge about most of the areas they concern. I thus unfortunately
->> will sometimes get things wrong or miss something important. I hope
->> that's not the case here; if you think it is, don't hesitate to tell me
->> in a public reply, it's in everyone's interest to set the public record
->> straight.
+--8323329-24784813-1646915371=:1973--
