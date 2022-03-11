@@ -1,53 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54BCA4D595C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 05:00:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2982F4D5970
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 05:16:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KFBzP1Glxz308h
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 15:00:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KFCLJ0nGpz2xTq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 15:16:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256 header.s=201811 header.b=JU1niSVp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i9UqldKK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KFByl3SrCz2yXP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 14:59:43 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KFCKb0mfHz2yMy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 15:16:03 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
- header.s=201811 header.b=JU1niSVp; dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4KFByk5hbvz4xNm;
- Fri, 11 Mar 2022 14:59:42 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=neuling.org;
- s=201811; t=1646971183;
- bh=SbArH8CONhN3lwsgwI/f1mo0U8LymakRxV4+wnw759U=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=JU1niSVpMpgeYCh83IX4Dmgdf7NHdH/p8sZTz+ifxur7efSF34jIMu5KXCa9WPmlt
- uDkiBiNY74o1By0j+dT1M+K0XD83eLPAZ/lE8FjMhJ1xmk5RUuyAC22ZQERJpUUO/a
- 2YIaY1vzd4lUbZoETNSKx5giKdSFPOn2/++iYIwwVDM7uccoTX3E17lCtBNjA0LSd5
- CyMOmq/oEO1DNDgdK+dsObO+bbcm/+E9JuLvEqdXMycLqP8DBuzyW4zS4Yb7jPBeef
- 5ikDsUS4GMT520Vk5sFGxMMGn1071iAJRQOc78heIrkCnCc7QKh9LQmMjTjOhvvGTm
- fk2EvNOkaWeWw==
-Received: by neuling.org (Postfix, from userid 1000)
- id AC7BA2C05C7; Fri, 11 Mar 2022 14:59:42 +1100 (AEDT)
-Message-ID: <b7ddaf945ed35c0e072acc41b7bbc6d8c4c5d69f.camel@neuling.org>
-Subject: Re: [PATCH] powerpc/tm: Fix more userspace r13 corruption
-From: Michael Neuling <mikey@neuling.org>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Date: Fri, 11 Mar 2022 14:59:42 +1100
-In-Reply-To: <20220311024733.48926-1-npiggin@gmail.com>
-References: <20220311024733.48926-1-npiggin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=i9UqldKK; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KFCKY3zHjz4xbG;
+ Fri, 11 Mar 2022 15:16:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1646972162;
+ bh=aWuv/cB2IRk/pSpG8sU4nbvCzp3/Ix7ZV08F5OtN0eU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=i9UqldKKsJpUVZvfHbkXYq6awpvN5Ap6TjGO/igs37yYKbQDoRTw0zBa0t6e+eBGZ
+ Ti5RhXN0X6ngbJodkwVd5SsGfg9Sb0+mV7/WmO6G/fynhEodhGhicoDEKBF6Iar46j
+ P+/7siGGDClvmmHt1sws/1v/Elg3dX8QTxXblz2JiBBoA4MxDUHEOFUYIS0BXFp44f
+ 5DTkcPpGrnLeXxFJlq+i9n34MfHhlxyTbXO7LayrXuueToBq0L0mskeCNyQx7VDUP8
+ aR5stvRDHwRay7QN1XbZY/+CNs46DPlK8ES167w5A6FZgdL7R0vj+UTkEbPOsj12Wz
+ F7jnEIf+6Hsug==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: =?utf-8?B?RsSBbmctcnXDrCBTw7JuZw==?= <maskray@google.com>, Alexey
+ Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH] powerpc: Replace ppc64 DT_RELACOUNT usage with
+ DT_RELASZ/24
+In-Reply-To: <CAFP8O3+jJf=amTYjm6YQbJKAuK0XRNoG3Gwc6C+E0=CPd46ZAw@mail.gmail.com>
+References: <20220309055118.1551013-1-maskray@google.com>
+ <CAKwvOdmMS4=QAoBFvhAdXWaLHOwH2252FX9i_yZyiCOpOt=3Dw@mail.gmail.com>
+ <CAFP8O3+jJf=amTYjm6YQbJKAuK0XRNoG3Gwc6C+E0=CPd46ZAw@mail.gmail.com>
+Date: Fri, 11 Mar 2022 15:15:59 +1100
+Message-ID: <87a6dxm8e8.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,92 +64,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gRnJpLCAyMDIyLTAzLTExIGF0IDEyOjQ3ICsxMDAwLCBOaWNob2xhcyBQaWdnaW4gd3JvdGU6
-Cj4gQ29tbWl0IGNmMTM0MzViNzMwYSAoInBvd2VycGMvdG06IEZpeCB1c2Vyc3BhY2UgcjEzIGNv
-cnJ1cHRpb24iKSBmaXhlcwo+IGEgcHJvYmxlbSBpbiB0cmVjbGFpbSB3aGVyZSBhIFNMQiBtaXNz
-IGNhbiBvY2N1ciBvbiB0aGUKPiB0aHJlYWRfc3RydWN0LT5ja3B0X3JlZ3Mgd2hpbGUgU0NSQVRD
-SDAgaXMgbGl2ZSB3aXRoIHRoZSBzYXZlZCB1c2VyIHIxMwo+IHZhbHVlLCBjbG9iYmVyaW5nIGl0
-IHdpdGggdGhlIGtlcm5lbCByMTMgYW5kIHVsdGltYXRlbHkgcmVzdWx0aW5nIGluCj4ga2VybmVs
-IHIxMyBiZWluZyBzdG9yZWQgaW4gY2twdF9yZWdzLgo+IAo+IFRoZXJlIGlzIGFuIGVxdWl2YWxl
-bnQgcHJvYmxlbSBpbiB0cmVjaGtwdCB3aGVyZSB0aGUgdXNlciByMTMgdmFsdWUgaXMKPiBsb2Fk
-ZWQgaW50byByMTMgZnJvbSBjaGtwdF9yZWdzIHRvIGJlIHJlY2hlY2twb2ludGVkLCBidXQgYSBT
-TEIgbWlzcwo+IGNvdWxkIG9jY3VyIG9uIGNrcHRfcmVncyBhY2Nlc3NlcyBhZnRlciB0aGF0LCB3
-aGljaCB3aWxsIHJlc3VsdCBpbiByMTMKPiBiZWluZyBjbG9iYmVyZWQgd2l0aCBhIGtlcm5lbCB2
-YWx1ZSBhbmQgdGhhdCB3aWxsIGdldCByZWNoZWNrcG9pbnRlZCBhbmQKPiB0aGVuIHJlc3RvcmVk
-IHRvIHVzZXIgcmVnaXN0ZXJzLgo+IAo+IFRoZSBzYW1lIG1lbW9yeSBwYWdlIGlzIGFjY2Vzc2Vk
-IHJpZ2h0IGJlZm9yZSB0aGlzIGNyaXRpY2FsIHdpbmRvdyB3aGVyZQo+IGEgU0xCIG1pc3MgY291
-bGQgY2F1c2UgY29ycnVwdGlvbiwgc28gaGl0dGluZyB0aGUgYnVnIHJlcXVpcmVzIHRoZSBTTEIK
-PiBlbnRyeSBiZSByZW1vdmVkIHdpdGhpbiBhIHNtYWxsIHdpbmRvdyBvZiBpbnN0cnVjdGlvbnMs
-IHdoaWNoIGlzIHBvc3NpYmxlCj4gaWYgYSBTTEIgcmVsYXRlZCBNQ0UgaGl0cyB0aGVyZS4gUEFQ
-UiBhbHNvIHBlcm1pdHMgdGhlIGh5cGVydmlzb3IgdG8KPiBkaXNjYXJkIHRoaXMgU0xCIGVudHJ5
-IChiZWNhdXNlIHNsYl9zaGFkb3ctPnBlcnNpc3RlbnQgaXMgb25seSBzZXQgdG8KPiBTTEJfTlVN
-X0JPTFRFRCkgYWx0aG91Z2ggaXQncyBub3Qga25vd24gd2hldGhlciBhbnkgaW1wbGVtZW50YXRp
-b25zIHdvdWxkCj4gZG8gdGhpcyAoS1ZNIGRvZXMgbm90KS4gU28gdGhpcyBpcyBhbiBleHRyZW1l
-bHkgdW5saWtlbHkgYnVnLCBvbmx5IGZvdW5kCj4gYnkgaW5zcGVjdGlvbi4KPiAKPiBGaXggdGhp
-cyBieSBhbHNvIHN0b3JpbmcgdXNlciByMTMgaW4gYSB0ZW1wb3JhcnkgbG9jYXRpb24gb24gdGhl
-IGtlcm5lbAo+IHN0YWNrIGFuZCBkb24ndCBjaGFuZSB0aGUgcjEzIHJlZ2lzdGVyIGZyb20ga2Vy
-bmVsIHIxMyB1bnRpbCB0aGUgUkk9MAo+IGNyaXRpY2FsIHNlY3Rpb24gdGhhdCBkb2VzIG5vdCBm
-YXVsdC4KCnMvY2hhbmUvY2hhbmdlLwoKPiAKPiBbIFRoZSBTQ1JBVENIMCBjaGFuZ2UgaXMgbm90
-IHN0cmljdGx5IHBhcnQgb2YgdGhlIGZpeCwgaXQncyBvbmx5IHVzZWQgaW4KPiDCoCB0aGUgUkk9
-MCBzZWN0aW9uIHNvIGl0IGRvZXMgbm90IGhhdmUgdGhlIHNhbWUgcHJvYmxlbSBhcyB0aGUgcHJl
-dmlvdXMKPiDCoCBTQ1JBVENIMCBidWcuIF0KPiAKPiBTaWduZWQtb2ZmLWJ5OiBOaWNob2xhcyBQ
-aWdnaW4gPG5waWdnaW5AZ21haWwuY29tPgoKVGhpcyBuZWVkcyB0byBiZSBtYXJrZWQgZm9yIHN0
-YWJsZSBhbHNvLiBPdGhlciB0aGFuIHRoYXQ6CgpBY2tlZC1ieTogTWljaGFlbCBOZXVsaW5nIDxt
-aWtleUBuZXVsaW5nLm9yZz4KClRoYW5rcyEKCj4gLS0tCj4gwqBhcmNoL3Bvd2VycGMva2VybmVs
-L3RtLlMgfCAyNSArKysrKysrKysrKysrKysrLS0tLS0tLS0tCj4gwqAxIGZpbGUgY2hhbmdlZCwg
-MTYgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9w
-b3dlcnBjL2tlcm5lbC90bS5TIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC90bS5TCj4gaW5kZXggM2Jl
-ZWNjMzI5NDBiLi41YTBmMDIzYTI2ZTkgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9wb3dlcnBjL2tlcm5l
-bC90bS5TCj4gKysrIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC90bS5TCj4gQEAgLTQ0Myw3ICs0NDMs
-OCBAQCByZXN0b3JlX2dwcnM6Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgUkVTVF9HUFIoMCwgcjcp
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBHUFIw
-ICovCj4gwqDCoMKgwqDCoMKgwqDCoFJFU1RfR1BSUygyLCA0LCByNynCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBHUFIyLTQgKi8KPiAtwqDCoMKgwqDCoMKgwqBS
-RVNUX0dQUlMoOCwgMzEsIHI3KcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAvKiBHUFI4LTMxICovCj4gK8KgwqDCoMKgwqDCoMKgUkVTVF9HUFJTKDgsIDEyLCByNynCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogR1BSOC0xMiAqLwo+ICvCoMKg
-wqDCoMKgwqDCoFJFU1RfR1BSUygxNCwgMzEsIHI3KcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgLyogR1BSMTQtMzEgKi8KPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqAvKiBMb2Fk
-IHVwIFBQUiBhbmQgRFNDUiBoZXJlIHNvIHdlIGRvbid0IHJ1biB3aXRoIHVzZXIgdmFsdWVzIGZv
-ciBsb25nCj4gKi8KPiDCoMKgwqDCoMKgwqDCoMKgbXRzcHLCoMKgwqBTUFJOX0RTQ1IsIHI1Cj4g
-QEAgLTQ3OSwxOCArNDgwLDI0IEBAIHJlc3RvcmVfZ3ByczoKPiDCoMKgwqDCoMKgwqDCoMKgUkVT
-VF9HUFIoNiwgcjcpCj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgLyoKPiAtwqDCoMKgwqDCoMKgwqAg
-KiBTdG9yZSByMSBhbmQgcjUgb24gdGhlIHN0YWNrIHNvIHRoYXQgd2UgY2FuIGFjY2VzcyB0aGVt
-IGFmdGVyIHdlCj4gLcKgwqDCoMKgwqDCoMKgICogY2xlYXIgTVNSIFJJLgo+ICvCoMKgwqDCoMKg
-wqDCoCAqIFN0b3JlIHVzZXIgcjEgYW5kIHI1IGFuZCByMTMgb24gdGhlIHN0YWNrIChpbiB0aGUg
-dW51c2VkIHNhdmUKPiArwqDCoMKgwqDCoMKgwqAgKiBhcmVhcyAvIGNvbXBpbGVyIHJlc2VydmVk
-IGFyZWFzKSwgc28gdGhhdCB3ZSBjYW4gYWNjZXNzIHRoZW0gYWZ0ZXIKPiArwqDCoMKgwqDCoMKg
-wqAgKiB3ZSBjbGVhciBNU1IgUkkuCj4gwqDCoMKgwqDCoMKgwqDCoCAqLwo+IMKgCj4gwqDCoMKg
-wqDCoMKgwqDCoFJFU1RfR1BSKDUsIHI3KQo+IMKgwqDCoMKgwqDCoMKgwqBzdGTCoMKgwqDCoMKg
-cjUsIC04KHIxKQo+IC3CoMKgwqDCoMKgwqDCoGxkwqDCoMKgwqDCoMKgcjUsIEdQUjEocjcpCj4g
-K8KgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByNSwgR1BSMTMocjcpCj4gwqDCoMKgwqDCoMKg
-wqDCoHN0ZMKgwqDCoMKgwqByNSwgLTE2KHIxKQo+ICvCoMKgwqDCoMKgwqDCoGxkwqDCoMKgwqDC
-oMKgcjUsIEdQUjEocjcpCj4gK8KgwqDCoMKgwqDCoMKgc3RkwqDCoMKgwqDCoHI1LCAtMjQocjEp
-Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgUkVTVF9HUFIoNywgcjcpCj4gwqAKPiAtwqDCoMKgwqDC
-oMKgwqAvKiBDbGVhciBNU1IgUkkgc2luY2Ugd2UgYXJlIGFib3V0IHRvIHVzZSBTQ1JBVENIMC4g
-RUUgaXMgYWxyZWFkeSBvZmYKPiAqLwo+ICvCoMKgwqDCoMKgwqDCoC8qIFN0YXNoIHRoZSBzdGFj
-ayBwb2ludGVyIGF3YXkgZm9yIHVzZSBhZnRlciByZWNoZWNrcG9pbnQgKi8KPiArwqDCoMKgwqDC
-oMKgwqBzdGTCoMKgwqDCoMKgcjEsIFBBQ0FSMShyMTMpCj4gKwo+ICvCoMKgwqDCoMKgwqDCoC8q
-IENsZWFyIE1TUiBSSSBzaW5jZSB3ZSBhcmUgYWJvdXQgdG8gY2xvYmJlciByMTMuIEVFIGlzIGFs
-cmVhZHkgb2ZmCj4gKi8KPiDCoMKgwqDCoMKgwqDCoMKgbGnCoMKgwqDCoMKgwqByNSwgMAo+IMKg
-wqDCoMKgwqDCoMKgwqBtdG1zcmTCoMKgcjUsIDEKPiDCoAo+IEBAIC01MDEsOSArNTA4LDkgQEAg
-cmVzdG9yZV9ncHJzOgo+IMKgwqDCoMKgwqDCoMKgwqAgKiB1bnRpbCB3ZSB0dXJuIE1TUiBSSSBi
-YWNrIG9uLgo+IMKgwqDCoMKgwqDCoMKgwqAgKi8KPiDCoAo+IC3CoMKgwqDCoMKgwqDCoFNFVF9T
-Q1JBVENIMChyMSkKPiDCoMKgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByNSwgLTgocjEpCj4g
-LcKgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByMSwgLTE2KHIxKQo+ICvCoMKgwqDCoMKgwqDC
-oGxkwqDCoMKgwqDCoMKgcjEzLCAtMTYocjEpCj4gK8KgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKg
-wqByMSwgLTI0KHIxKQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoC8qIENvbW1pdCByZWdpc3RlciBz
-dGF0ZSBhcyBjaGVja3BvaW50ZWQgc3RhdGU6ICovCj4gwqDCoMKgwqDCoMKgwqDCoFRSRUNIS1BU
-Cj4gQEAgLTUxOSw5ICs1MjYsOSBAQCByZXN0b3JlX2dwcnM6Cj4gwqDCoMKgwqDCoMKgwqDCoCAq
-Lwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoEdFVF9QQUNBKHIxMykKPiAtwqDCoMKgwqDCoMKgwqBH
-RVRfU0NSQVRDSDAocjEpCj4gK8KgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByMSwgUEFDQVIx
-KHIxMykKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoC8qIFIxIGlzIHJlc3RvcmVkLCBzbyB3ZSBhcmUg
-cmVjb3ZlcmFibGUgYWdhaW4uwqAgRUUgaXMgc3RpbGwgb2ZmICovCj4gK8KgwqDCoMKgwqDCoMKg
-LyogUjEzLCBSMSBpcyByZXN0b3JlZCwgc28gd2UgYXJlIHJlY292ZXJhYmxlIGFnYWluLsKgIEVF
-IGlzIHN0aWxsIG9mZgo+ICovCj4gwqDCoMKgwqDCoMKgwqDCoGxpwqDCoMKgwqDCoMKgcjQsIE1T
-Ul9SSQo+IMKgwqDCoMKgwqDCoMKgwqBtdG1zcmTCoMKgcjQsIDEKPiDCoAoK
+F=C4=81ng-ru=C3=AC S=C3=B2ng <maskray@google.com> writes:
+> On Thu, Mar 10, 2022 at 11:48 AM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+>>
+>> On Tue, Mar 8, 2022 at 9:53 PM Fangrui Song <maskray@google.com> wrote:
+>> >
+>> > DT_RELACOUNT is an ELF dynamic tag inherited from SunOS indicating the
+>> > number of R_*_RELATIVE relocations. It is optional but {ld.lld,ld.lld}
+>> > -z combreloc always creates it (if non-zero) to slightly speed up glibc
+>> > ld.so relocation resolving by avoiding R_*R_PPC64_RELATIVE type
+>> > comparison. The tag is otherwise nearly unused in the wild and I'd
+>> > recommend that software avoids using it.
+>> >
+>> > lld>=3D14.0.0 (since commit da0e5b885b25cf4ded0fa89b965dc6979ac02ca9)
+>> > underestimates DT_RELACOUNT for ppc64 when position-independent long
+>> > branch thunks are used. Correcting it needs non-trivial arch-specific
+>> > complexity which I'd prefer to avoid. Since our code always compares t=
+he
+>> > relocation type with R_PPC64_RELATIVE, replacing every occurrence of
+>> > DT_RELACOUNT with DT_RELASZ/sizeof(Elf64_Rela)=3DDT_RELASZ/24 is a cor=
+rect
+>> > alternative.
+>>
+>> checking that sizeof(Elf64_Rela) =3D=3D 24, yep: https://godbolt.org/z/b=
+b4aKbo5T
+>>
+>> >
+>> > DT_RELASZ is in practice bounded by an uint32_t. Dividing x by 24 can =
+be
+>> > implemented as (uint32_t)(x*0xaaaaaaab) >> 4.
+>>
+>> Yep: https://godbolt.org/z/x9445ePPv
+>>
+>> >
+>> > Link: https://github.com/ClangBuiltLinux/linux/issues/1581
+>> > Reported-by: Nathan Chancellor <nathan@kernel.org>
+>> > Signed-off-by: Fangrui Song <maskray@google.com>
+>> > ---
+>> >  arch/powerpc/boot/crt0.S       | 28 +++++++++++++++++-----------
+>> >  arch/powerpc/kernel/reloc_64.S | 15 +++++++++------
+>> >  2 files changed, 26 insertions(+), 17 deletions(-)
+...
 
+> I rebased the patch on
+> git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
+> master and got a conflict.
+> Seems that https://lore.kernel.org/linuxppc-dev/20220309061822.168173-1-a=
+ik@ozlabs.ru/T/#u
+> ("[PATCH kernel v4] powerpc/64: Add UADDR64 relocation support") fixed
+> the issue.
+> It just doesn't change arch/powerpc/boot/crt0.S
+
+Yeah sorry, I applied Alexey's v4 just before I saw your patch arrive on
+the list.
+
+If one of you can rework this so it applies on top that would be great :)
+
+cheers
