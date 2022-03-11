@@ -2,51 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8737C4D62BF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 15:01:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFB24D642D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 15:57:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KFSKF2vJ6z30Km
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 01:01:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KFTYg518zz3bbx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 01:57:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=codethink.co.uk (client-ip=78.40.148.184;
- helo=imap2.colo.codethink.co.uk; envelope-from=ben.dooks@codethink.co.uk;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 1371 seconds by postgrey-1.36 at boromir;
- Sat, 12 Mar 2022 01:01:13 AEDT
-Received: from imap2.colo.codethink.co.uk (imap2.colo.codethink.co.uk
- [78.40.148.184])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KFSJn3hzxz2yjS
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Mar 2022 01:01:11 +1100 (AEDT)
-Received: from [167.98.27.226] (helo=[172.16.103.108])
- by imap2.colo.codethink.co.uk with esmtpsa  (Exim 4.92 #3 (Debian))
- id 1nSfSn-0000Di-Kl; Fri, 11 Mar 2022 13:37:49 +0000
-Message-ID: <509d2b62-7d52-bf5c-7a6c-213a740a5c00@codethink.co.uk>
-Date: Fri, 11 Mar 2022 13:37:48 +0000
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KFTYB5n5Yz2y6K
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Mar 2022 01:56:59 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KFTY43pHCz9sS8;
+ Fri, 11 Mar 2022 15:56:56 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id Vtr32IuOipKO; Fri, 11 Mar 2022 15:56:56 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KFTY42whNz9sS7;
+ Fri, 11 Mar 2022 15:56:56 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B5D88B78D;
+ Fri, 11 Mar 2022 15:56:56 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ob3X9aOzhGZu; Fri, 11 Mar 2022 15:56:56 +0100 (CET)
+Received: from [192.168.202.87] (unknown [192.168.202.87])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 773B58B763;
+ Fri, 11 Mar 2022 15:56:55 +0100 (CET)
+Message-ID: <c0b8cb0e-cd96-d660-db87-51ded45435c2@csgroup.eu>
+Date: Fri, 11 Mar 2022 15:56:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH V7 13/20] riscv: compat: process: Add UXL_32 support in
- start_thread
-Content-Language: en-GB
-To: Guo Ren <guoren@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Arnd Bergmann <arnd@arndb.de>, Anup Patel <anup@brainfault.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- liush <liush@allwinnertech.com>, Wei Fu <wefu@redhat.com>,
- Drew Fustini <drew@beagleboard.org>, Wang Junqiang
- <wangjunqiang@iscas.ac.cn>, Christoph Hellwig <hch@lst.de>
-References: <20220227162831.674483-1-guoren@kernel.org>
- <20220227162831.674483-14-guoren@kernel.org>
- <CAJF2gTSJFMg1YJ=dbaNyemNV4sc_3P=+_PrS=RD_Y2_xz3TzPA@mail.gmail.com>
-From: Ben Dooks <ben.dooks@codethink.co.uk>
-Organization: Codethink Limited.
-In-Reply-To: <CAJF2gTSJFMg1YJ=dbaNyemNV4sc_3P=+_PrS=RD_Y2_xz3TzPA@mail.gmail.com>
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2] powerpc/32: Add support for out-of-line static calls
+Content-Language: fr-FR
+To: Peter Zijlstra <peterz@infradead.org>
+References: <97f252fcd63e145f54fbf85124c75fb01e96e1bb.1630415517.git.christophe.leroy@csgroup.eu>
+ <YS419Exj6PpESVc/@hirez.programming.kicks-ass.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <YS419Exj6PpESVc/@hirez.programming.kicks-ass.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,76 +63,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Parisc List <linux-parisc@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ Jason Baron <jbaron@akamai.com>, Paul Mackerras <paulus@samba.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ Ard Biesheuvel <ardb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11/03/2022 02:38, Guo Ren wrote:
-> Hi Arnd,
-> 
-> On Mon, Feb 28, 2022 at 12:30 AM <guoren@kernel.org> wrote:
->>
->> From: Guo Ren <guoren@linux.alibaba.com>
->>
->> If the current task is in COMPAT mode, set SR_UXL_32 in status for
->> returning userspace. We need CONFIG _COMPAT to prevent compiling
->> errors with rv32 defconfig.
->>
->> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
->> Signed-off-by: Guo Ren <guoren@kernel.org>
->> Cc: Arnd Bergmann <arnd@arndb.de>
->> Cc: Palmer Dabbelt <palmer@dabbelt.com>
->> ---
->>   arch/riscv/kernel/process.c | 5 +++++
->>   1 file changed, 5 insertions(+)
->>
->> diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
->> index 03ac3aa611f5..54787ca9806a 100644
->> --- a/arch/riscv/kernel/process.c
->> +++ b/arch/riscv/kernel/process.c
->> @@ -97,6 +97,11 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
->>          }
->>          regs->epc = pc;
->>          regs->sp = sp;
->> +
-> FIxup:
-> 
-> + #ifdef CONFIG_COMPAT
->> +       if (is_compat_task())
->> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_32;
->> +       else
->> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_64;
-> + #endif
-> 
-> We still need "#ifdef CONFIG_COMPAT" here, because for rv32 we can't
-> set SR_UXL at all. SR_UXL is BIT[32, 33].
+Hi Peter,
 
-would an if (IS_ENABLED(CONFIG_COMPAT)) { } around the lot be better
-than an #ifdef here?
+Le 31/08/2021 à 16:00, Peter Zijlstra a écrit :
+> On Tue, Aug 31, 2021 at 01:12:26PM +0000, Christophe Leroy wrote:
+> 
+> Yes, this should work nicely!
+> 
+> Since you have the two nop's at the end, you could frob in an
+> optimization for __static_call_return0 without too much issue.
+> 
+> Replace the two nops with (excuse my ppc asm):
+> 
+> 	li r3, 0
+> 	blr
+> 
+> and augment arch_static_call_transform() with something like:
+> 
+> 	if (func == &__static_call_return0)
+> 		err = patch_branch(tramp, tramp+24, 0);
 
->>   }
->>
->>   void flush_thread(void)
->> --
->> 2.25.1
->>
-> 
-> 
+I just discovered that we likely have an issue with the implementation 
+of that RET0 static call.
+
+Looking at System.map I have:
+
+	c0004fc0 t __static_call_return0
+	c0011518 t __static_call_return0
+	c00d8160 t __static_call_return0
 
 
--- 
-Ben Dooks				http://www.codethink.co.uk/
-Senior Engineer				Codethink - Providing Genius
+So when we do:
 
-https://www.codethink.co.uk/privacy.html
+	if (func == &__static_call_return0)
+
+It is unlikely that we'll get the expected one.
+
+
+I see __static_call_return0 is defined as 'static inline' in 
+include/linux/static_call.h
+
+Any reason for not having it as a single global symbol instead ?
+
+Thanks
+Christophe
