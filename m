@@ -1,60 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717254D5892
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 04:00:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54BCA4D595C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 05:00:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KF9fC2hyZz3bW2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 14:00:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KFBzP1Glxz308h
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 15:00:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hTu0sEoz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256 header.s=201811 header.b=JU1niSVp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=hTu0sEoz; dkim-atps=neutral
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KF9dZ3csQz2xCp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 13:59:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1646967586; x=1678503586;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=UJTpyFGEbvemu6dDdKBT6cEZiQLRbmMy45pgsMr9KBM=;
- b=hTu0sEozR+X9r1Xrj2IRcI1+Hljk3ugkucOfXNbVAkLKVh3+1Wz4CZUY
- P0+fwGphjC2Dz2WnmTzDEFR9PjF+XKDD8SP7NCTWgbh4JY+INqA6YBjSw
- mW1Cp3pwvzrXFMs/6Xp4LBSS0mTWEi5tWHj8NXuXHrlekLaO7JJinU/eN
- 1WPttRvt9EJvu3QxkLmFdLKoNOIsedeBdYZDncJD5GIHUvr8RwpkTCGhT
- EouQcjdONF/+3joY9WxQrqeS2inRPSMtKfyvv67ixdV7+FAaMDkqXxxQB
- IPeXUQDLGJ5ONpuZK7SpftSbQIBu6BvjKdJHBPM+SWGgc6wjOZxx9cRdc w==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10282"; a="255674884"
-X-IronPort-AV: E=Sophos;i="5.90,172,1643702400"; d="scan'208";a="255674884"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2022 18:58:41 -0800
-X-IronPort-AV: E=Sophos;i="5.90,172,1643702400"; d="scan'208";a="644784512"
-Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Mar 2022 18:58:20 -0800
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Russell Currey <ruscur@russell.cc>,
- Oliver OHalloran <oohall@gmail.com>
-Subject: [PATCH v1] PCI/AER: Handle Multi UnCorrectable/Correctable errors
- properly
-Date: Fri, 11 Mar 2022 02:58:07 +0000
-Message-Id: <20220311025807.14664-1-sathyanarayanan.kuppuswamy@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KFByl3SrCz2yXP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 14:59:43 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
+ header.s=201811 header.b=JU1niSVp; dkim-atps=neutral
+Received: from neuling.org (localhost [127.0.0.1])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KFByk5hbvz4xNm;
+ Fri, 11 Mar 2022 14:59:42 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=neuling.org;
+ s=201811; t=1646971183;
+ bh=SbArH8CONhN3lwsgwI/f1mo0U8LymakRxV4+wnw759U=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=JU1niSVpMpgeYCh83IX4Dmgdf7NHdH/p8sZTz+ifxur7efSF34jIMu5KXCa9WPmlt
+ uDkiBiNY74o1By0j+dT1M+K0XD83eLPAZ/lE8FjMhJ1xmk5RUuyAC22ZQERJpUUO/a
+ 2YIaY1vzd4lUbZoETNSKx5giKdSFPOn2/++iYIwwVDM7uccoTX3E17lCtBNjA0LSd5
+ CyMOmq/oEO1DNDgdK+dsObO+bbcm/+E9JuLvEqdXMycLqP8DBuzyW4zS4Yb7jPBeef
+ 5ikDsUS4GMT520Vk5sFGxMMGn1071iAJRQOc78heIrkCnCc7QKh9LQmMjTjOhvvGTm
+ fk2EvNOkaWeWw==
+Received: by neuling.org (Postfix, from userid 1000)
+ id AC7BA2C05C7; Fri, 11 Mar 2022 14:59:42 +1100 (AEDT)
+Message-ID: <b7ddaf945ed35c0e072acc41b7bbc6d8c4c5d69f.camel@neuling.org>
+Subject: Re: [PATCH] powerpc/tm: Fix more userspace r13 corruption
+From: Michael Neuling <mikey@neuling.org>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 11 Mar 2022 14:59:42 +1100
+In-Reply-To: <20220311024733.48926-1-npiggin@gmail.com>
+References: <20220311024733.48926-1-npiggin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.42.4 (3.42.4-1.fc35) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,64 +59,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
- Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, Eric Badger <ebadger@purestorage.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently the aer_irq() handler returns IRQ_NONE for cases without bits
-PCI_ERR_ROOT_UNCOR_RCV or PCI_ERR_ROOT_COR_RCV are set. But this
-assumption is incorrect.
-
-Consider a scenario where aer_irq() is triggered for a correctable
-error, and while we process the error and before we clear the error
-status in "Root Error Status" register, if the same kind of error
-is triggered again, since aer_irq() only clears events it saw, the
-multi-bit error is left in tact. This will cause the interrupt to fire
-again, resulting in entering aer_irq() with just the multi-bit error
-logged in the "Root Error Status" register.
-
-Repeated AER recovery test has revealed this condition does happen
-and this prevents any new interrupt from being triggered. Allow to
-process interrupt even if only multi-correctable (BIT 1) or
-multi-uncorrectable bit (BIT 3) is set.
-
-Reported-by: Eric Badger <ebadger@purestorage.com>
-Reviewed-by: Ashok Raj <ashok.raj@intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
----
- drivers/pci/pcie/aer.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 9fa1f97e5b27..7952e5efd6cf 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -101,6 +101,11 @@ struct aer_stats {
- #define ERR_COR_ID(d)			(d & 0xffff)
- #define ERR_UNCOR_ID(d)			(d >> 16)
- 
-+#define AER_ERR_STATUS_MASK		(PCI_ERR_ROOT_UNCOR_RCV |	\
-+					PCI_ERR_ROOT_COR_RCV |		\
-+					PCI_ERR_ROOT_MULTI_COR_RCV |	\
-+					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
-+
- static int pcie_aer_disable;
- static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
- 
-@@ -1196,7 +1201,7 @@ static irqreturn_t aer_irq(int irq, void *context)
- 	struct aer_err_source e_src = {};
- 
- 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS, &e_src.status);
--	if (!(e_src.status & (PCI_ERR_ROOT_UNCOR_RCV|PCI_ERR_ROOT_COR_RCV)))
-+	if (!(e_src.status & AER_ERR_STATUS_MASK))
- 		return IRQ_NONE;
- 
- 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_ERR_SRC, &e_src.id);
--- 
-2.25.1
+T24gRnJpLCAyMDIyLTAzLTExIGF0IDEyOjQ3ICsxMDAwLCBOaWNob2xhcyBQaWdnaW4gd3JvdGU6
+Cj4gQ29tbWl0IGNmMTM0MzViNzMwYSAoInBvd2VycGMvdG06IEZpeCB1c2Vyc3BhY2UgcjEzIGNv
+cnJ1cHRpb24iKSBmaXhlcwo+IGEgcHJvYmxlbSBpbiB0cmVjbGFpbSB3aGVyZSBhIFNMQiBtaXNz
+IGNhbiBvY2N1ciBvbiB0aGUKPiB0aHJlYWRfc3RydWN0LT5ja3B0X3JlZ3Mgd2hpbGUgU0NSQVRD
+SDAgaXMgbGl2ZSB3aXRoIHRoZSBzYXZlZCB1c2VyIHIxMwo+IHZhbHVlLCBjbG9iYmVyaW5nIGl0
+IHdpdGggdGhlIGtlcm5lbCByMTMgYW5kIHVsdGltYXRlbHkgcmVzdWx0aW5nIGluCj4ga2VybmVs
+IHIxMyBiZWluZyBzdG9yZWQgaW4gY2twdF9yZWdzLgo+IAo+IFRoZXJlIGlzIGFuIGVxdWl2YWxl
+bnQgcHJvYmxlbSBpbiB0cmVjaGtwdCB3aGVyZSB0aGUgdXNlciByMTMgdmFsdWUgaXMKPiBsb2Fk
+ZWQgaW50byByMTMgZnJvbSBjaGtwdF9yZWdzIHRvIGJlIHJlY2hlY2twb2ludGVkLCBidXQgYSBT
+TEIgbWlzcwo+IGNvdWxkIG9jY3VyIG9uIGNrcHRfcmVncyBhY2Nlc3NlcyBhZnRlciB0aGF0LCB3
+aGljaCB3aWxsIHJlc3VsdCBpbiByMTMKPiBiZWluZyBjbG9iYmVyZWQgd2l0aCBhIGtlcm5lbCB2
+YWx1ZSBhbmQgdGhhdCB3aWxsIGdldCByZWNoZWNrcG9pbnRlZCBhbmQKPiB0aGVuIHJlc3RvcmVk
+IHRvIHVzZXIgcmVnaXN0ZXJzLgo+IAo+IFRoZSBzYW1lIG1lbW9yeSBwYWdlIGlzIGFjY2Vzc2Vk
+IHJpZ2h0IGJlZm9yZSB0aGlzIGNyaXRpY2FsIHdpbmRvdyB3aGVyZQo+IGEgU0xCIG1pc3MgY291
+bGQgY2F1c2UgY29ycnVwdGlvbiwgc28gaGl0dGluZyB0aGUgYnVnIHJlcXVpcmVzIHRoZSBTTEIK
+PiBlbnRyeSBiZSByZW1vdmVkIHdpdGhpbiBhIHNtYWxsIHdpbmRvdyBvZiBpbnN0cnVjdGlvbnMs
+IHdoaWNoIGlzIHBvc3NpYmxlCj4gaWYgYSBTTEIgcmVsYXRlZCBNQ0UgaGl0cyB0aGVyZS4gUEFQ
+UiBhbHNvIHBlcm1pdHMgdGhlIGh5cGVydmlzb3IgdG8KPiBkaXNjYXJkIHRoaXMgU0xCIGVudHJ5
+IChiZWNhdXNlIHNsYl9zaGFkb3ctPnBlcnNpc3RlbnQgaXMgb25seSBzZXQgdG8KPiBTTEJfTlVN
+X0JPTFRFRCkgYWx0aG91Z2ggaXQncyBub3Qga25vd24gd2hldGhlciBhbnkgaW1wbGVtZW50YXRp
+b25zIHdvdWxkCj4gZG8gdGhpcyAoS1ZNIGRvZXMgbm90KS4gU28gdGhpcyBpcyBhbiBleHRyZW1l
+bHkgdW5saWtlbHkgYnVnLCBvbmx5IGZvdW5kCj4gYnkgaW5zcGVjdGlvbi4KPiAKPiBGaXggdGhp
+cyBieSBhbHNvIHN0b3JpbmcgdXNlciByMTMgaW4gYSB0ZW1wb3JhcnkgbG9jYXRpb24gb24gdGhl
+IGtlcm5lbAo+IHN0YWNrIGFuZCBkb24ndCBjaGFuZSB0aGUgcjEzIHJlZ2lzdGVyIGZyb20ga2Vy
+bmVsIHIxMyB1bnRpbCB0aGUgUkk9MAo+IGNyaXRpY2FsIHNlY3Rpb24gdGhhdCBkb2VzIG5vdCBm
+YXVsdC4KCnMvY2hhbmUvY2hhbmdlLwoKPiAKPiBbIFRoZSBTQ1JBVENIMCBjaGFuZ2UgaXMgbm90
+IHN0cmljdGx5IHBhcnQgb2YgdGhlIGZpeCwgaXQncyBvbmx5IHVzZWQgaW4KPiDCoCB0aGUgUkk9
+MCBzZWN0aW9uIHNvIGl0IGRvZXMgbm90IGhhdmUgdGhlIHNhbWUgcHJvYmxlbSBhcyB0aGUgcHJl
+dmlvdXMKPiDCoCBTQ1JBVENIMCBidWcuIF0KPiAKPiBTaWduZWQtb2ZmLWJ5OiBOaWNob2xhcyBQ
+aWdnaW4gPG5waWdnaW5AZ21haWwuY29tPgoKVGhpcyBuZWVkcyB0byBiZSBtYXJrZWQgZm9yIHN0
+YWJsZSBhbHNvLiBPdGhlciB0aGFuIHRoYXQ6CgpBY2tlZC1ieTogTWljaGFlbCBOZXVsaW5nIDxt
+aWtleUBuZXVsaW5nLm9yZz4KClRoYW5rcyEKCj4gLS0tCj4gwqBhcmNoL3Bvd2VycGMva2VybmVs
+L3RtLlMgfCAyNSArKysrKysrKysrKysrKysrLS0tLS0tLS0tCj4gwqAxIGZpbGUgY2hhbmdlZCwg
+MTYgaW5zZXJ0aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvYXJjaC9w
+b3dlcnBjL2tlcm5lbC90bS5TIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC90bS5TCj4gaW5kZXggM2Jl
+ZWNjMzI5NDBiLi41YTBmMDIzYTI2ZTkgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9wb3dlcnBjL2tlcm5l
+bC90bS5TCj4gKysrIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC90bS5TCj4gQEAgLTQ0Myw3ICs0NDMs
+OCBAQCByZXN0b3JlX2dwcnM6Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgUkVTVF9HUFIoMCwgcjcp
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBHUFIw
+ICovCj4gwqDCoMKgwqDCoMKgwqDCoFJFU1RfR1BSUygyLCA0LCByNynCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAvKiBHUFIyLTQgKi8KPiAtwqDCoMKgwqDCoMKgwqBS
+RVNUX0dQUlMoOCwgMzEsIHI3KcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAvKiBHUFI4LTMxICovCj4gK8KgwqDCoMKgwqDCoMKgUkVTVF9HUFJTKDgsIDEyLCByNynCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyogR1BSOC0xMiAqLwo+ICvCoMKg
+wqDCoMKgwqDCoFJFU1RfR1BSUygxNCwgMzEsIHI3KcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgLyogR1BSMTQtMzEgKi8KPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqAvKiBMb2Fk
+IHVwIFBQUiBhbmQgRFNDUiBoZXJlIHNvIHdlIGRvbid0IHJ1biB3aXRoIHVzZXIgdmFsdWVzIGZv
+ciBsb25nCj4gKi8KPiDCoMKgwqDCoMKgwqDCoMKgbXRzcHLCoMKgwqBTUFJOX0RTQ1IsIHI1Cj4g
+QEAgLTQ3OSwxOCArNDgwLDI0IEBAIHJlc3RvcmVfZ3ByczoKPiDCoMKgwqDCoMKgwqDCoMKgUkVT
+VF9HUFIoNiwgcjcpCj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgLyoKPiAtwqDCoMKgwqDCoMKgwqAg
+KiBTdG9yZSByMSBhbmQgcjUgb24gdGhlIHN0YWNrIHNvIHRoYXQgd2UgY2FuIGFjY2VzcyB0aGVt
+IGFmdGVyIHdlCj4gLcKgwqDCoMKgwqDCoMKgICogY2xlYXIgTVNSIFJJLgo+ICvCoMKgwqDCoMKg
+wqDCoCAqIFN0b3JlIHVzZXIgcjEgYW5kIHI1IGFuZCByMTMgb24gdGhlIHN0YWNrIChpbiB0aGUg
+dW51c2VkIHNhdmUKPiArwqDCoMKgwqDCoMKgwqAgKiBhcmVhcyAvIGNvbXBpbGVyIHJlc2VydmVk
+IGFyZWFzKSwgc28gdGhhdCB3ZSBjYW4gYWNjZXNzIHRoZW0gYWZ0ZXIKPiArwqDCoMKgwqDCoMKg
+wqAgKiB3ZSBjbGVhciBNU1IgUkkuCj4gwqDCoMKgwqDCoMKgwqDCoCAqLwo+IMKgCj4gwqDCoMKg
+wqDCoMKgwqDCoFJFU1RfR1BSKDUsIHI3KQo+IMKgwqDCoMKgwqDCoMKgwqBzdGTCoMKgwqDCoMKg
+cjUsIC04KHIxKQo+IC3CoMKgwqDCoMKgwqDCoGxkwqDCoMKgwqDCoMKgcjUsIEdQUjEocjcpCj4g
+K8KgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByNSwgR1BSMTMocjcpCj4gwqDCoMKgwqDCoMKg
+wqDCoHN0ZMKgwqDCoMKgwqByNSwgLTE2KHIxKQo+ICvCoMKgwqDCoMKgwqDCoGxkwqDCoMKgwqDC
+oMKgcjUsIEdQUjEocjcpCj4gK8KgwqDCoMKgwqDCoMKgc3RkwqDCoMKgwqDCoHI1LCAtMjQocjEp
+Cj4gwqAKPiDCoMKgwqDCoMKgwqDCoMKgUkVTVF9HUFIoNywgcjcpCj4gwqAKPiAtwqDCoMKgwqDC
+oMKgwqAvKiBDbGVhciBNU1IgUkkgc2luY2Ugd2UgYXJlIGFib3V0IHRvIHVzZSBTQ1JBVENIMC4g
+RUUgaXMgYWxyZWFkeSBvZmYKPiAqLwo+ICvCoMKgwqDCoMKgwqDCoC8qIFN0YXNoIHRoZSBzdGFj
+ayBwb2ludGVyIGF3YXkgZm9yIHVzZSBhZnRlciByZWNoZWNrcG9pbnQgKi8KPiArwqDCoMKgwqDC
+oMKgwqBzdGTCoMKgwqDCoMKgcjEsIFBBQ0FSMShyMTMpCj4gKwo+ICvCoMKgwqDCoMKgwqDCoC8q
+IENsZWFyIE1TUiBSSSBzaW5jZSB3ZSBhcmUgYWJvdXQgdG8gY2xvYmJlciByMTMuIEVFIGlzIGFs
+cmVhZHkgb2ZmCj4gKi8KPiDCoMKgwqDCoMKgwqDCoMKgbGnCoMKgwqDCoMKgwqByNSwgMAo+IMKg
+wqDCoMKgwqDCoMKgwqBtdG1zcmTCoMKgcjUsIDEKPiDCoAo+IEBAIC01MDEsOSArNTA4LDkgQEAg
+cmVzdG9yZV9ncHJzOgo+IMKgwqDCoMKgwqDCoMKgwqAgKiB1bnRpbCB3ZSB0dXJuIE1TUiBSSSBi
+YWNrIG9uLgo+IMKgwqDCoMKgwqDCoMKgwqAgKi8KPiDCoAo+IC3CoMKgwqDCoMKgwqDCoFNFVF9T
+Q1JBVENIMChyMSkKPiDCoMKgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByNSwgLTgocjEpCj4g
+LcKgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByMSwgLTE2KHIxKQo+ICvCoMKgwqDCoMKgwqDC
+oGxkwqDCoMKgwqDCoMKgcjEzLCAtMTYocjEpCj4gK8KgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKg
+wqByMSwgLTI0KHIxKQo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoC8qIENvbW1pdCByZWdpc3RlciBz
+dGF0ZSBhcyBjaGVja3BvaW50ZWQgc3RhdGU6ICovCj4gwqDCoMKgwqDCoMKgwqDCoFRSRUNIS1BU
+Cj4gQEAgLTUxOSw5ICs1MjYsOSBAQCByZXN0b3JlX2dwcnM6Cj4gwqDCoMKgwqDCoMKgwqDCoCAq
+Lwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoEdFVF9QQUNBKHIxMykKPiAtwqDCoMKgwqDCoMKgwqBH
+RVRfU0NSQVRDSDAocjEpCj4gK8KgwqDCoMKgwqDCoMKgbGTCoMKgwqDCoMKgwqByMSwgUEFDQVIx
+KHIxMykKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoC8qIFIxIGlzIHJlc3RvcmVkLCBzbyB3ZSBhcmUg
+cmVjb3ZlcmFibGUgYWdhaW4uwqAgRUUgaXMgc3RpbGwgb2ZmICovCj4gK8KgwqDCoMKgwqDCoMKg
+LyogUjEzLCBSMSBpcyByZXN0b3JlZCwgc28gd2UgYXJlIHJlY292ZXJhYmxlIGFnYWluLsKgIEVF
+IGlzIHN0aWxsIG9mZgo+ICovCj4gwqDCoMKgwqDCoMKgwqDCoGxpwqDCoMKgwqDCoMKgcjQsIE1T
+Ul9SSQo+IMKgwqDCoMKgwqDCoMKgwqBtdG1zcmTCoMKgcjQsIDEKPiDCoAoK
 
