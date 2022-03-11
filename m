@@ -2,70 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0404D5858
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 03:48:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717254D5892
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 04:00:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KF9NP24wZz3bPJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 13:48:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KF9fC2hyZz3bW2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 14:00:19 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=q6NEt/Ux;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hTu0sEoz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
- helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=q6NEt/Ux; dkim-atps=neutral
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
- [IPv6:2607:f8b0:4864:20::62b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=hTu0sEoz; dkim-atps=neutral
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KF9Mj2b8fz2yV7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 13:47:43 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id n18so3890312plg.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Mar 2022 18:47:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=cI4QCEltGleU+0fr29xZZaJlNKYacQmMc9sWn0o8j8c=;
- b=q6NEt/UxAOhpIWNCiz8OqE6bJ3H8T+r2so3r4doQ5+0hv07k27jPmKmCjwis+6bxVi
- 6O4dZ9d+ZjTSU+NtCnhheOCa0IqYX0z+Qv95l2UcHQ+DZ4tLB+HxJxU/9FyXaGRbx+JM
- b7tjMFdC1aTejFmFYv/xjs3nFndWtIWFTAfET+Kmgdt82lrADBZnDuthaWTVKxZ9nOCw
- hkonknGpMn6ycXRhkKAYq2kB6xg3Ji94KAfJvsxxCOeIzFKLTUYNf0bsZTmuw8G7Bglt
- kiYiQNEb35ZKF2zkffLNDwVQccW9U77ShIlX+v63AxWGht3neJzCbB3nhY5M7+ShiZ5k
- FUEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=cI4QCEltGleU+0fr29xZZaJlNKYacQmMc9sWn0o8j8c=;
- b=wszKHS2ELMLr+MJc/G0rw+yNZNC07+NN9mPlvYJ20BSdd0e1GcprGAwi+sdppF/09i
- wH2e+NWbnQcHXPFT0D1QdZlET3hdG1ikVOMOQH3t5/NelksDcv53hKj2N7EiJfBSRlch
- rf2KB/+KgksSD5TbPrCNMJA63RtT6ff3gmddP8jy8wewAu6eApGd5tgvdyRjtqNHuUx+
- lEY27V0R7omzlyBLZc0ZhbV2vYZEzBBRq+yXnwEMZIP6xgEkGUU4Sr8pAPNskOW2nXvU
- C0KMx4CbY/y/MoPGNgOSlWaKj8l/8vwBbjDfi8HmUdWDy6snXhl75h6N1R8vRdJswkMU
- jYOQ==
-X-Gm-Message-State: AOAM533nlOojpGgzinL6Ak5vAK/VNbDJ9cNQHYh88jFe5NG2Oe2gDVA0
- 62kQZa9mc5oG8NFU/zO7Odj45k+Jmag=
-X-Google-Smtp-Source: ABdhPJwS/2yFpRHm4RmXyRXohI+5iZLfKYQZjFP9dQRAJmwYw2r+TpEjJi+UCeEt04jsVCHw0sTJeA==
-X-Received: by 2002:a17:90b:1bc5:b0:1bf:1c96:66ac with SMTP id
- oa5-20020a17090b1bc500b001bf1c9666acmr19066231pjb.167.1646966860203; 
- Thu, 10 Mar 2022 18:47:40 -0800 (PST)
-Received: from bobo.ozlabs.ibm.com (110-175-148-108.static.tpgi.com.au.
- [110.175.148.108]) by smtp.gmail.com with ESMTPSA id
- ob13-20020a17090b390d00b001becfd7c6f3sm7531788pjb.27.2022.03.10.18.47.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 10 Mar 2022 18:47:39 -0800 (PST)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/tm: Fix more userspace r13 corruption
-Date: Fri, 11 Mar 2022 12:47:33 +1000
-Message-Id: <20220311024733.48926-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KF9dZ3csQz2xCp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 13:59:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1646967586; x=1678503586;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=UJTpyFGEbvemu6dDdKBT6cEZiQLRbmMy45pgsMr9KBM=;
+ b=hTu0sEozR+X9r1Xrj2IRcI1+Hljk3ugkucOfXNbVAkLKVh3+1Wz4CZUY
+ P0+fwGphjC2Dz2WnmTzDEFR9PjF+XKDD8SP7NCTWgbh4JY+INqA6YBjSw
+ mW1Cp3pwvzrXFMs/6Xp4LBSS0mTWEi5tWHj8NXuXHrlekLaO7JJinU/eN
+ 1WPttRvt9EJvu3QxkLmFdLKoNOIsedeBdYZDncJD5GIHUvr8RwpkTCGhT
+ EouQcjdONF/+3joY9WxQrqeS2inRPSMtKfyvv67ixdV7+FAaMDkqXxxQB
+ IPeXUQDLGJ5ONpuZK7SpftSbQIBu6BvjKdJHBPM+SWGgc6wjOZxx9cRdc w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10282"; a="255674884"
+X-IronPort-AV: E=Sophos;i="5.90,172,1643702400"; d="scan'208";a="255674884"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2022 18:58:41 -0800
+X-IronPort-AV: E=Sophos;i="5.90,172,1643702400"; d="scan'208";a="644784512"
+Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Mar 2022 18:58:20 -0800
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Russell Currey <ruscur@russell.cc>,
+ Oliver OHalloran <oohall@gmail.com>
+Subject: [PATCH v1] PCI/AER: Handle Multi UnCorrectable/Correctable errors
+ properly
+Date: Fri, 11 Mar 2022 02:58:07 +0000
+Message-Id: <20220311025807.14664-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,112 +66,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <knsathya@kernel.org>,
+ Ashok Raj <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Eric Badger <ebadger@purestorage.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit cf13435b730a ("powerpc/tm: Fix userspace r13 corruption") fixes
-a problem in treclaim where a SLB miss can occur on the
-thread_struct->ckpt_regs while SCRATCH0 is live with the saved user r13
-value, clobbering it with the kernel r13 and ultimately resulting in
-kernel r13 being stored in ckpt_regs.
+Currently the aer_irq() handler returns IRQ_NONE for cases without bits
+PCI_ERR_ROOT_UNCOR_RCV or PCI_ERR_ROOT_COR_RCV are set. But this
+assumption is incorrect.
 
-There is an equivalent problem in trechkpt where the user r13 value is
-loaded into r13 from chkpt_regs to be recheckpointed, but a SLB miss
-could occur on ckpt_regs accesses after that, which will result in r13
-being clobbered with a kernel value and that will get recheckpointed and
-then restored to user registers.
+Consider a scenario where aer_irq() is triggered for a correctable
+error, and while we process the error and before we clear the error
+status in "Root Error Status" register, if the same kind of error
+is triggered again, since aer_irq() only clears events it saw, the
+multi-bit error is left in tact. This will cause the interrupt to fire
+again, resulting in entering aer_irq() with just the multi-bit error
+logged in the "Root Error Status" register.
 
-The same memory page is accessed right before this critical window where
-a SLB miss could cause corruption, so hitting the bug requires the SLB
-entry be removed within a small window of instructions, which is possible
-if a SLB related MCE hits there. PAPR also permits the hypervisor to
-discard this SLB entry (because slb_shadow->persistent is only set to
-SLB_NUM_BOLTED) although it's not known whether any implementations would
-do this (KVM does not). So this is an extremely unlikely bug, only found
-by inspection.
+Repeated AER recovery test has revealed this condition does happen
+and this prevents any new interrupt from being triggered. Allow to
+process interrupt even if only multi-correctable (BIT 1) or
+multi-uncorrectable bit (BIT 3) is set.
 
-Fix this by also storing user r13 in a temporary location on the kernel
-stack and don't chane the r13 register from kernel r13 until the RI=0
-critical section that does not fault.
-
-[ The SCRATCH0 change is not strictly part of the fix, it's only used in
-  the RI=0 section so it does not have the same problem as the previous
-  SCRATCH0 bug. ]
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reported-by: Eric Badger <ebadger@purestorage.com>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 ---
- arch/powerpc/kernel/tm.S | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/pci/pcie/aer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/tm.S b/arch/powerpc/kernel/tm.S
-index 3beecc32940b..5a0f023a26e9 100644
---- a/arch/powerpc/kernel/tm.S
-+++ b/arch/powerpc/kernel/tm.S
-@@ -443,7 +443,8 @@ restore_gprs:
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9fa1f97e5b27..7952e5efd6cf 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -101,6 +101,11 @@ struct aer_stats {
+ #define ERR_COR_ID(d)			(d & 0xffff)
+ #define ERR_UNCOR_ID(d)			(d >> 16)
  
- 	REST_GPR(0, r7)				/* GPR0 */
- 	REST_GPRS(2, 4, r7)			/* GPR2-4 */
--	REST_GPRS(8, 31, r7)			/* GPR8-31 */
-+	REST_GPRS(8, 12, r7)			/* GPR8-12 */
-+	REST_GPRS(14, 31, r7)			/* GPR14-31 */
- 
- 	/* Load up PPR and DSCR here so we don't run with user values for long */
- 	mtspr	SPRN_DSCR, r5
-@@ -479,18 +480,24 @@ restore_gprs:
- 	REST_GPR(6, r7)
- 
- 	/*
--	 * Store r1 and r5 on the stack so that we can access them after we
--	 * clear MSR RI.
-+	 * Store user r1 and r5 and r13 on the stack (in the unused save
-+	 * areas / compiler reserved areas), so that we can access them after
-+	 * we clear MSR RI.
- 	 */
- 
- 	REST_GPR(5, r7)
- 	std	r5, -8(r1)
--	ld	r5, GPR1(r7)
-+	ld	r5, GPR13(r7)
- 	std	r5, -16(r1)
-+	ld	r5, GPR1(r7)
-+	std	r5, -24(r1)
- 
- 	REST_GPR(7, r7)
- 
--	/* Clear MSR RI since we are about to use SCRATCH0. EE is already off */
-+	/* Stash the stack pointer away for use after recheckpoint */
-+	std	r1, PACAR1(r13)
++#define AER_ERR_STATUS_MASK		(PCI_ERR_ROOT_UNCOR_RCV |	\
++					PCI_ERR_ROOT_COR_RCV |		\
++					PCI_ERR_ROOT_MULTI_COR_RCV |	\
++					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
 +
-+	/* Clear MSR RI since we are about to clobber r13. EE is already off */
- 	li	r5, 0
- 	mtmsrd	r5, 1
+ static int pcie_aer_disable;
+ static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
  
-@@ -501,9 +508,9 @@ restore_gprs:
- 	 * until we turn MSR RI back on.
- 	 */
+@@ -1196,7 +1201,7 @@ static irqreturn_t aer_irq(int irq, void *context)
+ 	struct aer_err_source e_src = {};
  
--	SET_SCRATCH0(r1)
- 	ld	r5, -8(r1)
--	ld	r1, -16(r1)
-+	ld	r13, -16(r1)
-+	ld	r1, -24(r1)
+ 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS, &e_src.status);
+-	if (!(e_src.status & (PCI_ERR_ROOT_UNCOR_RCV|PCI_ERR_ROOT_COR_RCV)))
++	if (!(e_src.status & AER_ERR_STATUS_MASK))
+ 		return IRQ_NONE;
  
- 	/* Commit register state as checkpointed state: */
- 	TRECHKPT
-@@ -519,9 +526,9 @@ restore_gprs:
- 	 */
- 
- 	GET_PACA(r13)
--	GET_SCRATCH0(r1)
-+	ld	r1, PACAR1(r13)
- 
--	/* R1 is restored, so we are recoverable again.  EE is still off */
-+	/* R13, R1 is restored, so we are recoverable again.  EE is still off */
- 	li	r4, MSR_RI
- 	mtmsrd	r4, 1
- 
+ 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_ERR_SRC, &e_src.id);
 -- 
-2.23.0
+2.25.1
 
