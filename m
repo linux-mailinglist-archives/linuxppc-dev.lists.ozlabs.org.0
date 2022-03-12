@@ -2,64 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5524D69A0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Mar 2022 21:45:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E87B74D6BEE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 03:14:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KFdH76WNtz3bXJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 07:45:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KFmZV62qnz3bVf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 13:14:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=R8yZf202;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dzXW6D8a;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=R8yZf202; 
+ header.s=k20201202 header.b=dzXW6D8a; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KFdGS0fVBz2xCp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Mar 2022 07:44:47 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KFmYp0BxKz2xb1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Mar 2022 13:13:33 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id E66B4B80EE7;
- Fri, 11 Mar 2022 20:44:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8FC52C340E9;
- Fri, 11 Mar 2022 20:44:42 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 2D2AE616C8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Mar 2022 02:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BA5C340FF
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Mar 2022 02:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1647031482;
- bh=wcT5VChcLpkgrO2/xrZjU90vmYEXiIG/4aduJ2D2F+U=;
- h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
- b=R8yZf202nfB+xasoDGAKryJRUJn0KvDcu+GWDzwyP6JgJn0UooZvJBR+TnWmpLL2N
- ht+WYyfQMlZz/R0TfnjIKNoDAlxfw0u4SVbutGTIcdG9kLtCrMSMtZudHG/Y5WzCA0
- XlMdQYnTeD3bTQxACjbe4uDRmXkOpi9/4hnwMxXetW7RDTmDAt8JiT3I+Uvx9vIKYu
- EP8S9j+xVNTeqy6TZIVmytTgPJuOjzZEqmJzirUB74MGe1oeOk1AJP14tObmGRUUL0
- nK/Np+x/bPjFl2Te5NKNMSxiTByNZ/qxBH1Oq1qqtsp9z7DlvbTNO3MsF2eEKPlIuP
- ukFlsG4ToOt8g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org
- (localhost.localdomain [127.0.0.1])
- by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id
- 7C940E6D3DD; Fri, 11 Mar 2022 20:44:42 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.17-6 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <874k45m3fg.fsf@mpe.ellerman.id.au>
-References: <874k45m3fg.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <874k45m3fg.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.17-6
-X-PR-Tracked-Commit-Id: 48015b632f770c401f3816f144499a39f2884677
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 878409ecde7c89c9f3db76ff1ef9486c6ceed02c
-Message-Id: <164703148250.12993.11243673651989579046.pr-tracker-bot@kernel.org>
-Date: Fri, 11 Mar 2022 20:44:42 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ s=k20201202; t=1647051209;
+ bh=iRWRs787HfJQ4SmemjGupG5ATeZbj3chEC+s846rFUI=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=dzXW6D8a2fZcblys/QjCjL1M/69kjw27NQiwmxnI6v3Ty+JBSWuIwfIfHMmel2imr
+ vGu03UC1vkaZOz0pVbvbaJ9VjatjyUMXrOjzw24dIgQIhPT2twm3Y7jpIEc+Sz1sZv
+ xbefw+amYIJbHgLb9GrTrmKiMUF0Kh9g0oRa9QtveWDvFd6jsFRy9NIp4DXV0Ut1IQ
+ qOhqK6ZRwENFgrFfhjtXN1OmpfCbVK48hQDU1kPXHAQlBTM9+QsrxqThgGkRXzKr2N
+ vavIpsLAOCj0FM0mLCPoFRDvSj/f0Tjjlyok2eBV73W6cwj6H+ndb0VRdsWuF97g+/
+ fjPsQcegOyixw==
+Received: by mail-vs1-f41.google.com with SMTP id y20so3241606vsy.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Mar 2022 18:13:29 -0800 (PST)
+X-Gm-Message-State: AOAM5336P3HWd2hLNV2UP0grTtFLGY+xJeaLJxQwbS13YQb6cfx5WKpv
+ RKy9oIk8/+SJWdg0CgFnr1fw3myB3VOaLyQ9ds4=
+X-Google-Smtp-Source: ABdhPJzCzz+Egly7/GI0fNYhw4sbiCEhUuQJ2YUO3cGoxYtVTwt+tqnmQKqPh36WSK6cQ0MJdLShbyuO/M99QnpoqW0=
+X-Received: by 2002:a67:fc17:0:b0:320:b039:afc0 with SMTP id
+ o23-20020a67fc17000000b00320b039afc0mr7125264vsq.2.1647051208526; Fri, 11 Mar
+ 2022 18:13:28 -0800 (PST)
+MIME-Version: 1.0
+References: <20220227162831.674483-1-guoren@kernel.org>
+ <20220227162831.674483-14-guoren@kernel.org>
+ <CAJF2gTSJFMg1YJ=dbaNyemNV4sc_3P=+_PrS=RD_Y2_xz3TzPA@mail.gmail.com>
+ <509d2b62-7d52-bf5c-7a6c-213a740a5c00@codethink.co.uk>
+In-Reply-To: <509d2b62-7d52-bf5c-7a6c-213a740a5c00@codethink.co.uk>
+From: Guo Ren <guoren@kernel.org>
+Date: Sat, 12 Mar 2022 10:13:17 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTSkrm+Ek5i--TTikR2RDBUa6Eo72jwvszbj3uZg=Kxorg@mail.gmail.com>
+Message-ID: <CAJF2gTSkrm+Ek5i--TTikR2RDBUa6Eo72jwvszbj3uZg=Kxorg@mail.gmail.com>
+Subject: Re: [PATCH V7 13/20] riscv: compat: process: Add UXL_32 support in
+ start_thread
+To: Ben Dooks <ben.dooks@codethink.co.uk>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,21 +74,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Drew Fustini <drew@beagleboard.org>, Anup Patel <anup@brainfault.org>,
+ Wang Junqiang <wangjunqiang@iscas.ac.cn>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, liush <liush@allwinnertech.com>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, Wei Fu <wefu@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Fri, 11 Mar 2022 17:03:15 +1100:
+On Fri, Mar 11, 2022 at 9:38 PM Ben Dooks <ben.dooks@codethink.co.uk> wrote:
+>
+> On 11/03/2022 02:38, Guo Ren wrote:
+> > Hi Arnd,
+> >
+> > On Mon, Feb 28, 2022 at 12:30 AM <guoren@kernel.org> wrote:
+> >>
+> >> From: Guo Ren <guoren@linux.alibaba.com>
+> >>
+> >> If the current task is in COMPAT mode, set SR_UXL_32 in status for
+> >> returning userspace. We need CONFIG _COMPAT to prevent compiling
+> >> errors with rv32 defconfig.
+> >>
+> >> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> >> Signed-off-by: Guo Ren <guoren@kernel.org>
+> >> Cc: Arnd Bergmann <arnd@arndb.de>
+> >> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> >> ---
+> >>   arch/riscv/kernel/process.c | 5 +++++
+> >>   1 file changed, 5 insertions(+)
+> >>
+> >> diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+> >> index 03ac3aa611f5..54787ca9806a 100644
+> >> --- a/arch/riscv/kernel/process.c
+> >> +++ b/arch/riscv/kernel/process.c
+> >> @@ -97,6 +97,11 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
+> >>          }
+> >>          regs->epc = pc;
+> >>          regs->sp = sp;
+> >> +
+> > FIxup:
+> >
+> > + #ifdef CONFIG_COMPAT
+> >> +       if (is_compat_task())
+> >> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_32;
+> >> +       else
+> >> +               regs->status = (regs->status & ~SR_UXL) | SR_UXL_64;
+> > + #endif
+> >
+> > We still need "#ifdef CONFIG_COMPAT" here, because for rv32 we can't
+> > set SR_UXL at all. SR_UXL is BIT[32, 33].
+>
+> would an if (IS_ENABLED(CONFIG_COMPAT)) { } around the lot be better
+> than an #ifdef here?
+I don't think, seems #ifdef CONFIG_COMPAT is more commonly used in arch/*
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.17-6
+>
+> >>   }
+> >>
+> >>   void flush_thread(void)
+> >> --
+> >> 2.25.1
+> >>
+> >
+> >
+>
+>
+> --
+> Ben Dooks                               http://www.codethink.co.uk/
+> Senior Engineer                         Codethink - Providing Genius
+>
+> https://www.codethink.co.uk/privacy.html
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/878409ecde7c89c9f3db76ff1ef9486c6ceed02c
 
-Thank you!
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
