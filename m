@@ -2,34 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173894D6E2E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 11:32:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A54424D6E30
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 11:33:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KFzf107lcz3cgZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 21:32:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KFzfr4G0gz3dpq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Mar 2022 21:33:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KFzbd1Z6mz30Cm
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KFzbd1sZfz30D6
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Mar 2022 21:30:53 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KFzbb1NRlz4xcl;
- Sat, 12 Mar 2022 21:30:51 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KFzbc6mYwz4xj6;
+ Sat, 12 Mar 2022 21:30:52 +1100 (AEDT)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <3ed660a585df2080ea8412ec20fbf652f5bf013a.1646413435.git.christophe.leroy@csgroup.eu>
-References: <3ed660a585df2080ea8412ec20fbf652f5bf013a.1646413435.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v1 1/4] powerpc: Cleanup asm-prototypes.c
-Message-Id: <164708098372.827774.13045777419131446755.b4-ty@ellerman.id.au>
-Date: Sat, 12 Mar 2022 21:29:43 +1100
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220304061222.2478720-1-mpe@ellerman.id.au>
+References: <20220304061222.2478720-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/64e: Tie PPC_BOOK3E_64 to PPC_FSL_BOOK3E
+Message-Id: <164708098452.827774.5678930089897480897.b4-ty@ellerman.id.au>
+Date: Sat, 12 Mar 2022 21:29:44 +1100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,31 +42,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: oss@buserror.net, naveen.n.rao@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 4 Mar 2022 18:04:02 +0100, Christophe Leroy wrote:
-> Last call to sys_swapcontext() from ASM was removed by
-> commit fbcee2ebe8ed ("powerpc/32: Always save non volatile GPRs at
-> syscall entry")
+On Fri, 4 Mar 2022 17:12:22 +1100, Michael Ellerman wrote:
+> Since the IBM A2 CPU support was removed, see commit
+> fb5a515704d7 ("powerpc: Remove platforms/wsp and associated pieces"),
+> the only 64-bit Book3E CPUs we support are Freescale (NXP) ones.
 > 
-> sys_debug_setcontext() prototype not needed anymore since
-> commit f3675644e172 ("powerpc/syscalls: signal_{32, 64} - switch
-> to SYSCALL_DEFINE")
+> However our Kconfig still allows configurating a kernel that has 64-bit
+> Book3E support, but no Freescale CPU support enabled. Such a kernel
+> would never boot, it doesn't know about any CPUs.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/4] powerpc: Cleanup asm-prototypes.c
-      https://git.kernel.org/powerpc/c/e86debbbb5f89c2575110cfdce89d1820577aa94
-[2/4] powerpc/smp: Declare current_set static
-      https://git.kernel.org/powerpc/c/e15c703be48edc3b2f96b66d4f548dc88b44266c
-[3/4] powerpc/kexec: Declare kexec_paca static
-      https://git.kernel.org/powerpc/c/a4abd55a2490fd6407ddb6810e41f64ebd66d3af
-[4/4] powerpc: Move C prototypes out of asm-prototypes.h
-      https://git.kernel.org/powerpc/c/76222808fc253cb9ea66c3e0e8d1946933f25b70
+[1/1] powerpc/64e: Tie PPC_BOOK3E_64 to PPC_FSL_BOOK3E
+      https://git.kernel.org/powerpc/c/1a76e520ee1831a81dabf8a9a58c6453f700026e
 
 cheers
