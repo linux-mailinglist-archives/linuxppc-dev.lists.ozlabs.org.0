@@ -2,57 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E634D7C2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Mar 2022 08:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC324D7FD4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Mar 2022 11:28:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KH7lh1W3Yz3f6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Mar 2022 18:41:52 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=vIJ2oE33;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHCRt3NGbz3bZS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Mar 2022 21:28:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+605a0c0c3369109790a8+6777+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=vIJ2oE33; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KH7Y13xprz3Wtp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Mar 2022 18:32:37 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=zCMW1Q+QCPXYuvBuEGOZUQKFwE9OwdLFtYhltvQ29K4=; b=vIJ2oE33+/DMOwDU/JixqH774f
- 4HcyxfW75FjmmRylwNxtYUZ/EQtjckE6WUtJCk9FMmZ9UiNrJUQNReUkRYB9gehR9d8FPU1StVV25
- mDZAU61IRRH6aevchvran8PrU1UUMctkO1s07C1dw7LyB44+FDPejkmKQZWLyMHg5oTrChOy5x3wo
- MfT4/jWOnm16vvedpWLshlHmUjvCe5TTKasktRFAsL18gH/ZI5fWAS0KZoTBRUiVEpg29wVYcYU1M
- 9OpeHj+MXwuceM9FZp/nCmHAVa7rGsk1e3aB6Qq0bvLlVR46azzHlVR3oWpheK6+ceqEjGSc2s8WB
- kPKhfqNA==;
-Received: from [46.140.54.162] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nTfBi-0044wm-QZ; Mon, 14 Mar 2022 07:32:19 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: iommu@lists.linux-foundation.org
-Subject: [PATCH 15/15] x86: remove cruft from <asm/dma-mapping.h>
-Date: Mon, 14 Mar 2022 08:31:29 +0100
-Message-Id: <20220314073129.1862284-16-hch@lst.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220314073129.1862284-1-hch@lst.de>
-References: <20220314073129.1862284-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHCRQ36XBz2xCW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Mar 2022 21:27:59 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KHCRJ5r0tz9sRx;
+ Mon, 14 Mar 2022 11:27:56 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id ZV1HWJixw3eq; Mon, 14 Mar 2022 11:27:56 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KHCRJ4t2wz9sRn;
+ Mon, 14 Mar 2022 11:27:56 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 92C178B76D;
+ Mon, 14 Mar 2022 11:27:56 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id VTHrXJMVcorN; Mon, 14 Mar 2022 11:27:56 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C3918B763;
+ Mon, 14 Mar 2022 11:27:56 +0100 (CET)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22EARkmA4139705
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Mon, 14 Mar 2022 11:27:46 +0100
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22EAReXf4135139;
+ Mon, 14 Mar 2022 11:27:40 +0100
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Peter Zijlstra <peterz@infradead.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, Jason Baron <jbaron@akamai.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Michael Ellerman <mpe@ellerman.id.au>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH v1 1/2] static_call: Properly initialise
+ DEFINE_STATIC_CALL_RET0()
+Date: Mon, 14 Mar 2022 11:27:35 +0100
+Message-Id: <1e0a61a88f52a460f62a58ffc2a5f847d1f7d9d8.1647253456.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1647253655; l=4450; s=20211009;
+ h=from:subject:message-id; bh=mtB8sSS5LTVjOGBbjCgyRtyvPACLaZttxYP+lcczsR8=;
+ b=7bP7OAbkHz+/6afFcUTRv8eGwDx5YECqQXL5L+DDGNp+oAKSLi4QSEGQy6HKgnit9SY8FThsSKgB
+ H7A3V2V8Ayq9RSUJlPG0Ynmt0Wk3In7Pcvfrmgw+WpCLM6Uorz6r
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,65 +79,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- linux-ia64@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- x86@kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- tboot-devel@lists.sourceforge.net, linux-hyperv@vger.kernel.org,
- linux-pci@vger.kernel.org, xen-devel@lists.xenproject.org,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- David Woodhouse <dwmw2@infradead.org>, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-<asm/dma-mapping.h> gets pulled in by all drivers using the DMA API.
-Remove x86 internal variables and unnecessary includes from it.
+When a static call is updated with __static_call_return0() as target,
+arch_static_call_transform() set it to use an optimised set of
+instructions which are meant to lay in the same cacheline.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+But when initialising a static call with DEFINE_STATIC_CALL_RET0(),
+we get a branch to the real __static_call_return0() function instead
+of getting the optimised setup:
+
+	c00d8120 <__SCT__perf_snapshot_branch_stack>:
+	c00d8120:	4b ff ff f4 	b       c00d8114 <__static_call_return0>
+	c00d8124:	3d 80 c0 0e 	lis     r12,-16370
+	c00d8128:	81 8c 81 3c 	lwz     r12,-32452(r12)
+	c00d812c:	7d 89 03 a6 	mtctr   r12
+	c00d8130:	4e 80 04 20 	bctr
+	c00d8134:	38 60 00 00 	li      r3,0
+	c00d8138:	4e 80 00 20 	blr
+	c00d813c:	00 00 00 00 	.long 0x0
+
+Add ARCH_DEFINE_STATIC_CALL_RET0_TRAMP() defined by each architecture
+to setup the optimised configuration, and rework
+DEFINE_STATIC_CALL_RET0() to call it:
+
+	c00d8120 <__SCT__perf_snapshot_branch_stack>:
+	c00d8120:	48 00 00 14 	b       c00d8134 <__SCT__perf_snapshot_branch_stack+0x14>
+	c00d8124:	3d 80 c0 0e 	lis     r12,-16370
+	c00d8128:	81 8c 81 3c 	lwz     r12,-32452(r12)
+	c00d812c:	7d 89 03 a6 	mtctr   r12
+	c00d8130:	4e 80 04 20 	bctr
+	c00d8134:	38 60 00 00 	li      r3,0
+	c00d8138:	4e 80 00 20 	blr
+	c00d813c:	00 00 00 00 	.long 0x0
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/x86/include/asm/dma-mapping.h | 11 -----------
- arch/x86/include/asm/iommu.h       |  2 ++
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ arch/powerpc/include/asm/static_call.h |  1 +
+ arch/x86/include/asm/static_call.h     |  2 ++
+ include/linux/static_call.h            | 20 +++++++++++++++++---
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/dma-mapping.h b/arch/x86/include/asm/dma-mapping.h
-index 256fd8115223d..1c66708e30623 100644
---- a/arch/x86/include/asm/dma-mapping.h
-+++ b/arch/x86/include/asm/dma-mapping.h
-@@ -2,17 +2,6 @@
- #ifndef _ASM_X86_DMA_MAPPING_H
- #define _ASM_X86_DMA_MAPPING_H
+diff --git a/arch/powerpc/include/asm/static_call.h b/arch/powerpc/include/asm/static_call.h
+index 0a0bc79bd1fa..de1018cc522b 100644
+--- a/arch/powerpc/include/asm/static_call.h
++++ b/arch/powerpc/include/asm/static_call.h
+@@ -24,5 +24,6 @@
  
--/*
-- * IOMMU interface. See Documentation/core-api/dma-api-howto.rst and
-- * Documentation/core-api/dma-api.rst for documentation.
-- */
+ #define ARCH_DEFINE_STATIC_CALL_TRAMP(name, func)	__PPC_SCT(name, "b " #func)
+ #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)	__PPC_SCT(name, "blr")
++#define ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)	__PPC_SCT(name, "b .+20")
+ 
+ #endif /* _ASM_POWERPC_STATIC_CALL_H */
+diff --git a/arch/x86/include/asm/static_call.h b/arch/x86/include/asm/static_call.h
+index ed4f8bb6c2d9..2455d721503e 100644
+--- a/arch/x86/include/asm/static_call.h
++++ b/arch/x86/include/asm/static_call.h
+@@ -38,6 +38,8 @@
+ #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)			\
+ 	__ARCH_DEFINE_STATIC_CALL_TRAMP(name, "ret; int3; nop; nop; nop")
+ 
++#define ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)			\
++	ARCH_DEFINE_STATIC_CALL_TRAMP(name, __static_call_return0)
+ 
+ #define ARCH_ADD_TRAMP_KEY(name)					\
+ 	asm(".pushsection .static_call_tramp_key, \"a\"		\n"	\
+diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+index fcc5b48989b3..3c50b0fdda16 100644
+--- a/include/linux/static_call.h
++++ b/include/linux/static_call.h
+@@ -196,6 +196,14 @@ extern long __static_call_return0(void);
+ 	};								\
+ 	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+ 
++#define DEFINE_STATIC_CALL_RET0(name, _func)				\
++	DECLARE_STATIC_CALL(name, _func);				\
++	struct static_call_key STATIC_CALL_KEY(name) = {		\
++		.func = __static_call_return0,				\
++		.type = 1,						\
++	};								\
++	ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)
++
+ #define static_call_cond(name)	(void)__static_call(name)
+ 
+ #define EXPORT_STATIC_CALL(name)					\
+@@ -231,6 +239,12 @@ static inline int static_call_init(void) { return 0; }
+ 	};								\
+ 	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+ 
++#define DEFINE_STATIC_CALL_RET0(name, _func)				\
++	DECLARE_STATIC_CALL(name, _func);				\
++	struct static_call_key STATIC_CALL_KEY(name) = {		\
++		.func = __static_call_return0,				\
++	};								\
++	ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)
+ 
+ #define static_call_cond(name)	(void)__static_call(name)
+ 
+@@ -284,6 +298,9 @@ static inline long __static_call_return0(void)
+ 		.func = NULL,						\
+ 	}
+ 
++#define DEFINE_STATIC_CALL_RET0(name, _func)				\
++	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
++
+ static inline void __static_call_nop(void) { }
+ 
+ /*
+@@ -327,7 +344,4 @@ static inline int static_call_text_reserved(void *start, void *end)
+ #define DEFINE_STATIC_CALL(name, _func)					\
+ 	__DEFINE_STATIC_CALL(name, _func, _func)
+ 
+-#define DEFINE_STATIC_CALL_RET0(name, _func)				\
+-	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
 -
--#include <linux/scatterlist.h>
--#include <asm/io.h>
--
--extern int iommu_merge;
--extern int panic_on_overflow;
--
- extern const struct dma_map_ops *dma_ops;
- 
- static inline const struct dma_map_ops *get_arch_dma_ops(struct bus_type *bus)
-diff --git a/arch/x86/include/asm/iommu.h b/arch/x86/include/asm/iommu.h
-index dba89ed40d38d..0bef44d30a278 100644
---- a/arch/x86/include/asm/iommu.h
-+++ b/arch/x86/include/asm/iommu.h
-@@ -8,6 +8,8 @@
- 
- extern int force_iommu, no_iommu;
- extern int iommu_detected;
-+extern int iommu_merge;
-+extern int panic_on_overflow;
- 
- #ifdef CONFIG_SWIOTLB
- extern bool x86_swiotlb_enable;
+ #endif /* _LINUX_STATIC_CALL_H */
 -- 
-2.30.2
+2.35.1
 
