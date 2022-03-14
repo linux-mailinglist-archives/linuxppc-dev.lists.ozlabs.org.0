@@ -1,105 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CD04D8AD4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Mar 2022 18:31:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63FF4D8E48
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Mar 2022 21:38:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHNqj5qH1z3bNs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 04:31:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHSzF4fTJz3bYf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 07:38:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QZJF78+R;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google header.b=H7D/n0Jb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::52a;
+ helo=mail-pg1-x52a.google.com; envelope-from=ebadger@purestorage.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=QZJF78+R; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=purestorage.com header.i=@purestorage.com
+ header.a=rsa-sha256 header.s=google header.b=H7D/n0Jb; 
+ dkim-atps=neutral
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHNq136Yjz2ymt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 04:30:36 +1100 (AEDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22EH2ctp021585
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Mar 2022 17:30:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=WESWI8IUacKVnxJkTAH7pdruuD1uAV1M1b0+iiuvUXo=;
- b=QZJF78+RwzzlGR1CpgMnV9OKp61UXyR89lai4HEDnSooyAYPmjCxACIBvrcrzrS4PzAa
- GY6BaTwHkQ8CG0Cnp9uU6IR6bQm3DrI4fQBPC1FvWykImVqaNKGJ/0N3zznCRjLEUuca
- oEfD3/lapo21AMJYr/lxWjyja/KZs2eovrSEDQor4KtwRGoUlxsGf8VMHr8MWXNGBkkX
- 5bskvkMNQ/zg9Q8LH04vF+Ggu3OxCw3iTRnBOSeCHAu4L0Zku/qx2m7GgDqORhbj/NNm
- My47ZXhhFWFwMMN6cCHnSyqaeY5b2N4nicT86ioBpHdMqjnbxVKlxY4g8khxrGdCUQ0m 9Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3et6aex8ea-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Mar 2022 17:30:34 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22EHRQKV010289
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Mar 2022 17:30:34 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3et6aex8dn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Mar 2022 17:30:34 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22EHDIpM004158;
- Mon, 14 Mar 2022 17:30:31 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma05fra.de.ibm.com with ESMTP id 3erk58m1wf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 14 Mar 2022 17:30:31 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 22EHUTIU50790804
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 14 Mar 2022 17:30:29 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1217F11C0B1;
- Mon, 14 Mar 2022 17:30:29 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E12C811C0C2;
- Mon, 14 Mar 2022 17:30:28 +0000 (GMT)
-Received: from [9.101.4.33] (unknown [9.101.4.33])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 14 Mar 2022 17:30:28 +0000 (GMT)
-Message-ID: <a39f804c-bb3d-4842-d035-5a1a685efb27@linux.ibm.com>
-Date: Mon, 14 Mar 2022 18:30:28 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHMHn5Pr4z2yNv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 03:21:54 +1100 (AEDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 6so14328582pgg.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Mar 2022 09:21:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=purestorage.com; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=qALLnaCSSKUHcfprNAAItch631Ge5KfRQPx2pUNLQTQ=;
+ b=H7D/n0JbKj9EjOt8JtzKTXMQH0CNTpYB4I8wApB4Rmv61PHXEWj9mIPqgO05ZTyBRV
+ gGQOTLYfGzzw1FdftrzkIh6XmORv26rbqjicyHqSgwyZQEb8kvdu+uMfyc1qS98htKOL
+ qldzP/g9QTFXumZOPLV1iMBVFyiv24zQIs4wc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=qALLnaCSSKUHcfprNAAItch631Ge5KfRQPx2pUNLQTQ=;
+ b=nmI/lgBfCpl5VEUaFB7NXvQ2em5AJ4FoNDK29IvasxCLrC1duBCEVYSCwWZDXo2xew
+ p6c2+3wTA4sdVKvPX1QEhlRG+CXJ04FiqBjMY+lAla+TR6OTUDTFfwx84v/6BVzOpMcX
+ kOU5Wcf5rTxCco/ZTywDU6RWQbYfPwkjPKY1j9Y3xSFxWUG6N+VfKb9/9381BOQDep4H
+ UmSQwFKh2knRzNVVcdjCZ79J+inLoZMhDfKtyA4GWn4yrhmYCV/jxzAvVSUugFsnIvNj
+ g2/R/jIcv5Ma52XNfqn3u3778r2oY/kThbKPHnBjmL4zIeESdHBufvCr2flpjBFt83Yj
+ rYdQ==
+X-Gm-Message-State: AOAM533P/zb07jsvKajaby5Wp/Ky9kuhkVuULL9Ia4L0uySmp7Aslz54
+ UFr/XI6tyV8yOSTuOAkrjU60EQ==
+X-Google-Smtp-Source: ABdhPJywlNfTDHCbCn7W5tk/3WvfHJOH4isiXUJsYK3fHzRwOBGDMLdgv9KHuQlVH/xNrUex2nFbYw==
+X-Received: by 2002:a65:6091:0:b0:35e:d274:5f54 with SMTP id
+ t17-20020a656091000000b0035ed2745f54mr20676714pgu.200.1647274910285; 
+ Mon, 14 Mar 2022 09:21:50 -0700 (PDT)
+Received: from ebps (cpe-75-80-179-40.san.res.rr.com. [75.80.179.40])
+ by smtp.gmail.com with ESMTPSA id
+ c3-20020a056a00248300b004f6f729e485sm21916449pfv.127.2022.03.14.09.21.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 14 Mar 2022 09:21:49 -0700 (PDT)
+Date: Mon, 14 Mar 2022 09:21:46 -0700
+From: Eric Badger <ebadger@purestorage.com>
+To: "Raj, Ashok" <ashok.raj@intel.com>
+Subject: Re: [PATCH v1] PCI/AER: Handle Multi UnCorrectable/Correctable
+ errors properly
+Message-ID: <20220314162146.GA1439451@ebps>
+References: <20220311025807.14664-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20220313195220.GA436941@bhelgaas>
+ <20220313214314.GD182809@otc-nc-03>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.7.0
-Subject: Re: [PATCH 10/14] powerpc/rtas: replace rtas_call_unlocked with
- raw_rtas_call
-Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20220308135047.478297-1-npiggin@gmail.com>
- <20220308135047.478297-11-npiggin@gmail.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <20220308135047.478297-11-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mJZoh2iFjkSFe1kDDCUwx-vTAGEN5yyJ
-X-Proofpoint-ORIG-GUID: qG3RpU1fJyfowEjMmvtg6hEOt_O3RP9i
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-14_12,2022-03-14_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015
- lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0 spamscore=0
- mlxlogscore=999 mlxscore=0 impostorscore=0 priorityscore=1501 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203140104
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220313214314.GD182809@otc-nc-03>
+X-Mailman-Approved-At: Tue, 15 Mar 2022 07:37:33 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,207 +84,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kuppuswamy Sathyanarayanan <knsathya@kernel.org>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Oliver OHalloran <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Bjorn Helgaas <helgaas@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/03/2022, 14:50:43, Nicholas Piggin wrote:
-> Use the same calling and rets return convention with the raw rtas
-> call rather than requiring callers to load and byteswap return
-> values out of rtas_args.
+On Sun, Mar 13, 2022 at 02:43:14PM -0700, Raj, Ashok wrote:
+> On Sun, Mar 13, 2022 at 02:52:20PM -0500, Bjorn Helgaas wrote:
+> > On Fri, Mar 11, 2022 at 02:58:07AM +0000, Kuppuswamy Sathyanarayanan wrote:
+> > > Currently the aer_irq() handler returns IRQ_NONE for cases without bits
+> > > PCI_ERR_ROOT_UNCOR_RCV or PCI_ERR_ROOT_COR_RCV are set. But this
+> > > assumption is incorrect.
+> > > 
+> > > Consider a scenario where aer_irq() is triggered for a correctable
+> > > error, and while we process the error and before we clear the error
+> > > status in "Root Error Status" register, if the same kind of error
+> > > is triggered again, since aer_irq() only clears events it saw, the
+> > > multi-bit error is left in tact. This will cause the interrupt to fire
+> > > again, resulting in entering aer_irq() with just the multi-bit error
+> > > logged in the "Root Error Status" register.
+> > > 
+> > > Repeated AER recovery test has revealed this condition does happen
+> > > and this prevents any new interrupt from being triggered. Allow to
+> > > process interrupt even if only multi-correctable (BIT 1) or
+> > > multi-uncorrectable bit (BIT 3) is set.
+> > > 
+> > > Reported-by: Eric Badger <ebadger@purestorage.com>
+> > 
+> > Is there a bug report with any concrete details (dmesg, lspci, etc)
+> > that we can include here?
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Eric might have more details to add when he collected numerous logs to get
+> to the timeline of the problem. The test was to stress the links with an
+> automated power off, this will result in some eDPC UC error followed by
+> link down. The recovery worked fine for several cycles and suddenly there
+> were no more interrupts. A manual rescan on pci would probe and device is
+> operational again.
 
-Despite a minor comment below
-Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
+The problem was originally discovered while performing a looping hot plug
+test. At hot remove time, one or more corrected errors usually appeared:
 
-> ---
->  arch/powerpc/include/asm/rtas.h              |  4 +-
->  arch/powerpc/kernel/rtas.c                   | 53 +++++++++++---------
->  arch/powerpc/platforms/pseries/hotplug-cpu.c |  2 +-
->  arch/powerpc/platforms/pseries/ras.c         |  7 +--
->  arch/powerpc/xmon/xmon.c                     |  2 +-
->  5 files changed, 33 insertions(+), 35 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-> index 82e5b055fa2a..1014ff140cf8 100644
-> --- a/arch/powerpc/include/asm/rtas.h
-> +++ b/arch/powerpc/include/asm/rtas.h
-> @@ -241,8 +241,8 @@ extern int rtas_token(const char *service);
->  extern int rtas_service_present(const char *service);
->  extern int rtas_call(int token, int, int, int *, ...);
->  int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...);
-> -void rtas_call_unlocked(struct rtas_args *args, int token, int nargs,
-> -			int nret, ...);
-> +int raw_rtas_call(struct rtas_args *args, int token,
-> +			int nargs, int nret, int *outputs, ...);
+[256236.078151] pcieport 0000:89:02.0: AER: Corrected error received: 0000:89:02.0
+[256236.078154] pcieport 0000:89:02.0: AER: PCIe Bus Error: severity=Corrected, type=Physical Layer, (Receiver ID)
+[256236.088606] pcieport 0000:89:02.0: AER:   device [8086:347a] error status/mask=00000001/00000000
+[256236.097857] pcieport 0000:89:02.0: AER:    [ 0] RxErr                 
+[256236.152622] pcieport 0000:89:02.0: pciehp: Slot(400): Link Down
+[256236.152623] pcieport 0000:89:02.0: pciehp: Slot(400): Card not present
+[256236.152631] pcieport 0000:89:02.0: DPC: containment event, status:0x1f01 source:0x0000
+[256236.152632] pcieport 0000:89:02.0: DPC: unmasked uncorrectable error detected reason 0 ext_reason 0
+[256236.152634] pcieport 0000:89:02.0: AER: PCIe Bus Error: severity=Uncorrected (Fatal), type=Transaction Layer, (Receiver ID)
+[256236.164207] pcieport 0000:89:02.0: AER:   device [8086:347a] error status/mask=00000020/00100000
+[256236.173464] pcieport 0000:89:02.0: AER:    [ 5] SDES                   (First)
+[256236.278407] pci 0000:8a:00.0: Removing from iommu group 32
+[256237.500837] pcieport 0000:89:02.0: Data Link Layer Link Active not set in 1000 msec
+[256237.500842] pcieport 0000:89:02.0: link reset at upstream device 0000:89:02.0 failed
+[256237.500865] pcieport 0000:89:02.0: AER: Device recovery failed
 
-Minor, would it be better to keep the "unlocked" suffix to advise that the
-rtas lock is not held here?
+The problematic case arose when 2 corrected errors arrived in a sequence like this:
 
->  extern void __noreturn rtas_restart(char *cmd);
->  extern void rtas_power_off(void);
->  extern void __noreturn rtas_halt(void);
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index fece066115f0..751a20669669 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -123,7 +123,7 @@ static void call_rtas_display_status(unsigned char c)
->  		return;
->  
->  	s = lock_rtas();
-> -	rtas_call_unlocked(&rtas.args, 10, 1, 1, NULL, c);
-> +	raw_rtas_call(&rtas.args, 10, 1, 1, NULL, c);
->  	unlock_rtas(s);
->  }
->  
-> @@ -434,10 +434,9 @@ static char *__fetch_rtas_last_error(char *altbuf)
->  #define get_errorlog_buffer()		NULL
->  #endif
->  
-> -
-> -static void
-> -va_rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret,
-> -		      va_list list)
-> +static int notrace va_raw_rtas_call(struct rtas_args *args, int token,
-> +				int nargs, int nret, int *outputs,
-> +				va_list list)
->  {
->  	int i;
->  
-> @@ -453,21 +452,37 @@ va_rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret,
->  		args->rets[i] = 0;
->  
->  	do_enter_rtas(__pa(args));
-> +
-> +	if (nret > 1 && outputs != NULL) {
-> +		for (i = 0; i < nret-1; ++i)
-> +			outputs[i] = be32_to_cpu(args->rets[i+1]);
-> +	}
-> +
-> +	return (nret > 0) ? be32_to_cpu(args->rets[0]) : 0;
->  }
->  
-> -void rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int nret, ...)
-> +/*
-> + * Like rtas_call but no kmalloc or printk etc in error handling, so
-> + * error won't go through log_error. No tracing, may be called in real mode.
-> + * rtas_args must be supplied, and appropriate synchronization for the rtas
-> + * call being made has to be performed by the caller.
-> + */
-> +int notrace raw_rtas_call(struct rtas_args *args, int token,
-> +			int nargs, int nret, int *outputs, ...)
->  {
->  	va_list list;
-> +	int ret;
->  
-> -	va_start(list, nret);
-> -	va_rtas_call_unlocked(args, token, nargs, nret, list);
-> +	va_start(list, outputs);
-> +	ret = va_raw_rtas_call(args, token, nargs, nret, outputs, list);
->  	va_end(list);
-> +
-> +	return ret;
->  }
->  
->  int rtas_call(int token, int nargs, int nret, int *outputs, ...)
->  {
->  	va_list list;
-> -	int i;
->  	unsigned long s;
->  	struct rtas_args *rtas_args;
->  	char *buff_copy = NULL;
-> @@ -482,19 +497,14 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
->  	rtas_args = &rtas.args;
->  
->  	va_start(list, outputs);
-> -	va_rtas_call_unlocked(rtas_args, token, nargs, nret, list);
-> +	ret = va_raw_rtas_call(rtas_args, token, nargs, nret, outputs, list);
->  	va_end(list);
->  
->  	/* A -1 return code indicates that the last command couldn't
->  	   be completed due to a hardware error. */
-> -	if (be32_to_cpu(rtas_args->rets[0]) == -1)
-> +	if (ret == -1)
->  		buff_copy = __fetch_rtas_last_error(NULL);
->  
-> -	if (nret > 1 && outputs != NULL)
-> -		for (i = 0; i < nret-1; ++i)
-> -			outputs[i] = be32_to_cpu(rtas_args->rets[i+1]);
-> -	ret = (nret > 0)? be32_to_cpu(rtas_args->rets[0]): 0;
-> -
->  	unlock_rtas(s);
->  
->  	if (buff_copy) {
-> @@ -950,7 +960,7 @@ int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
->  	va_list list;
->  	struct rtas_args *args;
->  	unsigned long flags;
-> -	int i, ret = 0;
-> +	int ret;
->  
->  	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
->  		return -1;
-> @@ -962,16 +972,9 @@ int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
->  	args = local_paca->rtas_args_reentrant;
->  
->  	va_start(list, outputs);
-> -	va_rtas_call_unlocked(args, token, nargs, nret, list);
-> +	ret = va_raw_rtas_call(args, token, nargs, nret, outputs, list);
->  	va_end(list);
->  
-> -	if (nret > 1 && outputs)
-> -		for (i = 0; i < nret - 1; ++i)
-> -			outputs[i] = be32_to_cpu(args->rets[i + 1]);
-> -
-> -	if (nret > 0)
-> -		ret = be32_to_cpu(args->rets[0]);
-> -
->  	local_irq_restore(flags);
->  	preempt_enable();
->  
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> index b81fc846d99c..17c05650b6b9 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> @@ -53,7 +53,7 @@ static void rtas_stop_self(void)
->  
->  	BUG_ON(rtas_stop_self_token == RTAS_UNKNOWN_SERVICE);
->  
-> -	rtas_call_unlocked(&args, rtas_stop_self_token, 0, 1, NULL);
-> +	raw_rtas_call(&args, rtas_stop_self_token, 0, 1, NULL);
->  
->  	panic("Alas, I survived.\n");
->  }
-> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-> index 74c9b1b5bc66..b009ed7de1ee 100644
-> --- a/arch/powerpc/platforms/pseries/ras.c
-> +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -465,12 +465,7 @@ static void fwnmi_release_errinfo(void)
->  	struct rtas_args rtas_args;
->  	int ret;
->  
-> -	/*
-> -	 * On pseries, the machine check stack is limited to under 4GB, so
-> -	 * args can be on-stack.
-> -	 */
-> -	rtas_call_unlocked(&rtas_args, ibm_nmi_interlock_token, 0, 1, NULL);
-> -	ret = be32_to_cpu(rtas_args.rets[0]);
-> +	ret = raw_rtas_call(&rtas_args, ibm_nmi_interlock_token, 0, 1, NULL);
->  	if (ret != 0)
->  		printk(KERN_ERR "FWNMI: nmi-interlock failed: %d\n", ret);
->  }
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index fd72753e8ad5..6f53e8bccc33 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -410,7 +410,7 @@ static inline void disable_surveillance(void)
->  	if (set_indicator_token == RTAS_UNKNOWN_SERVICE)
->  		return;
->  
-> -	rtas_call_unlocked(&args, set_indicator_token, 3, 1, NULL,
-> +	raw_rtas_call(&args, set_indicator_token, 3, 1, NULL,
->  			   SURVEILLANCE_TOKEN, 0, 0);
->  
->  #endif /* CONFIG_PPC_PSERIES */
+1. Correctable error triggered, bit 0 (ERR_COR) set in Root Error Status,
+   which now has value 0x1.
+2. aer_irq() triggered, reads Root Error Status, finds value 0x1.
+3. Second correctable error triggered, bit 1 (multiple ERR_COR) set in Root
+   Error Status, which now has value 0x3.
+4. aer_irq() writes back 0x1 to Root Error Status, which now has value 0x2.
+5. aer_irq() triggered again due to the second error, but, finding value 0x2
+   in Root Error Status, takes no action. Future interrupts are now inhibited.
+  
+My observation on Intel Icelake is that a new AER interrupt will be generated
+when one writes to Root Error Status but other bits remain set. I concluded
+this based on testing with ACPI EINJ and a hack like this:
 
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9fa1f97e5b27..5c9bbbe7887b 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1196,6 +1196,10 @@ static irqreturn_t aer_irq(int irq, void *context)
+ 	struct aer_err_source e_src = {};
+ 
+ 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS, &e_src.status);
++
++	pci_dbg(pdev->port, "Root Error Status: %04x\n", e_src.status);
++	return IRQ_NONE;
++
+ 	if (!(e_src.status & (PCI_ERR_ROOT_UNCOR_RCV|PCI_ERR_ROOT_COR_RCV)))
+ 		return IRQ_NONE;
+ 
+And then running these commands:
+
+    # Prep injection data for a correctable error.
+    $ cd /sys/kernel/debug/apei/einj
+    $ echo 0x00000040 > error_type
+    $ echo 0x4 > flags
+    $ echo 0x891000 > param4
+    
+    # Root Error Status is initially clear
+    $ setpci -s 89:02.0 ECAP0001+0x30.w
+    0000
+    
+    # Inject one error
+    $ echo 1 > error_inject
+    
+    # Interrupt received
+    [  285.526275] pcieport 0000:89:02.0: AER: Root Error Status 0001
+    
+    # Inject another error
+    $ echo 1 > error_inject
+    
+    # No interrupt received, but "multiple ERR_COR" is now set
+    $ setpci -s 89:02.0 ECAP0001+0x30.w
+    0003
+    
+    # Wait for a while, then clear ERR_COR. A new interrupt immediately fires.
+    $ setpci -s 89:02.0 ECAP0001+0x30.w=0x1
+    [  354.596748] pcieport 0000:89:02.0: AER: Root Error Status 0002
+
+
+I've tried to track down some different hardware to confirm this behavior, but
+haven't found any that can run this test.
+
+My reading of the PCIe 5.0 spec, section "6.2.4.1.2 Interrupt Generation"
+doesn't seem to describe the behavior I saw on Icelake.
+
+	If a Root Port or Root Complex Event Collector is enabled for
+	edge-triggered interrupt signaling using MSI or MSI-X, an interrupt
+	message must be sent every time the logical AND of the following
+	conditions transitions from FALSE to TRUE:
+	...
+    At least one Error Reporting Enable bit in the Root Error Command
+    register and its associated error Messages Received bit in the Root
+    Error Status register are both set to 1b.
+
+This section of the spec seems to say that, if Root Error Status sees the
+sequence of values described above (0x1->0x3->0x2), only one interrupt would
+be generated, since there was no FALSE to TRUE transition at 0x3->0x2.  So you
+would need something analogous to:
+
+8edf5332c3934 ("PCI: pciehp: Fix MSI interrupt race")
+
+However, this seems not to be the case for Icelake.
+
+Cheers,
+Eric
