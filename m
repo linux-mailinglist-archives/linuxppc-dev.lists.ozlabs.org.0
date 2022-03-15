@@ -1,94 +1,104 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BA34DA11A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 18:26:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFBD4DA11D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 18:27:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJ0gz3tPVz30Dx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 04:26:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJ0hq3ZZ7z3bSy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 04:27:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FgLVs4js;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BhnnyKn2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=FgLVs4js; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=BhnnyKn2; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJ0gG1p33z2xXZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 04:26:01 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22FGflpB002387; 
- Tue, 15 Mar 2022 17:25:52 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJ0h73Lgzz2ywn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 04:26:46 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22FGEMSn029819
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 17:26:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=+m2zdRbNqsWkuVUHJWgaFa7AvKiQxrR+dHzT2AmUs8c=;
- b=FgLVs4jsakxDnWHrcaOP1dImS1/6Z2Ewv1RslCPRKf/07SH6vavvTJIMmq6+q4zIWbPB
- gC3ZURYKECyNRceFwPUl7Nrr16ETjAqZOBVJwRBVrKZeoWDVQuMicxzMPW4BbREkCqWb
- 1EDgr1M+ywt043mZKEQQMg9JHjaRq2kJgWTMvsIK8/Izay+cPfjjB+mp4av0W/QnQ5hi
- AWOihZZCeuFuBi7jY8dVq4gXhoBh7ecsMrrdjKXSW2yNbxV8p7YF/37d2eJhNTL5pQV8
- iQjwENlMbzgHzTLH/EafygqoAU67OBi0l3UO3zmEi0t98zMDmhoHaTTxmh1ePHjrsDeX AA== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3etxhtgy6e-1
+ h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=j9QlhKR1SK3HwvTI18z6CNy7lb2vekjOIBcCQu7fpic=;
+ b=BhnnyKn22oRFvYZylaQT4pzVeUdtcKEUvop3uP0LSM4S8mTFWOA5UiPWqEutFosunfhj
+ Q7kfNcEYnmn7yNbioICwOmO3l0C4gqXsivHp6x6EPge5M+gYXIMl4kjBl8p/qCQjJl1N
+ 65tXFtZ72EJDXorF0ej+98LyA91wHXknw0IZ0xLIZPVk/vNxSJ68GSxfeTRuwwjv3HHd
+ MP7HoiQy2Hdcqe8up0p5wjg9DUEavVk8+79KJFmTrDkWusFvpvIJa39Ff4qxQ+tYze3k
+ KCyQ/B1spslpTmcBZKu3iGZJmsHq6Y/JLYPFyQ+dmq8zr83/FAhRTZDoM8H3SMz63BWh LA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3etw7p3e8t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 17:26:44 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22FGEw3Y007435
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 17:26:43 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3etw7p3e8f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Mar 2022 17:25:51 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22FHDKtp012855;
- Tue, 15 Mar 2022 17:25:49 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma05fra.de.ibm.com with ESMTP id 3erk58p3n0-1
+ Tue, 15 Mar 2022 17:26:43 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22FHCsqQ025482;
+ Tue, 15 Mar 2022 17:26:42 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 3et95wtff2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Mar 2022 17:25:49 +0000
+ Tue, 15 Mar 2022 17:26:42 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 22FHPktZ52167006
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22FHQd2R49611054
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Mar 2022 17:25:46 GMT
+ Tue, 15 Mar 2022 17:26:39 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 772D2AE04D;
- Tue, 15 Mar 2022 17:25:46 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AFCCCAE051;
+ Tue, 15 Mar 2022 17:26:39 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 89863AE045;
- Tue, 15 Mar 2022 17:25:41 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.211.32.147])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 15 Mar 2022 17:25:41 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Tue, 15 Mar 2022 22:55:39 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Dan Williams
- <dan.j.williams@intel.com>, Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: manual merge of the nvdimm tree with the powerpc tree
-In-Reply-To: <20220315191538.323eefbb@canb.auug.org.au>
-References: <20220315191538.323eefbb@canb.auug.org.au>
-Date: Tue, 15 Mar 2022 22:55:39 +0530
-Message-ID: <87v8wfb018.fsf@vajain21.in.ibm.com>
+ by IMSVA (Postfix) with ESMTP id 8D381AE045;
+ Tue, 15 Mar 2022 17:26:39 +0000 (GMT)
+Received: from [9.101.4.33] (unknown [9.101.4.33])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 15 Mar 2022 17:26:39 +0000 (GMT)
+Message-ID: <27c5a9a1-35f7-613a-f67f-70fa7e7d1b07@linux.ibm.com>
+Date: Tue, 15 Mar 2022 18:26:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.7.0
+Subject: Re: [PATCH 14/14] powerpc/rtas: Consolidate and improve checking for
+ rtas callers
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20220308135047.478297-1-npiggin@gmail.com>
+ <20220308135047.478297-15-npiggin@gmail.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <20220308135047.478297-15-npiggin@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -3J5cxA1rd3sxn56In5FZvp1n-T54dZQ
-X-Proofpoint-GUID: -3J5cxA1rd3sxn56In5FZvp1n-T54dZQ
+X-Proofpoint-ORIG-GUID: x3cN2-fZaDZ9tGmJ3dE0AbhLbpKr0gXJ
+X-Proofpoint-GUID: 9D4G-31pVAZrLoa0KXZC1MX8ZGV3R2mM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-15_03,2022-03-15_01,2022-02-23_01
+ definitions=2022-03-15_08,2022-03-15_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=999
- mlxscore=0 malwarescore=0 bulkscore=0 phishscore=0 spamscore=0
- suspectscore=0 impostorscore=0 clxscore=1011 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=781 suspectscore=0
+ phishscore=0 impostorscore=0 spamscore=0 bulkscore=0 clxscore=1015
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2203150104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -101,46 +111,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kajol Jain <kjain@linux.ibm.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+On 08/03/2022, 14:50:47, Nicholas Piggin wrote:
+> Add range checking from the rtas syscall, and other error checks
+> and warnings to kernel callers, so problems can be found and
+> fixed.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kernel/rtas.c | 23 +++++++++++++++++------
+>  1 file changed, 17 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index adf4892aeecd..7f8a3fd685f9 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -428,6 +428,23 @@ static int notrace va_raw_rtas_call(struct rtas_args *args, int token,
+>  {
+>  	int i;
+>  
+> +	if (!irqs_disabled()) {
+> +		WARN_ON_ONCE(1);
+> +		return -1;
+> +	}
+> +
+> +	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE) {
+> +		WARN_ON_ONCE(1);
+> +		return -1;
+> +	}
+> +
+> +	if (nargs >= ARRAY_SIZE(args->args)
+> +	    || nret > ARRAY_SIZE(args->args)
+> +	    || nargs + nret > ARRAY_SIZE(args->args)) {
+> +		WARN_ON_ONCE(1);
+> +		return -1;
+> +	}
 
-> Hi all,
->
-> Today's linux-next merge of the nvdimm tree got a conflict in:
->
->   arch/powerpc/platforms/pseries/papr_scm.c
->
-> between commit:
->
->   bbbca72352bb ("powerpc/papr_scm: Implement initial support for injecting smart errors")
->
-> from the powerpc tree and commit:
->
->   4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
->
-> from the nvdimm tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
+These 3 tests are making the function returning -1, which is previously
+only returned in the case the call cannot be achieved because of a hardware
+error (as stated in rtas_call()).
 
-Thanks for this correction Stephen and the change looks ok to me. I
-verified the functionality introduced by kernel commit bbbca72352bb
-("powerpc/papr_scm: Implement initial support for injecting smart
-errors") on the 'next-20220315' and found it to be working fine.
+Should a dedicated error code been returned here?
 
-<snip>
 
--- 
-Cheers
-~ Vaibhav
+> +
+>  	args->token = cpu_to_be32(token);
+>  	args->nargs = cpu_to_be32(nargs);
+>  	args->nret  = cpu_to_be32(nret);
+> @@ -476,9 +493,6 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
+>  	char *buff_copy = NULL;
+>  	int ret;
+>  
+> -	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
+> -		return -1;
+> -
+>  	if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
+>  		WARN_ON_ONCE(1);
+>  		return -1;
+> @@ -955,9 +969,6 @@ int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
+>  	unsigned long flags;
+>  	int ret;
+>  
+> -	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
+> -		return -1;
+> -
+>  	local_irq_save(flags);
+>  	preempt_disable();
+>  
+
