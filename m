@@ -1,58 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AC44D9B7B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 13:46:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF6A4D9C99
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 14:49:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHtS96rHzz3bYW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 23:46:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHvs91TySz30KB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 00:49:17 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KxCYTyEM;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=KxCYTyEM; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHtRk1KnVz2xb1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 23:45:34 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KHtRb47Jjz9sSm;
- Tue, 15 Mar 2022 13:45:31 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id sI-JKIuBflLI; Tue, 15 Mar 2022 13:45:31 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KHtRb36Nfz9sSj;
- Tue, 15 Mar 2022 13:45:31 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 57FB58B770;
- Tue, 15 Mar 2022 13:45:31 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id rcqadboiGTvy; Tue, 15 Mar 2022 13:45:31 +0100 (CET)
-Received: from [192.168.202.50] (unknown [192.168.202.50])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A4F6E8B763;
- Tue, 15 Mar 2022 13:45:30 +0100 (CET)
-Message-ID: <50ec8577-23a5-cbba-f8d4-a3ca37439298@csgroup.eu>
-Date: Tue, 15 Mar 2022 13:45:30 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHvrP0xRwz2yb9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 00:48:36 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22FDTRqY000973; 
+ Tue, 15 Mar 2022 13:48:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=OlTmFKeNOPbWVZWVR++ggfV/pUnN8vS0wntQqCNVVtQ=;
+ b=KxCYTyEMX0TfQhgCqkYkaJc01K4NxLUyR1eTt31M61JPUeTD/KjfisytSTFwg8TOmoRT
+ jhr9s9CBP4a+I/O7JysQZ3E8zxOXWKzlkA6a+kfhtWHkRBnFQEkhj0tLADav76YX7i3y
+ XqNP9tqj78rgFKJ/8oEmn4/GCvWh9Yz9ovc4LDrFu9SOIf64q1oLJtVTfXBFjl4g6ZCa
+ s18B/3WxwztVmzDSwbIZtONuhCWVdgMiSE78aT7Fvxr6aIoCIWXMgkPO5q5tweLycj/n
+ yzSVweqqIrmfl+Vk5+6hSzmNnlJO2xxJwPja/slWqzt48JrquLoDnMn5NzsRpF8sTnAv sw== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3etuqvrdy6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Mar 2022 13:48:18 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22FDd4ft009614;
+ Tue, 15 Mar 2022 13:48:16 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 3et95wt2f9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 15 Mar 2022 13:48:16 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22FDmD7D46530892
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 15 Mar 2022 13:48:13 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89B76A405B;
+ Tue, 15 Mar 2022 13:48:13 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 008E1A405C;
+ Tue, 15 Mar 2022 13:48:11 +0000 (GMT)
+Received: from [9.43.37.159] (unknown [9.43.37.159])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 15 Mar 2022 13:48:10 +0000 (GMT)
+Message-ID: <e4041192-5d9a-bf36-75d4-58c36abc14b8@linux.ibm.com>
+Date: Tue, 15 Mar 2022 19:18:09 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [PATCH v4,1/5] powerpc: sysdev: fix compile error for
- fsl_85xx_l2ctlr
-Content-Language: fr-FR
-To: Wang Wenhu <wenhu.wang@vivo.com>, kernel@vivo.com
-References: <20200424085839.60284-1-wenhu.wang@vivo.com>
- <20200424085839.60284-2-wenhu.wang@vivo.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20200424085839.60284-2-wenhu.wang@vivo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+ Thunderbird/91.5.0
+Subject: Re: linux-next: manual merge of the nvdimm tree with the powerpc tree
+Content-Language: en-US
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
+References: <20220315191538.323eefbb@canb.auug.org.au>
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <20220315191538.323eefbb@canb.auug.org.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oc8RKe36qml5uCS9FxAJSjtPHwalgQ3n
+X-Proofpoint-ORIG-GUID: oc8RKe36qml5uCS9FxAJSjtPHwalgQ3n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-15_03,2022-03-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0
+ lowpriorityscore=0 clxscore=1011 priorityscore=1501 mlxscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2202240000 definitions=main-2203150089
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,74 +105,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Scott Wood <oss@buserror.net>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 24/04/2020 à 10:58, Wang Wenhu a écrit :
-> Include "linux/of_address.h" to fix the compile error for
-> mpc85xx_l2ctlr_of_probe() when compiling fsl_85xx_cache_sram.c.
+On 3/15/22 13:45, Stephen Rothwell wrote:
+> Hi all,
 > 
->    CC      arch/powerpc/sysdev/fsl_85xx_l2ctlr.o
-> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c: In function ‘mpc85xx_l2ctlr_of_probe’:
-> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:11: error: implicit declaration of function ‘of_iomap’; did you mean ‘pci_iomap’? [-Werror=implicit-function-declaration]
->    l2ctlr = of_iomap(dev->dev.of_node, 0);
->             ^~~~~~~~
->             pci_iomap
-> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:9: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
->    l2ctlr = of_iomap(dev->dev.of_node, 0);
->           ^
-> cc1: all warnings being treated as errors
-> scripts/Makefile.build:267: recipe for target 'arch/powerpc/sysdev/fsl_85xx_l2ctlr.o' failed
-> make[2]: *** [arch/powerpc/sysdev/fsl_85xx_l2ctlr.o] Error 1
+> Today's linux-next merge of the nvdimm tree got a conflict in:
 > 
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Scott Wood <oss@buserror.net>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Fixes: 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
-> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
-
-Is there still an interest for this series ?
-
-I see there is even a v5 at 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=172421&state=* 
-allthough I can't find it in my emails.
-
-If so do you plan to send any update of it at some point ?
-
-Otherwise, as CONFIG_FSL_85XX_CACHE_SRAM is not user selectable and no 
-driver selects it, I think time has come to remove it completely.
-
-Thanks
-Christophe
-
-
-> ---
-> No change v1-v4
-> ---
->   arch/powerpc/sysdev/fsl_85xx_l2ctlr.c | 1 +
->   1 file changed, 1 insertion(+)
+>   arch/powerpc/platforms/pseries/papr_scm.c
 > 
-> diff --git a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
-> index 2d0af0c517bb..7533572492f0 100644
-> --- a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
-> +++ b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
-> @@ -10,6 +10,7 @@
->   #include <linux/kernel.h>
->   #include <linux/module.h>
->   #include <linux/of_platform.h>
-> +#include <linux/of_address.h>
->   #include <asm/io.h>
->   
->   #include "fsl_85xx_cache_ctlr.h"
+> between commit:
+> 
+>   bbbca72352bb ("powerpc/papr_scm: Implement initial support for injecting smart errors")
+> 
+> from the powerpc tree and commit:
+> 
+>   4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+> 
+> from the nvdimm tree.
+> 
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
+> 
+
+Hi Stephan,
+         The change for resolving merged trees issue looks good to me. I
+also tested the latest linux-next tree - master branch with
+next-20220315 changes and the papr_scm perf interface is working as
+expected. Thanks for correcting it.
+
+Thanks,
+Kajol Jain
