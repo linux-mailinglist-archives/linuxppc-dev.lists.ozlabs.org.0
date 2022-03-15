@@ -2,64 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6369B4D90A1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 00:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD9F4D90B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 01:00:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHYFv2Q1lz3bVF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 10:50:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHYTB1LLNz30Dh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 11:00:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bz6Hd8V8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CxQznLVv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
+ helo=sin.source.kernel.org; envelope-from=sstabellini@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=bz6Hd8V8; dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=CxQznLVv; 
+ dkim-atps=neutral
+Received: from sin.source.kernel.org (sin.source.kernel.org
+ [IPv6:2604:1380:40e1:4800::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHYFF0WX0z2xXd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 10:50:23 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1647301825; x=1678837825;
- h=message-id:date:mime-version:to:cc:references:from:
- subject:in-reply-to:content-transfer-encoding;
- bh=7M5knxoOmfrCuDGDv6Hrs47RoFG1XAbST+A6t24ICJ8=;
- b=bz6Hd8V8n4AFitZ3QfG+H9ef/S58y8tQOL8twiV+M9AzMt9IhX0TH9bB
- f6PU98YrQgmd8kE5fx2McAz0B0tQ7+qAf713wlz4+NwntlRJ7pksxbics
- Lg5bAUkcxHnG1b0J2X6LtUWO8ZolgdL5foa9t6xcAB1dppsfhb6BJdVze
- OaBQ3/JaFxBNW1VAVnClMULUPWbm+vsHPVQ8QmG1LPjBtX9uDjaLVmTKg
- AbWnmMNAWRNT8YeuU9atIfhSRCBn3OmFIVQALH7KhVpSp1BSU3JV4es0G
- qEcinXi9aGzNm/aBA9D72ClYtWYF1GAoEG4s76OfGvwxmbjmBJiXaN8G1 g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10286"; a="280939439"
-X-IronPort-AV: E=Sophos;i="5.90,181,1643702400"; d="scan'208";a="280939439"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2022 16:49:19 -0700
-X-IronPort-AV: E=Sophos;i="5.90,181,1643702400"; d="scan'208";a="613071356"
-Received: from ssraox-mobl2.amr.corp.intel.com (HELO [10.209.55.169])
- ([10.209.55.169])
- by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Mar 2022 16:49:19 -0700
-Message-ID: <42e0aa73-04c8-a4c2-2d64-80812634b627@intel.com>
-Date: Mon, 14 Mar 2022 16:49:12 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHYSV372Lz2xTs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 11:00:10 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 1D754CE16F9;
+ Tue, 15 Mar 2022 00:00:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82170C340E9;
+ Tue, 15 Mar 2022 00:00:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1647302404;
+ bh=qF2Kiv1yBWM6zFZu7vu4vkmgVsDPPK9bUwo+CMzG77s=;
+ h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+ b=CxQznLVvPAMHVLObot/GbKAGNBs3wp/Zo7J//e5fa5RGl/JAcrYpHk7dFYXJ+dCyc
+ yFp/t/ucQtYgdUQQRIyugjt0bw6neR65fWz4Mw2wQpqjjnNDOhxJr7SqJvB+dScWOI
+ FWaPNn7YRGzQ0CCDI4WX3HGCjk3WcedTK4ZKrUhQL/ZjI62kK/fSKVT6fnNg8LwsV7
+ O+N86nVOy9ALX/s25HJpQGYpv30ak+B6D/CFn8xWL4gwGSW9Q/HStnRPdXpxBq2xEr
+ XfmlQm0hAt72Py8IAnH8MpwztAqekJ4fXRmnodDkCqvESbpDzlwteZaCwLl1CvtOpX
+ 4SrZDmHAzylBg==
+Date: Mon, 14 Mar 2022 17:00:02 -0700 (PDT)
+From: Stefano Stabellini <sstabellini@kernel.org>
+X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 13/15] swiotlb: merge swiotlb-xen initialization into
+ swiotlb
+In-Reply-To: <20220314073129.1862284-14-hch@lst.de>
+Message-ID: <alpine.DEB.2.22.394.2203141659210.3497@ubuntu-linux-20-04-desktop>
+References: <20220314073129.1862284-1-hch@lst.de>
+ <20220314073129.1862284-14-hch@lst.de>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Content-Language: en-US
-To: ira.weiny@intel.com, Dave Hansen <dave.hansen@linux.intel.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-References: <20220311005742.1060992-1-ira.weiny@intel.com>
- <20220311005742.1060992-6-ira.weiny@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH 5/5] x86/pkeys: Standardize on u8 for pkey type
-In-Reply-To: <20220311005742.1060992-6-ira.weiny@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,24 +67,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+ tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org,
+ David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 3/10/22 16:57, ira.weiny@intel.com wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
+On Mon, 14 Mar 2022, Christoph Hellwig wrote:
+> Reuse the generic swiotlb initialization for xen-swiotlb.  For ARM/ARM64
+> this works trivially, while for x86 xen_swiotlb_fixup needs to be passed
+> as the remap argument to swiotlb_init_remap/swiotlb_init_late.
 > 
-> The number of pkeys supported on x86 and powerpc are much smaller than a
-> u16 value can hold.  It is desirable to standardize on the type for
-> pkeys.  powerpc currently supports the most pkeys at 32.  u8 is plenty
-> large for that.
-> 
-> Standardize on the pkey types by changing u16 to u8.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-How widely was this intended to "standardize" things?  Looks like it may
-have missed a few spots.
+For arch/arm/xen and drivers/xen/swiotlb-xen.c
 
-Also if we're worried about the type needing to change or with the wrong
-type being used, I guess we could just to a pkey_t typedef.
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
