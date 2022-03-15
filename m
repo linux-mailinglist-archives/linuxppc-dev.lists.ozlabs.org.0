@@ -1,61 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD9F4D90B9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 01:00:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1633E4D9274
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 03:09:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHYTB1LLNz30Dh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 11:00:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHcKm6NWCz3bXP
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 13:09:32 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CxQznLVv;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Txt8hjlm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=sstabellini@kernel.org;
- receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHcK85lgjz2xX8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 13:09:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=CxQznLVv; 
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=Txt8hjlm; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHYSV372Lz2xTs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 11:00:10 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 1D754CE16F9;
- Tue, 15 Mar 2022 00:00:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82170C340E9;
- Tue, 15 Mar 2022 00:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1647302404;
- bh=qF2Kiv1yBWM6zFZu7vu4vkmgVsDPPK9bUwo+CMzG77s=;
- h=Date:From:To:cc:Subject:In-Reply-To:References:From;
- b=CxQznLVvPAMHVLObot/GbKAGNBs3wp/Zo7J//e5fa5RGl/JAcrYpHk7dFYXJ+dCyc
- yFp/t/ucQtYgdUQQRIyugjt0bw6neR65fWz4Mw2wQpqjjnNDOhxJr7SqJvB+dScWOI
- FWaPNn7YRGzQ0CCDI4WX3HGCjk3WcedTK4ZKrUhQL/ZjI62kK/fSKVT6fnNg8LwsV7
- O+N86nVOy9ALX/s25HJpQGYpv30ak+B6D/CFn8xWL4gwGSW9Q/HStnRPdXpxBq2xEr
- XfmlQm0hAt72Py8IAnH8MpwztAqekJ4fXRmnodDkCqvESbpDzlwteZaCwLl1CvtOpX
- 4SrZDmHAzylBg==
-Date: Mon, 14 Mar 2022 17:00:02 -0700 (PDT)
-From: Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 13/15] swiotlb: merge swiotlb-xen initialization into
- swiotlb
-In-Reply-To: <20220314073129.1862284-14-hch@lst.de>
-Message-ID: <alpine.DEB.2.22.394.2203141659210.3497@ubuntu-linux-20-04-desktop>
-References: <20220314073129.1862284-1-hch@lst.de>
- <20220314073129.1862284-14-hch@lst.de>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KHcK625BJz4xvW;
+ Tue, 15 Mar 2022 13:08:58 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1647310140;
+ bh=DQLbu8ZK6+3euQ9kGSVBdD8oOAoWN4NLJ3/SuRxqoj4=;
+ h=Date:From:To:Cc:Subject:From;
+ b=Txt8hjlmsANTzVoejfKFDXpfCgSs+zImJFgReI1hIcIQVwIWhVYUUy7fkG2v2FlzU
+ 9V1fZJg3UZPRzjkTi1VbLd8jpkcEQoqt+C0Pdizq+uFznMFKiDft02OB/BPJXPUik6
+ WcCB4Nl10Z1tsAzJ/KvT1h8CPF2Fiq67+u5vk0cDKk/QVuNcshxdenMM67DRfzYPjB
+ PPcBcLNYbUc8lvVUAU3Ot+T9wNneRCQludKuyYNKKMlGErWj8P4bvreCQekS+4XpdB
+ lGxmYyll9zmQUt+dXDpB5XT6gNhKRhOFID3n43Zd7cytGKEixajNbiOqkyVH9L0SGa
+ eRol+s+mxqUtw==
+Date: Tue, 15 Mar 2022 13:08:57 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: manual merge of the tip tree with the powerpc tree
+Message-ID: <20220315130857.4610e761@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; boundary="Sig_/R8CDU9LS=P+IHhBLtfBWjSU";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,29 +61,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
- Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org,
- David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 14 Mar 2022, Christoph Hellwig wrote:
-> Reuse the generic swiotlb initialization for xen-swiotlb.  For ARM/ARM64
-> this works trivially, while for x86 xen_swiotlb_fixup needs to be passed
-> as the remap argument to swiotlb_init_remap/swiotlb_init_late.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+--Sig_/R8CDU9LS=P+IHhBLtfBWjSU
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-For arch/arm/xen and drivers/xen/swiotlb-xen.c
+Hi all,
 
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Today's linux-next merge of the tip tree got a conflict in:
+
+  arch/powerpc/include/asm/livepatch.h
+
+between commit:
+
+  a4520b252765 ("powerpc/ftrace: Add support for livepatch to PPC32")
+
+from the powerpc tree and commit:
+
+  a557abfd1a16 ("x86/livepatch: Validate __fentry__ location")
+
+from the tip tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc arch/powerpc/include/asm/livepatch.h
+index 6f10de6af6e3,7b9dcd51af32..000000000000
+--- a/arch/powerpc/include/asm/livepatch.h
++++ b/arch/powerpc/include/asm/livepatch.h
+@@@ -14,21 -14,11 +14,11 @@@
+  #ifdef CONFIG_LIVEPATCH
+  static inline void klp_arch_set_pc(struct ftrace_regs *fregs, unsigned lo=
+ng ip)
+  {
+ -	struct pt_regs *regs =3D ftrace_get_regs(fregs);
+ -
+ -	regs_set_return_ip(regs, ip);
+ +	ftrace_instruction_pointer_set(fregs, ip);
+  }
+-=20
+- #define klp_get_ftrace_location klp_get_ftrace_location
+- static inline unsigned long klp_get_ftrace_location(unsigned long faddr)
+- {
+- 	/*
+- 	 * Live patch works on PPC32 and only with -mprofile-kernel on PPC64. In
+- 	 * both cases, the ftrace location is always within the first 16 bytes.
+- 	 */
+- 	return ftrace_location_range(faddr, faddr + 16);
+- }
+ +#endif /* CONFIG_LIVEPATCH */
+ =20
+ +#ifdef CONFIG_LIVEPATCH_64
+  static inline void klp_init_thread_info(struct task_struct *p)
+  {
+  	/* + 1 to account for STACK_END_MAGIC */
+
+--Sig_/R8CDU9LS=P+IHhBLtfBWjSU
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIv9TkACgkQAVBC80lX
+0GxapwgAoQr9a8aKDh1Z7ZcA4c3PuxMeuzY/xdE0XmKD0FQPpsro5Ml2UBIBj+wZ
+1M66IkBYjOJuO5bxddhbmJoGD4gq3HecnOh3XCLWgWAmlc4D+NS4/AUUf7Fru6A4
+A9g8YxADFbrUTFZt1/KqCiPHJ+DtTrW1I2wxLSK2HGUTfAEdadkfW/ak1Xiih/LM
+EOCdHXOsilZdZZBQvWaHJa2VqAATJ6o5J8AsG/pgWf2IT1moKyxNhqcGYNuRnHeM
+IDvdf9qpor50KuGfeoCgVnnEL5MspoXd6Nu0uiHJcEfZbrmjhnHZmsXsvDFkzbYP
+LDegFiLVyJYGDm6Z39ysWI/T3UATQw==
+=rRU0
+-----END PGP SIGNATURE-----
+
+--Sig_/R8CDU9LS=P+IHhBLtfBWjSU--
