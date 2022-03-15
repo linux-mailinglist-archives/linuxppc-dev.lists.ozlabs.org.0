@@ -1,52 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44E74D95FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 09:16:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2134D9775
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 10:18:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHmSv4nc4z3bSn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 19:16:15 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=iD1LZR99;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHnrN5nYsz3bTw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 20:18:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHmSF0dnhz2yfZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 19:15:41 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=iD1LZR99; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KHmSD0QY4z4xvr;
- Tue, 15 Mar 2022 19:15:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1647332140;
- bh=mONG+UlY5rxH+SXgTIx9QXycu8XqaesFU2xLTtjz1dU=;
- h=Date:From:To:Cc:Subject:From;
- b=iD1LZR99sgmEmlApVmJE9DZwTpB0t4ddd4zSWHV/UpaVJmDOCTLFogluAIn4tSOBL
- rKxgLPxAE/CBLpfU2Ul5uFIbmYMMsyDNsknznikFtWrRuVhsapMWjw2hicKZ8yutDC
- /PYuzpC2XDCggwQIfOBIgdQR+hifLS8fdQd+IXDZGjm15QQAU2zlhTz53VF6cLU8Kz
- Xo3mfcgnH+ycg9OoKe+O2D+aZPdEuDsmuVj247JDeXKlz9i4jyHE5KhvDPImdncu/5
- 9+m83HVW39pXxNBpF5LgTFw7g5uJmJcPJCbegLaduvv7xeX92S1+WE9HE+qOsfNWUS
- Xfu1vadW2AYMA==
-Date: Tue, 15 Mar 2022 19:15:38 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Dan Williams <dan.j.williams@intel.com>, Michael Ellerman
- <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: manual merge of the nvdimm tree with the powerpc tree
-Message-ID: <20220315191538.323eefbb@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHnqz20Npz2yn9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 20:17:48 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KHnqp35RQz9sSj;
+ Tue, 15 Mar 2022 10:17:42 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id P8dfPOyh5Gos; Tue, 15 Mar 2022 10:17:42 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KHnqn2LFkz9sSp;
+ Tue, 15 Mar 2022 10:17:41 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CDBB8B770;
+ Tue, 15 Mar 2022 10:17:41 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id O-TSzOUhyEx1; Tue, 15 Mar 2022 10:17:41 +0100 (CET)
+Received: from [192.168.202.50] (unknown [192.168.202.50])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AC9488B763;
+ Tue, 15 Mar 2022 10:17:40 +0100 (CET)
+Message-ID: <bfdaba1e-333e-669b-e5c0-8a3e891ade35@csgroup.eu>
+Date: Tue, 15 Mar 2022 10:17:40 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/7yT_38cpgq4K6cE.N/rQ9Gr";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH] powerpc/xive: Fix unsigned comparison with less than zero
+Content-Language: fr-FR
+To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, mpe@ellerman.id.au,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+References: <1620382851-67480-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <1620382851-67480-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,77 +63,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kajol Jain <kjain@linux.ibm.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/7yT_38cpgq4K6cE.N/rQ9Gr
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi all,
 
-Today's linux-next merge of the nvdimm tree got a conflict in:
+Le 07/05/2021 à 12:20, Jiapeng Chong a écrit :
+> The return from the call to irq_domain_alloc_irqs() is int, it can be
+> a negative error code, however this is being assigned to an unsigned
+> int variable 'irq', this may lead to invalid if statement detection,
+> so that kfree execution is invalid. So making 'irq' an int.
+> 
+> Clean up the following coccicheck warning:
+> 
+> ./arch/powerpc/sysdev/xive/common.c:1157:6-14: WARNING: Unsigned
+> expression compared with zero: xid -> irq < 0.
+> 
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-  arch/powerpc/platforms/pseries/papr_scm.c
+This was fixed by 
+https://github.com/linuxppc/linux/commit/3f601608b71c3ca1e199898cd16f09d707fedb56
 
-between commit:
-
-  bbbca72352bb ("powerpc/papr_scm: Implement initial support for injecting =
-smart errors")
-
-from the powerpc tree and commit:
-
-  4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
-
-from the nvdimm tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc arch/powerpc/platforms/pseries/papr_scm.c
-index 1238b94b3cc1,4dd513d7c029..000000000000
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@@ -121,9 -124,8 +124,11 @@@ struct papr_scm_priv=20
-  	/* length of the stat buffer as expected by phyp */
-  	size_t stat_buffer_len;
- =20
- +	/* The bits which needs to be overridden */
- +	u64 health_bitmap_inject_mask;
- +
-+ 	 /* array to have event_code and stat_id mappings */
-+ 	char **nvdimm_events_map;
-  };
- =20
-  static int papr_scm_pmem_flush(struct nd_region *nd_region,
-
---Sig_/7yT_38cpgq4K6cE.N/rQ9Gr
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIwSyoACgkQAVBC80lX
-0GyI+wf+L9l4xP1s6s+BeHdWb+klzvUTm1TNtwuIXUuPTakfHbJQdkqCQGErkAXM
-c1DPXNCR8BHBiJP8RYiPlEADjYDmVPw+We4Q+BcaMGXrYfmWwVG48Z6zAGmDvubt
-49XdW9Pb7XlfE35BYDZ6Z90FeKP4JtP3uAX2oxEIHwfs06rcnfQWiCFw/L2W8sos
-Fy26F1USxOLcSedndo0/BeG45weJ1OPDq32c2EK8JRMhLFMvbShXs2wq48FX9Qyq
-xSiI6Gzm5HyUfd6Y+5QTnCZLsthFgtX72IS/Jv0tF5glRUxlEjFIc9cFlNTOCkbP
-3l1J6WfoB2fKHE3EsZwA3HMSVusqgA==
-=+mLq
------END PGP SIGNATURE-----
-
---Sig_/7yT_38cpgq4K6cE.N/rQ9Gr--
+> ---
+>   arch/powerpc/sysdev/xive/common.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+> index a830432..a5fd45a 100644
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -65,7 +65,7 @@
+>   #ifdef CONFIG_SMP
+>   /* The IPIs use the same logical irq number when on the same chip */
+>   static struct xive_ipi_desc {
+> -	unsigned int irq;
+> +	int irq;
+>   	char name[16];
+>   } *xive_ipis;
+>   
