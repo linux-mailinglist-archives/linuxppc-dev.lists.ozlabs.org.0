@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2134D9775
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 10:18:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5484D97EC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 10:42:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHnrN5nYsz3bTw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 20:18:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHpNw53q7z30Dv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 20:42:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,40 +16,41 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHnqz20Npz2yn9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 20:17:48 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHpNW3W43z2xTs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 20:42:33 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KHnqp35RQz9sSj;
- Tue, 15 Mar 2022 10:17:42 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4KHpNP6vFQz9sSm;
+ Tue, 15 Mar 2022 10:42:29 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id P8dfPOyh5Gos; Tue, 15 Mar 2022 10:17:42 +0100 (CET)
+ with ESMTP id dF2zyDWcfBkw; Tue, 15 Mar 2022 10:42:29 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KHnqn2LFkz9sSp;
- Tue, 15 Mar 2022 10:17:41 +0100 (CET)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KHpNP5ySrz9sSj;
+ Tue, 15 Mar 2022 10:42:29 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CDBB8B770;
- Tue, 15 Mar 2022 10:17:41 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B8C778B770;
+ Tue, 15 Mar 2022 10:42:29 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id O-TSzOUhyEx1; Tue, 15 Mar 2022 10:17:41 +0100 (CET)
+ with ESMTP id LEBbleLzX4BU; Tue, 15 Mar 2022 10:42:29 +0100 (CET)
 Received: from [192.168.202.50] (unknown [192.168.202.50])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AC9488B763;
- Tue, 15 Mar 2022 10:17:40 +0100 (CET)
-Message-ID: <bfdaba1e-333e-669b-e5c0-8a3e891ade35@csgroup.eu>
-Date: Tue, 15 Mar 2022 10:17:40 +0100
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0465E8B763;
+ Tue, 15 Mar 2022 10:42:28 +0100 (CET)
+Message-ID: <2f2cafaa-e1f3-7f75-10a5-b8edb6de26d7@csgroup.eu>
+Date: Tue, 15 Mar 2022 10:42:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.6.2
-Subject: Re: [PATCH] powerpc/xive: Fix unsigned comparison with less than zero
+Subject: Re: [PATCH -next] powerpc/eeh: Add correct inline functions
 Content-Language: fr-FR
-To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, mpe@ellerman.id.au,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-References: <1620382851-67480-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+To: YueHaibing <yuehaibing@huawei.com>, ruscur@russell.cc, oohall@gmail.com,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ sbobroff@linux.ibm.com
+References: <20210331125313.24036-1-yuehaibing@huawei.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <1620382851-67480-1-git-send-email-jiapeng.chong@linux.alibaba.com>
+In-Reply-To: <20210331125313.24036-1-yuehaibing@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,45 +64,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, paulus@samba.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 07/05/2021 à 12:20, Jiapeng Chong a écrit :
-> The return from the call to irq_domain_alloc_irqs() is int, it can be
-> a negative error code, however this is being assigned to an unsigned
-> int variable 'irq', this may lead to invalid if statement detection,
-> so that kfree execution is invalid. So making 'irq' an int.
+Le 31/03/2021 à 14:53, YueHaibing a écrit :
+> pseries_eeh_add_device_early()/pseries_eeh_add_device_tree_early() is
+> never used since adding, however pseries_eeh_init_edev() and
+> pseries_eeh_init_edev_recursive() need their inline versions.
 > 
-> Clean up the following coccicheck warning:
-> 
-> ./arch/powerpc/sysdev/xive/common.c:1157:6-14: WARNING: Unsigned
-> expression compared with zero: xid -> irq < 0.
-> 
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> Fixes: b6eebb093cad ("powerpc/eeh: Make early EEH init pseries specific")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-This was fixed by 
-https://github.com/linuxppc/linux/commit/3f601608b71c3ca1e199898cd16f09d707fedb56
+Those inline are not needed at all:
+- pseries_eeh_init_edev_recursive() is only called from files build wich 
+CONFIG_HOTPLUG_PCI_RPA which depends on CONFIG_PSERIES and CONFIG_EEH
+- pseries_eeh_init_edev() is used exclusively in
+arch/powerpc/platforms/pseries/eeh_pseries.c and should be made static.
+
+Can you update your patch ?
+
+Thanks
+Christophe
 
 > ---
->   arch/powerpc/sysdev/xive/common.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   arch/powerpc/include/asm/eeh.h | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-> index a830432..a5fd45a 100644
-> --- a/arch/powerpc/sysdev/xive/common.c
-> +++ b/arch/powerpc/sysdev/xive/common.c
-> @@ -65,7 +65,7 @@
->   #ifdef CONFIG_SMP
->   /* The IPIs use the same logical irq number when on the same chip */
->   static struct xive_ipi_desc {
-> -	unsigned int irq;
-> +	int irq;
->   	char name[16];
->   } *xive_ipis;
+> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
+> index b1a5bba2e0b9..0b6c2a6711d3 100644
+> --- a/arch/powerpc/include/asm/eeh.h
+> +++ b/arch/powerpc/include/asm/eeh.h
+> @@ -357,8 +357,8 @@ static inline int eeh_phb_pe_create(struct pci_controller *phb) { return 0; }
+>   void pseries_eeh_init_edev(struct pci_dn *pdn);
+>   void pseries_eeh_init_edev_recursive(struct pci_dn *pdn);
+>   #else
+> -static inline void pseries_eeh_add_device_early(struct pci_dn *pdn) { }
+> -static inline void pseries_eeh_add_device_tree_early(struct pci_dn *pdn) { }
+> +static inline void pseries_eeh_init_edev(struct pci_dn *pdn) { }
+> +static inline void pseries_eeh_init_edev_recursive(struct pci_dn *pdn) { }
+>   #endif
 >   
+>   #ifdef CONFIG_PPC64
