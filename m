@@ -1,53 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A7E4D99EA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 12:05:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F834D9A92
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 12:45:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHrCb5wYHz30NZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 22:04:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iPh5FAtd;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHs6p4x51z3bV1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 22:45:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHrBy0XsDz2y7M
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 22:04:26 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=iPh5FAtd; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KHrBt2JSBz4xvg;
- Tue, 15 Mar 2022 22:04:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1647342262;
- bh=LxlvTOPlI5AK+PwnQwM7jyZc0uSmf3N9i0BEu9kcyYY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=iPh5FAtdHT+j0m1zHUUIVHhA222aj0CCumeztBSdnL5LtgzBy312S2hdhw5R8VQLq
- c4Gu9Clfn5wHtOK96UmS6jd8b7CW7FTOfE1bXYzm8wXwIEHwdPws82aOBSs487giXq
- bFRi0x8zcUG2gEKIDqyqG4tTnznezFi0oDmD7etPWxU0GPDvVs8c7zbF+sIhpILqE0
- Uwyg9VApkVABZ+4hXhkJjXwOOz7EYyUdIQ1HYKcRKuEjX88cHc05DUEfo1qRIbjBwi
- l8Qsc5RlXenv3OAziscApY6BXN0zIEFmPPAli0DdM3YMJSGXqwz8W0OwSFjdIIT6c7
- YyEOPcm0AX7Ug==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Dan Williams
- <dan.j.williams@intel.com>, PowerPC <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: linux-next: manual merge of the nvdimm tree with the powerpc tree
-In-Reply-To: <20220315191538.323eefbb@canb.auug.org.au>
-References: <20220315191538.323eefbb@canb.auug.org.au>
-Date: Tue, 15 Mar 2022 22:04:20 +1100
-Message-ID: <874k3z4guj.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHs6L1b5Kz2yV7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 22:45:26 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KHs6C55q1z9sSm;
+ Tue, 15 Mar 2022 12:45:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id FxMvbyD66mSB; Tue, 15 Mar 2022 12:45:23 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KHs6C4HkPz9sSj;
+ Tue, 15 Mar 2022 12:45:23 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 80F848B770;
+ Tue, 15 Mar 2022 12:45:23 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 4vf2hETzTAz6; Tue, 15 Mar 2022 12:45:23 +0100 (CET)
+Received: from [192.168.202.50] (unknown [192.168.202.50])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 20B068B763;
+ Tue, 15 Mar 2022 12:45:23 +0100 (CET)
+Message-ID: <4cfd1a57-f3c1-86ff-3acc-61b1cc8a3602@csgroup.eu>
+Date: Tue, 15 Mar 2022 12:45:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH 6/6] powerpc/compat_sys: Declare syscalls
+Content-Language: fr-FR
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20210819125656.14498-1-clg@kaod.org>
+ <20210819125656.14498-7-clg@kaod.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20210819125656.14498-7-clg@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,59 +64,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kajol Jain <kjain@linux.ibm.com>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Shivaprasad G Bhat <sbhat@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> Hi all,
->
-> Today's linux-next merge of the nvdimm tree got a conflict in:
->
->   arch/powerpc/platforms/pseries/papr_scm.c
->
-> between commit:
->
->   bbbca72352bb ("powerpc/papr_scm: Implement initial support for injecting smart errors")
->
-> from the powerpc tree and commit:
->
->   4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
->
-> from the nvdimm tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
 
-Thanks, resolution looks obviously correct.
 
-Dan, this seems benign to me, I don't think any further action is
-required other than mentioning it to Linus. But if you disagree let me
-know.
+Le 19/08/2021 à 14:56, Cédric Le Goater a écrit :
+> This fixes a compile error with W=1.
+> 
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
 
-cheers
 
-> diff --cc arch/powerpc/platforms/pseries/papr_scm.c
-> index 1238b94b3cc1,4dd513d7c029..000000000000
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@@ -121,9 -124,8 +124,11 @@@ struct papr_scm_priv 
->   	/* length of the stat buffer as expected by phyp */
->   	size_t stat_buffer_len;
+Instead of doing that, we should use COMPAT_SYSCALL_DEFINEx macros in 
+the function definitions.
+
+Thanks
+Christophe
+
+> ---
+>   arch/powerpc/include/asm/syscalls.h | 31 +++++++++++++++++++++++++++++
+>   1 file changed, 31 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/syscalls.h b/arch/powerpc/include/asm/syscalls.h
+> index 398171fdcd9f..1d5f2abaa38a 100644
+> --- a/arch/powerpc/include/asm/syscalls.h
+> +++ b/arch/powerpc/include/asm/syscalls.h
+> @@ -6,6 +6,7 @@
+>   #include <linux/compiler.h>
+>   #include <linux/linkage.h>
+>   #include <linux/types.h>
+> +#include <linux/compat.h>
 >   
->  +	/* The bits which needs to be overridden */
->  +	u64 health_bitmap_inject_mask;
->  +
-> + 	 /* array to have event_code and stat_id mappings */
-> + 	char **nvdimm_events_map;
->   };
+>   struct rtas_args;
 >   
->   static int papr_scm_pmem_flush(struct nd_region *nd_region,
+> @@ -18,5 +19,35 @@ asmlinkage long sys_mmap2(unsigned long addr, size_t len,
+>   asmlinkage long ppc64_personality(unsigned long personality);
+>   asmlinkage long sys_rtas(struct rtas_args __user *uargs);
+>   
+> +#ifdef CONFIG_COMPAT
+> +unsigned long compat_sys_mmap2(unsigned long addr, size_t len,
+> +			       unsigned long prot, unsigned long flags,
+> +			       unsigned long fd, unsigned long pgoff);
+> +
+> +compat_ssize_t compat_sys_pread64(unsigned int fd, char __user *ubuf, compat_size_t count,
+> +				  u32 reg6, u32 pos1, u32 pos2);
+> +
+> +compat_ssize_t compat_sys_pwrite64(unsigned int fd, const char __user *ubuf, compat_size_t count,
+> +				   u32 reg6, u32 pos1, u32 pos2);
+> +
+> +compat_ssize_t compat_sys_readahead(int fd, u32 r4, u32 offset1, u32 offset2, u32 count);
+> +
+> +asmlinkage int compat_sys_truncate64(const char __user *path, u32 reg4,
+> +				     unsigned long len1, unsigned long len2);
+> +
+> +asmlinkage long compat_sys_fallocate(int fd, int mode, u32 offset1, u32 offset2,
+> +				     u32 len1, u32 len2);
+> +
+> +asmlinkage int compat_sys_ftruncate64(unsigned int fd, u32 reg4, unsigned long len1,
+> +				      unsigned long len2);
+> +
+> +long ppc32_fadvise64(int fd, u32 unused, u32 offset1, u32 offset2,
+> +		     size_t len, int advice);
+> +
+> +asmlinkage long compat_sys_sync_file_range2(int fd, unsigned int flags,
+> +					    unsigned int offset1, unsigned int offset2,
+> +					    unsigned int nbytes1, unsigned int nbytes2);
+> +#endif
+> +
+>   #endif /* __KERNEL__ */
+>   #endif /* __ASM_POWERPC_SYSCALLS_H */
