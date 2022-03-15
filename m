@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54724D9D5A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 15:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D224D9D5C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 15:22:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHwZN4wHSz30R6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 01:21:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHwb46Ds1z3c2d
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 01:22:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QGJ6zaYu;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QGJ6zaYu;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HqRRo3RU;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XWcWAp3x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,55 +19,55 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=QGJ6zaYu; 
+ header.s=mimecast20190719 header.b=HqRRo3RU; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=QGJ6zaYu; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=XWcWAp3x; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
  (us-smtp-delivery-124.mimecast.com [170.10.129.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHwWp4knYz30FQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 01:19:18 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHwX06VMlz3bTk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 01:19:28 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1647353956;
+ s=mimecast20190719; t=1647353965;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fCgJg7id0ExabGCMvT39C6jmUmXD3+Z3spzphLwh+3A=;
- b=QGJ6zaYun4vwVFSioH5USr9cxJE1dbW+v2IR4kqTv+95RzFsdW6xfikg5B1DS7bpFd/T9w
- +TeoxQTK189K0BJio2NWhrWfaVyqUpoD+z+d6LOU/lBJYkh5xsuJe7HHL3rkY/O4XajY4R
- IIoogKGkLZ7qATmAkyI6lp61brlwYOU=
+ bh=33F2qgmyketZPl05kSNPAq/J3WUAdrQWXF1ACWpI9hg=;
+ b=HqRRo3RUJ1oVHhpRQIy2UapwyDFBVha71L15cwKBqwEb/83w2QiSBRq9UezFcO+07LmNQW
+ T4epdzUWpZSno8yY1cHy8/aEcHtkzgczeJacF+bv5w+v6XYOGt9xWJ+tdiTJY1IA8Q/ltC
+ uAWBlMJNyyA6+3K/U6/XD0q13VCvYl8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1647353956;
+ s=mimecast20190719; t=1647353966;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fCgJg7id0ExabGCMvT39C6jmUmXD3+Z3spzphLwh+3A=;
- b=QGJ6zaYun4vwVFSioH5USr9cxJE1dbW+v2IR4kqTv+95RzFsdW6xfikg5B1DS7bpFd/T9w
- +TeoxQTK189K0BJio2NWhrWfaVyqUpoD+z+d6LOU/lBJYkh5xsuJe7HHL3rkY/O4XajY4R
- IIoogKGkLZ7qATmAkyI6lp61brlwYOU=
+ bh=33F2qgmyketZPl05kSNPAq/J3WUAdrQWXF1ACWpI9hg=;
+ b=XWcWAp3x6xvvY7ngoCCxfi9KLM3+bTkKwAMDJiJRDwgaqyC9bIWLqxxm4EJyUc8IECB6Q0
+ zKLixwyx9UbojdL/FAS9MtjH79slSBRMaAMaA+fukbtu2RKR3DqXPm/S//w0Q/9ZlGFnx7
+ 6Xk2scQ1sfQBW0o1hQmVEpO8hwxxsrk=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-619-cpSV8RIgNtyurFg1q55rhQ-1; Tue, 15 Mar 2022 10:19:14 -0400
-X-MC-Unique: cpSV8RIgNtyurFg1q55rhQ-1
+ us-mta-457-rizRHN8TOLWEyNwbtpDe9Q-1; Tue, 15 Mar 2022 10:19:23 -0400
+X-MC-Unique: rizRHN8TOLWEyNwbtpDe9Q-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B5E8A3C14CD2;
- Tue, 15 Mar 2022 14:19:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7AE8A38008A0;
+ Tue, 15 Mar 2022 14:19:21 +0000 (UTC)
 Received: from t480s.redhat.com (unknown [10.39.194.72])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 84EC64087D7E;
- Tue, 15 Mar 2022 14:19:05 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 21CBC4087D7E;
+ Tue, 15 Mar 2022 14:19:12 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 3/7] x86/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-Date: Tue, 15 Mar 2022 15:18:33 +0100
-Message-Id: <20220315141837.137118-4-david@redhat.com>
+Subject: [PATCH v1 4/7] arm64/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+Date: Tue, 15 Mar 2022 15:18:34 +0100
+Message-Id: <20220315141837.137118-5-david@redhat.com>
 In-Reply-To: <20220315141837.137118-1-david@redhat.com>
 References: <20220315141837.137118-1-david@redhat.com>
 MIME-Version: 1.0
@@ -111,80 +111,71 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let's use bit 3 to remember PG_anon_exclusive in swap ptes.
+Let's use one of the type bits: core-mm only supports 5, so there is no
+need to consume 6.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/x86/include/asm/pgtable.h       | 16 ++++++++++++++++
- arch/x86/include/asm/pgtable_64.h    |  4 +++-
- arch/x86/include/asm/pgtable_types.h |  5 +++++
- 3 files changed, 24 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable-prot.h |  1 +
+ arch/arm64/include/asm/pgtable.h      | 23 ++++++++++++++++++++---
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 8a9432fb3802..0c676da4babb 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -1291,6 +1291,22 @@ static inline void update_mmu_cache_pud(struct vm_area_struct *vma,
- {
+diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
+index b1e1b74d993c..62e0ebeed720 100644
+--- a/arch/arm64/include/asm/pgtable-prot.h
++++ b/arch/arm64/include/asm/pgtable-prot.h
+@@ -14,6 +14,7 @@
+  * Software defined PTE bits definition.
+  */
+ #define PTE_WRITE		(PTE_DBM)		 /* same as DBM (51) */
++#define PTE_SWP_EXCLUSIVE	(_AT(pteval_t, 1) << 2)	 /* only for swp ptes */
+ #define PTE_DIRTY		(_AT(pteval_t, 1) << 55)
+ #define PTE_SPECIAL		(_AT(pteval_t, 1) << 56)
+ #define PTE_DEVMAP		(_AT(pteval_t, 1) << 57)
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 94e147e5456c..ad9b221963d4 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -402,6 +402,22 @@ static inline pgprot_t mk_pmd_sect_prot(pgprot_t prot)
+ 	return __pgprot((pgprot_val(prot) & ~PMD_TABLE_BIT) | PMD_TYPE_SECT);
  }
  
 +#define __HAVE_ARCH_PTE_SWP_EXCLUSIVE
 +static inline pte_t pte_swp_mkexclusive(pte_t pte)
 +{
-+	return pte_set_flags(pte, _PAGE_SWP_EXCLUSIVE);
++	return set_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
 +}
 +
 +static inline int pte_swp_exclusive(pte_t pte)
 +{
-+	return pte_flags(pte) & _PAGE_SWP_EXCLUSIVE;
++	return pte_val(pte) & PTE_SWP_EXCLUSIVE;
 +}
 +
 +static inline pte_t pte_swp_clear_exclusive(pte_t pte)
 +{
-+	return pte_clear_flags(pte, _PAGE_SWP_EXCLUSIVE);
++	return clear_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
 +}
 +
- #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
- static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
- {
-diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
-index 56d0399a0cd1..e479491da8d5 100644
---- a/arch/x86/include/asm/pgtable_64.h
-+++ b/arch/x86/include/asm/pgtable_64.h
-@@ -186,7 +186,7 @@ static inline void native_pgd_clear(pgd_t *pgd)
-  *
-  * |     ...            | 11| 10|  9|8|7|6|5| 4| 3|2| 1|0| <- bit number
-  * |     ...            |SW3|SW2|SW1|G|L|D|A|CD|WT|U| W|P| <- bit names
-- * | TYPE (59-63) | ~OFFSET (9-58)  |0|0|X|X| X| X|F|SD|0| <- swp entry
-+ * | TYPE (59-63) | ~OFFSET (9-58)  |0|0|X|X| X| E|F|SD|0| <- swp entry
-  *
-  * G (8) is aliased and used as a PROT_NONE indicator for
-  * !present ptes.  We need to start storing swap entries above
-@@ -203,6 +203,8 @@ static inline void native_pgd_clear(pgd_t *pgd)
-  * F (2) in swp entry is used to record when a pagetable is
-  * writeprotected by userfaultfd WP support.
-  *
-+ * E (3) in swp entry is used to rememeber PG_anon_exclusive.
-+ *
-  * Bit 7 in swp entry should be 0 because pmd_present checks not only P,
-  * but also L and G.
-  *
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 40497a9020c6..54a8f370046d 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -83,6 +83,11 @@
- #define _PAGE_SOFT_DIRTY	(_AT(pteval_t, 0))
- #endif
- 
-+/*
-+ * We borrow bit 3 to remember PG_anon_exclusive.
-+ */
-+#define _PAGE_SWP_EXCLUSIVE	_PAGE_PWT
-+
+ #ifdef CONFIG_NUMA_BALANCING
  /*
-  * Tracking soft dirty bit when a page goes to a swap is tricky.
-  * We need a bit which can be stored in pte _and_ not conflict
+  * See the comment in include/linux/pgtable.h
+@@ -909,12 +925,13 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+ /*
+  * Encode and decode a swap entry:
+  *	bits 0-1:	present (must be zero)
+- *	bits 2-7:	swap type
++ *	bits 2:		remember PG_anon_exclusive
++ *	bits 3-7:	swap type
+  *	bits 8-57:	swap offset
+  *	bit  58:	PTE_PROT_NONE (must be zero)
+  */
+-#define __SWP_TYPE_SHIFT	2
+-#define __SWP_TYPE_BITS		6
++#define __SWP_TYPE_SHIFT	3
++#define __SWP_TYPE_BITS		5
+ #define __SWP_OFFSET_BITS	50
+ #define __SWP_TYPE_MASK		((1 << __SWP_TYPE_BITS) - 1)
+ #define __SWP_OFFSET_SHIFT	(__SWP_TYPE_BITS + __SWP_TYPE_SHIFT)
 -- 
 2.35.1
 
