@@ -1,49 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13EE4D9996
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 11:52:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A7E4D99EA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 12:05:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHqww4pzZz30KL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 21:52:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHrCb5wYHz30NZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 22:04:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=iPh5FAtd;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHqwW1F9vz2y7M
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 21:51:54 +1100 (AEDT)
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.54])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KHqtf5yXjzfZ6h;
- Tue, 15 Mar 2022 18:50:18 +0800 (CST)
-Received: from [10.174.179.215] (10.174.179.215) by
- canpemm500007.china.huawei.com (7.192.104.62) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 15 Mar 2022 18:51:45 +0800
-Subject: Re: [PATCH -next] powerpc/eeh: Add correct inline functions
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, <ruscur@russell.cc>,
- <oohall@gmail.com>, <mpe@ellerman.id.au>, <benh@kernel.crashing.org>,
- <paulus@samba.org>, <sbobroff@linux.ibm.com>
-References: <20210331125313.24036-1-yuehaibing@huawei.com>
- <2f2cafaa-e1f3-7f75-10a5-b8edb6de26d7@csgroup.eu>
-From: YueHaibing <yuehaibing@huawei.com>
-Message-ID: <52316466-6482-f69e-8f65-4767a7dc6336@huawei.com>
-Date: Tue, 15 Mar 2022 18:51:45 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHrBy0XsDz2y7M
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 22:04:26 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=iPh5FAtd; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KHrBt2JSBz4xvg;
+ Tue, 15 Mar 2022 22:04:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1647342262;
+ bh=LxlvTOPlI5AK+PwnQwM7jyZc0uSmf3N9i0BEu9kcyYY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=iPh5FAtdHT+j0m1zHUUIVHhA222aj0CCumeztBSdnL5LtgzBy312S2hdhw5R8VQLq
+ c4Gu9Clfn5wHtOK96UmS6jd8b7CW7FTOfE1bXYzm8wXwIEHwdPws82aOBSs487giXq
+ bFRi0x8zcUG2gEKIDqyqG4tTnznezFi0oDmD7etPWxU0GPDvVs8c7zbF+sIhpILqE0
+ Uwyg9VApkVABZ+4hXhkJjXwOOz7EYyUdIQ1HYKcRKuEjX88cHc05DUEfo1qRIbjBwi
+ l8Qsc5RlXenv3OAziscApY6BXN0zIEFmPPAli0DdM3YMJSGXqwz8W0OwSFjdIIT6c7
+ YyEOPcm0AX7Ug==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, Dan Williams
+ <dan.j.williams@intel.com>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: linux-next: manual merge of the nvdimm tree with the powerpc tree
+In-Reply-To: <20220315191538.323eefbb@canb.auug.org.au>
+References: <20220315191538.323eefbb@canb.auug.org.au>
+Date: Tue, 15 Mar 2022 22:04:20 +1100
+Message-ID: <874k3z4guj.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <2f2cafaa-e1f3-7f75-10a5-b8edb6de26d7@csgroup.eu>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- canpemm500007.china.huawei.com (7.192.104.62)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,50 +59,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Kajol Jain <kjain@linux.ibm.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Shivaprasad G Bhat <sbhat@linux.ibm.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022/3/15 17:42, Christophe Leroy wrote:
-> 
-> 
-> Le 31/03/2021 à 14:53, YueHaibing a écrit :
->> pseries_eeh_add_device_early()/pseries_eeh_add_device_tree_early() is
->> never used since adding, however pseries_eeh_init_edev() and
->> pseries_eeh_init_edev_recursive() need their inline versions.
->>
->> Fixes: b6eebb093cad ("powerpc/eeh: Make early EEH init pseries specific")
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> 
-> Those inline are not needed at all:
-> - pseries_eeh_init_edev_recursive() is only called from files build wich CONFIG_HOTPLUG_PCI_RPA which depends on CONFIG_PSERIES and CONFIG_EEH
-> - pseries_eeh_init_edev() is used exclusively in
-> arch/powerpc/platforms/pseries/eeh_pseries.c and should be made static.
-> 
-> Can you update your patch ?
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Hi all,
+>
+> Today's linux-next merge of the nvdimm tree got a conflict in:
+>
+>   arch/powerpc/platforms/pseries/papr_scm.c
+>
+> between commit:
+>
+>   bbbca72352bb ("powerpc/papr_scm: Implement initial support for injecting smart errors")
+>
+> from the powerpc tree and commit:
+>
+>   4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+>
+> from the nvdimm tree.
+>
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
 
-OK, will do it in v2.
-> 
-> Thanks
-> Christophe
-> 
->> ---
->>   arch/powerpc/include/asm/eeh.h | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/eeh.h b/arch/powerpc/include/asm/eeh.h
->> index b1a5bba2e0b9..0b6c2a6711d3 100644
->> --- a/arch/powerpc/include/asm/eeh.h
->> +++ b/arch/powerpc/include/asm/eeh.h
->> @@ -357,8 +357,8 @@ static inline int eeh_phb_pe_create(struct pci_controller *phb) { return 0; }
->>   void pseries_eeh_init_edev(struct pci_dn *pdn);
->>   void pseries_eeh_init_edev_recursive(struct pci_dn *pdn);
->>   #else
->> -static inline void pseries_eeh_add_device_early(struct pci_dn *pdn) { }
->> -static inline void pseries_eeh_add_device_tree_early(struct pci_dn *pdn) { }
->> +static inline void pseries_eeh_init_edev(struct pci_dn *pdn) { }
->> +static inline void pseries_eeh_init_edev_recursive(struct pci_dn *pdn) { }
->>   #endif
->>     #ifdef CONFIG_PPC64
-> .
+Thanks, resolution looks obviously correct.
+
+Dan, this seems benign to me, I don't think any further action is
+required other than mentioning it to Linus. But if you disagree let me
+know.
+
+cheers
+
+> diff --cc arch/powerpc/platforms/pseries/papr_scm.c
+> index 1238b94b3cc1,4dd513d7c029..000000000000
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@@ -121,9 -124,8 +124,11 @@@ struct papr_scm_priv 
+>   	/* length of the stat buffer as expected by phyp */
+>   	size_t stat_buffer_len;
+>   
+>  +	/* The bits which needs to be overridden */
+>  +	u64 health_bitmap_inject_mask;
+>  +
+> + 	 /* array to have event_code and stat_id mappings */
+> + 	char **nvdimm_events_map;
+>   };
+>   
+>   static int papr_scm_pmem_flush(struct nd_region *nd_region,
