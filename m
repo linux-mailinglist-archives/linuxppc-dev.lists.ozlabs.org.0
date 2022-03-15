@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D224D9D5C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 15:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161054D9D65
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 15:22:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHwb46Ds1z3c2d
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 01:22:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHwbn6Kh6z307g
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 01:22:45 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HqRRo3RU;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XWcWAp3x;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GgbZwYWH;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GgbZwYWH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
  helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=HqRRo3RU; 
+ header.s=mimecast20190719 header.b=GgbZwYWH; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=XWcWAp3x; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=GgbZwYWH; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHwX06VMlz3bTk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 01:19:28 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHwXC3Kjqz3bWw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 01:19:39 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1647353965;
+ s=mimecast20190719; t=1647353976;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=33F2qgmyketZPl05kSNPAq/J3WUAdrQWXF1ACWpI9hg=;
- b=HqRRo3RUJ1oVHhpRQIy2UapwyDFBVha71L15cwKBqwEb/83w2QiSBRq9UezFcO+07LmNQW
- T4epdzUWpZSno8yY1cHy8/aEcHtkzgczeJacF+bv5w+v6XYOGt9xWJ+tdiTJY1IA8Q/ltC
- uAWBlMJNyyA6+3K/U6/XD0q13VCvYl8=
+ bh=g7ZGP9EEuZxPkkXsXc+GSR+h+oyuOSOhywhi58TOA4w=;
+ b=GgbZwYWHvndhw45jynBA4A9/p9P7VG0NNZs9ZPdLd+4Nb/df5TVCIYiiWHiO9P8scST5kL
+ HRmq6Y0m8ts5Wxd6CMy9kZlpMLUMp/NIM5p5iSdX48/62GuVV7gR/n5q0xR10zWZqNi80x
+ rbudKH8r9P91yzNb+M+i6hmjrApeIyk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1647353966;
+ s=mimecast20190719; t=1647353976;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=33F2qgmyketZPl05kSNPAq/J3WUAdrQWXF1ACWpI9hg=;
- b=XWcWAp3x6xvvY7ngoCCxfi9KLM3+bTkKwAMDJiJRDwgaqyC9bIWLqxxm4EJyUc8IECB6Q0
- zKLixwyx9UbojdL/FAS9MtjH79slSBRMaAMaA+fukbtu2RKR3DqXPm/S//w0Q/9ZlGFnx7
- 6Xk2scQ1sfQBW0o1hQmVEpO8hwxxsrk=
+ bh=g7ZGP9EEuZxPkkXsXc+GSR+h+oyuOSOhywhi58TOA4w=;
+ b=GgbZwYWHvndhw45jynBA4A9/p9P7VG0NNZs9ZPdLd+4Nb/df5TVCIYiiWHiO9P8scST5kL
+ HRmq6Y0m8ts5Wxd6CMy9kZlpMLUMp/NIM5p5iSdX48/62GuVV7gR/n5q0xR10zWZqNi80x
+ rbudKH8r9P91yzNb+M+i6hmjrApeIyk=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-457-rizRHN8TOLWEyNwbtpDe9Q-1; Tue, 15 Mar 2022 10:19:23 -0400
-X-MC-Unique: rizRHN8TOLWEyNwbtpDe9Q-1
+ us-mta-376-B9RWVMP8NJKY4473arO79A-1; Tue, 15 Mar 2022 10:19:32 -0400
+X-MC-Unique: B9RWVMP8NJKY4473arO79A-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7AE8A38008A0;
- Tue, 15 Mar 2022 14:19:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0D19E1C05EA6;
+ Tue, 15 Mar 2022 14:19:30 +0000 (UTC)
 Received: from t480s.redhat.com (unknown [10.39.194.72])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 21CBC4087D7E;
- Tue, 15 Mar 2022 14:19:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CD5B64087D7E;
+ Tue, 15 Mar 2022 14:19:21 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v1 4/7] arm64/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-Date: Tue, 15 Mar 2022 15:18:34 +0100
-Message-Id: <20220315141837.137118-5-david@redhat.com>
+Subject: [PATCH v1 5/7] s390/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+Date: Tue, 15 Mar 2022 15:18:35 +0100
+Message-Id: <20220315141837.137118-6-david@redhat.com>
 In-Reply-To: <20220315141837.137118-1-david@redhat.com>
 References: <20220315141837.137118-1-david@redhat.com>
 MIME-Version: 1.0
@@ -111,71 +111,79 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let's use one of the type bits: core-mm only supports 5, so there is no
-need to consume 6.
+Let's steal one bit from the offset. While at it, document the meaning
+of bit 62 for swap ptes.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/arm64/include/asm/pgtable-prot.h |  1 +
- arch/arm64/include/asm/pgtable.h      | 23 ++++++++++++++++++++---
- 2 files changed, 21 insertions(+), 3 deletions(-)
+ arch/s390/include/asm/pgtable.h | 37 ++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
-index b1e1b74d993c..62e0ebeed720 100644
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -14,6 +14,7 @@
-  * Software defined PTE bits definition.
-  */
- #define PTE_WRITE		(PTE_DBM)		 /* same as DBM (51) */
-+#define PTE_SWP_EXCLUSIVE	(_AT(pteval_t, 1) << 2)	 /* only for swp ptes */
- #define PTE_DIRTY		(_AT(pteval_t, 1) << 55)
- #define PTE_SPECIAL		(_AT(pteval_t, 1) << 56)
- #define PTE_DEVMAP		(_AT(pteval_t, 1) << 57)
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 94e147e5456c..ad9b221963d4 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -402,6 +402,22 @@ static inline pgprot_t mk_pmd_sect_prot(pgprot_t prot)
- 	return __pgprot((pgprot_val(prot) & ~PMD_TABLE_BIT) | PMD_TYPE_SECT);
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 008a6c856fa4..c182212a2b44 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -181,6 +181,8 @@ static inline int is_module_addr(void *addr)
+ #define _PAGE_SOFT_DIRTY 0x000
+ #endif
+ 
++#define _PAGE_SWP_EXCLUSIVE _PAGE_LARGE	/* SW pte exclusive swap bit */
++
+ /* Set of bits not changed in pte_modify */
+ #define _PAGE_CHG_MASK		(PAGE_MASK | _PAGE_SPECIAL | _PAGE_DIRTY | \
+ 				 _PAGE_YOUNG | _PAGE_SOFT_DIRTY)
+@@ -796,6 +798,24 @@ static inline int pmd_protnone(pmd_t pmd)
  }
+ #endif
  
 +#define __HAVE_ARCH_PTE_SWP_EXCLUSIVE
 +static inline pte_t pte_swp_mkexclusive(pte_t pte)
 +{
-+	return set_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
++	pte_val(pte) |= _PAGE_SWP_EXCLUSIVE;
++	return pte;
 +}
 +
 +static inline int pte_swp_exclusive(pte_t pte)
 +{
-+	return pte_val(pte) & PTE_SWP_EXCLUSIVE;
++	return pte_val(pte) & _PAGE_SWP_EXCLUSIVE;
 +}
 +
 +static inline pte_t pte_swp_clear_exclusive(pte_t pte)
 +{
-+	return clear_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
++	pte_val(pte) &= ~_PAGE_SWP_EXCLUSIVE;
++	return pte;
 +}
 +
- #ifdef CONFIG_NUMA_BALANCING
- /*
-  * See the comment in include/linux/pgtable.h
-@@ -909,12 +925,13 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
- /*
-  * Encode and decode a swap entry:
-  *	bits 0-1:	present (must be zero)
-- *	bits 2-7:	swap type
-+ *	bits 2:		remember PG_anon_exclusive
-+ *	bits 3-7:	swap type
-  *	bits 8-57:	swap offset
-  *	bit  58:	PTE_PROT_NONE (must be zero)
+ static inline int pte_soft_dirty(pte_t pte)
+ {
+ 	return pte_val(pte) & _PAGE_SOFT_DIRTY;
+@@ -1675,16 +1695,19 @@ static inline int has_transparent_hugepage(void)
+  * information in the lowcore.
+  * Bits 54 and 63 are used to indicate the page type.
+  * A swap pte is indicated by bit pattern (pte & 0x201) == 0x200
+- * This leaves the bits 0-51 and bits 56-62 to store type and offset.
+- * We use the 5 bits from 57-61 for the type and the 52 bits from 0-51
++ * This leaves the bits 0-50 and bits 56-61 to store type and offset.
++ * We use the 5 bits from 57-61 for the type and the 51 bits from 0-50
+  * for the offset.
+- * |			  offset			|01100|type |00|
+- * |0000000000111111111122222222223333333333444444444455|55555|55566|66|
+- * |0123456789012345678901234567890123456789012345678901|23456|78901|23|
++ * |			  offset		       |E|01100|type |S0|
++ * |000000000011111111112222222222333333333344444444445|5|55555|55566|66|
++ * |012345678901234567890123456789012345678901234567890|1|23456|78901|23|
++ *
++ * S (bit 62) is used for softdirty tracking.
++ * E (bit 51) is used to remember PG_anon_exclusive.
   */
--#define __SWP_TYPE_SHIFT	2
--#define __SWP_TYPE_BITS		6
-+#define __SWP_TYPE_SHIFT	3
-+#define __SWP_TYPE_BITS		5
- #define __SWP_OFFSET_BITS	50
- #define __SWP_TYPE_MASK		((1 << __SWP_TYPE_BITS) - 1)
- #define __SWP_OFFSET_SHIFT	(__SWP_TYPE_BITS + __SWP_TYPE_SHIFT)
+ 
+-#define __SWP_OFFSET_MASK	((1UL << 52) - 1)
+-#define __SWP_OFFSET_SHIFT	12
++#define __SWP_OFFSET_MASK	((1UL << 51) - 1)
++#define __SWP_OFFSET_SHIFT	13
+ #define __SWP_TYPE_MASK		((1UL << 5) - 1)
+ #define __SWP_TYPE_SHIFT	2
+ 
 -- 
 2.35.1
 
