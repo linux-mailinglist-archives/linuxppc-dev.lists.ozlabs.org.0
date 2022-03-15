@@ -2,104 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFBD4DA11D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 18:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D73B54DA125
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 18:28:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJ0hq3ZZ7z3bSy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 04:27:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJ0k35Wftz3bb8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 04:28:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BhnnyKn2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eqT/ENsE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=BhnnyKn2; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=eqT/ENsE; dkim-atps=neutral
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJ0h73Lgzz2ywn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 04:26:46 +1100 (AEDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22FGEMSn029819
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 17:26:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=j9QlhKR1SK3HwvTI18z6CNy7lb2vekjOIBcCQu7fpic=;
- b=BhnnyKn22oRFvYZylaQT4pzVeUdtcKEUvop3uP0LSM4S8mTFWOA5UiPWqEutFosunfhj
- Q7kfNcEYnmn7yNbioICwOmO3l0C4gqXsivHp6x6EPge5M+gYXIMl4kjBl8p/qCQjJl1N
- 65tXFtZ72EJDXorF0ej+98LyA91wHXknw0IZ0xLIZPVk/vNxSJ68GSxfeTRuwwjv3HHd
- MP7HoiQy2Hdcqe8up0p5wjg9DUEavVk8+79KJFmTrDkWusFvpvIJa39Ff4qxQ+tYze3k
- KCyQ/B1spslpTmcBZKu3iGZJmsHq6Y/JLYPFyQ+dmq8zr83/FAhRTZDoM8H3SMz63BWh LA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3etw7p3e8t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 17:26:44 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22FGEw3Y007435
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 17:26:43 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3etw7p3e8f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Mar 2022 17:26:43 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22FHCsqQ025482;
- Tue, 15 Mar 2022 17:26:42 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3et95wtff2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 15 Mar 2022 17:26:42 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 22FHQd2R49611054
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 15 Mar 2022 17:26:39 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AFCCCAE051;
- Tue, 15 Mar 2022 17:26:39 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D381AE045;
- Tue, 15 Mar 2022 17:26:39 +0000 (GMT)
-Received: from [9.101.4.33] (unknown [9.101.4.33])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 15 Mar 2022 17:26:39 +0000 (GMT)
-Message-ID: <27c5a9a1-35f7-613a-f67f-70fa7e7d1b07@linux.ibm.com>
-Date: Tue, 15 Mar 2022 18:26:39 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJ0jL5nkgz2xXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 04:27:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1647365271; x=1678901271;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=ziFZXhnT03uuTOlbqC0mwUAOAr35MoEzqvS9Lt46bRY=;
+ b=eqT/ENsE5cBjxKhYyiG0gwvmJD/AN7zNbL8PRWDL7B/H83LYyZYauYFm
+ uNgCJUDUrx9fP913P4tjDCJVeusUuiS9T++E+ZNZYvgqkj25bpMvxR66m
+ a+w/dXsIYHnEsio7A+uoHeD6IetSrdOiE3pBSP/7GxZO9hF/VVTfkoA7b
+ eAMrMMcxZ1TtKUG3MKxo3n9Na5HPLZpMGuucWTnQl353R/cfRVxFFFT3y
+ 8FF5D9ANjIWWf/QsW3Ghi7nGdxWrs4oi8r+OOid7y5FE+/80wDtFcbWEK
+ Ru8z+zzy+EKYT6ufvwUA1TSnDeVq41y+uqK6DraM6bZtRV+3s8Snv52xl Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10286"; a="256095974"
+X-IronPort-AV: E=Sophos;i="5.90,184,1643702400"; d="scan'208";a="256095974"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Mar 2022 10:26:47 -0700
+X-IronPort-AV: E=Sophos;i="5.90,184,1643702400"; d="scan'208";a="512690836"
+Received: from rariley-mobl.amr.corp.intel.com (HELO [10.209.120.225])
+ ([10.209.120.225])
+ by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Mar 2022 10:26:46 -0700
+Message-ID: <2d4e8811-dce6-c891-e92d-e3746434685e@linux.intel.com>
+Date: Tue, 15 Mar 2022 10:26:46 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.7.0
-Subject: Re: [PATCH 14/14] powerpc/rtas: Consolidate and improve checking for
- rtas callers
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.5.0
+Subject: Re: [PATCH v2] PCI/AER: Handle Multi UnCorrectable/Correctable errors
+ properly
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20220308135047.478297-1-npiggin@gmail.com>
- <20220308135047.478297-15-npiggin@gmail.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <20220308135047.478297-15-npiggin@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Eric Badger <ebadger@purestorage.com>
+References: <20220315050842.120063-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+ <20220315171425.GA1521135@ebps>
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20220315171425.GA1521135@ebps>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: x3cN2-fZaDZ9tGmJ3dE0AbhLbpKr0gXJ
-X-Proofpoint-GUID: 9D4G-31pVAZrLoa0KXZC1MX8ZGV3R2mM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-15_08,2022-03-15_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 malwarescore=0 mlxlogscore=781 suspectscore=0
- phishscore=0 impostorscore=0 spamscore=0 bulkscore=0 clxscore=1015
- adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203150104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,74 +72,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Oliver OHalloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08/03/2022, 14:50:47, Nicholas Piggin wrote:
-> Add range checking from the rtas syscall, and other error checks
-> and warnings to kernel callers, so problems can be found and
-> fixed.
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/kernel/rtas.c | 23 +++++++++++++++++------
->  1 file changed, 17 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index adf4892aeecd..7f8a3fd685f9 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -428,6 +428,23 @@ static int notrace va_raw_rtas_call(struct rtas_args *args, int token,
->  {
->  	int i;
->  
-> +	if (!irqs_disabled()) {
-> +		WARN_ON_ONCE(1);
-> +		return -1;
-> +	}
-> +
-> +	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE) {
-> +		WARN_ON_ONCE(1);
-> +		return -1;
-> +	}
-> +
-> +	if (nargs >= ARRAY_SIZE(args->args)
-> +	    || nret > ARRAY_SIZE(args->args)
-> +	    || nargs + nret > ARRAY_SIZE(args->args)) {
-> +		WARN_ON_ONCE(1);
-> +		return -1;
-> +	}
-
-These 3 tests are making the function returning -1, which is previously
-only returned in the case the call cannot be achieved because of a hardware
-error (as stated in rtas_call()).
-
-Should a dedicated error code been returned here?
 
 
-> +
->  	args->token = cpu_to_be32(token);
->  	args->nargs = cpu_to_be32(nargs);
->  	args->nret  = cpu_to_be32(nret);
-> @@ -476,9 +493,6 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
->  	char *buff_copy = NULL;
->  	int ret;
->  
-> -	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
-> -		return -1;
-> -
->  	if ((mfmsr() & (MSR_IR|MSR_DR)) != (MSR_IR|MSR_DR)) {
->  		WARN_ON_ONCE(1);
->  		return -1;
-> @@ -955,9 +969,6 @@ int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
->  	unsigned long flags;
->  	int ret;
->  
-> -	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
-> -		return -1;
-> -
->  	local_irq_save(flags);
->  	preempt_disable();
->  
+On 3/15/22 10:14 AM, Eric Badger wrote:
+>>   # Prep injection data for a correctable error.
+>>   $ cd /sys/kernel/debug/apei/einj
+>>   $ echo 0x00000040 > error_type
+>>   $ echo 0x4 > flags
+>>   $ echo 0x891000 > param4
+>>
+>>   # Root Error Status is initially clear
+>>   $ setpci -s <Dev ID> ECAP0001+0x30.w
+>>   0000
+>>
+>>   # Inject one error
+>>   $ echo 1 > error_inject
+>>
+>>   # Interrupt received
+>>   pcieport <Dev ID>: AER: Root Error Status 0001
+>>
+>>   # Inject another error (within 5 seconds)
+>>   $ echo 1 > error_inject
+>>
+>>   # No interrupt received, but "multiple ERR_COR" is now set
+>>   $ setpci -s <Dev ID> ECAP0001+0x30.w
+>>   0003
+>>
+>>   # Wait for a while, then clear ERR_COR. A new interrupt immediately
+>>     fires.
+>>   $ setpci -s <Dev ID> ECAP0001+0x30.w=0x1
+>>   pcieport <Dev ID>: AER: Root Error Status 0002
+>>
+>> Currently, the above issue has been only reproduced in the ICL server
+>> platform.
+>>
+>> [Eric: proposed reproducing steps]
+> Hmm, this differs from the procedure I described on v1, and I don't
+> think will work as described here.
 
+I have attempted to modify the steps to reproduce it without returning
+IRQ_NONE for all cases (which will break the functionality). But I
+think I did not correct the last few steps.
+
+How about replacing the last 3 steps with following?
+
+  # Inject another error (within 5 seconds)
+  $ echo 1 > error_inject
+
+  # You will get a new IRQ with only multiple ERR_COR bit set
+  pcieport <Dev ID>: AER: Root Error Status 0002
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
