@@ -2,54 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1633E4D9274
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 03:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132CA4D9394
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 06:10:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KHcKm6NWCz3bXP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 13:09:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KHhLp43dPz3bXL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Mar 2022 16:10:42 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Txt8hjlm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kfUyLqyX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KHcK85lgjz2xX8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 13:09:00 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=Txt8hjlm; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KHcK625BJz4xvW;
- Tue, 15 Mar 2022 13:08:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
- s=201702; t=1647310140;
- bh=DQLbu8ZK6+3euQ9kGSVBdD8oOAoWN4NLJ3/SuRxqoj4=;
- h=Date:From:To:Cc:Subject:From;
- b=Txt8hjlmsANTzVoejfKFDXpfCgSs+zImJFgReI1hIcIQVwIWhVYUUy7fkG2v2FlzU
- 9V1fZJg3UZPRzjkTi1VbLd8jpkcEQoqt+C0Pdizq+uFznMFKiDft02OB/BPJXPUik6
- WcCB4Nl10Z1tsAzJ/KvT1h8CPF2Fiq67+u5vk0cDKk/QVuNcshxdenMM67DRfzYPjB
- PPcBcLNYbUc8lvVUAU3Ot+T9wNneRCQludKuyYNKKMlGErWj8P4bvreCQekS+4XpdB
- lGxmYyll9zmQUt+dXDpB5XT6gNhKRhOFID3n43Zd7cytGKEixajNbiOqkyVH9L0SGa
- eRol+s+mxqUtw==
-Date: Tue, 15 Mar 2022 13:08:57 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
- Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>
-Subject: linux-next: manual merge of the tip tree with the powerpc tree
-Message-ID: <20220315130857.4610e761@canb.auug.org.au>
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=kfUyLqyX; dkim-atps=neutral
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KHhL723FYz2yhC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 16:10:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1647321007; x=1678857007;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=oJuv0Z8dvZxqgVY1+X5D78/R17rRg7H8XXZJ/5nQQ3A=;
+ b=kfUyLqyXb/iqq/NKIIACtja1eooU+mxcFSxo74cIN8+UHlPVNJ3arVcp
+ IVTEH1W7q9N2bgMBo3PVmzuz5sxDhjO9c06dMta9I+uPrHHH19WG8b8Oc
+ NEUbyZ4g+qE+CsFBB40uGCcUbsR8HMPPb6FiiqEVzvCVyf/VJ59MEuYUK
+ sKatDAVKq3P4pvZ+QroDn7GuQykusooYaHECNmmLb086o9UPgL2fUQTeT
+ JphotTitPSSXeVubSk4dT0umngnqzfGHUobluW/VJlPhhfyJ/rvbGc4zP
+ Y4eU3YAlG7byU+NYVXIifdtf7BO6foyJxuNAL2deM6OcoLeON+4E4fre7 w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10286"; a="243665578"
+X-IronPort-AV: E=Sophos;i="5.90,182,1643702400"; d="scan'208";a="243665578"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2022 22:09:02 -0700
+X-IronPort-AV: E=Sophos;i="5.90,182,1643702400"; d="scan'208";a="580384681"
+Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2022 22:08:55 -0700
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Russell Currey <ruscur@russell.cc>,
+ Oliver OHalloran <oohall@gmail.com>
+Subject: [PATCH v2] PCI/AER: Handle Multi UnCorrectable/Correctable errors
+ properly
+Date: Tue, 15 Mar 2022 05:08:42 +0000
+Message-Id: <20220315050842.120063-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/R8CDU9LS=P+IHhBLtfBWjSU";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,88 +66,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: linux-pci@vger.kernel.org,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/R8CDU9LS=P+IHhBLtfBWjSU
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Currently the aer_irq() handler returns IRQ_NONE for cases without bits
+PCI_ERR_ROOT_UNCOR_RCV or PCI_ERR_ROOT_COR_RCV are set. But this
+assumption is incorrect.
 
-Hi all,
+Consider a scenario where aer_irq() is triggered for a correctable
+error, and while we process the error and before we clear the error
+status in "Root Error Status" register, if the same kind of error
+is triggered again, since aer_irq() only clears events it saw, the
+multi-bit error is left in tact. This will cause the interrupt to fire
+again, resulting in entering aer_irq() with just the multi-bit error
+logged in the "Root Error Status" register.
 
-Today's linux-next merge of the tip tree got a conflict in:
+Repeated AER recovery test has revealed this condition does happen
+and this prevents any new interrupt from being triggered. Allow to
+process interrupt even if only multi-correctable (BIT 1) or
+multi-uncorrectable bit (BIT 3) is set.
 
-  arch/powerpc/include/asm/livepatch.h
+This error can be reproduced by making following changes to the
+aer_irq() function and by executing the given test commands.
 
-between commit:
+ static irqreturn_t aer_irq(int irq, void *context)
+         struct aer_err_source e_src = {};
 
-  a4520b252765 ("powerpc/ftrace: Add support for livepatch to PPC32")
+         pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS,
+				&e_src.status);
+ +       pci_dbg(pdev->port, "Root Error Status: %04x\n",
+ +		e_src.status);
+         if (!(e_src.status & AER_ERR_STATUS_MASK))
+                 return IRQ_NONE;
 
-from the powerpc tree and commit:
+ +       mdelay(5000);
 
-  a557abfd1a16 ("x86/livepatch: Validate __fentry__ location")
+ # Prep injection data for a correctable error.
+ $ cd /sys/kernel/debug/apei/einj
+ $ echo 0x00000040 > error_type
+ $ echo 0x4 > flags
+ $ echo 0x891000 > param4
 
-from the tip tree.
+ # Root Error Status is initially clear
+ $ setpci -s <Dev ID> ECAP0001+0x30.w
+ 0000
 
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
+ # Inject one error
+ $ echo 1 > error_inject
 
---=20
-Cheers,
-Stephen Rothwell
+ # Interrupt received
+ pcieport <Dev ID>: AER: Root Error Status 0001
 
-diff --cc arch/powerpc/include/asm/livepatch.h
-index 6f10de6af6e3,7b9dcd51af32..000000000000
---- a/arch/powerpc/include/asm/livepatch.h
-+++ b/arch/powerpc/include/asm/livepatch.h
-@@@ -14,21 -14,11 +14,11 @@@
-  #ifdef CONFIG_LIVEPATCH
-  static inline void klp_arch_set_pc(struct ftrace_regs *fregs, unsigned lo=
-ng ip)
-  {
- -	struct pt_regs *regs =3D ftrace_get_regs(fregs);
- -
- -	regs_set_return_ip(regs, ip);
- +	ftrace_instruction_pointer_set(fregs, ip);
-  }
--=20
-- #define klp_get_ftrace_location klp_get_ftrace_location
-- static inline unsigned long klp_get_ftrace_location(unsigned long faddr)
-- {
-- 	/*
-- 	 * Live patch works on PPC32 and only with -mprofile-kernel on PPC64. In
-- 	 * both cases, the ftrace location is always within the first 16 bytes.
-- 	 */
-- 	return ftrace_location_range(faddr, faddr + 16);
-- }
- +#endif /* CONFIG_LIVEPATCH */
- =20
- +#ifdef CONFIG_LIVEPATCH_64
-  static inline void klp_init_thread_info(struct task_struct *p)
-  {
-  	/* + 1 to account for STACK_END_MAGIC */
+ # Inject another error (within 5 seconds)
+ $ echo 1 > error_inject
 
---Sig_/R8CDU9LS=P+IHhBLtfBWjSU
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+ # No interrupt received, but "multiple ERR_COR" is now set
+ $ setpci -s <Dev ID> ECAP0001+0x30.w
+ 0003
 
------BEGIN PGP SIGNATURE-----
+ # Wait for a while, then clear ERR_COR. A new interrupt immediately
+   fires.
+ $ setpci -s <Dev ID> ECAP0001+0x30.w=0x1
+ pcieport <Dev ID>: AER: Root Error Status 0002
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmIv9TkACgkQAVBC80lX
-0GxapwgAoQr9a8aKDh1Z7ZcA4c3PuxMeuzY/xdE0XmKD0FQPpsro5Ml2UBIBj+wZ
-1M66IkBYjOJuO5bxddhbmJoGD4gq3HecnOh3XCLWgWAmlc4D+NS4/AUUf7Fru6A4
-A9g8YxADFbrUTFZt1/KqCiPHJ+DtTrW1I2wxLSK2HGUTfAEdadkfW/ak1Xiih/LM
-EOCdHXOsilZdZZBQvWaHJa2VqAATJ6o5J8AsG/pgWf2IT1moKyxNhqcGYNuRnHeM
-IDvdf9qpor50KuGfeoCgVnnEL5MspoXd6Nu0uiHJcEfZbrmjhnHZmsXsvDFkzbYP
-LDegFiLVyJYGDm6Z39ysWI/T3UATQw==
-=rRU0
------END PGP SIGNATURE-----
+Currently, the above issue has been only reproduced in the ICL server
+platform.
 
---Sig_/R8CDU9LS=P+IHhBLtfBWjSU--
+[Eric: proposed reproducing steps]
+Fixes: 4696b828ca37 ("PCI/AER: Hoist aerdrv.c, aer_inject.c up to drivers/pci/pcie/")
+Reported-by: Eric Badger <ebadger@purestorage.com>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+---
+
+Changes since v1:
+ * Added Fixes tag.
+ * Included reproducing steps proposed by Eric.
+
+ drivers/pci/pcie/aer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9fa1f97e5b27..7952e5efd6cf 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -101,6 +101,11 @@ struct aer_stats {
+ #define ERR_COR_ID(d)			(d & 0xffff)
+ #define ERR_UNCOR_ID(d)			(d >> 16)
+ 
++#define AER_ERR_STATUS_MASK		(PCI_ERR_ROOT_UNCOR_RCV |	\
++					PCI_ERR_ROOT_COR_RCV |		\
++					PCI_ERR_ROOT_MULTI_COR_RCV |	\
++					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
++
+ static int pcie_aer_disable;
+ static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
+ 
+@@ -1196,7 +1201,7 @@ static irqreturn_t aer_irq(int irq, void *context)
+ 	struct aer_err_source e_src = {};
+ 
+ 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS, &e_src.status);
+-	if (!(e_src.status & (PCI_ERR_ROOT_UNCOR_RCV|PCI_ERR_ROOT_COR_RCV)))
++	if (!(e_src.status & AER_ERR_STATUS_MASK))
+ 		return IRQ_NONE;
+ 
+ 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_ERR_SRC, &e_src.id);
+-- 
+2.25.1
+
