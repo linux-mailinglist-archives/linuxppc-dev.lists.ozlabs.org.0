@@ -2,55 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C383B4DA729
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 02:01:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C474DA767
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 02:36:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJBmL4nzLz3bSy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 12:01:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJCXp5Fxhz3bTm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 12:36:10 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OVYxdnUC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qF/iwnuy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJBlg6sqsz2xBV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 12:00:31 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=OVYxdnUC; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=qF/iwnuy; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KJBlb3Dljz4xLQ;
- Wed, 16 Mar 2022 12:00:27 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1647392427;
- bh=yCdn2OfBru67nMJKT3NwGQ4LYVJb2NsO9wYeAEVcL6I=;
- h=From:To:Subject:In-Reply-To:References:Date:From;
- b=OVYxdnUCchEFKwcLWPMLR9vUvvgIf0Xs5xi175FSx0qpei3cSLBZEFtW4XpANmC40
- JMydKbe3A+ib1SJRoch5EaTFInUUlTcEOZ8rftFL7bSA/ODXGYtw5w1HbP+paA4+KU
- 8wDoWHHLreo8jYa8+tIkb2aLTXJ71ev7szYz2TzCb4IAauJHoJ9r+ySt+lzcl7Y47N
- AIOWFAtN4XeYGIGNZcjd99vNDjPCcX2IF5VMDpcq/Ikp3OL7XlE33Cxsq63w9gVVR2
- yyOBN1uX/Xz7Od7EXledguG6j4K3DaVScLbxXq9w9rfBAYRtf9nkOFwzgxYptBzGA4
- cXTBelK1vLpsw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michael Neuling <mikey@neuling.org>, Nicholas Piggin
- <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/tm: Fix more userspace r13 corruption
-In-Reply-To: <b7ddaf945ed35c0e072acc41b7bbc6d8c4c5d69f.camel@neuling.org>
-References: <20220311024733.48926-1-npiggin@gmail.com>
- <b7ddaf945ed35c0e072acc41b7bbc6d8c4c5d69f.camel@neuling.org>
-Date: Wed, 16 Mar 2022 12:00:23 +1100
-Message-ID: <871qz24spk.fsf@mpe.ellerman.id.au>
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJCX773ZSz2xTd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 12:35:35 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id B1663B819AB;
+ Wed, 16 Mar 2022 01:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A87C340E8;
+ Wed, 16 Mar 2022 01:35:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1647394530;
+ bh=7bPFgv/Hea8SdmXk6LIC9Qumvtn9wm7VULIScV4xUx0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=qF/iwnuyXKqMAg3nnnFEum+5eckxU7SLAiBJA1+oNJ9RrY3TgiN2NqULuXKjDTVIY
+ 7sH07m1T09s2yrHQVBDq9nIUyMxVLDst6JmA1GY3MZGfzMHT0OVtywgG8UZrESV7U5
+ Ow5hlUWDq505mYqTQBRaNxqEEVm6bKPdxNC3LWt0Z/oRumBRk4/OmXwoiYHFVW+kAI
+ Med79C33aNF7tA8gA8ZZlUQI+CxuhOlwRHwJBj4VW8MDSbQ3gL739M6N5EourlGAri
+ xINbkOX7draJHq+bfdPkSwF8iNHGbNlC9+MobdhF+ACVUiyerTDOd3mEHkCj0/X4dG
+ DZ6fBNjMIAM2Q==
+Date: Tue, 15 Mar 2022 18:35:29 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Paul Menzel <pmenzel@molgen.mpg.de>, Michal Kubecek <mkubecek@suse.cz>
+Subject: Re: bnx2x: ppc64le: Unable to set message level greater than 0x7fff
+Message-ID: <20220315183529.255f2795@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
+In-Reply-To: <0497a560-8c7b-7cf8-84ee-bde1470ae360@molgen.mpg.de>
+References: <0497a560-8c7b-7cf8-84ee-bde1470ae360@molgen.mpg.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,54 +63,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Ariel Elior <aelior@marvell.com>, Sudarsana Kalluru <skalluru@marvell.com>,
+ Manish Chopra <manishc@marvell.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Neuling <mikey@neuling.org> writes:
-> On Fri, 2022-03-11 at 12:47 +1000, Nicholas Piggin wrote:
->> Commit cf13435b730a ("powerpc/tm: Fix userspace r13 corruption") fixes
->> a problem in treclaim where a SLB miss can occur on the
->> thread_struct->ckpt_regs while SCRATCH0 is live with the saved user r13
->> value, clobbering it with the kernel r13 and ultimately resulting in
->> kernel r13 being stored in ckpt_regs.
->>=20
->> There is an equivalent problem in trechkpt where the user r13 value is
->> loaded into r13 from chkpt_regs to be recheckpointed, but a SLB miss
->> could occur on ckpt_regs accesses after that, which will result in r13
->> being clobbered with a kernel value and that will get recheckpointed and
->> then restored to user registers.
->>=20
->> The same memory page is accessed right before this critical window where
->> a SLB miss could cause corruption, so hitting the bug requires the SLB
->> entry be removed within a small window of instructions, which is possible
->> if a SLB related MCE hits there. PAPR also permits the hypervisor to
->> discard this SLB entry (because slb_shadow->persistent is only set to
->> SLB_NUM_BOLTED) although it's not known whether any implementations would
->> do this (KVM does not). So this is an extremely unlikely bug, only found
->> by inspection.
->>=20
->> Fix this by also storing user r13 in a temporary location on the kernel
->> stack and don't chane the r13 register from kernel r13 until the RI=3D0
->> critical section that does not fault.
->
-> s/chane/change/
+On Tue, 15 Mar 2022 22:58:57 +0100 Paul Menzel wrote:
+> On the POWER8 server IBM S822LC (ppc64le), I am unable to set the 
+> message level for the network device to 0x0100000 but it fails.
+> 
+>      $ sudo ethtool -s enP1p1s0f2 msglvl 0x0100000
+>      netlink error: cannot modify bits past kernel bitset size (offset 56)
+>      netlink error: Invalid argument
+> 
+> Below is more information. 0x7fff is the largest value I am able to set.
+> 
+> ```
+> $ sudo ethtool -i enP1p1s0f2
+> driver: bnx2x
+> version: 5.17.0-rc7+
+> firmware-version: bc 7.10.4
+> expansion-rom-version:
+> bus-info: 0001:01:00.2
+> supports-statistics: yes
+> supports-test: yes
+> supports-eeprom-access: yes
+> supports-register-dump: yes
+> supports-priv-flags: yes
+> $ sudo ethtool -s enP1p1s0f2 msglvl 0x7fff
+> $ sudo ethtool enP1p1s0f2
+> Settings for enP1p1s0f2:
+>          Supported ports: [ TP ]
+>          Supported link modes:   10baseT/Half 10baseT/Full
+>                                  100baseT/Half 100baseT/Full
+>                                  1000baseT/Full
+>          Supported pause frame use: Symmetric Receive-only
+>          Supports auto-negotiation: Yes
+>          Supported FEC modes: Not reported
+>          Advertised link modes:  10baseT/Half 10baseT/Full
+>                                  100baseT/Half 100baseT/Full
+>                                  1000baseT/Full
+>          Advertised pause frame use: Symmetric Receive-only
+>          Advertised auto-negotiation: Yes
+>          Advertised FEC modes: Not reported
+>          Speed: Unknown!
+>          Duplex: Unknown! (255)
+>          Auto-negotiation: on
+>          Port: Twisted Pair
+>          PHYAD: 17
+>          Transceiver: internal
+>          MDI-X: Unknown
+>          Supports Wake-on: g
+>          Wake-on: d
+>          Current message level: 0x00007fff (32767)
+>                                 drv probe link timer ifdown ifup rx_err 
+> tx_err tx_queued intr tx_done rx_status pktdata hw wol
+>          Link detected: no
+> $ sudo ethtool -s enP1p1s0f2 msglvl 0x8000
+> netlink error: cannot modify bits past kernel bitset size (offset 56)
+> netlink error: Invalid argument
+> ```
 
-Fixed.
+The new ethtool-over-netlink API limits the msg levels to the ones
+officially defined by the kernel (NETIF_MSG_CLASS_COUNT).
 
->> [ The SCRATCH0 change is not strictly part of the fix, it's only used in
->> =C2=A0 the RI=3D0 section so it does not have the same problem as the pr=
-evious
->> =C2=A0 SCRATCH0 bug. ]
->>=20
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->
-> This needs to be marked for stable also. Other than that:
-
-I added:
-
-Fixes: 98ae22e15b43 ("powerpc: Add helper functions for transactional memor=
-y context switching")
-Cc: stable@vger.kernel.org # v3.9+
-
-cheers
+CC: Michal
