@@ -1,61 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492F24DB7D8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 19:18:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CD84DB7E8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 19:27:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJdnP1Kbkz30Gj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 05:18:33 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qVEYGKYG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJdzy3r19z3bVq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 05:27:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=qVEYGKYG; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org;
+ receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJdmn4tr1z306h
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Mar 2022 05:18:01 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJdzT5gW4z308G
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Mar 2022 05:27:17 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id E5267B81C85;
- Wed, 16 Mar 2022 18:17:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EE3C340E9;
- Wed, 16 Mar 2022 18:17:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1647454676;
- bh=ty9fvidTblGxeLPSwUlqHqYfuHutWabBH5Zz8wkNXLw=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=qVEYGKYGGO4BM45uQ9udLJ8IPF7bPv56c0a+MYMQIBujOuB1YObzev6L/4CPhIeb9
- DArNEKl94nlSAvom7vVJsntVJTxguxyReefSjRCb9IlCOkHwzFJpE3vBIlXcYuNSGV
- kMJB7nAdSFwauBIX3rC6sA+opf8vt3WIG2O8uBQefJRTNICExBfzD2iWPrDbo71qCM
- 0rqZndnIyT/WEL1lAchK2OBYR1en4OeA/E0UAlU1VK70RxI21Xuq4XZBy3u5a/Q5LS
- m45Z3kAEEvMQmd++h1iLqkEhZHbl/5h/aqBtL91NTl202fRszYj+wkhC2OC8vR/Qi7
- 9nKZeSRnfagPA==
-Date: Wed, 16 Mar 2022 11:17:54 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Manish Chopra <manishc@marvell.com>
-Subject: Re: [EXT] Re: bnx2x: ppc64le: Unable to set message level greater
- than 0x7fff
-Message-ID: <20220316111754.5316bfb5@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <BY3PR18MB4612AD5E7F7D59233990A21DAB119@BY3PR18MB4612.namprd18.prod.outlook.com>
-References: <0497a560-8c7b-7cf8-84ee-bde1470ae360@molgen.mpg.de>
- <20220315183529.255f2795@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
- <db796473-69cf-122e-ec40-de62659517b0@molgen.mpg.de>
- <ade0ed87-be4f-e3c7-5e01-4bfdb78fae07@molgen.mpg.de>
- <BY3PR18MB4612AD5E7F7D59233990A21DAB119@BY3PR18MB4612.namprd18.prod.outlook.com>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B30B961889;
+ Wed, 16 Mar 2022 18:27:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1B8C340EC;
+ Wed, 16 Mar 2022 18:27:05 +0000 (UTC)
+Date: Wed, 16 Mar 2022 18:27:01 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v1 4/7] arm64/pgtable: support
+ __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+Message-ID: <YjIr9f9qaz4xITVd@arm.com>
+References: <20220315141837.137118-1-david@redhat.com>
+ <20220315141837.137118-5-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220315141837.137118-5-david@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,24 +49,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Kubecek <mkubecek@suse.cz>, Paul Menzel <pmenzel@molgen.mpg.de>,
- Ariel Elior <aelior@marvell.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "it+netdev@molgen.mpg.de" <it+netdev@molgen.mpg.de>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Sudarsana Reddy Kalluru <skalluru@marvell.com>
+Cc: x86@kernel.org, Jan Kara <jack@suse.cz>, Yang Shi <shy828301@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Donald Dutile <ddutile@redhat.com>, Liang Zhang <zhangliang5@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Paul Mackerras <paulus@samba.org>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ Jason Gunthorpe <jgg@nvidia.com>, David Rientjes <rientjes@google.com>,
+ Pedro Gomes <pedrodemargomes@gmail.com>, Jann Horn <jannh@google.com>,
+ John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Shakeel Butt <shakeelb@google.com>, Oleg Nesterov <oleg@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Oded Gabbay <oded.gabbay@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Nadav Amit <namit@vmware.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 16 Mar 2022 11:49:39 +0000 Manish Chopra wrote:
-> As ethtool over netlink has some limitations of the size,
-> I believe you can configure ethtool with "--disable-netlink" and set those message levels fine
+On Tue, Mar 15, 2022 at 03:18:34PM +0100, David Hildenbrand wrote:
+> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
+> index b1e1b74d993c..62e0ebeed720 100644
+> --- a/arch/arm64/include/asm/pgtable-prot.h
+> +++ b/arch/arm64/include/asm/pgtable-prot.h
+> @@ -14,6 +14,7 @@
+>   * Software defined PTE bits definition.
+>   */
+>  #define PTE_WRITE		(PTE_DBM)		 /* same as DBM (51) */
+> +#define PTE_SWP_EXCLUSIVE	(_AT(pteval_t, 1) << 2)	 /* only for swp ptes */
 
-Yup, IIUC it works for Paul on a 5.17 system, that system likely has
-old ethtool user space tool which uses ioctls instead of netlink.
+I think we can use bit 1 here.
 
-What makes the netlink path somewhat non-trivial is that there is 
-an expectation that the communication can be based on names (strings)
-as well as bit positions. I think we'd need a complete parallel
-attribute to carry vendor specific bits :S
+> @@ -909,12 +925,13 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+>  /*
+>   * Encode and decode a swap entry:
+>   *	bits 0-1:	present (must be zero)
+> - *	bits 2-7:	swap type
+> + *	bits 2:		remember PG_anon_exclusive
+> + *	bits 3-7:	swap type
+>   *	bits 8-57:	swap offset
+>   *	bit  58:	PTE_PROT_NONE (must be zero)
+
+I don't remember exactly why we reserved bits 0 and 1 when, from the
+hardware perspective, it's sufficient for bit 0 to be 0 and the whole
+pte becomes invalid. We use bit 1 as the 'table' bit (when 0 at pmd
+level, it's a huge page) but we shouldn't check for this on a swap
+entry.
+
+-- 
+Catalin
