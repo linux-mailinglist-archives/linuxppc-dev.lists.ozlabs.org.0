@@ -2,56 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C474DA767
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 02:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA024DA8F7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 04:33:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJCXp5Fxhz3bTm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 12:36:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJG8522JJz30Jm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 14:33:25 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qF/iwnuy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Wm53QL7G;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::434;
+ helo=mail-pf1-x434.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=qF/iwnuy; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Wm53QL7G; dkim-atps=neutral
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJCX773ZSz2xTd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 12:35:35 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id B1663B819AB;
- Wed, 16 Mar 2022 01:35:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A87C340E8;
- Wed, 16 Mar 2022 01:35:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1647394530;
- bh=7bPFgv/Hea8SdmXk6LIC9Qumvtn9wm7VULIScV4xUx0=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=qF/iwnuyXKqMAg3nnnFEum+5eckxU7SLAiBJA1+oNJ9RrY3TgiN2NqULuXKjDTVIY
- 7sH07m1T09s2yrHQVBDq9nIUyMxVLDst6JmA1GY3MZGfzMHT0OVtywgG8UZrESV7U5
- Ow5hlUWDq505mYqTQBRaNxqEEVm6bKPdxNC3LWt0Z/oRumBRk4/OmXwoiYHFVW+kAI
- Med79C33aNF7tA8gA8ZZlUQI+CxuhOlwRHwJBj4VW8MDSbQ3gL739M6N5EourlGAri
- xINbkOX7draJHq+bfdPkSwF8iNHGbNlC9+MobdhF+ACVUiyerTDOd3mEHkCj0/X4dG
- DZ6fBNjMIAM2Q==
-Date: Tue, 15 Mar 2022 18:35:29 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Paul Menzel <pmenzel@molgen.mpg.de>, Michal Kubecek <mkubecek@suse.cz>
-Subject: Re: bnx2x: ppc64le: Unable to set message level greater than 0x7fff
-Message-ID: <20220315183529.255f2795@kicinski-fedora-pc1c0hjn.dhcp.thefacebook.com>
-In-Reply-To: <0497a560-8c7b-7cf8-84ee-bde1470ae360@molgen.mpg.de>
-References: <0497a560-8c7b-7cf8-84ee-bde1470ae360@molgen.mpg.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJG7R5PCMz2y8P
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 14:32:49 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id g19so2082334pfc.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Mar 2022 20:32:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=NhNRsu7r2HQ8JFzb+3R879whPoIjGGcDOPzwv3S/pjc=;
+ b=Wm53QL7GX8kbaknCkt4ibMCpsQvufCJ5TK8J+rrZZkE9fXL+Gw3pTknr+nFNw6js8F
+ eFXyJCvgZICwKfOBHKj0JHJW8XPQQi8szcxUATdO/gU+HHCqXmFu8aJck6B+hQJtQ4fK
+ fqcpoW2RAJ7v6/EpNODIj6lS7cmJHa658cq/ssq6z8bjJrNstG5qdzPVf6kB04MIQmgp
+ 8EWjeDEPdfN1kILbNaRMXeuuWpPYvF/g1eTlwHF6Z/XWGQb2PjDDKZ4f/wyU6Z0+ZxhH
+ t2GV2FFVMITWgQ7597iCBS2AxBSB8+xrN1svNJeb+2YtgrPl6/vdsdFHVteNiWEnprEm
+ 9e6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=NhNRsu7r2HQ8JFzb+3R879whPoIjGGcDOPzwv3S/pjc=;
+ b=jXQ1hGDbdy5MVGIOaBRYm8I9tOn9es3ruhzHR71l6pIRhrzQ263agZcxk1ZQ6AIyYm
+ rFSNzN8zj3iH70mzzb9ljSOKKh8Dn8SUVFeFzq0vRh8Hjn5KYmEVIS0PKh3Y3RIhqTNi
+ aowWCrqQrtpgkQsDcf7cGO05fF4UVEGMwN4gM/A3UzVq5IGhb6ExKqG+TAgdA4k7597U
+ YFBBRxYtMteMmA4MQ5hmGPHEOh0fmt0wecjJJlg1f4aMmtuChOGaOlhxaPDR9UYwD5dy
+ 0zuyl8/aBI+UmRynUPwbhn2zNWVVahmI7LoGA+8uT0xhmmr56MZMhqgHqCPN8HRiI1xX
+ lE3Q==
+X-Gm-Message-State: AOAM533pnB9ostL1+zFwRVyY66QnTQbehs4V+APkulLlDvXu7b2HEhnu
+ Egv/nwirfO0+nPPqiur25Ljt7lyMW4g=
+X-Google-Smtp-Source: ABdhPJzZbz+MrhFUV7PNLNE0fxaDxnmH1zlAuXSFF6nlsBM0TycS1AL5CbyBooti43BdIPqeZj6fIA==
+X-Received: by 2002:a63:8441:0:b0:380:625b:bbb5 with SMTP id
+ k62-20020a638441000000b00380625bbbb5mr26949134pgd.472.1647401566463; 
+ Tue, 15 Mar 2022 20:32:46 -0700 (PDT)
+Received: from bobo.ibm.com (110-175-148-108.static.tpgi.com.au.
+ [110.175.148.108]) by smtp.gmail.com with ESMTPSA id
+ nr22-20020a17090b241600b001bef1964ec7sm4407731pjb.21.2022.03.15.20.32.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 15 Mar 2022 20:32:46 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH] powerpc/64/interrupt: Temporarily save PPR on stack to
+ fix register corruption due to SLB miss
+Date: Wed, 16 Mar 2022 13:32:35 +1000
+Message-Id: <20220316033235.903657-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,70 +80,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Ariel Elior <aelior@marvell.com>, Sudarsana Kalluru <skalluru@marvell.com>,
- Manish Chopra <manishc@marvell.com>
+Cc: Michael Neuling <mikey@neuling.org>, Michal Suchanek <msuchanek@suse.de>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 15 Mar 2022 22:58:57 +0100 Paul Menzel wrote:
-> On the POWER8 server IBM S822LC (ppc64le), I am unable to set the 
-> message level for the network device to 0x0100000 but it fails.
-> 
->      $ sudo ethtool -s enP1p1s0f2 msglvl 0x0100000
->      netlink error: cannot modify bits past kernel bitset size (offset 56)
->      netlink error: Invalid argument
-> 
-> Below is more information. 0x7fff is the largest value I am able to set.
-> 
-> ```
-> $ sudo ethtool -i enP1p1s0f2
-> driver: bnx2x
-> version: 5.17.0-rc7+
-> firmware-version: bc 7.10.4
-> expansion-rom-version:
-> bus-info: 0001:01:00.2
-> supports-statistics: yes
-> supports-test: yes
-> supports-eeprom-access: yes
-> supports-register-dump: yes
-> supports-priv-flags: yes
-> $ sudo ethtool -s enP1p1s0f2 msglvl 0x7fff
-> $ sudo ethtool enP1p1s0f2
-> Settings for enP1p1s0f2:
->          Supported ports: [ TP ]
->          Supported link modes:   10baseT/Half 10baseT/Full
->                                  100baseT/Half 100baseT/Full
->                                  1000baseT/Full
->          Supported pause frame use: Symmetric Receive-only
->          Supports auto-negotiation: Yes
->          Supported FEC modes: Not reported
->          Advertised link modes:  10baseT/Half 10baseT/Full
->                                  100baseT/Half 100baseT/Full
->                                  1000baseT/Full
->          Advertised pause frame use: Symmetric Receive-only
->          Advertised auto-negotiation: Yes
->          Advertised FEC modes: Not reported
->          Speed: Unknown!
->          Duplex: Unknown! (255)
->          Auto-negotiation: on
->          Port: Twisted Pair
->          PHYAD: 17
->          Transceiver: internal
->          MDI-X: Unknown
->          Supports Wake-on: g
->          Wake-on: d
->          Current message level: 0x00007fff (32767)
->                                 drv probe link timer ifdown ifup rx_err 
-> tx_err tx_queued intr tx_done rx_status pktdata hw wol
->          Link detected: no
-> $ sudo ethtool -s enP1p1s0f2 msglvl 0x8000
-> netlink error: cannot modify bits past kernel bitset size (offset 56)
-> netlink error: Invalid argument
-> ```
+This is a minimal stable kernel fix for the problem solved by
+4c2de74cc869 ("powerpc/64: Interrupts save PPR on stack rather than
+thread_struct"). Instead of changing the interrupt stack frame (which
+causes a lot of churn), it moves the PPR value from the PACA save area
+to an unused slot in the stack frame temporarily, and defers saving it
+to thread_struct to later on when it is safe to take SLB misses.
 
-The new ethtool-over-netlink API limits the msg levels to the ones
-officially defined by the kernel (NETIF_MSG_CLASS_COUNT).
+Upstream kernels between 4.17-4.20 have this bug, so I propose this
+patch for 4.19 stable.
 
-CC: Michal
+Fixes: f384796c4 ("powerpc/mm: Add support for handling > 512TB address in SLB miss")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/exception-64s.h | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
+index 35fb5b11955a..f0424c6fdeca 100644
+--- a/arch/powerpc/include/asm/exception-64s.h
++++ b/arch/powerpc/include/asm/exception-64s.h
+@@ -243,10 +243,22 @@
+  * PPR save/restore macros used in exceptions_64s.S  
+  * Used for P7 or later processors
+  */
+-#define SAVE_PPR(area, ra, rb)						\
++#define SAVE_PPR(area, ra)						\
++BEGIN_FTR_SECTION_NESTED(940)						\
++	ld	ra,area+EX_PPR(r13);	/* Read PPR from paca */	\
++	std	ra,RESULT(r1);		/* Store PPR in RESULT for now */ \
++END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,940)
++
++/*
++ * This is called after we are finished accessing 'area', so we can now take
++ * SLB faults accessing the thread struct, which will use PACA_EXSLB area.
++ * This is required because the large_addr_slb handler uses EXSLB and it also
++ * uses the common exception macros including this PPR saving.
++ */
++#define MOVE_PPR_TO_THREAD(ra, rb)					\
+ BEGIN_FTR_SECTION_NESTED(940)						\
+ 	ld	ra,PACACURRENT(r13);					\
+-	ld	rb,area+EX_PPR(r13);	/* Read PPR from paca */	\
++	ld	rb,RESULT(r1);		/* Read PPR from stack */	\
+ 	std	rb,TASKTHREADPPR(ra);					\
+ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,940)
+ 
+@@ -515,9 +527,11 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+ 3:	EXCEPTION_PROLOG_COMMON_1();					   \
+ 	beq	4f;			/* if from kernel mode		*/ \
+ 	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10);				   \
+-	SAVE_PPR(area, r9, r10);					   \
++	SAVE_PPR(area, r9);						   \
+ 4:	EXCEPTION_PROLOG_COMMON_2(area)					   \
+-	EXCEPTION_PROLOG_COMMON_3(n)					   \
++	beq	5f;			/* if from kernel mode		*/ \
++	MOVE_PPR_TO_THREAD(r9, r10);					   \
++5:	EXCEPTION_PROLOG_COMMON_3(n)					   \
+ 	ACCOUNT_STOLEN_TIME
+ 
+ /* Save original regs values from save area to stack frame. */
+-- 
+2.23.0
+
