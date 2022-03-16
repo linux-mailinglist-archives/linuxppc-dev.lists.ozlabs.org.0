@@ -1,123 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561CA4DABB6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 08:17:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9924DAC53
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 09:18:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJM6L22Dfz3fTG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 18:17:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJNSs6zHwz3bT4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Mar 2022 19:18:21 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dAFODFOz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::62c;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on062c.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::62c])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=dAFODFOz; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJLzv21y7z3dyc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 18:11:38 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L8WF89S5+sQYw8keiaDOrBTgKgapy8c4JOX3Y5Q/G2Z2N6hU3TorqtyZYd5j+ZDYqS8GGp5A5qslFeljMDJaNYVdPG8qXlJ+xTL95s1o5RlvOeTH2oKbNOA4ENP9cSq0eQMligr0PqZyxetEeSBV5l+l1NeNd41AUXQZlHzb0SUsTGTely8rABzpihv7Nm9EvgD+TIc7p9MOZw35TFaWlF+i0BZ4KDg9flUP/R5IQRsH8B8J9YF/5x45gtwib51k1i3mHIPyaghZ9SjakW98n5CbZkIXbRxzbiMV9QueSnhjSQMPFkVNamgji1lU+2FdsPnZ7kt65yZ0UId8sUXuJQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9N87drQsQAfpDRyVdzp6IMEQM+BWGw+F7T79wfF3Vq8=;
- b=MaskkfpEB7ORLDgKoQYOZejd4IGNpy2vdGIC2kQKTvHtVpIGwtYl9atfi0X/VqxxY2LdjsUCCgh8c9XZko8V8VCAfv/2mDu5FbLdcrYyi8KT1dNRs9oZZLIn+fMl3nGeWEbJaveUYhr1gdR498ZyBx3cTEWYrUDyT3RLohT6UYC0/YSjSpyHQpOXIUByFoLORMk5gv7XiZFnYzSbteYcmzdKbB1c4iBVkLcIH9MRxV36S0PK5ZuCG3xdJTWfvrv6AzJKc8v7tnqWg1JAHVDvg/s5yEmr6pWIPitSmm6RIPwBp4BtfwUBJwmt0xhZXtjpFot/mRivYYeW1nHnV3G3dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB2876.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:19::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5061.22; Wed, 16 Mar
- 2022 07:11:14 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::cd2f:d05d:9aa3:400d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::cd2f:d05d:9aa3:400d%6]) with mapi id 15.20.5081.014; Wed, 16 Mar 2022
- 07:11:14 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: Re: [PATCH] static_call: Don't make __static_call_return0 static
-Thread-Topic: [PATCH] static_call: Don't make __static_call_return0 static
-Thread-Index: AQHYN3QmErE3bJogF0unLvbGlzWypqzA87QAgACnbwA=
-Date: Wed, 16 Mar 2022 07:11:14 +0000
-Message-ID: <eabd82b5-6617-1965-e65b-25abae19e1d5@csgroup.eu>
-References: <b301796066e4fdd45c50c9e202d36a43688eb78e.1647242388.git.christophe.leroy@csgroup.eu>
- <20220315211158.kymtyh2nv4xj7ite@treble>
-In-Reply-To: <20220315211158.kymtyh2nv4xj7ite@treble>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0321a8a3-b915-410d-b2d7-08da071c2886
-x-ms-traffictypediagnostic: MRZP264MB2876:EE_
-x-microsoft-antispam-prvs: <MRZP264MB287642F3195C0221E49C8115ED119@MRZP264MB2876.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: XgP178r8FMDqD83GW/vzN1QBA4TAExc2ixg0lNSJ0AV56uq3ZMBKVz5qOqNPRO6UHJGzQ/6GXOHxe/PloCZzggBrtOyuYfud9FAvgvu9pCNKkpaJh3OUzU6kdzAmflLTWx8wD0oN35GfFbAYRoLsKNeCVqDwIuRZmBf23lCb14S5bpRAivu4Kp38Yy1kZ88r4XJVNEhUKDXfp7iMggrJO4qPojApNnqb7X9aa/rVKaVpU6qkVbP2AmKL8ZDKubiDNgOUSUAN0xdz2T+x7kmoaaSj5hJNXHld+0FRw1B9wNwe/u0QDHmwmIgycr5r55v2ddBC283cuhR+R7PeIVNMHE40PCtRfQLzErXr15d9eWjTBduIVnQPoegFozw1oAs3I3lPMH21dw+en0w7y9LkT8KkrqptP/F6FdWdZQoneSrRztOZkhuRhom+Ka4uQEMxxjfe7uo0RrWSaN9eUgXqiaQ/NIjNIxn6VHJqttH8RWMhFZLzSILJ2/hpD1DKhFYFSYbNG9isRFrPJa2SrvQjPUqlV8u31CE17vAb/X1y3yBqsSeJiQgU86AMY994qSBBukTkVA6lI8eT9CwtDMo5nLm7Mio/9QjT6QqRASNfB4IR+xGGyCxtKGwGNu7ZlrVqQwC4SI+DGgUCxqkRglSz3qhpdAfS4jCb/w9yIv7K56TihIuojOiyxb2MnRTz1EmQv8lM3YAS7xIcKMrcm/mI2crgDY7K1r3gMvJO7Q+BK3UJYGudO2VQZMbZGVR4J6nlbMRq6iPpK+1SUokmbif+VA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(86362001)(316002)(38100700002)(31696002)(38070700005)(122000001)(91956017)(54906003)(6486002)(6916009)(5660300002)(2906002)(8936002)(8676002)(76116006)(64756008)(66556008)(66946007)(66476007)(66446008)(66574015)(2616005)(83380400001)(36756003)(44832011)(508600001)(71200400001)(26005)(6506007)(6512007)(186003)(31686004)(4326008)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?dEFlaG1FS2JmMTJvY2FUNTBlcW9YZkoyWlE0TnUwR1FiM2R1NU44dEtzWXB4?=
- =?utf-8?B?eTh4RjJTaGF0dENMVjhXZ0d1MVo3eGVoZXlUeWhQUmJUbXFLL3VkcjRXcHFO?=
- =?utf-8?B?ZEkzL2h2V0NyeG04RURGcDNIUStLbjlKa2s2OVdyVkY0L1R3RzYzZW00by9I?=
- =?utf-8?B?Y29WcDlmSHluelQ5ZE1PVTl5TzhiT1dRaUZvalJwdDZZTWMyU1JKMkJiRXVh?=
- =?utf-8?B?NC9Sbzg3SmVRQmF3dVRhYWE3T1NYcUNWb0dkMVBOWk1wekdVcUJGOVRyV2pD?=
- =?utf-8?B?Zm9iWks0SDVXcjVQR0U2aVJTYktlMnhZUWZUeGl1K3JZdGtnWENXeDQvR0NI?=
- =?utf-8?B?TUdGV3kxbVBXSk5zcjJ0bDVpa0lnV3JrS1NyUjlvOUNmN3M1cUNSNXpnMkJo?=
- =?utf-8?B?VnhiMUw5S0ludlg0RThBOFhVdXQ3bUZla0I0ZGFQQVdwSEc1NzZ1MlU3WVpz?=
- =?utf-8?B?Lzd2WnpOTDhKY2g5QXZ2WFJuVG9OQk4xUzhwb3hZL2FBZTlhWFUyVzh1Qm5G?=
- =?utf-8?B?dXpmaGp4NElwdDFUUHVqQWR4YnJoOElDUEVqbmZ6SndDRnMxNGpRSTFVSjVD?=
- =?utf-8?B?WmxEOEdzeHN2dzY1SWV1RWxibU1GYUplMlEyZHhWZDZlQ2xhdmxST3J2VkRF?=
- =?utf-8?B?VmRYcS9lRWxrbThSaE8rZ0NwdmdCWHM1dWc0NytscnZ3U0U2a2t1eUM3YlZL?=
- =?utf-8?B?M3lyK08wZm9Oc2JOS3N6a0UxVytSYTR0cEpicHgxMTJEVHJMei9zdGVHZEd2?=
- =?utf-8?B?TUlxMElpYkRGR1kwS1ZPdHc4cHBOcWNBUlBWZUpXVnZudVdsWEEySExtLzBD?=
- =?utf-8?B?dlErdmt5bzZZajNZWXo3WW5NOUU5RHRxWEtaTFAvWkJ0OUV2TTVDcU0xVEpU?=
- =?utf-8?B?aCtHbGgremJIQWQzNXd3Zk1OSXZXQlc3bklTRWJZOU10ZzlPcFlFVVA0ZGFF?=
- =?utf-8?B?Z3dqSytndG1XOUZrbEVzb2svVHQxNGhlb2tuR3VqOUVvSzlnTTVzK1JBSzNo?=
- =?utf-8?B?MzhnQUxQbC9Wd0ttMFFnM2ZZQms3ZlZpcmNEOWNWVXBvMDNQVXZ0OTNpZHgv?=
- =?utf-8?B?K0czTE15OTBWalJVR1lERjhpSHYwOU5YM3poWW01dHVxVFhMZGZYQ3Y2R0dI?=
- =?utf-8?B?NFFHQ1NnUTZzeDRPY2c0bmlSeTI2OTBmckdjZkd1LzlzeEp0NTFld3F0Y3ZE?=
- =?utf-8?B?RDlnRFhMRTBPRi9kM05VYTNaUTIzRDg2SENTMW12MDJBbGxSQVdWMmg5cnVO?=
- =?utf-8?B?cklzWjVQQk4xaWdSTlo3MElQV2FKSXczcGtDVlM2Q2Q4bjdpdjBrVDJZV0Ny?=
- =?utf-8?B?dU5RRE9nbkpGT1U0OUtpeDRVTkY2MFgyVkRHUmFlaytlNEM1a0NucnFEeUdu?=
- =?utf-8?B?dWVoY1pOOUNJNE5LNmM1bnI0enl1OU1nc3lOdVIwMUxCbjZ1bFcrdGU1eE53?=
- =?utf-8?B?RGhCVzNlV1JzTG52UTF5UTB3NG56bk5VTElBVXYzZWxSU3Q2bUFzN0Y1bTEy?=
- =?utf-8?B?QVkxZXJma3B0aU9yeHM4bGZML2tQUUJReEs3OTI0Skxqbk1CMVppRXorUHJK?=
- =?utf-8?B?NHVrZEJQQTJtZ09pSzFhUnVSSm9IMmsrN093L21vaGZRSUFkWFVvVndNMEVp?=
- =?utf-8?B?V3ZrbWpYTmRWUXV2enhpbjdxOWZqS3FkSVBKdThncjFqc1kwQ1A0UFc2QUIv?=
- =?utf-8?B?emVzMmlRcUNJTnBjMGFHL2NKblp1UWVSQUVqSkVqQlpxL0dDQi9pTGN2WEFx?=
- =?utf-8?B?YnlDcDlRZ09OL1I2OUdEdm8zZk5yTFcrNG1pMUhwdEpsRTdwNFFZNk5tSHdG?=
- =?utf-8?B?bHIzNG5wcHNzdENhUWhKMlpZcVRHTTdiczU5aG5XNVVlb21nckcvR0pIelYx?=
- =?utf-8?B?OGJOeXV0TzFEYjNjUHBiVll2b2ZvWGdMYlUzSDlrTkE2Q3pBa0ozMlFTck93?=
- =?utf-8?B?RzVkSVhwUWxCcWNkaERWZmpNWkhnc20zOHUwV3VmQVpQZ0hjaGplWCtKQlZu?=
- =?utf-8?Q?fJEWjJSl+hETP9IGwdhVOSlKvAyQoo=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4BA1BA2E0042934894BC2918EE847A11@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0321a8a3-b915-410d-b2d7-08da071c2886
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Mar 2022 07:11:14.6116 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O1VUffJ46H+QQU8CzxI2INt5QnY9/7pY+YfLERitO9xi93uBf037ITyTEYMlY/dlj6ZHcpbojarIjQx88xjTVzae6m7hOw1sdl+rz5aFwsQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2876
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJNS44g4Jz2xXZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Mar 2022 19:17:40 +1100 (AEDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22G87w5i005797; 
+ Wed, 16 Mar 2022 08:17:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=3jOmHKD2ZZcxiCZiF0fzeQBKDauGBqWVWvYwJqZZSJQ=;
+ b=dAFODFOzBd9idu66liLd2X49WDH6OELg//xPs6eEWLzXy5ceS9fLP/eZD9d4SJXs70hA
+ LxdpJyWLjqn44V+yso5r5drtgEessLCf6eq7PB1zkiyEQU0xsBFMddJpceGkFu+o8/os
+ GUojKCIZYOU2iX4Ua4DVw/hFWGO9yZHrVF7tmtML96syQZ6NfhY+WtlzJsFaGf5BVZja
+ 93X+fjQ4hGC17eaIcsqw/bzEZ5Aw4vcew0/69boRDft5ok1zGUhykJ5/T+MFtN6HZK+o
+ u0xIcrMtHb1yZpvCntg6SU6ft8uDsaQkynRri6CjKWAaRcnqCk0BkObcevSQ212uqph4 2A== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3eubv18csr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Mar 2022 08:17:37 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22G8DJlS026349;
+ Wed, 16 Mar 2022 08:17:35 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06fra.de.ibm.com with ESMTP id 3erjshq894-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 16 Mar 2022 08:17:35 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22G8HXYx45154750
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 16 Mar 2022 08:17:33 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0C9EC11C058;
+ Wed, 16 Mar 2022 08:17:33 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 007D411C04A;
+ Wed, 16 Mar 2022 08:17:32 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.79.177.2])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 16 Mar 2022 08:17:31 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
+Subject: [powerpc]Kernel crash while running LTP (execveat03) [next-20220315]
+Message-Id: <19C0AAEE-43C1-4A17-83DC-5EC24BB1E0BE@linux.ibm.com>
+Date: Wed, 16 Mar 2022 13:47:30 +0530
+To: Ext4 Developers List <linux-ext4@vger.kernel.org>, riteshh@linux.ibm.com
+X-Mailer: Apple Mail (2.3693.60.0.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Zvenb4O0FL7EydkavzDxjv8dnlMQH7oC
+X-Proofpoint-GUID: Zvenb4O0FL7EydkavzDxjv8dnlMQH7oC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-16_02,2022-03-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ impostorscore=0 mlxscore=0 adultscore=0 phishscore=0 clxscore=1011
+ bulkscore=0 spamscore=0 mlxlogscore=999 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203160050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,36 +98,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Jason Baron <jbaron@akamai.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Ard Biesheuvel <ardb@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDE1LzAzLzIwMjIgw6AgMjI6MTEsIEpvc2ggUG9pbWJvZXVmIGEgw6ljcml0wqA6DQo+
-IE9uIE1vbiwgTWFyIDE0LCAyMDIyIGF0IDA4OjIxOjMwQU0gKzAxMDAsIENocmlzdG9waGUgTGVy
-b3kgd3JvdGU6DQo+PiBTeXN0ZW0ubWFwIHNob3dzIHRoYXQgdm1saW51eCBjb250YWlucyBzZXZl
-cmFsIGluc3RhbmNlcyBvZg0KPj4gX19zdGF0aWNfY2FsbF9yZXR1cm4wKCk6DQo+Pg0KPj4gCWMw
-MDA0ZmMwIHQgX19zdGF0aWNfY2FsbF9yZXR1cm4wDQo+PiAJYzAwMTE1MTggdCBfX3N0YXRpY19j
-YWxsX3JldHVybjANCj4+IAljMDBkODE2MCB0IF9fc3RhdGljX2NhbGxfcmV0dXJuMA0KPj4NCj4+
-IGFyY2hfc3RhdGljX2NhbGxfdHJhbnNmb3JtKCkgdXNlcyB0aGUgbWlkZGxlIG9uZSB0byBjaGVj
-ayB3aGV0aGVyIHdlIGFyZQ0KPj4gc2V0dGluZyBhIGNhbGwgdG8gX19zdGF0aWNfY2FsbF9yZXR1
-cm4wIG9yIG5vdDoNCj4+DQo+PiAJYzAwMTE1MjAgPGFyY2hfc3RhdGljX2NhbGxfdHJhbnNmb3Jt
-PjoNCj4+IAljMDAxMTUyMDogICAgICAgM2QgMjAgYzAgMDEgICAgIGxpcyAgICAgcjksLTE2Mzgz
-CTw9PSByOSA9ICAweGMwMDEgPDwgMTYNCj4+IAljMDAxMTUyNDogICAgICAgMzkgMjkgMTUgMTgg
-ICAgIGFkZGkgICAgcjkscjksNTQwMAk8PT0gcjkgKz0gMHgxNTE4DQo+PiAJYzAwMTE1Mjg6ICAg
-ICAgIDdjIDA1IDQ4IDAwICAgICBjbXB3ICAgIHI1LHI5CQk8PT0gcjkgaGFzIHZhbHVlIDB4YzAw
-MTE1MTggaGVyZQ0KPj4NCj4+IFNvIGlmIHN0YXRpY19jYWxsX3VwZGF0ZSgpIGlzIGNhbGxlZCB3
-aXRoIG9uZSBvZiB0aGUgb3RoZXIgaW5zdGFuY2VzIG9mDQo+PiBfX3N0YXRpY19jYWxsX3JldHVy
-bjAoKSwgYXJjaF9zdGF0aWNfY2FsbF90cmFuc2Zvcm0oKSB3b24ndCByZWNvZ25pc2UgaXQuDQo+
-Pg0KPj4gSW4gb3JkZXIgdG8gd29yayBwcm9wZXJseSwgZ2xvYmFsIHNpbmdsZSBpbnN0YW5jZSBv
-ZiBfX3N0YXRpY19jYWxsX3JldHVybjAoKSBpcyByZXF1aXJlZC4NCj4+DQo+PiBGaXhlczogM2Yy
-YThmYzRiMTVkICgic3RhdGljX2NhbGwveDg2OiBBZGQgX19zdGF0aWNfY2FsbF9yZXR1cm4wKCki
-KQ0KPj4gU2lnbmVkLW9mZi1ieTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBj
-c2dyb3VwLmV1Pg0KPiANCj4gQWNrZWQtYnk6IEpvc2ggUG9pbWJvZXVmIDxqcG9pbWJvZUByZWRo
-YXQuY29tPg0KPiANCg0KVGhhbmtzIGZvciB0aGlzIEFjay4NCg0KQnkgdGhlIHdheSBJIHNlbnQg
-dmVyc2lvbiB2MiBiZWZvcmUgeW91ciBBY2sgZm9yIGEgbWlzc2luZyAjaW5jbHVkZQ0KDQpDaHJp
-c3RvcGhl
+While running LTP tests(execveat03) against 5.17.0-rc8-next-20220315
+On a POWER10 LPAR following crash is seen:
+
+[  945.659049] dummy_del_mod: loading out-of-tree module taints kernel.
+[  945.659951] dummy_del_mod: module verification failed: signature =
+and/or required key missing - tainting kernel
+[  955.520206] process 'execveat01' launched '/dev/fd/-1' with NULL =
+argv: empty string added
+[  955.529560] loop0: detected capacity change from 0 to 524288
+[  955.830492] EXT4-fs (loop0): mounting ext2 file system using the ext4 =
+subsystem
+[  955.831047] EXT4-fs (loop0): mounted filesystem without journal. =
+Quota mode: none.
+[  955.831056] ext2 filesystem being mounted at =
+/var/tmp/avocado_2hol2hy1/ltp-SHEyyra8b0/3CPNpu/mntpoint supports =
+timestamps until 2038 (0x7fffffff)
+[  955.907793] Kernel attempted to read user page (1) - exploit attempt? =
+(uid: 0)
+[  955.907806] BUG: Kernel NULL pointer dereference on read at =
+0x00000001
+[  955.907809] Faulting instruction address: 0xc008000000be04ec
+[  955.907811] Oops: Kernel access of bad area, sig: 11 [#1]
+[  955.907814] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA =
+pSeries
+[  955.907818] Modules linked in: overlay vfat fat btrfs blake2b_generic =
+xor raid6_pq zstd_compress xfs loop sctp ip6_udp_tunnel udp_tunnel =
+dm_mod nft_ct nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set rfkill =
+nf_tables bonding libcrc32c nfnetlink sunrpc pseries_rng xts vmx_crypto =
+sch_fq_codel ext4 mbcache jbd2 sd_mod t10_pi crc64_rocksoft crc64 sg =
+ibmvscsi ibmveth scsi_transport_srp fuse [last unloaded: dummy_del_mod]
+[  955.907849] CPU: 30 PID: 1947255 Comm: execveat03 Tainted: G          =
+ OE     5.17.0-rc8-next-20220315 #1
+[  955.907853] NIP:  c008000000be04ec LR: c008000000ba4b00 CTR: =
+c0000000004fd040
+[  955.907856] REGS: c0000002474831a0 TRAP: 0300   Tainted: G           =
+OE      (5.17.0-rc8-next-20220315)
+[  955.907860] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  =
+CR: 28028282  XER: 20040000
+[  955.907869] CFAR: c008000000ba4afc DAR: 0000000000000001 DSISR: =
+40000000 IRQMASK: 0=20
+[  955.907869] GPR00: c008000000ba4b00 c000000247483440 c008000000c28000 =
+0000000000000001=20
+[  955.907869] GPR04: c000000206668af8 c008000000be0068 0000000000000000 =
+0000000000000000=20
+[  955.907869] GPR08: 0000000000000002 0000000000000004 0000000000000000 =
+c008000000be7f68=20
+[  955.907869] GPR12: c0000000004fd040 c000000effbe7280 0000000000000000 =
+0000000000000001=20
+[  955.907869] GPR16: 0000000000000000 c0000000029b4048 0000000000000000 =
+0000000000000000=20
+[  955.907869] GPR20: 0000000000000000 c0000000029b4048 0000000000000004 =
+c000000206668af8=20
+[  955.907869] GPR24: c000000247483528 0000000000000001 c008000000c01208 =
+0000000000000000=20
+[  955.907869] GPR28: 0000000000000001 c000000206668af8 c0000001f0d92e80 =
+0000000000000001=20
+[  955.907904] NIP [c008000000be04ec] __ext4_fc_track_link+0x44/0xf0 =
+[ext4]
+[  955.907927] LR [c008000000ba4b00] ext4_rename+0x878/0xdc0 [ext4]
+[  955.907946] Call Trace:
+[  955.907947] [c000000247483440] [0000000000000004] 0x4 (unreliable)
+[  955.907950] [c0000002474834a0] [c008000000ba4b00] =
+ext4_rename+0x878/0xdc0 [ext4]
+[  955.907969] [c000000247483670] [c0000000004a498c] =
+vfs_rename+0x9cc/0xe00
+[  955.907975] [c000000247483760] [c008000000341820] =
+ovl_do_rename.constprop.28+0x78/0x140 [overlay]
+[  955.907982] [c000000247483830] [c008000000341b50] =
+ovl_make_workdir+0x268/0x7e0 [overlay]
+[  955.907988] [c000000247483960] [c008000000343aa8] =
+ovl_fill_super+0x1060/0x2160 [overlay]
+[  955.907994] [c000000247483ae0] [c000000000492f68] =
+mount_nodev+0x78/0x100
+[  955.907998] [c000000247483b20] [c008000000340054] ovl_mount+0x2c/0x50 =
+[overlay]
+[  955.908004] [c000000247483b40] [c0000000004f676c] =
+legacy_get_tree+0x4c/0xb0
+[  955.908008] [c000000247483b70] [c00000000049063c] =
+vfs_get_tree+0x4c/0x150
+[  955.908012] [c000000247483bf0] [c0000000004d3768] =
+path_mount+0x8e8/0xd50
+[  955.908017] [c000000247483cb0] [c0000000004d3c50] do_mount+0x80/0xd0
+[  955.908021] [c000000247483d10] [c0000000004d3e3c] =
+sys_mount+0x19c/0x370
+[  955.908025] [c000000247483db0] [c00000000003375c] =
+system_call_exception+0x18c/0x390
+[  955.908029] [c000000247483e10] [c00000000000c64c] =
+system_call_common+0xec/0x270
+[  955.908034] --- interrupt: c00 at 0x7fffa9b38dfc
+[  955.908036] NIP:  00007fffa9b38dfc LR: 000000001001ba78 CTR: =
+0000000000000000
+[  955.908039] REGS: c000000247483e80 TRAP: 0c00   Tainted: G           =
+OE      (5.17.0-rc8-next-20220315)
+[  955.908042] MSR:  800000000280f033 =
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24002202  XER: 00000000
+[  955.908050] IRQMASK: 0=20
+[  955.908050] GPR00: 0000000000000015 00007ffff95c64c0 00007fffa9c07300 =
+0000000010029a08=20
+[  955.908050] GPR04: 0000000010027de0 0000000010029a08 0000000000000000 =
+00000000100299c0=20
+[  955.908050] GPR08: 0000000000004000 0000000000000000 0000000000000000 =
+0000000000000000=20
+[  955.908050] GPR12: 0000000000000000 00007fffa9e1a340 0000000000000000 =
+0000000000000000=20
+[  955.908050] GPR16: 0000000000000000 0000000000000000 ffffffffffffffff =
+0000000010027a38=20
+[  955.908050] GPR20: 00000000100284d0 0000000010028238 00000000100280f8 =
+00007ffff95c65b0=20
+[  955.908050] GPR24: 0000000000000003 0000000010051098 0000000010050c60 =
+00000000100555c8=20
+[  955.908050] GPR28: 000000000000040c 0000000010027b08 0000000000000000 =
+0000000000000001=20
+[  955.908083] NIP [00007fffa9b38dfc] 0x7fffa9b38dfc
+[  955.908086] LR [000000001001ba78] 0x1001ba78
+[  955.908090] --- interrupt: c00
+[  955.908092] Instruction dump:
+[  955.908095] fba1ffe8 fbc1fff0 7cbe2b78 fbe1fff8 3ca20000 e8a5a0c8 =
+7c7f1b78 39200004=20
+[  955.908103] 38e00000 7c9d2378 f8010010 f821ffa1 <e8630000> 38c10028 =
+e94d1100 f9410038=20
+[  955.908112] ---[ end trace 0000000000000000 ]---
+[  955.908943]=20
+[  956.908946] Kernel panic - not syncing: Fatal exception
+
+Bisect points to following commit:
+commit 9d5623d7ef8765f21f629e4ac636c19ec245e254
+    ext4: return early for non-eligible fast_commit track events
+
+Reverting this commit allows the test to run successfully.
+
+Thanks
+-Sachin
+
