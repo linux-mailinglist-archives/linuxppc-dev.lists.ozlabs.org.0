@@ -2,44 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621784DCA51
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 16:47:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9922A4DCD14
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 18:58:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KKBNV1DzHz30Dk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 02:47:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KKFJ13jydz3bcb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 04:58:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Void lookup limit
- of 2 exceeded) smtp.mailfrom=mansr.com (client-ip=2001:8b0:ca0d:8d8e::2;
- helo=unicorn.mansr.com; envelope-from=mru@mansr.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 434 seconds by postgrey-1.36 at boromir;
- Fri, 18 Mar 2022 02:46:59 AEDT
-Received: from unicorn.mansr.com (unicorn.mansr.com
- [IPv6:2001:8b0:ca0d:8d8e::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org;
+ receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KKBN34C8lz30CS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 02:46:59 +1100 (AEDT)
-Received: from raven.mansr.com (raven.mansr.com [81.2.72.235])
- by unicorn.mansr.com (Postfix) with ESMTPS id EF05B15360;
- Thu, 17 Mar 2022 15:39:35 +0000 (GMT)
-Received: by raven.mansr.com (Postfix, from userid 51770)
- id 86495210BC8; Thu, 17 Mar 2022 15:39:35 +0000 (GMT)
-From: Mans Rullgard <mans@mansr.com>
-To: Pantelis Antoniou <pantelis.antoniou@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Vitaly Bordug <vbordug@ru.mvista.com>, Dan Malek <dan@embeddededge.com>,
- Joakim Tjernlund <joakim.tjernlund@lumentis.se>,
- linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: [RFC][PATCH] net: fs_enet: fix tx error handling
-Date: Thu, 17 Mar 2022 15:38:58 +0000
-Message-Id: <20220317153858.20719-1-mans@mansr.com>
-X-Mailer: git-send-email 2.35.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KKFHb060Qz2yyn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 04:58:18 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 4247A61527;
+ Thu, 17 Mar 2022 17:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A284C340E9;
+ Thu, 17 Mar 2022 17:58:06 +0000 (UTC)
+Date: Thu, 17 Mar 2022 17:58:02 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v1 4/7] arm64/pgtable: support
+ __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+Message-ID: <YjN2qsXkmlEUTg4u@arm.com>
+References: <20220315141837.137118-1-david@redhat.com>
+ <20220315141837.137118-5-david@redhat.com>
+ <YjIr9f9qaz4xITVd@arm.com>
+ <c3d39666-52ae-42ba-eaa2-7a0ca489f766@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c3d39666-52ae-42ba-eaa2-7a0ca489f766@redhat.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,122 +51,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: x86@kernel.org, Jan Kara <jack@suse.cz>, Yang Shi <shy828301@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Donald Dutile <ddutile@redhat.com>, Liang Zhang <zhangliang5@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Paul Mackerras <paulus@samba.org>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ Jason Gunthorpe <jgg@nvidia.com>, David Rientjes <rientjes@google.com>,
+ Pedro Gomes <pedrodemargomes@gmail.com>, Jann Horn <jannh@google.com>,
+ John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Shakeel Butt <shakeelb@google.com>, Oleg Nesterov <oleg@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Oded Gabbay <oded.gabbay@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Nadav Amit <namit@vmware.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In some cases, the TXE flag is apparently set without any error
-indication in the buffer descriptor status. When this happens, tx
-stalls until the tx_restart() function is called via the device
-watchdog which can take a long time.
+On Thu, Mar 17, 2022 at 11:04:18AM +0100, David Hildenbrand wrote:
+> On 16.03.22 19:27, Catalin Marinas wrote:
+> > On Tue, Mar 15, 2022 at 03:18:34PM +0100, David Hildenbrand wrote:
+> >> @@ -909,12 +925,13 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+> >>  /*
+> >>   * Encode and decode a swap entry:
+> >>   *	bits 0-1:	present (must be zero)
+> >> - *	bits 2-7:	swap type
+> >> + *	bits 2:		remember PG_anon_exclusive
+> >> + *	bits 3-7:	swap type
+> >>   *	bits 8-57:	swap offset
+> >>   *	bit  58:	PTE_PROT_NONE (must be zero)
+> > 
+> > I don't remember exactly why we reserved bits 0 and 1 when, from the
+> > hardware perspective, it's sufficient for bit 0 to be 0 and the whole
+> > pte becomes invalid. We use bit 1 as the 'table' bit (when 0 at pmd
+> > level, it's a huge page) but we shouldn't check for this on a swap
+> > entry.
+> 
+> You mean
+> 
+> arch/arm64/include/asm/pgtable-hwdef.h:#define PTE_TABLE_BIT            (_AT(pteval_t, 1) << 1)
+> 
+> right?
 
-To fix this, check for TXE in the napi poll function and trigger a
-tx_restart() call as for errors reported in the buffer descriptor.
+Yes.
 
-This change makes the FCC based Ethernet controller on MPC82xx devices
-usable. It probably breaks the other modes (FEC, SCC) which I have no
-way of testing.
+> I wonder why it even exists, for arm64 I only spot:
+> 
+> arch/arm64/include/asm/pgtable.h:#define pte_mkhuge(pte)                (__pte(pte_val(pte) & ~PTE_TABLE_BIT))
+> 
+> I don't really see code that sets PTE_TABLE_BIT.
+> 
+> Similarly, I don't see code that sets PMD_TABLE_BIT/PUD_TABLE_BIT/P4D_TABLE_BIT.
+> Most probably setting code is not using the defines,  that's why I'm not finding it.
 
-Signed-off-by: Mans Rullgard <mans@mansr.com>
----
- .../ethernet/freescale/fs_enet/fs_enet-main.c | 47 +++++++------------
- .../net/ethernet/freescale/fs_enet/mac-fcc.c  |  2 +-
- 2 files changed, 19 insertions(+), 30 deletions(-)
+It gets set as part of P*D_TYPE_TABLE via p*d_populate(). We use the
+P*D_TABLE_BIT mostly for checking whether it's a huge page or not (the
+arm64 hugetlbpage.c code).
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-index 78e008b81374..4276becd07cf 100644
---- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
-@@ -94,14 +94,22 @@ static int fs_enet_napi(struct napi_struct *napi, int budget)
- 	int curidx;
- 	int dirtyidx, do_wake, do_restart;
- 	int tx_left = TX_RING_SIZE;
-+	u32 int_events;
- 
- 	spin_lock(&fep->tx_lock);
- 	bdp = fep->dirty_tx;
-+	do_wake = do_restart = 0;
-+
-+	int_events = (*fep->ops->get_int_events)(dev);
-+
-+	if (int_events & fep->ev_err) {
-+		(*fep->ops->ev_error)(dev, int_events);
-+		do_restart = 1;
-+	}
- 
- 	/* clear status bits for napi*/
- 	(*fep->ops->napi_clear_event)(dev);
- 
--	do_wake = do_restart = 0;
- 	while (((sc = CBDR_SC(bdp)) & BD_ENET_TX_READY) == 0 && tx_left) {
- 		dirtyidx = bdp - fep->tx_bd_base;
- 
-@@ -318,43 +326,24 @@ fs_enet_interrupt(int irq, void *dev_id)
- {
- 	struct net_device *dev = dev_id;
- 	struct fs_enet_private *fep;
--	const struct fs_platform_info *fpi;
- 	u32 int_events;
--	u32 int_clr_events;
--	int nr, napi_ok;
--	int handled;
- 
- 	fep = netdev_priv(dev);
--	fpi = fep->fpi;
- 
--	nr = 0;
--	while ((int_events = (*fep->ops->get_int_events)(dev)) != 0) {
--		nr++;
-+	int_events = (*fep->ops->get_int_events)(dev);
-+	if (!int_events)
-+		return IRQ_NONE;
- 
--		int_clr_events = int_events;
--		int_clr_events &= ~fep->ev_napi;
-+	int_events &= ~fep->ev_napi;
- 
--		(*fep->ops->clear_int_events)(dev, int_clr_events);
--
--		if (int_events & fep->ev_err)
--			(*fep->ops->ev_error)(dev, int_events);
--
--		if (int_events & fep->ev) {
--			napi_ok = napi_schedule_prep(&fep->napi);
--
--			(*fep->ops->napi_disable)(dev);
--			(*fep->ops->clear_int_events)(dev, fep->ev_napi);
--
--			/* NOTE: it is possible for FCCs in NAPI mode    */
--			/* to submit a spurious interrupt while in poll  */
--			if (napi_ok)
--				__napi_schedule(&fep->napi);
--		}
-+	(*fep->ops->clear_int_events)(dev, int_events);
- 
-+	if (napi_schedule_prep(&fep->napi)) {
-+		(*fep->ops->napi_disable)(dev);
-+		__napi_schedule(&fep->napi);
- 	}
- 
--	handled = nr > 0;
--	return IRQ_RETVAL(handled);
-+	return IRQ_HANDLED;
- }
- 
- void fs_init_bds(struct net_device *dev)
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c b/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-index b47490be872c..66c8f82a8333 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mac-fcc.c
-@@ -124,7 +124,7 @@ static int do_pd_setup(struct fs_enet_private *fep)
- 	return ret;
- }
- 
--#define FCC_NAPI_EVENT_MSK	(FCC_ENET_RXF | FCC_ENET_RXB | FCC_ENET_TXB)
-+#define FCC_NAPI_EVENT_MSK	(FCC_ENET_RXF | FCC_ENET_RXB | FCC_ENET_TXB | FCC_ENET_TXE)
- #define FCC_EVENT		(FCC_ENET_RXF | FCC_ENET_TXB)
- #define FCC_ERR_EVENT_MSK	(FCC_ENET_TXE)
- 
 -- 
-2.35.1
-
+Catalin
