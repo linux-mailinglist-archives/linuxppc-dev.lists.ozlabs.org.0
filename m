@@ -1,44 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46494DC785
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 14:25:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346AA4DC7D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 14:46:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KK7F74pK2z30Qv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 00:25:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KK7jT09lmz3bWb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 00:46:53 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=L9RXvHDW;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=suzuki.poulose@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KK7Df6kzhz2xsr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 00:25:20 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C303B1515;
- Thu, 17 Mar 2022 06:24:48 -0700 (PDT)
-Received: from [10.1.197.1] (ewhatever.cambridge.arm.com [10.1.197.1])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD8113F766;
- Thu, 17 Mar 2022 06:24:42 -0700 (PDT)
-Message-ID: <0d9d605e-4f92-3947-f99d-91faf9dbc2d7@arm.com>
-Date: Thu, 17 Mar 2022 13:24:41 +0000
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KK7hp0SNvz2yK2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 00:46:18 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=L9RXvHDW; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KK7hj3qgrz4xwC;
+ Fri, 18 Mar 2022 00:46:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1647524773;
+ bh=/QiNyRBH3wfsDma+tXagRhUEVBPzSttunbcsipVe+q0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=L9RXvHDWz3JSNzSzdBmIKueq6F2USH5OCveWKw+/cra6Qt6Pnn67LNteL8Ywf1TdF
+ nkCP3HKLyQ1PFXyaFf5v3rmoroe5bVGgRnk0x4NSkizI5n/Gw2I9m6i6TYBrXa2U9H
+ FFbJCvoLkRde9y+qdU5pxQJ2SgNWI3TDdadY+UjdVWlxg8Gzp2MHHe+GYf49YY9XbR
+ JVu0YZYs7vUVvY5Q6QiYZI/k7VJkButs3kkA+THW5fFUT8G+ozpLxehMfgJs4uXrxS
+ dLaz56oE6ilqkz1x5xd3zHrkRXCVbEojrqYJ/eVlJoz9SNms/a9y+ERAPLhveIllzN
+ tsWstndbUwXHg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC PATCH] powerpc/64/interrupt: Temporarily save PPR on stack
+ to fix register corruption due to SLB miss
+In-Reply-To: <20220316033235.903657-1-npiggin@gmail.com>
+References: <20220316033235.903657-1-npiggin@gmail.com>
+Date: Fri, 18 Mar 2022 00:46:08 +1100
+Message-ID: <87o8243d5r.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v4 2/6] Partially revert "KVM: Pass kvm_init()'s opaque
- param to additional arch funcs"
-Content-Language: en-US
-To: Chao Gao <chao.gao@intel.com>, seanjc@google.com, maz@kernel.org,
- kvm@vger.kernel.org, pbonzini@redhat.com, kevin.tian@intel.com,
- tglx@linutronix.de
-References: <20220216031528.92558-1-chao.gao@intel.com>
- <20220216031528.92558-3-chao.gao@intel.com>
-From: Suzuki Kuruppassery Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20220216031528.92558-3-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,71 +59,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>,
- David Hildenbrand <david@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>, Will Deacon <will@kernel.org>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
- linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
- Anup Patel <anup@brainfault.org>, Joerg Roedel <joro@8bytes.org>,
- Huacai Chen <chenhuacai@kernel.org>, linux-riscv@lists.infradead.org,
- kvmarm@lists.cs.columbia.edu, Dave Hansen <dave.hansen@linux.intel.com>,
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com>,
- Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>,
- Borislav Petkov <bp@alien8.de>, Atish Patra <atishp@atishpatra.org>,
- Alexandru Elisei <alexandru.elisei@arm.com>,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, James Morse <james.morse@arm.com>,
- Sven Schnelle <svens@linux.ibm.com>, kvm-riscv@lists.infradead.org,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K
+ . V" <aneesh.kumar@linux.ibm.com>, Michael Neuling <mikey@neuling.org>,
+ Michal Suchanek <msuchanek@suse.de>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16/02/2022 03:15, Chao Gao wrote:
-> This partially reverts commit b99040853738 ("KVM: Pass kvm_init()'s opaque
-> param to additional arch funcs") remove opaque from
-> kvm_arch_check_processor_compat because no one uses this opaque now.
-> Address conflicts for ARM (due to file movement) and manually handle RISC-V
-> which comes after the commit.
-> 
-> And changes about kvm_arch_hardware_setup() in original commit are still
-> needed so they are not reverted.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
-> Reviewed-by: Sean Christopherson <seanjc@google.com>
+Nicholas Piggin <npiggin@gmail.com> writes:
+> This is a minimal stable kernel fix for the problem solved by
+> 4c2de74cc869 ("powerpc/64: Interrupts save PPR on stack rather than
+> thread_struct"). Instead of changing the interrupt stack frame (which
+> causes a lot of churn), it moves the PPR value from the PACA save area
+> to an unused slot in the stack frame temporarily, and defers saving it
+> to thread_struct to later on when it is safe to take SLB misses.
+
+The change log for 4c2de74cc869 doesn't really describe the problem that
+well, because it was written as a pre-emptive fix for the SLB-in-C
+rewrite.
+
+Here's an attempt:
+
+In commit f384796c4 ("powerpc/mm: Add support for handling > 512TB
+address in SLB miss") we added support for using multiple context ids
+per process. Previously accessing past the first context id was a fatal
+error for the process. With the new support it became non-fatal, and so
+the previous "bad_addr_slb" handler was changed to be the
+"large_addr_slb" handler.
+
+That handler uses the EXCEPTION_PROLOG_COMMON() macro, which in-turn
+calls the SAVE_PPR() macro. At the point where SAVE_PPR() is used, the
+r9-13 register values from the original user fault are saved in
+paca->exslb. It's not until later in EXCEPTION_PROLOG_COMMON_2() that
+they are saved from paca->exslb onto the kernel stack.
+
+The PPR is saved into current->thread.ppr, which is notably not on the
+kernel stack the way pt_regs are. This means we can take an SLB miss on
+current->thread.ppr. If that happens in the "large_addr_slb" case we
+will clobber the saved user r9-r13 in paca->exslb with kernel values.
+Later we will save those clobbered values into the pt_regs on the stack,
+and when we return to userspace those kernel values will be restored.
+
+Typically this appears as some sort of segfault in userspace, with an
+address that looks like a kernel address. In dmesg it can appear as:
+
+  [19117.440331] some_program[1869625]: unhandled signal 11 at c00000000f6bda10 nip 00007fff780d559c lr 00007fff781ae56c code 30001
+
+The upstream fix for this issue was to move PPR into pt_regs, on the
+kernel stack, avoiding the possibility of an SLB fault when saving it.
+
+However changing the size of pt_regs is an intrusive change, and has
+side effects in other parts of the kernel. A minimal fix is to
+temporarily save the PPR in an unused part of pt_regs, then save the
+user register values from paca->exslb into pt_regs, and then move the
+saved PPR into thread.ppr.
+
+cheers
+
+> Upstream kernels between 4.17-4.20 have this bug, so I propose this
+> patch for 4.19 stable.
+>
+> Fixes: f384796c4 ("powerpc/mm: Add support for handling > 512TB address in SLB miss")
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 > ---
->   arch/arm64/kvm/arm.c       |  2 +-
->   arch/mips/kvm/mips.c       |  2 +-
->   arch/powerpc/kvm/powerpc.c |  2 +-
->   arch/riscv/kvm/main.c      |  2 +-
->   arch/s390/kvm/kvm-s390.c   |  2 +-
->   arch/x86/kvm/x86.c         |  2 +-
->   include/linux/kvm_host.h   |  2 +-
->   virt/kvm/kvm_main.c        | 16 +++-------------
->   8 files changed, 10 insertions(+), 20 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index ecc5958e27fe..0165cf3aac3a 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -73,7 +73,7 @@ int kvm_arch_hardware_setup(void *opaque)
->   	return 0;
->   }
->   
-> -int kvm_arch_check_processor_compat(void *opaque)
-> +int kvm_arch_check_processor_compat(void)
->   {
->   	return 0;
->   }
-
-For arm64 :
-
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+>  arch/powerpc/include/asm/exception-64s.h | 22 ++++++++++++++++++----
+>  1 file changed, 18 insertions(+), 4 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/exception-64s.h b/arch/powerpc/include/asm/exception-64s.h
+> index 35fb5b11955a..f0424c6fdeca 100644
+> --- a/arch/powerpc/include/asm/exception-64s.h
+> +++ b/arch/powerpc/include/asm/exception-64s.h
+> @@ -243,10 +243,22 @@
+>   * PPR save/restore macros used in exceptions_64s.S
+>   * Used for P7 or later processors
+>   */
+> -#define SAVE_PPR(area, ra, rb)						\
+> +#define SAVE_PPR(area, ra)						\
+> +BEGIN_FTR_SECTION_NESTED(940)						\
+> +	ld	ra,area+EX_PPR(r13);	/* Read PPR from paca */	\
+> +	std	ra,RESULT(r1);		/* Store PPR in RESULT for now */ \
+> +END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,940)
+> +
+> +/*
+> + * This is called after we are finished accessing 'area', so we can now take
+> + * SLB faults accessing the thread struct, which will use PACA_EXSLB area.
+> + * This is required because the large_addr_slb handler uses EXSLB and it also
+> + * uses the common exception macros including this PPR saving.
+> + */
+> +#define MOVE_PPR_TO_THREAD(ra, rb)					\
+>  BEGIN_FTR_SECTION_NESTED(940)						\
+>  	ld	ra,PACACURRENT(r13);					\
+> -	ld	rb,area+EX_PPR(r13);	/* Read PPR from paca */	\
+> +	ld	rb,RESULT(r1);		/* Read PPR from stack */	\
+>  	std	rb,TASKTHREADPPR(ra);					\
+>  END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,940)
+>
+> @@ -515,9 +527,11 @@ END_FTR_SECTION_NESTED(ftr,ftr,943)
+>  3:	EXCEPTION_PROLOG_COMMON_1();					   \
+>  	beq	4f;			/* if from kernel mode		*/ \
+>  	ACCOUNT_CPU_USER_ENTRY(r13, r9, r10);				   \
+> -	SAVE_PPR(area, r9, r10);					   \
+> +	SAVE_PPR(area, r9);						   \
+>  4:	EXCEPTION_PROLOG_COMMON_2(area)					   \
+> -	EXCEPTION_PROLOG_COMMON_3(n)					   \
+> +	beq	5f;			/* if from kernel mode		*/ \
+> +	MOVE_PPR_TO_THREAD(r9, r10);					   \
+> +5:	EXCEPTION_PROLOG_COMMON_3(n)					   \
+>  	ACCOUNT_STOLEN_TIME
+>
+>  /* Save original regs values from save area to stack frame. */
+> --
+> 2.23.0
