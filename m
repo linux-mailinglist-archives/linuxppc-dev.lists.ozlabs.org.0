@@ -2,33 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7114DBD3B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 03:51:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D994DBD3C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 03:51:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJs9149cBz3btG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 13:51:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJs9R3s5Cz3bYf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 13:51:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=meizu.com (client-ip=112.91.151.210; helo=mail.meizu.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=meizu.com (client-ip=14.29.68.187; helo=mail.meizu.com;
  envelope-from=baihaowen@meizu.com; receiver=<UNKNOWN>)
-Received: from mail.meizu.com (edge07.meizu.com [112.91.151.210])
+Received: from mail.meizu.com (unknown [14.29.68.187])
  (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJrqc2Bbwz2xD7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Mar 2022 13:36:11 +1100 (AEDT)
-Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail11.meizu.com
- (172.16.1.15) with Microsoft SMTP Server (TLS) id 14.3.487.0; Thu, 17 Mar
- 2022 10:35:59 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJrwt6jYPz2xWc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Mar 2022 13:40:45 +1100 (AEDT)
+Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail04.meizu.com
+ (172.16.1.16) with Microsoft SMTP Server (TLS) id 14.3.487.0; Thu, 17 Mar
+ 2022 10:40:40 +0800
 Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
  (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Thu, 17 Mar
- 2022 10:35:56 +0800
+ 2022 10:40:38 +0800
 From: Haowen Bai <baihaowen@meizu.com>
 To: <benh@kernel.crashing.org>, <masahiroy@kernel.org>, <adobriyan@gmail.com>
-Subject: [PATCH] macintosh: adb: Fix warning comparing pointer to 0
-Date: Thu, 17 Mar 2022 10:35:54 +0800
-Message-ID: <1647484554-13258-1-git-send-email-baihaowen@meizu.com>
+Subject: [PATCH] macintosh: via-cuda: Fix warning comparing pointer to 0
+Date: Thu, 17 Mar 2022 10:40:37 +0800
+Message-ID: <1647484837-14352-1-git-send-email-baihaowen@meizu.com>
 X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,31 +58,35 @@ Avoid pointer type value compared with 0 to make code clear.
 
 Signed-off-by: Haowen Bai <baihaowen@meizu.com>
 ---
- drivers/macintosh/adb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/macintosh/via-cuda.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
-index 73b3961..996f310 100644
---- a/drivers/macintosh/adb.c
-+++ b/drivers/macintosh/adb.c
-@@ -478,7 +478,7 @@ adb_register(int default_id, int handler_id, struct adb_ids *ids,
- 		if ((adb_handler[i].original_address == default_id) &&
- 		    (!handler_id || (handler_id == adb_handler[i].handler_id) || 
- 		    try_handler_change(i, handler_id))) {
--			if (adb_handler[i].handler != 0) {
-+			if (adb_handler[i].handler) {
- 				pr_err("Two handlers for ADB device %d\n",
- 				       default_id);
- 				continue;
-@@ -673,7 +673,7 @@ static int adb_open(struct inode *inode, struct file *file)
- 		goto out;
- 	}
- 	state = kmalloc(sizeof(struct adbdev_state), GFP_KERNEL);
--	if (state == 0) {
-+	if (!state) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
+diff --git a/drivers/macintosh/via-cuda.c b/drivers/macintosh/via-cuda.c
+index cd267392..05a3cd9 100644
+--- a/drivers/macintosh/via-cuda.c
++++ b/drivers/macintosh/via-cuda.c
+@@ -236,10 +236,10 @@ int __init find_via_cuda(void)
+     const u32 *reg;
+     int err;
+ 
+-    if (vias != 0)
++    if (vias)
+ 	return 1;
+     vias = of_find_node_by_name(NULL, "via-cuda");
+-    if (vias == 0)
++    if (!vias)
+ 	return 0;
+ 
+     reg = of_get_property(vias, "reg", NULL);
+@@ -517,7 +517,7 @@ cuda_write(struct adb_request *req)
+     req->reply_len = 0;
+ 
+     spin_lock_irqsave(&cuda_lock, flags);
+-    if (current_req != 0) {
++    if (current_req) {
+ 	last_req->next = req;
+ 	last_req = req;
+     } else {
 -- 
 2.7.4
 
