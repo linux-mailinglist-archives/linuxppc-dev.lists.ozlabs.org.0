@@ -1,34 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686484DBD3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 03:52:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AF04DBD3F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 03:52:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KJs9s23gzz2yK2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 13:52:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KJsBH1xRDz3cfj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Mar 2022 13:52:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=meizu.com (client-ip=112.91.151.210; helo=mail.meizu.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=meizu.com (client-ip=157.122.146.251; helo=mail.meizu.com;
  envelope-from=baihaowen@meizu.com; receiver=<UNKNOWN>)
-Received: from mail.meizu.com (edge07.meizu.com [112.91.151.210])
+X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir;
+ Thu, 17 Mar 2022 13:46:06 AEDT
+Received: from mail.meizu.com (edge05.meizu.com [157.122.146.251])
  (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KJrz33SN7z2yh9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Mar 2022 13:42:39 +1100 (AEDT)
-Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail11.meizu.com
- (172.16.1.15) with Microsoft SMTP Server (TLS) id 14.3.487.0; Thu, 17 Mar
- 2022 10:42:38 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KJs322t06z2yQG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Mar 2022 13:46:06 +1100 (AEDT)
+Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail12.meizu.com
+ (172.16.1.108) with Microsoft SMTP Server (TLS) id 14.3.487.0; Thu, 17 Mar
+ 2022 10:44:50 +0800
 Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
  (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Thu, 17 Mar
- 2022 10:42:34 +0800
+ 2022 10:44:49 +0800
 From: Haowen Bai <baihaowen@meizu.com>
 To: <benh@kernel.crashing.org>, <masahiroy@kernel.org>, <adobriyan@gmail.com>
-Subject: [PATCH] macintosh: windfarm_pm91: Fix warning comparing pointer to 0
-Date: Thu, 17 Mar 2022 10:42:33 +0800
-Message-ID: <1647484953-15249-1-git-send-email-baihaowen@meizu.com>
+Subject: [PATCH] macintosh: smu: Fix warning comparing pointer to 0
+Date: Thu, 17 Mar 2022 10:44:48 +0800
+Message-ID: <1647485088-16068-1-git-send-email-baihaowen@meizu.com>
 X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
@@ -57,22 +60,40 @@ Avoid pointer type value compared with 0 to make code clear.
 
 Signed-off-by: Haowen Bai <baihaowen@meizu.com>
 ---
- drivers/macintosh/windfarm_pm91.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/macintosh/smu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/macintosh/windfarm_pm91.c b/drivers/macintosh/windfarm_pm91.c
-index 3f346af..568f8a2 100644
---- a/drivers/macintosh/windfarm_pm91.c
-+++ b/drivers/macintosh/windfarm_pm91.c
-@@ -149,7 +149,7 @@ static void wf_smu_create_cpu_fans(void)
+diff --git a/drivers/macintosh/smu.c b/drivers/macintosh/smu.c
+index a4fbc3f..d72d073 100644
+--- a/drivers/macintosh/smu.c
++++ b/drivers/macintosh/smu.c
+@@ -1087,7 +1087,7 @@ static int smu_open(struct inode *inode, struct file *file)
+ 	unsigned long flags;
  
- 	/* First, locate the PID params in SMU SBD */
- 	hdr = smu_get_sdb_partition(SMU_SDB_CPUPIDDATA_ID, NULL);
--	if (hdr == 0) {
-+	if (!hdr) {
- 		printk(KERN_WARNING "windfarm: CPU PID fan config not found "
- 		       "max fan speed\n");
- 		goto fail;
+ 	pp = kzalloc(sizeof(struct smu_private), GFP_KERNEL);
+-	if (pp == 0)
++	if (!pp)
+ 		return -ENOMEM;
+ 	spin_lock_init(&pp->lock);
+ 	pp->mode = smu_file_commands;
+@@ -1254,7 +1254,7 @@ static __poll_t smu_fpoll(struct file *file, poll_table *wait)
+ 	__poll_t mask = 0;
+ 	unsigned long flags;
+ 
+-	if (pp == 0)
++	if (!pp)
+ 		return 0;
+ 
+ 	if (pp->mode == smu_file_commands) {
+@@ -1277,7 +1277,7 @@ static int smu_release(struct inode *inode, struct file *file)
+ 	unsigned long flags;
+ 	unsigned int busy;
+ 
+-	if (pp == 0)
++	if (!pp)
+ 		return 0;
+ 
+ 	file->private_data = NULL;
 -- 
 2.7.4
 
