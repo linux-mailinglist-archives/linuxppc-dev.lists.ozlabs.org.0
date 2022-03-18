@@ -1,65 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB454DE28C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 21:30:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A744DE3A8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 22:45:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KKwcQ2p1gz30R8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 07:30:14 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eSxagLLR;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KKyH21F9gz3bW0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 08:45:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=eSxagLLR; dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=uniontech.com (client-ip=59.36.132.32; helo=qq.com;
+ envelope-from=tangmeng@uniontech.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 68 seconds by postgrey-1.36 at boromir;
+ Fri, 18 Mar 2022 20:37:46 AEDT
+Received: from qq.com (smtpbg464.qq.com [59.36.132.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KKwbQ1FdVz30NC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 07:29:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1647635362; x=1679171362;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=bYWaejF1aAGMIe6zGaNynSygYXsQ9N7J6Zt5R6d87uw=;
- b=eSxagLLR4giQ7M6jrpW+0b7P/2sB4hHTCi/GohufgZ28wd9PE8sEm8aq
- qVg+IGc73oE7JHtC7sWSvOZhBZXz6Ls7/uEoZxLmiWSrfGb7/tq/NaKdZ
- qx9JpsmWaJLKmESuDDwi1D9/PFug7kubJefyRuUUMYVZ1Zd+A+QcPDR48
- TkFrJWUQ5KZdOjIJQ7QK1tHjrE4vy6ZZAyengzY510Ww3gn1jhqJD7Ek7
- TmVGQf7lV1GsgGtOaYnXusrLDFZX6K7Y1OjTm8XEP57frAckNWqxpay+q
- W+fC8EKKHf30N7iS1gxB7adnCJeRPWsXhgeQ0cbeD21GsdpdfO4g0myFV Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10290"; a="257167957"
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; d="scan'208";a="257167957"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2022 13:28:17 -0700
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; d="scan'208";a="558633118"
-Received: from reaganlo-mobl.amr.corp.intel.com (HELO [10.212.159.210])
- ([10.212.159.210])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2022 13:28:17 -0700
-Message-ID: <fca6704b-686a-e478-03bb-091337162e02@linux.intel.com>
-Date: Fri, 18 Mar 2022 13:28:16 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KKf7Z4GZzz30Dv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 20:37:43 +1100 (AEDT)
+X-QQ-mid: bizesmtp86t1647596144tkbrhvl5
+Received: from localhost.localdomain ( [58.240.82.166])
+ by bizesmtp.qq.com (ESMTP) with 
+ id ; Fri, 18 Mar 2022 17:35:38 +0800 (CST)
+X-QQ-SSF: 01400000002000D0I000000A0000000
+X-QQ-FEAT: 1vYwxPNStGlVdhmjjLS+53k4INM9GjyQdIqJJMrCR+pb1LYHnR4/aqzBpqnWV
+ ueiDrL0E4KPMqka9Lw7vwy/XCn///iYN9ih43KoU1HwOdjHxGQIEN6LgBHLEH0JECrFK3RL
+ dGoMa4fMbFbetSbqw9V3WYJ9vtrhXmaYvIT6xqaTpLjUrsNCQhdzovFEa9Am1JbwsavFN3I
+ 833ohGKSAeYcDIcL0P5znSvBEEv2dCuaM2FoXncuRXVRlhkz3VGYI4LgjDsC9HsX3BmImBq
+ YmeEnOeyGTxMf8Tpa7w+ainnytBx8VUOd0FhSPjKdSY4LLosOXXR89lldHfzWvtuCgakdck
+ KYQKGSYEzaMKyeG99h+MoSuQOYqVPN6f04H7YKy7alSwSm1HKk=
+X-QQ-GoodBg: 1
+From: Meng Tang <tangmeng@uniontech.com>
+To: nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
+ shengjiu.wang@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+ perex@perex.cz, tiwai@suse.com
+Subject: [PATCH] ASoC: fsl-asoc-card: Fix jack_event() always return 0
+Date: Fri, 18 Mar 2022 17:35:36 +0800
+Message-Id: <20220318093536.15385-1-tangmeng@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Firefox/91.0 Thunderbird/91.5.0
-Subject: Re: [PATCH v1] PCI/AER: Handle Multi UnCorrectable/Correctable errors
- properly
-Content-Language: en-US
-To: Bjorn Helgaas <helgaas@kernel.org>, Eric Badger <ebadger@purestorage.com>
-References: <20220317225944.GA765564@bhelgaas>
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20220317225944.GA765564@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybgforeign:qybgforeign4
+X-QQ-Bgrelay: 1
+X-Mailman-Approved-At: Sat, 19 Mar 2022 08:45:00 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,51 +56,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kuppuswamy Sathyanarayanan <knsathya@kernel.org>, "Raj,
- Ashok" <ashok.raj@intel.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, Oliver OHalloran <oohall@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Meng Tang <tangmeng@uniontech.com>, alsa-devel@alsa-project.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Today, hp_jack_event and mic_jack_event always return 0. However,
+snd_soc_dapm_disable_pin and snd_soc_dapm_enable_pin may return a
+non-zero value, this will cause the user who calling hp_jack_event
+and mic_jack_event don't know whether the operation was really
+successfully.
 
+This patch corrects the behavior by properly returning 1 when the
+value gets updated.
 
-On 3/17/22 3:59 PM, Bjorn Helgaas wrote:
-> Thanks for the additional details!
-> 
-> After this patch, I guess aer_irq() still reads 0x2
-> (PCI_ERR_ROOT_MULTI_COR_RCV), but now it writes 0x2 back which clears
-> PCI_ERR_ROOT_MULTI_COR_RCV.
-> 
-> In addition, aer_irq() will continue on to read PCI_ERR_ROOT_ERR_SRC,
-> which probably contains either 0 or junk left over from being captured
-> when PCI_ERR_ROOT_COR_RCV was set.
-> 
-> And aer_irq() will queue an e_src record with status ==
-> PCI_ERR_ROOT_MULTI_COR_RCV.  But since PCI_ERR_ROOT_COR_RCV is not set
-> in status, aer_isr_one_error() will do nothing, right?
-> 
-> That might not be*terrible*  and is definitely better than not being
-> able to handle future interrupts.  But we basically threw away the
-> information that multiple errors occurred, and we queued an e_src
-> record that occupies space without being used for anything.
+Signed-off-by: Meng Tang <tangmeng@uniontech.com>
+---
+ sound/soc/fsl/fsl-asoc-card.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-Yes, you are correct.  One other way to minimize this race window is to
-clear the Root status register as soon as possible. Maybe we can move
-it before source ID read as below.
-
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1204,8 +1204,8 @@ static irqreturn_t aer_irq(int irq, void *context)
-         if (!(e_src.status & AER_ERR_STATUS_MASK))
-                 return IRQ_NONE;
-
--       pci_read_config_dword(rp, aer + PCI_ERR_ROOT_ERR_SRC, &e_src.id);
-         pci_write_config_dword(rp, aer + PCI_ERR_ROOT_STATUS, 
-e_src.status);
-+       pci_read_config_dword(rp, aer + PCI_ERR_ROOT_ERR_SRC, &e_src.id)
-
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 370bc790c6ba..f2641c2cb047 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -457,16 +457,18 @@ static int fsl_asoc_card_audmux_init(struct device_node *np,
+ static int hp_jack_event(struct notifier_block *nb, unsigned long event,
+ 			 void *data)
+ {
++	int ret;
++
+ 	struct snd_soc_jack *jack = (struct snd_soc_jack *)data;
+ 	struct snd_soc_dapm_context *dapm = &jack->card->dapm;
+ 
+ 	if (event & SND_JACK_HEADPHONE)
+ 		/* Disable speaker if headphone is plugged in */
+-		snd_soc_dapm_disable_pin(dapm, "Ext Spk");
++		ret = snd_soc_dapm_disable_pin(dapm, "Ext Spk");
+ 	else
+-		snd_soc_dapm_enable_pin(dapm, "Ext Spk");
++		ret = snd_soc_dapm_enable_pin(dapm, "Ext Spk");
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static struct notifier_block hp_jack_nb = {
+@@ -476,16 +478,18 @@ static struct notifier_block hp_jack_nb = {
+ static int mic_jack_event(struct notifier_block *nb, unsigned long event,
+ 			  void *data)
+ {
++	int ret;
++
+ 	struct snd_soc_jack *jack = (struct snd_soc_jack *)data;
+ 	struct snd_soc_dapm_context *dapm = &jack->card->dapm;
+ 
+ 	if (event & SND_JACK_MICROPHONE)
+ 		/* Disable dmic if microphone is plugged in */
+-		snd_soc_dapm_disable_pin(dapm, "DMIC");
++		ret = snd_soc_dapm_disable_pin(dapm, "DMIC");
+ 	else
+-		snd_soc_dapm_enable_pin(dapm, "DMIC");
++		ret = snd_soc_dapm_enable_pin(dapm, "DMIC");
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static struct notifier_block mic_jack_nb = {
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+2.20.1
+
+
+
