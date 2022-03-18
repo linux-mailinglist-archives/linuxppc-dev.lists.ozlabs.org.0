@@ -1,45 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41834DD902
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 12:33:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE2B4DD928
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 12:43:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KKhjM4RGBz3bdl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 22:33:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KKhwN0PfMz3bXj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Mar 2022 22:43:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iouByIow;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=iouByIow; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KKhhs2bNbz3069
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 22:33:17 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 6049EB8219E;
- Fri, 18 Mar 2022 11:33:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81840C340E8;
- Fri, 18 Mar 2022 11:33:04 +0000 (UTC)
-Date: Fri, 18 Mar 2022 11:33:00 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v1 4/7] arm64/pgtable: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-Message-ID: <YjRt7DqDFJRZA7Gt@arm.com>
-References: <20220315141837.137118-1-david@redhat.com>
- <20220315141837.137118-5-david@redhat.com>
- <YjIr9f9qaz4xITVd@arm.com>
- <c3d39666-52ae-42ba-eaa2-7a0ca489f766@redhat.com>
- <YjN2qsXkmlEUTg4u@arm.com>
- <8989a07b-3a5b-0c81-983f-b35403d19579@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KKhvj0x9hz3069
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 22:42:40 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22I8Gk00009380; 
+ Fri, 18 Mar 2022 11:42:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=etN1PDHz/2z4Sz/gbJNqm+0duzQA2/2HC6BdCXipIGM=;
+ b=iouByIowKClLcp2sjbCcOAcBjOO09vWASv4XNIygZl6tPKex/48hDjtZIyewM4OetgH8
+ jozKoPv2GuUaahjAd3XMRd1AzvaKAhonOmlUX4qn255AEQsSGjQkdyMYXFhFNZKyKdtZ
+ QJGOasYedz/cMSfNxBB9LPFIEEQruV/838rTsUYEtjO0K4Z7yaTE35kAimzCKB4yH3lJ
+ IYgzdlhmI8J28hWXlNKL7rZTQtV49DMh2SCs2VJW0mgrZq/KyU7NekGU7iUwbFWJRGcF
+ j+dy7s1LarmGc1oZqppYVMYgd4coTfYEBN0jMK+8a4ddoU/6H5ioM5KTwdKfTQ5ox070 jg== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3ev10dc9d4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Mar 2022 11:41:59 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22IBXO8O030585;
+ Fri, 18 Mar 2022 11:41:58 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03fra.de.ibm.com with ESMTP id 3erk58ue5w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 18 Mar 2022 11:41:57 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22IBfsOI49349100
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 18 Mar 2022 11:41:54 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7A6D95204F;
+ Fri, 18 Mar 2022 11:41:54 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
+ [9.43.108.37])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E234C5204E;
+ Fri, 18 Mar 2022 11:41:48 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-next@vger.kernel.org,
+ peterz@infradead.org, dan.j.williams@intel.com, ira.weiny@intel.com,
+ vishal.l.verma@intel.com, sfr@canb.auug.org.au
+Subject: [PATCH 1/2] drivers/nvdimm: Fix build failure when CONFIG_PERF_EVENTS
+ is not set
+Date: Fri, 18 Mar 2022 17:11:32 +0530
+Message-Id: <20220318114133.113627-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: v-BlhMt60iwjTiL1t2iLUciFcC3xcbsO
+X-Proofpoint-GUID: v-BlhMt60iwjTiL1t2iLUciFcC3xcbsO
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8989a07b-3a5b-0c81-983f-b35403d19579@redhat.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-18_08,2022-03-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 mlxlogscore=999 suspectscore=0 phishscore=0
+ adultscore=0 spamscore=0 priorityscore=1501 clxscore=1011 bulkscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203180064
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,80 +99,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Jan Kara <jack@suse.cz>, Yang Shi <shy828301@gmail.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
- Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
- Donald Dutile <ddutile@redhat.com>, Liang Zhang <zhangliang5@huawei.com>,
- Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Paul Mackerras <paulus@samba.org>, Andrea Arcangeli <aarcange@redhat.com>,
- linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
- Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
- Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
- Jason Gunthorpe <jgg@nvidia.com>, David Rientjes <rientjes@google.com>,
- Pedro Gomes <pedrodemargomes@gmail.com>, Jann Horn <jannh@google.com>,
- John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
- Shakeel Butt <shakeelb@google.com>, Oleg Nesterov <oleg@redhat.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Oded Gabbay <oded.gabbay@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Nadav Amit <namit@vmware.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: santosh@fossix.org, maddy@linux.ibm.com, kernel test robot <lkp@intel.com>,
+ rnsastry@linux.ibm.com, aneesh.kumar@linux.ibm.com, linux-mm@kvack.org,
+ atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, vaibhav@linux.ibm.com,
+ tglx@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 18, 2022 at 10:59:10AM +0100, David Hildenbrand wrote:
-> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
-> index b1e1b74d993c..fd6ddf14c190 100644
-> --- a/arch/arm64/include/asm/pgtable-prot.h
-> +++ b/arch/arm64/include/asm/pgtable-prot.h
-> @@ -14,6 +14,7 @@
->   * Software defined PTE bits definition.
->   */
->  #define PTE_WRITE		(PTE_DBM)		 /* same as DBM (51) */
-> +#define PTE_SWP_EXCLUSIVE	(PTE_TABLE_BIT)		 /* only for swp ptes */
->  #define PTE_DIRTY		(_AT(pteval_t, 1) << 55)
->  #define PTE_SPECIAL		(_AT(pteval_t, 1) << 56)
->  #define PTE_DEVMAP		(_AT(pteval_t, 1) << 57)
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 94e147e5456c..c78994073cd0 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -402,6 +402,22 @@ static inline pgprot_t mk_pmd_sect_prot(pgprot_t prot)
->  	return __pgprot((pgprot_val(prot) & ~PMD_TABLE_BIT) | PMD_TYPE_SECT);
->  }
->  
-> +#define __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-> +static inline pte_t pte_swp_mkexclusive(pte_t pte)
-> +{
-> +	return set_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
-> +}
-> +
-> +static inline int pte_swp_exclusive(pte_t pte)
-> +{
-> +	return pte_val(pte) & PTE_SWP_EXCLUSIVE;
-> +}
-> +
-> +static inline pte_t pte_swp_clear_exclusive(pte_t pte)
-> +{
-> +	return clear_pte_bit(pte, __pgprot(PTE_SWP_EXCLUSIVE));
-> +}
-> +
->  #ifdef CONFIG_NUMA_BALANCING
->  /*
->   * See the comment in include/linux/pgtable.h
-> @@ -908,7 +924,8 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
->  
->  /*
->   * Encode and decode a swap entry:
-> - *	bits 0-1:	present (must be zero)
-> + *	bits 0:		present (must be zero)
-> + *	bits 1:		remember PG_anon_exclusive
+The following build failure occures when CONFIG_PERF_EVENTS is not set
+as generic pmu functions are not visible in that scenario.
 
-It looks fine to me.
+|-- s390-randconfig-r044-20220313
+|   |-- nd_perf.c:(.text):undefined-reference-to-perf_pmu_migrate_context
+|   |-- nd_perf.c:(.text):undefined-reference-to-perf_pmu_register
+|   `-- nd_perf.c:(.text):undefined-reference-to-perf_pmu_unregister
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Similar build failure in nds32 architecture:
+nd_perf.c:(.text+0x21e): undefined reference to `perf_pmu_migrate_context'
+nd_perf.c:(.text+0x434): undefined reference to `perf_pmu_register'
+nd_perf.c:(.text+0x57c): undefined reference to `perf_pmu_unregister'
+
+Fix this issue by adding check for CONFIG_PERF_EVENTS config option
+and disabling the nvdimm perf interface incase this config is not set.
+
+Also removed function declaration of perf_pmu_migrate_context,
+perf_pmu_register, perf_pmu_unregister functions from nd.h as these are
+common pmu functions which are part of perf_event.h and since we
+are disabling nvdimm perf interface incase CONFIG_PERF_EVENTS option
+is not set, we not need to declare them in nd.h
+
+Fixes: 0fab1ba6ad6b ("drivers/nvdimm: Add perf interface to expose
+nvdimm performance stats") (Commit id based on linux-next tree)
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Link: https://lore.kernel.org/all/62317124.YBQFU33+s%2FwdvWGj%25lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+---
+ drivers/nvdimm/Makefile | 2 +-
+ include/linux/nd.h      | 7 ++++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+---
+- This fix patch changes are added and tested on top of linux-next tree
+  on the 'next-20220315' branch.
+---
+diff --git a/drivers/nvdimm/Makefile b/drivers/nvdimm/Makefile
+index 3fb806748716..ba0296dca9db 100644
+--- a/drivers/nvdimm/Makefile
++++ b/drivers/nvdimm/Makefile
+@@ -15,7 +15,7 @@ nd_e820-y := e820.o
+ libnvdimm-y := core.o
+ libnvdimm-y += bus.o
+ libnvdimm-y += dimm_devs.o
+-libnvdimm-y += nd_perf.o
++libnvdimm-$(CONFIG_PERF_EVENTS) += nd_perf.o
+ libnvdimm-y += dimm.o
+ libnvdimm-y += region_devs.o
+ libnvdimm-y += region.o
+diff --git a/include/linux/nd.h b/include/linux/nd.h
+index 7b2ccbdc1cbc..a4265eaf5ae8 100644
+--- a/include/linux/nd.h
++++ b/include/linux/nd.h
+@@ -8,8 +8,10 @@
+ #include <linux/ndctl.h>
+ #include <linux/device.h>
+ #include <linux/badblocks.h>
++#ifdef CONFIG_PERF_EVENTS
+ #include <linux/perf_event.h>
+ #include <linux/platform_device.h>
++#endif
+ 
+ enum nvdimm_event {
+ 	NVDIMM_REVALIDATE_POISON,
+@@ -25,6 +27,7 @@ enum nvdimm_claim_class {
+ 	NVDIMM_CCLASS_UNKNOWN,
+ };
+ 
++#ifdef CONFIG_PERF_EVENTS
+ #define NVDIMM_EVENT_VAR(_id)  event_attr_##_id
+ #define NVDIMM_EVENT_PTR(_id)  (&event_attr_##_id.attr.attr)
+ 
+@@ -63,9 +66,7 @@ extern ssize_t nvdimm_events_sysfs_show(struct device *dev,
+ 
+ int register_nvdimm_pmu(struct nvdimm_pmu *nvdimm, struct platform_device *pdev);
+ void unregister_nvdimm_pmu(struct nvdimm_pmu *nd_pmu);
+-void perf_pmu_migrate_context(struct pmu *pmu, int src_cpu, int dst_cpu);
+-int perf_pmu_register(struct pmu *pmu, const char *name, int type);
+-void perf_pmu_unregister(struct pmu *pmu);
++#endif
+ 
+ struct nd_device_driver {
+ 	struct device_driver drv;
+-- 
+2.31.1
+
