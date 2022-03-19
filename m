@@ -1,100 +1,111 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9F84DE741
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 10:29:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10ABD4DE793
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 12:18:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KLFv555SGz3bN8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 20:29:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KLJJx69slz3bZ7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 22:18:09 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Cxw9Ivzh;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EqQK3mjv;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EqQK3mjv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Cxw9Ivzh; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=EqQK3mjv; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=EqQK3mjv; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KLFtL0tSrz3000
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 20:28:25 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22J359JI016482; 
- Sat, 19 Mar 2022 09:28:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : content-type : mime-version :
- content-transfer-encoding; s=pp1;
- bh=RvyCl5Cukb6dY9JmjqKiY5L9lFuEK/A9rxhkWqs2KZY=;
- b=Cxw9IvzhtiNGjH1QYMulBLfb+9GAyr5soDSOuQp+1s5QWEQ829oDG7CgLai7xVjLlObQ
- 7ZFeb8/64YZ/+VFcsNgA+2o4VXluAI+gMJ4/OeVze7/kP6NU64vzna+PWuDkoKeHxIy8
- O3GoQNIyQ5swSIYMTRwFtHBMY0mA3m/zytROkWm9dUlTOpPYY5wGt385wF85RjZQWl0/
- X6Or0Eq+e3hlapTsVSXvi3uBaYKjxN9qwpJINI3BUXRPGaudJcJa58FGA8XYdjc/ikgS
- qeGd0PkqIJGa7I/Zqb10zu3xrKb0QYwLi0x55hFG/E+D26tvOzm7ofwiLJQM/sJZHB1W Zg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ew6y63q6e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 19 Mar 2022 09:28:17 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22J9SHvR021279;
- Sat, 19 Mar 2022 09:28:17 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3ew6y63q68-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 19 Mar 2022 09:28:17 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22J9SAA7001563;
- Sat, 19 Mar 2022 09:28:16 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma04wdc.us.ibm.com with ESMTP id 3ew6t91fc0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 19 Mar 2022 09:28:15 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 22J9SCNl36897150
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 19 Mar 2022 09:28:12 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C121678067;
- Sat, 19 Mar 2022 09:28:12 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 228A078064;
- Sat, 19 Mar 2022 09:28:11 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.160.14.140])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sat, 19 Mar 2022 09:28:10 +0000 (GMT)
-Message-ID: <76d156f8af1e03cc09369d68e0bfad0c40031bcc.camel@linux.ibm.com>
-Subject: [PATCH] powerpc/pseries/vas: Use QoS credits from the userspace
-From: Haren Myneni <haren@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
- nathanl@linux.ibm.com
-Date: Sat, 19 Mar 2022 02:28:09 -0700
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KLJJ94qkzz3089
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 22:17:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1647688642;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=h01om2OJNg7UN6xR5wRvwatJof/v6Qj0aJDQ8nw06cE=;
+ b=EqQK3mjvMALifaDE4O5hPUmLxr5k7qOqzDeogrbUnf6ytlzB+PGAU9eyybDXrayzFZx4Fm
+ O8hQbl8mtQhw4j/Mcmv5pGVYcARJtyrN/4DfDxKIRWVyU0Hynk9IZC1xkl+JyMgMefny/s
+ AMPLgzBBAhMD0d0sy+6Dc46SpbeZSFY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1647688642;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=h01om2OJNg7UN6xR5wRvwatJof/v6Qj0aJDQ8nw06cE=;
+ b=EqQK3mjvMALifaDE4O5hPUmLxr5k7qOqzDeogrbUnf6ytlzB+PGAU9eyybDXrayzFZx4Fm
+ O8hQbl8mtQhw4j/Mcmv5pGVYcARJtyrN/4DfDxKIRWVyU0Hynk9IZC1xkl+JyMgMefny/s
+ AMPLgzBBAhMD0d0sy+6Dc46SpbeZSFY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-642-KoMR8PpFNAGD5kh6Ka6XXw-1; Sat, 19 Mar 2022 07:17:20 -0400
+X-MC-Unique: KoMR8PpFNAGD5kh6Ka6XXw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ m34-20020a05600c3b2200b0038115c73361so4040466wms.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 04:17:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent
+ :content-language:to:cc:references:from:organization:subject
+ :in-reply-to:content-transfer-encoding;
+ bh=h01om2OJNg7UN6xR5wRvwatJof/v6Qj0aJDQ8nw06cE=;
+ b=HHNC58dvw8H+Luh9KO0B+mf/EOZO546OPrmjl02K051AZCzI1WpWeDa32Uh2GKdGO8
+ jF5K9cTnaya8FPE2cE+o3YaYUu1ZJWs0k7AnrkmPX2i5jQUSzndZGGRx+vZY8DVgAFBR
+ grhXauKmxfEm1xwKBr0mDAXAweXcTveL42+EEMIrSkC8vcDP17W4ZsS4bUfmnONIllOu
+ yWUaq7bvseKf9FpleTsWyDj3i0IEvJMn9wKwkZpbyYEyH1Ct+1ENayedExI6BRZ1TlX3
+ sfuAzmt9oms3p/3+mtk0aKf8knJJcqQNOR9/hgrDytRVLopt73iuejCb34q01IctHUO0
+ MmQw==
+X-Gm-Message-State: AOAM533uClYLokdEWxLVe7sGG3gMuVKebypE/pwawQe9a5CYWh7w/DWs
+ 2nzV29xZJ4OVHaXLVQCBV6fp44p/TJ/LK37/ZP6/ly1n3b9lA66Gbq9puSAV8+nNXgtXgZuWckh
+ BRhp0kg1sbVuv8eJzgzfEBauNGw==
+X-Received: by 2002:a05:600c:3785:b0:38c:9b55:a477 with SMTP id
+ o5-20020a05600c378500b0038c9b55a477mr214114wmr.164.1647688639518; 
+ Sat, 19 Mar 2022 04:17:19 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwXQYHzmUknpl8dPLzijazZTS08+rGUI4YNRhcnL/au2TdAywuFEvKBekLN0RmMcXEBv9O0Qg==
+X-Received: by 2002:a05:600c:3785:b0:38c:9b55:a477 with SMTP id
+ o5-20020a05600c378500b0038c9b55a477mr214049wmr.164.1647688639186; 
+ Sat, 19 Mar 2022 04:17:19 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f24:9200:124e:f0bf:6f8c:cbd8?
+ (p200300d82f249200124ef0bf6f8ccbd8.dip0.t-ipconnect.de.
+ [2003:d8:2f24:9200:124e:f0bf:6f8c:cbd8])
+ by smtp.gmail.com with ESMTPSA id
+ n15-20020a05600c4f8f00b003842f011bc5sm12433837wmq.2.2022.03.19.04.17.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 19 Mar 2022 04:17:18 -0700 (PDT)
+Message-ID: <74fdfa8c-abaa-ea48-4b82-6f0023548ead@redhat.com>
+Date: Sat, 19 Mar 2022 12:17:16 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+To: Jason Gunthorpe <jgg@nvidia.com>
+References: <20220315141837.137118-1-david@redhat.com>
+ <20220318234850.GD11336@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v1 0/7] mm: COW fixes part 3: reliable GUP R/W FOLL_GET of
+ anonymous pages
+In-Reply-To: <20220318234850.GD11336@nvidia.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: sKbCq1EgXHqwQsKYTGTrRh1uF96nBpQe
-X-Proofpoint-ORIG-GUID: flhhbjfIb_3-WjeLeRIBytIelwgZnUaP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-19_01,2022-03-15_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- mlxlogscore=999 phishscore=0 clxscore=1015 lowpriorityscore=0
- suspectscore=0 priorityscore=1501 mlxscore=0 adultscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203190058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,155 +117,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: x86@kernel.org, Jan Kara <jack@suse.cz>,
+ Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Donald Dutile <ddutile@redhat.com>, Liang Zhang <zhangliang5@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Paul Mackerras <paulus@samba.org>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ David Rientjes <rientjes@google.com>, Pedro Gomes <pedrodemargomes@gmail.com>,
+ Jann Horn <jannh@google.com>, John Hubbard <jhubbard@nvidia.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Shakeel Butt <shakeelb@google.com>,
+ Oleg Nesterov <oleg@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Oded Gabbay <oded.gabbay@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Nadav Amit <namit@vmware.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 19.03.22 00:48, Jason Gunthorpe wrote:
+> On Tue, Mar 15, 2022 at 03:18:30PM +0100, David Hildenbrand wrote:
+>> This is just the natural follow-up of part 2, that will also further
+>> reduce "wrong COW" on the swapin path, for example, when we cannot remove
+>> a page from the swapcache due to concurrent writeback, or if we have two
+>> threads faulting on the same swapped-out page. Fixing O_DIRECT is just a
+>> nice side-product :)
 
-The user can change the QoS credits dynamically with the
-management console interface which notifies OS with sysfs. After
-returning from the OS interface successfully, the management
-console updates the hypervisor. Since the VAS capabilities in
-the hypervisor is not updated when the OS gets the update,
-the kernel is using the old total credits value from the
-hypervisor. Fix this issue by using the new QoS credits
-from the userspace instead of depending on VAS capabilities
-from the hypervisor.
+Hi Jason,
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/vas-sysfs.c | 19 +++++++++++++-----
- arch/powerpc/platforms/pseries/vas.c       | 23 +++++++++++-----------
- arch/powerpc/platforms/pseries/vas.h       |  2 +-
- 3 files changed, 27 insertions(+), 17 deletions(-)
+thanks or the review!
 
-diff --git a/arch/powerpc/platforms/pseries/vas-sysfs.c b/arch/powerpc/platforms/pseries/vas-sysfs.c
-index 4a7fcde5afc0..f3c58c309cff 100644
---- a/arch/powerpc/platforms/pseries/vas-sysfs.c
-+++ b/arch/powerpc/platforms/pseries/vas-sysfs.c
-@@ -27,22 +27,31 @@ struct vas_caps_entry {
- 
- /*
-  * This function is used to get the notification from the drmgr when
-- * QoS credits are changed. Though receiving the target total QoS
-- * credits here, get the official QoS capabilities from the hypervisor.
-+ * QoS credits are changed.
-  */
--static ssize_t update_total_credits_trigger(struct vas_cop_feat_caps *caps,
-+static ssize_t update_total_credits_store(struct vas_cop_feat_caps *caps,
- 						const char *buf, size_t count)
- {
- 	int err;
- 	u16 creds;
- 
- 	err = kstrtou16(buf, 0, &creds);
-+	/*
-+	 * The user space interface from the management console
-+	 * notifies OS with the new QoS credits and then the
-+	 * hypervisor. So OS has to use this new credits value
-+	 * and reconfigure VAS windows (close or reopen depends
-+	 * on the credits available) instead of depending on VAS
-+	 * QoS capabilities from the hypervisor.
-+	 */
- 	if (!err)
--		err = vas_reconfig_capabilties(caps->win_type);
-+		err = vas_reconfig_capabilties(caps->win_type, creds);
- 
- 	if (err)
- 		return -EINVAL;
- 
-+	pr_info("Set QoS total credits %u\n", creds);
-+
- 	return count;
- }
- 
-@@ -92,7 +101,7 @@ VAS_ATTR_RO(nr_total_credits);
- VAS_ATTR_RO(nr_used_credits);
- 
- static struct vas_sysfs_entry update_total_credits_attribute =
--	__ATTR(update_total_credits, 0200, NULL, update_total_credits_trigger);
-+	__ATTR(update_total_credits, 0200, NULL, update_total_credits_store);
- 
- static struct attribute *vas_def_capab_attrs[] = {
- 	&nr_total_credits_attribute.attr,
-diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
-index 1f59d78c77a1..ec643bbdb67f 100644
---- a/arch/powerpc/platforms/pseries/vas.c
-+++ b/arch/powerpc/platforms/pseries/vas.c
-@@ -779,10 +779,10 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
-  * changes. Reconfig window configurations based on the credits
-  * availability from this new capabilities.
-  */
--int vas_reconfig_capabilties(u8 type)
-+int vas_reconfig_capabilties(u8 type, int new_nr_creds)
- {
- 	struct vas_cop_feat_caps *caps;
--	int old_nr_creds, new_nr_creds;
-+	int old_nr_creds;
- 	struct vas_caps *vcaps;
- 	int rc = 0, nr_active_wins;
- 
-@@ -795,12 +795,6 @@ int vas_reconfig_capabilties(u8 type)
- 	caps = &vcaps->caps;
- 
- 	mutex_lock(&vas_pseries_mutex);
--	rc = h_query_vas_capabilities(H_QUERY_VAS_CAPABILITIES, vcaps->feat,
--				      (u64)virt_to_phys(&hv_cop_caps));
--	if (rc)
--		goto out;
--
--	new_nr_creds = be16_to_cpu(hv_cop_caps.target_lpar_creds);
- 
- 	old_nr_creds = atomic_read(&caps->nr_total_credits);
- 
-@@ -832,7 +826,6 @@ int vas_reconfig_capabilties(u8 type)
- 					false);
- 	}
- 
--out:
- 	mutex_unlock(&vas_pseries_mutex);
- 	return rc;
- }
-@@ -850,7 +843,7 @@ static int pseries_vas_notifier(struct notifier_block *nb,
- 	struct of_reconfig_data *rd = data;
- 	struct device_node *dn = rd->dn;
- 	const __be32 *intserv = NULL;
--	int len, rc = 0;
-+	int new_nr_creds, len, rc = 0;
- 
- 	if ((action == OF_RECONFIG_ATTACH_NODE) ||
- 		(action == OF_RECONFIG_DETACH_NODE))
-@@ -862,7 +855,15 @@ static int pseries_vas_notifier(struct notifier_block *nb,
- 	if (!intserv)
- 		return NOTIFY_OK;
- 
--	rc = vas_reconfig_capabilties(VAS_GZIP_DEF_FEAT_TYPE);
-+	rc = h_query_vas_capabilities(H_QUERY_VAS_CAPABILITIES,
-+					vascaps[VAS_GZIP_DEF_FEAT_TYPE].feat,
-+					(u64)virt_to_phys(&hv_cop_caps));
-+	if (!rc) {
-+		new_nr_creds = be16_to_cpu(hv_cop_caps.target_lpar_creds);
-+		rc = vas_reconfig_capabilties(VAS_GZIP_DEF_FEAT_TYPE,
-+						new_nr_creds);
-+	}
-+
- 	if (rc)
- 		pr_err("Failed reconfig VAS capabilities with DLPAR\n");
- 
-diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
-index 34177881e998..333ffa2f9f42 100644
---- a/arch/powerpc/platforms/pseries/vas.h
-+++ b/arch/powerpc/platforms/pseries/vas.h
-@@ -135,7 +135,7 @@ struct pseries_vas_window {
- };
- 
- int sysfs_add_vas_caps(struct vas_cop_feat_caps *caps);
--int vas_reconfig_capabilties(u8 type);
-+int vas_reconfig_capabilties(u8 type, int new_nr_creds);
- int __init sysfs_pseries_vas_init(struct vas_all_caps *vas_caps);
- 
- #ifdef CONFIG_PPC_VAS
+> 
+> I know I would benefit alot from a description of the swap specific
+> issue a bit more. Most of this message talks about clear_refs which I
+> do understand a bit better.
+
+Patch #1 contains some additional information. In general, it's the same
+issue as with any other mechanism that could get the page mapped R/O
+while there is a FOLL_GET | FOLL_WRITE reference to it --  for example,
+DMA to that page as happens with our O_DIRECT reproducer.
+
+Part 2 essentially fixed the other cases (i.e., clear_refs), but the
+remaining swapout+refault from swapcache case is handled in this series.
+
+> 
+> Is this talking about what happens after a page gets swapped back in?
+> eg the exclusive bit is missing when the page is recreated?
+
+Right, try_to_unmap() was the last remaining case where we'd have lost
+the exclusivity information -- it wasn't required for reliable GUP pins
+in part 2.
+
+Here is what happens without PG_anon_exclusive:
+
+1. The application uses parts of an anonymous base page for direct I/O,
+let's assume the first 512 bytes of page.
+
+fd = open(filename, O_DIRECT| ...);
+pread(fd, page, 512, 0);
+
+O_DIRECT will take a FOLL_GET|FOLL_WRITE reference on the page
+
+2. Reclaim kicks in and wants to swapout the page -- mm/vmscan.c
+
+shrink_page_list() first adds the page to the swapcache and then unmaps
+it via try_to_unmap().
+
+After the page was successfully unmapped, pageout() will start
+triggering writeback but will realize that there are additional
+references on the page (via is_page_cache_freeable()) and fail.
+
+3. The application uses unrelated parts of the page for other purposes
+while the DMA is not completed, e.g., doing a a simple
+
+page[4095]++;
+
+The read access will fault in the page readable from the swap cache in
+do_swap_page(). The write access will trigger our COW fault handler. As
+we have an additional reference on the page, we will create a copy and
+map it into out page table. At this point, the page table and the GUP
+reference are out of sync.
+
+4. O_DIRECT completes
+
+The read targets the page that is no longer referenced in the page
+tables. For the application, it looks like the read() never happened, as
+we lost our DMA read to our page.
+
+
+With PG_anon_exclusive from series part 2, we don't remember exclusivity
+information in try_to_unmap() yet. do_swap_page() cannot restore it as
+it has to assume the page is possibly shared.
+
+With this series, we remember exclusivity information in try_to_unmap()
+in the SWP PTE. do_swap_page() can restore it. Consequently, our COW
+fault handler won't create a wrong copy and we won't go out of sync
+between GUP and the page mapped into the page table.
+
+
+Hope that helps!
+
 -- 
-2.27.0
+Thanks,
 
+David / dhildenb
 
