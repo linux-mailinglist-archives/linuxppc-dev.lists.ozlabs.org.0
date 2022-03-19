@@ -2,54 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8357A4DE905
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 16:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 291DA4DEAB0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 21:40:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KLPrg1bq4z3bTD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Mar 2022 02:27:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KLXnc60BRz3bZl
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Mar 2022 07:40:20 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=S5vmWGPu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gsE2X3NO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=gsE2X3NO; dkim-atps=neutral
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KLPqv41g3z2yP9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Mar 2022 02:26:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
- :Reply-To:Content-ID:Content-Description;
- bh=rs69zP4MkVN9GKX0WlKSGLAUyjwHvCaUIqkkCrFXSMo=; b=S5vmWGPu750bXYHH4SggbfzGxQ
- nzewVVWRmBFcM3WTsVhoviDtMGSgZ5cTnboni5JJPQhcipXEIrY/6j3haJbN/I2aM7MJFFvnR2Vez
- zrqKxt/8n3y13pE+USi1uKJlv+RyPDetTzWN2yxFwArL4LTsq3hFZdUYxpvxBIkQYIzY+6eFFIyDW
- JSleUkW6SwQG4aQKNZdHH3Zp73RjrUBAmJcYpUjkdM66ZKZKO4EfYCtk8fxqmPZmRakiuERRACZbv
- nMzGWjXeCwjphSPkDrES9kkJHR+Fsr8q4JdUJu4Q0XqlamEJzE59NHTo38XOTGOC9REZNVxR1zBT7
- pL6ExI0g==;
-Received: from [2601:1c0:6280:3f0::aa0b]
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nVayP-008ujB-M1; Sat, 19 Mar 2022 15:26:33 +0000
-Message-ID: <d2d05776-c285-b174-6906-f71c5831fbc4@infradead.org>
-Date: Sat, 19 Mar 2022 08:26:28 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KLXmz13Vyz2y6K
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Mar 2022 07:39:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1647722387; x=1679258387;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=SNTO9SP31MJ3IfcBEllmZc0kH+tF2DmXOvnp/cl1uDA=;
+ b=gsE2X3NObX3vwv/d0Ad+Krp/RICUqsg2jn6Z4ie+LZnp8K2GuROKcOwI
+ Wek0FfDW1Q5UCxJwwlrkL0aHIOtG6qiIdTlOFafoOqH3pkDx/ze+SQfPE
+ V22nUN+VGHuGJaK4fflByp1F2MAZcZ1Ba5BX+cgKN5E1+4DaMKGe2oPdP
+ cLcPh5Cq03eq8eGW1IH77z0nzrjjrhnhB/8Y8Ud7OZatFRR68p+/6Vptt
+ ozKpCMpn2a64n57xThs8NhlJt69DTNhvy9WUYgT4+5ffWBtJyw4AzbujN
+ 7J4CrCO/xxQHMuAh+9XDzmAoEU0DECT2bCqX1ITv8BsdNcn2XslznqR1K Q==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10291"; a="343760784"
+X-IronPort-AV: E=Sophos;i="5.90,195,1643702400"; d="scan'208";a="343760784"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2022 13:38:41 -0700
+X-IronPort-AV: E=Sophos;i="5.90,195,1643702400"; d="scan'208";a="542656723"
+Received: from llscottx-mobl1.amr.corp.intel.com (HELO [10.209.82.139])
+ ([10.209.82.139])
+ by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Mar 2022 13:38:39 -0700
+Message-ID: <427f19c6-32f0-684e-5fdd-2e5ed192b71d@linux.intel.com>
+Date: Sat, 19 Mar 2022 13:38:39 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] macintosh/via-pmu: Fix compiler warnings when
- CONFIG_PROC_FS is disabled
+ Firefox/91.0 Thunderbird/91.5.0
+Subject: Re: [PATCH v2 1/2] PCI/AER: Disable AER service when link is in L2/L3
+ ready, L2 and L3 state
 Content-Language: en-US
-To: Finn Thain <fthain@linux-m68k.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-References: <650f5577599a701fdd632cdd469a9cea9788cdf3.1647674431.git.fthain@linux-m68k.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <650f5577599a701fdd632cdd469a9cea9788cdf3.1647674431.git.fthain@linux-m68k.org>
-Content-Type: text/plain; charset=UTF-8
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>, bhelgaas@google.com
+References: <20220127025418.1989642-1-kai.heng.feng@canonical.com>
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20220127025418.1989642-1-kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,152 +71,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Joerg Roedel <jroedel@suse.de>, koba.ko@canonical.com,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Lalithambika Krishnakumar <lalithambika.krishnakumar@intel.com>,
+ Oliver O'Halloran <oohall@gmail.com>, mika.westerberg@linux.intel.com,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 3/19/22 00:20, Finn Thain wrote:
-> drivers/macintosh/via-pmu.c:897:12: warning: 'pmu_battery_proc_show' defined but not used [-Wunused-function]
->  static int pmu_battery_proc_show(struct seq_file *m, void *v)
->             ^~~~~~~~~~~~~~~~~~~~~
-> drivers/macintosh/via-pmu.c:871:12: warning: 'pmu_irqstats_proc_show' defined but not used [-Wunused-function]
->  static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
->             ^~~~~~~~~~~~~~~~~~~~~~
-> drivers/macintosh/via-pmu.c:860:12: warning: 'pmu_info_proc_show' defined but not used [-Wunused-function]
->  static int pmu_info_proc_show(struct seq_file *m, void *v)
->             ^~~~~~~~~~~~~~~~~~
+On 1/26/22 6:54 PM, Kai-Heng Feng wrote:
+> Commit 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in
+> hint") enables ACS, and some platforms lose its NVMe after resume from
+
+Why enabling ACS makes platform lose NVMe? Can you add more details
+about the problem?
+
+> S3:
+> [   50.947816] pcieport 0000:00:1b.0: DPC: containment event, status:0x1f01 source:0x0000
+> [   50.947817] pcieport 0000:00:1b.0: DPC: unmasked uncorrectable error detected
+> [   50.947829] pcieport 0000:00:1b.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Receiver ID)
+> [   50.947830] pcieport 0000:00:1b.0:   device [8086:06ac] error status/mask=00200000/00010000
+> [   50.947831] pcieport 0000:00:1b.0:    [21] ACSViol                (First)
+> [   50.947841] pcieport 0000:00:1b.0: AER: broadcast error_detected message
+> [   50.947843] nvme nvme0: frozen state error detected, reset controller
 > 
-> Rearrange some code and add some #ifdefs to avoid unused code warnings
-> when CONFIG_PROC_FS is disabled.
+> It happens right after ACS gets enabled during resume.
 > 
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+> There's another case, when Thunderbolt reaches D3cold:
+> [   30.100211] pcieport 0000:00:1d.0: AER: Uncorrected (Non-Fatal) error received: 0000:00:1d.0
+> [   30.100251] pcieport 0000:00:1d.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
+> [   30.100256] pcieport 0000:00:1d.0:   device [8086:7ab0] error status/mask=00100000/00004000
+> [   30.100262] pcieport 0000:00:1d.0:    [20] UnsupReq               (First)
+> [   30.100267] pcieport 0000:00:1d.0: AER:   TLP Header: 34000000 08000052 00000000 00000000
+> [   30.100372] thunderbolt 0000:0a:00.0: AER: can't recover (no error_detected callback)
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
+no callback message means one or more devices in the given port does not
+support error handler. How is this related to ACS?
 
-Thanks.
-
+> [   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
+> [   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
+> 
+> So disable AER service to avoid the noises from turning power rails
+> on/off when the device is in low power states (D3hot and D3cold), as
+> PCIe spec "5.2 Link State Power Management" states that TLP and DLLP
+> transmission is disabled for a Link in L2/L3 Ready (D3hot), L2 (D3cold
+> with aux power) and L3 (D3cold).
+> 
+> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=209149
+> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215453
+> Fixes: 50310600ebda ("iommu/vt-d: Enable PCI ACS for platform opt in hint")
+> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 > ---
->  drivers/macintosh/via-pmu.c | 61 ++++++++++++++++++++++---------------
->  1 file changed, 36 insertions(+), 25 deletions(-)
+> v2:
+>   - Wording change.
 > 
-> diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
-> index 55afa6dfa263..5ffebf29b630 100644
-> --- a/drivers/macintosh/via-pmu.c
-> +++ b/drivers/macintosh/via-pmu.c
-> @@ -173,10 +173,15 @@ static unsigned long async_req_locks;
->  #define NUM_IRQ_STATS 13
->  static unsigned int pmu_irq_stats[NUM_IRQ_STATS];
->  
-> +#ifdef CONFIG_PROC_FS
->  static struct proc_dir_entry *proc_pmu_root;
->  static struct proc_dir_entry *proc_pmu_info;
->  static struct proc_dir_entry *proc_pmu_irqstats;
->  static struct proc_dir_entry *proc_pmu_options;
-> +static struct proc_dir_entry *proc_pmu_batt[PMU_MAX_BATTERIES];
-> +static void pmu_proc_setup(void);
-> +#endif
-> +
->  static int option_server_mode;
->  
->  int pmu_battery_count;
-> @@ -185,7 +190,6 @@ unsigned int pmu_power_flags = PMU_PWR_AC_PRESENT;
->  struct pmu_battery_info pmu_batteries[PMU_MAX_BATTERIES];
->  static int query_batt_timer = BATTERY_POLLING_COUNT;
->  static struct adb_request batt_req;
-> -static struct proc_dir_entry *proc_pmu_batt[PMU_MAX_BATTERIES];
->  
->  int asleep;
->  
-> @@ -204,11 +208,7 @@ static int init_pmu(void);
->  static void pmu_start(void);
->  static irqreturn_t via_pmu_interrupt(int irq, void *arg);
->  static irqreturn_t gpio1_interrupt(int irq, void *arg);
-> -static int pmu_info_proc_show(struct seq_file *m, void *v);
-> -static int pmu_irqstats_proc_show(struct seq_file *m, void *v);
-> -static int pmu_battery_proc_show(struct seq_file *m, void *v);
->  static void pmu_pass_intr(unsigned char *data, int len);
-> -static const struct proc_ops pmu_options_proc_ops;
->  
->  #ifdef CONFIG_ADB
->  const struct adb_driver via_pmu_driver = {
-> @@ -551,26 +551,9 @@ static int __init via_pmu_dev_init(void)
->  	}
->  #endif /* CONFIG_PPC32 */
->  
-> -	/* Create /proc/pmu */
-> -	proc_pmu_root = proc_mkdir("pmu", NULL);
-> -	if (proc_pmu_root) {
-> -		long i;
-> -
-> -		for (i=0; i<pmu_battery_count; i++) {
-> -			char title[16];
-> -			sprintf(title, "battery_%ld", i);
-> -			proc_pmu_batt[i] = proc_create_single_data(title, 0,
-> -					proc_pmu_root, pmu_battery_proc_show,
-> -					(void *)i);
-> -		}
-> -
-> -		proc_pmu_info = proc_create_single("info", 0, proc_pmu_root,
-> -				pmu_info_proc_show);
-> -		proc_pmu_irqstats = proc_create_single("interrupts", 0,
-> -				proc_pmu_root, pmu_irqstats_proc_show);
-> -		proc_pmu_options = proc_create("options", 0600, proc_pmu_root,
-> -						&pmu_options_proc_ops);
-> -	}
-> +#ifdef CONFIG_PROC_FS
-> +	pmu_proc_setup();
-> +#endif
->  	return 0;
->  }
->  
-> @@ -857,6 +840,7 @@ query_battery_state(void)
->  			2, PMU_SMART_BATTERY_STATE, pmu_cur_battery+1);
->  }
->  
-> +#ifdef CONFIG_PROC_FS
->  static int pmu_info_proc_show(struct seq_file *m, void *v)
->  {
->  	seq_printf(m, "PMU driver version     : %d\n", PMU_DRIVER_VERSION);
-> @@ -978,6 +962,33 @@ static const struct proc_ops pmu_options_proc_ops = {
->  	.proc_write	= pmu_options_proc_write,
->  };
->  
-> +static void pmu_proc_setup(void)
+>   drivers/pci/pcie/aer.c | 31 +++++++++++++++++++++++++------
+>   1 file changed, 25 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 9fa1f97e5b270..e4e9d4a3098d7 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -1367,6 +1367,22 @@ static int aer_probe(struct pcie_device *dev)
+>   	return 0;
+>   }
+>   
+> +static int aer_suspend(struct pcie_device *dev)
 > +{
-> +	long i;
+> +	struct aer_rpc *rpc = get_service_data(dev);
 > +
-> +	/* Create /proc/pmu */
-> +	proc_pmu_root = proc_mkdir("pmu", NULL);
-> +	if (!proc_pmu_root)
-> +		return;
-> +
-> +	for (i = 0; i < pmu_battery_count; i++) {
-> +		char title[16];
-> +
-> +		sprintf(title, "battery_%ld", i);
-> +		proc_pmu_batt[i] =
-> +			proc_create_single_data(title, 0, proc_pmu_root,
-> +						pmu_battery_proc_show, (void *)i);
-> +	}
-> +
-> +	proc_pmu_info = proc_create_single("info", 0, proc_pmu_root,
-> +					   pmu_info_proc_show);
-> +	proc_pmu_irqstats = proc_create_single("interrupts", 0, proc_pmu_root,
-> +					       pmu_irqstats_proc_show);
-> +	proc_pmu_options = proc_create("options", 0600, proc_pmu_root,
-> +				       &pmu_options_proc_ops);
+> +	aer_disable_rootport(rpc);
+> +	return 0;
 > +}
-> +#endif /* CONFIG_PROC_FS */
 > +
->  #ifdef CONFIG_ADB
->  /* Send an ADB command */
->  static int pmu_send_request(struct adb_request *req, int sync)
+> +static int aer_resume(struct pcie_device *dev)
+> +{
+> +	struct aer_rpc *rpc = get_service_data(dev);
+> +
+> +	aer_enable_rootport(rpc);
+> +	return 0;
+> +}
+> +
+>   /**
+>    * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
+>    * @dev: pointer to Root Port, RCEC, or RCiEP
+> @@ -1433,12 +1449,15 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
+>   }
+>   
+>   static struct pcie_port_service_driver aerdriver = {
+> -	.name		= "aer",
+> -	.port_type	= PCIE_ANY_PORT,
+> -	.service	= PCIE_PORT_SERVICE_AER,
+> -
+> -	.probe		= aer_probe,
+> -	.remove		= aer_remove,
+> +	.name			= "aer",
+> +	.port_type		= PCIE_ANY_PORT,
+> +	.service		= PCIE_PORT_SERVICE_AER,
+> +	.probe			= aer_probe,
+> +	.suspend		= aer_suspend,
+> +	.resume			= aer_resume,
+> +	.runtime_suspend	= aer_suspend,
+> +	.runtime_resume		= aer_resume,
+> +	.remove			= aer_remove,
+>   };
+>   
+>   /**
 
 -- 
-~Randy
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
