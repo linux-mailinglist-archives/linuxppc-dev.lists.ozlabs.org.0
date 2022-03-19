@@ -1,61 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBB94DE5E2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 05:03:49 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260504DE5F3
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 05:31:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KL6gj22F7z3bZl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 15:03:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KL7Hg0G9bz3bbh
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 15:31:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WLQ1iRHQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=ihv6lRRb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.helo=wout1-smtp.messagingengine.com (client-ip=64.147.123.24;
+ helo=wout1-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=WLQ1iRHQ; dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=ihv6lRRb; 
+ dkim-atps=neutral
+X-Greylist: delayed 458 seconds by postgrey-1.36 at boromir;
+ Sat, 19 Mar 2022 15:30:53 AEDT
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
+ [64.147.123.24])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KL6g071Dhz30H5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 15:03:03 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1647662589; x=1679198589;
- h=date:from:to:cc:subject:message-id:mime-version:
- content-transfer-encoding;
- bh=Lf0B00rjK6VJXbYOZaLN15Q6E0budQynLuAe7aa0ATs=;
- b=WLQ1iRHQmj9Uw34ld/1yuHjKkvbXIOKo6izvxO8bEhBXNHHfPyd3Lmza
- qRP/ueYSlK46aNawjttF/m7g75HkgUcG6EudaVkVy0fs0EiuY1QKmrMk3
- /91RFT4uNFo0Rv+NgF6QJWcYlbjxJWJ0zL3svNWQDYcMBHkLjI/IDf3cF
- SHa9u3DoDEi2TlHJI8Lt+BI/942Gzcn0c7tKbZ0odVbNaSNSzgV+oaOy2
- vXk+4dq6z8RKjqcjLtbT8hMkDQA4i+w8nkgmqfwygC3GOXVZjtLgJfm2b
- EC/Z2fZly6oFdhmW7lFfyPlYVRcBfP95ur2zeP/xzGvemqm4SV9eb7xZE g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10290"; a="282089321"
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; d="scan'208";a="282089321"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2022 21:02:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; d="scan'208";a="551021835"
-Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
- by fmsmga007.fm.intel.com with ESMTP; 18 Mar 2022 21:01:59 -0700
-Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1nVQHv-000FYh-4w; Sat, 19 Mar 2022 04:01:59 +0000
-Date: Sat, 19 Mar 2022 12:01:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 7e726dd53fdd381a1a2b2dcd7766c66a9684241f
-Message-ID: <6235558e.jFIdilepoD6BnBTV%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KL7H16DYtz30H5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 15:30:52 +1100 (AEDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.west.internal (Postfix) with ESMTP id B33D33200D53;
+ Sat, 19 Mar 2022 00:23:08 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute1.internal (MEProxy); Sat, 19 Mar 2022 00:23:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:date:date:from:from:in-reply-to
+ :message-id:reply-to:sender:subject:subject:to:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=QrAvON
+ OTZWCmMh13WeZL23sVu55xrRfpqIerLSK6XQk=; b=ihv6lRRbOf2WtAhJ2xqH6u
+ ZGRcuWNskZAbYkkp+0kwEBrVVFbdtF6ePJsjstBrnQiiJzN0Kq/LwoXa2xw/7Q1Y
+ qkEwlVzjY3SoYCWn/6FwhxXc4N4YtiJu2APFcML+6v/MdPmjpO86lulvqE8szxXs
+ fcxejzpGRbJ7MRyrt1tNJMkmv+JFVO9EWeTXh743tdutSKy/2d/26ZiL3hmb9B4K
+ LoRw3y7YUuo9tyOfnr+Xru1dGYu7RYA3jZzIw1prrZT6XWGBM8i9A3wg9owoahcM
+ Fi1gJVc6A5uijKmGS4RZQD8Jz4vHSdKMMwjEKocMowpRJRgOBa1jHl6wIP4m1emQ
+ ==
+X-ME-Sender: <xms:q1o1Yvf63xOFrmbpUpCq26Udjr041U1w5pPyfgAGx5K0ajv46Xfixw>
+ <xme:q1o1YlPhgYdQ6kRJK74vOpLjfnJtD2fZWEPnnIPC-YSUURPgI0v3aPCkRTyxy48cn
+ hVAUjg-grQbPXFKSus>
+X-ME-Received: <xmr:q1o1YojaoQyDgKlVesDxkUdoyX-jKL0LNcunEZg7tR9GSiBDZ0IdL_BEycRMVcXG7DitqucsPnQO5Rvti0wOxXuRoK_2hArE-4I>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudefjedgieelucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepvffkhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
+ uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
+ eptdelteekleekkedvueejheekgfdvtdehhefhteeitefhteefgefhudehveevleelnecu
+ vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthhgrih
+ hnsehlihhnuhigqdhmieekkhdrohhrgh
+X-ME-Proxy: <xmx:q1o1Yg-og3VE-hbwSq71tdyzUCSlLj7tEmMXUNeC4ln7d5Lomq0vPw>
+ <xmx:q1o1YrvMI37UWAxwIEOJD2oWeT_2Fr2tBvIUqcAFGLMGFjdT_RmE7A>
+ <xmx:q1o1YvHJeEb5FUo0PmFiQznjUVxUHJ5TlH8S2Dd6RzK8pO_uHVprJw>
+ <xmx:rFo1Yk6Wl_cLD8pvMXnzuxvL0v0qbfFhiJqNqMcRR6_Q1jNSDW9a2A>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 19 Mar 2022 00:23:06 -0400 (EDT)
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Message-Id: <cb1828050f8c9ef801b2bdf79eccd6c52afed26b.1647663509.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH] macintosh/via-pmu: Fix build failure when CONFIG_INPUT is
+ disabled
+Date: Sat, 19 Mar 2022 15:18:29 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,153 +80,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 7e726dd53fdd381a1a2b2dcd7766c66a9684241f  Automatic merge of 'next' into merge (2022-03-15 09:49)
+drivers/macintosh/via-pmu-event.o: In function `via_pmu_event':
+via-pmu-event.c:(.text+0x44): undefined reference to `input_event'
+via-pmu-event.c:(.text+0x68): undefined reference to `input_event'
+via-pmu-event.c:(.text+0x94): undefined reference to `input_event'
+via-pmu-event.c:(.text+0xb8): undefined reference to `input_event'
+drivers/macintosh/via-pmu-event.o: In function `via_pmu_event_init':
+via-pmu-event.c:(.init.text+0x20): undefined reference to `input_allocate_device'
+via-pmu-event.c:(.init.text+0xc4): undefined reference to `input_register_device'
+via-pmu-event.c:(.init.text+0xd4): undefined reference to `input_free_device'
+make[1]: *** [Makefile:1155: vmlinux] Error 1
+make: *** [Makefile:350: __build_one_by_one] Error 2
 
-elapsed time: 944m
+Don't call into the input subsystem unless CONFIG_INPUT is built-in.
 
-configs tested: 125
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-gcc tested configs:
-arm                                 defconfig
-arm                              allmodconfig
-arm                              allyesconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-arm                        mvebu_v7_defconfig
-arm                        mini2440_defconfig
-csky                             alldefconfig
-arm                        multi_v7_defconfig
-arm                          lpd270_defconfig
-mips                     decstation_defconfig
-arm                      footbridge_defconfig
-sh                              ul2_defconfig
-m68k                             allyesconfig
-arm                            qcom_defconfig
-powerpc                mpc7448_hpc2_defconfig
-arc                      axs103_smp_defconfig
-powerpc                   motionpro_defconfig
-arc                 nsimosci_hs_smp_defconfig
-sh                           sh2007_defconfig
-powerpc                        cell_defconfig
-ia64                             alldefconfig
-m68k                       m5208evb_defconfig
-powerpc                        warp_defconfig
-sparc64                             defconfig
-powerpc                      mgcoge_defconfig
-powerpc                     sequoia_defconfig
-mips                         tb0226_defconfig
-powerpc                     ep8248e_defconfig
-powerpc                      pasemi_defconfig
-sh                            titan_defconfig
-arm                  randconfig-c002-20220318
-arm                  randconfig-c002-20220317
-ia64                                defconfig
-ia64                             allmodconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-nds32                             allnoconfig
-nds32                               defconfig
-nios2                            allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-s390                             allyesconfig
-s390                             allmodconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                                defconfig
-i386                             allyesconfig
-i386                              debian-10.3
-i386                   debian-10.3-kselftests
-i386                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-i386                          randconfig-a003
-i386                          randconfig-a001
-i386                          randconfig-a005
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220318
-riscv                randconfig-r042-20220317
-arc                  randconfig-r043-20220317
-s390                 randconfig-r044-20220317
-riscv                    nommu_k210_defconfig
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-riscv                    nommu_virt_defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-
-clang tested configs:
-arm                  randconfig-c002-20220318
-x86_64                        randconfig-c007
-s390                 randconfig-c005-20220317
-arm                  randconfig-c002-20220317
-mips                 randconfig-c004-20220318
-mips                 randconfig-c004-20220317
-powerpc                 xes_mpc85xx_defconfig
-powerpc                      obs600_defconfig
-mips                           ip28_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a011
-i386                          randconfig-a013
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220318
-hexagon              randconfig-r045-20220317
-hexagon              randconfig-r041-20220318
-riscv                randconfig-r042-20220318
-hexagon              randconfig-r041-20220317
-s390                 randconfig-r044-20220318
-
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
 ---
-0-DAY CI Kernel Test Service
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ drivers/macintosh/Makefile  | 5 ++++-
+ drivers/macintosh/via-pmu.c | 2 ++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/macintosh/Makefile b/drivers/macintosh/Makefile
+index 49819b1b6f20..eaf28b1c272f 100644
+--- a/drivers/macintosh/Makefile
++++ b/drivers/macintosh/Makefile
+@@ -12,7 +12,10 @@ obj-$(CONFIG_MAC_EMUMOUSEBTN)	+= mac_hid.o
+ obj-$(CONFIG_INPUT_ADBHID)	+= adbhid.o
+ obj-$(CONFIG_ANSLCD)		+= ans-lcd.o
+ 
+-obj-$(CONFIG_ADB_PMU)		+= via-pmu.o via-pmu-event.o
++obj-$(CONFIG_ADB_PMU)		+= via-pmu.o
++ifeq ($(CONFIG_INPUT), y)
++obj-$(CONFIG_ADB_PMU)		+= via-pmu-event.o
++endif
+ obj-$(CONFIG_ADB_PMU_LED)	+= via-pmu-led.o
+ obj-$(CONFIG_PMAC_BACKLIGHT)	+= via-pmu-backlight.o
+ obj-$(CONFIG_ADB_CUDA)		+= via-cuda.o
+diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
+index 4b98bc26a94b..55afa6dfa263 100644
+--- a/drivers/macintosh/via-pmu.c
++++ b/drivers/macintosh/via-pmu.c
+@@ -1457,12 +1457,14 @@ pmu_handle_data(unsigned char *data, int len)
+ 		if (pmu_battery_count)
+ 			query_battery_state();
+ 		pmu_pass_intr(data, len);
++#ifdef CONFIG_INPUT
+ 		/* len == 6 is probably a bad check. But how do I
+ 		 * know what PMU versions send what events here? */
+ 		if (len == 6) {
+ 			via_pmu_event(PMU_EVT_POWER, !!(data[1]&8));
+ 			via_pmu_event(PMU_EVT_LID, data[1]&1);
+ 		}
++#endif
+ 		break;
+ 
+ 	default:
+-- 
+2.32.0
+
