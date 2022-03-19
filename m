@@ -1,67 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B2E4DE73A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 10:25:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9F84DE741
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 10:29:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KLFph4Ck5z3bZl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 20:25:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KLFv555SGz3bN8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 20:29:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Cxw9Ivzh;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.222.177;
- helo=mail-qk1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com
- [209.85.222.177])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Cxw9Ivzh; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KLFpG4Hv4z3000
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 20:24:52 +1100 (AEDT)
-Received: by mail-qk1-f177.google.com with SMTP id v13so8452901qkv.3
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 02:24:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=g/vQVG0dsvXiKvTeGXeXwf1PIXee60jvWMmXOwq1e7g=;
- b=wiRuX3gMK5JQrKwZBaWbOmm32rHb2VjbBrcRSHYk06K/UMWA2+ziJvXLg5REg42JsZ
- G/qCCi/nxAdjxEN0l1uvcOxRG5BAQDTTFAshvSZz/OYRsP5dUYKU5Q44K7nucNEtn4U2
- TTOmHTPVznpW+7qiyr/fxGAUDHavdOzonx3HR8Xy/vEwkxXt4ZwZrTnjGn7q2mCmobBW
- apYKy2XnXlVNxHD8KySEhzXdGNKTSW3UqszyrSKgAVgsT25fGWRL8SlVQmRNNcc/fh/2
- rRrd8dl82jIEZG9fXA5hZhN8UnQPzrYTWsnQlhOQ3BVVp5av3q84WajbfqML8v9Yhw4R
- MoJg==
-X-Gm-Message-State: AOAM5338aWksB4shnOE2z2WssGgJSKWP9KQeCgh6flA/xEtPCc7VjMIz
- gOgBgZ4mQ+/UJQsseVG5I6cyT9KDaz4NLA==
-X-Google-Smtp-Source: ABdhPJyX+k/0YoBiP7nX0fd1EE0cab8+YCAYIBfFFjpf/lQEhE+932IYjib6O7g8xinwKVUr7/1XUA==
-X-Received: by 2002:a05:620a:25cd:b0:67b:740:94fa with SMTP id
- y13-20020a05620a25cd00b0067b074094famr7847571qko.20.1647681887650; 
- Sat, 19 Mar 2022 02:24:47 -0700 (PDT)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com.
- [209.85.128.173]) by smtp.gmail.com with ESMTPSA id
- k6-20020a378806000000b0064915d9584fsm4901893qkd.8.2022.03.19.02.24.47
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 19 Mar 2022 02:24:47 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id
- 00721157ae682-2e5e31c34bfso33099657b3.10
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 02:24:47 -0700 (PDT)
-X-Received: by 2002:a81:5a08:0:b0:2db:d8c6:7e4f with SMTP id
- o8-20020a815a08000000b002dbd8c67e4fmr15567904ywb.256.1647681886843; Sat, 19
- Mar 2022 02:24:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <cb1828050f8c9ef801b2bdf79eccd6c52afed26b.1647663509.git.fthain@linux-m68k.org>
-In-Reply-To: <cb1828050f8c9ef801b2bdf79eccd6c52afed26b.1647663509.git.fthain@linux-m68k.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sat, 19 Mar 2022 10:24:35 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVLCX0uPOCQos=cd5Z5pbm-++uVyV-fzMGyPi6oD3+SZw@mail.gmail.com>
-Message-ID: <CAMuHMdVLCX0uPOCQos=cd5Z5pbm-++uVyV-fzMGyPi6oD3+SZw@mail.gmail.com>
-Subject: Re: [PATCH] macintosh/via-pmu: Fix build failure when CONFIG_INPUT is
- disabled
-To: Finn Thain <fthain@linux-m68k.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KLFtL0tSrz3000
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 20:28:25 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22J359JI016482; 
+ Sat, 19 Mar 2022 09:28:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : content-type : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=RvyCl5Cukb6dY9JmjqKiY5L9lFuEK/A9rxhkWqs2KZY=;
+ b=Cxw9IvzhtiNGjH1QYMulBLfb+9GAyr5soDSOuQp+1s5QWEQ829oDG7CgLai7xVjLlObQ
+ 7ZFeb8/64YZ/+VFcsNgA+2o4VXluAI+gMJ4/OeVze7/kP6NU64vzna+PWuDkoKeHxIy8
+ O3GoQNIyQ5swSIYMTRwFtHBMY0mA3m/zytROkWm9dUlTOpPYY5wGt385wF85RjZQWl0/
+ X6Or0Eq+e3hlapTsVSXvi3uBaYKjxN9qwpJINI3BUXRPGaudJcJa58FGA8XYdjc/ikgS
+ qeGd0PkqIJGa7I/Zqb10zu3xrKb0QYwLi0x55hFG/E+D26tvOzm7ofwiLJQM/sJZHB1W Zg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ew6y63q6e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 19 Mar 2022 09:28:17 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22J9SHvR021279;
+ Sat, 19 Mar 2022 09:28:17 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3ew6y63q68-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 19 Mar 2022 09:28:17 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22J9SAA7001563;
+ Sat, 19 Mar 2022 09:28:16 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com
+ (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+ by ppma04wdc.us.ibm.com with ESMTP id 3ew6t91fc0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 19 Mar 2022 09:28:15 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22J9SCNl36897150
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 19 Mar 2022 09:28:12 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C121678067;
+ Sat, 19 Mar 2022 09:28:12 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 228A078064;
+ Sat, 19 Mar 2022 09:28:11 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.160.14.140])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sat, 19 Mar 2022 09:28:10 +0000 (GMT)
+Message-ID: <76d156f8af1e03cc09369d68e0bfad0c40031bcc.camel@linux.ibm.com>
+Subject: [PATCH] powerpc/pseries/vas: Use QoS credits from the userspace
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+ nathanl@linux.ibm.com
+Date: Sat, 19 Mar 2022 02:28:09 -0700
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: sKbCq1EgXHqwQsKYTGTrRh1uF96nBpQe
+X-Proofpoint-ORIG-GUID: flhhbjfIb_3-WjeLeRIBytIelwgZnUaP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-19_01,2022-03-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 clxscore=1015 lowpriorityscore=0
+ suspectscore=0 priorityscore=1501 mlxscore=0 adultscore=0 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203190058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,81 +106,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Finn,
 
-On Sat, Mar 19, 2022 at 5:23 AM Finn Thain <fthain@linux-m68k.org> wrote:
-> drivers/macintosh/via-pmu-event.o: In function `via_pmu_event':
-> via-pmu-event.c:(.text+0x44): undefined reference to `input_event'
-> via-pmu-event.c:(.text+0x68): undefined reference to `input_event'
-> via-pmu-event.c:(.text+0x94): undefined reference to `input_event'
-> via-pmu-event.c:(.text+0xb8): undefined reference to `input_event'
-> drivers/macintosh/via-pmu-event.o: In function `via_pmu_event_init':
-> via-pmu-event.c:(.init.text+0x20): undefined reference to `input_allocate_device'
-> via-pmu-event.c:(.init.text+0xc4): undefined reference to `input_register_device'
-> via-pmu-event.c:(.init.text+0xd4): undefined reference to `input_free_device'
-> make[1]: *** [Makefile:1155: vmlinux] Error 1
-> make: *** [Makefile:350: __build_one_by_one] Error 2
->
-> Don't call into the input subsystem unless CONFIG_INPUT is built-in.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+The user can change the QoS credits dynamically with the
+management console interface which notifies OS with sysfs. After
+returning from the OS interface successfully, the management
+console updates the hypervisor. Since the VAS capabilities in
+the hypervisor is not updated when the OS gets the update,
+the kernel is using the old total credits value from the
+hypervisor. Fix this issue by using the new QoS credits
+from the userspace instead of depending on VAS capabilities
+from the hypervisor.
 
-Thanks for your patch!
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/vas-sysfs.c | 19 +++++++++++++-----
+ arch/powerpc/platforms/pseries/vas.c       | 23 +++++++++++-----------
+ arch/powerpc/platforms/pseries/vas.h       |  2 +-
+ 3 files changed, 27 insertions(+), 17 deletions(-)
 
-> --- a/drivers/macintosh/Makefile
-> +++ b/drivers/macintosh/Makefile
-> @@ -12,7 +12,10 @@ obj-$(CONFIG_MAC_EMUMOUSEBTN)        += mac_hid.o
->  obj-$(CONFIG_INPUT_ADBHID)     += adbhid.o
->  obj-$(CONFIG_ANSLCD)           += ans-lcd.o
->
-> -obj-$(CONFIG_ADB_PMU)          += via-pmu.o via-pmu-event.o
-> +obj-$(CONFIG_ADB_PMU)          += via-pmu.o
-> +ifeq ($(CONFIG_INPUT), y)
-> +obj-$(CONFIG_ADB_PMU)          += via-pmu-event.o
-> +endif
+diff --git a/arch/powerpc/platforms/pseries/vas-sysfs.c b/arch/powerpc/platforms/pseries/vas-sysfs.c
+index 4a7fcde5afc0..f3c58c309cff 100644
+--- a/arch/powerpc/platforms/pseries/vas-sysfs.c
++++ b/arch/powerpc/platforms/pseries/vas-sysfs.c
+@@ -27,22 +27,31 @@ struct vas_caps_entry {
+ 
+ /*
+  * This function is used to get the notification from the drmgr when
+- * QoS credits are changed. Though receiving the target total QoS
+- * credits here, get the official QoS capabilities from the hypervisor.
++ * QoS credits are changed.
+  */
+-static ssize_t update_total_credits_trigger(struct vas_cop_feat_caps *caps,
++static ssize_t update_total_credits_store(struct vas_cop_feat_caps *caps,
+ 						const char *buf, size_t count)
+ {
+ 	int err;
+ 	u16 creds;
+ 
+ 	err = kstrtou16(buf, 0, &creds);
++	/*
++	 * The user space interface from the management console
++	 * notifies OS with the new QoS credits and then the
++	 * hypervisor. So OS has to use this new credits value
++	 * and reconfigure VAS windows (close or reopen depends
++	 * on the credits available) instead of depending on VAS
++	 * QoS capabilities from the hypervisor.
++	 */
+ 	if (!err)
+-		err = vas_reconfig_capabilties(caps->win_type);
++		err = vas_reconfig_capabilties(caps->win_type, creds);
+ 
+ 	if (err)
+ 		return -EINVAL;
+ 
++	pr_info("Set QoS total credits %u\n", creds);
++
+ 	return count;
+ }
+ 
+@@ -92,7 +101,7 @@ VAS_ATTR_RO(nr_total_credits);
+ VAS_ATTR_RO(nr_used_credits);
+ 
+ static struct vas_sysfs_entry update_total_credits_attribute =
+-	__ATTR(update_total_credits, 0200, NULL, update_total_credits_trigger);
++	__ATTR(update_total_credits, 0200, NULL, update_total_credits_store);
+ 
+ static struct attribute *vas_def_capab_attrs[] = {
+ 	&nr_total_credits_attribute.attr,
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 1f59d78c77a1..ec643bbdb67f 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -779,10 +779,10 @@ static int reconfig_close_windows(struct vas_caps *vcap, int excess_creds,
+  * changes. Reconfig window configurations based on the credits
+  * availability from this new capabilities.
+  */
+-int vas_reconfig_capabilties(u8 type)
++int vas_reconfig_capabilties(u8 type, int new_nr_creds)
+ {
+ 	struct vas_cop_feat_caps *caps;
+-	int old_nr_creds, new_nr_creds;
++	int old_nr_creds;
+ 	struct vas_caps *vcaps;
+ 	int rc = 0, nr_active_wins;
+ 
+@@ -795,12 +795,6 @@ int vas_reconfig_capabilties(u8 type)
+ 	caps = &vcaps->caps;
+ 
+ 	mutex_lock(&vas_pseries_mutex);
+-	rc = h_query_vas_capabilities(H_QUERY_VAS_CAPABILITIES, vcaps->feat,
+-				      (u64)virt_to_phys(&hv_cop_caps));
+-	if (rc)
+-		goto out;
+-
+-	new_nr_creds = be16_to_cpu(hv_cop_caps.target_lpar_creds);
+ 
+ 	old_nr_creds = atomic_read(&caps->nr_total_credits);
+ 
+@@ -832,7 +826,6 @@ int vas_reconfig_capabilties(u8 type)
+ 					false);
+ 	}
+ 
+-out:
+ 	mutex_unlock(&vas_pseries_mutex);
+ 	return rc;
+ }
+@@ -850,7 +843,7 @@ static int pseries_vas_notifier(struct notifier_block *nb,
+ 	struct of_reconfig_data *rd = data;
+ 	struct device_node *dn = rd->dn;
+ 	const __be32 *intserv = NULL;
+-	int len, rc = 0;
++	int new_nr_creds, len, rc = 0;
+ 
+ 	if ((action == OF_RECONFIG_ATTACH_NODE) ||
+ 		(action == OF_RECONFIG_DETACH_NODE))
+@@ -862,7 +855,15 @@ static int pseries_vas_notifier(struct notifier_block *nb,
+ 	if (!intserv)
+ 		return NOTIFY_OK;
+ 
+-	rc = vas_reconfig_capabilties(VAS_GZIP_DEF_FEAT_TYPE);
++	rc = h_query_vas_capabilities(H_QUERY_VAS_CAPABILITIES,
++					vascaps[VAS_GZIP_DEF_FEAT_TYPE].feat,
++					(u64)virt_to_phys(&hv_cop_caps));
++	if (!rc) {
++		new_nr_creds = be16_to_cpu(hv_cop_caps.target_lpar_creds);
++		rc = vas_reconfig_capabilties(VAS_GZIP_DEF_FEAT_TYPE,
++						new_nr_creds);
++	}
++
+ 	if (rc)
+ 		pr_err("Failed reconfig VAS capabilities with DLPAR\n");
+ 
+diff --git a/arch/powerpc/platforms/pseries/vas.h b/arch/powerpc/platforms/pseries/vas.h
+index 34177881e998..333ffa2f9f42 100644
+--- a/arch/powerpc/platforms/pseries/vas.h
++++ b/arch/powerpc/platforms/pseries/vas.h
+@@ -135,7 +135,7 @@ struct pseries_vas_window {
+ };
+ 
+ int sysfs_add_vas_caps(struct vas_cop_feat_caps *caps);
+-int vas_reconfig_capabilties(u8 type);
++int vas_reconfig_capabilties(u8 type, int new_nr_creds);
+ int __init sysfs_pseries_vas_init(struct vas_all_caps *vas_caps);
+ 
+ #ifdef CONFIG_PPC_VAS
+-- 
+2.27.0
 
-Alternatively, you can introduce an invisible Kconfig symbol that
-is y if ADB_PMU && INPUT, to control the build of via-pmu.o.
 
->  obj-$(CONFIG_ADB_PMU_LED)      += via-pmu-led.o
->  obj-$(CONFIG_PMAC_BACKLIGHT)   += via-pmu-backlight.o
->  obj-$(CONFIG_ADB_CUDA)         += via-cuda.o
-> diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
-> index 4b98bc26a94b..55afa6dfa263 100644
-> --- a/drivers/macintosh/via-pmu.c
-> +++ b/drivers/macintosh/via-pmu.c
-> @@ -1457,12 +1457,14 @@ pmu_handle_data(unsigned char *data, int len)
->                 if (pmu_battery_count)
->                         query_battery_state();
->                 pmu_pass_intr(data, len);
-> +#ifdef CONFIG_INPUT
->                 /* len == 6 is probably a bad check. But how do I
->                  * know what PMU versions send what events here? */
->                 if (len == 6) {
->                         via_pmu_event(PMU_EVT_POWER, !!(data[1]&8));
->                         via_pmu_event(PMU_EVT_LID, data[1]&1);
->                 }
-> +#endif
-
-Additionally, if that new symbol is not enabled, a dummy via_pmu_event()
-can be provided, so you don't need to add an #ifdef to the driver anymore.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
