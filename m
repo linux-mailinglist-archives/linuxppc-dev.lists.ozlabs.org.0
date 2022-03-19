@@ -1,100 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9934DE500
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 02:37:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE494DE590
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 04:53:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KL3QL30hvz3bT1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 12:36:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KL6S55Xhcz3bZl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Mar 2022 14:53:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RViEmeOl;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RViEmeOl;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Qp2qNG2L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=jpoimboe@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=RViEmeOl; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=RViEmeOl; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=Qp2qNG2L; dkim-atps=neutral
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KL3PY4L15z2yh9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 12:36:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1647653772;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3Yhdauiv/hGwfTz79ujnlgoXkowLnIQTmrPreufHZAY=;
- b=RViEmeOlyfSTvG4mu9sQluyaaNjVgGJ4dCXs5Rftn45R08HXKt+RL04jsA9814FlRyrPKU
- 5T62fM/nV1wthGqFgKaIe4STRObR4apHOXypvcsdOddqFR0ZBch7LjT1k9C0tAQxnHTd/x
- dCVJxn5wDrTt2XW5HzgUcaacTUM1WVY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1647653772;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3Yhdauiv/hGwfTz79ujnlgoXkowLnIQTmrPreufHZAY=;
- b=RViEmeOlyfSTvG4mu9sQluyaaNjVgGJ4dCXs5Rftn45R08HXKt+RL04jsA9814FlRyrPKU
- 5T62fM/nV1wthGqFgKaIe4STRObR4apHOXypvcsdOddqFR0ZBch7LjT1k9C0tAQxnHTd/x
- dCVJxn5wDrTt2XW5HzgUcaacTUM1WVY=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-86-852_xSx6OvuNaKN09JwDOA-1; Fri, 18 Mar 2022 21:35:40 -0400
-X-MC-Unique: 852_xSx6OvuNaKN09JwDOA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- t16-20020ad44850000000b00440e0f2a561so5632775qvy.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Mar 2022 18:35:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=3Yhdauiv/hGwfTz79ujnlgoXkowLnIQTmrPreufHZAY=;
- b=JSje+UIFGSzj3HT64hI54wfzicxfJnWnLwKizN+ght3YS5DbdmLw2C3kaF4cJOwOdd
- gIcLmacq8W4weQfNwRw6pnYV3TxNxpnOy4yMg0zwAZEMmGVE9Yal70VOutwviuuet0R5
- CqxCMFPhmAazKtMXLUrhthgOh72uO+o0APYnTvv9Qa4uFAI+6OsGR6Ru+6YWI7aYiPoL
- qFFhVCdC1fxucHdKBEG31Xw7IyRvJ7mYFLKUQ3N1qu7otDfXEW8rGKePkks/RcrNet16
- yUqI++8AepyyzWnQbrgFpjM6Wc9Z/SDd4XEV0Nm7m6IsyRQU5KCeLRz315fMAEI2gtLZ
- lMow==
-X-Gm-Message-State: AOAM531xkX/UF4pEtHQSEoR0+OAc6iGRk1cl0JYXyqL1ZfcbDqtsaEFI
- cWcSMM8tep5oFKhkd1gnPrSQKLs+gLiC3/pP7oG3+zpQ+GC8Sz0kxZB2bw8lVg93JhMNcty7UvF
- BLe3v2X6KNk1ig4S7+xHbDBpqVQ==
-X-Received: by 2002:a05:6214:262a:b0:440:d51b:71d8 with SMTP id
- gv10-20020a056214262a00b00440d51b71d8mr8957947qvb.58.1647653740082; 
- Fri, 18 Mar 2022 18:35:40 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyFZ8FUzHQ/tF7I6xSgadbQibeZis7TglzPOIMyT0wgA1z0OwQ5PrduuzpXsh1YaDRWwJmJfQ==
-X-Received: by 2002:a05:6214:262a:b0:440:d51b:71d8 with SMTP id
- gv10-20020a056214262a00b00440d51b71d8mr8957931qvb.58.1647653739643; 
- Fri, 18 Mar 2022 18:35:39 -0700 (PDT)
-Received: from treble ([2600:1700:6e32:6c00::45])
- by smtp.gmail.com with ESMTPSA id
- n7-20020a05622a040700b002e1b8be0985sm6436353qtx.35.2022.03.18.18.35.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 18 Mar 2022 18:35:39 -0700 (PDT)
-Date: Fri, 18 Mar 2022 18:35:36 -0700
-From: Josh Poimboeuf <jpoimboe@redhat.com>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Subject: Re: [RFC PATCH 0/3] objtool: Add mcount sub-command
-Message-ID: <20220319013536.v2syx2ru7ijuvw23@treble>
-References: <20220318105140.43914-1-sv@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KL6RN0VG0z30Hj
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Mar 2022 14:53:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1647661984; x=1679197984;
+ h=date:from:to:cc:subject:message-id:mime-version:
+ content-transfer-encoding;
+ bh=52nwKUb0sNN+U+6uU7cdy/muLv3e67+Axn9d4b9Q134=;
+ b=Qp2qNG2LU+9wWLf8+KUhet/1OAQ6MT/48BbrKfRuEcnMqb8vhGhWE9s/
+ 9RmNC9/IuFUKFk83FwMZXD8905nKVE/2vYKeCgEQLTzAoYofWGUOf7UFE
+ g5Mvqx7uVHms9FH3moBqGtJ2uiOy4o8JMa36MiTq2Lj0hA9fzUjLAw8zA
+ Rw0AhHMSVg6tHjx933vYqya1wNIP66++hxuFsXumTTGhruxUnsGFuWljo
+ M38PH9hUm50coQIBv8Kr5RRlvLaJjKAQtMEJzxgNFCaxxbFvVIknj7zl6
+ PXYGQaXv8VIqscKt/IcSdrCpgPgg6nxpEh+DF88IXNdQWwSo1zA2YYHZY w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10290"; a="256092664"
+X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; d="scan'208";a="256092664"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2022 20:52:00 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,192,1643702400"; d="scan'208";a="715764272"
+Received: from lkp-server02.sh.intel.com (HELO 89b41b6ae01c) ([10.239.97.151])
+ by orsmga005.jf.intel.com with ESMTP; 18 Mar 2022 20:51:59 -0700
+Received: from kbuild by 89b41b6ae01c with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1nVQ8E-000FXW-QE; Sat, 19 Mar 2022 03:51:58 +0000
+Date: Sat, 19 Mar 2022 11:51:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next] BUILD SUCCESS 35de589cb8793573ed56a915af9cb4b5f15ad7d7
+Message-ID: <62355324.1N5i85hQ16yeqGRh%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <20220318105140.43914-1-sv@linux.ibm.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=jpoimboe@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,75 +67,209 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org,
- aik@ozlabs.ru, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 18, 2022 at 04:21:37PM +0530, Sathvika Vasireddy wrote:
-> This patchset adds support to implement 'objtool mcount' command.
-> 
-> Right now, objtool is built if CONFIG_STACK_VALIDATION is enabled.
-> And, '__mcount_loc' section is generated by objtool when --mcount 
-> option is passed to check sub-command. 
-> 
-> For architectures to be able to generate '__mcount_loc' section
-> without having to do stack validation, introduce 'mcount' as
-> a sub-command to objtool. This way, objtool is built for mcount 
-> if CONFIG_FTRACE_MCOUNT_USE_OBJTOOL is enabled. Additionally, 
-> architectures can select HAVE_NOP_MCOUNT to be able to nop out
-> mcount call sites.  
-> 
-> TODO: Enable "objtool mcount" for clang LTO builds.
-> 
-> Sathvika Vasireddy (3):
->   objtool: Move common code to utils.c
->   objtool: Enable and implement 'mcount' subcommand
->   objtool/mcount: Add powerpc specific functions
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 35de589cb8793573ed56a915af9cb4b5f15ad7d7  powerpc/time: improve decrementer clockevent processing
 
-Hi Sathvika,
+elapsed time: 932m
 
-Thanks for the patches!
+configs tested: 180
+configs skipped: 4
 
-I have some other patches in progress which will rework the objtool
-interface by modularizing the cmdline options, so that each option can
-be specified either individually or in combination.  Even stack
-validation itself will be its own separate option.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-I think it will help your situation as well: "objtool run --mcount" will
-only do '__mcount_loc' generation and nothing else.
+gcc tested configs:
+arm                                 defconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+i386                          randconfig-c001
+sh                          landisk_defconfig
+arc                           tb10x_defconfig
+xtensa                  audio_kc705_defconfig
+h8300                               defconfig
+arc                         haps_hs_defconfig
+m68k                       m5249evb_defconfig
+arc                    vdk_hs38_smp_defconfig
+powerpc                      ppc6xx_defconfig
+mips                           gcw0_defconfig
+m68k                          atari_defconfig
+sh                        edosk7705_defconfig
+arm64                            alldefconfig
+arm                            xcep_defconfig
+riscv             nommu_k210_sdcard_defconfig
+sh                         ap325rxa_defconfig
+sh                             espt_defconfig
+mips                       capcella_defconfig
+arm                      footbridge_defconfig
+m68k                          multi_defconfig
+csky                             alldefconfig
+arm                        mini2440_defconfig
+arm                        mvebu_v7_defconfig
+arm                        multi_v7_defconfig
+sh                               alldefconfig
+powerpc                     tqm8548_defconfig
+xtensa                              defconfig
+powerpc                      tqm8xx_defconfig
+sh                          polaris_defconfig
+mips                            ar7_defconfig
+sh                         microdev_defconfig
+arm                           corgi_defconfig
+sh                           se7724_defconfig
+um                             i386_defconfig
+powerpc                      bamboo_defconfig
+sh                              ul2_defconfig
+mips                         rt305x_defconfig
+ia64                        generic_defconfig
+arm                        keystone_defconfig
+xtensa                           alldefconfig
+arm                            hisi_defconfig
+parisc                           allyesconfig
+arm                          lpd270_defconfig
+mips                     decstation_defconfig
+m68k                             allyesconfig
+sh                ecovec24-romimage_defconfig
+sparc                            alldefconfig
+powerpc                       holly_defconfig
+arc                                 defconfig
+m68k                        m5307c3_defconfig
+mips                         mpc30x_defconfig
+m68k                           sun3_defconfig
+powerpc                   motionpro_defconfig
+arc                 nsimosci_hs_smp_defconfig
+sh                           sh2007_defconfig
+powerpc                        cell_defconfig
+ia64                             alldefconfig
+openrisc                  or1klitex_defconfig
+alpha                            alldefconfig
+ia64                          tiger_defconfig
+powerpc                  storcenter_defconfig
+powerpc                       maple_defconfig
+powerpc                     ep8248e_defconfig
+sh                           se7343_defconfig
+mips                         tb0226_defconfig
+sh                           se7619_defconfig
+arm                        clps711x_defconfig
+m68k                       m5208evb_defconfig
+riscv                               defconfig
+sh                          rsk7201_defconfig
+arm                             rpc_defconfig
+arm                        trizeps4_defconfig
+mips                      maltasmvp_defconfig
+alpha                               defconfig
+sparc                               defconfig
+sh                   sh7770_generic_defconfig
+sh                           se7705_defconfig
+openrisc                         alldefconfig
+sh                          sdk7780_defconfig
+arm                         lubbock_defconfig
+arc                          axs101_defconfig
+arm                             pxa_defconfig
+mips                  maltasmvp_eva_defconfig
+arm                        realview_defconfig
+m68k                            mac_defconfig
+sh                            hp6xx_defconfig
+arm                  randconfig-c002-20220318
+arm                  randconfig-c002-20220317
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nds32                             allnoconfig
+nds32                               defconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+sh                               allmodconfig
+parisc                              defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+parisc64                            defconfig
+s390                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+i386                          randconfig-a003
+i386                          randconfig-a001
+i386                          randconfig-a005
+x86_64                        randconfig-a013
+x86_64                        randconfig-a011
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+riscv                    nommu_k210_defconfig
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+x86_64                           allyesconfig
+x86_64                              defconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                                  kexec
 
-Something like so:
+clang tested configs:
+arm                  randconfig-c002-20220318
+s390                 randconfig-c005-20220317
+s390                 randconfig-c005-20220318
+arm                  randconfig-c002-20220317
+x86_64                        randconfig-c007
+powerpc              randconfig-c003-20220318
+riscv                randconfig-c006-20220318
+riscv                randconfig-c006-20220317
+powerpc              randconfig-c003-20220317
+mips                 randconfig-c004-20220317
+mips                 randconfig-c004-20220318
+i386                          randconfig-c001
+powerpc                      ppc44x_defconfig
+mips                        qi_lb60_defconfig
+hexagon                          alldefconfig
+powerpc                     tqm8540_defconfig
+mips                           ip22_defconfig
+riscv                            alldefconfig
+mips                      maltaaprp_defconfig
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220318
+hexagon              randconfig-r045-20220317
+hexagon              randconfig-r041-20220318
+riscv                randconfig-r042-20220318
+hexagon              randconfig-r041-20220317
+s390                 randconfig-r044-20220318
 
-$ ./objtool run --help
-
- Usage: objtool run [<options>] file.o
-
-Commands (at least one required):
-    -a, --uaccess         validate uaccess
-    -c, --static-call     annotate static calls
-    -i, --ibt             validate and annotate IBT
-    -m, --mcount          generate '__mcount_loc' section
-    -n, --noinstr         validate noinstr
-    -o, --orc             generate ORC metadata
-    -r, --retpoline       validate retpoline usage
-    -S, --sls             validate straight-line-speculation mitigation
-    -s, --stack-val       validate stack metadata
-
-Options:
-        --backtrace       unwind on error
-        --backup          create .orig files before modification
-        --dry-run         don't write the modifications
-        --fp              object uses frame pointers
-        --module          object will be part of a kernel module
-        --no-unreachable  skip 'unreachable instruction' warnings
-        --stats           print statistics
-        --vmlinux         object is vmlinux.o
-
-
-Hopefully I'll have the patches ready soon.
-
--- 
-Josh
-
+---
+0-DAY CI Kernel Test Service
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
