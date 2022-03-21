@@ -2,126 +2,111 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D911E4E21A0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 08:57:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 942BD4E21B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 09:05:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KMRmR5Xq9z3bSy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 18:57:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KMRxd3RDSz3bPD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 19:05:25 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IZAbEdQY;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::631;
- helo=fra01-pr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com
- (mail-pr2fra01on0631.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e18::631])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KMRww0QqNz3036
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 19:04:48 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IZAbEdQY; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KMRww06WJz4xc5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 19:04:48 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KMRww03rSz4xcj; Mon, 21 Mar 2022 19:04:48 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IZAbEdQY; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KMRlz45qCz3036
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 18:57:02 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NK6/BKbtG1bXulIsbhT8ZTYBStY5CqzuKc/DH9yKyk1jooW4fNRwB4Xpx2f2sHv533Uwe1A35VLsHVIRFHfo3Wl7Z2CrqgKfofkRLPJlArr2dZ/Eh8x0N0GA5txUqTvnovxKVIrR/hbxQjsn0qd4oKqJWxFxFhBFohMRiX4J+arBLF2dC1aAxOePQ2VwWWznP20GisH4AozUeScGLjpQ9barLnTA2kKflSaQ6FSFj5/DlTYbDvCrfVr9uRpY3nntSG4PFNJf6aDR8VvHgPPPD01xVdiP5WhiA3r6lEyu6OJCfB/jfUU00gSu2pHWW1WCdjmVRZOTn200qvnilCMt7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3YBBhUybv1MhMc6B/pHiHpEOpNszQ9ARuBjBbzMuNZU=;
- b=j3J2HpCulW0av7UOLZYINhOj9Ec+YP0giGgvtWUZ0N8DsfMBZvGhLqg0YOcm/Jn7qOIk8rn8zsYBImhqJU1ZGBFH1gmRgg3ICM4MxlT+Ku7kylyhrM04RcEhK5HJT7FZY+Cft3uYIgsuNP7ZIBR6PEuQp+aL89g7s5Wr9dXNJznlVCil0zyCktXdWCWNEcex3OSMNeRU6jKB//x1FC0zo6mrScLMJf6bhwMWpWzMS1r4B0i8IXgdCW3NB3MgimeDmfqb7qSEba53tchyDIzanCDtnPCbGHOuQ5ok75CMpozRyFmYXOlqarJkPK1cDiO4w7/PtAZcykvO8z4R59nYOA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR1P264MB1876.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:2::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.15; Mon, 21 Mar
- 2022 07:56:41 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::cd2f:d05d:9aa3:400d]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::cd2f:d05d:9aa3:400d%6]) with mapi id 15.20.5081.022; Mon, 21 Mar 2022
- 07:56:41 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>, Sathvika Vasireddy
- <sv@linux.ibm.com>
-Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-Thread-Topic: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-Thread-Index: AQHYOsOkMhd+XrYXYE6fzWpV8XELvKzFK0EAgAP1goCAAFwcgA==
-Date: Mon, 21 Mar 2022 07:56:41 +0000
-Message-ID: <a688b641-a8ef-8e6b-4f94-da5edd1c6943@csgroup.eu>
-References: <20220318105140.43914-1-sv@linux.ibm.com>
- <20220318105140.43914-4-sv@linux.ibm.com>
- <YjR6kHq4c/rjCTpr@hirez.programming.kicks-ass.net>
- <33447256-81d1-8844-d82f-e8ac94f65fbe@csgroup.eu>
- <87pmmgghvu.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87pmmgghvu.fsf@mpe.ellerman.id.au>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f1477918-b7fc-4f18-7a4b-08da0b105629
-x-ms-traffictypediagnostic: MR1P264MB1876:EE_
-x-microsoft-antispam-prvs: <MR1P264MB187685D37B303C8D977F062CED169@MR1P264MB1876.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: EfCPbLtEZ5g+92NDBsjEcLF2llJ1hNjLTZRPm2AeTj7jpi6ZZieTMsYhwpFMQyczZiWIr526c2kbH5Qk/O/mRVUXhFAxv9P4/jvbA/827elj8jJE/WVuRLUuq5Rba4OtnOKPzVdFD7qqrHvL0x6UGeYYabsfIgBzhjwF87kQrPwJgmfTfV9V3yhmoQMwspvg8PoES0qjW3w3lLSIBbJEG0OLruN5+euNlRlxq+6yqjQImxfS20GpT12wEnFNEwNZM2ZqEHAkEO4Z32ZO5TyThjTBkqvjMj7MGaZvCPQiSEUwSG/wqolYaQDIbU6pLwNDbmPLU+Und6AnvXgaLSNJxCs9ocvO4jlWE6724paVtRdYD4S2Jy5HaYjT4fEbwpkd4nRtet8qvkgTxLnpneqaNqG2fBgo+i7oQjsPir6E/zESnTYADlDhb0pe0/09qexP/2ynZMca80Ua9DNCIdc3eLFCYl/WUl4HyPrASDt5F7Q+F/1AcNImhGZ1DaOclQwZ0jwVA/8ON6v2p3HmLYvFJBxcU93lzaewxdclKxLRsgjcwgaV3VTOceXNoeN2ZN5+V5aWrfkJmr2jfxpjCcJRqEvobkD0nvA+sOFWXUuOUQ90rkRIbCDsdB11Ku2wY4WvjzXBBVz+sc7Wir1jbGyBudifGbOBdJeUUZ9dGKfv8K29kjXTLp5U0p8ss1fK8BVGhGUK7nQ0qXGspRn1QmT9ZS2UJ3eU4gHYHWJl/pkEztEWfmXAYTT2aE8UqSaOYsXnTFYPvCV/sW6vyH+MvZEqPmMgxRAO/YlGgrZKgyH8kF9RgD16HSxkBW5uHbTZT50FN1EYbRHNrX+G5vkgIrNBF6RSfizzXi4G+Vti8I5MergMPkeRMG/FOdA2nd/0logaRXf5JSARnGE4f11MqgbhNw==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(122000001)(110136005)(54906003)(2906002)(6506007)(6512007)(71200400001)(36756003)(31686004)(508600001)(6486002)(966005)(66446008)(186003)(26005)(4744005)(4326008)(76116006)(66556008)(66476007)(64756008)(38070700005)(66946007)(2616005)(8676002)(38100700002)(91956017)(5660300002)(31696002)(86362001)(44832011)(83380400001)(8936002)(316002)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MjJoVWxoQjJKZlFadmVhenJraVB2cERJRW9nbjI4RlhHVkhVcE1hMGpPajBy?=
- =?utf-8?B?TlZGWkxpdWRQWUVudDE2Y1R5aHZkUVNmY1JFWi9pWjl2QVBGc0RCd1VQdFE2?=
- =?utf-8?B?enhJblRKTDRSLy9DaHBXakJvT0VSNkJ0cXduWEJlQTlwVERGSUw4blZSZmhK?=
- =?utf-8?B?dE5KMSs4SXRnWW03dlFzTVpRaVd3UmZibmI5b1lCM3grK1ljd3g0V201WDNp?=
- =?utf-8?B?T1YvTDZsZThIbXhKZkdaUW9EK0R0T3d1ZzRVTUkwc1hRR2F6SFA3dmdTY3Ir?=
- =?utf-8?B?NWk4NnVIejdwOVVrczNteDhtWnorZHJ4WDBtU0FNZTZTcUREcmpaU0RDVHRR?=
- =?utf-8?B?N1Q3Uy9OZlVzai96ekFvMWV3aXEvbnZzcGltdWNmcmoxby9zd00vbFNocDNY?=
- =?utf-8?B?L1pPaDZNVlRDS1RTV1lHOXBBVkFmamVCcVlCbTdTTS9SN2hhTGVNakJESUtt?=
- =?utf-8?B?QXgzaTBrWm9CVU5MQnVpeWV2VEM4eCt6RVl6QmRLL2poeUVWWXBmRGFxUFRj?=
- =?utf-8?B?R01uc24yNlFiRXhVbFN6SHNaN3lXd2Q4VXBXK2EwT25rcURTbGcwcG8zVHN0?=
- =?utf-8?B?N1FNL1JxOStqSk13QklveElQTzQzUHN3bG9lN2dsWDZpWlBPNm1acXZrTVNB?=
- =?utf-8?B?eTFjUGxwZ0Zxc1hybVhNU2VlVlBoNEt1Umo4OU5iUjZhempjR3pJRnJhUDBX?=
- =?utf-8?B?RmRIcGg2UUpZZm9lNG9wQjlhMHF2d1RQMXlCNWUxbGREei93eWZzNTEvUkg4?=
- =?utf-8?B?ZElEY2MvMWF4OWhDZzN1b3BtcG1kT1NxSVB5cUF5Q1JFODdsVmoxN0NNaGx5?=
- =?utf-8?B?UEw3eFZZdnNxdnFrQzNzM0JtRWZoV2NQUW9YeGlEN3pGd3owQzRHWG1zNzlN?=
- =?utf-8?B?SzFvY1V6aURKYldFTlFYejM3RDl3OFZLUU9Bc290d3piVHl0UXV6a0ZDK3RN?=
- =?utf-8?B?TUhTc21pdk9OR09rZUVxMVV5SFBEeWNkTDRuY0RYYW5JTjkzeG93cDArV0Uv?=
- =?utf-8?B?Wmx0MzVGVytiQlEveUdUdnF0RVAzMXhPUFNxWjE5UHI5UDJZdHdabHhEY0dx?=
- =?utf-8?B?djhIcHdTVCt6REllZGRseXhYcW9ndU1JR3hPaThyUnlxWkZ2SlU1N2JiUTdk?=
- =?utf-8?B?MEJCdmlvTG1YeXMvSmxUSnoybDNaQXI3SEQ1ZG5SeFdhMlBHWEVOTy9OTmp3?=
- =?utf-8?B?ZzZHRVkwcEh6WW9ESjUzTVBmUUxsTHQ2d2NJNnptTU5teER0b00ySjd4ZzRy?=
- =?utf-8?B?K2lJT2Frb0xPR3orcnBFbDI1c3FCN2JoV0QzaWV2YXRKd0hDb3A3a1RNRG9z?=
- =?utf-8?B?eW5jK2w2ZjNTSjF1QXY2Tmx0TlZoa1dVbzkyQjIwb0M4NFZ5TlFGTjJUT2xR?=
- =?utf-8?B?dldnN0FpbGU3OTBVT0o2dU9kMG5XazlRb1Y5MVNDRkJrYXgxNW5LbWJnc1Vv?=
- =?utf-8?B?U2lOcGs3MFdoU3lZV3o0WHNVMm9QcHM1cUN3WjNGNWVoNUZURXAvTWhYRkFm?=
- =?utf-8?B?eXhtR2NYUi9tL0JWQ2QrMkMwdmQzcHdoQ3lwQjYwaXJnRUVuKzEwSm1hWExV?=
- =?utf-8?B?VEpPOE1vR2lvTDM0eFNJYTdmYVV3bzhKellNRFM2cGhNdU5mWlorZUI2QlRs?=
- =?utf-8?B?c21iTWltVWQ1V1pDWXFOeHRZSitTdE5jUHRLajArdWNRaERyYTE4Zmt0S1hr?=
- =?utf-8?B?akxPMCtseExTZHJIRXdkNTFIVjRTVStaUTZTTHBMQ0tZZmtzeklVMkV2NC9S?=
- =?utf-8?B?TzFHeU1ndi9kem5rWDdiWno5eEZ6TERWaXBxcnJyOStNM3BaamcvUG5yT3Br?=
- =?utf-8?B?L0ZnOFFkMTRhVndKdTMwTi9PYVRRQjd0UStaSUZ5VzZ6d1NNVk9QZS9rYnpl?=
- =?utf-8?B?VmZ5K2FpbnB4QXBod3I1WlhGZ0d2S2FVTlVvOVQ5NFkwWXZ5dGhxMTdFUEU2?=
- =?utf-8?B?ek52MEUxMDh0cGZST05zNjdGWEwvKzhKbEtwK1pvYUw5bjR3czUyMVBWSnhx?=
- =?utf-8?Q?gWOrI+JXsPwhLj1eDp9veZ83z3A50Q=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <4FAEB5C697D2494FA8D98F98BF587DE2@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KMRwv5cK5z4xc5
+ for <linuxppc-dev@ozlabs.org>; Mon, 21 Mar 2022 19:04:47 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22L81wMv023083; 
+ Mon, 21 Mar 2022 08:04:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=uezyAFLpxVd4l1Mt6HYl/LjN66bGGnL3v2TUqTTs82o=;
+ b=IZAbEdQYDqU+2acnoH2mdiYeeB8NMggBfwuHzH+gIIdmEesf025KycFgnBckYSXdeJrE
+ 1Sc5QnXIKWL8xtHgpTZslYYyT8+jNQUStwhbQnK9RC7qDx00Jn0YNcd4N9OnIfarLX1Y
+ 0lRuzmiri1mCruYMHhZOvpD52qEOwVKgSTE1CTbrDb8SqMKKPdvoPR8gtp+UISvs6kcj
+ r3mq1ocsJj3VNYph2Ik8Akt1dgA3m8WFWUlxDIiaUsgURDbF7nrtak7WXBX9S4hZXhRN
+ 0P+mgQPTE57d90Q307D0WTh4Hj2I2Gi578/6NTn9Rp3Kd9dgpguwyK5QN996z5goACrM eg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3exhpcm9tc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Mar 2022 08:04:30 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22L7wWXj007780;
+ Mon, 21 Mar 2022 08:04:30 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3exhpcm9t1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Mar 2022 08:04:30 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22L84SsV003971;
+ Mon, 21 Mar 2022 08:04:28 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 3ew6t8uacu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 21 Mar 2022 08:04:28 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22L84Qsd27328908
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 21 Mar 2022 08:04:26 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3F8BB52050;
+ Mon, 21 Mar 2022 08:04:26 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.117.210])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 876FC52051;
+ Mon, 21 Mar 2022 08:04:23 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [RFC v3 PATCH 0/5] In kernel handling of CPU hotplug events for crash
+ kernel
+Date: Mon, 21 Mar 2022 13:34:17 +0530
+Message-Id: <20220321080422.56255-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.35.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _Z3pxcgJMarP1p6Z04Hf-J_wSTB5E9WX
+X-Proofpoint-GUID: bP1dy4mCDbK0MhZmiDLjWFC95U65GHhF
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1477918-b7fc-4f18-7a4b-08da0b105629
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2022 07:56:41.8662 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: GsHztAHIzbGDsSGGHR0Hx6Ftuo8qwCwm9FDr5eSbG61p4EMSbTZXw0jMU9IIuAUGycXnJ44y+eKDYmvMQGJXuCr3NDkpA6w1T1Tk53NwJQk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB1876
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-21_02,2022-03-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ spamscore=0 impostorscore=0 phishscore=0 adultscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2202240000 definitions=main-2203210049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,33 +118,181 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- Peter Zijlstra <peterz@infradead.org>,
- "jpoimboe@redhat.com" <jpoimboe@redhat.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com,
+ kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDIxLzAzLzIwMjIgw6AgMDM6MjcsIE1pY2hhZWwgRWxsZXJtYW4gYSDDqWNyaXTCoDoN
-Cj4gQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiB3cml0ZXM6
-DQo+PiBMZSAxOC8wMy8yMDIyIMOgIDEzOjI2LCBQZXRlciBaaWpsc3RyYSBhIMOpY3JpdMKgOg0K
-Pj4+IE9uIEZyaSwgTWFyIDE4LCAyMDIyIGF0IDA0OjIxOjQwUE0gKzA1MzAsIFNhdGh2aWthIFZh
-c2lyZWRkeSB3cm90ZToNCj4+Pj4gVGhpcyBwYXRjaCBhZGRzIHBvd2VycGMgc3BlY2lmaWMgZnVu
-Y3Rpb25zIHJlcXVpcmVkIGZvcg0KPj4+PiAnb2JqdG9vbCBtY291bnQnIHRvIHdvcmssIGFuZCBl
-bmFibGVzIG1jb3VudCBmb3IgcHBjLg0KPj4+DQo+Pj4gSSB3b3VsZCBsb3ZlIHRvIHNlZSBtb3Jl
-IG9ianRvb2wgZW5hYmxlbWVudCBmb3IgUG93ZXIgOi0pDQo+Pg0KPj4gSSBoYXZlIG5vdCByZWNl
-aXZlZCB0aGlzIHNlcmllcyBhbmQgSSBjYW4ndCBzZWUgaXQgb24gcG93ZXJwYyBwYXRjaHdvcmsN
-Cj4+IGVpdGhlciAoaHR0cHM6Ly9wYXRjaHdvcmsub3psYWJzLm9yZy9wcm9qZWN0L2xpbnV4cHBj
-LWRldi9saXN0LykNCj4+DQo+PiBEaWQgeW91IHNlbmQgaXQgdG8gbGludXhwcGMtZGV2IGxpc3Qg
-PyBJZiBub3QgY2FuIHlvdSByZXNlbmQgaXQgdGhlcmUgPw0KPiANCj4gSXQgaXMgdGhlcmUsIG1p
-Z2h0IGhhdmUgYmVlbiBkZWxheWVkPw0KPiANCj4gaHR0cDovL3BhdGNod29yay5vemxhYnMub3Jn
-L3Byb2plY3QvbGludXhwcGMtZGV2L2xpc3QvP3Nlcmllcz0yOTExMjkNCj4gDQo+IFRoZXJlIGFy
-ZSBzb21lIENJIGZhaWx1cmVzLg0KPiANCg0KT24gUFBDMzIgSSBnZXQgOg0KDQpbICAgIDAuMDAw
-MDAwXSBmdHJhY2U6IE5vIGZ1bmN0aW9ucyB0byBiZSB0cmFjZWQ/DQoNCldpdGhvdXQgdGhpcyBz
-ZXJpZXMgSSBnZXQ6DQoNClsgICAgMC4wMDAwMDBdIGZ0cmFjZTogYWxsb2NhdGluZyAyMjUwOCBl
-bnRyaWVzIGluIDE3IHBhZ2VzDQpbICAgIDAuMDAwMDAwXSBmdHJhY2U6IGFsbG9jYXRlZCAxNyBw
-YWdlcyB3aXRoIDIgZ3JvdXBzDQoNCg0KQ2hyaXN0b3BoZQ==
+This patch series implements the crash hotplug handler on PowerPC introduced
+by https://lkml.org/lkml/2022/3/3/674 patch series.
+
+
+The Problem:
+============
+Post hotplug/DLPAR events the capture kernel holds stale information about the
+system. Dump collection with stale capture kernel might end up in dump capture
+failure or an inaccurate dump collection.
+
+
+Existing solution:
+==================
+The existing solution to keep the capture kernel up-to-date is observe the
+hotplug event via udev rule and trigger a full capture kernel reload post
+hotplug event. 
+
+Shortcomings:
+------------------------------------------------
+- Leaves a window where kernel crash might not lead to successful dump
+  collection.
+- Reloading all kexec components for each hotplug is inefficient. Since only
+  one or two kexec components need to be updated due to hotplug event reloading
+  all kexec component is redundant.
+- udev rules are prone to races if hotplug events are frequent.
+
+More about issues with an existing solution is posted here:
+ - https://lkml.org/lkml/2020/12/14/532
+ - https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-February/240254.html
+
+Proposed Solution:
+==================
+Instead of reloading all kexec segments on hotplug event, this patch series
+focuses on updating only the relevant kexec segment. Once the kexec
+segments are loaded in the kernel reserved area then an arch-specific hotplug handler
+will update the relevant kexec segment based on hotplug event type.
+
+As mentioned above this patch series implemented a PowerPC crash hotplug
+handler for the CPU. The crash hotplug handler memory is in our TODO list.
+
+
+A couple of minor changes are required to realize the benefit of the patch
+series:
+
+- disalble the udev rule:
+
+  comment out the below line in kdump udev rule file:
+  RHEL: /usr/lib/udev/rules.d/98-kexec.rules
+  # SUBSYSTEM=="cpu", ACTION=="online", GOTO="kdump_reload_cpu"
+
+- kexec tool needs to be updated with patch for kexec_load system call
+  to work (not needed if -s option is used during kexec panic load):
+
+---
+diff --git a/kexec/arch/ppc64/kexec-elf-ppc64.c b/kexec/arch/ppc64/kexec-elf-ppc64.c
+index 695b8b0..1dc6490 100644
+--- a/kexec/arch/ppc64/kexec-elf-ppc64.c
++++ b/kexec/arch/ppc64/kexec-elf-ppc64.c
+@@ -45,6 +45,29 @@ uint64_t initrd_base, initrd_size;
+ unsigned char reuse_initrd = 0;
+ const char *ramdisk;
+ 
++#define MAX_CORE 256
++#define PER_CORE_NODE_SIZE 1500
++
++/**
++ * get_crash_fdt_mem_sz() - calcuate mem size for crash kernel FDT
++ * @fdt: pointer to crash kernel FDT
++ *
++ * Calculate the buffer space needed to add more CPU nodes in FDT after
++ * capture kenrel load due to hot add events.
++ *
++ * Some assumption are made to calculate the additional buffer size needed
++ * to accommodate future hot add CPUs to the crash FDT. The maximum core count
++ * in the system would not go beyond MAX_CORE and memory needed to store per core
++ * date in FDT is PER_CORE_NODE_SIZE.
++ *
++ * Certainly MAX_CORE count can be replaced with possible core count and
++ * PER_CORE_NODE_SIZE to some standard value instead of randomly observed
++ * core size value on Power9 LPAR.
++ */
++static unsigned int get_crash_fdt_mem_sz(void *fdt) {
++	return fdt_totalsize(fdt) + (PER_CORE_NODE_SIZE * MAX_CORE);
++}
++
+ int elf_ppc64_probe(const char *buf, off_t len)
+ {
+ 	struct mem_ehdr ehdr;
+@@ -179,6 +202,7 @@ int elf_ppc64_load(int argc, char **argv, const char *buf, off_t len,
+ 	uint64_t max_addr, hole_addr;
+ 	char *seg_buf = NULL;
+ 	off_t seg_size = 0;
++	unsigned int mem_sz = 0;
+ 	struct mem_phdr *phdr;
+ 	size_t size;
+ #ifdef NEED_RESERVE_DTB
+@@ -329,7 +353,13 @@ int elf_ppc64_load(int argc, char **argv, const char *buf, off_t len,
+ 	if (result < 0)
+ 		return result;
+ 
+-	my_dt_offset = add_buffer(info, seg_buf, seg_size, seg_size,
++	if (info->kexec_flags & KEXEC_ON_CRASH) {
++		mem_sz = get_crash_fdt_mem_sz((void *)seg_buf);
++		fdt_set_totalsize(seg_buf, mem_sz);
++		info->fdt_index = info->nr_segments;
++	}
++
++	my_dt_offset = add_buffer(info, seg_buf, seg_size, mem_sz,
+ 				0, 0, max_addr, -1);
+ 
+ #ifdef NEED_RESERVE_DTB
+diff --git a/kexec/kexec.c b/kexec/kexec.c
+index f63b36b..846b1a8 100644
+--- a/kexec/kexec.c
++++ b/kexec/kexec.c
+@@ -672,6 +672,9 @@ static void update_purgatory(struct kexec_info *info)
+ 		if (info->segment[i].mem == (void *)info->rhdr.rel_addr) {
+ 			continue;
+ 		}
++		if (info->fdt_index == i)
++			continue;
++
+ 		sha256_update(&ctx, info->segment[i].buf,
+ 			      info->segment[i].bufsz);
+ 		nullsz = info->segment[i].memsz - info->segment[i].bufsz;
+diff --git a/kexec/kexec.h b/kexec/kexec.h
+index 595dd68..0906a1b 100644
+--- a/kexec/kexec.h
++++ b/kexec/kexec.h
+@@ -169,6 +169,7 @@ struct kexec_info {
+ 	int command_line_len;
+ 
+ 	int skip_checks;
++       // Given that we might need to update mutliple kexec segments
++       // then having array to keep indexes of all hotplug kexec segments
++       // will be helpful.
++	unsigned int fdt_index;
+ };
+ 
+ struct arch_map_entry {
+---
+
+---
+Changelog:
+
+v1 -> v2:
+  - Use generic hotplug handler introduced by https://lkml.org/lkml/2022/2/9/1406, a
+    significant change from v1.
+
+v2 -> v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of https://lkml.org/lkml/2022/3/3/674 [v5]
+  - Fixed warning reported by checpatch script
+---
+
+Sourabh Jain (5):
+  powerpc/kexec: make update_cpus_node non-static
+  powerpc/crash hp: introduce a new config option CRASH_HOTPLUG
+  powrepc/crash hp: update kimage struct
+  powerpc/crash hp: add crash hotplug support for kexec_file_load
+  powerpc/crash hp: add crash hotplug support for kexec_load
+
+ arch/powerpc/Kconfig              |  11 +++
+ arch/powerpc/include/asm/kexec.h  |   3 +
+ arch/powerpc/kexec/core_64.c      | 153 ++++++++++++++++++++++++++++++
+ arch/powerpc/kexec/elf_64.c       |  40 ++++++++
+ arch/powerpc/kexec/file_load_64.c |  87 -----------------
+ 5 files changed, 207 insertions(+), 87 deletions(-)
+
+-- 
+2.35.1
+
