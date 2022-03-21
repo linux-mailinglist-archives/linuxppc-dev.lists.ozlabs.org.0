@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4768C4E2302
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 10:12:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55584E2321
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 10:17:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KMTQm0hzXz3bX0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 20:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KMTXT4lYsz30Qx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 20:17:13 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=jbpPCrVn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=irk/5onz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,64 +18,55 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=jbpPCrVn; 
+ header.a=rsa-sha256 header.s=fm3 header.b=irk/5onz; 
  dkim-atps=neutral
 Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
  [66.111.4.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KMTQ72fphz2xKR
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 20:11:41 +1100 (AEDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id B54EA5C0102;
- Mon, 21 Mar 2022 05:11:39 -0400 (EDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KMTWr6vt3z2yxW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 20:16:40 +1100 (AEDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.nyi.internal (Postfix) with ESMTP id 324DA5C00A2;
+ Mon, 21 Mar 2022 05:16:38 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Mon, 21 Mar 2022 05:11:39 -0400
+ by compute1.internal (MEProxy); Mon, 21 Mar 2022 05:16:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=EaBaoXYAR6b4616S4
- HVTs+O1Fjylx01QZh1cTzPU21s=; b=jbpPCrVncbBcY4X+FwPZg82jyiQkUUmmf
- 1WzAI21dnNO6ghSDonK7FYMnahrJ+UiY01HHnoF1QiRq8D5lC5N02m2M5rIyf/Ay
- Kb36Oo618zk7x5ZGXbMYbNTyOB0O6tUpPu94lU/4kXMftRaBUe1gD8764Jgz59IG
- i1O/v1rpQYHj9g294BKOAL6gJSN/qu+Y/i8dq2568X5WqxpM85/i66xp5Fm55WC2
- iRW4qhMQ73WsSqY+HJlYHa2SQ6nA4tVwH8kCxcMBGoK7lWylsAGH/AoLPSA6oFzf
- 3RV9df8ZN+N8+hnZgcb1l9ItpLDAIjNjxCRYJkQRSqO9OsOHU8pVA==
-X-ME-Sender: <xms:S0E4YuUc06YA_sE-ekyolfXUyDsCW0Mpo-74-ZHXuEKsE-OPBTFHnA>
- <xme:S0E4Yqkn6zSeMr0qeGAoolvWxe-ghz57YvbmLteVjh9aegH5Pmx162AnnL4zTdf8m
- _xUtT97qkaXxYeDEy8>
-X-ME-Received: <xmr:S0E4YiYR7uL2CLnV2t4TL9EADRQv11LPuEjs8DWZfPJf4QHTmgEBqNiczum4B6wVypoRxcWe2ZesR6seY3NKFlMsCYeUQpM3FIg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudegfedgtdduucetufdoteggodetrfdotf
+ messagingengine.com; h=cc:cc:date:date:from:from:in-reply-to
+ :message-id:reply-to:sender:subject:subject:to:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=gNzyaw
+ ml6Mx9maRou91ByTbvGdGsig6mwf7OInhrdyE=; b=irk/5onzONs1uDbRQ3SRU3
+ unK4ocRvauOhTLinCpwrPn13YJe1nn6XpKfTDLD0b2vikofHoqLJNdfQGqj7XmS3
+ jFJulhTTYi65OJWGxd3mRrBNpjIc3h1wHPNnvjDzfEbR5NRE8cJDVOMJLDRwE0FF
+ IcPRZexWjkEEMQpxQeZBipCFpiiHOwpRU+ISKtjok6fEZpkd+aoUw8SMYSvwykiV
+ KfSluup1dbZzpoDIsrgkk+6EZtf7WnGAyMEt6O/nSDqQ0XzKHQktiMC6MwQMr2H2
+ UhckZlHBwee8wVzdaLbV9zQdiL8HDWkcBDqhpvLjbVKMDdZwZaDseohPUr5ETnKA
+ ==
+X-ME-Sender: <xms:dkI4YmmXyFgxWPP0DWilFaotzABjbQ-e3slgKe9TdZozepgd25e5Ow>
+ <xme:dkI4Yt3pMvCVmNxQnlKF-KL0fAIKB7bKV8DcBNg71lGLIvwnHgzQ1kdwKYMOqF_gC
+ rEJh8qrcPqgw-3kLnY>
+X-ME-Received: <xmr:dkI4Ykp55jg7rY41fNPV-b__JSKUSNxmmFCaXLjmpw_MiIiqQp6WrMVce-9j4hzsflz1cGk9ISOOEz7I5QysZbUcoTpSZIQyLL0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudegfedgtddvucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepfffhvffujgfkfhggtgesmhdtreertddtjeenucfhrhhomhephfhinhhnucfv
- hhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrth
- htvghrnhepfeffjeeigfehveehfeevhfetgefgieejieeviefhffffudfgfeekleffhffg
- hedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfh
- hthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgh
-X-ME-Proxy: <xmx:S0E4YlXdsIqRWw6y11QDsxECnFnCnsysxwZ9OsQ1t5Znfgq6PXM8Aw>
- <xmx:S0E4YolfyPDTrTwsQQpqDOJDCSVtq3GgIUBs-9u6NGjNh7Zbqh2hWw>
- <xmx:S0E4YqdfWOxnfVYEFb64rfxNimM9thv5i-lmGrlFE_jgmHhZLQRyDQ>
- <xmx:S0E4Ytx0wh9jx2g3BESC2GZBoyiF5NFxEjK3tcx-6wa5dsfRvDn4xw>
+ cujfgurhepvffkhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
+ uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
+ eptdelteekleekkedvueejheekgfdvtdehhefhteeitefhteefgefhudehveevleelnecu
+ vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthhgrih
+ hnsehlihhnuhigqdhmieekkhdrohhrgh
+X-ME-Proxy: <xmx:dkI4YqmMNYxMOwfPGaL3I8QN3BnV7z-cmPoGJ4mWWkXLM-QgBK88EQ>
+ <xmx:dkI4Yk1-PEVzSVymIoWR45MQssvDlSRfm1rfpHdnVpne6ZIYLGHwwA>
+ <xmx:dkI4YhuRHYpiS4muO7tgcv45KirbQ-lWx9NIyOHy9kju6uwrMNsUHQ>
+ <xmx:dkI4YiAoKlCbzT8lbWvb290h-TAw_5GhRLQC7jjYIYB7-9VbABpTpA>
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 21 Mar 2022 05:11:37 -0400 (EDT)
-Date: Mon, 21 Mar 2022 20:11:47 +1100 (AEDT)
+ 21 Mar 2022 05:16:36 -0400 (EDT)
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Message-Id: <bb3b2229213f5feaff12e731b7537d03705e15d5.1647854173.git.fthain@linux-m68k.org>
 From: Finn Thain <fthain@linux-m68k.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] macintosh/via-pmu: Fix compiler warnings when
- CONFIG_PROC_FS is disabled
-In-Reply-To: <073c34e0-a016-cf70-1deb-be286da94bde@csgroup.eu>
-Message-ID: <b6d69a6-9e17-d370-a1cd-8f51204ea5d@linux-m68k.org>
-References: <650f5577599a701fdd632cdd469a9cea9788cdf3.1647674431.git.fthain@linux-m68k.org>
- <bb6d3131-3c46-654f-d2a0-6d57bb8cbfbf@csgroup.eu>
- <39f63c1b-5a1b-8c8e-5991-813d3d3c2576@linux-m68k.org>
- <7b16264-dfef-414-8195-87c14a89fb40@linux-m68k.org>
- <073c34e0-a016-cf70-1deb-be286da94bde@csgroup.eu>
-MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="-1463811774-918512666-1647853907=:7891"
+Subject: [PATCH] Subject: [PATCH] macintosh/via-pmu: Avoid compiler warnings
+ when CONFIG_PROC_FS is disabled
+Date: Mon, 21 Mar 2022 20:16:13 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,68 +78,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+drivers/macintosh/via-pmu.c:897:12: warning: 'pmu_battery_proc_show' defined but not used [-Wunused-function]
+ static int pmu_battery_proc_show(struct seq_file *m, void *v)
+            ^~~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/via-pmu.c:871:12: warning: 'pmu_irqstats_proc_show' defined but not used [-Wunused-function]
+ static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
+            ^~~~~~~~~~~~~~~~~~~~~~
+drivers/macintosh/via-pmu.c:860:12: warning: 'pmu_info_proc_show' defined but not used [-Wunused-function]
+ static int pmu_info_proc_show(struct seq_file *m, void *v)
+            ^~~~~~~~~~~~~~~~~~
 
----1463811774-918512666-1647853907=:7891
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Rearrange some code and add some #ifdefs to avoid unused code warnings
+when CONFIG_PROC_FS is disabled.
 
-On Mon, 21 Mar 2022, Christophe Leroy wrote:
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+ drivers/macintosh/via-pmu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> Le 21/03/2022 =C3=A0 09:50, Finn Thain a =C3=A9crit=C2=A0:
-> > Hi Christophe,
-> >=20
-> > On Mon, 21 Mar 2022, Finn Thain wrote:
-> >=20
-> >> On Mon, 21 Mar 2022, Christophe Leroy wrote:
-> >>
-> >>> Le 19/03/2022 =C3=A0 08:20, Finn Thain a =C3=A9crit=C2=A0:
-> >>>> drivers/macintosh/via-pmu.c:897:12: warning: 'pmu_battery_proc_show'=
- defined but not used [-Wunused-function]
-> >>>>    static int pmu_battery_proc_show(struct seq_file *m, void *v)
-> >>>>               ^~~~~~~~~~~~~~~~~~~~~
-> >>>> drivers/macintosh/via-pmu.c:871:12: warning: 'pmu_irqstats_proc_show=
-' defined but not used [-Wunused-function]
-> >>>>    static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
-> >>>>               ^~~~~~~~~~~~~~~~~~~~~~
-> >>>> drivers/macintosh/via-pmu.c:860:12: warning: 'pmu_info_proc_show' de=
-fined but not used [-Wunused-function]
-> >>>>    static int pmu_info_proc_show(struct seq_file *m, void *v)
-> >>>>               ^~~~~~~~~~~~~~~~~~
-> >>>>
-> >>>> Rearrange some code and add some #ifdefs to avoid unused code warnin=
-gs
-> >>>> when CONFIG_PROC_FS is disabled.
-> >>>
-> >>> Why not just put those three functions inside an #ifdef CONFIG_PROC_F=
-S ?
-> >>>
-> >>
-> >> You'd get a warning about the prototypes ("declared static but never
-> >> defined"). Rather than add an ifdef around the prototypes as well, I
-> >> just reordered things a little.
-> >=20
-> > Oops, I was forgetting that I also added an ifdef around the new
-> > prototype.
-> >=20
-> > The simplest solution is probably the patch below, as it better exploit=
-s
-> > the stubbed-out proc_* API in include/linux/proc_fs.h.
-> >=20
-> > Was this what you had in mind?
->=20
-> Yes that's exactly what I had in mind.
->=20
+diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
+index 2109129ea1bb..495fd35b11de 100644
+--- a/drivers/macintosh/via-pmu.c
++++ b/drivers/macintosh/via-pmu.c
+@@ -204,9 +204,11 @@ static int init_pmu(void);
+ static void pmu_start(void);
+ static irqreturn_t via_pmu_interrupt(int irq, void *arg);
+ static irqreturn_t gpio1_interrupt(int irq, void *arg);
++#ifdef CONFIG_PROC_FS
+ static int pmu_info_proc_show(struct seq_file *m, void *v);
+ static int pmu_irqstats_proc_show(struct seq_file *m, void *v);
+ static int pmu_battery_proc_show(struct seq_file *m, void *v);
++#endif
+ static void pmu_pass_intr(unsigned char *data, int len);
+ static const struct proc_ops pmu_options_proc_ops;
+ 
+@@ -857,6 +859,7 @@ query_battery_state(void)
+ 			2, PMU_SMART_BATTERY_STATE, pmu_cur_battery+1);
+ }
+ 
++#ifdef CONFIG_PROC_FS
+ static int pmu_info_proc_show(struct seq_file *m, void *v)
+ {
+ 	seq_printf(m, "PMU driver version     : %d\n", PMU_DRIVER_VERSION);
+@@ -977,6 +980,7 @@ static const struct proc_ops pmu_options_proc_ops = {
+ 	.proc_release	= single_release,
+ 	.proc_write	= pmu_options_proc_write,
+ };
++#endif
+ 
+ #ifdef CONFIG_ADB
+ /* Send an ADB command */
+-- 
+2.32.0
 
-OK, I'll submit it formally.
-
-Thanks for your review.
----1463811774-918512666-1647853907=:7891--
