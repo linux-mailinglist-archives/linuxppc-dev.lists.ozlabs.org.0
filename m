@@ -1,67 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9BD4E2CAC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 16:45:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF984E2F4A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 18:45:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KMf8L3KVFz30Pq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Mar 2022 02:45:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KMhpM0b0vz3bYB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Mar 2022 04:44:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U3fE9mvn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=U3fE9mvn; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KMf7w4c61z3bfP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Mar 2022 02:45:00 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KMf7s3SVGz9sTR;
- Mon, 21 Mar 2022 16:44:57 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id GTON49PSekrA; Mon, 21 Mar 2022 16:44:57 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KMf7s2jxKz9sTJ;
- Mon, 21 Mar 2022 16:44:57 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4ADA28B76C;
- Mon, 21 Mar 2022 16:44:57 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id WHfqW7FVGiGT; Mon, 21 Mar 2022 16:44:57 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 353D58B763;
- Mon, 21 Mar 2022 16:44:57 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22LFimKO961652
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Mon, 21 Mar 2022 16:44:48 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22LFilCw961651;
- Mon, 21 Mar 2022 16:44:47 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: align address to page boundary in change_page_attr()
-Date: Mon, 21 Mar 2022 16:44:45 +0100
-Message-Id: <6bb118fb2ee89fa3c1f9cf90ed19f88220002cb0.1647877467.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KMhnf02Gfz3050
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Mar 2022 04:44:21 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 51F746147C;
+ Mon, 21 Mar 2022 17:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FE8C340E8;
+ Mon, 21 Mar 2022 17:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1647884656;
+ bh=Cc93Sj0aRgEOWTPpRj8NNqcOtJCr+4R/IS5e+PnVDpI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=U3fE9mvncxRxT9MkMJyY0wRxVjZfmImW2AWeVMS26K1N5AtfUrZ1VUSp/QbiO/uIR
+ BFbccvvfaSmWp/4TrOWv/MhNpySrnD3IQq3wzid7KyDktnTbLdSYaFOJLcRZtN4o7N
+ aDSP6nZ92OrCdbiQk8QH4DJ9LgjlQ5L1sJF3iyIWFCD3ZQtx29z+angBTrsQGIj6Kn
+ DdRfhByEDboFK2Cl786MKfWBivB0FL5zKRy23ALcA8DH4ljl0HYRhoHyjFQ4aXHahG
+ qSstj/taGkUf/aMOjalkyn48fWLmLB6kIOwvf2k/g0exuPW+jZpFfMOn1uJibIorNR
+ UkF9q9okXpjRg==
+Date: Mon, 21 Mar 2022 17:44:05 +0000
+From: Will Deacon <will@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v1 4/7] arm64/pgtable: support
+ __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+Message-ID: <20220321174404.GA11389@willie-the-truck>
+References: <20220315141837.137118-1-david@redhat.com>
+ <20220315141837.137118-5-david@redhat.com>
+ <YjIr9f9qaz4xITVd@arm.com>
+ <20220321143802.GC11145@willie-the-truck>
+ <ea570f92-f896-7f9b-91c4-ad0a025bb340@redhat.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1647877483; l=1785; s=20211009;
- h=from:subject:message-id; bh=XD7Tck9OiYXR05COoXx5aqfW6pqO+VH6BD8lG/u3XEg=;
- b=TmSNUn02E3l15lu/1NK8vuqd8N+RO1fZ2rCnCFpIHKhiTQJDbao2uLhkrJ/7Wqtz9t4sFpp3SV9r
- c2QRt9ypCsWedDYifJx8yhAvx96L7TGbx/9tGCsL0xhs5oLyBx4V
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ea570f92-f896-7f9b-91c4-ad0a025bb340@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,66 +69,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: x86@kernel.org, Jan Kara <jack@suse.cz>,
+ Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Nadav Amit <namit@vmware.com>, Liang Zhang <zhangliang5@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christoph Hellwig <hch@lst.de>, Paul Mackerras <paulus@samba.org>,
+ Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ linux-arm-kernel@lists.infradead.org, Jason Gunthorpe <jgg@nvidia.com>,
+ David Rientjes <rientjes@google.com>, Pedro Gomes <pedrodemargomes@gmail.com>,
+ Jann Horn <jannh@google.com>, John Hubbard <jhubbard@nvidia.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Shakeel Butt <shakeelb@google.com>,
+ Oleg Nesterov <oleg@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Oded Gabbay <oded.gabbay@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Donald Dutile <ddutile@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Aligning address to page boundary allows flush_tlb_kernel_range()
-to know it's a single page flush and use tlbie instead of tlbia.
+On Mon, Mar 21, 2022 at 04:07:48PM +0100, David Hildenbrand wrote:
+> On 21.03.22 15:38, Will Deacon wrote:
+> > On Wed, Mar 16, 2022 at 06:27:01PM +0000, Catalin Marinas wrote:
+> >> On Tue, Mar 15, 2022 at 03:18:34PM +0100, David Hildenbrand wrote:
+> >>> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
+> >>> index b1e1b74d993c..62e0ebeed720 100644
+> >>> --- a/arch/arm64/include/asm/pgtable-prot.h
+> >>> +++ b/arch/arm64/include/asm/pgtable-prot.h
+> >>> @@ -14,6 +14,7 @@
+> >>>   * Software defined PTE bits definition.
+> >>>   */
+> >>>  #define PTE_WRITE		(PTE_DBM)		 /* same as DBM (51) */
+> >>> +#define PTE_SWP_EXCLUSIVE	(_AT(pteval_t, 1) << 2)	 /* only for swp ptes */
+> >>
+> >> I think we can use bit 1 here.
+> >>
+> >>> @@ -909,12 +925,13 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+> >>>  /*
+> >>>   * Encode and decode a swap entry:
+> >>>   *	bits 0-1:	present (must be zero)
+> >>> - *	bits 2-7:	swap type
+> >>> + *	bits 2:		remember PG_anon_exclusive
+> >>> + *	bits 3-7:	swap type
+> >>>   *	bits 8-57:	swap offset
+> >>>   *	bit  58:	PTE_PROT_NONE (must be zero)
+> >>
+> >> I don't remember exactly why we reserved bits 0 and 1 when, from the
+> >> hardware perspective, it's sufficient for bit 0 to be 0 and the whole
+> >> pte becomes invalid. We use bit 1 as the 'table' bit (when 0 at pmd
+> >> level, it's a huge page) but we shouldn't check for this on a swap
+> >> entry.
+> > 
+> > I'm a little worried that when we're dealing with huge mappings at the
+> > PMD level we might lose the ability to distinguish them from a pte-level
+> > mapping with this new flag set if we use bit 1. A similar issue to this
+> > was fixed a long time ago by 59911ca4325d ("ARM64: mm: Move PTE_PROT_NONE
+> > bit") when we used to use bit 1 for PTE_PROT_NONE.
+> > 
+> > Is something like:
+> > 
+> > 	pmd_to_swp_entry(swp_entry_to_pmd(pmd));
+> 
+> Note that __HAVE_ARCH_PTE_SWP_EXCLUSIVE currently only applies to actual
+> swap entries, not non-swap entries (migration, hwpoison, ...). So it
+> really only applies to PTEs -- PMDs are not applicable.
 
-On 603 we now have the following code in first leg of
-change_page_attr():
+Right, thanks for the clarification.
 
-	  2c:	55 29 00 3c 	rlwinm  r9,r9,0,0,30
-	  30:	91 23 00 00 	stw     r9,0(r3)
-	  34:	7c 00 22 64 	tlbie   r4,r0
-	  38:	7c 00 04 ac 	hwsync
-	  3c:	38 60 00 00 	li      r3,0
-	  40:	4e 80 00 20 	blr
+> So the example you gave cannot possibly have that bit set. From what I
+> understand, it should be fine. But I have no real preference: I can also
+> just stick to the original patch, whatever you prefer.
 
-Before we had:
+I think I'd prefer to stay on the safe side and stick with bit 2 as you
+originally proposed. If we need to support crazy numbers of swapfiles
+in future then we can revisit the idea of allocating bit 1.
 
-	  28:	55 29 00 3c 	rlwinm  r9,r9,0,0,30
-	  2c:	91 23 00 00 	stw     r9,0(r3)
-	  30:	54 89 00 26 	rlwinm  r9,r4,0,0,19
-	  34:	38 84 10 00 	addi    r4,r4,4096
-	  38:	7c 89 20 50 	subf    r4,r9,r4
-	  3c:	28 04 10 00 	cmplwi  r4,4096
-	  40:	41 81 00 30 	bgt     70 <change_page_attr+0x70>
-	  44:	7c 00 4a 64 	tlbie   r9,r0
-	  48:	7c 00 04 ac 	hwsync
-	  4c:	38 60 00 00 	li      r3,0
-	  50:	4e 80 00 20 	blr
-	...
-	  70:	94 21 ff f0 	stwu    r1,-16(r1)
-	  74:	7c 08 02 a6 	mflr    r0
-	  78:	90 01 00 14 	stw     r0,20(r1)
-	  7c:	48 00 00 01 	bl      7c <change_page_attr+0x7c>
-				7c: R_PPC_REL24	_tlbia
-	  80:	80 01 00 14 	lwz     r0,20(r1)
-	  84:	38 60 00 00 	li      r3,0
-	  88:	7c 08 03 a6 	mtlr    r0
-	  8c:	38 21 00 10 	addi    r1,r1,16
-	  90:	4e 80 00 20 	blr
+Thanks, and sorry for the trouble.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/mm/pageattr.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
-index 85753e32a4de..6163e484bc6d 100644
---- a/arch/powerpc/mm/pageattr.c
-+++ b/arch/powerpc/mm/pageattr.c
-@@ -31,6 +31,7 @@ static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
- {
- 	long action = (long)data;
- 
-+	addr &= PAGE_MASK;
- 	/* modify the PTE bits as desired */
- 	switch (action) {
- 	case SET_MEMORY_RO:
--- 
-2.35.1
-
+Will
