@@ -2,77 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C114E2232
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 09:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44434E2236
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 09:30:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KMSTm14lnz30Lq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 19:29:48 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=MekULqoF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KMSW25W1mz3bf3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 19:30:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=out5-smtp.messagingengine.com (client-ip=66.111.4.29;
- helo=out5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=MekULqoF; 
- dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
- [66.111.4.29])
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KMST54N9zz3069
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 19:29:11 +1100 (AEDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
- by mailout.nyi.internal (Postfix) with ESMTP id 9D6865C01CC;
- Mon, 21 Mar 2022 04:29:07 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute2.internal (MEProxy); Mon, 21 Mar 2022 04:29:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=mJOoRUMYX3YmX13po
- 9qoHQ56zhl3uYpuOoJWbXxYEFY=; b=MekULqoFVnQl1+cCRF8WdVEiPR4UQiA1v
- iwe8N8NXBsUHo/NGxe6+PrtWL9xPyZ9aelp3k3FZSWmL0VFQeDf2CIB9R8XLYmcK
- LAVakqRxrBTYXuuCFwpr/zGJ3RVq6zWhqwDJXpsEKjrdcJPn6mbBbHUcb/UiwVCZ
- TZv+6LRrDsuuhwC0sSPhyzboVBAR0z640It0iZuLlK50KWXblBxDaKUNLbOIgmVZ
- yqfgNg2zpEtW6seIq4i4CWknX/4daBGPFmLLGDCfmaTMhCnDTxqJ47UzJi9JBEsx
- Sz+Mq9AXxdzFfbkRifU2xs0SUe1njJNOGKQuJXJJN8b/E3DJ4OpGw==
-X-ME-Sender: <xms:Ujc4Ys58J6p33yC3OE4CC8fIbr3phjWBN6TVNgfAeI5NeLhVPJ6jog>
- <xme:Ujc4Yt5Tz-bxaG5sSBmBIxduzMI1Xmg3wNLj35xlzw3bPwLTQnf6vlO4nx_Mcvhia
- 5F_nruF7y_D1ASfyKg>
-X-ME-Received: <xmr:Ujc4YreBqFeQ6y8vzQjVRMYl-Gc2K7kA6uNYf-ZWEV6Oi5sX-zwgd9CU6RZjozZ4N7Slugep2z8HbvrYlF1RFPsZZ8Sk0BW0y1Y>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudegvddguddvvdcutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpeffhffvufgjkfhfgggtsehmtderredttdejnecuhfhrohhmpefhihhnnhcu
- vfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrg
- htthgvrhhnpeefffejiefgheevheefvefhteeggfeijeeiveeihfffffdugfefkeelfffh
- gfehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
- hfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
-X-ME-Proxy: <xmx:Ujc4YhIR4UJ85EMUEC8wyjlG4oCseuRfJMWZAni0cppdgXdNc6n9xw>
- <xmx:Ujc4YgI1BkS9zlHsEGdY4mpsWCBjsWj8ouUQnlCSbsxHHJLloK05LA>
- <xmx:Ujc4Yiz6AqWNYh51xGjJ6yYhSbCNngQcBG5Y6JarjE7UiQ46W2LUow>
- <xmx:Uzc4Yk35x4Apxk0Gh7N1bj5Qe5iy07pVLl1LyWD7KpfUlY1NFaJ-9A>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 21 Mar 2022 04:29:05 -0400 (EDT)
-Date: Mon, 21 Mar 2022 19:29:11 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] macintosh/via-pmu: Fix build failure when CONFIG_INPUT
- is disabled
-In-Reply-To: <5291a177-9a67-b23a-515f-7faa3cc887e8@csgroup.eu>
-Message-ID: <e8398356-8ba3-e9de-8da0-3591907340b5@linux-m68k.org>
-References: <d987663bbed18d7dbf106db6066a759040b4e57a.1647837028.git.fthain@linux-m68k.org>
- <5291a177-9a67-b23a-515f-7faa3cc887e8@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KMSVc0tMgz307B
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 19:30:30 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KMSVV0FNCz9sSK;
+ Mon, 21 Mar 2022 09:30:26 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id UkHriV35UGGy; Mon, 21 Mar 2022 09:30:25 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KMSVT6X6Qz9sSD;
+ Mon, 21 Mar 2022 09:30:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CE1618B766;
+ Mon, 21 Mar 2022 09:30:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 289LELinwgzm; Mon, 21 Mar 2022 09:30:25 +0100 (CET)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 83A188B763;
+ Mon, 21 Mar 2022 09:30:25 +0100 (CET)
+Message-ID: <0a8285c7-67d2-5697-5c41-f6699f9b5599@csgroup.eu>
+Date: Mon, 21 Mar 2022 09:30:25 +0100
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="-1463811774-1060938498-1647851351=:12278"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Sathvika Vasireddy <sv@linux.ibm.com>
+References: <20220318105140.43914-1-sv@linux.ibm.com>
+ <20220318105140.43914-4-sv@linux.ibm.com>
+ <YjR6kHq4c/rjCTpr@hirez.programming.kicks-ass.net>
+ <33447256-81d1-8844-d82f-e8ac94f65fbe@csgroup.eu>
+ <87pmmgghvu.fsf@mpe.ellerman.id.au>
+ <a688b641-a8ef-8e6b-4f94-da5edd1c6943@csgroup.eu>
+In-Reply-To: <a688b641-a8ef-8e6b-4f94-da5edd1c6943@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,77 +68,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "rostedt@goodmis.org" <rostedt@goodmis.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "jpoimboe@redhat.com" <jpoimboe@redhat.com>,
+ "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
----1463811774-1060938498-1647851351=:12278
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On Mon, 21 Mar 2022, Christophe Leroy wrote:
+Le 21/03/2022 à 08:56, Christophe Leroy a écrit :
+> 
+> 
+> Le 21/03/2022 à 03:27, Michael Ellerman a écrit :
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>> Le 18/03/2022 à 13:26, Peter Zijlstra a écrit :
+>>>> On Fri, Mar 18, 2022 at 04:21:40PM +0530, Sathvika Vasireddy wrote:
+>>>>> This patch adds powerpc specific functions required for
+>>>>> 'objtool mcount' to work, and enables mcount for ppc.
+>>>>
+>>>> I would love to see more objtool enablement for Power :-)
+>>>
+>>> I have not received this series and I can't see it on powerpc patchwork
+>>> either (https://patchwork.ozlabs.org/project/linuxppc-dev/list/)
+>>>
+>>> Did you send it to linuxppc-dev list ? If not can you resend it there ?
+>>
+>> It is there, might have been delayed?
+>>
+>> http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=291129
+>>
+>> There are some CI failures.
+>>
+> 
+> On PPC32 I get :
+> 
+> [    0.000000] ftrace: No functions to be traced?
+> 
+> Without this series I get:
+> 
+> [    0.000000] ftrace: allocating 22508 entries in 17 pages
+> [    0.000000] ftrace: allocated 17 pages with 2 groups
+> 
+> 
 
->=20
->=20
-> Le 21/03/2022 =C3=A0 05:30, Finn Thain a =C3=A9crit=C2=A0:
-> > drivers/macintosh/via-pmu-event.o: In function `via_pmu_event':
-> > via-pmu-event.c:(.text+0x44): undefined reference to `input_event'
-> > via-pmu-event.c:(.text+0x68): undefined reference to `input_event'
-> > via-pmu-event.c:(.text+0x94): undefined reference to `input_event'
-> > via-pmu-event.c:(.text+0xb8): undefined reference to `input_event'
-> > drivers/macintosh/via-pmu-event.o: In function `via_pmu_event_init':
-> > via-pmu-event.c:(.init.text+0x20): undefined reference to `input_alloca=
-te_device'
-> > via-pmu-event.c:(.init.text+0xc4): undefined reference to `input_regist=
-er_device'
-> > via-pmu-event.c:(.init.text+0xd4): undefined reference to `input_free_d=
-evice'
-> > make[1]: *** [Makefile:1155: vmlinux] Error 1
-> > make: *** [Makefile:350: __build_one_by_one] Error 2
-> >=20
-> > Don't call into the input subsystem unless CONFIG_INPUT is built-in.
-> >=20
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Cc: Randy Dunlap <rdunlap@infradead.org>
-> > Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-> > ---
-> > This is equivalent to the patch I sent a couple of days ago. This one
-> > is slightly longer and adds a new symbol so that Kconfig logic can been
-> > used instead of Makefile logic in case reviewers prefer that.
-> > ---
-> >   drivers/macintosh/Kconfig   | 5 +++++
-> >   drivers/macintosh/Makefile  | 3 ++-
-> >   drivers/macintosh/via-pmu.c | 2 ++
-> >   3 files changed, 9 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
-> > index 5cdc361da37c..b9102f051bbb 100644
-> > --- a/drivers/macintosh/Kconfig
-> > +++ b/drivers/macintosh/Kconfig
-> > @@ -67,6 +67,11 @@ config ADB_PMU
-> >   =09  this device; you should do so if your machine is one of those
-> >   =09  mentioned above.
-> >  =20
-> > +config ADB_PMU_EVENT
-> > +=09bool
-> > +=09depends on ADB_PMU && INPUT=3Dy
-> > +=09default y
->=20
-> Could be reduced to
->=20
-> config ADB_PMU_EVENT
-> =09def_bool y if ADB_PMU && INPUT=3Dy
->=20
 
-That's great but my question remains unanswered: why the aversion to=20
-conditionals in Makefiles, when that would be simpler (no new symbol)?
----1463811774-1060938498-1647851351=:12278--
+ppc64_defconfig on QEMU:
+
+[    0.000000][    T0] ftrace: No functions to be traced?
+
+Without your series:
+
+[    0.000000][    T0] ftrace: allocating 38750 entries in 15 pages
+[    0.000000][    T0] ftrace: allocated 15 pages with 4 groups
+[    0.000000][    T0] trace event string verifier disabled
+
