@@ -2,73 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F20224E325C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 22:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6157D4E3277
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 22:55:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KMp1q6btYz30FQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Mar 2022 08:40:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KMpMq2B6lz3bYW
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Mar 2022 08:55:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20210112.gappssmtp.com header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=AJJS8AlL;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=R5o7PYox;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::62c;
- helo=mail-pl1-x62c.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20210112.gappssmtp.com
- header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=AJJS8AlL; dkim-atps=neutral
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com
- [IPv6:2607:f8b0:4864:20::62c])
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=desiato.20200630 header.b=R5o7PYox; 
+ dkim-atps=neutral
+Received: from desiato.infradead.org (desiato.infradead.org
+ [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KMp1B2GBwz2xrv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Mar 2022 08:39:35 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id w4so13832277ply.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 14:39:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20210112.gappssmtp.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=hzlxuoVcUtFNyYhd7IaP3vW/n/31iVrjVI0cYpxyVIg=;
- b=AJJS8AlLvE3dh4Iw3f148oDobBs8GBjNK4HQR4fd1ld62s0aCs+22XINlkoJDU3AoS
- 8uOi8t84billfQr0/CqrEHKAzh01irX6vV3+g/0cziRJHBRIamVkeOpo/BnaIatO7PZV
- Eh43oCbXlnRIdtB69OTh5c/BRYxUtttvmXan5DnrMyeb/hsvFapXSvlvx+JuWcvRFGHt
- Ntke3y/TTx6l6EOaJqInsPSOd9mVsFU0WbP2/5lR+aO70ZuS7ys8aNRkV3i6D/Lf0evC
- r6BJwCreN/NdOKs2SjJv0+1od6GQSOKpx1d5z0hh7EF2eui/EcuQxfMSPoOkBKCZ7FWC
- /+Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=hzlxuoVcUtFNyYhd7IaP3vW/n/31iVrjVI0cYpxyVIg=;
- b=TuTZftCO2NDUj8f6lq7dw3NX1M6lv6feD5y8/esVOSy9RjfxBcDLULXg3b2b+c1ah2
- KThZdoA09NYm6J/y2xap3RP/fynGxkFWWsddIR5UPVFajnNSJwGQ/zKu1mzGunHWu4a4
- szwplUp9aVTVUQA8e7VxzFjkpyNEMxwWqqwSezjpFCpFo5OePRqksDsMd9DSfOMIjNQ0
- zQ/jHAUtpn+hK7jc1zjB8BM8pRylq4G/ItLmfYr650CjvmiwIFXN7FT2P3qors5W915j
- rHGxk4RxbL82HTZdodfBesi/5FRHbtILhLl+gHwlzN6dHiXE4ggTlFdT5amsqKBH/hd4
- INKQ==
-X-Gm-Message-State: AOAM533/sdVZOtW1F2RRXIklhtqny6fWg28dM9VpULpKVTY6LCF0GUE5
- h+k4VrRQXyKLT+tIg//q7AOFVxsplYwgPbB5oGPU0w==
-X-Google-Smtp-Source: ABdhPJyzdofKTKHoiJ4iGCBbHSPi4Xc1wlwYjpgmL6SpWKAD7UioDwd+ubLQF8zj102JpbsH9iOBSWpSmWQXM5a6nHg=
-X-Received: by 2002:a17:903:32c7:b0:154:4156:f384 with SMTP id
- i7-20020a17090332c700b001544156f384mr10917932plr.34.1647898771195; Mon, 21
- Mar 2022 14:39:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KMpM65DCVz2yP7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Mar 2022 08:55:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+ :In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=roFmIy7ERbZhzCdoKPTNzJ04IPexvyGINPkBzgIr3yI=; b=R5o7PYoxgNC067hILjqK+/dz9x
+ 6uL2vy8NfYNYqZLoYMbNS+EHz5nPJE5bk7D25QQjeW3WxYYSx86VOIRrPQ8b8Syse84r6KOTissD4
+ yjbAqu+w3nW1Lnam0BCg5VVUKNb7yI7yesp9xtp8iNjBl2tUWoYoD/J5HjKH3OTrkb8wKU2jm6n69
+ SXHWoqLSnQL/7tJmRC9I4SYEuMlZWekh+z12ONXpvusPF1sT1fl9tIkr2l6eAllnU7nC9mSVaX/iU
+ Eloy61/03ss+UQXnBOsrZAgvemxmHYt+arYILd+7T6kMlWn+oKf8VXis+wOWfNXXzpWHm+l4VqzsD
+ swVbh2jA==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+ by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1nWPzM-003G0Q-Em; Mon, 21 Mar 2022 21:54:56 +0000
+Message-ID: <11533b46-70ec-6dde-fd18-af44cc36b1ab@infradead.org>
+Date: Mon, 21 Mar 2022 14:54:50 -0700
 MIME-Version: 1.0
-References: <20220318114133.113627-1-kjain@linux.ibm.com>
- <20220318114133.113627-2-kjain@linux.ibm.com>
-In-Reply-To: <20220318114133.113627-2-kjain@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 21 Mar 2022 14:39:23 -0700
-Message-ID: <CAPcyv4iqpTn89WLOW1XjFXGZEYG_MmPg+VQbcDJ9ygJ4Jaybtw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/papr_scm: Fix build failure when
- CONFIG_PERF_EVENTS is not set
-To: Kajol Jain <kjain@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2] macintosh/via-pmu: Avoid compiler warnings when
+ CONFIG_PROC_FS is disabled
+Content-Language: en-US
+To: Finn Thain <fthain@linux-m68k.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+References: <0c11c0770fc4ec7e80a4b2e0ffce1055b792cfdb.1647854880.git.fthain@linux-m68k.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <0c11c0770fc4ec7e80a4b2e0ffce1055b792cfdb.1647854880.git.fthain@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,83 +66,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux NVDIMM <nvdimm@lists.linux.dev>, Santosh Sivaraj <santosh@fossix.org>,
- maddy@linux.ibm.com, "Weiny, Ira" <ira.weiny@intel.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Peter Zijlstra <peterz@infradead.org>,
- rnsastry@linux.ibm.com,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>,
- Linux-Next Mailing List <linux-next@vger.kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>, atrajeev@linux.vnet.ibm.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 18, 2022 at 4:42 AM Kajol Jain <kjain@linux.ibm.com> wrote:
->
-> The following build failure occures when CONFIG_PERF_EVENTS is not set
-> as generic pmu functions are not visible in that scenario.
->
-> arch/powerpc/platforms/pseries/papr_scm.c:372:35: error: =E2=80=98struct =
-perf_event=E2=80=99 has no member named =E2=80=98attr=E2=80=99
->          p->nvdimm_events_map[event->attr.config],
->                                    ^~
-> In file included from ./include/linux/list.h:5,
->                  from ./include/linux/kobject.h:19,
->                  from ./include/linux/of.h:17,
->                  from arch/powerpc/platforms/pseries/papr_scm.c:5:
-> arch/powerpc/platforms/pseries/papr_scm.c: In function =E2=80=98papr_scm_=
-pmu_event_init=E2=80=99:
-> arch/powerpc/platforms/pseries/papr_scm.c:389:49: error: =E2=80=98struct =
-perf_event=E2=80=99 has no member named =E2=80=98pmu=E2=80=99
->   struct nvdimm_pmu *nd_pmu =3D to_nvdimm_pmu(event->pmu);
->                                                  ^~
-> ./include/linux/container_of.h:18:26: note: in definition of macro =E2=80=
-=98container_of=E2=80=99
->   void *__mptr =3D (void *)(ptr);     \
->                           ^~~
-> arch/powerpc/platforms/pseries/papr_scm.c:389:30: note: in expansion of m=
-acro =E2=80=98to_nvdimm_pmu=E2=80=99
->   struct nvdimm_pmu *nd_pmu =3D to_nvdimm_pmu(event->pmu);
->                               ^~~~~~~~~~~~~
-> In file included from ./include/linux/bits.h:22,
->                  from ./include/linux/bitops.h:6,
->                  from ./include/linux/of.h:15,
->                  from arch/powerpc/platforms/pseries/papr_scm.c:5:
->
-> Fix the build issue by adding check for CONFIG_PERF_EVENTS config option
-> and disabling the papr_scm perf interface support incase this config
-> is not set
->
-> Fixes: 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support") (Com=
-mit id
-> based on linux-next tree)
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+
+
+On 3/21/22 02:28, Finn Thain wrote:
+> drivers/macintosh/via-pmu.c:897:12: warning: 'pmu_battery_proc_show' defined but not used [-Wunused-function]
+>  static int pmu_battery_proc_show(struct seq_file *m, void *v)
+>             ^~~~~~~~~~~~~~~~~~~~~
+> drivers/macintosh/via-pmu.c:871:12: warning: 'pmu_irqstats_proc_show' defined but not used [-Wunused-function]
+>  static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
+>             ^~~~~~~~~~~~~~~~~~~~~~
+> drivers/macintosh/via-pmu.c:860:12: warning: 'pmu_info_proc_show' defined but not used [-Wunused-function]
+>  static int pmu_info_proc_show(struct seq_file *m, void *v)
+>             ^~~~~~~~~~~~~~~~~~
+> 
+> Add some #ifdefs to avoid unused code warnings when CONFIG_PROC_FS is
+> disabled.
+> 
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+Thanks.
+
 > ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 15 +++++++++++++++
+> Changed since v1:
+>  - Simplified to take advantage of the fact that proc_mkdir() is stubbed
+>    out when CONFIG_PROC_FS=n. Hence that call doesn't need to move
+>    within the #ifdef.
+> ---
+>  drivers/macintosh/via-pmu.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
+> index 2109129ea1bb..495fd35b11de 100644
+> --- a/drivers/macintosh/via-pmu.c
+> +++ b/drivers/macintosh/via-pmu.c
+> @@ -204,9 +204,11 @@ static int init_pmu(void);
+>  static void pmu_start(void);
+>  static irqreturn_t via_pmu_interrupt(int irq, void *arg);
+>  static irqreturn_t gpio1_interrupt(int irq, void *arg);
+> +#ifdef CONFIG_PROC_FS
+>  static int pmu_info_proc_show(struct seq_file *m, void *v);
+>  static int pmu_irqstats_proc_show(struct seq_file *m, void *v);
+>  static int pmu_battery_proc_show(struct seq_file *m, void *v);
+> +#endif
+>  static void pmu_pass_intr(unsigned char *data, int len);
+>  static const struct proc_ops pmu_options_proc_ops;
+>  
+> @@ -857,6 +859,7 @@ query_battery_state(void)
+>  			2, PMU_SMART_BATTERY_STATE, pmu_cur_battery+1);
+>  }
+>  
+> +#ifdef CONFIG_PROC_FS
+>  static int pmu_info_proc_show(struct seq_file *m, void *v)
+>  {
+>  	seq_printf(m, "PMU driver version     : %d\n", PMU_DRIVER_VERSION);
+> @@ -977,6 +980,7 @@ static const struct proc_ops pmu_options_proc_ops = {
+>  	.proc_release	= single_release,
+>  	.proc_write	= pmu_options_proc_write,
+>  };
+> +#endif
+>  
+>  #ifdef CONFIG_ADB
+>  /* Send an ADB command */
 
-This is a bit messier than I would have liked mainly because it dumps
-a bunch of ifdefery into a C file contrary to coding style, "Wherever
-possible, don't use preprocessor conditionals (#if, #ifdef) in .c
-files". I would expect this all to move to an organization like:
-
-arch/powerpc/platforms/pseries/papr_scm/main.c
-arch/powerpc/platforms/pseries/papr_scm/perf.c
-
-...and a new config symbol like:
-
-config PAPR_SCM_PERF
-       depends on PAPR_SCM && PERF_EVENTS
-       def_bool y
-
-...with wrappers in header files to make everything compile away
-without any need for main.c to carry an ifdef.
-
-Can you turn a patch like that in the next couple days? Otherwise, I
-think if Linus saw me sending a late breaking compile fix that threw
-coding style out the window he'd have cause to just drop the pull
-request entirely.
+-- 
+~Randy
