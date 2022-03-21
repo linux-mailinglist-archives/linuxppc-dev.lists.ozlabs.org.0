@@ -2,61 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44434E2236
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 09:30:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 541034E2249
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 09:34:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KMSW25W1mz3bf3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 19:30:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KMSb314fLz3bVf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Mar 2022 19:34:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=QPY3fFhy;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.helo=out5-smtp.messagingengine.com (client-ip=66.111.4.29;
+ helo=out5-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=QPY3fFhy; 
+ dkim-atps=neutral
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
+ [66.111.4.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KMSVc0tMgz307B
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 19:30:30 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KMSVV0FNCz9sSK;
- Mon, 21 Mar 2022 09:30:26 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id UkHriV35UGGy; Mon, 21 Mar 2022 09:30:25 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KMSVT6X6Qz9sSD;
- Mon, 21 Mar 2022 09:30:25 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CE1618B766;
- Mon, 21 Mar 2022 09:30:25 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 289LELinwgzm; Mon, 21 Mar 2022 09:30:25 +0100 (CET)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83A188B763;
- Mon, 21 Mar 2022 09:30:25 +0100 (CET)
-Message-ID: <0a8285c7-67d2-5697-5c41-f6699f9b5599@csgroup.eu>
-Date: Mon, 21 Mar 2022 09:30:25 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KMSZR3TlLz307B
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Mar 2022 19:33:50 +1100 (AEDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id 9A7505C0148;
+ Mon, 21 Mar 2022 04:33:48 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute2.internal (MEProxy); Mon, 21 Mar 2022 04:33:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=VtZrK2QJiD142HH3e
+ GmHXidaImy2Iw8OCXmGcQVUc68=; b=QPY3fFhy5BPpxmLoGrFk6WJorIKyixJor
+ 69vOYsoS8sXfCDN+02J5Y771+jowJidfQwr2ENoq2z78TL+7P717CetjPCJvDQ8T
+ qKQcM20/dIxJHY2kYw5AE8Qu4azDD5A7EoFvkK6J2qq0EaUTGKaSVcenZc54gtzK
+ Y7KgRDUcR/dCn+hXm2paWWcY1Rdc0VlHHvpE6F94jd4iMxn2RVT17rgPo03cyVLd
+ B+E3LUo8GpzdduAOLC9a1BKgTUvVVS7oveVM0m20uCRjyKcYtTGKba+walTdKVBw
+ d2TyQoN5KkYPOE+rI7//VIShPPBKIkvyqhDpHbOA6UQ+xLu7KYdsQ==
+X-ME-Sender: <xms:bDg4YlIWvlY11pNN6C5YQpq9YkfPMWGbEqkE24kIA5Z6vZmstLZ8gQ>
+ <xme:bDg4YhJJi65ZonIC1Roo10xa-o-9Ye3r8wDczuIhRxGjSUNazHajFKvfC1IC7OlWY
+ oGC7QsupScIR4-hALI>
+X-ME-Received: <xmr:bDg4Ytug7GTBFnwV3KiJCAwQUt87jNzkDABa8MUKD4j096A1XzTNi6Fq-3Ht5X021df26BVNdgGrrzZmilUHwcx1POdXfJvJ9Ac>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudegvddguddvfecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpeffhffvufgjkfhfgggtsehmtderredttdejnecuhfhrohhmpefhihhnnhcu
+ vfhhrghinhcuoehfthhhrghinheslhhinhhugidqmheikehkrdhorhhgqeenucggtffrrg
+ htthgvrhhnpeefffejiefgheevheefvefhteeggfeijeeiveeihfffffdugfefkeelfffh
+ gfehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+ hfthhhrghinheslhhinhhugidqmheikehkrdhorhhg
+X-ME-Proxy: <xmx:bDg4YmarDAoULOf4IE2EJh377O5zWgzcWqgeWJFynO8TfXFjrHO7mw>
+ <xmx:bDg4YsZirls1e2q3o7Lxx3Sg78mXPniQQaJKJzSoSeHfq1pDEZglyg>
+ <xmx:bDg4YqCObPnrhNwUdapayoyOR_dPwVoeX2ZPnJxxuq1XIfJeeGiBqQ>
+ <xmx:bDg4YrnCPB4wnMmMWJFw1yr2VU2ve0PcMV4pG486hcvMPClzL0CUIQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 21 Mar 2022 04:33:46 -0400 (EDT)
+Date: Mon, 21 Mar 2022 19:33:56 +1100 (AEDT)
+From: Finn Thain <fthain@linux-m68k.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] macintosh/via-pmu: Fix compiler warnings when
+ CONFIG_PROC_FS is disabled
+In-Reply-To: <bb6d3131-3c46-654f-d2a0-6d57bb8cbfbf@csgroup.eu>
+Message-ID: <39f63c1b-5a1b-8c8e-5991-813d3d3c2576@linux-m68k.org>
+References: <650f5577599a701fdd632cdd469a9cea9788cdf3.1647674431.git.fthain@linux-m68k.org>
+ <bb6d3131-3c46-654f-d2a0-6d57bb8cbfbf@csgroup.eu>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Sathvika Vasireddy <sv@linux.ibm.com>
-References: <20220318105140.43914-1-sv@linux.ibm.com>
- <20220318105140.43914-4-sv@linux.ibm.com>
- <YjR6kHq4c/rjCTpr@hirez.programming.kicks-ass.net>
- <33447256-81d1-8844-d82f-e8ac94f65fbe@csgroup.eu>
- <87pmmgghvu.fsf@mpe.ellerman.id.au>
- <a688b641-a8ef-8e6b-4f94-da5edd1c6943@csgroup.eu>
-In-Reply-To: <a688b641-a8ef-8e6b-4f94-da5edd1c6943@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed;
+ boundary="-1463811774-1870743231-1647851636=:12278"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,62 +84,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- Peter Zijlstra <peterz@infradead.org>,
- "jpoimboe@redhat.com" <jpoimboe@redhat.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+---1463811774-1870743231-1647851636=:12278
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Le 21/03/2022 à 08:56, Christophe Leroy a écrit :
-> 
-> 
-> Le 21/03/2022 à 03:27, Michael Ellerman a écrit :
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> Le 18/03/2022 à 13:26, Peter Zijlstra a écrit :
->>>> On Fri, Mar 18, 2022 at 04:21:40PM +0530, Sathvika Vasireddy wrote:
->>>>> This patch adds powerpc specific functions required for
->>>>> 'objtool mcount' to work, and enables mcount for ppc.
->>>>
->>>> I would love to see more objtool enablement for Power :-)
->>>
->>> I have not received this series and I can't see it on powerpc patchwork
->>> either (https://patchwork.ozlabs.org/project/linuxppc-dev/list/)
->>>
->>> Did you send it to linuxppc-dev list ? If not can you resend it there ?
->>
->> It is there, might have been delayed?
->>
->> http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=291129
->>
->> There are some CI failures.
->>
-> 
-> On PPC32 I get :
-> 
-> [    0.000000] ftrace: No functions to be traced?
-> 
-> Without this series I get:
-> 
-> [    0.000000] ftrace: allocating 22508 entries in 17 pages
-> [    0.000000] ftrace: allocated 17 pages with 2 groups
-> 
-> 
+On Mon, 21 Mar 2022, Christophe Leroy wrote:
 
+> Le 19/03/2022 =C3=A0 08:20, Finn Thain a =C3=A9crit=C2=A0:
+> > drivers/macintosh/via-pmu.c:897:12: warning: 'pmu_battery_proc_show' de=
+fined but not used [-Wunused-function]
+> >   static int pmu_battery_proc_show(struct seq_file *m, void *v)
+> >              ^~~~~~~~~~~~~~~~~~~~~
+> > drivers/macintosh/via-pmu.c:871:12: warning: 'pmu_irqstats_proc_show' d=
+efined but not used [-Wunused-function]
+> >   static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
+> >              ^~~~~~~~~~~~~~~~~~~~~~
+> > drivers/macintosh/via-pmu.c:860:12: warning: 'pmu_info_proc_show' defin=
+ed but not used [-Wunused-function]
+> >   static int pmu_info_proc_show(struct seq_file *m, void *v)
+> >              ^~~~~~~~~~~~~~~~~~
+> >=20
+> > Rearrange some code and add some #ifdefs to avoid unused code warnings
+> > when CONFIG_PROC_FS is disabled.
+>=20
+> Why not just put those three functions inside an #ifdef CONFIG_PROC_FS ?
+>=20
 
-ppc64_defconfig on QEMU:
-
-[    0.000000][    T0] ftrace: No functions to be traced?
-
-Without your series:
-
-[    0.000000][    T0] ftrace: allocating 38750 entries in 15 pages
-[    0.000000][    T0] ftrace: allocated 15 pages with 4 groups
-[    0.000000][    T0] trace event string verifier disabled
-
+You'd get a warning about the prototypes ("declared static but never=20
+defined"). Rather than add an ifdef around the prototypes as well, I just=
+=20
+reordered things a little.
+---1463811774-1870743231-1647851636=:12278--
