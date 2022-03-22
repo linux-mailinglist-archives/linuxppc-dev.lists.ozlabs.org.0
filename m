@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7937D4E432D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Mar 2022 16:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF4C4E4339
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Mar 2022 16:41:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KNG0v3RPdz3bWb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 02:41:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KNG1p1k99z3bTM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 02:41:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,51 +14,54 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KNG0W5P6Mz2xDD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Mar 2022 02:40:41 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KNG0j0p6jz30RN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Mar 2022 02:40:52 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KNG0N11Qbz9sTY;
- Tue, 22 Mar 2022 16:40:36 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4KNG0Q0lwkz9sTb;
+ Tue, 22 Mar 2022 16:40:38 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id LJyfPn8qiIjw; Tue, 22 Mar 2022 16:40:36 +0100 (CET)
+ with ESMTP id 4PM4Gat-FIaZ; Tue, 22 Mar 2022 16:40:38 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KNG0N08jSz9sTJ;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KNG0N0HP6z9sTQ;
  Tue, 22 Mar 2022 16:40:36 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E72108B779;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EB5B88B773;
  Tue, 22 Mar 2022 16:40:35 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id gP6_4JIIv282; Tue, 22 Mar 2022 16:40:35 +0100 (CET)
+ with ESMTP id JCefATiHZUjg; Tue, 22 Mar 2022 16:40:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.14])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 995098B773;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A0C928B775;
  Tue, 22 Mar 2022 16:40:35 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22MFeRuf1513362
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22MFeTP91513366
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 22 Mar 2022 16:40:27 +0100
+ Tue, 22 Mar 2022 16:40:29 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22MFeO8K1513360;
- Tue, 22 Mar 2022 16:40:24 +0100
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22MFeTkt1513365;
+ Tue, 22 Mar 2022 16:40:29 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v1 0/4] Kill the time spent in patch_instruction()
-Date: Tue, 22 Mar 2022 16:40:17 +0100
-Message-Id: <cover.1647962456.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 1/4] powerpc/code-patching: Don't call
+ is_vmalloc_or_module_addr() without CONFIG_MODULES
+Date: Tue, 22 Mar 2022 16:40:18 +0100
+Message-Id: <f3c701cce00a38620788c0fc43ff0b611a268c54.1647962456.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <cover.1647962456.git.christophe.leroy@csgroup.eu>
+References: <cover.1647962456.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1647963619; l=1293; s=20211009;
- h=from:subject:message-id; bh=zVm3jdRSxZZDB2iHVRkd9NIm3qIwHXvhJgaUbMNYDAM=;
- b=cAZozjNy5AjYFtKZakL2xbyzBzJARaXbCmSCQcKJaWZKMTflOHOKntyWCOdCLRSi1k8Cmfq1zeNZ
- duXkISWMCFx/XGeTYRC1Pg/RYtMHvq74s6B1Mpu2lfcyZ8zfQJVv
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1647963619; l=872; s=20211009;
+ h=from:subject:message-id; bh=ZfTeZCNos+9TM+ODeoKZHrQvpqXI+wYtliNjGS/FiJM=;
+ b=y5DV3Rx5CzGcO3XwPAk0teKABXW5GFOefONOVHZn1mu1Pcs+/6DNAonka28vtA9euT6tXjo2tHYi
+ xGKNxqKCBjfjNLBhVPeY7F9lk/9sVA5bihINd7OBH8ps1PPwrk33
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -78,39 +81,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series reduces by 70% the time required to activate
-ftrace on an 8xx with CONFIG_STRICT_KERNEL_RWX.
+If CONFIG_MODULES is not set, there is no point in checking
+whether text is in module area.
 
-Measure is performed in function ftrace_replace_code() using mftb()
-around the loop.
+This reduced the time needed to activate/deactivate ftrace
+by more than 10% on an 8xx.
 
-With the series,
-- Without CONFIG_STRICT_KERNEL_RWX, 416000 TB ticks are measured.
-- With CONFIG_STRICT_KERNEL_RWX, 546000 TB ticks are measured.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/lib/code-patching.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Before this series,
-- Without CONFIG_STRICT_KERNEL_RWX, 427000 TB ticks are measured.
-- With CONFIG_STRICT_KERNEL_RWX, 1744000 TB ticks are measured.
-
-Before the series, CONFIG_STRICT_KERNEL_RWX multiplies the time
-required for ftrace activation by more than 4.
-
-With the series, CONFIG_STRICT_KERNEL_RWX increases the time
-required for ftrace activation by only 30%
-
-Christophe Leroy (4):
-  powerpc/code-patching: Don't call is_vmalloc_or_module_addr() without
-    CONFIG_MODULES
-  powerpc/code-patching: Speed up page mapping/unmapping
-  powerpc/code-patching: Use jump_label for testing freed initmem
-  powerpc/code-patching: Use jump_label to check if poking_init() is
-    done
-
- arch/powerpc/include/asm/code-patching.h |  2 ++
- arch/powerpc/lib/code-patching.c         | 37 +++++++++++++++---------
- arch/powerpc/mm/mem.c                    |  2 ++
- 3 files changed, 28 insertions(+), 13 deletions(-)
-
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 00c68e7fb11e..f970f189875b 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -97,7 +97,7 @@ static int map_patch_area(void *addr, unsigned long text_poke_addr)
+ {
+ 	unsigned long pfn;
+ 
+-	if (is_vmalloc_or_module_addr(addr))
++	if (IS_ENABLED(CONFIG_MODULES) && is_vmalloc_or_module_addr(addr))
+ 		pfn = vmalloc_to_pfn(addr);
+ 	else
+ 		pfn = __pa_symbol(addr) >> PAGE_SHIFT;
 -- 
 2.35.1
 
