@@ -1,101 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54004E51A5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 12:54:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A7C4E5366
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 14:41:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KNmwv3fFlz3bfp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 22:54:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KNqJ32mr4z30Q6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 00:41:07 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KnVxHmiv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uURvrSQY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=guoren@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=KnVxHmiv; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=uURvrSQY; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KNmtb69Q4z2xCW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Mar 2022 22:52:23 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22NAtNFj021712; 
- Wed, 23 Mar 2022 11:52:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=ndWFjO7DF4CTxD0rXybl3lTSlt7zTbQTko/4ibiI4Bo=;
- b=KnVxHmivWXBKHn9eH+/IT02GoorMwst9rFHvAEBhl0dsEt84nD2SnAsCPOh9u+/cL1Dq
- GeXUSF0fXjPB5MwFg6NV5W7H7uhon/J85JNPFHIYQYJRhD81fzXhhR2g81Idbrk0bcnx
- K/Q3v8zp6Wk9/SQ3vcwMq9SdgXyM5RW6k1n2kwJpOAUMOrQXNBXsDpA18yi5zR8HEbmi
- ygaJY4vaSMdp38FmIwHgIoOBe/VjXpoFsVCM9xCmMfu1MMusuTh4VOe9xtZ1AVtMYrCl
- UQGkdnZ8+Z0Fb9nmXkc21VAeXMBOCZUa24COuQ8XZIbw52QuduTxtEBwwO8wKS04ssBW Mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3f027nh3vf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Mar 2022 11:52:16 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22NBfO7Z013061;
- Wed, 23 Mar 2022 11:52:16 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3f027nh3ut-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Mar 2022 11:52:16 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22NBi6MI004315;
- Wed, 23 Mar 2022 11:52:14 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06fra.de.ibm.com with ESMTP id 3ew6ehy9j1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 23 Mar 2022 11:52:14 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 22NBqCnb39387490
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 23 Mar 2022 11:52:12 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E0ECB4C044;
- Wed, 23 Mar 2022 11:52:11 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 64D044C040;
- Wed, 23 Mar 2022 11:52:10 +0000 (GMT)
-Received: from li-NotSettable.ibm.com.com (unknown [9.43.106.108])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 23 Mar 2022 11:52:10 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 2/2] powerpc/64: remove system call instruction emulation
-Date: Wed, 23 Mar 2022 17:21:36 +0530
-Message-Id: <daa580a615c4372fc68c5978cc5cbfbe1f0d218f.1648030681.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1648030681.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1648030681.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KNqHN56dXz2y0B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Mar 2022 00:40:32 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 7BFDEB81F51
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Mar 2022 13:40:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32FC8C340E8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Mar 2022 13:40:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1648042827;
+ bh=tfAJdIq2+RYdVHZ38GzSMwiGmA3mYSLGoPCsYK/Ay0o=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=uURvrSQYWoBDbOJ1HJhmy4zq35Wx1u92YfhAJjselJu+G8KZl4y/4epaPOKQFhp86
+ e8VZNnOBbO/ktj6k+JKr407It53apzOQA52t2ZaWuP2k6XTZ52oSFeFqKqdKrBnI79
+ e+h+GlWqbJCvNW/dJFFTun/pfdlihLnlSfevvfRe8Od2DiA5PPC58S/Sw2CT7LaGgx
+ vRPmWwBDcfmb6lBwS6yGFY5dtq/AtP+pJPVEtbuDPfgiy7V7e/BvAXEOBbDuxjBTSy
+ WeSKZsuamgmFXT84rsRMyZYU/5UL1M8XpQPabdxZhi+QVjhbD0odc//B58wz5CV33+
+ tsFxE8jN2V55Q==
+Received: by mail-vk1-f176.google.com with SMTP id q85so849980vkq.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Mar 2022 06:40:27 -0700 (PDT)
+X-Gm-Message-State: AOAM5330KocUTJzgrEh8iCw3XKcSMEeCvL+ctboDCcFlEL9vybAX9ZDm
+ ZfHxz8XwDIKJEq9iDouX2/OrFFf2SqY2IGE+ucU=
+X-Google-Smtp-Source: ABdhPJwacFP88rQle1BS8Fl0WkwH/yl7QzXYYyv8GMnk2rx9FSXhwtYXtlbmIrv2UbeMrdZOjlC8mGra51uCgccxAVo=
+X-Received: by 2002:a05:6122:c85:b0:33f:ab27:5f5d with SMTP id
+ ba5-20020a0561220c8500b0033fab275f5dmr626464vkb.2.1648042826087; Wed, 23 Mar
+ 2022 06:40:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: a2dlMkPL4K-O1s1hjmeo4nxYmggGWH1V
-X-Proofpoint-ORIG-GUID: WW-OJqSF0s6Y4SrrkqTnm6lfkCh6SQ0U
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-23_06,2022-03-22_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
- bulkscore=0 adultscore=0 mlxlogscore=999 phishscore=0 mlxscore=0
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2203230066
+References: <20220322144003.2357128-1-guoren@kernel.org>
+ <20220322144003.2357128-12-guoren@kernel.org>
+In-Reply-To: <20220322144003.2357128-12-guoren@kernel.org>
+From: Guo Ren <guoren@kernel.org>
+Date: Wed, 23 Mar 2022 21:40:14 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQnnEDbXCe142tbVzNENS+HTRDNkKy5qDzNMOdTdoDBJg@mail.gmail.com>
+Message-ID: <CAJF2gTQnnEDbXCe142tbVzNENS+HTRDNkKy5qDzNMOdTdoDBJg@mail.gmail.com>
+Subject: Re: [PATCH V9 11/20] riscv: compat: syscall: Add compat_sys_call_table
+ implementation
+To: Palmer Dabbelt <palmer@dabbelt.com>, Arnd Bergmann <arnd@arndb.de>,
+ Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,166 +75,379 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+Hi Palmer & Arnd,
 
-emulate_step instruction emulation including sc instruction emulation
-initially appeared in xmon. It then emulation code was then moved into
-sstep.c where kprobes could use it too, and later hw_breakpoint and
-uprobes started to use it.
+Fixup fadvise64_64 arguments problem.
 
-Until uprobes, the only instruction emulation users were for kernel
-mode instructions.
+On Tue, Mar 22, 2022 at 10:41 PM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Implement compat sys_call_table and some system call functions:
+> truncate64, ftruncate64, fallocate, pread64, pwrite64,
+> sync_file_range, readahead, fadvise64_64 which need argument
+> translation.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Tested-by: Heiko Stuebner <heiko@sntech.de>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> ---
+>  arch/riscv/include/asm/syscall.h         |  1 +
+>  arch/riscv/include/asm/unistd.h          | 11 +++++++
+>  arch/riscv/include/uapi/asm/unistd.h     |  2 +-
+>  arch/riscv/kernel/Makefile               |  1 +
+>  arch/riscv/kernel/compat_syscall_table.c | 19 ++++++++++++
+>  arch/riscv/kernel/sys_riscv.c            |  6 ++--
+>  fs/open.c                                | 24 +++++++++++++++
+>  fs/read_write.c                          | 16 ++++++++++
+>  fs/sync.c                                |  9 ++++++
+>  include/asm-generic/compat.h             |  7 +++++
+>  include/linux/compat.h                   | 37 ++++++++++++++++++++++++
+>  mm/fadvise.c                             | 11 +++++++
+>  mm/readahead.c                           |  7 +++++
+>  13 files changed, 148 insertions(+), 3 deletions(-)
+>  create mode 100644 arch/riscv/kernel/compat_syscall_table.c
+>
+> diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
+> index 7ac6a0e275f2..384a63b86420 100644
+> --- a/arch/riscv/include/asm/syscall.h
+> +++ b/arch/riscv/include/asm/syscall.h
+> @@ -16,6 +16,7 @@
+>
+>  /* The array of function pointers for syscalls. */
+>  extern void * const sys_call_table[];
+> +extern void * const compat_sys_call_table[];
+>
+>  /*
+>   * Only the low 32 bits of orig_r0 are meaningful, so we return int.
+> diff --git a/arch/riscv/include/asm/unistd.h b/arch/riscv/include/asm/unistd.h
+> index 6c316093a1e5..5ddac412b578 100644
+> --- a/arch/riscv/include/asm/unistd.h
+> +++ b/arch/riscv/include/asm/unistd.h
+> @@ -11,6 +11,17 @@
+>  #define __ARCH_WANT_SYS_CLONE
+>  #define __ARCH_WANT_MEMFD_SECRET
+>
+> +#ifdef CONFIG_COMPAT
+> +#define __ARCH_WANT_COMPAT_TRUNCATE64
+> +#define __ARCH_WANT_COMPAT_FTRUNCATE64
+> +#define __ARCH_WANT_COMPAT_FALLOCATE
+> +#define __ARCH_WANT_COMPAT_PREAD64
+> +#define __ARCH_WANT_COMPAT_PWRITE64
+> +#define __ARCH_WANT_COMPAT_SYNC_FILE_RANGE
+> +#define __ARCH_WANT_COMPAT_READAHEAD
+> +#define __ARCH_WANT_COMPAT_FADVISE64_64
+> +#endif
+> +
+>  #include <uapi/asm/unistd.h>
+>
+>  #define NR_syscalls (__NR_syscalls)
+> diff --git a/arch/riscv/include/uapi/asm/unistd.h b/arch/riscv/include/uapi/asm/unistd.h
+> index 8062996c2dfd..c9e50eed14aa 100644
+> --- a/arch/riscv/include/uapi/asm/unistd.h
+> +++ b/arch/riscv/include/uapi/asm/unistd.h
+> @@ -15,7 +15,7 @@
+>   * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+>   */
+>
+> -#ifdef __LP64__
+> +#if defined(__LP64__) && !defined(__SYSCALL_COMPAT)
+>  #define __ARCH_WANT_NEW_STAT
+>  #define __ARCH_WANT_SET_GET_RLIMIT
+>  #endif /* __LP64__ */
+> diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+> index ffc87e76b1dd..3b3e425aadd2 100644
+> --- a/arch/riscv/kernel/Makefile
+> +++ b/arch/riscv/kernel/Makefile
+> @@ -68,3 +68,4 @@ obj-$(CONFIG_CRASH_DUMP)      += crash_dump.o
+>  obj-$(CONFIG_JUMP_LABEL)       += jump_label.o
+>
+>  obj-$(CONFIG_EFI)              += efi.o
+> +obj-$(CONFIG_COMPAT)           += compat_syscall_table.o
+> diff --git a/arch/riscv/kernel/compat_syscall_table.c b/arch/riscv/kernel/compat_syscall_table.c
+> new file mode 100644
+> index 000000000000..651f2b009c28
+> --- /dev/null
+> +++ b/arch/riscv/kernel/compat_syscall_table.c
+> @@ -0,0 +1,19 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#define __SYSCALL_COMPAT
+> +
+> +#include <linux/compat.h>
+> +#include <linux/syscalls.h>
+> +#include <asm-generic/mman-common.h>
+> +#include <asm-generic/syscalls.h>
+> +#include <asm/syscall.h>
+> +
+> +#undef __SYSCALL
+> +#define __SYSCALL(nr, call)      [nr] = (call),
+> +
+> +asmlinkage long compat_sys_rt_sigreturn(void);
+> +
+> +void * const compat_sys_call_table[__NR_syscalls] = {
+> +       [0 ... __NR_syscalls - 1] = sys_ni_syscall,
+> +#include <asm/unistd.h>
+> +};
+> diff --git a/arch/riscv/kernel/sys_riscv.c b/arch/riscv/kernel/sys_riscv.c
+> index 12f8a7fce78b..9c0194f176fc 100644
+> --- a/arch/riscv/kernel/sys_riscv.c
+> +++ b/arch/riscv/kernel/sys_riscv.c
+> @@ -33,7 +33,9 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
+>  {
+>         return riscv_sys_mmap(addr, len, prot, flags, fd, offset, 0);
+>  }
+> -#else
+> +#endif
+> +
+> +#if defined(CONFIG_32BIT) || defined(CONFIG_COMPAT)
+>  SYSCALL_DEFINE6(mmap2, unsigned long, addr, unsigned long, len,
+>         unsigned long, prot, unsigned long, flags,
+>         unsigned long, fd, off_t, offset)
+> @@ -44,7 +46,7 @@ SYSCALL_DEFINE6(mmap2, unsigned long, addr, unsigned long, len,
+>          */
+>         return riscv_sys_mmap(addr, len, prot, flags, fd, offset, 12);
+>  }
+> -#endif /* !CONFIG_64BIT */
+> +#endif
+>
+>  /*
+>   * Allows the instruction cache to be flushed from userspace.  Despite RISC-V
+> diff --git a/fs/open.c b/fs/open.c
+> index 9ff2f621b760..b25613f7c0a7 100644
+> --- a/fs/open.c
+> +++ b/fs/open.c
+> @@ -224,6 +224,21 @@ SYSCALL_DEFINE2(ftruncate64, unsigned int, fd, loff_t, length)
+>  }
+>  #endif /* BITS_PER_LONG == 32 */
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_TRUNCATE64)
+> +COMPAT_SYSCALL_DEFINE3(truncate64, const char __user *, pathname,
+> +                      compat_arg_u64_dual(length))
+> +{
+> +       return ksys_truncate(pathname, compat_arg_u64_glue(length));
+> +}
+> +#endif
+> +
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_FTRUNCATE64)
+> +COMPAT_SYSCALL_DEFINE3(ftruncate64, unsigned int, fd,
+> +                      compat_arg_u64_dual(length))
+> +{
+> +       return ksys_ftruncate(fd, compat_arg_u64_glue(length));
+> +}
+> +#endif
+>
+>  int vfs_fallocate(struct file *file, int mode, loff_t offset, loff_t len)
+>  {
+> @@ -339,6 +354,15 @@ SYSCALL_DEFINE4(fallocate, int, fd, int, mode, loff_t, offset, loff_t, len)
+>         return ksys_fallocate(fd, mode, offset, len);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_FALLOCATE)
+> +COMPAT_SYSCALL_DEFINE6(fallocate, int, fd, int, mode, compat_arg_u64_dual(offset),
+> +                      compat_arg_u64_dual(len))
+> +{
+> +       return ksys_fallocate(fd, mode, compat_arg_u64_glue(offset),
+> +                             compat_arg_u64_glue(len));
+> +}
+> +#endif
+> +
+>  /*
+>   * access() needs to use the real uid/gid, not the effective uid/gid.
+>   * We do this by temporarily clearing all FS-related capabilities and
+> diff --git a/fs/read_write.c b/fs/read_write.c
+> index 0074afa7ecb3..548657c462e8 100644
+> --- a/fs/read_write.c
+> +++ b/fs/read_write.c
+> @@ -681,6 +681,14 @@ SYSCALL_DEFINE4(pread64, unsigned int, fd, char __user *, buf,
+>         return ksys_pread64(fd, buf, count, pos);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_PREAD64)
+> +COMPAT_SYSCALL_DEFINE5(pread64, unsigned int, fd, char __user *, buf,
+> +                      size_t, count, compat_arg_u64_dual(pos))
+> +{
+> +       return ksys_pread64(fd, buf, count, compat_arg_u64_glue(pos));
+> +}
+> +#endif
+> +
+>  ssize_t ksys_pwrite64(unsigned int fd, const char __user *buf,
+>                       size_t count, loff_t pos)
+>  {
+> @@ -707,6 +715,14 @@ SYSCALL_DEFINE4(pwrite64, unsigned int, fd, const char __user *, buf,
+>         return ksys_pwrite64(fd, buf, count, pos);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_PWRITE64)
+> +COMPAT_SYSCALL_DEFINE5(pwrite64, unsigned int, fd, const char __user *, buf,
+> +                      size_t, count, compat_arg_u64_dual(pos))
+> +{
+> +       return ksys_pwrite64(fd, buf, count, compat_arg_u64_glue(pos));
+> +}
+> +#endif
+> +
+>  static ssize_t do_iter_readv_writev(struct file *filp, struct iov_iter *iter,
+>                 loff_t *ppos, int type, rwf_t flags)
+>  {
+> diff --git a/fs/sync.c b/fs/sync.c
+> index c7690016453e..dc725914e1ed 100644
+> --- a/fs/sync.c
+> +++ b/fs/sync.c
+> @@ -373,6 +373,15 @@ SYSCALL_DEFINE4(sync_file_range, int, fd, loff_t, offset, loff_t, nbytes,
+>         return ksys_sync_file_range(fd, offset, nbytes, flags);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_SYNC_FILE_RANGE)
+> +COMPAT_SYSCALL_DEFINE6(sync_file_range, int, fd, compat_arg_u64_dual(offset),
+> +                      compat_arg_u64_dual(nbytes), unsigned int, flags)
+> +{
+> +       return ksys_sync_file_range(fd, compat_arg_u64_glue(offset),
+> +                                   compat_arg_u64_glue(nbytes), flags);
+> +}
+> +#endif
+> +
+>  /* It would be nice if people remember that not all the world's an i386
+>     when they introduce new system calls */
+>  SYSCALL_DEFINE4(sync_file_range2, int, fd, unsigned int, flags,
+> diff --git a/include/asm-generic/compat.h b/include/asm-generic/compat.h
+> index 11653d6846cc..d06308a2a7a8 100644
+> --- a/include/asm-generic/compat.h
+> +++ b/include/asm-generic/compat.h
+> @@ -14,6 +14,13 @@
+>  #define COMPAT_OFF_T_MAX       0x7fffffff
+>  #endif
+>
+> +#if !defined(compat_arg_u64) && !defined(CONFIG_CPU_BIG_ENDIAN)
+> +#define compat_arg_u64(name)           u32  name##_lo, u32  name##_hi
+> +#define compat_arg_u64_dual(name)      u32, name##_lo, u32, name##_hi
+> +#define compat_arg_u64_glue(name)      (((u64)name##_lo & 0xffffffffUL) | \
+> +                                        ((u64)name##_hi << 32))
+> +#endif
+> +
+>  /* These types are common across all compat ABIs */
+>  typedef u32 compat_size_t;
+>  typedef s32 compat_ssize_t;
+> diff --git a/include/linux/compat.h b/include/linux/compat.h
+> index a0481fe6c5d5..8779e283a1e9 100644
+> --- a/include/linux/compat.h
+> +++ b/include/linux/compat.h
+> @@ -926,6 +926,43 @@ asmlinkage long compat_sys_sigaction(int sig,
+>  /* obsolete: net/socket.c */
+>  asmlinkage long compat_sys_socketcall(int call, u32 __user *args);
+>
+> +#ifdef __ARCH_WANT_COMPAT_TRUNCATE64
+> +asmlinkage long compat_sys_truncate64(const char __user *pathname, compat_arg_u64(len));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_FTRUNCATE64
+> +asmlinkage long compat_sys_ftruncate64(unsigned int fd, compat_arg_u64(len));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_FALLOCATE
+> +asmlinkage long compat_sys_fallocate(int fd, int mode, compat_arg_u64(offset),
+> +                                    compat_arg_u64(len));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_PREAD64
+> +asmlinkage long compat_sys_pread64(unsigned int fd, char __user *buf, size_t count,
+> +                                  compat_arg_u64(pos));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_PWRITE64
+> +asmlinkage long compat_sys_pwrite64(unsigned int fd, const char __user *buf, size_t count,
+> +                                   compat_arg_u64(pos));
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_SYNC_FILE_RANGE
+> +asmlinkage long compat_sys_sync_file_range(int fd, compat_arg_u64(pos),
+> +                                          compat_arg_u64(nbytes), unsigned int flags);
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_FADVISE64_64
+> +asmlinkage long compat_sys_fadvise64_64(int fd, int advice, compat_arg_u64(pos),
+> +                                       compat_arg_u64(len));
+This should be:
++asmlinkage long compat_sys_fadvise64_64(int fd, compat_arg_u64(pos),
++                                        compat_arg_u64(len), int advice);
 
-- xmon only steps / breaks on kernel addresses.
-- kprobes is kernel only.
-- hw_breakpoint only emulates kernel instructions, single steps user.
+> +#endif
+> +
+> +#ifdef __ARCH_WANT_COMPAT_READAHEAD
+> +asmlinkage long compat_sys_readahead(int fd, compat_arg_u64(offset), size_t count);
+> +#endif
+> +
+>  #endif /* CONFIG_ARCH_HAS_SYSCALL_WRAPPER */
+>
+>  /**
+> diff --git a/mm/fadvise.c b/mm/fadvise.c
+> index d6baa4f451c5..8950f7c05d20 100644
+> --- a/mm/fadvise.c
+> +++ b/mm/fadvise.c
+> @@ -215,5 +215,16 @@ SYSCALL_DEFINE4(fadvise64, int, fd, loff_t, offset, size_t, len, int, advice)
+>         return ksys_fadvise64_64(fd, offset, len, advice);
+>  }
+>
+> +#endif
+> +
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_FADVISE64_64)
+> +
+> +COMPAT_SYSCALL_DEFINE6(fadvise64_64, int, fd, int, advice, compat_arg_u64_dual(offset),
+> +                      compat_arg_u64_dual(len))
+Ditto, this should be.
 
-At one point there was support for the kernel to execute sc
-instructions, although that is long removed and it's not clear whether
-there was any in-tree code. So system call emulation is not required by
-the above users.
++COMPAT_SYSCALL_DEFINE6(fadvise64_64, int, fd, compat_arg_u64_dual(offset),
++                      compat_arg_u64_dual(len), int, advice)
 
-uprobes uses emulate_step and it appears possible to emulate sc
-instruction in userspace. Userspace system call emulation is broken and
-it's not clear it ever worked well.
+> +{
+> +       return ksys_fadvise64_64(fd, compat_arg_u64_glue(offset),
+> +                                compat_arg_u64_glue(len), advice);
+> +}
+> +
+>  #endif
+>  #endif
+> diff --git a/mm/readahead.c b/mm/readahead.c
+> index cf0dcf89eb69..9adf57044299 100644
+> --- a/mm/readahead.c
+> +++ b/mm/readahead.c
+> @@ -640,6 +640,13 @@ SYSCALL_DEFINE3(readahead, int, fd, loff_t, offset, size_t, count)
+>         return ksys_readahead(fd, offset, count);
+>  }
+>
+> +#if defined(CONFIG_COMPAT) && defined(__ARCH_WANT_COMPAT_READAHEAD)
+> +COMPAT_SYSCALL_DEFINE4(readahead, int, fd, compat_arg_u64_dual(offset), size_t, count)
+> +{
+> +       return ksys_readahead(fd, compat_arg_u64_glue(offset), count);
+> +}
+> +#endif
+> +
+>  /**
+>   * readahead_expand - Expand a readahead request
+>   * @ractl: The request to be expanded
+> --
+> 2.25.1
+>
 
-The big complication is that userspace takes an interrupt to the kernel
-to emulate the instruction. The user->kernel interrupt sets up registers
-and interrupt stack frame expecting to return to userspace, then system
-call instruction emulation re-directs that stack frame to the kernel,
-early in the system call interrupt handler. This means the the interrupt
-return code takes the kernel->kernel restore path, which does not restore
-everything as the system call interrupt handler would expect coming from
-userspace. regs->iamr appears to get lost for example, because the
-kernel->kernel return does not restore the user iamr. Accounting such as
-irqflags tracing and CPU accounting does not get flipped back to user
-mode as the system call handler expects, so those appear to enter the
-kernel twice without returning to userspace.
 
-These things may be individually fixable with various complication, but
-it is a big complexity for unclear real benefit.
-
-This patch removes system call emulation and disables stepping system
-calls (because they don't work with trace interrupts, as commented).
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[also get rid of '#ifdef CONFIG_PPC64']
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/interrupt_64.S | 10 -------
- arch/powerpc/lib/sstep.c           | 46 +++++++-----------------------
- 2 files changed, 10 insertions(+), 46 deletions(-)
-
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index 7bab2d7de372e0..6471034c790973 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -219,16 +219,6 @@ system_call_vectored common 0x3000
-  */
- system_call_vectored sigill 0x7ff0
- 
--
--/*
-- * Entered via kernel return set up by kernel/sstep.c, must match entry regs
-- */
--	.globl system_call_vectored_emulate
--system_call_vectored_emulate:
--_ASM_NOKPROBE_SYMBOL(system_call_vectored_emulate)
--	li	r10,IRQS_ALL_DISABLED
--	stb	r10,PACAIRQSOFTMASK(r13)
--	b	system_call_vectored_common
- #endif /* CONFIG_PPC_BOOK3S */
- 
- 	.balign IFETCH_ALIGN_BYTES
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 3fda8d0a05b43f..01c8fd39f34981 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -15,9 +15,6 @@
- #include <asm/cputable.h>
- #include <asm/disassemble.h>
- 
--extern char system_call_common[];
--extern char system_call_vectored_emulate[];
--
- #ifdef CONFIG_PPC64
- /* Bits in SRR1 that are copied from MSR */
- #define MSR_MASK	0xffffffff87c0ffffUL
-@@ -1376,7 +1373,6 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		if (branch_taken(word, regs, op))
- 			op->type |= BRTAKEN;
- 		return 1;
--#ifdef CONFIG_PPC64
- 	case 17:	/* sc */
- 		if ((word & 0xfe2) == 2)
- 			op->type = SYSCALL;
-@@ -1388,7 +1384,6 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		} else
- 			op->type = UNKNOWN;
- 		return 0;
--#endif
- 	case 18:	/* b */
- 		op->type = BRANCH | BRTAKEN;
- 		imm = word & 0x03fffffc;
-@@ -3643,43 +3638,22 @@ int emulate_step(struct pt_regs *regs, ppc_inst_t instr)
- 		regs_set_return_msr(regs, (regs->msr & ~op.val) | (val & op.val));
- 		goto instr_done;
- 
--#ifdef CONFIG_PPC64
- 	case SYSCALL:	/* sc */
- 		/*
--		 * N.B. this uses knowledge about how the syscall
--		 * entry code works.  If that is changed, this will
--		 * need to be changed also.
-+		 * Per ISA v3.1, section 7.5.15 'Trace Interrupt', we can't
-+		 * single step a system call instruction:
-+		 *
-+		 *   Successful completion for an instruction means that the
-+		 *   instruction caused no other interrupt. Thus a Trace
-+		 *   interrupt never occurs for a System Call or System Call
-+		 *   Vectored instruction, or for a Trap instruction that
-+		 *   traps.
- 		 */
--		if (IS_ENABLED(CONFIG_PPC_FAST_ENDIAN_SWITCH) &&
--				cpu_has_feature(CPU_FTR_REAL_LE) &&
--				regs->gpr[0] == 0x1ebe) {
--			regs_set_return_msr(regs, regs->msr ^ MSR_LE);
--			goto instr_done;
--		}
--		regs->gpr[9] = regs->gpr[13];
--		regs->gpr[10] = MSR_KERNEL;
--		regs->gpr[11] = regs->nip + 4;
--		regs->gpr[12] = regs->msr & MSR_MASK;
--		regs->gpr[13] = (unsigned long) get_paca();
--		regs_set_return_ip(regs, (unsigned long) &system_call_common);
--		regs_set_return_msr(regs, MSR_KERNEL);
--		return 1;
--
--#ifdef CONFIG_PPC_BOOK3S_64
-+		return -1;
- 	case SYSCALL_VECTORED_0:	/* scv 0 */
--		regs->gpr[9] = regs->gpr[13];
--		regs->gpr[10] = MSR_KERNEL;
--		regs->gpr[11] = regs->nip + 4;
--		regs->gpr[12] = regs->msr & MSR_MASK;
--		regs->gpr[13] = (unsigned long) get_paca();
--		regs_set_return_ip(regs, (unsigned long) &system_call_vectored_emulate);
--		regs_set_return_msr(regs, MSR_KERNEL);
--		return 1;
--#endif
--
-+		return -1;
- 	case RFI:
- 		return -1;
--#endif
- 	}
- 	return 0;
- 
 -- 
-2.35.1
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
