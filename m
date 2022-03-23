@@ -2,61 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64DAF4E57C4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 18:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DEC4E5812
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 19:03:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KNwjZ27TDz3050
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 04:45:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KNx6q076Bz30Qx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 05:03:31 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WPAHOZIF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=jv8WdjAt;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SCqhS6nM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=WPAHOZIF; dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=mbenes@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
+ header.s=susede2_rsa header.b=jv8WdjAt; 
+ dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=SCqhS6nM; 
+ dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KNx663f92z2ypV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Mar 2022 05:02:53 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id A3E54210F4;
+ Wed, 23 Mar 2022 18:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+ t=1648058569; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PH6z87ZT6oLdaXVcqGtAs/3h7ivkY3xB/i0TfcTIX5U=;
+ b=jv8WdjAtfSPahs8a0C++jvpJEJDKQ+fsP21x42FtoS69DQROpOhlReP14kr2DY2KhnF1N1
+ YuFgd8cE7bKVNnyU1G8ysaULWhsAPs3Pfgl/GSbfDFQxdTfexeEVlDsPcgTlm9tnSBhYl4
+ 2VLx6nxSj5oaDLJOqbG0uePwa3b22xM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+ s=susede2_ed25519; t=1648058569;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PH6z87ZT6oLdaXVcqGtAs/3h7ivkY3xB/i0TfcTIX5U=;
+ b=SCqhS6nM2K2a36VQe2YNroDZ/MzJFif/cIueWn7mxCBYA1ausDCAYM75kA6ZfJpu+hqce5
+ 0kMTRuKSQQ+mHeCg==
+Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KNwhw4QByz2xTn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Mar 2022 04:44:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1648057472; x=1679593472;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Jn+HiqIMvCI5Ag0vA8t+qIxmidEK/HlIdGCSWeHdw80=;
- b=WPAHOZIFxkl8vSUC4EMT96w+JQuG5WXIjAbTwEQBt8reUiidNSLN9DHs
- n+RgnfMA1iFAhGfeVPnay6Hj67vZaEWXh26ul7wo12hopoWQNNpkWkb/W
- 82Aoo6W+UlcxeBhk6sUKFeqvW9vXQiGxpGnVIq13L0gO3Ms/NoOdfrSjo
- wNLi4SRBJfK+zhNd0okKaG9ZNEuMhnKZFCmYYp7edqLzv5iwj5xhFPSVp
- T9jrqsxIacy/XZLlbyHyFGyN2wUU/eeRoi1Ar5wG0qMeplGuYwe8cSnZW
- bY9EZPZs6zIHVHQppxkVNHfftO/FUPzzHfKV7wZftJAZ8x4aiv2Xaq7Rf g==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10295"; a="283035188"
-X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; d="scan'208";a="283035188"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Mar 2022 10:43:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; d="scan'208";a="693031305"
-Received: from black.fi.intel.com ([10.237.72.28])
- by fmsmga001.fm.intel.com with ESMTP; 23 Mar 2022 10:43:25 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
- id 30515120; Wed, 23 Mar 2022 19:43:45 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v1 1/1] powerpc/83xx/mpc8349emitx: Get rid of of_node
- assignment
-Date: Wed, 23 Mar 2022 19:43:42 +0200
-Message-Id: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.35.1
+ by relay2.suse.de (Postfix) with ESMTPS id 12FEDA3B88;
+ Wed, 23 Mar 2022 18:02:48 +0000 (UTC)
+Date: Wed, 23 Mar 2022 19:02:47 +0100 (CET)
+From: Miroslav Benes <mbenes@suse.cz>
+To: Sathvika Vasireddy <sv@linux.ibm.com>
+Subject: Re: [RFC PATCH 1/3] objtool: Move common code to utils.c
+In-Reply-To: <20220318105140.43914-2-sv@linux.ibm.com>
+Message-ID: <alpine.LSU.2.21.2203231859420.10670@pobox.suse.cz>
+References: <20220318105140.43914-1-sv@linux.ibm.com>
+ <20220318105140.43914-2-sv@linux.ibm.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,68 +75,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Scott Wood <oss@buserror.net>,
- Paul Mackerras <paulus@samba.org>, Linus Walleij <linus.walleij@linaro.org>
+Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, rostedt@goodmis.org,
+ aik@ozlabs.ru, jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Let GPIO library to assign of_node from the parent device.
-This allows to move GPIO library and drivers to use fwnode
-APIs instead of being stuck with OF-only interfaces.
+> +#define sym_for_each_insn(file, sym, insn)                              \
+> +	for (insn = find_insn(file, sym->sec, sym->offset);             \
+> +	     insn && &insn->list != &file->insn_list &&                 \
+> +		insn->sec == sym->sec &&                                \
+> +		insn->offset < sym->offset + sym->len;                  \
+> +	     insn = list_next_entry(insn, list))
+> +
+> +#endif /* UTILS_H */
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+Since you include <objtool/utils.h> in check.c, you can remove the 
+definition of sym_for_each_insn() macro from check.c as well.
 
-diff --git a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c b/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
-index a38372f9ac12..26b502773b3f 100644
---- a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
-+++ b/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
-@@ -8,15 +8,15 @@
-  */
- 
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/device.h>
- #include <linux/mutex.h>
- #include <linux/i2c.h>
- #include <linux/gpio/driver.h>
--#include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/slab.h>
- #include <linux/kthread.h>
-+#include <linux/property.h>
- #include <linux/reboot.h>
- #include <asm/prom.h>
- #include <asm/machdep.h>
-@@ -116,21 +116,17 @@ static int mcu_gpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
- 
- static int mcu_gpiochip_add(struct mcu *mcu)
- {
--	struct device_node *np;
-+	struct device *dev = &mcu->client->dev;
- 	struct gpio_chip *gc = &mcu->gc;
- 
--	np = of_find_compatible_node(NULL, NULL, "fsl,mcu-mpc8349emitx");
--	if (!np)
--		return -ENODEV;
--
- 	gc->owner = THIS_MODULE;
--	gc->label = kasprintf(GFP_KERNEL, "%pOF", np);
-+	gc->label = kasprintf(GFP_KERNEL, "%pfw", dev_fwnode(dev));
- 	gc->can_sleep = 1;
- 	gc->ngpio = MCU_NUM_GPIO;
- 	gc->base = -1;
- 	gc->set = mcu_gpio_set;
- 	gc->direction_output = mcu_gpio_dir_out;
--	gc->of_node = np;
-+	gc->parent = dev;
- 
- 	return gpiochip_add_data(gc, mcu);
- }
--- 
-2.35.1
+I wonder if it would make sense to move all these helper functions to 
+utils.c and utils.h. Might be connected to what Josh wrote about his work 
+on objtool interface.
 
+Regards
+Miroslav
