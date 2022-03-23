@@ -2,41 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51E84E575D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 18:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64DAF4E57C4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Mar 2022 18:45:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KNwDG3sfhz3081
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 04:23:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KNwjZ27TDz3050
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 04:45:06 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WPAHOZIF;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org;
- receiver=<UNKNOWN>)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=WPAHOZIF; dkim-atps=neutral
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KNwCr6KXJz2xDD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Mar 2022 04:22:48 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 423D060B6A;
- Wed, 23 Mar 2022 17:22:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EDCC340E8;
- Wed, 23 Mar 2022 17:22:42 +0000 (UTC)
-Date: Wed, 23 Mar 2022 17:22:38 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Ariel Marcovitch <arielmarcovitch@gmail.com>
-Subject: Re: False positive kmemleak report for dtb properties names on powerpc
-Message-ID: <YjtXXlnbEp64eL0T@arm.com>
-References: <9dd08bb5-f39e-53d8-f88d-bec598a08c93@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KNwhw4QByz2xTn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Mar 2022 04:44:31 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1648057472; x=1679593472;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Jn+HiqIMvCI5Ag0vA8t+qIxmidEK/HlIdGCSWeHdw80=;
+ b=WPAHOZIFxkl8vSUC4EMT96w+JQuG5WXIjAbTwEQBt8reUiidNSLN9DHs
+ n+RgnfMA1iFAhGfeVPnay6Hj67vZaEWXh26ul7wo12hopoWQNNpkWkb/W
+ 82Aoo6W+UlcxeBhk6sUKFeqvW9vXQiGxpGnVIq13L0gO3Ms/NoOdfrSjo
+ wNLi4SRBJfK+zhNd0okKaG9ZNEuMhnKZFCmYYp7edqLzv5iwj5xhFPSVp
+ T9jrqsxIacy/XZLlbyHyFGyN2wUU/eeRoi1Ar5wG0qMeplGuYwe8cSnZW
+ bY9EZPZs6zIHVHQppxkVNHfftO/FUPzzHfKV7wZftJAZ8x4aiv2Xaq7Rf g==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10295"; a="283035188"
+X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; d="scan'208";a="283035188"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Mar 2022 10:43:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,204,1643702400"; d="scan'208";a="693031305"
+Received: from black.fi.intel.com ([10.237.72.28])
+ by fmsmga001.fm.intel.com with ESMTP; 23 Mar 2022 10:43:25 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+ id 30515120; Wed, 23 Mar 2022 19:43:45 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v1 1/1] powerpc/83xx/mpc8349emitx: Get rid of of_node
+ assignment
+Date: Wed, 23 Mar 2022 19:43:42 +0200
+Message-Id: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9dd08bb5-f39e-53d8-f88d-bec598a08c93@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,109 +68,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, paulus@samba.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- Mike Rapoport <rppt@kernel.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Scott Wood <oss@buserror.net>,
+ Paul Mackerras <paulus@samba.org>, Linus Walleij <linus.walleij@linaro.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Ariel,
+Let GPIO library to assign of_node from the parent device.
+This allows to move GPIO library and drivers to use fwnode
+APIs instead of being stuck with OF-only interfaces.
 
-On Fri, Feb 18, 2022 at 09:45:51PM +0200, Ariel Marcovitch wrote:
-> I was running a powerpc 32bit kernel (built using
-> qemu_ppc_mpc8544ds_defconfig
-> buildroot config, with enabling DEBUGFS+KMEMLEAK+HIGHMEM in the kernel
-> config)
-> on qemu and invoked the kmemleak scan (twice. for some reason the first time
-> wasn't enough).
-[...]
-> I got 97 leak reports, all similar to the following:
-[...]
-> memblock_alloc lets kmemleak know about the allocated memory using
-> kmemleak_alloc_phys (in mm/memblock.c:memblock_alloc_range_nid()).
-> 
-> The problem is with the following code (mm/kmemleak.c):
-> 
-> ```c
-> 
-> void __ref kmemleak_alloc_phys(phys_addr_t phys, size_t size, int min_count,
->                                gfp_t gfp)
-> {
->         if (!IS_ENABLED(CONFIG_HIGHMEM) || PHYS_PFN(phys) < max_low_pfn)
->                 kmemleak_alloc(__va(phys), size, min_count, gfp);
-> }
-> 
-> ```
-> 
-> When CONFIG_HIGHMEM is enabled, the pfn of the allocated memory is checked
-> against max_low_pfn, to make sure it is not in the HIGHMEM zone.
-> 
-> However, when called through unflatten_device_tree(), max_low_pfn is not yet
-> initialized in powerpc.
-> 
-> max_low_pfn is initialized (when NUMA is disabled) in
-> arch/powerpc/mm/mem.c:mem_topology_setup() which is called only after
-> unflatten_device_tree() is called in the same function (setup_arch()).
-> 
-> Because max_low_pfn is global it is 0 before initialization, so as far as
-> kmemleak_alloc_phys() is concerned, every memory is HIGHMEM (: and the
-> allocated memory is not tracked by kmemleak, causing references to objects
-> allocated later with kmalloc() to be ignored and these objects are marked as
-> leaked.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-Thanks for digging into this. It looks like the logic doesn't work (not
-sure whether it ever worked).
-
-> I actually tried to find out whether this happen on other arches as well,
-> and it seems like arm64 also have this problem when dtb is used instead of
-> acpi, although I haven't had the chance to confirm this.
-
-arm64 doesn't enable CONFIG_HIGHMEM, so it's not affected.
-
-> I don't suppose I can just shuffle the calls in setup_arch() around, so I
-> wanted to hear your opinions first
-
-I think it's better if we change the logic than shuffling the calls.
-IIUC MEMBLOCK_ALLOC_ACCESSIBLE means that __va() works on the phys
-address return by memblock, so something like below (untested):
-
--------------8<----------------------
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 7580baa76af1..f3599e857c13 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -1127,8 +1127,7 @@ EXPORT_SYMBOL(kmemleak_no_scan);
- void __ref kmemleak_alloc_phys(phys_addr_t phys, size_t size, int min_count,
- 			       gfp_t gfp)
- {
--	if (!IS_ENABLED(CONFIG_HIGHMEM) || PHYS_PFN(phys) < max_low_pfn)
--		kmemleak_alloc(__va(phys), size, min_count, gfp);
-+	kmemleak_alloc(__va(phys), size, min_count, gfp);
- }
- EXPORT_SYMBOL(kmemleak_alloc_phys);
+diff --git a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c b/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
+index a38372f9ac12..26b502773b3f 100644
+--- a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
++++ b/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
+@@ -8,15 +8,15 @@
+  */
  
-diff --git a/mm/memblock.c b/mm/memblock.c
-index b12a364f2766..2515bd4331e8 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1397,7 +1397,7 @@ phys_addr_t __init memblock_alloc_range_nid(phys_addr_t size,
- 	 * Skip kmemleak for those places like kasan_init() and
- 	 * early_pgtable_alloc() due to high volume.
- 	 */
--	if (end != MEMBLOCK_ALLOC_NOLEAKTRACE)
-+	if (end == MEMBLOCK_ALLOC_ACCESSIBLE)
- 		/*
- 		 * The min_count is set to 0 so that memblock allocated
- 		 * blocks are never reported as leaks. This is because many
--------------8<----------------------
-
-But I'm not sure whether we'd now miss some genuine allocations where
-the memblock limit is different from MEMBLOCK_ALLOC_ACCESSIBLE but still
-within the lowmem limit. If the above works, we can probably get rid of
-some other kmemleak callbacks in the kernel.
-
-Adding Mike for any input on memblock.
-
+ #include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
+ #include <linux/mutex.h>
+ #include <linux/i2c.h>
+ #include <linux/gpio/driver.h>
+-#include <linux/of.h>
+-#include <linux/of_gpio.h>
+ #include <linux/slab.h>
+ #include <linux/kthread.h>
++#include <linux/property.h>
+ #include <linux/reboot.h>
+ #include <asm/prom.h>
+ #include <asm/machdep.h>
+@@ -116,21 +116,17 @@ static int mcu_gpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ 
+ static int mcu_gpiochip_add(struct mcu *mcu)
+ {
+-	struct device_node *np;
++	struct device *dev = &mcu->client->dev;
+ 	struct gpio_chip *gc = &mcu->gc;
+ 
+-	np = of_find_compatible_node(NULL, NULL, "fsl,mcu-mpc8349emitx");
+-	if (!np)
+-		return -ENODEV;
+-
+ 	gc->owner = THIS_MODULE;
+-	gc->label = kasprintf(GFP_KERNEL, "%pOF", np);
++	gc->label = kasprintf(GFP_KERNEL, "%pfw", dev_fwnode(dev));
+ 	gc->can_sleep = 1;
+ 	gc->ngpio = MCU_NUM_GPIO;
+ 	gc->base = -1;
+ 	gc->set = mcu_gpio_set;
+ 	gc->direction_output = mcu_gpio_dir_out;
+-	gc->of_node = np;
++	gc->parent = dev;
+ 
+ 	return gpiochip_add_data(gc, mcu);
+ }
 -- 
-Catalin
+2.35.1
+
