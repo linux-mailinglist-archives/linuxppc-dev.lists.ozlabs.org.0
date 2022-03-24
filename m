@@ -1,36 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902704E6AAB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 23:29:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D744E6AB5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 23:33:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KPfz93lRWz30Bm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Mar 2022 09:29:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KPg4H3HcMz300Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Mar 2022 09:33:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org;
  envelope-from=srs0=cvhx=ud=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KPfym3Zmjz2xD3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Mar 2022 09:29:04 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KPg3p5Z9tz2xBl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Mar 2022 09:33:26 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 3870BB826A1;
- Thu, 24 Mar 2022 22:29:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F13C340EC;
- Thu, 24 Mar 2022 22:28:57 +0000 (UTC)
-Date: Thu, 24 Mar 2022 18:28:56 -0400
+ by sin.source.kernel.org (Postfix) with ESMTPS id 63F1DCE2747;
+ Thu, 24 Mar 2022 22:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E774C340EC;
+ Thu, 24 Mar 2022 22:33:22 +0000 (UTC)
+Date: Thu, 24 Mar 2022 18:33:20 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] MAINTAINERS: Add arch/powerpc/kernel/trace to TRACING
-Message-ID: <20220324182856.6f6a01d7@gandalf.local.home>
-In-Reply-To: <8e2f707e2efa1fc1d1ffd2f9f6758e8c4a82c83e.1648132613.git.christophe.leroy@csgroup.eu>
-References: <8e2f707e2efa1fc1d1ffd2f9f6758e8c4a82c83e.1648132613.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1] ftrace: Make ftrace_graph_is_dead() static inline
+Message-ID: <20220324183320.000d7088@gandalf.local.home>
+In-Reply-To: <529ece004e0901ca04ea0e07d6bf8476612e2294.1648116004.git.christophe.leroy@csgroup.eu>
+References: <529ece004e0901ca04ea0e07d6bf8476612e2294.1648116004.git.christophe.leroy@csgroup.eu>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,50 +46,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Joe Perches <joe@perches.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Ingo Molnar <mingo@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 24 Mar 2022 15:38:28 +0100
+On Thu, 24 Mar 2022 11:01:45 +0100
 Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e127c2fb08a7..3b5943f34568 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -19592,6 +19592,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace.git
->  F:	Documentation/trace/ftrace.rst
->  F:	arch/*/*/*/ftrace.h
->  F:	arch/*/kernel/ftrace.c
-> +F:	arch/powerpc/kernel/trace/
+> @@ -1006,7 +1006,20 @@ unsigned long ftrace_graph_ret_addr(struct task_struct *task, int *idx,
+>  extern int register_ftrace_graph(struct fgraph_ops *ops);
+>  extern void unregister_ftrace_graph(struct fgraph_ops *ops);
+>  
+> -extern bool ftrace_graph_is_dead(void);
+> +/**
+> + * ftrace_graph_is_dead - returns true if ftrace_graph_stop() was called
+> + *
+> + * ftrace_graph_stop() is called when a severe error is detected in
+> + * the function graph tracing. This function is called by the critical
+> + * paths of function graph to keep those paths from doing any more harm.
+> + */
+> +extern bool kill_ftrace_graph;
+> +
+> +static inline bool ftrace_graph_is_dead(void)
+> +{
+> +	return kill_ftrace_graph;
+> +}
+> +
+>  extern void ftrace_graph_stop(void);
 
-Perhaps replace the above two with:
-   F:   arch/*/*/ftrace*
-   F:   arch/*/*/*/ftrace*
+The reason I did not expose that variable, is because I didn't want it to
+be touched outside of the kernel/trace directory. Or the ftrace.c file for
+that matter (although, I could put it in fgraph.c :-/)
 
-As we also have things like ftrace_32.S, ftrace_64.S
+What would be better, is to make it a static branch.
 
-Maybe even add:
+extern struct static_key fgraph_dead;
 
-   F: arch/*/*/*_ftrace.*
-   F: arch/*/*/*/*_ftrace.*
+static inline bool ftrace_graph_is_dead(void)
+{
+	if (static_key_false(&fgraph_dead))
+		return true;
+	return false;
+}
 
-to catch the "entry_ftrace.S" and friends (needing the leading "_" to not
-get confused by any "bpftrace" files).
+That way we even get rid of the conditional branch.
 
-?
-
-But in reality, I'm only a reviewer for ftrace in the archs. It really is
-maintained by the arch maintainers. But it is still good that I get Cc'd on
-any ftrace arch related changes.
+Yeah, the fgraph_dead is still exposed for anyone to touch, but it still
+requires a function to modify it, so I'm not as worried it will be touched
+as easily.
 
 -- Steve
-
-
->  F:	fs/tracefs/
->  F:	include/*/ftrace.h
->  F:	include/linux/trace*.h
-
