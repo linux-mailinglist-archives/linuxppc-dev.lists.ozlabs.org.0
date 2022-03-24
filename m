@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA3F4E6556
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 15:34:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1A14E6579
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Mar 2022 15:40:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KPSRh0fjgz3f3g
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Mar 2022 01:34:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KPSYl21jfz3fxx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Mar 2022 01:40:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KPSN04NMCz3bjQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Mar 2022 01:31:44 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KPSPM3dT0z3c85
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Mar 2022 01:32:55 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KPSM72Rvlz9sTm;
- Thu, 24 Mar 2022 15:30:59 +0100 (CET)
+ by localhost (Postfix) with ESMTP id 4KPSMN13tvz9sV6;
+ Thu, 24 Mar 2022 15:31:12 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 3y8FJrRGWf4I; Thu, 24 Mar 2022 15:30:59 +0100 (CET)
+ with ESMTP id vgZREsIefgYc; Thu, 24 Mar 2022 15:31:12 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KPSLy6CFZz9sTn;
- Thu, 24 Mar 2022 15:30:50 +0100 (CET)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KPSLz21m6z9sTc;
+ Thu, 24 Mar 2022 15:30:51 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BF9DA8B780;
- Thu, 24 Mar 2022 15:30:50 +0100 (CET)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 326538B763;
+ Thu, 24 Mar 2022 15:30:51 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id mDVJ1tvagV3h; Thu, 24 Mar 2022 15:30:50 +0100 (CET)
+ with ESMTP id fKmCTQZdkbZD; Thu, 24 Mar 2022 15:30:51 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.77])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9C56E8B786;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B9DAC8B790;
  Thu, 24 Mar 2022 15:30:49 +0100 (CET)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22OEUfho1811682
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22OEUfCV1811686
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Thu, 24 Mar 2022 15:30:41 +0100
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22OEUfZo1811681;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22OEUfbb1811685;
  Thu, 24 Mar 2022 15:30:41 +0100
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -52,17 +52,18 @@ To: "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
  Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v1 01/22] powerpc/ftrace: Refactor prepare_ftrace_return()
-Date: Thu, 24 Mar 2022 15:29:51 +0100
-Message-Id: <b634583ca92fc8144773079605215defdc2bd805.1648131740.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v1 02/22] powerpc/ftrace: Remove redundant create_branch()
+ calls
+Date: Thu, 24 Mar 2022 15:29:52 +0100
+Message-Id: <2d8e845d4329372c6204612bee70b4f36f27e35e.1648131740.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1648131740.git.christophe.leroy@csgroup.eu>
 References: <cover.1648131740.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1648132150; l=1899; s=20211009;
- h=from:subject:message-id; bh=zXRjPYU7QaID1rculDvXRerDW2vtk7P4KyqgYPe84dw=;
- b=U7z+n5XgLJWzFTAW/v6lPqNVyN1ZdZiFY9a6LocS3k9ki0kkEyeAvnc4mc1d92kD7P2MzYQ4A920
- esG61C4xCFc0lBFD743p3cdDXxxPP7Ywj87/wEhkw5vQjZm75Iwz
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1648132150; l=2368; s=20211009;
+ h=from:subject:message-id; bh=92KxuX0pLpQCITr7vgjlWnrEBj5V6cm1CJL4gIXJC9A=;
+ b=dUWsc4MtUmN0jjbntgP7dTOuC78Ry2hUoY+sxYUOFNKWEkp/VyAev3THZUiCvA9j7W8wCtFJfDnH
+ 6fBDYJltDBQ5Gz+TgRvBDx+SqpV5rGrJEOzsIXqhk6uICYfpTg9+
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -82,52 +83,77 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When we have CONFIG_DYNAMIC_FTRACE_WITH_ARGS,
-prepare_ftrace_return() is called by ftrace_graph_func()
-otherwise prepare_ftrace_return() is called from assembly.
+Since commit d5937db114e4 ("powerpc/code-patching: Fix patch_branch()
+return on out-of-range failure") patch_branch() fails with -ERANGE
+when trying to branch out of range.
 
-Refactor prepare_ftrace_return() into a static
-__prepare_ftrace_return() that will be called by both
-prepare_ftrace_return() and ftrace_graph_func().
-
-It will allow GCC to fold __prepare_ftrace_return() inside
-ftrace_graph_func().
+No need to perform the test twice. Remove redundant create_branch()
+calls.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/trace/ftrace.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/trace/ftrace.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 4ee04aacf9f1..7a266fd469b7 100644
+index 7a266fd469b7..3ce3697e8a7c 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -939,8 +939,8 @@ int ftrace_disable_ftrace_graph_caller(void)
-  * Hook the return address and push it in the stack of return addrs
-  * in current thread info. Return the address we want to divert to.
-  */
--unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
--						unsigned long sp)
-+static unsigned long
-+__prepare_ftrace_return(unsigned long parent, unsigned long ip, unsigned long sp)
- {
- 	unsigned long return_hooker;
- 	int bit;
-@@ -969,7 +969,13 @@ unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
- void ftrace_graph_func(unsigned long ip, unsigned long parent_ip,
- 		       struct ftrace_ops *op, struct ftrace_regs *fregs)
- {
--	fregs->regs.link = prepare_ftrace_return(parent_ip, ip, fregs->regs.gpr[1]);
-+	fregs->regs.link = __prepare_ftrace_return(parent_ip, ip, fregs->regs.gpr[1]);
-+}
-+#else
-+unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip,
-+				    unsigned long sp)
-+{
-+	return __prepare_ftrace_return(parent, ip, sp);
- }
+@@ -301,7 +301,6 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
+ 	int i;
+ 	ppc_inst_t op;
+ 	unsigned long ptr;
+-	ppc_inst_t instr;
+ 	static unsigned long ftrace_plt_tramps[NUM_FTRACE_TRAMPS];
+ 
+ 	/* Is this a known long jump tramp? */
+@@ -344,12 +343,6 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
+ #else
+ 	ptr = ppc_global_function_entry((void *)ftrace_caller);
  #endif
- #endif /* CONFIG_FUNCTION_GRAPH_TRACER */
+-	if (create_branch(&instr, (void *)tramp, ptr, 0)) {
+-		pr_debug("%ps is not reachable from existing mcount tramp\n",
+-				(void *)ptr);
+-		return -1;
+-	}
+-
+ 	if (patch_branch((u32 *)tramp, ptr, 0)) {
+ 		pr_debug("REL24 out of range!\n");
+ 		return -1;
+@@ -490,7 +483,6 @@ static int
+ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ {
+ 	ppc_inst_t op[2];
+-	ppc_inst_t instr;
+ 	void *ip = (void *)rec->ip;
+ 	unsigned long entry, ptr, tramp;
+ 	struct module *mod = rec->arch.mod;
+@@ -539,12 +531,6 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Ensure branch is within 24 bits */
+-	if (create_branch(&instr, ip, tramp, BRANCH_SET_LINK)) {
+-		pr_err("Branch out of range\n");
+-		return -EINVAL;
+-	}
+-
+ 	if (patch_branch(ip, tramp, BRANCH_SET_LINK)) {
+ 		pr_err("REL24 out of range!\n");
+ 		return -EINVAL;
+@@ -770,12 +756,6 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Ensure branch is within 24 bits */
+-	if (create_branch(&op, (u32 *)ip, tramp, BRANCH_SET_LINK)) {
+-		pr_err("Branch out of range\n");
+-		return -EINVAL;
+-	}
+-
+ 	if (patch_branch((u32 *)ip, tramp, BRANCH_SET_LINK)) {
+ 		pr_err("REL24 out of range!\n");
+ 		return -EINVAL;
 -- 
 2.35.1
 
