@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE8B4E837E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Mar 2022 19:46:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26254E8386
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Mar 2022 19:48:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KQnx45ktfz3bj9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 05:46:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KQnzn5JRNz3cgC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 05:48:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=ufnfsXYy;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=Hf7mJJcW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=N07pKZu3;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=cAGmc7q/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,45 +18,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=benni@stuerz.xyz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256
- header.s=mail header.b=ufnfsXYy; 
+ header.s=mail header.b=N07pKZu3; 
  dkim=pass (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz
- header.a=rsa-sha256 header.s=mail header.b=Hf7mJJcW; 
+ header.a=rsa-sha256 header.s=mail header.b=cAGmc7q/; 
  dkim-atps=neutral
 Received: from stuerz.xyz (unknown [45.77.206.31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KQlm348pvz307W
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 04:08:35 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KQlm56VQTz307W
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 04:08:37 +1100 (AEDT)
 Received: by stuerz.xyz (Postfix, from userid 114)
- id 9EAA5FBBC0; Sat, 26 Mar 2022 17:00:16 +0000 (UTC)
+ id E8950FBBBE; Sat, 26 Mar 2022 17:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
- t=1648314017; bh=HOFmAYiVvnT7rSVfobZmsnPlgQ5nBBe17TNp3HtbNU0=;
+ t=1648314023; bh=gqt1+kI42FGInscQtbmdIv8LY19kdHpeRO5nUSHeT20=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ufnfsXYyR3N17k3zg+cOeF1ppjMFAshfvhuH1gVyMVcHkxpYZUapf7tDtaq5gpMoc
- ucbhQRPg+EJe/T7pwIyM+Dmt539N9vIAt48cadCWafXguWUDxDzCibWT8kUeWxZEWR
- BdurrHkkyyIkhvYZzYqDYMGeN8tvhTMIeIMtGoVoBO6Q/fnGSOxPV+bNxu6e0Bxt+8
- o6B2bX7Sn945aiMUChPEkF76/dFsUOmOLC17kjJHpt0K3aJjNFLSc0kgz0B44av7KA
- gWE7tRpnnfiqAZ452yIXrpC30AZUgte9sc5+sjee+LQzE1HHEiGCM7aR9XN1M7KFVr
- 6q8TtmG2xujBA==
+ b=N07pKZu3PISVns7G2iZJv14fX/jwnESzADyM5Dx/r6L9sSxM0haJk5+tnBgpAyzCb
+ +bcRnGGeZLdgEti0RBF6/peH+MAuHYEWN8l8ab6/pFSI7H+xBtErE3drEXhK87cucK
+ iehJIcpblsj3APUGYt6GFsXFwTwWRaqJtVWs26MIaSpTHPrIXmc19cY1fnB9xo4THp
+ 4my3AngN5VVhg66lKwuktjmjicEqkD+u1b+EEZoYLWcI5k2CuzFsN8AShSUtDZkHYp
+ EJWh5lVV9Oke0cOvwUtoYV3TJK748kw/aYqU4SsyyFAkZKcs9RimkIkuSsncxlfQWk
+ lgSWLe4xdWZ6A==
 Received: from benni-fedora.. (unknown
  [IPv6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8])
- by stuerz.xyz (Postfix) with ESMTPSA id 20D94FB7EA;
- Sat, 26 Mar 2022 17:00:07 +0000 (UTC)
+ by stuerz.xyz (Postfix) with ESMTPSA id A8729FB7D3;
+ Sat, 26 Mar 2022 17:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
- t=1648314013; bh=HOFmAYiVvnT7rSVfobZmsnPlgQ5nBBe17TNp3HtbNU0=;
+ t=1648314020; bh=gqt1+kI42FGInscQtbmdIv8LY19kdHpeRO5nUSHeT20=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Hf7mJJcWBmIj3C+XCxyzFO7S9C0oUaIl8hxKEGBu6X8vw2n1pWSpj6iB15/DP+6Lp
- 3QX2TjmaymPMgIhJcqwVkwY6dEsEyphIorKi1wt0xa4x6MJ6oAZB59LvQ3nuveeFu0
- 348YW/tdR5UvOfRwGWcPa9XVwbxu+xibpp/4thWzzXOlH3zZnJHzTtHyLYycZzhdQ3
- Slg6rVaVkmUpHlV6SbMwW2oDlerJ1InqL387Q5Q/hQQJH1awaV4a52wpm8TuxMZYnL
- WGg8OJF9bO4XtyqoNzz5xIgxnsqwooQQF0Nsc2pHaLUBhYt9zf8O+zC8ZiS2I6nTZh
- bsWtkEHhv2HFw==
+ b=cAGmc7q/v70fp/d8OErxnqAUtLx7NZZMJRTXOS0xd3wx/9j3/80aOVZpisTnSXgpD
+ prCgpdgT77LpFvxgJNlKEBWLSBjZ4kxEnRiiQ8dYJXZz/rVa+mwrDqlAxyVCXFhHlW
+ pIK2SHvu+HJwUEPSNGCBAg9W2pTt/tLFKw/zKUqmtezySp/jWWzvO2dxfFwiuWRJ/2
+ xpQDsn76lN3Gog+YDVovDRsTD/FUOFZK+XpCqNI1kFh28CwW7J2ObwhgE7g2W94Ieh
+ euilI5YMx4HWkP8cW5lsUQrviC9YxhnjqgNxitvFz2aa9gpm6UrKMQ8V/jtHu5kgQn
+ iXGM/MCmHVf9Q==
 From: =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>
 To: andrew@lunn.ch
-Subject: [PATCH 08/22] i5100: Replace comments with C99 initializers
-Date: Sat, 26 Mar 2022 17:58:55 +0100
-Message-Id: <20220326165909.506926-8-benni@stuerz.xyz>
+Subject: [PATCH 09/22] gpio-winbond: Use C99 initializers
+Date: Sat, 26 Mar 2022 17:58:56 +0100
+Message-Id: <20220326165909.506926-9-benni@stuerz.xyz>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220326165909.506926-1-benni@stuerz.xyz>
 References: <20220326165909.506926-1-benni@stuerz.xyz>
@@ -106,64 +106,67 @@ initializers because the kernel supports them now.
 
 Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
 ---
- drivers/edac/i5100_edac.c | 44 +++++++++++++++++++--------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/gpio/gpio-winbond.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/edac/i5100_edac.c b/drivers/edac/i5100_edac.c
-index 324a46b8479b..5992f0ee5f28 100644
---- a/drivers/edac/i5100_edac.c
-+++ b/drivers/edac/i5100_edac.c
-@@ -379,28 +379,28 @@ static int i5100_rank_to_slot(const struct mem_ctl_info *mci,
- static const char *i5100_err_msg(unsigned err)
- {
- 	static const char *merrs[] = {
--		"unknown", /* 0 */
--		"uncorrectable data ECC on replay", /* 1 */
--		"unknown", /* 2 */
--		"unknown", /* 3 */
--		"aliased uncorrectable demand data ECC", /* 4 */
--		"aliased uncorrectable spare-copy data ECC", /* 5 */
--		"aliased uncorrectable patrol data ECC", /* 6 */
--		"unknown", /* 7 */
--		"unknown", /* 8 */
--		"unknown", /* 9 */
--		"non-aliased uncorrectable demand data ECC", /* 10 */
--		"non-aliased uncorrectable spare-copy data ECC", /* 11 */
--		"non-aliased uncorrectable patrol data ECC", /* 12 */
--		"unknown", /* 13 */
--		"correctable demand data ECC", /* 14 */
--		"correctable spare-copy data ECC", /* 15 */
--		"correctable patrol data ECC", /* 16 */
--		"unknown", /* 17 */
--		"SPD protocol error", /* 18 */
--		"unknown", /* 19 */
--		"spare copy initiated", /* 20 */
--		"spare copy completed", /* 21 */
-+		[0]  = "unknown",
-+		[1]  = "uncorrectable data ECC on replay",
-+		[2]  = "unknown",
-+		[3]  = "unknown",
-+		[4]  = "aliased uncorrectable demand data ECC",
-+		[5]  = "aliased uncorrectable spare-copy data ECC",
-+		[6]  = "aliased uncorrectable patrol data ECC",
-+		[7]  = "unknown",
-+		[8]  = "unknown",
-+		[9]  = "unknown",
-+		[10] = "non-aliased uncorrectable demand data ECC",
-+		[11] = "non-aliased uncorrectable spare-copy data ECC",
-+		[12] = "non-aliased uncorrectable patrol data ECC",
-+		[13] = "unknown",
-+		[14] = "correctable demand data ECC",
-+		[15] = "correctable spare-copy data ECC",
-+		[16] = "correctable patrol data ECC",
-+		[17] = "unknown",
-+		[18] = "SPD protocol error",
-+		[19] = "unknown",
-+		[20] = "spare copy initiated",
-+		[21] = "spare copy completed",
- 	};
- 	unsigned i;
+diff --git a/drivers/gpio/gpio-winbond.c b/drivers/gpio/gpio-winbond.c
+index 7f8f5b02e31d..0b637fdb407c 100644
+--- a/drivers/gpio/gpio-winbond.c
++++ b/drivers/gpio/gpio-winbond.c
+@@ -249,7 +249,7 @@ struct winbond_gpio_info {
+ };
  
+ static const struct winbond_gpio_info winbond_gpio_infos[6] = {
+-	{ /* 0 */
++	[0] = {
+ 		.dev = WB_SIO_DEV_GPIO12,
+ 		.enablereg = WB_SIO_GPIO12_REG_ENABLE,
+ 		.enablebit = WB_SIO_GPIO12_ENABLE_1,
+@@ -266,7 +266,7 @@ static const struct winbond_gpio_info winbond_gpio_infos[6] = {
+ 			.warnonly = true
+ 		}
+ 	},
+-	{ /* 1 */
++	[1] = {
+ 		.dev = WB_SIO_DEV_GPIO12,
+ 		.enablereg = WB_SIO_GPIO12_REG_ENABLE,
+ 		.enablebit = WB_SIO_GPIO12_ENABLE_2,
+@@ -277,7 +277,7 @@ static const struct winbond_gpio_info winbond_gpio_infos[6] = {
+ 		.datareg = WB_SIO_GPIO12_REG_DATA2
+ 		/* special conflict handling so doesn't use conflict data */
+ 	},
+-	{ /* 2 */
++	[2] = {
+ 		.dev = WB_SIO_DEV_GPIO34,
+ 		.enablereg = WB_SIO_GPIO34_REG_ENABLE,
+ 		.enablebit = WB_SIO_GPIO34_ENABLE_3,
+@@ -294,7 +294,7 @@ static const struct winbond_gpio_info winbond_gpio_infos[6] = {
+ 			.warnonly = true
+ 		}
+ 	},
+-	{ /* 3 */
++	[3] = {
+ 		.dev = WB_SIO_DEV_GPIO34,
+ 		.enablereg = WB_SIO_GPIO34_REG_ENABLE,
+ 		.enablebit = WB_SIO_GPIO34_ENABLE_4,
+@@ -311,7 +311,7 @@ static const struct winbond_gpio_info winbond_gpio_infos[6] = {
+ 			.warnonly = true
+ 		}
+ 	},
+-	{ /* 4 */
++	[4] = {
+ 		.dev = WB_SIO_DEV_WDGPIO56,
+ 		.enablereg = WB_SIO_WDGPIO56_REG_ENABLE,
+ 		.enablebit = WB_SIO_WDGPIO56_ENABLE_5,
+@@ -328,7 +328,7 @@ static const struct winbond_gpio_info winbond_gpio_infos[6] = {
+ 			.warnonly = true
+ 		}
+ 	},
+-	{ /* 5 */
++	[5] = {
+ 		.dev = WB_SIO_DEV_WDGPIO56,
+ 		.enablereg = WB_SIO_WDGPIO56_REG_ENABLE,
+ 		.enablebit = WB_SIO_WDGPIO56_ENABLE_6,
 -- 
 2.35.1
 
