@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B15D4E8372
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Mar 2022 19:43:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5811E4E8373
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Mar 2022 19:44:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KQnsr09ljz3cFt
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 05:43:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KQntN1TMsz3chr
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 05:44:12 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=WhP51Dsj;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=lpn1kNOh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=eiGwixJH;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=qP7TgvW3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,45 +18,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=benni@stuerz.xyz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256
- header.s=mail header.b=WhP51Dsj; 
+ header.s=mail header.b=eiGwixJH; 
  dkim=pass (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz
- header.a=rsa-sha256 header.s=mail header.b=lpn1kNOh; 
+ header.a=rsa-sha256 header.s=mail header.b=qP7TgvW3; 
  dkim-atps=neutral
 Received: from stuerz.xyz (unknown [45.77.206.31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KQlbd45Cqz306r
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 04:01:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KQlbm3ws7z306m
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 04:01:24 +1100 (AEDT)
 Received: by stuerz.xyz (Postfix, from userid 114)
- id 9A83FFB7CD; Sat, 26 Mar 2022 17:01:15 +0000 (UTC)
+ id 939E1FBC1A; Sat, 26 Mar 2022 17:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
- t=1648314075; bh=F4mFOP6R8mSC+27qiR8caNRLqSuQe2zZwUjAxTCpWKk=;
+ t=1648314082; bh=Atyp98CUeE2ls+rskgXqrYpiNVHIwFrsLn7qDkbs1Uk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=WhP51Dsj9ygdfkekHcodjm11EIvWjBmngru0X/UyaTK4e4arlt2AHoCufYL1xvJbV
- I1UAiqqP4qX9B4TYWdutbN7A8+kGZfnYTUmlaI9TRZtQ1MjPrlTlup53OKRHidf/zP
- ErGxYeA2Drr9rm+QpLhFoo6VVzqvDrn4p0aLz+JLqUAN7QEOfg/JcO/p6CzuHiuF+o
- F+uHHu4yvCmMEw0RkDVhvJtQJ7YUf2qp4/4UCjuXh/FtnKSHeE39BIojNHCWA9uPHW
- 6BntlSqCJB9JM2MqanPpNUwAFgJvMp3ShGh8OltUq9JSqBktdxRjZFURyyib+byOYw
- dbh9v07zFksbw==
+ b=eiGwixJHX40Mjai348pC1lzflWdZ4/TWZvazf9NVycjGc0PoBYsj0VNy4j7Mka+za
+ a98m3NgnjoaCQtJcSVruSWZOywSSMCwwRWVny8PIEa5HlhaMJ8CJpagtorYZ4VqqEV
+ qUgJYgoyi6RCc+k7y2g+pqAHlpazsKDlcdUpMvx72f2250fcmH7JaxOoHrHPYQmujg
+ TBeaur9eBRGLzUqe67csfwQgqaU/6VFraimJlb+3o+ETHLpCgIHKp/oUornHhtMyik
+ aun2rkV4cjxuTLhmj8e41iD+LRkrH3uMSjCVR/HpCU2uZtl+tDVLk54fHYcwao3JPi
+ gycpBPm2WkAEg==
 Received: from benni-fedora.. (unknown
  [IPv6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8])
- by stuerz.xyz (Postfix) with ESMTPSA id A2186FB7CD;
- Sat, 26 Mar 2022 17:01:06 +0000 (UTC)
+ by stuerz.xyz (Postfix) with ESMTPSA id 4CC2BFBB90;
+ Sat, 26 Mar 2022 17:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
- t=1648314073; bh=F4mFOP6R8mSC+27qiR8caNRLqSuQe2zZwUjAxTCpWKk=;
+ t=1648314079; bh=Atyp98CUeE2ls+rskgXqrYpiNVHIwFrsLn7qDkbs1Uk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=lpn1kNOht3IjqkwWrlXCvwxCCuKRTgm9xratBr2om8NH60q2A3PkG7ny40QNucd/c
- TI5QLl5gJY3hgaLe/x2wsXDBNDJ8sD7BM5hPjca1hImMajeyzv97QpcvqYXtaodIwn
- LP32ozhih5w7oBi1imaMTktrGINSREkWcl8znBajxoBVw+kh9bYQXBdB0++rNIqnjk
- /56oT7zPXmWOO1JkR7/z86GemOpPv2MOrbeEd2gs6B4eQE/NQoych/gsIiVj9RsovA
- xRoAwNJStE0bvDErb8jy1vAHc4WALCyAibhfkba1AKMkK5kA2ZNDgcbcDAeFBT4Qns
- 573fZe452hA5g==
+ b=qP7TgvW3oJ/sA3Yix4CPfWDhnnvNFSatDRinq+EiKUXUQ0FdQI4CUN9Ml1XU1whAq
+ vjdvv9SLrRySrhuWfF7F3KT2Q0Q/afP2v/4p8uBka44hkcxbWaTdYLE/dfa6u+aVZs
+ Hu5FjvNMk5YoWc87f4DSc4bGRxf3NY8w37161qCITHdWuasXmmoH++J1nnLZ8uMitr
+ F2UHAiWPQaYkH9C51bVT6N2PKeePCyXwAGryWdjCX70SGZRwLFc7L5r/epKTjpJVF3
+ Zxaxa7nN8V9aWqLDpaEQ1RakPYyfGoCHqw6V3gcaaKjBWRIkdx8c/QesH3NlUg1hGk
+ gD7/Pz6t0ggBg==
 From: =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>
 To: andrew@lunn.ch
-Subject: [PATCH 17/22] cxl: Replace comments with C99 initializers
-Date: Sat, 26 Mar 2022 17:59:04 +0100
-Message-Id: <20220326165909.506926-17-benni@stuerz.xyz>
+Subject: [PATCH 18/22] smsc: Replace comments with C99 initializers
+Date: Sat, 26 Mar 2022 17:59:05 +0100
+Message-Id: <20220326165909.506926-18-benni@stuerz.xyz>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220326165909.506926-1-benni@stuerz.xyz>
 References: <20220326165909.506926-1-benni@stuerz.xyz>
@@ -106,66 +106,65 @@ initializers because the kernel supports them now.
 
 Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
 ---
- drivers/misc/cxl/hcalls.c | 40 +++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/smsc/smc9194.h | 15 ++++++---------
+ drivers/net/ethernet/smsc/smc91x.h  | 18 ++++++++----------
+ 2 files changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/misc/cxl/hcalls.c b/drivers/misc/cxl/hcalls.c
-index aba5e20eeb1f..ed2086d579d3 100644
---- a/drivers/misc/cxl/hcalls.c
-+++ b/drivers/misc/cxl/hcalls.c
-@@ -86,32 +86,32 @@
+diff --git a/drivers/net/ethernet/smsc/smc9194.h b/drivers/net/ethernet/smsc/smc9194.h
+index cf69d0a5a1cb..e1c780afb9bb 100644
+--- a/drivers/net/ethernet/smsc/smc9194.h
++++ b/drivers/net/ethernet/smsc/smc9194.h
+@@ -163,15 +163,12 @@ typedef unsigned long int 		dword;
+ #define CHIP_91100	7
+ 
+ static const char * chip_ids[ 15 ] =  {
+-	NULL, NULL, NULL,
+-	/* 3 */ "SMC91C90/91C92",
+-	/* 4 */ "SMC91C94",
+-	/* 5 */ "SMC91C95",
+-	NULL,
+-	/* 7 */ "SMC91C100",
+-	/* 8 */ "SMC91C100FD",
+-	NULL, NULL, NULL,
+-	NULL, NULL, NULL};
++	[3] = "SMC91C90/91C92",
++	[4] = "SMC91C94",
++	[5] = "SMC91C95",
++	[7] = "SMC91C100",
++	[8] = "SMC91C100FD",
++};
+ 
+ /*
+  . Transmit status bits
+diff --git a/drivers/net/ethernet/smsc/smc91x.h b/drivers/net/ethernet/smsc/smc91x.h
+index 387539a8094b..122cdc849507 100644
+--- a/drivers/net/ethernet/smsc/smc91x.h
++++ b/drivers/net/ethernet/smsc/smc91x.h
+@@ -731,16 +731,14 @@ smc_pxa_dma_insw(void __iomem *ioaddr, struct smc_local *lp, int reg, int dma,
+ #define CHIP_91111FD	9
+ 
+ static const char * chip_ids[ 16 ] =  {
+-	NULL, NULL, NULL,
+-	/* 3 */ "SMC91C90/91C92",
+-	/* 4 */ "SMC91C94",
+-	/* 5 */ "SMC91C95",
+-	/* 6 */ "SMC91C96",
+-	/* 7 */ "SMC91C100",
+-	/* 8 */ "SMC91C100FD",
+-	/* 9 */ "SMC91C11xFD",
+-	NULL, NULL, NULL,
+-	NULL, NULL, NULL};
++	[3] = "SMC91C90/91C92",
++	[4] = "SMC91C94",
++	[5] = "SMC91C95",
++	[6] = "SMC91C96",
++	[7] = "SMC91C100",
++	[8] = "SMC91C100FD",
++	[9] = "SMC91C11xFD",
++};
  
  
- static char *afu_op_names[] = {
--	"UNKNOWN_OP",		/* 0 undefined */
--	"RESET",		/* 1 */
--	"SUSPEND_PROCESS",	/* 2 */
--	"RESUME_PROCESS",	/* 3 */
--	"READ_ERR_STATE",	/* 4 */
--	"GET_AFU_ERR",		/* 5 */
--	"GET_CONFIG",		/* 6 */
--	"GET_DOWNLOAD_STATE",	/* 7 */
--	"TERMINATE_PROCESS",	/* 8 */
--	"COLLECT_VPD",		/* 9 */
--	"UNKNOWN_OP",		/* 10 undefined */
--	"GET_FUNCTION_ERR_INT",	/* 11 */
--	"ACK_FUNCTION_ERR_INT",	/* 12 */
--	"GET_ERROR_LOG",	/* 13 */
-+	[0]  = "UNKNOWN_OP",		         /* undefined */
-+	[1]  = "RESET",
-+	[2]  = "SUSPEND_PROCESS",
-+	[3]  = "RESUME_PROCESS",
-+	[4]  = "READ_ERR_STATE",
-+	[5]  = "GET_AFU_ERR",
-+	[6]  = "GET_CONFIG",
-+	[7]  = "GET_DOWNLOAD_STATE",
-+	[8]  = "TERMINATE_PROCESS",
-+	[9]  = "COLLECT_VPD",
-+	[10] = "UNKNOWN_OP",		         /*  undefined */
-+	[11] = "GET_FUNCTION_ERR_INT",
-+	[12] = "ACK_FUNCTION_ERR_INT",
-+	[13] = "GET_ERROR_LOG",
- };
- 
- static char *control_adapter_op_names[] = {
--	"UNKNOWN_OP",		/* 0 undefined */
--	"RESET",		/* 1 */
--	"COLLECT_VPD",		/* 2 */
-+	[0] = "UNKNOWN_OP",		         /* undefined */
-+	[1] = "RESET",
-+	[2] = "COLLECT_VPD",
- };
- 
- static char *download_op_names[] = {
--	"UNKNOWN_OP",		/* 0 undefined */
--	"DOWNLOAD",		/* 1 */
--	"VALIDATE",		/* 2 */
-+	[0] = "UNKNOWN_OP",		         /* undefined */
-+	[1] = "DOWNLOAD",
-+	[2] = "VALIDATE",
- };
- 
- static char *op_str(unsigned int op, char *name_array[], int array_len)
+ /*
 -- 
 2.35.1
 
