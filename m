@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E754E7FE4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Mar 2022 08:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B30B14E838B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Mar 2022 19:50:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KQWZR0Vsrz3bSr
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Mar 2022 18:59:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KQp1R4nNBz3dN6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 05:50:19 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=quzw4Veq;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=vaoJWTFz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=stuerz.xyz (client-ip=2001:19f0:5:15da:5400:3ff:fecc:7379;
+ helo=stuerz.xyz; envelope-from=benni@stuerz.xyz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256
+ header.s=mail header.b=quzw4Veq; 
+ dkim=pass (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz
+ header.a=rsa-sha256 header.s=mail header.b=vaoJWTFz; 
+ dkim-atps=neutral
+Received: from stuerz.xyz (stuerz.xyz
+ [IPv6:2001:19f0:5:15da:5400:3ff:fecc:7379])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KQWYz5cCxz2xZk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Mar 2022 18:59:01 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KQWYq15Qsz9sSk;
- Sat, 26 Mar 2022 08:58:55 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id MWd_2_uPwi9A; Sat, 26 Mar 2022 08:58:55 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KQWYp6thGz9sSg;
- Sat, 26 Mar 2022 08:58:54 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D0F348B766;
- Sat, 26 Mar 2022 08:58:54 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id BDLFlGK4czpi; Sat, 26 Mar 2022 08:58:54 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.30])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83F078B763;
- Sat, 26 Mar 2022 08:58:54 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22Q7wdPf2233517
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Sat, 26 Mar 2022 08:58:39 +0100
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22Q7wYrd2233515;
- Sat, 26 Mar 2022 08:58:34 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Sathvika Vasireddy <sv@linux.ibm.com>
-Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-Date: Sat, 26 Mar 2022 08:58:28 +0100
-Message-Id: <ee3d660adbf8c2cdd77425268a12172ef4d5ee42.1648280690.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KQlm714Jpz30BN
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 04:08:39 +1100 (AEDT)
+Received: by stuerz.xyz (Postfix, from userid 114)
+ id EC006FB7EB; Sat, 26 Mar 2022 16:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+ t=1648313971; bh=h8kNuGjX/tVaFYP7mTBrGXI49VfH81tUX/xpUFBsyPo=;
+ h=From:To:Cc:Subject:Date:From;
+ b=quzw4Veqn1t75q8i+SwY92Od0H4kbj+Jplj+Hrb9t/pLmlKsT6TJwKYv9o17XTzCA
+ 3n4+kjK3LG/omELSm+sodJ7uUl4FaExNJQFo4XQbw2amIsW408Doe+3AErNNJZpImZ
+ lx7AVbydSYoFr2bJYXUKmyssrinBABDWXfDrQufUX+8e9VArBlaTIJ/bN2K5xyVq+w
+ 0p7uHbBGHtyMHQgqTwLQnNn16UdQEjGi85LRaznlxiosXx3mrR8DCIsPHQcZtPldiM
+ dmTbc/27NaJUevsVWuBjG4Qlevt2k5gOfZ0u7u+jCoIZM3SSZM+fmuEdmLFHsnsnPg
+ mGpj42WHbwZ4g==
+Received: from benni-fedora.. (unknown
+ [IPv6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8])
+ by stuerz.xyz (Postfix) with ESMTPSA id 06801FB7CA;
+ Sat, 26 Mar 2022 16:59:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+ t=1648313967; bh=h8kNuGjX/tVaFYP7mTBrGXI49VfH81tUX/xpUFBsyPo=;
+ h=From:To:Cc:Subject:Date:From;
+ b=vaoJWTFzm8MRCBX+7S85u4Wohc5rAbjDG2T7E8DUltJLkf/krkoSBna4S3pqS99En
+ P3y6O3CiGyfogbGETepdGKzgpDN0QtHf35//97zogTn2Hce6o6WZ17BRWG3tApzQGf
+ aNIkiZhaEmddVF8juLhl42fQ5bbgbuzhcq0ukey1NN8t0guq0sCG3i6sPdM3bYC1U6
+ aU6BRZFuKP75AmwaGReNRozzsPCzJxq44tCraR+Ll6KCKwir1BEUti16KlHrTphFJy
+ +nuQ/wPjFpAX6QV3asHxC7dOJgBXo+wgnEZXWOiibQ9bZKvgZVBmA4ga1hsVtcewJL
+ xOc6w0OY3ukmA==
+From: =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>
+To: andrew@lunn.ch
+Subject: [PATCH 01/22] orion5x: Replace comments with C99 initializers
+Date: Sat, 26 Mar 2022 17:58:48 +0100
+Message-Id: <20220326165909.506926-1-benni@stuerz.xyz>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <a688b641-a8ef-8e6b-4f94-da5edd1c6943@csgroup.eu>
-References: <a688b641-a8ef-8e6b-4f94-da5edd1c6943@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1648281498; l=5533; s=20211009;
- h=from:subject:message-id; bh=pqy69GtQ37gBmhkxEFcXQTJnF0YiL4OahbeYhVhf0xQ=;
- b=q1llzLWfDJRF22MRB95arYV9fbbQviEkLJOO+XlAHTjVsavxpDhS+8OloaQLsqVR+elDBn9qHioJ
- luyaJCgvB28UUAb6d1ezx6v8Oy7P9t+wgNUgFmDmS8o7GJwpqwTd
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Sun, 27 Mar 2022 05:40:34 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,172 +74,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- Peter Zijlstra <peterz@infradead.org>,
- "jpoimboe@redhat.com" <jpoimboe@redhat.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-atm-general@lists.sourceforge.net, linux-ia64@vger.kernel.org,
+ linus.walleij@linaro.org, dave.hansen@linux.intel.com,
+ linux-pci@vger.kernel.org, robert.moore@intel.com, laforge@gnumonks.org,
+ alim.akhtar@samsung.com, hpa@zytor.com, wcn36xx@lists.infradead.org,
+ =?UTF-8?q?Benjamin=20St=C3=BCrz?= <benni@stuerz.xyz>, pkshih@realtek.com,
+ linux-samsung-soc@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-edac@vger.kernel.org, dennis.dalessandro@cornelisnetworks.com,
+ linux-rdma@vger.kernel.org, gregory.clement@bootlin.com,
+ rafael.j.wysocki@intel.com, linux@armlinux.org.uk, krzk@kernel.org,
+ jgg@ziepe.ca, mingo@redhat.com, 3chas3@gmail.com, linux-input@vger.kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, lenb@kernel.org,
+ mike.marciniszyn@cornelisnetworks.com, rric@kernel.org, ajd@linux.ibm.com,
+ arnd@arndb.de, kvalo@kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-gpio@vger.kernel.org, loic.poulain@linaro.org, bp@alien8.de,
+ bhelgaas@google.com, tglx@linutronix.de, mchehab@kernel.org,
+ linux-media@vger.kernel.org, linux@simtec.co.uk,
+ linux-arm-kernel@lists.infradead.org, devel@acpica.org, isdn@linux-pingi.de,
+ tony.luck@intel.com, nico@fluxnic.net, gregkh@linuxfoundation.org,
+ dmitry.torokhov@gmail.com, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, james.morse@arm.com,
+ netdev@vger.kernel.org, fbarrat@linux.ibm.com, sebastian.hesselbarth@gmail.com,
+ pali@kernel.org, brgl@bgdev.pl
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 21/03/2022 a 08:56, Christophe Leroy a ecrit :
-> 
-> 
-> Le 21/03/2022 a 03:27, Michael Ellerman a ecrit :
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> Le 18/03/2022 a 13:26, Peter Zijlstra a ecrit :
->>>> On Fri, Mar 18, 2022 at 04:21:40PM +0530, Sathvika Vasireddy wrote:
->>>>> This patch adds powerpc specific functions required for
->>>>> 'objtool mcount' to work, and enables mcount for ppc.
->>>>
->>>> I would love to see more objtool enablement for Power :-)
->>>
->>> I have not received this series and I can't see it on powerpc patchwork
->>> either (https://patchwork.ozlabs.org/project/linuxppc-dev/list/)
->>>
->>> Did you send it to linuxppc-dev list ? If not can you resend it there ?
->>
->> It is there, might have been delayed?
->>
->> http://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=291129
->>
->> There are some CI failures.
->>
-> 
-> On PPC32 I get :
-> 
-> [    0.000000] ftrace: No functions to be traced?
-> 
-> Without this series I get:
-> 
-> [    0.000000] ftrace: allocating 22508 entries in 17 pages
-> [    0.000000] ftrace: allocated 17 pages with 2 groups
-> 
+This replaces comments with C99's designated
+initializers because the kernel supports them now.
 
-
-With the changes below I managed to get a working ftrace on a PPC32 target.
-
-Christophe
-
----------
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/objtool: Set to big endian and 32 bits
-
-Small ack to crossbuild a PPC32 kernel with a x86_64 host.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
 ---
- tools/objtool/arch/powerpc/decode.c                  |  3 ++-
- tools/objtool/arch/powerpc/include/arch/endianness.h |  9 +++++++++
- tools/objtool/elf.c                                  |  4 ++--
- tools/objtool/utils.c                                | 12 +++++++-----
- 4 files changed, 20 insertions(+), 8 deletions(-)
- create mode 100644 tools/objtool/arch/powerpc/include/arch/endianness.h
+ arch/arm/mach-orion5x/dns323-setup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/arch/powerpc/decode.c b/tools/objtool/arch/powerpc/decode.c
-index 58988f88b315..330af382e39f 100644
---- a/tools/objtool/arch/powerpc/decode.c
-+++ b/tools/objtool/arch/powerpc/decode.c
-@@ -8,6 +8,7 @@
- #include <objtool/arch.h>
- #include <objtool/warn.h>
- #include <objtool/builtin.h>
-+#include <objtool/endianness.h>
+diff --git a/arch/arm/mach-orion5x/dns323-setup.c b/arch/arm/mach-orion5x/dns323-setup.c
+index 87cb47220e82..d762248c6512 100644
+--- a/arch/arm/mach-orion5x/dns323-setup.c
++++ b/arch/arm/mach-orion5x/dns323-setup.c
+@@ -61,9 +61,9 @@
  
- int arch_decode_instruction(struct objtool_file *file, const struct section *sec,
- 			    unsigned long offset, unsigned int maxlen,
-@@ -20,7 +21,7 @@ int arch_decode_instruction(struct objtool_file *file, const struct section *sec
- 	u64 imm;
+ /* Exposed to userspace, do not change */
+ enum {
+-	DNS323_REV_A1,	/* 0 */
+-	DNS323_REV_B1,	/* 1 */
+-	DNS323_REV_C1,	/* 2 */
++	DNS323_REV_A1 = 0,
++	DNS323_REV_B1 = 1,
++	DNS323_REV_C1 = 2,
+ };
  
- 	*immediate = imm = 0;
--	memcpy(&insn, sec->data->d_buf+offset, 4);
-+	insn = bswap_if_needed(*(u32 *)(sec->data->d_buf + offset));
- 	*len = 4;
- 	*type = INSN_OTHER;
  
-diff --git a/tools/objtool/arch/powerpc/include/arch/endianness.h b/tools/objtool/arch/powerpc/include/arch/endianness.h
-new file mode 100644
-index 000000000000..275087bfcc16
---- /dev/null
-+++ b/tools/objtool/arch/powerpc/include/arch/endianness.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef _ARCH_ENDIANNESS_H
-+#define _ARCH_ENDIANNESS_H
-+
-+#include <endian.h>
-+
-+#define __TARGET_BYTE_ORDER __BIG_ENDIAN
-+
-+#endif /* _ARCH_ENDIANNESS_H */
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index 4b384c907027..433f0e327b68 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -867,7 +867,7 @@ static struct section *elf_create_rela_reloc_section(struct elf *elf, struct sec
- 	strcpy(relocname, ".rela");
- 	strcat(relocname, base->name);
- 
--	sec = elf_create_section(elf, relocname, 0, sizeof(GElf_Rela), 0);
-+	sec = elf_create_section(elf, relocname, 0, sizeof(Elf32_Rela), 0);
- 	free(relocname);
- 	if (!sec)
- 		return NULL;
-@@ -876,7 +876,7 @@ static struct section *elf_create_rela_reloc_section(struct elf *elf, struct sec
- 	sec->base = base;
- 
- 	sec->sh.sh_type = SHT_RELA;
--	sec->sh.sh_addralign = 8;
-+	sec->sh.sh_addralign = 4;
- 	sec->sh.sh_link = find_section_by_name(elf, ".symtab")->idx;
- 	sec->sh.sh_info = base->idx;
- 	sec->sh.sh_flags = SHF_INFO_LINK;
-diff --git a/tools/objtool/utils.c b/tools/objtool/utils.c
-index c9c14fa0dfd7..f77695c81386 100644
---- a/tools/objtool/utils.c
-+++ b/tools/objtool/utils.c
-@@ -151,7 +151,7 @@ int decode_instructions(struct objtool_file *file)
- int create_mcount_loc_sections(struct objtool_file *file)
- {
- 	struct section *sec;
--	unsigned long *loc;
-+	unsigned int *loc;
- 	struct instruction *insn;
- 	int idx;
- 
-@@ -169,15 +169,17 @@ int create_mcount_loc_sections(struct objtool_file *file)
- 	list_for_each_entry(insn, &file->mcount_loc_list, call_node)
- 		idx++;
- 
--	sec = elf_create_section(file->elf, "__mcount_loc", 0, sizeof(unsigned long), idx);
-+	sec = elf_create_section(file->elf, "__mcount_loc", 0, sizeof(unsigned int), idx);
- 	if (!sec)
- 		return -1;
- 
-+	sec->sh.sh_addralign = 4;
-+
- 	idx = 0;
- 	list_for_each_entry(insn, &file->mcount_loc_list, call_node) {
- 
--		loc = (unsigned long *)sec->data->d_buf + idx;
--		memset(loc, 0, sizeof(unsigned long));
-+		loc = (unsigned int *)sec->data->d_buf + idx;
-+		memset(loc, 0, sizeof(unsigned int));
- 
- 		if (file->elf->ehdr.e_machine == EM_X86_64) {
- 			if (elf_add_reloc_to_insn(file->elf, sec,
-@@ -197,7 +199,7 @@ int create_mcount_loc_sections(struct objtool_file *file)
- 
- 		if (file->elf->ehdr.e_machine == EM_PPC) {
- 			if (elf_add_reloc_to_insn(file->elf, sec,
--						  idx * sizeof(unsigned long),
-+						  idx * sizeof(unsigned int),
- 						  R_PPC_ADDR32,
- 						  insn->sec, insn->offset))
- 				return -1;
 -- 
 2.35.1
 
