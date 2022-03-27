@@ -2,71 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A9C4E8A3C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 23:33:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38D34E8A5A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 00:01:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KRTZh6N9dz3c2x
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 08:33:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KRVCz5Jj9z3c1t
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 09:01:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=W7sg25bH;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=s8a/oMsf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62c;
- helo=mail-ej1-x62c.google.com; envelope-from=andy.shevchenko@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=W7sg25bH; dkim-atps=neutral
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
- [IPv6:2a00:1450:4864:20::62c])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KRRX71fFJz305B
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 07:00:38 +1100 (AEDT)
-Received: by mail-ej1-x62c.google.com with SMTP id yy13so24729074ejb.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 13:00:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=78iW5XK4+ASAwJVsAvI1krxN1Cn3kULaSzDMrQW3lbE=;
- b=W7sg25bHaszzvWVJN0gyX6n6UFKurK5uWS8e6vL3YRtpn8QA30BzDbsf0Fo0KnzuVo
- f5lgeCM1g7VjeI4+YsTMtUtXLU8OULMmeB5PSBFxtOhNQxOmFPwV58KHSise/8GMyt0R
- UkRxgQ3CLiyEWm9B5wmzgYC64NBf7VmqUh+uCDsTRhKm1dBL3PhDD7kvx2KxY5v+Ou9s
- LtCbA+PaAxJA8Aqhhp0q2Rfl3QnpipqfZJ/WNelj96BMMf018qhLZN8AMLxNqJh1Ixg8
- Af8ZbFHjT7fOZzcs+O1sgyvPQnq9W6Aze+RWRCdQHnD8mS6FSfbjKHib+pU03gWIfqf1
- ov8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=78iW5XK4+ASAwJVsAvI1krxN1Cn3kULaSzDMrQW3lbE=;
- b=1QCXekiJ2tcztNDMrUMEdu9xUc+tIMH0Q1gNNPKbHYOeL7WJYma9JxEwR/YTjdmTzV
- 1XUHHJmsHkx16BFnpXF0+vFrLOWRVq6FQe453T9iXyqbMd7E29QbqYNbmoeQ5CNno2sF
- 7nPEtGIFnQAQkwL7rZ89AB2qpt59p0wI39H/ZUH2LtFOFGD6pqVSvo4PbMCXbmEDm1k1
- YX614xw0C7G5fPwrDwZM8LO9NGm8V34SrzpjzmYIQqZR35UFihJwv6tntei5OIP7Ohig
- 6zDFeeZJBteGZ9Li4qOVBieg0kNyRTyy+LZl+6oJRX6FHQcsuEE1uav97MdFqYrCQmf5
- lWCw==
-X-Gm-Message-State: AOAM531otYrcdkWwKh2bmL2JMaYOuei86z5gbcH1VLMbWv6nmFJKqzk+
- WKDeZXQ2yPH3hvXOrWVm6Ub9GbZdXo/4+jIV35U=
-X-Google-Smtp-Source: ABdhPJwdyxkAQAdfH1wRFs+W0MNyk4bgRb4Rgv1M9DLQvwm3YbnfTG06hhOU+eKDq7Hs4uOIofL7RgDFq+x0npk+U+Y=
-X-Received: by 2002:a17:907:628e:b0:6d9:c6fa:6168 with SMTP id
- nd14-20020a170907628e00b006d9c6fa6168mr23537601ejc.132.1648411230602; Sun, 27
- Mar 2022 13:00:30 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KRVCJ6hTWz2xTs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 09:01:16 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=s8a/oMsf; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KRVCC645Tz4x7X;
+ Mon, 28 Mar 2022 09:01:11 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+ s=201702; t=1648418472;
+ bh=bfqGnwHxbXXrLj5FZG0b7iogD6D0yJ/ab6cTkkeGjPI=;
+ h=Date:From:To:Cc:Subject:From;
+ b=s8a/oMsfC2Hm5757N1x/8jZ3u0EyfBMZFqrSuZ4FBlWPprOkZ+Bkgylok9S4iwEYQ
+ 4CxOeRO10cZhNjnGZItjHrfZAnT4FsI2hKX+qNq1W3D5At1YS4V2I3Aw16hP7YSfzS
+ JgEcNVhq0+kL1mOoFFQRdOiZCtd43GWDhKnsqBZsOzFqtAn0+yIH34Ya45tojzGdM6
+ Ip+SdWk4k2IIGNsFgNUqgAG2gLylHukowChqU7RezOiLEjy0WENJL4hrn85U3AgkwI
+ 434bKcHy0zczop8yvsDE+OoGWuTJrlLyBlsSs1VJXIo1XXz8oRMHOVLyfVMqX9mPKb
+ 2QlWVz7MvPcZA==
+Date: Mon, 28 Mar 2022 09:01:11 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: linux-next: build failure in Linus' tree
+Message-ID: <20220328090111.26f8980f@canb.auug.org.au>
 MIME-Version: 1.0
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-5-benni@stuerz.xyz>
-In-Reply-To: <20220326165909.506926-5-benni@stuerz.xyz>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 27 Mar 2022 22:59:54 +0300
-Message-ID: <CAHp75VeTXMAueQc_c0Ryj5+a8PrJ7gk-arugiNnxtAm03x7XTg@mail.gmail.com>
-Subject: Re: [PATCH 05/22] acpica: Replace comments with C99 initializers
-To: =?UTF-8?Q?Benjamin_St=C3=BCrz?= <benni@stuerz.xyz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Mon, 28 Mar 2022 08:32:29 +1100
+Content-Type: multipart/signed; boundary="Sig_/L.iZ1TLmoRQAosbi/tUErGk";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,57 +57,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, linux-atm-general@lists.sourceforge.net,
- linux-ia64@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-pci@vger.kernel.org,
- Robert Moore <robert.moore@intel.com>, Harald Welte <laforge@gnumonks.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, "H. Peter Anvin" <hpa@zytor.com>,
- wcn36xx@lists.infradead.org, Ping-Ke Shih <pkshih@realtek.com>,
- Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
- ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
- linux-edac@vger.kernel.org, dennis.dalessandro@cornelisnetworks.com,
- "open list:HFI1 DRIVER" <linux-rdma@vger.kernel.org>,
- Gregory Clement <gregory.clement@bootlin.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Krzysztof Kozlowski <krzk@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Ingo Molnar <mingo@redhat.com>, 3chas3@gmail.com,
- linux-input <linux-input@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Len Brown <lenb@kernel.org>,
- mike.marciniszyn@cornelisnetworks.com, Robert Richter <rric@kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Kalle Valo <kvalo@kernel.org>,
- "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
- <linuxppc-dev@lists.ozlabs.org>,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- Loic Poulain <loic.poulain@linaro.org>, Borislav Petkov <bp@alien8.de>,
- Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- linux@simtec.co.uk,
- linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
- "open list:ACPI COMPONENT ARCHITECTURE \(ACPICA\)" <devel@acpica.org>,
- Karsten Keil <isdn@linux-pingi.de>, Tony Luck <tony.luck@intel.com>,
- Nicolas Pitre <nico@fluxnic.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-wireless@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "David S. Miller" <davem@davemloft.net>, James Morse <james.morse@arm.com>,
- netdev <netdev@vger.kernel.org>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 26, 2022 at 7:39 PM Benjamin St=C3=BCrz <benni@stuerz.xyz> wrot=
-e:
->
-> This replaces comments with C99's designated
-> initializers because the kernel supports them now.
+--Sig_/L.iZ1TLmoRQAosbi/tUErGk
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Does it follow the conventions which are accepted in the ACPI CA project?
+Hi all,
+
+Building LInus' tree, today's linux-next build (powerpc
+ppc64_defconfig) failed like this:
+
+In file included from arch/powerpc/kernel/irq.c:66:
+arch/powerpc/include/asm/livepatch.h:7: error: unterminated #ifndef
+    7 | #ifndef _ASM_POWERPC_LIVEPATCH_H
+      |=20
+
+Caused by commit
+
+  7001052160d1 ("Merge tag 'x86_core_for_5.18_rc1' of git://git.kernel.org/=
+pub/scm/linux/kernel/git/tip/tip")
+
+A #endif got removed during the merge resolution :-(
+
+I have applied the following patch for today
+
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Mon, 28 Mar 2022 08:55:39 +1100
+Subject: [PATCH] powerpc: restore removed #endif
+
+Fixes: 7001052160d1 ("Merge tag 'x86_core_for_5.18_rc1' of git://git.kernel=
+.org/pub/scm/linux/kernel/git/tip/tip")
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/include/asm/livepatch.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/include/asm/livepatch.h b/arch/powerpc/include/as=
+m/livepatch.h
+index fd65931a739f..1c60094ea0cd 100644
+--- a/arch/powerpc/include/asm/livepatch.h
++++ b/arch/powerpc/include/asm/livepatch.h
+@@ -16,6 +16,7 @@ static inline void klp_arch_set_pc(struct ftrace_regs *fr=
+egs, unsigned long ip)
+ {
+ 	ftrace_instruction_pointer_set(fregs, ip);
+ }
++#endif /* CONFIG_LIVEPATCH */
+=20
+ #ifdef CONFIG_LIVEPATCH_64
+ static inline void klp_init_thread_info(struct task_struct *p)
+--=20
+2.35.1
 
 --=20
-With Best Regards,
-Andy Shevchenko
+Cheers,
+Stephen Rothwell
+
+--Sig_/L.iZ1TLmoRQAosbi/tUErGk
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmJA3qcACgkQAVBC80lX
+0GzEOgf+Ont4XKzz2D7eAdtpGmyQSfAaCkq9M2KJB19PcaFBOlbA+y51WSJag05k
+OF8oc1dCbgufAipb+LFszLUqDGw3AnJfwyNKO95L6lY3GZE1Vg2ACwdyQ9CxU+KQ
+3o/3L/2yAEslXRFCAiLw8qB+x7IxOA3xSOdfgzkqHGGZg/Rr1/sZ2cQyHSNtbdfb
+XCr6TjTBzNs9orlnfMmUvrVX+n7BNdahDU8c7Ws6o2kR+LlLhPWGKeSPx+eEFiqG
+WUrJ1vcNg8qwgIWjy95ckMDu7tbvG/dzh3fP6OhJCC1ZKj03bKp4vKXfeG9QrB3N
+RRgNJ4zqJtff4RugBTItaW5nFBpwQg==
+=7DOZ
+-----END PGP SIGNATURE-----
+
+--Sig_/L.iZ1TLmoRQAosbi/tUErGk--
