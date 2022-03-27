@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82934E879A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 14:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8EBB4E87CC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 14:46:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KRDyR5XHcz3c29
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 23:04:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KRFvV3mjNz3c2f
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Mar 2022 23:46:46 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=DBeKCqni;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=XW7jQ0Jj;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256 header.s=mail header.b=vBbH8cJY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b36;
- helo=mail-yb1-xb36.google.com; envelope-from=linus.walleij@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=stuerz.xyz (client-ip=45.77.206.31; helo=stuerz.xyz;
+ envelope-from=benni@stuerz.xyz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=DBeKCqni; dkim-atps=neutral
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com
- [IPv6:2607:f8b0:4864:20::b36])
+ unprotected) header.d=stuerz.xyz header.i=@stuerz.xyz header.a=rsa-sha256
+ header.s=mail header.b=XW7jQ0Jj; 
+ dkim=pass (2048-bit key) header.d=stuerz.xyz header.i=@stuerz.xyz
+ header.a=rsa-sha256 header.s=mail header.b=vBbH8cJY; 
+ dkim-atps=neutral
+Received: from stuerz.xyz (unknown [45.77.206.31])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KRDxp1HSvz3036
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 23:03:39 +1100 (AEDT)
-Received: by mail-yb1-xb36.google.com with SMTP id y142so21532485ybe.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 05:03:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=wHl9/T6i852qERrOCzTbVmjCSJRBRFv6zzTTgfN3gGk=;
- b=DBeKCqnidSXRmjiHTwVXUm4Pw0FrvuU5auJwDHCtbAnP1JZ6qiPpSjZDc1EnievgCm
- k5no1MQUvAD2Yp3D3H1Tr3wFvuBVtBvY0i0mU5RabNBoi3/pL8f/6Tb9BQLGy0EqxLim
- On/ghyDbBKDfoI1WVgqODIBn6khsYUoHAWzfmXzjVfIdVAfJdqWQ38L4b3KjNIsnQGf5
- cgvoKweA70BHCozuaKCRihZLkHnnvPPUZn2vskE4BruKJzGYVu0lZCSi+igjp0nfvdo0
- ZJyraa0orbFShGttjahETrCdSKgHieYBFQK9fGyQ0z7Gu5mGO845X2d0b8f0k35o7KuE
- ASiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=wHl9/T6i852qERrOCzTbVmjCSJRBRFv6zzTTgfN3gGk=;
- b=7rIx47LCj3QbHqBE84F34SujRiJCxlnRq3GbR3wvVmn/xROJkWSiLJ36QpXQsVSvEy
- 454GyIkSFohtvL8KSx3SV8GdQ5CbDwjxCOgGPmHCQl99i02Kevvhl2u7jx+w/S+UPlBD
- viDEENRoAeaXW0OWZEBL3BxMI7wLNbONHJsKLTsxC6hx5CfYCd1lq6+ter4oN4peAbAa
- /h5mbSlxA81SYzH/jDYOozBEsGoSJc9Fu8IOFWjVweqBVvELZkVjphsvb+PtcoBeCux2
- XPuCUWCE3myPMul3RKIhmr+/r4x7mz/a+X90+UX5oDv/q3Ska/TD7N9X5mNdNXQCRNgV
- +dag==
-X-Gm-Message-State: AOAM532F4iazMY4FR/qEwVTdwLBDRqI8utH3Q6+PWI4is1GsrkWPHlFz
- NLOb6TP3ygB7ojQrWiaXwFb+yHDdPACxvaBxQkzEzw==
-X-Google-Smtp-Source: ABdhPJyTVK6hiK7PmUY/txocaMlBoVgao0GtcKKhq5CZDdZWRUTeou5UFQRdJHVA+h0E7EBO4BHN73OpU62W6NXo4pA=
-X-Received: by 2002:a25:ab64:0:b0:633:6d02:ebc8 with SMTP id
- u91-20020a25ab64000000b006336d02ebc8mr18404908ybi.492.1648382616352; Sun, 27
- Mar 2022 05:03:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KRFtw11QKz2ymw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Mar 2022 23:46:15 +1100 (AEDT)
+Received: by stuerz.xyz (Postfix, from userid 114)
+ id 882B7FBBCC; Sun, 27 Mar 2022 12:46:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+ t=1648385171; bh=G70xCP6D8WSn+bAqlXu192tXuBsjh/gv9sAawqfU9NY=;
+ h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
+ b=XW7jQ0JjvkbBwWYcDnJe2nlVcVuRIXoXRSxf3PNWwPKilsznYeHIMaHkGHbpF6CPi
+ nqty3MnXTqG+wOEmI6ELfBW3t6Ot8AvrXhUDwqW1UwZJf6kiQJniSr9SnP78twlnv0
+ ZUgcLapZcbEI4qbn8OxvPWktNikL6Kc+Etx6Bphh9afk/Hjw9xpphYQkktP6pYTs4U
+ LH6YzQsfUm6Srdnzw7PCZmDV1KvBPkO+9qnzYPwcN+LOHDfP1TScrzVJPWp75MbJFA
+ PLeKhwC+Gp8yjNM/5t52esOjGU9lpx0aWVyem4iFCEGjhJnePoGwI4TGCoWVDXFMVG
+ IaZqNMJ7zdbtQ==
+Received: from [IPV6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8] (unknown
+ [IPv6:2a02:8109:a100:1a48:ff0:ef2f:d4da:17d8])
+ by stuerz.xyz (Postfix) with ESMTPSA id 2060CFBBBC;
+ Sun, 27 Mar 2022 12:46:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=stuerz.xyz; s=mail;
+ t=1648385168; bh=G70xCP6D8WSn+bAqlXu192tXuBsjh/gv9sAawqfU9NY=;
+ h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
+ b=vBbH8cJYXUrIhSgvFCWqsIlouOaWa0Ob/IwOKcnk6W9EsrhxCv3d9ruHzL3uCcOyT
+ isUVW1tcpcwMZ4y6KY5ZxcD9C88CnxszLWDsiAskZjdJ53DER27M6zK0oaEhWWieSL
+ Juy7xWTEZPuLwOj9cO6+/7dR2PqcKQxjkt2MABFO0zPwNEsjU2mafYbXnQPlZ2I0cL
+ 2ZDQJwWjnuzEx4AHGvLxNgfwyXB0lIDpMXfYtHANjMklviMBw30yLOvmuMA/WBhhwQ
+ lTIOL/KwWHU60GJWJ06zwdDByMnoxCjLnfIwK3SRtaOMOkXk/Hr5rtRBTGuebT4pdB
+ MUwu53koBYhbA==
+Message-ID: <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
+Date: Sun, 27 Mar 2022 14:46:00 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: [PATCH 00/22] Replace comments with C99 initializers
+Content-Language: en-US
+To: =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>
 References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-9-benni@stuerz.xyz>
-In-Reply-To: <20220326165909.506926-9-benni@stuerz.xyz>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Sun, 27 Mar 2022 14:03:24 +0200
-Message-ID: <CACRpkdYa6cKC34MzkXKsVSAFEkcGb=R5a0XS68eA3njoTh8Q8A@mail.gmail.com>
-Subject: Re: [PATCH 09/22] gpio-winbond: Use C99 initializers
-To: =?UTF-8?Q?Benjamin_St=C3=BCrz?= <benni@stuerz.xyz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>
+In-Reply-To: <20220326165909.506926-1-benni@stuerz.xyz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,8 +76,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew@lunn.ch, linux-atm-general@lists.sourceforge.net,
- linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com,
+Cc: linux-atm-general@lists.sourceforge.net, linux-ia64@vger.kernel.org,
+ linus.walleij@linaro.org, dave.hansen@linux.intel.com,
  linux-pci@vger.kernel.org, robert.moore@intel.com, laforge@gnumonks.org,
  alim.akhtar@samsung.com, hpa@zytor.com, wcn36xx@lists.infradead.org,
  pkshih@realtek.com, linux-samsung-soc@vger.kernel.org,
@@ -102,15 +101,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 26, 2022 at 6:00 PM Benjamin St=C3=BCrz <benni@stuerz.xyz> wrot=
-e:
+This patch series replaces comments with C99's designated initializers
+in a few places. It also adds some enum initializers. This is my first
+time contributing to the Linux kernel, therefore I'm probably doing a
+lot of things the wrong way. I'm sorry for that.
 
-> This replaces comments with C99's designated
-> initializers because the kernel supports them now.
->
-> Signed-off-by: Benjamin St=C3=BCrz <benni@stuerz.xyz>
+I've gotten a few emails so far stating that this patch series is
+unnecessary. Yes, in fact this patch series is not necessary by itself,
+but it could help me understand how the whole process works and maybe I
+could help somewhere, where help is actually needed.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+This patch itself is a no-op.
 
-Yours,
-Linus Walleij
+Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
+---
+ .gitignore | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index 7afd412dadd2..706f667261eb 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -20,7 +20,7 @@
+ *.dtb
+ *.dtbo
+ *.dtb.S
+-*.dwo
++*.dwo
+ *.elf
+ *.gcno
+ *.gz
+-- 
+2.35.1
