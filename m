@@ -2,55 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6938D4E92DE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 12:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCFF4E92E4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 12:57:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KRqQl2Bj4z3c2s
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 21:57:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KRqRR12mKz3c1b
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 21:57:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=q2kwNuWn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N7gslZiA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=kvalo@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=kvalo@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=q2kwNuWn; 
+ header.s=k20201202 header.b=N7gslZiA; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KRnSg18hXz3071
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 20:28:51 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KRnZf4SR5z2xSM
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 20:34:02 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 83B4DB80FD3;
- Mon, 28 Mar 2022 09:28:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF3EC004DD;
- Mon, 28 Mar 2022 09:28:33 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id F242CB80FCD;
+ Mon, 28 Mar 2022 09:33:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0B4C004DD;
+ Mon, 28 Mar 2022 09:33:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648459726;
- bh=YbP5lj9aEd4DoYw2/KO0XgPscMHFUgkHCQI0zXuUgAI=;
+ s=k20201202; t=1648460036;
+ bh=vyhorH3ReopEjyyeOaqNXz1F+fuDMA3PtzKea0coFV8=;
  h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
- b=q2kwNuWnLPg3ldJ06RzOoGZgjEApk2emBsBlcC4DIWDBf6XS6buiB/pFE0ki2GKr6
- ErVihGEORLk+Kl/joyYFH9Qnn5WIKisIJs2koQm75vxblzUACLdba7bLBadv34jqHa
- gG/dyimPa3QMXarS8taeQrItnA+PyE+69QfmI1x+OIRN37CqA8RGmFSfy8wCk32LYd
- wWNPuDjDJII9jb6UiZjaJQY+mrErr5hXT95wGlcXLjmEq3JrFXNadx78JuJyNsfATA
- KRM4AmAlzGRVV2bBDL3KM8oNuNDKBwh/AqLu5QcMplbJuTfwuOcAa7hX9WZ9rw1WWk
- IPDzzpGq0+fyA==
+ b=N7gslZiAbUk2K0itCjecfsI/RWbD921JgzGNP2Kjob9tlNWKxpcv0XxXJfPNZin/w
+ A0IR7YQPjfgzcF8nfIw2Qp9ZjcFTNb7LTztL9AYoQlq+D0DFSUCrNS2qiH6JPnE1fC
+ d1KCYuVMQdA55JmSSOhMn38gdsnsuJiIvXS7xjuBjd+D58bh2S8/2S5hzqSNDwuMtF
+ wL6A4k/3MHLny+7jUG8f45x9h9oK0icdinMC+NM7pK2YaZF62B/PFs4TG4m+pXcVBe
+ gM+xB7pqzFL7oswhmEfyYWWLVgaR1DNvn0CsMhOvyHk4QEK83ayzd9+XQz5ZI40AA0
+ C+vN55O6TsHMw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Larry Finger <Larry.Finger@lwfinger.net>
-Subject: Re: [PATCH 21/22] rtw89: Replace comments with C99 initializers
+To: Benjamin =?utf-8?Q?St=C3=BCrz?= <benni@stuerz.xyz>
+Subject: Re: [PATCH 00/22] Replace comments with C99 initializers
 References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-21-benni@stuerz.xyz>
- <f7bb9164-2f66-8985-5771-5f31ee5740b7@lwfinger.net>
-Date: Mon, 28 Mar 2022 12:28:30 +0300
-In-Reply-To: <f7bb9164-2f66-8985-5771-5f31ee5740b7@lwfinger.net> (Larry
- Finger's message of "Sat, 26 Mar 2022 13:55:33 -0500")
-Message-ID: <87k0cezarl.fsf@kernel.org>
+ <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
+Date: Mon, 28 Mar 2022 12:33:42 +0300
+In-Reply-To: <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz> ("Benjamin
+ \=\?utf-8\?Q\?St\=C3\=BCrz\=22's\?\= message of "Sun,
+ 27 Mar 2022 14:46:00 +0200")
+Message-ID: <87fsn2zaix.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -67,22 +69,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew@lunn.ch, linux-atm-general@lists.sourceforge.net,
- linux-ia64@vger.kernel.org, linus.walleij@linaro.org,
- dave.hansen@linux.intel.com, linux-pci@vger.kernel.org, robert.moore@intel.com,
- laforge@gnumonks.org, alim.akhtar@samsung.com, hpa@zytor.com,
- wcn36xx@lists.infradead.org,
- Benjamin =?utf-8?Q?St=C3=BCrz?= <benni@stuerz.xyz>, pkshih@realtek.com,
- linux-samsung-soc@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-edac@vger.kernel.org, dennis.dalessandro@cornelisnetworks.com,
- linux-rdma@vger.kernel.org, gregory.clement@bootlin.com,
- rafael.j.wysocki@intel.com, linux@armlinux.org.uk, krzk@kernel.org,
- jgg@ziepe.ca, mingo@redhat.com, 3chas3@gmail.com, linux-input@vger.kernel.org,
- kuba@kernel.org, pabeni@redhat.com, lenb@kernel.org,
- mike.marciniszyn@cornelisnetworks.com, rric@kernel.org, ajd@linux.ibm.com,
- arnd@arndb.de, linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org,
- loic.poulain@linaro.org, bp@alien8.de, bhelgaas@google.com, tglx@linutronix.de,
- mchehab@kernel.org, linux-media@vger.kernel.org, linux@simtec.co.uk,
+Cc: linux-atm-general@lists.sourceforge.net, linux-ia64@vger.kernel.org,
+ linus.walleij@linaro.org, dave.hansen@linux.intel.com,
+ linux-pci@vger.kernel.org, robert.moore@intel.com, laforge@gnumonks.org,
+ alim.akhtar@samsung.com, hpa@zytor.com, wcn36xx@lists.infradead.org,
+ pkshih@realtek.com, linux-samsung-soc@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
+ dennis.dalessandro@cornelisnetworks.com, linux-rdma@vger.kernel.org,
+ gregory.clement@bootlin.com, rafael.j.wysocki@intel.com, linux@armlinux.org.uk,
+ krzk@kernel.org, jgg@ziepe.ca, mingo@redhat.com, 3chas3@gmail.com,
+ linux-input@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ lenb@kernel.org, mike.marciniszyn@cornelisnetworks.com, rric@kernel.org,
+ ajd@linux.ibm.com, arnd@arndb.de, linuxppc-dev@lists.ozlabs.org,
+ linux-gpio@vger.kernel.org, loic.poulain@linaro.org, bp@alien8.de,
+ bhelgaas@google.com, tglx@linutronix.de, mchehab@kernel.org,
+ linux-media@vger.kernel.org, linux@simtec.co.uk,
  linux-arm-kernel@lists.infradead.org, devel@acpica.org, isdn@linux-pingi.de,
  tony.luck@intel.com, nico@fluxnic.net, gregkh@linuxfoundation.org,
  dmitry.torokhov@gmail.com, linux-wireless@vger.kernel.org,
@@ -93,76 +94,18 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
+Benjamin St=C3=BCrz <benni@stuerz.xyz> writes:
 
-> On 3/26/22 11:59, Benjamin St=C3=BCrz wrote:
->> This replaces comments with C99's designated
->> initializers because the kernel supports them now.
->>
->> Signed-off-by: Benjamin St=C3=BCrz <benni@stuerz.xyz>
->> ---
->>   drivers/net/wireless/realtek/rtw89/coex.c | 40 +++++++++++------------
->>   1 file changed, 20 insertions(+), 20 deletions(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wir=
-eless/realtek/rtw89/coex.c
->> index 684583955511..3c83a0bfb120 100644
->> --- a/drivers/net/wireless/realtek/rtw89/coex.c
->> +++ b/drivers/net/wireless/realtek/rtw89/coex.c
->> @@ -97,26 +97,26 @@ static const struct rtw89_btc_fbtc_slot s_def[] =3D {
->>   };
->>     static const u32 cxtbl[] =3D {
->> -	0xffffffff, /* 0 */
->> -	0xaaaaaaaa, /* 1 */
->> -	0x55555555, /* 2 */
->> -	0x66555555, /* 3 */
->> -	0x66556655, /* 4 */
->> -	0x5a5a5a5a, /* 5 */
->> -	0x5a5a5aaa, /* 6 */
->> -	0xaa5a5a5a, /* 7 */
->> -	0x6a5a5a5a, /* 8 */
->> -	0x6a5a5aaa, /* 9 */
->> -	0x6a5a6a5a, /* 10 */
->> -	0x6a5a6aaa, /* 11 */
->> -	0x6afa5afa, /* 12 */
->> -	0xaaaa5aaa, /* 13 */
->> -	0xaaffffaa, /* 14 */
->> -	0xaa5555aa, /* 15 */
->> -	0xfafafafa, /* 16 */
->> -	0xffffddff, /* 17 */
->> -	0xdaffdaff, /* 18 */
->> -	0xfafadafa  /* 19 */
->> +	[0]  =3D 0xffffffff,
->> +	[1]  =3D 0xaaaaaaaa,
->> +	[2]  =3D 0x55555555,
->> +	[3]  =3D 0x66555555,
->> +	[4]  =3D 0x66556655,
->> +	[5]  =3D 0x5a5a5a5a,
->> +	[6]  =3D 0x5a5a5aaa,
->> +	[7]  =3D 0xaa5a5a5a,
->> +	[8]  =3D 0x6a5a5a5a,
->> +	[9]  =3D 0x6a5a5aaa,
->> +	[10] =3D 0x6a5a6a5a,
->> +	[11] =3D 0x6a5a6aaa,
->> +	[12] =3D 0x6afa5afa,
->> +	[13] =3D 0xaaaa5aaa,
->> +	[14] =3D 0xaaffffaa,
->> +	[15] =3D 0xaa5555aa,
->> +	[16] =3D 0xfafafafa,
->> +	[17] =3D 0xffffddff,
->> +	[18] =3D 0xdaffdaff,
->> +	[19] =3D 0xfafadafa
->>   };
->>     struct rtw89_btc_btf_tlv {
->
->
-> Is this change really necessary? Yes, the entries must be ordered;
-> however, the comment carries that information at very few extra
-> characters. To me, this patch looks like unneeded source churn.
+> This patch series replaces comments with C99's designated initializers
+> in a few places. It also adds some enum initializers. This is my first
+> time contributing to the Linux kernel, therefore I'm probably doing a
+> lot of things the wrong way. I'm sorry for that.
 
-One small benefit I see is to avoid the comment index being wrong and
-there would be no way to catch that. But otherwise I don't have any
-opinion about this.
+Just a small tip: If you are new, start with something small and learn
+from that. Don't do a controversial big patchset spanning multiple
+subsystems, that's the hard way to learn things. First submit one patch
+at a time to one subsystem and gain understanding of the process that
+way.
 
 --=20
 https://patchwork.kernel.org/project/linux-wireless/list/
