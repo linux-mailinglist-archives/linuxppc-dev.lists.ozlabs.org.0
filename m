@@ -1,105 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0534D4EA162
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 22:22:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721C14EA29C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 23:59:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KS3yf720sz3c2g
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 07:22:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KS66f1rlzz302k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 08:59:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Bu6t4srH;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y4auQ0hn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YVlWymAf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=jpoimboe@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Bu6t4srH; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Y4auQ0hn; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=YVlWymAf; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KS3xv560nz3c00
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 07:21:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1648498896;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3p40tNFk+gHnhhZuqFavI/fEyZfK9XcFxgpC8+00PDQ=;
- b=Bu6t4srHvL2H+FyB75mdAxFj+takss5+KuvhLKNDdmTkCMjw3VhzfzBpHUNnCZAHkPgHDN
- BKJES4F59xkFyUCx3gXOIL8bEZSr6/gY0l1oNuNoPKDyXOqhYPgA4JPIhbACD7PakCtPXO
- 5HINpOO4+/z2JTQcKTtAUqy9HzJF2Eg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1648498897;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3p40tNFk+gHnhhZuqFavI/fEyZfK9XcFxgpC8+00PDQ=;
- b=Y4auQ0hn1yFrGRjlqtgBhF8t4ymheWBy8wt0cEUNIdPtF76Lb+m9rIzW/uqKyfiWsPWm8L
- sPAXxT06tMJQFMZUA/qws8p+W6Gw+USjg2iJ2I4N7YaeZUl3NeZtRfoiC+qd1HgXUbam6h
- WOdsOwLteN6uj42F63dDGzbWUlxE3n0=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-68-j3o8dLU2P-CZxSjsXhLAwQ-1; Mon, 28 Mar 2022 16:21:35 -0400
-X-MC-Unique: j3o8dLU2P-CZxSjsXhLAwQ-1
-Received: by mail-qv1-f72.google.com with SMTP id
- o1-20020a0c9001000000b00440e415a3a2so12173309qvo.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 13:21:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=3p40tNFk+gHnhhZuqFavI/fEyZfK9XcFxgpC8+00PDQ=;
- b=Fpbm6HLJGNFfjI5gBUFwZr+Wf1LK++GbKVIiCUJvq/dJ4tqUCEIia3lzfezHgV5Qsv
- rbWM4U6wMTMnYOY0GeErBbajvIEfWTtCDIEY4lR3bCFDyUPtinw/RBhrDz5yGDpGVUhS
- WWQF9IsuGrSxu6Q/++AABeiIqbDG02pbmBTvM9J6Fz1TOkvoLRJBDAAf+/YYEx2qHZlO
- LiuFtpadhr4r43MdjVszDWL0p7XMzv8+xdFuhP12Cz2tLo8CfqfqXSHMsXR4VlFicFuD
- 5mY1dlBi07qtH4ivhg2l6m1Rrc73Otrxk4/cfLDXDq5a5abWWOaU68xbnT34p61O3TFS
- Ymvg==
-X-Gm-Message-State: AOAM5323ghdv34Oe16MaRdr6E/4R52xHLDOYjdSAihu6yU+rbi/MCTuU
- LzQRYXLrfgt8TY8iwPHvSqCIv/5HTi310LfNwzIlfQrEY5r9+Vl+1H7nzF/VGZgpJKYRwS+iYtv
- 29jddSLC0hIwCW94eEW6bUsXv4A==
-X-Received: by 2002:a05:6214:29c7:b0:441:3f11:9315 with SMTP id
- gh7-20020a05621429c700b004413f119315mr22667906qvb.87.1648498895156; 
- Mon, 28 Mar 2022 13:21:35 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwNM++ZxHApL6PNdttJ/yUMPNMmzlV+WiT8X4Xf2ogElGi09uECpKMGDIcr2ELe1JrOd+5kdg==
-X-Received: by 2002:a05:6214:29c7:b0:441:3f11:9315 with SMTP id
- gh7-20020a05621429c700b004413f119315mr22667879qvb.87.1648498894940; 
- Mon, 28 Mar 2022 13:21:34 -0700 (PDT)
-Received: from treble ([2600:1700:6e32:6c00::35])
- by smtp.gmail.com with ESMTPSA id
- g9-20020a05620a108900b0067b13036bd5sm8275335qkk.52.2022.03.28.13.21.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Mar 2022 13:21:34 -0700 (PDT)
-Date: Mon, 28 Mar 2022 13:21:31 -0700
-From: Josh Poimboeuf <jpoimboe@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-Message-ID: <20220328202131.jis7swqswm7chn6k@treble>
-References: <20220318105140.43914-1-sv@linux.ibm.com>
- <20220318105140.43914-4-sv@linux.ibm.com>
- <YjR6kHq4c/rjCTpr@hirez.programming.kicks-ass.net>
- <0b55f122-4760-c1ba-840a-0911cefec2ad@csgroup.eu>
- <20220328195920.dqlfra3lcardko6r@treble>
- <YkIXLnAxtPuSDcOW@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KS65x248vz2xXw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 08:58:44 +1100 (AEDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22SLsOsB027195; 
+ Mon, 28 Mar 2022 21:58:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=UY86goFnF0Gj4iIqrrsYyWGWYsTERdVG0myVbGGPb4k=;
+ b=YVlWymAfSiRIvgYx4XsDlFvBWZAJ4n+4KaKyusghjTR1YTaofYsRTKnbWOEMZ9BvCYfu
+ 3B5omo/lUV6N4YaPm4YeaSz0omsP10zbYAzNJ1cmP0UW8z0hgq13SmWlyEGa3YtZohjK
+ PhUsi9MGGBEQRSsRTuuIEfAespvMmmeJo+coI47wD7rLJOZ3c9b3llIp1Z0PRosE62cQ
+ cek+7XgV1Lu6HejyvlBHTEFxrcZWorV0c/iZyfFIh8800n0GBBAZTAabLmnZ2QLZlMU3
+ /qpxTkPOTGwKUcBS7ZxZlZRmkL7pyZ0i9U7t0AxeYQHRRmY7WEdfkrwhW/VTiaCGGBpN 2Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f3nbk81vu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Mar 2022 21:58:36 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22SLveDd006019;
+ Mon, 28 Mar 2022 21:58:35 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f3nbk81vp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Mar 2022 21:58:35 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22SLhacC022831;
+ Mon, 28 Mar 2022 21:58:35 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02wdc.us.ibm.com with ESMTP id 3f1tf983m8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 28 Mar 2022 21:58:35 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22SLwYsA7274822
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 28 Mar 2022 21:58:34 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AC18FAE066;
+ Mon, 28 Mar 2022 21:58:34 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7B345AE05C;
+ Mon, 28 Mar 2022 21:58:33 +0000 (GMT)
+Received: from li-4707e44c-227d-11b2-a85c-f336a85283d9.ibm.com.com (unknown
+ [9.160.110.254]) by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 28 Mar 2022 21:58:33 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] KVM: PPC: Book3S HV: Fix vcore_blocked tracepoint
+Date: Mon, 28 Mar 2022 18:58:31 -0300
+Message-Id: <20220328215831.320409-1-farosas@linux.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-In-Reply-To: <YkIXLnAxtPuSDcOW@hirez.programming.kicks-ass.net>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=jpoimboe@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: e3zgWKn2IGwM4h8epjkDe_AHKNgPfF_7
+X-Proofpoint-GUID: wN3pgk_2AuplFalMYCnl_2xmgG8W1uHO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-28_10,2022-03-28_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ phishscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ spamscore=0 mlxlogscore=999 suspectscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203280116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,42 +102,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, "aik@ozlabs.ru" <aik@ozlabs.ru>,
- Will Deacon <will@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- Sathvika Vasireddy <sv@linux.ibm.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- ardb@kernel.org
+Cc: npiggin@gmail.com, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 28, 2022 at 10:14:38PM +0200, Peter Zijlstra wrote:
-> > FWIW, there have been some objtool patches for arm64 stack validation,
-> > but the arm64 maintainers have been hesitant to get on board with
-> > objtool, as it brings a certain maintenance burden.  Especially for the
-> > full stack validation and ORC unwinder.  But if you only want inline
-> > static calls and/or mcount then it'd probably be much easier to
-> > maintain.
-> 
-> IIRC the major stumbling block for arm64 is the whole jump-table thing.
-> Either they need to rely on compiler plugins to provide objtool that
-> data (yuck, since we support at least 2 different compilers), disable
-> jump-tables (yuck, for that limits code-gen just to please a tool) or
-> use DWARF (yuck, because build times).
+We removed most of the vcore logic from the P9 path but there's still
+a tracepoint that tried to dereference vc->runner.
 
-Well yeah, that was indeed the main technical issue but I seem to
-remember some arm64 maintainers not really being sold on the value of
-objtool regardless.
+Fixes: ecb6a7207f92 ("KVM: PPC: Book3S HV P9: Remove most of the vcore logic")
+Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+---
+ arch/powerpc/kvm/book3s_hv.c | 8 ++++----
+ arch/powerpc/kvm/trace_hv.h  | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-> There was a little talk about an impromptu 'abi' to communicate
-> jump-table details to objtool without going full on DWARF, but that
-> seems to have hit a dead end again.
-
-Probably my fault, not enough hours in the day...
-
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index c886557638a1..5f5b2d0dee8c 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4218,13 +4218,13 @@ static void kvmppc_vcore_blocked(struct kvmppc_vcore *vc)
+ 	start_wait = ktime_get();
+ 
+ 	vc->vcore_state = VCORE_SLEEPING;
+-	trace_kvmppc_vcore_blocked(vc, 0);
++	trace_kvmppc_vcore_blocked(vc->runner, 0);
+ 	spin_unlock(&vc->lock);
+ 	schedule();
+ 	finish_rcuwait(&vc->wait);
+ 	spin_lock(&vc->lock);
+ 	vc->vcore_state = VCORE_INACTIVE;
+-	trace_kvmppc_vcore_blocked(vc, 1);
++	trace_kvmppc_vcore_blocked(vc->runner, 1);
+ 	++vc->runner->stat.halt_successful_wait;
+ 
+ 	cur = ktime_get();
+@@ -4596,9 +4596,9 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 			if (kvmppc_vcpu_check_block(vcpu))
+ 				break;
+ 
+-			trace_kvmppc_vcore_blocked(vc, 0);
++			trace_kvmppc_vcore_blocked(vcpu, 0);
+ 			schedule();
+-			trace_kvmppc_vcore_blocked(vc, 1);
++			trace_kvmppc_vcore_blocked(vcpu, 1);
+ 		}
+ 		finish_rcuwait(wait);
+ 	}
+diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
+index 38cd0ed0a617..32e2cb5811cc 100644
+--- a/arch/powerpc/kvm/trace_hv.h
++++ b/arch/powerpc/kvm/trace_hv.h
+@@ -409,9 +409,9 @@ TRACE_EVENT(kvmppc_run_core,
+ );
+ 
+ TRACE_EVENT(kvmppc_vcore_blocked,
+-	TP_PROTO(struct kvmppc_vcore *vc, int where),
++	TP_PROTO(struct kvm_vcpu *vcpu, int where),
+ 
+-	TP_ARGS(vc, where),
++	TP_ARGS(vcpu, where),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(int,	n_runnable)
+@@ -421,8 +421,8 @@ TRACE_EVENT(kvmppc_vcore_blocked,
+ 	),
+ 
+ 	TP_fast_assign(
+-		__entry->runner_vcpu = vc->runner->vcpu_id;
+-		__entry->n_runnable  = vc->n_runnable;
++		__entry->runner_vcpu = vcpu->vcpu_id;
++		__entry->n_runnable  = vcpu->arch.vcore->n_runnable;
+ 		__entry->where       = where;
+ 		__entry->tgid	     = current->tgid;
+ 	),
 -- 
-Josh
+2.35.1
 
