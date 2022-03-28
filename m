@@ -2,77 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610C94EA27E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 23:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C002A4EA27F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 23:36:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KS5bl21SBz3cfQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 08:36:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KS5cS4pCfz3cBR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 08:36:40 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=oLet0tAN;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcdkim header.b=bvQh4qsa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32b;
- helo=mail-wm1-x32b.google.com; envelope-from=daniel.thompson@linaro.org;
+ smtp.mailfrom=quicinc.com (client-ip=199.106.114.38;
+ helo=alexa-out-sd-01.qualcomm.com; envelope-from=quic_jjohnson@quicinc.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=oLet0tAN; dkim-atps=neutral
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com
- [IPv6:2a00:1450:4864:20::32b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256
+ header.s=qcdkim header.b=bvQh4qsa; dkim-atps=neutral
+X-Greylist: delayed 123 seconds by postgrey-1.36 at boromir;
+ Tue, 29 Mar 2022 03:19:51 AEDT
+Received: from alexa-out-sd-01.qualcomm.com (alexa-out-sd-01.qualcomm.com
+ [199.106.114.38])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KRv000lXFz3071
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 00:37:51 +1100 (AEDT)
-Received: by mail-wm1-x32b.google.com with SMTP id p189so8410643wmp.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 06:37:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:content-transfer-encoding:in-reply-to;
- bh=X9xolOBuBIa4R0vTxvv45W6wXO+HEw6pqnTDDTRpzds=;
- b=oLet0tANev/NadSGG5WygX6a9PHbV48R0OGVzTFAK66vgaFAFv+6FEqLK0G3/3ySP4
- b/d5orpZAPqedkx1AD7rtFEyiwXnPvIQaUt3cb5bANbLFAp1PP9b3VM5x83B+LE5bpZX
- Mqfb0YdcPylnkm3GgwX0FkcVIyeIpzrHW1Ztm1YCPJWhtEm6b0R7UxTKqyLkp9X86tDh
- RTML6mUvAc9b6cJ7rPhuh5vgMUf407AdVPTSrPRQBy/Qnb76rcY+JlipO/P3K/LBqKBX
- q692XNYucimXULVF/VqoaavfK2r3MAlFNO2DaqNE8kM6/YoLSPlUhjDCWMHA+GVsdYK9
- BlPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=X9xolOBuBIa4R0vTxvv45W6wXO+HEw6pqnTDDTRpzds=;
- b=CAX0nfbeEuoTfL0efK4e+im1SXbBcxgqCeDzebIEKXUTydoqeFf2cUVGjvW22TfqBD
- IoULkWdcfqlzv0LAkh0qv/rBbtJboZPgDuxDClDIu+1j0KCZQjRxEG20AkWG54P193Am
- vmWX1vjNURFPwGR/XcPD7ki7mOoqd9aVwjOSvtF0+YM/hyTJd2P8w4VOIKhZqwuf/cfi
- xXLSXJQkOT8udeZOExPek3nm6WuyA1sqnsUtOdDcxbV6ovRH1x6HBIFdzaovF8BwpVsU
- Z2ZjD3OpS0ZlPqzkszvb5YpU1p8cBySAMKu3pnHlYGy0QIvrp1+YlciBEb3/wC0VL08B
- OQtQ==
-X-Gm-Message-State: AOAM530U01Hy6euXUQ2JjQaC4cxcV27Ehrr6dfuOlvkE1yscJXVC5IKa
- NW0siAw8at83MSiFvYTHzxZHrw==
-X-Google-Smtp-Source: ABdhPJzgqImTJvpGFyUqZPtbBODfMsZThR+EI0nK3Vy5a8rcSuNNZ7ZoSJ0lC0b5BDudwRR5EvwIkg==
-X-Received: by 2002:a05:600c:a08:b0:38c:93c8:36e9 with SMTP id
- z8-20020a05600c0a0800b0038c93c836e9mr36701865wmp.97.1648474666793; 
- Mon, 28 Mar 2022 06:37:46 -0700 (PDT)
-Received: from maple.lan (cpc141216-aztw34-2-0-cust174.18-1.cable.virginm.net.
- [80.7.220.175]) by smtp.gmail.com with ESMTPSA id
- p14-20020a5d59ae000000b00203dcc87d39sm19694611wrr.54.2022.03.28.06.37.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 28 Mar 2022 06:37:46 -0700 (PDT)
-Date: Mon, 28 Mar 2022 14:37:43 +0100
-From: Daniel Thompson <daniel.thompson@linaro.org>
-To: Benjamin =?utf-8?B?U3TDvHJ6?= <benni@stuerz.xyz>
-Subject: Re: [PATCH 02/22] s3c: Replace comments with C99 initializers
-Message-ID: <20220328133743.xhdzmprlc7a6jxxy@maple.lan>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-2-benni@stuerz.xyz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KRyZv6PKFz2xrc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 03:19:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+ t=1648484392; x=1680020392;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=Eu7nJy5jkPS6ql5ANPoXUckpfZ6g40U1vF2Yo2ODg4c=;
+ b=bvQh4qsa3p4A3F2OVvNWOE0NcHJhsJePyRuvh5EyLQXEAg+yyiMFHP6B
+ nB5GEekBK1EN6jLgpVIRB0CvX9x1sFAuQ2KxGQvryueiuK/xz4SiJ3dny
+ rkux80TJXnu10GPb9zVHwKLtwrxTmV4HSiMGzA6U4rjW7rJcyPXAnaLdU w=;
+Received: from unknown (HELO ironmsg05-sd.qualcomm.com) ([10.53.140.145])
+ by alexa-out-sd-01.qualcomm.com with ESMTP; 28 Mar 2022 09:17:46 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+ by ironmsg05-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Mar 2022 09:17:44 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Mon, 28 Mar 2022 09:17:44 -0700
+Received: from [10.110.35.108] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Mon, 28 Mar
+ 2022 09:17:41 -0700
+Message-ID: <f0ebc901-051a-c7fe-ca5a-bc798e7c31e7@quicinc.com>
+Date: Mon, 28 Mar 2022 09:17:40 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH 19/22] wnc36xx: Replace comments with C99 initializers
+Content-Language: en-US
+To: =?UTF-8?Q?Benjamin_St=c3=bcrz?= <benni@stuerz.xyz>, <andrew@lunn.ch>
+References: <20220326165909.506926-1-benni@stuerz.xyz>
+ <20220326165909.506926-19-benni@stuerz.xyz>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20220326165909.506926-19-benni@stuerz.xyz>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220326165909.506926-2-benni@stuerz.xyz>
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-Mailman-Approved-At: Tue, 29 Mar 2022 08:33:34 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -85,22 +79,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew@lunn.ch, linux-atm-general@lists.sourceforge.net,
- linux-ia64@vger.kernel.org, linus.walleij@linaro.org,
- dave.hansen@linux.intel.com, linux-pci@vger.kernel.org, robert.moore@intel.com,
- laforge@gnumonks.org, alim.akhtar@samsung.com, hpa@zytor.com,
- wcn36xx@lists.infradead.org, pkshih@realtek.com,
- linux-samsung-soc@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-edac@vger.kernel.org, dennis.dalessandro@cornelisnetworks.com,
- linux-rdma@vger.kernel.org, gregory.clement@bootlin.com,
- rafael.j.wysocki@intel.com, linux@armlinux.org.uk, krzk@kernel.org,
- jgg@ziepe.ca, mingo@redhat.com, 3chas3@gmail.com, linux-input@vger.kernel.org,
- kuba@kernel.org, pabeni@redhat.com, lenb@kernel.org,
- mike.marciniszyn@cornelisnetworks.com, rric@kernel.org, ajd@linux.ibm.com,
- arnd@arndb.de, kvalo@kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-gpio@vger.kernel.org, loic.poulain@linaro.org, bp@alien8.de,
- bhelgaas@google.com, tglx@linutronix.de, mchehab@kernel.org,
- linux-media@vger.kernel.org, linux@simtec.co.uk,
+Cc: linux-atm-general@lists.sourceforge.net, linux-ia64@vger.kernel.org,
+ linus.walleij@linaro.org, dave.hansen@linux.intel.com,
+ linux-pci@vger.kernel.org, robert.moore@intel.com, laforge@gnumonks.org,
+ alim.akhtar@samsung.com, hpa@zytor.com, wcn36xx@lists.infradead.org,
+ pkshih@realtek.com, linux-samsung-soc@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-edac@vger.kernel.org,
+ dennis.dalessandro@cornelisnetworks.com, linux-rdma@vger.kernel.org,
+ gregory.clement@bootlin.com, rafael.j.wysocki@intel.com, linux@armlinux.org.uk,
+ krzk@kernel.org, jgg@ziepe.ca, mingo@redhat.com, 3chas3@gmail.com,
+ linux-input@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ lenb@kernel.org, mike.marciniszyn@cornelisnetworks.com, rric@kernel.org,
+ ajd@linux.ibm.com, arnd@arndb.de, kvalo@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org,
+ loic.poulain@linaro.org, bp@alien8.de, bhelgaas@google.com, tglx@linutronix.de,
+ mchehab@kernel.org, linux-media@vger.kernel.org, linux@simtec.co.uk,
  linux-arm-kernel@lists.infradead.org, devel@acpica.org, isdn@linux-pingi.de,
  tony.luck@intel.com, nico@fluxnic.net, gregkh@linuxfoundation.org,
  dmitry.torokhov@gmail.com, linux-wireless@vger.kernel.org,
@@ -111,76 +104,157 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Mar 26, 2022 at 05:58:49PM +0100, Benjamin Stürz wrote:
+On 3/26/2022 9:59 AM, Benjamin StÃ¼rz wrote:
 > This replaces comments with C99's designated
 > initializers because the kernel supports them now.
-
-I'm a bit puzzled by "because the kernel supports them now". Designated
-initializers are not purely a C99 feature... it is also a GNU C extension
-to C89. This language feature has been used by the kernel for a very long time
-(well over a decade).
-
-On other words it would be much more effective to advocate for the
-change by saying "because the code is clearer and easier to read" rather
-than "because we can".
-
-
-> Signed-off-by: Benjamin Stürz <benni@stuerz.xyz>
-> ---
->  arch/arm/mach-s3c/bast-irq.c | 32 ++++++++++++++++----------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
 > 
-> diff --git a/arch/arm/mach-s3c/bast-irq.c b/arch/arm/mach-s3c/bast-irq.c
-> index d299f124e6dc..bd5471f9973b 100644
-> --- a/arch/arm/mach-s3c/bast-irq.c
-> +++ b/arch/arm/mach-s3c/bast-irq.c
-> @@ -29,22 +29,22 @@
->   * the irq is not implemented
->  */
->  static const unsigned char bast_pc104_irqmasks[] = {
-> -	0,   /* 0 */
-> -	0,   /* 1 */
-> -	0,   /* 2 */
-> -	1,   /* 3 */
-> -	0,   /* 4 */
-> -	2,   /* 5 */
-> -	0,   /* 6 */
-> -	4,   /* 7 */
-> -	0,   /* 8 */
-> -	0,   /* 9 */
-> -	8,   /* 10 */
-> -	0,   /* 11 */
-> -	0,   /* 12 */
-> -	0,   /* 13 */
-> -	0,   /* 14 */
-> -	0,   /* 15 */
-> +	[0]  = 0,
-> +	[1]  = 0,
-> +	[2]  = 0,
-> +	[3]  = 1,
-> +	[4]  = 0,
-> +	[5]  = 2,
-> +	[6]  = 0,
-> +	[7]  = 4,
-> +	[8]  = 0,
-> +	[9]  = 0,
-> +	[10] = 8,
-> +	[11] = 0,
-> +	[12] = 0,
-> +	[13] = 0,
-> +	[14] = 0,
-> +	[15] = 0,
+> Signed-off-by: Benjamin StÃ¼rz <benni@stuerz.xyz>
+> ---
+>   drivers/net/wireless/ath/wcn36xx/main.c | 122 ++++++++++++------------
+>   1 file changed, 61 insertions(+), 61 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+> index 95ea7d040d8c..0fed64bd37b4 100644
+> --- a/drivers/net/wireless/ath/wcn36xx/main.c
+> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
+> @@ -193,67 +193,67 @@ static inline u8 get_sta_index(struct ieee80211_vif *vif,
+>   }
+>   
+>   static const char * const wcn36xx_caps_names[] = {
+> -	"MCC",				/* 0 */
+> -	"P2P",				/* 1 */
+> -	"DOT11AC",			/* 2 */
+> -	"SLM_SESSIONIZATION",		/* 3 */
+> -	"DOT11AC_OPMODE",		/* 4 */
+> -	"SAP32STA",			/* 5 */
+> -	"TDLS",				/* 6 */
+> -	"P2P_GO_NOA_DECOUPLE_INIT_SCAN",/* 7 */
+> -	"WLANACTIVE_OFFLOAD",		/* 8 */
+> -	"BEACON_OFFLOAD",		/* 9 */
+> -	"SCAN_OFFLOAD",			/* 10 */
+> -	"ROAM_OFFLOAD",			/* 11 */
+> -	"BCN_MISS_OFFLOAD",		/* 12 */
+> -	"STA_POWERSAVE",		/* 13 */
+> -	"STA_ADVANCED_PWRSAVE",		/* 14 */
+> -	"AP_UAPSD",			/* 15 */
+> -	"AP_DFS",			/* 16 */
+> -	"BLOCKACK",			/* 17 */
+> -	"PHY_ERR",			/* 18 */
+> -	"BCN_FILTER",			/* 19 */
+> -	"RTT",				/* 20 */
+> -	"RATECTRL",			/* 21 */
+> -	"WOW",				/* 22 */
+> -	"WLAN_ROAM_SCAN_OFFLOAD",	/* 23 */
+> -	"SPECULATIVE_PS_POLL",		/* 24 */
+> -	"SCAN_SCH",			/* 25 */
+> -	"IBSS_HEARTBEAT_OFFLOAD",	/* 26 */
+> -	"WLAN_SCAN_OFFLOAD",		/* 27 */
+> -	"WLAN_PERIODIC_TX_PTRN",	/* 28 */
+> -	"ADVANCE_TDLS",			/* 29 */
+> -	"BATCH_SCAN",			/* 30 */
+> -	"FW_IN_TX_PATH",		/* 31 */
+> -	"EXTENDED_NSOFFLOAD_SLOT",	/* 32 */
+> -	"CH_SWITCH_V1",			/* 33 */
+> -	"HT40_OBSS_SCAN",		/* 34 */
+> -	"UPDATE_CHANNEL_LIST",		/* 35 */
+> -	"WLAN_MCADDR_FLT",		/* 36 */
+> -	"WLAN_CH144",			/* 37 */
+> -	"NAN",				/* 38 */
+> -	"TDLS_SCAN_COEXISTENCE",	/* 39 */
+> -	"LINK_LAYER_STATS_MEAS",	/* 40 */
+> -	"MU_MIMO",			/* 41 */
+> -	"EXTENDED_SCAN",		/* 42 */
+> -	"DYNAMIC_WMM_PS",		/* 43 */
+> -	"MAC_SPOOFED_SCAN",		/* 44 */
+> -	"BMU_ERROR_GENERIC_RECOVERY",	/* 45 */
+> -	"DISA",				/* 46 */
+> -	"FW_STATS",			/* 47 */
+> -	"WPS_PRBRSP_TMPL",		/* 48 */
+> -	"BCN_IE_FLT_DELTA",		/* 49 */
+> -	"TDLS_OFF_CHANNEL",		/* 51 */
+> -	"RTT3",				/* 52 */
+> -	"MGMT_FRAME_LOGGING",		/* 53 */
+> -	"ENHANCED_TXBD_COMPLETION",	/* 54 */
+> -	"LOGGING_ENHANCEMENT",		/* 55 */
+> -	"EXT_SCAN_ENHANCED",		/* 56 */
+> -	"MEMORY_DUMP_SUPPORTED",	/* 57 */
+> -	"PER_PKT_STATS_SUPPORTED",	/* 58 */
+> -	"EXT_LL_STAT",			/* 60 */
+> -	"WIFI_CONFIG",			/* 61 */
+> -	"ANTENNA_DIVERSITY_SELECTION",	/* 62 */
+> +	[0]  = "MCC",
+> +	[1]  = "P2P",
+> +	[2]  = "DOT11AC",
+> +	[3]  = "SLM_SESSIONIZATION",
+> +	[4]  = "DOT11AC_OPMODE",
+> +	[5]  = "SAP32STA",
+> +	[6]  = "TDLS",
+> +	[7]  = "P2P_GO_NOA_DECOUPLE_INIT_SCAN",
+> +	[8]  = "WLANACTIVE_OFFLOAD",
+> +	[9]  = "BEACON_OFFLOAD",
+> +	[10] = "SCAN_OFFLOAD",
+> +	[11] = "ROAM_OFFLOAD",
+> +	[12] = "BCN_MISS_OFFLOAD",
+> +	[13] = "STA_POWERSAVE",
+> +	[14] = "STA_ADVANCED_PWRSAVE",
+> +	[15] = "AP_UAPSD",
+> +	[16] = "AP_DFS",
+> +	[17] = "BLOCKACK",
+> +	[18] = "PHY_ERR",
+> +	[19] = "BCN_FILTER",
+> +	[20] = "RTT",
+> +	[21] = "RATECTRL",
+> +	[22] = "WOW",
+> +	[23] = "WLAN_ROAM_SCAN_OFFLOAD",
+> +	[24] = "SPECULATIVE_PS_POLL",
+> +	[25] = "SCAN_SCH",
+> +	[26] = "IBSS_HEARTBEAT_OFFLOAD",
+> +	[27] = "WLAN_SCAN_OFFLOAD",
+> +	[28] = "WLAN_PERIODIC_TX_PTRN",
+> +	[29] = "ADVANCE_TDLS",
+> +	[30] = "BATCH_SCAN",
+> +	[31] = "FW_IN_TX_PATH",
+> +	[32] = "EXTENDED_NSOFFLOAD_SLOT",
+> +	[33] = "CH_SWITCH_V1",
+> +	[34] = "HT40_OBSS_SCAN",
+> +	[35] = "UPDATE_CHANNEL_LIST",
+> +	[36] = "WLAN_MCADDR_FLT",
+> +	[37] = "WLAN_CH144",
+> +	[38] = "NAN",
+> +	[39] = "TDLS_SCAN_COEXISTENCE",
+> +	[40] = "LINK_LAYER_STATS_MEAS",
+> +	[41] = "MU_MIMO",
+> +	[42] = "EXTENDED_SCAN",
+> +	[43] = "DYNAMIC_WMM_PS",
+> +	[44] = "MAC_SPOOFED_SCAN",
+> +	[45] = "BMU_ERROR_GENERIC_RECOVERY",
+> +	[46] = "DISA",
+> +	[47] = "FW_STATS",
+> +	[48] = "WPS_PRBRSP_TMPL",
+> +	[49] = "BCN_IE_FLT_DELTA",
+> +	[51] = "TDLS_OFF_CHANNEL",
+> +	[52] = "RTT3",
+> +	[53] = "MGMT_FRAME_LOGGING",
+> +	[54] = "ENHANCED_TXBD_COMPLETION",
+> +	[55] = "LOGGING_ENHANCEMENT",
+> +	[56] = "EXT_SCAN_ENHANCED",
+> +	[57] = "MEMORY_DUMP_SUPPORTED",
+> +	[58] = "PER_PKT_STATS_SUPPORTED",
+> +	[60] = "EXT_LL_STAT",
+> +	[61] = "WIFI_CONFIG",
+> +	[62] = "ANTENNA_DIVERSITY_SELECTION",
+>   };
+>   
+>   static const char *wcn36xx_get_cap_name(enum place_holder_in_cap_bitmap x)
 
-Shouldn't this just be as follows (in order to match bast_pc104_irqs)?
+I know there has been much discussion on this series. For this specific 
+patch this would be a great change if you use the actual enumerations 
+from enum place_holder_in_cap_bitmap as the index values,
+i.e.
+  [MCC] = "MCC",
+  etc.
 
-+static const unsigned char bast_pc104_irqmasks[16] = {
-+	[3]  = 1,
-+	[5]  = 2,
-+	[7]  = 4,
-+	[10] = 8,
- };
- 
- static const unsigned char bast_pc104_irqs[] = { 3, 5, 7, 10 };
+So a v2 for this patch would be appreciated
 
 
-Daniel.
+
