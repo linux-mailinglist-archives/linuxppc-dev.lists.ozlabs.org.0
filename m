@@ -1,64 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CCE4E96A6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 14:32:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF91E4E97C8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 15:16:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KRsX16pK1z3c5B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 23:32:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KRtWs5g8Zz3c5k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 00:16:57 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vR3sm0Sy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zDVfDycj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=kvalo@kernel.org;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::112e;
+ helo=mail-yw1-x112e.google.com; envelope-from=linus.walleij@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=vR3sm0Sy; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=zDVfDycj; dkim-atps=neutral
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com
+ [IPv6:2607:f8b0:4864:20::112e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KRsWL4dbCz2xm1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 23:31:26 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 19B6F60B87;
- Mon, 28 Mar 2022 12:31:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A869FC340EC;
- Mon, 28 Mar 2022 12:31:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648470682;
- bh=fLGdb7dSfAqcoc7SmA0DtwuG5S8J1UMKX6NM0JYvlbE=;
- h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
- b=vR3sm0Sym9PNeV1iKQGwMQbPO6yRDwohIBCSBdBAAXuDDO0SWpja6OgX6EnOvgTmq
- TjnzAmmgRqAI7VMMqH2O7CUJ6XEWGQoPVF1AN2lYHSalQOuTT+xH3TeXiapzkBoDDY
- tTzTYQ5GBWa2GALcTzd9hSykzmqjjHuEIfoQNXYeYukvQqZVWjJgo1IrRVnWgagObl
- g/dwjiafO/fytUgqLw8IWTrjQWjo/zqFAaNAJAQ8gjKtytzwyaZGjuidRKQhih/yde
- bDhRRLmxOXxLsSy40enpsfgnUm8nwGiwmrDs+aoLJB2mBmG7Pk8oHcDE3szRC3iHWp
- ESPsCuNOlpy8A==
-From: Kalle Valo <kvalo@kernel.org>
-To: Benjamin =?utf-8?Q?St=C3=BCrz?= <benni@stuerz.xyz>
-Subject: Re: [PATCH 00/22] Replace comments with C99 initializers
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
- <87fsn2zaix.fsf@kernel.org>
- <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz>
-Date: Mon, 28 Mar 2022 15:31:14 +0300
-In-Reply-To: <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz> ("Benjamin
- \=\?utf-8\?Q\?St\=C3\=BCrz\=22's\?\= message of "Mon,
- 28 Mar 2022 13:51:42 +0200")
-Message-ID: <87bkxqz2b1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KRtWD3D40z2ynj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 00:16:23 +1100 (AEDT)
+Received: by mail-yw1-x112e.google.com with SMTP id
+ 00721157ae682-2e6650cde1bso147675747b3.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 06:16:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=G5uuyZBXJwp7PyyisU+EIbTNtbVnmDYNzWqCp6rEsws=;
+ b=zDVfDycjVsjtc8Wz/2yNBWq9/BgmdioNxQmtuqk12esMombnp3NIeZKjatpgrkguio
+ 9cwxgAbZvqI+rA/O0+PBotzJSY95vCE4+mTmJfv9RuebTcvU5bxKtk+jrQHABDaQpF7k
+ IdHa4kcTNvMfyfR6vp5qMR2JNAALo/pryZ9SEenDdbTBWuCMGHpNpbvDUGnoPd5TTx4u
+ RuDgiaWl6XpQTQiGFb+rjRUxr6QtXWsPbiIoo6YMjD3zPkaoeRD1KL+mX2wqzVI02ClX
+ y3DSzpOW+tS+zb1kSSUOCvV5hTUR1p/rPmRfcdyrE2DhDsZDmyeepD+/Q18fYsg1XWBF
+ eaog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=G5uuyZBXJwp7PyyisU+EIbTNtbVnmDYNzWqCp6rEsws=;
+ b=pmihdEIqdXr9JeuzXCpivc2y+QxajjlDUjW0bfI8x0XEjA3UOoB37k/DQFnbtsEqNl
+ GllCLH11KVdihzlsZFTYsE4Ccn2rjVTMzfgKw8IX962hCUK6rfo+fL3AtPFMhGowvMDb
+ yrQbTUexYVvk5dOAq16T59k/64EzxVFo520rq/upEEItgX8Svn5wdr2qsEq/0SpsYwdt
+ sYZY1DfSUOn3hdi4vJeM6lkl2+OFPdErxiuu1WnN0XpJV4OURW3EMr2lwoOO3L/bGECL
+ Ip+jZdkRU+kOryc6ZkTk5aKHNyAc/BtkklY3heV3CP6HQgXvlQQGV8t4IVyozSVqawSd
+ w9TQ==
+X-Gm-Message-State: AOAM530TlRhC/vqBtOZCWPIn3ptFrIBfiGNPNeK7mYTRNs+hSOP/vZbP
+ BJTMkd7lHGWtGOXjhjLbU52iHwJf7CmSn0rrSf96AQ==
+X-Google-Smtp-Source: ABdhPJxvrqtRZdCJx8IMb57QwLhs/eGoSivn6ijKcrdp4HASIgvKYZqWzG0jXBPQP0WpR0KIcwolNqKj4N73PTfigmM=
+X-Received: by 2002:a81:b50d:0:b0:2e5:b653:7e97 with SMTP id
+ t13-20020a81b50d000000b002e5b6537e97mr25986896ywh.140.1648473379829; Mon, 28
+ Mar 2022 06:16:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 28 Mar 2022 15:16:08 +0200
+Message-ID: <CACRpkdbUWE8knM=9uUVLTX792Y8_J1aPj4KtFh=yJxaKi+ZqRw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] powerpc/83xx/mpc8349emitx: Get rid of of_node
+ assignment
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,73 +76,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-media@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
- linux-atm-general@lists.sourceforge.net, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
- wcn36xx@lists.infradead.org, linux-edac@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- devel@acpica.org
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, linux-kernel@vger.kernel.org,
+ Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Benjamin St=C3=BCrz <benni@stuerz.xyz> writes:
+On Wed, Mar 23, 2022 at 6:43 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 
-> On 28.03.22 11:33, Kalle Valo wrote:
->> Benjamin St=C3=BCrz <benni@stuerz.xyz> writes:
->>=20
->>> This patch series replaces comments with C99's designated initializers
->>> in a few places. It also adds some enum initializers. This is my first
->>> time contributing to the Linux kernel, therefore I'm probably doing a
->>> lot of things the wrong way. I'm sorry for that.
->>=20
->> Just a small tip: If you are new, start with something small and learn
->> from that. Don't do a controversial big patchset spanning multiple
->> subsystems, that's the hard way to learn things. First submit one patch
->> at a time to one subsystem and gain understanding of the process that
->> way.
+> Let GPIO library to assign of_node from the parent device.
+> This allows to move GPIO library and drivers to use fwnode
+> APIs instead of being stuck with OF-only interfaces.
 >
-> I actually thought this would be such simple thing.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-If there are 22 patches and a dozen different subsystems it's far from
-simple, as you noticed from your replies :)
+That's a nice patch.
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-> Do you know of any good thing where to start? I already looked into
-> drivers/staging/*/TODO and didn't found something for me personally.
-
-I work in wireless and one my annoyance is use of BUG_ON() in wireless
-drivers. There just isn't a good reason to crash the whole system when
-there's a bug in a wireless driver or firmware. You can get list like
-this:
-
-git grep BUG_ON drivers/net/wireless/ | grep -v BUILD_BUG_ON
-
-It might not be always trivial to fix BUG_ON() usage, so it would be a
-good challenge as well. See the wiki link below how to submit wireless
-patches. But just send a one patch first, don't work for several hours
-and then submit a big set of patches.
-
-We also might have a todo list somewhere in the wiki, but don't know how
-to up-to-date it is.
-
-> Should I drop this patchset and start with something different?=20
-
-Like Mauro suggested, splitting the patchset per subsystem is a very
-good idea. And first try out with one subsystem, and after seeing how it
-goes (if they are accepted or rejected), decide if you send more patches
-to other subsystems.
-
-> If yes, what would the proper way to drop it? Just announcing, that
-> this is going nowhere in a separate patch?
-
-Replying to Mauro's email and telling your intentions is a good way to
-inform everyone.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Yours,
+Linus Walleij
