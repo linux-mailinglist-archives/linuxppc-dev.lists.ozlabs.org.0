@@ -1,70 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF91E4E97C8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 15:16:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7424E9849
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 15:36:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KRtWs5g8Zz3c5k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 00:16:57 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zDVfDycj;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KRtyt2fLgz3c6m
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 00:36:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::112e;
- helo=mail-yw1-x112e.google.com; envelope-from=linus.walleij@linaro.org;
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=zDVfDycj; dkim-atps=neutral
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com
- [IPv6:2607:f8b0:4864:20::112e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KRtWD3D40z2ynj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 00:16:23 +1100 (AEDT)
-Received: by mail-yw1-x112e.google.com with SMTP id
- 00721157ae682-2e6650cde1bso147675747b3.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Mar 2022 06:16:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=G5uuyZBXJwp7PyyisU+EIbTNtbVnmDYNzWqCp6rEsws=;
- b=zDVfDycjVsjtc8Wz/2yNBWq9/BgmdioNxQmtuqk12esMombnp3NIeZKjatpgrkguio
- 9cwxgAbZvqI+rA/O0+PBotzJSY95vCE4+mTmJfv9RuebTcvU5bxKtk+jrQHABDaQpF7k
- IdHa4kcTNvMfyfR6vp5qMR2JNAALo/pryZ9SEenDdbTBWuCMGHpNpbvDUGnoPd5TTx4u
- RuDgiaWl6XpQTQiGFb+rjRUxr6QtXWsPbiIoo6YMjD3zPkaoeRD1KL+mX2wqzVI02ClX
- y3DSzpOW+tS+zb1kSSUOCvV5hTUR1p/rPmRfcdyrE2DhDsZDmyeepD+/Q18fYsg1XWBF
- eaog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=G5uuyZBXJwp7PyyisU+EIbTNtbVnmDYNzWqCp6rEsws=;
- b=pmihdEIqdXr9JeuzXCpivc2y+QxajjlDUjW0bfI8x0XEjA3UOoB37k/DQFnbtsEqNl
- GllCLH11KVdihzlsZFTYsE4Ccn2rjVTMzfgKw8IX962hCUK6rfo+fL3AtPFMhGowvMDb
- yrQbTUexYVvk5dOAq16T59k/64EzxVFo520rq/upEEItgX8Svn5wdr2qsEq/0SpsYwdt
- sYZY1DfSUOn3hdi4vJeM6lkl2+OFPdErxiuu1WnN0XpJV4OURW3EMr2lwoOO3L/bGECL
- Ip+jZdkRU+kOryc6ZkTk5aKHNyAc/BtkklY3heV3CP6HQgXvlQQGV8t4IVyozSVqawSd
- w9TQ==
-X-Gm-Message-State: AOAM530TlRhC/vqBtOZCWPIn3ptFrIBfiGNPNeK7mYTRNs+hSOP/vZbP
- BJTMkd7lHGWtGOXjhjLbU52iHwJf7CmSn0rrSf96AQ==
-X-Google-Smtp-Source: ABdhPJxvrqtRZdCJx8IMb57QwLhs/eGoSivn6ijKcrdp4HASIgvKYZqWzG0jXBPQP0WpR0KIcwolNqKj4N73PTfigmM=
-X-Received: by 2002:a81:b50d:0:b0:2e5:b653:7e97 with SMTP id
- t13-20020a81b50d000000b002e5b6537e97mr25986896ywh.140.1648473379829; Mon, 28
- Mar 2022 06:16:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 28 Mar 2022 15:16:08 +0200
-Message-ID: <CACRpkdbUWE8knM=9uUVLTX792Y8_J1aPj4KtFh=yJxaKi+ZqRw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] powerpc/83xx/mpc8349emitx: Get rid of of_node
- assignment
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KRtxn34B7z3c0T
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 00:35:56 +1100 (AEDT)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 22SDJU00005431;
+ Mon, 28 Mar 2022 08:19:30 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 22SDJSov005423;
+ Mon, 28 Mar 2022 08:19:28 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Mon, 28 Mar 2022 08:19:28 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 01/22] orion5x: Replace comments with C99 initializers
+Message-ID: <20220328131928.GH614@gate.crashing.org>
+References: <20220326165909.506926-1-benni@stuerz.xyz>
+ <CAK8P3a1e57mNUQgronhwrsXsuQW9sZYxCktKij7NwsieBWiGmw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAK8P3a1e57mNUQgronhwrsXsuQW9sZYxCktKij7NwsieBWiGmw@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,24 +48,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, linux-kernel@vger.kernel.org,
- Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>,
+ "open list:ACPI COMPONENT ARCHITECTURE \(ACPICA\)" <devel@acpica.org>,
+ linux-atm-general@lists.sourceforge.net, linux-ia64@vger.kernel.org,
+ linux-pci <linux-pci@vger.kernel.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, wcn36xx@lists.infradead.org,
+ Bartosz Golaszewski <brgl@bgdev.pl>,
+ Benjamin =?iso-8859-1?Q?St=FCrz?= <benni@stuerz.xyz>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Pkshih <pkshih@realtek.com>,
+ "moderated list:ARM/SAMSUNG EXYNOS ARM ARCHITECTURES"
+ <linux-samsung-soc@vger.kernel.org>, dennis.dalessandro@cornelisnetworks.com,
+ linux-rdma <linux-rdma@vger.kernel.org>,
+ Gregory CLEMENT <gregory.clement@bootlin.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Robert Moore <robert.moore@intel.com>, Harald Welte <laforge@gnumonks.org>,
+ ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ Chas Williams <3chas3@gmail.com>,
+ "open list:HID CORE LAYER" <linux-input@vger.kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
+ Len Brown <lenb@kernel.org>, mike.marciniszyn@cornelisnetworks.com,
+ Robert Richter <rric@kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>,
+ kvalo@kernel.org, "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Simtec Linux Team <linux@simtec.co.uk>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, linux-edac@vger.kernel.org,
+ Karsten Keil <isdn@linux-pingi.de>, loic.poulain@linaro.org,
+ Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
+ Nicolas Pitre <nico@fluxnic.net>, gregkh <gregkh@linuxfoundation.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ James Morse <james.morse@arm.com>, Networking <netdev@vger.kernel.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Linux Media Mailing List <linux-media@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 23, 2022 at 6:43 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Sat, Mar 26, 2022 at 08:23:31PM +0100, Arnd Bergmann wrote:
+> On Sat, Mar 26, 2022 at 5:58 PM Benjamin Stürz <benni@stuerz.xyz> wrote:
+> >
+> > This replaces comments with C99's designated
+> > initializers because the kernel supports them now.
+> 
+> The change looks fine, but the comment looks misplaced, as enum initializers
+> are not c99 feature.
 
-> Let GPIO library to assign of_node from the parent device.
-> This allows to move GPIO library and drivers to use fwnode
-> APIs instead of being stuck with OF-only interfaces.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Yes, it is from C89/C90.
 
-That's a nice patch.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Also, the named array and struct intializers have been
+> supported by gnu89 for a long time and widely used in the kernel, so it's
+> not a recent change even for the others.
 
-Yours,
-Linus Walleij
+GCC supports this since 1998.  There was a syntax different from C99
+designated initializers (".ans = 42") before (namely, "ans: 42").
+
+1998 is long enough ago for all intents and purposes now of course ;-)
+
+
+Segher
