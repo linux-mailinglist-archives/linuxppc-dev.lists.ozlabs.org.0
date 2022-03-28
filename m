@@ -2,69 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B19E4EA139
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 22:16:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 062464EA15D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Mar 2022 22:20:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KS3qj6RTrz3c8g
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 07:16:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KS3wz63BPz3c31
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 07:20:51 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ctPAHr89;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nccR77Dm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=ctPAHr89; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=nccR77Dm; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KS3q65NPhz3c00
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 07:15:46 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=+SAmBHZ787xIZLUQH99HC86IVadAYShzQii7C3N8Zz4=; b=ctPAHr89/2z5b/JrYQDfDyYfm8
- sfsDL+i4qNHs46+uxU6vH/P/JPVpvPiPvdexoTrVQhLO3kYD/epcLhRtM3tiYj0qB2VLe3+QUpAFS
- N8SkUjogqhPs6nnIyYcIvkxmCFlsBY0zHS3uhsVHfzP2XErqL0f5Ea6BADc62Db88AvAcZZCEyvC/
- 2QcSmbY2iyUDSvFZUfeQoDATSr43YUxbacg5Ic6gnO0hnV9HmIYoH8QIDmi2LrxfVz0JXGjVM3017
- pRzf7SmVwpzksOpYBXVl6AZftXd6Z18J1dpXepJdzEGVX7O5tze+PC3tTCsrOTD9TVc0PiWN2GO/E
- Cl0zGrFg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nYvm3-00HEQd-GO; Mon, 28 Mar 2022 20:15:35 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 26BC4300237;
- Mon, 28 Mar 2022 22:15:35 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 0A218205DA138; Mon, 28 Mar 2022 22:15:35 +0200 (CEST)
-Date: Mon, 28 Mar 2022 22:15:34 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Josh Poimboeuf <jpoimboe@redhat.com>
-Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-Message-ID: <YkIXZlAam57gxJvN@hirez.programming.kicks-ass.net>
-References: <20220318105140.43914-1-sv@linux.ibm.com>
- <20220318105140.43914-4-sv@linux.ibm.com>
- <YjR6kHq4c/rjCTpr@hirez.programming.kicks-ass.net>
- <0b55f122-4760-c1ba-840a-0911cefec2ad@csgroup.eu>
- <20220328195920.dqlfra3lcardko6r@treble>
- <YkIXLnAxtPuSDcOW@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KS3wP1pRzz3c00
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 07:20:21 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id D57EFB81205;
+ Mon, 28 Mar 2022 20:20:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF991C340F0;
+ Mon, 28 Mar 2022 20:20:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1648498816;
+ bh=DYKSgCLyLSG5eVAyXEXBJzv5wUb4KbwLHueX4TuM2es=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=nccR77DmMt5fnc/o6gzPVyT3/n47SLxU5yK+UpwKdHx+DMcaLuX/6OketRHPbmZK4
+ q8cXPhOeS5U/lTt4ZBRJMWdOApW5jbpoUqhxVh/BedGBZMTMV5wkH3BtP7s6iGDW7Q
+ y0QdQapyEyF3Bt/RYtFN3DcVWfO6ymXfIwUMVbM0YopTHxL2aIt7JhbD6dj4ejWOxW
+ pc+m/7ZMIf0Ie62Bdb6sgKnlk4iE+Z9kmM5yyWzogfPqXEglCECce8tPm4qxiKW+nA
+ n66IatdJU8T97URqDPNt56LnxyLR99fOCTtEa0OoWadqYlrX2oFEX/OYDMGmH5+pqh
+ E51HpRAN1M85Q==
+Date: Mon, 28 Mar 2022 13:20:14 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Benjamin =?UTF-8?B?U3TDvHJ6?= <benni@stuerz.xyz>
+Subject: Re: [PATCH 00/22] Replace comments with C99 initializers
+Message-ID: <20220328132014.6b8c0a21@kernel.org>
+In-Reply-To: <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz>
+References: <20220326165909.506926-1-benni@stuerz.xyz>
+ <8f9271b6-0381-70a9-f0c2-595b2235866a@stuerz.xyz>
+ <87fsn2zaix.fsf@kernel.org>
+ <cc104272-d79a-41e1-f4de-cb78fb073991@stuerz.xyz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YkIXLnAxtPuSDcOW@hirez.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,50 +65,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, "aik@ozlabs.ru" <aik@ozlabs.ru>,
- Will Deacon <will@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- Sathvika Vasireddy <sv@linux.ibm.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- ardb@kernel.org
+Cc: linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+ Kalle Valo <kvalo@kernel.org>, linux-atm-general@lists.sourceforge.net,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-input@vger.kernel.org, wcn36xx@lists.infradead.org,
+ linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, devel@acpica.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 28 Mar 2022 13:51:42 +0200 Benjamin St=C3=BCrz wrote:
+> > Just a small tip: If you are new, start with something small and learn
+> > from that. Don't do a controversial big patchset spanning multiple
+> > subsystems, that's the hard way to learn things. First submit one patch
+> > at a time to one subsystem and gain understanding of the process that
+> > way.
+>=20
+> I actually thought this would be such simple thing. Do you know of any
+> good thing where to start? I already looked into drivers/staging/*/TODO
+> and didn't found something for me personally.
 
-+arm64 people...
+FWIW on the netdev side there's work coming to convert a set of features
+from unsigned long to a BITMAP which will require converting a lot of
+drivers to an explicit helpers from direct access.
 
-On Mon, Mar 28, 2022 at 10:14:38PM +0200, Peter Zijlstra wrote:
-> On Mon, Mar 28, 2022 at 12:59:20PM -0700, Josh Poimboeuf wrote:
-> 
-> > I'm not making any major changes to the code, just shuffling things
-> > around to make the interface more modular.  I hope to have something
-> > soon (this week).  Peter recently added a big feature (Intel IBT) which
-> > is already in -next.
-> 
-> Hit Linus' tree yesterday :-)
-> 
-> > Some years ago Kamalesh Babulal had a prototype of objtool for ppc64le
-> > which did the full stack validation.  I'm not sure what ever became of
-> > that.
-> 
-> I've also heard chatter about s390.
-> 
-> > FWIW, there have been some objtool patches for arm64 stack validation,
-> > but the arm64 maintainers have been hesitant to get on board with
-> > objtool, as it brings a certain maintenance burden.  Especially for the
-> > full stack validation and ORC unwinder.  But if you only want inline
-> > static calls and/or mcount then it'd probably be much easier to
-> > maintain.
-> 
-> IIRC the major stumbling block for arm64 is the whole jump-table thing.
-> Either they need to rely on compiler plugins to provide objtool that
-> data (yuck, since we support at least 2 different compilers), disable
-> jump-tables (yuck, for that limits code-gen just to please a tool) or
-> use DWARF (yuck, because build times).
-> 
-> There was a little talk about an impromptu 'abi' to communicate
-> jump-table details to objtool without going full on DWARF, but that
-> seems to have hit a dead end again.
+https://lore.kernel.org/all/20220324154932.17557-14-shenjian15@huawei.com/
+
+If it seems interesting enough you can try reaching out to Jian Shen.
