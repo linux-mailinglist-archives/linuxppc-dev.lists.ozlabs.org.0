@@ -1,60 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5BA4EAA71
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 11:24:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFDE4EAB96
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 12:47:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KSPKT4xSfz30QB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 20:24:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KSR8Q04XKz2y8P
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 21:47:02 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=B1myBB6p;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=zizPa5Fa;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=E1I0b1yt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=desiato.20200630 header.b=B1myBB6p; 
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=mbenes@suse.cz; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
+ header.s=susede2_rsa header.b=zizPa5Fa; 
+ dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=E1I0b1yt; 
  dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org
- [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KSPJq5mTjz2x9b
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 20:24:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=GNMAqIh0j6P//qlq8Z1xIR7mjldURS8/Ro5eIkOUj+w=; b=B1myBB6pcjFAoPaZpBLrlBlJeD
- lsya7OrVyrHw3xcSbhztqK72QHvaKM7rlZiEwgxOP2yYEYqjbBeoEDmeVDa4MqcnzDMzmeGMW3H8q
- WtVql6DJiGqyDmAVKo7v46USmmMOREJ8zcQ5d2QzhOUaiFLbjciuI46l69y6CmIfyhB5A9fijRTEt
- jn/8DfIFZpZbfgX/7tE93ChQoMbYbftFhHJgPX7W41AB0ge/6sAAVoKDbQHbxuSj8Otk7dRXCqZVS
- pBJVklp/JiQAbIC48SRmBkrcEnzZl9fvhWoyE23U8AReqJwCGR+kLmJ9daNkl+SavvD5dOm8QRTMs
- JjVv4/rw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=worktop.programming.kicks-ass.net)
- by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nZ84a-005o2F-Tu; Tue, 29 Mar 2022 09:23:33 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
- id 8B1DD9861E9; Tue, 29 Mar 2022 11:23:30 +0200 (CEST)
-Date: Tue, 29 Mar 2022 11:23:30 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Qing Wang <wangqing@vivo.com>
-Subject: Re: [PATCH 1/3] sched: topology: add input parameter for
- sched_domain_flags_f()
-Message-ID: <20220329092330.GG8939@worktop.programming.kicks-ass.net>
-References: <1648545322-14531-1-git-send-email-wangqing@vivo.com>
- <1648545322-14531-2-git-send-email-wangqing@vivo.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KSR7j3f1nz2xjR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 21:46:25 +1100 (AEDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id B3162218F2;
+ Tue, 29 Mar 2022 10:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+ t=1648550781; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RXUSr0X/OHwTP/biM/aptOlOarSjj143JBWUeUahRO4=;
+ b=zizPa5FaVHvWbtWboCJrQErjt4ri7XTkke0agNui/r7WTQLWdwuYyKAKoeKF+R1KQ3z+3t
+ gMTCS9CM/UVIrreLPyLs5snZS5J3Q9164XqF3g2mAEK5S8hh0DWE5cFI1JEAnBww28KB7T
+ /D9OeTEJEdcsywB0g8aZ8UeaQZgGF10=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+ s=susede2_ed25519; t=1648550781;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=RXUSr0X/OHwTP/biM/aptOlOarSjj143JBWUeUahRO4=;
+ b=E1I0b1yt/ZVOBITzt2gmpMsiMuaXnfYmN7DJONqxVe/CI6Po9m4wJ4VrdnWYvkdEPEpkrl
+ 0TK0mxpEMFCXBNAA==
+Received: from pobox.suse.cz (pobox.suse.cz [10.100.2.14])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by relay2.suse.de (Postfix) with ESMTPS id 70EA6A3B82;
+ Tue, 29 Mar 2022 10:46:19 +0000 (UTC)
+Date: Tue, 29 Mar 2022 12:46:19 +0200 (CEST)
+From: Miroslav Benes <mbenes@suse.cz>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] livepatch: Remove klp_arch_set_pc() and
+ asm/livepatch.h
+In-Reply-To: <e029c7cfde436f6bbf99148ab14dc2da99add503.1648447981.git.christophe.leroy@csgroup.eu>
+Message-ID: <alpine.LSU.2.21.2203291245580.31302@pobox.suse.cz>
+References: <e029c7cfde436f6bbf99148ab14dc2da99add503.1648447981.git.christophe.leroy@csgroup.eu>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1648545322-14531-2-git-send-email-wangqing@vivo.com>
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,29 +75,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Ben Segall <bsegall@google.com>,
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
  Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Will Deacon <will@kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Mel Gorman <mgorman@suse.de>,
- linuxppc-dev@lists.ozlabs.org, Steven Rostedt <rostedt@goodmis.org>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- linux-arm-kernel@lists.infradead.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Sudeep Holla <sudeep.holla@arm.com>,
- Daniel Bristot de Oliveira <bristot@redhat.com>
+ live-patching@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ linux-s390@vger.kernel.org, Joe Lawrence <joe.lawrence@redhat.com>,
+ x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Petr Mladek <pmladek@suse.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Jiri Kosina <jikos@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+ Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 29, 2022 at 02:15:19AM -0700, Qing Wang wrote:
-> From: Wang Qing <wangqing@vivo.com>
-> 
-> sched_domain_flags_f() are statically set now, but actually, we can get a lot
-> of necessary information based on the cpu_map. e.g. we can know whether its
-> cache is shared.
-> 
-> Allows custom extension without affecting current.
+On Mon, 28 Mar 2022, Christophe Leroy wrote:
 
-Still NAK
+> All three versions of klp_arch_set_pc() do exactly the same: they
+> call ftrace_instruction_pointer_set().
+> 
+> Call ftrace_instruction_pointer_set() directly and remove
+> klp_arch_set_pc().
+> 
+> As klp_arch_set_pc() was the only thing remaining in asm/livepatch.h
+> on x86 and s390, remove asm/livepatch.h
+> 
+> livepatch.h remains on powerpc but its content is exclusively used
+> by powerpc specific code.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+Acked-by: Miroslav Benes <mbenes@suse.cz>
+
+M
