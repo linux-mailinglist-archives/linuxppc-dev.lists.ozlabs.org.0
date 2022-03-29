@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D044EAA4C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 11:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 007E44EAA53
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 11:18:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KSP8z584Pz2yZB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 20:17:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KSP9n63J4z2yg3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 20:18:05 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=RH9kn1OU;
+	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=mhynPiXC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,40 +19,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
  header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
- header.b=RH9kn1OU; dkim-atps=neutral
+ header.b=mhynPiXC; dkim-atps=neutral
 Received: from APC01-TYZ-obe.outbound.protection.outlook.com
  (mail-tyzapc01on20712.outbound.protection.outlook.com
  [IPv6:2a01:111:f403:704b::712])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KSP7T0hNcz2xCy
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KSP7T3lF1z2xCy
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 20:16:05 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WbVg798QMpPcbFRavjRByMxiYBJuEINRuj5tRWvP2Bt1NDtyI8jNis4lOXDVq9WTRICP/Nv/wfHRSFwLnX1IhSI6hIrLnWdy7oTDoux+VLvlLOYN5zE10bKSoMcV1H0cfntdRAtTNcZzhHKJWggQrtXBMCLhvt6sHWzOdKIfbs1KBuFHXgBgirdPlL43vAfjw+63/ZN6VRcQEuAJo+yVT6SeHTDJ/jsiZTUVMGSRzuTNXAzqp/R6BhPx+DhNaM1QApzUPayymvZSkS80Kb7BjCqqqfaQ7sT4qoRkEN7ufrNrcG86dSp1N1E2BGurX8Bm4L0LbnqEUks3HO26M2LoZQ==
+ b=TIKVdUZnzI4nM1VjmEJaoO/sYa87t30wEOHUfI6UpVANtAPGJMRniFf1FjZfaduzOG3ipqB/VgdzZSCZadsFXSnQIMYqzj/IVb4nE/e6d5uA0SukI8/+VnxPKAZE2CMij2jVqzrRaT9CJx1NiEHKSxK2AwpkZxMa/VKU2SZu6ZqDHNdduRgYnPOcyfNVECxP2aC5GG0tzbd5nHCmA2/K6z2zeX/tdMDMgBARW1tw75/jryXadZyO0ewyrvHWAquUhoCKprO3FKxc2Lyzgo/WdEBpJWRQ2/MKHKneU7Sb7HoVah7yNxLQso7+OnuK95siGyky5v7e93bryIee09g7sQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SJdJRvEwPqo8RlI6DpBDKNBZKqXxtMQySW1s9gdVT8Q=;
- b=jT9zxgZrShSG6RjEurpm5iYnQ+qhsdLni/OV9BU///XjR+9jxkR1hrajp4fqZGXiiKjrqJehJhU6cEdufo7fjWpHgFmY9nVkciPFM+CgufoQl//3RW6LtvNGF4fLLXOTnwQrYHpmyoI1rvX9/mYjltdCwpNWz/TEZtaTXZ4T/KuDsd0WQ4rZb9fzPb6gjTf+CIoY0J9K4hWZEeI/1GziW2a4UvtcewwTmF1WlM4OKJe405aBC9+sad7D2EODdXnECmh/G/Y7xUMxjB3BYv/E7gLHPrD6ABIGGpgNhbwBpUbU8YLNHBt1PZBj82wMbge4psOW6EiNVrCyC4WZSyoTUA==
+ bh=bacD8EkrrD3OdwjpWfHOF5YHsF/oPpRQEdyJIXbuY7E=;
+ b=Np80S/rsXbLye2zuPAoFhV6FnV9ZR/9NAVVWUYDe+262I3FyzB8OH2KW/7QBHSA0Y5mOp6FXCYb16n1tr53vLeAEgpN1zOx6Y/XsFuEI8fuSA9hRqj/A/DxGC02b+9tpA7Q1p6bB4qmz7NrErgnv2zJzr2M67d1JvkdGyUV1VFcCGKx194evkE5XRcss46UfO/nqFOjhpDZh24yPB/ZW0f7swTJvE9tTigvQccpMCbh4/vZWY1cti+cUg2d0qyqWUUZbBftEQgBIwggCMivxym70EDLCHCptKcSQzE7vgmUuI1G++bOruAaBdyCPysQ8nmuBaDTcmMSoOXQfEp+sug==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
  dkim=pass header.d=vivo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
  s=selector2-vivo0-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SJdJRvEwPqo8RlI6DpBDKNBZKqXxtMQySW1s9gdVT8Q=;
- b=RH9kn1OUxxp6XDB37LQqNrzPW41AhS9y9DVAWzK9C6N5yilsNcwQ4LyYErKa30/pj49nKA2JbMhkc0PrrCSq8eOaFhPV0imOoeKGopDpTFpoT7y8kjCpQVDjRQv22e4nEGrJvULJ2J1NB+k8etZcWb43Ry+awKgMpcSlF/IC9Vs=
+ bh=bacD8EkrrD3OdwjpWfHOF5YHsF/oPpRQEdyJIXbuY7E=;
+ b=mhynPiXCC5Yz4ITYrTYT45Inm7kO/kXZwptRLsHbhm5WyIJ17Me4B7lLZ9CSIoEpP/8m+Y2YReV7ljOJW/YH83gyjVFHNymG0Jfs2tmnjg0qSZvlqwXOzI780uSSFI6DIBGsZbi9Gq26ildr/lT/zze4q+/o9A4poxdwvRF1LhQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=vivo.com;
 Received: from SL2PR06MB3082.apcprd06.prod.outlook.com (2603:1096:100:37::17)
  by KL1PR0601MB3875.apcprd06.prod.outlook.com (2603:1096:820:21::13)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5102.17; Tue, 29 Mar
- 2022 09:15:41 +0000
+ 2022 09:15:48 +0000
 Received: from SL2PR06MB3082.apcprd06.prod.outlook.com
  ([fe80::49ef:baa:8c3b:cb3d]) by SL2PR06MB3082.apcprd06.prod.outlook.com
  ([fe80::49ef:baa:8c3b:cb3d%5]) with mapi id 15.20.5102.023; Tue, 29 Mar 2022
- 09:15:41 +0000
+ 09:15:48 +0000
 From: Qing Wang <wangqing@vivo.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Michael Ellerman <mpe@ellerman.id.au>,
@@ -71,10 +71,10 @@ To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
  Daniel Bristot de Oliveira <bristot@redhat.com>,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/3] sched: topology: add input parameter for
- sched_domain_flags_f()
-Date: Tue, 29 Mar 2022 02:15:19 -0700
-Message-Id: <1648545322-14531-2-git-send-email-wangqing@vivo.com>
+Subject: [PATCH 2/3] arch_topology: support for describing cache topology from
+ DT
+Date: Tue, 29 Mar 2022 02:15:20 -0700
+Message-Id: <1648545322-14531-3-git-send-email-wangqing@vivo.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <1648545322-14531-1-git-send-email-wangqing@vivo.com>
 References: <1648545322-14531-1-git-send-email-wangqing@vivo.com>
@@ -84,57 +84,57 @@ X-ClientProxiedBy: HK2PR02CA0214.apcprd02.prod.outlook.com
  (2603:1096:100:37::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7777b578-e8a6-49d4-b80c-08da1164b234
+X-MS-Office365-Filtering-Correlation-Id: c38c5332-e7bb-4d1a-3abb-08da1164b676
 X-MS-TrafficTypeDiagnostic: KL1PR0601MB3875:EE_
-X-Microsoft-Antispam-PRVS: <KL1PR0601MB38756A4F2DD90A06FECD0D2FBD1E9@KL1PR0601MB3875.apcprd06.prod.outlook.com>
+X-Microsoft-Antispam-PRVS: <KL1PR0601MB3875EAAAFBBDD2DDF946BAACBD1E9@KL1PR0601MB3875.apcprd06.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /441SjkoX+Ny9slPCFJNrDU+XgmipscTvQbzgshuldXjW53uHqjKx0vYySgWVm0IKnnkfZm7pIU9flNNzlK7PlvZ4a+sLe5JObQ5SJf9uhfHawjYbY8zOe2f2d3G9l7lIc4poCVwPOsBQem87JZWuC5R/C4ufAYUU0BAeTXhJ8D3WzJNjd/XtV5HfJSdBSRfSQnsR+sXwRuRXC4m3Tm3CFk68OJy/sUt/KKTp1/dyGhbIe3tOKFqPjwm3nQemS9s6s/ER/rgcuo2uKvL2SvUvghvqu22G3DgVQ2a8r/A2MvYiYmmWPaZ/kBHxWoQiisrpXE71axLmvBmFcqCMslmAim67G59Um1fYpv2LV94qMJ8zGEC5CrX5GDmvpC8/OikRDyg0Aics2KpbcuBXG7eHA3Ft3iyAFbOuSHo4Hd7CtIldkMUhEfShowNleVd1EIQVUXlFlOtbyZ6+bL7koBfwgu1jsVacC37r6vov5mHWRAWdiHYAdY8fuOQEfB5rvt7aa4eDNcL0OqCsUDmowP6m43J//h+o3eEYUn+I12EqV7GtPW/tsFIx95UID9WnRCmnruUG6ugdXFuG10vYUzhwjacgUHKbQ51OEedx2flKDDzOStBkCkFswvCVtcotbnre3LNEq9UOS+JKBDvTr7NqL8PpdS7QRS4+lDLzsQVYoF1k/SBQsIfFYf6calMLLh0sVDAHErEN12CluLV3jf6OqaxOdzDcluxkQcVg5klV/U=
+X-Microsoft-Antispam-Message-Info: lUF/s+FGS30k1Dp3QG6kZCwfWgkYK0rwkdVHCVi1Gh24vBUeH30uDAD6DLwi7rOzfgJ/1VnfQm7i2i3ozQdh1MKB2C+JvmdjuOMfmB2NsG1fzKWXuv35dGIMlbnHDV43pj9p9MdS2LxXCJOU/r9ZPRFHXRSFHpWIxPgkQnPBMqufwBSnQRAc56PZkZwqkuI2BFWRhrabrkICt88bVdvrNHRbjeI/LKUTHnsiMzQN84MWaWm8c1fandnPm0NsXYlCsS2UdladfP++2cxI8euysVZgpBPtuw1pwi8E3cCj4F9NZ15FQw4rJoCaC6kpKxGQke9GLAgbgxZRF3uUoAp2nLsy4s0LkBvcOrkCFxDW4Ktk5EXVe4O8GfYIwoFjSkUSl6Vxuv0ZHH8o5y9IhJ5foVNVeZdgKNHDffbYKA2o3N6dqDdZNNxbrIGel0+lQKfEZhw3mcuzHGER+QRDUzrTyFAKHI2nOJtqXjb5cfxlehugTU8kM6t9tcsAczzOkEC4xu8zkbQvFA2UieItw1ZuBuxMrmk9ciJ6JPYu89bitpb3H9iXhgdEbyvc2fIjDcxztXUTDyjU+E4XFgQlxQge9u8adLXOTxYrhEcfYUntOy5dymtk9Y54zH6AFqOHjOq0VjHK4DWAzS2oAUpXSbEvplHoHm3fZMxuIGOsSnGXkgme5Qnom4Re3gXCjVMAgZGjSshXSWJ4pVMrF5+W+r/Q/FOG+EUgcvJMRAwll54TnFY=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SL2PR06MB3082.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230001)(4636009)(366004)(8936002)(5660300002)(66946007)(110136005)(6666004)(6486002)(83380400001)(508600001)(38350700002)(38100700002)(8676002)(66556008)(66476007)(4326008)(7416002)(86362001)(6512007)(921005)(36756003)(2616005)(52116002)(107886003)(2906002)(6506007)(316002)(186003)(26005);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?PhBJKgt5FL2Y8Ibc46Cq1XMrtS3R7Qmoy98zYQkdcoJycBuZOEhtEQK7Ggv2?=
- =?us-ascii?Q?wBKJ+d6a+Ndf7CQwGFir8xHYywEa61FzVHO0AEMjEDA2qChNnHC/yMZXdX0c?=
- =?us-ascii?Q?sN619elmKuil7XqzwhtJq1LXYahhdNutfANMU5/E0GW27k7XolTCfDbuxIUU?=
- =?us-ascii?Q?WflQfgJXHuZrTAmvHvGR0shYZjXVVvyOM/reePCu2J/lTSYPAolrvdlNx5bd?=
- =?us-ascii?Q?9g+vu53Z+HiuB0mQ4bKz5rgtT6SCeGVX8DtABb9fgbSlkYxpTZiQUXk5SYZv?=
- =?us-ascii?Q?sqm4bhyMFIxB2ajy4l4UT1bhq+w+jKvfHRs9XQC1zeIBDb1DAh7+jZSD95/z?=
- =?us-ascii?Q?IKDTk7M0dx1kLGJJ3LedH7Qi1UK1n1vm5wAbWNhsfMUc06U7hEeP81fqAt4Q?=
- =?us-ascii?Q?L1Y6yhvqB6nQP3o4Eus6SBLJUp/lAe1oPZ/VUKhJdqYWs04r1C4UaUkHfJjl?=
- =?us-ascii?Q?Nrcy4ihOR2Xux5HQRvk5ka3stbEYQR9QOTJOHmWDdEII4Ek7fQx3/FUJbzc1?=
- =?us-ascii?Q?0MLxJFwnyscBOiIT2mE62sw+jpuD9JsUikVretLlJRXODY7vAURrnVx/YG7c?=
- =?us-ascii?Q?NobW32JRRFjeN/pR5hXZgWn0MII/oj0sGlPq5GhZRG8RZpKzZ/b2S6lbS6Es?=
- =?us-ascii?Q?W6c2VYJECWZ+BPkbSCOyrda73epxvFsgcRwGdwb0sf1xVQM2wXvoW2rTr+2a?=
- =?us-ascii?Q?ngIgoeDS4VkawYgupI/B6qIeEPHl/bAkGzXLjUisq3WWvlCxlReKickVnmLA?=
- =?us-ascii?Q?CJQQ4co2JttKFLaEPRV+bzhSc518SVPLThlVqPLZcFFhpffLAuNRK28WVDVb?=
- =?us-ascii?Q?VZuM1mHQqK/EmpnCBQiQequhXgDGJmL/Z1oM+qnKeLsDu86Q4/aqfovT6hGZ?=
- =?us-ascii?Q?44qFCsPqVqduZlEi0NLLkp9ICRKdayILVGe5Cjaj+xfxsAo1UP6SUlEGLrXp?=
- =?us-ascii?Q?CYLAHuJX+/EUDc7TL9RK6NTq3FZSlK8CQc85j4VTCKGBrhrkBtfoDODCywPi?=
- =?us-ascii?Q?OJF+ygNG7y2g9oF0YjEgm4Y51Xpvl5zbNkC4niUwYBTFhgfvhMcLvoHDbQz+?=
- =?us-ascii?Q?L7AW6YxG4qVQ9xy/l2q0oFRv9lzHxCshXG3+6Ck9WbPd5bhfymawtVDgXCja?=
- =?us-ascii?Q?9+O6/QuErHqfnsTL4DzQlKtF4bov4nKGIFf2EzLQ/m4m7FC/QYKR8tcYQU6e?=
- =?us-ascii?Q?/RzMAP9fmCSWjcsqTkMBGK0K4LmCKXnNzZyAUyLIm7rHnmSnQye90OkQJdmr?=
- =?us-ascii?Q?zQEwsB1MkpTXWiaBdFhCfzIILIoby7i95ow/XXSL+Lwpbws9lcNcXBDB82kD?=
- =?us-ascii?Q?2cgabTuSJAATH8Hc/cEHPDAcPHYhSP9eU06dEHJdBJTQCiDrqSuHv6vyfo5K?=
- =?us-ascii?Q?0IV1cE0FNkf5qi3KbYERfXLBBKUHIo5VUAKoYHJtlebK3f/Df5iAf+vEwWqJ?=
- =?us-ascii?Q?zyEi726R5R/qy8jT9K61raEBxXp/k862BC2DP+4uv1qTCo6f2nRKNUG61/Te?=
- =?us-ascii?Q?c1jlSk44DH/stgOXcc6/CbSkv+SCrVP5xBCCoVn+h8paELHsOeqEvgedbYmf?=
- =?us-ascii?Q?Wi+ON62CL2EEJ09blYwf4MBesqgBj9uzUFtM+D0Bu2+qdDIpJ33OKt2HXw5L?=
- =?us-ascii?Q?VHXdS9icnqowt0BP0Nw/4/Fw8npvPbKMeYekFqUsclqWfpv89vKkUkPLVa8S?=
- =?us-ascii?Q?j3PMFFoAqtAHfMjok4JOeGIvCZvDzMRmO/aynJ1s7mRtnlUPLseIt6wVU72f?=
- =?us-ascii?Q?09w33ILV6w=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?vl7/hUNaQyS2do9pDKXqGI/qAEohsCeTnMP/fLL9wBTZts/BHAVSgEeFW6Vg?=
+ =?us-ascii?Q?4vAoPNdInEz4Kfayzi+BFSHMx52EIJlGqxPuzPtUjRVoG1Ozpp7RcEDlj/sA?=
+ =?us-ascii?Q?1+hsNyR3xmMppVX7Tz/Y/eA857Y+GYF0bIjP2ec5ljO4TAO3NhFTHiO7LUS3?=
+ =?us-ascii?Q?lXHgkqUQAZtVD/xzmnn3n3uQwZrelNmsoj21sg2szd6Jh6oARgfZwKaqVE3p?=
+ =?us-ascii?Q?/IioWxeBD75wLG4Dbb7ILVtNZ5k50nAexDazhAa+HTZSQPNd9vEQH4Yb/Hjh?=
+ =?us-ascii?Q?kpJuIO4PEzYs0Cj40me32gmuh9PP5iGmB4hKakAsczYIT0CHxkOqJAjwUzYX?=
+ =?us-ascii?Q?skM571pZTlDPscZDDoXco2Frr60+S5RH/iZyccyrhN+fVFN87vC/lDJIBv4P?=
+ =?us-ascii?Q?134TS2/HLFTkQQS5mGSclBm6lsyQ7mTZbmPOmj5TgVyun1MsZ5sDOkAr/uKZ?=
+ =?us-ascii?Q?fOotTUbGV8nRM1Y7n9dDmA3jxraZEB4V+ydmVu7Xe3CTaFgie6CvDoB0I6MD?=
+ =?us-ascii?Q?lrsS/cpFU0tfm81qiI2jsPN62MyDDs2fj0jBJ5Flq4zgcLeukZYTy7fwAg/C?=
+ =?us-ascii?Q?Jr3kFxiJx4aAgFh2lHeTHNNa6wcBQR/Ob8fdZeGQwdH4AdNfAbE2wGO4znNz?=
+ =?us-ascii?Q?mz1LBnwrzDq9CYy9GUPyD2/usGoH3fCoytiWWYLt/8G6xF7KOkcMRDs3nBn4?=
+ =?us-ascii?Q?iYUzzOo+y8Fr76MAplggnkzaNiDHj786g9ZYo94/vB5fiTiTLKFWgQUGg63f?=
+ =?us-ascii?Q?cjeCFj7bofhRv+3eecKbOUJa2lGbeG5aoJDU3ax8vMcxBHRU9/IIz1LWp/Op?=
+ =?us-ascii?Q?oFmqEp0nsIYb74WFpM0phn991GmZPksp+8XU9Idj9DlA5vZbhs9F+DX0KM+V?=
+ =?us-ascii?Q?msQ23LnF4PuakyozMA9ZmtZ+TAb/cbn/q7moR6Ifby/ZcnbdeCLCyXziEB0I?=
+ =?us-ascii?Q?BaQH9v6bKsSNNnfdDvwDYU3ckCiovPFjXGQH9KTvusSbW2lQ8VkLi7fGwgtI?=
+ =?us-ascii?Q?RgwNIoC/v1zdNZ0hLCN9el84kMaVKpzpvsNI+ek+CQBoHsd8nDsMQEvFO4Dm?=
+ =?us-ascii?Q?LJDZ3/Bi+5/PVEZIahYp9JDSlwVUc7zTexsyIUKxo43v4qCjNxIDgzX4rwFn?=
+ =?us-ascii?Q?zFVKoREhZzZqNm+x5C9If5Du8kTTzKFS02UuJLuT3lO9uw3MdMom/dRNXE/g?=
+ =?us-ascii?Q?7enlHXLXUGtE6twJC2PYHV/FaxuFV+xRAFdYLlzqy/zbqMEwRse15sMN0Sny?=
+ =?us-ascii?Q?zShE4Oz6myLhLAqaaVb0pr+a2nldlX+0x6rv2BN1j8k5bVD42QvvxgEzq2R3?=
+ =?us-ascii?Q?ez9aQTYEcoKOpct+/LzhXtSooMvrOF0Xx2zcKjO7FUAjsrM8khnRscJDmiSC?=
+ =?us-ascii?Q?M5qWQdqxiL3KXp/3zb6sTswkjyVa16fON49/AicDjmQx6/+CsYRpndfarYJi?=
+ =?us-ascii?Q?tzBBe+ve2TN99stYEjFIa6g1ji0kvoM7EO3LucVVbWVaVF66mW+7zxBJBc84?=
+ =?us-ascii?Q?bkYPhcPA8GVcghI52UKCZiWu1jqhxkCYjCiSj7jswihbFe4ppu5xvzvZXsBd?=
+ =?us-ascii?Q?A3M04YBXLZho6JmoOCC0B5/XGGcGdppEwj61ZLvC8BZGyxcOAKpHAZxdPNPO?=
+ =?us-ascii?Q?ihbg5YlBObYdt4JZWSnGLDZjX6lmgRC1AbuPdmPzsZwifOJX2F6N0ChoshYQ?=
+ =?us-ascii?Q?VBFUOyxkQwjUtA8fBD0fTNdgGsptWMb831zoLs3cBNTO/EmJGpbTHy8T8rWA?=
+ =?us-ascii?Q?7Y34eam6cw=3D=3D?=
 X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7777b578-e8a6-49d4-b80c-08da1164b234
+X-MS-Exchange-CrossTenant-Network-Message-Id: c38c5332-e7bb-4d1a-3abb-08da1164b676
 X-MS-Exchange-CrossTenant-AuthSource: SL2PR06MB3082.apcprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2022 09:15:41.1797 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Mar 2022 09:15:48.3199 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zkB7NIzlDSPNeOxa80qBw5x236F2y420RKK+VPv/+1yIwCm8HbzuN1oVnVJFlF+QyHqB1fAG0ZK3znmIctmdhQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5zgKXmdEdrZl0h0nN15JFsGEBRKl+uJ3bS1X7afqVPK70r6/zNWTXtL6EGrjqrV+wbTb2CZF7Sznuj+sFHVWOw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0601MB3875
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -154,135 +154,165 @@ Sender: "Linuxppc-dev"
 
 From: Wang Qing <wangqing@vivo.com>
 
-sched_domain_flags_f() are statically set now, but actually, we can get a lot
-of necessary information based on the cpu_map. e.g. we can know whether its
-cache is shared.
-
-Allows custom extension without affecting current.
+When ACPI is not enabled, we can get cache topolopy from DT like:
+*		cpu0: cpu@000 {
+*			next-level-cache = <&L2_1>;
+*			L2_1: l2-cache {
+* 				compatible = "cache";
+*				next-level-cache = <&L3_1>;
+* 			};
+*			L3_1: l3-cache {
+* 				compatible = "cache";
+* 			};
+*		};
+*
+*		cpu1: cpu@001 {
+*			next-level-cache = <&L2_1>;
+*			cpu-idle-states = <&clusteroff_l &mcusysoff
+*						&system_mem &system_pll &system_bus
+*						&s2idle>;
+*		};
+*		cpu2: cpu@002 {
+*			L2_2: l2-cache {
+* 				compatible = "cache";
+*				next-level-cache = <&L3_1>;
+*			};
+*		};
+*
+*		cpu3: cpu@003 {
+*			next-level-cache = <&L2_2>;
+*		};
+cache_topology hold the pointer describing "next-level-cache", 
+it can describe the cache topology of every level.
 
 Signed-off-by: Wang Qing <wangqing@vivo.com>
 ---
- arch/powerpc/kernel/smp.c      |  4 ++--
- arch/x86/kernel/smpboot.c      |  8 ++++----
- include/linux/sched/topology.h | 10 +++++-----
- kernel/sched/topology.c        |  2 +-
- 4 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/base/arch_topology.c  | 89 ++++++++++++++++++++++++++++++++++++++++++-
+ include/linux/arch_topology.h |  4 ++
+ 2 files changed, 92 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index de0f6f0..e503d23
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1000,7 +1000,7 @@ static bool shared_caches;
+diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+index 1d6636e..41e0301
+--- a/drivers/base/arch_topology.c
++++ b/drivers/base/arch_topology.c
+@@ -647,6 +647,92 @@ static int __init parse_dt_topology(void)
+ }
+ #endif
  
- #ifdef CONFIG_SCHED_SMT
- /* cpumask of CPUs with asymmetric SMT dependency */
--static int powerpc_smt_flags(void)
-+static int powerpc_smt_flags(const struct cpumask *cpu_map)
- {
- 	int flags = SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
- 
-@@ -1018,7 +1018,7 @@ static int powerpc_smt_flags(void)
-  * since the migrated task remains cache hot. We want to take advantage of this
-  * at the scheduler level so an extra topology level is required.
++
++/*
++ * cpu cache topology table
++ */
++#define MAX_CACHE_LEVEL 7
++struct device_node *cache_topology[NR_CPUS][MAX_CACHE_LEVEL];
++
++void init_cpu_cache_topology(void)
++{
++	struct device_node *node_cpu, *node_cache;
++	int cpu;
++	int level = 0;
++
++	for_each_possible_cpu(cpu) {
++		node_cpu = of_get_cpu_node(cpu, NULL);
++		if (!node_cpu)
++			continue;
++
++		level = 0;
++		node_cache = node_cpu;
++		while (level < MAX_CACHE_LEVEL) {
++			node_cache = of_parse_phandle(node_cache, "next-level-cache", 0);
++			if (!node_cache)
++				break;
++
++			cache_topology[cpu][level++] = node_cache;
++		}
++		of_node_put(node_cpu);
++	}
++}
++
++/*
++ * private means only shared within cpu_mask
++ * Returns -1 if not described int DT.
++ */
++int cpu_share_private_cache(const struct cpumask *cpu_mask)
++{
++	int cache_level, cpu_id;
++	struct cpumask cache_mask;
++	int cpu = cpumask_first(cpu_mask);
++
++	for (cache_level = 0; cache_level < MAX_CACHE_LEVEL; cache_level++) {
++		if (!cache_topology[cpu][cache_level])
++			return -1;
++
++		cpumask_clear(&cache_mask);
++		for (cpu_id = 0; cpu_id < NR_CPUS; cpu_id++) {
++			if (cache_topology[cpu][cache_level] == cache_topology[cpu_id][cache_level])
++				cpumask_set_cpu(cpu_id, &cache_mask);
++		}
++
++		if (cpumask_equal(cpu_mask, &cache_mask))
++			return 1;
++	}
++
++	return 0;
++}
++
++bool cpu_share_llc(int cpu1, int cpu2)
++{
++	int cache_level;
++
++	for (cache_level = MAX_CACHE_LEVEL - 1; cache_level > 0; cache_level--) {
++		if (!cache_topology[cpu1][cache_level])
++			continue;
++
++		if (cache_topology[cpu1][cache_level] == cache_topology[cpu2][cache_level])
++			return true;
++
++		return false;
++	}
++
++	return false;
++}
++
++bool cpu_share_l2c(int cpu1, int cpu2)
++{
++	if (!cache_topology[cpu1][0])
++		return false;
++
++	if (cache_topology[cpu1][0] == cache_topology[cpu2][0])
++		return true;
++
++	return false;
++}
++
+ /*
+  * cpu topology table
   */
--static int powerpc_shared_cache_flags(void)
-+static int powerpc_shared_cache_flags(const struct cpumask *cpu_map)
- {
- 	return SD_SHARE_PKG_RESOURCES;
- }
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 2ef1477..c005a8e
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -535,25 +535,25 @@ static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
+@@ -684,7 +770,8 @@ void update_siblings_masks(unsigned int cpuid)
+ 	for_each_online_cpu(cpu) {
+ 		cpu_topo = &cpu_topology[cpu];
  
- 
- #if defined(CONFIG_SCHED_SMT) || defined(CONFIG_SCHED_CLUSTER) || defined(CONFIG_SCHED_MC)
--static inline int x86_sched_itmt_flags(void)
-+static inline int x86_sched_itmt_flags(const struct cpumask *cpu_map)
- {
- 	return sysctl_sched_itmt_enabled ? SD_ASYM_PACKING : 0;
- }
- 
- #ifdef CONFIG_SCHED_MC
--static int x86_core_flags(void)
-+static int x86_core_flags(const struct cpumask *cpu_map)
- {
- 	return cpu_core_flags() | x86_sched_itmt_flags();
- }
- #endif
- #ifdef CONFIG_SCHED_SMT
--static int x86_smt_flags(void)
-+static int x86_smt_flags(const struct cpumask *cpu_map)
- {
- 	return cpu_smt_flags() | x86_sched_itmt_flags();
- }
- #endif
- #ifdef CONFIG_SCHED_CLUSTER
--static int x86_cluster_flags(void)
-+static int x86_cluster_flags(const struct cpumask *cpu_map)
- {
- 	return cpu_cluster_flags() | x86_sched_itmt_flags();
- }
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 56cffe4..6aa985a
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -36,28 +36,28 @@ extern const struct sd_flag_debug sd_flag_debug[];
- #endif
- 
- #ifdef CONFIG_SCHED_SMT
--static inline int cpu_smt_flags(void)
-+static inline int cpu_smt_flags(const struct cpumask *cpu_map)
- {
- 	return SD_SHARE_CPUCAPACITY | SD_SHARE_PKG_RESOURCES;
- }
- #endif
- 
- #ifdef CONFIG_SCHED_CLUSTER
--static inline int cpu_cluster_flags(void)
-+static inline int cpu_cluster_flags(const struct cpumask *cpu_map)
- {
- 	return SD_SHARE_PKG_RESOURCES;
- }
- #endif
- 
- #ifdef CONFIG_SCHED_MC
--static inline int cpu_core_flags(void)
-+static inline int cpu_core_flags(const struct cpumask *cpu_map)
- {
- 	return SD_SHARE_PKG_RESOURCES;
- }
- #endif
- 
- #ifdef CONFIG_NUMA
--static inline int cpu_numa_flags(void)
-+static inline int cpu_numa_flags(const struct cpumask *cpu_map)
- {
- 	return SD_NUMA;
- }
-@@ -180,7 +180,7 @@ void free_sched_domains(cpumask_var_t doms[], unsigned int ndoms);
- bool cpus_share_cache(int this_cpu, int that_cpu);
- 
- typedef const struct cpumask *(*sched_domain_mask_f)(int cpu);
--typedef int (*sched_domain_flags_f)(void);
-+typedef int (*sched_domain_flags_f)(const struct cpumask *cpu_map);
- 
- #define SDTL_OVERLAP	0x01
- 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 05b6c2a..34dfec4
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1556,7 +1556,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 	sd_weight = cpumask_weight(tl->mask(cpu));
- 
- 	if (tl->sd_flags)
--		sd_flags = (*tl->sd_flags)();
-+		sd_flags = (*tl->sd_flags)(tl->mask(cpu));
- 	if (WARN_ONCE(sd_flags & ~TOPOLOGY_SD_FLAGS,
- 			"wrong sd_flags in topology description\n"))
- 		sd_flags &= TOPOLOGY_SD_FLAGS;
+-		if (cpuid_topo->llc_id == cpu_topo->llc_id) {
++		if ((cpuid_topo->llc_id != -1 && cpuid_topo->llc_id == cpu_topo->llc_id)
++			|| (cpuid_topo->llc_id == -1 && cpu_share_llc(cpu, cpuid))) {
+ 			cpumask_set_cpu(cpu, &cpuid_topo->llc_sibling);
+ 			cpumask_set_cpu(cpuid, &cpu_topo->llc_sibling);
+ 		}
+diff --git a/include/linux/arch_topology.h b/include/linux/arch_topology.h
+index 58cbe18..a402ff6
+--- a/include/linux/arch_topology.h
++++ b/include/linux/arch_topology.h
+@@ -86,6 +86,10 @@ extern struct cpu_topology cpu_topology[NR_CPUS];
+ #define topology_cluster_cpumask(cpu)	(&cpu_topology[cpu].cluster_sibling)
+ #define topology_llc_cpumask(cpu)	(&cpu_topology[cpu].llc_sibling)
+ void init_cpu_topology(void);
++void init_cpu_cache_topology(void);
++int cpu_share_private_cache(const struct cpumask *cpu_mask);
++bool cpu_share_llc(int cpu1, int cpu2);
++bool cpu_share_l2c(int cpu1, int cpu2);
+ void store_cpu_topology(unsigned int cpuid);
+ const struct cpumask *cpu_coregroup_mask(int cpu);
+ const struct cpumask *cpu_clustergroup_mask(int cpu);
 -- 
 2.7.4
 
