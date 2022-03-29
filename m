@@ -1,58 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCF64EACCE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 14:02:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A32D4EAD34
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 14:31:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KSSq81XgDz302k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 23:02:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KSTT51rxxz3c03
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 23:31:37 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=L3kBFENc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bgdev-pl.20210112.gappssmtp.com header.i=@bgdev-pl.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=rghn0NZ7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=bgdev.pl
+ (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com;
+ envelope-from=brgl@bgdev.pl; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=bgdev-pl.20210112.gappssmtp.com
+ header.i=@bgdev-pl.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=rghn0NZ7; dkim-atps=neutral
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com
+ [IPv6:2a00:1450:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KSSpc3hMQz2xgN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 23:01:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=L3kBFENc; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KSSpX4blyz4xNm;
- Tue, 29 Mar 2022 23:01:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1648555304;
- bh=01mxyWDLRIt5kimROuqbPGIxm1dCV7lRCsI+Du/e0Ss=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=L3kBFENcYSTJQ6cWgshgm35f9FNB8Ew3X782WdaRMzj5n1w6uL8J0Z/9Ys116iCFS
- 3PKWwyLdvJr7Urq5zfhmzBHcNgBvtBFVrXcYgUJcLmLdW1ydcCQ87VcVAvUsX5BuNm
- WBZuEPhmLtbthCqRlOVX2bbziX37DusGS6BuAtrp4Di10dnmOkWG+QgHwwm8zOu8Yu
- ZN9UUWjSbHiLGVna/Gx2iXrBrD8HB7QI4Y2ePlRHcqGzwi508PLBVR2T5X7UsVNl0c
- nY6Jcm5fJsxWdKA6Re61fRVd9yvLa+Eq0akkxggx2ECh4uGtyOXf5hKVkr8ZbFYdyM
- vfcsSLcgEpWTA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Josh Poimboeuf <jpoimboe@redhat.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-In-Reply-To: <20220328195920.dqlfra3lcardko6r@treble>
-References: <20220318105140.43914-1-sv@linux.ibm.com>
- <20220318105140.43914-4-sv@linux.ibm.com>
- <YjR6kHq4c/rjCTpr@hirez.programming.kicks-ass.net>
- <0b55f122-4760-c1ba-840a-0911cefec2ad@csgroup.eu>
- <20220328195920.dqlfra3lcardko6r@treble>
-Date: Tue, 29 Mar 2022 23:01:38 +1100
-Message-ID: <87mth9ezml.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KSTSQ0JQFz2x98
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 23:31:00 +1100 (AEDT)
+Received: by mail-ej1-x62a.google.com with SMTP id lr4so26375161ejb.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 05:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=nRQGNy0JNeG8yPE1QXXWKqsK/KgT2iVgd9NOSAmnpao=;
+ b=rghn0NZ7veo+c7F9TgovwmfTphDZN1nzJMzcXj5lds+VNPPlWVx4s9Km9UFuESnj9C
+ 0j6zPwG/Xf6D92JpGQDO2SsY514Cc3dispUkIKCGzRnO4C9HS7T9TWQ6L1NWItI9HoVR
+ Wk/smMInsq69ioZO8yNZDu546rixqBUH1Q7RKjgyI+USlKpBx73H+Jxrz2inmb2EkToU
+ H2vf7Sa/pckmLcWFoAxiMBDzr7UgHBsB2Q8hra4/Kl5ny0G8cLhgWaE+yEkyTutDGHt1
+ d/7ehdh+gvbKH2tMg6SF+fI/PRBhqZLpgBB/Oz9YxV+MxEClGvdSUz2pl20OT0F+Mpvd
+ d2oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=nRQGNy0JNeG8yPE1QXXWKqsK/KgT2iVgd9NOSAmnpao=;
+ b=dXPy6fmAr3oSyl4WfSPlrohpQXqg/hJHsXvNSxl2VLuZDK5QlGq45TIS8fcKeRMmIg
+ 94URVIWP4PX38TNbYOhxfJDDI3t8WNH8p0jAsb9Irgoz5gKo1ynyCyThfEh5P7aG9Jik
+ f1/gVMPuh96FyPeutFIR/KlSdtgReW49KF6xtD7GhYdKbZWhtE59owmaY3sC0J9RKoSE
+ 7a25vx0rzTXO08pqpbfQQAyUDCoWvvBDUbcR2zG5TxDatLlN+U/KKJOF8XulK9HWif+p
+ CPOHrHe1f+Ky9T4YCYGH5w3D9X0y2wQBr8FRalQ2T1OVMt4glAeQKnzUAvMS6DdMHxct
+ FHkA==
+X-Gm-Message-State: AOAM533q+YxbTrz7yBOsRBMIWeR1JsdOihIvlbnqDrU+y7yCAXisBdb7
+ xAWx1wyBX8wEp9dfidYeGaUpq1PQ3LJvCKAJ7C3kew==
+X-Google-Smtp-Source: ABdhPJyPZNX8y3gOGfSZgg3AGAll74j9kjPNXJs0DTpnrEh1/wBVEgROdTkgglF1+DGDwH7nabIubcnQbpp8LiNpfow=
+X-Received: by 2002:a17:907:d2a:b0:6e0:963c:97d9 with SMTP id
+ gn42-20020a1709070d2a00b006e0963c97d9mr28430774ejc.736.1648557051475; Tue, 29
+ Mar 2022 05:30:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220326165909.506926-1-benni@stuerz.xyz>
+ <20220326165909.506926-9-benni@stuerz.xyz>
+In-Reply-To: <20220326165909.506926-9-benni@stuerz.xyz>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 29 Mar 2022 14:30:40 +0200
+Message-ID: <CAMRc=Md5qTnP1ZYak4f3hyqmaOR6jT_KL=rNr5cwAOcZ22yXfg@mail.gmail.com>
+Subject: Re: [PATCH 09/22] gpio-winbond: Use C99 initializers
+To: =?UTF-8?Q?Benjamin_St=C3=BCrz?= <benni@stuerz.xyz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,71 +79,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>,
- Sathvika Vasireddy <sv@linux.ibm.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, linux-atm-general@lists.sourceforge.net,
+ linux-ia64@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+ dave.hansen@linux.intel.com, linux-pci@vger.kernel.org, robert.moore@intel.com,
+ laforge@gnumonks.org, alim.akhtar@samsung.com, hpa@zytor.com,
+ wcn36xx@lists.infradead.org, pkshih@realtek.com,
+ linux-samsung-soc@vger.kernel.org,
+ ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+ linux-edac@vger.kernel.org, dennis.dalessandro@cornelisnetworks.com,
+ linux-rdma@vger.kernel.org, Gregory Clement <gregory.clement@bootlin.com>,
+ "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+ Russell King <linux@armlinux.org.uk>, Krzysztof Kozlowski <krzk@kernel.org>,
+ jgg@ziepe.ca, mingo@redhat.com, 3chas3@gmail.com,
+ Linux Input <linux-input@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, lenb@kernel.org,
+ mike.marciniszyn@cornelisnetworks.com, Robert Richter <rric@kernel.org>,
+ ajd@linux.ibm.com, Arnd Bergmann <arnd@arndb.de>, kvalo@kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ loic.poulain@linaro.org, Borislav Petkov <bp@alien8.de>,
+ Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Linux Media Mailing List <linux-media@vger.kernel.org>, linux@simtec.co.uk,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>, devel@acpica.org,
+ isdn@linux-pingi.de, Tony Luck <tony.luck@intel.com>, nico@fluxnic.net,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-wireless@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ James Morse <james.morse@arm.com>, netdev <netdev@vger.kernel.org>,
+ fbarrat@linux.ibm.com, Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+ pali@kernel.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Josh Poimboeuf <jpoimboe@redhat.com> writes:
-> On Sun, Mar 27, 2022 at 09:09:20AM +0000, Christophe Leroy wrote:
->> Second point is the endianess and 32/64 selection, especially when 
->> crossbuilding. There is already some stuff regarding endianess based on 
->> bswap_if_needed() but that's based on constant selection at build time 
->> and I couldn't find an easy way to set it conditionaly based on the 
->> target being built.
->>
->> Regarding 32/64 selection, there is almost nothing, it's based on using 
->> type 'long' which means that at the time being the target and the build 
->> platform must both be 32 bits or 64 bits.
->> 
->> For both cases (endianess and 32/64) I think the solution should 
->> probably be to start with the fileformat of the object file being 
->> reworked by objtool.
+On Sat, Mar 26, 2022 at 6:00 PM Benjamin St=C3=BCrz <benni@stuerz.xyz> wrot=
+e:
 >
-> Do we really need to detect the endianness/bitness at runtime?  Objtool
-> is built with the kernel, why not just build-in the same target
-> assumptions as the kernel itself?
-
-I don't think we need runtime detection. But it will need to support
-basically most combinations of objtool running as 32-bit/64-bit LE/BE
-while the kernel it's analysing is 32-bit/64-bit LE/BE.
-
->> What are current works in progress on objtool ? Should I wait Josh's 
->> changes before starting looking at all this ? Should I wait for anything 
->> else ?
+> This replaces comments with C99's designated
+> initializers because the kernel supports them now.
 >
-> I'm not making any major changes to the code, just shuffling things
-> around to make the interface more modular.  I hope to have something
-> soon (this week).  Peter recently added a big feature (Intel IBT) which
-> is already in -next.
+> Signed-off-by: Benjamin St=C3=BCrz <benni@stuerz.xyz>
+> ---
+>  drivers/gpio/gpio-winbond.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 >
-> Contributions are welcome, with the understanding that you'll help
-> maintain it ;-)
+> diff --git a/drivers/gpio/gpio-winbond.c b/drivers/gpio/gpio-winbond.c
+> index 7f8f5b02e31d..0b637fdb407c 100644
+> --- a/drivers/gpio/gpio-winbond.c
+> +++ b/drivers/gpio/gpio-winbond.c
+> @@ -249,7 +249,7 @@ struct winbond_gpio_info {
+>  };
 >
-> Some years ago Kamalesh Babulal had a prototype of objtool for ppc64le
-> which did the full stack validation.  I'm not sure what ever became of
-> that.
+>  static const struct winbond_gpio_info winbond_gpio_infos[6] =3D {
+> -       { /* 0 */
+> +       [0] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO12,
+>                 .enablereg =3D WB_SIO_GPIO12_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO12_ENABLE_1,
+> @@ -266,7 +266,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 1 */
+> +       [1] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO12,
+>                 .enablereg =3D WB_SIO_GPIO12_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO12_ENABLE_2,
+> @@ -277,7 +277,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                 .datareg =3D WB_SIO_GPIO12_REG_DATA2
+>                 /* special conflict handling so doesn't use conflict data=
+ */
+>         },
+> -       { /* 2 */
+> +       [2] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO34,
+>                 .enablereg =3D WB_SIO_GPIO34_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO34_ENABLE_3,
+> @@ -294,7 +294,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 3 */
+> +       [3] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO34,
+>                 .enablereg =3D WB_SIO_GPIO34_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO34_ENABLE_4,
+> @@ -311,7 +311,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 4 */
+> +       [4] =3D {
+>                 .dev =3D WB_SIO_DEV_WDGPIO56,
+>                 .enablereg =3D WB_SIO_WDGPIO56_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_WDGPIO56_ENABLE_5,
+> @@ -328,7 +328,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 5 */
+> +       [5] =3D {
+>                 .dev =3D WB_SIO_DEV_WDGPIO56,
+>                 .enablereg =3D WB_SIO_WDGPIO56_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_WDGPIO56_ENABLE_6,
+> --
+> 2.35.1
+>
 
-From memory he was starting to clean the patches up in late 2019, but I
-guess that probably got derailed by COVID. AFAIK he never posted
-anything. Maybe someone at IBM has a copy internally (Naveen?).
-
-> FWIW, there have been some objtool patches for arm64 stack validation,
-> but the arm64 maintainers have been hesitant to get on board with
-> objtool, as it brings a certain maintenance burden.  Especially for the
-> full stack validation and ORC unwinder.  But if you only want inline
-> static calls and/or mcount then it'd probably be much easier to
-> maintain.
-
-I would like to have the stack validation, but I am also worried about
-the maintenance burden.
-
-I guess we start with mcount, which looks pretty minimal judging by this
-series, and see how we go from there.
-
-cheers
+Acked-by: Bartosz Golaszewski <brgl@bgdev.pl>
