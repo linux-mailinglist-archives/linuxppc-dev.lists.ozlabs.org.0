@@ -2,56 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B974EAC5A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 13:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A8D4EAC60
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 13:33:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KSS8P5Xpfz30MQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 22:32:05 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=a4pa12+a;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KSS9b6DS7z2yg5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 22:33:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=a4pa12+a; dkim-atps=neutral
-X-Greylist: delayed 505 seconds by postgrey-1.36 at boromir;
- Tue, 29 Mar 2022 22:31:30 AEDT
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KSS7k0CjPz2xf9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 22:31:29 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 0422A1F87C;
- Tue, 29 Mar 2022 11:23:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1648552981; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=SIv5uXYMR0opeIvGmNdx5Nx23cUrlYA4mD5vDaH6REM=;
- b=a4pa12+asB0UvvOL2t6C7VRrhoYKwHDo9Jo1k1K7cQSVeCHRBqAxNEzdFkHj6Jx/cJvJMv
- xzTboGQJtPnMz32eX6bxd6a+dUtVbcvzrMkj7YY00wEBN+JYWlhoLgnAXmqUso50y5Sdu2
- ycRjhpo8VdscO15NjnBedEdqe8bBlGE=
-Received: from suse.cz (unknown [10.100.216.66])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id C099FA3B82;
- Tue, 29 Mar 2022 11:23:00 +0000 (UTC)
-Date: Tue, 29 Mar 2022 13:22:57 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] livepatch: Remove klp_arch_set_pc() and asm/livepatch.h
-Message-ID: <YkLsEUgxJkYbLZ7Z@alley>
-References: <e029c7cfde436f6bbf99148ab14dc2da99add503.1648447981.git.christophe.leroy@csgroup.eu>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KSS964XmXz2xf9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 22:32:42 +1100 (AEDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.53])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4KSS6W4PYqzfZLD;
+ Tue, 29 Mar 2022 19:30:27 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Tue, 29 Mar 2022 19:32:05 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2308.21; Tue, 29 Mar 2022 19:32:04 +0800
+Message-ID: <0c6e13cc-f768-2cb4-0aa3-cd090b99fc8f@huawei.com>
+Date: Tue, 29 Mar 2022 19:32:04 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e029c7cfde436f6bbf99148ab14dc2da99add503.1648447981.git.christophe.leroy@csgroup.eu>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [PATCH v4 1/2] Revert "powerpc: Set max_mapnr correctly"
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>, "benh@kernel.crashing.or"
+ <benh@kernel.crashing.or>, "paulus@samba.org" <paulus@samba.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>
+References: <20220216121109.157605-1-wangkefeng.wang@huawei.com>
+ <b2ff771c-01ef-3f14-f22d-9248735fdc77@huawei.com>
+ <de3e12e2-6dff-90cd-3f47-fe8deaae1fa8@csgroup.eu>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <de3e12e2-6dff-90cd-3f47-fe8deaae1fa8@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggeme701-chm.china.huawei.com (10.1.199.97) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,41 +63,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- live-patching@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Miroslav Benes <mbenes@suse.cz>, linux-s390@vger.kernel.org,
- Joe Lawrence <joe.lawrence@redhat.com>, x86@kernel.org,
- Ingo Molnar <mingo@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- Jiri Kosina <jikos@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-kernel@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "songyuanzheng@huawei.com" <songyuanzheng@huawei.com>,
+ "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 2022-03-28 08:26:48, Christophe Leroy wrote:
-> All three versions of klp_arch_set_pc() do exactly the same: they
-> call ftrace_instruction_pointer_set().
-> 
-> Call ftrace_instruction_pointer_set() directly and remove
-> klp_arch_set_pc().
-> 
-> As klp_arch_set_pc() was the only thing remaining in asm/livepatch.h
-> on x86 and s390, remove asm/livepatch.h
-> 
-> livepatch.h remains on powerpc but its content is exclusively used
-> by powerpc specific code.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Acked-by: Petr Mladek <pmladek@suse.com>
-
-I am going to take it via livepatch/livepatch.git for 5.19. We are
-already in the middle of the merge window and this is not critical.
-
-Best Regards,
-Petr
+On 2022/3/28 22:12, Christophe Leroy wrote:
+> Hi,
+>
+> Le 26/03/2022 à 08:55, Kefeng Wang a écrit :
+>> Hi maintainers，
+>>
+>> I saw the patches has been reviewed[1], could they be merged?
+> Thinking about it once more, I think the patches should go in reverse
+> order. Patch 2 should go first and patch 1 should go after.
+>
+> Otherwise, once patch 1 is applied and patch 2 is not applied yet,
+> virt_addr_valid() doesn't work anymore.
+Should I resend them or could the maintainer reverse order when merging 
+them?
+>
+> Christophe
+>
+>> Many thanks.
+>>
+>> [1] https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=286464
+>>
