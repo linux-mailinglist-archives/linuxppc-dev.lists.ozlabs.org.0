@@ -1,95 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C3B4EB46B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 22:06:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F354EB4EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Mar 2022 22:55:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KSgYt5nN4z2yP7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 07:06:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KShfZ524Fz3c29
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 07:55:34 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm1 header.b=IDkyQ8wv;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=MXBIEYDu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel-com.20210112.gappssmtp.com header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=x/3PVpLY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=svenpeter.dev (client-ip=66.111.4.29;
- helo=out5-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev;
+ smtp.mailfrom=intel.com (client-ip=2607:f8b0:4864:20::42a;
+ helo=mail-pf1-x42a.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev
- header.a=rsa-sha256 header.s=fm1 header.b=IDkyQ8wv; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=MXBIEYDu; 
- dkim-atps=neutral
-X-Greylist: delayed 397 seconds by postgrey-1.36 at boromir;
- Wed, 30 Mar 2022 07:05:47 AEDT
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
- [66.111.4.29])
+ unprotected) header.d=intel-com.20210112.gappssmtp.com
+ header.i=@intel-com.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=x/3PVpLY; dkim-atps=neutral
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com
+ [IPv6:2607:f8b0:4864:20::42a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KSgY76ybmz2xsW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 07:05:47 +1100 (AEDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
- by mailout.nyi.internal (Postfix) with ESMTP id 660C65C01BB;
- Tue, 29 Mar 2022 15:59:05 -0400 (EDT)
-Received: from imap47 ([10.202.2.97])
- by compute3.internal (MEProxy); Tue, 29 Mar 2022 15:59:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
- h=cc:cc:content-transfer-encoding:content-type:date:date:from
- :from:in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm1; bh=ECeje11hlUWWc7
- ahU+melr+v3923TUV1SOEn+aMSwfc=; b=IDkyQ8wvClEa9bEVHsgEqxUSqV0Cqf
- 0X7a5NoChmomd/wU1PWKAzdiPjS8DgkvrrqPi6Wv0Uta2ngB9z/OnTkK5lkyVx0q
- 1u7KmRN4XcTAFWSq/SH4SBA7jOUsYsvH/VoZQt6NCJ3z4hD5abm1Z2qOHjFTUDil
- UpwTPJa4ZNACsyT38uouIFQA4nBUP+5bcJsy8XlvSA8IqWhcbOPQ5szbncCB78NC
- ZXaHGW8YBtjqX9rNqG4PN0pvyRZqPlTOuNRrpj6rntgWEaMXEyyXLoFj3pr3XwNS
- cBWpfnOPwud9JERKOCiPSNm+DA92TbRbK3iZyC0XX+AKrdvqsi6LwYtQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm3; bh=ECeje11hlUWWc7ahU+melr+v3923TUV1SOEn+aMSw
- fc=; b=MXBIEYDu0Diu7AlV79qmpfV03zUCN1oIh30QqCzW2JH0EBCCiKmllCFjl
- FHIBVeFNemPwI9U8LbzqFRgJTWgO9ot149wgeULc9+lmBHKkMV2+Jo55eLcauOJd
- VaV1TND7gvEFTXr9vmsL0M3pjb/8diL9ECBh4QUYpHqALVeY0KBTeStCNi9rVXMb
- YR7l392wToBSdZ2rfhDFUJZMes3IlZFNrO43zIBI4prttkCZxYoVaV5lS2qdbdLT
- f47kBEaKl7ZKNtOhosOFwnliOXguDnQ/lvyFGzg7gdRxtLwLiuj60Bxb//dOFmMc
- OTLQfju6c7tMuFomfwDq2g0CANarA==
-X-ME-Sender: <xms:B2VDYiEnOrERQd-p9wWp-eftG2L8MPSZqc0sLH7oVVbwJLlosE-EyA>
- <xme:B2VDYjVrTK0qZeBjRKyddoXoKpyS3KNkneLa8MjMfpjYC67AU_bOjVEr2JRyiPUrY
- ErtloDAUWU7_GRwuO0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudeitddguddukecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefofgggkfgjfhffhffvufgtgfesthhqredtreerjeenucfhrhhomhepfdfu
- vhgvnhcurfgvthgvrhdfuceoshhvvghnsehsvhgvnhhpvghtvghrrdguvghvqeenucggtf
- frrghtthgvrhhnpeetueduleetfeeuledvleehheeivedvhfekheejjeduhfeileffffdu
- hfekieelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
- hmpehsvhgvnhesshhvvghnphgvthgvrhdruggvvh
-X-ME-Proxy: <xmx:B2VDYsKbFzSBts_hisz_R4QUxzHx0zcNz3-jedNjie8uqSA22XZL6g>
- <xmx:B2VDYsEJuXuGPkiroERW54xpqXxJPkeSdKAfcHOQHU3zQKFzhrQGMQ>
- <xmx:B2VDYoVRvIT0BjVz8fpeNtd7BrIReH8gbQfIdrHryTJABYn-LINxvQ>
- <xmx:CWVDYhNPHo1q35d7aYeXWAoLtOGKsy73hJ8Z-bzeseDd6mwKB8yChQ>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 8FE2F2740137; Tue, 29 Mar 2022 15:59:03 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.5.0-alpha0-4911-g925b585eab-fm-20220323.003-g925b585e
-Mime-Version: 1.0
-Message-Id: <74a36bce-3d6e-4124-add1-8ed44ba2c80d@www.fastmail.com>
-In-Reply-To: <20220329183817.21656-1-povik+lin@cutebit.org>
-References: <20220329183817.21656-1-povik+lin@cutebit.org>
-Date: Tue, 29 Mar 2022 21:58:43 +0200
-From: "Sven Peter" <sven@svenpeter.dev>
-To: =?UTF-8?Q?Martin_Povi=C5=A1er?= <povik+lin@cutebit.org>,
- "Hector Martin" <marcan@marcan.st>, "Michael Ellerman" <mpe@ellerman.id.au>
-Subject: Re: [PATCH] i2c: pasemi: Wait for write xfers to finish
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KShdw6y4Pz2xsG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 07:54:54 +1100 (AEDT)
+Received: by mail-pf1-x42a.google.com with SMTP id z16so16966923pfh.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 13:54:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20210112.gappssmtp.com; s=20210112;
+ h=mime-version:from:date:message-id:subject:to:cc;
+ bh=FDqhi0N/S/cUCLoAuboiyOBP3IQEQ1O6QqcgKgHDMTU=;
+ b=x/3PVpLYjRnKwsaey2xougaew21RYo4GEuoyEXNrglvcGPfUh+vqthPJlK8+C2bTgd
+ 8IMQTz6lp1ZgXncGNdvSlXcRhEcstjb6VorrpPRbOp/t0HyM0LTjRzh5bRyXtvuo433s
+ Or1qeAQH7BuLCtaKAaRBbLN0NO1o8aIwh9hcBCiqhksd6QZoCn7M+28UTb00TNrOsW4e
+ X96Aj//eZ/TfBgpoel8d1ub+9aJsdZ/fBzuZP5e0dRYyqxdW0GdfkIuE/8uirSGD1dfk
+ blTKmQGCEUVBvGIGXqfr4EQXMS/OOPijoAnAYxMAqoyD+VuClv5yU/a7zvGwdYqW7+OE
+ Oe2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+ bh=FDqhi0N/S/cUCLoAuboiyOBP3IQEQ1O6QqcgKgHDMTU=;
+ b=lZteLxOgwR2lYZmky3EFoUCq21ZizPVzpe1oV++PzBmgCz8bcuAVYZaKb0zmSRPPvE
+ vR88dArE98/zFnIDlwBLIAlSL5VmaDJuaYjhejgrM7RQ2GVKNjI/5UTCLWVmf8eHGDuR
+ OK2KjQiStm1N9sS9LVkUk7cSCnQGGKR2jgvD10SaB8xqeRZ1+W3dYaaJQuImjDuQy5aW
+ SDjClfreYfZQl9QwpDNQ3EdgQAs9I36EEwb5sP/aczU3HH6nexBew9pzqnQfcoNFb/5V
+ q4JUj4J+5RxNAUoIWZ7y8rrULvSX3Q6QilbwJjIsszmJEdkKh4F/BuJnV3CcnnKYEgyf
+ TTyg==
+X-Gm-Message-State: AOAM532n9wUS9UtwbRpNIxhL0xYlUDdT+uUQV5e2ANcY7DJXxer9YH/l
+ t9Jel7kkduvFu5p6aqs63IisjcXUkJrOy13qmCMhHQ==
+X-Google-Smtp-Source: ABdhPJwmS9mDmjkje+k3GsHwWgWBckFPeTJrJcGyj7bgk4ha15BJ4lDerfFVoIwXMu5O3fOv2UnxO/USzXRhOvcTnJw=
+X-Received: by 2002:a05:6a02:283:b0:342:703e:1434 with SMTP id
+ bk3-20020a056a02028300b00342703e1434mr3350486pgb.74.1648587292181; Tue, 29
+ Mar 2022 13:54:52 -0700 (PDT)
+MIME-Version: 1.0
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 29 Mar 2022 13:54:41 -0700
+Message-ID: <CAPcyv4hydiSDFXVVBtYyuUgutTca6eL67s7txkSgzGzW1VGT0A@mail.gmail.com>
+Subject: [GIT PULL] LIBNVDIMM update for v5.18
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,75 +73,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Olof Johansson <olof@lixom.net>,
- Paul Mackerras <paulus@samba.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Jean Delvare <khali@linux-fr.org>, Janne Grunau <j@jannau.net>,
+Cc: Linux NVDIMM <nvdimm@lists.linux.dev>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 29, 2022, at 20:38, Martin Povi=C5=A1er wrote:
-> Wait for completion of write transfers before returning from the drive=
-r.
-> At first sight it may seem advantageous to leave write transfers queued
-> for the controller to carry out on its own time, but there's a couple =
-of
-> issues with it:
->
->  * Driver doesn't check for FIFO space.
+Hi Linus, please pull from:
 
-Maybe we should also check that in a follow-up patch :-)
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/libnvdimm-for-5.18
 
->
->  * The queued writes can complete while the driver is in its I2C read
->    transfer path which means it will get confused by the raising of
->    XEN (the 'transaction ended' signal). This can cause a spurious
->    ENODATA error due to premature reading of the MRXFIFO register.
->
-> Adding the wait fixes some unreliability issues with the driver. There=
-'s
-> some efficiency cost to it (especially with pasemi_smb_waitready doing
-> its polling), but that will be alleviated once the driver receives
-> interrupt support.
->
-> Fixes: beb58aa39e6e ("i2c: PA Semi SMBus driver")
-> Signed-off-by: Martin Povi=C5=A1er <povik+lin@cutebit.org>
-> ---
+...to receive the libnvdimm update for this cycle which includes the
+deprecation of block-aperture mode and a new perf events interface for
+the papr_scm nvdimm driver. The perf events approach was acked by
+PeterZ. You will notice the top commit is less than a week old as
+linux-next exposure identified some build failure scenarios. Kajol
+turned around a fix and it has appeared in linux-next with no
+additional reports. Some other fixups for the removal of
+block-aperture mode also generated some follow-on fixes from -next
+exposure.
 
-Reviewed-by: Sven Peter <sven@svenpeter.dev>
+I am not aware of anything else outstanding, please pull.
 
->
-> Tested on Apple's t8103 chip. To my knowledge the PA Semi controller
-> in its pre-Apple occurences behaves the same as far as this patch is
-> concerned.
->
->  drivers/i2c/busses/i2c-pasemi-core.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/i2c/busses/i2c-pasemi-core.c=20
-> b/drivers/i2c/busses/i2c-pasemi-core.c
-> index 7728c8460dc0..9028ffb58cc0 100644
-> --- a/drivers/i2c/busses/i2c-pasemi-core.c
-> +++ b/drivers/i2c/busses/i2c-pasemi-core.c
-> @@ -137,6 +137,12 @@ static int pasemi_i2c_xfer_msg(struct i2c_adapter=20
-> *adapter,
->=20
->  		TXFIFO_WR(smbus, msg->buf[msg->len-1] |
->  			  (stop ? MTXFIFO_STOP : 0));
-> +
-> +		if (stop) {
-> +			err =3D pasemi_smb_waitready(smbus);
-> +			if (err)
-> +				goto reset_out;
-> +		}
+---
 
-Looks like pasemi_smb_xfer doesn't suffer from the same issue.
-I wonder if every device connected to the bus on the original PA Semi bo=
-ards
-only used that path and that's why no one noticed it.
+The following changes since commit 754e0b0e35608ed5206d6a67a791563c631cec07:
 
+  Linux 5.17-rc4 (2022-02-13 12:13:30 -0800)
 
-Sven
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/libnvdimm-for-5.18
+
+for you to fetch changes up to ada8d8d337ee970860c9844126e634df8076aa11:
+
+  nvdimm/blk: Fix title level (2022-03-23 17:52:33 -0700)
+
+----------------------------------------------------------------
+libnvdimm for 5.18
+
+- Add perf support for nvdimm events, initially only for 'papr_scm'
+  devices.
+
+- Deprecate the 'block aperture' support in libnvdimm, it only ever
+  existed in the specification, not in shipping product.
+
+----------------------------------------------------------------
+Dan Williams (6):
+      nvdimm/region: Fix default alignment for small regions
+      nvdimm/blk: Delete the block-aperture window driver
+      nvdimm/namespace: Delete blk namespace consideration in shared paths
+      nvdimm/namespace: Delete nd_namespace_blk
+      ACPI: NFIT: Remove block aperture support
+      nvdimm/region: Delete nd_blk_region infrastructure
+
+Kajol Jain (6):
+      drivers/nvdimm: Add nvdimm pmu structure
+      drivers/nvdimm: Add perf interface to expose nvdimm performance stats
+      powerpc/papr_scm: Add perf interface support
+      docs: ABI: sysfs-bus-nvdimm: Document sysfs event format entries
+for nvdimm pmu
+      drivers/nvdimm: Fix build failure when CONFIG_PERF_EVENTS is not set
+      powerpc/papr_scm: Fix build failure when
+
+Lukas Bulwahn (1):
+      MAINTAINERS: remove section LIBNVDIMM BLK: MMIO-APERTURE DRIVER
+
+Tom Rix (1):
+      nvdimm/blk: Fix title level
+
+ Documentation/ABI/testing/sysfs-bus-nvdimm |  35 ++
+ Documentation/driver-api/nvdimm/nvdimm.rst | 406 +++++------------------
+ MAINTAINERS                                |  11 -
+ arch/powerpc/include/asm/device.h          |   5 +
+ arch/powerpc/platforms/pseries/papr_scm.c  | 230 +++++++++++++
+ drivers/acpi/nfit/core.c                   | 387 +---------------------
+ drivers/acpi/nfit/nfit.h                   |   6 -
+ drivers/nvdimm/Kconfig                     |  25 +-
+ drivers/nvdimm/Makefile                    |   4 +-
+ drivers/nvdimm/blk.c                       | 335 -------------------
+ drivers/nvdimm/bus.c                       |   2 -
+ drivers/nvdimm/dimm_devs.c                 | 204 +-----------
+ drivers/nvdimm/label.c                     | 346 +-------------------
+ drivers/nvdimm/label.h                     |   5 +-
+ drivers/nvdimm/namespace_devs.c            | 506 ++---------------------------
+ drivers/nvdimm/nd-core.h                   |  27 +-
+ drivers/nvdimm/nd.h                        |  13 -
+ drivers/nvdimm/nd_perf.c                   | 329 +++++++++++++++++++
+ drivers/nvdimm/region.c                    |  31 +-
+ drivers/nvdimm/region_devs.c               | 157 ++-------
+ include/linux/libnvdimm.h                  |  24 --
+ include/linux/nd.h                         |  78 +++--
+ include/uapi/linux/ndctl.h                 |   2 -
+ tools/testing/nvdimm/Kbuild                |   4 -
+ tools/testing/nvdimm/config_check.c        |   1 -
+ tools/testing/nvdimm/test/ndtest.c         |  67 +---
+ tools/testing/nvdimm/test/nfit.c           |  23 --
+ 27 files changed, 833 insertions(+), 2430 deletions(-)
+ delete mode 100644 drivers/nvdimm/blk.c
+ create mode 100644 drivers/nvdimm/nd_perf.c
