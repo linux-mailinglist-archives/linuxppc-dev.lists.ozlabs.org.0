@@ -2,54 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F21B4ECFD5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 00:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EA84ECFD6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 00:56:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KTMGK33Ssz305p
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 09:55:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KTMH42SCHz30FH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 09:56:00 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JUVULduN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kXuDa67d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=JUVULduN; 
+ header.s=k20201202 header.b=kXuDa67d; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KTMFd6dmlz2xBK
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 09:54:45 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KTMGM2z6yz2yHX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 09:55:23 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 342B5617BB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:54:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 97F04C340F0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:54:42 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 34F0DB81D46
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:55:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D2E6DC340F3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648680882;
- bh=NRYM8GkScXecoVQ8QaLzyYGRG9CMMWR70FTwwvUqBxE=;
+ s=k20201202; t=1648680917;
+ bh=/9DUXDve/1vY/geH3cRgtbd0W7lebtdL7dqQweNfTcs=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=JUVULduNUT/wsUKEhu7hMdNYqzpMxKyyuXqGwFTvssX7uE8ihmI6p3mrZS3/a67Wr
- 08m6QfnT4xegrfLTXLzobUAdvtWz/0b8hID2MEaAAOj9HoWBp8SJ+gdI+Gz16q3gJQ
- jqOg425hZuHkRcTneaYe4NL/+Qmeev2b2XNRShL5niZg/H/7WwS3bLw8hCtG+2kEpQ
- p5XRc/C+pY3pd5ThU9TndlNlkkHZDds76BQNIJnrBU36oDR2lTaXKVWFZhgk+vdxS3
- fTFFZ58YvjCr0IIjZzLzMNh2gLmNRZzLRiWO8Ae8vzY1OKZSbbwoujiTqcYctZMuvN
- wfmjRrVBKNapw==
+ b=kXuDa67dgl/tQnQdH9BK6h9hhwfWoCU92USFVi01UnL9ZVcxB0OkvN/iqM+nz00G0
+ k1feRy1WJmE6ue3/ijoUtz49GQu2mHlzA05+K9Jmg0uiiJLsMl+FKZMdreXG3SrPCO
+ MreWxo8HfmLm0rbDlLJCH9Kr7DWCRCA7ADQkwXgNIwdgo5sEMP0rV2CvCqcKkZGfC/
+ WnZOZCAPPA8xSJE754DMalbz6+w0zPFdCEOpxQGejeVFN9KSWUmPTFCnOSPe6QF01O
+ hgcQnPZllVn363wpUc5jz26mf3pwwRVHDGhnzcxeRfjwH57C/n3HkA6XzioDuj4WWk
+ 7CDV7496EMWtQ==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id 79F0BC05FD0; Wed, 30 Mar 2022 22:54:42 +0000 (UTC)
+ from userid 48) id BF29FC05FD0; Wed, 30 Mar 2022 22:55:17 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 215781] Highmem support broken on kernels greater 5.15.x on
  ppc32?
-Date: Wed, 30 Mar 2022 22:54:42 +0000
+Date: Wed, 30 Mar 2022 22:55:17 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -65,7 +63,7 @@ X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-215781-206035-A9BpXHKsni@https.bugzilla.kernel.org/>
+Message-ID: <bug-215781-206035-jvSNyIOLJk@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-215781-206035@https.bugzilla.kernel.org/>
 References: <bug-215781-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -90,10 +88,10 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D215781
 
---- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 300665
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300665&action=3Dedit
-dmesg (5.15.32, PowerMac G4 DP)
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 300666
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300666&action=3Dedit
+kernel .config (5.16.18, PowerMac G4 DP)
 
 --=20
 You may reply to this email to add a comment.
