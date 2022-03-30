@@ -2,111 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046874EBB54
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 08:59:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7D44EBB5C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 09:00:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KSy3H5pHBz2yyK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 17:59:23 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LILja68p;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=T3DkEgcC;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KSy554Gtzz3036
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 18:00:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=LILja68p; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=T3DkEgcC; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KSy2W0ns5z2xTd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 17:58:41 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1648623518;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BF9Fr3Hf2Q3seTfZG5uyvCg9ZVloRlsxZukD5j+fS4A=;
- b=LILja68p93ujgunKcSzMgpDX3ug346qSFD0y+glc5bTbCCYMTwUZxkPKwSQ21xBsZDcg/0
- UVJ6edyNVKNbFwOqdDGWq2faDq4mEnY/Lv259GNDI/5bgN9JNPfOM0DtyZUM068QEyx3fn
- Cyz34CPWzWlJKK/4SOSWh6AKkI7+Zk0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1648623519;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BF9Fr3Hf2Q3seTfZG5uyvCg9ZVloRlsxZukD5j+fS4A=;
- b=T3DkEgcCFk4eL5NLHs9CYjrsQYHOxIgCAX2tn5lv38LyfhUPdiX7bMLYfJoNzAM64lzwCr
- IgRYOtCi/rHqMA9kDo4fhN0wf7bmx84ezhrW+0wQhtqc7ui0EtHI8OZACI4UMqutIvs59u
- JTKEebCZPGxbORhagDeiphPepzsjPP8=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-18-EK91-SbBOH-YpvXUMDHLeg-1; Wed, 30 Mar 2022 02:58:37 -0400
-X-MC-Unique: EK91-SbBOH-YpvXUMDHLeg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- r82-20020a1c4455000000b0038c15a1ed8cso333942wma.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 23:58:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:organization:in-reply-to
- :content-transfer-encoding;
- bh=BF9Fr3Hf2Q3seTfZG5uyvCg9ZVloRlsxZukD5j+fS4A=;
- b=mCl/qEPe20RHz9ZHJN8Om7JfLa6DGveNU0RhXD6oMCsajhouVeOvXvjcURWQUq8X2z
- VzM25UCxZkX8SCKoH6NW44KsAUJEx1rdsLH11UW+u0G6LxUNDEp5jIFmF/goyEl+Usik
- cuB4wnkWcm50Z8ME6PqLYH08riHA4VfsA2NufgMn3NzNBqix49nxlByMwthF34WVDFyN
- o5mvnM/AYQvztgkpZDx73pjvPB4ixiWTeMhfe2IM4jhBnHVI7fDZEJeywrPVacHAGpld
- t9d3j0pyOdXLGiz9vENT5iPYQFkg24Upjkl/gQgrJjgxkiw7/1PqRJr0NQ3E6zhKunPY
- BOlw==
-X-Gm-Message-State: AOAM533LC5sJULDYDDfPqRriK6QeUfhIKxtRxxy3NvCDp//WUM7oGq19
- CRW6Vo8alONdd4V28Vig6PGrgZyu8qaNSXd/hNnHtA/xgDxbfwgGRGyCZJOz+8XhCVfzw/eS6TT
- KCMaGaXYoPUX4lIEjk/r0xzzUrQ==
-X-Received: by 2002:adf:f943:0:b0:203:e832:129 with SMTP id
- q3-20020adff943000000b00203e8320129mr34761257wrr.626.1648623515915; 
- Tue, 29 Mar 2022 23:58:35 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwtto01FveovjFViTUCxDqiAQ+5FDv0R1GlHAedwP32FH88iQTdtwzmDfuXuu4j6BvJ3hJeZg==
-X-Received: by 2002:adf:f943:0:b0:203:e832:129 with SMTP id
- q3-20020adff943000000b00203e8320129mr34761230wrr.626.1648623515578; 
- Tue, 29 Mar 2022 23:58:35 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c705:2200:178b:7244:2a1f:b5d8?
- (p200300cbc7052200178b72442a1fb5d8.dip0.t-ipconnect.de.
- [2003:cb:c705:2200:178b:7244:2a1f:b5d8])
- by smtp.gmail.com with ESMTPSA id
- r65-20020a1c4444000000b0038c48dd23b9sm6003935wma.5.2022.03.29.23.58.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Mar 2022 23:58:35 -0700 (PDT)
-Message-ID: <3272510e-ff5c-8694-c45c-7be9eaed4b42@redhat.com>
-Date: Wed, 30 Mar 2022 08:58:32 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KSy4h0XZxz2xWm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 18:00:34 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KSy4b67c7z9sS9;
+ Wed, 30 Mar 2022 09:00:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id RCdpq8d0SeNj; Wed, 30 Mar 2022 09:00:31 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KSy4b59wqz9sS8;
+ Wed, 30 Mar 2022 09:00:31 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9F8308B77B;
+ Wed, 30 Mar 2022 09:00:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id P1-xpKC3Oz0p; Wed, 30 Mar 2022 09:00:31 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 761788B765;
+ Wed, 30 Mar 2022 09:00:31 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 22U70Mjd279108
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Wed, 30 Mar 2022 09:00:22 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 22U70LeF279107;
+ Wed, 30 Mar 2022 09:00:21 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Steven Rostedt <rostedt@goodmis.org>, Ingo Molnar <mingo@redhat.com>
+Subject: [PATCH v3] ftrace: Make ftrace_graph_is_dead() a static branch
+Date: Wed, 30 Mar 2022 09:00:19 +0200
+Message-Id: <e0411a6a0ed3eafff0ad2bc9cd4b0e202b4617df.1648623570.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.2
-Subject: Re: [PATCH v2 7/8] powerpc/pgtable: remove _PAGE_BIT_SWAP_TYPE for
- book3s
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20220329164329.208407-1-david@redhat.com>
- <20220329164329.208407-8-david@redhat.com>
- <22d3c42d-402f-8aeb-e989-c05d023b2ed3@csgroup.eu>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <22d3c42d-402f-8aeb-e989-c05d023b2ed3@csgroup.eu>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1648623618; l=3505; s=20211009;
+ h=from:subject:message-id; bh=aCcAKl5FNjWRbsv3MCPz0tiPrIo7QmLsO8hbWKLshtE=;
+ b=Ssufl5SrZq1mI9BBqpCSJGu2PAG8ypJPr+aKeZbTU2iNAVEhPsSQlAXql/uBE0A/atfYOwelonGX
+ GnVbOCcAApbNCTtw6NSI2ANpwC9rBoNG/IsmWD5MMsJSFY0yyOs+
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -119,71 +72,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, Catalin Marinas <catalin.marinas@arm.com>,
- Yang Shi <shy828301@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Peter Xu <peterx@redhat.com>, Michal Hocko <mhocko@kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>, Donald Dutile <ddutile@redhat.com>,
- Liang Zhang <zhangliang5@huawei.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>,
- Christoph Hellwig <hch@lst.de>, Andrea Arcangeli <aarcange@redhat.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Shakeel Butt <shakeelb@google.com>, Pedro Gomes <pedrodemargomes@gmail.com>,
- "x86@kernel.org" <x86@kernel.org>, Hugh Dickins <hughd@google.com>,
- Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
- Jason Gunthorpe <jgg@nvidia.com>, David Rientjes <rientjes@google.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Nadav Amit <namit@vmware.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Rik van Riel <riel@surriel.com>,
- John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Oded Gabbay <oded.gabbay@gmail.com>, Jann Horn <jannh@google.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Oleg Nesterov <oleg@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Roman Gushchin <guro@fb.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 30.03.22 08:07, Christophe Leroy wrote:
-> 
-> 
-> Le 29/03/2022 à 18:43, David Hildenbrand a écrit :
->> The swap type is simply stored in bits 0x1f of the swap pte. Let's
->> simplify by just getting rid of _PAGE_BIT_SWAP_TYPE. It's not like that
->> we can simply change it: _PAGE_SWP_SOFT_DIRTY would suddenly fall into
->> _RPAGE_RSV1, which isn't possible and would make the
->> BUILD_BUG_ON(_PAGE_HPTEFLAGS & _PAGE_SWP_SOFT_DIRTY) angry.
->>
->> While at it, make it clearer which bit we're actually using for
->> _PAGE_SWP_SOFT_DIRTY by just using the proper define and introduce and
->> use SWP_TYPE_MASK.
->>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> ---
->>   arch/powerpc/include/asm/book3s/64/pgtable.h | 12 +++++-------
-> 
-> Why only BOOK3S ? Why not BOOK3E as well ?
+ftrace_graph_is_dead() is used on hot paths, it just reads a variable
+in memory and is not worth suffering function call constraints.
 
-Hi Cristophe,
+For instance, at entry of prepare_ftrace_return(), inlining it avoids
+saving prepare_ftrace_return() parameters to stack and restoring them
+after calling ftrace_graph_is_dead().
 
-I'm focusing on the most relevant enterprise architectures for now. I
-don't have the capacity to convert each and every architecture at this
-point (especially, I don't to waste my time in case this doesn't get
-merged, and book3e didn't look straight forward to me).
+While at it using a static branch is even more performant and is
+rather well adapted considering that the returned value will almost
+never change.
 
-Once this series hits upstream, I can look into other architectures --
-and I'll be happy if other people jump in that have more familiarity
-with the architecture-specific swp pte layouts.
+Inline ftrace_graph_is_dead() and replace 'kill_ftrace_graph' bool
+by a static branch.
 
-Thanks
+The performance improvement is noticeable.
 
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v3: Keep includes in upside-down x-mas tree
+
+v2: Use a static branch instead of a global bool var.
+---
+ include/linux/ftrace.h | 16 +++++++++++++++-
+ kernel/trace/fgraph.c  | 17 +++--------------
+ 2 files changed, 18 insertions(+), 15 deletions(-)
+
+diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+index ed8cf433a46a..4816b7e11047 100644
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/trace_recursion.h>
+ #include <linux/trace_clock.h>
++#include <linux/jump_label.h>
+ #include <linux/kallsyms.h>
+ #include <linux/linkage.h>
+ #include <linux/bitops.h>
+@@ -1018,7 +1019,20 @@ unsigned long ftrace_graph_ret_addr(struct task_struct *task, int *idx,
+ extern int register_ftrace_graph(struct fgraph_ops *ops);
+ extern void unregister_ftrace_graph(struct fgraph_ops *ops);
+ 
+-extern bool ftrace_graph_is_dead(void);
++/**
++ * ftrace_graph_is_dead - returns true if ftrace_graph_stop() was called
++ *
++ * ftrace_graph_stop() is called when a severe error is detected in
++ * the function graph tracing. This function is called by the critical
++ * paths of function graph to keep those paths from doing any more harm.
++ */
++DECLARE_STATIC_KEY_FALSE(kill_ftrace_graph);
++
++static inline bool ftrace_graph_is_dead(void)
++{
++	return static_branch_unlikely(&kill_ftrace_graph);
++}
++
+ extern void ftrace_graph_stop(void);
+ 
+ /* The current handlers in use */
+diff --git a/kernel/trace/fgraph.c b/kernel/trace/fgraph.c
+index 19028e072cdb..8f4fb328133a 100644
+--- a/kernel/trace/fgraph.c
++++ b/kernel/trace/fgraph.c
+@@ -7,6 +7,7 @@
+  *
+  * Highly modified by Steven Rostedt (VMware).
+  */
++#include <linux/jump_label.h>
+ #include <linux/suspend.h>
+ #include <linux/ftrace.h>
+ #include <linux/slab.h>
+@@ -23,24 +24,12 @@
+ #define ASSIGN_OPS_HASH(opsname, val)
+ #endif
+ 
+-static bool kill_ftrace_graph;
++DEFINE_STATIC_KEY_FALSE(kill_ftrace_graph);
+ int ftrace_graph_active;
+ 
+ /* Both enabled by default (can be cleared by function_graph tracer flags */
+ static bool fgraph_sleep_time = true;
+ 
+-/**
+- * ftrace_graph_is_dead - returns true if ftrace_graph_stop() was called
+- *
+- * ftrace_graph_stop() is called when a severe error is detected in
+- * the function graph tracing. This function is called by the critical
+- * paths of function graph to keep those paths from doing any more harm.
+- */
+-bool ftrace_graph_is_dead(void)
+-{
+-	return kill_ftrace_graph;
+-}
+-
+ /**
+  * ftrace_graph_stop - set to permanently disable function graph tracing
+  *
+@@ -51,7 +40,7 @@ bool ftrace_graph_is_dead(void)
+  */
+ void ftrace_graph_stop(void)
+ {
+-	kill_ftrace_graph = true;
++	static_branch_enable(&kill_ftrace_graph);
+ }
+ 
+ /* Add a function return address to the trace stack on thread info.*/
 -- 
-Thanks,
-
-David / dhildenb
+2.35.1
 
