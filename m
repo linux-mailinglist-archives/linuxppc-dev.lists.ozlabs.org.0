@@ -1,44 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009EA4ECDC7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 22:20:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6981F4ECFD1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 00:53:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KTHqN63tpz2yxx
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 07:20:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KTMCj2j9Jz2yXM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 09:53:05 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MaAaUm7R;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org;
- envelope-from=srs0=x/co=uj=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KTHq05zTPz2xTs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 07:19:56 +1100 (AEDT)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=MaAaUm7R; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KTMBx0HK0z2xT8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 09:52:24 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id CE93E615E7;
- Wed, 30 Mar 2022 20:19:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B13C340EC;
- Wed, 30 Mar 2022 20:19:51 +0000 (UTC)
-Date: Wed, 30 Mar 2022 16:19:50 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v2] ftrace: Make ftrace_graph_is_dead() a static branch
-Message-ID: <20220330161950.1d12d708@gandalf.local.home>
-In-Reply-To: <8c65a6fb-cd93-926d-7851-0831658dd289@csgroup.eu>
-References: <8628338322fa74287ca8d432d5c0c1964acd6f2a.1648195329.git.christophe.leroy@csgroup.eu>
- <20220329220733.682172ec@gandalf.local.home>
- <8c65a6fb-cd93-926d-7851-0831658dd289@csgroup.eu>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 60335617DB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:52:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BF150C340EC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:52:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1648680740;
+ bh=9x/vbxvO2V/n0az2vCzCS5jCtIMwId2+eabB4iOKq24=;
+ h=From:To:Subject:Date:From;
+ b=MaAaUm7RY0VtkyANgdBnO883bAFRJ8g0LhBW9vTCQSLt0/V6wTOnt0h8/OetYqW66
+ fkmWv9TAHSMa5muRLaERITccyav4gXWPGn8XJyxefGgzwZ/UgY4hT28eBIzqhg+iJC
+ NVJyBaOYQxWmQWBVqp2pEPpUwt9TwTaHK+o3QXhOq6Hg3VMgNpLppEGr1o0l9aFVmu
+ 8PVak9szK3/JFtpq6gLEfzmOg5XGYLBOTR+Ok/MtWObiOXRhxpf6JYQHjeV5HmWmJO
+ Xb4P7cf8PzYu+/vz8zqDXyEugVMkLeupiG+wIxQa6ZOzNpxAVduK/qkGG69p9XNiGO
+ b3nMsR28JfUmw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id A0639C05FCE; Wed, 30 Mar 2022 22:52:20 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215781] New: Highmem support broken on kernels greater 5.15.x
+ on ppc32?
+Date: Wed, 30 Mar 2022 22:52:20 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cf_regression attachments.created
+Message-ID: <bug-215781-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,39 +82,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ingo Molnar <mingo@redhat.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 30 Mar 2022 06:55:26 +0000
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215781
 
-> > Small nit. Please order the includes in "upside-down x-mas tree" fashion:
-> > 
-> > #include <linux/jump_label.h>
-> > #include <linux/suspend.h>
-> > #include <linux/ftrace.h>
-> > #include <linux/slab.h>
-> >   
-> 
-> That's the first time I get such a request. Usually people request 
-> #includes to be in alphabetical order so when I see a file that has 
-> headers in alphabetical order I try to not break it, but here that was 
-> not the case so I put it at the end of the list.
+            Bug ID: 215781
+           Summary: Highmem support broken on kernels greater 5.15.x on
+                    ppc32?
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.16.18
+          Hardware: PPC-32
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-32
+          Assignee: platform_ppc-32@kernel-bugs.osdl.org
+          Reporter: erhard_f@mailbox.org
+        Regression: Yes
 
-This is something that Ingo Molnar started back in 2009 or so. And I do
-find it easier on the eyes ;-)  I may be the only one today trying to keep
-it (albeit poorly).
+Created attachment 300664
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300664&action=3Dedit
+dmesg (5.16.18, PowerMac G4 DP)
 
-It's not a hard requirement, but I find it makes the code look more like
-art, which it is :-D
+Noticed my G4 DP ran a bit sluggish... Turned out it uses only 614664K of
+2097152K RAM. Happens on both kernel 5.16.18 and 5.17.1. Kernels 5.15 and
+before work as expected.
 
-> 
-> I'll send v3
+It seems to be a problem with highmem as 5.16.18 and 5.1.7.1 show 0K highme=
+m.
+CONFIG_HIGHMEM=3Dy is of course set.
 
-Thanks,
+Kernel 5.16.18 says:
+[...]
+Top of RAM: 0x80000000, Total RAM: 0x80000000
+Memory hole size: 0MB
+Zone ranges:
+  DMA      [mem 0x0000000000000000-0x0000000027ffffff]
+  Normal   empty
+  HighMem  [mem 0x0000000028000000-0x000000007fffffff]
+Movable zone start for each node
+Early memory node ranges
+  node   0: [mem 0x0000000000000000-0x000000007fffffff]
+Initmem setup node 0 [mem 0x0000000000000000-0x000000007fffffff]
+percpu: Embedded 12 pages/cpu s19404 r8192 d21556 u49152
+pcpu-alloc: s19404 r8192 d21556 u49152 alloc=3D12*4096
+pcpu-alloc: [0] 0 [0] 1=20
+Built 1 zonelists, mobility grouping on.  Total pages: 522848
+Kernel command line: ro root=3D/dev/sda5 zswap.max_pool_percent=3D16
+zswap.zpool=3Dz3fold slub_debug=3DFZP page_poison=3D1
+netconsole=3D6666@192.168.2.5/eth0,6666@192.168.2.2/70:85:C2:30:EC:01=20
+Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
+Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
+mem auto-init: stack:__user(zero), heap alloc:off, heap free:off
+Kernel virtual memory layout:
+  * 0xffbbf000..0xfffff000  : fixmap
+  * 0xff400000..0xff800000  : highmem PTEs
+  * 0xff115000..0xff400000  : early ioremap
+  * 0xe9000000..0xff115000  : vmalloc & ioremap
+  * 0xb0000000..0xc0000000  : modules
+Memory: 614664K/2097152K available (8828K kernel code, 488K rwdata, 1664K
+rodata, 1316K init, 381K bss, 1482488K reserved, 0K cma-reserved, 0K highme=
+m)
+[...]
 
--- Steve
+On kernel 5.15.23 I got highmem as expected:
+[...]
+Top of RAM: 0x80000000, Total RAM: 0x80000000
+Memory hole size: 0MB
+Zone ranges:
+  DMA      [mem 0x0000000000000000-0x0000000027ffffff]
+  Normal   empty
+  HighMem  [mem 0x0000000028000000-0x000000007fffffff]
+Movable zone start for each node
+Early memory node ranges
+  node   0: [mem 0x0000000000000000-0x000000007fffffff]
+Initmem setup node 0 [mem 0x0000000000000000-0x000000007fffffff]
+percpu: Embedded 12 pages/cpu s19404 r8192 d21556 u49152
+pcpu-alloc: s19404 r8192 d21556 u49152 alloc=3D12*4096
+pcpu-alloc: [0] 0 [0] 1=20
+Built 1 zonelists, mobility grouping on.  Total pages: 522848
+Kernel command line: ro root=3D/dev/sda5 zswap.max_pool_percent=3D16
+zswap.zpool=3Dz3fold slub_debug=3DFZP page_poison=3D1
+netconsole=3D6666@192.168.2.5/eth0,6666@192.168.2.2/70:85:C2:30:EC:01=20
+Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
+Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
+mem auto-init: stack:__user(zero), heap alloc:off, heap free:off
+Kernel virtual memory layout:
+  * 0xffbbf000..0xfffff000  : fixmap
+  * 0xff400000..0xff800000  : highmem PTEs
+  * 0xff115000..0xff400000  : early ioremap
+  * 0xe9000000..0xff115000  : vmalloc & ioremap
+  * 0xb0000000..0xc0000000  : modules
+Memory: 2056460K/2097152K available (8688K kernel code, 488K rwdata, 1644K
+rodata, 1316K init, 377K bss, 40692K reserved, 0K cma-reserved, 1441792K
+highmem)
+[...]
+
+For testing I used the kernel .config from 5.15.32 for 5.16.18 via make
+oldconfig and selecting =3Dn for all questions.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
