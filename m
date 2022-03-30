@@ -1,101 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0934EC637
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 16:10:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32A24ECA07
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 18:51:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KT7cj317dz3cBh
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 01:10:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KTC9x4ZzKz3c4r
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 03:51:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Li/YNSC+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KRzoQsD6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Li/YNSC+; dkim-atps=neutral
+ header.s=pp1 header.b=KRzoQsD6; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KT7Ym0fdQz2ync
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 01:07:55 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22UDioCN019085; 
- Wed, 30 Mar 2022 14:07:47 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KTC8V07cfz2ym7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 03:49:45 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22UEJLVv000462; 
+ Wed, 30 Mar 2022 16:48:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=DSSi90HA3kIr2aEYvWpaL1Y+vIyopACLH4lQpBLTkRY=;
- b=Li/YNSC+f1HM+JA96S0Nt7pX0x/s+AhB+3UFI63zXKxiNVKHiiDf+t1T5SD/f/xM+mVU
- 4yPSMDJV2SOFOjVyxSO/evKQ2oln1RxRWMBJviqBP4gGbR1j7O5ChPK4dCImxcEJzbRS
- vB5uisZoafp9rVqYkt5mhuc0O2ksJYQLRJzWo2EtdUf18AM815sEHThINB6FZ7vRcp3p
- pkogwJGqo61jncD9xQVyJWV7fZ9vvL/aqL05YfEJh6Vd1m1BmutM/dSXhjlaPdV287Rf
- 4+mj33D0cZoAf3RnfwNQDEEhiEYVeSoGnnnA8lkbEubZTXVktfj64uwwt7kdPUPgv3lW fw== 
+ h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ARroIKBEvmL0KWXtnhmovWMBp2q8g4z6TFYDyygKASk=;
+ b=KRzoQsD6PJq2G9kFzeRvUWII/EaOj8gNOezSHce7EUZzHFJYk8L3G7wMnqGHNUaYfBNZ
+ tT0FrChzyFQQSOXdgfU4DqvUD21YnmntRVYIC5IoyJg9VaRBFvlEYjukvXmUyzAhVxAn
+ eMHsoKuTPyn86zO1kum0w5/jhuBrdbbRmVLBCgTbugi2inIVv+Lh9lveTdlhj2B4rF+G
+ vKb0KVbDWuGazpQt07aaINJeZRoiflDfzHQKUKmaAuQy6etr7v7t/qU/rxACRWa/n3oH
+ Xn89v9c9Zfb2LM8sl55NZrAtVgRVU1tUgDpdpMqudv2KtvdBHywKKNEcBU38h19oPPbK uA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3f4rc1ggd6-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f4psu6gut-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Mar 2022 14:07:47 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22UDlb5f028915;
- Wed, 30 Mar 2022 14:07:47 GMT
+ Wed, 30 Mar 2022 16:48:56 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22UGfnPq005888;
+ Wed, 30 Mar 2022 16:48:55 GMT
 Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3f4rc1ggch-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f4psu6gtv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Mar 2022 14:07:46 +0000
+ Wed, 30 Mar 2022 16:48:55 +0000
 Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22UE3K1L030605;
- Wed, 30 Mar 2022 14:07:44 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 3f3rs3kr6g-1
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22UGhWGn024601;
+ Wed, 30 Mar 2022 16:48:52 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06ams.nl.ibm.com with ESMTP id 3f3rs3m0ep-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 30 Mar 2022 14:07:44 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 22UE7fr436241884
+ Wed, 30 Mar 2022 16:48:52 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22UGmnpC41288138
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 30 Mar 2022 14:07:42 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C93EFA405D;
- Wed, 30 Mar 2022 14:07:41 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37681A4040;
- Wed, 30 Mar 2022 14:07:40 +0000 (GMT)
-Received: from li-NotSettable.ibm.com.com (unknown [9.43.30.177])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 30 Mar 2022 14:07:39 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, mopsfelder@gmail.com
-Subject: [PATCH v2 3/3] powerpc/64: remove system call instruction emulation
-Date: Wed, 30 Mar 2022 19:37:19 +0530
-Message-Id: <a412e3b3791ed83de18704c8d90f492e7a0049c0.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <cover.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
+ Wed, 30 Mar 2022 16:48:49 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 095B14C046;
+ Wed, 30 Mar 2022 16:48:49 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B3654C040;
+ Wed, 30 Mar 2022 16:48:47 +0000 (GMT)
+Received: from thinkpad (unknown [9.171.11.24])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 30 Mar 2022 16:48:47 +0000 (GMT)
+Date: Wed, 30 Mar 2022 18:48:45 +0200
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v2 6/8] s390/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+Message-ID: <20220330184845.737efc45@thinkpad>
+In-Reply-To: <20220329164329.208407-7-david@redhat.com>
+References: <20220329164329.208407-1-david@redhat.com>
+ <20220329164329.208407-7-david@redhat.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jbbHz2mpPOKm_TETIBWibcUYpyX7b8eJ
-X-Proofpoint-GUID: S6MoUhprBiCdXIxM6E4SulyHJ9lF51pm
+X-Proofpoint-ORIG-GUID: 1QKLcZzt1jR5dzZvoETLyjNRF1Mo4qOd
+X-Proofpoint-GUID: R2QabvWqUvukurysdgE-o4H0cb3QiG1t
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-03-30_04,2022-03-30_01,2022-02-23_01
+ definitions=2022-03-30_06,2022-03-30_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 mlxlogscore=999
- spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 phishscore=0
- impostorscore=0 bulkscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2203300069
+ phishscore=0
+ lowpriorityscore=0 mlxscore=0 adultscore=0 impostorscore=0 mlxlogscore=999
+ malwarescore=0 clxscore=1011 suspectscore=0 bulkscore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203300081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,169 +108,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Jan Kara <jack@suse.cz>,
+ Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Donald Dutile <ddutile@redhat.com>, Liang Zhang <zhangliang5@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Paul Mackerras <paulus@samba.org>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ Jason Gunthorpe <jgg@nvidia.com>, David Rientjes <rientjes@google.com>,
+ Pedro Gomes <pedrodemargomes@gmail.com>, Jann Horn <jannh@google.com>,
+ John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Shakeel Butt <shakeelb@google.com>, Oleg Nesterov <oleg@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Oded Gabbay <oded.gabbay@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Nadav Amit <namit@vmware.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On Tue, 29 Mar 2022 18:43:27 +0200
+David Hildenbrand <david@redhat.com> wrote:
 
-emulate_step() instruction emulation including sc instruction emulation
-initially appeared in xmon. It was then moved into sstep.c where kprobes
-could use it too, and later hw_breakpoint and uprobes started to use it.
+> Let's use bit 52, which is unused.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  arch/s390/include/asm/pgtable.h | 23 +++++++++++++++++++++--
+>  1 file changed, 21 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+> index 3982575bb586..a397b072a580 100644
+> --- a/arch/s390/include/asm/pgtable.h
+> +++ b/arch/s390/include/asm/pgtable.h
+> @@ -181,6 +181,8 @@ static inline int is_module_addr(void *addr)
+>  #define _PAGE_SOFT_DIRTY 0x000
+>  #endif
+>  
+> +#define _PAGE_SWP_EXCLUSIVE _PAGE_LARGE	/* SW pte exclusive swap bit */
+> +
+>  /* Set of bits not changed in pte_modify */
+>  #define _PAGE_CHG_MASK		(PAGE_MASK | _PAGE_SPECIAL | _PAGE_DIRTY | \
+>  				 _PAGE_YOUNG | _PAGE_SOFT_DIRTY)
+> @@ -826,6 +828,22 @@ static inline int pmd_protnone(pmd_t pmd)
+>  }
+>  #endif
+>  
+> +#define __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+> +static inline int pte_swp_exclusive(pte_t pte)
+> +{
+> +	return pte_val(pte) & _PAGE_SWP_EXCLUSIVE;
+> +}
+> +
+> +static inline pte_t pte_swp_mkexclusive(pte_t pte)
+> +{
+> +	return set_pte_bit(pte, __pgprot(_PAGE_SWP_EXCLUSIVE));
+> +}
+> +
+> +static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+> +{
+> +	return clear_pte_bit(pte, __pgprot(_PAGE_SWP_EXCLUSIVE));
+> +}
+> +
+>  static inline int pte_soft_dirty(pte_t pte)
+>  {
+>  	return pte_val(pte) & _PAGE_SOFT_DIRTY;
+> @@ -1715,14 +1733,15 @@ static inline int has_transparent_hugepage(void)
+>   * Bits 54 and 63 are used to indicate the page type. Bit 53 marks the pte
+>   * as invalid.
+>   * A swap pte is indicated by bit pattern (pte & 0x201) == 0x200
+> - * |			  offset			|X11XX|type |S0|
+> + * |			  offset			|E11XX|type |S0|
+>   * |0000000000111111111122222222223333333333444444444455|55555|55566|66|
+>   * |0123456789012345678901234567890123456789012345678901|23456|78901|23|
+>   *
+>   * Bits 0-51 store the offset.
+> + * Bit 52 (E) is used to remember PG_anon_exclusive.
+>   * Bits 57-61 store the type.
+>   * Bit 62 (S) is used for softdirty tracking.
+> - * Bits 52, 55 and 56 (X) are unused.
+> + * Bits 55 and 56 (X) are unused.
+>   */
+>  
+>  #define __SWP_OFFSET_MASK	((1UL << 52) - 1)
 
-Until uprobes, the only instruction emulation users were for kernel
-mode instructions.
+Thanks David!
 
-- xmon only steps / breaks on kernel addresses.
-- kprobes is kernel only.
-- hw_breakpoint only emulates kernel instructions, single steps user.
-
-At one point, there was support for the kernel to execute sc
-instructions, although that is long removed and it's not clear whether
-there were any in-tree users. So system call emulation is not required
-by the above users.
-
-uprobes uses emulate_step and it appears possible to emulate sc
-instruction in userspace. Userspace system call emulation is broken and
-it's not clear it ever worked well.
-
-The big complication is that userspace takes an interrupt to the kernel
-to emulate the instruction. The user->kernel interrupt sets up registers
-and interrupt stack frame expecting to return to userspace, then system
-call instruction emulation re-directs that stack frame to the kernel,
-early in the system call interrupt handler. This means the interrupt
-return code takes the kernel->kernel restore path, which does not
-restore everything as the system call interrupt handler would expect
-coming from userspace. regs->iamr appears to get lost for example,
-because the kernel->kernel return does not restore the user iamr.
-Accounting such as irqflags tracing and CPU accounting does not get
-flipped back to user mode as the system call handler expects, so those
-appear to enter the kernel twice without returning to userspace.
-
-These things may be individually fixable with various complication, but
-it is a big complexity for unclear real benefit.
-
-Furthermore, it is not possible to single step a system call instruction
-since it causes an interrupt. As such, a separate patch disables probing
-on system call instructions.
-
-This patch removes system call emulation and disables stepping system
-calls.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[minor commit log edit, and also get rid of '#ifdef CONFIG_PPC64']
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/interrupt_64.S | 10 -------
- arch/powerpc/lib/sstep.c           | 46 +++++++-----------------------
- 2 files changed, 10 insertions(+), 46 deletions(-)
-
-diff --git a/arch/powerpc/kernel/interrupt_64.S b/arch/powerpc/kernel/interrupt_64.S
-index 7bab2d7de372e0..6471034c790973 100644
---- a/arch/powerpc/kernel/interrupt_64.S
-+++ b/arch/powerpc/kernel/interrupt_64.S
-@@ -219,16 +219,6 @@ system_call_vectored common 0x3000
-  */
- system_call_vectored sigill 0x7ff0
- 
--
--/*
-- * Entered via kernel return set up by kernel/sstep.c, must match entry regs
-- */
--	.globl system_call_vectored_emulate
--system_call_vectored_emulate:
--_ASM_NOKPROBE_SYMBOL(system_call_vectored_emulate)
--	li	r10,IRQS_ALL_DISABLED
--	stb	r10,PACAIRQSOFTMASK(r13)
--	b	system_call_vectored_common
- #endif /* CONFIG_PPC_BOOK3S */
- 
- 	.balign IFETCH_ALIGN_BYTES
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 3fda8d0a05b43f..01c8fd39f34981 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -15,9 +15,6 @@
- #include <asm/cputable.h>
- #include <asm/disassemble.h>
- 
--extern char system_call_common[];
--extern char system_call_vectored_emulate[];
--
- #ifdef CONFIG_PPC64
- /* Bits in SRR1 that are copied from MSR */
- #define MSR_MASK	0xffffffff87c0ffffUL
-@@ -1376,7 +1373,6 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		if (branch_taken(word, regs, op))
- 			op->type |= BRTAKEN;
- 		return 1;
--#ifdef CONFIG_PPC64
- 	case 17:	/* sc */
- 		if ((word & 0xfe2) == 2)
- 			op->type = SYSCALL;
-@@ -1388,7 +1384,6 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 		} else
- 			op->type = UNKNOWN;
- 		return 0;
--#endif
- 	case 18:	/* b */
- 		op->type = BRANCH | BRTAKEN;
- 		imm = word & 0x03fffffc;
-@@ -3643,43 +3638,22 @@ int emulate_step(struct pt_regs *regs, ppc_inst_t instr)
- 		regs_set_return_msr(regs, (regs->msr & ~op.val) | (val & op.val));
- 		goto instr_done;
- 
--#ifdef CONFIG_PPC64
- 	case SYSCALL:	/* sc */
- 		/*
--		 * N.B. this uses knowledge about how the syscall
--		 * entry code works.  If that is changed, this will
--		 * need to be changed also.
-+		 * Per ISA v3.1, section 7.5.15 'Trace Interrupt', we can't
-+		 * single step a system call instruction:
-+		 *
-+		 *   Successful completion for an instruction means that the
-+		 *   instruction caused no other interrupt. Thus a Trace
-+		 *   interrupt never occurs for a System Call or System Call
-+		 *   Vectored instruction, or for a Trap instruction that
-+		 *   traps.
- 		 */
--		if (IS_ENABLED(CONFIG_PPC_FAST_ENDIAN_SWITCH) &&
--				cpu_has_feature(CPU_FTR_REAL_LE) &&
--				regs->gpr[0] == 0x1ebe) {
--			regs_set_return_msr(regs, regs->msr ^ MSR_LE);
--			goto instr_done;
--		}
--		regs->gpr[9] = regs->gpr[13];
--		regs->gpr[10] = MSR_KERNEL;
--		regs->gpr[11] = regs->nip + 4;
--		regs->gpr[12] = regs->msr & MSR_MASK;
--		regs->gpr[13] = (unsigned long) get_paca();
--		regs_set_return_ip(regs, (unsigned long) &system_call_common);
--		regs_set_return_msr(regs, MSR_KERNEL);
--		return 1;
--
--#ifdef CONFIG_PPC_BOOK3S_64
-+		return -1;
- 	case SYSCALL_VECTORED_0:	/* scv 0 */
--		regs->gpr[9] = regs->gpr[13];
--		regs->gpr[10] = MSR_KERNEL;
--		regs->gpr[11] = regs->nip + 4;
--		regs->gpr[12] = regs->msr & MSR_MASK;
--		regs->gpr[13] = (unsigned long) get_paca();
--		regs_set_return_ip(regs, (unsigned long) &system_call_vectored_emulate);
--		regs_set_return_msr(regs, MSR_KERNEL);
--		return 1;
--#endif
--
-+		return -1;
- 	case RFI:
- 		return -1;
--#endif
- 	}
- 	return 0;
- 
--- 
-2.35.1
-
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
