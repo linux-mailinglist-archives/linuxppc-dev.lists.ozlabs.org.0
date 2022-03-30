@@ -1,62 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EA14EC0C9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 13:52:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 923E04EC239
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 13:59:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KT4Yq1v53z3c4Z
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 22:52:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KT4jV2pqPz2yfZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 22:59:26 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ov1cINHs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZVNQv62N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=ov1cINHs; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ZVNQv62N; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KT4Y829ZLz2xY1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:52:12 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id BD1A2615E2;
- Wed, 30 Mar 2022 11:52:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7A1C340EE;
- Wed, 30 Mar 2022 11:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648641128;
- bh=VhHDD6RrdMjp5dMDXPfeMmXdEbQklV9mCIfGyFoUl+4=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ov1cINHsPi5Cu/628OLJdB9aQJ9TXrMNi0piwEiW4cSZNEQKXaYy/4j4FINVuKfuA
- EP8nan4uY1PwUZPMfmm1A0AWtolS5rPGiQRxCCVjbonlVNX63FVEWCl0BFaxcczLLh
- fpHiLguOFlyQTLx7s02KwGq6B+AJ71URtEvoxfMlAWQudMv0+pwwFQQxnSUGf2iTxG
- ALd8TX6G1zfzyew+IPY2m0CAWCiGQdW9E+EHz0Fv4Zf3bOEi9SObZAP/xhM8QfkK/K
- 6+gFwqryCd0NA1+VEWzo+9ENhIH7cWZWt6vEcrmJUWDuTEFFaTS/Zws2g/iBnm3I+o
- eUgdl/FXAO//A==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 26/37] uaccess: fix type mismatch warnings from
- access_ok()
-Date: Wed, 30 Mar 2022 07:51:11 -0400
-Message-Id: <20220330115122.1671763-26-sashal@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220330115122.1671763-1-sashal@kernel.org>
-References: <20220330115122.1671763-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KT4hk0y05z2xTs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 22:58:45 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22UBh5va027506; 
+ Wed, 30 Mar 2022 11:58:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : from : subject : to : cc : references : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=18A9OJUgNmDoRYrIS4z3SJ5vMTgikgfdJTnRRrRgqtQ=;
+ b=ZVNQv62NARKYgeO5ScWI0JkDQRJR6Oc0uESH4TmiPRKhRrhxeNiegfgwTP5qyUFBW3LO
+ iKLTMlzg6RKvWDMuTHKxLuIPe+JjlI1lexMH20h7xIwNbx1i37/+rSjSD8s+xay0OSQ/
+ 5qUy+a4Mg6xaXT1ziLMBqiMN2QBtqlbGS4qRtzbdZ3NihIuVQn88V1O2P/llJ8e5bQ7A
+ X+dUyYBUUAl2ItBk/xAuFVW30WCpuum7Z0cJEozkb6kEj+TO7DMF73pdlK3qP2Ibioap
+ wAi92b0L4+QJ+R093OeArPTiBEZHzfwzCwBGpsFD9u3JOh/zwAmXpvt8tORobXswCcsw kQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f40q23us8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Mar 2022 11:58:37 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22UBvw7x003222;
+ Wed, 30 Mar 2022 11:58:36 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f40q23urn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Mar 2022 11:58:36 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22UBvVHJ024119;
+ Wed, 30 Mar 2022 11:58:34 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 3f1tf9gg3g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Mar 2022 11:58:34 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 22UBkW6q47645070
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 30 Mar 2022 11:46:32 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1CFAA405C;
+ Wed, 30 Mar 2022 11:58:31 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9C60CA4054;
+ Wed, 30 Mar 2022 11:58:31 +0000 (GMT)
+Received: from [9.145.166.215] (unknown [9.145.166.215])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 30 Mar 2022 11:58:31 +0000 (GMT)
+Message-ID: <85b16843-5477-21b4-7d62-4fc39e48b5cf@linux.ibm.com>
+Date: Wed, 30 Mar 2022 13:58:31 +0200
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.7.0
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/rtas: Keep MSR RI set when calling RTAS
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20220317110601.86917-1-ldufour@linux.ibm.com>
+ <1648542633.wzscjm967w.astroid@bobo.none>
+ <8e3175ff-afba-e2a2-4fe6-0f964da0fa4b@linux.ibm.com>
+ <87pmm5f1tp.fsf@mpe.ellerman.id.au>
+Content-Language: en-US
+In-Reply-To: <87pmm5f1tp.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: aK2pxcuXYIuzjA7Wl-2CWAQyF6gO3eio
+X-Proofpoint-ORIG-GUID: 12WylFQJ-5L4q4Qofr2vd2eGFFIf4CtS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-30_03,2022-03-30_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=999
+ mlxscore=0 clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203300061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,243 +112,140 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, catalin.marinas@arm.com, paulus@samba.org,
- sparclinux@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Sasha Levin <sashal@kernel.org>, kernel test robot <lkp@intel.com>,
- linux@armlinux.org.uk, mingo@redhat.com, linux-snps-arc@lists.infradead.org,
- Arnd Bergmann <arnd@arndb.de>, acme@kernel.org, rmk+kernel@armlinux.org.uk,
- lftan@altera.com, linux-arm-kernel@lists.infradead.org,
- gregkh@linuxfoundation.org, Dinh Nguyen <dinguyen@kernel.org>,
- vgupta@synopsys.com, nios2-dev@lists.rocketboards.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On 29/03/2022, 13:14:10, Michael Ellerman wrote:
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>> On 29/03/2022, 10:31:33, Nicholas Piggin wrote:
+>>> Excerpts from Laurent Dufour's message of March 17, 2022 9:06 pm:
+>>>> RTAS runs in real mode (MSR[DR] and MSR[IR] unset) and in 32bits
+>>>> mode (MSR[SF] unset).
+>>>>
+>>>> The change in MSR is done in enter_rtas() in a relatively complex way,
+>>>> since the MSR value could be hardcoded.
+>>>>
+>>>> Furthermore, a panic has been reported when hitting the watchdog interrupt
+>>>> while running in RTAS, this leads to the following stack trace:
+>>>>
+>>>> [69244.027433][   C24] watchdog: CPU 24 Hard LOCKUP
+>>>> [69244.027442][   C24] watchdog: CPU 24 TB:997512652051031, last heartbeat TB:997504470175378 (15980ms ago)
+>>>> [69244.027451][   C24] Modules linked in: chacha_generic(E) libchacha(E) xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) libpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rng(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camellia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) algif_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rpcgss(E)
+>>>> nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netlink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) configfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E) t10_pi(E)
+>>>> [69244.027555][   C24]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf128mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) raid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
+>>>> [69244.027587][   C24] Supported: No, Unreleased kernel
+>>>> [69244.027600][   C24] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Tainted: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
+>>>> [69244.027609][   C24] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0000000000000000
+>>>> [69244.027612][   C24] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G            E  X     (5.14.21-150400.71.1.bz196362_2-default)
+>>>> [69244.027615][   C24] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 48800002  XER: 20040020
+>>>> [69244.027625][   C24] CFAR: 000000000000011c IRQMASK: 1
+>>>> [69244.027625][   C24] GPR00: 0000000000000003 ffffffffffffffff 0000000000000001 00000000000050dc
+>>>> [69244.027625][   C24] GPR04: 000000001ffb6100 0000000000000020 0000000000000001 000000001fb09010
+>>>> [69244.027625][   C24] GPR08: 0000000020000000 0000000000000000 0000000000000000 0000000000000000
+>>>> [69244.027625][   C24] GPR12: 80040000072a40a8 c00000000ff8b680 0000000000000007 0000000000000034
+>>>> [69244.027625][   C24] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001fbd1db0 000000001fb3f008
+>>>> [69244.027625][   C24] GPR20: 000000001fb41018 ffffffffffffffff 000000000000017f fffffffffffff68f
+>>>> [69244.027625][   C24] GPR24: 000000001fb18fe8 000000001fb3e000 000000001fb1adc0 000000001fb1cf40
+>>>> [69244.027625][   C24] GPR28: 000000001fb26000 000000001fb460f0 000000001fb17f18 000000001fb17000
+>>>> [69244.027663][   C24] NIP [000000001fb41050] 0x1fb41050
+>>>> [69244.027696][   C24] LR [000000001fb4104c] 0x1fb4104c
+>>>> [69244.027699][   C24] Call Trace:
+>>>> [69244.027701][   C24] Instruction dump:
+>>>> [69244.027723][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+>>>> [69244.027728][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+>>>> [69244.027762][T87504] Oops: Unrecoverable System Reset, sig: 6 [#1]
+>>>> [69244.028044][T87504] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+>>>> [69244.028089][T87504] Modules linked in: chacha_generic(E) libchacha(E) xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) libpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rng(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camellia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) algif_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rpcgss(E)
+>>>> nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netlink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) configfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E) t10_pi(E)
+>>>> [69244.028171][T87504]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf128mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) raid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
+>>>> [69244.028307][T87504] Supported: No, Unreleased kernel
+>>>> [69244.028385][T87504] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Tainted: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
+>>>> [69244.028408][T87504] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0000000000000000
+>>>> [69244.028418][T87504] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G            E  X     (5.14.21-150400.71.1.bz196362_2-default)
+>>>> [69244.028429][T87504] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 48800002  XER: 20040020
+>>>> [69244.028444][T87504] CFAR: 000000000000011c IRQMASK: 1
+>>>> [69244.028444][T87504] GPR00: 0000000000000003 ffffffffffffffff 0000000000000001 00000000000050dc
+>>>> [69244.028444][T87504] GPR04: 000000001ffb6100 0000000000000020 0000000000000001 000000001fb09010
+>>>> [69244.028444][T87504] GPR08: 0000000020000000 0000000000000000 0000000000000000 0000000000000000
+>>>> [69244.028444][T87504] GPR12: 80040000072a40a8 c00000000ff8b680 0000000000000007 0000000000000034
+>>>> [69244.028444][T87504] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001fbd1db0 000000001fb3f008
+>>>> [69244.028444][T87504] GPR20: 000000001fb41018 ffffffffffffffff 000000000000017f fffffffffffff68f
+>>>> [69244.028444][T87504] GPR24: 000000001fb18fe8 000000001fb3e000 000000001fb1adc0 000000001fb1cf40
+>>>> [69244.028444][T87504] GPR28: 000000001fb26000 000000001fb460f0 000000001fb17f18 000000001fb17000
+>>>> [69244.028534][T87504] NIP [000000001fb41050] 0x1fb41050
+>>>> [69244.028543][T87504] LR [000000001fb4104c] 0x1fb4104c
+>>>> [69244.028549][T87504] Call Trace:
+>>>> [69244.028554][T87504] Instruction dump:
+>>>> [69244.028561][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+>>>> [69244.028575][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+>>>> [69244.028607][T87504] ---[ end trace 3ddec07f638c34a2 ]---
+>>>>
+>>>> This happens because MSR[RI] is unset when entering RTAS but there is no
+>>>> valid reason to not set it here.
+>>>>
+>>>> Fixing this by reviewing the way MSR is compute before calling RTAS. Now a
+>>>> hardcoded value meaning real mode, 32 bits and Recoverable Interrupt is
+>>>> loaded.
+>>>>
+>>>> In addition a check is added in do_enter_rtas() to detect calls made with
+>>>> MSR[RI] unset, as we are forcing it on later.
+>>>
+>>> This looks okay to me, I would just adjust the comment about watchdog
+>>> irq. It's more like NMI (SRESET or MCE), watchdog irq could be confusing 
+>>> for the soft-NMI timer.
+>>>
+>>> Otherwise I think it's okay.
+>>>
+>>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>>
+>> Thanks Nick,
+>>
+>> I agree about comment watchdog irq.
+>> Michael, could you fix that comment below when applying?
+> 
+> I can.
 
-[ Upstream commit 23fc539e81295b14b50c6ccc5baeb4f3d59d822d ]
+Thanks, Michael
 
-On some architectures, access_ok() does not do any argument type
-checking, so replacing the definition with a generic one causes
-a few warnings for harmless issues that were never caught before.
+> 
+> But the changelog also needs to mention that what we're doing is legal
+> per PAPR, and reference the relevant sections.
+> 
+> I think that's section "7.2.1 Machine State", in particular:
+> 
+>   R1–7.2.1–9. If called with MSR[RI]equal to 1, then RTAS must protect
+>   its own critical regions from recursion by setting the MSR[RI] bit to
+>   0 when in the critical regions.
+> 
+> That language appears to go back to PAPR+ Version 1.0, so that should
+> cover all PAPR systems.
 
-Fix the ones that I found either through my own test builds or
-that were reported by the 0-day bot.
+I agree, referencing this section would be good, I don't have the complete
+PAPR+ series, the oldest one I've access to is 2.7, and it is already
+mentioning this.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arc/kernel/process.c          |  2 +-
- arch/arm/kernel/swp_emulate.c      |  2 +-
- arch/arm/kernel/traps.c            |  2 +-
- arch/csky/kernel/perf_callchain.c  |  2 +-
- arch/csky/kernel/signal.c          |  2 +-
- arch/nios2/kernel/signal.c         | 20 +++++++++++---------
- arch/powerpc/lib/sstep.c           |  4 ++--
- arch/riscv/kernel/perf_callchain.c |  4 ++--
- arch/sparc/kernel/signal_32.c      |  2 +-
- lib/test_lockup.c                  |  4 ++--
- 10 files changed, 23 insertions(+), 21 deletions(-)
+> 
+> We also had RTAS on pre-PAPR systems, but I don't think we support any
+> of those anymore (on 64-bit).
 
-diff --git a/arch/arc/kernel/process.c b/arch/arc/kernel/process.c
-index 37f724ad5e39..a85e9c625ab5 100644
---- a/arch/arc/kernel/process.c
-+++ b/arch/arc/kernel/process.c
-@@ -43,7 +43,7 @@ SYSCALL_DEFINE0(arc_gettls)
- 	return task_thread_info(current)->thr_ptr;
- }
- 
--SYSCALL_DEFINE3(arc_usr_cmpxchg, int *, uaddr, int, expected, int, new)
-+SYSCALL_DEFINE3(arc_usr_cmpxchg, int __user *, uaddr, int, expected, int, new)
- {
- 	struct pt_regs *regs = current_pt_regs();
- 	u32 uval;
-diff --git a/arch/arm/kernel/swp_emulate.c b/arch/arm/kernel/swp_emulate.c
-index 6166ba38bf99..b74bfcf94fb1 100644
---- a/arch/arm/kernel/swp_emulate.c
-+++ b/arch/arm/kernel/swp_emulate.c
-@@ -195,7 +195,7 @@ static int swp_handler(struct pt_regs *regs, unsigned int instr)
- 		 destreg, EXTRACT_REG_NUM(instr, RT2_OFFSET), data);
- 
- 	/* Check access in reasonable access range for both SWP and SWPB */
--	if (!access_ok((address & ~3), 4)) {
-+	if (!access_ok((void __user *)(address & ~3), 4)) {
- 		pr_debug("SWP{B} emulation: access to %p not allowed!\n",
- 			 (void *)address);
- 		res = -EFAULT;
-diff --git a/arch/arm/kernel/traps.c b/arch/arm/kernel/traps.c
-index 2d9e72ad1b0f..a531afad87fd 100644
---- a/arch/arm/kernel/traps.c
-+++ b/arch/arm/kernel/traps.c
-@@ -589,7 +589,7 @@ do_cache_op(unsigned long start, unsigned long end, int flags)
- 	if (end < start || flags)
- 		return -EINVAL;
- 
--	if (!access_ok(start, end - start))
-+	if (!access_ok((void __user *)start, end - start))
- 		return -EFAULT;
- 
- 	return __do_cache_op(start, end);
-diff --git a/arch/csky/kernel/perf_callchain.c b/arch/csky/kernel/perf_callchain.c
-index 35318a635a5f..75e1f9df5f60 100644
---- a/arch/csky/kernel/perf_callchain.c
-+++ b/arch/csky/kernel/perf_callchain.c
-@@ -49,7 +49,7 @@ static unsigned long user_backtrace(struct perf_callchain_entry_ctx *entry,
- {
- 	struct stackframe buftail;
- 	unsigned long lr = 0;
--	unsigned long *user_frame_tail = (unsigned long *)fp;
-+	unsigned long __user *user_frame_tail = (unsigned long __user *)fp;
- 
- 	/* Check accessibility of one struct frame_tail beyond */
- 	if (!access_ok(user_frame_tail, sizeof(buftail)))
-diff --git a/arch/csky/kernel/signal.c b/arch/csky/kernel/signal.c
-index 0ca49b5e3dd3..243228b0aa07 100644
---- a/arch/csky/kernel/signal.c
-+++ b/arch/csky/kernel/signal.c
-@@ -136,7 +136,7 @@ static inline void __user *get_sigframe(struct ksignal *ksig,
- static int
- setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs)
- {
--	struct rt_sigframe *frame;
-+	struct rt_sigframe __user *frame;
- 	int err = 0;
- 	struct csky_vdso *vdso = current->mm->context.vdso;
- 
-diff --git a/arch/nios2/kernel/signal.c b/arch/nios2/kernel/signal.c
-index cf2dca2ac7c3..e45491d1d3e4 100644
---- a/arch/nios2/kernel/signal.c
-+++ b/arch/nios2/kernel/signal.c
-@@ -36,10 +36,10 @@ struct rt_sigframe {
- 
- static inline int rt_restore_ucontext(struct pt_regs *regs,
- 					struct switch_stack *sw,
--					struct ucontext *uc, int *pr2)
-+					struct ucontext __user *uc, int *pr2)
- {
- 	int temp;
--	unsigned long *gregs = uc->uc_mcontext.gregs;
-+	unsigned long __user *gregs = uc->uc_mcontext.gregs;
- 	int err;
- 
- 	/* Always make any pending restarted system calls return -EINTR */
-@@ -102,10 +102,11 @@ asmlinkage int do_rt_sigreturn(struct switch_stack *sw)
- {
- 	struct pt_regs *regs = (struct pt_regs *)(sw + 1);
- 	/* Verify, can we follow the stack back */
--	struct rt_sigframe *frame = (struct rt_sigframe *) regs->sp;
-+	struct rt_sigframe __user *frame;
- 	sigset_t set;
- 	int rval;
- 
-+	frame = (struct rt_sigframe __user *) regs->sp;
- 	if (!access_ok(frame, sizeof(*frame)))
- 		goto badframe;
- 
-@@ -124,10 +125,10 @@ asmlinkage int do_rt_sigreturn(struct switch_stack *sw)
- 	return 0;
- }
- 
--static inline int rt_setup_ucontext(struct ucontext *uc, struct pt_regs *regs)
-+static inline int rt_setup_ucontext(struct ucontext __user *uc, struct pt_regs *regs)
- {
- 	struct switch_stack *sw = (struct switch_stack *)regs - 1;
--	unsigned long *gregs = uc->uc_mcontext.gregs;
-+	unsigned long __user *gregs = uc->uc_mcontext.gregs;
- 	int err = 0;
- 
- 	err |= __put_user(MCONTEXT_VERSION, &uc->uc_mcontext.version);
-@@ -162,8 +163,9 @@ static inline int rt_setup_ucontext(struct ucontext *uc, struct pt_regs *regs)
- 	return err;
- }
- 
--static inline void *get_sigframe(struct ksignal *ksig, struct pt_regs *regs,
--				 size_t frame_size)
-+static inline void __user *get_sigframe(struct ksignal *ksig,
-+					struct pt_regs *regs,
-+					size_t frame_size)
- {
- 	unsigned long usp;
- 
-@@ -174,13 +176,13 @@ static inline void *get_sigframe(struct ksignal *ksig, struct pt_regs *regs,
- 	usp = sigsp(usp, ksig);
- 
- 	/* Verify, is it 32 or 64 bit aligned */
--	return (void *)((usp - frame_size) & -8UL);
-+	return (void __user *)((usp - frame_size) & -8UL);
- }
- 
- static int setup_rt_frame(struct ksignal *ksig, sigset_t *set,
- 			  struct pt_regs *regs)
- {
--	struct rt_sigframe *frame;
-+	struct rt_sigframe __user *frame;
- 	int err = 0;
- 
- 	frame = get_sigframe(ksig, regs, sizeof(*frame));
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 0edebbbffcdc..42701b2f2474 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -108,9 +108,9 @@ static nokprobe_inline long address_ok(struct pt_regs *regs,
- {
- 	if (!user_mode(regs))
- 		return 1;
--	if (__access_ok(ea, nb))
-+	if (access_ok((void __user *)ea, nb))
- 		return 1;
--	if (__access_ok(ea, 1))
-+	if (access_ok((void __user *)ea, 1))
- 		/* Access overlaps the end of the user region */
- 		regs->dar = TASK_SIZE_MAX - 1;
- 	else
-diff --git a/arch/riscv/kernel/perf_callchain.c b/arch/riscv/kernel/perf_callchain.c
-index ad3001cbdf61..1aa84b998a11 100644
---- a/arch/riscv/kernel/perf_callchain.c
-+++ b/arch/riscv/kernel/perf_callchain.c
-@@ -19,8 +19,8 @@ static unsigned long user_backtrace(struct perf_callchain_entry_ctx *entry,
- {
- 	struct stackframe buftail;
- 	unsigned long ra = 0;
--	unsigned long *user_frame_tail =
--			(unsigned long *)(fp - sizeof(struct stackframe));
-+	unsigned long __user *user_frame_tail =
-+		(unsigned long __user *)(fp - sizeof(struct stackframe));
- 
- 	/* Check accessibility of one struct frame_tail beyond */
- 	if (!access_ok(user_frame_tail, sizeof(buftail)))
-diff --git a/arch/sparc/kernel/signal_32.c b/arch/sparc/kernel/signal_32.c
-index 741d0701003a..1da36dd34990 100644
---- a/arch/sparc/kernel/signal_32.c
-+++ b/arch/sparc/kernel/signal_32.c
-@@ -65,7 +65,7 @@ struct rt_signal_frame {
-  */
- static inline bool invalid_frame_pointer(void __user *fp, int fplen)
- {
--	if ((((unsigned long) fp) & 15) || !__access_ok((unsigned long)fp, fplen))
-+	if ((((unsigned long) fp) & 15) || !access_ok(fp, fplen))
- 		return true;
- 
- 	return false;
-diff --git a/lib/test_lockup.c b/lib/test_lockup.c
-index f1a020bcc763..07f476317187 100644
---- a/lib/test_lockup.c
-+++ b/lib/test_lockup.c
-@@ -417,8 +417,8 @@ static bool test_kernel_ptr(unsigned long addr, int size)
- 		return false;
- 
- 	/* should be at least readable kernel address */
--	if (access_ok(ptr, 1) ||
--	    access_ok(ptr + size - 1, 1) ||
-+	if (access_ok((void __user *)ptr, 1) ||
-+	    access_ok((void __user *)ptr + size - 1, 1) ||
- 	    get_kernel_nofault(buf, ptr) ||
- 	    get_kernel_nofault(buf, ptr + size - 1)) {
- 		pr_err("invalid kernel ptr: %#lx\n", addr);
--- 
-2.34.1
+Unfortunately, I have no knowledge on these systems, neither I'm aware of
+such a system I have access to. Do you have any pointer?
 
+> Would also be good to know what machines you've tested this on.
+
+Tests have been done on various systems:
+Power KVM Guest
+  P8 S822L (host Ubuntu kernel 5.11.0-49-generic)
+PowerVM LPAR
+  P8 9119-MME (FW860.A1)
+  p9 9008-22L (FW950.00)
+  P10 9080-HEX (FW1010.00)
+
+Should I send a new version with the commit description updated, and the
+comment fixed in the code?
+
+Thanks,
+Laurent.
