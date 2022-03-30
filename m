@@ -1,75 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B83D24EC620
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 16:05:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D304EC629
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 16:08:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KT7VZ4pSsz3c1L
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 01:05:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KT7ZH2nn1z3bj2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 01:08:23 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ef6F+hrx;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=R4xgioPB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mhPp9BiR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=osalvador@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=ef6F+hrx; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=R4xgioPB; 
- dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=mhPp9BiR; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KT7Tx0swDz2xtJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 01:04:36 +1100 (AEDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 6769C21613;
- Wed, 30 Mar 2022 14:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1648649074; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3HMcf6VpPdUtSHMVGDhdxTY9zIcILTXot1rIgQ5P1hw=;
- b=ef6F+hrxT7jsNU5wyGaDpWxZI/bcW+2pKvn+iRcd8z7sWGdhsLkagx60oPooXJve1pi+Y9
- FPnRPPjwFAghwQpOSMuNv4+areI5A0klDnvvC2Mqlz2k6gttuEgRDihl0sDgfC1IO224Vu
- OdzOSjrvy29y0MNdWyihG3F6s/zHGcY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1648649074;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=3HMcf6VpPdUtSHMVGDhdxTY9zIcILTXot1rIgQ5P1hw=;
- b=R4xgioPBIA28fZdQiFSKgD2Pu95fR2in5TKCC19Wxsz5AkvxXc3d9MYefMe6NeZTcEqCeJ
- zLS3RNxUBQRlRQDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 09B9E13A60;
- Wed, 30 Mar 2022 14:04:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id kboWO3FjRGJyagAAMHmgww
- (envelope-from <osalvador@suse.de>); Wed, 30 Mar 2022 14:04:33 +0000
-Date: Wed, 30 Mar 2022 16:04:32 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/numa: Handle partially initialized numa nodes
-Message-ID: <YkRjcF61+nbIZfvJ@localhost.localdomain>
-References: <20220330135123.1868197-1-srikar@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KT7Yd3PH2z2xtJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 01:07:49 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22UDh0Sd005057; 
+ Wed, 30 Mar 2022 14:07:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=KOqoCqxMrBckgY/TpXLBjPlwTEbwMDlUHKPh56s6lNQ=;
+ b=mhPp9BiR2i26kmtLDUJsZs4HuaC7dZ59PWCVIXcQ+raTefUTsQnN48zn1u8JU+n2/qlG
+ HjLGwBKafcVJEO3ZzkKedNX7VRvBPpaVtWtf4l9UI4y59eCFr/57RmbN/IkAwZmQOC2b
+ bnc19VUgZD70E1FtFyJ7NKiIteuC2W4wq4u1hAzdaudZKxIeJ6Kcq2rISNGmH9D7kJrC
+ aWef8cZIePk5MqjuV9cXLhSoNo7E4tTWLHNy/S0khM+RK8RdupsI1+sn2CXu9SswdXRA
+ geqZmlwRfWM5vNum1MDygYm2+GROx7AlUrmmcFDyMA4GfffOLhIRiVgMDDXEcJv2E0bc pg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f40q26mgv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Mar 2022 14:07:40 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22UDojda008090;
+ Wed, 30 Mar 2022 14:07:39 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f40q26mfs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Mar 2022 14:07:39 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22UE2ufU014891;
+ Wed, 30 Mar 2022 14:07:37 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma02fra.de.ibm.com with ESMTP id 3f1tf8yepq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 30 Mar 2022 14:07:36 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22UE7YBI31261056
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 30 Mar 2022 14:07:34 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 94870A404D;
+ Wed, 30 Mar 2022 14:07:34 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ED485A4040;
+ Wed, 30 Mar 2022 14:07:32 +0000 (GMT)
+Received: from li-NotSettable.ibm.com.com (unknown [9.43.30.177])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 30 Mar 2022 14:07:32 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, mopsfelder@gmail.com
+Subject: [PATCH v2 0/3] powerpc: Remove system call emulation
+Date: Wed, 30 Mar 2022 19:37:16 +0530
+Message-Id: <cover.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220330135123.1868197-1-srikar@linux.vnet.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: klA4IlWVrvMzJRmm6WrhisqImwJv8FuX
+X-Proofpoint-ORIG-GUID: FIc6edR84UUYqKiBwEC_GW-Ahy2-fyVH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-30_04,2022-03-30_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxlogscore=771
+ mlxscore=0 clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2203300069
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,103 +104,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>, linux-mm@kvack.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Mar 30, 2022 at 07:21:23PM +0530, Srikar Dronamraju wrote:
-> With commit 09f49dca570a ("mm: handle uninitialized numa nodes
-> gracefully") NODE_DATA for even a memoryless/cpuless node is partially
-> initialized at boot time.
-> 
-> Before onlining the node, current Powerpc code checks for NODE_DATA to
-> be NULL. However since NODE_DATA is partially initialized, this check
-> will end up always being false.
-> 
-> This causes hotplugging a CPU to a memoryless/cpuless node to fail.
-> 
-> Before adding CPUs
-> $ numactl -H
-> available: 1 nodes (4)
-> node 4 cpus: 0 1 2 3 4 5 6 7
-> node 4 size: 97372 MB
-> node 4 free: 95545 MB
-> node distances:
-> node   4
-> 4:  10
-> 
-> $ lparstat
-> System Configuration
-> type=Dedicated mode=Capped smt=8 lcpu=1 mem=99709440 kB cpus=0 ent=1.00
-> 
-> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
-> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
-> 2.66  2.67  0.16    94.51     0.00  0.00  5.33  0.00 67749     0
-> 
-> After hotplugging 32 cores
-> $ numactl -H
-> node 4 cpus: 0 1 2 3 4 5 6 7 120 121 122 123 124 125 126 127 128 129 130
-> 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148
-> 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166
-> 167 168 169 170 171 172 173 174 175
-> node 4 size: 97372 MB
-> node 4 free: 93636 MB
-> node distances:
-> node   4
-> 4:  10
-> 
-> $ lparstat
-> System Configuration
-> type=Dedicated mode=Capped smt=8 lcpu=33 mem=99709440 kB cpus=0 ent=33.00
-> 
-> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
-> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
-> 0.04  0.02  0.00    99.94     0.00  0.00  0.06  0.00 1128751     3
-> 
-> As we can see numactl is listing only 8 cores while lparstat is showing
-> 33 cores.
-> 
-> Also dmesg is showing messages like:
-> [ 2261.318350 ] BUG: arch topology borken
-> [ 2261.318357 ]      the DIE domain not a subset of the NODE domain
-> 
-> Fixes: 09f49dca570a ("mm: handle uninitialized numa nodes gracefully")
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-mm@kvack.org
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Since v1, the main change is to use helpers to decode primary/extended 
+opcode and the addition of macros for some of the used opcodes.
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+- Naveen
 
-Thanks Srikar!
 
-> ---
->  arch/powerpc/mm/numa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index b9b7fefbb64b..13022d734951 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -1436,7 +1436,7 @@ int find_and_online_cpu_nid(int cpu)
->  	if (new_nid < 0 || !node_possible(new_nid))
->  		new_nid = first_online_node;
->  
-> -	if (NODE_DATA(new_nid) == NULL) {
-> +	if (!node_online(new_nid)) {
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  		/*
->  		 * Need to ensure that NODE_DATA is initialized for a node from
-> -- 
-> 2.27.0
-> 
-> 
 
+Naveen N. Rao (2):
+  powerpc: Sort and de-dup primary opcodes in ppc-opcode.h
+  powerpc: Reject probes on instructions that can't be single stepped
+
+Nicholas Piggin (1):
+  powerpc/64: remove system call instruction emulation
+
+ arch/powerpc/include/asm/ppc-opcode.h | 87 +++++++++++++++------------
+ arch/powerpc/include/asm/probes.h     | 36 +++++++++++
+ arch/powerpc/kernel/interrupt_64.S    | 10 ---
+ arch/powerpc/kernel/kprobes.c         |  4 +-
+ arch/powerpc/kernel/uprobes.c         |  5 ++
+ arch/powerpc/lib/sstep.c              | 46 +++-----------
+ arch/powerpc/xmon/xmon.c              | 11 ++--
+ 7 files changed, 107 insertions(+), 92 deletions(-)
+
+
+base-commit: e8833c5edc5903f8c8c4fa3dd4f34d6b813c87c8
 -- 
-Oscar Salvador
-SUSE Labs
+2.35.1
+
