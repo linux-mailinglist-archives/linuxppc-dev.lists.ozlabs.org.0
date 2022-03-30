@@ -2,108 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BEA4EB9A7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 06:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F34B24EBA8A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 08:02:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KSthJ3D6Rz30LS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 15:27:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iGJDsWQ/;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iGJDsWQ/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KSwnS04wzz3c2N
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 17:02:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=jpoimboe@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=iGJDsWQ/; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=iGJDsWQ/; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KStgX6hLpz2xWm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 15:27:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1648614416;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nKA9pWHMxnbapsXj7AFZXsdri/J+aqlfWUZEkrFaXOs=;
- b=iGJDsWQ/xobzWIE0YWfo60CRuBoGTpKYLMumoqW5OW4K95DNTaO/hvgY7rud2LScJ2Qcxi
- QQwlIJOFy+FaPMs0nM5H0taFjHUVyHsaqeBM4D5ot2+jxHFcMg2yhwdKuKLP3HI3/s9wnC
- SY6HCkDBwsKDcyJLgV4J+A/n81StKW0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1648614416;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=nKA9pWHMxnbapsXj7AFZXsdri/J+aqlfWUZEkrFaXOs=;
- b=iGJDsWQ/xobzWIE0YWfo60CRuBoGTpKYLMumoqW5OW4K95DNTaO/hvgY7rud2LScJ2Qcxi
- QQwlIJOFy+FaPMs0nM5H0taFjHUVyHsaqeBM4D5ot2+jxHFcMg2yhwdKuKLP3HI3/s9wnC
- SY6HCkDBwsKDcyJLgV4J+A/n81StKW0=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-488-4ADgKHsiPKm-e4JVZ3NsCg-1; Wed, 30 Mar 2022 00:26:54 -0400
-X-MC-Unique: 4ADgKHsiPKm-e4JVZ3NsCg-1
-Received: by mail-qt1-f199.google.com with SMTP id
- t19-20020ac86a13000000b002e1fd2c4ce5so16473189qtr.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Mar 2022 21:26:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=nKA9pWHMxnbapsXj7AFZXsdri/J+aqlfWUZEkrFaXOs=;
- b=HP0N/7JyDkjpFfifDRpfnZFSjAusHZw+DSc4jZ+y8ZaEL6MMJfESIOv2B/u95BiWlo
- 3V9yhNhqUazYTcnH01ZEGmA1cNiCbPSM7IKraqBcShrd3u12zjl1FXWt7kyx3bJHivmL
- tUs4Eae637o+69CpKwYYqEYUTSFk0hdBb00nylgqYrSvfrkmzcT2AxiqbomIEGaTDzRY
- lRzG61PW8qM0CtuknlOnfCByOTbeMgw6e6MeuAUqicTP1iJDrM52iLHXJbMqDfdCEjCv
- r5MRvTkp2ZsUQaaTTqRHqXlRkPUazd3GBDZ7+0BU4xfHd/uWL7LUqh4Nfza7x/3LScOk
- k50w==
-X-Gm-Message-State: AOAM5339rEOCWMUyOAdeYNk9lpxxFw7l2pZV63yKcshaE859+U3hV584
- bHliiXNUaBVQzC0zm/zv6vvTNZ2dQSTZYn7MLKi0pHmdUvdhLeI5KIcLGx/SyuGQATBCqjgublg
- lyzF/5csClmfDF+bPLdRq10BKIg==
-X-Received: by 2002:a05:6214:230a:b0:435:4f89:3c0e with SMTP id
- gc10-20020a056214230a00b004354f893c0emr29007846qvb.92.1648614414344; 
- Tue, 29 Mar 2022 21:26:54 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwDTTnL5kXiRn6YJo7R0KGe6AX6xPcJu4FBJYFEXOnIiaFh60A0fM3hMylzfAQAXg6eHu8dUQ==
-X-Received: by 2002:a05:6214:230a:b0:435:4f89:3c0e with SMTP id
- gc10-20020a056214230a00b004354f893c0emr29007830qvb.92.1648614413978; 
- Tue, 29 Mar 2022 21:26:53 -0700 (PDT)
-Received: from treble ([2600:1700:6e32:6c00::15])
- by smtp.gmail.com with ESMTPSA id
- p13-20020a05622a048d00b002e1ce0c627csm17321177qtx.58.2022.03.29.21.26.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 29 Mar 2022 21:26:53 -0700 (PDT)
-Date: Tue, 29 Mar 2022 21:26:49 -0700
-From: Josh Poimboeuf <jpoimboe@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 3/3] objtool/mcount: Add powerpc specific functions
-Message-ID: <20220330042649.fj43vxtpxmyxtbnd@treble>
-References: <20220318105140.43914-1-sv@linux.ibm.com>
- <20220318105140.43914-4-sv@linux.ibm.com>
- <YjR6kHq4c/rjCTpr@hirez.programming.kicks-ass.net>
- <0b55f122-4760-c1ba-840a-0911cefec2ad@csgroup.eu>
- <20220328195920.dqlfra3lcardko6r@treble>
- <87mth9ezml.fsf@mpe.ellerman.id.au>
- <af262c28-0d73-7ae6-3dd5-2977c9a41f7d@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KSwmz5Dvqz2xWm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 17:01:52 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KSwmq5FHGz9sS8;
+ Wed, 30 Mar 2022 08:01:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 1WiQPGVHHbfD; Wed, 30 Mar 2022 08:01:47 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KSwmq4LQfz9sRp;
+ Wed, 30 Mar 2022 08:01:47 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 80D408B77A;
+ Wed, 30 Mar 2022 08:01:47 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id nDMx8rJUsfAH; Wed, 30 Mar 2022 08:01:47 +0200 (CEST)
+Received: from [172.25.230.108] (unknown [172.25.230.108])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 49FDC8B765;
+ Wed, 30 Mar 2022 08:01:47 +0200 (CEST)
+Message-ID: <61a1f568-67da-ce5e-1334-91b5611f9ccb@csgroup.eu>
+Date: Wed, 30 Mar 2022 08:01:47 +0200
 MIME-Version: 1.0
-In-Reply-To: <af262c28-0d73-7ae6-3dd5-2977c9a41f7d@csgroup.eu>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=jpoimboe@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [RFC][PATCH 2/2] powerpc/papr_scm: Implement support for
+ reporting generic nvdimm stats
+Content-Language: fr-FR
+To: Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>
+References: <20201108211549.122018-1-vaibhav@linux.ibm.com>
+ <20201108211549.122018-2-vaibhav@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20201108211549.122018-2-vaibhav@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -116,71 +65,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>,
- Sathvika Vasireddy <sv@linux.ibm.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Santosh Sivaraj <santosh@fossix.org>, linuxppc-dev@lists.ozlabs.org,
+ Ira Weiny <ira.weiny@intel.com>, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 29, 2022 at 05:32:18PM +0000, Christophe Leroy wrote:
+Hi,
+
+Le 08/11/2020 à 22:15, Vaibhav Jain a écrit :
+> Add support for reporting papr-scm supported generic nvdimm stats by
+> implementing support for handling ND_CMD_GET_STAT in
+> 'papr_scm_ndctl().
 > 
+> The mapping between libnvdimm generic nvdimm-stats and papr-scm
+> specific performance-stats is embedded inside 'dimm_stats_map[]'. This
+> array is queried by newly introduced 'papr_scm_get_stat()' that
+> verifies if the requested nvdimm-stat is supported and if yes does an
+> hcall via 'drc_pmem_query_stat()' to request the performance-stat and
+> return it back to libnvdimm.
 > 
-> Le 29/03/2022 à 14:01, Michael Ellerman a écrit :
-> > Josh Poimboeuf <jpoimboe@redhat.com> writes:
-> >> On Sun, Mar 27, 2022 at 09:09:20AM +0000, Christophe Leroy wrote:
-> >>> Second point is the endianess and 32/64 selection, especially when
-> >>> crossbuilding. There is already some stuff regarding endianess based on
-> >>> bswap_if_needed() but that's based on constant selection at build time
-> >>> and I couldn't find an easy way to set it conditionaly based on the
-> >>> target being built.
-> >>>
-> >>> Regarding 32/64 selection, there is almost nothing, it's based on using
-> >>> type 'long' which means that at the time being the target and the build
-> >>> platform must both be 32 bits or 64 bits.
-> >>>
-> >>> For both cases (endianess and 32/64) I think the solution should
-> >>> probably be to start with the fileformat of the object file being
-> >>> reworked by objtool.
-> >>
-> >> Do we really need to detect the endianness/bitness at runtime?  Objtool
-> >> is built with the kernel, why not just build-in the same target
-> >> assumptions as the kernel itself?
-> > 
-> > I don't think we need runtime detection. But it will need to support
-> > basically most combinations of objtool running as 32-bit/64-bit LE/BE
-> > while the kernel it's analysing is 32-bit/64-bit LE/BE.
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+
+I see this series is still flagged as 'new' in patchwork.
+
+I saw some patches providing stats to nvdimm are in a pull request for 5.18.
+
+I imagine this is the same subject, so I'm going to change the status of 
+this series. Let me know if I'm wrong.
+
+Thanks
+Christophe
+
+> ---
+>   arch/powerpc/platforms/pseries/papr_scm.c | 66 ++++++++++++++++++++++-
+>   1 file changed, 65 insertions(+), 1 deletion(-)
 > 
-> Exactly, the way it is done today with a constant in 
-> objtool/endianness.h is too simple, we need to be able to select it 
-> based on kernel's config. Is there a way to get the CONFIG_ macros from 
-> the kernel ? If yes then we could use CONFIG_64BIT and 
-> CONFIG_CPU_LITTLE_ENDIAN to select the correct options in objtool.
-
-As of now, there's no good way to get CONFIG options from the kernel.
-That's pretty much by design, since objtool is meant to be a standalone
-tool.  In fact there are people who've used objtool for other projects.
-
-The objtool Makefile does at least have access to HOSTARCH/SRCARCH, but
-I guess that doesn't help here.  We could maybe export the endian/bit
-details in env variables to the objtool build somehow.
-
-But, I managed to forget that objtool can already be cross-compiled for
-a x86-64 target, from a 32-bit x86 LE host or a 64-bit powerpc BE host.
-There are some people out there doing x86 kernel builds on such systems
-who reported bugs, which were since fixed.  And the fixes were pretty
-trivial, IIRC.
-
-Libelf actually does a decent job of abstracting those details from
-objtool.  So, forget what I said, it might be ok to just detect
-endian/bit (and possibly even arch) at runtime like you originally
-suggested.
-
-For example bswap_if_needed() could be reworked to be a runtime check.
-
--- 
-Josh
-
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 835163f54244..51eeab3376fd 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -25,7 +25,8 @@
+>   	((1ul << ND_CMD_GET_CONFIG_SIZE) | \
+>   	 (1ul << ND_CMD_GET_CONFIG_DATA) | \
+>   	 (1ul << ND_CMD_SET_CONFIG_DATA) | \
+> -	 (1ul << ND_CMD_CALL))
+> +	 (1ul << ND_CMD_CALL) |		   \
+> +	 (1ul << ND_CMD_GET_STAT))
+>   
+>   /* DIMM health bitmap bitmap indicators */
+>   /* SCM device is unable to persist memory contents */
+> @@ -120,6 +121,16 @@ struct papr_scm_priv {
+>   static LIST_HEAD(papr_nd_regions);
+>   static DEFINE_MUTEX(papr_ndr_lock);
+>   
+> +/* Map generic nvdimm stats to papr-scm stats */
+> +static const char * const dimm_stat_map[] = {
+> +	[ND_DIMM_STAT_INVALID] = NULL,
+> +	[ND_DIMM_STAT_MEDIA_READS] = "MedRCnt ",
+> +	[ND_DIMM_STAT_MEDIA_WRITES] = "MedWCnt ",
+> +	[ND_DIMM_STAT_READ_REQUESTS] = "HostLCnt",
+> +	[ND_DIMM_STAT_WRITE_REQUESTS] = "HostSCnt",
+> +	[ND_DIMM_STAT_MAX] = NULL,
+> +};
+> +
+>   static int drc_pmem_bind(struct papr_scm_priv *p)
+>   {
+>   	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> @@ -728,6 +739,54 @@ static int papr_scm_service_pdsm(struct papr_scm_priv *p,
+>   	return pdsm_pkg->cmd_status;
+>   }
+>   
+> +/*
+> + * For a given pdsm request call an appropriate service function.
+> + * Returns errors if any while handling the pdsm command package.
+> + */
+> +static int papr_scm_get_stat(struct papr_scm_priv *p,
+> +			     struct nd_cmd_get_dimm_stat *dimm_stat)
+> +
+> +{
+> +	int rc;
+> +	ssize_t size;
+> +	struct papr_scm_perf_stat *stat;
+> +	struct papr_scm_perf_stats *stats;
+> +
+> +	/* Check if the requested stat-id is supported */
+> +	if (dimm_stat->stat_id >= ARRAY_SIZE(dimm_stat_map) ||
+> +	    !dimm_stat_map[dimm_stat->stat_id]) {
+> +		dev_dbg(&p->pdev->dev, "Invalid stat-id %lld\n", dimm_stat->stat_id);
+> +		return -ENOSPC;
+> +	}
+> +
+> +	/* Allocate request buffer enough to hold single performance stat */
+> +	size = sizeof(struct papr_scm_perf_stats) +
+> +		sizeof(struct papr_scm_perf_stat);
+> +
+> +	stats = kzalloc(size, GFP_KERNEL);
+> +	if (!stats)
+> +		return -ENOMEM;
+> +
+> +	stat = &stats->scm_statistic[0];
+> +	memcpy(&stat->stat_id, dimm_stat_map[dimm_stat->stat_id],
+> +	       sizeof(stat->stat_id));
+> +	stat->stat_val = 0;
+> +
+> +	/* Fetch the statistic from PHYP and copy it to provided payload */
+> +	rc = drc_pmem_query_stats(p, stats, 1);
+> +	if (rc < 0) {
+> +		dev_dbg(&p->pdev->dev, "Err(%d) fetching stat '%.8s'\n",
+> +			rc, stat->stat_id);
+> +		kfree(stats);
+> +		return rc;
+> +	}
+> +
+> +	dimm_stat->int_val = be64_to_cpu(stat->stat_val);
+> +
+> +	kfree(stats);
+> +	return 0;
+> +}
+> +
+>   static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>   			  struct nvdimm *nvdimm, unsigned int cmd, void *buf,
+>   			  unsigned int buf_len, int *cmd_rc)
+> @@ -772,6 +831,11 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>   		*cmd_rc = papr_scm_service_pdsm(p, call_pkg);
+>   		break;
+>   
+> +	case ND_CMD_GET_STAT:
+> +		*cmd_rc = papr_scm_get_stat(p,
+> +					    (struct nd_cmd_get_dimm_stat *)buf);
+> +		break;
+> +
+>   	default:
+>   		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd);
+>   		return -EINVAL;
