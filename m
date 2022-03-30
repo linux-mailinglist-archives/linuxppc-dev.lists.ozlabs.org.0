@@ -1,55 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD544EC618
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 16:00:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBC374EC863
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 17:38:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KT7Ns04Rfz3byv
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 01:00:13 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=hDAroaOH;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KT9Yn5T2mz3c3G
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 02:38:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=mhocko@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=hDAroaOH; dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.134; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KT7NH0y7tz2xtJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 00:59:42 +1100 (AEDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 2F74421610;
- Wed, 30 Mar 2022 13:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1648648777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=FP+N6jUfe/Nhmh5h6A4hiD8oEZ6ImqyXs59pRC4gfmQ=;
- b=hDAroaOH3ebshWf2xsKHSI4wSQ91uXQdY47ZKaJM+9A7jT/JpFpeIPM5nqbqzesvPtbkxJ
- MXDlR6eg+CT3I6wjm5WEbPRsEX41Y5Opam+WxXdlZzi8kz+9eMgxVyMbJSVMKLFt4Zuu3i
- TiRXK0oA9KldNvZnKl7exG2zs0P91rI=
-Received: from suse.cz (unknown [10.100.201.86])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id EA039A3B82;
- Wed, 30 Mar 2022 13:59:36 +0000 (UTC)
-Date: Wed, 30 Mar 2022 15:59:33 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/numa: Handle partially initialized numa nodes
-Message-ID: <YkRiRV7iwolJUwsm@dhcp22.suse.cz>
-References: <20220330135123.1868197-1-srikar@linux.vnet.ibm.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KT9YH1ksXz2xst
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 02:37:37 +1100 (AEDT)
+Received: from mail-wm1-f53.google.com ([209.85.128.53]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1M27Bp-1nc3E40YET-002aR6 for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar
+ 2022 17:37:33 +0200
+Received: by mail-wm1-f53.google.com with SMTP id p189so12513866wmp.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Mar 2022 08:37:32 -0700 (PDT)
+X-Gm-Message-State: AOAM5324PJKkrT40Ewo6xe4VbbA5pc7ZBCW/sMofslQ/t/lrKNFKcRV3
+ i1AoFGiftvn6jpy/kWbx/5PaFSuqa0bPQFCc3iQ=
+X-Google-Smtp-Source: ABdhPJyFDtDMU88yCYrJWs8ilBs1qgSlTrY/zkuVFBVQD5a2e8HtDgObtvJMsCBEA8avtDQ005+YpydEfjPyDUO36sQ=
+X-Received: by 2002:a7b:cd13:0:b0:38b:f39c:1181 with SMTP id
+ f19-20020a7bcd13000000b0038bf39c1181mr4752181wmj.20.1648647915002; Wed, 30
+ Mar 2022 06:45:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220330135123.1868197-1-srikar@linux.vnet.ibm.com>
+References: <87zglefhxd.fsf@mpe.ellerman.id.au>
+ <CAHk-=whk4jihDM+zkhZPYRyNO0-YA1_-K9_NyC3EDsX+gkxC-w@mail.gmail.com>
+ <87wngefnsu.fsf@mpe.ellerman.id.au> <20220330112733.GG163591@kunlun.suse.cz>
+ <87k0cbfuf4.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87k0cbfuf4.fsf@mpe.ellerman.id.au>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 30 Mar 2022 15:44:58 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2GCQd4SNpUvZrrEOgJ5OtOgj0PXtORnfe208n7tapzNQ@mail.gmail.com>
+Message-ID: <CAK8P3a2GCQd4SNpUvZrrEOgJ5OtOgj0PXtORnfe208n7tapzNQ@mail.gmail.com>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.18-1 tag
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Fud2kzSHnUNyFzaDadKbGd0BQkFeSAfGaLZcnjXa5wmBVczO9p+
+ 8PIxkUSCE6NX/lVPeWejo//qhHKx3PNIcFmP4DpHADb3UyTtZC09Du7Y8/9gQQqeZGbTyjb
+ Ls/puDBD17ySQ46yp4lu7/nlvV32wXeq8iZFJ3ryj4eFuuy95nfvb4rBM3STXo7o/dCwDwT
+ ++nr8fo8D42wzPkrfjEWg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:aK/KE9TVxZo=:llnxgLOfjMHsFh2K/EXAbe
+ Yri/7V0+GCKart5kZM3HDVSxBYkvMcLgK5udr6SXnqwSOQwsJlRgEMJ7fVpnmHc43BZI2TrbJ
+ DQSe0o0gYh5r+0CXINBw8h3HoYKTveGBzjdO40L1uah+dha3OgrCxRifyWM/He7d3LEF9Q3Xs
+ w5pLaa9bkHqgUQT6EzaF9chFTTZMuI/Xq/AfOwmCor/aiHlnl+yzPdJBMIfX0wgjATp+wTZff
+ x9/UlM4xa/fg+ZTz+cDp8W+ompsOu62M2u7MLZ7eem5oomLwvLZGK8Q0RpR/Uqy2ypImW76Q0
+ CQ1AHpachWAZQ8UAR87KNnkdUltyLL4ivYVQoyWYHqwoJ/2E47J3gpxygsDwG24g3LaLSv/Fs
+ 6TfP4LMWODQthBoFFWc9QsZ0vxl3zPdcoADVt+Nu7oUjQyHwsXdeCfDcXGv239lCNrZehP0To
+ 6MPqprX0G/jLIqEeeOKviHoi14m4j3rpguI08o1SqXpohzWdwkmQnqNQXaVkZsmRD0wNFGK4n
+ L8Vtv+ODpFv+hc24H5cWWck04BWOw4/oIfprZpkIyYDIxkT6aDWWewzPgby+++9atQRX0xuJ+
+ Nco+MF54hPI0z1USs68SbUvLj5W8G6d9k/InhAXWYQy4uGnFMQ53kbNAEe5fcHFS8IvPPEU8I
+ QVX1RgbF+IsFqgqe6giMxcre49Je3nsnkywR6ZHPZubLQX2LgnMmgzjlDrgttMJAteLs=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,99 +72,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>, linux-mm@kvack.org
+Cc: Randy Dunlap <rdunlap@infradead.org>, Petr Mladek <pmladek@suse.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>, jniethe5@gmail.com,
+ ganeshgr@linux.ibm.com, Jason Wang <wangborong@cdjrlc.com>,
+ Jakob Koschel <jakobkoschel@gmail.com>, Miroslav Benes <mbenes@suse.cz>,
+ hbh25y@gmail.com, Michael Neuling <mikey@neuling.org>,
+ Joe Lawrence <joe.lawrence@redhat.com>,
+ Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Helge Deller <deller@gmx.de>,
+ danielhb413@gmail.com, haren@linux.ibm.com,
+ Wedson Almeida Filho <wedsonaf@google.com>,
+ Corentin Labbe <clabbe@baylibre.com>, mamatha4@linux.vnet.ibm.com,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Thierry Reding <treding@nvidia.com>, kernel.noureddine@gmail.com,
+ Nathan Lynch <nathanl@linux.ibm.com>, Paul Menzel <pmenzel@molgen.mpg.de>,
+ YueHaibing <yuehaibing@huawei.com>, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, guozhengkui@vivo.com, kjain@linux.ibm.com,
+ chenjingwen6@huawei.com, Nick Piggin <npiggin@gmail.com>,
+ Scott Wood <oss@buserror.net>, rmclure@linux.ibm.com, maddy@linux.ibm.com,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, psampat@linux.ibm.com,
+ sachinp@linux.ibm.com, bigunclemax@gmail.com, ldufour@linux.ibm.com,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+ =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>, farosas@linux.ibm.com,
+ Geoff Levand <geoff@infradead.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Anders Roxell <anders.roxell@linaro.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ sourabhjain@linux.ibm.com, Julia Lawall <Julia.Lawall@inria.fr>,
+ Ritesh Harjani <riteshh@linux.ibm.com>, cgel.zte@gmail.com,
+ Vaibhav Jain <vaibhav@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, tobias@waldekranz.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 30-03-22 19:21:23, Srikar Dronamraju wrote:
-> With commit 09f49dca570a ("mm: handle uninitialized numa nodes
-> gracefully") NODE_DATA for even a memoryless/cpuless node is partially
-> initialized at boot time.
-> 
-> Before onlining the node, current Powerpc code checks for NODE_DATA to
-> be NULL. However since NODE_DATA is partially initialized, this check
-> will end up always being false.
-> 
-> This causes hotplugging a CPU to a memoryless/cpuless node to fail.
-> 
-> Before adding CPUs
-> $ numactl -H
-> available: 1 nodes (4)
-> node 4 cpus: 0 1 2 3 4 5 6 7
-> node 4 size: 97372 MB
-> node 4 free: 95545 MB
-> node distances:
-> node   4
-> 4:  10
-> 
-> $ lparstat
-> System Configuration
-> type=Dedicated mode=Capped smt=8 lcpu=1 mem=99709440 kB cpus=0 ent=1.00
-> 
-> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
-> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
-> 2.66  2.67  0.16    94.51     0.00  0.00  5.33  0.00 67749     0
-> 
-> After hotplugging 32 cores
-> $ numactl -H
-> node 4 cpus: 0 1 2 3 4 5 6 7 120 121 122 123 124 125 126 127 128 129 130
-> 131 132 133 134 135 136 137 138 139 140 141 142 143 144 145 146 147 148
-> 149 150 151 152 153 154 155 156 157 158 159 160 161 162 163 164 165 166
-> 167 168 169 170 171 172 173 174 175
-> node 4 size: 97372 MB
-> node 4 free: 93636 MB
-> node distances:
-> node   4
-> 4:  10
-> 
-> $ lparstat
-> System Configuration
-> type=Dedicated mode=Capped smt=8 lcpu=33 mem=99709440 kB cpus=0 ent=33.00
-> 
-> %user  %sys %wait    %idle    physc %entc lbusy   app  vcsw phint
-> ----- ----- -----    -----    ----- ----- ----- ----- ----- -----
-> 0.04  0.02  0.00    99.94     0.00  0.00  0.06  0.00 1128751     3
-> 
-> As we can see numactl is listing only 8 cores while lparstat is showing
-> 33 cores.
-> 
-> Also dmesg is showing messages like:
-> [ 2261.318350 ] BUG: arch topology borken
-> [ 2261.318357 ]      the DIE domain not a subset of the NODE domain
-> 
-> Fixes: 09f49dca570a ("mm: handle uninitialized numa nodes gracefully")
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-mm@kvack.org
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Reported-by: Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>
-> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+On Wed, Mar 30, 2022 at 3:21 PM Michael Ellerman <mpe@ellerman.id.au> wrote=
+:
+> Michal Such=C3=A1nek <msuchanek@suse.de> writes:
+> > On Mon, Mar 28, 2022 at 08:07:13PM +1100, Michael Ellerman wrote:
+> >> No you're right, we have moved away from them, but not entirely.
+> >>
+> >> Functions descriptors are still used for 64-bit big endian, but they'r=
+e
+> >> not used for 64-bit little endian, or 32-bit.
+> >
+> > There was a patch to use ABIv2 for ppc64 big endian. I suppose that
+> > would rid usof the gunction descriptors for good.
+>
+> It would be nice.
+>
+> The hesitation in the past was that the GNU toolchain developers don't
+> officially support BE+ELFv2, though it is in use so it does work.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+It clearly made sense to wait while BE+ELFv1 was commonly used and
+well tested, but as that is getting less common each year, getting ELFv1
+out of the picture would appear to make the setup less obscure, not more.
 
-> ---
->  arch/powerpc/mm/numa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index b9b7fefbb64b..13022d734951 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -1436,7 +1436,7 @@ int find_and_online_cpu_nid(int cpu)
->  	if (new_nid < 0 || !node_possible(new_nid))
->  		new_nid = first_online_node;
->  
-> -	if (NODE_DATA(new_nid) == NULL) {
-> +	if (!node_online(new_nid)) {
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  		/*
->  		 * Need to ensure that NODE_DATA is initialized for a node from
-> -- 
-> 2.27.0
-
--- 
-Michal Hocko
-SUSE Labs
+       Arnd
