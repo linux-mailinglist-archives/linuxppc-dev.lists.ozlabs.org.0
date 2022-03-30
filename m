@@ -2,63 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C984ECD63
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 21:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 009EA4ECDC7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Mar 2022 22:20:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KTGzY02R3z3c1y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 06:42:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CgY9udA0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KTHqN63tpz2yxx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 07:20:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=CgY9udA0; dkim-atps=neutral
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org;
+ envelope-from=srs0=x/co=uj=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KTGyr1ffYz2yZZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 06:41:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1648669300; x=1680205300;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Hhnn1DKnMB2M/y2bDdb4qAmNYodHX20Vw2Rm29bwANA=;
- b=CgY9udA0HUZuAXEtdR/ov+5GlAP3i3L+Vw1asl+0WYpdl1WtY/tcOwSr
- gQYo1tnjRJk1Tpqy+ArXWyGQUK3h8AHoXFHF3tFVjXt/J08ddKO0Nosuq
- t1tHSN/F/Axet1RDANsYuvQuPMh6kKdxqIoUS17qf+gqG41nJr9FASBUN
- drsvOoKIe8mUXH0AtuYUqjmHefeSPvDeRtYt6ytg7lJdbNkOKcEnyOmjo
- ihDtMiWOhajgwzGkciCYSHnGL45BwCSin1O7IeDIfr5wXBkv7qAOSmiEY
- X1Om/JajLOPsyoEPa8Uxeuwrr+7vLpp7k5VemoqDvbMHlf2KAOzhHZ3Ra Q==;
-X-IronPort-AV: E=McAfee;i="6200,9189,10302"; a="257209619"
-X-IronPort-AV: E=Sophos;i="5.90,223,1643702400"; d="scan'208";a="257209619"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2022 12:40:35 -0700
-X-IronPort-AV: E=Sophos;i="5.90,223,1643702400"; d="scan'208";a="639844560"
-Received: from ksanitha-mobl3.amr.corp.intel.com (HELO [10.209.123.221])
- ([10.209.123.221])
- by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Mar 2022 12:40:34 -0700
-Message-ID: <009c9c14-7669-9750-a787-1d220414423e@linux.intel.com>
-Date: Wed, 30 Mar 2022 12:40:32 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KTHq05zTPz2xTs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 07:19:56 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id CE93E615E7;
+ Wed, 30 Mar 2022 20:19:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B13C340EC;
+ Wed, 30 Mar 2022 20:19:51 +0000 (UTC)
+Date: Wed, 30 Mar 2022 16:19:50 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v2] ftrace: Make ftrace_graph_is_dead() a static branch
+Message-ID: <20220330161950.1d12d708@gandalf.local.home>
+In-Reply-To: <8c65a6fb-cd93-926d-7851-0831658dd289@csgroup.eu>
+References: <8628338322fa74287ca8d432d5c0c1964acd6f2a.1648195329.git.christophe.leroy@csgroup.eu>
+ <20220329220733.682172ec@gandalf.local.home>
+ <8c65a6fb-cd93-926d-7851-0831658dd289@csgroup.eu>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Firefox/91.0 Thunderbird/91.5.0
-Subject: Re: [PATCH v3 1/2] PCI/AER: Disable AER service when link is in L2/L3
- ready, L2 and L3 state
-Content-Language: en-US
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>, bhelgaas@google.com
-References: <20220329083130.817316-1-kai.heng.feng@canonical.com>
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20220329083130.817316-1-kai.heng.feng@canonical.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,105 +50,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, koba.ko@canonical.com,
- Oliver O'Halloran <oohall@gmail.com>, mika.westerberg@linux.intel.com,
- baolu.lu@linux.intel.com
+Cc: Ingo Molnar <mingo@redhat.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, 30 Mar 2022 06:55:26 +0000
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
+> > Small nit. Please order the includes in "upside-down x-mas tree" fashion:
+> > 
+> > #include <linux/jump_label.h>
+> > #include <linux/suspend.h>
+> > #include <linux/ftrace.h>
+> > #include <linux/slab.h>
+> >   
+> 
+> That's the first time I get such a request. Usually people request 
+> #includes to be in alphabetical order so when I see a file that has 
+> headers in alphabetical order I try to not break it, but here that was 
+> not the case so I put it at the end of the list.
 
-On 3/29/22 1:31 AM, Kai-Heng Feng wrote:
-> On some Intel AlderLake platforms, Thunderbolt entering D3cold can cause
-> some errors reported by AER:
-> [   30.100211] pcieport 0000:00:1d.0: AER: Uncorrected (Non-Fatal) error received: 0000:00:1d.0
-> [   30.100251] pcieport 0000:00:1d.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
-> [   30.100256] pcieport 0000:00:1d.0:   device [8086:7ab0] error status/mask=00100000/00004000
-> [   30.100262] pcieport 0000:00:1d.0:    [20] UnsupReq               (First)
-> [   30.100267] pcieport 0000:00:1d.0: AER:   TLP Header: 34000000 08000052 00000000 00000000
-> [   30.100372] thunderbolt 0000:0a:00.0: AER: can't recover (no error_detected callback)
-> [   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
-> [   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
+This is something that Ingo Molnar started back in 2009 or so. And I do
+find it easier on the eyes ;-)  I may be the only one today trying to keep
+it (albeit poorly).
 
-Include details about in which platform you have seen it and whether
-this is a generic power issue?
+It's not a hard requirement, but I find it makes the code look more like
+art, which it is :-D
 
 > 
-> So disable AER service to avoid the noises from turning power rails
-> on/off when the device is in low power states (D3hot and D3cold), as
-> PCIe spec "5.2 Link State Power Management" states that TLP and DLLP
+> I'll send v3
 
-Also include PCIe specification version number.
+Thanks,
 
-> transmission is disabled for a Link in L2/L3 Ready (D3hot), L2 (D3cold
-> with aux power) and L3 (D3cold).
-> 
-> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215453
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
-> v3:
->   - Remove reference to ACS.
->   - Wording change.
-> 
-> v2:
->   - Wording change.
-> 
->   drivers/pci/pcie/aer.c | 31 +++++++++++++++++++++++++------
->   1 file changed, 25 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9fa1f97e5b270..e4e9d4a3098d7 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1367,6 +1367,22 @@ static int aer_probe(struct pcie_device *dev)
->   	return 0;
->   }
->   
-> +static int aer_suspend(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +
-> +	aer_disable_rootport(rpc);
-> +	return 0;
-> +}
-> +
-> +static int aer_resume(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +
-> +	aer_enable_rootport(rpc);
-> +	return 0;
-> +}
-> +
->   /**
->    * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
->    * @dev: pointer to Root Port, RCEC, or RCiEP
-> @@ -1433,12 +1449,15 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
->   }
->   
->   static struct pcie_port_service_driver aerdriver = {
-> -	.name		= "aer",
-> -	.port_type	= PCIE_ANY_PORT,
-> -	.service	= PCIE_PORT_SERVICE_AER,
-> -
-> -	.probe		= aer_probe,
-> -	.remove		= aer_remove,
-> +	.name			= "aer",
-> +	.port_type		= PCIE_ANY_PORT,
-> +	.service		= PCIE_PORT_SERVICE_AER,
-> +	.probe			= aer_probe,
-> +	.suspend		= aer_suspend,
-> +	.resume			= aer_resume,
-> +	.runtime_suspend	= aer_suspend,
-> +	.runtime_resume		= aer_resume,
-> +	.remove			= aer_remove,
->   };
->   
->   /**
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+-- Steve
