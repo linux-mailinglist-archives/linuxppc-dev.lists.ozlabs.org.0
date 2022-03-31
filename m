@@ -1,53 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790534ED9C2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 14:40:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE584EDAB3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 15:40:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KTjZG1q2tz307n
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 23:40:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KTkvb5Dynz3c17
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 00:40:27 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lchCe3cP;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ZwQyMEsV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KTjYf1jkwz2xTd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 23:39:50 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=lchCe3cP; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75;
+ helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=ZwQyMEsV; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KTjYd4NYVz4xXx;
- Thu, 31 Mar 2022 23:39:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1648730390;
- bh=mtQYRav07C0gt+IZBOPdCcIdZ3AXyNuFaeKrCabS2Gw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=lchCe3cPsJx5ZRe3ABIJSBcRS0xkKQe86HweMJDbtrEy4QskxSwqxeGC1NCTqGRUZ
- BiHsG+wZvPHWTemDblhKRuvhaoHkHPbifCWHjISXT78VGEble//8OxHvznzaw5CI+A
- DU1My+bjmb4xvu/jgzKcIU86vU/8KMwoDOYWD3aL6ILnoqdseLRIWzVuDhzHKTDjlD
- JrxWq0eDZLbdnrQAL95aCz0YTjO2pwxTZDswHQXztZJPuqVl6rGyp+HnaIrwQ1Vroo
- ONpTbW4Ybn8dn7RPsjdVoDyQuAqfoqSvrzVLYZHscHNseCW7R/dyzTxYh4XfxshjxO
- GnpYGSGh1k9cA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KTktz2cRqz2xsc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Apr 2022 00:39:54 +1100 (AEDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id EF39EB82110;
+ Thu, 31 Mar 2022 13:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597FBC3410F;
+ Thu, 31 Mar 2022 13:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1648733988;
+ bh=2AadCGNxCzfaSpTKNEhZbOlEaZXEIT1xpSB/CqupWQI=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ZwQyMEsVJ9vRl+EcpzA34l/77VIPFuoJqeuZ2pd+iik8vPGH1aookspLLZqqX6utY
+ Ipcw1t6B6E10sMKURl8xfhKG3HoSQhXTJR4Q6rPGTYhjbIMT1WiXS5v9JyVx4bkmUl
+ BnxH9RXNP2n93MC5NkNdvgIBPwsYK9t9fZ0JOB/Q=
+Date: Thu, 31 Mar 2022 15:39:41 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
 Subject: Re: [PATCH] powerpc/pseries/vas: use default_groups in kobj_type
-In-Reply-To: <20220329142552.558339-1-gregkh@linuxfoundation.org>
+Message-ID: <YkWvHRoCk3KM283t@kroah.com>
 References: <20220329142552.558339-1-gregkh@linuxfoundation.org>
-Date: Thu, 31 Mar 2022 23:39:45 +1100
-Message-ID: <87h77efg8e.fsf@mpe.ellerman.id.au>
+ <87h77efg8e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h77efg8e.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,35 +61,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>
+Cc: Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> There are currently 2 ways to create a set of sysfs files for a
-> kobj_type, through the default_attrs field, and the default_groups
-> field.  Move the pseries vas sysfs code to use default_groups field
-> which has been the preferred way since aa30f47cf666 ("kobject: Add
-> support for default attribute groups to kobj_type") so that we can soon
-> get rid of the obsolete default_attrs field.
->
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Haren Myneni <haren@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->
-> Note, I would like to take this through my driver-core tree for 5.18-rc2
-> as this is the last hold-out of the default_attrs field.  It "snuck" in
-> as new code for 5.18-rc1, any objection to me taking it?
+On Thu, Mar 31, 2022 at 11:39:45PM +1100, Michael Ellerman wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> > There are currently 2 ways to create a set of sysfs files for a
+> > kobj_type, through the default_attrs field, and the default_groups
+> > field.  Move the pseries vas sysfs code to use default_groups field
+> > which has been the preferred way since aa30f47cf666 ("kobject: Add
+> > support for default attribute groups to kobj_type") so that we can soon
+> > get rid of the obsolete default_attrs field.
+> >
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Cc: Paul Mackerras <paulus@samba.org>
+> > Cc: Haren Myneni <haren@linux.ibm.com>
+> > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >
+> > Note, I would like to take this through my driver-core tree for 5.18-rc2
+> > as this is the last hold-out of the default_attrs field.  It "snuck" in
+> > as new code for 5.18-rc1, any objection to me taking it?
+> 
+> No objection, please take it via your tree.
 
-No objection, please take it via your tree.
-
-cheers
+Thanks, will do!
