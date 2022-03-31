@@ -2,130 +2,121 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA044ED53C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 10:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 952F44ED669
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 11:02:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KTbbr2VPHz2yQ6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 19:11:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KTckX2nXyz2yR4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Mar 2022 20:02:12 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y2bjqa7J;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::609;
- helo=fra01-pr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com
- (mail-pr2fra01on0609.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e18::609])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KTcjn5Dkmz2xVq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 20:01:33 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Y2bjqa7J; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KTcjm6qBGz4xXx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 20:01:32 +1100 (AEDT)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KTcjm6lhRz4xY0; Thu, 31 Mar 2022 20:01:32 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=Y2bjqa7J; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KTbbL1FtLz2x98
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 19:10:52 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kwFme1kQXH3RPbXeuvAa/yRTLF+bOIfKooTt81EBioJg6sjiFQ3vgGwcfdxE5n2VJziAn6rnyYLTYDwBduK8PG4wSZi8cwWMPWrThM6aSdlldf1ccF1Lofnib5f76CXpjkTuSBlo4lTh76LIntij/8LdFYb6LD8AIqfW/ULucw0eK7Vu/FLt8J36hbeFq5Nx5v3BWsJ3vx4lPqDzMpdMK5W6uwk1FY15IlhgoHpCxw0Ix4HCjJqDcJSR8mhSDvzm1AA/dwqD7ei3lPuy+mFQ1M0gEtPx24uBelCtLEVAvmpLn82bKE9IwdDCFLJzYKBGTIPhv8CHxR1HN+mfNfFQEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dP4Ss7y5zdmvftj/6iNAP9d8whG4qhRibjmFLI2k8qo=;
- b=Lej/XTEaz13NBysXX6b8ZwxU7Aq90e9N7BFphMtK+rZNhca9aUg9CyV4xoCKYJpYlsfXMnRdnCazeOFEtIDYzrsEIP58Oj8rkdCajRO2t6nPyUKLIhCBWG/qM00it3beUU/TKY9+INtqxiSzg/t6Pv47TdZ58rDYwBaMAGwEvqx8pVwNp1Qr8V0vs7uR/r5ZIxCpnCu9RDC09GYM48JgNyVBO2J8tNGHnlo/fDPe8Jcj/pKOhYRkyalf5L4ccv0bUlICTYYHwaKLK9DILdBPlJvcJIbGH0jdBqsKdKMpdKgp0RULj/1W7hHeCGXixlnix57+WD3gs3jS2sRB+g/Qxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MRZP264MB2859.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:18::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5123.21; Thu, 31 Mar
- 2022 08:10:29 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::59c:ae33:63c1:cb1c]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::59c:ae33:63c1:cb1c%7]) with mapi id 15.20.5123.021; Thu, 31 Mar 2022
- 08:10:29 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [RFC PATCH v1] objtool: Use target file endianness instead of a
- compiled constant
-Thread-Topic: [RFC PATCH v1] objtool: Use target file endianness instead of a
- compiled constant
-Thread-Index: AQHYRNRKJ6ALQybCh0KTwMUAnhSTmazZI0gAgAAAnoA=
-Date: Thu, 31 Mar 2022 08:10:29 +0000
-Message-ID: <2c2bcb5f-e9bd-d7fc-effd-81aed6bd27e6@csgroup.eu>
-References: <7c503552c4bc1f0e1aa4775765f8f24e9d1b0a04.1648713067.git.christophe.leroy@csgroup.eu>
- <20220331080814.GQ8939@worktop.programming.kicks-ass.net>
-In-Reply-To: <20220331080814.GQ8939@worktop.programming.kicks-ass.net>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 43107699-98ee-4b71-e337-08da12edebbf
-x-ms-traffictypediagnostic: MRZP264MB2859:EE_
-x-microsoft-antispam-prvs: <MRZP264MB2859E89F5DC3FC3D27C5E89CEDE19@MRZP264MB2859.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: fZPDkVMNiXscxovzfjnC8XrrPK3QXksWZ/Ph8tNFbz2KXT7yq0uD0Ymi85MMTShQNAs9nUmTNS/xjDhWzAfWHtnw1kMEoyD3JQ8eV3JoW/FTwCcbseG/0ZVsD5svG7xo5816ajJXCwGyXTcZjG/uFBhOpuUXuAelLdA/IgkxMiPj3pZiWKuz+41e5s1CwjLNrjfsLGRax/E/hYg9iaFth+vdVUOqAYux80ar80U+NQ2cLSLWry4R8NRMcKWZQ2jOp489xtJUcP7g6ObgR+hq4cPrv/Grx29ro8cL3Jr3GgTozCc90x9jZdZ1u363y63lNFQJEKJ+BO+Ghc4lmuHDnJz4Y1hQ0pTPsiLCcFIFzCEIDyrTCpwyKIDTEHPA3pbp3D7eu2M/6iVj3uTiy844d7SzXCXlLXGJ1jk3MBknR6/0KUZ2Rrtq12jIAg4p/8EvcC9GMWilge38G9SKgt40c7PCT1vQjIkCryCu+FrWpajUBnPL1Oda9gC97OXju3PQpE9DNRx1LYLTiGFA7L1d6OT0j75XgWahKo7CeAyX8oicc400viwsdCgeFIEDwoGh3sDeTRmpVNFTOlIqlN5OzjauBI/pV6QA6MuzLxhQWX5W/dXTPUULcwWAOaMC0uHT5O8xeRHOg52CcxIrXy0ua2xN5wIofHsqns2U+bewXOs1k0Le1wsPvg5efSdyWTn6MCwIWjw3HcKw1IF/I5TrmxfyZGVrWv6eajfTxqzBqNQVlG5QAUrJy7lhiPuLi8IfBrYZOAsxIq1mbE65aCqTkg==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(83380400001)(38100700002)(122000001)(66574015)(38070700005)(316002)(6506007)(91956017)(2616005)(71200400001)(54906003)(31686004)(86362001)(6486002)(6916009)(508600001)(76116006)(44832011)(2906002)(6512007)(66476007)(26005)(8676002)(4326008)(186003)(66946007)(66446008)(5660300002)(8936002)(36756003)(31696002)(66556008)(64756008)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WDc4WEZqaUxtRWFrRFVWRVd1SCs3ZXR0Yk43d0pMT2tnZE91MG5wV1E0QmhM?=
- =?utf-8?B?RWgyWm9KL3FWZklIOTNwbFZpS2RES0tVTGNRak1UYkMwclRYeElwNWF1a0kx?=
- =?utf-8?B?VThmY3RFVHFDVlZXblRQT2pvbzBKcjd6cWFrQ1dTSGFnZFlONnJiRW5sL2Vj?=
- =?utf-8?B?SiswMFpXWDJsK1lxcG4xeExpNWxpZGw0eE9xM1dvVFY3S2plNlFwZy9DS3NV?=
- =?utf-8?B?cDRKT3BPeHVNMkJnMXhvbDV3RDRrMDYvNzcrbUhOaXZqbVB4L3JSeEV3K2Fm?=
- =?utf-8?B?WHVOUDk0Q3hwL0Q1eGhlTnFqNEhUWXg4TzEyNkZPRHNaSXpFOS9yTE5aZEFp?=
- =?utf-8?B?V0dRVXNiRWM1WUYvU3FIRVBWSkhIR3E1bm83R2hlMGphYW5tME9aMHBacmVP?=
- =?utf-8?B?UEROOUpyVTFOa25QMW5lRTJvQWdVK2FYdUhZNCs3a2l1Zm9xK2NHQndqVmpi?=
- =?utf-8?B?WVg4ckFxaFZ3VzNpNnJLNlN1ME94RXhZa0E5NGdaeWFIT0psU20rWGw5MmxS?=
- =?utf-8?B?UUlUWEh6OXExdkJ3MlIzV3huNjhJY2ZaUldTejhBYlU1OGhMdWhJYXpwL3V2?=
- =?utf-8?B?cnlvR1o5eTNuWmtFZk1LR3dybExBSFhReVgvUFk1c2JXWGVtSUlGSnU3dHZN?=
- =?utf-8?B?SzdlUFBSajNCdzR4eHJ4NXZnQnNxOXVmeVNuV0lObG1HeHZqSnc4RGtweGpC?=
- =?utf-8?B?R1NJcENqRmRzNWlVbXlZc3JjcnBnUnA2Y0x6QmtVdVE2aFdEeEJJSW5RazFZ?=
- =?utf-8?B?elRQdFZMaWFZZUNseTFadk5NZkV6K1hNWTlveG9RMjV1c2E3TnB5SHNXLzlC?=
- =?utf-8?B?bGFwWGVwVlcxaVJKNFYweG9mWVJ3TTNOOFNoQzlGa29naVErS2VnSTFPQ0lr?=
- =?utf-8?B?MWx1K1luekxORzZ3VmZ2bkR5eUlNcjFKT3dJSE9HK0MzYzladEJtMUhyZXNp?=
- =?utf-8?B?eGsxaU5sMkVZTVlneUxYRHk0YlpBaldXeUhua01ubXZKaldyVmpla0lheWg1?=
- =?utf-8?B?OU9KWjcwREJGYmRlT3lxN1FjUGFqSE5aVDJwUDAydGIrNmVOYnFwbVpobUVE?=
- =?utf-8?B?QmVBTGdocWMyNlRSL2JFdHp1V2VFV1VaamFWTllLeVhsUnlwbjhWM0duS01j?=
- =?utf-8?B?ZlJkMStEQ3dSWkNkRGVRQ09JNUtTb0ZhTXVjc2h3c0MydXRkaWIvKy9GVE16?=
- =?utf-8?B?cEtTd2dIdkRhYWJYRjJiVXZrRGlPT2RpbUh1TU95VFpmNDN1VE1TcGJCMlBl?=
- =?utf-8?B?NFAvQjZFdlNOellzVHMxUlpXQXpEcjZNS0FXZEZyRDRwcmZzYTdGOWx0QS9I?=
- =?utf-8?B?a0RzNDhla25pTURQTlYrQ0lMNXNUZVpVZEpvZ2VkZjhKbS9MT3U5QzVZSWZZ?=
- =?utf-8?B?cDR3eTloNm4xSjJ0dm1rcXcwSXBWVW5jZWlJNDdkRWw3bDlXdENtNTVqSnFo?=
- =?utf-8?B?YXYycUdpclllSW8vUHhWZVlVRkRwSSsrdE03djZZUWhvVDNEcFVsNFBYaERj?=
- =?utf-8?B?NzlmTlQzVmxuc3UwbDlpSjA0U3NDQ3llajRVVWdzZ0N2VWFBdGk2bTdUaUpV?=
- =?utf-8?B?MHhoN0IwS2lvT0hTTW9SbWVEUElpa1RzTENvSSs1Zlo3SEJZU041WFFGNWxY?=
- =?utf-8?B?WVNsdVBENzlyQXRjL0xuZE4yZEZoN3pnUWxOand4Y2RqRU1tbDlaaUNwYy8z?=
- =?utf-8?B?ZWtCMFNPd05hNWw5ZnZ0cXdoNStjR1lDaXNyQ1d3L0paRTE4c1kwQkRKU3VZ?=
- =?utf-8?B?WjI1U25LYjRuRmVaN2dsZ0NGOFBVMVM4NzVFN1lFd1FBanFWaUVpbExLam9T?=
- =?utf-8?B?MkxORFFOcml2ZG8vU1BTMEZiY040aWxnVXZiVEdmb2V1eFFOaFZvVE9BMGgw?=
- =?utf-8?B?MFMyRXdUYldZMzRqMVZPMnRPV1dsYUtpblJJRGlSayt3dFl5dkZja09VZmlU?=
- =?utf-8?B?TFJ3QitvbUdSNEVWbWVVbWRuVzQrUHVVY0dFeklKSE14eG9VbXZ4ZStCd0dE?=
- =?utf-8?B?NXdDOVI5dlNkOUtiUXdDMFJ6NUhRdnZpZC9oMVpGcHdRYjV6aVVVNkxTMDNM?=
- =?utf-8?B?dFhsb3FZMytXb29yYnN2Mk5NMjR5cWx3UzQwdmoxTXpaMmhVcDBCdkU2dnoz?=
- =?utf-8?B?c1lMNDBVVVpoaDNncHJXYTR0SUFjcjNZc1F3N09QUUhQMkJuYVdzR3BmbXRL?=
- =?utf-8?B?cThONnV3KzRBUjBLdGs2OGc1ZnU2NGQ5ZWlmeFI5ZjNEalJ2VUc4Yi9WSW1u?=
- =?utf-8?B?ZTlsOE5WaFpqVVFuRGtwcXdYaHdQVnNFTFlhb00ySldWanZ2MnByb05aSGtj?=
- =?utf-8?B?Rjc1UzM2YXhJOVdTcjdiNllNUW4xWWhRSUkyVTJkVkJqUjBCVkxJZkUxcXJY?=
- =?utf-8?Q?Gw/Q/TytNm4rlN+Raa7f8DA9ihxE9apC76Rij?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8459B396F107FF4385317028A908EAAB@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KTcjm3kvdz4xXx
+ for <linuxppc-dev@ozlabs.org>; Thu, 31 Mar 2022 20:01:32 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 22V7wShK004717; 
+ Thu, 31 Mar 2022 09:00:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zO8nzZ7SCxcaFl1ZZt+VQVqMjX9PpbvMHNIJEaub2qA=;
+ b=Y2bjqa7Jvz+QxlIEu2ybLvseAI+TJcvLq8uNpqNEIfsBHCLVsB2EdVhBfqGqgY75ceje
+ WgJ//dIncrqY+v81mWcXMYgy/o7V6VtukR0EMX/eQ32cg5uvIT0FCs/y/Pwh2yyE0C9k
+ SUxQqkMcF0HncM0LCe9+7QbEN6WEIm6pduSX5Q2kNiAeEKXpVIEYz7T4pcGF88LbxTAQ
+ 2x7LEVtpF7o00k9xpmAo6mJ6r0cKaNr9CHylmrklHALxj1SGjSEE56/I7On9iHDJXNd6
+ iwjlgn7155azewwBHa8Uv1v/ez1u3uQtEhPRVqLFwsqhw/fysRhvA5Q0OhX9h8Y1ltha sA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3f58cqh5r0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Mar 2022 09:00:18 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 22V8gmUb031357;
+ Thu, 31 Mar 2022 09:00:18 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3f58cqh5q4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Mar 2022 09:00:17 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 22V8qR6j004989;
+ Thu, 31 Mar 2022 09:00:16 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 3f1tf90ryn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 31 Mar 2022 09:00:16 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 22V90CTh20185480
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 31 Mar 2022 09:00:13 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D5F1AAE05A;
+ Thu, 31 Mar 2022 09:00:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6702AE055;
+ Thu, 31 Mar 2022 09:00:10 +0000 (GMT)
+Received: from [9.43.21.51] (unknown [9.43.21.51])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 31 Mar 2022 09:00:10 +0000 (GMT)
+Message-ID: <477e1960-ffd5-068b-1f87-cc1888d4394d@linux.ibm.com>
+Date: Thu, 31 Mar 2022 14:30:09 +0530
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43107699-98ee-4b71-e337-08da12edebbf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2022 08:10:29.7804 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Gb8gQ2FI/aB3zNVbsDmNv2Zg6S6FcMEiRDKeOmnZILQXzSdZcXYpKeDFW4nhV4QnG5wBI6XGDfh8JbtISEeloP8dJnLsXSs/PCzqFPd8E2w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2859
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [RFC v3 PATCH 4/5] powerpc/crash hp: add crash hotplug support
+ for kexec_file_load
+Content-Language: en-US
+To: Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@ozlabs.org
+References: <20220321080422.56255-1-sourabhjain@linux.ibm.com>
+ <20220321080422.56255-5-sourabhjain@linux.ibm.com>
+ <b9cf2d6a-7fec-3ef3-0600-1b09ee7c1c37@linux.ibm.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <b9cf2d6a-7fec-3ef3-0600-1b09ee7c1c37@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: tkrAn_G4sHJVc60pgny2IsD9rgAfE2e4
+X-Proofpoint-GUID: dbIrbrTEV2D-J2nrX93Fq5CNK5TR1ltM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-03-31_03,2022-03-30_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 phishscore=0
+ suspectscore=0 adultscore=0 mlxscore=0 spamscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2203310046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,46 +128,154 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Sathvika Vasireddy <sv@linux.ibm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: bhe@redhat.com, mahesh@linux.vnet.ibm.com, kexec@lists.infradead.org,
+ eric.devolder@oracle.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDMxLzAzLzIwMjIgw6AgMTA6MDgsIFBldGVyIFppamxzdHJhIGEgw6ljcml0wqA6DQo+
-IE9uIFRodSwgTWFyIDMxLCAyMDIyIGF0IDA5OjUyOjA3QU0gKzAyMDAsIENocmlzdG9waGUgTGVy
-b3kgd3JvdGU6DQo+PiBTb21lIGFyY2hpdGVjdHVyZXMgbGlrZSBwb3dlcnBjIHN1cHBvcnQgYm90
-aCBlbmRpYW5uZXNzLCBpdCdzDQo+PiB0aGVyZWZvcmUgbm90IHBvc3NpYmxlIHRvIGZpeCB0aGUg
-ZW5kaWFubmVzcyB2aWEgYXJjaC9lbmRpYW5uZXNzLmgNCj4+IGJlY2F1c2UgdGhlcmUgaXMgbm8g
-ZWFzeSB3YXkgdG8gZ2V0IHRoZSB0YXJnZXQgZW5kaWFubmVzcyBhdA0KPj4gYnVpbGQgdGltZS4N
-Cj4+DQo+PiBVc2UgdGhlIGVuZGlhbm5lc3MgcmVjb3JkZWQgaW4gdGhlIGZpbGUgb2JqdG9vbCBp
-cyB3b3JraW5nIG9uLg0KPj4NCj4gDQo+PiArI2luY2x1ZGUgPG9ianRvb2wvZWxmLmg+DQo+PiAg
-IA0KPj4gICAvKg0KPj4gLSAqIERvZXMgYSBieXRlIHN3YXAgaWYgdGFyZ2V0IGVuZGlhbm5lc3Mg
-ZG9lc24ndCBtYXRjaCB0aGUgaG9zdCwgaS5lLiBjcm9zcw0KPj4gKyAqIERvZXMgYSBieXRlIHN3
-YXAgaWYgdGFyZ2V0IGZpbGUgZW5kaWFubmVzcyBkb2Vzbid0IG1hdGNoIHRoZSBob3N0LCBpLmUu
-IGNyb3NzDQo+PiAgICAqIGNvbXBpbGF0aW9uIGZvciBsaXR0bGUgZW5kaWFuIG9uIGJpZyBlbmRp
-YW4gYW5kIHZpY2UgdmVyc2EuDQo+PiAgICAqIFRvIGJlIHVzZWQgZm9yIG11bHRpLWJ5dGUgdmFs
-dWVzIGNvbnZlcnNpb24sIHdoaWNoIGFyZSByZWFkIGZyb20gLyBhYm91dA0KPj4gICAgKiB0byBi
-ZSB3cml0dGVuIHRvIGEgdGFyZ2V0IG5hdGl2ZSBlbmRpYW5uZXNzIEVMRiBmaWxlLg0KPj4gICAg
-Ki8NCj4+IC0jZGVmaW5lIGJzd2FwX2lmX25lZWRlZCh2YWwpCQkJCQkJXA0KPj4gK3N0YXRpYyBp
-bmxpbmUgYm9vbCBuZWVkX2Jzd2FwKEdFbGZfRWhkciAqZWhkcikNCj4+ICt7DQo+PiArCXJldHVy
-biAoX19CWVRFX09SREVSID09IF9fTElUVExFX0VORElBTikgXg0KPj4gKwkgICAgICAgKGVoZHIt
-PmVfaWRlbnRbRUlfREFUQV0gPT0gRUxGREFUQTJMU0IpOw0KPj4gK30NCj4+ICsNCj4+ICsjZGVm
-aW5lIGJzd2FwX2lmX25lZWRlZChlaGRyLCB2YWwpCQkJCQlcDQo+PiAgICh7CQkJCQkJCQkJXA0K
-Pj4gICAJX190eXBlb2ZfXyh2YWwpIF9fcmV0OwkJCQkJCVwNCj4+ICsJYm9vbCBfX25lZWRfYnN3
-YXAgPSBuZWVkX2Jzd2FwKGVoZHIpOwkJCQlcDQo+PiAgIAlzd2l0Y2ggKHNpemVvZih2YWwpKSB7
-CQkJCQkJXA0KPj4gLQljYXNlIDg6IF9fcmV0ID0gX19ORUVEX0JTV0FQID8gYnN3YXBfNjQodmFs
-KSA6ICh2YWwpOyBicmVhazsJXA0KPj4gLQljYXNlIDQ6IF9fcmV0ID0gX19ORUVEX0JTV0FQID8g
-YnN3YXBfMzIodmFsKSA6ICh2YWwpOyBicmVhazsJXA0KPj4gLQljYXNlIDI6IF9fcmV0ID0gX19O
-RUVEX0JTV0FQID8gYnN3YXBfMTYodmFsKSA6ICh2YWwpOyBicmVhazsJXA0KPj4gKwljYXNlIDg6
-IF9fcmV0ID0gX19uZWVkX2Jzd2FwID8gYnN3YXBfNjQodmFsKSA6ICh2YWwpOyBicmVhazsJXA0K
-Pj4gKwljYXNlIDQ6IF9fcmV0ID0gX19uZWVkX2Jzd2FwID8gYnN3YXBfMzIodmFsKSA6ICh2YWwp
-OyBicmVhazsJXA0KPj4gKwljYXNlIDI6IF9fcmV0ID0gX19uZWVkX2Jzd2FwID8gYnN3YXBfMTYo
-dmFsKSA6ICh2YWwpOyBicmVhazsJXA0KPj4gICAJZGVmYXVsdDoJCQkJCQkJXA0KPj4gICAJCUJV
-SUxEX0JVRygpOyBicmVhazsJCQkJCVwNCj4+ICAgCX0JCQkJCQkJCVwNCj4gDQo+IEZhciBsZXNz
-IHBhaW5mdWxsIHRoYXQgSSBpbWFnaW5lZCBpdCB3b3VsZCBiZSwuLiBidXQgSSB0aGluayBJIHBy
-ZWZlcg0KPiBwYXNzaW5nIGluIGVsZiwgYXMgb3Bwb3NlZCB0byBlbGYtPmVoZHIsIHdvdWxkIHRo
-YXQgd29yaz8NCg0KVGhhdCdzIHdoYXQgSSB3YW50ZWQgdG8gZG8gaW4gdGhlIGJlZ2lubmluZywg
-YnV0IHdlIGRvbid0IGhhdmUgaXQgaW4gDQpvcmNfZHVtcCgpDQoNCkNocmlzdG9waGU=
+Hi Laurent,
+
+On 25/03/22 23:33, Laurent Dufour wrote:
+> On 21/03/2022, 09:04:21, Sourabh Jain wrote:
+>> Two major changes are done to enable the crash CPU hotplug handler.
+>> Firstly, updated the kexec_load path to prepare kimage for hotplug
+>> changes and secondly, implemented the crash hotplug handler itself.
+>>
+>> On the kexec load path, memsz allocation of crash FDT segment is
+>> updated to ensure that it has sufficient buffer space to accommodate
+>> future hot add CPUs. Initialized the kimage members to track the FDT
+>> segment.
+>>
+>> The crash hotplug handler updates the cpus node of crash FDT. While
+>> we update crash FDT the kexec_crash_image is marked invalid and restored
+>> after FDT update to avoid race.
+>>
+>> Since memory crash hotplug support is not there yet the crash hotplug
+>> handler simply warn the user and return.
+>>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kexec/core_64.c | 46 ++++++++++++++++++++++++++++++++++++
+>>   arch/powerpc/kexec/elf_64.c  | 40 +++++++++++++++++++++++++++++++
+>>   2 files changed, 86 insertions(+)
+>>
+>> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+>> index 249d2632526d..a470fe6904e3 100644
+>> --- a/arch/powerpc/kexec/core_64.c
+>> +++ b/arch/powerpc/kexec/core_64.c
+>> @@ -466,6 +466,52 @@ int update_cpus_node(void *fdt)
+>>   	return ret;
+>>   }
+>>   
+>> +#ifdef CONFIG_CRASH_HOTPLUG
+>> +/**
+>> + * arch_crash_hotplug_handler() - Handle hotplug FDT changes
+>> + * @image: the active struct kimage
+>> + * @hp_action: the hot un/plug action being handled
+>> + * @a: first parameter dependent upon hp_action
+>> + * @b: first parameter dependent upon hp_action
+>> + *
+>> + * To accurately reflect CPU hot un/plug changes, the FDT
+>> + * must be updated with the new list of CPUs and memories.
+>> + */
+>> +void arch_crash_hotplug_handler(struct kimage *image, unsigned int hp_action,
+>> +				unsigned long a, unsigned long b)
+>> +{
+>> +	void *fdt;
+>> +
+>> +	/* No action needed for CPU hot-unplug */
+>> +	if (hp_action == KEXEC_CRASH_HP_REMOVE_CPU)
+>> +		return;
+>> +
+>> +	/* crash update on memory hotplug is not support yet */
+>> +	if (hp_action == KEXEC_CRASH_HP_REMOVE_MEMORY || hp_action == KEXEC_CRASH_HP_ADD_MEMORY) {
+>> +		pr_err("crash hp: crash update is not supported with memory hotplug\n");
+> 		
+> May be pr_info_once() that's not really an error ?
+
+
+Ye not an error.
+
+>
+>> +		return;
+>> +	}
+>> +
+>> +	/* Must have valid FDT index */
+>> +	if (!image->arch.fdt_index_valid) {
+>> +		pr_err("crash hp: unable to locate FDT segment");
+>> +		return;
+>> +	}
+>> +
+>> +	fdt = __va((void *)image->segment[image->arch.fdt_index].mem);
+>> +
+>> +	/* Temporarily invalidate the crash image while it is replaced */
+>> +	xchg(&kexec_crash_image, NULL);
+>> +
+>> +	/* update FDT to refelect changes to CPU resrouces */
+>> +	if (update_cpus_node(fdt))
+>> +		pr_err("crash hp: failed to update crash FDT");
+>> +
+>> +	/* The crash image is now valid once again */
+>> +	xchg(&kexec_crash_image, image);
+>> +}
+>> +#endif /* CONFIG_CRASH_HOTPLUG */
+>> +
+>>   #ifdef CONFIG_PPC_64S_HASH_MMU
+>>   /* Values we need to export to the second kernel via the device tree. */
+>>   static unsigned long htab_base;
+>> diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
+>> index eeb258002d1e..2ffe6d69e186 100644
+>> --- a/arch/powerpc/kexec/elf_64.c
+>> +++ b/arch/powerpc/kexec/elf_64.c
+>> @@ -24,6 +24,33 @@
+>>   #include <linux/slab.h>
+>>   #include <linux/types.h>
+>>   
+>> +
+>> +#ifdef CONFIG_CRASH_HOTPLUG
+>> +#define MAX_CORE 256
+> Why not computing something based on nr_cpus_ids and threads_per_core instead?
+
+
+Yes in the next version I will change this to nr_cpus.
+
+>
+>> +#define PER_CORE_NODE_SIZE 1500
+> Is that size function of threadsd_per_core too?
+
+
+It is per core basis. I noticed that the size of FDT get increased by
+approx 1.5 KB after adding a core.
+
+In next version this patch series, we will be computing FDT buffer
+size needed of hotplug CPUs based on the existing core size.
+While loading the kdump kernel we will go through all attributes
+of the currently online CPU and use them to calculate the buffer
+space needed for hotplug CPUs.
+
+>> + *
+>> + * Some assumption are made to calculate the additional buffer size needed
+>> + * to accommodate future hot add CPUs to the crash FDT. The maximum core count
+>> + * in the system would not go beyond MAX_CORE and memory needed to store per core
+>> + * date in FDT is PER_CORE_NODE_SIZE.
+>> + *
+>> + * Certainly MAX_CORE count can be replaced with possible core count and
+>> + * PER_CORE_NODE_SIZE to some standard value instead of randomly observed
+>> + * core size value on Power9 LPAR.
+> See above.
+>
+>> + */
+>> +static unsigned int get_crash_fdt_mem_sz(void *fdt)
+>> +{
+>> +	return fdt_totalsize(fdt) + (PER_CORE_NODE_SIZE * MAX_CORE);
+> I guess fdt_totalsize() is already taken in account the online CPUs, isn't it?
+> If that's the case, you should add the remaining needed part only.
+
+Agree, I will take of that in next series.
+
+
+Thanks for the review.
+
+- Sourabh Jain
+
