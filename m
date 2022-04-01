@@ -2,59 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C484EE919
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 09:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 593304EE91B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 09:29:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVBc82Dblz3c2q
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 18:28:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVBcs1Py4z3cCW
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 18:29:17 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ZfJXByG0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=aLVtx7qP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+d0e8833360852bfe4ee8+6795+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::634;
+ helo=mail-ej1-x634.google.com; envelope-from=krzysztof.kozlowski@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=ZfJXByG0; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=aLVtx7qP; dkim-atps=neutral
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
+ [IPv6:2a00:1450:4864:20::634])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KV7YX4mlpz2xvF
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Apr 2022 16:11:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
- :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
- Sender:Reply-To:Content-ID:Content-Description;
- bh=V32+zQcO407Oigns62fencqAWiQUbjG3dkYmA/bzFgs=; b=ZfJXByG0vD8l+JFtQ4yjotGAuY
- xAgedtPzZTd8OUi1dzB10Si101BKwG0IYWbUCcMjsIiNuwNVenxVCR/KUkSyd/oDjtfDtwUtY+Mn9
- tnE9E6ckU/QHuJU1mNFHjKGmNRoYXc7KQCx4T17fUppasjeBeiMsnvEfkkgFKrt2669XSgfwMt26e
- EII86iOdGu6w/fzgHJVnCqnoDNPCV3PpARH3CmgKBBJACtqcFtJloyHytdjvZpcXSGPAB9I2RnLLa
- pVcCVcwCoVfPWnVPAvAUEZBYbQyavK/AJMzt4IuTrmRktkBZkumKIQqDVXR1iP+MBwNx5+iddah/E
- 9mEWW45w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1na9YU-004W8V-1i; Fri, 01 Apr 2022 05:10:38 +0000
-Date: Thu, 31 Mar 2022 22:10:38 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 05/22] acpica: Replace comments with C99 initializers
-Message-ID: <YkaJTh+Bhf+oPQB7@infradead.org>
-References: <20220326165909.506926-1-benni@stuerz.xyz>
- <20220326165909.506926-5-benni@stuerz.xyz>
- <CAHp75VeTXMAueQc_c0Ryj5+a8PrJ7gk-arugiNnxtAm03x7XTg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KV91y0F3Kz2yHD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Apr 2022 17:17:23 +1100 (AEDT)
+Received: by mail-ej1-x634.google.com with SMTP id bg10so3716729ejb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 23:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=2TwJKrePsfMG+vTEocsT56Q0z7ebW1hBFsv6Y12aibY=;
+ b=aLVtx7qPaGlbo7sC9oaFRHo6sy3YxvNEi1YbDdnBX0tdlJV2Iec401aNv5l+WOJ4Ft
+ TRrCBOrXCVMJq2HtqciitvAi2coYs9KPozl9trDHNdqD6bOeotOatK4vpdC01We+E8/m
+ 1RBFRn2qcyilCs0Jfxa1lgWdfVQb0vsisLeCHNZuaN6pVBr/KZPiylqwTsp1j1J5WP3v
+ JYP6GK53acRgy4zZzE5mkE4iIULUE8jN3KRs/N8nn0HYu5qYD0BteYidJWR/RdCTvhV3
+ jlTw6c2tsJvFFkeLlqffXRlngyYTjHRBffyVEZq387TvjThgLKXamxHS7xJjscmVbub0
+ k9kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=2TwJKrePsfMG+vTEocsT56Q0z7ebW1hBFsv6Y12aibY=;
+ b=dhjLbzRaPNLRSAWfPlQi/eBkh1pCAscTuPVkNmSLno/rOvWVBzA073bw+hOI4hPvgF
+ 02ZRk4LE4XJbjsX5tNNnbrvp7E5ICfn2aQ+aC+wzFPMdGZAbdUBGFJ7vo7dzYP6/E7NM
+ YSV6rVVrTcLNm9zTHz2yUdVJzrck+qZiLV2VyOjkpDbm6MF3/rfoK/wQKnRwZ8T6kv/r
+ kWqIq9/WGVcA89OgbTXGJKpqM6nPPz8IpNluVdxq3on4AHH50uJmb0oVXEXgdYs4QAHL
+ I3WfYQLylu0JEasJqgYu9C9i5MrJy6sZTgXw36+s5UDl6snxNLhDrDOQUEKGDZ8pOmnQ
+ ts6w==
+X-Gm-Message-State: AOAM53186tR+F3c7ZU9oR6wJgPxQwnh4c7l4BxUvJj9D8De5ayePk51B
+ ZEhGMYv7dc/oozhyPBwfqwxQ/Q==
+X-Google-Smtp-Source: ABdhPJx0+06TUOISc+VO1MjT01uD6Ml5n1QTeFunR8KRUAfAhDO43QTr7KtZezI5fbtl0e7HJ6cyaw==
+X-Received: by 2002:a17:907:1614:b0:6df:678a:a7d5 with SMTP id
+ hb20-20020a170907161400b006df678aa7d5mr7836538ejc.719.1648793835880; 
+ Thu, 31 Mar 2022 23:17:15 -0700 (PDT)
+Received: from [192.168.0.168] (xdsl-188-155-201-27.adslplus.ch.
+ [188.155.201.27]) by smtp.gmail.com with ESMTPSA id
+ fx3-20020a170906b74300b006daecedee44sm634137ejb.220.2022.03.31.23.17.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 31 Mar 2022 23:17:15 -0700 (PDT)
+Message-ID: <9fe715a5-8ab5-ff86-7d8f-de72eac72c97@linaro.org>
+Date: Fri, 1 Apr 2022 08:17:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VeTXMAueQc_c0Ryj5+a8PrJ7gk-arugiNnxtAm03x7XTg@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] powerpc/85xx: Remove fsl,85... bindings
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Rob Herring <robh+dt@kernel.org>, Scott Wood <oss@buserror.net>,
+ Johannes Thumshirn <morbidrsa@gmail.com>
+References: <82a8bc4450a4daee50ee5fada75621fecb3703ff.1648721299.git.christophe.leroy@csgroup.eu>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <82a8bc4450a4daee50ee5fada75621fecb3703ff.1648721299.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Fri, 01 Apr 2022 18:27:09 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,59 +88,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>,
- "open list:ACPI COMPONENT ARCHITECTURE \(ACPICA\)" <devel@acpica.org>,
- linux-atm-general@lists.sourceforge.net, linux-ia64@vger.kernel.org,
- linux-pci@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Russell King - ARM Linux <linux@armlinux.org.uk>,
- Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- "H. Peter Anvin" <hpa@zytor.com>, wcn36xx@lists.infradead.org,
- Bartosz Golaszewski <brgl@bgdev.pl>,
- Benjamin =?iso-8859-1?Q?St=FCrz?= <benni@stuerz.xyz>,
- Jason Gunthorpe <jgg@ziepe.ca>, Ping-Ke Shih <pkshih@realtek.com>,
- Linux Samsung SOC <linux-samsung-soc@vger.kernel.org>,
- dennis.dalessandro@cornelisnetworks.com,
- "open list:HFI1 DRIVER" <linux-rdma@vger.kernel.org>,
- Gregory Clement <gregory.clement@bootlin.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Robert Moore <robert.moore@intel.com>, Harald Welte <laforge@gnumonks.org>,
- ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 3chas3@gmail.com,
- linux-input <linux-input@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Len Brown <lenb@kernel.org>,
- mike.marciniszyn@cornelisnetworks.com, Robert Richter <rric@kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Kalle Valo <kvalo@kernel.org>,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux@simtec.co.uk,
- linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
- linux-edac@vger.kernel.org, Karsten Keil <isdn@linux-pingi.de>,
- Loic Poulain <loic.poulain@linaro.org>,
- Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
- Nicolas Pitre <nico@fluxnic.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-wireless@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- James Morse <james.morse@arm.com>, netdev <netdev@vger.kernel.org>,
- Frederic Barrat <fbarrat@linux.ibm.com>, linux-media@vger.kernel.org,
- "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT"
- <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: devicetree@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+ Robert Richter <rric@kernel.org>, linux-kernel@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Paul Mackerras <paulus@samba.org>, linux-edac@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Mar 27, 2022 at 10:59:54PM +0300, Andy Shevchenko wrote:
-> On Sat, Mar 26, 2022 at 7:39 PM Benjamin Stürz <benni@stuerz.xyz> wrote:
-> >
-> > This replaces comments with C99's designated
-> > initializers because the kernel supports them now.
+On 31/03/2022 12:13, Christophe Leroy wrote:
+> Since commit 8a4ab218ef70 ("powerpc/85xx: Change deprecated binding
+> for 85xx-based boards"), those bindings are not used anymore.
 > 
-> Does it follow the conventions which are accepted in the ACPI CA project?
+> A comment in drivers/edac/mpc85xx_edac.c say they are to be removed
+> with kernel 2.6.30.
+> 
+> Remove them now.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  .../bindings/memory-controllers/fsl/fsl,ddr.yaml   |  6 ------
+>  .../devicetree/bindings/powerpc/fsl/l2cache.txt    |  6 ------
+>  drivers/edac/mpc85xx_edac.c                        | 14 --------------
+>  3 files changed, 26 deletions(-)
+> 
 
-Why would ACPI CA be allowed to make up it's own conventions?  And as
-you might imply not allow using a very useful and more than 20 year old
-C feature?  This kind of BS need to stop.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+
+Best regards,
+Krzysztof
