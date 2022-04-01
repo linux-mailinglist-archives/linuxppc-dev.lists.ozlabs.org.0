@@ -2,59 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEF34EEFA5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456394EEFBB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:28:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVMvv66n7z30G6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:27:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVMwZ0sd9z3c17
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:28:30 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RfWMpevk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lzRb5qcL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=RfWMpevk; 
+ header.s=k20201202 header.b=lzRb5qcL; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KVMvC3dNVz2xfy
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:27:19 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KVMvF6KdKz2xfy
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:27:21 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 71DC461BCE;
- Fri,  1 Apr 2022 14:27:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618FBC2BBE4;
- Fri,  1 Apr 2022 14:27:14 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 71A6061C43;
+ Fri,  1 Apr 2022 14:27:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86889C2BBE4;
+ Fri,  1 Apr 2022 14:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648823235;
- bh=XDdrt3Zdkqf91+hsmo+atvf9Fl2UncK5Pbj1CzGlJm4=;
+ s=k20201202; t=1648823238;
+ bh=b51VNEiKO+Fx8+RwLfJTXx0nWoth9Ssof+K5dUkMstw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=RfWMpevkqUxFGU1DHgaE2lF9GTSml12ZoHoonIGLKVlKh+2tgbgkinsA6l2G6nETP
- c3dbxiCGaY1MCIPUKUOHdbFkmxZzJFWt7HlHbs4lfmNmcZsmdAyrVoewh+rg0kbDxY
- oUCR1+7GtKR4cN58YsuXJVioo5/SrwQqb1Uexhq+oGPz8OmdNzBMCWNzytW3lBqyut
- gS2K9V079sRbsptaz42urIFtFeHWBkkgDn3vuSsi8HrcVqmyffk6DweCkr2wwFfIth
- j+wTQ6E84WBqKty/y32t8ywCkZWxp5m+b9Uad0xhPi0bMQi89Ny3BID9mcPqzJA771
- 4osOANCmOi9dQ==
+ b=lzRb5qcLN1/53yc5oKT7sO3W6zaQ42oQ3Jca7Tb2yP2UboEfdR/V5+nrf9uI/ET2b
+ dRE6ku5jr+MY/+L0VJS6m88I/eXQYZX0Vzl8imU5JPcPP9lZrwuONARZLCqW9FE6yO
+ f7ZSbCaHSXF2n936Jsbmpcg1M8ccdLZmlAqAIg/Gc1AtP3dwLTIThIHCMGwzX5uvod
+ 6o5u3hMQo5QaUDXA3R8/hUS11rULghiEn0RSN0hXkGlIufBTJhkG8iT4IS0rdZW0L7
+ o33WLfkdHswI+WXTxg+K6fHgRmniEgrciDxsUFGi5zDoXJ1SuSXCUs4AA8AxqTliIf
+ 4g13TgkmDEIXg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 027/149] powerpc/xive: Export XIVE IPI
- information for online-only processors.
-Date: Fri,  1 Apr 2022 10:23:34 -0400
-Message-Id: <20220401142536.1948161-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.17 028/149] powerpc: dts: t104xrdb: fix phy type for
+ FMAN 4/5
+Date: Fri,  1 Apr 2022 10:23:35 -0400
+Message-Id: <20220401142536.1948161-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401142536.1948161-1-sashal@kernel.org>
 References: <20220401142536.1948161-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -69,47 +66,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, groug@kaod.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Sachin Sant <sachinp@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, devicetree@vger.kernel.org,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Maxim Kochetkov <fido_max@inbox.ru>,
+ robh+dt@kernel.org, Maxim Kiselev <bigunclemax@gmail.com>, krzk+dt@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sachin Sant <sachinp@linux.ibm.com>
+From: Maxim Kiselev <bigunclemax@gmail.com>
 
-[ Upstream commit 279d1a72c0f8021520f68ddb0a1346ff9ba1ea8c ]
+[ Upstream commit 17846485dff91acce1ad47b508b633dffc32e838 ]
 
-Cédric pointed out that XIVE IPI information exported via sysfs
-(debug/powerpc/xive) display empty lines for processors which are
-not online.
+T1040RDB has two RTL8211E-VB phys which requires setting
+of internal delays for correct work.
 
-Switch to using for_each_online_cpu() so that information is
-displayed for online-only processors.
+Changing the phy-connection-type property to `rgmii-id`
+will fix this issue.
 
-Reported-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Sachin Sant <sachinp@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
+Reviewed-by: Maxim Kochetkov <fido_max@inbox.ru>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/164146703333.19039.10920919226094771665.sendpatchset@MacBook-Pro.local
+Link: https://lore.kernel.org/r/20211230151123.1258321-1-bigunclemax@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/xive/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/boot/dts/fsl/t104xrdb.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
-index 1ca5564bda9d..32863b4daf72 100644
---- a/arch/powerpc/sysdev/xive/common.c
-+++ b/arch/powerpc/sysdev/xive/common.c
-@@ -1791,7 +1791,7 @@ static int xive_ipi_debug_show(struct seq_file *m, void *private)
- 	if (xive_ops->debug_show)
- 		xive_ops->debug_show(m, private);
+diff --git a/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi b/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
+index 099a598c74c0..bfe1ed5be337 100644
+--- a/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
++++ b/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
+@@ -139,12 +139,12 @@ pca9546@77 {
+ 		fman@400000 {
+ 			ethernet@e6000 {
+ 				phy-handle = <&phy_rgmii_0>;
+-				phy-connection-type = "rgmii";
++				phy-connection-type = "rgmii-id";
+ 			};
  
--	for_each_possible_cpu(cpu)
-+	for_each_online_cpu(cpu)
- 		xive_debug_show_ipi(m, cpu);
- 	return 0;
- }
+ 			ethernet@e8000 {
+ 				phy-handle = <&phy_rgmii_1>;
+-				phy-connection-type = "rgmii";
++				phy-connection-type = "rgmii-id";
+ 			};
+ 
+ 			mdio0: mdio@fc000 {
 -- 
 2.34.1
 
