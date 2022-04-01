@@ -2,80 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593304EE91B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 09:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CB84EE91D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 09:29:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVBcs1Py4z3cCW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 18:29:17 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=aLVtx7qP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVBdK0kFKz3cKr
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 18:29:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::634;
- helo=mail-ej1-x634.google.com; envelope-from=krzysztof.kozlowski@linaro.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=aLVtx7qP; dkim-atps=neutral
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
- [IPv6:2a00:1450:4864:20::634])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=inspur.com (client-ip=210.51.61.248; helo=ssh248.corpemail.net;
+ envelope-from=liubo03@inspur.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 126 seconds by postgrey-1.36 at boromir;
+ Fri, 01 Apr 2022 17:55:43 AEDT
+Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KV91y0F3Kz2yHD
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Apr 2022 17:17:23 +1100 (AEDT)
-Received: by mail-ej1-x634.google.com with SMTP id bg10so3716729ejb.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Mar 2022 23:17:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=2TwJKrePsfMG+vTEocsT56Q0z7ebW1hBFsv6Y12aibY=;
- b=aLVtx7qPaGlbo7sC9oaFRHo6sy3YxvNEi1YbDdnBX0tdlJV2Iec401aNv5l+WOJ4Ft
- TRrCBOrXCVMJq2HtqciitvAi2coYs9KPozl9trDHNdqD6bOeotOatK4vpdC01We+E8/m
- 1RBFRn2qcyilCs0Jfxa1lgWdfVQb0vsisLeCHNZuaN6pVBr/KZPiylqwTsp1j1J5WP3v
- JYP6GK53acRgy4zZzE5mkE4iIULUE8jN3KRs/N8nn0HYu5qYD0BteYidJWR/RdCTvhV3
- jlTw6c2tsJvFFkeLlqffXRlngyYTjHRBffyVEZq387TvjThgLKXamxHS7xJjscmVbub0
- k9kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=2TwJKrePsfMG+vTEocsT56Q0z7ebW1hBFsv6Y12aibY=;
- b=dhjLbzRaPNLRSAWfPlQi/eBkh1pCAscTuPVkNmSLno/rOvWVBzA073bw+hOI4hPvgF
- 02ZRk4LE4XJbjsX5tNNnbrvp7E5ICfn2aQ+aC+wzFPMdGZAbdUBGFJ7vo7dzYP6/E7NM
- YSV6rVVrTcLNm9zTHz2yUdVJzrck+qZiLV2VyOjkpDbm6MF3/rfoK/wQKnRwZ8T6kv/r
- kWqIq9/WGVcA89OgbTXGJKpqM6nPPz8IpNluVdxq3on4AHH50uJmb0oVXEXgdYs4QAHL
- I3WfYQLylu0JEasJqgYu9C9i5MrJy6sZTgXw36+s5UDl6snxNLhDrDOQUEKGDZ8pOmnQ
- ts6w==
-X-Gm-Message-State: AOAM53186tR+F3c7ZU9oR6wJgPxQwnh4c7l4BxUvJj9D8De5ayePk51B
- ZEhGMYv7dc/oozhyPBwfqwxQ/Q==
-X-Google-Smtp-Source: ABdhPJx0+06TUOISc+VO1MjT01uD6Ml5n1QTeFunR8KRUAfAhDO43QTr7KtZezI5fbtl0e7HJ6cyaw==
-X-Received: by 2002:a17:907:1614:b0:6df:678a:a7d5 with SMTP id
- hb20-20020a170907161400b006df678aa7d5mr7836538ejc.719.1648793835880; 
- Thu, 31 Mar 2022 23:17:15 -0700 (PDT)
-Received: from [192.168.0.168] (xdsl-188-155-201-27.adslplus.ch.
- [188.155.201.27]) by smtp.gmail.com with ESMTPSA id
- fx3-20020a170906b74300b006daecedee44sm634137ejb.220.2022.03.31.23.17.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 31 Mar 2022 23:17:15 -0700 (PDT)
-Message-ID: <9fe715a5-8ab5-ff86-7d8f-de72eac72c97@linaro.org>
-Date: Fri, 1 Apr 2022 08:17:14 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KV9t7209lz2yJF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Apr 2022 17:55:42 +1100 (AEDT)
+Received: from ([60.208.111.195])
+ by ssh248.corpemail.net ((D)) with ASMTP (SSL) id VAB00056;
+ Fri, 01 Apr 2022 14:52:56 +0800
+Received: from localhost.localdomain (10.200.104.97) by
+ jtjnmail201612.home.langchao.com (10.100.2.12) with Microsoft SMTP Server id
+ 15.1.2308.21; Fri, 1 Apr 2022 14:52:57 +0800
+From: Bo Liu <liubo03@inspur.com>
+To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>
+Subject: [PATCH] KVM: PPC: Book3S HV: fix the return value of kvm_age_rmapp()
+Date: Fri, 1 Apr 2022 02:52:52 -0400
+Message-ID: <20220401065252.36472-1-liubo03@inspur.com>
+X-Mailer: git-send-email 2.18.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH] powerpc/85xx: Remove fsl,85... bindings
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Rob Herring <robh+dt@kernel.org>, Scott Wood <oss@buserror.net>,
- Johannes Thumshirn <morbidrsa@gmail.com>
-References: <82a8bc4450a4daee50ee5fada75621fecb3703ff.1648721299.git.christophe.leroy@csgroup.eu>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <82a8bc4450a4daee50ee5fada75621fecb3703ff.1648721299.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.200.104.97]
+tUid: 2022401145256c1c7b0e9cca863817d7f78b2247f8888
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 X-Mailman-Approved-At: Fri, 01 Apr 2022 18:27:09 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,34 +51,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
- Robert Richter <rric@kernel.org>, linux-kernel@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Paul Mackerras <paulus@samba.org>, linux-edac@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Bo Liu <liubo03@inspur.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31/03/2022 12:13, Christophe Leroy wrote:
-> Since commit 8a4ab218ef70 ("powerpc/85xx: Change deprecated binding
-> for 85xx-based boards"), those bindings are not used anymore.
-> 
-> A comment in drivers/edac/mpc85xx_edac.c say they are to be removed
-> with kernel 2.6.30.
-> 
-> Remove them now.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  .../bindings/memory-controllers/fsl/fsl,ddr.yaml   |  6 ------
->  .../devicetree/bindings/powerpc/fsl/l2cache.txt    |  6 ------
->  drivers/edac/mpc85xx_edac.c                        | 14 --------------
->  3 files changed, 26 deletions(-)
-> 
+The return value type defined in the function kvm_age_rmapp() is
+"bool", but the return value type defined in the implementation of the
+function kvm_age_rmapp() is "int".
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Change the return value type to "bool".
 
+Signed-off-by: Bo Liu <liubo03@inspur.com>
+---
+ arch/powerpc/kvm/book3s_64_mmu_hv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Best regards,
-Krzysztof
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+index 0aeb51738ca9..9a83894ca743 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+@@ -879,7 +879,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+ 	struct revmap_entry *rev = kvm->arch.hpt.rev;
+ 	unsigned long head, i, j;
+ 	__be64 *hptep;
+-	int ret = 0;
++	bool ret = false;
+ 	unsigned long *rmapp;
+ 
+ 	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
+@@ -887,7 +887,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+ 	lock_rmap(rmapp);
+ 	if (*rmapp & KVMPPC_RMAP_REFERENCED) {
+ 		*rmapp &= ~KVMPPC_RMAP_REFERENCED;
+-		ret = 1;
++		ret = true;
+ 	}
+ 	if (!(*rmapp & KVMPPC_RMAP_PRESENT)) {
+ 		unlock_rmap(rmapp);
+@@ -919,7 +919,7 @@ static bool kvm_age_rmapp(struct kvm *kvm, struct kvm_memory_slot *memslot,
+ 				rev[i].guest_rpte |= HPTE_R_R;
+ 				note_hpte_modification(kvm, &rev[i]);
+ 			}
+-			ret = 1;
++			ret = true;
+ 		}
+ 		__unlock_hpte(hptep, be64_to_cpu(hptep[0]));
+ 	} while ((i = j) != head);
+-- 
+2.27.0
+
