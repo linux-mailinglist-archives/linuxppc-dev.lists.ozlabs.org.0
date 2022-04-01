@@ -2,56 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004844EF20C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 880634EF210
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:47:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVNLF6YXPz3fYF
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:47:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVNLx37Q3z3fbY
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:47:53 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S6CzPe3g;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qHcjoh9s;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=sashal@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=S6CzPe3g; 
+ header.s=k20201202 header.b=qHcjoh9s; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KVNJl3cfSz3fQv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:45:59 +1100 (AEDT)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KVNKN0BDdz3dPc
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:46:32 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 304FAB8240E;
- Fri,  1 Apr 2022 14:45:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC4AC3410F;
- Fri,  1 Apr 2022 14:45:55 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 18E6360A3C;
+ Fri,  1 Apr 2022 14:46:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE5BC2BBE4;
+ Fri,  1 Apr 2022 14:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648824356;
- bh=T6tPuj8Acp42Rr5p3oVDbKRALnGv/RT8/DtkoTLBGkc=;
+ s=k20201202; t=1648824389;
+ bh=b51VNEiKO+Fx8+RwLfJTXx0nWoth9Ssof+K5dUkMstw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=S6CzPe3g8j8QaMkZB3SZXd6Z+FJCKIXJbAgFYClH0VYc1g57i1cJYoR6TiGS63czn
- v3iJ6OI8QqUz5tgQTjAM8Cb5itJ79d0mUbgeSqpykeXFkBuVbs94+j1J76efablNxo
- P7lOjN1UuORxvjYh6FoM5SWnEJkLw4bUMl3uMEqpJBS6piz6OGMikjvn0InioBbK4M
- qc0kIvktvKklst2JIdZT6OKKSPTctURM5DDESXd0KLzOknV3EEO/tWWqPBl0VDdEMd
- A9smc+Az7OotG5nJePikT7O6+hxxkR9IBfmYyEdoNoeOsoGmqzHpTa+WwcATtAHFqo
- qJqbGL8RmzzpQ==
+ b=qHcjoh9snVT3yEDc9hYCmTZsgjSE3P3LzQtIa2SsoqjlikEUxbaAcKtKZ7/iBE4b5
+ i841lyPd2D2aurJMJDpAhWww1S8xqgXj9SQQJYuGxP561PY4HLrx4c9JnJO+mOTc7k
+ 80Pi0pfqYs7Fq9CZZztzCyMBcLUOWwx+DDlygd0vZSqY4AEb0i4zjSIdEQXSO9l+5m
+ LoifimPn9+KG/7nhnXgQJ4C93aVqFvWNU25gIUNy6tgvh8q0ZAqF9q602e0prjhjWg
+ BzZrwrQRclWVLT4+P14kpiIrGVp4+SzHOVaiZoQ9D/+kSlD2ZATMVSFf78+usTvy+Q
+ KcnHCJY1hFBKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 30/37] powerpc/code-patching: Pre-map patch area
-Date: Fri,  1 Apr 2022 10:44:39 -0400
-Message-Id: <20220401144446.1954694-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 05/29] powerpc: dts: t104xrdb: fix phy type for
+ FMAN 4/5
+Date: Fri,  1 Apr 2022 10:45:48 -0400
+Message-Id: <20220401144612.1955177-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220401144446.1954694-1-sashal@kernel.org>
-References: <20220401144446.1954694-1-sashal@kernel.org>
+In-Reply-To: <20220401144612.1955177-1-sashal@kernel.org>
+References: <20220401144612.1955177-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -67,103 +66,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Paul Menzel <pmenzel@molgen.mpg.de>,
- Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, devicetree@vger.kernel.org,
+ Vladimir Oltean <vladimir.oltean@nxp.com>, Maxim Kochetkov <fido_max@inbox.ru>,
+ robh+dt@kernel.org, Maxim Kiselev <bigunclemax@gmail.com>, krzk+dt@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Maxim Kiselev <bigunclemax@gmail.com>
 
-[ Upstream commit 591b4b268435f00d2f0b81f786c2c7bd5ef66416 ]
+[ Upstream commit 17846485dff91acce1ad47b508b633dffc32e838 ]
 
-Paul reported a warning with DEBUG_ATOMIC_SLEEP=y:
+T1040RDB has two RTL8211E-VB phys which requires setting
+of internal delays for correct work.
 
-  BUG: sleeping function called from invalid context at include/linux/sched/mm.h:256
-  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
-  preempt_count: 0, expected: 0
-  ...
-  Call Trace:
-    dump_stack_lvl+0xa0/0xec (unreliable)
-    __might_resched+0x2f4/0x310
-    kmem_cache_alloc+0x220/0x4b0
-    __pud_alloc+0x74/0x1d0
-    hash__map_kernel_page+0x2cc/0x390
-    do_patch_instruction+0x134/0x4a0
-    arch_jump_label_transform+0x64/0x78
-    __jump_label_update+0x148/0x180
-    static_key_enable_cpuslocked+0xd0/0x120
-    static_key_enable+0x30/0x50
-    check_kvm_guest+0x60/0x88
-    pSeries_smp_probe+0x54/0xb0
-    smp_prepare_cpus+0x3e0/0x430
-    kernel_init_freeable+0x20c/0x43c
-    kernel_init+0x30/0x1a0
-    ret_from_kernel_thread+0x5c/0x64
+Changing the phy-connection-type property to `rgmii-id`
+will fix this issue.
 
-Peter pointed out that this is because do_patch_instruction() has
-disabled interrupts, but then map_patch_area() calls map_kernel_page()
-then hash__map_kernel_page() which does a sleeping memory allocation.
-
-We only see the warning in KVM guests with SMT enabled, which is not
-particularly common, or on other platforms if CONFIG_KPROBES is
-disabled, also not common. The reason we don't see it in most
-configurations is that another path that happens to have interrupts
-enabled has allocated the required page tables for us, eg. there's a
-path in kprobes init that does that. That's just pure luck though.
-
-As Christophe suggested, the simplest solution is to do a dummy
-map/unmap when we initialise the patching, so that any required page
-table levels are pre-allocated before the first call to
-do_patch_instruction(). This works because the unmap doesn't free any
-page tables that were allocated by the map, it just clears the PTE,
-leaving the page table levels there for the next map.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Debugged-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Maxim Kiselev <bigunclemax@gmail.com>
+Reviewed-by: Maxim Kochetkov <fido_max@inbox.ru>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220223015821.473097-1-mpe@ellerman.id.au
+Link: https://lore.kernel.org/r/20211230151123.1258321-1-bigunclemax@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/code-patching.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/powerpc/boot/dts/fsl/t104xrdb.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index a05f289e613e..e417d4470397 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -41,9 +41,14 @@ int raw_patch_instruction(unsigned int *addr, unsigned int instr)
- #ifdef CONFIG_STRICT_KERNEL_RWX
- static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
+diff --git a/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi b/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
+index 099a598c74c0..bfe1ed5be337 100644
+--- a/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
++++ b/arch/powerpc/boot/dts/fsl/t104xrdb.dtsi
+@@ -139,12 +139,12 @@ pca9546@77 {
+ 		fman@400000 {
+ 			ethernet@e6000 {
+ 				phy-handle = <&phy_rgmii_0>;
+-				phy-connection-type = "rgmii";
++				phy-connection-type = "rgmii-id";
+ 			};
  
-+static int map_patch_area(void *addr, unsigned long text_poke_addr);
-+static void unmap_patch_area(unsigned long addr);
-+
- static int text_area_cpu_up(unsigned int cpu)
- {
- 	struct vm_struct *area;
-+	unsigned long addr;
-+	int err;
+ 			ethernet@e8000 {
+ 				phy-handle = <&phy_rgmii_1>;
+-				phy-connection-type = "rgmii";
++				phy-connection-type = "rgmii-id";
+ 			};
  
- 	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
- 	if (!area) {
-@@ -51,6 +56,15 @@ static int text_area_cpu_up(unsigned int cpu)
- 			cpu);
- 		return -1;
- 	}
-+
-+	// Map/unmap the area to ensure all page tables are pre-allocated
-+	addr = (unsigned long)area->addr;
-+	err = map_patch_area(empty_zero_page, addr);
-+	if (err)
-+		return err;
-+
-+	unmap_patch_area(addr);
-+
- 	this_cpu_write(text_poke_area, area);
- 
- 	return 0;
+ 			mdio0: mdio@fc000 {
 -- 
 2.34.1
 
