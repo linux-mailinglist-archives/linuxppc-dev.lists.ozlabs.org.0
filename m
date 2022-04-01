@@ -2,92 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBDF4EFA3E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 21:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BAE34EFA3F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 21:02:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVV0C5vKCz3cDX
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 06:02:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVV103FC5z3c70
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 06:02:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MLBsVtDB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=m5Nbem7/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=MLBsVtDB; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ header.s=pp1 header.b=m5Nbem7/; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KVTxd1B0Dz30Fw
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 05:59:48 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 231GtXAW004963; 
- Fri, 1 Apr 2022 18:59:43 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KVTxm2Y9Tz3c1B
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 05:59:56 +1100 (AEDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 231IPYZ1032809; 
+ Fri, 1 Apr 2022 18:59:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=084QExmGtFqhUTbvbPsoKnHTsj91QjOI0kM7ZjCouM0=;
- b=MLBsVtDBimyou2CJKPeT2kkgNPRqiqOKXAN4OArAzCCTJD0czjD6S0N1C6AVUpYok4Lf
- K2ZLQH0Ne3E/0dYX26/qFWGoJAWIl1vdX66GdOBaaY/pfJvx2iEmVoqKec3vOgm3VVBX
- hR4K4L0/hRhifNjhjzNUrU9Ook3sZsiDHJKYKhHL5vumQKcbHNB9nFw8eIyRSaAVhZZU
- bSUPDywYG+m/w3qktjDuDRHcm9I9UiTNKQQddMnlsUd8IvDzV26u1TmFUOdrSuz0f4W0
- hJph6HlsT4YzNXq0Bfvr2HFaxmkaDAc5x1fc1D2oq2Bit6v+X/FgUcrRWTOlNNvEnxkp sQ== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3f632kdm9y-1
+ content-type : content-transfer-encoding; s=pp1;
+ bh=rYzBa0Q35Z0nbRZA3fgmjIQ5P4DWIwVibblGjOMpbWw=;
+ b=m5Nbem7/ZBaM7ON91G58eKlLv0Nj2OJL+RnVoFZ/DOuZfq62xYagGfVx01XCNcycTe4Q
+ RiZZTUSbNDiotBxsZYzCJyLGi70qJmpnYh43m5c2LmkhE4Vezz/aA8HzT9WxawQZtLtT
+ znIZUokOPxvdhr3jkM9rRE5OwHKj/4VCKxlI3k6uuN69EFanG2uqTTXVIsZ9VlEaiCjk
+ kAeXgVTdSC7UM/3GYa+rmQeJsYX2LKnhTKszh4H1UaL4+OIxLxq3qBDRamn/OXXZBc5d
+ MPO3Qfu07PVKjZtOqwjVZLHltTACLZB6zdYKykaSe+sIU6s24vI/yL6tjiqLii9r0o5g 6A== 
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f66nmrgny-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Apr 2022 18:59:43 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 231Ivhpb016567;
- Fri, 1 Apr 2022 18:59:41 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma04fra.de.ibm.com with ESMTP id 3f1tf93h5g-1
+ Fri, 01 Apr 2022 18:59:48 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 231IxaZq017423;
+ Fri, 1 Apr 2022 18:59:46 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06fra.de.ibm.com with ESMTP id 3f1t3j3j33-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 01 Apr 2022 18:59:41 +0000
+ Fri, 01 Apr 2022 18:59:46 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 231IlXrZ38666526
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 231Ixhxe14745856
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 1 Apr 2022 18:47:33 GMT
+ Fri, 1 Apr 2022 18:59:43 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 11CDCA4054;
+ by IMSVA (Postfix) with ESMTP id 3D001A4054;
+ Fri,  1 Apr 2022 18:59:43 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF195A405C;
  Fri,  1 Apr 2022 18:59:38 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E6ADA405B;
- Fri,  1 Apr 2022 18:59:32 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.211.128.246])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  1 Apr 2022 18:59:32 +0000 (GMT)
+ Fri,  1 Apr 2022 18:59:38 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com
-Subject: [PATCH 3/4] tools/perf: Fix perf numa bench to fix usage of affinity
- for machines with #CPUs > 1K
-Date: Sat,  2 Apr 2022 00:28:52 +0530
-Message-Id: <20220401185853.23912-4-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH 4/4] tools/perf: Fix perf bench numa testcase to check if CPU
+ used to bind task is online
+Date: Sat,  2 Apr 2022 00:28:53 +0530
+Message-Id: <20220401185853.23912-5-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220401185853.23912-1-atrajeev@linux.vnet.ibm.com>
 References: <20220401185853.23912-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LKbV-xYywK8f8wvjwbVfjGJabtWGwe3n
-X-Proofpoint-ORIG-GUID: LKbV-xYywK8f8wvjwbVfjGJabtWGwe3n
+X-Proofpoint-ORIG-GUID: 7vR4fGg7F51MTFq7q3imnx3OUoyFjHHf
+X-Proofpoint-GUID: 7vR4fGg7F51MTFq7q3imnx3OUoyFjHHf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-04-01_05,2022-03-31_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 clxscore=1015 mlxlogscore=999 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 malwarescore=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ mlxlogscore=999 clxscore=1015 impostorscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2204010088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -107,279 +108,148 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-perf bench numa testcase fails on systems with CPU's
-more than 1K.
+Perf numa bench test fails with error:
 
-Testcase: perf bench numa mem -p 1 -t 3 -P 512 -s 100 -zZ0qcm --thp  1
-Snippet of code:
+Testcase:
+./perf bench numa mem -p 2 -t 1 -P 1024 -C 0,8 -M 1,0 -s 20 -zZq
+--thp  1 --no-data_rand_walk
+
+Failure snippet:
 <<>>
-perf: bench/numa.c:302: bind_to_node: Assertion `!(ret)' failed.
-Aborted (core dumped)
+ Running 'numa/mem' benchmark:
+
+ # Running main, "perf bench numa numa-mem -p 2 -t 1 -P 1024 -C 0,8
+-M 1,0 -s 20 -zZq --thp 1 --no-data_rand_walk"
+
+perf: bench/numa.c:333: bind_to_cpumask: Assertion `!(ret)' failed.
 <<>>
 
-bind_to_node function uses "sched_getaffinity" to save the original
-cpumask and this call is returning EINVAL ((invalid argument).
-This happens because the default mask size in glibc is 1024.
-To overcome this 1024 CPUs mask size limitation of cpu_set_t,
-change the mask size using the CPU_*_S macros ie, use CPU_ALLOC to
-allocate cpumask, CPU_ALLOC_SIZE for size. Apart from fixing this
-for "orig_mask", apply same logic to "mask" as well which is used to
-setaffinity so that mask size is large enough to represent number
-of possible CPU's in the system.
+The Testcases uses CPU’s 0 and 8. In function "parse_setup_cpu_list",
+There is check to see if cpu number is greater than max cpu’s possible
+in the system ie via "if (bind_cpu_0 >= g->p.nr_cpus ||
+bind_cpu_1 >= g->p.nr_cpus) {". But it could happen that system has
+say 48 CPU’s, but only number of online CPU’s is 0-7. Other CPU’s
+are offlined. Since "g->p.nr_cpus" is 48, so function will go ahead
+and set bit for CPU 8 also in cpumask ( td->bind_cpumask).
 
-sched_getaffinity is used in one more place in perf numa bench. It
-is in "bind_to_cpu" function. Apply the same logic there also. Though
-currently no failure is reported from there, it is ideal to change
-getaffinity to work with such system configurations having CPU's more
-than default mask size supported by glibc.
+bind_to_cpumask function is called to set affinity using
+sched_setaffinity and the cpumask. Since the CPU8 is not present,
+set affinity will fail here with EINVAL. Fix this issue by adding a
+check to make sure that, CPU’s provided in the input argument values
+are online before proceeding further and skip the test. For this,
+include new helper function "is_cpu_online" in
+"tools/perf/util/header.c".
 
-Also fix "sched_setaffinity" to use mask size which is large enough
-to represent number of possible CPU's in the system.
+Since "BIT(x)" definition will get included from header.h, remove
+that from bench/numa.c
 
-Fixed all places where "bind_cpumask" which is part of "struct
-thread_data" is used such that bind_cpumask works in all configuration.
-
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- tools/perf/bench/numa.c | 109 +++++++++++++++++++++++++++++-----------
- 1 file changed, 81 insertions(+), 28 deletions(-)
+ tools/perf/bench/numa.c  |  8 ++++++--
+ tools/perf/util/header.c | 43 ++++++++++++++++++++++++++++++++++++++++
+ tools/perf/util/header.h |  1 +
+ 3 files changed, 50 insertions(+), 2 deletions(-)
 
 diff --git a/tools/perf/bench/numa.c b/tools/perf/bench/numa.c
-index f2640179ada9..333896907e45 100644
+index 333896907e45..42e2b2ed30c3 100644
 --- a/tools/perf/bench/numa.c
 +++ b/tools/perf/bench/numa.c
-@@ -54,7 +54,7 @@
+@@ -34,6 +34,7 @@
+ #include <linux/numa.h>
+ #include <linux/zalloc.h>
  
- struct thread_data {
- 	int			curr_cpu;
--	cpu_set_t		bind_cpumask;
-+	cpu_set_t		*bind_cpumask;
- 	int			bind_node;
- 	u8			*process_data;
- 	int			process_nr;
-@@ -266,46 +266,75 @@ static bool node_has_cpus(int node)
- 	return ret;
- }
++#include "../util/header.h"
+ #include <numa.h>
+ #include <numaif.h>
  
--static cpu_set_t bind_to_cpu(int target_cpu)
-+static cpu_set_t *bind_to_cpu(int target_cpu)
- {
--	cpu_set_t orig_mask, mask;
-+	int nrcpus = numa_num_possible_cpus();
-+	cpu_set_t *orig_mask, *mask;
-+	size_t size;
- 	int ret;
- 
--	ret = sched_getaffinity(0, sizeof(orig_mask), &orig_mask);
--	BUG_ON(ret);
-+	orig_mask = CPU_ALLOC(nrcpus);
-+	BUG_ON(!orig_mask);
-+	size = CPU_ALLOC_SIZE(nrcpus);
-+	CPU_ZERO_S(size, orig_mask);
-+
-+	ret = sched_getaffinity(0, size, orig_mask);
-+	if (ret) {
-+		CPU_FREE(orig_mask);
-+		BUG_ON(ret);
-+	}
- 
--	CPU_ZERO(&mask);
-+	mask = CPU_ALLOC(nrcpus);
-+	BUG_ON(!mask);
-+	CPU_ZERO_S(size, mask);
- 
- 	if (target_cpu == -1) {
- 		int cpu;
- 
- 		for (cpu = 0; cpu < g->p.nr_cpus; cpu++)
--			CPU_SET(cpu, &mask);
-+			CPU_SET_S(cpu, size, mask);
- 	} else {
- 		BUG_ON(target_cpu < 0 || target_cpu >= g->p.nr_cpus);
--		CPU_SET(target_cpu, &mask);
-+		CPU_SET_S(target_cpu, size, mask);
- 	}
- 
--	ret = sched_setaffinity(0, sizeof(mask), &mask);
--	BUG_ON(ret);
-+	ret = sched_setaffinity(0, size, mask);
-+	if (ret) {
-+		CPU_FREE(mask);
-+		BUG_ON(ret);
-+	}
-+
-+	CPU_FREE(mask);
- 
- 	return orig_mask;
- }
- 
--static cpu_set_t bind_to_node(int target_node)
-+static cpu_set_t *bind_to_node(int target_node)
- {
--	cpu_set_t orig_mask, mask;
-+	int nrcpus = numa_num_possible_cpus();
-+	cpu_set_t *orig_mask, *mask;
-+	size_t size;
- 	int cpu;
- 	int ret;
- 
--	ret = sched_getaffinity(0, sizeof(orig_mask), &orig_mask);
--	BUG_ON(ret);
-+	orig_mask = CPU_ALLOC(nrcpus);
-+	BUG_ON(!orig_mask);
-+	size = CPU_ALLOC_SIZE(nrcpus);
-+	CPU_ZERO_S(size, orig_mask);
-+
-+	ret = sched_getaffinity(0, size, orig_mask);
-+	if (ret) {
-+		CPU_FREE(orig_mask);
-+		BUG_ON(ret);
-+	}
- 
--	CPU_ZERO(&mask);
-+	mask = CPU_ALLOC(nrcpus);
-+	BUG_ON(!mask);
-+	CPU_ZERO_S(size, mask);
- 
- 	if (target_node == NUMA_NO_NODE) {
- 		for (cpu = 0; cpu < g->p.nr_cpus; cpu++)
--			CPU_SET(cpu, &mask);
-+			CPU_SET_S(cpu, size, mask);
- 	} else {
- 		struct bitmask *cpumask = numa_allocate_cpumask();
- 
-@@ -313,24 +342,33 @@ static cpu_set_t bind_to_node(int target_node)
- 		if (!numa_node_to_cpus(target_node, cpumask)) {
- 			for (cpu = 0; cpu < (int)cpumask->size; cpu++) {
- 				if (numa_bitmask_isbitset(cpumask, cpu))
--					CPU_SET(cpu, &mask);
-+					CPU_SET_S(cpu, size, mask);
- 			}
+@@ -624,6 +625,11 @@ static int parse_setup_cpu_list(void)
+ 			return -1;
  		}
- 		numa_free_cpumask(cpumask);
- 	}
  
--	ret = sched_setaffinity(0, sizeof(mask), &mask);
--	BUG_ON(ret);
-+	ret = sched_setaffinity(0, size, mask);
-+	if (ret) {
-+		CPU_FREE(mask);
-+		BUG_ON(ret);
-+	}
++		if (is_cpu_online(bind_cpu_0) != 1 || is_cpu_online(bind_cpu_1) != 1) {
++			printf("\nTest not applicable, bind_cpu_0 or bind_cpu_1 is offline\n");
++			return -1;
++		}
 +
-+	CPU_FREE(mask);
- 
- 	return orig_mask;
- }
- 
--static void bind_to_cpumask(cpu_set_t mask)
-+static void bind_to_cpumask(cpu_set_t *mask)
- {
- 	int ret;
-+	size_t size = CPU_ALLOC_SIZE(numa_num_possible_cpus());
- 
--	ret = sched_setaffinity(0, sizeof(mask), &mask);
--	BUG_ON(ret);
-+	ret = sched_setaffinity(0, size, mask);
-+	if (ret) {
-+		CPU_FREE(mask);
-+		BUG_ON(ret);
-+	}
- }
- 
- static void mempol_restore(void)
-@@ -376,7 +414,7 @@ do {							\
- static u8 *alloc_data(ssize_t bytes0, int map_flags,
- 		      int init_zero, int init_cpu0, int thp, int init_random)
- {
--	cpu_set_t orig_mask;
-+	cpu_set_t *orig_mask;
- 	ssize_t bytes;
- 	u8 *buf;
- 	int ret;
-@@ -434,6 +472,7 @@ static u8 *alloc_data(ssize_t bytes0, int map_flags,
- 	/* Restore affinity: */
- 	if (init_cpu0) {
- 		bind_to_cpumask(orig_mask);
-+		CPU_FREE(orig_mask);
- 		mempol_restore();
- 	}
- 
-@@ -589,6 +628,7 @@ static int parse_setup_cpu_list(void)
+ 		BUG_ON(bind_cpu_0 < 0 || bind_cpu_1 < 0);
  		BUG_ON(bind_cpu_0 > bind_cpu_1);
  
- 		for (bind_cpu = bind_cpu_0; bind_cpu <= bind_cpu_1; bind_cpu += step) {
-+			size_t size = CPU_ALLOC_SIZE(g->p.nr_cpus);
- 			int i;
- 
- 			for (i = 0; i < mul; i++) {
-@@ -608,10 +648,12 @@ static int parse_setup_cpu_list(void)
- 					tprintf("%2d", bind_cpu);
- 				}
- 
--				CPU_ZERO(&td->bind_cpumask);
-+				td->bind_cpumask = CPU_ALLOC(g->p.nr_cpus);
-+				BUG_ON(!td->bind_cpumask);
-+				CPU_ZERO_S(size, td->bind_cpumask);
- 				for (cpu = bind_cpu; cpu < bind_cpu+bind_len; cpu++) {
- 					BUG_ON(cpu < 0 || cpu >= g->p.nr_cpus);
--					CPU_SET(cpu, &td->bind_cpumask);
-+					CPU_SET_S(cpu, size, td->bind_cpumask);
- 				}
- 				t++;
- 			}
-@@ -1241,7 +1283,7 @@ static void *worker_thread(void *__tdata)
- 		 * by migrating to CPU#0:
- 		 */
- 		if (first_task && g->p.perturb_secs && (int)(stop.tv_sec - last_perturbance) >= g->p.perturb_secs) {
--			cpu_set_t orig_mask;
-+			cpu_set_t *orig_mask;
- 			int target_cpu;
- 			int this_cpu;
- 
-@@ -1265,6 +1307,7 @@ static void *worker_thread(void *__tdata)
- 				printf(" (injecting perturbalance, moved to CPU#%d)\n", target_cpu);
- 
- 			bind_to_cpumask(orig_mask);
-+			CPU_FREE(orig_mask);
- 		}
- 
- 		if (details >= 3) {
-@@ -1398,21 +1441,31 @@ static void init_thread_data(void)
- 
- 	for (t = 0; t < g->p.nr_tasks; t++) {
- 		struct thread_data *td = g->threads + t;
-+		size_t cpuset_size = CPU_ALLOC_SIZE(g->p.nr_cpus);
- 		int cpu;
- 
- 		/* Allow all nodes by default: */
- 		td->bind_node = NUMA_NO_NODE;
- 
- 		/* Allow all CPUs by default: */
--		CPU_ZERO(&td->bind_cpumask);
-+		td->bind_cpumask = CPU_ALLOC(g->p.nr_cpus);
-+		BUG_ON(!td->bind_cpumask);
-+		CPU_ZERO_S(cpuset_size, td->bind_cpumask);
- 		for (cpu = 0; cpu < g->p.nr_cpus; cpu++)
--			CPU_SET(cpu, &td->bind_cpumask);
-+			CPU_SET_S(cpu, cpuset_size, td->bind_cpumask);
- 	}
+@@ -794,8 +800,6 @@ static int parse_nodes_opt(const struct option *opt __maybe_unused,
+ 	return parse_node_list(arg);
  }
  
- static void deinit_thread_data(void)
+-#define BIT(x) (1ul << x)
+-
+ static inline uint32_t lfsr_32(uint32_t lfsr)
  {
- 	ssize_t size = sizeof(*g->threads)*g->p.nr_tasks;
-+	int t;
-+
-+	/* Free the bind_cpumask allocated for thread_data */
-+	for (t = 0; t < g->p.nr_tasks; t++) {
-+		struct thread_data *td = g->threads + t;
-+		CPU_FREE(td->bind_cpumask);
-+	}
- 
- 	free_data(g->threads, size);
+ 	const uint32_t taps = BIT(1) | BIT(5) | BIT(6) | BIT(31);
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 6da12e522edc..3f5fcf5d4b3f 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -983,6 +983,49 @@ static int write_dir_format(struct feat_fd *ff,
+ 	return do_write(ff, &data->dir.version, sizeof(data->dir.version));
  }
+ 
++#define SYSFS "/sys/devices/system/cpu/"
++
++/*
++ * Check whether a CPU is online
++ *
++ * Returns:
++ *     1 -> if CPU is online
++ *     0 -> if CPU is offline
++ *    -1 -> error case
++ */
++int is_cpu_online(unsigned int cpu)
++{
++	char sysfs_cpu[255];
++	char buf[255];
++	struct stat statbuf;
++	size_t len;
++	int fd;
++
++	snprintf(sysfs_cpu, sizeof(sysfs_cpu), SYSFS "cpu%u", cpu);
++
++	if (stat(sysfs_cpu, &statbuf) != 0)
++		return 0;
++
++	/*
++	 * Check if /sys/devices/system/cpu/cpux/online file
++	 * exists. In kernels without CONFIG_HOTPLUG_CPU, this
++	 * file won't exist.
++	 */
++	snprintf(sysfs_cpu, sizeof(sysfs_cpu), SYSFS "cpu%u/online", cpu);
++	if (stat(sysfs_cpu, &statbuf) != 0)
++		return 1;
++
++	fd = open(sysfs_cpu, O_RDONLY);
++	if (fd == -1)
++		return -1;
++
++	len = read(fd, buf, sizeof(buf) - 1);
++	buf[len] = '\0';
++	close(fd);
++
++	return strtoul(buf, NULL, 16);
++}
++
+ #ifdef HAVE_LIBBPF_SUPPORT
+ static int write_bpf_prog_info(struct feat_fd *ff,
+ 			       struct evlist *evlist __maybe_unused)
+diff --git a/tools/perf/util/header.h b/tools/perf/util/header.h
+index c9e3265832d9..0eb4bc29a5a4 100644
+--- a/tools/perf/util/header.h
++++ b/tools/perf/util/header.h
+@@ -158,6 +158,7 @@ int do_write(struct feat_fd *fd, const void *buf, size_t size);
+ int write_padded(struct feat_fd *fd, const void *bf,
+ 		 size_t count, size_t count_aligned);
+ 
++int is_cpu_online(unsigned int cpu);
+ /*
+  * arch specific callback
+  */
 -- 
 2.35.1
 
