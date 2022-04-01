@@ -1,53 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4610D4EF135
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:39:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F6E4EF17A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:40:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVN9d0vD7z3dwm
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:39:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVNBG0gdfz3f0q
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:40:22 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TaNUNEx9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LCKIMbXo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=sashal@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=TaNUNEx9; 
+ header.s=k20201202 header.b=LCKIMbXo; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KVN903rWWz2x9T
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:39:16 +1100 (AEDT)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KVN9c3zF3z3dwh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:39:48 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id A729760E9A;
- Fri,  1 Apr 2022 14:39:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6290C2BBE4;
- Fri,  1 Apr 2022 14:39:12 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id F2225B8240E;
+ Fri,  1 Apr 2022 14:39:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A3EC2BBE4;
+ Fri,  1 Apr 2022 14:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648823954;
- bh=BwOrEkLZgTMlLGyBgn33UsQLqqayQQduB5Dg1mYe6CA=;
+ s=k20201202; t=1648823984;
+ bh=sl/L3IoLhbxSi+8SA2V9tdINBn6+oqofJHpHEInNECk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=TaNUNEx9NuDdgyg8qA/Re7Sy0p+I4fYX+04kM74YKXdmeNvlJpkgj6jT4fEd2vi7i
- WyPvZIR0WQ5OtbP/MStWJN7fSgH7Ufg6FPtPprKE6dhWJvcv4yG+D6X2dE/aRTVFyF
- 0DncdZcj8TAiRmLEvG8nzyw5wo00cwYkS1Bdhlfiwp6YhtHfdCPgwI61hr4wLA5UCN
- F523cImQdjj+KftK4k3xXBdxGM1Xjpm+OHELEFkKGoBpLxOKa+24CLn0qfg7CI+Rm4
- n0v9flWK+1RIzODM8J7DVZJycPp+dydRslDkqjrAB+TO8HCECEAwEgNAPwq1cskof2
- vxeAzbR5zg4FQ==
+ b=LCKIMbXodDYszSNtvXX6AUSUkwkmqGBjAdtUucBwuIEP6ZfV5fZ0lwK0VqA7sdPYv
+ MN27/XnXOEP8HRC+Fd8RkEY4Yp1lGgplwf5CQ5l4IlsdVTtfbD4QeDNG7XZTCTVaBp
+ 9xvBvTiEBsKl3FqafQS2IH2pjJSNnmHl5cGqGQy/CHGEtbm0uFicj925V17NtBzCR7
+ 1yOf6ZpYH7Hjf0wWj+MxcOUGiOWKAxKf8Ze2umv/slvfXtnDN0yMGxSOSme+IVBQRY
+ vEWgMcthylV7alOJE7Kh7zIVmRpn+bYdTKZwFWVSObzNiwtO0iFzZx9KA5jxBT+tJm
+ 6KaCchpZvaPMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 29/98] powerpc: Set crashkernel offset to mid of
- RMA region
-Date: Fri,  1 Apr 2022 10:36:33 -0400
-Message-Id: <20220401143742.1952163-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 40/98] powerpc/set_memory: Avoid spinlock
+ recursion in change_page_attr()
+Date: Fri,  1 Apr 2022 10:36:44 -0400
+Message-Id: <20220401143742.1952163-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401143742.1952163-1-sashal@kernel.org>
 References: <20220401143742.1952163-1-sashal@kernel.org>
@@ -66,97 +68,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, nathanl@linux.ibm.com, ajd@linux.ibm.com,
- arnd@arndb.de, aik@ozlabs.ru, Sourabh Jain <sourabhjain@linux.ibm.com>,
- Abdul haleem <abdhalee@linux.vnet.ibm.com>, nick.child@ibm.com,
- npiggin@gmail.com, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org,
- adobriyan@gmail.com, rppt@kernel.org
+Cc: Sasha Levin <sashal@kernel.org>, jniethe5@gmail.com,
+ Maxime Bizon <mbizon@freebox.fr>, linuxppc-dev@lists.ozlabs.org,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 7c5ed82b800d8615cdda00729e7b62e5899f0b13 ]
+[ Upstream commit a4c182ecf33584b9b2d1aa9dad073014a504c01f ]
 
-On large config LPARs (having 192 and more cores), Linux fails to boot
-due to insufficient memory in the first memblock. It is due to the
-memory reservation for the crash kernel which starts at 128MB offset of
-the first memblock. This memory reservation for the crash kernel doesn't
-leave enough space in the first memblock to accommodate other essential
-system resources.
+Commit 1f9ad21c3b38 ("powerpc/mm: Implement set_memory() routines")
+included a spin_lock() to change_page_attr() in order to
+safely perform the three step operations. But then
+commit 9f7853d7609d ("powerpc/mm: Fix set_memory_*() against
+concurrent accesses") modify it to use pte_update() and do
+the operation safely against concurrent access.
 
-The crash kernel start address was set to 128MB offset by default to
-ensure that the crash kernel get some memory below the RMA region which
-is used to be of size 256MB. But given that the RMA region size can be
-512MB or more, setting the crash kernel offset to mid of RMA size will
-leave enough space for the kernel to allocate memory for other system
-resources.
+In the meantime, Maxime reported some spinlock recursion.
 
-Since the above crash kernel offset change is only applicable to the LPAR
-platform, the LPAR feature detection is pushed before the crash kernel
-reservation. The rest of LPAR specific initialization will still
-be done during pseries_probe_fw_features as usual.
+[   15.351649] BUG: spinlock recursion on CPU#0, kworker/0:2/217
+[   15.357540]  lock: init_mm+0x3c/0x420, .magic: dead4ead, .owner: kworker/0:2/217, .owner_cpu: 0
+[   15.366563] CPU: 0 PID: 217 Comm: kworker/0:2 Not tainted 5.15.0+ #523
+[   15.373350] Workqueue: events do_free_init
+[   15.377615] Call Trace:
+[   15.380232] [e4105ac0] [800946a4] do_raw_spin_lock+0xf8/0x120 (unreliable)
+[   15.387340] [e4105ae0] [8001f4ec] change_page_attr+0x40/0x1d4
+[   15.393413] [e4105b10] [801424e0] __apply_to_page_range+0x164/0x310
+[   15.400009] [e4105b60] [80169620] free_pcp_prepare+0x1e4/0x4a0
+[   15.406045] [e4105ba0] [8016c5a0] free_unref_page+0x40/0x2b8
+[   15.411979] [e4105be0] [8018724c] kasan_depopulate_vmalloc_pte+0x6c/0x94
+[   15.418989] [e4105c00] [801424e0] __apply_to_page_range+0x164/0x310
+[   15.425451] [e4105c50] [80187834] kasan_release_vmalloc+0xbc/0x134
+[   15.431898] [e4105c70] [8015f7a8] __purge_vmap_area_lazy+0x4e4/0xdd8
+[   15.438560] [e4105d30] [80160d10] _vm_unmap_aliases.part.0+0x17c/0x24c
+[   15.445283] [e4105d60] [801642d0] __vunmap+0x2f0/0x5c8
+[   15.450684] [e4105db0] [800e32d0] do_free_init+0x68/0x94
+[   15.456181] [e4105dd0] [8005d094] process_one_work+0x4bc/0x7b8
+[   15.462283] [e4105e90] [8005d614] worker_thread+0x284/0x6e8
+[   15.468227] [e4105f00] [8006aaec] kthread+0x1f0/0x210
+[   15.473489] [e4105f40] [80017148] ret_from_kernel_thread+0x14/0x1c
 
-This patch is dependent on changes to paca allocation for boot CPU. It
-expect boot CPU to discover 1T segment support which is introduced by
-the patch posted here:
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239175.html
+Remove the read / modify / write sequence to make the operation atomic
+and remove the spin_lock() in change_page_attr().
 
-Reported-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+To do the operation atomically, we can't use pte modification helpers
+anymore. Because all platforms have different combination of bits, it
+is not easy to use those bits directly. But all have the
+_PAGE_KERNEL_{RO/ROX/RW/RWX} set of flags. All we need it to compare
+two sets to know which bits are set or cleared.
+
+For instance, by comparing _PAGE_KERNEL_ROX and _PAGE_KERNEL_RO you
+know which bit gets cleared and which bit get set when changing exec
+permission.
+
+Reported-by: Maxime Bizon <mbizon@freebox.fr>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220204085601.107257-1-sourabhjain@linux.ibm.com
+Link: https://lore.kernel.org/all/20211212112152.GA27070@sakura/
+Link: https://lore.kernel.org/r/43c3c76a1175ae6dc1a3d3b5c3f7ecb48f683eea.1640344012.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c |  6 ++++++
- arch/powerpc/kexec/core.c  | 15 +++++++++++----
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ arch/powerpc/mm/pageattr.c | 32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index ff80bbad22a5..e18a725a8e5d 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1235,6 +1235,12 @@ int __init early_init_dt_scan_rtas(unsigned long node,
- 	entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
- 	sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
+diff --git a/arch/powerpc/mm/pageattr.c b/arch/powerpc/mm/pageattr.c
+index edea388e9d3f..8812454e70ff 100644
+--- a/arch/powerpc/mm/pageattr.c
++++ b/arch/powerpc/mm/pageattr.c
+@@ -15,12 +15,14 @@
+ #include <asm/pgtable.h>
  
-+#ifdef CONFIG_PPC64
-+	/* need this feature to decide the crashkernel offset */
-+	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
-+		powerpc_firmware_features |= FW_FEATURE_LPAR;
-+#endif
+ 
++static pte_basic_t pte_update_delta(pte_t *ptep, unsigned long addr,
++				    unsigned long old, unsigned long new)
++{
++	return pte_update(&init_mm, addr, ptep, old & ~new, new & ~old, 0);
++}
 +
- 	if (basep && entryp && sizep) {
- 		rtas.base = *basep;
- 		rtas.entry = *entryp;
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index 48525e8b5730..71b1bfdadd76 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -147,11 +147,18 @@ void __init reserve_crashkernel(void)
- 	if (!crashk_res.start) {
- #ifdef CONFIG_PPC64
- 		/*
--		 * On 64bit we split the RMO in half but cap it at half of
--		 * a small SLB (128MB) since the crash kernel needs to place
--		 * itself and some stacks to be in the first segment.
-+		 * On the LPAR platform place the crash kernel to mid of
-+		 * RMA size (512MB or more) to ensure the crash kernel
-+		 * gets enough space to place itself and some stack to be
-+		 * in the first segment. At the same time normal kernel
-+		 * also get enough space to allocate memory for essential
-+		 * system resource in the first segment. Keep the crash
-+		 * kernel starts at 128MB offset on other platforms.
- 		 */
--		crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
-+		if (firmware_has_feature(FW_FEATURE_LPAR))
-+			crashk_res.start = ppc64_rma_size / 2;
-+		else
-+			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
- #else
- 		crashk_res.start = KDUMP_KERNELBASE;
- #endif
+ /*
+- * Updates the attributes of a page in three steps:
+- *
+- * 1. take the page_table_lock
+- * 2. install the new entry with the updated attributes
+- * 3. flush the TLB
++ * Updates the attributes of a page atomically.
+  *
+  * This sequence is safe against concurrent updates, and also allows updating the
+  * attributes of a page currently being executed or accessed.
+@@ -28,41 +30,33 @@
+ static int change_page_attr(pte_t *ptep, unsigned long addr, void *data)
+ {
+ 	long action = (long)data;
+-	pte_t pte;
+-
+-	spin_lock(&init_mm.page_table_lock);
+-
+-	pte = ptep_get(ptep);
+ 
+-	/* modify the PTE bits as desired, then apply */
++	/* modify the PTE bits as desired */
+ 	switch (action) {
+ 	case SET_MEMORY_RO:
+-		pte = pte_wrprotect(pte);
++		/* Don't clear DIRTY bit */
++		pte_update_delta(ptep, addr, _PAGE_KERNEL_RW & ~_PAGE_DIRTY, _PAGE_KERNEL_RO);
+ 		break;
+ 	case SET_MEMORY_RW:
+-		pte = pte_mkwrite(pte_mkdirty(pte));
++		pte_update_delta(ptep, addr, _PAGE_KERNEL_RO, _PAGE_KERNEL_RW);
+ 		break;
+ 	case SET_MEMORY_NX:
+-		pte = pte_exprotect(pte);
++		pte_update_delta(ptep, addr, _PAGE_KERNEL_ROX, _PAGE_KERNEL_RO);
+ 		break;
+ 	case SET_MEMORY_X:
+-		pte = pte_mkexec(pte);
++		pte_update_delta(ptep, addr, _PAGE_KERNEL_RO, _PAGE_KERNEL_ROX);
+ 		break;
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		break;
+ 	}
+ 
+-	pte_update(&init_mm, addr, ptep, ~0UL, pte_val(pte), 0);
+-
+ 	/* See ptesync comment in radix__set_pte_at() */
+ 	if (radix_enabled())
+ 		asm volatile("ptesync": : :"memory");
+ 
+ 	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+ 
+-	spin_unlock(&init_mm.page_table_lock);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.34.1
 
