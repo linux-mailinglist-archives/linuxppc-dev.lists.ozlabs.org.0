@@ -1,55 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533FE4EF21A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:50:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39424EF21D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Apr 2022 16:50:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVNPn106Qz3fps
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:50:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVNQR5yNsz3fsc
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 01:50:55 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LevkTUfQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i3LwNfUF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=LevkTUfQ; 
+ header.s=k20201202 header.b=i3LwNfUF; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KVNLy6qrvz3fc2
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:47:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KVNMR33SXz3dpM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Apr 2022 01:48:19 +1100 (AEDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 1BB6660AC0;
- Fri,  1 Apr 2022 14:47:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49115C36AE2;
- Fri,  1 Apr 2022 14:47:51 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 1FFADB824D5;
+ Fri,  1 Apr 2022 14:48:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6CEC2BBE4;
+ Fri,  1 Apr 2022 14:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648824472;
- bh=QqnES8ynFTVQcwMQhvxc3XVQGibTXjAfr2+ul2wlJWY=;
+ s=k20201202; t=1648824495;
+ bh=Dx3lx22s84dvcX2NHGP3SkhLqmFI3j5QSQo82oCG5bU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LevkTUfQukgJPFR4wf1M2I4qL3YzZfWFc+QdCUOMmHpJ52q2OqQgfDCWhPx4Dfkes
- OjnN/DgL52KHHGgxEKPRn/nkY94pTFc1kdtsWAWNKZUvK1nCYUiO5EFjhWlgUaoMLr
- v7N6/8wYh6SyHSG9jYS2/eS6ipVmlfsVyz1PBxVWNJdlr1FxYfIGSgz2b8TKQcP8TM
- QVyH1NSieJmhsMht5c0Mq4lvsaFVMGiUxRKED9fwrFlCGJtHU+Bypuk7sedqSiyAdK
- qLNRc8/pojBMrZ7W/VpTPeM49DRv94K6OMDANeppiYnKiw7YxhQvFc+A+yzU6OL+Cl
- O0NkuS3Md1R0g==
+ b=i3LwNfUFoEtrjRHYRDkqUqD4/ZVfB75lCmN2O8zXubJS0t+FjALfeo5i+ezazXTuz
+ Gd0NnAMlNF/vcumgv2/k/w0QhHsi8l2GCCESjo6lmCZtGSWeS+LnP+VTE1a5HVVICR
+ KAAuD33Fk0fXauwjpvDp8zi/3GMVFhZS4vsEQ52RU3EwCTcDiz7/pTAvsfSMRjpbWf
+ s8drj2Ec2Yxpl36G1OGVkHJpleS+2rOfGFnUAWqxXBU0ar+o8jsXCPQk0MBujW8cqz
+ ZYThdkhaP77nSbPKBtjW/be4mTBuhAJHRnLwnFjFpbnt2aHjxzPsbgxlzCheo3f74F
+ scFbhPmHMzvWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 07/22] powerpc: Set crashkernel offset to mid of
- RMA region
-Date: Fri,  1 Apr 2022 10:47:14 -0400
-Message-Id: <20220401144729.1955554-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 17/22] powerpc/code-patching: Pre-map patch area
+Date: Fri,  1 Apr 2022 10:47:24 -0400
+Message-Id: <20220401144729.1955554-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220401144729.1955554-1-sashal@kernel.org>
 References: <20220401144729.1955554-1-sashal@kernel.org>
@@ -68,96 +65,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, nathanl@linux.ibm.com, ajd@linux.ibm.com,
- aik@ozlabs.ru, Sourabh Jain <sourabhjain@linux.ibm.com>,
- Abdul haleem <abdhalee@linux.vnet.ibm.com>, npiggin@gmail.com,
- linuxppc-dev@lists.ozlabs.org, adobriyan@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>, Paul Menzel <pmenzel@molgen.mpg.de>,
+ Peter Zijlstra <peterz@infradead.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 7c5ed82b800d8615cdda00729e7b62e5899f0b13 ]
+[ Upstream commit 591b4b268435f00d2f0b81f786c2c7bd5ef66416 ]
 
-On large config LPARs (having 192 and more cores), Linux fails to boot
-due to insufficient memory in the first memblock. It is due to the
-memory reservation for the crash kernel which starts at 128MB offset of
-the first memblock. This memory reservation for the crash kernel doesn't
-leave enough space in the first memblock to accommodate other essential
-system resources.
+Paul reported a warning with DEBUG_ATOMIC_SLEEP=y:
 
-The crash kernel start address was set to 128MB offset by default to
-ensure that the crash kernel get some memory below the RMA region which
-is used to be of size 256MB. But given that the RMA region size can be
-512MB or more, setting the crash kernel offset to mid of RMA size will
-leave enough space for the kernel to allocate memory for other system
-resources.
+  BUG: sleeping function called from invalid context at include/linux/sched/mm.h:256
+  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
+  preempt_count: 0, expected: 0
+  ...
+  Call Trace:
+    dump_stack_lvl+0xa0/0xec (unreliable)
+    __might_resched+0x2f4/0x310
+    kmem_cache_alloc+0x220/0x4b0
+    __pud_alloc+0x74/0x1d0
+    hash__map_kernel_page+0x2cc/0x390
+    do_patch_instruction+0x134/0x4a0
+    arch_jump_label_transform+0x64/0x78
+    __jump_label_update+0x148/0x180
+    static_key_enable_cpuslocked+0xd0/0x120
+    static_key_enable+0x30/0x50
+    check_kvm_guest+0x60/0x88
+    pSeries_smp_probe+0x54/0xb0
+    smp_prepare_cpus+0x3e0/0x430
+    kernel_init_freeable+0x20c/0x43c
+    kernel_init+0x30/0x1a0
+    ret_from_kernel_thread+0x5c/0x64
 
-Since the above crash kernel offset change is only applicable to the LPAR
-platform, the LPAR feature detection is pushed before the crash kernel
-reservation. The rest of LPAR specific initialization will still
-be done during pseries_probe_fw_features as usual.
+Peter pointed out that this is because do_patch_instruction() has
+disabled interrupts, but then map_patch_area() calls map_kernel_page()
+then hash__map_kernel_page() which does a sleeping memory allocation.
 
-This patch is dependent on changes to paca allocation for boot CPU. It
-expect boot CPU to discover 1T segment support which is introduced by
-the patch posted here:
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-January/239175.html
+We only see the warning in KVM guests with SMT enabled, which is not
+particularly common, or on other platforms if CONFIG_KPROBES is
+disabled, also not common. The reason we don't see it in most
+configurations is that another path that happens to have interrupts
+enabled has allocated the required page tables for us, eg. there's a
+path in kprobes init that does that. That's just pure luck though.
 
-Reported-by: Abdul haleem <abdhalee@linux.vnet.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+As Christophe suggested, the simplest solution is to do a dummy
+map/unmap when we initialise the patching, so that any required page
+table levels are pre-allocated before the first call to
+do_patch_instruction(). This works because the unmap doesn't free any
+page tables that were allocated by the map, it just clears the PTE,
+leaving the page table levels there for the next map.
+
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Debugged-by: Peter Zijlstra <peterz@infradead.org>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220204085601.107257-1-sourabhjain@linux.ibm.com
+Link: https://lore.kernel.org/r/20220223015821.473097-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/machine_kexec.c | 15 +++++++++++----
- arch/powerpc/kernel/rtas.c          |  6 ++++++
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ arch/powerpc/lib/code-patching.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
-index cb4d6cd949fc..101b0fb7a80e 100644
---- a/arch/powerpc/kernel/machine_kexec.c
-+++ b/arch/powerpc/kernel/machine_kexec.c
-@@ -145,11 +145,18 @@ void __init reserve_crashkernel(void)
- 	if (!crashk_res.start) {
- #ifdef CONFIG_PPC64
- 		/*
--		 * On 64bit we split the RMO in half but cap it at half of
--		 * a small SLB (128MB) since the crash kernel needs to place
--		 * itself and some stacks to be in the first segment.
-+		 * On the LPAR platform place the crash kernel to mid of
-+		 * RMA size (512MB or more) to ensure the crash kernel
-+		 * gets enough space to place itself and some stack to be
-+		 * in the first segment. At the same time normal kernel
-+		 * also get enough space to allocate memory for essential
-+		 * system resource in the first segment. Keep the crash
-+		 * kernel starts at 128MB offset on other platforms.
- 		 */
--		crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
-+		if (firmware_has_feature(FW_FEATURE_LPAR))
-+			crashk_res.start = ppc64_rma_size / 2;
-+		else
-+			crashk_res.start = min(0x8000000ULL, (ppc64_rma_size / 2));
- #else
- 		crashk_res.start = KDUMP_KERNELBASE;
- #endif
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 55b266d7afe1..912e7f69266e 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1356,6 +1356,12 @@ int __init early_init_dt_scan_rtas(unsigned long node,
- 	entryp = of_get_flat_dt_prop(node, "linux,rtas-entry", NULL);
- 	sizep  = of_get_flat_dt_prop(node, "rtas-size", NULL);
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 85f84b45d3a0..c58a619a68b3 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -47,9 +47,14 @@ int raw_patch_instruction(unsigned int *addr, unsigned int instr)
+ #ifdef CONFIG_STRICT_KERNEL_RWX
+ static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
  
-+#ifdef CONFIG_PPC64
-+	/* need this feature to decide the crashkernel offset */
-+	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
-+		powerpc_firmware_features |= FW_FEATURE_LPAR;
-+#endif
++static int map_patch_area(void *addr, unsigned long text_poke_addr);
++static void unmap_patch_area(unsigned long addr);
 +
- 	if (basep && entryp && sizep) {
- 		rtas.base = *basep;
- 		rtas.entry = *entryp;
+ static int text_area_cpu_up(unsigned int cpu)
+ {
+ 	struct vm_struct *area;
++	unsigned long addr;
++	int err;
+ 
+ 	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
+ 	if (!area) {
+@@ -57,6 +62,15 @@ static int text_area_cpu_up(unsigned int cpu)
+ 			cpu);
+ 		return -1;
+ 	}
++
++	// Map/unmap the area to ensure all page tables are pre-allocated
++	addr = (unsigned long)area->addr;
++	err = map_patch_area(empty_zero_page, addr);
++	if (err)
++		return err;
++
++	unmap_patch_area(addr);
++
+ 	this_cpu_write(text_poke_area, area);
+ 
+ 	return 0;
 -- 
 2.34.1
 
