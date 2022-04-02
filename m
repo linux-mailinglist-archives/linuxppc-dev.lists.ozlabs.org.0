@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6E94F04C4
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 18:14:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21264F04F4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 18:35:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KW2DP1tFNz30Fw
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Apr 2022 02:14:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KW2hv6NjXz3c2q
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Apr 2022 02:35:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,52 +16,42 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KW2Ct6jwcz2xDD
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Apr 2022 02:14:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KW2hV57jSz2xRp
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Apr 2022 02:35:20 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KW2Cm3Wbzz9sSX;
- Sat,  2 Apr 2022 18:13:56 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4KW2hP62wJz9sSX;
+ Sat,  2 Apr 2022 18:35:17 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id uGOm-OX4ahYj; Sat,  2 Apr 2022 18:13:56 +0200 (CEST)
+ with ESMTP id MEtE9mW9L07m; Sat,  2 Apr 2022 18:35:17 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KW2Cm2WMwz9sSQ;
- Sat,  2 Apr 2022 18:13:56 +0200 (CEST)
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KW2hP54N8z9sS6;
+ Sat,  2 Apr 2022 18:35:17 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 42F8E8B76D;
- Sat,  2 Apr 2022 18:13:56 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9808D8B76D;
+ Sat,  2 Apr 2022 18:35:17 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 2GrwgdPFsQWp; Sat,  2 Apr 2022 18:13:56 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.137])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E50368B768;
- Sat,  2 Apr 2022 18:13:55 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 232GDkxx008659
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Sat, 2 Apr 2022 18:13:46 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 232GDjBW008657;
- Sat, 2 Apr 2022 18:13:45 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: [PATCH] [Rebased for 5.4] powerpc/kasan: Fix early region not updated
- correctly
-Date: Sat,  2 Apr 2022 18:13:31 +0200
-Message-Id: <fc39c36ea92e03ed5eb218ddbe83b34361034d9d.1648915982.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.1
+ with ESMTP id 1mhd8NZeBHsu; Sat,  2 Apr 2022 18:35:17 +0200 (CEST)
+Received: from [192.168.202.137] (unknown [192.168.202.137])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 231568B768;
+ Sat,  2 Apr 2022 18:35:17 +0200 (CEST)
+Message-ID: <9d02405a-793e-bcf5-a424-470d9c82ec7d@csgroup.eu>
+Date: Sat, 2 Apr 2022 18:35:15 +0200
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1648916010; l=3434;
- i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id;
- bh=Hq5fiOviUcMicNmDDK52z8tOXSe3kJkV1ZNLLWvxmjM=;
- b=MGfzrBP4AIGBuQCs9lA5I89BspUHZyTRwCnfjoJQivd4GjsGTB0UOEEEcO92OKqAlE9YrYd+PrR/
- 5+l+2RPNDunazBsAqQx9uOftbbbERbPTGWey61v/+18CQmsfaboZ
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2] powerpc/drmem: Don't compute the NUMA node for each LMB
+Content-Language: fr-FR
+To: Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <202008051807.Vi8NDJtX%lkp@intel.com>
+ <20200805133502.33723-1-ldufour@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20200805133502.33723-1-ldufour@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,92 +64,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chen Jingwen <chenjingwen6@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: nathanl@linux.ibm.com, cheloha@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Chen Jingwen <chenjingwen6@huawei.com>
 
-This is backport for 5.4
 
-Upstream commit 5647a94a26e352beed61788b46e035d9d12664cd
+Le 05/08/2020 à 15:35, Laurent Dufour a écrit :
+> All the LMB from the same set of ibm,dynamic-memory-v2 property are
+> sharing the same NUMA node. Don't compute that node for each one.
+> 
+> Tested on a system with 1022 LMBs spread on 4 NUMA nodes, only 4 calls to
+> lmb_set_nid() have been made instead of 1022.
+> 
+> This should prevent some soft lockups when starting large guests
+> 
+> Code has meaning only if CONFIG_MEMORY_HOTPLUG is set, otherwise the nid
+> field is not present in the drmem_lmb structure.
+> 
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
 
-The shadow's page table is not updated when PTE_RPN_SHIFT is 24
-and PAGE_SHIFT is 12. It not only causes false positives but
-also false negative as shown the following text.
+It looks like this patch was superseded by e5e179aa3a39 ("pseries/drmem: 
+don't cache node id in drmem_lmb struct").
 
-Fix it by bringing the logic of kasan_early_shadow_page_entry here.
+If not, anyway it conflicts with that patch so it has to be rebased.
 
-1. False Positive:
-==================================================================
-BUG: KASAN: vmalloc-out-of-bounds in pcpu_alloc+0x508/0xa50
-Write of size 16 at addr f57f3be0 by task swapper/0/1
+Thanks
+Christophe
 
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.0-12267-gdebe436e77c7 #1
-Call Trace:
-[c80d1c20] [c07fe7b8] dump_stack_lvl+0x4c/0x6c (unreliable)
-[c80d1c40] [c02ff668] print_address_description.constprop.0+0x88/0x300
-[c80d1c70] [c02ff45c] kasan_report+0x1ec/0x200
-[c80d1cb0] [c0300b20] kasan_check_range+0x160/0x2f0
-[c80d1cc0] [c03018a4] memset+0x34/0x90
-[c80d1ce0] [c0280108] pcpu_alloc+0x508/0xa50
-[c80d1d40] [c02fd7bc] __kmem_cache_create+0xfc/0x570
-[c80d1d70] [c0283d64] kmem_cache_create_usercopy+0x274/0x3e0
-[c80d1db0] [c2036580] init_sd+0xc4/0x1d0
-[c80d1de0] [c00044a0] do_one_initcall+0xc0/0x33c
-[c80d1eb0] [c2001624] kernel_init_freeable+0x2c8/0x384
-[c80d1ef0] [c0004b14] kernel_init+0x24/0x170
-[c80d1f10] [c001b26c] ret_from_kernel_thread+0x5c/0x64
 
-Memory state around the buggy address:
- f57f3a80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- f57f3b00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
->f57f3b80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-                                               ^
- f57f3c00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
- f57f3c80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-==================================================================
-
-2. False Negative (with KASAN tests):
-==================================================================
-Before fix:
-    ok 45 - kmalloc_double_kzfree
-    # vmalloc_oob: EXPECTATION FAILED at lib/test_kasan.c:1039
-    KASAN failure expected in "((volatile char *)area)[3100]", but none occurred
-    not ok 46 - vmalloc_oob
-    not ok 1 - kasan
-
-==================================================================
-After fix:
-    ok 1 - kasan
-
-Fixes: cbd18991e24fe ("powerpc/mm: Fix an Oops in kasan_mmu_init()")
-Cc: stable@vger.kernel.org # 5.4.x
-Signed-off-by: Chen Jingwen <chenjingwen6@huawei.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20211229035226.59159-1-chenjingwen6@huawei.com
-[chleroy: Backport for 5.4]
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/mm/kasan/kasan_init_32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-index 1cfe57b51d7e..3f78007a7282 100644
---- a/arch/powerpc/mm/kasan/kasan_init_32.c
-+++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-@@ -121,7 +121,7 @@ static void __init kasan_remap_early_shadow_ro(void)
- 		pmd_t *pmd = pmd_offset(pud_offset(pgd_offset_k(k_cur), k_cur), k_cur);
- 		pte_t *ptep = pte_offset_kernel(pmd, k_cur);
- 
--		if ((pte_val(*ptep) & PTE_RPN_MASK) != pa)
-+		if (pte_page(*ptep) != virt_to_page(lm_alias(kasan_early_shadow_page)))
- 			continue;
- 
- 		__set_pte_at(&init_mm, k_cur, ptep, pfn_pte(PHYS_PFN(pa), prot), 0);
--- 
-2.35.1
-
+> ---
+>   arch/powerpc/mm/drmem.c | 25 ++++++++++++++++++++++++-
+>   1 file changed, 24 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/drmem.c b/arch/powerpc/mm/drmem.c
+> index b2eeea39684c..c11b6ec99ea3 100644
+> --- a/arch/powerpc/mm/drmem.c
+> +++ b/arch/powerpc/mm/drmem.c
+> @@ -402,6 +402,9 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
+>   	const __be32 *p;
+>   	u32 i, j, lmb_sets;
+>   	int lmb_index;
+> +#ifdef CONFIG_MEMORY_HOTPLUG
+> +	struct drmem_lmb *first = NULL;
+> +#endif
+>   
+>   	lmb_sets = of_read_number(prop++, 1);
+>   	if (lmb_sets == 0)
+> @@ -426,6 +429,15 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
+>   	for (i = 0; i < lmb_sets; i++) {
+>   		read_drconf_v2_cell(&dr_cell, &p);
+>   
+> +#ifdef CONFIG_MEMORY_HOTPLUG
+> +		/*
+> +		 * Fetch the NUMA node id for the fist set or if the
+> +		 * associativity index is different from the previous set.
+> +		 */
+> +		if (first && dr_cell.aa_index != first->aa_index)
+> +			first = NULL;
+> +#endif
+> +
+>   		for (j = 0; j < dr_cell.seq_lmbs; j++) {
+>   			lmb = &drmem_info->lmbs[lmb_index++];
+>   
+> @@ -438,7 +450,18 @@ static void __init init_drmem_v2_lmbs(const __be32 *prop)
+>   			lmb->aa_index = dr_cell.aa_index;
+>   			lmb->flags = dr_cell.flags;
+>   
+> -			lmb_set_nid(lmb);
+> +#ifdef CONFIG_MEMORY_HOTPLUG
+> +			/*
+> +			 * All the LMB in the set share the same NUMA
+> +			 * associativity property. So read that node only once.
+> +			 */
+> +			if (!first) {
+> +				lmb_set_nid(lmb);
+> +				first = lmb;
+> +			} else {
+> +				lmb->nid = first->nid;
+> +			}
+> +#endif
+>   		}
+>   	}
+>   }
