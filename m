@@ -1,57 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2B24F02F9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 15:48:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DF84F02FC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Apr 2022 15:50:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KVz0T1kKpz3fSs
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Apr 2022 00:48:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KVz1r6DKlz30G6
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Apr 2022 00:50:08 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sTgKGicu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=UjBNWOsJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=202.248.20.67;
+ helo=condef-02.nifty.com; envelope-from=masahiroy@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sTgKGicu; 
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=UjBNWOsJ; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KVyln4sSnz3cBt
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Apr 2022 00:37:57 +1100 (AEDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 00A0F614DC;
- Sat,  2 Apr 2022 13:37:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E52EC340F3;
- Sat,  2 Apr 2022 13:37:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1648906674;
- bh=qyoPYJlSA6NEig6jnwlt/QYfSWiYQ9maXb6WEkmPDVA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sTgKGicuDvKASrBBt+fEBB/DMwyPrGd4KoNoC98ie/3sOworx/DaU4a2gqzH5EzuC
- CZ8ykH2qBCi6HFYe+htFe7aPENEnBKWDVu1giurNSCgxFjOuLAVkqxcxZdjGpNC0VR
- NcOjqDnzuZ1r+uYBFb+zIH6kOaAtwD0q/ukQ5gcJnSLFSiEvBSh0ELR1e6A0v8R4DX
- 29rlnv+Y0CsjFv5swhIJWFCuvGnMh006xfRe/GwdzTm1Jp4SI8bsUxX360Ruf+BNcP
- pl784eI0Wev7qWgMCqjd56x55sCIh70Msnw8mEJhGYB+92sB4TvFdUdZ1FAE7RVtTC
- 9froC8nKTUJwA==
-From: guoren@kernel.org
-To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de,
- gregkh@linuxfoundation.org, hch@lst.de
-Subject: [PATCH V10 20/20] riscv: compat: Add COMPAT Kbuild skeletal support
-Date: Sat,  2 Apr 2022 21:35:44 +0800
-Message-Id: <20220402133544.2690231-21-guoren@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220402133544.2690231-1-guoren@kernel.org>
-References: <20220402133544.2690231-1-guoren@kernel.org>
+X-Greylist: delayed 234 seconds by postgrey-1.36 at boromir;
+ Sun, 03 Apr 2022 00:47:02 AEDT
+Received: from condef-02.nifty.com (condef-02.nifty.com [202.248.20.67])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KVyyG1gkRz3fJs
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Apr 2022 00:47:02 +1100 (AEDT)
+Received: from conssluserg-02.nifty.com ([10.126.8.81])by condef-02.nifty.com
+ with ESMTP id 232DddXV021872
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 2 Apr 2022 22:39:39 +0900
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com
+ [209.85.216.53]) (authenticated)
+ by conssluserg-02.nifty.com with ESMTP id 232DdMnR014940
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 2 Apr 2022 22:39:22 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 232DdMnR014940
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1648906762;
+ bh=DjlDOU+QMjAfHhVG3DyTJmpT3lFDSgL63YIdZlYs+Z8=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=UjBNWOsJyDXN7Ik/vwlvvrJkUL3xcxEeg90yUV1f+r5ew2JO7uDPlWeIA2kNCDqEE
+ ETj8LWZUJPnYjBjS9QYitIqBWohRa0mjtjCy7cBR8iXTaGfIbhWCc1NXWZ1cw5JxiY
+ 2vi5QtrPy/3OUu0OYzdLi51TT9qzBH8nJURyyACPdN49U+KhpkF82BO0ztcEVikKL9
+ XTxGKqtlAdv2MopYNjZ+KEk1aH+VC4LwedXc6I7LtAd/tdc5Q95a4YNcsChFI+XkrM
+ obNKeytY00Sy3kB7FVsQx/4zvlMOZjhq7dvmSJjIyqWa5P4Sap4+WRoCxJgzCbmYZX
+ L4dCUCgCPLXEQ==
+X-Nifty-SrcIP: [209.85.216.53]
+Received: by mail-pj1-f53.google.com with SMTP id jx9so4695562pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 Apr 2022 06:39:22 -0700 (PDT)
+X-Gm-Message-State: AOAM532lAPBjO5EjKO+KRCrplrvwSjdryRob2Vhf3+c4waS6HiWmiRZm
+ a+rZcaq0fYlTzXViN+7HQU7QLKigncxEUrVzpa8=
+X-Google-Smtp-Source: ABdhPJw2exoLpxI5c+cAeuK679q0cyMySJSrkv8rzRvz/yceSC8H6FLOcidZ+Bg1m2/S7aiMae+xzlzCK43rihaAn5w=
+X-Received: by 2002:a17:90b:4d01:b0:1c9:ec79:1b35 with SMTP id
+ mw1-20020a17090b4d0100b001c9ec791b35mr16659993pjb.77.1648906761882; Sat, 02
+ Apr 2022 06:39:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220402133544.2690231-1-guoren@kernel.org>
+ <20220402133544.2690231-5-guoren@kernel.org>
+In-Reply-To: <20220402133544.2690231-5-guoren@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 2 Apr 2022 22:38:34 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAS8i2xe2zFQo7mcJeujymhWB7hyp36UWS4Rp9T9dMUu2g@mail.gmail.com>
+Message-ID: <CAK7LNAS8i2xe2zFQo7mcJeujymhWB7hyp36UWS4Rp9T9dMUu2g@mail.gmail.com>
+Subject: Re: [PATCH V10 04/20] kconfig: Add SYSVIPC_COMPAT for all
+ architectures
+To: Guo Ren <guoren@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,82 +76,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Guo Ren <guoren@linux.alibaba.com>, heiko@sntech.de,
- linux-parisc@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, X86 ML <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, sparclinux <sparclinux@vger.kernel.org>,
+ "open list:SIFIVE DRIVERS" <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Guo Ren <guoren@linux.alibaba.com>
+On Sat, Apr 2, 2022 at 10:36 PM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> The existing per-arch definitions are pretty much historic cruft.
+> Move SYSVIPC_COMPAT into init/Kconfig.
+>
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Acked-by: Arnd Bergmann <arnd@arndb.de>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Tested-by: Heiko Stuebner <heiko@sntech.de>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> ---
 
-Adds initial skeletal COMPAT Kbuild (Running 32bit U-mode on
-64bit S-mode) support.
- - Setup kconfig & dummy functions for compiling.
- - Implement compat_start_thread by the way.
+Please use "arch:" or something for the commit subject.
 
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Tested-by: Heiko Stuebner <heiko@sntech.de>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
----
- arch/riscv/Kconfig | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+I want to see "kconfig:" for
+changes under scripts/kconfig/.
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 5adcbd9b5e88..6f11df8c189f 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -73,6 +73,7 @@ config RISCV
- 	select HAVE_ARCH_KGDB if !XIP_KERNEL
- 	select HAVE_ARCH_KGDB_QXFER_PKT
- 	select HAVE_ARCH_MMAP_RND_BITS if MMU
-+	select HAVE_ARCH_MMAP_RND_COMPAT_BITS if COMPAT
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE if 64BIT && MMU
-@@ -123,12 +124,18 @@ config ARCH_MMAP_RND_BITS_MIN
- 	default 18 if 64BIT
- 	default 8
- 
-+config ARCH_MMAP_RND_COMPAT_BITS_MIN
-+	default 8
-+
- # max bits determined by the following formula:
- #  VA_BITS - PAGE_SHIFT - 3
- config ARCH_MMAP_RND_BITS_MAX
- 	default 24 if 64BIT # SV39 based
- 	default 17
- 
-+config ARCH_MMAP_RND_COMPAT_BITS_MAX
-+	default 17
-+
- # set if we run in machine mode, cleared if we run in supervisor mode
- config RISCV_M_MODE
- 	bool
-@@ -406,6 +413,18 @@ config CRASH_DUMP
- 
- 	  For more details see Documentation/admin-guide/kdump/kdump.rst
- 
-+config COMPAT
-+	bool "Kernel support for 32-bit U-mode"
-+	default 64BIT
-+	depends on 64BIT && MMU
-+	help
-+	  This option enables support for a 32-bit U-mode running under a 64-bit
-+	  kernel at S-mode. riscv32-specific components such as system calls,
-+	  the user helper functions (vdso), signal rt_frame functions and the
-+	  ptrace interface are handled appropriately by the kernel.
-+
-+	  If you want to execute 32-bit userspace applications, say Y.
-+
- endmenu
- 
- menu "Boot options"
+
+
 -- 
-2.25.1
-
+Best Regards
+Masahiro Yamada
