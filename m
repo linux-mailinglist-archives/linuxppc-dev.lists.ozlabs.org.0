@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236DB4F12A2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 12:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AEF4F12BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 12:09:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KX5zp5CWBz2xtp
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 20:07:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KX62T2yJ1z3bw4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 20:09:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=NNkJqr8+;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=nvHqe8IE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,36 +17,37 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=NNkJqr8+; 
+ header.s=mail2016061301 header.b=nvHqe8IE; 
  dkim-atps=neutral
 Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KX5zB37Kkz2xsb
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KX5zB3G4Sz2xtT
  for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Apr 2022 20:06:45 +1000 (AEST)
 Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id 28F2D22247;
- Mon,  4 Apr 2022 11:57:23 +0200 (CEST)
+ by ssl.serverraum.org (Postfix) with ESMTPSA id 356A722249;
+ Mon,  4 Apr 2022 11:57:24 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1649066243;
+ s=mail2016061301; t=1649066244;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iX2fFx8/rq7F3Adog43qeOMbLlUuhbcJulHHCOYHYsg=;
- b=NNkJqr8+5zPdPhCam/JqBEDXjHgmuDyTC4HQuzE8W1AFUWCkpHKmXvPT5CrDnlCAiRJlLz
- lKmkzJsGVRQbhbivf/bArfrBeax3BmkJDf7FdMBGNh0nEzRukk32OAfTxo3fL0FSTzVM8y
- 8ROz2rfs3NU6TZo2Z9EcRzwh9KMQKwY=
+ bh=8H9WDff2V0whcBx4OOXlWzd8HqNMxJRqX9n6bDccO1g=;
+ b=nvHqe8IEY4ITtcVoDHNFdJ8SV5LqTxDgclRU5ap8Vj3p94k4fA789MeXeJkoDwBJZPY3wb
+ 5or2MDkzUCpYeqms9j2ZCqwGuqupHH54JZGfwVSXb6kTnKth0wUDJEGPPUjVJ0b7q2BIPo
+ uLvJs2vK/WCGe09fD+hGe9rnR5MQjWc=
 From: Michael Walle <michael@walle.cc>
 To: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND v2 1/7] soc: fsl: guts: machine variable might be unset
-Date: Mon,  4 Apr 2022 11:56:03 +0200
-Message-Id: <20220404095609.3932782-2-michael@walle.cc>
+Subject: [PATCH RESEND v2 2/7] soc: fsl: guts: remove module_exit() and
+ fsl_guts_remove()
+Date: Mon,  4 Apr 2022 11:56:04 +0200
+Message-Id: <20220404095609.3932782-3-michael@walle.cc>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20220404095609.3932782-1-michael@walle.cc>
 References: <20220404095609.3932782-1-michael@walle.cc>
@@ -71,29 +72,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If both the model and the compatible properties are missing, then
-machine will not be set. Initialize it with NULL.
+This driver will never be unloaded. Firstly, it is not available as a
+module, but more importantly, other drivers will depend on this one to
+apply possible chip errata.
 
-Fixes: 34c1c21e94ac ("soc: fsl: fix section mismatch build warnings")
 Signed-off-by: Michael Walle <michael@walle.cc>
 Acked-by: Arnd Bergmann <arnd@arndb.de>
 ---
- drivers/soc/fsl/guts.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/fsl/guts.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
 diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-index 5ed2fc1c53a0..be18d46c7b0f 100644
+index be18d46c7b0f..0bea43770d51 100644
 --- a/drivers/soc/fsl/guts.c
 +++ b/drivers/soc/fsl/guts.c
-@@ -140,7 +140,7 @@ static int fsl_guts_probe(struct platform_device *pdev)
+@@ -27,7 +27,6 @@ struct fsl_soc_die_attr {
+ 
+ static struct guts *guts;
+ static struct soc_device_attribute soc_dev_attr;
+-static struct soc_device *soc_dev;
+ 
+ 
+ /* SoC die attribute definition for QorIQ platform */
+@@ -138,6 +137,7 @@ static u32 fsl_guts_get_svr(void)
+ static int fsl_guts_probe(struct platform_device *pdev)
+ {
  	struct device_node *root, *np = pdev->dev.of_node;
++	static struct soc_device *soc_dev;
  	struct device *dev = &pdev->dev;
  	const struct fsl_soc_die_attr *soc_die;
--	const char *machine;
-+	const char *machine = NULL;
- 	u32 svr;
+ 	const char *machine = NULL;
+@@ -197,12 +197,6 @@ static int fsl_guts_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
- 	/* Initialize guts */
+-static int fsl_guts_remove(struct platform_device *dev)
+-{
+-	soc_device_unregister(soc_dev);
+-	return 0;
+-}
+-
+ /*
+  * Table for matching compatible strings, for device tree
+  * guts node, for Freescale QorIQ SOCs.
+@@ -242,7 +236,6 @@ static struct platform_driver fsl_guts_driver = {
+ 		.of_match_table = fsl_guts_of_match,
+ 	},
+ 	.probe = fsl_guts_probe,
+-	.remove = fsl_guts_remove,
+ };
+ 
+ static int __init fsl_guts_init(void)
+@@ -250,9 +243,3 @@ static int __init fsl_guts_init(void)
+ 	return platform_driver_register(&fsl_guts_driver);
+ }
+ core_initcall(fsl_guts_init);
+-
+-static void __exit fsl_guts_exit(void)
+-{
+-	platform_driver_unregister(&fsl_guts_driver);
+-}
+-module_exit(fsl_guts_exit);
 -- 
 2.30.2
 
