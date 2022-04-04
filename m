@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C424F12EE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 12:17:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B751B4F12EB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 12:16:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KX6C95qf7z3bxY
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 20:17:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KX6BS4SLjz3bl5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 20:16:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=V5+EektB;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=RpOYc55V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=AcjLg+WR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=FataNJlW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,71 +19,72 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm2 header.b=V5+EektB; 
+ header.s=fm2 header.b=AcjLg+WR; 
  dkim=pass (2048-bit key;
  unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=RpOYc55V; 
+ header.a=rsa-sha256 header.s=fm3 header.b=FataNJlW; 
  dkim-atps=neutral
-X-Greylist: delayed 245 seconds by postgrey-1.36 at boromir;
- Mon, 04 Apr 2022 20:15:55 AEST
 Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
  [66.111.4.25])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KX69l6jyrz2xdN
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Apr 2022 20:15:55 +1000 (AEST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.nyi.internal (Postfix) with ESMTP id 0599E5C00AF;
- Mon,  4 Apr 2022 06:15:54 -0400 (EDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KX69p2Xlqz2xsP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Apr 2022 20:15:58 +1000 (AEST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+ by mailout.nyi.internal (Postfix) with ESMTP id 74A205C00FF;
+ Mon,  4 Apr 2022 06:15:56 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Mon, 04 Apr 2022 06:15:54 -0400
+ by compute1.internal (MEProxy); Mon, 04 Apr 2022 06:15:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
  :cc:content-transfer-encoding:date:date:from:from:in-reply-to
- :message-id:mime-version:reply-to:sender:subject:subject:to:to;
- s=fm2; bh=yrfRuy50zXFhzu/93kUIZDWd8h+lP3MyW9/HjDGdVLY=; b=V5+Ee
- ktBwh5nFoponQKnEU2Obn4P0OuQM7Qm0ia78XchntvqNSFncG+48aO1yxmeVf4Q5
- 0LPsZkm/99K8i+bWtlxJ0eFuEXvM1g/lLrl+lKsWfeTMCKqm06Y8qG/no/3sSZrn
- iLyMPemmjDUVhvol9MgO881igeisYRg3O3uuIqeq3IfNuGs8itPck6qfmxGv/ZuN
- HqyXK3eIAvWIjufgNwGJiCYVBz5NkKBaGSwAEb7jY4u9RCKbKGCHY/eVMaHvlKl0
- YQk2fOGYpicBAdEHERUAvOROf8Wv4NjRuuw+6X2KJ5YqSlKT4JsX81ISDQND01BK
- qr+SsxHC0JMB7PfKw==
+ :in-reply-to:message-id:mime-version:references:reply-to:sender
+ :subject:subject:to:to; s=fm2; bh=OpYjOK8qXNkeZoUyd5OhpdozVPoR9p
+ h6sxuzaI33x6Y=; b=AcjLg+WRJtfTC3RcxwlgmRT+4ijHgrTZsTPbG8NC/HO5Tq
+ Wuy/DD++EbAy7BViI9stqg/WrIzd3zXVagXsiIxAzjrFEUofEeAHqdclqYVQkgEN
+ 7HD9jkmzIk4sh+6pIkCMmExXYSBK1N0gxxgbi5zLzOczkNZZnY0iV2IoF6XzbgQY
+ VOTqNHQ7iyQCxRgAp+2xij0iTHjFOSbBYCy1VzvH6/0+VN7o6fYMZQl+XY5chNB4
+ df3YIMWHpa0UqsdkTk3aO77ueHz+wXVGBktBiFJVypRf+/WK1N4QP2XWSQA8r/1h
+ Iy94AHO87Q6b1p0PQMvqjxXYfZRkJqPVSYxuNT1A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
- :from:from:in-reply-to:message-id:mime-version:reply-to:sender
- :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
- :x-me-sender:x-sasl-enc; s=fm3; bh=yrfRuy50zXFhzu/93kUIZDWd8h+lP
- 3MyW9/HjDGdVLY=; b=RpOYc55Vfh6QvjLnE8p25jehw2Xqftox49ThoefAtmbm2
- 5gb/CR8G2/YK7spnxgb4/jr41NWyXfjIWLCmwUY/5QEW6z8UHTJ2Epw6Xim5LYNl
- MILL6mWw6I1v3+2MHq864PFBITTK/hWkB/7ZseWavbV1svM34ii9y2fgXvBqSF9L
- tM1ANIaksUvVkB2OORmzXK4rfm+uH5VgQ2ILOAAQIS2EJ85C+3d93Z+EY8j6QJ+B
- gs4X8KajF9r8HNX5yJPdh4iPloD5iaFTVwez9xIGQx7ZmhvYwZhQOA22QeW6mSTh
- MG31sukqihJLITkqi/UZ4iB0o3T1z4wVPbyAleBQw==
-X-ME-Sender: <xms:WcVKYkhCWC7XL6y1O8z10Nj3B_SB7jN6skOOPaB8tE1fdXIlNoLmPA>
- <xme:WcVKYtAEd9mZCH0o8MGF7Q4AOcO6jXB8uKhCMUijDOGblJrJG2NLR6ymebVRjLgDV
- WJP2TMdXH003s1OWw>
-X-ME-Received: <xmr:WcVKYsFEIE2313kdKxbQsY-BX0Ty09P3kEmM5zanzz8tDGSG-ATNbeGBbJN79rFbLfPVvgz4V2bc8TsJi4tkCFmRTivqGV8jqBTyPLBxl8ED9UAMBwifBtsCuA>
+ :from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=OpYjOK
+ 8qXNkeZoUyd5OhpdozVPoR9ph6sxuzaI33x6Y=; b=FataNJlWAOA11BN+T/Pxi9
+ WudfIrEC9B0cbb7c+lxFRTkMW4k3kYvVmKw8vGsS2nzQlLakNgu563XvlJtk6/KZ
+ F8G3ShrkJvcU1ngRiYHFtvzPuHEcdWtuV/9xfuJjH4nkN5w/RKnLJSUdd7f03/xw
+ orY4m8QXW7QkaUx5zniBCwSafwxk1ZRCeO9IFUqztbWdEeLCl01E+uvbU+Dj8e1v
+ jevwWScbJ41Tnm4d7+IRKluNkbjwuKtmW8h0M8m/97819nXeNI/BDSKm3OjrYMTn
+ DIeyNm5BUVEH1slS1MeWsmBBa9H/tm6mChY907AuszznsARcACFf+6QViZiuHB0A
+ ==
+X-ME-Sender: <xms:XMVKYri0XrTy3GDHn7i1hYq0ACluyxKk3OpWXtCPHOIEhAgUtmcXKw>
+ <xme:XMVKYoBeRlT3tCRJ1gA93rKn_pTOSw8OoIaoQePnUnBJUWQWaPeDrCU4eu_NFXSFJ
+ 8nfpBRng797uFAZog>
+X-ME-Received: <xmr:XMVKYrGUPTA9GwP3V5U8pQi3D1bnQwI2LA05T2iBnnVecscqL_bc87owVpSDmct-LXMDbiuy3Q3uHwiOZ9DyQ4D2LUtYlAijGKKywyeAKn32uCILieBI9fVMFQ>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudejvddgvdefucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
- fufffkofgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgih
- uceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnhepleegle
- efvdffkeegveefleevfedtieelgfdugeekueehhfevgfffkeeugfffkeefnecuvehluhhs
- thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrsehruh
- hsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:WcVKYlQYUtn3Q6Z4ILZwrCf2m27qPGvDLe-VPmsd2dNMYzGM-ML-Iw>
- <xmx:WcVKYhyYg8t7dLwbwCLNEiPqI7NMHPujSIboqDuRgRjbcLrD-q8e3A>
- <xmx:WcVKYj6IZ-SqqEDpPp2sMzBMNiZKe8qyKRF9L4JOPDGXRWAEPJ66vg>
- <xmx:WsVKYjtoRBXqGRLhBQO_4SDwMsChuZQ0qSpVIjNBasboQl8LfpP70Q>
+ fufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhr
+ vgihuceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnheple
+ ehudejieefveetuedtfeevvdfhgfekjeeuieevieellefhleduhfefvdduheegnecuvehl
+ uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrse
+ hruhhsshgvlhhlrdgttg
+X-ME-Proxy: <xmx:XMVKYoTB3rOFGK6jajkcr91c2eWG79bkCqa2gWBPyHvbsfhxvd4yQA>
+ <xmx:XMVKYozBqNF1vhV_VqSD-V8JB3Zn-2qKaGUPCoyIYqJRu1H-kCmmHA>
+ <xmx:XMVKYu7MtDhroSqJtqKx7Cq-XW0-y_vHs6bCNJAiaecPHwA3VM0ZHg>
+ <xmx:XMVKYiu1U1uP-tV4kvhbkKngSJMXd1zJ5z13xTwDt2cDRHXl_2nsow>
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Apr 2022 06:15:51 -0400 (EDT)
+ 4 Apr 2022 06:15:54 -0400 (EDT)
 From: Russell Currey <ruscur@russell.cc>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/2] powerpc/powernv: Get L1D flush requirements from
+Subject: [PATCH v2 2/2] powerpc/powernv: Get STF barrier requirements from
  device-tree
-Date: Mon,  4 Apr 2022 20:15:35 +1000
-Message-Id: <20220404101536.104794-1-ruscur@russell.cc>
+Date: Mon,  4 Apr 2022 20:15:36 +1000
+Message-Id: <20220404101536.104794-2-ruscur@russell.cc>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220404101536.104794-1-ruscur@russell.cc>
+References: <20220404101536.104794-1-ruscur@russell.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -103,39 +104,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The device-tree properties no-need-l1d-flush-msr-pr-1-to-0 and
-no-need-l1d-flush-kernel-on-user-access are the equivalents of
-H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY and H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS
-from the H_GET_CPU_CHARACTERISTICS hcall on pseries respectively.
+The device-tree property no-need-store-drain-on-priv-state-switch is
+equivalent to H_CPU_BEHAV_NO_STF_BARRIER from the
+H_CPU_GET_CHARACTERISTICS hcall on pseries.
 
-In commit d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version
-check for entry and uaccess flushes") the condition for disabling the
-L1D flush on kernel entry and user access was changed from any non-P9
-CPU to only checking P7 and P8.  Without the appropriate device-tree
-checks for newer processors on powernv, these flushes are unnecessarily
-enabled on those systems.  This patch corrects this.
+Since commit 84ed26fd00c5 ("powerpc/security: Add a security feature for
+STF barrier") powernv systems with this device-tree property have been
+enabling the STF barrier when they have no need for it.  This patch
+fixes this by clearing the STF barrier feature on those systems.
 
-Fixes: d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version check for entry and uaccess flushes")
+Fixes: 84ed26fd00c5 ("powerpc/security: Add a security feature for STF barrier")
 Reported-by: Joel Stanley <joel@jms.id.au>
 Signed-off-by: Russell Currey <ruscur@russell.cc>
 ---
- arch/powerpc/platforms/powernv/setup.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/platforms/powernv/setup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 105d889abd51..378f7e5f18d2 100644
+index 378f7e5f18d2..824c3ad7a0fa 100644
 --- a/arch/powerpc/platforms/powernv/setup.c
 +++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -96,6 +96,12 @@ static void __init init_fw_feat_flags(struct device_node *np)
+@@ -102,6 +102,9 @@ static void __init init_fw_feat_flags(struct device_node *np)
  
- 	if (fw_feature_is("disabled", "needs-spec-barrier-for-bound-checks", np))
- 		security_ftr_clear(SEC_FTR_BNDS_CHK_SPEC_BAR);
+ 	if (fw_feature_is("enabled", "no-need-l1d-flush-kernel-on-user-access", np))
+ 		security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
 +
-+	if (fw_feature_is("enabled", "no-need-l1d-flush-msr-pr-1-to-0", np))
-+		security_ftr_clear(SEC_FTR_L1D_FLUSH_ENTRY);
-+
-+	if (fw_feature_is("enabled", "no-need-l1d-flush-kernel-on-user-access", np))
-+		security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
++	if (fw_feature_is("enabled", "no-need-store-drain-on-priv-state-switch", np))
++		security_ftr_clear(SEC_FTR_STF_BARRIER);
  }
  
  static void __init pnv_setup_security_mitigations(void)
