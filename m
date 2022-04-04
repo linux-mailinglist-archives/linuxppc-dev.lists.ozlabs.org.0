@@ -1,92 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B751B4F12EB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 12:16:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCBE4F13E8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 13:35:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KX6BS4SLjz3bl5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 20:16:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KX7xV4ZpZz3bY8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 21:35:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=AcjLg+WR;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=FataNJlW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IVCExeAv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=66.111.4.25;
- helo=out1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm2 header.b=AcjLg+WR; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm3 header.b=FataNJlW; 
- dkim-atps=neutral
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
- [66.111.4.25])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IVCExeAv; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KX69p2Xlqz2xsP
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Apr 2022 20:15:58 +1000 (AEST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailout.nyi.internal (Postfix) with ESMTP id 74A205C00FF;
- Mon,  4 Apr 2022 06:15:56 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute1.internal (MEProxy); Mon, 04 Apr 2022 06:15:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
- :cc:content-transfer-encoding:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:sender
- :subject:subject:to:to; s=fm2; bh=OpYjOK8qXNkeZoUyd5OhpdozVPoR9p
- h6sxuzaI33x6Y=; b=AcjLg+WRJtfTC3RcxwlgmRT+4ijHgrTZsTPbG8NC/HO5Tq
- Wuy/DD++EbAy7BViI9stqg/WrIzd3zXVagXsiIxAzjrFEUofEeAHqdclqYVQkgEN
- 7HD9jkmzIk4sh+6pIkCMmExXYSBK1N0gxxgbi5zLzOczkNZZnY0iV2IoF6XzbgQY
- VOTqNHQ7iyQCxRgAp+2xij0iTHjFOSbBYCy1VzvH6/0+VN7o6fYMZQl+XY5chNB4
- df3YIMWHpa0UqsdkTk3aO77ueHz+wXVGBktBiFJVypRf+/WK1N4QP2XWSQA8r/1h
- Iy94AHO87Q6b1p0PQMvqjxXYfZRkJqPVSYxuNT1A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=OpYjOK
- 8qXNkeZoUyd5OhpdozVPoR9ph6sxuzaI33x6Y=; b=FataNJlWAOA11BN+T/Pxi9
- WudfIrEC9B0cbb7c+lxFRTkMW4k3kYvVmKw8vGsS2nzQlLakNgu563XvlJtk6/KZ
- F8G3ShrkJvcU1ngRiYHFtvzPuHEcdWtuV/9xfuJjH4nkN5w/RKnLJSUdd7f03/xw
- orY4m8QXW7QkaUx5zniBCwSafwxk1ZRCeO9IFUqztbWdEeLCl01E+uvbU+Dj8e1v
- jevwWScbJ41Tnm4d7+IRKluNkbjwuKtmW8h0M8m/97819nXeNI/BDSKm3OjrYMTn
- DIeyNm5BUVEH1slS1MeWsmBBa9H/tm6mChY907AuszznsARcACFf+6QViZiuHB0A
- ==
-X-ME-Sender: <xms:XMVKYri0XrTy3GDHn7i1hYq0ACluyxKk3OpWXtCPHOIEhAgUtmcXKw>
- <xme:XMVKYoBeRlT3tCRJ1gA93rKn_pTOSw8OoIaoQePnUnBJUWQWaPeDrCU4eu_NFXSFJ
- 8nfpBRng797uFAZog>
-X-ME-Received: <xmr:XMVKYrGUPTA9GwP3V5U8pQi3D1bnQwI2LA05T2iBnnVecscqL_bc87owVpSDmct-LXMDbiuy3Q3uHwiOZ9DyQ4D2LUtYlAijGKKywyeAKn32uCILieBI9fVMFQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudejvddgvdefucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefhvf
- fufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhushhsvghllhcuvehurhhr
- vgihuceorhhushgtuhhrsehruhhsshgvlhhlrdgttgeqnecuggftrfgrthhtvghrnheple
- ehudejieefveetuedtfeevvdfhgfekjeeuieevieellefhleduhfefvdduheegnecuvehl
- uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhushgtuhhrse
- hruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:XMVKYoTB3rOFGK6jajkcr91c2eWG79bkCqa2gWBPyHvbsfhxvd4yQA>
- <xmx:XMVKYozBqNF1vhV_VqSD-V8JB3Zn-2qKaGUPCoyIYqJRu1H-kCmmHA>
- <xmx:XMVKYu7MtDhroSqJtqKx7Cq-XW0-y_vHs6bCNJAiaecPHwA3VM0ZHg>
- <xmx:XMVKYiu1U1uP-tV4kvhbkKngSJMXd1zJ5z13xTwDt2cDRHXl_2nsow>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Apr 2022 06:15:54 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] powerpc/powernv: Get STF barrier requirements from
- device-tree
-Date: Mon,  4 Apr 2022 20:15:36 +1000
-Message-Id: <20220404101536.104794-2-ruscur@russell.cc>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220404101536.104794-1-ruscur@russell.cc>
-References: <20220404101536.104794-1-ruscur@russell.cc>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KX7wp12bxz2xDl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Apr 2022 21:34:48 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2349GJB8031958; 
+ Mon, 4 Apr 2022 11:34:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=z3Sfn4YW0o7P8kBvBOPmwjAYhi5tC4sDdnuVpERy0zg=;
+ b=IVCExeAvSvXT4DZwJul7FeoOC11wv8j+dT5FKePvi41wCWlR3aMcYkD/mw3aNg2uhewV
+ 3C1NPzcp5x8p/6hwtsCqlGyrjrX+adEVkqev7lf1oTupnj7UpQiEZOhA67UjWUwM+A0x
+ VrUDn/8Qzm/IYOqhNJZgc4rWilCm4tyW0PSjREelBzQSkX6RddxjzF10Ore5c79qSkLT
+ 4zi5qnZbyNVUa198xzqT3AAdd2W8WNMssxHGrb/NHzTOPmIrZA5xMwbnVK9W9LO7W7KD
+ zzKCrr2BQ3299T7bRPaKSdTiyoo013gzO9uElfyRDzzXtQWLSn5jOEhTx2n2Q7vKgTDt 4g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f702q0u1p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Apr 2022 11:34:45 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 234AUtcG009897;
+ Mon, 4 Apr 2022 11:34:44 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f702q0u0n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Apr 2022 11:34:44 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 234BXSdM032193;
+ Mon, 4 Apr 2022 11:34:42 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma01fra.de.ibm.com with ESMTP id 3f6e48twy2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 04 Apr 2022 11:34:42 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 234BYdcC49545564
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 4 Apr 2022 11:34:39 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B032A11C054;
+ Mon,  4 Apr 2022 11:34:39 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 82D2611C050;
+ Mon,  4 Apr 2022 11:34:37 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.79.181.230])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  4 Apr 2022 11:34:37 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.60.0.1.1\))
+Subject: [powerpc]Kernel crash while running xfstests (generic/250)
+ [next-20220404]
+Message-Id: <A3B628C9-A20B-4621-BC8C-C79B270297E1@linux.ibm.com>
+Date: Mon, 4 Apr 2022 17:04:35 +0530
+To: linux-block@vger.kernel.org, snitzer@redhat.com
+X-Mailer: Apple Mail (2.3693.60.0.1.1)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: iFFfqOApfYy2xa18rALLAzVDcBfYQyVA
+X-Proofpoint-ORIG-GUID: KWJLFJkh8frgZPjeJ58DYsCi1rCJ43tZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-04-04_03,2022-03-31_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=934 bulkscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1011 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204040065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,42 +106,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mopsfelder@gmail.com, joel@jms.id.au, npiggin@gmail.com,
- Russell Currey <ruscur@russell.cc>
+Cc: dm-devel@redhat.com, riteshh@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ open list <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The device-tree property no-need-store-drain-on-priv-state-switch is
-equivalent to H_CPU_BEHAV_NO_STF_BARRIER from the
-H_CPU_GET_CHARACTERISTICS hcall on pseries.
+While running xfstests(ext4 or XFS as fs) on a Power10 LPAR booted with =
+today=E2=80=99s
+next (5.18.0-rc1-next-20220404) following crash is seen.=20
 
-Since commit 84ed26fd00c5 ("powerpc/security: Add a security feature for
-STF barrier") powernv systems with this device-tree property have been
-enabling the STF barrier when they have no need for it.  This patch
-fixes this by clearing the STF barrier feature on those systems.
+[   51.260209] XFS (dm-0): Unmounting Filesystem
+[   51.262949] XFS (dm-0): Mounting V5 Filesystem
+[   51.270524] XFS (dm-0): Ending clean mount
+[   51.272641] xfs filesystem being mounted at /mnt/scratch supports =
+timestamps until 2038 (0x7fffffff)
+[   51.377505] XFS (dm-0): Unmounting Filesystem
+[   51.397584] BUG: Unable to handle kernel data access at =
+0x5deadbeef0000122
+[   51.397591] Faulting instruction address: 0xc0000000001561bc
+[   51.397595] Oops: Kernel access of bad area, sig: 11 [#1]
+[   51.397598] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA =
+pSeries
+[   51.397602] Modules linked in: xfs dm_mod ip_set rfkill nf_tables =
+bonding libcrc32c nfnetlink sunrpc pseries_rng xts vmx_crypto =
+uio_pdrv_genirq uio sch_fq_codel ext4 mbcache jbd2 sd_mod t10_pi =
+crc64_rocksoft crc64 sg ibmvscsi ibmveth scsi_transport_srp fuse
+[   51.397626] CPU: 3 PID: 3448 Comm: dmsetup Not tainted =
+5.18.0-rc1-next-20220404 #16
+[   51.397630] NIP:  c0000000001561bc LR: c0000000001560e8 CTR: =
+c000000000672ef0
+[   51.397633] REGS: c000000095c9b610 TRAP: 0380   Not tainted  =
+(5.18.0-rc1-next-20220404)
+[   51.397636] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  =
+CR: 24024824  XER: 00000000
+[   51.397646] CFAR: c0000000001560f0 IRQMASK: 0=20
+[   51.397646] GPR00: c0000000001560e8 c000000095c9b8b0 c000000002a03800 =
+0000000000000000=20
+[   51.397646] GPR04: c000000017a1ab78 0000000000000000 c00000002cab6ac0 =
+c000000093e73900=20
+[   51.397646] GPR08: c000000093e73900 5deadbeef0000100 5deadbeef0000122 =
+c008000001b5a4e8=20
+[   51.397646] GPR12: c000000000672ef0 c000000abfff8e80 000000013dbd0b60 =
+00007fff849e9da8=20
+[   51.397646] GPR16: 00007fff849e9da8 00007fff849e9da8 00007fff84a23670 =
+0000000000000000=20
+[   51.397646] GPR20: 00007fff849f3388 00007fff84a22040 000000013dbd0b90 =
+0000000000000131=20
+[   51.397646] GPR24: c00000000254d768 ffffffffffff0000 c00000000254d730 =
+c000000027668e00=20
+[   51.397646] GPR28: c0000000029b0170 c000000017a1ab78 0000000000000017 =
+0000000000000000=20
+[   51.397684] NIP [c0000000001561bc] =
+__cpuhp_state_remove_instance+0x19c/0x2c0
+[   51.397692] LR [c0000000001560e8] =
+__cpuhp_state_remove_instance+0xc8/0x2c0
+[   51.397697] Call Trace:
+[   51.397698] [c000000095c9b8b0] [c0000000001560e8] =
+__cpuhp_state_remove_instance+0xc8/0x2c0 (unreliable)
+[   51.397705] [c000000095c9b920] [c000000000672f4c] =
+bioset_exit+0x5c/0x280
+[   51.397709] [c000000095c9b9c0] [c008000001b433f4] =
+cleanup_mapped_device+0x4c/0x1a0 [dm_mod]
+[   51.397721] [c000000095c9ba00] [c008000001b436f0] =
+__dm_destroy+0x1a8/0x360 [dm_mod]
+[   51.397730] [c000000095c9baa0] [c008000001b50e90] =
+dev_remove+0x1a8/0x280 [dm_mod]
+[   51.397740] [c000000095c9bb30] [c008000001b5115c] =
+ctl_ioctl+0x1f4/0x7c0 [dm_mod]
+[   51.397750] [c000000095c9bd40] [c008000001b51748] =
+dm_ctl_ioctl+0x20/0x40 [dm_mod]
+[   51.397759] [c000000095c9bd60] [c0000000004b1f68] =
+sys_ioctl+0xf8/0x150
+[   51.397763] [c000000095c9bdb0] [c00000000003373c] =
+system_call_exception+0x18c/0x390
+[   51.397767] [c000000095c9be10] [c00000000000c64c] =
+system_call_common+0xec/0x270
+[   51.397772] --- interrupt: c00 at 0x7fff84329210
+[   51.397776] NIP:  00007fff84329210 LR: 00007fff849e6824 CTR: =
+0000000000000000
+[   51.397780] REGS: c000000095c9be80 TRAP: 0c00   Not tainted  =
+(5.18.0-rc1-next-20220404)
+[   51.397785] MSR:  800000000280f033 =
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24004484  XER: 00000000
+[   51.397795] IRQMASK: 0=20
+[   51.397795] GPR00: 0000000000000036 00007ffffdb43030 00007fff84407300 =
+0000000000000003=20
+[   51.397795] GPR04: 00000000c138fd04 000000013dbd0b60 0000000000000004 =
+00007fff849f3f98=20
+[   51.397795] GPR08: 0000000000000003 0000000000000000 0000000000000000 =
+0000000000000000=20
+[   51.397795] GPR12: 0000000000000000 00007fff84acfa80 000000013dbd0b60 =
+00007fff849e9da8=20
+[   51.397795] GPR16: 00007fff849e9da8 00007fff849e9da8 00007fff84a23670 =
+0000000000000000=20
+[   51.397795] GPR20: 00007fff849f3388 00007fff84a22040 000000013dbd0b90 =
+000000013dbd02e0=20
+[   51.397795] GPR24: 00007fff849e9da8 00007fff849e9da8 00007fff849e9da8 =
+00007fff849e9da8=20
+[   51.397795] GPR28: 0000000000000001 00007fff849e9da8 0000000000000000 =
+00007fff849e9da8=20
+[   51.397829] NIP [00007fff84329210] 0x7fff84329210
+[   51.397831] LR [00007fff849e6824] 0x7fff849e6824
+[   51.397834] --- interrupt: c00
+[   51.397835] Instruction dump:
+[   51.397838] 60000000 7f69db78 7f83e040 7c7f07b4 7bea1f24 419cffb4 =
+eae10028 eb210038=20
+[   51.397844] eb610048 e93d0000 e95d0008 2fa90000 <f92a0000> 419e0008 =
+f9490008 3d405dea=20
+[   51.397850] ---[ end trace 0000000000000000 ]---
+[   51.400133]=20
+[   52.400136] Kernel panic - not syncing: Fatal exception
 
-Fixes: 84ed26fd00c5 ("powerpc/security: Add a security feature for STF barrier")
-Reported-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Russell Currey <ruscur@russell.cc>
----
- arch/powerpc/platforms/powernv/setup.c | 3 +++
- 1 file changed, 3 insertions(+)
+This problem was possibly introduced with 5.17.0-next-20220330.=20
+Git bisect leads me to following patch
+commit 1d158814db8e7b3cbca0f2c8d9242fbec4fbc57e
+    dm: conditionally enable BIOSET_PERCPU_CACHE for dm_io bioset
 
-diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 378f7e5f18d2..824c3ad7a0fa 100644
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -102,6 +102,9 @@ static void __init init_fw_feat_flags(struct device_node *np)
- 
- 	if (fw_feature_is("enabled", "no-need-l1d-flush-kernel-on-user-access", np))
- 		security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
-+
-+	if (fw_feature_is("enabled", "no-need-store-drain-on-priv-state-switch", np))
-+		security_ftr_clear(SEC_FTR_STF_BARRIER);
- }
- 
- static void __init pnv_setup_security_mitigations(void)
--- 
-2.35.1
-
+-Sachin=
