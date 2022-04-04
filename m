@@ -1,57 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523754F12C7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 12:10:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C6C4F1308
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 12:21:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KX63n1X05z3c9V
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 20:10:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KX6JB43mKz3bcR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Apr 2022 20:21:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=jrxnZimP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=Kab/PA7k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=DC7CF18K;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=2a01:4f8:151:8464::1:2;
- helo=ssl.serverraum.org; envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=jrxnZimP; 
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.25;
+ helo=out1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm2 header.b=Kab/PA7k; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=DC7CF18K; 
  dkim-atps=neutral
-Received: from ssl.serverraum.org (ssl.serverraum.org
- [IPv6:2a01:4f8:151:8464::1:2])
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com
+ [66.111.4.25])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KX5zF6PcJz2xtT
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Apr 2022 20:06:49 +1000 (AEST)
-Received: from mwalle01.kontron.local. (unknown [213.135.10.150])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-384) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id 2EEA222255;
- Mon,  4 Apr 2022 11:57:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1649066246;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=j904Obz7z0f9BMGRXiWX07Usnwp/ORQFPcf7fLFab5g=;
- b=jrxnZimPuYcg7vhCzupFLMjC648tABQHXkZGvNzwa9loh5/w38AxSF79HG4Oc8Ogf6hU3U
- dJtO2LIPEYkNJ1Nwb2tWOkFO3syJ+71ODjRcprZBHmb2kiA37cD2+gfK2XKWtsDeImW+Oy
- vBx8aq5h60V3C9WpviDFdaEEDY4MBE4=
-From: Michael Walle <michael@walle.cc>
-To: linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH RESEND v2 7/7] soc: fsl: guts: add serial_number support
-Date: Mon,  4 Apr 2022 11:56:09 +0200
-Message-Id: <20220404095609.3932782-8-michael@walle.cc>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220404095609.3932782-1-michael@walle.cc>
-References: <20220404095609.3932782-1-michael@walle.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KX6HX18hmz2xdN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Apr 2022 20:20:56 +1000 (AEST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.nyi.internal (Postfix) with ESMTP id 0F5125C00B2;
+ Mon,  4 Apr 2022 06:11:47 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute4.internal (MEProxy); Mon, 04 Apr 2022 06:11:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
+ :cc:content-transfer-encoding:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm2; bh=wRznwEHucFDONc
+ /kDuqRJqbkzM/SZZFsgTO46A84rJE=; b=Kab/PA7kxI+rTjY3MYdaO+4OSx5y8X
+ 9F2S7HwTr3V1s2KvZvy7EfSjMMSplOu4wI5Uh2n+yccgthWs2hixkmHN4co6FsGi
+ eAn3PANOEgd7Ga7NJZhmAyeSrNdrs+4g6AmZ8AcczLh6POFeOro4KrY8H0DZa0YB
+ xoGSbffwQB/tAywROLOt8B427LJI4WdXcXhXZBJFtcXZxmWcms+oiZVUwhkBWBmI
+ yenXM3/dfa/b5aGwvqr3DwjpOV3ipH3JbbyR8UN03ZA+F8UiOB6IFdxvgzdJsDTw
+ 1bqXPqh83iMogLdJGDV8Eh85KhrIvfzQqvQDyDJVaADm21YX/ZecQEcA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm3; bh=wRznwEHucFDONc/kDuqRJqbkzM/SZZFsgTO46A84r
+ JE=; b=DC7CF18KCo/OEmZJHmvHANxsW803LOORD1WXy/2UA53hVsaY5E0JInKXN
+ pXhnabZJqJU/xAuA9KnU9C1oG/FPKtXMiTlSw4BAkHFFCIn2U3OHRPOAIArim9b+
+ +DiwqiqVQUHoqektoK962Jffgew1dsKHxD3dz3tEmBd0rVNQ/32mZduzxukh8fZV
+ g/vLdz3L01sHnReypSWS0JzbLmM4U7d4K4ho6injf3ZfculzZ26xDgvuc0xlf13q
+ s6pLP8xUOrnr8kBWqJBrbutNXNXXYfpqI8TVwnBbNxfjHWxhImY180YMb/kzyDJW
+ RRY7LkLLiHlRuwM0FT1wrwQ/5L+GA==
+X-ME-Sender: <xms:YsRKYvAvH4ay_1lIhJc8yiPs7pwXOqtsMJrgcqM_TqsJ5j210oGyIw>
+ <xme:YsRKYlglj7l0utHbEhDXIEJ2lruS2DOfcljdq0tOJ-UkepLvbE9ZLMXCf5gzS8C3X
+ TG3aDfH8d3G_pJcUA>
+X-ME-Received: <xmr:YsRKYqlOAFLVg7uipCRGwM5O2g3ynFBY3MlGgT_lSypyDeTB5pqRKINaKjVFjANfuaZkHr59CSTkyNOmhUljWtEiZYUjP2LGn3PqEo1SvP7_pJqSr7aA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudejvddgvdefucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ gfrhhlucfvnfffucdlfedtmdenucfjughrpefkuffhvfgjfhgtffggfgfgsehtkeertddt
+ reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
+ hsvghllhdrtggtqeenucggtffrrghtthgvrhhnpeffveffueevleeivedvveeugeehueeh
+ hefgtefhvefhudeitdduieffveejudevvdenucevlhhushhtvghrufhiiigvpedtnecurf
+ grrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggt
+X-ME-Proxy: <xmx:YsRKYhzAfIdxgnCtZFudhtfJKf5OoZXzHVTBIuutS-5gTOxkFfMEcg>
+ <xmx:YsRKYkS4ymLlCH2ClwJWiZ2McKNnM1h8mZFNLjmXAiU_ju-cAf2qAQ>
+ <xmx:YsRKYkYpdIliGVAYmLthEihPDwSsh8xt9tDLzlgA6NJVASYuxmK_Cg>
+ <xmx:Y8RKYvcJMz9MiFWBM0RzVhhiaTZBwrE_9r3AvHXrthn7yLcPs1cjfQ>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 4 Apr 2022 06:11:45 -0400 (EDT)
+Message-ID: <0c9c0f9e2030abfe60f24a7050437f7bd1c76e19.camel@russell.cc>
+Subject: Re: [PATCH] powerpc/powernv: Get more flushing requirements from
+ device-tree
+From: Russell Currey <ruscur@russell.cc>
+To: Murilo Opsfelder =?ISO-8859-1?Q?Ara=FAjo?= <mopsfelder@gmail.com>, 
+ linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <bbbd59a9-c93a-0bb4-6131-1b769f257094@gmail.com>
+References: <20220322074734.107721-1-ruscur@russell.cc>
+ <bbbd59a9-c93a-0bb4-6131-1b769f257094@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 04 Apr 2022 20:11:40 +1000
 MIME-Version: 1.0
+User-Agent: Evolution 3.42.4 
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -64,136 +101,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, Arnd Bergmann <arnd@arndb.de>,
- Li Yang <leoyang.li@nxp.com>, Michael Walle <michael@walle.cc>,
- Sudeep Holla <Sudeep.Holla@arm.com>, Shawn Guo <shawnguo@kernel.org>,
- Dan Carpenter <dan.carpenter@oracle.com>
+Cc: joel@jms.id.au, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Most layerscapes provide a security fuse processor where the vendor
-will store a unique id per part. Unfortunately, we cannot use the
-corresponding efuse driver because this driver needs to be ready
-early during the boot phase. To get the unique identifier, we just
-need to access two registers. Thus we just search the device tree
-for the corresponding device, map its memory to read the id and then
-unmap it again.
+On Wed, 2022-03-23 at 16:26 -0300, Murilo Opsfelder Araújo wrote:
+> Hi, Russell.
+> 
+> I think this patch could have been split in half with their
+> corresponding Fixes: tag.
+> 
+> This may sound nitpicking but doing this would certainly help distros
+> doing their backports.
 
-Because it is likely that the offset within the fuses is dependent
-on the SoC, we need a per SoC data. Also, the compatible string is
-different among the SoCs. For now, this add support for the LS1028A
-SoC.
+Hi Murilo,
 
-Signed-off-by: Michael Walle <michael@walle.cc>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/soc/fsl/guts.c | 48 ++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
+I didn't use the Fixes: tag originally since as far as I'm aware this
+issue doesn't impact any systems "out in the wild" - so I didn't think
+there would be interest in any backports.  I should have split and
+tagged the commits anyway though, in case others wanted to make that
+decision.
 
-diff --git a/drivers/soc/fsl/guts.c b/drivers/soc/fsl/guts.c
-index 370be923aa0f..27035de062f8 100644
---- a/drivers/soc/fsl/guts.c
-+++ b/drivers/soc/fsl/guts.c
-@@ -20,6 +20,11 @@ struct fsl_soc_die_attr {
- 	u32	mask;
- };
- 
-+struct fsl_soc_data {
-+	const char *sfp_compat;
-+	u32 uid_offset;
-+};
-+
- /* SoC die attribute definition for QorIQ platform */
- static const struct fsl_soc_die_attr fsl_soc_die[] = {
- 	/*
-@@ -110,6 +115,33 @@ static const struct fsl_soc_die_attr *fsl_soc_die_match(
- 	return NULL;
- }
- 
-+static u64 fsl_guts_get_soc_uid(const char *compat, unsigned int offset)
-+{
-+	struct device_node *np;
-+	void __iomem *sfp_base;
-+	u64 uid;
-+
-+	np = of_find_compatible_node(NULL, NULL, compat);
-+	if (!np)
-+		return 0;
-+
-+	sfp_base = of_iomap(np, 0);
-+
-+	uid = ioread32(sfp_base + offset);
-+	uid <<= 32;
-+	uid |= ioread32(sfp_base + offset + 4);
-+
-+	iounmap(sfp_base);
-+	of_node_put(np);
-+
-+	return uid;
-+}
-+
-+static const struct fsl_soc_data ls1028a_data = {
-+	.sfp_compat = "fsl,ls1028a-sfp",
-+	.uid_offset = 0x21c,
-+};
-+
- /*
-  * Table for matching compatible strings, for device tree
-  * guts node, for Freescale QorIQ SOCs.
-@@ -138,7 +170,7 @@ static const struct of_device_id fsl_guts_of_match[] = {
- 	{ .compatible = "fsl,ls1012a-dcfg", },
- 	{ .compatible = "fsl,ls1046a-dcfg", },
- 	{ .compatible = "fsl,lx2160a-dcfg", },
--	{ .compatible = "fsl,ls1028a-dcfg", },
-+	{ .compatible = "fsl,ls1028a-dcfg", .data = &ls1028a_data},
- 	{}
- };
- 
-@@ -147,16 +179,20 @@ static int __init fsl_guts_init(void)
- 	struct soc_device_attribute *soc_dev_attr;
- 	static struct soc_device *soc_dev;
- 	const struct fsl_soc_die_attr *soc_die;
-+	const struct fsl_soc_data *soc_data;
-+	const struct of_device_id *match;
- 	struct ccsr_guts __iomem *regs;
- 	const char *machine = NULL;
- 	struct device_node *np;
- 	bool little_endian;
-+	u64 soc_uid = 0;
- 	u32 svr;
- 	int ret;
- 
--	np = of_find_matching_node_and_match(NULL, fsl_guts_of_match, NULL);
-+	np = of_find_matching_node_and_match(NULL, fsl_guts_of_match, &match);
- 	if (!np)
- 		return 0;
-+	soc_data = match->data;
- 
- 	regs = of_iomap(np, 0);
- 	if (IS_ERR(regs)) {
-@@ -204,6 +240,13 @@ static int __init fsl_guts_init(void)
- 	if (!soc_dev_attr->revision)
- 		goto err_nomem;
- 
-+	if (soc_data)
-+		soc_uid = fsl_guts_get_soc_uid(soc_data->sfp_compat,
-+					       soc_data->uid_offset);
-+	if (soc_uid)
-+		soc_dev_attr->serial_number = kasprintf(GFP_KERNEL, "%016llX",
-+							soc_uid);
-+
- 	soc_dev = soc_device_register(soc_dev_attr);
- 	if (IS_ERR(soc_dev)) {
- 		ret = PTR_ERR(soc_dev);
-@@ -224,6 +267,7 @@ static int __init fsl_guts_init(void)
- 	kfree(soc_dev_attr->family);
- 	kfree(soc_dev_attr->soc_id);
- 	kfree(soc_dev_attr->revision);
-+	kfree(soc_dev_attr->serial_number);
- 	kfree(soc_dev_attr);
- 
- 	return ret;
--- 
-2.30.2
+Will resend.
+
 
