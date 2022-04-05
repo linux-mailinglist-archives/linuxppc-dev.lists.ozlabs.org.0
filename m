@@ -1,56 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14704F350B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 15:43:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 132EF4F3C92
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 18:17:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KXpkq5CFFz3bcv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 23:43:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AAbBEiS5;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KXt7x6Y2qz3bdP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 02:17:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=afa@pengutronix.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=AAbBEiS5; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KXpk960PXz2xD4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Apr 2022 23:42:56 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 4D103B81D74;
- Tue,  5 Apr 2022 13:42:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993CAC385A0;
- Tue,  5 Apr 2022 13:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1649166168;
- bh=Bo1TLmFRPzMx504oGz1+72EDqWUNnp44Jv6KtOwHkao=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=AAbBEiS56WV11mH8SJIEcCt/I/TPqKCtXjUnCImEkrEFFr5/+H0tUw/jiorz9dep+
- 9v/+YdKdktiakuYU4InzvCB238HyBjVW9g3a1xRQDtrEpNlxSTLTR44tTiSDvBsAhn
- TPkR7hMHg3Trp747EATc8qicj8cgF/B1XblEqms8=
-Date: Tue, 5 Apr 2022 15:42:45 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/pseries/vas: use default_groups in kobj_type
-Message-ID: <YkxHVS3kwXY12KSL@kroah.com>
-References: <20220329142552.558339-1-gregkh@linuxfoundation.org>
- <87h77efg8e.fsf@mpe.ellerman.id.au>
+X-Greylist: delayed 1078 seconds by postgrey-1.36 at boromir;
+ Wed, 06 Apr 2022 02:16:37 AEST
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KXt7T5x5Hz2yJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 02:16:36 +1000 (AEST)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <afa@pengutronix.de>)
+ id 1nblZT-0004nd-AF; Tue, 05 Apr 2022 17:58:19 +0200
+Received: from afa by dude.hi.pengutronix.de with local (Exim 4.94.2)
+ (envelope-from <afa@pengutronix.de>)
+ id 1nblZR-0038Jb-G8; Tue, 05 Apr 2022 17:58:17 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Nicolin Chen <nicoleotsuka@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>,
+ Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Viorel Suman <viorel.suman@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] ASoC: fsl_sai: fix 1:1 bclk:mclk ratio support
+Date: Tue,  5 Apr 2022 17:57:31 +0200
+Message-Id: <20220405155731.745413-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87h77efg8e.fsf@mpe.ellerman.id.au>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: afa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,38 +59,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+ Takashi Iwai <tiwai@suse.com>, kernel@pengutronix.de,
+ Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Mar 31, 2022 at 11:39:45PM +1100, Michael Ellerman wrote:
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
-> > There are currently 2 ways to create a set of sysfs files for a
-> > kobj_type, through the default_attrs field, and the default_groups
-> > field.  Move the pseries vas sysfs code to use default_groups field
-> > which has been the preferred way since aa30f47cf666 ("kobject: Add
-> > support for default attribute groups to kobj_type") so that we can soon
-> > get rid of the obsolete default_attrs field.
-> >
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > Cc: Paul Mackerras <paulus@samba.org>
-> > Cc: Haren Myneni <haren@linux.ibm.com>
-> > Cc: Nicholas Piggin <npiggin@gmail.com>
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > ---
-> >
-> > Note, I would like to take this through my driver-core tree for 5.18-rc2
-> > as this is the last hold-out of the default_attrs field.  It "snuck" in
-> > as new code for 5.18-rc1, any objection to me taking it?
-> 
-> No objection, please take it via your tree.
+Refactoring in commit a50b7926d015 ("ASoC: fsl_sai: implement 1:1
+bclk:mclk ratio support") led to the bypass never happening
+as (ratio = 1) was caught in the existing if (ratio & 1) continue;
+check. The correct check sequence instead is:
 
-Thanks, now queued up.
+ - skip all ratios lower than one and higher than 512
+ - skip all odd ratios except for 1:1
+ - skip 1:1 ratio if and only if !support_1_1_ratio
 
-greg k-h
+And for all others, calculate the appropriate divider. Adjust the
+code to facilitate this.
+
+Fixes: a50b7926d015 ("ASoC: fsl_sai: implement 1:1 bclk:mclk ratio support")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ sound/soc/fsl/fsl_sai.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index a992d51568cc..50c377f16097 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -372,7 +372,7 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
+ 			continue;
+ 		if (ratio == 1 && !support_1_1_ratio)
+ 			continue;
+-		else if (ratio & 1)
++		if ((ratio & 1) && ratio > 1)
+ 			continue;
+ 
+ 		diff = abs((long)clk_rate - ratio * freq);
+-- 
+2.30.2
+
