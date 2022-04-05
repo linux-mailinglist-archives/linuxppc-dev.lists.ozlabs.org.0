@@ -2,69 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9640F4F2F6E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 14:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C14704F350B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 15:43:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KXmm64BjXz3cfh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 22:14:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KXpkq5CFFz3bcv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 23:43:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=AAbBEiS5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=AAbBEiS5; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KXmk32Brzz3bdC
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Apr 2022 22:12:43 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KXmjd2ZWCz9sTF;
- Tue,  5 Apr 2022 14:12:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id cOQUgrdfibbH; Tue,  5 Apr 2022 14:12:21 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KXmjY2lllz9sTH;
- Tue,  5 Apr 2022 14:12:17 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 407EC8B77C;
- Tue,  5 Apr 2022 14:12:17 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id IRPPyoPUMpO4; Tue,  5 Apr 2022 14:12:17 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0DE5D8B775;
- Tue,  5 Apr 2022 14:12:17 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 235CCCYY352500
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 5 Apr 2022 14:12:12 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 235CCCkf352499;
- Tue, 5 Apr 2022 14:12:12 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5/5] powerpc/8xx: Use kmalloced data structure instead of
- global static
-Date: Tue,  5 Apr 2022 14:12:04 +0200
-Message-Id: <7d817f13ebd5193d69bbc807bbdd96f82a6c573b.1649160685.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <d3a7dc832d905bed14b35d83410cdb69a7ba20e8.1649160685.git.christophe.leroy@csgroup.eu>
-References: <d3a7dc832d905bed14b35d83410cdb69a7ba20e8.1649160685.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KXpk960PXz2xD4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Apr 2022 23:42:56 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 4D103B81D74;
+ Tue,  5 Apr 2022 13:42:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993CAC385A0;
+ Tue,  5 Apr 2022 13:42:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1649166168;
+ bh=Bo1TLmFRPzMx504oGz1+72EDqWUNnp44Jv6KtOwHkao=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=AAbBEiS56WV11mH8SJIEcCt/I/TPqKCtXjUnCImEkrEFFr5/+H0tUw/jiorz9dep+
+ 9v/+YdKdktiakuYU4InzvCB238HyBjVW9g3a1xRQDtrEpNlxSTLTR44tTiSDvBsAhn
+ TPkR7hMHg3Trp747EATc8qicj8cgF/B1XblEqms8=
+Date: Tue, 5 Apr 2022 15:42:45 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/pseries/vas: use default_groups in kobj_type
+Message-ID: <YkxHVS3kwXY12KSL@kroah.com>
+References: <20220329142552.558339-1-gregkh@linuxfoundation.org>
+ <87h77efg8e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1649160722; l=4190; s=20211009;
- h=from:subject:message-id; bh=gbAm6QkVkPnZ9c9BYkFQVy/zbFCRmgtesziyGYwG0T8=;
- b=sC88JwMbSD2y3MTXTtvcYLZH1ivBlRHsgEDs1A9GRe3yzPn2N0xe98p/x2axMcppcSjeAYCHzQwI
- 9B/U68sPB4HeAy+ZmL/Ufmq5quYGzphhFoF8/FhZqtnQXl5Bes51
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h77efg8e.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,147 +62,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use a kmalloced data structure to store interrupt controller internal
-data instead of static global variables.
+On Thu, Mar 31, 2022 at 11:39:45PM +1100, Michael Ellerman wrote:
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> > There are currently 2 ways to create a set of sysfs files for a
+> > kobj_type, through the default_attrs field, and the default_groups
+> > field.  Move the pseries vas sysfs code to use default_groups field
+> > which has been the preferred way since aa30f47cf666 ("kobject: Add
+> > support for default attribute groups to kobj_type") so that we can soon
+> > get rid of the obsolete default_attrs field.
+> >
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> > Cc: Paul Mackerras <paulus@samba.org>
+> > Cc: Haren Myneni <haren@linux.ibm.com>
+> > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >
+> > Note, I would like to take this through my driver-core tree for 5.18-rc2
+> > as this is the last hold-out of the default_attrs field.  It "snuck" in
+> > as new code for 5.18-rc1, any objection to me taking it?
+> 
+> No objection, please take it via your tree.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/platforms/8xx/cpm1-ic.c | 48 +++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 18 deletions(-)
+Thanks, now queued up.
 
-diff --git a/arch/powerpc/platforms/8xx/cpm1-ic.c b/arch/powerpc/platforms/8xx/cpm1-ic.c
-index 6f9765597a6d..a18fc7c99f83 100644
---- a/arch/powerpc/platforms/8xx/cpm1-ic.c
-+++ b/arch/powerpc/platforms/8xx/cpm1-ic.c
-@@ -10,29 +10,33 @@
- #include <linux/platform_device.h>
- #include <asm/cpm1.h>
- 
--static cpic8xx_t __iomem *cpic_reg;
--
--static struct irq_domain *cpm_pic_host;
-+struct cpm_pic_data {
-+	cpic8xx_t __iomem *reg;
-+	struct irq_domain *host;
-+};
- 
- static void cpm_mask_irq(struct irq_data *d)
- {
-+	struct cpm_pic_data *data = irq_data_get_irq_chip_data(d);
- 	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
- 
--	clrbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
-+	clrbits32(&data->reg->cpic_cimr, (1 << cpm_vec));
- }
- 
- static void cpm_unmask_irq(struct irq_data *d)
- {
-+	struct cpm_pic_data *data = irq_data_get_irq_chip_data(d);
- 	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
- 
--	setbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
-+	setbits32(&data->reg->cpic_cimr, (1 << cpm_vec));
- }
- 
- static void cpm_end_irq(struct irq_data *d)
- {
-+	struct cpm_pic_data *data = irq_data_get_irq_chip_data(d);
- 	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
- 
--	out_be32(&cpic_reg->cpic_cisr, (1 << cpm_vec));
-+	out_be32(&data->reg->cpic_cisr, (1 << cpm_vec));
- }
- 
- static struct irq_chip cpm_pic = {
-@@ -42,29 +46,31 @@ static struct irq_chip cpm_pic = {
- 	.irq_eoi = cpm_end_irq,
- };
- 
--static int cpm_get_irq(void)
-+static int cpm_get_irq(struct irq_desc *desc)
- {
-+	struct cpm_pic_data *data = irq_desc_get_handler_data(desc);
- 	int cpm_vec;
- 
- 	/*
- 	 * Get the vector by setting the ACK bit and then reading
- 	 * the register.
- 	 */
--	out_be16(&cpic_reg->cpic_civr, 1);
--	cpm_vec = in_be16(&cpic_reg->cpic_civr);
-+	out_be16(&data->reg->cpic_civr, 1);
-+	cpm_vec = in_be16(&data->reg->cpic_civr);
- 	cpm_vec >>= 11;
- 
--	return irq_linear_revmap(cpm_pic_host, cpm_vec);
-+	return irq_linear_revmap(data->host, cpm_vec);
- }
- 
- static void cpm_cascade(struct irq_desc *desc)
- {
--	generic_handle_irq(cpm_get_irq());
-+	generic_handle_irq(cpm_get_irq(desc));
- }
- 
- static int cpm_pic_host_map(struct irq_domain *h, unsigned int virq,
- 			    irq_hw_number_t hw)
- {
-+	irq_set_chip_data(virq, h->host_data);
- 	irq_set_status_flags(virq, IRQ_LEVEL);
- 	irq_set_chip_and_handler(virq, &cpm_pic, handle_fasteoi_irq);
- 	return 0;
-@@ -79,13 +85,18 @@ static int cpm_pic_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
- 	int irq;
-+	struct cpm_pic_data *data;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!res)
- 		return -ENODEV;
- 
--	cpic_reg = devm_ioremap(dev, res->start, resource_size(res));
--	if (!cpic_reg)
-+	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	data->reg = devm_ioremap(dev, res->start, resource_size(res));
-+	if (!data->reg)
- 		return -ENODEV;
- 
- 	irq = platform_get_irq(pdev, 0);
-@@ -93,19 +104,20 @@ static int cpm_pic_probe(struct platform_device *pdev)
- 		return irq;
- 
- 	/* Initialize the CPM interrupt controller. */
--	out_be32(&cpic_reg->cpic_cicr,
-+	out_be32(&data->reg->cpic_cicr,
- 		 (CICR_SCD_SCC4 | CICR_SCC_SCC3 | CICR_SCB_SCC2 | CICR_SCA_SCC1) |
- 		 ((virq_to_hw(irq) / 2) << 13) | CICR_HP_MASK);
- 
--	out_be32(&cpic_reg->cpic_cimr, 0);
-+	out_be32(&data->reg->cpic_cimr, 0);
- 
--	cpm_pic_host = irq_domain_add_linear(dev->of_node, 64, &cpm_pic_host_ops, NULL);
--	if (!cpm_pic_host)
-+	data->host = irq_domain_add_linear(dev->of_node, 64, &cpm_pic_host_ops, data);
-+	if (!data->host)
- 		return -ENODEV;
- 
-+	irq_set_handler_data(irq, data);
- 	irq_set_chained_handler(irq, cpm_cascade);
- 
--	setbits32(&cpic_reg->cpic_cicr, CICR_IEN);
-+	setbits32(&data->reg->cpic_cicr, CICR_IEN);
- 
- 	return 0;
- }
--- 
-2.35.1
-
+greg k-h
