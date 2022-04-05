@@ -2,65 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6011E4F20D5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 04:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7134F2219
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 06:37:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KXXF41xyyz3bYG
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 12:50:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KXZd606CZz2ywF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 14:37:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=nDSKlTbn;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lhB7hyRX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f30;
- helo=mail-qv1-xf30.google.com; envelope-from=joel.stan@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=nDSKlTbn; dkim-atps=neutral
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com
- [IPv6:2607:f8b0:4864:20::f30])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=lhB7hyRX; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KXXDP36dkz2xWg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Apr 2022 12:49:39 +1000 (AEST)
-Received: by mail-qv1-xf30.google.com with SMTP id kd21so9046664qvb.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Apr 2022 19:49:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+3yYs4jPEdpiPVZtw96RU6MjJ9sWjKN7KDqJyIXraKE=;
- b=nDSKlTbnhB5zbglbFxSPUYNryzfXcRiscLFyNo1n0TiZssQFMqexQblAcNe/CQdp7o
- anCH9utw/gOPubIATJxxSLlNS3051COoPiJud7P3KXrU7IClDAnHBax6+SdVpmW9Pi2C
- Aug855s/iXmdOEDqZQpItCzF+BTZi9hGc234Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+3yYs4jPEdpiPVZtw96RU6MjJ9sWjKN7KDqJyIXraKE=;
- b=yiFwaNnLL4o5XnoqSOowHaKi8RhC4Gnlt8mY8H2CpoNQkL+ABcZsnOYVS32/KeyK2/
- lXz60gLswGLWa5mbYazQdHBUsEjYl/nutL1cwQJSEc598SrOCzm8cDinbH/+wBoS5nXF
- s709I6lqsZblzxtoGvNVTaGObN9ffRCfEDM/hu/9IxW+Y5Z4NBIcfQBsaglJohRCWu7X
- tYNAGtxlUPetOeZXNOd12TFIY3wOmA6RJ61JxurN+u2khUg+xHaCpbkco1s2jcxOSwXQ
- 2OHlfkDoMOOJfgc8Ib4TuAZ5cdgDorrBIKN1icPxDhE/Za83Muc3NNmZ4wuB0z5iJ2vB
- LdAQ==
-X-Gm-Message-State: AOAM532NVY18xhU+ZkDis397vAYir6jqw/1KxYLJkSkh4UCWMkaghpYD
- 0kJLpEG/2S74oBahhWuqiRtde8f9Cda7I5ggGow=
-X-Google-Smtp-Source: ABdhPJw2+1ELG901fsXNiJurRT6Bsuasdk/BUE7Ro7b5ylkqz0PfvneXSY7SwCFYyl9MtH/vdqodwd5i+MDOgbqRfU4=
-X-Received: by 2002:a0c:f583:0:b0:443:d114:e059 with SMTP id
- k3-20020a0cf583000000b00443d114e059mr933170qvm.107.1649126974510; Mon, 04 Apr
- 2022 19:49:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220404101536.104794-1-ruscur@russell.cc>
-In-Reply-To: <20220404101536.104794-1-ruscur@russell.cc>
-From: Joel Stanley <joel@jms.id.au>
-Date: Tue, 5 Apr 2022 02:49:21 +0000
-Message-ID: <CACPK8XdifXFmjCJL3KDu8PJi4KLKWnOBeq86wZvN0kiHGQ=JHw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] powerpc/powernv: Get L1D flush requirements from
- device-tree
-To: Russell Currey <ruscur@russell.cc>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KXZcM2Kwrz2xfN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Apr 2022 14:37:07 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id DF6DB6143A
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Apr 2022 04:37:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4B77AC340F0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Apr 2022 04:37:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1649133423;
+ bh=SLsKtQeZsqWCNILaKwlu2uQkdcYGm77RsEFY5vB2aYs=;
+ h=From:To:Subject:Date:From;
+ b=lhB7hyRXW4C9r1fOgAoouHKBE5HWtn4l3U63LEeJMWY/ZR5EDFkOICSBD21UzFnwl
+ M+ltJX40exH2meUjkvAJkVaNmugvCQ1pexwple6gOAQPOBLlcLO8+1jjBt9EBowmU+
+ LEj7xgoEcxBe9VayCYrgEB3/38YIP51mZ3N21Pkd/e4bKeUhynFjwuk81RAXPSnhrq
+ vuDbEOknzt63hpW68hM3j8UpwbPo0atKyKf9Bh1iWzRx4aaJIc6fZvW/NMOy+IBth+
+ cuSiFHlIMkcCvxwn5+CtfUSvAytkgP+A7X0zglTSt+h2ibwx0VmI2IDkGNg0o8b/m0
+ 0zoUZ9qi0+oUQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id 28D09C05FD2; Tue,  5 Apr 2022 04:37:03 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215803] New: ppc64le(P9): BUG: Kernel NULL pointer dereference
+ on read at 0x00000060 NIP:
+ do_remove_conflicting_framebuffers+0x184/0x1d0
+Date: Tue, 05 Apr 2022 04:37:02 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: zlang@redhat.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cf_regression
+Message-ID: <bug-215803-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,81 +85,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?Q?Murilo_Opsfelder_Ara=C3=BAjo?= <mopsfelder@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 4 Apr 2022 at 10:15, Russell Currey <ruscur@russell.cc> wrote:
->
-> The device-tree properties no-need-l1d-flush-msr-pr-1-to-0 and
-> no-need-l1d-flush-kernel-on-user-access are the equivalents of
-> H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY and H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS
-> from the H_GET_CPU_CHARACTERISTICS hcall on pseries respectively.
->
-> In commit d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version
-> check for entry and uaccess flushes") the condition for disabling the
-> L1D flush on kernel entry and user access was changed from any non-P9
-> CPU to only checking P7 and P8.  Without the appropriate device-tree
-> checks for newer processors on powernv, these flushes are unnecessarily
-> enabled on those systems.  This patch corrects this.
->
-> Fixes: d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version check for entry and uaccess flushes")
-> Reported-by: Joel Stanley <joel@jms.id.au>
-> Signed-off-by: Russell Currey <ruscur@russell.cc>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215803
 
-I booted both patches in this series on a power10 powernv machine,
-applied on top of v5.18-rc1:
+            Bug ID: 215803
+           Summary: ppc64le(P9):  BUG: Kernel NULL pointer dereference on
+                    read at 0x00000060  NIP:
+                    do_remove_conflicting_framebuffers+0x184/0x1d0
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.18-rc1
+          Hardware: All
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-64
+          Assignee: platform_ppc-64@kernel-bugs.osdl.org
+          Reporter: zlang@redhat.com
+        Regression: No
 
-$ dmesg |grep -i flush
-[    0.000000] rfi-flush: fallback displacement flush available
-[    0.000000] rfi-flush: patched 12 locations (no flush)
-[    0.000000] count-cache-flush: flush disabled.
-[    0.000000] link-stack-flush: flush disabled.
+When I test latest linux kernel, it panic[1] directly when I  just tried to
+boot it on ppc64le. I hit it several times on different ppc64le machines, s=
+ame
+call trace. Due to I only hit this panic on ppc64le, so I report this bug to
+ppc64 to get more review.
 
-$ grep . /sys/devices/system/cpu/vulnerabilities/*
-/sys/devices/system/cpu/vulnerabilities/itlb_multihit:Not affected
-/sys/devices/system/cpu/vulnerabilities/l1tf:Not affected
-/sys/devices/system/cpu/vulnerabilities/mds:Not affected
-/sys/devices/system/cpu/vulnerabilities/meltdown:Not affected
-/sys/devices/system/cpu/vulnerabilities/spec_store_bypass:Not affected
-/sys/devices/system/cpu/vulnerabilities/spectre_v1:Mitigation: __user
-pointer sanitization, ori31 speculation barrier enabled
-/sys/devices/system/cpu/vulnerabilities/spectre_v2:Mitigation:
-Software count cache flush (hardware accelerated), Software link stack
-flush
-/sys/devices/system/cpu/vulnerabilities/srbds:Not affected
-/sys/devices/system/cpu/vulnerabilities/tsx_async_abort:Not affected
+The linux kernel HEAD is (nearly 5.18-rc1):
 
-Does that match what we expect?
+commit be2d3ecedd9911fbfd7e55cc9ceac5f8b79ae4cf
+Author: Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat Apr 2 12:57:17 2022 -0700
 
-Cheers,
+    Merge tag 'perf-tools-for-v5.18-2022-04-02' of
+git://git.kernel.org/pub/scm/linux/kernel/git/acme/linux
 
-Joel
 
-> ---
->  arch/powerpc/platforms/powernv/setup.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-> index 105d889abd51..378f7e5f18d2 100644
-> --- a/arch/powerpc/platforms/powernv/setup.c
-> +++ b/arch/powerpc/platforms/powernv/setup.c
-> @@ -96,6 +96,12 @@ static void __init init_fw_feat_flags(struct device_node *np)
->
->         if (fw_feature_is("disabled", "needs-spec-barrier-for-bound-checks", np))
->                 security_ftr_clear(SEC_FTR_BNDS_CHK_SPEC_BAR);
-> +
-> +       if (fw_feature_is("enabled", "no-need-l1d-flush-msr-pr-1-to-0", np))
-> +               security_ftr_clear(SEC_FTR_L1D_FLUSH_ENTRY);
-> +
-> +       if (fw_feature_is("enabled", "no-need-l1d-flush-kernel-on-user-access", np))
-> +               security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
->  }
->
->  static void __init pnv_setup_security_mitigations(void)
-> --
-> 2.35.1
->
+[1]
+[   18.785170] RPC: Registered named UNIX socket transport module.=20
+[   18.785214] RPC: Registered udp transport module.=20
+[   18.785235] RPC: Registered tcp transport module.=20
+[   18.785256] RPC: Registered tcp NFSv4.1 backchannel transport module.=20
+[=20=20=20=20=20=20
+  OK=20=20=20=20=20
+] Mounted=20=20=20=20=20=20=20=20=20
+RPC Pipe File System=20=20=20
+.=20
+[=20=20=20=20=20=20
+  OK=20=20=20=20=20
+] Reached target=20=20=20=20=20=20=20=20=20
+rpc_pipefs.target=20=20=20
+.=20
+[   18.830598] fb0: switching to ast from OFfb vga=20
+[   18.830646] BUG: Kernel NULL pointer dereference on read at 0x00000060=20
+[   18.830669] Faulting instruction address: 0xc0000000009fd974=20
+[   18.830692] Oops: Kernel access of bad area, sig: 7 [#1]=20
+[   18.830712] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA Power=
+NV=20
+[   18.830734] Modules linked in: ast(+) i2c_algo_bit sunrpc drm_vram_helper
+drm_ttm_helper ttm drm_kms_helper fb_sys_fops syscopyarea sysfillrect ofpart
+sysimgblt ses enclosure powernv_flash ipmi_powernv at24 ipmi_devintf ext4
+opal_prd mtd scsi_transport_sas ibmpowernv regmap_i2c ipmi_msghandler mbcac=
+he
+jbd2 drm fuse drm_panel_orientation_quirks xfs libcrc32c sd_mod t10_pi
+crc64_rocksoft_generic crc64_rocksoft crc64 sg i40e vmx_crypto aacraid=20
+[   18.830875] CPU: 0 PID: 963 Comm: kworker/0:2 Not tainted 5.17.0+ #1=20
+[   18.830906] Workqueue: events work_for_cpu_fn=20
+[   18.830930] NIP:  c0000000009fd974 LR: c0000000009fd96c CTR:
+0000000000000000=20
+[   18.830961] REGS: c0000001156db740 TRAP: 0300   Not tainted  (5.17.0+)=20
+[   18.830981] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 480282=
+22=20
+XER: 00000000=20
+[   18.831022] CFAR: c00000000022a9ec DAR: 0000000000000060 DSISR: 00080000
+IRQMASK: 0=20=20
+[   18.831022] GPR00: c0000000009fd96c c0000001156db9e0 c000000002d06200
+0000000000000023=20=20
+[   18.831022] GPR04: 0000000000000000 c0000001156db730 c0000001156db728
+0000000000000000=20=20
+[   18.831022] GPR08: 0000000000000027 c000000002be6200 c000000115751000
+0000000000000001=20=20
+[   18.831022] GPR12: 0000001ff1900000 c000000005120000 c000000000194608
+c00020001119b000=20=20
+[   18.831022] GPR16: 0000000000000000 0000000000000000 0000000000000000
+0000000000000000=20=20
+[   18.831022] GPR20: 0000000000000000 0000000000000000 c00000000144c560
+c00000000144c588=20=20
+[   18.831022] GPR24: 0000000000000001 00000000000a0000 c0080000166c1200
+c00000010f0dbf60=20=20
+[   18.831022] GPR28: c000000002d65038 c00020001ecc0380 0000000000000000
+c000000002d64f40=20=20
+[   18.831234] NIP [c0000000009fd974]
+do_remove_conflicting_framebuffers+0x184/0x1d0=20
+[   18.831267] LR [c0000000009fd96c]
+do_remove_conflicting_framebuffers+0x17c/0x1d0=20
+[   18.831299] Call Trace:=20
+[   18.831314] [c0000001156db9e0] [c0000000009fd96c]
+do_remove_conflicting_framebuffers+0x17c/0x1d0 (unreliable)=20
+[   18.831351] [c0000001156dbab0] [c0000000009fdf34]
+remove_conflicting_framebuffers+0x64/0x160=20
+[   18.831385] [c0000001156dbb00] [c008000014ed05a8]
+drm_aperture_remove_conflicting_framebuffers+0x80/0xf0 [drm]=20
+[   18.831439] [c0000001156dbb50] [c0080000166b0238] ast_pci_probe+0x60/0x1=
+30
+[ast]=20
+[   18.831474] [c0000001156dbb90] [c0000000009b39c8] local_pci_probe+0x68/0=
+x110=20
+[   18.831508] [c0000001156dbc10] [c00000000017f038] work_for_cpu_fn+0x38/0=
+x60=20
+[   18.831540] [c0000001156dbc40] [c000000000185608]
+process_one_work+0x348/0x850=20
+[   18.831574] [c0000001156dbd30] [c000000000185d70] worker_thread+0x260/0x=
+500=20
+[   18.831605] [c0000001156dbdc0] [c000000000194748] kthread+0x148/0x150=20
+[   18.831627] [c0000001156dbe10] [c00000000000cbf4]
+ret_from_kernel_thread+0x5c/0x64=20
+[   18.831661] Instruction dump:=20
+[   18.831679] 7d710120 7d708120 4e800020 e8df0000 7fc407b4 7f45d378 7ec3b3=
+78
+f8810068=20=20
+[   18.831716] 38c601f0 4b82d03d 60000000 3d22ffee <e9550060> 3929ee90 e881=
+0068
+7c2a4800=20=20
+[   18.831755] ---[ end trace 0000000000000000 ]---=20
+[   18.958634]=20=20
+[   18.958701] kworker/0:2 (963) used greatest stack depth: 7056 bytes left=
+=20
+[=20=20=20=20=20=20
+  OK=20=20=20=20=20
+] Started=20=20=20=20=20=20=20=20=20
+Security Auditing Service=20=20=20
+.=20
+         Starting=20=20=20=20=20=20=20=20=20
+Record System Boot/Shutdown in UTMP
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
