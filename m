@@ -1,55 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A197A4F3C96
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 18:18:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A41A4F3D08
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 19:52:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KXt9F3csDz3bfg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 02:18:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d9bKmV/0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KXwFZ173Pz3bY8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 03:52:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=d9bKmV/0; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KXt8d2LVQz2yJ5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 02:17:37 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 0D7ACB81D6D;
- Tue,  5 Apr 2022 16:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12D0C385A4;
- Tue,  5 Apr 2022 16:17:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649175451;
- bh=9i+q2ZN9TmxfoI0nuVfh6ATI7dSt6NeIA1KoAxqH9Wo=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=d9bKmV/0IMeeXRcs+lJgcy2FAU7lLCVkihgX4OgOBMkO1BYdDu8qxnUx2/rqg7UyV
- DzDTTlCGsm+r8VfiUlQkuC+3f3h6koQ2HES1mTi9Q2now2v+7ba3/ryJgnWGydGAmV
- uifbtzr2x1eCuFnu+B0llXSSt6zyAwaXYioJ58oNh0uEp01YDQs/9HLXhdbJ46n/LC
- EMF8fRU7e8J/LFe++amL1j9hkDYSZ8hBWivyrqg8UyGXzu7q/I1r2+SfJ7k9vXv4pl
- yRa6lxE7a2Dru+ZbrOLiv++PMJfDzhFEsrlGh7dWEDnp4DPIpUjAhXyMVe6QwAcqfh
- CyBn92r+JO3Bg==
-Date: Tue, 5 Apr 2022 11:17:29 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] pci: hotplug: Prepare cleanup of powerpc's asm/prom.h
-Message-ID: <20220405161729.GA71083@bhelgaas>
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=sha@pengutronix.de;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 1181 seconds by postgrey-1.36 at boromir;
+ Wed, 06 Apr 2022 03:51:37 AEST
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KXwF53cnXz2yJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 03:51:36 +1000 (AEST)
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nbn1n-0005q6-Lf; Tue, 05 Apr 2022 19:31:39 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+ (envelope-from <sha@pengutronix.de>)
+ id 1nbn1l-0004Ld-6t; Tue, 05 Apr 2022 19:31:37 +0200
+Date: Tue, 5 Apr 2022 19:31:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] ASoC: fsl_sai: fix 1:1 bclk:mclk ratio support
+Message-ID: <20220405173137.GR4012@pengutronix.de>
+References: <20220405155731.745413-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <79201f5fae8d003164ac36ed3be7789db1bc5ab4.1648833421.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <20220405155731.745413-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-IRC: #ptxdist @freenode
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-Uptime: 19:31:02 up 6 days, 6:00, 66 users, load average: 0.28, 0.18, 0.18
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,101 +63,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ kernel@pengutronix.de, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Takashi Iwai <tiwai@suse.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Viorel Suman <viorel.suman@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 02, 2022 at 12:11:56PM +0200, Christophe Leroy wrote:
-> powerpc's asm/prom.h brings some headers that it doesn't
-> need itself.
+On Tue, Apr 05, 2022 at 05:57:31PM +0200, Ahmad Fatoum wrote:
+> Refactoring in commit a50b7926d015 ("ASoC: fsl_sai: implement 1:1
+> bclk:mclk ratio support") led to the bypass never happening
+> as (ratio = 1) was caught in the existing if (ratio & 1) continue;
+> check. The correct check sequence instead is:
 > 
-> In order to clean it up, first add missing headers in
-> users of asm/prom.h
+>  - skip all ratios lower than one and higher than 512
+>  - skip all odd ratios except for 1:1
+>  - skip 1:1 ratio if and only if !support_1_1_ratio
 > 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> And for all others, calculate the appropriate divider. Adjust the
+> code to facilitate this.
+> 
+> Fixes: a50b7926d015 ("ASoC: fsl_sai: implement 1:1 bclk:mclk ratio support")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-I tidied the subject line to match previous history and applied to
-pci/hotplug for v5.19, thanks!
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Sascha
 
 > ---
->  drivers/pci/hotplug/pnv_php.c       | 1 +
->  drivers/pci/hotplug/rpadlpar_core.c | 1 +
->  drivers/pci/hotplug/rpaphp_core.c   | 2 ++
->  drivers/pci/hotplug/rpaphp_pci.c    | 1 +
->  drivers/pci/hotplug/rpaphp_slot.c   | 1 +
->  5 files changed, 6 insertions(+)
+>  sound/soc/fsl/fsl_sai.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-> index f4c2e6e01be0..881d420637bf 100644
-> --- a/drivers/pci/hotplug/pnv_php.c
-> +++ b/drivers/pci/hotplug/pnv_php.c
-> @@ -9,6 +9,7 @@
->  #include <linux/module.h>
->  #include <linux/pci.h>
->  #include <linux/pci_hotplug.h>
-> +#include <linux/of_fdt.h>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index a992d51568cc..50c377f16097 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -372,7 +372,7 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
+>  			continue;
+>  		if (ratio == 1 && !support_1_1_ratio)
+>  			continue;
+> -		else if (ratio & 1)
+> +		if ((ratio & 1) && ratio > 1)
+>  			continue;
 >  
->  #include <asm/opal.h>
->  #include <asm/pnv-pci.h>
-> diff --git a/drivers/pci/hotplug/rpadlpar_core.c b/drivers/pci/hotplug/rpadlpar_core.c
-> index e6991ff67526..980bb3afd092 100644
-> --- a/drivers/pci/hotplug/rpadlpar_core.c
-> +++ b/drivers/pci/hotplug/rpadlpar_core.c
-> @@ -15,6 +15,7 @@
->  
->  #include <linux/init.h>
->  #include <linux/module.h>
-> +#include <linux/of.h>
->  #include <linux/pci.h>
->  #include <linux/string.h>
->  #include <linux/vmalloc.h>
-> diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
-> index 9887c9de08c3..491986197c47 100644
-> --- a/drivers/pci/hotplug/rpaphp_core.c
-> +++ b/drivers/pci/hotplug/rpaphp_core.c
-> @@ -11,6 +11,7 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/moduleparam.h>
-> +#include <linux/of.h>
->  #include <linux/pci.h>
->  #include <linux/pci_hotplug.h>
->  #include <linux/smp.h>
-> @@ -20,6 +21,7 @@
->  #include <asm/eeh.h>       /* for eeh_add_device() */
->  #include <asm/rtas.h>		/* rtas_call */
->  #include <asm/pci-bridge.h>	/* for pci_controller */
-> +#include <asm/prom.h>
->  #include "../pci.h"		/* for pci_add_new_bus */
->  				/* and pci_do_scan_bus */
->  #include "rpaphp.h"
-> diff --git a/drivers/pci/hotplug/rpaphp_pci.c b/drivers/pci/hotplug/rpaphp_pci.c
-> index c380bdacd146..630f77057c23 100644
-> --- a/drivers/pci/hotplug/rpaphp_pci.c
-> +++ b/drivers/pci/hotplug/rpaphp_pci.c
-> @@ -8,6 +8,7 @@
->   * Send feedback to <lxie@us.ibm.com>
->   *
->   */
-> +#include <linux/of.h>
->  #include <linux/pci.h>
->  #include <linux/string.h>
->  
-> diff --git a/drivers/pci/hotplug/rpaphp_slot.c b/drivers/pci/hotplug/rpaphp_slot.c
-> index 93b4a945c55d..779eab12e981 100644
-> --- a/drivers/pci/hotplug/rpaphp_slot.c
-> +++ b/drivers/pci/hotplug/rpaphp_slot.c
-> @@ -11,6 +11,7 @@
->  #include <linux/kernel.h>
->  #include <linux/module.h>
->  #include <linux/sysfs.h>
-> +#include <linux/of.h>
->  #include <linux/pci.h>
->  #include <linux/string.h>
->  #include <linux/slab.h>
+>  		diff = abs((long)clk_rate - ratio * freq);
 > -- 
-> 2.35.1
+> 2.30.2
 > 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
