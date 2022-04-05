@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2C44F3D0A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 19:53:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 792E34F3D11
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Apr 2022 19:57:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KXwHQ4lBLz3bbV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 03:53:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KXwMl2TBgz3bXG
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 03:57:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=qZ4GjDNJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=cUte+H4u;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::433;
- helo=mail-wr1-x433.google.com; envelope-from=irogers@google.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::436;
+ helo=mail-wr1-x436.google.com; envelope-from=irogers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=qZ4GjDNJ; dkim-atps=neutral
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com
- [IPv6:2a00:1450:4864:20::433])
+ header.s=20210112 header.b=cUte+H4u; dkim-atps=neutral
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com
+ [IPv6:2a00:1450:4864:20::436])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KXwGl3d70z2yJ5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 03:53:03 +1000 (AEST)
-Received: by mail-wr1-x433.google.com with SMTP id r13so20484426wrr.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Apr 2022 10:53:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KXwM55SQsz2yMj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 03:56:49 +1000 (AEST)
+Received: by mail-wr1-x436.google.com with SMTP id w21so20550567wra.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Apr 2022 10:56:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=rfQvZQAVT5MbUjtOudkNp0xxDlMhGlQ+Xf2K1QkwOE0=;
- b=qZ4GjDNJV/h/60dOw6GpN8omhAC5g1vtQbt421s+ZJboD4OP2tI/iQf7pfU5TkLm2p
- C0pd8V6pxkfdDdiaKud41mh6hW6j38+YgVHknQjqXxW+5Amhg5XZmg4JJjeSyvNdAWFS
- yVvoc5EKg75qAIaT8I7kP/j0fo0wLq7BYO5dn7qaGKiJYFxUlmYeqCUHRjekm0Kk3J5G
- hfRV+aXUPKTt26J+I5lGqy2oeg63oy/Vz0jssiOkAcAIO/27qK4hFeKf0Pn/KAD+CJ5Y
- yL2TtvXHE22+BleKJtNKui/7DtqpAWIsn6hX/V49j/waBBUmbyWnGO6+KapwAK0nfsdk
- cSxQ==
+ :cc; bh=2XSThWl+PZUFMqLNS/uIAi3vardfLBgaW6ejdi55O/w=;
+ b=cUte+H4u04BPbzs34V5G9+eJ8SNIxiDkuEWGf9is+YEzzGQ1EQLCqjro2iuE13EjWj
+ gb3LzQki1bDzDpCyY2ius2D4+lnxAiWW0sYAG/aWFuf7fiKPERTTBngWGzHURX2T+Vbs
+ LDz6QTd04M8Pdo55/3O20fxWoUryj88TNBgE2RotkPuEP4q4mXu+WFb58s/tSt60V8hQ
+ O8aau9ebEUA0DSzTsDbDOs61Jts3776a+roSFGgfgfKKzIzgZBOb8JhvPWYaw/hvkwFM
+ n5Dd29H6nUhwPcIRceG5Qw6YgcZ/yJ9Q9a/n81R1KbqtUhR6cdZ6KVIXLgehN2oWrLKj
+ xPfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=rfQvZQAVT5MbUjtOudkNp0xxDlMhGlQ+Xf2K1QkwOE0=;
- b=1fQZiokzS8fSnjvPV1oI0dIQjnLfnPLB7H80/cAWFcfktEdWo/MTin7QlCdcUw67vI
- UxCdaRsgBoEKgX8BZe1FkpKwezzRvze0uH33+bsmcaHsGJ1iIwqsLID1TuEBeRhV+S7f
- 8X1zw1fDrsNB49HeXoBUF/wK56Kv1gnatOak6ztn9CsFT4GZ9F6QSWpHiJbPFQASnC20
- GRFwoMUKFecP8tlj+d1mHsZ0kj4WmGwyDXee2dxg67A8SwXtJt4Z38cCejlQEHAYj5A7
- SkWGHVw0Uu34HF/FWeC/CBrccYSVrXZnV6LrokJM7m6293a5LdWTZJ0ts5qscOau/tbA
- TbVw==
-X-Gm-Message-State: AOAM533ET2q040exkORcoG/qQLucCZBpk2283+tGqZvr1zTyE1URD7dN
- vCyHU5u4OIZz5BnnRf1Qop3GYm0Q6eE8fgVjvMFW4Q==
-X-Google-Smtp-Source: ABdhPJw3X0Yex6ZhSiSoN3kyUGsdkSsuWXqiOwUMcIHUzAwCI1i0OSioKpRdtv2iFVaqSH9kgCZYI3sTxr9nhekK79s=
-X-Received: by 2002:adf:8123:0:b0:206:1759:f164 with SMTP id
- 32-20020adf8123000000b002061759f164mr3733847wrm.654.1649181175492; Tue, 05
- Apr 2022 10:52:55 -0700 (PDT)
+ bh=2XSThWl+PZUFMqLNS/uIAi3vardfLBgaW6ejdi55O/w=;
+ b=UMZISJzSq7q95AopVOyAMepSU+RpuJ65LwICzFxXpUvh8Ie73IqhpNlE9wB3kMqdrJ
+ 4aLRTKjEpBBX++sYTDo1AHMevmnhWG/Bb8BE9yEt9FS64/5qZlk8aKYrq0kTjYVJ5NQZ
+ PndtzsuDjmwDX7usujvTUi/FcMfWmciezr8y/3dbP1fq1knuwupbybLfF/Bjr5hWGk6C
+ 3hFZb7lWOkwVronRfkdDrQK/vgair+uf0EZOgHapn7G13Y7WpAvc7uva2ouSuMfThlpX
+ a2Md68xeKUHiH65vNtmI3ymOdx7lC8lZHfCvJm6XYgvEcsZrpPVYIK51hmHAk+i6vHvj
+ /rVA==
+X-Gm-Message-State: AOAM533GxPPVkuMw6Nyz24yUp6AQNB+g4SJOnaWweRpdnmLVZ/4FF25T
+ bhFs4QOGJKmfMxKDt1vVfLwcr13sN8CTLj5aGT9eUw==
+X-Google-Smtp-Source: ABdhPJzgP8n462gwm0RE72/GPAAxZDwFiRP42trNQDTRiMZwhcAjJ/cAqmlG07N1+jK4G+ZtJKxhfg6D6nQqdMWrGK0=
+X-Received: by 2002:a5d:50c3:0:b0:206:179f:1143 with SMTP id
+ f3-20020a5d50c3000000b00206179f1143mr3674128wrt.343.1649181406206; Tue, 05
+ Apr 2022 10:56:46 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220401185853.23912-1-atrajeev@linux.vnet.ibm.com>
- <20220401185853.23912-4-atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20220401185853.23912-4-atrajeev@linux.vnet.ibm.com>
+ <20220401185853.23912-3-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20220401185853.23912-3-atrajeev@linux.vnet.ibm.com>
 From: Ian Rogers <irogers@google.com>
-Date: Tue, 5 Apr 2022 10:52:43 -0700
-Message-ID: <CAP-5=fX6n-VkQWAxLm4YHCkfUAvB+dwiaTJyD5Xpowv-OE9z8g@mail.gmail.com>
-Subject: Re: [PATCH 3/4] tools/perf: Fix perf numa bench to fix usage of
+Date: Tue, 5 Apr 2022 10:56:34 -0700
+Message-ID: <CAP-5=fUi9f5V+kEgNJQyHDVxivxz-kEXY3-pdaLwf6wJhqyO5Q@mail.gmail.com>
+Subject: Re: [PATCH 2/4] tools/perf: Fix perf bench epoll to correct usage of
  affinity for machines with #CPUs > 1K
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
@@ -83,291 +83,168 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 1, 2022 at 11:59 AM Athira Rajeev
+On Fri, Apr 1, 2022 at 12:00 PM Athira Rajeev
 <atrajeev@linux.vnet.ibm.com> wrote:
 >
-> perf bench numa testcase fails on systems with CPU's
+> perf bench epoll testcase fails on systems with CPU's
 > more than 1K.
 >
-> Testcase: perf bench numa mem -p 1 -t 3 -P 512 -s 100 -zZ0qcm --thp  1
-> Snippet of code:
+> Testcase: perf bench epoll all
+> Result snippet:
 > <<>>
-> perf: bench/numa.c:302: bind_to_node: Assertion `!(ret)' failed.
-> Aborted (core dumped)
+> Run summary [PID 106497]: 1399 threads monitoring on 64 file-descriptors for 8 secs.
+>
+> perf: pthread_create: No such file or directory
 > <<>>
 >
-> bind_to_node function uses "sched_getaffinity" to save the original
-> cpumask and this call is returning EINVAL ((invalid argument).
-> This happens because the default mask size in glibc is 1024.
-> To overcome this 1024 CPUs mask size limitation of cpu_set_t,
-> change the mask size using the CPU_*_S macros ie, use CPU_ALLOC to
-> allocate cpumask, CPU_ALLOC_SIZE for size. Apart from fixing this
-> for "orig_mask", apply same logic to "mask" as well which is used to
-> setaffinity so that mask size is large enough to represent number
-> of possible CPU's in the system.
+> In epoll benchmarks (ctl, wait) pthread_create is invoked in do_threads
+> from respective bench_epoll_*  function. Though the logs shows direct
+> failure from pthread_create, the actual failure is from  "sched_setaffinity"
+> returning EINVAL (invalid argument). This happens because the default
+> mask size in glibc is 1024. To overcome this 1024 CPUs mask size
+> limitation of cpu_set_t, change the mask size using the CPU_*_S macros.
 >
-> sched_getaffinity is used in one more place in perf numa bench. It
-> is in "bind_to_cpu" function. Apply the same logic there also. Though
-> currently no failure is reported from there, it is ideal to change
-> getaffinity to work with such system configurations having CPU's more
-> than default mask size supported by glibc.
->
-> Also fix "sched_setaffinity" to use mask size which is large enough
-> to represent number of possible CPU's in the system.
->
-> Fixed all places where "bind_cpumask" which is part of "struct
-> thread_data" is used such that bind_cpumask works in all configuration.
+> Patch addresses this by fixing all the epoll benchmarks to use
+> CPU_ALLOC to allocate cpumask, CPU_ALLOC_SIZE for size, and
+> CPU_SET_S to set the mask.
 >
 > Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
 > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > ---
->  tools/perf/bench/numa.c | 109 +++++++++++++++++++++++++++++-----------
->  1 file changed, 81 insertions(+), 28 deletions(-)
+>  tools/perf/bench/epoll-ctl.c  | 25 +++++++++++++++++++------
+>  tools/perf/bench/epoll-wait.c | 25 +++++++++++++++++++------
+>  2 files changed, 38 insertions(+), 12 deletions(-)
 >
-> diff --git a/tools/perf/bench/numa.c b/tools/perf/bench/numa.c
-> index f2640179ada9..333896907e45 100644
-> --- a/tools/perf/bench/numa.c
-> +++ b/tools/perf/bench/numa.c
-> @@ -54,7 +54,7 @@
->
->  struct thread_data {
->         int                     curr_cpu;
-> -       cpu_set_t               bind_cpumask;
-> +       cpu_set_t               *bind_cpumask;
->         int                     bind_node;
->         u8                      *process_data;
->         int                     process_nr;
-> @@ -266,46 +266,75 @@ static bool node_has_cpus(int node)
->         return ret;
->  }
->
-> -static cpu_set_t bind_to_cpu(int target_cpu)
-> +static cpu_set_t *bind_to_cpu(int target_cpu)
+> diff --git a/tools/perf/bench/epoll-ctl.c b/tools/perf/bench/epoll-ctl.c
+> index 1a17ec83d3c4..91c53f6c6d87 100644
+> --- a/tools/perf/bench/epoll-ctl.c
+> +++ b/tools/perf/bench/epoll-ctl.c
+> @@ -222,13 +222,20 @@ static void init_fdmaps(struct worker *w, int pct)
+>  static int do_threads(struct worker *worker, struct perf_cpu_map *cpu)
 >  {
-> -       cpu_set_t orig_mask, mask;
-> +       int nrcpus = numa_num_possible_cpus();
-> +       cpu_set_t *orig_mask, *mask;
+>         pthread_attr_t thread_attr, *attrp = NULL;
+> -       cpu_set_t cpuset;
+> +       cpu_set_t *cpuset;
+>         unsigned int i, j;
+>         int ret = 0;
+> +       int nrcpus;
 > +       size_t size;
->         int ret;
 >
-> -       ret = sched_getaffinity(0, sizeof(orig_mask), &orig_mask);
-> -       BUG_ON(ret);
-> +       orig_mask = CPU_ALLOC(nrcpus);
-> +       BUG_ON(!orig_mask);
+>         if (!noaffinity)
+>                 pthread_attr_init(&thread_attr);
+>
+> +       nrcpus = perf_cpu_map__nr(cpu);
+> +       cpuset = CPU_ALLOC(nrcpus);
+> +       BUG_ON(!cpuset);
 > +       size = CPU_ALLOC_SIZE(nrcpus);
-> +       CPU_ZERO_S(size, orig_mask);
 > +
-> +       ret = sched_getaffinity(0, size, orig_mask);
-> +       if (ret) {
-> +               CPU_FREE(orig_mask);
-> +               BUG_ON(ret);
-> +       }
+>         for (i = 0; i < nthreads; i++) {
+>                 struct worker *w = &worker[i];
 >
-> -       CPU_ZERO(&mask);
-> +       mask = CPU_ALLOC(nrcpus);
-> +       BUG_ON(!mask);
-> +       CPU_ZERO_S(size, mask);
+> @@ -252,22 +259,28 @@ static int do_threads(struct worker *worker, struct perf_cpu_map *cpu)
+>                         init_fdmaps(w, 50);
 >
->         if (target_cpu == -1) {
->                 int cpu;
+>                 if (!noaffinity) {
+> -                       CPU_ZERO(&cpuset);
+> -                       CPU_SET(perf_cpu_map__cpu(cpu, i % perf_cpu_map__nr(cpu)).cpu, &cpuset);
+> +                       CPU_ZERO_S(size, cpuset);
+> +                       CPU_SET_S(perf_cpu_map__cpu(cpu, i % perf_cpu_map__nr(cpu)).cpu,
+> +                                       size, cpuset);
 >
->                 for (cpu = 0; cpu < g->p.nr_cpus; cpu++)
-> -                       CPU_SET(cpu, &mask);
-> +                       CPU_SET_S(cpu, size, mask);
->         } else {
->                 BUG_ON(target_cpu < 0 || target_cpu >= g->p.nr_cpus);
-> -               CPU_SET(target_cpu, &mask);
-> +               CPU_SET_S(target_cpu, size, mask);
+> -                       ret = pthread_attr_setaffinity_np(&thread_attr, sizeof(cpu_set_t), &cpuset);
+> -                       if (ret)
+> +                       ret = pthread_attr_setaffinity_np(&thread_attr, size, cpuset);
+> +                       if (ret) {
+> +                               CPU_FREE(cpuset);
+>                                 err(EXIT_FAILURE, "pthread_attr_setaffinity_np");
+> +                       }
+>
+>                         attrp = &thread_attr;
+>                 }
+>
+>                 ret = pthread_create(&w->thread, attrp, workerfn,
+>                                      (void *)(struct worker *) w);
+> -               if (ret)
+> +               if (ret) {
+> +                       CPU_FREE(cpuset);
+>                         err(EXIT_FAILURE, "pthread_create");
+> +               }
 >         }
 >
-> -       ret = sched_setaffinity(0, sizeof(mask), &mask);
-> -       BUG_ON(ret);
-> +       ret = sched_setaffinity(0, size, mask);
-> +       if (ret) {
-> +               CPU_FREE(mask);
-> +               BUG_ON(ret);
-> +       }
-> +
-> +       CPU_FREE(mask);
+> +       CPU_FREE(cpuset);
 
-This all looks good, a nit here it could it be a little shorter as:
-ret = sched_setaffinity(0, size, mask);
-CPU_FREE(mask);
-BUG_ON(ret);
+A nit here you could CPU_FREE right after the ret = pthread_create...
+to make it a bit shorter.
 
 Thanks,
 Ian
 
+>         if (!noaffinity)
+>                 pthread_attr_destroy(&thread_attr);
 >
->         return orig_mask;
->  }
->
-> -static cpu_set_t bind_to_node(int target_node)
-> +static cpu_set_t *bind_to_node(int target_node)
+> diff --git a/tools/perf/bench/epoll-wait.c b/tools/perf/bench/epoll-wait.c
+> index 0d1dd8879197..9469a53ffab9 100644
+> --- a/tools/perf/bench/epoll-wait.c
+> +++ b/tools/perf/bench/epoll-wait.c
+> @@ -291,9 +291,11 @@ static void print_summary(void)
+>  static int do_threads(struct worker *worker, struct perf_cpu_map *cpu)
 >  {
-> -       cpu_set_t orig_mask, mask;
-> +       int nrcpus = numa_num_possible_cpus();
-> +       cpu_set_t *orig_mask, *mask;
+>         pthread_attr_t thread_attr, *attrp = NULL;
+> -       cpu_set_t cpuset;
+> +       cpu_set_t *cpuset;
+>         unsigned int i, j;
+>         int ret = 0, events = EPOLLIN;
+> +       int nrcpus;
 > +       size_t size;
->         int cpu;
->         int ret;
 >
-> -       ret = sched_getaffinity(0, sizeof(orig_mask), &orig_mask);
-> -       BUG_ON(ret);
-> +       orig_mask = CPU_ALLOC(nrcpus);
-> +       BUG_ON(!orig_mask);
+>         if (oneshot)
+>                 events |= EPOLLONESHOT;
+> @@ -306,6 +308,11 @@ static int do_threads(struct worker *worker, struct perf_cpu_map *cpu)
+>         if (!noaffinity)
+>                 pthread_attr_init(&thread_attr);
+>
+> +       nrcpus = perf_cpu_map__nr(cpu);
+> +       cpuset = CPU_ALLOC(nrcpus);
+> +       BUG_ON(!cpuset);
 > +       size = CPU_ALLOC_SIZE(nrcpus);
-> +       CPU_ZERO_S(size, orig_mask);
 > +
-> +       ret = sched_getaffinity(0, size, orig_mask);
-> +       if (ret) {
-> +               CPU_FREE(orig_mask);
-> +               BUG_ON(ret);
-> +       }
+>         for (i = 0; i < nthreads; i++) {
+>                 struct worker *w = &worker[i];
 >
-> -       CPU_ZERO(&mask);
-> +       mask = CPU_ALLOC(nrcpus);
-> +       BUG_ON(!mask);
-> +       CPU_ZERO_S(size, mask);
->
->         if (target_node == NUMA_NO_NODE) {
->                 for (cpu = 0; cpu < g->p.nr_cpus; cpu++)
-> -                       CPU_SET(cpu, &mask);
-> +                       CPU_SET_S(cpu, size, mask);
->         } else {
->                 struct bitmask *cpumask = numa_allocate_cpumask();
->
-> @@ -313,24 +342,33 @@ static cpu_set_t bind_to_node(int target_node)
->                 if (!numa_node_to_cpus(target_node, cpumask)) {
->                         for (cpu = 0; cpu < (int)cpumask->size; cpu++) {
->                                 if (numa_bitmask_isbitset(cpumask, cpu))
-> -                                       CPU_SET(cpu, &mask);
-> +                                       CPU_SET_S(cpu, size, mask);
->                         }
->                 }
->                 numa_free_cpumask(cpumask);
->         }
->
-> -       ret = sched_setaffinity(0, sizeof(mask), &mask);
-> -       BUG_ON(ret);
-> +       ret = sched_setaffinity(0, size, mask);
-> +       if (ret) {
-> +               CPU_FREE(mask);
-> +               BUG_ON(ret);
-> +       }
-> +
-> +       CPU_FREE(mask);
->
->         return orig_mask;
->  }
->
-> -static void bind_to_cpumask(cpu_set_t mask)
-> +static void bind_to_cpumask(cpu_set_t *mask)
->  {
->         int ret;
-> +       size_t size = CPU_ALLOC_SIZE(numa_num_possible_cpus());
->
-> -       ret = sched_setaffinity(0, sizeof(mask), &mask);
-> -       BUG_ON(ret);
-> +       ret = sched_setaffinity(0, size, mask);
-> +       if (ret) {
-> +               CPU_FREE(mask);
-> +               BUG_ON(ret);
-> +       }
->  }
->
->  static void mempol_restore(void)
-> @@ -376,7 +414,7 @@ do {                                                        \
->  static u8 *alloc_data(ssize_t bytes0, int map_flags,
->                       int init_zero, int init_cpu0, int thp, int init_random)
->  {
-> -       cpu_set_t orig_mask;
-> +       cpu_set_t *orig_mask;
->         ssize_t bytes;
->         u8 *buf;
->         int ret;
-> @@ -434,6 +472,7 @@ static u8 *alloc_data(ssize_t bytes0, int map_flags,
->         /* Restore affinity: */
->         if (init_cpu0) {
->                 bind_to_cpumask(orig_mask);
-> +               CPU_FREE(orig_mask);
->                 mempol_restore();
->         }
->
-> @@ -589,6 +628,7 @@ static int parse_setup_cpu_list(void)
->                 BUG_ON(bind_cpu_0 > bind_cpu_1);
->
->                 for (bind_cpu = bind_cpu_0; bind_cpu <= bind_cpu_1; bind_cpu += step) {
-> +                       size_t size = CPU_ALLOC_SIZE(g->p.nr_cpus);
->                         int i;
->
->                         for (i = 0; i < mul; i++) {
-> @@ -608,10 +648,12 @@ static int parse_setup_cpu_list(void)
->                                         tprintf("%2d", bind_cpu);
->                                 }
->
-> -                               CPU_ZERO(&td->bind_cpumask);
-> +                               td->bind_cpumask = CPU_ALLOC(g->p.nr_cpus);
-> +                               BUG_ON(!td->bind_cpumask);
-> +                               CPU_ZERO_S(size, td->bind_cpumask);
->                                 for (cpu = bind_cpu; cpu < bind_cpu+bind_len; cpu++) {
->                                         BUG_ON(cpu < 0 || cpu >= g->p.nr_cpus);
-> -                                       CPU_SET(cpu, &td->bind_cpumask);
-> +                                       CPU_SET_S(cpu, size, td->bind_cpumask);
->                                 }
->                                 t++;
->                         }
-> @@ -1241,7 +1283,7 @@ static void *worker_thread(void *__tdata)
->                  * by migrating to CPU#0:
->                  */
->                 if (first_task && g->p.perturb_secs && (int)(stop.tv_sec - last_perturbance) >= g->p.perturb_secs) {
-> -                       cpu_set_t orig_mask;
-> +                       cpu_set_t *orig_mask;
->                         int target_cpu;
->                         int this_cpu;
->
-> @@ -1265,6 +1307,7 @@ static void *worker_thread(void *__tdata)
->                                 printf(" (injecting perturbalance, moved to CPU#%d)\n", target_cpu);
->
->                         bind_to_cpumask(orig_mask);
-> +                       CPU_FREE(orig_mask);
+> @@ -341,22 +348,28 @@ static int do_threads(struct worker *worker, struct perf_cpu_map *cpu)
 >                 }
 >
->                 if (details >= 3) {
-> @@ -1398,21 +1441,31 @@ static void init_thread_data(void)
+>                 if (!noaffinity) {
+> -                       CPU_ZERO(&cpuset);
+> -                       CPU_SET(perf_cpu_map__cpu(cpu, i % perf_cpu_map__nr(cpu)).cpu, &cpuset);
+> +                       CPU_ZERO_S(size, cpuset);
+> +                       CPU_SET_S(perf_cpu_map__cpu(cpu, i % perf_cpu_map__nr(cpu)).cpu,
+> +                                       size, cpuset);
 >
->         for (t = 0; t < g->p.nr_tasks; t++) {
->                 struct thread_data *td = g->threads + t;
-> +               size_t cpuset_size = CPU_ALLOC_SIZE(g->p.nr_cpus);
->                 int cpu;
+> -                       ret = pthread_attr_setaffinity_np(&thread_attr, sizeof(cpu_set_t), &cpuset);
+> -                       if (ret)
+> +                       ret = pthread_attr_setaffinity_np(&thread_attr, size, cpuset);
+> +                       if (ret) {
+> +                               CPU_FREE(cpuset);
+>                                 err(EXIT_FAILURE, "pthread_attr_setaffinity_np");
+> +                       }
 >
->                 /* Allow all nodes by default: */
->                 td->bind_node = NUMA_NO_NODE;
+>                         attrp = &thread_attr;
+>                 }
 >
->                 /* Allow all CPUs by default: */
-> -               CPU_ZERO(&td->bind_cpumask);
-> +               td->bind_cpumask = CPU_ALLOC(g->p.nr_cpus);
-> +               BUG_ON(!td->bind_cpumask);
-> +               CPU_ZERO_S(cpuset_size, td->bind_cpumask);
->                 for (cpu = 0; cpu < g->p.nr_cpus; cpu++)
-> -                       CPU_SET(cpu, &td->bind_cpumask);
-> +                       CPU_SET_S(cpu, cpuset_size, td->bind_cpumask);
+>                 ret = pthread_create(&w->thread, attrp, workerfn,
+>                                      (void *)(struct worker *) w);
+> -               if (ret)
+> +               if (ret) {
+> +                       CPU_FREE(cpuset);
+>                         err(EXIT_FAILURE, "pthread_create");
+> +               }
 >         }
->  }
 >
->  static void deinit_thread_data(void)
->  {
->         ssize_t size = sizeof(*g->threads)*g->p.nr_tasks;
-> +       int t;
-> +
-> +       /* Free the bind_cpumask allocated for thread_data */
-> +       for (t = 0; t < g->p.nr_tasks; t++) {
-> +               struct thread_data *td = g->threads + t;
-> +               CPU_FREE(td->bind_cpumask);
-> +       }
+> +       CPU_FREE(cpuset);
+>         if (!noaffinity)
+>                 pthread_attr_destroy(&thread_attr);
 >
->         free_data(g->threads, size);
->  }
 > --
 > 2.35.1
 >
