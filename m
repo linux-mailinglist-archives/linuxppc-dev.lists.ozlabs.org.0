@@ -1,70 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BAE4F566F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 08:25:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35924F5692
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 08:44:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYDzD4PPSz3bbw
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 16:25:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYFP43XnTz3bbp
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 16:44:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bxMWHMLy;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=bxMWHMLy; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYDxG52Lwz3bfR
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 16:24:02 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KYDwt4sB2z9sT7;
- Wed,  6 Apr 2022 08:23:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 50ACN8q_GpOR; Wed,  6 Apr 2022 08:23:42 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KYDwp5BVCz9sTC;
- Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BA4C8B776;
- Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id MdPgQrRTrO0q; Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.200])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0E0338B779;
- Wed,  6 Apr 2022 08:23:37 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2366NRgr390706
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Wed, 6 Apr 2022 08:23:27 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2366NRDH390705;
- Wed, 6 Apr 2022 08:23:27 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 5/5] powerpc/8xx: Use kmalloced data structure instead of
- global static
-Date: Wed,  6 Apr 2022 08:23:21 +0200
-Message-Id: <c8f0866ee013113d5e28948943cf0586e49f5353.1649226186.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <d3a7dc832d905bed14b35d83410cdb69a7ba20e8.1649226186.git.christophe.leroy@csgroup.eu>
-References: <d3a7dc832d905bed14b35d83410cdb69a7ba20e8.1649226186.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYFNJ0Hsrz2xB1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 16:43:59 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23633LSr016210; 
+ Wed, 6 Apr 2022 06:43:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=qCYyAHYd3qcSSdh6JKTxv2idV/wS9yHsQC0N8moZXfI=;
+ b=bxMWHMLyXufXsKm/clv75+L3yXYVmjso+Md1X7sVo2lMU3hFi9F0xD6MmrTgadgHEEzU
+ ZReHjS7iXvba5y8/pZWSwePQMgr929S8yg+AuwHEdV7uz9A8dSPz2juJ+wanCYPF/8PZ
+ r41ewhMin+bS3J67tZtQvR83ZIvafwH5pYv+miNQQJHHkbAMBYlPzqHrOiUUwN056EL5
+ nm6yDh0aXbUkF5EwqP+MMC18GBGVyBu0N4Tifr6yQm4uK0tQewIYUMRgJ6JD6n4xZBn2
+ stdGDF6tDFcc5mp7G1FNz6UtLy0WDAPjTrJF6hj/Xq6ujQl0P924RAa2HagYZOwcDx46 ew== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3f8ut8j6da-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Apr 2022 06:43:50 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2366h6Y8000879;
+ Wed, 6 Apr 2022 06:43:49 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03ams.nl.ibm.com with ESMTP id 3f6e48y7b8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Apr 2022 06:43:48 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 2366VV7u46137770
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 6 Apr 2022 06:31:31 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7823EAE045;
+ Wed,  6 Apr 2022 06:43:46 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CCB5AAE04D;
+ Wed,  6 Apr 2022 06:43:45 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  6 Apr 2022 06:43:45 +0000 (GMT)
+Received: from [9.43.195.169] (unknown [9.43.195.169])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9A915600A7;
+ Wed,  6 Apr 2022 16:43:41 +1000 (AEST)
+Message-ID: <d6cb3408-49a4-3c35-6ce0-3b35fd88bb9e@linux.ibm.com>
+Date: Wed, 6 Apr 2022 16:43:30 +1000
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1649226200; l=4190; s=20211009;
- h=from:subject:message-id; bh=gbAm6QkVkPnZ9c9BYkFQVy/zbFCRmgtesziyGYwG0T8=;
- b=7tAnJYtkABQY90NQl2CUyeB25iRMMGXhQU4j2Vb31dr+qH1A1BcJP+hudSdZ0zuAr4bwIfT1eOqF
- FtupuI72CU1qN9gd+RN+PHTirbcXOlIWxLbYmSYB6aQhQ6OLgu8n
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] cxl/ocxl: Prepare cleanup of powerpc's asm/prom.h
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <a2bae89b280e7a7cb87889635d9911d6a245e780.1648833388.git.christophe.leroy@csgroup.eu>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+In-Reply-To: <a2bae89b280e7a7cb87889635d9911d6a245e780.1648833388.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: EKurYAJO1W4zDCRPbPte46L-hT8YgAC9
+X-Proofpoint-ORIG-GUID: EKurYAJO1W4zDCRPbPte46L-hT8YgAC9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-04-06_02,2022-04-05_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1011
+ bulkscore=0 malwarescore=0 priorityscore=1501 mlxlogscore=970
+ suspectscore=0 spamscore=0 impostorscore=0 mlxscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204060028
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,142 +114,156 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use a kmalloced data structure to store interrupt controller internal
-data instead of static global variables.
+On 2/4/22 20:52, Christophe Leroy wrote:
+> powerpc's asm/prom.h brings some headers that it doesn't
+> need itself.
+> 
+> In order to clean it up, first add missing headers in
+> users of asm/prom.h
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/platforms/8xx/cpm1-ic.c | 48 +++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 18 deletions(-)
+Untested because I don't have your actual patch to change prom.h, but 
+nothing here looks concerning.
 
-diff --git a/arch/powerpc/platforms/8xx/cpm1-ic.c b/arch/powerpc/platforms/8xx/cpm1-ic.c
-index 6f9765597a6d..a18fc7c99f83 100644
---- a/arch/powerpc/platforms/8xx/cpm1-ic.c
-+++ b/arch/powerpc/platforms/8xx/cpm1-ic.c
-@@ -10,29 +10,33 @@
- #include <linux/platform_device.h>
- #include <asm/cpm1.h>
- 
--static cpic8xx_t __iomem *cpic_reg;
--
--static struct irq_domain *cpm_pic_host;
-+struct cpm_pic_data {
-+	cpic8xx_t __iomem *reg;
-+	struct irq_domain *host;
-+};
- 
- static void cpm_mask_irq(struct irq_data *d)
- {
-+	struct cpm_pic_data *data = irq_data_get_irq_chip_data(d);
- 	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
- 
--	clrbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
-+	clrbits32(&data->reg->cpic_cimr, (1 << cpm_vec));
- }
- 
- static void cpm_unmask_irq(struct irq_data *d)
- {
-+	struct cpm_pic_data *data = irq_data_get_irq_chip_data(d);
- 	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
- 
--	setbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
-+	setbits32(&data->reg->cpic_cimr, (1 << cpm_vec));
- }
- 
- static void cpm_end_irq(struct irq_data *d)
- {
-+	struct cpm_pic_data *data = irq_data_get_irq_chip_data(d);
- 	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
- 
--	out_be32(&cpic_reg->cpic_cisr, (1 << cpm_vec));
-+	out_be32(&data->reg->cpic_cisr, (1 << cpm_vec));
- }
- 
- static struct irq_chip cpm_pic = {
-@@ -42,29 +46,31 @@ static struct irq_chip cpm_pic = {
- 	.irq_eoi = cpm_end_irq,
- };
- 
--static int cpm_get_irq(void)
-+static int cpm_get_irq(struct irq_desc *desc)
- {
-+	struct cpm_pic_data *data = irq_desc_get_handler_data(desc);
- 	int cpm_vec;
- 
- 	/*
- 	 * Get the vector by setting the ACK bit and then reading
- 	 * the register.
- 	 */
--	out_be16(&cpic_reg->cpic_civr, 1);
--	cpm_vec = in_be16(&cpic_reg->cpic_civr);
-+	out_be16(&data->reg->cpic_civr, 1);
-+	cpm_vec = in_be16(&data->reg->cpic_civr);
- 	cpm_vec >>= 11;
- 
--	return irq_linear_revmap(cpm_pic_host, cpm_vec);
-+	return irq_linear_revmap(data->host, cpm_vec);
- }
- 
- static void cpm_cascade(struct irq_desc *desc)
- {
--	generic_handle_irq(cpm_get_irq());
-+	generic_handle_irq(cpm_get_irq(desc));
- }
- 
- static int cpm_pic_host_map(struct irq_domain *h, unsigned int virq,
- 			    irq_hw_number_t hw)
- {
-+	irq_set_chip_data(virq, h->host_data);
- 	irq_set_status_flags(virq, IRQ_LEVEL);
- 	irq_set_chip_and_handler(virq, &cpm_pic, handle_fasteoi_irq);
- 	return 0;
-@@ -79,13 +85,18 @@ static int cpm_pic_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
- 	int irq;
-+	struct cpm_pic_data *data;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!res)
- 		return -ENODEV;
- 
--	cpic_reg = devm_ioremap(dev, res->start, resource_size(res));
--	if (!cpic_reg)
-+	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	data->reg = devm_ioremap(dev, res->start, resource_size(res));
-+	if (!data->reg)
- 		return -ENODEV;
- 
- 	irq = platform_get_irq(pdev, 0);
-@@ -93,19 +104,20 @@ static int cpm_pic_probe(struct platform_device *pdev)
- 		return irq;
- 
- 	/* Initialize the CPM interrupt controller. */
--	out_be32(&cpic_reg->cpic_cicr,
-+	out_be32(&data->reg->cpic_cicr,
- 		 (CICR_SCD_SCC4 | CICR_SCC_SCC3 | CICR_SCB_SCC2 | CICR_SCA_SCC1) |
- 		 ((virq_to_hw(irq) / 2) << 13) | CICR_HP_MASK);
- 
--	out_be32(&cpic_reg->cpic_cimr, 0);
-+	out_be32(&data->reg->cpic_cimr, 0);
- 
--	cpm_pic_host = irq_domain_add_linear(dev->of_node, 64, &cpm_pic_host_ops, NULL);
--	if (!cpm_pic_host)
-+	data->host = irq_domain_add_linear(dev->of_node, 64, &cpm_pic_host_ops, data);
-+	if (!data->host)
- 		return -ENODEV;
- 
-+	irq_set_handler_data(irq, data);
- 	irq_set_chained_handler(irq, cpm_cascade);
- 
--	setbits32(&cpic_reg->cpic_cicr, CICR_IEN);
-+	setbits32(&data->reg->cpic_cicr, CICR_IEN);
- 
- 	return 0;
- }
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+
+> ---
+>   drivers/misc/cxl/api.c      | 1 +
+>   drivers/misc/cxl/cxl.h      | 2 ++
+>   drivers/misc/cxl/cxllib.c   | 1 +
+>   drivers/misc/cxl/flash.c    | 1 +
+>   drivers/misc/cxl/guest.c    | 2 ++
+>   drivers/misc/cxl/irq.c      | 1 +
+>   drivers/misc/cxl/main.c     | 1 +
+>   drivers/misc/cxl/native.c   | 1 +
+>   drivers/misc/ocxl/afu_irq.c | 1 +
+>   drivers/misc/ocxl/link.c    | 1 +
+>   10 files changed, 12 insertions(+)
+> 
+> diff --git a/drivers/misc/cxl/api.c b/drivers/misc/cxl/api.c
+> index b493de962153..d85c56530863 100644
+> --- a/drivers/misc/cxl/api.c
+> +++ b/drivers/misc/cxl/api.c
+> @@ -12,6 +12,7 @@
+>   #include <linux/pseudo_fs.h>
+>   #include <linux/sched/mm.h>
+>   #include <linux/mmu_context.h>
+> +#include <linux/irqdomain.h>
+>   
+>   #include "cxl.h"
+>   
+> diff --git a/drivers/misc/cxl/cxl.h b/drivers/misc/cxl/cxl.h
+> index 5dc0f6093f9d..7a6dd91987fd 100644
+> --- a/drivers/misc/cxl/cxl.h
+> +++ b/drivers/misc/cxl/cxl.h
+> @@ -25,6 +25,8 @@
+>   
+>   extern uint cxl_verbose;
+>   
+> +struct property;
+> +
+>   #define CXL_TIMEOUT 5
+>   
+>   /*
+> diff --git a/drivers/misc/cxl/cxllib.c b/drivers/misc/cxl/cxllib.c
+> index 53b919856426..e5fe0a171472 100644
+> --- a/drivers/misc/cxl/cxllib.c
+> +++ b/drivers/misc/cxl/cxllib.c
+> @@ -5,6 +5,7 @@
+>   
+>   #include <linux/hugetlb.h>
+>   #include <linux/sched/mm.h>
+> +#include <asm/opal-api.h>
+>   #include <asm/pnv-pci.h>
+>   #include <misc/cxllib.h>
+>   
+> diff --git a/drivers/misc/cxl/flash.c b/drivers/misc/cxl/flash.c
+> index 5b93ff51d82a..eee9decc121e 100644
+> --- a/drivers/misc/cxl/flash.c
+> +++ b/drivers/misc/cxl/flash.c
+> @@ -4,6 +4,7 @@
+>   #include <linux/semaphore.h>
+>   #include <linux/slab.h>
+>   #include <linux/uaccess.h>
+> +#include <linux/of.h>
+>   #include <asm/rtas.h>
+>   
+>   #include "cxl.h"
+> diff --git a/drivers/misc/cxl/guest.c b/drivers/misc/cxl/guest.c
+> index 9d485c9e3fff..3321c014913c 100644
+> --- a/drivers/misc/cxl/guest.c
+> +++ b/drivers/misc/cxl/guest.c
+> @@ -6,6 +6,8 @@
+>   #include <linux/spinlock.h>
+>   #include <linux/uaccess.h>
+>   #include <linux/delay.h>
+> +#include <linux/irqdomain.h>
+> +#include <linux/platform_device.h>
+>   
+>   #include "cxl.h"
+>   #include "hcalls.h"
+> diff --git a/drivers/misc/cxl/irq.c b/drivers/misc/cxl/irq.c
+> index 4cb829d5d873..5f0e2dcebb34 100644
+> --- a/drivers/misc/cxl/irq.c
+> +++ b/drivers/misc/cxl/irq.c
+> @@ -4,6 +4,7 @@
+>    */
+>   
+>   #include <linux/interrupt.h>
+> +#include <linux/irqdomain.h>
+>   #include <linux/workqueue.h>
+>   #include <linux/sched.h>
+>   #include <linux/wait.h>
+> diff --git a/drivers/misc/cxl/main.c b/drivers/misc/cxl/main.c
+> index 43b312d06e3e..c1fbf6f588f7 100644
+> --- a/drivers/misc/cxl/main.c
+> +++ b/drivers/misc/cxl/main.c
+> @@ -15,6 +15,7 @@
+>   #include <linux/slab.h>
+>   #include <linux/idr.h>
+>   #include <linux/pci.h>
+> +#include <linux/platform_device.h>
+>   #include <linux/sched/task.h>
+>   
+>   #include <asm/cputable.h>
+> diff --git a/drivers/misc/cxl/native.c b/drivers/misc/cxl/native.c
+> index 1a7f22836041..50b0c44bb8d7 100644
+> --- a/drivers/misc/cxl/native.c
+> +++ b/drivers/misc/cxl/native.c
+> @@ -11,6 +11,7 @@
+>   #include <linux/mm.h>
+>   #include <linux/uaccess.h>
+>   #include <linux/delay.h>
+> +#include <linux/irqdomain.h>
+>   #include <asm/synch.h>
+>   #include <asm/switch_to.h>
+>   #include <misc/cxl-base.h>
+> diff --git a/drivers/misc/ocxl/afu_irq.c b/drivers/misc/ocxl/afu_irq.c
+> index ecdcfae025b7..a06920b7e049 100644
+> --- a/drivers/misc/ocxl/afu_irq.c
+> +++ b/drivers/misc/ocxl/afu_irq.c
+> @@ -1,6 +1,7 @@
+>   // SPDX-License-Identifier: GPL-2.0+
+>   // Copyright 2017 IBM Corp.
+>   #include <linux/interrupt.h>
+> +#include <linux/irqdomain.h>
+>   #include <asm/pnv-ocxl.h>
+>   #include <asm/xive.h>
+>   #include "ocxl_internal.h"
+> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
+> index 9670d02c927f..4cf4c55a5f00 100644
+> --- a/drivers/misc/ocxl/link.c
+> +++ b/drivers/misc/ocxl/link.c
+> @@ -6,6 +6,7 @@
+>   #include <linux/mm_types.h>
+>   #include <linux/mmu_context.h>
+>   #include <linux/mmu_notifier.h>
+> +#include <linux/irqdomain.h>
+>   #include <asm/copro.h>
+>   #include <asm/pnv-ocxl.h>
+>   #include <asm/xive.h>
+
 -- 
-2.35.1
-
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
