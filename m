@@ -2,30 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A004F56A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 09:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D15724F56B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 09:08:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYFm33fVnz2yn9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 17:01:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYFx35Yxxz2ypn
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 17:08:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=Ik8jQGN5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KYFlc0BV0z2xVY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 17:00:42 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id A1517804AA;
- Wed,  6 Apr 2022 03:00:39 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: llvm@lists.linux.dev
-Subject: [PATCH kernel v3] powerpc/boot: Stop using RELACOUNT
-Date: Wed,  6 Apr 2022 17:00:38 +1000
-Message-Id: <20220406070038.3704604-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.30.2
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::830;
+ helo=mail-qt1-x830.google.com; envelope-from=joel.stan@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
+ header.s=google header.b=Ik8jQGN5; dkim-atps=neutral
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com
+ [IPv6:2607:f8b0:4864:20::830])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYFwP2gmhz2xB1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 17:08:20 +1000 (AEST)
+Received: by mail-qt1-x830.google.com with SMTP id 10so2873325qtz.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Apr 2022 00:08:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=q5cbQQe49bEF5HFrjbUeCKsVieZAGKpIPnvEABi81V0=;
+ b=Ik8jQGN5kwSKzWlAOPqdcr5EfMXB3cCaAXs4iEJnN+tzSBnhdKP9oV9blRgJIKTMhP
+ iUQ2BwalG/flvlLinSQcgr0ej50lrif+oOGgYEFzUpRH2ZnHJNEVYRhAMYk2mI9xlFIu
+ XPxbzqV9w8kiesP6714sUKgemZojrHdhb/rW0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=q5cbQQe49bEF5HFrjbUeCKsVieZAGKpIPnvEABi81V0=;
+ b=cSIvfi9FjbqiUK1QBz8Hkns7ciG9D/D6OvqnitNYK3Sby7s4GnPt7Dy7SFhP7G+7aG
+ ndx7FURa7VaQllTrRsRtgU2Nc+gyPXaABgh3+79toXimj3jCqa0n8BvXIY8n8viikFBO
+ +3tr1bt9S1pPFmV+Eym4bB2zODowaM+q5mRuuV3romPef9uYQz4SFR+F9oM4vhufJEUf
+ 4SOmM+Amtqf+zu/1YbPPJsQ0YUYgqOSiLXUCDlqIpMsOGfQNMFdGHOXKevdPwDt0Sw5j
+ KV8MU5qDYp4tktRbH9PeKPJxEjqoapYaydsYqAx152AiYcBm2jx+gfuXIRmKhKYgoGxZ
+ i5uQ==
+X-Gm-Message-State: AOAM530c31IHokL7deBa/oUjaU2IXIjjxDUKaJTKVY6yerLdLGFsPfN4
+ pNHqZWlkcUJEC2yJBTSYnYVnPTvvjJsjVIwildk=
+X-Google-Smtp-Source: ABdhPJw4/fHu75vAEqWIpnDMwI0wQGm1IMPKqKOcHhE2nB6rsWLu/Wi8RQEx8Toy+6dQqqkzUHS7U0U7MFsCx6m1YZo=
+X-Received: by 2002:a37:f903:0:b0:648:ca74:b7dc with SMTP id
+ l3-20020a37f903000000b00648ca74b7dcmr4502240qkj.666.1649228898092; Wed, 06
+ Apr 2022 00:08:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220330112437.540214-1-joel@jms.id.au>
+ <815770fb-3247-baab-f8ca-eed7b99213d1@gmail.com>
+ <CACPK8XdremqtJBKycbFZauky9C9yCb2S7+aZDxRtZ8fU41L=Ew@mail.gmail.com>
+ <167db0bd-4f10-7751-36a2-fb9ec5b136a7@gmail.com>
+ <20220331234433.GB614@gate.crashing.org>
+In-Reply-To: <20220331234433.GB614@gate.crashing.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Wed, 6 Apr 2022 07:08:06 +0000
+Message-ID: <CACPK8XcWuFuR0zTj=tqUNZ9aQNVWEeyoDeDUOmUE3_RS_4Whxg@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/boot: Build wrapper for an appropriate CPU
+To: Segher Boessenkool <segher@kernel.crashing.org>, 
+ =?UTF-8?Q?Murilo_Opsfelder_Ara=C3=BAjo?= <mopsfelder@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,154 +78,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-So far the RELACOUNT tag from the ELF header was containing the exact
-number of R_PPC_RELATIVE/R_PPC64_RELATIVE relocations. However the LLVM's
-recent change [1] make it equal-or-less than the actual number which
-makes it useless.
+On Thu, 31 Mar 2022 at 23:46, Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
+>
+> On Thu, Mar 31, 2022 at 12:19:52PM -0300, Murilo Opsfelder Ara=C3=BAjo wr=
+ote:
+> > My understanding is that the default cpu type for -mcpu=3Dpowerpc64 can
+> > change.
+>
+> Different subtargets (Linux, AIX, Darwin, the various BSDs, bare ELF,
+> etc.) have different default CPUs.  It also can be set at configure time
+> for most subtargets.
+>
+> Linux can be built with compilers not targetting *-linux*, so it would
+> be best to specify a specific CPU always.
+>
+> > >I did a little test using my buildroot compiler which has
+> > >with-cpu=3Dpower10. I used the presence of PCREL relocations as eviden=
+ce
+> > >that it was build for power10.
+> > >
+> > >$ powerpc64le-buildroot-linux-gnu-gcc -mcpu=3Dpower10 -c test.c
+> > >$ readelf -r test.o |grep -c PCREL
+> > >24
+> >
+> > It respected the -mcpu=3Dpower10 you provided.
+>
+> Of course.
+>
+> > And that's my concern.  We're relying on the compiler default cpu type.
+>
+> That is not the compiler default.  It is the default from who built the
+> compiler.  It can vary wildly and unpredictably.
+>
+> The actual compiler default will not change so easily at all, basically
+> only when its subtarget drops support for an older CPU.
+>
+> > If gcc defaults -mcpu=3Dpowerpc64le to power10, you're going to have
+> > the same problem again.
+>
+> That will not happen before power10 is the minimum supported CPU.
+> Anything else is madness.
 
-This replaces RELACOUNT in zImage loader with a pair of RELASZ and RELAENT.
-The vmlinux relocation code is fixed in commit d79976918852
-("powerpc/64: Add UADDR64 relocation support").
+Murilo, does Segher's explanation address your concerns?
 
-To make it more future proof, this walks through the entire .rela.dyn
-section instead of assuming that the section is sorter by a relocation
-type. Unlike d79976918852, this does not add unaligned UADDR/UADDR64
-relocations as we are likely not to see those in practice - the zImage
-is small and very arch specific so there is a smaller chance that some
-generic feature (such as PRINK_INDEX) triggers unaligned relocations.
+I believe the patch I sent fixes the problem that you're worried
+about. It should be compatible into the future too.
 
-[1] https://github.com/llvm/llvm-project/commit/da0e5b885b25cf4
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
-Changes:
-v3:
-* s/divd/divdu/ for ppc64
+Cheers,
 
-v2:
-* s/divd/divwu/ for ppc32
-* updated the commit log
-* named all new labels instead of numbering them
-(s/101f/.Lcheck_for_relaent/ and so on)
----
- arch/powerpc/boot/crt0.S | 45 ++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+Joel
 
-diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
-index feadee18e271..44544720daae 100644
---- a/arch/powerpc/boot/crt0.S
-+++ b/arch/powerpc/boot/crt0.S
-@@ -8,7 +8,8 @@
- #include "ppc_asm.h"
- 
- RELA = 7
--RELACOUNT = 0x6ffffff9
-+RELASZ = 8
-+RELAENT = 9
- 
- 	.data
- 	/* A procedure descriptor used when booting this as a COFF file.
-@@ -75,34 +76,39 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
- 	bne	11f
- 	lwz	r9,4(r12)	/* get RELA pointer in r9 */
- 	b	12f
--11:	addis	r8,r8,(-RELACOUNT)@ha
--	cmpwi	r8,RELACOUNT@l
-+11:	cmpwi	r8,RELASZ
-+	bne	.Lcheck_for_relaent
-+	lwz	r0,4(r12)       /* get RELASZ value in r0 */
-+	b	12f
-+.Lcheck_for_relaent:
-+	cmpwi	r8,RELAENT
- 	bne	12f
--	lwz	r0,4(r12)	/* get RELACOUNT value in r0 */
-+	lwz     r14,4(r12)      /* get RELAENT value in r14 */
- 12:	addi	r12,r12,8
- 	b	9b
- 
- 	/* The relocation section contains a list of relocations.
- 	 * We now do the R_PPC_RELATIVE ones, which point to words
--	 * which need to be initialized with addend + offset.
--	 * The R_PPC_RELATIVE ones come first and there are RELACOUNT
--	 * of them. */
-+	 * which need to be initialized with addend + offset */
- 10:	/* skip relocation if we don't have both */
- 	cmpwi	r0,0
- 	beq	3f
- 	cmpwi	r9,0
- 	beq	3f
-+	cmpwi	r14,0
-+	beq	3f
- 
- 	add	r9,r9,r11	/* Relocate RELA pointer */
-+	divwu   r0,r0,r14       /* RELASZ / RELAENT */
- 	mtctr	r0
- 2:	lbz	r0,4+3(r9)	/* ELF32_R_INFO(reloc->r_info) */
- 	cmpwi	r0,22		/* R_PPC_RELATIVE */
--	bne	3f
-+	bne	.Lnext
- 	lwz	r12,0(r9)	/* reloc->r_offset */
- 	lwz	r0,8(r9)	/* reloc->r_addend */
- 	add	r0,r0,r11
- 	stwx	r0,r11,r12
--	addi	r9,r9,12
-+.Lnext:	add	r9,r9,r14
- 	bdnz	2b
- 
- 	/* Do a cache flush for our text, in case the loader didn't */
-@@ -160,32 +166,39 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
- 	bne	10f
- 	ld	r13,8(r11)       /* get RELA pointer in r13 */
- 	b	11f
--10:	addis	r12,r12,(-RELACOUNT)@ha
--	cmpdi	r12,RELACOUNT@l
--	bne	11f
--	ld	r8,8(r11)       /* get RELACOUNT value in r8 */
-+10:	cmpwi   r12,RELASZ
-+	bne	.Lcheck_for_relaent
-+	lwz	r8,8(r11)	/* get RELASZ pointer in r8 */
-+	b	11f
-+.Lcheck_for_relaent:
-+	cmpwi	r12,RELAENT
-+	bne     11f
-+	lwz     r14,8(r11)      /* get RELAENT pointer in r14 */
- 11:	addi	r11,r11,16
- 	b	9b
- 12:
--	cmpdi	r13,0            /* check we have both RELA and RELACOUNT */
-+	cmpdi	r13,0            /* check we have both RELA, RELASZ, RELAENT*/
- 	cmpdi	cr1,r8,0
- 	beq	3f
- 	beq	cr1,3f
-+	cmpdi	r14,0
-+	beq	3f
- 
- 	/* Calcuate the runtime offset. */
- 	subf	r13,r13,r9
- 
- 	/* Run through the list of relocations and process the
- 	 * R_PPC64_RELATIVE ones. */
-+	divdu   r8,r8,r14       /* RELASZ / RELAENT */
- 	mtctr	r8
- 13:	ld	r0,8(r9)        /* ELF64_R_TYPE(reloc->r_info) */
- 	cmpdi	r0,22           /* R_PPC64_RELATIVE */
--	bne	3f
-+	bne	.Lnext
- 	ld	r12,0(r9)        /* reloc->r_offset */
- 	ld	r0,16(r9)       /* reloc->r_addend */
- 	add	r0,r0,r13
- 	stdx	r0,r13,r12
--	addi	r9,r9,24
-+.Lnext:	add	r9,r9,r14
- 	bdnz	13b
- 
- 	/* Do a cache flush for our text, in case the loader didn't */
--- 
-2.30.2
-
+>
+> > It happens that the power8 default cpu type
+> > is compatible to your system by coincidence.
+>
+> No, power8 is (and always was) the minimum supported CPU type for
+> powerpc64le-linux.
+>
+> > In gcc/config/rs6000/rs6000-cpus.def, they are set to different process=
+ors:
+> >
+> >     254 RS6000_CPU ("powerpc64", PROCESSOR_POWERPC64, MASK_PPC_GFXOPT |
+> >     MASK_POWERPC64)
+> >     255 RS6000_CPU ("powerpc64le", PROCESSOR_POWER8, MASK_POWERPC64 |
+> >     ISA_2_7_MASKS_SERVER
+>
+> Those can and will change though, over time.  But -mcpu=3Dpowerpc64 (etc.=
+)
+> always will mean what the current documentation says it does:
+>      '-mcpu=3Dpowerpc', '-mcpu=3Dpowerpc64', and '-mcpu=3Dpowerpc64le' sp=
+ecify
+>      pure 32-bit PowerPC (either endian), 64-bit big endian PowerPC and
+>      64-bit little endian PowerPC architecture machine types, with an
+>      appropriate, generic processor model assumed for scheduling
+>      purposes.
+>
+> > My suggestion was to explicitly set -mcpu=3Dpower8 instead of
+> > -mcpu=3Dpowerpc64le.
+>
+> That is implied anyway, it is the minimum supported for
+> powerpc64le-linux.  Using -mcpu=3Dpowerpc64le might schedule better for
+> newer CPUs, in the future (but the code will always work on all still
+> supported CPUs).
+>
+>
+> Segher
