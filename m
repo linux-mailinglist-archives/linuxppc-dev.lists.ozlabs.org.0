@@ -1,70 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21B74F546E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 06:59:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628374F5646
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 08:24:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYC473c1tz2x9F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 14:59:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=DKIM header.b=Jqc7dBJQ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYDxK2TXhz3bdg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 16:24:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=iram.es
- (client-ip=130.206.19.181; helo=mx02.puc.rediris.es;
- envelope-from=paubert@iram.es; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256
- header.s=DKIM header.b=Jqc7dBJQ; dkim-atps=neutral
-Received: from mx02.puc.rediris.es (outbound6sev.lav.puc.rediris.es
- [130.206.19.181])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYC3P3mH0z2xKK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 14:59:10 +1000 (AEST)
-Received: from mta-out02.sim.rediris.es (mta-out02.sim.rediris.es
- [130.206.24.44])
- by mx02.puc.rediris.es  with ESMTP id 2364wOJZ016331-2364wOJb016331
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
- Wed, 6 Apr 2022 06:58:24 +0200
-Received: from mta-out02.sim.rediris.es (localhost.localdomain [127.0.0.1])
- by mta-out02.sim.rediris.es (Postfix) with ESMTPS id 73FC8C15F93;
- Wed,  6 Apr 2022 06:58:23 +0200 (CEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by mta-out02.sim.rediris.es (Postfix) with ESMTP id E633EC15F94;
- Wed,  6 Apr 2022 06:58:22 +0200 (CEST)
-X-Amavis-Modified: Mail body modified (using disclaimer) -
- mta-out02.sim.rediris.es
-Received: from mta-out02.sim.rediris.es ([127.0.0.1])
- by localhost (mta-out02.sim.rediris.es [127.0.0.1]) (amavisd-new, port 10026)
- with ESMTP id Yq8Lz7YkYewq; Wed,  6 Apr 2022 06:58:22 +0200 (CEST)
-Received: from lt-gp.iram.es (haproxy02.sim.rediris.es [130.206.24.70])
- by mta-out02.sim.rediris.es (Postfix) with ESMTPA id 4F869C15F93;
- Wed,  6 Apr 2022 06:58:19 +0200 (CEST)
-Date: Wed, 6 Apr 2022 06:58:15 +0200
-From: Gabriel Paubert <paubert@iram.es>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel v2] powerpc/boot: Stop using RELACOUNT
-Message-ID: <Yk0d54t8MPn3ocrO@lt-gp.iram.es>
-References: <20220406040148.3608400-1-aik@ozlabs.ru>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYDwx3xj0z2xfP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 16:23:42 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KYDwp5FHnz9sTH;
+ Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id dwLr21BLa_r6; Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KYDwp4CXrz9sSq;
+ Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7BE978B77A;
+ Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ZEXgXqXCDtIp; Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.200])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 06EB98B775;
+ Wed,  6 Apr 2022 08:23:37 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2366NRXW390690
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Wed, 6 Apr 2022 08:23:27 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2366NPf7390689;
+ Wed, 6 Apr 2022 08:23:25 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2 1/5] powerpc/8xx: Move CPM interrupt controller into a
+ dedicated file
+Date: Wed,  6 Apr 2022 08:23:17 +0200
+Message-Id: <d3a7dc832d905bed14b35d83410cdb69a7ba20e8.1649226186.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220406040148.3608400-1-aik@ozlabs.ru>
-X-FE-Policy-ID: 23:8:0:SYSTEM
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=iram.es; s=DKIM;
- c=relaxed/relaxed; 
- h=date:from:to:cc:subject:message-id:references:mime-version:content-type;
- bh=iWLqBKm0QxOTSuxivAHOgQWWkkPWqas6w3uyIKhAa28=;
- b=Jqc7dBJQbhcx4JS7THPEOkmV2hwtcCyR+OHlDv/w6Q0DRK0Wa+XFNrMdHYDrqfQRvIMvnoSeY0WO
- W/q8ntnajzYC9L4XYDXzQ8F+g93j06wGODR6tjgpnl4Vfilq/OGzih6YNIIuuaqr8DXEm/Wbvn+m
- 7u3dSMvwi6vuJBCCzbtbaR5HGr/szqS0S+KDBGTxf/mHaXaVLkVHay/MCjgMQayMpYuax258jwvE
- /5lntfRvFtcdUB+86A8pS+IDEWXrjPkgOHU1EWmccFuuKc+T3laRwBHJ20J4RGfkNMKsfUzm67Qd
- 1VHyUwXm8NGvEAQORXG9Y4ZSMrfDGv9fXmwEYQ==
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1649226200; l=9345; s=20211009;
+ h=from:subject:message-id; bh=TRghPIZWzCEEv4kNXaEaQMRxcQG1byIVRG6jr5eKADc=;
+ b=Hta5hS8mBCofEylmhhu4OfLPI4NhKQJX/TrWWgZJPjxhl0wFPcXSzmlsXMOxj8LrAE1ljFk3Y4U0
+ nAxU7yBGAtNmfsXZIpoHYIL6H6PzUM0D5uyFkIOIjrkFwgeNiH7d
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,164 +74,347 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, llvm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 06, 2022 at 02:01:48PM +1000, Alexey Kardashevskiy wrote:
-> So far the RELACOUNT tag from the ELF header was containing the exact
-> number of R_PPC_RELATIVE/R_PPC64_RELATIVE relocations. However the LLVM's
-> recent change [1] make it equal-or-less than the actual number which
-> makes it useless.
-> 
-> This replaces RELACOUNT in zImage loader with a pair of RELASZ and RELAENT.
-> The vmlinux relocation code is fixed in commit d79976918852
-> ("powerpc/64: Add UADDR64 relocation support").
-> 
-> To make it more future proof, this walks through the entire .rela.dyn
-> section instead of assuming that the section is sorter by a relocation
-> type. Unlike d79976918852, this does not add unaligned UADDR/UADDR64
-> relocations as we are likely not to see those in practice - the zImage
-> is small and very arch specific so there is a smaller chance that some
-> generic feature (such as PRINK_INDEX) triggers unaligned relocations.
-> 
-> [1] https://github.com/llvm/llvm-project/commit/da0e5b885b25cf4
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
-> Changes:
-> v2:
-> * s/divd/divwu/ for ppc32
-> * updated the commit log
-> * named all new labels instead of numbering them
-> (s/101f/.Lcheck_for_relaent/ and so on)
-> ---
->  arch/powerpc/boot/crt0.S | 45 ++++++++++++++++++++++++++--------------
->  1 file changed, 29 insertions(+), 16 deletions(-)
-> 
-> diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
-> index feadee18e271..e9306d862f8d 100644
-> --- a/arch/powerpc/boot/crt0.S
-> +++ b/arch/powerpc/boot/crt0.S
-> @@ -8,7 +8,8 @@
->  #include "ppc_asm.h"
->  
->  RELA = 7
-> -RELACOUNT = 0x6ffffff9
-> +RELASZ = 8
-> +RELAENT = 9
->  
->  	.data
->  	/* A procedure descriptor used when booting this as a COFF file.
-> @@ -75,34 +76,39 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
->  	bne	11f
->  	lwz	r9,4(r12)	/* get RELA pointer in r9 */
->  	b	12f
-> -11:	addis	r8,r8,(-RELACOUNT)@ha
-> -	cmpwi	r8,RELACOUNT@l
-> +11:	cmpwi	r8,RELASZ
-> +	bne	.Lcheck_for_relaent
-> +	lwz	r0,4(r12)       /* get RELASZ value in r0 */
-> +	b	12f
-> +.Lcheck_for_relaent:
-> +	cmpwi	r8,RELAENT
->  	bne	12f
-> -	lwz	r0,4(r12)	/* get RELACOUNT value in r0 */
-> +	lwz     r14,4(r12)      /* get RELAENT value in r14 */
->  12:	addi	r12,r12,8
->  	b	9b
->  
->  	/* The relocation section contains a list of relocations.
->  	 * We now do the R_PPC_RELATIVE ones, which point to words
-> -	 * which need to be initialized with addend + offset.
-> -	 * The R_PPC_RELATIVE ones come first and there are RELACOUNT
-> -	 * of them. */
-> +	 * which need to be initialized with addend + offset */
->  10:	/* skip relocation if we don't have both */
->  	cmpwi	r0,0
->  	beq	3f
->  	cmpwi	r9,0
->  	beq	3f
-> +	cmpwi	r14,0
-> +	beq	3f
->  
->  	add	r9,r9,r11	/* Relocate RELA pointer */
-> +	divwu   r0,r0,r14       /* RELASZ / RELAENT */
->  	mtctr	r0
->  2:	lbz	r0,4+3(r9)	/* ELF32_R_INFO(reloc->r_info) */
->  	cmpwi	r0,22		/* R_PPC_RELATIVE */
-> -	bne	3f
-> +	bne	.Lnext
->  	lwz	r12,0(r9)	/* reloc->r_offset */
->  	lwz	r0,8(r9)	/* reloc->r_addend */
->  	add	r0,r0,r11
->  	stwx	r0,r11,r12
-> -	addi	r9,r9,12
-> +.Lnext:	add	r9,r9,r14
->  	bdnz	2b
->  
->  	/* Do a cache flush for our text, in case the loader didn't */
-> @@ -160,32 +166,39 @@ p_base:	mflr	r10		/* r10 now points to runtime addr of p_base */
->  	bne	10f
->  	ld	r13,8(r11)       /* get RELA pointer in r13 */
->  	b	11f
-> -10:	addis	r12,r12,(-RELACOUNT)@ha
-> -	cmpdi	r12,RELACOUNT@l
-> -	bne	11f
-> -	ld	r8,8(r11)       /* get RELACOUNT value in r8 */
-> +10:	cmpwi   r12,RELASZ
-> +	bne	.Lcheck_for_relaent
-> +	lwz	r8,8(r11)	/* get RELASZ pointer in r8 */
-> +	b	11f
-> +.Lcheck_for_relaent:
-> +	cmpwi	r12,RELAENT
-> +	bne     11f
-> +	lwz     r14,8(r11)      /* get RELAENT pointer in r14 */
->  11:	addi	r11,r11,16
->  	b	9b
->  12:
-> -	cmpdi	r13,0            /* check we have both RELA and RELACOUNT */
-> +	cmpdi	r13,0            /* check we have both RELA, RELASZ, RELAENT*/
->  	cmpdi	cr1,r8,0
->  	beq	3f
->  	beq	cr1,3f
-> +	cmpdi	r14,0
-> +	beq	3f
->  
->  	/* Calcuate the runtime offset. */
->  	subf	r13,r13,r9
->  
->  	/* Run through the list of relocations and process the
->  	 * R_PPC64_RELATIVE ones. */
-> +	divd    r8,r8,r14       /* RELASZ / RELAENT */
+CPM interrupt controller is quite standalone. Move it into a
+dedicated file. It will help for next step which will change
+it to a platform driver.
 
-While you are at it, this one should also be divdu.
+This is pure code move, checkpatch report is ignored at this point,
+except one parenthesis alignment which would remain at the end of
+the series. All other points fly away with following patches.
 
-I really wished IBM had used explicit signed/unsigned indication in the
-mnemonics (divds, divdu, divws, divwu) instead. Fortunately very little
-assemby code uses these instructions nowadays.
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/platforms/8xx/Makefile  |   2 +-
+ arch/powerpc/platforms/8xx/cpm1-ic.c | 151 +++++++++++++++++++++++++++
+ arch/powerpc/platforms/8xx/cpm1.c    | 139 ------------------------
+ 3 files changed, 152 insertions(+), 140 deletions(-)
+ create mode 100644 arch/powerpc/platforms/8xx/cpm1-ic.c
 
-
->  	mtctr	r8
->  13:	ld	r0,8(r9)        /* ELF64_R_TYPE(reloc->r_info) */
->  	cmpdi	r0,22           /* R_PPC64_RELATIVE */
-> -	bne	3f
-> +	bne	.Lnext
->  	ld	r12,0(r9)        /* reloc->r_offset */
->  	ld	r0,16(r9)       /* reloc->r_addend */
->  	add	r0,r0,r13
->  	stdx	r0,r13,r12
-> -	addi	r9,r9,24
-> +.Lnext:	add	r9,r9,r14
->  	bdnz	13b
->  
->  	/* Do a cache flush for our text, in case the loader didn't */
-> -- 
-> 2.30.2
-
-	Cheers,
-	Gabriel
+diff --git a/arch/powerpc/platforms/8xx/Makefile b/arch/powerpc/platforms/8xx/Makefile
+index 27a7c6f828e0..5a098f7d5d31 100644
+--- a/arch/powerpc/platforms/8xx/Makefile
++++ b/arch/powerpc/platforms/8xx/Makefile
+@@ -3,7 +3,7 @@
+ # Makefile for the PowerPC 8xx linux kernel.
+ #
+ obj-y			+= m8xx_setup.o machine_check.o pic.o
+-obj-$(CONFIG_CPM1)		+= cpm1.o
++obj-$(CONFIG_CPM1)		+= cpm1.o cpm1-ic.o
+ obj-$(CONFIG_UCODE_PATCH)	+= micropatch.o
+ obj-$(CONFIG_MPC885ADS)   += mpc885ads_setup.o
+ obj-$(CONFIG_MPC86XADS)   += mpc86xads_setup.o
+diff --git a/arch/powerpc/platforms/8xx/cpm1-ic.c b/arch/powerpc/platforms/8xx/cpm1-ic.c
+new file mode 100644
+index 000000000000..d5cf0ee7c07d
+--- /dev/null
++++ b/arch/powerpc/platforms/8xx/cpm1-ic.c
+@@ -0,0 +1,151 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Interrupt controller for the
++ * Communication Processor Module.
++ * Copyright (c) 1997 Dan error_act (dmalek@jlc.net)
++ */
++#include <linux/kernel.h>
++#include <linux/interrupt.h>
++#include <linux/irqdomain.h>
++#include <linux/of_irq.h>
++#include <asm/cpm1.h>
++
++static cpic8xx_t __iomem *cpic_reg;
++
++static struct irq_domain *cpm_pic_host;
++
++static void cpm_mask_irq(struct irq_data *d)
++{
++	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
++
++	clrbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
++}
++
++static void cpm_unmask_irq(struct irq_data *d)
++{
++	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
++
++	setbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
++}
++
++static void cpm_end_irq(struct irq_data *d)
++{
++	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
++
++	out_be32(&cpic_reg->cpic_cisr, (1 << cpm_vec));
++}
++
++static struct irq_chip cpm_pic = {
++	.name = "CPM PIC",
++	.irq_mask = cpm_mask_irq,
++	.irq_unmask = cpm_unmask_irq,
++	.irq_eoi = cpm_end_irq,
++};
++
++int cpm_get_irq(void)
++{
++	int cpm_vec;
++
++	/*
++	 * Get the vector by setting the ACK bit and then reading
++	 * the register.
++	 */
++	out_be16(&cpic_reg->cpic_civr, 1);
++	cpm_vec = in_be16(&cpic_reg->cpic_civr);
++	cpm_vec >>= 11;
++
++	return irq_linear_revmap(cpm_pic_host, cpm_vec);
++}
++
++static int cpm_pic_host_map(struct irq_domain *h, unsigned int virq,
++			    irq_hw_number_t hw)
++{
++	pr_debug("cpm_pic_host_map(%d, 0x%lx)\n", virq, hw);
++
++	irq_set_status_flags(virq, IRQ_LEVEL);
++	irq_set_chip_and_handler(virq, &cpm_pic, handle_fasteoi_irq);
++	return 0;
++}
++
++/*
++ * The CPM can generate the error interrupt when there is a race condition
++ * between generating and masking interrupts.  All we have to do is ACK it
++ * and return.  This is a no-op function so we don't need any special
++ * tests in the interrupt handler.
++ */
++static irqreturn_t cpm_error_interrupt(int irq, void *dev)
++{
++	return IRQ_HANDLED;
++}
++
++static const struct irq_domain_ops cpm_pic_host_ops = {
++	.map = cpm_pic_host_map,
++};
++
++unsigned int __init cpm_pic_init(void)
++{
++	struct device_node *np = NULL;
++	struct resource res;
++	unsigned int sirq = 0, hwirq, eirq;
++	int ret;
++
++	pr_debug("cpm_pic_init\n");
++
++	np = of_find_compatible_node(NULL, NULL, "fsl,cpm1-pic");
++	if (np == NULL)
++		np = of_find_compatible_node(NULL, "cpm-pic", "CPM");
++	if (np == NULL) {
++		printk(KERN_ERR "CPM PIC init: can not find cpm-pic node\n");
++		return sirq;
++	}
++
++	ret = of_address_to_resource(np, 0, &res);
++	if (ret)
++		goto end;
++
++	cpic_reg = ioremap(res.start, resource_size(&res));
++	if (cpic_reg == NULL)
++		goto end;
++
++	sirq = irq_of_parse_and_map(np, 0);
++	if (!sirq)
++		goto end;
++
++	/* Initialize the CPM interrupt controller. */
++	hwirq = (unsigned int)virq_to_hw(sirq);
++	out_be32(&cpic_reg->cpic_cicr,
++	    (CICR_SCD_SCC4 | CICR_SCC_SCC3 | CICR_SCB_SCC2 | CICR_SCA_SCC1) |
++		((hwirq/2) << 13) | CICR_HP_MASK);
++
++	out_be32(&cpic_reg->cpic_cimr, 0);
++
++	cpm_pic_host = irq_domain_add_linear(np, 64, &cpm_pic_host_ops, NULL);
++	if (cpm_pic_host == NULL) {
++		printk(KERN_ERR "CPM2 PIC: failed to allocate irq host!\n");
++		sirq = 0;
++		goto end;
++	}
++
++	/* Install our own error handler. */
++	np = of_find_compatible_node(NULL, NULL, "fsl,cpm1");
++	if (np == NULL)
++		np = of_find_node_by_type(NULL, "cpm");
++	if (np == NULL) {
++		printk(KERN_ERR "CPM PIC init: can not find cpm node\n");
++		goto end;
++	}
++
++	eirq = irq_of_parse_and_map(np, 0);
++	if (!eirq)
++		goto end;
++
++	if (request_irq(eirq, cpm_error_interrupt, IRQF_NO_THREAD, "error",
++			NULL))
++		printk(KERN_ERR "Could not allocate CPM error IRQ!");
++
++	setbits32(&cpic_reg->cpic_cicr, CICR_IEN);
++
++end:
++	of_node_put(np);
++	return sirq;
++}
+diff --git a/arch/powerpc/platforms/8xx/cpm1.c b/arch/powerpc/platforms/8xx/cpm1.c
+index e82cb7f60151..3c69c7ceedea 100644
+--- a/arch/powerpc/platforms/8xx/cpm1.c
++++ b/arch/powerpc/platforms/8xx/cpm1.c
+@@ -51,145 +51,6 @@
  
+ cpm8xx_t __iomem *cpmp;  /* Pointer to comm processor space */
+ immap_t __iomem *mpc8xx_immr = (void __iomem *)VIRT_IMMR_BASE;
+-static cpic8xx_t __iomem *cpic_reg;
+-
+-static struct irq_domain *cpm_pic_host;
+-
+-static void cpm_mask_irq(struct irq_data *d)
+-{
+-	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
+-
+-	clrbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
+-}
+-
+-static void cpm_unmask_irq(struct irq_data *d)
+-{
+-	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
+-
+-	setbits32(&cpic_reg->cpic_cimr, (1 << cpm_vec));
+-}
+-
+-static void cpm_end_irq(struct irq_data *d)
+-{
+-	unsigned int cpm_vec = (unsigned int)irqd_to_hwirq(d);
+-
+-	out_be32(&cpic_reg->cpic_cisr, (1 << cpm_vec));
+-}
+-
+-static struct irq_chip cpm_pic = {
+-	.name = "CPM PIC",
+-	.irq_mask = cpm_mask_irq,
+-	.irq_unmask = cpm_unmask_irq,
+-	.irq_eoi = cpm_end_irq,
+-};
+-
+-int cpm_get_irq(void)
+-{
+-	int cpm_vec;
+-
+-	/*
+-	 * Get the vector by setting the ACK bit and then reading
+-	 * the register.
+-	 */
+-	out_be16(&cpic_reg->cpic_civr, 1);
+-	cpm_vec = in_be16(&cpic_reg->cpic_civr);
+-	cpm_vec >>= 11;
+-
+-	return irq_linear_revmap(cpm_pic_host, cpm_vec);
+-}
+-
+-static int cpm_pic_host_map(struct irq_domain *h, unsigned int virq,
+-			  irq_hw_number_t hw)
+-{
+-	pr_debug("cpm_pic_host_map(%d, 0x%lx)\n", virq, hw);
+-
+-	irq_set_status_flags(virq, IRQ_LEVEL);
+-	irq_set_chip_and_handler(virq, &cpm_pic, handle_fasteoi_irq);
+-	return 0;
+-}
+-
+-/*
+- * The CPM can generate the error interrupt when there is a race condition
+- * between generating and masking interrupts.  All we have to do is ACK it
+- * and return.  This is a no-op function so we don't need any special
+- * tests in the interrupt handler.
+- */
+-static irqreturn_t cpm_error_interrupt(int irq, void *dev)
+-{
+-	return IRQ_HANDLED;
+-}
+-
+-static const struct irq_domain_ops cpm_pic_host_ops = {
+-	.map = cpm_pic_host_map,
+-};
+-
+-unsigned int __init cpm_pic_init(void)
+-{
+-	struct device_node *np = NULL;
+-	struct resource res;
+-	unsigned int sirq = 0, hwirq, eirq;
+-	int ret;
+-
+-	pr_debug("cpm_pic_init\n");
+-
+-	np = of_find_compatible_node(NULL, NULL, "fsl,cpm1-pic");
+-	if (np == NULL)
+-		np = of_find_compatible_node(NULL, "cpm-pic", "CPM");
+-	if (np == NULL) {
+-		printk(KERN_ERR "CPM PIC init: can not find cpm-pic node\n");
+-		return sirq;
+-	}
+-
+-	ret = of_address_to_resource(np, 0, &res);
+-	if (ret)
+-		goto end;
+-
+-	cpic_reg = ioremap(res.start, resource_size(&res));
+-	if (cpic_reg == NULL)
+-		goto end;
+-
+-	sirq = irq_of_parse_and_map(np, 0);
+-	if (!sirq)
+-		goto end;
+-
+-	/* Initialize the CPM interrupt controller. */
+-	hwirq = (unsigned int)virq_to_hw(sirq);
+-	out_be32(&cpic_reg->cpic_cicr,
+-	    (CICR_SCD_SCC4 | CICR_SCC_SCC3 | CICR_SCB_SCC2 | CICR_SCA_SCC1) |
+-		((hwirq/2) << 13) | CICR_HP_MASK);
+-
+-	out_be32(&cpic_reg->cpic_cimr, 0);
+-
+-	cpm_pic_host = irq_domain_add_linear(np, 64, &cpm_pic_host_ops, NULL);
+-	if (cpm_pic_host == NULL) {
+-		printk(KERN_ERR "CPM2 PIC: failed to allocate irq host!\n");
+-		sirq = 0;
+-		goto end;
+-	}
+-
+-	/* Install our own error handler. */
+-	np = of_find_compatible_node(NULL, NULL, "fsl,cpm1");
+-	if (np == NULL)
+-		np = of_find_node_by_type(NULL, "cpm");
+-	if (np == NULL) {
+-		printk(KERN_ERR "CPM PIC init: can not find cpm node\n");
+-		goto end;
+-	}
+-
+-	eirq = irq_of_parse_and_map(np, 0);
+-	if (!eirq)
+-		goto end;
+-
+-	if (request_irq(eirq, cpm_error_interrupt, IRQF_NO_THREAD, "error",
+-			NULL))
+-		printk(KERN_ERR "Could not allocate CPM error IRQ!");
+-
+-	setbits32(&cpic_reg->cpic_cicr, CICR_IEN);
+-
+-end:
+-	of_node_put(np);
+-	return sirq;
+-}
+ 
+ void __init cpm_reset(void)
+ {
+-- 
+2.35.1
 
