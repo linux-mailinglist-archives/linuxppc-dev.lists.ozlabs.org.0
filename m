@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6902A4F67C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 19:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6934C4F67D4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 19:52:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYWzr3JKQz3bdp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 03:42:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYXCR30kzz3bgS
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 03:52:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QAUnmT69;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TR8FU7ao;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,74 +18,81 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=QAUnmT69; dkim-atps=neutral
+ header.s=pp1 header.b=TR8FU7ao; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYWz62xpYz2yXP
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 03:41:37 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 236F16sE022229; 
- Wed, 6 Apr 2022 17:41:30 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYXBk0Nl7z2ymb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 03:51:41 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 236G7JVc002986; 
+ Wed, 6 Apr 2022 17:51:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=t6cmvtnlTfByGWWD1UjXGdi7gwnyC3bRIgmDKYQTktc=;
- b=QAUnmT69JiKxw9DU5cV9qhTWvLvHmlAAJjG13RJqh9HicwohgZkwERYyKEWGDvpBGJfw
- xMCf4Jqxwjni6Ppafi/I/c/rXxumymXb7E7pVEBw9GD4rf47un0DpMuEQlycNMciTRPs
- DSe0B9MJ2nx+ht8Oy+uXNdX5HE6FvWr4Pog+uLl9w9/ppiLPYJ375nXa9khNzM2V8HOm
- fmuixmqvFJkdbhwAdnMEBBaSx7Mw1LD7S49a4k/Lz/Rvp5z107CMTJwsIGMPJzpLB+I4
- gHw1kTFM6cPGS0qFOZKwn3fglDuM7m1GRYVmm7maDYmtZUT4cgTNneSkkRHHh/GIvnMZ qA== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3f96s7v4ww-1
+ bh=3qnoL3A32ViFstgzgjBXHDaitO7b7rpSfdz143vPKGk=;
+ b=TR8FU7aonqtxG8ouGzmoHP3dQUxqjUVdnYma1hjHXH/4/N80pNW6NSnTohIo8j9YJ/bw
+ q3omH4X6JNAjTIcbOI1R7LZFVMOCddMPkBTxNH92dpyxA/lGR3IROMIgf5NVnFh0WsfE
+ qe+tErwLLdf1HvOp75+xLKcmcvIBnt052pVcSXk2fP/yq9Q4FqxbQNhzjWb+xir2Ql2H
+ QLIbEZBpqDUa5f0V1MW2TsuMH43gbgOvrLJGtDGdN9nZh5fjgvjMV7fyyk9LB3RGoECa
+ 5giq59aatNv64mZimb/vcDUEFUYk0dG5y4KQ1J40E6clJ4OpHFeuBwKxB29pMemEEoGF vA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3f977buna9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Apr 2022 17:41:30 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 236HXgE6028706;
- Wed, 6 Apr 2022 17:41:28 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04ams.nl.ibm.com with ESMTP id 3f6e4907vc-1
+ Wed, 06 Apr 2022 17:51:27 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 236HiFZe032736;
+ Wed, 6 Apr 2022 17:51:27 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3f977bun9m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 Apr 2022 17:41:28 +0000
+ Wed, 06 Apr 2022 17:51:27 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 236Hh9TN018159;
+ Wed, 6 Apr 2022 17:51:25 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 3f6e4908m5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 06 Apr 2022 17:51:25 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 236HfPqL43123066
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 236HpMAW32899450
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 6 Apr 2022 17:41:25 GMT
+ Wed, 6 Apr 2022 17:51:22 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D4CD64C044;
- Wed,  6 Apr 2022 17:41:25 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 005A74C046;
+ Wed,  6 Apr 2022 17:51:22 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A5254C040;
- Wed,  6 Apr 2022 17:41:23 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id AD8684C044;
+ Wed,  6 Apr 2022 17:51:16 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.211.90.125])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  6 Apr 2022 17:41:23 +0000 (GMT)
+ Wed,  6 Apr 2022 17:51:16 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/perf: Fix the event alternatives array to have
- correct sort order
-Date: Wed,  6 Apr 2022 23:11:21 +0530
-Message-Id: <20220406174121.87837-1-atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com
+Subject: [PATCH v2 0/4] Fix perf bench numa,
+ futex and epoll to work with machines having #CPUs > 1K
+Date: Wed,  6 Apr 2022 23:21:09 +0530
+Message-Id: <20220406175113.87881-1-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: m6oMPeKjmuZhoJBb0Uyfi6ynTRf_lpvf
-X-Proofpoint-ORIG-GUID: m6oMPeKjmuZhoJBb0Uyfi6ynTRf_lpvf
+X-Proofpoint-GUID: 3dg8eNuLQnFlErqcy5KMkXzXKig2d57D
+X-Proofpoint-ORIG-GUID: ijgm-SApZVM232V8XJqSlbh0zK3Xg7-X
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.850,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-04-06_09,2022-04-06_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 impostorscore=0 mlxscore=0 phishscore=0
- adultscore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2204060087
+ priorityscore=1501
+ impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0
+ clxscore=1011 phishscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204060087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,72 +104,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com,
+ rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, kjain@linux.ibm.com,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Platform specific PMU supports alternative event for some
-of the event codes. During perf_event_open, if any event
-group doesn't match constraint check criteria, further lookup
-is done to find alternative event. Code checks to see if
-it is possible to schedule event as group using alternative
-events.
+The perf benchmark for collections: numa, futex and epoll
+hits failure in system configuration with CPU's more than 1024.
+These benchmarks uses "sched_getaffinity" and "sched_setaffinity"
+in the code to work with affinity.
 
-Currently the array of alternatives events in PMU code is expected
-to be sorted by column 0. This is because in find_alternative()
-function, the return criteria is based on event code comparison.
-ie "event < ev_alt[i][0])". If the input "event" code is less
-than event code in table of alternative events, the search will end.
-This optimisation that it has to be sorted is used since
-find_alternative() potentially gets called a lot. In power9/power10
-PMU code, the alternative event array is not sorted list and hence
-there is breakage in finding alternative event.
+Example snippet from numa benchmark:
+<<>>
+perf: bench/numa.c:302: bind_to_node: Assertion `!(ret)' failed.
+Aborted (core dumped)
+<<>>
 
-To work with existing logic, fix the alternative event array
-to be sorted by column 0 for power9-pmu.c and power10-pmu.c
+bind_to_node function uses "sched_getaffinity" to save the cpumask.
+This fails with EINVAL because the default mask size in glibc is 1024.
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- arch/powerpc/perf/power10-pmu.c | 2 +-
- arch/powerpc/perf/power9-pmu.c  | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+Similarly in futex and epoll benchmark, uses sched_setaffinity during
+pthread_create with affinity. And since it returns EINVAL in such system
+configuration, benchmark doesn't run.
 
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index d3398100a60f..c6d51e7093cf 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -91,8 +91,8 @@ extern u64 PERF_REG_EXTENDED_MASK;
- 
- /* Table of alternatives, sorted by column 0 */
- static const unsigned int power10_event_alternatives[][MAX_ALT] = {
--	{ PM_CYC_ALT,			PM_CYC },
- 	{ PM_INST_CMPL_ALT,		PM_INST_CMPL },
-+	{ PM_CYC_ALT,			PM_CYC },
- };
- 
- static int power10_get_alternatives(u64 event, unsigned int flags, u64 alt[])
-diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
-index c9eb5232e68b..c393e837648e 100644
---- a/arch/powerpc/perf/power9-pmu.c
-+++ b/arch/powerpc/perf/power9-pmu.c
-@@ -133,11 +133,11 @@ int p9_dd22_bl_ev[] = {
- 
- /* Table of alternatives, sorted by column 0 */
- static const unsigned int power9_event_alternatives[][MAX_ALT] = {
--	{ PM_INST_DISP,			PM_INST_DISP_ALT },
--	{ PM_RUN_CYC_ALT,		PM_RUN_CYC },
--	{ PM_RUN_INST_CMPL_ALT,		PM_RUN_INST_CMPL },
--	{ PM_LD_MISS_L1,		PM_LD_MISS_L1_ALT },
- 	{ PM_BR_2PATH,			PM_BR_2PATH_ALT },
-+	{ PM_INST_DISP,			PM_INST_DISP_ALT },
-+	{ PM_RUN_CYC_ALT,               PM_RUN_CYC },
-+	{ PM_LD_MISS_L1,                PM_LD_MISS_L1_ALT },
-+	{ PM_RUN_INST_CMPL_ALT,         PM_RUN_INST_CMPL },
- };
- 
- static int power9_get_alternatives(u64 event, unsigned int flags, u64 alt[])
+To overcome this 1024 CPUs mask size limitation of cpu_set_t,
+change the mask size using the CPU_*_S macros ie, use CPU_ALLOC to
+allocate cpumask, CPU_ALLOC_SIZE for size, CPU_SET_S to set mask bit.
+
+Fix all the relevant places in the code to use mask size which is large
+enough to represent number of possible CPU's in the system.
+
+Fix parse_setup_cpu_list function in numa bench to check if input CPU
+is online before binding task to that CPU. This is to fix failures where,
+though CPU number is within max CPU, it could happen that CPU is offline.
+Here, sched_setaffinity will result in failure when using cpumask having
+that cpu bit set in the mask.
+
+Patch 1 and Patch 2 address fix for perf bench futex and perf bench
+epoll benchmark. Patch 3 and Patch 4 address fix in perf bench numa
+benchmark
+
+Athira Rajeev (4):
+  tools/perf: Fix perf bench futex to correct usage of affinity for
+    machines with #CPUs > 1K
+  tools/perf: Fix perf bench epoll to correct usage of affinity for
+    machines with #CPUs > 1K
+  tools/perf: Fix perf numa bench to fix usage of affinity for machines
+    with #CPUs > 1K
+  tools/perf: Fix perf bench numa testcase to check if CPU used to bind
+    task is online
+
+Changelog:
+From v1 -> v2:
+ Addressed review comment from Ian Rogers to do
+ CPU_FREE in a cleaner way.
+ Added Tested-by from Disha Goel
+
+ tools/perf/bench/epoll-ctl.c           |  25 ++++--
+ tools/perf/bench/epoll-wait.c          |  25 ++++--
+ tools/perf/bench/futex-hash.c          |  26 ++++--
+ tools/perf/bench/futex-lock-pi.c       |  21 +++--
+ tools/perf/bench/futex-requeue.c       |  21 +++--
+ tools/perf/bench/futex-wake-parallel.c |  21 +++--
+ tools/perf/bench/futex-wake.c          |  22 ++++--
+ tools/perf/bench/numa.c                | 105 ++++++++++++++++++-------
+ tools/perf/util/header.c               |  43 ++++++++++
+ tools/perf/util/header.h               |   1 +
+ 10 files changed, 242 insertions(+), 68 deletions(-)
+
 -- 
 2.35.1
 
