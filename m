@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C92D94F5654
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 08:24:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9ECF4F5667
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 08:25:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYDxv548cz3bxt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 16:24:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYDyn5djtz3cLW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Apr 2022 16:25:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,52 +16,52 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYDx22qS9z2yPJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 16:23:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYDxB6HRPz3bd4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Apr 2022 16:23:58 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KYDwq6Lzrz9sSq;
- Wed,  6 Apr 2022 08:23:39 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4KYDws4Slmz9sT3;
+ Wed,  6 Apr 2022 08:23:41 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id S_yeFAnqBIjO; Wed,  6 Apr 2022 08:23:39 +0200 (CEST)
+ with ESMTP id uKaguoLpcrD8; Wed,  6 Apr 2022 08:23:41 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KYDwp4g6Kz9sT0;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KYDwp4tHCz9sT7;
  Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 845698B775;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 895F08B765;
  Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xC-miEjPSyxc; Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
+ with ESMTP id whQAlKyBKpaE; Wed,  6 Apr 2022 08:23:38 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.200])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 05F108B765;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 097878B776;
  Wed,  6 Apr 2022 08:23:37 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2366NRg2390694
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2366NR2V390698
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Wed, 6 Apr 2022 08:23:27 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2366NRbu390693;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2366NRLC390697;
  Wed, 6 Apr 2022 08:23:27 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 2/5] powerpc/8xx: Convert CPM1 error interrupt handler to
- platform driver
-Date: Wed,  6 Apr 2022 08:23:18 +0200
-Message-Id: <375a72df6e4a26c5959cc81a6c6d46152efa2306.1649226186.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 3/5] powerpc/8xx: Convert CPM1 interrupt controller to
+ platform_device
+Date: Wed,  6 Apr 2022 08:23:19 +0200
+Message-Id: <fb80d0b2077312079c49da0296e25591578771cd.1649226186.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <d3a7dc832d905bed14b35d83410cdb69a7ba20e8.1649226186.git.christophe.leroy@csgroup.eu>
 References: <d3a7dc832d905bed14b35d83410cdb69a7ba20e8.1649226186.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1649226200; l=3256; s=20211009;
- h=from:subject:message-id; bh=iBfAM7j9zDFlEgqnwHTDh48Q3s/XSmi+wspQbzDZSEI=;
- b=E1iKS8AFCXvHmGa/tfcqOHu7YwzV9XMwz9QKnNhYD8z0WpgFTBx10uGLSVivRTDHml8De0P/C9Sf
- SrnlolN8AbKbeP+IAH4KELhosAkrM9oTxePW6U9+oxegF97pcZco
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1649226200; l=5823; s=20211009;
+ h=from:subject:message-id; bh=xqxqeBrgaxS9ROwACOUCccr8atstrvPPHD45jHzNfOg=;
+ b=owf4S2LcPL4rGS0t/Wg/3jQvA54SRf7sWE4GRvzzJlUACcMyhN24/9r/cXhZ0/PCpq/3A7p3IsL8
+ rVi3JB1FA0j3DdmB+sXeY75IFG0EDY4aGEJ1flU5KwkekjGCKOB0
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -81,122 +81,210 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add CPM error interrupt as a standalone platform driver,
-to simplify the init of CPM interrupt handler.
+In the same logic as commit be7ecbd240b2 ("soc: fsl: qe: convert QE
+interrupt controller to platform_device"), convert CPM1 interrupt
+controller to platform_device.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/platforms/8xx/cpm1-ic.c | 73 +++++++++++++++++-----------
- 1 file changed, 44 insertions(+), 29 deletions(-)
+ arch/powerpc/platforms/8xx/cpm1-ic.c    | 90 ++++++++++++++-----------
+ arch/powerpc/platforms/8xx/m8xx_setup.c | 14 ----
+ arch/powerpc/platforms/8xx/pic.c        |  2 -
+ 3 files changed, 50 insertions(+), 56 deletions(-)
 
 diff --git a/arch/powerpc/platforms/8xx/cpm1-ic.c b/arch/powerpc/platforms/8xx/cpm1-ic.c
-index d5cf0ee7c07d..d22b4fc2d4cf 100644
+index d22b4fc2d4cf..6f9765597a6d 100644
 --- a/arch/powerpc/platforms/8xx/cpm1-ic.c
 +++ b/arch/powerpc/platforms/8xx/cpm1-ic.c
-@@ -8,6 +8,7 @@
+@@ -7,7 +7,6 @@
+ #include <linux/kernel.h>
  #include <linux/interrupt.h>
  #include <linux/irqdomain.h>
- #include <linux/of_irq.h>
-+#include <linux/platform_device.h>
+-#include <linux/of_irq.h>
+ #include <linux/platform_device.h>
  #include <asm/cpm1.h>
  
- static cpic8xx_t __iomem *cpic_reg;
-@@ -67,17 +68,6 @@ static int cpm_pic_host_map(struct irq_domain *h, unsigned int virq,
- 	return 0;
- }
- 
--/*
-- * The CPM can generate the error interrupt when there is a race condition
-- * between generating and masking interrupts.  All we have to do is ACK it
-- * and return.  This is a no-op function so we don't need any special
-- * tests in the interrupt handler.
-- */
--static irqreturn_t cpm_error_interrupt(int irq, void *dev)
--{
--	return IRQ_HANDLED;
--}
--
- static const struct irq_domain_ops cpm_pic_host_ops = {
- 	.map = cpm_pic_host_map,
+@@ -43,7 +42,7 @@ static struct irq_chip cpm_pic = {
+ 	.irq_eoi = cpm_end_irq,
  };
-@@ -86,7 +76,7 @@ unsigned int __init cpm_pic_init(void)
+ 
+-int cpm_get_irq(void)
++static int cpm_get_irq(void)
  {
- 	struct device_node *np = NULL;
- 	struct resource res;
--	unsigned int sirq = 0, hwirq, eirq;
-+	unsigned int sirq = 0, hwirq;
- 	int ret;
+ 	int cpm_vec;
  
- 	pr_debug("cpm_pic_init\n");
-@@ -126,26 +116,51 @@ unsigned int __init cpm_pic_init(void)
- 		goto end;
- 	}
- 
--	/* Install our own error handler. */
--	np = of_find_compatible_node(NULL, NULL, "fsl,cpm1");
--	if (np == NULL)
--		np = of_find_node_by_type(NULL, "cpm");
--	if (np == NULL) {
--		printk(KERN_ERR "CPM PIC init: can not find cpm node\n");
--		goto end;
--	}
--
--	eirq = irq_of_parse_and_map(np, 0);
--	if (!eirq)
--		goto end;
--
--	if (request_irq(eirq, cpm_error_interrupt, IRQF_NO_THREAD, "error",
--			NULL))
--		printk(KERN_ERR "Could not allocate CPM error IRQ!");
--
- 	setbits32(&cpic_reg->cpic_cicr, CICR_IEN);
- 
- end:
- 	of_node_put(np);
- 	return sirq;
+@@ -58,11 +57,14 @@ int cpm_get_irq(void)
+ 	return irq_linear_revmap(cpm_pic_host, cpm_vec);
  }
-+
-+/*
-+ * The CPM can generate the error interrupt when there is a race condition
-+ * between generating and masking interrupts.  All we have to do is ACK it
-+ * and return.  This is a no-op function so we don't need any special
-+ * tests in the interrupt handler.
-+ */
-+static irqreturn_t cpm_error_interrupt(int irq, void *dev)
+ 
++static void cpm_cascade(struct irq_desc *desc)
 +{
-+	return IRQ_HANDLED;
++	generic_handle_irq(cpm_get_irq());
 +}
 +
-+static int cpm_error_probe(struct platform_device *pdev)
-+{
+ static int cpm_pic_host_map(struct irq_domain *h, unsigned int virq,
+ 			    irq_hw_number_t hw)
+ {
+-	pr_debug("cpm_pic_host_map(%d, 0x%lx)\n", virq, hw);
+-
+ 	irq_set_status_flags(virq, IRQ_LEVEL);
+ 	irq_set_chip_and_handler(virq, &cpm_pic, handle_fasteoi_irq);
+ 	return 0;
+@@ -72,56 +74,64 @@ static const struct irq_domain_ops cpm_pic_host_ops = {
+ 	.map = cpm_pic_host_map,
+ };
+ 
+-unsigned int __init cpm_pic_init(void)
++static int cpm_pic_probe(struct platform_device *pdev)
+ {
+-	struct device_node *np = NULL;
+-	struct resource res;
+-	unsigned int sirq = 0, hwirq;
+-	int ret;
+-
+-	pr_debug("cpm_pic_init\n");
+-
+-	np = of_find_compatible_node(NULL, NULL, "fsl,cpm1-pic");
+-	if (np == NULL)
+-		np = of_find_compatible_node(NULL, "cpm-pic", "CPM");
+-	if (np == NULL) {
+-		printk(KERN_ERR "CPM PIC init: can not find cpm-pic node\n");
+-		return sirq;
+-	}
++	struct device *dev = &pdev->dev;
++	struct resource *res;
 +	int irq;
-+
+ 
+-	ret = of_address_to_resource(np, 0, &res);
+-	if (ret)
+-		goto end;
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -ENODEV;
+ 
+-	cpic_reg = ioremap(res.start, resource_size(&res));
+-	if (cpic_reg == NULL)
+-		goto end;
++	cpic_reg = devm_ioremap(dev, res->start, resource_size(res));
++	if (!cpic_reg)
++		return -ENODEV;
+ 
+-	sirq = irq_of_parse_and_map(np, 0);
+-	if (!sirq)
+-		goto end;
 +	irq = platform_get_irq(pdev, 0);
 +	if (irq < 0)
 +		return irq;
+ 
+ 	/* Initialize the CPM interrupt controller. */
+-	hwirq = (unsigned int)virq_to_hw(sirq);
+ 	out_be32(&cpic_reg->cpic_cicr,
+-	    (CICR_SCD_SCC4 | CICR_SCC_SCC3 | CICR_SCB_SCC2 | CICR_SCA_SCC1) |
+-		((hwirq/2) << 13) | CICR_HP_MASK);
++		 (CICR_SCD_SCC4 | CICR_SCC_SCC3 | CICR_SCB_SCC2 | CICR_SCA_SCC1) |
++		 ((virq_to_hw(irq) / 2) << 13) | CICR_HP_MASK);
+ 
+ 	out_be32(&cpic_reg->cpic_cimr, 0);
+ 
+-	cpm_pic_host = irq_domain_add_linear(np, 64, &cpm_pic_host_ops, NULL);
+-	if (cpm_pic_host == NULL) {
+-		printk(KERN_ERR "CPM2 PIC: failed to allocate irq host!\n");
+-		sirq = 0;
+-		goto end;
+-	}
++	cpm_pic_host = irq_domain_add_linear(dev->of_node, 64, &cpm_pic_host_ops, NULL);
++	if (!cpm_pic_host)
++		return -ENODEV;
 +
-+	return request_irq(irq, cpm_error_interrupt, IRQF_NO_THREAD, "error", NULL);
++	irq_set_chained_handler(irq, cpm_cascade);
+ 
+ 	setbits32(&cpic_reg->cpic_cicr, CICR_IEN);
+ 
+-end:
+-	of_node_put(np);
+-	return sirq;
++	return 0;
 +}
 +
-+static const struct of_device_id cpm_error_ids[] = {
-+	{ .compatible = "fsl,cpm1" },
-+	{ .type = "cpm" },
-+	{},
++static const struct of_device_id cpm_pic_match[] = {
++	{
++		.compatible = "fsl,cpm1-pic",
++	}, {
++		.type = "cpm-pic",
++		.compatible = "CPM",
++	}, {},
 +};
 +
-+static struct platform_driver cpm_error_driver = {
++static struct platform_driver cpm_pic_driver = {
 +	.driver	= {
-+		.name		= "cpm-error",
-+		.of_match_table	= cpm_error_ids,
++		.name		= "cpm-pic",
++		.of_match_table	= cpm_pic_match,
 +	},
-+	.probe	= cpm_error_probe,
++	.probe	= cpm_pic_probe,
 +};
 +
-+static int __init cpm_error_init(void)
++static int __init cpm_pic_init(void)
 +{
-+	return platform_driver_register(&cpm_error_driver);
-+}
-+subsys_initcall(cpm_error_init);
++	return platform_driver_register(&cpm_pic_driver);
+ }
++arch_initcall(cpm_pic_init);
+ 
+ /*
+  * The CPM can generate the error interrupt when there is a race condition
+diff --git a/arch/powerpc/platforms/8xx/m8xx_setup.c b/arch/powerpc/platforms/8xx/m8xx_setup.c
+index df4d57d07f9a..a03ba0ad7312 100644
+--- a/arch/powerpc/platforms/8xx/m8xx_setup.c
++++ b/arch/powerpc/platforms/8xx/m8xx_setup.c
+@@ -28,9 +28,6 @@
+ 
+ #include "mpc8xx.h"
+ 
+-extern int cpm_pic_init(void);
+-extern int cpm_get_irq(void);
+-
+ /* A place holder for time base interrupts, if they are ever enabled. */
+ static irqreturn_t timebase_interrupt(int irq, void *dev)
+ {
+@@ -208,11 +205,6 @@ void __noreturn mpc8xx_restart(char *cmd)
+ 	panic("Restart failed\n");
+ }
+ 
+-static void cpm_cascade(struct irq_desc *desc)
+-{
+-	generic_handle_irq(cpm_get_irq());
+-}
+-
+ /* Initialize the internal interrupt controllers.  The number of
+  * interrupts supported can vary with the processor type, and the
+  * 82xx family can have up to 64.
+@@ -221,14 +213,8 @@ static void cpm_cascade(struct irq_desc *desc)
+  */
+ void __init mpc8xx_pics_init(void)
+ {
+-	int irq;
+-
+ 	if (mpc8xx_pic_init()) {
+ 		printk(KERN_ERR "Failed interrupt 8xx controller  initialization\n");
+ 		return;
+ 	}
+-
+-	irq = cpm_pic_init();
+-	if (irq)
+-		irq_set_chained_handler(irq, cpm_cascade);
+ }
+diff --git a/arch/powerpc/platforms/8xx/pic.c b/arch/powerpc/platforms/8xx/pic.c
+index 04a6abf14c29..eaa16338cc4b 100644
+--- a/arch/powerpc/platforms/8xx/pic.c
++++ b/arch/powerpc/platforms/8xx/pic.c
+@@ -14,8 +14,6 @@
+ 
+ #define PIC_VEC_SPURRIOUS      15
+ 
+-extern int cpm_get_irq(struct pt_regs *regs);
+-
+ static struct irq_domain *mpc8xx_pic_host;
+ static unsigned long mpc8xx_cached_irq_mask;
+ static sysconf8xx_t __iomem *siu_reg;
 -- 
 2.35.1
 
