@@ -1,77 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62AE54F8A6F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 01:15:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB2A4F8A74
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 01:21:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZHKV29R2z3bgR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 09:15:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZHSN0jS3z3bd6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 09:21:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GrG2qMP7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=ZSvawR2S;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62e;
- helo=mail-ej1-x62e.google.com; envelope-from=zhouzhouyi@gmail.com;
+ smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=GrG2qMP7; dkim-atps=neutral
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
- [IPv6:2a00:1450:4864:20::62e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=korg header.b=ZSvawR2S; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZHJr5ltSz2yHB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 09:14:34 +1000 (AEST)
-Received: by mail-ej1-x62e.google.com with SMTP id qh7so13822714ejb.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 16:14:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=hCyVboVUMPZRo6TCLUWM5ite4XgyvgGmMlQpKKqCowA=;
- b=GrG2qMP7peJK3yh7+RDthSYJ//So1IVDy9vGbZMtlQFpxCmwpcOKLT14mMaqvCS6c8
- pezqIjuxHzZWIWU3siGlmijZpUfQ+Dy8DElqN9hElT4anUAl59t77HSjafgUBAhS8FD6
- m8mtbLejgIab93m+4ta3CFenMUsh/9GP32voxnMvmmyJ+/GDlnxcZge0vO8X/rZ0X/4y
- j6K6RaVe2VFyZpjAGJv3W2rxTC8WER+9XNRvE41rC50VroN7EiHthsMuu7p+KzpdqzVo
- db2Ti/gJhCIqi3/CbvkE8lnQpV1NQk/OtdCY4YULljzJOQjjDKMAZRqJoy9QzXed8p6n
- 7mYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=hCyVboVUMPZRo6TCLUWM5ite4XgyvgGmMlQpKKqCowA=;
- b=woKZtM64pivw5Pzyh0vBb6VLI7lZlZZV2L7/637VQkA5injlmEpT2qtZXOXNB6peNe
- gmomk7hugpVmTtJUUVpt2QcG8/+EJ8AQtxM1oxlIX9fRFsay8L/QWbT8D/x28jWoJILi
- OMMNCVPa7V/lMmmZbLW1lrGydi7GY0iHeokHZ92W5hsQtjTKOu0wIytgNdwrY23ckgCe
- 9sXuZdCEfCZ9cXe9VIbm1g9WUJXxwgb/7w4DC94XtXZihHBrBAkmn5SG2pY1q9u8p0vT
- IJ03DWl3nq7Xhg89BpecEACmmf9wF/I9hqI42iTCN4XlaYISWNG3X9hwGN50/ye+dH1O
- +w7g==
-X-Gm-Message-State: AOAM533FjeBJSHyAbXhVwTN/w8IWtMqC7iX4uhv0N5PVQdYT2xA+EjNb
- jCILmrz22IOYy8sliO3AJw8Jne7Hgl2uJ7rOooE=
-X-Google-Smtp-Source: ABdhPJx5uiKTVZj1SoMAR7GkPqFXPjtVnFlop1C4TgW0U9VAY3y3a03KwRCCZhzWJ1jeAPhX3Pa6hDNtJFuPZQ3NNoE=
-X-Received: by 2002:a17:907:6d07:b0:6e7:979e:9c0a with SMTP id
- sa7-20020a1709076d0700b006e7979e9c0amr15502794ejc.614.1649373271786; Thu, 07
- Apr 2022 16:14:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
- <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
- <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
- <CAABZP2zhZaN0+KqP7oMoyXTSkDhLjZwWvnj7coa1ZVve9M+jsQ@mail.gmail.com>
- <20220406195011.GP4285@paulmck-ThinkPad-P17-Gen-1>
- <CAABZP2x8_783jhEhC3AozH9=xj40UO-rZT2BRJsg5gaLdBz=9w@mail.gmail.com>
- <CANiq72mYXnQo_Y39k23rY-rdJay8GEPJ8MhU-y7-bjkw=zRC+Q@mail.gmail.com>
- <20220407151555.GR4285@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72k7BWjOU8=-dXD4bYWbK1i+rjDNaAohGrU42yJzcBm7uQ@mail.gmail.com>
- <20220407175500.GV4285@paulmck-ThinkPad-P17-Gen-1>
-In-Reply-To: <20220407175500.GV4285@paulmck-ThinkPad-P17-Gen-1>
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Date: Fri, 8 Apr 2022 07:14:20 +0800
-Message-ID: <CAABZP2yDe3dU0DtigvAE4CQLAipvT81Bw4LrF5WjLSiP5nq1UA@mail.gmail.com>
-Subject: Re: rcu_sched self-detected stall on CPU
-To: "Paul E. McKenney" <paulmck@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZHRj3X9bz2x9G
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 09:20:32 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 4C086612FF;
+ Thu,  7 Apr 2022 23:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64848C385A0;
+ Thu,  7 Apr 2022 23:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+ s=korg; t=1649373625;
+ bh=3fTd4/oB9ZoXEdf+K+L8T8ud1sgeiHXYri5q9XU2dws=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=ZSvawR2SP4z25+5v05hEzD/SNY3BquUg00da51rb2XpIhfun/uRj9F50//O4lmLVK
+ mMLQ0SBSzdnOSHOJqeZeyVk3ZlzylTqp4UUO/tQPLTSgSiMH0RDrND71V5dVeKi6ET
+ qbMbsgu4SDWZr0njwS/0ZGtXu6KbiDlG0yFJTssU=
+Date: Thu, 7 Apr 2022 16:20:24 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V4 0/7] mm/mmap: Drop arch_vm_get_page_prot() and
+ arch_filter_pgprot()
+Message-Id: <20220407162024.7747ee14092d04082f13aa9d@linux-foundation.org>
+In-Reply-To: <20220407103251.1209606-1-anshuman.khandual@arm.com>
+References: <20220407103251.1209606-1-anshuman.khandual@arm.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,45 +63,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu <rcu@vger.kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Zhouyi Zhou <zhouzhouyi@gmail.com>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, linux-mm@kvack.org,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Dear Paul and Miguel
+On Thu,  7 Apr 2022 16:02:44 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-On Fri, Apr 8, 2022 at 1:55 AM Paul E. McKenney <paulmck@kernel.org> wrote:
->
-> On Thu, Apr 07, 2022 at 07:05:58PM +0200, Miguel Ojeda wrote:
-> > On Thu, Apr 7, 2022 at 5:15 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> > >
-> > > Ah.  So you would instead look for boot to have completed within 10
-> > > seconds?  Either way, reliable automation might well more important than
-> > > reduction in time.
-> >
-> > No (although I guess that could be an option), I was only pointing out
-> > that when no stall is produced, the run should be much quicker than 30
-> > seconds (at least it was in my setup), which would be the majority of the runs.
->
-> Ah, thank you for the clarification!
-Thank both of you for the information. In my setup (PPC cloud VM), the
-majority of the runs complete at least for 50 seconds. From last
-evening to this morning (Beijing Time), following experiments have
-been done:
-1) torture mainline: the test quickly finished by hitting "rcu_sched
-self-detected stall" after 12 runs
-2) torture v5.17: the test last 10 hours plus 14 minutes, 702 runs
-have been done without trigger the bug
+> protection_map[] is an array based construct that translates given vm_flags
+> combination. This array contains page protection map, which is populated by
+> the platform via [__S000 .. __S111] and [__P000 .. __P111] exported macros.
+> Primary usage for protection_map[] is for vm_get_page_prot(), which is used
+> to determine page protection value for a given vm_flags. vm_get_page_prot()
+> implementation, could again call platform overrides arch_vm_get_page_prot()
+> and arch_filter_pgprot(). Some platforms override protection_map[] that was
+> originally built with __SXXX/__PXXX with different runtime values.
+> 
+> Currently there are multiple layers of abstraction i.e __SXXX/__PXXX macros
+> , protection_map[], arch_vm_get_page_prot() and arch_filter_pgprot() built
+> between the platform and generic MM, finally defining vm_get_page_prot().
+> 
+> Hence this series proposes to drop later two abstraction levels and instead
+> just move the responsibility of defining vm_get_page_prot() to the platform
+> (still utilizing generic protection_map[] array) itself making it clean and
+> simple.
+> 
+> This first introduces ARCH_HAS_VM_GET_PAGE_PROT which enables the platforms
+> to define custom vm_get_page_prot(). This starts converting platforms that
+> define the overrides arch_filter_pgprot() or arch_vm_get_page_prot() which
+> enables for those constructs to be dropped off completely.
+> 
+> The series has been inspired from an earlier discuss with Christoph Hellwig
+> 
+> https://lore.kernel.org/all/1632712920-8171-1-git-send-email-anshuman.khandual@arm.com/
+> 
+> This series applies on 5.18-rc1 after the following patch.
+> 
+> https://lore.kernel.org/all/1643004823-16441-1-git-send-email-anshuman.khandual@arm.com/
 
-Conclusion:
-There must be a commit that causes the bug as Paul has pointed out.
-I am going to do the bisect, and estimate to locate the bug within a
-week (at most).
-This is a good learning experience, thanks for the guidance ;-)
+Confusing.  That patch is already in 5.18-rc1.
 
-Kind Regards
-Zhouyi
->
->                                                         Thanx, Paul
+But the version which was merged (24e988c7fd1ee701e) lacked the change
+to arch/arm64/Kconfig.  I seem to recall that this patch went through a
+few issues and perhaps the arm64 change was dropped.  Can you please
+check?
+
+(It would be easier for me to track all this down if the original patch
+had had cc:linux-mm.  Please cc linux-mm!)
+
