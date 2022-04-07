@@ -2,72 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97434F7C5F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 12:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 391374F7C83
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 12:16:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYxsh5HSQz3bdP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:08:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYy2Q1wVFz2yn1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:15:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CErb0NIm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=UT/vr5Qh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d32;
- helo=mail-io1-xd32.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
+ smtp.helo=out2-smtp.messagingengine.com (client-ip=66.111.4.26;
+ helo=out2-smtp.messagingengine.com; envelope-from=fthain@linux-m68k.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=CErb0NIm; dkim-atps=neutral
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com
- [IPv6:2607:f8b0:4864:20::d32])
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=UT/vr5Qh; 
+ dkim-atps=neutral
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com
+ [66.111.4.26])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYxs365dYz2xsW
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 20:07:49 +1000 (AEST)
-Received: by mail-io1-xd32.google.com with SMTP id r2so6118751iod.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 03:07:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=t+20wf0GtDSgwHKQPUIDUWXlshKcm23UV/5tifZ3qNQ=;
- b=CErb0NImHMXyWQaIX785WKOmy6LabafXklmq4w2GQC1o9NrCsnU5agIsDqEvUbNrtV
- LIUmI2DcrX6P59Z01TArpie430Im7o9yO77jivJ1UNmaOtloUOa1gro0ZbQZTPSvfOav
- oNMdgoK4CYEX1Wbawm01PtyLEo+kUhv4OzP4UloVbsrksGUDgbM1JlS652xyxJqeUL/U
- dlAPav2DQzkM5zixnH/llhORre1N2pE+E7IG3rznR7kXV9HFnvICKAOgY2c9EbnU3PYX
- JqS3INeNlD0S2Hvx9om7ZFfo2U0O+uUl51TubDHv3rJxSx7CAQCWHu7qi0Ruzh7B3pF6
- 8P2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=t+20wf0GtDSgwHKQPUIDUWXlshKcm23UV/5tifZ3qNQ=;
- b=INkZqpE3shlKbUjl14FL2+f9dPMMTB8VJHcKE9qlOSeypRaGQsNFElcvaxRPO2bBVU
- lLHBpfe9sI8vHWnp4bJAPomBnJs+eW24YKIu9CxQITumuoLUtFYGqoabQiOurL5M/K6m
- fInZZA89ig7PXQ5DlGw0+fzUYeNtu3tiI0MJUXI4Ab/fnwIFCFP37AsPoiGHt9Pn0YKi
- KcbYk7MQH2MfCLPJMhNcGzQJZmUPiOfhq2JnGfq1nn14m15XqaBMtKFnX5vjrCc+Sbmx
- g83uk0EuxkVyJe+MyFYLzj2SJnGst4rmvOQ4Qv2/HmV3KH1r+l/SpU10KXj18vKSy6AQ
- k5cg==
-X-Gm-Message-State: AOAM532DNStH8Y64lwtWZiiysyZpeCvaLWuO8wmgG9yCuTppl5OBUuaM
- 1P0eVkjXfmKGu5A/svZC6Kq3ryTYuaNOsStDTpU=
-X-Google-Smtp-Source: ABdhPJxUPNYRorI9eAmMjOiqWAV3/Dg4IX9tjX/hdBgbEMkZi8T/5za5C9ftAX0TYRjxX+B0fSqX6M9cZ3U/vLNuKWw=
-X-Received: by 2002:a02:ab87:0:b0:324:2157:2b4 with SMTP id
- t7-20020a02ab87000000b00324215702b4mr1514815jan.186.1649326065883; Thu, 07
- Apr 2022 03:07:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
- <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
- <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
- <CAABZP2zhZaN0+KqP7oMoyXTSkDhLjZwWvnj7coa1ZVve9M+jsQ@mail.gmail.com>
- <20220406195011.GP4285@paulmck-ThinkPad-P17-Gen-1>
- <CAABZP2x8_783jhEhC3AozH9=xj40UO-rZT2BRJsg5gaLdBz=9w@mail.gmail.com>
-In-Reply-To: <CAABZP2x8_783jhEhC3AozH9=xj40UO-rZT2BRJsg5gaLdBz=9w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 7 Apr 2022 12:07:34 +0200
-Message-ID: <CANiq72mYXnQo_Y39k23rY-rdJay8GEPJ8MhU-y7-bjkw=zRC+Q@mail.gmail.com>
-Subject: Re: rcu_sched self-detected stall on CPU
-To: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYy1m23YTz2yN4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 20:15:23 +1000 (AEST)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.nyi.internal (Postfix) with ESMTP id 58DA15C0231;
+ Thu,  7 Apr 2022 06:15:20 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute5.internal (MEProxy); Thu, 07 Apr 2022 06:15:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:date:date:from:from:in-reply-to
+ :message-id:reply-to:sender:subject:subject:to:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=ZjQ0U+
+ QYU3GVU9/vZxUDNkx5L3+KNfvJqan0Hjjw7QY=; b=UT/vr5QhXuq2tSG74A46kZ
+ 8tsYpygO+byeFCoVc1WvhCR09de+foGpc17LdN+kDfHT8kZ1FjkGAQy7HGVTx1SE
+ T6BtRYIQuniSQm/e4Ow1YzVC6QAKpfUkPoOPq0sFpJl+5c5C0xRUcDypd/nhc3lA
+ xFUf1/aqKXEOOT1DQRmbM3B/63i0TSg3y5yFFjUHacB4dwjZLwtIUcV0GAEBTlJG
+ kw+aKjkDBa9kzoWcoXW5gOXL/vxDvxKUHoH7Iw+pQN+OTdhKQjkq/h2DsWfMe6JZ
+ oDaFgMtmDp8Nhm+QgmDb+0Oe49AJq5V9KXiAVAjCd64JiD3IuSR6oOh7UG8+kr9A
+ ==
+X-ME-Sender: <xms:t7lOYslaS6bacDasFfwlAQlTypkrJNlPKX5pVYT42aSRceYbw3QhQw>
+ <xme:t7lOYr1Z6MjHfX5z7UqoV8r7cOrKmSPe9FaH6d2aeyeoTkV22b7lEJMKZIkfNQCyZ
+ SXdgSnISYjOZF2ItC0>
+X-ME-Received: <xmr:t7lOYqpbKuMQUk_JcjgNk9doMN-hvS5GuF_bEjEjvTtTOxA07Q-EH7nYN1pLGaXPa8VyUtjsaWtTAqWqd3aDzwR1H-CRr4kN4Xg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvvddrudejkedgvdeiucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepvffkhffuffestddtredttddttdenucfhrhhomhephfhinhhnucfvhhgrihhn
+ uceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrthhtvghrnh
+ eptdelteekleekkedvueejheekgfdvtdehhefhteeitefhteefgefhudehveevleelnecu
+ vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfhhthhgrih
+ hnsehlihhnuhigqdhmieekkhdrohhrgh
+X-ME-Proxy: <xmx:t7lOYokv__jw68BwjAp_Y3vzwrJ74SiobMWbKMKvsPKI-rnVW8-eJA>
+ <xmx:t7lOYq0X7CVZYji4OPXooBdewBXQLO7I_CeK8bKSV0NgQmorxjtjoA>
+ <xmx:t7lOYvseLp1AsxRZQNWE4W1PjOeZjSdOSNPXxGWKpj5bXq_MjyK9hA>
+ <xmx:uLlOYvxIHy0N4IndHwcD-FYYgp5gBsS1IPjnAY8h8KomgWowS86dQA>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Apr 2022 06:15:18 -0400 (EDT)
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Message-Id: <5edbe76ce68227f71e09af4614cc4c1bd61c7ec8.1649326292.git.fthain@linux-m68k.org>
+From: Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v2] macintosh/via-pmu: Fix build failure when CONFIG_INPUT is
+ disabled
+Date: Thu, 07 Apr 2022 20:11:32 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,24 +78,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: rcu <rcu@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "Paul E. McKenney" <paulmck@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Randy Dunlap <rdunlap@infradead.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 7, 2022 at 4:27 AM Zhouyi Zhou <zhouzhouyi@gmail.com> wrote:
->
-> Yes, this happens within 30 seconds after kernel boot.  If we take all
-> into account (qemu preparing, kernel loading), we can do one test
-> within 54 seconds.
+drivers/macintosh/via-pmu-event.o: In function `via_pmu_event':
+via-pmu-event.c:(.text+0x44): undefined reference to `input_event'
+via-pmu-event.c:(.text+0x68): undefined reference to `input_event'
+via-pmu-event.c:(.text+0x94): undefined reference to `input_event'
+via-pmu-event.c:(.text+0xb8): undefined reference to `input_event'
+drivers/macintosh/via-pmu-event.o: In function `via_pmu_event_init':
+via-pmu-event.c:(.init.text+0x20): undefined reference to `input_allocate_device'
+via-pmu-event.c:(.init.text+0xc4): undefined reference to `input_register_device'
+via-pmu-event.c:(.init.text+0xd4): undefined reference to `input_free_device'
+make[1]: *** [Makefile:1155: vmlinux] Error 1
+make: *** [Makefile:350: __build_one_by_one] Error 2
 
-When it does not trigger, the run should be 20 seconds quicker than
-that (e.g. 10 seconds), since we don't wait for the stall timeout. I
-guess the timeout could also be reduced a fair bit to make failures
-quicker, but they do not contribute as much as the successes anyway.
+Don't call into the input subsystem unless CONFIG_INPUT is built-in.
 
-Thanks a lot for running the bisect on that server, Zhouyi!
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+---
+Changed since v1:
+ - Adopted IS_ENABLED to avoid an ifdef as suggested by Christophe.
+ - Added the ADB_PMU_EVENT symbol as suggested by Geert, though this
+   adds a new Kconfig symbol for little gain AFAICS.
+---
+ drivers/macintosh/Kconfig   | 4 ++++
+ drivers/macintosh/Makefile  | 3 ++-
+ drivers/macintosh/via-pmu.c | 2 +-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-Cheers,
-Miguel
+diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
+index 5cdc361da37c..3942db15a2b8 100644
+--- a/drivers/macintosh/Kconfig
++++ b/drivers/macintosh/Kconfig
+@@ -67,6 +67,10 @@ config ADB_PMU
+ 	  this device; you should do so if your machine is one of those
+ 	  mentioned above.
+ 
++config ADB_PMU_EVENT
++	def_bool y
++	depends on ADB_PMU && INPUT=y
++
+ config ADB_PMU_LED
+ 	bool "Support for the Power/iBook front LED"
+ 	depends on PPC_PMAC && ADB_PMU
+diff --git a/drivers/macintosh/Makefile b/drivers/macintosh/Makefile
+index 49819b1b6f20..712edcb3e0b0 100644
+--- a/drivers/macintosh/Makefile
++++ b/drivers/macintosh/Makefile
+@@ -12,7 +12,8 @@ obj-$(CONFIG_MAC_EMUMOUSEBTN)	+= mac_hid.o
+ obj-$(CONFIG_INPUT_ADBHID)	+= adbhid.o
+ obj-$(CONFIG_ANSLCD)		+= ans-lcd.o
+ 
+-obj-$(CONFIG_ADB_PMU)		+= via-pmu.o via-pmu-event.o
++obj-$(CONFIG_ADB_PMU)		+= via-pmu.o
++obj-$(CONFIG_ADB_PMU_EVENT)	+= via-pmu-event.o
+ obj-$(CONFIG_ADB_PMU_LED)	+= via-pmu-led.o
+ obj-$(CONFIG_PMAC_BACKLIGHT)	+= via-pmu-backlight.o
+ obj-$(CONFIG_ADB_CUDA)		+= via-cuda.o
+diff --git a/drivers/macintosh/via-pmu.c b/drivers/macintosh/via-pmu.c
+index 399074306a74..495fd35b11de 100644
+--- a/drivers/macintosh/via-pmu.c
++++ b/drivers/macintosh/via-pmu.c
+@@ -1463,7 +1463,7 @@ pmu_handle_data(unsigned char *data, int len)
+ 		pmu_pass_intr(data, len);
+ 		/* len == 6 is probably a bad check. But how do I
+ 		 * know what PMU versions send what events here? */
+-		if (len == 6) {
++		if (IS_ENABLED(CONFIG_ADB_PMU_EVENT) && len == 6) {
+ 			via_pmu_event(PMU_EVT_POWER, !!(data[1]&8));
+ 			via_pmu_event(PMU_EVT_LID, data[1]&1);
+ 		}
+-- 
+2.32.0
+
