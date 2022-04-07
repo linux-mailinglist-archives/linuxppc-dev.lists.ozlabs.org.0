@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3511E4F7D1E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 12:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2864F7D24
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 12:38:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYyWX1t7Dz3dx2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:37:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYyXC3zRrz3cd5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:38:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IEzc/255;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NcLD8mHa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::634;
- helo=mail-ej1-x634.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62c;
+ helo=mail-ej1-x62c.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=IEzc/255; dkim-atps=neutral
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
- [IPv6:2a00:1450:4864:20::634])
+ header.s=20210112 header.b=NcLD8mHa; dkim-atps=neutral
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
+ [IPv6:2a00:1450:4864:20::62c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYyN500hjz3bXR
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 20:31:16 +1000 (AEST)
-Received: by mail-ej1-x634.google.com with SMTP id ot30so9804808ejb.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 03:31:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYyN6019Xz3bYF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 20:31:17 +1000 (AEST)
+Received: by mail-ej1-x62c.google.com with SMTP id bq8so9852219ejb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 03:31:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=fIZenjsGtzoZOCvRY/8dIr7NFNGibTLVVWT+oNYuIJo=;
- b=IEzc/255dt97HZarz+h4rN2mCO7j6l7/vbTvJxhhhDXx3gsbrsyYxJTx7T6m3q/z7P
- R/q2STBfwPvXpIrtlJWG+TQeP1X/IEnFbDf3tYOjq0H2eXbXTiswDLo/yLngVcJQ6evF
- EgLZlnOAiycgSvMmsY6gaYqxmGSYvNHf2XlHkZy85K9XdR31ldsPJQEQ56DE+1kzLQuI
- fKSk1UFKUjSgPyL+Kz+3n+zycAChi+t4w7pYoQdBKpISy8tzFyJG7gdTjVmLzzAVhfCN
- oqiwz+QPjJookkQzLOMOZZZmOrpbaZ4nW8oXH0193pisDN0c8HquvkpOGVfLb7PAONNx
- wSjg==
+ bh=k+AveRuUfZMS7nrLE2qCYNI1T96Mx5+XYDPrjV8syDQ=;
+ b=NcLD8mHaR4qaNPR6BVkLI8cR0N9faisH5bqM+PPDilSapF2TaoYIOm6cL6AzD7IbWj
+ CBshM5QiBxeaw54xMXgap91pls2Kb5DPu5mg9Xg/5UAIUU4gW1w0pOZS0KeKNWr/kVJ3
+ BrDl1iS2myhrhLtoREcwcpaaioyTRJl8NPRjZxfUF6qzcfXh3RzU4tevnL07WCFfBVV3
+ PcqElTxD9nGyEUKAvM6/iFJitBW2/ljIDlNeUUcU2bf2uYx9XQVu+BmitEAqntOci0IY
+ KMSBsY+JaFePOA6R2px14qoCJFT2c6j5LEg2gkuS+B04U9JJfAQVgVh381Rebhkj3RMz
+ Z+gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=fIZenjsGtzoZOCvRY/8dIr7NFNGibTLVVWT+oNYuIJo=;
- b=OpsYnU99jlZZL0xDXu3Gs27gq/zCl8Umj7U3SUoRl8N8CTvEifQ0N4EE/bB9dTTGvU
- zVwh3c9q28qEimd7YGwoJBCzLmU+k3Ljgm7VG+p/7PqCyinp1hiYfRFfbj4UEsvl6Dcw
- u5zW3aBA5j6hTh9j1VGJezcJ2ZBHHlViYOWKC98XP/QUlQheMPle28xEpZSlwBZ+Mr13
- j3D1XHmLYNa/8bcotYZtJ02tLji1W0Fa66qTvVr4oIY1rAFtSDT9cMwFyYNviCbY+1hq
- AVu0VEKE9gmrHaydZDiVqgZQadLgdZ4CrDtpLDBGwUX3bYsRYkSdOoAEGkw8vHikgaAZ
- i5aw==
-X-Gm-Message-State: AOAM5314/gvv0SjZTL0KuO4oDB/JSscogsagJwBo7VEK3LwMGmW9FRiH
- S7yqZe4Hsu98HERO7040R54=
-X-Google-Smtp-Source: ABdhPJyzQQk+FCznVWCjwHk15yPjS9UB0L2i76zhUW9Qc/pxLNM93JdkF8mUTiewVkD4UFtK9kqHRw==
-X-Received: by 2002:a17:907:7b9d:b0:6df:fb8f:fe82 with SMTP id
- ne29-20020a1709077b9d00b006dffb8ffe82mr12586465ejc.652.1649327473634; 
- Thu, 07 Apr 2022 03:31:13 -0700 (PDT)
+ bh=k+AveRuUfZMS7nrLE2qCYNI1T96Mx5+XYDPrjV8syDQ=;
+ b=Kvi7g65F44QJictc8IchBcqu/x59uCYqncyO9s/SbPi0ovwDgDArojLpm0bLWVqoS/
+ O55ZAKRHEuKNQ79HbBVUZW8lWvQALJ8++O2on0Du08QRjIs6Tj9MShbavC9IoARnC5Ok
+ P53faXgdPMOGUEWUpY0RbT1WOJ/veeAbeCt88GKDvOrMj49RJFwLWGZH8P58kbymf4r3
+ 0GhFRKv40OnG6ixr2ORArvik31pToz5AjipVXfczYP9ZQkyjCMGK9OyXrGe/PopL90oQ
+ KmdA8KPNMxnDFGj5gjeWLKXFyDnO0Ck5dsnHFCkU/pxCsBSdRaI3Px5oo+fPGJ0ZSBY5
+ gzOA==
+X-Gm-Message-State: AOAM531yhzTR5rNJj+r3Kw7RFDCMnxm/yS6KFS1FksyheBty27TPMqC5
+ FQGoj+ckZDeCMVMf8cXZJQud9dz0aaPL3HTC
+X-Google-Smtp-Source: ABdhPJyUMk7P7yhyEFZWum6NOrzRuYQhvq6Vl8oB+OA51dwydUryDEsWaJ7QTxbXBBuOO2+NpgZo8A==
+X-Received: by 2002:a17:906:5d14:b0:6e8:3897:9ec2 with SMTP id
+ g20-20020a1709065d1400b006e838979ec2mr2114089ejt.708.1649327474884; 
+ Thu, 07 Apr 2022 03:31:14 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- c5-20020a170906d18500b006ce371f09d4sm7413573ejz.57.2022.04.07.03.31.12
+ c5-20020a170906d18500b006ce371f09d4sm7413573ejz.57.2022.04.07.03.31.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Apr 2022 03:31:13 -0700 (PDT)
+ Thu, 07 Apr 2022 03:31:14 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next 10/15] net: qede: Remove check of list iterator
- against head past the loop body
-Date: Thu,  7 Apr 2022 12:28:55 +0200
-Message-Id: <20220407102900.3086255-11-jakobkoschel@gmail.com>
+Subject: [PATCH net-next 11/15] sfc: Remove usage of list iterator for
+ list_add() after the loop body
+Date: Thu,  7 Apr 2022 12:28:56 +0200
+Message-Id: <20220407102900.3086255-12-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220407102900.3086255-1-jakobkoschel@gmail.com>
 References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
@@ -104,54 +104,45 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When list_for_each_entry() completes the iteration over the whole list
-without breaking the loop, the iterator value will be a bogus pointer
-computed based on the head element.
-
-While it is safe to use the pointer to determine if it was computed
-based on the head element, either with list_entry_is_head() or
-&pos->member == head, using the iterator variable after the loop should
-be avoided.
-
 In preparation to limit the scope of a list iterator to the list
 traversal loop, use a dedicated pointer to point to the found element [1].
+
+Before, the code implicitly used the head when no element was found
+when using &pos->list. Since the new variable is only set if an
+element was found, the list_add() is performed within the loop
+and only done after the loop if it is done on the list head directly.
 
 Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- drivers/net/ethernet/qlogic/qede/qede_filter.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/sfc/rx_common.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-index 3010833ddde3..3d167e37e654 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-@@ -829,18 +829,21 @@ int qede_configure_vlan_filters(struct qede_dev *edev)
- int qede_vlan_rx_kill_vid(struct net_device *dev, __be16 proto, u16 vid)
- {
- 	struct qede_dev *edev = netdev_priv(dev);
--	struct qede_vlan *vlan;
-+	struct qede_vlan *vlan = NULL;
-+	struct qede_vlan *iter;
- 	int rc = 0;
+diff --git a/drivers/net/ethernet/sfc/rx_common.c b/drivers/net/ethernet/sfc/rx_common.c
+index 1b22c7be0088..a8822152ff83 100644
+--- a/drivers/net/ethernet/sfc/rx_common.c
++++ b/drivers/net/ethernet/sfc/rx_common.c
+@@ -563,8 +563,10 @@ struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
  
- 	DP_VERBOSE(edev, NETIF_MSG_IFDOWN, "Removing vlan 0x%04x\n", vid);
- 
- 	/* Find whether entry exists */
- 	__qede_lock(edev);
--	list_for_each_entry(vlan, &edev->vlan_list, list)
--		if (vlan->vid == vid)
-+	list_for_each_entry(iter, &edev->vlan_list, list)
-+		if (iter->vid == vid) {
-+			vlan = iter;
+ 	/* Search for first gap in the numbering */
+ 	list_for_each_entry(ctx, head, list) {
+-		if (ctx->user_id != id)
++		if (ctx->user_id != id) {
++			head = &ctx->list;
  			break;
 +		}
+ 		id++;
+ 		/* Check for wrap.  If this happens, we have nearly 2^32
+ 		 * allocated RSS contexts, which seems unlikely.
+@@ -582,7 +584,7 @@ struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
  
--	if (list_entry_is_head(vlan, &edev->vlan_list, list)) {
-+	if (!vlan) {
- 		DP_VERBOSE(edev, (NETIF_MSG_IFUP | NETIF_MSG_IFDOWN),
- 			   "Vlan isn't configured\n");
- 		goto out;
+ 	/* Insert the new entry into the gap */
+ 	new->user_id = id;
+-	list_add_tail(&new->list, &ctx->list);
++	list_add_tail(&new->list, head);
+ 	return new;
+ }
+ 
 -- 
 2.25.1
 
