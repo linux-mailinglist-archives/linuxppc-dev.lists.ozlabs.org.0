@@ -2,68 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668034F86B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 19:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 226DD4F8718
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:30:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZ8Dq34G4z3bk9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 03:55:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Eg6eeKS5;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZ91G1dnVz3bqN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 04:30:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org;
- envelope-from=srs0=cszx=ur=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Eg6eeKS5; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZ8D95dj1z2yZZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 03:55:05 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id ECEB561650;
- Thu,  7 Apr 2022 17:55:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C03C385A4;
- Thu,  7 Apr 2022 17:55:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649354101;
- bh=NjqPIHsoPThEmFMj3pqLnI9A1ClWJ6kDy569ZQ6WmFI=;
- h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
- b=Eg6eeKS57vUMS8c9cB1S0SCjMUvA8KuurAmnbiRc84hnqg8KA2iLIuA+bCcEJaVRI
- rukTsvuq8FbOg4244AzGK/xzr1o2tZ7pQGW2750YB/sGx/9udWx9FsAISIgGVn+X+m
- Ka31B6Kfrxr7iggzTVjnP94a2gcCOOoa+iu6Ni3ChRpQMKKv3r4/JBQROIGBsC/SSK
- Tb846uJxPF21w/TNaOR2MZa07u56X6Y4dPIgrQS2zQu+IGFVhM/PGq6xl2j+W7XEGe
- Zc4p7spe8DxFaiVkhWEE5Ewy7nfB1PK02XyiCxAlUWHceV5AT13bxlIauHlikz4+qt
- FbndlCopC4Jgw==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
- id DF5955C3267; Thu,  7 Apr 2022 10:55:00 -0700 (PDT)
-Date: Thu, 7 Apr 2022 10:55:00 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Subject: Re: rcu_sched self-detected stall on CPU
-Message-ID: <20220407175500.GV4285@paulmck-ThinkPad-P17-Gen-1>
-References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
- <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
- <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
- <CAABZP2zhZaN0+KqP7oMoyXTSkDhLjZwWvnj7coa1ZVve9M+jsQ@mail.gmail.com>
- <20220406195011.GP4285@paulmck-ThinkPad-P17-Gen-1>
- <CAABZP2x8_783jhEhC3AozH9=xj40UO-rZT2BRJsg5gaLdBz=9w@mail.gmail.com>
- <CANiq72mYXnQo_Y39k23rY-rdJay8GEPJ8MhU-y7-bjkw=zRC+Q@mail.gmail.com>
- <20220407151555.GR4285@paulmck-ThinkPad-P17-Gen-1>
- <CANiq72k7BWjOU8=-dXD4bYWbK1i+rjDNaAohGrU42yJzcBm7uQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZ90n58zsz2xZp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 04:30:14 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KZ90d2yhcz9sRn;
+ Thu,  7 Apr 2022 20:30:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id YiRAN_PMiJwo; Thu,  7 Apr 2022 20:30:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KZ90d23v1z9sRk;
+ Thu,  7 Apr 2022 20:30:09 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 384238B765;
+ Thu,  7 Apr 2022 20:30:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id CznV1Ldv3Bfe; Thu,  7 Apr 2022 20:30:09 +0200 (CEST)
+Received: from [192.168.202.234] (unknown [192.168.202.234])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C8908B792;
+ Thu,  7 Apr 2022 20:30:07 +0200 (CEST)
+Message-ID: <5666917d-81b3-e010-776a-2c2ddccd400e@csgroup.eu>
+Date: Thu, 7 Apr 2022 20:30:06 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANiq72k7BWjOU8=-dXD4bYWbK1i+rjDNaAohGrU42yJzcBm7uQ@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v8 00/14] Convert powerpc to default topdown mmap layout
+ (v8)
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1646847561.git.christophe.leroy@csgroup.eu>
+ <ddfed61b-e387-4554-eb88-6654b391d1a4@csgroup.eu>
+ <877d91m7wd.fsf@mpe.ellerman.id.au>
+ <20220310204917.3d42e6cf3088f7cf1c7fe7a6@linux-foundation.org>
+ <e61f1ab5-075a-8d68-0315-4d7069be1650@csgroup.eu>
+In-Reply-To: <e61f1ab5-075a-8d68-0315-4d7069be1650@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,24 +68,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: rcu <rcu@vger.kernel.org>, Zhouyi Zhou <zhouzhouyi@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "alex@ghiti.fr" <alex@ghiti.fr>, "will@kernel.org" <will@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 07, 2022 at 07:05:58PM +0200, Miguel Ojeda wrote:
-> On Thu, Apr 7, 2022 at 5:15 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > Ah.  So you would instead look for boot to have completed within 10
-> > seconds?  Either way, reliable automation might well more important than
-> > reduction in time.
+Hi Andrew,
+
+Le 04/04/2022 à 07:22, Christophe Leroy a écrit :
+> Hi Andrew,
 > 
-> No (although I guess that could be an option), I was only pointing out
-> that when no stall is produced, the run should be much quicker than 30
-> seconds (at least it was in my setup), which would be the majority of the runs.
+> Le 11/03/2022 à 05:49, Andrew Morton a écrit :
+>> On Fri, 11 Mar 2022 15:26:42 +1100 Michael Ellerman 
+>> <mpe@ellerman.id.au> wrote:
+>>
+>>>> What will be the merge strategy ? I guess it's a bit late to get it
+>>>> through powerpc tree, so I was just wondering whether we could get
+>>>> patches 2 to 5 in mm this cycle, and the powerpc ones next cycle ?
+>>>
+>>> Yeah I didn't pick it up because the mm changes don't have many acks and
+>>> I'm always nervous about carrying generic mm changes.
+>>>
+>>> It would be my preference if Andrew could take 2-5 through mm for v5.18,
+>>> but it is quite late, so I'm not sure how he will feel about that.
+>>
+>> 5.18 isn't a problem.  Perhaps you meant 5.17, which would be real tough.
+>>
+>> Can we take a look after 5.18-rc1?
+> 
+> 5.18-rc1 was released last night.
+> 
+> Can you take patchs 2-5 as they are, or do you prefer I resend them to 
+> yourself as a standalone series ?
+> 
 
-Ah, thank you for the clarification!
+Are you expecting anything from me ? Do you need a resend of those 4 
+patches as a standalone series ?
 
-							Thanx, Paul
+Thanks
+Christiphe
