@@ -2,79 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC6D4F879C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 21:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 347734F88AA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 22:35:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZ9j92ccGz3bVN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 05:01:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=bJx6W9C9;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZCnW2Fxkz3blK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 06:35:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d2c;
- helo=mail-io1-xd2c.google.com; envelope-from=skhan@linuxfoundation.org;
+ smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
+ helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=google header.b=bJx6W9C9; 
- dkim-atps=neutral
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com
- [IPv6:2607:f8b0:4864:20::d2c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZ9hT1FsCz2yN4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 05:01:11 +1000 (AEST)
-Received: by mail-io1-xd2c.google.com with SMTP id b16so7993100ioz.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 12:01:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linuxfoundation.org; s=google;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=keVkYj4cWaI4gay87MdL0AahO7PaN4KeF2eJUm3V5FQ=;
- b=bJx6W9C91GXHZT9WZmR5uDci7uh5rihNKWqmcZX88RTvcFDWcennu7TEZgFHORE0o5
- Sih/OiecaC+yPBT1oUXlgYv4Thkp3gG2s1+O1pF9KogW+eHi2GYSo6vwUN0wYrwPG3Ls
- d0JJ9Qy1LuKY4eLK/uh5sCTBRurXSZkClGXzE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=keVkYj4cWaI4gay87MdL0AahO7PaN4KeF2eJUm3V5FQ=;
- b=qWI5XjpNOQT/aFQ/8bxfu8l9j33SRwvxTtfhyG/fMUSqCbzrwHFMGW+CCowDHgwpCj
- t7YG2gwgGYy9U+Fcve48klOlNyrzLxpfhMUt/8hT1pey5VxJkLTRtIMp3FOcGBywnVj4
- 9PdmPS2KfNp3FJvfqY7yfxrdu1pYwMOWJ+e/0cK+d2ZgYDe+GM7MLzWX1XZgocBW46gO
- nQ4Khiqu7UkSFyuZsJDnC1Wn+Pzl4kn6MaBknA7GhkoT3oYpV6WtyDZHvqb292hCo6Uj
- Gc7Ip6fadtBbhTtbZxsP7ISoe7e/IRiJd+VPprWIIRE7V3Qm3S+wHiGkjO8w2Ymb67AN
- G1Ag==
-X-Gm-Message-State: AOAM533p8DHArER9xqt7VhpSNl+KRzoJDlF9U7cVmerACPne46T5zKhn
- uBLLjL65f+B/lMeBoRUtEctcZQ==
-X-Google-Smtp-Source: ABdhPJxGOZ2BJ+RHSzRcbdkCNemhvmf9CaBqWrCb2/N1joKqeDq2ON7aDkwhDmdeCC+ElIarNR2UwQ==
-X-Received: by 2002:a05:6638:d87:b0:323:c006:3650 with SMTP id
- l7-20020a0566380d8700b00323c0063650mr7872341jaj.64.1649358065787; 
- Thu, 07 Apr 2022 12:01:05 -0700 (PDT)
-Received: from [192.168.1.128] ([71.205.29.0])
- by smtp.gmail.com with ESMTPSA id
- k5-20020a6bf705000000b00649a2634725sm13146036iog.17.2022.04.07.12.01.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 07 Apr 2022 12:01:05 -0700 (PDT)
-Subject: Re: [PATCH V2] testing/selftests/mqueue: Fix mq_perf_tests to free
- the allocated cpu set
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, disgoel@linux.vnet.ibm.com
-References: <20220407184008.93879-1-atrajeev@linux.vnet.ibm.com>
-From: Shuah Khan <skhan@linuxfoundation.org>
-Message-ID: <e9c8a8c7-9a0d-09be-343d-038b7f791b98@linuxfoundation.org>
-Date: Thu, 7 Apr 2022 13:01:04 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <20220407184008.93879-1-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KZCn34QQQz2xrS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 06:35:18 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 237KXCj2014770;
+ Thu, 7 Apr 2022 15:33:12 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 237KX9BV014769;
+ Thu, 7 Apr 2022 15:33:09 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 7 Apr 2022 15:33:09 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Murilo Opsfelder =?iso-8859-1?Q?Ara=FAjo?= <muriloo@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/boot: Build wrapper for an appropriate CPU
+Message-ID: <20220407203309.GQ614@gate.crashing.org>
+References: <20220330112437.540214-1-joel@jms.id.au>
+ <815770fb-3247-baab-f8ca-eed7b99213d1@gmail.com>
+ <CACPK8XdremqtJBKycbFZauky9C9yCb2S7+aZDxRtZ8fU41L=Ew@mail.gmail.com>
+ <167db0bd-4f10-7751-36a2-fb9ec5b136a7@gmail.com>
+ <20220331234433.GB614@gate.crashing.org>
+ <CACPK8XcWuFuR0zTj=tqUNZ9aQNVWEeyoDeDUOmUE3_RS_4Whxg@mail.gmail.com>
+ <75f14a30-f1ad-7cdf-a8af-d1fad8647ca2@linux.ibm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <75f14a30-f1ad-7cdf-a8af-d1fad8647ca2@linux.ibm.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,112 +53,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com,
- Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org,
- kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Joel Stanley <joel@jms.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/7/22 12:40 PM, Athira Rajeev wrote:
-> The selftest "mqueue/mq_perf_tests.c" use CPU_ALLOC to allocate
-> CPU set. This cpu set is used further in pthread_attr_setaffinity_np
-> and by pthread_create in the code. But in current code, allocated
-> cpu set is not freed.
+On Thu, Apr 07, 2022 at 03:43:20PM -0300, Murilo Opsfelder Araújo wrote:
+> On 4/6/22 04:08, Joel Stanley wrote:
+> >On Thu, 31 Mar 2022 at 23:46, Segher Boessenkool
+> ><segher@kernel.crashing.org> wrote:
+> >>On Thu, Mar 31, 2022 at 12:19:52PM -0300, Murilo Opsfelder Araújo wrote:
+> >>>My understanding is that the default cpu type for -mcpu=powerpc64 can
+> >>>change.
+> >>
+> >>Different subtargets (Linux, AIX, Darwin, the various BSDs, bare ELF,
+> >>etc.) have different default CPUs.  It also can be set at configure time
+> >>for most subtargets.
+> >>
+> >>Linux can be built with compilers not targetting *-linux*, so it would
+> >>be best to specify a specific CPU always.
+> >>
+> >>>>I did a little test using my buildroot compiler which has
+> >>>>with-cpu=power10. I used the presence of PCREL relocations as evidence
+> >>>>that it was build for power10.
+> >>>>
+> >>>>$ powerpc64le-buildroot-linux-gnu-gcc -mcpu=power10 -c test.c
+> >>>>$ readelf -r test.o |grep -c PCREL
+> >>>>24
+> >>>
+> >>>It respected the -mcpu=power10 you provided.
+> >>
+> >>Of course.
+> >>
+> >>>And that's my concern.  We're relying on the compiler default cpu type.
+> >>
+> >>That is not the compiler default.  It is the default from who built the
+> >>compiler.  It can vary wildly and unpredictably.
+> >>
+> >>The actual compiler default will not change so easily at all, basically
+> >>only when its subtarget drops support for an older CPU.
+> >>
+> >>>If gcc defaults -mcpu=powerpc64le to power10, you're going to have
+> >>>the same problem again.
+> >>
+> >>That will not happen before power10 is the minimum supported CPU.
+> >>Anything else is madness.
+> >
+> >Murilo, does Segher's explanation address your concerns?
 > 
-> Fix this issue by adding CPU_FREE in the "shutdown" function which
-> is called in most of the error/exit path for the cleanup. Also add
-> CPU_FREE in some of the error paths where shutdown is not called.
+> The comment:
 > 
-> Fixes: 7820b0715b6f ("tools/selftests: add mq_perf_tests")
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
-> Changelog:
->  From v1 -> v2:
->   Addressed review comment from Shuah Khan to add
->   CPU_FREE in other exit paths where it is needed
+> "Different subtargets (Linux, AIX, Darwin, the various BSDs, bare ELF,
+> etc.) have different default CPUs.  It also can be set at configure time
+> for most subtargets.
 > 
-
-Thank you. I have a couple of comments on making the error
-paths simpler. Please see below.
-
->   tools/testing/selftests/mqueue/mq_perf_tests.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+> Linux can be built with compilers not targetting *-linux*, so it would
+> be best to specify a specific CPU always."
 > 
-> diff --git a/tools/testing/selftests/mqueue/mq_perf_tests.c b/tools/testing/selftests/mqueue/mq_perf_tests.c
-> index b019e0b8221c..182434c7898d 100644
-> --- a/tools/testing/selftests/mqueue/mq_perf_tests.c
-> +++ b/tools/testing/selftests/mqueue/mq_perf_tests.c
-> @@ -180,6 +180,9 @@ void shutdown(int exit_val, char *err_cause, int line_no)
->   	if (in_shutdown++)
->   		return;
->   
-> +	/* Free the cpu_set allocated using CPU_ALLOC in main function */
-> +	CPU_FREE(cpu_set);
-> +
->   	for (i = 0; i < num_cpus_to_pin; i++)
->   		if (cpu_threads[i]) {
->   			pthread_kill(cpu_threads[i], SIGUSR1);
-> @@ -589,6 +592,7 @@ int main(int argc, char *argv[])
->   						cpu_set)) {
->   					fprintf(stderr, "Any given CPU may "
->   						"only be given once.\n");
-> +					CPU_FREE(cpu_set);
-
-This could be done in a common error path handling.
-
->   					exit(1);
->   				} else
->   					CPU_SET_S(cpus_to_pin[cpu],
-> @@ -607,6 +611,7 @@ int main(int argc, char *argv[])
->   				queue_path = malloc(strlen(option) + 2);
->   				if (!queue_path) {
->   					perror("malloc()");
-> +					CPU_FREE(cpu_set);
-
-This could be done in a common error path handling.
-
->   					exit(1);
->   				}
->   				queue_path[0] = '/';
-> @@ -619,6 +624,7 @@ int main(int argc, char *argv[])
->   	}
->   
->   	if (continuous_mode && num_cpus_to_pin == 0) {
-> +		CPU_FREE(cpu_set);
-
-This could be done in a common error path handling.
-
->   		fprintf(stderr, "Must pass at least one CPU to continuous "
->   			"mode.\n");
->   		poptPrintUsage(popt_context, stderr, 0);
-> @@ -628,10 +634,12 @@ int main(int argc, char *argv[])
->   		cpus_to_pin[0] = cpus_online - 1;
->   	}
->   
-> -	if (getuid() != 0)
-> +	if (getuid() != 0) {
-> +		CPU_FREE(cpu_set);
->   		ksft_exit_skip("Not running as root, but almost all tests "
->   			"require root in order to modify\nsystem settings.  "
->   			"Exiting.\n");
-> +	}
->   
-
-Why not move this check before CPU_ALLOC and make this the very first
-check in main()?
-
-With this change the other places where CPU_FREE is added right before
-exit(1). Something like this:
-
-err_code:
-	CPU_FREE(cpu_set);
-	exit(code)
-
->   	max_msgs = fopen(MAX_MSGS, "r+");
->   	max_msgsize = fopen(MAX_MSGSIZE, "r+");
+> made me think that it's better to specify -mcpu=power8 instead of 
+> -mcpu=powerpc64le
+> because of such compilers not targetting *-linux*.
 > 
+> Did I understand Segher's comment correctly?  To be honest, I don't know
+> how much concerned we should be about this scenario.
 
-thanks,
--- Shuah
+That is the long and short of it, yes.  This matters for reproducible
+builds if you care for more exotic compilers (which are very common for
+32 bit, but not so much for 64 bit).
+
+> Just for the sake of consistency, if we decide to go with -mcpu=powerpc64le,
+> then I think we should also change arch/powerpc/Makefile CFLAGS.
+> Otherwise, we could follow what we already have in the tree and use
+> -mcpu=power8 in BOOTCLAGS, too.
+> 
+> Practically speaking, either way works for us.  In any case:
+
++1
+
+> Reviewed-by: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+
+Segher
