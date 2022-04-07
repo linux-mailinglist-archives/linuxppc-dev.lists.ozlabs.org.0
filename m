@@ -1,60 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25D14F7BD7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 11:39:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97434F7C5F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 12:08:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYxCw3wcqz3bYS
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 19:39:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYxsh5HSQz3bdP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:08:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jDs25bbn;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CErb0NIm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=broonie@kernel.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d32;
+ helo=mail-io1-xd32.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=jDs25bbn; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=CErb0NIm; dkim-atps=neutral
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com
+ [IPv6:2607:f8b0:4864:20::d32])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYxCF1kJMz2xsW
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 19:38:33 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id CCCF2B826EB;
- Thu,  7 Apr 2022 09:38:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1C8C385A8;
- Thu,  7 Apr 2022 09:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649324307;
- bh=q6HaN3d0Wc4BX8ScAWKhh8emcIaugeEwIsXTjJpawCQ=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=jDs25bbn3/0QsT4YpXsLyKfbVWolN6z7t2NW5wae9Xx7AbvyoCskY4Gki2pAChFJh
- fxrPJTgP2NS2nU1lm9L+pHXj39Qf4lOZ9N7ohio9BBUbZpE7fInyEkJGOGbp/7L88v
- F9dRCwftYPgfY5XFZGfNOLUaV0ZJ9ACI1+3s6uTvEqnt3ld5/xMbmhvbRIuyVH+vnC
- ocUdo9UYJztl6mtBhYhhLtxSgNiKRjC+JSpDz/i8AalrcdBH2Nge4JvGcZqzeZzRUt
- 3CVTb/XNaOEUrj1OHBDXgYaxVyw/ZiWzIP3bOsTvqJookhEHQwYE9bJictLCSj2Heg
- VN2Be9RiddtWg==
-From: Mark Brown <broonie@kernel.org>
-To: viorel.suman@nxp.com, shengjiu.wang@gmail.com, nicoleotsuka@gmail.com,
- lgirdwood@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>,
- a.fatoum@pengutronix.de, Xiubo.Lee@gmail.com, festevam@gmail.com
-In-Reply-To: <20220405155731.745413-1-a.fatoum@pengutronix.de>
-References: <20220405155731.745413-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] ASoC: fsl_sai: fix 1:1 bclk:mclk ratio support
-Message-Id: <164932430460.3844153.13561902931852849107.b4-ty@kernel.org>
-Date: Thu, 07 Apr 2022 10:38:24 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYxs365dYz2xsW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 20:07:49 +1000 (AEST)
+Received: by mail-io1-xd32.google.com with SMTP id r2so6118751iod.9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 03:07:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=t+20wf0GtDSgwHKQPUIDUWXlshKcm23UV/5tifZ3qNQ=;
+ b=CErb0NImHMXyWQaIX785WKOmy6LabafXklmq4w2GQC1o9NrCsnU5agIsDqEvUbNrtV
+ LIUmI2DcrX6P59Z01TArpie430Im7o9yO77jivJ1UNmaOtloUOa1gro0ZbQZTPSvfOav
+ oNMdgoK4CYEX1Wbawm01PtyLEo+kUhv4OzP4UloVbsrksGUDgbM1JlS652xyxJqeUL/U
+ dlAPav2DQzkM5zixnH/llhORre1N2pE+E7IG3rznR7kXV9HFnvICKAOgY2c9EbnU3PYX
+ JqS3INeNlD0S2Hvx9om7ZFfo2U0O+uUl51TubDHv3rJxSx7CAQCWHu7qi0Ruzh7B3pF6
+ 8P2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=t+20wf0GtDSgwHKQPUIDUWXlshKcm23UV/5tifZ3qNQ=;
+ b=INkZqpE3shlKbUjl14FL2+f9dPMMTB8VJHcKE9qlOSeypRaGQsNFElcvaxRPO2bBVU
+ lLHBpfe9sI8vHWnp4bJAPomBnJs+eW24YKIu9CxQITumuoLUtFYGqoabQiOurL5M/K6m
+ fInZZA89ig7PXQ5DlGw0+fzUYeNtu3tiI0MJUXI4Ab/fnwIFCFP37AsPoiGHt9Pn0YKi
+ KcbYk7MQH2MfCLPJMhNcGzQJZmUPiOfhq2JnGfq1nn14m15XqaBMtKFnX5vjrCc+Sbmx
+ g83uk0EuxkVyJe+MyFYLzj2SJnGst4rmvOQ4Qv2/HmV3KH1r+l/SpU10KXj18vKSy6AQ
+ k5cg==
+X-Gm-Message-State: AOAM532DNStH8Y64lwtWZiiysyZpeCvaLWuO8wmgG9yCuTppl5OBUuaM
+ 1P0eVkjXfmKGu5A/svZC6Kq3ryTYuaNOsStDTpU=
+X-Google-Smtp-Source: ABdhPJxUPNYRorI9eAmMjOiqWAV3/Dg4IX9tjX/hdBgbEMkZi8T/5za5C9ftAX0TYRjxX+B0fSqX6M9cZ3U/vLNuKWw=
+X-Received: by 2002:a02:ab87:0:b0:324:2157:2b4 with SMTP id
+ t7-20020a02ab87000000b00324215702b4mr1514815jan.186.1649326065883; Thu, 07
+ Apr 2022 03:07:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
+ <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
+ <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
+ <CAABZP2zhZaN0+KqP7oMoyXTSkDhLjZwWvnj7coa1ZVve9M+jsQ@mail.gmail.com>
+ <20220406195011.GP4285@paulmck-ThinkPad-P17-Gen-1>
+ <CAABZP2x8_783jhEhC3AozH9=xj40UO-rZT2BRJsg5gaLdBz=9w@mail.gmail.com>
+In-Reply-To: <CAABZP2x8_783jhEhC3AozH9=xj40UO-rZT2BRJsg5gaLdBz=9w@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 7 Apr 2022 12:07:34 +0200
+Message-ID: <CANiq72mYXnQo_Y39k23rY-rdJay8GEPJ8MhU-y7-bjkw=zRC+Q@mail.gmail.com>
+Subject: Re: rcu_sched self-detected stall on CPU
+To: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,49 +79,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
- Takashi Iwai <tiwai@suse.com>, kernel@pengutronix.de,
- Jaroslav Kysela <perex@perex.cz>, linuxppc-dev@lists.ozlabs.org
+Cc: rcu <rcu@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 5 Apr 2022 17:57:31 +0200, Ahmad Fatoum wrote:
-> Refactoring in commit a50b7926d015 ("ASoC: fsl_sai: implement 1:1
-> bclk:mclk ratio support") led to the bypass never happening
-> as (ratio = 1) was caught in the existing if (ratio & 1) continue;
-> check. The correct check sequence instead is:
-> 
->  - skip all ratios lower than one and higher than 512
->  - skip all odd ratios except for 1:1
->  - skip 1:1 ratio if and only if !support_1_1_ratio
-> 
-> [...]
+On Thu, Apr 7, 2022 at 4:27 AM Zhouyi Zhou <zhouzhouyi@gmail.com> wrote:
+>
+> Yes, this happens within 30 seconds after kernel boot.  If we take all
+> into account (qemu preparing, kernel loading), we can do one test
+> within 54 seconds.
 
-Applied to
+When it does not trigger, the run should be 20 seconds quicker than
+that (e.g. 10 seconds), since we don't wait for the stall timeout. I
+guess the timeout could also be reduced a fair bit to make failures
+quicker, but they do not contribute as much as the successes anyway.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Thanks a lot for running the bisect on that server, Zhouyi!
 
-Thanks!
-
-[1/1] ASoC: fsl_sai: fix 1:1 bclk:mclk ratio support
-      commit: d00887c106dac47b9af6ed70e8d5c45b69c4bd52
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Cheers,
+Miguel
