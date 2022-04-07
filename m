@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F12E4F7D26
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 12:39:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D07A4F7D27
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 12:40:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KYyYc1QsXz3f60
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:39:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KYyZH4Qz9z2ygC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Apr 2022 20:40:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ck9VMXlw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=nNuQkSMC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::536;
- helo=mail-ed1-x536.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::531;
+ helo=mail-ed1-x531.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ck9VMXlw; dkim-atps=neutral
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
- [IPv6:2a00:1450:4864:20::536])
+ header.s=20210112 header.b=nNuQkSMC; dkim-atps=neutral
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com
+ [IPv6:2a00:1450:4864:20::531])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KYyN84vdFz3bZf
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 20:31:20 +1000 (AEST)
-Received: by mail-ed1-x536.google.com with SMTP id f18so5870922edc.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 03:31:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KYyN937J5z3bVH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Apr 2022 20:31:21 +1000 (AEST)
+Received: by mail-ed1-x531.google.com with SMTP id q26so5848568edc.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 03:31:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=vgJhsUA0t53G3i/our+ohO3psku9eyW28VU5QSKiZig=;
- b=ck9VMXlwjAkrJBjF/n1CbKYDRKjFW2L1sPR2cfn0O4RDS+4QiOHeU1rYTT4S9ncl+G
- o5azQ4trV0k6BexbuKXvDPcfd6d2avbwCYSYjZU2vIeAZL1SDwryL0Y9Z/si11u9czY8
- HzSmojIwKa9wGHtHA7Rw1QF6JO72eOMQZIlf93BwLEg4gdnjSLVBRiuAO8dVakaZb4kz
- SOSvnRA47mFgah3zGWtDP9mGpxSHfD8Utvl8jF8xYbBMw/zcDA+AHsBZNp4IxEZ19BHf
- XWEAPp3jBv3UnL1paAnMyKvp5qfSTKVSfzz4UUD+u3vqppZpYWgxHW3KPf144WduY8wu
- hZWA==
+ bh=y4Pr090XMJdWC/DFcBeDDVj+LNsTMLYKFYstx7+jurs=;
+ b=nNuQkSMCzLU1sEOB3kq25UUx35GFYl6QVT99wdmylAxE9TixTKmDmoqMFWdlbqiWZP
+ I3kc8fEKcgXlSy83s+c0lRBGVAHJEWI14YpuOLndz3WHyzs7RLvuY/L5jpLgy2VXqiWT
+ XQwh6mAxC9rRU/MR6v9XW+wUQVVEOTvTmVXHjIAtQWksNpk44d3f4eaYMV/Ys5xgW0v9
+ binB3V+mZmDmJuRNiEbhTx36DO8zxBDOH6jcmiVJLU3GAGr2SdjmTgaIJRTM1VLnwUyN
+ HqfyTsMQcIfkBrPyHbBLbFKivOQQn6H7EoI68pLa9qZa4b5aV/5ifQDEIQMvxl8t4KRy
+ QpeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=vgJhsUA0t53G3i/our+ohO3psku9eyW28VU5QSKiZig=;
- b=WGVllefsxF7efDdnroqfGOEoiemCg52NOlm1Y5dBo7ZVZWPNOd94V+cmG1zfdTlVzH
- tWfc5Dzwt1iCoRs8GcnllJV9ZRZIWrJ925pCTKQ134SoeG7/uRxmgj4/4hf6EkZMVZUo
- qLqcybfFVamlz7PxCJWX3FIEWVa53yiZpQHGEmddYPx07ofb9DIeLaEL8Ci7mCLSR2Vw
- VXPNnWaOu4u9FLjCmsKsuSRpd21/ZQlxNrghGNR/0UrxL15PD9KwBrEUkSjYJOb8UMkA
- a91d4QzqsvsdbWvUwBPg3H73GHg7vD9WnuYG8NZ2bQ5GLduOXAAdzseayatLivw2aeTl
- jsFQ==
-X-Gm-Message-State: AOAM530VKqnDkbLo6eE2RXWBjaNbjUrE9yyBwYTparaHrWh9U23R9r30
- UnrEAlY52jzJ5qCon3OXvP4=
-X-Google-Smtp-Source: ABdhPJxIonNOQ1zmloCWblK64EDRlsodCxqZVtWTSlCR5kf0sJLYfy5mmraay8MHk+JFs8Mqdx5Yvg==
-X-Received: by 2002:a05:6402:5191:b0:41c:e08c:ae21 with SMTP id
- q17-20020a056402519100b0041ce08cae21mr13474506edd.268.1649327477350; 
- Thu, 07 Apr 2022 03:31:17 -0700 (PDT)
+ bh=y4Pr090XMJdWC/DFcBeDDVj+LNsTMLYKFYstx7+jurs=;
+ b=RYQi9bUZTc3aI6hApJjqawF3VuAVJBQ64TQXn8u9z3bIxCyD9D+KTJXbwbiaGQFNba
+ M9KNe9OXYpFwfZj1CKeElWMHXusCvdE+Wj7HCcgpbyZqWD8By3nJ+81XQbz+YSEWsfn4
+ seiiVK7/osKS2PFS/AIVehixNubSfjp++p6gpZoE2Zxi9SotXi+Tjs5J/0sbylZFH23i
+ E16W6ViG9ONW/TFe261jEielIAWxctHChSYfgRjfx9QFTQriN+2I9DgMLqHQRUWw8qM9
+ r8KGU03pAAPZRGeuUicbhrpi1+IBIzdnWXxwBAxdh6rYDMgcxnwLqxcYNmSwGCkyE2el
+ DtQw==
+X-Gm-Message-State: AOAM5332HLqCb585ABDqxiUvN6hu4Mv71lLARuycDA9bebW5qBlq5TsL
+ D8i+JiFWPtXWbrt+PGxl+KQ=
+X-Google-Smtp-Source: ABdhPJyUVMuPNJKyBCwZCMXkNxTYAyM3gmvop0JowcoIjCJOFNiuXCadO642w0wu8JZyPI+BRtF6cg==
+X-Received: by 2002:a05:6402:1111:b0:416:2ac8:b98e with SMTP id
+ u17-20020a056402111100b004162ac8b98emr13450111edv.236.1649327478576; 
+ Thu, 07 Apr 2022 03:31:18 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- c5-20020a170906d18500b006ce371f09d4sm7413573ejz.57.2022.04.07.03.31.16
+ c5-20020a170906d18500b006ce371f09d4sm7413573ejz.57.2022.04.07.03.31.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Apr 2022 03:31:17 -0700 (PDT)
+ Thu, 07 Apr 2022 03:31:18 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next 13/15] ps3_gelic: Replace usage of found with
- dedicated list iterator variable
-Date: Thu,  7 Apr 2022 12:28:58 +0200
-Message-Id: <20220407102900.3086255-14-jakobkoschel@gmail.com>
+Subject: [PATCH net-next 14/15] ipvlan: Remove usage of list iterator variable
+ for the loop body
+Date: Thu,  7 Apr 2022 12:28:59 +0200
+Message-Id: <20220407102900.3086255-15-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220407102900.3086255-1-jakobkoschel@gmail.com>
 References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
@@ -104,95 +104,59 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To move the list iterator variable into the list_for_each_entry_*()
-macro in the future it should be avoided to use the list iterator
-variable after the loop body.
+In preparation to limit the scope of the list iterator variable to the
+list traversal loop, use a dedicated pointer to iterate through the
+list [1].
 
-To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable instead of a
-found boolean [1].
+Since that variable should not be used past the loop iteration, a
+separate variable is used to 'remember the current location within the
+loop'.
+By avoiding the use of the iterator variable after the loop, we can lower
+the scope of it to the list traversal macros in the future.
 
-This removes the need to use a found variable and simply checking if
-the variable was set, can determine if the break/goto was hit.
+To either continue iterating from that position or start a new
+iteration (if the previous iteration was complete) list_prepare_entry()
+is used.
 
 Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- .../net/ethernet/toshiba/ps3_gelic_wireless.c | 30 +++++++++----------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/ipvlan/ipvlan_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
-index dc14a66583ff..c8a016c902cd 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
-@@ -1495,14 +1495,14 @@ static int gelic_wl_start_scan(struct gelic_wl_info *wl, int always_scan,
-  */
- static void gelic_wl_scan_complete_event(struct gelic_wl_info *wl)
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index 696e245f6d00..063d7c30e944 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -9,7 +9,7 @@
+ static int ipvlan_set_port_mode(struct ipvl_port *port, u16 nval,
+ 				struct netlink_ext_ack *extack)
  {
-+	struct gelic_wl_scan_info *target = NULL, *iter, *tmp;
- 	struct gelic_eurus_cmd *cmd = NULL;
--	struct gelic_wl_scan_info *target, *tmp;
- 	struct gelic_wl_scan_info *oldest = NULL;
- 	struct gelic_eurus_scan_info *scan_info;
- 	unsigned int scan_info_size;
- 	union iwreq_data data;
- 	unsigned long this_time = jiffies;
--	unsigned int data_len, i, found, r;
-+	unsigned int data_len, i, r;
- 	void *buf;
- 
- 	pr_debug("%s:start\n", __func__);
-@@ -1539,14 +1539,14 @@ static void gelic_wl_scan_complete_event(struct gelic_wl_info *wl)
- 	wl->scan_stat = GELIC_WL_SCAN_STAT_GOT_LIST;
- 
- 	/* mark all entries are old */
--	list_for_each_entry_safe(target, tmp, &wl->network_list, list) {
--		target->valid = 0;
-+	list_for_each_entry_safe(iter, tmp, &wl->network_list, list) {
-+		iter->valid = 0;
- 		/* expire too old entries */
--		if (time_before(target->last_scanned + wl->scan_age,
-+		if (time_before(iter->last_scanned + wl->scan_age,
- 				this_time)) {
--			kfree(target->hwinfo);
--			target->hwinfo = NULL;
--			list_move_tail(&target->list, &wl->network_free_list);
-+			kfree(iter->hwinfo);
-+			iter->hwinfo = NULL;
-+			list_move_tail(&iter->list, &wl->network_free_list);
- 		}
- 	}
- 
-@@ -1569,22 +1569,22 @@ static void gelic_wl_scan_complete_event(struct gelic_wl_info *wl)
- 			continue;
- 		}
- 
--		found = 0;
-+		target = NULL;
- 		oldest = NULL;
--		list_for_each_entry(target, &wl->network_list, list) {
--			if (ether_addr_equal(&target->hwinfo->bssid[2],
-+		list_for_each_entry(iter, &wl->network_list, list) {
-+			if (ether_addr_equal(&iter->hwinfo->bssid[2],
- 					     &scan_info->bssid[2])) {
--				found = 1;
-+				target = iter;
- 				pr_debug("%s: same BBS found scanned list\n",
- 					 __func__);
- 				break;
+-	struct ipvl_dev *ipvlan;
++	struct ipvl_dev *ipvlan, *tmp = NULL;
+ 	unsigned int flags;
+ 	int err;
+
+@@ -26,8 +26,10 @@ static int ipvlan_set_port_mode(struct ipvl_port *port, u16 nval,
+ 						       flags & ~IFF_NOARP,
+ 						       extack);
  			}
- 			if (!oldest ||
--			    (target->last_scanned < oldest->last_scanned))
--				oldest = target;
-+			    (iter->last_scanned < oldest->last_scanned))
-+				oldest = iter;
+-			if (unlikely(err))
++			if (unlikely(err)) {
++				tmp = ipvlan;
+ 				goto fail;
++			}
  		}
- 
--		if (!found) {
-+		if (!target) {
- 			/* not found in the list */
- 			if (list_empty(&wl->network_free_list)) {
- 				/* expire oldest */
--- 
+ 		if (nval == IPVLAN_MODE_L3S) {
+ 			/* New mode is L3S */
+@@ -43,6 +45,7 @@ static int ipvlan_set_port_mode(struct ipvl_port *port, u16 nval,
+ 	return 0;
+
+ fail:
++	ipvlan = list_prepare_entry(tmp, &port->ipvlans, pnode);
+ 	/* Undo the flags changes that have been done so far. */
+ 	list_for_each_entry_continue_reverse(ipvlan, &port->ipvlans, pnode) {
+ 		flags = ipvlan->dev->flags;
+--
 2.25.1
 
