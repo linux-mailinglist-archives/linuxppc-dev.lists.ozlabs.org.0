@@ -1,59 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2034F8CE3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 05:55:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EEA4F8CE6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 06:02:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZPXX2dGkz3bfC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 13:55:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZPj75tWCz3bXq
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 14:02:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=avEXtVrk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VfwoAqc5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZPhT38tqz2xBv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 14:02:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=avEXtVrk; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=VfwoAqc5; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZPWt5bmLz2xBv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 13:54:34 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 616C0CE29C1;
- Fri,  8 Apr 2022 03:54:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD55C385A1;
- Fri,  8 Apr 2022 03:54:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649390068;
- bh=XvrZjZaX5Rsi5fiZFoDR7A0z44p/01oSQz1BX2ODyvU=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=avEXtVrk7mOyW8zohyzfG6CeVAW9WHmglJH2zFNO6BqivVAiwRFXM5FysYbfpSW4R
- e5ioNTKU9dR9CdSfVo/qzoEX+KFzJXpGKeUC7RYWphXdJ9lD7QEgvw1cEHhAK3riim
- SfLqUUEiyZ6Fo9fMpvbleZcmaOnWtrU+CsAVL3b/ftZoe3QS1owYNeov9z652aNwns
- +dhbMjxfJFqASqlpcBfHfh/dNAHNoXw1FYbDqttp1G+Tba1An+xtmjAldSlNV81Un0
- hXlyPc0jm4HYBSy2zICqZdHsaMx79AWrW1iGEJpX+m85MDo32q6JDwBzIWVYqdGVM3
- 4k9iubEHtRGQg==
-Date: Thu, 7 Apr 2022 20:54:26 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jakob Koschel <jakobkoschel@gmail.com>
-Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
- iterator for list_add() after loop
-Message-ID: <20220407205426.6a31e4b2@kernel.org>
-In-Reply-To: <20220407102900.3086255-3-jakobkoschel@gmail.com>
-References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
- <20220407102900.3086255-3-jakobkoschel@gmail.com>
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KZPhN3zhCz4xQt;
+ Fri,  8 Apr 2022 14:01:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1649390518;
+ bh=A2daiLR29kPBS0/Of/FIMCpQE2nWeaHom3WVPWAyukM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=VfwoAqc587d1hrh+C4vbrMPnEEmLgiDy613EyM5q7B+nwYULD8sVf24LnZUD67u9h
+ I5ebxG585UQ5aY9e7bTi8blgaomSAHakCXVooLbsbFlBs7ZjPrcf8x5CCGTF4dpCgj
+ ncNGAMhNlfiicBd5ZrjHmUxA3ebOPC4VJQO7d4Mhmwsc0uVFS2QjjLDZfCBGjNa+bR
+ vu61y9rY7UxVEIDEnVAsn+ybLez0h9Z0pEjeQtiSArHI0RCvvplEQqrZs+WKLcAFE0
+ cYVCgSFU8f9ZGBzImMAZ1/esidYSGZXrNSCfpPB27yOwvwI3kVCFNbv5cNyHl/jeYj
+ TURShglGcNMWA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 5/6] powerpc/64: Only WARN if __pa()/__va() called with
+ bad addresses
+In-Reply-To: <7381978d-26d1-4abb-e539-d28247a93d9b@csgroup.eu>
+References: <20220406145802.538416-1-mpe@ellerman.id.au>
+ <20220406145802.538416-5-mpe@ellerman.id.au>
+ <7381978d-26d1-4abb-e539-d28247a93d9b@csgroup.eu>
+Date: Fri, 08 Apr 2022 14:01:50 +1000
+Message-ID: <87zgkw6x5d.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,63 +63,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
- Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
- Ariel Elior <aelior@marvell.com>, Florian Fainelli <f.fainelli@gmail.com>,
- Manish Chopra <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, "Bos, 
- H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
- Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
- Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Di Zhu <zhudi21@huawei.com>, Lars Povlsen <lars.povlsen@microchip.com>,
- Colin Ian King <colin.king@intel.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com,
- Edward Cree <ecree.xilinx@gmail.com>, Michael Walle <michael@walle.cc>,
- Xu Wang <vulab@iscas.ac.cn>, Vladimir Oltean <olteanv@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Casper Andersson <casper.casan@gmail.com>,
- Mike Rapoport <rppt@kernel.org>
+Cc: "erhard_f@mailbox.org" <erhard_f@mailbox.org>,
+ "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>,
+ "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  7 Apr 2022 12:28:47 +0200 Jakob Koschel wrote:
-> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-> index b7e95d60a6e4..cfcae4d19eef 100644
-> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
-> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-> @@ -27,20 +27,24 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
->  	if (list_empty(&gating_cfg->entries)) {
->  		list_add(&e->list, &gating_cfg->entries);
->  	} else {
-> -		struct sja1105_gate_entry *p;
-> +		struct sja1105_gate_entry *p = NULL, *iter;
->  
-> -		list_for_each_entry(p, &gating_cfg->entries, list) {
-> -			if (p->interval == e->interval) {
-> +		list_for_each_entry(iter, &gating_cfg->entries, list) {
-> +			if (iter->interval == e->interval) {
->  				NL_SET_ERR_MSG_MOD(extack,
->  						   "Gate conflict");
->  				rc = -EBUSY;
->  				goto err;
->  			}
->  
-> -			if (e->interval < p->interval)
-> +			if (e->interval < iter->interval) {
-> +				p = iter;
-> +				list_add(&e->list, iter->list.prev);
->  				break;
-> +			}
->  		}
-> -		list_add(&e->list, p->list.prev);
-> +		if (!p)
-> +			list_add(&e->list, gating_cfg->entries.prev);
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 06/04/2022 =C3=A0 16:58, Michael Ellerman a =C3=A9crit=C2=A0:
+>> We added checks to __pa() / __va() to ensure they're only called with
+>> appropriate addresses. But using BUG_ON() is too strong, it means
+>> virt_addr_valid() will BUG when DEBUG_VIRTUAL is enabled.
+>>=20
+>> Instead switch them to warnings, arm64 does the same.
+>>=20
+>> Fixes: 4dd7554a6456 ("powerpc/64: Add VIRTUAL_BUG_ON checks for __va and=
+ __pa addresses")
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>> ---
+>>   arch/powerpc/include/asm/page.h | 10 ++++++++--
+>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/=
+page.h
+>> index f2c5c26869f1..40a27a56ee40 100644
+>> --- a/arch/powerpc/include/asm/page.h
+>> +++ b/arch/powerpc/include/asm/page.h
+>> @@ -216,6 +216,12 @@ static inline bool pfn_valid(unsigned long pfn)
+>>   #define __pa(x) ((phys_addr_t)(unsigned long)(x) - VIRT_PHYS_OFFSET)
+>>   #else
+>>   #ifdef CONFIG_PPC64
+>> +
+>> +#ifdef CONFIG_DEBUG_VIRTUAL
+>> +#define VIRTUAL_WARN_ON(x)	WARN_ON(x)
+>> +#else
+>> +#define VIRTUAL_WARN_ON(x)
+>> +#endif
+>
+> Could be:
+>
+> #define VIRTUAL_WARN_ON(x)	WARN_ON(IS_ENABLED(CONFIG_DEBUG_VIRTUAL) && (x=
+))
+>
+>>   /*
+>>    * gcc miscompiles (unsigned long)(&static_var) - PAGE_OFFSET
+>>    * with -mcmodel=3Dmedium, so we use & and | instead of - and + on 64-=
+bit.
+>> @@ -223,13 +229,13 @@ static inline bool pfn_valid(unsigned long pfn)
+>>    */
+>>   #define __va(x)								\
+>>   ({									\
+>> -	VIRTUAL_BUG_ON((unsigned long)(x) >=3D PAGE_OFFSET);		\
+>> +	VIRTUAL_WARN_ON((unsigned long)(x) >=3D PAGE_OFFSET);		\
+>>   	(void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET);	\
+>>   })
+>>=20=20=20
+>>   #define __pa(x)								\
+>>   ({									\
+>> -	VIRTUAL_BUG_ON((unsigned long)(x) < PAGE_OFFSET);		\
+>> +	VIRTUAL_WARN_ON((unsigned long)(x) < PAGE_OFFSET);		\
+>>   	(unsigned long)(x) & 0x0fffffffffffffffUL;			\
+>>   })
+>>=20=20=20
+>
+> Isn't it dangerous to WARN (or BUG) here ? __pa() can be used very early=
+=20
+> during boot, like in prom_init.c
 
-This turns a pretty slick piece of code into something ugly :(
-I'd rather you open coded the iteration here than make it more 
-complex to satisfy "safe coding guidelines".
+Yes. WARN is a bit less dangerous though :)
 
-Also the list_add() could be converted to list_add_tail().
+> Some other architectures have a __pa_nodebug(). The __pa() does the=20
+> WARN() then calls __pa_nodebug(). Early users call __pa_nodebug() directl=
+y.
+
+Yeah I saw that, we could go that way.
+
+I think possibly the better option is for __pa() to have no checks,
+instead the checks go in the higher level routines like virt_to_phys()
+and phys_to_virt().
+
+And then we can check uses of __pa() and any that are *not* early boot
+or low level stuff can be converted to virt_to_phys().
+
+cheers
