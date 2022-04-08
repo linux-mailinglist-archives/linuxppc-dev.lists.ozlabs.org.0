@@ -2,96 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 252D24F9BF6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 19:46:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 412CC4F9CB7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 20:31:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZm0D0JZKz3bfr
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 03:46:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZmzH10F7z3bdP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 04:31:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g+/T1CjV;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=google header.b=YpRUx5na;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2607:f8b0:4864:20::d2c;
+ helo=mail-io1-xd2c.google.com; envelope-from=skhan@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=g+/T1CjV; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=google header.b=YpRUx5na; 
+ dkim-atps=neutral
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com
+ [IPv6:2607:f8b0:4864:20::d2c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZlzW08LZz2xfC
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 03:46:14 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 238FWEh9011919; 
- Fri, 8 Apr 2022 17:46:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=Av/17OEhTW/mxeJdUKXGmyoez4WeRhtABkz5mEBRB9I=;
- b=g+/T1CjV2hBIxvAp9D+7nKDwUP035zJlxYnXi/SUUGSmC/Av9agtjQ9irH6OzJoGpSI1
- tGg/23Bnc09Kjha7WdC+Fv5XH61bhuB4vCbRqmDbx8zaGlwsuAarm7o2UkACdVA+qLA4
- plfG6WZOb/arFPkSzj9jdS93dObJgNBS2wOqqFPPTVzHkxzyswstbQjeIgsUP1+lFSC6
- 4kn/SAL9dy7uUdYmFmRSjEKL/tyXHpBSA7QB6Q7k5k8sQp1Z+Z33cV7YElYC3Bd3EZPq
- mG8aCZdr+OLFtnq04GEheFAvsOU7joS3Jaz1QsOLW7/c2F+fTVQmW//A6k1F3e0NFYkJ Sw== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3fa44x9xa9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 17:46:08 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 238HXHgO031215;
- Fri, 8 Apr 2022 17:46:06 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06fra.de.ibm.com with ESMTP id 3f6drht2ks-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 17:46:06 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 238Hk4Ok38863138
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Apr 2022 17:46:04 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1AB104C046;
- Fri,  8 Apr 2022 17:46:04 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1FE364C040;
- Fri,  8 Apr 2022 17:46:03 +0000 (GMT)
-Received: from sig-9-65-90-167.ibm.com (unknown [9.65.90.167])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  8 Apr 2022 17:46:02 +0000 (GMT)
-Message-ID: <c97b7032d777853c2f4b8d2e7f9fc7a522ff891c.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc: Mark arch_get_ima_policy() and
- is_ppc_trustedboot_enabled() as __init
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Date: Fri, 08 Apr 2022 13:46:01 -0400
-In-Reply-To: <05e8ec5c0f471b17eeec417285a0691a61377d51.camel@linux.ibm.com>
-References: <20220407141520.733735-1-mpe@ellerman.id.au>
- <ebfa96c9cdcd48b28c524af0fb4e10bcb5a7acb9.camel@linux.ibm.com>
- <05e8ec5c0f471b17eeec417285a0691a61377d51.camel@linux.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZmyb29MBz2ync
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 04:30:29 +1000 (AEST)
+Received: by mail-io1-xd2c.google.com with SMTP id z7so11678652iom.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Apr 2022 11:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linuxfoundation.org; s=google;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=8c4w2SqV3Zwtk6hjN9XQDs1ojn8rP0mcUHvQvhzuNaU=;
+ b=YpRUx5naQgJOrPJtNsmh78aDsmIIkswFS8lXDrNYheqXIeJEK2ARoLdZkPcn+nfw5T
+ oYiFN+5ZvBke8G2w+I4t1ThEG9QAMUoMMfn3SprosOFXtLJQ9uLglI+1t3LYKARK0RE9
+ fZFK0+HB8gFFQwUCeNj0/qHoPWD0MoYjgz6Nw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=8c4w2SqV3Zwtk6hjN9XQDs1ojn8rP0mcUHvQvhzuNaU=;
+ b=Ny5Whdvdb1jQYWMycjCx6iazmvTK38Ev4Ffw/fMYQoC+4b1eBeiRvrpT+JvBycw9C0
+ Bm9D24M6YkuZ6SGW0ZFBnr28U4RJMBko+T940ssaSakYWOM8ZG/YGvcv0eoHi6m+1LHM
+ eZUaEtNddbj5U5WkGrUO9AQUqUPmupovU6g0bBOt61m18HpVR9LqigKLeP4vgRcTuFkd
+ rgIDVgBYYUmTWmHhuXoXChKQiIA3N4fQU6KmHkapXt3rN3FOvoLbzRqREckYlOGqVr++
+ wGPxsnjOSnuP60BoIsndpvFFYl9bYUpKFzm8U8ZTFBhDRAlWg7BnPE5YOglYQJ5JLxrt
+ n6gQ==
+X-Gm-Message-State: AOAM530Y9YYGPpmjGJ5ukNp5fMZALR5Z1CLxZYFe5J5xyiuoaBlnhiuY
+ q7595eWDU3ZCtz6VG9CSUy5YcQ==
+X-Google-Smtp-Source: ABdhPJz0knJI2EvKgFMOby7OjCoRi/HEQHXa7piPfbIdw92oEo/ocHWDiLbO7mI1s1H7DgX30ZuY4g==
+X-Received: by 2002:a05:6638:2643:b0:323:c3e3:fcec with SMTP id
+ n3-20020a056638264300b00323c3e3fcecmr10003722jat.289.1649442625269; 
+ Fri, 08 Apr 2022 11:30:25 -0700 (PDT)
+Received: from [192.168.1.128] ([71.205.29.0])
+ by smtp.gmail.com with ESMTPSA id
+ y6-20020a056e02174600b002c7f247b3a7sm14985188ill.54.2022.04.08.11.30.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 08 Apr 2022 11:30:24 -0700 (PDT)
+Subject: Re: [PATCH V3] testing/selftests/mqueue: Fix mq_perf_tests to free
+ the allocated cpu set
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, shuah@kernel.org,
+ linux-kselftest@vger.kernel.org, disgoel@linux.vnet.ibm.com
+References: <20220408072431.94947-1-atrajeev@linux.vnet.ibm.com>
+From: Shuah Khan <skhan@linuxfoundation.org>
+Message-ID: <1a1d119a-e68e-a590-a518-cfb3c78ed888@linuxfoundation.org>
+Date: Fri, 8 Apr 2022 12:30:23 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
+MIME-Version: 1.0
+In-Reply-To: <20220408072431.94947-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TdSGRFjJZDg9ktTpvzKYcuJFB3RNr2Au
-X-Proofpoint-ORIG-GUID: TdSGRFjJZDg9ktTpvzKYcuJFB3RNr2Au
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-04-08_05,2022-04-08_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- phishscore=0 adultscore=0 priorityscore=1501 bulkscore=0 mlxlogscore=858
- impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204080089
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,29 +86,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, dja@axtens.net
+Cc: maddy@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com,
+ Shuah Khan <skhan@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org,
+ kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2022-04-08 at 13:31 -0400, Mimi Zohar wrote:
-> On Fri, 2022-04-08 at 12:05 -0400, Mimi Zohar wrote:
-> > On Fri, 2022-04-08 at 00:15 +1000, Michael Ellerman wrote:
-> > > We can mark arch_get_ima_policy() as __init because it's only caller
-> > > ima_init_arch_policy() is __init. We can then mark
-> > > is_ppc_trustedboot_enabled() __init because its only caller is
-> > > arch_get_ima_policy().
-> > > 
-> > > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> > 
-> > I assume you want to upstream this via power,
-> > 
-> >     Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+On 4/8/22 1:24 AM, Athira Rajeev wrote:
+> The selftest "mqueue/mq_perf_tests.c" use CPU_ALLOC to allocate
+> CPU set. This cpu set is used further in pthread_attr_setaffinity_np
+> and by pthread_create in the code. But in current code, allocated
+> cpu set is not freed.
 > 
-> Sorry, I just noticed that is_ppc_trustedboot_enabled() is also called
-> by arch_ima_get_secureboot().
+> Fix this issue by adding CPU_FREE in the "shutdown" function which
+> is called in most of the error/exit path for the cleanup. There are
+> few error paths which exit without using shutdown. Add a common goto
+> error path with CPU_FREE for these cases.
+> 
+> Fixes: 7820b0715b6f ("tools/selftests: add mq_perf_tests")
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+> Changelog:
+>   From v2 -> v3:
+>    Addressed review comment from Shuah Khan to add
+>    common "goto" error path with CPU_FREE for few exit
+>    cases.
+>   From v1 -> v2:
+>    Addressed review comment from Shuah Khan to add
+>    CPU_FREE in other exit paths where it is needed
+> 
 
-Never mind, arch_ima_get_secureboot() calls
-is_ppc_secureboot_enabled(), not is_ppc_trustedboot_enabled().
+Thank you. I will queue this up for Linux 5.18-rc3
 
-
+thanks,
+-- Shuah
