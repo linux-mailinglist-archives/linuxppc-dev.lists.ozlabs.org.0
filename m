@@ -1,89 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1843D4F95A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 14:26:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E644F95BD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 14:27:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZctj0Hdnz3bbn
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 22:26:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZcvt5dJBz2yWn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 22:27:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HgBEsa6s;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pHe9prWD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=HgBEsa6s; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=pHe9prWD; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZcsw0hN8z2xgJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 22:25:54 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2389Dkd6030920; 
- Fri, 8 Apr 2022 12:25:43 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZcv65ydTz2xvS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 22:26:58 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 238Af5pK021148; 
+ Fri, 8 Apr 2022 12:26:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=date : from : to : cc :
  subject : message-id : reply-to : references : mime-version : content-type
- : in-reply-to; s=pp1; bh=8+dQLvwd1bGaCWREWy5GVy+CqU8oP390+lVLIVoFTQw=;
- b=HgBEsa6sRvDSrr5Y2BoZUhppiqc8A2RWGWAdDvgmZvCS/gLGo3DpvJksc9R1aRtyS67F
- f4uPt6adBgwE2aD/5Jd3+bmRfP1Yw27ooD4GoljMPffm3VMKUfUbMBzYtcpHyIMxIehM
- h/o+vQirEdcCWl/0AkAw5umA0FR5K6Ffu+wzWwgkkk3IS6lXbqQpAwC66MD6oijJYn2V
- sC1+s85t54XgyldD/46lFHvLpT4dzUdD8wd6ggq+UwfIgvpcftubE2Uj7OR4bm25pXO+
- NyxqvEEJUayfo64e9s3zCnqCS6CnfbxLgcoD/+ysyACGOU9Cg6jYlL50L8QUGFcXmuuf AA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3fad2gs3ty-1
+ : in-reply-to; s=pp1; bh=mqCLsfHi93jccKStWj5lCi4fkyrQdCYAWdQtQsx7Rqk=;
+ b=pHe9prWDZvrytWq3Jx/6UGzdIAw3fxQWhatMcxWnFSVNb6ZeJI+eXhu4mNke7kpxTcKd
+ z7lENjeQNWupLFjPe76IAeCzRJ0Z/bkhrq2nBZOICNzarQIgbS3peoMPuVUbHTS2KGM2
+ Mgp90/i6IMxbLrLjyqYM5yuXWJvYJFOVVEKfP2DidMgocPU0md/22KVfPJQstY4zFls8
+ duWeOdqIvLi/3RQzS5iRI6oXcs1YGX4nqIQoXKXj6M7B294dfT1mALZex3ua+PEnnRgE
+ nZM2L5npLnrFvdEHPejo6r5jMpl1zm7Tb4VNmI/qomFyCa5cIlZei8EMB2bFtzXdJp5B jg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3fa4jx2sq3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 12:25:43 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 238CDbjO022675;
- Fri, 8 Apr 2022 12:25:41 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3f6e493rxc-1
+ Fri, 08 Apr 2022 12:26:51 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 238CJkHx030218;
+ Fri, 8 Apr 2022 12:26:50 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3fa4jx2spq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 12:25:41 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 238CPdoq43909562
+ Fri, 08 Apr 2022 12:26:50 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 238CDjel016458;
+ Fri, 8 Apr 2022 12:26:48 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04fra.de.ibm.com with ESMTP id 3f6e491ny5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 Apr 2022 12:26:48 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 238CEP1b46662088
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Apr 2022 12:25:39 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1CC6852050;
- Fri,  8 Apr 2022 12:25:39 +0000 (GMT)
+ Fri, 8 Apr 2022 12:14:25 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 50A4D42049;
+ Fri,  8 Apr 2022 12:26:45 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7AF234203F;
+ Fri,  8 Apr 2022 12:26:43 +0000 (GMT)
 Received: from linux.vnet.ibm.com (unknown [9.40.195.195])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id DEBDB5204E;
- Fri,  8 Apr 2022 12:25:37 +0000 (GMT)
-Date: Fri, 8 Apr 2022 17:55:37 +0530
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri,  8 Apr 2022 12:26:43 +0000 (GMT)
+Date: Fri, 8 Apr 2022 17:56:42 +0530
 From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Oscar Salvador <osalvador@suse.de>
-Subject: Re: [PATCH] powerpc/numa: Handle partially initialized numa nodes
-Message-ID: <20220408122537.GD568950@linux.vnet.ibm.com>
-References: <20220330135123.1868197-1-srikar@linux.vnet.ibm.com>
- <Yk29dMa3H8bk0yST@localhost.localdomain>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 4/4] tools/perf: Fix perf bench numa testcase to check
+ if CPU used to bind task is online
+Message-ID: <20220408122642.GE568950@linux.vnet.ibm.com>
+References: <20220406175113.87881-1-atrajeev@linux.vnet.ibm.com>
+ <20220406175113.87881-5-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <Yk29dMa3H8bk0yST@localhost.localdomain>
+In-Reply-To: <20220406175113.87881-5-atrajeev@linux.vnet.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3tQ-Xa00FGMTzel42n_o_zAoS_uhTegc
-X-Proofpoint-GUID: 3tQ-Xa00FGMTzel42n_o_zAoS_uhTegc
+X-Proofpoint-GUID: 7OCz8BkOzxvY7vt3ls03oUoKVx4-GN1s
+X-Proofpoint-ORIG-GUID: 6OeemDusQzhfXAvTNH8ZAluOplIzYMUX
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-04-08_04,2022-04-08_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 adultscore=0
- impostorscore=0 spamscore=0 phishscore=0 clxscore=1011 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ clxscore=1011 phishscore=0
+ lowpriorityscore=0 priorityscore=1501 suspectscore=0 spamscore=0
+ bulkscore=0 mlxscore=0 impostorscore=0 adultscore=0 mlxlogscore=999
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2204080062
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -97,241 +107,163 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>, linux-mm@kvack.org
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linux-kernel@vger.kernel.org, acme@kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
+ disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Oscar Salvador <osalvador@suse.de> [2022-04-06 18:19:00]:
+* Athira Rajeev <atrajeev@linux.vnet.ibm.com> [2022-04-06 23:21:13]:
 
-> On Wed, Mar 30, 2022 at 07:21:23PM +0530, Srikar Dronamraju wrote:
-> >  arch/powerpc/mm/numa.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> > index b9b7fefbb64b..13022d734951 100644
-> > --- a/arch/powerpc/mm/numa.c
-> > +++ b/arch/powerpc/mm/numa.c
-> > @@ -1436,7 +1436,7 @@ int find_and_online_cpu_nid(int cpu)
-> >  	if (new_nid < 0 || !node_possible(new_nid))
-> >  		new_nid = first_online_node;
-> >  
-> > -	if (NODE_DATA(new_nid) == NULL) {
-> > +	if (!node_online(new_nid)) {
-> >  #ifdef CONFIG_MEMORY_HOTPLUG
-> >  		/*
-> >  		 * Need to ensure that NODE_DATA is initialized for a node from
+> Perf numa bench test fails with error:
 > 
-> Because of this fix, I wanted to check whether we might have any more fallouts due
-> to ("mm: handle uninitialized numa nodes gracefully"), and it made me look closer
-> as to why powerpc is the only platform that special cases try_online_node(),
-> while all others rely on cpu_up()->try_online_node() to do the right thing.
+> Testcase:
+> ./perf bench numa mem -p 2 -t 1 -P 1024 -C 0,8 -M 1,0 -s 20 -zZq
+> --thp  1 --no-data_rand_walk
 > 
-> So, I had a look.
-> Let us rewind a bit:
+> Failure snippet:
+> <<>>
+>  Running 'numa/mem' benchmark:
 > 
-> The commit that sets find_and_online_cpu_nid() in dlpar_online_cpu was
-> e67e02a544e9 ("powerpc/pseries: Fix cpu hotplug crash with memoryless nodes").
+>  # Running main, "perf bench numa numa-mem -p 2 -t 1 -P 1024 -C 0,8
+> -M 1,0 -s 20 -zZq --thp 1 --no-data_rand_walk"
 > 
-> In there, it says that we have the following picture:
+> perf: bench/numa.c:333: bind_to_cpumask: Assertion `!(ret)' failed.
+> <<>>
 > 
-> partition_sched_domains
->  arch_update_cpu_topology
->   numa_update_cpu_topology
->    find_and_online_cpu_nid
+> The Testcases uses CPU???s 0 and 8. In function "parse_setup_cpu_list",
+> There is check to see if cpu number is greater than max cpu???s possible
+> in the system ie via "if (bind_cpu_0 >= g->p.nr_cpus ||
+> bind_cpu_1 >= g->p.nr_cpus) {". But it could happen that system has
+> say 48 CPU???s, but only number of online CPU???s is 0-7. Other CPU???s
+> are offlined. Since "g->p.nr_cpus" is 48, so function will go ahead
+> and set bit for CPU 8 also in cpumask ( td->bind_cpumask).
 > 
-> and by the time find_and_online_cpu_nid() gets called to online the node, it might be
-> too late as we might have referenced some NODE_DATA() fields.
-> Note that this happens at a much later stage in cpuhp.
+> bind_to_cpumask function is called to set affinity using
+> sched_setaffinity and the cpumask. Since the CPU8 is not present,
+> set affinity will fail here with EINVAL. Fix this issue by adding a
+> check to make sure that, CPU???s provided in the input argument values
+> are online before proceeding further and skip the test. For this,
+> include new helper function "is_cpu_online" in
+> "tools/perf/util/header.c".
 > 
-> Also note that at a much earlier stage, we do already have a try_online_node() in cpu_up(),
-> which should allocate-and-online the node and prevent accessing garbage.
-> But the problem is that, on powerpc, all possible cpus have the same node set at boot stage
-> (see arch/powerpc/mm/numa.c:mem_topology_setup),
-> so cpu_to_node() returns the same thing until it the mapping gets update (which happens in
-> start_secondary()->set_numa_node()), and so, the try_online_node() from cpu_up() does not
-> apply on the right node, because it still holds the not-up-to-date mapping node <-> cpu.
+> Since "BIT(x)" definition will get included from header.h, remove
+> that from bench/numa.c
 > 
-> (e.g: in my test case, when onlining a CPU belongin to node1, cpu_up()->try_online_node()
->  tries to online node0, or whatever old mapping numa<->cpu is there).
-> 
-> So, we have something like:
-> 
-> dlpar_online_cpu
->  device_online
->   dev->bus->online
->    cpu_subsys_online
->     cpu_device_up
->      cpu_up
->       try_online_node (old mapping nid <-> cpu )
->       ...
->       ...
->       cphp_callbacks
->        sched_cpu_activate
->         cpuset_update_active_cpus
->          schedule_work(&cpuset_hotplug_work)
->           cpuset_hotplug_work
->            partition_sched_domains
->             arch_update_cpu_topology
->              numa_update_cpu_topology
->               find_and_online_cpu_nid (online new_nid)
-> 
-> 
-> So, yeah, the real onlining in numa_update_cpu_topology()->find_and_online_cpu_nid()
-> happens too late, that is why adding find_and_online_cpu_nid() back in dlpar_online_cpu()
-> fixed the issue, but we should not need this special casing at all.
-> 
-> We do already know the numa<->cpu associativity in
-> dlpar_online_cpu()->find_and_online_cpu_nid(), so we should just be able to
-> update the numa<->cpu mapping, and let the try_online_node() do the right thing.
-> 
-> With this in mind, I came up with the following patch, where I carried out a battery
-> of tests for CPU hotplug stuff and it worked as expected.
-> But I am not familiar with all powerpc pitfalls, e.g: dedicated vs shared cpus etc, so
-> I would like to hear from more familiar people.
-> 
-> The patch is:
-> 
-> From: Oscar Salvador <osalvador@suse.de>
-> Date: Wed, 6 Apr 2022 14:39:15 +0200
-> Subject: [PATCH] powerpc/numa: Associate numa node to its cpu earlier
-> 
-> powerpc is the only platform that do not rely on
-> cpu_up()->try_online_node() to bring up a numa node,
-> and special cases it, instead, deep in its own machinery:
-> 
-> dlpar_online_cpu
->  find_and_online_cpu_nid
->   try_online_node
-> 
-> This should not be needed, but the thing is that the try_online_node()
-> from cpu_up() will not apply on the right node, because cpu_to_node()
-> will return the old mapping numa<->cpu that gets set on boot stage
-> for all possible cpus.
-> 
-> That can be seen easily if we try to print out the numa node passed
-> to try_online_node() in cpu_up().
-> 
-> The thing is that the numa<->cpu mapping does not get updated till a much
-> later stage in start_secondary:
-> 
-> start_secondary:
->  set_numa_node(numa_cpu_lookup_table[cpu])
-> 
-> But we do not really care, as we already now the
-> CPU <-> NUMA associativity back in find_and_online_cpu_nid(),
-> so let us make use of that and set the proper numa<->cpu mapping,
-> so cpu_to_node() in cpu_up() returns the right node and
-> try_online_node() can do its work.
-> 
-> Signed-off-by: Oscar Salvador <osalvador@suse.de>
+> Tested-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
 
 Looks good to me.
-
 Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-
 > ---
->  arch/powerpc/include/asm/topology.h          |  8 ++-----
->  arch/powerpc/mm/numa.c                       | 31 +++++++---------------------
->  arch/powerpc/platforms/pseries/hotplug-cpu.c |  2 +-
->  3 files changed, 11 insertions(+), 30 deletions(-)
+>  tools/perf/bench/numa.c  |  8 ++++++--
+>  tools/perf/util/header.c | 43 ++++++++++++++++++++++++++++++++++++++++
+>  tools/perf/util/header.h |  1 +
+>  3 files changed, 50 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-> index 36fcafb1fd6d..6ae1b2dce83e 100644
-> --- a/arch/powerpc/include/asm/topology.h
-> +++ b/arch/powerpc/include/asm/topology.h
-> @@ -111,14 +111,10 @@ static inline void unmap_cpu_from_node(unsigned long cpu) {}
->  #endif /* CONFIG_NUMA */
+> diff --git a/tools/perf/bench/numa.c b/tools/perf/bench/numa.c
+> index 29e41e32bd88..7992d79b3e41 100644
+> --- a/tools/perf/bench/numa.c
+> +++ b/tools/perf/bench/numa.c
+> @@ -34,6 +34,7 @@
+>  #include <linux/numa.h>
+>  #include <linux/zalloc.h>
 > 
->  #if defined(CONFIG_NUMA) && defined(CONFIG_PPC_SPLPAR)
-> -extern int find_and_online_cpu_nid(int cpu);
-> +extern void find_and_update_cpu_nid(int cpu);
->  extern int cpu_to_coregroup_id(int cpu);
->  #else
-> -static inline int find_and_online_cpu_nid(int cpu)
-> -{
-> -	return 0;
-> -}
-> -
-> +static inline void find_and_update_cpu_nid(int cpu) {}
->  static inline int cpu_to_coregroup_id(int cpu)
->  {
->  #ifdef CONFIG_SMP
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index b9b7fefbb64b..b5bc8b1a833d 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -1423,43 +1423,28 @@ static long vphn_get_associativity(unsigned long cpu,
->  	return rc;
->  }
+> +#include "../util/header.h"
+>  #include <numa.h>
+>  #include <numaif.h>
 > 
-> -int find_and_online_cpu_nid(int cpu)
-> +void find_and_update_cpu_nid(int cpu)
->  {
->  	__be32 associativity[VPHN_ASSOC_BUFSIZE] = {0};
->  	int new_nid;
+> @@ -616,6 +617,11 @@ static int parse_setup_cpu_list(void)
+>  			return -1;
+>  		}
 > 
->  	/* Use associativity from first thread for all siblings */
->  	if (vphn_get_associativity(cpu, associativity))
-> -		return cpu_to_node(cpu);
-> +		return;
-> 
-> +	/* Do not have previous associativity, so find it now. */
->  	new_nid = associativity_to_nid(associativity);
+> +		if (is_cpu_online(bind_cpu_0) != 1 || is_cpu_online(bind_cpu_1) != 1) {
+> +			printf("\nTest not applicable, bind_cpu_0 or bind_cpu_1 is offline\n");
+> +			return -1;
+> +		}
 > +
->  	if (new_nid < 0 || !node_possible(new_nid))
->  		new_nid = first_online_node;
-> -
-> -	if (NODE_DATA(new_nid) == NULL) {
-> -#ifdef CONFIG_MEMORY_HOTPLUG
-> -		/*
-> -		 * Need to ensure that NODE_DATA is initialized for a node from
-> -		 * available memory (see memblock_alloc_try_nid). If unable to
-> -		 * init the node, then default to nearest node that has memory
-> -		 * installed. Skip onlining a node if the subsystems are not
-> -		 * yet initialized.
-> -		 */
-> -		if (!topology_inited || try_online_node(new_nid))
-> -			new_nid = first_online_node;
-> -#else
-> -		/*
-> -		 * Default to using the nearest node that has memory installed.
-> -		 * Otherwise, it would be necessary to patch the kernel MM code
-> -		 * to deal with more memoryless-node error conditions.
-> +	else
-> +		/* Associate node <-> cpu, so cpu_up() calls
-> +		 * try_online_node() on the right node.
->  		 */
-> -		new_nid = first_online_node;
-> -#endif
-> -	}
-> +		set_cpu_numa_node(cpu, new_nid);
+>  		BUG_ON(bind_cpu_0 < 0 || bind_cpu_1 < 0);
+>  		BUG_ON(bind_cpu_0 > bind_cpu_1);
 > 
->  	pr_debug("%s:%d cpu %d nid %d\n", __FUNCTION__, __LINE__,
->  		cpu, new_nid);
-> -	return new_nid;
+> @@ -786,8 +792,6 @@ static int parse_nodes_opt(const struct option *opt __maybe_unused,
+>  	return parse_node_list(arg);
 >  }
 > 
->  int cpu_to_coregroup_id(int cpu)
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> index b81fc846d99c..0f8cd8b06432 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-> @@ -398,7 +398,7 @@ static int dlpar_online_cpu(struct device_node *dn)
->  			if (get_hard_smp_processor_id(cpu) != thread)
->  				continue;
->  			cpu_maps_update_done();
-> -			find_and_online_cpu_nid(cpu);
-> +			find_and_update_cpu_nid(cpu);
->  			rc = device_online(get_cpu_device(cpu));
->  			if (rc) {
->  				dlpar_offline_cpu(dn);
-> --
-> 2.16.4
+> -#define BIT(x) (1ul << x)
+> -
+>  static inline uint32_t lfsr_32(uint32_t lfsr)
+>  {
+>  	const uint32_t taps = BIT(1) | BIT(5) | BIT(6) | BIT(31);
+> diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+> index 6da12e522edc..3f5fcf5d4b3f 100644
+> --- a/tools/perf/util/header.c
+> +++ b/tools/perf/util/header.c
+> @@ -983,6 +983,49 @@ static int write_dir_format(struct feat_fd *ff,
+>  	return do_write(ff, &data->dir.version, sizeof(data->dir.version));
+>  }
 > 
+> +#define SYSFS "/sys/devices/system/cpu/"
+> +
+> +/*
+> + * Check whether a CPU is online
+> + *
+> + * Returns:
+> + *     1 -> if CPU is online
+> + *     0 -> if CPU is offline
+> + *    -1 -> error case
+> + */
+> +int is_cpu_online(unsigned int cpu)
+> +{
+> +	char sysfs_cpu[255];
+> +	char buf[255];
+> +	struct stat statbuf;
+> +	size_t len;
+> +	int fd;
+> +
+> +	snprintf(sysfs_cpu, sizeof(sysfs_cpu), SYSFS "cpu%u", cpu);
+> +
+> +	if (stat(sysfs_cpu, &statbuf) != 0)
+> +		return 0;
+> +
+> +	/*
+> +	 * Check if /sys/devices/system/cpu/cpux/online file
+> +	 * exists. In kernels without CONFIG_HOTPLUG_CPU, this
+> +	 * file won't exist.
+> +	 */
+> +	snprintf(sysfs_cpu, sizeof(sysfs_cpu), SYSFS "cpu%u/online", cpu);
+> +	if (stat(sysfs_cpu, &statbuf) != 0)
+> +		return 1;
+> +
+> +	fd = open(sysfs_cpu, O_RDONLY);
+> +	if (fd == -1)
+> +		return -1;
+> +
+> +	len = read(fd, buf, sizeof(buf) - 1);
+> +	buf[len] = '\0';
+> +	close(fd);
+> +
+> +	return strtoul(buf, NULL, 16);
+> +}
+> +
+>  #ifdef HAVE_LIBBPF_SUPPORT
+>  static int write_bpf_prog_info(struct feat_fd *ff,
+>  			       struct evlist *evlist __maybe_unused)
+> diff --git a/tools/perf/util/header.h b/tools/perf/util/header.h
+> index c9e3265832d9..0eb4bc29a5a4 100644
+> --- a/tools/perf/util/header.h
+> +++ b/tools/perf/util/header.h
+> @@ -158,6 +158,7 @@ int do_write(struct feat_fd *fd, const void *buf, size_t size);
+>  int write_padded(struct feat_fd *fd, const void *bf,
+>  		 size_t count, size_t count_aligned);
+> 
+> +int is_cpu_online(unsigned int cpu);
+>  /*
+>   * arch specific callback
+>   */
 > -- 
-> Oscar Salvador
-> SUSE Labs
+> 2.35.1
+> 
