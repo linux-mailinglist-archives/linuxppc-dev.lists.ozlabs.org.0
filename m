@@ -1,60 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2172A4F9997
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 17:34:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5FDD4F99EC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 17:53:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZj3114Wfz3bx3
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 01:34:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZjT93mqGz3bbm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 01:53:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=RTFeNcxJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bYkO4hwl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=canonical.com (client-ip=185.125.188.121;
- helo=smtp-relay-canonical-1.canonical.com;
- envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org;
+ envelope-from=srs0=khno=us=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=RTFeNcxJ; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=bYkO4hwl; 
  dkim-atps=neutral
-Received: from smtp-relay-canonical-1.canonical.com
- (smtp-relay-canonical-1.canonical.com [185.125.188.121])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZj1m1d41z2yJ9
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 01:33:00 +1000 (AEST)
-Received: from localhost.localdomain (unknown [10.101.196.174])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZjSV6mGZz2yZd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 01:52:42 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 672C741DC4; 
- Fri,  8 Apr 2022 15:32:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1649431977;
- bh=MnhRgeQEal2lOKifhRiXmc8x4Chl0YZYFn2hkFpTXqs=;
- h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
- MIME-Version;
- b=RTFeNcxJyiR/5mCM1Q9pM7LWIBn/ZhyWzBUT0fO+lP8iFerIvzN1qXQzzmT5utOil
- h+1K7ljy5rEA9D45v3THRV/FZxVrnKj3SUBvWZJK7zPL5V2ER7kVgPi84ecWa0RkOe
- 3jmODJ4razCd9RIjDBR0IWw2GRIa3rz7sUwzxU8qb/G3bvltsi/fL2ggpyOxUUAC49
- vyjSwLIyqe/l7MzdB3KX/shG4Rc1/+S7Ojj3ijQczViqQR+X1O3hgM50ZfSjgFTWPv
- 1ME4aELvRyRFG1sFentlVWAdli7mcCBAvUn8YZMKOJs0DPJWRUiPFjTGUfbBjDp1PA
- 4whoXiZwDTa5g==
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-To: bhelgaas@google.com
-Subject: [PATCH v4 2/2] PCI/DPC: Disable DPC service when link is in L2/L3
- ready, L2 and L3 state
-Date: Fri,  8 Apr 2022 23:31:59 +0800
-Message-Id: <20220408153159.106741-2-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220408153159.106741-1-kai.heng.feng@canonical.com>
-References: <20220408153159.106741-1-kai.heng.feng@canonical.com>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 9642A62027;
+ Fri,  8 Apr 2022 15:52:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079CAC385A3;
+ Fri,  8 Apr 2022 15:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1649433159;
+ bh=MIPO6NzLS3OATyraPtetroejBNzc206DoT0mn5TCp+I=;
+ h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+ b=bYkO4hwlm/P9fnSaQQxTFvjEGgVT1QyTcZ8X9i4p3D4YiuPBNSmFjSEfxAAFzF4US
+ dyoz0WO5QiQw4iSoUlLyg+9Bq05k+9DoNP3spsvp4skXez5LTYBQlwAC/WaA2XC2++
+ UcmjfzurU8isRCRKtlCCm0fn6o3elVM90mz1bzexYfE53nUMfRU7EDh2KisWaWMfc/
+ 5yusXZMK4U69psC7ZCyyknnuHWdqHS3xUlCXbvn2X5gA6XniXEi2UO0PXiVjc2a8WF
+ S/jJ92BE+jn2Lw2DaqE8emWc2LYF+e42VRpxDO4jRb69w/UyCRxvWEZyEvA74G/U89
+ 2BekZ+lhEIwHA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+ id A69865C0176; Fri,  8 Apr 2022 08:52:38 -0700 (PDT)
+Date: Fri, 8 Apr 2022 08:52:38 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: rcu_sched self-detected stall on CPU
+Message-ID: <20220408155238.GG4285@paulmck-ThinkPad-P17-Gen-1>
+References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
+ <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
+ <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
+ <87pmls6nt7.fsf@mpe.ellerman.id.au>
+ <87k0bz7i1s.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87k0bz7i1s.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,142 +71,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, koba.ko@canonical.com,
- Kai-Heng Feng <kai.heng.feng@canonical.com>,
- Oliver O'Halloran <oohall@gmail.com>, mika.westerberg@linux.intel.com,
- baolu.lu@linux.intel.com
+Reply-To: paulmck@kernel.org
+Cc: rcu <rcu@vger.kernel.org>, Zhouyi Zhou <zhouzhouyi@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Intel Alder Lake platforms, Thunderbolt entering D3cold can cause
-some errors reported by AER:
-[   30.100211] pcieport 0000:00:1d.0: AER: Uncorrected (Non-Fatal) error received: 0000:00:1d.0
-[   30.100251] pcieport 0000:00:1d.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
-[   30.100256] pcieport 0000:00:1d.0:   device [8086:7ab0] error status/mask=00100000/00004000
-[   30.100262] pcieport 0000:00:1d.0:    [20] UnsupReq               (First)
-[   30.100267] pcieport 0000:00:1d.0: AER:   TLP Header: 34000000 08000052 00000000 00000000
-[   30.100372] thunderbolt 0000:0a:00.0: AER: can't recover (no error_detected callback)
-[   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
-[   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
+On Sat, Apr 09, 2022 at 12:42:39AM +1000, Michael Ellerman wrote:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+> > "Paul E. McKenney" <paulmck@kernel.org> writes:
+> >> On Wed, Apr 06, 2022 at 05:31:10PM +0800, Zhouyi Zhou wrote:
+> >>> Hi
+> >>> 
+> >>> I can reproduce it in a ppc virtual cloud server provided by Oregon
+> >>> State University.  Following is what I do:
+> >>> 1) curl -l https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/snapshot/linux-5.18-rc1.tar.gz
+> >>> -o linux-5.18-rc1.tar.gz
+> >>> 2) tar zxf linux-5.18-rc1.tar.gz
+> >>> 3) cp config linux-5.18-rc1/.config
+> >>> 4) cd linux-5.18-rc1
+> >>> 5) make vmlinux -j 8
+> >>> 6) qemu-system-ppc64 -kernel vmlinux -nographic -vga none -no-reboot
+> >>> -smp 2 (QEMU 4.2.1)
+> >>> 7) after 12 rounds, the bug got reproduced:
+> >>> (http://154.223.142.244/logs/20220406/qemu.log.txt)
+> >>
+> >> Just to make sure, are you both seeing the same thing?  Last I knew,
+> >> Zhouyi was chasing an RCU-tasks issue that appears only in kernels
+> >> built with CONFIG_PROVE_RCU=y, which Miguel does not have set.  Or did
+> >> I miss something?
+> >>
+> >> Miguel is instead seeing an RCU CPU stall warning where RCU's grace-period
+> >> kthread slept for three milliseconds, but did not wake up for more than
+> >> 20 seconds.  This kthread would normally have awakened on CPU 1, but
+> >> CPU 1 looks to me to be very unhealthy, as can be seen in your console
+> >> output below (but maybe my idea of what is healthy for powerpc systems
+> >> is outdated).  Please see also the inline annotations.
+> >>
+> >> Thoughts from the PPC guys?
+> >
+> > I haven't seen it in my testing. But using Miguel's config I can
+> > reproduce it seemingly on every boot.
+> >
+> > For me it bisects to:
+> >
+> >   35de589cb879 ("powerpc/time: improve decrementer clockevent processing")
+> >
+> > Which seems plausible.
+> >
+> > Reverting that on mainline makes the bug go away.
+> >
+> > I don't see an obvious bug in the diff, but I could be wrong, or the old
+> > code was papering over an existing bug?
+> >
+> > I'll try and work out what it is about Miguel's config that exposes
+> > this vs our defconfig, that might give us a clue.
+> 
+> It's CONFIG_HIGH_RES_TIMERS=n which triggers the stall.
+> 
+> I can reproduce just with:
+> 
+>   $ make ppc64le_guest_defconfig
+>   $ ./scripts/config -d HIGH_RES_TIMERS
+> 
+> We have no defconfigs that disable HIGH_RES_TIMERS, I didn't even
+> realise you could disable it TBH :)
+> 
+> The Rust CI has it disabled because I copied that from the x86 defconfig
+> they were using back when I added the Rust support. I think that was
+> meant to be a stripped down fast config for CI, but the result is it's
+> just using a badly tested combination which is not helpful.
+> 
+> So I'll send a patch to turn HIGH_RES_TIMERS on for the Rust CI, and we
+> can debug this further without blocking them.
 
-Since AER is disabled in previous patch for a Link in L2/L3 Ready, L2
-and L3, also disable DPC here as DPC depends on AER to work.
+Would it make sense to select HIGH_RES_TIMERS from one of the Kconfig*
+files in arch/powerpc?  Asking for a friend.  ;-)
 
-Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215453
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v4:
- - Wording change.
-
-v3:
- - Wording change to make the patch more clear.
-
-v2:
- - Wording change.
- - Empty line dropped.
-
- drivers/pci/pcie/dpc.c | 60 +++++++++++++++++++++++++++++++-----------
- 1 file changed, 44 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 3e9afee02e8d1..414258967f08e 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -343,13 +343,33 @@ void pci_dpc_init(struct pci_dev *pdev)
- 	}
- }
- 
-+static void dpc_enable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
-+static void dpc_disable(struct pcie_device *dev)
-+{
-+	struct pci_dev *pdev = dev->port;
-+	u16 ctl;
-+
-+	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
-+	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
-+	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+}
-+
- #define FLAG(x, y) (((x) & (y)) ? '+' : '-')
- static int dpc_probe(struct pcie_device *dev)
- {
- 	struct pci_dev *pdev = dev->port;
- 	struct device *device = &dev->device;
- 	int status;
--	u16 ctl, cap;
-+	u16 cap;
- 
- 	if (!pcie_aer_is_native(pdev) && !pcie_ports_dpc_native)
- 		return -ENOTSUPP;
-@@ -364,10 +384,7 @@ static int dpc_probe(struct pcie_device *dev)
- 	}
- 
- 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--
--	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+	dpc_enable(dev);
- 	pci_info(pdev, "enabled with IRQ %d\n", dev->irq);
- 
- 	pci_info(pdev, "error containment capabilities: Int Msg #%d, RPExt%c PoisonedTLP%c SwTrigger%c RP PIO Log %d, DL_ActiveErr%c\n",
-@@ -380,22 +397,33 @@ static int dpc_probe(struct pcie_device *dev)
- 	return status;
- }
- 
--static void dpc_remove(struct pcie_device *dev)
-+static int dpc_suspend(struct pcie_device *dev)
- {
--	struct pci_dev *pdev = dev->port;
--	u16 ctl;
-+	dpc_disable(dev);
-+	return 0;
-+}
- 
--	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
--	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
--	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
-+static int dpc_resume(struct pcie_device *dev)
-+{
-+	dpc_enable(dev);
-+	return 0;
-+}
-+
-+static void dpc_remove(struct pcie_device *dev)
-+{
-+	dpc_disable(dev);
- }
- 
- static struct pcie_port_service_driver dpcdriver = {
--	.name		= "dpc",
--	.port_type	= PCIE_ANY_PORT,
--	.service	= PCIE_PORT_SERVICE_DPC,
--	.probe		= dpc_probe,
--	.remove		= dpc_remove,
-+	.name			= "dpc",
-+	.port_type		= PCIE_ANY_PORT,
-+	.service		= PCIE_PORT_SERVICE_DPC,
-+	.probe			= dpc_probe,
-+	.suspend		= dpc_suspend,
-+	.resume			= dpc_resume,
-+	.runtime_suspend	= dpc_suspend,
-+	.runtime_resume		= dpc_resume,
-+	.remove			= dpc_remove,
- };
- 
- int __init pcie_dpc_init(void)
--- 
-2.34.1
-
+							Thanx, Paul
