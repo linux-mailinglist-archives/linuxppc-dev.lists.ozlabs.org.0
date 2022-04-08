@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF754F9996
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 17:33:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2172A4F9997
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 17:34:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZj2L6tYtz3bft
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 01:33:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZj3114Wfz3bx3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 01:34:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=NFvwQzSl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=canonical.com header.i=@canonical.com header.a=rsa-sha256 header.s=20210705 header.b=RTFeNcxJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,38 +18,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=kai.heng.feng@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=canonical.com header.i=@canonical.com
- header.a=rsa-sha256 header.s=20210705 header.b=NFvwQzSl; 
+ header.a=rsa-sha256 header.s=20210705 header.b=RTFeNcxJ; 
  dkim-atps=neutral
 Received: from smtp-relay-canonical-1.canonical.com
  (smtp-relay-canonical-1.canonical.com [185.125.188.121])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZj1k4nrTz2yJ9
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 01:32:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZj1m1d41z2yJ9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 01:33:00 +1000 (AEST)
 Received: from localhost.localdomain (unknown [10.101.196.174])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 2C69A41DC2; 
- Fri,  8 Apr 2022 15:32:45 +0000 (UTC)
+ by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 672C741DC4; 
+ Fri,  8 Apr 2022 15:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
- s=20210705; t=1649431970;
- bh=SEHB8Gr2t8wcvSx8XgT0ofHfG2Fduuwte9ePkJVoBlY=;
- h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
- b=NFvwQzSlzqaEx78sYmn6INCxcrKaodKJdWWEnsj3C6eM+JXfk4btowHLO/+4PHY18
- 4FEb6ktdW2VCCPP7+KBIwsbZXEJLoIlhQsHsrINYq4RydoSXaDoMqhx4wDw0mtax9T
- 3Ao9Dgo/ubU04U8Bs1XS6zBCuwgZS8EUMVgV7BT4k8HOqwVbp2fF8ulO0jUNkzi1kv
- DPnohqjHh83WmE7YDd/XjnGlh89Z4+D1FNNDq18RLvda0QMw2GMH13zccoTuCCO5wP
- TFqeGTZ9Iogz2MFYG83n507nsRp5rUXfQsgjpzIgUaKln2hamuQzSot60/u8olQyuz
- kAn2l8RAj2NcQ==
+ s=20210705; t=1649431977;
+ bh=MnhRgeQEal2lOKifhRiXmc8x4Chl0YZYFn2hkFpTXqs=;
+ h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+ MIME-Version;
+ b=RTFeNcxJyiR/5mCM1Q9pM7LWIBn/ZhyWzBUT0fO+lP8iFerIvzN1qXQzzmT5utOil
+ h+1K7ljy5rEA9D45v3THRV/FZxVrnKj3SUBvWZJK7zPL5V2ER7kVgPi84ecWa0RkOe
+ 3jmODJ4razCd9RIjDBR0IWw2GRIa3rz7sUwzxU8qb/G3bvltsi/fL2ggpyOxUUAC49
+ vyjSwLIyqe/l7MzdB3KX/shG4Rc1/+S7Ojj3ijQczViqQR+X1O3hgM50ZfSjgFTWPv
+ 1ME4aELvRyRFG1sFentlVWAdli7mcCBAvUn8YZMKOJs0DPJWRUiPFjTGUfbBjDp1PA
+ 4whoXiZwDTa5g==
 From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 To: bhelgaas@google.com
-Subject: [PATCH v4 1/2] PCI/AER: Disable AER service when link is in L2/L3
+Subject: [PATCH v4 2/2] PCI/DPC: Disable DPC service when link is in L2/L3
  ready, L2 and L3 state
-Date: Fri,  8 Apr 2022 23:31:58 +0800
-Message-Id: <20220408153159.106741-1-kai.heng.feng@canonical.com>
+Date: Fri,  8 Apr 2022 23:31:59 +0800
+Message-Id: <20220408153159.106741-2-kai.heng.feng@canonical.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220408153159.106741-1-kai.heng.feng@canonical.com>
+References: <20220408153159.106741-1-kai.heng.feng@canonical.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,79 +86,122 @@ some errors reported by AER:
 [   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
 [   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
 
-So disable AER service to avoid the noises from turning power rails
-on/off when the device is in low power states (D3hot and D3cold), as
-PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
-that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
-(D3hot), L2 (D3cold with aux power) and L3 (D3cold).
+Since AER is disabled in previous patch for a Link in L2/L3 Ready, L2
+and L3, also disable DPC here as DPC depends on AER to work.
 
 Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215453
 Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 ---
 v4:
- - Explicitly states the spec version.
- - Wording change. 
+ - Wording change.
 
 v3:
- - Remove reference to ACS.
- - Wording change.
+ - Wording change to make the patch more clear.
 
 v2:
  - Wording change.
+ - Empty line dropped.
 
- drivers/pci/pcie/aer.c | 31 +++++++++++++++++++++++++------
- 1 file changed, 25 insertions(+), 6 deletions(-)
+ drivers/pci/pcie/dpc.c | 60 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 44 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 9fa1f97e5b270..e4e9d4a3098d7 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1367,6 +1367,22 @@ static int aer_probe(struct pcie_device *dev)
- 	return 0;
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index 3e9afee02e8d1..414258967f08e 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -343,13 +343,33 @@ void pci_dpc_init(struct pci_dev *pdev)
+ 	}
  }
  
-+static int aer_suspend(struct pcie_device *dev)
++static void dpc_enable(struct pcie_device *dev)
 +{
-+	struct aer_rpc *rpc = get_service_data(dev);
++	struct pci_dev *pdev = dev->port;
++	u16 ctl;
 +
-+	aer_disable_rootport(rpc);
-+	return 0;
++	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
++	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
++	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
 +}
 +
-+static int aer_resume(struct pcie_device *dev)
++static void dpc_disable(struct pcie_device *dev)
 +{
-+	struct aer_rpc *rpc = get_service_data(dev);
++	struct pci_dev *pdev = dev->port;
++	u16 ctl;
 +
-+	aer_enable_rootport(rpc);
-+	return 0;
++	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
++	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
++	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
 +}
 +
- /**
-  * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
-  * @dev: pointer to Root Port, RCEC, or RCiEP
-@@ -1433,12 +1449,15 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
- }
+ #define FLAG(x, y) (((x) & (y)) ? '+' : '-')
+ static int dpc_probe(struct pcie_device *dev)
+ {
+ 	struct pci_dev *pdev = dev->port;
+ 	struct device *device = &dev->device;
+ 	int status;
+-	u16 ctl, cap;
++	u16 cap;
  
- static struct pcie_port_service_driver aerdriver = {
--	.name		= "aer",
--	.port_type	= PCIE_ANY_PORT,
--	.service	= PCIE_PORT_SERVICE_AER,
+ 	if (!pcie_aer_is_native(pdev) && !pcie_ports_dpc_native)
+ 		return -ENOTSUPP;
+@@ -364,10 +384,7 @@ static int dpc_probe(struct pcie_device *dev)
+ 	}
+ 
+ 	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CAP, &cap);
+-	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
 -
--	.probe		= aer_probe,
--	.remove		= aer_remove,
-+	.name			= "aer",
+-	ctl = (ctl & 0xfff4) | PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN;
+-	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
++	dpc_enable(dev);
+ 	pci_info(pdev, "enabled with IRQ %d\n", dev->irq);
+ 
+ 	pci_info(pdev, "error containment capabilities: Int Msg #%d, RPExt%c PoisonedTLP%c SwTrigger%c RP PIO Log %d, DL_ActiveErr%c\n",
+@@ -380,22 +397,33 @@ static int dpc_probe(struct pcie_device *dev)
+ 	return status;
+ }
+ 
+-static void dpc_remove(struct pcie_device *dev)
++static int dpc_suspend(struct pcie_device *dev)
+ {
+-	struct pci_dev *pdev = dev->port;
+-	u16 ctl;
++	dpc_disable(dev);
++	return 0;
++}
+ 
+-	pci_read_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, &ctl);
+-	ctl &= ~(PCI_EXP_DPC_CTL_EN_FATAL | PCI_EXP_DPC_CTL_INT_EN);
+-	pci_write_config_word(pdev, pdev->dpc_cap + PCI_EXP_DPC_CTL, ctl);
++static int dpc_resume(struct pcie_device *dev)
++{
++	dpc_enable(dev);
++	return 0;
++}
++
++static void dpc_remove(struct pcie_device *dev)
++{
++	dpc_disable(dev);
+ }
+ 
+ static struct pcie_port_service_driver dpcdriver = {
+-	.name		= "dpc",
+-	.port_type	= PCIE_ANY_PORT,
+-	.service	= PCIE_PORT_SERVICE_DPC,
+-	.probe		= dpc_probe,
+-	.remove		= dpc_remove,
++	.name			= "dpc",
 +	.port_type		= PCIE_ANY_PORT,
-+	.service		= PCIE_PORT_SERVICE_AER,
-+	.probe			= aer_probe,
-+	.suspend		= aer_suspend,
-+	.resume			= aer_resume,
-+	.runtime_suspend	= aer_suspend,
-+	.runtime_resume		= aer_resume,
-+	.remove			= aer_remove,
++	.service		= PCIE_PORT_SERVICE_DPC,
++	.probe			= dpc_probe,
++	.suspend		= dpc_suspend,
++	.resume			= dpc_resume,
++	.runtime_suspend	= dpc_suspend,
++	.runtime_resume		= dpc_resume,
++	.remove			= dpc_remove,
  };
  
- /**
+ int __init pcie_dpc_init(void)
 -- 
 2.34.1
 
