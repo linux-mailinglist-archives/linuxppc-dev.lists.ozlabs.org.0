@@ -1,73 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1834F8CE0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 05:43:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2034F8CE3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 05:55:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZPGr4vJvz2ynd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 13:43:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZPXX2dGkz3bfC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 13:55:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dL1emr/S;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=avEXtVrk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::536;
- helo=mail-pg1-x536.google.com; envelope-from=keescook@chromium.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=dL1emr/S; dkim-atps=neutral
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com
- [IPv6:2607:f8b0:4864:20::536])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
+ helo=sin.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=avEXtVrk; 
+ dkim-atps=neutral
+Received: from sin.source.kernel.org (sin.source.kernel.org
+ [IPv6:2604:1380:40e1:4800::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZPG759wfz2xY1
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 13:42:37 +1000 (AEST)
-Received: by mail-pg1-x536.google.com with SMTP id 66so6674018pga.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Apr 2022 20:42:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=K96mlN10n7EweDR+53jcFZAkfBQwRjsHeZeSVOaqH6U=;
- b=dL1emr/SVvDUitmI/GhFvZ5GDfJfCZqqybUK0jY5r9YpcwDEym86lGSPk5ajT9fkXv
- 68GItVAds/Z+CMKr5K6+nclMV48nPWohX7Qz2mbKGSdt22CtfWYhovUHU9eWOOIJxF/x
- TIwKpkgJMMkaKK6GQVnlphvoASG3ht7FbopB8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=K96mlN10n7EweDR+53jcFZAkfBQwRjsHeZeSVOaqH6U=;
- b=iwGTrfmPy9JW1OVtPE4xt+ao0tEiQcFRjA8fangips9/phFbs0IcBKUamsm21oXLyf
- xl23cubak8Id24GDfQWQHK//tHa+AQMJUzGKS8TORfksWDpUjNcEEuE2SQdXT95JPG30
- mUF1Qd8zO75KGvcfdmOhJlfIMQiu5tWWgm9gAv73NEPsOJiDiTBxmuK1xtRSIXUgsDZ4
- w7Rn+tC6p7YkooifU6ffA9pLFY/iwclwmfM+UTipdAhN3XB87zgw/0SSUSqYw+9GaE3w
- cdcmyQB+6BbTy/geeLyqL/CQpqmxsJZ8gM+r2pv6jdOwJDDYZOy2OnVjfzUg5A5tknl4
- StuA==
-X-Gm-Message-State: AOAM531Msh//qiUcYUqvc0xoa74aHO1kJjmDeJuezTn/3rX0Q7Au0PN/
- 2+vim8dlbARi4Wx0ZJmK8nlX+A==
-X-Google-Smtp-Source: ABdhPJzs4BJvqoMUJeyjaJ1TeZcDIdeQX1b09zQG89u/2Jo2P8sjElQ6/UOvNErwvd9fdVv73z+YWw==
-X-Received: by 2002:a63:6c02:0:b0:398:833b:f739 with SMTP id
- h2-20020a636c02000000b00398833bf739mr14106439pgc.524.1649389353914; 
- Thu, 07 Apr 2022 20:42:33 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id
- q27-20020aa7961b000000b004fdf7a4d49esm17171769pfg.170.2022.04.07.20.42.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 Apr 2022 20:42:33 -0700 (PDT)
-Date: Thu, 7 Apr 2022 20:42:32 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH] lkdtm: Replace lkdtm_rodata_do_nothing() by
- do_nothing()
-Message-ID: <202204072037.FE91C45E@keescook>
-References: <fe36bf23fb14e7eff92a95a1092ed38edb01d5f5.1634491011.git.christophe.leroy@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZPWt5bmLz2xBv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 13:54:34 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 616C0CE29C1;
+ Fri,  8 Apr 2022 03:54:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD55C385A1;
+ Fri,  8 Apr 2022 03:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1649390068;
+ bh=XvrZjZaX5Rsi5fiZFoDR7A0z44p/01oSQz1BX2ODyvU=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=avEXtVrk7mOyW8zohyzfG6CeVAW9WHmglJH2zFNO6BqivVAiwRFXM5FysYbfpSW4R
+ e5ioNTKU9dR9CdSfVo/qzoEX+KFzJXpGKeUC7RYWphXdJ9lD7QEgvw1cEHhAK3riim
+ SfLqUUEiyZ6Fo9fMpvbleZcmaOnWtrU+CsAVL3b/ftZoe3QS1owYNeov9z652aNwns
+ +dhbMjxfJFqASqlpcBfHfh/dNAHNoXw1FYbDqttp1G+Tba1An+xtmjAldSlNV81Un0
+ hXlyPc0jm4HYBSy2zICqZdHsaMx79AWrW1iGEJpX+m85MDo32q6JDwBzIWVYqdGVM3
+ 4k9iubEHtRGQg==
+Date: Thu, 7 Apr 2022 20:54:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jakob Koschel <jakobkoschel@gmail.com>
+Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
+ iterator for list_add() after loop
+Message-ID: <20220407205426.6a31e4b2@kernel.org>
+In-Reply-To: <20220407102900.3086255-3-jakobkoschel@gmail.com>
+References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
+ <20220407102900.3086255-3-jakobkoschel@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fe36bf23fb14e7eff92a95a1092ed38edb01d5f5.1634491011.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,44 +65,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>,
- linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
+ Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
+ Ariel Elior <aelior@marvell.com>, Florian Fainelli <f.fainelli@gmail.com>,
+ Manish Chopra <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>, "Bos, 
+ H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
+ Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
+ Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
+ Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Di Zhu <zhudi21@huawei.com>, Lars Povlsen <lars.povlsen@microchip.com>,
+ Colin Ian King <colin.king@intel.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com,
+ Edward Cree <ecree.xilinx@gmail.com>, Michael Walle <michael@walle.cc>,
+ Xu Wang <vulab@iscas.ac.cn>, Vladimir Oltean <olteanv@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Casper Andersson <casper.casan@gmail.com>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Oct 17, 2021 at 07:19:47PM +0200, Christophe Leroy wrote:
-> But for EXEC_RODATA test, execute_location() uses
-> lkdtm_rodata_do_nothing() which is already in rodata section
-> at build time instead of using a copy of do_nothing(). However
-> it still uses the function descriptor of do_nothing(). There
-> is a risk that running lkdtm_rodata_do_nothing() with the
-> function descriptor of do_thing() is wrong.
+On Thu,  7 Apr 2022 12:28:47 +0200 Jakob Koschel wrote:
+> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
+> index b7e95d60a6e4..cfcae4d19eef 100644
+> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
+> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
+> @@ -27,20 +27,24 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
+>  	if (list_empty(&gating_cfg->entries)) {
+>  		list_add(&e->list, &gating_cfg->entries);
+>  	} else {
+> -		struct sja1105_gate_entry *p;
+> +		struct sja1105_gate_entry *p = NULL, *iter;
+>  
+> -		list_for_each_entry(p, &gating_cfg->entries, list) {
+> -			if (p->interval == e->interval) {
+> +		list_for_each_entry(iter, &gating_cfg->entries, list) {
+> +			if (iter->interval == e->interval) {
+>  				NL_SET_ERR_MSG_MOD(extack,
+>  						   "Gate conflict");
+>  				rc = -EBUSY;
+>  				goto err;
+>  			}
+>  
+> -			if (e->interval < p->interval)
+> +			if (e->interval < iter->interval) {
+> +				p = iter;
+> +				list_add(&e->list, iter->list.prev);
+>  				break;
+> +			}
+>  		}
+> -		list_add(&e->list, p->list.prev);
+> +		if (!p)
+> +			list_add(&e->list, gating_cfg->entries.prev);
 
-Wrong how? (Could there be two descriptors?)
+This turns a pretty slick piece of code into something ugly :(
+I'd rather you open coded the iteration here than make it more 
+complex to satisfy "safe coding guidelines".
 
-> To remove the above risk, change the approach and do the same
-> as for other EXEC tests: use a copy of do_nothing(). The copy
-> cannot be done during the test because RODATA area is write
-> protected. Do the copy during init, before RODATA becomes
-> write protected.
-
-Hmm, hmm. This is a nice way to handle it, but I'm not sure which
-"weird" way is better. I kind of prefer the code going through all the
-"regular" linking goo to end up in .rodata, but is it really any
-different from doing this via the ro_after_init section? It makes me
-nervous because they can technically be handled differently. For
-example, .rodata is mapped differently on some architectures compared to
-ro_after_init. Honestly, I actually this this patch should be modified
-to _add_ a new test for EXEC_RO_AFTER_INIT, and leave the existing
-.rodata one alone...
-
--Kees
-
--- 
-Kees Cook
+Also the list_add() could be converted to list_add_tail().
