@@ -2,94 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51234F9A14
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 18:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 551D94F9B49
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 19:03:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZjlv6292z3bfh
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 02:06:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZl222cznz3bZq
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 03:03:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K0YhABMr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=k/HNWFMW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::136;
+ helo=mail-il1-x136.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=K0YhABMr; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=k/HNWFMW; dkim-atps=neutral
+Received: from mail-il1-x136.google.com (mail-il1-x136.google.com
+ [IPv6:2607:f8b0:4864:20::136])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZjlC1ZmWz2yS3
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 02:05:26 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 238FWNDs004976; 
- Fri, 8 Apr 2022 16:05:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=iNBiKma26w+0R44hNOoECeN1UHi+2McPDK0VaxNI7eA=;
- b=K0YhABMrk3OSOqXcScei/wOBH6lD0uzN1AYiP27JJJdtEgNyOen3R4lIEglZhMrdUExi
- 9oVt+eusWhyvWSW5bolD0dA2aEjSImwfyF6P2X9e8gS/TP/JfJgsvagJdeO56JapP8Z8
- laqn6g1yo+qdD9UCpHPESYRZhSiAu/uiCTv9SIRQimNJXMN71SJ8o1BhSxyaX5pnt5US
- 3LGyCBYv3AqODht4W444hMDqiq0LaOcvra6NnJMZEA36IY2ZENfs39NS/s54NryL9yAV
- xTpxxLtWp8xVlY98q11Pjcsi6FttHLxv5b2BLwOw8r2IX4199C0xGWHfsoVkjOjSVMwf uw== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3fad2gwkuc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 16:05:16 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 238G3Ed3020167;
- Fri, 8 Apr 2022 16:05:15 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma06ams.nl.ibm.com with ESMTP id 3f6drhv38x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 16:05:14 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 238G5CCN53215508
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Apr 2022 16:05:12 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7BEBC4203F;
- Fri,  8 Apr 2022 16:05:12 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5C74B42041;
- Fri,  8 Apr 2022 16:05:11 +0000 (GMT)
-Received: from sig-9-65-90-167.ibm.com (unknown [9.65.90.167])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  8 Apr 2022 16:05:11 +0000 (GMT)
-Message-ID: <ebfa96c9cdcd48b28c524af0fb4e10bcb5a7acb9.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc: Mark arch_get_ima_policy() and
- is_ppc_trustedboot_enabled() as __init
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Date: Fri, 08 Apr 2022 12:05:10 -0400
-In-Reply-To: <20220407141520.733735-1-mpe@ellerman.id.au>
-References: <20220407141520.733735-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lZGqou2AZc6mHWP9byjX-9CEU8xU8qhM
-X-Proofpoint-GUID: lZGqou2AZc6mHWP9byjX-9CEU8xU8qhM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-04-08_05,2022-04-08_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=861 adultscore=0
- impostorscore=0 spamscore=0 phishscore=0 clxscore=1011 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204080081
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZl1L6vccz2xvW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 03:02:46 +1000 (AEST)
+Received: by mail-il1-x136.google.com with SMTP id t4so6853858ilo.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Apr 2022 10:02:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+cmSU0Va28wW3Wv27B01VfHd9CC4OB3jfpn/xb5rpDI=;
+ b=k/HNWFMWUhwt5qbzB1IFJsSLxCUYI+nUO25IG7WP0fG4xUGslpD7gKg8IgZyAe2Z5T
+ XTkga/PZ7VkogQDCJUAvDf+jS5PdNFlfp2Sfyvtma0bfgOLuV4TULJVHCVc+TADLwsXQ
+ fSAeFByQvHnpplIJfZbugAjZoRxjB8bj69g+X7yNEWHVX9EgRXYihshUH3DxwFwD+b30
+ Jt7m5F0KXE8CaOQpNOi0ObrsZt6tlXk0Xbqcpa1k3nRlsWqsquZVqGcqeb/db6D70r55
+ +u8NeL9/JhKD4GVWqqEkYllK28NpQmzHgbDBVhW4kGssvNffQAI4/QCquN3Kpj3DmMjZ
+ 9giA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+cmSU0Va28wW3Wv27B01VfHd9CC4OB3jfpn/xb5rpDI=;
+ b=Zr6KtA/VZTyJy4iyfD9ZOAkn/VM8YkSaxRX5inEOmJqsT7ljzpjOXqsmlT8p2MpJYK
+ UokN327+IUPfenPEEvsbfCWWJSA6ZJy3Dbug25n31s43JVW7gE0Qiw/IoXc2BrUvV09p
+ ae6TDGtFVrr9xPC+XNZoeXHDcbAHZAuK5ZICbo5JDSjySRHKeuQEaMjEBY8c1KfBGd1/
+ g4e+cvKdxPIFbpKFzh31iWjgS5tLQqDlfilkpdq0kgzpbgYB75l+5Bvolm+u0T106ApF
+ 4Ugn58pwl1UzDn/Z/PjcdozcuJFM4PTss3iHFA6FTk8TFKBDlusnWvqS5IhigH3VSPff
+ qnZg==
+X-Gm-Message-State: AOAM531kYQ1Hxw9VcbDA5N5B3hhjpGoRfhHFaFEZ+V/iO8cDFkB0KJJr
+ pgCZNCVTkxxtNdMlF4vwOVrrNTOVglElBkkpBLo=
+X-Google-Smtp-Source: ABdhPJxuX89crWnUYos8OlxCY0JszVtXNikV3THYVoau7sPe8UOdn4n0i+tRO5nTSPvJh54DHbIACrJtJqwLHCU1HcU=
+X-Received: by 2002:a05:6e02:1846:b0:2c7:b032:5d92 with SMTP id
+ b6-20020a056e02184600b002c7b0325d92mr9261539ilv.237.1649437361331; Fri, 08
+ Apr 2022 10:02:41 -0700 (PDT)
+MIME-Version: 1.0
+References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
+ <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
+ <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
+ <87pmls6nt7.fsf@mpe.ellerman.id.au>
+ <87k0bz7i1s.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87k0bz7i1s.fsf@mpe.ellerman.id.au>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 8 Apr 2022 19:02:30 +0200
+Message-ID: <CANiq72=UXURR-caoXrP7zQNWmeKRtzZGRwF1iTi9svZEuHP22g@mail.gmail.com>
+Subject: Re: rcu_sched self-detected stall on CPU
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,24 +78,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, dja@axtens.net
+Cc: rcu <rcu@vger.kernel.org>, Zhouyi Zhou <zhouzhouyi@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Nicholas Piggin <npiggin@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2022-04-08 at 00:15 +1000, Michael Ellerman wrote:
-> We can mark arch_get_ima_policy() as __init because it's only caller
-> ima_init_arch_policy() is __init. We can then mark
-> is_ppc_trustedboot_enabled() __init because its only caller is
-> arch_get_ima_policy().
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+On Fri, Apr 8, 2022 at 4:42 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>
+> The Rust CI has it disabled because I copied that from the x86 defconfig
+> they were using back when I added the Rust support. I think that was
+> meant to be a stripped down fast config for CI, but the result is it's
 
-I assume you want to upstream this via power,
+Indeed, that was my intention when I created the original config.
 
-    Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> So I'll send a patch to turn HIGH_RES_TIMERS on for the Rust CI, and we
+> can debug this further without blocking them.
 
-thanks,
+Thanks! I can also do it on your behalf, if you prefer, when I sync with -rc1.
 
-Mimi
-
+Cheers,
+Miguel
