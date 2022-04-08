@@ -2,88 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0594F8F8D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 09:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF524F8F99
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 09:26:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZVCB3SXBz3bfC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 17:25:26 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=K+VOtmna;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZVDW6ST4z3cH9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Apr 2022 17:26:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=K+VOtmna; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZVBY63jnz2yHB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 17:24:53 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2385QbLS011064; 
- Fri, 8 Apr 2022 07:24:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=lJdUtViZ+9WYK9MNV/wF5jy+0uPy4byFiA3RxmH2wm0=;
- b=K+VOtmnawi47OdFf+Qt8yn4/LWR4Y0m47nb+RNdHebRJh0J/jcj2TWpp6gsGX+sr/zlf
- uZLJwANDoAaUK8JXOpoJkyOJjbRvgg1JeeGeDR2nB+IfTaybXomlT1QRIxB6CPzbk1zL
- UbgbPKAt1Vv+kLUmokAbwwBWaY6DtPfo2gwOxk0+M7ekdhdaNW/EM83V8AQuJKxN1NW6
- IKBuASuq4mSAH0OxKbAsRrtouHGt2Bp511Uhi63zzpyOijePRr70B5lC7foQEv4nk2bO
- ymZ+G+BDuTmTfNxBkYPHG4QkaiTr9d3W6r5KGCow9DZk6z3yE/CXokdwFGSTiL7Wg4sK LA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3faewhsxhj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 07:24:44 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2387CsSo024440;
- Fri, 8 Apr 2022 07:24:41 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3f6e49395m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 Apr 2022 07:24:41 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2387Odjp39453024
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 Apr 2022 07:24:39 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C9445204F;
- Fri,  8 Apr 2022 07:24:39 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.211.146.176])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id EB6EF52051;
- Fri,  8 Apr 2022 07:24:33 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: shuah@kernel.org, linux-kselftest@vger.kernel.org,
- disgoel@linux.vnet.ibm.com
-Subject: [PATCH V3] testing/selftests/mqueue: Fix mq_perf_tests to free the
- allocated cpu set
-Date: Fri,  8 Apr 2022 12:54:31 +0530
-Message-Id: <20220408072431.94947-1-atrajeev@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZVCJ31lQz3bmP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Apr 2022 17:25:32 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KZVC65qQyz9sSd;
+ Fri,  8 Apr 2022 09:25:22 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 48HuQbzOigg3; Fri,  8 Apr 2022 09:25:22 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KZVC41YvQz9sSf;
+ Fri,  8 Apr 2022 09:25:20 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1718A8B79C;
+ Fri,  8 Apr 2022 09:25:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id pnH8sFJh-bTC; Fri,  8 Apr 2022 09:25:19 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.13])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A64348B798;
+ Fri,  8 Apr 2022 09:25:19 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2387PBd7637055
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Fri, 8 Apr 2022 09:25:11 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2387PAoN637053;
+ Fri, 8 Apr 2022 09:25:10 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v9 0/4] mm: Enable conversion of powerpc to default topdown
+ mmap layout
+Date: Fri,  8 Apr 2022 09:24:58 +0200
+Message-Id: <cover.1649401201.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1649402686; l=3749; s=20211009;
+ h=from:subject:message-id; bh=mbaN0Ay/dxvG6sk8Y2S8aeUg8HVugbWpxoBP9ZgeYPY=;
+ b=mBQu3vjXEDLkH/Up0d17Vu6+vefUbydIx+LkIDPw6BCnb/nCnGzkhoklm8laUOnJB9FI85g6f7JF
+ 4k9v7gAcBP4Rh88gOkldx5FKs/3T645i9jh3IFRQ7Vse0jPsI2dS
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oFSK29UBfSCeQZpUe-fbcXjKIGm8eMPU
-X-Proofpoint-GUID: oFSK29UBfSCeQZpUe-fbcXjKIGm8eMPU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.425,FMLib:17.11.64.514
- definitions=2022-04-08_02,2022-04-07_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- bulkscore=0 spamscore=0 clxscore=1015 mlxlogscore=999 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204080038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,113 +73,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, acme@kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The selftest "mqueue/mq_perf_tests.c" use CPU_ALLOC to allocate
-CPU set. This cpu set is used further in pthread_attr_setaffinity_np
-and by pthread_create in the code. But in current code, allocated
-cpu set is not freed.
+Rebased on top of Linux 5.18-rc1
 
-Fix this issue by adding CPU_FREE in the "shutdown" function which
-is called in most of the error/exit path for the cleanup. There are
-few error paths which exit without using shutdown. Add a common goto
-error path with CPU_FREE for these cases.
+This is the mm part of the series that converts powerpc to default
+topdown mmap layout, for merge into v5.18
 
-Fixes: 7820b0715b6f ("tools/selftests: add mq_perf_tests")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
-Changelog:
- From v2 -> v3:
-  Addressed review comment from Shuah Khan to add
-  common "goto" error path with CPU_FREE for few exit
-  cases.
- From v1 -> v2:
-  Addressed review comment from Shuah Khan to add
-  CPU_FREE in other exit paths where it is needed
+powerpc requires its own arch_get_unmapped_area() only when
+slices are needed, which is only for book3s/64. First part of
+the series moves slices into book3s/64 specific directories
+and cleans up other subarchitectures.
 
- .../testing/selftests/mqueue/mq_perf_tests.c  | 25 +++++++++++++------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+The actual convertion of powerpc to default topdown mmap layout will
+then be resent in a follow-up series for application on v5.19
 
-diff --git a/tools/testing/selftests/mqueue/mq_perf_tests.c b/tools/testing/selftests/mqueue/mq_perf_tests.c
-index b019e0b8221c..84fda3b49073 100644
---- a/tools/testing/selftests/mqueue/mq_perf_tests.c
-+++ b/tools/testing/selftests/mqueue/mq_perf_tests.c
-@@ -180,6 +180,9 @@ void shutdown(int exit_val, char *err_cause, int line_no)
- 	if (in_shutdown++)
- 		return;
- 
-+	/* Free the cpu_set allocated using CPU_ALLOC in main function */
-+	CPU_FREE(cpu_set);
-+
- 	for (i = 0; i < num_cpus_to_pin; i++)
- 		if (cpu_threads[i]) {
- 			pthread_kill(cpu_threads[i], SIGUSR1);
-@@ -551,6 +554,12 @@ int main(int argc, char *argv[])
- 		perror("sysconf(_SC_NPROCESSORS_ONLN)");
- 		exit(1);
- 	}
-+
-+	if (getuid() != 0)
-+		ksft_exit_skip("Not running as root, but almost all tests "
-+			"require root in order to modify\nsystem settings.  "
-+			"Exiting.\n");
-+
- 	cpus_online = min(MAX_CPUS, sysconf(_SC_NPROCESSORS_ONLN));
- 	cpu_set = CPU_ALLOC(cpus_online);
- 	if (cpu_set == NULL) {
-@@ -589,7 +598,7 @@ int main(int argc, char *argv[])
- 						cpu_set)) {
- 					fprintf(stderr, "Any given CPU may "
- 						"only be given once.\n");
--					exit(1);
-+					goto err_code;
- 				} else
- 					CPU_SET_S(cpus_to_pin[cpu],
- 						  cpu_set_size, cpu_set);
-@@ -607,7 +616,7 @@ int main(int argc, char *argv[])
- 				queue_path = malloc(strlen(option) + 2);
- 				if (!queue_path) {
- 					perror("malloc()");
--					exit(1);
-+					goto err_code;
- 				}
- 				queue_path[0] = '/';
- 				queue_path[1] = 0;
-@@ -622,17 +631,12 @@ int main(int argc, char *argv[])
- 		fprintf(stderr, "Must pass at least one CPU to continuous "
- 			"mode.\n");
- 		poptPrintUsage(popt_context, stderr, 0);
--		exit(1);
-+		goto err_code;
- 	} else if (!continuous_mode) {
- 		num_cpus_to_pin = 1;
- 		cpus_to_pin[0] = cpus_online - 1;
- 	}
- 
--	if (getuid() != 0)
--		ksft_exit_skip("Not running as root, but almost all tests "
--			"require root in order to modify\nsystem settings.  "
--			"Exiting.\n");
--
- 	max_msgs = fopen(MAX_MSGS, "r+");
- 	max_msgsize = fopen(MAX_MSGSIZE, "r+");
- 	if (!max_msgs)
-@@ -740,4 +744,9 @@ int main(int argc, char *argv[])
- 			sleep(1);
- 	}
- 	shutdown(0, "", 0);
-+
-+err_code:
-+	CPU_FREE(cpu_set);
-+	exit(1);
-+
- }
+First patch modifies the core mm to allow powerpc to still provide its
+own arch_randomize_brk()
+
+Second patch modifies core mm to give len and flags to
+arch_get_mmap_end() as powerpc needs it. 
+
+Third patch modifies core mm to allow powerpc to use generic versions
+of get_unmapped_area functions for Radix while still providing its own
+implementation for Hash, the selection between Radix and Hash being
+done at runtime.
+
+Fourth patch is a complement/fix of f6795053dac8 ("mm: mmap: Allow for
+"high" userspace addresses") for hugetlb. It adds support for "high"
+userspace addresses that are optionally supported on the system and
+have to be requested via a hint mechanism ("high" addr parameter to mmap).
+
+Previous version of the series is available at
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?state=*&series=289718
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+Changes in v9:
+- Sending mm patches and powerpc patches separately with the objective
+of mm patches going into kernel v5.18 and powerpc patches folling up
+into kernel v5.19
+
+Changes in v8:
+- Moved patch "sizes.h: Add SZ_1T macro" up from which is already in linux-next but not in Linus tree yet.
+- Rebased on today's powerpc/next
+
+Changes in v7:
+- Taken into account comments from Catalin (patches 3 and 4)
+
+Changes in v6:
+- New patch (patch 4) to take arch_get_mmap_base() and arch_get_mmap_end() into account in generic hugetlb_get_unmapped_area()
+- Get back arch_randomize_brk() simplification as it relies on default topdown mmap layout.
+- Fixed precedence between || and && in powerpc's arch_get_mmap_end() (patch 9)
+
+Changes in v5:
+- Added patch 3
+- Added arch_get_mmap_base() and arch_get_mmap_end() to patch 7 to better match original powerpc behaviour
+- Switched patched 10 and 11 and performed full randomisation in patch 10 just before switching to default implementation, as suggested by Nic.
+
+Changes in v4:
+- Move arch_randomize_brk() simplification out of this series
+- Add a change to core mm to enable using generic implementation
+while providing arch specific one at the same time.
+- Reworked radix get_unmapped_area to use generic implementation
+- Rebase on top of Nic's series v6
+
+Changes in v3:
+- Fixed missing <linux/elf-randomize.h> in last patch
+- Added a patch to move SZ_1T out of drivers/pci/controller/pci-xgene.c
+
+Changes in v2:
+- Moved patch 4 before patch 2
+- Make generic arch_randomize_brk() __weak
+- Added patch 9
+
+Christophe Leroy (4):
+  mm: Allow arch specific arch_randomize_brk() with
+    CONFIG_ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
+  mm, hugetlbfs: Allow an arch to always use generic versions of
+    get_unmapped_area functions
+  mm: Add len and flags parameters to arch_get_mmap_end()
+  mm, hugetlbfs: Allow for "high" userspace addresses
+
+ arch/arm64/include/asm/processor.h |  4 +--
+ fs/hugetlbfs/inode.c               | 26 ++++++++++++------
+ include/linux/hugetlb.h            |  5 ++++
+ include/linux/sched/mm.h           | 17 ++++++++++++
+ mm/mmap.c                          | 43 ++++++++++++++++++------------
+ mm/util.c                          |  2 +-
+ 6 files changed, 69 insertions(+), 28 deletions(-)
+
 -- 
 2.35.1
 
