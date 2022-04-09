@@ -2,104 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927404FA570
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 08:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8044FA611
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 10:45:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kb4x14vSNz3bYZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 16:30:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kb7wf20rHz3bZ2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 18:45:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EEb5U8pA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ERqGZ4/m;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=EEb5U8pA; dkim-atps=neutral
+ header.s=pp1 header.b=ERqGZ4/m; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kb4wL3ZV7z2xmZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 16:29:38 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 239452fk003459; 
- Sat, 9 Apr 2022 06:29:26 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kb7vw6QQ9z2yR4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 18:44:27 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 2391k2Fd018741; 
+ Sat, 9 Apr 2022 08:44:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=iR9ucZMYa0HdnazYKEUFucOEh062cPEmx4MxWODZAPQ=;
- b=EEb5U8pAvjPXyaviF/XPjPFKPbI2oOhAEgy0ULnX5FS36viBaNHyIh5e215+PL2NVekk
- UMpvZSHkSG6EsLRp7XyfwBPSqJsmaULYuUT5SjLVUSt3xFCJI0G5QICd5Ob9YasS4qnE
- Yst+2Dapi3XOmlTmqInQa//i1veT1nc0o9iKdiUmnxJsJKZH1rMbIWwpywqVydI1WJw4
- udWWKqYVxQfm2EpZQHt8U8bsinqmmolv0BfTYz0C92SBuvQxFzNSiHgnXLLDLWiCLEr9
- AeZddzA/sgLSPQaHTE4BykWKUzh3nPLeH3J0BnexyroN1a5L2IhIAnLvBE/jH1z8lOtt bg== 
+ h=message-id : subject :
+ from : to : cc : date : content-type : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=Ec2Zl5+VLz1IMrkcDoPFbQbqF6PUhVNTC8cqG21qyXI=;
+ b=ERqGZ4/mR99hjD8YBkOoAY4YRn9uKBEYVSIYWH0V+supWZEvDdT7fu9Js4qaeV8qarlu
+ fJSuGzvjlcURDCct1tQ9WzjdKFsE7Ank8IQgxF8dm54v90of+slcniV4rB8uI4KIquX9
+ fYB8S87uLx+7xzyvnNpl9di9LxYsntsvsZLpYUUEhNoG4R2UpSz583XauK4NEgCizJZS
+ Pjxa+Vf28sMSqYvEN2E0YFr1Q09YSiXEj+Eykj7Bsl017pEHSPWTpYUmal4MN6EFnLJa
+ im/7S6YJi265mexdRcNz8+OuAyYYuueCd8taeY5cIeA5Q/wXCfHo2K9QPwfi+ulp6pWh jg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3fb2tasee7-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3fb0s5mbjn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 09 Apr 2022 06:29:26 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2396D0ed004416;
- Sat, 9 Apr 2022 06:29:26 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3fb2tasedu-1
+ Sat, 09 Apr 2022 08:44:20 +0000
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 2398fNYB027200;
+ Sat, 9 Apr 2022 08:44:19 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3fb0s5mbjj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 09 Apr 2022 06:29:25 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2396Rq1X006607;
- Sat, 9 Apr 2022 06:29:24 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03fra.de.ibm.com with ESMTP id 3fb1s8g5mq-1
+ Sat, 09 Apr 2022 08:44:19 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2398bH4S030339;
+ Sat, 9 Apr 2022 08:44:19 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma01wdc.us.ibm.com with ESMTP id 3fb1s89hux-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 09 Apr 2022 06:29:24 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2396TKP936503852
+ Sat, 09 Apr 2022 08:44:19 +0000
+Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
+ [9.57.199.108])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 2398iIsQ26411500
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 9 Apr 2022 06:29:20 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DAC45AE051;
- Sat,  9 Apr 2022 06:29:20 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 54923AE045;
- Sat,  9 Apr 2022 06:29:16 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.211.90.23])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Sat,  9 Apr 2022 06:29:15 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: [PATCH v2 4/4] tools/perf: Fix perf bench numa testcase to check
- if CPU used to bind task is online
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20220408122642.GE568950@linux.vnet.ibm.com>
-Date: Sat, 9 Apr 2022 11:59:12 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <24F45D77-E65E-4F4E-82B7-DD24AD0EF2E1@linux.vnet.ibm.com>
-References: <20220406175113.87881-1-atrajeev@linux.vnet.ibm.com>
- <20220406175113.87881-5-atrajeev@linux.vnet.ibm.com>
- <20220408122642.GE568950@linux.vnet.ibm.com>
-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
+ Sat, 9 Apr 2022 08:44:19 GMT
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E0E6AB2068;
+ Sat,  9 Apr 2022 08:44:18 +0000 (GMT)
+Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 34238B206A;
+ Sat,  9 Apr 2022 08:44:18 +0000 (GMT)
+Received: from sig-9-65-94-83.ibm.com (unknown [9.65.94.83])
+ by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
+ Sat,  9 Apr 2022 08:44:18 +0000 (GMT)
+Message-ID: <338e958c7ab8f3b266fa794a1f80f99b9671829e.camel@linux.ibm.com>
+Subject: [PATCH] powerpc/powernv/vas: Assign real address to rx_fifo in
+ vas_rx_win_attr
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Date: Sat, 09 Apr 2022 01:44:16 -0700
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jxmQbJvxtdpvks1VmPBIi45wmCDwsett
-X-Proofpoint-ORIG-GUID: WbefU6hsF11QqJrtYhI6q5h3An5iNvvL
+X-Proofpoint-ORIG-GUID: 2Yv6TJHh0X4zkIC3Ajex7RvtGi_9YwuG
+X-Proofpoint-GUID: isxfumvJRrBEcixg14Bip7JIKt_88WNd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.425,FMLib:17.11.64.514
  definitions=2022-04-08_09,2022-04-08_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- malwarescore=0 lowpriorityscore=0 adultscore=0 phishscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 mlxlogscore=999 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204090037
+ clxscore=1011 suspectscore=0
+ spamscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 priorityscore=1501 mlxlogscore=782 phishscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2204090055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,186 +105,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ian Rogers <irogers@google.com>, maddy@linux.vnet.ibm.com,
- Nageswara Sastry <rnsastry@linux.ibm.com>, kjain@linux.ibm.com,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org,
- jolsa@kernel.org, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In init_winctx_regs(), __pa() is called on winctx->rx_fifo and this
+function is called to initialize registers for receive and fault
+windows. But the real address is passed in winctx->rx_fifo for
+receive windows and the virtual address for fault windows which
+causes errors with DEBUG_VIRTUAL enabled. Fixes this issue by
+assigning only real address to rx_fifo in vas_rx_win_attr struct
+for both receive and fault windows.
 
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+---
+ arch/powerpc/include/asm/vas.h              | 2 +-
+ arch/powerpc/platforms/powernv/vas-fault.c  | 2 +-
+ arch/powerpc/platforms/powernv/vas-window.c | 4 ++--
+ arch/powerpc/platforms/powernv/vas.h        | 2 +-
+ drivers/crypto/nx/nx-common-powernv.c       | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-> On 08-Apr-2022, at 5:56 PM, Srikar Dronamraju =
-<srikar@linux.vnet.ibm.com> wrote:
->=20
-> * Athira Rajeev <atrajeev@linux.vnet.ibm.com> [2022-04-06 23:21:13]:
->=20
->> Perf numa bench test fails with error:
->>=20
->> Testcase:
->> ./perf bench numa mem -p 2 -t 1 -P 1024 -C 0,8 -M 1,0 -s 20 -zZq
->> --thp  1 --no-data_rand_walk
->>=20
->> Failure snippet:
->> <<>>
->> Running 'numa/mem' benchmark:
->>=20
->> # Running main, "perf bench numa numa-mem -p 2 -t 1 -P 1024 -C 0,8
->> -M 1,0 -s 20 -zZq --thp 1 --no-data_rand_walk"
->>=20
->> perf: bench/numa.c:333: bind_to_cpumask: Assertion `!(ret)' failed.
->> <<>>
->>=20
->> The Testcases uses CPU???s 0 and 8. In function =
-"parse_setup_cpu_list",
->> There is check to see if cpu number is greater than max cpu???s =
-possible
->> in the system ie via "if (bind_cpu_0 >=3D g->p.nr_cpus ||
->> bind_cpu_1 >=3D g->p.nr_cpus) {". But it could happen that system has
->> say 48 CPU???s, but only number of online CPU???s is 0-7. Other =
-CPU???s
->> are offlined. Since "g->p.nr_cpus" is 48, so function will go ahead
->> and set bit for CPU 8 also in cpumask ( td->bind_cpumask).
->>=20
->> bind_to_cpumask function is called to set affinity using
->> sched_setaffinity and the cpumask. Since the CPU8 is not present,
->> set affinity will fail here with EINVAL. Fix this issue by adding a
->> check to make sure that, CPU???s provided in the input argument =
-values
->> are online before proceeding further and skip the test. For this,
->> include new helper function "is_cpu_online" in
->> "tools/perf/util/header.c".
->>=20
->> Since "BIT(x)" definition will get included from header.h, remove
->> that from bench/numa.c
->>=20
->> Tested-by: Disha Goel <disgoel@linux.vnet.ibm.com>
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
->=20
-> Looks good to me.
-> Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
+index 83afcb6c194b..c36f71e01c0f 100644
+--- a/arch/powerpc/include/asm/vas.h
++++ b/arch/powerpc/include/asm/vas.h
+@@ -126,7 +126,7 @@ static inline void vas_user_win_add_mm_context(struct vas_user_win_ref *ref)
+  * Receive window attributes specified by the (in-kernel) owner of window.
+  */
+ struct vas_rx_win_attr {
+-	void *rx_fifo;
++	u64 rx_fifo;
+ 	int rx_fifo_size;
+ 	int wcreds_max;
+ 
+diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
+index a7aabc18039e..c1bfad56447d 100644
+--- a/arch/powerpc/platforms/powernv/vas-fault.c
++++ b/arch/powerpc/platforms/powernv/vas-fault.c
+@@ -216,7 +216,7 @@ int vas_setup_fault_window(struct vas_instance *vinst)
+ 	vas_init_rx_win_attr(&attr, VAS_COP_TYPE_FAULT);
+ 
+ 	attr.rx_fifo_size = vinst->fault_fifo_size;
+-	attr.rx_fifo = vinst->fault_fifo;
++	attr.rx_fifo = __pa(vinst->fault_fifo);
+ 
+ 	/*
+ 	 * Max creds is based on number of CRBs can fit in the FIFO.
+diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
+index 0f8d39fbf2b2..0072682531d8 100644
+--- a/arch/powerpc/platforms/powernv/vas-window.c
++++ b/arch/powerpc/platforms/powernv/vas-window.c
+@@ -404,7 +404,7 @@ static void init_winctx_regs(struct pnv_vas_window *window,
+ 	 *
+ 	 * See also: Design note in function header.
+ 	 */
+-	val = __pa(winctx->rx_fifo);
++	val = winctx->rx_fifo;
+ 	val = SET_FIELD(VAS_PAGE_MIGRATION_SELECT, val, 0);
+ 	write_hvwc_reg(window, VREG(LFIFO_BAR), val);
+ 
+@@ -739,7 +739,7 @@ static void init_winctx_for_rxwin(struct pnv_vas_window *rxwin,
+ 		 */
+ 		winctx->fifo_disable = true;
+ 		winctx->intr_disable = true;
+-		winctx->rx_fifo = NULL;
++		winctx->rx_fifo = 0;
+ 	}
+ 
+ 	winctx->lnotify_lpid = rxattr->lnotify_lpid;
+diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
+index 8bb08e395de0..08d9d3d5a22b 100644
+--- a/arch/powerpc/platforms/powernv/vas.h
++++ b/arch/powerpc/platforms/powernv/vas.h
+@@ -376,7 +376,7 @@ struct pnv_vas_window {
+  * is a container for the register fields in the window context.
+  */
+ struct vas_winctx {
+-	void *rx_fifo;
++	u64 rx_fifo;
+ 	int rx_fifo_size;
+ 	int wcreds_max;
+ 	int rsvd_txbuf_count;
+diff --git a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
+index 32a036ada5d0..f418817c0f43 100644
+--- a/drivers/crypto/nx/nx-common-powernv.c
++++ b/drivers/crypto/nx/nx-common-powernv.c
+@@ -827,7 +827,7 @@ static int __init vas_cfg_coproc_info(struct device_node *dn, int chip_id,
+ 		goto err_out;
+ 
+ 	vas_init_rx_win_attr(&rxattr, coproc->ct);
+-	rxattr.rx_fifo = (void *)rx_fifo;
++	rxattr.rx_fifo = rx_fifo;
+ 	rxattr.rx_fifo_size = fifo_size;
+ 	rxattr.lnotify_lpid = lpid;
+ 	rxattr.lnotify_pid = pid;
+-- 
+2.27.0
 
-Hi Srikar,
-
-Thanks for the review
-
-Athira
->=20
->> ---
->> tools/perf/bench/numa.c  |  8 ++++++--
->> tools/perf/util/header.c | 43 =
-++++++++++++++++++++++++++++++++++++++++
->> tools/perf/util/header.h |  1 +
->> 3 files changed, 50 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/tools/perf/bench/numa.c b/tools/perf/bench/numa.c
->> index 29e41e32bd88..7992d79b3e41 100644
->> --- a/tools/perf/bench/numa.c
->> +++ b/tools/perf/bench/numa.c
->> @@ -34,6 +34,7 @@
->> #include <linux/numa.h>
->> #include <linux/zalloc.h>
->>=20
->> +#include "../util/header.h"
->> #include <numa.h>
->> #include <numaif.h>
->>=20
->> @@ -616,6 +617,11 @@ static int parse_setup_cpu_list(void)
->> 			return -1;
->> 		}
->>=20
->> +		if (is_cpu_online(bind_cpu_0) !=3D 1 || =
-is_cpu_online(bind_cpu_1) !=3D 1) {
->> +			printf("\nTest not applicable, bind_cpu_0 or =
-bind_cpu_1 is offline\n");
->> +			return -1;
->> +		}
->> +
->> 		BUG_ON(bind_cpu_0 < 0 || bind_cpu_1 < 0);
->> 		BUG_ON(bind_cpu_0 > bind_cpu_1);
->>=20
->> @@ -786,8 +792,6 @@ static int parse_nodes_opt(const struct option =
-*opt __maybe_unused,
->> 	return parse_node_list(arg);
->> }
->>=20
->> -#define BIT(x) (1ul << x)
->> -
->> static inline uint32_t lfsr_32(uint32_t lfsr)
->> {
->> 	const uint32_t taps =3D BIT(1) | BIT(5) | BIT(6) | BIT(31);
->> diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
->> index 6da12e522edc..3f5fcf5d4b3f 100644
->> --- a/tools/perf/util/header.c
->> +++ b/tools/perf/util/header.c
->> @@ -983,6 +983,49 @@ static int write_dir_format(struct feat_fd *ff,
->> 	return do_write(ff, &data->dir.version, =
-sizeof(data->dir.version));
->> }
->>=20
->> +#define SYSFS "/sys/devices/system/cpu/"
->> +
->> +/*
->> + * Check whether a CPU is online
->> + *
->> + * Returns:
->> + *     1 -> if CPU is online
->> + *     0 -> if CPU is offline
->> + *    -1 -> error case
->> + */
->> +int is_cpu_online(unsigned int cpu)
->> +{
->> +	char sysfs_cpu[255];
->> +	char buf[255];
->> +	struct stat statbuf;
->> +	size_t len;
->> +	int fd;
->> +
->> +	snprintf(sysfs_cpu, sizeof(sysfs_cpu), SYSFS "cpu%u", cpu);
->> +
->> +	if (stat(sysfs_cpu, &statbuf) !=3D 0)
->> +		return 0;
->> +
->> +	/*
->> +	 * Check if /sys/devices/system/cpu/cpux/online file
->> +	 * exists. In kernels without CONFIG_HOTPLUG_CPU, this
->> +	 * file won't exist.
->> +	 */
->> +	snprintf(sysfs_cpu, sizeof(sysfs_cpu), SYSFS "cpu%u/online", =
-cpu);
->> +	if (stat(sysfs_cpu, &statbuf) !=3D 0)
->> +		return 1;
->> +
->> +	fd =3D open(sysfs_cpu, O_RDONLY);
->> +	if (fd =3D=3D -1)
->> +		return -1;
->> +
->> +	len =3D read(fd, buf, sizeof(buf) - 1);
->> +	buf[len] =3D '\0';
->> +	close(fd);
->> +
->> +	return strtoul(buf, NULL, 16);
->> +}
->> +
->> #ifdef HAVE_LIBBPF_SUPPORT
->> static int write_bpf_prog_info(struct feat_fd *ff,
->> 			       struct evlist *evlist __maybe_unused)
->> diff --git a/tools/perf/util/header.h b/tools/perf/util/header.h
->> index c9e3265832d9..0eb4bc29a5a4 100644
->> --- a/tools/perf/util/header.h
->> +++ b/tools/perf/util/header.h
->> @@ -158,6 +158,7 @@ int do_write(struct feat_fd *fd, const void *buf, =
-size_t size);
->> int write_padded(struct feat_fd *fd, const void *bf,
->> 		 size_t count, size_t count_aligned);
->>=20
->> +int is_cpu_online(unsigned int cpu);
->> /*
->>  * arch specific callback
->>  */
->> --=20
->> 2.35.1
 
