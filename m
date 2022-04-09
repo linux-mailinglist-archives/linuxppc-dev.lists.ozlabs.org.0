@@ -2,52 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003744FA18E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 04:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CF74FA1F4
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 05:25:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZz840RzDz3bZZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 12:09:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kb0rM463sz3bcR
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 13:25:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=lyXLxby7;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=xOlvG7rB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=lyXLxby7; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=korg header.b=xOlvG7rB; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZz7N1qjgz2xBv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 12:08:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=F75WgLKYZWUeJINf8+Yays5uvhvJJCETxcO2mCDDMP8=; b=lyXLxby7leOtzEIBGgGdvhg9aI
- ppN1Ti3FCmXWfMEATse9V55cNyhMl5ie97YyCk3Me6nN+EeaeKZ2J0m8RX0mbgcWnlGkpah08S0iN
- sT2I3qLUVQBzSMDV77n/r80NjnenKYglKrA0fpcymAdAentilrJMUtYmoiaei0oJngUxsotetB99X
- ICMzQgBdyltZuIYaSYsf7+zNQ3WVApWi5yjMghYG81YdO0KyR9/fjW3l231YCgebN8equojEHbBTt
- MRWS25GkXuVN9SCNlPeq43tcungXlKhRsv+LbCSIbLF5gngIjY+RO+fHi8CzTeSDHl/vkKs+0tdIn
- Ah0X6acA==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nd0WV-001hkH-Ma; Sat, 09 Apr 2022 02:08:23 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] macintosh: fix via-pmu and via-cuda build without RTC_CLASS
-Date: Fri,  8 Apr 2022 19:08:21 -0700
-Message-Id: <20220409020821.10229-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kb0ql0F6cz2xmZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 13:25:21 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B2C0D62044;
+ Sat,  9 Apr 2022 03:25:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED296C385A4;
+ Sat,  9 Apr 2022 03:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+ s=korg; t=1649474717;
+ bh=QztxxwJbpCCCWMERmgAVm2Swrx1fqBXopvd4ffA8cw8=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=xOlvG7rB7RRzvIkCUU5vTfg+1GYBSbt9aLhxymSUz6j82IvAUZyhUMvzaGHaHWrai
+ /30zp4sk0EJuLzTcNx1jeTyIQkrta0X3p3JUMHXmbqkzlICaKfXwDXA9ys7ce2rx0R
+ 21w+T41QYox5acwiAGfZVpGfZiqcvn5HzUaTHR6g=
+Date: Fri, 8 Apr 2022 20:25:16 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v9 0/4] mm: Enable conversion of powerpc to default
+ topdown mmap layout
+Message-Id: <20220408202516.254e22a8293a57324650bd3f@linux-foundation.org>
+In-Reply-To: <cover.1649401201.git.christophe.leroy@csgroup.eu>
+References: <cover.1649401201.git.christophe.leroy@csgroup.eu>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,67 +63,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Randy Dunlap <rdunlap@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nathan Chancellor <nathan@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
- Finn Thain <fthain@linux-m68k.org>, kernel test robot <lkp@intel.com>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix build when RTC_CLASS is not set/enabled.
-Eliminates these build errors:
+On Fri,  8 Apr 2022 09:24:58 +0200 Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-m68k-linux-ld: drivers/macintosh/via-pmu.o: in function `pmu_set_rtc_time':
-drivers/macintosh/via-pmu.c:1769: undefined reference to `rtc_tm_to_time64'
-m68k-linux-ld: drivers/macintosh/via-cuda.o: in function `cuda_set_rtc_time':
-drivers/macintosh/via-cuda.c:797: undefined reference to `rtc_tm_to_time64'
+> Rebased on top of Linux 5.18-rc1
+> 
+> This is the mm part of the series that converts powerpc to default
+> topdown mmap layout, for merge into v5.18
 
-Fixes: 0792a2c8e0bb ("macintosh: Use common code to access RTC")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org
----
- drivers/macintosh/via-cuda.c |    5 ++++-
- drivers/macintosh/via-pmu.c  |    5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+We're at 5.18-rc1.  The 5.18 merge window has closed and we're in
+fixes-only mode.
 
---- a/drivers/macintosh/via-cuda.c
-+++ b/drivers/macintosh/via-cuda.c
-@@ -794,7 +794,10 @@ int cuda_set_rtc_time(struct rtc_time *t
- 	u32 now;
- 	struct adb_request req;
- 
--	now = lower_32_bits(rtc_tm_to_time64(tm) + RTC_OFFSET);
-+	now = lower_32_bits(mktime64(((unsigned int)tm->tm_year + 1900),
-+			    tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
-+			    tm->tm_min, tm->tm_sec)
-+			    + RTC_OFFSET);
- 	if (cuda_request(&req, NULL, 6, CUDA_PACKET, CUDA_SET_TIME,
- 	                 now >> 24, now >> 16, now >> 8, now) < 0)
- 		return -ENXIO;
---- a/drivers/macintosh/via-pmu.c
-+++ b/drivers/macintosh/via-pmu.c
-@@ -1766,7 +1766,10 @@ int pmu_set_rtc_time(struct rtc_time *tm
- 	u32 now;
- 	struct adb_request req;
- 
--	now = lower_32_bits(rtc_tm_to_time64(tm) + RTC_OFFSET);
-+	now = lower_32_bits(mktime64(((unsigned int)tm->tm_year + 1900),
-+			    tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
-+			    tm->tm_min, tm->tm_sec)
-+			    + RTC_OFFSET);
- 	if (pmu_request(&req, NULL, 5, PMU_SET_RTC,
- 	                now >> 24, now >> 16, now >> 8, now) < 0)
- 		return -ENXIO;
+If there's a case to be made that these patches are needed by 5.18
+users then please let's make that case.  Otherwise, this is 5.19-rc1 material.
+
+And if it is indeed all 5.19-rc1 material, then please carry all four
+in the powerpc tree with Acked-by: Andrew Morton
+<akpm@linux-foundation.org>.
+
+Also, [4/4] has a cc:stable.  This is a bit odd because -stable
+candidates should be standalone patches, staged ahead of all
+for-next-merge-window material, so we can get them merged up quickly.
+
+More oddly, [4/4]'s changelog provides no explanation for why the patch
+should be considered for backporting.
+
