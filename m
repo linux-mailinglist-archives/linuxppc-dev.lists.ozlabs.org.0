@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001F24FA9EF
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 19:24:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66DA4FA9DC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 19:20:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KbMSD6hClz3fWw
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 03:24:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KbMLw5y7vz3bbS
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 03:20:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KbMKv0429z3bXD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 03:19:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KbMK20X3Qz3bcZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 03:18:29 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KbMK01V58z9sTf;
- Sat,  9 Apr 2022 19:18:28 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4KbMJn4BqYz9sTL;
+ Sat,  9 Apr 2022 19:18:17 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id O9KuHRXx2IvQ; Sat,  9 Apr 2022 19:18:28 +0200 (CEST)
+ with ESMTP id 4CH_5kXfi46D; Sat,  9 Apr 2022 19:18:17 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KbMJl6sTfz9sTh;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KbMJl2zsBz9sTS;
  Sat,  9 Apr 2022 19:18:15 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CD9A88B7A7;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 543BA8B765;
  Sat,  9 Apr 2022 19:18:15 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lYK1In8DcRAh; Sat,  9 Apr 2022 19:18:15 +0200 (CEST)
+ with ESMTP id KNiw-433fELi; Sat,  9 Apr 2022 19:18:15 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.53])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A49648B7A9;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9A42F8B7A0;
  Sat,  9 Apr 2022 19:18:14 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 239HI8mj833222
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 239HI8xQ833226
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Sat, 9 Apr 2022 19:18:08 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 239HI8Xu833221;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 239HI8XJ833225;
  Sat, 9 Apr 2022 19:18:08 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -51,17 +51,18 @@ From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Michael Ellerman <mpe@ellerman.id.au>, akpm@linux-foundation.org
-Subject: [PATCH v10 07/13] powerpc/mm: Remove CONFIG_PPC_MM_SLICES
-Date: Sat,  9 Apr 2022 19:17:31 +0200
-Message-Id: <dc2cdc204de8978574bf7c02329b6cfc4db0bce7.1649523076.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v10 08/13] powerpc/mm: Use generic_get_unmapped_area() and
+ call it from arch_get_unmapped_area()
+Date: Sat,  9 Apr 2022 19:17:32 +0200
+Message-Id: <393be1fa386446443682fdb74544d733f68ef3bb.1649523076.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1649523076.git.christophe.leroy@csgroup.eu>
 References: <cover.1649523076.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1649524639; l=7009; s=20211009;
- h=from:subject:message-id; bh=OJfSjEsBiOjyk6mVJozRtYnW5x2UZjgwOqjqn13f90s=;
- b=rLnuEoae9MumFZF1nwFsMuzVwF6sRv1nCJyfRmdiWefSsAgXHTy0lzbvvfwbRn4bp0GLO/mmj+NP
- 69BGDW03A2ybqiDxvj86x3unULEEReX2z3Qgjav9v1pN41KtzgZB
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1649524639; l=6626; s=20211009;
+ h=from:subject:message-id; bh=C5sGSH3egToqQ7FLf2+Qr9/If/ytl82PjCY0W1x0g3A=;
+ b=66vQAaLBgyE9ZS0Yw9eEbcGOKjjMQvGlhF3Du5oSWXkrLzEA7ypRnocKeDPV/J++F6G4FOPJx9tj
+ SKMss6uoDUDnACLwonULaT2YTz5yQ+fECDDFofESbbPp+i1dGhYi
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -77,207 +78,213 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CONFIG_PPC_MM_SLICES is always selected by hash book3s/64.
-CONFIG_PPC_MM_SLICES is never selected by other platforms.
+Use the generic version of arch_get_unmapped_area() which
+is now available at all time instead of its copy
+radix__arch_get_unmapped_area()
 
-Remove it.
+To allow that for PPC64, add arch_get_mmap_base() and
+arch_get_mmap_end() macros.
+
+Instead of setting mm->get_unmapped_area() to either
+arch_get_unmapped_area() or generic_get_unmapped_area(),
+always set it to arch_get_unmapped_area() and call
+generic_get_unmapped_area() from there when radix is enabled.
+
+Do the same with radix__arch_get_unmapped_area_topdown()
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/hugetlb.h     |  2 +-
- arch/powerpc/include/asm/paca.h        |  7 -------
- arch/powerpc/kernel/paca.c             |  5 -----
- arch/powerpc/mm/book3s64/Makefile      |  3 +--
- arch/powerpc/mm/book3s64/hash_utils.c  | 14 --------------
- arch/powerpc/mm/hugetlbpage.c          |  2 +-
- arch/powerpc/mm/mmap.c                 |  4 ++--
- arch/powerpc/platforms/Kconfig.cputype |  4 ----
- 8 files changed, 5 insertions(+), 36 deletions(-)
+ arch/powerpc/include/asm/task_size_64.h |   8 ++
+ arch/powerpc/mm/mmap.c                  | 127 ++----------------------
+ 2 files changed, 14 insertions(+), 121 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
-index 6a1a1ac5743b..ef86197d1c0a 100644
---- a/arch/powerpc/include/asm/hugetlb.h
-+++ b/arch/powerpc/include/asm/hugetlb.h
-@@ -24,7 +24,7 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
- 					 unsigned long addr,
- 					 unsigned long len)
- {
--	if (IS_ENABLED(CONFIG_PPC_MM_SLICES) && !radix_enabled())
-+	if (IS_ENABLED(CONFIG_PPC_64S_HASH_MMU) && !radix_enabled())
- 		return slice_is_hugepage_only_range(mm, addr, len);
- 	return 0;
- }
-diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
-index 8330968ca346..03330b7d835f 100644
---- a/arch/powerpc/include/asm/paca.h
-+++ b/arch/powerpc/include/asm/paca.h
-@@ -152,16 +152,9 @@ struct paca_struct {
- 	struct tlb_core_data tcd;
- #endif /* CONFIG_PPC_BOOK3E */
+diff --git a/arch/powerpc/include/asm/task_size_64.h b/arch/powerpc/include/asm/task_size_64.h
+index 38fdf8041d12..5a709951c901 100644
+--- a/arch/powerpc/include/asm/task_size_64.h
++++ b/arch/powerpc/include/asm/task_size_64.h
+@@ -72,4 +72,12 @@
+ #define STACK_TOP_MAX TASK_SIZE_USER64
+ #define STACK_TOP (is_32bit_task() ? STACK_TOP_USER32 : STACK_TOP_USER64)
  
--#ifdef CONFIG_PPC_BOOK3S
- #ifdef CONFIG_PPC_64S_HASH_MMU
--#ifdef CONFIG_PPC_MM_SLICES
- 	unsigned char mm_ctx_low_slices_psize[BITS_PER_LONG / BITS_PER_BYTE];
- 	unsigned char mm_ctx_high_slices_psize[SLICE_ARRAY_SIZE];
--#else
--	u16 mm_ctx_user_psize;
--	u16 mm_ctx_sllp;
--#endif
--#endif
- #endif
- 
- 	/*
-diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
-index 39da688a9455..ba593fd60124 100644
---- a/arch/powerpc/kernel/paca.c
-+++ b/arch/powerpc/kernel/paca.c
-@@ -344,15 +344,10 @@ void copy_mm_to_paca(struct mm_struct *mm)
- {
- 	mm_context_t *context = &mm->context;
- 
--#ifdef CONFIG_PPC_MM_SLICES
- 	VM_BUG_ON(!mm_ctx_slb_addr_limit(context));
- 	memcpy(&get_paca()->mm_ctx_low_slices_psize, mm_ctx_low_slices(context),
- 	       LOW_SLICE_ARRAY_SZ);
- 	memcpy(&get_paca()->mm_ctx_high_slices_psize, mm_ctx_high_slices(context),
- 	       TASK_SLICE_ARRAY_SZ(context));
--#else /* CONFIG_PPC_MM_SLICES */
--	get_paca()->mm_ctx_user_psize = context->user_psize;
--	get_paca()->mm_ctx_sllp = context->sllp;
--#endif
- }
- #endif /* CONFIG_PPC_64S_HASH_MMU */
-diff --git a/arch/powerpc/mm/book3s64/Makefile b/arch/powerpc/mm/book3s64/Makefile
-index af2f3e75d458..d527dc8e30a8 100644
---- a/arch/powerpc/mm/book3s64/Makefile
-+++ b/arch/powerpc/mm/book3s64/Makefile
-@@ -5,7 +5,7 @@ ccflags-y	:= $(NO_MINIMAL_TOC)
- obj-y				+= mmu_context.o pgtable.o trace.o
- ifdef CONFIG_PPC_64S_HASH_MMU
- CFLAGS_REMOVE_slb.o = $(CC_FLAGS_FTRACE)
--obj-y				+= hash_pgtable.o hash_utils.o hash_tlb.o slb.o
-+obj-y				+= hash_pgtable.o hash_utils.o hash_tlb.o slb.o slice.o
- obj-$(CONFIG_PPC_HASH_MMU_NATIVE)	+= hash_native.o
- obj-$(CONFIG_PPC_4K_PAGES)	+= hash_4k.o
- obj-$(CONFIG_PPC_64K_PAGES)	+= hash_64k.o
-@@ -21,7 +21,6 @@ obj-$(CONFIG_PPC_RADIX_MMU)	+= radix_hugetlbpage.o
- endif
- obj-$(CONFIG_SPAPR_TCE_IOMMU)	+= iommu_api.o
- obj-$(CONFIG_PPC_PKEY)	+= pkeys.o
--obj-$(CONFIG_PPC_MM_SLICES)	+= slice.o
- 
- # Instrumenting the SLB fault path can lead to duplicate SLB entries
- KCOV_INSTRUMENT_slb.o := n
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 985cabdd7f67..43ecad8f9564 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1264,7 +1264,6 @@ unsigned int hash_page_do_lazy_icache(unsigned int pp, pte_t pte, int trap)
- 	return pp;
- }
- 
--#ifdef CONFIG_PPC_MM_SLICES
- static unsigned int get_paca_psize(unsigned long addr)
- {
- 	unsigned char *psizes;
-@@ -1281,12 +1280,6 @@ static unsigned int get_paca_psize(unsigned long addr)
- 	return (psizes[index >> 1] >> (mask_index * 4)) & 0xF;
- }
- 
--#else
--unsigned int get_paca_psize(unsigned long addr)
--{
--	return get_paca()->mm_ctx_user_psize;
--}
--#endif
- 
- /*
-  * Demote a segment to using 4k pages.
-@@ -1680,7 +1673,6 @@ DEFINE_INTERRUPT_HANDLER(do_hash_fault)
- 	}
- }
- 
--#ifdef CONFIG_PPC_MM_SLICES
- static bool should_hash_preload(struct mm_struct *mm, unsigned long ea)
- {
- 	int psize = get_slice_psize(mm, ea);
-@@ -1697,12 +1689,6 @@ static bool should_hash_preload(struct mm_struct *mm, unsigned long ea)
- 
- 	return true;
- }
--#else
--static bool should_hash_preload(struct mm_struct *mm, unsigned long ea)
--{
--	return true;
--}
--#endif
- 
- static void hash_preload(struct mm_struct *mm, pte_t *ptep, unsigned long ea,
- 			 bool is_exec, unsigned long trap)
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index 7b89f0799d82..f71ac14018e2 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -558,7 +558,7 @@ unsigned long hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
- 		return radix__hugetlb_get_unmapped_area(file, addr, len,
- 						       pgoff, flags);
- #endif
--#ifdef CONFIG_PPC_MM_SLICES
-+#ifdef CONFIG_PPC_64S_HASH_MMU
- 	return slice_get_unmapped_area(addr, len, flags, file_to_psize(file), 1);
- #endif
- 	BUG();
++#define arch_get_mmap_base(addr, base) \
++	(((addr) > DEFAULT_MAP_WINDOW) ? (base) + TASK_SIZE - DEFAULT_MAP_WINDOW : (base))
++
++#define arch_get_mmap_end(addr, len, flags) \
++	(((addr) > DEFAULT_MAP_WINDOW) || \
++	 (((flags) & MAP_FIXED) && ((addr) + (len) > DEFAULT_MAP_WINDOW)) ? TASK_SIZE : \
++									    DEFAULT_MAP_WINDOW)
++
+ #endif /* _ASM_POWERPC_TASK_SIZE_64_H */
 diff --git a/arch/powerpc/mm/mmap.c b/arch/powerpc/mm/mmap.c
-index c475cf810aa8..9b0d6e395bc0 100644
+index 9b0d6e395bc0..46781d0103d1 100644
 --- a/arch/powerpc/mm/mmap.c
 +++ b/arch/powerpc/mm/mmap.c
-@@ -190,7 +190,7 @@ unsigned long arch_get_unmapped_area(struct file *filp,
+@@ -81,115 +81,15 @@ static inline unsigned long mmap_base(unsigned long rnd,
+ }
+ 
+ #ifdef HAVE_ARCH_UNMAPPED_AREA
+-#ifdef CONFIG_PPC_RADIX_MMU
+-/*
+- * Same function as generic code used only for radix, because we don't need to overload
+- * the generic one. But we will have to duplicate, because hash select
+- * HAVE_ARCH_UNMAPPED_AREA
+- */
+-static unsigned long
+-radix__arch_get_unmapped_area(struct file *filp, unsigned long addr,
+-			     unsigned long len, unsigned long pgoff,
+-			     unsigned long flags)
+-{
+-	struct mm_struct *mm = current->mm;
+-	struct vm_area_struct *vma;
+-	int fixed = (flags & MAP_FIXED);
+-	unsigned long high_limit;
+-	struct vm_unmapped_area_info info;
+-
+-	high_limit = DEFAULT_MAP_WINDOW;
+-	if (addr >= high_limit || (fixed && (addr + len > high_limit)))
+-		high_limit = TASK_SIZE;
+-
+-	if (len > high_limit)
+-		return -ENOMEM;
+-
+-	if (fixed) {
+-		if (addr > high_limit - len)
+-			return -ENOMEM;
+-		return addr;
+-	}
+-
+-	if (addr) {
+-		addr = PAGE_ALIGN(addr);
+-		vma = find_vma(mm, addr);
+-		if (high_limit - len >= addr && addr >= mmap_min_addr &&
+-		    (!vma || addr + len <= vm_start_gap(vma)))
+-			return addr;
+-	}
+-
+-	info.flags = 0;
+-	info.length = len;
+-	info.low_limit = mm->mmap_base;
+-	info.high_limit = high_limit;
+-	info.align_mask = 0;
+-
+-	return vm_unmapped_area(&info);
+-}
+-
+-static unsigned long
+-radix__arch_get_unmapped_area_topdown(struct file *filp,
+-				     const unsigned long addr0,
+-				     const unsigned long len,
+-				     const unsigned long pgoff,
+-				     const unsigned long flags)
+-{
+-	struct vm_area_struct *vma;
+-	struct mm_struct *mm = current->mm;
+-	unsigned long addr = addr0;
+-	int fixed = (flags & MAP_FIXED);
+-	unsigned long high_limit;
+-	struct vm_unmapped_area_info info;
+-
+-	high_limit = DEFAULT_MAP_WINDOW;
+-	if (addr >= high_limit || (fixed && (addr + len > high_limit)))
+-		high_limit = TASK_SIZE;
+-
+-	if (len > high_limit)
+-		return -ENOMEM;
+-
+-	if (fixed) {
+-		if (addr > high_limit - len)
+-			return -ENOMEM;
+-		return addr;
+-	}
+-
+-	if (addr) {
+-		addr = PAGE_ALIGN(addr);
+-		vma = find_vma(mm, addr);
+-		if (high_limit - len >= addr && addr >= mmap_min_addr &&
+-		    (!vma || addr + len <= vm_start_gap(vma)))
+-			return addr;
+-	}
+-
+-	info.flags = VM_UNMAPPED_AREA_TOPDOWN;
+-	info.length = len;
+-	info.low_limit = max(PAGE_SIZE, mmap_min_addr);
+-	info.high_limit = mm->mmap_base + (high_limit - DEFAULT_MAP_WINDOW);
+-	info.align_mask = 0;
+-
+-	addr = vm_unmapped_area(&info);
+-	if (!(addr & ~PAGE_MASK))
+-		return addr;
+-	VM_BUG_ON(addr != -ENOMEM);
+-
+-	/*
+-	 * A failed mmap() very likely causes application failure,
+-	 * so fall back to the bottom-up function here. This scenario
+-	 * can happen with large stack limits and large mmap()
+-	 * allocations.
+-	 */
+-	return radix__arch_get_unmapped_area(filp, addr0, len, pgoff, flags);
+-}
+-#endif
+-
+ unsigned long arch_get_unmapped_area(struct file *filp,
+ 				     unsigned long addr,
+ 				     unsigned long len,
  				     unsigned long pgoff,
  				     unsigned long flags)
  {
--#ifdef CONFIG_PPC_MM_SLICES
-+#ifdef CONFIG_PPC_64S_HASH_MMU
++	if (radix_enabled())
++		return generic_get_unmapped_area(filp, addr, len, pgoff, flags);
++
+ #ifdef CONFIG_PPC_64S_HASH_MMU
  	return slice_get_unmapped_area(addr, len, flags,
  				       mm_ctx_user_psize(&current->mm->context), 0);
- #else
-@@ -204,7 +204,7 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+@@ -204,6 +104,9 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
  					     const unsigned long pgoff,
  					     const unsigned long flags)
  {
--#ifdef CONFIG_PPC_MM_SLICES
-+#ifdef CONFIG_PPC_64S_HASH_MMU
++	if (radix_enabled())
++		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags);
++
+ #ifdef CONFIG_PPC_64S_HASH_MMU
  	return slice_get_unmapped_area(addr0, len, flags,
  				       mm_ctx_user_psize(&current->mm->context), 1);
- #else
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index e2e1fec91c6e..9d099dc75e8b 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -377,7 +377,6 @@ config SPE
- config PPC_64S_HASH_MMU
- 	bool "Hash MMU Support"
- 	depends on PPC_BOOK3S_64
--	select PPC_MM_SLICES
- 	default y
- 	help
- 	  Enable support for the Power ISA Hash style MMU. This is implemented
-@@ -451,9 +450,6 @@ config PPC_BOOK3E_MMU
- 	def_bool y
- 	depends on FSL_BOOKE || PPC_BOOK3E
+@@ -213,21 +116,6 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+ }
+ #endif /* HAVE_ARCH_UNMAPPED_AREA */
  
--config PPC_MM_SLICES
--	bool
+-static void radix__arch_pick_mmap_layout(struct mm_struct *mm,
+-					unsigned long random_factor,
+-					struct rlimit *rlim_stack)
+-{
+-#ifdef CONFIG_PPC_RADIX_MMU
+-	if (mmap_is_legacy(rlim_stack)) {
+-		mm->mmap_base = TASK_UNMAPPED_BASE;
+-		mm->get_unmapped_area = radix__arch_get_unmapped_area;
+-	} else {
+-		mm->mmap_base = mmap_base(random_factor, rlim_stack);
+-		mm->get_unmapped_area = radix__arch_get_unmapped_area_topdown;
+-	}
+-#endif
+-}
 -
- config PPC_HAVE_PMU_SUPPORT
- 	bool
+ /*
+  * This function, called very early during the creation of a new
+  * process VM image, sets up which VM layout function to use:
+@@ -239,9 +127,6 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+ 	if (current->flags & PF_RANDOMIZE)
+ 		random_factor = arch_mmap_rnd();
  
+-	if (radix_enabled())
+-		return radix__arch_pick_mmap_layout(mm, random_factor,
+-						    rlim_stack);
+ 	/*
+ 	 * Fall back to the standard layout if the personality
+ 	 * bit is set, or if the expected stack growth is unlimited:
 -- 
 2.35.1
 
