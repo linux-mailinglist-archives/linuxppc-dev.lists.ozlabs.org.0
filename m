@@ -2,81 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF1A4FA05F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 02:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFE44FA06A
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 02:05:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZwHr024tz3bhQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 10:00:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZwNd0Jz5z3bYZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 10:05:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Kbnf+OTm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AwBP3ICs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::436;
- helo=mail-wr1-x436.google.com; envelope-from=jakobkoschel@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Kbnf+OTm; dkim-atps=neutral
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com
- [IPv6:2a00:1450:4864:20::436])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=AwBP3ICs; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZwHD2pBmz2xgJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 10:00:24 +1000 (AEST)
-Received: by mail-wr1-x436.google.com with SMTP id i20so1939748wrb.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Apr 2022 17:00:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=M4fK1yo1NBIHG/5W6ZdoT+jscsUpt52urbAtX6EHweY=;
- b=Kbnf+OTmmmZ25Py7KZVEogMix9TXNLbqSs+Rby4Mck4nWKvGBvMG0Yu2oTCcjsopxe
- tac9vGLoQEqTba+57ySJl6CUS1A6BZRfBgzMYRR8hAbHS4wtx3oQCU0T6hEeF8h3Wljb
- p+UQLEGEkM6V1/rISJRGHb/h1YLXES7qXMHhPMOgiTRwGCT6g3mjF7XMWDXnqmX1KcCf
- 5t92VacE8vcq5J0j4lKxfq/44xUYXoNAVfxhlKmHVeFvv/MrkmHedjUiuMd7R6ykF5Go
- jYmTt7ztJv9nQIMfoTzEGMD+MIMTr7RyTmna9GZkjOGr866lASWUreb/L/vHg0ygsbM9
- xMWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=M4fK1yo1NBIHG/5W6ZdoT+jscsUpt52urbAtX6EHweY=;
- b=CceCkvrASadQZRYvOCKlCLRIWzJ4HU7r6t7qfpFO9v9MfKDMqJ1Q8ba5CgJE1guQDM
- c7rxFOQDODqo+ISRQus2xFrAmPwUTD8AN1RZNFcqg8m4Rl0/soa4c7oKjFy0H84H+e+3
- NzNY4CY4dhOFUxF3LFEb0PshOXzPskhxsrhWcQbCEfmE/ukGhj4Qi240cEhNpOwdyTwy
- o5Tf/Ug594WkxkuyhV4pcnxhlN7QiB9LxUZR/jBOFq/k7a2MBg4IrggPp9Zh415WvXqp
- 6MaZXa/r0e44S1i+Q6LJABIbrOrbGLsiYlwc6VWuIAlWdC+VHVqSD5mrhyWGg4fE8eLG
- pXLQ==
-X-Gm-Message-State: AOAM530WfqHrbnsqZ8sEh9VN8L9jHIkxny3YMW3L/nxsTW4kKAEzY1c8
- rlpA6pjM0jyEVifvGli4N6I=
-X-Google-Smtp-Source: ABdhPJwsgzMxfu8oKABBvDjW9kco9sUI3QmbrtC5b9hgDi2efhG+oHaYpnT8EByLRhIHH6Va2p0drA==
-X-Received: by 2002:a5d:6989:0:b0:206:1517:9b66 with SMTP id
- g9-20020a5d6989000000b0020615179b66mr16236897wru.583.1649462421298; 
- Fri, 08 Apr 2022 17:00:21 -0700 (PDT)
-Received: from smtpclient.apple ([185.238.38.242])
- by smtp.gmail.com with ESMTPSA id
- w7-20020a1cf607000000b00389a5390180sm11277078wmc.25.2022.04.08.17.00.19
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 08 Apr 2022 17:00:20 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
-Subject: Re: [PATCH net-next 03/15] net: dsa: mv88e6xxx: Replace usage of
- found with dedicated iterator
-From: Jakob Koschel <jakobkoschel@gmail.com>
-In-Reply-To: <20220408235051.2a4hh7p3lee3a3xv@skbuf>
-Date: Sat, 9 Apr 2022 02:00:18 +0200
-Content-Transfer-Encoding: 7bit
-Message-Id: <56F3A9DE-C80A-4932-AFEA-BB82251C1199@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZwN06hfBz2xnM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 10:04:32 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 2C601B82DEE;
+ Sat,  9 Apr 2022 00:04:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 892C8C385A3;
+ Sat,  9 Apr 2022 00:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1649462665;
+ bh=bd8rzBS+vEc4ttPjaHAQjZ7XjvJdbi78cn8u1jcSgnY=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=AwBP3ICswtwn4xr9uXInDJ4nqqlw/9l7rsH7J5AmSQ38K7fhTXA/NIsNkI3Cku5LF
+ UyOlYbhACeeY/VSub9qNl02fo6GS4pMScAhZgzr371jyLskztqeh5z1ZItO+hxfMLV
+ /aPzSIUVhfVwrmhDdf/FLz7WbjqYG23kHHCcNWNodIQ4ejDS5PdzQ/dHAtIGLry+hQ
+ ir5v8brOrIClr3cwwWDmp3wWYO8brZ/IyRy3D1ItZTpXVEm//sr5Cwr/s/1cBmrtEG
+ x7Tt7OnYb+8u5jUHUvv635ozDpZ13jxsnG+j3lNWF2SHpwUVQ3yLXRLZgCTH9fQ3Ku
+ rHHyHCSlsR/Ww==
+Date: Fri, 8 Apr 2022 17:04:23 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jakob Koschel <jakobkoschel@gmail.com>
+Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
+ iterator for list_add() after loop
+Message-ID: <20220408170423.35b379d9@kernel.org>
+In-Reply-To: <AAB64C72-5B45-4BA1-BB48-106F08BDFF1B@gmail.com>
 References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
- <20220407102900.3086255-4-jakobkoschel@gmail.com>
- <20220408123101.p33jpynhqo67hebe@skbuf>
- <C2AFC0FB-08EC-4421-AF44-8C485BF48879@gmail.com>
- <20220408235051.2a4hh7p3lee3a3xv@skbuf>
-To: Vladimir Oltean <olteanv@gmail.com>
-X-Mailer: Apple Mail (2.3696.80.82.1.1)
+ <20220407102900.3086255-3-jakobkoschel@gmail.com>
+ <20220407205426.6a31e4b2@kernel.org>
+ <AAB64C72-5B45-4BA1-BB48-106F08BDFF1B@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,54 +72,40 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
  Ariel Elior <aelior@marvell.com>, Florian Fainelli <f.fainelli@gmail.com>,
  Manish Chopra <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>,
  Steen Hegelund <Steen.Hegelund@microchip.com>, "Bos, H.J." <h.j.bos@vu.nl>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, Martin Habets <habetsm.xilinx@gmail.com>,
+ Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>,
  Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
  Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
  Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakub Kicinski <kuba@kernel.org>, Di Zhu <zhudi21@huawei.com>,
- Lars Povlsen <lars.povlsen@microchip.com>, Netdev <netdev@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, UNGLinuxDriver@microchip.com,
+ Di Zhu <zhudi21@huawei.com>, Lars Povlsen <lars.povlsen@microchip.com>,
+ Colin Ian King <colin.king@intel.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com,
  Edward Cree <ecree.xilinx@gmail.com>, Michael Walle <michael@walle.cc>,
- Xu Wang <vulab@iscas.ac.cn>, Colin Ian King <colin.king@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Casper Andersson <casper.casan@gmail.com>, Mike Rapoport <rppt@kernel.org>
+ Xu Wang <vulab@iscas.ac.cn>, Vladimir Oltean <olteanv@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Casper Andersson <casper.casan@gmail.com>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-> On 9. Apr 2022, at 01:50, Vladimir Oltean <olteanv@gmail.com> wrote:
+On Sat, 9 Apr 2022 01:58:29 +0200 Jakob Koschel wrote:
+> > This turns a pretty slick piece of code into something ugly :(
+> > I'd rather you open coded the iteration here than make it more 
+> > complex to satisfy "safe coding guidelines".  
 > 
-> On Sat, Apr 09, 2022 at 01:44:00AM +0200, Jakob Koschel wrote:
->>> Let's try to not make convoluted code worse. Do the following 2 patches
->>> achieve what you are looking for? Originally I had a single patch (what
->>> is now 2/2) but I figured it would be cleaner to break out the unrelated
->>> change into what is now 1/2.
->> 
->> I do agree with not making convoluted code worse, but I was reluctant with
->> e.g. introducing new functions for this because others essentially
->> have the opposite opinion on this.
->> 
->> I however like solving it that way, it makes it a lot cleaner.
-> 
-> Yeah, I think 'just adapt to the context and style and intentions of the
-> code you're changing and don't try to push a robotic one-size-fits-all
-> solution' is sensible enough for an initial guiding principle.
-> 
->>> If you want I can submit these changes separately.
->> 
->> Sure if you want to submit them separately, go ahead. Otherwise I can
->> integrate it into a v2, whatever you prefer essentially.
-> 
-> If you're moving quickly feel free to pick them up. I have lots of other
-> things on my backlog so it won't be until late next week until I even
-> consider submitting these.
+> I'm not entirely sure I understand what you mean with 
+> "open coded the iteration". But maybe the solution proposed by Vladimir [1]
+> works for you?
 
-I'm planning to send a v2 earlier than that, so I'll just integrate it there.
+Yup, that's what I meant!
 
-Thanks,
-Jakob
+> I'm planning to rewrite the cases in that way for the relevant ones.
+>
+> > Also the list_add() could be converted to list_add_tail().  
+> 
+> Good point, I wasn't sure if that's considered as something that should be
+> done as a separate change. I'm happy to include it in v2.
 
+Ack, separate patch would be better for that. I guess Vladimir may have
+used .prev on purpose, since _tail() doesn't intuitively scream _after()
+Anyway, not important.
