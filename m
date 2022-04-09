@@ -2,77 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2EE24FA070
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 02:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E8F4FA077
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 02:11:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KZwTB24x0z3bZ2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 10:09:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KZwWY3GYCz3bh9
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Apr 2022 10:11:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Hf3GAkOQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=naC9lKld;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62d;
- helo=mail-ej1-x62d.google.com; envelope-from=olteanv@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::434;
+ helo=mail-wr1-x434.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Hf3GAkOQ; dkim-atps=neutral
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com
- [IPv6:2a00:1450:4864:20::62d])
+ header.s=20210112 header.b=naC9lKld; dkim-atps=neutral
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
+ [IPv6:2a00:1450:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KZwSZ3vgmz2xCB
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 10:08:29 +1000 (AEST)
-Received: by mail-ej1-x62d.google.com with SMTP id bq8so20186337ejb.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Apr 2022 17:08:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KZwVw0zQ1z2xsP
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Apr 2022 10:10:32 +1000 (AEST)
+Received: by mail-wr1-x434.google.com with SMTP id w4so15010820wrg.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Apr 2022 17:10:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=RvZAa7SKDRUob+n4fTMpikTEqqS+v/QxENsH8RtzPww=;
- b=Hf3GAkOQzv9e8PvaX4T37CgoPYyjwun300cYmypPebz99NbqI5XWgZUUr/cRfgCQ0q
- yEyPv3iui1C1/grSAXRrWRuN8dbz6cBQEpg3lM9C37EBvM5sQDouUxhFabNcQizQcdU8
- 1s+r7XOnue2u+UMcpKJu/o5yZnpvCQoIqy1MlxgC7F/5F2fvQ+eQEk2tTjLrTRaQwq71
- fGM/L62bKnVvaOGDbo+8C5lRYbmkPMu3xXTxHpTBlvwi8Nl0ZlKE28458OZhFawR3t/T
- U/DFqLcUt7Ns/zgPRVKNPT4qAkIRo6ipV/fvzLQk22ztkCl4kIxx7nuo9Oa47HrHOD0G
- Hjmw==
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=Em4XLbKn3weeywAuYbLh67KeJT9mzRe61DWplVcKypI=;
+ b=naC9lKldrkSC7zCNFHhRAhqGVylvW15bkJQAqbkOKBWu7ygsCW7RbzcCayG3jCmi15
+ Z17Hl61Nd70wx+plx5gpgJccrGheKPucirRczR2qSH+bdSOFKkTGLaimnmt0QSIedPHd
+ 6LEfWoxB4+vmvFcRQ2FzmnD1Upp7GVpVposZ5+MgKTU7z7mzymjGpbjC6pJH3Iw0jnP5
+ zUSwfuNlHPdZqjAs9DNOxxJUJbDhZKsK1ztu+U13BmJefTSRslhyvZL4HW9w+ZkAX4q6
+ eLRdyeLZk35841OgOMea3Ei245zZ0hZuxWYVq9No4cTXAde0yllcDHtvWhaglNko2x70
+ ezYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=RvZAa7SKDRUob+n4fTMpikTEqqS+v/QxENsH8RtzPww=;
- b=Gv4LzjhuNWV2b8HEAsUsB9ACdmpQU74BmvGPo9Oz4T8jtsxv5T0MrpImtGGy33tS8F
- I3Pe5ZzNJ1n6uIIpAx37uQL1Jn/SOGkkulFevXmG/mvMIAbc7wpHrR36dm5WM4Ua/3Af
- 5yujJ3KCiRe5y729tBo4qAgOBzCkJox3rO3/MTBlFjBg+7mtMtDKo+qSp1b6YNz+n+Vp
- liJ9ZubWOk/xoFq1Cqw5iXppwHTmXA6TijN4rqIpIuZKMFgy3YF7MWtEBY6VGYSM2NLb
- Hqmz82oiqSbtLY5A9NEoPVNE4DeQ6PRuD6s8gLrcwkiqbvQr4kV3ykAS590BojBjEZw0
- UPeA==
-X-Gm-Message-State: AOAM5310JhB1w20/dGVH8kW/5M6BtVHq2MHUbw7ogIY/Y+r6cENcgB3L
- Ip2WvlqEk3FcB5zx2LdfuQox2UHZO4s=
-X-Google-Smtp-Source: ABdhPJxa+uwu4gunlQPwRdiolDxha0utOQH8M/7X9mDxxlHZQFL3dCLpiHOPKltrB32NP/LUIeS0CA==
-X-Received: by 2002:a17:907:6e04:b0:6e0:95c0:47b8 with SMTP id
- sd4-20020a1709076e0400b006e095c047b8mr20688094ejc.483.1649462905357; 
- Fri, 08 Apr 2022 17:08:25 -0700 (PDT)
-Received: from skbuf ([188.26.57.45]) by smtp.gmail.com with ESMTPSA id
- v2-20020a509d02000000b00412d53177a6sm11146780ede.20.2022.04.08.17.08.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 08 Apr 2022 17:08:24 -0700 (PDT)
-Date: Sat, 9 Apr 2022 03:08:22 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jakob Koschel <jakobkoschel@gmail.com>
-Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
- iterator for list_add() after loop
-Message-ID: <20220409000822.mbz34qevh7babqo5@skbuf>
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=Em4XLbKn3weeywAuYbLh67KeJT9mzRe61DWplVcKypI=;
+ b=MEZP8iG9I4xDVMuPHjW8mZ+kJVIcCBJFprgB3OnKI8QNs4jm+QPlVSIsRLC1t0CRYY
+ NCClgnkV+FQoKOVS5or+ZrOdVCAN1b8WBoiIq4NcVKxI0XnLM4QB9KzidDfAUQXNdRTm
+ yjYyRIXlvlCdWqusYb8w9VkJ15Zn0taB/qOzjlGdFhZ+DL1hNpelkYL1WaTY9MxBRlGe
+ Hpaqj8EBbnQPWfaTF1nADKHEgXiRnBBOyH6K19TAqff0qgCUo4LV7qTJ8qYX1ylWqJEF
+ 3K/HjWgpPTOyPC8knbqKuab6R/i2WVIBI2F6VWVX9GCj+9FRvkMeqvNvwhNG86WiNPOz
+ lOFQ==
+X-Gm-Message-State: AOAM533o51LYgcpUi91tZqzSEDXHezw2sDrExca+wOWDIVTeNiYKEcCj
+ +bdBjGZbH5n8Tsyl7B0/s4U=
+X-Google-Smtp-Source: ABdhPJzmLwsA1+SOQhHbzMNFbQhPfQg3DyyzoBI32JG9626vpPcnl/Yxmvz41FJyi8uwyoDEhq0KAw==
+X-Received: by 2002:a5d:558f:0:b0:206:c79:8d46 with SMTP id
+ i15-20020a5d558f000000b002060c798d46mr16261274wrv.628.1649463027998; 
+ Fri, 08 Apr 2022 17:10:27 -0700 (PDT)
+Received: from smtpclient.apple ([185.238.38.242])
+ by smtp.gmail.com with ESMTPSA id
+ c186-20020a1c35c3000000b0038e6c6fc860sm11450767wma.37.2022.04.08.17.10.26
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 08 Apr 2022 17:10:27 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
+Subject: Re: [PATCH net-next 11/15] sfc: Remove usage of list iterator for
+ list_add() after the loop body
+From: Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <4520e9c5-8871-b281-f621-ac737e64333b@gmail.com>
+Date: Sat, 9 Apr 2022 02:10:24 +0200
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B21A2B9D-4B5F-47D2-A990-D17DC56C0A69@gmail.com>
 References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
- <20220407102900.3086255-3-jakobkoschel@gmail.com>
- <20220407205426.6a31e4b2@kernel.org>
- <AAB64C72-5B45-4BA1-BB48-106F08BDFF1B@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AAB64C72-5B45-4BA1-BB48-106F08BDFF1B@gmail.com>
+ <20220407102900.3086255-12-jakobkoschel@gmail.com>
+ <4520e9c5-8871-b281-f621-ac737e64333b@gmail.com>
+To: Edward Cree <ecree.xilinx@gmail.com>
+X-Mailer: Apple Mail (2.3696.80.82.1.1)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,36 +91,122 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
  Ariel Elior <aelior@marvell.com>, Florian Fainelli <f.fainelli@gmail.com>,
  Manish Chopra <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>,
  Steen Hegelund <Steen.Hegelund@microchip.com>, "Bos, H.J." <h.j.bos@vu.nl>,
- linux-arm-kernel@lists.infradead.org, Martin Habets <habetsm.xilinx@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
  Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
  Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
  Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
  Jakub Kicinski <kuba@kernel.org>, Di Zhu <zhudi21@huawei.com>,
- Lars Povlsen <lars.povlsen@microchip.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, UNGLinuxDriver@microchip.com,
- Edward Cree <ecree.xilinx@gmail.com>, Michael Walle <michael@walle.cc>,
- Xu Wang <vulab@iscas.ac.cn>, Colin Ian King <colin.king@intel.com>,
- linuxppc-dev@lists.ozlabs.org, Casper Andersson <casper.casan@gmail.com>,
- Mike Rapoport <rppt@kernel.org>
+ Lars Povlsen <lars.povlsen@microchip.com>,
+ Colin Ian King <colin.king@intel.com>, Netdev <netdev@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, UNGLinuxDriver@microchip.com,
+ Michael Walle <michael@walle.cc>, Xu Wang <vulab@iscas.ac.cn>,
+ Vladimir Oltean <olteanv@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Casper Andersson <casper.casan@gmail.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 09, 2022 at 01:58:29AM +0200, Jakob Koschel wrote:
-> Hello Jakub,
-> > Also the list_add() could be converted to list_add_tail().
-> 
-> Good point, I wasn't sure if that's considered as something that should be
-> done as a separate change. I'm happy to include it in v2.
+Hello Edward,
 
-By now you probably studied more list access patterns than I did,
-but I wrote that deliberately using list_add(..., pos->prev) rather than
-list_add_tail(), because even though the code is the same, I tend to
-think of the "head" argument of list_add_tail() as being the actual head
-of the list, and therefore the head->prev being the tail of the list
-(hence the name), something which doesn't hold true here where we're
-inserting in the middle of the list. Anyway it's just a name and that's
-what felt natural to me at the time, I won't oppose the change, but do
-make it a separate change and not clump it together with the unrelated
-list_for_each_entry() -> list_for_each() change.
+> On 7. Apr 2022, at 19:42, Edward Cree <ecree.xilinx@gmail.com> wrote:
+>=20
+> On 07/04/2022 11:28, Jakob Koschel wrote:
+>> In preparation to limit the scope of a list iterator to the list
+>> traversal loop, use a dedicated pointer to point to the found element =
+[1].
+>>=20
+>> Before, the code implicitly used the head when no element was found
+>> when using &pos->list. Since the new variable is only set if an
+>> element was found, the list_add() is performed within the loop
+>> and only done after the loop if it is done on the list head directly.
+>>=20
+>> Link: =
+https://lore.kernel.org/all/CAHk-=3DwgRr_D8CB-D9Kg-c=3DEHreAsk5SqXPwr9Y7k9=
+sA6cWXJ6w@mail.gmail.com/ [1]
+>> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+>=20
+> The commit message doesn't accurately describe the patch; it states
+> that "the list_add() is performed within the loop", which doesn't
+> appear to be the case.
+
+you're right, I've changed the code last minute. I'll make sure
+the changelog reflects the actual behaviour here. Thanks for the
+input!
+
+> Also it seems a bit subtle to use `head` as both the head of the
+> list to iterate over and the found entry/gap to insert before; a
+> comment explaining that wouldn't go amiss.
+
+Also a good point, I'll add a comment as well, or perhaps using
+a separate 'struct list_head *pos' variable is even cleaner.
+
+> (I'd question whether this change is really an improvement in this
+> case, where the iterator really does hold the thing we want at the
+> end of the search and so there's no if(found) special-casing =E2=80=94
+> we're not even abusing the type system, because efx->rss_context
+> is of the same type as all the list entries, so ctx really is a
+> valid pointer and there shouldn't be any issues with speculative
+> accesses or whatever =E2=80=94 but it seems Linus has already =
+pronounced
+> in favour of the scope limiting, and far be it from me to gainsay
+> him.)
+
+So, since the head is included in the struct of the same type as
+the element, it really doesn't make much of a difference here.
+It will always be safe to use.
+
+But this is the very rare exception. There are other benefits of
+avoiding the use of list iterator after the loop. One of them
+is scope limiting but you also might want to set the iterator
+variable to a "safe value" before the processor might execute an =
+additional
+iteration in speculative execution on the 'bogus' head element.
+
+If you do these kind of patches on the list macros, you need to make =
+sure
+they work for all the uses, including the safe ones (like this one).
+
+>=20
+> -ed
+>=20
+>> ---
+>> drivers/net/ethernet/sfc/rx_common.c | 6 ++++--
+>> 1 file changed, 4 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/drivers/net/ethernet/sfc/rx_common.c =
+b/drivers/net/ethernet/sfc/rx_common.c
+>> index 1b22c7be0088..a8822152ff83 100644
+>> --- a/drivers/net/ethernet/sfc/rx_common.c
+>> +++ b/drivers/net/ethernet/sfc/rx_common.c
+>> @@ -563,8 +563,10 @@ struct efx_rss_context =
+*efx_alloc_rss_context_entry(struct efx_nic *efx)
+>>=20
+>> 	/* Search for first gap in the numbering */
+>> 	list_for_each_entry(ctx, head, list) {
+>> -		if (ctx->user_id !=3D id)
+>> +		if (ctx->user_id !=3D id) {
+>> +			head =3D &ctx->list;
+>> 			break;
+>> +		}
+>> 		id++;
+>> 		/* Check for wrap.  If this happens, we have nearly 2^32
+>> 		 * allocated RSS contexts, which seems unlikely.
+>> @@ -582,7 +584,7 @@ struct efx_rss_context =
+*efx_alloc_rss_context_entry(struct efx_nic *efx)
+>>=20
+>> 	/* Insert the new entry into the gap */
+>> 	new->user_id =3D id;
+>> -	list_add_tail(&new->list, &ctx->list);
+>> +	list_add_tail(&new->list, head);
+>> 	return new;
+>> }
+>>=20
+>>=20
+>=20
+
+Thanks,
+Jakob
+
