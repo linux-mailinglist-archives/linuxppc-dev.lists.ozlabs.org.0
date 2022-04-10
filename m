@@ -2,83 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC934FB02F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 22:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 674FF4FB0B4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 00:46:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kc3f36rsLz3bcn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 06:35:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kc6Xr2rT3z3bff
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 08:46:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=fJz20MHN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T7cjx/nl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::536;
- helo=mail-ed1-x536.google.com; envelope-from=olteanv@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=fJz20MHN; dkim-atps=neutral
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
- [IPv6:2a00:1450:4864:20::536])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=T7cjx/nl; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kc3dP0fhJz2yJF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 06:35:04 +1000 (AEST)
-Received: by mail-ed1-x536.google.com with SMTP id z99so7422268ede.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 13:35:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=dCmksJmPxgakgPcETkyiMkdEpAIfPO8dTB6JgwQ/+0c=;
- b=fJz20MHNwDvsBXdmgdMPNyq04BZ5BUG60QpxolftSlFksOd7su6HQLoU6Ym3gzUS9Z
- 1HOHAI1W86fYaCzaxUN5sXZRzTzF/FgAhUMtk7w7n4SKYTDfggk4U2NXEHuuhBg5bOQj
- 7AmYBCt6RZKmk/JrDlUwsJpoUULpi+QFAllfEIz2JBYO/eXqDK3Iev7FQY9dKcvA4Mmi
- tQGnUFhaplfYowHS0ggxLJH7BKaETYZLgXmFDsdvnDdMysaS0fSWOExFy96UIba2+vWu
- mz4aSQmoRlql8Scvd4xNgNcCvlcKYqi0CPXxIMHdzILmeexpscOm7rOOgg8pNpvJhqYL
- im3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=dCmksJmPxgakgPcETkyiMkdEpAIfPO8dTB6JgwQ/+0c=;
- b=PKW/2AFywYGPk++JOO5JyYalhbjkJtcmd6HwijkHVvFC9eZDx3yg+7P4Ql+/rPuwDT
- nJk90Sc+sqNPRmHBbYyfh9dVbQB3SjD7V0Yg7mI0sZyfJpDc/Rq5AMiL3ep75sasSGQr
- 27pn8IecOe1uMmVjeD3B+vj+mkB7EHbT50ooNHZH+zcgghD8zeFTykpIJMBocGwcmQx+
- gIlY6f7cx5GrfOB8+BFwiJBWe2/21ef02AP03r+v4ONuhqbM0dJwxvlx6CiBjRfy9kA7
- Nct8RE7/6KWt2VrnsiUDp2iRS6pIVFYKyCyf74szVK97V6xACWT7FWHMQJPOPbKJW55y
- ip4Q==
-X-Gm-Message-State: AOAM530ixCD5YUuXxfRDqdCketBcZVGRRbgXj19Cl01rHosqPP7VC2Sa
- ldOFTmt2bxTLmlatiGV5KlI=
-X-Google-Smtp-Source: ABdhPJwZznt2lJwO+hf+ALxhFuyiAjJq2pf8wY+nER92urPfEHHhtB2vyJZ36qkUOAwve20Kv235ZQ==
-X-Received: by 2002:a05:6402:34b:b0:41d:7026:d9e3 with SMTP id
- r11-20020a056402034b00b0041d7026d9e3mr7280900edw.168.1649622900513; 
- Sun, 10 Apr 2022 13:35:00 -0700 (PDT)
-Received: from skbuf ([188.26.57.45]) by smtp.gmail.com with ESMTPSA id
- u25-20020a170906b11900b006e08588afedsm11183676ejy.132.2022.04.10.13.34.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Apr 2022 13:35:00 -0700 (PDT)
-Date: Sun, 10 Apr 2022 23:34:57 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jakob Koschel <jakobkoschel@gmail.com>
-Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
- iterator for list_add() after loop
-Message-ID: <20220410203457.3las4i3qcmaitsjt@skbuf>
-References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
- <20220407102900.3086255-3-jakobkoschel@gmail.com>
- <20220408114120.tvf2lxvhfqbnrlml@skbuf>
- <FA317E17-3B09-411B-9DF6-05BDD320D988@gmail.com>
- <C9081CE3-B008-48DA-A97C-76F51D4F189F@gmail.com>
- <20220410110508.em3r7z62ufqcbrfm@skbuf>
- <935062D0-C657-4C79-A0BE-70141D052EC0@gmail.com>
- <C88FE232-417C-4029-A79E-9A7E807D2FE7@gmail.com>
- <20220410200235.6mtdkd2f73ijxknn@skbuf>
- <A8286EF1-4C38-4ACD-884A-6D1C64769DAE@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kc6X74R7Mz2xZp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 08:45:43 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 39F66B80ECB
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 22:45:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D566FC385A5
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 22:45:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1649630737;
+ bh=6UkPIpIoHnSYMIZ184N1Cwt8I6jxl9Byi8oN6b9Hi58=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=T7cjx/nll+xXf3+4LNAkShBfFTZ5oWXx/nqKP/E+d6tA8VWR7rdPotp1zpoZLBQuz
+ Xf7ShJ5b+wGA8g+J0w9cBs4xGBj7CMK/omlqBwXwsygd7dN9Tvbt1riHHw9ocqhEqO
+ yF1SflhfItyzmNW2MCY/QnHmCk/GsdXtD9lFACUVlIMEbZO8vptNmzYlM/34s2KEvW
+ cJS4Oq9oeQ1JG6zcTa4KzGdfGh8RjVhTfX5MuK+Opd8bEJA2NByqX++bOcORiJzLJr
+ 8rkSac3d1abYqv5sUn8iL8cbZVD3/c7LdBmVGnAkkMIS2nQpcAKX33WZHCJ/t3wTEV
+ YodMAK780GooQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id BDD11C05F98; Sun, 10 Apr 2022 22:45:37 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215803] ppc64le(P9):  BUG: Kernel NULL pointer dereference on
+ read at 0x00000060  NIP: do_remove_conflicting_framebuffers+0x184/0x1d0
+Date: Sun, 10 Apr 2022 22:45:37 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: linux@octaforge.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-215803-206035-M99EIgtj4A@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215803-206035@https.bugzilla.kernel.org/>
+References: <bug-215803-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <A8286EF1-4C38-4ACD-884A-6D1C64769DAE@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,77 +84,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
- Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
- Ariel Elior <aelior@marvell.com>, Florian Fainelli <f.fainelli@gmail.com>,
- Manish Chopra <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, "Bos, H.J." <h.j.bos@vu.nl>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
- Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakub Kicinski <kuba@kernel.org>, Lars Povlsen <lars.povlsen@microchip.com>,
- Netdev <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
- UNGLinuxDriver@microchip.com, Edward Cree <ecree.xilinx@gmail.com>,
- Michael Walle <michael@walle.cc>, Xu Wang <vulab@iscas.ac.cn>,
- Colin Ian King <colin.king@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Casper Andersson <casper.casan@gmail.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Apr 10, 2022 at 10:30:31PM +0200, Jakob Koschel wrote:
-> > On 10. Apr 2022, at 22:02, Vladimir Oltean <olteanv@gmail.com> wrote:
-> > 
-> > On Sun, Apr 10, 2022 at 08:24:37PM +0200, Jakob Koschel wrote:
-> >> Btw, I just realized that the if (!pos) is not necessary. This should simply do it:
-> >> 
-> >> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-> >> index b7e95d60a6e4..2d59e75a9e3d 100644
-> >> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
-> >> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-> >> @@ -28,6 +28,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
-> >> 		list_add(&e->list, &gating_cfg->entries);
-> >> 	} else {
-> >> +		struct list_head *pos = &gating_cfg->entries;
-> >> 		struct sja1105_gate_entry *p;
-> >> 
-> >> 		list_for_each_entry(p, &gating_cfg->entries, list) {
-> >> 			if (p->interval == e->interval) {
-> >> @@ -37,10 +38,12 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
-> >> 				goto err;
-> >> 			}
-> >> 
-> >> -			if (e->interval < p->interval)
-> >> +			if (e->interval < p->interval) {
-> >> +				pos = &p->list;
-> >> 				break;
-> >> +			}
-> >> 		}
-> >> -		list_add(&e->list, p->list.prev);
-> >> +		list_add(&e->list, pos->prev);
-> >> 	}
-> >> 
-> >> 	gating_cfg->num_entries++;
-> >> -- 
-> >> 2.25.1
-> > 
-> > I think we can give this a turn that is actually beneficial for the driver.
-> > I've prepared and tested 3 patches on this function, see below.
-> > Concrete improvements:
-> > - that thing with list_for_each_entry() and list_for_each()
-> > - no more special-casing of an empty list
-> > - simplifying the error path
-> > - that thing with list_add_tail()
-> > 
-> > What do you think about the changes below?
-> 
-> Thanks for all the good cooperation and help. The changes look great.
-> I'll include them in v2 unless you want to do that separately, then I'll
-> just remove them from the patch series.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215803
 
-I think it's less of a synchronization hassle if you send them along
-with your list of others. Good luck.
+Daniel Kolesa (linux@octaforge.org) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |linux@octaforge.org
+
+--- Comment #2 from Daniel Kolesa (linux@octaforge.org) ---
+This now hits 5.15.33. I noticed this when virtio-gpu failed to come up.
+
+Commit:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/dri=
+vers/video/fbdev/core?h=3Dlinux-5.15.y&id=3Dc894ac44786cfed383a6c6b20c1bfb1=
+2eb96018a
+
+More detailed backtrace:
+https://gist.github.com/q66/6ffc1bd18cf241e6ad894dc4409a2f72
+
+This is also on a ppc64le system. However, I think this bug may not be ppc64
+specific...
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
