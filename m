@@ -1,70 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB1D4FAFFB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 22:03:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F334FB01B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 22:31:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kc2wr6vmxz3bk2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 06:03:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kc3Y05qWBz3bZY
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 06:31:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=RZFAduIY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KpjDZvDR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632;
- helo=mail-ej1-x632.google.com; envelope-from=olteanv@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62e;
+ helo=mail-ej1-x62e.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=RZFAduIY; dkim-atps=neutral
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com
- [IPv6:2a00:1450:4864:20::632])
+ header.s=20210112 header.b=KpjDZvDR; dkim-atps=neutral
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
+ [IPv6:2a00:1450:4864:20::62e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kc2w76T7wz2xnD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 06:02:45 +1000 (AEST)
-Received: by mail-ej1-x632.google.com with SMTP id u15so8374934ejf.11
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 13:02:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kc3XH5jX7z2yJF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 06:30:37 +1000 (AEST)
+Received: by mail-ej1-x62e.google.com with SMTP id p15so27086326ejc.7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 13:30:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=GnYyWArUhJQqTQwEof5GYvJV/QLYrf7vSksV6hEcM50=;
- b=RZFAduIY7ZscSzkRGZF5F0gRjrdt4WlKE3VvBL8OJXHhmiAkl3OPpu3EOHelHlrkuj
- M7PSPCv6fTsFkHwR0B6fSdV/ROHl4dxk1GyWtGm+OpNdNlVvi5G8tkVIDwjWdoCazOkb
- CZw9B76aLmVvmvbYAqzD0vLx3hoooCibn6UV82lgPtAMWCDqqkvy+7XI7Mc6cDYeJ0KH
- KoMffJvyglvdV7w36x69mWGpV8HbIXlGJjXrjEeMoQOpEkf41J72TiDP2dldEs/3Usng
- 34ioGeGyMtwA2NoEc9T9GSpWhFMWyXJ4PIDuLmghDLEq8VoviaAIXn++a/B9CJXdECRz
- I9GQ==
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=gUD5EhRwFvBmLktOS5nOEnCBK4Sai9l7XhsoofswNUc=;
+ b=KpjDZvDRxqER1EswlLgFSnxQANZugwBRxOtmC41gnd0Uryz4qSPC1na+niPwLITs1Q
+ f4VxtCFXnSfj2cMmXR3IYwc8sPbzRqzTYXap1f6r7Re1J5j9CziCtdlT0kapnBmURE5P
+ wRpuW+dsgOzAMA6gmMVJVIB/SXwusu1rEFuPQ/Hg3/wsHgkcYNY9jj/UldaVdVpJjitR
+ NsrX1/26OeynSGHT6oEvkGNJ0L+dNLhWL6mN7CSByFTJXUdZMmDo2SOHy4gK5Z8pf0Nb
+ FSGRJtc3dLJtcbAP7fFwm5k7ZSYOpzukA+YzlJDMPjGLZ2aSKbXsgpkrp8ZVoxuqz7Bf
+ bHvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=GnYyWArUhJQqTQwEof5GYvJV/QLYrf7vSksV6hEcM50=;
- b=c8iBXxAM/7SzVQZNlp09VD9rhcND/pSPjtW8Kp8smEJQ46DClTev/vh123m6E2aAoG
- 2UKa1NSRpiU8XSrhT+anbKXaIMfrA5dEfII1Dq101O73G/oATD3ZMHIbD9255+xOGcw9
- pW4OHjaN1TZ9SbGSqDSIrXHu5QzkXIWdmDKCpbKECPY4+MXVxM3l3kcT6mEgrQbWLFmw
- mQT1YCuu4aSXwbQcgxmamFBHQ6MuQHlzGnqYhOpwNuQq6Ria/jwahob1fIIiHKmqShtF
- iuSe254oywedj4Tcq9CssOuy73iyJp27zKzxUt2s1wba5jdtWBzYnMZdxGQuQSZCRO8b
- D+bg==
-X-Gm-Message-State: AOAM533hAg/SzwmLfhtGUqkW1ZZAbHrwuQ8+T4rvQ8EY/txsdqd/eRqQ
- I8U2PgHEgKjgcaB8jwQgZO4=
-X-Google-Smtp-Source: ABdhPJxHbIQZEnUpzRU1OvqhvO3HGBsAFI2htAXaE0HJyeFzwPILH2y+MafSZ7wkBhJGry58b2nxig==
-X-Received: by 2002:a17:907:2d92:b0:6e8:4b2a:e41f with SMTP id
- gt18-20020a1709072d9200b006e84b2ae41fmr12659637ejc.124.1649620958790; 
- Sun, 10 Apr 2022 13:02:38 -0700 (PDT)
-Received: from skbuf ([188.26.57.45]) by smtp.gmail.com with ESMTPSA id
- i3-20020a1709067a4300b006dd879b4680sm11321691ejo.112.2022.04.10.13.02.36
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Apr 2022 13:02:38 -0700 (PDT)
-Date: Sun, 10 Apr 2022 23:02:35 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jakob Koschel <jakobkoschel@gmail.com>
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=gUD5EhRwFvBmLktOS5nOEnCBK4Sai9l7XhsoofswNUc=;
+ b=vfA2PQu54ea++WINEq6CRNyrnny2DL2lmab3/nfZpvaJLC9NEO8o1OZbGY9sZDbKHR
+ 1GHO+o2xZJy1z3vrSpQ5cWetXUepgfMWhbZ8Mo6PyxKoH5g9eTt+hted5u84D11mg3M9
+ eMXILdXV5PrCa9IaJOW7KNC/6FqXGKLMCYen5a6IfkLR/nkNkRUvIRJYTLCMHzDi5oAo
+ 8Y24ckNGoThlaiMMEgFq6R8Kz2fzUhu6JmLfzwitKn55JN1lB7o9dwhy+EVM2eXJfUai
+ 32peaD988+UHvP7oCjV9cWRpWN7pjKjxh3AG0uLfLihVt03zkmZgJx/dKP4TZm74DHJb
+ AaBg==
+X-Gm-Message-State: AOAM533FuXXe93IIzVErJuay4fgwju4znWP2Rg64TY1ZLRF8WEi2PJRl
+ SloR6157olgbmrfIW5wTCHY=
+X-Google-Smtp-Source: ABdhPJwmrMKGUQSQ2qHn4JYa/+mcP5Wj0Rz4HzzH5ErMxaZRpVJ0h2eMDNZT9ne8FZ4BV1319aD2Cg==
+X-Received: by 2002:a17:907:7f9e:b0:6e0:d34b:7d98 with SMTP id
+ qk30-20020a1709077f9e00b006e0d34b7d98mr26836972ejc.574.1649622633088; 
+ Sun, 10 Apr 2022 13:30:33 -0700 (PDT)
+Received: from smtpclient.apple (i130160.upc-i.chello.nl. [62.195.130.160])
+ by smtp.gmail.com with ESMTPSA id
+ l10-20020a170906938a00b006e88c811016sm910597ejx.145.2022.04.10.13.30.31
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Sun, 10 Apr 2022 13:30:32 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
 Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
  iterator for list_add() after loop
-Message-ID: <20220410200235.6mtdkd2f73ijxknn@skbuf>
+From: Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <20220410200235.6mtdkd2f73ijxknn@skbuf>
+Date: Sun, 10 Apr 2022 22:30:31 +0200
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A8286EF1-4C38-4ACD-884A-6D1C64769DAE@gmail.com>
 References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
  <20220407102900.3086255-3-jakobkoschel@gmail.com>
  <20220408114120.tvf2lxvhfqbnrlml@skbuf>
@@ -73,10 +78,9 @@ References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
  <20220410110508.em3r7z62ufqcbrfm@skbuf>
  <935062D0-C657-4C79-A0BE-70141D052EC0@gmail.com>
  <C88FE232-417C-4029-A79E-9A7E807D2FE7@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C88FE232-417C-4029-A79E-9A7E807D2FE7@gmail.com>
+ <20220410200235.6mtdkd2f73ijxknn@skbuf>
+To: Vladimir Oltean <olteanv@gmail.com>
+X-Mailer: Apple Mail (2.3696.80.82.1.1)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,250 +114,289 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Apr 10, 2022 at 08:24:37PM +0200, Jakob Koschel wrote:
-> Btw, I just realized that the if (!pos) is not necessary. This should simply do it:
-> 
-> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-> index b7e95d60a6e4..2d59e75a9e3d 100644
+
+
+> On 10. Apr 2022, at 22:02, Vladimir Oltean <olteanv@gmail.com> wrote:
+>=20
+> On Sun, Apr 10, 2022 at 08:24:37PM +0200, Jakob Koschel wrote:
+>> Btw, I just realized that the if (!pos) is not necessary. This should =
+simply do it:
+>>=20
+>> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c =
+b/drivers/net/dsa/sja1105/sja1105_vl.c
+>> index b7e95d60a6e4..2d59e75a9e3d 100644
+>> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
+>> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
+>> @@ -28,6 +28,7 @@ static int sja1105_insert_gate_entry(struct =
+sja1105_gating_config *gating_cfg,
+>> 		list_add(&e->list, &gating_cfg->entries);
+>> 	} else {
+>> +		struct list_head *pos =3D &gating_cfg->entries;
+>> 		struct sja1105_gate_entry *p;
+>>=20
+>> 		list_for_each_entry(p, &gating_cfg->entries, list) {
+>> 			if (p->interval =3D=3D e->interval) {
+>> @@ -37,10 +38,12 @@ static int sja1105_insert_gate_entry(struct =
+sja1105_gating_config *gating_cfg,
+>> 				goto err;
+>> 			}
+>>=20
+>> -			if (e->interval < p->interval)
+>> +			if (e->interval < p->interval) {
+>> +				pos =3D &p->list;
+>> 				break;
+>> +			}
+>> 		}
+>> -		list_add(&e->list, p->list.prev);
+>> +		list_add(&e->list, pos->prev);
+>> 	}
+>>=20
+>> 	gating_cfg->num_entries++;
+>> --=20
+>> 2.25.1
+>=20
+> I think we can give this a turn that is actually beneficial for the =
+driver.
+> I've prepared and tested 3 patches on this function, see below.
+> Concrete improvements:
+> - that thing with list_for_each_entry() and list_for_each()
+> - no more special-casing of an empty list
+> - simplifying the error path
+> - that thing with list_add_tail()
+>=20
+> What do you think about the changes below?
+
+Thanks for all the good cooperation and help. The changes look great.
+I'll include them in v2 unless you want to do that separately, then I'll
+just remove them from the patch series.
+
+>=20
+> =46rom 5b952b75e239cbe96729cf78c17e8d9725c9617c Mon Sep 17 00:00:00 =
+2001
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Date: Sun, 10 Apr 2022 22:21:41 +0300
+> Subject: [PATCH 1/3] net: dsa: sja1105: remove use of iterator after
+> list_for_each_entry() loop
+>=20
+> Jakob Koschel explains in the link below that there is a desire to
+> syntactically change list_for_each_entry() and list_for_each() such =
+that
+> it becomes impossible to use the iterator variable outside the scope =
+of
+> the loop.
+>=20
+> Although sja1105_insert_gate_entry() makes legitimate use of the
+> iterator pointer when it breaks out, the pattern it uses may become
+> illegal, so it needs to change.
+>=20
+> It is deemed acceptable to use a copy of the loop iterator, and
+> sja1105_insert_gate_entry() only needs to know the list_head element
+> before which the list insertion should be made. So let's profit from =
+the
+> occasion and refactor the list iteration to a dedicated function.
+>=20
+> An additional benefit is given by the fact that with the helper =
+function
+> in place, we no longer need to special-case the empty list, since it =
+is
+> equivalent to not having found any gating entry larger than the
+> specified interval in the list. We just need to insert at the tail of
+> that list (list_add vs list_add_tail on an empty list does the same
+> thing).
+>=20
+> Link: =
+https://patchwork.kernel.org/project/netdevbpf/patch/20220407102900.308625=
+5-3-jakobkoschel@gmail.com/#24810127
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
+> drivers/net/dsa/sja1105/sja1105_vl.c | 46 ++++++++++++++++++----------
+> 1 file changed, 29 insertions(+), 17 deletions(-)
+>=20
+> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c =
+b/drivers/net/dsa/sja1105/sja1105_vl.c
+> index b7e95d60a6e4..369be2ac3587 100644
 > --- a/drivers/net/dsa/sja1105/sja1105_vl.c
 > +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-> @@ -28,6 +28,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
->  		list_add(&e->list, &gating_cfg->entries);
->  	} else {
-> +		struct list_head *pos = &gating_cfg->entries;
->  		struct sja1105_gate_entry *p;
->  
->  		list_for_each_entry(p, &gating_cfg->entries, list) {
->  			if (p->interval == e->interval) {
-> @@ -37,10 +38,12 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
->  				goto err;
->  			}
->  
+> @@ -7,6 +7,27 @@
+>=20
+> #define SJA1105_SIZE_VL_STATUS			8
+>=20
+> +static struct list_head *
+> +sja1105_first_entry_longer_than(struct list_head *entries,
+> +				s64 interval,
+> +				struct netlink_ext_ack *extack)
+> +{
+> +	struct sja1105_gate_entry *p;
+> +
+> +	list_for_each_entry(p, entries, list) {
+> +		if (p->interval =3D=3D interval) {
+> +			NL_SET_ERR_MSG_MOD(extack, "Gate conflict");
+> +			return ERR_PTR(-EBUSY);
+> +		}
+> +
+> +		if (interval < p->interval)
+> +			return &p->list;
+> +	}
+> +
+> +	/* Empty list, or specified interval is largest within the list =
+*/
+> +	return entries;
+> +}
+> +
+> /* Insert into the global gate list, sorted by gate action time. */
+> static int sja1105_insert_gate_entry(struct sja1105_gating_config =
+*gating_cfg,
+> 				     struct sja1105_rule *rule,
+> @@ -14,6 +35,7 @@ static int sja1105_insert_gate_entry(struct =
+sja1105_gating_config *gating_cfg,
+> 				     struct netlink_ext_ack *extack)
+> {
+> 	struct sja1105_gate_entry *e;
+> +	struct list_head *pos;
+> 	int rc;
+>=20
+> 	e =3D kzalloc(sizeof(*e), GFP_KERNEL);
+> @@ -24,25 +46,15 @@ static int sja1105_insert_gate_entry(struct =
+sja1105_gating_config *gating_cfg,
+> 	e->gate_state =3D gate_state;
+> 	e->interval =3D entry_time;
+>=20
+> -	if (list_empty(&gating_cfg->entries)) {
+> -		list_add(&e->list, &gating_cfg->entries);
+> -	} else {
+> -		struct sja1105_gate_entry *p;
+> -
+> -		list_for_each_entry(p, &gating_cfg->entries, list) {
+> -			if (p->interval =3D=3D e->interval) {
+> -				NL_SET_ERR_MSG_MOD(extack,
+> -						   "Gate conflict");
+> -				rc =3D -EBUSY;
+> -				goto err;
+> -			}
+> -
 > -			if (e->interval < p->interval)
-> +			if (e->interval < p->interval) {
-> +				pos = &p->list;
->  				break;
-> +			}
->  		}
+> -				break;
+> -		}
 > -		list_add(&e->list, p->list.prev);
-> +		list_add(&e->list, pos->prev);
->  	}
->  
->  	gating_cfg->num_entries++;
-> -- 
+> +	pos =3D sja1105_first_entry_longer_than(&gating_cfg->entries,
+> +					      e->interval, extack);
+> +	if (IS_ERR(pos)) {
+> +		rc =3D PTR_ERR(pos);
+> +		goto err;
+> 	}
+>=20
+> +	list_add(&e->list, pos->prev);
+> +
+> 	gating_cfg->num_entries++;
+>=20
+> 	return 0;
+> --=20
 > 2.25.1
-
-I think we can give this a turn that is actually beneficial for the driver.
-I've prepared and tested 3 patches on this function, see below.
-Concrete improvements:
-- that thing with list_for_each_entry() and list_for_each()
-- no more special-casing of an empty list
-- simplifying the error path
-- that thing with list_add_tail()
-
-What do you think about the changes below?
-
-From 5b952b75e239cbe96729cf78c17e8d9725c9617c Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-Date: Sun, 10 Apr 2022 22:21:41 +0300
-Subject: [PATCH 1/3] net: dsa: sja1105: remove use of iterator after
- list_for_each_entry() loop
-
-Jakob Koschel explains in the link below that there is a desire to
-syntactically change list_for_each_entry() and list_for_each() such that
-it becomes impossible to use the iterator variable outside the scope of
-the loop.
-
-Although sja1105_insert_gate_entry() makes legitimate use of the
-iterator pointer when it breaks out, the pattern it uses may become
-illegal, so it needs to change.
-
-It is deemed acceptable to use a copy of the loop iterator, and
-sja1105_insert_gate_entry() only needs to know the list_head element
-before which the list insertion should be made. So let's profit from the
-occasion and refactor the list iteration to a dedicated function.
-
-An additional benefit is given by the fact that with the helper function
-in place, we no longer need to special-case the empty list, since it is
-equivalent to not having found any gating entry larger than the
-specified interval in the list. We just need to insert at the tail of
-that list (list_add vs list_add_tail on an empty list does the same
-thing).
-
-Link: https://patchwork.kernel.org/project/netdevbpf/patch/20220407102900.3086255-3-jakobkoschel@gmail.com/#24810127
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- drivers/net/dsa/sja1105/sja1105_vl.c | 46 ++++++++++++++++++----------
- 1 file changed, 29 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-index b7e95d60a6e4..369be2ac3587 100644
---- a/drivers/net/dsa/sja1105/sja1105_vl.c
-+++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-@@ -7,6 +7,27 @@
- 
- #define SJA1105_SIZE_VL_STATUS			8
- 
-+static struct list_head *
-+sja1105_first_entry_longer_than(struct list_head *entries,
-+				s64 interval,
-+				struct netlink_ext_ack *extack)
-+{
-+	struct sja1105_gate_entry *p;
-+
-+	list_for_each_entry(p, entries, list) {
-+		if (p->interval == interval) {
-+			NL_SET_ERR_MSG_MOD(extack, "Gate conflict");
-+			return ERR_PTR(-EBUSY);
-+		}
-+
-+		if (interval < p->interval)
-+			return &p->list;
-+	}
-+
-+	/* Empty list, or specified interval is largest within the list */
-+	return entries;
-+}
-+
- /* Insert into the global gate list, sorted by gate action time. */
- static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- 				     struct sja1105_rule *rule,
-@@ -14,6 +35,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- 				     struct netlink_ext_ack *extack)
- {
- 	struct sja1105_gate_entry *e;
-+	struct list_head *pos;
- 	int rc;
- 
- 	e = kzalloc(sizeof(*e), GFP_KERNEL);
-@@ -24,25 +46,15 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- 	e->gate_state = gate_state;
- 	e->interval = entry_time;
- 
--	if (list_empty(&gating_cfg->entries)) {
--		list_add(&e->list, &gating_cfg->entries);
--	} else {
--		struct sja1105_gate_entry *p;
--
--		list_for_each_entry(p, &gating_cfg->entries, list) {
--			if (p->interval == e->interval) {
--				NL_SET_ERR_MSG_MOD(extack,
--						   "Gate conflict");
--				rc = -EBUSY;
--				goto err;
--			}
--
--			if (e->interval < p->interval)
--				break;
--		}
--		list_add(&e->list, p->list.prev);
-+	pos = sja1105_first_entry_longer_than(&gating_cfg->entries,
-+					      e->interval, extack);
-+	if (IS_ERR(pos)) {
-+		rc = PTR_ERR(pos);
-+		goto err;
- 	}
- 
-+	list_add(&e->list, pos->prev);
-+
- 	gating_cfg->num_entries++;
- 
- 	return 0;
--- 
-2.25.1
-
-From b6385f62d730b69007ea218e885461542ca4c44c Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-Date: Sun, 10 Apr 2022 22:34:35 +0300
-Subject: [PATCH 2/3] net: dsa: sja1105: reorder
- sja1105_first_entry_longer_than with memory allocation
-
-sja1105_first_entry_longer_than() does not make use of the full struct
-sja1105_gate_entry *e, just of e->interval which is set from the passed
-entry_time.
-
-This means that if there is a gate conflict, we have allocated e for
-nothing, just to free it later. Reorder the memory allocation and the
-function call, to avoid that and simplify the error unwind path.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- drivers/net/dsa/sja1105/sja1105_vl.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-index 369be2ac3587..e5ea8eb9ec4e 100644
---- a/drivers/net/dsa/sja1105/sja1105_vl.c
-+++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-@@ -36,7 +36,11 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- {
- 	struct sja1105_gate_entry *e;
- 	struct list_head *pos;
--	int rc;
-+
-+	pos = sja1105_first_entry_longer_than(&gating_cfg->entries,
-+					      entry_time, extack);
-+	if (IS_ERR(pos))
-+		return PTR_ERR(pos);
- 
- 	e = kzalloc(sizeof(*e), GFP_KERNEL);
- 	if (!e)
-@@ -45,22 +49,11 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- 	e->rule = rule;
- 	e->gate_state = gate_state;
- 	e->interval = entry_time;
--
--	pos = sja1105_first_entry_longer_than(&gating_cfg->entries,
--					      e->interval, extack);
--	if (IS_ERR(pos)) {
--		rc = PTR_ERR(pos);
--		goto err;
--	}
--
- 	list_add(&e->list, pos->prev);
- 
- 	gating_cfg->num_entries++;
- 
- 	return 0;
--err:
--	kfree(e);
--	return rc;
- }
- 
- /* The gate entries contain absolute times in their e->interval field. Convert
--- 
-2.25.1
-
-From 8aa272b8a3f53aba7b80f181b275e040b9aaed8d Mon Sep 17 00:00:00 2001
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-Date: Sun, 10 Apr 2022 22:37:14 +0300
-Subject: [PATCH 3/3] net: dsa: sja1105: use list_add_tail(pos) instead of
- list_add(pos->prev)
-
-When passed a non-head list element, list_add_tail() actually adds the
-new element to its left, which is what we want. Despite the slightly
-confusing name, use the dedicated function which does the same thing as
-the open-coded list_add(pos->prev).
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
----
- drivers/net/dsa/sja1105/sja1105_vl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-index e5ea8eb9ec4e..7fe9b18f1cbd 100644
---- a/drivers/net/dsa/sja1105/sja1105_vl.c
-+++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-@@ -49,7 +49,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- 	e->rule = rule;
- 	e->gate_state = gate_state;
- 	e->interval = entry_time;
--	list_add(&e->list, pos->prev);
-+	list_add_tail(&e->list, pos);
- 
- 	gating_cfg->num_entries++;
- 
--- 
-2.25.1
+>=20
+> =46rom b6385f62d730b69007ea218e885461542ca4c44c Mon Sep 17 00:00:00 =
+2001
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Date: Sun, 10 Apr 2022 22:34:35 +0300
+> Subject: [PATCH 2/3] net: dsa: sja1105: reorder
+> sja1105_first_entry_longer_than with memory allocation
+>=20
+> sja1105_first_entry_longer_than() does not make use of the full struct
+> sja1105_gate_entry *e, just of e->interval which is set from the =
+passed
+> entry_time.
+>=20
+> This means that if there is a gate conflict, we have allocated e for
+> nothing, just to free it later. Reorder the memory allocation and the
+> function call, to avoid that and simplify the error unwind path.
+>=20
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
+> drivers/net/dsa/sja1105/sja1105_vl.c | 17 +++++------------
+> 1 file changed, 5 insertions(+), 12 deletions(-)
+>=20
+> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c =
+b/drivers/net/dsa/sja1105/sja1105_vl.c
+> index 369be2ac3587..e5ea8eb9ec4e 100644
+> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
+> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
+> @@ -36,7 +36,11 @@ static int sja1105_insert_gate_entry(struct =
+sja1105_gating_config *gating_cfg,
+> {
+> 	struct sja1105_gate_entry *e;
+> 	struct list_head *pos;
+> -	int rc;
+> +
+> +	pos =3D sja1105_first_entry_longer_than(&gating_cfg->entries,
+> +					      entry_time, extack);
+> +	if (IS_ERR(pos))
+> +		return PTR_ERR(pos);
+>=20
+> 	e =3D kzalloc(sizeof(*e), GFP_KERNEL);
+> 	if (!e)
+> @@ -45,22 +49,11 @@ static int sja1105_insert_gate_entry(struct =
+sja1105_gating_config *gating_cfg,
+> 	e->rule =3D rule;
+> 	e->gate_state =3D gate_state;
+> 	e->interval =3D entry_time;
+> -
+> -	pos =3D sja1105_first_entry_longer_than(&gating_cfg->entries,
+> -					      e->interval, extack);
+> -	if (IS_ERR(pos)) {
+> -		rc =3D PTR_ERR(pos);
+> -		goto err;
+> -	}
+> -
+> 	list_add(&e->list, pos->prev);
+>=20
+> 	gating_cfg->num_entries++;
+>=20
+> 	return 0;
+> -err:
+> -	kfree(e);
+> -	return rc;
+> }
+>=20
+> /* The gate entries contain absolute times in their e->interval field. =
+Convert
+> --=20
+> 2.25.1
+>=20
+> =46rom 8aa272b8a3f53aba7b80f181b275e040b9aaed8d Mon Sep 17 00:00:00 =
+2001
+> From: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Date: Sun, 10 Apr 2022 22:37:14 +0300
+> Subject: [PATCH 3/3] net: dsa: sja1105: use list_add_tail(pos) instead =
+of
+> list_add(pos->prev)
+>=20
+> When passed a non-head list element, list_add_tail() actually adds the
+> new element to its left, which is what we want. Despite the slightly
+> confusing name, use the dedicated function which does the same thing =
+as
+> the open-coded list_add(pos->prev).
+>=20
+> Suggested-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> ---
+> drivers/net/dsa/sja1105/sja1105_vl.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c =
+b/drivers/net/dsa/sja1105/sja1105_vl.c
+> index e5ea8eb9ec4e..7fe9b18f1cbd 100644
+> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
+> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
+> @@ -49,7 +49,7 @@ static int sja1105_insert_gate_entry(struct =
+sja1105_gating_config *gating_cfg,
+> 	e->rule =3D rule;
+> 	e->gate_state =3D gate_state;
+> 	e->interval =3D entry_time;
+> -	list_add(&e->list, pos->prev);
+> +	list_add_tail(&e->list, pos);
+>=20
+> 	gating_cfg->num_entries++;
+>=20
+> --=20
+> 2.25.1
+>=20
 
