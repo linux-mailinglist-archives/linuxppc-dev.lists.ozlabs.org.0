@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5380C4FADA2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 13:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACDE84FADA6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 13:29:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KbqFQ1R8mz3bYP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 21:16:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KbqWV4GzBz3bky
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 21:29:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jLvjL8zY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=I9pw0lrE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KbqDp5lmcz2xY1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 21:16:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KbqVw3478z2xvW
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 21:28:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jLvjL8zY; 
+ header.a=rsa-sha256 header.s=201909 header.b=I9pw0lrE; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KbqDp1Wtqz4x7Y;
- Sun, 10 Apr 2022 21:16:25 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KbqVv21v5z4xNl;
+ Sun, 10 Apr 2022 21:28:38 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1649589386;
- bh=9yYI8lTl0E5dSfyyE6FsmUtYDygke+Twf1iIsHO3cek=;
+ s=201909; t=1649590120;
+ bh=bWMlGO9+BhrhUnAw4psROVAflBZr1WxUpIsiqOVWFwU=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jLvjL8zYnCTQoptcA+dxRwE0hQQV+ota96O+2SbswWx+qeQJspmy/6lK4tPjuPLPF
- wh4pQUHlHlwpDgBQaoy1fa5fegGhBzaYSs9MQOjWhVwh+XeZumQydnc3ON1PTICbqK
- PaZNQ7wLuRp1Ab+BSlL9hEtqegnNXgvMdCKXJNPsOjOIaJomfl1OLsJn7QiWhV+Eeu
- 2fEEfFjGnPK6NXhgWDo5BC2O28H87VgE+esYBkC2SPzBo0lC3zqTqiUktYTgCbiIsD
- h3EQ6enk9xY8Gv1dTMVYcOy/ZVIZMPIp0T54U18vRBiqZxlerX3GI1owSr8UXbdzrl
- jViAqa3vvcaFA==
+ b=I9pw0lrEvttIbctgZ0lUHuJb43v6wlV+QNUYBXPhFziEN/WnuBl+7d4S4RpVdeOZw
+ varm21jJcQRFdcLn20fJ+wH7j0RZ1jL1dTwuc8oCBW1fSIOvUQTmUk8/K+jqZ14Jjl
+ 6xxuy83Y2/lZIGy0o9YgWDZlXwoiNfvAOCKQAXUDeCidX/dYYI/3Fql3K1vyE9jNqw
+ YDvdjNPJKAe0/iH+1qhjFcLXJDI5rtCyfbC/vQROtU6PQAQMye0zNUuQFcD3mRyHCq
+ Iv5WRlHpiNVdtZz4A96xqdIfwslM8NQ7f3P9hEZHeDQEvr7ABFvsNdpn7IiEVFQ5n5
+ RyjZOgr++My/A==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Joel Stanley <joel@jms.id.au>
-Subject: Re: [PATCH v2 1/2] powerpc/powernv: Get L1D flush requirements from
- device-tree
-In-Reply-To: <CACPK8XfM-odZm=AvjsmfB7fdK+3xc7gcwZX97H_1f8=ZOCAx4g@mail.gmail.com>
-References: <20220404101536.104794-1-ruscur@russell.cc>
- <CACPK8XdifXFmjCJL3KDu8PJi4KLKWnOBeq86wZvN0kiHGQ=JHw@mail.gmail.com>
- <874k3883ct.fsf@mpe.ellerman.id.au>
- <CACPK8XfM-odZm=AvjsmfB7fdK+3xc7gcwZX97H_1f8=ZOCAx4g@mail.gmail.com>
-Date: Sun, 10 Apr 2022 21:16:22 +1000
-Message-ID: <878rsd6veh.fsf@mpe.ellerman.id.au>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>, Oscar Salvador
+ <osalvador@suse.de>
+Subject: Re: [PATCH] powerpc/numa: Handle partially initialized numa nodes
+In-Reply-To: <20220408122537.GD568950@linux.vnet.ibm.com>
+References: <20220330135123.1868197-1-srikar@linux.vnet.ibm.com>
+ <Yk29dMa3H8bk0yST@localhost.localdomain>
+ <20220408122537.GD568950@linux.vnet.ibm.com>
+Date: Sun, 10 Apr 2022 21:28:38 +1000
+Message-ID: <874k316uu1.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,128 +61,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Murilo Opsfelder =?utf-8?Q?Ara=C3=BAjo?= <mopsfelder@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-mm@kvack.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Geetika Moolchandani <Geetika.Moolchandani1@ibm.com>,
+ Michal Hocko <mhocko@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Joel Stanley <joel@jms.id.au> writes:
-> On Tue, 5 Apr 2022 at 06:13, Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Joel Stanley <joel@jms.id.au> writes:
->> > On Mon, 4 Apr 2022 at 10:15, Russell Currey <ruscur@russell.cc> wrote:
->> >>
->> >> The device-tree properties no-need-l1d-flush-msr-pr-1-to-0 and
->> >> no-need-l1d-flush-kernel-on-user-access are the equivalents of
->> >> H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY and H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS
->> >> from the H_GET_CPU_CHARACTERISTICS hcall on pseries respectively.
->> >>
->> >> In commit d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version
->> >> check for entry and uaccess flushes") the condition for disabling the
->> >> L1D flush on kernel entry and user access was changed from any non-P9
->> >> CPU to only checking P7 and P8.  Without the appropriate device-tree
->> >> checks for newer processors on powernv, these flushes are unnecessarily
->> >> enabled on those systems.  This patch corrects this.
->> >>
->> >> Fixes: d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version check for entry and uaccess flushes")
->> >> Reported-by: Joel Stanley <joel@jms.id.au>
->> >> Signed-off-by: Russell Currey <ruscur@russell.cc>
->> >
->> > I booted both patches in this series on a power10 powernv machine,
->> > applied on top of v5.18-rc1:
->> >
->> > $ dmesg |grep -i flush
->> > [    0.000000] rfi-flush: fallback displacement flush available
->> > [    0.000000] rfi-flush: patched 12 locations (no flush)
->> > [    0.000000] count-cache-flush: flush disabled.
->> > [    0.000000] link-stack-flush: flush disabled.
->> >
->> > $ grep . /sys/devices/system/cpu/vulnerabilities/*
->> > /sys/devices/system/cpu/vulnerabilities/itlb_multihit:Not affected
->> > /sys/devices/system/cpu/vulnerabilities/l1tf:Not affected
->> > /sys/devices/system/cpu/vulnerabilities/mds:Not affected
->> > /sys/devices/system/cpu/vulnerabilities/meltdown:Not affected
->> > /sys/devices/system/cpu/vulnerabilities/spec_store_bypass:Not affected
->> > /sys/devices/system/cpu/vulnerabilities/spectre_v1:Mitigation: __user
->> > pointer sanitization, ori31 speculation barrier enabled
->> > /sys/devices/system/cpu/vulnerabilities/spectre_v2:Mitigation:
->> > Software count cache flush (hardware accelerated), Software link stack
->> > flush
->> > /sys/devices/system/cpu/vulnerabilities/srbds:Not affected
->> > /sys/devices/system/cpu/vulnerabilities/tsx_async_abort:Not affected
->> >
->> > Does that match what we expect?
->>
->> AFAIK yes. Happy for ruscur to correct me though.
->>
->> Can you also try running the kernel selftests under
->> tools/testing/selftests/powerpc/security/ ?
+Srikar Dronamraju <srikar@linux.vnet.ibm.com> writes:
+> * Oscar Salvador <osalvador@suse.de> [2022-04-06 18:19:00]:
 >
-> Here's the results when booted with no_spectrev2 (which I keep on
-> doing by accident, as this machine has it in it's nvram):
+>> On Wed, Mar 30, 2022 at 07:21:23PM +0530, Srikar Dronamraju wrote:
+>> >  arch/powerpc/mm/numa.c | 2 +-
+>> >  1 file changed, 1 insertion(+), 1 deletion(-)
+>> > 
+>> > diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+>> > index b9b7fefbb64b..13022d734951 100644
+>> > --- a/arch/powerpc/mm/numa.c
+>> > +++ b/arch/powerpc/mm/numa.c
+>> > @@ -1436,7 +1436,7 @@ int find_and_online_cpu_nid(int cpu)
+>> >  	if (new_nid < 0 || !node_possible(new_nid))
+>> >  		new_nid = first_online_node;
+>> >  
+>> > -	if (NODE_DATA(new_nid) == NULL) {
+>> > +	if (!node_online(new_nid)) {
+>> >  #ifdef CONFIG_MEMORY_HOTPLUG
+>> >  		/*
+>> >  		 * Need to ensure that NODE_DATA is initialized for a node from
+>> 
+>> Because of this fix, I wanted to check whether we might have any more fallouts due
+>> to ("mm: handle uninitialized numa nodes gracefully"), and it made me look closer
+>> as to why powerpc is the only platform that special cases try_online_node(),
+>> while all others rely on cpu_up()->try_online_node() to do the right thing.
+>> 
+>> So, I had a look.
+>> Let us rewind a bit:
+>> 
+>> The commit that sets find_and_online_cpu_nid() in dlpar_online_cpu was
+>> e67e02a544e9 ("powerpc/pseries: Fix cpu hotplug crash with memoryless nodes").
+>> 
+>> In there, it says that we have the following picture:
+>> 
+>> partition_sched_domains
+>>  arch_update_cpu_topology
+>>   numa_update_cpu_topology
+>>    find_and_online_cpu_nid
+>> 
+>> and by the time find_and_online_cpu_nid() gets called to online the node, it might be
+>> too late as we might have referenced some NODE_DATA() fields.
+>> Note that this happens at a much later stage in cpuhp.
+>> 
+>> Also note that at a much earlier stage, we do already have a try_online_node() in cpu_up(),
+>> which should allocate-and-online the node and prevent accessing garbage.
+>> But the problem is that, on powerpc, all possible cpus have the same node set at boot stage
+>> (see arch/powerpc/mm/numa.c:mem_topology_setup),
+>> so cpu_to_node() returns the same thing until it the mapping gets update (which happens in
+>> start_secondary()->set_numa_node()), and so, the try_online_node() from cpu_up() does not
+>> apply on the right node, because it still holds the not-up-to-date mapping node <-> cpu.
+>> 
+>> (e.g: in my test case, when onlining a CPU belongin to node1, cpu_up()->try_online_node()
+>>  tries to online node0, or whatever old mapping numa<->cpu is there).
+>> 
+>> So, we have something like:
+>> 
+>> dlpar_online_cpu
+>>  device_online
+>>   dev->bus->online
+>>    cpu_subsys_online
+>>     cpu_device_up
+>>      cpu_up
+>>       try_online_node (old mapping nid <-> cpu )
+>>       ...
+>>       ...
+>>       cphp_callbacks
+>>        sched_cpu_activate
+>>         cpuset_update_active_cpus
+>>          schedule_work(&cpuset_hotplug_work)
+>>           cpuset_hotplug_work
+>>            partition_sched_domains
+>>             arch_update_cpu_topology
+>>              numa_update_cpu_topology
+>>               find_and_online_cpu_nid (online new_nid)
+>> 
+>> 
+>> So, yeah, the real onlining in numa_update_cpu_topology()->find_and_online_cpu_nid()
+>> happens too late, that is why adding find_and_online_cpu_nid() back in dlpar_online_cpu()
+>> fixed the issue, but we should not need this special casing at all.
+>> 
+>> We do already know the numa<->cpu associativity in
+>> dlpar_online_cpu()->find_and_online_cpu_nid(), so we should just be able to
+>> update the numa<->cpu mapping, and let the try_online_node() do the right thing.
+>> 
+>> With this in mind, I came up with the following patch, where I carried out a battery
+>> of tests for CPU hotplug stuff and it worked as expected.
+>> But I am not familiar with all powerpc pitfalls, e.g: dedicated vs shared cpus etc, so
+>> I would like to hear from more familiar people.
+>> 
+>> The patch is:
+>> 
+>> From: Oscar Salvador <osalvador@suse.de>
+>> Date: Wed, 6 Apr 2022 14:39:15 +0200
+>> Subject: [PATCH] powerpc/numa: Associate numa node to its cpu earlier
+>> 
+>> powerpc is the only platform that do not rely on
+>> cpu_up()->try_online_node() to bring up a numa node,
+>> and special cases it, instead, deep in its own machinery:
+>> 
+>> dlpar_online_cpu
+>>  find_and_online_cpu_nid
+>>   try_online_node
+>> 
+>> This should not be needed, but the thing is that the try_online_node()
+>> from cpu_up() will not apply on the right node, because cpu_to_node()
+>> will return the old mapping numa<->cpu that gets set on boot stage
+>> for all possible cpus.
+>> 
+>> That can be seen easily if we try to print out the numa node passed
+>> to try_online_node() in cpu_up().
+>> 
+>> The thing is that the numa<->cpu mapping does not get updated till a much
+>> later stage in start_secondary:
+>> 
+>> start_secondary:
+>>  set_numa_node(numa_cpu_lookup_table[cpu])
+>> 
+>> But we do not really care, as we already now the
+>> CPU <-> NUMA associativity back in find_and_online_cpu_nid(),
+>> so let us make use of that and set the proper numa<->cpu mapping,
+>> so cpu_to_node() in cpu_up() returns the right node and
+>> try_online_node() can do its work.
+>> 
+>> Signed-off-by: Oscar Salvador <osalvador@suse.de>
 >
-> make[1]: Entering directory
-> '/home/joel/dev/kernels/linus/tools/testing/selftests/powerpc/security'
-> TAP version 13
-> 1..5
-> # selftests: powerpc/security: rfi_flush
-> # test: rfi_flush_test
-> # tags: git_version:v5.18-rc1-0-g312310928417
-> # PASS (L1D misses with rfi_flush=0: 63101900 < 95000000) [10/10 pass]
-> # PASS (L1D misses with rfi_flush=1: 196001003 > 190000000) [10/10 pass]
-> # success: rfi_flush_test
-> ok 1 selftests: powerpc/security: rfi_flush
-> # selftests: powerpc/security: entry_flush
-> # test: entry_flush_test
-> # tags: git_version:v5.18-rc1-0-g312310928417
-> # PASS (L1D misses with entry_flush=0: 52766044 < 95000000) [10/10 pass]
-> # PASS (L1D misses with entry_flush=1: 196082833 > 190000000) [10/10 pass]
-> # success: entry_flush_test
-> ok 2 selftests: powerpc/security: entry_flush
-> # selftests: powerpc/security: uaccess_flush
-> # test: uaccess_flush_test
-> # tags: git_version:v5.18-rc1-0-g312310928417
-> # PASS (L1D misses with uaccess_flush=0: 68646267 < 95000000) [10/10 pass]
-> # PASS (L1D misses with uaccess_flush=1: 194177355 > 190000000) [10/10 pass]
-> # success: uaccess_flush_test
-> ok 3 selftests: powerpc/security: uaccess_flush
-> # selftests: powerpc/security: spectre_v2
-> # test: spectre_v2
-> # tags: git_version:v5.18-rc1-0-g312310928417
-> # sysfs reports: 'Vulnerable'
-> #  PM_BR_PRED_CCACHE: result          0 running/enabled 2090650862
-> # PM_BR_MPRED_CCACHE: result          1 running/enabled 2090648016
-> # Miss percent 0 %
-> # OK - Measured branch prediction rates match reported spectre v2 mitigation.
-> # success: spectre_v2
-> ok 4 selftests: powerpc/security: spectre_v2
-> # selftests: powerpc/security: mitigation-patching.sh
-> # Spawned threads enabling/disabling mitigations ...
-> # Waiting for timeout ...
-> # OK
-> ok 5 selftests: powerpc/security: mitigation-patching.sh
+> Looks good to me.
 >
->
-> Here's the same thing without the command line option set:
+> Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-Thanks.
+Yeah agreed, thanks for getting to the root of the problem.
 
-> # test: spectre_v2
-> # tags: git_version:v5.18-rc1-0-g312310928417
-> # sysfs reports: 'Mitigation: Software count cache flush (hardware
-> accelerated), Software link stack flush'
-> #  PM_BR_PRED_CCACHE: result          0 running/enabled 2016985490
-> # PM_BR_MPRED_CCACHE: result          1 running/enabled 2016981520
-> # Miss percent 0 %
-> # OK - Measured branch prediction rates match reported spectre v2 mitigation.
-> # success: spectre_v2
-
-This passed, but looks wrong, it says there were zero branches correctly
-predicted.
-
-I think the PMU events were are using are wrong for P10, the test will
-need updating to use the right events for P10.
+Can you resend as a standalone patch. Because you sent it as a reply it
+won't be recognised by patchwork[1] which means it risks getting lost.
 
 cheers
+
+1: http://patchwork.ozlabs.org/project/linuxppc-dev/list/
