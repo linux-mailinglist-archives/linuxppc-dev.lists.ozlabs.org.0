@@ -2,78 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D8B4FAD9E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 13:05:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5380C4FADA2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 13:17:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kbq0d5mGxz3bdB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 21:05:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KbqFQ1R8mz3bYP
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 21:16:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ob9fiGsJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=jLvjL8zY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62b;
- helo=mail-ej1-x62b.google.com; envelope-from=olteanv@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Ob9fiGsJ; dkim-atps=neutral
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
- [IPv6:2a00:1450:4864:20::62b])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kbpzw2R5Pz2xvW
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 21:05:16 +1000 (AEST)
-Received: by mail-ej1-x62b.google.com with SMTP id s18so2991328ejr.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 04:05:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=adPV1zp7diLsWHqzN1lHL+GqEnUieJZSmVlsIsbWwpE=;
- b=Ob9fiGsJykZtGsN1gXjaquKw6PFzWg+nAC9wYYAAVm0T+7rjzmVd4fHgzvgdWUEzE1
- IzoRprgjKGaibtKOR665kPTiuHm4XaxNgyFazf8YgKAK/IP73v+DzQ9p/9sh3tAXtUp3
- fSvOPsGAiCEXj8kfK6ZpEEOqRvKA6JpNLDs/TXeIGKtbEvHSJDJ3lBcY2OjMaLZ/3qBw
- ZYBRe93+F621m3Wlc6m530Qtchr9gPxYQTkWNjE+hv98s2zySf8n2Jznue1L++edra3l
- t1DI8PV5QY21yYt4rCT9hZZ3r5xoUfsk89RMCNA8/UiMOtJuiuny0aHB3XvgCf0D9aZ3
- hwuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=adPV1zp7diLsWHqzN1lHL+GqEnUieJZSmVlsIsbWwpE=;
- b=Hkt6lsItpwBzEM86feaq2WHNciRIUtcOfyMF1GNXo3fV+5qrwK0agkxDYFD9F1pQAD
- /IjskdZfPCHLn0C4OZa0OskHkdEPSn1T3ob44XwUOKJc45SeDN+v6ZVpyyxyNRIEHwa8
- H5JY+5U9J1TckQuLnyGoKyYz05S6zFrvbiOODXQKPQQysbWPINmfXwLkbAgPF1FhOPRl
- eTyl/sRp9gCtkAr8LMfLd8bP5cmEhPP0br6WYueJIlxcWV0nfxQunl+WaKJrdT9GlXGV
- cr7SkGK5aeLldztVqpCkOQBKHM6qGBkaJeGLaGUXMl4m+1Fmj8oh7V5bjKdQ8UKXE3aC
- tLZQ==
-X-Gm-Message-State: AOAM533VHX+S4eGh4Bitf2cP/0Z1rQHsKppgBNwaDx9/4QVPqPLOntR4
- 6Yo0Oq6BdhTg1RwDHq87Dew=
-X-Google-Smtp-Source: ABdhPJy4CfP6h/f6jEve+JMMd5M6e84ocjd2vq2qNBHY+zBvxrBpJzRN/enhyyp3MUEvPBoaqyEshQ==
-X-Received: by 2002:a17:907:7e82:b0:6e8:92eb:2858 with SMTP id
- qb2-20020a1709077e8200b006e892eb2858mr300803ejc.443.1649588711789; 
- Sun, 10 Apr 2022 04:05:11 -0700 (PDT)
-Received: from skbuf ([188.26.57.45]) by smtp.gmail.com with ESMTPSA id
- c5-20020a170906d18500b006ce371f09d4sm10596141ejz.57.2022.04.10.04.05.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 10 Apr 2022 04:05:11 -0700 (PDT)
-Date: Sun, 10 Apr 2022 14:05:08 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jakob Koschel <jakobkoschel@gmail.com>
-Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
- iterator for list_add() after loop
-Message-ID: <20220410110508.em3r7z62ufqcbrfm@skbuf>
-References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
- <20220407102900.3086255-3-jakobkoschel@gmail.com>
- <20220408114120.tvf2lxvhfqbnrlml@skbuf>
- <FA317E17-3B09-411B-9DF6-05BDD320D988@gmail.com>
- <C9081CE3-B008-48DA-A97C-76F51D4F189F@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KbqDp5lmcz2xY1
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 21:16:26 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=jLvjL8zY; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KbqDp1Wtqz4x7Y;
+ Sun, 10 Apr 2022 21:16:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1649589386;
+ bh=9yYI8lTl0E5dSfyyE6FsmUtYDygke+Twf1iIsHO3cek=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=jLvjL8zYnCTQoptcA+dxRwE0hQQV+ota96O+2SbswWx+qeQJspmy/6lK4tPjuPLPF
+ wh4pQUHlHlwpDgBQaoy1fa5fegGhBzaYSs9MQOjWhVwh+XeZumQydnc3ON1PTICbqK
+ PaZNQ7wLuRp1Ab+BSlL9hEtqegnNXgvMdCKXJNPsOjOIaJomfl1OLsJn7QiWhV+Eeu
+ 2fEEfFjGnPK6NXhgWDo5BC2O28H87VgE+esYBkC2SPzBo0lC3zqTqiUktYTgCbiIsD
+ h3EQ6enk9xY8Gv1dTMVYcOy/ZVIZMPIp0T54U18vRBiqZxlerX3GI1owSr8UXbdzrl
+ jViAqa3vvcaFA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Joel Stanley <joel@jms.id.au>
+Subject: Re: [PATCH v2 1/2] powerpc/powernv: Get L1D flush requirements from
+ device-tree
+In-Reply-To: <CACPK8XfM-odZm=AvjsmfB7fdK+3xc7gcwZX97H_1f8=ZOCAx4g@mail.gmail.com>
+References: <20220404101536.104794-1-ruscur@russell.cc>
+ <CACPK8XdifXFmjCJL3KDu8PJi4KLKWnOBeq86wZvN0kiHGQ=JHw@mail.gmail.com>
+ <874k3883ct.fsf@mpe.ellerman.id.au>
+ <CACPK8XfM-odZm=AvjsmfB7fdK+3xc7gcwZX97H_1f8=ZOCAx4g@mail.gmail.com>
+Date: Sun, 10 Apr 2022 21:16:22 +1000
+Message-ID: <878rsd6veh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C9081CE3-B008-48DA-A97C-76F51D4F189F@gmail.com>
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,83 +62,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
- Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
- Ariel Elior <aelior@marvell.com>, Florian Fainelli <f.fainelli@gmail.com>,
- Manish Chopra <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, "Bos, H.J." <h.j.bos@vu.nl>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
- Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakub Kicinski <kuba@kernel.org>, Di Zhu <zhudi21@huawei.com>,
- Lars Povlsen <lars.povlsen@microchip.com>, Netdev <netdev@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, UNGLinuxDriver@microchip.com,
- Edward Cree <ecree.xilinx@gmail.com>, Michael Walle <michael@walle.cc>,
- Xu Wang <vulab@iscas.ac.cn>, Colin Ian King <colin.king@intel.com>,
+Cc: Murilo Opsfelder =?utf-8?Q?Ara=C3=BAjo?= <mopsfelder@gmail.com>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Casper Andersson <casper.casan@gmail.com>, Mike Rapoport <rppt@kernel.org>
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Apr 10, 2022 at 12:51:56PM +0200, Jakob Koschel wrote:
-> I've just looked at this again in a bit more detail while integrating it into the patch series.
-> 
-> I realized that this just shifts the 'problem' to using the 'pos' iterator variable after the loop.
-> If the scope of the list iterator would be lowered to the list traversal loop it would also make sense
-> to also do it for list_for_each().
+Joel Stanley <joel@jms.id.au> writes:
+> On Tue, 5 Apr 2022 at 06:13, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> Joel Stanley <joel@jms.id.au> writes:
+>> > On Mon, 4 Apr 2022 at 10:15, Russell Currey <ruscur@russell.cc> wrote:
+>> >>
+>> >> The device-tree properties no-need-l1d-flush-msr-pr-1-to-0 and
+>> >> no-need-l1d-flush-kernel-on-user-access are the equivalents of
+>> >> H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY and H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS
+>> >> from the H_GET_CPU_CHARACTERISTICS hcall on pseries respectively.
+>> >>
+>> >> In commit d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version
+>> >> check for entry and uaccess flushes") the condition for disabling the
+>> >> L1D flush on kernel entry and user access was changed from any non-P9
+>> >> CPU to only checking P7 and P8.  Without the appropriate device-tree
+>> >> checks for newer processors on powernv, these flushes are unnecessarily
+>> >> enabled on those systems.  This patch corrects this.
+>> >>
+>> >> Fixes: d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version check for entry and uaccess flushes")
+>> >> Reported-by: Joel Stanley <joel@jms.id.au>
+>> >> Signed-off-by: Russell Currey <ruscur@russell.cc>
+>> >
+>> > I booted both patches in this series on a power10 powernv machine,
+>> > applied on top of v5.18-rc1:
+>> >
+>> > $ dmesg |grep -i flush
+>> > [    0.000000] rfi-flush: fallback displacement flush available
+>> > [    0.000000] rfi-flush: patched 12 locations (no flush)
+>> > [    0.000000] count-cache-flush: flush disabled.
+>> > [    0.000000] link-stack-flush: flush disabled.
+>> >
+>> > $ grep . /sys/devices/system/cpu/vulnerabilities/*
+>> > /sys/devices/system/cpu/vulnerabilities/itlb_multihit:Not affected
+>> > /sys/devices/system/cpu/vulnerabilities/l1tf:Not affected
+>> > /sys/devices/system/cpu/vulnerabilities/mds:Not affected
+>> > /sys/devices/system/cpu/vulnerabilities/meltdown:Not affected
+>> > /sys/devices/system/cpu/vulnerabilities/spec_store_bypass:Not affected
+>> > /sys/devices/system/cpu/vulnerabilities/spectre_v1:Mitigation: __user
+>> > pointer sanitization, ori31 speculation barrier enabled
+>> > /sys/devices/system/cpu/vulnerabilities/spectre_v2:Mitigation:
+>> > Software count cache flush (hardware accelerated), Software link stack
+>> > flush
+>> > /sys/devices/system/cpu/vulnerabilities/srbds:Not affected
+>> > /sys/devices/system/cpu/vulnerabilities/tsx_async_abort:Not affected
+>> >
+>> > Does that match what we expect?
+>>
+>> AFAIK yes. Happy for ruscur to correct me though.
+>>
+>> Can you also try running the kernel selftests under
+>> tools/testing/selftests/powerpc/security/ ?
+>
+> Here's the results when booted with no_spectrev2 (which I keep on
+> doing by accident, as this machine has it in it's nvram):
+>
+> make[1]: Entering directory
+> '/home/joel/dev/kernels/linus/tools/testing/selftests/powerpc/security'
+> TAP version 13
+> 1..5
+> # selftests: powerpc/security: rfi_flush
+> # test: rfi_flush_test
+> # tags: git_version:v5.18-rc1-0-g312310928417
+> # PASS (L1D misses with rfi_flush=0: 63101900 < 95000000) [10/10 pass]
+> # PASS (L1D misses with rfi_flush=1: 196001003 > 190000000) [10/10 pass]
+> # success: rfi_flush_test
+> ok 1 selftests: powerpc/security: rfi_flush
+> # selftests: powerpc/security: entry_flush
+> # test: entry_flush_test
+> # tags: git_version:v5.18-rc1-0-g312310928417
+> # PASS (L1D misses with entry_flush=0: 52766044 < 95000000) [10/10 pass]
+> # PASS (L1D misses with entry_flush=1: 196082833 > 190000000) [10/10 pass]
+> # success: entry_flush_test
+> ok 2 selftests: powerpc/security: entry_flush
+> # selftests: powerpc/security: uaccess_flush
+> # test: uaccess_flush_test
+> # tags: git_version:v5.18-rc1-0-g312310928417
+> # PASS (L1D misses with uaccess_flush=0: 68646267 < 95000000) [10/10 pass]
+> # PASS (L1D misses with uaccess_flush=1: 194177355 > 190000000) [10/10 pass]
+> # success: uaccess_flush_test
+> ok 3 selftests: powerpc/security: uaccess_flush
+> # selftests: powerpc/security: spectre_v2
+> # test: spectre_v2
+> # tags: git_version:v5.18-rc1-0-g312310928417
+> # sysfs reports: 'Vulnerable'
+> #  PM_BR_PRED_CCACHE: result          0 running/enabled 2090650862
+> # PM_BR_MPRED_CCACHE: result          1 running/enabled 2090648016
+> # Miss percent 0 %
+> # OK - Measured branch prediction rates match reported spectre v2 mitigation.
+> # success: spectre_v2
+> ok 4 selftests: powerpc/security: spectre_v2
+> # selftests: powerpc/security: mitigation-patching.sh
+> # Spawned threads enabling/disabling mitigations ...
+> # Waiting for timeout ...
+> # OK
+> ok 5 selftests: powerpc/security: mitigation-patching.sh
+>
+>
+> Here's the same thing without the command line option set:
 
-Yes, but list_for_each() was never formulated as being problematic in
-the same way as list_for_each_entry(), was it? I guess I'm starting to
-not understand what is the true purpose of the changes.
+Thanks.
 
-> What do you think about doing it this way:
-> 
-> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-> index b7e95d60a6e4..f5b0502c1098 100644
-> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
-> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-> @@ -28,6 +28,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
->                 list_add(&e->list, &gating_cfg->entries);
->         } else {
->                 struct sja1105_gate_entry *p;
-> +               struct list_head *pos = NULL;
-> 
->                 list_for_each_entry(p, &gating_cfg->entries, list) {
->                         if (p->interval == e->interval) {
-> @@ -37,10 +38,14 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
->                                 goto err;
->                         }
-> 
-> -                       if (e->interval < p->interval)
-> +                       if (e->interval < p->interval) {
-> +                               pos = &p->list;
->                                 break;
-> +                       }
->                 }
-> -               list_add(&e->list, p->list.prev);
-> +               if (!pos)
-> +                       pos = &gating_cfg->entries;
-> +               list_add(&e->list, pos->prev);
->         }
-> 
->         gating_cfg->num_entries++;
-> --
-> 
-> > 
-> > Thanks for the suggestion.
-> > 
-> >> 	}
-> >> 
-> >> 	gating_cfg->num_entries++;
-> >> -----------------------------[ cut here ]-----------------------------
-> > 
-> > [1] https://lore.kernel.org/linux-kernel/20220407102900.3086255-12-jakobkoschel@gmail.com/
-> > 
-> > 	Jakob
-> 
-> Thanks,
-> Jakob
+> # test: spectre_v2
+> # tags: git_version:v5.18-rc1-0-g312310928417
+> # sysfs reports: 'Mitigation: Software count cache flush (hardware
+> accelerated), Software link stack flush'
+> #  PM_BR_PRED_CCACHE: result          0 running/enabled 2016985490
+> # PM_BR_MPRED_CCACHE: result          1 running/enabled 2016981520
+> # Miss percent 0 %
+> # OK - Measured branch prediction rates match reported spectre v2 mitigation.
+> # success: spectre_v2
+
+This passed, but looks wrong, it says there were zero branches correctly
+predicted.
+
+I think the PMU events were are using are wrong for P10, the test will
+need updating to use the right events for P10.
+
+cheers
