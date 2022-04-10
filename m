@@ -1,83 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16D74FADE3
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 14:40:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2104FAE0A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 15:24:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kbs6509kCz3bfq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 22:40:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kbt4J1WD9z3blK
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 23:24:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=genybavv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=BumI25dO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631;
- helo=mail-ej1-x631.google.com; envelope-from=jakobkoschel@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=genybavv; dkim-atps=neutral
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
- [IPv6:2a00:1450:4864:20::631])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kbs5R0MmPz2xfT
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 22:40:10 +1000 (AEST)
-Received: by mail-ej1-x631.google.com with SMTP id p15so25697333ejc.7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 05:40:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=WJ3zx5hxbrhQdoh4df/mkYbAfZTieLScs1fGc8yvAKE=;
- b=genybavvxQfO3oMBZjo2CjIk1O/oGwGjSShnuF7VRUqPU857l7tmI7mOpqspRCdNa8
- PP0OIXI2vNtXcK+auG9ZXMTFfhBJFd0oUTv8b4pdD3v7PeUC32Ge/N4RYYU9PNXTmgJE
- zl+60cT3783cP9JX4TQBR8pW957rVNarSQlgjCj2xNVl4mqDV72XT3VCx+sVT9VZ1DHg
- zQaUavreMRULymshsvHLE8NMNW7w3nEqeO1w59qryQUYbxeUYgeVZGqKcEuDOH+/Mstm
- /dypm4G0EB4d+XBiyN7xyFepVohVcq2zwf8oZ9d6urnWhkNoNMDQ1bECwpDFSUHNF7wj
- Nq1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=WJ3zx5hxbrhQdoh4df/mkYbAfZTieLScs1fGc8yvAKE=;
- b=uTvGt8Wsv+xz9PsqVz1zg7Arr5jemJ75gzfEitCsJ4RsCkOtKtQqPSsZjchS2oIwig
- bX3Wenza5M65aJCHdbrQA5XgclBjj5tggBw6OMsOQHqgRup5VSLbG2z1OiCM1zVRWoD+
- eWXn18jt+UxSaVQwopempFmKnrLj+3EAJZXo/27tz9GCWxj6W80nWLR56r7uxcZqVxxx
- DQNgL/hp8qsU+EZXvbwGT0sd1HNqx2Srke4PwoyefHzoJy2gQPnFKcuCW7rTZ3J+SbGG
- v0dz+g2oGJAbN4w5k+22grU7K+bJSnOjm5pyAW6StoigvP9Nx90AtzRHvT+jcEkKl+o6
- VyiA==
-X-Gm-Message-State: AOAM530OcHh9TCj6Bs2unF+3+Y1kGK0P/En+C3w7o92XcsDv+H+nwiax
- ud60Vqi/6bakbgvXNY/BXXw=
-X-Google-Smtp-Source: ABdhPJyyaBS7UlkYvO3wuO5S0f8bGGkJ6uVCS0ltBvj9Hg44UfZ+IoAoo+jvga3Jvjur3dumJsVFrg==
-X-Received: by 2002:a17:906:7943:b0:6df:e5b3:6553 with SMTP id
- l3-20020a170906794300b006dfe5b36553mr25955888ejo.398.1649594404580; 
- Sun, 10 Apr 2022 05:40:04 -0700 (PDT)
-Received: from smtpclient.apple (ip-185-104-137-32.ptr.icomera.net.
- [185.104.137.32]) by smtp.gmail.com with ESMTPSA id
- tj13-20020a170907c24d00b006e853804a70sm2598630ejc.0.2022.04.10.05.39.52
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 10 Apr 2022 05:40:04 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
-Subject: Re: [PATCH net-next 02/15] net: dsa: sja1105: Remove usage of
- iterator for list_add() after loop
-From: Jakob Koschel <jakobkoschel@gmail.com>
-In-Reply-To: <20220410110508.em3r7z62ufqcbrfm@skbuf>
-Date: Sun, 10 Apr 2022 14:39:48 +0200
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <935062D0-C657-4C79-A0BE-70141D052EC0@gmail.com>
-References: <20220407102900.3086255-1-jakobkoschel@gmail.com>
- <20220407102900.3086255-3-jakobkoschel@gmail.com>
- <20220408114120.tvf2lxvhfqbnrlml@skbuf>
- <FA317E17-3B09-411B-9DF6-05BDD320D988@gmail.com>
- <C9081CE3-B008-48DA-A97C-76F51D4F189F@gmail.com>
- <20220410110508.em3r7z62ufqcbrfm@skbuf>
-To: Vladimir Oltean <olteanv@gmail.com>
-X-Mailer: Apple Mail (2.3696.80.82.1.1)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kbt3f6QNDz2xfC
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Apr 2022 23:23:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=BumI25dO; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kbt3Z4Jlvz4xLS;
+ Sun, 10 Apr 2022 23:23:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1649597020;
+ bh=hmIbrPItE/fhgZiQOZ10+3w1d55EyNhgfrJfoY0cso0=;
+ h=From:To:Cc:Subject:Date:From;
+ b=BumI25dOGPHD2vUxscA4roeAgqSX1tnWSNhbLsbKE2CCQ8aycC74hXOOQFUqspRpb
+ obQFuM5KvSmYX2MwGmh9vRA6dX8sRJHOaO3JvuU0W2FtcsLOZpuZelKbzm6LggjS9H
+ ZnWL7c9sjVpqooJ6yUmo7PEXUSlp08xkS4ECH7mSizUkplc2SiUKwwcfA/t9802AXG
+ axNoJ4FFP9NT/IHSjj3HP2KylWDlfqojn3P7ngA4/JK10ZxwAD1hUQTwwyjqjRXwz7
+ rIkB9oFzU3Sdf+GbMt352wz1cnUMvaRNsjdoGI/Y+F9uDsB/WzMNaLXznV27TLi4cl
+ ZEX59x1pbmmgA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.18-2 tag
+Date: Sun, 10 Apr 2022 23:23:35 +1000
+Message-ID: <87y20d5ay0.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,157 +57,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
- Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>,
- Ariel Elior <aelior@marvell.com>, Florian Fainelli <f.fainelli@gmail.com>,
- Manish Chopra <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>, "Bos, H.J." <h.j.bos@vu.nl>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
- Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakub Kicinski <kuba@kernel.org>, Di Zhu <zhudi21@huawei.com>,
- Lars Povlsen <lars.povlsen@microchip.com>, Netdev <netdev@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, UNGLinuxDriver@microchip.com,
- Edward Cree <ecree.xilinx@gmail.com>, Michael Walle <michael@walle.cc>,
- Xu Wang <vulab@iscas.ac.cn>, Colin Ian King <colin.king@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Casper Andersson <casper.casan@gmail.com>, Mike Rapoport <rppt@kernel.org>
+Cc: wangkefeng.wang@huawei.com, mhocko@suse.com, srikar@linux.vnet.ibm.com,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org,
+ osalvador@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Hi Linus,
+
+Please pull powerpc fixes for 5.18:
+
+The following changes since commit f82da161ea75dc4db21b2499e4b1facd36dab275:
+
+  powerpc: restore removed #endif (2022-03-27 15:31:16 -0700)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.18-2
+
+for you to fetch changes up to 1ff5c8e8c835e8a81c0868e3050c76563dd56a2c:
+
+  Revert "powerpc: Set max_mapnr correctly" (2022-04-07 08:54:35 +1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.18 #2
+
+ - Fix KVM "lost kick" race, where an attempt to pull a vcpu out of the guest could be
+   lost (or delayed until the next guest exit).
+
+ - Disable SCV (system call vectored) when PR KVM guests could be run.
+
+ - Fix KVM PR guests using SCV, by disallowing AIL != 0 for KVM PR guests.
+
+ - Add a new KVM CAP to indicate if AIL == 3 is supported.
+
+ - Fix a regression when hotplugging a CPU to a memoryless/cpuless node.
+
+ - Make virt_addr_valid() stricter for 64-bit Book3E & 32-bit, which fixes crashes seen
+   due to hardened usercopy.
+
+ - Revert a change to max_mapnr which broke HIGHMEM.
+
+Thanks to: Christophe Leroy, Fabiano Rosas, Kefeng Wang, Nicholas Piggin, Srikar Dronamraju.
+
+- ------------------------------------------------------------------
+Christophe Leroy (1):
+      powerpc/64: Fix build failure with allyesconfig in book3s_64_entry.S
+
+Kefeng Wang (2):
+      powerpc: Fix virt_addr_valid() for 64-bit Book3E & 32-bit
+      Revert "powerpc: Set max_mapnr correctly"
+
+Michael Ellerman (3):
+      Merge branch 'kvm-ppc-cap-210' of https://git.kernel.org/pub/scm/virt/kvm/kvm into topic/ppc-kvm
+      Merge branch 'topic/ppc-kvm' into next
+      KVM: PPC: Move kvmhv_on_pseries() into kvm_ppc.h
+
+Nicholas Piggin (4):
+      KVM: PPC: Book3S HV P9: Fix "lost kick" race
+      KVM: PPC: Book3S PR: Disable SCV when AIL could be disabled
+      KVM: PPC: Book3S PR: Disallow AIL != 0
+      KVM: PPC: Use KVM_CAP_PPC_AIL_MODE_3
+
+Srikar Dronamraju (1):
+      powerpc/numa: Handle partially initialized numa nodes
 
 
-> On 10. Apr 2022, at 13:05, Vladimir Oltean <olteanv@gmail.com> wrote:
->=20
-> On Sun, Apr 10, 2022 at 12:51:56PM +0200, Jakob Koschel wrote:
->> I've just looked at this again in a bit more detail while integrating =
-it into the patch series.
->>=20
->> I realized that this just shifts the 'problem' to using the 'pos' =
-iterator variable after the loop.
->> If the scope of the list iterator would be lowered to the list =
-traversal loop it would also make sense
->> to also do it for list_for_each().
->=20
-> Yes, but list_for_each() was never formulated as being problematic in
-> the same way as list_for_each_entry(), was it? I guess I'm starting to
-> not understand what is the true purpose of the changes.
+ arch/powerpc/include/asm/kvm_book3s_64.h | 12 ------
+ arch/powerpc/include/asm/kvm_ppc.h       | 12 ++++++
+ arch/powerpc/include/asm/page.h          |  6 ++-
+ arch/powerpc/include/asm/setup.h         |  2 +
+ arch/powerpc/kernel/exceptions-64s.S     |  4 ++
+ arch/powerpc/kernel/setup_64.c           | 28 +++++++++++++
+ arch/powerpc/kvm/Kconfig                 |  9 +++++
+ arch/powerpc/kvm/book3s_64_entry.S       | 10 ++++-
+ arch/powerpc/kvm/book3s_hv.c             | 41 ++++++++++++++++----
+ arch/powerpc/kvm/book3s_pr.c             | 26 ++++++++-----
+ arch/powerpc/kvm/book3s_pr_papr.c        | 20 ++++++++++
+ arch/powerpc/kvm/powerpc.c               | 17 ++++++++
+ arch/powerpc/mm/mem.c                    |  2 +-
+ arch/powerpc/mm/numa.c                   |  2 +-
+ arch/powerpc/platforms/pseries/setup.c   | 13 ++++++-
+ 15 files changed, 169 insertions(+), 35 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-Sorry for having caused the confusion. Let me elaborate a bit to give =
-more context.
-
-There are two main benefits of this entire effort.
-
-1) fix the architectural bugs and avoid any missuse of the list iterator =
-after the loop
-by construction. This only concerns the list_for_each_entry_*() macros =
-and your change
-will allow lowering the scope for all of those. It might be debatable =
-that it would be
-more consistent to lower the scope for list_for_each() as well, but it =
-wouldn't be
-strictly necessary.
-
-2) fix *possible* speculative bugs. In our project, Kasper [1], we were =
-able to show
-that this can be an issue for the list traversal macros (and this is how =
-the entire
-effort started).
-The reason is that the processor might run an additional loop iteration =
-in speculative
-execution with the iterator variable computed based on the head element. =
-This can
-(and we have verified this) happen if the CPU incorrectly=20
-assumes !list_entry_is_head(pos, head, member).
-
-If this happens, all memory accesses based on the iterator variable =
-*potentially* open
-the chance for spectre [2] gadgets. The proposed mitigation was setting =
-the iterator variable
-to NULL when the terminating condition is reached (in speculative safe =
-way). Then,
-the additional speculative list iteration would still execute but won't =
-access any
-potential secret data.
-
-And this would also be required for list_for_each() since combined with =
-the list_entry()
-within the loop it basically is semantically identical to =
-list_for_each_entry()
-for the additional speculative iteration.
-
-Now, I have no strong opinion on going all the way and since 2) is not =
-the main motivation
-for this I'm also fine with sticking to your proposed solution, but it =
-would mean that implementing
-a "speculative safe" list_for_each() will be more difficult in the =
-future since it is using
-the iterator of list_for_each() past the loop.
-
-I hope this explains the background a bit better.
-
->=20
->> What do you think about doing it this way:
->>=20
->> diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c =
-b/drivers/net/dsa/sja1105/sja1105_vl.c
->> index b7e95d60a6e4..f5b0502c1098 100644
->> --- a/drivers/net/dsa/sja1105/sja1105_vl.c
->> +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
->> @@ -28,6 +28,7 @@ static int sja1105_insert_gate_entry(struct =
-sja1105_gating_config *gating_cfg,
->>                list_add(&e->list, &gating_cfg->entries);
->>        } else {
->>                struct sja1105_gate_entry *p;
->> +               struct list_head *pos =3D NULL;
->>=20
->>                list_for_each_entry(p, &gating_cfg->entries, list) {
->>                        if (p->interval =3D=3D e->interval) {
->> @@ -37,10 +38,14 @@ static int sja1105_insert_gate_entry(struct =
-sja1105_gating_config *gating_cfg,
->>                                goto err;
->>                        }
->>=20
->> -                       if (e->interval < p->interval)
->> +                       if (e->interval < p->interval) {
->> +                               pos =3D &p->list;
->>                                break;
->> +                       }
->>                }
->> -               list_add(&e->list, p->list.prev);
->> +               if (!pos)
->> +                       pos =3D &gating_cfg->entries;
->> +               list_add(&e->list, pos->prev);
->>        }
->>=20
->>        gating_cfg->num_entries++;
->> --
->>=20
->>>=20
->>> Thanks for the suggestion.
->>>=20
->>>> 	}
->>>>=20
->>>> 	gating_cfg->num_entries++;
->>>> -----------------------------[ cut here =
-]-----------------------------
->>>=20
->>> [1] =
-https://lore.kernel.org/linux-kernel/20220407102900.3086255-12-jakobkosche=
-l@gmail.com/
->>>=20
->>> 	Jakob
->>=20
->> Thanks,
->> Jakob
-
-Thanks,
-Jakob
-
-[1] https://www.vusec.net/projects/kasper/
-[2] https://spectreattack.com/spectre.pdf
-
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmJS2fgACgkQUevqPMjh
+pYBt1BAAgsfryhBqA9GD/hEgNpk08Pb214OAAGkKF4uStVs3kAlVhuVeDUThGt5B
+z3OpvAL8lnOOkQ6S/fl0FXMAU5URJhdXTNwmS3g557VIWAVblWEc+oGMOeq2aJIi
+hmlFoLUd7Ge31I03+OZ5IIlOuOc0DM8Qe6zpF25feg3Xw0oQzMHCKgPfnsWbQz+Q
+116NhWE8r35eCmrZEsamaTaUBb8ox9aklVaNNyYm/fJgUUuZg9ROb+pmf4s4y5uP
+x+DQW5RawMV6S7+co7Je8wJB4wGDG0aO/edqUPmdkVW8jksUv5aTD3jr3aQeSA8l
+YwICU8wIZBd9Ps3W8/1LWVfNCyfdcbafOCztirrIAHpD7BdKUizvo8zyQCMTATqB
+m2mHI+EPOGcE/P8HRhLENnjBz6CTU0ZFuSaxpmyDTCOewDP9zzIGkEL5qwZ9EOcY
+7XlqEEK0PiS/rBmigN8R5bv+H9WsJ6Lb2mOVkoSo18ujM5oclhyWw6OlAVmpLybU
+ZauoiM31SINO5LHX+M9P0o8FHtauRLPCHYxmB6akhnTPqYhwfqi+fWxrqbmBtEba
+dr+MTnAVMEFIt4ZdzFOPtZcM+nSGUX/CNfUO4DiCW9MgB9F24kx/lmy+MljQ0gvS
+2jxt0ylnTUVxb1XeGZMVHD1CCz0vZhntmAxewbkoltuZuMufJdo=
+=WTqS
+-----END PGP SIGNATURE-----
