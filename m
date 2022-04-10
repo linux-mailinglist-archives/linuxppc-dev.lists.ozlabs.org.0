@@ -1,53 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EE54FAECB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 18:11:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66FA4FAF77
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Apr 2022 19:53:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KbxnG6wvBz3bk2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 02:11:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kc02b56b7z3bk5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 03:53:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=b5/otx6c;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tD4a+IPI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=b5/otx6c; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=tD4a+IPI; 
  dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kbxmd5zHcz2xnD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 02:10:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=B6tMKYK2Z3xVAw/QxFp/pyz5o32Ek1zRQPrPupjZolk=; b=b5/otx6cfC1w2dFSBG/HnGZhaO
- tknBA+fOo0Hp/JnpVoaXQPxZFNbPcnlfBt7YXqAgB5e6JJ5xJyTvEytgd4jlFTuiV0HgfJPUd/No4
- kFC+8E4oe/V1+x9WZMnR3QgfrS84V5+trt+5+xRUzl3AwXEWfiTWH/3ll6LwfhmaQ6CjDbNOFG96X
- 0vqSicky0N46/z/NgADTbnBZLWRimS5zzrETj9HnJcSepPdZ6rKJQ4NW4bPeP96WKhk7dn12UQvOv
- nl7wIQD5cM9J2Y72M5RU7NPOXIWnsuGuzTfUXtReymgkKLHPe912QyVHHZDRt2F3RzATGpY4okyep
- 72YPKfdg==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nda96-0056Gu-Qt; Sun, 10 Apr 2022 16:10:36 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2] macintosh: via-pmu and via-cuda need RTC_LIB
-Date: Sun, 10 Apr 2022 09:10:35 -0700
-Message-Id: <20220410161035.592-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kc01s3XwVz2xY1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 03:52:33 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 54168B80E4B;
+ Sun, 10 Apr 2022 17:52:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 22632C385A1;
+ Sun, 10 Apr 2022 17:52:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1649613147;
+ bh=rj7JL4rBbavn4EW6mgbShPJ7NOA1xAZoZUayNVGFDik=;
+ h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+ b=tD4a+IPIB4xNFQml9IYe9SYi39+jLhiU1Q7+mv34M0cKLa1S+cxpNF6ObJgwy2qV6
+ 2EW0obeLHWxmY93SCnCv5+KQiFqqkiI6GLy33s5EGxErH7aJ4q35MZ60ahTq+T2h/z
+ 22BBggmH2b0ow96EWrFIw0XGpFQnVfiCKW/1n0wnBn67XDbc3iiK5UM0inRJTlwz0q
+ eU9oMXfv+9iGrC3K2DgA4uaNfy/x6dLhKS49XszKKRLy7pK8mMrwvDiy0g1gb46ndX
+ mx/QSJxOKLCaO9lfNlaHKwKLs1uEjTHSZcjkZID29+PekYvy5tDLDY2VDIMotzORIJ
+ lnrKvQgqpHBZg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org
+ (localhost.localdomain [127.0.0.1])
+ by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id
+ 0E7E5E8DD5D; Sun, 10 Apr 2022 17:52:27 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.18-2 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <87y20d5ay0.fsf@mpe.ellerman.id.au>
+References: <87y20d5ay0.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List
+ <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <87y20d5ay0.fsf@mpe.ellerman.id.au>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
+ tags/powerpc-5.18-2
+X-PR-Tracked-Commit-Id: 1ff5c8e8c835e8a81c0868e3050c76563dd56a2c
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 4ea3c6425269d33da53c79d539ce9554117cf4d4
+Message-Id: <164961314705.10430.4232436589957126926.pr-tracker-bot@kernel.org>
+Date: Sun, 10 Apr 2022 17:52:27 +0000
+To: Michael Ellerman <mpe@ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,58 +74,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Randy Dunlap <rdunlap@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Nathan Chancellor <nathan@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
- Finn Thain <fthain@linux-m68k.org>, kernel test robot <lkp@intel.com>
+Cc: wangkefeng.wang@huawei.com, mhocko@suse.com, srikar@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ Linus Torvalds <torvalds@linux-foundation.org>, osalvador@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix build when RTC_LIB is not set/enabled.
-Eliminates these build errors:
+The pull request you sent on Sun, 10 Apr 2022 23:23:35 +1000:
 
-m68k-linux-ld: drivers/macintosh/via-pmu.o: in function `pmu_set_rtc_time':
-drivers/macintosh/via-pmu.c:1769: undefined reference to `rtc_tm_to_time64'
-m68k-linux-ld: drivers/macintosh/via-cuda.o: in function `cuda_set_rtc_time':
-drivers/macintosh/via-cuda.c:797: undefined reference to `rtc_tm_to_time64'
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.18-2
 
-Fixes: 0792a2c8e0bb ("macintosh: Use common code to access RTC")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org
----
-v2: use RTC_LIB instead of open-coding the call to rtc_tm_to_time64()
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/4ea3c6425269d33da53c79d539ce9554117cf4d4
 
- drivers/macintosh/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+Thank you!
 
---- a/drivers/macintosh/Kconfig
-+++ b/drivers/macintosh/Kconfig
-@@ -44,6 +44,7 @@ config ADB_IOP
- config ADB_CUDA
- 	bool "Support for Cuda/Egret based Macs and PowerMacs"
- 	depends on (ADB || PPC_PMAC) && !PPC_PMAC64
-+	select RTC_LIB
- 	help
- 	  This provides support for Cuda/Egret based Macintosh and
- 	  Power Macintosh systems. This includes most m68k based Macs,
-@@ -57,6 +58,7 @@ config ADB_CUDA
- config ADB_PMU
- 	bool "Support for PMU based PowerMacs and PowerBooks"
- 	depends on PPC_PMAC || MAC
-+	select RTC_LIB
- 	help
- 	  On PowerBooks, iBooks, and recent iMacs and Power Macintoshes, the
- 	  PMU is an embedded microprocessor whose primary function is to
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
