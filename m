@@ -1,64 +1,112 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76FA4FB62C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 10:36:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15A54FB64C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 10:47:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KcMdj5qQ9z3brv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 18:36:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KcMtg4742z3byC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Apr 2022 18:47:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FL8doWXv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g9b2KGC8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KcMpy5FBjz3bXG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 18:44:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=FL8doWXv; dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=g9b2KGC8; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KcMpy57f9z4xR9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 18:44:26 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KcMpy53f6z4xXK; Mon, 11 Apr 2022 18:44:26 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=g9b2KGC8; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KcMcT5cwLz2yn9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Apr 2022 18:35:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1649666121; x=1681202121;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=mKslFDPrN8HDNyAMvaN7A7LjBDIw4MveCAQXoBwsLGg=;
- b=FL8doWXvp+lP6YqghsmmyI076ijUy+Lvy/Uw7O7z7jGRA2was+NptT0O
- PAsJARz6/1RMwXmJxary0rOBTmEOAB8hz8fEsTKuehgUBXyTOFNv9Yw6b
- K7gkh+ykpF7rr5R5dmCxjIPF+6M7alYGTFAOd5YkVS4WUfIRLWiPEQKlr
- whFGrbhgaqcm13TqSqwsFrhbzZ/jyJu1neqVEsWiJBUl/2tvLQdiK9deL
- L0WW5Nqt8zs97GF/p9ByCXhbxBoNgjHegmZpuEBcK5Hs4/Anx/zxyRFyN
- Kxj8hCu2cVYvnJTxAodRqKblE7l+s0sW9LCVpZVHlY+aAIHK+cyvwZEOS w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10313"; a="242654804"
-X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; d="scan'208";a="242654804"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2022 01:34:18 -0700
-X-IronPort-AV: E=Sophos;i="5.90,251,1643702400"; d="scan'208";a="572028764"
-Received: from azahoner-mobl1.ger.corp.intel.com (HELO
- ijarvine-MOBL2.ger.corp.intel.com) ([10.249.44.232])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2022 01:34:09 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: linux-serial@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Lukas Wunner <lukas@wunner.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v3 08/12] serial: General support for multipoint addresses
-Date: Mon, 11 Apr 2022 11:33:17 +0300
-Message-Id: <20220411083321.9131-9-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220411083321.9131-1-ilpo.jarvinen@linux.intel.com>
-References: <20220411083321.9131-1-ilpo.jarvinen@linux.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KcMpy1wsqz4xR9
+ for <linuxppc-dev@ozlabs.org>; Mon, 11 Apr 2022 18:44:26 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23B7g5E7005260; 
+ Mon, 11 Apr 2022 08:44:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=B5Gd+p8RZJ7xRw+6ApWMQoiFUu9SxWBPNa2iiMxbfXg=;
+ b=g9b2KGC80OLMkZJvjFsQCZKNvMTj/MROHifupN8Is9qkKL7iPr7S3vNjuFdzc/4mG7pi
+ /XuUcCUZK1+1p+S0vwEuwvhOmGh4USgd9/lquITKtI5p6OptjU5FIp+1NzKCqZO2+cXG
+ 8P0etYcH/iKjivdFKIRs2eJZrFk3GQuS75XhECYk+Z78eomF4qkpDytas6m/nWDsWRer
+ N1UFXJmiwJdYbx2HoWzK50cQbFAouXJFu63gdBqAZVqphE67ID9EZt+yNfPIQM5DIxT2
+ Zpsc+UGtvnku3B4opS5dx3BA/qHC5WlINChJTYcM0e9caRlrzIgNanJ4yoee3q3qCRzk 6g== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3fcg5us40k-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Apr 2022 08:44:06 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 23B7lmC7023486;
+ Mon, 11 Apr 2022 08:44:06 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3fcg5us400-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Apr 2022 08:44:06 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23B8hdI3021482;
+ Mon, 11 Apr 2022 08:44:04 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma02fra.de.ibm.com with ESMTP id 3fb1s8j5vr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 Apr 2022 08:44:04 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 23B8i03C52887810
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 Apr 2022 08:44:01 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C64F252054;
+ Mon, 11 Apr 2022 08:44:00 +0000 (GMT)
+Received: from sjain014.ibmuc.com (unknown [9.43.41.3])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6D76952050;
+ Mon, 11 Apr 2022 08:43:58 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
+Subject: [RFC v4 PATCH 0/5] In kernel handling of CPU hotplug events for crash
+ kernel
+Date: Mon, 11 Apr 2022 14:13:52 +0530
+Message-Id: <20220411084357.157308-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.35.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oK0VyGB2bTlFi-vyNMHQRLDrn0SLIAAa
+X-Proofpoint-ORIG-GUID: IcJIGpckIPlUkU596ypAkTOL_9XTfsWi
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.425,FMLib:17.11.64.514
+ definitions=2022-04-11_03,2022-04-08_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ impostorscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204110047
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,389 +118,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, heiko@sntech.de,
- linux-sh@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linux-arch@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Helge Deller <deller@gmx.de>, linux-doc@vger.kernel.org,
- =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Matt Turner <mattst88@gmail.com>, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, Johan Hovold <johan@kernel.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, linux-mips@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, giulio.benetti@micronovasrl.com
+Cc: eric.devolder@oracle.com, bhe@redhat.com, mahesh@linux.vnet.ibm.com,
+ kexec@lists.infradead.org, ldufour@linux.ibm.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add generic support for serial multipoint addressing. Two new
-ioctls are added. TIOCSADDR is used to indicate the
-destination/receive address. TIOCGADDR returns the current
-address in use. The driver should implement set_addr and get_addr
-to support addressing mode.
+This patch series implements the crash hotplug handler on PowerPC introduced
+by https://lkml.org/lkml/2022/3/3/674 patch series.
 
-Adjust ADDRB clearing to happen only if driver does not provide
-set_addr (=the driver doesn't support address mode).
 
-This change is necessary for supporting devices with RS485
-multipoint addressing [*]. A following patch in the patch series
-adds support for Synopsys Designware UART capable for 9th bit
-addressing mode. In this mode, 9th bit is used to indicate an
-address (byte) within the communication line. The 9th bit
-addressing mode is selected using ADDRB introduced by the
-previous patch.
+The Problem:
+============
+Post hotplug/DLPAR events the capture kernel holds stale information about the
+system. Dump collection with stale capture kernel might end up in dump capture
+failure or an inaccurate dump collection.
 
-Transmit addresses / receiver filter are specified by setting
-the flags SER_ADDR_DEST and/or SER_ADDR_RECV. When the user
-supplies the transmit address, in the 9bit addressing mode it is
-sent out immediately with the 9th bit set to 1. After that, the
-subsequent normal data bytes are sent with 9th bit as 0 and they
-are intended to the device with the given address. It is up to
-receiver to enforce the filter using SER_ADDR_RECV. When userspace
-has supplied the receive address, the driver is expected to handle
-the matching of the address and only data with that address is
-forwarded to the user. Both SER_ADDR_DEST and SER_ADDR_RECV can
-be given at the same time in a single call if the addresses are
-the same.
 
-The user can clear the receive filter with SER_ADDR_RECV_CLEAR.
+Existing solution:
+==================
+The existing solution to keep the capture kernel up-to-date is observe the
+hotplug event via udev rule and trigger a full capture kernel reload post
+hotplug event. 
 
-[*] Technically, RS485 is just an electronic spec and does not
-itself specify the 9th bit addressing mode but 9th bit seems
-at least "semi-standard" way to do addressing with RS485.
+Shortcomings:
+------------------------------------------------
+- Leaves a window where kernel crash might not lead to successful dump
+  collection.
+- Reloading all kexec components for each hotplug is inefficient. Since only
+  one or two kexec components need to be updated due to hotplug event reloading
+  all kexec component is redundant.
+- udev rules are prone to races if hotplug events are frequent.
 
-Cc: linux-api@vger.kernel.org
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: linux-alpha@vger.kernel.org
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-parisc@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: linux-sh@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: linux-xtensa@linux-xtensa.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+More about issues with an existing solution is posted here:
+ - https://lkml.org/lkml/2020/12/14/532
+ - https://lists.ozlabs.org/pipermail/linuxppc-dev/2022-February/240254.html
+
+Proposed Solution:
+==================
+Instead of reloading all kexec segments on hotplug event, this patch series
+focuses on updating only the relevant kexec segment. Once the kexec
+segments are loaded in the kernel reserved area then an arch-specific hotplug handler
+will update the relevant kexec segment based on hotplug event type.
+
+As mentioned above this patch series implemented a PowerPC crash hotplug
+handler for the CPU. The crash hotplug handler memory is in our TODO list.
+
+
+A couple of minor changes are required to realize the benefit of the patch
+series:
+
+- disalble the udev rule:
+
+  comment out the below line in kdump udev rule file:
+  RHEL: /usr/lib/udev/rules.d/98-kexec.rules
+  # SUBSYSTEM=="cpu", ACTION=="online", GOTO="kdump_reload_cpu"
+
+- kexec tool needs to be updated with patch for kexec_load system call
+  to work (not needed if -s option is used during kexec panic load):
+
 ---
- .../driver-api/serial/serial-rs485.rst        | 23 ++++++-
- arch/alpha/include/uapi/asm/ioctls.h          |  3 +
- arch/mips/include/uapi/asm/ioctls.h           |  3 +
- arch/parisc/include/uapi/asm/ioctls.h         |  3 +
- arch/powerpc/include/uapi/asm/ioctls.h        |  3 +
- arch/sh/include/uapi/asm/ioctls.h             |  3 +
- arch/sparc/include/uapi/asm/ioctls.h          |  3 +
- arch/xtensa/include/uapi/asm/ioctls.h         |  3 +
- drivers/tty/serial/8250/8250_core.c           |  2 +
- drivers/tty/serial/serial_core.c              | 62 ++++++++++++++++++-
- drivers/tty/tty_io.c                          |  2 +
- include/linux/serial_core.h                   |  6 ++
- include/uapi/asm-generic/ioctls.h             |  3 +
- include/uapi/linux/serial.h                   |  8 +++
- 14 files changed, 125 insertions(+), 2 deletions(-)
-
-diff --git a/Documentation/driver-api/serial/serial-rs485.rst b/Documentation/driver-api/serial/serial-rs485.rst
-index 6bc824f948f9..2f45f007fa5b 100644
---- a/Documentation/driver-api/serial/serial-rs485.rst
-+++ b/Documentation/driver-api/serial/serial-rs485.rst
-@@ -95,7 +95,28 @@ RS485 Serial Communications
- 		/* Error handling. See errno. */
- 	}
+diff --git a/kexec/arch/ppc64/kexec-elf-ppc64.c b/kexec/arch/ppc64/kexec-elf-ppc64.c
+index 695b8b0..1dc6490 100644
+--- a/kexec/arch/ppc64/kexec-elf-ppc64.c
++++ b/kexec/arch/ppc64/kexec-elf-ppc64.c
+@@ -45,6 +45,29 @@ uint64_t initrd_base, initrd_size;
+ unsigned char reuse_initrd = 0;
+ const char *ramdisk;
  
--5. References
-+5. Multipoint Addressing
-+========================
++#define MAX_CORE 256
++#define PER_CORE_NODE_SIZE 1500
 +
-+   The Linux kernel provides serial_addr structure to handle addressing within
-+   multipoint serial communications line such as RS485. 9th bit addressiong mode
-+   is enabled by adding ADDRB flag in termios c_cflag.
-+
-+   Serial core calls device specific set/get_addr in response to TIOCSADDR and
-+   TIOCGADDR ioctls with a pointer to serial_addr. Destination and receive
-+   address can be specified using serial_addr flags field. Receive address may
-+   also be cleared using flags. Once an address is set, the communication
-+   can occur only with the particular device and other peers are filtered out.
-+   It is left up to the receiver side to enforce the filtering.
-+
-+   Address flags:
-+	- SER_ADDR_RECV: Receive (filter) address.
-+	- SER_ADDR_RECV_CLEAR: Clear receive filter (only for TIOCSADDR).
-+	- SER_ADDR_DEST: Destination address.
-+
-+   Note: not all devices supporting RS485 support multipoint addressing.
-+
-+6. References
- =============
- 
-  [1]	include/uapi/linux/serial.h
-diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
-index 971311605288..500cab3e1d6b 100644
---- a/arch/alpha/include/uapi/asm/ioctls.h
-+++ b/arch/alpha/include/uapi/asm/ioctls.h
-@@ -125,4 +125,7 @@
- #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* _ASM_ALPHA_IOCTLS_H */
-diff --git a/arch/mips/include/uapi/asm/ioctls.h b/arch/mips/include/uapi/asm/ioctls.h
-index 16aa8a766aec..3859dc46857e 100644
---- a/arch/mips/include/uapi/asm/ioctls.h
-+++ b/arch/mips/include/uapi/asm/ioctls.h
-@@ -96,6 +96,9 @@
- #define TIOCGISO7816	_IOR('T', 0x42, struct serial_iso7816)
- #define TIOCSISO7816	_IOWR('T', 0x43, struct serial_iso7816)
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* I hope the range from 0x5480 on is free ... */
- #define TIOCSCTTY	0x5480		/* become controlling tty */
- #define TIOCGSOFTCAR	0x5481
-diff --git a/arch/parisc/include/uapi/asm/ioctls.h b/arch/parisc/include/uapi/asm/ioctls.h
-index 82d1148c6379..62337743db64 100644
---- a/arch/parisc/include/uapi/asm/ioctls.h
-+++ b/arch/parisc/include/uapi/asm/ioctls.h
-@@ -86,6 +86,9 @@
- #define TIOCSTOP	0x5462
- #define TIOCSLTC	0x5462
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Used for packet mode */
- #define TIOCPKT_DATA		 0
- #define TIOCPKT_FLUSHREAD	 1
-diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
-index 2c145da3b774..84fd69ac366a 100644
---- a/arch/powerpc/include/uapi/asm/ioctls.h
-+++ b/arch/powerpc/include/uapi/asm/ioctls.h
-@@ -120,4 +120,7 @@
- #define TIOCMIWAIT	0x545C	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif	/* _ASM_POWERPC_IOCTLS_H */
-diff --git a/arch/sh/include/uapi/asm/ioctls.h b/arch/sh/include/uapi/asm/ioctls.h
-index 11866d4f60e1..f82966b7dba2 100644
---- a/arch/sh/include/uapi/asm/ioctls.h
-+++ b/arch/sh/include/uapi/asm/ioctls.h
-@@ -113,4 +113,7 @@
- #define TIOCMIWAIT	_IO('T', 92) /* 0x545C */	/* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* __ASM_SH_IOCTLS_H */
-diff --git a/arch/sparc/include/uapi/asm/ioctls.h b/arch/sparc/include/uapi/asm/ioctls.h
-index 7fd2f5873c9e..e44624c67c79 100644
---- a/arch/sparc/include/uapi/asm/ioctls.h
-+++ b/arch/sparc/include/uapi/asm/ioctls.h
-@@ -125,6 +125,9 @@
- #define TIOCMIWAIT	0x545C /* Wait for change on serial input line(s) */
- #define TIOCGICOUNT	0x545D /* Read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Kernel definitions */
- 
- /* Used for packet mode */
-diff --git a/arch/xtensa/include/uapi/asm/ioctls.h b/arch/xtensa/include/uapi/asm/ioctls.h
-index 6d4a87296c95..759ca9377f2a 100644
---- a/arch/xtensa/include/uapi/asm/ioctls.h
-+++ b/arch/xtensa/include/uapi/asm/ioctls.h
-@@ -127,4 +127,7 @@
- #define TIOCMIWAIT	_IO('T', 92) /* wait for a change on serial input line(s) */
- #define TIOCGICOUNT	0x545D	/* read serial port inline interrupt counts */
- 
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- #endif /* _XTENSA_IOCTLS_H */
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-index 01d30f6ed8fb..f67bc3b76f65 100644
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -1008,6 +1008,8 @@ int serial8250_register_8250_port(const struct uart_8250_port *up)
- 		uart->port.rs485	= up->port.rs485;
- 		uart->rs485_start_tx	= up->rs485_start_tx;
- 		uart->rs485_stop_tx	= up->rs485_stop_tx;
-+		uart->port.set_addr	= up->port.set_addr;
-+		uart->port.get_addr	= up->port.get_addr;
- 		uart->dma		= up->dma;
- 
- 		/* Take tx_loadsz from fifosize if it wasn't set separately */
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index de198c2acefe..2cd129c78ef6 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1350,6 +1350,56 @@ static int uart_set_iso7816_config(struct uart_port *port,
- 	return 0;
- }
- 
-+static int uart_set_addr(struct uart_port *port,
-+			 struct serial_addr __user *serial_addr_user)
-+{
-+	struct serial_addr addr;
-+	unsigned long flags;
-+	int ret;
-+
-+	if (!port->set_addr)
-+		return -ENOTTY;
-+
-+	if (copy_from_user(&addr, serial_addr_user, sizeof(*serial_addr_user)))
-+		return -EFAULT;
-+
-+	spin_lock_irqsave(&port->lock, flags);
-+	ret = port->set_addr(port, &addr);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(serial_addr_user, &addr, sizeof(addr)))
-+		return -EFAULT;
-+
-+	return 0;
++/**
++ * get_crash_fdt_mem_sz() - calcuate mem size for crash kernel FDT
++ * @fdt: pointer to crash kernel FDT
++ *
++ * Calculate the buffer space needed to add more CPU nodes in FDT after
++ * capture kenrel load due to hot add events.
++ *
++ * Some assumption are made to calculate the additional buffer size needed
++ * to accommodate future hot add CPUs to the crash FDT. The maximum core count
++ * in the system would not go beyond MAX_CORE and memory needed to store per core
++ * date in FDT is PER_CORE_NODE_SIZE.
++ *
++ * Certainly MAX_CORE count can be replaced with possible core count and
++ * PER_CORE_NODE_SIZE to some standard value instead of randomly observed
++ * core size value on Power9 LPAR.
++ */
++static unsigned int get_crash_fdt_mem_sz(void *fdt) {
++	return fdt_totalsize(fdt) + (PER_CORE_NODE_SIZE * MAX_CORE);
 +}
 +
-+static int uart_get_addr(struct uart_port *port,
-+			 struct serial_addr __user *serial_addr_user)
-+{
-+	struct serial_addr addr;
-+	unsigned long flags;
-+	int ret;
-+
-+	if (!port->get_addr)
-+		return -ENOTTY;
-+
-+	if (copy_from_user(&addr, serial_addr_user, sizeof(*serial_addr_user)))
-+		return -EFAULT;
-+
-+	spin_lock_irqsave(&port->lock, flags);
-+	ret = port->get_addr(port, &addr);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+	if (ret)
-+		return ret;
-+
-+	if (copy_to_user(serial_addr_user, &addr, sizeof(addr)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
- /*
-  * Called via sys_ioctl.  We can use spin_lock_irq() here.
-  */
-@@ -1427,6 +1477,15 @@ uart_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
- 	case TIOCGISO7816:
- 		ret = uart_get_iso7816_config(state->uart_port, uarg);
- 		break;
-+
-+	case TIOCSADDR:
-+		ret = uart_set_addr(uport, uarg);
-+		break;
-+
-+	case TIOCGADDR:
-+		ret = uart_get_addr(uport, uarg);
-+		break;
-+
- 	default:
- 		if (uport->ops->ioctl)
- 			ret = uport->ops->ioctl(uport, cmd, arg);
-@@ -1493,7 +1552,8 @@ static void uart_set_termios(struct tty_struct *tty,
- 		goto out;
- 	}
+ int elf_ppc64_probe(const char *buf, off_t len)
+ {
+ 	struct mem_ehdr ehdr;
+@@ -179,6 +202,7 @@ int elf_ppc64_load(int argc, char **argv, const char *buf, off_t len,
+ 	uint64_t max_addr, hole_addr;
+ 	char *seg_buf = NULL;
+ 	off_t seg_size = 0;
++	unsigned int mem_sz = 0;
+ 	struct mem_phdr *phdr;
+ 	size_t size;
+ #ifdef NEED_RESERVE_DTB
+@@ -329,7 +353,13 @@ int elf_ppc64_load(int argc, char **argv, const char *buf, off_t len,
+ 	if (result < 0)
+ 		return result;
  
--	tty->termios.c_cflag &= ~ADDRB;
-+	if (!uport->set_addr)
-+		tty->termios.c_cflag &= ~ADDRB;
+-	my_dt_offset = add_buffer(info, seg_buf, seg_size, seg_size,
++	if (info->kexec_flags & KEXEC_ON_CRASH) {
++		mem_sz = get_crash_fdt_mem_sz((void *)seg_buf);
++		fdt_set_totalsize(seg_buf, mem_sz);
++		info->fdt_index = info->nr_segments;
++	}
++
++	my_dt_offset = add_buffer(info, seg_buf, seg_size, mem_sz,
+ 				0, 0, max_addr, -1);
  
- 	uart_change_speed(tty, state, old_termios);
- 	/* reload cflag from termios; port driver may have overridden flags */
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 7e8b3bd59c7b..93d8609e88aa 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2885,6 +2885,8 @@ static long tty_compat_ioctl(struct file *file, unsigned int cmd,
- 	case TIOCSERGETLSR:
- 	case TIOCGRS485:
- 	case TIOCSRS485:
-+	case TIOCSADDR:
-+	case TIOCGADDR:
- #ifdef TIOCGETP
- 	case TIOCGETP:
- 	case TIOCSETP:
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 504d365e2803..a2efd3fe2635 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -135,6 +135,12 @@ struct uart_port {
- 						struct serial_rs485 *rs485);
- 	int			(*iso7816_config)(struct uart_port *,
- 						  struct serial_iso7816 *iso7816);
+ #ifdef NEED_RESERVE_DTB
+diff --git a/kexec/kexec.c b/kexec/kexec.c
+index f63b36b..846b1a8 100644
+--- a/kexec/kexec.c
++++ b/kexec/kexec.c
+@@ -672,6 +672,9 @@ static void update_purgatory(struct kexec_info *info)
+ 		if (info->segment[i].mem == (void *)info->rhdr.rel_addr) {
+ 			continue;
+ 		}
++		if (info->fdt_index == i)
++			continue;
 +
-+	int			(*set_addr)(struct uart_port *p,
-+					    struct serial_addr *addr);
-+	int			(*get_addr)(struct uart_port *p,
-+					    struct serial_addr *addr);
-+
- 	unsigned int		irq;			/* irq number */
- 	unsigned long		irqflags;		/* irq flags  */
- 	unsigned int		uartclk;		/* base uart clock */
-diff --git a/include/uapi/asm-generic/ioctls.h b/include/uapi/asm-generic/ioctls.h
-index cdc9f4ca8c27..689743366091 100644
---- a/include/uapi/asm-generic/ioctls.h
-+++ b/include/uapi/asm-generic/ioctls.h
-@@ -106,6 +106,9 @@
- # define FIOQSIZE	0x5460
- #endif
+ 		sha256_update(&ctx, info->segment[i].buf,
+ 			      info->segment[i].bufsz);
+ 		nullsz = info->segment[i].memsz - info->segment[i].bufsz;
+diff --git a/kexec/kexec.h b/kexec/kexec.h
+index 595dd68..0906a1b 100644
+--- a/kexec/kexec.h
++++ b/kexec/kexec.h
+@@ -169,6 +169,7 @@ struct kexec_info {
+ 	int command_line_len;
  
-+#define TIOCSADDR	_IOWR('T', 0x63, struct serial_addr)
-+#define TIOCGADDR	_IOWR('T', 0x64, struct serial_addr)
-+
- /* Used for packet mode */
- #define TIOCPKT_DATA		 0
- #define TIOCPKT_FLUSHREAD	 1
-diff --git a/include/uapi/linux/serial.h b/include/uapi/linux/serial.h
-index fa6b16e5fdd8..8cb785ea7087 100644
---- a/include/uapi/linux/serial.h
-+++ b/include/uapi/linux/serial.h
-@@ -149,4 +149,12 @@ struct serial_iso7816 {
- 	__u32	reserved[5];
+ 	int skip_checks;
++       // Given that we might need to update mutliple kexec segments
++       // then having array to keep indexes of all hotplug kexec segments
++       // will be helpful.
++	unsigned int fdt_index;
  };
  
-+struct serial_addr {
-+	__u32	flags;
-+#define SER_ADDR_RECV			(1 << 0)
-+#define SER_ADDR_RECV_CLEAR		(1 << 1)
-+#define SER_ADDR_DEST			(1 << 2)
-+	__u32	addr;
-+};
-+
- #endif /* _UAPI_LINUX_SERIAL_H */
+ struct arch_map_entry {
+---
+
+---
+Changelog:
+
+v1 -> v2:
+  - Use generic hotplug handler introduced by https://lkml.org/lkml/2022/2/9/1406, a
+    significant change from v1.
+
+v2 -> v3
+  - Move fdt_index and fdt_index_vaild variables to kimage_arch struct.
+  - Rebase patche on top of https://lkml.org/lkml/2022/3/3/674 [v5]
+  - Fixed warning reported by checpatch script
+
+v3 -> v4:
+  - Update the logic to find the additional space needed for hotadd CPUs post
+    kexec load. Refer "[RFC v4 PATCH 4/5] powerpc/crash hp: add crash hotplug
+    support for kexec_file_load" patch to know more about the change.
+  - Fix a couple of typo.
+  - Replace pr_err to pr_info_once to warn user about memory hotplug
+    support.
+  - In crash hotplug handle exit the for loop if FDT segment is found.
+---
+
+Sourabh Jain (5):
+  powerpc/kexec: make update_cpus_node non-static
+  powerpc/crash hp: introduce a new config option CRASH_HOTPLUG
+  powrepc/crash hp: update kimage_arch struct
+  powerpc/crash hp: add crash hotplug support for kexec_file_load
+  powerpc/crash hp: add crash hotplug support for kexec_load
+
+ arch/powerpc/Kconfig              |  11 +++
+ arch/powerpc/include/asm/kexec.h  |   3 +
+ arch/powerpc/kexec/core_64.c      | 154 ++++++++++++++++++++++++++++++
+ arch/powerpc/kexec/elf_64.c       |  74 ++++++++++++++
+ arch/powerpc/kexec/file_load_64.c |  87 -----------------
+ 5 files changed, 242 insertions(+), 87 deletions(-)
+
 -- 
-2.30.2
+2.35.1
 
