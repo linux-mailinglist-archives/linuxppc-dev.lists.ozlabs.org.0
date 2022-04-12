@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BAF4FDC31
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2D04FDC32
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:03:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2rJ26Nwz3dR1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:02:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2rz0DLKz3drL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:03:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eSGSjXgh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aoDWjjGv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::629;
- helo=mail-ej1-x629.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62d;
+ helo=mail-ej1-x62d.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=eSGSjXgh; dkim-atps=neutral
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com
- [IPv6:2a00:1450:4864:20::629])
+ header.s=20210112 header.b=aoDWjjGv; dkim-atps=neutral
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com
+ [IPv6:2a00:1450:4864:20::62d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2lp54Y1z2yh9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:59:02 +1000 (AEST)
-Received: by mail-ej1-x629.google.com with SMTP id r13so36579330ejd.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 03:59:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2lr2ldXz3bY8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:59:04 +1000 (AEST)
+Received: by mail-ej1-x62d.google.com with SMTP id l7so31105115ejn.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 03:59:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=6t7Nl01e4cvCsyopQipowOOZNCNPO7CspXlgqSRJfN8=;
- b=eSGSjXghlomi9azQlGr8ioc93WtOY0TuT/i6asBU/eQ+Q1w2HuQr9Vbj0Lv+K2Uwd6
- lXdCp6Vbsjqb5Tp7v0fWY/1qyy/i8g8zwSwikdYrSgIRB7uQP9o+u+3aqohN3d5QBPnP
- O4mRo1gAyGu1nbzgZwnvP9EAz/wI6yc3NzZ4bclnifBH7zuHLKkaqhGX1U63ThGSZauP
- WZ+sMhbur0UIkqVmNVJeRpye8a4Q3jZgiinMGQQxTzyF3nF8Mw+K59r+DiRp3aQNsYpa
- DdIpdyl4Ejhf0ewOKioasVXY5lbD/Pnm2HFjg4mbFodfu/4l26vi13SEfg+nBtyg/yVz
- 7lbA==
+ bh=lwv0OP8MEFPtBT1zINZmdonMBn1rL8mDzX3cu0httRY=;
+ b=aoDWjjGvs8H8yV45D3QuJ9H1mPo83/jIJGuOj1UpFJ8MPHj2wmJ2oNQyVYGjD9hwgT
+ 0xZ8dHSNv/Oq9Aba8FmB5PoM8ATn2/vxZDDRV3BMeUZBWLJNX+fDyMt5OScKlN7uMbjA
+ JmeAfahBug2GpC5HqsB/JKtqbKu99F75AQXzfj6BX+3A2gO1+1iQduJ1GtTYZeK3TSSW
+ bxdDdDXK6vzKPZqYRf9rDKpMV/2PzZvu+MhpG5ge7Z9f7BUmwBeEF7GnWs6EOwRQisIw
+ ll4crz3AHeFACf/yUyn4P59IiZ1EwuizU4cEmM00Zz+1Zte2KliFKeVpEiDvdS5g3qeJ
+ PIVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=6t7Nl01e4cvCsyopQipowOOZNCNPO7CspXlgqSRJfN8=;
- b=DfSERbKVYNYcI/aehxSitUG7YD51Te2jpgfEL+Xj/cGIYTihcoB47M6PlN32NQG4ik
- nC9pAKnp/eIK7ct8LL2BTNQDVCs0zI3DbaiO1QYUkMilxTkvJqftN5Rry+syKmkzd6yL
- QdB1QJIfqXhJGHhBsFvQIM1v8G9Jokj+PtTSXhqlMBjXb+QncmqWbceqLz9s4/NOQK/r
- gO168od4vktXAepyrkFzv13Lzxy53mA9pcnuRvWKbIJpo7o/8KIPgH2CBa5HpYX9or+n
- gGamXIsiXwzdZi7F5fpAfT8RsNGhXX/5xsccuOVGBeL+Xx5JLrlF4zdlfBzcw23mW7pr
- KcOw==
-X-Gm-Message-State: AOAM531pF2MwbaFJk/I3hRbsPxakyn4AOnJP0mB/j6w4AZSt7UAllxNS
- W0+HGLdwqRfQtPVvdJmQedc=
-X-Google-Smtp-Source: ABdhPJwVYANoguUGdZzhpnrpdU22VVN93loOJ+LRG4RlNJ4J6OzE+BXNUMPf7L3VgsdYHMP9/kOrsw==
-X-Received: by 2002:a17:907:72c3:b0:6e8:a265:4232 with SMTP id
- du3-20020a17090772c300b006e8a2654232mr5352112ejc.86.1649761139587; 
- Tue, 12 Apr 2022 03:58:59 -0700 (PDT)
+ bh=lwv0OP8MEFPtBT1zINZmdonMBn1rL8mDzX3cu0httRY=;
+ b=t8w1Juu4/J9Ngso4oIpSlW5R2jFbxDyjwUjTOjbBJbECxVuGxVGzDQN3mZnqEpxSaB
+ I0zQN4Xz2IdQnAXayXubxCfR7tHttsQ6XdVM6eWlRZx7ehMRTz+gmFTu3VEkDY0QsidD
+ RBjt/8I+caUy/iJcQjwU+wXUzWZDA4hHkmwCTtgTgk8DjPuuLVFMfPopCX4watOloR3J
+ TVL50BTenInjBXlXtAgSkp+n9W/5q+ackcfAMmmqaFm0BETBLho6uzS1nBatrRkLE3pk
+ BmWEmDwLldp8AthLwIcRrs3vFwZJCaQwXadk8TqiGPoUNdfcqDttyKiIKwb5rCSRRIl/
+ yuxA==
+X-Gm-Message-State: AOAM532NySSbQSWu3aq8ewyIz/OYIXmodHgm4V0O3tw0MitXnbNu2uqC
+ qLbU2CPeVZKHtXMgbVofYC4=
+X-Google-Smtp-Source: ABdhPJxtM0/vB3PbVqf57ZcvCKz1A36pyt5xGp3an1wFWW0AwFhDleBHHOsnfcPXL2iVSu+R5pyonA==
+X-Received: by 2002:a17:907:72c7:b0:6e8:442c:1722 with SMTP id
+ du7-20020a17090772c700b006e8442c1722mr20430201ejc.120.1649761141020; 
+ Tue, 12 Apr 2022 03:59:01 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.58
+ f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Apr 2022 03:58:59 -0700 (PDT)
+ Tue, 12 Apr 2022 03:59:00 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v2 06/18] net: dsa: mv88e6xxx: refactor
- mv88e6xxx_port_vlan()
-Date: Tue, 12 Apr 2022 12:58:18 +0200
-Message-Id: <20220412105830.3495846-7-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v2 07/18] net: dsa: Replace usage of found with
+ dedicated list iterator variable
+Date: Tue, 12 Apr 2022 12:58:19 +0200
+Message-Id: <20220412105830.3495846-8-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220412105830.3495846-1-jakobkoschel@gmail.com>
 References: <20220412105830.3495846-1-jakobkoschel@gmail.com>
@@ -90,7 +90,6 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
  Steen Hegelund <Steen.Hegelund@microchip.com>,
  John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
  "Bos, H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
  Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
  Vivien Didelot <vivien.didelot@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
  Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
@@ -110,110 +109,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To avoid bugs and speculative execution exploits due to type-confused
-pointers at the end of a list_for_each_entry() loop, one measure is to
-restrict code to not use the iterator variable outside the loop block.
+To move the list iterator variable into the list_for_each_entry_*()
+macro in the future it should be avoided to use the list iterator
+variable after the loop body.
 
-In the case of mv88e6xxx_port_vlan(), this isn't a problem, as we never
-let the loops exit through "natural causes" anyway, by using a "found"
-variable and then using the last "dp" iterator prior to the break, which
-is a safe thing to do.
+To *never* use the list iterator variable after the loop it was
+concluded to use a separate iterator variable instead of a
+found boolean [1].
 
-Nonetheless, with the expected new syntax, this pattern will no longer
-be possible.
+This removes the need to use a found variable and simply checking if
+the variable was set, can determine if the break/goto was hit.
 
-Profit off of the occasion and break the two port finding methods into
-smaller sub-functions. Somehow, returning a copy of the iterator pointer
-is still accepted.
-
-This change makes it redundant to have a "bool found", since the "dp"
-from mv88e6xxx_port_vlan() now holds NULL if we haven't found what we
-were looking for.
-
+Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 54 ++++++++++++++++++--------------
- 1 file changed, 31 insertions(+), 23 deletions(-)
+ net/dsa/dsa.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index b3aa0e5bc842..1f35e89053e6 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -1378,42 +1378,50 @@ static int mv88e6xxx_set_mac_eee(struct dsa_switch *ds, int port,
- 	return 0;
- }
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index 89c6c86e746f..645522c4dd4a 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -112,22 +112,21 @@ const struct dsa_device_ops *dsa_find_tagger_by_name(const char *buf)
  
-+static struct dsa_port *mv88e6xxx_find_port(struct dsa_switch_tree *dst,
-+					    int sw_index, int port)
-+{
-+	struct dsa_port *dp;
-+
-+	list_for_each_entry(dp, &dst->ports, list)
-+		if (dp->ds->index == sw_index && dp->index == port)
-+			return dp;
-+
-+	return NULL;
-+}
-+
-+static struct dsa_port *
-+mv88e6xxx_find_port_by_bridge_num(struct dsa_switch_tree *dst,
-+				  unsigned int bridge_num)
-+{
-+	struct dsa_port *dp;
-+
-+	list_for_each_entry(dp, &dst->ports, list)
-+		if (dsa_port_bridge_num_get(dp) == bridge_num)
-+			return dp;
-+
-+	return NULL;
-+}
-+
- /* Mask of the local ports allowed to receive frames from a given fabric port */
- static u16 mv88e6xxx_port_vlan(struct mv88e6xxx_chip *chip, int dev, int port)
+ const struct dsa_device_ops *dsa_tag_driver_get(int tag_protocol)
  {
- 	struct dsa_switch *ds = chip->ds;
- 	struct dsa_switch_tree *dst = ds->dst;
- 	struct dsa_port *dp, *other_dp;
+-	struct dsa_tag_driver *dsa_tag_driver;
++	struct dsa_tag_driver *dsa_tag_driver = NULL, *iter;
+ 	const struct dsa_device_ops *ops;
 -	bool found = false;
- 	u16 pvlan;
  
--	/* dev is a physical switch */
- 	if (dev <= dst->last_switch) {
--		list_for_each_entry(dp, &dst->ports, list) {
--			if (dp->ds->index == dev && dp->index == port) {
--				/* dp might be a DSA link or a user port, so it
--				 * might or might not have a bridge.
--				 * Use the "found" variable for both cases.
--				 */
--				found = true;
--				break;
--			}
--		}
--	/* dev is a virtual bridge */
-+		/* dev is a physical switch */
-+		dp = mv88e6xxx_find_port(dst, dev, port);
- 	} else {
--		list_for_each_entry(dp, &dst->ports, list) {
--			unsigned int bridge_num = dsa_port_bridge_num_get(dp);
--
--			if (bridge_num + dst->last_switch != dev)
--				continue;
--
+ 	request_module("%s%d", DSA_TAG_DRIVER_ALIAS, tag_protocol);
+ 
+ 	mutex_lock(&dsa_tag_drivers_lock);
+-	list_for_each_entry(dsa_tag_driver, &dsa_tag_drivers_list, list) {
+-		ops = dsa_tag_driver->ops;
++	list_for_each_entry(iter, &dsa_tag_drivers_list, list) {
++		ops = iter->ops;
+ 		if (ops->proto == tag_protocol) {
 -			found = true;
--			break;
--		}
-+		/* dev is a virtual bridge */
-+		dp = mv88e6xxx_find_port_by_bridge_num(dst,
-+						       dev - dst->last_switch);
++			dsa_tag_driver = iter;
+ 			break;
+ 		}
  	}
  
- 	/* Prevent frames from unknown switch or virtual bridge */
--	if (!found)
-+	if (!dp)
- 		return 0;
- 
- 	/* Frames from DSA links and CPU ports can egress any local port */
+-	if (found) {
++	if (dsa_tag_driver) {
+ 		if (!try_module_get(dsa_tag_driver->owner))
+ 			ops = ERR_PTR(-ENOPROTOOPT);
+ 	} else {
 -- 
 2.25.1
 
