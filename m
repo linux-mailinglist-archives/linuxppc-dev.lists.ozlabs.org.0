@@ -2,57 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CECB4FCA41
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1174FCA88
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:52:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KcnG96tRRz3bbQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:50:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KcnHZ69dRz3bbl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:52:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MR0ko3PA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gczfqQpt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=MR0ko3PA; 
+ header.s=k20201202 header.b=gczfqQpt; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KcnFY04t4z2xBF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:50:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KcnGz1mvXz2xBF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:51:39 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id E26B760AB4;
- Tue, 12 Apr 2022 00:50:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707ACC385A3;
- Tue, 12 Apr 2022 00:50:21 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 74D66B815C8;
+ Tue, 12 Apr 2022 00:51:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AE6C385A9;
+ Tue, 12 Apr 2022 00:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649724622;
- bh=Q1HQeDFU9x7Fs+XYhAq+f0rh0AAVChmCSP3pcSdxFy8=;
+ s=k20201202; t=1649724694;
+ bh=YM5jbNuYoDJbbdPNVsAyxItLgFYeipZZZly7PYJXEZs=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=MR0ko3PAovryWzKQNtFcW2bR0H7dva6iR7lHxQl2P55mGKBlw/9mme9Yb5B2UQVXW
- lTUe4nKjRrIaH7PzItvs62VEH5Hybur+tKdMFzl41gUgyfXdRjhI19YVoTyGOZpC98
- FnwB5BmzkD+7UlPBvK9yAcYi95zgHMPPXTL5dLs0DE0T2tczMYPb4SQwRPKJj29OBN
- lUonCYLoBL8K6tz1dxbCtLrGCwy2Ypu/JMuqM5dNzfJnaqO+bcdK1AptkUFIJII4yX
- obpZBRB/t+30bRqzJtnhR0i8MG3xdIW+VC2XhsAMdoc+iD1eNR3DLZxbITv6YCZqvt
- FfslHo7FW3d0Q==
+ b=gczfqQptWkL2DJovElFzcWGgGRoLQVOB5xFNkBxO8SMpwuPA/QAmA9EcFiikxmgJX
+ NxT2/BkOA/O1OIZ6JtbQcfwKWMbPGEapEUi822vRjM51vIKv0CIzLr2PqFMuPw2poF
+ +KloabXwfXqL5M9HSkawBf29COBRa/XC4XaLg0dePhKxetCm5enwpMAjyPhxxyHKQm
+ Cedakte2zEqQgZbuWm1fWDR8nCIur1yl5zwWBzhKEEBGOIZDgYBty3bYvr3zwpISVD
+ TfeBzcZ2RYU9VlvlVfqCr6LxE7/RHLiy/nAffytTXS7/keCjigkhIZNtyU7mj0UHlR
+ P8cDeJqpeXkbA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 25/30] powerpc: Fix virt_addr_valid() for 64-bit
+Subject: [PATCH AUTOSEL 5.4 17/21] powerpc: Fix virt_addr_valid() for 64-bit
  Book3E & 32-bit
-Date: Mon, 11 Apr 2022 20:48:59 -0400
-Message-Id: <20220412004906.350678-25-sashal@kernel.org>
+Date: Mon, 11 Apr 2022 20:50:36 -0400
+Message-Id: <20220412005042.351105-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220412004906.350678-1-sashal@kernel.org>
-References: <20220412004906.350678-1-sashal@kernel.org>
+In-Reply-To: <20220412005042.351105-1-sashal@kernel.org>
+References: <20220412005042.351105-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -146,7 +144,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-index 254687258f42..f2c5c26869f1 100644
+index 6ba5adb96a3b..0d8f9246ce15 100644
 --- a/arch/powerpc/include/asm/page.h
 +++ b/arch/powerpc/include/asm/page.h
 @@ -132,7 +132,11 @@ static inline bool pfn_valid(unsigned long pfn)
