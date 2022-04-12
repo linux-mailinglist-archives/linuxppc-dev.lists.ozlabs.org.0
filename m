@@ -2,37 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFFE54FCE37
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 06:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB5C4FCF62
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 08:21:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KctNn6c3hz3dwD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 14:42:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kcwbz5wKxz3bpH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 16:21:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KctKw46SZz3bdL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 14:39:32 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F7E11756;
- Mon, 11 Apr 2022 21:38:59 -0700 (PDT)
-Received: from a077893.arm.com (unknown [10.163.38.213])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6E6383F70D;
- Mon, 11 Apr 2022 21:38:55 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Subject: [PATCH V5 7/7] mm/mmap: Drop arch_vm_get_page_pgprot()
-Date: Tue, 12 Apr 2022 10:08:48 +0530
-Message-Id: <20220412043848.80464-8-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220412043848.80464-1-anshuman.khandual@arm.com>
-References: <20220412043848.80464-1-anshuman.khandual@arm.com>
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KcwbZ35h4z2xSM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 16:21:28 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id CD9FC68AA6; Tue, 12 Apr 2022 08:21:20 +0200 (CEST)
+Date: Tue, 12 Apr 2022 08:21:20 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+Subject: Re: [PATCH 10/15] swiotlb: add a SWIOTLB_ANY flag to lift the low
+ memory restriction
+Message-ID: <20220412062120.GA7796@lst.de>
+References: <20220404050559.132378-1-hch@lst.de>
+ <20220404050559.132378-11-hch@lst.de> <Yk4vfAd0J5u+wUsq@char.us.oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yk4vfAd0J5u+wUsq@char.us.oracle.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,56 +44,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
- catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-hyperv@vger.kernel.org, linux-ia64@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
+ Stefano Stabellini <sstabellini@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ x86@kernel.org, tboot-devel@lists.sourceforge.net,
+ xen-devel@lists.xenproject.org, David Woodhouse <dwmw2@infradead.org>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are no platforms left which use arch_vm_get_page_prot(). Just drop
-generic arch_vm_get_page_prot().
+On Wed, Apr 06, 2022 at 08:25:32PM -0400, Konrad Rzeszutek Wilk wrote:
+> > diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
+> > index c5228f4969eb2..3b4045d508ec8 100644
+> > --- a/arch/powerpc/platforms/pseries/svm.c
+> > +++ b/arch/powerpc/platforms/pseries/svm.c
+> > @@ -28,7 +28,7 @@ static int __init init_svm(void)
+> >  	 * need to use the SWIOTLB buffer for DMA even if dma_capable() says
+> >  	 * otherwise.
+> >  	 */
+> > -	swiotlb_force = SWIOTLB_FORCE;
+> > +	ppc_swiotlb_flags |= SWIOTLB_ANY | SWIOTLB_FORCE;
+> 
+> This is the only place you set the ppc_swiotlb_flags.. so I wonder why
+> the '|=' instead of just '=' ?
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- include/linux/mman.h | 4 ----
- mm/mmap.c            | 3 +--
- 2 files changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/include/linux/mman.h b/include/linux/mman.h
-index b66e91b8176c..58b3abd457a3 100644
---- a/include/linux/mman.h
-+++ b/include/linux/mman.h
-@@ -93,10 +93,6 @@ static inline void vm_unacct_memory(long pages)
- #define arch_calc_vm_flag_bits(flags) 0
- #endif
- 
--#ifndef arch_vm_get_page_prot
--#define arch_vm_get_page_prot(vm_flags) __pgprot(0)
--#endif
--
- #ifndef arch_validate_prot
- /*
-  * This is called from mprotect().  PROT_GROWSDOWN and PROT_GROWSUP have
-diff --git a/mm/mmap.c b/mm/mmap.c
-index edf2a5e38f4d..db7f33154206 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -110,8 +110,7 @@ pgprot_t protection_map[16] __ro_after_init = {
- pgprot_t vm_get_page_prot(unsigned long vm_flags)
- {
- 	pgprot_t ret = __pgprot(pgprot_val(protection_map[vm_flags &
--				(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]) |
--			pgprot_val(arch_vm_get_page_prot(vm_flags)));
-+				(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]));
- 
- 	return ret;
- }
--- 
-2.25.1
-
+Preparing for setting others and not clobbering the value.
