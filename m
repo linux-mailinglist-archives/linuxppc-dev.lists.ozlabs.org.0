@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356174FCA12
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CECB4FCA41
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:51:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KcnDH0q1pz3bcC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:49:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KcnG96tRRz3bbQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:50:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IRitT71f;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MR0ko3PA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,41 +18,41 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=IRitT71f; 
+ header.s=k20201202 header.b=MR0ko3PA; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org
  [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KcnCg2ds3z2xsm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:48:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KcnFY04t4z2xBF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:50:24 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 7D1746181D;
- Tue, 12 Apr 2022 00:48:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C5FC385A9;
- Tue, 12 Apr 2022 00:48:43 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id E26B760AB4;
+ Tue, 12 Apr 2022 00:50:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707ACC385A3;
+ Tue, 12 Apr 2022 00:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649724523;
+ s=k20201202; t=1649724622;
  bh=Q1HQeDFU9x7Fs+XYhAq+f0rh0AAVChmCSP3pcSdxFy8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=IRitT71fPSPhxiLxsHBp7+nP9c7S8Y73wYEox+0r5oTDEQmSsFDBx2ySpxUuhKM+P
- PisW4QyhapDlj9ffN8PdX53m8qgzp4kfpGT4ZZmQgXqbv2ravlibxv/ul0qp+dm3EE
- NSF1h3OkrOlDgpnwzAt1Mfeh3XyuRuNdUMjbKmF3ONoFwErPZ2fxQYTXUpbu8g/PA3
- WHi4/7vkVnblvdIqqOy8lb0iKubJhlcIHa/xEnQ5VMbmdGihjeXdc0NbrcVRZyjlpT
- OUurdAAlDeq1HA9ZkrGT7Xg29yIq8MJKPTSpicEwiAKYgGwXskmbePPtbbvSbGTTNy
- FX29WhH2nw18w==
+ b=MR0ko3PAovryWzKQNtFcW2bR0H7dva6iR7lHxQl2P55mGKBlw/9mme9Yb5B2UQVXW
+ lTUe4nKjRrIaH7PzItvs62VEH5Hybur+tKdMFzl41gUgyfXdRjhI19YVoTyGOZpC98
+ FnwB5BmzkD+7UlPBvK9yAcYi95zgHMPPXTL5dLs0DE0T2tczMYPb4SQwRPKJj29OBN
+ lUonCYLoBL8K6tz1dxbCtLrGCwy2Ypu/JMuqM5dNzfJnaqO+bcdK1AptkUFIJII4yX
+ obpZBRB/t+30bRqzJtnhR0i8MG3xdIW+VC2XhsAMdoc+iD1eNR3DLZxbITv6YCZqvt
+ FfslHo7FW3d0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 33/41] powerpc: Fix virt_addr_valid() for 64-bit
+Subject: [PATCH AUTOSEL 5.10 25/30] powerpc: Fix virt_addr_valid() for 64-bit
  Book3E & 32-bit
-Date: Mon, 11 Apr 2022 20:46:45 -0400
-Message-Id: <20220412004656.350101-33-sashal@kernel.org>
+Date: Mon, 11 Apr 2022 20:48:59 -0400
+Message-Id: <20220412004906.350678-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220412004656.350101-1-sashal@kernel.org>
-References: <20220412004656.350101-1-sashal@kernel.org>
+In-Reply-To: <20220412004906.350678-1-sashal@kernel.org>
+References: <20220412004906.350678-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
