@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E2E4FDBEC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0120B4FDC2E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:01:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2mx55wlz3bgC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:00:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2px65Yrz3bpr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:01:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ITHb5Z6R;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PuvOlw8F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631;
- helo=mail-ej1-x631.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52f;
+ helo=mail-ed1-x52f.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ITHb5Z6R; dkim-atps=neutral
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
- [IPv6:2a00:1450:4864:20::631])
+ header.s=20210112 header.b=PuvOlw8F; dkim-atps=neutral
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com
+ [IPv6:2a00:1450:4864:20::52f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2lm2K78z2ygC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:58:58 +1000 (AEST)
-Received: by mail-ej1-x631.google.com with SMTP id bg10so36566499ejb.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 03:58:58 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2lm6Jz3z2ygB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:59:00 +1000 (AEST)
+Received: by mail-ed1-x52f.google.com with SMTP id z99so13257445ede.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 03:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=8gxZv9czNrqSsp+NwDMxwad6YKQOb4DD102M9ETWSEU=;
- b=ITHb5Z6Ro2j7h9KvVs8LnHP+X9FORr367PPN32rttpJ+hrNMecB/3XZ4h+su6UDu5Q
- UHw8l+Pjwclo5Ysc5IzDvHR9VYp8P7ICq84aWXUN5djTntioSeCBzqLrmWEVOmxMzo/i
- lTo2zLR/QC4uKo0xVTLDz3Stqpju1oz1DsJ3jrjvDHTyr+zTXgTAcEffm7Wio8myKENt
- wbSzkkHS7T+8h5HggSK/6g02VLekQa/Em0l750WCJr+KqES7vhEzWKH+ooie57tmdXlR
- 7uNWoRy+loFZl+7EYx6sA58obekFJFD4IGE7LZEGMkR2VSocff0x2mtDG+azcl2C6gjr
- ZO/g==
+ bh=esB5mepgr5nyvG9nrRmGTzzqc+m2Rur7gox62JB2JxA=;
+ b=PuvOlw8FCBCG5e+EE/ntog+d+HeeY8K1lZiupPOEKAdCgqu2LkYctFFE46dcuaKWxD
+ JqH+76Qb0X+BMNsfA9Q8hPEBX7h/TK52EayIDurkbi0ZXZFsbAEpG97HJRgmTx+tICGE
+ lCvlWrFaheyN2vCP4qZCLM2U9CPNc/5RzLPcE9ceZCqgdyWliGLOkuRdsOz6o3J4ilD+
+ TbQcxAbbz+3lTN4E+LeC2njmuDn5Cn6HBynXRNM7hJygrqlMJHf3cKhdC3wl51iVwJOp
+ 0ejiDVcQHPks45Uwbw/G/4tvBL/Muq1Ge9wW11L6vmzrxnOckDr79bjZ6ilLKC8GJuHB
+ DezA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=8gxZv9czNrqSsp+NwDMxwad6YKQOb4DD102M9ETWSEU=;
- b=ozxuj6qAG4S82OE43PTR0kArbTbFSRiAenJ0VcrYPq3RLYy16PqvFayUyNP2UM6dxu
- Pd+Z1w7grFnMmU+HnOSMEsQk3QMIi84JPWixu4CCiWUBx94nGWqd9NAv5Sd8LOqeQVEP
- JdmQ+s60+o8dqvzay2k18E6o0UTDwDabuJCI99WbnmtwC34LNHX5I+/Pzc3X+4NIk7Q3
- KoxYpKdIK7U9tAojHRWBO7WWe/wHPgta0zVhiXX5qyxkTehQ+grFGXqKb7dDU05yNGi1
- y3hX+RpVM3MHqSu0oz7aCxiXZ0c4zQIszZ6cXAV1Ny5OOoGUzqANEGt8JRAXwM7wE9GD
- GeZA==
-X-Gm-Message-State: AOAM5318AH8/fvS7kBYLmC9Gm3Rv895tM1IXbstF8m4rTNhX5d444Ww/
- sh5+/E1nU2To33PfavsE2Ik=
-X-Google-Smtp-Source: ABdhPJzNTHWGl2lSK5El9AwYn/g4QL+TmEsz0QZcXmoF0HHdlRFYvO6ANFjRh9vxOm6k30pcEG3CMw==
-X-Received: by 2002:a17:906:2883:b0:6e8:7012:4185 with SMTP id
- o3-20020a170906288300b006e870124185mr14014409ejd.204.1649761135581; 
- Tue, 12 Apr 2022 03:58:55 -0700 (PDT)
+ bh=esB5mepgr5nyvG9nrRmGTzzqc+m2Rur7gox62JB2JxA=;
+ b=DT1FUAm139t2AGCwc6Qvi+NEuoReYZD+WY1Czzzpz9kpK4RN2PDxcRM7c+UKKZ6iDv
+ taFQXHszksVL6sZIDkuH8bMCNQL+V63dSjkw+ByPcTqf+DoYqYWUTOVrKezwRLUUn1KQ
+ nKNDSSUtYOfTiSr/fBh17UxLwUlRwB+asCTi9/uj1ZrApjmiJHHdaudw87yrUavYT4y3
+ CLrMfJdVFF/XV/QmNYrodM3QypA6YFDn2dQdLuqvkXd3GV72KdVZSwuGAWwNIs3FDvgd
+ OmsPuDRm7CqwWEevBD2C97wNRcwZvlIxnoSY5a7H1AJIkf7Aa6PdHSCMYfkms4bc16xJ
+ HfOg==
+X-Gm-Message-State: AOAM532mTRbPkeTq9lYzEgwXpEvtdQje92/tFcc6pfomFgN0SFfhdeTI
+ M+vcExZY0Ws7riuxNCf+K/g=
+X-Google-Smtp-Source: ABdhPJwWJgCDTrqPfiqP3TWBYTxeilB8kDG9V7L+j1ctwcQCz/eM8OQpB3keuCQCrlhlGAhb4nEDcw==
+X-Received: by 2002:a05:6402:5106:b0:419:45cd:7ab0 with SMTP id
+ m6-20020a056402510600b0041945cd7ab0mr38052671edd.116.1649761136889; 
+ Tue, 12 Apr 2022 03:58:56 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.54
+ f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Apr 2022 03:58:55 -0700 (PDT)
+ Tue, 12 Apr 2022 03:58:56 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v2 03/18] net: dsa: sja1105: reorder
- sja1105_first_entry_longer_than with memory allocation
-Date: Tue, 12 Apr 2022 12:58:15 +0200
-Message-Id: <20220412105830.3495846-4-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v2 04/18] net: dsa: sja1105: use list_add_tail(pos)
+ instead of list_add(pos->prev)
+Date: Tue, 12 Apr 2022 12:58:16 +0200
+Message-Id: <20220412105830.3495846-5-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220412105830.3495846-1-jakobkoschel@gmail.com>
 References: <20220412105830.3495846-1-jakobkoschel@gmail.com>
@@ -110,60 +110,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-sja1105_first_entry_longer_than() does not make use of the full struct
-sja1105_gate_entry *e, just of e->interval which is set from the passed
-entry_time.
+When passed a non-head list element, list_add_tail() actually adds the
+new element to its left, which is what we want. Despite the slightly
+confusing name, use the dedicated function which does the same thing as
+the open-coded list_add(pos->prev).
 
-This means that if there is a gate conflict, we have allocated e for
-nothing, just to free it later. Reorder the memory allocation and the
-function call, to avoid that and simplify the error unwind path.
-
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/dsa/sja1105/sja1105_vl.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_vl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-index 369be2ac3587..e5ea8eb9ec4e 100644
+index e5ea8eb9ec4e..7fe9b18f1cbd 100644
 --- a/drivers/net/dsa/sja1105/sja1105_vl.c
 +++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-@@ -36,7 +36,11 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- {
- 	struct sja1105_gate_entry *e;
- 	struct list_head *pos;
--	int rc;
-+
-+	pos = sja1105_first_entry_longer_than(&gating_cfg->entries,
-+					      entry_time, extack);
-+	if (IS_ERR(pos))
-+		return PTR_ERR(pos);
- 
- 	e = kzalloc(sizeof(*e), GFP_KERNEL);
- 	if (!e)
-@@ -45,22 +49,11 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
+@@ -49,7 +49,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
  	e->rule = rule;
  	e->gate_state = gate_state;
  	e->interval = entry_time;
--
--	pos = sja1105_first_entry_longer_than(&gating_cfg->entries,
--					      e->interval, extack);
--	if (IS_ERR(pos)) {
--		rc = PTR_ERR(pos);
--		goto err;
--	}
--
- 	list_add(&e->list, pos->prev);
+-	list_add(&e->list, pos->prev);
++	list_add_tail(&e->list, pos);
  
  	gating_cfg->num_entries++;
  
- 	return 0;
--err:
--	kfree(e);
--	return rc;
- }
- 
- /* The gate entries contain absolute times in their e->interval field. Convert
 -- 
 2.25.1
 
