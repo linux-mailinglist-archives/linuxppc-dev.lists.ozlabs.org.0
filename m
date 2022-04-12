@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812364FC9B0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:46:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB96B4FC9BA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:47:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kcn8k15Ltz3bcK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:46:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kcn9h51k9z3bqY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:47:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bi0wmgXQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tuSL7Ucm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=sashal@kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Bi0wmgXQ; 
+ header.s=k20201202 header.b=tuSL7Ucm; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kcn846fj6z2xsm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:45:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kcn933QMfz2xsm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:46:31 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 0D9BFCE0EA2;
- Tue, 12 Apr 2022 00:45:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE837C385AC;
- Tue, 12 Apr 2022 00:45:34 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 8BB5D617D9;
+ Tue, 12 Apr 2022 00:46:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C45C385A4;
+ Tue, 12 Apr 2022 00:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649724336;
- bh=trBNC8YuPBKlcPxoBGVpvrmOv8vIPeg+n7tKXJ1+6Gs=;
+ s=k20201202; t=1649724389;
+ bh=Q1HQeDFU9x7Fs+XYhAq+f0rh0AAVChmCSP3pcSdxFy8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Bi0wmgXQhUjQlpV3tRAtY8C749xb5JpfSF7rctUw4i5i14/HPcNhfbEB4ZfAEFQUw
- 1D7tTQ7XaUQByjrIvUsi2rQT+/+Wf4EgPEtfOUMnNAoTgLaa9sZtncwhf1o+OQkJKg
- MKygcl/YOeA5paVlUI/L7IznXlVPZ7Op6N4ksa8FZXNA5WVFzHgT+cwJoB9eSF/4k9
- cCgUVhW2WsWxgtr1atfnn0mwqPTYksRLocQ9xogtV4nd5QuJJgt0tNzeXkQ3a71bwc
- KSMCyETpZo7S2NFC068bxxr9KPxuGV4wz5i7+oVfayJ+1Dn82BQ1AmzPLy8Vj6gFJY
- wUfRCO6NXPO/g==
+ b=tuSL7Ucmwk7DhyPOdDgYIB5RsTxJ5WhEWVlLe9AGb5KTFas9+546L9xDeAmOqRE6l
+ wC85RJvUVGZMLo1eJaZVDJK2SjoRIGOuiWQnm4v9RuutnHjEGR770yl79uQsFKsesS
+ wJyt7tY2rL46aeKeQL6HPibxpUXFML0A/6d9Jkiw47KIYBkBrEYYCF0SP1n8ta9cVM
+ UXjPJ5DAZh2w99qVO0wFSxpmBDVhOGv7+LhDA9tRPyskdYvTxwGXT8lbG+lueD50ss
+ FJtsjs6P0J2SEmcYed1FVD3a95IxnP4zMAMVb5rdHjeDqKHFaFKDPLnERgSxBZv4ql
+ U65VlGC+zc7KQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 27/49] static_call: Properly initialise
- DEFINE_STATIC_CALL_RET0()
-Date: Mon, 11 Apr 2022 20:43:45 -0400
-Message-Id: <20220412004411.349427-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.17 40/49] powerpc: Fix virt_addr_valid() for 64-bit
+ Book3E & 32-bit
+Date: Mon, 11 Apr 2022 20:43:58 -0400
+Message-Id: <20220412004411.349427-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220412004411.349427-1-sashal@kernel.org>
 References: <20220412004411.349427-1-sashal@kernel.org>
@@ -68,136 +68,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, x86@kernel.org,
- Peter Zijlstra <peterz@infradead.org>, dave.hansen@linux.intel.com,
- jbaron@akamai.com, mingo@redhat.com, bp@alien8.de,
- Josh Poimboeuf <jpoimboe@redhat.com>, tglx@linutronix.de,
+Cc: Sasha Levin <sashal@kernel.org>, Kefeng Wang <wangkefeng.wang@huawei.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
 
-[ Upstream commit 5517d500829c683a358a8de04ecb2e28af629ae5 ]
+[ Upstream commit ffa0b64e3be58519ae472ea29a1a1ad681e32f48 ]
 
-When a static call is updated with __static_call_return0() as target,
-arch_static_call_transform() set it to use an optimised set of
-instructions which are meant to lay in the same cacheline.
+mpe: On 64-bit Book3E vmalloc space starts at 0x8000000000000000.
 
-But when initialising a static call with DEFINE_STATIC_CALL_RET0(),
-we get a branch to the real __static_call_return0() function instead
-of getting the optimised setup:
+Because of the way __pa() works we have:
+  __pa(0x8000000000000000) == 0, and therefore
+  virt_to_pfn(0x8000000000000000) == 0, and therefore
+  virt_addr_valid(0x8000000000000000) == true
 
-	c00d8120 <__SCT__perf_snapshot_branch_stack>:
-	c00d8120:	4b ff ff f4 	b       c00d8114 <__static_call_return0>
-	c00d8124:	3d 80 c0 0e 	lis     r12,-16370
-	c00d8128:	81 8c 81 3c 	lwz     r12,-32452(r12)
-	c00d812c:	7d 89 03 a6 	mtctr   r12
-	c00d8130:	4e 80 04 20 	bctr
-	c00d8134:	38 60 00 00 	li      r3,0
-	c00d8138:	4e 80 00 20 	blr
-	c00d813c:	00 00 00 00 	.long 0x0
+Which is wrong, virt_addr_valid() should be false for vmalloc space.
+In fact all vmalloc addresses that alias with a valid PFN will return
+true from virt_addr_valid(). That can cause bugs with hardened usercopy
+as described below by Kefeng Wang:
 
-Add ARCH_DEFINE_STATIC_CALL_RET0_TRAMP() defined by each architecture
-to setup the optimised configuration, and rework
-DEFINE_STATIC_CALL_RET0() to call it:
+  When running ethtool eth0 on 64-bit Book3E, a BUG occurred:
 
-	c00d8120 <__SCT__perf_snapshot_branch_stack>:
-	c00d8120:	48 00 00 14 	b       c00d8134 <__SCT__perf_snapshot_branch_stack+0x14>
-	c00d8124:	3d 80 c0 0e 	lis     r12,-16370
-	c00d8128:	81 8c 81 3c 	lwz     r12,-32452(r12)
-	c00d812c:	7d 89 03 a6 	mtctr   r12
-	c00d8130:	4e 80 04 20 	bctr
-	c00d8134:	38 60 00 00 	li      r3,0
-	c00d8138:	4e 80 00 20 	blr
-	c00d813c:	00 00 00 00 	.long 0x0
+    usercopy: Kernel memory exposure attempt detected from SLUB object not in SLUB page?! (offset 0, size 1048)!
+    kernel BUG at mm/usercopy.c:99
+    ...
+    usercopy_abort+0x64/0xa0 (unreliable)
+    __check_heap_object+0x168/0x190
+    __check_object_size+0x1a0/0x200
+    dev_ethtool+0x2494/0x2b20
+    dev_ioctl+0x5d0/0x770
+    sock_do_ioctl+0xf0/0x1d0
+    sock_ioctl+0x3ec/0x5a0
+    __se_sys_ioctl+0xf0/0x160
+    system_call_exception+0xfc/0x1f0
+    system_call_common+0xf8/0x200
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/1e0a61a88f52a460f62a58ffc2a5f847d1f7d9d8.1647253456.git.christophe.leroy@csgroup.eu
+  The code shows below,
+
+    data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
+    copy_to_user(useraddr, data, gstrings.len * ETH_GSTRING_LEN))
+
+  The data is alloced by vmalloc(), virt_addr_valid(ptr) will return true
+  on 64-bit Book3E, which leads to the panic.
+
+  As commit 4dd7554a6456 ("powerpc/64: Add VIRTUAL_BUG_ON checks for __va
+  and __pa addresses") does, make sure the virt addr above PAGE_OFFSET in
+  the virt_addr_valid() for 64-bit, also add upper limit check to make
+  sure the virt is below high_memory.
+
+  Meanwhile, for 32-bit PAGE_OFFSET is the virtual address of the start
+  of lowmem, high_memory is the upper low virtual address, the check is
+  suitable for 32-bit, this will fix the issue mentioned in commit
+  602946ec2f90 ("powerpc: Set max_mapnr correctly") too.
+
+On 32-bit there is a similar problem with high memory, that was fixed in
+commit 602946ec2f90 ("powerpc: Set max_mapnr correctly"), but that
+commit breaks highmem and needs to be reverted.
+
+We can't easily fix __pa(), we have code that relies on its current
+behaviour. So for now add extra checks to virt_addr_valid().
+
+For 64-bit Book3S the extra checks are not necessary, the combination of
+virt_to_pfn() and pfn_valid() should yield the correct result, but they
+are harmless.
+
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+[mpe: Add additional change log detail]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20220406145802.538416-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/static_call.h |  1 +
- arch/x86/include/asm/static_call.h     |  2 ++
- include/linux/static_call.h            | 20 +++++++++++++++++---
- 3 files changed, 20 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/page.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/static_call.h b/arch/powerpc/include/asm/static_call.h
-index 0a0bc79bd1fa..de1018cc522b 100644
---- a/arch/powerpc/include/asm/static_call.h
-+++ b/arch/powerpc/include/asm/static_call.h
-@@ -24,5 +24,6 @@
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index 254687258f42..f2c5c26869f1 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -132,7 +132,11 @@ static inline bool pfn_valid(unsigned long pfn)
+ #define virt_to_page(kaddr)	pfn_to_page(virt_to_pfn(kaddr))
+ #define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
  
- #define ARCH_DEFINE_STATIC_CALL_TRAMP(name, func)	__PPC_SCT(name, "b " #func)
- #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)	__PPC_SCT(name, "blr")
-+#define ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)	__PPC_SCT(name, "b .+20")
- 
- #endif /* _ASM_POWERPC_STATIC_CALL_H */
-diff --git a/arch/x86/include/asm/static_call.h b/arch/x86/include/asm/static_call.h
-index ed4f8bb6c2d9..2455d721503e 100644
---- a/arch/x86/include/asm/static_call.h
-+++ b/arch/x86/include/asm/static_call.h
-@@ -38,6 +38,8 @@
- #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)			\
- 	__ARCH_DEFINE_STATIC_CALL_TRAMP(name, "ret; int3; nop; nop; nop")
- 
-+#define ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)			\
-+	ARCH_DEFINE_STATIC_CALL_TRAMP(name, __static_call_return0)
- 
- #define ARCH_ADD_TRAMP_KEY(name)					\
- 	asm(".pushsection .static_call_tramp_key, \"a\"		\n"	\
-diff --git a/include/linux/static_call.h b/include/linux/static_call.h
-index 3e56a9751c06..e2d70435988c 100644
---- a/include/linux/static_call.h
-+++ b/include/linux/static_call.h
-@@ -196,6 +196,14 @@ extern long __static_call_return0(void);
- 	};								\
- 	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
- 
-+#define DEFINE_STATIC_CALL_RET0(name, _func)				\
-+	DECLARE_STATIC_CALL(name, _func);				\
-+	struct static_call_key STATIC_CALL_KEY(name) = {		\
-+		.func = __static_call_return0,				\
-+		.type = 1,						\
-+	};								\
-+	ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)
-+
- #define static_call_cond(name)	(void)__static_call(name)
- 
- #define EXPORT_STATIC_CALL(name)					\
-@@ -231,6 +239,12 @@ static inline int static_call_init(void) { return 0; }
- 	};								\
- 	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
- 
-+#define DEFINE_STATIC_CALL_RET0(name, _func)				\
-+	DECLARE_STATIC_CALL(name, _func);				\
-+	struct static_call_key STATIC_CALL_KEY(name) = {		\
-+		.func = __static_call_return0,				\
-+	};								\
-+	ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)
- 
- #define static_call_cond(name)	(void)__static_call(name)
- 
-@@ -287,6 +301,9 @@ static inline long __static_call_return0(void)
- 		.func = NULL,						\
- 	}
- 
-+#define DEFINE_STATIC_CALL_RET0(name, _func)				\
-+	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
-+
- static inline void __static_call_nop(void) { }
+-#define virt_addr_valid(kaddr)	pfn_valid(virt_to_pfn(kaddr))
++#define virt_addr_valid(vaddr)	({					\
++	unsigned long _addr = (unsigned long)vaddr;			\
++	_addr >= PAGE_OFFSET && _addr < (unsigned long)high_memory &&	\
++	pfn_valid(virt_to_pfn(_addr));					\
++})
  
  /*
-@@ -330,7 +347,4 @@ static inline int static_call_text_reserved(void *start, void *end)
- #define DEFINE_STATIC_CALL(name, _func)					\
- 	__DEFINE_STATIC_CALL(name, _func, _func)
- 
--#define DEFINE_STATIC_CALL_RET0(name, _func)				\
--	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
--
- #endif /* _LINUX_STATIC_CALL_H */
+  * On Book-E parts we need __va to parse the device tree and we can't
 -- 
 2.35.1
 
