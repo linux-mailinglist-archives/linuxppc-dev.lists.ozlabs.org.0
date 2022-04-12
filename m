@@ -1,56 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6444FC979
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:44:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812364FC9B0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 02:46:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kcn764BXxz3bYq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:44:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kcn8k15Ltz3bcK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 10:46:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r7JvaNGE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bi0wmgXQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
+ helo=sin.source.kernel.org; envelope-from=sashal@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=r7JvaNGE; 
+ header.s=k20201202 header.b=Bi0wmgXQ; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from sin.source.kernel.org (sin.source.kernel.org
+ [IPv6:2604:1380:40e1:4800::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kcn6W4z25z2xsb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:44:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kcn846fj6z2xsm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 10:45:40 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3D3C161787;
- Tue, 12 Apr 2022 00:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A305C385A4;
- Tue, 12 Apr 2022 00:44:13 +0000 (UTC)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 0D9BFCE0EA2;
+ Tue, 12 Apr 2022 00:45:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE837C385AC;
+ Tue, 12 Apr 2022 00:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1649724254;
- bh=uS/GY6ExnjhPYx2j4Wl+qD9StA6nkkAyHB9DsmGkl2U=;
- h=From:To:Cc:Subject:Date:From;
- b=r7JvaNGEkdYNV8Amldnb8L2FcnORFAubxMbeZCdRomftjgkhFVYgQ7ShaO2ILF0Nc
- JhKg5EIQz3VDtxHcp5lPObzcAynZYE3EvOaSCe6aHAUs4iANfPHog2Fs2SvhuPG7zF
- YGMDaCvsrHM05JrXNtrRLXhI/0uphQVeXTM3LWPIXl4ev0lUcJVxcrRBqp1u3E3mgK
- yupC0gSmpdjgaf6X7cE1G27S9vZfL3Im9cN4XDI10Bnh0OygQHg5a4lVWF6NDQXH9n
- rlf2mKNIdrzIi+j7TsEHOGl6pw2/49mR6SGsLzlclFQ0Osb71ShOfTCsbjLS3tOEn+
- 9G/9q6ODqqKpQ==
+ s=k20201202; t=1649724336;
+ bh=trBNC8YuPBKlcPxoBGVpvrmOv8vIPeg+n7tKXJ1+6Gs=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=Bi0wmgXQhUjQlpV3tRAtY8C749xb5JpfSF7rctUw4i5i14/HPcNhfbEB4ZfAEFQUw
+ 1D7tTQ7XaUQByjrIvUsi2rQT+/+Wf4EgPEtfOUMnNAoTgLaa9sZtncwhf1o+OQkJKg
+ MKygcl/YOeA5paVlUI/L7IznXlVPZ7Op6N4ksa8FZXNA5WVFzHgT+cwJoB9eSF/4k9
+ cCgUVhW2WsWxgtr1atfnn0mwqPTYksRLocQ9xogtV4nd5QuJJgt0tNzeXkQ3a71bwc
+ KSMCyETpZo7S2NFC068bxxr9KPxuGV4wz5i7+oVfayJ+1Dn82BQ1AmzPLy8Vj6gFJY
+ wUfRCO6NXPO/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.17 01/49] KVM: PPC: Book3S HV P9: Fix "lost kick"
- race
-Date: Mon, 11 Apr 2022 20:43:19 -0400
-Message-Id: <20220412004411.349427-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.17 27/49] static_call: Properly initialise
+ DEFINE_STATIC_CALL_RET0()
+Date: Mon, 11 Apr 2022 20:43:45 -0400
+Message-Id: <20220412004411.349427-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220412004411.349427-1-sashal@kernel.org>
+References: <20220412004411.349427-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -66,143 +68,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, farosas@linux.ibm.com, aik@ozlabs.ru,
- Nicholas Piggin <npiggin@gmail.com>, pbonzini@redhat.com,
+Cc: Sasha Levin <sashal@kernel.org>, x86@kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, dave.hansen@linux.intel.com,
+ jbaron@akamai.com, mingo@redhat.com, bp@alien8.de,
+ Josh Poimboeuf <jpoimboe@redhat.com>, tglx@linutronix.de,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit c7fa848ff01dad9ed3146a6b1a7d3622131bcedd ]
+[ Upstream commit 5517d500829c683a358a8de04ecb2e28af629ae5 ]
 
-When new work is created that requires attention from the hypervisor
-(e.g., to inject an interrupt into the guest), fast_vcpu_kick is used to
-pull the target vcpu out of the guest if it may have been running.
+When a static call is updated with __static_call_return0() as target,
+arch_static_call_transform() set it to use an optimised set of
+instructions which are meant to lay in the same cacheline.
 
-Therefore the work creation side looks like this:
+But when initialising a static call with DEFINE_STATIC_CALL_RET0(),
+we get a branch to the real __static_call_return0() function instead
+of getting the optimised setup:
 
-  vcpu->arch.doorbell_request = 1;
-  kvmppc_fast_vcpu_kick_hv(vcpu) {
-    smp_mb();
-    cpu = vcpu->cpu;
-    if (cpu != -1)
-        send_ipi(cpu);
-  }
+	c00d8120 <__SCT__perf_snapshot_branch_stack>:
+	c00d8120:	4b ff ff f4 	b       c00d8114 <__static_call_return0>
+	c00d8124:	3d 80 c0 0e 	lis     r12,-16370
+	c00d8128:	81 8c 81 3c 	lwz     r12,-32452(r12)
+	c00d812c:	7d 89 03 a6 	mtctr   r12
+	c00d8130:	4e 80 04 20 	bctr
+	c00d8134:	38 60 00 00 	li      r3,0
+	c00d8138:	4e 80 00 20 	blr
+	c00d813c:	00 00 00 00 	.long 0x0
 
-And the guest entry side *should* look like this:
+Add ARCH_DEFINE_STATIC_CALL_RET0_TRAMP() defined by each architecture
+to setup the optimised configuration, and rework
+DEFINE_STATIC_CALL_RET0() to call it:
 
-  vcpu->cpu = smp_processor_id();
-  smp_mb();
-  if (vcpu->arch.doorbell_request) {
-    // do something (abort entry or inject doorbell etc)
-  }
+	c00d8120 <__SCT__perf_snapshot_branch_stack>:
+	c00d8120:	48 00 00 14 	b       c00d8134 <__SCT__perf_snapshot_branch_stack+0x14>
+	c00d8124:	3d 80 c0 0e 	lis     r12,-16370
+	c00d8128:	81 8c 81 3c 	lwz     r12,-32452(r12)
+	c00d812c:	7d 89 03 a6 	mtctr   r12
+	c00d8130:	4e 80 04 20 	bctr
+	c00d8134:	38 60 00 00 	li      r3,0
+	c00d8138:	4e 80 00 20 	blr
+	c00d813c:	00 00 00 00 	.long 0x0
 
-But currently the store and load are flipped, so it is possible for the
-entry to see no doorbell pending, and the doorbell creation misses the
-store to set cpu, resulting lost work (or at least delayed until the
-next guest exit).
-
-Fix this by reordering the entry operations and adding a smp_mb
-between them. The P8 path appears to have a similar race which is
-commented but not addressed yet.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220303053315.1056880-2-npiggin@gmail.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/1e0a61a88f52a460f62a58ffc2a5f847d1f7d9d8.1647253456.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 41 +++++++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/static_call.h |  1 +
+ arch/x86/include/asm/static_call.h     |  2 ++
+ include/linux/static_call.h            | 20 +++++++++++++++++---
+ 3 files changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 791db769080d..316f61a4cb59 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -225,6 +225,13 @@ static void kvmppc_fast_vcpu_kick_hv(struct kvm_vcpu *vcpu)
- 	int cpu;
- 	struct rcuwait *waitp;
+diff --git a/arch/powerpc/include/asm/static_call.h b/arch/powerpc/include/asm/static_call.h
+index 0a0bc79bd1fa..de1018cc522b 100644
+--- a/arch/powerpc/include/asm/static_call.h
++++ b/arch/powerpc/include/asm/static_call.h
+@@ -24,5 +24,6 @@
  
-+	/*
-+	 * rcuwait_wake_up contains smp_mb() which orders prior stores that
-+	 * create pending work vs below loads of cpu fields. The other side
-+	 * is the barrier in vcpu run that orders setting the cpu fields vs
-+	 * testing for pending work.
-+	 */
+ #define ARCH_DEFINE_STATIC_CALL_TRAMP(name, func)	__PPC_SCT(name, "b " #func)
+ #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)	__PPC_SCT(name, "blr")
++#define ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)	__PPC_SCT(name, "b .+20")
+ 
+ #endif /* _ASM_POWERPC_STATIC_CALL_H */
+diff --git a/arch/x86/include/asm/static_call.h b/arch/x86/include/asm/static_call.h
+index ed4f8bb6c2d9..2455d721503e 100644
+--- a/arch/x86/include/asm/static_call.h
++++ b/arch/x86/include/asm/static_call.h
+@@ -38,6 +38,8 @@
+ #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)			\
+ 	__ARCH_DEFINE_STATIC_CALL_TRAMP(name, "ret; int3; nop; nop; nop")
+ 
++#define ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)			\
++	ARCH_DEFINE_STATIC_CALL_TRAMP(name, __static_call_return0)
+ 
+ #define ARCH_ADD_TRAMP_KEY(name)					\
+ 	asm(".pushsection .static_call_tramp_key, \"a\"		\n"	\
+diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+index 3e56a9751c06..e2d70435988c 100644
+--- a/include/linux/static_call.h
++++ b/include/linux/static_call.h
+@@ -196,6 +196,14 @@ extern long __static_call_return0(void);
+ 	};								\
+ 	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+ 
++#define DEFINE_STATIC_CALL_RET0(name, _func)				\
++	DECLARE_STATIC_CALL(name, _func);				\
++	struct static_call_key STATIC_CALL_KEY(name) = {		\
++		.func = __static_call_return0,				\
++		.type = 1,						\
++	};								\
++	ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)
 +
- 	waitp = kvm_arch_vcpu_get_wait(vcpu);
- 	if (rcuwait_wake_up(waitp))
- 		++vcpu->stat.generic.halt_wakeup;
-@@ -1089,7 +1096,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
- 			break;
- 		}
- 		tvcpu->arch.prodded = 1;
--		smp_mb();
-+		smp_mb(); /* This orders prodded store vs ceded load */
- 		if (tvcpu->arch.ceded)
- 			kvmppc_fast_vcpu_kick_hv(tvcpu);
- 		break;
-@@ -3771,6 +3778,14 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
- 		pvc = core_info.vc[sub];
- 		pvc->pcpu = pcpu + thr;
- 		for_each_runnable_thread(i, vcpu, pvc) {
-+			/*
-+			 * XXX: is kvmppc_start_thread called too late here?
-+			 * It updates vcpu->cpu and vcpu->arch.thread_cpu
-+			 * which are used by kvmppc_fast_vcpu_kick_hv(), but
-+			 * kick is called after new exceptions become available
-+			 * and exceptions are checked earlier than here, by
-+			 * kvmppc_core_prepare_to_enter.
-+			 */
- 			kvmppc_start_thread(vcpu, pvc);
- 			kvmppc_create_dtl_entry(vcpu, pvc);
- 			trace_kvm_guest_enter(vcpu);
-@@ -4492,6 +4507,21 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	if (need_resched() || !kvm->arch.mmu_ready)
- 		goto out;
+ #define static_call_cond(name)	(void)__static_call(name)
  
-+	vcpu->cpu = pcpu;
-+	vcpu->arch.thread_cpu = pcpu;
-+	vc->pcpu = pcpu;
-+	local_paca->kvm_hstate.kvm_vcpu = vcpu;
-+	local_paca->kvm_hstate.ptid = 0;
-+	local_paca->kvm_hstate.fake_suspend = 0;
+ #define EXPORT_STATIC_CALL(name)					\
+@@ -231,6 +239,12 @@ static inline int static_call_init(void) { return 0; }
+ 	};								\
+ 	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+ 
++#define DEFINE_STATIC_CALL_RET0(name, _func)				\
++	DECLARE_STATIC_CALL(name, _func);				\
++	struct static_call_key STATIC_CALL_KEY(name) = {		\
++		.func = __static_call_return0,				\
++	};								\
++	ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)
+ 
+ #define static_call_cond(name)	(void)__static_call(name)
+ 
+@@ -287,6 +301,9 @@ static inline long __static_call_return0(void)
+ 		.func = NULL,						\
+ 	}
+ 
++#define DEFINE_STATIC_CALL_RET0(name, _func)				\
++	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
 +
-+	/*
-+	 * Orders set cpu/thread_cpu vs testing for pending interrupts and
-+	 * doorbells below. The other side is when these fields are set vs
-+	 * kvmppc_fast_vcpu_kick_hv reading the cpu/thread_cpu fields to
-+	 * kick a vCPU to notice the pending interrupt.
-+	 */
-+	smp_mb();
-+
- 	if (!nested) {
- 		kvmppc_core_prepare_to_enter(vcpu);
- 		if (test_bit(BOOK3S_IRQPRIO_EXTERNAL,
-@@ -4511,13 +4541,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ static inline void __static_call_nop(void) { }
  
- 	tb = mftb();
+ /*
+@@ -330,7 +347,4 @@ static inline int static_call_text_reserved(void *start, void *end)
+ #define DEFINE_STATIC_CALL(name, _func)					\
+ 	__DEFINE_STATIC_CALL(name, _func, _func)
  
--	vcpu->cpu = pcpu;
--	vcpu->arch.thread_cpu = pcpu;
--	vc->pcpu = pcpu;
--	local_paca->kvm_hstate.kvm_vcpu = vcpu;
--	local_paca->kvm_hstate.ptid = 0;
--	local_paca->kvm_hstate.fake_suspend = 0;
+-#define DEFINE_STATIC_CALL_RET0(name, _func)				\
+-	__DEFINE_STATIC_CALL(name, _func, __static_call_return0)
 -
- 	__kvmppc_create_dtl_entry(vcpu, pcpu, tb + vc->tb_offset, 0);
- 
- 	trace_kvm_guest_enter(vcpu);
-@@ -4619,6 +4642,8 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 	run->exit_reason = KVM_EXIT_INTR;
- 	vcpu->arch.ret = -EINTR;
-  out:
-+	vcpu->cpu = -1;
-+	vcpu->arch.thread_cpu = -1;
- 	powerpc_local_irq_pmu_restore(flags);
- 	preempt_enable();
- 	goto done;
+ #endif /* _LINUX_STATIC_CALL_H */
 -- 
 2.35.1
 
