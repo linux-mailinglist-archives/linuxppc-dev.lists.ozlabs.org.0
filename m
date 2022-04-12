@@ -1,71 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C77D4FDF55
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 14:18:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 475174FDF50
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 14:17:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd4Wk48YPz2xXB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 22:18:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd4VM1Jcdz3bpJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 22:17:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KMMgTD4e;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dLGG+W1Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62c;
- helo=mail-ej1-x62c.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632;
+ helo=mail-ej1-x632.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=KMMgTD4e; dkim-atps=neutral
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com
- [IPv6:2a00:1450:4864:20::62c])
+ header.s=20210112 header.b=dLGG+W1Q; dkim-atps=neutral
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com
+ [IPv6:2a00:1450:4864:20::632])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd4TB5gt6z2ymg
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd4TB5G7qz2yh9
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 22:16:29 +1000 (AEST)
-Received: by mail-ej1-x62c.google.com with SMTP id k23so36917438ejd.3
+Received: by mail-ej1-x632.google.com with SMTP id l7so31496151ejn.2
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 05:16:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=SauRrPtkvH++wq5kM/ENmKVywKLBbnGlq4WrfqqSV+A=;
- b=KMMgTD4eqHSocfjUAX9sOYUKbAccfIdzUX7Y/cKXBZaA3DdYKoxaDEkMTRpY15o4Pp
- LEFDk2i7uYe0t8MnS99DWhcmH+n3krrsHjMfb/I9AeIsI7boJcVxlx6SSr3LxEFaO10s
- E+dBacnWczSHi6Vv6AnA0AFsgkjnfCuvnjTVH0BbxhhbuNqE4UFa+48BgViG/28eaG4b
- NZ2UlhPW2IbUHdjPVlGa6lA+1bTtbP/b9QYneqAekedYypLIIGTSjCsrCIUhJyEnNBmX
- FE6NJWukEY4Gyqss5WRrieAK/t7AiE0doun7ScIXJIEFBdGzgs0avwpahmiPVU8aR1Vm
- oAvQ==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=cM7cNDbZdzDRR54XOLUdiPP1jrQ7jBG9dEAYVsbcNLE=;
+ b=dLGG+W1QjtHthDDhe+f38oZpmGxVOt8eok0rdcZmZGotUR9zQdPegeYKMvVVn6hhN8
+ qALqEdKKNFIGUH/HxVhE21OebCrqrKHMzIYGsTB5yEGRljbDOMsMTyLG9yR0dWwY86qh
+ zMJf4D5teJhK+o/3/TSV9rVZ6vpMgLcWjBGrVwtkw/9kEVxy6uZo+dM1QTZhM5/zPIG6
+ ZiUdEbTmhE4U8OEgTBt6TEp+l0s0P1gPVwHjLBwdpt+N/HFRxSQyJ1LPJZv7nCJlarU6
+ V4JNB5zawviACWFRP45EzqRiDHEUyVoR6F2/OjAOoeLW8M1Bf3abkJu4gBUNbFDMvZRg
+ KhPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=SauRrPtkvH++wq5kM/ENmKVywKLBbnGlq4WrfqqSV+A=;
- b=Z+WeO5kUaFaxlC+x3RWcJ5YBwfg5BGh2NXR9nafd7a6SyPG7jqJAjqorHtKK3dAH/J
- NbhPNqFfG3gcO1S+fzmYutvkFaSeuKH644Wkdo5qKHarqbmky440mdOEqq6zmonSbW/M
- ZX5BVCbY8J7LdynGd7duQYi4A+mZWVwZWbR2F1xjWe9+t0+cjqSYnPwqbhB3iuUQlMLr
- 4MPOxR0aKfUZsimSIXlkUKvNBqj0U6gvzKzNNPbmKYvqtPukpO31rHx/kWzY4BfNtbg1
- tSm/kbj0ntzDKygj6KKOZvX5PyPKcI5lxJk61cAe6z4VPT8Ba6Kh2UzWhH4LRANlGAIV
- +xDA==
-X-Gm-Message-State: AOAM530KLDXpBtLb8BPNEpR+svKXWv0FpywSzLMqKB4QFXFLxfsf4uiG
- H8vym7fHD/n5IyBf0zbM28k=
-X-Google-Smtp-Source: ABdhPJwaLV9WCXwPNDN9XsaLWYamOBWtMxnQwfCpN462OFM8kyd9vvvxbB2FB9m9bGxFmOH6VZCyVA==
-X-Received: by 2002:a17:906:2991:b0:6cd:ac19:ce34 with SMTP id
- x17-20020a170906299100b006cdac19ce34mr34558940eje.746.1649765780565; 
- Tue, 12 Apr 2022 05:16:20 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=cM7cNDbZdzDRR54XOLUdiPP1jrQ7jBG9dEAYVsbcNLE=;
+ b=FEhpG3LGoYkbQlNoy5TZOlOmAP8x7XH4so2g57bGKzthsUEX9fezx5Wa++VUi7ykAy
+ gBMV47zT2RnEoZNMbXMrd8wZj4MhvxRxIzCjWOGyOtM8DpIyT1LXybhni7Fq6khdLF3j
+ 2Z+O2xAUfx6g1z0rSg9ErL49lkKUCR6CoHm92mKTiHP2wMkWEgGJ/Hv48BLhiyDf/Vpm
+ /Q3YaeRrBW0+l38BNEmabmmEbHTEwxdYNiyyUESoiyzB0xNMQfO4hbvemG+Z/ssHgpjF
+ NtJ0iALZyfxcKZd6gWpHF0GbBvdc5GrGikb2y+l3wKbtrTCphm/kVx3Pn1t6ymLz6+gd
+ T96w==
+X-Gm-Message-State: AOAM532gErVsE4Ak7lWaBbUmbdCcgXgxmZB+el3Q4I3sl24Wt013QLnH
+ l1ZVRfVFNfj6a4V1qcB8l/U=
+X-Google-Smtp-Source: ABdhPJwejWWXRfowCT/3hbJoVTDowE3vdhCQyrWd8hoMymr7vWLuQRkkwpkVy1n7H0R1bspGUXNqjg==
+X-Received: by 2002:a17:907:6e0d:b0:6e0:59ae:21f1 with SMTP id
+ sd13-20020a1709076e0d00b006e059ae21f1mr35335459ejc.362.1649765782495; 
+ Tue, 12 Apr 2022 05:16:22 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- b5-20020a17090630c500b006e8044fa76bsm8827900ejb.143.2022.04.12.05.16.18
+ b5-20020a17090630c500b006e8044fa76bsm8827900ejb.143.2022.04.12.05.16.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Apr 2022 05:16:20 -0700 (PDT)
+ Tue, 12 Apr 2022 05:16:22 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v3 00/18] Remove use of list iterator after loop body
-Date: Tue, 12 Apr 2022 14:15:39 +0200
-Message-Id: <20220412121557.3553555-1-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v3 01/18] connector: Replace usage of found with
+ dedicated list iterator variable
+Date: Tue, 12 Apr 2022 14:15:40 +0200
+Message-Id: <20220412121557.3553555-2-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220412121557.3553555-1-jakobkoschel@gmail.com>
+References: <20220412121557.3553555-1-jakobkoschel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -107,55 +110,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When the list iterator loop does not exit early the list iterator variable
-contains a type-confused pointer to a 'bogus' list element computed based
-on the head [1].
+To move the list iterator variable into the list_for_each_entry_*()
+macro in the future it should be avoided to use the list iterator
+variable after the loop body.
 
-Often a 'found' variable is used to ensure the list iterator
-variable is only accessed after the loop body if the loop did exit early
-(using a break or goto).
+To *never* use the list iterator variable after the loop it was
+concluded to use a separate iterator variable instead of a
+found boolean [1].
 
-In other cases that list iterator variable is used in
-combination to access the list member which reverses the invocation of
-container_of() and brings back a "safe" pointer to the head of the list.
+This removes the need to use a found variable and simply checking if
+the variable was set, can determine if the break/goto was hit.
 
-Since, due to this code patten, there were quite a few bugs discovered [2],
-Linus concluded that the rule should be to never use the list iterator
-after the loop and introduce a dedicated pointer for that [3].
+Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
+Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+---
+ drivers/connector/cn_queue.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-With the new gnu11 standard, it will now be possible to limit the scope
-of the list iterator variable to the traversal loop itself by defining
-the variable within the for loop.
-This, however, requires to remove all uses of the list iterator after
-the loop.
-
-Based on input from Paolo Abeni [4], Vinicius Costa Gomes [5], and
-Jakub Kicinski [6], I've splitted all the net-next related changes into
-two patch sets, where this is part 1.
-
-v2->v3:
-- fix commit authors and signed-off order regarding Vladimir's patches
-  (Sorry about that, wasn't intentional.)
-
-v1->v2:
-- Fixed commit message for PATCH 14/18 and used dedicated variable
-  pointing to the position (Edward Cree)
-- Removed redundant check in mv88e6xxx_port_vlan() (Vladimir Oltean)
-- Refactor mv88e6xxx_port_vlan() using separate list iterator functions
-  (Vladimir Oltean)
-- Refactor sja1105_insert_gate_entry() to use separate list iterator
-  functions (Vladimir Oltean)
-- Allow early return in sja1105_insert_gate_entry() if
-  sja1105_first_entry_longer_than() didn't find any element
-  (Vladimir Oltean)
-- Use list_add_tail() instead of list_add() in sja1105_insert_gate_entry()
-  (Jakub Kicinski)
-- net: netcp: also use separate 'pos' variable instead of duplicating list_add()
-
-Link: https://lwn.net/Articles/887097/ [1]
-Link: https://lore.kernel.org/linux-kernel/20220217184829.1991035-4-jakobkoschel@gmail.com/ [2]
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [3]
-Link: https://lore.kernel.org/linux-kernel/7393b673c626fd75f2b4f8509faa5459254fb87c.camel@redhat.com/ [4]
-Link: https://lore.kernel.org/linux-kernel/877d8a3sww.fsf@intel.com/ [5]
-Link: https://lore.kernel.org/linux-kernel/20220403205502.1b34415d@kernel.org/ [6]
+diff --git a/drivers/connector/cn_queue.c b/drivers/connector/cn_queue.c
+index 996f025eb63c..ed77599b0b25 100644
+--- a/drivers/connector/cn_queue.c
++++ b/drivers/connector/cn_queue.c
+@@ -92,20 +92,19 @@ int cn_queue_add_callback(struct cn_queue_dev *dev, const char *name,
+ 
+ void cn_queue_del_callback(struct cn_queue_dev *dev, const struct cb_id *id)
+ {
+-	struct cn_callback_entry *cbq, *n;
+-	int found = 0;
++	struct cn_callback_entry *cbq = NULL, *iter, *n;
+ 
+ 	spin_lock_bh(&dev->queue_lock);
+-	list_for_each_entry_safe(cbq, n, &dev->queue_list, callback_entry) {
+-		if (cn_cb_equal(&cbq->id.id, id)) {
+-			list_del(&cbq->callback_entry);
+-			found = 1;
++	list_for_each_entry_safe(iter, n, &dev->queue_list, callback_entry) {
++		if (cn_cb_equal(&iter->id.id, id)) {
++			list_del(&iter->callback_entry);
++			cbq = iter;
+ 			break;
+ 		}
+ 	}
+ 	spin_unlock_bh(&dev->queue_lock);
+ 
+-	if (found)
++	if (cbq)
+ 		cn_queue_release_callback(cbq);
+ }
+ 
+-- 
+2.25.1
 
