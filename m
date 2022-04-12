@@ -2,75 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F834FDD90
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6844FDDA9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:36:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd3143HB5z3fPd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:10:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd3ZZ2vZgz3bd9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:36:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=SjeWH0jl;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=FJsGgOd6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62d;
- helo=mail-ej1-x62d.google.com; envelope-from=jakobkoschel@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
+ (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk;
+ envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=SjeWH0jl; dkim-atps=neutral
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com
- [IPv6:2a00:1450:4864:20::62d])
+ secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
+ header.s=pandora-2019 header.b=FJsGgOd6; 
+ dkim-atps=neutral
+X-Greylist: delayed 353 seconds by postgrey-1.36 at boromir;
+ Tue, 12 Apr 2022 21:35:30 AEST
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
+ [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2m62JVyz3bl5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:59:18 +1000 (AEST)
-Received: by mail-ej1-x62d.google.com with SMTP id g18so11596262ejc.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 03:59:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=/A0b7QXPnRxcdjzjvBy95srF3RhPajcOL797uVjW17k=;
- b=SjeWH0jlNFmePRXl8dJ5tOr0nMvE5gz1VnPoBl2RdiuqK7/rhCkGDROJVoWs+R7R2r
- p1qvebYqg3+jW24bnWcUlRzQVHHgVged1q1Utq4TobXGkcy5laWyweXH8tE3PYW/yO1W
- ZHVLkn+5LZIcjlzzBMAJEibzhXz7DDetUpsDUAOJo0GVViAjfx2CjmgVqdFnCBQeiNm9
- OvGvf8HfChICC93V7jrAYlyBRwUh/kl8nhn+1i0n2v21Tys/Qif3K/8QRHJgpg2hVB8k
- VNyEanXj0JGh5q4lxsCvBqgOAotV4fQ7DPcpVVoqgrHpyzkfkIHdyjUie5gnC3hOwq3g
- vdvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=/A0b7QXPnRxcdjzjvBy95srF3RhPajcOL797uVjW17k=;
- b=mPdoY1HDK4cFUV5/J039oknppOpK+vdcdRJeaA5t3unUBC1FzVSEdJuupvN/oI/P52
- WpTtBUb0yr1T/hHmW/d0mYXeojPBMKThLW3nLZcdGvooDoDNb8ArDu8N/5LUDatk9spN
- IgeXfPKfd9D2iGIFwWoSWt2C+WyIcL3ebrsdU62XF54g1XfgVMJuTrZeQxGm1zCq6PvN
- a6v2jqy75g108dVBF5TwHukeeQ3+JpMBZQuezfiUjndYo01qi5FqMl9uJiraTkUD7Of9
- ioYtN3CS3R16KXg8ZdjvqCw8dWl6ZX9wNiiTBlO0ld6rAIfbdR1Yaucr+MjR1S/dN4Kw
- 1Klw==
-X-Gm-Message-State: AOAM533gDGhfDONooYakcUpzG922MeyeKdB3U8Icj/mHvpeEQGv0u8Up
- nC2E43yBXPWFsmM/V0uV8qCmOxBK7OOVsA==
-X-Google-Smtp-Source: ABdhPJxFBamJhsqwDANV0YZl/c0qqOhT6uCLu4Z29O0YhqS8TE5aL2G027YBbvLG8u6zq+Rc73u48A==
-X-Received: by 2002:a17:906:9b85:b0:6db:ab80:7924 with SMTP id
- dd5-20020a1709069b8500b006dbab807924mr34347460ejc.160.1649761155495; 
- Tue, 12 Apr 2022 03:59:15 -0700 (PDT)
-Received: from localhost.localdomain (i130160.upc-i.chello.nl.
- [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.59.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Apr 2022 03:59:15 -0700 (PDT)
-From: Jakob Koschel <jakobkoschel@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v2 18/18] team: Remove use of list iterator variable
- for list_for_each_entry_from()
-Date: Tue, 12 Apr 2022 12:58:30 +0200
-Message-Id: <20220412105830.3495846-19-jakobkoschel@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220412105830.3495846-1-jakobkoschel@gmail.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd3Yt2GlMz2xDw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 21:35:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=k1kFbr4PJFmsHiVyh3odwUpl/FEunR2slPc9KbivmVs=; b=FJsGgOd6Jog/SVqJqtG82tp8gF
+ GmofMqvYUa9rQRC13PSTLfmhxejGCEF6gS4x9w8uLHIZWizN5tXQvJ85FM+OjXDsvvshki/tqrWTR
+ ijKqokXU7UeOILCkJWOmQfRrdgFUmI7ulHIUz6O//1a80snecUa4eRrVm1MTENQUInqEPHbeZPb2D
+ unRlctmv3BT82g774UuWb9bM94zmpSy9Tu///xUdzOrE+iYwjfidcGftFycGjXYqjyemYE5BVqNNI
+ TfjxE7pcrSZTtu7dijAp8lI9sMPrOI9Ksv+/xDzYHzORtMtioQ+vO+NNavrO13alkrr6dMoe/et7D
+ lyMXRLFg==;
+Received: from shell.armlinux.org.uk
+ ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:58226)
+ by pandora.armlinux.org.uk with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <linux@armlinux.org.uk>)
+ id 1neEh4-0001o2-0I; Tue, 12 Apr 2022 12:28:21 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+ (envelope-from <linux@shell.armlinux.org.uk>)
+ id 1neEgf-0002LH-Jc; Tue, 12 Apr 2022 12:27:57 +0100
+Date: Tue, 12 Apr 2022 12:27:57 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jakob Koschel <jakobkoschel@gmail.com>
+Subject: Re: [PATCH net-next v2 05/18] net: dsa: mv88e6xxx: remove redundant
+ check in mv88e6xxx_port_vlan()
+Message-ID: <YlViPWWKhvoV2DLN@shell.armlinux.org.uk>
 References: <20220412105830.3495846-1-jakobkoschel@gmail.com>
+ <20220412105830.3495846-6-jakobkoschel@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220412105830.3495846-6-jakobkoschel@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,14 +79,16 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
  Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
  Florian Fainelli <f.fainelli@gmail.com>,
  Daniel Borkmann <daniel@iogearbox.net>,
+ "David S. Miller" <davem@davemloft.net>,
  Steen Hegelund <Steen.Hegelund@microchip.com>,
  John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
  "Bos, H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
  Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
  Vivien Didelot <vivien.didelot@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
  Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
  Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakob Koschel <jakobkoschel@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
  Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
  Lars Povlsen <lars.povlsen@microchip.com>,
  Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
@@ -109,103 +103,34 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation to limit the scope of the list iterator variable to the
-list traversal loop, use a dedicated pointer to iterate through the
-list [1].
+On Tue, Apr 12, 2022 at 12:58:17PM +0200, Jakob Koschel wrote:
+> We know that "dev > dst->last_switch" in the "else" block.
+> In other words, that "dev - dst->last_switch" is > 0.
+> 
+> dsa_port_bridge_num_get(dp) can be 0, but the check
+> "if (bridge_num + dst->last_switch != dev) continue", rewritten as
+> "if (bridge_num != dev - dst->last_switch) continue", aka
+> "if (bridge_num != something which cannot be 0) continue",
+> makes it redundant to have the extra "if (!bridge_num) continue" logic,
+> since a bridge_num of zero would have been skipped anyway.
+> 
+> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Since that variable should not be used past the loop iteration, a
-separate variable is used to 'remember the current location within the
-loop'.
+Isn't this Vladimir's patch?
 
-To either continue iterating from that position or skip the iteration
-(if the previous iteration was complete) list_prepare_entry() is used.
+If so, it should be commited as Vladimir as the author, and Vladimir's
+sign-off should appear before yours. When sending out such patches,
+there should be a From: line for Vladimir as the first line in the body
+of the patch email.
 
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
----
- drivers/net/team/team.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+The same goes for the next mv88e6xxx patch in this series - I think
+both of these are the patches Vladimir sent in his email:
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index b07dde6f0abf..688c4393f099 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2425,17 +2425,17 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 				    int flags, team_nl_send_func_t *send_func,
- 				    struct list_head *sel_opt_inst_list)
- {
-+	struct team_option_inst *opt_inst, *tmp = NULL;
- 	struct nlattr *option_list;
- 	struct nlmsghdr *nlh;
- 	void *hdr;
--	struct team_option_inst *opt_inst;
- 	int err;
- 	struct sk_buff *skb = NULL;
- 	bool incomplete;
- 	int i;
- 
--	opt_inst = list_first_entry(sel_opt_inst_list,
--				    struct team_option_inst, tmp_list);
-+	tmp = list_first_entry(sel_opt_inst_list,
-+			       struct team_option_inst, tmp_list);
- 
- start_again:
- 	err = __send_and_alloc_skb(&skb, team, portid, send_func);
-@@ -2456,7 +2456,9 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 		goto nla_put_failure;
- 
- 	i = 0;
-+	opt_inst = list_prepare_entry(tmp, sel_opt_inst_list, tmp_list);
- 	incomplete = false;
-+	tmp = NULL;
- 	list_for_each_entry_from(opt_inst, sel_opt_inst_list, tmp_list) {
- 		err = team_nl_fill_one_option_get(skb, team, opt_inst);
- 		if (err) {
-@@ -2464,6 +2466,7 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 				if (!i)
- 					goto errout;
- 				incomplete = true;
-+				tmp = opt_inst;
- 				break;
- 			}
- 			goto errout;
-@@ -2707,14 +2710,14 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 	struct nlattr *port_list;
- 	struct nlmsghdr *nlh;
- 	void *hdr;
--	struct team_port *port;
-+	struct team_port *port, *tmp = NULL;
- 	int err;
- 	struct sk_buff *skb = NULL;
- 	bool incomplete;
- 	int i;
- 
--	port = list_first_entry_or_null(&team->port_list,
--					struct team_port, list);
-+	tmp = list_first_entry_or_null(&team->port_list,
-+				       struct team_port, list);
- 
- start_again:
- 	err = __send_and_alloc_skb(&skb, team, portid, send_func);
-@@ -2744,7 +2747,9 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 		err = team_nl_fill_one_port_get(skb, one_port);
- 		if (err)
- 			goto errout;
--	} else if (port) {
-+	} else {
-+		port = list_prepare_entry(tmp, &team->port_list, list);
-+		tmp = NULL;
- 		list_for_each_entry_from(port, &team->port_list, list) {
- 			err = team_nl_fill_one_port_get(skb, port);
- 			if (err) {
-@@ -2752,6 +2757,7 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 					if (!i)
- 						goto errout;
- 					incomplete = true;
-+					tmp = port;
- 					break;
- 				}
- 				goto errout;
+https://lore.kernel.org/r/20220408123101.p33jpynhqo67hebe@skbuf
+
+Thanks.
+
 -- 
-2.25.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
