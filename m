@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B079E4FCE2D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 06:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BBF4FCE2E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 06:40:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KctL85xyTz3c8R
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 14:39:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KctLZ02cHz3cFk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 14:40:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -14,20 +14,20 @@ Authentication-Results: lists.ozlabs.org;
  (client-ip=217.140.110.172; helo=foss.arm.com;
  envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KctKJ5Gb7z2xmV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 14:39:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KctKQ07f8z2xnC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 14:39:05 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FC12169C;
- Mon, 11 Apr 2022 21:38:28 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8B1816A3;
+ Mon, 11 Apr 2022 21:38:33 -0700 (PDT)
 Received: from a077893.arm.com (unknown [10.163.38.213])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 674D53F70D;
- Mon, 11 Apr 2022 21:38:23 -0700 (PDT)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 398B63F70D;
+ Mon, 11 Apr 2022 21:38:28 -0700 (PDT)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org,
 	akpm@linux-foundation.org
-Subject: [PATCH V5 1/7] mm/mmap: Add new config ARCH_HAS_VM_GET_PAGE_PROT
-Date: Tue, 12 Apr 2022 10:08:42 +0530
-Message-Id: <20220412043848.80464-2-anshuman.khandual@arm.com>
+Subject: [PATCH V5 2/7] powerpc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date: Tue, 12 Apr 2022 10:08:43 +0530
+Message-Id: <20220412043848.80464-3-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220412043848.80464-1-anshuman.khandual@arm.com>
 References: <20220412043848.80464-1-anshuman.khandual@arm.com>
@@ -46,61 +46,99 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch@vger.kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>,
  catalin.marinas@arm.com, linux-kernel@vger.kernel.org,
- Christoph Hellwig <hch@infradead.org>, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+ Christoph Hellwig <hch@infradead.org>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a new config ARCH_HAS_VM_GET_PAGE_PROT, which when subscribed enables a
-given platform to define its own vm_get_page_prot() but still utilizing the
-generic protection_map[] array.
+This defines and exports a platform specific custom vm_get_page_prot() via
+subscribing ARCH_HAS_VM_GET_PAGE_PROT. While here, this also localizes
+arch_vm_get_page_prot() as __vm_get_page_prot() and moves it near
+vm_get_page_prot().
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Suggested-by: Christoph Hellwig <hch@infradead.org>
 Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 ---
- mm/Kconfig | 3 +++
- mm/mmap.c  | 2 ++
- 2 files changed, 5 insertions(+)
+ arch/powerpc/Kconfig               |  1 +
+ arch/powerpc/include/asm/mman.h    | 12 ------------
+ arch/powerpc/mm/book3s64/pgtable.c | 20 ++++++++++++++++++++
+ 3 files changed, 21 insertions(+), 12 deletions(-)
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 034d87953600..b1f7624276f8 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -765,6 +765,9 @@ config ARCH_HAS_CURRENT_STACK_POINTER
- config ARCH_HAS_FILTER_PGPROT
- 	bool
- 
-+config ARCH_HAS_VM_GET_PAGE_PROT
-+	bool
-+
- config ARCH_HAS_PTE_DEVMAP
- 	bool
- 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 3aa839f81e63..87cb2eaf7e1a 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -106,6 +106,7 @@ pgprot_t protection_map[16] __ro_after_init = {
- 	__S000, __S001, __S010, __S011, __S100, __S101, __S110, __S111
- };
- 
-+#ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT
- #ifndef CONFIG_ARCH_HAS_FILTER_PGPROT
- static inline pgprot_t arch_filter_pgprot(pgprot_t prot)
- {
-@@ -122,6 +123,7 @@ pgprot_t vm_get_page_prot(unsigned long vm_flags)
- 	return arch_filter_pgprot(ret);
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 174edabb74fa..69e44358a235 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -140,6 +140,7 @@ config PPC
+ 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UACCESS_FLUSHCACHE
+ 	select ARCH_HAS_UBSAN_SANITIZE_ALL
++	select ARCH_HAS_VM_GET_PAGE_PROT	if PPC_BOOK3S_64
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_KEEP_MEMBLOCK
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+diff --git a/arch/powerpc/include/asm/mman.h b/arch/powerpc/include/asm/mman.h
+index 7cb6d18f5cd6..1b024e64c8ec 100644
+--- a/arch/powerpc/include/asm/mman.h
++++ b/arch/powerpc/include/asm/mman.h
+@@ -24,18 +24,6 @@ static inline unsigned long arch_calc_vm_prot_bits(unsigned long prot,
  }
- EXPORT_SYMBOL(vm_get_page_prot);
-+#endif	/* CONFIG_ARCH_HAS_VM_GET_PAGE_PROT */
+ #define arch_calc_vm_prot_bits(prot, pkey) arch_calc_vm_prot_bits(prot, pkey)
  
- static pgprot_t vm_pgprot_modify(pgprot_t oldprot, unsigned long vm_flags)
+-static inline pgprot_t arch_vm_get_page_prot(unsigned long vm_flags)
+-{
+-#ifdef CONFIG_PPC_MEM_KEYS
+-	return (vm_flags & VM_SAO) ?
+-		__pgprot(_PAGE_SAO | vmflag_to_pte_pkey_bits(vm_flags)) :
+-		__pgprot(0 | vmflag_to_pte_pkey_bits(vm_flags));
+-#else
+-	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
+-#endif
+-}
+-#define arch_vm_get_page_prot(vm_flags) arch_vm_get_page_prot(vm_flags)
+-
+ static inline bool arch_validate_prot(unsigned long prot, unsigned long addr)
  {
+ 	if (prot & ~(PROT_READ | PROT_WRITE | PROT_EXEC | PROT_SEM | PROT_SAO))
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index 052e6590f84f..d0319524e27f 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -7,6 +7,7 @@
+ #include <linux/mm_types.h>
+ #include <linux/memblock.h>
+ #include <linux/memremap.h>
++#include <linux/pkeys.h>
+ #include <linux/debugfs.h>
+ #include <misc/cxl-base.h>
+ 
+@@ -549,3 +550,22 @@ unsigned long memremap_compat_align(void)
+ }
+ EXPORT_SYMBOL_GPL(memremap_compat_align);
+ #endif
++
++static pgprot_t __vm_get_page_prot(unsigned long vm_flags)
++{
++#ifdef CONFIG_PPC_MEM_KEYS
++	return (vm_flags & VM_SAO) ?
++		__pgprot(_PAGE_SAO | vmflag_to_pte_pkey_bits(vm_flags)) :
++		__pgprot(0 | vmflag_to_pte_pkey_bits(vm_flags));
++#else
++	return (vm_flags & VM_SAO) ? __pgprot(_PAGE_SAO) : __pgprot(0);
++#endif
++}
++
++pgprot_t vm_get_page_prot(unsigned long vm_flags)
++{
++	return __pgprot(pgprot_val(protection_map[vm_flags &
++			(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]) |
++			pgprot_val(__vm_get_page_prot(vm_flags)));
++}
++EXPORT_SYMBOL(vm_get_page_prot);
 -- 
 2.25.1
 
