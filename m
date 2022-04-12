@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0254FDBCE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 12:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1224FDC1C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:00:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2mG0h9Pz3bpR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 20:59:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2nb6n4xz3cBt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:00:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Dq5bCJRt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=K7tdn/q/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::636;
- helo=mail-ej1-x636.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::630;
+ helo=mail-ej1-x630.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Dq5bCJRt; dkim-atps=neutral
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com
- [IPv6:2a00:1450:4864:20::636])
+ header.s=20210112 header.b=K7tdn/q/; dkim-atps=neutral
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com
+ [IPv6:2a00:1450:4864:20::630])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2lm2DtTz2ygB
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2lm2PWHz2ynF
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:58:58 +1000 (AEST)
-Received: by mail-ej1-x636.google.com with SMTP id u15so17893186ejf.11
+Received: by mail-ej1-x630.google.com with SMTP id u15so17893304ejf.11
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 03:58:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=cM7cNDbZdzDRR54XOLUdiPP1jrQ7jBG9dEAYVsbcNLE=;
- b=Dq5bCJRtJE/e5zpt/g8uhjtXlNwlyc03WzbQtD9O5T08zaWWGjT/Ag4jl2RIuRXgby
- Qwp1u9x/IB/Ce8Tr45SP1TAHER+/BcDWmUe1rY27Gvh6LjoodLltMn89thpgVkWeCzNg
- rqa57oY9y6kks3VOOo5Bt/lyTCqXhUw7SHfUjEfDpc0MOnBo7ayHkNlFz/W0nSRwnPSM
- CrrAOtLgT3H8lrbkk5yFPrIkAf058eIaUNe+Jx7oKA0AvzHA9Qvgw8EjkcuX4nXj1tRe
- jVAH1HjMl1CSS9c8ic4HOkcYXj/hvp8Ub278a1c0JTZmcJDOxO79xPUVK1J8PTb2H7wl
- 0mEA==
+ bh=FowTEmVpm1uPIFJNe+klnaydiP7lfevazg4UCPLydfM=;
+ b=K7tdn/q/E1KWRJsGRBNoo8W3aoSvNQK66Im4Nk/Szs4rsCwKSPSUMqsmadZAf36Vn1
+ PmqO1YfKAILsMrn38IZBTNi12ZTE0WJZRwUUBIIPPLp6IT91kIWFiH8YkyP6f7F8qPTh
+ uuw53VEL/i5KKVXcqIS8kirS//a8IJR0TE/SBcdtyrAgvCyL7PHKDMTaMTZxmKxw5yUh
+ ILCaV4J0hAyoFLPQwxGs6FdHYv2ATMwW6OEnuCFejmAoRxf0/hr5de0M3a3YSxCCE8F3
+ 3jBq7O4JK6sk970XlEkRdHOmf7sqnOSMlWNAgkBbJhXYyJLZ4zShhuo5KqihsxnSQHs4
+ LF4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=cM7cNDbZdzDRR54XOLUdiPP1jrQ7jBG9dEAYVsbcNLE=;
- b=slrpv/Mw1Oxrs2OkQva+FbzvMptOL9dSVXHkPodJaZMMehwzusnWLt3Bko/rv8bIOD
- oOHxCM6uAHQtzkfQv4f6NEe+lWsaMfwa4y1FRbr9MKD4Z/dfK8ssvbvGNpA+JPNOx04o
- gPZ64wrRfFyeBBxPQAkN5Va6D8zIIgI/kBY3TsYoqGsxxmdpzYeDzZlbHd+jllgOifgZ
- +c4+oHqLugrvwRs4/HfwGu4UGtKDrhrMHKIknSEMCTdufHD8NZc21chUDozHG5ldgdsa
- ZY218/eML3nOE6oI5BHegn+7cdT/W+06Ij4xoFPY+w/hND0xBFCPIs51m/prrA2X+1mY
- 5j9g==
-X-Gm-Message-State: AOAM530h6WYWMvMy7kYQCwTw/Lxq6yvR/CbkPpOtSAT8/w8fUwCkC3em
- zYAUBiUrqsA8Oahr/zC7s/g=
-X-Google-Smtp-Source: ABdhPJz2dP0+jVOhmUNMBFBvhf2MPq5UcEvXEVs7zWdsz4lY7uM09/gGpZn4TgywcRiwfvine1dbHw==
-X-Received: by 2002:a17:907:3f86:b0:6df:ad43:583 with SMTP id
- hr6-20020a1709073f8600b006dfad430583mr34406710ejc.535.1649761132855; 
- Tue, 12 Apr 2022 03:58:52 -0700 (PDT)
+ bh=FowTEmVpm1uPIFJNe+klnaydiP7lfevazg4UCPLydfM=;
+ b=VnteKh7XzYOBePYhqTHQ7YnhvIwRAncZHHdtcMzVwsPk3SPWpoEEm8765jc6wysS4O
+ RjElb/pWTNIHQicsVpHOsUM0Sw2YK450LXb3vg5f3tVxUFDNAIvznKHsb2QN6kCguYwo
+ tJ4+B3pcHOp+4LA6cVtC+6uj8sx/AFu+3wPxuZf3ZhW0jy3es7TWAtnWcekQ7z53kXDz
+ 7uDExbiPPgcutgHvJPetXV/9Kh/FlVdNliaUeV2swg9EzNohoXZNcoODN4jF2uRjLZSl
+ M0S2aB5Y8fmZI4BdKojMq/jHKxqdbhcgG5mVZXbC+I2IUCLFkxr7NUO9MPqlSEoEzEz7
+ Enrw==
+X-Gm-Message-State: AOAM530+zkOSGjKZy4iUUBMJSwoQPLKzjQuYINGniUbwER5VAhSVtU5a
+ OKKOQgnMCOVRYUrhUIwF7zE=
+X-Google-Smtp-Source: ABdhPJxeVh1mBXlBFPbmPYNjA6S+0AQ4F7u+x+GbgHabraLPigOwM3eS3FHJaM0cQytVS2bSqurDvw==
+X-Received: by 2002:a17:906:a005:b0:6e8:947b:7530 with SMTP id
+ p5-20020a170906a00500b006e8947b7530mr8124695ejy.320.1649761134236; 
+ Tue, 12 Apr 2022 03:58:54 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.51
+ f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Apr 2022 03:58:52 -0700 (PDT)
+ Tue, 12 Apr 2022 03:58:53 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v2 01/18] connector: Replace usage of found with
- dedicated list iterator variable
-Date: Tue, 12 Apr 2022 12:58:13 +0200
-Message-Id: <20220412105830.3495846-2-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v2 02/18] net: dsa: sja1105: remove use of iterator
+ after list_for_each_entry() loop
+Date: Tue, 12 Apr 2022 12:58:14 +0200
+Message-Id: <20220412105830.3495846-3-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220412105830.3495846-1-jakobkoschel@gmail.com>
 References: <20220412105830.3495846-1-jakobkoschel@gmail.com>
@@ -90,6 +90,7 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
  Steen Hegelund <Steen.Hegelund@microchip.com>,
  John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
  "Bos, H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
  Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
  Vivien Didelot <vivien.didelot@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
  Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
@@ -109,54 +110,106 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To move the list iterator variable into the list_for_each_entry_*()
-macro in the future it should be avoided to use the list iterator
-variable after the loop body.
+The link below explains that there is a desire to syntactically change
+list_for_each_entry() and list_for_each() such that it becomes
+impossible to use the iterator variable outside the scope of the loop.
 
-To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable instead of a
-found boolean [1].
+Although sja1105_insert_gate_entry() makes legitimate use of the
+iterator pointer when it breaks out, the pattern it uses may become
+illegal, so it needs to change.
 
-This removes the need to use a found variable and simply checking if
-the variable was set, can determine if the break/goto was hit.
+It is deemed acceptable to use a copy of the loop iterator, and
+sja1105_insert_gate_entry() only needs to know the list_head element
+before which the list insertion should be made. So let's profit from the
+occasion and refactor the list iteration to a dedicated function.
 
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
+An additional benefit is given by the fact that with the helper function
+in place, we no longer need to special-case the empty list, since it is
+equivalent to not having found any gating entry larger than the
+specified interval in the list. We just need to insert at the tail of
+that list (list_add vs list_add_tail on an empty list does the same
+thing).
+
+Link: https://patchwork.kernel.org/project/netdevbpf/patch/20220407102900.3086255-3-jakobkoschel@gmail.com/#24810127
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/connector/cn_queue.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/net/dsa/sja1105/sja1105_vl.c | 46 ++++++++++++++++++----------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/connector/cn_queue.c b/drivers/connector/cn_queue.c
-index 996f025eb63c..ed77599b0b25 100644
---- a/drivers/connector/cn_queue.c
-+++ b/drivers/connector/cn_queue.c
-@@ -92,20 +92,19 @@ int cn_queue_add_callback(struct cn_queue_dev *dev, const char *name,
+diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
+index b7e95d60a6e4..369be2ac3587 100644
+--- a/drivers/net/dsa/sja1105/sja1105_vl.c
++++ b/drivers/net/dsa/sja1105/sja1105_vl.c
+@@ -7,6 +7,27 @@
  
- void cn_queue_del_callback(struct cn_queue_dev *dev, const struct cb_id *id)
+ #define SJA1105_SIZE_VL_STATUS			8
+ 
++static struct list_head *
++sja1105_first_entry_longer_than(struct list_head *entries,
++				s64 interval,
++				struct netlink_ext_ack *extack)
++{
++	struct sja1105_gate_entry *p;
++
++	list_for_each_entry(p, entries, list) {
++		if (p->interval == interval) {
++			NL_SET_ERR_MSG_MOD(extack, "Gate conflict");
++			return ERR_PTR(-EBUSY);
++		}
++
++		if (interval < p->interval)
++			return &p->list;
++	}
++
++	/* Empty list, or specified interval is largest within the list */
++	return entries;
++}
++
+ /* Insert into the global gate list, sorted by gate action time. */
+ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
+ 				     struct sja1105_rule *rule,
+@@ -14,6 +35,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
+ 				     struct netlink_ext_ack *extack)
  {
--	struct cn_callback_entry *cbq, *n;
--	int found = 0;
-+	struct cn_callback_entry *cbq = NULL, *iter, *n;
+ 	struct sja1105_gate_entry *e;
++	struct list_head *pos;
+ 	int rc;
  
- 	spin_lock_bh(&dev->queue_lock);
--	list_for_each_entry_safe(cbq, n, &dev->queue_list, callback_entry) {
--		if (cn_cb_equal(&cbq->id.id, id)) {
--			list_del(&cbq->callback_entry);
--			found = 1;
-+	list_for_each_entry_safe(iter, n, &dev->queue_list, callback_entry) {
-+		if (cn_cb_equal(&iter->id.id, id)) {
-+			list_del(&iter->callback_entry);
-+			cbq = iter;
- 			break;
- 		}
+ 	e = kzalloc(sizeof(*e), GFP_KERNEL);
+@@ -24,25 +46,15 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
+ 	e->gate_state = gate_state;
+ 	e->interval = entry_time;
+ 
+-	if (list_empty(&gating_cfg->entries)) {
+-		list_add(&e->list, &gating_cfg->entries);
+-	} else {
+-		struct sja1105_gate_entry *p;
+-
+-		list_for_each_entry(p, &gating_cfg->entries, list) {
+-			if (p->interval == e->interval) {
+-				NL_SET_ERR_MSG_MOD(extack,
+-						   "Gate conflict");
+-				rc = -EBUSY;
+-				goto err;
+-			}
+-
+-			if (e->interval < p->interval)
+-				break;
+-		}
+-		list_add(&e->list, p->list.prev);
++	pos = sja1105_first_entry_longer_than(&gating_cfg->entries,
++					      e->interval, extack);
++	if (IS_ERR(pos)) {
++		rc = PTR_ERR(pos);
++		goto err;
  	}
- 	spin_unlock_bh(&dev->queue_lock);
  
--	if (found)
-+	if (cbq)
- 		cn_queue_release_callback(cbq);
- }
++	list_add(&e->list, pos->prev);
++
+ 	gating_cfg->num_entries++;
  
+ 	return 0;
 -- 
 2.25.1
 
