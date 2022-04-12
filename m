@@ -1,38 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB5C4FCF62
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 08:21:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28074FCFB8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 08:36:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kcwbz5wKxz3bpH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 16:21:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KcwwT5G9vz3bfr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 16:36:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Nd2yL4IA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KcwbZ35h4z2xSM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 16:21:28 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id CD9FC68AA6; Tue, 12 Apr 2022 08:21:20 +0200 (CEST)
-Date: Tue, 12 Apr 2022 08:21:20 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Subject: Re: [PATCH 10/15] swiotlb: add a SWIOTLB_ANY flag to lift the low
- memory restriction
-Message-ID: <20220412062120.GA7796@lst.de>
-References: <20220404050559.132378-1-hch@lst.de>
- <20220404050559.132378-11-hch@lst.de> <Yk4vfAd0J5u+wUsq@char.us.oracle.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kcwvs5Rtjz2yK7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 16:35:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Nd2yL4IA; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kcwvr710jz4xNl;
+ Tue, 12 Apr 2022 16:35:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1649745337;
+ bh=KOPW0YoznaEOZ4lHn5MCkotY+XFXHkyZcvx9GTXAcm0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Nd2yL4IAil9l07N83Be0MuQoHG40q8hyQNcyuSclpT9ck/FCYnf69VZYQ4NEYacv4
+ BcKfzxbI3pNdPqHbXdt4S2rH354m26hd6KTRRL4fXnERJsBnbEJqFxRhCIYmo/m1JI
+ w2C1INiK4P0Ih7STQs/sGI9cAALCuVDm5s7yTVRaXmRaj4VCIHH4VfdyRtFMT87a/y
+ V3pL42K3fJ+/QdHfl5G5xHnn8F6YfEC+jR8pTW3ot2Tg8Y6ECQo12hK40uJ2QqS7q4
+ mvEGqFT1I8K6vp2mKU5GhtyKsFekrHWuBlnNbvidM2VQoNabqqVVV6TT6Z6uZb9T4y
+ 4qtCnPitjVZ7A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.17 40/49] powerpc: Fix virt_addr_valid() for
+ 64-bit Book3E & 32-bit
+In-Reply-To: <20220412004411.349427-40-sashal@kernel.org>
+References: <20220412004411.349427-1-sashal@kernel.org>
+ <20220412004411.349427-40-sashal@kernel.org>
+Date: Tue, 12 Apr 2022 16:35:35 +1000
+Message-ID: <87sfqi6c7c.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yk4vfAd0J5u+wUsq@char.us.oracle.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,36 +61,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, linux-ia64@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org,
- Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org,
- Stefano Stabellini <sstabellini@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- x86@kernel.org, tboot-devel@lists.sourceforge.net,
- xen-devel@lists.xenproject.org, David Woodhouse <dwmw2@infradead.org>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Sasha Levin <sashal@kernel.org>, Kefeng Wang <wangkefeng.wang@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 06, 2022 at 08:25:32PM -0400, Konrad Rzeszutek Wilk wrote:
-> > diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
-> > index c5228f4969eb2..3b4045d508ec8 100644
-> > --- a/arch/powerpc/platforms/pseries/svm.c
-> > +++ b/arch/powerpc/platforms/pseries/svm.c
-> > @@ -28,7 +28,7 @@ static int __init init_svm(void)
-> >  	 * need to use the SWIOTLB buffer for DMA even if dma_capable() says
-> >  	 * otherwise.
-> >  	 */
-> > -	swiotlb_force = SWIOTLB_FORCE;
-> > +	ppc_swiotlb_flags |= SWIOTLB_ANY | SWIOTLB_FORCE;
-> 
-> This is the only place you set the ppc_swiotlb_flags.. so I wonder why
-> the '|=' instead of just '=' ?
+Sasha Levin <sashal@kernel.org> writes:
+> From: Kefeng Wang <wangkefeng.wang@huawei.com>
+>
+> [ Upstream commit ffa0b64e3be58519ae472ea29a1a1ad681e32f48 ]
+>
+> mpe: On 64-bit Book3E vmalloc space starts at 0x8000000000000000.
 
-Preparing for setting others and not clobbering the value.
+This cherry-pick is good, but can you also pick up the immediately
+following commit:
+
+  1ff5c8e8c835 ("Revert "powerpc: Set max_mapnr correctly"")
+
+For v5.16 and v5.17. Thanks.
+
+cheers
