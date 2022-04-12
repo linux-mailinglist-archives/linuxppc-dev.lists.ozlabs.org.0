@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0120B4FDC2E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B686B4FDC2F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 13:02:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2px65Yrz3bpr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:01:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kd2qc4W17z3chh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 21:02:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PuvOlw8F;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=qbvgYgag;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52f;
- helo=mail-ed1-x52f.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::629;
+ helo=mail-ej1-x629.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=PuvOlw8F; dkim-atps=neutral
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com
- [IPv6:2a00:1450:4864:20::52f])
+ header.s=20210112 header.b=qbvgYgag; dkim-atps=neutral
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com
+ [IPv6:2a00:1450:4864:20::629])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2lm6Jz3z2ygB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:59:00 +1000 (AEST)
-Received: by mail-ed1-x52f.google.com with SMTP id z99so13257445ede.5
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kd2ln1hbJz2ygB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 20:59:01 +1000 (AEST)
+Received: by mail-ej1-x629.google.com with SMTP id k23so36523659ejd.3
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 03:59:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=esB5mepgr5nyvG9nrRmGTzzqc+m2Rur7gox62JB2JxA=;
- b=PuvOlw8FCBCG5e+EE/ntog+d+HeeY8K1lZiupPOEKAdCgqu2LkYctFFE46dcuaKWxD
- JqH+76Qb0X+BMNsfA9Q8hPEBX7h/TK52EayIDurkbi0ZXZFsbAEpG97HJRgmTx+tICGE
- lCvlWrFaheyN2vCP4qZCLM2U9CPNc/5RzLPcE9ceZCqgdyWliGLOkuRdsOz6o3J4ilD+
- TbQcxAbbz+3lTN4E+LeC2njmuDn5Cn6HBynXRNM7hJygrqlMJHf3cKhdC3wl51iVwJOp
- 0ejiDVcQHPks45Uwbw/G/4tvBL/Muq1Ge9wW11L6vmzrxnOckDr79bjZ6ilLKC8GJuHB
- DezA==
+ bh=PwlvdFh40zWrnBHSnvRolkyWcqqdHXS406E/ZGgN6EM=;
+ b=qbvgYgagzSXxv6YmhWQbxqNdOmSbQgfVFVfg080pnmD2QQT4ewAjsptb6A151wy3qB
+ l6YN8srio8jNhYnocQB9/Du9NaXc7tZUtoTURut7ItC2ERogITRXDModlgdtZqjY2hoA
+ vYjbslfGvCzth9QlMXFSRC8+gpbvhVtL9EnROoIzIai1bv0v+3U8etOIs85gXb2avuu0
+ wXup3n/MaYi0FQUmW7W9MseeBhsedGuwcgBndyFWy1KvjzSHRp3PnwiU33VAYbjVdr+k
+ XXZ7rWh6GJt6kkgM93uVduBBw0Piopt0wRQtEsiohjxYPFVFZXdutCjO5dD/WJCTgmfj
+ RZdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=esB5mepgr5nyvG9nrRmGTzzqc+m2Rur7gox62JB2JxA=;
- b=DT1FUAm139t2AGCwc6Qvi+NEuoReYZD+WY1Czzzpz9kpK4RN2PDxcRM7c+UKKZ6iDv
- taFQXHszksVL6sZIDkuH8bMCNQL+V63dSjkw+ByPcTqf+DoYqYWUTOVrKezwRLUUn1KQ
- nKNDSSUtYOfTiSr/fBh17UxLwUlRwB+asCTi9/uj1ZrApjmiJHHdaudw87yrUavYT4y3
- CLrMfJdVFF/XV/QmNYrodM3QypA6YFDn2dQdLuqvkXd3GV72KdVZSwuGAWwNIs3FDvgd
- OmsPuDRm7CqwWEevBD2C97wNRcwZvlIxnoSY5a7H1AJIkf7Aa6PdHSCMYfkms4bc16xJ
- HfOg==
-X-Gm-Message-State: AOAM532mTRbPkeTq9lYzEgwXpEvtdQje92/tFcc6pfomFgN0SFfhdeTI
- M+vcExZY0Ws7riuxNCf+K/g=
-X-Google-Smtp-Source: ABdhPJwWJgCDTrqPfiqP3TWBYTxeilB8kDG9V7L+j1ctwcQCz/eM8OQpB3keuCQCrlhlGAhb4nEDcw==
-X-Received: by 2002:a05:6402:5106:b0:419:45cd:7ab0 with SMTP id
- m6-20020a056402510600b0041945cd7ab0mr38052671edd.116.1649761136889; 
- Tue, 12 Apr 2022 03:58:56 -0700 (PDT)
+ bh=PwlvdFh40zWrnBHSnvRolkyWcqqdHXS406E/ZGgN6EM=;
+ b=wv6P/W1yHz59Bgqt2lsfPp+ld+ywjsPEiVY3qahpmjGVR9+dMkC3mk3adY04FZh51R
+ wF4G83SealsbCwWL8l1kdjUiIxboUl0Byiuec1H9KSMT2sb+dOlf3ISdDG4Rw2oxS52L
+ e2edJ2gr0BqiA5lyYBZbG83eDJFNoS2suvW7SoMeFqRB00XuAk1esAooKZWq+jdZulCt
+ rBeaJSqPnAwx1h0oW+c9MdpZklZ8wi1v83joJoQC0HI4DjT5KiFuPTXSNpPMvloFwnUW
+ 1PZhkawOFEEgn8jQ7gvoURHYVi7E9nCzY2wtIV31fm7EVwrR7Fnk2vKjvReYhCIHUCka
+ oBxw==
+X-Gm-Message-State: AOAM531g/efKEo1DKEjcyw8ZOoLIrcO2BNJMQyzl07++CQswTZbSaf9O
+ ruxq81L7GVldNu0vjra9Mnc=
+X-Google-Smtp-Source: ABdhPJwA+rvSjheEa32LQoy9hOd6Zb25JtwO8XMjJGvYpQlukrjH+4wgEFqK8xj7XJh4Ax1vjoAg/g==
+X-Received: by 2002:a17:906:c111:b0:6db:cf0e:3146 with SMTP id
+ do17-20020a170906c11100b006dbcf0e3146mr34735453ejc.280.1649761138218; 
+ Tue, 12 Apr 2022 03:58:58 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.55
+ f1-20020a056402194100b00416b174987asm16986370edz.35.2022.04.12.03.58.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Apr 2022 03:58:56 -0700 (PDT)
+ Tue, 12 Apr 2022 03:58:57 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v2 04/18] net: dsa: sja1105: use list_add_tail(pos)
- instead of list_add(pos->prev)
-Date: Tue, 12 Apr 2022 12:58:16 +0200
-Message-Id: <20220412105830.3495846-5-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v2 05/18] net: dsa: mv88e6xxx: remove redundant check
+ in mv88e6xxx_port_vlan()
+Date: Tue, 12 Apr 2022 12:58:17 +0200
+Message-Id: <20220412105830.3495846-6-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220412105830.3495846-1-jakobkoschel@gmail.com>
 References: <20220412105830.3495846-1-jakobkoschel@gmail.com>
@@ -110,30 +110,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When passed a non-head list element, list_add_tail() actually adds the
-new element to its left, which is what we want. Despite the slightly
-confusing name, use the dedicated function which does the same thing as
-the open-coded list_add(pos->prev).
+We know that "dev > dst->last_switch" in the "else" block.
+In other words, that "dev - dst->last_switch" is > 0.
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
+dsa_port_bridge_num_get(dp) can be 0, but the check
+"if (bridge_num + dst->last_switch != dev) continue", rewritten as
+"if (bridge_num != dev - dst->last_switch) continue", aka
+"if (bridge_num != something which cannot be 0) continue",
+makes it redundant to have the extra "if (!bridge_num) continue" logic,
+since a bridge_num of zero would have been skipped anyway.
+
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 ---
- drivers/net/dsa/sja1105/sja1105_vl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/dsa/sja1105/sja1105_vl.c b/drivers/net/dsa/sja1105/sja1105_vl.c
-index e5ea8eb9ec4e..7fe9b18f1cbd 100644
---- a/drivers/net/dsa/sja1105/sja1105_vl.c
-+++ b/drivers/net/dsa/sja1105/sja1105_vl.c
-@@ -49,7 +49,7 @@ static int sja1105_insert_gate_entry(struct sja1105_gating_config *gating_cfg,
- 	e->rule = rule;
- 	e->gate_state = gate_state;
- 	e->interval = entry_time;
--	list_add(&e->list, pos->prev);
-+	list_add_tail(&e->list, pos);
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 64f4fdd02902..b3aa0e5bc842 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -1404,9 +1404,6 @@ static u16 mv88e6xxx_port_vlan(struct mv88e6xxx_chip *chip, int dev, int port)
+ 		list_for_each_entry(dp, &dst->ports, list) {
+ 			unsigned int bridge_num = dsa_port_bridge_num_get(dp);
  
- 	gating_cfg->num_entries++;
+-			if (!bridge_num)
+-				continue;
+-
+ 			if (bridge_num + dst->last_switch != dev)
+ 				continue;
  
 -- 
 2.25.1
