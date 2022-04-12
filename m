@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1574FCE25
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 06:39:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B079E4FCE2D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 06:39:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KctKm27Txz3bqC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 14:39:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KctL85xyTz3c8R
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Apr 2022 14:39:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -14,22 +14,23 @@ Authentication-Results: lists.ozlabs.org;
  (client-ip=217.140.110.172; helo=foss.arm.com;
  envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KctKJ1Lmfz2xmV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 14:38:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KctKJ5Gb7z2xmV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 14:39:00 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 94FD71570;
- Mon, 11 Apr 2022 21:38:23 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FC12169C;
+ Mon, 11 Apr 2022 21:38:28 -0700 (PDT)
 Received: from a077893.arm.com (unknown [10.163.38.213])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 49E993F70D;
- Mon, 11 Apr 2022 21:38:18 -0700 (PDT)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 674D53F70D;
+ Mon, 11 Apr 2022 21:38:23 -0700 (PDT)
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org,
 	akpm@linux-foundation.org
-Subject: [PATCH V5 0/7] mm/mmap: Drop arch_vm_get_page_prot() and
- arch_filter_pgprot()
-Date: Tue, 12 Apr 2022 10:08:41 +0530
-Message-Id: <20220412043848.80464-1-anshuman.khandual@arm.com>
+Subject: [PATCH V5 1/7] mm/mmap: Add new config ARCH_HAS_VM_GET_PAGE_PROT
+Date: Tue, 12 Apr 2022 10:08:42 +0530
+Message-Id: <20220412043848.80464-2-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220412043848.80464-1-anshuman.khandual@arm.com>
+References: <20220412043848.80464-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -51,136 +52,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-protection_map[] is an array based construct that translates given vm_flags
-combination. This array contains page protection map, which is populated by
-the platform via [__S000 .. __S111] and [__P000 .. __P111] exported macros.
-Primary usage for protection_map[] is for vm_get_page_prot(), which is used
-to determine page protection value for a given vm_flags. vm_get_page_prot()
-implementation, could again call platform overrides arch_vm_get_page_prot()
-and arch_filter_pgprot(). Some platforms override protection_map[] that was
-originally built with __SXXX/__PXXX with different runtime values.
+Add a new config ARCH_HAS_VM_GET_PAGE_PROT, which when subscribed enables a
+given platform to define its own vm_get_page_prot() but still utilizing the
+generic protection_map[] array.
 
-Currently there are multiple layers of abstraction i.e __SXXX/__PXXX macros
-, protection_map[], arch_vm_get_page_prot() and arch_filter_pgprot() built
-between the platform and generic MM, finally defining vm_get_page_prot().
-
-Hence this series proposes to drop later two abstraction levels and instead
-just move the responsibility of defining vm_get_page_prot() to the platform
-(still utilizing generic protection_map[] array) itself making it clean and
-simple.
-
-This first introduces ARCH_HAS_VM_GET_PAGE_PROT which enables the platforms
-to define custom vm_get_page_prot(). This starts converting platforms that
-define the overrides arch_filter_pgprot() or arch_vm_get_page_prot() which
-enables for those constructs to be dropped off completely.
-
-The series has been inspired from an earlier discuss with Christoph Hellwig
-
-https://lore.kernel.org/all/1632712920-8171-1-git-send-email-anshuman.khandual@arm.com/
-
-This series applies on 5.18-rc2.
-
-This series has been cross built for multiple platforms.
-
-- Anshuman
-
-Cc: Christoph Hellwig <hch@infradead.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: sparclinux@vger.kernel.org
 Cc: linux-mm@kvack.org
-Cc: linux-arch@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ mm/Kconfig | 3 +++
+ mm/mmap.c  | 2 ++
+ 2 files changed, 5 insertions(+)
 
-Changes in V5:
-
-- Collected new tags on various patches in the series
-- Coalesced arm64_arch_vm_get_page_prot() into vm_get_page_prot() per Catalin
-- Modified powerpc's vm_get_page_prot() implementation per Christophe
-
-Changes in V4:
-
-https://lore.kernel.org/all/20220407103251.1209606-1-anshuman.khandual@arm.com/
-
-- ARCH_HAS_VM_GET_PAGE_PROT now excludes generic protection_map[]
-- Changed platform's vm_get_page_prot() to use generic protection_map[]
-- Dropped all platform changes not enabling either arch_vm_get_page_prot() or arch_filter_pgprot() 
-- Dropped all previous tags as code base has changed
-
-Changes in V3:
-
-https://lore.kernel.org/all/1646045273-9343-1-git-send-email-anshuman.khandual@arm.com/
-
-- Dropped variable 'i' from sme_early_init() on x86 platform
-- Moved CONFIG_COLDFIRE vm_get_page_prot() inside arch/m68k/mm/mcfmmu.c
-- Moved CONFIG_SUN3 vm_get_page_prot() inside arch/m68k/mm/sun3mmu.c
-- Dropped cachebits for vm_get_page_prot() inside arch/m68k/mm/motorola.c
-- Dropped PAGE_XXX_C definitions from arch/m68k/include/asm/motorola_pgtable.h
-- Used PAGE_XXX instead for vm_get_page_prot() inside arch/m68k/mm/motorola.c
-- Dropped all references to protection_map[] in the tree
-- Replaced s/extensa/xtensa/ on the patch title
-- Moved left over comments from pgtable.h into init.c on nios2 platform
-
-Changes in V2:
-
-https://lore.kernel.org/all/1645425519-9034-1-git-send-email-anshuman.khandual@arm.com/
-
-- Dropped the entire comment block in [PATCH 30/30] per Geert
-- Replaced __P010 (although commented) with __PAGE_COPY on arm platform
-- Replaced __P101 with PAGE_READONLY on um platform
-
-Changes in V1:
-
-https://lore.kernel.org/all/1644805853-21338-1-git-send-email-anshuman.khandual@arm.com/
-
-- Add white spaces around the | operators 
-- Moved powerpc_vm_get_page_prot() near vm_get_page_prot() on powerpc
-- Moved arm64_vm_get_page_prot() near vm_get_page_prot() on arm64
-- Moved sparc_vm_get_page_prot() near vm_get_page_prot() on sparc
-- Compacted vm_get_page_prot() switch cases on all platforms
--  _PAGE_CACHE040 inclusion is dependent on CPU_IS_040_OR_060
-- VM_SHARED case should return PAGE_NONE (not PAGE_COPY) on SH platform
-- Reorganized VM_SHARED, VM_EXEC, VM_WRITE, VM_READ
-- Dropped the last patch [RFC V1 31/31] which added macros for vm_flags combinations
-  https://lore.kernel.org/all/1643029028-12710-32-git-send-email-anshuman.khandual@arm.com/
-
-Changes in RFC:
-
-https://lore.kernel.org/all/1643029028-12710-1-git-send-email-anshuman.khandual@arm.com/
-
-
-Anshuman Khandual (6):
-  mm/mmap: Add new config ARCH_HAS_VM_GET_PAGE_PROT
-  powerpc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-  arm64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-  sparc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-  mm/mmap: Drop arch_filter_pgprot()
-  mm/mmap: Drop arch_vm_get_page_pgprot()
-
-Christoph Hellwig (1):
-  x86/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-
- arch/arm64/Kconfig                 |  1 +
- arch/arm64/include/asm/mman.h      | 24 --------------------
- arch/arm64/mm/mmap.c               | 25 +++++++++++++++++++++
- arch/powerpc/Kconfig               |  1 +
- arch/powerpc/include/asm/mman.h    | 12 ----------
- arch/powerpc/mm/book3s64/pgtable.c | 20 +++++++++++++++++
- arch/sparc/Kconfig                 |  1 +
- arch/sparc/include/asm/mman.h      |  6 -----
- arch/sparc/mm/init_64.c            | 13 +++++++++++
- arch/x86/Kconfig                   |  2 +-
- arch/x86/include/asm/pgtable.h     |  5 -----
- arch/x86/include/uapi/asm/mman.h   | 14 ------------
- arch/x86/mm/Makefile               |  2 +-
- arch/x86/mm/pgprot.c               | 35 ++++++++++++++++++++++++++++++
- include/linux/mman.h               |  4 ----
- mm/Kconfig                         |  2 +-
- mm/mmap.c                          | 14 ++++--------
- 17 files changed, 103 insertions(+), 78 deletions(-)
- create mode 100644 arch/x86/mm/pgprot.c
-
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 034d87953600..b1f7624276f8 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -765,6 +765,9 @@ config ARCH_HAS_CURRENT_STACK_POINTER
+ config ARCH_HAS_FILTER_PGPROT
+ 	bool
+ 
++config ARCH_HAS_VM_GET_PAGE_PROT
++	bool
++
+ config ARCH_HAS_PTE_DEVMAP
+ 	bool
+ 
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 3aa839f81e63..87cb2eaf7e1a 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -106,6 +106,7 @@ pgprot_t protection_map[16] __ro_after_init = {
+ 	__S000, __S001, __S010, __S011, __S100, __S101, __S110, __S111
+ };
+ 
++#ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT
+ #ifndef CONFIG_ARCH_HAS_FILTER_PGPROT
+ static inline pgprot_t arch_filter_pgprot(pgprot_t prot)
+ {
+@@ -122,6 +123,7 @@ pgprot_t vm_get_page_prot(unsigned long vm_flags)
+ 	return arch_filter_pgprot(ret);
+ }
+ EXPORT_SYMBOL(vm_get_page_prot);
++#endif	/* CONFIG_ARCH_HAS_VM_GET_PAGE_PROT */
+ 
+ static pgprot_t vm_pgprot_modify(pgprot_t oldprot, unsigned long vm_flags)
+ {
 -- 
 2.25.1
 
