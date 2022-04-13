@@ -1,130 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE7E4FEF54
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 08:08:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7064FEF66
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 08:10:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KdXGP2JNfz3dp8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 16:08:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KdXJh1dc5z3bbB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 16:10:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=I2VW7T5l;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::622;
- helo=fra01-mr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0622.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e19::622])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d;
+ helo=mail-pj1-x102d.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=I2VW7T5l; dkim-atps=neutral
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com
+ [IPv6:2607:f8b0:4864:20::102d])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KdXFl0H07z3cQ0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 16:08:10 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E7k9IlD4YqjTjmLH88GSQUtICWLx9RA7LoEtmN9uHpnAZeoV0tST97xj/ZDF0RWdCKdN8aL9kvJRJnmBtz97XSAialtOcXrKv0O07dP5P3OB4qtovX7RtvvwTDiyCro1Ob1YyhkJtQ716amwqvXtX7DA4uhJKqkRWn2Ra5XKyl6czRr9Om4qiHwjCU7z5hRIAvjpNFg9JXwCcNduTwRzMzI/H9ide8E+n1w27sCa6zb2tltQqQbGRVDRDucYwN1Cv00Nlp43NFOaGy1ilnDG9qq7luaXXu/X6SPyyfK38MgxetwHsASIJvGWKJN9TkEO6X7irhgtSmJARV5lLy5MvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9lotfj25gymw+66lxZeOp43qX/JSJZD/b+QUyDW7Y7Y=;
- b=jsx5gNMrWi0yJx7hHOET5uhlsAE9Mzo5FP201sWOmyngzefQkcUFsJC0pyFWPg7rZktBSFD99rUOquLUelgcQMaOdka1tvWqeMFoz+u7Jum5QbXxNCKR1RMQYC7qhMTdirlICfY0utYrnhMEd5dV6E80B/dNzUFXaYDo+j832Fb1YTpw9rVTBqO4zrl1SlLouStQNVIQ1SKAfaobyl3H1TA/6iTQWzMX+d05VWVN5zDNPgV+eJSuW7PNSWWTMB+oJKzGTvJkiNhIqSaDjoRLb6833WvC4bQyh6NQ495ihKpFVaoVcM6IJwKr7oEnsXUXDOwgmDn31R7AT7HgKQGnHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR0P264MB2137.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:168::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5144.29; Wed, 13 Apr
- 2022 06:07:49 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::59c:ae33:63c1:cb1c]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::59c:ae33:63c1:cb1c%8]) with mapi id 15.20.5164.020; Wed, 13 Apr 2022
- 06:07:49 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Anshuman Khandual <anshuman.khandual@arm.com>, "linux-mm@kvack.org"
- <linux-mm@kvack.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
-Subject: Re: [PATCH V6 1/7] mm/mmap: Add new config ARCH_HAS_VM_GET_PAGE_PROT
-Thread-Topic: [PATCH V6 1/7] mm/mmap: Add new config ARCH_HAS_VM_GET_PAGE_PROT
-Thread-Index: AQHYTvt9uFmHBK9nfE6hekh92vZjMaztW6GA
-Date: Wed, 13 Apr 2022 06:07:49 +0000
-Message-ID: <5527d07c-d9c9-b17f-22e9-1b2d3cde95c6@csgroup.eu>
-References: <20220413055840.392628-1-anshuman.khandual@arm.com>
- <20220413055840.392628-2-anshuman.khandual@arm.com>
-In-Reply-To: <20220413055840.392628-2-anshuman.khandual@arm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b8024d83-dec4-4ffe-5603-08da1d13efd8
-x-ms-traffictypediagnostic: PR0P264MB2137:EE_
-x-microsoft-antispam-prvs: <PR0P264MB21379C8BFF50748170B86E31EDEC9@PR0P264MB2137.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: CDbjLomtDTkrzDE9l0KHZglzpxHQ20C+0U0sL9uMbe9NoA9PziMZefRMDgsFyAHNNb+560M/fI9/xb9uqpwqBCjnkjVU6CgyAif4R+ElnR3Y8Q7AdrzDnbCtto4ktwPbozpXmb2tjRD0VR34X3QltqhgOrBm/5wRD2jpQxBhg3NRB0DPFR2PLA1SlP4VbK91JMYfsszwgczBNDuM/HAWBM0H8v6xvUoKBVMNHIWSXOkS4sCotCwG31JLEjjq6jV3lMF0Uu+6NOKGgv0aUMMIYYE/yQGgtmWUJpRYrnQlSQmqoSS/mKeDT9Wa+2LDPQbk/5uLxK38Uxk5W2Dbw8FEcc7J/834TJPq1uxVExu/saUImQbglfa06bXFORbNGW8+5AedqgKuv3iilGLrPQSaBrd1LW+w3Na5/+k9M9GaY9gtO78PAm+IsekpBYKyKfVRZYHfcSCJ3CcRytV704FbS0swbabxgtgq1v2RfDTZ+yK/lRGXKd9sRoDVb8ea2oXegxJQ04yYxeXhca29jrZHhh8rSWyKlHUNo5L4jjRmy7Od1pzGy3x8yjR87W38wq+nsHLaKg1bMHmYI4fRnrAzBxNJE6YrhXmzBzHOAOWTOPs0A+AGsK+cHxJos2VM4fhC7rDtkAxSDF+XNZaWRNR04MkbUO9EomEHzN8MR8ZEQYnEeLEP4/672OvfgwEKV0r2kTFfVosptKS1Qxy9UZeGd4YxB2zc0Be5d6pe9scq25pn84Z7Zs+P3oLaS59wzHnzsyN2PkwJnJTT5zYj0SrDGQ==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(66446008)(66476007)(186003)(38070700005)(86362001)(7416002)(66556008)(66946007)(36756003)(6512007)(508600001)(31696002)(122000001)(31686004)(2616005)(8936002)(38100700002)(26005)(6506007)(2906002)(91956017)(44832011)(110136005)(54906003)(316002)(76116006)(6486002)(5660300002)(64756008)(71200400001)(8676002)(4326008)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U2I1WDA2MWdRb3pRbGJpTHlaczRCeVVlbE1FQ3llTjdINk9WY2RSWVRYUW1O?=
- =?utf-8?B?S0R0UmVrckd4RW8vcjVYUkxpcnV3d1g3d2pQT3FiRkgvVzRCeHFEeTJKSTY5?=
- =?utf-8?B?UXNpN25IR0V3V1llSVRWcmxManlYdjl6ZFJhdUhBVnNEUE1NZW9ndEZWY2x4?=
- =?utf-8?B?TVhyV2ppQm5BVUJsdWZpRnBsZ3R4YUVZaURVZlZtbWZCMEdRRDdYaUkrdmRR?=
- =?utf-8?B?QzhWcHcxTlE2ZmcyMzBZVkR0U2Z5bkhIajhielR4VGtDbTR3azdIVys3OENX?=
- =?utf-8?B?S0tWTDB3S3JpUmJLaVo0TEQ0Mzk0Y2k1T0VVRlVJTmNQUVpBUTRpeHBoc2Ey?=
- =?utf-8?B?T0tiTURIbm9sajAzUCtCY1BPbE1tWkRmWmJ1dEM2eTR5aWMrQUF4VzlGR0Jr?=
- =?utf-8?B?cXh2RUF3bTNJelV6NXRrN3FaNHZlTzRvOUo0VENDYVNnM29mdEF4OEV2eFVX?=
- =?utf-8?B?V1I4YWtZS05FZWZma3BiaEdhbm5tcTh2bGZMSjkvbk1xZmpqTmVaTlJqRjgw?=
- =?utf-8?B?ZVlZY21KTjBtMXhub3IxUEN0cmhEem9Ebkw2bXE0Si9XWnVOWExhSFBWUnJW?=
- =?utf-8?B?aVlaWWY0RzZRTjBFYmFzY0ZBUXhLWm5uVytTQUpSWDVHSFZpZURzY0tCS1Fj?=
- =?utf-8?B?R2Z1dWJPT0JFK1lRbjhCNm41UTBXYjZUOGVPeE5tMnVaUzhxbytTRnZNNWUv?=
- =?utf-8?B?YWtxZDJYcFBaWWlSbmxYR2FYVEp3dFBPT05hamV1NFhhR3BnNG0zaXN2UjFz?=
- =?utf-8?B?VGtpdDRhYzNlaWtDQ3JWdWNXWmJQVVl1aVN1ZSt3T1RYczdBaTZlYmI2WjNY?=
- =?utf-8?B?eithVXJ2eTdQTXJzc3JnY3RFTFVpYVZCdGNaRyt6RE9JN1pIWWdoUlR1RDBh?=
- =?utf-8?B?YTNjTlpSaDdDMm9uSFJFWk1RcUNKVERwRDR3OVFhKy9IRWdmLy9MbjE0Y3By?=
- =?utf-8?B?bVJJalo0anNDRUJHWlNRUkpUYXpPaEs2S1phT0pVZ1ZDY3ZVZUZEK0ovYnRO?=
- =?utf-8?B?ZHlVQXpZSmNacW1ZNkpJUkhqZXgweGJVQjhvaUdDejZNTHc1bEkxTE9aQ2Vo?=
- =?utf-8?B?THdaT3A3djFPSTZVN0x1ZVdYc0t0RmtCMjE4MXF3QjIwYWpoTlhhVjdZK0dZ?=
- =?utf-8?B?d2laS0NFVURFOTZLUkd1U25UcHRyR0txQnhXTkVvbGJ0T1dVdVhJRzZGQUYz?=
- =?utf-8?B?L0h4UjVvOFBDMG5CcitSdGE3Y1VqY29nOXFkcDBZbURsNFlsd3FhcG84UlJy?=
- =?utf-8?B?b3Y4cVRLMnV0ZkVPV2s1M0J4TDRzOUUxbFhDUHdSMlBIdnc1MFJkNkZuM0Qz?=
- =?utf-8?B?YnhwOXJTTDhPZ0dFZHFac1Raa1ZDQmpJNUYwdEpTSlIzaDB0eVllTzRlNGhz?=
- =?utf-8?B?dUFzUWgyb0k4RW1ITHBOYmc1QjdqdENKZVorNGxDZU5vbm5wZjc4cklqbEcw?=
- =?utf-8?B?Vk0xVlJrSmRsTEJhTXpLSFB0WnFwNWRmYmpNbUkzMUMwVnFwYnhpUXZsb0lT?=
- =?utf-8?B?SGRIRG5DMnI3dllRWHVGb0UxQVdoRktjSXE4WFllTU04MDV5OTVtNVRxRjI2?=
- =?utf-8?B?c2hERFhVeStxcC9rTU5wZzJmMlQ0T1BEWncvekltRFdhaWtDQ0RQSERNVWRq?=
- =?utf-8?B?WnY3dmYxNkF6ZHNIK0JkeUFsL1VJdjcxaVVhQjQ4aXc0SWpRY2JrOFZlYXVJ?=
- =?utf-8?B?MG5xbU55VVhDUDVIR3ZrOFNCTWd4c1ZaZ05SM3NEeHBPV2oyTFgyMUJscWRN?=
- =?utf-8?B?amIvcUhpREtmQ2s5alZneXNDTEU2TTFvUm5ZNWpEWVR5REMvajRzUnEzbjJp?=
- =?utf-8?B?MmJGZ25mREtPbUlhNnAvUmY5NGxQZWQ5V2VmTjUwRlNFZnZMVXJlY2ZFTlEw?=
- =?utf-8?B?TkpUZEFhSUFZTVF2RzZHVDlqTHN4SEJJcXp1a3VHR3NPU2NhamN5QW5uR3N1?=
- =?utf-8?B?bGF5amxtNlhqY3hmSU9nY01UNHYrcHR4NFNJbmQrU1ZEaEVjQnl4a0gwSGdK?=
- =?utf-8?B?a0Z4S0tZRlc5SXNrd3JjVk1KbmZ2WnJyc0xqUllXbHRMOFR0ZGY1cFQyVGZ5?=
- =?utf-8?B?UTFpWlV1N1E0T1V3NGFvS1Vac1hVTVM1RnFBeWNXdVpUOTA2OHJ2ZEdZdFIx?=
- =?utf-8?B?TlppUm1McGVJM0lMZFdNTHVnV2ZxTWkxQk9RTGZNTDk1a2RKQVlJek50U0xC?=
- =?utf-8?B?VnFDSEYwTlkremxwVmJXaHlvZ0tETUhDdHhQVmRXSjQ3N3dRUWM5ZXJnU1NR?=
- =?utf-8?B?UzV5M2VYS0FidWttQ1ZLdE40K09UaFZmaDUyZHFLcTU1bEVja0xINlZReHBs?=
- =?utf-8?B?eUR1eTNHbDdZQ0VMZDhZbFNkTy9YZUlxL3d0ZUtDcUJPcThDOWkzaEYycUVF?=
- =?utf-8?Q?3ZcEOmp5yunoAZCc8yScMffVVYsEYzsSaPWRT?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1206DB192815D145881CD1245F45DF2A@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KdXJ26Jgmz2xf9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 16:10:10 +1000 (AEST)
+Received: by mail-pj1-x102d.google.com with SMTP id ll10so987143pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Apr 2022 23:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=0g9UcE2zL5w+G01NTjUcugLriSQ8wpxoQjCrz2R0018=;
+ b=I2VW7T5lmrxE21qiKPO9lndJB6OgiCBkcMN5noH755MjocM5a4fiUTmOIIm2TkCFK+
+ 0dPWv4t4FK9A+A2QucvMbMDu4RgXm9Wqj53zCnwCtHb+LXNhrRdhMqexatsIJc2BYQEK
+ n/vhUydLYp8dwRFLlT++nQpMFc2+AuV0L6TusfGFeckcFvnb3KIt4gs1ZaDovrtx9y20
+ qaiB6n9fI9Ypixj6f8nRwHMFW8WaNK4Yr9y/IBbyEnUF57x2iLURIHkp6vLJX4tVKU92
+ S5pbE89v3RQIc8669YQwHiuEpWdhHh0hlUVzfp8f4KfKvwCY0IiAtunVRb59uUJR1Os+
+ k9gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=0g9UcE2zL5w+G01NTjUcugLriSQ8wpxoQjCrz2R0018=;
+ b=4Pwurbdl7D6BRq3NUtV3LEHRni4QYxtDD0P7LoJx2kMBYT3awgXasxiPpFQstrtsQX
+ UT1hJQrovhx6b/ckpCwXfGJfh4u8g5r+Z5bpLI2JmcnxMAWrdYxKusvwsKob33KSD333
+ Wj35lgP82jMa6xOyCbrPj5HCLhUaFrtdfA9HcD3FH4WNZZYATg118Pb0gvlNJtQa+K5V
+ 9Q8JefgveGW5HwFW2lhpgakHnIIe6TEN/Ly3RuSo+6u66U5G7Bpvf6j4Ns2Z8i1ywt+5
+ eAqEjU16iw+JIPTLS3Vg40Pu+i4CCCO4nMVZBmMlWo59GYc00qnNzQk/Ck/4jrQcb+2Z
+ ldxg==
+X-Gm-Message-State: AOAM5335zasqavqGXuch6nUEEN6kX28cnZC5RiXsyIVb18Fb6NWO2be6
+ AxICsfa6rwA9dlIOYCPnHxU=
+X-Google-Smtp-Source: ABdhPJwZGUY1wE3FwLT56wfTkox589sv0KFwbe72PnNBrsjgcyxpDTyj5tceVyPohBuu8hSyRW7Qag==
+X-Received: by 2002:a17:90b:1bc4:b0:1cb:c3db:5f4c with SMTP id
+ oa4-20020a17090b1bc400b001cbc3db5f4cmr7738423pjb.125.1649830207617; 
+ Tue, 12 Apr 2022 23:10:07 -0700 (PDT)
+Received: from localhost (220-235-208-104.tpgi.com.au. [220.235.208.104])
+ by smtp.gmail.com with ESMTPSA id
+ z5-20020a056a00240500b004e15d39f15fsm41452636pfh.83.2022.04.12.23.10.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Apr 2022 23:10:07 -0700 (PDT)
+Date: Wed, 13 Apr 2022 16:10:02 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Low-res tick handler device not going to ONESHOT_STOPPED when tick is
+ stopped (was: rcu_sched self-detected stall on CPU)
+To: Michael Ellerman <mpe@ellerman.id.au>, paulmck@kernel.org, Zhouyi Zhou
+ <zhouzhouyi@gmail.com>
+References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
+ <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
+ <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
+ <87pmls6nt7.fsf@mpe.ellerman.id.au> <87k0bz7i1s.fsf@mpe.ellerman.id.au>
+ <1649818529.j46672mh2p.astroid@bobo.none>
+In-Reply-To: <1649818529.j46672mh2p.astroid@bobo.none>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8024d83-dec4-4ffe-5603-08da1d13efd8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Apr 2022 06:07:49.1081 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jE2cH91+NY8uCAu9Zt7I1hxgglkrRNpAvDvusOpYODq/8SCqX4yGms+amAfuMqQ1K77tf2TM+PEtBy0E1v7VFN0L5Tm9e+mg2vaPjzYtF+U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR0P264MB2137
+Message-Id: <1649829917.xni78o33uo.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,46 +87,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@infradead.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-kernel@vger.kernel.org,
+ rcu <rcu@vger.kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDEzLzA0LzIwMjIgw6AgMDc6NTgsIEFuc2h1bWFuIEtoYW5kdWFsIGEgw6ljcml0wqA6
-DQo+IEFkZCBhIG5ldyBjb25maWcgQVJDSF9IQVNfVk1fR0VUX1BBR0VfUFJPVCwgd2hpY2ggd2hl
-biBzdWJzY3JpYmVkIGVuYWJsZXMgYQ0KPiBnaXZlbiBwbGF0Zm9ybSB0byBkZWZpbmUgaXRzIG93
-biB2bV9nZXRfcGFnZV9wcm90KCkgYnV0IHN0aWxsIHV0aWxpemluZyB0aGUNCj4gZ2VuZXJpYyBw
-cm90ZWN0aW9uX21hcFtdIGFycmF5Lg0KPiANCj4gQ2M6IEFuZHJldyBNb3J0b24gPGFrcG1AbGlu
-dXgtZm91bmRhdGlvbi5vcmc+DQo+IENjOiBsaW51eC1tbUBrdmFjay5vcmcNCj4gQ2M6IGxpbnV4
-LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gUmV2aWV3ZWQtYnk6IENhdGFsaW4gTWFyaW5hcyA8
-Y2F0YWxpbi5tYXJpbmFzQGFybS5jb20+DQo+IFN1Z2dlc3RlZC1ieTogQ2hyaXN0b3BoIEhlbGx3
-aWcgPGhjaEBpbmZyYWRlYWQub3JnPg0KDQpSZXZpZXdlZC1ieTogQ2hyaXN0b3BoZSBMZXJveSA8
-Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1Pg0KDQo+IFNpZ25lZC1vZmYtYnk6IEFuc2h1bWFu
-IEtoYW5kdWFsIDxhbnNodW1hbi5raGFuZHVhbEBhcm0uY29tPg0KPiAtLS0NCj4gICBtbS9LY29u
-ZmlnIHwgMyArKysNCj4gICBtbS9tbWFwLmMgIHwgMiArKw0KPiAgIDIgZmlsZXMgY2hhbmdlZCwg
-NSBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbW0vS2NvbmZpZyBiL21tL0tjb25m
-aWcNCj4gaW5kZXggMDM0ZDg3OTUzNjAwLi5iMWY3NjI0Mjc2ZjggMTAwNjQ0DQo+IC0tLSBhL21t
-L0tjb25maWcNCj4gKysrIGIvbW0vS2NvbmZpZw0KPiBAQCAtNzY1LDYgKzc2NSw5IEBAIGNvbmZp
-ZyBBUkNIX0hBU19DVVJSRU5UX1NUQUNLX1BPSU5URVINCj4gICBjb25maWcgQVJDSF9IQVNfRklM
-VEVSX1BHUFJPVA0KPiAgIAlib29sDQo+ICAgDQo+ICtjb25maWcgQVJDSF9IQVNfVk1fR0VUX1BB
-R0VfUFJPVA0KPiArCWJvb2wNCj4gKw0KPiAgIGNvbmZpZyBBUkNIX0hBU19QVEVfREVWTUFQDQo+
-ICAgCWJvb2wNCj4gICANCj4gZGlmZiAtLWdpdCBhL21tL21tYXAuYyBiL21tL21tYXAuYw0KPiBp
-bmRleCAzYWE4MzlmODFlNjMuLjg3Y2IyZWFmN2UxYSAxMDA2NDQNCj4gLS0tIGEvbW0vbW1hcC5j
-DQo+ICsrKyBiL21tL21tYXAuYw0KPiBAQCAtMTA2LDYgKzEwNiw3IEBAIHBncHJvdF90IHByb3Rl
-Y3Rpb25fbWFwWzE2XSBfX3JvX2FmdGVyX2luaXQgPSB7DQo+ICAgCV9fUzAwMCwgX19TMDAxLCBf
-X1MwMTAsIF9fUzAxMSwgX19TMTAwLCBfX1MxMDEsIF9fUzExMCwgX19TMTExDQo+ICAgfTsNCj4g
-ICANCj4gKyNpZm5kZWYgQ09ORklHX0FSQ0hfSEFTX1ZNX0dFVF9QQUdFX1BST1QNCj4gICAjaWZu
-ZGVmIENPTkZJR19BUkNIX0hBU19GSUxURVJfUEdQUk9UDQo+ICAgc3RhdGljIGlubGluZSBwZ3By
-b3RfdCBhcmNoX2ZpbHRlcl9wZ3Byb3QocGdwcm90X3QgcHJvdCkNCj4gICB7DQo+IEBAIC0xMjIs
-NiArMTIzLDcgQEAgcGdwcm90X3Qgdm1fZ2V0X3BhZ2VfcHJvdCh1bnNpZ25lZCBsb25nIHZtX2Zs
-YWdzKQ0KPiAgIAlyZXR1cm4gYXJjaF9maWx0ZXJfcGdwcm90KHJldCk7DQo+ICAgfQ0KPiAgIEVY
-UE9SVF9TWU1CT0wodm1fZ2V0X3BhZ2VfcHJvdCk7DQo+ICsjZW5kaWYJLyogQ09ORklHX0FSQ0hf
-SEFTX1ZNX0dFVF9QQUdFX1BST1QgKi8NCj4gICANCj4gICBzdGF0aWMgcGdwcm90X3Qgdm1fcGdw
-cm90X21vZGlmeShwZ3Byb3RfdCBvbGRwcm90LCB1bnNpZ25lZCBsb25nIHZtX2ZsYWdzKQ0KPiAg
-IHs=
+Oops, fixed subject...
+
+Excerpts from Nicholas Piggin's message of April 13, 2022 3:11 pm:
+> +Daniel, Thomas, Viresh
+>=20
+> Subject: Re: rcu_sched self-detected stall on CPU
+>=20
+> Excerpts from Michael Ellerman's message of April 9, 2022 12:42 am:
+>> Michael Ellerman <mpe@ellerman.id.au> writes:
+>>> "Paul E. McKenney" <paulmck@kernel.org> writes:
+>>>> On Wed, Apr 06, 2022 at 05:31:10PM +0800, Zhouyi Zhou wrote:
+>>>>> Hi
+>>>>>=20
+>>>>> I can reproduce it in a ppc virtual cloud server provided by Oregon
+>>>>> State University.  Following is what I do:
+>>>>> 1) curl -l https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/l=
+inux.git/snapshot/linux-5.18-rc1.tar.gz
+>>>>> -o linux-5.18-rc1.tar.gz
+>>>>> 2) tar zxf linux-5.18-rc1.tar.gz
+>>>>> 3) cp config linux-5.18-rc1/.config
+>>>>> 4) cd linux-5.18-rc1
+>>>>> 5) make vmlinux -j 8
+>>>>> 6) qemu-system-ppc64 -kernel vmlinux -nographic -vga none -no-reboot
+>>>>> -smp 2 (QEMU 4.2.1)
+>>>>> 7) after 12 rounds, the bug got reproduced:
+>>>>> (http://154.223.142.244/logs/20220406/qemu.log.txt)
+>>>>
+>>>> Just to make sure, are you both seeing the same thing?  Last I knew,
+>>>> Zhouyi was chasing an RCU-tasks issue that appears only in kernels
+>>>> built with CONFIG_PROVE_RCU=3Dy, which Miguel does not have set.  Or d=
+id
+>>>> I miss something?
+>>>>
+>>>> Miguel is instead seeing an RCU CPU stall warning where RCU's grace-pe=
+riod
+>>>> kthread slept for three milliseconds, but did not wake up for more tha=
+n
+>>>> 20 seconds.  This kthread would normally have awakened on CPU 1, but
+>>>> CPU 1 looks to me to be very unhealthy, as can be seen in your console
+>>>> output below (but maybe my idea of what is healthy for powerpc systems
+>>>> is outdated).  Please see also the inline annotations.
+>>>>
+>>>> Thoughts from the PPC guys?
+>>>
+>>> I haven't seen it in my testing. But using Miguel's config I can
+>>> reproduce it seemingly on every boot.
+>>>
+>>> For me it bisects to:
+>>>
+>>>   35de589cb879 ("powerpc/time: improve decrementer clockevent processin=
+g")
+>>>
+>>> Which seems plausible.
+>>>
+>>> Reverting that on mainline makes the bug go away.
+>>>
+>>> I don't see an obvious bug in the diff, but I could be wrong, or the ol=
+d
+>>> code was papering over an existing bug?
+>>>
+>>> I'll try and work out what it is about Miguel's config that exposes
+>>> this vs our defconfig, that might give us a clue.
+>>=20
+>> It's CONFIG_HIGH_RES_TIMERS=3Dn which triggers the stall.
+>>=20
+>> I can reproduce just with:
+>>=20
+>>   $ make ppc64le_guest_defconfig
+>>   $ ./scripts/config -d HIGH_RES_TIMERS
+>>=20
+>> We have no defconfigs that disable HIGH_RES_TIMERS, I didn't even
+>> realise you could disable it TBH :)
+>>=20
+>> The Rust CI has it disabled because I copied that from the x86 defconfig
+>> they were using back when I added the Rust support. I think that was
+>> meant to be a stripped down fast config for CI, but the result is it's
+>> just using a badly tested combination which is not helpful.
+>>=20
+>> So I'll send a patch to turn HIGH_RES_TIMERS on for the Rust CI, and we
+>> can debug this further without blocking them.
+>=20
+> So we traced the problem down to possibly a misunderstanding between=20
+> decrementer clock event device and core code.
+>=20
+> The decrementer is only oneshot*ish*. It actually needs to either be=20
+> reprogrammed or shut down otherwise it just continues to cause=20
+> interrupts.
+>=20
+> Before commit 35de589cb879, it was sort of two-shot. The initial=20
+> interrupt at the programmed time would set its internal next_tb variable=20
+> to ~0 and call the ->event_handler(). If that did not set_next_event or=20
+> stop the timer, the interrupt will fire again immediately, notice=20
+> next_tb is ~0, and only then stop the decrementer interrupt.
+>=20
+> So that was already kind of ugly, this patch just turned it into a hang.
+>=20
+> The problem happens when the tick is stopped with an event still=20
+> pending, then tick_nohz_handler() is called, but it bails out because=20
+> tick_stopped =3D=3D 1 so the device never gets programmed again, and so i=
+t=20
+> keeps firing.
+>=20
+> How to fix it? Before commit a7cba02deced, powerpc's decrementer was=20
+> really oneshot, but we would like to avoid doing that because it requires=
+=20
+> additional programming of the hardware on each timer interrupt. We have=20
+> the ONESHOT_STOPPED state which seems to be just about what we want.
+>=20
+> Did the ONESHOT_STOPPED patch just miss this case, or is there a reason=20
+> we don't stop it here? This patch seems to fix the hang (not heavily
+> tested though).
+> =20
+> Thanks,
+> Nick
+>=20
+> ---
+> diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+> index 2d76c91b85de..7e13a55b6b71 100644
+> --- a/kernel/time/tick-sched.c
+> +++ b/kernel/time/tick-sched.c
+> @@ -1364,9 +1364,11 @@ static void tick_nohz_handler(struct clock_event_d=
+evice *dev)
+>  	tick_sched_do_timer(ts, now);
+>  	tick_sched_handle(ts, regs);
+> =20
+> -	/* No need to reprogram if we are running tickless  */
+> -	if (unlikely(ts->tick_stopped))
+> +	if (unlikely(ts->tick_stopped)) {
+> +		/* If we are tickless, change the clock event to stopped */
+> +		tick_program_event(KTIME_MAX, 1);
+>  		return;
+> +	}
+> =20
+>  	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
+>  	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
+>=20
