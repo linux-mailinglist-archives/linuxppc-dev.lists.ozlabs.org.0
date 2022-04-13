@@ -2,83 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A481F4FFD82
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 20:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B91A64FFE21
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 20:47:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KdrGC42Smz3bXg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 04:09:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kds5S4xtRz3bk9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 04:47:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=GHT6yjiL;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=PH+Ba93k;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HifCVjTy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=GHT6yjiL; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=PH+Ba93k; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=robh+dt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=HifCVjTy; 
  dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kds4p2dfrz2xsb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 04:46:34 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KdrFY1C05z2xYQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 04:09:04 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id D27642160D;
- Wed, 13 Apr 2022 18:09:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1649873341; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=/xSqIm15UUHBxwwqMSdhCX8Bdk86MUM3KIMa8CaDG6o=;
- b=GHT6yjiL6oakbG0GDeZiJW4qlUvmJSY3TwhqfEgC2Dz+JFlZuoWRlT3A3MopCWeRd6pnFn
- eejn6y3Od93dT/I2iuxaVz4LHIMzGDi4tkCeLw9No26T9CUtBXdwXyVbTjpuarC6kS6TpA
- xuyVE1JGM8fnpxQr1CqtHgFnxPsy6Bg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1649873341;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=/xSqIm15UUHBxwwqMSdhCX8Bdk86MUM3KIMa8CaDG6o=;
- b=PH+Ba93kHiNgLZ5NuQlHIApJMDAoFGIAuXnDb4knpTfa8d0yhISaibOc1O3e4jLw38OgtT
- /y7g66r1j7jCVWCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8AA0713AB8;
- Wed, 13 Apr 2022 18:09:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id Dt58IL0RV2ILbgAAMHmgww
- (envelope-from <tzimmermann@suse.de>); Wed, 13 Apr 2022 18:09:01 +0000
-Message-ID: <9d4599d9-e094-e7dd-5b91-282c2679aae4@suse.de>
-Date: Wed, 13 Apr 2022 20:09:00 +0200
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 58058619FC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 18:46:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE425C385A9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 18:46:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1649875589;
+ bh=ysrPtaTYb8EyW5VHJIP8kmaecK5XOai6g/Tx5uvuzMc=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=HifCVjTyYmnCyys0GagMzajpFi5s2br8b7c+XHv7DHYIJzrdFhnAbBf3FkZu3qSWP
+ s17MFMgODFGfpkBV5AscPelCEh6z0AhZgHVzb9rbTw/jrao+66i+tH/JLlcBF2kVXQ
+ KTctZBJL3Q1a7/12vV6yV9E4S3g+SXq6W2qPxQliijDSkdF1sA9+98+beDedPiCOua
+ A7qtMNXhn1Qysd/O9HOH0mIQfCarGoETMkb3v/Gox0CQEbmKoLUoKLjxO/13qnmuip
+ kSC2loFpBokA9hshSpQ3RaojFDk8A9Gw6Rck9OwXpeFMZAGhtl0WYRH6CjSXryMQh7
+ OyrSBCBCfTzVg==
+Received: by mail-io1-f41.google.com with SMTP id 9so2927182iou.5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 11:46:29 -0700 (PDT)
+X-Gm-Message-State: AOAM532038+V+cybb//mwF8H5HS7R5Uzf3sQzTgpiepi6IW+vlr4DMTw
+ xN1fMDFjmxbdTwng9zy0mLRYrUlMqbvHp9695w==
+X-Google-Smtp-Source: ABdhPJxBoCyvmmSYBlR3CPMXkWfpbJbFlu0q65XwYXKzyqlRpm9qS1dexycZeKMQZVXe6ksNkSG9HXnYOujJ9Kbb334=
+X-Received: by 2002:a02:1107:0:b0:321:78dc:890d with SMTP id
+ 7-20020a021107000000b0032178dc890dmr22807402jaf.236.1649875588926; Wed, 13
+ Apr 2022 11:46:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH 2/2] fbdev: Remove hot-unplug workaround for framebuffers
- without device
-Content-Language: en-US
-To: Daniel Vetter <daniel@ffwll.ch>,
- Javier Martinez Canillas <javierm@redhat.com>
 References: <20220413092454.1073-1-tzimmermann@suse.de>
- <20220413092454.1073-3-tzimmermann@suse.de>
- <2e183cc9-603d-f038-54aa-5601f11b0484@redhat.com>
- <Ylb0316ABOhOe1Rb@phenom.ffwll.local>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <Ylb0316ABOhOe1Rb@phenom.ffwll.local>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------xBs0UgV8K6Ld1iE06EpBr7qw"
+ <20220413092454.1073-2-tzimmermann@suse.de>
+ <CAL_JsqK4oT47Q=XFTZ0a=g3-DiB1JsW7_j9M1qRzpeahhz0muA@mail.gmail.com>
+ <b31df06c-6cce-37dd-5ec1-661fdc8151da@suse.de>
+In-Reply-To: <b31df06c-6cce-37dd-5ec1-661fdc8151da@suse.de>
+From: Rob Herring <robh+dt@kernel.org>
+Date: Wed, 13 Apr 2022 13:46:17 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJdYjd=P4Nhd9E+=OjOb2A-=_txBUtWsDL1FWqZ0phD+g@mail.gmail.com>
+Message-ID: <CAL_JsqJdYjd=P4Nhd9E+=OjOb2A-=_txBUtWsDL1FWqZ0phD+g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] of: Create platform devices for OF framebuffers
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,121 +73,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org, sam@ravnborg.org,
- frowand.list@gmail.com, deller@gmx.de, dri-devel@lists.freedesktop.org,
- robh+dt@kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
- linux@roeck-us.net
+Cc: devicetree@vger.kernel.org,
+ Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+ Frank Rowand <frowand.list@gmail.com>, Helge Deller <deller@gmx.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Paul Mackerras <paulus@samba.org>,
+ Daniel Vetter <daniel@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>,
+ Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------xBs0UgV8K6Ld1iE06EpBr7qw
-Content-Type: multipart/mixed; boundary="------------XNH9RfXI1PyYuHJ0PkMtgwSX";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Daniel Vetter <daniel@ffwll.ch>,
- Javier Martinez Canillas <javierm@redhat.com>
-Cc: devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
- frowand.list@gmail.com, deller@gmx.de, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, robh+dt@kernel.org, paulus@samba.org,
- mpe@ellerman.id.au, sam@ravnborg.org, linux@roeck-us.net
-Message-ID: <9d4599d9-e094-e7dd-5b91-282c2679aae4@suse.de>
-Subject: Re: [PATCH 2/2] fbdev: Remove hot-unplug workaround for framebuffers
- without device
-References: <20220413092454.1073-1-tzimmermann@suse.de>
- <20220413092454.1073-3-tzimmermann@suse.de>
- <2e183cc9-603d-f038-54aa-5601f11b0484@redhat.com>
- <Ylb0316ABOhOe1Rb@phenom.ffwll.local>
-In-Reply-To: <Ylb0316ABOhOe1Rb@phenom.ffwll.local>
+On Wed, Apr 13, 2022 at 12:58 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>
+> Hi
+>
+> Am 13.04.22 um 14:51 schrieb Rob Herring:
+> > On Wed, Apr 13, 2022 at 4:24 AM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> >>
+> >> Create a platform device for each OF-declared framebuffer and have
+> >> offb bind to these devices. Allows for real hot-unplugging and other
+> >> drivers besides offb.
+> >>
+> >> Originally, offb created framebuffer devices while initializing its
+> >> module by parsing the OF device tree. No actual Linux device was set
+> >> up. This tied OF framebuffers to offb and makes writing other drivers
+> >> for the OF framebuffers complicated. The absence of a Linux device
+> >> prevented real hot-unplugging. Adding a distinct platform device for
+> >> each OF framebuffer solves both problems. Specifically, a DRM drivers
+> >> can now provide graphics output with modern userspace.
+> >>
+> >> Some of the offb init code is now located in the OF initialization.
+> >> There's now also an implementation of of_platform_default_populate_init(),
+> >> which was missing before. The OF side creates different devices for
+> >> either OF display nodes or bootx displays as they require different
+> >> handling by the driver. The offb drivers picks up each type of device
+> >> and runs the appropriate fbdev initialization.
+> >>
+> >> Tested with OF display nodes on qemu's ppc64le target.
+> >>
+> >> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> >> ---
+> >>   drivers/of/platform.c      | 73 ++++++++++++++++++++++++++--
+> >>   drivers/video/fbdev/offb.c | 98 +++++++++++++++++++++++++-------------
+> >>   2 files changed, 134 insertions(+), 37 deletions(-)
+> >>
+> >> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> >> index a16b74f32aa9..4c63b9a73587 100644
+> >> --- a/drivers/of/platform.c
+> >> +++ b/drivers/of/platform.c
+> >> @@ -447,6 +447,60 @@ int of_platform_bus_probe(struct device_node *root,
+> >>   }
+> >>   EXPORT_SYMBOL(of_platform_bus_probe);
+> >>
+> >> +static int __init of_platform_populate_framebuffers(void)
+> >> +{
+> >> +       struct device_node *boot_display = NULL;
+> >> +       struct device_node *node;
+> >> +       struct platform_device *dev;
+> >> +       int ret;
+> >> +
+> >> +       node = of_get_compatible_child(of_chosen, "simple-framebuffer");
+> >> +       of_platform_device_create(node, NULL, NULL);
+> >> +       of_node_put(node);
+> >> +
+> >
+> > The rest is PPC only, so bail out here if !PPC.
+> >
+> >> +       /* Check if we have a MacOS display without a node spec */
+> >> +       if (of_get_property(of_chosen, "linux,bootx-noscreen", NULL)) {
+> >> +               /*
+> >> +                * The old code tried to work out which node was the MacOS
+> >> +                * display based on the address. I'm dropping that since the
+> >> +                * lack of a node spec only happens with old BootX versions
+> >> +                * (users can update) and with this code, they'll still get
+> >> +                * a display (just not the palette hacks).
+> >> +                */
+> >> +               dev = platform_device_alloc("bootx-noscreen", 0);
+> >> +               if (WARN_ON(!dev))
+> >> +                       return -ENOMEM;
+> >> +               ret = platform_device_add(dev);
+> >> +               if (WARN_ON(ret)) {
+> >> +                       platform_device_put(dev);
+> >> +                       return ret;
+> >> +               }
+> >> +       }
+> >> +
+> >> +       /*
+> >> +        * For OF framebuffers, first create the device for the boot display,
+> >> +        * then for the other framebuffers. Only fail for the boot display;
+> >> +        * ignore errors for the rest.
+> >> +        */
+> >> +       for_each_node_by_type(node, "display") {
+> >> +               if (!of_get_property(node, "linux,opened", NULL) ||
+> >> +                   !of_get_property(node, "linux,boot-display", NULL))
+> >> +                       continue;
+> >> +               dev = of_platform_device_create(node, "of-display", NULL);
+> >> +               if (WARN_ON(!dev))
+> >> +                       return -ENOMEM;
+> >> +               boot_display = node;
+> >> +               break;
+> >> +       }
+> >> +       for_each_node_by_type(node, "display") {
+> >> +               if (!of_get_property(node, "linux,opened", NULL) || node == boot_display)
+> >> +                       continue;
+> >> +               of_platform_device_create(node, "of-display", NULL);
+> >> +       }
+> >> +
+> >> +       return 0;
+> >> +}
+> >> +
+> >>   /**
+> >>    * of_platform_populate() - Populate platform_devices from device tree data
+> >>    * @root: parent of the first level to probe or NULL for the root of the tree
+> >> @@ -541,9 +595,7 @@ static int __init of_platform_default_populate_init(void)
+> >>                  of_node_put(node);
+> >>          }
+> >>
+> >> -       node = of_get_compatible_child(of_chosen, "simple-framebuffer");
+> >> -       of_platform_device_create(node, NULL, NULL);
+> >> -       of_node_put(node);
+> >> +       of_platform_populate_framebuffers();
+> >>
+> >>          /* Populate everything else. */
+> >>          of_platform_default_populate(NULL, NULL, NULL);
+> >
+> > I'm pretty sure it's just this call that's the problem for PPC though
+> > none of the above existed when adding this caused a regression. Can we
+> > remove the ifdef and just make this call conditional on
+> > !IS_ENABLED(CONFIG_PPC).
+>
+> Together with the changes in of_platform_populate_framebuffers(), the
+> code is more or less an "if-else" depending on PPC. I'll drop
+> of_platform_populate_framebuffers() from the patch and make a separate
+> implementation of of_platform_default_populate_init for PPC. Seems like
+> the easiest solution to me.
 
---------------XNH9RfXI1PyYuHJ0PkMtgwSX
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+That just moves us farther from PPC ever using
+of_platform_default_populate_init(). But I don't know that anyone in
+PPC cares about that, so fine I guess.
 
-SGkNCg0KQW0gMTMuMDQuMjIgdW0gMTg6MDUgc2NocmllYiBEYW5pZWwgVmV0dGVyOg0KPiBP
-biBXZWQsIEFwciAxMywgMjAyMiBhdCAxMjo1MDo1MFBNICswMjAwLCBKYXZpZXIgTWFydGlu
-ZXogQ2FuaWxsYXMgd3JvdGU6DQo+PiBPbiA0LzEzLzIyIDExOjI0LCBUaG9tYXMgWmltbWVy
-bWFubiB3cm90ZToNCj4+PiBBIHdvcmthcm91bmQgbWFrZXMgZmJkZXYgaG90LXVucGx1Z2dp
-bmcgd29yayBmb3IgZnJhbWVidWZmZXJzIHdpdGhvdXQNCj4+PiBkZXZpY2UuIFRoZSBvbmx5
-IHVzZXIgZm9yIHRoaXMgZmVhdHVyZSB3YXMgb2ZmYi4gQXMgZWFjaCBPRiBmcmFtZWJ1ZmZl
-cg0KPj4+IG5vdyBoYXMgYW4gYXNzb2NpYXRlZCBwbGF0Zm9ybSBkZXZpY2UsIHRoZSB3b3Jr
-YXJvdW5kIGlzIG5vIGxvbmdlcg0KPj4+IG5lZWRlZC4gUmVtb3ZlIGl0LiBFZmZlY3RpdmVs
-eSByZXZlcnRzIGNvbW1pdCAwZjUyNTI4OWZmMGQgKCJmYmRldjogRml4DQo+Pj4gdW5yZWdp
-c3RlcmluZyBvZiBmcmFtZWJ1ZmZlcnMgd2l0aG91dCBkZXZpY2UiKS4NCj4+Pg0KPj4+IFNp
-Z25lZC1vZmYtYnk6IFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPg0K
-Pj4+IC0tLQ0KPj4+ICAgZHJpdmVycy92aWRlby9mYmRldi9jb3JlL2ZibWVtLmMgfCA5ICst
-LS0tLS0tLQ0KPj4+ICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCA4IGRlbGV0
-aW9ucygtKQ0KPj4+DQo+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdmlkZW8vZmJkZXYvY29y
-ZS9mYm1lbS5jIGIvZHJpdmVycy92aWRlby9mYmRldi9jb3JlL2ZibWVtLmMNCj4+PiBpbmRl
-eCBiYzZlZDc1MGU5MTUuLmJkZDAwZDM4MWJiYyAxMDA2NDQNCj4+PiAtLS0gYS9kcml2ZXJz
-L3ZpZGVvL2ZiZGV2L2NvcmUvZmJtZW0uYw0KPj4+ICsrKyBiL2RyaXZlcnMvdmlkZW8vZmJk
-ZXYvY29yZS9mYm1lbS5jDQo+Pj4gQEAgLTE1NzksMTQgKzE1NzksNyBAQCBzdGF0aWMgdm9p
-ZCBkb19yZW1vdmVfY29uZmxpY3RpbmdfZnJhbWVidWZmZXJzKHN0cnVjdCBhcGVydHVyZXNf
-c3RydWN0ICphLA0KPj4+ICAgCQkJICogSWYgaXQncyBub3QgYSBwbGF0Zm9ybSBkZXZpY2Us
-IGF0IGxlYXN0IHByaW50IGEgd2FybmluZy4gQQ0KPj4+ICAgCQkJICogZml4IHdvdWxkIGFk
-ZCBjb2RlIHRvIHJlbW92ZSB0aGUgZGV2aWNlIGZyb20gdGhlIHN5c3RlbS4NCj4+PiAgIAkJ
-CSAqLw0KPj4+IC0JCQlpZiAoIWRldmljZSkgew0KPj4+IC0JCQkJLyogVE9ETzogUmVwcmVz
-ZW50IGVhY2ggT0YgZnJhbWVidWZmZXIgYXMgaXRzIG93bg0KPj4+IC0JCQkJICogZGV2aWNl
-IGluIHRoZSBkZXZpY2UgaGllcmFyY2h5LiBGb3Igbm93LCBvZmZiDQo+Pj4gLQkJCQkgKiBk
-b2Vzbid0IGhhdmUgc3VjaCBhIGRldmljZSwgc28gdW5yZWdpc3RlciB0aGUNCj4+PiAtCQkJ
-CSAqIGZyYW1lYnVmZmVyIGFzIGJlZm9yZSB3aXRob3V0IHdhcm5pbmcuDQo+Pj4gLQkJCQkg
-Ki8NCj4+PiAtCQkJCWRvX3VucmVnaXN0ZXJfZnJhbWVidWZmZXIocmVnaXN0ZXJlZF9mYltp
-XSk7DQo+Pg0KPj4gTWF5YmUgd2UgY291bGQgc3RpbGwga2VlcCB0aGlzIGZvciBhIGNvdXBs
-ZSBvZiByZWxlYXNlcyBidXQgd2l0aCBhIGJpZw0KPj4gd2FybmluZyB0aGF0J3Mgbm90IHN1
-cHBvcnRlZCBpbiBjYXNlIHRoZXJlIGFyZSBvdXQtb2YtdHJlZSBkcml2ZXJzIG91dA0KPj4g
-dGhlcmUgdGhhdCBzdGlsbCBkbyB0aGlzID8NCj4+DQo+PiBPciBhdCBsZWFzdCBhIHdhcm5p
-bmcgaWYgdGhlIGRvX3VucmVnaXN0ZXJfZnJhbWVidWZmZXIoKSBjYWxsIGlzIHJlbW92ZWQu
-DQo+IA0KPiBZZWFoIGR5aW5nIHdoaWxlIGhvbGRpbmcgY29uc29sZV9sb2NrIGlzbid0IGZ1
-biwgYW5kIG5vdCBoYXZpbmcgYSBXQVJOX09ODQo+ICsgYmFpbC1vdXQgY29kZSBwcmV0dHkg
-bXVjaCBmb3JjZXMgYnVnIHJlcG9ydGVycyB0byBkbyBhIGJpc2VjdCBoZXJlIHRvDQo+IGdp
-dmUgdXMgc29tZXRoaW5nIG1vcmUgdGhhbiAibWFjaGluZSBkaWVzIGF0IGJvb3Qgd2l0aCBu
-byBtZXNzYWdlcyIuDQo+IA0KPiBJJ2QganVzdCBvdXRyaWdodCBrZWVwIHRoZSBXQVJOX09O
-IGhlcmUgZm9yIDEtMiB5ZWFycyBldmVuIHRvIHJlYWxseSBtYWtlDQo+IHN1cmUgd2UgZ290
-IGFsbCB0aGUgYnVnIHJlcG9ydHMsIHNpbmNlIG9mdGVuIHRoZXNlIG9sZGVyIG1hY2hpbmVz
-IG9ubHkNCj4gdXBkYXRlIG9udG8gTFRTIHJlbGVhc2VzLg0KDQpJZiB0aGF0J3Mgd2hhdCB0
-aGUgY29uc2VudCBpcywgSSdsbCBnbyB3aXRoIGl0Lg0KDQpJJ20ganVzdCBub3Qgc3VyZSBp
-ZiB3ZSB0YWxrIGFib3V0IHRoZSBzYW1lIHByb2JsZW0uIG9mZmIgZGlkbid0IGhhdmUgYSAN
-CnBsYXRmb3JtIGRldmljZSwgc28gd2UgcmVjZW50bHkgYWRkZWQgdGhpcyB3b3JrYXJvdW5k
-IHdpdGggJ2lmIA0KKCFkZXZpY2UpJy4gIEFsbCB0aGUgb3RoZXIgZmJkZXYgZHJpdmVycyBo
-YXZlIGEgcGxhdGZvcm0gZGV2aWNlOyBhbmQgDQphbnl0aGluZyBlbHNlIHRoYXQgY291bGQg
-ZmFpbCBpcyBvdXQtb2YtdHJlZS4gV2UgZG9uJ3QgcmVhbGx5IGNhcmUgYWJvdXQgDQp0aG9z
-ZSBBRkFJSy4NCg0KV2l0aCBvZmZiIGNvbnZlcnRlZCwgd2UgY291bGQgcHJhY3RpY2FsbHkg
-cmVtb3ZlIGFsbCBvZiB0aGUgY2hlY2tzIGhlcmUgDQphbmQgY2FsbCBwbGF0Zm9ybV9kZXZp
-Y2VfdW5yZWdpc3RlcigpIHVuY29uZGl0aW9uYWxseS4NCg0KQmVzdCByZWdhcmRzDQpUaG9t
-YXMNCg0KPiANCj4gQW5kIGl0IG5lZWRzIHRvIGJlIGEgV0FSTl9PTiArIGJhaWwgb3V0IHNp
-bmNlIEJVR19PTiBpcyBhcyBiYWQgYXMganVzdA0KPiBvb3BzaW5nLg0KPiAtRGFuaWVsDQo+
-IA0KPj4NCj4+IFJlZ2FyZGxlc3Mgb2Ygd2hhdCB5b3UgY2hvc2UgdG8gZG8sIHRoZSBwYXRj
-aCBsb29rcyBnb29kIHRvIG1lLg0KPj4NCj4+IFJldmlld2VkLWJ5OiBKYXZpZXIgTWFydGlu
-ZXogQ2FuaWxsYXMgPGphdmllcm1AcmVkaGF0LmNvbT4NCj4+DQo+PiAtLSANCj4+IEJlc3Qg
-cmVnYXJkcywNCj4+DQo+PiBKYXZpZXIgTWFydGluZXogQ2FuaWxsYXMNCj4+IExpbnV4IEVu
-Z2luZWVyaW5nDQo+PiBSZWQgSGF0DQo+Pg0KPiANCg0KLS0gDQpUaG9tYXMgWmltbWVybWFu
-bg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMg
-R2VybWFueSBHbWJIDQpNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJlcmcsIEdlcm1hbnkN
-CihIUkIgMzY4MDksIEFHIE7DvHJuYmVyZykNCkdlc2Now6RmdHNmw7xocmVyOiBJdm8gVG90
-ZXYNCg==
-
---------------XNH9RfXI1PyYuHJ0PkMtgwSX--
-
---------------xBs0UgV8K6Ld1iE06EpBr7qw
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmJXEbwFAwAAAAAACgkQlh/E3EQov+BV
-7g//WLLPfVRsElxV0IpWC9EUSq2GXnKoXHDzuulQ5/3zyJLkgpx0aJUX3K3HFc5fxkISlCIYJQcO
-WgmT6r0Y7L5PqhHlIhocHuZgKUPRnKOsEfD0xhifyL5Cv7QGFhtdMBb85JEkeU2V3q/MNQ7BrLQV
-JaG5dl0xyE+FFcE7jSK0aLsLJTediZdxWZ27fiO3W54lPG7IEgwPKIRuUjMscWudISg/kDZ5h6Ez
-uoIdittCO3HUp0SUFoScEfpj2OwODYYfcTHy/B6BZEEI1NccWFPknwLAjyeTRxvpdj5EYthlGyKF
-gMOTABOCPWlCoWR7l9F6xtoaZzlEXSAmy7qEOPJzt2Dt2c69bOUJVDEE2nEiSaBZU1L52KfSIxEz
-9Dxy1F6isKBl+Vcy35alEJOPKuy9kgn3e05ptmb/kRSiHQulGq3rbyHSz3bovJcx8rHEutimfvpE
-IRK+7H+BsJWKkx3ChW2+wm23Wb3E5TqqizM1KR1Gu2VTFCLaiOy1ys7wBZAbd+RwYN0nB8NQlQ5I
-gznMTE6+NCugEsle+2KL41TUBKbRjGhFuuA3IkCnPQ0ShJB52QC9XwHqG9ePnYQGRJ2R0S7oCui3
-dAnQnR1sV4jvtRoE5Q/h6U71lC28Nzm7JAz+YfZWfwpBdRoFLnLuAJS77yxOgdIaQrG6BASANg3r
-EeM=
-=QIWW
------END PGP SIGNATURE-----
-
---------------xBs0UgV8K6Ld1iE06EpBr7qw--
+Rob
