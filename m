@@ -2,44 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBFF4FEFC4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 08:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B6B4FF1A5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 10:19:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KdXZr3C0Mz3bpQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 16:23:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kdb8v42D0z3bdM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 18:19:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ZO7+1DjF;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KdXZQ5lBPz2x9T
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 16:22:37 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1BB61150C;
- Tue, 12 Apr 2022 23:22:06 -0700 (PDT)
-Received: from [10.163.39.141] (unknown [10.163.39.141])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A73273F70D;
- Tue, 12 Apr 2022 23:22:00 -0700 (PDT)
-Message-ID: <e0efde60-625c-fa58-79c4-5e8a86ddf203@arm.com>
-Date: Wed, 13 Apr 2022 11:52:36 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH V6 4/7] sparc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- khalid.aziz@oracle.com
-References: <20220413055840.392628-1-anshuman.khandual@arm.com>
- <20220413055840.392628-5-anshuman.khandual@arm.com>
- <c3619877-32db-aaa3-5dd9-4917c067bc42@csgroup.eu>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <c3619877-32db-aaa3-5dd9-4917c067bc42@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::531;
+ helo=mail-ed1-x531.google.com; envelope-from=jakobkoschel@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=ZO7+1DjF; dkim-atps=neutral
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com
+ [IPv6:2a00:1450:4864:20::531])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kdb8D1fYsz2yPY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 18:18:34 +1000 (AEST)
+Received: by mail-ed1-x531.google.com with SMTP id b15so1426439edn.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 01:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=NM1pfbSgTEQ9uckWSvNkdocJAYN18ejH2fT6Ofk0eeU=;
+ b=ZO7+1DjFeRVhMTsgznRttF4gB2w6B0IYKtFlA4KFq1h3iyBj5QYxSIJne7Yh506ZqM
+ swB8QzLiPoWAF3LMh/l3KgD4/mNV4sn59GaBuq53ifDYJ6XuI8eoXMS+5IhfE3NKTDB/
+ I4zsbZ5y//peeXAXtyPrmwrTYKsLaEVebBGl+MJmM70/yZUB/e0WGb3YVaxtS0h1vOUV
+ 7z+2mxqxR0TqdfF1n8LGT7V81mhY2K9kNXpsvuTebVelCQRK3PT0oTHKyMEwiPUGb15s
+ FN7kEnSW2tGnQUNQWa/CAboo8LsqaQvW3AqfeP4IN1PEMq1kjLOJjqSJx/cXQ7Gfo5pP
+ dacw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=NM1pfbSgTEQ9uckWSvNkdocJAYN18ejH2fT6Ofk0eeU=;
+ b=vzhTDlHOq5M3u8K1d2dPUzrr7UavFFRJwRBG9T1hlxNCKAljxjXB+tqUNh3/4KND/D
+ 0ftbTxoff/ZwY4NlbqBgIPiwFCoTzIN86qFB6y5tzTRTY8dP5RR8mYZiZbAg/9mczLdG
+ Cs/tV1NK/XT9ZbgqvvV+A0f74rvbRMncGD8QlBb+iWXcEec4XpEhXVf2fHtU6pu/gc5G
+ qnjDvUA4mbnCss7y/ELehUneTgP7SFvr5DF31mpByLr/5JJ7+kvPrv/yFSNpvzLqUWpY
+ BnhVcrifo448gsqROo82jTqoKqV8d3DNWpcHFskaiSFCG4Yg+SpP7LKENhXOZQ6W4FcY
+ lcQw==
+X-Gm-Message-State: AOAM531JBETHvwReEQoGX7jpxhR7I0V6T3yA4k3HdSFaRBAAhISLnKVz
+ THtB8+KOCSFIlsUdhEtZsWU=
+X-Google-Smtp-Source: ABdhPJz1zFDl7IwBBpiJdJJrHQx/gNJ9eFMxB5nFGFZzuNCuKc3atEKIDRvXQCvDLr+YN63LNf2RhA==
+X-Received: by 2002:a05:6402:51c6:b0:419:8269:f33d with SMTP id
+ r6-20020a05640251c600b004198269f33dmr41758137edd.264.1649837910214; 
+ Wed, 13 Apr 2022 01:18:30 -0700 (PDT)
+Received: from smtpclient.apple (i130160.upc-i.chello.nl. [62.195.130.160])
+ by smtp.gmail.com with ESMTPSA id
+ u4-20020a170906780400b006ce69ff6050sm13728111ejm.69.2022.04.13.01.18.28
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 13 Apr 2022 01:18:29 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
+Subject: Re: [PATCH net-next v3 14/18] sfc: Remove usage of list iterator for
+ list_add() after the loop body
+From: Jakob Koschel <jakobkoschel@gmail.com>
+In-Reply-To: <20220412142905.54489567@kernel.org>
+Date: Wed, 13 Apr 2022 10:18:28 +0200
+Content-Transfer-Encoding: 7bit
+Message-Id: <132EC4A3-4397-4124-B736-0C3057B63B26@gmail.com>
+References: <20220412121557.3553555-1-jakobkoschel@gmail.com>
+ <20220412121557.3553555-15-jakobkoschel@gmail.com>
+ <20220412142905.54489567@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+X-Mailer: Apple Mail (2.3696.80.82.1.1)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,113 +86,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@infradead.org>, Khalid Aziz <khalid.aziz@oracle.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
+ Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
  "David S. Miller" <davem@davemloft.net>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ "Bos, H.J." <h.j.bos@vu.nl>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
+ Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
+ Arnd Bergmann <arnd@arndb.de>, Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+ KP Singh <kpsingh@kernel.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Yonghong Song <yhs@fb.com>,
+ Di Zhu <zhudi21@huawei.com>, Lars Povlsen <lars.povlsen@microchip.com>,
+ Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
+ Netdev <netdev@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ UNGLinuxDriver@microchip.com, Edward Cree <ecree.xilinx@gmail.com>,
+ Michael Walle <michael@walle.cc>, Casper Andersson <casper.casan@gmail.com>,
+ Xu Wang <vulab@iscas.ac.cn>, Cristiano Giuffrida <c.giuffrida@vu.nl>,
+ bpf@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Martin KaFai Lau <kafai@fb.com>,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 4/13/22 11:43, Christophe Leroy wrote:
+> On 12. Apr 2022, at 23:29, Jakub Kicinski <kuba@kernel.org> wrote:
 > 
+> On Tue, 12 Apr 2022 14:15:53 +0200 Jakob Koschel wrote:
+>> -	struct list_head *head = &efx->rss_context.list;
+>> +	struct list_head *head = *pos = &efx->rss_context.list;
 > 
-> Le 13/04/2022 à 07:58, Anshuman Khandual a écrit :
->> This defines and exports a platform specific custom vm_get_page_prot() via
->> subscribing ARCH_HAS_VM_GET_PAGE_PROT. It localizes arch_vm_get_page_prot()
->> as sparc_vm_get_page_prot() and moves near vm_get_page_prot().
->>
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Khalid Aziz <khalid.aziz@oracle.com>
->> Cc: sparclinux@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Reviewed-by: Khalid Aziz <khalid.aziz@oracle.com>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   arch/sparc/Kconfig            |  1 +
->>   arch/sparc/include/asm/mman.h |  6 ------
->>   arch/sparc/mm/init_64.c       | 13 +++++++++++++
->>   3 files changed, 14 insertions(+), 6 deletions(-)
->>
->> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
->> index 9200bc04701c..85b573643af6 100644
->> --- a/arch/sparc/Kconfig
->> +++ b/arch/sparc/Kconfig
->> @@ -84,6 +84,7 @@ config SPARC64
->>   	select PERF_USE_VMALLOC
->>   	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->>   	select HAVE_C_RECORDMCOUNT
->> +	select ARCH_HAS_VM_GET_PAGE_PROT
->>   	select HAVE_ARCH_AUDITSYSCALL
->>   	select ARCH_SUPPORTS_ATOMIC_RMW
->>   	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
->> diff --git a/arch/sparc/include/asm/mman.h b/arch/sparc/include/asm/mman.h
->> index 274217e7ed70..af9c10c83dc5 100644
->> --- a/arch/sparc/include/asm/mman.h
->> +++ b/arch/sparc/include/asm/mman.h
->> @@ -46,12 +46,6 @@ static inline unsigned long sparc_calc_vm_prot_bits(unsigned long prot)
->>   	}
->>   }
->>   
->> -#define arch_vm_get_page_prot(vm_flags) sparc_vm_get_page_prot(vm_flags)
->> -static inline pgprot_t sparc_vm_get_page_prot(unsigned long vm_flags)
->> -{
->> -	return (vm_flags & VM_SPARC_ADI) ? __pgprot(_PAGE_MCD_4V) : __pgprot(0);
->> -}
->> -
->>   #define arch_validate_prot(prot, addr) sparc_validate_prot(prot, addr)
->>   static inline int sparc_validate_prot(unsigned long prot, unsigned long addr)
->>   {
->> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
->> index 8b1911591581..dcb17763c1f2 100644
->> --- a/arch/sparc/mm/init_64.c
->> +++ b/arch/sparc/mm/init_64.c
->> @@ -3184,3 +3184,16 @@ void copy_highpage(struct page *to, struct page *from)
->>   	}
->>   }
->>   EXPORT_SYMBOL(copy_highpage);
->> +
->> +static pgprot_t sparc_vm_get_page_prot(unsigned long vm_flags)
->> +{
->> +	return (vm_flags & VM_SPARC_ADI) ? __pgprot(_PAGE_MCD_4V) : __pgprot(0);
->> +}
->> +
->> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
->> +{
->> +	return __pgprot(pgprot_val(protection_map[vm_flags &
->> +			(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]) |
->> +			pgprot_val(sparc_vm_get_page_prot(vm_flags)));
->> +}
->> +EXPORT_SYMBOL(vm_get_page_prot);
-> 
-> 
-> sparc is now the only one with two functions. You can most likely do 
-> like you did for ARM and POWERPC: merge into a single function:
+> ENOTBUILT, please wait with the reposting. Since you posted two
+> versions today I guess that's 2x 24h? :)
 
-I was almost about to do this one as well but as this patch has already been
-reviewed with a tag, just skipped it. I will respin the series once more :)
+oh gosh, seems like I indeed forgot to build this commit.
+Sorry about all the mess :( Also I'll wait with reposting (not
+going to make the same mistake twice ;)).
 
-Khalid,
-
-Could I keep your review tag after the following change ?
-
-> 
-> pgprot_t vm_get_page_prot(unsigned long vm_flags)
-> {
-> 	unsigned long prot = pgprot_val(protection_map[vm_flags &
-> 		(VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]);
-> 
-> 	if (vm_flags & VM_SPARC_ADI)
-> 		prot |= _PAGE_MCD_4V;
-> 
-> 	return __pgprot(prot);
-> }
-> EXPORT_SYMBOL(vm_get_page_prot);
-
-- Anshuman
+I messed up three times yesterday, was really not on a high.
+I'll be more careful in the future to not the the same kind of
+mistakes again :/
