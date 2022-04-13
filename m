@@ -1,55 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551814FF9EA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 17:20:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77684FFAEE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Apr 2022 18:06:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KdmWM2t1rz3bc9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 01:20:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KdnXJ6h6zz3bgS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 02:06:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=ffwll.ch header.i=@ffwll.ch header.a=rsa-sha256 header.s=google header.b=SMSq1vzh;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.219.172;
- helo=mail-yb1-f172.google.com; envelope-from=rjwysocki@gmail.com;
- receiver=<UNKNOWN>)
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com
- [209.85.219.172])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=ffwll.ch
+ (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com;
+ envelope-from=daniel@ffwll.ch; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=ffwll.ch header.i=@ffwll.ch header.a=rsa-sha256
+ header.s=google header.b=SMSq1vzh; dkim-atps=neutral
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com
+ [IPv6:2a00:1450:4864:20::42d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KdmVz5YYRz2x9V
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 01:20:25 +1000 (AEST)
-Received: by mail-yb1-f172.google.com with SMTP id g34so4403020ybj.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 08:20:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KdnWZ6ftdz2ygC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 02:06:01 +1000 (AEST)
+Received: by mail-wr1-x42d.google.com with SMTP id m14so3323487wrb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Apr 2022 09:06:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ffwll.ch; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=nPdGkgfedd/A4OP8KwTTe+FHIMRJcA3jhSUiZu8tE4s=;
+ b=SMSq1vzhpdQ78zUIkOaNXUt3O9fifj0rXSBWRdwImunuLxqHLuE58sPWO9jCz+Rqps
+ JUzCFp9Yp9LHRB2XxmnmQ9qMlaMqOe/uqH8ZYfYk5GGsbLwpVLKfasf4LLCNxk4lJP5O
+ Njosm3BtBMYcp5sEyZed8HqQKM9BYZM73WQO4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=w2Lgy0xxZ/kq35mN9jTEDe99/KAY+dTqIri9HO0ska8=;
- b=wmcRmXjHt3exdVlOQN2HdVyrr4bQF3bCpZQfS/FDw4nQhFB3hD6NcIlxL+UrIJJc7c
- 8AyUUcGZBhnGeTOQFRUrGlgw1GVFc+T+M/jDisnN3G235MoCG8AjerxKKUagVce4gzUr
- 3por/PEI1om8AmfsPdKAiKQHHuLtJNGbCXh+iOzagz+FrWn5peIIFK17st5oFWz/eyvl
- lsb3FlqxT6UCeYAMScDvacn2Lk+hOlJE/MbiyehzxW2VnYF2tQgWt6gtJ1MycZ13ZiOH
- apHA1s2Tc0DkIhiJDmixbYcQeNdkcP2gsB+T/QzGw2OPu5CP0Fb37krC3L0kw9XTPZWw
- cu/w==
-X-Gm-Message-State: AOAM533lbTezgudC/Udar7Fm+9nYCUVVHZrbdScpJp+mI1LXqR5BvPoo
- OURgMQ5ZWA5SWytmzwxwU4AsBz0tLo3JZ+iieDY=
-X-Google-Smtp-Source: ABdhPJwOIpKOGRh6wLe+b2eqyMIagCZXSSwKkMG4Q0iaM3xYCmKqKl32u8IbpWSAjNHIgVdbn8Ltt5Bh6VA0YsVmI+o=
-X-Received: by 2002:a25:3cc3:0:b0:63e:6ee9:4840 with SMTP id
- j186-20020a253cc3000000b0063e6ee94840mr22598626yba.153.1649863222281; Wed, 13
- Apr 2022 08:20:22 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=nPdGkgfedd/A4OP8KwTTe+FHIMRJcA3jhSUiZu8tE4s=;
+ b=ZFFF9Z0Uc0d1jq9RX/4mOZQ0K2vAfROHkxDF521Ih3NT84fsJQxSxga5gZFE4PAtx4
+ Lg4vYYos9ygvM3GD6gXSis/szikNOdYWzSEL0ZiZaqofNhurlyPGraWf0jwYz/UAwOzH
+ XoZ7mVluaf2HVox5X8bSMdIq5NbtzLPABd231psZiWBavC6c91C2RQ4e02iB2bbgVyAu
+ QsyNr0V3uA8qRFb361YLLp8W55QVXuIzj2qkqqXPPSNxHtzZbUaPCYteVWcvkbFvDo9N
+ x640OjuB8KVrlOyt1IHXzGIC8NTplqP06Imbhg/O3stc8qcnDZ1dV3abcNVm6Ws1fSGf
+ 4x6w==
+X-Gm-Message-State: AOAM533GdLVUUIpJQ7wWur4hYqTTH4mDnGOLJTa/0XdxgXmSAqCyE455
+ jwjzdkQvRvTtkn/7rwFiZyhNsw==
+X-Google-Smtp-Source: ABdhPJxCHSZR6sOhR82MWDqkHkKQxYBi5t7yzBdb+67OAJKLu81jjVxRF6LbEco5kZi775i1Cfk2zw==
+X-Received: by 2002:adf:e944:0:b0:207:af9e:a4e7 with SMTP id
+ m4-20020adfe944000000b00207af9ea4e7mr6330680wrn.296.1649865953497; 
+ Wed, 13 Apr 2022 09:05:53 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+ by smtp.gmail.com with ESMTPSA id
+ o6-20020a05600c378600b0038eca3cdbb3sm2716964wmr.13.2022.04.13.09.05.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Apr 2022 09:05:53 -0700 (PDT)
+Date: Wed, 13 Apr 2022 18:05:51 +0200
+From: Daniel Vetter <daniel@ffwll.ch>
+To: Javier Martinez Canillas <javierm@redhat.com>
+Subject: Re: [PATCH 2/2] fbdev: Remove hot-unplug workaround for framebuffers
+ without device
+Message-ID: <Ylb0316ABOhOe1Rb@phenom.ffwll.local>
+References: <20220413092454.1073-1-tzimmermann@suse.de>
+ <20220413092454.1073-3-tzimmermann@suse.de>
+ <2e183cc9-603d-f038-54aa-5601f11b0484@redhat.com>
 MIME-Version: 1.0
-References: <4cb0c4573cce165657ad1f7275c4b3852cbcd115.1648833416.git.christophe.leroy@csgroup.eu>
- <20220404062710.m6bzpg5gsx4x7tm5@vireshk-i7>
-In-Reply-To: <20220404062710.m6bzpg5gsx4x7tm5@vireshk-i7>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 13 Apr 2022 17:20:11 +0200
-Message-ID: <CAJZ5v0itEsDDWPYPYJkY5xbs1t97uMx3P3pL1Qg_jrA63aXw_Q@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq: Prepare cleanup of powerpc's asm/prom.h
-To: Viresh Kumar <viresh.kumar@linaro.org>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e183cc9-603d-f038-54aa-5601f11b0484@redhat.com>
+X-Operating-System: Linux phenom 5.10.0-8-amd64 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,99 +82,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux PM <linux-pm@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ Thomas Zimmermann <tzimmermann@suse.de>, frowand.list@gmail.com, deller@gmx.de,
+ linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
+ robh+dt@kernel.org, paulus@samba.org, daniel@ffwll.ch, sam@ravnborg.org,
+ linux@roeck-us.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 4, 2022 at 8:27 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 01-04-22, 19:24, Christophe Leroy wrote:
-> > powerpc's asm/prom.h brings some headers that it doesn't
-> > need itself.
-> >
-> > In order to clean it up, first add missing headers in
-> > users of asm/prom.h
-> >
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+On Wed, Apr 13, 2022 at 12:50:50PM +0200, Javier Martinez Canillas wrote:
+> On 4/13/22 11:24, Thomas Zimmermann wrote:
+> > A workaround makes fbdev hot-unplugging work for framebuffers without
+> > device. The only user for this feature was offb. As each OF framebuffer
+> > now has an associated platform device, the workaround is no longer
+> > needed. Remove it. Effectively reverts commit 0f525289ff0d ("fbdev: Fix
+> > unregistering of framebuffers without device").
+> > 
+> > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 > > ---
-> >  drivers/cpufreq/pasemi-cpufreq.c      | 1 -
-> >  drivers/cpufreq/pmac32-cpufreq.c      | 2 +-
-> >  drivers/cpufreq/pmac64-cpufreq.c      | 2 +-
-> >  drivers/cpufreq/ppc_cbe_cpufreq.c     | 1 -
-> >  drivers/cpufreq/ppc_cbe_cpufreq_pmi.c | 2 +-
-> >  5 files changed, 3 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/drivers/cpufreq/pasemi-cpufreq.c b/drivers/cpufreq/pasemi-cpufreq.c
-> > index 815645170c4d..039a66bbe1be 100644
-> > --- a/drivers/cpufreq/pasemi-cpufreq.c
-> > +++ b/drivers/cpufreq/pasemi-cpufreq.c
-> > @@ -18,7 +18,6 @@
-> >
-> >  #include <asm/hw_irq.h>
-> >  #include <asm/io.h>
-> > -#include <asm/prom.h>
-> >  #include <asm/time.h>
-> >  #include <asm/smp.h>
-> >
-> > diff --git a/drivers/cpufreq/pmac32-cpufreq.c b/drivers/cpufreq/pmac32-cpufreq.c
-> > index 4f20c6a9108d..20f64a8b0a35 100644
-> > --- a/drivers/cpufreq/pmac32-cpufreq.c
-> > +++ b/drivers/cpufreq/pmac32-cpufreq.c
-> > @@ -24,7 +24,7 @@
-> >  #include <linux/device.h>
-> >  #include <linux/hardirq.h>
-> >  #include <linux/of_device.h>
-> > -#include <asm/prom.h>
-> > +
-> >  #include <asm/machdep.h>
-> >  #include <asm/irq.h>
-> >  #include <asm/pmac_feature.h>
-> > diff --git a/drivers/cpufreq/pmac64-cpufreq.c b/drivers/cpufreq/pmac64-cpufreq.c
-> > index d7542a106e6b..ba9c31d98bd6 100644
-> > --- a/drivers/cpufreq/pmac64-cpufreq.c
-> > +++ b/drivers/cpufreq/pmac64-cpufreq.c
-> > @@ -22,7 +22,7 @@
-> >  #include <linux/completion.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/of_device.h>
-> > -#include <asm/prom.h>
-> > +
-> >  #include <asm/machdep.h>
-> >  #include <asm/irq.h>
-> >  #include <asm/sections.h>
-> > diff --git a/drivers/cpufreq/ppc_cbe_cpufreq.c b/drivers/cpufreq/ppc_cbe_cpufreq.c
-> > index c58abb4cca3a..e3313ce63b38 100644
-> > --- a/drivers/cpufreq/ppc_cbe_cpufreq.c
-> > +++ b/drivers/cpufreq/ppc_cbe_cpufreq.c
-> > @@ -12,7 +12,6 @@
-> >  #include <linux/of_platform.h>
-> >
-> >  #include <asm/machdep.h>
-> > -#include <asm/prom.h>
-> >  #include <asm/cell-regs.h>
-> >
-> >  #include "ppc_cbe_cpufreq.h"
-> > diff --git a/drivers/cpufreq/ppc_cbe_cpufreq_pmi.c b/drivers/cpufreq/ppc_cbe_cpufreq_pmi.c
-> > index 037fe23bc6ed..4fba3637b115 100644
-> > --- a/drivers/cpufreq/ppc_cbe_cpufreq_pmi.c
-> > +++ b/drivers/cpufreq/ppc_cbe_cpufreq_pmi.c
-> > @@ -13,9 +13,9 @@
-> >  #include <linux/init.h>
-> >  #include <linux/of_platform.h>
-> >  #include <linux/pm_qos.h>
-> > +#include <linux/slab.h>
-> >
-> >  #include <asm/processor.h>
-> > -#include <asm/prom.h>
-> >  #include <asm/pmi.h>
-> >  #include <asm/cell-regs.h>
->
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> >  drivers/video/fbdev/core/fbmem.c | 9 +--------
+> >  1 file changed, 1 insertion(+), 8 deletions(-)
+> > 
+> > diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+> > index bc6ed750e915..bdd00d381bbc 100644
+> > --- a/drivers/video/fbdev/core/fbmem.c
+> > +++ b/drivers/video/fbdev/core/fbmem.c
+> > @@ -1579,14 +1579,7 @@ static void do_remove_conflicting_framebuffers(struct apertures_struct *a,
+> >  			 * If it's not a platform device, at least print a warning. A
+> >  			 * fix would add code to remove the device from the system.
+> >  			 */
+> > -			if (!device) {
+> > -				/* TODO: Represent each OF framebuffer as its own
+> > -				 * device in the device hierarchy. For now, offb
+> > -				 * doesn't have such a device, so unregister the
+> > -				 * framebuffer as before without warning.
+> > -				 */
+> > -				do_unregister_framebuffer(registered_fb[i]);
+> 
+> Maybe we could still keep this for a couple of releases but with a big
+> warning that's not supported in case there are out-of-tree drivers out
+> there that still do this ?
+> 
+> Or at least a warning if the do_unregister_framebuffer() call is removed.
 
-Applied as 5.19 material.
+Yeah dying while holding console_lock isn't fun, and not having a WARN_ON
++ bail-out code pretty much forces bug reporters to do a bisect here to
+give us something more than "machine dies at boot with no messages".
 
-If the powerpc folks decide to take it, I can drop it, so please let me know.
+I'd just outright keep the WARN_ON here for 1-2 years even to really make
+sure we got all the bug reports, since often these older machines only
+update onto LTS releases.
+
+And it needs to be a WARN_ON + bail out since BUG_ON is as bad as just
+oopsing.
+-Daniel
+
+> 
+> Regardless of what you chose to do, the patch looks good to me.
+> 
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+> 
+> -- 
+> Best regards,
+> 
+> Javier Martinez Canillas
+> Linux Engineering
+> Red Hat
+> 
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
