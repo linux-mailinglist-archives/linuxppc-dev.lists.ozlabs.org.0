@@ -2,102 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98A3500401
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 04:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A02085004FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 06:18:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kf2sR4vPPz3bfC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 12:07:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kf5n64z2rz3bhR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Apr 2022 14:18:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gE4AEiKq;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au header.a=rsa-sha256 header.s=201602 header.b=B9ixypu7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=disgoel@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gE4AEiKq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KdlQd2P2Xz2xKT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 00:31:36 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23DCmeth031326; 
- Wed, 13 Apr 2022 14:31:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version; s=pp1; bh=Y8jlYoG6vVAI6ionQZqVLq6nwk37g/rdsB0wsUqn3d4=;
- b=gE4AEiKqstPDjTo+skvCCgfzk+A5hLNqyM1Wi7vXBrQck3qaqkX8Bw847/qL9FiPmmt3
- om2iIDvKYrKcK9AzDdxizokBIjrmIILf7WlIl360zavshHBpIn0W9106fsgeVEFtWZYk
- sUorM6dIdF17QK0tMgUo90mNRNBb3YXJc8jPsqakZ1BVK2fa0o1rQ5+PvzuGI65PGJcw
- HQz/j4bQ5VYpcoeEVBRRFBO2Wab0KwzqGPtqselj5I0LgGdKV4TClnL7MMSURSfFLORM
- wFHGis1NVhdY/DRCuYUecAHVfiQesRX/r6s4wiNq4y3euSZu6lFhbUMlPvAx09Soo34M OQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3fdxusagkp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 Apr 2022 14:31:22 +0000
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 23DEVMgW021021;
- Wed, 13 Apr 2022 14:31:22 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3fdxusagjh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 Apr 2022 14:31:22 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23DEE075013256;
- Wed, 13 Apr 2022 14:31:19 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma05fra.de.ibm.com with ESMTP id 3fb1s8nmbb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 Apr 2022 14:31:19 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 23DEVPt143254160
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 Apr 2022 14:31:25 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5ECAF4C044;
- Wed, 13 Apr 2022 14:31:16 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 768E24C040;
- Wed, 13 Apr 2022 14:31:10 +0000 (GMT)
-Received: from disgoel-ibm-com (unknown [9.43.116.244])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 13 Apr 2022 14:31:10 +0000 (GMT)
-Message-ID: <c977f552a37f092b69b22fe07b2adef053a4d721.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH V3 0/2] Fix perf bench numa to work with machines having
- #CPUs > 1K
-From: Disha Goel <disgoel@linux.vnet.ibm.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
- jolsa@kernel.org
-Date: Wed, 13 Apr 2022 20:01:08 +0530
-In-Reply-To: <20220412164059.42654-1-atrajeev@linux.vnet.ibm.com>
-References: <20220412164059.42654-1-atrajeev@linux.vnet.ibm.com>
-Content-Type: multipart/alternative; boundary="=-L2vVa6joYbbKvsUwutrU"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 86artl2ZVaCK9fKhb283Vfrz3GaVEc0_
-X-Proofpoint-ORIG-GUID: _6rMQWkCwL9tk1yTt0EBdhFIokyYWZft
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kf5mQ5TTWz2xfT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 14:18:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=B9ixypu7; 
+ dkim-atps=neutral
+Received: by gandalf.ozlabs.org (Postfix, from userid 1007)
+ id 4Kf5mM5yCtz4xLV; Thu, 14 Apr 2022 14:18:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gibson.dropbear.id.au; s=201602; t=1649909891;
+ bh=oSFTQN5XpimNXqsD08tupkvcuCmsZwu0RDa1OOcL13A=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=B9ixypu7Oy3JzGGzWMQcKwPzJdJFZ9xgg93g86u612qEnQyRsvTfBcnewpACCzPFe
+ wO3uTo7gv6PmPT0qSg6MUTIIqc6T60mv3Soc2OxH/nUWtPN77E0byNknASaeO4swgc
+ 36XV2lK0m69Rdnehbai1NAsx081ycPvN91UtnTS4=
+Date: Thu, 14 Apr 2022 14:18:02 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Subject: Re: [PATCH kernel] KVM: PPC: Fix TCE handling for VFIO
+Message-ID: <YlegeomEgsKk77aG@yekko>
+References: <20220406040416.3608518-1-aik@ozlabs.ru>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-04-13_02,2022-04-13_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 clxscore=1011 impostorscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204130077
-X-Mailman-Approved-At: Thu, 14 Apr 2022 12:06:48 +1000
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="GK8C8w0gKbIl6lLW"
+Content-Disposition: inline
+In-Reply-To: <20220406040416.3608518-1-aik@ozlabs.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,140 +54,347 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, maddy@linux.vnet.ibm.com, srikar@linux.vnet.ibm.com,
- rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, kjain@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Daniel Barboza <dbarboza@redhat.com>, Fabiano Rosas <farosas@linux.ibm.com>,
+ kvm-ppc@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---=-L2vVa6joYbbKvsUwutrU
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-
-
------Original Message-----
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com
-Cc: mpe@ellerman.id.au, linux-perf-users@vger.kernel.org, 
-linuxppc-dev@lists.ozlabs.org, maddy@linux.vnet.ibm.com, 
-rnsastry@linux.ibm.com, kjain@linux.ibm.com, 
-linux-kernel@vger.kernel.org, srikar@linux.vnet.ibm.com, 
-irogers@google.com
-Subject: [PATCH V3 0/2] Fix perf bench numa to work with machines
-having #CPUs > 1K
-Date: Tue, 12 Apr 2022 22:10:57 +0530
-
-The perf benchmark for collections: numa hits failure in
-systemconfiguration with CPU's more than 1024. These benchmarks
-uses"sched_getaffinity" and "sched_setaffinity" in the code towork with
-affinity.
-Example snippet from numa benchmark:<<>>perf: bench/numa.c:302:
-bind_to_node: Assertion `!(ret)' failed.Aborted (core dumped)<<>>
-bind_to_node function uses "sched_getaffinity" to save the cpumask.This
-fails with EINVAL because the default mask size in glibc is 1024
-To overcome this 1024 CPUs mask size limitation of cpu_set_t,change the
-mask size using the CPU_*_S macros ie, use CPU_ALLOC toallocate
-cpumask, CPU_ALLOC_SIZE for size, CPU_SET_S to set mask bit.
-Fix all the relevant places in the code to use mask size which is
-largeenough to represent number of possible CPU's in the system.
-This patchset also address a fix for parse_setup_cpu_list function
-innuma bench to check if input CPU is online before binding task tothat
-CPU. This is to fix failures where, though CPU number is withinmax CPU,
-it could happen that CPU is offline. Here, sched_setaffinitywill result
-in failure when using cpumask having that cpu bit setin the mask.
-Patch 1 address fix for parse_setup_cpu_list to check if CPU used to
-bindtask is online. Patch 2 has fix for bench numa to work with
-machineshaving #CPUs > 1K
-Athira Rajeev (2):  tools/perf: Fix perf bench numa testcase to check
-if CPU used to bind    task is online  perf bench: Fix numa bench to
-fix usage of affinity for machines with    #CPUs > 1K
-Changelog:v2 -> v3Link to the v2 version :
-https://lore.kernel.org/all/20220406175113.87881-1-atrajeev@linux.vnet.ibm.com/
- - From the v2 version, patch 1 and patch 2 are now part of upstream. -
-This v3 version separates patch 3 and patch 4 to address
-review   comments from arnaldo which includes using sysfs__read_str for
-reading   sysfs file and fixing the compilation issues observed in
-debian
-Tesed the patches on powerpc with CPU > 1K and other configurations as
-well, verified the perf bench numa with the patch set.Tested-by: Disha
-Goel <disgoel@linux.vnet.ibm.com>
- tools/perf/bench/numa.c  | 136 +++++++++++++++++++++++++++++----------
-tools/perf/util/header.c |  51 +++++++++++++++ tools/perf/util/header.h
-|   1 + 3 files changed, 153 insertions(+), 35 deletions(-)
-
-
---=-L2vVa6joYbbKvsUwutrU
-Content-Type: text/html; charset="utf-8"
+--GK8C8w0gKbIl6lLW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-<html dir=3D"ltr"><head></head><body style=3D"text-align:left; direction:lt=
-r;"><div><br></div><div><br></div><div>-----Original Message-----</div><div=
-><b>From</b>: Athira Rajeev &lt;<a href=3D"mailto:Athira%20Rajeev%20%3catra=
-jeev@linux.vnet.ibm.com%3e">atrajeev@linux.vnet.ibm.com</a>&gt;</div><div><=
-b>To</b>: <a href=3D"mailto:acme@kernel.org">acme@kernel.org</a>, <a href=
-=3D"mailto:jolsa@kernel.org">jolsa@kernel.org</a>, <a href=3D"mailto:disgoe=
-l@linux.vnet.ibm.com">disgoel@linux.vnet.ibm.com</a></div><div><b>Cc</b>: <=
-a href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.au</a>, <a href=3D"mai=
-lto:linux-perf-users@vger.kernel.org">linux-perf-users@vger.kernel.org</a>,=
- <a href=3D"mailto:linuxppc-dev@lists.ozlabs.org">linuxppc-dev@lists.ozlabs=
-.org</a>, <a href=3D"mailto:maddy@linux.vnet.ibm.com">maddy@linux.vnet.ibm.=
-com</a>, <a href=3D"mailto:rnsastry@linux.ibm.com">rnsastry@linux.ibm.com</=
-a>, <a href=3D"mailto:kjain@linux.ibm.com">kjain@linux.ibm.com</a>, <a href=
-=3D"mailto:linux-kernel@vger.kernel.org">linux-kernel@vger.kernel.org</a>, =
-<a href=3D"mailto:srikar@linux.vnet.ibm.com">srikar@linux.vnet.ibm.com</a>,=
- <a href=3D"mailto:irogers@google.com">irogers@google.com</a></div><div><b>=
-Subject</b>: [PATCH V3 0/2] Fix perf bench numa to work with machines havin=
-g #CPUs &gt; 1K</div><div><b>Date</b>: Tue, 12 Apr 2022 22:10:57 +0530</div=
-><div><br></div><pre>The perf benchmark for collections: numa hits failure =
-in system</pre><pre>configuration with CPU's more than 1024. These benchmar=
-ks uses</pre><pre>"sched_getaffinity" and "sched_setaffinity" in the code t=
-o</pre><pre>work with affinity.</pre><pre><br></pre><pre>Example snippet fr=
-om numa benchmark:</pre><pre>&lt;&lt;&gt;&gt;</pre><pre>perf: bench/numa.c:=
-302: bind_to_node: Assertion `!(ret)' failed.</pre><pre>Aborted (core dumpe=
-d)</pre><pre>&lt;&lt;&gt;&gt;</pre><pre><br></pre><pre>bind_to_node functio=
-n uses "sched_getaffinity" to save the cpumask.</pre><pre>This fails with E=
-INVAL because the default mask size in glibc is 1024</pre><pre><br></pre><p=
-re>To overcome this 1024 CPUs mask size limitation of cpu_set_t,</pre><pre>=
-change the mask size using the CPU_*_S macros ie, use CPU_ALLOC to</pre><pr=
-e>allocate cpumask, CPU_ALLOC_SIZE for size, CPU_SET_S to set mask bit.</pr=
-e><pre><br></pre><pre>Fix all the relevant places in the code to use mask s=
-ize which is large</pre><pre>enough to represent number of possible CPU's i=
-n the system.</pre><pre><br></pre><pre>This patchset also address a fix for=
- parse_setup_cpu_list function in</pre><pre>numa bench to check if input CP=
-U is online before binding task to</pre><pre>that CPU. This is to fix failu=
-res where, though CPU number is within</pre><pre>max CPU, it could happen t=
-hat CPU is offline. Here, sched_setaffinity</pre><pre>will result in failur=
-e when using cpumask having that cpu bit set</pre><pre>in the mask.</pre><p=
-re><br></pre><pre>Patch 1 address fix for parse_setup_cpu_list to check if =
-CPU used to bind</pre><pre>task is online. Patch 2 has fix for bench numa t=
-o work with machines</pre><pre>having #CPUs &gt; 1K</pre><pre><br></pre><pr=
-e>Athira Rajeev (2):</pre><pre>  tools/perf: Fix perf bench numa testcase t=
-o check if CPU used to bind</pre><pre>    task is online</pre><pre>  perf b=
-ench: Fix numa bench to fix usage of affinity for machines with</pre><pre> =
-   #CPUs &gt; 1K</pre><pre><br></pre><pre>Changelog:</pre><pre>v2 -&gt; v3<=
-/pre><pre>Link to the v2 version :</pre><a href=3D"https://lore.kernel.org/=
-all/20220406175113.87881-1-atrajeev@linux.vnet.ibm.com/"><pre>https://lore.=
-kernel.org/all/20220406175113.87881-1-atrajeev@linux.vnet.ibm.com/</pre></a=
-><pre><br></pre><pre> - From the v2 version, patch 1 and patch 2 are now pa=
-rt of upstream.</pre><pre> - This v3 version separates patch 3 and patch 4 =
-to address review</pre><pre>   comments from arnaldo which includes using s=
-ysfs__read_str for reading</pre><pre>   sysfs file and fixing the compilati=
-on issues observed in debian</pre><pre><br></pre><pre style=3D"caret-color:=
- rgb(0, 0, 0); color: rgb(0, 0, 0);">Tesed the patches on powerpc with CPU =
-&gt; 1K and other configurations as well, verified the perf bench numa with=
- the patch set.</pre><pre style=3D"caret-color: rgb(0, 0, 0); color: rgb(0,=
- 0, 0);">Tested-by: Disha Goel &lt;<a href=3D"mailto:disgoel@linux.vnet.ibm=
-.com">disgoel@linux.vnet.ibm.com</a>&gt;</pre><pre style=3D"caret-color: rg=
-b(0, 0, 0); color: rgb(0, 0, 0);"><br></pre><pre style=3D"caret-color: rgb(=
-0, 0, 0); color: rgb(0, 0, 0);"> tools/perf/bench/numa.c  | 136 +++++++++++=
-++++++++++++++++++----------</pre><pre> tools/perf/util/header.c |  51 ++++=
-+++++++++++</pre><pre> tools/perf/util/header.h |   1 +</pre><pre> 3 files =
-changed, 153 insertions(+), 35 deletions(-)</pre><pre><br></pre></body></ht=
-ml>
+On Wed, Apr 06, 2022 at 02:04:16PM +1000, Alexey Kardashevskiy wrote:
+> At the moment the IOMMU page size in a pseries VM is 16MB (the biggest
+> allowed by LoPAPR), this page size is used for an emulated TCE table.
+> If there is a passed though PCI device, that there are hardware IOMMU
+> tables with equal or smaller IOMMU page sizes so one emulated IOMMU pages
+> is backed by power-of-two hardware pages.
+>=20
+> The code wrongly uses the emulated TCE index instead of hardware TCE
+> index in error handling. The problem is easier to see on POWER8 with
+> multi-level TCE tables (when only the first level is preallocated)
+> as hash mode uses real mode TCE hypercalls handlers.
+> The kernel starts using indirect tables when VMs get bigger than 128GB
+> (depends on the max page order).
+> The very first real mode hcall is going to fail with H_TOO_HARD as
+> in the real mode we cannot allocate memory for TCEs (we can in the virtual
+> mode) but on the way out the code attempts to clear hardware TCEs using
+> emulated TCE indexes which corrupts random kernel memory because
+> it_offset=3D=3D1<<59 is subtracted from those indexes and the resulting i=
+ndex
+> is out of the TCE table bounds.
+>=20
+> This fixes kvmppc_clear_tce() to use the correct TCE indexes.
+>=20
+> While at it, this fixes TCE cache invalidation which uses emulated TCE
+> indexes instead of the hardware ones. This went unnoticed as 64bit DMA
+> is used these days and VMs map all RAM in one go and only then do DMA
+> and this is when the TCE cache gets populated.
+>=20
+> Potentially this could slow down mapping, however normally 16MB
+> emulated pages are backed by 64K hardware pages so it is one write to
+> the "TCE Kill" per 256 updates which is not that bad considering the size
+> of the cache (1024 TCEs or so).
+>=20
+> Fixes: ca1fc489cfa0 ("KVM: PPC: Book3S: Allow backing bigger guest IOMMU =
+pages with smaller physical pages")
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
---=-L2vVa6joYbbKvsUwutrU--
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
 
+In addition, I have confirmations from both our QE team and a customer
+that they can no longer reproduce the problem with this patch.  So,
+
+Tested-by: David Gibson <david@gibson.dropbear.id.au>
+
+If we can merge this ASAP, that would be great.
+
+> ---
+>  arch/powerpc/kvm/book3s_64_vio.c    | 45 +++++++++++++++--------------
+>  arch/powerpc/kvm/book3s_64_vio_hv.c | 44 ++++++++++++++--------------
+>  2 files changed, 45 insertions(+), 44 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_6=
+4_vio.c
+> index d42b4b6d4a79..85cfa6328222 100644
+> --- a/arch/powerpc/kvm/book3s_64_vio.c
+> +++ b/arch/powerpc/kvm/book3s_64_vio.c
+> @@ -420,13 +420,19 @@ static void kvmppc_tce_put(struct kvmppc_spapr_tce_=
+table *stt,
+>  	tbl[idx % TCES_PER_PAGE] =3D tce;
+>  }
+> =20
+> -static void kvmppc_clear_tce(struct mm_struct *mm, struct iommu_table *t=
+bl,
+> -		unsigned long entry)
+> +static void kvmppc_clear_tce(struct mm_struct *mm, struct kvmppc_spapr_t=
+ce_table *stt,
+> +		struct iommu_table *tbl, unsigned long entry)
+>  {
+> -	unsigned long hpa =3D 0;
+> -	enum dma_data_direction dir =3D DMA_NONE;
+> +	unsigned long i;
+> +	unsigned long subpages =3D 1ULL << (stt->page_shift - tbl->it_page_shif=
+t);
+> +	unsigned long io_entry =3D entry << (stt->page_shift - tbl->it_page_shi=
+ft);
+> =20
+> -	iommu_tce_xchg_no_kill(mm, tbl, entry, &hpa, &dir);
+> +	for (i =3D 0; i < subpages; ++i) {
+> +		unsigned long hpa =3D 0;
+> +		enum dma_data_direction dir =3D DMA_NONE;
+> +
+> +		iommu_tce_xchg_no_kill(mm, tbl, io_entry + i, &hpa, &dir);
+> +	}
+>  }
+> =20
+>  static long kvmppc_tce_iommu_mapped_dec(struct kvm *kvm,
+> @@ -485,6 +491,8 @@ static long kvmppc_tce_iommu_unmap(struct kvm *kvm,
+>  			break;
+>  	}
+> =20
+> +	iommu_tce_kill(tbl, io_entry, subpages);
+> +
+>  	return ret;
+>  }
+> =20
+> @@ -544,6 +552,8 @@ static long kvmppc_tce_iommu_map(struct kvm *kvm,
+>  			break;
+>  	}
+> =20
+> +	iommu_tce_kill(tbl, io_entry, subpages);
+> +
+>  	return ret;
+>  }
+> =20
+> @@ -590,10 +600,9 @@ long kvmppc_h_put_tce(struct kvm_vcpu *vcpu, unsigne=
+d long liobn,
+>  			ret =3D kvmppc_tce_iommu_map(vcpu->kvm, stt, stit->tbl,
+>  					entry, ua, dir);
+> =20
+> -		iommu_tce_kill(stit->tbl, entry, 1);
+> =20
+>  		if (ret !=3D H_SUCCESS) {
+> -			kvmppc_clear_tce(vcpu->kvm->mm, stit->tbl, entry);
+> +			kvmppc_clear_tce(vcpu->kvm->mm, stt, stit->tbl, entry);
+>  			goto unlock_exit;
+>  		}
+>  	}
+> @@ -669,13 +678,13 @@ long kvmppc_h_put_tce_indirect(struct kvm_vcpu *vcp=
+u,
+>  		 */
+>  		if (get_user(tce, tces + i)) {
+>  			ret =3D H_TOO_HARD;
+> -			goto invalidate_exit;
+> +			goto unlock_exit;
+>  		}
+>  		tce =3D be64_to_cpu(tce);
+> =20
+>  		if (kvmppc_tce_to_ua(vcpu->kvm, tce, &ua)) {
+>  			ret =3D H_PARAMETER;
+> -			goto invalidate_exit;
+> +			goto unlock_exit;
+>  		}
+> =20
+>  		list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+> @@ -684,19 +693,15 @@ long kvmppc_h_put_tce_indirect(struct kvm_vcpu *vcp=
+u,
+>  					iommu_tce_direction(tce));
+> =20
+>  			if (ret !=3D H_SUCCESS) {
+> -				kvmppc_clear_tce(vcpu->kvm->mm, stit->tbl,
+> -						entry);
+> -				goto invalidate_exit;
+> +				kvmppc_clear_tce(vcpu->kvm->mm, stt, stit->tbl,
+> +						 entry + i);
+> +				goto unlock_exit;
+>  			}
+>  		}
+> =20
+>  		kvmppc_tce_put(stt, entry + i, tce);
+>  	}
+> =20
+> -invalidate_exit:
+> -	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
+> -		iommu_tce_kill(stit->tbl, entry, npages);
+> -
+>  unlock_exit:
+>  	srcu_read_unlock(&vcpu->kvm->srcu, idx);
+> =20
+> @@ -735,20 +740,16 @@ long kvmppc_h_stuff_tce(struct kvm_vcpu *vcpu,
+>  				continue;
+> =20
+>  			if (ret =3D=3D H_TOO_HARD)
+> -				goto invalidate_exit;
+> +				return ret;
+> =20
+>  			WARN_ON_ONCE(1);
+> -			kvmppc_clear_tce(vcpu->kvm->mm, stit->tbl, entry);
+> +			kvmppc_clear_tce(vcpu->kvm->mm, stt, stit->tbl, entry + i);
+>  		}
+>  	}
+> =20
+>  	for (i =3D 0; i < npages; ++i, ioba +=3D (1ULL << stt->page_shift))
+>  		kvmppc_tce_put(stt, ioba >> stt->page_shift, tce_value);
+> =20
+> -invalidate_exit:
+> -	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
+> -		iommu_tce_kill(stit->tbl, ioba >> stt->page_shift, npages);
+> -
+>  	return ret;
+>  }
+>  EXPORT_SYMBOL_GPL(kvmppc_h_stuff_tce);
+> diff --git a/arch/powerpc/kvm/book3s_64_vio_hv.c b/arch/powerpc/kvm/book3=
+s_64_vio_hv.c
+> index 870b7f0c7ea5..fdeda6a9cff4 100644
+> --- a/arch/powerpc/kvm/book3s_64_vio_hv.c
+> +++ b/arch/powerpc/kvm/book3s_64_vio_hv.c
+> @@ -247,13 +247,19 @@ static void iommu_tce_kill_rm(struct iommu_table *t=
+bl,
+>  		tbl->it_ops->tce_kill(tbl, entry, pages, true);
+>  }
+> =20
+> -static void kvmppc_rm_clear_tce(struct kvm *kvm, struct iommu_table *tbl,
+> -		unsigned long entry)
+> +static void kvmppc_rm_clear_tce(struct kvm *kvm, struct kvmppc_spapr_tce=
+_table *stt,
+> +		struct iommu_table *tbl, unsigned long entry)
+>  {
+> -	unsigned long hpa =3D 0;
+> -	enum dma_data_direction dir =3D DMA_NONE;
+> +	unsigned long i;
+> +	unsigned long subpages =3D 1ULL << (stt->page_shift - tbl->it_page_shif=
+t);
+> +	unsigned long io_entry =3D entry << (stt->page_shift - tbl->it_page_shi=
+ft);
+> =20
+> -	iommu_tce_xchg_no_kill_rm(kvm->mm, tbl, entry, &hpa, &dir);
+> +	for (i =3D 0; i < subpages; ++i) {
+> +		unsigned long hpa =3D 0;
+> +		enum dma_data_direction dir =3D DMA_NONE;
+> +
+> +		iommu_tce_xchg_no_kill_rm(kvm->mm, tbl, io_entry + i, &hpa, &dir);
+> +	}
+>  }
+> =20
+>  static long kvmppc_rm_tce_iommu_mapped_dec(struct kvm *kvm,
+> @@ -316,6 +322,8 @@ static long kvmppc_rm_tce_iommu_unmap(struct kvm *kvm,
+>  			break;
+>  	}
+> =20
+> +	iommu_tce_kill_rm(tbl, io_entry, subpages);
+> +
+>  	return ret;
+>  }
+> =20
+> @@ -379,6 +387,8 @@ static long kvmppc_rm_tce_iommu_map(struct kvm *kvm,
+>  			break;
+>  	}
+> =20
+> +	iommu_tce_kill_rm(tbl, io_entry, subpages);
+> +
+>  	return ret;
+>  }
+> =20
+> @@ -420,10 +430,8 @@ long kvmppc_rm_h_put_tce(struct kvm_vcpu *vcpu, unsi=
+gned long liobn,
+>  			ret =3D kvmppc_rm_tce_iommu_map(vcpu->kvm, stt,
+>  					stit->tbl, entry, ua, dir);
+> =20
+> -		iommu_tce_kill_rm(stit->tbl, entry, 1);
+> -
+>  		if (ret !=3D H_SUCCESS) {
+> -			kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl, entry);
+> +			kvmppc_rm_clear_tce(vcpu->kvm, stt, stit->tbl, entry);
+>  			return ret;
+>  		}
+>  	}
+> @@ -561,7 +569,7 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *vc=
+pu,
+>  		ua =3D 0;
+>  		if (kvmppc_rm_tce_to_ua(vcpu->kvm, tce, &ua)) {
+>  			ret =3D H_PARAMETER;
+> -			goto invalidate_exit;
+> +			goto unlock_exit;
+>  		}
+> =20
+>  		list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+> @@ -570,19 +578,15 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *=
+vcpu,
+>  					iommu_tce_direction(tce));
+> =20
+>  			if (ret !=3D H_SUCCESS) {
+> -				kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl,
+> -						entry);
+> -				goto invalidate_exit;
+> +				kvmppc_rm_clear_tce(vcpu->kvm, stt, stit->tbl,
+> +						entry + i);
+> +				goto unlock_exit;
+>  			}
+>  		}
+> =20
+>  		kvmppc_rm_tce_put(stt, entry + i, tce);
+>  	}
+> =20
+> -invalidate_exit:
+> -	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
+> -		iommu_tce_kill_rm(stit->tbl, entry, npages);
+> -
+>  unlock_exit:
+>  	if (!prereg)
+>  		arch_spin_unlock(&kvm->mmu_lock.rlock.raw_lock);
+> @@ -620,20 +624,16 @@ long kvmppc_rm_h_stuff_tce(struct kvm_vcpu *vcpu,
+>  				continue;
+> =20
+>  			if (ret =3D=3D H_TOO_HARD)
+> -				goto invalidate_exit;
+> +				return ret;
+> =20
+>  			WARN_ON_ONCE_RM(1);
+> -			kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl, entry);
+> +			kvmppc_rm_clear_tce(vcpu->kvm, stt, stit->tbl, entry + i);
+>  		}
+>  	}
+> =20
+>  	for (i =3D 0; i < npages; ++i, ioba +=3D (1ULL << stt->page_shift))
+>  		kvmppc_rm_tce_put(stt, ioba >> stt->page_shift, tce_value);
+> =20
+> -invalidate_exit:
+> -	list_for_each_entry_lockless(stit, &stt->iommu_tables, next)
+> -		iommu_tce_kill_rm(stit->tbl, ioba >> stt->page_shift, npages);
+> -
+>  	return ret;
+>  }
+> =20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--GK8C8w0gKbIl6lLW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEoULxWu4/Ws0dB+XtgypY4gEwYSIFAmJXoHIACgkQgypY4gEw
+YSLS5xAAiqtRjKSR7GarA6lgAbcbA4fUZQZaeHI8kkI6CnTmVteHmYsxC7uIdBaz
+YJ1CXUlwIjxpdeYzZMbwuwyBoKCDIkh+H1mOlolzqKd/MpG4wb+tSdrIF7gZ0GNR
+wU/GjSILtOpUPc8Es99oU+pEooipKb5j6XflWAZ0UtS3re4Jrh6OD3ZtmBYjzBLf
+/OWQ6qBu3u1ZadmxMYCHVIK2vW+R/mao9FeFf6TNAkeQcYHVX6FAx3hIEeqC0224
+JV41eDXBigZ03bP2//jd0od+Dj4lGlGshGNkMZIB2kvIKU0hssFp16UXjV5VnszQ
+MnGiACllrDmkk2h8I+mcr4bn0jx0LgPeSNDLR9rFwCjB+JfgExS8tqI9CYXn+bW8
+5lx1mVt4rPhT6NoUrk3sAun0MRx7ed3TfyEG6j+3ziATzwIM9nKKwB4iTvKnJ23y
+MSqcvp4Lhzw+pkL44ZSyYjJmM9hXWAs0HRhRoqN5M5IFxT1QY+1fAhrQtf7SRYHC
+l/08oXabqZFyobsFy4uLwf+mkl6dLln0GcA5B+Mi/VwKUBLcEQrV9iJzLX9hCpxe
+V5S+NdtBBQYdwQ8OVdhjdv8yGIBaRvByoge+gfgvZqyxy5M77crjLVg1YcizA1L9
+37UmeQCulKGQt+LCLSKruoZkJBsp2F0JP599Xu7ZOiL50WI3520=
+=WDJ8
+-----END PGP SIGNATURE-----
+
+--GK8C8w0gKbIl6lLW--
