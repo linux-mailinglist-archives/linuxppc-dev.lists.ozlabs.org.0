@@ -1,48 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77904502F25
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 21:12:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBCA502F27
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 21:13:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg5Yq3lcCz3bs4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 05:12:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg5Zc4nLPz3bpB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 05:13:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mucLjtHZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Vo9SN5UB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=mucLjtHZ; 
+ header.s=k20201202 header.b=Vo9SN5UB; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg5TS4zrCz3bcQ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 05:08:44 +1000 (AEST)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg5TV3DmRz3bdK
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 05:08:46 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 0626D61CC8;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id C329461BB8;
+ Fri, 15 Apr 2022 19:08:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DE7C385A5;
  Fri, 15 Apr 2022 19:08:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD7CC385B7;
- Fri, 15 Apr 2022 19:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650049722;
- bh=II6OEIXWBm46BUBaioGDbgMZ+vUKj+RzIpjwlTwoobY=;
+ s=k20201202; t=1650049724;
+ bh=dvZpqVTi0jdBV+n0QdZhgd89O8shNTR194n0OIslFEI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=mucLjtHZlTlqn2DfNqXglYqlzQSZRXHg7K3buWgwJ6TRmRLexMpb/3xdYzYZVnJs+
- gvBVNpEgyW88VKmUYBkUJbakIu5PdplrUxVwEyeu9N/5FtduwCXjlc6s+6XwFWAL7a
- J3hnMLdtA0dszo+jHajTb12P1IDdZL9y+8tQ9AM1qXC1DXvSJv/qQ6bqPGDCQJxN9s
- 8SuiW1RQrqkyjOH5CKiSXg68i99swwTacX+KoAEKHxEuVCAvdKmn+ZTzSKf8SCV95w
- qZvkONpo92Q8EjiphevANVfZ7bTf5QgoMcAuHZJkuE3BCcOyhiGmvRmV3bWHD9MpWP
- RuPfTe7QgwUPw==
+ b=Vo9SN5UB5HN+TQ8PDoWan0KcngRkeZPACjXnATfZw2QPo8YV8IFEsKTgTqaUHb4Wq
+ buYSTHLuV8dWUQ+yssZu4Cu0uOcBv0mjwVsDVHIh1maofvqLvYAAAy1RVEFK9yCXo+
+ dPGdBtMn+DALp8LeFcJxFbSsAfDVa+Yze68PW2g0l28eXMzTI2kK5VoUBifIrHOtwZ
+ 1WOf86Z5OYIWDhVv4bhoKtsirQ9OaUxjNMN4e/90dC6L7vUMwinM6ndR4799Tqlo2s
+ Geiv9PhbOsZgFOoijb1U7+dWqsYEaovac2mSFv5v7ZmqCiWLmIaVi+7wvIiA7CI4f6
+ lLjJ23uF8IhFQ==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -52,10 +50,10 @@ To: Richard Henderson <rth@twiddle.net>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  Chas Williams <3chas3@gmail.com>, "David S . Miller" <davem@davemloft.net>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6/7] ia64: remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO
+Subject: [PATCH 7/7] alpha: remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO
  definitions
-Date: Fri, 15 Apr 2022 14:08:16 -0500
-Message-Id: <20220415190817.842864-7-helgaas@kernel.org>
+Date: Fri, 15 Apr 2022 14:08:17 -0500
+Message-Id: <20220415190817.842864-8-helgaas@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220415190817.842864-1-helgaas@kernel.org>
 References: <20220415190817.842864-1-helgaas@kernel.org>
@@ -86,24 +84,24 @@ Remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO definitions.
 
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
- arch/ia64/include/asm/io.h | 4 ----
+ arch/alpha/include/asm/io.h | 4 ----
  1 file changed, 4 deletions(-)
 
-diff --git a/arch/ia64/include/asm/io.h b/arch/ia64/include/asm/io.h
-index 6d93b923b379..1069e1730b2e 100644
---- a/arch/ia64/include/asm/io.h
-+++ b/arch/ia64/include/asm/io.h
-@@ -23,10 +23,6 @@
- #include <asm/unaligned.h>
- #include <asm/early_ioremap.h>
+diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
+index c9cb554fbe54..338dd24400bd 100644
+--- a/arch/alpha/include/asm/io.h
++++ b/arch/alpha/include/asm/io.h
+@@ -14,10 +14,6 @@
+    the implementation we have here matches that interface.  */
+ #include <asm-generic/iomap.h>
  
--/* We don't use IO slowdowns on the ia64, but.. */
+-/* We don't use IO slowdowns on the Alpha, but.. */
 -#define __SLOW_DOWN_IO	do { } while (0)
 -#define SLOW_DOWN_IO	do { } while (0)
 -
- #define __IA64_UNCACHED_OFFSET	RGN_BASE(RGN_UNCACHED)
- 
  /*
+  * Virtual -> physical identity mapping starts at this offset
+  */
 -- 
 2.25.1
 
