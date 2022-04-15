@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47822502A63
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:42:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC15502D7D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 18:05:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KfwvP0bgGz2yp5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:42:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg1Q946Kdz3bpH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 02:05:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XPxIYgo6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=q1bzqzL3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::536;
- helo=mail-ed1-x536.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62b;
+ helo=mail-ej1-x62b.google.com; envelope-from=olteanv@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=XPxIYgo6; dkim-atps=neutral
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com
- [IPv6:2a00:1450:4864:20::536])
+ header.s=20210112 header.b=q1bzqzL3; dkim-atps=neutral
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
+ [IPv6:2a00:1450:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfwfp1nJBz3bq8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:14 +1000 (AEST)
-Received: by mail-ed1-x536.google.com with SMTP id g20so9760945edw.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:31:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg1PT6cz3z2xDN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 02:04:59 +1000 (AEST)
+Received: by mail-ej1-x62b.google.com with SMTP id k23so16071311ejd.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 09:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=/A0b7QXPnRxcdjzjvBy95srF3RhPajcOL797uVjW17k=;
- b=XPxIYgo6M0hFOfIDjd1x3rJvr403xWmkCv4BfN5SzQ6rl/o2LtUELnVEK2flTgl7Mu
- h9HynkeZlcHvrZKXB463qAGm4ubHnZ3K84JE6vUQ2VAllYUyaKrzCWHOr4clD8wcI+rZ
- QpgplpTYCxRlhudFZFTA3TZD85lBUtoeJR2ZadxDeZWKjD8aVgCwTAxdaBFqyCFEJ1J8
- PEwKA6HHOLREZ0lK50ZwI1XpJLo79AgBKnxd7WsP5o/j86FlHeBFkz4B3rHD3RofjoY7
- 6FtJSZWBNVcMaDMJQhhI3uZMtMt0Od6Y/b3KCJAVC6iktp21nwQegu5vn8S6PUNDQGsm
- aPaA==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=112dwm8QpeyoKYHzXDlM/vsE5hIZxIAtes3nuwV/SSo=;
+ b=q1bzqzL3lBdyltYHc9DTIT5JLPdLODWLZph8x8M5S6Lrx38YGPco66753ypyqSZHdS
+ TsBVCJ5EpLAbAmZd7rn35rz5+5MFo5cmcPhwTg2EsuyzzljP5OF0i5quSN5Bq79dJupT
+ XxChUcD2MsVarL7yLizfAjcN3B0NTqgueTBK61H9jo+fIJq2L7zfnVfyEtuLdKfBrIhL
+ iDzvx73Aqc0XvRiY1AXXQbSKFoZMT0Gp0iczLfr/jN0opuxhWCDc6rZaQadXhtc1zVzT
+ V6fOjszCUEV1CJPEyDoo3WVMYNJOQYRIdd2ngW2MNMxLobrauU5wyg1fn/2XkaL6GqdW
+ ZQzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=/A0b7QXPnRxcdjzjvBy95srF3RhPajcOL797uVjW17k=;
- b=waBSUFkHx18iVvkQe4Q8HjXVA7S6vNEv294akFHFIOk8AY3bUVSYWjVa0MsyWpFiy0
- TK9vYGNjyIrmn7TVjEZh8U6f/4+6ZV7Agx2zjcZVWZlDrHDH9+d7+PjlyQxaCizBtiUY
- NBqmb13iGrrIhi/gz15BUC4PMnojK0BqkM1ABsoCDLK+521CE2d2EDq+JYVTp7agydDz
- wuCi7+HuJqhnSa9jI69Bc74RqIfPU9hSDkvakEdm/CdZXThedBQwGriIf0PU5RJXSupf
- x3qWpzT59FQDtuNqnQmMI3b7q0AuO1cl+gjlc1R3drkx9B63gXxozYxWQcTp5BYJSB73
- fmBA==
-X-Gm-Message-State: AOAM533n4zH+z8OWHIY2Wucen3VCJfOGLv+SrO0Wbu1wcVby6BYZeOfz
- XzQo412OFKAdjYZScamdbmI=
-X-Google-Smtp-Source: ABdhPJzMXbUYQrLVI7KhkcyMDrJ0/R3dZbgsUde+fJ0qaBD2PAAuaj6vloHxnRVzxDfc0Lz8L3X0Bw==
-X-Received: by 2002:a05:6402:26cb:b0:421:e28f:4776 with SMTP id
- x11-20020a05640226cb00b00421e28f4776mr4442275edd.400.1650025870912; 
- Fri, 15 Apr 2022 05:31:10 -0700 (PDT)
-Received: from localhost.localdomain (i130160.upc-i.chello.nl.
- [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.31.09
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=112dwm8QpeyoKYHzXDlM/vsE5hIZxIAtes3nuwV/SSo=;
+ b=3q/fcmqEgS7oPE+XNTQcuWT7A8U5QSTcSLBPZHjlQ/g+q2kQ31iqyJe1aHhWt5zIAm
+ B+KOx1TXFggVPjRU6Gz4YaTK4cg5m0few3b9lg3d45Z02MPQlVaZ8pqdQ4t9+VCk0iMU
+ n5nLIfCJ3+XkZJWXo09e6IKHe6rac9sZyZa8WjpqTmSHxsaGoyaNJ8wADkh9arVJAd4O
+ MHbSiSmOs7mnEvNrzZIr4jedRxuAawT2zHiX2546FqRiorHniPwzDTGmsclInyjmKbSg
+ CpHeyV/QQMJ0F18uVIWenw6z0P7q1baFNkrX8Kmr6YM8rZ7/3DCJ6/3TpsnKeBv20p0J
+ Oxtg==
+X-Gm-Message-State: AOAM531bZoRn+BTkbor66eFNgeBS7azVN0IkuMLGLdcYnL21X4qsehbV
+ aEy+GICbjYL83Nxc8EQs9KM=
+X-Google-Smtp-Source: ABdhPJw48aM/ILhX7ieEo4E/2JT/l4q8QZCfn54tMQSw+A5qviAhPCWJlSaz9aHJH2xpZA3vw595cw==
+X-Received: by 2002:a17:907:6e88:b0:6da:8f01:7a8f with SMTP id
+ sh8-20020a1709076e8800b006da8f017a8fmr6648623ejc.619.1650038696267; 
+ Fri, 15 Apr 2022 09:04:56 -0700 (PDT)
+Received: from skbuf ([188.26.57.45]) by smtp.gmail.com with ESMTPSA id
+ r18-20020a05640251d200b0041d1600ab09sm3036190edd.54.2022.04.15.09.04.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 05:31:10 -0700 (PDT)
-From: Jakob Koschel <jakobkoschel@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v4 18/18] team: Remove use of list iterator variable
- for list_for_each_entry_from()
-Date: Fri, 15 Apr 2022 14:29:47 +0200
-Message-Id: <20220415122947.2754662-19-jakobkoschel@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220415122947.2754662-1-jakobkoschel@gmail.com>
+ Fri, 15 Apr 2022 09:04:55 -0700 (PDT)
+Date: Fri, 15 Apr 2022 19:04:52 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Jakob Koschel <jakobkoschel@gmail.com>
+Subject: Re: [PATCH net-next v4 07/18] net: dsa: Replace usage of found with
+ dedicated list iterator variable
+Message-ID: <20220415160452.z4m4j3sulcteqggs@skbuf>
 References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
+ <20220415122947.2754662-8-jakobkoschel@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220415122947.2754662-8-jakobkoschel@gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,6 +87,7 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
  Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
  Florian Fainelli <f.fainelli@gmail.com>,
  Daniel Borkmann <daniel@iogearbox.net>,
+ "David S. Miller" <davem@davemloft.net>,
  Steen Hegelund <Steen.Hegelund@microchip.com>,
  John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
  "Bos, H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
@@ -95,118 +96,76 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
  Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
  Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
  Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakob Koschel <jakobkoschel@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
  Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Lars Povlsen <lars.povlsen@microchip.com>,
- Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
+ Lars Povlsen <lars.povlsen@microchip.com>, Manish Chopra <manishc@marvell.com>,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  UNGLinuxDriver@microchip.com, Yonghong Song <yhs@fb.com>,
  Edward Cree <ecree.xilinx@gmail.com>,
  Casper Andersson <casper.casan@gmail.com>, Xu Wang <vulab@iscas.ac.cn>,
  Cristiano Giuffrida <c.giuffrida@vu.nl>, bpf@vger.kernel.org,
- Vladimir Oltean <olteanv@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Colin Ian King <colin.king@intel.com>, linuxppc-dev@lists.ozlabs.org,
  Martin KaFai Lau <kafai@fb.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation to limit the scope of the list iterator variable to the
-list traversal loop, use a dedicated pointer to iterate through the
-list [1].
+On Fri, Apr 15, 2022 at 02:29:36PM +0200, Jakob Koschel wrote:
+> To move the list iterator variable into the list_for_each_entry_*()
+> macro in the future it should be avoided to use the list iterator
+> variable after the loop body.
+> 
+> To *never* use the list iterator variable after the loop it was
+> concluded to use a separate iterator variable instead of a
+> found boolean [1].
+> 
+> This removes the need to use a found variable and simply checking if
+> the variable was set, can determine if the break/goto was hit.
+> 
+> Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
+> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+> ---
 
-Since that variable should not be used past the loop iteration, a
-separate variable is used to 'remember the current location within the
-loop'.
+I absolutely hate the robotic commit message, but the change looks like
+it works, so:
 
-To either continue iterating from that position or skip the iteration
-(if the previous iteration was complete) list_prepare_entry() is used.
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
 
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
----
- drivers/net/team/team.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index b07dde6f0abf..688c4393f099 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2425,17 +2425,17 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 				    int flags, team_nl_send_func_t *send_func,
- 				    struct list_head *sel_opt_inst_list)
- {
-+	struct team_option_inst *opt_inst, *tmp = NULL;
- 	struct nlattr *option_list;
- 	struct nlmsghdr *nlh;
- 	void *hdr;
--	struct team_option_inst *opt_inst;
- 	int err;
- 	struct sk_buff *skb = NULL;
- 	bool incomplete;
- 	int i;
- 
--	opt_inst = list_first_entry(sel_opt_inst_list,
--				    struct team_option_inst, tmp_list);
-+	tmp = list_first_entry(sel_opt_inst_list,
-+			       struct team_option_inst, tmp_list);
- 
- start_again:
- 	err = __send_and_alloc_skb(&skb, team, portid, send_func);
-@@ -2456,7 +2456,9 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 		goto nla_put_failure;
- 
- 	i = 0;
-+	opt_inst = list_prepare_entry(tmp, sel_opt_inst_list, tmp_list);
- 	incomplete = false;
-+	tmp = NULL;
- 	list_for_each_entry_from(opt_inst, sel_opt_inst_list, tmp_list) {
- 		err = team_nl_fill_one_option_get(skb, team, opt_inst);
- 		if (err) {
-@@ -2464,6 +2466,7 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 				if (!i)
- 					goto errout;
- 				incomplete = true;
-+				tmp = opt_inst;
- 				break;
- 			}
- 			goto errout;
-@@ -2707,14 +2710,14 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 	struct nlattr *port_list;
- 	struct nlmsghdr *nlh;
- 	void *hdr;
--	struct team_port *port;
-+	struct team_port *port, *tmp = NULL;
- 	int err;
- 	struct sk_buff *skb = NULL;
- 	bool incomplete;
- 	int i;
- 
--	port = list_first_entry_or_null(&team->port_list,
--					struct team_port, list);
-+	tmp = list_first_entry_or_null(&team->port_list,
-+				       struct team_port, list);
- 
- start_again:
- 	err = __send_and_alloc_skb(&skb, team, portid, send_func);
-@@ -2744,7 +2747,9 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 		err = team_nl_fill_one_port_get(skb, one_port);
- 		if (err)
- 			goto errout;
--	} else if (port) {
-+	} else {
-+		port = list_prepare_entry(tmp, &team->port_list, list);
-+		tmp = NULL;
- 		list_for_each_entry_from(port, &team->port_list, list) {
- 			err = team_nl_fill_one_port_get(skb, port);
- 			if (err) {
-@@ -2752,6 +2757,7 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 					if (!i)
- 						goto errout;
- 					incomplete = true;
-+					tmp = port;
- 					break;
- 				}
- 				goto errout;
--- 
-2.25.1
-
+>  net/dsa/dsa.c | 11 +++++------
+>  1 file changed, 5 insertions(+), 6 deletions(-)
+> 
+> diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+> index 89c6c86e746f..645522c4dd4a 100644
+> --- a/net/dsa/dsa.c
+> +++ b/net/dsa/dsa.c
+> @@ -112,22 +112,21 @@ const struct dsa_device_ops *dsa_find_tagger_by_name(const char *buf)
+>  
+>  const struct dsa_device_ops *dsa_tag_driver_get(int tag_protocol)
+>  {
+> -	struct dsa_tag_driver *dsa_tag_driver;
+> +	struct dsa_tag_driver *dsa_tag_driver = NULL, *iter;
+>  	const struct dsa_device_ops *ops;
+> -	bool found = false;
+>  
+>  	request_module("%s%d", DSA_TAG_DRIVER_ALIAS, tag_protocol);
+>  
+>  	mutex_lock(&dsa_tag_drivers_lock);
+> -	list_for_each_entry(dsa_tag_driver, &dsa_tag_drivers_list, list) {
+> -		ops = dsa_tag_driver->ops;
+> +	list_for_each_entry(iter, &dsa_tag_drivers_list, list) {
+> +		ops = iter->ops;
+>  		if (ops->proto == tag_protocol) {
+> -			found = true;
+> +			dsa_tag_driver = iter;
+>  			break;
+>  		}
+>  	}
+>  
+> -	if (found) {
+> +	if (dsa_tag_driver) {
+>  		if (!try_module_get(dsa_tag_driver->owner))
+>  			ops = ERR_PTR(-ENOPROTOOPT);
+>  	} else {
+> -- 
+> 2.25.1
+> 
