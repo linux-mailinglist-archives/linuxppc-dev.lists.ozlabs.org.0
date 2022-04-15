@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B92502A4E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:39:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E40502A58
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:39:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfwqy4bYKz3chW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:39:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfwrf5vQMz3cFY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:39:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PnprkJEp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=d1IWC1UD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62a;
- helo=mail-ej1-x62a.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632;
+ helo=mail-ej1-x632.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=PnprkJEp; dkim-atps=neutral
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com
- [IPv6:2a00:1450:4864:20::62a])
+ header.s=20210112 header.b=d1IWC1UD; dkim-atps=neutral
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com
+ [IPv6:2a00:1450:4864:20::632])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfwfg0N49z3bcY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:06 +1000 (AEST)
-Received: by mail-ej1-x62a.google.com with SMTP id i27so15132443ejd.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:31:06 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfwfh119sz3bg2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:08 +1000 (AEST)
+Received: by mail-ej1-x632.google.com with SMTP id l7so15185405ejn.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:31:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=fIZenjsGtzoZOCvRY/8dIr7NFNGibTLVVWT+oNYuIJo=;
- b=PnprkJEp2AV/psDSMmNlNJR5/A6mm1H16/LpjoBjEuaix47jUPTOMi1cgCdR7PBn7X
- C7rCT7JJgTLtc33gKay7RC67B1NsptkBmDPqwCfInz0WENgKBqsDW4vFVMaOIC8dUclS
- /+oxUFIQWxH39M6uE0HzXos2C62iWdBQRjtYmp8K6IUVZdo+53+bkuwEuUfCd+sDo4xA
- qLoVbtxYwjSiBQ7jVpMwDObcu2HkSJrmHfv4hfHl0ktbZEtJhUgUwuSRnBnm+TRC9ETz
- v6/00UdmF6bhJopm36jbohFJEyRDAneLSE2ubDYHLeBKhXYUbTEdLuksjgw+vPlJZpub
- fCUA==
+ bh=uAHor3fZAToYO2ZbC1+zF3CTAzYEz/vc4hOsxC2CPlY=;
+ b=d1IWC1UD75Cs8XZm2xFafi1NpLjrHtuA/gSi8YeHIWwbplMDAuT3/9fA6m11Ll6kYE
+ q4/ol++c2+FkzAuq1sb/y6You4BIIcLcC4uxqO7VtAnMvEm6ByB4a6eMBd377wT/EDGi
+ 9yWnLo6WFSDFHCCD9CT/QgxyN5Bgfl+CK/zoZBgjaj7+oIns6nuK0/4sP0BR3DK8tSd3
+ vqjAEtbwv54Rs3CL9TZk9R8smGwmpzyn1w5PABzefSSczNyFqmhR8xCUwaPRiVEb1leF
+ U98fQfONKtEr/ldLjaoqYoMraM9qJG5dWeqz7kXL1U1t971lwsQwlN9NennrfTteVD/E
+ SmCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=fIZenjsGtzoZOCvRY/8dIr7NFNGibTLVVWT+oNYuIJo=;
- b=OKfzRVuzUMUFlfCru79Pc+YYFSEmTMjhtsOv05n4UYecqwJiHzoH8aH7cs/lt+Vhnw
- YjEEP/lmOtm9ix1xvfvQJjGkHaK8AU8/0fZkAMXXnkFRv5+HLINM3tdR+lmhg5Qsplri
- 4KZxI7M7G4wRJ5TvlUttI5Ehx710CwTqDDcAlBb3Ul9hj4wGyJU+FZ15XcL8OzMMm8qG
- pD7lJ74T8OMnIE1ku72C+oCVs/UfK3/s/eqnnpcQtg/i8KsbNbro7zMH5p/C+Jf0+mhZ
- Y85xLXROszhHHKgLMDSb7QvC4KaEU5kgfDURaHsxn1me7eUyG7wYRpa1FpF9N5DNJN+V
- lUfg==
-X-Gm-Message-State: AOAM530MVWastBrq7raxQz9kM3KVEBTVmSTSKoYxAqgLWq7eA1SwmuPN
- lkjFza4bqOZV3hs+bKyHObI=
-X-Google-Smtp-Source: ABdhPJwFa9wLSTj1xXt1QbiRiyGVhuHtT/dlA0VG6MIkcwtzByCOypTj1XZMjZyXz+s9p8S4pamS0g==
-X-Received: by 2002:a17:907:da7:b0:6df:9ff4:10c7 with SMTP id
- go39-20020a1709070da700b006df9ff410c7mr5945711ejc.106.1650025863925; 
- Fri, 15 Apr 2022 05:31:03 -0700 (PDT)
+ bh=uAHor3fZAToYO2ZbC1+zF3CTAzYEz/vc4hOsxC2CPlY=;
+ b=Wer5QeADc1tQmRAr5Pq0nmFjD7X1RGCf2blEhSbyHcTIs50eP4qSSPG4JvhBpPwgsV
+ gFAwfJkh/um6srvOrDmXzQia0hxQigN1bsRYc7j01c2WS8LODC5DY49Ql7eQhTC233It
+ rAZ+2sI7xilBjTKtieU05ivPIRThwbgYYAXgvwRAj6/+gxjw+77JID5OaTm2UvyKOOds
+ paqL2W6hcrdKjlvMWPQAM2T5Xb3E9jnXLhsp/KMuCm55hHHsbvDRaB/6L8y0MjeyU8fr
+ br2PqOc+NiAV4k3NrVE0ikHk7dwvlctnGgu30vkdJx6QSjU0K6bkl0eSoQYIs1AG1UIh
+ 665A==
+X-Gm-Message-State: AOAM532Y+wSOrtDw6rLeMruaauZlqUtHYfuDEiPSdE0dPXHlANXz4+v/
+ Hd7BqVxEkFWNkEcL88vXadM=
+X-Google-Smtp-Source: ABdhPJz9Q0jgktw0ccZcumMAz0TYBTMU3aEYa31kRPzOK6808ixPEYTW1P8q2f6OdLNRDumy5FlGuw==
+X-Received: by 2002:a17:906:6158:b0:6ce:61d6:f243 with SMTP id
+ p24-20020a170906615800b006ce61d6f243mr5934115ejl.268.1650025865292; 
+ Fri, 15 Apr 2022 05:31:05 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.31.02
+ bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.31.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 05:31:03 -0700 (PDT)
+ Fri, 15 Apr 2022 05:31:04 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v4 13/18] net: qede: Remove check of list iterator
- against head past the loop body
-Date: Fri, 15 Apr 2022 14:29:42 +0200
-Message-Id: <20220415122947.2754662-14-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v4 14/18] sfc: Remove usage of list iterator for
+ list_add() after the loop body
+Date: Fri, 15 Apr 2022 14:29:43 +0200
+Message-Id: <20220415122947.2754662-15-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220415122947.2754662-1-jakobkoschel@gmail.com>
 References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
@@ -110,54 +110,54 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When list_for_each_entry() completes the iteration over the whole list
-without breaking the loop, the iterator value will be a bogus pointer
-computed based on the head element.
-
-While it is safe to use the pointer to determine if it was computed
-based on the head element, either with list_entry_is_head() or
-&pos->member == head, using the iterator variable after the loop should
-be avoided.
-
 In preparation to limit the scope of a list iterator to the list
-traversal loop, use a dedicated pointer to point to the found element [1].
+traversal loop, use a dedicated pointer pointing to the location
+where the element should be inserted [1].
+
+Before, the code implicitly used the head when no element was found
+when using &new->list. The new 'pos' variable is set to the list head
+by default and overwritten if the list exits early, marking the
+insertion point for list_add().
 
 Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- drivers/net/ethernet/qlogic/qede/qede_filter.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/sfc/rx_common.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-index 3010833ddde3..3d167e37e654 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
-@@ -829,18 +829,21 @@ int qede_configure_vlan_filters(struct qede_dev *edev)
- int qede_vlan_rx_kill_vid(struct net_device *dev, __be16 proto, u16 vid)
+diff --git a/drivers/net/ethernet/sfc/rx_common.c b/drivers/net/ethernet/sfc/rx_common.c
+index 1b22c7be0088..716847ba7038 100644
+--- a/drivers/net/ethernet/sfc/rx_common.c
++++ b/drivers/net/ethernet/sfc/rx_common.c
+@@ -556,6 +556,7 @@ efx_rx_packet_gro(struct efx_channel *channel, struct efx_rx_buffer *rx_buf,
+ struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
  {
- 	struct qede_dev *edev = netdev_priv(dev);
--	struct qede_vlan *vlan;
-+	struct qede_vlan *vlan = NULL;
-+	struct qede_vlan *iter;
- 	int rc = 0;
+ 	struct list_head *head = &efx->rss_context.list;
++	struct list_head *pos = head;
+ 	struct efx_rss_context *ctx, *new;
+ 	u32 id = 1; /* Don't use zero, that refers to the master RSS context */
  
- 	DP_VERBOSE(edev, NETIF_MSG_IFDOWN, "Removing vlan 0x%04x\n", vid);
+@@ -563,8 +564,10 @@ struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
  
- 	/* Find whether entry exists */
- 	__qede_lock(edev);
--	list_for_each_entry(vlan, &edev->vlan_list, list)
--		if (vlan->vid == vid)
-+	list_for_each_entry(iter, &edev->vlan_list, list)
-+		if (iter->vid == vid) {
-+			vlan = iter;
+ 	/* Search for first gap in the numbering */
+ 	list_for_each_entry(ctx, head, list) {
+-		if (ctx->user_id != id)
++		if (ctx->user_id != id) {
++			pos = &ctx->list;
  			break;
 +		}
+ 		id++;
+ 		/* Check for wrap.  If this happens, we have nearly 2^32
+ 		 * allocated RSS contexts, which seems unlikely.
+@@ -582,7 +585,7 @@ struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
  
--	if (list_entry_is_head(vlan, &edev->vlan_list, list)) {
-+	if (!vlan) {
- 		DP_VERBOSE(edev, (NETIF_MSG_IFUP | NETIF_MSG_IFDOWN),
- 			   "Vlan isn't configured\n");
- 		goto out;
+ 	/* Insert the new entry into the gap */
+ 	new->user_id = id;
+-	list_add_tail(&new->list, &ctx->list);
++	list_add_tail(&new->list, pos);
+ 	return new;
+ }
+ 
 -- 
 2.25.1
 
