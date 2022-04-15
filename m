@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63DFD502A20
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:37:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9BF7502A43
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:38:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfwnm3VpRz3dyq
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:37:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfwpb3Yjxz3bVc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:37:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=VTgQeHrk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mafmYbVb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632;
- helo=mail-ej1-x632.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::529;
+ helo=mail-ed1-x529.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=VTgQeHrk; dkim-atps=neutral
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com
- [IPv6:2a00:1450:4864:20::632])
+ header.s=20210112 header.b=mafmYbVb; dkim-atps=neutral
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com
+ [IPv6:2a00:1450:4864:20::529])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfwfb1Ny3z3bcv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:03 +1000 (AEST)
-Received: by mail-ej1-x632.google.com with SMTP id l7so15185024ejn.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:31:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfwfc3QVgz3bdj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:04 +1000 (AEST)
+Received: by mail-ed1-x529.google.com with SMTP id c6so9756810edn.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:31:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=LXuHnml0JyQ7WUWtSyqxCdcrvdOAihH7ECEcB+ac3FQ=;
- b=VTgQeHrkpIHgOEGZvW6m7lK+ww/hBIaLxp/ed1YbHFERxY7K8zgmthq8r0MO/eDheA
- 64RJAUDP0PCNupTiFSXSD0K9TwZw/VBqVra2httvVSuGRa0rtzP8UWtbBnmILYXL6Z2H
- sr5X4+IEfwB6d5kKRo4eDMfm2O1ZmyozhlUEFzHkyPeS+S7EEuZSM7ink8BrFdT5ZLz3
- GIxrZW9NwL5XcJZvTEmI8dg0NdKEWbX31YU7MxwkMeQJhRou9/SCt1Ujs+st1SvtgpVw
- 9aQDWxS22TjT0DPrnK2A3NtIzbFZtU+RaSWnUyyUovnBEkNcZnYSmXiUDfvziK0b2SLX
- cyEA==
+ bh=JrLemglUST4WORuuuukktAwV8TRd9yLyGflAl3xl1zc=;
+ b=mafmYbVbVxWUw7nefkSJts5XVtc1I2XZombj1QNKLFN4XRlHey5FXGgwoplAHEJKQw
+ vKfV/yH0V76fWQEBpDnMa46JV+6jTUNdZW3/gh0ujS+I3hs7vpYQBbkUbn/dBZ0xV+DZ
+ 68tlU1TtKV5nq96SKtdNo5CXiQVHrOf+/J4dxsU0hxXgGoVBKpocuJ2neHQTeSKnGMER
+ ObVAsLj9cSuAmjziBrUhUqCSGh5Yr82JIHluYhgremXkMfdC0/2p4djXShb1dpPJNWty
+ pZBJj2piwCEQ7aPuBIyO/WrZKMnadMOSzFfbCqNXRA2RHlYB7NLh7+IJKYlUb6P7awvj
+ EKSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=LXuHnml0JyQ7WUWtSyqxCdcrvdOAihH7ECEcB+ac3FQ=;
- b=t4k9a2p0KAiBPt3BVTTtLkKza3eUmsEr5Ap9eLUSU9An+Nmp112JjdWenPj0Sh8z64
- sKriWlsNxCQF4BHP95OONIJzzFSisFIe+RRMDph0mW7kCIfAmIFgGfdrLowaKT/zxvZh
- wBGQAlE8nW/xYV5QEG+oNbXR9yHFMdTQrzts6TZRCuKsHMqmJB0aSED9cIqkaN8Xmwc+
- zQda3A1ni0wWJWynVJGmeW/yCwRBS6DsyPTkITBV7+ram14RHZdXk/82catNISL3tuPD
- KU0B2+LrxL/ru4vA7MIDLEjJyoE6VMDEEuNCcPVJ1qHBlViMS+2zk7jckEax86QY2mL7
- 8uEg==
-X-Gm-Message-State: AOAM532je28QMrlDnH3COTkF7va/jKpiLbMVhh0PlFSwvgt1NQTyAOA0
- Jv3CDnFI/n82CPFSkMAA2oA=
-X-Google-Smtp-Source: ABdhPJxoOHJKRpfHC4KfhLHKEeHHtK1KA32Oh4BvD5pxRHzbDl+DHwOIhAvuB9jirqfyrBrH+vb+KQ==
-X-Received: by 2002:a17:907:9485:b0:6da:aa54:a88 with SMTP id
- dm5-20020a170907948500b006daaa540a88mr6248462ejc.427.1650025859818; 
- Fri, 15 Apr 2022 05:30:59 -0700 (PDT)
+ bh=JrLemglUST4WORuuuukktAwV8TRd9yLyGflAl3xl1zc=;
+ b=hjrEGJQSXdQKwSk5mx2DnsT1+XXphs0fbfNvIGAQoxlqfKP+8bqOWgrKBhSIkrcm84
+ nCANqYOERWBR59lI8FS7AGK8ms+ryIk+rDra3aH1QZ6yXxh+h2PmUr5Z7A+3tups6qHG
+ ZcEiST2J1XErIceLj0e44BbsX4NXo8ifdaMoUzPEu0A2SJAFQ7amncNQewZzfztAXdul
+ yo8fUS+i0t4sdYzCCrIdrhtkSRWa6MlBK+22CHdCxuXUwjtxF4MPp5FQTcRnkwGGlgZf
+ TTB+UVIkfLr5g1LrYuxdLF0Ism6Bwoe2nXhJe+FQqHP/T6dWD0qxTxWUG9b9AMoV22Xr
+ SmJQ==
+X-Gm-Message-State: AOAM533y3QlYLJ3tX/P1Ww3EsHFBjUseK5Y4gOFu9yOgp26R/9ubhhYn
+ kL7Bn7n906eimLJh2HHvkWM=
+X-Google-Smtp-Source: ABdhPJwycOikouJVJerhPs1YeFM8DUOtHRINDxotzjLwkYL8dk44vBbwYV5+KQohufaBSdey9IYyRw==
+X-Received: by 2002:a05:6402:530b:b0:41d:6f3c:d8dc with SMTP id
+ eo11-20020a056402530b00b0041d6f3cd8dcmr7987212edb.291.1650025861179; 
+ Fri, 15 Apr 2022 05:31:01 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.30.58
+ bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.30.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 05:30:59 -0700 (PDT)
+ Fri, 15 Apr 2022 05:31:00 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v4 10/18] qed: Replace usage of found with dedicated
- list iterator variable
-Date: Fri, 15 Apr 2022 14:29:39 +0200
-Message-Id: <20220415122947.2754662-11-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v4 11/18] qed: Remove usage of list iterator variable
+ after the loop
+Date: Fri, 15 Apr 2022 14:29:40 +0200
+Message-Id: <20220415122947.2754662-12-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220415122947.2754662-1-jakobkoschel@gmail.com>
 References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
@@ -114,74 +114,41 @@ To move the list iterator variable into the list_for_each_entry_*()
 macro in the future it should be avoided to use the list iterator
 variable after the loop body.
 
-To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable instead of a
-found boolean [1].
+Since "found" and "p_ent" need to be equal, "found" should be used
+consistently to limit the scope of "p_ent" to the list traversal in
+the future.
 
-This removes the need to use a found variable and simply checking if
-the variable was set, can determine if the break/goto was hit.
-
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- drivers/net/ethernet/qlogic/qed/qed_iwarp.c | 26 ++++++++++-----------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_spq.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_iwarp.c b/drivers/net/ethernet/qlogic/qed/qed_iwarp.c
-index 1d1d4caad680..198c9321bf51 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_iwarp.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_iwarp.c
-@@ -1630,38 +1630,36 @@ static struct qed_iwarp_listener *
- qed_iwarp_get_listener(struct qed_hwfn *p_hwfn,
- 		       struct qed_iwarp_cm_info *cm_info)
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_spq.c b/drivers/net/ethernet/qlogic/qed/qed_spq.c
+index d01b9245f811..cbaa2abed660 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_spq.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_spq.c
+@@ -934,10 +934,10 @@ int qed_spq_completion(struct qed_hwfn *p_hwfn,
+ 		       u8 fw_return_code,
+ 		       union event_ring_data *p_data)
  {
--	struct qed_iwarp_listener *listener = NULL;
-+	struct qed_iwarp_listener *listener = NULL, *iter;
- 	static const u32 ip_zero[4] = { 0, 0, 0, 0 };
--	bool found = false;
++	struct qed_spq_entry	*found = NULL;
+ 	struct qed_spq		*p_spq;
+-	struct qed_spq_entry	*p_ent = NULL;
++	struct qed_spq_entry	*p_ent;
+ 	struct qed_spq_entry	*tmp;
+-	struct qed_spq_entry	*found = NULL;
  
--	list_for_each_entry(listener,
-+	list_for_each_entry(iter,
- 			    &p_hwfn->p_rdma_info->iwarp.listen_list,
- 			    list_entry) {
--		if (listener->port == cm_info->local_port) {
--			if (!memcmp(listener->ip_addr,
-+		if (iter->port == cm_info->local_port) {
-+			if (!memcmp(iter->ip_addr,
- 				    ip_zero, sizeof(ip_zero))) {
--				found = true;
-+				listener = iter;
- 				break;
- 			}
- 
--			if (!memcmp(listener->ip_addr,
-+			if (!memcmp(iter->ip_addr,
- 				    cm_info->local_ip,
- 				    sizeof(cm_info->local_ip)) &&
--			    (listener->vlan == cm_info->vlan)) {
--				found = true;
-+			    iter->vlan == cm_info->vlan) {
-+				listener = iter;
- 				break;
- 			}
- 		}
- 	}
- 
--	if (found) {
-+	if (listener)
- 		DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "listener found = %p\n",
- 			   listener);
--		return listener;
--	}
-+	else
-+		DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "listener not found\n");
- 
--	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "listener not found\n");
--	return NULL;
-+	return listener;
- }
- 
- static int
+ 	if (!p_hwfn)
+ 		return -EINVAL;
+@@ -980,7 +980,7 @@ int qed_spq_completion(struct qed_hwfn *p_hwfn,
+ 	DP_VERBOSE(p_hwfn, QED_MSG_SPQ,
+ 		   "Complete EQE [echo %04x]: func %p cookie %p)\n",
+ 		   le16_to_cpu(echo),
+-		   p_ent->comp_cb.function, p_ent->comp_cb.cookie);
++		   found->comp_cb.function, found->comp_cb.cookie);
+ 	if (found->comp_cb.function)
+ 		found->comp_cb.function(p_hwfn, found->comp_cb.cookie, p_data,
+ 					fw_return_code);
 -- 
 2.25.1
 
