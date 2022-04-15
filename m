@@ -1,71 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4814502A00
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:35:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A4E502A07
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:36:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfwlq4TBQz3dQY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:35:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KfwmX1JkNz3dqw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:36:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UZTPd5Ev;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=T7ylaXjr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::534;
- helo=mail-ed1-x534.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62b;
+ helo=mail-ej1-x62b.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=UZTPd5Ev; dkim-atps=neutral
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
- [IPv6:2a00:1450:4864:20::534])
+ header.s=20210112 header.b=T7ylaXjr; dkim-atps=neutral
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
+ [IPv6:2a00:1450:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KfwfV4Qh9z3bcv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:30:58 +1000 (AEST)
-Received: by mail-ed1-x534.google.com with SMTP id b24so9743570edu.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:30:58 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KfwfX0mPqz3bdC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:00 +1000 (AEST)
+Received: by mail-ej1-x62b.google.com with SMTP id g18so15112329ejc.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:30:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=lwv0OP8MEFPtBT1zINZmdonMBn1rL8mDzX3cu0httRY=;
- b=UZTPd5EvZ/7MLeV5SHtB+DQhNN4W/OwqqQD/Vnq8UPU+juZJceoU1tO/nRd+HtUHtS
- lq6v8mlv4GF/XgBIxIfZj5vfqKuVZ7dp9hJALaUjMsaF8ugqEfGR0QrimofHjdEt3nwD
- o8Pib6cIZe0ext5DPaldULt2SsVWuagTkMWim99r9eFk7gTOVkNDTPTJW1KeALsPOk1r
- gtMb7641ZqBcW2ChXiZMCT26tDbMg/2tj2TS99WH3TZE2E0FZXigOBBi2SoAI9muA8Gy
- Ol74QcHNdnx9qALZo5u3z2INkQ/Pfu6J2lTXEIxX6+qMhMAPMTgWDfpQjYWhQxmZa771
- jzvQ==
+ bh=7YEqjlB8bsXZ45gzNCMwH2JxmTxm4dwtRKumhhyyThw=;
+ b=T7ylaXjrwRyWiTc0Rk/AGiAUhp47Dwm32Ks4vuxph9an+0z1xHj59O1MX/r1Hx67px
+ 8+EOa0zPfsbd+6OeFm/ZLRXrOmwVi1n/z4+OC6/ShauOZtv8ETJJ6UUxs8zdoMTpYvlv
+ f7d6Sa/nHrWnCc3tNiQD0aDmpEQfg3JLMAu3+0BAUPK9JynfpPu+cxUVCO1dR/fCVadO
+ z1XrXzFIxZ7GQUxqMlNe6nGA0eBdmoz6K/xJ7ayYwY2XLh5s2/4Oc7u6QgePCmUCS6yJ
+ HONc9MP2eI2HzyLJLql9Kmauz4rVI6HzYhE3fDEFu77+bIGGjvjumr7yEVn3LlsK/PEt
+ atTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=lwv0OP8MEFPtBT1zINZmdonMBn1rL8mDzX3cu0httRY=;
- b=x2VPF5cxTh1Wi72DENN+BO2P+vgPSKo06FYiBvkShqDJ6A7K0EATWLJiO0NaNB/kLL
- GuHR99GCUrfmRAeA4TjaHOc+8m9a+dBH3QN6mwghal9m5edoOohcp6WdYrmyYrWUl30L
- NwOhE8Y1tP8Di6SOJxkC3RitiJefXaBUo6QHA8Wzb4ddhnNM8zpm+yYr3ZLuXq2qwKQj
- yvNhqlFjIVXzAuu3QpzNwJBjYCP3V0JJuu59IV4nyLZqVxyxJylqE7L7d5fIJK5oh/cu
- cKsnF9I0eOWO9BhRA1IwMUAFM/NxPUNEO9kxlQPk9Y70D6ezeF20M8SmUF69tXO+v9c+
- DJZw==
-X-Gm-Message-State: AOAM530VSd2uNFv3xAiWQ2vR/m7LP8M9DT/YflEYcXdJCt/ABME+ov4M
- W2lEWgkyS3/r2xvLyJNvjqg=
-X-Google-Smtp-Source: ABdhPJzLgdqhI8sijV1/WD9R8+gXblB1GSaAAtWi4SuH00opz1OHspvfpMH+wmKhCQg5yv6q6t4gWA==
-X-Received: by 2002:a05:6402:2794:b0:419:2ea9:7de3 with SMTP id
- b20-20020a056402279400b004192ea97de3mr8072353ede.169.1650025855191; 
- Fri, 15 Apr 2022 05:30:55 -0700 (PDT)
+ bh=7YEqjlB8bsXZ45gzNCMwH2JxmTxm4dwtRKumhhyyThw=;
+ b=1hLtzWxyfZM+MaBgYR+nIhJS5xG1XNgJLqrFcYyj9AUlxwUpnYZWCXywQGdL8m6ZV/
+ ITiV988jNZxdJdp1Z39Lmxl4lgxkTBVvYgf2ptErqWaU2tqHL1y7w8qoB9opIMKLrTMl
+ Z8W5A/GxAK7UFouehCunOxjkJAv9MUiUxXBfeUHVeBU+ovPhk4A75odq66+bFjwv8Xag
+ HGRD/Xhxz6z38ANBWZzvYD0C2aA9JoL11QrLsACX3+CWIAfSPomztaspSA434l5EmzBp
+ ovb0AQT5iljYC5489neSP6wQM4PVKOaKgJwhf+OUN8G9Hl/enx+kVi3Yxzuka5+MVf9F
+ STMA==
+X-Gm-Message-State: AOAM532Pd/F5NpzFgdzLyKpL8uwG7V86LrKqszWqgEHRaC81RXr5hyPk
+ qgRxmhPRfCgHSUEiYixSMPQ=
+X-Google-Smtp-Source: ABdhPJyUUJDEq8iUjmbpZnPlBcAN+S98Ospicf2P4TBMAkg0qLhJ8vZC0xGS1LIiK4ovBtz3ZS4QfQ==
+X-Received: by 2002:a17:907:72d5:b0:6ec:abf:dc87 with SMTP id
+ du21-20020a17090772d500b006ec0abfdc87mr5374442ejc.120.1650025856776; 
+ Fri, 15 Apr 2022 05:30:56 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.30.53
+ bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.30.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 05:30:54 -0700 (PDT)
+ Fri, 15 Apr 2022 05:30:56 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v4 07/18] net: dsa: Replace usage of found with
+Subject: [PATCH net-next v4 08/18] net: sparx5: Replace usage of found with
  dedicated list iterator variable
-Date: Fri, 15 Apr 2022 14:29:36 +0200
-Message-Id: <20220415122947.2754662-8-jakobkoschel@gmail.com>
+Date: Fri, 15 Apr 2022 14:29:37 +0200
+Message-Id: <20220415122947.2754662-9-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220415122947.2754662-1-jakobkoschel@gmail.com>
 References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
@@ -124,41 +124,63 @@ the variable was set, can determine if the break/goto was hit.
 Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- net/dsa/dsa.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ .../microchip/sparx5/sparx5_mactable.c        | 25 +++++++++----------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index 89c6c86e746f..645522c4dd4a 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -112,22 +112,21 @@ const struct dsa_device_ops *dsa_find_tagger_by_name(const char *buf)
- 
- const struct dsa_device_ops *dsa_tag_driver_get(int tag_protocol)
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
+index a5837dbe0c7e..bb8d9ce79ac2 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
+@@ -362,8 +362,7 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
+ 				     unsigned char mac[ETH_ALEN],
+ 				     u16 vid, u32 cfg2)
  {
--	struct dsa_tag_driver *dsa_tag_driver;
-+	struct dsa_tag_driver *dsa_tag_driver = NULL, *iter;
- 	const struct dsa_device_ops *ops;
+-	struct sparx5_mact_entry *mact_entry;
 -	bool found = false;
++	struct sparx5_mact_entry *mact_entry = NULL, *iter;
+ 	u16 port;
  
- 	request_module("%s%d", DSA_TAG_DRIVER_ALIAS, tag_protocol);
+ 	if (LRN_MAC_ACCESS_CFG_2_MAC_ENTRY_ADDR_TYPE_GET(cfg2) !=
+@@ -378,28 +377,28 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
+ 		return;
  
- 	mutex_lock(&dsa_tag_drivers_lock);
--	list_for_each_entry(dsa_tag_driver, &dsa_tag_drivers_list, list) {
--		ops = dsa_tag_driver->ops;
-+	list_for_each_entry(iter, &dsa_tag_drivers_list, list) {
-+		ops = iter->ops;
- 		if (ops->proto == tag_protocol) {
+ 	mutex_lock(&sparx5->mact_lock);
+-	list_for_each_entry(mact_entry, &sparx5->mact_entries, list) {
+-		if (mact_entry->vid == vid &&
+-		    ether_addr_equal(mac, mact_entry->mac)) {
 -			found = true;
-+			dsa_tag_driver = iter;
+-			mact_entry->flags |= MAC_ENT_ALIVE;
+-			if (mact_entry->port != port) {
++	list_for_each_entry(iter, &sparx5->mact_entries, list) {
++		if (iter->vid == vid &&
++		    ether_addr_equal(mac, iter->mac)) {
++			iter->flags |= MAC_ENT_ALIVE;
++			if (iter->port != port) {
+ 				dev_warn(sparx5->dev, "Entry move: %d -> %d\n",
+-					 mact_entry->port, port);
+-				mact_entry->port = port;
+-				mact_entry->flags |= MAC_ENT_MOVED;
++					 iter->port, port);
++				iter->port = port;
++				iter->flags |= MAC_ENT_MOVED;
+ 			}
+ 			/* Entry handled */
++			mact_entry = iter;
  			break;
  		}
  	}
+ 	mutex_unlock(&sparx5->mact_lock);
  
--	if (found) {
-+	if (dsa_tag_driver) {
- 		if (!try_module_get(dsa_tag_driver->owner))
- 			ops = ERR_PTR(-ENOPROTOOPT);
- 	} else {
+-	if (found && !(mact_entry->flags & MAC_ENT_MOVED))
++	if (mact_entry && !(mact_entry->flags & MAC_ENT_MOVED))
+ 		/* Present, not moved */
+ 		return;
+ 
+-	if (!found) {
++	if (!mact_entry) {
+ 		/* Entry not found - now add */
+ 		mact_entry = alloc_mact_entry(sparx5, mac, vid, port);
+ 		if (!mact_entry)
 -- 
 2.25.1
 
