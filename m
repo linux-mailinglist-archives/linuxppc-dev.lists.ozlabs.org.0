@@ -2,70 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A4E502A07
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:36:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66CC502A0E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 14:36:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KfwmX1JkNz3dqw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:36:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfwn84qYYz3dv9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 22:36:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=T7ylaXjr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gYd+11Kd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62b;
- helo=mail-ej1-x62b.google.com; envelope-from=jakobkoschel@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::530;
+ helo=mail-ed1-x530.google.com; envelope-from=jakobkoschel@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=T7ylaXjr; dkim-atps=neutral
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
- [IPv6:2a00:1450:4864:20::62b])
+ header.s=20210112 header.b=gYd+11Kd; dkim-atps=neutral
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com
+ [IPv6:2a00:1450:4864:20::530])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KfwfX0mPqz3bdC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:00 +1000 (AEST)
-Received: by mail-ej1-x62b.google.com with SMTP id g18so15112329ejc.10
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:30:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KfwfY4w2Vz3bdp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 22:31:01 +1000 (AEST)
+Received: by mail-ed1-x530.google.com with SMTP id c6so9756670edn.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 05:31:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=7YEqjlB8bsXZ45gzNCMwH2JxmTxm4dwtRKumhhyyThw=;
- b=T7ylaXjrwRyWiTc0Rk/AGiAUhp47Dwm32Ks4vuxph9an+0z1xHj59O1MX/r1Hx67px
- 8+EOa0zPfsbd+6OeFm/ZLRXrOmwVi1n/z4+OC6/ShauOZtv8ETJJ6UUxs8zdoMTpYvlv
- f7d6Sa/nHrWnCc3tNiQD0aDmpEQfg3JLMAu3+0BAUPK9JynfpPu+cxUVCO1dR/fCVadO
- z1XrXzFIxZ7GQUxqMlNe6nGA0eBdmoz6K/xJ7ayYwY2XLh5s2/4Oc7u6QgePCmUCS6yJ
- HONc9MP2eI2HzyLJLql9Kmauz4rVI6HzYhE3fDEFu77+bIGGjvjumr7yEVn3LlsK/PEt
- atTA==
+ bh=f1NofSwJuKbiTcVP4Eyds36Vn/5/VoS2zfBkRtVaGBU=;
+ b=gYd+11KdtVMsDo8ipZsM/pQACHdNkS8JfxV0xuiuqis3dZ1pGHZbRoHPczkRjYJMbt
+ m9KqEmAkE72nFZxe8blHGEEKKXopOYqzlWTveYZNUpqKfTUZYdA1n1ZD3Dnqt39XYGHn
+ l98WgM5lNOqWfXdgw+XRNoagXSlOxxiIBK9Vg/Fo748Ik52rGAK5OU39lMU2Jvzzv5Fq
+ laUhA+97OK6zanNVEtJmblQOAyqVhsHhKoT9y0jULvTfcwCYWiDnXKaRgJBVrFONP8ot
+ OYRjwiqQr0IF50+YiA8AVgk5N5/uki4UXE8KqUYb6MRf/v8KmcdtCGf1/iMO8cg0LSuI
+ OFFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=7YEqjlB8bsXZ45gzNCMwH2JxmTxm4dwtRKumhhyyThw=;
- b=1hLtzWxyfZM+MaBgYR+nIhJS5xG1XNgJLqrFcYyj9AUlxwUpnYZWCXywQGdL8m6ZV/
- ITiV988jNZxdJdp1Z39Lmxl4lgxkTBVvYgf2ptErqWaU2tqHL1y7w8qoB9opIMKLrTMl
- Z8W5A/GxAK7UFouehCunOxjkJAv9MUiUxXBfeUHVeBU+ovPhk4A75odq66+bFjwv8Xag
- HGRD/Xhxz6z38ANBWZzvYD0C2aA9JoL11QrLsACX3+CWIAfSPomztaspSA434l5EmzBp
- ovb0AQT5iljYC5489neSP6wQM4PVKOaKgJwhf+OUN8G9Hl/enx+kVi3Yxzuka5+MVf9F
- STMA==
-X-Gm-Message-State: AOAM532Pd/F5NpzFgdzLyKpL8uwG7V86LrKqszWqgEHRaC81RXr5hyPk
- qgRxmhPRfCgHSUEiYixSMPQ=
-X-Google-Smtp-Source: ABdhPJyUUJDEq8iUjmbpZnPlBcAN+S98Ospicf2P4TBMAkg0qLhJ8vZC0xGS1LIiK4ovBtz3ZS4QfQ==
-X-Received: by 2002:a17:907:72d5:b0:6ec:abf:dc87 with SMTP id
- du21-20020a17090772d500b006ec0abfdc87mr5374442ejc.120.1650025856776; 
- Fri, 15 Apr 2022 05:30:56 -0700 (PDT)
+ bh=f1NofSwJuKbiTcVP4Eyds36Vn/5/VoS2zfBkRtVaGBU=;
+ b=YWt6q0Hz696n2LeVK1AcTqRZjew9CRgkXlvh2YHUAVBWHAi64/FNR0rz38ScVUsFB4
+ Go7CyFzpgey8QiS2bHcHz4x6fFwZ5TNeNgqbC2dGA6BhzNynRnDubjRc8maamnKXbt25
+ Jc2oY87ZIyX9LpdSH945x+yNwc6L1wAVtAr7I42SzAhycq5p+J+Mu1U2BRU1FqnDMYH7
+ ABQiPfZKLUYjtH5t3xHnoMSrp12VSNiUKE/G0GDcZcRlWszs0oc2Ooo5PNaHClokKVSC
+ tgqAVfshbH6duJo2Ijkxusd3JYgUJ++AFGWMDYmptwrvhLPtJnw4RnG06JdtMyPoTAB4
+ TyUg==
+X-Gm-Message-State: AOAM530aqSG9DarCflksXwSz1zzdiKUuq6QtDPrCuAOoeoc+7UOjVPLD
+ 7MvjRDOtkIcY/1xXh1dpEpc=
+X-Google-Smtp-Source: ABdhPJy5eEqVwSt0S2+qGSltSh+dzs3Ju/Vei9bEaex5c5UKnqBo+y80ySXR0HvL4iQnHznifRljEA==
+X-Received: by 2002:a05:6402:2707:b0:419:5b7d:fd21 with SMTP id
+ y7-20020a056402270700b004195b7dfd21mr8078596edd.51.1650025858331; 
+ Fri, 15 Apr 2022 05:30:58 -0700 (PDT)
 Received: from localhost.localdomain (i130160.upc-i.chello.nl.
  [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.30.55
+ bo14-20020a170906d04e00b006ce98d9c3e3sm1649533ejb.194.2022.04.15.05.30.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 05:30:56 -0700 (PDT)
+ Fri, 15 Apr 2022 05:30:57 -0700 (PDT)
 From: Jakob Koschel <jakobkoschel@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v4 08/18] net: sparx5: Replace usage of found with
- dedicated list iterator variable
-Date: Fri, 15 Apr 2022 14:29:37 +0200
-Message-Id: <20220415122947.2754662-9-jakobkoschel@gmail.com>
+Subject: [PATCH net-next v4 09/18] qed: Use dedicated list iterator variable
+Date: Fri, 15 Apr 2022 14:29:38 +0200
+Message-Id: <20220415122947.2754662-10-jakobkoschel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220415122947.2754662-1-jakobkoschel@gmail.com>
 References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
@@ -115,72 +114,45 @@ macro in the future it should be avoided to use the list iterator
 variable after the loop body.
 
 To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable instead of a
-found boolean [1].
-
-This removes the need to use a found variable and simply checking if
-the variable was set, can determine if the break/goto was hit.
+concluded to use a separate iterator variable [1].
 
 Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
 Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 ---
- .../microchip/sparx5/sparx5_mactable.c        | 25 +++++++++----------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_dev.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
-index a5837dbe0c7e..bb8d9ce79ac2 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
-@@ -362,8 +362,7 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
- 				     unsigned char mac[ETH_ALEN],
- 				     u16 vid, u32 cfg2)
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_dev.c b/drivers/net/ethernet/qlogic/qed/qed_dev.c
+index 672480c9d195..e920e7dcf66a 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_dev.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_dev.c
+@@ -174,7 +174,7 @@ int qed_db_recovery_add(struct qed_dev *cdev,
+ int qed_db_recovery_del(struct qed_dev *cdev,
+ 			void __iomem *db_addr, void *db_data)
  {
--	struct sparx5_mact_entry *mact_entry;
--	bool found = false;
-+	struct sparx5_mact_entry *mact_entry = NULL, *iter;
- 	u16 port;
+-	struct qed_db_recovery_entry *db_entry = NULL;
++	struct qed_db_recovery_entry *db_entry = NULL, *iter;
+ 	struct qed_hwfn *p_hwfn;
+ 	int rc = -EINVAL;
  
- 	if (LRN_MAC_ACCESS_CFG_2_MAC_ENTRY_ADDR_TYPE_GET(cfg2) !=
-@@ -378,28 +377,28 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
- 		return;
+@@ -190,12 +190,13 @@ int qed_db_recovery_del(struct qed_dev *cdev,
  
- 	mutex_lock(&sparx5->mact_lock);
--	list_for_each_entry(mact_entry, &sparx5->mact_entries, list) {
--		if (mact_entry->vid == vid &&
--		    ether_addr_equal(mac, mact_entry->mac)) {
--			found = true;
--			mact_entry->flags |= MAC_ENT_ALIVE;
--			if (mact_entry->port != port) {
-+	list_for_each_entry(iter, &sparx5->mact_entries, list) {
-+		if (iter->vid == vid &&
-+		    ether_addr_equal(mac, iter->mac)) {
-+			iter->flags |= MAC_ENT_ALIVE;
-+			if (iter->port != port) {
- 				dev_warn(sparx5->dev, "Entry move: %d -> %d\n",
--					 mact_entry->port, port);
--				mact_entry->port = port;
--				mact_entry->flags |= MAC_ENT_MOVED;
-+					 iter->port, port);
-+				iter->port = port;
-+				iter->flags |= MAC_ENT_MOVED;
- 			}
- 			/* Entry handled */
-+			mact_entry = iter;
+ 	/* Protect the list */
+ 	spin_lock_bh(&p_hwfn->db_recovery_info.lock);
+-	list_for_each_entry(db_entry,
++	list_for_each_entry(iter,
+ 			    &p_hwfn->db_recovery_info.list, list_entry) {
+ 		/* search according to db_data addr since db_addr is not unique (roce) */
+-		if (db_entry->db_data == db_data) {
+-			qed_db_recovery_dp_entry(p_hwfn, db_entry, "Deleting");
+-			list_del(&db_entry->list_entry);
++		if (iter->db_data == db_data) {
++			qed_db_recovery_dp_entry(p_hwfn, iter, "Deleting");
++			list_del(&iter->list_entry);
++			db_entry = iter;
+ 			rc = 0;
  			break;
  		}
- 	}
- 	mutex_unlock(&sparx5->mact_lock);
- 
--	if (found && !(mact_entry->flags & MAC_ENT_MOVED))
-+	if (mact_entry && !(mact_entry->flags & MAC_ENT_MOVED))
- 		/* Present, not moved */
- 		return;
- 
--	if (!found) {
-+	if (!mact_entry) {
- 		/* Entry not found - now add */
- 		mact_entry = alloc_mact_entry(sparx5, mac, vid, port);
- 		if (!mact_entry)
 -- 
 2.25.1
 
