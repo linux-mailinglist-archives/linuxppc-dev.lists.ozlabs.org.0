@@ -1,76 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DC15502D7D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 18:05:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB8F502EF4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 21:09:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg1Q946Kdz3bpH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 02:05:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg5Tt4l7Sz3bd4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 05:09:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=q1bzqzL3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kMa8vmzs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62b;
- helo=mail-ej1-x62b.google.com; envelope-from=olteanv@gmail.com;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=q1bzqzL3; dkim-atps=neutral
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com
- [IPv6:2a00:1450:4864:20::62b])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=kMa8vmzs; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg1PT6cz3z2xDN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 02:04:59 +1000 (AEST)
-Received: by mail-ej1-x62b.google.com with SMTP id k23so16071311ejd.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 09:04:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=112dwm8QpeyoKYHzXDlM/vsE5hIZxIAtes3nuwV/SSo=;
- b=q1bzqzL3lBdyltYHc9DTIT5JLPdLODWLZph8x8M5S6Lrx38YGPco66753ypyqSZHdS
- TsBVCJ5EpLAbAmZd7rn35rz5+5MFo5cmcPhwTg2EsuyzzljP5OF0i5quSN5Bq79dJupT
- XxChUcD2MsVarL7yLizfAjcN3B0NTqgueTBK61H9jo+fIJq2L7zfnVfyEtuLdKfBrIhL
- iDzvx73Aqc0XvRiY1AXXQbSKFoZMT0Gp0iczLfr/jN0opuxhWCDc6rZaQadXhtc1zVzT
- V6fOjszCUEV1CJPEyDoo3WVMYNJOQYRIdd2ngW2MNMxLobrauU5wyg1fn/2XkaL6GqdW
- ZQzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=112dwm8QpeyoKYHzXDlM/vsE5hIZxIAtes3nuwV/SSo=;
- b=3q/fcmqEgS7oPE+XNTQcuWT7A8U5QSTcSLBPZHjlQ/g+q2kQ31iqyJe1aHhWt5zIAm
- B+KOx1TXFggVPjRU6Gz4YaTK4cg5m0few3b9lg3d45Z02MPQlVaZ8pqdQ4t9+VCk0iMU
- n5nLIfCJ3+XkZJWXo09e6IKHe6rac9sZyZa8WjpqTmSHxsaGoyaNJ8wADkh9arVJAd4O
- MHbSiSmOs7mnEvNrzZIr4jedRxuAawT2zHiX2546FqRiorHniPwzDTGmsclInyjmKbSg
- CpHeyV/QQMJ0F18uVIWenw6z0P7q1baFNkrX8Kmr6YM8rZ7/3DCJ6/3TpsnKeBv20p0J
- Oxtg==
-X-Gm-Message-State: AOAM531bZoRn+BTkbor66eFNgeBS7azVN0IkuMLGLdcYnL21X4qsehbV
- aEy+GICbjYL83Nxc8EQs9KM=
-X-Google-Smtp-Source: ABdhPJw48aM/ILhX7ieEo4E/2JT/l4q8QZCfn54tMQSw+A5qviAhPCWJlSaz9aHJH2xpZA3vw595cw==
-X-Received: by 2002:a17:907:6e88:b0:6da:8f01:7a8f with SMTP id
- sh8-20020a1709076e8800b006da8f017a8fmr6648623ejc.619.1650038696267; 
- Fri, 15 Apr 2022 09:04:56 -0700 (PDT)
-Received: from skbuf ([188.26.57.45]) by smtp.gmail.com with ESMTPSA id
- r18-20020a05640251d200b0041d1600ab09sm3036190edd.54.2022.04.15.09.04.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 09:04:55 -0700 (PDT)
-Date: Fri, 15 Apr 2022 19:04:52 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Jakob Koschel <jakobkoschel@gmail.com>
-Subject: Re: [PATCH net-next v4 07/18] net: dsa: Replace usage of found with
- dedicated list iterator variable
-Message-ID: <20220415160452.z4m4j3sulcteqggs@skbuf>
-References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
- <20220415122947.2754662-8-jakobkoschel@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg5TF6Hn7z3bVd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 05:08:33 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 60C9A619C9;
+ Fri, 15 Apr 2022 19:08:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE88C385A4;
+ Fri, 15 Apr 2022 19:08:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1650049709;
+ bh=wLptQ9KcXl6+N9MX+ZuwkhOcFMiubmc8uGIxEhPIVsw=;
+ h=From:To:Cc:Subject:Date:From;
+ b=kMa8vmzsEoLHqqj8o162lzFyicETqjQXbHfr5ImL1Ae9T92XhA7/J/OYE3IcbnXN4
+ 7ePmsefcNu2rBwzhNnaUtZBSIDPSaoyxmLo8pk+i5VdMOtmG3GkUY0lrEa73lTW/2V
+ Ug7UMduqMNaG9m5kk1lDbtepjruMyB//l/sFbAUflo5h2fSiSQOtJtlTGb/ZjBrZDX
+ w/IKNd1N+X/c6BltEErY9wMWJZ965YEp++XzySEwiQDwnEYl3OyhGebrjR9Ll6lBhN
+ Pw1g6o9wyrUeuiUPT7mgq7WrcLLHXyKlny2f9f7eZFXgVeaocS+n1eFAK11luqBP6s
+ uuqYoPhSC5y/g==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Richard Henderson <rth@twiddle.net>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Matt Turner <mattst88@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ Chas Williams <3chas3@gmail.com>, "David S . Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 0/7] Remove unused SLOW_DOWN_IO
+Date: Fri, 15 Apr 2022 14:08:10 -0500
+Message-Id: <20220415190817.842864-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220415122947.2754662-8-jakobkoschel@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,90 +69,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
- Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>,
- "David S. Miller" <davem@davemloft.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- "Bos, H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
- Martin Habets <habetsm.xilinx@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
- Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakub Kicinski <kuba@kernel.org>,
- Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Lars Povlsen <lars.povlsen@microchip.com>, Manish Chopra <manishc@marvell.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- UNGLinuxDriver@microchip.com, Yonghong Song <yhs@fb.com>,
- Edward Cree <ecree.xilinx@gmail.com>,
- Casper Andersson <casper.casan@gmail.com>, Xu Wang <vulab@iscas.ac.cn>,
- Cristiano Giuffrida <c.giuffrida@vu.nl>, bpf@vger.kernel.org,
- Colin Ian King <colin.king@intel.com>, linuxppc-dev@lists.ozlabs.org,
- Martin KaFai Lau <kafai@fb.com>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ netdev@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 15, 2022 at 02:29:36PM +0200, Jakob Koschel wrote:
-> To move the list iterator variable into the list_for_each_entry_*()
-> macro in the future it should be avoided to use the list iterator
-> variable after the loop body.
-> 
-> To *never* use the list iterator variable after the loop it was
-> concluded to use a separate iterator variable instead of a
-> found boolean [1].
-> 
-> This removes the need to use a found variable and simply checking if
-> the variable was set, can determine if the break/goto was hit.
-> 
-> Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-> ---
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-I absolutely hate the robotic commit message, but the change looks like
-it works, so:
+Only alpha, ia64, powerpc, and sh define SLOW_DOWN_IO, and there are no
+actual uses of it.  The few references to it are in situations that are
+themselves unused.  Remove them all.
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+It should be safe to apply these independently and in any order.  The only
+place SLOW_DOWN_IO is used at all is the lmc_var.h definition of DELAY,
+which is itself never used.
 
->  net/dsa/dsa.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
-> 
-> diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-> index 89c6c86e746f..645522c4dd4a 100644
-> --- a/net/dsa/dsa.c
-> +++ b/net/dsa/dsa.c
-> @@ -112,22 +112,21 @@ const struct dsa_device_ops *dsa_find_tagger_by_name(const char *buf)
->  
->  const struct dsa_device_ops *dsa_tag_driver_get(int tag_protocol)
->  {
-> -	struct dsa_tag_driver *dsa_tag_driver;
-> +	struct dsa_tag_driver *dsa_tag_driver = NULL, *iter;
->  	const struct dsa_device_ops *ops;
-> -	bool found = false;
->  
->  	request_module("%s%d", DSA_TAG_DRIVER_ALIAS, tag_protocol);
->  
->  	mutex_lock(&dsa_tag_drivers_lock);
-> -	list_for_each_entry(dsa_tag_driver, &dsa_tag_drivers_list, list) {
-> -		ops = dsa_tag_driver->ops;
-> +	list_for_each_entry(iter, &dsa_tag_drivers_list, list) {
-> +		ops = iter->ops;
->  		if (ops->proto == tag_protocol) {
-> -			found = true;
-> +			dsa_tag_driver = iter;
->  			break;
->  		}
->  	}
->  
-> -	if (found) {
-> +	if (dsa_tag_driver) {
->  		if (!try_module_get(dsa_tag_driver->owner))
->  			ops = ERR_PTR(-ENOPROTOOPT);
->  	} else {
-> -- 
-> 2.25.1
-> 
+Bjorn Helgaas (7):
+  net: wan: atp: remove unused eeprom_delay()
+  net: wan: lmc: remove unused DELAY()
+  net: remove comments that mention obsolete __SLOW_DOWN_IO
+  sh: remove unused SLOW_DOWN_IO
+  powerpc: Remove unused SLOW_DOWN_IO definition
+  ia64: remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO definitions
+  alpha: remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO definitions
+
+ arch/alpha/include/asm/io.h                  |  4 ----
+ arch/ia64/include/asm/io.h                   |  4 ----
+ arch/powerpc/include/asm/io.h                |  2 --
+ arch/sh/include/asm/io.h                     | 17 ++---------------
+ drivers/atm/nicstarmac.c                     |  5 -----
+ drivers/net/ethernet/dec/tulip/winbond-840.c |  2 --
+ drivers/net/ethernet/natsemi/natsemi.c       |  2 --
+ drivers/net/ethernet/realtek/atp.h           |  4 ----
+ drivers/net/wan/lmc/lmc_main.c               |  8 --------
+ drivers/net/wan/lmc/lmc_var.h                |  8 --------
+ 10 files changed, 2 insertions(+), 54 deletions(-)
+
+-- 
+2.25.1
+
