@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60371501FBF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 02:44:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2346501FC0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 02:45:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfczr35Gwz3bdW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 10:44:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfd0V3KSWz3bq9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 10:45:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bZwTwRaS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=FuTYBhDI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=flex--seanjc.bounces.google.com
  (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com;
- envelope-from=3xl9yygykdl8xjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com;
+ envelope-from=3xr9yygykdmezlhuqjnvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--seanjc.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=bZwTwRaS; dkim-atps=neutral
+ header.s=20210112 header.b=FuTYBhDI; dkim-atps=neutral
 Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com
  [IPv6:2607:f8b0:4864:20::549])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfcyb6RnRz2yY7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 10:43:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfcyc1jcVz2yhD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 10:43:52 +1000 (AEST)
 Received: by mail-pg1-x549.google.com with SMTP id
- l6-20020a637006000000b003811a27370aso3490445pgc.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 17:43:50 -0700 (PDT)
+ 78-20020a630651000000b0039d993c3c55so3473379pgg.14
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 17:43:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
  h=reply-to:date:in-reply-to:message-id:mime-version:references
  :subject:from:to:cc;
- bh=WHJorEYqdPsyoiS8LBeb1G8S4S7kzQkyLWZGD9aUrjs=;
- b=bZwTwRaSjFo3UIyEnG1Se3GCFh+RY6IvOG3VlupdDpfNfI6GX6hkJeLI81eGmOGX6G
- 1cHm7fTg8TqH04RjFv10Of5DvAYAHAM8tiEPrQRiuCNBDJRSzCUDQUG0BMRWHtD+LdNa
- OXpZzAre9wRSs/2YHv0GHmqXz+Pqefc9fuZxtMcl8GYafBb9wbzvPCjbT/nzQhtpz2Wn
- fyyyAL63cPcu44vOIB0qfBetcyUX/9l8dZ2b05Q4AfOcPl4SLNf/Fbj41CZv9b/yvg1F
- Aer1piomJTMTT3b0SNhbaUMWvPS5/iUeOlL+Pvad6lLyGugPdHlz8JZmH21Rl+8vgLjA
- mBcA==
+ bh=VDBBxbRymwn99ifXkPvrfvP8JeLntCySB5qG2FLdHGc=;
+ b=FuTYBhDITxI66Qxt5+87xMlO2q0C9iJXI9s7fddQAntJKNcZhy4i5CX3Vpr1K7b1gG
+ lpGYjjhgm/CKQjYxIZBLOAlu6Wf9zZOr5BTnS1Mm46MrfyyFviEAqnWwqxLbNvwWcsyf
+ JvdoNGNXJ/6sDa03DP7PftstcK+dADaHLntSvUANgU/0B4isfM6BZs4hWPzvL2xkAlhB
+ CUMjlksohwVrJztO8x/MgujxI4iPE/ysUfovmABWThXxb2g+rlV8zXfjr6a4wKFGQQ8A
+ 2BioePglRBUYrzqDp/34X5DBOonLRTI2L6fETCpuSbqRp5Wtv6N/vgi4/Y0xhSy1jDZu
+ aMxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:reply-to:date:in-reply-to:message-id
  :mime-version:references:subject:from:to:cc;
- bh=WHJorEYqdPsyoiS8LBeb1G8S4S7kzQkyLWZGD9aUrjs=;
- b=zEFQl1wVgm1ixPDavtweYFu6YHkeeAf2t/MuhjRtNPiyGWY1nWuW1sUs80FmU+NOlC
- ACj1WXKvmLlXe6rsdoRoUlcqm9PA6zQ+6L1J6yz00gkZ1lFuSfzj822TZpv0EC1JCDzO
- Li+lOeOeEniSp4BcEUGcw4H4s5zfHn6CzGrUJdUb8a7SrT2hQcxcREqaz7KsFXkujSJH
- iHa8LCVVdQ/N5bOeEzS1Jy2lo/o/2mHOsp1AWsaonZeDIrNVQ2nj8aeq+ChVMadZO4RC
- x5SEjXiDgO0jltlxN7GxlG2DZ5k+e/zaRzurRQ3Ym19v7ekfDEZv2PsGfz/7sBf8SLBQ
- fkeg==
-X-Gm-Message-State: AOAM532qS5KV2DxF4FzeyDb9cSRV4d5zOQEZZYkOvn8isSuYykI+EZs9
- GGL4oe0VrLWmi8teCQu/aZLanZpq6tU=
-X-Google-Smtp-Source: ABdhPJzt0tscL0kcshOCrjwd8G3ruQcGXCkqq7xMYex2fkXBeIa/R8tC7xq7T2RAxBd1S9ySsMfZwzJ54UU=
+ bh=VDBBxbRymwn99ifXkPvrfvP8JeLntCySB5qG2FLdHGc=;
+ b=6dySolxvvdVA5agad1q5463FnLMFzpUDVp9Vyof6hhOiv1Di446TQfyPfuA130NTZd
+ J2gnaFrlz94NDKNB+ua65UnQC20V1dzg3iMhI6RnJ0fAQEFfrhqaupL8i584FObRki9/
+ Jy3dajCXyHn+HQmUNMskFieMq0/5RSxKFOWdvaopViTG0b69GINcYRd2j4rOPzJ0jU5W
+ y97G6bCoHgP7LD2QNTL2KjbJNtdM2IqkDza/4Kf4EDmF6bHl0A7wvSy5cnCHHZ55ghND
+ y7UVtLZLVYBOprT8A4I55x6pY3+esk93Kz8j/KIad8zpHMwn3tUVw88UUGnM+2Z8nprc
+ Ae5Q==
+X-Gm-Message-State: AOAM530me8S1jjKItZjbCMCDeYF9Tk+Y1yOiAeEVrFKo3fFfopzYxRep
+ TMakCv/OwNySgb9kVgm1+KVTJrssOqc=
+X-Google-Smtp-Source: ABdhPJxWvnh9vGPdu8WwNvP/XothzcdXxz8DVteSxV4BWZ39Cw9eF09ZeKITExpxjd/oejtHjB373C4/RJY=
 X-Received: from seanjc.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:3e5])
- (user=seanjc job=sendgmr) by 2002:a17:90b:4b84:b0:1cb:6cf5:d2ff
+ (user=seanjc job=sendgmr) by 2002:a05:6a00:1a90:b0:506:1e27:a579
  with SMTP id
- lr4-20020a17090b4b8400b001cb6cf5d2ffmr1311935pjb.41.1649983428416; Thu, 14
- Apr 2022 17:43:48 -0700 (PDT)
-Date: Fri, 15 Apr 2022 00:43:41 +0000
+ e16-20020a056a001a9000b005061e27a579mr6426109pfv.46.1649983430118; Thu, 14
+ Apr 2022 17:43:50 -0700 (PDT)
+Date: Fri, 15 Apr 2022 00:43:42 +0000
 In-Reply-To: <20220415004343.2203171-1-seanjc@google.com>
-Message-Id: <20220415004343.2203171-2-seanjc@google.com>
+Message-Id: <20220415004343.2203171-3-seanjc@google.com>
 Mime-Version: 1.0
 References: <20220415004343.2203171-1-seanjc@google.com>
 X-Mailer: git-send-email 2.36.0.rc0.470.gd361397f0d-goog
-Subject: [PATCH 1/3] KVM: x86: Don't re-acquire SRCU lock in
- complete_emulated_io()
+Subject: [PATCH 2/3] KVM: RISC-V: Use kvm_vcpu.srcu_idx, drop RISC-V's
+ unnecessary copy
 From: Sean Christopherson <seanjc@google.com>
 To: Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
@@ -96,38 +96,120 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Don't re-acquire SRCU in complete_emulated_io() now that KVM acquires the
-lock in kvm_arch_vcpu_ioctl_run().  More importantly, don't overwrite
-vcpu->srcu_idx.  If the index acquired by complete_emulated_io() differs
-from the one acquired by kvm_arch_vcpu_ioctl_run(), KVM will effectively
-leak a lock and hang if/when synchronize_srcu() is invoked for the
-relevant grace period.
+Use the generic kvm_vcpu's srcu_idx instead of using an indentical field
+in RISC-V's version of kvm_vcpu_arch.  Generic KVM very intentionally
+does not touch vcpu->srcu_idx, i.e. there's zero chance of running afoul
+of common code.
 
-Fixes: 8d25b7beca7e ("KVM: x86: pull kvm->srcu read-side to kvm_arch_vcpu_ioctl_run")
-Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ arch/riscv/include/asm/kvm_host.h |  3 ---
+ arch/riscv/kvm/vcpu.c             | 16 ++++++++--------
+ arch/riscv/kvm/vcpu_exit.c        |  4 ++--
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ab336f7c82e4..f35fe09de59d 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10450,12 +10450,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+index 78da839657e5..cd4bbcecb0fb 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -193,9 +193,6 @@ struct kvm_vcpu_arch {
  
- static inline int complete_emulated_io(struct kvm_vcpu *vcpu)
- {
--	int r;
+ 	/* Don't run the VCPU (blocked) */
+ 	bool pause;
 -
--	vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
--	r = kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
--	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
--	return r;
-+	return kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
- }
+-	/* SRCU lock index for in-kernel run loop */
+-	int srcu_idx;
+ };
  
- static int complete_emulated_pio(struct kvm_vcpu *vcpu)
+ static inline void kvm_arch_hardware_unsetup(void) {}
+diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
+index 6785aef4cbd4..2f1caf23eed4 100644
+--- a/arch/riscv/kvm/vcpu.c
++++ b/arch/riscv/kvm/vcpu.c
+@@ -724,13 +724,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 	/* Mark this VCPU ran at least once */
+ 	vcpu->arch.ran_atleast_once = true;
+ 
+-	vcpu->arch.srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
++	vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 
+ 	/* Process MMIO value returned from user-space */
+ 	if (run->exit_reason == KVM_EXIT_MMIO) {
+ 		ret = kvm_riscv_vcpu_mmio_return(vcpu, vcpu->run);
+ 		if (ret) {
+-			srcu_read_unlock(&vcpu->kvm->srcu, vcpu->arch.srcu_idx);
++			srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 			return ret;
+ 		}
+ 	}
+@@ -739,13 +739,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 	if (run->exit_reason == KVM_EXIT_RISCV_SBI) {
+ 		ret = kvm_riscv_vcpu_sbi_return(vcpu, vcpu->run);
+ 		if (ret) {
+-			srcu_read_unlock(&vcpu->kvm->srcu, vcpu->arch.srcu_idx);
++			srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 			return ret;
+ 		}
+ 	}
+ 
+ 	if (run->immediate_exit) {
+-		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->arch.srcu_idx);
++		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 		return -EINTR;
+ 	}
+ 
+@@ -784,7 +784,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 		 */
+ 		vcpu->mode = IN_GUEST_MODE;
+ 
+-		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->arch.srcu_idx);
++		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 		smp_mb__after_srcu_read_unlock();
+ 
+ 		/*
+@@ -802,7 +802,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 			vcpu->mode = OUTSIDE_GUEST_MODE;
+ 			local_irq_enable();
+ 			preempt_enable();
+-			vcpu->arch.srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
++			vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 			continue;
+ 		}
+ 
+@@ -846,7 +846,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 
+ 		preempt_enable();
+ 
+-		vcpu->arch.srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
++		vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 
+ 		ret = kvm_riscv_vcpu_exit(vcpu, run, &trap);
+ 	}
+@@ -855,7 +855,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 
+ 	vcpu_put(vcpu);
+ 
+-	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->arch.srcu_idx);
++	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 
+ 	return ret;
+ }
+diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
+index aa8af129e4bb..2d56faddb9d1 100644
+--- a/arch/riscv/kvm/vcpu_exit.c
++++ b/arch/riscv/kvm/vcpu_exit.c
+@@ -456,9 +456,9 @@ static int stage2_page_fault(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ void kvm_riscv_vcpu_wfi(struct kvm_vcpu *vcpu)
+ {
+ 	if (!kvm_arch_vcpu_runnable(vcpu)) {
+-		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->arch.srcu_idx);
++		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+ 		kvm_vcpu_halt(vcpu);
+-		vcpu->arch.srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
++		vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+ 		kvm_clear_request(KVM_REQ_UNHALT, vcpu);
+ 	}
+ }
 -- 
 2.36.0.rc0.470.gd361397f0d-goog
 
