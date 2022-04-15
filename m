@@ -2,67 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C83501FB9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 02:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60371501FBF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 02:44:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KfczB0jRtz3bp0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 10:44:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kfczr35Gwz3bdW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 10:44:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=MeCa2hpH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=bZwTwRaS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=flex--seanjc.bounces.google.com
- (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com;
- envelope-from=3wr9yygykdl0vhdqmfjrrjoh.frpolqx0ssf-ghyolvwv.r2odev.ruj@flex--seanjc.bounces.google.com;
+ (client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com;
+ envelope-from=3xl9yygykdl8xjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=MeCa2hpH; dkim-atps=neutral
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com
- [IPv6:2607:f8b0:4864:20::104a])
+ header.s=20210112 header.b=bZwTwRaS; dkim-atps=neutral
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com
+ [IPv6:2607:f8b0:4864:20::549])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfcyb6vFxz2yg3
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kfcyb6RnRz2yY7
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 10:43:50 +1000 (AEST)
-Received: by mail-pj1-x104a.google.com with SMTP id
- s13-20020a17090a764d00b001cb896b75ffso3629752pjl.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 17:43:49 -0700 (PDT)
+Received: by mail-pg1-x549.google.com with SMTP id
+ l6-20020a637006000000b003811a27370aso3490445pgc.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Apr 2022 17:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=reply-to:date:message-id:mime-version:subject:from:to:cc;
- bh=7OMi2RIEzFlzmxnmlN9xX+Hiuvy0euETloS8ByI5IaE=;
- b=MeCa2hpH2EDOFAv86dWfFxEDhUCoVgtYtspWsZspfLv8qId3NORSe7rf03wn86oylz
- +XJ0GcdqQRybf6xncuTBeePmfFN4InpFQ41P9BSR3Syo01zZHvGZ9zQr4T4EE1WEIloe
- reG4s0K2VYD7FLIjoouyOUE3otCfnre0GNbLyJfTBPWb2DV4bee0Kn/uLaXDFLxrNX/x
- UbZV6ELm90R1ITrDKiVMDDPojI8aJ036Iusf7S6xFX02aeLgG7OCHcrKOwsYwLbInWX3
- PegPDslVaW429FO+Y+K2OsH/9FIvKxrhlxBKuaQed7QGbk7x/m+I+YhWAP5nEspT3bi9
- F2eA==
+ h=reply-to:date:in-reply-to:message-id:mime-version:references
+ :subject:from:to:cc;
+ bh=WHJorEYqdPsyoiS8LBeb1G8S4S7kzQkyLWZGD9aUrjs=;
+ b=bZwTwRaSjFo3UIyEnG1Se3GCFh+RY6IvOG3VlupdDpfNfI6GX6hkJeLI81eGmOGX6G
+ 1cHm7fTg8TqH04RjFv10Of5DvAYAHAM8tiEPrQRiuCNBDJRSzCUDQUG0BMRWHtD+LdNa
+ OXpZzAre9wRSs/2YHv0GHmqXz+Pqefc9fuZxtMcl8GYafBb9wbzvPCjbT/nzQhtpz2Wn
+ fyyyAL63cPcu44vOIB0qfBetcyUX/9l8dZ2b05Q4AfOcPl4SLNf/Fbj41CZv9b/yvg1F
+ Aer1piomJTMTT3b0SNhbaUMWvPS5/iUeOlL+Pvad6lLyGugPdHlz8JZmH21Rl+8vgLjA
+ mBcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:reply-to:date:message-id:mime-version:subject
- :from:to:cc;
- bh=7OMi2RIEzFlzmxnmlN9xX+Hiuvy0euETloS8ByI5IaE=;
- b=MwfO7XPDX1d6ukNslC3faoxlF83TQZDuqfxlfUf2lxSfQXKKNTfmBnGuGSGADufOXe
- FDZmizKS1pNMcaaLfkkbmgKPGAh1RW0L7TuKJjS/XltXxrC70c0Vc5Q7/l9C0AF1RSEx
- z7feC56j9nrxxrd90D77pye4HelxIp8GamNPMi1wufVK3OF5O+lgeG7KwULW0aRvWVgV
- I5VY1Zo9yyAkMFz9VYz+5VrT5c+NrB1CJwVhJTK89wQw82OZW/4neWnOzNVAbwwhRoFB
- H3c2PVvMrFg/x2qAD/xxADv300JRyzpSYDp0EgEnlea0jUU0uT2ZEaDjM8wzCuU5zNaU
- UOpA==
-X-Gm-Message-State: AOAM532sLRgQBrtegy6wnb1Zh92rhWaCZrAGPRmxsqBQ2P1bDDk61O63
- 4MIZrvY1NBEj3HylNTpXhTrPyrsoCQk=
-X-Google-Smtp-Source: ABdhPJx6JOuyqIVZMdQQ1Mawo8G7YZO4giLYHAwOTFBDw/d0CTLHvznAoZ7hbCtCNcCnHHDws4949mgI1FE=
+ h=x-gm-message-state:reply-to:date:in-reply-to:message-id
+ :mime-version:references:subject:from:to:cc;
+ bh=WHJorEYqdPsyoiS8LBeb1G8S4S7kzQkyLWZGD9aUrjs=;
+ b=zEFQl1wVgm1ixPDavtweYFu6YHkeeAf2t/MuhjRtNPiyGWY1nWuW1sUs80FmU+NOlC
+ ACj1WXKvmLlXe6rsdoRoUlcqm9PA6zQ+6L1J6yz00gkZ1lFuSfzj822TZpv0EC1JCDzO
+ Li+lOeOeEniSp4BcEUGcw4H4s5zfHn6CzGrUJdUb8a7SrT2hQcxcREqaz7KsFXkujSJH
+ iHa8LCVVdQ/N5bOeEzS1Jy2lo/o/2mHOsp1AWsaonZeDIrNVQ2nj8aeq+ChVMadZO4RC
+ x5SEjXiDgO0jltlxN7GxlG2DZ5k+e/zaRzurRQ3Ym19v7ekfDEZv2PsGfz/7sBf8SLBQ
+ fkeg==
+X-Gm-Message-State: AOAM532qS5KV2DxF4FzeyDb9cSRV4d5zOQEZZYkOvn8isSuYykI+EZs9
+ GGL4oe0VrLWmi8teCQu/aZLanZpq6tU=
+X-Google-Smtp-Source: ABdhPJzt0tscL0kcshOCrjwd8G3ruQcGXCkqq7xMYex2fkXBeIa/R8tC7xq7T2RAxBd1S9ySsMfZwzJ54UU=
 X-Received: from seanjc.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:3e5])
- (user=seanjc job=sendgmr) by 2002:a05:6a00:1490:b0:4fb:1544:bc60
+ (user=seanjc job=sendgmr) by 2002:a17:90b:4b84:b0:1cb:6cf5:d2ff
  with SMTP id
- v16-20020a056a00149000b004fb1544bc60mr17317476pfu.73.1649983426720; Thu, 14
- Apr 2022 17:43:46 -0700 (PDT)
-Date: Fri, 15 Apr 2022 00:43:40 +0000
-Message-Id: <20220415004343.2203171-1-seanjc@google.com>
+ lr4-20020a17090b4b8400b001cb6cf5d2ffmr1311935pjb.41.1649983428416; Thu, 14
+ Apr 2022 17:43:48 -0700 (PDT)
+Date: Fri, 15 Apr 2022 00:43:41 +0000
+In-Reply-To: <20220415004343.2203171-1-seanjc@google.com>
+Message-Id: <20220415004343.2203171-2-seanjc@google.com>
 Mime-Version: 1.0
+References: <20220415004343.2203171-1-seanjc@google.com>
 X-Mailer: git-send-email 2.36.0.rc0.470.gd361397f0d-goog
-Subject: [PATCH 0/3] KVM: x86 SRCU bug fix and SRCU hardening
+Subject: [PATCH 1/3] KVM: x86: Don't re-acquire SRCU lock in
+ complete_emulated_io()
 From: Sean Christopherson <seanjc@google.com>
 To: Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
@@ -92,41 +96,38 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix an x86 bug where KVM overwrites vcpu->srcu_idx and can leak an SRCU
-lock due to unlocking the wrong index, ultimately causing a hang if/when
-KVM attempts to synchronize.
+Don't re-acquire SRCU in complete_emulated_io() now that KVM acquires the
+lock in kvm_arch_vcpu_ioctl_run().  More importantly, don't overwrite
+vcpu->srcu_idx.  If the index acquired by complete_emulated_io() differs
+from the one acquired by kvm_arch_vcpu_ioctl_run(), KVM will effectively
+leak a lock and hang if/when synchronize_srcu() is invoked for the
+relevant grace period.
 
-Switch RISC-V to the generic vcpu->srcu_idx, for reasons unknown it has
-its own copy and ignores the generic one.
+Fixes: 8d25b7beca7e ("KVM: x86: pull kvm->srcu read-side to kvm_arch_vcpu_ioctl_run")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/x86.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Add helpers with rudimentary detection of illegal vcpu->srcu_idx usage,
-the x86 bug would have been incredibly painful to debug had I not known
-what to look for (found by a selftest with very specific behavior...
-that we recently modified with respect to SRCU).
-
-Non-x86 changes are compile tested only.
-
-Sean Christopherson (3):
-  KVM: x86: Don't re-acquire SRCU lock in complete_emulated_io()
-  KVM: RISC-V: Use kvm_vcpu.srcu_idx, drop RISC-V's unnecessary copy
-  KVM: Add helpers to wrap vcpu->srcu_idx and yell if it's abused
-
- arch/powerpc/kvm/book3s_64_mmu_radix.c |  9 ++++---
- arch/powerpc/kvm/book3s_hv_nested.c    | 16 ++++++------
- arch/powerpc/kvm/book3s_rtas.c         |  4 +--
- arch/powerpc/kvm/powerpc.c             |  4 +--
- arch/riscv/include/asm/kvm_host.h      |  3 ---
- arch/riscv/kvm/vcpu.c                  | 16 ++++++------
- arch/riscv/kvm/vcpu_exit.c             |  4 +--
- arch/s390/kvm/interrupt.c              |  4 +--
- arch/s390/kvm/kvm-s390.c               |  8 +++---
- arch/s390/kvm/vsie.c                   |  4 +--
- arch/x86/kvm/x86.c                     | 35 +++++++++++---------------
- include/linux/kvm_host.h               | 24 +++++++++++++++++-
- 12 files changed, 72 insertions(+), 59 deletions(-)
-
-
-base-commit: 150866cd0ec871c765181d145aa0912628289c8a
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index ab336f7c82e4..f35fe09de59d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10450,12 +10450,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+ 
+ static inline int complete_emulated_io(struct kvm_vcpu *vcpu)
+ {
+-	int r;
+-
+-	vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+-	r = kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
+-	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+-	return r;
++	return kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
+ }
+ 
+ static int complete_emulated_pio(struct kvm_vcpu *vcpu)
 -- 
 2.36.0.rc0.470.gd361397f0d-goog
 
