@@ -2,47 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB8F502EF4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 21:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C068C502F21
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 21:10:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg5Tt4l7Sz3bd4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 05:09:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg5WB4sPPz3cBy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 05:10:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kMa8vmzs;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Uy7wm2db;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=kMa8vmzs; 
+ header.s=k20201202 header.b=Uy7wm2db; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg5TF6Hn7z3bVd
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 05:08:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg5TL5rWsz3bVd
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 05:08:38 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 60C9A619C9;
- Fri, 15 Apr 2022 19:08:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE88C385A4;
- Fri, 15 Apr 2022 19:08:29 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 75E9CB82E94;
+ Fri, 15 Apr 2022 19:08:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BFFC385A4;
+ Fri, 15 Apr 2022 19:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650049709;
- bh=wLptQ9KcXl6+N9MX+ZuwkhOcFMiubmc8uGIxEhPIVsw=;
- h=From:To:Cc:Subject:Date:From;
- b=kMa8vmzsEoLHqqj8o162lzFyicETqjQXbHfr5ImL1Ae9T92XhA7/J/OYE3IcbnXN4
- 7ePmsefcNu2rBwzhNnaUtZBSIDPSaoyxmLo8pk+i5VdMOtmG3GkUY0lrEa73lTW/2V
- Ug7UMduqMNaG9m5kk1lDbtepjruMyB//l/sFbAUflo5h2fSiSQOtJtlTGb/ZjBrZDX
- w/IKNd1N+X/c6BltEErY9wMWJZ965YEp++XzySEwiQDwnEYl3OyhGebrjR9Ll6lBhN
- Pw1g6o9wyrUeuiUPT7mgq7WrcLLHXyKlny2f9f7eZFXgVeaocS+n1eFAK11luqBP6s
- uuqYoPhSC5y/g==
+ s=k20201202; t=1650049712;
+ bh=nreQfjm+N9qOhwr5Z/uFXcKNU+5eXomO6oZib8laKZg=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=Uy7wm2dbW0KsrkPVWxh3QI7TRGnVyhSSco7+9aVi5fskwyqNsDWtS+q/SXS0bNcDO
+ CYltjjk3xL9ZG6NwBehx/ojBF5VY7YIGy3NLngmpDUfuDXDgriKqzMRePSTVMnGAdD
+ R+rqHc1skZ92pOdAFuoa4otdVxaZew8vigWMLMntEk6IdaYxNKGjrYB8+Mfk1d5bD5
+ WiKK6lwF3+vqPJl7B0VQDyrm5GpW3KJLj91M175TJmwtb2bQWMafnrh0awZTyXc+yi
+ n1+OadUZmi73lelEAcmJo9wdqSiDxF2HbLYakkwcJVG5pomoGx33bln+IKhygSvfk/
+ n/ZpSUlcUTW0Q==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Richard Henderson <rth@twiddle.net>,
  Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
@@ -52,10 +50,12 @@ To: Richard Henderson <rth@twiddle.net>,
  Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
  Chas Williams <3chas3@gmail.com>, "David S . Miller" <davem@davemloft.net>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 0/7] Remove unused SLOW_DOWN_IO
-Date: Fri, 15 Apr 2022 14:08:10 -0500
-Message-Id: <20220415190817.842864-1-helgaas@kernel.org>
+Subject: [PATCH 1/7] net: wan: atp: remove unused eeprom_delay()
+Date: Fri, 15 Apr 2022 14:08:11 -0500
+Message-Id: <20220415190817.842864-2-helgaas@kernel.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220415190817.842864-1-helgaas@kernel.org>
+References: <20220415190817.842864-1-helgaas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,35 +79,29 @@ Sender: "Linuxppc-dev"
 
 From: Bjorn Helgaas <bhelgaas@google.com>
 
-Only alpha, ia64, powerpc, and sh define SLOW_DOWN_IO, and there are no
-actual uses of it.  The few references to it are in situations that are
-themselves unused.  Remove them all.
+atp.h is included only by atp.c, which does not use eeprom_delay().  Remove
+the unused definition.
 
-It should be safe to apply these independently and in any order.  The only
-place SLOW_DOWN_IO is used at all is the lmc_var.h definition of DELAY,
-which is itself never used.
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+---
+ drivers/net/ethernet/realtek/atp.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Bjorn Helgaas (7):
-  net: wan: atp: remove unused eeprom_delay()
-  net: wan: lmc: remove unused DELAY()
-  net: remove comments that mention obsolete __SLOW_DOWN_IO
-  sh: remove unused SLOW_DOWN_IO
-  powerpc: Remove unused SLOW_DOWN_IO definition
-  ia64: remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO definitions
-  alpha: remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO definitions
-
- arch/alpha/include/asm/io.h                  |  4 ----
- arch/ia64/include/asm/io.h                   |  4 ----
- arch/powerpc/include/asm/io.h                |  2 --
- arch/sh/include/asm/io.h                     | 17 ++---------------
- drivers/atm/nicstarmac.c                     |  5 -----
- drivers/net/ethernet/dec/tulip/winbond-840.c |  2 --
- drivers/net/ethernet/natsemi/natsemi.c       |  2 --
- drivers/net/ethernet/realtek/atp.h           |  4 ----
- drivers/net/wan/lmc/lmc_main.c               |  8 --------
- drivers/net/wan/lmc/lmc_var.h                |  8 --------
- 10 files changed, 2 insertions(+), 54 deletions(-)
-
+diff --git a/drivers/net/ethernet/realtek/atp.h b/drivers/net/ethernet/realtek/atp.h
+index 63f0d2d0e87b..b202184eddd4 100644
+--- a/drivers/net/ethernet/realtek/atp.h
++++ b/drivers/net/ethernet/realtek/atp.h
+@@ -255,10 +255,6 @@ static inline void write_word_mode0(short ioaddr, unsigned short value)
+ #define EE_DATA_WRITE	0x01	/* EEPROM chip data in. */
+ #define EE_DATA_READ	0x08	/* EEPROM chip data out. */
+ 
+-/* Delay between EEPROM clock transitions. */
+-#define eeprom_delay(ticks) \
+-do { int _i = 40; while (--_i > 0) { __SLOW_DOWN_IO; } } while (0)
+-
+ /* The EEPROM commands include the alway-set leading bit. */
+ #define EE_WRITE_CMD(offset)	(((5 << 6) + (offset)) << 17)
+ #define EE_READ(offset)		(((6 << 6) + (offset)) << 17)
 -- 
 2.25.1
 
