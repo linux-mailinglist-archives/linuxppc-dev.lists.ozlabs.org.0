@@ -2,72 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D574503212
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 02:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C26FA503213
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 02:42:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KgDsT3r8Xz3bdL
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 10:41:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KgDt95zlHz3by6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 10:42:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=N1gzaNMp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=KaItwtfz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
- helo=mail-pg1-x535.google.com; envelope-from=namhyung@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631;
+ helo=mail-pl1-x631.google.com; envelope-from=namhyung@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=N1gzaNMp; dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
- [IPv6:2607:f8b0:4864:20::535])
+ header.s=20210112 header.b=KaItwtfz; dkim-atps=neutral
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
+ [IPv6:2607:f8b0:4864:20::631])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KgDrp6bvFz3bVN
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 10:40:57 +1000 (AEST)
-Received: by mail-pg1-x535.google.com with SMTP id t13so9103570pgn.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 17:40:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KgDrp6P3mz301s
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 10:40:58 +1000 (AEST)
+Received: by mail-pl1-x631.google.com with SMTP id be5so8196521plb.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 17:40:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=sender:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=UWFJae0wB3i/+AjUHp0kgcY6gHCBjSvEexFbtOZL7cw=;
- b=N1gzaNMpjSVHF43xt8VTC6Pq6l2GGjFsGQ2QmCg0hWKpuUjwH6vK2ITiQVZ/tbemQ6
- qTh57IrnV2xB7nCCB1+4ZkXhgIjGuXRLEAc7THqwNOEjvZGrbASW0kHxuNjZqxNE1dys
- 9BJc/J77Ux1wsq0Y6ot5Ue0Nhymb+lTik1oXUfm6SRUKGu9FvUny3MNn5TXgmQbLlgQw
- cUHoYnw/bOS0YKjN9PTgYjtVl1DedARYXGIVXk0OYIZGJm4EIw2LP3n60vQaBcQJodmD
- FoOjiZdxyr/vyroCOZRG8JtnGDIKfP44EVw/uKWZXBA+EPPv9krPQ5Jq4nggSsYucc4N
- +dQw==
+ h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=C/yp2SiPCDYhZ9QJZ/VkI3pUZmOOKH2y3TvYwr4r/ZY=;
+ b=KaItwtfz20xnWMtNTiOqG2T72TphlDwszWNLq4pqt1Jy2NZGmz4xPEv7EjGhIFMi2E
+ F9OgIDcC54Zx2zt/Hc+cI8xZuyo5DfmMAdWKoggxKdi7cqSaPSSOvQeZo4IkNe6FZqjW
+ 766dPYHxy1CDcGyaM/Z80nLgd+sTo05wF5k6mWrg8+8FRzyf7bZpXhpKU1TmqG2iAc+T
+ trXclf97t/OX+AuOY1U0xx/4aO1cfsSbMRR8jpD1VLLVDXr57cYQeftuyZwU7l5NQ2uC
+ mmuQdoTbb24IrxRsmtippfaiePCKwvbxgOuSPIEYDge1N3I/qm3TPyMI9RYvYE1jdoL9
+ d4Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
- :mime-version:content-transfer-encoding;
- bh=UWFJae0wB3i/+AjUHp0kgcY6gHCBjSvEexFbtOZL7cw=;
- b=cve32mvkizmDb0W6+f6Jt3sff79RpBBz/uDTAhyR4MYNKwJbA6vlzdtu5pVPFZA2A6
- Re9GMDV/3NK/BofQKmAJhm3Xcq3ZBBYuE+vZ6TVUtOuMNYeKilwnqHu6rktUeYQfyDIG
- zoRNBQ2/+q4Zx+fybp1ZuLHcA2+22pM3bxRQzdVQ+LA5qqqrRUB+Ha8zv6qvm+dBOWgK
- LHgEzsDQw8h0pgmKOQsFiwyCrs8pmcq+o92sF/HM3SVQXDcEda+en/pkMLsA1ihL9Jtp
- EWofuaybGlWbqzIeRtNrm30g2aqd9P2ztdSCjpMcx3UKoGtxeNPkkuM8VESLjqKclqbs
- s4Iw==
-X-Gm-Message-State: AOAM531iL/u+3hbIjElZ38ywJSG8DFDn9+uYLrnZKxei6MGmVxMkeXlu
- ebVaHa3vhuANQNTP5zapjlo=
-X-Google-Smtp-Source: ABdhPJy7+O0d1TAWEptQEO1FaQlgJslFZTjGjF/ZuzHuNoQrVP6vRz/HM02MSWZFO67NeYN6B+T6Aw==
-X-Received: by 2002:a05:6a00:14d2:b0:50a:48f0:881a with SMTP id
- w18-20020a056a0014d200b0050a48f0881amr1390703pfu.36.1650069653526; 
- Fri, 15 Apr 2022 17:40:53 -0700 (PDT)
+ :in-reply-to:references:mime-version:content-transfer-encoding;
+ bh=C/yp2SiPCDYhZ9QJZ/VkI3pUZmOOKH2y3TvYwr4r/ZY=;
+ b=Ah8JH8+kikneiZukBw5DqZ+Mn4JLjbh9ihVMqLbdRE7Ho+fSWpBgU6oDybU0tSRWb5
+ kBMu3xaS9CkpeNXUW8TQCZoWRd0RxpSx7Gpel58n91Y1AyUbtaGY76Z9VfEP/w7qJP3C
+ lGGzmzByIFWGEhcDGhjrG6TNNgZ8L/mlNKLVosZnmLRwD2ASjYqYGhd+lYe6SPbVtiHp
+ vMWlZhJir2sF2bnVIP3TyYztjElYShPuUwzsZRViVA7kcslJz4+pEPBMTNMuVbnMg3xI
+ YQll6/cbzNr+J9MgaWLk8ra5HpyhuMnZZTGYuEk3paobaejJzoXorTqXwQEVBI8eR43a
+ 9D1Q==
+X-Gm-Message-State: AOAM531GL+X0stYbAcx9j1LAep49N3pXWEqCxKz9jlVgt+q7qgw74ZMZ
+ Ic2ObHg0Qw7X733EJCgdeso=
+X-Google-Smtp-Source: ABdhPJzsACZqcMn+IVHVYYnMsaYkZAQYl/1YN2wyFMIwCE7NodBJ76t90Djj26qvoMib2GCP1YQ1Lg==
+X-Received: by 2002:a17:902:7884:b0:158:b5b6:572c with SMTP id
+ q4-20020a170902788400b00158b5b6572cmr1452146pll.144.1650069656404; 
+ Fri, 15 Apr 2022 17:40:56 -0700 (PDT)
 Received: from balhae.roam.corp.google.com
  ([2607:fb90:461:36d2:dba1:7530:2cda:19b1])
  by smtp.gmail.com with ESMTPSA id
- j9-20020a056a00130900b004f73df40914sm3913537pfu.82.2022.04.15.17.40.50
+ j9-20020a056a00130900b004f73df40914sm3913537pfu.82.2022.04.15.17.40.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 17:40:52 -0700 (PDT)
+ Fri, 15 Apr 2022 17:40:55 -0700 (PDT)
 From: Namhyung Kim <namhyung@kernel.org>
 To: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
  Ian Rogers <irogers@google.com>, Michael Petlan <mpetlan@redhat.com>
-Subject: [PATCH 0/3] perf tools: Tidy up symbol end fixup (v3)
-Date: Fri, 15 Apr 2022 17:40:45 -0700
-Message-Id: <20220416004048.1514900-1-namhyung@kernel.org>
+Subject: [PATCH 1/3] perf symbol: Pass is_kallsyms to symbols__fixup_end()
+Date: Fri, 15 Apr 2022 17:40:46 -0700
+Message-Id: <20220416004048.1514900-2-namhyung@kernel.org>
 X-Mailer: git-send-email 2.36.0.rc0.470.gd361397f0d-goog
+In-Reply-To: <20220416004048.1514900-1-namhyung@kernel.org>
+References: <20220416004048.1514900-1-namhyung@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -93,47 +95,82 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+The symbol fixup is necessary for symbols in kallsyms since they don't
+have size info.  So we use the next symbol's address to calculate the
+size.  Now it's also used for user binaries because sometimes they
+miss size for hand-written asm functions.
 
-This work is a follow-up of Ian's previous one at
-  https://lore.kernel.org/all/20220412154817.2728324-1-irogers@google.com/
+There's a arch-specific function to handle kallsyms differently but
+currently it cannot distinguish kallsyms from others.  Pass this
+information explicitly to handle it properly.  Note that those arch
+functions will be moved to the generic function so I didn't added it
+to the arch-functions.
 
-Fixing up more symbol ends as introduced in:
-  https://lore.kernel.org/lkml/20220317135536.805-1-mpetlan@redhat.com/
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+---
+ tools/perf/util/symbol-elf.c | 2 +-
+ tools/perf/util/symbol.c     | 7 ++++---
+ tools/perf/util/symbol.h     | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-it caused perf annotate to run into memory limits - every symbol holds
-all the disassembled code in the annotation, and so making symbols
-ends further away dramatically increased memory usage (40MB to >1GB).
-
-Modify the symbol end fixup logic so that special kernel cases aren't
-applied in the common case.
-
-v3 changes)
- * rename is_kernel to is_kallsyms
- * move the logic to generic function
- * remove arch-specific functions
-
-Thanks,
-Namhyung
-
-
-Namhyung Kim (3):
-  perf symbol: Pass is_kallsyms to symbols__fixup_end()
-  perf symbol: Update symbols__fixup_end()
-  perf symbol: Remove arch__symbols__fixup_end()
-
- tools/perf/arch/arm64/util/machine.c   | 21 ---------------
- tools/perf/arch/powerpc/util/Build     |  1 -
- tools/perf/arch/powerpc/util/machine.c | 25 -----------------
- tools/perf/arch/s390/util/machine.c    | 16 -----------
- tools/perf/util/symbol-elf.c           |  2 +-
- tools/perf/util/symbol.c               | 37 +++++++++++++++++++-------
- tools/perf/util/symbol.h               |  3 +--
- 7 files changed, 29 insertions(+), 76 deletions(-)
- delete mode 100644 tools/perf/arch/powerpc/util/machine.c
-
-
-base-commit: 41204da4c16071be9090940b18f566832d46becc
+diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
+index 31cd59a2b66e..ecd377938eea 100644
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -1290,7 +1290,7 @@ dso__load_sym_internal(struct dso *dso, struct map *map, struct symsrc *syms_ss,
+ 	 * For misannotated, zeroed, ASM function sizes.
+ 	 */
+ 	if (nr > 0) {
+-		symbols__fixup_end(&dso->symbols);
++		symbols__fixup_end(&dso->symbols, false);
+ 		symbols__fixup_duplicate(&dso->symbols);
+ 		if (kmap) {
+ 			/*
+diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
+index dea0fc495185..1b85cc1422a9 100644
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -217,7 +217,8 @@ void symbols__fixup_duplicate(struct rb_root_cached *symbols)
+ 	}
+ }
+ 
+-void symbols__fixup_end(struct rb_root_cached *symbols)
++void symbols__fixup_end(struct rb_root_cached *symbols,
++			bool is_kallsyms __maybe_unused)
+ {
+ 	struct rb_node *nd, *prevnd = rb_first_cached(symbols);
+ 	struct symbol *curr, *prev;
+@@ -1467,7 +1468,7 @@ int __dso__load_kallsyms(struct dso *dso, const char *filename,
+ 	if (kallsyms__delta(kmap, filename, &delta))
+ 		return -1;
+ 
+-	symbols__fixup_end(&dso->symbols);
++	symbols__fixup_end(&dso->symbols, true);
+ 	symbols__fixup_duplicate(&dso->symbols);
+ 
+ 	if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
+@@ -1659,7 +1660,7 @@ int dso__load_bfd_symbols(struct dso *dso, const char *debugfile)
+ #undef bfd_asymbol_section
+ #endif
+ 
+-	symbols__fixup_end(&dso->symbols);
++	symbols__fixup_end(&dso->symbols, false);
+ 	symbols__fixup_duplicate(&dso->symbols);
+ 	dso->adjust_symbols = 1;
+ 
+diff --git a/tools/perf/util/symbol.h b/tools/perf/util/symbol.h
+index fbf866d82dcc..5fcdd1f94c56 100644
+--- a/tools/perf/util/symbol.h
++++ b/tools/perf/util/symbol.h
+@@ -203,7 +203,7 @@ void __symbols__insert(struct rb_root_cached *symbols, struct symbol *sym,
+ 		       bool kernel);
+ void symbols__insert(struct rb_root_cached *symbols, struct symbol *sym);
+ void symbols__fixup_duplicate(struct rb_root_cached *symbols);
+-void symbols__fixup_end(struct rb_root_cached *symbols);
++void symbols__fixup_end(struct rb_root_cached *symbols, bool is_kallsyms);
+ void maps__fixup_end(struct maps *maps);
+ 
+ typedef int (*mapfn_t)(u64 start, u64 len, u64 pgoff, void *data);
 -- 
 2.36.0.rc0.470.gd361397f0d-goog
 
