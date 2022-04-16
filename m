@@ -2,68 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087AC502FF0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Apr 2022 23:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D574503212
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 02:41:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kg8F60bfxz3bpH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 07:13:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KgDsT3r8Xz3bdL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 10:41:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K1VZwuH7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=N1gzaNMp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535;
+ helo=mail-pg1-x535.google.com; envelope-from=namhyung@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=K1VZwuH7; 
- dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=N1gzaNMp; dkim-atps=neutral
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com
+ [IPv6:2607:f8b0:4864:20::535])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kg8DQ4HCmz2yp5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 07:12:38 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 6AE5ECE300F;
- Fri, 15 Apr 2022 21:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270F7C385A5;
- Fri, 15 Apr 2022 21:12:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650057153;
- bh=S1eI5dmq775LCayHMx3N/pfPBenUwajWdt1s32ub72A=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=K1VZwuH7MkPb3eAokvmvG8/+fCa6eSxfTr8BBnOGXaCwICqPt8YBNxrkm3ssSXwPi
- GKQVr6OXxjWF2aEYUUk+XDwU2fguct5d7LOF4E74oEyc/P8lxF7qIdrLy4FV5VDQ5e
- VbL6/AYJmLSTib8bYYxzlQfRLhEz+0z6QN5D559XZ7+TEZKbfh/5Ax27hA8dkF7Qko
- 4t3KA/uqSMJvCOoSZnc2geB2qK7n25wWoaGmz3Fiy474jtdnMbqsWNcomnEXwOaggc
- QT7g9uKlozIB0Jz1J0mSS6sWMINxMCAWNVZg4ponL+V05da4eo4H5CJ+cwcKiM+QC9
- YrmFs/7YOnS/Q==
-Date: Fri, 15 Apr 2022 23:12:28 +0200
-From: Wolfram Sang <wsa@kernel.org>
-To: Martin =?utf-8?Q?Povi=C5=A1er?= <povik+lin@cutebit.org>
-Subject: Re: [PATCH] i2c: pasemi: Wait for write xfers to finish
-Message-ID: <YlnfvJDyluEDfu39@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
- Martin =?utf-8?Q?Povi=C5=A1er?= <povik+lin@cutebit.org>,
- Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Jean Delvare <khali@linux-fr.org>, Olof Johansson <olof@lixom.net>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
- Janne Grunau <j@jannau.net>
-References: <20220329183817.21656-1-povik+lin@cutebit.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KgDrp6bvFz3bVN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 10:40:57 +1000 (AEST)
+Received: by mail-pg1-x535.google.com with SMTP id t13so9103570pgn.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 17:40:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=UWFJae0wB3i/+AjUHp0kgcY6gHCBjSvEexFbtOZL7cw=;
+ b=N1gzaNMpjSVHF43xt8VTC6Pq6l2GGjFsGQ2QmCg0hWKpuUjwH6vK2ITiQVZ/tbemQ6
+ qTh57IrnV2xB7nCCB1+4ZkXhgIjGuXRLEAc7THqwNOEjvZGrbASW0kHxuNjZqxNE1dys
+ 9BJc/J77Ux1wsq0Y6ot5Ue0Nhymb+lTik1oXUfm6SRUKGu9FvUny3MNn5TXgmQbLlgQw
+ cUHoYnw/bOS0YKjN9PTgYjtVl1DedARYXGIVXk0OYIZGJm4EIw2LP3n60vQaBcQJodmD
+ FoOjiZdxyr/vyroCOZRG8JtnGDIKfP44EVw/uKWZXBA+EPPv9krPQ5Jq4nggSsYucc4N
+ +dQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+ :mime-version:content-transfer-encoding;
+ bh=UWFJae0wB3i/+AjUHp0kgcY6gHCBjSvEexFbtOZL7cw=;
+ b=cve32mvkizmDb0W6+f6Jt3sff79RpBBz/uDTAhyR4MYNKwJbA6vlzdtu5pVPFZA2A6
+ Re9GMDV/3NK/BofQKmAJhm3Xcq3ZBBYuE+vZ6TVUtOuMNYeKilwnqHu6rktUeYQfyDIG
+ zoRNBQ2/+q4Zx+fybp1ZuLHcA2+22pM3bxRQzdVQ+LA5qqqrRUB+Ha8zv6qvm+dBOWgK
+ LHgEzsDQw8h0pgmKOQsFiwyCrs8pmcq+o92sF/HM3SVQXDcEda+en/pkMLsA1ihL9Jtp
+ EWofuaybGlWbqzIeRtNrm30g2aqd9P2ztdSCjpMcx3UKoGtxeNPkkuM8VESLjqKclqbs
+ s4Iw==
+X-Gm-Message-State: AOAM531iL/u+3hbIjElZ38ywJSG8DFDn9+uYLrnZKxei6MGmVxMkeXlu
+ ebVaHa3vhuANQNTP5zapjlo=
+X-Google-Smtp-Source: ABdhPJy7+O0d1TAWEptQEO1FaQlgJslFZTjGjF/ZuzHuNoQrVP6vRz/HM02MSWZFO67NeYN6B+T6Aw==
+X-Received: by 2002:a05:6a00:14d2:b0:50a:48f0:881a with SMTP id
+ w18-20020a056a0014d200b0050a48f0881amr1390703pfu.36.1650069653526; 
+ Fri, 15 Apr 2022 17:40:53 -0700 (PDT)
+Received: from balhae.roam.corp.google.com
+ ([2607:fb90:461:36d2:dba1:7530:2cda:19b1])
+ by smtp.gmail.com with ESMTPSA id
+ j9-20020a056a00130900b004f73df40914sm3913537pfu.82.2022.04.15.17.40.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Apr 2022 17:40:52 -0700 (PDT)
+From: Namhyung Kim <namhyung@kernel.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
+ Ian Rogers <irogers@google.com>, Michael Petlan <mpetlan@redhat.com>
+Subject: [PATCH 0/3] perf tools: Tidy up symbol end fixup (v3)
+Date: Fri, 15 Apr 2022 17:40:45 -0700
+Message-Id: <20220416004048.1514900-1-namhyung@kernel.org>
+X-Mailer: git-send-email 2.36.0.rc0.470.gd361397f0d-goog
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="h21sbJa9/A5zZIHK"
-Content-Disposition: inline
-In-Reply-To: <20220329183817.21656-1-povik+lin@cutebit.org>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,64 +81,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Peter <sven@svenpeter.dev>, Hector Martin <marcan@marcan.st>,
- linux-kernel@vger.kernel.org, Olof Johansson <olof@lixom.net>,
- Paul Mackerras <paulus@samba.org>, linux-arm-kernel@lists.infradead.org,
- Jean Delvare <khali@linux-fr.org>, Janne Grunau <j@jannau.net>,
- linuxppc-dev@lists.ozlabs.org, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- linux-i2c@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-s390@vger.kernel.org,
+ Song Liu <songliubraving@fb.com>, linuxppc-dev@lists.ozlabs.org,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Peter Zijlstra <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>,
+ John Garry <john.garry@huawei.com>, LKML <linux-kernel@vger.kernel.org>,
+ linux-perf-users@vger.kernel.org, Leo Yan <leo.yan@linaro.org>,
+ Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
+ Will Deacon <will@kernel.org>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello,
 
---h21sbJa9/A5zZIHK
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This work is a follow-up of Ian's previous one at
+  https://lore.kernel.org/all/20220412154817.2728324-1-irogers@google.com/
 
-On Tue, Mar 29, 2022 at 08:38:17PM +0200, Martin Povi=C5=A1er wrote:
-> Wait for completion of write transfers before returning from the driver.
-> At first sight it may seem advantageous to leave write transfers queued
-> for the controller to carry out on its own time, but there's a couple of
-> issues with it:
->=20
->  * Driver doesn't check for FIFO space.
->=20
->  * The queued writes can complete while the driver is in its I2C read
->    transfer path which means it will get confused by the raising of
->    XEN (the 'transaction ended' signal). This can cause a spurious
->    ENODATA error due to premature reading of the MRXFIFO register.
->=20
-> Adding the wait fixes some unreliability issues with the driver. There's
-> some efficiency cost to it (especially with pasemi_smb_waitready doing
-> its polling), but that will be alleviated once the driver receives
-> interrupt support.
->=20
-> Fixes: beb58aa39e6e ("i2c: PA Semi SMBus driver")
-> Signed-off-by: Martin Povi=C5=A1er <povik+lin@cutebit.org>
+Fixing up more symbol ends as introduced in:
+  https://lore.kernel.org/lkml/20220317135536.805-1-mpetlan@redhat.com/
 
-Applied to for-current, thanks!
+it caused perf annotate to run into memory limits - every symbol holds
+all the disassembled code in the annotation, and so making symbols
+ends further away dramatically increased memory usage (40MB to >1GB).
+
+Modify the symbol end fixup logic so that special kernel cases aren't
+applied in the common case.
+
+v3 changes)
+ * rename is_kernel to is_kallsyms
+ * move the logic to generic function
+ * remove arch-specific functions
+
+Thanks,
+Namhyung
 
 
---h21sbJa9/A5zZIHK
-Content-Type: application/pgp-signature; name="signature.asc"
+Namhyung Kim (3):
+  perf symbol: Pass is_kallsyms to symbols__fixup_end()
+  perf symbol: Update symbols__fixup_end()
+  perf symbol: Remove arch__symbols__fixup_end()
 
------BEGIN PGP SIGNATURE-----
+ tools/perf/arch/arm64/util/machine.c   | 21 ---------------
+ tools/perf/arch/powerpc/util/Build     |  1 -
+ tools/perf/arch/powerpc/util/machine.c | 25 -----------------
+ tools/perf/arch/s390/util/machine.c    | 16 -----------
+ tools/perf/util/symbol-elf.c           |  2 +-
+ tools/perf/util/symbol.c               | 37 +++++++++++++++++++-------
+ tools/perf/util/symbol.h               |  3 +--
+ 7 files changed, 29 insertions(+), 76 deletions(-)
+ delete mode 100644 tools/perf/arch/powerpc/util/machine.c
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJZ37wACgkQFA3kzBSg
-KbZQYBAAiTUhdwY7QAuznZSfhNwuVynUucrnWrVKfFiiZWjtxraHqVHG0lN0Mz0I
-v56ZVw9aBFtCcK/FaipcGLOm/7JPnIJEovhp7Gjq73BImwBQ/ox/SZ0YQ2uGgt7v
-JxGzwpUrInswF6+DL9XpoHBcAEr35BXZ2ZGIb6GbuV/Jalj7BldDCWxHB1O4gsUL
-yhDhnj1bmNVG+zzHAHG6nr/ZX8QJk6dm1JvV9W4MlvmRugDRciBLACsNqf4Ffw48
-eTdKxGBbDmjPNnYtUplgVV2SZw1uo7lrQLhVHvkcJhE3F9G8InygwWYrmKAMx3ye
-TdYI96LNyvTu5C8NQe/+qQCijogwVNm7ZpyXSZ42nciBqdq/1WkiS615cLW5GkVX
-x27uKGhldwMUfcr2b4PB8R6rh7OxM9Y/cp3P4+R40fHnrR0y4Ip06BaOhKhn8R6O
-kLu/ZuqZ3PhgIelJTE7rnY04FAWcrHHv8PrIClmKgzhWee1WhWmyDfZ2lWJ4UJLs
-E/zHma87dnykwAJtUmBIobXle/SZqfUYyrUq0BfGFYlIwQwPxwUVkxrIdS9P9wYg
-LG/gy4fD757d3BOQTcYhfzhx/BO7IeCkJEO8GXrHkiUZ92ymy372FUZH+2SHoIyy
-HhVFfV6BjTS4A+CAEKVZZ94+S/J1U+kKPUE3R300kMh2FONXNcw=
-=47X8
------END PGP SIGNATURE-----
 
---h21sbJa9/A5zZIHK--
+base-commit: 41204da4c16071be9090940b18f566832d46becc
+-- 
+2.36.0.rc0.470.gd361397f0d-goog
+
