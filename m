@@ -1,69 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3489503740
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 17:00:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1F05037FE
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 21:38:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KgbwN0HtHz3bqT
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Apr 2022 01:00:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kgk5M3HMtz3bmW
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Apr 2022 05:38:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=JsGelCQg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=lEOMeVgS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::433;
- helo=mail-wr1-x433.google.com; envelope-from=irogers@google.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f;
+ helo=mail-pj1-x102f.google.com; envelope-from=f.fainelli@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=JsGelCQg; dkim-atps=neutral
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com
- [IPv6:2a00:1450:4864:20::433])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=lEOMeVgS; dkim-atps=neutral
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com
+ [IPv6:2607:f8b0:4864:20::102f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kgbvn2czdz2y8R
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Apr 2022 00:59:46 +1000 (AEST)
-Received: by mail-wr1-x433.google.com with SMTP id m14so13733324wrb.6
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 07:59:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=OO1451Z/51EUQiODYQcioXNtAk5WDJClp+v1gsb4O+A=;
- b=JsGelCQgSfft9VxIYkI97wbWG1Wnm7X9pfRoYqmEWOo9hpWdzwWLwiWQqwhnjSMUKt
- Kc14Sh6fqshzpxMj6q2WvlyVH2SL7rZH0iSVd62N/WQulajBAf6BLXeaiPaNQ/MvJlHO
- 3s0/2yk8wxg0g7RgchbWU8lO9FupY6w+J/88Wl+mgkQwwQD5qJmpVQoZHMRB1etsUDUa
- DBKpijfWSZs6SQjStJ5SBH1LnUW3WJH5iLErJhnltNlsks4HmlbGGaUhXm+y9fYD0okl
- 154Eh5cOsi2ONW+/sEeXldDTqdGXMjGX7e/S80TGZdqg+2c9JhJkl0/vZpOD6NrFy1fC
- XOew==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kgk4g4BpMz2yWN
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Apr 2022 05:37:53 +1000 (AEST)
+Received: by mail-pj1-x102f.google.com with SMTP id
+ i24-20020a17090adc1800b001cd5529465aso9553682pjv.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 12:37:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=bBrIvj2RbZjYdFWgGo9Q0KH8nivE4RSBLo6+AjhmX8c=;
+ b=lEOMeVgS1UMAn/xAIx5tnzWJc4+4PBnVnbIGYnQgj/K7x1Xjyp0bC5S4rQX/eJ5XJ+
+ Uvn4OHwJ93BV1qqJQ8Lz8Dh5SMvYbToBLlkhbRBgK8+8NJHX95bahxE8bIyrfhPfTOmB
+ zyHMM6yt3Pc4IVFjxuzz0Zus9NOynBqBsxuzSkzBUVJ8d2KcICxb5bsLxJfdh9ArULCH
+ DBWP0uXEP/didfNU/U9Mf6Cl0qPKeQnU6ukgCF3Xqk388QOUUIf8BLF1eyJLxPeXVZDA
+ 4n4v4zJ7TEb5faKVZN/sBliY0tZGS+DMd9VhpsfLOYIHRRZbOy2e1qKh5A00PUzLphHZ
+ kKkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=OO1451Z/51EUQiODYQcioXNtAk5WDJClp+v1gsb4O+A=;
- b=CZlRCNPx3+5Fak40g9c0dZfytEZn/bkLl6VLikEYIZHSuEoifkoz2aS4xIWflcFovj
- pezcoq9l79DfFt6LfUMU7v6UuNlcOmBrPO5jz4Llor9ZOMoq274imISMwMooWgkwjJoi
- k/IqYR91TKOfVCSePfVBjxN0OlBvB69DBcIGEmQoWbAY1r/WADcarkR01GVSeGe/2l71
- 9sv6FNl3+jvt2LXJ09apZPwdscQJ62ML1sD1ZkElw+x1EDvTqqXrGN1ims9QRCR0ZnJS
- ubqdqi5sPSUJCGMElrn/GXVwtlQvnlzG1S9B7VuxfO1byZ/bZDUvUeq+tVvx0ib85qFG
- 5nlQ==
-X-Gm-Message-State: AOAM531e9Pzdjdn+6f7Te33Y226oAPXdkFtPCmH1cM1gmVU5uL6sQr1y
- aymUpDjHjD1Z+XeXW8PwpOMblep4Q9x35d0JykdiJQ==
-X-Google-Smtp-Source: ABdhPJygSfQudGHNGaIYA8AF4RqP8bQ81BW1Wk85dVq6W4Vll53M5oge7GeBZ1IPlzfuBne9ZZ6kH4WkXvpz8agqIAU=
-X-Received: by 2002:adf:eb09:0:b0:207:bb77:9abb with SMTP id
- s9-20020adfeb09000000b00207bb779abbmr2770912wrn.375.1650121180438; Sat, 16
- Apr 2022 07:59:40 -0700 (PDT)
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=bBrIvj2RbZjYdFWgGo9Q0KH8nivE4RSBLo6+AjhmX8c=;
+ b=FS1wYzgPmrylYoF2dyHZNkwMn0ZjnwKM4dPOB0+4ccXZnXd4hdXreocDcNQHeNkpfw
+ aXxbTTAPG86k1Jw7P74GvoGVBRDIlkUov2mPImALOa28Zu1CB2EdWxezmqKsDhg/MFZj
+ 86OUgKtceCwZ+Rzhh+nt76YaLNg2Zu4M+Pe4GCL3DtmNFJRcdkoe4UvMu43U5linv+fB
+ FcFxRbCFu2cVZ0ypZIbDS9k6qkGj2WNgyQ+kocFMJH0/hrM88KzpSRP6PpGVhbmHdaaN
+ Erq2S8on7OZgNYBoIsElshVpxgSaER1dKwUNvGehp6o0F6I4GovHt7jfLlwDDqcOCjwT
+ 4Qfg==
+X-Gm-Message-State: AOAM533c5WvDcV1GdxYc9ObXzIZXg00U+uphNbF66XRv3RgENUPLH1Bu
+ gVOuAFMvWgveqg5CbKlWoKo=
+X-Google-Smtp-Source: ABdhPJytoSNnjDeE+7hBXKTSMpgdN3zwp9Rbobt1H/fmiDJUw3gNnLwtvKzHRCcSY93HciTZejk2EQ==
+X-Received: by 2002:a17:902:8c96:b0:158:9135:98d3 with SMTP id
+ t22-20020a1709028c9600b00158913598d3mr4509598plo.171.1650137869043; 
+ Sat, 16 Apr 2022 12:37:49 -0700 (PDT)
+Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
+ by smtp.gmail.com with ESMTPSA id
+ u10-20020a63b54a000000b00380ea901cd2sm8056884pgo.6.2022.04.16.12.37.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 16 Apr 2022 12:37:48 -0700 (PDT)
+Message-ID: <bec03048-d15a-d934-ab88-0f6a5cb2ab0f@gmail.com>
+Date: Sat, 16 Apr 2022 12:37:45 -0700
 MIME-Version: 1.0
-References: <20220416004048.1514900-1-namhyung@kernel.org>
- <20220416004048.1514900-2-namhyung@kernel.org>
-In-Reply-To: <20220416004048.1514900-2-namhyung@kernel.org>
-From: Ian Rogers <irogers@google.com>
-Date: Sat, 16 Apr 2022 10:59:27 -0400
-Message-ID: <CAP-5=fX5S2CR58REzAhXH4s8_27=D2LbKksS7mHoSoxYOOmN4g@mail.gmail.com>
-Subject: Re: [PATCH 1/3] perf symbol: Pass is_kallsyms to symbols__fixup_end()
-To: Namhyung Kim <namhyung@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH net-next v4 07/18] net: dsa: Replace usage of found with
+ dedicated list iterator variable
+Content-Language: en-US
+To: Jakob Koschel <jakobkoschel@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>
+References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
+ <20220415122947.2754662-8-jakobkoschel@gmail.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20220415122947.2754662-8-jakobkoschel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,107 +89,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-s390@vger.kernel.org,
- Song Liu <songliubraving@fb.com>, linuxppc-dev@lists.ozlabs.org,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Michael Petlan <mpetlan@redhat.com>, Will Deacon <will@kernel.org>,
- Heiko Carstens <hca@linux.ibm.com>, John Garry <john.garry@huawei.com>,
- LKML <linux-kernel@vger.kernel.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Leo Yan <leo.yan@linaro.org>,
- Masami Hiramatsu <masami.hiramatsu.pt@hitachi.com>,
- Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
+ Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ "Bos, H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
+ Yonghong Song <yhs@fb.com>, Paolo Abeni <pabeni@redhat.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>,
+ Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
+ Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Martin Habets <habetsm.xilinx@gmail.com>,
+ Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+ Lars Povlsen <lars.povlsen@microchip.com>,
+ Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ UNGLinuxDriver@microchip.com, Edward Cree <ecree.xilinx@gmail.com>,
+ Casper Andersson <casper.casan@gmail.com>, Xu Wang <vulab@iscas.ac.cn>,
+ Cristiano Giuffrida <c.giuffrida@vu.nl>, bpf@vger.kernel.org,
+ Vladimir Oltean <olteanv@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Martin KaFai Lau <kafai@fb.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 15, 2022 at 8:40 PM Namhyung Kim <namhyung@kernel.org> wrote:
->
-> The symbol fixup is necessary for symbols in kallsyms since they don't
-> have size info.  So we use the next symbol's address to calculate the
-> size.  Now it's also used for user binaries because sometimes they
-> miss size for hand-written asm functions.
->
-> There's a arch-specific function to handle kallsyms differently but
-> currently it cannot distinguish kallsyms from others.  Pass this
-> information explicitly to handle it properly.  Note that those arch
-> functions will be moved to the generic function so I didn't added it
-> to the arch-functions.
 
-Thanks Namhyung, in:
-https://lore.kernel.org/linux-perf-users/20220412154817.2728324-3-irogers@google.com/
-I used "dso->kernel != DSO_SPACE__USER" in symbol-elf to make this
-more than just kallsyms as presumably kernel code is the issue. Do we
-know elf kernel code has correctly sized symbols?
 
-Thanks,
-Ian
+On 4/15/2022 5:29 AM, Jakob Koschel wrote:
+> To move the list iterator variable into the list_for_each_entry_*()
+> macro in the future it should be avoided to use the list iterator
+> variable after the loop body.
+> 
+> To *never* use the list iterator variable after the loop it was
+> concluded to use a separate iterator variable instead of a
+> found boolean [1].
+> 
+> This removes the need to use a found variable and simply checking if
+> the variable was set, can determine if the break/goto was hit.
+> 
+> Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
+> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 
-> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-> ---
->  tools/perf/util/symbol-elf.c | 2 +-
->  tools/perf/util/symbol.c     | 7 ++++---
->  tools/perf/util/symbol.h     | 2 +-
->  3 files changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/tools/perf/util/symbol-elf.c b/tools/perf/util/symbol-elf.c
-> index 31cd59a2b66e..ecd377938eea 100644
-> --- a/tools/perf/util/symbol-elf.c
-> +++ b/tools/perf/util/symbol-elf.c
-> @@ -1290,7 +1290,7 @@ dso__load_sym_internal(struct dso *dso, struct map *map, struct symsrc *syms_ss,
->          * For misannotated, zeroed, ASM function sizes.
->          */
->         if (nr > 0) {
-> -               symbols__fixup_end(&dso->symbols);
-> +               symbols__fixup_end(&dso->symbols, false);
->                 symbols__fixup_duplicate(&dso->symbols);
->                 if (kmap) {
->                         /*
-> diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-> index dea0fc495185..1b85cc1422a9 100644
-> --- a/tools/perf/util/symbol.c
-> +++ b/tools/perf/util/symbol.c
-> @@ -217,7 +217,8 @@ void symbols__fixup_duplicate(struct rb_root_cached *symbols)
->         }
->  }
->
-> -void symbols__fixup_end(struct rb_root_cached *symbols)
-> +void symbols__fixup_end(struct rb_root_cached *symbols,
-> +                       bool is_kallsyms __maybe_unused)
->  {
->         struct rb_node *nd, *prevnd = rb_first_cached(symbols);
->         struct symbol *curr, *prev;
-> @@ -1467,7 +1468,7 @@ int __dso__load_kallsyms(struct dso *dso, const char *filename,
->         if (kallsyms__delta(kmap, filename, &delta))
->                 return -1;
->
-> -       symbols__fixup_end(&dso->symbols);
-> +       symbols__fixup_end(&dso->symbols, true);
->         symbols__fixup_duplicate(&dso->symbols);
->
->         if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
-> @@ -1659,7 +1660,7 @@ int dso__load_bfd_symbols(struct dso *dso, const char *debugfile)
->  #undef bfd_asymbol_section
->  #endif
->
-> -       symbols__fixup_end(&dso->symbols);
-> +       symbols__fixup_end(&dso->symbols, false);
->         symbols__fixup_duplicate(&dso->symbols);
->         dso->adjust_symbols = 1;
->
-> diff --git a/tools/perf/util/symbol.h b/tools/perf/util/symbol.h
-> index fbf866d82dcc..5fcdd1f94c56 100644
-> --- a/tools/perf/util/symbol.h
-> +++ b/tools/perf/util/symbol.h
-> @@ -203,7 +203,7 @@ void __symbols__insert(struct rb_root_cached *symbols, struct symbol *sym,
->                        bool kernel);
->  void symbols__insert(struct rb_root_cached *symbols, struct symbol *sym);
->  void symbols__fixup_duplicate(struct rb_root_cached *symbols);
-> -void symbols__fixup_end(struct rb_root_cached *symbols);
-> +void symbols__fixup_end(struct rb_root_cached *symbols, bool is_kallsyms);
->  void maps__fixup_end(struct maps *maps);
->
->  typedef int (*mapfn_t)(u64 start, u64 len, u64 pgoff, void *data);
-> --
-> 2.36.0.rc0.470.gd361397f0d-goog
->
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian
