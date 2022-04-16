@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EDC7503214
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 02:42:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E65D503215
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 02:43:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KgDts4mg0z3br1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 10:42:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KgDvY0h0Cz3cFW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Apr 2022 10:43:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=e3t0LJ31;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TTa2v/vC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::631;
- helo=mail-pl1-x631.google.com; envelope-from=namhyung@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529;
+ helo=mail-pg1-x529.google.com; envelope-from=namhyung@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=e3t0LJ31; dkim-atps=neutral
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com
- [IPv6:2607:f8b0:4864:20::631])
+ header.s=20210112 header.b=TTa2v/vC; dkim-atps=neutral
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com
+ [IPv6:2607:f8b0:4864:20::529])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KgDrs5FKbz301s
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 10:41:01 +1000 (AEST)
-Received: by mail-pl1-x631.google.com with SMTP id n8so8245576plh.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 17:41:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KgDrx1HBgz3bYh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Apr 2022 10:41:05 +1000 (AEST)
+Received: by mail-pg1-x529.google.com with SMTP id k14so9136173pga.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Apr 2022 17:41:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=sender:from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=8cYq+2F/bEonU/DO+vgP5ahGjGGTEVFinNWKQ+3P1dA=;
- b=e3t0LJ31dAW3tgBgLwggCET7d3nYF4ZzincvzXr3nWxyy+4KLgHG7ii18LvvBdrW3h
- 7Nv9+WpNMYiq27uI2efgeWtX/mNDml9C6ydY4XrIYZIRxQKwLn3RJjKFHnbJ3Q0xu9Lr
- /i+2ykLemDcaG1DUJMCnqEflD141djoRj+dEk0JXnfcWLvPEVRkLxjDARi850BB7qZ4u
- wU4BqWCf7XAuksnTJPWW7hzYOaBPVd1pDStLHpadiiVzmaEW2On4cIEoWH7ML4MneeNw
- XnzIAynLdhza93C9Pm9LsOusWj8jFiYYDNLIk2xT7xQuDt+UlN8OKltDM62qN3KJ2kzn
- /aWA==
+ bh=SXoVsWrrvVTNRRN6nzP3JgGhrdX3aN2oduI58UStebw=;
+ b=TTa2v/vCv9FbhRf5PLykRl5wJuGd+GB0FkIGtTg6Bu02tX8l6WG0kBqp8Nfp+JyqAC
+ sIONB0kkIEWvAXZTljhL8sATHEsVpfgTk1jrZDcqiy72DQj5hKXI851orEfjLZsqbZT7
+ daCw82iZWYwqcYiZG9lV/z+DSebzHrqBoERIYgXaeIpjfLSoC/W1hSnOVTvCnbm9IfUG
+ o1NzkzK8iYoB3Ts3y0bT4L/MvGBVT3lIy7/tQUn9IWzP9ooYcwO9SnCvF5Z6/Ju9iEST
+ iWlcGg67m4C+Ncp9ugGVYxZ9EEBCGwp5dmTtvZBJhWRA2CHZSLhzeEsAHI2JpcMLmu0Q
+ R5oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
  :in-reply-to:references:mime-version:content-transfer-encoding;
- bh=8cYq+2F/bEonU/DO+vgP5ahGjGGTEVFinNWKQ+3P1dA=;
- b=rRlhA9WYQqBM5f/hCZ3nVn8AzD/bkv66Ock6ousgHPoUObnA4lmxCTak7z0RGlgyxV
- sI4iN2Cx8H1tIdYSyZX5tQXBmExuYtkGdRFPMLzYijO+ZUyPaPs1RpZa/y6j+C9cUJMi
- 0uT0MbVTT8zLU3nA/OOFf8cuS28dzFW0kf3FIOwKECP9Z0616itIvGI5edBzOSAqGXXO
- X0EZmx3Usv5g4pKqoAH43SI0zwVcISYK5V9Y65YraQJaFVnaH7qi8W2w+WrydTU3n1Qc
- 5o5vjo1GO94bePCMtBkBcVp3BPlH7oDUxZZBX0vSzCyK1exc83M47ISuzHn1FTeYgC7p
- LrCA==
-X-Gm-Message-State: AOAM532BItAPBoSdDB6JIJtKecWg7tk5eh651qP8Xc0WdGOalWHOCbxH
- SMEZ2//VhmtFFZEZHTUna4I=
-X-Google-Smtp-Source: ABdhPJzxX5yhHHrTm7NAJCXbKqHI5E6hvIAvMJcX5k+3LzscvqDrkPHyuj0MwnZd8nFQZVC6TYtuVw==
-X-Received: by 2002:a17:90a:4405:b0:1cd:5fe6:dd99 with SMTP id
- s5-20020a17090a440500b001cd5fe6dd99mr1491754pjg.210.1650069659895; 
- Fri, 15 Apr 2022 17:40:59 -0700 (PDT)
+ bh=SXoVsWrrvVTNRRN6nzP3JgGhrdX3aN2oduI58UStebw=;
+ b=1e8oyE1CXtnkyipUKqFBV8GnB5T2BbxhSc5oWThNWTTAScCZcB+BRcmqnz2EWDzImB
+ 7JfDZ5oPr/mxIeKmtnIzDE4zXCtt6y9sWueZsOL7i5cuXqUPURYS1E00nzpCMRB2feAI
+ lbsOn07NOIbd+4isyX8MddPbDcvULK2CPuPTo6Bx1/XMb59stut+bJeDfnjKvovd6l6x
+ W6wPQYnfHOMImb7RO7n7M8el7aVV4TCQCKAYWczRuHQojku5bPOjunxihPUCjJWt472/
+ 65TPLYsLJx864p4odhYG/Mh5NRSaqIOez1PsbvUYmIGmh0udKlL0eU/T0D/MDUMO2XDE
+ QAwQ==
+X-Gm-Message-State: AOAM530wm+06/uqpPs7xxHouy/Bbt5GOkENskR7nVOJabLzvC1KDfevK
+ Nmrl4pCyZnmtbGCfoNa+nO0=
+X-Google-Smtp-Source: ABdhPJwAy3vIuGOqGXEuKHQKtScI4nlcAtfNuxl7peC9v1lMweP6i+J/TEBILTTbRqj2F0hemcztAg==
+X-Received: by 2002:a63:451b:0:b0:380:b9f8:13f4 with SMTP id
+ s27-20020a63451b000000b00380b9f813f4mr1159993pga.367.1650069663050; 
+ Fri, 15 Apr 2022 17:41:03 -0700 (PDT)
 Received: from balhae.roam.corp.google.com
  ([2607:fb90:461:36d2:dba1:7530:2cda:19b1])
  by smtp.gmail.com with ESMTPSA id
- j9-20020a056a00130900b004f73df40914sm3913537pfu.82.2022.04.15.17.40.56
+ j9-20020a056a00130900b004f73df40914sm3913537pfu.82.2022.04.15.17.41.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Apr 2022 17:40:59 -0700 (PDT)
+ Fri, 15 Apr 2022 17:41:02 -0700 (PDT)
 From: Namhyung Kim <namhyung@kernel.org>
 To: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@redhat.com>,
  Ian Rogers <irogers@google.com>, Michael Petlan <mpetlan@redhat.com>
-Subject: [PATCH 2/3] perf symbol: Update symbols__fixup_end()
-Date: Fri, 15 Apr 2022 17:40:47 -0700
-Message-Id: <20220416004048.1514900-3-namhyung@kernel.org>
+Subject: [PATCH 3/3] perf symbol: Remove arch__symbols__fixup_end()
+Date: Fri, 15 Apr 2022 17:40:48 -0700
+Message-Id: <20220416004048.1514900-4-namhyung@kernel.org>
 X-Mailer: git-send-email 2.36.0.rc0.470.gd361397f0d-goog
 In-Reply-To: <20220416004048.1514900-1-namhyung@kernel.org>
 References: <20220416004048.1514900-1-namhyung@kernel.org>
@@ -95,64 +95,145 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now arch-specific functions all do the same thing.  When it fixes the
-symbol address it needs to check the boundary between the kernel image
-and modules.  For the last symbol in the previous region, it cannot
-know the exact size as it's discarded already.  Thus it just uses a
-small page size (4096) and rounds it up like the last symbol.
+Now the generic code can handle kallsyms fixup properly so no need to
+keep the arch-functions anymore.
 
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 ---
- tools/perf/util/symbol.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ tools/perf/arch/arm64/util/machine.c   | 21 ---------------------
+ tools/perf/arch/powerpc/util/Build     |  1 -
+ tools/perf/arch/powerpc/util/machine.c | 25 -------------------------
+ tools/perf/arch/s390/util/machine.c    | 16 ----------------
+ tools/perf/util/symbol.c               |  5 -----
+ tools/perf/util/symbol.h               |  1 -
+ 6 files changed, 69 deletions(-)
+ delete mode 100644 tools/perf/arch/powerpc/util/machine.c
 
+diff --git a/tools/perf/arch/arm64/util/machine.c b/tools/perf/arch/arm64/util/machine.c
+index d2ce31e28cd7..41c1596e5207 100644
+--- a/tools/perf/arch/arm64/util/machine.c
++++ b/tools/perf/arch/arm64/util/machine.c
+@@ -8,27 +8,6 @@
+ #include "callchain.h"
+ #include "record.h"
+ 
+-/* On arm64, kernel text segment starts at high memory address,
+- * for example 0xffff 0000 8xxx xxxx. Modules start at a low memory
+- * address, like 0xffff 0000 00ax xxxx. When only small amount of
+- * memory is used by modules, gap between end of module's text segment
+- * and start of kernel text segment may reach 2G.
+- * Therefore do not fill this gap and do not assign it to the kernel dso map.
+- */
+-
+-#define SYMBOL_LIMIT (1 << 12) /* 4K */
+-
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	if ((strchr(p->name, '[') && strchr(c->name, '[') == NULL) ||
+-			(strchr(p->name, '[') == NULL && strchr(c->name, '[')))
+-		/* Limit range of last symbol in module and kernel */
+-		p->end += SYMBOL_LIMIT;
+-	else
+-		p->end = c->start;
+-	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
+-}
+-
+ void arch__add_leaf_frame_record_opts(struct record_opts *opts)
+ {
+ 	opts->sample_user_regs |= sample_reg_masks[PERF_REG_ARM64_LR].mask;
+diff --git a/tools/perf/arch/powerpc/util/Build b/tools/perf/arch/powerpc/util/Build
+index 8a79c4126e5b..0115f3166568 100644
+--- a/tools/perf/arch/powerpc/util/Build
++++ b/tools/perf/arch/powerpc/util/Build
+@@ -1,5 +1,4 @@
+ perf-y += header.o
+-perf-y += machine.o
+ perf-y += kvm-stat.o
+ perf-y += perf_regs.o
+ perf-y += mem-events.o
+diff --git a/tools/perf/arch/powerpc/util/machine.c b/tools/perf/arch/powerpc/util/machine.c
+deleted file mode 100644
+index e652a1aa8132..000000000000
+--- a/tools/perf/arch/powerpc/util/machine.c
++++ /dev/null
+@@ -1,25 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-#include <inttypes.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <internal/lib.h> // page_size
+-#include "debug.h"
+-#include "symbol.h"
+-
+-/* On powerpc kernel text segment start at memory addresses, 0xc000000000000000
+- * whereas the modules are located at very high memory addresses,
+- * for example 0xc00800000xxxxxxx. The gap between end of kernel text segment
+- * and beginning of first module's text segment is very high.
+- * Therefore do not fill this gap and do not assign it to the kernel dso map.
+- */
+-
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	if (strchr(p->name, '[') == NULL && strchr(c->name, '['))
+-		/* Limit the range of last kernel symbol */
+-		p->end += page_size;
+-	else
+-		p->end = c->start;
+-	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
+-}
+diff --git a/tools/perf/arch/s390/util/machine.c b/tools/perf/arch/s390/util/machine.c
+index 7644a4f6d4a4..98bc3f39d5f3 100644
+--- a/tools/perf/arch/s390/util/machine.c
++++ b/tools/perf/arch/s390/util/machine.c
+@@ -35,19 +35,3 @@ int arch__fix_module_text_start(u64 *start, u64 *size, const char *name)
+ 
+ 	return 0;
+ }
+-
+-/* On s390 kernel text segment start is located at very low memory addresses,
+- * for example 0x10000. Modules are located at very high memory addresses,
+- * for example 0x3ff xxxx xxxx. The gap between end of kernel text segment
+- * and beginning of first module's text segment is very big.
+- * Therefore do not fill this gap and do not assign it to the kernel dso map.
+- */
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	if (strchr(p->name, '[') == NULL && strchr(c->name, '['))
+-		/* Last kernel symbol mapped to end of page */
+-		p->end = roundup(p->end, page_size);
+-	else
+-		p->end = c->start;
+-	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
+-}
 diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 1b85cc1422a9..623094e866fd 100644
+index 623094e866fd..f72baf636724 100644
 --- a/tools/perf/util/symbol.c
 +++ b/tools/perf/util/symbol.c
-@@ -217,8 +217,8 @@ void symbols__fixup_duplicate(struct rb_root_cached *symbols)
- 	}
+@@ -101,11 +101,6 @@ static int prefix_underscores_count(const char *str)
+ 	return tail - str;
  }
  
--void symbols__fixup_end(struct rb_root_cached *symbols,
--			bool is_kallsyms __maybe_unused)
-+/* Update zero-sized symbols using the address of the next symbol */
-+void symbols__fixup_end(struct rb_root_cached *symbols, bool is_kallsyms)
+-void __weak arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	p->end = c->start;
+-}
+-
+ const char * __weak arch__normalize_symbol_name(const char *name)
  {
- 	struct rb_node *nd, *prevnd = rb_first_cached(symbols);
- 	struct symbol *curr, *prev;
-@@ -232,8 +232,29 @@ void symbols__fixup_end(struct rb_root_cached *symbols,
- 		prev = curr;
- 		curr = rb_entry(nd, struct symbol, rb_node);
+ 	return name;
+diff --git a/tools/perf/util/symbol.h b/tools/perf/util/symbol.h
+index 5fcdd1f94c56..0b893dcc8ea6 100644
+--- a/tools/perf/util/symbol.h
++++ b/tools/perf/util/symbol.h
+@@ -241,7 +241,6 @@ const char *arch__normalize_symbol_name(const char *name);
+ #define SYMBOL_A 0
+ #define SYMBOL_B 1
  
--		if (prev->end == prev->start || prev->end != curr->start)
--			arch__symbols__fixup_end(prev, curr);
-+		/*
-+		 * On some architecture kernel text segment start is located at
-+		 * some low memory address, while modules are located at high
-+		 * memory addresses (or vice versa).  The gap between end of
-+		 * kernel text segment and beginning of first module's text
-+		 * segment is very big.  Therefore do not fill this gap and do
-+		 * not assign it to the kernel dso map (kallsyms).
-+		 *
-+		 * In kallsyms, it determines module symbols using '[' character
-+		 * like in:
-+		 *   ffffffffc1937000 T hdmi_driver_init  [snd_hda_codec_hdmi]
-+		 */
-+		if (prev->end == prev->start) {
-+			/* Last kernel/module symbol mapped to end of page */
-+			if (is_kallsyms && (!strchr(prev->name, '[') !=
-+					    !strchr(curr->name, '[')))
-+				prev->end = roundup(prev->end + 4096, 4096);
-+			else
-+				prev->end = curr->start;
-+
-+			pr_debug4("%s sym:%s end:%#" PRIx64 "\n",
-+				  __func__, prev->name, prev->end);
-+		}
- 	}
- 
- 	/* Last entry */
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c);
+ int arch__compare_symbol_names(const char *namea, const char *nameb);
+ int arch__compare_symbol_names_n(const char *namea, const char *nameb,
+ 				 unsigned int n);
 -- 
 2.36.0.rc0.470.gd361397f0d-goog
 
