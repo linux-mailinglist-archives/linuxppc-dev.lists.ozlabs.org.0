@@ -2,52 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712A0504F03
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 12:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73113504F04
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 12:51:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KhkH83Phtz3bYT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 20:50:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KhkHw3x4dz3bcB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 20:51:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nM+wBa+U;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oNRzDPUP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=nM+wBa+U; 
+ header.s=k20201202 header.b=oNRzDPUP; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KhkGQ5403z2xt7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 20:49:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KhkGg6Rbvz3bWD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 20:50:03 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 6D4ECB80D18
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 10:49:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 120AAC385A7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 10:49:44 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id A9491B80E6D
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 10:49:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 65367C385A1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 10:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650278984;
- bh=itc5IQgQJXWjxBv4CODGBn+q/aKCkD0kvqo8NHbsuyk=;
+ s=k20201202; t=1650278998;
+ bh=FwmOibq0MQkkPXnDiJaC2itPckTTBtleXSS0FTXNBW4=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=nM+wBa+UE9+sjZ74F3GbeuwBVXLnKnO1w35Niql2KIlDkMn2mreXkaWGUogC9qYAC
- bJb3SfKAuq/wn4FJbP0gwU4iP/fhcRTzIUn5wgqnihNkIRc7s21eoR3LTtMsK3p5rR
- x0FB+/QP2qa2pmtVTkSINa9XnOf7pP3xWGlgJCuqlMYg3S3lgu1cqZBQ0M8fBRdaD7
- LhdSTrVT0GXF5lpY6zqnSHYTDE034umHYLvFO5tU3RcILDiCOpnW9CJFzspZcT6RAv
- rbnjMr+fY02+lKXsiEfmUJws6VMYiq8ccJH+KT2AW4Mbm++nzs9plWVKvvVq0gFG1S
- zB7J5+9pxvrvw==
+ b=oNRzDPUPNVDqBZJBveaNfGEI52toboizCVCGawH0lQWvXNMRW7itwjnbGFDg1tj8F
+ IDhN5as9bSjuIlMwOBsNcPRDH8o4/Iboav71S2wZlKD6iaydxow8gztryUd8AVZ8QS
+ j3Q0MY+1GTo6PPzlMruy7VhkzYLJndlgs3b+KEQnA1OpjFeHZ2mEDdIBKVR14GMTp4
+ lhNCruAU1bZJb7X1huC89gMKxW2xNJOjQbtgcIjZsJTXayuaT3odLOcDScq2USFU/+
+ mX75wDeq/seiIxJwgWYFmeV/5vCoM7B2q5tJbmZTENlHL2T1RbnONcGzLLa4lCFFcs
+ 9RAeCoyDlVsHg==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id E0B74C05F98; Mon, 18 Apr 2022 10:49:43 +0000 (UTC)
+ from userid 48) id 54D41C05F98; Mon, 18 Apr 2022 10:49:58 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 215781] Highmem support broken on kernels greater 5.15.x on
  ppc32?
-Date: Mon, 18 Apr 2022 10:49:43 +0000
+Date: Mon, 18 Apr 2022 10:49:58 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -57,13 +59,13 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-215781-206035-Z390SG1r0e@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-215781-206035-GyEUMxghEh@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-215781-206035@https.bugzilla.kernel.org/>
 References: <bug-215781-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -88,13 +90,12 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D215781
 
---- Comment #5 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 300769
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300769&action=3Dedit
-dmesg (5.18-rc3, PowerMac G4 DP)
+Erhard F. (erhard_f@mailbox.org) changed:
 
-Meanwhile the fixes landed in 5.16.x, 5.17.x and 5.18-rc3 is also ok. Thank=
-s!
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |CODE_FIX
 
 --=20
 You may reply to this email to add a comment.
