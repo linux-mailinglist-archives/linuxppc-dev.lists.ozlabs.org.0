@@ -1,78 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF721505909
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 16:13:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA7D505A63
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 16:56:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KhpnK62Bkz3bdM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 00:13:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Khqkq2x87z3bdR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 00:56:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FjTMu4u8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QVhL6h1A;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=FjTMu4u8; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=QVhL6h1A; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KhpmY6D7lz2xD3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 00:12:45 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id CA6EAB80EC4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 14:12:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 755CCC385A7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 14:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650291159;
- bh=RjMtEVpPDeXUQgA8W1PRFpSRYYm6BHmqog10zI2g0og=;
- h=From:To:Subject:Date:From;
- b=FjTMu4u8MpIF8cpw6BA1+H2q9UR0m7ceyaL3oXUhg7l9D6rpsqvUfy0dMYeUltM37
- nFTApcgvuxn0gzaMUXPPK9vfhUCPoYTOo9r6AFW6wdoD4D/YWW2ENYePq5iZM5UclQ
- q5uNNw2c3wNmka4rL8xaIse+yixrQ2Aja2bbi0C392/rceRh5z7b9EfGdbpr35ykja
- I2t+qrGfq+eKss9ARv3iHbdBwX6IPOb/LVI2ZJoBPMlL9fE2Au9h5LGe6UCjRoYfdK
- TvPJPObfKotXMPOPQLv4zgTPVAh1m882HgekrSup1P4y4hVbLTHMF6+7BuzpzeB7Cc
- XZe26Cjku5wfA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id 53406C05F98; Mon, 18 Apr 2022 14:12:39 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215862] New: clang-14 fails 5.18-rc3 ppc64 BE kernel build -
- <unknown>:0: error: expected relocatable expression
-Date: Mon, 18 Apr 2022 14:12:39 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cf_regression attachments.created
-Message-ID: <bug-215862-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Khqk51Nrtz2yb7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 00:55:39 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23IEOimX004839; 
+ Mon, 18 Apr 2022 14:55:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=P1Bsgru10c/6zc+MxxknoeBLb783l3ejGHTp9O/tANE=;
+ b=QVhL6h1ArUC37BhOmCLT/oBwDqILJI22ySEGh/N+Aw5EK2Fgns7+vfKuQMFWTL2q99Yz
+ XAQp9nzg+mVto2nhg4oSm8GFrY3S6zh2xO4Jn7RCNhSrif3AfsK9WflyX6siWuvsGTTF
+ MHXNTtU6Fz7Jio8tORXwzSUtXK3mLNyPAHyCiji7yJG6EvPaBRNoEMPcPwTFyW3JDacW
+ YwEoH1iVIR6u6JWh4qI3UK7nSvGz+H2erlXpnvcYFeNe9mWvjMgAQbooHoj447OSIb93
+ ghovUm4v7Q2M32lOBLClNbAfZMxs31wHbpvxqFgPbcQpiGLA6XlhXlfE6CQmeKz/jhiD lg== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3fg7ek6va3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Apr 2022 14:55:31 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23IEr5us017248;
+ Mon, 18 Apr 2022 14:55:29 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04ams.nl.ibm.com with ESMTP id 3ffne92wbs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Apr 2022 14:55:29 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 23IEtRD433685964
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Apr 2022 14:55:27 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 528DDAE04D;
+ Mon, 18 Apr 2022 14:55:27 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DCC9BAE045;
+ Mon, 18 Apr 2022 14:55:24 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.163.2.35])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 18 Apr 2022 14:55:24 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH V2 1/2] powerpc/perf: Fix the power9 event alternatives array
+ to have correct sort order
+Date: Mon, 18 Apr 2022 20:25:19 +0530
+Message-Id: <20220418145520.85753-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kVi0c-943W4K4nYuk7n8Wl5Z9prcclAd
+X-Proofpoint-GUID: kVi0c-943W4K4nYuk7n8Wl5Z9prcclAd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-04-18_02,2022-04-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 impostorscore=0 phishscore=0 suspectscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204180085
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,59 +97,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215862
+When scheduling a group of events, there are constraint checks
+done to make sure all events can go in a group. Example, one of
+the criteria is that events in a group cannot use same PMC.
+But platform specific PMU supports alternative event for some
+of the event codes. During perf_event_open, if any event
+group doesn't match constraint check criteria, further lookup
+is done to find alternative event.
 
-            Bug ID: 215862
-           Summary: clang-14 fails 5.18-rc3 ppc64 BE kernel build -
-                    <unknown>:0: error: expected relocatable expression
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.18-rc3
-          Hardware: PPC-64
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: normal
-          Priority: P1
-         Component: PPC-64
-          Assignee: platform_ppc-64@kernel-bugs.osdl.org
-          Reporter: erhard_f@mailbox.org
-        Regression: No
+By current design, the array of alternatives events in PMU
+code is expected to be sorted by column 0. This is because in
+find_alternative() function, the return criteria is based on
+event code comparison. ie "event < ev_alt[i][0])". This
+optimisation is there since find_alternative() can get called
+multiple times. In power9 PMU code, the alternative event array
+is not sorted list and hence there is breakage in finding
+alternative event.
 
-Created attachment 300776
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D300776&action=3Dedit
-kernel .config (kernel 5.18-rc3, Talos II)
+To work with existing logic, fix the alternative event array
+to be sorted by column 0 for power9-pmu.c
 
-# make LLVM=3D1
-[...]
-  AR      usr/built-in.a
-  CC      arch/powerpc/kernel/ptrace/ptrace.o
-  CC      arch/powerpc/kernel/ptrace/ptrace-view.o
-  CC      arch/powerpc/kernel/ptrace/ptrace-fpu.o
-  CC      arch/powerpc/kernel/ptrace/ptrace32.o
-  CC      arch/powerpc/kernel/ptrace/ptrace-vsx.o
-  CC      arch/powerpc/kernel/ptrace/ptrace-altivec.o
-  CC      arch/powerpc/kernel/ptrace/ptrace-tm.o
-  CC      arch/powerpc/kernel/ptrace/ptrace-noadv.o
-  AR      arch/powerpc/kernel/ptrace/built-in.a
-  AR      arch/powerpc/kernel/trace/built-in.a
-  AS      arch/powerpc/kernel/head_64.o
-<unknown>:0: error: expected relocatable expression
-make[2]: *** [scripts/Makefile.build:389: arch/powerpc/kernel/head_64.o] Fe=
-hler
-1
-make[1]: *** [scripts/Makefile.build:550: arch/powerpc/kernel] Fehler 2
-make: *** [Makefile:1834: arch/powerpc] Fehler 2
+Fixes: 91e0bd1e6251 ("powerpc/perf: Add PM_LD_MISS_L1 and PM_BR_2PATH to power9 event list")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+---
+Changelog:
+ Added Fixes tag and reworded commit message.
+ Added Reviewed-by from Maddy.
 
-Toolchain used was llvm/clang/lld-14.0.1. Same kernel builds fine with
-gcc-11.2, binutils-2.37.
+ arch/powerpc/perf/power9-pmu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---=20
-You may reply to this email to add a comment.
+diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
+index c9eb5232e68b..c393e837648e 100644
+--- a/arch/powerpc/perf/power9-pmu.c
++++ b/arch/powerpc/perf/power9-pmu.c
+@@ -133,11 +133,11 @@ int p9_dd22_bl_ev[] = {
+ 
+ /* Table of alternatives, sorted by column 0 */
+ static const unsigned int power9_event_alternatives[][MAX_ALT] = {
+-	{ PM_INST_DISP,			PM_INST_DISP_ALT },
+-	{ PM_RUN_CYC_ALT,		PM_RUN_CYC },
+-	{ PM_RUN_INST_CMPL_ALT,		PM_RUN_INST_CMPL },
+-	{ PM_LD_MISS_L1,		PM_LD_MISS_L1_ALT },
+ 	{ PM_BR_2PATH,			PM_BR_2PATH_ALT },
++	{ PM_INST_DISP,			PM_INST_DISP_ALT },
++	{ PM_RUN_CYC_ALT,               PM_RUN_CYC },
++	{ PM_LD_MISS_L1,                PM_LD_MISS_L1_ALT },
++	{ PM_RUN_INST_CMPL_ALT,         PM_RUN_INST_CMPL },
+ };
+ 
+ static int power9_get_alternatives(u64 event, unsigned int flags, u64 alt[])
+-- 
+2.35.1
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
