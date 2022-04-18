@@ -1,106 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2744504C90
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 08:22:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654C7504CC4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 08:41:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KhcKv5xm8z3bc4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 16:22:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KhclW2LC3z3bdM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 16:41:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=leUKqGQ5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IzvW5Ok9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=leUKqGQ5; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=IzvW5Ok9; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KhcKD5gV4z2xDV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 16:21:51 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23I5XhN8026855; 
- Mon, 18 Apr 2022 06:21:23 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Khckk6w6lz2xSN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Apr 2022 16:40:30 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23I5WvHH007123; 
+ Mon, 18 Apr 2022 06:40:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=date : from : subject :
  to : cc : references : in-reply-to : mime-version : message-id :
  content-type : content-transfer-encoding; s=pp1;
- bh=yG3tvuh/wkbdNu2Hnn37iYqP01H/spW/kJNWBKIP3Mk=;
- b=leUKqGQ5W4plr1aH07/FRL8t6grvfVdzUi+h/WxVbY9vFGPPUJFAMBY3iYtYeIEY3VVB
- zlEwkvQXg3scKFszCrQC0q+6X8gY946s9Ow4NYzkNvApuUbtFqZNAvKF6HfI6hjJijqv
- 0pL+94eUi85w87f3LnQHUfXClLx5VhHuuXh+G6uZlC9TvFcMFFqPK3uPK6MrBPRpjl7x
- NVEvDnb1hbZ0pJnYEn+YD1zFXJirAp28iRQGhGBcVP0jwx5MClARDMoqg6ZeEdfz+IIE
- ycQIZm38sBepwl+2Fyf/sItqyV3szPQuAu1YtyE12ZNshwd/tQkJRVxmNHj9v0ZAzdyx Gg== 
+ bh=E2Zn3AY9jysDVP1+aZfS54RO47VY1Tec/MLxakNq/V0=;
+ b=IzvW5Ok9yWpGCx3yt21doL5RealkfYdv+X67MrWV/f2AcBvl5rEAHVqTmzHKNwkwUoHk
+ wvyxWFWd1Bk7UnF9Cgn1C86G0bpaxq6Jr8jHd6iegBRaZvaK3h5bsXDiF7csJUxX5gbM
+ lmfrYraacYsP4n/GmUbdGS9qdvtny4EivQi4JATnp3XULLniKHt2eXgA+cJcV+m1EyzK
+ LWjgVLSqMpBoRnWIb+Uiv+356LcbRSjDV5/616eAvGfp0e27KbACSBYKEB1wVgjt9Yp7
+ a2L2VdIleRKl7BWrn45EPQCXNtvVixL+QAksKxTTxXfDz6FMtkgQHKPAFG2yk3d9TZxe 3w== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3fg7k9dmmd-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3fg77hx1kk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Apr 2022 06:21:22 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 23I6LJ2e024528;
- Mon, 18 Apr 2022 06:21:22 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3fg7k9dmky-1
+ Mon, 18 Apr 2022 06:40:11 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 23I6eBPD005441;
+ Mon, 18 Apr 2022 06:40:11 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3fg77hx1jt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Apr 2022 06:21:22 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23I69d5g030270;
- Mon, 18 Apr 2022 06:21:20 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3ffne8jb96-1
+ Mon, 18 Apr 2022 06:40:11 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23I6d201007638;
+ Mon, 18 Apr 2022 06:40:09 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma06fra.de.ibm.com with ESMTP id 3ffn2hsvsy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Apr 2022 06:21:20 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 23I6LINc44040660
+ Mon, 18 Apr 2022 06:40:09 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 23I6eH9X45482248
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 18 Apr 2022 06:21:18 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EE920AE045;
- Mon, 18 Apr 2022 06:21:17 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 82F03AE04D;
- Mon, 18 Apr 2022 06:21:17 +0000 (GMT)
+ Mon, 18 Apr 2022 06:40:17 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2211442045;
+ Mon, 18 Apr 2022 06:40:07 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7D26D4203F;
+ Mon, 18 Apr 2022 06:40:06 +0000 (GMT)
 Received: from localhost (unknown [9.43.2.186])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 18 Apr 2022 06:21:17 +0000 (GMT)
-Date: Mon, 18 Apr 2022 11:51:16 +0530
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 18 Apr 2022 06:40:06 +0000 (GMT)
+Date: Mon, 18 Apr 2022 12:10:04 +0530
 From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v1 07/22] powerpc/ftrace: Use patch_instruction() return
- directly
+Subject: Re: [PATCH v1 08/22] powerpc/ftrace: Make __ftrace_make_{nop/call}()
+ common to PPC32 and PPC64
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
  <christophe.leroy@csgroup.eu>,
  Ingo Molnar <mingo@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>,
  Paul Mackerras <paulus@samba.org>, Steven Rostedt <rostedt@goodmis.org>
 References: <cover.1648131740.git.christophe.leroy@csgroup.eu>
- <b4505e936e1aee411f7132a27791cf138102f35f.1648131740.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <b4505e936e1aee411f7132a27791cf138102f35f.1648131740.git.christophe.leroy@csgroup.eu>
+ <fb60b19f154db8132a00c2df7aca7db3e85603b5.1648131740.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <fb60b19f154db8132a00c2df7aca7db3e85603b5.1648131740.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1650262058.altfknhzto.naveen@linux.ibm.com>
+Message-Id: <1650262952.h2adiu8czw.naveen@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: LCSBoDByS4Ci7hB89TZFIQrU8zICUT7R
-X-Proofpoint-GUID: Wn_hlXc4xkSYL9KmNaiODcLR1pcf1JUy
+X-Proofpoint-GUID: ZtEeHyqeNCRQxQEjOnsSbQ1pNk3Vxv9c
+X-Proofpoint-ORIG-GUID: AR7z4CLw4NJSZkjawAleBSiPhNfPK8Q_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-04-18_02,2022-04-15_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- priorityscore=1501 adultscore=0 malwarescore=0 suspectscore=0 phishscore=0
- mlxscore=0 mlxlogscore=802 bulkscore=0 lowpriorityscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2204180035
+ malwarescore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=999 spamscore=0 impostorscore=0
+ bulkscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204180037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,80 +118,150 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Christophe Leroy wrote:
-> Instead of returning -EPERM when patch_instruction() fails,
-> just return what patch_instruction returns.
+> Since c93d4f6ecf4b ("powerpc/ftrace: Add module_trampoline_target()
+> for PPC32"), __ftrace_make_nop() for PPC32 is very similar to the
+> one for PPC64.
 >=20
-> That simplifies ftrace_modify_code():
+> Same for __ftrace_make_call().
 >=20
-> 	   0:	94 21 ff c0 	stwu    r1,-64(r1)
-> 	   4:	93 e1 00 3c 	stw     r31,60(r1)
-> 	   8:	7c 7f 1b 79 	mr.     r31,r3
-> 	   c:	40 80 00 30 	bge     3c <ftrace_modify_code+0x3c>
-> 	  10:	93 c1 00 38 	stw     r30,56(r1)
-> 	  14:	7c 9e 23 78 	mr      r30,r4
-> 	  18:	7c a4 2b 78 	mr      r4,r5
-> 	  1c:	80 bf 00 00 	lwz     r5,0(r31)
-> 	  20:	7c 1e 28 40 	cmplw   r30,r5
-> 	  24:	40 82 00 34 	bne     58 <ftrace_modify_code+0x58>
-> 	  28:	83 c1 00 38 	lwz     r30,56(r1)
-> 	  2c:	7f e3 fb 78 	mr      r3,r31
-> 	  30:	83 e1 00 3c 	lwz     r31,60(r1)
-> 	  34:	38 21 00 40 	addi    r1,r1,64
-> 	  38:	48 00 00 00 	b       38 <ftrace_modify_code+0x38>
-> 				38: R_PPC_REL24	patch_instruction
->=20
-> Before:
->=20
-> 	   0:	94 21 ff c0 	stwu    r1,-64(r1)
-> 	   4:	93 e1 00 3c 	stw     r31,60(r1)
-> 	   8:	7c 7f 1b 79 	mr.     r31,r3
-> 	   c:	40 80 00 4c 	bge     58 <ftrace_modify_code+0x58>
-> 	  10:	93 c1 00 38 	stw     r30,56(r1)
-> 	  14:	7c 9e 23 78 	mr      r30,r4
-> 	  18:	7c a4 2b 78 	mr      r4,r5
-> 	  1c:	80 bf 00 00 	lwz     r5,0(r31)
-> 	  20:	7c 08 02 a6 	mflr    r0
-> 	  24:	90 01 00 44 	stw     r0,68(r1)
-> 	  28:	7c 1e 28 40 	cmplw   r30,r5
-> 	  2c:	40 82 00 48 	bne     74 <ftrace_modify_code+0x74>
-> 	  30:	7f e3 fb 78 	mr      r3,r31
-> 	  34:	48 00 00 01 	bl      34 <ftrace_modify_code+0x34>
-> 				34: R_PPC_REL24	patch_instruction
-> 	  38:	80 01 00 44 	lwz     r0,68(r1)
-> 	  3c:	20 63 00 00 	subfic  r3,r3,0
-> 	  40:	83 c1 00 38 	lwz     r30,56(r1)
-> 	  44:	7c 63 19 10 	subfe   r3,r3,r3
-> 	  48:	7c 08 03 a6 	mtlr    r0
-> 	  4c:	83 e1 00 3c 	lwz     r31,60(r1)
-> 	  50:	38 21 00 40 	addi    r1,r1,64
-> 	  54:	4e 80 00 20 	blr
->=20
-> It improves ftrace activation/deactivation duration by about 3%.
+> Make them common.
 >=20
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  arch/powerpc/kernel/trace/ftrace.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>  arch/powerpc/kernel/trace/ftrace.c | 108 +++--------------------------
+>  1 file changed, 8 insertions(+), 100 deletions(-)
 >=20
 > diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/tra=
 ce/ftrace.c
-> index 98e82fa4980f..1b05d33f96c6 100644
+> index 1b05d33f96c6..2c7e42e439bb 100644
 > --- a/arch/powerpc/kernel/trace/ftrace.c
 > +++ b/arch/powerpc/kernel/trace/ftrace.c
-> @@ -78,10 +78,7 @@ ftrace_modify_code(unsigned long ip, ppc_inst_t old, p=
-pc_inst_t new)
+> @@ -114,7 +114,6 @@ static unsigned long find_bl_target(unsigned long ip,=
+ ppc_inst_t op)
+>  }
+>=20
+>  #ifdef CONFIG_MODULES
+> -#ifdef CONFIG_PPC64
+>  static int
+>  __ftrace_make_nop(struct module *mod,
+>  		  struct dyn_ftrace *rec, unsigned long addr)
+> @@ -154,10 +153,11 @@ __ftrace_make_nop(struct module *mod,
+>  		return -EINVAL;
 >  	}
 >=20
->  	/* replace the text with the new text */
-> -	if (patch_instruction((u32 *)ip, new))
+> -#ifdef CONFIG_MPROFILE_KERNEL
+> -	/* When using -mkernel_profile there is no load to jump over */
+> +	/* When using -mkernel_profile or PPC32 there is no load to jump over *=
+/
+                      -mprofile-kernel
+
+Since you are modifying that line anyway ^^
+
+
+>  	pop =3D ppc_inst(PPC_RAW_NOP());
+>=20
+> +#ifdef CONFIG_PPC64
+> +#ifdef CONFIG_MPROFILE_KERNEL
+>  	if (copy_inst_from_kernel_nofault(&op, (void *)(ip - 4))) {
+>  		pr_err("Fetching instruction at %lx failed.\n", ip - 4);
+>  		return -EFAULT;
+> @@ -201,6 +201,7 @@ __ftrace_make_nop(struct module *mod,
+>  		return -EINVAL;
+>  	}
+>  #endif /* CONFIG_MPROFILE_KERNEL */
+> +#endif /* PPC64 */
+>=20
+>  	if (patch_instruction((u32 *)ip, pop)) {
+>  		pr_err("Patching NOP failed.\n");
+> @@ -209,48 +210,6 @@ __ftrace_make_nop(struct module *mod,
+>=20
+>  	return 0;
+>  }
+> -
+> -#else /* !PPC64 */
+> -static int
+> -__ftrace_make_nop(struct module *mod,
+> -		  struct dyn_ftrace *rec, unsigned long addr)
+> -{
+> -	ppc_inst_t op;
+> -	unsigned long ip =3D rec->ip;
+> -	unsigned long tramp, ptr;
+> -
+> -	if (copy_from_kernel_nofault(&op, (void *)ip, MCOUNT_INSN_SIZE))
+> -		return -EFAULT;
+> -
+> -	/* Make sure that that this is still a 24bit jump */
+> -	if (!is_bl_op(op)) {
+> -		pr_err("Not expected bl: opcode is %s\n", ppc_inst_as_str(op));
+> -		return -EINVAL;
+> -	}
+> -
+> -	/* lets find where the pointer goes */
+> -	tramp =3D find_bl_target(ip, op);
+> -
+> -	/* Find where the trampoline jumps to */
+> -	if (module_trampoline_target(mod, tramp, &ptr)) {
+> -		pr_err("Failed to get trampoline target\n");
+> -		return -EFAULT;
+> -	}
+> -
+> -	if (ptr !=3D addr) {
+> -		pr_err("Trampoline location %08lx does not match addr\n",
+> -		       tramp);
+> -		return -EINVAL;
+> -	}
+> -
+> -	op =3D ppc_inst(PPC_RAW_NOP());
+> -
+> -	if (patch_instruction((u32 *)ip, op))
 > -		return -EPERM;
 > -
 > -	return 0;
-> +	return patch_instruction((u32 *)ip, new);
+> -}
+> -#endif /* PPC64 */
+>  #endif /* CONFIG_MODULES */
+>=20
+>  static unsigned long find_ftrace_tramp(unsigned long ip)
+> @@ -437,13 +396,12 @@ int ftrace_make_nop(struct module *mod,
+>  }
+>=20
+>  #ifdef CONFIG_MODULES
+> -#ifdef CONFIG_PPC64
+>  /*
+>   * Examine the existing instructions for __ftrace_make_call.
+>   * They should effectively be a NOP, and follow formal constraints,
+>   * depending on the ABI. Return false if they don't.
+>   */
+> -#ifndef CONFIG_MPROFILE_KERNEL
+> +#ifndef CONFIG_DYNAMIC_FTRACE_WITH_REGS
 
-I think the reason we were returning -EPERM is so that ftrace_bug() can=20
-throw the right error message. That will change due to this patch,=20
-though I'm not sure how much it matters. -EFAULT and -EPERM seem to=20
-print almost the same error message.
+It is better to gate this on PPC64_ELF_ABI_v1
+
+>  static int
+>  expected_nop_sequence(void *ip, ppc_inst_t op0, ppc_inst_t op1)
+>  {
+> @@ -465,7 +423,7 @@ expected_nop_sequence(void *ip, ppc_inst_t op0, ppc_i=
+nst_t op1)
+>  static int
+>  expected_nop_sequence(void *ip, ppc_inst_t op0, ppc_inst_t op1)
+>  {
+> -	/* look for patched "NOP" on ppc64 with -mprofile-kernel */
+> +	/* look for patched "NOP" on ppc64 with -mprofile-kernel or ppc32 */
+>  	if (!ppc_inst_equal(op0, ppc_inst(PPC_RAW_NOP())))
+>  		return 0;
+>  	return 1;
+> @@ -484,8 +442,10 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned =
+long addr)
+>  	if (copy_inst_from_kernel_nofault(op, ip))
+>  		return -EFAULT;
+>=20
+> +#ifndef CONFIG_DYNAMIC_FTRACE_WITH_REGS
+>  	if (copy_inst_from_kernel_nofault(op + 1, ip + 4))
+>  		return -EFAULT;
+> +#endif
+
+Here too...
+
 
 - Naveen
+
