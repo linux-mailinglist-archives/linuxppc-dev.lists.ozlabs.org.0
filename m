@@ -1,94 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B941F505A65
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 16:57:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EAF505A8A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Apr 2022 17:06:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KhqlY6ZXyz3bc5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 00:56:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Khqy25ZWZz2ync
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 01:06:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O7uW+irY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jZXwt08x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mga12.intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=O7uW+irY; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=jZXwt08x; dkim-atps=neutral
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Khqk51Qwgz2yb9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 00:55:40 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23IE2cah018382; 
- Mon, 18 Apr 2022 14:55:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=2DNMORwCO7SqLoy/1TUOtM5po9aqVBmyc1UIUZIjqNE=;
- b=O7uW+irY2buHe+YSRbiZ4atZAsTw956t17IKkfwnvSslqyQJ6I37Us2H2fZQj0mzVoc0
- Vd3k0RIa35Yu6qnZloGFm0hiImfp1i3hPdKmKZMINGCTg2TBCTSdIjkR/6Vrqrzt3hmj
- OGCO0Ve3cA7cKEt7x7s4xIQxia3C2hDWaXwwODDe3qg4WcPNppiA4JuBxmFZ8YWO/6qZ
- yELLkmxh+1xsotSy3O3w8rAVvUiRMGcxeWKq2P3yMiEwUQ9CLnG1dk+XvLh/slapbGsT
- MwdDWLuecZihPYOLlNzIDdYSvWfB+X621yDX8GJQON2on8ouQ1zik7uRmFZm1+mSn0iC VA== 
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3ffpdxmcnc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Apr 2022 14:55:34 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23IEsjMb030706;
- Mon, 18 Apr 2022 14:55:32 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04fra.de.ibm.com with ESMTP id 3ffvt99xdk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Apr 2022 14:55:32 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 23IEtUjL55902512
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 18 Apr 2022 14:55:30 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6BF31AE045;
- Mon, 18 Apr 2022 14:55:30 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 170C6AE04D;
- Mon, 18 Apr 2022 14:55:28 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.163.2.35])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 18 Apr 2022 14:55:27 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH V2 2/2] powerpc/perf: Fix the power10 event alternatives array
- to have correct sort order
-Date: Mon, 18 Apr 2022 20:25:20 +0530
-Message-Id: <20220418145520.85753-2-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220418145520.85753-1-atrajeev@linux.vnet.ibm.com>
-References: <20220418145520.85753-1-atrajeev@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KhqxP5V2Vz2xZW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 01:05:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1650294330; x=1681830330;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Mm1ye/WQVxQp/MY2hRmkn81yEIqLrJ2QUUa96JnW2oA=;
+ b=jZXwt08xUUsyc1EaZZ/idQM8hJlfOoLWwv3FonVqdCd0y4UZTyINydrA
+ nhtlcLqPZAOI7mjiVy1zZdH/zwnebbpZHwHfkr9kNli3+w8C0YZWoxXCX
+ qGvGPosFuORAbO8cyCGQrBVbJTUCF5VxTepQr0kksNiqnWSKUbkOT7NTk
+ yT83GO6liLiAmQwB0rqCrVx7+0Q6FXoEgHeX22+0UrhGNA02DDRBz9dAb
+ rR9Md0tIuhLjJhHTlu8sdU4mNf/L/1v6P1UsXumsbUc46sNr12SNEDF8U
+ gsIQW7l6q5G/VZmrDN7M4AjkIHIwEicR6tvRq4KfUWThxEp/To9muswCk w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10321"; a="243467124"
+X-IronPort-AV: E=Sophos;i="5.90,270,1643702400"; d="scan'208";a="243467124"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2022 08:03:08 -0700
+X-IronPort-AV: E=Sophos;i="5.90,270,1643702400"; d="scan'208";a="726670038"
+Received: from skuppusw-desk2.jf.intel.com ([10.165.154.101])
+ by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Apr 2022 08:03:07 -0700
+From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Russell Currey <ruscur@russell.cc>,
+ Oliver OHalloran <oohall@gmail.com>
+Subject: [PATCH v3] PCI/AER: Handle Multi UnCorrectable/Correctable errors
+ properly
+Date: Mon, 18 Apr 2022 15:02:37 +0000
+Message-Id: <20220418150237.1021519-1-sathyanarayanan.kuppuswamy@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RDJTJqzvkApasD7A8vlFSmPaXjz1vdoi
-X-Proofpoint-GUID: RDJTJqzvkApasD7A8vlFSmPaXjz1vdoi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-04-18_02,2022-04-15_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0 bulkscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204180085
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,57 +65,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When scheduling a group of events, there are constraint checks
-done to make sure all events can go in a group. Example, one of
-the criteria is that events in a group cannot use same PMC.
-But platform specific PMU supports alternative event for some
-of the event codes. During perf_event_open, if any event
-group doesn't match constraint check criteria, further lookup
-is done to find alternative event.
+Currently the aer_irq() handler returns IRQ_NONE for cases without bits
+PCI_ERR_ROOT_UNCOR_RCV or PCI_ERR_ROOT_COR_RCV are set. But this
+assumption is incorrect.
 
-By current design, the array of alternatives events in PMU 
-code is expected to be sorted by column 0. This is because in
-find_alternative() function, the return criteria is based on
-event code comparison. ie "event < ev_alt[i][0])". This
-optimisation is there since find_alternative() can get called
-multiple times. In power10 PMU code, the alternative event array
-is not sorted list and hence there is breakage in finding 
-alternative event.
+Consider a scenario where aer_irq() is triggered for a correctable
+error, and while we process the error and before we clear the error
+status in "Root Error Status" register, if the same kind of error
+is triggered again, since aer_irq() only clears events it saw, the
+multi-bit error is left in tact. This will cause the interrupt to fire
+again, resulting in entering aer_irq() with just the multi-bit error
+logged in the "Root Error Status" register.
 
-To work with existing logic, fix the alternative event array
-to be sorted by column 0 for power10-pmu.c
+Repeated AER recovery test has revealed this condition does happen
+and this prevents any new interrupt from being triggered. Allow to
+process interrupt even if only multi-correctable (BIT 1) or
+multi-uncorrectable bit (BIT 3) is set.
 
-Fixes: a64e697cef23 ("powerpc/perf: power10 Performance Monitoring support")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Also note that, for cases with only multi-bit error is set, since this
+is not the first occurrence of the error, PCI_ERR_ROOT_ERR_SRC may have
+zero or some junk value. So we cannot cleanly process this error
+information using aer_isr_one_error(). All we are attempting with this
+fix is to make sure error interrupt processing can continue in this
+scenario.
+
+This error can be reproduced by making following changes to the
+aer_irq() function and by executing the given test commands.
+
+ static irqreturn_t aer_irq(int irq, void *context)
+         struct aer_err_source e_src = {};
+
+         pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS,
+				&e_src.status);
+ +       pci_dbg(pdev->port, "Root Error Status: %04x\n",
+ +		e_src.status);
+         if (!(e_src.status & AER_ERR_STATUS_MASK))
+                 return IRQ_NONE;
+
+ +       mdelay(5000);
+
+ # Prep injection data for a correctable error.
+ $ cd /sys/kernel/debug/apei/einj
+ $ echo 0x00000040 > error_type
+ $ echo 0x4 > flags
+ $ echo 0x891000 > param4
+
+ # Root Error Status is initially clear
+ $ setpci -s <Dev ID> ECAP0001+0x30.w
+ 0000
+
+ # Inject one error
+ $ echo 1 > error_inject
+
+ # Interrupt received
+ pcieport <Dev ID>: AER: Root Error Status 0001
+
+ # Inject another error (within 5 seconds)
+ $ echo 1 > error_inject
+
+ # You will get a new IRQ with only multiple ERR_COR bit set
+ pcieport <Dev ID>: AER: Root Error Status 0002
+
+Currently, the above issue has been only reproduced in the ICL server
+platform.
+
+[Eric: proposed reproducing steps]
+Fixes: 4696b828ca37 ("PCI/AER: Hoist aerdrv.c, aer_inject.c up to drivers/pci/pcie/")
+Reported-by: Eric Badger <ebadger@purestorage.com>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 ---
-Changelog:
- Added Fixes tag and reworded commit message
- Added Reviewed-by from Maddy
 
- arch/powerpc/perf/power10-pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes since v2:
+ * Added more details to the commit log.
+ * Rebased on v5.18-rc1.
 
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index d3398100a60f..c6d51e7093cf 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -91,8 +91,8 @@ extern u64 PERF_REG_EXTENDED_MASK;
+Changes since v1:
+ * Added Fixes tag.
+ * Included reproducing steps proposed by Eric.
+
+ drivers/pci/pcie/aer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9fa1f97e5b27..7952e5efd6cf 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -101,6 +101,11 @@ struct aer_stats {
+ #define ERR_COR_ID(d)			(d & 0xffff)
+ #define ERR_UNCOR_ID(d)			(d >> 16)
  
- /* Table of alternatives, sorted by column 0 */
- static const unsigned int power10_event_alternatives[][MAX_ALT] = {
--	{ PM_CYC_ALT,			PM_CYC },
- 	{ PM_INST_CMPL_ALT,		PM_INST_CMPL },
-+	{ PM_CYC_ALT,			PM_CYC },
- };
++#define AER_ERR_STATUS_MASK		(PCI_ERR_ROOT_UNCOR_RCV |	\
++					PCI_ERR_ROOT_COR_RCV |		\
++					PCI_ERR_ROOT_MULTI_COR_RCV |	\
++					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
++
+ static int pcie_aer_disable;
+ static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
  
- static int power10_get_alternatives(u64 event, unsigned int flags, u64 alt[])
+@@ -1196,7 +1201,7 @@ static irqreturn_t aer_irq(int irq, void *context)
+ 	struct aer_err_source e_src = {};
+ 
+ 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS, &e_src.status);
+-	if (!(e_src.status & (PCI_ERR_ROOT_UNCOR_RCV|PCI_ERR_ROOT_COR_RCV)))
++	if (!(e_src.status & AER_ERR_STATUS_MASK))
+ 		return IRQ_NONE;
+ 
+ 	pci_read_config_dword(rp, aer + PCI_ERR_ROOT_ERR_SRC, &e_src.id);
 -- 
-2.35.1
+2.25.1
 
