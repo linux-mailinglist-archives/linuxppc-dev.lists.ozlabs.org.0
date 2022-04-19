@@ -2,78 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA23A50684B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 12:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B25650695E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 13:03:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjKDf5LhTz3bwG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 20:05:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KjLWP0Kzdz3bZR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 21:03:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=qIrGCpfv;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/4wHI6Ks;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=iNT0C27i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=qIrGCpfv; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=/4wHI6Ks; 
- dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=hbh25y@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=iNT0C27i; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjKCH2PZ2z2yXM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 20:04:10 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 211211F750;
- Tue, 19 Apr 2022 10:04:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1650362648; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=72MSO73iE9m6d6QcQ+RYD7uJHq/qshdsujcD80AQRJM=;
- b=qIrGCpfvcmzkt/DJmyMjcpRiB83gp2InxeVfPQxpoOBm6yrImp+SHdPFycXCH+L0/Go4C8
- xqAqGL5VxrqzQ8aa4MNUd0sLpEmpNB6MP6LuKtPqr2E//clpNRxf++RzosaofnhnLUqHbU
- 3Dxm9PS5hp2XPEOYaUFqlmM+i2AR+hU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1650362648;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=72MSO73iE9m6d6QcQ+RYD7uJHq/qshdsujcD80AQRJM=;
- b=/4wHI6KsrywOkyEaqa+m3SvpCyqaRqbDM4X9so+EOdCFjlb5vQ5NVNJPxQ67TxlWV70SER
- sNnW7IOHd/Os6oCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C39F1132E7;
- Tue, 19 Apr 2022 10:04:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 6MLVLheJXmJzJQAAMHmgww
- (envelope-from <tzimmermann@suse.de>); Tue, 19 Apr 2022 10:04:07 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: robh+dt@kernel.org, frowand.list@gmail.com, daniel@ffwll.ch, deller@gmx.de,
- sam@ravnborg.org, linux@roeck-us.net, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, javierm@redhat.com
-Subject: [PATCH v2 2/2] fbdev: Warn in hot-unplug workaround for framebuffers
- without device
-Date: Tue, 19 Apr 2022 12:04:05 +0200
-Message-Id: <20220419100405.12600-3-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220419100405.12600-1-tzimmermann@suse.de>
-References: <20220419100405.12600-1-tzimmermann@suse.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KjLVh2dcvz2x9X
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 21:02:35 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id i24so939767pfa.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 04:02:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language:to
+ :cc:references:from:in-reply-to:content-transfer-encoding;
+ bh=HPfHlnZW/J0QTwj9E3rSjp2CIkBFwM3rHUP6G621yX8=;
+ b=iNT0C27iILY9yMw5fp4m8wrEpS19RdildApUUoPCMPAggfUSWjI1IBVhyVlsj70CLT
+ L6utqZiifJMNTICWPPPHkUgizjX90tPr2zB5nu5K+9NmjVyYf1isJUD4lltfeoMMH0ni
+ w+2p5Mp7SlPaWD7g+dvinXp0qtpW1YfIqFjcf1yXGYxmiWV2pYuDgydI5EtEnxa/eTYn
+ q6nBgoXFRO5EdNI3PRrAv9w8euU/aAOiB0cCwokJBoAn1jwn2eqjQ/RDHEQQaV22zeGM
+ fcT4jHPZP0e7NSi2CDpJ9TgGVjAfzWAXYIanuvR8OIkbRlckhD5OhuGPXRrBV1fdNl1f
+ KrSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=HPfHlnZW/J0QTwj9E3rSjp2CIkBFwM3rHUP6G621yX8=;
+ b=wLd09OO4wUTROhbuiD5JoS5y1m3AmK1bSATqtF8Hkr7xPHW6mW1RQ9SNUrUcuU4W8r
+ /QMc1Nj4e2wlOTZGJvY+Doj5y8/X3BUEzdCz0RF2PtdiX3pRY9+kYE0hoTlsqygJfXuX
+ KZqiEJFeg4Zxee0dXoFwBoXHqe+6ytdrFFyhB5qus9tyS/eyz9XISuNbV3LTsL7GEDPv
+ 59u9+zweVRnaPxXtXJ+PlrfnoUEBMhOfpBoKcnMIwgF3Hmk4IGUWt2Jb8YtaB0/KMo2k
+ tbjVGPVZOuHBFfaxbc1+/6W/tfA4dyp+w/K16olWOIlpeGAcESaJ6VUeOMsS4QUD4yv6
+ cK/A==
+X-Gm-Message-State: AOAM533/tGpHHF8jtcv/eczugzwnREA9LaQfmCZU8QdlFkrANlobrsTW
+ GV40lj05POVPS4wm66i3F6U=
+X-Google-Smtp-Source: ABdhPJw2iYD4KBeGw1t2OjioGfEiU3FCIpVJNOBj87m8tve6GdGwt06U40Bh5rLvaoS3a/5BfnkHrw==
+X-Received: by 2002:a63:1510:0:b0:39d:7212:8500 with SMTP id
+ v16-20020a631510000000b0039d72128500mr13534063pgl.377.1650366150920; 
+ Tue, 19 Apr 2022 04:02:30 -0700 (PDT)
+Received: from [192.168.50.247] ([103.84.139.165])
+ by smtp.gmail.com with ESMTPSA id
+ ch10-20020a056a00288a00b0050a51a95e91sm10386370pfb.201.2022.04.19.04.02.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Apr 2022 04:02:30 -0700 (PDT)
+Message-ID: <0da7b5da-6fab-ab73-5748-ae270d77b4d0@gmail.com>
+Date: Tue, 19 Apr 2022 19:02:24 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH] misc: ocxl: fix possible double free in
+ ocxl_file_register_afu
+Content-Language: en-US
+To: Frederic Barrat <fbarrat@linux.ibm.com>, ajd@linux.ibm.com,
+ arnd@arndb.de, gregkh@linuxfoundation.org, mpe@ellerman.id.au,
+ alastair@d-silva.org
+References: <20220418085758.38145-1-hbh25y@gmail.com>
+ <e18a4b58-4551-aa68-ed52-baeeeaab56bb@linux.ibm.com>
+From: Hangyu Hua <hbh25y@gmail.com>
+In-Reply-To: <e18a4b58-4551-aa68-ed52-baeeeaab56bb@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -86,48 +89,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Thomas Zimmermann <tzimmermann@suse.de>,
- dri-devel@lists.freedesktop.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A workaround makes fbdev hot-unplugging work for framebuffers without
-device. The only user for this feature was offb. As each OF framebuffer
-now has an associated platform device, the workaround hould no longer
-be triggered. Update it with a warning and rewrite the comment. Fbdev
-drivers that trigger the hot-unplug workaround really need to be fixed.
+On 2022/4/19 17:09, Frederic Barrat wrote:
+> 
+> 
+> On 18/04/2022 10:57, Hangyu Hua wrote:
+>> info_release() will be called in device_unregister() when info->dev's
+>> reference count is 0. So there is no need to call ocxl_afu_put() and
+>> kfree() again.
+>>
+>> Fix this by adding free_minor() and return to err_unregister error path.
+>>
+>> Fixes: 75ca758adbaf ("ocxl: Create a clear delineation between ocxl 
+>> backend & frontend")
+>> Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+>> ---
+> 
+> 
+> Thanks for fixing that error path!
+> I'm now thinking it would be cleaner to have the call to free_minor() in 
+> the info_release() callback but that would be another patch.
+> In any case:
+> Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> 
+>    Fred
+> 
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Suggested-by: Javier Martinez Canillas <javierm@redhat.com>
----
- drivers/video/fbdev/core/fbmem.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+I think it is a good idea to use callbacks to handle all garbage 
+collections. And free_minor is used only in ocxl_file_register_afu() 
+andocxl_file_unregister_afu(). So this should only require minor changes.
 
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index bc6ed750e915..84427470367b 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1577,14 +1577,12 @@ static void do_remove_conflicting_framebuffers(struct apertures_struct *a,
- 			 * allocate the memory range.
- 			 *
- 			 * If it's not a platform device, at least print a warning. A
--			 * fix would add code to remove the device from the system.
-+			 * fix would add code to remove the device from the system. For
-+			 * framebuffers without any Linux device, print a warning as
-+			 * well.
- 			 */
- 			if (!device) {
--				/* TODO: Represent each OF framebuffer as its own
--				 * device in the device hierarchy. For now, offb
--				 * doesn't have such a device, so unregister the
--				 * framebuffer as before without warning.
--				 */
-+				pr_warn("fb%d: no device set\n", i);
- 				do_unregister_framebuffer(registered_fb[i]);
- 			} else if (dev_is_platform(device)) {
- 				registered_fb[i]->forced_out = true;
--- 
-2.35.1
+Thanks.
 
+> 
+>>   drivers/misc/ocxl/file.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
+>> index d881f5e40ad9..6777c419a8da 100644
+>> --- a/drivers/misc/ocxl/file.c
+>> +++ b/drivers/misc/ocxl/file.c
+>> @@ -556,7 +556,9 @@ int ocxl_file_register_afu(struct ocxl_afu *afu)
+>>   err_unregister:
+>>       ocxl_sysfs_unregister_afu(info); // safe to call even if 
+>> register failed
+>> +    free_minor(info);
+>>       device_unregister(&info->dev);
+>> +    return rc;
+>>   err_put:
+>>       ocxl_afu_put(afu);
+>>       free_minor(info);
