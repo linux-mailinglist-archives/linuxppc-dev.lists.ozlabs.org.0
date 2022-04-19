@@ -1,159 +1,160 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF0A506FA8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 16:03:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DEB9506FE8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 16:15:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjQW65lfHz3bdN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 00:03:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KjQn63ZJJz3bZ4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 00:15:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=KFJ5tTyN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=GIdlnUs8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=windriver.com (client-ip=205.220.166.238;
- helo=mx0a-0064b401.pphosted.com;
+ smtp.mailfrom=windriver.com (client-ip=205.220.178.238;
+ helo=mx0b-0064b401.pphosted.com;
  envelope-from=prvs=11081c7a60=zhe.he@windriver.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=windriver.com header.i=@windriver.com
- header.a=rsa-sha256 header.s=PPS06212021 header.b=KFJ5tTyN; 
+ header.a=rsa-sha256 header.s=PPS06212021 header.b=GIdlnUs8; 
  dkim-atps=neutral
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com
- [205.220.166.238])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com
+ [205.220.178.238])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjQVJ53z4z2xnB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 00:02:25 +1000 (AEST)
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
- by mx0a-0064b401.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23JDODrb032162;
- Tue, 19 Apr 2022 07:01:31 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KjQmL2R35z2xBv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 00:14:40 +1000 (AEST)
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+ by mx0a-0064b401.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23JCvp4o013188;
+ Tue, 19 Apr 2022 14:13:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
  h=message-id : date
  : subject : to : cc : references : from : in-reply-to : content-type :
  content-transfer-encoding : mime-version; s=PPS06212021;
- bh=jXCFpMh4Gh2YVe5PbI6dIurLDiZEXeJwE3HRp81A8QA=;
- b=KFJ5tTyNDMun33qlExgBxonV+Ds1jR8H/Hv8rHRPqSTvD1Ll2rCf/EwKVqIEhW3mEm9t
- RP7Lw+veXRwjIuQdWH+C0gWAJannXQi0kDcxeqdvuYnQOHzW6zFJ47PQ3kkKwR2/xk+D
- 1dU5TPuuJFFkKqrvy+C+HwkSJaztwP9654loxdKTdJJMSa0aj+KNyicMNTfrwjUk6ivC
- NPirDrt/TiEnAAdubHfqoX8U8CSoEhFyqWeymEncxr7PWafTRwAYPc4trAeCDB+NyxAK
- pgbv3g4TtIY9Z5ecag/5Fq28otObiZCkKXCg5RqkES48K7XuvEQxw6I+QWp7RRDFQkbJ 3w== 
-Received: from nam04-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam08lp2173.outbound.protection.outlook.com [104.47.73.173])
- by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ffs3122w4-1
+ bh=TKCYh77Qld6+GzXGSXRxQdTaAvPHUBYmFX7EUyrF6HA=;
+ b=GIdlnUs8wqYuzJkjzxoQ6rjb3RINz0R1Ki3lV879lhZuSDdseh3f0VDrGc+IEUsuov0K
+ r2HAzuoAsroPOmKayj9TP/UhJxAi9CyuOVuq9EEAmhmCq1xTNAxpWTtmE9V6jOlezNY4
+ T6GMV+JBXgm1k/9t7K/ZnCEJ1i75A6fxHB63rclMfavJykXFjzCTEP3rrJl3j/yQYQYa
+ VqfZ6es2m+amlX1o8o+rh2E3nlGJEEdiEjKrRVLDpE1CfzxleFyM8tDsEoenP2A96Rre
+ hwqyr/HovA3VRKMOnnhAqgplfEStwCZo9poXfsPtNFggJLU+NLaC26/nX6E+OXBPXZkf eA== 
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
+ by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ffpj2t5ur-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Apr 2022 07:01:30 -0700
+ Tue, 19 Apr 2022 14:13:58 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kW9lbKMcl+ew9NMrZlp/zytyB+fC3yZinAMkhcUB530DcDZKXbedSAbgR8jLBjrPwwyJyzDPqRvvrW8Eu7+0idwYvA256ShSxbkEqDHoneyuyDT3fkGx6UZJ22lsHbPwmtSM4i3nnqPDBJFnnZ1HOTJRY48FYlR6tlY19CMiRyVugDxC88D/eoZ2xA18A7kyibe1UNfY1NxYFWieKXKihwn4i4tHaugADq4h9USq5z7RuW9SKn9bQK6OItV+s6tlzUI56pmdGST6b1jmhR85yt900EHmI2cVzWxTmORM4Qg+AG+ZPWW6QD2RkCA0yLogzXGDb16eSTH7bH7E6/XB3w==
+ b=YNz0QZqt6/mXfjT5qcGf0/1bVLsKqsVt9BwCTKMLcm3lpGdOS/XKe4VvrNRCrEX6IsXYATeO7LYKDJiSGQCbUYpyOjMldIrQm7OwE7wnQjE9i9Q1CIeHJkq3OJ3KfGpbqhafmE7uAQYV365mDVeZh6t8mv9H3zpGaQROO5HbhBpznZEocuf8XKyIzeD7kTdYUU5mcmCWrbBuSQOFHbazJQ+t+UJBP93+cSPWi4NzmNQSHr6hLiFXSw7FlXeEtTWnmgwYU9pESIRCnButN76coqKyEeBKTbv9VVv3GppF2mdVmAs6HceNXVQhH603zPvuTJDCj6w+RHKJQi1MjZsIXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jXCFpMh4Gh2YVe5PbI6dIurLDiZEXeJwE3HRp81A8QA=;
- b=nuVa+0bA1Eg4I/e61Q78Pyj8zJfE50GzKlXjniMh7Ylm4rm8G8kDzCuQEnKhHdsW3iE8QJDTU9bvA0JkBR8BjivBmNwrtKZAL71Su0EvF+tOh0Z/DVU6uhGqIhIMkdf0sV094g2vamrvLyAfth/yf5d5MLn2OY7EnVz3dqYn6UsfpZTJcow8U0rQKuyJuwfS0uq5Bd6NOb7g82TR7yIZsjkeO+i7C19uEvwKRqerhz/tcAXyMRg+55zSWS7YROux+sC+u+ploqJPdq27sS/PsYJcYlst6ILoEXsgQ6xg9o1gh9oY/EWNApn91JhOzlT27tYklBc+hhKYeHMYXASdvQ==
+ bh=TKCYh77Qld6+GzXGSXRxQdTaAvPHUBYmFX7EUyrF6HA=;
+ b=JTNHdQ+oh0aImJPwmixxScOlDZ1pRv7Xq5Q5k3jTl80zouJeJuNsw3tQMpWC1//PKJDmLxnznwztM25gb6JIWajPJ9fzY0ctWRQj1vDd8s6WaGJUg2LRQKKFYxpLCY6exuherefOFdh5eKPhI+QY7Sfsgg6/6ZLaj0HZxpH73DT9VQHU9Pu9qffLy6Gmr9RsMFp+hFDktWjVrTXj0Nz8shMqE7ea7ksD6Zb9DxpTN1U+2g7Tu+9k/Qc8C0vPQV4U4WhXeA6WKqGbI03T+4AgaDL6EGs3NRJHm4o6C6EqgODrHbtnd4Tb+WeQ0R9F1knY6UDVPTFBgbUjgwg928+kJw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
 Received: from MWHPR11MB1358.namprd11.prod.outlook.com (2603:10b6:300:23::8)
- by MWHPR11MB2032.namprd11.prod.outlook.com (2603:10b6:300:2b::13) with
+ by BN7PR11MB2865.namprd11.prod.outlook.com (2603:10b6:406:ac::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5164.20; Tue, 19 Apr
- 2022 14:01:28 +0000
+ 2022 14:13:54 +0000
 Received: from MWHPR11MB1358.namprd11.prod.outlook.com
  ([fe80::1cd4:125:344:9fc]) by MWHPR11MB1358.namprd11.prod.outlook.com
  ([fe80::1cd4:125:344:9fc%7]) with mapi id 15.20.5164.025; Tue, 19 Apr 2022
- 14:01:28 +0000
-Message-ID: <b328bed3-ebb9-6fba-9585-79946262c40f@windriver.com>
-Date: Tue, 19 Apr 2022 22:01:11 +0800
+ 14:13:54 +0000
+Message-ID: <286b9800-1b17-5274-889e-5a1a361eb410@windriver.com>
+Date: Tue, 19 Apr 2022 22:13:38 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [PATCH RFC 2/8] arm64: stacktrace: Add arch_within_stack_frames
+Subject: Re: [PATCH RFC 1/8] stacktrace: Change callback prototype to pass
+ more information
 Content-Language: en-US
-To: Kees Cook <keescook@chromium.org>
+To: Mark Rutland <mark.rutland@arm.com>
 References: <20220418132217.1573072-1-zhe.he@windriver.com>
- <20220418132217.1573072-3-zhe.he@windriver.com>
- <202204181457.9DE190CE@keescook>
+ <20220418132217.1573072-2-zhe.he@windriver.com>
+ <Yl60euwfis+u92cA@FVFF77S0Q05N>
 From: He Zhe <zhe.he@windriver.com>
-In-Reply-To: <202204181457.9DE190CE@keescook>
+In-Reply-To: <Yl60euwfis+u92cA@FVFF77S0Q05N>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SL2P216CA0117.KORP216.PROD.OUTLOOK.COM (2603:1096:101::14)
- To MWHPR11MB1358.namprd11.prod.outlook.com
+X-ClientProxiedBy: HK2PR02CA0217.apcprd02.prod.outlook.com
+ (2603:1096:201:20::29) To MWHPR11MB1358.namprd11.prod.outlook.com
  (2603:10b6:300:23::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1f729ecc-0a84-4960-fd7a-08da220d1956
-X-MS-TrafficTypeDiagnostic: MWHPR11MB2032:EE_
-X-Microsoft-Antispam-PRVS: <MWHPR11MB20324F72622BFAF8FFBAA91C8FF29@MWHPR11MB2032.namprd11.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 0e9eee27-c4a0-40a4-3b53-08da220ed633
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2865:EE_
+X-Microsoft-Antispam-PRVS: <BN7PR11MB2865A80BF5BFA48AA437DFF78FF29@BN7PR11MB2865.namprd11.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: fkC/4I12arSLfooNxGGC600fzzrBRkKonAA3IUhPImD39Da+cWkOzqQ+WH6beSYAhktA8Q5CyMSVqPxvxIECEe0mqExzLdnqRxMssDWPdSy8FBMpi1oqEwPUFfWDeLYmpHIV9HQoX43pgq4iCbWBf3RQDji2/X16P8o1M28/K0gw8MkecA18f0R6sRcr/VKI5o3Pt9ZDBCnIptaYrno4mFkBIBJkwo2phqTGCiLbOvV1EaKwGhglDsv8Wu6xSFTj4MnfZnvqdhsyCD04YQG+GNN8I3NJ9lUVSJZgpDT26s9ufjWRK2ON6I9pZeB91epPkqVi33aSEl9DYg8UsoJUCtyu0VGsKmBpMbsgryPEfv+C/HJjY3guWINy9FfewcVEUNusCV7xK6ycaddohBV8hK3sfQj92/fzP6cvVi+00t42MCtL90GIsaiLKRJQQKo6Grzz/PEIyrbgKQqZu62vPfS4TDRJNEFT51yp9pMfUvCkL6Z0iBzeLGZCWOp0fRU86Su2gZQq9WudJzUO2qZtuXjkYRQ0hLugEeN5mO4V3dmbwjX7dlsjIUURkWll1iWaI/N8v6wOtzquaZ2c15RzoZsyXWsY2ZU6CilVkL8c+YxFSZw3W0UAoqnsQ+u+2o3TpdSW1DpVI7h/ponC6RXutKEQ2WIDIi6h1IC0TGxiqMML9OP9wZp/rtXYOsfmt+wS0wSSI4ExNKRvNg6041mstvm4ZeChV1hRDjxYXHCzKcot4nfRqYGI/OPBa48bT5Ej
+X-Microsoft-Antispam-Message-Info: nc6YLA1KzFGK92zRLDu1qTfrUUysz7J2LMrk13a0mSaZoGjxzs1owMSfJDWj5Dtt8eGSdBzEbRyCdv7wEk/h9UAV8nxhjplnwIhMTRJjT/GUceI9QyhuTfEFNSdPpqqkOKqKE0gkhp5LkDJDUwy4c2IVMEmirs9CK1VDIoo3dq4c32ikrT0929Qhdg5kPJDCJcofU9n4m/QTPGGkmlyQE/RDMFXedE23OENL0AHieEzeqvS3ujaVNZvqKHngx0NJxTpa33HLI+9p80ogduoYgTQ5TgYi7DmJm4+kkp4K4JtYbmzbPDVsAAroUikWRXK1ZBdfhrNVftdYDwUxpWUCdGv7jvCMYuBetqUGsdtjA0X+of52uW1XekyQjMH2ggD7rYtFO+2DAkCE++44TGo4x/ZhUZtNgTmQ9LjYzBzzteuoEFzOIocWOU24KsOj85IKTwkyCl/ITQTWRi+YQjh0bbR0Q46NCRYeVeCrF7Q/D3/qC/hm8ya/xKORbEgOrTAfmlrRCklMmWt8KFMgaYIbn1vl9xpkvMYEgsyI36rrdxjijABzaRqH4s68b8El5VprI88pbO3/Adqcs71yU4emRNh+VQ9LiIejtvH9+L7qtU+VmRXWjeZIOQtj5DXicnepTNlLcVJMUCKBVfyXBtDUM2Bt3qJYQoWT04Xv643Fr6/XD/V1e5rbuLxBBIvKCSQ1SsXTn6hgPWqsGxsQKNPnKX1MaWiHJqhj/DksL+OscRdW4MBv1tvnXddkGqyYgLPivYJFOLd7UyGoDMFISYACxA==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MWHPR11MB1358.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(38100700002)(2616005)(8676002)(186003)(38350700002)(4326008)(5660300002)(36756003)(31696002)(508600001)(6666004)(26005)(66946007)(66556008)(66476007)(2906002)(6506007)(6512007)(52116002)(53546011)(83380400001)(86362001)(31686004)(7416002)(8936002)(6916009)(6486002)(316002)(45980500001)(43740500002);
+ SFS:(13230001)(4636009)(366004)(83380400001)(53546011)(38100700002)(38350700002)(6506007)(6512007)(52116002)(6666004)(316002)(26005)(6486002)(186003)(7416002)(6916009)(508600001)(2616005)(5660300002)(2906002)(8936002)(4326008)(8676002)(66476007)(66946007)(66556008)(36756003)(31686004)(31696002)(86362001)(45980500001)(43740500002);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OFNDOWp4ekREQ2IyUytTQ25yUU1vaHRLNkxhaWpINjlLSnpBQ1lJNjJHdFBR?=
- =?utf-8?B?VlJZYTQ4SkUySDdLTWdFVGxRK0w5L1F0a0xsVEhWT0Q0RGVrYWdud3VxS04w?=
- =?utf-8?B?WFpSNmxhVkRrUndGb1lqREVBRDE4TEV6Z2VwOWhUZmdKYlJ1MjVuVkhGSjZ0?=
- =?utf-8?B?M1FDeGdMeStKMm5aaktGQTVHRmF2di9VcThyOVc5Y0EvSkdwMjA1ME4xOTJO?=
- =?utf-8?B?MXYvdWpRTkVhTjkydDE4c21rUEd4NFg3OXZwZG90eWxBRjhKL1IzTENmN2cy?=
- =?utf-8?B?K2cvZ3dzeTdsYkVZL01TS1BXcjFlUXRabkhOOVdDS0QxNTIydTZUeENzVmhK?=
- =?utf-8?B?ZmkvY1dBZ1NTUEMxZ1dPNW10bXhXSmxGTFJ4RnhzdkJhaWRsRWw0QWhiVWV4?=
- =?utf-8?B?dmZOV1FBbXVibW9WbFZBTzVhUGdlRlN4ODhVaVJJd1FEYlQwc1pyNEgrK21o?=
- =?utf-8?B?L2tJOGs3TlUyeGNubFBRK0xwN01ab1ExOEVWSVNudXdvMWtZNHpPRU9qa256?=
- =?utf-8?B?ZkcyZ09NNVVZVWx4cEp1ek5WcGo2RlozZHEyOWxOalhWVzBxL2tveUtZbHdP?=
- =?utf-8?B?ZEg4M242ZkIraWhoQWtFZkwzNDl1eE5kZHNqZWQ2NzFEYkRPRktvWW5QejQ0?=
- =?utf-8?B?TFA3d2s0NHFJQjJkU0QwYzgzSHRBMDN3eDJMZ3ROcDhncHJOcXdQOEhQYTJ0?=
- =?utf-8?B?d3ZHV3pMSENNZDJxWkdOcEhBZDdjQkozM0F1MXBPZjNUb0I3OEZDUVVjc0ww?=
- =?utf-8?B?eEgzMTVFT09vRnRhMFZqTGpiL3UzcEpqUzlKSGxXQThmczNReDdVUm03dmZ2?=
- =?utf-8?B?bzAvR2h4cHE3dW5uRnBMNjY2ZnRLZW12MFdXUHJSZjR4OGh0azF6M2dRMTVi?=
- =?utf-8?B?K2FkZEdSZjIxUW5QWDgvTW1KRVZ5c2NDemd0NHZVaTBRVDlHbE5LTHp6R3U2?=
- =?utf-8?B?UDJoaFpmMEJOb2h2M3MvK0V1d2VPaUIzYU0xNHQ1ck9mV1doTTZZVDRhYVhh?=
- =?utf-8?B?Z01ySWgrQUhMNVRZQUVhcUZ0ejdSYzZvNHFrbDJUcFVwa1dEZDl0b1lVdXZt?=
- =?utf-8?B?bnVyV1BVMlZwWWUxZEV5cCtBeURId2tMeTQrdkw3clF1NEVVbXVOQzE1aVkv?=
- =?utf-8?B?UTNRcnhPcVdMZHhkbkp4UVNFTUlMSHlwWEJ4QXBuNlIrbUVERTJHNDAzeHB3?=
- =?utf-8?B?dUxnelhHcCtsNzU2S1JGSktLSUQ4UVRRcFpiRnRNcTNKcnlOUVJkODA5YVNi?=
- =?utf-8?B?eDNtM2dFbXlHOWZkR3Z3VWhXTlFUQ3M0b3JUNVlsdjBOdXBseFZXbjc3cUw4?=
- =?utf-8?B?QUdzenV6bTlSVHdCRmxXSjdWZ29UK1VOb3pUYTJRcmRGWHc3Mk1EYjFCL3hH?=
- =?utf-8?B?bzBVbWZORWt4K0xSNlBSdkJFcnBsRjJ5K3BlcUV5WlBtUDdJMXVWSzYwaDYy?=
- =?utf-8?B?Q0dRVjh2NzdYZ1A1ZVpUVE1pek0zV3Bic1NEV244SHNIditBRE5BaFdxRVBv?=
- =?utf-8?B?Z0JSaDhORUJBN0NMSXRxMy8zQWZvQ1VLWVZja1QwaHJyZXdWYXdXdjJoZTBZ?=
- =?utf-8?B?KzVnOGZ1STJLQzRpRG5EMllqTDhUMmo2eVlPVDhwVnR6WExkKzJZR3d3L1VB?=
- =?utf-8?B?R0NWcHRHWDFKbUF3ZkRnU1J1MEgwL28wNEoyQ1FIcHBsd1NBdlA4LzEvVTdz?=
- =?utf-8?B?d3p6UFd6QThJcHl1SG9KejFVdWU0c0F5aENsV29XRkpzYm12NTI3MUdZbkRm?=
- =?utf-8?B?TCtEWmw5eW0xN2crYmFYUEYzRUt2dGk1UFh6U1M2bDY3UkhpQjRRSVEwU3hS?=
- =?utf-8?B?cEpZaDhNL1BKYjdtTFhRUWF4bnR5Q2dHODdxcXRVYnVYS2huUmhLYXZOREho?=
- =?utf-8?B?RmNlN2IrSHduc2NUcncyREpycTFHVXJiREJUL2tiNlRsaUVsSHJ4dGU5OC9K?=
- =?utf-8?B?RVVQYVR4LzRRMVNvcVExRVR2MEo5TzBXQXd5Tk5qeHNrY3BZR2FIZVhHQldq?=
- =?utf-8?B?ZWdZd0VBeHBoYXdWL0t4OTk5MGRMMXhFWmpVSUJJa1NKR2xFYS9xMGQ1RGx3?=
- =?utf-8?B?SXg0KzlxSmlCYXVKMTNMSnJSRHdTL1RFRk9oeDhnK0dteU9sdUFFZjh3RFA3?=
- =?utf-8?B?d0xzM3FPdE42TGJua2taTml2VCtTNElRUlgwa3B0UXVlNnVNTWV6RGpYMFVo?=
- =?utf-8?B?R2ZwZStXS2YyOXhYQXBFbEJkZEV5aTYyUlFzT2dFeklkTEpBMVZrbTBzemZ6?=
- =?utf-8?B?Nk42WFN4aTZnbW92S3dyOFVUMHFocUc3Wjg3NmQ5OTd6eEJBdjJQQ24zVjBl?=
- =?utf-8?B?VXl3aDhaRUJZbEx6eUorSmYrQ0VvOGMrbWdEeUc4clN3dm1wa1NpQT09?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VFFSdDNCWkR6bHppWERZcmJrRGU2NjFKMTdPVFJjZExYbWYrc29zdEdwbW1n?=
+ =?utf-8?B?WGNOZzFJaEwvRERhK3QvMkY0Q3NVL2VVWWI5UHlkWVh4U1I5R0xUK3JWeG44?=
+ =?utf-8?B?WDVIUlBhL0hrL3hXM0FHUlVMdFlNcUJraGVjOUI1Ym93WS8rbE5sRHRCTjhF?=
+ =?utf-8?B?UndZZ3NxVWVZVW5KTDV2VTgwMGJ0Y1BxMFZtemJKbjdwcHpzNTl5L3N1dkFV?=
+ =?utf-8?B?UFJLaHpWQXRtRXUvY29kZGh1U3VSU0VqbHFlSlUwa0lvZGZreE04K2RFYnNQ?=
+ =?utf-8?B?Y2x4TmFsQ0Y0TStBSk44TWl2OUQ1SXVJZ0pvVWM3bnAzQ0pVMXVHMUhIZ1FD?=
+ =?utf-8?B?eUozQ1kxMXFtaGhWSWx5ckNFalVzQ2ZPbnFGNDlQT2VMa1dOajBTb3ZabC9Q?=
+ =?utf-8?B?b2R5Qm5GOVZZajNUNk5NL2FCL1FVUGJVaGJNdmd4YXhxeWdkdHBFa1hMcU5C?=
+ =?utf-8?B?bjdrZFUyaFRkaWozcFV0bXlJa01mZFNrZE9HTHVZa2Q4aG9saFNPbzJCRW5D?=
+ =?utf-8?B?UXJlOW9oYmk3Sk1kc01QdlJpaHU2ZnNCZHlPZlFTMlRkY2VqZHRNaXRFaWtL?=
+ =?utf-8?B?c0xSRFJlc2JGVVEvY0M0dVJuZjlBZHQvd0JjcFJGUUNnRWJMNXhBMmtHVzNR?=
+ =?utf-8?B?MER1ZXluTGN3NXowOE0vUjdSaFZLY0xGYWt3ald1aVBtSWhBSlp5czkvYk5q?=
+ =?utf-8?B?cUZJMGZ5Ky9OS3RnRzBYS2xHNXlFTmVSaTY3WU1vSXdOOWVuVmFZeEZQM3Rp?=
+ =?utf-8?B?OXM3UWpINFRKL2pDbm1DamFQd3JpZGpYN2NnSE5OaWlTb1hlRFcvL2RsZUwy?=
+ =?utf-8?B?L2h5LzNVMDVhRWVRTUZjNUtYUWw2VTg0YmpYaFNadTBmNXVMdnpkYVRKVzNM?=
+ =?utf-8?B?bVFQK056T09sUy8xanZVT05HdnBZb2daS2pDajVXbUV5MUxjMWp2TVhHZGh6?=
+ =?utf-8?B?ekl4ZzRWTm5WM0FFV2p6ZWZBUEN5RXVTeDlHam41RHVNZXA2YXBjUVJkNnlL?=
+ =?utf-8?B?QkdsZUF6dDRtMTVveS9BVHduMFk2b1NVRk9lVlBMWWEyRi9UQU1OSDFQdDNF?=
+ =?utf-8?B?d095MkJXK0xxZ09kWnFScGZFT0F5akJQK3VhZUVQTzVObTV3dzNtZzRMWHI0?=
+ =?utf-8?B?dW55WkNoU254THZNMXN3T3p4Y09tcWp4MUtYQzdVd1VGR3VWaVVXUkRzRUcr?=
+ =?utf-8?B?MzJkcHhkMXExQmVjSXp1MmlRVmVhZHJuaHBvRjdEOTF4NURvb0pwWUFRMkN6?=
+ =?utf-8?B?bUIxNUNJSlZPamJFQklkczFLblY0eEFiOEQvaTlraVpvTkdJcFBYSzBrajRX?=
+ =?utf-8?B?WVJlWXVmUGVhcTdDeUhtUmlUa291UzB5ZkRsRm5kL0dCQVBSa1NRL2V5SThX?=
+ =?utf-8?B?TEFzT1JZM1hUY2tRcytHeTBjb2xhRW9heGEzdGczT2V5Ym1NVSs4OXhMMTRs?=
+ =?utf-8?B?T1dhYnVLa0tIblRkWGRmYjlUMi9xNEg5dnRKWHRpaWVNM29aa3ZWbzdYY0Rh?=
+ =?utf-8?B?VzZmRFBJSVNyV3c3VUJDMnRISFpiRFpzOWUvcEFJWC8zTVBmS0ZmQ1g4SU9l?=
+ =?utf-8?B?QUFGd2h0NDdvQWNGejIwdFpoYWJTQjIvS2Nja3hUQWRxak1RUFd4QXJOcUox?=
+ =?utf-8?B?cTEySCtaQlVLV3cxM1BZY0pkZEJGM2NDeGU4WnpIS2p3eUxOYjNJdTQrWUtp?=
+ =?utf-8?B?bVVTTGRQZ1Fmb0ZxODFMM0NNaXBzZ3dNbjZvc2ZycEZoSVp0MjM5WTN0dFFS?=
+ =?utf-8?B?K3dmWTF6b25QdlhuWm94S0htNGZPZGJvMkQ4YWxOajI2ek9IWkdxbS9Zd21m?=
+ =?utf-8?B?em50QjBlUHNLaU5aelBReUtCQndGOTFVNzV6UEFKMVpGWUxFQk1OUk1aMG9M?=
+ =?utf-8?B?Rjk1eVVEQzJzcWk5Y3VhazZmRWNEK3dlc0s1NzczbkFLTS9OSlhYSG5JQ2hi?=
+ =?utf-8?B?RzZWWTZtR2dKNHJ6MWdwSnBta2FTMmN5MVlPaGtMcWNTUm0zNWlMRDZzYm8z?=
+ =?utf-8?B?a1ZVQy8wWUNtbU9aaG9PSjd5Nzl4VTR6WTF3OVMrNHM4ZUVadzBobGVNZFJt?=
+ =?utf-8?B?K0dnamNTbFE2U3dxS0Vrc2xzQkNGZjlUNUFEOHYwOFhQS1Y4TjNyMjF6U2Rw?=
+ =?utf-8?B?SXZHcjRMZXVxR0RjNkhCSm52MkxzeTRXNHFTdm10Nk00Y3V5TEFSNXBOVDU1?=
+ =?utf-8?B?UWl5Y0dXbUlsRXZjdHB1bGx3Nk85NnQwREhQYis5Z2tPbjBuVnpXRnNpRDFL?=
+ =?utf-8?B?SEk1azdwZmRldzlzbmU1NW95YTFCRFBGRFFNNUNGMkZyRUx4RGRYNG91SUd3?=
+ =?utf-8?B?RVM0YVR5TUc3andOd0J2d0VPOEpMYUh5dFlsdWNaY2V4dzZySDE1Zz09?=
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1f729ecc-0a84-4960-fd7a-08da220d1956
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e9eee27-c4a0-40a4-3b53-08da220ed633
 X-MS-Exchange-CrossTenant-AuthSource: MWHPR11MB1358.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2022 14:01:28.4053 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2022 14:13:54.7258 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ofdz986LEKxDB5WOOyhz1lzVQF6NK644vtKn+kHO+oVJz1O+tbou2+FlkgtBVKWPdqIeDPkFzHzuyoUZdFUyng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB2032
-X-Proofpoint-ORIG-GUID: XL_uwb1FUFV8AwVJ4nD0WxJv-_Y2mNvz
-X-Proofpoint-GUID: XL_uwb1FUFV8AwVJ4nD0WxJv-_Y2mNvz
+X-MS-Exchange-CrossTenant-UserPrincipalName: isCXzZ7pGvj3pDLEd2PIG1ji7CY6ausECPkaWsN3P06cBpuvVOyB03aonil4uPKE6EWAc7V8/59nsK7TPHoD9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR11MB2865
+X-Proofpoint-ORIG-GUID: HLj-IMppU42ZbC1cHJZplarHQDTl5cW-
+X-Proofpoint-GUID: HLj-IMppU42ZbC1cHJZplarHQDTl5cW-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-04-19_05,2022-04-15_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
- adultscore=0 clxscore=1015 spamscore=0 bulkscore=0 malwarescore=0
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2202240000 definitions=main-2204190080
+ lowpriorityscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0 malwarescore=0
+ mlxlogscore=999 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204190081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -165,53 +166,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, linux-s390@vger.kernel.org, x86@kernel.org,
- hpa@zytor.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com,
+Cc: linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ x86@kernel.org, hpa@zytor.com, keescook@chromium.org,
+ alexander.shishkin@linux.intel.com, catalin.marinas@arm.com,
  dave.hansen@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, bp@alien8.de,
  svens@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org, tglx@linutronix.de,
  borntraeger@linux.ibm.com, will@kernel.org, linux-riscv@lists.infradead.org,
- paulus@samba.org, linux-arm-kernel@lists.infradead.org
+ paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 4/19/22 05:59, Kees Cook wrote:
-> On Mon, Apr 18, 2022 at 09:22:11PM +0800, He Zhe wrote:
->> This function checks if the given address range crosses frame boundary.
->> It is based on the existing x86 algorithm, but implemented via stacktrace.
->> This can be tested by USERCOPY_STACK_FRAME_FROM and
->> USERCOPY_STACK_FRAME_TO in lkdtm.
-> Hi,
+On 4/19/22 21:09, Mark Rutland wrote:
+> On Mon, Apr 18, 2022 at 09:22:10PM +0800, He Zhe wrote:
+>> Currently stack_trace_consume_fn can only have pc of each frame of the
+>> stack. Copying-beyond-the-frame-detection also needs fp of current and
+>> previous frame. Other detection algorithm in the future may need more
+>> information of the frame.
+>>
+>> We define a frame_info to include them all.
+>>
+>>
+>> Signed-off-by: He Zhe <zhe.he@windriver.com>
+>> ---
+>>  include/linux/stacktrace.h |  9 ++++++++-
+>>  kernel/stacktrace.c        | 10 +++++-----
+>>  2 files changed, 13 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/include/linux/stacktrace.h b/include/linux/stacktrace.h
+>> index 97455880ac41..5a61bfafe6f0 100644
+>> --- a/include/linux/stacktrace.h
+>> +++ b/include/linux/stacktrace.h
+>> @@ -10,15 +10,22 @@ struct pt_regs;
+>>  
+>>  #ifdef CONFIG_ARCH_STACKWALK
+>>  
+>> +struct frame_info {
+>> +	unsigned long pc;
+>> +	unsigned long fp;
+>> +	unsigned long prev_fp;
+>> +};
+> I don't think this should be exposed through a generic interface; the `fp` and
+> `prev_fp` values are only meaningful with arch-specific knowledge, and they're
+> *very* easy to misuse (e.g. when transitioning from one stack to another).
+> There's also a bunch of other information one may or may not want, depending on
+> what you're trying to achieve.
 >
-> Thanks for doing this implementation! One reason usercopy hardening
-> didn't persue doing a "full" stacktrace was because it seemed relatively
-> expensive. Did you do any usercopy-heavily workload testing to see if
-> there was a noticeable performance impact?
->
-> It would be nice to block the exposure of canaries and PAC bits, though,
-> so I'm not opposed, but I'd like to get a better sense of how "heavy"
-> this might be.
+> I am happy to have an arch-specific internal unwinder where we can access this
+> information, and *maybe* it makes sense to have a generic API that passes some
+> opaque token, but I don't think we should make the structure generic.
 
-I just did some rough tests:
-hackbench -s 512 -l 200 -g 15 -f 25 -P
-Such line would hit arch_within_stack_frames at least 5000 times in my environment.
-With hardened_usercopy=on, the execution time would be around 2.121 seconds(average for 30 times)
-With hardened_usercopy=off, the execution time would be around 2.011 seconds(average for 30 times)
-
-I'll test the original x86 way for arm64 tomorrow.
-
-Any other workload needed to be run?
+Thanks for thoughts. I saw unwind_frame and etc was made private earlier and
+took that as a hint that all further stack walk things should be based on those
+functions and came up with this. But OK, good to know that arch-specific unwind
+would be fine, I'll redo this series in that way.
 
 Thanks,
 Zhe
 
-
 >
-> Thanks!
+> Thanks,
+> Mark.
 >
-> -Kees
->
+>> +
+>>  /**
+>>   * stack_trace_consume_fn - Callback for arch_stack_walk()
+>>   * @cookie:	Caller supplied pointer handed back by arch_stack_walk()
+>>   * @addr:	The stack entry address to consume
+>> + * @fi:	The frame information to consume
+>>   *
+>>   * Return:	True, if the entry was consumed or skipped
+>>   *		False, if there is no space left to store
+>>   */
+>> -typedef bool (*stack_trace_consume_fn)(void *cookie, unsigned long addr);
+>> +typedef bool (*stack_trace_consume_fn)(void *cookie, struct frame_info *fi);
+>>  /**
+>>   * arch_stack_walk - Architecture specific function to walk the stack
+>>   * @consume_entry:	Callback which is invoked by the architecture code for
+>> diff --git a/kernel/stacktrace.c b/kernel/stacktrace.c
+>> index 9ed5ce989415..2d0a2812e92b 100644
+>> --- a/kernel/stacktrace.c
+>> +++ b/kernel/stacktrace.c
+>> @@ -79,7 +79,7 @@ struct stacktrace_cookie {
+>>  	unsigned int	len;
+>>  };
+>>  
+>> -static bool stack_trace_consume_entry(void *cookie, unsigned long addr)
+>> +static bool stack_trace_consume_entry(void *cookie, struct frame_info *fi)
+>>  {
+>>  	struct stacktrace_cookie *c = cookie;
+>>  
+>> @@ -90,15 +90,15 @@ static bool stack_trace_consume_entry(void *cookie, unsigned long addr)
+>>  		c->skip--;
+>>  		return true;
+>>  	}
+>> -	c->store[c->len++] = addr;
+>> +	c->store[c->len++] = fi->pc;
+>>  	return c->len < c->size;
+>>  }
+>>  
+>> -static bool stack_trace_consume_entry_nosched(void *cookie, unsigned long addr)
+>> +static bool stack_trace_consume_entry_nosched(void *cookie, struct frame_info *fi)
+>>  {
+>> -	if (in_sched_functions(addr))
+>> +	if (in_sched_functions(fi->pc))
+>>  		return true;
+>> -	return stack_trace_consume_entry(cookie, addr);
+>> +	return stack_trace_consume_entry(cookie, fi);
+>>  }
+>>  
+>>  /**
+>> -- 
+>> 2.25.1
+>>
 
