@@ -2,80 +2,158 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5EC506DC7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 15:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF0A506FA8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 16:03:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjQ2z1sYBz3bZX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 23:42:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KjQW65lfHz3bdN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 00:03:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=fgboA1x+;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=NbxbkNkB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=KFJ5tTyN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=fgboA1x+; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=NbxbkNkB; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=windriver.com (client-ip=205.220.166.238;
+ helo=mx0a-0064b401.pphosted.com;
+ envelope-from=prvs=11081c7a60=zhe.he@windriver.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=windriver.com header.i=@windriver.com
+ header.a=rsa-sha256 header.s=PPS06212021 header.b=KFJ5tTyN; 
  dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com
+ [205.220.166.238])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjQ2H5jTBz2xBF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 23:41:43 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 007BD2112B;
- Tue, 19 Apr 2022 13:41:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1650375699; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OU924VncPndQwLZyBXE5JWyC1rgAj1xobyIWoZiX7+w=;
- b=fgboA1x+o5bDijssIofMI7BJHQYsy4PSPUIdBRcrfcLF0FI6qBXbLuvHF64hI2w+E4iSKu
- dmMFNuwRfGrAEomEMe8gf7xYuU5rI/AgyjbDlD8LJcyLDtkvcmTtzW0S/+AO5P4tT32Cz1
- Lg4o12K1srfbbY2Yy3wTPeaY9UsW4Uc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1650375699;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OU924VncPndQwLZyBXE5JWyC1rgAj1xobyIWoZiX7+w=;
- b=NbxbkNkBAUZOMG/8GB1TtbxlLg5awOQvOTbJZbeCA2bQfiu3Bm5wgJ/CdBGoUZm/L7sFbk
- pdti2XXM+wk7uHBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BB239139BE;
- Tue, 19 Apr 2022 13:41:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id jLLLLBK8XmIiDgAAMHmgww
- (envelope-from <tzimmermann@suse.de>); Tue, 19 Apr 2022 13:41:38 +0000
-Message-ID: <5f7d1b9e-4c92-13b1-8556-ab67f17846cc@suse.de>
-Date: Tue, 19 Apr 2022 15:41:38 +0200
-MIME-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KjQVJ53z4z2xnB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 00:02:25 +1000 (AEST)
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+ by mx0a-0064b401.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23JDODrb032162;
+ Tue, 19 Apr 2022 07:01:31 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+ h=message-id : date
+ : subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=PPS06212021;
+ bh=jXCFpMh4Gh2YVe5PbI6dIurLDiZEXeJwE3HRp81A8QA=;
+ b=KFJ5tTyNDMun33qlExgBxonV+Ds1jR8H/Hv8rHRPqSTvD1Ll2rCf/EwKVqIEhW3mEm9t
+ RP7Lw+veXRwjIuQdWH+C0gWAJannXQi0kDcxeqdvuYnQOHzW6zFJ47PQ3kkKwR2/xk+D
+ 1dU5TPuuJFFkKqrvy+C+HwkSJaztwP9654loxdKTdJJMSa0aj+KNyicMNTfrwjUk6ivC
+ NPirDrt/TiEnAAdubHfqoX8U8CSoEhFyqWeymEncxr7PWafTRwAYPc4trAeCDB+NyxAK
+ pgbv3g4TtIY9Z5ecag/5Fq28otObiZCkKXCg5RqkES48K7XuvEQxw6I+QWp7RRDFQkbJ 3w== 
+Received: from nam04-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam08lp2173.outbound.protection.outlook.com [104.47.73.173])
+ by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ffs3122w4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 Apr 2022 07:01:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kW9lbKMcl+ew9NMrZlp/zytyB+fC3yZinAMkhcUB530DcDZKXbedSAbgR8jLBjrPwwyJyzDPqRvvrW8Eu7+0idwYvA256ShSxbkEqDHoneyuyDT3fkGx6UZJ22lsHbPwmtSM4i3nnqPDBJFnnZ1HOTJRY48FYlR6tlY19CMiRyVugDxC88D/eoZ2xA18A7kyibe1UNfY1NxYFWieKXKihwn4i4tHaugADq4h9USq5z7RuW9SKn9bQK6OItV+s6tlzUI56pmdGST6b1jmhR85yt900EHmI2cVzWxTmORM4Qg+AG+ZPWW6QD2RkCA0yLogzXGDb16eSTH7bH7E6/XB3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jXCFpMh4Gh2YVe5PbI6dIurLDiZEXeJwE3HRp81A8QA=;
+ b=nuVa+0bA1Eg4I/e61Q78Pyj8zJfE50GzKlXjniMh7Ylm4rm8G8kDzCuQEnKhHdsW3iE8QJDTU9bvA0JkBR8BjivBmNwrtKZAL71Su0EvF+tOh0Z/DVU6uhGqIhIMkdf0sV094g2vamrvLyAfth/yf5d5MLn2OY7EnVz3dqYn6UsfpZTJcow8U0rQKuyJuwfS0uq5Bd6NOb7g82TR7yIZsjkeO+i7C19uEvwKRqerhz/tcAXyMRg+55zSWS7YROux+sC+u+ploqJPdq27sS/PsYJcYlst6ILoEXsgQ6xg9o1gh9oY/EWNApn91JhOzlT27tYklBc+hhKYeHMYXASdvQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from MWHPR11MB1358.namprd11.prod.outlook.com (2603:10b6:300:23::8)
+ by MWHPR11MB2032.namprd11.prod.outlook.com (2603:10b6:300:2b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5164.20; Tue, 19 Apr
+ 2022 14:01:28 +0000
+Received: from MWHPR11MB1358.namprd11.prod.outlook.com
+ ([fe80::1cd4:125:344:9fc]) by MWHPR11MB1358.namprd11.prod.outlook.com
+ ([fe80::1cd4:125:344:9fc%7]) with mapi id 15.20.5164.025; Tue, 19 Apr 2022
+ 14:01:28 +0000
+Message-ID: <b328bed3-ebb9-6fba-9585-79946262c40f@windriver.com>
+Date: Tue, 19 Apr 2022 22:01:11 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [PATCH v2 1/2] of: Create platform devices for OF framebuffers
+Subject: Re: [PATCH RFC 2/8] arm64: stacktrace: Add arch_within_stack_frames
 Content-Language: en-US
-To: Rob Herring <robh@kernel.org>
-References: <20220419100405.12600-1-tzimmermann@suse.de>
- <20220419100405.12600-2-tzimmermann@suse.de>
- <Yl65by+ZjQdK8nIv@robh.at.kernel.org>
-From: Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <Yl65by+ZjQdK8nIv@robh.at.kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------H2Ei4jFDsCdAEGbJSqAuxH3d"
+To: Kees Cook <keescook@chromium.org>
+References: <20220418132217.1573072-1-zhe.he@windriver.com>
+ <20220418132217.1573072-3-zhe.he@windriver.com>
+ <202204181457.9DE190CE@keescook>
+From: He Zhe <zhe.he@windriver.com>
+In-Reply-To: <202204181457.9DE190CE@keescook>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SL2P216CA0117.KORP216.PROD.OUTLOOK.COM (2603:1096:101::14)
+ To MWHPR11MB1358.namprd11.prod.outlook.com
+ (2603:10b6:300:23::8)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 1f729ecc-0a84-4960-fd7a-08da220d1956
+X-MS-TrafficTypeDiagnostic: MWHPR11MB2032:EE_
+X-Microsoft-Antispam-PRVS: <MWHPR11MB20324F72622BFAF8FFBAA91C8FF29@MWHPR11MB2032.namprd11.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: fkC/4I12arSLfooNxGGC600fzzrBRkKonAA3IUhPImD39Da+cWkOzqQ+WH6beSYAhktA8Q5CyMSVqPxvxIECEe0mqExzLdnqRxMssDWPdSy8FBMpi1oqEwPUFfWDeLYmpHIV9HQoX43pgq4iCbWBf3RQDji2/X16P8o1M28/K0gw8MkecA18f0R6sRcr/VKI5o3Pt9ZDBCnIptaYrno4mFkBIBJkwo2phqTGCiLbOvV1EaKwGhglDsv8Wu6xSFTj4MnfZnvqdhsyCD04YQG+GNN8I3NJ9lUVSJZgpDT26s9ufjWRK2ON6I9pZeB91epPkqVi33aSEl9DYg8UsoJUCtyu0VGsKmBpMbsgryPEfv+C/HJjY3guWINy9FfewcVEUNusCV7xK6ycaddohBV8hK3sfQj92/fzP6cvVi+00t42MCtL90GIsaiLKRJQQKo6Grzz/PEIyrbgKQqZu62vPfS4TDRJNEFT51yp9pMfUvCkL6Z0iBzeLGZCWOp0fRU86Su2gZQq9WudJzUO2qZtuXjkYRQ0hLugEeN5mO4V3dmbwjX7dlsjIUURkWll1iWaI/N8v6wOtzquaZ2c15RzoZsyXWsY2ZU6CilVkL8c+YxFSZw3W0UAoqnsQ+u+2o3TpdSW1DpVI7h/ponC6RXutKEQ2WIDIi6h1IC0TGxiqMML9OP9wZp/rtXYOsfmt+wS0wSSI4ExNKRvNg6041mstvm4ZeChV1hRDjxYXHCzKcot4nfRqYGI/OPBa48bT5Ej
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MWHPR11MB1358.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(38100700002)(2616005)(8676002)(186003)(38350700002)(4326008)(5660300002)(36756003)(31696002)(508600001)(6666004)(26005)(66946007)(66556008)(66476007)(2906002)(6506007)(6512007)(52116002)(53546011)(83380400001)(86362001)(31686004)(7416002)(8936002)(6916009)(6486002)(316002)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OFNDOWp4ekREQ2IyUytTQ25yUU1vaHRLNkxhaWpINjlLSnpBQ1lJNjJHdFBR?=
+ =?utf-8?B?VlJZYTQ4SkUySDdLTWdFVGxRK0w5L1F0a0xsVEhWT0Q0RGVrYWdud3VxS04w?=
+ =?utf-8?B?WFpSNmxhVkRrUndGb1lqREVBRDE4TEV6Z2VwOWhUZmdKYlJ1MjVuVkhGSjZ0?=
+ =?utf-8?B?M1FDeGdMeStKMm5aaktGQTVHRmF2di9VcThyOVc5Y0EvSkdwMjA1ME4xOTJO?=
+ =?utf-8?B?MXYvdWpRTkVhTjkydDE4c21rUEd4NFg3OXZwZG90eWxBRjhKL1IzTENmN2cy?=
+ =?utf-8?B?K2cvZ3dzeTdsYkVZL01TS1BXcjFlUXRabkhOOVdDS0QxNTIydTZUeENzVmhK?=
+ =?utf-8?B?ZmkvY1dBZ1NTUEMxZ1dPNW10bXhXSmxGTFJ4RnhzdkJhaWRsRWw0QWhiVWV4?=
+ =?utf-8?B?dmZOV1FBbXVibW9WbFZBTzVhUGdlRlN4ODhVaVJJd1FEYlQwc1pyNEgrK21o?=
+ =?utf-8?B?L2tJOGs3TlUyeGNubFBRK0xwN01ab1ExOEVWSVNudXdvMWtZNHpPRU9qa256?=
+ =?utf-8?B?ZkcyZ09NNVVZVWx4cEp1ek5WcGo2RlozZHEyOWxOalhWVzBxL2tveUtZbHdP?=
+ =?utf-8?B?ZEg4M242ZkIraWhoQWtFZkwzNDl1eE5kZHNqZWQ2NzFEYkRPRktvWW5QejQ0?=
+ =?utf-8?B?TFA3d2s0NHFJQjJkU0QwYzgzSHRBMDN3eDJMZ3ROcDhncHJOcXdQOEhQYTJ0?=
+ =?utf-8?B?d3ZHV3pMSENNZDJxWkdOcEhBZDdjQkozM0F1MXBPZjNUb0I3OEZDUVVjc0ww?=
+ =?utf-8?B?eEgzMTVFT09vRnRhMFZqTGpiL3UzcEpqUzlKSGxXQThmczNReDdVUm03dmZ2?=
+ =?utf-8?B?bzAvR2h4cHE3dW5uRnBMNjY2ZnRLZW12MFdXUHJSZjR4OGh0azF6M2dRMTVi?=
+ =?utf-8?B?K2FkZEdSZjIxUW5QWDgvTW1KRVZ5c2NDemd0NHZVaTBRVDlHbE5LTHp6R3U2?=
+ =?utf-8?B?UDJoaFpmMEJOb2h2M3MvK0V1d2VPaUIzYU0xNHQ1ck9mV1doTTZZVDRhYVhh?=
+ =?utf-8?B?Z01ySWgrQUhMNVRZQUVhcUZ0ejdSYzZvNHFrbDJUcFVwa1dEZDl0b1lVdXZt?=
+ =?utf-8?B?bnVyV1BVMlZwWWUxZEV5cCtBeURId2tMeTQrdkw3clF1NEVVbXVOQzE1aVkv?=
+ =?utf-8?B?UTNRcnhPcVdMZHhkbkp4UVNFTUlMSHlwWEJ4QXBuNlIrbUVERTJHNDAzeHB3?=
+ =?utf-8?B?dUxnelhHcCtsNzU2S1JGSktLSUQ4UVRRcFpiRnRNcTNKcnlOUVJkODA5YVNi?=
+ =?utf-8?B?eDNtM2dFbXlHOWZkR3Z3VWhXTlFUQ3M0b3JUNVlsdjBOdXBseFZXbjc3cUw4?=
+ =?utf-8?B?QUdzenV6bTlSVHdCRmxXSjdWZ29UK1VOb3pUYTJRcmRGWHc3Mk1EYjFCL3hH?=
+ =?utf-8?B?bzBVbWZORWt4K0xSNlBSdkJFcnBsRjJ5K3BlcUV5WlBtUDdJMXVWSzYwaDYy?=
+ =?utf-8?B?Q0dRVjh2NzdYZ1A1ZVpUVE1pek0zV3Bic1NEV244SHNIditBRE5BaFdxRVBv?=
+ =?utf-8?B?Z0JSaDhORUJBN0NMSXRxMy8zQWZvQ1VLWVZja1QwaHJyZXdWYXdXdjJoZTBZ?=
+ =?utf-8?B?KzVnOGZ1STJLQzRpRG5EMllqTDhUMmo2eVlPVDhwVnR6WExkKzJZR3d3L1VB?=
+ =?utf-8?B?R0NWcHRHWDFKbUF3ZkRnU1J1MEgwL28wNEoyQ1FIcHBsd1NBdlA4LzEvVTdz?=
+ =?utf-8?B?d3p6UFd6QThJcHl1SG9KejFVdWU0c0F5aENsV29XRkpzYm12NTI3MUdZbkRm?=
+ =?utf-8?B?TCtEWmw5eW0xN2crYmFYUEYzRUt2dGk1UFh6U1M2bDY3UkhpQjRRSVEwU3hS?=
+ =?utf-8?B?cEpZaDhNL1BKYjdtTFhRUWF4bnR5Q2dHODdxcXRVYnVYS2huUmhLYXZOREho?=
+ =?utf-8?B?RmNlN2IrSHduc2NUcncyREpycTFHVXJiREJUL2tiNlRsaUVsSHJ4dGU5OC9K?=
+ =?utf-8?B?RVVQYVR4LzRRMVNvcVExRVR2MEo5TzBXQXd5Tk5qeHNrY3BZR2FIZVhHQldq?=
+ =?utf-8?B?ZWdZd0VBeHBoYXdWL0t4OTk5MGRMMXhFWmpVSUJJa1NKR2xFYS9xMGQ1RGx3?=
+ =?utf-8?B?SXg0KzlxSmlCYXVKMTNMSnJSRHdTL1RFRk9oeDhnK0dteU9sdUFFZjh3RFA3?=
+ =?utf-8?B?d0xzM3FPdE42TGJua2taTml2VCtTNElRUlgwa3B0UXVlNnVNTWV6RGpYMFVo?=
+ =?utf-8?B?R2ZwZStXS2YyOXhYQXBFbEJkZEV5aTYyUlFzT2dFeklkTEpBMVZrbTBzemZ6?=
+ =?utf-8?B?Nk42WFN4aTZnbW92S3dyOFVUMHFocUc3Wjg3NmQ5OTd6eEJBdjJQQ24zVjBl?=
+ =?utf-8?B?VXl3aDhaRUJZbEx6eUorSmYrQ0VvOGMrbWdEeUc4clN3dm1wa1NpQT09?=
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1f729ecc-0a84-4960-fd7a-08da220d1956
+X-MS-Exchange-CrossTenant-AuthSource: MWHPR11MB1358.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2022 14:01:28.4053 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ofdz986LEKxDB5WOOyhz1lzVQF6NK644vtKn+kHO+oVJz1O+tbou2+FlkgtBVKWPdqIeDPkFzHzuyoUZdFUyng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR11MB2032
+X-Proofpoint-ORIG-GUID: XL_uwb1FUFV8AwVJ4nD0WxJv-_Y2mNvz
+X-Proofpoint-GUID: XL_uwb1FUFV8AwVJ4nD0WxJv-_Y2mNvz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-04-19_05,2022-04-15_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
+ adultscore=0 clxscore=1015 spamscore=0 bulkscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2202240000 definitions=main-2204190080
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,146 +165,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org, sam@ravnborg.org,
- frowand.list@gmail.com, deller@gmx.de, javierm@redhat.com,
- dri-devel@lists.freedesktop.org, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
+Cc: mark.rutland@arm.com, linux-s390@vger.kernel.org, x86@kernel.org,
+ hpa@zytor.com, alexander.shishkin@linux.intel.com, catalin.marinas@arm.com,
+ dave.hansen@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, bp@alien8.de,
+ svens@linux.ibm.com, jolsa@kernel.org, namhyung@kernel.org, tglx@linutronix.de,
+ borntraeger@linux.ibm.com, will@kernel.org, linux-riscv@lists.infradead.org,
+ paulus@samba.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------H2Ei4jFDsCdAEGbJSqAuxH3d
-Content-Type: multipart/mixed; boundary="------------V6Ezpezy3p0yw0t0S0BNfgzr";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-fbdev@vger.kernel.org,
- frowand.list@gmail.com, deller@gmx.de, linuxppc-dev@lists.ozlabs.org,
- javierm@redhat.com, dri-devel@lists.freedesktop.org, paulus@samba.org,
- mpe@ellerman.id.au, sam@ravnborg.org, linux@roeck-us.net
-Message-ID: <5f7d1b9e-4c92-13b1-8556-ab67f17846cc@suse.de>
-Subject: Re: [PATCH v2 1/2] of: Create platform devices for OF framebuffers
-References: <20220419100405.12600-1-tzimmermann@suse.de>
- <20220419100405.12600-2-tzimmermann@suse.de>
- <Yl65by+ZjQdK8nIv@robh.at.kernel.org>
-In-Reply-To: <Yl65by+ZjQdK8nIv@robh.at.kernel.org>
 
---------------V6Ezpezy3p0yw0t0S0BNfgzr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
 
-SGkNCg0KQW0gMTkuMDQuMjIgdW0gMTU6MzAgc2NocmllYiBSb2IgSGVycmluZzoNCi4uLg0K
-Pj4gLSNpZm5kZWYgQ09ORklHX1BQQw0KPj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IG9mX2Rl
-dmljZV9pZCByZXNlcnZlZF9tZW1fbWF0Y2hlc1tdID0gew0KPj4gICAJeyAuY29tcGF0aWJs
-ZSA9ICJxY29tLHJtdGZzLW1lbSIgfSwNCj4+ICAgCXsgLmNvbXBhdGlibGUgPSAicWNvbSxj
-bWQtZGIiIH0sDQo+PiBAQCAtNTIwLDMzICs1MTksODEgQEAgc3RhdGljIGNvbnN0IHN0cnVj
-dCBvZl9kZXZpY2VfaWQgcmVzZXJ2ZWRfbWVtX21hdGNoZXNbXSA9IHsNCj4+ICAgDQo+PiAg
-IHN0YXRpYyBpbnQgX19pbml0IG9mX3BsYXRmb3JtX2RlZmF1bHRfcG9wdWxhdGVfaW5pdCh2
-b2lkKQ0KPj4gICB7DQo+PiAtCXN0cnVjdCBkZXZpY2Vfbm9kZSAqbm9kZTsNCj4+IC0NCj4g
-DQo+IEFzIGJvdGggaWYvZWxzZSBjbGF1c2VzIG5lZWQgJ25vZGUnLCBJJ2Qga2VlcCB0aGlz
-IGRlY2xhcmVkIGhlcmUuDQoNCk9rLg0KDQo+IA0KPj4gICAJZGV2aWNlX2xpbmtzX3N1cHBs
-aWVyX3N5bmNfc3RhdGVfcGF1c2UoKTsNCj4+ICAgDQo+PiAgIAlpZiAoIW9mX2hhdmVfcG9w
-dWxhdGVkX2R0KCkpDQo+PiAgIAkJcmV0dXJuIC1FTk9ERVY7DQo+PiAgIA0KPj4gLQkvKg0K
-Pj4gLQkgKiBIYW5kbGUgY2VydGFpbiBjb21wYXRpYmxlcyBleHBsaWNpdGx5LCBzaW5jZSB3
-ZSBkb24ndCB3YW50IHRvIGNyZWF0ZQ0KPj4gLQkgKiBwbGF0Zm9ybV9kZXZpY2VzIGZvciBl
-dmVyeSBub2RlIGluIC9yZXNlcnZlZC1tZW1vcnkgd2l0aCBhDQo+PiAtCSAqICJjb21wYXRp
-YmxlIiwNCj4+IC0JICovDQo+PiAtCWZvcl9lYWNoX21hdGNoaW5nX25vZGUobm9kZSwgcmVz
-ZXJ2ZWRfbWVtX21hdGNoZXMpDQo+PiAtCQlvZl9wbGF0Zm9ybV9kZXZpY2VfY3JlYXRlKG5v
-ZGUsIE5VTEwsIE5VTEwpOw0KPj4gKwlpZiAoSVNfRU5BQkxFRChDT05GSUdfUFBDKSkgew0K
-Pj4gKwkJc3RydWN0IGRldmljZV9ub2RlICpib290X2Rpc3BsYXkgPSBOVUxMOw0KPj4gKwkJ
-c3RydWN0IGRldmljZV9ub2RlICpub2RlOw0KPj4gKwkJc3RydWN0IHBsYXRmb3JtX2Rldmlj
-ZSAqZGV2Ow0KPj4gKwkJaW50IHJldDsNCj4+ICsNCj4+ICsJCS8qIENoZWNrIGlmIHdlIGhh
-dmUgYSBNYWNPUyBkaXNwbGF5IHdpdGhvdXQgYSBub2RlIHNwZWMgKi8NCj4+ICsJCWlmIChv
-Zl9nZXRfcHJvcGVydHkob2ZfY2hvc2VuLCAibGludXgsYm9vdHgtbm9zY3JlZW4iLCBOVUxM
-KSkgew0KPj4gKwkJCS8qDQo+PiArCQkJICogVGhlIG9sZCBjb2RlIHRyaWVkIHRvIHdvcmsg
-b3V0IHdoaWNoIG5vZGUgd2FzIHRoZSBNYWNPUw0KPj4gKwkJCSAqIGRpc3BsYXkgYmFzZWQg
-b24gdGhlIGFkZHJlc3MuIEknbSBkcm9wcGluZyB0aGF0IHNpbmNlIHRoZQ0KPj4gKwkJCSAq
-IGxhY2sgb2YgYSBub2RlIHNwZWMgb25seSBoYXBwZW5zIHdpdGggb2xkIEJvb3RYIHZlcnNp
-b25zDQo+PiArCQkJICogKHVzZXJzIGNhbiB1cGRhdGUpIGFuZCB3aXRoIHRoaXMgY29kZSwg
-dGhleSdsbCBzdGlsbCBnZXQNCj4+ICsJCQkgKiBhIGRpc3BsYXkgKGp1c3Qgbm90IHRoZSBw
-YWxldHRlIGhhY2tzKS4NCj4+ICsJCQkgKi8NCj4+ICsJCQlkZXYgPSBwbGF0Zm9ybV9kZXZp
-Y2VfYWxsb2MoImJvb3R4LW5vc2NyZWVuIiwgMCk7DQo+PiArCQkJaWYgKFdBUk5fT04oIWRl
-dikpDQo+PiArCQkJCXJldHVybiAtRU5PTUVNOw0KPj4gKwkJCXJldCA9IHBsYXRmb3JtX2Rl
-dmljZV9hZGQoZGV2KTsNCj4+ICsJCQlpZiAoV0FSTl9PTihyZXQpKSB7DQo+PiArCQkJCXBs
-YXRmb3JtX2RldmljZV9wdXQoZGV2KTsNCj4+ICsJCQkJcmV0dXJuIHJldDsNCj4+ICsJCQl9
-DQo+PiArCQl9DQo+PiAgIA0KPj4gLQlub2RlID0gb2ZfZmluZF9ub2RlX2J5X3BhdGgoIi9m
-aXJtd2FyZSIpOw0KPj4gLQlpZiAobm9kZSkgew0KPj4gLQkJb2ZfcGxhdGZvcm1fcG9wdWxh
-dGUobm9kZSwgTlVMTCwgTlVMTCwgTlVMTCk7DQo+PiAtCQlvZl9ub2RlX3B1dChub2RlKTsN
-Cj4+IC0JfQ0KPj4gKwkJLyoNCj4+ICsJCSAqIEZvciBPRiBmcmFtZWJ1ZmZlcnMsIGZpcnN0
-IGNyZWF0ZSB0aGUgZGV2aWNlIGZvciB0aGUgYm9vdCBkaXNwbGF5LA0KPj4gKwkJICogdGhl
-biBmb3IgdGhlIG90aGVyIGZyYW1lYnVmZmVycy4gT25seSBmYWlsIGZvciB0aGUgYm9vdCBk
-aXNwbGF5Ow0KPj4gKwkJICogaWdub3JlIGVycm9ycyBmb3IgdGhlIHJlc3QuDQo+PiArCQkg
-Ki8NCj4+ICsJCWZvcl9lYWNoX25vZGVfYnlfdHlwZShub2RlLCAiZGlzcGxheSIpIHsNCj4+
-ICsJCQlpZiAoIW9mX2dldF9wcm9wZXJ0eShub2RlLCAibGludXgsb3BlbmVkIiwgTlVMTCkg
-fHwNCj4+ICsJCQkgICAgIW9mX2dldF9wcm9wZXJ0eShub2RlLCAibGludXgsYm9vdC1kaXNw
-bGF5IiwgTlVMTCkpDQo+PiArCQkJCWNvbnRpbnVlOw0KPj4gKwkJCWRldiA9IG9mX3BsYXRm
-b3JtX2RldmljZV9jcmVhdGUobm9kZSwgIm9mLWRpc3BsYXkiLCBOVUxMKTsNCj4+ICsJCQlp
-ZiAoV0FSTl9PTighZGV2KSkNCj4+ICsJCQkJcmV0dXJuIC1FTk9NRU07DQo+PiArCQkJYm9v
-dF9kaXNwbGF5ID0gbm9kZTsNCj4+ICsJCQlicmVhazsNCj4+ICsJCX0NCj4+ICsJCWZvcl9l
-YWNoX25vZGVfYnlfdHlwZShub2RlLCAiZGlzcGxheSIpIHsNCj4+ICsJCQlpZiAoIW9mX2dl
-dF9wcm9wZXJ0eShub2RlLCAibGludXgsb3BlbmVkIiwgTlVMTCkgfHwgbm9kZSA9PSBib290
-X2Rpc3BsYXkpDQo+PiArCQkJCWNvbnRpbnVlOw0KPj4gKwkJCW9mX3BsYXRmb3JtX2Rldmlj
-ZV9jcmVhdGUobm9kZSwgIm9mLWRpc3BsYXkiLCBOVUxMKTsNCj4+ICsJCX0NCj4+ICAgDQo+
-PiAtCW5vZGUgPSBvZl9nZXRfY29tcGF0aWJsZV9jaGlsZChvZl9jaG9zZW4sICJzaW1wbGUt
-ZnJhbWVidWZmZXIiKTsNCj4+IC0Jb2ZfcGxhdGZvcm1fZGV2aWNlX2NyZWF0ZShub2RlLCBO
-VUxMLCBOVUxMKTsNCj4+IC0Jb2Zfbm9kZV9wdXQobm9kZSk7DQo+PiArCX0gZWxzZSB7DQo+
-PiArCQlzdHJ1Y3QgZGV2aWNlX25vZGUgKm5vZGU7DQo+PiArDQo+PiArCQkvKg0KPj4gKwkJ
-ICogSGFuZGxlIGNlcnRhaW4gY29tcGF0aWJsZXMgZXhwbGljaXRseSwgc2luY2Ugd2UgZG9u
-J3Qgd2FudCB0byBjcmVhdGUNCj4+ICsJCSAqIHBsYXRmb3JtX2RldmljZXMgZm9yIGV2ZXJ5
-IG5vZGUgaW4gL3Jlc2VydmVkLW1lbW9yeSB3aXRoIGENCj4+ICsJCSAqICJjb21wYXRpYmxl
-IiwNCj4+ICsJCSAqLw0KPj4gKwkJZm9yX2VhY2hfbWF0Y2hpbmdfbm9kZShub2RlLCByZXNl
-cnZlZF9tZW1fbWF0Y2hlcykNCj4+ICsJCQlvZl9wbGF0Zm9ybV9kZXZpY2VfY3JlYXRlKG5v
-ZGUsIE5VTEwsIE5VTEwpOw0KPj4gICANCj4+IC0JLyogUG9wdWxhdGUgZXZlcnl0aGluZyBl
-bHNlLiAqLw0KPj4gLQlvZl9wbGF0Zm9ybV9kZWZhdWx0X3BvcHVsYXRlKE5VTEwsIE5VTEws
-IE5VTEwpOw0KPj4gKwkJbm9kZSA9IG9mX2ZpbmRfbm9kZV9ieV9wYXRoKCIvZmlybXdhcmUi
-KTsNCj4+ICsJCWlmIChub2RlKSB7DQo+PiArCQkJb2ZfcGxhdGZvcm1fcG9wdWxhdGUobm9k
-ZSwgTlVMTCwgTlVMTCwgTlVMTCk7DQo+PiArCQkJb2Zfbm9kZV9wdXQobm9kZSk7DQo+PiAr
-CQl9DQo+PiArDQo+PiArCQlub2RlID0gb2ZfZ2V0X2NvbXBhdGlibGVfY2hpbGQob2ZfY2hv
-c2VuLCAic2ltcGxlLWZyYW1lYnVmZmVyIik7DQo+PiArCQlvZl9wbGF0Zm9ybV9kZXZpY2Vf
-Y3JlYXRlKG5vZGUsIE5VTEwsIE5VTEwpOw0KPj4gKwkJb2Zfbm9kZV9wdXQobm9kZSk7DQo+
-IA0KPiBJbiB2MSwgeW91IHN1cHBvcnRlZCAic2ltcGxlLWZyYW1lYnVmZmVyIiBvbiBQUEMu
-IERvbid0IHdlIHdhbnQgdG8gYWxsb3cNCj4gdGhhdD8gTWF5YmUgbm8gb25lIGNhcmVzIEFU
-TSwgYnV0IHRoYXQgY291bGQgY2hhbmdlLiBFaXRoZXIgd2F5Og0KDQpTdXBwb3J0IGZvciB0
-aGVzZSBmcmFtZWJ1ZmZlcnMgaGFzIGFsd2F5cyBiZWVuIG11dHVhbGx5IGV4Y2x1c2l2ZS4g
-VGhlIA0Kb2ZmYiBkcml2ZXIsIHdoaWNoIG9yaWdpbmFsbHkgY29udGFpbmVkIHRoZSBjb2Rl
-LCBkZXBlbmRzIG9uIENPTkZJR19QUEMuIA0KQW5kIFBQQyBuZXZlciBzdXBwb3J0ZWQgc2lt
-cGxlLWZyYW1lYnVmZmVyIGFueXdoZXJlLg0KDQo+IA0KPiBSZXZpZXdlZC1ieTogUm9iIEhl
-cnJpbmcgPHJvYmhAa2VybmVsLm9yZz4NCg0KVGhhbmsgeW91Lg0KDQpCZXN0IHJlZ2FyZHMN
-ClRob21hcw0KDQo+IA0KPiANCj4+ICsNCj4+ICsJCS8qIFBvcHVsYXRlIGV2ZXJ5dGhpbmcg
-ZWxzZS4gKi8NCj4+ICsJCW9mX3BsYXRmb3JtX2RlZmF1bHRfcG9wdWxhdGUoTlVMTCwgTlVM
-TCwgTlVMTCk7DQo+PiArCX0NCj4+ICAgDQo+PiAgIAlyZXR1cm4gMDsNCj4+ICAgfQ0KPj4g
-QEAgLTU1OCw3ICs2MDUsNiBAQCBzdGF0aWMgaW50IF9faW5pdCBvZl9wbGF0Zm9ybV9zeW5j
-X3N0YXRlX2luaXQodm9pZCkNCj4+ICAgCXJldHVybiAwOw0KPj4gICB9DQo+PiAgIGxhdGVf
-aW5pdGNhbGxfc3luYyhvZl9wbGF0Zm9ybV9zeW5jX3N0YXRlX2luaXQpOw0KPj4gLSNlbmRp
-Zg0KPj4gICANCj4+ICAgaW50IG9mX3BsYXRmb3JtX2RldmljZV9kZXN0cm95KHN0cnVjdCBk
-ZXZpY2UgKmRldiwgdm9pZCAqZGF0YSkNCj4+ICAgew0KDQotLSANClRob21hcyBaaW1tZXJt
-YW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9u
-cyBHZXJtYW55IEdtYkgNCk1heGZlbGRzdHIuIDUsIDkwNDA5IE7DvHJuYmVyZywgR2VybWFu
-eQ0KKEhSQiAzNjgwOSwgQUcgTsO8cm5iZXJnKQ0KR2VzY2jDpGZ0c2bDvGhyZXI6IEl2byBU
-b3Rldg0K
+On 4/19/22 05:59, Kees Cook wrote:
+> On Mon, Apr 18, 2022 at 09:22:11PM +0800, He Zhe wrote:
+>> This function checks if the given address range crosses frame boundary.
+>> It is based on the existing x86 algorithm, but implemented via stacktrace.
+>> This can be tested by USERCOPY_STACK_FRAME_FROM and
+>> USERCOPY_STACK_FRAME_TO in lkdtm.
+> Hi,
+>
+> Thanks for doing this implementation! One reason usercopy hardening
+> didn't persue doing a "full" stacktrace was because it seemed relatively
+> expensive. Did you do any usercopy-heavily workload testing to see if
+> there was a noticeable performance impact?
+>
+> It would be nice to block the exposure of canaries and PAC bits, though,
+> so I'm not opposed, but I'd like to get a better sense of how "heavy"
+> this might be.
 
---------------V6Ezpezy3p0yw0t0S0BNfgzr--
+I just did some rough tests:
+hackbench -s 512 -l 200 -g 15 -f 25 -P
+Such line would hit arch_within_stack_frames at least 5000 times in my environment.
+With hardened_usercopy=on, the execution time would be around 2.121 seconds(average for 30 times)
+With hardened_usercopy=off, the execution time would be around 2.011 seconds(average for 30 times)
 
---------------H2Ei4jFDsCdAEGbJSqAuxH3d
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+I'll test the original x86 way for arm64 tomorrow.
 
------BEGIN PGP SIGNATURE-----
+Any other workload needed to be run?
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmJevBIFAwAAAAAACgkQlh/E3EQov+Cs
-nQ/+PjxVvHS4ZjtQ7GRnq5WdGi01qeBkHRyzBvlJv/+sAV8+440CNa5FhBIs6xnr4qXnnZn/U8Y5
-esGtU6VEVhKPsN9WRrwnpmzxJRHFnkg68Uxk9BRVJfnCkj4ajHlQeCJPvB8ibTeiY/E+b5bkQ098
-6DKFHE0Aypr3Drw7c633xlCJnjQ738I7xfcAvyI3DSjWdBC9ikZOU3Qx5p6gHoV/YW1fXmvmvZvf
-oGm+9fi2xfeu1k/K4NW52HqqPu8zjXQy8p0NGhq9aR7ayfQLYLijLMgaLOYRorKWX+F4gPfO1y4X
-AADeO++G5KyyNPNpA0N74GsaFVQ+R2N4a/xOHlBahj8HJSDrjfUOHH30P0rKfcZmi2iZ851nzRzn
-E7ZPN+BODCwHx2Y42Jl30dvNINNRDd9CeGCtNNeiBQ6jZqQt98MAPEmhvQ4d1rBOphIRYtm3QaY3
-LOz8BBWcekdEBQ+GoxiQYXV/XreJY/6VGQctesiwnwJfuWzvMzdr+s2mI3xX+jWWA+HIeZCgabk9
-zb5KMz2HbfhnIcg8Wl/mpCvkjH7MjMJNaMG/xu3LelH9iA5whwzClevDStMJ7au7ZY1Jqz03bB8T
-76vjPG/YP5tmvdSnUbErFsoYzfG25b2biIgRY4vm0g4RLCfejdMxi5CLmfw6gzAeC5v4zoHZiEsd
-on4=
-=16Z/
------END PGP SIGNATURE-----
+Thanks,
+Zhe
 
---------------H2Ei4jFDsCdAEGbJSqAuxH3d--
+
+>
+> Thanks!
+>
+> -Kees
+>
+
