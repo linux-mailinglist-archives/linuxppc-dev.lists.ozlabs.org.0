@@ -2,93 +2,109 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDE0506B67
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 13:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AB8506CBE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 14:47:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjMYK5F89z3bql
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 21:49:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KjNqy60krz2yw9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 22:47:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hyJXjh8y;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=RnKtPUGk;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CO2ZpUXD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hyJXjh8y; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=RnKtPUGk; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=CO2ZpUXD; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjMWx36ftz2yMD
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 21:48:44 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.1.2/8.16.1.2) with SMTP id 23JBixIu024128; 
- Tue, 19 Apr 2022 11:48:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=H4vJphjH5WpMWPhviwxS9TsozADhHMFMc1JexMZO3f4=;
- b=hyJXjh8yCifm3PXHxBcqyQlei722VEbPqFOBslGYvU5/9QR/XvBZucPZPTtUIJtYh3Bq
- Mgxu0QVJBAStnYhI1JaltVtGoM8EHz40StS/k84hvNySLulcV0QV/5EibuJ9RH0pQsts
- +AvNWpjE4BSFUzSOVDDDfz5BIMyJVFZEop0gYhAYYBqQV1z+sKR22tc+WEOve3wP3LJV
- 4b1D2S/TesXGmCxx1YPLZmL5QIa5svT+MCPMkpSl43aXOk9SHuUzAcQrPyAml0J5aNUI
- 0XEMO2ISDHXRy6Uglh5v5TcVkhJcsouXZxzzOvVb7TlQp8SlLbtGa+DA3R2JLbZNF9V2 xQ== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3fg7vnv985-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Apr 2022 11:48:40 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23JBlbek009017;
- Tue, 19 Apr 2022 11:48:38 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 3ffn2hvakt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Apr 2022 11:48:38 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 23JBmaSo46203232
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 Apr 2022 11:48:36 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C940A404D;
- Tue, 19 Apr 2022 11:48:36 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B7954A4040;
- Tue, 19 Apr 2022 11:48:33 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.211.73.128])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 19 Apr 2022 11:48:33 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH V3 2/2] powerpc/perf: Fix the power10 event alternatives array
- to have correct sort order
-Date: Tue, 19 Apr 2022 17:18:28 +0530
-Message-Id: <20220419114828.89843-2-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220419114828.89843-1-atrajeev@linux.vnet.ibm.com>
-References: <20220419114828.89843-1-atrajeev@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KjNqC3tjYz2xnM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 22:47:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650372416;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JIdJvCM/nzvVsX3gP8Of74a/GoE/TyZ8c3A83vketQk=;
+ b=RnKtPUGkE9L1McwSaDNVB1nD8oGCxIhJgsD3XvuVfHH3jdVQ4Ojdzs6B+wRxoASQm0iiYw
+ k43R47EtlY187MDW+ohxOXRH33a1aydVtfsdLJp9aagJ37IKMv892vkKusSty6xT2T9wHr
+ c2xjaBIbdUku2bJfk4raQrfJY+PEuE8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650372417;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JIdJvCM/nzvVsX3gP8Of74a/GoE/TyZ8c3A83vketQk=;
+ b=CO2ZpUXD87rVSUlp6k2aUMctcdRiPDutxgrX4iuHNWoLNNtDJbiXNy8j0Q57Ev0xxhAcAO
+ tMvYkDdLM7Zi/zbsJAYCekyIN58y/ROD6s7HWqAMVmk/z6Kz7ldgIEPJqs+gMTFGzI6mZz
+ rlOV5qiNxY6U3fm2xx1Tv3QB5Pxq0o4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-426-NxaHO3rlObKMbOaa37o-ow-1; Tue, 19 Apr 2022 08:46:55 -0400
+X-MC-Unique: NxaHO3rlObKMbOaa37o-ow-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ bg8-20020a05600c3c8800b0038e6a989925so9251808wmb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 05:46:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent
+ :content-language:to:cc:references:from:organization:subject
+ :in-reply-to:content-transfer-encoding;
+ bh=JIdJvCM/nzvVsX3gP8Of74a/GoE/TyZ8c3A83vketQk=;
+ b=lyjOe2nIEYvEj6KkIA7BVkEi3E9stJYCY5nCZhtnq0i6TkF5znPU8g8iDoEC4cUHyd
+ yuZPPya4l4nhY3l8V0u31GjpghvwMGRYV1yqHd3RmBDAWnMXVxX4SoFjkHiD4LWS6K8L
+ PbVIkAOGjJhzqww0rT3J6zruJjP9H6h3bbw8UM1cX4RPcyrpyvTwxF1mVHqU3+gYvZEz
+ u+HNg6ThXow3XRIgfIDPdyKnERcokWHEu6NFt52qZ1Pfykrvz3aXNelpOZDI/NfdT3TQ
+ 2AkzJyuCxVrTFPnqA02zwgtd1nYu/YZ3gICOiRoo3tb3BRgtUz9ld8Hga4mcGyEhBW11
+ 1eiA==
+X-Gm-Message-State: AOAM531bnLhGpmaqs9Hu5kBGIco6SVd+FhECrNIQSIABLhelPzXT7dHf
+ NS4HOBpAM6/ofWC09PrdH/DXZZIuHOoFxdAC56ryFB641bn42+N5FLxk8IrzNmZWi2S1C9Rfntj
+ G/vGxQQ50AFPkfg7OEllIdHLxjw==
+X-Received: by 2002:a5d:6c61:0:b0:20a:a261:876a with SMTP id
+ r1-20020a5d6c61000000b0020aa261876amr3888825wrz.251.1650372414465; 
+ Tue, 19 Apr 2022 05:46:54 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzdMM5QdzCOMem9yase7YYuZlZxCCL7y7FebP52SLMHsNQ3htbJhnS/K27BEXI5r4m/9jMYRg==
+X-Received: by 2002:a5d:6c61:0:b0:20a:a261:876a with SMTP id
+ r1-20020a5d6c61000000b0020aa261876amr3888803wrz.251.1650372414247; 
+ Tue, 19 Apr 2022 05:46:54 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c704:5d00:d8c2:fbf6:a608:957a?
+ (p200300cbc7045d00d8c2fbf6a608957a.dip0.t-ipconnect.de.
+ [2003:cb:c704:5d00:d8c2:fbf6:a608:957a])
+ by smtp.gmail.com with ESMTPSA id
+ s7-20020a5d6a87000000b00207aad420c4sm12434616wru.101.2022.04.19.05.46.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Apr 2022 05:46:53 -0700 (PDT)
+Message-ID: <d875c292-46b3-f281-65ae-71d0b0c6f592@redhat.com>
+Date: Tue, 19 Apr 2022 14:46:51 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 8wf5v7WUaEmU1nJ90POxhbvrIs7Xtq90
-X-Proofpoint-GUID: 8wf5v7WUaEmU1nJ90POxhbvrIs7Xtq90
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-04-19_05,2022-04-15_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 mlxscore=0
- phishscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=999 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204190064
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+To: linux-kernel@vger.kernel.org
+References: <20220329164329.208407-1-david@redhat.com>
+ <20220329164329.208407-4-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v2 3/8] x86/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+In-Reply-To: <20220329164329.208407-4-david@redhat.com>
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,102 +116,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Jan Kara <jack@suse.cz>,
+ Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Donald Dutile <ddutile@redhat.com>, Liang Zhang <zhangliang5@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Paul Mackerras <paulus@samba.org>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, linux-arm-kernel@lists.infradead.org,
+ Jason Gunthorpe <jgg@nvidia.com>, David Rientjes <rientjes@google.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Pedro Gomes <pedrodemargomes@gmail.com>, Jann Horn <jannh@google.com>,
+ John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Shakeel Butt <shakeelb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Oded Gabbay <oded.gabbay@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Oleg Nesterov <oleg@redhat.com>,
+ Nadav Amit <namit@vmware.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When scheduling a group of events, there are constraint checks
-done to make sure all events can go in a group. Example, one of
-the criteria is that events in a group cannot use same PMC.
-But platform specific PMU supports alternative event for some
-of the event codes. During perf_event_open, if any event
-group doesn't match constraint check criteria, further lookup
-is done to find alternative event.
+On 29.03.22 18:43, David Hildenbrand wrote:
+> Let's use bit 3 to remember PG_anon_exclusive in swap ptes.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
 
-By current design, the array of alternatives events in PMU 
-code is expected to be sorted by column 0. This is because in
-find_alternative() function, the return criteria is based on
-event code comparison. ie "event < ev_alt[i][0])". This
-optimisation is there since find_alternative() can get called
-multiple times. In power10 PMU code, the alternative event array
-is not sorted list and hence there is breakage in finding 
-alternative event.
+Looks like I ignored that 32bit uses a different (undocumented) swap layout
+and bit 3 falls into the swp type. We'll restrict this to x86-64 for now, just
+like for the other architectures.
 
-To work with existing logic, fix the alternative event array
-to be sorted by column 0 for power10-pmu.c
+The following seems to fly. @Andrew, let me know if you prefer a v3.
 
-Results:
 
-In case where an alternative event is not chosen when we could,
-events will be multiplexed. ie, time sliced where it could
-actually run concurrently.
-Example, in power10 PM_INST_CMPL_ALT(0x00002) has alternative
-event, PM_INST_CMPL(0x500fa). Without the fix, if a group of
-events with PMC1 to PMC4 is used along with PM_INST_CMPL_ALT,
-it will be time sliced since all programmable PMC's are
-consumed already. But with the fix, when it picks alternative
-event on PMC5, all events will run concurrently.
+From bafb5ba914e89ad20c46f4e841a36909e610b81e Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Wed, 9 Mar 2022 09:47:29 +0100
+Subject: [PATCH] x86/pgtable: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE on x86_64
 
-<< Before Patch >>
- # perf stat -e r00002,r100fc,r200fa,r300fc,r400fc
-^C
- Performance counter stats for 'system wide':
+Let's use bit 3 to remember PG_anon_exclusive in swap ptes.
 
-         328668935      r00002               (79.94%)
-          56501024      r100fc               (79.95%)
-          49564238      r200fa               (79.95%)
-               376      r300fc               (80.19%)
-               660      r400fc               (79.97%)
-
-       4.039150522 seconds time elapsed
-
-With the fix, since alternative event is chosen to run
-on PMC6, events will be run concurrently.
-
-<< After Patch >>
- # perf stat -e r00002,r100fc,r200fa,r300fc,r400fc
-^C
- Performance counter stats for 'system wide':
-
-          23596607      r00002
-           4907738      r100fc
-           2283608      r200fa
-               135      r300fc
-               248      r400fc
-
-       1.664671390 seconds time elapsed
-
-Fixes: a64e697cef23 ("powerpc/perf: power10 Performance Monitoring support")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
-Changelog:
- v1 -> v2:
- Added Fixes tag and reworded commit message
- Added Reviewed-by from Maddy
- v2 -> v3:
- Added info about what is the breakage with current 
- code.
+ arch/x86/include/asm/pgtable.h          | 17 +++++++++++++++++
+ arch/x86/include/asm/pgtable_64.h       |  4 +++-
+ arch/x86/include/asm/pgtable_64_types.h |  5 +++++
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
- arch/powerpc/perf/power10-pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index d3398100a60f..c6d51e7093cf 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -91,8 +91,8 @@ extern u64 PERF_REG_EXTENDED_MASK;
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 62ab07e24aef..a1c555abed26 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1291,6 +1291,23 @@ static inline void update_mmu_cache_pud(struct vm_area_struct *vma,
+ 		unsigned long addr, pud_t *pud)
+ {
+ }
++#ifdef _PAGE_SWP_EXCLUSIVE
++#define __HAVE_ARCH_PTE_SWP_EXCLUSIVE
++static inline pte_t pte_swp_mkexclusive(pte_t pte)
++{
++	return pte_set_flags(pte, _PAGE_SWP_EXCLUSIVE);
++}
++
++static inline int pte_swp_exclusive(pte_t pte)
++{
++	return pte_flags(pte) & _PAGE_SWP_EXCLUSIVE;
++}
++
++static inline pte_t pte_swp_clear_exclusive(pte_t pte)
++{
++	return pte_clear_flags(pte, _PAGE_SWP_EXCLUSIVE);
++}
++#endif /* _PAGE_SWP_EXCLUSIVE */
  
- /* Table of alternatives, sorted by column 0 */
- static const unsigned int power10_event_alternatives[][MAX_ALT] = {
--	{ PM_CYC_ALT,			PM_CYC },
- 	{ PM_INST_CMPL_ALT,		PM_INST_CMPL },
-+	{ PM_CYC_ALT,			PM_CYC },
- };
+ #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+ static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
+diff --git a/arch/x86/include/asm/pgtable_64.h b/arch/x86/include/asm/pgtable_64.h
+index 56d0399a0cd1..e479491da8d5 100644
+--- a/arch/x86/include/asm/pgtable_64.h
++++ b/arch/x86/include/asm/pgtable_64.h
+@@ -186,7 +186,7 @@ static inline void native_pgd_clear(pgd_t *pgd)
+  *
+  * |     ...            | 11| 10|  9|8|7|6|5| 4| 3|2| 1|0| <- bit number
+  * |     ...            |SW3|SW2|SW1|G|L|D|A|CD|WT|U| W|P| <- bit names
+- * | TYPE (59-63) | ~OFFSET (9-58)  |0|0|X|X| X| X|F|SD|0| <- swp entry
++ * | TYPE (59-63) | ~OFFSET (9-58)  |0|0|X|X| X| E|F|SD|0| <- swp entry
+  *
+  * G (8) is aliased and used as a PROT_NONE indicator for
+  * !present ptes.  We need to start storing swap entries above
+@@ -203,6 +203,8 @@ static inline void native_pgd_clear(pgd_t *pgd)
+  * F (2) in swp entry is used to record when a pagetable is
+  * writeprotected by userfaultfd WP support.
+  *
++ * E (3) in swp entry is used to rememeber PG_anon_exclusive.
++ *
+  * Bit 7 in swp entry should be 0 because pmd_present checks not only P,
+  * but also L and G.
+  *
+diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
+index 91ac10654570..70e360a2e5fb 100644
+--- a/arch/x86/include/asm/pgtable_64_types.h
++++ b/arch/x86/include/asm/pgtable_64_types.h
+@@ -163,4 +163,9 @@ extern unsigned int ptrs_per_p4d;
  
- static int power10_get_alternatives(u64 event, unsigned int flags, u64 alt[])
+ #define PGD_KERNEL_START	((PAGE_SIZE / 2) / sizeof(pgd_t))
+ 
++/*
++ * We borrow bit 3 to remember PG_anon_exclusive.
++ */
++#define _PAGE_SWP_EXCLUSIVE	_PAGE_PWT
++
+ #endif /* _ASM_X86_PGTABLE_64_DEFS_H */
 -- 
 2.35.1
+
+
+
+
+
+-- 
+Thanks,
+
+David / dhildenb
 
