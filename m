@@ -2,159 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DEB9506FE8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 16:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA1695070CD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 16:41:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjQn63ZJJz3bZ4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 00:15:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=windriver.com header.i=@windriver.com header.a=rsa-sha256 header.s=PPS06212021 header.b=GIdlnUs8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KjRMf6080z3bjG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 00:41:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=windriver.com (client-ip=205.220.178.238;
- helo=mx0b-0064b401.pphosted.com;
- envelope-from=prvs=11081c7a60=zhe.he@windriver.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=windriver.com header.i=@windriver.com
- header.a=rsa-sha256 header.s=PPS06212021 header.b=GIdlnUs8; 
- dkim-atps=neutral
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com
- [205.220.178.238])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjQmL2R35z2xBv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 00:14:40 +1000 (AEST)
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
- by mx0a-0064b401.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23JCvp4o013188;
- Tue, 19 Apr 2022 14:13:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
- h=message-id : date
- : subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=PPS06212021;
- bh=TKCYh77Qld6+GzXGSXRxQdTaAvPHUBYmFX7EUyrF6HA=;
- b=GIdlnUs8wqYuzJkjzxoQ6rjb3RINz0R1Ki3lV879lhZuSDdseh3f0VDrGc+IEUsuov0K
- r2HAzuoAsroPOmKayj9TP/UhJxAi9CyuOVuq9EEAmhmCq1xTNAxpWTtmE9V6jOlezNY4
- T6GMV+JBXgm1k/9t7K/ZnCEJ1i75A6fxHB63rclMfavJykXFjzCTEP3rrJl3j/yQYQYa
- VqfZ6es2m+amlX1o8o+rh2E3nlGJEEdiEjKrRVLDpE1CfzxleFyM8tDsEoenP2A96Rre
- hwqyr/HovA3VRKMOnnhAqgplfEStwCZo9poXfsPtNFggJLU+NLaC26/nX6E+OXBPXZkf eA== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com
- (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
- by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3ffpj2t5ur-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Apr 2022 14:13:58 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YNz0QZqt6/mXfjT5qcGf0/1bVLsKqsVt9BwCTKMLcm3lpGdOS/XKe4VvrNRCrEX6IsXYATeO7LYKDJiSGQCbUYpyOjMldIrQm7OwE7wnQjE9i9Q1CIeHJkq3OJ3KfGpbqhafmE7uAQYV365mDVeZh6t8mv9H3zpGaQROO5HbhBpznZEocuf8XKyIzeD7kTdYUU5mcmCWrbBuSQOFHbazJQ+t+UJBP93+cSPWi4NzmNQSHr6hLiFXSw7FlXeEtTWnmgwYU9pESIRCnButN76coqKyEeBKTbv9VVv3GppF2mdVmAs6HceNXVQhH603zPvuTJDCj6w+RHKJQi1MjZsIXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TKCYh77Qld6+GzXGSXRxQdTaAvPHUBYmFX7EUyrF6HA=;
- b=JTNHdQ+oh0aImJPwmixxScOlDZ1pRv7Xq5Q5k3jTl80zouJeJuNsw3tQMpWC1//PKJDmLxnznwztM25gb6JIWajPJ9fzY0ctWRQj1vDd8s6WaGJUg2LRQKKFYxpLCY6exuherefOFdh5eKPhI+QY7Sfsgg6/6ZLaj0HZxpH73DT9VQHU9Pu9qffLy6Gmr9RsMFp+hFDktWjVrTXj0Nz8shMqE7ea7ksD6Zb9DxpTN1U+2g7Tu+9k/Qc8C0vPQV4U4WhXeA6WKqGbI03T+4AgaDL6EGs3NRJHm4o6C6EqgODrHbtnd4Tb+WeQ0R9F1knY6UDVPTFBgbUjgwg928+kJw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from MWHPR11MB1358.namprd11.prod.outlook.com (2603:10b6:300:23::8)
- by BN7PR11MB2865.namprd11.prod.outlook.com (2603:10b6:406:ac::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5164.20; Tue, 19 Apr
- 2022 14:13:54 +0000
-Received: from MWHPR11MB1358.namprd11.prod.outlook.com
- ([fe80::1cd4:125:344:9fc]) by MWHPR11MB1358.namprd11.prod.outlook.com
- ([fe80::1cd4:125:344:9fc%7]) with mapi id 15.20.5164.025; Tue, 19 Apr 2022
- 14:13:54 +0000
-Message-ID: <286b9800-1b17-5274-889e-5a1a361eb410@windriver.com>
-Date: Tue, 19 Apr 2022 22:13:38 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH RFC 1/8] stacktrace: Change callback prototype to pass
- more information
-Content-Language: en-US
-To: Mark Rutland <mark.rutland@arm.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KjRMD0hbPz2yJ5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 00:41:25 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E1E041063;
+ Tue, 19 Apr 2022 07:40:52 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.75.72])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A597E3F766;
+ Tue, 19 Apr 2022 07:40:49 -0700 (PDT)
+Date: Tue, 19 Apr 2022 15:40:45 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: He Zhe <zhe.he@windriver.com>
+Subject: Re: [PATCH RFC 2/8] arm64: stacktrace: Add arch_within_stack_frames
+Message-ID: <Yl7J7aVzKiWRtrGi@FVFF77S0Q05N>
 References: <20220418132217.1573072-1-zhe.he@windriver.com>
- <20220418132217.1573072-2-zhe.he@windriver.com>
- <Yl60euwfis+u92cA@FVFF77S0Q05N>
-From: He Zhe <zhe.he@windriver.com>
-In-Reply-To: <Yl60euwfis+u92cA@FVFF77S0Q05N>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: HK2PR02CA0217.apcprd02.prod.outlook.com
- (2603:1096:201:20::29) To MWHPR11MB1358.namprd11.prod.outlook.com
- (2603:10b6:300:23::8)
+ <20220418132217.1573072-3-zhe.he@windriver.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0e9eee27-c4a0-40a4-3b53-08da220ed633
-X-MS-TrafficTypeDiagnostic: BN7PR11MB2865:EE_
-X-Microsoft-Antispam-PRVS: <BN7PR11MB2865A80BF5BFA48AA437DFF78FF29@BN7PR11MB2865.namprd11.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: nc6YLA1KzFGK92zRLDu1qTfrUUysz7J2LMrk13a0mSaZoGjxzs1owMSfJDWj5Dtt8eGSdBzEbRyCdv7wEk/h9UAV8nxhjplnwIhMTRJjT/GUceI9QyhuTfEFNSdPpqqkOKqKE0gkhp5LkDJDUwy4c2IVMEmirs9CK1VDIoo3dq4c32ikrT0929Qhdg5kPJDCJcofU9n4m/QTPGGkmlyQE/RDMFXedE23OENL0AHieEzeqvS3ujaVNZvqKHngx0NJxTpa33HLI+9p80ogduoYgTQ5TgYi7DmJm4+kkp4K4JtYbmzbPDVsAAroUikWRXK1ZBdfhrNVftdYDwUxpWUCdGv7jvCMYuBetqUGsdtjA0X+of52uW1XekyQjMH2ggD7rYtFO+2DAkCE++44TGo4x/ZhUZtNgTmQ9LjYzBzzteuoEFzOIocWOU24KsOj85IKTwkyCl/ITQTWRi+YQjh0bbR0Q46NCRYeVeCrF7Q/D3/qC/hm8ya/xKORbEgOrTAfmlrRCklMmWt8KFMgaYIbn1vl9xpkvMYEgsyI36rrdxjijABzaRqH4s68b8El5VprI88pbO3/Adqcs71yU4emRNh+VQ9LiIejtvH9+L7qtU+VmRXWjeZIOQtj5DXicnepTNlLcVJMUCKBVfyXBtDUM2Bt3qJYQoWT04Xv643Fr6/XD/V1e5rbuLxBBIvKCSQ1SsXTn6hgPWqsGxsQKNPnKX1MaWiHJqhj/DksL+OscRdW4MBv1tvnXddkGqyYgLPivYJFOLd7UyGoDMFISYACxA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MWHPR11MB1358.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(83380400001)(53546011)(38100700002)(38350700002)(6506007)(6512007)(52116002)(6666004)(316002)(26005)(6486002)(186003)(7416002)(6916009)(508600001)(2616005)(5660300002)(2906002)(8936002)(4326008)(8676002)(66476007)(66946007)(66556008)(36756003)(31686004)(31696002)(86362001)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VFFSdDNCWkR6bHppWERZcmJrRGU2NjFKMTdPVFJjZExYbWYrc29zdEdwbW1n?=
- =?utf-8?B?WGNOZzFJaEwvRERhK3QvMkY0Q3NVL2VVWWI5UHlkWVh4U1I5R0xUK3JWeG44?=
- =?utf-8?B?WDVIUlBhL0hrL3hXM0FHUlVMdFlNcUJraGVjOUI1Ym93WS8rbE5sRHRCTjhF?=
- =?utf-8?B?UndZZ3NxVWVZVW5KTDV2VTgwMGJ0Y1BxMFZtemJKbjdwcHpzNTl5L3N1dkFV?=
- =?utf-8?B?UFJLaHpWQXRtRXUvY29kZGh1U3VSU0VqbHFlSlUwa0lvZGZreE04K2RFYnNQ?=
- =?utf-8?B?Y2x4TmFsQ0Y0TStBSk44TWl2OUQ1SXVJZ0pvVWM3bnAzQ0pVMXVHMUhIZ1FD?=
- =?utf-8?B?eUozQ1kxMXFtaGhWSWx5ckNFalVzQ2ZPbnFGNDlQT2VMa1dOajBTb3ZabC9Q?=
- =?utf-8?B?b2R5Qm5GOVZZajNUNk5NL2FCL1FVUGJVaGJNdmd4YXhxeWdkdHBFa1hMcU5C?=
- =?utf-8?B?bjdrZFUyaFRkaWozcFV0bXlJa01mZFNrZE9HTHVZa2Q4aG9saFNPbzJCRW5D?=
- =?utf-8?B?UXJlOW9oYmk3Sk1kc01QdlJpaHU2ZnNCZHlPZlFTMlRkY2VqZHRNaXRFaWtL?=
- =?utf-8?B?c0xSRFJlc2JGVVEvY0M0dVJuZjlBZHQvd0JjcFJGUUNnRWJMNXhBMmtHVzNR?=
- =?utf-8?B?MER1ZXluTGN3NXowOE0vUjdSaFZLY0xGYWt3ald1aVBtSWhBSlp5czkvYk5q?=
- =?utf-8?B?cUZJMGZ5Ky9OS3RnRzBYS2xHNXlFTmVSaTY3WU1vSXdOOWVuVmFZeEZQM3Rp?=
- =?utf-8?B?OXM3UWpINFRKL2pDbm1DamFQd3JpZGpYN2NnSE5OaWlTb1hlRFcvL2RsZUwy?=
- =?utf-8?B?L2h5LzNVMDVhRWVRTUZjNUtYUWw2VTg0YmpYaFNadTBmNXVMdnpkYVRKVzNM?=
- =?utf-8?B?bVFQK056T09sUy8xanZVT05HdnBZb2daS2pDajVXbUV5MUxjMWp2TVhHZGh6?=
- =?utf-8?B?ekl4ZzRWTm5WM0FFV2p6ZWZBUEN5RXVTeDlHam41RHVNZXA2YXBjUVJkNnlL?=
- =?utf-8?B?QkdsZUF6dDRtMTVveS9BVHduMFk2b1NVRk9lVlBMWWEyRi9UQU1OSDFQdDNF?=
- =?utf-8?B?d095MkJXK0xxZ09kWnFScGZFT0F5akJQK3VhZUVQTzVObTV3dzNtZzRMWHI0?=
- =?utf-8?B?dW55WkNoU254THZNMXN3T3p4Y09tcWp4MUtYQzdVd1VGR3VWaVVXUkRzRUcr?=
- =?utf-8?B?MzJkcHhkMXExQmVjSXp1MmlRVmVhZHJuaHBvRjdEOTF4NURvb0pwWUFRMkN6?=
- =?utf-8?B?bUIxNUNJSlZPamJFQklkczFLblY0eEFiOEQvaTlraVpvTkdJcFBYSzBrajRX?=
- =?utf-8?B?WVJlWXVmUGVhcTdDeUhtUmlUa291UzB5ZkRsRm5kL0dCQVBSa1NRL2V5SThX?=
- =?utf-8?B?TEFzT1JZM1hUY2tRcytHeTBjb2xhRW9heGEzdGczT2V5Ym1NVSs4OXhMMTRs?=
- =?utf-8?B?T1dhYnVLa0tIblRkWGRmYjlUMi9xNEg5dnRKWHRpaWVNM29aa3ZWbzdYY0Rh?=
- =?utf-8?B?VzZmRFBJSVNyV3c3VUJDMnRISFpiRFpzOWUvcEFJWC8zTVBmS0ZmQ1g4SU9l?=
- =?utf-8?B?QUFGd2h0NDdvQWNGejIwdFpoYWJTQjIvS2Nja3hUQWRxak1RUFd4QXJOcUox?=
- =?utf-8?B?cTEySCtaQlVLV3cxM1BZY0pkZEJGM2NDeGU4WnpIS2p3eUxOYjNJdTQrWUtp?=
- =?utf-8?B?bVVTTGRQZ1Fmb0ZxODFMM0NNaXBzZ3dNbjZvc2ZycEZoSVp0MjM5WTN0dFFS?=
- =?utf-8?B?K3dmWTF6b25QdlhuWm94S0htNGZPZGJvMkQ4YWxOajI2ek9IWkdxbS9Zd21m?=
- =?utf-8?B?em50QjBlUHNLaU5aelBReUtCQndGOTFVNzV6UEFKMVpGWUxFQk1OUk1aMG9M?=
- =?utf-8?B?Rjk1eVVEQzJzcWk5Y3VhazZmRWNEK3dlc0s1NzczbkFLTS9OSlhYSG5JQ2hi?=
- =?utf-8?B?RzZWWTZtR2dKNHJ6MWdwSnBta2FTMmN5MVlPaGtMcWNTUm0zNWlMRDZzYm8z?=
- =?utf-8?B?a1ZVQy8wWUNtbU9aaG9PSjd5Nzl4VTR6WTF3OVMrNHM4ZUVadzBobGVNZFJt?=
- =?utf-8?B?K0dnamNTbFE2U3dxS0Vrc2xzQkNGZjlUNUFEOHYwOFhQS1Y4TjNyMjF6U2Rw?=
- =?utf-8?B?SXZHcjRMZXVxR0RjNkhCSm52MkxzeTRXNHFTdm10Nk00Y3V5TEFSNXBOVDU1?=
- =?utf-8?B?UWl5Y0dXbUlsRXZjdHB1bGx3Nk85NnQwREhQYis5Z2tPbjBuVnpXRnNpRDFL?=
- =?utf-8?B?SEk1azdwZmRldzlzbmU1NW95YTFCRFBGRFFNNUNGMkZyRUx4RGRYNG91SUd3?=
- =?utf-8?B?RVM0YVR5TUc3andOd0J2d0VPOEpMYUh5dFlsdWNaY2V4dzZySDE1Zz09?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e9eee27-c4a0-40a4-3b53-08da220ed633
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR11MB1358.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2022 14:13:54.7258 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: isCXzZ7pGvj3pDLEd2PIG1ji7CY6ausECPkaWsN3P06cBpuvVOyB03aonil4uPKE6EWAc7V8/59nsK7TPHoD9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PR11MB2865
-X-Proofpoint-ORIG-GUID: HLj-IMppU42ZbC1cHJZplarHQDTl5cW-
-X-Proofpoint-GUID: HLj-IMppU42ZbC1cHJZplarHQDTl5cW-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-04-19_05,2022-04-15_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 clxscore=1015 phishscore=0 impostorscore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204190081
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220418132217.1573072-3-zhe.he@windriver.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -178,108 +57,352 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi,
 
+On Mon, Apr 18, 2022 at 09:22:11PM +0800, He Zhe wrote:
+> This function checks if the given address range crosses frame boundary.
 
-On 4/19/22 21:09, Mark Rutland wrote:
-> On Mon, Apr 18, 2022 at 09:22:10PM +0800, He Zhe wrote:
->> Currently stack_trace_consume_fn can only have pc of each frame of the
->> stack. Copying-beyond-the-frame-detection also needs fp of current and
->> previous frame. Other detection algorithm in the future may need more
->> information of the frame.
->>
->> We define a frame_info to include them all.
->>
->>
->> Signed-off-by: He Zhe <zhe.he@windriver.com>
->> ---
->>  include/linux/stacktrace.h |  9 ++++++++-
->>  kernel/stacktrace.c        | 10 +++++-----
->>  2 files changed, 13 insertions(+), 6 deletions(-)
->>
->> diff --git a/include/linux/stacktrace.h b/include/linux/stacktrace.h
->> index 97455880ac41..5a61bfafe6f0 100644
->> --- a/include/linux/stacktrace.h
->> +++ b/include/linux/stacktrace.h
->> @@ -10,15 +10,22 @@ struct pt_regs;
->>  
->>  #ifdef CONFIG_ARCH_STACKWALK
->>  
->> +struct frame_info {
->> +	unsigned long pc;
->> +	unsigned long fp;
->> +	unsigned long prev_fp;
->> +};
-> I don't think this should be exposed through a generic interface; the `fp` and
-> `prev_fp` values are only meaningful with arch-specific knowledge, and they're
-> *very* easy to misuse (e.g. when transitioning from one stack to another).
-> There's also a bunch of other information one may or may not want, depending on
-> what you're trying to achieve.
->
-> I am happy to have an arch-specific internal unwinder where we can access this
-> information, and *maybe* it makes sense to have a generic API that passes some
-> opaque token, but I don't think we should make the structure generic.
+I don't think that's quite true, becuase arm64's procedure call standard
+(AAPCS64) doesn't give us enough information to determine this without
+additional metadata from the compiler, which we simply don't have today.
 
-Thanks for thoughts. I saw unwind_frame and etc was made private earlier and
-took that as a hint that all further stack walk things should be based on those
-functions and came up with this. But OK, good to know that arch-specific unwind
-would be fine, I'll redo this series in that way.
+Since there's a lot of confusion in this area, I've made a bit of an info dump
+below, before review on the patch itself, but TBH I'm struggling to see that
+this is all that useful.
+
+On arm64, we use a calling convention called AAPCS64, (in full: "Procedure Call
+Standard for the Arm® 64-bit Architecture (AArch64)"). That's maintained at:
+
+  https://github.com/ARM-software/abi-aa
+
+... with the latest release (as of today) at:
+
+  https://github.com/ARM-software/abi-aa/blob/60a8eb8c55e999d74dac5e368fc9d7e36e38dda4/aapcs64/aapcs64.rst
+  https://github.com/ARM-software/abi-aa/releases/download/2022Q1/aapcs64.pdf
+
+In AAPCS64, there are two related but distinct things to be aware of:
+
+* The "stack frame" of a function, which is the entire contiguous region of
+  stack memory used by a function.
+
+* The "frame record", which is the saved FP and LR placed *somewhere* within
+  the function's stack frame. The FP points at the most recent frame record on
+  the stack, and at function call boundaries points at the caller's frame
+  record.
+
+AAPCS64 doesn't say *where* a frame record is placed within a stack frame, and
+there are reasons for compilers to place above and below it. So in genral, a
+functionss stack frame looks like:
+      
+        +=========+
+        |  above  |
+        |---------|
+        | FP | LR |
+        |---------|
+        |  below  |
+        +=========+
+
+... where the "above" or "below" portions might be any size (even 0 bytes).
+
+Typical code generation today means for most functions that the "below" portion
+is 0 bytes in size, but this is not guaranteed, and even today there are cases
+where this is not true.
+
+When one function calls another without a stack transition, that looks like:
+
+        +=========+ ___
+        |  above  |    \
+        |---------|    |
+     ,->| FP | LR |    +-- Caller's stack frame
+     |  |---------|    |
+     |  |  below  | ___/
+     |  +=========+ ___ 
+     |  |  above  |    \
+     |  |---------|    |
+     '--| FP | LR |    +-- Callee's stack frame
+        |---------|    |
+        |  below  | ___/
+        +=========+
+
+Where there's a stack transition, and the new stack is at a *lower* VA than the
+old stack, that looks like:
+
+        +=========+ ___
+        |  above  |    \
+        |---------|    |
+     ,->| FP | LR |    +-- Caller's stack frame
+     |  |---------|    |
+     |  |  below  | ___/
+     |  +=========+
+     | 
+     |  ~~~~~~~~~~~
+     |  Arbitrarily 
+     |  large gap,
+     |  potentially
+     |  including
+     |  other data
+     |  ~~~~~~~~~~~
+     |
+     |  +=========+ ___ 
+     |  |  above  |    \
+     |  |---------|    |
+     '--| FP | LR |    +-- Callee's stack frame
+        |---------|    |
+        |  below  | ___/
+        +=========+
+
+Where there's a stack transition, and the new stack is at a *higher* VA than
+the old stack, that looks like:
+
+        +=========+ ___ 
+        |  above  |    \
+        |---------|    |
+     ,--| FP | LR |    +-- Callee's stack frame
+     |  |---------|    |
+     |  |  below  | ___/
+     |  +=========+
+     |
+     |  ~~~~~~~~~~~
+     |  Arbitrarily 
+     |  large gap,
+     |  potentially
+     |  including
+     |  other data
+     |  ~~~~~~~~~~~
+     | 
+     |  +=========+ ___
+     |  |  above  |    \
+     |  |---------|    |
+     '->| FP | LR |    +-- Caller's stack frame
+        |---------|    |
+        |  below  | ___/
+        +=========+
+ 
+In all of these cases, we *cannot* identify the boundary between the two stack
+frames, we can *only* identify where something overlaps a frame record. That
+might itself be a good thing, but it's not the same thing as what you describe
+in the commit message.
+
+> It is based on the existing x86 algorithm, but implemented via stacktrace.
+> This can be tested by USERCOPY_STACK_FRAME_FROM and
+> USERCOPY_STACK_FRAME_TO in lkdtm.
+
+Can you please explain *why* we'd want this?
+
+Who do we expect to use this?
+
+What's the overhead in practice?
+
+Has this passed a more realistic stress test (e.g. running some userspace
+applications which make intensive use of copies to/from the kernel)?
+
+> 
+> Signed-off-by: He Zhe <zhe.he@windriver.com>
+> ---
+>  arch/arm64/Kconfig                   |  1 +
+>  arch/arm64/include/asm/thread_info.h | 12 +++++
+>  arch/arm64/kernel/stacktrace.c       | 76 ++++++++++++++++++++++++++--
+>  3 files changed, 85 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 57c4c995965f..0f52a83d7771 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -165,6 +165,7 @@ config ARM64
+>  	select HAVE_ARCH_TRACEHOOK
+>  	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
+>  	select HAVE_ARCH_VMAP_STACK
+> +	select HAVE_ARCH_WITHIN_STACK_FRAMES
+>  	select HAVE_ARM_SMCCC
+>  	select HAVE_ASM_MODVERSIONS
+>  	select HAVE_EBPF_JIT
+> diff --git a/arch/arm64/include/asm/thread_info.h b/arch/arm64/include/asm/thread_info.h
+> index e1317b7c4525..b839ad9f2248 100644
+> --- a/arch/arm64/include/asm/thread_info.h
+> +++ b/arch/arm64/include/asm/thread_info.h
+> @@ -58,6 +58,18 @@ void arch_setup_new_exec(void);
+>  void arch_release_task_struct(struct task_struct *tsk);
+>  int arch_dup_task_struct(struct task_struct *dst,
+>  				struct task_struct *src);
+> +/*
+> + * Walks up the stack frames to make sure that the specified object is
+> + * entirely contained by a single stack frame.
+> + *
+> + * Returns:
+> + *	GOOD_FRAME	if within a frame
+
+As above, we cannot identify this reliably.
+
+> + *	BAD_STACK	if placed across a frame boundary (or outside stack)
+> + *	NOT_STACK	unable to determine (no frame pointers, etc)
+
+On arm64 we always have frame pointers enabled, so this is a confusing comment.
+Is this a copy-paste from x86?
+
+> + */
+> +int arch_within_stack_frames(const void * const stack,
+> +		const void * const stackend,
+> +		const void *obj, unsigned long len);
+>  
+>  #endif
+>  
+> diff --git a/arch/arm64/kernel/stacktrace.c b/arch/arm64/kernel/stacktrace.c
+> index e4103e085681..219b90c1de12 100644
+> --- a/arch/arm64/kernel/stacktrace.c
+> +++ b/arch/arm64/kernel/stacktrace.c
+> @@ -145,12 +145,17 @@ NOKPROBE_SYMBOL(unwind_frame);
+>  
+>  static void notrace walk_stackframe(struct task_struct *tsk,
+>  				    struct stackframe *frame,
+> -				    bool (*fn)(void *, unsigned long), void *data)
+> +				    stack_trace_consume_fn fn, void *data)
+>  {
+> +	struct frame_info fi;
+> +
+>  	while (1) {
+>  		int ret;
+>  
+> -		if (!fn(data, frame->pc))
+> +		fi.pc = frame->pc;
+> +		fi.fp = frame->fp;
+> +		fi.prev_fp = frame->prev_fp;
+> +		if (!fn(data, &fi))
+>  			break;
+>  		ret = unwind_frame(tsk, frame);
+>  		if (ret < 0)
+
+As on my prior comment, I don't think we want to alter our generic stack walker
+in this way. If we need more info, I'd prefer to expose this in layers, keeping
+arch_stack_walk unchanged, but having an arm64_stack_walk that can pass some
+arm64-specific data.
+
+> @@ -159,10 +164,10 @@ static void notrace walk_stackframe(struct task_struct
+> *tsk,
+>  }
+>  NOKPROBE_SYMBOL(walk_stackframe);
+>  
+> -static bool dump_backtrace_entry(void *arg, unsigned long where)
+> +static bool dump_backtrace_entry(void *arg, struct frame_info *fi)
+>  {
+>  	char *loglvl = arg;
+> -	printk("%s %pSb\n", loglvl, (void *)where);
+> +	printk("%s %pSb\n", loglvl, (void *)fi->pc);
+>  	return true;
+>  }
+>  
+> @@ -210,3 +215,66 @@ noinline notrace void arch_stack_walk(stack_trace_consume_fn consume_entry,
+>  
+>  	walk_stackframe(task, &frame, consume_entry, cookie);
+>  }
+> +
+> +struct arch_stack_object {
+> +	unsigned long start;
+> +	unsigned long len;
+> +	int flag;
+
+What is "flag" ?
+
+> +};
+> +
+> +static bool arch_stack_object_check(void *data, struct frame_info *fi)
+> +{
+> +	struct arch_stack_object *obj = (struct arch_stack_object *)data;
+> +
+> +	/* Skip the frame of arch_within_stack_frames itself */
+> +	if (fi->prev_fp == 0)
+> +		return true;
+
+That's not what this is skipping. The first time arch_stack_walk() is called,
+it gives the PC of its caller (i.e. arch_within_stack_frames), and it's own
+synthetic FP. The next time around it gives the FP of it's caller.
+
+> +
+> +	/*
+> +	 * low ----------------------------------------------> high
+> +	 * [saved bp][saved ip][args][local vars][saved bp][saved ip]
+> +	 *                     ^----------------^
+> +	 *               allow copies only within here
+> +	 */
+
+This diagram is not valid for arm64. There is no "bp" or "ip", and each stack
+frame can be laid out more arbitrarily relative to the frame record.
+
+> +	if (obj->start + obj->len <= fi->fp) {
+> +		obj->flag = obj->start >=
+> +			fi->prev_fp + 2 * sizeof(void *) ?
+> +			GOOD_FRAME : BAD_STACK;
+
+This check is broken in several ways if there's a stack transition, since the
+placement of fp and prev_fp is legitimately arbitrary.
+
+This would also be a lot clearer if you bailed out early rather than nesting
+checks.
+
+The best thing you can realistically do is check that the object falls entirely
+within a given stack, then check that that no frames intersect the object. You
+don't need prev_fp for that, since you can just check each frame record in
+turn, then bail out once the object has been passed (i.e. once we've hit the
+correct stack, and either seen an FP above it or transitioned to another
+stack).
+
+> +		return false;
+> +	} else
+> +		return true;
+> +}
+> +
+> +/*
+> + * Walks up the stack frames to make sure that the specified object is
+> + * entirely contained by a single stack frame.
+> + *
+> + * Returns:
+> + *	GOOD_FRAME	if within a frame
+> + *	BAD_STACK	if placed across a frame boundary (or outside stack)
+> + *	NOT_STACK	unable to determine (no frame pointers, etc)
+> + */
+
+This is the exact same comment as in the header. My comments from there apply
+here, and one of the two should disappear.
+
+> +int arch_within_stack_frames(const void * const stack,
+> +		const void * const stackend,
+> +		const void *obj, unsigned long len)
+> +{
+> +#if defined(CONFIG_FRAME_POINTER)
+
+As above, this *cannot* be selected on arm64.
+
+> +	struct arch_stack_object object;
+> +	struct pt_regs regs;
+> +
+> +	if (__builtin_frame_address(1) == 0)
+> +		return NOT_STACK;
+
+When do you expect this to happen?
+
+> +
+> +	object.start = (unsigned long)obj;
+> +	object.len = len;
+> +	object.flag = NOT_STACK;
+> +
+> +	regs.regs[29] = (u64)__builtin_frame_address(1);
+
+NAK to making a synthetic pt_regs like this. That an abuse of the existing API,
+and you don't need to do this in the first place.
+
+> +
+> +	arch_stack_walk(arch_stack_object_check, (void *)&object, NULL, &regs);
+
+A void pointer cast is not necessary.
 
 Thanks,
-Zhe
+Mark.
 
->
-> Thanks,
-> Mark.
->
->> +
->>  /**
->>   * stack_trace_consume_fn - Callback for arch_stack_walk()
->>   * @cookie:	Caller supplied pointer handed back by arch_stack_walk()
->>   * @addr:	The stack entry address to consume
->> + * @fi:	The frame information to consume
->>   *
->>   * Return:	True, if the entry was consumed or skipped
->>   *		False, if there is no space left to store
->>   */
->> -typedef bool (*stack_trace_consume_fn)(void *cookie, unsigned long addr);
->> +typedef bool (*stack_trace_consume_fn)(void *cookie, struct frame_info *fi);
->>  /**
->>   * arch_stack_walk - Architecture specific function to walk the stack
->>   * @consume_entry:	Callback which is invoked by the architecture code for
->> diff --git a/kernel/stacktrace.c b/kernel/stacktrace.c
->> index 9ed5ce989415..2d0a2812e92b 100644
->> --- a/kernel/stacktrace.c
->> +++ b/kernel/stacktrace.c
->> @@ -79,7 +79,7 @@ struct stacktrace_cookie {
->>  	unsigned int	len;
->>  };
->>  
->> -static bool stack_trace_consume_entry(void *cookie, unsigned long addr)
->> +static bool stack_trace_consume_entry(void *cookie, struct frame_info *fi)
->>  {
->>  	struct stacktrace_cookie *c = cookie;
->>  
->> @@ -90,15 +90,15 @@ static bool stack_trace_consume_entry(void *cookie, unsigned long addr)
->>  		c->skip--;
->>  		return true;
->>  	}
->> -	c->store[c->len++] = addr;
->> +	c->store[c->len++] = fi->pc;
->>  	return c->len < c->size;
->>  }
->>  
->> -static bool stack_trace_consume_entry_nosched(void *cookie, unsigned long addr)
->> +static bool stack_trace_consume_entry_nosched(void *cookie, struct frame_info *fi)
->>  {
->> -	if (in_sched_functions(addr))
->> +	if (in_sched_functions(fi->pc))
->>  		return true;
->> -	return stack_trace_consume_entry(cookie, addr);
->> +	return stack_trace_consume_entry(cookie, fi);
->>  }
->>  
->>  /**
->> -- 
->> 2.25.1
->>
-
+> +
+> +	return object.flag;
+> +#else
+> +	return NOT_STACK;
+> +#endif
+> +}
+> -- 
+> 2.25.1
+> 
