@@ -1,57 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D59507BEA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 23:28:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82BA507C08
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 23:39:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjcNL1B48z3bdF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 07:28:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kjcdb6WxNz2ypD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 07:39:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k3qUvGot;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=F9g5t4Hg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=nathan@kernel.org;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b30;
+ helo=mail-yb1-xb30.google.com; envelope-from=linus.walleij@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=k3qUvGot; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=F9g5t4Hg; dkim-atps=neutral
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com
+ [IPv6:2607:f8b0:4864:20::b30])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjcMg5tMfz2xlF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 07:27:27 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id BE25DB81A62;
- Tue, 19 Apr 2022 21:27:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5954C385A7;
- Tue, 19 Apr 2022 21:27:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650403641;
- bh=J4l6nOhwaGP9gwFmqdP8jxouA835/1GgWpS/8DKzJkg=;
- h=Date:From:To:Cc:Subject:From;
- b=k3qUvGotzVuqDlNl1O1CY7Rh+NP1XAKEDxdjSAQA6nUfeDRU1GNpC17/vPuW6jM1J
- W3H+W13+Ct2s+3btCEWGcsDnhdq5IN5tykWlsNTSWR/Vlfg36a9Gbrc4jra+sBL+wE
- TDJ3vN2A9zpm4AFLu8XDlubcD80FEXqL80xgmQpXJyF5ME5O2KusPi7conjaz6qJHr
- aiBaKhYDwdJNjz5b9fYa0Zb6S0usS655i2XDVAB5PpD9yk7OVxqjjhNwVRvGQUAMWm
- W7WJjT55au+sgRubuSHMMyfHDupZ1U2/7Gk0lSuwKIAog9fuMSTF2zf8QqWitn1zMx
- I/drdBGddnN5A==
-Date: Tue, 19 Apr 2022 14:27:19 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: Apply d799769188529abc6cbf035a10087a51f7832b6b to 5.17 and 5.15?
-Message-ID: <Yl8pNxSGUgeHZ1FT@dev-arch.thelio-3990X>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kjcd04rPvz2yY1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 07:38:57 +1000 (AEST)
+Received: by mail-yb1-xb30.google.com with SMTP id r189so13745716ybr.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 14:38:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=lpixaXj6qNPyfuQi+711f00czQF/Nnw+LVQXzBb+S8Q=;
+ b=F9g5t4HgbUdVEO+7E0ZaRfMM+SEy8iU+ns1cW1A9oOsOFSSwkkuANuzTMzZmRjMKtx
+ No4Q1IoHiqt9yd6rB84MXHA+yXX6YwSNUiO66pvOO5eMIFO7uEtJlyPpRqVKtDKZIUak
+ iwWZN0L8aq9SVoLAoPswC9n7QVWCW+F+R3XIXHZ1ywr4IWivMjByCVzO7jtS1yMaQGh4
+ ygPAIOfmqRqoziZ4QlKCxcWJ2C98HH0SprzpWLQ/FQ+Zu/eXifGBrPPlWgvct9cOBIfa
+ 0v4U0L9yQZi8bxosZ9TIsRr50S/J6T5vJXHVjubMKBqYfGQXVXVWz2/9pZFmP1t612dR
+ B/3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=lpixaXj6qNPyfuQi+711f00czQF/Nnw+LVQXzBb+S8Q=;
+ b=1n6M56MAYnQntHylufaiKXn/F4bWUJqK2crr9jE+f2lvl1SQIy3REOTNVvXnB99D8n
+ 5DWmQr4NJZZwyFm+KhWsC4KvalgALxTuKQkto25Lc73xhH0ho6BCH3uEut4McHwvAG80
+ m8SIhHKj9hb4PcPK3hoUSqnJvERCr/Na/+Hs55HZ7RBPD09GbMrGbxsAxt21F+0TYtoS
+ 4f8oOyYxVB26mUwHIdeHEP61MRcbij9k+x1JmIZq/Kgr1GX1mo3HVmHL9PeR/PORBok9
+ GPI8Bbg6tOAXPUPp3zLuL0blNcN9Spewmbi1skRUb+0CwSpB2rp/UtkQ1Uq21UH21zL3
+ ELYQ==
+X-Gm-Message-State: AOAM533onaxpDqwT3E/htJQdAaLSt0Dcbbz864eSjmT5HzcQra4Lqxfv
+ pjEnPeslTAljyPNlMK8muAkgtY68G1EOyQl5gsj3mg==
+X-Google-Smtp-Source: ABdhPJxLVTTgwCGxy+lO7TQGdgaHtKXCvsmRfdXfncWdJZBji/2RvB6wApY4h1lwCArWlAwDJd3CkXS8AyglvAtlQEk=
+X-Received: by 2002:a25:a12a:0:b0:644:e94e:5844 with SMTP id
+ z39-20020a25a12a000000b00644e94e5844mr12447288ybh.492.1650404334359; Tue, 19
+ Apr 2022 14:38:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
+ <CACRpkdbUWE8knM=9uUVLTX792Y8_J1aPj4KtFh=yJxaKi+ZqRw@mail.gmail.com>
+ <Yk2PE7+oEEtGri95@smile.fi.intel.com>
+In-Reply-To: <Yk2PE7+oEEtGri95@smile.fi.intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Tue, 19 Apr 2022 23:38:43 +0200
+Message-ID: <CACRpkdbqfNiWQG6ayqMXACby4xkW0pY6JhdYE-x+pWkSxJU5TQ@mail.gmail.com>
+Subject: Re: [PATCH v1 1/1] powerpc/83xx/mpc8349emitx: Get rid of of_node
+ assignment
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,34 +78,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Tom Rix <trix@redhat.com>,
- llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
- stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, linux-kernel@vger.kernel.org,
+ Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Greg, Sasha, and Michael,
+On Wed, Apr 6, 2022 at 3:02 PM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> On Mon, Mar 28, 2022 at 03:16:08PM +0200, Linus Walleij wrote:
+> > On Wed, Mar 23, 2022 at 6:43 PM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > > Let GPIO library to assign of_node from the parent device.
+> > > This allows to move GPIO library and drivers to use fwnode
+> > > APIs instead of being stuck with OF-only interfaces.
+> > >
+> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >
+> > That's a nice patch.
+> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>
+> Thanks!
+>
+> Can we have this applied now?
 
-Commit d79976918852 ("powerpc/64: Add UADDR64 relocation support") fixes
-a boot failure with CONFIG_RELOCATABLE=y kernels linked with recent
-versions of ld.lld [1]. Additionally, it resolves a separate boot
-failure that Paul Menzel reported [2] with ld.lld 13.0.0. Is this a
-reasonable backport for 5.17 and 5.15? It applies cleanly, resolves both
-problems, and does not appear to cause any other issues in my testing
-for both trees but I was curious what Michael's opinion was, as I am far
-from a PowerPC expert.
+I think Michael Ellerman could help with this?
 
-This change does apply cleanly to 5.10 (I did not try earlier branches)
-but there are other changes needed for ld.lld to link CONFIG_RELOCATABLE
-kernels in that branch so to avoid any regressions, I think it is safe
-to just focus on 5.15 and 5.17.
+Michael?
 
-Paul, it would not hurt to confirm the results of my testing with your
-setup, just to make sure I did not miss anything :)
-
-[1]: https://github.com/ClangBuiltLinux/linux/issues/1581
-[2]: https://lore.kernel.org/Yg2h2Q2vXFkkLGTh@dev-arch.archlinux-ax161/
-
-Cheers,
-Nathan
+Yours,
+Linus Walleij
