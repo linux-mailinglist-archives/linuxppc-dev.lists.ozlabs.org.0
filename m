@@ -2,111 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF8B506930
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 12:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB855506935
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 12:57:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjLNC4V8Nz2ynr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 20:56:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KjLNw689fz3bZN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 20:57:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P1T979Cb;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Aw71b+3z;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hixjpFQx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42f;
- helo=mail-wr1-x42f.google.com; envelope-from=habetsm.xilinx@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=mlevitsk@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=P1T979Cb; dkim-atps=neutral
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com
- [IPv6:2a00:1450:4864:20::42f])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Aw71b+3z; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=hixjpFQx; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjG7C0hDMz2xrb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 17:45:25 +1000 (AEST)
-Received: by mail-wr1-x42f.google.com with SMTP id c10so21256279wrb.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 00:45:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:mail-followup-to:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=LIDXo/Uity2xr0NOefpQVn0crCBfVXuQDDJyi/aflIk=;
- b=P1T979CbMsI2SUmYhQenmVVAIhGym62LpiPwyhu9mqZxFcDQfYblpBVJSI318EvEkU
- 8qraQoEDiW07OJeqNLpO1y4LicWptHus+FDeTQ+ri0fKDi0Gd3qjTzchzJWw1eV3J2P/
- ur+/YV9SpThD14a+M4Xmx2nBHefr2HCF9i0g9r/v0YFck8Sp1dDQHrhoCRX/D8LLD+nv
- hSbMh/wtA7UytVfbYUIxc8Vd3UCJhC0dZWi5dnl6xtPjbpaBDhqNaROJjuoWcG/xdpM/
- cfT1g6fLQGRIHJeLkDOGbTqf4WV/fdLr/5gECYLOYf83BQnlZ2tdaiA8le5fVPy13rCW
- ro6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id
- :mail-followup-to:references:mime-version:content-disposition
- :in-reply-to:user-agent;
- bh=LIDXo/Uity2xr0NOefpQVn0crCBfVXuQDDJyi/aflIk=;
- b=udOGfO8uMF58PaAhQ/ZgfRcqGdRcuqnPB0dnl/V+5iMwrA6bEj8CLuDHDMsTYxvcjl
- BnH5w5UpSraT2kvf2BrahDYsAeyPJhTK8fqYXOuZxnqqpHoLPDiiCs89hpD5p481MEh/
- PMcqGRgeoHOEGcBtKIHmDAPw6Kq1KwYFM9xEpmff9oWmSrDEOeC1za3uWypCvY/apCsX
- skTr9PAKN5iCfWO4sJCgwsDIB5VqA1iJ7tkGLX+Lvy3iGqDcTObciCqYPzvfYcAuZCtM
- drs4iJVihTd+vS3XzuUSnRaM8ZXwGlWmo02k6cICil6lMiNjV49zO/l0EdmZgdfNM0Ir
- xXjQ==
-X-Gm-Message-State: AOAM530KzFpbVOVNxBm7hEL9hwXir9TxBAeIU3tThnvFeL1KSa1LOAeD
- 6pfJPTNM4mwx8VKwt5Og1TU=
-X-Google-Smtp-Source: ABdhPJzezuCr1A2N5D3o9C3Ys+bbuuIe1wYYoQKgg7RlsTX7w5PNcndV/T40ockclreuq/ypyy6ZLw==
-X-Received: by 2002:adf:e2cc:0:b0:203:e8ba:c709 with SMTP id
- d12-20020adfe2cc000000b00203e8bac709mr10556484wrj.713.1650354316985; 
- Tue, 19 Apr 2022 00:45:16 -0700 (PDT)
-Received: from gmail.com ([81.168.73.77]) by smtp.gmail.com with ESMTPSA id
- h10-20020a05600c414a00b0038ebb6884d8sm22941157wmm.0.2022.04.19.00.45.15
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 19 Apr 2022 00:45:16 -0700 (PDT)
-Date: Tue, 19 Apr 2022 08:45:13 +0100
-From: Martin Habets <habetsm.xilinx@gmail.com>
-To: Jakob Koschel <jakobkoschel@gmail.com>
-Subject: Re: [PATCH net-next v4 14/18] sfc: Remove usage of list iterator for
- list_add() after the loop body
-Message-ID: <20220419074513.bgqmi3c5ydogpytj@gmail.com>
-Mail-Followup-To: Jakob Koschel <jakobkoschel@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew@lunn.ch>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Vladimir Oltean <olteanv@gmail.com>,
- Lars Povlsen <lars.povlsen@microchip.com>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- UNGLinuxDriver@microchip.com, Ariel Elior <aelior@marvell.com>,
- Manish Chopra <manishc@marvell.com>,
- Edward Cree <ecree.xilinx@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Jiri Pirko <jiri@resnulli.us>,
- Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
- Yonghong Song <yhs@fb.com>,
- John Fastabend <john.fastabend@gmail.com>,
- KP Singh <kpsingh@kernel.org>,
- Casper Andersson <casper.casan@gmail.com>,
- Bjarni Jonasson <bjarni.jonasson@microchip.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Arnd Bergmann <arnd@arndb.de>,
- Colin Ian King <colin.king@intel.com>,
- Eric Dumazet <edumazet@google.com>, Xu Wang <vulab@iscas.ac.cn>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- bpf@vger.kernel.org, Mike Rapoport <rppt@kernel.org>,
- Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Cristiano Giuffrida <c.giuffrida@vu.nl>,
- "Bos, H.J." <h.j.bos@vu.nl>
-References: <20220415122947.2754662-1-jakobkoschel@gmail.com>
- <20220415122947.2754662-15-jakobkoschel@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KjHh63qJ8z2y8R
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 18:55:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650358528;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sAp+F+npHVI/LvkJesk2bVKFg1Wa6g6pN0S+Js80XoI=;
+ b=Aw71b+3zqHHKd4FVZYq1L0a274qEGVML2saaD11UiuUz85rL/gTxz2E9e4NIQcMtTHqFqK
+ vFE42w1zeJ6yzBvNJeEGTO/UKP4r5W/dSxUojNDhkGuOKCsnLzViigrM8FGpssN11v8Lqs
+ kfjyFVYYUbSaTBmVLxsRu9WLwYaLPQQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650358529;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=sAp+F+npHVI/LvkJesk2bVKFg1Wa6g6pN0S+Js80XoI=;
+ b=hixjpFQx5ywOZnMBuC/Q/KLk7b8NKp+aYryc3+qNs9HNYF4/WTCpgthlpUBv1xY9rvUmqY
+ uwknRI7yfG3t3DqRF27Qm/BxR31EwVlIcdJHwyOfUDBlb/cotqFYve5AbAq+XDoDC+QCt5
+ sbQPSuAFfX64DgUacnSCJBYfVuW3is8=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-121-cvwRzkmxM9Szm0_kiSLc0w-1; Tue, 19 Apr 2022 04:55:24 -0400
+X-MC-Unique: cvwRzkmxM9Szm0_kiSLc0w-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C56EF3811F2D;
+ Tue, 19 Apr 2022 08:55:23 +0000 (UTC)
+Received: from starship (unknown [10.40.194.231])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 465364087D60;
+ Tue, 19 Apr 2022 08:55:19 +0000 (UTC)
+Message-ID: <204c7265de2d69ed240d18e30c7595702277cdbb.camel@redhat.com>
+Subject: Re: [PATCH 1/3] KVM: x86: Don't re-acquire SRCU lock in
+ complete_emulated_io()
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: Sean Christopherson <seanjc@google.com>, Anup Patel
+ <anup@brainfault.org>,  Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,  Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
+ <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, Paolo
+ Bonzini <pbonzini@redhat.com>
+Date: Tue, 19 Apr 2022 11:55:18 +0300
+In-Reply-To: <20220415004343.2203171-2-seanjc@google.com>
+References: <20220415004343.2203171-1-seanjc@google.com>
+ <20220415004343.2203171-2-seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220415122947.2754662-15-jakobkoschel@gmail.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
 X-Mailman-Approved-At: Tue, 19 Apr 2022 20:56:27 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -119,87 +94,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
- Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>,
- "David S. Miller" <davem@davemloft.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- "Bos, H.J." <h.j.bos@vu.nl>, linux-arm-kernel@lists.infradead.org,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Vivien Didelot <vivien.didelot@gmail.com>,
- Bjarni Jonasson <bjarni.jonasson@microchip.com>, Jiri Pirko <jiri@resnulli.us>,
- Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Yonghong Song <yhs@fb.com>,
- Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Lars Povlsen <lars.povlsen@microchip.com>,
- Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- UNGLinuxDriver@microchip.com, Edward Cree <ecree.xilinx@gmail.com>,
- Casper Andersson <casper.casan@gmail.com>, Xu Wang <vulab@iscas.ac.cn>,
- Cristiano Giuffrida <c.giuffrida@vu.nl>, bpf@vger.kernel.org,
- Vladimir Oltean <olteanv@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Martin KaFai Lau <kafai@fb.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Wanpeng Li <wanpengli@tencent.com>, kvm@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>, Joerg Roedel <joro@8bytes.org>,
+ linux-kernel@vger.kernel.org, kvm-riscv@lists.infradead.org,
+ Atish Patra <atishp@atishpatra.org>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 15, 2022 at 02:29:43PM +0200, Jakob Koschel wrote:
-> In preparation to limit the scope of a list iterator to the list
-> traversal loop, use a dedicated pointer pointing to the location
-> where the element should be inserted [1].
+On Fri, 2022-04-15 at 00:43 +0000, Sean Christopherson wrote:
+> Don't re-acquire SRCU in complete_emulated_io() now that KVM acquires the
+> lock in kvm_arch_vcpu_ioctl_run().  More importantly, don't overwrite
+> vcpu->srcu_idx.  If the index acquired by complete_emulated_io() differs
+> from the one acquired by kvm_arch_vcpu_ioctl_run(), KVM will effectively
+> leak a lock and hang if/when synchronize_srcu() is invoked for the
+> relevant grace period.
 > 
-> Before, the code implicitly used the head when no element was found
-> when using &new->list. The new 'pos' variable is set to the list head
-> by default and overwritten if the list exits early, marking the
-> insertion point for list_add().
-> 
-> Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+> Fixes: 8d25b7beca7e ("KVM: x86: pull kvm->srcu read-side to kvm_arch_vcpu_ioctl_run")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  drivers/net/ethernet/sfc/rx_common.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  arch/x86/kvm/x86.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/sfc/rx_common.c b/drivers/net/ethernet/sfc/rx_common.c
-> index 1b22c7be0088..716847ba7038 100644
-> --- a/drivers/net/ethernet/sfc/rx_common.c
-> +++ b/drivers/net/ethernet/sfc/rx_common.c
-> @@ -556,6 +556,7 @@ efx_rx_packet_gro(struct efx_channel *channel, struct efx_rx_buffer *rx_buf,
->  struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index ab336f7c82e4..f35fe09de59d 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -10450,12 +10450,7 @@ static int vcpu_run(struct kvm_vcpu *vcpu)
+>  
+>  static inline int complete_emulated_io(struct kvm_vcpu *vcpu)
 >  {
->  	struct list_head *head = &efx->rss_context.list;
-> +	struct list_head *pos = head;
-
-This violates the reverse Xmas list policy. This definition should be
-1 line further down.
-
-Martin
-
->  	struct efx_rss_context *ctx, *new;
->  	u32 id = 1; /* Don't use zero, that refers to the master RSS context */
->  
-> @@ -563,8 +564,10 @@ struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
->  
->  	/* Search for first gap in the numbering */
->  	list_for_each_entry(ctx, head, list) {
-> -		if (ctx->user_id != id)
-> +		if (ctx->user_id != id) {
-> +			pos = &ctx->list;
->  			break;
-> +		}
->  		id++;
->  		/* Check for wrap.  If this happens, we have nearly 2^32
->  		 * allocated RSS contexts, which seems unlikely.
-> @@ -582,7 +585,7 @@ struct efx_rss_context *efx_alloc_rss_context_entry(struct efx_nic *efx)
->  
->  	/* Insert the new entry into the gap */
->  	new->user_id = id;
-> -	list_add_tail(&new->list, &ctx->list);
-> +	list_add_tail(&new->list, pos);
->  	return new;
+> -	int r;
+> -
+> -	vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
+> -	r = kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
+> -	srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
+> -	return r;
+> +	return kvm_emulate_instruction(vcpu, EMULTYPE_NO_DECODE);
 >  }
 >  
-> -- 
-> 2.25.1
+>  static int complete_emulated_pio(struct kvm_vcpu *vcpu)
+
+I wonder how this did work....
+
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+
+Best regards,
+	Maxim Levitsky
+
