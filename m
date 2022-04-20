@@ -2,71 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82BA507C08
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Apr 2022 23:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1DE507F4A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 05:04:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kjcdb6WxNz2ypD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 07:39:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kjlrx1CyYz3046
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 13:04:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=F9g5t4Hg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Ts5wpZle;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::b30;
- helo=mail-yb1-xb30.google.com; envelope-from=linus.walleij@linaro.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::735;
+ helo=mail-qk1-x735.google.com; envelope-from=cgel.zte@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=F9g5t4Hg; dkim-atps=neutral
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com
- [IPv6:2607:f8b0:4864:20::b30])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=Ts5wpZle; dkim-atps=neutral
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com
+ [IPv6:2607:f8b0:4864:20::735])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kjcd04rPvz2yY1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 07:38:57 +1000 (AEST)
-Received: by mail-yb1-xb30.google.com with SMTP id r189so13745716ybr.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 14:38:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=lpixaXj6qNPyfuQi+711f00czQF/Nnw+LVQXzBb+S8Q=;
- b=F9g5t4HgbUdVEO+7E0ZaRfMM+SEy8iU+ns1cW1A9oOsOFSSwkkuANuzTMzZmRjMKtx
- No4Q1IoHiqt9yd6rB84MXHA+yXX6YwSNUiO66pvOO5eMIFO7uEtJlyPpRqVKtDKZIUak
- iwWZN0L8aq9SVoLAoPswC9n7QVWCW+F+R3XIXHZ1ywr4IWivMjByCVzO7jtS1yMaQGh4
- ygPAIOfmqRqoziZ4QlKCxcWJ2C98HH0SprzpWLQ/FQ+Zu/eXifGBrPPlWgvct9cOBIfa
- 0v4U0L9yQZi8bxosZ9TIsRr50S/J6T5vJXHVjubMKBqYfGQXVXVWz2/9pZFmP1t612dR
- B/3w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KjlrG4YP2z2xtQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 13:04:13 +1000 (AEST)
+Received: by mail-qk1-x735.google.com with SMTP id j9so375152qkg.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Apr 2022 20:04:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yqneS1sFpDsOyrIE2+1UdTS/4fNFnUPRBLnd3RmNOTc=;
+ b=Ts5wpZlehNTldV56YalrJSp5dhybuu6s+42AgTPpMsMwjFt1Lis7Rt+xmK9FiGrio2
+ HqLSB4P+IzJOw+6Bkz6PTrg+YcegYXzJGd4zlkOm30JZB+yWwqKV7qq9mHJMgm9uucUv
+ /ylGtHPl592ncy1Ko3mPGdSmR3RmOr7Ar//h7ITZwPp/wsPT6/qocvoCupoZwIFDzDSf
+ fYcOGN48iPY8aBPztkQacG0OHWYO35uCtj4BqSNdu25D3pTWUH0OjeCD8FbVBoa8L1Aj
+ sDsFDbYDyfEySElrOHYUPcqUKXIq5uonPN1JW7eM9e1SOfRmSiKxCj5zvxMMKj7c6X/3
+ FsnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lpixaXj6qNPyfuQi+711f00czQF/Nnw+LVQXzBb+S8Q=;
- b=1n6M56MAYnQntHylufaiKXn/F4bWUJqK2crr9jE+f2lvl1SQIy3REOTNVvXnB99D8n
- 5DWmQr4NJZZwyFm+KhWsC4KvalgALxTuKQkto25Lc73xhH0ho6BCH3uEut4McHwvAG80
- m8SIhHKj9hb4PcPK3hoUSqnJvERCr/Na/+Hs55HZ7RBPD09GbMrGbxsAxt21F+0TYtoS
- 4f8oOyYxVB26mUwHIdeHEP61MRcbij9k+x1JmIZq/Kgr1GX1mo3HVmHL9PeR/PORBok9
- GPI8Bbg6tOAXPUPp3zLuL0blNcN9Spewmbi1skRUb+0CwSpB2rp/UtkQ1Uq21UH21zL3
- ELYQ==
-X-Gm-Message-State: AOAM533onaxpDqwT3E/htJQdAaLSt0Dcbbz864eSjmT5HzcQra4Lqxfv
- pjEnPeslTAljyPNlMK8muAkgtY68G1EOyQl5gsj3mg==
-X-Google-Smtp-Source: ABdhPJxLVTTgwCGxy+lO7TQGdgaHtKXCvsmRfdXfncWdJZBji/2RvB6wApY4h1lwCArWlAwDJd3CkXS8AyglvAtlQEk=
-X-Received: by 2002:a25:a12a:0:b0:644:e94e:5844 with SMTP id
- z39-20020a25a12a000000b00644e94e5844mr12447288ybh.492.1650404334359; Tue, 19
- Apr 2022 14:38:54 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=yqneS1sFpDsOyrIE2+1UdTS/4fNFnUPRBLnd3RmNOTc=;
+ b=LPYDzWvayG95uegbvBeptxdFgGAZlIAWcpMMa2ZfKQTzAxM8bzKp0ydrspS6/cunAL
+ 9vUsMheuNV3gt+hzY3/vWrgRGKubq+t6/Ksm0yjCdkI2mE3yF/FywBXigwIWPxyrcWQV
+ mDCU8vYVuvPvEDWdrBNMo6ImQdRVOy/6uw9pCDC1/IUrkPjnS5bUTFSbI9ELSfZRCya9
+ nmlC50iPpQq4k9PT0zCHP71wbjYxutZRsZAL2fAtvj03WE5Jxlo97zi93Ab7CFvXfsDF
+ J3EuQLBw4CrMmOnaUUn2wZtGtgJERk+0L+vAUto9p0erYELaKVwSTiltnCXtv42OWzbn
+ zyRw==
+X-Gm-Message-State: AOAM532Ix5jst95Fx2lK4fj9/qUzrUsRIFiGn2T/hlta2d6NTopOMbmG
+ 8sZ9OcL0b6OSIrUrP2Bjv7o=
+X-Google-Smtp-Source: ABdhPJx/s+b4syYfQni7rUQWx2AyU+UcLFCRd7P0jGC6d1QDovYVBI1ayiBLkCungiG7Xd4kM0xQww==
+X-Received: by 2002:a05:620a:16b3:b0:69e:bf77:778b with SMTP id
+ s19-20020a05620a16b300b0069ebf77778bmr4284035qkj.642.1650423849002; 
+ Tue, 19 Apr 2022 20:04:09 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+ by smtp.gmail.com with ESMTPSA id
+ v23-20020ae9e317000000b0069ea555b54dsm901109qkf.128.2022.04.19.20.04.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Apr 2022 20:04:08 -0700 (PDT)
+From: cgel.zte@gmail.com
+X-Google-Original-From: chi.minghao@zte.com.cn
+To: shengjiu.wang@gmail.com
+Subject: [PATCH] ASoC: fsl_asrc: using pm_runtime_resume_and_get to simplify
+ the code
+Date: Wed, 20 Apr 2022 03:04:02 +0000
+Message-Id: <20220420030402.2575755-1-chi.minghao@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
- <CACRpkdbUWE8knM=9uUVLTX792Y8_J1aPj4KtFh=yJxaKi+ZqRw@mail.gmail.com>
- <Yk2PE7+oEEtGri95@smile.fi.intel.com>
-In-Reply-To: <Yk2PE7+oEEtGri95@smile.fi.intel.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 19 Apr 2022 23:38:43 +0200
-Message-ID: <CACRpkdbqfNiWQG6ayqMXACby4xkW0pY6JhdYE-x+pWkSxJU5TQ@mail.gmail.com>
-Subject: Re: [PATCH v1 1/1] powerpc/83xx/mpc8349emitx: Get rid of of_node
- assignment
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,35 +81,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, linux-kernel@vger.kernel.org,
- Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, Zeal Robot <zealci@zte.com.cn>,
+ lgirdwood@gmail.com, Minghao Chi <chi.minghao@zte.com.cn>,
+ linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com, broonie@kernel.org,
+ festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 6, 2022 at 3:02 PM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
-> On Mon, Mar 28, 2022 at 03:16:08PM +0200, Linus Walleij wrote:
-> > On Wed, Mar 23, 2022 at 6:43 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> >
-> > > Let GPIO library to assign of_node from the parent device.
-> > > This allows to move GPIO library and drivers to use fwnode
-> > > APIs instead of being stuck with OF-only interfaces.
-> > >
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >
-> > That's a nice patch.
-> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
->
-> Thanks!
->
-> Can we have this applied now?
+From: Minghao Chi <chi.minghao@zte.com.cn>
 
-I think Michael Ellerman could help with this?
+Using pm_runtime_resume_and_get() to replace pm_runtime_get_sync and
+pm_runtime_put_noidle. This change is just to simplify the code, no
+actual functional changes.
 
-Michael?
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+---
+ sound/soc/fsl/fsl_asrc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Yours,
-Linus Walleij
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index d7d1536a4f37..31a7f9aac6e3 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -1211,11 +1211,9 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+ 			goto err_pm_disable;
+ 	}
+ 
+-	ret = pm_runtime_get_sync(&pdev->dev);
+-	if (ret < 0) {
+-		pm_runtime_put_noidle(&pdev->dev);
++	ret = pm_runtime_resume_and_get(&pdev->dev);
++	if (ret < 0)
+ 		goto err_pm_get_sync;
+-	}
+ 
+ 	ret = fsl_asrc_init(asrc);
+ 	if (ret) {
+-- 
+2.25.1
+
+
