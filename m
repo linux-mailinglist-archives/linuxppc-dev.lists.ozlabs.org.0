@@ -1,59 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A0450802C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 06:36:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9004508033
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 06:38:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjntX3RtBz3cM6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 14:36:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kjnx86Jlxz3dyC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 14:38:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WXhD4tb8;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WXhD4tb8;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com;
- envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 949 seconds by postgrey-1.36 at boromir;
- Wed, 20 Apr 2022 13:01:33 AEST
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kjln91DgMz2xnM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 13:01:31 +1000 (AEST)
-Received: from kwepemi500007.china.huawei.com (unknown [172.30.72.54])
- by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4KjlKp3drSzCrYb;
- Wed, 20 Apr 2022 10:41:18 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- kwepemi500007.china.huawei.com (7.221.188.207) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 20 Apr 2022 10:45:43 +0800
-Received: from localhost.localdomain (10.175.112.125) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 20 Apr 2022 10:45:41 +0800
-From: Tong Tiangen <tongtiangen@huawei.com>
-To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Robin Murphy <robin.murphy@arm.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH -next v4 7/7] arm64: add cow to machine check safe
-Date: Wed, 20 Apr 2022 03:04:18 +0000
-Message-ID: <20220420030418.3189040-8-tongtiangen@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220420030418.3189040-1-tongtiangen@huawei.com>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
+ smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=mlevitsk@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=WXhD4tb8; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=WXhD4tb8; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KjnvY1D8zz3dQj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 14:37:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650429429;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mQOHNPZTUOaysYmSTDrA55i6Fl6EOOvTznA+1gLQJg4=;
+ b=WXhD4tb80H0eMZuv5IAHidJjMt9pvIONDRRkFvAgcdEM/HtDJQQcufu6UNW5wziCUzBQiW
+ S687C/VYLkZq66t4JSWbDmwJdHr0rrUlGMZh0uDMiurPRRS9jgP/0Rr5/Z5V+3Yti8ppLp
+ DHpujgEVzVV9FK34w2dGPRdhpC/yB0c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650429429;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mQOHNPZTUOaysYmSTDrA55i6Fl6EOOvTznA+1gLQJg4=;
+ b=WXhD4tb80H0eMZuv5IAHidJjMt9pvIONDRRkFvAgcdEM/HtDJQQcufu6UNW5wziCUzBQiW
+ S687C/VYLkZq66t4JSWbDmwJdHr0rrUlGMZh0uDMiurPRRS9jgP/0Rr5/Z5V+3Yti8ppLp
+ DHpujgEVzVV9FK34w2dGPRdhpC/yB0c=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-57-QZo87eu1MGGvqboxyXWg5g-1; Wed, 20 Apr 2022 00:37:05 -0400
+X-MC-Unique: QZo87eu1MGGvqboxyXWg5g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 109D3800B28;
+ Wed, 20 Apr 2022 04:37:04 +0000 (UTC)
+Received: from starship (unknown [10.40.194.231])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id DB67214583EE;
+ Wed, 20 Apr 2022 04:36:58 +0000 (UTC)
+Message-ID: <ad0023fd2ea0297e7bfb8a6a9535b2b8b8f56093.camel@redhat.com>
+Subject: Re: [PATCH 3/3] KVM: Add helpers to wrap vcpu->srcu_idx and yell if
+ it's abused
+From: Maxim Levitsky <mlevitsk@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 20 Apr 2022 07:36:57 +0300
+In-Reply-To: <Yl7ZMJ/takmHh7tY@google.com>
+References: <20220415004343.2203171-1-seanjc@google.com>
+ <20220415004343.2203171-4-seanjc@google.com>
+ <5b561bf1a0bbf140ea09d516f946a4e8fee8dd2d.camel@redhat.com>
+ <Yl7ZMJ/takmHh7tY@google.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5 (3.36.5-2.fc32) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Wed, 20 Apr 2022 14:34:53 +1000
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,309 +90,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Tong Tiangen <tongtiangen@huawei.com>, Guohanjun <guohanjun@huawei.com>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Wanpeng Li <wanpengli@tencent.com>,
+ Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Joerg Roedel <joro@8bytes.org>, Atish Patra <atishp@atishpatra.org>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the cow(copy on write) processing, the data of the user process is
-copied, when hardware memory error is encountered during copy, only the
-relevant processes are affected, so killing the user process and isolate
-the user page with hardware memory errors is a more reasonable choice than
-kernel panic.
+On Tue, 2022-04-19 at 15:45 +0000, Sean Christopherson wrote:
+> On Tue, Apr 19, 2022, Maxim Levitsky wrote:
+> > On Fri, 2022-04-15 at 00:43 +0000, Sean Christopherson wrote:
+> > > Add wrappers to acquire/release KVM's SRCU lock when stashing the index
+> > > in vcpu->src_idx, along with rudimentary detection of illegal usage,
+> > > e.g. re-acquiring SRCU and thus overwriting vcpu->src_idx.  Because the
+> > > SRCU index is (currently) either 0 or 1, illegal nesting bugs can go
+> > > unnoticed for quite some time and only cause problems when the nested
+> > > lock happens to get a different index.
+> > > 
+> > > Wrap the WARNs in PROVE_RCU=y, and make them ONCE, otherwise KVM will
+> > > likely yell so loudly that it will bring the kernel to its knees.
+> > > 
+> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > ---
+> 
+> ...
+> 
+> > Looks good to me overall.
+> > 
+> > Note that there are still places that acquire the lock and store the idx into
+> > a local variable, for example kvm_xen_vcpu_set_attr and such.
+> > I didn't check yet if these should be converted as well.
+> 
+> Using a local variable is ok, even desirable.  Nested/multiple readers is not an
+> issue, the bug fixed by patch 1 is purely that kvm_vcpu.srcu_idx gets corrupted.
 
-Add new helper copy_page_mc() which provide a page copy implementation with
-machine check safe. At present, only used in cow. In future, we can expand
-more scenes. As long as the consequences of page copy failure are not
-fatal(eg: only affect user process), we can use this helper.
+Makes sense. I still recal *that* bug in AVIC inhibition where that srcu lock was
+a major PITA, but now I remember that it was not due to nesting of the lock,
+but rather fact that we attempted to call syncronize_srcu or something like that
+with it held.
 
-The copy_page_mc() in copy_page_mc.S is largely borrows from copy_page()
-in copy_page.S and the main difference is copy_page_mc() add extable entry
-to every load/store insn to support machine check safe. largely to keep the
-patch simple. If needed those optimizations can be folded in.
 
-Add new extable type EX_TYPE_COPY_PAGE_MC which used in copy_page_mc().
+> 
+> In an ideal world, KVM would _only_ track the SRCU index in local variables, but
+> that would require plumbing the local variable down into vcpu_enter_guest() and
+> kvm_vcpu_block() so that SRCU can be unlocked prior to entering the guest or
+> scheduling out the vCPU.
+> 
+It all makes sense now - thanks.
 
-This type only be processed in fixup_exception_mc(), The reason is that
-copy_page_mc() is consistent with copy_page() except machine check safe is
-considered, and copy_page() do not need to consider exception fixup.
-
-Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
----
- arch/arm64/include/asm/asm-extable.h |  5 ++
- arch/arm64/include/asm/page.h        | 10 ++++
- arch/arm64/lib/Makefile              |  2 +
- arch/arm64/lib/copy_page_mc.S        | 86 ++++++++++++++++++++++++++++
- arch/arm64/mm/copypage.c             | 36 ++++++++++--
- arch/arm64/mm/extable.c              |  2 +
- include/linux/highmem.h              |  8 +++
- mm/memory.c                          |  2 +-
- 8 files changed, 144 insertions(+), 7 deletions(-)
- create mode 100644 arch/arm64/lib/copy_page_mc.S
-
-diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
-index 80410899a9ad..74c056ddae15 100644
---- a/arch/arm64/include/asm/asm-extable.h
-+++ b/arch/arm64/include/asm/asm-extable.h
-@@ -14,6 +14,7 @@
- /* _MC indicates that can fixup from machine check errors */
- #define EX_TYPE_UACCESS_MC		5
- #define EX_TYPE_UACCESS_MC_ERR_ZERO	6
-+#define EX_TYPE_COPY_PAGE_MC		7
- 
- #ifdef __ASSEMBLY__
- 
-@@ -42,6 +43,10 @@
- 	__ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_UACCESS_MC, 0)
- 	.endm
- 
-+	.macro          _asm_extable_copy_page_mc, insn, fixup
-+	__ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_COPY_PAGE_MC, 0)
-+	.endm
-+
- /*
-  * Create an exception table entry for `insn` if `fixup` is provided. Otherwise
-  * do nothing.
-diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
-index 993a27ea6f54..832571a7dddb 100644
---- a/arch/arm64/include/asm/page.h
-+++ b/arch/arm64/include/asm/page.h
-@@ -29,6 +29,16 @@ void copy_user_highpage(struct page *to, struct page *from,
- void copy_highpage(struct page *to, struct page *from);
- #define __HAVE_ARCH_COPY_HIGHPAGE
- 
-+#ifdef CONFIG_ARCH_HAS_COPY_MC
-+extern void copy_page_mc(void *to, const void *from);
-+void copy_highpage_mc(struct page *to, struct page *from);
-+#define __HAVE_ARCH_COPY_HIGHPAGE_MC
-+
-+void copy_user_highpage_mc(struct page *to, struct page *from,
-+		unsigned long vaddr, struct vm_area_struct *vma);
-+#define __HAVE_ARCH_COPY_USER_HIGHPAGE_MC
-+#endif
-+
- struct page *alloc_zeroed_user_highpage_movable(struct vm_area_struct *vma,
- 						unsigned long vaddr);
- #define __HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE_MOVABLE
-diff --git a/arch/arm64/lib/Makefile b/arch/arm64/lib/Makefile
-index 29490be2546b..0d9f292ef68a 100644
---- a/arch/arm64/lib/Makefile
-+++ b/arch/arm64/lib/Makefile
-@@ -15,6 +15,8 @@ endif
- 
- lib-$(CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE) += uaccess_flushcache.o
- 
-+lib-$(CONFIG_ARCH_HAS_COPY_MC) += copy_page_mc.o
-+
- obj-$(CONFIG_CRC32) += crc32.o
- 
- obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
-diff --git a/arch/arm64/lib/copy_page_mc.S b/arch/arm64/lib/copy_page_mc.S
-new file mode 100644
-index 000000000000..655161363dcf
---- /dev/null
-+++ b/arch/arm64/lib/copy_page_mc.S
-@@ -0,0 +1,86 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2012 ARM Ltd.
-+ */
-+
-+#include <linux/linkage.h>
-+#include <linux/const.h>
-+#include <asm/assembler.h>
-+#include <asm/page.h>
-+#include <asm/cpufeature.h>
-+#include <asm/alternative.h>
-+#include <asm/asm-extable.h>
-+
-+#define CPY_MC(l, x...)		\
-+9999:   x;			\
-+	_asm_extable_copy_page_mc    9999b, l
-+
-+/*
-+ * Copy a page from src to dest (both are page aligned) with machine check
-+ *
-+ * Parameters:
-+ *	x0 - dest
-+ *	x1 - src
-+ */
-+SYM_FUNC_START(__pi_copy_page_mc)
-+alternative_if ARM64_HAS_NO_HW_PREFETCH
-+	// Prefetch three cache lines ahead.
-+	prfm	pldl1strm, [x1, #128]
-+	prfm	pldl1strm, [x1, #256]
-+	prfm	pldl1strm, [x1, #384]
-+alternative_else_nop_endif
-+
-+CPY_MC(9998f, ldp	x2, x3, [x1])
-+CPY_MC(9998f, ldp	x4, x5, [x1, #16])
-+CPY_MC(9998f, ldp	x6, x7, [x1, #32])
-+CPY_MC(9998f, ldp	x8, x9, [x1, #48])
-+CPY_MC(9998f, ldp	x10, x11, [x1, #64])
-+CPY_MC(9998f, ldp	x12, x13, [x1, #80])
-+CPY_MC(9998f, ldp	x14, x15, [x1, #96])
-+CPY_MC(9998f, ldp	x16, x17, [x1, #112])
-+
-+	add	x0, x0, #256
-+	add	x1, x1, #128
-+1:
-+	tst	x0, #(PAGE_SIZE - 1)
-+
-+alternative_if ARM64_HAS_NO_HW_PREFETCH
-+	prfm	pldl1strm, [x1, #384]
-+alternative_else_nop_endif
-+
-+CPY_MC(9998f, stnp	x2, x3, [x0, #-256])
-+CPY_MC(9998f, ldp	x2, x3, [x1])
-+CPY_MC(9998f, stnp	x4, x5, [x0, #16 - 256])
-+CPY_MC(9998f, ldp	x4, x5, [x1, #16])
-+CPY_MC(9998f, stnp	x6, x7, [x0, #32 - 256])
-+CPY_MC(9998f, ldp	x6, x7, [x1, #32])
-+CPY_MC(9998f, stnp	x8, x9, [x0, #48 - 256])
-+CPY_MC(9998f, ldp	x8, x9, [x1, #48])
-+CPY_MC(9998f, stnp	x10, x11, [x0, #64 - 256])
-+CPY_MC(9998f, ldp	x10, x11, [x1, #64])
-+CPY_MC(9998f, stnp	x12, x13, [x0, #80 - 256])
-+CPY_MC(9998f, ldp	x12, x13, [x1, #80])
-+CPY_MC(9998f, stnp	x14, x15, [x0, #96 - 256])
-+CPY_MC(9998f, ldp	x14, x15, [x1, #96])
-+CPY_MC(9998f, stnp	x16, x17, [x0, #112 - 256])
-+CPY_MC(9998f, ldp	x16, x17, [x1, #112])
-+
-+	add	x0, x0, #128
-+	add	x1, x1, #128
-+
-+	b.ne	1b
-+
-+CPY_MC(9998f, stnp	x2, x3, [x0, #-256])
-+CPY_MC(9998f, stnp	x4, x5, [x0, #16 - 256])
-+CPY_MC(9998f, stnp	x6, x7, [x0, #32 - 256])
-+CPY_MC(9998f, stnp	x8, x9, [x0, #48 - 256])
-+CPY_MC(9998f, stnp	x10, x11, [x0, #64 - 256])
-+CPY_MC(9998f, stnp	x12, x13, [x0, #80 - 256])
-+CPY_MC(9998f, stnp	x14, x15, [x0, #96 - 256])
-+CPY_MC(9998f, stnp	x16, x17, [x0, #112 - 256])
-+
-+9998:	ret
-+
-+SYM_FUNC_END(__pi_copy_page_mc)
-+SYM_FUNC_ALIAS(copy_page_mc, __pi_copy_page_mc)
-+EXPORT_SYMBOL(copy_page_mc)
-diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
-index 0dea80bf6de4..0f28edfcb234 100644
---- a/arch/arm64/mm/copypage.c
-+++ b/arch/arm64/mm/copypage.c
-@@ -14,13 +14,8 @@
- #include <asm/cpufeature.h>
- #include <asm/mte.h>
- 
--void copy_highpage(struct page *to, struct page *from)
-+static void do_mte(struct page *to, struct page *from, void *kto, void *kfrom)
- {
--	void *kto = page_address(to);
--	void *kfrom = page_address(from);
--
--	copy_page(kto, kfrom);
--
- 	if (system_supports_mte() && test_bit(PG_mte_tagged, &from->flags)) {
- 		set_bit(PG_mte_tagged, &to->flags);
- 		page_kasan_tag_reset(to);
-@@ -35,6 +30,15 @@ void copy_highpage(struct page *to, struct page *from)
- 		mte_copy_page_tags(kto, kfrom);
- 	}
- }
-+
-+void copy_highpage(struct page *to, struct page *from)
-+{
-+	void *kto = page_address(to);
-+	void *kfrom = page_address(from);
-+
-+	copy_page(kto, kfrom);
-+	do_mte(to, from, kto, kfrom);
-+}
- EXPORT_SYMBOL(copy_highpage);
- 
- void copy_user_highpage(struct page *to, struct page *from,
-@@ -44,3 +48,23 @@ void copy_user_highpage(struct page *to, struct page *from,
- 	flush_dcache_page(to);
- }
- EXPORT_SYMBOL_GPL(copy_user_highpage);
-+
-+#ifdef CONFIG_ARCH_HAS_COPY_MC
-+void copy_highpage_mc(struct page *to, struct page *from)
-+{
-+	void *kto = page_address(to);
-+	void *kfrom = page_address(from);
-+
-+	copy_page_mc(kto, kfrom);
-+	do_mte(to, from, kto, kfrom);
-+}
-+EXPORT_SYMBOL(copy_highpage_mc);
-+
-+void copy_user_highpage_mc(struct page *to, struct page *from,
-+			unsigned long vaddr, struct vm_area_struct *vma)
-+{
-+	copy_highpage_mc(to, from);
-+	flush_dcache_page(to);
-+}
-+EXPORT_SYMBOL_GPL(copy_user_highpage_mc);
-+#endif
-diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
-index 1023ccdb2f89..4c882d36dd64 100644
---- a/arch/arm64/mm/extable.c
-+++ b/arch/arm64/mm/extable.c
-@@ -110,6 +110,8 @@ bool fixup_exception_mc(struct pt_regs *regs)
- 		return ex_handler_uaccess_type(ex, regs, FIXUP_TYPE_MC);
- 	case EX_TYPE_UACCESS_MC_ERR_ZERO:
- 		return ex_handler_uaccess_err_zero(ex, regs);
-+	case EX_TYPE_COPY_PAGE_MC:
-+		return ex_handler_fixup(ex, regs);
- 
- 	}
- 
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index 39bb9b47fa9c..a9dbf331b038 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -283,6 +283,10 @@ static inline void copy_user_highpage(struct page *to, struct page *from,
- 
- #endif
- 
-+#ifndef __HAVE_ARCH_COPY_USER_HIGHPAGE_MC
-+#define copy_user_highpage_mc copy_user_highpage
-+#endif
-+
- #ifndef __HAVE_ARCH_COPY_HIGHPAGE
- 
- static inline void copy_highpage(struct page *to, struct page *from)
-@@ -298,6 +302,10 @@ static inline void copy_highpage(struct page *to, struct page *from)
- 
- #endif
- 
-+#ifndef __HAVE_ARCH_COPY_HIGHPAGE_MC
-+#define cop_highpage_mc copy_highpage
-+#endif
-+
- static inline void memcpy_page(struct page *dst_page, size_t dst_off,
- 			       struct page *src_page, size_t src_off,
- 			       size_t len)
-diff --git a/mm/memory.c b/mm/memory.c
-index 76e3af9639d9..d5f62234152d 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2767,7 +2767,7 @@ static inline bool cow_user_page(struct page *dst, struct page *src,
- 	unsigned long addr = vmf->address;
- 
- 	if (likely(src)) {
--		copy_user_highpage(dst, src, addr, vma);
-+		copy_user_highpage_mc(dst, src, addr, vma);
- 		return true;
- 	}
- 
--- 
-2.25.1
+Best regards,
+	Maxim Levistky
 
