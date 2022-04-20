@@ -1,69 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE81508ACC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 16:29:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D041B508E19
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 19:11:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kk32P3JxHz3bdg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 00:29:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kk6dV4tq6z3bc8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 03:11:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=pUsJH+kO;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6ShhutQF;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=qEFLX/t/;
+	dkim=fail reason="signature verification failed" header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Lz02F1m0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
  (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=msuchanek@suse.de; receiver=<UNKNOWN>)
+ envelope-from=vbabka@suse.cz; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=pUsJH+kO; 
- dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=6ShhutQF; 
+ unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256
+ header.s=susede2_rsa header.b=qEFLX/t/; 
+ dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256
+ header.s=susede2_ed25519 header.b=Lz02F1m0; 
  dkim-atps=neutral
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kk31k41Lvz2yNF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 00:28:26 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 7957F210EB;
- Wed, 20 Apr 2022 14:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1650464902; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kk6cn0B6sz2xBx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 03:10:32 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 9598221107;
+ Wed, 20 Apr 2022 17:10:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+ t=1650474628; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3OrVkb7HfzeMWqMTSQRuccpxaC6+0XiaP2m2iL/FpSc=;
- b=pUsJH+kOal23/dQyD1A6AAIJ1Ffz6FH7J7oA68vOQZ4saiPzSzq7Eps3FYpYkw+GVwRz0V
- 8U6MLJKExfDkgPdTECybG44dm/rbxUC259xvHhanIHUgHoH+yu3SmLcgo36TQB9YYymu3P
- MyjZrzJljmB9RS29QsS6tRJIcIDXwk0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1650464902;
+ bh=Fv+DUHDuv75iqi/speofL8fyyiV3PO12nkEaPGAjVpg=;
+ b=qEFLX/t/h3r7OpqmNOmGOP8dA4rSO2sikq6ol1N77QIelrvEBFghQ7bcvovldgvJObmH6p
+ 66q5lRqmWi9t95sVzEwUZIP8Cr7uNETQRm4NEKf64zjhBKay2Q/2JBXNnuG2fhAbtkoWOO
+ HtmZ7GIqs22vDe7hH9NqFNk4XWWgWUo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+ s=susede2_ed25519; t=1650474628;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3OrVkb7HfzeMWqMTSQRuccpxaC6+0XiaP2m2iL/FpSc=;
- b=6ShhutQFXoD09vNKxr+rvxvzlt2eKlApV4eIngCk2PA0VZWf+nqi5CX1BfVVj2TmbkxsgP
- EwVIDAwkJi3CDADg==
-Received: from kunlun.suse.cz (unknown [10.100.128.76])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ bh=Fv+DUHDuv75iqi/speofL8fyyiV3PO12nkEaPGAjVpg=;
+ b=Lz02F1m0uYxMKVcER4wii/ZMq3u7/dEO9YPxA0w+R8Q7KJp2LiDa55Odye1bSPkQBU7LeS
+ pJ2pECEhijNbb1DQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 5CB282C14B;
- Wed, 20 Apr 2022 14:28:22 +0000 (UTC)
-Date: Wed, 20 Apr 2022 16:28:21 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/time: Always set decrementer in timer_interrupt()
-Message-ID: <20220420142821.GR163591@kunlun.suse.cz>
-References: <20220420141657.771442-1-mpe@ellerman.id.au>
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E940913A30;
+ Wed, 20 Apr 2022 17:10:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id +h0eOIM+YGIqXwAAMHmgww
+ (envelope-from <vbabka@suse.cz>); Wed, 20 Apr 2022 17:10:27 +0000
+Message-ID: <b49f1b4c-defa-ef32-1984-0273e1fad178@suse.cz>
+Date: Wed, 20 Apr 2022 19:10:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220420141657.771442-1-mpe@ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2 1/8] mm/swap: remember PG_anon_exclusive via a swp pte
+ bit
+Content-Language: en-US
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+References: <20220329164329.208407-1-david@redhat.com>
+ <20220329164329.208407-2-david@redhat.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20220329164329.208407-2-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,116 +88,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: miguel.ojeda.sandonis@gmail.com, linuxppc-dev@lists.ozlabs.org,
- npiggin@gmail.com
+Cc: x86@kernel.org, Jan Kara <jack@suse.cz>,
+ Catalin Marinas <catalin.marinas@arm.com>, Yang Shi <shy828301@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Peter Xu <peterx@redhat.com>,
+ Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+ Donald Dutile <ddutile@redhat.com>, Liang Zhang <zhangliang5@huawei.com>,
+ Borislav Petkov <bp@alien8.de>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Paul Mackerras <paulus@samba.org>, Andrea Arcangeli <aarcange@redhat.com>,
+ linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ David Rientjes <rientjes@google.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Pedro Gomes <pedrodemargomes@gmail.com>, Jann Horn <jannh@google.com>,
+ John Hubbard <jhubbard@nvidia.com>, Heiko Carstens <hca@linux.ibm.com>,
+ Shakeel Butt <shakeelb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Oded Gabbay <oded.gabbay@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Oleg Nesterov <oleg@redhat.com>,
+ Nadav Amit <namit@vmware.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Roman Gushchin <guro@fb.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On 3/29/22 18:43, David Hildenbrand wrote:
+> Currently, we clear PG_anon_exclusive in try_to_unmap() and forget about
+> it. We do this, to keep fork() logic on swap entries easy and efficient:
+> for example, if we wouldn't clear it when unmapping, we'd have to lookup
+> the page in the swapcache for each and every swap entry during fork() and
+> clear PG_anon_exclusive if set.
+> 
+> Instead, we want to store that information directly in the swap pte,
+> protected by the page table lock, similarly to how we handle
+> SWP_MIGRATION_READ_EXCLUSIVE for migration entries. However, for actual
+> swap entries, we don't want to mess with the swap type (e.g., still one
+> bit) because it overcomplicates swap code.
+> 
+> In try_to_unmap(), we already reject to unmap in case the page might be
+> pinned, because we must not lose PG_anon_exclusive on pinned pages ever.
+> Checking if there are other unexpected references reliably *before*
+> completely unmapping a page is unfortunately not really possible: THP
+> heavily overcomplicate the situation. Once fully unmapped it's easier --
+> we, for example, make sure that there are no unexpected references
+> *after* unmapping a page before starting writeback on that page.
+> 
+> So, we currently might end up unmapping a page and clearing
+> PG_anon_exclusive if that page has additional references, for example,
+> due to a FOLL_GET.
+> 
+> do_swap_page() has to re-determine if a page is exclusive, which will
+> easily fail if there are other references on a page, most prominently
+> GUP references via FOLL_GET. This can currently result in memory
+> corruptions when taking a FOLL_GET | FOLL_WRITE reference on a page even
+> when fork() is never involved: try_to_unmap() will succeed, and when
+> refaulting the page, it cannot be marked exclusive and will get replaced
+> by a copy in the page tables on the next write access, resulting in writes
+> via the GUP reference to the page being lost.
+> 
+> In an ideal world, everybody that uses GUP and wants to modify page
+> content, such as O_DIRECT, would properly use FOLL_PIN. However, that
+> conversion will take a while. It's easier to fix what used to work in the
+> past (FOLL_GET | FOLL_WRITE) remembering PG_anon_exclusive. In addition,
+> by remembering PG_anon_exclusive we can further reduce unnecessary COW
+> in some cases, so it's the natural thing to do.
+> 
+> So let's transfer the PG_anon_exclusive information to the swap pte and
+> store it via an architecture-dependant pte bit; use that information when
+> restoring the swap pte in do_swap_page() and unuse_pte(). During fork(), we
+> simply have to clear the pte bit and are done.
+> 
+> Of course, there is one corner case to handle: swap backends that don't
+> support concurrent page modifications while the page is under writeback.
+> Special case these, and drop the exclusive marker. Add a comment why that
+> is just fine (also, reuse_swap_page() would have done the same in the
+> past).
+> 
+> In the future, we'll hopefully have all architectures support
+> __HAVE_ARCH_PTE_SWP_EXCLUSIVE, such that we can get rid of the empty
+> stubs and the define completely. Then, we can also convert
+> SWP_MIGRATION_READ_EXCLUSIVE. For architectures it's fairly easy to
+> support: either simply use a yet unused pte bit that can be used for swap
+> entries, steal one from the arch type bits if they exceed 5, or steal one
+> from the offset bits.
+> 
+> Note: R/O FOLL_GET references were never really reliable, especially
+> when taking one on a shared page and then writing to the page (e.g., GUP
+> after fork()). FOLL_GET, including R/W references, were never really
+> reliable once fork was involved (e.g., GUP before fork(),
+> GUP during fork()). KSM steps back in case it stumbles over unexpected
+> references and is, therefore, fine.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-On Thu, Apr 21, 2022 at 12:16:57AM +1000, Michael Ellerman wrote:
-> This is a partial revert of commit 0faf20a1ad16 ("powerpc/64s/interrupt:
-> Don't enable MSR[EE] in irq handlers unless perf is in use").
-> 
-> Prior to that commit, we always set the decrementer in
-> timer_interrupt(), to clear the timer interrupt. Otherwise we could end
-> up continuously taking timer interrupts.
-> 
-> When high res timers are enabled there is no problem seen with leaving
-> the decrementer untouched in timer_interrupt(), because it will be
-> programmed via hrtimer_interrupt() -> tick_program_event() ->
-> clockevents_program_event() -> decrementer_set_next_event().
-> 
-> However with CONFIG_HIGH_RES_TIMERS=n or booting with highres=off, we
+With the fixup as reportedy by Miaohe Lin
 
-How difficult is it to detect this condition?
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Maybe detecting this could be just added?
+(sent a separate mm-commits mail to inquire about the fix going missing from
+mmotm)
 
-Thanks
+https://lore.kernel.org/mm-commits/c3195d8a-2931-0749-973a-1d04e4baec94@suse.cz/T/#m4e98ccae6f747e11f45e4d0726427ba2fef740eb
 
-Michal
-
-> see a stall/lockup, because tick_nohz_handler() does not cause a
-> reprogram of the decrementer, leading to endless timer interrupts.
-> Example trace:
-> 
->   [    1.898617][    T7] Freeing initrd memory: 2624K^M
->   [   22.680919][    C1] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:^M
->   [   22.682281][    C1] rcu:     0-....: (25 ticks this GP) idle=073/0/0x1 softirq=10/16 fqs=1050 ^M
->   [   22.682851][    C1]  (detected by 1, t=2102 jiffies, g=-1179, q=476)^M
->   [   22.683649][    C1] Sending NMI from CPU 1 to CPUs 0:^M
->   [   22.685252][    C0] NMI backtrace for cpu 0^M
->   [   22.685649][    C0] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.16.0-rc2-00185-g0faf20a1ad16 #145^M
->   [   22.686393][    C0] NIP:  c000000000016d64 LR: c000000000f6cca4 CTR: c00000000019c6e0^M
->   [   22.686774][    C0] REGS: c000000002833590 TRAP: 0500   Not tainted  (5.16.0-rc2-00185-g0faf20a1ad16)^M
->   [   22.687222][    C0] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24000222  XER: 00000000^M
->   [   22.688297][    C0] CFAR: c00000000000c854 IRQMASK: 0 ^M
->   ...
->   [   22.692637][    C0] NIP [c000000000016d64] arch_local_irq_restore+0x174/0x250^M
->   [   22.694443][    C0] LR [c000000000f6cca4] __do_softirq+0xe4/0x3dc^M
->   [   22.695762][    C0] Call Trace:^M
->   [   22.696050][    C0] [c000000002833830] [c000000000f6cc80] __do_softirq+0xc0/0x3dc (unreliable)^M
->   [   22.697377][    C0] [c000000002833920] [c000000000151508] __irq_exit_rcu+0xd8/0x130^M
->   [   22.698739][    C0] [c000000002833950] [c000000000151730] irq_exit+0x20/0x40^M
->   [   22.699938][    C0] [c000000002833970] [c000000000027f40] timer_interrupt+0x270/0x460^M
->   [   22.701119][    C0] [c0000000028339d0] [c0000000000099a8] decrementer_common_virt+0x208/0x210^M
-> 
-> Possibly this should be fixed in the lowres timing code, but that would
-> be a generic change and could take some time and may not backport
-> easily, so for now make the programming of the decrementer unconditional
-> again in timer_interrupt() to avoid the stall/lockup.
-> 
-> Fixes: 0faf20a1ad16 ("powerpc/64s/interrupt: Don't enable MSR[EE] in irq handlers unless perf is in use")
-> Reported-by: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-> ---
->  arch/powerpc/kernel/time.c | 29 ++++++++++++++---------------
->  1 file changed, 14 insertions(+), 15 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-> index f5cbfe5efd25..f80cce0e3899 100644
-> --- a/arch/powerpc/kernel/time.c
-> +++ b/arch/powerpc/kernel/time.c
-> @@ -615,23 +615,22 @@ DEFINE_INTERRUPT_HANDLER_ASYNC(timer_interrupt)
->  		return;
->  	}
->  
-> -	/* Conditionally hard-enable interrupts. */
-> -	if (should_hard_irq_enable()) {
-> -		/*
-> -		 * Ensure a positive value is written to the decrementer, or
-> -		 * else some CPUs will continue to take decrementer exceptions.
-> -		 * When the PPC_WATCHDOG (decrementer based) is configured,
-> -		 * keep this at most 31 bits, which is about 4 seconds on most
-> -		 * systems, which gives the watchdog a chance of catching timer
-> -		 * interrupt hard lockups.
-> -		 */
-> -		if (IS_ENABLED(CONFIG_PPC_WATCHDOG))
-> -			set_dec(0x7fffffff);
-> -		else
-> -			set_dec(decrementer_max);
-> +	/*
-> +	 * Ensure a positive value is written to the decrementer, or
-> +	 * else some CPUs will continue to take decrementer exceptions.
-> +	 * When the PPC_WATCHDOG (decrementer based) is configured,
-> +	 * keep this at most 31 bits, which is about 4 seconds on most
-> +	 * systems, which gives the watchdog a chance of catching timer
-> +	 * interrupt hard lockups.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_PPC_WATCHDOG))
-> +		set_dec(0x7fffffff);
-> +	else
-> +		set_dec(decrementer_max);
->  
-> +	/* Conditionally hard-enable interrupts. */
-> +	if (should_hard_irq_enable())
->  		do_hard_irq_enable();
-> -	}
->  
->  #if defined(CONFIG_PPC32) && defined(CONFIG_PPC_PMAC)
->  	if (atomic_read(&ppc_n_lost_interrupts) != 0)
-> -- 
-> 2.34.1
-> 
