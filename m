@@ -1,41 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E3A50830A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 09:58:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B3150856A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 12:01:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KjtMj1q2Vz3bnn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 17:58:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kjx604s4Wz3bf5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Apr 2022 20:01:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KXjz45pn;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KXjz45pn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ucw.cz
- (client-ip=46.255.230.98; helo=jabberwock.ucw.cz; envelope-from=pavel@ucw.cz;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com;
  receiver=<UNKNOWN>)
-X-Greylist: delayed 541 seconds by postgrey-1.36 at boromir;
- Wed, 20 Apr 2022 17:58:04 AEST
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=KXjz45pn; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=KXjz45pn; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KjtMJ1966z2xmQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 17:58:04 +1000 (AEST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
- id 4B86C1C0B87; Wed, 20 Apr 2022 09:48:56 +0200 (CEST)
-Date: Wed, 20 Apr 2022 09:48:55 +0200
-From: Pavel Machek <pavel@ucw.cz>
-To: cgel.zte@gmail.com
-Subject: Re: [PATCH] ASoC: fsl: using pm_runtime_resume_and_get instead of
- pm_runtime_get_sync
-Message-ID: <20220420074855.GA25823@amd>
-References: <20220412083000.2532711-1-chi.minghao@zte.com.cn>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kjx5H2Lv2z2xdN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Apr 2022 20:01:05 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650448862;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=KXjz45pnwy7vnba1yFrtrSNjmoUoQsy3Np4PXRtqrrs5k3Bwmf5pLTcSJLdDWYCJ3nUNz8
+ 3cADrfxMROGrFgTNLd/BUa1owTfdXwFiq+FqlCaM3BsDqLl4zKS4vJ6yuWWduMs7sFA9Sg
+ JXECw4jnDC/FhHHxfEpcKZiJeR2nqEU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1650448862;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=KXjz45pnwy7vnba1yFrtrSNjmoUoQsy3Np4PXRtqrrs5k3Bwmf5pLTcSJLdDWYCJ3nUNz8
+ 3cADrfxMROGrFgTNLd/BUa1owTfdXwFiq+FqlCaM3BsDqLl4zKS4vJ6yuWWduMs7sFA9Sg
+ JXECw4jnDC/FhHHxfEpcKZiJeR2nqEU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-428-y5X5w6yUMmmiKMMUH8qTcg-1; Wed, 20 Apr 2022 06:00:59 -0400
+X-MC-Unique: y5X5w6yUMmmiKMMUH8qTcg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A9093811E80;
+ Wed, 20 Apr 2022 10:00:58 +0000 (UTC)
+Received: from virtlab701.virt.lab.eng.bos.redhat.com
+ (virtlab701.virt.lab.eng.bos.redhat.com [10.19.152.228])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F20EF141511F;
+ Wed, 20 Apr 2022 10:00:57 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Sean Christopherson <seanjc@google.com>
+Subject: Re: [PATCH 0/3] KVM: x86 SRCU bug fix and SRCU hardening
+Date: Wed, 20 Apr 2022 06:00:48 -0400
+Message-Id: <20220420100048.1093018-1-pbonzini@redhat.com>
+In-Reply-To: <20220415004343.2203171-1-seanjc@google.com>
+References: 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature"; boundary="BOKacYhQ+x31HxR3"
-Content-Disposition: inline
-In-Reply-To: <20220412083000.2532711-1-chi.minghao@zte.com.cn>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,81 +85,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, shengjiu.wang@gmail.com,
- Zeal Robot <zealci@zte.com.cn>, linuxppc-dev@lists.ozlabs.org,
- lgirdwood@gmail.com, Minghao Chi <chi.minghao@zte.com.cn>,
- linux-kernel@vger.kernel.org, nicoleotsuka@gmail.com, broonie@kernel.org,
- festevam@gmail.com
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Wanpeng Li <wanpengli@tencent.com>,
+ Janosch Frank <frankja@linux.ibm.com>, kvm@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Joerg Roedel <joro@8bytes.org>, Atish Patra <atishp@atishpatra.org>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ kvm-riscv@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Queued, thanks.
 
---BOKacYhQ+x31HxR3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Paolo
 
-Hi!
 
-> From: Minghao Chi <chi.minghao@zte.com.cn>
->=20
-> Using pm_runtime_resume_and_get is more appropriate
-> for simplifing code
->=20
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
-> ---
->  sound/soc/fsl/fsl_esai.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->=20
-> diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-> index ed444e8f1d6b..1a2bdf8e76f0 100644
-> --- a/sound/soc/fsl/fsl_esai.c
-> +++ b/sound/soc/fsl/fsl_esai.c
-> @@ -1050,11 +1050,9 @@ static int fsl_esai_probe(struct platform_device *=
-pdev)
->  			goto err_pm_disable;
->  	}
-> =20
-> -	ret =3D pm_runtime_get_sync(&pdev->dev);
-> -	if (ret < 0) {
-> -		pm_runtime_put_noidle(&pdev->dev);
-> +	ret =3D pm_runtime_resume_and_get(&pdev->dev);
-> +	if (ret < 0)
->  		goto err_pm_get_sync;
-> -	}
-> =20
->  	ret =3D fsl_esai_hw_init(esai_priv);
->  	if (ret)
-
-Please take a closer look at that function.
-
-a) error labels are now misnamed
-
-b) there's leak if
-   ret =3D fsl_esai_hw_init(esai_priv);
-   if (ret)
-     goto err_pm_get_sync;
-
-happens.
-
-Best regards,
-							Pavel			  =20
-
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---BOKacYhQ+x31HxR3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAmJfuucACgkQMOfwapXb+vIiGACffOMVcK21uP4rckwMmbnzLCim
-9/QAnjyoa8+Std4g2m6imouSbgDhSKdo
-=cpOV
------END PGP SIGNATURE-----
-
---BOKacYhQ+x31HxR3--
