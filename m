@@ -2,55 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB4850981F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 09:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6149B509972
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 09:47:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KkT8C0rZFz3bbL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 17:05:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KkV4l2Q3vz3bbn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 17:47:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QR0Xe8VE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=gvMx8c1m;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+75405b57bc5fe52e01f0+6815+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=bombadil.20210309 header.b=QR0Xe8VE; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KkT7X2LyTz2xrS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 17:04:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=zBXWLNnXpk4rildATDLl07tkcfHH7qx/rs6eJc2jVvY=; b=QR0Xe8VEKwSitBZoLjmLhc8fq8
- Lr97HHHJhJPho3My5cPAj3WFl0XUehAS9E+qEfCT/Lq6WDrFnYeWYcShZdet8No9amJuD3NdnhpXg
- A2WH2R3rSaIEsCxFrj4AW4IgVwsRmuLSHamhv5gA1JmwuKLVy4Zwc1fRRbXymaAOFUWY/Fo25jO/Y
- Rv07h3ZFVNmYVZsAr2+KfR9itkDS/IPJLGd4Zit2F7zasrKi43a339FOQVRyOyxnkylnHwxU0xPsw
- c+T5CEboHhoU2XsgyUtATcYfhWl+O7Eg4aZlYpZqDsNyqmG71+b+KUGXTz4CsIQO92nqN/AR8/lSc
- vuSIbYrQ==;
-Received: from [2001:4bb8:191:364b:7b50:153f:5622:82f7] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nhQrr-00BwId-CM; Thu, 21 Apr 2022 07:04:43 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: akpm@linux-foundation.org
-Subject: [PATCH] net: unexport csum_and_copy_{from,to}_user
-Date: Thu, 21 Apr 2022 09:04:40 +0200
-Message-Id: <20220421070440.1282704-1-hch@lst.de>
-X-Mailer: git-send-email 2.30.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KkV461qnqz2xsc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 17:47:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=gvMx8c1m; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KkV4217nTz4xR9;
+ Thu, 21 Apr 2022 17:46:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1650527220;
+ bh=6Zuyw245iK0ZvmsIInOVF3tD0phZx7klr4ZSZDE0lfk=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=gvMx8c1mKZEk9360t6GcgeT3JWfOTmnYz6GvFDessBmf39sJEx44Q0Z+x1hpFTrWy
+ t4auQPIRwi6TLOC5KSsg8QKX3p9zEXuShyq0uHBYu1erlGHlaMvzSTd0+fj7RWiYgU
+ tCzURkRfAPImrkXcC+sBl+rheKPkeC/rMcEJM3EKRQvK2lB4MuBgaPGGYpPPbVTHfA
+ it8ioLrKDEww3YE+8lIiJlY2K/OnNQ2eKwRmuZIRJLwcYGC9rXuKHeESQprOyINdKY
+ 7lCkeruyA9hybz/N8O7uCdsQXVrHra8+jOKydxL26BYWOsvAHnHDfhh6wid+ljGafu
+ 32UOBCm0c47oQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nathan Chancellor <nathan@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: Apply d799769188529abc6cbf035a10087a51f7832b6b to 5.17 and 5.15?
+In-Reply-To: <Yl8pNxSGUgeHZ1FT@dev-arch.thelio-3990X>
+References: <Yl8pNxSGUgeHZ1FT@dev-arch.thelio-3990X>
+Date: Thu, 21 Apr 2022 17:46:52 +1000
+Message-ID: <877d7ig9oz.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,87 +59,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Tom Rix <trix@redhat.com>,
+ llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
+ stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-csum_and_copy_from_user and csum_and_copy_to_user are exported by
-a few architectures, but not actually used in modular code.  Drop
-the exports.
+Nathan Chancellor <nathan@kernel.org> writes:
+> Hi Greg, Sasha, and Michael,
+>
+> Commit d79976918852 ("powerpc/64: Add UADDR64 relocation support") fixes
+> a boot failure with CONFIG_RELOCATABLE=y kernels linked with recent
+> versions of ld.lld [1]. Additionally, it resolves a separate boot
+> failure that Paul Menzel reported [2] with ld.lld 13.0.0. Is this a
+> reasonable backport for 5.17 and 5.15? It applies cleanly, resolves both
+> problems, and does not appear to cause any other issues in my testing
+> for both trees but I was curious what Michael's opinion was, as I am far
+> from a PowerPC expert.
+>
+> This change does apply cleanly to 5.10 (I did not try earlier branches)
+> but there are other changes needed for ld.lld to link CONFIG_RELOCATABLE
+> kernels in that branch so to avoid any regressions, I think it is safe
+> to just focus on 5.15 and 5.17.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/alpha/lib/csum_partial_copy.c   | 1 -
- arch/m68k/lib/checksum.c             | 2 --
- arch/powerpc/lib/checksum_wrappers.c | 2 --
- arch/x86/lib/csum-wrappers_64.c      | 2 --
- 4 files changed, 7 deletions(-)
+I considered tagging it for stable, but I wanted it to get a bit of
+testing first, it's a reasonably big patch.
 
-diff --git a/arch/alpha/lib/csum_partial_copy.c b/arch/alpha/lib/csum_partial_copy.c
-index 1931a04af85a2..4d180d96f09e4 100644
---- a/arch/alpha/lib/csum_partial_copy.c
-+++ b/arch/alpha/lib/csum_partial_copy.c
-@@ -353,7 +353,6 @@ csum_and_copy_from_user(const void __user *src, void *dst, int len)
- 		return 0;
- 	return __csum_and_copy(src, dst, len);
- }
--EXPORT_SYMBOL(csum_and_copy_from_user);
- 
- __wsum
- csum_partial_copy_nocheck(const void *src, void *dst, int len)
-diff --git a/arch/m68k/lib/checksum.c b/arch/m68k/lib/checksum.c
-index 7e6afeae62177..5acb821849d30 100644
---- a/arch/m68k/lib/checksum.c
-+++ b/arch/m68k/lib/checksum.c
-@@ -265,8 +265,6 @@ csum_and_copy_from_user(const void __user *src, void *dst, int len)
- 	return sum;
- }
- 
--EXPORT_SYMBOL(csum_and_copy_from_user);
--
- 
- /*
-  * copy from kernel space while checksumming, otherwise like csum_partial
-diff --git a/arch/powerpc/lib/checksum_wrappers.c b/arch/powerpc/lib/checksum_wrappers.c
-index f3999cbb2fcc4..1a14c8780278c 100644
---- a/arch/powerpc/lib/checksum_wrappers.c
-+++ b/arch/powerpc/lib/checksum_wrappers.c
-@@ -24,7 +24,6 @@ __wsum csum_and_copy_from_user(const void __user *src, void *dst,
- 	user_read_access_end();
- 	return csum;
- }
--EXPORT_SYMBOL(csum_and_copy_from_user);
- 
- __wsum csum_and_copy_to_user(const void *src, void __user *dst, int len)
- {
-@@ -38,4 +37,3 @@ __wsum csum_and_copy_to_user(const void *src, void __user *dst, int len)
- 	user_write_access_end();
- 	return csum;
- }
--EXPORT_SYMBOL(csum_and_copy_to_user);
-diff --git a/arch/x86/lib/csum-wrappers_64.c b/arch/x86/lib/csum-wrappers_64.c
-index 189344924a2be..145f9a0bde29a 100644
---- a/arch/x86/lib/csum-wrappers_64.c
-+++ b/arch/x86/lib/csum-wrappers_64.c
-@@ -32,7 +32,6 @@ csum_and_copy_from_user(const void __user *src, void *dst, int len)
- 	user_access_end();
- 	return sum;
- }
--EXPORT_SYMBOL(csum_and_copy_from_user);
- 
- /**
-  * csum_and_copy_to_user - Copy and checksum to user space.
-@@ -57,7 +56,6 @@ csum_and_copy_to_user(const void *src, void __user *dst, int len)
- 	user_access_end();
- 	return sum;
- }
--EXPORT_SYMBOL(csum_and_copy_to_user);
- 
- /**
-  * csum_partial_copy_nocheck - Copy and checksum.
--- 
-2.30.2
+I think we're reasonably confident it doesn't introduce any new bugs,
+but more testing time is always good.
 
+So I guess I'd be inclined to wait another week or so before requesting
+a stable backport?
+
+cheers
