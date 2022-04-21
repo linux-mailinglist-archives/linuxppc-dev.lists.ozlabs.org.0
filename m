@@ -2,41 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D30550952D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 04:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE08509532
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 04:58:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KkMXW2hsHz3bbB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 12:52:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KkMgB1BZTz3bVN
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 12:58:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=meizu.com (client-ip=112.91.151.210; helo=mail.meizu.com;
- envelope-from=baihaowen@meizu.com; receiver=<UNKNOWN>)
-Received: from mail.meizu.com (edge07.meizu.com [112.91.151.210])
- (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KkMX660gyz2xVY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 12:52:20 +1000 (AEST)
-Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail11.meizu.com
- (172.16.1.15) with Microsoft SMTP Server (TLS) id 14.3.487.0; Thu, 21 Apr
- 2022 10:52:12 +0800
-Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
- (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Thu, 21 Apr
- 2022 10:52:10 +0800
-From: Haowen Bai <baihaowen@meizu.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: [PATCH] powerpc/pci: Remove useless null check before call
- of_node_put()
-Date: Thu, 21 Apr 2022 10:52:08 +0800
-Message-ID: <1650509529-27525-1-git-send-email-baihaowen@meizu.com>
-X-Mailer: git-send-email 2.7.4
+ smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
+ envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KkMfk5Dbwz2xVY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 12:58:04 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+ by ozlabs.ru (Postfix) with ESMTP id 6A860804E7;
+ Wed, 20 Apr 2022 22:57:58 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] powerpc/perf: Fix 32bit compile
+Date: Thu, 21 Apr 2022 12:57:56 +1000
+Message-Id: <20220421025756.571995-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.16.137.70]
-X-ClientProxiedBy: IT-EXMB-1-126.meizu.com (172.16.1.126) To
- IT-EXMB-1-125.meizu.com (172.16.1.125)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,35 +37,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Haowen Bai <baihaowen@meizu.com>,
- linux-kernel@vger.kernel.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No need to add null check before call of_node_put(), since the
-implementation of of_node_put() has done it.
+The "read_bhrb" global symbol is only called under CONFIG_PPC64 of
+arch/powerpc/perf/core-book3s.c but it is compiled for both 32 and 64 bit
+anyway (and LLVM fails to link this on 32bit).
 
-Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+This fixes it by moving bhrb.o to obj64 targets.
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/kernel/pci_dn.c | 4 ++--
+ arch/powerpc/perf/Makefile | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
-index 61571ae23953..ba3bbc9bec2d 100644
---- a/arch/powerpc/kernel/pci_dn.c
-+++ b/arch/powerpc/kernel/pci_dn.c
-@@ -357,8 +357,8 @@ void pci_remove_device_node_info(struct device_node *dn)
+diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
+index 2f46e31c7612..4f53d0b97539 100644
+--- a/arch/powerpc/perf/Makefile
++++ b/arch/powerpc/perf/Makefile
+@@ -3,11 +3,11 @@
+ obj-y				+= callchain.o callchain_$(BITS).o perf_regs.o
+ obj-$(CONFIG_COMPAT)		+= callchain_32.o
  
- 	/* Drop the parent pci_dn's ref to our backing dt node */
- 	parent = of_get_parent(dn);
--	if (parent)
--		of_node_put(parent);
-+
-+	of_node_put(parent);
+-obj-$(CONFIG_PPC_PERF_CTRS)	+= core-book3s.o bhrb.o
++obj-$(CONFIG_PPC_PERF_CTRS)	+= core-book3s.o
+ obj64-$(CONFIG_PPC_PERF_CTRS)	+= ppc970-pmu.o power5-pmu.o \
+ 				   power5+-pmu.o power6-pmu.o power7-pmu.o \
+ 				   isa207-common.o power8-pmu.o power9-pmu.o \
+-				   generic-compat-pmu.o power10-pmu.o
++				   generic-compat-pmu.o power10-pmu.o bhrb.o
+ obj32-$(CONFIG_PPC_PERF_CTRS)	+= mpc7450-pmu.o
  
- 	/*
- 	 * At this point we *might* still have a pci_dev that was
+ obj-$(CONFIG_PPC_POWERNV)	+= imc-pmu.o
 -- 
-2.7.4
+2.30.2
 
