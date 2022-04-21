@@ -2,53 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA835097D3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 08:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB4850981F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 09:05:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KkSf83gzgz3bVd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 16:42:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KkT8C0rZFz3bbL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Apr 2022 17:05:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ZPF7oY3I;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=QR0Xe8VE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+75405b57bc5fe52e01f0+6815+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=QR0Xe8VE; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KkSdV1KM0z2xtQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 16:42:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ZPF7oY3I; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KkSdP5XNdz4xPw;
- Thu, 21 Apr 2022 16:42:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1650523338;
- bh=Vq8aQQ7x9r9hQTwpUpgf1xEauPJ2w6wRlIKNaFLmLew=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ZPF7oY3IzCue7FBk+3C5MWaf+mpnMLrDyUObLKiyVIu6uu+flNUqPxCrQB5OxJjKe
- RuP0uZkNR/rxlznxh95WzEJ0qCv0FngqJICzPdzdqrPh9PBK56zNSUhHXwTYZNjsLY
- Uqj6X7H0QjhzL1tvQas1X8QzWXzGIO68oNfAX0uou7ImeAXv4M57vNt1tVx05MdEs0
- vOz90n53G3mSO7GpDcNrDW8/fkSPNQdPw0akA5HuGsp36Qo9zVHAA48SncDs/MpzJH
- MYRFuF12pnHbaiIKqIVniOpIZ/3OY3MWWKcEV3qUpDlkOhG5KAYART16Dw7LKAKPgz
- KztVnhqzWRypg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Subject: Re: [PATCH] powerpc/time: Always set decrementer in timer_interrupt()
-In-Reply-To: <20220420142821.GR163591@kunlun.suse.cz>
-References: <20220420141657.771442-1-mpe@ellerman.id.au>
- <20220420142821.GR163591@kunlun.suse.cz>
-Date: Thu, 21 Apr 2022 16:42:13 +1000
-Message-ID: <87a6cfey4a.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KkT7X2LyTz2xrS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Apr 2022 17:04:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=zBXWLNnXpk4rildATDLl07tkcfHH7qx/rs6eJc2jVvY=; b=QR0Xe8VEKwSitBZoLjmLhc8fq8
+ Lr97HHHJhJPho3My5cPAj3WFl0XUehAS9E+qEfCT/Lq6WDrFnYeWYcShZdet8No9amJuD3NdnhpXg
+ A2WH2R3rSaIEsCxFrj4AW4IgVwsRmuLSHamhv5gA1JmwuKLVy4Zwc1fRRbXymaAOFUWY/Fo25jO/Y
+ Rv07h3ZFVNmYVZsAr2+KfR9itkDS/IPJLGd4Zit2F7zasrKi43a339FOQVRyOyxnkylnHwxU0xPsw
+ c+T5CEboHhoU2XsgyUtATcYfhWl+O7Eg4aZlYpZqDsNyqmG71+b+KUGXTz4CsIQO92nqN/AR8/lSc
+ vuSIbYrQ==;
+Received: from [2001:4bb8:191:364b:7b50:153f:5622:82f7] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1nhQrr-00BwId-CM; Thu, 21 Apr 2022 07:04:43 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: akpm@linux-foundation.org
+Subject: [PATCH] net: unexport csum_and_copy_{from,to}_user
+Date: Thu, 21 Apr 2022 09:04:40 +0200
+Message-Id: <20220421070440.1282704-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,43 +62,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: miguel.ojeda.sandonis@gmail.com, linuxppc-dev@lists.ozlabs.org,
- npiggin@gmail.com
+Cc: netdev@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> Hello,
->
-> On Thu, Apr 21, 2022 at 12:16:57AM +1000, Michael Ellerman wrote:
->> This is a partial revert of commit 0faf20a1ad16 ("powerpc/64s/interrupt:
->> Don't enable MSR[EE] in irq handlers unless perf is in use").
->>=20
->> Prior to that commit, we always set the decrementer in
->> timer_interrupt(), to clear the timer interrupt. Otherwise we could end
->> up continuously taking timer interrupts.
->>=20
->> When high res timers are enabled there is no problem seen with leaving
->> the decrementer untouched in timer_interrupt(), because it will be
->> programmed via hrtimer_interrupt() -> tick_program_event() ->
->> clockevents_program_event() -> decrementer_set_next_event().
->>=20
->> However with CONFIG_HIGH_RES_TIMERS=3Dn or booting with highres=3Doff, we
->
-> How difficult is it to detect this condition?
->
-> Maybe detecting this could be just added?
+csum_and_copy_from_user and csum_and_copy_to_user are exported by
+a few architectures, but not actually used in modular code.  Drop
+the exports.
 
-We could but it would be quite a hack.
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/alpha/lib/csum_partial_copy.c   | 1 -
+ arch/m68k/lib/checksum.c             | 2 --
+ arch/powerpc/lib/checksum_wrappers.c | 2 --
+ arch/x86/lib/csum-wrappers_64.c      | 2 --
+ 4 files changed, 7 deletions(-)
 
-This patch is just meant as a minimal fix to put the code back the way
-it's been for the last ~15 years.
+diff --git a/arch/alpha/lib/csum_partial_copy.c b/arch/alpha/lib/csum_partial_copy.c
+index 1931a04af85a2..4d180d96f09e4 100644
+--- a/arch/alpha/lib/csum_partial_copy.c
++++ b/arch/alpha/lib/csum_partial_copy.c
+@@ -353,7 +353,6 @@ csum_and_copy_from_user(const void __user *src, void *dst, int len)
+ 		return 0;
+ 	return __csum_and_copy(src, dst, len);
+ }
+-EXPORT_SYMBOL(csum_and_copy_from_user);
+ 
+ __wsum
+ csum_partial_copy_nocheck(const void *src, void *dst, int len)
+diff --git a/arch/m68k/lib/checksum.c b/arch/m68k/lib/checksum.c
+index 7e6afeae62177..5acb821849d30 100644
+--- a/arch/m68k/lib/checksum.c
++++ b/arch/m68k/lib/checksum.c
+@@ -265,8 +265,6 @@ csum_and_copy_from_user(const void __user *src, void *dst, int len)
+ 	return sum;
+ }
+ 
+-EXPORT_SYMBOL(csum_and_copy_from_user);
+-
+ 
+ /*
+  * copy from kernel space while checksumming, otherwise like csum_partial
+diff --git a/arch/powerpc/lib/checksum_wrappers.c b/arch/powerpc/lib/checksum_wrappers.c
+index f3999cbb2fcc4..1a14c8780278c 100644
+--- a/arch/powerpc/lib/checksum_wrappers.c
++++ b/arch/powerpc/lib/checksum_wrappers.c
+@@ -24,7 +24,6 @@ __wsum csum_and_copy_from_user(const void __user *src, void *dst,
+ 	user_read_access_end();
+ 	return csum;
+ }
+-EXPORT_SYMBOL(csum_and_copy_from_user);
+ 
+ __wsum csum_and_copy_to_user(const void *src, void __user *dst, int len)
+ {
+@@ -38,4 +37,3 @@ __wsum csum_and_copy_to_user(const void *src, void __user *dst, int len)
+ 	user_write_access_end();
+ 	return csum;
+ }
+-EXPORT_SYMBOL(csum_and_copy_to_user);
+diff --git a/arch/x86/lib/csum-wrappers_64.c b/arch/x86/lib/csum-wrappers_64.c
+index 189344924a2be..145f9a0bde29a 100644
+--- a/arch/x86/lib/csum-wrappers_64.c
++++ b/arch/x86/lib/csum-wrappers_64.c
+@@ -32,7 +32,6 @@ csum_and_copy_from_user(const void __user *src, void *dst, int len)
+ 	user_access_end();
+ 	return sum;
+ }
+-EXPORT_SYMBOL(csum_and_copy_from_user);
+ 
+ /**
+  * csum_and_copy_to_user - Copy and checksum to user space.
+@@ -57,7 +56,6 @@ csum_and_copy_to_user(const void *src, void __user *dst, int len)
+ 	user_access_end();
+ 	return sum;
+ }
+-EXPORT_SYMBOL(csum_and_copy_to_user);
+ 
+ /**
+  * csum_partial_copy_nocheck - Copy and checksum.
+-- 
+2.30.2
 
-I think Nick has identified the problem in the core timing code, so
-fixing that should be the right solution.
-
-If that's wrong for some reason then we can do some detection in our
-timer_interrupt() to avoid the set_dec() when it's unnecessary.
-
-cheers
