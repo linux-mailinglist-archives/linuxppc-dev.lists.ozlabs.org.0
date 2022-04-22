@@ -1,75 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC4650B9D7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 16:15:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB9A50BC2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 17:54:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KlGf72lsfz3bkb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 00:15:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KlJqb73lvz3bpQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 01:54:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DLUPr3Mr;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0B/g2yGc;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=h+b8XloV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
- helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
+ helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=DLUPr3Mr; dkim-atps=neutral
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
- [IPv6:2607:f8b0:4864:20::635])
+ secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
+ header.s=2020 header.b=0B/g2yGc; 
+ dkim=pass header.d=linutronix.de header.i=@linutronix.de
+ header.a=ed25519-sha256 header.s=2020e header.b=h+b8XloV; 
+ dkim-atps=neutral
+Received: from galois.linutronix.de (Galois.linutronix.de
+ [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KlGdQ3vtjz2xm2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 00:15:04 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id t12so11127051pll.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Apr 2022 07:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=OrTV+vKHG9WRBs5wYVMFlDVclc2ptNVvzr3BSJrgrQw=;
- b=DLUPr3Mrol9s6jb3RZJTqcrKP8CqrkjBoKBR4tINnis9V4dAih4Z3ce8OiJ+Wq+Hab
- 8n8POr08CCxV5W51U2pcyDX2nLfw+8ZcXlJQ5knVwCQ7FgvVTL9Y8T/R9HBpXkNMQrmA
- zlCDnzU/AOCwzkZGH0F8sFLiXPZi6b8qaBarhEdwL4E49vK4H8jdfnq2MsFRgxkJSHJF
- bDiJHAijIykxyUvXXCA5VW1aGsIQYxyNa+Rcu3tM6D8YRT7Da3hWHAhNE9DPsHTiZbRY
- e6/tPyh4HAU6BPutD2bg4ZQv8vl+bSWWyecmJw2xKfvNwydr0UzJVXHlpjIojkHPYmA+
- w7yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=OrTV+vKHG9WRBs5wYVMFlDVclc2ptNVvzr3BSJrgrQw=;
- b=vhKw69O5dvB00fwKYoLIRQ3FCGg9MIE2p7qlYdCbRD2sZ+Ivms6SfaJkWiEjRmWz2g
- hvUxicquLIQDWctME1THvhzd1NKqEEOKKaWQrsP8wBnoQ+8Cz1ZH73BpRnkJNkuhL7lV
- U8qhx2vIsVYswqfB1ZVTYrgONUUhP6z6xxNlT79+WjOI5Tk8nu1iuWf3dPlVVbD3fZMd
- eAw7mjhKZyoEAHFIPaYVt7nRM8jd6+6I4Y733dPY4DuuVJTqxBHDQhIA9aJmplH9QOX4
- atz+Lxp/gpC9KmKOpI32F1xYzC1E2N14bPt/lFPrbPQ5C71ntKYe68NKAhUB3/aFx8z3
- kpIg==
-X-Gm-Message-State: AOAM532nQrgPfTsXGHBSJlHWaTScfx3ehmtFh105yogpnv7avQMFELpa
- WG8WvY+58Cpyv8xYTdRV2YA=
-X-Google-Smtp-Source: ABdhPJxbucRQpRtBfAtKgiD4p7RWXqg/vYMGxckPmzgSbfRkbwJoeF8x2zTyLe3nPyaqonO8URY1Tg==
-X-Received: by 2002:a17:902:ce91:b0:15a:46bf:e629 with SMTP id
- f17-20020a170902ce9100b0015a46bfe629mr4906042plg.118.1650636900735; 
- Fri, 22 Apr 2022 07:15:00 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (193-116-116-20.tpgi.com.au.
- [193.116.116.20]) by smtp.gmail.com with ESMTPSA id
- gn8-20020a17090ac78800b001cd4989ff70sm613507pjb.55.2022.04.22.07.14.55
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Apr 2022 07:15:00 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH] timers/nohz: Low-res tick handler switch to ONESHOT_STOPPED
- if tick stops
-Date: Sat, 23 Apr 2022 00:14:46 +1000
-Message-Id: <20220422141446.915024-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.35.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KlJpz5Z2lz3bWG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 01:53:31 +1000 (AEST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020; t=1650642805;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=egLwwNxV76btrQ9q6om6wjZt3PbLjlniEsPtA9utVZE=;
+ b=0B/g2yGcr/YICXgS6yxrwyv3L9VyBOoE8ZDe1IZ6DiB/hNt5NOAtPBfDcbaVGnuC9NBNZr
+ WzfW8KArxGYgHvrcWCVUrCfsCUZGiDLCKSsTnh0rQMZBoir0Bdf56o8yJmEZZXhQn3fvOi
+ 1pij3IAAlT1DL0fv/o751EUPVw2qSAezWfAOD+BpCvTQD5HqXOm5BIChszEt3x5eGIGu/b
+ Cq1vZ4TjAROsrj/gm8Trlv8CuRVFPsRcRfce+81J0wg5OJUCBzNuzX69kH0UfKEhmjEwEo
+ 3rHc0uew53iewGSZoklZ1XUowp1GyVzmdH+YBE0l1LfmOesn9cVZML2A5eXjUQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+ s=2020e; t=1650642805;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=egLwwNxV76btrQ9q6om6wjZt3PbLjlniEsPtA9utVZE=;
+ b=h+b8XloVx+fEEddSy+0yPJCFyuqiaW+GGnk2EUrdGujBSkcAApL+SE7A/hzyZEQRVQVwfy
+ nZLkXLdKq0h2SMDg==
+To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, paulmck@kernel.org, Zhouyi Zhou
+ <zhouzhouyi@gmail.com>
+Subject: Re:
+In-Reply-To: <1649818529.j46672mh2p.astroid@bobo.none>
+References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
+ <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
+ <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
+ <87pmls6nt7.fsf@mpe.ellerman.id.au> <87k0bz7i1s.fsf@mpe.ellerman.id.au>
+ <1649818529.j46672mh2p.astroid@bobo.none>
+Date: Fri, 22 Apr 2022 17:53:24 +0200
+Message-ID: <87fsm55d3f.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,63 +75,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Paul E . McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <fweisbec@gmail.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Viresh Kumar <viresh.kumar@linaro.org>, Zhouyi Zhou <zhouzhouyi@gmail.com>,
- =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>, linux-kernel@vger.kernel.org,
+ rcu <rcu@vger.kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When tick_nohz_stop_tick() stops the tick, the the clock event device
-is not put into ONESHOT_STOPPED mode. This can lead to spurious timer
-interrupts with some clock event device drivers that don't shut down
-entirely after firing.
+On Wed, Apr 13 2022 at 15:11, Nicholas Piggin wrote:
+> So we traced the problem down to possibly a misunderstanding between 
+> decrementer clock event device and core code.
+>
+> The decrementer is only oneshot*ish*. It actually needs to either be 
+> reprogrammed or shut down otherwise it just continues to cause 
+> interrupts.
 
-Eliminate these by putting the device into ONESHOT_STOPPED mode at
-points where it is not being reprogrammed. When there are no timers
-active, then tick_program_event() with KTIME_MAX can be used to stop the
-device. When there is a timer active, the device can be stopped at the
-next tick (any new timer added by timers will reprogram the tick).
+I always thought that PPC had sane timers. That's really disillusioning.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- kernel/time/tick-sched.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+> Before commit 35de589cb879, it was sort of two-shot. The initial 
+> interrupt at the programmed time would set its internal next_tb variable 
+> to ~0 and call the ->event_handler(). If that did not set_next_event or 
+> stop the timer, the interrupt will fire again immediately, notice 
+> next_tb is ~0, and only then stop the decrementer interrupt.
+>
+> So that was already kind of ugly, this patch just turned it into a hang.
+>
+> The problem happens when the tick is stopped with an event still 
+> pending, then tick_nohz_handler() is called, but it bails out because 
+> tick_stopped == 1 so the device never gets programmed again, and so it 
+> keeps firing.
+>
+> How to fix it? Before commit a7cba02deced, powerpc's decrementer was 
+> really oneshot, but we would like to avoid doing that because it requires 
+> additional programming of the hardware on each timer interrupt. We have 
+> the ONESHOT_STOPPED state which seems to be just about what we want.
+>
+> Did the ONESHOT_STOPPED patch just miss this case, or is there a reason 
+> we don't stop it here? This patch seems to fix the hang (not heavily
+> tested though).
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index d257721c68b8..da1a7efa45a4 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -928,6 +928,8 @@ static void tick_nohz_stop_tick(struct tick_sched *ts, int cpu)
- 	if (unlikely(expires == KTIME_MAX)) {
- 		if (ts->nohz_mode == NOHZ_MODE_HIGHRES)
- 			hrtimer_cancel(&ts->sched_timer);
-+		else
-+			tick_program_event(KTIME_MAX, 1);
- 		return;
- 	}
- 
-@@ -1364,9 +1366,14 @@ static void tick_nohz_handler(struct clock_event_device *dev)
- 	tick_sched_do_timer(ts, now);
- 	tick_sched_handle(ts, regs);
- 
--	/* No need to reprogram if we are running tickless  */
--	if (unlikely(ts->tick_stopped))
-+	if (unlikely(ts->tick_stopped)) {
-+		/*
-+		 * If we are tickless, no need to reprogram, so change the
-+		 * clock event device to ONESHOT_STOPPED.
-+		 */
-+		tick_program_event(KTIME_MAX, 1);
- 		return;
-+	}
- 
- 	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
- 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
--- 
-2.35.1
+This was definitely overlooked, but it's arguable it is is not required
+for real oneshot clockevent devices. This should only handle the case
+where the interrupt was already pending.
 
+The ONESHOT_STOPPED state was introduced to handle the case where the
+last timer gets canceled, so the already programmed event does not fire.
+
+It was not necessarily meant to "fix" clockevent devices which are
+pretending to be ONESHOT, but keep firing over and over.
+
+That, said. I'm fine with the change along with a big fat comment why
+this is required.
+
+Thanks,
+
+        tglx
