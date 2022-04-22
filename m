@@ -2,68 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB9A50BC2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 17:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA3750BF04
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 19:49:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KlJqb73lvz3bpQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 01:54:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KlMNS3XN8z3bcm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 03:49:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0B/g2yGc;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=h+b8XloV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JFxldeSw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=0B/g2yGc; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=h+b8XloV; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=JFxldeSw; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KlJpz5Z2lz3bWG
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 01:53:31 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1650642805;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=egLwwNxV76btrQ9q6om6wjZt3PbLjlniEsPtA9utVZE=;
- b=0B/g2yGcr/YICXgS6yxrwyv3L9VyBOoE8ZDe1IZ6DiB/hNt5NOAtPBfDcbaVGnuC9NBNZr
- WzfW8KArxGYgHvrcWCVUrCfsCUZGiDLCKSsTnh0rQMZBoir0Bdf56o8yJmEZZXhQn3fvOi
- 1pij3IAAlT1DL0fv/o751EUPVw2qSAezWfAOD+BpCvTQD5HqXOm5BIChszEt3x5eGIGu/b
- Cq1vZ4TjAROsrj/gm8Trlv8CuRVFPsRcRfce+81J0wg5OJUCBzNuzX69kH0UfKEhmjEwEo
- 3rHc0uew53iewGSZoklZ1XUowp1GyVzmdH+YBE0l1LfmOesn9cVZML2A5eXjUQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1650642805;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=egLwwNxV76btrQ9q6om6wjZt3PbLjlniEsPtA9utVZE=;
- b=h+b8XloVx+fEEddSy+0yPJCFyuqiaW+GGnk2EUrdGujBSkcAApL+SE7A/hzyZEQRVQVwfy
- nZLkXLdKq0h2SMDg==
-To: Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman
- <mpe@ellerman.id.au>, paulmck@kernel.org, Zhouyi Zhou
- <zhouzhouyi@gmail.com>
-Subject: Re:
-In-Reply-To: <1649818529.j46672mh2p.astroid@bobo.none>
-References: <CANiq72k+5Rdj7i3Df2dcE6_OPYPXK3z5EWLKnY56sSMz4G3OvA@mail.gmail.com>
- <CAABZP2z64aYWfVSdXHaQopWc+BAbJJUGqtrju2iWER3DDTDFWg@mail.gmail.com>
- <20220406170012.GO4285@paulmck-ThinkPad-P17-Gen-1>
- <87pmls6nt7.fsf@mpe.ellerman.id.au> <87k0bz7i1s.fsf@mpe.ellerman.id.au>
- <1649818529.j46672mh2p.astroid@bobo.none>
-Date: Fri, 22 Apr 2022 17:53:24 +0200
-Message-ID: <87fsm55d3f.ffs@tglx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KlMMm44vLz2yyM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 03:48:36 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 8A098B83216;
+ Fri, 22 Apr 2022 17:48:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE67C385A0;
+ Fri, 22 Apr 2022 17:48:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1650649710;
+ bh=5eG88j23VfpqEXG5LElKEOANPUif8PLVVEOgW3NWPM8=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=JFxldeSwtEKgk9Lc8kRCQDX6OUJaNJqjczwvWjMV4j3OqtctIRIdLWhgVFbHcrF3q
+ 6RV2w/ktTedzqZubriC/58H3Vdm9JiPVMTZntT5U6PsWNK7vp6Lf1pJVILEyJGxmS+
+ qbW6cqz9aSs5BypgxKnfiub0ZMs/SwHrot2cRn1CQZuR4f0sF4Z4oMH0Z+a459fUj/
+ AqyDYdPlcTk4kUXYFN7XRqxWUhAFDdRXCLT5AegHPef/SkanQTZdABcipo326XcIeu
+ cDK0+ZCKSi/1Lz6pPb+mOUQxdS1svIyOTdYSc7OWhpV+sUpJYcDte2V/RzhDmTOY++
+ fOwXTN8nCbK0w==
+Date: Fri, 22 Apr 2022 10:48:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH 0/7] Remove unused SLOW_DOWN_IO
+Message-ID: <20220422104828.75c726d0@kernel.org>
+In-Reply-To: <20220415190817.842864-1-helgaas@kernel.org>
+References: <20220415190817.842864-1-helgaas@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,59 +63,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, linux-kernel@vger.kernel.org,
- rcu <rcu@vger.kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Chas Williams <3chas3@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Paul Mackerras <paulus@samba.org>,
+ Matt Turner <mattst88@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>,
+ Richard Henderson <rth@twiddle.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 13 2022 at 15:11, Nicholas Piggin wrote:
-> So we traced the problem down to possibly a misunderstanding between 
-> decrementer clock event device and core code.
->
-> The decrementer is only oneshot*ish*. It actually needs to either be 
-> reprogrammed or shut down otherwise it just continues to cause 
-> interrupts.
+On Fri, 15 Apr 2022 14:08:10 -0500 Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Only alpha, ia64, powerpc, and sh define SLOW_DOWN_IO, and there are no
+> actual uses of it.  The few references to it are in situations that are
+> themselves unused.  Remove them all.
+> 
+> It should be safe to apply these independently and in any order.  The only
+> place SLOW_DOWN_IO is used at all is the lmc_var.h definition of DELAY,
+> which is itself never used.
 
-I always thought that PPC had sane timers. That's really disillusioning.
-
-> Before commit 35de589cb879, it was sort of two-shot. The initial 
-> interrupt at the programmed time would set its internal next_tb variable 
-> to ~0 and call the ->event_handler(). If that did not set_next_event or 
-> stop the timer, the interrupt will fire again immediately, notice 
-> next_tb is ~0, and only then stop the decrementer interrupt.
->
-> So that was already kind of ugly, this patch just turned it into a hang.
->
-> The problem happens when the tick is stopped with an event still 
-> pending, then tick_nohz_handler() is called, but it bails out because 
-> tick_stopped == 1 so the device never gets programmed again, and so it 
-> keeps firing.
->
-> How to fix it? Before commit a7cba02deced, powerpc's decrementer was 
-> really oneshot, but we would like to avoid doing that because it requires 
-> additional programming of the hardware on each timer interrupt. We have 
-> the ONESHOT_STOPPED state which seems to be just about what we want.
->
-> Did the ONESHOT_STOPPED patch just miss this case, or is there a reason 
-> we don't stop it here? This patch seems to fix the hang (not heavily
-> tested though).
-
-This was definitely overlooked, but it's arguable it is is not required
-for real oneshot clockevent devices. This should only handle the case
-where the interrupt was already pending.
-
-The ONESHOT_STOPPED state was introduced to handle the case where the
-last timer gets canceled, so the already programmed event does not fire.
-
-It was not necessarily meant to "fix" clockevent devices which are
-pretending to be ONESHOT, but keep firing over and over.
-
-That, said. I'm fine with the change along with a big fat comment why
-this is required.
-
-Thanks,
-
-        tglx
+Hi Bojrn! Would you mind reposting just patches 1 and 3 for networking?
+LMC got removed in net-next (commit a5b116a0fa90 ("net: wan: remove the
+lanmedia (lmc) driver")) so the entire series fails to apply and therefore 
+defeats all of our patch handling scripts :S
