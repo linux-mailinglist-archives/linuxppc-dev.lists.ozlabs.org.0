@@ -2,54 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4405D50B434
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 11:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C256B50B44E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 11:46:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kl8St0x9zz3bpL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 19:37:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kl8g056P5z3bh9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 19:46:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DlL98Qmm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n1kiepiJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kl8SF1kpwz2ygC
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Apr 2022 19:36:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kl8fQ2MmCz2yMj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Apr 2022 19:45:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=DlL98Qmm; 
+ header.a=rsa-sha256 header.s=201909 header.b=n1kiepiJ; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kl8SC4PFHz4xXS;
- Fri, 22 Apr 2022 19:36:43 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kl8fN2BN9z4xXS;
+ Fri, 22 Apr 2022 19:45:32 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1650620204;
- bh=v8NPrOoUSmPygCfnqB/rFEsanu07lIk8aZKOXiSsbt4=;
+ s=201909; t=1650620734;
+ bh=Al83ymN/ho4hwVOypF35AMxE9htb4+ARNDtj3dzBOic=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=DlL98QmmptAtyh/xohLggJENxp9wwXou1VWdZAcucdyXzO1702WBukr6pGy0rQSGO
- mT66LivgC+ke1qqnkrgu4MLvD6ci5QkR7u0DCDqkv0BxztDdwh5mKf4qXMXJ8LRrrZ
- fjAOAhjDmLP4k4Os6y+9F4+PijETVEEPXCPD8odTa0vD6rV7D9Ab3aQDX4D+5KRK+D
- WDvb4mcVQO+B21vv0cMiu9YzYhyj2jyaaEwHGxkD19uQEpoVdMiIxrh7Q2t9hkOR75
- YbzRFluEjjaZUS3+vNHolMNWKZ+DW3n63ducNzg2fYuoplBI8rYvb34DLAHeMApBYz
- +XNo4dlWY6Dag==
+ b=n1kiepiJd8a8t0vH2NyNoWar0AsBDtzB1cl/Fh45VwFPT5MK8tw1UTcLX17q8WY8x
+ /7xNsb+93FcFBaFP2NiF6MDx8CcmozeREaY6MkKhoGHeZ6WSWzPS6pQLEicFyeOsx9
+ zPDp4YE8G3p/q9e27K8R6pmEr5wXLas6eOraWwbg3X4rxYwsOE+1tm9/OZf5rixtcj
+ 3uGlTfzdlC3h1U3DKijnn+wq7uPxly76L8ow24pMuA4Fo1F2wRwKCg5b01JuxaptnE
+ mh318QXvG2BkqiDkZ7wQbm/SqWlTmabZNHKvcn/GTzHYoN9JSHonn/T3uphH5DhXvq
+ Ed1+/nokNrBog==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Frederic Barrat <fbarrat@linux.ibm.com>, Hangyu Hua <hbh25y@gmail.com>,
- ajd@linux.ibm.com, arnd@arndb.de, gregkh@linuxfoundation.org,
- alastair@d-silva.org
-Subject: Re: [PATCH] misc: ocxl: fix possible double free in
- ocxl_file_register_afu
-In-Reply-To: <f76454e3-843d-93b4-e30c-bf374d41802b@linux.ibm.com>
-References: <20220418085758.38145-1-hbh25y@gmail.com>
- <87czhbfjsj.fsf@mpe.ellerman.id.au>
- <f76454e3-843d-93b4-e30c-bf374d41802b@linux.ibm.com>
-Date: Fri, 22 Apr 2022 19:36:43 +1000
-Message-ID: <87tual8no4.fsf@mpe.ellerman.id.au>
+To: Tong Tiangen <tongtiangen@huawei.com>, Mark Rutland
+ <mark.rutland@arm.com>, James Morse <james.morse@arm.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Robin Murphy
+ <robin.murphy@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
+ x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH -next v4 1/7] x86, powerpc: fix function define in
+ copy_mc_to_user
+In-Reply-To: <20220420030418.3189040-2-tongtiangen@huawei.com>
+References: <20220420030418.3189040-1-tongtiangen@huawei.com>
+ <20220420030418.3189040-2-tongtiangen@huawei.com>
+Date: Fri, 22 Apr 2022 19:45:31 +1000
+Message-ID: <87r15p8n9g.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -63,41 +68,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Tong Tiangen <tongtiangen@huawei.com>, Guohanjun <guohanjun@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Frederic Barrat <fbarrat@linux.ibm.com> writes:
-> On 21/04/2022 00:54, Michael Ellerman wrote:
->> Hangyu Hua <hbh25y@gmail.com> writes:
->>> info_release() will be called in device_unregister() when info->dev's
->>> reference count is 0. So there is no need to call ocxl_afu_put() and
->>> kfree() again.
->> 
->> Double frees are often exploitable. But it looks to me like this error
->> path is not easily reachable by an attacker.
->> 
->> ocxl_file_register_afu() is only called from ocxl_probe(), and we only
->> go to err_unregister if the sysfs or cdev initialisation fails, which
->> should only happen if we hit ENOMEM, or we have a duplicate device which
->> would be a device-tree/hardware error. But maybe Fred can check more
->> closely, I don't know the driver that well.
+Tong Tiangen <tongtiangen@huawei.com> writes:
+> x86/powerpc has it's implementation of copy_mc_to_user but not use #define
+> to declare.
 >
-> The linux devices built here are based on what is parsed on the physical 
-> devices. Those could be FPGAs but updating the FPGA image requires root 
-> privilege. In any case, duplicate AFU names are possible, that's why the 
-> driver adds an index (the afu->config.idx part of the name) to the linux 
-> device name. So we would need to mess that up in the driver as well to 
-> have a duplicate device name.
-> So I would agree the double free is hard to hit.
+> This may cause problems, for example, if other architectures open
+> CONFIG_ARCH_HAS_COPY_MC, but want to use copy_mc_to_user() outside the
+> architecture, the code add to include/linux/uaddess.h is as follows:
+>
+>     #ifndef copy_mc_to_user
+>     static inline unsigned long __must_check
+>     copy_mc_to_user(void *dst, const void *src, size_t cnt)
+>     {
+> 	    ...
+>     }
+>     #endif
+     
+The above doesn't exist yet, you add it in patch 3, which is a little
+confusing for a reader of this commit in isolation.
 
-Thanks for confirming.
+I think you could safely move that into this patch, and then this patch
+would be ~= "Add generic fallback version of copy_mc_to_user()".
 
-> mpe: I think this patch can be taken as is. The "beautification" I 
-> talked about is just that and I don't intend to work on it except if 
-> something else shows up.
+It's probably not worth doing a whole new version of the series just for
+that, but if you need to do a new version for some other reason I think
+it would be cleaner to introduce the fallback in this commit.
 
-OK, will pick this up.
+> Then this definition will conflict with the implementation of x86/powerpc
+> and cause compilation errors as follow:
+>
+> Fixes: ec6347bb4339 ("x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user, kernel}()")
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+> ---
+>  arch/powerpc/include/asm/uaccess.h | 1 +
+
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
 cheers
