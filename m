@@ -1,58 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A55550C23B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 00:25:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E8250C23C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 00:25:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KlTVx1Vbyz3bqZ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 08:25:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KlTWZ3qFCz3bpm
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 08:25:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sM6SdleQ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VqtUDtOS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1;
- helo=sin.source.kernel.org; envelope-from=helgaas@kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sM6SdleQ; 
+ header.s=k20201202 header.b=VqtUDtOS; 
  dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org
- [IPv6:2604:1380:40e1:4800::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KlTVK11Vjz2xfC
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 08:24:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KlTVX4N4cz3bfq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 08:24:52 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by sin.source.kernel.org (Postfix) with ESMTPS id 94E6DCE2D89;
- Fri, 22 Apr 2022 22:24:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF7EC385A0;
- Fri, 22 Apr 2022 22:24:35 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id C34286216A;
+ Fri, 22 Apr 2022 22:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0321DC385A4;
+ Fri, 22 Apr 2022 22:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650666275;
- bh=JpCuibTDnOetl+PLrbkZUpdEWAAZR0B2yf5RKC+PzJA=;
+ s=k20201202; t=1650666289;
+ bh=fxJN1ADA+sWdw61IyEj2dQRFCoL52sBZQvlid/cA61E=;
  h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=sM6SdleQJ3yL55lXpYxCTJl6NBwHVOz54NGi3BcQe4xYtDpylu+BJWVyB511FDlaz
- yHyf/Qf2XpuQtmurpDr0VLxOUqQiJpgRRYOnaxXW3ptcS1PRmkntJzzaUZNZywmiEo
- LfKyrtqnEUZHjQMdPmlRYcuipPXm5vM6B9yxmM/xC5Gt9si7hHUV06IRKFYuShCRU1
- HR9NGtEuLu15niZJ4AFAa9Wgur9EOGCvx8x+xUKhVlA9T4gZiHttPZIDqmN+7s0M+4
- C96KZWIhH2v+IWe1YLbkyKEjOP4ZcACghEcLtEDnXC6AJWC1bnqlLTWeGB68RUEqiO
- X6SQZbAHxxK5Q==
-Date: Fri, 22 Apr 2022 17:24:33 -0500
+ b=VqtUDtOScYsh+v96PGvVuNJA4iiHe4wsX46n78PX9q4xuJr4S6lfCl6udE4phxR/u
+ sDHXMGvuAzZc6k/O/ylBMrhWqoKUnBwG7C5ApaG3dvc/NuXg1nY8RauzA29/0GmDro
+ 1ICAMa6ItEkonugBzifApV07hA+ZOEtw5b0KBCMGl5070QULczZzfIXskxOEF+najl
+ aTycO/QVOeHZPtNQuDSa0R8rzenzctAjN95/NGV3u1gWS26b6FORAce58dfg65PyO/
+ ufKiRA4WAVh9U+K66a47bC89lTQwcc7r4i++WXCUnFem/zek52SNa/UNDn4q96ZeV4
+ dD7MKEizgG/SQ==
+Date: Fri, 22 Apr 2022 17:24:46 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH v4 1/2] PCI/AER: Disable AER service when link is in
- L2/L3 ready, L2 and L3 state
-Message-ID: <20220422222433.GA1464120@bhelgaas>
+To: Rajvi Jingar <rajvi.jingar@intel.com>
+Subject: Re: [PATCH v4 2/2] PCI/PM: Fix pci_pm_suspend_noirq() to disable PTM
+Message-ID: <20220422222446.GA1522716@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220408153159.106741-1-kai.heng.feng@canonical.com>
+In-Reply-To: <ba571993-90fb-ae67-6617-0b63571298be@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,145 +64,60 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: sathyanarayanan.kuppuswamy@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, koba.ko@canonical.com,
- Rajvi Jingar <rajvi.jingar@intel.com>, Oliver O'Halloran <oohall@gmail.com>,
- david.e.box@linux.intel.com, bhelgaas@google.com,
- mika.westerberg@linux.intel.com, baolu.lu@linux.intel.com
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-kernel@vger.kernel.org,
+ koba.ko@canonical.com, Kai-Heng Feng <kai.heng.feng@canonical.com>,
+ Oliver O'Halloran <oohall@gmail.com>, david.e.box@linux.intel.com,
+ bhelgaas@google.com, mika.westerberg@linux.intel.com, baolu.lu@linux.intel.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[+cc Rajvi, David]
+[+cc other folks interested in PTM from https://lore.kernel.org/r/20220408153159.106741-1-kai.heng.feng@canonical.com]
 
-On Fri, Apr 08, 2022 at 11:31:58PM +0800, Kai-Heng Feng wrote:
-> On Intel Alder Lake platforms, Thunderbolt entering D3cold can cause
-> some errors reported by AER:
-> [   30.100211] pcieport 0000:00:1d.0: AER: Uncorrected (Non-Fatal) error received: 0000:00:1d.0
-> [   30.100251] pcieport 0000:00:1d.0: PCIe Bus Error: severity=Uncorrected (Non-Fatal), type=Transaction Layer, (Requester ID)
-> [   30.100256] pcieport 0000:00:1d.0:   device [8086:7ab0] error status/mask=00100000/00004000
-> [   30.100262] pcieport 0000:00:1d.0:    [20] UnsupReq               (First)
-> [   30.100267] pcieport 0000:00:1d.0: AER:   TLP Header: 34000000 08000052 00000000 00000000
-> [   30.100372] thunderbolt 0000:0a:00.0: AER: can't recover (no error_detected callback)
-> [   30.100401] xhci_hcd 0000:3e:00.0: AER: can't recover (no error_detected callback)
-> [   30.100427] pcieport 0000:00:1d.0: AER: device recovery failed
-> 
-> So disable AER service to avoid the noises from turning power rails
-> on/off when the device is in low power states (D3hot and D3cold), as
-> PCIe Base Spec 5.0, section 5.2 "Link State Power Management" states
-> that TLP and DLLP transmission is disabled for a Link in L2/L3 Ready
-> (D3hot), L2 (D3cold with aux power) and L3 (D3cold).
+On Thu, Apr 14, 2022 at 07:54:02PM +0200, Rafael J. Wysocki wrote:
+> On 3/25/2022 8:50 PM, Rajvi Jingar wrote:
+> > For the PCIe devices (like nvme) that do not go into D3 state still need to
+> > disable PTM on PCIe root ports to allow the port to enter a lower-power PM
+> > state and the SoC to reach a lower-power idle state as a whole. Move the
+> > pci_disable_ptm() out of pci_prepare_to_sleep() as this code path is not
+> > followed for devices that do not go into D3. This patch fixes the issue
+> > seen on Dell XPS 9300 with Ice Lake CPU and Dell Precision 5530 with Coffee
+> > Lake CPU platforms to get improved residency in low power idle states.
+> > 
+> > Fixes: a697f072f5da ("PCI: Disable PTM during suspend to save power")
+> > Signed-off-by: Rajvi Jingar <rajvi.jingar@intel.com>
+> > Suggested-by: David E. Box <david.e.box@linux.intel.com>
 
-Help me walk through what's happening here, because I'm never very
-confident about how error reporting works.  I *think* the Unsupported
-Request error means some request was in progress and was not
-completed.  I don't think a link going down should by itself cause
-an Unsupported Request error because there's no *request*.
+> > ---
+> >   v1 -> v2: add Fixes tag in commit message
+> >   v2 -> v3: move changelog after "---" marker
+> >   v3 -> v4: add "---" marker after changelog
+> > ---
+> >   drivers/pci/pci-driver.c | 10 ++++++++++
+> >   drivers/pci/pci.c        | 10 ----------
+> >   2 files changed, 10 insertions(+), 10 deletions(-)
+> > 
+> > diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> > index 8b55a90126a2..ab733374a260 100644
+> > --- a/drivers/pci/pci-driver.c
+> > +++ b/drivers/pci/pci-driver.c
+> > @@ -847,6 +847,16 @@ static int pci_pm_suspend_noirq(struct device *dev)
+> >   	if (!pci_dev->state_saved) {
+> >   		pci_save_state(pci_dev);
+> > +		/*
+> > +		 * There are systems (for example, Intel mobile chips since Coffee
+> > +		 * Lake) where the power drawn while suspended can be significantly
+> > +		 * reduced by disabling PTM on PCIe root ports as this allows the
+> > +		 * port to enter a lower-power PM state and the SoC to reach a
+> > +		 * lower-power idle state as a whole.
+> > +		 */
+> > +		if (pci_pcie_type(pci_dev) == PCI_EXP_TYPE_ROOT_PORT)
+> > +			pci_disable_ptm(pci_dev);
 
-I have a theory about what happened here.  Decoding the TLP Header
-(from PCIe r6.0, sec 2.2.1.1, 2.2.8.10) gives:
+Why is disabling PTM dependent on pci_dev->state_saved?  The point of
+this is to change the behavior of the device, and it seems like we
+want to do that regardless of whether the driver has used
+pci_save_state().
 
-  34000000 (0011 0100 ...):
-    Fmt               001        4 DW header, no data
-    Type           1 0100        Msg, Local - Terminate at Receiver
-
-  08000052 (0800 ... 0101 0010)
-    Requester ID     0800        00:08.0
-    Message Code     0101 0010   PTM Request
-
-From your lspci in bugzilla, 08:00 has PTM enabled.  So my theory is
-that:
-
-  - 08:00.0 sent a PTM Request Message (a Posted Request)
-  - 00:1d.0 received the PTM Request Message
-  - The link transitioned to DL_Down
-  - Per sec 2.9.1, 00:1d.0 discarded the Request and reported an
-    Unsupported Request
-  - Or, per sec 6.21.3, if 00:1d.0 received a PTM Request when its
-    own PTM Enable was clear, it would also be treated as an
-    Unsupported Request
-
-So I suspect we should disable PTM on 08:00.0 before putting it in a
-low-power state.  If you manually disable PTM on 08:00.0, do these
-errors stop happening?
-
-David did something like this [1], but just for Root Ports.  That
-looks wrong to me because sec 6.21.3 says we should not have PTM
-enabled in an Upstream Port (i.e., in a downstream device like
-08:00.0) unless it is already enabled in the Downstream Port (i.e., in
-the Root Port 00:1d.0).
-
-Nit: can you remove the timestamps from the log?  They add clutter but
-no useful information.
-
-[1] https://git.kernel.org/linus/a697f072f5da
-
-> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=215453
-> Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-> ---
-> v4:
->  - Explicitly states the spec version.
->  - Wording change. 
-> 
-> v3:
->  - Remove reference to ACS.
->  - Wording change.
-> 
-> v2:
->  - Wording change.
-> 
->  drivers/pci/pcie/aer.c | 31 +++++++++++++++++++++++++------
->  1 file changed, 25 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9fa1f97e5b270..e4e9d4a3098d7 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1367,6 +1367,22 @@ static int aer_probe(struct pcie_device *dev)
->  	return 0;
->  }
->  
-> +static int aer_suspend(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +
-> +	aer_disable_rootport(rpc);
-> +	return 0;
-> +}
-> +
-> +static int aer_resume(struct pcie_device *dev)
-> +{
-> +	struct aer_rpc *rpc = get_service_data(dev);
-> +
-> +	aer_enable_rootport(rpc);
-> +	return 0;
-> +}
-> +
->  /**
->   * aer_root_reset - reset Root Port hierarchy, RCEC, or RCiEP
->   * @dev: pointer to Root Port, RCEC, or RCiEP
-> @@ -1433,12 +1449,15 @@ static pci_ers_result_t aer_root_reset(struct pci_dev *dev)
->  }
->  
->  static struct pcie_port_service_driver aerdriver = {
-> -	.name		= "aer",
-> -	.port_type	= PCIE_ANY_PORT,
-> -	.service	= PCIE_PORT_SERVICE_AER,
-> -
-> -	.probe		= aer_probe,
-> -	.remove		= aer_remove,
-> +	.name			= "aer",
-> +	.port_type		= PCIE_ANY_PORT,
-> +	.service		= PCIE_PORT_SERVICE_AER,
-> +	.probe			= aer_probe,
-> +	.suspend		= aer_suspend,
-> +	.resume			= aer_resume,
-> +	.runtime_suspend	= aer_suspend,
-> +	.runtime_resume		= aer_resume,
-> +	.remove			= aer_remove,
->  };
->  
->  /**
-> -- 
-> 2.34.1
-> 
+Bjorn
