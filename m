@@ -2,61 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C256B50B44E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 11:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC4650B9D7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 16:15:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kl8g056P5z3bh9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 19:46:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KlGf72lsfz3bkb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 00:15:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n1kiepiJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DLUPr3Mr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kl8fQ2MmCz2yMj
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Apr 2022 19:45:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635;
+ helo=mail-pl1-x635.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=n1kiepiJ; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=DLUPr3Mr; dkim-atps=neutral
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
+ [IPv6:2607:f8b0:4864:20::635])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kl8fN2BN9z4xXS;
- Fri, 22 Apr 2022 19:45:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1650620734;
- bh=Al83ymN/ho4hwVOypF35AMxE9htb4+ARNDtj3dzBOic=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=n1kiepiJd8a8t0vH2NyNoWar0AsBDtzB1cl/Fh45VwFPT5MK8tw1UTcLX17q8WY8x
- /7xNsb+93FcFBaFP2NiF6MDx8CcmozeREaY6MkKhoGHeZ6WSWzPS6pQLEicFyeOsx9
- zPDp4YE8G3p/q9e27K8R6pmEr5wXLas6eOraWwbg3X4rxYwsOE+1tm9/OZf5rixtcj
- 3uGlTfzdlC3h1U3DKijnn+wq7uPxly76L8ow24pMuA4Fo1F2wRwKCg5b01JuxaptnE
- mh318QXvG2BkqiDkZ7wQbm/SqWlTmabZNHKvcn/GTzHYoN9JSHonn/T3uphH5DhXvq
- Ed1+/nokNrBog==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Tong Tiangen <tongtiangen@huawei.com>, Mark Rutland
- <mark.rutland@arm.com>, James Morse <james.morse@arm.com>, Andrew Morton
- <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Robin Murphy
- <robin.murphy@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Catalin
- Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH -next v4 1/7] x86, powerpc: fix function define in
- copy_mc_to_user
-In-Reply-To: <20220420030418.3189040-2-tongtiangen@huawei.com>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
- <20220420030418.3189040-2-tongtiangen@huawei.com>
-Date: Fri, 22 Apr 2022 19:45:31 +1000
-Message-ID: <87r15p8n9g.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KlGdQ3vtjz2xm2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 00:15:04 +1000 (AEST)
+Received: by mail-pl1-x635.google.com with SMTP id t12so11127051pll.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Apr 2022 07:15:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=OrTV+vKHG9WRBs5wYVMFlDVclc2ptNVvzr3BSJrgrQw=;
+ b=DLUPr3Mrol9s6jb3RZJTqcrKP8CqrkjBoKBR4tINnis9V4dAih4Z3ce8OiJ+Wq+Hab
+ 8n8POr08CCxV5W51U2pcyDX2nLfw+8ZcXlJQ5knVwCQ7FgvVTL9Y8T/R9HBpXkNMQrmA
+ zlCDnzU/AOCwzkZGH0F8sFLiXPZi6b8qaBarhEdwL4E49vK4H8jdfnq2MsFRgxkJSHJF
+ bDiJHAijIykxyUvXXCA5VW1aGsIQYxyNa+Rcu3tM6D8YRT7Da3hWHAhNE9DPsHTiZbRY
+ e6/tPyh4HAU6BPutD2bg4ZQv8vl+bSWWyecmJw2xKfvNwydr0UzJVXHlpjIojkHPYmA+
+ w7yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=OrTV+vKHG9WRBs5wYVMFlDVclc2ptNVvzr3BSJrgrQw=;
+ b=vhKw69O5dvB00fwKYoLIRQ3FCGg9MIE2p7qlYdCbRD2sZ+Ivms6SfaJkWiEjRmWz2g
+ hvUxicquLIQDWctME1THvhzd1NKqEEOKKaWQrsP8wBnoQ+8Cz1ZH73BpRnkJNkuhL7lV
+ U8qhx2vIsVYswqfB1ZVTYrgONUUhP6z6xxNlT79+WjOI5Tk8nu1iuWf3dPlVVbD3fZMd
+ eAw7mjhKZyoEAHFIPaYVt7nRM8jd6+6I4Y733dPY4DuuVJTqxBHDQhIA9aJmplH9QOX4
+ atz+Lxp/gpC9KmKOpI32F1xYzC1E2N14bPt/lFPrbPQ5C71ntKYe68NKAhUB3/aFx8z3
+ kpIg==
+X-Gm-Message-State: AOAM532nQrgPfTsXGHBSJlHWaTScfx3ehmtFh105yogpnv7avQMFELpa
+ WG8WvY+58Cpyv8xYTdRV2YA=
+X-Google-Smtp-Source: ABdhPJxbucRQpRtBfAtKgiD4p7RWXqg/vYMGxckPmzgSbfRkbwJoeF8x2zTyLe3nPyaqonO8URY1Tg==
+X-Received: by 2002:a17:902:ce91:b0:15a:46bf:e629 with SMTP id
+ f17-20020a170902ce9100b0015a46bfe629mr4906042plg.118.1650636900735; 
+ Fri, 22 Apr 2022 07:15:00 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (193-116-116-20.tpgi.com.au.
+ [193.116.116.20]) by smtp.gmail.com with ESMTPSA id
+ gn8-20020a17090ac78800b001cd4989ff70sm613507pjb.55.2022.04.22.07.14.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Apr 2022 07:15:00 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH] timers/nohz: Low-res tick handler switch to ONESHOT_STOPPED
+ if tick stops
+Date: Sat, 23 Apr 2022 00:14:46 +1000
+Message-Id: <20220422141446.915024-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,48 +81,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Tong Tiangen <tongtiangen@huawei.com>, Guohanjun <guohanjun@huawei.com>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: "Paul E . McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <fweisbec@gmail.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Zhouyi Zhou <zhouzhouyi@gmail.com>,
+ =?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tong Tiangen <tongtiangen@huawei.com> writes:
-> x86/powerpc has it's implementation of copy_mc_to_user but not use #define
-> to declare.
->
-> This may cause problems, for example, if other architectures open
-> CONFIG_ARCH_HAS_COPY_MC, but want to use copy_mc_to_user() outside the
-> architecture, the code add to include/linux/uaddess.h is as follows:
->
->     #ifndef copy_mc_to_user
->     static inline unsigned long __must_check
->     copy_mc_to_user(void *dst, const void *src, size_t cnt)
->     {
-> 	    ...
->     }
->     #endif
-     
-The above doesn't exist yet, you add it in patch 3, which is a little
-confusing for a reader of this commit in isolation.
+When tick_nohz_stop_tick() stops the tick, the the clock event device
+is not put into ONESHOT_STOPPED mode. This can lead to spurious timer
+interrupts with some clock event device drivers that don't shut down
+entirely after firing.
 
-I think you could safely move that into this patch, and then this patch
-would be ~= "Add generic fallback version of copy_mc_to_user()".
+Eliminate these by putting the device into ONESHOT_STOPPED mode at
+points where it is not being reprogrammed. When there are no timers
+active, then tick_program_event() with KTIME_MAX can be used to stop the
+device. When there is a timer active, the device can be stopped at the
+next tick (any new timer added by timers will reprogram the tick).
 
-It's probably not worth doing a whole new version of the series just for
-that, but if you need to do a new version for some other reason I think
-it would be cleaner to introduce the fallback in this commit.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ kernel/time/tick-sched.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-> Then this definition will conflict with the implementation of x86/powerpc
-> and cause compilation errors as follow:
->
-> Fixes: ec6347bb4339 ("x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user, kernel}()")
-> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-> ---
->  arch/powerpc/include/asm/uaccess.h | 1 +
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index d257721c68b8..da1a7efa45a4 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -928,6 +928,8 @@ static void tick_nohz_stop_tick(struct tick_sched *ts, int cpu)
+ 	if (unlikely(expires == KTIME_MAX)) {
+ 		if (ts->nohz_mode == NOHZ_MODE_HIGHRES)
+ 			hrtimer_cancel(&ts->sched_timer);
++		else
++			tick_program_event(KTIME_MAX, 1);
+ 		return;
+ 	}
+ 
+@@ -1364,9 +1366,14 @@ static void tick_nohz_handler(struct clock_event_device *dev)
+ 	tick_sched_do_timer(ts, now);
+ 	tick_sched_handle(ts, regs);
+ 
+-	/* No need to reprogram if we are running tickless  */
+-	if (unlikely(ts->tick_stopped))
++	if (unlikely(ts->tick_stopped)) {
++		/*
++		 * If we are tickless, no need to reprogram, so change the
++		 * clock event device to ONESHOT_STOPPED.
++		 */
++		tick_program_event(KTIME_MAX, 1);
+ 		return;
++	}
+ 
+ 	hrtimer_forward(&ts->sched_timer, now, TICK_NSEC);
+ 	tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
+-- 
+2.35.1
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
