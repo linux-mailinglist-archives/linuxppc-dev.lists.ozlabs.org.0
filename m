@@ -2,56 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB41F50B0C8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 08:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E81A50B3AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 11:13:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kl4f74gD6z3bl9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 16:45:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kl7xM31PXz3bcZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Apr 2022 19:13:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SkGfNV8i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Kluun7t1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kl4dX1y1Rz2yb6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Apr 2022 16:44:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kl7wk4vg3z2yp5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Apr 2022 19:12:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=SkGfNV8i; 
+ header.a=rsa-sha256 header.s=201909 header.b=Kluun7t1; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kl4dS58mlz4xXS;
- Fri, 22 Apr 2022 16:44:27 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kl7wf0njlz4xXS;
+ Fri, 22 Apr 2022 19:12:49 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1650609870;
- bh=3eLXiyOB458HngAaYCOTJBZShTmHk/qj59dCQWCz0co=;
+ s=201909; t=1650618771;
+ bh=TAQU4yACc/OpJ4CrlRCjZa4rq8YrRjfIqrgtYmrgmq8=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=SkGfNV8iJBliQixYncwq5FfV8UADKFcsOJ7PQevePJQYT02V+r2jXHxXYL6plpI8G
- BfPdaZF1IybxT9FNYpuUVE5gP903BbKuzA2EuW9j3f9iNP9x8/tFynZ8ekZGqQ23O/
- zq6z994qcGsmjiXzBwmlOh3hASzITXdh+448B7sfuOJkH+07vjCisgsyuGWFtyXVSd
- G3YAH4xDlj6z+6rPo9DEJLYNyhQH4Yvf8eji5ra0Ugve15ehyQT2PYXcIQrK3ZHjS8
- b7ElbR6vrpVHIGt6ZeKXtfIuc+OrUOmAohwSl5ygXCifaPCMzXrsHWjyCXPrpbsm8V
- PRm9B8SAHt7sA==
+ b=Kluun7t1yUg109zhUX0NKdQDXUS57TjUMNfWa33hSC3kQoiszVF4V4VbMEt6kNQLS
+ VMSD8Lv9ktUSJAoTylgu1kmx2DeejrCGR5Ov1ws0dHU/ggozuXn6xPUTp1BLvcogCN
+ tSEj8ybnDEIRnhoQCSlCQ+utsfavEI6puFSK/x4C0xCJPfiYDwFLT4xvZ59M3SJpSv
+ GI2foayEyAw1DN+7qMxZjjQPpwQ5PmVI99eUbiubs9X65wSHK4NXtTieLOjEaw5pss
+ 3lBgp0arVWxkjvR0IgWdhTMoPS6SUrCH4wmY/kfyFBJcoGKQcbwsHqXEysY4k9oBDH
+ Z2Je52wsOeogA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Yihao Han <hanyihao@vivo.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Ulf Hansson <ulf.hansson@linaro.org>, Mark
- Brown <broonie@kernel.org>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, William Breathitt Gray
- <vilhelm.gray@gmail.com>, Sven Van Asbroeck <TheSven73@gmail.com>,
- Corentin Labbe <clabbe@baylibre.com>, Yihao Han <hanyihao@vivo.com>, Uwe
- =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] macintosh: macio_asic: fix resource_size.cocci warnings
-In-Reply-To: <20220414140304.82751-1-hanyihao@vivo.com>
-References: <20220414140304.82751-1-hanyihao@vivo.com>
-Date: Fri, 22 Apr 2022 16:44:24 +1000
-Message-ID: <87zgkd8vnb.fsf@mpe.ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Benjamin
+ Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Ingo Molnar <mingo@redhat.com>, Paul
+ Mackerras <paulus@samba.org>, Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v1 06/22] powerpc/ftrace: Inline ftrace_modify_code()
+In-Reply-To: <1650261933.e8kr43zvw0.naveen@linux.ibm.com>
+References: <cover.1648131740.git.christophe.leroy@csgroup.eu>
+ <3b651381f4c53988ede62f4a1505e7e8ccab56b4.1648131740.git.christophe.leroy@csgroup.eu>
+ <1650261933.e8kr43zvw0.naveen@linux.ibm.com>
+Date: Fri, 22 Apr 2022 19:12:44 +1000
+Message-ID: <87wnfh8os3.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -65,46 +64,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@vivo.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Yihao Han <hanyihao@vivo.com> writes:
-> drivers/macintosh/macio_asic.c:219:26-29: WARNING:
-> Suspicious code. resource_size is maybe missing with res
-> drivers/macintosh/macio_asic.c:221:26-29: WARNING:
-> Suspicious code. resource_size is maybe missing with res
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Christophe Leroy wrote:
+>> Inlining ftrace_modify_code(), it increases a bit the
+>> size of ftrace code but brings 5% improvment on ftrace
+>> activation.
+>> 
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>  arch/powerpc/kernel/trace/ftrace.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+>> index 41c45b9c7f39..98e82fa4980f 100644
+>> --- a/arch/powerpc/kernel/trace/ftrace.c
+>> +++ b/arch/powerpc/kernel/trace/ftrace.c
+>> @@ -53,7 +53,7 @@ ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
+>>  	return op;
+>>  }
+>> 
+>> -static int
+>> +static inline int
+>>  ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_t new)
+>>  {
+>>  	ppc_inst_t replaced;
 >
-> Use resource_size function on resource object instead of
-> explicit computation.
->
-> Generated by: scripts/coccinelle/api/resource_size.cocci
->
-> Signed-off-by: Yihao Han <hanyihao@vivo.com>
-> ---
->  drivers/macintosh/macio_asic.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/macintosh/macio_asic.c b/drivers/macintosh/macio_asic.c
-> index 1943a007e2d5..260fccb3863e 100644
-> --- a/drivers/macintosh/macio_asic.c
-> +++ b/drivers/macintosh/macio_asic.c
-> @@ -216,9 +216,9 @@ static int macio_resource_quirks(struct device_node *np, struct resource *res,
->  	/* Some older IDE resources have bogus sizes */
->  	if (of_node_name_eq(np, "IDE") || of_node_name_eq(np, "ATA") ||
->  	    of_node_is_type(np, "ide") || of_node_is_type(np, "ata")) {
-> -		if (index == 0 && (res->end - res->start) > 0xfff)
-> +		if (index == 0 && (resource_size(res)) > 0xfff)
->  			res->end = res->start + 0xfff;
-> -		if (index == 1 && (res->end - res->start) > 0xff)
-> +		if (index == 1 && (resource_size(res)) > 0xff)
+> I thought gcc was free to inline functions without the need for 
+> 'inline'.
 
-Are you sure the conversion is correct? It's not exactly equivalent:
+Yes it is.
 
-static inline resource_size_t resource_size(const struct resource *res)
-{
-	return res->end - res->start + 1;
-}
+> On the flip side, don't we need __always_inline if we want to force 
+> inlining?
+
+Yes. Since ac7c3e4ff401 ("compiler: enable CONFIG_OPTIMIZE_INLINING forcibly").
 
 cheers
