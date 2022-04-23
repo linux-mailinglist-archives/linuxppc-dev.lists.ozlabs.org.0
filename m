@@ -1,56 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BB550CB3B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 16:33:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D558F50CB83
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 17:02:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Klv0H35Mfz3brH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 00:33:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KlvdG51hCz3bdB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 01:02:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lrXnP+fp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j4W+UeVu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kltzf4wX6z2yLJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 00:33:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=lrXnP+fp; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=j4W+UeVu; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kltzc14TSz4xLb;
- Sun, 24 Apr 2022 00:33:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1650724381;
- bh=WoVkgo+1c7VtsmcEJ4bIoptWeHFiV0K5oskKMxsYsV0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=lrXnP+fpdJguWUAQWN2X0b9+V8jQE/+m2rqG1BLz3rDML3ZSMi7xW+qv0wJWDSXCq
- Xhj6CLepoh2fU8F3p1VITdGldCUyOGWiBEBeNheRZW0W9QjOxwcWq4mV9h/yV1SVZz
- c+/YHpTiXpRZJaJVp4FdGBpALyrEopPLt/J7w84o5QJo70nWyfSErzCldxBL4DU/cg
- Ysg3aCv7AQe5GSGXpXeS1D3CfNjPzG6b6y6k7x385n0URcFGtZBxB4hqsyEVAm8QBB
- nexrFGD9EmNJ0R4hQoYb2z1zQeghYrrFviCWnTbYgZose6Tbequ2yQWHEPpnPRKNHc
- i4zq7Oddw7rgA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>, Haowen Bai <baihaowen@meizu.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>
-Subject: Re: [PATCH] powerpc/pci: Remove useless null check before call
- of_node_put()
-In-Reply-To: <c4613523-de98-b824-175a-89fd66931bd6@linux.ibm.com>
-References: <1650509529-27525-1-git-send-email-baihaowen@meizu.com>
- <c4613523-de98-b824-175a-89fd66931bd6@linux.ibm.com>
-Date: Sun, 24 Apr 2022 00:32:57 +1000
-Message-ID: <87levv98fa.fsf@mpe.ellerman.id.au>
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Klvcg18Ckz3bVd
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 01:01:39 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 4271B6129D;
+ Sat, 23 Apr 2022 15:01:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BCCC385A0;
+ Sat, 23 Apr 2022 15:01:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1650726095;
+ bh=uaq6jNypdiikbr84HxxnRbgSGuCdBE8n2XWA2kVi2Go=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=j4W+UeVu3/Vi110qIfDgsZqhpYu8qMnJWI5iwdqmEpz6rWP2cQz6EBroNuEBknJSt
+ Pajs7dX7YzmIgbttwC9wDbnRxYZV+ydbrIk7w/o6T8XiPN+o7fk7kKZyl6V2t8SlqS
+ y2Vp0AlB/QEOBmxSznnjFkmK1SmrVmzGqvxuDu7/4C91717uTC5+JM+2VtKVYlCLoa
+ GSn+cdsFeV7jmjOjLNH6WByptK7hTvUzISBNOpHmM/bpS34kwjP4y6d5i213GV86wT
+ X6Ml966XTBxMhEKT4pyIyNqqu8WnOMSB8q42TueLKq1HmPXKsaikWy5t2IMnOrNibw
+ xpaRC8DS/Cu/w==
+Date: Sat, 23 Apr 2022 10:01:32 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Jingar, Rajvi" <rajvi.jingar@intel.com>
+Subject: Re: [PATCH v4 2/2] PCI/PM: Fix pci_pm_suspend_noirq() to disable PTM
+Message-ID: <20220423150132.GA1552054@bhelgaas>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ0PR11MB507047C0109C5163EF20D9AE9EF69@SJ0PR11MB5070.namprd11.prod.outlook.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,59 +61,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Wysocki,
+ Rafael J" <rafael.j.wysocki@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "koba.ko@canonical.com" <koba.ko@canonical.com>,
+ Kai-Heng Feng <kai.heng.feng@canonical.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
+ "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Tyrel Datwyler <tyreld@linux.ibm.com> writes:
-> On 4/20/22 19:52, Haowen Bai wrote:
->> No need to add null check before call of_node_put(), since the
->> implementation of of_node_put() has done it.
->> 
->> Signed-off-by: Haowen Bai <baihaowen@meizu.com>
->> ---
->>  arch/powerpc/kernel/pci_dn.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->> 
->> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
->> index 61571ae23953..ba3bbc9bec2d 100644
->> --- a/arch/powerpc/kernel/pci_dn.c
->> +++ b/arch/powerpc/kernel/pci_dn.c
->> @@ -357,8 +357,8 @@ void pci_remove_device_node_info(struct device_node *dn)
->> 
->>  	/* Drop the parent pci_dn's ref to our backing dt node */
->>  	parent = of_get_parent(dn);
->> -	if (parent)
->> -		of_node_put(parent);
->> +
->> +	of_node_put(parent);
->
-> This whole block of code looks useless, or suspect. Examining the rest of the
-> code for this function this is the only place that parent is referenced. The
-> of_get_parent() call returns the parent with its refcount incremented, and then
-> we turn around and call of_node_put() which drops that reference we just took.
-> The comment doesn't do what it says it does. If we really need to drop a
-> previous reference to the parent device node this code block would need to call
-> of_node_put() twice on parent to accomplish that.
+On Sat, Apr 23, 2022 at 12:43:14AM +0000, Jingar, Rajvi wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> > On Thu, Apr 14, 2022 at 07:54:02PM +0200, Rafael J. Wysocki wrote:
+> > > On 3/25/2022 8:50 PM, Rajvi Jingar wrote:
+> > > > For the PCIe devices (like nvme) that do not go into D3 state still need to
+> > > > disable PTM on PCIe root ports to allow the port to enter a lower-power PM
+> > > > state and the SoC to reach a lower-power idle state as a whole. Move the
+> > > > pci_disable_ptm() out of pci_prepare_to_sleep() as this code path is not
+> > > > followed for devices that do not go into D3. This patch fixes the issue
+> > > > seen on Dell XPS 9300 with Ice Lake CPU and Dell Precision 5530 with Coffee
+> > > > Lake CPU platforms to get improved residency in low power idle states.
+> > > >
+> > > > Fixes: a697f072f5da ("PCI: Disable PTM during suspend to save power")
+> > > > Signed-off-by: Rajvi Jingar <rajvi.jingar@intel.com>
+> > > > Suggested-by: David E. Box <david.e.box@linux.intel.com>
+> > > > ---
+> > > >   drivers/pci/pci-driver.c | 10 ++++++++++
+> > > >   drivers/pci/pci.c        | 10 ----------
+> > > >   2 files changed, 10 insertions(+), 10 deletions(-)
+> > > >
+> > > > diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> > > > index 8b55a90126a2..ab733374a260 100644
+> > > > --- a/drivers/pci/pci-driver.c
+> > > > +++ b/drivers/pci/pci-driver.c
+> > > > @@ -847,6 +847,16 @@ static int pci_pm_suspend_noirq(struct device *dev)
+> > > >   	if (!pci_dev->state_saved) {
+> > > >   		pci_save_state(pci_dev);
+> > > > +		/*
+> > > > +		 * There are systems (for example, Intel mobile chips since
+> > Coffee
+> > > > +		 * Lake) where the power drawn while suspended can be
+> > significantly
+> > > > +		 * reduced by disabling PTM on PCIe root ports as this allows the
+> > > > +		 * port to enter a lower-power PM state and the SoC to reach a
+> > > > +		 * lower-power idle state as a whole.
+> > > > +		 */
+> > > > +		if (pci_pcie_type(pci_dev) == PCI_EXP_TYPE_ROOT_PORT)
+> > > > +			pci_disable_ptm(pci_dev);
+> > 
+> > Why is disabling PTM dependent on pci_dev->state_saved?  The point of
+> > this is to change the behavior of the device, and it seems like we
+> > want to do that regardless of whether the driver has used
+> > pci_save_state().
+> 
+> Because we use the saved state to restore PTM on the root port. 
+> And it's under this condition that the root port state gets saved.
 
-Yeah good analysis.
+Yes, I understand that pci_restore_ptm_state() depends on a previous
+call to pci_save_ptm_state().
 
-It used to use pdn->parent, which didn't grab  an extra reference, see
-commit 14db3d52d3a2 ("powerpc/eeh: Reduce use of pci_dn::node").
+The point I'm trying to make is that pci_disable_ptm() changes the
+state of the device, and that state change should not depend on
+whether the driver has used pci_save_state().
 
-The old code was:
+When we're putting a device into a low-power state, I think we want to
+disable PTM *always*, no matter what the driver did.  And I think we
+want to do it for all devices, not just Root Ports.
 
-        if (pdn->parent)
-                of_node_put(pdn->parent->node);
-
-> A closer examination is required to determine if what the comment says we need
-> to do is required. If it is then the code as it exists today is leaking that
-> reference AFAICS.
-
-Yeah. This function is only called from pnv_php.c, ie. powernv PCI
-hotplug, which I think gets less testing than pseries hotplug. So
-possibly we are leaking references and haven't noticed, or maybe the
-comment is out of date.
-
-cheers
+Bjorn
