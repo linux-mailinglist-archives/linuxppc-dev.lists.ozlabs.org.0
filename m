@@ -1,59 +1,156 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9086E50CD9E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Apr 2022 23:27:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4071A50CE49
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 03:52:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Km4BH420tz3bdP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 07:27:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KmB386ks5z3bbn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 11:52:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=mxw3tXP3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N99tKL1V;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=srs0=n99z=vb=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256
- header.s=20210105 header.b=mxw3tXP3; dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=rajvi.jingar@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=N99tKL1V; dkim-atps=neutral
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Km49Z74dxz2yHp
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 07:27:14 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id CA982B80DAB;
- Sat, 23 Apr 2022 21:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655E8C385A5;
- Sat, 23 Apr 2022 21:27:04 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
- dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com
- header.b="mxw3tXP3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105; 
- t=1650749222;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=pY3GCFkvaKbYFxDCcKwSdJ8N9nXdG8OE4PjRxZGLbwE=;
- b=mxw3tXP3rv19uw0WGrfNZ5vKeN9vdScLNhpiHdV1D7EpFAVPuUI2t27mnVwIz+EPXhdc0N
- DxsrccWIpl1bhZSnO0NPOVu65nNxex7ViVlm3T1mRaL18DWAN+oQeZyXO+p1apZw+pyUO5
- OdzcbE/GPAE1xJDfBMeAuCkH5KtnstM=
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5c3eede4
- (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO); 
- Sat, 23 Apr 2022 21:27:02 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
- tglx@linutronix.de, arnd@arndb.de
-Subject: [PATCH v6 00/17] archs/random: fallback to best raw ktime when no
- cycle counter
-Date: Sat, 23 Apr 2022 23:26:06 +0200
-Message-Id: <20220423212623.1957011-1-Jason@zx2c4.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KlXbZ0TBZz2ywF
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Apr 2022 10:44:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1650674666; x=1682210666;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=M4dnxnhrXPozsBXyfv17cINsmliZiIpCNaxDfVlZsr8=;
+ b=N99tKL1VpH5332gofo+HoZWkchhqiD4dvmmqiR77gvGtKHuVnwV+2Ic1
+ ylu0GyKBCyZeypCHOd72X7bTJZbcfWwbF7kqDltPVeqStezzllE1JvDGz
+ TaioOVlt2jrWxqHtVKFK9H86RHV4gPeJrTv+g4lzfMJtgis7M8vLyI5xb
+ m2sAN+q8hfgaF8BLNyDDjkGVY0DNZ7whtrQtFVyUhFfgiymlBYeQLhJGl
+ 13+kDS0yHKPImWPA7Roynz2cUztektBd+BQgynl4sv2U7KO9cPhdW20PT
+ J5xInUpBqflXwXDjh+1D2ATmv8iuFI/5uL1rcQBduG/nSToM1miR0C5xt g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10324"; a="245396028"
+X-IronPort-AV: E=Sophos;i="5.90,282,1643702400"; d="scan'208";a="245396028"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Apr 2022 17:43:17 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.90,282,1643702400"; d="scan'208";a="556645703"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orsmga007.jf.intel.com with ESMTP; 22 Apr 2022 17:43:17 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 22 Apr 2022 17:43:16 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27 via Frontend Transport; Fri, 22 Apr 2022 17:43:16 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.105)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.27; Fri, 22 Apr 2022 17:43:16 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=eeR5q4Y5zFJ6XhaGJZR9kxk+0iuXFoB1H1r4LUyv1AVkcq6nqDCEkmfzNLw55nsJItOj/ySozuCTFqVfDvrbujZf5wKMo8WpXLIhN05plmgL3dfGhtmNNIO15VhijDGQFqTDSBeBT6z5eLKNMuHyrUJOgMrpuwIwlBs/Fcl7cHdjagQhaBCSE58rlOgNPcIwToD4oo1Yloyz7sFe2gVtUxe+I+P11TjEsWK50Todv446e9XGrMH395lNHjVapmzWCr317JenQTLhG6/Jb/r4w53cUaKlYk0f0YqsrwH3Yae278D6HFK3fifMw0U1U4lVsaNxHiOsAjjSiQOp8SeN8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DBBEHTLaoR7qTvas6pTTnIsUjf/8DtCZZ7Iasad58BE=;
+ b=Q0Bnrx/5w1rZiYuZ+/xVoaC6g27iJfr8Wh5xedPrpaBGpOiFlIch7sJDADjC2rsP5SFBoFQUg6lbq1YkM0kiwnowe31OH/BAZ11KlJ6gSLGP2UcBICElYCTtCY4FZb64DU3p2XWBCWqap2z2/2cvDE/eCyltUwSG8qBODZZUsNBjAFaZVseLod6Y4zUsIHJRa4FwbR8DU8eunWGa3NiS8GBZFOjKJbcXCh8Ry3YkJnrAh3ywVMJeqlnTuw4kNXzCK2lh+HAONN3I2jQSb2eldOjyPGe23lomaYa6HKg/lAoN9NJ1GCWte1Fo6mlGVyTH64Qfj9mqPZYIVpBzUt4FWg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB5070.namprd11.prod.outlook.com (2603:10b6:a03:2d5::13)
+ by MW5PR11MB5812.namprd11.prod.outlook.com (2603:10b6:303:193::14)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5186.14; Sat, 23 Apr
+ 2022 00:43:14 +0000
+Received: from SJ0PR11MB5070.namprd11.prod.outlook.com
+ ([fe80::15c7:ebeb:fa0a:bbd9]) by SJ0PR11MB5070.namprd11.prod.outlook.com
+ ([fe80::15c7:ebeb:fa0a:bbd9%7]) with mapi id 15.20.5186.015; Sat, 23 Apr 2022
+ 00:43:14 +0000
+From: "Jingar, Rajvi" <rajvi.jingar@intel.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: RE: [PATCH v4 2/2] PCI/PM: Fix pci_pm_suspend_noirq() to disable PTM
+Thread-Topic: [PATCH v4 2/2] PCI/PM: Fix pci_pm_suspend_noirq() to disable PTM
+Thread-Index: AQHYQIGzE0/LKKZHKkmXPRchVsogIazv0DwAgAzeSwCAACSt0A==
+Date: Sat, 23 Apr 2022 00:43:14 +0000
+Message-ID: <SJ0PR11MB507047C0109C5163EF20D9AE9EF69@SJ0PR11MB5070.namprd11.prod.outlook.com>
+References: <ba571993-90fb-ae67-6617-0b63571298be@intel.com>
+ <20220422222446.GA1522716@bhelgaas>
+In-Reply-To: <20220422222446.GA1522716@bhelgaas>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.6.401.20
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: cd349aa4-95d9-4280-3b1a-08da24c2402e
+x-ms-traffictypediagnostic: MW5PR11MB5812:EE_
+x-microsoft-antispam-prvs: <MW5PR11MB5812E80A38CE7A6EAEC6BE2C9EF69@MW5PR11MB5812.namprd11.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: kEXOSTnyRKSUOsIPMFbn0YggF9d0NxB4y/zmfp9pv6N54l/vWsIIvDHgHn/uCd7XeglvF/g5nx4Egr9+GkaG2eqoU+MR0jJ+tTUa3BqTT5UFCxBNoeWcYWkyEwvONFJJZmL8lxOmsZBJXz+DXPsQAN4H9wRn7miziL3xbzVMsWjCeq3jR1AR/C76eJ0SWvrds6ULELGdZoob4ppSxdfEMrAMB06zwo1T1Dip3GNkgYUOBKAajQM8wFel4g32yRELluaJmdQl/Z69+minKmD/uz86bPWu0HDY7HNou1I4tN0Z6kMsANNfNpsCx+Y4IyYeCeXLd8Hy+gJX8lUEaaQK9sJQwskyx3IIcb2bHp0hN34iIIXevrq9004itUbOfil4D911BxIB1SG4s7yt/rUQms8c2eP+a3T8hn/erL3IEFtviGwqE/G9XQKXU9QMOJI2wdBZlCcJyE2ffiZTfSoTkIkimLdqc4bWYulptIbxDNdMLhOOZzfnPr2aGAugf3qTdhiKVdE6AUgrd4aHYxQ6acS/6r9ZEEVZHYTHmsLSY2JFnV81Ubl8TPYeB1ANuKiPCR2kZaSo7cJ2UQr9cv6KRzE6TBpAARzW6M2jwHYy4RyN0nBif0eKZfC6lTcQjKDcxrQXfdB3Jn/C+g3ES3UEeE08G2FLPcrbM4X4EkcaHmKX7mDthkrQwjYtc2ciMqOaFsK5ydg//j5/jZDl5Jqx8EoIW/Z8XEMRKC/7dnF0YzBvxin6laQ61a9yUD3b2RvKT7PGPmAYltoJHKzf/v6HvFIhTahePxO+8JnsqYA0Nn4=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB5070.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(366004)(71200400001)(186003)(7696005)(66556008)(53546011)(76116006)(26005)(83380400001)(64756008)(8936002)(4326008)(966005)(8676002)(7416002)(66446008)(66476007)(9686003)(6506007)(66946007)(2906002)(5660300002)(33656002)(55016003)(508600001)(52536014)(38100700002)(38070700005)(54906003)(82960400001)(316002)(122000001)(6916009)(86362001);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?NehV+Sw0guYNcdXrgh5iyDs5s7RXURhAlwGAFXChfTtCdoOhu+m6XxJhjAzx?=
+ =?us-ascii?Q?I70Nq7cx4vKh+TEqkw08VO5H3/o6U7xJ24K/vGEH5o77aOROv5Uy82ORzn68?=
+ =?us-ascii?Q?e8UYD4EFFcdPY4bwA0LBPhNElNg+D1AUsjwQgrqb2aoj4QEMeNtJTob7Un69?=
+ =?us-ascii?Q?BSm8wd2uWgcrJOdscqUqsfK04aMzEDVTnaP3rlyUIMnpUQRYqLdspHBMCkHP?=
+ =?us-ascii?Q?x+MNENSZGY7hJ5m2BMkmpl1ixyh00GuqZrN7PbkTzF3bsGQAcptJpDfC9MQQ?=
+ =?us-ascii?Q?KOteEq0xHrzIl9IPmutXQk1XmRai9sGDfd+NKqVBI+hLw414W6epYaX8hz1C?=
+ =?us-ascii?Q?TaPbGzhU0JlV5Z7Fbj5NU1BejOgecux8cYY2yCc5kCW6zjjgPQBRtst/rTFn?=
+ =?us-ascii?Q?G+uypTAYechIMZtHrmS8QGyYJkc0+1OmEfh5ocdBa2gGjnigR3C7uSpOeH5c?=
+ =?us-ascii?Q?aDmkmG5rFGlYUczkOtIY5CbVUSBkSHKhJLaBfAeVIFcGsBFD7OcuJgsPmz+I?=
+ =?us-ascii?Q?oOdW5lqM5i5q+gHmFYcTrw2kBwsCS2RHgmbox/z/cBUegkAGoMX2Clshpovk?=
+ =?us-ascii?Q?RIB9THJhcvZN7BGJus8ZNm3oAzaTJzhL5I5gqbUDa4wMwBsbV+/FLNFvDoF+?=
+ =?us-ascii?Q?XQSHJQuzbn8N69NUryFvp8cqRlowTbM3QEg2dT2wHw3DRh+Fet3WX9tJm6rN?=
+ =?us-ascii?Q?K2s4OO3blIf+l0cR4mVuGNy06NxcQURMD818oYgqs3BgJ8JgebHoZ/6Mpt5q?=
+ =?us-ascii?Q?+YdIGEfN3aspu/l/gFeLBSyaIau7KXgqPkZRrBLTw0tPkJnrUZ91OsuUJh7y?=
+ =?us-ascii?Q?G1cQGuWripVM1DtsXoReIi6pt3E1k2V7Hrzl9Gakw6oJd5OMmNg9xtSxKbQc?=
+ =?us-ascii?Q?qAqAOrSHAese2O4v5qPoeSQMtfZbd7aUYdFAjDlrBGJYINFdHQPjbDeOdfu2?=
+ =?us-ascii?Q?rcYkkhXaEK6d5hanfwKTW8QKYo992rLAgqXOiPJhekHaC6KHdsp6coWsDB5c?=
+ =?us-ascii?Q?7eTUev+umi6mgPSxims/Z3tKnutr6TQs1gET/U1pUA3HCXE9uoriqoNpaHez?=
+ =?us-ascii?Q?W7uhYLRyO2IaV26uTN7yEkbNwi7UqKFypa5M7MiCGreXd8AtRknm2cUzgmnI?=
+ =?us-ascii?Q?HfLBf3W3dkdmS1rKviXa+gMktA2B5e2rWFCf874rzLdk4kJzPOmxmuTWDfrA?=
+ =?us-ascii?Q?9sQ947h7qZ49r4IQeSRd4HBDx4S/YbSaNqDeZYUpIJtw3oU2mglClgjCISuH?=
+ =?us-ascii?Q?o1dwinlNwGSWtmy4KGXgXd9O8arTNBsdt1e5sF6hVfNpI8UIv2ge0GXNnlm9?=
+ =?us-ascii?Q?MOegYDs7XZ+W/F2OTh5qPpmyAjJpLV6Yj18YGonB0yzv5XjAzwodP9l30ewY?=
+ =?us-ascii?Q?OuLEEdXZdvtW98qqQbpuvkD64aNkKONV/UNM1NbkDv8r+8qCdMgo0uJR+5kE?=
+ =?us-ascii?Q?44+kJW2eLHEeGPQZO2lJhkbCfLW0s1a+bQFpIpUGzK5fParkSDsIL20xTTRF?=
+ =?us-ascii?Q?wgFfOCHWiKSj6peNZ8mZvNNH9gh/JR6LxyPbq9aotTiCoSNCDLmK3OhirGQz?=
+ =?us-ascii?Q?kzIA38LeBFNcZ2eQ1laVtst8u6Q8Htf2byF72hJ50Tp5KGGHy+lKAfkl3EOk?=
+ =?us-ascii?Q?/s0dsOzxGkQFloVDmISzh8bX2JNjh8vTYcCRXmcKirkIUvkYEGU0VPgFZKQ2?=
+ =?us-ascii?Q?mPLkW9XhpnsXCFaH9trM4M6hNsF5MmkCQLigTXLz6hesfuzMNjGMr5/8lud/?=
+ =?us-ascii?Q?hgpfHWsukw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB5070.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd349aa4-95d9-4280-3b1a-08da24c2402e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2022 00:43:14.5061 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OSFB/KD4hJVCQooDJ+tYvUkPJoLFE0PL18A+T8v1lvkB154wHH6VuU0ftaragwuydo1pL2QzQ1KZQMI2dkcQfQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5812
+X-OriginatorOrg: intel.com
+X-Mailman-Approved-At: Sun, 24 Apr 2022 11:51:24 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,218 +162,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, linux-ia64@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Dominik Brodowski <linux@dominikbrodowski.net>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>,
- linux-riscv@lists.infradead.org,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
- Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Matt Turner <mattst88@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>,
- Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
- linux-um@lists.infradead.org,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, linux-arm-kernel@lists.infradead.org,
- Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Theodore Ts'o <tytso@mit.edu>,
- linux-parisc@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>,
- linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>
+Cc: "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Wysocki,
+ Rafael J" <rafael.j.wysocki@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "koba.ko@canonical.com" <koba.ko@canonical.com>,
+ Kai-Heng Feng <kai.heng.feng@canonical.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "david.e.box@linux.intel.com" <david.e.box@linux.intel.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
+ "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[Preface for v6: if you're an arch maintainer, a simple Acked-by would
- be appreciated if this looks okay.]
 
-Hi folks,
+> -----Original Message-----
+> From: Bjorn Helgaas <helgaas@kernel.org>
+> Sent: Friday, April 22, 2022 3:25 PM
+> To: Jingar, Rajvi <rajvi.jingar@intel.com>
+> Cc: bhelgaas@google.com; david.e.box@linux.intel.com; linux-
+> pci@vger.kernel.org; linux-kernel@vger.kernel.org; linux-pm@vger.kernel.o=
+rg;
+> Wysocki, Rafael J <rafael.j.wysocki@intel.com>; Kai-Heng Feng
+> <kai.heng.feng@canonical.com>; mika.westerberg@linux.intel.com;
+> koba.ko@canonical.com; baolu.lu@linux.intel.com;
+> sathyanarayanan.kuppuswamy@linux.intel.com; Russell Currey
+> <ruscur@russell.cc>; Oliver O'Halloran <oohall@gmail.com>; linuxppc-
+> dev@lists.ozlabs.org
+> Subject: Re: [PATCH v4 2/2] PCI/PM: Fix pci_pm_suspend_noirq() to disable=
+ PTM
+>=20
+> [+cc other folks interested in PTM from
+> https://lore.kernel.org/r/20220408153159.106741-1-
+> kai.heng.feng@canonical.com]
+>=20
+> On Thu, Apr 14, 2022 at 07:54:02PM +0200, Rafael J. Wysocki wrote:
+> > On 3/25/2022 8:50 PM, Rajvi Jingar wrote:
+> > > For the PCIe devices (like nvme) that do not go into D3 state still n=
+eed to
+> > > disable PTM on PCIe root ports to allow the port to enter a lower-pow=
+er PM
+> > > state and the SoC to reach a lower-power idle state as a whole. Move =
+the
+> > > pci_disable_ptm() out of pci_prepare_to_sleep() as this code path is =
+not
+> > > followed for devices that do not go into D3. This patch fixes the iss=
+ue
+> > > seen on Dell XPS 9300 with Ice Lake CPU and Dell Precision 5530 with =
+Coffee
+> > > Lake CPU platforms to get improved residency in low power idle states=
+.
+> > >
+> > > Fixes: a697f072f5da ("PCI: Disable PTM during suspend to save power")
+> > > Signed-off-by: Rajvi Jingar <rajvi.jingar@intel.com>
+> > > Suggested-by: David E. Box <david.e.box@linux.intel.com>
+>=20
+> > > ---
+> > >   v1 -> v2: add Fixes tag in commit message
+> > >   v2 -> v3: move changelog after "---" marker
+> > >   v3 -> v4: add "---" marker after changelog
+> > > ---
+> > >   drivers/pci/pci-driver.c | 10 ++++++++++
+> > >   drivers/pci/pci.c        | 10 ----------
+> > >   2 files changed, 10 insertions(+), 10 deletions(-)
+> > >
+> > > diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> > > index 8b55a90126a2..ab733374a260 100644
+> > > --- a/drivers/pci/pci-driver.c
+> > > +++ b/drivers/pci/pci-driver.c
+> > > @@ -847,6 +847,16 @@ static int pci_pm_suspend_noirq(struct device *d=
+ev)
+> > >   	if (!pci_dev->state_saved) {
+> > >   		pci_save_state(pci_dev);
+> > > +		/*
+> > > +		 * There are systems (for example, Intel mobile chips since
+> Coffee
+> > > +		 * Lake) where the power drawn while suspended can be
+> significantly
+> > > +		 * reduced by disabling PTM on PCIe root ports as this allows the
+> > > +		 * port to enter a lower-power PM state and the SoC to reach a
+> > > +		 * lower-power idle state as a whole.
+> > > +		 */
+> > > +		if (pci_pcie_type(pci_dev) =3D=3D PCI_EXP_TYPE_ROOT_PORT)
+> > > +			pci_disable_ptm(pci_dev);
+>=20
+> Why is disabling PTM dependent on pci_dev->state_saved?  The point of
+> this is to change the behavior of the device, and it seems like we
+> want to do that regardless of whether the driver has used
+> pci_save_state().
+>=20
 
-The RNG uses a function called random_get_entropy() basically anytime
-that it needs to timestamp an event. For example, an interrupt comes in,
-and we mix a random_get_entropy() into the entropy pool somehow.
-Somebody mashes their keyboard or moves their mouse around? We mix a
-random_get_entropy() into the entropy pool. It's one of the main
-varieties of input.
+Because we use the saved state to restore PTM on the root port.=20
+And it's under this condition that the root port state gets saved.
 
-Unfortunately, it's always 0 on a few platforms. The RNG has accumulated
-various hacks to deal with this, but in general it's not great. Surely
-we can do better than 0. In fact, *anything* that's not the same exact
-value all the time would be better than 0. Even a counter that
-increments once per hour would be better than 0! I think you get the
-idea.
-
-On most platforms, random_get_entropy() is aliased to get_cycles(),
-which makes sense for platforms where get_cycles() is defined. RDTSC,
-for example, has all the characteristics we care about for this
-function: it's fast to acquire (i.e. acceptable in an irq handler),
-pretty high precision, available, forms a 2-monotone distribution, etc.
-But for platforms without that, what is the next best thing?
-
-Sometimes the next best thing is architecture-defined. For example,
-really old MIPS has the C0 random register, which isn't quite a cycle
-counter, but is at least something. However, some platforms don't even
-have an architecture-defined fallback.
-
-Fortunately, the timekeeping subsystem has already solved this problem
-of trying to determine what the least bad clock is on constrained
-systems, falling back to jiffies in the worst case. By exporting the raw
-clock, we can get a decent fallback function for when there's no cycle
-counter or architecture-specific function.
-
-This series makes the RNG more useful on: m68k, RISC-V, MIPS, ARM32,
-NIOS II, SPARC32, Xtensa, OpenRISC, and Usermode Linux. Previously these
-platforms would, in certain circumstances, but out of luck with regards to
-having any type of event timestamping source in the RNG.
-
-Finally, note that this series isn't about "jitter entropy" or other
-ways of initializing the RNG. That's a different topic for a different
-thread. Please don't let this discussion veer off into that. Here, I'm
-just trying to find a good fallback counter/timer for platforms without
-get_cycles(), a question with limited scope.
-
-If this (or a future revision) looks good to you all and receives the
-requisite acks, my plan was to take these through the random.git tree
-for 5.19, so that I can then build on top of it.
-
-Thanks,
-Jason
-
-Changes v5->v6:
-- Use cpu_feature_enabled() instead of boot_cpu_has() on x86.
-- OpenRISC support.
-- Define missing `#define get_cycles get_cycles` on various platforms.
-
-Changes v4->v5:
-- Do not prototype symbol with 'extern', according to style guide.
-- On MIPS, combine random_get_entropy_fallback() with the c0 random
-  register in a way that matches the format of the c0 random value, so
-  that we get the best of a high precision cycle counter and of larger
-  period timer, joined together. As a result, Thomas Bogendoerfer's
-  ack on v4 of patch 4 has been dropped, since this is a substantial
-  change.
-
-Changes v3->v4:
-- Use EXPORT_SYMBOL_GPL instead of EXPORT_SYMBOL.
-
-Changes v2->v3:
-- Name the fallback function random_get_entropy_fallback(), so that it
-  can be changed out as needed.
-- Include header with prototype in timekeeping.c to avoid compiler
-  warning.
-- Export fallback function symbol.
-
-Changes v1->v2:
-- Use ktime_read_raw_clock() instead of sched_clock(), per Thomas'
-  suggestion.
-- Drop arm64 change.
-- Cleanup header inclusion ordering problem.
-
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Theodore Ts'o <tytso@mit.edu>
-Cc: Dominik Brodowski <linux@dominikbrodowski.net>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: Dinh Nguyen <dinguyen@kernel.org>
-Cc: Jonas Bonn <jonas@southpole.se>
-Cc: Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
-Cc: Stafford Horne <shorne@gmail.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org
-Cc: sparclinux@vger.kernel.org
-Cc: linux-um@lists.infradead.org
-Cc: x86@kernel.org
-Cc: linux-xtensa@linux-xtensa.org
-Cc: openrisc@lists.librecores.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-
-Jason A. Donenfeld (17):
-  ia64: define get_cycles macro for arch-override
-  s390: define get_cycles macro for arch-override
-  parisc: define get_cycles macro for arch-override
-  alpha: define get_cycles macro for arch-override
-  powerpc: define get_cycles macro for arch-override
-  timekeeping: add raw clock fallback for random_get_entropy()
-  m68k: use fallback for random_get_entropy() instead of zero
-  riscv: use fallback for random_get_entropy() instead of zero
-  mips: use fallback for random_get_entropy() instead of just c0 random
-  arm: use fallback for random_get_entropy() instead of zero
-  openrisc: use fallback for random_get_entropy() instead of zero
-  nios2: use fallback for random_get_entropy() instead of zero
-  x86: use fallback for random_get_entropy() instead of zero
-  um: use fallback for random_get_entropy() instead of zero
-  sparc: use fallback for random_get_entropy() instead of zero
-  xtensa: use fallback for random_get_entropy() instead of zero
-  random: insist on random_get_entropy() existing in order to simplify
-
- arch/alpha/include/asm/timex.h    |  1 +
- arch/arm/include/asm/timex.h      |  1 +
- arch/ia64/include/asm/timex.h     |  1 +
- arch/m68k/include/asm/timex.h     |  2 +-
- arch/mips/include/asm/timex.h     | 17 +++---
- arch/nios2/include/asm/timex.h    |  3 ++
- arch/openrisc/include/asm/timex.h |  3 ++
- arch/parisc/include/asm/timex.h   |  3 +-
- arch/powerpc/include/asm/timex.h  |  1 +
- arch/riscv/include/asm/timex.h    |  2 +-
- arch/s390/include/asm/timex.h     |  1 +
- arch/sparc/include/asm/timex_32.h |  4 +-
- arch/um/include/asm/timex.h       |  9 +---
- arch/x86/include/asm/timex.h      | 10 ++++
- arch/x86/include/asm/tsc.h        |  4 +-
- arch/xtensa/include/asm/timex.h   |  6 +--
- drivers/char/random.c             | 89 ++++++++++---------------------
- include/linux/timex.h             |  8 +++
- kernel/time/timekeeping.c         | 10 ++++
- 19 files changed, 87 insertions(+), 88 deletions(-)
-
--- 
-2.35.1
-
+> Bjorn
