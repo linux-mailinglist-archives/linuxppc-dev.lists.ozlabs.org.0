@@ -1,128 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA0550D0C7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 11:26:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E9B50D158
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 12:54:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KmN7T3sXQz3bfh
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 19:26:29 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com header.b=R8OyXbN8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KmQ5675SWz3bqv
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 20:54:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=2a01:111:f400:feab::71f;
- helo=apc01-sg2-obe.outbound.protection.outlook.com;
- envelope-from=wanjiabing@vivo.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=vivo0.onmicrosoft.com header.i=@vivo0.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-vivo0-onmicrosoft-com
- header.b=R8OyXbN8; dkim-atps=neutral
-Received: from APC01-SG2-obe.outbound.protection.outlook.com
- (mail-sgaapc01on2071f.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:feab::71f])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.helo=relay3.hostedemail.com (client-ip=64.99.140.34;
+ helo=relay3.hostedemail.com; envelope-from=joe@perches.com;
+ receiver=<UNKNOWN>)
+Received: from relay3.hostedemail.com (relay3.hostedemail.com [64.99.140.34])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KmN6h4mS1z2xgN
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 19:25:46 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HFmjDSvasYP9B4fmSnQCIiRnb08W9+11GwlIzkUG6+eDyQX8C5ed3lMeDG3eq4JbDAWhPik5qPZ1j/ujggosfHeymvRJZH+BBxbfQQ7cIUuqQqFm1hAqwXFo2kclKijmiVgpSi67d67ZxTdFOZtSQ84UFwO4Iws4z+lGu+mHkKRGuEdWRZQSO9EKR16GnCRzAyZ/B7Opw8PZy4DQ1oFkb2pnhsB/lL86WsnEOnQ7P5gFfbH+vWelwNyC4hP9QNfge0mRflO/5pIEwCbe2OfaWmNaFS+SguhGvD1FCFNAckfAQ2IL/hY5nWWa/UIHFLY1arvhuphIh3UpRC8zePikpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qQOUK/Ne0UkX/FzbxTbNENOBpVva+p93KRg87jkCfIo=;
- b=BceeF8Pwh7j4B21RYrlw8FpxoriOcSLDVQ8lz+MRuNFeutUqZgWogeNjEk3I9/ifs3Kg0UwJlztSdhuTdDmiB0Zbu7KXuzNaif4Vh2L05G11nClajVScM5qjoyVfgl7rolMyzS+aLzl3mIZUL7MvKLDKuUY2J0Ylkl+saCnU/B6/DLVb44ht8nzRKV+0grzEuLdMvlTxxOW/YGlyXqwVIpGjgYCk/yI5WfA81xe3LqO8IgDrTIYOAPNM4frdReNOTZ3fbiaHe35SADYi4qXIK3xGfOyFUgD0AmHOYpFRvklb8iUw/oYS6/xBAVMjie2rBFd5CytaxkVveZjecAHOjg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo0.onmicrosoft.com; 
- s=selector2-vivo0-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qQOUK/Ne0UkX/FzbxTbNENOBpVva+p93KRg87jkCfIo=;
- b=R8OyXbN8aPwws1aVF8qSBxHAM3v16R8V+46CVmCBv4m5awxEqqzwVuPBStKFii6DfYrx1pmSdyWH22m4kndUjEI9Ts6ZdMNRKlAzgE/r1Nu+Y2stfmvbfj37S6a6mrb2c9f6/y2EWIt1BguPm8WmW0D+8pEPhW/wEDLRoTwR4YQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from SG2PR06MB3367.apcprd06.prod.outlook.com (2603:1096:4:78::19) by
- SL2PR06MB3241.apcprd06.prod.outlook.com (2603:1096:100:3d::11) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5186.13; Sun, 24 Apr 2022 09:25:24 +0000
-Received: from SG2PR06MB3367.apcprd06.prod.outlook.com
- ([fe80::4591:4f3e:f951:6c8c]) by SG2PR06MB3367.apcprd06.prod.outlook.com
- ([fe80::4591:4f3e:f951:6c8c%7]) with mapi id 15.20.5186.019; Sun, 24 Apr 2022
- 09:25:23 +0000
-From: Wan Jiabing <wanjiabing@vivo.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: [PATCH] tty/hvc_opal: simplify if-if to if-else
-Date: Sun, 24 Apr 2022 17:25:11 +0800
-Message-Id: <20220424092511.100309-1-wanjiabing@vivo.com>
-X-Mailer: git-send-email 2.35.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HK2PR04CA0078.apcprd04.prod.outlook.com
- (2603:1096:202:15::22) To SG2PR06MB3367.apcprd06.prod.outlook.com
- (2603:1096:4:78::19)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KmQ4h2mrSz2yMS
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 20:54:10 +1000 (AEST)
+Received: from omf17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+ by unirelay11.hostedemail.com (Postfix) with ESMTP id 220CA82A77;
+ Sun, 24 Apr 2022 10:54:05 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by
+ omf17.hostedemail.com (Postfix) with ESMTPA id 97E6718; 
+ Sun, 24 Apr 2022 10:54:03 +0000 (UTC)
+Message-ID: <92734c71f40541a5e8b4af16c5c4f1563660fa92.camel@perches.com>
+Subject: Re: [PATCH] tty/hvc_opal: simplify if-if to if-else
+From: Joe Perches <joe@perches.com>
+To: Wan Jiabing <wanjiabing@vivo.com>, Michael Ellerman
+ <mpe@ellerman.id.au>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Date: Sun, 24 Apr 2022 03:54:02 -0700
+In-Reply-To: <20220424092511.100309-1-wanjiabing@vivo.com>
+References: <20220424092511.100309-1-wanjiabing@vivo.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ab21901b-caaa-48d7-babe-08da25d45be6
-X-MS-TrafficTypeDiagnostic: SL2PR06MB3241:EE_
-X-Microsoft-Antispam-PRVS: <SL2PR06MB32414653CFAB0F6E30519420ABF99@SL2PR06MB3241.apcprd06.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UeiPmwfQwNM1LsHmOMDSRBEQE5vH4XFAFDgyntyRrx3T2WMcZcGKEXXiIiPyUukFMgZeHawu51I1DklV4j6o68WyVfv1epzUS5ldXRH51hs7nKQ+sLbtVOJ7Yy+gFkckjGqWiG+6VTVWOoHyo6RQW5JJWwkQl/JXG844UvZGgys8wC6gCrmjqMlGaj2zkE0a/kh9b8RArKFiTy2bVUnzw2xH5gXBvSV1D2vNJvvoMG9eKBI92VQsZmsXgd+Y3kJyYkB/TnLQQoPwNXAPEAanpwMlvQPmisEtbK1gElfy8Id1nlcsLbemXqyOo0mwmqpUbAHO35k0MRhn5bAIUTnjjxUhnVwU8Jc/dnqZfHN2/lAxaVkU7IafYcbHtuAUZlz+EVZUYh34c3Lg/79WkWg9753K7ttxKMxApWxXWiUAuJ3mEz8+uVenSp0/Nlrre8vlrXPlmWQp9vbsL4wXksjGNXe5jiAaRx52YA/KsyWyhAHLyczExSql5QvK1Tmemre60Dtb2wYOkBFvkVhcYhG9qg3uYuKfYvgrjojg9jDe5eysM0LVlbcEv+MDtUP4QsADGffOFdy0V3DDKs4jbqRh8rKhEdB8I7GGfCgYoIi3pC1qd/WP7E35ctmgMQYCMP7zkYOwPD0PNVLc6SHo82r1b8+bKwsvu3TmkHGjtOzZbEUouZezHLDK2QkJbaeW6n9LjSRKrHaxjWTb/uwC7CD1Nw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SG2PR06MB3367.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(4744005)(1076003)(8936002)(86362001)(5660300002)(66946007)(66556008)(66476007)(38350700002)(38100700002)(6512007)(26005)(6666004)(6506007)(4326008)(8676002)(2616005)(52116002)(2906002)(107886003)(186003)(316002)(83380400001)(6486002)(508600001)(110136005)(36756003);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LJURF6oGKcGyNIBd/QwA7BbNUj4y7PrRrfFgKGg1rERj1bIm1VKjPbx6g5Jx?=
- =?us-ascii?Q?xqvSf/9Pjeuml8nuOh8f2U4EbgkbJrby0SiivcvIj8z6HwLnfXSZQH6k4NM4?=
- =?us-ascii?Q?RLDUvXvwE0qFOjyiNJ6rhr4WxK2VZNmCJXHdFCXtfKEG8UtDb+onV4b0oTur?=
- =?us-ascii?Q?idRngf5A0M6bQqnxptnpYB2XK8bQ5Vu31LawUcK2vp0q++6VfK0vv2bCscAG?=
- =?us-ascii?Q?s7wCuvhMHoKzqkWtpKNhra809+3CbKrwgtYZRkNexCMI+9Ikb5pCxOcIb2Rs?=
- =?us-ascii?Q?cZphvVou1frj5hiPbSpR53I4wBXH0ypZpfdXolrwBPx433SbqdJGZBFj21iA?=
- =?us-ascii?Q?Rv2XmqE0OTIfvM5DeaPJ6rX8JkHvyaRMUllpbZsdRZW/avBCJF1vQXlS3h1C?=
- =?us-ascii?Q?WxR3waU51pOj+0xaxieuV2tRb3P6EneJlhDTbYXeKpELCwlgwu9UkvnFC4fr?=
- =?us-ascii?Q?J5cSDoZZCD7eohss2kStnGUkQl8rPBcMkQyVLDUtL3XTWQdm/OP9JdvyNCxo?=
- =?us-ascii?Q?o1P6Dt/Xwax/GdH4tgGq/m67MxRCYYPdeiCsqC+8h4I7ADTAPfU0MHr7BZtC?=
- =?us-ascii?Q?QEMlFJRAIyNsURLsx6WEcJyEXI6X18cVvYrxRUYZmt1SHjbWYbeA2Bz6C763?=
- =?us-ascii?Q?cTZC9ZV2zt0cI33W4p3XmNn3ZlM3pBT6A+T+qdsD0UtDB3x+hhzCZ0lkKVKH?=
- =?us-ascii?Q?UOaH5vMF3g27YrryPGtxtCWgPpWZ/vSvboR1U35MY0ZRFu77P7AHBYOcfas5?=
- =?us-ascii?Q?+AqMBbbGLpcyMpYEk62IGzk96bfSBaij8OycycBqcEe6RZII2aIXadIp7YTV?=
- =?us-ascii?Q?m3mB9hRbjlaDZl350wRBIUn0Mj2n3uStYGD37RSJW7EA5HyFGO/wm08O5U5f?=
- =?us-ascii?Q?MF0XNOU0F8H00CnpG5GgQgB5lqpdnwn9TCJm3iRTGv8aomXDkihy84/GDLeY?=
- =?us-ascii?Q?jjPF5iwzcmrOARf8xTyQes3lzPHSYs1iXhTWd5ajbcN7uyasLTGIRJdJylX5?=
- =?us-ascii?Q?9Ad8j0lr2OvkX1+kK1t9LELUN0oQrSuLJVvXa5C2Yggr0y8Oi7lNKKnd+5Ut?=
- =?us-ascii?Q?7BwBIo6Osnhw4SH6C9eaZSfjFTi5Vt66AC/yWHJXpIA9C+MyKSLFiYM+p+iK?=
- =?us-ascii?Q?p6KuVamIRBJrOyW5rkSes/TjfnR0/VNfj7cTAh/2snIa0zowntvvNOIGpU0Z?=
- =?us-ascii?Q?3f1t+dmNlKt8abn3ubE+bKyQ9sklHZ3rqe5LQTLvTYgwHmDD4rDqdecUIt9I?=
- =?us-ascii?Q?FRsxYb9b9cVBHh5D9aikQVDtycaTkb+mIyqbKbpb8TaCKIOui6XUfqz8wqpy?=
- =?us-ascii?Q?DslqdPpj4RJ8eQk7gH/EC6vsz3iQPq37kODGg05e7ICMo8UM1EenMnlM1WZ2?=
- =?us-ascii?Q?vw5v9Pfes83Wqm17klOQlHvHDysEYlHoz74j1YdUUfNQMTL9VzmjTpQyq1PF?=
- =?us-ascii?Q?4dNSEjDL+PQdQsS1OWuqZHTZGMJS+cf4xMYa/iiNptC5cSknF4SrR8s5YtLp?=
- =?us-ascii?Q?99k0HpikglCu8+xW++uu9gtjQwCY6cY0LDD59JOXqv06VSlSM1AmZb0rPzmz?=
- =?us-ascii?Q?RLLV/noYV5Oi9NykmNew1yr7AHvcse0ieo73RcovI8Cb8z2QKwkqWwXkrbox?=
- =?us-ascii?Q?lXqRs4GonQqJVisaElGcHhJutRWARqFwAiLE9dGxXMoKlED0qSTSsBWp4t16?=
- =?us-ascii?Q?ryFssWNvdVyz0vYQhPSDm5FggdnQ4qwQfQSrteAiFxOiDLReGFsSg00FA4wi?=
- =?us-ascii?Q?YNtfP6/Dlw=3D=3D?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab21901b-caaa-48d7-babe-08da25d45be6
-X-MS-Exchange-CrossTenant-AuthSource: SG2PR06MB3367.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2022 09:25:23.3832 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ci+v+N9GnV293YxITS1+bO6ZsQpsjmgNQtCG0CMFpDJ7XJBEM+y6Rlwuwfe0ZyqfNtTxpTUgVSmOCOz2E4Pzyw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SL2PR06MB3241
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.81
+X-Stat-Signature: ipzcjh49t4bqqwpjuot4qwkemmewgkxe
+X-Rspamd-Server: rspamout03
+X-Rspamd-Queue-Id: 97E6718
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX18Ywp7PsG3t9mCNnY0D/c9qTE7hc2KP1mk=
+X-HE-Tag: 1650797643-85386
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,41 +58,230 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kael_w@yeah.net, Wan Jiabing <wanjiabing@vivo.com>
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use if and else instead of if(A) and if (!A).
+On Sun, 2022-04-24 at 17:25 +0800, Wan Jiabing wrote:
+> Use if and else instead of if(A) and if (!A).
+[]
+> diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
+[]
+> @@ -344,14 +344,15 @@ void __init hvc_opal_init_early(void)
+>  		opal = of_find_node_by_path("/ibm,opal/consoles");
+>  		if (opal)
+>  			pr_devel("hvc_opal: Found consoles in new location\n");
+> -		if (!opal) {
+> +		else {
+>  			opal = of_find_node_by_path("/ibm,opal");
+>  			if (opal)
+>  				pr_devel("hvc_opal: "
+>  					 "Found consoles in old location\n");
+> +			else
+> +				return;
 
-Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+A few things:
+
+o add {} braces to first block before else
+o see about using pr_fmt to prefix the pr_<level> output
+o reverse the test and unindent the pr_devel
+
+			if (!opal)
+				return;
+			pr_devel("...);
+
+Maybe a few more just to quiet checkpatch noise.  Something like:
 ---
- drivers/tty/hvc/hvc_opal.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/tty/hvc/hvc_opal.c | 58 +++++++++++++++++++++++++---------------------
+ 1 file changed, 31 insertions(+), 27 deletions(-)
 
 diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
-index 84776bc641e6..2dafa0964c2a 100644
+index 84776bc641e6b..a42d5697ae198 100644
 --- a/drivers/tty/hvc/hvc_opal.c
 +++ b/drivers/tty/hvc/hvc_opal.c
-@@ -344,14 +344,15 @@ void __init hvc_opal_init_early(void)
+@@ -5,6 +5,8 @@
+  * Copyright 2011 Benjamin Herrenschmidt <benh@kernel.crashing.org>, IBM Corp.
+  */
+ 
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
+ #undef DEBUG
+ 
+ #include <linux/types.h>
+@@ -43,6 +45,7 @@ struct hvc_opal_priv {
+ 	hv_protocol_t		proto;	/* Raw data or HVSI packets */
+ 	struct hvsi_priv	hvsi;	/* HVSI specific data */
+ };
++
+ static struct hvc_opal_priv *hvc_opal_privs[MAX_NR_HVC_CONSOLES];
+ 
+ /* For early boot console */
+@@ -124,7 +127,7 @@ static int hvc_opal_hvsi_tiocmget(struct hvc_struct *hp)
+ }
+ 
+ static int hvc_opal_hvsi_tiocmset(struct hvc_struct *hp, unsigned int set,
+-				unsigned int clear)
++				  unsigned int clear)
+ {
+ 	struct hvc_opal_priv *pv = hvc_opal_privs[hp->vtermno];
+ 
+@@ -167,8 +170,7 @@ static int hvc_opal_probe(struct platform_device *dev)
+ 		proto = HV_PROTOCOL_HVSI;
+ 		ops = &hvc_opal_hvsi_ops;
+ 	} else {
+-		pr_err("hvc_opal: Unknown protocol for %pOF\n",
+-		       dev->dev.of_node);
++		pr_err("Unknown protocol for %pOF\n", dev->dev.of_node);
+ 		return -ENXIO;
+ 	}
+ 
+@@ -195,15 +197,16 @@ static int hvc_opal_probe(struct platform_device *dev)
+ 				     termno, 0);
+ 		}
+ 
+-		/* Instanciate now to establish a mapping index==vtermno */
++		/* Instantiate now to establish a mapping index==vtermno */
+ 		hvc_instantiate(termno, termno, ops);
+ 	} else {
+-		pr_err("hvc_opal: Device %pOF has duplicate terminal number #%d\n",
++		pr_err("Device %pOF has duplicate terminal number #%d\n",
+ 		       dev->dev.of_node, termno);
+ 		return -ENXIO;
+ 	}
+ 
+-	pr_info("hvc%d: %s protocol on %pOF%s\n", termno,
++	pr_info("hvc%d: %s protocol on %pOF%s\n",
++		termno,
+ 		proto == HV_PROTOCOL_RAW ? "raw" : "hvsi",
+ 		dev->dev.of_node,
+ 		boot ? " (boot console)" : "");
+@@ -211,13 +214,13 @@ static int hvc_opal_probe(struct platform_device *dev)
+ 	irq = irq_of_parse_and_map(dev->dev.of_node, 0);
+ 	if (!irq) {
+ 		pr_info("hvc%d: No interrupts property, using OPAL event\n",
+-				termno);
++			termno);
+ 		irq = opal_event_request(ilog2(OPAL_EVENT_CONSOLE_INPUT));
+ 	}
+ 
+ 	if (!irq) {
+-		pr_err("hvc_opal: Unable to map interrupt for device %pOF\n",
+-			dev->dev.of_node);
++		pr_err("Unable to map interrupt for device %pOF\n",
++		       dev->dev.of_node);
+ 		return irq;
+ 	}
+ 
+@@ -275,7 +278,7 @@ static void udbg_opal_putc(char c)
+ 		udbg_opal_putc('\r');
+ 
+ 	do {
+-		switch(hvc_opal_boot_priv.proto) {
++		switch (hvc_opal_boot_priv.proto) {
+ 		case HV_PROTOCOL_RAW:
+ 			count = opal_put_chars(termno, &c, 1);
+ 			break;
+@@ -288,7 +291,7 @@ static void udbg_opal_putc(char c)
+ 		 * when there aren't any interrupts.
+ 		 */
+ 		opal_flush_console(termno);
+-	} while(count == 0 || count == -EAGAIN);
++	} while (count == 0 || count == -EAGAIN);
+ }
+ 
+ static int udbg_opal_getc_poll(void)
+@@ -297,7 +300,7 @@ static int udbg_opal_getc_poll(void)
+ 	int rc = 0;
+ 	char c;
+ 
+-	switch(hvc_opal_boot_priv.proto) {
++	switch (hvc_opal_boot_priv.proto) {
+ 	case HV_PROTOCOL_RAW:
+ 		rc = opal_get_chars(termno, &c, 1);
+ 		break;
+@@ -313,6 +316,7 @@ static int udbg_opal_getc_poll(void)
+ static int udbg_opal_getc(void)
+ {
+ 	int ch;
++
+ 	for (;;) {
+ 		ch = udbg_opal_getc_poll();
+ 		if (ch != -1)
+@@ -342,16 +346,14 @@ void __init hvc_opal_init_early(void)
+ 		 * path, so we hard wire it
+ 		 */
  		opal = of_find_node_by_path("/ibm,opal/consoles");
- 		if (opal)
- 			pr_devel("hvc_opal: Found consoles in new location\n");
+-		if (opal)
+-			pr_devel("hvc_opal: Found consoles in new location\n");
 -		if (!opal) {
-+		else {
++		if (opal) {
++			pr_devel("Found consoles in new location\n");
++		} else {
  			opal = of_find_node_by_path("/ibm,opal");
- 			if (opal)
- 				pr_devel("hvc_opal: "
- 					 "Found consoles in old location\n");
-+			else
+-			if (opal)
+-				pr_devel("hvc_opal: "
+-					 "Found consoles in old location\n");
++			if (!opal)
 +				return;
++			pr_devel("Found consoles in old location\n");
  		}
 -		if (!opal)
 -			return;
-+
  		for_each_child_of_node(opal, np) {
  			if (of_node_name_eq(np, "serial")) {
  				stdout_node = np;
--- 
-2.35.1
+@@ -359,9 +361,9 @@ void __init hvc_opal_init_early(void)
+ 			}
+ 		}
+ 		of_node_put(opal);
++		if (!stdout_node)
++			return;
+ 	}
+-	if (!stdout_node)
+-		return;
+ 	termno = of_get_property(stdout_node, "reg", NULL);
+ 	index = termno ? be32_to_cpup(termno) : 0;
+ 	if (index >= MAX_NR_HVC_CONSOLES)
+@@ -372,9 +374,8 @@ void __init hvc_opal_init_early(void)
+ 	if (of_device_is_compatible(stdout_node, "ibm,opal-console-raw")) {
+ 		hvc_opal_boot_priv.proto = HV_PROTOCOL_RAW;
+ 		ops = &hvc_opal_raw_ops;
+-		pr_devel("hvc_opal: Found RAW console\n");
+-	}
+-	else if (of_device_is_compatible(stdout_node,"ibm,opal-console-hvsi")) {
++		pr_devel("Found RAW console\n");
++	} else if (of_device_is_compatible(stdout_node, "ibm,opal-console-hvsi")) {
+ 		hvc_opal_boot_priv.proto = HV_PROTOCOL_HVSI;
+ 		ops = &hvc_opal_hvsi_ops;
+ 		hvsilib_init(&hvc_opal_boot_priv.hvsi,
+@@ -382,9 +383,10 @@ void __init hvc_opal_init_early(void)
+ 			     index, 1);
+ 		/* HVSI, perform the handshake now */
+ 		hvsilib_establish(&hvc_opal_boot_priv.hvsi);
+-		pr_devel("hvc_opal: Found HVSI console\n");
+-	} else
++		pr_devel("Found HVSI console\n");
++	} else {
+ 		goto out;
++	}
+ 	hvc_opal_boot_termno = index;
+ 	udbg_init_opal_common();
+ 	add_preferred_console("hvc", index, NULL);
+@@ -397,6 +399,7 @@ void __init hvc_opal_init_early(void)
+ void __init udbg_init_debug_opal_raw(void)
+ {
+ 	u32 index = CONFIG_PPC_EARLY_DEBUG_OPAL_VTERMNO;
++
+ 	hvc_opal_privs[index] = &hvc_opal_boot_priv;
+ 	hvc_opal_boot_priv.proto = HV_PROTOCOL_RAW;
+ 	hvc_opal_boot_termno = index;
+@@ -408,6 +411,7 @@ void __init udbg_init_debug_opal_raw(void)
+ void __init udbg_init_debug_opal_hvsi(void)
+ {
+ 	u32 index = CONFIG_PPC_EARLY_DEBUG_OPAL_VTERMNO;
++
+ 	hvc_opal_privs[index] = &hvc_opal_boot_priv;
+ 	hvc_opal_boot_termno = index;
+ 	udbg_init_opal_common();
 
