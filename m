@@ -1,50 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B081B50D1DB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 15:09:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3351E50D437
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 20:41:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KmT4g3v5tz3bqb
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 23:09:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KmcRJ0pTBz3bdB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Apr 2022 04:41:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=W3XW05/8;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=bUZfYeZf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KmT433vGqz2xDY
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 23:08:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d2e;
+ helo=mail-io1-xd2e.google.com; envelope-from=frowand.list@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=W3XW05/8; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=bUZfYeZf; dkim-atps=neutral
+Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com
+ [IPv6:2607:f8b0:4864:20::d2e])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KmT432ncHz4xLb;
- Sun, 24 Apr 2022 23:08:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1650805731;
- bh=aD20Ip6O0k4ur0B2dS9sPY/ZrzmWmmRTAz9tDJoSTE8=;
- h=From:To:Cc:Subject:Date:From;
- b=W3XW05/8eCCvEe2qhydOVID0LEjQT05ZwmU9KuRH8FhcCtfs3wceZJO22ej56/sSy
- 8VS3VId1vBE0uEiJ97oV3hn3A6DdGYth0DrWfi6hvuJNa6dd2VFnWtfj+7Eg+sLpx4
- rYTBXYzDbq/MrVI+LkaMPyOQfWncI9lehShYcZCoF7E6ZfgWWigUpOpx2LM3kAJorX
- JrWq+No3WnEpK11Q5A2V+tCP+BTs7p1Nf7NuovW9gOZYk7hmT6eBhEWICAShHh4cuE
- /HXV1A25ANAyaIj3uqVqel3INcy8vdVssOELgE2BbXW51rHRSMlLHhThL2yeon+v6u
- mo7YvutK35KZQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.18-3 tag
-Date: Sun, 24 Apr 2022 23:08:48 +1000
-Message-ID: <87ilqy8w7z.fsf@mpe.ellerman.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KmcQf2jy7z2xgN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Apr 2022 04:40:25 +1000 (AEST)
+Received: by mail-io1-xd2e.google.com with SMTP id e194so13686992iof.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 11:40:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ysq6r/KGEWvs3JKm+7GsajBhnC1rqVgQKhxLMm/5600=;
+ b=bUZfYeZfZWfa6hk+J6GAlHPPJFwphY+7fWPaBSwJpdBtX5M1te6iI9zhHvbzPqrcDv
+ zPyViDP7AnKsZjxb9ErLTH7eC1OQeX6rqBbpQwF23l5zEuVOsXp9fKqu2Coj9jedISIM
+ HEgrv654jM8khYCmokvsmJsBmU11xda+NJHCAs3b03fflbQQCypZgOYW0S7ymvDXwqaO
+ rpN3Pv2GPQImHdzTrblpzkQBOg1VXIAUqlUMR5tWKQVxpULRbV1PvRn2SmLTVNmjCJT8
+ ysQV2Of2e6oIvnX7OCP2d6dQ/anWxgFc5o1/cuXXdMA/inTaG0vkljDSYULAGRXhM2Xw
+ CP+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Ysq6r/KGEWvs3JKm+7GsajBhnC1rqVgQKhxLMm/5600=;
+ b=LonGnfuwm4WfeHMLbf1RRJcCRnmVawdwiZ1NZHgEJJziGB3QAk3eKJWcjSLUz3+xFK
+ do3CxlEdkS2mtmTeabcjLt3SIu1FYNAFhwK9ICiu6j3AaydgUVA5+sCmfvBtAfs0dByo
+ OOzfCXb+KkdvUlcb4M84ZGTu67/dyxkl4n/Fibjjt8f5siMwmCiIj/RTbI3Shh45IXOO
+ 48L2vm/p5jmITfjO85P1iUt0dvmax1DHkgX2JHfnY+fTq+c9Kqd26qfhnA/2rvlW83te
+ hjviOHexcV7rzgMhcFZZGFWT9ANiC5e1W/BGFACTalGwdXK6kRduWtAVaYANQxF/Hdpn
+ DEYA==
+X-Gm-Message-State: AOAM533f0iTSeCBdAR0tUL9l4yUTEyX1YzMqriVBuf98qbh4z3cslWG8
+ 7RPQ6x4db7z4EltDwIByq1M=
+X-Google-Smtp-Source: ABdhPJzrLitNERpkOJd/1LPHq0rM//0XPtdGApNYOedaZW7ozTM8UiimVn2OEGDIOcP2Cl86SRf8/A==
+X-Received: by 2002:a05:6602:2dc4:b0:648:adac:bae8 with SMTP id
+ l4-20020a0566022dc400b00648adacbae8mr5951706iow.9.1650825621787; 
+ Sun, 24 Apr 2022 11:40:21 -0700 (PDT)
+Received: from xps8900.attlocal.net ([2600:1700:2442:6db0:a0fc:5934:6989:31dd])
+ by smtp.gmail.com with ESMTPSA id
+ b7-20020a92db07000000b002cbee0fdb4bsm5064735iln.70.2022.04.24.11.40.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 24 Apr 2022 11:40:21 -0700 (PDT)
+From: frowand.list@gmail.com
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: [PATCH 1/1] powerpc/boot: remove unused function
+ find_node_by_linuxphandle()
+Date: Sun, 24 Apr 2022 13:40:14 -0500
+Message-Id: <20220424184014.968274-1-frowand.list@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,77 +82,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, atrajeev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+Cc: Rob Herring <robh+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+From: Frank Rowand <frank.rowand@sony.com>
 
-Hi Linus,
+The last user of find_node_by_linuxphandle() was removed in v4.18-rc1
+by commit 30f4bbe0472a ("powerpc/boot: Remove support for Marvell MPSC serial controller")
+four years ago.  This function is no longer needed.
 
-Please pull some more powerpc fixes for 5.18:
+Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+---
+ arch/powerpc/boot/ops.h | 6 ------
+ 1 file changed, 6 deletions(-)
 
-The following changes since commit ce522ba9ef7e2d9fb22a39eb3371c0c64e2a433e:
+diff --git a/arch/powerpc/boot/ops.h b/arch/powerpc/boot/ops.h
+index 6455fc9a244f..8334bc3cbe49 100644
+--- a/arch/powerpc/boot/ops.h
++++ b/arch/powerpc/boot/ops.h
+@@ -200,12 +200,6 @@ void __dt_fixup_mac_addresses(u32 startindex, ...);
+ 	__dt_fixup_mac_addresses(0, __VA_ARGS__, NULL)
+ 
+ 
+-static inline void *find_node_by_linuxphandle(const u32 linuxphandle)
+-{
+-	return find_node_by_prop_value(NULL, "linux,phandle",
+-			(char *)&linuxphandle, sizeof(u32));
+-}
+-
+ static inline char *get_path(const void *phandle, char *buf, int len)
+ {
+ 	if (dt_ops.get_path)
+-- 
+Frank Rowand <frank.rowand@sony.com>
 
-  Linux 5.18-rc2 (2022-04-10 14:21:36 -1000)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.18-3
-
-for you to fetch changes up to bb82c574691daf8f7fa9a160264d15c5804cb769:
-
-  powerpc/perf: Fix 32bit compile (2022-04-21 23:26:47 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.18 #3
-
- - Partly revert a change to our timer_interrupt() that caused lockups with high res
-   timers disabled.
-
- - Fix a bug in KVM TCE handling that could corrupt kernel memory.
-
- - Two commits fixing Power9/Power10 perf alternative event selection.
-
-Thanks to: Alexey Kardashevskiy, Athira Rajeev, David Gibson, Frederic Barrat, Madhavan
-Srinivasan, Miguel Ojeda, Nicholas Piggin.
-
-- ------------------------------------------------------------------
-Alexey Kardashevskiy (2):
-      KVM: PPC: Fix TCE handling for VFIO
-      powerpc/perf: Fix 32bit compile
-
-Athira Rajeev (2):
-      powerpc/perf: Fix power9 event alternatives
-      powerpc/perf: Fix power10 event alternatives
-
-Michael Ellerman (1):
-      powerpc/time: Always set decrementer in timer_interrupt()
-
-
- arch/powerpc/kernel/time.c          | 29 ++++++-------
- arch/powerpc/kvm/book3s_64_vio.c    | 45 ++++++++++----------
- arch/powerpc/kvm/book3s_64_vio_hv.c | 44 +++++++++----------
- arch/powerpc/perf/Makefile          |  4 +-
- arch/powerpc/perf/power10-pmu.c     |  2 +-
- arch/powerpc/perf/power9-pmu.c      |  8 ++--
- 6 files changed, 66 insertions(+), 66 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmJlSSoACgkQUevqPMjh
-pYDAkA/7BkoLPd4V9VwBu847BkwK6Dd15b2Qu71y0ieF0xzDzG8pkOEjpk5gCVmd
-DV17CXSeX8t9ppDcKp82tLtuTnBIDjpZVtoKBALvzxB8tgErTp1CemwRcnlu+ILT
-Y5K/tioe+Y6V07HKcDefLIJrtt73IpHUV7GighPtbah0a/HNLB6+zx6HENzR2vKS
-G5ccs+FDbVgStRxw1tzWSH9JiAC7AznRJTWjA7XDiMcRva4t4qoZHSVU32H6Tlis
-fCQfIwyhyppxS5MizZx45qkumy5oJggdXhb2r7g1Wl7jeSAVPldY/S7Fq3UU8usa
-e2k5ZyUGWVSKZxGAlY7v6h6SwAhs28fspA/+tI0pvSH9a8knBkHk8H8bHlnORKkv
-j6zx1hx3qdD2BnVstEEwdiZzWrff6LwfaEytNfC1Fri7yVTkZoZVGihMKyCGHftB
-7TmRMIg99WsEx8xNNDGelaEePyRhCPGHgrB0oEHrmCzJVi3a4IiVwGcaLZdYUekG
-oEFwcyXz4mStftyS5qV/NhFSHMgum9CuTjV8fi2pqN9fFVcPoDEXoGyaSzji9UDf
-AOIP1NXJMZZGgXAN5rusjRJ9zfyFkzLcRcLPjMUqRtKaDJD86LyGPgvxh+gR8ky4
-8IzPHbwbYt6fMcDXkFjiS5Ks+x0ZfKkL5R7HbHNqyyKYWUSZxK0=
-=21WF
------END PGP SIGNATURE-----
