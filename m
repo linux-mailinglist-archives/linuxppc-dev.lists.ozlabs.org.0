@@ -1,60 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B6350CE31
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 03:17:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D35B50D079
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 10:27:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Km9Gp0qqxz3bdq
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 11:17:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KmLqJ1xT8z3bqG
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Apr 2022 18:27:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
- envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Km9GK4pcpz2yN4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 11:16:41 +1000 (AEST)
-Received: from kwepemi500001.china.huawei.com (unknown [172.30.72.55])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Km9Dj5x1XzfZWc;
- Sun, 24 Apr 2022 09:15:17 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- kwepemi500001.china.huawei.com (7.221.188.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sun, 24 Apr 2022 09:16:07 +0800
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sun, 24 Apr 2022 09:16:06 +0800
-Message-ID: <4ee686bc-38d4-7709-30a9-0c807919672a@huawei.com>
-Date: Sun, 24 Apr 2022 09:16:05 +0800
+ smtp.mailfrom=meizu.com (client-ip=112.91.151.210; helo=mail.meizu.com;
+ envelope-from=baihaowen@meizu.com; receiver=<UNKNOWN>)
+Received: from mail.meizu.com (edge07.meizu.com [112.91.151.210])
+ (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KmLps0lX2z2xDY
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Apr 2022 18:26:56 +1000 (AEST)
+Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail11.meizu.com
+ (172.16.1.15) with Microsoft SMTP Server (TLS) id 14.3.487.0; Sun, 24 Apr
+ 2022 16:26:45 +0800
+Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
+ (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Sun, 24 Apr
+ 2022 16:26:43 +0800
+From: Haowen Bai <baihaowen@meizu.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Shuah Khan
+ <shuah@kernel.org>
+Subject: [PATCH] selftests/powerpc/pmu: Fix unsigned function returning
+ negative constant
+Date: Sun, 24 Apr 2022 16:26:41 +0800
+Message-ID: <1650788802-14402-1-git-send-email-baihaowen@meizu.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH -next v4 1/7] x86, powerpc: fix function define in
- copy_mc_to_user
-To: Michael Ellerman <mpe@ellerman.id.au>, Mark Rutland
- <mark.rutland@arm.com>, James Morse <james.morse@arm.com>, Andrew Morton
- <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
- Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Robin Murphy
- <robin.murphy@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Catalin
- Marinas" <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
- <20220420030418.3189040-2-tongtiangen@huawei.com>
- <87r15p8n9g.fsf@mpe.ellerman.id.au>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <87r15p8n9g.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-Originating-IP: [172.16.137.70]
+X-ClientProxiedBy: IT-EXMB-1-126.meizu.com (172.16.1.126) To
+ IT-EXMB-1-125.meizu.com (172.16.1.125)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,58 +49,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, Haowen Bai <baihaowen@meizu.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The function __perf_reg_mask has an unsigned return type, but returns a
+negative constant to indicate an error condition. So we change unsigned
+to int.
 
+Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+---
+ tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-在 2022/4/22 17:45, Michael Ellerman 写道:
-> Tong Tiangen <tongtiangen@huawei.com> writes:
->> x86/powerpc has it's implementation of copy_mc_to_user but not use #define
->> to declare.
->>
->> This may cause problems, for example, if other architectures open
->> CONFIG_ARCH_HAS_COPY_MC, but want to use copy_mc_to_user() outside the
->> architecture, the code add to include/linux/uaddess.h is as follows:
->>
->>      #ifndef copy_mc_to_user
->>      static inline unsigned long __must_check
->>      copy_mc_to_user(void *dst, const void *src, size_t cnt)
->>      {
->> 	    ...
->>      }
->>      #endif
->       
-> The above doesn't exist yet, you add it in patch 3, which is a little
-> confusing for a reader of this commit in isolation.
-> 
-> I think you could safely move that into this patch, and then this patch
-> would be ~= "Add generic fallback version of copy_mc_to_user()".
-> 
-> It's probably not worth doing a whole new version of the series just for
-> that, but if you need to do a new version for some other reason I think
-> it would be cleaner to introduce the fallback in this commit.
-> 
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
+index fca054bbc094..c01a31d5f4ee 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
+@@ -274,7 +274,7 @@ u64 *get_intr_regs(struct event *event, void *sample_buff)
+ 	return intr_regs;
+ }
+ 
+-static const unsigned int __perf_reg_mask(const char *register_name)
++static const int __perf_reg_mask(const char *register_name)
+ {
+ 	if (!strcmp(register_name, "R0"))
+ 		return 0;
+-- 
+2.7.4
 
-Agreed, will do in next version.
-
-Thanks,
-Tong.
-
->> Then this definition will conflict with the implementation of x86/powerpc
->> and cause compilation errors as follow:
->>
->> Fixes: ec6347bb4339 ("x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user, kernel}()")
->> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
->> ---
->>   arch/powerpc/include/asm/uaccess.h | 1 +
-> 
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> 
-> cheers
-> .
