@@ -2,66 +2,114 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACBA50EB74
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 00:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EF650EC39
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 00:40:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KnK443Ww8z3c8v
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 08:11:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KnKj54F4vz2yY7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 08:40:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TP8CwJVh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IEDBfIXq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=david.e.box@linux.intel.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KnKhM6dStz2xm2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 08:39:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=TP8CwJVh; dkim-atps=neutral
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IEDBfIXq; dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KnKhM3hmWz4xL5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 08:39:47 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KnKhM3dtWz4xTX; Tue, 26 Apr 2022 08:39:47 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IEDBfIXq; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KnDDl2Lpyz2xm2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 04:33:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1650911639; x=1682447639;
- h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=jmlGUQOKfZ1fEEUeDa+ZjhpmUMMaxIHAYo6P39XG2Tc=;
- b=TP8CwJVh1upPh7dU6e9gXJw0QgHzN2b5PBdeXOJDrX9yOLYczAWCK4Pp
- JDfd2MjF5gMFqdFBFiyqqvjDPkr1S6VJHz2Xtdayu59HSPwpZTFALaR86
- ieYvYYB1vpwhFXSzXyqMuy0roQa7oWrqYh5YH5EAqXeGE4rIPIoYjJv8p
- IZGTbMXFjBmU226EEmfXS4hZgfMDVrrsdSZqx7VPfAsfARV7mW6P87UDT
- puxUseG08LqxhAPW75q5ND+vN9hbhzmxumV1s/5jyWkLU03vIbV86/WYY
- sIgHv0j7U/kn4iZdxA/2gCmfe6rN8RH8z0Z6ok857aHgc1QtC3cKqKvz/ w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10328"; a="252701385"
-X-IronPort-AV: E=Sophos;i="5.90,289,1643702400"; d="scan'208";a="252701385"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2022 11:32:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.90,289,1643702400"; d="scan'208";a="532246106"
-Received: from linux.intel.com ([10.54.29.200])
- by orsmga006.jf.intel.com with ESMTP; 25 Apr 2022 11:32:55 -0700
-Received: from jiunhong-mobl.amr.corp.intel.com (unknown [10.209.83.58])
- by linux.intel.com (Postfix) with ESMTP id C001B5809EB;
- Mon, 25 Apr 2022 11:32:54 -0700 (PDT)
-Message-ID: <44ebf450aa3300e02aba6ec009d8bea20c0fc535.camel@linux.intel.com>
-Subject: Re: [PATCH v4 2/2] PCI/PM: Fix pci_pm_suspend_noirq() to disable PTM
-From: "David E. Box" <david.e.box@linux.intel.com>
-To: Bjorn Helgaas <helgaas@kernel.org>, "Jingar, Rajvi"
- <rajvi.jingar@intel.com>
-Date: Mon, 25 Apr 2022 11:32:54 -0700
-In-Reply-To: <20220423150132.GA1552054@bhelgaas>
-References: <20220423150132.GA1552054@bhelgaas>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KnKhL4z8fz4xL5
+ for <linuxppc-dev@ozlabs.org>; Tue, 26 Apr 2022 08:39:45 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23PLpuFf037761
+ for <linuxppc-dev@ozlabs.org>; Mon, 25 Apr 2022 22:39:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=shH/meKKsI8taf5k9Tk9OLKzXZzvi8VwnyFDfWgWcuc=;
+ b=IEDBfIXq5eIsfK7E6BmnRXwRp+l3MEFNfyjUEaxWNv1mYFUz4Jbsu5NLkAe8ht7NbnQh
+ 2kmS+rWSvoCeOEenQQ2Pyhk4SGuxQ8rMTD1zN9h/Pde0l0k2vxif/lEMzCGPJ2P3ft5R
+ gCuvq0fLM7ua9hz+V10sIiWJ4qitpbWP6n5bTWBLRnwnUPUZ+SVFPBF9BRX535zmseXN
+ 9+l//u62pAB+nvHS9KjBjBGB/LcxKCZUX8ARcfI5wF/lEi1dYMPpSl60r/ah+Rfq+pi+
+ 61ehWt92mNCv9dPiH6SbR5F7+ZlMTvyCOJKfMynJzdSKVDRjgnX7STlSralkc7ixQU5Q 8Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fp3xdrrxs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 25 Apr 2022 22:39:43 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 23PMYjot030062
+ for <linuxppc-dev@ozlabs.org>; Mon, 25 Apr 2022 22:39:42 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fp3xdrrxb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Apr 2022 22:39:42 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23PMcKcg028381;
+ Mon, 25 Apr 2022 22:39:42 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 3fm939vp87-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Apr 2022 22:39:42 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 23PMdfog33358164
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 25 Apr 2022 22:39:41 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2ABF628066;
+ Mon, 25 Apr 2022 22:39:41 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E614B2805E;
+ Mon, 25 Apr 2022 22:39:40 +0000 (GMT)
+Received: from localhost (unknown [9.163.16.230])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 25 Apr 2022 22:39:40 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Subject: Re: [PATCH v5] PCI hotplug: rpaphp: Error out on busy status from
+ get-sensor-state
+In-Reply-To: <164684593617.368427.2230609269419942906.stgit@jupiter>
+References: <164684593617.368427.2230609269419942906.stgit@jupiter>
+Date: Mon, 25 Apr 2022 17:39:40 -0500
+Message-ID: <877d7crdn7.fsf@linux.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mInmEAJLicjZJLL4tpqXWrHUL5vQ646r
+X-Proofpoint-GUID: J3xhIlehe-drvyEU14Mvjj-0BZDgXkLw
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 26 Apr 2022 08:10:52 +1000
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-04-25_10,2022-04-25_03,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011
+ priorityscore=1501 malwarescore=0 impostorscore=0 bulkscore=0 mlxscore=0
+ spamscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204250101
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,116 +121,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: david.e.box@linux.intel.com
-Cc: "sathyanarayanan.kuppuswamy@linux.intel.com"
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Wysocki,
- Rafael J" <rafael.j.wysocki@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "koba.ko@canonical.com" <koba.ko@canonical.com>,
- Kai-Heng Feng <kai.heng.feng@canonical.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
- "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2022-04-23 at 10:01 -0500, Bjorn Helgaas wrote:
-> On Sat, Apr 23, 2022 at 12:43:14AM +0000, Jingar, Rajvi wrote:
-> > > -----Original Message-----
-> > > From: Bjorn Helgaas <helgaas@kernel.org>
-> > > On Thu, Apr 14, 2022 at 07:54:02PM +0200, Rafael J. Wysocki wrote:
-> > > > On 3/25/2022 8:50 PM, Rajvi Jingar wrote:
-> > > > > For the PCIe devices (like nvme) that do not go into D3 state still
-> > > > > need to
-> > > > > disable PTM on PCIe root ports to allow the port to enter a lower-
-> > > > > power PM
-> > > > > state and the SoC to reach a lower-power idle state as a whole. Move
-> > > > > the
-> > > > > pci_disable_ptm() out of pci_prepare_to_sleep() as this code path is
-> > > > > not
-> > > > > followed for devices that do not go into D3. This patch fixes the
-> > > > > issue
-> > > > > seen on Dell XPS 9300 with Ice Lake CPU and Dell Precision 5530 with
-> > > > > Coffee
-> > > > > Lake CPU platforms to get improved residency in low power idle states.
-> > > > > 
-> > > > > Fixes: a697f072f5da ("PCI: Disable PTM during suspend to save power")
-> > > > > Signed-off-by: Rajvi Jingar <rajvi.jingar@intel.com>
-> > > > > Suggested-by: David E. Box <david.e.box@linux.intel.com>
-> > > > > ---
-> > > > >   drivers/pci/pci-driver.c | 10 ++++++++++
-> > > > >   drivers/pci/pci.c        | 10 ----------
-> > > > >   2 files changed, 10 insertions(+), 10 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-> > > > > index 8b55a90126a2..ab733374a260 100644
-> > > > > --- a/drivers/pci/pci-driver.c
-> > > > > +++ b/drivers/pci/pci-driver.c
-> > > > > @@ -847,6 +847,16 @@ static int pci_pm_suspend_noirq(struct device
-> > > > > *dev)
-> > > > >   	if (!pci_dev->state_saved) {
-> > > > >   		pci_save_state(pci_dev);
-> > > > > +		/*
-> > > > > +		 * There are systems (for example, Intel mobile chips
-> > > > > since
-> > > Coffee
-> > > > > +		 * Lake) where the power drawn while suspended can be
-> > > significantly
-> > > > > +		 * reduced by disabling PTM on PCIe root ports as this
-> > > > > allows the
-> > > > > +		 * port to enter a lower-power PM state and the SoC to
-> > > > > reach a
-> > > > > +		 * lower-power idle state as a whole.
-> > > > > +		 */
-> > > > > +		if (pci_pcie_type(pci_dev) == PCI_EXP_TYPE_ROOT_PORT)
-> > > > > +			pci_disable_ptm(pci_dev);
-> > > 
-> > > Why is disabling PTM dependent on pci_dev->state_saved?  The point of
-> > > this is to change the behavior of the device, and it seems like we
-> > > want to do that regardless of whether the driver has used
-> > > pci_save_state().
-> > 
-> > Because we use the saved state to restore PTM on the root port. 
-> > And it's under this condition that the root port state gets saved.
-> 
-> Yes, I understand that pci_restore_ptm_state() depends on a previous
-> call to pci_save_ptm_state().
-> 
-> The point I'm trying to make is that pci_disable_ptm() changes the
-> state of the device, and that state change should not depend on
-> whether the driver has used pci_save_state().
+Mahesh Salgaonkar <mahesh@linux.ibm.com> writes:
+> When certain PHB HW failure causes phyp to recover PHB, it marks the PE
+> state as temporarily unavailable until recovery is complete. This also
+> triggers an EEH handler in Linux which needs to notify drivers, and perform
+> recovery. But before notifying the driver about the pci error it uses
+> get_adapter_state()->get-sesnor-state() operation of the hotplug_slot to
+> determine if the slot contains a device or not. if the slot is empty, the
+> recovery is skipped entirely.
+>
+> However on certain PHB failures, the rtas call get-sesnor-state() returns
+> extended busy error (9902) until PHB is recovered by phyp. Once PHB is
+> recovered, the get-sensor-state() returns success with correct presence
+> status. The rtas call interface rtas_get_sensor() loops over the rtas call
+> on extended delay return code (9902) until the return value is either
+> success (0) or error (-1). This causes the EEH handler to get stuck for ~6
+> seconds before it could notify that the pci error has been detected and
+> stop any active operations. Hence with running I/O traffic, during this 6
+> seconds, the network driver continues its operation and hits a timeout
+> (netdev watchdog). On timeouts, network driver go into ffdc capture mode
+> and reset path assuming the PCI device is in fatal condition. This
+> sometimes causes EEH recovery to fail. This impacts the ssh connection and
+> leads to the system being inaccessible.
+>
+> ------------
+> [52732.244731] DEBUG: ibm_read_slot_reset_state2()
+> [52732.244762] DEBUG: ret = 0, rets[0]=5, rets[1]=1, rets[2]=4000, rets[3]=>
+> [52732.244798] DEBUG: in eeh_slot_presence_check
+> [52732.244804] DEBUG: error state check
+> [52732.244807] DEBUG: Is slot hotpluggable
+> [52732.244810] DEBUG: hotpluggable ops ?
+> [52732.244953] DEBUG: Calling ops->get_adapter_status
+> [52732.244958] DEBUG: calling rpaphp_get_sensor_state
+> [52736.564262] ------------[ cut here ]------------
+> [52736.564299] NETDEV WATCHDOG: enP64p1s0f3 (tg3): transmit queue 0 timed o>
+> [52736.564324] WARNING: CPU: 1442 PID: 0 at net/sched/sch_generic.c:478 dev>
+> [...]
+> [52736.564505] NIP [c000000000c32368] dev_watchdog+0x438/0x440
+> [52736.564513] LR [c000000000c32364] dev_watchdog+0x434/0x440
+> ------------
+>
+> To avoid this issue, fix the pci hotplug driver (rpaphp) to return an error
+> if the slot presence state can not be detected immediately while pe is in
+> EEH recovery state. Current implementation uses rtas_get_sensor() API which
+> blocks the slot check state until rtas call returns success. Change
+> rpaphp_get_sensor_state() to invoke rtas_call(get-sensor-state) directly
+> only if the respective pe is in EEH recovery state, and take actions based
+> on rtas return status.
+>
+> In normal cases (non-EEH case) rpaphp_get_sensor_state() will continue to
+> invoke rtas_get_sensor() as it was earlier with no change in existing
+> behavior.
+>
+> Signed-off-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>
+> ---
+> Change in v5:
+> - Fixup #define macros with parentheses around the values.
+>
+> Change in V4:
+> - Error out on sensor busy only if pe is going through EEH recovery instead
+>   of always error out.
+>
+> Change in V3:
+> - Invoke rtas_call(get-sensor-state) directly from
+>   rpaphp_get_sensor_state() directly and do special handling.
+> - See v2 at
+>   https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/237336.html
+>
+> Change in V2:
+> - Alternate approach to fix the EEH issue instead of delaying slot presence
+>   check proposed at
+>   https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/236956.html
+>
+> Also refer:
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-November/237027.html
 
-We do it here because D3 depends on whether the device state was saved by the
-driver.
+Sorry for the long delay. I think it looks OK now. Does this need to go
+to the PCI list/maintainer?
 
-	if (!pci_dev->state_saved) {
-        	pci_save_state(pci_dev);
-
-		/* disable PTM here */
-
-		if (pci_power_manageable(pci_dev))
-			pci_prepare_to_sleep(pci_dev);
-	}
-
-
-If we disable PTM before the check, we will have saved "PTM disabled" as the
-restore state. And we can't do it after the check as the device will be in D3.
-
-As to disabling PTM on all devices, I see no problem with this, but the
-reasoning is different. We disabled the root port PTM for power savings.
-
-
-David
-
-> 
-> When we're putting a device into a low-power state, I think we want to
-> disable PTM *always*, no matter what the driver did.  And I think we
-> want to do it for all devices, not just Root Ports.
-> 
-> Bjorn
-
+Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
