@@ -2,61 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B87750F268
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 09:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 739BC50F26C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 09:30:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KnYR438zWz3bpZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 17:29:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256 header.s=mail2016061301 header.b=WLsMfwV0;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KnYSY2Hkbz3brH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 17:30:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=walle.cc (client-ip=176.9.125.105; helo=ssl.serverraum.org;
- envelope-from=michael@walle.cc; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=walle.cc header.i=@walle.cc header.a=rsa-sha256
- header.s=mail2016061301 header.b=WLsMfwV0; 
- dkim-atps=neutral
-Received: from ssl.serverraum.org (ssl.serverraum.org [176.9.125.105])
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.43; helo=mail-ed1-f43.google.com;
+ envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com
+ [209.85.208.43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KnYQS5FPVz2xBV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 17:28:32 +1000 (AEST)
-Received: from ssl.serverraum.org (web.serverraum.org [172.16.0.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ssl.serverraum.org (Postfix) with ESMTPSA id B6E0A2223A;
- Tue, 26 Apr 2022 09:28:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc;
- s=mail2016061301; t=1650958108;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mzzsrtLgDhH/mUpZ95LPe7yFWgFVICtJRss1dScu0l4=;
- b=WLsMfwV0KL/FIMULQI396eMh2JgmUNPuLtROTi2Uf6+MI9kKJWGfdOy3upRieZ36tH/mnF
- UaB7LffD+miuwmjsCrhJXFO1MhRqJ9Gm1Uq82AvQIUUNm09Avl31g13lar3POnut6X7d8L
- yJx48P/MaJpQ/trOFQcS6gGsy9TIAJo=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KnYS84tJbz2xBV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 17:29:58 +1000 (AEST)
+Received: by mail-ed1-f43.google.com with SMTP id g20so21210700edw.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 00:29:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=hOlzS7teepghKhHO3I5ZYfaNXKKQM3quot1pS5vaaSA=;
+ b=FJ4YTUcfI5SLhA3xg3fBPHlO9VRMvyyekfD9p3m3BbARZwizo3UWjUMpNAcMmCsh5x
+ PyOMis9kfSttz3dA0lt2ReAJWsIDDjq77a7g4n217tWli5ox1oztS+6VNZEIR4zj5pF5
+ Q0s3U9NljQBeE9xOGn6RO/g9dPDTc5zyL0oS2OZKvpkEKXvtH0ANAO+ZBMJdRnIG4NU5
+ vIa1W9ZX7XDNXcSwW5NvcuQ7AVKwob0BERZ1bvK8IzWSFD/Re1pLNw98t2Ih3cnxEmze
+ TIKBx83iZwAcPJF40O87So6BATbH4gn4dtsEiRBMmPb6IufvvAYJzjY7qtMdSjJoS3kC
+ scUg==
+X-Gm-Message-State: AOAM532S+iEiASLp/vqPZ71MugSyklyP1YbD8jfqzc47WuIBynmZIMPo
+ Dm8xvpOlp5G8/k/8XuY5KAiM4b5AISU=
+X-Google-Smtp-Source: ABdhPJwdtxQjyz2PID87gQkYXoDXvRITcke2EmvtcsG/Izql7n9Ce8e7NkkGkhbJN8TWTPJqnM2HvQ==
+X-Received: by 2002:a05:6402:42d4:b0:416:5cac:a9a0 with SMTP id
+ i20-20020a05640242d400b004165caca9a0mr23253479edc.86.1650958194022; 
+ Tue, 26 Apr 2022 00:29:54 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
+ by smtp.gmail.com with ESMTPSA id
+ n10-20020a170906700a00b006efdb748e8dsm4433107ejj.88.2022.04.26.00.29.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Apr 2022 00:29:53 -0700 (PDT)
+Message-ID: <47accf18-ca39-8b36-100e-a6dbfd8705fe@kernel.org>
+Date: Tue, 26 Apr 2022 09:29:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [PATCH v2] tty/hvc_opal: simplify if-if to if-else
+Content-Language: en-US
+To: Wan Jiabing <wanjiabing@vivo.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20220426071041.168282-1-wanjiabing@vivo.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+In-Reply-To: <20220426071041.168282-1-wanjiabing@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Date: Tue, 26 Apr 2022 09:28:27 +0200
-From: Michael Walle <michael@walle.cc>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: interrupt-controller: fsl, ls-extirq:
- convert to YAML
-In-Reply-To: <c324eec7-79b1-33da-c38e-4a480fe23126@linaro.org>
-References: <20220425140214.32448-1-michael@walle.cc>
- <658851ed-33fd-8e2b-7db7-ef1ca9e31c33@linaro.org>
- <83b596d0570c779c61c3c37c6f512679@walle.cc>
- <c324eec7-79b1-33da-c38e-4a480fe23126@linaro.org>
-User-Agent: Roundcube Webmail/1.4.13
-Message-ID: <6fec63c911c88a375fc024f6ca0e946d@walle.cc>
-X-Sender: michael@walle.cc
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,65 +72,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Marc Zyngier <maz@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: kael_w@yeah.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am 2022-04-26 08:53, schrieb Krzysztof Kozlowski:
-> On 25/04/2022 23:58, Michael Walle wrote:
->>>> +  reg:
->>>> +    maxItems: 1
->>>> +    description:
->>>> +      Specifies the Interrupt Polarity Control Register (INTPCR) in
->>>> the
->>>> +      SCFG or the External Interrupt Control Register (IRQCR) in 
->>>> the
->>>> ISC.
->>>> +
->>>> +  interrupt-map:
->> 
->> btw.
->> 
->> minItems: 12
->> maxItems: 12
->> 
->> Isn't working here, is that expected? The validator seem to get the
->> count
->> of the elements of one tuple wrong.
->> 
->> I.e.
->> arch/arm64/boot/dts/freescale/fsl-ls2080a-rdb.dtb:
->> interrupt-controller@14: interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1,
->> 0, 1, 4, 2, 0, 1, 0], [2, 4, 3, 0, 1, 0, 3, 4], [4, 0, 1, 0, 4, 4, 5,
->> 0], [1, 0, 5, 4, 6, 0, 1, 0], [6, 4, 7, 0, 1, 0, 7, 4], [8, 0, 1, 0, 
->> 8,
->> 4, 9, 0], [1, 0, 9, 4, 10, 0, 1, 0], [10, 4, 11, 0, 1, 0, 11, 4]] is 
->> too
->> short
+On 26. 04. 22, 9:10, Wan Jiabing wrote:
+> Use if and else instead of if(A) and if (!A).
+
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> ---
+> Change log:
+> v2:
+> - add braces to the if block.
+> ---
+>   drivers/tty/hvc/hvc_opal.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> 
-> Works for me (in different schema)... maybe update your dtschema?
+> diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
+> index 84776bc641e6..794c7b18aa06 100644
+> --- a/drivers/tty/hvc/hvc_opal.c
+> +++ b/drivers/tty/hvc/hvc_opal.c
+> @@ -342,9 +342,9 @@ void __init hvc_opal_init_early(void)
+>   		 * path, so we hard wire it
+>   		 */
+>   		opal = of_find_node_by_path("/ibm,opal/consoles");
+> -		if (opal)
+> +		if (opal) {
+>   			pr_devel("hvc_opal: Found consoles in new location\n");
+> -		if (!opal) {
+> +		} else {
+>   			opal = of_find_node_by_path("/ibm,opal");
+>   			if (opal)
+>   				pr_devel("hvc_opal: "
 
-Just updated to the latest one. But I'm still getting the same errors.
 
-$ dt-validate -V
-2022.4
-
-/home/mwalle/repos/b-linux-arm64/arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: 
-interrupt-controller@14: interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 
-0, 1, 4, 2, 0, 1, 0], [2, 4, 3, 0, 1, 0, 3, 4], [4, 0, 1, 0, 4, 4, 5, 
-0], [1, 0, 5, 4, 6, 0, 1, 0], [6, 4, 7, 0, 1, 0, 7, 4], [8, 0, 1, 0, 8, 
-4, 9, 0], [1, 0, 9, 4, 10, 0, 1, 0], [10, 4, 11, 0, 1, 0, 11, 4]] is too 
-short
-	From schema: 
-/home/mwalle/repos/linux-mw/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
-
-How is the length of one entry calculated?
-
--michael
+-- 
+js
+suse labs
