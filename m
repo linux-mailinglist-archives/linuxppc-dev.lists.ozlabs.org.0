@@ -1,66 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739BC50F26C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 09:30:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C4050F516
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 10:39:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KnYSY2Hkbz3brH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 17:30:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Knb0H1FZ1z3bYZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 18:39:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TljaTwoD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.208.43; helo=mail-ed1-f43.google.com;
- envelope-from=jirislaby@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com
- [209.85.208.43])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::435;
+ helo=mail-pf1-x435.google.com; envelope-from=bagasdotme@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=TljaTwoD; dkim-atps=neutral
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com
+ [IPv6:2607:f8b0:4864:20::435])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KnYS84tJbz2xBV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 17:29:58 +1000 (AEST)
-Received: by mail-ed1-f43.google.com with SMTP id g20so21210700edw.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 00:29:58 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KnYsg4SxKz2xrf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 17:48:39 +1000 (AEST)
+Received: by mail-pf1-x435.google.com with SMTP id i24so17225965pfa.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 00:48:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=f3CunhxLC3mb3e6UNr+xNX95pgRojNIa+JUKiN4OUms=;
+ b=TljaTwoD8SLvOhWYTxOMKfYY4caoHsVCypcKaTpr1fj0K9eavwC4WSrr8G2XGElv8x
+ TV9kj4OpypB/7rTo+tSov6Fhh50nCp6quQer1GYUvmSyAxLUzyGDQwX6SW4ddDzFDIOx
+ 6NB1aq9idon2IZZRJdp8SP825iqygYG2wCZap9YmIKbCh1GtDzbZSPKq6e1EU+rYfu3Q
+ DysNrV27KbaIKIkDTDBGraC+yTWaPMQGx3+ki4BKfk4HizU8csvTp0Ol0uCs3egEEEzh
+ S0HZdkVei0DhgK4TtYnkwmcRYoRjDjQH2Ho5T6mcxx2QupLuE1DZthyiYYsEEzAdy8aq
+ DKfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=hOlzS7teepghKhHO3I5ZYfaNXKKQM3quot1pS5vaaSA=;
- b=FJ4YTUcfI5SLhA3xg3fBPHlO9VRMvyyekfD9p3m3BbARZwizo3UWjUMpNAcMmCsh5x
- PyOMis9kfSttz3dA0lt2ReAJWsIDDjq77a7g4n217tWli5ox1oztS+6VNZEIR4zj5pF5
- Q0s3U9NljQBeE9xOGn6RO/g9dPDTc5zyL0oS2OZKvpkEKXvtH0ANAO+ZBMJdRnIG4NU5
- vIa1W9ZX7XDNXcSwW5NvcuQ7AVKwob0BERZ1bvK8IzWSFD/Re1pLNw98t2Ih3cnxEmze
- TIKBx83iZwAcPJF40O87So6BATbH4gn4dtsEiRBMmPb6IufvvAYJzjY7qtMdSjJoS3kC
- scUg==
-X-Gm-Message-State: AOAM532S+iEiASLp/vqPZ71MugSyklyP1YbD8jfqzc47WuIBynmZIMPo
- Dm8xvpOlp5G8/k/8XuY5KAiM4b5AISU=
-X-Google-Smtp-Source: ABdhPJwdtxQjyz2PID87gQkYXoDXvRITcke2EmvtcsG/Izql7n9Ce8e7NkkGkhbJN8TWTPJqnM2HvQ==
-X-Received: by 2002:a05:6402:42d4:b0:416:5cac:a9a0 with SMTP id
- i20-20020a05640242d400b004165caca9a0mr23253479edc.86.1650958194022; 
- Tue, 26 Apr 2022 00:29:54 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::70f? ([2a0b:e7c0:0:107::70f])
+ bh=f3CunhxLC3mb3e6UNr+xNX95pgRojNIa+JUKiN4OUms=;
+ b=AzLXoHUXxcilz1t8zBQnQQuMsi4hAKk60A/nw7SQ7/KBTwX9z212nOeL5kWUitlBmJ
+ i5GsUcVrSFTEGZPyvOpx43PKZstqSGcGk9y7TnRt7GbMlcMW+RafIsqGDTEm57qgrClF
+ xIM/ND9MFdEDtwEwPgGK6HZuv8/XUXbBj76SbYYw/gNOYlRNugBvAqpaXdurHmR58wvF
+ Uiq6q1d69BvK1uyhxweq2UYZIj8E/NAELftqCnOtfW1XWmRV+V6CikVCpONv+bv+uFFX
+ 3DclfNW2LjA+Upsib5zsjIdmHUZy/s68d5gUetxhPZwpW254X2Vyvym6JkLPQdNj4qYO
+ 3maw==
+X-Gm-Message-State: AOAM530W57hGQ063wD275ukMXP3GUJ0ZVEscG011bXZ0zapfNxHjI5h0
+ KBOln7Ndpu0JzvORXubbUFM=
+X-Google-Smtp-Source: ABdhPJzbS6CSlbSiL3g2XpFHPHeAZCURvdyStjTGUIx8QfAcYIPh4pe5nzI/LP307yAagUaH8Nk2Bg==
+X-Received: by 2002:a63:3115:0:b0:3ab:2131:5f12 with SMTP id
+ x21-20020a633115000000b003ab21315f12mr9658991pgx.0.1650959316856; 
+ Tue, 26 Apr 2022 00:48:36 -0700 (PDT)
+Received: from debian.me (subs32-116-206-28-30.three.co.id. [116.206.28.30])
  by smtp.gmail.com with ESMTPSA id
- n10-20020a170906700a00b006efdb748e8dsm4433107ejj.88.2022.04.26.00.29.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Apr 2022 00:29:53 -0700 (PDT)
-Message-ID: <47accf18-ca39-8b36-100e-a6dbfd8705fe@kernel.org>
-Date: Tue, 26 Apr 2022 09:29:52 +0200
+ n12-20020a17090ade8c00b001d25dfb9d39sm1845467pjv.14.2022.04.26.00.48.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Apr 2022 00:48:35 -0700 (PDT)
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: linux-doc@vger.kernel.org
+Subject: [PATCH] KVM: powerpc: remove extraneous asterisk from
+ rm_host_ipi_action comment
+Date: Tue, 26 Apr 2022 14:47:51 +0700
+Message-Id: <20220426074750.71251-1-bagasdotme@gmail.com>
+X-Mailer: git-send-email 2.36.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v2] tty/hvc_opal: simplify if-if to if-else
-Content-Language: en-US
-To: Wan Jiabing <wanjiabing@vivo.com>, Michael Ellerman <mpe@ellerman.id.au>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20220426071041.168282-1-wanjiabing@vivo.com>
-From: Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20220426071041.168282-1-wanjiabing@vivo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Tue, 26 Apr 2022 18:38:54 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,43 +81,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kael_w@yeah.net
+Cc: kvm@vger.kernel.org, Anders Roxell <anders.roxell@linaro.org>,
+ kernel test robot <lkp@intel.com>, Arnd Bergmann <arnd@arndb.de>,
+ Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ stable@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>,
+ Suresh Warrier <warrier@linux.vnet.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 26. 04. 22, 9:10, Wan Jiabing wrote:
-> Use if and else instead of if(A) and if (!A).
+kernel test robot reported kernel-doc warning for rm_host_ipi_action():
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+arch/powerpc/kvm/book3s_hv_rm_xics.c:887: warning: This comment
+starts with '/**', but isn't a kernel-doc comment. Refer
+Documentation/doc-guide/kernel-doc.rst
 
-> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
-> ---
-> Change log:
-> v2:
-> - add braces to the if block.
-> ---
->   drivers/tty/hvc/hvc_opal.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tty/hvc/hvc_opal.c b/drivers/tty/hvc/hvc_opal.c
-> index 84776bc641e6..794c7b18aa06 100644
-> --- a/drivers/tty/hvc/hvc_opal.c
-> +++ b/drivers/tty/hvc/hvc_opal.c
-> @@ -342,9 +342,9 @@ void __init hvc_opal_init_early(void)
->   		 * path, so we hard wire it
->   		 */
->   		opal = of_find_node_by_path("/ibm,opal/consoles");
-> -		if (opal)
-> +		if (opal) {
->   			pr_devel("hvc_opal: Found consoles in new location\n");
-> -		if (!opal) {
-> +		} else {
->   			opal = of_find_node_by_path("/ibm,opal");
->   			if (opal)
->   				pr_devel("hvc_opal: "
+Since the function is static, remove the extraneous (second) asterisk at
+the head of function comment.
 
+Link: https://lore.kernel.org/linux-doc/202204252334.Cd2IsiII-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Suresh Warrier <warrier@linux.vnet.ibm.com>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Anders Roxell <anders.roxell@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Segher Boessenkool <segher@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Fabiano Rosas <farosas@linux.ibm.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: kvm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+---
+ arch/powerpc/kvm/book3s_hv_rm_xics.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/powerpc/kvm/book3s_hv_rm_xics.c b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+index 587c33fc45640f..6e16bd751c8423 100644
+--- a/arch/powerpc/kvm/book3s_hv_rm_xics.c
++++ b/arch/powerpc/kvm/book3s_hv_rm_xics.c
+@@ -883,7 +883,7 @@ long kvmppc_deliver_irq_passthru(struct kvm_vcpu *vcpu,
+ 
+ /*  --- Non-real mode XICS-related built-in routines ---  */
+ 
+-/**
++/*
+  * Host Operations poked by RM KVM
+  */
+ static void rm_host_ipi_action(int action, void *data)
+
+base-commit: d615b5416f8a1afeb82d13b238f8152c572d59c0
 -- 
-js
-suse labs
+An old man doll... just what I always wanted! - Clara
+
