@@ -1,80 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AE750FD47
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 14:41:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49CF50FDAA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 14:52:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KnhMV2sSbz3bd9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 22:41:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Knhck46Wnz3bXw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 22:52:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GnbxG5lH;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=PeVgS2kA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430;
- helo=mail-pf1-x430.google.com; envelope-from=bagasdotme@gmail.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=GnbxG5lH; dkim-atps=neutral
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com
- [IPv6:2607:f8b0:4864:20::430])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=PeVgS2kA; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KnhLq6M15z2xm2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 22:40:49 +1000 (AEST)
-Received: by mail-pf1-x430.google.com with SMTP id b15so17855938pfm.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 05:40:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=yD7e9mPWeNwo1vgL89bG3pSg2Dekc+TvmVsazxgc/xQ=;
- b=GnbxG5lHExJVNlDP+xzzDlUmG5m8kM2lnHSyteFhSHuHmpvLor+hykPvI88Ozca2bT
- VJsDsUomaDNoDRz/VtOzCjG/S91wN/bnLQU8ay8+PyylBsG0a0DoyukUNb3/ScorOh8E
- lvNdkOuaBkw48w94VH3S61M1BI0ruUpScv4/3bK0+55k1HhwfZC1sdGqEznzkYYu2e5y
- 0TjpNn2RhmZKHJlDu4Qlc8ZprjifkOaqcCdteN9ZnRdKvkFtklPpU3i8p1syKgIU1bjB
- eVEDh8n9T3T8Fp8LX2Z/1S6VkrdAC9QTatPw6NZ/lXf2YVRUOwBrNp2flzFbpWTkFwgZ
- s7zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=yD7e9mPWeNwo1vgL89bG3pSg2Dekc+TvmVsazxgc/xQ=;
- b=ruVEBL7IDjEz31TjBHea6g9Pka0+eZR3leWYReAnPms41s49gFieF4b2ryAyCw/LtM
- fGt1+N0mGbpBgl1K6bxg6AeU84VS3TQ/3A5npqToSuJ4JXzTHhxpnrIyU53a7C5RSHgd
- 41Yp1kcWE4WLCwCFJiOUYRsViq29kvKJF8yc7ZRAS3L+z03s40N5YnNEe+TjyoaKMoyf
- 75TgDMPzHUOISHWGYw4FuyRxarU9Q3puD0N1PKLEtZuzOBmawLF3+qokrDfg8SxYqC/x
- BUG/LRu3EGWujWQtovJrE0Cu/97GYhB9gSSkU006/j0DF3eB7mh00FrWvEIbHzltbBew
- 33ww==
-X-Gm-Message-State: AOAM533SgbRfD1scghAzKlwU2GwKHoEnTPSYXZ0Mv7qtVKBtTf+nxtEY
- mdNLYqPwHfAOA6IFi0prqt0=
-X-Google-Smtp-Source: ABdhPJxQpQBnfySbDernbtM/2zvLb6OSYK+avT5/SNEuSrqQE/7Jv9ZFk6Gy3eDnWfCPcZ391s1lEg==
-X-Received: by 2002:a05:6a00:1145:b0:4f6:3ebc:a79b with SMTP id
- b5-20020a056a00114500b004f63ebca79bmr24461635pfm.41.1650976846536; 
- Tue, 26 Apr 2022 05:40:46 -0700 (PDT)
-Received: from [192.168.43.80] (subs02-180-214-232-1.three.co.id.
- [180.214.232.1]) by smtp.gmail.com with ESMTPSA id
- w129-20020a628287000000b0050d4246fbedsm6798183pfd.187.2022.04.26.05.40.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Apr 2022 05:40:45 -0700 (PDT)
-Message-ID: <9b428d55-322b-5685-b336-4bd71b52a73f@gmail.com>
-Date: Tue, 26 Apr 2022 19:40:38 +0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Knhc3115dz2yN4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 22:52:17 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 3FF2A61947;
+ Tue, 26 Apr 2022 12:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BADC385AC;
+ Tue, 26 Apr 2022 12:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1650977533;
+ bh=JYdt7nbGn2AGAmBPvGn66zPmcPIfNYsifRTpCHGEQPs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=PeVgS2kAG6q5eiHA+jYqEttw/PXUgA0eQejcGeGlzbdKNFJ/x4hRepm+jc/dBQT+6
+ JmJkRlgGOqlBcrSLH4aREEHXkqpiN/VBeQKPLUNBDHX7StjuwOzxngNC2H0mW2Mvhf
+ EH4d238nRc3YrEWe4spzNlm07S+xuaxY3WZRLeh8=
+Date: Tue, 26 Apr 2022 14:52:10 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH v5 05/10] serial: termbits: ADDRB to indicate 9th bit
+ addressing mode
+Message-ID: <Ymfq+jUXfZcNM/P/@kroah.com>
+References: <20220426122448.38997-1-ilpo.jarvinen@linux.intel.com>
+ <20220426122448.38997-6-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH] KVM: powerpc: remove extraneous asterisk from
- rm_host_ipi_action comment
-Content-Language: en-US
-To: linux-doc@vger.kernel.org
-References: <20220426074750.71251-1-bagasdotme@gmail.com>
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-In-Reply-To: <20220426074750.71251-1-bagasdotme@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220426122448.38997-6-ilpo.jarvinen@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,41 +64,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anders Roxell <anders.roxell@linaro.org>, kernel test robot <lkp@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, Fabiano Rosas <farosas@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- stable@vger.kernel.org, kvm@vger.kernel.org,
- Suresh Warrier <warrier@linux.vnet.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, heiko@sntech.de,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Jiri Slaby <jirislaby@kernel.org>, linux-arch@vger.kernel.org,
+ Helge Deller <deller@gmx.de>, linux-serial@vger.kernel.org,
+ Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+ Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Johan Hovold <johan@kernel.org>, Vicente Bergas <vicencb@gmail.com>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-mips@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Lukas Wunner <lukas@wunner.de>, linux-alpha@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, giulio.benetti@micronovasrl.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/26/22 14:47, Bagas Sanjaya wrote:
-> Link: https://lore.kernel.org/linux-doc/202204252334.Cd2IsiII-lkp@intel.com/
-> Reported-by: kernel test robot <lkp@intel.com>
-> Cc: Suresh Warrier <warrier@linux.vnet.ibm.com>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Anders Roxell <anders.roxell@linaro.org>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Segher Boessenkool <segher@kernel.crashing.org>
+On Tue, Apr 26, 2022 at 03:24:43PM +0300, Ilpo Järvinen wrote:
+> Add ADDRB to termbits to indicate 9th bit addressing mode. This change
+> is necessary for supporting devices with RS485 multipoint addressing
+> [*]. A later patch in the patch series adds support for Synopsys
+> Designware UART capable for 9th bit addressing mode. In this mode, 9th
+> bit is used to indicate an address (byte) within the communication
+> line. The 9th bit addressing mode is selected using ADDRB introduced by
+> an earlier patch.
+> 
+> [*] Technically, RS485 is just an electronic spec and does not itself
+> specify the 9th bit addressing mode but 9th bit seems at least
+> "semi-standard" way to do addressing with RS485.
+> 
+> Cc: linux-api@vger.kernel.org
+> Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
+> Cc: Matt Turner <mattst88@gmail.com>
+> Cc: linux-alpha@vger.kernel.org
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: linux-mips@vger.kernel.org
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: linux-parisc@vger.kernel.org
 > Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Fabiano Rosas <farosas@linux.ibm.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+> Cc: Paul Mackerras <paulus@samba.org>
 > Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: kvm@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: sparclinux@vger.kernel.org
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-usb@vger.kernel.org
+> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> ---
+>  arch/alpha/include/uapi/asm/termbits.h   | 1 +
+>  arch/mips/include/uapi/asm/termbits.h    | 1 +
+>  arch/parisc/include/uapi/asm/termbits.h  | 1 +
+>  arch/powerpc/include/uapi/asm/termbits.h | 1 +
+>  arch/sparc/include/uapi/asm/termbits.h   | 1 +
+>  drivers/char/pcmcia/synclink_cs.c        | 2 ++
+>  drivers/ipack/devices/ipoctal.c          | 2 ++
+>  drivers/mmc/core/sdio_uart.c             | 2 ++
+>  drivers/net/usb/hso.c                    | 3 ++-
+>  drivers/s390/char/tty3270.c              | 3 +++
+>  drivers/staging/greybus/uart.c           | 2 ++
+>  drivers/tty/amiserial.c                  | 6 +++++-
+>  drivers/tty/moxa.c                       | 1 +
+>  drivers/tty/mxser.c                      | 1 +
+>  drivers/tty/serial/serial_core.c         | 2 ++
+>  drivers/tty/synclink_gt.c                | 2 ++
+>  drivers/tty/tty_ioctl.c                  | 2 ++
+>  drivers/usb/class/cdc-acm.c              | 2 ++
+>  drivers/usb/serial/usb-serial.c          | 6 ++++--
+>  include/uapi/asm-generic/termbits.h      | 1 +
+>  net/bluetooth/rfcomm/tty.c               | 2 ++
+>  21 files changed, 40 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/alpha/include/uapi/asm/termbits.h b/arch/alpha/include/uapi/asm/termbits.h
+> index 4575ba34a0ea..0c123e715486 100644
+> --- a/arch/alpha/include/uapi/asm/termbits.h
+> +++ b/arch/alpha/include/uapi/asm/termbits.h
+> @@ -180,6 +180,7 @@ struct ktermios {
+>  #define HUPCL	00040000
+>  
+>  #define CLOCAL	00100000
+> +#define ADDRB	004000000000		/* address bit */
+>  #define CMSPAR	  010000000000		/* mark or space (stick) parity */
+>  #define CRTSCTS	  020000000000		/* flow control */
+>  
+> diff --git a/arch/mips/include/uapi/asm/termbits.h b/arch/mips/include/uapi/asm/termbits.h
+> index dfeffba729b7..4732d31b0e4e 100644
+> --- a/arch/mips/include/uapi/asm/termbits.h
+> +++ b/arch/mips/include/uapi/asm/termbits.h
+> @@ -182,6 +182,7 @@ struct ktermios {
+>  #define	 B3500000 0010016
+>  #define	 B4000000 0010017
+>  #define CIBAUD	  002003600000	/* input baud rate */
+> +#define ADDRB	  004000000000	/* address bit */
+>  #define CMSPAR	  010000000000	/* mark or space (stick) parity */
+>  #define CRTSCTS	  020000000000	/* flow control */
+>  
+> diff --git a/arch/parisc/include/uapi/asm/termbits.h b/arch/parisc/include/uapi/asm/termbits.h
+> index 40e920f8d683..d6bbd10d92ba 100644
+> --- a/arch/parisc/include/uapi/asm/termbits.h
+> +++ b/arch/parisc/include/uapi/asm/termbits.h
+> @@ -159,6 +159,7 @@ struct ktermios {
+>  #define  B3500000 0010016
+>  #define  B4000000 0010017
+>  #define CIBAUD    002003600000		/* input baud rate */
+> +#define ADDRB	  004000000000		/* address bit */
 
-Oops, I forgot Fixes: 0c2a66062470cd ("KVM: PPC: Book3S HV: Host side kick VCPU when poked by real-mode KVM")
-tag.
+tabs where the rest were not?
 
--- 
-An old man doll... just what I always wanted! - Clara
+>  #define CMSPAR    010000000000          /* mark or space (stick) parity */
+>  #define CRTSCTS   020000000000          /* flow control */
+>  
+> diff --git a/arch/powerpc/include/uapi/asm/termbits.h b/arch/powerpc/include/uapi/asm/termbits.h
+> index ed18bc61f63d..c6a033732f39 100644
+> --- a/arch/powerpc/include/uapi/asm/termbits.h
+> +++ b/arch/powerpc/include/uapi/asm/termbits.h
+> @@ -171,6 +171,7 @@ struct ktermios {
+>  #define HUPCL	00040000
+>  
+>  #define CLOCAL	00100000
+> +#define ADDRB	004000000000		/* address bit */
+>  #define CMSPAR	  010000000000		/* mark or space (stick) parity */
+>  #define CRTSCTS	  020000000000		/* flow control */
+>  
+> diff --git a/arch/sparc/include/uapi/asm/termbits.h b/arch/sparc/include/uapi/asm/termbits.h
+> index ce5ad5d0f105..5eb1d547b5c4 100644
+> --- a/arch/sparc/include/uapi/asm/termbits.h
+> +++ b/arch/sparc/include/uapi/asm/termbits.h
+> @@ -201,6 +201,7 @@ struct ktermios {
+>  #define B3500000  0x00001012
+>  #define B4000000  0x00001013  */
+>  #define CIBAUD	  0x100f0000  /* input baud rate (not used) */
+> +#define ADDRB	  0x20000000  /* address bit */
+>  #define CMSPAR	  0x40000000  /* mark or space (stick) parity */
+>  #define CRTSCTS	  0x80000000  /* flow control */
+
+Why all the different values?  Can't we pick one and use it for all
+arches?  Having these be different in different arches and userspace
+should not be a thing for new fields, right?
+
+> diff --git a/drivers/char/pcmcia/synclink_cs.c b/drivers/char/pcmcia/synclink_cs.c
+> index 78baba55a8b5..d179b9b57a25 100644
+> --- a/drivers/char/pcmcia/synclink_cs.c
+> +++ b/drivers/char/pcmcia/synclink_cs.c
+> @@ -2287,6 +2287,8 @@ static void mgslpc_set_termios(struct tty_struct *tty, struct ktermios *old_term
+>  		== RELEVANT_IFLAG(old_termios->c_iflag)))
+>  	  return;
+>  
+> +	tty->termios.c_cflag &= ~ADDRB;
+
+Having to do this for all drivers feels wrong.  It isn't needed for any
+other flag, right?  That makes me really not like this change as it
+feels very ackward and
+yet-another-thing-a-serial-driver-has-to-remember.
+
+And as you are wanting to pass this bit to userspace, where is that
+documented?
+
+thanks,
+
+greg k-h
