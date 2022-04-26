@@ -2,83 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28B8510271
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 18:00:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4955103AC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 18:38:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Knmmr4JDJz3bqm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 02:00:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KnncQ6pWDz3bcY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 02:37:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=uAJmI3Pj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UMqMxHb5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::62e;
- helo=mail-ej1-x62e.google.com; envelope-from=krzysztof.kozlowski@linaro.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=uAJmI3Pj; dkim-atps=neutral
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
- [IPv6:2a00:1450:4864:20::62e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=UMqMxHb5; dkim-atps=neutral
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KnmmD5jJHz2xBk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 01:59:40 +1000 (AEST)
-Received: by mail-ej1-x62e.google.com with SMTP id l7so37057493ejn.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Apr 2022 08:59:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=IE5WdDoFR9vCBN7dCO3EiE00nBi4kE/GvRYTPFuengA=;
- b=uAJmI3Pj5Ngxs35JNs0qJ/cLsAm6ZoUCdy76uRTYT9+Z1/KhgAaieAS8CSZNRJdiGC
- 4icruyLaS2b3j68ffd1FQii1CRcoKYiGEsi1WkjqyCQEST0CeCVJputyIDElvsb0MIvL
- ZZUFcuTf1rogLT79mSdLkCMMwfBd1LoMFDVRvduF9/wjNBPtaI5Ef/uK4PHTPU181ZxI
- JOT9lurbEVBv68bOo/IT+AKBxBBhQEktpdyCp/8MfkCZ8yhP39IUls/sfEKYogPU00+n
- RMi3N2n0pPksskrRF0l5AL0/Z8YSuaL9P2DmZsw3MvuYRexm3WsKL3bvIu3O4KinMIqL
- vhmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=IE5WdDoFR9vCBN7dCO3EiE00nBi4kE/GvRYTPFuengA=;
- b=KKh0O1ZVk4Ish5oNwkb8MLdpyR4QqF7HhBUxEne7RXxnK8hEDmYSawSHNepvM4BtaJ
- jYyrBKqxCGA1s1X9pOVIw8adCPbh8FhaIo4iB7ASpI43kL4gDmdziM8XVEAFWmZLGxfP
- JHIEYNFVOJinxDFeU34j0/IWxxeueywjpBGcjhsnNIIXMf4ZIlG6lAUEnk3qZ2Yn02DK
- GSw68QC4Rv2DCeepB6y3hHzJ4HsNacOP2fhctcqaY+neuyZzXaQUmBj3CbufUEr+kyDK
- dDtSsitlpP2WyzPiAvnu7WrIq1lakWGFb8mVoagiUKDHKGfSpD9b/4MMRIK4L0lSDK2f
- valw==
-X-Gm-Message-State: AOAM5314HHhQH9/n6LvS29Cf7lcDmW3nwhAExCKx5vfDQ/se0BReKgun
- enFGGJeV5LSbHGFqHXivyoc6Rw==
-X-Google-Smtp-Source: ABdhPJyD555vYRh8BhSe3kVw/JNEcQgwHjOkSDdSDmnLNaL5jq9Crlx6eOVDsZNck52443oEXklXCw==
-X-Received: by 2002:a17:906:7c5:b0:6e8:7c6f:4f49 with SMTP id
- m5-20020a17090607c500b006e87c6f4f49mr22050294ejc.378.1650988777608; 
- Tue, 26 Apr 2022 08:59:37 -0700 (PDT)
-Received: from [192.168.0.252] (xdsl-188-155-176-92.adslplus.ch.
- [188.155.176.92]) by smtp.gmail.com with ESMTPSA id
- q16-20020a056402519000b00425f60d7109sm1294360edd.54.2022.04.26.08.59.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Apr 2022 08:59:36 -0700 (PDT)
-Message-ID: <3171818a-82c2-3f29-03e4-fd2b7d8947fc@linaro.org>
-Date: Tue, 26 Apr 2022 17:59:36 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Knnbl1bGqz2xt7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 02:37:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1650991043; x=1682527043;
+ h=date:from:to:cc:subject:in-reply-to:message-id:
+ references:mime-version;
+ bh=YkchwpoFBWYE6wjpBeZGz+2BPwCBUpcUNyTQQIFBqC8=;
+ b=UMqMxHb5tUv6r9ZVv5eWyFWHVQJtVwsJz9W941C4vwdFTeDkqKG4F0be
+ I7Jf65goiU8c/u08MINsl9lrpDb/DZZUVXTcozKiDWxnVdrcDe7vzBr3J
+ rHTBAuMHQ2eWkUywq4FN1jmcRAvAAp9ySXDaHvxYGsYRAxY9RlLSOXSr1
+ h393ozc+ndntO0ZgTHRx76hgdKZSrm9wXpwrKGbrIruu/ixTe+J9ZGlI2
+ V9KyqO4PX6Y1OkeDaiLRc9doK3bVR0UhMtxgQc1dg+zHbfA+9cjRVbyLl
+ BzCxN3aqONaQHdLnojT0m4Z6rfepf+GD6vFOQRz9h6+A8slE+UO4a5j+6 A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10329"; a="265449311"
+X-IronPort-AV: E=Sophos;i="5.90,291,1643702400"; d="scan'208";a="265449311"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2022 09:29:19 -0700
+X-IronPort-AV: E=Sophos;i="5.90,291,1643702400"; d="scan'208";a="580016188"
+Received: from mmilkovx-mobl.amr.corp.intel.com ([10.249.47.245])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2022 09:29:11 -0700
+Date: Tue, 26 Apr 2022 19:29:08 +0300 (EEST)
+From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v5 05/10] serial: termbits: ADDRB to indicate 9th bit
+ addressing mode
+In-Reply-To: <Ymf9UhyXj7o8cNhq@kroah.com>
+Message-ID: <9a9dda88-b239-9c63-82d-2f7678fdbf9@linux.intel.com>
+References: <20220426122448.38997-1-ilpo.jarvinen@linux.intel.com>
+ <20220426122448.38997-6-ilpo.jarvinen@linux.intel.com>
+ <Ymfq+jUXfZcNM/P/@kroah.com>
+ <b667479-fb27-8712-cec8-938eed179240@linux.intel.com>
+ <17547658-4737-7ec1-9ef9-c61c6287b8b@linux.intel.com>
+ <Ymf9UhyXj7o8cNhq@kroah.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v2 1/2] dt-bindings: interrupt-controller: fsl, ls-extirq:
- convert to YAML
-Content-Language: en-US
-To: Michael Walle <michael@walle.cc>
-References: <20220425140214.32448-1-michael@walle.cc>
- <658851ed-33fd-8e2b-7db7-ef1ca9e31c33@linaro.org>
- <83b596d0570c779c61c3c37c6f512679@walle.cc>
- <c324eec7-79b1-33da-c38e-4a480fe23126@linaro.org>
- <6fec63c911c88a375fc024f6ca0e946d@walle.cc>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <6fec63c911c88a375fc024f6ca0e946d@walle.cc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="8323329-1964830911-1650990558=:1644"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,73 +71,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Marc Zyngier <maz@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, heiko@sntech.de,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ Jiri Slaby <jirislaby@kernel.org>, linux-arch@vger.kernel.org,
+ Helge Deller <deller@gmx.de>, linux-serial <linux-serial@vger.kernel.org>,
+ =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+ Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Johan Hovold <johan@kernel.org>, Vicente Bergas <vicencb@gmail.com>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-mips@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Lukas Wunner <lukas@wunner.de>, linux-alpha@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, giulio.benetti@micronovasrl.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 26/04/2022 09:28, Michael Walle wrote:
-> Am 2022-04-26 08:53, schrieb Krzysztof Kozlowski:
->> On 25/04/2022 23:58, Michael Walle wrote:
->>>>> +  reg:
->>>>> +    maxItems: 1
->>>>> +    description:
->>>>> +      Specifies the Interrupt Polarity Control Register (INTPCR) in
->>>>> the
->>>>> +      SCFG or the External Interrupt Control Register (IRQCR) in 
->>>>> the
->>>>> ISC.
->>>>> +
->>>>> +  interrupt-map:
->>>
->>> btw.
->>>
->>> minItems: 12
->>> maxItems: 12
->>>
->>> Isn't working here, is that expected? The validator seem to get the
->>> count
->>> of the elements of one tuple wrong.
->>>
->>> I.e.
->>> arch/arm64/boot/dts/freescale/fsl-ls2080a-rdb.dtb:
->>> interrupt-controller@14: interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1,
->>> 0, 1, 4, 2, 0, 1, 0], [2, 4, 3, 0, 1, 0, 3, 4], [4, 0, 1, 0, 4, 4, 5,
->>> 0], [1, 0, 5, 4, 6, 0, 1, 0], [6, 4, 7, 0, 1, 0, 7, 4], [8, 0, 1, 0, 
->>> 8,
->>> 4, 9, 0], [1, 0, 9, 4, 10, 0, 1, 0], [10, 4, 11, 0, 1, 0, 11, 4]] is 
->>> too
->>> short
->>
->>
->> Works for me (in different schema)... maybe update your dtschema?
-> 
-> Just updated to the latest one. But I'm still getting the same errors.
-> 
-> $ dt-validate -V
-> 2022.4
-> 
-> /home/mwalle/repos/b-linux-arm64/arch/arm64/boot/dts/freescale/fsl-ls1088a-qds.dtb: 
-> interrupt-controller@14: interrupt-map: [[0, 0, 1, 0, 0, 4, 1, 0], [1, 
-> 0, 1, 4, 2, 0, 1, 0], [2, 4, 3, 0, 1, 0, 3, 4], [4, 0, 1, 0, 4, 4, 5, 
-> 0], [1, 0, 5, 4, 6, 0, 1, 0], [6, 4, 7, 0, 1, 0, 7, 4], [8, 0, 1, 0, 8, 
-> 4, 9, 0], [1, 0, 9, 4, 10, 0, 1, 0], [10, 4, 11, 0, 1, 0, 11, 4]] is too 
-> short
-> 	From schema: 
-> /home/mwalle/repos/linux-mw/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.yaml
-> 
-> How is the length of one entry calculated?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-If you add maxItems to your original v2 binding example, it works. If
-you replace your example with ls1088a and use maxItems:12, it works.
+--8323329-1964830911-1650990558=:1644
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
 
-So maybe something is wrong in your modified patch (which we do not have
-so we cannot test it)?
+On Tue, 26 Apr 2022, Greg KH wrote:
 
-Best regards,
-Krzysztof
+> On Tue, Apr 26, 2022 at 05:01:31PM +0300, Ilpo Järvinen wrote:
+> > 
+> > ADDRB value is the same for all archs (it's just this octal vs hex 
+> > notation I've followed as per the nearby defines within the same file
+> > which makes them look different).
+> > 
+> > Should I perhaps add to my cleanup list conversion of all those octal ones 
+> > to hex?
+> 
+> Argh, yes, please, let's do that now, I totally missed that.  Will let
+> us see how to unify them as well.
+
+Unifying them might turn out impractical, here's a rough idea now many
+copies ... | uniq -c finds for the defines (based on more aggressively 
+cleaned up lines than the patch will have):
+     89 1
+     74 2
+     14 3
+     58 4
+     11 5
+     54 6
+There just tends to be 1 or 2 archs which are different from the others.
+
+...I'll send the actual octal-to-hex patch once the arch builds complete.
+
+-- 
+ i.
+
+--8323329-1964830911-1650990558=:1644--
