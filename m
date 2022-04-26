@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFDB510807
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 21:03:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E355651080A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 21:04:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Knrr91Rwlz3c87
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 05:03:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Knrry5SzVz3cCJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 05:04:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KWAyOTy/;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QI3vajOT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,39 +17,39 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=KWAyOTy/; 
+ header.s=k20201202 header.b=QI3vajOT; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KnrqC1j7Lz3bgR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 05:02:31 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KnrqR1VZ8z3bl9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 05:02:43 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 5583E619CC;
- Tue, 26 Apr 2022 19:02:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75078C385B0;
- Tue, 26 Apr 2022 19:02:28 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 810D0619C8;
+ Tue, 26 Apr 2022 19:02:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E34AC385A4;
+ Tue, 26 Apr 2022 19:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1650999748;
- bh=+Rmjm5j+NVCX092c+nELx71iEIRBfHPkU0zB4Hx6TB8=;
+ s=k20201202; t=1650999761;
+ bh=UzaHSttgxLekgrWJttDuNNC3KNvjaox2XCxdt4LdC0k=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=KWAyOTy/S9i6LkNMyyS1a24WIB1omL8tm73edyXQVEC1jEekeNIT3rzk57gzhXLtl
- Mu43jnBN8dWyo+rxsVTFMHGVYs8ahrgp3YGGTJeXtKtvO/WvDeWKCrCQddBTZfLLFr
- C11h9rtUcdjOD+YjmN6OFkTVrct/08sFn3rKOQ9ib7eG38zw4VU4YGyj9abcPkvO9z
- jYKZ4v/k8epbG1D+a8DkAUlbisUKwadLTO1urhfnN4RxrbnJ2x1nl/qk7OFZVfDTEK
- l9z0emhfJX5kg93h+JBLojK8C9xxgDwXim8wvEi0W3BTXBqzHwdrTopaKleah7hym+
- aMfGUhjFuoz2g==
+ b=QI3vajOT1YvTdZvLHeCLJ1Q9a1ZhpnsTwzLY2P224k/kmsjSKCszuPETa/5yT9oW4
+ TRKq0ypZmtq/noeBSIUdyn8KuhPVh1Yat2ezG7+ZZ47YebuE3GLwc3aNqv2hDoP4Q1
+ auQ95KnvojNJNwlzkYwTF+MRSFFUb/s93pOI2C5foCshUfXOsYAqHMSDDECfa4A9Ar
+ +rEmw6PHlhct5GLW801xVOUC0hwsj46YpMcPNEzyOD2L+jMxNG3hHTjl8OxytMQfvG
+ b3D4MkzuH8qdVCW//OuNhYhaBdcVeXn+Ps/c3MvDZqF2JZpoJNDsqyXnH7nj0ThOBF
+ j7Fqh+gSF/eFA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 12/15] powerpc/perf: Fix 32bit compile
-Date: Tue, 26 Apr 2022 15:02:11 -0400
-Message-Id: <20220426190216.2351413-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 8/9] powerpc/perf: Fix 32bit compile
+Date: Tue, 26 Apr 2022 15:02:29 -0400
+Message-Id: <20220426190232.2351606-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220426190216.2351413-1-sashal@kernel.org>
-References: <20220426190216.2351413-1-sashal@kernel.org>
+In-Reply-To: <20220426190232.2351606-1-sashal@kernel.org>
+References: <20220426190232.2351606-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -91,12 +91,12 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
-index 2f46e31c7612..4f53d0b97539 100644
+index c02854dea2b2..da9f60ede97b 100644
 --- a/arch/powerpc/perf/Makefile
 +++ b/arch/powerpc/perf/Makefile
-@@ -3,11 +3,11 @@
- obj-y				+= callchain.o callchain_$(BITS).o perf_regs.o
- obj-$(CONFIG_COMPAT)		+= callchain_32.o
+@@ -5,11 +5,11 @@ ifdef CONFIG_COMPAT
+ obj-$(CONFIG_PERF_EVENTS)	+= callchain_32.o
+ endif
  
 -obj-$(CONFIG_PPC_PERF_CTRS)	+= core-book3s.o bhrb.o
 +obj-$(CONFIG_PPC_PERF_CTRS)	+= core-book3s.o
