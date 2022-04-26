@@ -2,64 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4955103AC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 18:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A29510487
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Apr 2022 18:51:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KnncQ6pWDz3bcY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 02:37:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Knnvm3RBRz3bqX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 02:51:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UMqMxHb5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UrLDJh26;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=UMqMxHb5; dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=UrLDJh26; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Knnbl1bGqz2xt7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 02:37:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1650991043; x=1682527043;
- h=date:from:to:cc:subject:in-reply-to:message-id:
- references:mime-version;
- bh=YkchwpoFBWYE6wjpBeZGz+2BPwCBUpcUNyTQQIFBqC8=;
- b=UMqMxHb5tUv6r9ZVv5eWyFWHVQJtVwsJz9W941C4vwdFTeDkqKG4F0be
- I7Jf65goiU8c/u08MINsl9lrpDb/DZZUVXTcozKiDWxnVdrcDe7vzBr3J
- rHTBAuMHQ2eWkUywq4FN1jmcRAvAAp9ySXDaHvxYGsYRAxY9RlLSOXSr1
- h393ozc+ndntO0ZgTHRx76hgdKZSrm9wXpwrKGbrIruu/ixTe+J9ZGlI2
- V9KyqO4PX6Y1OkeDaiLRc9doK3bVR0UhMtxgQc1dg+zHbfA+9cjRVbyLl
- BzCxN3aqONaQHdLnojT0m4Z6rfepf+GD6vFOQRz9h6+A8slE+UO4a5j+6 A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10329"; a="265449311"
-X-IronPort-AV: E=Sophos;i="5.90,291,1643702400"; d="scan'208";a="265449311"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2022 09:29:19 -0700
-X-IronPort-AV: E=Sophos;i="5.90,291,1643702400"; d="scan'208";a="580016188"
-Received: from mmilkovx-mobl.amr.corp.intel.com ([10.249.47.245])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2022 09:29:11 -0700
-Date: Tue, 26 Apr 2022 19:29:08 +0300 (EEST)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v5 05/10] serial: termbits: ADDRB to indicate 9th bit
- addressing mode
-In-Reply-To: <Ymf9UhyXj7o8cNhq@kroah.com>
-Message-ID: <9a9dda88-b239-9c63-82d-2f7678fdbf9@linux.intel.com>
-References: <20220426122448.38997-1-ilpo.jarvinen@linux.intel.com>
- <20220426122448.38997-6-ilpo.jarvinen@linux.intel.com>
- <Ymfq+jUXfZcNM/P/@kroah.com>
- <b667479-fb27-8712-cec8-938eed179240@linux.intel.com>
- <17547658-4737-7ec1-9ef9-c61c6287b8b@linux.intel.com>
- <Ymf9UhyXj7o8cNhq@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Knnv43b21z2xCC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 02:50:40 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 32EE9B820FE;
+ Tue, 26 Apr 2022 16:50:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2946C385A4;
+ Tue, 26 Apr 2022 16:50:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1650991833;
+ bh=d+I84Q1PYqLr/ykJNwwHSQgjeeZM+iYFOcHNWTpzypU=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=UrLDJh26RraUwH13/R1gNmjzfYhu1mrVXQpGOX1RI+bJmLiUcaty5XxwhJRKkyJiA
+ ZmqUp2naP1YHzEjq3AmOlJe9n9UN9fpY/53kqKWX1NGRMlub3niSuvw3CvT5GYk6I4
+ r2bx52e92hwX2ORN37OADnM9IRKGEjwqXLKfacGMrUba3Bp8huhNBbnaKCgLjn7BSp
+ UQg6a2P3Ya3/6CiAvobeckJdLOWjApF/nekL40ueij8tsiiE/H0ZK/7Spsf4lb1dCA
+ TxTBsKMSZx4d7Jcm44l/E957B4SJSeVY56JIG4+ALrdAfn5tYzKsgJMbA5XmXBEZYK
+ OPROa5rg9XX8g==
+Date: Tue, 26 Apr 2022 11:50:31 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "David E. Box" <david.e.box@linux.intel.com>
+Subject: Re: [PATCH v4 2/2] PCI/PM: Fix pci_pm_suspend_noirq() to disable PTM
+Message-ID: <20220426165031.GA1731758@bhelgaas>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1964830911-1650990558=:1644"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <44ebf450aa3300e02aba6ec009d8bea20c0fc535.camel@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,60 +63,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, heiko@sntech.de,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- Jiri Slaby <jirislaby@kernel.org>, linux-arch@vger.kernel.org,
- Helge Deller <deller@gmx.de>, linux-serial <linux-serial@vger.kernel.org>,
- =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
- Matt Turner <mattst88@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Johan Hovold <johan@kernel.org>, Vicente Bergas <vicencb@gmail.com>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-api@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-mips@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Lukas Wunner <lukas@wunner.de>, linux-alpha@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, giulio.benetti@micronovasrl.com
+Cc: "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, "Wysocki,
+ Rafael J" <rafael.j.wysocki@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "koba.ko@canonical.com" <koba.ko@canonical.com>, "Jingar,
+ Rajvi" <rajvi.jingar@intel.com>, Kai-Heng Feng <kai.heng.feng@canonical.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
+ "baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323329-1964830911-1650990558=:1644
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-
-On Tue, 26 Apr 2022, Greg KH wrote:
-
-> On Tue, Apr 26, 2022 at 05:01:31PM +0300, Ilpo Järvinen wrote:
+On Mon, Apr 25, 2022 at 11:32:54AM -0700, David E. Box wrote:
+> On Sat, 2022-04-23 at 10:01 -0500, Bjorn Helgaas wrote:
+> > On Sat, Apr 23, 2022 at 12:43:14AM +0000, Jingar, Rajvi wrote:
+> > > > -----Original Message-----
+> > > > From: Bjorn Helgaas <helgaas@kernel.org>
+> > > > On Thu, Apr 14, 2022 at 07:54:02PM +0200, Rafael J. Wysocki wrote:
+> > > > > On 3/25/2022 8:50 PM, Rajvi Jingar wrote:
+> > > > > > For the PCIe devices (like nvme) that do not go into D3 state still
+> > > > > > need to
+> > > > > > disable PTM on PCIe root ports to allow the port to enter a lower-
+> > > > > > power PM
+> > > > > > state and the SoC to reach a lower-power idle state as a whole. Move
+> > > > > > the
+> > > > > > pci_disable_ptm() out of pci_prepare_to_sleep() as this code path is
+> > > > > > not
+> > > > > > followed for devices that do not go into D3. This patch fixes the
+> > > > > > issue
+> > > > > > seen on Dell XPS 9300 with Ice Lake CPU and Dell Precision 5530 with
+> > > > > > Coffee
+> > > > > > Lake CPU platforms to get improved residency in low power idle states.
+> > > > > > 
+> > > > > > Fixes: a697f072f5da ("PCI: Disable PTM during suspend to save power")
+> > > > > > Signed-off-by: Rajvi Jingar <rajvi.jingar@intel.com>
+> > > > > > Suggested-by: David E. Box <david.e.box@linux.intel.com>
+> > > > > > ---
+> > > > > >   drivers/pci/pci-driver.c | 10 ++++++++++
+> > > > > >   drivers/pci/pci.c        | 10 ----------
+> > > > > >   2 files changed, 10 insertions(+), 10 deletions(-)
+> > > > > > 
+> > > > > > diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+> > > > > > index 8b55a90126a2..ab733374a260 100644
+> > > > > > --- a/drivers/pci/pci-driver.c
+> > > > > > +++ b/drivers/pci/pci-driver.c
+> > > > > > @@ -847,6 +847,16 @@ static int pci_pm_suspend_noirq(struct device
+> > > > > > *dev)
+> > > > > >   	if (!pci_dev->state_saved) {
+> > > > > >   		pci_save_state(pci_dev);
+> > > > > > +		/*
+> > > > > > +		 * There are systems (for example, Intel mobile chips
+> > > > > > since
+> > > > Coffee
+> > > > > > +		 * Lake) where the power drawn while suspended can be
+> > > > significantly
+> > > > > > +		 * reduced by disabling PTM on PCIe root ports as this
+> > > > > > allows the
+> > > > > > +		 * port to enter a lower-power PM state and the SoC to
+> > > > > > reach a
+> > > > > > +		 * lower-power idle state as a whole.
+> > > > > > +		 */
+> > > > > > +		if (pci_pcie_type(pci_dev) == PCI_EXP_TYPE_ROOT_PORT)
+> > > > > > +			pci_disable_ptm(pci_dev);
+> > > > 
+> > > > Why is disabling PTM dependent on pci_dev->state_saved?  The
+> > > > point of this is to change the behavior of the device, and it
+> > > > seems like we want to do that regardless of whether the driver
+> > > > has used pci_save_state().
+> > > 
+> > > Because we use the saved state to restore PTM on the root port.
+> > > And it's under this condition that the root port state gets
+> > > saved.
 > > 
-> > ADDRB value is the same for all archs (it's just this octal vs hex 
-> > notation I've followed as per the nearby defines within the same file
-> > which makes them look different).
+> > Yes, I understand that pci_restore_ptm_state() depends on a
+> > previous call to pci_save_ptm_state().
 > > 
-> > Should I perhaps add to my cleanup list conversion of all those octal ones 
-> > to hex?
+> > The point I'm trying to make is that pci_disable_ptm() changes the
+> > state of the device, and that state change should not depend on
+> > whether the driver has used pci_save_state().
 > 
-> Argh, yes, please, let's do that now, I totally missed that.  Will let
-> us see how to unify them as well.
+> We do it here because D3 depends on whether the device state was
+> saved by the driver.
+> 
+> 	if (!pci_dev->state_saved) {
+>         	pci_save_state(pci_dev);
+> 
+> 		/* disable PTM here */
+> 
+> 		if (pci_power_manageable(pci_dev))
+> 			pci_prepare_to_sleep(pci_dev);
+> 	}
+> 
+> 
+> If we disable PTM before the check, we will have saved "PTM
+> disabled" as the restore state. And we can't do it after the check
+> as the device will be in D3.
 
-Unifying them might turn out impractical, here's a rough idea now many
-copies ... | uniq -c finds for the defines (based on more aggressively 
-cleaned up lines than the patch will have):
-     89 1
-     74 2
-     14 3
-     58 4
-     11 5
-     54 6
-There just tends to be 1 or 2 archs which are different from the others.
+Are you suggesting that PTM should be left enabled if the driver
+called pci_save_state(), but disabled otherwise?  I don't see the
+rationale for that.
 
-...I'll send the actual octal-to-hex patch once the arch builds complete.
+I don't understand all the paths through pci_pm_suspend_noirq() (e.g.,
+skip_bus_pm), but for this one, I think we could do something like
+this:
 
--- 
- i.
+  driver_saved = pci_dev->state_saved;
+  if (!driver_saved)
+    pci_save_state(pci_dev);
 
---8323329-1964830911-1650990558=:1644--
+  pci_disable_ptm(pci_dev);
+
+  if (!driver_saved) {
+    if (pci_power_manageable(pci_dev))
+      pci_prepare_to_sleep(pci_dev);
+  }
+
+Or I guess one could argue that a driver calling pci_save_state() is
+implicitly taking responsibility for all PCI-related suspend work, and
+it should be disabling PTM itself.  But that doesn't really seem
+maintainable.
+
+> As to disabling PTM on all devices, I see no problem with this, but the
+> reasoning is different. We disabled the root port PTM for power savings.
+
+The power saving is good.  I'm trying to make the argument that we
+need to disable PTM on all devices for correctness.
+
+If we disable PTM on the root port, are we guaranteed that it will
+never receive a PTM Request from a downstream device?  Per PCIe r6.0,
+sec 6.21.3, such a request would cause an Unsupported Request error.
+
+I sort of expect that if we're putting a root port in a low-power
+state, all downstream devices are already in the same or a lower-power
+state (but I don't understand PM well enough to be confident).
+
+And I don't really *expect* devices in a low-power state to generate
+PTM Requests, but I haven't seen anything in the spec that prohibits
+it.
+
+This leads me to believe that if we disable PTM in a root port, we
+must first disable PTM in any downstream devices.  Otherwise, the root
+port may log UR errors if the downstream device issues a PTM Request.
+
+> > When we're putting a device into a low-power state, I think we want to
+> > disable PTM *always*, no matter what the driver did.  And I think we
+> > want to do it for all devices, not just Root Ports.
+> > 
+> > Bjorn
+> 
