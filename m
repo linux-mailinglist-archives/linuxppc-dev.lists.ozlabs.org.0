@@ -1,39 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0845E511878
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 15:47:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB0551188B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 15:54:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KpKnH05D9z3brL
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 23:47:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KpKxZ4RY3z3bsG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 23:54:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org;
  envelope-from=srs0=av7o=vf=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KpKmq0X2cz2xlF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 23:47:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpKx92JbMz2ync
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 23:54:21 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 5EB3BB82766;
- Wed, 27 Apr 2022 13:47:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714F6C385A9;
- Wed, 27 Apr 2022 13:47:00 +0000 (UTC)
-Date: Wed, 27 Apr 2022 09:46:58 -0400
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 6841461D51;
+ Wed, 27 Apr 2022 13:54:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A50CC385A9;
+ Wed, 27 Apr 2022 13:54:16 +0000 (UTC)
+Date: Wed, 27 Apr 2022 09:54:15 -0400
 From: Steven Rostedt <rostedt@goodmis.org>
 To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/2] ftrace: Drop duplicate mcount locations
-Message-ID: <20220427094658.502fcaee@gandalf.local.home>
-In-Reply-To: <9b1b816cff1f479c8de0e9baa5a6ac680b84e17e.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 2/2] recordmcount: Handle sections with no non-weak symbols
+Message-ID: <20220427095415.594e5120@gandalf.local.home>
+In-Reply-To: <1b9566f0e7185fb8fd8ef2535add7a081501ccc8.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
 References: <cover.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
- <9b1b816cff1f479c8de0e9baa5a6ac680b84e17e.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
+ <1b9566f0e7185fb8fd8ef2535add7a081501ccc8.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,71 +56,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Apr 2022 15:01:21 +0530
+On Wed, 27 Apr 2022 15:01:22 +0530
 "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
 
-> In the absence of section symbols [1], objtool (today) and recordmcount
-> (with a subsequent patch) generate __mcount_loc relocation records with
-> weak symbols as the base. This works fine as long as those weak symbols
-> are not overridden, but if they are, these can result in duplicate
-> entries in the final vmlinux mcount location table. This will cause
-> ftrace to fail when trying to patch the same location twice. Fix this by
-> dropping duplicate locations during ftrace init.
-> 
-> [1] https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=d1bcae833b32f1
-> 
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
->  kernel/trace/ftrace.c | 13 ++++++++++++-
->  1 file changed, 12 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-> index 4f1d2f5e726341..8bc4f282bb3ff4 100644
-> --- a/kernel/trace/ftrace.c
-> +++ b/kernel/trace/ftrace.c
-> @@ -6496,7 +6496,7 @@ static int ftrace_process_locs(struct module *mod,
->  	struct dyn_ftrace *rec;
->  	unsigned long count;
->  	unsigned long *p;
-> -	unsigned long addr;
-> +	unsigned long addr, prev_addr = 0;
->  	unsigned long flags = 0; /* Shut up gcc */
->  	int ret = -ENOMEM;
->  
-> @@ -6550,6 +6550,16 @@ static int ftrace_process_locs(struct module *mod,
->  	while (p < end) {
->  		unsigned long end_offset;
->  		addr = ftrace_call_adjust(*p++);
-> +
-> +		/*
-> +		 * Drop duplicate entries, which can happen when weak
-> +		 * functions are overridden, and __mcount_loc relocation
-> +		 * records were generated against function names due to
-> +		 * absence of non-weak section symbols
-> +		 */
-> +		if (addr == prev_addr)
-> +			addr = 0;
+> If one or both of these weak functions are overridden in future, in the
+> final vmlinux mcount table, references to these will change over to the
+> non-weak variant which has its own mcount location entry. As such, there
+> will now be two entries for these functions, both pointing to the same
+> non-weak location.
 
-Please don't use the side effect of addr == 0 causing the loop to continue
-for this logic. The two are not related. Simply call continue.
-
-		if (addr == prev_addr)
-			continue;
-
+But is that really true in all cases? x86 uses fentry these days, and other
+archs do things differently too. But the original mcount (-pg) call
+happened *after* the frame setup. That means the offset of the mcount call
+would be at different offsets wrt the start of the function. If you have
+one of these architectures that still use mcount, and the weak function
+doesn't have the same size frame setup as the overriding function, then the
+addresses will not be the same.
 
 -- Steve
 
 
-> +
->  		/*
->  		 * Some architecture linkers will pad between
->  		 * the different mcount_loc sections of different
-> @@ -6569,6 +6579,7 @@ static int ftrace_process_locs(struct module *mod,
->  
->  		rec = &pg->records[pg->index++];
->  		rec->ip = addr;
-> +		prev_addr = addr;
->  	}
->  
->  	/* We should have used all pages */
+> We don't need the non-weak locations since they will
+> never be executed. Ftrace skips the duplicate entries due to a previous
+> commit.
 
