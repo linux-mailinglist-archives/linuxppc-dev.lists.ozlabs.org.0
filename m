@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EC45128F9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 03:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A7E5128FD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 03:40:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kpdbm2MSZz3dyl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 11:40:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KpdcQ4dwdz3f2m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 11:40:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=nwXMrZIm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=Dl2B7pSV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,13 +17,13 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=nwXMrZIm; dkim-atps=neutral
+ header.s=20170329 header.b=Dl2B7pSV; dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KpYwL1ftcz2yWn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 08:54:26 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpYwc3g2Tz2yXf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 08:54:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -31,22 +31,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=gwBR7P38mmxeEI4wWnwfuOo3Vx6Wo8buxtIoJ+/ueVE=; b=nwXMrZImrRof6aT4nflSriZWm8
- nV+2kfTnZMr3qMfu/pdKx8zdoFC6dPSZfgjMR8nrCqKQx0a9STr9zXRmf603LSCMYxoe/0rzj8WAX
- X04mzyflhbAneN3N3eqd1bEuJEgnFV2TubG1LTS2zdwee0DTxDCCfkp/jZLLefrxcRie9zAR6UkMF
- CbBI0mU22IJBGJ0ER3H7bHP1OaQk7bRcIVlpHROO0rfL6uLx6VUv9a0aPf+94uNbhp5w7FYgnWnfd
- FC3cJ2sUp+UEhn1teUMFvXk88fY0u++AP/ytEp5+rJzALI+oR2Quq3NLCvwKLKxi/cwHyaoyY3uHg
- LhfKC/tQ==;
+ bh=oI9b5duO8OJ5vQDZCcg8/YSfwN8M5sfdHxH8XUnmtlk=; b=Dl2B7pSVJp25fe7IfIs24mmkq8
+ hNWQZdfuE5b8NzwyHqbjR/6C1jbxbEv8wNNcNdcZK+x2mWiNzNr+u6ej0RkZPoYhNEHBCsZ6UD+6G
+ UKVT1x0W1ctGqUC1Gq0pKfbBSIn3/AQDQpBwhuyH0wupCzlBVEy+S+oaSi7mTGACgenSYzi35Memm
+ cwNrE6VLPhA8HIa6SL7ijwVZV/Cmf5guYFGY1etNEWb16ALz0OIjrK84zUZZaRulPOC47prAFsrmC
+ 8jtFSnfk5SwoqCho0RbgOB8YFry+V3AQ6FT8GxIeK9uuEGFeYv+qjRy2g8pgwIU4Wj4/dnNONMvQE
+ 5U+RG0NQ==;
 Received: from [179.113.53.197] (helo=localhost)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1njqY1-0002Ha-Aa; Thu, 28 Apr 2022 00:54:15 +0200
+ id 1njqYG-0002IR-Ki; Thu, 28 Apr 2022 00:54:29 +0200
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 To: akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
  kexec@lists.infradead.org
-Subject: [PATCH 17/30] tracing: Improve panic/die notifiers
-Date: Wed, 27 Apr 2022 19:49:11 -0300
-Message-Id: <20220427224924.592546-18-gpiccoli@igalia.com>
+Subject: [PATCH 18/30] notifier: Show function names on notifier routines if
+ DEBUG_NOTIFIERS is set
+Date: Wed, 27 Apr 2022 19:49:12 -0300
+Message-Id: <20220427224924.592546-19-gpiccoli@igalia.com>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220427224924.592546-1-gpiccoli@igalia.com>
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
@@ -66,6 +67,7 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
  gregkh@linuxfoundation.org, peterz@infradead.org,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
  alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
  feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
  sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
@@ -73,14 +75,17 @@ Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
  john.ogness@linutronix.de, corbet@lwn.net, paulmck@kernel.org,
  fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
  bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, coresight@lists.linaro.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
+ dyoung@redhat.com, Valentin Schneider <valentin.schneider@arm.com>,
+ vgoyal@redhat.com, Xiaoming Ni <nixiaoming@huawei.com>,
+ linux-xtensa@linux-xtensa.org, dave.hansen@linux.intel.com,
+ keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org,
+ coresight@lists.linaro.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
+ rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
+ linux-tegra@vger.kernel.org, Cong Wang <xiyou.wangcong@gmail.com>,
  openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
  senozhatsky@chromium.org, linux-arm-kernel@lists.infradead.org,
- linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ linux-edac@vger.kernel.org, jgross@suse.com,
+ Arjan van de Ven <arjan@linux.intel.com>, linux-parisc@vger.kernel.org,
  netdev@vger.kernel.org, kernel@gpiccoli.net, linux-kernel@vger.kernel.org,
  stern@rowland.harvard.edu, gpiccoli@igalia.com, d.hatayama@jp.fujitsu.com,
  mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
@@ -89,105 +94,131 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently the tracing dump_on_oops feature is implemented
-through separate notifiers, one for die/oops and the other
-for panic. With the addition of panic notifier "id", this
-patch makes use of such "id" to unify both functions.
+Currently we have a debug infrastructure in the notifiers file, but
+it's very simple/limited. This patch extends it by:
 
-It also comments the function and changes the priority of the
-notifier blocks, in order they run early compared to other
-notifiers, to prevent useless trace data (like the callback
-names for the other notifiers). Finally, we also removed an
-unnecessary header inclusion.
+(a) Showing all registered/unregistered notifiers' callback names;
 
+(b) Adding a dynamic debug tuning to allow showing called notifiers'
+function names. Notice that this should be guarded as a tunable since
+it can flood the kernel log buffer.
+
+Cc: Arjan van de Ven <arjan@linux.intel.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: Xiaoming Ni <nixiaoming@huawei.com>
 Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 ---
- kernel/trace/trace.c | 57 +++++++++++++++++++++++++-------------------
- 1 file changed, 32 insertions(+), 25 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index f4de111fa18f..c1d8a3622ccc 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -19,7 +19,6 @@
- #include <linux/kallsyms.h>
- #include <linux/security.h>
- #include <linux/seq_file.h>
--#include <linux/notifier.h>
- #include <linux/irqflags.h>
- #include <linux/debugfs.h>
- #include <linux/tracefs.h>
-@@ -9767,38 +9766,46 @@ static __init int tracer_init_tracefs(void)
+We have some design decisions that worth discussing here:
+
+(a) First of call, using C99 helps a lot to write clear and concise code, but
+due to commit 4d94f910e79a ("Kbuild: use -Wdeclaration-after-statement") we
+have a warning if mixing variable declarations with code. For this patch though,
+doing that makes the code way clear, so decision was to add the debug code
+inside brackets whenever this warning pops up. We can change that, but that'll
+cause more ifdefs in the same function.
+
+(b) In the symbol lookup helper function, we modify the parameter passed but
+even more, we return it as well! This is unusual and seems unnecessary, but was
+the strategy taken to allow embedding such function in the pr_debug() call.
+
+Not doing that would likely requiring 3 symbol_name variables to avoid
+concurrency (registering notifier A while calling notifier B) - we rely in
+local variables as a serialization mechanism.
+
+We're open for suggestions in case this design is not appropriate;
+thanks in advance!
+
+ kernel/notifier.c | 48 +++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 46 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/notifier.c b/kernel/notifier.c
+index ba005ebf4730..21032ebcde57 100644
+--- a/kernel/notifier.c
++++ b/kernel/notifier.c
+@@ -7,6 +7,22 @@
+ #include <linux/vmalloc.h>
+ #include <linux/reboot.h>
  
- fs_initcall(tracer_init_tracefs);
- 
--static int trace_panic_handler(struct notifier_block *this,
--			       unsigned long event, void *unused)
++#ifdef CONFIG_DEBUG_NOTIFIERS
++#include <linux/kallsyms.h>
++
 +/*
-+ * The idea is to execute the following die/panic callback early, in order
-+ * to avoid showing irrelevant information in the trace (like other panic
-+ * notifier functions); we are the 2nd to run, after hung_task/rcu_stall
-+ * warnings get disabled (to prevent potential log flooding).
++ *	Helper to get symbol names in case DEBUG_NOTIFIERS is set.
++ *	Return the modified parameter is a strategy used to achieve
++ *	the pr_debug() functionality - with this, function is only
++ *	executed if the dynamic debug tuning is effectively set.
 + */
-+static int trace_die_panic_handler(struct notifier_block *self,
-+				unsigned long ev, void *unused)
- {
--	if (ftrace_dump_on_oops)
-+	int do_dump;
++static inline char *notifier_name(struct notifier_block *nb, char *sym_name)
++{
++	lookup_symbol_name((unsigned long)(nb->notifier_call), sym_name);
++	return sym_name;
++}
++#endif
 +
-+	if (!ftrace_dump_on_oops)
-+		return NOTIFY_DONE;
+ /*
+  *	Notifier list for kernel code which wants to be called
+  *	at shutdown. This is used to stop any idling DMA operations
+@@ -34,20 +50,41 @@ static int notifier_chain_register(struct notifier_block **nl,
+ 	}
+ 	n->next = *nl;
+ 	rcu_assign_pointer(*nl, n);
 +
-+	switch (ev) {
-+	case DIE_OOPS:
-+		do_dump = 1;
-+		break;
-+	case PANIC_NOTIFIER:
-+		do_dump = 1;
-+		break;
-+	default:
-+		do_dump = 0;
-+		break;
++#ifdef CONFIG_DEBUG_NOTIFIERS
++	{
++		char sym_name[KSYM_NAME_LEN];
++
++		pr_info("notifiers: registered %s()\n",
++			notifier_name(n, sym_name));
 +	}
-+
-+	if (do_dump)
- 		ftrace_dump(ftrace_dump_on_oops);
--	return NOTIFY_OK;
-+
-+	return NOTIFY_DONE;
++#endif
+ 	return 0;
  }
  
- static struct notifier_block trace_panic_notifier = {
--	.notifier_call  = trace_panic_handler,
--	.next           = NULL,
--	.priority       = 150   /* priority: INT_MAX >= x >= 0 */
-+	.notifier_call = trace_die_panic_handler,
-+	.priority = INT_MAX - 1,
- };
+ static int notifier_chain_unregister(struct notifier_block **nl,
+ 		struct notifier_block *n)
+ {
++	int ret = -ENOENT;
++
+ 	while ((*nl) != NULL) {
+ 		if ((*nl) == n) {
+ 			rcu_assign_pointer(*nl, n->next);
+-			return 0;
++			ret = 0;
++			break;
+ 		}
+ 		nl = &((*nl)->next);
+ 	}
+-	return -ENOENT;
++
++#ifdef CONFIG_DEBUG_NOTIFIERS
++	if (!ret) {
++		char sym_name[KSYM_NAME_LEN];
++
++		pr_info("notifiers: unregistered %s()\n",
++			notifier_name(n, sym_name));
++	}
++#endif
++	return ret;
+ }
  
--static int trace_die_handler(struct notifier_block *self,
--			     unsigned long val,
--			     void *data)
--{
--	switch (val) {
--	case DIE_OOPS:
--		if (ftrace_dump_on_oops)
--			ftrace_dump(ftrace_dump_on_oops);
--		break;
--	default:
--		break;
--	}
--	return NOTIFY_OK;
--}
--
- static struct notifier_block trace_die_notifier = {
--	.notifier_call = trace_die_handler,
--	.priority = 200
-+	.notifier_call = trace_die_panic_handler,
-+	.priority = INT_MAX - 1,
- };
+ /**
+@@ -80,6 +117,13 @@ static int notifier_call_chain(struct notifier_block **nl,
+ 			nb = next_nb;
+ 			continue;
+ 		}
++
++		{
++			char sym_name[KSYM_NAME_LEN];
++
++			pr_debug("notifiers: calling %s()\n",
++				 notifier_name(nb, sym_name));
++		}
+ #endif
+ 		ret = nb->notifier_call(nb, val, v);
  
- /*
 -- 
 2.36.0
 
