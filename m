@@ -1,107 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7163E511BEF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 17:37:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DFA511C01
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 17:42:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KpNDD1vQKz3bdJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 01:37:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KpNKV6JQYz3bqW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 01:42:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=L9neTzgH;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gNmHh6bq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=seE+Cwqa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=L9neTzgH; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=gNmHh6bq; 
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=seE+Cwqa; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KpNCT4qZKz2xlF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 01:36:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1651073809;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PLzRtimpMwkEhbx4emiYpoBgN4Y+vripnsA+QcNWh8Y=;
- b=L9neTzgHNPXxkVumE7UtKHaKRaNewoUPG4ESJgY2tvTVO+3NOHYvAk5vibjhefROrxY7hk
- edlCiu18Ah6BDsnJxDblIyf5xQEA9PztC0URptgwzMZw3a8gto0R11x63CoFqpDg3e40N5
- 27OGxzk/5WhPKXma0frWlXgEkz7Y43U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1651073810;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PLzRtimpMwkEhbx4emiYpoBgN4Y+vripnsA+QcNWh8Y=;
- b=gNmHh6bqiVVPVfaWp4w+VvL1GK8+r6MQi4X6kIWKFJdt2CecqFQ58djl3WKv2jh5nzFAvX
- HgSR0+JOrEpazvhgPlKjQqz7UPnLH/NSJZLVRvdcPSpAtlwjDHtlZpkoT7rVy6iB+8IuDn
- GxayNslkOJI258f4dRergjQAVHwkzCw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-35-5_GL670NPBacWWYIvarR8Q-1; Wed, 27 Apr 2022 11:36:46 -0400
-X-MC-Unique: 5_GL670NPBacWWYIvarR8Q-1
-Received: by mail-wm1-f70.google.com with SMTP id
- k16-20020a7bc310000000b0038e6cf00439so716270wmj.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 08:36:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:from:to:cc:references:in-reply-to
- :content-transfer-encoding;
- bh=PLzRtimpMwkEhbx4emiYpoBgN4Y+vripnsA+QcNWh8Y=;
- b=A8J68Dl1IFrTFe5VFsvLuZ+KgWECUUXdgQPojKh40YMYC8rTc/ffgcBA25TMR5In5D
- gGluH4UsOh++ghj3D2oG9iXLjjJF8Ig49c4xMjOMwe0lDtv7C/nnNj+9OAtgbrcvs/Ze
- lQhcpOwgeq9DaZ5gWRYNEmXkiaPbjDnSGKT7zlYSHG/+9CBoGOMUYJtLa8CMZUARja+q
- JnRpqnNejZJBPbbmRm9ylRhhD2Uu/edg0JHQJteIwvzz28TCHWADnUAxQHzYG4fiv+8s
- FcLg732mrfRpBV7lQRVonRcl9UhxRRdgkqng/x3oRrD4o/8Ri7CIC/xv7LFw99XQMgSR
- 66IQ==
-X-Gm-Message-State: AOAM533F9FphUAq/IRKiAkkU6WzQckbo5X+Mj5+vlNCmK3NWQ71ZuZhO
- ZBg0Jw8p/abWMdqT+I7PNZdi06DHHVXCJyXQZKOwltsblHa0GJphTBXh5lR3Ikt16dqiO6pwiVk
- /AjaY2IWlLQ7h09zrnfdb5SFnEA==
-X-Received: by 2002:adf:bd91:0:b0:209:19ac:7159 with SMTP id
- l17-20020adfbd91000000b0020919ac7159mr21994603wrh.3.1651073805287; 
- Wed, 27 Apr 2022 08:36:45 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyeRxULmrOLQQqJqV/2VI13K13LIoNQxVijy/gvXXFK1QVi4JzXOkCbG+oqjLDKbRpFmoLMvQ==
-X-Received: by 2002:adf:bd91:0:b0:209:19ac:7159 with SMTP id
- l17-20020adfbd91000000b0020919ac7159mr21994591wrh.3.1651073805033; 
- Wed, 27 Apr 2022 08:36:45 -0700 (PDT)
-Received: from [10.33.192.232] (nat-pool-str-t.redhat.com. [149.14.88.106])
- by smtp.gmail.com with ESMTPSA id
- q16-20020a1ce910000000b0038eabd31749sm2160786wmc.32.2022.04.27.08.36.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Apr 2022 08:36:44 -0700 (PDT)
-Message-ID: <4106256f-1648-cf8b-b0e2-cefc84caf18e@redhat.com>
-Date: Wed, 27 Apr 2022 17:36:42 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpNJq65dLz3bXw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 01:41:31 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 7FD016190F;
+ Wed, 27 Apr 2022 15:41:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B29C385AF;
+ Wed, 27 Apr 2022 15:41:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651074088;
+ bh=AQ2M2cIdMLKFRoOhOa3L4wS6t0ZWgmj+IPNpm9VSkJ4=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=seE+Cwqa8hiSgbmdjS9MW4M3EBVzWCGeN0jgLmE9eq3pU+6hg6CEVcjBSJwDcSSIX
+ koW4eq89pTGtsvENbKFGoSZJXtwXL8ef8R7vfRt4HGLuZrRNS6akXyDqjPZw6GxlFV
+ NU8VhqW339ENzH9C9qLQq92CXQUxIquUC70nb9vyjW5FziQZR4WR3TaV4heKwrfCWv
+ iOr6/jWKGryNxi3ih90VtCiW8gRTBK9KBuuU7MP6BkFJyXJMiBR5PnZ4wDahoyEYO/
+ dBlDKwETCbDu1pgNoAgFAxVPpVkA6X6qSzUUg/vFJFeo/aGvXrykjF5ZDU3vuMs5Qi
+ 7uvmtDz7Y+C/g==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net,
+	pabeni@redhat.com
+Subject: [PATCH net-next 13/14] eth: spider: remove a copy of the
+ NAPI_POLL_WEIGHT define
+Date: Wed, 27 Apr 2022 08:41:10 -0700
+Message-Id: <20220427154111.529975-14-kuba@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220427154111.529975-1-kuba@kernel.org>
+References: <20220427154111.529975-1-kuba@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: serial hang in qemu-system-ppc64 -M pseries
-From: Thomas Huth <thuth@redhat.com>
-To: Rob Landley <rob@landley.net>, QEMU Developers <qemu-devel@nongnu.org>
-References: <74b9755a-4b5d-56b1-86f5-0c5c7688845a@landley.net>
- <8558c117-75a0-dc73-9b1a-be128e04056c@redhat.com>
-In-Reply-To: <8558c117-75a0-dc73-9b1a-be128e04056c@redhat.com>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=thuth@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,56 +65,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: qemu-ppc@nongnu.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
+Cc: geoff@infradead.org, netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Jakub Kicinski <kuba@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27/04/2022 17.27, Thomas Huth wrote:
-> On 26/04/2022 12.26, Rob Landley wrote:
->> When I cut and paste 80-ish characters of text into the Linux serial 
->> console, it
->> reads 16 characters and stops. When I hit space, it reads another 16 
->> characters,
->> and if I keep at it will eventually catch up without losing data. If I type,
->> every character shows up immediately.
-> 
-> That "16" certainly comes from VTERM_BUFSIZE in hw/char/spapr_vty.c in the 
-> QEMU sources, I think.
-> 
->> (On other qemu targets and kernels I can cut and paste an entire uuencoded
->> binary and it goes through just fine in one go, but this target hangs with 
->> big
->> pastes until I hit keys.)
->>
->> Is this a qemu-side bug, or a kernel-side bug?
->>
->> Kernel config attached (linux 5.18-rc3 or thereabouts), qemu invocation is:
->>
->> qemu-system-ppc64 -M pseries -vga none -nographic -no-reboot -m 256 -kernel
->> vmlinux -initrd powerpc64leroot.cpio.gz -append "panic=1 HOST=powerpc64le
->> console=hvc0"
-> 
-> Which version of QEMU are you using? Which frontend (GTK or terminal?) ... 
-> this rings a distant bell, but I thought we had fixed these issues long ago 
-> in the past... e.g.:
-> 
-> https://yhbt.net/lore/all/1380113886-16845-10-git-send-email-mdroth@linux.vnet.ibm.com/ 
-> 
-> https://git.qemu.org/?p=qemu.git;a=commitdiff;h=8a273cbe53221d28
-> 
-> ... but maybe my memory also just fails and this has never been properly fixed.
+Defining local versions of NAPI_POLL_WEIGHT with the same
+values in the drivers just makes refactoring harder.
 
-In case you're using GTK, I think I just found the problem that I was 
-remembering again:
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: kou.ishizaki@toshiba.co.jp
+CC: geoff@infradead.org
+CC: linuxppc-dev@lists.ozlabs.org
+---
+ drivers/net/ethernet/toshiba/spider_net.c | 2 +-
+ drivers/net/ethernet/toshiba/spider_net.h | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-https://lists.gnu.org/archive/html/qemu-ppc/2016-11/msg00142.html
-https://lists.gnu.org/archive/html/qemu-ppc/2016-11/msg00143.html
-
-I assume this has never been properly fixed.
-
-  Thomas
+diff --git a/drivers/net/ethernet/toshiba/spider_net.c b/drivers/net/ethernet/toshiba/spider_net.c
+index f47b8358669d..c09cd961edbb 100644
+--- a/drivers/net/ethernet/toshiba/spider_net.c
++++ b/drivers/net/ethernet/toshiba/spider_net.c
+@@ -2270,7 +2270,7 @@ spider_net_setup_netdev(struct spider_net_card *card)
+ 	timer_setup(&card->aneg_timer, spider_net_link_phy, 0);
+ 
+ 	netif_napi_add(netdev, &card->napi,
+-		       spider_net_poll, SPIDER_NET_NAPI_WEIGHT);
++		       spider_net_poll, NAPI_POLL_WEIGHT);
+ 
+ 	spider_net_setup_netdev_ops(netdev);
+ 
+diff --git a/drivers/net/ethernet/toshiba/spider_net.h b/drivers/net/ethernet/toshiba/spider_net.h
+index 05b1a0736835..51948e2b3a34 100644
+--- a/drivers/net/ethernet/toshiba/spider_net.h
++++ b/drivers/net/ethernet/toshiba/spider_net.h
+@@ -44,7 +44,6 @@ extern char spider_net_driver_name[];
+ #define SPIDER_NET_RX_CSUM_DEFAULT		1
+ 
+ #define SPIDER_NET_WATCHDOG_TIMEOUT		50*HZ
+-#define SPIDER_NET_NAPI_WEIGHT			64
+ 
+ #define SPIDER_NET_FIRMWARE_SEQS	6
+ #define SPIDER_NET_FIRMWARE_SEQWORDS	1024
+-- 
+2.34.1
 
