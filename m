@@ -2,42 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB0551188B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 15:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E45A85118B2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 16:19:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KpKxZ4RY3z3bsG
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 23:54:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KpLTZ5pJcz3brM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 00:18:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org;
- envelope-from=srs0=av7o=vf=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=209.85.160.42; helo=mail-oa1-f42.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com
+ [209.85.160.42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KpKx92JbMz2ync
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 23:54:21 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 6841461D51;
- Wed, 27 Apr 2022 13:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A50CC385A9;
- Wed, 27 Apr 2022 13:54:16 +0000 (UTC)
-Date: Wed, 27 Apr 2022 09:54:15 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 2/2] recordmcount: Handle sections with no non-weak symbols
-Message-ID: <20220427095415.594e5120@gandalf.local.home>
-In-Reply-To: <1b9566f0e7185fb8fd8ef2535add7a081501ccc8.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
- <1b9566f0e7185fb8fd8ef2535add7a081501ccc8.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpLT705xcz2xvW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 00:18:34 +1000 (AEST)
+Received: by mail-oa1-f42.google.com with SMTP id
+ 586e51a60fabf-d6e29fb3d7so2066993fac.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 07:18:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
+ :message-id;
+ bh=PMYFToIIw9gCyKckeLz6QNSj28pYwPtqHEMymIKkXRA=;
+ b=siTYa2LFufoOQvOLKD2QSx42b6jhx889LmNQMY9CkdQPmBacTKCsI9YjmK3LvXMINg
+ k6kEMVvgrx4wR0d3LbOlpbYUb8DfcuLEEuGs1PQPuZ020czuwuQZ8bFrbx5v2ia/qKsH
+ rTGCUsixn+OBMiUv20NjBlzzlTF3j1ElUSMCYLRrULqAHkEMQLdzIKmGf+3BGhSrNJU4
+ rroW8YOgTne4lQw1jznSBD1LvqVHLiiu5A6xUq8ZuSC07nWJPUxpVBv1dLoJ5SXZG/UR
+ 2N17kv3NB7hmK6HywqJOTSCcRa67EqbVY2LgqkzPFce7KWEHzBL3i4g43m6nJ6JtsSps
+ waXg==
+X-Gm-Message-State: AOAM532EjidgF62Z93KYnxhsva1+RMUtkUVtlyOAc+UTchCNsKuMj5cj
+ fu7AuxTRuty+5GOwEgAjxQ==
+X-Google-Smtp-Source: ABdhPJyS08rrT9jgCgkOe3uGHzv/NwWEfTH0q/IX+PLWPJjo6NzGWHPEYfF02mq/cITg/8Jmteod+w==
+X-Received: by 2002:a05:6870:6307:b0:e9:6ed6:cb2f with SMTP id
+ s7-20020a056870630700b000e96ed6cb2fmr2954367oao.26.1651069110640; 
+ Wed, 27 Apr 2022 07:18:30 -0700 (PDT)
+Received: from robh.at.kernel.org (66-90-144-107.dyn.grandenetworks.net.
+ [66.90.144.107]) by smtp.gmail.com with ESMTPSA id
+ h21-20020a9d6015000000b006025edf7cafsm6020169otj.22.2022.04.27.07.18.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Apr 2022 07:18:30 -0700 (PDT)
+Received: (nullmailer pid 4142587 invoked by uid 1000);
+ Wed, 27 Apr 2022 14:18:28 -0000
+From: Rob Herring <robh@kernel.org>
+To: Michael Walle <michael@walle.cc>
+In-Reply-To: <20220427075338.1156449-5-michael@walle.cc>
+References: <20220427075338.1156449-1-michael@walle.cc>
+ <20220427075338.1156449-5-michael@walle.cc>
+Subject: Re: [PATCH v3 4/4] dt-bindings: fsl: convert fsl,
+ layerscape-scfg to YAML
+Date: Wed, 27 Apr 2022 09:18:28 -0500
+Message-Id: <1651069108.159837.4142586.nullmailer@robh.at.kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,34 +66,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
- linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
+ linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Shawn Guo <shawnguo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Apr 2022 15:01:22 +0530
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+On Wed, 27 Apr 2022 09:53:38 +0200, Michael Walle wrote:
+> Convert the fsl,layerscape-scfg binding to the new YAML format.
+> 
+> In the device trees, the device node always have a "syscon"
+> compatible, which wasn't mentioned in the previous binding.
+> 
+> Also added, compared to the original binding, is the
+> interrupt-controller subnode as used in arch/arm/boot/dts/ls1021a.dtsi
+> as well as the litte-endian and big-endian properties.
+> 
+> Signed-off-by: Michael Walle <michael@walle.cc>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+> changes since v2:
+>  - none
+> 
+> changes since v1:
+>  - moved to soc/fsl/fsl,layerscape-scfg.yaml
+>  - generic name for node in example
+>  - mention added "syscon" compatible in commit message
+>  - reference specific interrupt controller
+> 
+>  .../arm/freescale/fsl,layerscape-scfg.txt     | 19 ------
+>  .../bindings/soc/fsl/fsl,layerscape-scfg.yaml | 58 +++++++++++++++++++
+>  2 files changed, 58 insertions(+), 19 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/arm/freescale/fsl,layerscape-scfg.txt
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,layerscape-scfg.yaml
+> 
 
-> If one or both of these weak functions are overridden in future, in the
-> final vmlinux mcount table, references to these will change over to the
-> non-weak variant which has its own mcount location entry. As such, there
-> will now be two entries for these functions, both pointing to the same
-> non-weak location.
+Running 'make dtbs_check' with the schema in this patch gives the
+following warnings. Consider if they are expected or the schema is
+incorrect. These may not be new warnings.
 
-But is that really true in all cases? x86 uses fentry these days, and other
-archs do things differently too. But the original mcount (-pg) call
-happened *after* the frame setup. That means the offset of the mcount call
-would be at different offsets wrt the start of the function. If you have
-one of these architectures that still use mcount, and the weak function
-doesn't have the same size frame setup as the overriding function, then the
-addresses will not be the same.
+Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+This will change in the future.
 
--- Steve
+Full log is available here: https://patchwork.ozlabs.org/patch/
 
 
-> We don't need the non-weak locations since they will
-> never be executed. Ftrace skips the duplicate entries due to a previous
-> commit.
+scfg@1570000: interrupt-controller@1ac:interrupt-map-mask:0:0: 15 was expected
+	arch/arm64/boot/dts/freescale/fsl-ls1043a-qds.dtb
+	arch/arm64/boot/dts/freescale/fsl-ls1043a-rdb.dtb
+	arch/arm64/boot/dts/freescale/fsl-ls1046a-frwy.dtb
+	arch/arm64/boot/dts/freescale/fsl-ls1046a-qds.dtb
+	arch/arm64/boot/dts/freescale/fsl-ls1046a-rdb.dtb
+
+scfg@1570000: interrupt-controller@1ac:interrupt-map-mask:0:0: 7 was expected
+	arch/arm/boot/dts/ls1021a-moxa-uc-8410a.dtb
+	arch/arm/boot/dts/ls1021a-qds.dtb
+	arch/arm/boot/dts/ls1021a-tsn.dtb
+	arch/arm/boot/dts/ls1021a-twr.dtb
 
