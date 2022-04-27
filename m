@@ -1,57 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0231A51141C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 11:10:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E1B511453
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 11:38:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KpCd16m7Xz3bry
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 19:09:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KpDFQ0Wmsz30FR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 19:38:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GBc/Ffkp;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
- envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KpCcX2Nj6z2xtQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 19:09:31 +1000 (AEST)
-Received: from kwepemi100023.china.huawei.com (unknown [172.30.72.54])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KpCbz5DxlzgYkt;
- Wed, 27 Apr 2022 17:09:03 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- kwepemi100023.china.huawei.com (7.221.188.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 27 Apr 2022 17:09:21 +0800
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 27 Apr 2022 17:09:20 +0800
-Message-ID: <6b18fed1-f802-b15c-95d9-718a48edbbfc@huawei.com>
-Date: Wed, 27 Apr 2022 17:09:19 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH -next v4 0/7]arm64: add machine check safe support
-To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Robin Murphy <robin.murphy@arm.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
- <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <20220420030418.3189040-1-tongtiangen@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=GBc/Ffkp; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpDCv64nXz2xsc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 19:36:43 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23R6VCDW018516;
+ Wed, 27 Apr 2022 09:36:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=wOYOBQTDmKHJ9iGvYwffbRu0unw8UKjjQnVlXqJp8/k=;
+ b=GBc/FfkpBdOM3LQFUOi1wVsV0l4bv8W8SdM9yVhLNGff5q1JxYkZVoCPRa2lXQW/LTDF
+ XDKc2/QrVVJEd2s7Z2PLBxPG/QigC1NWCgObvSx+e3xJXqURCI9fBWNfHZocG2u1q5JZ
+ XC2wTxwHW1rrADXvcPwTR3l01h2JqaEA9Pt0LzPSbOgTDRU09aF0RsSsE8KdhLOjyUAH
+ H1/wgSrcDIUMmi7oUtCvdaXiFEVp2HaDKX74Ez0jcwYEsn2ga8qo7En+/sqPH99tKelH
+ Ac6s51b0pXOT7nqIoUO4bdW5Tqyh5aRco0jZnVJICiu6OuyoXjiL5j4MVXKBaJVHCFt/ xQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fpvpgevs1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Apr 2022 09:36:25 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 23R9NYYL011352;
+ Wed, 27 Apr 2022 09:36:24 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fpvpgevr4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Apr 2022 09:36:24 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23R9SceU002254;
+ Wed, 27 Apr 2022 09:36:22 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma06fra.de.ibm.com with ESMTP id 3fm8qhmg34-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Apr 2022 09:36:22 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 23R9aJYv31785448
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Apr 2022 09:36:19 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7ADC04C044;
+ Wed, 27 Apr 2022 09:36:19 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 454574C040;
+ Wed, 27 Apr 2022 09:36:17 +0000 (GMT)
+Received: from li-NotSettable.ibm.com.com (unknown [9.43.116.196])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 27 Apr 2022 09:36:16 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 0/2] ftrace/recordmcount: Handle object files without section
+ symbols
+Date: Wed, 27 Apr 2022 15:01:20 +0530
+Message-Id: <cover.1651047542.git.naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0I5l914qw2sjcEy8vcTwnFx6QDGpb4Lt
+X-Proofpoint-ORIG-GUID: ZqHIazna3rCWKJ56c0qlH5HWZkmHM3oS
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-04-27_03,2022-04-26_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ malwarescore=0 phishscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 spamscore=0 adultscore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2204270063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,103 +105,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mark, James, Robin, kindly ping...
+This solves a build issue on powerpc with binutils v2.36 and newer [1].
+Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
+symbols") [2], binutils started dropping section symbols that it thought
+were unused. Due to this, in certain scenarios, recordmcount is unable 
+to find a non-weak symbol to generate a relocation record against.
 
-Thanks.
+Clang integrated assembler is also aggressive in dropping section 
+symbols [3].
 
-在 2022/4/20 11:04, Tong Tiangen 写道:
-> With the increase of memory capacity and density, the probability of
-> memory error increases. The increasing size and density of server RAM
-> in the data center and cloud have shown increased uncorrectable memory
-> errors.
-> 
-> Currently, the kernel has a mechanism to recover from hardware memory
-> errors. This patchset provides an new recovery mechanism.
-> 
-> For arm64, the hardware memory error handling is do_sea() which divided
-> into two cases:
->   1. The user state consumed the memory errors, the solution is kill the
->      user process and isolate the error page.
->   2. The kernel state consumed the memory errors, the solution is panic.
-> 
-> For case 2, Undifferentiated panic maybe not the optimal choice, it can be
-> handled better, in some scenes, we can avoid panic, such as uaccess, if the
-> uaccess fails due to memory error, only the user process will be affected,
-> kill the user process and isolate the user page with hardware memory errors
-> is a better choice.
-> 
-> This patchset can be divided into three parts:
->   1. Patch 0/1/4    - make some minor fixes to the associated code.
->   2. Patch 3      - arm64 add support for machine check safe framework.
->   3. Pathc 5/6/7  - arm64 add uaccess and cow to machine check safe.
-> 
-> Since V4:
->   1. According to Robin's suggestion, direct modify user_ldst and
->   user_ldp in asm-uaccess.h and modify mte.S.
->   2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
->   and copy_to_user.S.
->   3. According to Robin's suggestion, using micro in copy_page_mc.S to
->   simplify code.
->   4. According to KeFeng's suggestion, modify powerpc code in patch1.
->   5. According to KeFeng's suggestion, modify mm/extable.c and some code
->   optimization.
-> 
-> Since V3:
->   1. According to Mark's suggestion, all uaccess can be recovered due to
->      memory error.
->   2. Scenario pagecache reading is also supported as part of uaccess
->      (copy_to_user()) and duplication code problem is also solved.
->      Thanks for Robin's suggestion.
->   3. According Mark's suggestion, update commit message of patch 2/5.
->   4. According Borisllav's suggestion, update commit message of patch 1/5.
-> 
-> Since V2:
->   1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
->     ARM64_UCE_KERNEL_RECOVERY.
->   2.Add two new scenes, cow and pagecache reading.
->   3.Fix two small bug(the first two patch).
-> 
-> V1 in here:
-> https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
-> 
-> Robin Murphy (1):
->    arm64: mte: Clean up user tag accessors
-> 
-> Tong Tiangen (6):
->    x86, powerpc: fix function define in copy_mc_to_user
->    arm64: fix types in copy_highpage()
->    arm64: add support for machine check error safe
->    arm64: add copy_{to, from}_user to machine check safe
->    arm64: add {get, put}_user to machine check safe
->    arm64: add cow to machine check safe
-> 
->   arch/arm64/Kconfig                   |  1 +
->   arch/arm64/include/asm/asm-extable.h | 33 +++++++++++
->   arch/arm64/include/asm/asm-uaccess.h | 15 +++--
->   arch/arm64/include/asm/extable.h     |  1 +
->   arch/arm64/include/asm/page.h        | 10 ++++
->   arch/arm64/include/asm/uaccess.h     |  4 +-
->   arch/arm64/lib/Makefile              |  2 +
->   arch/arm64/lib/copy_from_user.S      | 18 +++---
->   arch/arm64/lib/copy_page_mc.S        | 86 ++++++++++++++++++++++++++++
->   arch/arm64/lib/copy_to_user.S        | 18 +++---
->   arch/arm64/lib/mte.S                 |  4 +-
->   arch/arm64/mm/copypage.c             | 36 ++++++++++--
->   arch/arm64/mm/extable.c              | 33 +++++++++++
->   arch/arm64/mm/fault.c                | 27 ++++++++-
->   arch/powerpc/include/asm/uaccess.h   |  1 +
->   arch/x86/include/asm/uaccess.h       |  1 +
->   include/linux/highmem.h              |  8 +++
->   include/linux/uaccess.h              |  9 +++
->   mm/memory.c                          |  2 +-
->   19 files changed, 278 insertions(+), 31 deletions(-)
->   create mode 100644 arch/arm64/lib/copy_page_mc.S
-> 
+In the past, there have been various workarounds to address this. See 
+commits 55d5b7dd6451b5 ("initramfs: fix clang build failure") and 
+6e7b64b9dd6d96 ("elfcore: fix building with clang") and a recent patch:
+https://lore.kernel.org/linuxppc-dev/20220425174128.11455-1-naveen.n.rao@linux.vnet.ibm.com/T/#u
+
+Fix this issue by using the weak symbol in the relocation record. This 
+can result in duplicate locations in the mcount table if those weak 
+functions are overridden, so have ftrace skip dupicate entries.
+
+Objtool already follows this approach, so patch 2 updates recordmcount 
+to do the same. Patch 1 updates ftrace to skip duplicate entries.
+
+- Naveen
+
+
+[1] https://github.com/linuxppc/issues/issues/388
+[2] https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=d1bcae833b32f1
+[3] https://github.com/ClangBuiltLinux/linux/issues/981
+
+
+Naveen N. Rao (2):
+  ftrace: Drop duplicate mcount locations
+  recordmcount: Handle sections with no non-weak symbols
+
+ kernel/trace/ftrace.c  | 13 ++++++-
+ scripts/recordmcount.h | 86 +++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 85 insertions(+), 14 deletions(-)
+
+
+base-commit: 83d8a0d166119de813cad27ae7d61f54f9aea707
+-- 
+2.35.1
+
