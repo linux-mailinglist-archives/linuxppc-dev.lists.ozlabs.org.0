@@ -2,75 +2,130 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07730511C57
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 18:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6425123AE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Apr 2022 22:10:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KpP7w6CWPz3fPP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 02:18:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KpVGj300lz3blK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 06:10:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=djNzVmRe;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=MlDH8nrb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::631;
- helo=mail-ej1-x631.google.com; envelope-from=jakobkoschel@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=djNzVmRe; dkim-atps=neutral
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
- [IPv6:2a00:1450:4864:20::631])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=permerror (SPF Permanent Error: Void lookup limit
+ of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f400:fe0d::61a;
+ helo=eur04-he1-obe.outbound.protection.outlook.com;
+ envelope-from=leoyang.li@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=MlDH8nrb; 
+ dkim-atps=neutral
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (mail-he1eur04on061a.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe0d::61a])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KpNv20LnRz3bs8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 02:07:42 +1000 (AEST)
-Received: by mail-ej1-x631.google.com with SMTP id l18so4354738ejc.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Apr 2022 09:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=/A0b7QXPnRxcdjzjvBy95srF3RhPajcOL797uVjW17k=;
- b=djNzVmRevWSY+hIiC1/H30PkHbSU6xqUomoS6vNxNxSsA2vgIsDJmjFdrGiJt1K8MS
- XvJVUBQenTNDmnRY1OxwRpXMU6eq8+3j9NKMg8A0/fSUm/OXLuHTuvFMOxq1tfiv5/lo
- PETw/pty71e5r7Z5xql/U9OyQrFDpphWq0AKn82ZX5A9j9EvNXqncx1kGerazGaEhlhW
- BtwUHrzoVQidChJdfESgX4ChoMs1jqCIz+LCsesKzeGmJ4AwqLUMeAhlcZ0ui7hA1ca6
- FYrGCeBuXiEVcQ+uN5Ej2ozdZDqA9mtVVLC0RLXFL7lInO3enpCUsINJFZgSSzcJVwCF
- jf8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=/A0b7QXPnRxcdjzjvBy95srF3RhPajcOL797uVjW17k=;
- b=B2T/IwcpRnjhU3MfW68juZiTehpJWflqFYehxp2SskRl/wMiVXfK1ikb5i6F1TjZEA
- mEmXD1Otc+X6qwt3M5TuhK2FKCL4S5h0DjCpfABsXwil2UHDsZ1cbAmeae3TQu5bP4iS
- avp90NsohFyBnhu/e6EcedboBVhy/c0Y8KZH/JoTpw/IsKJrfQ+F+MWF04Fh3kDRsCCT
- 7Dt+fXGLUfbQZQ5uSgoGAnZUjH6G1uTD1TcNFvRFu4GemIBjiHQHzu1HQRjjlxnijzBn
- ycxB4thuWLqKA4GAFK+TZLqGwqi/1oGvJ3YKZ4pqugKIiw7d14oxHuBEepc10GCj8mLW
- oCkg==
-X-Gm-Message-State: AOAM531XSuc51Wn2RBoFUfAna7Rs0Wam3njLRY6xaHvffMUnUCHhWFDr
- Lxw3W55cy/O9SHdOrd6w4/g=
-X-Google-Smtp-Source: ABdhPJzZ9GK5JMKIlGUFt2skqXUpBcMIDshg75p8eWcFCf8XLqwMsnXkioKQLmTu+ChB5hH1wuiIcQ==
-X-Received: by 2002:a17:907:98eb:b0:6f3:ce56:c1a2 with SMTP id
- ke11-20020a17090798eb00b006f3ce56c1a2mr2984393ejc.173.1651075659037; 
- Wed, 27 Apr 2022 09:07:39 -0700 (PDT)
-Received: from localhost.localdomain (i130160.upc-i.chello.nl.
- [62.195.130.160]) by smtp.googlemail.com with ESMTPSA id
- n5-20020a170906378500b006efb4ab6f59sm6984098ejc.86.2022.04.27.09.07.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Apr 2022 09:07:38 -0700 (PDT)
-From: Jakob Koschel <jakobkoschel@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net-next v5 18/18] team: Remove use of list iterator variable
- for list_for_each_entry_from()
-Date: Wed, 27 Apr 2022 18:06:35 +0200
-Message-Id: <20220427160635.420492-19-jakobkoschel@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220427160635.420492-1-jakobkoschel@gmail.com>
-References: <20220427160635.420492-1-jakobkoschel@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpVFt1PwCz2yMP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 06:09:18 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VVOwz5vod4jxVqw749qE/7Z/f1f8HlVUNZrsBE1POt1A+TxmBAx+GpQalkK/acfoDPiKcir89L9kH0XwJRbxU3AGnezmYXxnrSdRTpax7OIqF3DfqeCDv0u/itcn0C1XpMNKeB44nQds1vLAL8h3Xg1uxmmbDFp++0ILCxqU2o075xLXYKbWb/uJeYSG95L11aiu9e0V/G3uOyPmX/7b4YJN/E0vyyhxnIYmQAag1iAVVP3xith3lYNTjwLOpKZ09kFSU98oE0BHFBpGCBNqHcX9ona9WTe5axKzltZzbfDpWs3UMViubAu208uHfVprO62Ho8p5x4ImXYGzoWNaFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HYW7DSBK13QbKY+g51JEtyjjDXuh4XlkIvcfRfdk0JE=;
+ b=dpL9bgm9saO2nqkxfeKuoh+3l5oleLEqoP5IDACu0ZGPB7rlJZQtZBA+96OagMnZL1rDxXjuMv3c42SWxPFbpRSF9kvzUz+tACPHlaVCKs3X297LeOVyDIe2seGOgPzkRPhk2X+ubjhULjWofHhHtuXEiYvYqAk65t4ju4J9SihHcMG4QF6eQS3H1frWCseUWCJpd5jKskiC7d67kvXrHaJ3isP5hzYnqu9U9Fai5VFIqipeS9ZtG8+r22RXZZPUczDmLwrx5OQaU9cL27OjCNr2aws0fLq+3qjmBy5zHQU7eqwYm4XU4ICprMEbF5mc0U5/pA0C475RzcfkURaDeQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HYW7DSBK13QbKY+g51JEtyjjDXuh4XlkIvcfRfdk0JE=;
+ b=MlDH8nrbkeXlChSL+trqsjTwyx7GavUjPE7p946idiVvQXINnAdJZ+W738VOhMVr/AHC9lofGqhgI3DZM3mSnNNtBMXKKxyms03uqjVHOZ4OaonE5tUhg/5B9JqEjwzGcr9VvdvhkmfFHBVeeaY8NlHFyr6INC2xyNSp4LEJzdU=
+Received: from AS8PR04MB8946.eurprd04.prod.outlook.com (2603:10a6:20b:42d::18)
+ by DBBPR04MB7979.eurprd04.prod.outlook.com (2603:10a6:10:1ec::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5186.21; Wed, 27 Apr
+ 2022 20:08:51 +0000
+Received: from AS8PR04MB8946.eurprd04.prod.outlook.com
+ ([fe80::8859:691:cefc:9a17]) by AS8PR04MB8946.eurprd04.prod.outlook.com
+ ([fe80::8859:691:cefc:9a17%7]) with mapi id 15.20.5206.013; Wed, 27 Apr 2022
+ 20:08:51 +0000
+From: Leo Li <leoyang.li@nxp.com>
+To: Michael Walle <michael@walle.cc>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: RE: [PATCH v3 3/4] dt-bindings: interrupt-controller: fsl, ls-extirq:
+ convert to YAML
+Thread-Topic: [PATCH v3 3/4] dt-bindings: interrupt-controller: fsl, ls-extirq:
+ convert to YAML
+Thread-Index: AQHYWgvu/3id1S7+XUqAoUUdRpoi4K0ELChw
+Date: Wed, 27 Apr 2022 20:08:51 +0000
+Message-ID: <AS8PR04MB89464877E53B7F7B14A814178FFA9@AS8PR04MB8946.eurprd04.prod.outlook.com>
+References: <20220427075338.1156449-1-michael@walle.cc>
+ <20220427075338.1156449-4-michael@walle.cc>
+In-Reply-To: <20220427075338.1156449-4-michael@walle.cc>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: fd7964aa-50db-4e8d-50ed-08da2889bf94
+x-ms-traffictypediagnostic: DBBPR04MB7979:EE_
+x-microsoft-antispam-prvs: <DBBPR04MB7979E59DA3BD95D75A83E2FB8FFA9@DBBPR04MB7979.eurprd04.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: +uP37YyG5A9CyiVB6NlUOo5kwmqeqlxLXfL+Ojyh42FeAEAtFMXZEU9llKkPHg3PkKU0w3Z7IR+6nfKQh7RbubWsIjozy0OUbSYwnTxeYlGrkg5LQcyHyTt8224sMgoPPnIhJWafc0m5uv/EqhFPJB1P2TeTNKCiLleF0mWZJ7tHigundRgOe+Jha6g7XbclkWgISiKqMfZ7wDVyG+GrR85R1CO6h15YhkOTnVRuFwnAziSTqIid1PLLn1PYbhzb/sukMJpLqfC9N3in1oQbI+PplwUye+MzrwbgIV/v+gBoq6ZoGB4fQV6H2ryZQlMGaP3tkreRUrx5pbGaqvGT8m4r1qx4qiImWUXkd6GbspkmjqIDRG9AF5xBjPkG+gPA9Dh99Pq/br7hY4j8LwXVI9K5BG241y5lWjLmXg6T2TFaydl19mdkFWDmI0qP4+XjIhuWhka633J1if9Q57mkUQUY3I71BeeVhMqMoLSg2N2Fgx5C/90dl2o2i7Nhf2Jx29FYkvCIw0Z08qmIudd3RuQr7EZ66aZxiM8cWZ8NLuBuhVRCImoolVPw1IvpaH2rfQwpM2elGI5Zx/CFXS835hrZoVd+MgIHLqRJYg57syaM3dd+7RiBdE3XpuoGPjBoIh947Sxz6q+AlOinCeVfniooKcarjHOygwp6tF+5OjBW1cpuKLpIP6weyFLIfH9MopYwk+/+vY7A/Kv79RcdzQNCMgJzwItJLKXHO5AT2f7Dpw90ZVUSym/GuXv799bUIV5uw63oECJEC1nxXJMYckHwp/J94H2RAHBJsjflGck=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AS8PR04MB8946.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(2906002)(38070700005)(122000001)(508600001)(7416002)(38100700002)(76116006)(66946007)(8676002)(66556008)(4326008)(66446008)(64756008)(86362001)(66476007)(71200400001)(55016003)(54906003)(110136005)(52536014)(8936002)(5660300002)(316002)(9686003)(26005)(83380400001)(6506007)(53546011)(186003)(7696005)(45080400002)(33656002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?N9EkQPmGEZOnkdtcv/YjpY25Jl6OVgRuSYDbF0sNYCN23elOg343GDvgtOMd?=
+ =?us-ascii?Q?omDMjTqB2IdG/JOgHryWccxoC5F/78XBhIM55jO5nVHFKaa0nXT3nyPr+U1k?=
+ =?us-ascii?Q?yhbt+aKjL+XZ44Ks/8HQHgPf0GT7y7ne4QT6xZTJF0iNKpaKqBbVsB0nepY0?=
+ =?us-ascii?Q?NXBRQaKmSWMvFzGC076kEQnjz1PsUDL37sSlYNPv6vNFZak3dz43IgTl77PX?=
+ =?us-ascii?Q?Uw6OVBa1vNXxu5pZnrEPl3VGjoIc95Q6amftieNhcRevozwSa6kq3zjTsu45?=
+ =?us-ascii?Q?SeKa1bJk+4YiKJg2QvxtA4SEbpvLXIpWP/cBSlWscExHmUDIGzfAggPDmbCD?=
+ =?us-ascii?Q?Ep/lX/Xb/SY4a7ASdyza7h4sB5t+QVXaREXV/a2RYJn8XCNxZR9hvqGpSuyl?=
+ =?us-ascii?Q?mPk7oLnU3Jz614HAl3XYbTkSaufhDvGJJefbrG7Ba3fjh/pMzgLgYk//3/Pz?=
+ =?us-ascii?Q?DVTH2n0UE04YIwHi0GDwbSejmTnY5tdwuh/ZfvLJVeD9Dd8/Oq9sf7+dsdXU?=
+ =?us-ascii?Q?JODbbkwbopUj0MmFMz0wfcW5i/qPtj4dA8/jszpD8RM6imTE4AvuHEjnx8ZR?=
+ =?us-ascii?Q?8nSl1z1+Hj3PuK+wX+/lSWA886UmZtDA8QX/1WFFsRN0l7Bg57n5miN8px+t?=
+ =?us-ascii?Q?9Xf+kbbA/QeXt1Vlozbo1NqNoEUrvj5dP2J/ddY4cWBz3+a84m/NWZAZbqHG?=
+ =?us-ascii?Q?oSRzs2mnay30sEHb2XWQcK1elVJ/OiXYrmjtc95EjpMhi8bgPgg4ee+BVwx6?=
+ =?us-ascii?Q?CiaAsEOV+YeDOA0zYfAi9KszbHIokd5sLgsMtr4E4BTTz6lbQnY1G72edQGl?=
+ =?us-ascii?Q?EbCeNbFoJdrfKIeeUpmGvarXk0zDNpHeETzyEBq/moFeR6kMbWSSQmg1xvoy?=
+ =?us-ascii?Q?khCFDSEQiLcSgkhQo6oQR5G0OGuFwzrpwZzvPy10MEwCR8pjd8N3v3dTyJCZ?=
+ =?us-ascii?Q?g6HbncJT+HA/gJqWrTl9btu5zqrDX6DAA3Q1LAYbKlPbCDOSbksrsZRSosII?=
+ =?us-ascii?Q?kRwVNvwAw2TChWhtIOwh4H8dONnEyFHTZly6dHFNbsZhkm0YBpX5VQnThIVK?=
+ =?us-ascii?Q?OI+7wlcHl9uCGkw3b5a/v7bAm5HWwBPIHi5pcySI5I8VvmMUcdIE6cGefr/p?=
+ =?us-ascii?Q?rmYHnm+jxVk8ucUIlkl9ZISML4Xa0Fjh9JPdlru1aSgAOylNZP4N0onsVl5j?=
+ =?us-ascii?Q?yYjblSBdqI+bXHzWiKbFBfj9rEBmtHCDFpz1kT/vzABejD7ENfGD6K377/NY?=
+ =?us-ascii?Q?5OQEyEZ0FK7G4Vm1qJfKr7TVEx6eSaMAPjTV6v68YDtxEzpLTl2ymH5+DSWS?=
+ =?us-ascii?Q?8lW42wBuD3QIFt4fKIXAsWo8JkH4V50IX0SQ0O3Pk6pEXCsFluewtpxeUm/s?=
+ =?us-ascii?Q?5EW2qhraxe4vlJVxTVufz18AYpeFHOUvtpKimoCS/uxv72Ap6lPqPgI45mE7?=
+ =?us-ascii?Q?Nx6fsh1CAyY87R+8I5I/vSL0lSbkyOyXf2KH+MY3aUlk9CZcY0SVnzEYfm84?=
+ =?us-ascii?Q?12vVBoBW4hkyEDItxNM8EpulmJ/tWkgi0DpN6Jcf29xZxkEa8Hs27GMEPw/r?=
+ =?us-ascii?Q?5jkikHQVQsbBPYFTXvRhfWAUOKRc6P6HqyYfiL14n4qdy5tsYwfScwNMstnd?=
+ =?us-ascii?Q?3QrjyudfAL1mI8tmyoqhERW6/7AXbtYrDPg3XbueCVcUnJo6OR3GheILbieH?=
+ =?us-ascii?Q?47wNdGHdDiZFLKdnEWBfbkatM8Sja2T2v+99IFOtN2LrcWCM/3A4ASodQG2v?=
+ =?us-ascii?Q?1qsJolo3uQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8946.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd7964aa-50db-4e8d-50ed-08da2889bf94
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Apr 2022 20:08:51.5676 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TWZCfxY2e56p38aKb/eIIdEQb2PfLlKrZZg7W+bJlcl1Ob1DuQ/6ey5oX9plMTAm3FA10LK8vrLFX1ZrDOf4HQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7979
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,131 +137,298 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
- Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- "Bos, H.J." <h.j.bos@vu.nl>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-arm-kernel@lists.infradead.org, Martin Habets <habetsm.xilinx@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, Arnd Bergmann <arnd@arndb.de>,
- KP Singh <kpsingh@kernel.org>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Jakob Koschel <jakobkoschel@gmail.com>, Jakub Kicinski <kuba@kernel.org>,
- Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Lars Povlsen <lars.povlsen@microchip.com>,
- Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- UNGLinuxDriver@microchip.com, Yonghong Song <yhs@fb.com>,
- Edward Cree <ecree.xilinx@gmail.com>,
- Casper Andersson <casper.casan@gmail.com>, Xu Wang <vulab@iscas.ac.cn>,
- Cristiano Giuffrida <c.giuffrida@vu.nl>, bpf@vger.kernel.org,
- Vladimir Oltean <olteanv@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Martin KaFai Lau <kafai@fb.com>, Mike Rapoport <rppt@kernel.org>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Marc Zyngier <maz@kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In preparation to limit the scope of the list iterator variable to the
-list traversal loop, use a dedicated pointer to iterate through the
-list [1].
 
-Since that variable should not be used past the loop iteration, a
-separate variable is used to 'remember the current location within the
-loop'.
 
-To either continue iterating from that position or skip the iteration
-(if the previous iteration was complete) list_prepare_entry() is used.
+> -----Original Message-----
+> From: Michael Walle <michael@walle.cc>
+> Sent: Wednesday, April 27, 2022 2:54 AM
+> To: Rob Herring <robh+dt@kernel.org>; Krzysztof Kozlowski
+> <krzysztof.kozlowski+dt@linaro.org>
+> Cc: Leo Li <leoyang.li@nxp.com>; Michael Walle <michael@walle.cc>; Shawn
+> Guo <shawnguo@kernel.org>; Thomas Gleixner <tglx@linutronix.de>; Marc
+> Zyngier <maz@kernel.org>; linuxppc-dev@lists.ozlabs.org; linux-arm-
+> kernel@lists.infradead.org; devicetree@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Subject: [PATCH v3 3/4] dt-bindings: interrupt-controller: fsl,ls-extirq:
+> convert to YAML
+>=20
+> Convert the fsl,ls-extirq binding to the new YAML format.
+>=20
+> In contrast to the original binding documentation, there are three
+> compatibles which are used in their corresponding device trees which have=
+ a
+> specific compatible and the (already documented) fallback
+> compatible:
+>  - "fsl,ls1046a-extirq", "fsl,ls1043a-extirq"
+>  - "fsl,ls2080a-extirq", "fsl,ls1088a-extirq"
+>  - "fsl,lx2160a-extirq", "fsl,ls1088a-extirq"
+>=20
+> Depending on the number of the number of the external IRQs which is
+> usually 12 except for the LS1021A where there are only 6, the interrupt-m=
+ap-
+> mask was reduced from 0xffffffff to 0xf and 0x7 respectively and the numb=
+er
+> of interrupt-map entries have to match.
 
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
----
- drivers/net/team/team.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+I assume this change won't prevent driver to be compatible with older devic=
+e trees using the 0xffffffff?  The original 0xffffffff should work for both=
+ 6/12 interrupts or whatever reasonable number of interrupts that maybe use=
+d in future SoCs.  So the purpose of this change is to make the binding mor=
+e specific to catch more errors in device tree?
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index b07dde6f0abf..688c4393f099 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2425,17 +2425,17 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 				    int flags, team_nl_send_func_t *send_func,
- 				    struct list_head *sel_opt_inst_list)
- {
-+	struct team_option_inst *opt_inst, *tmp = NULL;
- 	struct nlattr *option_list;
- 	struct nlmsghdr *nlh;
- 	void *hdr;
--	struct team_option_inst *opt_inst;
- 	int err;
- 	struct sk_buff *skb = NULL;
- 	bool incomplete;
- 	int i;
- 
--	opt_inst = list_first_entry(sel_opt_inst_list,
--				    struct team_option_inst, tmp_list);
-+	tmp = list_first_entry(sel_opt_inst_list,
-+			       struct team_option_inst, tmp_list);
- 
- start_again:
- 	err = __send_and_alloc_skb(&skb, team, portid, send_func);
-@@ -2456,7 +2456,9 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 		goto nla_put_failure;
- 
- 	i = 0;
-+	opt_inst = list_prepare_entry(tmp, sel_opt_inst_list, tmp_list);
- 	incomplete = false;
-+	tmp = NULL;
- 	list_for_each_entry_from(opt_inst, sel_opt_inst_list, tmp_list) {
- 		err = team_nl_fill_one_option_get(skb, team, opt_inst);
- 		if (err) {
-@@ -2464,6 +2466,7 @@ static int team_nl_send_options_get(struct team *team, u32 portid, u32 seq,
- 				if (!i)
- 					goto errout;
- 				incomplete = true;
-+				tmp = opt_inst;
- 				break;
- 			}
- 			goto errout;
-@@ -2707,14 +2710,14 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 	struct nlattr *port_list;
- 	struct nlmsghdr *nlh;
- 	void *hdr;
--	struct team_port *port;
-+	struct team_port *port, *tmp = NULL;
- 	int err;
- 	struct sk_buff *skb = NULL;
- 	bool incomplete;
- 	int i;
- 
--	port = list_first_entry_or_null(&team->port_list,
--					struct team_port, list);
-+	tmp = list_first_entry_or_null(&team->port_list,
-+				       struct team_port, list);
- 
- start_again:
- 	err = __send_and_alloc_skb(&skb, team, portid, send_func);
-@@ -2744,7 +2747,9 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 		err = team_nl_fill_one_port_get(skb, one_port);
- 		if (err)
- 			goto errout;
--	} else if (port) {
-+	} else {
-+		port = list_prepare_entry(tmp, &team->port_list, list);
-+		tmp = NULL;
- 		list_for_each_entry_from(port, &team->port_list, list) {
- 			err = team_nl_fill_one_port_get(skb, port);
- 			if (err) {
-@@ -2752,6 +2757,7 @@ static int team_nl_send_port_list_get(struct team *team, u32 portid, u32 seq,
- 					if (!i)
- 						goto errout;
- 					incomplete = true;
-+					tmp = port;
- 					break;
- 				}
- 				goto errout;
--- 
-2.25.1
+>=20
+> Signed-off-by: Michael Walle <michael@walle.cc>
+> ---
+> changes since v2:
+>  - drop $ref to interrupt-controller.yaml
+>  - use a more strict interrupt-map-mask and make it conditional on SoC
+>=20
+> changes since v1:
+>  - new patch
+>=20
+>  .../interrupt-controller/fsl,ls-extirq.txt    |  53 --------
+>  .../interrupt-controller/fsl,ls-extirq.yaml   | 118 ++++++++++++++++++
+>  2 files changed, 118 insertions(+), 53 deletions(-)  delete mode 100644
+> Documentation/devicetree/bindings/interrupt-controller/fsl,ls-extirq.txt
+>  create mode 100644 Documentation/devicetree/bindings/interrupt-
+> controller/fsl,ls-extirq.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,l=
+s-
+> extirq.txt b/Documentation/devicetree/bindings/interrupt-controller/fsl,l=
+s-
+> extirq.txt
+> deleted file mode 100644
+> index 4d47df1a5c91..000000000000
+> --- a/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-
+> extirq.txt
+> +++ /dev/null
+> @@ -1,53 +0,0 @@
+> -* Freescale Layerscape external IRQs
+> -
+> -Some Layerscape SOCs (LS1021A, LS1043A, LS1046A -LS1088A, LS208xA,
+> LX216xA) support inverting -the polarity of certain external interrupt li=
+nes.
+> -
+> -The device node must be a child of the node representing the -
+> Supplemental Configuration Unit (SCFG).
+> -
+> -Required properties:
+> -- compatible: should be "fsl,<soc-name>-extirq", e.g. "fsl,ls1021a-extir=
+q".
+> -  "fsl,ls1043a-extirq": for LS1043A, LS1046A.
+> -  "fsl,ls1088a-extirq": for LS1088A, LS208xA, LX216xA.
+> -- #interrupt-cells: Must be 2. The first element is the index of the
+> -  external interrupt line. The second element is the trigger type.
+> -- #address-cells: Must be 0.
+> -- interrupt-controller: Identifies the node as an interrupt controller
+> -- reg: Specifies the Interrupt Polarity Control Register (INTPCR) in
+> -  the SCFG or the External Interrupt Control Register (IRQCR) in
+> -  the ISC.
+> -- interrupt-map: Specifies the mapping from external interrupts to GIC
+> -  interrupts.
+> -- interrupt-map-mask: Must be <0xffffffff 0>.
+> -
+> -Example:
+> -	scfg: scfg@1570000 {
+> -		compatible =3D "fsl,ls1021a-scfg", "syscon";
+> -		reg =3D <0x0 0x1570000 0x0 0x10000>;
+> -		big-endian;
+> -		#address-cells =3D <1>;
+> -		#size-cells =3D <1>;
+> -		ranges =3D <0x0 0x0 0x1570000 0x10000>;
+> -
+> -		extirq: interrupt-controller@1ac {
+> -			compatible =3D "fsl,ls1021a-extirq";
+> -			#interrupt-cells =3D <2>;
+> -			#address-cells =3D <0>;
+> -			interrupt-controller;
+> -			reg =3D <0x1ac 4>;
+> -			interrupt-map =3D
+> -				<0 0 &gic GIC_SPI 163
+> IRQ_TYPE_LEVEL_HIGH>,
+> -				<1 0 &gic GIC_SPI 164
+> IRQ_TYPE_LEVEL_HIGH>,
+> -				<2 0 &gic GIC_SPI 165
+> IRQ_TYPE_LEVEL_HIGH>,
+> -				<3 0 &gic GIC_SPI 167
+> IRQ_TYPE_LEVEL_HIGH>,
+> -				<4 0 &gic GIC_SPI 168
+> IRQ_TYPE_LEVEL_HIGH>,
+> -				<5 0 &gic GIC_SPI 169
+> IRQ_TYPE_LEVEL_HIGH>;
+> -			interrupt-map-mask =3D <0xffffffff 0x0>;
+> -		};
+> -	};
+> -
+> -
+> -	interrupts-extended =3D <&gic GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>,
+> -			      <&extirq 1 IRQ_TYPE_LEVEL_LOW>;
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,l=
+s-
+> extirq.yaml b/Documentation/devicetree/bindings/interrupt-
+> controller/fsl,ls-extirq.yaml
+> new file mode 100644
+> index 000000000000..887e565b9573
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,ls-exti
+> +++ rq.yaml
+> @@ -0,0 +1,118 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) %YAML 1.2
+> +---
+> +$id:
+> +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fdevic
+> e
+> +tree.org%2Fschemas%2Finterrupt-controller%2Ffsl%2Cls-
+> extirq.yaml%23&amp
+> +;data=3D05%7C01%7Cleoyang.li%40nxp.com%7Cdda04b02c8fb455d29a608da2
+> 8230f9a
+> +%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C1%7C63786642829380089
+> 0%7CUnkn
+> +own%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6I
+> k1haWwiL
+> +CJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DFVelhP%2B5CgDLZ8IUc
+> 1%2B7b5MOP6n
+> +TspGvJyT%2BLtbon70%3D&amp;reserved=3D0
+> +$schema:
+> +https://eur01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2Fdevic
+> e
+> +tree.org%2Fmeta-
+> schemas%2Fcore.yaml%23&amp;data=3D05%7C01%7Cleoyang.li%40
+> +nxp.com%7Cdda04b02c8fb455d29a608da28230f9a%7C686ea1d3bc2b4c6fa9
+> 2cd99c5c
+> +301635%7C0%7C1%7C637866428293800890%7CUnknown%7CTWFpbGZsb3d
+> 8eyJWIjoiMC4
+> +wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%
+> 7C%7C%7C
+> +&amp;sdata=3DqwIgHY4ZOMNHm7nYBXrqqahH652mZwxGgQ9t1HJzMRQ%3D
+> &amp;reserved=3D
+> +0
+> +
+> +title: Freescale Layerscape External Interrupt Controller
+> +
+> +maintainers:
+> +  - Shawn Guo <shawnguo@kernel.org>
+> +  - Li Yang <leoyang.li@nxp.com>
+> +
+> +description: |
+> +  Some Layerscape SOCs (LS1021A, LS1043A, LS1046A LS1088A, LS208xA,
+> +  LX216xA) support inverting the polarity of certain external interrupt
+> +  lines.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - enum:
+> +          - fsl,ls1021a-extirq
+> +          - fsl,ls1043a-extirq
+> +          - fsl,ls1088a-extirq
+> +      - items:
+> +          - enum:
+> +              - fsl,ls1046a-extirq
+> +          - const: fsl,ls1043a-extirq
+> +      - items:
+> +          - enum:
+> +              - fsl,ls2080a-extirq
+> +              - fsl,lx2160a-extirq
+> +          - const: fsl,ls1088a-extirq
+> +
+> +  '#interrupt-cells':
+> +    const: 2
+> +
+> +  '#address-cells':
+> +    const: 0
+> +
+> +  interrupt-controller: true
+> +
+> +  reg:
+> +    maxItems: 1
+> +    description:
+> +      Specifies the Interrupt Polarity Control Register (INTPCR) in the
+> +      SCFG or the External Interrupt Control Register (IRQCR) in the ISC=
+.
+> +
+> +  interrupt-map:
+> +    description: Specifies the mapping from external interrupts to GIC
+> interrupts.
+> +
+> +  interrupt-map-mask: true
+> +
+> +required:
+> +  - compatible
+> +  - '#interrupt-cells'
+> +  - '#address-cells'
+> +  - interrupt-controller
+> +  - reg
+> +  - interrupt-map
+> +  - interrupt-map-mask
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,ls1021a-extirq
+> +    then:
+> +      properties:
+> +        interrupt-map:
+> +          minItems: 6
+> +          maxItems: 6
+> +        interrupt-map-mask:
+> +          items:
+> +            - const: 0x7
+> +            - const: 0
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,ls1043a-extirq
+> +              - fsl,ls1046a-extirq
+> +              - fsl,ls1088a-extirq
+> +              - fsl,ls2080a-extirq
+> +              - fsl,lx2160a-extirq
+> +    then:
+> +      properties:
+> +        interrupt-map:
+> +          minItems: 12
+> +          maxItems: 12
+> +        interrupt-map-mask:
+> +          items:
+> +            - const: 0xf
+> +            - const: 0
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    interrupt-controller@1ac {
+> +            compatible =3D "fsl,ls1021a-extirq";
+> +            #interrupt-cells =3D <2>;
+> +            #address-cells =3D <0>;
+> +            interrupt-controller;
+> +            reg =3D <0x1ac 4>;
+> +            interrupt-map =3D
+> +                    <0 0 &gic GIC_SPI 163 IRQ_TYPE_LEVEL_HIGH>,
+> +                    <1 0 &gic GIC_SPI 164 IRQ_TYPE_LEVEL_HIGH>,
+> +                    <2 0 &gic GIC_SPI 165 IRQ_TYPE_LEVEL_HIGH>,
+> +                    <3 0 &gic GIC_SPI 167 IRQ_TYPE_LEVEL_HIGH>,
+> +                    <4 0 &gic GIC_SPI 168 IRQ_TYPE_LEVEL_HIGH>,
+> +                    <5 0 &gic GIC_SPI 169 IRQ_TYPE_LEVEL_HIGH>;
+> +            interrupt-map-mask =3D <0x7 0x0>;
+> +    };
+> --
+> 2.30.2
 
