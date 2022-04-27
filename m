@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A7E5128FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 03:40:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7424E5128FE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 03:41:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KpdcQ4dwdz3f2m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 11:40:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kpdd729Cfz3cgq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 11:41:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=Dl2B7pSV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=MKBh56UT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,13 +17,13 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=Dl2B7pSV; dkim-atps=neutral
+ header.s=20170329 header.b=MKBh56UT; dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KpYwc3g2Tz2yXf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 08:54:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpYx40nrgz2ynj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 08:55:04 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
@@ -31,23 +31,22 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive;
- bh=oI9b5duO8OJ5vQDZCcg8/YSfwN8M5sfdHxH8XUnmtlk=; b=Dl2B7pSVJp25fe7IfIs24mmkq8
- hNWQZdfuE5b8NzwyHqbjR/6C1jbxbEv8wNNcNdcZK+x2mWiNzNr+u6ej0RkZPoYhNEHBCsZ6UD+6G
- UKVT1x0W1ctGqUC1Gq0pKfbBSIn3/AQDQpBwhuyH0wupCzlBVEy+S+oaSi7mTGACgenSYzi35Memm
- cwNrE6VLPhA8HIa6SL7ijwVZV/Cmf5guYFGY1etNEWb16ALz0OIjrK84zUZZaRulPOC47prAFsrmC
- 8jtFSnfk5SwoqCho0RbgOB8YFry+V3AQ6FT8GxIeK9uuEGFeYv+qjRy2g8pgwIU4Wj4/dnNONMvQE
- 5U+RG0NQ==;
+ bh=UhhPFJqW26A1a6soa6rznnjXRjwvDkXyweuhXfNQOVY=; b=MKBh56UTZ7JCBvBjxeK61V4jDM
+ v7kwzQJKazlMRxSRc2ZqArefnMuAMvJRSN0Dm/n3rUqjfn87xJdCwCNZgYYInNcW7KLaZieSBQ8O6
+ XsgLVHkw+gGyoqVfpHoR7HGpc4dRel8YFV0PNkyLnVjOtFb6zpg44r32e+Cy7IowfRZ1AwUGXIuJK
+ ogEnepSyse/P/gSxYI2obKAoqpGM2oj0KXhOmKybDbZdIj++zZDEM0H4AKnIRoCEV72z/ad5u+yfX
+ mziNZTi1DoyU2ltDkam4BhJMX4t8MGH4SNKViSUOE5Td2/P7EGuXXRrbm7W62coqKt68Zw2u7NGpT
+ +e52kJVw==;
 Received: from [179.113.53.197] (helo=localhost)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1njqYG-0002IR-Ki; Thu, 28 Apr 2022 00:54:29 +0200
+ id 1njqYb-0002JS-Nh; Thu, 28 Apr 2022 00:54:50 +0200
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 To: akpm@linux-foundation.org, bhe@redhat.com, pmladek@suse.com,
  kexec@lists.infradead.org
-Subject: [PATCH 18/30] notifier: Show function names on notifier routines if
- DEBUG_NOTIFIERS is set
-Date: Wed, 27 Apr 2022 19:49:12 -0300
-Message-Id: <20220427224924.592546-19-gpiccoli@igalia.com>
+Subject: [PATCH 19/30] panic: Add the panic hypervisor notifier list
+Date: Wed, 27 Apr 2022 19:49:13 -0300
+Message-Id: <20220427224924.592546-20-gpiccoli@igalia.com>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220427224924.592546-1-gpiccoli@igalia.com>
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
@@ -65,160 +64,427 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
- linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
- john.ogness@linutronix.de, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, Valentin Schneider <valentin.schneider@arm.com>,
- vgoyal@redhat.com, Xiaoming Ni <nixiaoming@huawei.com>,
- linux-xtensa@linux-xtensa.org, dave.hansen@linux.intel.com,
- keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org,
- coresight@lists.linaro.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
- rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
- linux-tegra@vger.kernel.org, Cong Wang <xiyou.wangcong@gmail.com>,
- openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
- senozhatsky@chromium.org, linux-arm-kernel@lists.infradead.org,
- linux-edac@vger.kernel.org, jgross@suse.com,
- Arjan van de Ven <arjan@linux.intel.com>, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, linux-kernel@vger.kernel.org,
- stern@rowland.harvard.edu, gpiccoli@igalia.com, d.hatayama@jp.fujitsu.com,
- mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
- vkuznets@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>, Justin Chen <justinpopo6@gmail.com>,
+ Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ stern@rowland.harvard.edu, xen-devel@lists.xenproject.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, linux-pm@vger.kernel.org,
+ linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>,
+ luto@kernel.org, Mihai Carabas <mihai.carabas@oracle.com>, tglx@linutronix.de,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ Sven Schnelle <svens@linux.ibm.com>, linux-hyperv@vger.kernel.org,
+ dave.hansen@linux.intel.com, linux-s390@vger.kernel.org,
+ Stephen Hemminger <sthemmin@microsoft.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ vgoyal@redhat.com, mhiramat@kernel.org, Andrea Parri <parri.andrea@gmail.com>,
+ linux-xtensa@linux-xtensa.org, john.ogness@linutronix.de,
+ Scott Branden <scott.branden@broadcom.com>, coresight@lists.linaro.org,
+ Florian Fainelli <f.fainelli@gmail.com>, Markus Mayer <mmayer@broadcom.com>,
+ hidehiro.kawai.ez@hitachi.com, linux-arm-kernel@lists.infradead.org,
+ gpiccoli@igalia.com, kernel-dev@igalia.com, fabiomirmar@gmail.com,
+ halves@canonical.com, alejandro.j.jimenez@oracle.com, feng.tang@intel.com,
+ zhenwei pi <pizhenwei@bytedance.com>, will@kernel.org,
+ Doug Berger <opendmb@gmail.com>, corbet@lwn.net,
+ Dexuan Cui <decui@microsoft.com>, Evan Green <evgreen@chromium.org>,
+ bcm-kernel-feedback-list@broadcom.com, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ keescook@chromium.org, arnd@arndb.de, Haiyang Zhang <haiyangz@microsoft.com>,
+ rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de,
+ openipmi-developer@lists.sourceforge.net,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ Sebastian Reichel <sre@kernel.org>, linux-alpha@vger.kernel.org,
+ Brian Norris <computersforpeace@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, peterz@infradead.org,
+ linux-remoteproc@vger.kernel.org, mikelley@microsoft.com,
+ sparclinux@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-leds@vger.kernel.org, x86@kernel.org,
+ mingo@redhat.com, dyoung@redhat.com, paulmck@kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Shile Zhang <shile.zhang@linux.alibaba.com>,
+ Wang ShaoBo <bobo.shaobowang@huawei.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ David Gow <davidgow@google.com>, linux-tegra@vger.kernel.org,
+ andriy.shevchenko@linux.intel.com, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-edac@vger.kernel.org, jgross@suse.com, netdev@vger.kernel.org,
+ kernel@gpiccoli.net, linux-mips@vger.kernel.org,
+ Julius Werner <jwerner@chromium.org>, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently we have a debug infrastructure in the notifiers file, but
-it's very simple/limited. This patch extends it by:
+The goal of this new panic notifier is to allow its users to register
+callbacks to run very early in the panic path. This aims hypervisor/FW
+notification mechanisms as well as simple LED functions, and any other
+simple and safe mechanism that should run early in the panic path; more
+dangerous callbacks should execute later.
 
-(a) Showing all registered/unregistered notifiers' callback names;
+For now, the patch is almost a no-op (although it changes a bit the
+ordering in which some panic notifiers are executed). In a subsequent
+patch, the panic path will be refactored, then the panic hypervisor
+notifiers will effectively run very early in the panic path.
 
-(b) Adding a dynamic debug tuning to allow showing called notifiers'
-function names. Notice that this should be guarded as a tunable since
-it can flood the kernel log buffer.
+We also defer documenting it all properly in the subsequent refactor
+patch. While at it, we removed some useless header inclusions and
+fixed some notifiers return too (by using the standard NOTIFY_DONE).
 
-Cc: Arjan van de Ven <arjan@linux.intel.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Xiaoming Ni <nixiaoming@huawei.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrea Parri (Microsoft) <parri.andrea@gmail.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Brian Norris <computersforpeace@gmail.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: David Gow <davidgow@google.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Dexuan Cui <decui@microsoft.com>
+Cc: Doug Berger <opendmb@gmail.com>
+Cc: Evan Green <evgreen@chromium.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Julius Werner <jwerner@chromium.org>
+Cc: Justin Chen <justinpopo6@gmail.com>
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>
+Cc: Lee Jones <lee.jones@linaro.org>
+Cc: Markus Mayer <mmayer@broadcom.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michael Kelley <mikelley@microsoft.com>
+Cc: Mihai Carabas <mihai.carabas@oracle.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Scott Branden <scott.branden@broadcom.com>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
+Cc: Stephen Hemminger <sthemmin@microsoft.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Tianyu Lan <Tianyu.Lan@microsoft.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Wang ShaoBo <bobo.shaobowang@huawei.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: zhenwei pi <pizhenwei@bytedance.com>
 Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 ---
+ arch/mips/sgi-ip22/ip22-reset.c          | 2 +-
+ arch/mips/sgi-ip32/ip32-reset.c          | 3 +--
+ arch/powerpc/kernel/setup-common.c       | 2 +-
+ arch/sparc/kernel/sstate.c               | 3 +--
+ drivers/firmware/google/gsmi.c           | 4 ++--
+ drivers/hv/vmbus_drv.c                   | 4 ++--
+ drivers/leds/trigger/ledtrig-activity.c  | 4 ++--
+ drivers/leds/trigger/ledtrig-heartbeat.c | 4 ++--
+ drivers/misc/bcm-vk/bcm_vk_dev.c         | 6 +++---
+ drivers/misc/pvpanic/pvpanic.c           | 4 ++--
+ drivers/power/reset/ltc2952-poweroff.c   | 4 ++--
+ drivers/s390/char/zcore.c                | 5 +++--
+ drivers/soc/bcm/brcmstb/pm/pm-arm.c      | 2 +-
+ include/linux/panic_notifier.h           | 1 +
+ kernel/panic.c                           | 4 ++++
+ 15 files changed, 28 insertions(+), 24 deletions(-)
 
-We have some design decisions that worth discussing here:
-
-(a) First of call, using C99 helps a lot to write clear and concise code, but
-due to commit 4d94f910e79a ("Kbuild: use -Wdeclaration-after-statement") we
-have a warning if mixing variable declarations with code. For this patch though,
-doing that makes the code way clear, so decision was to add the debug code
-inside brackets whenever this warning pops up. We can change that, but that'll
-cause more ifdefs in the same function.
-
-(b) In the symbol lookup helper function, we modify the parameter passed but
-even more, we return it as well! This is unusual and seems unnecessary, but was
-the strategy taken to allow embedding such function in the pr_debug() call.
-
-Not doing that would likely requiring 3 symbol_name variables to avoid
-concurrency (registering notifier A while calling notifier B) - we rely in
-local variables as a serialization mechanism.
-
-We're open for suggestions in case this design is not appropriate;
-thanks in advance!
-
- kernel/notifier.c | 48 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 46 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/notifier.c b/kernel/notifier.c
-index ba005ebf4730..21032ebcde57 100644
---- a/kernel/notifier.c
-+++ b/kernel/notifier.c
-@@ -7,6 +7,22 @@
- #include <linux/vmalloc.h>
- #include <linux/reboot.h>
- 
-+#ifdef CONFIG_DEBUG_NOTIFIERS
-+#include <linux/kallsyms.h>
-+
-+/*
-+ *	Helper to get symbol names in case DEBUG_NOTIFIERS is set.
-+ *	Return the modified parameter is a strategy used to achieve
-+ *	the pr_debug() functionality - with this, function is only
-+ *	executed if the dynamic debug tuning is effectively set.
-+ */
-+static inline char *notifier_name(struct notifier_block *nb, char *sym_name)
-+{
-+	lookup_symbol_name((unsigned long)(nb->notifier_call), sym_name);
-+	return sym_name;
-+}
-+#endif
-+
- /*
-  *	Notifier list for kernel code which wants to be called
-  *	at shutdown. This is used to stop any idling DMA operations
-@@ -34,20 +50,41 @@ static int notifier_chain_register(struct notifier_block **nl,
+diff --git a/arch/mips/sgi-ip22/ip22-reset.c b/arch/mips/sgi-ip22/ip22-reset.c
+index 8f0861c58080..3023848acbf1 100644
+--- a/arch/mips/sgi-ip22/ip22-reset.c
++++ b/arch/mips/sgi-ip22/ip22-reset.c
+@@ -195,7 +195,7 @@ static int __init reboot_setup(void)
  	}
- 	n->next = *nl;
- 	rcu_assign_pointer(*nl, n);
-+
-+#ifdef CONFIG_DEBUG_NOTIFIERS
-+	{
-+		char sym_name[KSYM_NAME_LEN];
-+
-+		pr_info("notifiers: registered %s()\n",
-+			notifier_name(n, sym_name));
-+	}
-+#endif
+ 
+ 	timer_setup(&blink_timer, blink_timeout, 0);
+-	atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
++	atomic_notifier_chain_register(&panic_hypervisor_list, &panic_block);
+ 
  	return 0;
  }
+diff --git a/arch/mips/sgi-ip32/ip32-reset.c b/arch/mips/sgi-ip32/ip32-reset.c
+index 18d1c115cd53..9ee1302c9d13 100644
+--- a/arch/mips/sgi-ip32/ip32-reset.c
++++ b/arch/mips/sgi-ip32/ip32-reset.c
+@@ -15,7 +15,6 @@
+ #include <linux/panic_notifier.h>
+ #include <linux/sched.h>
+ #include <linux/sched/signal.h>
+-#include <linux/notifier.h>
+ #include <linux/delay.h>
+ #include <linux/rtc/ds1685.h>
+ #include <linux/interrupt.h>
+@@ -145,7 +144,7 @@ static __init int ip32_reboot_setup(void)
+ 	pm_power_off = ip32_machine_halt;
  
- static int notifier_chain_unregister(struct notifier_block **nl,
- 		struct notifier_block *n)
+ 	timer_setup(&blink_timer, blink_timeout, 0);
+-	atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
++	atomic_notifier_chain_register(&panic_hypervisor_list, &panic_block);
+ 
+ 	return 0;
+ }
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 52f96b209a96..1468c3937bf4 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -753,7 +753,7 @@ static struct notifier_block ppc_panic_block = {
+ void __init setup_panic(void)
  {
-+	int ret = -ENOENT;
-+
- 	while ((*nl) != NULL) {
- 		if ((*nl) == n) {
- 			rcu_assign_pointer(*nl, n->next);
--			return 0;
-+			ret = 0;
-+			break;
- 		}
- 		nl = &((*nl)->next);
+ 	/* Hard-disables IRQs + deal with FW-assisted dump (fadump) */
+-	atomic_notifier_chain_register(&panic_notifier_list,
++	atomic_notifier_chain_register(&panic_hypervisor_list,
+ 				       &ppc_fadump_block);
+ 
+ 	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && kaslr_offset() > 0)
+diff --git a/arch/sparc/kernel/sstate.c b/arch/sparc/kernel/sstate.c
+index 3bcc4ddc6911..82b7b68e0bdc 100644
+--- a/arch/sparc/kernel/sstate.c
++++ b/arch/sparc/kernel/sstate.c
+@@ -5,7 +5,6 @@
+  */
+ 
+ #include <linux/kernel.h>
+-#include <linux/notifier.h>
+ #include <linux/panic_notifier.h>
+ #include <linux/reboot.h>
+ #include <linux/init.h>
+@@ -106,7 +105,7 @@ static int __init sstate_init(void)
+ 
+ 	do_set_sstate(HV_SOFT_STATE_TRANSITION, booting_msg);
+ 
+-	atomic_notifier_chain_register(&panic_notifier_list,
++	atomic_notifier_chain_register(&panic_hypervisor_list,
+ 				       &sstate_panic_block);
+ 	register_reboot_notifier(&sstate_reboot_notifier);
+ 
+diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
+index b01ed02e4a87..ff0bebe2f444 100644
+--- a/drivers/firmware/google/gsmi.c
++++ b/drivers/firmware/google/gsmi.c
+@@ -1034,7 +1034,7 @@ static __init int gsmi_init(void)
+ 
+ 	register_reboot_notifier(&gsmi_reboot_notifier);
+ 	register_die_notifier(&gsmi_die_notifier);
+-	atomic_notifier_chain_register(&panic_notifier_list,
++	atomic_notifier_chain_register(&panic_hypervisor_list,
+ 				       &gsmi_panic_notifier);
+ 
+ 	printk(KERN_INFO "gsmi version " DRIVER_VERSION " loaded\n");
+@@ -1061,7 +1061,7 @@ static void __exit gsmi_exit(void)
+ {
+ 	unregister_reboot_notifier(&gsmi_reboot_notifier);
+ 	unregister_die_notifier(&gsmi_die_notifier);
+-	atomic_notifier_chain_unregister(&panic_notifier_list,
++	atomic_notifier_chain_unregister(&panic_hypervisor_list,
+ 					 &gsmi_panic_notifier);
+ #ifdef CONFIG_EFI
+ 	efivars_unregister(&efivars);
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index f37f12d48001..901b97034308 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -1614,7 +1614,7 @@ static int vmbus_bus_init(void)
+ 			hv_kmsg_dump_register();
+ 
+ 		register_die_notifier(&hyperv_die_report_block);
+-		atomic_notifier_chain_register(&panic_notifier_list,
++		atomic_notifier_chain_register(&panic_hypervisor_list,
+ 						&hyperv_panic_report_block);
  	}
--	return -ENOENT;
-+
-+#ifdef CONFIG_DEBUG_NOTIFIERS
-+	if (!ret) {
-+		char sym_name[KSYM_NAME_LEN];
-+
-+		pr_info("notifiers: unregistered %s()\n",
-+			notifier_name(n, sym_name));
-+	}
-+#endif
-+	return ret;
+ 
+@@ -2843,7 +2843,7 @@ static void __exit vmbus_exit(void)
+ 	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
+ 		kmsg_dump_unregister(&hv_kmsg_dumper);
+ 		unregister_die_notifier(&hyperv_die_report_block);
+-		atomic_notifier_chain_unregister(&panic_notifier_list,
++		atomic_notifier_chain_unregister(&panic_hypervisor_list,
+ 						&hyperv_panic_report_block);
+ 	}
+ 
+diff --git a/drivers/leds/trigger/ledtrig-activity.c b/drivers/leds/trigger/ledtrig-activity.c
+index 30bc9df03636..bbbcf3bc17e3 100644
+--- a/drivers/leds/trigger/ledtrig-activity.c
++++ b/drivers/leds/trigger/ledtrig-activity.c
+@@ -247,7 +247,7 @@ static int __init activity_init(void)
+ 	int rc = led_trigger_register(&activity_led_trigger);
+ 
+ 	if (!rc) {
+-		atomic_notifier_chain_register(&panic_notifier_list,
++		atomic_notifier_chain_register(&panic_hypervisor_list,
+ 					       &activity_panic_nb);
+ 		register_reboot_notifier(&activity_reboot_nb);
+ 	}
+@@ -257,7 +257,7 @@ static int __init activity_init(void)
+ static void __exit activity_exit(void)
+ {
+ 	unregister_reboot_notifier(&activity_reboot_nb);
+-	atomic_notifier_chain_unregister(&panic_notifier_list,
++	atomic_notifier_chain_unregister(&panic_hypervisor_list,
+ 					 &activity_panic_nb);
+ 	led_trigger_unregister(&activity_led_trigger);
+ }
+diff --git a/drivers/leds/trigger/ledtrig-heartbeat.c b/drivers/leds/trigger/ledtrig-heartbeat.c
+index 7fe0a05574d2..a1ed25e83c8f 100644
+--- a/drivers/leds/trigger/ledtrig-heartbeat.c
++++ b/drivers/leds/trigger/ledtrig-heartbeat.c
+@@ -190,7 +190,7 @@ static int __init heartbeat_trig_init(void)
+ 	int rc = led_trigger_register(&heartbeat_led_trigger);
+ 
+ 	if (!rc) {
+-		atomic_notifier_chain_register(&panic_notifier_list,
++		atomic_notifier_chain_register(&panic_hypervisor_list,
+ 					       &heartbeat_panic_nb);
+ 		register_reboot_notifier(&heartbeat_reboot_nb);
+ 	}
+@@ -200,7 +200,7 @@ static int __init heartbeat_trig_init(void)
+ static void __exit heartbeat_trig_exit(void)
+ {
+ 	unregister_reboot_notifier(&heartbeat_reboot_nb);
+-	atomic_notifier_chain_unregister(&panic_notifier_list,
++	atomic_notifier_chain_unregister(&panic_hypervisor_list,
+ 					 &heartbeat_panic_nb);
+ 	led_trigger_unregister(&heartbeat_led_trigger);
+ }
+diff --git a/drivers/misc/bcm-vk/bcm_vk_dev.c b/drivers/misc/bcm-vk/bcm_vk_dev.c
+index a16b99bdaa13..d9d5199cdb2b 100644
+--- a/drivers/misc/bcm-vk/bcm_vk_dev.c
++++ b/drivers/misc/bcm-vk/bcm_vk_dev.c
+@@ -1446,7 +1446,7 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	/* register for panic notifier */
+ 	vk->panic_nb.notifier_call = bcm_vk_on_panic;
+-	err = atomic_notifier_chain_register(&panic_notifier_list,
++	err = atomic_notifier_chain_register(&panic_hypervisor_list,
+ 					     &vk->panic_nb);
+ 	if (err) {
+ 		dev_err(dev, "Fail to register panic notifier\n");
+@@ -1486,7 +1486,7 @@ static int bcm_vk_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	bcm_vk_tty_exit(vk);
+ 
+ err_unregister_panic_notifier:
+-	atomic_notifier_chain_unregister(&panic_notifier_list,
++	atomic_notifier_chain_unregister(&panic_hypervisor_list,
+ 					 &vk->panic_nb);
+ 
+ err_destroy_workqueue:
+@@ -1559,7 +1559,7 @@ static void bcm_vk_remove(struct pci_dev *pdev)
+ 	usleep_range(BCM_VK_UCODE_BOOT_US, BCM_VK_UCODE_BOOT_MAX_US);
+ 
+ 	/* unregister panic notifier */
+-	atomic_notifier_chain_unregister(&panic_notifier_list,
++	atomic_notifier_chain_unregister(&panic_hypervisor_list,
+ 					 &vk->panic_nb);
+ 
+ 	bcm_vk_msg_remove(vk);
+diff --git a/drivers/misc/pvpanic/pvpanic.c b/drivers/misc/pvpanic/pvpanic.c
+index 049a12006348..233a71d89477 100644
+--- a/drivers/misc/pvpanic/pvpanic.c
++++ b/drivers/misc/pvpanic/pvpanic.c
+@@ -101,7 +101,7 @@ static int pvpanic_init(void)
+ 	INIT_LIST_HEAD(&pvpanic_list);
+ 	spin_lock_init(&pvpanic_lock);
+ 
+-	atomic_notifier_chain_register(&panic_notifier_list, &pvpanic_panic_nb);
++	atomic_notifier_chain_register(&panic_hypervisor_list, &pvpanic_panic_nb);
+ 
+ 	return 0;
+ }
+@@ -109,7 +109,7 @@ module_init(pvpanic_init);
+ 
+ static void pvpanic_exit(void)
+ {
+-	atomic_notifier_chain_unregister(&panic_notifier_list, &pvpanic_panic_nb);
++	atomic_notifier_chain_unregister(&panic_hypervisor_list, &pvpanic_panic_nb);
+ 
+ }
+ module_exit(pvpanic_exit);
+diff --git a/drivers/power/reset/ltc2952-poweroff.c b/drivers/power/reset/ltc2952-poweroff.c
+index 65d9528cc989..fb5078ba3a69 100644
+--- a/drivers/power/reset/ltc2952-poweroff.c
++++ b/drivers/power/reset/ltc2952-poweroff.c
+@@ -279,7 +279,7 @@ static int ltc2952_poweroff_probe(struct platform_device *pdev)
+ 	pm_power_off = ltc2952_poweroff_kill;
+ 
+ 	data->panic_notifier.notifier_call = ltc2952_poweroff_notify_panic;
+-	atomic_notifier_chain_register(&panic_notifier_list,
++	atomic_notifier_chain_register(&panic_hypervisor_list,
+ 				       &data->panic_notifier);
+ 	dev_info(&pdev->dev, "probe successful\n");
+ 
+@@ -293,7 +293,7 @@ static int ltc2952_poweroff_remove(struct platform_device *pdev)
+ 	pm_power_off = NULL;
+ 	hrtimer_cancel(&data->timer_trigger);
+ 	hrtimer_cancel(&data->timer_wde);
+-	atomic_notifier_chain_unregister(&panic_notifier_list,
++	atomic_notifier_chain_unregister(&panic_hypervisor_list,
+ 					 &data->panic_notifier);
+ 	return 0;
+ }
+diff --git a/drivers/s390/char/zcore.c b/drivers/s390/char/zcore.c
+index 516783ba950f..768a8a3a9046 100644
+--- a/drivers/s390/char/zcore.c
++++ b/drivers/s390/char/zcore.c
+@@ -246,7 +246,7 @@ static int zcore_reboot_and_on_panic_handler(struct notifier_block *self,
+ 	if (hsa_available)
+ 		release_hsa();
+ 
+-	return NOTIFY_OK;
++	return NOTIFY_DONE;
  }
  
- /**
-@@ -80,6 +117,13 @@ static int notifier_call_chain(struct notifier_block **nl,
- 			nb = next_nb;
- 			continue;
- 		}
-+
-+		{
-+			char sym_name[KSYM_NAME_LEN];
-+
-+			pr_debug("notifiers: calling %s()\n",
-+				 notifier_name(nb, sym_name));
-+		}
- #endif
- 		ret = nb->notifier_call(nb, val, v);
+ static struct notifier_block zcore_reboot_notifier = {
+@@ -322,7 +322,8 @@ static int __init zcore_init(void)
+ 					     NULL, &zcore_hsa_fops);
  
+ 	register_reboot_notifier(&zcore_reboot_notifier);
+-	atomic_notifier_chain_register(&panic_notifier_list, &zcore_on_panic_notifier);
++	atomic_notifier_chain_register(&panic_hypervisor_list,
++				       &zcore_on_panic_notifier);
+ 
+ 	return 0;
+ fail:
+diff --git a/drivers/soc/bcm/brcmstb/pm/pm-arm.c b/drivers/soc/bcm/brcmstb/pm/pm-arm.c
+index 870686ae042b..babca66c7862 100644
+--- a/drivers/soc/bcm/brcmstb/pm/pm-arm.c
++++ b/drivers/soc/bcm/brcmstb/pm/pm-arm.c
+@@ -814,7 +814,7 @@ static int brcmstb_pm_probe(struct platform_device *pdev)
+ 		goto out;
+ 	}
+ 
+-	atomic_notifier_chain_register(&panic_notifier_list,
++	atomic_notifier_chain_register(&panic_hypervisor_list,
+ 				       &brcmstb_pm_panic_nb);
+ 
+ 	pm_power_off = brcmstb_pm_poweroff;
+diff --git a/include/linux/panic_notifier.h b/include/linux/panic_notifier.h
+index 07dced83a783..0bb9dc0dea04 100644
+--- a/include/linux/panic_notifier.h
++++ b/include/linux/panic_notifier.h
+@@ -6,6 +6,7 @@
+ #include <linux/types.h>
+ 
+ extern struct atomic_notifier_head panic_notifier_list;
++extern struct atomic_notifier_head panic_hypervisor_list;
+ 
+ extern bool crash_kexec_post_notifiers;
+ 
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 523bc9ccd0e9..ef76f3f9c44d 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -73,6 +73,9 @@ ATOMIC_NOTIFIER_HEAD(panic_notifier_list);
+ 
+ EXPORT_SYMBOL(panic_notifier_list);
+ 
++ATOMIC_NOTIFIER_HEAD(panic_hypervisor_list);
++EXPORT_SYMBOL(panic_hypervisor_list);
++
+ static long no_blink(int state)
+ {
+ 	return 0;
+@@ -287,6 +290,7 @@ void panic(const char *fmt, ...)
+ 	 * Run any panic handlers, including those that might need to
+ 	 * add information to the kmsg dump output.
+ 	 */
++	atomic_notifier_call_chain(&panic_hypervisor_list, PANIC_NOTIFIER, buf);
+ 	atomic_notifier_call_chain(&panic_notifier_list, PANIC_NOTIFIER, buf);
+ 
+ 	panic_print_sys_info(false);
 -- 
 2.36.0
 
