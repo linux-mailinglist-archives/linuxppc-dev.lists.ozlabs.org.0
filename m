@@ -2,105 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39EB512F6F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 11:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E965133A0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 14:26:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kpr5c657Vz3bqg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 19:33:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kpvwz3bSvz3br7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 22:26:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bSdVaS0y;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bSdVaS0y;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pSTImsqM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=bSdVaS0y; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=bSdVaS0y; 
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=pSTImsqM; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KpvwJ3DgSz2yNF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 22:25:36 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kpr4r24Gmz2yHB
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 19:32:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1651138358;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OG6hUPY6sAUTqTJViKJ1E1LWjNyEwooQAig3aG1iSlg=;
- b=bSdVaS0yvXXpcbDElCVtDBaDx0k1hLCEBJ30qU6Th/pqqSu19XujxA1FEMqmwRtlmyyEwJ
- YLVSf6reCB8icoY9UilVO5q9FfpYCGyxGTyOgO93umwDCBspKUgGPTFf7DyWzODfM31bh8
- 1cFarfsOSA5R9Qh58WE7Xddpipg+Po4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1651138358;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OG6hUPY6sAUTqTJViKJ1E1LWjNyEwooQAig3aG1iSlg=;
- b=bSdVaS0yvXXpcbDElCVtDBaDx0k1hLCEBJ30qU6Th/pqqSu19XujxA1FEMqmwRtlmyyEwJ
- YLVSf6reCB8icoY9UilVO5q9FfpYCGyxGTyOgO93umwDCBspKUgGPTFf7DyWzODfM31bh8
- 1cFarfsOSA5R9Qh58WE7Xddpipg+Po4=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-252-kdE2vY5yMmSUiUkBP7AKzA-1; Thu, 28 Apr 2022 05:32:37 -0400
-X-MC-Unique: kdE2vY5yMmSUiUkBP7AKzA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- eo13-20020ad4594d000000b004466661ece9so3294986qvb.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 02:32:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=OG6hUPY6sAUTqTJViKJ1E1LWjNyEwooQAig3aG1iSlg=;
- b=L7DGEo8Guh6aGq97bcMWxbVcG04YiguaGkOxdw80SFpV9122kQUTyLvdg0LqoujS9R
- PSHhPIqWxfvvSTDBwccU1y4NAnFxJoQl+SxNFBIsAWoZQONKCLDSNStx6mgJZ3a/Q+rO
- suZxg+YMM1E1uRQ70IekNugYYWhIaDosQiTVH3Qs4SPk5olDtFhuySNLGtoTNRNNap0S
- YbB7wh9kI7dcn6q4+NFWSSHBzzez1PwfYSQ1ovgo1v4uVUVC21F7ZWLNa9Hh0Cr92pr+
- GdG+g4KgaLfr1WWvgcKogN3ni1aimBBxgNmTJFe/z9M4lqi0i54BFygKtflGuO7T0TJX
- J/Mw==
-X-Gm-Message-State: AOAM532kGSNC+3OiwdzHa3LBPktvpAXwRTotQ58uuwdb0eYth2ONv2eW
- CrsungFCo2QJhD2rr6xQK0L0DvmgjZmoSoSA2PAVcHk3bHxK8GnQsxclkMZNwNh/3lc1iC0LgX2
- 4aD/D2RDhDOL3Q0uTmIUeMWK6CA==
-X-Received: by 2002:a05:622a:2cb:b0:2f3:646b:54b6 with SMTP id
- a11-20020a05622a02cb00b002f3646b54b6mr15456787qtx.380.1651138356478; 
- Thu, 28 Apr 2022 02:32:36 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyJ3J0ImF+LM/cJTr/TdEmv6YBtIqlv1bBiDK6w9j0coe0CvNV+LL3YO5hh7fcCBb3x5O7y0w==
-X-Received: by 2002:a05:622a:2cb:b0:2f3:646b:54b6 with SMTP id
- a11-20020a05622a02cb00b002f3646b54b6mr15456733qtx.380.1651138356147; 
- Thu, 28 Apr 2022 02:32:36 -0700 (PDT)
-Received: from gerbillo.redhat.com (146-241-117-160.dyn.eolo.it.
- [146.241.117.160]) by smtp.gmail.com with ESMTPSA id
- k66-20020a37ba45000000b0069c5adb2f2fsm9620433qkf.6.2022.04.28.02.32.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Apr 2022 02:32:35 -0700 (PDT)
-Message-ID: <c499d01d51095ae338cbc63179bdc0e1606cbfef.camel@redhat.com>
-Subject: Re: [PATCH net-next v5 08/18] net: sparx5: Replace usage of found
- with dedicated list iterator variable
-From: Paolo Abeni <pabeni@redhat.com>
-To: Jakob Koschel <jakobkoschel@gmail.com>, "David S. Miller"
- <davem@davemloft.net>
-Date: Thu, 28 Apr 2022 11:32:28 +0200
-In-Reply-To: <20220427160635.420492-9-jakobkoschel@gmail.com>
-References: <20220427160635.420492-1-jakobkoschel@gmail.com>
- <20220427160635.420492-9-jakobkoschel@gmail.com>
-User-Agent: Evolution 3.42.4 (3.42.4-2.fc35)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 396C662007
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 12:25:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E1FC385B6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 12:25:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651148732;
+ bh=17SRVxXJDuWHQbd9cJFwutubod0QH1iDUIQ+IPKdS5M=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=pSTImsqMTjOAp6cy6/dufRWs+MZ7ITJzuX6MGxG5jtSr1/voa0e+VG6302k40cE/a
+ r86tAn5Xxh5yAWZJTHBXbLcFrj4plQODir48fjYon14AfUAFt+YTvFSXYhit5HWB6t
+ qx6yamqc8ty6xt9JBvQ1y5hDHxUirujht8ZW/SYD2W/tDTfPLGW8OqpcK9niKv8SyW
+ Jc5ZCXwUpdEiQ6s5+AU1ZZCYFD7eQkqtVc3wQhFfo58XNeKCs0WbfoegC3T69mGc1b
+ SXo3PjiUwyYHQn0SlrGODTNmjT167INLgOuJVkxYSvEa4SoYIYaeT8+4abyPdmC9Yi
+ 2u0rcNAK2vuNg==
+Received: by mail-ua1-f44.google.com with SMTP id 63so1693095uaw.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 05:25:32 -0700 (PDT)
+X-Gm-Message-State: AOAM530u7AW6NqTz47fFtB544NpbjXhZKKwVa2zFzJotnMeTQIl0/VW7
+ 5hktd0Clg0yEVuOSKycv/IJ2HP/02OHG/U06LRI=
+X-Google-Smtp-Source: ABdhPJxhKuDx8SacnV0N5n+O7EUNmoXwDd/+arI770Gp6sKyfaN9KiMmrf0JcxzpJa0TN3P0eaZvSpv5CXgZLxh8Rk8=
+X-Received: by 2002:a9f:2048:0:b0:352:9b4f:ac98 with SMTP id
+ 66-20020a9f2048000000b003529b4fac98mr10350091uam.12.1651148730728; Thu, 28
+ Apr 2022 05:25:30 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pabeni@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20220405071314.3225832-1-guoren@kernel.org>
+In-Reply-To: <20220405071314.3225832-1-guoren@kernel.org>
+From: Guo Ren <guoren@kernel.org>
+Date: Thu, 28 Apr 2022 20:25:19 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTR6=RGJgcYT_yBHep0=zdpU_M7OfsV=d9_DxPeacKN=Gw@mail.gmail.com>
+Message-ID: <CAJF2gTR6=RGJgcYT_yBHep0=zdpU_M7OfsV=d9_DxPeacKN=Gw@mail.gmail.com>
+Subject: Re: [PATCH V12 00/20] riscv: Add COMPAT mode support for 64BIT
+To: Guo Ren <guoren@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Christoph Hellwig <hch@lst.de>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Naresh Kamboju <naresh.kamboju@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,89 +75,525 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
- Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Steen Hegelund <Steen.Hegelund@microchip.com>,
- John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- "Bos, H.J." <h.j.bos@vu.nl>, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-arm-kernel@lists.infradead.org, Yonghong Song <yhs@fb.com>,
- Vivien Didelot <vivien.didelot@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Martin Habets <habetsm.xilinx@gmail.com>,
- Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
- Lars Povlsen <lars.povlsen@microchip.com>,
- Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- UNGLinuxDriver@microchip.com, Edward Cree <ecree.xilinx@gmail.com>,
- Casper Andersson <casper.casan@gmail.com>, Xu Wang <vulab@iscas.ac.cn>,
- Cristiano Giuffrida <c.giuffrida@vu.nl>, bpf@vger.kernel.org,
- Vladimir Oltean <olteanv@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Martin KaFai Lau <kafai@fb.com>, Mike Rapoport <rppt@kernel.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Hi Palmer,
 
-On Wed, 2022-04-27 at 18:06 +0200, Jakob Koschel wrote:
-> To move the list iterator variable into the list_for_each_entry_*()
-> macro in the future it should be avoided to use the list iterator
-> variable after the loop body.
-> 
-> To *never* use the list iterator variable after the loop it was
-> concluded to use a separate iterator variable instead of a
-> found boolean [1].
-> 
-> This removes the need to use a found variable and simply checking if
-> the variable was set, can determine if the break/goto was hit.
-> 
-> Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-> ---
->  .../microchip/sparx5/sparx5_mactable.c        | 25 +++++++++----------
->  1 file changed, 12 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
-> index a5837dbe0c7e..bb8d9ce79ac2 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
-> @@ -362,8 +362,7 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
->  				     unsigned char mac[ETH_ALEN],
->  				     u16 vid, u32 cfg2)
->  {
-> -	struct sparx5_mact_entry *mact_entry;
-> -	bool found = false;
-> +	struct sparx5_mact_entry *mact_entry = NULL, *iter;
->  	u16 port;
->  
->  	if (LRN_MAC_ACCESS_CFG_2_MAC_ENTRY_ADDR_TYPE_GET(cfg2) !=
-> @@ -378,28 +377,28 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
->  		return;
->  
->  	mutex_lock(&sparx5->mact_lock);
-> -	list_for_each_entry(mact_entry, &sparx5->mact_entries, list) {
-> -		if (mact_entry->vid == vid &&
-> -		    ether_addr_equal(mac, mact_entry->mac)) {
-> -			found = true;
-> -			mact_entry->flags |= MAC_ENT_ALIVE;
-> -			if (mact_entry->port != port) {
-> +	list_for_each_entry(iter, &sparx5->mact_entries, list) {
-> +		if (iter->vid == vid &&
-> +		    ether_addr_equal(mac, iter->mac)) {
+I see you have taken v12 into your riscv-compat branch and added
+asm/signal32.h. Do you need me help put compat_sigcontext &
+compat_ucontext & compat_rt_sigframe into signal32.h? And could we
+rename signal32.h to compat_signal.h to match compat_signal.c?
 
-I'm sorry for the late feedback.
+In the end, thx for taking care of compat patch series.
 
-If you move the 'mact_entry = iter;' statement here, the diffstat will
-be slightly smaller and the patch more readable, IMHO.
 
-There is similar situation in the next patch.
+On Tue, Apr 5, 2022 at 3:13 PM <guoren@kernel.org> wrote:
+>
+> From: Guo Ren <guoren@linux.alibaba.com>
+>
+> Currently, most 64-bit architectures (x86, parisc, powerpc, arm64,
+> s390, mips, sparc) have supported COMPAT mode. But they all have
+> history issues and can't use standard linux unistd.h. RISC-V would
+> be first standard __SYSCALL_COMPAT user of include/uapi/asm-generic
+> /unistd.h.
+>
+> The patchset are based on v5.18-rc1, you can compare rv64-compat
+> v.s. rv32-native in qemu with following steps:
+>
+>  - Prepare rv32 rootfs & fw_jump.bin by buildroot.org
+>    $ git clone git://git.busybox.net/buildroot
+>    $ cd buildroot
+>    $ make qemu_riscv32_virt_defconfig O=3Dqemu_riscv32_virt_defconfig
+>    $ make -C qemu_riscv32_virt_defconfig
+>    $ make qemu_riscv64_virt_defconfig O=3Dqemu_riscv64_virt_defconfig
+>    $ make -C qemu_riscv64_virt_defconfig
+>    (Got fw_jump.bin & rootfs.ext2 in qemu_riscvXX_virt_defconfig/images)
+>
+>  - Prepare Linux rv32 & rv64 Image
+>    $ git clone git@github.com:c-sky/csky-linux.git -b riscv_compat_v12 li=
+nux
+>    $ cd linux
+>    $ echo "CONFIG_STRICT_KERNEL_RWX=3Dn" >> arch/riscv/configs/defconfig
+>    $ echo "CONFIG_STRICT_MODULE_RWX=3Dn" >> arch/riscv/configs/defconfig
+>    $ make ARCH=3Driscv CROSS_COMPILE=3Driscv32-buildroot-linux-gnu- O=3D.=
+./build-rv32/ rv32_defconfig
+>    $ make ARCH=3Driscv CROSS_COMPILE=3Driscv32-buildroot-linux-gnu- O=3D.=
+./build-rv32/ Image
+>    $ make ARCH=3Driscv CROSS_COMPILE=3Driscv64-buildroot-linux-gnu- O=3D.=
+./build-rv64/ defconfig
+>    $ make ARCH=3Driscv CROSS_COMPILE=3Driscv64-buildroot-linux-gnu- O=3D.=
+./build-rv64/ Image
+>
+>  - Prepare Qemu:
+>    $ git clone https://gitlab.com/qemu-project/qemu.git -b master linux
+>    $ cd qemu
+>    $ ./configure --target-list=3D"riscv64-softmmu riscv32-softmmu"
+>    $ make
+>
+> Now let's compare rv64-compat with rv32-native memory footprint with almo=
+st the same
+> defconfig, rootfs, opensbi in one qemu.
+>
+>  - Run rv64 with rv32 rootfs in compat mode:
+>    $ ./build/qemu-system-riscv64 -cpu rv64 -M virt -m 64m -nographic -bio=
+s qemu_riscv64_virt_defconfig/images/fw_jump.bin -kernel build-rv64/Image -=
+drive file qemu_riscv32_virt_defconfig/images/rootfs.ext2,format=3Draw,id=
+=3Dhd0 -device virtio-blk-device,drive=3Dhd0 -append "rootwait root=3D/dev/=
+vda ro console=3DttyS0 earlycon=3Dsbi" -netdev user,id=3Dnet0 -device virti=
+o-net-device,netdev=3Dnet0
+>
+> QEMU emulator version 6.2.50 (v6.2.0-29-g196d7182c8)
+> OpenSBI v0.9
+> [    0.000000] Linux version 5.16.0-rc6-00017-g750f87086bdd-dirty (guoren=
+@guoren-Z87-HD3) (riscv64-unknown-linux-gnu-gcc (GCC) 10.2.0, GNU ld (GNU B=
+inutils) 2.37) #96 SMP Tue Dec 28 21:01:55 CST 2021
+> [    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80200000
+> [    0.000000] Machine model: riscv-virtio,qemu
+> [    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
+> [    0.000000] printk: bootconsole [sbi0] enabled
+> [    0.000000] efi: UEFI not found.
+> [    0.000000] Zone ranges:
+> [    0.000000]   DMA32    [mem 0x0000000080200000-0x0000000083ffffff]
+> [    0.000000]   Normal   empty
+> [    0.000000] Movable zone start for each node
+> [    0.000000] Early memory node ranges
+> [    0.000000]   node   0: [mem 0x0000000080200000-0x0000000083ffffff]
+> [    0.000000] Initmem setup node 0 [mem 0x0000000080200000-0x0000000083f=
+fffff]
+> [    0.000000] SBI specification v0.2 detected
+> [    0.000000] SBI implementation ID=3D0x1 Version=3D0x9
+> [    0.000000] SBI TIME extension detected
+> [    0.000000] SBI IPI extension detected
+> [    0.000000] SBI RFENCE extension detected
+> [    0.000000] SBI v0.2 HSM extension detected
+> [    0.000000] riscv: ISA extensions acdfhimsu
+> [    0.000000] riscv: ELF capabilities acdfim
+> [    0.000000] percpu: Embedded 17 pages/cpu s30696 r8192 d30744 u69632
+> [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 156=
+55
+> [    0.000000] Kernel command line: rootwait root=3D/dev/vda ro console=
+=3DttyS0 earlycon=3Dsbi
+> [    0.000000] Dentry cache hash table entries: 8192 (order: 4, 65536 byt=
+es, linear)
+> [    0.000000] Inode-cache hash table entries: 4096 (order: 3, 32768 byte=
+s, linear)
+> [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+> [    0.000000] Virtual kernel memory layout:
+> [    0.000000]       fixmap : 0xffffffcefee00000 - 0xffffffceff000000   (=
+2048 kB)
+> [    0.000000]       pci io : 0xffffffceff000000 - 0xffffffcf00000000   (=
+  16 MB)
+> [    0.000000]      vmemmap : 0xffffffcf00000000 - 0xffffffcfffffffff   (=
+4095 MB)
+> [    0.000000]      vmalloc : 0xffffffd000000000 - 0xffffffdfffffffff   (=
+65535 MB)
+> [    0.000000]       lowmem : 0xffffffe000000000 - 0xffffffe003e00000   (=
+  62 MB)
+> [    0.000000]       kernel : 0xffffffff80000000 - 0xffffffffffffffff   (=
+2047 MB)
+> [    0.000000] Memory: 52788K/63488K available (6184K kernel code, 888K r=
+wdata, 1917K rodata, 294K init, 297K bss, 10700K reserved, 0K cma-reserved)
+> [    0.000000] SLUB: HWalign=3D64, Order=3D0-3, MinObjects=3D0, CPUs=3D1,=
+ Nodes=3D1
+> [    0.000000] rcu: Hierarchical RCU implementation.
+> [    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=3D8 to nr_cpu_i=
+ds=3D1.
+> [    0.000000] rcu:     RCU debug extended QS entry/exit.
+> [    0.000000]  Tracing variant of Tasks RCU enabled.
+> [    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is=
+ 25 jiffies.
+> [    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=3D16, nr_cpu_i=
+ds=3D1
+> [    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+> [    0.000000] riscv-intc: 64 local interrupts mapped
+> [    0.000000] plic: plic@c000000: mapped 53 interrupts with 1 handlers f=
+or 2 contexts.
+> ...
+> Welcome to Buildroot
+> buildroot login: root
+> # cat /proc/cpuinfo
+> processor       : 0
+> hart            : 0
+> isa             : rv64imafdcsuh
+> mmu             : sv48
+>
+> # file /bin/busybox
+> /bin/busybox: setuid ELF 32-bit LSB shared object, UCB RISC-V, version 1 =
+(SYSV), dynamically linked, interpreter /lib/ld-linux-riscv32-ilp32d.so.1, =
+for GNU/Linux 5.15.0, stripped
+> # ca[   78.386630] random: fast init done
+> # cat /proc/meminfo
+> MemTotal:          53076 kB
+> MemFree:           40264 kB
+> MemAvailable:      40244 kB
+> Buffers:             236 kB
+> Cached:             1560 kB
+> SwapCached:            0 kB
+> Active:             1700 kB
+> Inactive:            516 kB
+> Active(anon):         40 kB
+> Inactive(anon):      424 kB
+> Active(file):       1660 kB
+> Inactive(file):       92 kB
+> Unevictable:           0 kB
+> Mlocked:               0 kB
+> SwapTotal:             0 kB
+> SwapFree:              0 kB
+> Dirty:                 0 kB
+> Writeback:             0 kB
+> AnonPages:           444 kB
+> Mapped:             1188 kB
+> Shmem:                44 kB
+> KReclaimable:        952 kB
+> Slab:               5744 kB
+> SReclaimable:        952 kB
+> SUnreclaim:         4792 kB
+> KernelStack:         624 kB
+> PageTables:          156 kB
+> NFS_Unstable:          0 kB
+> Bounce:                0 kB
+> WritebackTmp:          0 kB
+> CommitLimit:       26536 kB
+> Committed_AS:       1748 kB
+> VmallocTotal:   67108863 kB
+> VmallocUsed:         652 kB
+> VmallocChunk:          0 kB
+> Percpu:               80 kB
+> #
+>
+>  - Run rv32 with rv32 rootfs:
+>    $ ./build/qemu-system-riscv32 -cpu rv32 -M virt -m 64m -nographic -bio=
+s qemu_riscv32_virt_defconfig/images/fw_jump.bin -kernel build-rv32/Image -=
+drive file qemu_riscv32_virt_defconfig/images/rootfs.ext2,format=3Draw,id=
+=3Dhd0 -device virtio-blk-device,drive=3Dhd0 -append "rootwait root=3D/dev/=
+vda ro console=3DttyS0 earlycon=3Dsbi" -netdev user,id=3Dnet0 -device virti=
+o-net-device,netdev=3Dnet0
+>
+> QEMU emulator version 6.2.50 (v6.2.0-29-g196d7182c8)
+> OpenSBI v0.9
+> [    0.000000] Linux version 5.16.0-rc6-00017-g750f87086bdd-dirty (guoren=
+@guoren-Z87-HD3) (riscv32-buildroot-linux-gnu-gcc.br_real (Buildroot 2021.1=
+1-201-g7600ca7960-dirty) 10.3.0, GNU ld (GNU Binutils) 2.36.1) #7 SMP Tue D=
+ec 28 21:02:21 CST 2021
+> [    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000
+> [    0.000000] Machine model: riscv-virtio,qemu
+> [    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
+> [    0.000000] printk: bootconsole [sbi0] enabled
+> [    0.000000] efi: UEFI not found.
+> [    0.000000] Zone ranges:
+> [    0.000000]   Normal   [mem 0x0000000080400000-0x0000000083ffffff]
+> [    0.000000] Movable zone start for each node
+> [    0.000000] Early memory node ranges
+> [    0.000000]   node   0: [mem 0x0000000080400000-0x0000000083ffffff]
+> [    0.000000] Initmem setup node 0 [mem 0x0000000080400000-0x0000000083f=
+fffff]
+> [    0.000000] SBI specification v0.2 detected
+> [    0.000000] SBI implementation ID=3D0x1 Version=3D0x9
+> [    0.000000] SBI TIME extension detected
+> [    0.000000] SBI IPI extension detected
+> [    0.000000] SBI RFENCE extension detected
+> [    0.000000] SBI v0.2 HSM extension detected
+> [    0.000000] riscv: ISA extensions acdfhimsu
+> [    0.000000] riscv: ELF capabilities acdfim
+> [    0.000000] percpu: Embedded 12 pages/cpu s16600 r8192 d24360 u49152
+> [    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 152=
+40
+> [    0.000000] Kernel command line: rootwait root=3D/dev/vda ro console=
+=3DttyS0 earlycon=3Dsbi
+> [    0.000000] Dentry cache hash table entries: 8192 (order: 3, 32768 byt=
+es, linear)
+> [    0.000000] Inode-cache hash table entries: 4096 (order: 2, 16384 byte=
+s, linear)
+> [    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+> [    0.000000] Virtual kernel memory layout:
+> [    0.000000]       fixmap : 0x9dc00000 - 0x9e000000   (4096 kB)
+> [    0.000000]       pci io : 0x9e000000 - 0x9f000000   (  16 MB)
+> [    0.000000]      vmemmap : 0x9f000000 - 0x9fffffff   (  15 MB)
+> [    0.000000]      vmalloc : 0xa0000000 - 0xbfffffff   ( 511 MB)
+> [    0.000000]       lowmem : 0xc0000000 - 0xc3c00000   (  60 MB)
+> [    0.000000] Memory: 51924K/61440K available (6117K kernel code, 695K r=
+wdata, 1594K rodata, 255K init, 241K bss, 9516K reserved, 0K cma-reserved)
+> [    0.000000] SLUB: HWalign=3D64, Order=3D0-3, MinObjects=3D0, CPUs=3D1,=
+ Nodes=3D1
+> [    0.000000] rcu: Hierarchical RCU implementation.
+> [    0.000000] rcu:     RCU restricting CPUs from NR_CPUS=3D8 to nr_cpu_i=
+ds=3D1.
+> [    0.000000] rcu:     RCU debug extended QS entry/exit.
+> [    0.000000]  Tracing variant of Tasks RCU enabled.
+> [    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is=
+ 25 jiffies.
+> [    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=3D16, nr_cpu_i=
+ds=3D1
+> [    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+> [    0.000000] riscv-intc: 32 local interrupts mapped
+> [    0.000000] plic: plic@c000000: mapped 53 interrupts with 1 handlers f=
+or 2 contexts.
+> ...
+> Welcome to Buildroot
+> buildroot login: root
+> # cat /proc/cpuinfo
+> processor       : 0
+> hart            : 0
+> isa             : rv32imafdcsuh
+> mmu             : sv32
+>
+> # file /bin/busybox
+> /bin/busybox: setuid ELF 32-bit LSB shared object, UCB RISC-V, version 1 =
+(SYSV), dynamically linked, interpreter /lib/ld-linux-riscv32-ilp32d.so.1, =
+for GNU/Linux 5.15.0, stripped
+> [   79.320589] random: fast init done
+> # cat /proc/meminfo
+> MemTotal:          52176 kB
+> MemFree:           41012 kB
+> MemAvailable:      42176 kB
+> Buffers:             644 kB
+> Cached:             2724 kB
+> SwapCached:            0 kB
+> Active:             3128 kB
+> Inactive:            752 kB
+> Active(anon):         40 kB
+> Inactive(anon):      516 kB
+> Active(file):       3088 kB
+> Inactive(file):      236 kB
+> Unevictable:           0 kB
+> Mlocked:               0 kB
+> SwapTotal:             0 kB
+> SwapFree:              0 kB
+> Dirty:                 4 kB
+> Writeback:             0 kB
+> AnonPages:           556 kB
+> Mapped:             2172 kB
+> Shmem:                44 kB
+> KReclaimable:        656 kB
+> Slab:               3684 kB
+> SReclaimable:        656 kB
+> SUnreclaim:         3028 kB
+> KernelStack:         312 kB
+> PageTables:           88 kB
+> NFS_Unstable:          0 kB
+> Bounce:                0 kB
+> WritebackTmp:          0 kB
+> CommitLimit:       26088 kB
+> Committed_AS:       2088 kB
+> VmallocTotal:     524287 kB
+> VmallocUsed:          12 kB
+> VmallocChunk:          0 kB
+> Percpu:               60 kB
+> #
+>
+>  Some conclusions:
+>  - kernel statics:
+>    64: Memory: 52788K/63488K available (6184K kernel code, 888K rwdata, 1=
+917K rodata, 294K init, 297K bss, 10700K reserved)
+>    32: Memory: 51924K/61440K available (6117K kernel code, 695K rwdata, 1=
+594K rodata, 255K init, 241K bss,  9516K reserved)
+>    rv32 better than rv64:                  1%               22%          =
+ 17%          13%        19%         11%
+>    The code size is very similar, but data size rv32 would be better.
+>
+>  - rv32 kernel runtime KernelStack, Slab... are smaller,
+>    rv64: MemTotal: 53076 kB,        MemFree: 40264 kB
+>    rv32: MemTotal: 52176 + 2048 kB, MemFree: 41012  + 2048 kB
+>    rv32 better than rv64:       2%                         6%
+>
+>    (Because opensbi problem, we could add another 2MB for rv32.)
+>    Overall in 64MB memory situation, rv64-compat is 6% worse than rv32-na=
+tive
+>    at memory footprint. If the userspace memory usage increases, I think
+>    the gap will be further reduced.
+>
+> Changes in v12:
+>  - Rebase on 5.18-rc1
+>  - Fixup compile conflicts with 5.18-rc1
+>  - Fixup $(srctree) =3D=3D $(objtree) compile error reported by Nathan
+>
+> Changes in v11:
+>  - Using arch instead of kconfig for commit subject by Masahiro Yamada
+>
+> Changes in v10:
+>  - Fixup arm64 compile error with compat_statfs definition
+>  - Fixup compat_sys_fadvise64_64 function arguments error cause ltp failu=
+re
+>
+> Changes in v9:
+>  - Fixup rv32 call rv64 segment fault
+>  - Ready for 5.18
+>
+> Changes in v8:
+>  - Enhanced elf_check_arch with EI_CLASS
+>  - Fixup SR_UXL doesn't exist in CONFIG_32BIT
+>  - Add Tested-by with Heiko
+>  - Update qemu compile tips with upstream repo
+>
+> Changes in v7:
+>  - Re-construct compat_vdso/Makefile
+>  - Fixup disable COMPAT compile error by csr.h's macro.
+>  - Optimize coding convention for lo/hi in compat.h
+>
+> Changes in v6:
+>  - Rebase on linux-5.17-rc5
+>  - Optimize hw capability check for elf
+>  - Optimize comment in thread_info.h
+>  - Optimize start_thread with SR_UXL setting
+>  - Optimize vdso.c with direct panic
+>
+> Changes in v5:
+>  - Rebase on linux-5.17-rc2
+>  - Include consolidate the fcntl patches by Christoph Hellwig
+>  - Remove F_GETLK64/F_SETLK64/F_SETLKW64 from asm/compat.h
+>  - Change COMPAT_RLIM_INFINITY from 0x7fffffff to 0xffffffff
+>  - Bring back "Add hw-cap detect in setup_arch patch" in v1
+>
+> Changes in v4:
+>  - Rebase on linux-5.17-rc1
+>  - Optimize compat_sys_call_table implementation with Arnd's advice
+>  - Add reviewed-by for Arnd. Thx :)
+>  - Remove FIXME comment in elf.h
+>  - Optimize Cleanup duplicate definitions in compat.h with Arnd's advice
+>
+> Changes in v3:
+>  - Rebase on newest master (pre linux-5.17-rc1)
+>  - Using newest qemu version v7 for test
+>  - Remove fcntl common modification
+>  - Fixup SET_PERSONALITY in elf.h by Arnd
+>  - Fixup KVM Kconfig
+>  - Update Acked-by & Reviewed-by
+>
+> Changes in v2:
+>  - Add __ARCH_WANT_COMPAT_STAT suggested
+>  - Cleanup fcntl compatduplicate definitions
+>  - Cleanup compat.h
+>  - Move rv32_defconfig into Makefile
+>  - Fixup rv64 rootfs boot failed, remove hw_compat_mode_detect
+>  - Move SYSVIPC_COMPAT into init/Kconfig
+>  - Simplify compat_elf_check
+>
+> Christoph Hellwig (3):
+>   uapi: simplify __ARCH_FLOCK{,64}_PAD a little
+>   uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64 in fcntl.h
+>   compat: consolidate the compat_flock{,64} definition
+>
+> Guo Ren (17):
+>   arch: Add SYSVIPC_COMPAT for all architectures
+>   fs: stat: compat: Add __ARCH_WANT_COMPAT_STAT
+>   asm-generic: compat: Cleanup duplicate definitions
+>   syscalls: compat: Fix the missing part for __SYSCALL_COMPAT
+>   riscv: Fixup difference with defconfig
+>   riscv: compat: Add basic compat data type implementation
+>   riscv: compat: Support TASK_SIZE for compat mode
+>   riscv: compat: syscall: Add compat_sys_call_table implementation
+>   riscv: compat: syscall: Add entry.S implementation
+>   riscv: compat: process: Add UXL_32 support in start_thread
+>   riscv: compat: Add elf.h implementation
+>   riscv: compat: Add hw capability check for elf
+>   riscv: compat: vdso: Add COMPAT_VDSO base code implementation
+>   riscv: compat: vdso: Add setup additional pages implementation
+>   riscv: compat: signal: Add rt_frame implementation
+>   riscv: compat: ptrace: Add compat_arch_ptrace implement
+>   riscv: compat: Add COMPAT Kbuild skeletal support
+>
+>  arch/arm64/Kconfig                            |   4 -
+>  arch/arm64/include/asm/compat.h               |  93 +------
+>  arch/arm64/include/asm/unistd.h               |   1 +
+>  arch/mips/Kconfig                             |   5 -
+>  arch/mips/include/asm/compat.h                |  41 +--
+>  arch/mips/include/asm/unistd.h                |   2 +
+>  arch/mips/include/uapi/asm/fcntl.h            |  30 +--
+>  arch/parisc/Kconfig                           |   4 -
+>  arch/parisc/include/asm/compat.h              |  45 +---
+>  arch/parisc/include/asm/unistd.h              |   1 +
+>  arch/powerpc/Kconfig                          |   5 -
+>  arch/powerpc/include/asm/compat.h             |  50 +---
+>  arch/powerpc/include/asm/unistd.h             |   1 +
+>  arch/riscv/Kconfig                            |  19 ++
+>  arch/riscv/Makefile                           |   9 +
+>  arch/riscv/include/asm/compat.h               | 129 ++++++++++
+>  arch/riscv/include/asm/csr.h                  |   7 +
+>  arch/riscv/include/asm/elf.h                  |  50 +++-
+>  arch/riscv/include/asm/mmu.h                  |   1 +
+>  arch/riscv/include/asm/pgtable.h              |  13 +-
+>  arch/riscv/include/asm/processor.h            |   6 +-
+>  arch/riscv/include/asm/syscall.h              |   1 +
+>  arch/riscv/include/asm/thread_info.h          |   1 +
+>  arch/riscv/include/asm/unistd.h               |  11 +
+>  arch/riscv/include/asm/vdso.h                 |   9 +
+>  arch/riscv/include/uapi/asm/unistd.h          |   2 +-
+>  arch/riscv/kernel/Makefile                    |   3 +
+>  arch/riscv/kernel/compat_signal.c             | 242 ++++++++++++++++++
+>  arch/riscv/kernel/compat_syscall_table.c      |  19 ++
+>  arch/riscv/kernel/compat_vdso/.gitignore      |   2 +
+>  arch/riscv/kernel/compat_vdso/Makefile        |  78 ++++++
+>  arch/riscv/kernel/compat_vdso/compat_vdso.S   |   8 +
+>  .../kernel/compat_vdso/compat_vdso.lds.S      |   3 +
+>  arch/riscv/kernel/compat_vdso/flush_icache.S  |   3 +
+>  .../compat_vdso/gen_compat_vdso_offsets.sh    |   5 +
+>  arch/riscv/kernel/compat_vdso/getcpu.S        |   3 +
+>  arch/riscv/kernel/compat_vdso/note.S          |   3 +
+>  arch/riscv/kernel/compat_vdso/rt_sigreturn.S  |   3 +
+>  arch/riscv/kernel/entry.S                     |  18 +-
+>  arch/riscv/kernel/process.c                   |  37 +++
+>  arch/riscv/kernel/ptrace.c                    |  87 ++++++-
+>  arch/riscv/kernel/signal.c                    |  13 +-
+>  arch/riscv/kernel/sys_riscv.c                 |   6 +-
+>  arch/riscv/kernel/vdso.c                      | 105 +++++---
+>  arch/riscv/kernel/vdso/vdso.S                 |   6 +-
+>  arch/s390/Kconfig                             |   3 -
+>  arch/s390/include/asm/compat.h                |  99 +------
+>  arch/s390/include/asm/unistd.h                |   1 +
+>  arch/sparc/Kconfig                            |   5 -
+>  arch/sparc/include/asm/compat.h               |  61 ++---
+>  arch/sparc/include/asm/unistd.h               |   1 +
+>  arch/x86/Kconfig                              |   4 -
+>  arch/x86/include/asm/compat.h                 | 104 ++------
+>  arch/x86/include/asm/unistd.h                 |   1 +
+>  fs/open.c                                     |  24 ++
+>  fs/read_write.c                               |  16 ++
+>  fs/stat.c                                     |   2 +-
+>  fs/sync.c                                     |   9 +
+>  include/asm-generic/compat.h                  | 113 ++++++++
+>  include/linux/compat.h                        |  68 +++++
+>  include/uapi/asm-generic/fcntl.h              |  23 +-
+>  include/uapi/asm-generic/unistd.h             |   4 +-
+>  init/Kconfig                                  |   4 +
+>  mm/fadvise.c                                  |  11 +
+>  mm/readahead.c                                |   7 +
+>  tools/include/uapi/asm-generic/fcntl.h        |  21 +-
+>  tools/include/uapi/asm-generic/unistd.h       |   4 +-
+>  67 files changed, 1206 insertions(+), 563 deletions(-)
+>  create mode 100644 arch/riscv/include/asm/compat.h
+>  create mode 100644 arch/riscv/kernel/compat_signal.c
+>  create mode 100644 arch/riscv/kernel/compat_syscall_table.c
+>  create mode 100644 arch/riscv/kernel/compat_vdso/.gitignore
+>  create mode 100644 arch/riscv/kernel/compat_vdso/Makefile
+>  create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.S
+>  create mode 100644 arch/riscv/kernel/compat_vdso/compat_vdso.lds.S
+>  create mode 100644 arch/riscv/kernel/compat_vdso/flush_icache.S
+>  create mode 100755 arch/riscv/kernel/compat_vdso/gen_compat_vdso_offsets=
+.sh
+>  create mode 100644 arch/riscv/kernel/compat_vdso/getcpu.S
+>  create mode 100644 arch/riscv/kernel/compat_vdso/note.S
+>  create mode 100644 arch/riscv/kernel/compat_vdso/rt_sigreturn.S
+>
+> --
+> 2.25.1
+>
 
-Cheers,
 
-Paolo
+--
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
