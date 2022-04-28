@@ -1,42 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BF3512EE0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 10:46:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39EB512F6F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 11:33:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kpq3P6qTbz3c8w
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 18:46:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kpr5c657Vz3bqg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Apr 2022 19:33:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bSdVaS0y;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bSdVaS0y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=suzuki.poulose@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KppM449YKz2xt0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 18:14:55 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAD1D13D5;
- Thu, 28 Apr 2022 01:14:23 -0700 (PDT)
-Received: from [10.57.12.231] (unknown [10.57.12.231])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 801DE3F774;
- Thu, 28 Apr 2022 01:14:12 -0700 (PDT)
-Message-ID: <7956ab00-66b6-bd89-dcc0-f10cf2741e4d@arm.com>
-Date: Thu, 28 Apr 2022 09:14:11 +0100
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=bSdVaS0y; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=bSdVaS0y; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kpr4r24Gmz2yHB
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 19:32:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1651138358;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OG6hUPY6sAUTqTJViKJ1E1LWjNyEwooQAig3aG1iSlg=;
+ b=bSdVaS0yvXXpcbDElCVtDBaDx0k1hLCEBJ30qU6Th/pqqSu19XujxA1FEMqmwRtlmyyEwJ
+ YLVSf6reCB8icoY9UilVO5q9FfpYCGyxGTyOgO93umwDCBspKUgGPTFf7DyWzODfM31bh8
+ 1cFarfsOSA5R9Qh58WE7Xddpipg+Po4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1651138358;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OG6hUPY6sAUTqTJViKJ1E1LWjNyEwooQAig3aG1iSlg=;
+ b=bSdVaS0yvXXpcbDElCVtDBaDx0k1hLCEBJ30qU6Th/pqqSu19XujxA1FEMqmwRtlmyyEwJ
+ YLVSf6reCB8icoY9UilVO5q9FfpYCGyxGTyOgO93umwDCBspKUgGPTFf7DyWzODfM31bh8
+ 1cFarfsOSA5R9Qh58WE7Xddpipg+Po4=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-252-kdE2vY5yMmSUiUkBP7AKzA-1; Thu, 28 Apr 2022 05:32:37 -0400
+X-MC-Unique: kdE2vY5yMmSUiUkBP7AKzA-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ eo13-20020ad4594d000000b004466661ece9so3294986qvb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Apr 2022 02:32:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=OG6hUPY6sAUTqTJViKJ1E1LWjNyEwooQAig3aG1iSlg=;
+ b=L7DGEo8Guh6aGq97bcMWxbVcG04YiguaGkOxdw80SFpV9122kQUTyLvdg0LqoujS9R
+ PSHhPIqWxfvvSTDBwccU1y4NAnFxJoQl+SxNFBIsAWoZQONKCLDSNStx6mgJZ3a/Q+rO
+ suZxg+YMM1E1uRQ70IekNugYYWhIaDosQiTVH3Qs4SPk5olDtFhuySNLGtoTNRNNap0S
+ YbB7wh9kI7dcn6q4+NFWSSHBzzez1PwfYSQ1ovgo1v4uVUVC21F7ZWLNa9Hh0Cr92pr+
+ GdG+g4KgaLfr1WWvgcKogN3ni1aimBBxgNmTJFe/z9M4lqi0i54BFygKtflGuO7T0TJX
+ J/Mw==
+X-Gm-Message-State: AOAM532kGSNC+3OiwdzHa3LBPktvpAXwRTotQ58uuwdb0eYth2ONv2eW
+ CrsungFCo2QJhD2rr6xQK0L0DvmgjZmoSoSA2PAVcHk3bHxK8GnQsxclkMZNwNh/3lc1iC0LgX2
+ 4aD/D2RDhDOL3Q0uTmIUeMWK6CA==
+X-Received: by 2002:a05:622a:2cb:b0:2f3:646b:54b6 with SMTP id
+ a11-20020a05622a02cb00b002f3646b54b6mr15456787qtx.380.1651138356478; 
+ Thu, 28 Apr 2022 02:32:36 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyJ3J0ImF+LM/cJTr/TdEmv6YBtIqlv1bBiDK6w9j0coe0CvNV+LL3YO5hh7fcCBb3x5O7y0w==
+X-Received: by 2002:a05:622a:2cb:b0:2f3:646b:54b6 with SMTP id
+ a11-20020a05622a02cb00b002f3646b54b6mr15456733qtx.380.1651138356147; 
+ Thu, 28 Apr 2022 02:32:36 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-117-160.dyn.eolo.it.
+ [146.241.117.160]) by smtp.gmail.com with ESMTPSA id
+ k66-20020a37ba45000000b0069c5adb2f2fsm9620433qkf.6.2022.04.28.02.32.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Apr 2022 02:32:35 -0700 (PDT)
+Message-ID: <c499d01d51095ae338cbc63179bdc0e1606cbfef.camel@redhat.com>
+Subject: Re: [PATCH net-next v5 08/18] net: sparx5: Replace usage of found
+ with dedicated list iterator variable
+From: Paolo Abeni <pabeni@redhat.com>
+To: Jakob Koschel <jakobkoschel@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>
+Date: Thu, 28 Apr 2022 11:32:28 +0200
+In-Reply-To: <20220427160635.420492-9-jakobkoschel@gmail.com>
+References: <20220427160635.420492-1-jakobkoschel@gmail.com>
+ <20220427160635.420492-9-jakobkoschel@gmail.com>
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.8.1
-Subject: Re: [PATCH 20/30] panic: Add the panic informational notifier list
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, akpm@linux-foundation.org,
- bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-21-gpiccoli@igalia.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20220427224924.592546-21-gpiccoli@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=pabeni@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Thu, 28 Apr 2022 18:45:42 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,132 +112,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, Joel Fernandes <joel@joelfernandes.org>,
- linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- Thierry Reding <thierry.reding@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, will@kernel.org,
- tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
- Florian Fainelli <f.fainelli@gmail.com>, mikelley@microsoft.com,
- john.ogness@linutronix.de, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, Jonathan Hunter <jonathanh@nvidia.com>,
- mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com,
- Hari Bathini <hbathini@linux.ibm.com>,
- Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, Frederic Weisbecker <frederic@kernel.org>,
- vgoyal@redhat.com, Mike Leach <mike.leach@linaro.org>,
- linux-xtensa@linux-xtensa.org, Neeraj Upadhyay <quic_neeraju@quicinc.com>,
- dave.hansen@linux.intel.com, Mikko Perttunen <mperttunen@nvidia.com>,
- keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org,
- Lai Jiangshan <jiangshanlai@gmail.com>, coresight@lists.linaro.org,
- Leo Yan <leo.yan@linaro.org>, linux-um@lists.infradead.org,
- Josh Triplett <josh@joshtriplett.org>, rostedt@goodmis.org,
- rcu@vger.kernel.org, bp@alien8.de, Nicholas Piggin <npiggin@gmail.com>,
- luto@kernel.org, linux-tegra@vger.kernel.org,
- openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
- linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
- jgross@suse.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, linux-kernel@vger.kernel.org,
- stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
- mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Song Liu <songliubraving@fb.com>,
+ Alexei Starovoitov <ast@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Paul Mackerras <paulus@samba.org>, Ariel Elior <aelior@marvell.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
+ "Bos, H.J." <h.j.bos@vu.nl>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-arm-kernel@lists.infradead.org, Yonghong Song <yhs@fb.com>,
+ Vivien Didelot <vivien.didelot@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+ Arnd Bergmann <arnd@arndb.de>, KP Singh <kpsingh@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Martin Habets <habetsm.xilinx@gmail.com>,
+ Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
+ Lars Povlsen <lars.povlsen@microchip.com>,
+ Colin Ian King <colin.king@intel.com>, Manish Chopra <manishc@marvell.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ UNGLinuxDriver@microchip.com, Edward Cree <ecree.xilinx@gmail.com>,
+ Casper Andersson <casper.casan@gmail.com>, Xu Wang <vulab@iscas.ac.cn>,
+ Cristiano Giuffrida <c.giuffrida@vu.nl>, bpf@vger.kernel.org,
+ Vladimir Oltean <olteanv@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Martin KaFai Lau <kafai@fb.com>, Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27/04/2022 23:49, Guilherme G. Piccoli wrote:
-> The goal of this new panic notifier is to allow its users to
-> register callbacks to run earlier in the panic path than they
-> currently do. This aims at informational mechanisms, like dumping
-> kernel offsets and showing device error data (in case it's simple
-> registers reading, for example) as well as mechanisms to disable
-> log flooding (like hung_task detector / RCU warnings) and the
-> tracing dump_on_oops (when enabled).
+Hello,
+
+On Wed, 2022-04-27 at 18:06 +0200, Jakob Koschel wrote:
+> To move the list iterator variable into the list_for_each_entry_*()
+> macro in the future it should be avoided to use the list iterator
+> variable after the loop body.
 > 
-> Any (non-invasive) information that should be provided before
-> kmsg_dump() as well as log flooding preventing code should fit
-> here, as long it offers relatively low risk for kdump.
+> To *never* use the list iterator variable after the loop it was
+> concluded to use a separate iterator variable instead of a
+> found boolean [1].
 > 
-> For now, the patch is almost a no-op, although it changes a bit
-> the ordering in which some panic notifiers are executed - specially
-> affected by this are the notifiers responsible for disabling the
-> hung_task detector / RCU warnings, which now run first. In a
-> subsequent patch, the panic path will be refactored, then the
-> panic informational notifiers will effectively run earlier,
-> before ksmg_dump() (and usually before kdump as well).
+> This removes the need to use a found variable and simply checking if
+> the variable was set, can determine if the break/goto was hit.
 > 
-> We also defer documenting it all properly in the subsequent
-> refactor patch. Finally, while at it, we removed some useless
-> header inclusions too.
-> 
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Frederic Weisbecker <frederic@kernel.org>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Joel Fernandes <joel@joelfernandes.org>
-> Cc: Jonathan Hunter <jonathanh@nvidia.com>
-> Cc: Josh Triplett <josh@joshtriplett.org>
-> Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-> Cc: Leo Yan <leo.yan@linaro.org>
-> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Mike Leach <mike.leach@linaro.org>
-> Cc: Mikko Perttunen <mperttunen@nvidia.com>
-> Cc: Neeraj Upadhyay <quic_neeraju@quicinc.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Cc: Thierry Reding <thierry.reding@gmail.com>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
+> Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
 > ---
->   arch/arm64/kernel/setup.c                         | 2 +-
->   arch/mips/kernel/relocate.c                       | 2 +-
->   arch/powerpc/kernel/setup-common.c                | 2 +-
->   arch/x86/kernel/setup.c                           | 2 +-
->   drivers/bus/brcmstb_gisb.c                        | 2 +-
->   drivers/hwtracing/coresight/coresight-cpu-debug.c | 4 ++--
->   drivers/soc/tegra/ari-tegra186.c                  | 3 ++-
->   include/linux/panic_notifier.h                    | 1 +
->   kernel/hung_task.c                                | 3 ++-
->   kernel/panic.c                                    | 4 ++++
->   kernel/rcu/tree.c                                 | 1 -
->   kernel/rcu/tree_stall.h                           | 3 ++-
->   kernel/trace/trace.c                              | 2 +-
->   13 files changed, 19 insertions(+), 12 deletions(-)
+>  .../microchip/sparx5/sparx5_mactable.c        | 25 +++++++++----------
+>  1 file changed, 12 insertions(+), 13 deletions(-)
 > 
+> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
+> index a5837dbe0c7e..bb8d9ce79ac2 100644
+> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
+> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_mactable.c
+> @@ -362,8 +362,7 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
+>  				     unsigned char mac[ETH_ALEN],
+>  				     u16 vid, u32 cfg2)
+>  {
+> -	struct sparx5_mact_entry *mact_entry;
+> -	bool found = false;
+> +	struct sparx5_mact_entry *mact_entry = NULL, *iter;
+>  	u16 port;
+>  
+>  	if (LRN_MAC_ACCESS_CFG_2_MAC_ENTRY_ADDR_TYPE_GET(cfg2) !=
+> @@ -378,28 +377,28 @@ static void sparx5_mact_handle_entry(struct sparx5 *sparx5,
+>  		return;
+>  
+>  	mutex_lock(&sparx5->mact_lock);
+> -	list_for_each_entry(mact_entry, &sparx5->mact_entries, list) {
+> -		if (mact_entry->vid == vid &&
+> -		    ether_addr_equal(mac, mact_entry->mac)) {
+> -			found = true;
+> -			mact_entry->flags |= MAC_ENT_ALIVE;
+> -			if (mact_entry->port != port) {
+> +	list_for_each_entry(iter, &sparx5->mact_entries, list) {
+> +		if (iter->vid == vid &&
+> +		    ether_addr_equal(mac, iter->mac)) {
 
-...
+I'm sorry for the late feedback.
 
-> diff --git a/drivers/hwtracing/coresight/coresight-cpu-debug.c b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-> index 1874df7c6a73..7b1012454525 100644
-> --- a/drivers/hwtracing/coresight/coresight-cpu-debug.c
-> +++ b/drivers/hwtracing/coresight/coresight-cpu-debug.c
-> @@ -535,7 +535,7 @@ static int debug_func_init(void)
->   			    &debug_func_knob_fops);
->   
->   	/* Register function to be called for panic */
-> -	ret = atomic_notifier_chain_register(&panic_notifier_list,
-> +	ret = atomic_notifier_chain_register(&panic_info_list,
->   					     &debug_notifier);
->   	if (ret) {
->   		pr_err("%s: unable to register notifier: %d\n",
-> @@ -552,7 +552,7 @@ static int debug_func_init(void)
->   
->   static void debug_func_exit(void)
->   {
-> -	atomic_notifier_chain_unregister(&panic_notifier_list,
-> +	atomic_notifier_chain_unregister(&panic_info_list,
->   					 &debug_notifier);
->   	debugfs_remove_recursive(debug_debugfs_dir);
->   }
+If you move the 'mact_entry = iter;' statement here, the diffstat will
+be slightly smaller and the patch more readable, IMHO.
 
-Acked-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+There is similar situation in the next patch.
+
+Cheers,
+
+Paolo
 
