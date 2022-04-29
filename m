@@ -2,138 +2,100 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8BF5152FA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 19:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C33E5152FD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 19:50:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kqg3r3mfWz3c8v
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 03:49:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kqg4b0Syvz3dvd
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 03:50:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=microsoft.com header.i=@microsoft.com header.a=rsa-sha256 header.s=selector2 header.b=QSQxqWpJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LdrJUKTh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=microsoft.com (client-ip=2a01:111:f403:c110::1;
- helo=na01-obe.outbound.protection.outlook.com;
- envelope-from=mikelley@microsoft.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=microsoft.com header.i=@microsoft.com
- header.a=rsa-sha256 header.s=selector2 header.b=QSQxqWpJ; 
- dkim-atps=neutral
-Received: from na01-obe.outbound.protection.outlook.com
- (mail-eus2azlp170100001.outbound.protection.outlook.com
- [IPv6:2a01:111:f403:c110::1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=disgoel@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=LdrJUKTh; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kqffp6Z5lz2yw9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 03:31:29 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XTnYIoTyFDjM5JUklkUkeZSVHdB/KbpjWUKMrwxPKtMBCELnhwwVxh3SyOWp+1En+lBB80Pmi2MOFKxrdFIAO1tVkwmz31aHf3c0WXJgTJO4H8WZ8wWDi+ZLogiDuQYv43MvDvBMsiShc3M4W6FuR/wPAy1Edr9Ejm4EmMmHgoezg8BixUKBI7OUSVmU0/dlrFC57AU3xqY9yjnUIy1vXdv9nlj9XWZBE29iaC+cnW5L/0PZPRadrHbf3+g4UC7EMWCusYpZlk+0nFrTbZZbgil9754PaHuq87Xs5x2NPKguVl+xJisWMMhTPBDhnZUpXDwN8SYDRRPJVsZL70yHUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1lb7HJaoovhC6aIWP9rKJ4VgGH06NMpJYC4i1j5JxsI=;
- b=cllHTkoF7/QGmRKVAfZLbB2EINE8+FyPVK/DhZU1IvHmvPGKiv37XAYsy2ztQQZBV0S2wCJT80Qzf+ODT8pn9hxUAriFcnDhg0MQtoQDmk99sbR4eoHjIBnESHA8RFpDL0QZ9TQIFYrTQ1sa0LxWuC2wFr9KEoOKWkswbeTWdtT8qAKyinjpnI2y79/6J5xxB374yWzqyHNG2OYd8Xse8Q49miwVkxuAjSdxGMc/d6kQcSSLV+ETreRF9TXQzVouszl+GMZqY9q76aTtD+gRUELbgbQQXH756uY5Jmx8Y7/63+0pYcIqxk4hn9ecg4cqgoQJyCOfZkljvQwjcZgnhw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1lb7HJaoovhC6aIWP9rKJ4VgGH06NMpJYC4i1j5JxsI=;
- b=QSQxqWpJqa0hyyFA2XDVFvIF6LUCH46zWRApVCGDtXYWI6H38+ofNY2enqE+SH/qIy3nfoGgoNGiAJVzByKlaoklJK7MeqAmDXe2OQgK7UNp04ELgeYfkgc7YvIny43HOtGavqk6L/OU2tQ5UUDZXTksZysdcEpxlosr405yQD8=
-Received: from PH0PR21MB3025.namprd21.prod.outlook.com (2603:10b6:510:d2::21)
- by DM5PR21MB0761.namprd21.prod.outlook.com (2603:10b6:3:a3::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5227.6; Fri, 29 Apr
- 2022 17:30:45 +0000
-Received: from PH0PR21MB3025.namprd21.prod.outlook.com
- ([fe80::dd77:2d4d:329e:87df]) by PH0PR21MB3025.namprd21.prod.outlook.com
- ([fe80::dd77:2d4d:329e:87df%6]) with mapi id 15.20.5227.006; Fri, 29 Apr 2022
- 17:30:45 +0000
-From: "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "bhe@redhat.com" <bhe@redhat.com>,
- "pmladek@suse.com" <pmladek@suse.com>, "kexec@lists.infradead.org"
- <kexec@lists.infradead.org>
-Subject: RE: [PATCH 19/30] panic: Add the panic hypervisor notifier list
-Thread-Topic: [PATCH 19/30] panic: Add the panic hypervisor notifier list
-Thread-Index: AQHYWonjjKMtrubrvUiw63ryI2yC7q0HJOjg
-Date: Fri, 29 Apr 2022 17:30:44 +0000
-Message-ID: <PH0PR21MB30256260CCF4CAB713BBB11ED7FC9@PH0PR21MB3025.namprd21.prod.outlook.com>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-20-gpiccoli@igalia.com>
-In-Reply-To: <20220427224924.592546-20-gpiccoli@igalia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=ffbe4afc-a779-4ef6-ac4b-fe8bbe7e97a6;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2022-04-29T17:17:23Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: eeb8e09c-7f93-4457-468d-08da2a05fdd8
-x-ms-traffictypediagnostic: DM5PR21MB0761:EE_
-x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-x-microsoft-antispam-prvs: <DM5PR21MB076153F3B23BA9EDA94AA480D7FC9@DM5PR21MB0761.namprd21.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ODUHNdNoyMm3+AjwwTGZa1uU+b7TzZfWBoAD8U4KhH1PO+xsXH02vwPBpyB/mIWIIZLzexbTDM4Vu/gZXstTguCwFin3jx/rAWvym7fQtAAg7bf3LoRbUADVs29tsGDy7+TAF7XXuJ2XtQpxtKth+FDvvHqKkOMz6t9UN3qxlX6X2/8DIw+GSljUyUj0tBw+/yPNu/lWy8bf/Am8dAdq1sDNbEC96RfsPekPyfP+ABzhwQ7PYKa/WylVKbqc6qF9DBAiGkEhIue/W/buwkdT7hYfHatG+zYOokfeiF3mlfl6KUzf5D5VNniM5lrQaX04V1qe1DNhDfiM2zUJp+UaaATU3lWntWn8XhQuwQ43saBb+whCvgo88zwSOnEtmfyXyJ7jSHr1E4zfj918Eh9wqTjnj+ly+wc+lrYnrbxMrLnOqL7bIfdILybyElXp12gbfm2vduDRh4SqY47pT+etRXV897ZE09O7/kJq3qYvGYtzXFoW19u/PKLiR28Z4TH/0eiE3v99EQFM/nm9qKWOIJz0AQ2aN9R7RyGMJ2el+s3C9YrtAh+XKMmCa/DuIpJihY98t7SoGzymQzR/oWmks7/DWMg11/eTBUSMF7oGyj/sryAvEYyImB8qi3eqsEWUoi0UGVpgJYUtiNLHN8PgE27Kl/BKSUCkJOXB2SWOuZP/2y/mimDRuhjjLgpCS8XKOFW4CADcxyTlrPyV6BZvcWd8nLypxsa6tVzXjuIb6HQVUSBs7DXSfR7irbmoVbPr
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR21MB3025.namprd21.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(451199009)(26005)(508600001)(8936002)(9686003)(86362001)(5660300002)(122000001)(66556008)(76116006)(66946007)(4326008)(64756008)(8676002)(66476007)(66446008)(52536014)(55016003)(7696005)(2906002)(83380400001)(33656002)(8990500004)(7366002)(6506007)(71200400001)(186003)(7336002)(7416002)(7406005)(110136005)(38100700002)(38070700005)(54906003)(82960400001)(82950400001)(316002)(10290500003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?TlM1hb7C2zMfewQaGJedC++RJRP9D1fk9jo5g85b/VbEJjlvhufD/+3GvsdT?=
- =?us-ascii?Q?2RVoig3NgPv+9kMAhzt2yayxBFL+XC6TKbfh6r5z8+a3Ialq4pqnl+61min4?=
- =?us-ascii?Q?AQUbYZF6RM2WxWAWaWbmf4pZvHkqxCNxh2tBKbbAZG7zTWlGRE0yrn46CpjQ?=
- =?us-ascii?Q?Kg+FF3RMjkh0xhKb7YhWVGFRR4cUFfDwAE8Y0u/ayL9EvN7YfHgvbTwnFibg?=
- =?us-ascii?Q?wxrs8ZKT9gyje95TfWsysjrlEo2AMhjijQYf+wk++uxUxKjFMFcFM0TK/o0U?=
- =?us-ascii?Q?SkFo0xaTlF5faRiiVtJr3loo9S/Ku6rNW972dcU4pAdU566LuvrnO7MFZjdh?=
- =?us-ascii?Q?AFmbPsT2BzLJiaocFxkmdlQu7LQAu7OqTCRt6l+PZ9/gSfZuPhUus2hHDtrB?=
- =?us-ascii?Q?SDM9omiIG+Hxx9v9sHNTsQnym8IgjtRHARJqPiuuOrhzGW6rnMAOXglrCflV?=
- =?us-ascii?Q?Rov5f0XftngP4p/15HVk/xZ3U6CF21Y8wkL46j9LuXmnR1XoUchKnTl+E2LX?=
- =?us-ascii?Q?HVGrWe5ghuEiAOI2CIdLYYiZOLMOSKHkPVS5tEsF0puhwsUw4JMbLD+YZac+?=
- =?us-ascii?Q?XngxLj2g0ToSfUytDuBtW/xckOvI92+dCx8pO+ZAYP+e0eVn9cwp1Kvm1xNb?=
- =?us-ascii?Q?rAV5CaVoCci7b8QWoR2QN+Fu5dk7/CqjmTz1tOeFdsuqD6uz1SRGrS1d03HL?=
- =?us-ascii?Q?xDH9ipJZ+o8EfvcxNjL+NjflstJUNBTDD179PIJ02lIR/lqudf7+UQyDID84?=
- =?us-ascii?Q?q6tjz0iN9UUKGwVqgivgZXrsYwAytqrnKmINVNW4wb3XLk5w9neXRmUH+j78?=
- =?us-ascii?Q?KsamX4Pm+/ES4p923iT/O1j8Dc0iz2HIDjQusOUqKqy+1Cmv74o7qNPXqarR?=
- =?us-ascii?Q?SV+zg4wh7LaN+6mQPM9GRAC/fCDGlfCRDE0pObSvJCER5gHColet4D4oXi/M?=
- =?us-ascii?Q?whLKv3In3ycb8NG9SfzBHT6UBBuTXzlk8Z1cOw5HxwbJpQLcoJRyOznkhaFh?=
- =?us-ascii?Q?puB+TPg2v7gG43STuXsZuBPdxeBcD8t22uNy09Tm5VdFwD19dW7BANqzNvjE?=
- =?us-ascii?Q?6ltEeCK6kZsWlNtZnhZXzDkWfGec7QKD5T4837WQofWzk4AFyNmw3P07gbzW?=
- =?us-ascii?Q?DPRwU0bZQmEfow5pS46fZjnBJLIMizPbjOrxqQF88Hjdw7YkIlxIIPy9nOq5?=
- =?us-ascii?Q?rkOk+PDUI9sQbFgNvnFlRVqa5M9e8Cy3bVoX1i0e+J8fFasucl92zOySG7x1?=
- =?us-ascii?Q?dB0URJnSLwBlrJmIq2kHvmFM17BCiSIY6KmZnlsYBBc1zFLorv7VM7LxtvfK?=
- =?us-ascii?Q?eWEn4xu8Zu2XCbhm1RGjyA5mb3yJm+3MMLIWqa+D7mjqfMW4n/WDwOBGp4aX?=
- =?us-ascii?Q?7QIVcVDS2FQO8HGQtL0ZKsEXbyBGRrNCLrnSGQeM3c6sITs7FuMznsa3uTQ1?=
- =?us-ascii?Q?RzaG53kxTddhkwnYFMCH33OZDDS2VRKVGp0nCTknijgA/sd/pqAgBqx5FXNZ?=
- =?us-ascii?Q?LATiyW6hMVS3IQCBsELFD/kPKZZBR2r77QSiuWPyw2p8Pov/AXvouaHqr3Ks?=
- =?us-ascii?Q?aS3oN5XL5IHgKsiBu9N05s7MHrTT+fYH1fgDf196dY2Y2fYMpnG/9O22tFVZ?=
- =?us-ascii?Q?lsqy47lRHWMZ83W8zC+zPLhsXx6hfG0s/4A7rNIm78PqkrB2VME1eEucYCy8?=
- =?us-ascii?Q?YLC3m+W9TrKfxD8jKOYF9JNku02hxJAdCmjBpA8ShRZwpe21dzNz+uH7NKFr?=
- =?us-ascii?Q?FMBdMIBAEVrPX2S6uKBKGZRc/W3b2C8=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR21MB3025.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eeb8e09c-7f93-4457-468d-08da2a05fdd8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2022 17:30:44.8209 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: w0NqD7w01G3MX0hLhA/dcwb32L6tMn458kJlZ8pEiHHtKKqoR4vHWxkneKizeI4TFabvPMLpsqtoLF7uJprzpME6TmOX5LZO5vkLMC+rFzs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR21MB0761
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KqflX27gVz3bYn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 03:35:35 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23THIXJi018260;
+ Fri, 29 Apr 2022 17:35:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version; s=pp1; bh=+/6BIlgunlgG30XMhEZi8l941iHxYHcxJ8421jNRvDw=;
+ b=LdrJUKThYG54yvBmv8FzoucL7oqTQk9gKEIGKuQ3ceYFDczBuuf2oaPmVXSHB3SuQjMT
+ WBkiAz1bdiDquNKRYHHQ6YuIImfUnvevNkxzeu0stS4m0EWMxaI0vA/ruX7n+Yi5YbZQ
+ 3dmvMBcy4hfHgmMH5wK0Hlsn/KIaN5lftwdrrQdYKmq5ZWD3SY+0ZfNnnahxvCCI5szV
+ N9gdmPOsmN4rbnu6yL8vDGCPFzhuUOj2WtgNmSfrg7YSYz1S1w9xNdxfyvVAYIkUCC44
+ dTLtJJyUowuwt++jeMqdMB+gIm8FQJgJ1IY2fXC52ECKSMMMyYkIijN2p8iK2zailuUw Ag== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3frma4ganq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 29 Apr 2022 17:35:25 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 23THJQLd023816;
+ Fri, 29 Apr 2022 17:35:25 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.72])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3frma4gamt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 29 Apr 2022 17:35:25 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+ by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23THGOI9026024;
+ Fri, 29 Apr 2022 17:35:23 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma06fra.de.ibm.com with ESMTP id 3fm8qhqgqk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 29 Apr 2022 17:35:22 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 23THMAa736569412
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 29 Apr 2022 17:22:10 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5AA58A405B;
+ Fri, 29 Apr 2022 17:35:19 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1BDDAA4054;
+ Fri, 29 Apr 2022 17:35:14 +0000 (GMT)
+Received: from disgoel-ibm-com (unknown [9.43.111.62])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 29 Apr 2022 17:35:13 +0000 (GMT)
+Message-ID: <32e64f2af0ffe545fee07e641870e8deb67aaf08.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH 0/2] Fix session topology test for powerpc and add
+ utility function to get cpuinfo entries
+From: Disha Goel <disgoel@linux.vnet.ibm.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+ jolsa@kernel.org
+Date: Fri, 29 Apr 2022 23:05:12 +0530
+In-Reply-To: <20220428150829.30733-1-atrajeev@linux.vnet.ibm.com>
+References: <20220428150829.30733-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: multipart/alternative; boundary="=-yT4bCEGVdsMB7jA0c9Kx"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AMOYc6GcXaPmAgHUO0DmM2L-cMWw6xJr
+X-Proofpoint-GUID: ToOngbhzXd5bxVhKzUEsess8-s4E4KFS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-04-29_08,2022-04-28_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0
+ clxscore=1015 phishscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2204290088
 X-Mailman-Approved-At: Sat, 30 Apr 2022 03:44:36 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -146,193 +108,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Justin Chen <justinpopo6@gmail.com>,
- Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>,
- KY Srinivasan <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- Nicholas Piggin <npiggin@gmail.com>, "luto@kernel.org" <luto@kernel.org>,
- Mihai Carabas <mihai.carabas@oracle.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
- "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "vgoyal@redhat.com" <vgoyal@redhat.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- Andrea Parri <parri.andrea@gmail.com>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
- Scott Branden <scott.branden@broadcom.com>,
- "coresight@lists.linaro.org" <coresight@lists.linaro.org>,
- Florian Fainelli <f.fainelli@gmail.com>, Markus Mayer <mmayer@broadcom.com>,
- "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
- "halves@canonical.com" <halves@canonical.com>,
- "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
- "feng.tang@intel.com" <feng.tang@intel.com>,
- zhenwei pi <pizhenwei@bytedance.com>, "will@kernel.org" <will@kernel.org>,
- Doug Berger <opendmb@gmail.com>, "corbet@lwn.net" <corbet@lwn.net>,
- Dexuan Cui <decui@microsoft.com>, Evan Green <evgreen@chromium.org>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- "keescook@chromium.org" <keescook@chromium.org>,
- "arnd@arndb.de" <arnd@arndb.de>, Haiyang Zhang <haiyangz@microsoft.com>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
- "openipmi-developer@lists.sourceforge.net"
- <openipmi-developer@lists.sourceforge.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- Sebastian Reichel <sre@kernel.org>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- Brian Norris <computersforpeace@gmail.com>, "David S.
- Miller" <davem@davemloft.net>, "peterz@infradead.org" <peterz@infradead.org>,
- "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Lee Jones <lee.jones@linaro.org>, Ard Biesheuvel <ardb@kernel.org>,
- "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "dyoung@redhat.com" <dyoung@redhat.com>,
- "paulmck@kernel.org" <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Wang ShaoBo <bobo.shaobowang@huawei.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- David Gow <davidgow@google.com>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "jgross@suse.com" <jgross@suse.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- Julius Werner <jwerner@chromium.org>, vkuznets <vkuznets@redhat.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linux-perf-users@vger.kernel.org, kjain@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com> Sent: Wednesday, April 27,=
- 2022 3:49 PM
->=20
-> The goal of this new panic notifier is to allow its users to register
-> callbacks to run very early in the panic path. This aims hypervisor/FW
-> notification mechanisms as well as simple LED functions, and any other
-> simple and safe mechanism that should run early in the panic path; more
-> dangerous callbacks should execute later.
->=20
-> For now, the patch is almost a no-op (although it changes a bit the
-> ordering in which some panic notifiers are executed). In a subsequent
-> patch, the panic path will be refactored, then the panic hypervisor
-> notifiers will effectively run very early in the panic path.
->=20
-> We also defer documenting it all properly in the subsequent refactor
-> patch. While at it, we removed some useless header inclusions and
-> fixed some notifiers return too (by using the standard NOTIFY_DONE).
->=20
-> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> Cc: Andrea Parri (Microsoft) <parri.andrea@gmail.com>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Brian Norris <computersforpeace@gmail.com>
-> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Cc: David Gow <davidgow@google.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Dexuan Cui <decui@microsoft.com>
-> Cc: Doug Berger <opendmb@gmail.com>
-> Cc: Evan Green <evgreen@chromium.org>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Haiyang Zhang <haiyangz@microsoft.com>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Julius Werner <jwerner@chromium.org>
-> Cc: Justin Chen <justinpopo6@gmail.com>
-> Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Markus Mayer <mmayer@broadcom.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Michael Kelley <mikelley@microsoft.com>
-> Cc: Mihai Carabas <mihai.carabas@oracle.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Scott Branden <scott.branden@broadcom.com>
-> Cc: Sebastian Reichel <sre@kernel.org>
-> Cc: Shile Zhang <shile.zhang@linux.alibaba.com>
-> Cc: Stephen Hemminger <sthemmin@microsoft.com>
-> Cc: Sven Schnelle <svens@linux.ibm.com>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: Tianyu Lan <Tianyu.Lan@microsoft.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Wang ShaoBo <bobo.shaobowang@huawei.com>
-> Cc: Wei Liu <wei.liu@kernel.org>
-> Cc: zhenwei pi <pizhenwei@bytedance.com>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-> ---
->  arch/mips/sgi-ip22/ip22-reset.c          | 2 +-
->  arch/mips/sgi-ip32/ip32-reset.c          | 3 +--
->  arch/powerpc/kernel/setup-common.c       | 2 +-
->  arch/sparc/kernel/sstate.c               | 3 +--
->  drivers/firmware/google/gsmi.c           | 4 ++--
->  drivers/hv/vmbus_drv.c                   | 4 ++--
->  drivers/leds/trigger/ledtrig-activity.c  | 4 ++--
->  drivers/leds/trigger/ledtrig-heartbeat.c | 4 ++--
->  drivers/misc/bcm-vk/bcm_vk_dev.c         | 6 +++---
->  drivers/misc/pvpanic/pvpanic.c           | 4 ++--
->  drivers/power/reset/ltc2952-poweroff.c   | 4 ++--
->  drivers/s390/char/zcore.c                | 5 +++--
->  drivers/soc/bcm/brcmstb/pm/pm-arm.c      | 2 +-
->  include/linux/panic_notifier.h           | 1 +
->  kernel/panic.c                           | 4 ++++
->  15 files changed, 28 insertions(+), 24 deletions(-)
 
-[ snip]
-
->=20
-> diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-> index f37f12d48001..901b97034308 100644
-> --- a/drivers/hv/vmbus_drv.c
-> +++ b/drivers/hv/vmbus_drv.c
-> @@ -1614,7 +1614,7 @@ static int vmbus_bus_init(void)
->  			hv_kmsg_dump_register();
->=20
->  		register_die_notifier(&hyperv_die_report_block);
-> -		atomic_notifier_chain_register(&panic_notifier_list,
-> +		atomic_notifier_chain_register(&panic_hypervisor_list,
->  						&hyperv_panic_report_block);
->  	}
->=20
-> @@ -2843,7 +2843,7 @@ static void __exit vmbus_exit(void)
->  	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
->  		kmsg_dump_unregister(&hv_kmsg_dumper);
->  		unregister_die_notifier(&hyperv_die_report_block);
-> -		atomic_notifier_chain_unregister(&panic_notifier_list,
-> +		atomic_notifier_chain_unregister(&panic_hypervisor_list,
->  						&hyperv_panic_report_block);
->  	}
->=20
-
-Using the hypervisor_list here produces a bit of a mismatch.  In many cases
-this notifier will do nothing, and will defer to the kmsg_dump() mechanism
-to notify the hypervisor about the panic.   Running the kmsg_dump()
-mechanism is linked to the info_list, so I'm thinking the Hyper-V panic rep=
-ort
-notifier should be on the info_list as well.  That way the reporting behavi=
-or
-is triggered at the same point in the panic path regardless of which
-reporting mechanism is used.
+--=-yT4bCEGVdsMB7jA0c9Kx
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
 
+
+-----Original Message-----
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com
+Cc: mpe@ellerman.id.au, linux-perf-users@vger.kernel.org, 
+linuxppc-dev@lists.ozlabs.org, maddy@linux.vnet.ibm.com, 
+rnsastry@linux.ibm.com, kjain@linux.ibm.com, irogers@google.com
+Subject: [PATCH 0/2] Fix session topology test for powerpc and add
+utility function to get cpuinfo entries
+Date: Thu, 28 Apr 2022 20:38:27 +0530
+
+The session topology test fails in powerpc pSeries platform.Test
+logs:<<>>Session topology : FAILED!<<>>
+This test uses cpu topology information and in powerpc,some of the
+topology info is restricted in environmentlike virtualized platform.
+Hence this test needs to beskipped in pSeries platform for powerpc. The
+informationabout platform is available in /proc/cpuinfo.
+Patch 1 adds generic utility function in "util/header.c"to read
+/proc/cpuinfo for any entry. Though the testcasefix needs value from
+"platform" entry, making this as ageneric function to return value for
+any entry from the/proc/cpuinfo file which can be used commonly in
+futureusecases.
+Patch 2 uses the newly added utility function to look forplatform and
+skip the test in pSeries platform for powerpc.
+Athira Rajeev (2):  tools/perf: Add utility function to read
+/proc/cpuinfo for any field  tools/perf/tests: Fix session topology
+test to skip the test in guest    environment
+Tested the patches on powerpc and powernv, verified perf test session
+topology test with the patch set.Tested-by: Disha Goel <
+disgoel@linux.vnet.ibm.com>
+ tools/perf/tests/topology.c | 17 ++++++++++++
+tools/perf/util/header.c    | 54 +++++++++++++++++++++++++++++++++++++
+tools/perf/util/header.h    |  1 + 3 files changed, 72 insertions(+)
+
+
+--=-yT4bCEGVdsMB7jA0c9Kx
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html dir=3D"ltr"><head></head><body style=3D"text-align:left; direction:lt=
+r;"><div><br></div><div><br></div><div>-----Original Message-----</div><div=
+><b>From</b>: Athira Rajeev &lt;<a href=3D"mailto:Athira%20Rajeev%20%3catra=
+jeev@linux.vnet.ibm.com%3e">atrajeev@linux.vnet.ibm.com</a>&gt;</div><div><=
+b>To</b>: <a href=3D"mailto:acme@kernel.org">acme@kernel.org</a>, <a href=
+=3D"mailto:jolsa@kernel.org">jolsa@kernel.org</a>, <a href=3D"mailto:disgoe=
+l@linux.vnet.ibm.com">disgoel@linux.vnet.ibm.com</a></div><div><b>Cc</b>: <=
+a href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.au</a>, <a href=3D"mai=
+lto:linux-perf-users@vger.kernel.org">linux-perf-users@vger.kernel.org</a>,=
+ <a href=3D"mailto:linuxppc-dev@lists.ozlabs.org">linuxppc-dev@lists.ozlabs=
+.org</a>, <a href=3D"mailto:maddy@linux.vnet.ibm.com">maddy@linux.vnet.ibm.=
+com</a>, <a href=3D"mailto:rnsastry@linux.ibm.com">rnsastry@linux.ibm.com</=
+a>, <a href=3D"mailto:kjain@linux.ibm.com">kjain@linux.ibm.com</a>, <a href=
+=3D"mailto:irogers@google.com">irogers@google.com</a></div><div><b>Subject<=
+/b>: [PATCH 0/2] Fix session topology test for powerpc and add utility func=
+tion to get cpuinfo entries</div><div><b>Date</b>: Thu, 28 Apr 2022 20:38:2=
+7 +0530</div><div><br></div><pre>The session topology test fails in powerpc=
+ pSeries platform.</pre><pre>Test logs:</pre><pre>&lt;&lt;&gt;&gt;</pre><pr=
+e>Session topology : FAILED!</pre><pre>&lt;&lt;&gt;&gt;</pre><pre><br></pre=
+><pre>This test uses cpu topology information and in powerpc,</pre><pre>som=
+e of the topology info is restricted in environment</pre><pre>like virtuali=
+zed platform. Hence this test needs to be</pre><pre>skipped in pSeries plat=
+form for powerpc. The information</pre><pre>about platform is available in =
+/proc/cpuinfo.</pre><pre><br></pre><pre>Patch 1 adds generic utility functi=
+on in "util/header.c"</pre><pre>to read /proc/cpuinfo for any entry. Though=
+ the testcase</pre><pre>fix needs value from "platform" entry, making this =
+as a</pre><pre>generic function to return value for any entry from the</pre=
+><pre>/proc/cpuinfo file which can be used commonly in future</pre><pre>use=
+cases.</pre><pre><br></pre><pre>Patch 2 uses the newly added utility functi=
+on to look for</pre><pre>platform and skip the test in pSeries platform for=
+ powerpc.</pre><pre><br></pre><pre>Athira Rajeev (2):</pre><pre>  tools/per=
+f: Add utility function to read /proc/cpuinfo for any field</pre><pre>  too=
+ls/perf/tests: Fix session topology test to skip the test in guest</pre><pr=
+e>    environment</pre><pre><br></pre><pre style=3D"caret-color: rgb(0, 0, =
+0); color: rgb(0, 0, 0);">Tested the patches on powerpc and powernv, verifi=
+ed perf test session topology test with the patch set.</pre><pre><span styl=
+e=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">Tested-by: Disha Goel=
+ &lt;</span><a href=3D"mailto:disgoel@linux.vnet.ibm.com" style=3D"caret-co=
+lor: rgb(0, 0, 0);"><a href=3D"mailto:disgoel@linux.vnet.ibm.com">disgoel@l=
+inux.vnet.ibm.com</a></a><span style=3D"caret-color: rgb(0, 0, 0); color: r=
+gb(0, 0, 0);">&gt;</span></pre><pre><br></pre><pre> tools/perf/tests/topolo=
+gy.c | 17 ++++++++++++</pre><pre> tools/perf/util/header.c    | 54 ++++++++=
++++++++++++++++++++++++++++++</pre><pre> tools/perf/util/header.h    |  1 +=
+</pre><pre> 3 files changed, 72 insertions(+)</pre><pre><br></pre></body></=
+html>
+
+--=-yT4bCEGVdsMB7jA0c9Kx--
 
