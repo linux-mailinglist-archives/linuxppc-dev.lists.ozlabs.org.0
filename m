@@ -2,101 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C33E5152FD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 19:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F332151526F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 19:40:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kqg4b0Syvz3dvd
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 03:50:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kqfrx6Dqbz3bs1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 03:40:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LdrJUKTh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bh6pzVLD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=disgoel@linux.vnet.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=LdrJUKTh; dkim-atps=neutral
+ header.s=pp1 header.b=bh6pzVLD; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KqflX27gVz3bYn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 03:35:35 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23THIXJi018260;
- Fri, 29 Apr 2022 17:35:26 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KqfrG1H3lz3bZX
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 03:39:41 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23TGw0cJ011947;
+ Fri, 29 Apr 2022 17:39:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version; s=pp1; bh=+/6BIlgunlgG30XMhEZi8l941iHxYHcxJ8421jNRvDw=;
- b=LdrJUKThYG54yvBmv8FzoucL7oqTQk9gKEIGKuQ3ceYFDczBuuf2oaPmVXSHB3SuQjMT
- WBkiAz1bdiDquNKRYHHQ6YuIImfUnvevNkxzeu0stS4m0EWMxaI0vA/ruX7n+Yi5YbZQ
- 3dmvMBcy4hfHgmMH5wK0Hlsn/KIaN5lftwdrrQdYKmq5ZWD3SY+0ZfNnnahxvCCI5szV
- N9gdmPOsmN4rbnu6yL8vDGCPFzhuUOj2WtgNmSfrg7YSYz1S1w9xNdxfyvVAYIkUCC44
- dTLtJJyUowuwt++jeMqdMB+gIm8FQJgJ1IY2fXC52ECKSMMMyYkIijN2p8iK2zailuUw Ag== 
+ h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=YoHa0fLQEkgm+3Igrqs1u82fd0eKrL3cNPKS8q/AGcs=;
+ b=bh6pzVLD+JALzZUxG9/IYtCYv8tb0e7wZUDHzxVGH637nt81PrchE5i2K3rY6nqvuNE3
+ vxfMkDFLMqdtShueEkai+pgunIfMy+c6T3QBRJB3hjmQ/xC0kzYtXu7NiHU3Rrk+ObKb
+ Z1CoxBLs0LxC/mVa4dQVos5kCs3S8WAI4+fVBIjWLMvomjbtHWvUnVC1cEmd/Vhjllxk
+ 50Tv3C/tVS5ayUgm2iTM+DiKYpmMftBTCrbkDKbVdokiYn7MfxsvnELk+DF9CyWGbFhI
+ cvAy5SE/Evzpd15aVS0eNLFjqhqEpYPrtHxKlTdphWUYgryupNAkhtElIMm/3nvYCLXi iw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3frma4ganq-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fqt9efudn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Apr 2022 17:35:25 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 23THJQLd023816;
- Fri, 29 Apr 2022 17:35:25 GMT
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.72])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3frma4gamt-1
+ Fri, 29 Apr 2022 17:39:26 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 23THVGSR002413;
+ Fri, 29 Apr 2022 17:39:26 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fqt9efucs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Apr 2022 17:35:25 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
- by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23THGOI9026024;
- Fri, 29 Apr 2022 17:35:23 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma06fra.de.ibm.com with ESMTP id 3fm8qhqgqk-1
+ Fri, 29 Apr 2022 17:39:26 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23THbqX0031260;
+ Fri, 29 Apr 2022 17:39:23 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma05fra.de.ibm.com with ESMTP id 3fm938ygfe-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 29 Apr 2022 17:35:22 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 23THMAa736569412
+ Fri, 29 Apr 2022 17:39:23 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 23THdLdl48365836
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 29 Apr 2022 17:22:10 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5AA58A405B;
- Fri, 29 Apr 2022 17:35:19 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1BDDAA4054;
- Fri, 29 Apr 2022 17:35:14 +0000 (GMT)
-Received: from disgoel-ibm-com (unknown [9.43.111.62])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 29 Apr 2022 17:35:13 +0000 (GMT)
-Message-ID: <32e64f2af0ffe545fee07e641870e8deb67aaf08.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH 0/2] Fix session topology test for powerpc and add
- utility function to get cpuinfo entries
-From: Disha Goel <disgoel@linux.vnet.ibm.com>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
- jolsa@kernel.org
-Date: Fri, 29 Apr 2022 23:05:12 +0530
-In-Reply-To: <20220428150829.30733-1-atrajeev@linux.vnet.ibm.com>
-References: <20220428150829.30733-1-atrajeev@linux.vnet.ibm.com>
-Content-Type: multipart/alternative; boundary="=-yT4bCEGVdsMB7jA0c9Kx"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+ Fri, 29 Apr 2022 17:39:21 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4078511C04C;
+ Fri, 29 Apr 2022 17:39:21 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C675B11C04A;
+ Fri, 29 Apr 2022 17:39:20 +0000 (GMT)
+Received: from localhost (unknown [9.43.18.217])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 29 Apr 2022 17:39:20 +0000 (GMT)
+Date: Fri, 29 Apr 2022 23:09:19 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 2/2] ftrace: recordmcount: Handle sections with no
+ non-weak symbols
+To: Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1651166001.git.naveen.n.rao@linux.vnet.ibm.com>
+ <126aca34935cf1c7168e17970c706e36577094e7.1651166001.git.naveen.n.rao@linux.vnet.ibm.com>
+ <20220428184212.18fbf438@gandalf.local.home>
+In-Reply-To: <20220428184212.18fbf438@gandalf.local.home>
+MIME-Version: 1.0
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1651252324.js9790ngjg.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: AMOYc6GcXaPmAgHUO0DmM2L-cMWw6xJr
-X-Proofpoint-GUID: ToOngbhzXd5bxVhKzUEsess8-s4E4KFS
+X-Proofpoint-GUID: XjwigIEeW3HSn-VRBEuRqpTuXxv62pyz
+X-Proofpoint-ORIG-GUID: ed5zTfg3vACJAC1QySK7bIsb5o0AfjqR
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-04-29_08,2022-04-28_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0
- clxscore=1015 phishscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
+ malwarescore=0 phishscore=0
+ mlxscore=0 suspectscore=0 priorityscore=1501 spamscore=0 mlxlogscore=783
+ adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
  definitions=main-2204290088
-X-Mailman-Approved-At: Sat, 30 Apr 2022 03:44:36 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,103 +110,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- linux-perf-users@vger.kernel.org, kjain@linux.ibm.com,
+Cc: llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Steven Rostedt wrote:
+> On Thu, 28 Apr 2022 22:49:52 +0530
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> wrote:
+>=20
+>> But, with ppc64 elf abi v1 which only supports the old -pg flag, mcount
+>> location can differ between the weak and non-weak variants of a
+>> function. In such scenarios, one of the two mcount entries will be
+>> invalid. Such architectures need to validate mcount locations by
+>> ensuring that the instruction(s) at those locations are as expected. On
+>> powerpc, this can be a simple check to ensure that the instruction is a
+>> 'bl'. This check can be further tightened as necessary.
+>=20
+> I was thinking about this more, and I was thinking that we could create
+> another section; Perhaps __mcount_loc_weak. And place these in that
+> section. That way, we could check if these symbols to see if there's
+> already a symbol for it, and if there is, then drop it.
 
---=-yT4bCEGVdsMB7jA0c9Kx
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+If I'm understanding your suggestion right:
+- we now create a new section in each object file: __mcount_loc_weak,=20
+  and capture such relocations using weak symbols there.
+- we then ask the linker to put these separately between, say,=20
+  __start_mcount_loc_weak and __stop_mcount_loc_weak
+- on ftrace init, we go through entries in this range, but discard those=20
+  that belong to functions that also have an entry between=20
+  __start_mcount_loc and __stop_mcount loc.
+
+The primary issue I see here is that the mcount locations within the new=20
+weak section will end up being offsets from a different function in=20
+vmlinux, since the linker does not create a symbol for the weak=20
+functions that were over-ridden.
+
+As an example, in the issue described in this patch set, if powerpc=20
+starts over-riding kexec_arch_apply_relocations(), then the current weak=20
+implementation in kexec_file.o gets carried over to the final vmlinux,=20
+but the instructions will instead appear under the previous function in=20
+kexec_file.o: crash_prepare_elf64_headers(). This function may or may=20
+not be traced to begin with, so we won't be able to figure out if this=20
+is valid or not.
 
 
-
------Original Message-----
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com
-Cc: mpe@ellerman.id.au, linux-perf-users@vger.kernel.org, 
-linuxppc-dev@lists.ozlabs.org, maddy@linux.vnet.ibm.com, 
-rnsastry@linux.ibm.com, kjain@linux.ibm.com, irogers@google.com
-Subject: [PATCH 0/2] Fix session topology test for powerpc and add
-utility function to get cpuinfo entries
-Date: Thu, 28 Apr 2022 20:38:27 +0530
-
-The session topology test fails in powerpc pSeries platform.Test
-logs:<<>>Session topology : FAILED!<<>>
-This test uses cpu topology information and in powerpc,some of the
-topology info is restricted in environmentlike virtualized platform.
-Hence this test needs to beskipped in pSeries platform for powerpc. The
-informationabout platform is available in /proc/cpuinfo.
-Patch 1 adds generic utility function in "util/header.c"to read
-/proc/cpuinfo for any entry. Though the testcasefix needs value from
-"platform" entry, making this as ageneric function to return value for
-any entry from the/proc/cpuinfo file which can be used commonly in
-futureusecases.
-Patch 2 uses the newly added utility function to look forplatform and
-skip the test in pSeries platform for powerpc.
-Athira Rajeev (2):  tools/perf: Add utility function to read
-/proc/cpuinfo for any field  tools/perf/tests: Fix session topology
-test to skip the test in guest    environment
-Tested the patches on powerpc and powernv, verified perf test session
-topology test with the patch set.Tested-by: Disha Goel <
-disgoel@linux.vnet.ibm.com>
- tools/perf/tests/topology.c | 17 ++++++++++++
-tools/perf/util/header.c    | 54 +++++++++++++++++++++++++++++++++++++
-tools/perf/util/header.h    |  1 + 3 files changed, 72 insertions(+)
-
-
---=-yT4bCEGVdsMB7jA0c9Kx
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html dir=3D"ltr"><head></head><body style=3D"text-align:left; direction:lt=
-r;"><div><br></div><div><br></div><div>-----Original Message-----</div><div=
-><b>From</b>: Athira Rajeev &lt;<a href=3D"mailto:Athira%20Rajeev%20%3catra=
-jeev@linux.vnet.ibm.com%3e">atrajeev@linux.vnet.ibm.com</a>&gt;</div><div><=
-b>To</b>: <a href=3D"mailto:acme@kernel.org">acme@kernel.org</a>, <a href=
-=3D"mailto:jolsa@kernel.org">jolsa@kernel.org</a>, <a href=3D"mailto:disgoe=
-l@linux.vnet.ibm.com">disgoel@linux.vnet.ibm.com</a></div><div><b>Cc</b>: <=
-a href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.au</a>, <a href=3D"mai=
-lto:linux-perf-users@vger.kernel.org">linux-perf-users@vger.kernel.org</a>,=
- <a href=3D"mailto:linuxppc-dev@lists.ozlabs.org">linuxppc-dev@lists.ozlabs=
-.org</a>, <a href=3D"mailto:maddy@linux.vnet.ibm.com">maddy@linux.vnet.ibm.=
-com</a>, <a href=3D"mailto:rnsastry@linux.ibm.com">rnsastry@linux.ibm.com</=
-a>, <a href=3D"mailto:kjain@linux.ibm.com">kjain@linux.ibm.com</a>, <a href=
-=3D"mailto:irogers@google.com">irogers@google.com</a></div><div><b>Subject<=
-/b>: [PATCH 0/2] Fix session topology test for powerpc and add utility func=
-tion to get cpuinfo entries</div><div><b>Date</b>: Thu, 28 Apr 2022 20:38:2=
-7 +0530</div><div><br></div><pre>The session topology test fails in powerpc=
- pSeries platform.</pre><pre>Test logs:</pre><pre>&lt;&lt;&gt;&gt;</pre><pr=
-e>Session topology : FAILED!</pre><pre>&lt;&lt;&gt;&gt;</pre><pre><br></pre=
-><pre>This test uses cpu topology information and in powerpc,</pre><pre>som=
-e of the topology info is restricted in environment</pre><pre>like virtuali=
-zed platform. Hence this test needs to be</pre><pre>skipped in pSeries plat=
-form for powerpc. The information</pre><pre>about platform is available in =
-/proc/cpuinfo.</pre><pre><br></pre><pre>Patch 1 adds generic utility functi=
-on in "util/header.c"</pre><pre>to read /proc/cpuinfo for any entry. Though=
- the testcase</pre><pre>fix needs value from "platform" entry, making this =
-as a</pre><pre>generic function to return value for any entry from the</pre=
-><pre>/proc/cpuinfo file which can be used commonly in future</pre><pre>use=
-cases.</pre><pre><br></pre><pre>Patch 2 uses the newly added utility functi=
-on to look for</pre><pre>platform and skip the test in pSeries platform for=
- powerpc.</pre><pre><br></pre><pre>Athira Rajeev (2):</pre><pre>  tools/per=
-f: Add utility function to read /proc/cpuinfo for any field</pre><pre>  too=
-ls/perf/tests: Fix session topology test to skip the test in guest</pre><pr=
-e>    environment</pre><pre><br></pre><pre style=3D"caret-color: rgb(0, 0, =
-0); color: rgb(0, 0, 0);">Tested the patches on powerpc and powernv, verifi=
-ed perf test session topology test with the patch set.</pre><pre><span styl=
-e=3D"caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0);">Tested-by: Disha Goel=
- &lt;</span><a href=3D"mailto:disgoel@linux.vnet.ibm.com" style=3D"caret-co=
-lor: rgb(0, 0, 0);"><a href=3D"mailto:disgoel@linux.vnet.ibm.com">disgoel@l=
-inux.vnet.ibm.com</a></a><span style=3D"caret-color: rgb(0, 0, 0); color: r=
-gb(0, 0, 0);">&gt;</span></pre><pre><br></pre><pre> tools/perf/tests/topolo=
-gy.c | 17 ++++++++++++</pre><pre> tools/perf/util/header.c    | 54 ++++++++=
-+++++++++++++++++++++++++++++</pre><pre> tools/perf/util/header.h    |  1 +=
-</pre><pre> 3 files changed, 72 insertions(+)</pre><pre><br></pre></body></=
-html>
-
---=-yT4bCEGVdsMB7jA0c9Kx--
-
+- Naveen
