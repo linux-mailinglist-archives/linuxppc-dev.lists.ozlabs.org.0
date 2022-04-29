@@ -1,57 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC585144F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 10:58:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41D951455B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 11:23:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KqRH00XYpz3cBn
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 18:58:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KqRqq5Spgz3br1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 19:23:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=M4lHi+pd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CcHlI3Au;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217;
- helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129;
+ helo=mail-lf1-x129.google.com; envelope-from=sergei.shtylyov@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=M4lHi+pd; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KqRFm0M97z3bdq
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Apr 2022 18:57:32 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=CcHlI3Au; dkim-atps=neutral
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com
+ [IPv6:2a00:1450:4864:20::129])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 56948621DB;
- Fri, 29 Apr 2022 08:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D7DC385A4;
- Fri, 29 Apr 2022 08:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1651222649;
- bh=wyTdr9jvT7V3LA6rXQQ3Y/Pb/7ndihDo78ilRiquIWU=;
- h=Subject:To:Cc:From:Date:In-Reply-To:From;
- b=M4lHi+pdgBOQFZIlVkFDSDLIx1UHIaLKd31uOw9d8GBaNXDbYYWH3oPKq5vb3+vl3
- TrlSdXPCUtwC+ZSkJYlFfdenSvhpwD1mJhX3YYBU1C5Zx/j+sdGHuHshOfEs4BNrH/
- C+nEqPqikpK5oCsvJxtZhjrCn7B5+ykx7RwkzxKo=
-Subject: Patch "powerpc/64s: Unmerge EX_LR and EX_DAR" has been added to the
- 4.19-stable tree
-To: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- mpe@ellerman.id.au, npiggin@gmail.com
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 29 Apr 2022 10:57:16 +0200
-In-Reply-To: <20220428124150.375623-3-mpe@ellerman.id.au>
-Message-ID: <16512226368413@kroah.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KqRq75JB8z3bYS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Apr 2022 19:22:57 +1000 (AEST)
+Received: by mail-lf1-x129.google.com with SMTP id y32so12958655lfa.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Apr 2022 02:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=bhPxd6svpKOboxST/6guS4MOSMze/71rIJIgOQA8rZo=;
+ b=CcHlI3Au6GCo1UVzpXVov/h1wYElTNB9KLySGMMq2ve/a+TtvK5YlNIE1buiqFG4Nl
+ u/yJNPitTZt8sIeOJjB65Ui/1u355v1A2H7rivfKbBLHtHs+twE1aeJijeY6w74gk/C9
+ beognAtlmiiMUVoRPY2P2xBjOD5kn8WzXajIeBHjp2IbcVFILkaLGvvcgQymLNFVLX7W
+ O2NCAewH21dEqhwgYIy8zCJ1hXEDN8sGRLk/bc4Oj4c5AC8PD4Xjq19cf3SOi69El8Xe
+ CE7Bw/RGpPKDZ+W4HqGQMjQxaF5kblB25nziyJo7yUSAzUuWVoHRSngnqULHAZHmFVOo
+ K43A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=bhPxd6svpKOboxST/6guS4MOSMze/71rIJIgOQA8rZo=;
+ b=D6fVc7+BuqVDzjZ/EmFHGxbGKlvqTGz+gQJuv0ORuwmo0U1Df4OgV+GdrALi3ixJ7E
+ DnFuTqd679f0yDzvXBiYdQwBCdM7iZYqdB+vdOO9h1HA8SOHqIXAEWHfWTMvC7h1S9yJ
+ PKloROb09yRZ+GiOTIEyQsG4ll8cSaQtqsOJvHgQkUBD+P9q20CskYgudTaKZSnKcOEu
+ LzdZzBsvlqjXjN8E2C2qhXj9xHTtqfc7trU5rwRUJR5/1zhJPyosjFtKu7lbYU38H8wN
+ cg7ILW806bf2CEaWwPgk2XfQRFzNEtT9eUgjPGCRZqvQcRAlwD7oa+RG76dOXnyfcPzE
+ f3tA==
+X-Gm-Message-State: AOAM530dsTDfiqrLfpPgrb+/j0Mk1qSn9gE+vK4AWJLwJdFFy1H6Sr7K
+ jP3sk+akCN7qJuRZnZgaL38=
+X-Google-Smtp-Source: ABdhPJzFja3bmADODH1fdpoqaNJXuuCGiOo+I2PKC036x77KFxdRqfAwbMVEMu8UhB/GID87ZxayFg==
+X-Received: by 2002:a05:6512:3ba0:b0:472:49f2:a752 with SMTP id
+ g32-20020a0565123ba000b0047249f2a752mr1049387lfv.374.1651224168844; 
+ Fri, 29 Apr 2022 02:22:48 -0700 (PDT)
+Received: from [192.168.1.103] ([178.176.73.25])
+ by smtp.gmail.com with ESMTPSA id
+ e1-20020a196741000000b0046bc4be1d60sm192072lfj.123.2022.04.29.02.22.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Apr 2022 02:22:48 -0700 (PDT)
+Subject: Re: [PATCH 17/30] tracing: Improve panic/die notifiers
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, akpm@linux-foundation.org,
+ bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-18-gpiccoli@igalia.com>
+From: Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Message-ID: <b8771b37-01f5-f50b-dbb3-9db4ee26e67e@gmail.com>
+Date: Fri, 29 Apr 2022 12:22:44 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+In-Reply-To: <20220427224924.592546-18-gpiccoli@igalia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,150 +87,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable-commits@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
+ linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
+ john.ogness@linutronix.de, corbet@lwn.net, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
+ dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
+ linux-pm@vger.kernel.org, coresight@lists.linaro.org,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+ jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+ kernel@gpiccoli.net, linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
+ kernel-dev@igalia.com, linux-alpha@vger.kernel.org, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello!
 
-This is a note to let you know that I've just added the patch titled
+On 4/28/22 1:49 AM, Guilherme G. Piccoli wrote:
 
-    powerpc/64s: Unmerge EX_LR and EX_DAR
+> Currently the tracing dump_on_oops feature is implemented
+> through separate notifiers, one for die/oops and the other
+> for panic. With the addition of panic notifier "id", this
+> patch makes use of such "id" to unify both functions.
+> 
+> It also comments the function and changes the priority of the
+> notifier blocks, in order they run early compared to other
+> notifiers, to prevent useless trace data (like the callback
+> names for the other notifiers). Finally, we also removed an
+> unnecessary header inclusion.
+> 
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> ---
+>  kernel/trace/trace.c | 57 +++++++++++++++++++++++++-------------------
+>  1 file changed, 32 insertions(+), 25 deletions(-)
+> 
+> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+> index f4de111fa18f..c1d8a3622ccc 100644
+> --- a/kernel/trace/trace.c
+> +++ b/kernel/trace/trace.c
+[...]
+> @@ -9767,38 +9766,46 @@ static __init int tracer_init_tracefs(void)
+>  
+>  fs_initcall(tracer_init_tracefs);
+>  
+> -static int trace_panic_handler(struct notifier_block *this,
+> -			       unsigned long event, void *unused)
+> +/*
+> + * The idea is to execute the following die/panic callback early, in order
+> + * to avoid showing irrelevant information in the trace (like other panic
+> + * notifier functions); we are the 2nd to run, after hung_task/rcu_stall
+> + * warnings get disabled (to prevent potential log flooding).
+> + */
+> +static int trace_die_panic_handler(struct notifier_block *self,
+> +				unsigned long ev, void *unused)
+>  {
+> -	if (ftrace_dump_on_oops)
+> +	int do_dump;
 
-to the 4.19-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+   bool?
 
-The filename of the patch is:
-     powerpc-64s-unmerge-ex_lr-and-ex_dar.patch
-and it can be found in the queue-4.19 subdirectory.
+> +
+> +	if (!ftrace_dump_on_oops)
+> +		return NOTIFY_DONE;
+> +
+> +	switch (ev) {
+> +	case DIE_OOPS:
+> +		do_dump = 1;
+> +		break;
+> +	case PANIC_NOTIFIER:
+> +		do_dump = 1;
+> +		break;
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+   Why not:
 
+	case DIE_OOPS:
+	case PANIC_NOTIFIER:
+		do_dump = 1;
+		break;
 
-From foo@baz Fri Apr 29 10:56:14 AM CEST 2022
-From: Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 28 Apr 2022 22:41:50 +1000
-Subject: powerpc/64s: Unmerge EX_LR and EX_DAR
-To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>
-Cc: <linuxppc-dev@lists.ozlabs.org>, <npiggin@gmail.com>
-Message-ID: <20220428124150.375623-3-mpe@ellerman.id.au>
+> +	default:
+> +		do_dump = 0;
+> +		break;
+> +	}
+> +
+> +	if (do_dump)
+>  		ftrace_dump(ftrace_dump_on_oops);
+> -	return NOTIFY_OK;
+> +
+> +	return NOTIFY_DONE;
+>  }
+[...]
 
-From: Michael Ellerman <mpe@ellerman.id.au>
-
-The SLB miss handler is not fully re-entrant, it is able to work because
-we ensure that the SLB entries for the kernel text and data segment, as
-well as the kernel stack are pinned in the SLB. Accesses to kernel data
-outside of those areas has to be carefully managed and can only occur in
-certain parts of the code. One way we deal with that is by storing some
-values in temporary slots in the paca.
-
-In v4.13 in commit dbeea1d6b4bd ("powerpc/64s/paca: EX_LR can be merged
-with EX_DAR") we merged the storage for two temporary slots for register
-storage during SLB miss handling. That was safe at the time because the
-two slots were never used at the same time.
-
-Unfortunately in v4.17 in commit c2b4d8b7417a ("powerpc/mm/hash64:
-Increase the VA range") we broke that condition, and introduced a case
-where the two slots could be in use at the same time, leading to one
-being corrupted.
-
-Specifically in slb_miss_common() when we detect that we're handling a
-fault for a large virtual address (> 512TB) we go to the "8" label,
-there we store the original fault address into paca->exslb[EX_DAR],
-before jumping to large_addr_slb() (using rfid).
-
-We then use the EXCEPTION_PROLOG_COMMON and RECONCILE_IRQ_STATE macros
-to do exception setup, before reloading the fault address from
-paca->exslb[EX_DAR] and storing it into pt_regs->dar (Data Address
-Register).
-
-However the code generated by those macros can cause a recursive SLB
-miss on a kernel address in three places.
-
-Firstly is the saving of the PPR (Program Priority Register), which
-happens on all CPUs since Power7, the PPR is saved to the thread struct
-which can be anywhere in memory. There is also the call to
-accumulate_stolen_time() if CONFIG_VIRT_CPU_ACCOUNTING_NATIVE=y and
-CONFIG_PPC_SPLPAR=y, and also the call to trace_hardirqs_off() if
-CONFIG_TRACE_IRQFLAGS=y. The latter two call into generic C code and can
-lead to accesses anywhere in memory.
-
-On modern 64-bit CPUs we have 1TB segments, so for any of those accesses
-to cause an SLB fault they must access memory more than 1TB away from
-the kernel text, data and kernel stack. That typically only happens on
-machines with more than 1TB of RAM. However it is possible on multi-node
-Power9 systems, because memory on the 2nd node begins at 32TB in the
-linear mapping.
-
-If we take a recursive SLB fault then we will corrupt the original fault
-address with the LR (Link Register) value, because the EX_DAR and EX_LR
-slots share storage. Subsequently we will think we're trying to fault
-that LR address, which is the wrong address, and will also mostly likely
-lead to a segfault because the LR address will be < 512TB and so will be
-rejected by slb_miss_large_addr().
-
-This appears as a spurious segfault to userspace, and if
-show_unhandled_signals is enabled you will see a fault reported in dmesg
-with the LR address, not the expected fault address, eg:
-
-  prog[123]: segfault (11) at 128a61808 nip 128a618cc lr 128a61808 code 3 in prog[128a60000+10000]
-  prog[123]: code: 4bffffa4 39200040 3ce00004 7d2903a6 3c000200 78e707c6 780083e4 7d3b4b78
-  prog[123]: code: 7d455378 7d7d5b78 7d9f6378 7da46b78 <f8670000> 7d3a4b78 7d465378 7d7c5b78
-
-Notice that the fault address == the LR, and the faulting instruction is
-a simple store that should never use LR.
-
-In upstream this was fixed in v4.20 in commit
-48e7b7695745 ("powerpc/64s/hash: Convert SLB miss handlers to C"),
-however that is a huge rewrite and not backportable.
-
-The minimal fix for stable is to just unmerge the EX_LR and EX_DAR slots
-again, avoiding the corruption of the DAR value. This uses an extra 8
-bytes per CPU, which is negligble.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/powerpc/include/asm/exception-64s.h |   15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
-
---- a/arch/powerpc/include/asm/exception-64s.h
-+++ b/arch/powerpc/include/asm/exception-64s.h
-@@ -48,11 +48,12 @@
- #define EX_CCR		52
- #define EX_CFAR		56
- #define EX_PPR		64
-+#define EX_LR		72
- #if defined(CONFIG_RELOCATABLE)
--#define EX_CTR		72
--#define EX_SIZE		10	/* size in u64 units */
-+#define EX_CTR		80
-+#define EX_SIZE		11	/* size in u64 units */
- #else
--#define EX_SIZE		9	/* size in u64 units */
-+#define EX_SIZE		10	/* size in u64 units */
- #endif
- 
- /*
-@@ -61,14 +62,6 @@
- #define MAX_MCE_DEPTH	4
- 
- /*
-- * EX_LR is only used in EXSLB and where it does not overlap with EX_DAR
-- * EX_CCR similarly with DSISR, but being 4 byte registers there is a hole
-- * in the save area so it's not necessary to overlap them. Could be used
-- * for future savings though if another 4 byte register was to be saved.
-- */
--#define EX_LR		EX_DAR
--
--/*
-  * EX_R3 is only used by the bad_stack handler. bad_stack reloads and
-  * saves DAR from SPRN_DAR, and EX_DAR is not used. So EX_R3 can overlap
-  * with EX_DAR.
-
-
-Patches currently in stable-queue which might be from mpe@ellerman.id.au are
-
-queue-4.19/powerpc-64s-unmerge-ex_lr-and-ex_dar.patch
-queue-4.19/powerpc-64-interrupt-temporarily-save-ppr-on-stack-to-fix-register-corruption-due-to-slb-miss.patch
+MBR, Sergey
