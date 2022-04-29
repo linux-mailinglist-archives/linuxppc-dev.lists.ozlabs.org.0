@@ -1,64 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C445158F3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 01:27:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D069F5158F4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 01:27:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KqpYF6jNZz3bdq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 09:27:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KqpYy5cJ8z3c8G
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 09:27:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=slyIgXme;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u0+tCCPL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
- envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=slyIgXme; dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KqgQG3Z7Lz2xgJ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 04:05:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=CfgJSltNTETfm69VgWZeJ1xxMOJuVJJeVDaV1//hOM4=; b=slyIgXmeUq77MnrSUr5lBtJx9z
- m86cp15BT6gKICc3jCqWbY2B0tpa99u5bAed7DYYXL/rMf6XHJRMLSIrTGUcJCHpVtGl/+APLcmrh
- RXQpa9HZXWVydxhVU95+hp+ZiaA0uHFZXPx5zEc5qg8trUY5PT1GKrapnos8zeTpFOAoQJEAx9vvn
- efpqnWK3jhpJIbXy7DD12LOMiGnr6GupNgQCAiVUmjcrI2J6NMnifvEjcuVQUbIlOFxyQL8HlLyj5
- ydadfwYuZkTNnyuPFseli5ffoVSkxD0MS5bvuilrJblEdywU2jKWaFEjPPnVXRJf3ScYrp3fr3KhT
- ij4JQKSA==;
-Received: from [179.113.53.197] (helo=[192.168.1.60])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1nkUzF-0006RF-Du; Fri, 29 Apr 2022 20:05:01 +0200
-Message-ID: <0147d038-571b-0802-c210-ccd4d52cd5dd@igalia.com>
-Date: Fri, 29 Apr 2022 15:04:22 -0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
-Content-Language: en-US
-To: "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "bhe@redhat.com" <bhe@redhat.com>, "pmladek@suse.com" <pmladek@suse.com>,
- "kexec@lists.infradead.org" <kexec@lists.infradead.org>
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=u0+tCCPL; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KqglS5l5Gz2xm2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 04:20:36 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id DB7C1B8376C;
+ Fri, 29 Apr 2022 18:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6C7C385A7;
+ Fri, 29 Apr 2022 18:20:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651256432;
+ bh=7UlwWJyNgO5O8HAPQY4CevoguxGtN71USDYsxCC4Y1I=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=u0+tCCPLMcAPDoyXRHMoixV/Z0LeuwRRZuVV6YJqDPXCMAyu6bp1HqrLhdZjG9Cyh
+ QYJFW5R7kiAcrSezRCwm7ENodSCUhCJjtpqzm8cd/HFpkS4sMGegRRQASH5n2SihkJ
+ 71HJ1xTMFivjTVqgd4DPNTs7LM6lfZnZ8DzEzNE0oyYqPlKCdTvIv23u3eGTMBYaOt
+ 2wiCePOny8nv8PLW7e+Nz32vtmsDfQhUnorB1/3LgjVu9HRSU6K6LoPIEjrMtXRAwq
+ gSkSxWg9xur9RU7CW+BnHL/qWaY7Tt1AlSEuqbaVhcTiKCDIrzlj5v67mhP4+8Bla0
+ PK6vOCY0vQL6g==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=why.misterjones.org)
+ by disco-boy.misterjones.org with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
+ (envelope-from <maz@kernel.org>)
+ id 1nkVED-0080Zl-Vn; Fri, 29 Apr 2022 19:20:30 +0100
+Date: Fri, 29 Apr 2022 19:20:29 +0100
+Message-ID: <87mtg392fm.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: Re: [PATCH 02/30] ARM: kexec: Disable IRQs/FIQs also on crash CPUs
+ shutdown path
+In-Reply-To: <20220427224924.592546-3-gpiccoli@igalia.com>
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-20-gpiccoli@igalia.com>
- <PH0PR21MB30256260CCF4CAB713BBB11ED7FC9@PH0PR21MB3025.namprd21.prod.outlook.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <PH0PR21MB30256260CCF4CAB713BBB11ED7FC9@PH0PR21MB3025.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220427224924.592546-3-gpiccoli@igalia.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/27.1
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: gpiccoli@igalia.com, akpm@linux-foundation.org,
+ bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ coresight@lists.linaro.org, linuxppc-dev@lists.ozlabs.org,
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-edac@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-leds@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-remoteproc@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-tegra@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, netdev@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, rcu@vger.kernel.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org,
+ kernel-dev@igalia.com, kernel@gpiccoli.net, halves@canonical.com,
+ fabiomirmar@gmail.com, alejandro.j.jimenez@oracle.com,
+ andriy.shevchenko@linux.intel.com, arnd@arndb.de, bp@alien8.de, corbe
+ t@lwn.net, d.hatayama@jp.fujitsu.com, dave.hansen@linux.intel.com,
+ dyoung@redhat.com, feng.tang@intel.com, gregkh@linuxfoundation.org,
+ mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com, jgross@suse.com,
+ john.ogness@linutronix.de, keescook@chromium.org, luto@kernel.org,
+ mhiramat@kernel.org, mingo@redhat.com, paulmck@kernel.org,
+ peterz@infradead.org, rostedt@goodmis.org, senozhatsky@chromium.org,
+ stern@rowland.harvard.edu, tglx@linutronix.de, vgoyal@redhat.com,
+ vkuznets@redhat.com, will@kernel.org, linux@armlinux.org.uk
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org);
+ SAEximRunCond expanded to false
 X-Mailman-Approved-At: Sat, 30 Apr 2022 09:26:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,128 +100,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Justin Chen <justinpopo6@gmail.com>,
- Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>,
- KY Srinivasan <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- Nicholas Piggin <npiggin@gmail.com>, "luto@kernel.org" <luto@kernel.org>,
- Mihai Carabas <mihai.carabas@oracle.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
- "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
- "vgoyal@redhat.com" <vgoyal@redhat.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- Andrea Parri <parri.andrea@gmail.com>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Scott Branden <scott.branden@broadcom.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Markus Mayer <mmayer@broadcom.com>,
- "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
- "halves@canonical.com" <halves@canonical.com>,
- "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
- "feng.tang@intel.com" <feng.tang@intel.com>,
- zhenwei pi <pizhenwei@bytedance.com>, "will@kernel.org" <will@kernel.org>,
- Doug Berger <opendmb@gmail.com>, "corbet@lwn.net" <corbet@lwn.net>,
- Dexuan Cui <decui@microsoft.com>, Evan Green <evgreen@chromium.org>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- "keescook@chromium.org" <keescook@chromium.org>,
- "arnd@arndb.de" <arnd@arndb.de>, Haiyang Zhang <haiyangz@microsoft.com>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
- "openipmi-developer@lists.sourceforge.net"
- <openipmi-developer@lists.sourceforge.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- Sebastian Reichel <sre@kernel.org>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- Brian Norris <computersforpeace@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Lee Jones <lee.jones@linaro.org>, Ard Biesheuvel <ardb@kernel.org>,
- "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "dyoung@redhat.com" <dyoung@redhat.com>,
- "paulmck@kernel.org" <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Wang ShaoBo <bobo.shaobowang@huawei.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- David Gow <davidgow@google.com>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "jgross@suse.com" <jgross@suse.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- Julius Werner <jwerner@chromium.org>, vkuznets <vkuznets@redhat.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ linux-xtensa@linux-xtensa.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
+ linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
+ john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com,
+ xen-devel@lists.xenproject.org, dyoung@redhat.com, vgoyal@redhat.com,
+ pmladek@suse.com, dave.hansen@linux.intel.com, keescook@chromium.org,
+ arnd@arndb.de, linux-pm@vger.kernel.org, coresight@lists.linaro.org,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org,
+ linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
+ linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+ jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
+ kernel@gpiccoli.net, kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29/04/2022 14:30, Michael Kelley (LINUX) wrote:
-> From: Guilherme G. Piccoli <gpiccoli@igalia.com> Sent: Wednesday, April 27, 2022 3:49 PM
->> [...]
->>
->> @@ -2843,7 +2843,7 @@ static void __exit vmbus_exit(void)
->>  	if (ms_hyperv.misc_features & HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE) {
->>  		kmsg_dump_unregister(&hv_kmsg_dumper);
->>  		unregister_die_notifier(&hyperv_die_report_block);
->> -		atomic_notifier_chain_unregister(&panic_notifier_list,
->> +		atomic_notifier_chain_unregister(&panic_hypervisor_list,
->>  						&hyperv_panic_report_block);
->>  	}
->>
+On Wed, 27 Apr 2022 23:48:56 +0100,
+"Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
 > 
-> Using the hypervisor_list here produces a bit of a mismatch.  In many cases
-> this notifier will do nothing, and will defer to the kmsg_dump() mechanism
-> to notify the hypervisor about the panic.   Running the kmsg_dump()
-> mechanism is linked to the info_list, so I'm thinking the Hyper-V panic report
-> notifier should be on the info_list as well.  That way the reporting behavior
-> is triggered at the same point in the panic path regardless of which
-> reporting mechanism is used.
+> Currently the regular CPU shutdown path for ARM disables IRQs/FIQs
+> in the secondary CPUs - smp_send_stop() calls ipi_cpu_stop(), which
+> is responsible for that. This makes sense, since we're turning off
+> such CPUs, putting them in an endless busy-wait loop.
 > 
+> Problem is that there is an alternative path for disabling CPUs,
+> in the form of function crash_smp_send_stop(), used for kexec/panic
+> paths. This functions relies in a SMP call that also triggers a
+> busy-wait loop [at machine_crash_nonpanic_core()], but *without*
+> disabling interrupts. This might lead to odd scenarios, like early
+> interrupts in the boot of kexec'd kernel or even interrupts in
+> other CPUs while the main one still works in the panic path and
+> assumes all secondary CPUs are (really!) off.
+> 
+> This patch mimics the ipi_cpu_stop() interrupt disable mechanism
+> in the crash CPU shutdown path, hence disabling IRQs/FIQs in all
+> secondary CPUs in the kexec/panic path as well.
+> 
+> Cc: Marc Zyngier <maz@kernel.org>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> ---
+>  arch/arm/kernel/machine_kexec.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
+> index f567032a09c0..ef788ee00519 100644
+> --- a/arch/arm/kernel/machine_kexec.c
+> +++ b/arch/arm/kernel/machine_kexec.c
+> @@ -86,6 +86,9 @@ void machine_crash_nonpanic_core(void *unused)
+>  	set_cpu_online(smp_processor_id(), false);
+>  	atomic_dec(&waiting_for_crash_ipi);
+>  
+> +	local_fiq_disable();
+> +	local_irq_disable();
+> +
 
-Hi Michael, thanks for your feedback! I agree that your idea could work,
-but...there is one downside: imagine the kmsg_dump() approach is not set
-in some Hyper-V guest, then we would rely in the regular notification
-mechanism [hv_die_panic_notify_crash()], right?
-But...you want then to run this notifier in the informational list,
-which...won't execute *by default* before kdump if no kmsg_dump() is
-set. So, this logic is convoluted when you mix it with the default level
-concept + kdump.
+My expectations would be that, since we're getting here using an IPI,
+interrupts are already masked. So what reenabled them the first place?
 
-May I suggest something? If possible, take a run with this patch set +
-DEBUG_NOTIFIER=y, in *both* cases (with and without the kmsg_dump()
-set). I did that and they run almost at the same time...I've checked the
-notifiers called, it's like almost nothing runs in-between.
+Thanks,
 
-I feel the panic notification mechanism does really fit with a
-hypervisor list, it's a good match with the nature of the list, which
-aims at informing the panic notification to the hypervisor/FW.
-Of course we can modify it if you prefer...but please take into account
-the kdump case and how it complicates the logic.
+	M.
 
-Let me know your considerations, in case you can experiment with the
-patch set as-is.
-Cheers,
-
-
-Guilherme
+-- 
+Without deviation from the norm, progress is not possible.
