@@ -1,62 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2B7515046
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 18:05:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFCE51529F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 19:46:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KqclY2M9Vz3bqJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 02:05:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kqg0X6JHXz3cLq
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 03:46:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=dYOwdCYz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NQuHjq75;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
- envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::230;
+ helo=mail-oi1-x230.google.com; envelope-from=jcmvbkbc@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=dYOwdCYz; dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=NQuHjq75; dkim-atps=neutral
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com
+ [IPv6:2607:f8b0:4864:20::230])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kqckx1bTYz2yHB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 02:04:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=QQI5zmi1djYWNz2i53I6KuQGatDa49BWqjEk2Pav1i4=; b=dYOwdCYz8mfW6uRaErWUoCqmdx
- 5T0+vzZBt6UK85jUK/bYBffPO6pHVBukVXgw40Mng8+hfEFyxsYupbDv17vw0eY73RVtJNUJhZeIk
- wjL2oPNMg0UJQkop2tznLUBtpwTgs2tJTFrh96RXyi3iI9oJ7Xg0HjOO5wFLxxatzCt/a1kjKIm+q
- GG90XSMTUteF9uAfx+0HJjQF0T7y90PJaZRFs3aM6M51tA02d53awi4I7n5GpC6cVQif5RrGFpU1r
- QhiVEfyVqroi50IPYPzYRbjvCqabrqPiHclqX4UZkfFE4tLq7njetpvB7ea+qAjYTdFscbWw6lpa8
- 5AxSRVRQ==;
-Received: from [179.113.53.197] (helo=[192.168.1.60])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1nkT6a-0001BR-MS; Fri, 29 Apr 2022 18:04:28 +0200
-Message-ID: <7518924e-5bb4-e6e9-0e3e-3f5cb03bf946@igalia.com>
-Date: Fri, 29 Apr 2022 13:04:01 -0300
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kqckv0n0xz2yHB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 02:04:53 +1000 (AEST)
+Received: by mail-oi1-x230.google.com with SMTP id 12so8934222oix.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Apr 2022 09:04:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=MQcZ21ZXrJjtfh7JWVyd82OFreqrUf57vyzG9uXB95s=;
+ b=NQuHjq75yTcETqoe5MFxchlZ/6p7R23s4Uh/eK6M8cjCLKjgK4aZLK94enM9k42z9z
+ 9olN5ZP+vAQmeXTs3TpSIt0NzvMdqABegG4qz96TEt/HS/xzZxrOdtT3s38HXa8rxQCC
+ //y1nGWR49pl0bI4BXJikvhyEOuRN9x7yyhQG6wmlGrFanhXAWznrpMOX2TZU06+jYUn
+ nIWU94QXvKkXMgCPv2tcj5gD6bKy2psqRCjrFUOKa8Bl/tDHLN4JOX0rshY1mFgS6Dj8
+ yb9QNW2JBzYk707yzx4X/QadG8x7UesXEXLRQ21ibqXwVr/gFDYqh338pCxNErks0fTt
+ i5PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=MQcZ21ZXrJjtfh7JWVyd82OFreqrUf57vyzG9uXB95s=;
+ b=C1v7B9jfBWyJyYt7wcwO0QNWW2TisoF5ZH8qqO7dpf+Yre/Zor0J5Bccp6RDBEOyGo
+ 34HlW7A0iDblmgLm80WYIBlFUHHtzsYWSV1eDcbaktbXwBrs5WuJOA3moBqGHI04F6U6
+ eHcv0d/bkkp+NF8YvOlpu4HVsDJxD5z7V5kesiJSnEJv7xOVoaM6JGJrPa2nDiZSEPAe
+ BB7YIaeFnawWZqRvWrBXLGdtBfniPp7hzV1TvKUjj0inSeUkkzUDm2JNUAIm6MXLY24o
+ ZJ9608UqMkQPA3VLQ/AJYZ9ocMJ+cxmI/m99qBMW5gF8H8pHnd06r23OWruf2RaYwUXL
+ lTAQ==
+X-Gm-Message-State: AOAM532JRePQO1aJ+xavv6rE+jnEVvW3EsL4wElIsG73UNP19y3/4YKL
+ KlG4aWN9fjA+oT7fy/Y4Rvhve10F+ZyBjYhbw8E=
+X-Google-Smtp-Source: ABdhPJysHLlZfOKGv6xFakU0zwsYHpphdLaC+QwvkTPAsD1DKrMZHBdjgWt7xXjXQ23jsIbpf+qT2AhQ4uRAgVD8DGA=
+X-Received: by 2002:a05:6808:1202:b0:2f9:c7b4:fd56 with SMTP id
+ a2-20020a056808120200b002f9c7b4fd56mr15139oil.55.1651248290317; Fri, 29 Apr
+ 2022 09:04:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 24/30] panic: Refactor the panic path
-Content-Language: en-US
-To: Randy Dunlap <rdunlap@infradead.org>, akpm@linux-foundation.org,
- bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-25-gpiccoli@igalia.com>
- <4fe85e9c-4e96-e9d5-9fd8-f062bafcda4f@infradead.org>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <4fe85e9c-4e96-e9d5-9fd8-f062bafcda4f@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220427224924.592546-22-gpiccoli@igalia.com>
+In-Reply-To: <20220427224924.592546-22-gpiccoli@igalia.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Fri, 29 Apr 2022 09:04:39 -0700
+Message-ID: <CAMo8BfKzA+oy-Qun9-aO3xCr4Jy_rfdjYqMX=W9xONCSX8O51Q@mail.gmail.com>
+Subject: Re: [PATCH 21/30] panic: Introduce the panic pre-reboot notifier list
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Sat, 30 Apr 2022 03:44:36 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,51 +76,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
- linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
- john.ogness@linutronix.de, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, coresight@lists.linaro.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
- openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
- linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
- jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- kernel@gpiccoli.net, linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
- kernel-dev@igalia.com, linux-alpha@vger.kernel.org, vkuznets@redhat.com,
+Cc: Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ stern@rowland.harvard.edu, xen-devel@lists.xenproject.org,
+ Matt Turner <mattst88@gmail.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Petr Mladek <pmladek@suse.com>, linux-pm@vger.kernel.org,
+ linux-um@lists.infradead.org, Andrew Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>,
+ Alex Elder <elder@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, d.hatayama@jp.fujitsu.com,
+ Bjorn Andersson <bjorn.andersson@linaro.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-hyperv@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
+ Helge Deller <deller@gmx.de>, vgoyal@redhat.com,
+ Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ john.ogness@linutronix.de, coresight@lists.linaro.org,
+ hidehiro.kawai.ez@hitachi.com, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Tony Luck <tony.luck@intel.com>, Mathieu Poirier <mathieu.poirier@linaro.org>,
+ James Morse <james.morse@arm.com>, kernel-dev@igalia.com,
+ fabiomirmar@gmail.com, halves@canonical.com, alejandro.j.jimenez@oracle.com,
+ feng.tang@intel.com, Will Deacon <will@kernel.org>, bhe@redhat.com,
+ Jonathan Corbet <corbet@lwn.net>, Dexuan Cui <decui@microsoft.com>,
+ bcm-kernel-feedback-list@broadcom.com, Robert Richter <rric@kernel.org>,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Steven Rostedt <rostedt@goodmis.org>,
+ rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+ openipmi-developer@lists.sourceforge.net,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, linux-remoteproc@vger.kernel.org,
+ mikelley@microsoft.com, "H. Peter Anvin" <hpa@zytor.com>,
+ "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>,
+ linux-leds@vger.kernel.org, Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Richard Weinberger <richard@nod.at>,
+ "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, dyoung@redhat.com, paulmck@kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>, linux-tegra@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Johannes Berg <johannes@sipsolutions.net>, linux-edac@vger.kernel.org,
+ jgross@suse.com, netdev <netdev@vger.kernel.org>, kernel@gpiccoli.net,
+ kexec@lists.infradead.org, linux-mips@vger.kernel.org,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, vkuznets@redhat.com,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27/04/2022 21:28, Randy Dunlap wrote:
-> 
-> 
-> On 4/27/22 15:49, Guilherme G. Piccoli wrote:
->> +	crash_kexec_post_notifiers
->> +			This was DEPRECATED - users should always prefer the
-> 
-> 			This is DEPRECATED - users should always prefer the
-> 
->> +			parameter "panic_notifiers_level" - check its entry
->> +			in this documentation for details on how it works.
->> +			Setting this parameter is exactly the same as setting
->> +			"panic_notifiers_level=4".
-> 
+On Wed, Apr 27, 2022 at 3:55 PM Guilherme G. Piccoli
+<gpiccoli@igalia.com> wrote:
+>
+> This patch renames the panic_notifier_list to panic_pre_reboot_list;
+> the idea is that a subsequent patch will refactor the panic path
+> in order to better split the notifiers, running some of them very
+> early, some of them not so early [but still before kmsg_dump()] and
+> finally, the rest should execute late, after kdump. The latter ones
+> are now in the panic pre-reboot list - the name comes from the idea
+> that these notifiers execute before panic() attempts rebooting the
+> machine (if that option is set).
+>
+> We also took the opportunity to clean-up useless header inclusions,
+> improve some notifier block declarations (e.g. in ibmasm/heartbeat.c)
+> and more important, change some priorities - we hereby set 2 notifiers
+> to run late in the list [iss_panic_event() and the IPMI panic_event()]
+> due to the risks they offer (may not return, for example).
+> Proper documentation is going to be provided in a subsequent patch,
+> that effectively refactors the panic path.
 
-Thanks Randy, for your suggestion - but I confess I couldn't understand
-it properly. It's related to spaces/tabs, right? What you suggest me to
-change in this formatting? Just by looking the email I can't parse.
+[...]
 
-Cheers,
+>  arch/xtensa/platforms/iss/setup.c     |  4 ++--For xtensa:
 
+For xtensa:
+Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 
-Guilherme
+-- 
+Thanks.
+-- Max
