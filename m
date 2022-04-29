@@ -2,69 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFCE51529F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 19:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 670A35150BF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Apr 2022 18:26:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kqg0X6JHXz3cLq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 03:46:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KqdCq11d1z3bpJ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Apr 2022 02:26:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=NQuHjq75;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CVIs8Sdx;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::230;
- helo=mail-oi1-x230.google.com; envelope-from=jcmvbkbc@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=NQuHjq75; dkim-atps=neutral
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com
- [IPv6:2607:f8b0:4864:20::230])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kqckv0n0xz2yHB
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 02:04:53 +1000 (AEST)
-Received: by mail-oi1-x230.google.com with SMTP id 12so8934222oix.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Apr 2022 09:04:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=MQcZ21ZXrJjtfh7JWVyd82OFreqrUf57vyzG9uXB95s=;
- b=NQuHjq75yTcETqoe5MFxchlZ/6p7R23s4Uh/eK6M8cjCLKjgK4aZLK94enM9k42z9z
- 9olN5ZP+vAQmeXTs3TpSIt0NzvMdqABegG4qz96TEt/HS/xzZxrOdtT3s38HXa8rxQCC
- //y1nGWR49pl0bI4BXJikvhyEOuRN9x7yyhQG6wmlGrFanhXAWznrpMOX2TZU06+jYUn
- nIWU94QXvKkXMgCPv2tcj5gD6bKy2psqRCjrFUOKa8Bl/tDHLN4JOX0rshY1mFgS6Dj8
- yb9QNW2JBzYk707yzx4X/QadG8x7UesXEXLRQ21ibqXwVr/gFDYqh338pCxNErks0fTt
- i5PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=MQcZ21ZXrJjtfh7JWVyd82OFreqrUf57vyzG9uXB95s=;
- b=C1v7B9jfBWyJyYt7wcwO0QNWW2TisoF5ZH8qqO7dpf+Yre/Zor0J5Bccp6RDBEOyGo
- 34HlW7A0iDblmgLm80WYIBlFUHHtzsYWSV1eDcbaktbXwBrs5WuJOA3moBqGHI04F6U6
- eHcv0d/bkkp+NF8YvOlpu4HVsDJxD5z7V5kesiJSnEJv7xOVoaM6JGJrPa2nDiZSEPAe
- BB7YIaeFnawWZqRvWrBXLGdtBfniPp7hzV1TvKUjj0inSeUkkzUDm2JNUAIm6MXLY24o
- ZJ9608UqMkQPA3VLQ/AJYZ9ocMJ+cxmI/m99qBMW5gF8H8pHnd06r23OWruf2RaYwUXL
- lTAQ==
-X-Gm-Message-State: AOAM532JRePQO1aJ+xavv6rE+jnEVvW3EsL4wElIsG73UNP19y3/4YKL
- KlG4aWN9fjA+oT7fy/Y4Rvhve10F+ZyBjYhbw8E=
-X-Google-Smtp-Source: ABdhPJysHLlZfOKGv6xFakU0zwsYHpphdLaC+QwvkTPAsD1DKrMZHBdjgWt7xXjXQ23jsIbpf+qT2AhQ4uRAgVD8DGA=
-X-Received: by 2002:a05:6808:1202:b0:2f9:c7b4:fd56 with SMTP id
- a2-20020a056808120200b002f9c7b4fd56mr15139oil.55.1651248290317; Fri, 29 Apr
- 2022 09:04:50 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KqdC73s5Gz2yHB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 02:25:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=CVIs8Sdx; 
+ dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KqdC51sk8z4xXk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Apr 2022 02:25:53 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KqdC51P8Jz4ySs; Sat, 30 Apr 2022 02:25:53 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=CVIs8Sdx; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KqdC45qVzz4xXk
+ for <linuxppc-dev@ozlabs.org>; Sat, 30 Apr 2022 02:25:52 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 805C962241;
+ Fri, 29 Apr 2022 16:25:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F6CC385A4;
+ Fri, 29 Apr 2022 16:25:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651249548;
+ bh=BWS82VVFyGkq8byIrn9E10Tw1cwiTndaAE5gu1B1OmQ=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=CVIs8SdxCsEVj5dUFPoP75L/KJ26GD43iGVck/aZNGhK1aezz7ZZb06FSUfWiMU00
+ TXb+1854FvHtiQPJaNkNykibUp1cgY1oD2iObIkRxs2MoTYcJb63woOZPMZR+SDGcU
+ 3HNVtaNPwoV85OfwP4/4RrLNA8cIYKZ8K7ZEC1wEKqUE7zEsAtpg+Sc7WIPoW36o3E
+ l4BqKcJyvXW/5tH7ZOLJG6rEOYNvav4eMgUMApp2OOvJvYo/J+DJZ4ArXiMOT84Bha
+ LcuibEvm3xCMlzVtrEPQulC95eJG+GMWrxVeoahXaCXso46F+NgWRtTC/XTK12qu/A
+ mlhrBbOUrkG0g==
+Date: Fri, 29 Apr 2022 11:25:45 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH v6] PCI hotplug: rpaphp: Error out on busy status from
+ get-sensor-state
+Message-ID: <20220429162545.GA79541@bhelgaas>
 MIME-Version: 1.0
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-22-gpiccoli@igalia.com>
-In-Reply-To: <20220427224924.592546-22-gpiccoli@igalia.com>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Fri, 29 Apr 2022 09:04:39 -0700
-Message-ID: <CAMo8BfKzA+oy-Qun9-aO3xCr4Jy_rfdjYqMX=W9xONCSX8O51Q@mail.gmail.com>
-Subject: Re: [PATCH 21/30] panic: Introduce the panic pre-reboot notifier list
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Sat, 30 Apr 2022 03:44:36 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87k0b8q1px.fsf@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,90 +81,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Pavel Machek <pavel@ucw.cz>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- stern@rowland.harvard.edu, xen-devel@lists.xenproject.org,
- Matt Turner <mattst88@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Petr Mladek <pmladek@suse.com>, linux-pm@vger.kernel.org,
- linux-um@lists.infradead.org, Andrew Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>,
- Alex Elder <elder@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>, d.hatayama@jp.fujitsu.com,
- Bjorn Andersson <bjorn.andersson@linaro.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linux-hyperv@vger.kernel.org,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, Corey Minyard <minyard@acm.org>,
- Helge Deller <deller@gmx.de>, vgoyal@redhat.com,
- Sven Schnelle <svens@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- john.ogness@linutronix.de, coresight@lists.linaro.org,
- hidehiro.kawai.ez@hitachi.com, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Tony Luck <tony.luck@intel.com>, Mathieu Poirier <mathieu.poirier@linaro.org>,
- James Morse <james.morse@arm.com>, kernel-dev@igalia.com,
- fabiomirmar@gmail.com, halves@canonical.com, alejandro.j.jimenez@oracle.com,
- feng.tang@intel.com, Will Deacon <will@kernel.org>, bhe@redhat.com,
- Jonathan Corbet <corbet@lwn.net>, Dexuan Cui <decui@microsoft.com>,
- bcm-kernel-feedback-list@broadcom.com, Robert Richter <rric@kernel.org>,
- Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
- Haiyang Zhang <haiyangz@microsoft.com>, Steven Rostedt <rostedt@goodmis.org>,
- rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
- openipmi-developer@lists.sourceforge.net,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, linux-remoteproc@vger.kernel.org,
- mikelley@microsoft.com, "H. Peter Anvin" <hpa@zytor.com>,
- "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>,
- linux-leds@vger.kernel.org, Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Richard Weinberger <richard@nod.at>,
- "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, dyoung@redhat.com, paulmck@kernel.org,
- Heiko Carstens <hca@linux.ibm.com>, linux-tegra@vger.kernel.org,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Johannes Berg <johannes@sipsolutions.net>, linux-edac@vger.kernel.org,
- jgross@suse.com, netdev <netdev@vger.kernel.org>, kernel@gpiccoli.net,
- kexec@lists.infradead.org, linux-mips@vger.kernel.org,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linux-pci <linux-pci@vger.kernel.org>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ Linux Kernel <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>, Oliver O'Halloran <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 27, 2022 at 3:55 PM Guilherme G. Piccoli
-<gpiccoli@igalia.com> wrote:
->
-> This patch renames the panic_notifier_list to panic_pre_reboot_list;
-> the idea is that a subsequent patch will refactor the panic path
-> in order to better split the notifiers, running some of them very
-> early, some of them not so early [but still before kmsg_dump()] and
-> finally, the rest should execute late, after kdump. The latter ones
-> are now in the panic pre-reboot list - the name comes from the idea
-> that these notifiers execute before panic() attempts rebooting the
-> machine (if that option is set).
->
-> We also took the opportunity to clean-up useless header inclusions,
-> improve some notifier block declarations (e.g. in ibmasm/heartbeat.c)
-> and more important, change some priorities - we hereby set 2 notifiers
-> to run late in the list [iss_panic_event() and the IPMI panic_event()]
-> due to the risks they offer (may not return, for example).
-> Proper documentation is going to be provided in a subsequent patch,
-> that effectively refactors the panic path.
+On Thu, Apr 28, 2022 at 05:31:38PM -0500, Nathan Lynch wrote:
+> Bjorn Helgaas <helgaas@kernel.org> writes:
+> > On Tue, Apr 26, 2022 at 11:07:39PM +0530, Mahesh Salgaonkar wrote:
+> >> +/*
+> >> + * RTAS call get-sensor-state(DR_ENTITY_SENSE) return values as per PAPR:
+> >> + *    -1: Hardware Error
+> >> + *    -2: RTAS_BUSY
+> >> + *    -3: Invalid sensor. RTAS Parameter Error.
+> >> + * -9000: Need DR entity to be powered up and unisolated before RTAS call
+> >> + * -9001: Need DR entity to be powered up, but not unisolated, before RTAS call
+> >> + * -9002: DR entity unusable
+> >> + *  990x: Extended delay - where x is a number in the range of 0-5
+> >> + */
+> >> +#define RTAS_HARDWARE_ERROR	(-1)
+> >> +#define RTAS_INVALID_SENSOR	(-3)
+> >> +#define SLOT_UNISOLATED		(-9000)
+> >> +#define SLOT_NOT_UNISOLATED	(-9001)
 
-[...]
+> >> +static int rtas_to_errno(int rtas_rc)
+> >> +{
+> >> +	int rc;
+> >> +
+> >> +	switch (rtas_rc) {
+> >> +	case RTAS_HARDWARE_ERROR:
+> >> +		rc = -EIO;
+> >> +		break;
+> >> +	case RTAS_INVALID_SENSOR:
+> >> +		rc = -EINVAL;
+> >> +		break;
+> >> +	case SLOT_UNISOLATED:
+> >> +	case SLOT_NOT_UNISOLATED:
+> >> +		rc = -EFAULT;
+> >> +		break;
+> >> +	case SLOT_NOT_USABLE:
+> >> +		rc = -ENODEV;
+> >> +		break;
+> >> +	case RTAS_BUSY:
+> >> +	case RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX:
+> >> +		rc = -EBUSY;
+> >> +		break;
+> >> +	default:
+> >> +		err("%s: unexpected RTAS error %d\n", __func__, rtas_rc);
+> >> +		rc = -ERANGE;
+> >> +		break;
+> >> +	}
+> >> +	return rc;
+> >
+> > This basically duplicates rtas_error_rc().  Why do we need two copies?
+> 
+> It treats RTAS_BUSY, RTAS_EXTENDED_DELAY_MIN...RTAS_EXTENDED_DELAY_MAX
+> differently, which is part of the point of this change.
 
->  arch/xtensa/platforms/iss/setup.c     |  4 ++--For xtensa:
+I think it would reduce confusion overall to:
 
-For xtensa:
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
+  - add RTAS_HARDWARE_ERROR, RTAS_INVALID_SENSOR to rtas.h
 
--- 
-Thanks.
--- Max
+  - rename and move SLOT_UNISOLATED, etc to rtas.h; they look
+    analogous to function-specific things like RTAS_SUSPEND_ABORTED
+
+  - change rtas_error_rc() to use the RTAS_HARDWARE_ERROR, etc
+    constants
+
+  - use the constants (SLOT_NOT_USABLE) instead of "9902" in the
+    commit log and code comments
+
+> Aside: rtas_error_rc() (from powerpc's rtas.c) is badly named. Its
+> conversions make sense for only a handful of RTAS calls. RTAS error
+> codes have function-specific interpretations.
+
+Maybe there's a case for factoring out the generic error codes and
+have rtas_to_errno() (which sounds like maybe it should be renamed as
+well) handle the function-specific part and fall back to the generic
+one otherwise:
+
+  int rtas_to_errno(int rtas_rc)
+  {
+    switch (rtas_rc) {
+    case SLOT_UNISOLATED:
+    case SLOT_NOT_UNISOLATED:
+      return -EINVAL;
+    case SLOT_NOT_USABLE:
+      return -ENODEV;
+    ...
+    default:
+      return rtas_error_rc(rtas_rc);
+    }
+  }
