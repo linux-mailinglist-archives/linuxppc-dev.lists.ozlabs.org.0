@@ -1,40 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A175168CB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 May 2022 00:50:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D04D516DA1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 May 2022 11:43:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ks1dy3TrNz3bsD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 May 2022 08:50:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KsJ7m2yg2z3bpD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 May 2022 19:43:48 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cBMHuyEn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=orcam.me.uk
- (client-ip=78.133.224.34; helo=angie.orcam.me.uk;
- envelope-from=macro@orcam.me.uk; receiver=<UNKNOWN>)
-X-Greylist: delayed 555 seconds by postgrey-1.36 at boromir;
- Mon, 02 May 2022 08:50:08 AEST
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Ks1dX08QKz2xDY
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 May 2022 08:50:07 +1000 (AEST)
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
- id 2E01592009C; Mon,  2 May 2022 00:40:39 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by angie.orcam.me.uk (Postfix) with ESMTP id 2645D92009B;
- Sun,  1 May 2022 23:40:39 +0100 (BST)
-Date: Sun, 1 May 2022 23:40:39 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Niklas Schnelle <schnelle@linux.ibm.com>
-Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
- it as necessary
-In-Reply-To: <20220429135108.2781579-2-schnelle@linux.ibm.com>
-Message-ID: <alpine.DEB.2.21.2205012335020.9383@angie.orcam.me.uk>
-References: <20220429135108.2781579-1-schnelle@linux.ibm.com>
- <20220429135108.2781579-2-schnelle@linux.ibm.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=cBMHuyEn; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KsJ6y3DtHz2yQ9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 May 2022 19:43:06 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id E9A12B815AB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 May 2022 09:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B4729C385AF
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 May 2022 09:43:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651484581;
+ bh=1dJPggPlTFZNpMFzXJAFH1SWAccgJG9NeZGZ44udKlI=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=cBMHuyEnnC78cYXasH1HQhUb7Mqa6nCpp1uvuvhRioHE8a4UMIs57KlY9z3/6qTXY
+ 7NeSlQq3hCSsA7a0qE5aa/9R13gdwLN5avDeWcEvDIhdJdoNv9ACmlGCXXJCqicU3L
+ hNkZrGiN0Yh4tVz88OKOhwxI1nGwcigKGRhHaijWhvq+xGXR4ijtnFigDVmEf5S6Ow
+ yl+mS2NEqAHafvzuSjLV1uNEtrd8/BqoRusgxy1ky53A81oXiFlxdsoZy3CNQk10qz
+ N2sBQhOH65b6CGynJmgDMq3GHBbUT8OVTRe37KsOwmWGqMXTkOuP4LGzpuk9Iw5Fv0
+ 8F2nlD3g+6KsQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id 9A727C05F98; Mon,  2 May 2022 09:43:00 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
+ running its' testsuite
+Date: Mon, 02 May 2022 09:43:00 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215389-206035-23Lm91LlbX@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
+References: <bug-215389-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,64 +82,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>,
- "open list:IA64 \(Itanium\) PLATFORM" <linux-ia64@vger.kernel.org>,
- "open list:SUPERH" <linux-sh@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci@vger.kernel.org,
- Matt Turner <mattst88@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Arnd Bergmann <arnd@arndb.de>,
- "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- Arnd Bergmann <arnd@kernel.org>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
- Borislav Petkov <bp@alien8.de>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 29 Apr 2022, Niklas Schnelle wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
 
-> We introduce a new HAS_IOPORT Kconfig option to indicate support for
-> I/O Port access. In a future patch HAS_IOPORT=n will disable compilation
-> of the I/O accessor functions inb()/outb() and friends on architectures
-> which can not meaningfully support legacy I/O spaces such as s390 or
-> where such support is optional. The "depends on" relations on HAS_IOPORT
-> in drivers as well as ifdefs for HAS_IOPORT specific sections will be
-> added in subsequent patches on a per subsystem basis.
-[...]
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index de3b32a507d2..4c55df08d6f1 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -47,6 +47,7 @@ config MIPS
->  	select GENERIC_SMP_IDLE_THREAD
->  	select GENERIC_TIME_VSYSCALL
->  	select GUP_GET_PTE_LOW_HIGH if CPU_MIPS32 && PHYS_ADDR_T_64BIT
-> +	select HAS_IOPORT
->  	select HAVE_ARCH_COMPILER_H
->  	select HAVE_ARCH_JUMP_LABEL
->  	select HAVE_ARCH_KGDB if MIPS_FP_SUPPORT
+--- Comment #14 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+Do you mean it still happens with the default values, or it also happens wi=
+th
+the reduced CONFIG_LOWMEM_SIZE ?
 
- NAK, not all MIPS systems have the port I/O space, and we have it already 
-handled via the NO_IOPORT_MAP option.  We'll need to have HAS_IOPORT set 
-to !NO_IOPORT_MAP (or vice versa) for the MIPS architecture.
+--=20
+You may reply to this email to add a comment.
 
-  Maciej
+You are receiving this mail because:
+You are watching the assignee of the bug.=
