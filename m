@@ -1,64 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C12517A3E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 00:56:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CC0517A62
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 01:06:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ksdjy2yWHz3cBh
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 08:56:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KsdxS4S0dz3bpQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 09:06:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=RlBNIlGd;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=PUlHwSHS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
- envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=RlBNIlGd; dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KsSDk0sM1z30QN
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 May 2022 01:48:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lSY7Wy5DSWONSGouYm7Vnq+8PpTXyI6/GSbK7cQgCdQ=; b=RlBNIlGd1Uln2EauUT9Bs8LHDK
- lsVxakNgNxOntg3zLwYjCz6zOIS7+wkzSqZEsUYLo84tU2IRVM3hBykPTK2LYoUlT7/mcdyUpbUFn
- 8zsviqZPpC67uRPZkrddN0YT9DyHem+ksVhTVubBHX9U/sp2ORRnik8vQd9AygK72JtMh2IYdh8l4
- tTpjZfKpvJI67kl00fIHJVuD+e4FxpA6/fe+9WzqT6PUlM32LuzphP5qVuRzYjTVTCNB0OrF3F4Xd
- tFHwZ3zAtgZeXLXoEMwxv3kOugrwYBERBngMA0b8PvfrRDptBdxsqHAO3vzW13Xb6GPVwUXCxoyeQ
- X1mlzNhw==;
-Received: from [179.113.53.197] (helo=[192.168.1.60])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1nlYHE-0006n9-M1; Mon, 02 May 2022 17:47:57 +0200
-Message-ID: <baf65246-a012-93ad-1ba0-6c6d67e501b5@igalia.com>
-Date: Mon, 2 May 2022 12:47:22 -0300
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
+ header.a=rsa-sha256 header.s=korg header.b=PUlHwSHS; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ksdwt0v8yz2x9M
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 May 2022 09:05:32 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id D2515612DC;
+ Mon,  2 May 2022 23:05:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2977AC385A4;
+ Mon,  2 May 2022 23:05:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1651532728;
+ bh=XuBfxjhIde6H+rjaTVAca5E7Q0XKufuv6WP/1VcPNBQ=;
+ h=Subject:To:Cc:From:Date:From;
+ b=PUlHwSHSZ0D2ornEPasaRUECo338xUfUm53840zIduZlMKlqYOcHTj3GYawEahTsL
+ r81dqtbRxl8x5luBM09XkdruvwXf9T3SzeF7uTO9xg9zv0FG55P6WJExirkNGQNT36
+ +sA/1KTlZP9z+ngWHPKmYa9SM/7axnw65B5M7Us0=
+Subject: Patch "perf symbol: Pass is_kallsyms to symbols__fixup_end()" has
+ been added to the 5.10-stable tree
+To: acme@redhat.com, gregkh@linuxfoundation.org, hca@linux.ibm.com,
+ irogers@google.com, john.garry@huawei.com, jolsa@kernel.org,
+ leo.yan@linaro.org, linuxppc-dev@lists.ozlabs.org, mark.rutland@arm.com,
+ mathieu.poirier@linaro.org, mhiramat@kernel.org, mingo@kernel.org,
+ mpe@ellerman.id.au, mpetlan@redhat.com, namhyung@kernel.org,
+ peterz@infradead.org, songliubraving@fb.com, will@kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 03 May 2022 01:05:27 +0200
+Message-ID: <16515327271118@kroah.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 06/30] soc: bcm: brcmstb: Document panic notifier action
- and remove useless header
-Content-Language: en-US
-To: Florian Fainelli <f.fainelli@gmail.com>, akpm@linux-foundation.org,
- bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-7-gpiccoli@igalia.com>
- <a02821ab-db4f-5bff-2a98-7d74032a0652@gmail.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <a02821ab-db4f-5bff-2a98-7d74032a0652@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 03 May 2022 08:54:19 +1000
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,42 +67,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- Markus Mayer <mmayer@broadcom.com>, gregkh@linuxfoundation.org,
- peterz@infradead.org, alejandro.j.jimenez@oracle.com,
- linux-remoteproc@vger.kernel.org, feng.tang@intel.com,
- linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- Justin Chen <justinpopo6@gmail.com>, sparclinux@vger.kernel.org,
- will@kernel.org, tglx@linutronix.de, linux-leds@vger.kernel.org,
- linux-s390@vger.kernel.org, Doug Berger <opendmb@gmail.com>,
- mikelley@microsoft.com, john.ogness@linutronix.de, corbet@lwn.net,
- paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
- rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
- linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org,
- linux-edac@vger.kernel.org, jgross@suse.com, Lee Jones <lee.jones@linaro.org>,
- linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net,
- linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
- kernel-dev@igalia.com, linux-alpha@vger.kernel.org, vkuznets@redhat.com,
- Brian Norris <computersforpeace@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: stable-commits@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02/05/2022 12:38, Florian Fainelli wrote:
-> [...] 
-> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-> 
-> Likewise, I am not sure if the Fixes tag is necessary here.
 
-Perfect Florian, thanks!  I'll add your Acked-by tag and remove the
-fixes for V2 =)
-Cheers,
+This is a note to let you know that I've just added the patch titled
+
+    perf symbol: Pass is_kallsyms to symbols__fixup_end()
+
+to the 5.10-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+
+The filename of the patch is:
+     perf-symbol-pass-is_kallsyms-to-symbols__fixup_end.patch
+and it can be found in the queue-5.10 subdirectory.
+
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
 
-Guilherme
+From 838425f2defe5262906b698752d28fd2fca1aac2 Mon Sep 17 00:00:00 2001
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Fri, 15 Apr 2022 17:40:46 -0700
+Subject: perf symbol: Pass is_kallsyms to symbols__fixup_end()
+
+From: Namhyung Kim <namhyung@kernel.org>
+
+commit 838425f2defe5262906b698752d28fd2fca1aac2 upstream.
+
+The symbol fixup is necessary for symbols in kallsyms since they don't
+have size info.  So we use the next symbol's address to calculate the
+size.  Now it's also used for user binaries because sometimes they miss
+size for hand-written asm functions.
+
+There's a arch-specific function to handle kallsyms differently but
+currently it cannot distinguish kallsyms from others.  Pass this
+information explicitly to handle it properly.  Note that those arch
+functions will be moved to the generic function so I didn't added it to
+the arch-functions.
+
+Fixes: 3cf6a32f3f2a4594 ("perf symbols: Fix symbol size calculation condition")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Garry <john.garry@huawei.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-s390@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Link: https://lore.kernel.org/r/20220416004048.1514900-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ tools/perf/util/symbol-elf.c |    2 +-
+ tools/perf/util/symbol.c     |    7 ++++---
+ tools/perf/util/symbol.h     |    2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+--- a/tools/perf/util/symbol-elf.c
++++ b/tools/perf/util/symbol-elf.c
+@@ -1245,7 +1245,7 @@ int dso__load_sym(struct dso *dso, struc
+ 	 * For misannotated, zeroed, ASM function sizes.
+ 	 */
+ 	if (nr > 0) {
+-		symbols__fixup_end(&dso->symbols);
++		symbols__fixup_end(&dso->symbols, false);
+ 		symbols__fixup_duplicate(&dso->symbols);
+ 		if (kmap) {
+ 			/*
+--- a/tools/perf/util/symbol.c
++++ b/tools/perf/util/symbol.c
+@@ -217,7 +217,8 @@ again:
+ 	}
+ }
+ 
+-void symbols__fixup_end(struct rb_root_cached *symbols)
++void symbols__fixup_end(struct rb_root_cached *symbols,
++			bool is_kallsyms __maybe_unused)
+ {
+ 	struct rb_node *nd, *prevnd = rb_first_cached(symbols);
+ 	struct symbol *curr, *prev;
+@@ -1456,7 +1457,7 @@ int __dso__load_kallsyms(struct dso *dso
+ 	if (kallsyms__delta(kmap, filename, &delta))
+ 		return -1;
+ 
+-	symbols__fixup_end(&dso->symbols);
++	symbols__fixup_end(&dso->symbols, true);
+ 	symbols__fixup_duplicate(&dso->symbols);
+ 
+ 	if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
+@@ -1651,7 +1652,7 @@ int dso__load_bfd_symbols(struct dso *ds
+ #undef bfd_asymbol_section
+ #endif
+ 
+-	symbols__fixup_end(&dso->symbols);
++	symbols__fixup_end(&dso->symbols, false);
+ 	symbols__fixup_duplicate(&dso->symbols);
+ 	dso->adjust_symbols = 1;
+ 
+--- a/tools/perf/util/symbol.h
++++ b/tools/perf/util/symbol.h
+@@ -192,7 +192,7 @@ void __symbols__insert(struct rb_root_ca
+ 		       bool kernel);
+ void symbols__insert(struct rb_root_cached *symbols, struct symbol *sym);
+ void symbols__fixup_duplicate(struct rb_root_cached *symbols);
+-void symbols__fixup_end(struct rb_root_cached *symbols);
++void symbols__fixup_end(struct rb_root_cached *symbols, bool is_kallsyms);
+ void maps__fixup_end(struct maps *maps);
+ 
+ typedef int (*mapfn_t)(u64 start, u64 len, u64 pgoff, void *data);
+
+
+Patches currently in stable-queue which might be from namhyung@kernel.org are
+
+queue-5.10/perf-symbol-update-symbols__fixup_end.patch
+queue-5.10/perf-symbol-pass-is_kallsyms-to-symbols__fixup_end.patch
