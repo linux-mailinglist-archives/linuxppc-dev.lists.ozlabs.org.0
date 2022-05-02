@@ -1,81 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2049D517A3D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 00:55:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C12517A3E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 00:56:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KsdjF6YyMz3c7K
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 08:55:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ksdjy2yWHz3cBh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 08:56:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=n+sdzeWg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=RlBNIlGd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530;
- helo=mail-pg1-x530.google.com; envelope-from=f.fainelli@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=n+sdzeWg; dkim-atps=neutral
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com
- [IPv6:2607:f8b0:4864:20::530])
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=RlBNIlGd; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KsS1K4zN9z3064
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 May 2022 01:38:45 +1000 (AEST)
-Received: by mail-pg1-x530.google.com with SMTP id k14so11998703pga.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 May 2022 08:38:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=xdAYU3mu3q5iKW/q53x7SG0PmMFu/IJ99F9X+I1LBFA=;
- b=n+sdzeWg2S/gnK+vDOIvL6IUbN3m/ZsZjzFb11eZoR9Ocah7YJVO2WiV41qchObcfb
- DQoBAV7ZWycdznoAT+bkWgo/wu+1wDV1bIUkSxqup4K24uuli3THOxTxyw5X5d53wgme
- WcsN0rdXUDiQCbaE2BiYM+YRj9TzgmIUMpvqiw3DgUAYB77r1iQIEojYxiA62BjPH8RM
- iKwEObMzsKXIe5T1OWURADziMPdtdHkUN1OxLhRHsrdiQj28siLmQYHweNGUt6WE2RWU
- 4RoD4QWsGkku1xASAbiwviIYb1qjscuQqHCmPnV7Xwb2MQ5+T3WoFFqH/wvbUUW3/9i6
- dZOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=xdAYU3mu3q5iKW/q53x7SG0PmMFu/IJ99F9X+I1LBFA=;
- b=YCe81kORVICj0MZFs2YJB/sRw0Y2VFkl/qnGhJvPdJCuf6MInsaXIKOOpa748pE9Nr
- YwGQ8cJnRtOYLf9fnWCiwx1WWf6s85RsvVZfbuV89nWckmWNJtt/Ia8s/Y5CmVIt8Eh7
- 4GmCoFPgTeug/kkCAq2VNne6qk7Q4iEieol0Sxr2kyKisbVkNguaw7KLj7tWPQg0Awa1
- rmeDqe7L60xo/G4hugOHoMf9LWfHc1bzwD8xcylnmdAk34Obi28Vkh0v5A1jcQHpyGGy
- 6UCvRCFoz50I93O1+zwoUesG9t3MJA/AuFYFkhaxB5iBMGar77aC386Io4DG973Obnt4
- B4CQ==
-X-Gm-Message-State: AOAM530Irh4CQc/eA7w8aO9PqSt/4NYY58oMK0ct4LQI+WTQHmaPxcMG
- 6lQWZbw9CtnBNlIcQrgFs0A=
-X-Google-Smtp-Source: ABdhPJyFyZFQ5alP4D0nGrJsTy5roBCXXaX5AecPC5DucA/TU9ZDaKugYKQuLpePce1AAM16r6umMQ==
-X-Received: by 2002:a05:6a00:846:b0:50d:f02f:bb46 with SMTP id
- q6-20020a056a00084600b0050df02fbb46mr4382838pfk.74.1651505921477; 
- Mon, 02 May 2022 08:38:41 -0700 (PDT)
-Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
- by smtp.gmail.com with ESMTPSA id
- j11-20020aa7800b000000b0050dc76281basm5027174pfi.148.2022.05.02.08.38.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 May 2022 08:38:40 -0700 (PDT)
-Message-ID: <a02821ab-db4f-5bff-2a98-7d74032a0652@gmail.com>
-Date: Mon, 2 May 2022 08:38:36 -0700
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KsSDk0sM1z30QN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 May 2022 01:48:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=lSY7Wy5DSWONSGouYm7Vnq+8PpTXyI6/GSbK7cQgCdQ=; b=RlBNIlGd1Uln2EauUT9Bs8LHDK
+ lsVxakNgNxOntg3zLwYjCz6zOIS7+wkzSqZEsUYLo84tU2IRVM3hBykPTK2LYoUlT7/mcdyUpbUFn
+ 8zsviqZPpC67uRPZkrddN0YT9DyHem+ksVhTVubBHX9U/sp2ORRnik8vQd9AygK72JtMh2IYdh8l4
+ tTpjZfKpvJI67kl00fIHJVuD+e4FxpA6/fe+9WzqT6PUlM32LuzphP5qVuRzYjTVTCNB0OrF3F4Xd
+ tFHwZ3zAtgZeXLXoEMwxv3kOugrwYBERBngMA0b8PvfrRDptBdxsqHAO3vzW13Xb6GPVwUXCxoyeQ
+ X1mlzNhw==;
+Received: from [179.113.53.197] (helo=[192.168.1.60])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1nlYHE-0006n9-M1; Mon, 02 May 2022 17:47:57 +0200
+Message-ID: <baf65246-a012-93ad-1ba0-6c6d67e501b5@igalia.com>
+Date: Mon, 2 May 2022 12:47:22 -0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
 Subject: Re: [PATCH 06/30] soc: bcm: brcmstb: Document panic notifier action
  and remove useless header
 Content-Language: en-US
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, akpm@linux-foundation.org,
+To: Florian Fainelli <f.fainelli@gmail.com>, akpm@linux-foundation.org,
  bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
  <20220427224924.592546-7-gpiccoli@igalia.com>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20220427224924.592546-7-gpiccoli@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <a02821ab-db4f-5bff-2a98-7d74032a0652@gmail.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <a02821ab-db4f-5bff-2a98-7d74032a0652@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Tue, 03 May 2022 08:54:19 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -102,9 +83,8 @@ Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
  bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
  dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
  dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, coresight@lists.linaro.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- Florian Fainelli <f.fainelli@gmail.com>, bp@alien8.de, luto@kernel.org,
+ linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
+ rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
  linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
  andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org,
  linux-edac@vger.kernel.org, jgross@suse.com, Lee Jones <lee.jones@linaro.org>,
@@ -117,31 +97,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 4/27/2022 3:49 PM, Guilherme G. Piccoli wrote:
-> The panic notifier of this driver is very simple code-wise, just a memory
-> write to a special position with some numeric code. But this is not clear
-> from the semantic point-of-view, and there is no public documentation
-> about that either.
+On 02/05/2022 12:38, Florian Fainelli wrote:
+> [...] 
+> Acked-by: Florian Fainelli <f.fainelli@gmail.com>
 > 
-> After discussing this in the mailing-lists [0] and having Florian explained
-> it very well, this patch just document that in the code for the future
-> generations asking the same questions. Also, it removes a useless header.
-> 
-> [0] https://lore.kernel.org/lkml/781cafb0-8d06-8b56-907a-5175c2da196a@gmail.com
-> 
-> Fixes: 0b741b8234c8 ("soc: bcm: brcmstb: Add support for S2/S3/S5 suspend states (ARM)")
-> Cc: Brian Norris <computersforpeace@gmail.com>
-> Cc: Doug Berger <opendmb@gmail.com>
-> Cc: Florian Fainelli <f.fainelli@gmail.com>
-> Cc: Justin Chen <justinpopo6@gmail.com>
-> Cc: Lee Jones <lee.jones@linaro.org>
-> Cc: Markus Mayer <mmayer@broadcom.com>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Likewise, I am not sure if the Fixes tag is necessary here.
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Perfect Florian, thanks!  I'll add your Acked-by tag and remove the
+fixes for V2 =)
+Cheers,
 
-Likewise, I am not sure if the Fixes tag is necessary here.
--- 
-Florian
+
+Guilherme
