@@ -1,61 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A900D518689
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 16:23:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C73B5187E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 17:07:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kt2Hm3ZXtz3bql
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 00:23:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kt3GY6Rrkz3bcR
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 01:07:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=LGwcJwJF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=oOj5zvna;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=LGwcJwJF; 
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt3Fw5RS0z2xKK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 01:06:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=oOj5zvna; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt2Gm5mlbz3bp5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 00:22:24 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 4C9D0B81EF5;
- Tue,  3 May 2022 14:22:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BD5C385AF;
- Tue,  3 May 2022 14:22:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1651587741;
- bh=5BIgKK9sINDQl0FoiditL8mcqVV6CeKoKfnesYP+s1Y=;
- h=Subject:To:Cc:From:Date:From;
- b=LGwcJwJFVSNMOTenvd4hIJDt/moYJv7sxK/7MFuTWpQ5NGmFTGDZyramWJGH3+WDd
- xSBnOXuFJnQy/tlV47jEJcbJaKtHDLx3ukzA2SLFXWRAmO3sdnGKIvkldwrCAT5zn8
- puzsj8MIqEJMFYd5CgQRiJ4lT7HADPOvuTXt7jNA=
-Subject: Patch "perf symbol: Remove arch__symbols__fixup_end()" has been added
- to the 5.15-stable tree
-To: acme@redhat.com, gregkh@linuxfoundation.org, hca@linux.ibm.com,
- irogers@google.com, john.garry@huawei.com, jolsa@kernel.org,
- leo.yan@linaro.org, linuxppc-dev@lists.ozlabs.org, mark.rutland@arm.com,
- mathieu.poirier@linaro.org, mhiramat@kernel.org, mingo@kernel.org,
- mpe@ellerman.id.au, mpetlan@redhat.com, namhyung@kernel.org,
- peterz@infradead.org, songliubraving@fb.com, will@kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 May 2022 16:22:12 +0200
-Message-ID: <16515877326839@kroah.com>
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kt3Fw4K0Pz4xXk;
+ Wed,  4 May 2022 01:06:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1651590404;
+ bh=Dgg0y2YAJVCYq+A7nlozqofEZc1GspCWNF8o1AxIhDk=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=oOj5zvnan2Y/BMYEpzl5Az0MK3LSXnm9Hl0SuV96bsd1io91AjtKlq4SX1yV6iLvd
+ VPqPSG64Jl4UNBj9/Fhnb0iMsGHn6qOzrTiKdy99kLv6mUDg5ppeRtSEWiJCmZKzKW
+ LYaQC2WhJ9AJjpfRegXbTRn2gdmWqTZcRUSpWXQF0bo5zFdstIk7j9VNGQO3G2TgsH
+ 3S29CDT+RNxq9v1fbWp+uO+1oATO/8o1WwIO9ZeHe92UfFt7xUcw8uJcRMKJIO3Cek
+ xwHV8E8EvrIyBohVYTVFefLXaxdmi7Sz5So1X4nVaLST8pOpH1Ebzzn/Byyy30yXne
+ 00KbkEONIoFJQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/rtas: Keep MSR[RI] set when calling RTAS
+In-Reply-To: <20220401140634.65726-1-ldufour@linux.ibm.com>
+References: <20220401140634.65726-1-ldufour@linux.ibm.com>
+Date: Wed, 04 May 2022 01:06:41 +1000
+Message-ID: <87r15aveny.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,197 +60,252 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable-commits@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> RTAS runs in real mode (MSR[DR] and MSR[IR] unset) and in 32bits
+> mode (MSR[SF] unset).
 
-This is a note to let you know that I've just added the patch titled
+Probably also worth mentioning that it runs in big endian mode :)
 
-    perf symbol: Remove arch__symbols__fixup_end()
+It is specified in PAPR (R1-7.2.1-6).
 
-to the 5.15-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> The change in MSR is done in enter_rtas() in a relatively complex way,
+> since the MSR value could be hardcoded.
+>
+> Furthermore, a panic has been reported when hitting the watchdog interrupt
+> while running in RTAS, this leads to the following stack trace:
+>
+> [69244.027433][   C24] watchdog: CPU 24 Hard LOCKUP
+> [69244.027442][   C24] watchdog: CPU 24 TB:997512652051031, last heartbea=
+t TB:997504470175378 (15980ms ago)
+> [69244.027451][   C24] Modules linked in: chacha_generic(E) libchacha(E) =
+xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) li=
+bpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rn=
+g(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_=
+generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camel=
+lia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) alg=
+if_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rp=
+cgss(E)
+> nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(=
+E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netl=
+ink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(=
+E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_=
+vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) con=
+figfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E)=
+ t10_pi(E)
+> [69244.027555][   C24]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf1=
+28mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) r=
+aid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) d=
+m_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
+> [69244.027587][   C24] Supported: No, Unreleased kernel
+> [69244.027600][   C24] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Taint=
+ed: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP=
+4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
+> [69244.027609][   C24] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0=
+000000000000000
+> [69244.027612][   C24] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G    =
+        E  X     (5.14.21-150400.71.1.bz196362_2-default)
+> [69244.027615][   C24] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 488000=
+02  XER: 20040020
+> [69244.027625][   C24] CFAR: 000000000000011c IRQMASK: 1
+> [69244.027625][   C24] GPR00: 0000000000000003 ffffffffffffffff 000000000=
+0000001 00000000000050dc
+> [69244.027625][   C24] GPR04: 000000001ffb6100 0000000000000020 000000000=
+0000001 000000001fb09010
+> [69244.027625][   C24] GPR08: 0000000020000000 0000000000000000 000000000=
+0000000 0000000000000000
+> [69244.027625][   C24] GPR12: 80040000072a40a8 c00000000ff8b680 000000000=
+0000007 0000000000000034
+> [69244.027625][   C24] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001=
+fbd1db0 000000001fb3f008
+> [69244.027625][   C24] GPR20: 000000001fb41018 ffffffffffffffff 000000000=
+000017f fffffffffffff68f
+> [69244.027625][   C24] GPR24: 000000001fb18fe8 000000001fb3e000 000000001=
+fb1adc0 000000001fb1cf40
+> [69244.027625][   C24] GPR28: 000000001fb26000 000000001fb460f0 000000001=
+fb17f18 000000001fb17000
+> [69244.027663][   C24] NIP [000000001fb41050] 0x1fb41050
+> [69244.027696][   C24] LR [000000001fb4104c] 0x1fb4104c
+> [69244.027699][   C24] Call Trace:
+> [69244.027701][   C24] Instruction dump:
+> [69244.027723][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
+XXX XXXXXXXX XXXXXXXX
+> [69244.027728][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
+XXX XXXXXXXX XXXXXXXX
+> [69244.027762][T87504] Oops: Unrecoverable System Reset, sig: 6 [#1]
+> [69244.028044][T87504] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 N=
+UMA pSeries
+> [69244.028089][T87504] Modules linked in: chacha_generic(E) libchacha(E) =
+xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) li=
+bpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rn=
+g(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_=
+generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camel=
+lia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) alg=
+if_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rp=
+cgss(E)
+> nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(=
+E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netl=
+ink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(=
+E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_=
+vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) con=
+figfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E)=
+ t10_pi(E)
+> [69244.028171][T87504]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf1=
+28mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) r=
+aid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) d=
+m_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
+> [69244.028307][T87504] Supported: No, Unreleased kernel
+> [69244.028385][T87504] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Taint=
+ed: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP=
+4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
+> [69244.028408][T87504] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0=
+000000000000000
+> [69244.028418][T87504] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G    =
+        E  X     (5.14.21-150400.71.1.bz196362_2-default)
+> [69244.028429][T87504] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 488000=
+02  XER: 20040020
+> [69244.028444][T87504] CFAR: 000000000000011c IRQMASK: 1
+> [69244.028444][T87504] GPR00: 0000000000000003 ffffffffffffffff 000000000=
+0000001 00000000000050dc
+> [69244.028444][T87504] GPR04: 000000001ffb6100 0000000000000020 000000000=
+0000001 000000001fb09010
+> [69244.028444][T87504] GPR08: 0000000020000000 0000000000000000 000000000=
+0000000 0000000000000000
+> [69244.028444][T87504] GPR12: 80040000072a40a8 c00000000ff8b680 000000000=
+0000007 0000000000000034
+> [69244.028444][T87504] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001=
+fbd1db0 000000001fb3f008
+> [69244.028444][T87504] GPR20: 000000001fb41018 ffffffffffffffff 000000000=
+000017f fffffffffffff68f
+> [69244.028444][T87504] GPR24: 000000001fb18fe8 000000001fb3e000 000000001=
+fb1adc0 000000001fb1cf40
+> [69244.028444][T87504] GPR28: 000000001fb26000 000000001fb460f0 000000001=
+fb17f18 000000001fb17000
+> [69244.028534][T87504] NIP [000000001fb41050] 0x1fb41050
+> [69244.028543][T87504] LR [000000001fb4104c] 0x1fb4104c
+> [69244.028549][T87504] Call Trace:
+> [69244.028554][T87504] Instruction dump:
+> [69244.028561][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
+XXX XXXXXXXX XXXXXXXX
+> [69244.028575][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
+XXX XXXXXXXX XXXXXXXX
+> [69244.028607][T87504] ---[ end trace 3ddec07f638c34a2 ]---
+>
+> This happens because MSR[RI] is unset when entering RTAS but there is no
+> valid reason to not set it here.
+>
+> RTAS is expected to be called with MSR[RI] as specified in PAPR+ section
+> "7.2.1 Machine State":
+>
+>  R1=E2=80=937.2.1=E2=80=939. If called with MSR[RI] equal to 1, then RTAS=
+ must protect its
+>  own critical regions from recursion by setting the MSRRI bit to 0 when in
+>  the critical regions.
+>
+> Fixing this by reviewing the way MSR is compute before calling RTAS. Now a
+> hardcoded value meaning real mode, 32 bits and Recoverable Interrupt is
+> loaded.
+>
+> In addition a check is added in do_enter_rtas() to detect calls made with
+> MSR[RI] unset, as we are forcing it on later.
+>
+> This patch has been tested on the following machines:
+> Power KVM Guest
+>   P8 S822L (host Ubuntu kernel 5.11.0-49-generic)
+> PowerVM LPAR
+>   P8 9119-MME (FW860.A1)
+>   p9 9008-22L (FW950.00)
+>   P10 9080-HEX (FW1010.00)
+>
+> Changes in V2:
+>  - Change comment in code to indicate NMI (Nick's comment)
+>  - Add reference to PAPR+ in the change log (Michael's comment)
+>
+> Cc: stable@vger.kernel.org
+> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/entry_64.S | 20 ++++++++------------
+>  arch/powerpc/kernel/rtas.c     |  5 +++++
+>  2 files changed, 13 insertions(+), 12 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_6=
+4.S
+> index 9581906b5ee9..65cb14b56f8d 100644
+> --- a/arch/powerpc/kernel/entry_64.S
+> +++ b/arch/powerpc/kernel/entry_64.S
+> @@ -330,22 +330,18 @@ _GLOBAL(enter_rtas)
+>  	clrldi	r4,r4,2			/* convert to realmode address */
+>         	mtlr	r4
+>=20=20
+> -	li	r0,0
+> -	ori	r0,r0,MSR_EE|MSR_SE|MSR_BE|MSR_RI
+> -	andc	r0,r6,r0
+> -=09
+> -        li      r9,1
+> -        rldicr  r9,r9,MSR_SF_LG,(63-MSR_SF_LG)
+> -	ori	r9,r9,MSR_IR|MSR_DR|MSR_FE0|MSR_FE1|MSR_FP|MSR_RI|MSR_LE
+> -	andc	r6,r0,r9
+=20
+One advantage of the old method is it can adapt to new MSR bits being
+set by the kernel.
 
-The filename of the patch is:
-     perf-symbol-remove-arch__symbols__fixup_end.patch
-and it can be found in the queue-5.15 subdirectory.
+For example we used to use RTAS on powernv, and this code didn't need
+updating to cater to MSR_HV being set. We will probably never use RTAS
+on bare-metal again, so that's OK.
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+But your change might break secure virtual machines, because it clears
+MSR_S whereas the old code didn't. I think SVMs did use RTAS, but I
+don't know whether it matters if it's called with MSR_S set or not?
 
+Not sure if anyone will remember, or has a working setup they can test.
+Maybe for now we just copy MSR_S from the kernel MSR the way the
+current code does.
 
-From a5d20d42a2f2dc2b2f9e9361912062732414090d Mon Sep 17 00:00:00 2001
-From: Namhyung Kim <namhyung@kernel.org>
-Date: Fri, 15 Apr 2022 17:40:48 -0700
-Subject: perf symbol: Remove arch__symbols__fixup_end()
+>  __enter_rtas:
+> -	sync				/* disable interrupts so SRR0/1 */
+> -	mtmsrd	r0			/* don't get trashed */
+> -
+>  	LOAD_REG_ADDR(r4, rtas)
+>  	ld	r5,RTASENTRY(r4)	/* get the rtas->entry value */
+>  	ld	r4,RTASBASE(r4)		/* get the rtas->base value */
+> +
+> +	/* RTAS runs in 32bits real mode but let MSR[]RI on as we may hit
 
-From: Namhyung Kim <namhyung@kernel.org>
+"32-bit big endian real mode"
 
-commit a5d20d42a2f2dc2b2f9e9361912062732414090d upstream.
+> +	 * NMI (SRESET or MCE). RTAS should disable RI in its critical
+> +	 * regions (as specified in PAPR+ section 7.2.1). */
+> +	LOAD_REG_IMMEDIATE(r6, MSR_ME|MSR_RI)
+> +
+> +	li      r0,0
+> +	mtmsrd  r0,1                    /* disable RI before using SRR0/1 */
+>=20=20=09
+>  	mtspr	SPRN_SRR0,r5
+>  	mtspr	SPRN_SRR1,r6
+> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+> index 1f42aabbbab3..d7775b8c8853 100644
+> --- a/arch/powerpc/kernel/rtas.c
+> +++ b/arch/powerpc/kernel/rtas.c
+> @@ -49,6 +49,11 @@ void enter_rtas(unsigned long);
+>=20=20
+>  static inline void do_enter_rtas(unsigned long args)
+>  {
+> +	unsigned long msr;
+> +
+> +	msr =3D mfmsr();
+> +	BUG_ON(!(msr & MSR_RI));
 
-Now the generic code can handle kallsyms fixup properly so no need to
-keep the arch-functions anymore.
+I'm not sure about this.
 
-Fixes: 3cf6a32f3f2a4594 ("perf symbols: Fix symbol size calculation condition")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.garry@huawei.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-s390@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20220416004048.1514900-4-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- tools/perf/arch/arm64/util/Build       |    1 -
- tools/perf/arch/arm64/util/machine.c   |   28 ----------------------------
- tools/perf/arch/powerpc/util/Build     |    1 -
- tools/perf/arch/powerpc/util/machine.c |   25 -------------------------
- tools/perf/arch/s390/util/machine.c    |   16 ----------------
- tools/perf/util/symbol.c               |    5 -----
- tools/perf/util/symbol.h               |    1 -
- 7 files changed, 77 deletions(-)
- delete mode 100644 tools/perf/arch/powerpc/util/machine.c
+We call RTAS in some low-level places, so if we ever hit this BUG_ON
+then it might cause us to crash badly, or recursively BUG.
 
---- a/tools/perf/arch/arm64/util/Build
-+++ b/tools/perf/arch/arm64/util/Build
-@@ -1,5 +1,4 @@
- perf-y += header.o
--perf-y += machine.o
- perf-y += perf_regs.o
- perf-y += tsc.o
- perf-y += pmu.o
---- a/tools/perf/arch/arm64/util/machine.c
-+++ /dev/null
-@@ -1,28 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--#include <inttypes.h>
--#include <stdio.h>
--#include <string.h>
--#include "debug.h"
--#include "symbol.h"
--
--/* On arm64, kernel text segment starts at high memory address,
-- * for example 0xffff 0000 8xxx xxxx. Modules start at a low memory
-- * address, like 0xffff 0000 00ax xxxx. When only small amount of
-- * memory is used by modules, gap between end of module's text segment
-- * and start of kernel text segment may reach 2G.
-- * Therefore do not fill this gap and do not assign it to the kernel dso map.
-- */
--
--#define SYMBOL_LIMIT (1 << 12) /* 4K */
--
--void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
--{
--	if ((strchr(p->name, '[') && strchr(c->name, '[') == NULL) ||
--			(strchr(p->name, '[') == NULL && strchr(c->name, '[')))
--		/* Limit range of last symbol in module and kernel */
--		p->end += SYMBOL_LIMIT;
--	else
--		p->end = c->start;
--	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
--}
---- a/tools/perf/arch/powerpc/util/Build
-+++ b/tools/perf/arch/powerpc/util/Build
-@@ -1,5 +1,4 @@
- perf-y += header.o
--perf-y += machine.o
- perf-y += kvm-stat.o
- perf-y += perf_regs.o
- perf-y += mem-events.o
---- a/tools/perf/arch/powerpc/util/machine.c
-+++ /dev/null
-@@ -1,25 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--#include <inttypes.h>
--#include <stdio.h>
--#include <string.h>
--#include <internal/lib.h> // page_size
--#include "debug.h"
--#include "symbol.h"
--
--/* On powerpc kernel text segment start at memory addresses, 0xc000000000000000
-- * whereas the modules are located at very high memory addresses,
-- * for example 0xc00800000xxxxxxx. The gap between end of kernel text segment
-- * and beginning of first module's text segment is very high.
-- * Therefore do not fill this gap and do not assign it to the kernel dso map.
-- */
--
--void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
--{
--	if (strchr(p->name, '[') == NULL && strchr(c->name, '['))
--		/* Limit the range of last kernel symbol */
--		p->end += page_size;
--	else
--		p->end = c->start;
--	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
--}
---- a/tools/perf/arch/s390/util/machine.c
-+++ b/tools/perf/arch/s390/util/machine.c
-@@ -35,19 +35,3 @@ int arch__fix_module_text_start(u64 *sta
- 
- 	return 0;
- }
--
--/* On s390 kernel text segment start is located at very low memory addresses,
-- * for example 0x10000. Modules are located at very high memory addresses,
-- * for example 0x3ff xxxx xxxx. The gap between end of kernel text segment
-- * and beginning of first module's text segment is very big.
-- * Therefore do not fill this gap and do not assign it to the kernel dso map.
-- */
--void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
--{
--	if (strchr(p->name, '[') == NULL && strchr(c->name, '['))
--		/* Last kernel symbol mapped to end of page */
--		p->end = roundup(p->end, page_size);
--	else
--		p->end = c->start;
--	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
--}
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -101,11 +101,6 @@ static int prefix_underscores_count(cons
- 	return tail - str;
- }
- 
--void __weak arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
--{
--	p->end = c->start;
--}
--
- const char * __weak arch__normalize_symbol_name(const char *name)
- {
- 	return name;
---- a/tools/perf/util/symbol.h
-+++ b/tools/perf/util/symbol.h
-@@ -230,7 +230,6 @@ const char *arch__normalize_symbol_name(
- #define SYMBOL_A 0
- #define SYMBOL_B 1
- 
--void arch__symbols__fixup_end(struct symbol *p, struct symbol *c);
- int arch__compare_symbol_names(const char *namea, const char *nameb);
- int arch__compare_symbol_names_n(const char *namea, const char *nameb,
- 				 unsigned int n);
+A WARN_ON_ONCE() might be safer?
 
-
-Patches currently in stable-queue which might be from namhyung@kernel.org are
-
-queue-5.15/perf-symbol-remove-arch__symbols__fixup_end.patch
-queue-5.15/perf-arm-spe-fix-addresses-of-synthesized-spe-events.patch
-queue-5.15/perf-symbol-update-symbols__fixup_end.patch
-queue-5.15/perf-symbol-pass-is_kallsyms-to-symbols__fixup_end.patch
+cheers
