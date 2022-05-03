@@ -2,53 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C73B5187E1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 17:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED64F518988
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 18:17:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kt3GY6Rrkz3bcR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 01:07:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kt4qb5k9Rz3bs3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 02:17:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=oOj5zvna;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BpF1tovU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt3Fw5RS0z2xKK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 01:06:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oOj5zvna; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kt3Fw4K0Pz4xXk;
- Wed,  4 May 2022 01:06:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1651590404;
- bh=Dgg0y2YAJVCYq+A7nlozqofEZc1GspCWNF8o1AxIhDk=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oOj5zvnan2Y/BMYEpzl5Az0MK3LSXnm9Hl0SuV96bsd1io91AjtKlq4SX1yV6iLvd
- VPqPSG64Jl4UNBj9/Fhnb0iMsGHn6qOzrTiKdy99kLv6mUDg5ppeRtSEWiJCmZKzKW
- LYaQC2WhJ9AJjpfRegXbTRn2gdmWqTZcRUSpWXQF0bo5zFdstIk7j9VNGQO3G2TgsH
- 3S29CDT+RNxq9v1fbWp+uO+1oATO/8o1WwIO9ZeHe92UfFt7xUcw8uJcRMKJIO3Cek
- xwHV8E8EvrIyBohVYTVFefLXaxdmi7Sz5So1X4nVaLST8pOpH1Ebzzn/Byyy30yXne
- 00KbkEONIoFJQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Laurent Dufour <ldufour@linux.ibm.com>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=BpF1tovU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt4pp08k9z3050
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 02:16:49 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 243Fib6n015328;
+ Tue, 3 May 2022 16:16:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=pOQy/PjfoUASKQBsieVyMYXmR6G6qlGPQnBZNfJWYg8=;
+ b=BpF1tovUo0NLs4JjdkCQWqpadzsmAtsnb1063mBmad/i6o3krKlOAEYX1B40+CrCs2tG
+ JLhXySV7fx8Lm9j5lS/MxyBSmNK7CQqvR5TL3uWZ99UuXU7Ut6SfBCNbJnJ+bkef1gsu
+ WU2kAi+GBK1krUY+R1QPPeGWM1xyeA+v9BtYtGRhcpW9gbUzWVE9Lix279xmolKgsd04
+ KzVOIOs6c2D0eOpxSE9jrS95RtleBTYUGdjWK2T9CVaNA8z+qWuN4OEDGJekhoCFYOBr
+ WdYItzavFrISq5ujT3a+hqMAj7pYVsvFPlIq6MohP+eHs2yXGjYPr2Qnt1+NmIOxaFaF dA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fu7a8rp91-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 May 2022 16:16:42 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 243FqOZ1003505;
+ Tue, 3 May 2022 16:16:42 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fu7a8rp8g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 May 2022 16:16:42 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 243G6UXE005814;
+ Tue, 3 May 2022 16:16:41 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma04wdc.us.ibm.com with ESMTP id 3frvr9myq0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 May 2022 16:16:40 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 243GGeR631195406
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 May 2022 16:16:40 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1DFFB7805E;
+ Tue,  3 May 2022 16:16:40 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5932578066;
+ Tue,  3 May 2022 16:16:36 +0000 (GMT)
+Received: from localhost (unknown [9.160.48.141])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Tue,  3 May 2022 16:16:35 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Laurent Dufour
+ <ldufour@linux.ibm.com>
 Subject: Re: [PATCH v2] powerpc/rtas: Keep MSR[RI] set when calling RTAS
-In-Reply-To: <20220401140634.65726-1-ldufour@linux.ibm.com>
+In-Reply-To: <87r15aveny.fsf@mpe.ellerman.id.au>
 References: <20220401140634.65726-1-ldufour@linux.ibm.com>
-Date: Wed, 04 May 2022 01:06:41 +1000
-Message-ID: <87r15aveny.fsf@mpe.ellerman.id.au>
+ <87r15aveny.fsf@mpe.ellerman.id.au>
+Date: Tue, 03 May 2022 13:16:29 -0300
+Message-ID: <87levia8wy.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4QIy9T9IVO1N4-KCXdHIXyrKE1c93rvw
+X-Proofpoint-ORIG-GUID: YQ4p8xJgLWTLQN6qlQo2zo0ubGdZUdNr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-03_06,2022-05-02_03,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ malwarescore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 mlxlogscore=852 adultscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205030109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,246 +112,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Laurent Dufour <ldufour@linux.ibm.com> writes:
-> RTAS runs in real mode (MSR[DR] and MSR[IR] unset) and in 32bits
-> mode (MSR[SF] unset).
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-Probably also worth mentioning that it runs in big endian mode :)
-
-It is specified in PAPR (R1-7.2.1-6).
-
-> The change in MSR is done in enter_rtas() in a relatively complex way,
-> since the MSR value could be hardcoded.
+>> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+>> index 9581906b5ee9..65cb14b56f8d 100644
+>> --- a/arch/powerpc/kernel/entry_64.S
+>> +++ b/arch/powerpc/kernel/entry_64.S
+>> @@ -330,22 +330,18 @@ _GLOBAL(enter_rtas)
+>>  	clrldi	r4,r4,2			/* convert to realmode address */
+>>         	mtlr	r4
+>>  
+>> -	li	r0,0
+>> -	ori	r0,r0,MSR_EE|MSR_SE|MSR_BE|MSR_RI
+>> -	andc	r0,r6,r0
+>> -	
+>> -        li      r9,1
+>> -        rldicr  r9,r9,MSR_SF_LG,(63-MSR_SF_LG)
+>> -	ori	r9,r9,MSR_IR|MSR_DR|MSR_FE0|MSR_FE1|MSR_FP|MSR_RI|MSR_LE
+>> -	andc	r6,r0,r9
+>  
+> One advantage of the old method is it can adapt to new MSR bits being
+> set by the kernel.
 >
-> Furthermore, a panic has been reported when hitting the watchdog interrupt
-> while running in RTAS, this leads to the following stack trace:
+> For example we used to use RTAS on powernv, and this code didn't need
+> updating to cater to MSR_HV being set. We will probably never use RTAS
+> on bare-metal again, so that's OK.
 >
-> [69244.027433][   C24] watchdog: CPU 24 Hard LOCKUP
-> [69244.027442][   C24] watchdog: CPU 24 TB:997512652051031, last heartbea=
-t TB:997504470175378 (15980ms ago)
-> [69244.027451][   C24] Modules linked in: chacha_generic(E) libchacha(E) =
-xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) li=
-bpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rn=
-g(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_=
-generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camel=
-lia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) alg=
-if_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rp=
-cgss(E)
-> nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(=
-E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netl=
-ink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(=
-E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_=
-vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) con=
-figfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E)=
- t10_pi(E)
-> [69244.027555][   C24]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf1=
-28mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) r=
-aid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) d=
-m_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
-> [69244.027587][   C24] Supported: No, Unreleased kernel
-> [69244.027600][   C24] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Taint=
-ed: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP=
-4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
-> [69244.027609][   C24] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0=
-000000000000000
-> [69244.027612][   C24] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G    =
-        E  X     (5.14.21-150400.71.1.bz196362_2-default)
-> [69244.027615][   C24] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 488000=
-02  XER: 20040020
-> [69244.027625][   C24] CFAR: 000000000000011c IRQMASK: 1
-> [69244.027625][   C24] GPR00: 0000000000000003 ffffffffffffffff 000000000=
-0000001 00000000000050dc
-> [69244.027625][   C24] GPR04: 000000001ffb6100 0000000000000020 000000000=
-0000001 000000001fb09010
-> [69244.027625][   C24] GPR08: 0000000020000000 0000000000000000 000000000=
-0000000 0000000000000000
-> [69244.027625][   C24] GPR12: 80040000072a40a8 c00000000ff8b680 000000000=
-0000007 0000000000000034
-> [69244.027625][   C24] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001=
-fbd1db0 000000001fb3f008
-> [69244.027625][   C24] GPR20: 000000001fb41018 ffffffffffffffff 000000000=
-000017f fffffffffffff68f
-> [69244.027625][   C24] GPR24: 000000001fb18fe8 000000001fb3e000 000000001=
-fb1adc0 000000001fb1cf40
-> [69244.027625][   C24] GPR28: 000000001fb26000 000000001fb460f0 000000001=
-fb17f18 000000001fb17000
-> [69244.027663][   C24] NIP [000000001fb41050] 0x1fb41050
-> [69244.027696][   C24] LR [000000001fb4104c] 0x1fb4104c
-> [69244.027699][   C24] Call Trace:
-> [69244.027701][   C24] Instruction dump:
-> [69244.027723][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
-XXX XXXXXXXX XXXXXXXX
-> [69244.027728][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
-XXX XXXXXXXX XXXXXXXX
-> [69244.027762][T87504] Oops: Unrecoverable System Reset, sig: 6 [#1]
-> [69244.028044][T87504] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 N=
-UMA pSeries
-> [69244.028089][T87504] Modules linked in: chacha_generic(E) libchacha(E) =
-xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) li=
-bpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rn=
-g(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_=
-generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camel=
-lia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) alg=
-if_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rp=
-cgss(E)
-> nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(=
-E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netl=
-ink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(=
-E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_=
-vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) con=
-figfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E)=
- t10_pi(E)
-> [69244.028171][T87504]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf1=
-28mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) r=
-aid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) d=
-m_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
-> [69244.028307][T87504] Supported: No, Unreleased kernel
-> [69244.028385][T87504] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Taint=
-ed: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP=
-4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
-> [69244.028408][T87504] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0=
-000000000000000
-> [69244.028418][T87504] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G    =
-        E  X     (5.14.21-150400.71.1.bz196362_2-default)
-> [69244.028429][T87504] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 488000=
-02  XER: 20040020
-> [69244.028444][T87504] CFAR: 000000000000011c IRQMASK: 1
-> [69244.028444][T87504] GPR00: 0000000000000003 ffffffffffffffff 000000000=
-0000001 00000000000050dc
-> [69244.028444][T87504] GPR04: 000000001ffb6100 0000000000000020 000000000=
-0000001 000000001fb09010
-> [69244.028444][T87504] GPR08: 0000000020000000 0000000000000000 000000000=
-0000000 0000000000000000
-> [69244.028444][T87504] GPR12: 80040000072a40a8 c00000000ff8b680 000000000=
-0000007 0000000000000034
-> [69244.028444][T87504] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001=
-fbd1db0 000000001fb3f008
-> [69244.028444][T87504] GPR20: 000000001fb41018 ffffffffffffffff 000000000=
-000017f fffffffffffff68f
-> [69244.028444][T87504] GPR24: 000000001fb18fe8 000000001fb3e000 000000001=
-fb1adc0 000000001fb1cf40
-> [69244.028444][T87504] GPR28: 000000001fb26000 000000001fb460f0 000000001=
-fb17f18 000000001fb17000
-> [69244.028534][T87504] NIP [000000001fb41050] 0x1fb41050
-> [69244.028543][T87504] LR [000000001fb4104c] 0x1fb4104c
-> [69244.028549][T87504] Call Trace:
-> [69244.028554][T87504] Instruction dump:
-> [69244.028561][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
-XXX XXXXXXXX XXXXXXXX
-> [69244.028575][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXX=
-XXX XXXXXXXX XXXXXXXX
-> [69244.028607][T87504] ---[ end trace 3ddec07f638c34a2 ]---
+> But your change might break secure virtual machines, because it clears
+> MSR_S whereas the old code didn't. I think SVMs did use RTAS, but I
+> don't know whether it matters if it's called with MSR_S set or not?
 >
-> This happens because MSR[RI] is unset when entering RTAS but there is no
-> valid reason to not set it here.
->
-> RTAS is expected to be called with MSR[RI] as specified in PAPR+ section
-> "7.2.1 Machine State":
->
->  R1=E2=80=937.2.1=E2=80=939. If called with MSR[RI] equal to 1, then RTAS=
- must protect its
->  own critical regions from recursion by setting the MSRRI bit to 0 when in
->  the critical regions.
->
-> Fixing this by reviewing the way MSR is compute before calling RTAS. Now a
-> hardcoded value meaning real mode, 32 bits and Recoverable Interrupt is
-> loaded.
->
-> In addition a check is added in do_enter_rtas() to detect calls made with
-> MSR[RI] unset, as we are forcing it on later.
->
-> This patch has been tested on the following machines:
-> Power KVM Guest
->   P8 S822L (host Ubuntu kernel 5.11.0-49-generic)
-> PowerVM LPAR
->   P8 9119-MME (FW860.A1)
->   p9 9008-22L (FW950.00)
->   P10 9080-HEX (FW1010.00)
->
-> Changes in V2:
->  - Change comment in code to indicate NMI (Nick's comment)
->  - Add reference to PAPR+ in the change log (Michael's comment)
->
-> Cc: stable@vger.kernel.org
-> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/entry_64.S | 20 ++++++++------------
->  arch/powerpc/kernel/rtas.c     |  5 +++++
->  2 files changed, 13 insertions(+), 12 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_6=
-4.S
-> index 9581906b5ee9..65cb14b56f8d 100644
-> --- a/arch/powerpc/kernel/entry_64.S
-> +++ b/arch/powerpc/kernel/entry_64.S
-> @@ -330,22 +330,18 @@ _GLOBAL(enter_rtas)
->  	clrldi	r4,r4,2			/* convert to realmode address */
->         	mtlr	r4
->=20=20
-> -	li	r0,0
-> -	ori	r0,r0,MSR_EE|MSR_SE|MSR_BE|MSR_RI
-> -	andc	r0,r6,r0
-> -=09
-> -        li      r9,1
-> -        rldicr  r9,r9,MSR_SF_LG,(63-MSR_SF_LG)
-> -	ori	r9,r9,MSR_IR|MSR_DR|MSR_FE0|MSR_FE1|MSR_FP|MSR_RI|MSR_LE
-> -	andc	r6,r0,r9
-=20
-One advantage of the old method is it can adapt to new MSR bits being
-set by the kernel.
+> Not sure if anyone will remember, or has a working setup they can test.
+> Maybe for now we just copy MSR_S from the kernel MSR the way the
+> current code does.
 
-For example we used to use RTAS on powernv, and this code didn't need
-updating to cater to MSR_HV being set. We will probably never use RTAS
-on bare-metal again, so that's OK.
-
-But your change might break secure virtual machines, because it clears
-MSR_S whereas the old code didn't. I think SVMs did use RTAS, but I
-don't know whether it matters if it's called with MSR_S set or not?
-
-Not sure if anyone will remember, or has a working setup they can test.
-Maybe for now we just copy MSR_S from the kernel MSR the way the
-current code does.
-
->  __enter_rtas:
-> -	sync				/* disable interrupts so SRR0/1 */
-> -	mtmsrd	r0			/* don't get trashed */
-> -
->  	LOAD_REG_ADDR(r4, rtas)
->  	ld	r5,RTASENTRY(r4)	/* get the rtas->entry value */
->  	ld	r4,RTASBASE(r4)		/* get the rtas->base value */
-> +
-> +	/* RTAS runs in 32bits real mode but let MSR[]RI on as we may hit
-
-"32-bit big endian real mode"
-
-> +	 * NMI (SRESET or MCE). RTAS should disable RI in its critical
-> +	 * regions (as specified in PAPR+ section 7.2.1). */
-> +	LOAD_REG_IMMEDIATE(r6, MSR_ME|MSR_RI)
-> +
-> +	li      r0,0
-> +	mtmsrd  r0,1                    /* disable RI before using SRR0/1 */
->=20=20=09
->  	mtspr	SPRN_SRR0,r5
->  	mtspr	SPRN_SRR1,r6
-> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-> index 1f42aabbbab3..d7775b8c8853 100644
-> --- a/arch/powerpc/kernel/rtas.c
-> +++ b/arch/powerpc/kernel/rtas.c
-> @@ -49,6 +49,11 @@ void enter_rtas(unsigned long);
->=20=20
->  static inline void do_enter_rtas(unsigned long args)
->  {
-> +	unsigned long msr;
-> +
-> +	msr =3D mfmsr();
-> +	BUG_ON(!(msr & MSR_RI));
-
-I'm not sure about this.
-
-We call RTAS in some low-level places, so if we ever hit this BUG_ON
-then it might cause us to crash badly, or recursively BUG.
-
-A WARN_ON_ONCE() might be safer?
-
-cheers
+Would the kernel even be able to change the bit? I think only urfid can
+clear MSR_S.
