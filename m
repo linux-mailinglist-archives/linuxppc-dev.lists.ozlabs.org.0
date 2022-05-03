@@ -1,91 +1,141 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA98518AAD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 19:03:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A0A518B29
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 19:33:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kt5r600qtz3bpR
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 03:03:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kt6Vn2sSzz3bp3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 03:33:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Zhd84acr;
+	dkim=pass (1024-bit key; unprotected) header.d=microsoft.com header.i=@microsoft.com header.a=rsa-sha256 header.s=selector2 header.b=iMwLKZ9L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=arbab@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=Zhd84acr; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ smtp.mailfrom=microsoft.com (client-ip=2a01:111:f403:c111::3;
+ helo=na01-obe.outbound.protection.outlook.com;
+ envelope-from=mikelley@microsoft.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=microsoft.com header.i=@microsoft.com
+ header.a=rsa-sha256 header.s=selector2 header.b=iMwLKZ9L; 
+ dkim-atps=neutral
+Received: from na01-obe.outbound.protection.outlook.com
+ (mail-cusazlp170110003.outbound.protection.outlook.com
+ [IPv6:2a01:111:f403:c111::3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt5qL66v1z308G
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 03:02:22 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 243GwiZg025367;
- Tue, 3 May 2022 17:02:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=msdioapRihqlSoKhKh+q78mYSRPmLcTnHZMyHVDr77k=;
- b=Zhd84acrraMNlc3hh+qsjbFVMG2NHhU6TZHGknzUy/tdXkFfFpr3d0XcTJdGuWwse6IP
- 966Kbz7c4qmr9cd4l2ESLL06ahp0+x2FL3HwGLbNtEQxc4CLSbEyqcAKamDjX7IX65lw
- izSxf4TZ/20WmjRVXU2Q/Y3TKd6+2lwxbkUiUJcwQBqAh6SuH9JLtixVNG1woPE/kAxy
- 7MGiNVzGVAemjJYeY3V1frvek+u6IhMctiEMLyhTwP7ZP5bmCXpSn6+jisfs8lsMThTv
- hy4+I488ZlRAKFjy1lVVPsB8buA5J9VbxncVlAcYHXVZa5mNZE4rhdYMGLNgZERWvRYj fw== 
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fu8cyr22k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 May 2022 17:02:19 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 243Gpx4Y020110;
- Tue, 3 May 2022 17:02:19 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02dal.us.ibm.com with ESMTP id 3frvr9tfgp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 May 2022 17:02:19 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
- [9.57.199.106])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 243H2IZf33030588
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 May 2022 17:02:18 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 523842805C;
- Tue,  3 May 2022 17:02:18 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3AD4D28058;
- Tue,  3 May 2022 17:02:18 +0000 (GMT)
-Received: from arbab-laptop.localdomain (unknown [9.53.178.181])
- by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTPS;
- Tue,  3 May 2022 17:02:18 +0000 (GMT)
-Received: by arbab-laptop.localdomain (Postfix, from userid 152845)
- id 6DB3BAE6359; Tue,  3 May 2022 12:02:17 -0500 (CDT)
-From: Reza Arbab <arbab@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Enable the DAWR on POWER9 DD2.3 and above
-Date: Tue,  3 May 2022 12:01:52 -0500
-Message-Id: <20220503170152.23412-1-arbab@linux.ibm.com>
-X-Mailer: git-send-email 2.27.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt6Tx2Y2bz3bcY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 03:32:19 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Jt/KOtRUgIAyksyYK8VnD6ZnzZ/NliFwcadXLsWhztfCamTq3QwkwpGwyMwiutvnUnN9P++1gDsLEiw6Ffs4JzYwWGjG1s32LGaj++fC09TISIbhTPJ22JvpH1sDoC1t8TEEevav+mZukOSpAc/O8A9zMznA1StSx+n+fiDRjrtWV3GTpPnM9y6fYUY9TLjiFeJdopLkIP13Hd3e75u1mME7ICYLLotdeJxv7FFo9dCplpw84PrBxCkN8oMYpv+9SKWUo7v1vDi+yPwDJ8RozZ6cej5bW0lGLjxGVSQUz4zO2RXSdgzKKqzurjdwrIitXCjuYEki2FjSzkfT1QwwKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EOJL1aNKBYeOe+uczwmHwdViQyc7IwMUkuukaeURBOs=;
+ b=S7HWX64rCgnA9mLOc2eDXyDjV6iC0ehqY8SNFj/n7g9tX/kIZbHomLEI9FL1MH56jcIPtcTLOcqfxQMnuO6iEK3JH7YjdxMdQA+HfoV3LG9zl2jalk2jxwFSWVvdJKaYxR965/HLYUfTNH9sMSpM9KkV6n9THwWb2UXseqq1mVCCB9/2/pYGTGYa0m4B6mGZ8ABVNHH0efDrQpFCtgvcmpBYAxTdOM5BWACtw4nDbSbKbDaQPVrS4f/tC0fAe4egALomaphJqT00udxastUBLuxGhAmPgXopd/cBVnO3YucxlRcHy76OdoyO+bUJQCABjNA8UWZ8RaZuV9puIkhUjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EOJL1aNKBYeOe+uczwmHwdViQyc7IwMUkuukaeURBOs=;
+ b=iMwLKZ9LBUYKCD7s3OHUGAzQf1eKepDONOGF5h+ECdpSlLnCRD1k8RU9oxx0Yd92mvK8EkErUnr1aFcwYQE1hWsNHP5RV8IZwkrqNwqDR6/GJsTT94uz47EnDd3I5q+sCx4HSe8qnHdaKJZ/stF6cJ7V1IuK4VGpUqTTX4YDSgg=
+Received: from PH0PR21MB3025.namprd21.prod.outlook.com (2603:10b6:510:d2::21)
+ by MWHPR21MB0191.namprd21.prod.outlook.com (2603:10b6:300:79::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5250.6; Tue, 3 May
+ 2022 17:31:43 +0000
+Received: from PH0PR21MB3025.namprd21.prod.outlook.com
+ ([fe80::dd77:2d4d:329e:87df]) by PH0PR21MB3025.namprd21.prod.outlook.com
+ ([fe80::dd77:2d4d:329e:87df%5]) with mapi id 15.20.5250.006; Tue, 3 May 2022
+ 17:31:43 +0000
+From: "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>, "bhe@redhat.com" <bhe@redhat.com>,
+ "pmladek@suse.com" <pmladek@suse.com>, "kexec@lists.infradead.org"
+ <kexec@lists.infradead.org>
+Subject: RE: [PATCH 24/30] panic: Refactor the panic path
+Thread-Topic: [PATCH 24/30] panic: Refactor the panic path
+Thread-Index: AQHYWooewzaZJbWMbkqYc1HZNUkdQa0HKRAQgAAz7QCABhB0MA==
+Date: Tue, 3 May 2022 17:31:43 +0000
+Message-ID: <PH0PR21MB302570C9407F80AAD09E209ED7C09@PH0PR21MB3025.namprd21.prod.outlook.com>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-25-gpiccoli@igalia.com>
+ <PH0PR21MB30252C55EB4F97F3D78021BDD7FC9@PH0PR21MB3025.namprd21.prod.outlook.com>
+ <50178dfb-8e94-f35f-09c3-22fe197550ef@igalia.com>
+In-Reply-To: <50178dfb-8e94-f35f-09c3-22fe197550ef@igalia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=8353cb62-2ed7-400a-b7eb-a0eb08ff48b4;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2022-05-03T17:14:35Z;
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c02534b1-161e-4271-51ad-08da2d2aca6d
+x-ms-traffictypediagnostic: MWHPR21MB0191:EE_
+x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+x-microsoft-antispam-prvs: <MWHPR21MB01911FB5FF350E4B06750FD0D7C09@MWHPR21MB0191.namprd21.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: d+Vj8BD2ptagF97e+OKWd6KIi9dJnQ7gaUDc6wlNZqB6d87vNQwAg9gTTz7gmEe5peNSxQquSkNJzQZbbI/RlISFgBlQoQpdhadxVIaq7nDryyXKXewxJ0vEK70rT16ZqNlNHh03BpEBnX+MiIth//WHnfeBrwZmsv0wDp5R3AQsTrWJaSMiwJUOUWRAJ4NNbdjAtd6NDcqyYBbe/F2sAryTMSyjGpc4aonCjZ4cV15U71QaHrIwDBpm9Ott4b/b9qtwd1Umqb+3ozGfrT9PkBMRsd3ruDpgUupJRy0jUOCMhPng7xTHxD5JfAgZjtHX9KAOIfg/a4LVLYLDxSzDOj0bVriAYEXmhf3mtG/3z/Ov87p4l4gyWHPi3JZPxGGlFR/SgW76EoWXJHfAJtuldYHbL9T4rhbaORwQLgLnzmqfYlau6+M/dYNT8y/uw3q3K6oZ6wuFLStOV7xMc3LAlTPyYJYxe8F0WsMoFQutNHnbjeH5rRpCrzTR2byFdYk4tRWkm1W2B7lovCjTOPhfiNyLfasP6HjbeopVJGp91XcI8s8jb7bFMITNKq0NhyelZQt8vkTqhEUT0hpbvLrqX/4zxvGqf7KS+O5k9BlNztUgNOk4AEnflbZjadvWOVpCU6KgEsLHWGGqJTczV5btT+4ftNTK4/5RNcc5r8t81x3Qng82ku6C6Sy2px6abE7hE+MJFVQt3wDG7R39G1tnCbrKEwajs+OkqxRln1S9lmH2pp5HwuLL5xpibnmFTPHDx410FyVKd08iauOHoDTrAWdkY/rGrhSinmO9G7HzK/JuxyBxSsA50phwfKS7qvGXabAWJbIIe81HboIaEq2IyXifJPQJp+rKDJXr+pJU+kmIR57hSHvkeiJudnDxrp8n
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR21MB3025.namprd21.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(451199009)(71200400001)(10290500003)(82950400001)(5660300002)(7406005)(7366002)(122000001)(8676002)(8936002)(83380400001)(53546011)(7416002)(7696005)(508600001)(86362001)(6506007)(64756008)(38070700005)(38100700002)(52536014)(9686003)(186003)(26005)(66476007)(66446008)(66946007)(76116006)(66556008)(82960400001)(54906003)(110136005)(966005)(316002)(4326008)(8990500004)(2906002)(55016003)(33656002);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?/JpsvICJW831GtJhoHUV7R5VNJCByy4wAGc71QhpgpZ9H5twFSHjEwLRUjNq?=
+ =?us-ascii?Q?+xcjP/YzIJDPmEBkCiHEwmnaevTU0pHzAC/ToQf+XxP9Pq/V6V/4zX1GbtCC?=
+ =?us-ascii?Q?6TfuHBuuBf+9ejbz00o1x7xRKy5CUtBmEvw+0X5/cQSU/lR6323jos9/PanL?=
+ =?us-ascii?Q?wXSQfD6SMNaQHS0AB5Ww12hs+qWMOFKkpyXTSvfTfP8xd/65gZ5GX5qeH3ZV?=
+ =?us-ascii?Q?rk0XFNSTh0qp1DUHgrYLDStU+U5kweGv+JzhMITo15+lB9pZO6tKK5u1+yIv?=
+ =?us-ascii?Q?S4Xc3FVp/A2a7E9dcITnFLqGq8Di8UadZMR9ty8GUfGmqGizf2j2+zN6Qlzq?=
+ =?us-ascii?Q?W9G42fDKK65EIbamjxiBd7kwvsgKpWjadf0mTRG5wd6RhvSnjRfUC5DWAVD5?=
+ =?us-ascii?Q?MU43loH4ELMFnUomwAGDwpb7Jfq72+KlTxdLXSlfvyrd8qfZhVbosi5rq778?=
+ =?us-ascii?Q?OsgybK0DVpMIm4u97jRl8TRFD0Kumg8jUSvxHQuMK9IhffuYGS7J9Tj2fF2L?=
+ =?us-ascii?Q?r+wWJ+bpmnK5isJwURS9DQA7ZKjeauso0WcwJatwsHZY3tW07ezQw3LdF3eC?=
+ =?us-ascii?Q?BPQIpQ6Gv1hgqaMvEOFvz5j6jFIRH9bIafnMpeUmwQl+IsmP/e+s+Kd0pIA8?=
+ =?us-ascii?Q?CIiIqq7GIvYQqYCaH4Kai4JM2R6PQ+UBr3bT7802u8YJSEfQhlKqznchSm1L?=
+ =?us-ascii?Q?sFnvGGX1BvEzcBWZ3oNjA72XewKggji1hhR1Up+TJlOngapGMliMmVKtyRpR?=
+ =?us-ascii?Q?An0XeQ+OjtTeo13bQmj3o132J/r6YJrJZCI+V/lxQ6TabhCmPKsgkx6KEQFy?=
+ =?us-ascii?Q?EZWA9YNVksZkcqfHPRmKtvhtt2t4VXJSlooO/gsEDGU5UK5xWoD1C7xNOfr5?=
+ =?us-ascii?Q?3HfkPGhe+KL3/FSEczi29DIyhslBql9QRZkeyGBED6xWcoHeWQICeopseWe5?=
+ =?us-ascii?Q?rA8Wyj2STMJj1XZPMf2Ig4T4uCLE53Jc87GKJPrWk6guBYcZNQTUlsP3RRi/?=
+ =?us-ascii?Q?eOj1pnly+b3D0souCKgk9bVVlIewyhQFC3rDkdNqeEG0iyC/c1NIFpQ7BTsM?=
+ =?us-ascii?Q?hQT3d/1an0zHG5geRp6eUSgzazxJdw9FWfdwnXJUKyvfQvNvOAaERsNw0wWC?=
+ =?us-ascii?Q?zzbU8jX3dNYLUKrrOH0NV12CHX4jYkTVYJmbKnkX28nQt/c7qhnxyRVWxt4U?=
+ =?us-ascii?Q?u/pUED5lDnxYr0//LOtOOggezR1tW5+2vlOst3LzoPjmy4cuZHMrmgqV62jX?=
+ =?us-ascii?Q?BsTaKSRtmBDE4jLeImBYd42cPgdVttbyKVo3SSX+u+qV7FBwHvuSK4mGTMT9?=
+ =?us-ascii?Q?zj2OyZyV0iIcCMnAv5bRh9jZYYdeuQlOMcJi0Pn8A3/QGdmQwclZu0/BD9kV?=
+ =?us-ascii?Q?/tpGTxTS8CYjFK9L6GpSBkcjBAzbZd9DdPM2tD4KDdhhv9FOvl9K893/rqJT?=
+ =?us-ascii?Q?EcvMYmZsYOFNp939/EQ02tRp5Tk4RTZDzUZOytVvYLm9Etqrtk0we6fyWqZW?=
+ =?us-ascii?Q?7h2jGVdTyiXaZJo3zpc2u2E8R/4sxXQWFdY/7hAQ6pZiB/jfXGIsWWCT/h2j?=
+ =?us-ascii?Q?seEitHQyk3PZuYC26Tt+Aep09FET5ZeUVkFhE2lDKvZGqW2p2FuH0IsbWnHJ?=
+ =?us-ascii?Q?APq546lgGacp3dNPPra6++6k5Ze+ibilIXYr2871lf75Po05kxywWn2YS7tE?=
+ =?us-ascii?Q?7ihfERru7bbVvMU0KOB53AE4IzmeefbD40voYwTcNdMO7hDuylseW+MXFABQ?=
+ =?us-ascii?Q?3Alqkuy65DPhYQjdaZpxE27nYeShtF4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: QNDYMy6zZ9XoqPVlTGt9R3L2KamDe7RH
-X-Proofpoint-ORIG-GUID: QNDYMy6zZ9XoqPVlTGt9R3L2KamDe7RH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-03_07,2022-05-02_03,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- impostorscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 clxscore=1011 bulkscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205030111
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR21MB3025.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c02534b1-161e-4271-51ad-08da2d2aca6d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 May 2022 17:31:43.3884 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uCZvqjHqBSnDDITyIgv33IArtj67sulx9219DtqDuXN15ic3u3zIh/wV/287GSYh6ohZ68LzN/uqJT/ZRhTo5qXHXhMXRCpanWwblZGK3w4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR21MB0191
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,168 +147,202 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "halves@canonical.com" <halves@canonical.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
+ "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
+ "feng.tang@intel.com" <feng.tang@intel.com>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
+ "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+ "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
+ "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+ "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+ "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
+ "corbet@lwn.net" <corbet@lwn.net>, "paulmck@kernel.org" <paulmck@kernel.org>,
+ "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
+ "x86@kernel.org" <x86@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
+ "bcm-kernel-feedback-list@broadcom.com"
+ <bcm-kernel-feedback-list@broadcom.com>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+ "dyoung@redhat.com" <dyoung@redhat.com>,
+ "vgoyal@redhat.com" <vgoyal@redhat.com>,
+ "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "keescook@chromium.org" <keescook@chromium.org>,
+ "arnd@arndb.de" <arnd@arndb.de>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+ "rostedt@goodmis.org" <rostedt@goodmis.org>,
+ "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+ "luto@kernel.org" <luto@kernel.org>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+ "openipmi-developer@lists.sourceforge.net"
+ <openipmi-developer@lists.sourceforge.net>,
+ "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+ "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+ "jgross@suse.com" <jgross@suse.com>,
+ "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
+ "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
+ "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
+ "mhiramat@kernel.org" <mhiramat@kernel.org>,
+ "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
+ "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+ vkuznets <vkuznets@redhat.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hardware bug in POWER9 preventing use of the DAWR was fixed in
-DD2.3. Set the CPU_FTR_DAWR feature bit on these newer systems to start
-using it again, and update the documentation accordingly.
+From: Guilherme G. Piccoli <gpiccoli@igalia.com> Sent: Friday, April 29, 20=
+22 1:38 PM
+>=20
+> On 29/04/2022 14:53, Michael Kelley (LINUX) wrote:
+> > From: Guilherme G. Piccoli <gpiccoli@igalia.com> Sent: Wednesday, April=
+ 27, 2022
+> 3:49 PM
+> >> [...]
+> >> +	panic_notifiers_level=3D
+> >> +			[KNL] Set the panic notifiers execution order.
+> >> +			Format: <unsigned int>
+> >> +			We currently have 4 lists of panic notifiers; based
+> >> +			on the functionality and risk (for panic success) the
+> >> +			callbacks are added in a given list. The lists are:
+> >> +			- hypervisor/FW notification list (low risk);
+> >> +			- informational list (low/medium risk);
+> >> +			- pre_reboot list (higher risk);
+> >> +			- post_reboot list (only run late in panic and after
+> >> +			kdump, not configurable for now).
+> >> +			This parameter defines the ordering of the first 3
+> >> +			lists with regards to kdump; the levels determine
+> >> +			which set of notifiers execute before kdump. The
+> >> +			accepted levels are:
+> >> +			0: kdump is the first thing to run, NO list is
+> >> +			executed before kdump.
+> >> +			1: only the hypervisor list is executed before kdump.
+> >> +			2 (default level): the hypervisor list and (*if*
+> >> +			there's any kmsg_dumper defined) the informational
+> >> +			list are executed before kdump.
+> >> +			3: both the hypervisor and the informational lists
+> >> +			(always) execute before kdump.
+> >
+> > I'm not clear on why level 2 exists.  What is the scenario where
+> > execution of the info list before kdump should be conditional on the
+> > existence of a kmsg_dumper?   Maybe the scenario is described
+> > somewhere in the patch set and I just missed it.
+> >
+>=20
+> Hi Michael, thanks for your review/consideration. So, this idea started
+> kind of some time ago. It all started with a need of exposing more
+> information on kernel log *before* kdump and *before* pstore -
+> specifically, we're talking about panic_print. But this cause some
+> reactions, Baoquan was very concerned with that [0]. Soon after, I've
+> proposed a panic notifiers filter (orthogonal) approach, to which Petr
+> suggested instead doing a major refactor [1] - it finally is alive in
+> the form of this series.
+>=20
+> The theory behind the level 2 is to allow a scenario of kdump with the
+> minimum amount of notifiers - what is the point in printing more
+> information if the user doesn't care, since it's going to kdump? Now, if
+> there is a kmsg dumper, it means that there is likely some interest in
+> collecting information, and that might as well be required before the
+> potential kdump (which is my case, hence the proposal on [0]).
+>=20
+> Instead of forcing one of the two behaviors (level 1 or level 3), we
+> have a middle-term/compromise: if there's interest in collecting such
+> data (in the form of a kmsg dumper), we then execute the informational
+> notifiers before kdump. If not, why to increase (even slightly) the risk
+> for kdump?
+>=20
+> I'm OK in removing the level 2 if people prefer, but I don't feel it's a
+> burden, quite opposite - seems a good way to accommodate the somewhat
+> antagonistic ideas (jump to kdump ASAP vs collecting more info in the
+> panicked kernel log).
+>=20
+> [0] https://lore.kernel.org/lkml/20220126052246.GC2086@MiWiFi-R3L-srv/
+>=20
+> [1] https://lore.kernel.org/lkml/YfPxvzSzDLjO5ldp@alley/
+>=20
 
-The CPU features for DD2.3 are currently determined by "DD2.2 or later"
-logic. In adding DD2.3 as a discrete case for the first time here, I'm
-carrying the quirks of DD2.2 forward to keep all behavior outside of
-this DAWR change the same. This leaves the assessment and potential
-removal of those quirks on DD2.3 for later.
+To me, it's a weak correlation between having a kmsg dumper, and
+wanting or not wanting the info level output to come before kdump.
+Hyper-V is one of only a few places that register a kmsg dumper, so most
+Linux instances outside of Hyper-V guest (and PowerPC systems?) will have
+the info level output after kdump.  It seems like anyone who cared strongly
+about the info level output would set the panic_notifier_level to 1 or to 3
+so that the result is more deterministic.  But that's just my opinion, and
+it's probably an opinion that is not as well informed on the topic as some
+others in the discussion. So keeping things as in your patch set is not a
+show-stopper for me.
 
-Signed-off-by: Reza Arbab <arbab@linux.ibm.com>
----
- Documentation/powerpc/dawr-power9.rst | 26 +++++++++++++++++---------
- arch/powerpc/include/asm/cputable.h   | 10 ++++++++--
- arch/powerpc/kernel/cputable.c        | 22 ++++++++++++++++++++--
- arch/powerpc/kernel/dt_cpu_ftrs.c     |  8 +++++++-
- 4 files changed, 52 insertions(+), 14 deletions(-)
+However, I would request a clarification in the documentation.   The
+panic_notifier_level affects not only the hypervisor, informational,
+and pre_reboot lists, but it also affects panic_print_sys_info() and
+kmsg_dump().  Specifically, at level 1, panic_print_sys_info() and
+kmsg_dump() will not be run before kdump.  At level 3, they will
+always be run before kdump.  Your documentation above mentions
+"informational lists" (plural), which I take to vaguely include
+kmsg_dump() and panic_print_sys_info(), but being explicit about
+the effect would be better.
 
-diff --git a/Documentation/powerpc/dawr-power9.rst b/Documentation/powerpc/dawr-power9.rst
-index e55ac6a24b97..310f2e0cea81 100644
---- a/Documentation/powerpc/dawr-power9.rst
-+++ b/Documentation/powerpc/dawr-power9.rst
-@@ -2,15 +2,23 @@
- DAWR issues on POWER9
- =====================
- 
--On POWER9 the Data Address Watchpoint Register (DAWR) can cause a checkstop
--if it points to cache inhibited (CI) memory. Currently Linux has no way to
--distinguish CI memory when configuring the DAWR, so (for now) the DAWR is
--disabled by this commit::
--
--    commit 9654153158d3e0684a1bdb76dbababdb7111d5a0
--    Author: Michael Neuling <mikey@neuling.org>
--    Date:   Tue Mar 27 15:37:24 2018 +1100
--    powerpc: Disable DAWR in the base POWER9 CPU features
-+On older POWER9 processors, the Data Address Watchpoint Register (DAWR) can
-+cause a checkstop if it points to cache inhibited (CI) memory. Currently Linux
-+has no way to distinguish CI memory when configuring the DAWR, so on affected
-+systems, the DAWR is disabled.
-+
-+Affected processor revisions
-+============================
-+
-+This issue is only present on processors prior to v2.3. The revision can be
-+found in /proc/cpuinfo::
-+
-+    processor       : 0
-+    cpu             : POWER9, altivec supported
-+    clock           : 3800.000000MHz
-+    revision        : 2.3 (pvr 004e 1203)
-+
-+On a system with the issue, the DAWR is disabled as detailed below.
- 
- Technical Details:
- ==================
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index e85c849214a2..978a4450d190 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -440,6 +440,10 @@ static inline void cpu_feature_keys_init(void) { }
- #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
- 			       CPU_FTR_P9_TM_HV_ASSIST | \
- 			       CPU_FTR_P9_TM_XER_SO_BUG)
-+#define CPU_FTRS_POWER9_DD2_3 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
-+			       CPU_FTR_P9_TM_HV_ASSIST | \
-+			       CPU_FTR_P9_TM_XER_SO_BUG | \
-+			       CPU_FTR_DAWR)
- #define CPU_FTRS_POWER10 (CPU_FTR_LWSYNC | \
- 	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | CPU_FTR_ARCH_206 |\
- 	    CPU_FTR_MMCRA | CPU_FTR_SMT | \
-@@ -469,14 +473,16 @@ static inline void cpu_feature_keys_init(void) { }
- #define CPU_FTRS_POSSIBLE	\
- 	    (CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | CPU_FTRS_POWER8 | \
- 	     CPU_FTR_ALTIVEC_COMP | CPU_FTR_VSX_COMP | CPU_FTRS_POWER9 | \
--	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
-+	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | \
-+	     CPU_FTRS_POWER9_DD2_3 | CPU_FTRS_POWER10)
- #else
- #define CPU_FTRS_POSSIBLE	\
- 	    (CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
- 	     CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
- 	     CPU_FTRS_POWER8 | CPU_FTRS_CELL | CPU_FTRS_PA6T | \
- 	     CPU_FTR_VSX_COMP | CPU_FTR_ALTIVEC_COMP | CPU_FTRS_POWER9 | \
--	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
-+	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | \
-+	     CPU_FTRS_POWER9_DD2_3 | CPU_FTRS_POWER10)
- #endif /* CONFIG_CPU_LITTLE_ENDIAN */
- #endif
- #else
-diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
-index ae0fdef0ac11..0134249a4ca8 100644
---- a/arch/powerpc/kernel/cputable.c
-+++ b/arch/powerpc/kernel/cputable.c
-@@ -487,11 +487,29 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.machine_check_early	= __machine_check_early_realmode_p9,
- 		.platform		= "power9",
- 	},
--	{	/* Power9 DD2.2 or later */
-+	{	/* Power9 DD2.2 */
-+		.pvr_mask		= 0xffffefff,
-+		.pvr_value		= 0x004e0202,
-+		.cpu_name		= "POWER9 (raw)",
-+		.cpu_features		= CPU_FTRS_POWER9_DD2_2,
-+		.cpu_user_features	= COMMON_USER_POWER9,
-+		.cpu_user_features2	= COMMON_USER2_POWER9,
-+		.mmu_features		= MMU_FTRS_POWER9,
-+		.icache_bsize		= 128,
-+		.dcache_bsize		= 128,
-+		.num_pmcs		= 6,
-+		.pmc_type		= PPC_PMC_IBM,
-+		.oprofile_cpu_type	= "ppc64/power9",
-+		.cpu_setup		= __setup_cpu_power9,
-+		.cpu_restore		= __restore_cpu_power9,
-+		.machine_check_early	= __machine_check_early_realmode_p9,
-+		.platform		= "power9",
-+	},
-+	{	/* Power9 DD2.3 or later */
- 		.pvr_mask		= 0xffff0000,
- 		.pvr_value		= 0x004e0000,
- 		.cpu_name		= "POWER9 (raw)",
--		.cpu_features		= CPU_FTRS_POWER9_DD2_2,
-+		.cpu_features		= CPU_FTRS_POWER9_DD2_3,
- 		.cpu_user_features	= COMMON_USER_POWER9,
- 		.cpu_user_features2	= COMMON_USER2_POWER9,
- 		.mmu_features		= MMU_FTRS_POWER9,
-diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 7d1b2c4a4891..972497d53953 100644
---- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-+++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -774,20 +774,26 @@ static __init void cpufeatures_cpu_quirks(void)
- 	if ((version & 0xffffefff) == 0x004e0200) {
- 		/* DD2.0 has no feature flag */
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
-+		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
- 	} else if ((version & 0xffffefff) == 0x004e0201) {
- 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_RADIX_PREFETCH_BUG;
-+		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
- 	} else if ((version & 0xffffefff) == 0x004e0202) {
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_HV_ASSIST;
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_XER_SO_BUG;
- 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
-+		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
-+	} else if ((version & 0xffffefff) == 0x004e0203) {
-+		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_HV_ASSIST;
-+		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TM_XER_SO_BUG;
-+		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
- 	} else if ((version & 0xffff0000) == 0x004e0000) {
- 		/* DD2.1 and up have DD2_1 */
- 		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD2_1;
- 	}
- 
- 	if ((version & 0xffff0000) == 0x004e0000) {
--		cur_cpu_spec->cpu_features &= ~(CPU_FTR_DAWR);
- 		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TIDR;
- 	}
- 
--- 
-2.27.0
+Michael
 
+>=20
+> >[...]
+> >> +	 * Based on the level configured (smaller than 4), we clear the
+> >> +	 * proper bits in "panic_notifiers_bits". Notice that this bitfield
+> >> +	 * is initialized with all notifiers set.
+> >> +	 */
+> >> +	switch (panic_notifiers_level) {
+> >> +	case 3:
+> >> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> >> +		break;
+> >> +	case 2:
+> >> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> >> +
+> >> +		if (!kmsg_has_dumpers())
+> >> +			clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> >> +		break;
+> >> +	case 1:
+> >> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> >> +		clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> >> +		break;
+> >> +	case 0:
+> >> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> >> +		clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> >> +		clear_bit(PN_HYPERVISOR_BIT, &panic_notifiers_bits);
+> >> +		break;
+> >> +	}
+> >
+> > I think the above switch statement could be done as follows:
+> >
+> > if (panic_notifiers_level <=3D 3)
+> > 	clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> > if (panic_notifiers_level <=3D 2)
+> > 	if (!kmsg_has_dumpers())
+> > 		clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> > if (panic_notifiers_level <=3D1)
+> > 	clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> > if (panic_notifiers_level =3D=3D 0)
+> > 	clear_bit(PN_HYPERVISOR_BIT, &panic_notifiers_bits);
+> >
+> > That's about half the lines of code.  It's somewhat a matter of style,
+> > so treat this as just a suggestion to consider.  I just end up looking
+> > for a better solution when I see the same line of code repeated
+> > 3 or 4 times!
+> >
+>=20
+> It's a good idea - I liked your code. The switch seems more
+> natural/explicit for me, even duplicating some lines, but in case more
+> people prefer your way, I can definitely change the code - thanks for
+> the suggestion.
+> Cheers,
+>=20
+>=20
+> Guilherme
