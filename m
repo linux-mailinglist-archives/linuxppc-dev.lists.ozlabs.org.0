@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A9D51914A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 00:22:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D57A751914B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 00:22:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtDw75t5Rz3cLh
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 08:21:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtDwq54wJz3cBg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 08:22:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=TqkdHc+3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=g6wHrcBw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,13 +17,13 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=TqkdHc+3; dkim-atps=neutral
+ header.s=20170329 header.b=g6wHrcBw; dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt8PV4M0Jz3bcm
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 04:58:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt8k947Knz2x9M
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 05:13:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
@@ -31,35 +31,30 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Q8xZuwWHbM5RtbVLpI5p8QHhyHnoykAXVMFnszZxrdg=; b=TqkdHc+398urJjW6/hR3lSmD91
- Fo7i3n3SNwuNElwVYi/w+KnbhS8+u2vWgV1cIJIjZ8jCkAcSLSvlso5lciPOVsZuwZ60o4GZ0Sqjx
- 22Y1fjpJoK/chqdm1vTsGuRJJqpC4q32E8Os80o8bAzvpNnZtKFYUr9IxCs7Y3+qiYY9v7R2c2HHE
- u9NeehqoIhEiDWWb10yrMKqoHSbKirkdSM2MnGXbLFUWfXxGVmNdvtyoWTdWi0kALfB+UzyKpCQXc
- XjY+PUaHj85B5+JbHxedajI8IojA4qagg32dYWLI8h4fZxyG6QPV3ENEKaWRgNkAk597bSNzvAt8G
- d2ESiTmQ==;
+ bh=YwqRVzAP9ZbrZ5VBMcTGFQUJhCIOHa56e0xcGxSMZUc=; b=g6wHrcBwrz2KwYvXjjVtORBiHn
+ IYMsR5GaRD/VR0xedfaxvBvF7rTbYR/J22t3j5lb3f06u/Fc1RouLR18wpSiKcYUFYo1Es0dUnLOJ
+ KS0gcPiTX1Gp43QoEXeB9qey3fro+JGWKqZb1HOFCCA1BT9LzygpBsI5rkGlNutynR2bG5HAOwC/E
+ tPyLP92RA6GDIRm0QuhAm+c5aBu4j0UaKxwKd9I7j0kUsDE4qHndJxIdGDBq1RIB7dNA6suRfXZwh
+ e21o4FfMtSVNbUCh0WQI73Gd4fdNm7+rXf7RsUeEiM3OYwwmkesCvbsvfiNKmEoMOIdut9FTHQRzP
+ TtMjBb/w==;
 Received: from [179.113.53.197] (helo=[192.168.1.60])
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1nlxio-0001n9-LT; Tue, 03 May 2022 20:58:06 +0200
-Message-ID: <92dee5a0-f04e-f352-1e22-f990818ca06a@igalia.com>
-Date: Tue, 3 May 2022 15:57:32 -0300
+ id 1nlxwt-0003VB-Uo; Tue, 03 May 2022 21:12:40 +0200
+Message-ID: <adcf6d0e-c37c-6ede-479e-29959d03d8c0@igalia.com>
+Date: Tue, 3 May 2022 16:12:09 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH 16/30] drivers/hv/vmbus, video/hyperv_fb: Untangle and
- refactor Hyper-V panic notifiers
+Subject: Re: [PATCH 04/30] firmware: google: Convert regular spinlock into
+ trylock on panic path
 Content-Language: en-US
-To: "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "bhe@redhat.com" <bhe@redhat.com>, "pmladek@suse.com" <pmladek@suse.com>,
- "kexec@lists.infradead.org" <kexec@lists.infradead.org>
+To: Evan Green <evgreen@chromium.org>
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-17-gpiccoli@igalia.com>
- <PH0PR21MB30250C9246FFF36AFB1DFDECD7FC9@PH0PR21MB3025.namprd21.prod.outlook.com>
- <2787b476-6366-1c83-db80-0393da417497@igalia.com>
- <PH0PR21MB3025A46643EEDA6B14AC1ECED7C09@PH0PR21MB3025.namprd21.prod.outlook.com>
+ <20220427224924.592546-5-gpiccoli@igalia.com>
+ <CAE=gft5Pq25L4KFoPWbftkPF-JN1ex2yws77mMJ4GQnn9W0L2g@mail.gmail.com>
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <PH0PR21MB3025A46643EEDA6B14AC1ECED7C09@PH0PR21MB3025.namprd21.prod.outlook.com>
+In-Reply-To: <CAE=gft5Pq25L4KFoPWbftkPF-JN1ex2yws77mMJ4GQnn9W0L2g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Wed, 04 May 2022 08:18:47 +1000
@@ -74,170 +69,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "halves@canonical.com" <halves@canonical.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
- "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
- "feng.tang@intel.com" <feng.tang@intel.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- KY Srinivasan <kys@microsoft.com>, "will@kernel.org" <will@kernel.org>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Wei Liu <wei.liu@kernel.org>, Stephen Hemminger <sthemmin@microsoft.com>,
- "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
- "corbet@lwn.net" <corbet@lwn.net>, "paulmck@kernel.org" <paulmck@kernel.org>,
- "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
- "x86@kernel.org" <x86@kernel.org>, Dexuan Cui <decui@microsoft.com>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "dyoung@redhat.com" <dyoung@redhat.com>,
- "vgoyal@redhat.com" <vgoyal@redhat.com>, Andrea Parri <parri.andrea@gmail.com>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- Tianyu Lan <Tianyu.Lan@microsoft.com>,
- "keescook@chromium.org" <keescook@chromium.org>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- Haiyang Zhang <haiyangz@microsoft.com>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
- "luto@kernel.org" <luto@kernel.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "openipmi-developer@lists.sourceforge.net"
- <openipmi-developer@lists.sourceforge.net>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "jgross@suse.com" <jgross@suse.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
- "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- vkuznets <vkuznets@redhat.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ David Gow <davidgow@google.com>, linux-xtensa@linux-xtensa.org,
+ peterz@infradead.org, alejandro.j.jimenez@oracle.com,
+ linux-remoteproc@vger.kernel.org, feng.tang@intel.com,
+ linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-leds@vger.kernel.org,
+ linux-s390@vger.kernel.org, mikelley@microsoft.com, john.ogness@linutronix.de,
+ bhe@redhat.com, Jonathan Corbet <corbet@lwn.net>, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+ mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com,
+ xen-devel@lists.xenproject.org, dyoung@redhat.com, vgoyal@redhat.com,
+ pmladek@suse.com, dave.hansen@linux.intel.com,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Linux PM <linux-pm@vger.kernel.org>, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, rcu@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Borislav Petkov <bp@alien8.de>, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, vkuznets@redhat.com,
+ linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>, Alan Stern <stern@rowland.harvard.edu>,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
+ kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ Julius Werner <jwerner@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/05/2022 15:13, Michael Kelley (LINUX) wrote:
+On 03/05/2022 15:03, Evan Green wrote:
 > [...]
->> (a) We could forget about this change, and always do the clean-up here,
->> not relying in machine_crash_shutdown().
->> Pro: really simple, behaves the same as it is doing currently.
->> Con: less elegant/concise, doesn't allow arm64 customization.
->>
->> (b) Add a way to allow ARM64 customization of shutdown crash handler.
->> Pro: matches x86, more customizable, improves arm64 arch code.
->> Con: A tad more complex.
->>
->> Also, a question that came-up: if ARM64 has no way of calling special
->> crash shutdown handler, how can you execute hv_stimer_cleanup() and
->> hv_synic_disable_regs() there? Or are they not required in ARM64?
->>
-> 
-> My suggestion is to do (a) for now.  I suspect (b) could be a more
-> extended discussion and I wouldn't want your patch set to get held
-> up on that discussion.  I don't know what the sense of the ARM64
-> maintainers would be toward (b).  They have tried to avoid picking
-> up code warts like have accumulated on the x86/x64 side over the
-> years, and I agree with that effort.  But as more and varied
-> hypervisors become available for ARM64, it seems like a framework
-> for supporting a custom shutdown handler may become necessary.
-> But that could take a little time.
-> 
-> You are right about hv_stimer_cleanup() and hv_synic_disable_regs().
-> We are not running these when a panic occurs on ARM64, and we
-> should be, though the risk is small.   We will pursue (b) and add
-> these additional cleanups as part of that.  But again, I would suggest
-> doing (a) for now, and we will switch back to your solution once
-> (b) is in place.
+> gsmi_shutdown_reason() is a common function called in other scenarios
+> as well, like reboot and thermal trip, where it may still make sense
+> to wait to acquire a spinlock. Maybe we should add a parameter to
+> gsmi_shutdown_reason() so that you can get your change on panic, but
+> we don't convert other callbacks into try-fail scenarios causing us to
+> miss logs.
 > 
 
-Thanks again Michael, I'll stick with (a) for now. I'll check with ARM64
-community about that, and I might even try to implement something in
-parallel (if you are not already working on that - lemme know please),
-so we don't get stuck here. As you said, I feel that this is more and
-more relevant as the number of panic/crash/kexec scenarios tend to
-increase in ARM64.
+Hi Evan, thanks for your feedback, much appreciated!
+What I've done in other cases like this was to have a helper checking
+the spinlock in the panic notifier - if we can acquire that, go ahead
+but if not, bail out. For a proper example of an implementation, check
+patch 13 of the series:
+https://lore.kernel.org/lkml/20220427224924.592546-14-gpiccoli@igalia.com/ .
+
+Do you agree with that, or prefer really a parameter in
+gsmi_shutdown_reason() ? I'll follow your choice =)
 
 
->> [...]
->> Some ideas of what we can do here:
->>
->> I) we could change the framebuffer notifier to rely on trylocks, instead
->> of risking a lockup scenario, and with that, we can execute it before
->> the vmbus disconnect in the hypervisor list;
-> 
-> I think we have to do this approach for now.
-> 
->>
->> II) we ignore the hypervisor notifier in case of kdump _by default_, and
->> if the users don't want that, they can always set the panic notifier
->> level to 4 and run all notifiers prior to kdump; would that be terrible
->> you think? Kdump users might don't care about the framebuffer...
->>
->> III) we go with approach (b) above and refactor arm64 code to allow the
->> custom crash handler on kdump time, then [with point (I) above] the
->> logic proposed in this series is still valid - seems more and more the
->> most correct/complete solution.
-> 
-> But even when/if we get approach (b) implemented, having the
-> framebuffer notifier on the pre_reboot list is still too late with the
-> default of panic_notifier_level = 2.  The kdump path will reset the
-> VMbus connection and then the framebuffer notifier won't work.
-> 
+> Though thinking more about it, is this really a Good Change (TM)? The
+> spinlock itself already disables interrupts, meaning the only case
+> where this change makes a difference is if the panic happens from
+> within the function that grabbed the spinlock (in which case the
+> callback is also likely to panic), or in an NMI that panics within
+> that window. The downside of this change is that if one core was
+> politely working through an event with the lock held, and another core
+> panics, we now might lose the panic log, even though it probably would
+> have gone through fine assuming the other core has a chance to
+> continue.
 
-OK, perfect! I'll work something along these lines in V2, allowing the
-FB notifier to always run in the hypervisor list before the vmbus unload
-mechanism.
+My feeling is that this is a good change, indeed - a lot of places are
+getting changed like this, in this series.
 
+Reasoning: the problem with your example is that, by default, secondary
+CPUs are disabled in the panic path, through an IPI mechanism. IPIs take
+precedence and interrupt the work in these CPUs, effectively
+interrupting the "polite work" with the lock held heh
 
->> [...]
->>>> +static int hv_panic_vmbus_unload(struct notifier_block *nb, unsigned long val,
->>>>  			      void *args)
->>>> +{
->>>> +	if (!kexec_crash_loaded())
->>>
->>> I'm not clear on the purpose of this condition.  I think it means
->>> we will skip the vmbus_initiate_unload() if a panic occurs in the
->>> kdump kernel.  Is there a reason a panic in the kdump kernel
->>> should be treated differently?  Or am I misunderstanding?
->>
->> This is really related with the point discussed in the top of this
->> response - I assumed both ARM64/x86_64 would behave the same and
->> disconnect the vmbus through the custom crash handler when kdump is set,
->> so worth skipping it here in the notifier. But that's not true for ARM64
->> as you pointed, so this guard against kexec is really part of the
->> decision/discussion on what to do with ARM64 heh
-> 
-> But note that vmbus_initiate_unload() already has a guard built-in.
-> If the intent of this test is just as a guard against running twice,
-> then it isn't needed.
+Then, such CPU is put to sleep and we finally reach the panic notifier
+hereby discussed, in the main CPU. If the other CPU was shut-off *with
+the lock held*, it's never finishing such work, so the lock is never to
+be released. Conclusion: the spinlock can't be acquired, hence we broke
+the machine (which is already broken, given it's panic) in the path of
+this notifier.
+This should be really rare, but..possible. So I think we should protect
+against this scenario.
 
-Since we're going to avoid relying in the custom crash_shutdown(), due
-to the lack of ARM64 support for now, this check will be removed in V2.
+We can grab others' feedback if you prefer, and of course you have the
+rights to refuse this change in the gsmi code, but from my
+point-of-view, I don't see any advantage in just assume the risk,
+specially since the change is very very simple.
 
-Its purpose was to skip the notifier *proactively* in case kexec is set,
-given that...once kexec happens, the custom crash_shutdown() would run
-the same function (wrong assumption for ARM64, my bad).
-
-Postponing that slightly would maybe gain us some time while the
-hypervisor finish its work, so we'd delay less in the vmbus unload path
-- that was the rationale behind this check.
+Cheers,
 
 
-Cheers!
+Guilherme
