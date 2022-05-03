@@ -2,65 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733AD519134
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 00:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED20519135
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 00:20:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtDsw287fz3by9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 08:20:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtDtd0FYFz3cD8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 08:20:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=gjAznZuo;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=CJu9kW5F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
- envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=gjAznZuo; dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::22a;
+ helo=mail-oi1-x22a.google.com; envelope-from=evgreen@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=CJu9kW5F; dkim-atps=neutral
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com
+ [IPv6:2607:f8b0:4864:20::22a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt73k4ylFz2y6F
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 03:58:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=V5OlIrQZACaQuAvW/eyS6B/1Zwik+ew1I16AuySJnIg=; b=gjAznZuoR4/m9kKzzhqzuGrpkT
- xtMc6cJN1cBQNuGvg6XyrPFTI1ixzsXC2Qdeh+HpywC/rv8GnlBjcukr7ohfRrQ9c8Vv3g1C+degf
- BKLK1MQn4ihq1pQ2tLJ4K6bqakBNB70xc08nkdXZEPCNZh6tlfswNgMdLLmr3btmvO+ASGsTB1McO
- bjtFx1IEqa+FJgHwAOYextuGE9H3QAozC9Ow4n5OqOMhRYX1e/PE6FhaxFfCh6NihoHwyZzrtpHli
- GlpKhk1VLnB8Ef855kd7QLHnrR7/smJu3dr6Yo1GdqpDjEKpnWDlt7/NfiaCRZ690xo8EgxQrZVRx
- GY9vS48w==;
-Received: from [179.113.53.197] (helo=[192.168.1.60])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1nlwlp-0009Ge-E7; Tue, 03 May 2022 19:57:09 +0200
-Message-ID: <dccb35f9-8fff-8b53-3b31-fbe55b2781c0@igalia.com>
-Date: Tue, 3 May 2022 14:56:27 -0300
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt7Bt1zc3z3bcv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 04:04:19 +1000 (AEST)
+Received: by mail-oi1-x22a.google.com with SMTP id l16so11722833oil.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 May 2022 11:04:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=R4/K6aedIUl9MohMPOlkW7bX2DydtcwCMb+CydErQh0=;
+ b=CJu9kW5FihxnTA4wr5HdIEfymEuuekA79aJVNMM2F6kdV2+CmmuoX8R9fhQ+4vfzGu
+ cwr0+95tIZHFde4YyKyVQIEU1uoccXZ0Wre6iNf7ZQo6N8EA9gsX+jTvyEJvXCE49T6e
+ 235jqkHQ/du2SkGvAqn3TvfA6e2cYQxB3dcEA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=R4/K6aedIUl9MohMPOlkW7bX2DydtcwCMb+CydErQh0=;
+ b=olqw/ZF6Vtre1td1WLHgm0ucC8G1jZ8B1U0o2TerlHY4d7b3/qureeOwe5kdKacLpu
+ jYXTkjjzuLYOWp2xsmyP1rV5r7qQEE4/4K/BH9o07NVzkgcgoGMa29gj7210cMmXHhSt
+ cqSivL0fdqgQpMih5FVLwdIqZLLnFZSgd36h2KV+vNpPR8adxsXo1Vk0fWmcxMu4JCAK
+ M0AI+BKXRXzLm0EOyY+yvgoI65L53bnpETZ8fYrdcT3UzYisxw5rBQLd3gj6S+MTm68s
+ +h+JZEYuLPm88+dl5EHgRmSrdekG2IG8xAPLXqIQWf8HLpMtH1jMnJQvzfvjCmqDF7zi
+ ufGg==
+X-Gm-Message-State: AOAM531xJC5dEbHB2oQZsC0WgyHPC2PbnU3BPFLYwkFIV7kL02uNGJwE
+ rKyWHXl+7D3Wf5wSqoLaO9GWG9ks49pBbg==
+X-Google-Smtp-Source: ABdhPJxgSl8yws5EFMkVq9AIlbZklQwcAHbYtOiYwGUX6AEMeKRzT6h8eR+Ork7YYbPl0uiqQzqnDg==
+X-Received: by 2002:a05:6808:1115:b0:2ec:e103:99c8 with SMTP id
+ e21-20020a056808111500b002ece10399c8mr2308773oih.194.1651601054560; 
+ Tue, 03 May 2022 11:04:14 -0700 (PDT)
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com.
+ [209.85.167.181]) by smtp.gmail.com with ESMTPSA id
+ c20-20020a05687093d400b000e686d13898sm7178250oal.50.2022.05.03.11.04.13
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 May 2022 11:04:13 -0700 (PDT)
+Received: by mail-oi1-f181.google.com with SMTP id e189so18960385oia.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 May 2022 11:04:13 -0700 (PDT)
+X-Received: by 2002:a05:6808:d50:b0:322:fb1d:319d with SMTP id
+ w16-20020a0568080d5000b00322fb1d319dmr2350498oik.174.1651601052906; Tue, 03
+ May 2022 11:04:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
-Content-Language: en-US
-To: "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "bhe@redhat.com" <bhe@redhat.com>, "pmladek@suse.com" <pmladek@suse.com>,
- "kexec@lists.infradead.org" <kexec@lists.infradead.org>
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-20-gpiccoli@igalia.com>
- <PH0PR21MB30256260CCF4CAB713BBB11ED7FC9@PH0PR21MB3025.namprd21.prod.outlook.com>
- <0147d038-571b-0802-c210-ccd4d52cd5dd@igalia.com>
- <PH0PR21MB30257E4E6E16BB8FFDE8F312D7C09@PH0PR21MB3025.namprd21.prod.outlook.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <PH0PR21MB30257E4E6E16BB8FFDE8F312D7C09@PH0PR21MB3025.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20220427224924.592546-5-gpiccoli@igalia.com>
+In-Reply-To: <20220427224924.592546-5-gpiccoli@igalia.com>
+From: Evan Green <evgreen@chromium.org>
+Date: Tue, 3 May 2022 11:03:37 -0700
+X-Gmail-Original-Message-ID: <CAE=gft5Pq25L4KFoPWbftkPF-JN1ex2yws77mMJ4GQnn9W0L2g@mail.gmail.com>
+Message-ID: <CAE=gft5Pq25L4KFoPWbftkPF-JN1ex2yws77mMJ4GQnn9W0L2g@mail.gmail.com>
+Subject: Re: [PATCH 04/30] firmware: google: Convert regular spinlock into
+ trylock on panic path
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Wed, 04 May 2022 08:18:47 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,130 +86,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Justin Chen <justinpopo6@gmail.com>,
- Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>,
- KY Srinivasan <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- Nicholas Piggin <npiggin@gmail.com>, "luto@kernel.org" <luto@kernel.org>,
- Mihai Carabas <mihai.carabas@oracle.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
- "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
- Sven Schnelle <svens@linux.ibm.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>,
- "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
- "vgoyal@redhat.com" <vgoyal@redhat.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- Andrea Parri <parri.andrea@gmail.com>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- Vasily Gorbik <gor@linux.ibm.com>, Scott Branden <scott.branden@broadcom.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Markus Mayer <mmayer@broadcom.com>,
- "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
- "halves@canonical.com" <halves@canonical.com>,
- "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
- "feng.tang@intel.com" <feng.tang@intel.com>,
- zhenwei pi <pizhenwei@bytedance.com>, "will@kernel.org" <will@kernel.org>,
- Doug Berger <opendmb@gmail.com>, "corbet@lwn.net" <corbet@lwn.net>,
- Dexuan Cui <decui@microsoft.com>, Evan Green <evgreen@chromium.org>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- "keescook@chromium.org" <keescook@chromium.org>,
- "arnd@arndb.de" <arnd@arndb.de>, Haiyang Zhang <haiyangz@microsoft.com>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
- "openipmi-developer@lists.sourceforge.net"
- <openipmi-developer@lists.sourceforge.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- Sebastian Reichel <sre@kernel.org>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- Brian Norris <computersforpeace@gmail.com>,
- "David S. Miller" <davem@davemloft.net>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- Lee Jones <lee.jones@linaro.org>, Ard Biesheuvel <ardb@kernel.org>,
- "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "dyoung@redhat.com" <dyoung@redhat.com>,
- "paulmck@kernel.org" <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Wang ShaoBo <bobo.shaobowang@huawei.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- David Gow <davidgow@google.com>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "jgross@suse.com" <jgross@suse.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- Julius Werner <jwerner@chromium.org>, vkuznets <vkuznets@redhat.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ David Gow <davidgow@google.com>, linux-xtensa@linux-xtensa.org,
+ peterz@infradead.org, alejandro.j.jimenez@oracle.com,
+ linux-remoteproc@vger.kernel.org, feng.tang@intel.com,
+ linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-leds@vger.kernel.org,
+ linux-s390@vger.kernel.org, mikelley@microsoft.com, john.ogness@linutronix.de,
+ bhe@redhat.com, Jonathan Corbet <corbet@lwn.net>, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+ mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com,
+ xen-devel@lists.xenproject.org, dyoung@redhat.com, vgoyal@redhat.com,
+ pmladek@suse.com, dave.hansen@linux.intel.com,
+ Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+ Linux PM <linux-pm@vger.kernel.org>, coresight@lists.linaro.org,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Borislav Petkov <bp@alien8.de>, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, vkuznets@redhat.com,
+ linux-arm Mailing List <linux-arm-kernel@lists.infradead.org>,
+ linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>, Alan Stern <stern@rowland.harvard.edu>,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
+ kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ Julius Werner <jwerner@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/05/2022 14:44, Michael Kelley (LINUX) wrote:
-> [...]
->>
->> Hi Michael, thanks for your feedback! I agree that your idea could work,
->> but...there is one downside: imagine the kmsg_dump() approach is not set
->> in some Hyper-V guest, then we would rely in the regular notification
->> mechanism [hv_die_panic_notify_crash()], right?
->> But...you want then to run this notifier in the informational list,
->> which...won't execute *by default* before kdump if no kmsg_dump() is
->> set. So, this logic is convoluted when you mix it with the default level
->> concept + kdump.
-> 
-> Yes, you are right.  But to me that speaks as much to the linkage
-> between the informational list and kmsg_dump() being the core
-> problem.  But as I described in my reply to Patch 24, I can live with
-> the linkage as-is.
+On Wed, Apr 27, 2022 at 3:51 PM Guilherme G. Piccoli
+<gpiccoli@igalia.com> wrote:
+>
+> Currently the gsmi driver registers a panic notifier as well as
+> reboot and die notifiers. The callbacks registered are called in
+> atomic and very limited context - for instance, panic disables
+> preemption, local IRQs and all other CPUs that aren't running the
+> current panic function.
+>
+> With that said, taking a spinlock in this scenario is a
+> dangerous invitation for a deadlock scenario. So, we fix
+> that in this commit by changing the regular spinlock with
+> a trylock, which is a safer approach.
+>
+> Fixes: 74c5b31c6618 ("driver: Google EFI SMI")
+> Cc: Ard Biesheuvel <ardb@kernel.org>
+> Cc: David Gow <davidgow@google.com>
+> Cc: Evan Green <evgreen@chromium.org>
+> Cc: Julius Werner <jwerner@chromium.org>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> ---
+>  drivers/firmware/google/gsmi.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
+> index adaa492c3d2d..b01ed02e4a87 100644
+> --- a/drivers/firmware/google/gsmi.c
+> +++ b/drivers/firmware/google/gsmi.c
+> @@ -629,7 +629,10 @@ static int gsmi_shutdown_reason(int reason)
+>         if (saved_reason & (1 << reason))
+>                 return 0;
+>
+> -       spin_lock_irqsave(&gsmi_dev.lock, flags);
+> +       if (!spin_trylock_irqsave(&gsmi_dev.lock, flags)) {
+> +               rc = -EBUSY;
+> +               goto out;
+> +       }
 
-Thanks for the feedback Michael!
+gsmi_shutdown_reason() is a common function called in other scenarios
+as well, like reboot and thermal trip, where it may still make sense
+to wait to acquire a spinlock. Maybe we should add a parameter to
+gsmi_shutdown_reason() so that you can get your change on panic, but
+we don't convert other callbacks into try-fail scenarios causing us to
+miss logs.
 
-> [...] 
->> I feel the panic notification mechanism does really fit with a
->> hypervisor list, it's a good match with the nature of the list, which
->> aims at informing the panic notification to the hypervisor/FW.
->> Of course we can modify it if you prefer...but please take into account
->> the kdump case and how it complicates the logic.
-> 
-> I agree that the runtime effect of one list vs. the other is nil.  The
-> code works and can stay as you written it.
-> 
-> I was trying to align from a conceptual standpoint.  It was a bit
-> unexpected that one path would be on the hypervisor list, and the
-> other path effectively on the informational list.  When I see
-> conceptual mismatches like that, I tend to want to understand why,
-> and if there is something more fundamental that is out-of-whack.
-> 
+Though thinking more about it, is this really a Good Change (TM)? The
+spinlock itself already disables interrupts, meaning the only case
+where this change makes a difference is if the panic happens from
+within the function that grabbed the spinlock (in which case the
+callback is also likely to panic), or in an NMI that panics within
+that window. The downside of this change is that if one core was
+politely working through an event with the lock held, and another core
+panics, we now might lose the panic log, even though it probably would
+have gone through fine assuming the other core has a chance to
+continue.
 
-Totally agree with you here, I am like that as well - try to really
-understand the details, this is very important specially in this patch
-set, since it's a refactor and affects every user of the notifiers
-infrastructure.
-
-Again, just to double-say it: feel free to suggest any change for the
-Hyper-V portion (might as well for any patch in the series, indeed) -
-you and the other Hyper-V maintainers own this code and I'd be glad to
-align with your needs, you are honor citizens in the panic notifiers
-area, being one the most heavy users for that =)
-
-Cheers,
-
-
-Guilherme
+-Evan
