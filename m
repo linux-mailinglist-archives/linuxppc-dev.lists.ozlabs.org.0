@@ -2,65 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C436518BE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 20:07:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6938518FE5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 May 2022 23:22:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kt7Gf3s5nz3byL
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 04:07:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtCbD5CzWz3bY8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 07:22:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=IJk7PjWX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=iQ5+SVQd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
- envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::132;
+ helo=mail-lf1-x132.google.com; envelope-from=ndesaulniers@google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=IJk7PjWX; dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=iQ5+SVQd; dkim-atps=neutral
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
+ [IPv6:2a00:1450:4864:20::132])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kt7G25ltPz3bZ4
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 04:07:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=WYW7A1AoQOryf4HZjlafyZKPnHAKwmZXZQ0bWMyg1OM=; b=IJk7PjWXbuJYxjyJajFcqu+Mif
- 2fd51zOcNQRJjfhVuzSoQO9mBBwmDdVBHLRqON1BGirC1Vk8+AoSYO3LiHwD+UN1A9emX95LT9quF
- x9JKLy4HImLNSn0mqdv7zEp5uPj6Lvn09d1aUkR/Hf14MsP+c2ZYwmIAyLwNg0VIkqGkELR5aYgVO
- 0xdNy0LqxmoLJzxFqk/oO1+b/WdJOIRWXo4fLVInmE2Yo6XsUwQPE4Yo6Y1hA1Cl8oTHfkCacBbdC
- IAv1LZ4HQl0+X38MUmMlSpApf42pMuXeETEON4eFrPMp1+0PSjab3dBLEc1woBTNMiXT6t4Yfmen7
- fHSrzQsQ==;
-Received: from [179.113.53.197] (helo=[192.168.1.60])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1nlwvB-000AFb-By; Tue, 03 May 2022 20:06:49 +0200
-Message-ID: <12b5a753-c0f1-9da5-f269-483384752837@igalia.com>
-Date: Tue, 3 May 2022 15:06:15 -0300
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtCZZ3vDHz2xsN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 07:21:41 +1000 (AEST)
+Received: by mail-lf1-x132.google.com with SMTP id bq30so32437266lfb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 May 2022 14:21:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=Kx7+Mo6KfcU2gojNKWu3an2tWbyvTvTXb4jiuFElasY=;
+ b=iQ5+SVQdMlk38OR/3OKX2hm7Innt92hQUBwfl456D9md5FFqk3+e2fjdm7njfWMztd
+ DaU/edgEVtJ17NwEq4NNGogUq+vP45iuuTu24LIiTM4Xgg78E7XdNCYY/6lEscfC5sMp
+ 8IV1IKNVOyzMCPOtI1LPAJiI8TrHRrFsAEBPJpHJAnGF1fJtY7Q1V/0ghPpqVUc+Uuw2
+ zdkgyOfqILUpbn2WttY7ZwAObk7UdC5IAuvDtEG3mZ3cXEqctVDV2ow9KpS7oIpTt0Ho
+ LgHqIVu2E8Ibr0i+/eKigebw7X6lYvXiNjew76S3Yj52QWf5KfqMPE3Lv/G9ir0R6NnK
+ EYMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=Kx7+Mo6KfcU2gojNKWu3an2tWbyvTvTXb4jiuFElasY=;
+ b=A0H1WnuD0egDM2qao6OwAiMVJKsDq0BQrPR3iGHD7K2zQHK3vneXZyvDYZLdo4EFfq
+ /Ce9gearfBe2rWkTPvKJ6lRww2rxe9mJg5kNaqoIzI+9JoAbGDiO1b0k8MrvKbhE8u4S
+ YpxBk5Sdxf+9Gvq0DOnrAg6NRo735XS261ooJYCu6TgjQC+d2X/4d8d3y8xlfAlyERku
+ F5jJvWmc198Zu10YzRhNXQb8A0Ctb0OxkT7aGegqcTKGPkZ/lLC42dUWfd0zlC5e27hM
+ ouqdNzhfl78R1VmVipxFXBHaFu0VDtvTLPd57cdX/wMN1+92D6cd20rawWVILqZoISbb
+ hs4g==
+X-Gm-Message-State: AOAM533fGmZyqapKDv5WHn3oT1ND8Fi37l6i5fuHu1Zj2hMW7Cf5qrHv
+ Ruhi6PbUedQ7cdIGE2w6m0psoNxP2jYNoWE5wLPyAg==
+X-Google-Smtp-Source: ABdhPJz8tpJ9FdXAjH2ECRPBJrLQm/gDsGEdwgRwYZeAraKKARD0ms6vfvoClYb63ar+jbR11FkkVQey4y7+WK/n0qQ=
+X-Received: by 2002:ac2:4188:0:b0:471:96f4:c1d4 with SMTP id
+ z8-20020ac24188000000b0047196f4c1d4mr12370983lfh.626.1651612892674; Tue, 03
+ May 2022 14:21:32 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 24/30] panic: Refactor the panic path
-Content-Language: en-US
-To: "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "bhe@redhat.com" <bhe@redhat.com>, "pmladek@suse.com" <pmladek@suse.com>,
- "kexec@lists.infradead.org" <kexec@lists.infradead.org>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-25-gpiccoli@igalia.com>
- <PH0PR21MB30252C55EB4F97F3D78021BDD7FC9@PH0PR21MB3025.namprd21.prod.outlook.com>
- <50178dfb-8e94-f35f-09c3-22fe197550ef@igalia.com>
- <PH0PR21MB302570C9407F80AAD09E209ED7C09@PH0PR21MB3025.namprd21.prod.outlook.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <PH0PR21MB302570C9407F80AAD09E209ED7C09@PH0PR21MB3025.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20220429064547.2334280-1-aik@ozlabs.ru>
+In-Reply-To: <20220429064547.2334280-1-aik@ozlabs.ru>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Tue, 3 May 2022 14:21:21 -0700
+Message-ID: <CAKwvOdmUMhqhQhDCpWjMNiQQPvwOJB9MbUkF3RR0BL+H+DagmA@mail.gmail.com>
+Subject: Re: [PATCH kernel] powerpc/llvm/lto: Allow LLVM LTO builds
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,110 +74,221 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "halves@canonical.com" <halves@canonical.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
- "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
- "feng.tang@intel.com" <feng.tang@intel.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
- "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
- "corbet@lwn.net" <corbet@lwn.net>, "paulmck@kernel.org" <paulmck@kernel.org>,
- "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
- "x86@kernel.org" <x86@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "dyoung@redhat.com" <dyoung@redhat.com>,
- "vgoyal@redhat.com" <vgoyal@redhat.com>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "keescook@chromium.org" <keescook@chromium.org>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
- "luto@kernel.org" <luto@kernel.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "openipmi-developer@lists.sourceforge.net"
- <openipmi-developer@lists.sourceforge.net>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "jgross@suse.com" <jgross@suse.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
- "d.hatayama@jp.fujitsu.com" <d.hatayama@jp.fujitsu.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- vkuznets <vkuznets@redhat.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: llvm@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
+ Nathan Chancellor <nathan@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/05/2022 14:31, Michael Kelley (LINUX) wrote:
-> [...]
-> 
-> To me, it's a weak correlation between having a kmsg dumper, and
-> wanting or not wanting the info level output to come before kdump.
-> Hyper-V is one of only a few places that register a kmsg dumper, so most
-> Linux instances outside of Hyper-V guest (and PowerPC systems?) will have
-> the info level output after kdump.  It seems like anyone who cared strongly
-> about the info level output would set the panic_notifier_level to 1 or to 3
-> so that the result is more deterministic.  But that's just my opinion, and
-> it's probably an opinion that is not as well informed on the topic as some
-> others in the discussion. So keeping things as in your patch set is not a
-> show-stopper for me.
-> 
-> However, I would request a clarification in the documentation.   The
-> panic_notifier_level affects not only the hypervisor, informational,
-> and pre_reboot lists, but it also affects panic_print_sys_info() and
-> kmsg_dump().  Specifically, at level 1, panic_print_sys_info() and
-> kmsg_dump() will not be run before kdump.  At level 3, they will
-> always be run before kdump.  Your documentation above mentions
-> "informational lists" (plural), which I take to vaguely include
-> kmsg_dump() and panic_print_sys_info(), but being explicit about
-> the effect would be better.
-> 
-> Michael
+On Thu, Apr 28, 2022 at 11:46 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+>
+> This enables LTO_CLANG builds on POWER with the upstream version of
+> LLVM.
+>
+> LTO optimizes the output vmlinux binary and this may affect the FTP
+> alternative section if alt branches use "bc" (Branch Conditional) which
+> is limited by 16 bit offsets. This shows up in errors like:
+>
+> ld.lld: error: InputSection too large for range extension thunk vmlinux.o:(__ftr_alt_97+0xF0)
+>
+> This works around the issue by replacing "bc" in FTR_SECTION_ELSE with
+> "b" which allows 26 bit offsets.
+>
+> This catches the problem instructions in vmlinux.o before it LTO'ed:
+>
+> $ objdump -d -M raw -j __ftr_alt_97 vmlinux.o | egrep '\S+\s*\<bc\>'
+>   30:   00 00 82 40     bc      4,eq,30 <__ftr_alt_97+0x30>
+>   f0:   00 00 82 40     bc      4,eq,f0 <__ftr_alt_97+0xf0>
+>
+> This allows LTO builds for ppc64le_defconfig plus LTO options.
+> Note that DYNAMIC_FTRACE/FUNCTION_TRACER is not supported by LTO builds
+> but this is not POWERPC-specific.
 
-Thanks again Michael, to express your points and concerns - great idea
-of documentation improvement here, I'll do that for V2, for sure.
+$ ARCH=powerpc make LLVM=1 -j72 ppc64le_defconfig
+$ ARCH=powerpc make LLVM=1 -j72 menuconfig
+<disable FTRACE, enable LTO_CLANG_THIN>
+$ ARCH=powerpc make LLVM=1 -j72
+...
+  VDSO64L arch/powerpc/kernel/vdso/vdso64.so.dbg
+/usr/bin/powerpc64le-linux-gnu-ld:
+/android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: error
+loading plugin:
+/android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: cannot open
+shared object file: No such file or directory
+clang-15: error: linker command failed with exit code 1 (use -v to see
+invocation)
+make[1]: *** [arch/powerpc/kernel/vdso/Makefile:67:
+arch/powerpc/kernel/vdso/vdso64.so.dbg] Error 1
 
-The idea of "defaulting" to skip the info list on kdump (if no
-kmsg_dump() is set) is again a mechanism that aims at accommodating all
-users and concerns of antagonistic goals, kdump vs notifier lists.
+Looks like LLD isn't being invoked correctly to link the vdso.
+Probably need to revisit
+https://lore.kernel.org/lkml/20200901222523.1941988-1-ndesaulniers@google.com/
 
-Before this patch set, by default no notifier executed before kdump. So,
-the "pendulum"  was strongly on kdump side, and clearly this was a
-sub-optimal decision - proof of that is that both Hyper-V / PowerPC code
-forcibly set the "crash_kexec_post_notifiers". The goal here is to have
-a more lightweight list that by default runs before kdump, a secondary
-list that only runs before kdump if there's usage for that (either user
-sets that or kmsg_dumper set is considered a valid user), and the
-remaining notifiers run by default only after kdump, all of that very
-customizable through the levels idea.
+How were you working around this issue? Perhaps you built clang to
+default to LLD? (there's a cmake option for that)
 
-Now, one thing we could do to improve consistency for the hyper-v case:
-having a kmsg_dump_once() helper, and *for Hyper-V only*, call it on the
-hypervisor list, within the info notifier (that would be moved to
-hypervisor list, ofc).
-Let's wait for more feedback on that, just throwing some ideas in order
-we can have everyone happy with the end-result!
+Perhaps for now I should just send:
+```
+diff --git a/arch/powerpc/kernel/vdso/Makefile
+b/arch/powerpc/kernel/vdso/Makefile
+index 954974287ee7..8762e6513683 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -55,6 +55,11 @@ AS32FLAGS := -D__VDSO32__ -s
+ CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
+ AS64FLAGS := -D__VDSO64__ -s
 
-Cheers,
++ifneq ($(LLVM),)
++CC32FLAGS += -fuse-ld=lld
++CC64FLAGS += -fuse-ld=lld
++endif
++
+ targets += vdso32.lds
+ CPPFLAGS_vdso32.lds += -P -C -Upowerpc
+ targets += vdso64.lds
+```
 
 
-Guilherme
+>
+> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+> ---
+>
+> Note 1:
+> This is further development of
+> https://lore.kernel.org/all/20220211023125.1790960-1-aik@ozlabs.ru/T/
+>
+> Note 2:
+> CONFIG_ZSTD_COMPRESS and CONFIG_ZSTD_DECOMPRESS must be both "m" or "y"
+> or it won't link. For details:
+> https://lore.kernel.org/lkml/20220428043850.1706973-1-aik@ozlabs.ru/T/
+
+Yeah, I just hit this:
+```
+  LTO     vmlinux.o
+LLVM ERROR: Function Import: link error: linking module flags 'Code
+Model': IDs have conflicting values in
+'lib/built-in.a(entropy_common.o at 5782)' and
+'lib/built-in.a(zstd_decompress_block.o at 6202)'
+PLEASE submit a bug report to
+https://github.com/llvm/llvm-project/issues/ and include the crash
+backtrace.
+LLVM ERROR: Failed to rename temporary file
+.thinlto-cache/Thin-96f93f.tmp.o to
+.thinlto-cache/llvmcache-A5B351EA452D46A86980E29C78B7260673348AAF: No
+such file or directory
+scripts/link-vmlinux.sh: line 76: 1240312 Aborted
+${LD} ${KBUILD_LDFLAGS} -r -o ${1} ${lds} ${objects}
+make: *** [Makefile:1158: vmlinux] Error 134
+```
+These two configs aren't easily modified in menuconfig. Perhaps you
+could find the concise set of configs that need to be disabled for
+this to be buildable? At least so others can test more easily, or even
+so we can update Kconfig checks.
+
+> ---
+>  arch/powerpc/Kconfig                   | 2 ++
+>  arch/powerpc/kernel/exceptions-64s.S   | 4 +++-
+>  arch/powerpc/lib/copyuser_64.S         | 3 ++-
+>  arch/powerpc/lib/feature-fixups-test.S | 3 +--
+>  arch/powerpc/lib/memcpy_64.S           | 3 ++-
+>  5 files changed, 10 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 174edabb74fa..e2c7b5c1d0a6 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -158,6 +158,8 @@ config PPC
+>         select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+>         select ARCH_WANT_LD_ORPHAN_WARN
+>         select ARCH_WEAK_RELEASE_ACQUIRE
+> +       select ARCH_SUPPORTS_LTO_CLANG
+> +       select ARCH_SUPPORTS_LTO_CLANG_THIN
+>         select BINFMT_ELF
+>         select BUILDTIME_TABLE_SORT
+>         select CLONE_BACKWARDS
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+> index b66dd6f775a4..5b783bd51260 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -476,9 +476,11 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real, text)
+>                 .if IHSRR_IF_HVMODE
+>                 BEGIN_FTR_SECTION
+>                 bne     masked_Hinterrupt
+> +               b       4f
+>                 FTR_SECTION_ELSE
+> -               bne     masked_interrupt
+>                 ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
+> +               bne     masked_interrupt
+> +4:
+>                 .elseif IHSRR
+>                 bne     masked_Hinterrupt
+>                 .else
+> diff --git a/arch/powerpc/lib/copyuser_64.S b/arch/powerpc/lib/copyuser_64.S
+> index db8719a14846..d07f95eebc65 100644
+> --- a/arch/powerpc/lib/copyuser_64.S
+> +++ b/arch/powerpc/lib/copyuser_64.S
+> @@ -75,10 +75,11 @@ _GLOBAL(__copy_tofrom_user_base)
+>   * set is Power6.
+>   */
+>  test_feature = (SELFTEST_CASE == 1)
+> +       beq     .Ldst_aligned
+>  BEGIN_FTR_SECTION
+>         nop
+>  FTR_SECTION_ELSE
+> -       bne     .Ldst_unaligned
+> +       b       .Ldst_unaligned
+>  ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
+>                     CPU_FTR_UNALIGNED_LD_STD)
+>  .Ldst_aligned:
+> diff --git a/arch/powerpc/lib/feature-fixups-test.S b/arch/powerpc/lib/feature-fixups-test.S
+> index 480172fbd024..2751e42a9fd7 100644
+> --- a/arch/powerpc/lib/feature-fixups-test.S
+> +++ b/arch/powerpc/lib/feature-fixups-test.S
+> @@ -145,7 +145,6 @@ BEGIN_FTR_SECTION
+>  FTR_SECTION_ELSE
+>  2:     or      2,2,2
+>         PPC_LCMPI       r3,1
+> -       beq     3f
+>         blt     2b
+>         b       3f
+>         b       1b
+> @@ -160,10 +159,10 @@ globl(ftr_fixup_test6_expected)
+>  1:     or      1,1,1
+>  2:     or      2,2,2
+>         PPC_LCMPI       r3,1
+> -       beq     3f
+>         blt     2b
+>         b       3f
+>         b       1b
+> +       nop
+>  3:     or      1,1,1
+>         or      2,2,2
+>         or      3,3,3
+> diff --git a/arch/powerpc/lib/memcpy_64.S b/arch/powerpc/lib/memcpy_64.S
+> index 016c91e958d8..286c7e2d0883 100644
+> --- a/arch/powerpc/lib/memcpy_64.S
+> +++ b/arch/powerpc/lib/memcpy_64.S
+> @@ -50,10 +50,11 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
+>     At the time of writing the only CPU that has this combination of bits
+>     set is Power6. */
+>  test_feature = (SELFTEST_CASE == 1)
+> +       beq      .ldst_aligned
+>  BEGIN_FTR_SECTION
+>         nop
+>  FTR_SECTION_ELSE
+> -       bne     .Ldst_unaligned
+> +       b       .Ldst_unaligned
+>  ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
+>                      CPU_FTR_UNALIGNED_LD_STD)
+>  .Ldst_aligned:
+> --
+> 2.30.2
+>
+
+
+-- 
+Thanks,
+~Nick Desaulniers
