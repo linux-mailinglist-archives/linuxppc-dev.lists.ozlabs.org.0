@@ -2,82 +2,135 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C06519F19
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 14:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3849E519F20
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 14:20:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtbT45lfzz3bp9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 22:18:16 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=YUaR/FME;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtbWP1S7Kz3bdC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 22:20:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::62e;
- helo=mail-pl1-x62e.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
- header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=YUaR/FME; dkim-atps=neutral
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
- [IPv6:2607:f8b0:4864:20::62e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::60d;
+ helo=fra01-pr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com
+ (mail-pr2fra01on060d.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e18::60d])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KtbSP4qVQz3bYM
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 22:17:39 +1000 (AEST)
-Received: by mail-pl1-x62e.google.com with SMTP id s14so1236663plk.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 May 2022 05:17:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language
- :from:to:cc:references:in-reply-to:content-transfer-encoding;
- bh=Il7jfF/pSH+Mvi8XVM/hNqXQtaNd1fw+Ww8c1tX2ydc=;
- b=YUaR/FMEyOQi1wR5z5dUByl9IIgif27Nl5waIleFflCYaaQEoGg61PGLMvQRk517TF
- OpBOZsDMhVJ8P2pccMchBMde7e9cABdzffHru4swg3qaDCIVeVYVt5DmE3VDFaLM6OZj
- UfU938YHk3ZW70Y7XbBI1eXIucrkLOsdraUIFnsTEkmXMKyLGwLW7kJ9YmuRYKQXSYVZ
- +NWFzAHWQuopxjo/qM09XO9Cm2cSb5NQ8Vmbhb9CyrmhsnFcBdUqzF8esBk2vKS9s5eP
- Gu3hKs2UyTWQQmpVwaHcFESLqcgtStj5a6aScx+S/cVSWOV8/LUMhOpF4qimCSzpOcbJ
- tjig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:from:to:cc:references:in-reply-to
- :content-transfer-encoding;
- bh=Il7jfF/pSH+Mvi8XVM/hNqXQtaNd1fw+Ww8c1tX2ydc=;
- b=U1aM12QUc+mJBfZqgi4CfhL1lWdLueVb23uQavg2fif4iu/NZ+35QM+5GrevfQfvb2
- srDz/9NHFl3L/sjNgOVD6aEIKXjiQA9a+enG4kEJcTLNuPzVprrP9r9I0bwHMHJEu3kv
- 89rmZhyRV4F691sYNBb12IkEZqbHMLgssU8t5tC6YYXCQf+O8NNuNvIOtTFqdyn621XZ
- xiYsp/ALNQmo6EInumC3ZD3ZgIAYbBA8BuXkt00xbPjNoDX/bnm16/eheFGGNbEkJyoz
- OR6F3sStV1+c92zTCnFyGZZjpYOo4tLkK7lVkeTg5DaGMyXU/1pS/XdWiXuGzizlcbz5
- vMWw==
-X-Gm-Message-State: AOAM53146FNRo0yeZgNuWmSzZDtahFDWuJ45csRbGgmqiJgIW1W1K3yh
- K8pkS+WPIJ/7H+HpgIeT/toz/A==
-X-Google-Smtp-Source: ABdhPJyi7KbrUgpCcALYGysAwcCw6NFd5PSHf9w6GUqq277Tc7a7gHK68fqBSVoMbxjIryObQZUVfQ==
-X-Received: by 2002:a17:90a:634b:b0:1ca:6c7e:7952 with SMTP id
- v11-20020a17090a634b00b001ca6c7e7952mr10006442pjs.54.1651666656125; 
- Wed, 04 May 2022 05:17:36 -0700 (PDT)
-Received: from [192.168.161.71] (203-7-124-83.dyn.iinet.net.au. [203.7.124.83])
- by smtp.gmail.com with ESMTPSA id
- n9-20020a170903110900b0015e8d4eb1c1sm8183997plh.11.2022.05.04.05.17.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 May 2022 05:17:35 -0700 (PDT)
-Message-ID: <3eb3c335-9492-eed9-5b7e-ad0a93a9d419@ozlabs.ru>
-Date: Wed, 4 May 2022 22:17:38 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101
- Thunderbird/100.0
-Subject: Re: [PATCH kernel] powerpc/llvm/lto: Allow LLVM LTO builds
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtbVw3H0Cz3bXw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 22:19:51 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Nh7EO/QgYr4ZTZVpZrj+gC/LrUDx6CfKp/b63pqIiQExFVPHMRXiznmTts+CQnh6md2rjdJCRYbKpXznYeUKHNJXBaoAfB32J2QCVnRA6ogEO2gGDFW7OxS3q8XNslqYjOiKChP/sswJ+HhyCVm+HMcKrTM9JPDumffQqp63wqNRNyzCdawEeuevUVrHXoen8g2UAsgQXqQV8M9UqxuZCJXTfjyDEx9m/n6BmA6FfjTn1osFGjNOrDgyL29RgAlKMu3E9w/D7uIyDfC7HRibVgYds+Bp/IAxyQSX1evdn9DYzAhaBbWau5mClx/iOQtBY0CSqPhovGxMSNm8yQJQiA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jwo2sTzd1Fv2WUFh7LXhTU3vJQ6BY2HatD64yOW9Trw=;
+ b=aId7uTSWMqD6/EL64/uW1m6o8rOdIvFfwE0+9i5uV4TRSwt4wt25gXH8TneH9t7XLPolAIXbG7/AcGK4GAgNR8PbG+NXtssX7dx6L81hlQRzoGzQ1lY2tA3bs+tNKn3XrbgBqp152nBYegJPALVT8gNNDhq31Gs5jlyTXcOUsWJ+1P7GaeczVRSZrBSlCUxqtxCkVLvXfwZ6d67l56hCLA3Ur6bMhuMOZwPlAV2i4uTZtYMLBEjKBE5S/7DDcwKn7OnbLSjh4WXk+Yih2EBW5rHRC4jbuKJAxtAedjUqSNtcuSDxLKNfwbzAINmA9oatqPLRq0YX5ckhG+RJcSsR7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB1638.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:9::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5206.12; Wed, 4 May
+ 2022 12:19:31 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::d572:ae3f:9e0c:3c6]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::d572:ae3f:9e0c:3c6%7]) with mapi id 15.20.5206.025; Wed, 4 May 2022
+ 12:19:31 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Ingo Molnar <mingo@redhat.com>,
+ Michael Ellerman
+ <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>, Steven Rostedt
+ <rostedt@goodmis.org>
+Subject: Re: [PATCH v1 08/22] powerpc/ftrace: Make __ftrace_make_{nop/call}()
+ common to PPC32 and PPC64
+Thread-Topic: [PATCH v1 08/22] powerpc/ftrace: Make __ftrace_make_{nop/call}()
+ common to PPC32 and PPC64
+Thread-Index: AQHYP4vPBTNDUSKTeEOC4y2yFRN9Daz1Xy0AgBmEJYA=
+Date: Wed, 4 May 2022 12:19:31 +0000
+Message-ID: <4e8386b5-56e7-7cb9-dbe3-97b048846192@csgroup.eu>
+References: <cover.1648131740.git.christophe.leroy@csgroup.eu>
+ <fb60b19f154db8132a00c2df7aca7db3e85603b5.1648131740.git.christophe.leroy@csgroup.eu>
+ <1650262952.h2adiu8czw.naveen@linux.ibm.com>
+In-Reply-To: <1650262952.h2adiu8czw.naveen@linux.ibm.com>
+Accept-Language: fr-FR, en-US
 Content-Language: en-US
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: Nick Desaulniers <ndesaulniers@google.com>
-References: <20220429064547.2334280-1-aik@ozlabs.ru>
- <CAKwvOdmUMhqhQhDCpWjMNiQQPvwOJB9MbUkF3RR0BL+H+DagmA@mail.gmail.com>
- <5cb86579-5e75-ac46-8f76-fac9ac405c47@ozlabs.ru>
-In-Reply-To: <5cb86579-5e75-ac46-8f76-fac9ac405c47@ozlabs.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 81b133de-d073-4381-59c8-08da2dc857bd
+x-ms-traffictypediagnostic: MRZP264MB1638:EE_
+x-microsoft-antispam-prvs: <MRZP264MB16381776362B2C6CE6F450D3EDC39@MRZP264MB1638.FRAP264.PROD.OUTLOOK.COM>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: LiIqm6c8XwKyARKYBHYTy7DUOz+kp5QjffTmpmvULF5K9X+8P1s/N9tEJYVE6GmEKJPeGxaaaI+4L3RW6rhKqcSLyMCIHYmqRAmTp95SuGqQakR4Y51+P9nmdMDDPhAqRNIxwNsnKb6t9pSbnayFnZQZBmZmJdX84q+RDakDhpl3j4hfJGKoV29YbNU108KrdgYXwjGWu20NmXTJyjYPLP5CwkL8H3tFiOli5dlIUbUDPJB/djjFJFLYc4InxmCybCqVGfhjKhBaltbES9SVeBNU0JvtpOU/XAe6xzwSMPyKO0rD8xTmEQ4qT57ZYLcjfM918gLdyBU0ek4m9JsiqxulFz+nbIcMJaKHZaSnr807S0Betmbb+WTUyk458v+l+EmEahT4qFuzh8U26/vpAU1QSRGAHpbzOlePl+hibN2yGx5qfDfY3imBLM2ZyO/FSmnH9/SqtsBSP/A69exBcwyU1uv5sA5oeD7mDJbq7+c88Pya4dNrhDCLBabp9KhbYj/zitDn7WcbEOUNjLBgHGmj8vltoAQI78PBmRKvTi1MtQOcz2vwlU6YggschuT6PiB0wWFFY1jAD6dsliB47DykzIpriTAy10yuOgJ9RniH8MD2wE1Ndh2qydUsL09UVEaWiIVwc8VtZ7x5TvWRoPjqFk1Vqb/d5AEBLFvb+DX1EGq4How3CkvWEUpDzgG4lrZUuT4a5RdKZY0TAz2M2GWC+CXBAGmCcERczR/uyuZSyzTIo6s2+Y/nf002YPWJ9enINGBT6mRx3WykoLRzaQ==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(2616005)(6506007)(36756003)(44832011)(5660300002)(31686004)(38070700005)(2906002)(8936002)(83380400001)(508600001)(66556008)(6486002)(66476007)(66446008)(8676002)(4326008)(38100700002)(64756008)(66946007)(76116006)(91956017)(71200400001)(122000001)(26005)(186003)(66574015)(54906003)(110136005)(86362001)(31696002)(316002)(6512007)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?U05pd2VITzQ5UU9zOWVaVEtaLzJ5dFZ5MGRrUExZUFVlSUZKNjBHQ0ZXVVBL?=
+ =?utf-8?B?RmljTXYzWDF4WHk3YTIvaHpIZTRFTEFsdkw2OU05MmhkUzJwK3lNOTNPSW4y?=
+ =?utf-8?B?TmU4a1dweVdISWVrdlJYNWZCWlJ5bStROGdYMmVNTUpzSDBTRFdTNkkva0tk?=
+ =?utf-8?B?c1JBZHhzM0Y0SU55MVF0L1RmckpQSHpwVzdSSTZqRFVRN3U2YjRHTDVGSWw2?=
+ =?utf-8?B?NFRDUzN6dTQyVFdITjB4azJrbDBqTU4rOHdJQmd6bVZaYTlycFJSamhFZzZL?=
+ =?utf-8?B?TnFhMWdTVkJPdnZBTlBrTnVKOXoxd1ZTTDF6ZEUxRFhSM0FkRTlFN0F0eStp?=
+ =?utf-8?B?WWtqYWoxSms3blA2UmNoenFiSnlpSnlzM3NtS0NZQ3lpVkNRdTFUaWFwQkZN?=
+ =?utf-8?B?UFhPWUxwcnBWYnpBSVBkUkZxeVdEeDZ2RjhHM2E0WGs3bnBRWGFlam50Y1Qy?=
+ =?utf-8?B?WFBwL1B1S1dWMlE4ZEtqR0RTQkIrNVZnR05ldFh3TnBBaVJ1ajhiNVJMbTBn?=
+ =?utf-8?B?a0g0QVBjV0wzNy9kVFNtY0YrWUl6SzFEYmNrN2dhR1pvVlRBRzZnM2JmOVFZ?=
+ =?utf-8?B?MlVZQ1NTRUlJRHZsTGo5TVBneXFvQ2UwTVFxNTN1dWcrZ3p2UkFwWlV2MGxS?=
+ =?utf-8?B?dUpZenRudnNtVzlUb0wrMzhQQXN2Y0E1NjR5d2VGNURiSDZCcDZ0ZEJ6cnlI?=
+ =?utf-8?B?VGd6ZmhBNnJFOUdUNFB3RXh0aktYLzQ4dkc5cEg3cVhoSTR5akxPbmZYcHV5?=
+ =?utf-8?B?Y3pKRW55NTVWLzc0ZkNsZFdGdmZJdnJSSUtGMTZQYTAxN0V3Z2Y5bGs5c1dr?=
+ =?utf-8?B?MnRlakRBdjZsdlJXZkxMM2w0L2k4WWpKd2lrZVcwUXd1UDd1OVUraThsdnZU?=
+ =?utf-8?B?Rlp3cHpzTGUyMDNwSERlSCtzb3R4R2VuWXlsU3RLclZhRmtzMFBnSHlSTFJw?=
+ =?utf-8?B?U2J6Y2lRTjMzaDkwWVhFNmVXVGJmWWRhOGlKdEtGS1ROd3pYZjNkZ2xocUJq?=
+ =?utf-8?B?dUtTR242ekNBVlpMQXhpRnRBV2padjV1TXNGcTYwbnd6OVdHbVM1OUVYcm1C?=
+ =?utf-8?B?TytzZkQxWjkwQU9QVUhmZC9lSXNESEV1MUJ6VlNMcDVyNVBFeG9FeGVWM3FO?=
+ =?utf-8?B?aTNRUzNEZ3F3T2M2S1RzMUJ2RG5LVDJHcGJXRWVwa1pQYUlxZkFwN0hZU3R6?=
+ =?utf-8?B?MXlmaStrZTRLYTdabGxDVk5YM2UvWkZjM1VhcFBRSTY4c0txR251Z0hrQlJB?=
+ =?utf-8?B?OU5wam1hekQxbktYQW5jN2RFS3g4STh2eVJUMTdwNEJNcVFYMXBkdXJQRUpR?=
+ =?utf-8?B?eXh3R1RZc3JkK0RhOG14NmdxM2FLYW1OVWRJSFg5S1RDVGIyaVVtSzVjbHMz?=
+ =?utf-8?B?VzZlOGErRTdOdE1IS0h1KzQ2bWF5OVVpVUlVaGV0UmxwS3IzSVdzRU0rZGVO?=
+ =?utf-8?B?M2IxVmQ3SUZTWG9XdkxFbVB0VUJ1M2ZFUHBOZnd1TVFiRGJHeHVtcDZYTnNq?=
+ =?utf-8?B?Sm1kbTl0dEZlY3J2NVE2M0p2Zmtsc0hLRVpNSFp6VlJOdWpYTG10ZnkrNk5X?=
+ =?utf-8?B?OGlRMDhHOE5LcE9zd3V1R0FSREkvdkpsVy9lTTdsVEpZZ1RSOVJVM3packZl?=
+ =?utf-8?B?TFhaenlXNGZDSWFKZHVYeWF4UGV4MEs0OU1wQ0hyQTFzRFpCcWRZcVRkd0l2?=
+ =?utf-8?B?Q1EvWmR5VjNSQnBvR1JBN2phM1o1LzhGc0xhK1lTQTYrbGthVnpPQVl0WnNt?=
+ =?utf-8?B?L0g5TThwcUs3QnQ4OXlrNXVwRmdDd3ViZUFSRjhqRHpBSmpncHh1Ujk4bjdY?=
+ =?utf-8?B?aW41SGE4NXBYclF1b3g1Y0p4Q0lxaU4yTTBiUnhxT2oyUTRTbCt4QlhSRmhL?=
+ =?utf-8?B?WkVneFBDMlZlUlc1cWFuZUNtM1pxb1V1WWx3UXRuaVJ3S2h0cGg4dllpVnhR?=
+ =?utf-8?B?N3hLV2VZazRseVkzcDMycEdUVER0QzIzUjJWRHd1cW5RT0lPQlMrMDBRbmZD?=
+ =?utf-8?B?Y3dqT1BRZEg0aFlLd0xudFEwV21WSFNaeEtjcGJiUkdBd3dSRmxadFhHSVNl?=
+ =?utf-8?B?dUd0alNnclFlQ2Fya2NiRm5xQkxqTnc3NjVES2V1RStibHd6TEtZT2ZraXE2?=
+ =?utf-8?B?M1FIZmU2SlV4WFBneS9NNFdGaUVXeU05b2pzNnBvbTNKb3Z3TkpHdWdCV29M?=
+ =?utf-8?B?ZlpIclB5WXA4NTNOQzVhUUQ1Nnozcnptd05Zd2RyaXVyNTRHMk1RTmFNVlhm?=
+ =?utf-8?B?N0JEWE11eVdUQ2IrZk1RSzJrSkZhRzJ0R1NkVCtJQ0krS2NiMFRVSVRNUE1F?=
+ =?utf-8?B?ZWVjdzRISG9aOWNzekNNb0EydTNrUU0zRjk2eUp5YXg4SHJtcllkdGU4ZTlH?=
+ =?utf-8?Q?u7NOBS5+MVaZyr9UM3KjaY5a/Fey21dcZDq/9?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9509C3C9220B5F4FA379CCBE298AC766@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81b133de-d073-4381-59c8-08da2dc857bd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 May 2022 12:19:31.4770 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4aY6rmUu5h/GWxZnsWvpeNvbH0ItoVX786yi43l5fJ6Wz3yzNbGlTbOFsCwia8Ir/y5Pl9teeYUHs4vVTVyqZNcBguvMuBwHoWgQkwZ3cx0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1638
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,312 +142,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
- Nathan Chancellor <nathan@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>,
- Sami Tolvanen <samitolvanen@google.com>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 04/05/2022 17:11, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 5/4/22 07:21, Nick Desaulniers wrote:
->> On Thu, Apr 28, 2022 at 11:46 PM Alexey Kardashevskiy <aik@ozlabs.ru> 
->> wrote:
->>>
->>> This enables LTO_CLANG builds on POWER with the upstream version of
->>> LLVM.
->>>
->>> LTO optimizes the output vmlinux binary and this may affect the FTP
->>> alternative section if alt branches use "bc" (Branch Conditional) which
->>> is limited by 16 bit offsets. This shows up in errors like:
->>>
->>> ld.lld: error: InputSection too large for range extension thunk 
->>> vmlinux.o:(__ftr_alt_97+0xF0)
->>>
->>> This works around the issue by replacing "bc" in FTR_SECTION_ELSE with
->>> "b" which allows 26 bit offsets.
->>>
->>> This catches the problem instructions in vmlinux.o before it LTO'ed:
->>>
->>> $ objdump -d -M raw -j __ftr_alt_97 vmlinux.o | egrep '\S+\s*\<bc\>'
->>>    30:   00 00 82 40     bc      4,eq,30 <__ftr_alt_97+0x30>
->>>    f0:   00 00 82 40     bc      4,eq,f0 <__ftr_alt_97+0xf0>
->>>
->>> This allows LTO builds for ppc64le_defconfig plus LTO options.
->>> Note that DYNAMIC_FTRACE/FUNCTION_TRACER is not supported by LTO builds
->>> but this is not POWERPC-specific.
->>
->> $ ARCH=powerpc make LLVM=1 -j72 ppc64le_defconfig
->> $ ARCH=powerpc make LLVM=1 -j72 menuconfig
->> <disable FTRACE, enable LTO_CLANG_THIN>
->> $ ARCH=powerpc make LLVM=1 -j72
->> ...
->>    VDSO64L arch/powerpc/kernel/vdso/vdso64.so.dbg
->> /usr/bin/powerpc64le-linux-gnu-ld:
->> /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: error
->> loading plugin:
->> /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: cannot open
->> shared object file: No such file or directory
->> clang-15: error: linker command failed with exit code 1 (use -v to see
->> invocation)
->> make[1]: *** [arch/powerpc/kernel/vdso/Makefile:67:
->> arch/powerpc/kernel/vdso/vdso64.so.dbg] Error 1
->>
->> Looks like LLD isn't being invoked correctly to link the vdso.
->> Probably need to revisit
->> https://lore.kernel.org/lkml/20200901222523.1941988-1-ndesaulniers@google.com/
->>
->> How were you working around this issue? Perhaps you built clang to
->> default to LLD? (there's a cmake option for that)
-> 
-> 
-> I was not.
-> 
-> Just did clean build like this:
-> 
-> mkdir ~/pbuild/llvm/llvm-lto-latest-cleanbuild
-> 
-> cd ~/pbuild/llvm/llvm-lto-latest-cleanbuild
-> 
-> CC='clang' CXX='clang++' cmake -G Ninja 
-> -DLLVM_ENABLE_PROJECTS="clang;lld" -DLLVM_TARGETS_TO_BUILD=PowerPC 
-> ~/p/llvm/llvm-latest/llvm/ -DLLVM_ENABLE_LTO=ON   -DLLVM_ENABLE_LLD=ON 
-> -DLLVM_BINUTILS_INCDIR=/usr/include -DCMAKE_BUILD_TYPE=Release
-> 
-> ninja -j 50
-> 
-> It builds fine:
-> 
-> [fstn1-p1 ~/p/kernels-llvm/llvm]$ find 
-> /home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/ -iname LLVMgold.so 
-> -exec ls -l {} \;
-> -rwxrwxr-x 1 aik aik 39032840 May  4 13:06 
-> /home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/lib/LLVMgold.so
-> 
-> 
-> 
-> 
-> and then in the kernel tree:
-> 
-> 
-> PATH=/home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/bin:$PATH make 
-> -j64 
-> O=/home/aik/pbuild/kernels-llvm/llvm-wip-llvm-latest-lto-full-cleanbuild/ ARCH=powerpc LLVM_IAS=1 CC=clang LLVM=1 ppc64le_defconfig
-> 
-> then enabled LTO in that .config and then just built "vmlinux":
-> 
-> 
-> [fstn1-p1 ~/p/kernels-llvm/llvm]$ ls -l 
-> /home/aik/pbuild/kernels-llvm/llvm-wip-llvm-latest-lto-full-cleanbuild/vmlinux
-> -rwxrwxr-x 1 aik aik 48145272 May  4 17:00 
-> /home/aik/pbuild/kernels-llvm/llvm-wip-llvm-latest-lto-full-cleanbuild/vmlinux
-> 
-> which boots under qemu, the kernel version is:
-> 
-> Preparing to boot Linux version 5.18.0-rc2_0bb153baeff0_a+fstn1 
-> (aik@fstn1-p1) (clang version 15.0.0 (https://github.com/llvm/llvm-proje
-> ct.git e29dc0c6fde284e7f05aa5f45b05c629c9fad295), LLD 15.0.0) #1 SMP Wed 
-> May 4 16:54:16 AEST 2022
-> 
-> 
-> 
-> Before I got to this point, I did many unspeakable things to that build 
-> system so may be it is screwed in some way but I cannot pinpoint it.
-> 
-> The installed clang/lld is 12.0.0-3ubuntu1~21.04.2 and 
-> -DLLVM_ENABLE_LLD=ON from cmake is to accelerate rebuilding of LLVM (for 
-> bisecting). I'll try without it now, just takes ages to complete.
-
-
-And I just did. clang built with gcc simply crashes while building 
-kernel's scripts/basic/fixdep  :-D
-
-I may have to file a bug against clang now :-/
-
-
-
-
-
-> 
->>
->> Perhaps for now I should just send:
->> ```
->> diff --git a/arch/powerpc/kernel/vdso/Makefile
->> b/arch/powerpc/kernel/vdso/Makefile
->> index 954974287ee7..8762e6513683 100644
->> --- a/arch/powerpc/kernel/vdso/Makefile
->> +++ b/arch/powerpc/kernel/vdso/Makefile
->> @@ -55,6 +55,11 @@ AS32FLAGS := -D__VDSO32__ -s
->>   CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
->>   AS64FLAGS := -D__VDSO64__ -s
->>
->> +ifneq ($(LLVM),)
->> +CC32FLAGS += -fuse-ld=lld
->> +CC64FLAGS += -fuse-ld=lld
->> +endif
->> +
->>   targets += vdso32.lds
->>   CPPFLAGS_vdso32.lds += -P -C -Upowerpc
->>   targets += vdso64.lds
->> ```
->>
->>
->>>
->>> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->>> ---
->>>
->>> Note 1:
->>> This is further development of
->>> https://lore.kernel.org/all/20220211023125.1790960-1-aik@ozlabs.ru/T/
->>>
->>> Note 2:
->>> CONFIG_ZSTD_COMPRESS and CONFIG_ZSTD_DECOMPRESS must be both "m" or "y"
->>> or it won't link. For details:
->>> https://lore.kernel.org/lkml/20220428043850.1706973-1-aik@ozlabs.ru/T/
->>
->> Yeah, I just hit this:
->> ```
->>    LTO     vmlinux.o
->> LLVM ERROR: Function Import: link error: linking module flags 'Code
->> Model': IDs have conflicting values in
->> 'lib/built-in.a(entropy_common.o at 5782)' and
->> 'lib/built-in.a(zstd_decompress_block.o at 6202)'
->> PLEASE submit a bug report to
->> https://github.com/llvm/llvm-project/issues/ and include the crash
->> backtrace.
->> LLVM ERROR: Failed to rename temporary file
->> .thinlto-cache/Thin-96f93f.tmp.o to
->> .thinlto-cache/llvmcache-A5B351EA452D46A86980E29C78B7260673348AAF: No
->> such file or directory
->> scripts/link-vmlinux.sh: line 76: 1240312 Aborted
->> ${LD} ${KBUILD_LDFLAGS} -r -o ${1} ${lds} ${objects}
->> make: *** [Makefile:1158: vmlinux] Error 134
->> ```
->> These two configs aren't easily modified in menuconfig. Perhaps you
->> could find the concise set of configs that need to be disabled for
->> this to be buildable? At least so others can test more easily, or even
->> so we can update Kconfig checks.
-> 
-> 
-> I have posted v2:
-> 
-> https://lore.kernel.org/lkml/20220429053329.2278740-1-aik@ozlabs.ru/T/
-> 
-> with this one, the ppc64 defconfigs should just work.
-> 
-> 
->>> ---
->>>   arch/powerpc/Kconfig                   | 2 ++
->>>   arch/powerpc/kernel/exceptions-64s.S   | 4 +++-
->>>   arch/powerpc/lib/copyuser_64.S         | 3 ++-
->>>   arch/powerpc/lib/feature-fixups-test.S | 3 +--
->>>   arch/powerpc/lib/memcpy_64.S           | 3 ++-
->>>   5 files changed, 10 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>> index 174edabb74fa..e2c7b5c1d0a6 100644
->>> --- a/arch/powerpc/Kconfig
->>> +++ b/arch/powerpc/Kconfig
->>> @@ -158,6 +158,8 @@ config PPC
->>>          select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
->>>          select ARCH_WANT_LD_ORPHAN_WARN
->>>          select ARCH_WEAK_RELEASE_ACQUIRE
->>> +       select ARCH_SUPPORTS_LTO_CLANG
->>> +       select ARCH_SUPPORTS_LTO_CLANG_THIN
->>>          select BINFMT_ELF
->>>          select BUILDTIME_TABLE_SORT
->>>          select CLONE_BACKWARDS
->>> diff --git a/arch/powerpc/kernel/exceptions-64s.S 
->>> b/arch/powerpc/kernel/exceptions-64s.S
->>> index b66dd6f775a4..5b783bd51260 100644
->>> --- a/arch/powerpc/kernel/exceptions-64s.S
->>> +++ b/arch/powerpc/kernel/exceptions-64s.S
->>> @@ -476,9 +476,11 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real, text)
->>>                  .if IHSRR_IF_HVMODE
->>>                  BEGIN_FTR_SECTION
->>>                  bne     masked_Hinterrupt
->>> +               b       4f
->>>                  FTR_SECTION_ELSE
->>> -               bne     masked_interrupt
->>>                  ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | 
->>> CPU_FTR_ARCH_206)
->>> +               bne     masked_interrupt
->>> +4:
->>>                  .elseif IHSRR
->>>                  bne     masked_Hinterrupt
->>>                  .else
->>> diff --git a/arch/powerpc/lib/copyuser_64.S 
->>> b/arch/powerpc/lib/copyuser_64.S
->>> index db8719a14846..d07f95eebc65 100644
->>> --- a/arch/powerpc/lib/copyuser_64.S
->>> +++ b/arch/powerpc/lib/copyuser_64.S
->>> @@ -75,10 +75,11 @@ _GLOBAL(__copy_tofrom_user_base)
->>>    * set is Power6.
->>>    */
->>>   test_feature = (SELFTEST_CASE == 1)
->>> +       beq     .Ldst_aligned
->>>   BEGIN_FTR_SECTION
->>>          nop
->>>   FTR_SECTION_ELSE
->>> -       bne     .Ldst_unaligned
->>> +       b       .Ldst_unaligned
->>>   ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
->>>                      CPU_FTR_UNALIGNED_LD_STD)
->>>   .Ldst_aligned:
->>> diff --git a/arch/powerpc/lib/feature-fixups-test.S 
->>> b/arch/powerpc/lib/feature-fixups-test.S
->>> index 480172fbd024..2751e42a9fd7 100644
->>> --- a/arch/powerpc/lib/feature-fixups-test.S
->>> +++ b/arch/powerpc/lib/feature-fixups-test.S
->>> @@ -145,7 +145,6 @@ BEGIN_FTR_SECTION
->>>   FTR_SECTION_ELSE
->>>   2:     or      2,2,2
->>>          PPC_LCMPI       r3,1
->>> -       beq     3f
->>>          blt     2b
->>>          b       3f
->>>          b       1b
->>> @@ -160,10 +159,10 @@ globl(ftr_fixup_test6_expected)
->>>   1:     or      1,1,1
->>>   2:     or      2,2,2
->>>          PPC_LCMPI       r3,1
->>> -       beq     3f
->>>          blt     2b
->>>          b       3f
->>>          b       1b
->>> +       nop
->>>   3:     or      1,1,1
->>>          or      2,2,2
->>>          or      3,3,3
->>> diff --git a/arch/powerpc/lib/memcpy_64.S b/arch/powerpc/lib/memcpy_64.S
->>> index 016c91e958d8..286c7e2d0883 100644
->>> --- a/arch/powerpc/lib/memcpy_64.S
->>> +++ b/arch/powerpc/lib/memcpy_64.S
->>> @@ -50,10 +50,11 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
->>>      At the time of writing the only CPU that has this combination of 
->>> bits
->>>      set is Power6. */
->>>   test_feature = (SELFTEST_CASE == 1)
->>> +       beq      .ldst_aligned
->>>   BEGIN_FTR_SECTION
->>>          nop
->>>   FTR_SECTION_ELSE
->>> -       bne     .Ldst_unaligned
->>> +       b       .Ldst_unaligned
->>>   ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
->>>                       CPU_FTR_UNALIGNED_LD_STD)
->>>   .Ldst_aligned:
->>> -- 
->>> 2.30.2
->>>
->>
->>
-
--- 
-Alexey
+DQoNCkxlIDE4LzA0LzIwMjIgw6AgMDg6NDAsIE5hdmVlbiBOLiBSYW8gYSDDqWNyaXTCoDoNCj4g
+Q2hyaXN0b3BoZSBMZXJveSB3cm90ZToNCj4+IFNpbmNlIGM5M2Q0ZjZlY2Y0YiAoInBvd2VycGMv
+ZnRyYWNlOiBBZGQgbW9kdWxlX3RyYW1wb2xpbmVfdGFyZ2V0KCkNCj4+IGZvciBQUEMzMiIpLCBf
+X2Z0cmFjZV9tYWtlX25vcCgpIGZvciBQUEMzMiBpcyB2ZXJ5IHNpbWlsYXIgdG8gdGhlDQo+PiBv
+bmUgZm9yIFBQQzY0Lg0KPj4NCj4+IFNhbWUgZm9yIF9fZnRyYWNlX21ha2VfY2FsbCgpLg0KPj4N
+Cj4+IE1ha2UgdGhlbSBjb21tb24uDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogQ2hyaXN0b3BoZSBM
+ZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1Pg0KPj4gLS0tDQo+PiDCoGFyY2gvcG93
+ZXJwYy9rZXJuZWwvdHJhY2UvZnRyYWNlLmMgfCAxMDggKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0NCj4+IMKgMSBmaWxlIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKSwgMTAwIGRlbGV0aW9u
+cygtKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMva2VybmVsL3RyYWNlL2Z0cmFj
+ZS5jIA0KPj4gYi9hcmNoL3Bvd2VycGMva2VybmVsL3RyYWNlL2Z0cmFjZS5jDQo+PiBpbmRleCAx
+YjA1ZDMzZjk2YzYuLjJjN2U0MmU0MzliYiAxMDA2NDQNCj4+IC0tLSBhL2FyY2gvcG93ZXJwYy9r
+ZXJuZWwvdHJhY2UvZnRyYWNlLmMNCj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvdHJhY2Uv
+ZnRyYWNlLmMNCj4+IEBAIC0xMTQsNyArMTE0LDYgQEAgc3RhdGljIHVuc2lnbmVkIGxvbmcgZmlu
+ZF9ibF90YXJnZXQodW5zaWduZWQgbG9uZyANCj4+IGlwLCBwcGNfaW5zdF90IG9wKQ0KPj4gwqB9
+DQo+Pg0KPj4gwqAjaWZkZWYgQ09ORklHX01PRFVMRVMNCj4+IC0jaWZkZWYgQ09ORklHX1BQQzY0
+DQo+PiDCoHN0YXRpYyBpbnQNCj4+IMKgX19mdHJhY2VfbWFrZV9ub3Aoc3RydWN0IG1vZHVsZSAq
+bW9kLA0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RydWN0IGR5bl9mdHJhY2UgKnJlYywgdW5z
+aWduZWQgbG9uZyBhZGRyKQ0KPj4gQEAgLTE1NCwxMCArMTUzLDExIEBAIF9fZnRyYWNlX21ha2Vf
+bm9wKHN0cnVjdCBtb2R1bGUgKm1vZCwNCj4+IMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIC1FSU5W
+QUw7DQo+PiDCoMKgwqDCoCB9DQo+Pg0KPj4gLSNpZmRlZiBDT05GSUdfTVBST0ZJTEVfS0VSTkVM
+DQo+PiAtwqDCoMKgIC8qIFdoZW4gdXNpbmcgLW1rZXJuZWxfcHJvZmlsZSB0aGVyZSBpcyBubyBs
+b2FkIHRvIGp1bXAgb3ZlciAqLw0KPj4gK8KgwqDCoCAvKiBXaGVuIHVzaW5nIC1ta2VybmVsX3By
+b2ZpbGUgb3IgUFBDMzIgdGhlcmUgaXMgbm8gbG9hZCB0byBqdW1wIA0KPj4gb3ZlciAqLw0KPiAg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAtbXByb2ZpbGUta2VybmVs
+DQo+IA0KPiBTaW5jZSB5b3UgYXJlIG1vZGlmeWluZyB0aGF0IGxpbmUgYW55d2F5IF5eDQoNCm9r
+DQoNCg0KPiANCj4gDQo+PiDCoMKgwqDCoCBwb3AgPSBwcGNfaW5zdChQUENfUkFXX05PUCgpKTsN
+Cj4+DQo+PiArI2lmZGVmIENPTkZJR19QUEM2NA0KPj4gKyNpZmRlZiBDT05GSUdfTVBST0ZJTEVf
+S0VSTkVMDQo+PiDCoMKgwqDCoCBpZiAoY29weV9pbnN0X2Zyb21fa2VybmVsX25vZmF1bHQoJm9w
+LCAodm9pZCAqKShpcCAtIDQpKSkgew0KPj4gwqDCoMKgwqDCoMKgwqDCoCBwcl9lcnIoIkZldGNo
+aW5nIGluc3RydWN0aW9uIGF0ICVseCBmYWlsZWQuXG4iLCBpcCAtIDQpOw0KPj4gwqDCoMKgwqDC
+oMKgwqDCoCByZXR1cm4gLUVGQVVMVDsNCj4+IEBAIC0yMDEsNiArMjAxLDcgQEAgX19mdHJhY2Vf
+bWFrZV9ub3Aoc3RydWN0IG1vZHVsZSAqbW9kLA0KPj4gwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4g
+LUVJTlZBTDsNCj4+IMKgwqDCoMKgIH0NCj4+IMKgI2VuZGlmIC8qIENPTkZJR19NUFJPRklMRV9L
+RVJORUwgKi8NCj4+ICsjZW5kaWYgLyogUFBDNjQgKi8NCj4+DQo+PiDCoMKgwqDCoCBpZiAocGF0
+Y2hfaW5zdHJ1Y3Rpb24oKHUzMiAqKWlwLCBwb3ApKSB7DQo+PiDCoMKgwqDCoMKgwqDCoMKgIHBy
+X2VycigiUGF0Y2hpbmcgTk9QIGZhaWxlZC5cbiIpOw0KPj4gQEAgLTIwOSw0OCArMjEwLDYgQEAg
+X19mdHJhY2VfbWFrZV9ub3Aoc3RydWN0IG1vZHVsZSAqbW9kLA0KPj4NCj4+IMKgwqDCoMKgIHJl
+dHVybiAwOw0KPj4gwqB9DQo+PiAtDQo+PiAtI2Vsc2UgLyogIVBQQzY0ICovDQo+PiAtc3RhdGlj
+IGludA0KPj4gLV9fZnRyYWNlX21ha2Vfbm9wKHN0cnVjdCBtb2R1bGUgKm1vZCwNCj4+IC3CoMKg
+wqDCoMKgwqDCoMKgwqAgc3RydWN0IGR5bl9mdHJhY2UgKnJlYywgdW5zaWduZWQgbG9uZyBhZGRy
+KQ0KPj4gLXsNCj4+IC3CoMKgwqAgcHBjX2luc3RfdCBvcDsNCj4+IC3CoMKgwqAgdW5zaWduZWQg
+bG9uZyBpcCA9IHJlYy0+aXA7DQo+PiAtwqDCoMKgIHVuc2lnbmVkIGxvbmcgdHJhbXAsIHB0cjsN
+Cj4+IC0NCj4+IC3CoMKgwqAgaWYgKGNvcHlfZnJvbV9rZXJuZWxfbm9mYXVsdCgmb3AsICh2b2lk
+ICopaXAsIE1DT1VOVF9JTlNOX1NJWkUpKQ0KPj4gLcKgwqDCoMKgwqDCoMKgIHJldHVybiAtRUZB
+VUxUOw0KPj4gLQ0KPj4gLcKgwqDCoCAvKiBNYWtlIHN1cmUgdGhhdCB0aGF0IHRoaXMgaXMgc3Rp
+bGwgYSAyNGJpdCBqdW1wICovDQo+PiAtwqDCoMKgIGlmICghaXNfYmxfb3Aob3ApKSB7DQo+PiAt
+wqDCoMKgwqDCoMKgwqAgcHJfZXJyKCJOb3QgZXhwZWN0ZWQgYmw6IG9wY29kZSBpcyAlc1xuIiwg
+cHBjX2luc3RfYXNfc3RyKG9wKSk7DQo+PiAtwqDCoMKgwqDCoMKgwqAgcmV0dXJuIC1FSU5WQUw7
+DQo+PiAtwqDCoMKgIH0NCj4+IC0NCj4+IC3CoMKgwqAgLyogbGV0cyBmaW5kIHdoZXJlIHRoZSBw
+b2ludGVyIGdvZXMgKi8NCj4+IC3CoMKgwqAgdHJhbXAgPSBmaW5kX2JsX3RhcmdldChpcCwgb3Ap
+Ow0KPj4gLQ0KPj4gLcKgwqDCoCAvKiBGaW5kIHdoZXJlIHRoZSB0cmFtcG9saW5lIGp1bXBzIHRv
+ICovDQo+PiAtwqDCoMKgIGlmIChtb2R1bGVfdHJhbXBvbGluZV90YXJnZXQobW9kLCB0cmFtcCwg
+JnB0cikpIHsNCj4+IC3CoMKgwqDCoMKgwqDCoCBwcl9lcnIoIkZhaWxlZCB0byBnZXQgdHJhbXBv
+bGluZSB0YXJnZXRcbiIpOw0KPj4gLcKgwqDCoMKgwqDCoMKgIHJldHVybiAtRUZBVUxUOw0KPj4g
+LcKgwqDCoCB9DQo+PiAtDQo+PiAtwqDCoMKgIGlmIChwdHIgIT0gYWRkcikgew0KPj4gLcKgwqDC
+oMKgwqDCoMKgIHByX2VycigiVHJhbXBvbGluZSBsb2NhdGlvbiAlMDhseCBkb2VzIG5vdCBtYXRj
+aCBhZGRyXG4iLA0KPj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdHJhbXApOw0KPj4g
+LcKgwqDCoMKgwqDCoMKgIHJldHVybiAtRUlOVkFMOw0KPj4gLcKgwqDCoCB9DQo+PiAtDQo+PiAt
+wqDCoMKgIG9wID0gcHBjX2luc3QoUFBDX1JBV19OT1AoKSk7DQo+PiAtDQo+PiAtwqDCoMKgIGlm
+IChwYXRjaF9pbnN0cnVjdGlvbigodTMyICopaXAsIG9wKSkNCj4+IC3CoMKgwqDCoMKgwqDCoCBy
+ZXR1cm4gLUVQRVJNOw0KPj4gLQ0KPj4gLcKgwqDCoCByZXR1cm4gMDsNCj4+IC19DQo+PiAtI2Vu
+ZGlmIC8qIFBQQzY0ICovDQo+PiDCoCNlbmRpZiAvKiBDT05GSUdfTU9EVUxFUyAqLw0KPj4NCj4+
+IMKgc3RhdGljIHVuc2lnbmVkIGxvbmcgZmluZF9mdHJhY2VfdHJhbXAodW5zaWduZWQgbG9uZyBp
+cCkNCj4+IEBAIC00MzcsMTMgKzM5NiwxMiBAQCBpbnQgZnRyYWNlX21ha2Vfbm9wKHN0cnVjdCBt
+b2R1bGUgKm1vZCwNCj4+IMKgfQ0KPj4NCj4+IMKgI2lmZGVmIENPTkZJR19NT0RVTEVTDQo+PiAt
+I2lmZGVmIENPTkZJR19QUEM2NA0KPj4gwqAvKg0KPj4gwqAgKiBFeGFtaW5lIHRoZSBleGlzdGlu
+ZyBpbnN0cnVjdGlvbnMgZm9yIF9fZnRyYWNlX21ha2VfY2FsbC4NCj4+IMKgICogVGhleSBzaG91
+bGQgZWZmZWN0aXZlbHkgYmUgYSBOT1AsIGFuZCBmb2xsb3cgZm9ybWFsIGNvbnN0cmFpbnRzLA0K
+Pj4gwqAgKiBkZXBlbmRpbmcgb24gdGhlIEFCSS4gUmV0dXJuIGZhbHNlIGlmIHRoZXkgZG9uJ3Qu
+DQo+PiDCoCAqLw0KPj4gLSNpZm5kZWYgQ09ORklHX01QUk9GSUxFX0tFUk5FTA0KPj4gKyNpZm5k
+ZWYgQ09ORklHX0RZTkFNSUNfRlRSQUNFX1dJVEhfUkVHUw0KPiANCj4gSXQgaXMgYmV0dGVyIHRv
+IGdhdGUgdGhpcyBvbiBQUEM2NF9FTEZfQUJJX3YxDQoNCldlbGwgLi4uIGxldCB0aGVuIGZpcnN0
+IGNoYW5nZSB0aGlzIHRvIGEgQ09ORklHXyBpdGVtLCBpdCBzaG91bGQgDQpzaW1wbGlmeSBzb21l
+IHN0dWZmIGhlcmUgYW5kIHRoZXJlLg0KDQo+IA0KPj4gwqBzdGF0aWMgaW50DQo+PiDCoGV4cGVj
+dGVkX25vcF9zZXF1ZW5jZSh2b2lkICppcCwgcHBjX2luc3RfdCBvcDAsIHBwY19pbnN0X3Qgb3Ax
+KQ0KPj4gwqB7DQo+PiBAQCAtNDY1LDcgKzQyMyw3IEBAIGV4cGVjdGVkX25vcF9zZXF1ZW5jZSh2
+b2lkICppcCwgcHBjX2luc3RfdCBvcDAsIA0KPj4gcHBjX2luc3RfdCBvcDEpDQo+PiDCoHN0YXRp
+YyBpbnQNCj4+IMKgZXhwZWN0ZWRfbm9wX3NlcXVlbmNlKHZvaWQgKmlwLCBwcGNfaW5zdF90IG9w
+MCwgcHBjX2luc3RfdCBvcDEpDQo+PiDCoHsNCj4+IC3CoMKgwqAgLyogbG9vayBmb3IgcGF0Y2hl
+ZCAiTk9QIiBvbiBwcGM2NCB3aXRoIC1tcHJvZmlsZS1rZXJuZWwgKi8NCj4+ICvCoMKgwqAgLyog
+bG9vayBmb3IgcGF0Y2hlZCAiTk9QIiBvbiBwcGM2NCB3aXRoIC1tcHJvZmlsZS1rZXJuZWwgb3Ig
+cHBjMzIgKi8NCj4+IMKgwqDCoMKgIGlmICghcHBjX2luc3RfZXF1YWwob3AwLCBwcGNfaW5zdChQ
+UENfUkFXX05PUCgpKSkpDQo+PiDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAwOw0KPj4gwqDCoMKg
+wqAgcmV0dXJuIDE7DQo+PiBAQCAtNDg0LDggKzQ0MiwxMCBAQCBfX2Z0cmFjZV9tYWtlX2NhbGwo
+c3RydWN0IGR5bl9mdHJhY2UgKnJlYywgDQo+PiB1bnNpZ25lZCBsb25nIGFkZHIpDQo+PiDCoMKg
+wqDCoCBpZiAoY29weV9pbnN0X2Zyb21fa2VybmVsX25vZmF1bHQob3AsIGlwKSkNCj4+IMKgwqDC
+oMKgwqDCoMKgwqAgcmV0dXJuIC1FRkFVTFQ7DQo+Pg0KPj4gKyNpZm5kZWYgQ09ORklHX0RZTkFN
+SUNfRlRSQUNFX1dJVEhfUkVHUw0KPj4gwqDCoMKgwqAgaWYgKGNvcHlfaW5zdF9mcm9tX2tlcm5l
+bF9ub2ZhdWx0KG9wICsgMSwgaXAgKyA0KSkNCj4+IMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIC1F
+RkFVTFQ7DQo+PiArI2VuZGlmDQo+IA0KPiBIZXJlIHRvby4uLg0KPiANCg0KT2sNCg0KQ2hyaXN0
+b3BoZQ==
