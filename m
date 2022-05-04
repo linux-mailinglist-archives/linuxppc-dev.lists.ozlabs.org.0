@@ -2,42 +2,105 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC413519CE0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 12:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 989C0519D88
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 13:02:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtY113KsLz3bqB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 20:27:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtYnD32g2z3bpb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 21:02:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZZZruooG;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=cmarinas@kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=ZZZruooG; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KtY0Y3t9bz3bXw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 20:26:53 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 1DA4AB8253E;
- Wed,  4 May 2022 10:26:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C3EC385A4;
- Wed,  4 May 2022 10:26:43 +0000 (UTC)
-Date: Wed, 4 May 2022 11:26:40 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Subject: Re: [PATCH -next v4 4/7] arm64: add copy_{to, from}_user to machine
- check safe
-Message-ID: <YnJU4NIrJmHLawgk@arm.com>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
- <20220420030418.3189040-5-tongtiangen@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtYmV2jljz3bbV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 21:01:29 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 244ASn2i032651;
+ Wed, 4 May 2022 11:01:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=1ag1YfXg3EBO7Or3ScbArxB8G7BzI6staQN620kU86g=;
+ b=ZZZruooGfLSzS36cVOPx8r/toTIR3mHbyJeLZjix3AZABSUW4/4KiTzm+lyapvGwpWI7
+ EH8PDiQLwxpT/0oZO60Zo2f/8YCfjpu3pwUDvcpSvIAN7HxW+BjUeAdlEuYBUnrs7vp6
+ wrd39OVNuNUL+Z3KnggzhqV+V0d77hETFjBFYQs6m67ieaYOXoaYhybC45bTCIJh4yF0
+ JatRpdBv2ZhXesaKjmoeuCBagt0cZptcULRKTCUQDx9bNhq2SMy0cL6Sb9mPCCU56xV3
+ IAyJPIYwtesMNipNnGD500godmgSN4/85TqpKXDaHAb6T51LcGIJVjfcqnuvF4CJBxyf mQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fuqs0gkb5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 11:01:23 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 244AV6x7007803;
+ Wed, 4 May 2022 11:01:23 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fuqs0gkad-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 11:01:23 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 244AwlOl001521;
+ Wed, 4 May 2022 11:01:21 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04ams.nl.ibm.com with ESMTP id 3frvr8wgtd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 11:01:21 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 244AlxZI50594048
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 May 2022 10:47:59 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2E00742049;
+ Wed,  4 May 2022 11:01:19 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA8F842042;
+ Wed,  4 May 2022 11:01:18 +0000 (GMT)
+Received: from [9.145.14.176] (unknown [9.145.14.176])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 May 2022 11:01:18 +0000 (GMT)
+Message-ID: <f498f098-8b87-26bd-9967-2315bbc231f3@linux.ibm.com>
+Date: Wed, 4 May 2022 13:01:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220420030418.3189040-5-tongtiangen@huawei.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.8.1
+Subject: Re: [PATCH v2] powerpc/rtas: Keep MSR[RI] set when calling RTAS
+Content-Language: en-US
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20220401140634.65726-1-ldufour@linux.ibm.com>
+ <87r15aveny.fsf@mpe.ellerman.id.au>
+ <c33a2be3-d4b7-9b3b-c980-552f5de081be@linux.ibm.com>
+ <87ee19vnwe.fsf@mpe.ellerman.id.au>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <87ee19vnwe.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 9miYMbhLlVrMRbdzZN77mC4eIDD1F5m-
+X-Proofpoint-GUID: rhI7oEMXt52f1caDX5UlztzBXFTj78Qx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-04_03,2022-05-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 mlxlogscore=958
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 malwarescore=0
+ spamscore=0 phishscore=0 bulkscore=0 priorityscore=1501 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205040070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,46 +112,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>,
- Will Deacon <will@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- Xie XiuQi <xiexiuqi@huawei.com>, Borislav Petkov <bp@alien8.de>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 20, 2022 at 03:04:15AM +0000, Tong Tiangen wrote:
-> Add copy_{to, from}_user() to machine check safe.
+On 04/05/2022, 07:59:29, Michael Ellerman wrote:
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
+>> On 03/05/2022, 17:06:41, Michael Ellerman wrote:
+>>> Laurent Dufour <ldufour@linux.ibm.com> writes:
+> ...
+>>>> diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+>>>> index 1f42aabbbab3..d7775b8c8853 100644
+>>>> --- a/arch/powerpc/kernel/rtas.c
+>>>> +++ b/arch/powerpc/kernel/rtas.c
+>>>> @@ -49,6 +49,11 @@ void enter_rtas(unsigned long);
+>>>>  
+>>>>  static inline void do_enter_rtas(unsigned long args)
+>>>>  {
+>>>> +	unsigned long msr;
+>>>> +
+>>>> +	msr = mfmsr();
+>>>> +	BUG_ON(!(msr & MSR_RI));
+>>>
+>>> I'm not sure about this.
+>>>
+>>> We call RTAS in some low-level places, so if we ever hit this BUG_ON
+>>> then it might cause us to crash badly, or recursively BUG.
+>>>
+>>> A WARN_ON_ONCE() might be safer?
+>>
+>> I'm afraid a BUG_ON is required here. Since MSR[RI] is set on RTAS exit so
+>> if it was not set when calling RTAS, that's a real issue and should
+>> generate unexpected behaviour.
+>>
+>> Do you have places in mind where RTAS could be called with !MSR[RI]?
 > 
-> If copy fail due to hardware memory error, only the relevant processes are
-> affected, so killing the user process and isolate the user page with
-> hardware memory errors is a more reasonable choice than kernel panic.
+> The main one I can think of is if someone is using
+> CONFIG_UDBG_RTAS_CONSOLE, then udbg_rtascon_putc() is wired up as
+> udbg_putc() and that might be called from anywhere, including xmon.
+> 
+> There's also RTAS calls in low-level xics interrupt code, that might get
+> called during panic/crash.
+> 
+> I don't expect any of those places to be called with MSR[RI] unset, but
+> I'm worried that if we're already crashing and for some reason MSR[RI]
+> is unset, then that BUG_ON will just make things worse.
+> 
+> eg. imagine taking a BUG_ON() for every character we try to print as
+> part of an oops.
+> 
+> Admittedly CONFIG_UDBG_RTAS_CONSOLE is old and probably not used much
+> anymore, but I'm still a bit paranoid :)
 
-Just to make sure I understand - we can only recover if the fault is in
-a user page. That is, for a copy_from_user(), we can only handle the
-faults in the source address, not the destination.
+I think you're right to be paranoid :)
 
-> diff --git a/arch/arm64/lib/copy_from_user.S b/arch/arm64/lib/copy_from_user.S
-> index 34e317907524..480cc5ac0a8d 100644
-> --- a/arch/arm64/lib/copy_from_user.S
-> +++ b/arch/arm64/lib/copy_from_user.S
-> @@ -25,7 +25,7 @@
->  	.endm
->  
->  	.macro strb1 reg, ptr, val
-> -	strb \reg, [\ptr], \val
-> +	USER_MC(9998f, strb \reg, [\ptr], \val)
->  	.endm
+This part of code can be really sensitive.
+I boot a kernel built with CONFIG_UDBG_RTAS_CONSOLE, xmon is working fine,
+but I cannot pretend this is covering all the RTAS call cases.
 
-So if I got the above correctly, why do we need an exception table entry
-for the store to the kernel address?
-
--- 
-Catalin
+My hope with BUG_ON() is to raise the issue, as soon as possible, so it can
+be addressed during the test phase.
