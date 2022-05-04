@@ -2,48 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4680751A6C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 18:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D1951A6C7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 18:56:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtjdY0tYdz3cYd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 02:56:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtjfD1wncz3cgc
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 02:56:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=qhugop2Z;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=moTzdKOD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1;
  helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=qhugop2Z; 
+ header.a=rsa-sha256 header.s=korg header.b=moTzdKOD; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KtjcF3q0dz3bh9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 02:54:53 +1000 (AEST)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ktjck2vMMz3cCk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 02:55:18 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id B119B61899;
- Wed,  4 May 2022 16:54:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AC6C385A4;
- Wed,  4 May 2022 16:54:50 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id AE2C4618D6;
+ Wed,  4 May 2022 16:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE928C385AA;
+ Wed,  4 May 2022 16:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1651683290;
- bh=lxOCNLhoXuv1p/yYbOt/qn66HbF114gIdpkYgvRyQOI=;
+ s=korg; t=1651683316;
+ bh=f3LfaPRTuf8VmfYtzu6PTZU4ueGuu1a7cbTyQ4MNFCA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qhugop2ZMxygL+Em7/qjYMYiJOi0gP8Lrzo/NxHRyuLDqn87sb3lNq3o3xQlBRjQg
- LfqmzgaK4PrIHJ82jVhCz8nvl+N2I9402RotlOQ+CCBn9iUSPEIvfLOKFD9l3V9zb4
- 17/7pJUHll/pO9fSV2a7SxhUQeWGsfPv701glhSk=
+ b=moTzdKODe3NPwLpgwzT1d17ky2jb1fl47USSJAveUzCRYCIALvJ/+iaYnU0DeahQD
+ /K8b2OPbWjTv+HV8zG1s8yo6Xvtlb1qI5kFOzMf6V2+YNy51Cax1rtZDBeXjNyXl/0
+ J/BOE60jjma+0ZaLs8xRVt0eA1PQkt9QxhuYoSzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15 156/177] perf symbol: Update symbols__fixup_end()
-Date: Wed,  4 May 2022 18:45:49 +0200
-Message-Id: <20220504153107.383498779@linuxfoundation.org>
+Subject: [PATCH 5.15 173/177] perf symbol: Remove arch__symbols__fixup_end()
+Date: Wed,  4 May 2022 18:46:06 +0200
+Message-Id: <20220504153109.145979266@linuxfoundation.org>
 X-Mailer: git-send-email 2.36.0
 In-Reply-To: <20220504153053.873100034@linuxfoundation.org>
 References: <20220504153053.873100034@linuxfoundation.org>
@@ -78,13 +79,10 @@ Sender: "Linuxppc-dev"
 
 From: Namhyung Kim <namhyung@kernel.org>
 
-commit 8799ebce84d672aae1dc3170510f6a3e66f96b11 upstream.
+commit a5d20d42a2f2dc2b2f9e9361912062732414090d upstream.
 
-Now arch-specific functions all do the same thing.  When it fixes the
-symbol address it needs to check the boundary between the kernel image
-and modules.  For the last symbol in the previous region, it cannot
-know the exact size as it's discarded already.  Thus it just uses a
-small page size (4096) and rounds it up like the last symbol.
+Now the generic code can handle kallsyms fixup properly so no need to
+keep the arch-functions anymore.
 
 Fixes: 3cf6a32f3f2a4594 ("perf symbols: Fix symbol size calculation condition")
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
@@ -104,57 +102,140 @@ Cc: Song Liu <songliubraving@fb.com>
 Cc: Will Deacon <will@kernel.org>
 Cc: linux-s390@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
-Link: https://lore.kernel.org/r/20220416004048.1514900-3-namhyung@kernel.org
+Link: https://lore.kernel.org/r/20220416004048.1514900-4-namhyung@kernel.org
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/symbol.c |   29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ tools/perf/arch/arm64/util/Build       |    1 -
+ tools/perf/arch/arm64/util/machine.c   |   28 ----------------------------
+ tools/perf/arch/powerpc/util/Build     |    1 -
+ tools/perf/arch/powerpc/util/machine.c |   25 -------------------------
+ tools/perf/arch/s390/util/machine.c    |   16 ----------------
+ tools/perf/util/symbol.c               |    5 -----
+ tools/perf/util/symbol.h               |    1 -
+ 7 files changed, 77 deletions(-)
+ delete mode 100644 tools/perf/arch/powerpc/util/machine.c
 
+--- a/tools/perf/arch/arm64/util/Build
++++ b/tools/perf/arch/arm64/util/Build
+@@ -1,5 +1,4 @@
+ perf-y += header.o
+-perf-y += machine.o
+ perf-y += perf_regs.o
+ perf-y += tsc.o
+ perf-y += pmu.o
+--- a/tools/perf/arch/arm64/util/machine.c
++++ /dev/null
+@@ -1,28 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-#include <inttypes.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include "debug.h"
+-#include "symbol.h"
+-
+-/* On arm64, kernel text segment starts at high memory address,
+- * for example 0xffff 0000 8xxx xxxx. Modules start at a low memory
+- * address, like 0xffff 0000 00ax xxxx. When only small amount of
+- * memory is used by modules, gap between end of module's text segment
+- * and start of kernel text segment may reach 2G.
+- * Therefore do not fill this gap and do not assign it to the kernel dso map.
+- */
+-
+-#define SYMBOL_LIMIT (1 << 12) /* 4K */
+-
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	if ((strchr(p->name, '[') && strchr(c->name, '[') == NULL) ||
+-			(strchr(p->name, '[') == NULL && strchr(c->name, '[')))
+-		/* Limit range of last symbol in module and kernel */
+-		p->end += SYMBOL_LIMIT;
+-	else
+-		p->end = c->start;
+-	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
+-}
+--- a/tools/perf/arch/powerpc/util/Build
++++ b/tools/perf/arch/powerpc/util/Build
+@@ -1,5 +1,4 @@
+ perf-y += header.o
+-perf-y += machine.o
+ perf-y += kvm-stat.o
+ perf-y += perf_regs.o
+ perf-y += mem-events.o
+--- a/tools/perf/arch/powerpc/util/machine.c
++++ /dev/null
+@@ -1,25 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-#include <inttypes.h>
+-#include <stdio.h>
+-#include <string.h>
+-#include <internal/lib.h> // page_size
+-#include "debug.h"
+-#include "symbol.h"
+-
+-/* On powerpc kernel text segment start at memory addresses, 0xc000000000000000
+- * whereas the modules are located at very high memory addresses,
+- * for example 0xc00800000xxxxxxx. The gap between end of kernel text segment
+- * and beginning of first module's text segment is very high.
+- * Therefore do not fill this gap and do not assign it to the kernel dso map.
+- */
+-
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	if (strchr(p->name, '[') == NULL && strchr(c->name, '['))
+-		/* Limit the range of last kernel symbol */
+-		p->end += page_size;
+-	else
+-		p->end = c->start;
+-	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
+-}
+--- a/tools/perf/arch/s390/util/machine.c
++++ b/tools/perf/arch/s390/util/machine.c
+@@ -35,19 +35,3 @@ int arch__fix_module_text_start(u64 *sta
+ 
+ 	return 0;
+ }
+-
+-/* On s390 kernel text segment start is located at very low memory addresses,
+- * for example 0x10000. Modules are located at very high memory addresses,
+- * for example 0x3ff xxxx xxxx. The gap between end of kernel text segment
+- * and beginning of first module's text segment is very big.
+- * Therefore do not fill this gap and do not assign it to the kernel dso map.
+- */
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	if (strchr(p->name, '[') == NULL && strchr(c->name, '['))
+-		/* Last kernel symbol mapped to end of page */
+-		p->end = roundup(p->end, page_size);
+-	else
+-		p->end = c->start;
+-	pr_debug4("%s sym:%s end:%#" PRIx64 "\n", __func__, p->name, p->end);
+-}
 --- a/tools/perf/util/symbol.c
 +++ b/tools/perf/util/symbol.c
-@@ -217,8 +217,8 @@ again:
- 	}
+@@ -101,11 +101,6 @@ static int prefix_underscores_count(cons
+ 	return tail - str;
  }
  
--void symbols__fixup_end(struct rb_root_cached *symbols,
--			bool is_kallsyms __maybe_unused)
-+/* Update zero-sized symbols using the address of the next symbol */
-+void symbols__fixup_end(struct rb_root_cached *symbols, bool is_kallsyms)
+-void __weak arch__symbols__fixup_end(struct symbol *p, struct symbol *c)
+-{
+-	p->end = c->start;
+-}
+-
+ const char * __weak arch__normalize_symbol_name(const char *name)
  {
- 	struct rb_node *nd, *prevnd = rb_first_cached(symbols);
- 	struct symbol *curr, *prev;
-@@ -232,8 +232,29 @@ void symbols__fixup_end(struct rb_root_c
- 		prev = curr;
- 		curr = rb_entry(nd, struct symbol, rb_node);
+ 	return name;
+--- a/tools/perf/util/symbol.h
++++ b/tools/perf/util/symbol.h
+@@ -230,7 +230,6 @@ const char *arch__normalize_symbol_name(
+ #define SYMBOL_A 0
+ #define SYMBOL_B 1
  
--		if (prev->end == prev->start || prev->end != curr->start)
--			arch__symbols__fixup_end(prev, curr);
-+		/*
-+		 * On some architecture kernel text segment start is located at
-+		 * some low memory address, while modules are located at high
-+		 * memory addresses (or vice versa).  The gap between end of
-+		 * kernel text segment and beginning of first module's text
-+		 * segment is very big.  Therefore do not fill this gap and do
-+		 * not assign it to the kernel dso map (kallsyms).
-+		 *
-+		 * In kallsyms, it determines module symbols using '[' character
-+		 * like in:
-+		 *   ffffffffc1937000 T hdmi_driver_init  [snd_hda_codec_hdmi]
-+		 */
-+		if (prev->end == prev->start) {
-+			/* Last kernel/module symbol mapped to end of page */
-+			if (is_kallsyms && (!strchr(prev->name, '[') !=
-+					    !strchr(curr->name, '[')))
-+				prev->end = roundup(prev->end + 4096, 4096);
-+			else
-+				prev->end = curr->start;
-+
-+			pr_debug4("%s sym:%s end:%#" PRIx64 "\n",
-+				  __func__, prev->name, prev->end);
-+		}
- 	}
- 
- 	/* Last entry */
+-void arch__symbols__fixup_end(struct symbol *p, struct symbol *c);
+ int arch__compare_symbol_names(const char *namea, const char *nameb);
+ int arch__compare_symbol_names_n(const char *namea, const char *nameb,
+ 				 unsigned int n);
 
 
