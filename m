@@ -2,59 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B76A5199EB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 10:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1129519CA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 12:13:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtVX324M4z3bZC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 18:35:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtXjK6Sl3z3bhQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 20:13:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TU4JT06n;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=b/Ce3h05;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=TU4JT06n; dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=b/Ce3h05; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KtVWP0Jz0z2xmV
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 18:34:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651653297; x=1683189297;
- h=date:from:to:cc:subject:in-reply-to:message-id:
- references:mime-version;
- bh=HLCH8nB4SW/lMh2Z2lGHu7Z1XbytxGyCLhDOE+GPI7E=;
- b=TU4JT06nnh030tISe8bunMbucOEom6rRZwGybMd7a/Qgs6TM8e+Npmxu
- Bj0ERXy/g1Mg1hpi7HrUPF52HWr7vFT09dk7t+UPErYLHS4hWHyrWMh8F
- oReXdic+2Wxn/kot4vpL1Ex0UJ5EXhXH3DBlugxBrdTxqob3L7VIF+YmN
- eThYoVlRsFMPj61k5EmGKyKJeSLIY1craIQRYytlzdcqI++0Z90JjepuE
- xrvRPzEIEJQHCkLCpKwFVV9vhFAUDRgapdzncOlz2IHZz5xHqEYpT1R2H
- ifB0Gq+7hUnLzc4zTnf3hKilZjLJKPxBtNOmQ0d5pGNpYAE2+bulMArES w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10336"; a="328242683"
-X-IronPort-AV: E=Sophos;i="5.91,197,1647327600"; d="scan'208";a="328242683"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2022 01:33:41 -0700
-X-IronPort-AV: E=Sophos;i="5.91,197,1647327600"; d="scan'208";a="562617081"
-Received: from unknown (HELO ijarvine-MOBL2) ([10.251.218.195])
- by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2022 01:33:34 -0700
-Date: Wed, 4 May 2022 11:33:32 +0300 (EEST)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 1/1] termbits: Convert octal defines to hex
-In-Reply-To: <CAK8P3a0hy8Ras7pwF9rJADtCAfeV49K7GWkftJnzqeGiQ6j-zA@mail.gmail.com>
-Message-ID: <ca39c741-8d15-33c0-7bd6-635778cc436@linux.intel.com>
-References: <2c8c96f-a12f-aadc-18ac-34c1d371929c@linux.intel.com>
- <CAK8P3a0hy8Ras7pwF9rJADtCAfeV49K7GWkftJnzqeGiQ6j-zA@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtXhX6THwz3bYP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 20:12:59 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2449ddDH006554;
+ Wed, 4 May 2022 10:12:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=1/EdRZxc1q6wIHNF9coOZr+b2lDewyIBNR14WItW9gk=;
+ b=b/Ce3h05m2MMPkA8oUU2w49M7eA6zZzGx1nLSlnGsopr0r+awD+8kb1GONgkAq/Fukcp
+ k6F5gzymWGYAVwoQMhUrqGrecY0WkcMy2v6lNKUvkcL8PX0T/lz/pFbD9AOoMDOV5oQW
+ Ssw1sqO8YifiHqpN1bmkmU65ENqcA8kZB5vhBjT7EvLCRIoINJTGwS6RKC0PDHPkchuT
+ AN9B8h+Knp1qQPOOGSVOmdlenANBfujUkQWKuv01rw7aTt8wLlVr3+tnlJ0j3BhDZMfM
+ aKyJi+wKWA5MLrWhpe2RKfvY8A0rFzu17g/bUJwuuhGc/0oyCufqxYMRDey/MQvFPZZ1 9Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fupn191kd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 10:12:52 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2449tw8P007768;
+ Wed, 4 May 2022 10:12:52 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fupn191jt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 10:12:52 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 244A944M017178;
+ Wed, 4 May 2022 10:12:49 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 3ftp7ft9qr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 10:12:49 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 244ACiMa28508436
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 May 2022 10:12:44 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AA88942041;
+ Wed,  4 May 2022 10:12:46 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5E32142045;
+ Wed,  4 May 2022 10:12:46 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.14.176])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 May 2022 10:12:46 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: mpe@ellerman.id.au, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] powerpc/rtas: Keep MSR[RI] set when calling RTAS
+Date: Wed,  4 May 2022 12:12:44 +0200
+Message-Id: <20220504101244.12107-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.36.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-777826785-1651653220=:1623"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0vqfpqbV_p5SVmJ2Uch30SbD5ojBPaYh
+X-Proofpoint-ORIG-GUID: 0XEdKwyAxX2UicQDUROQUEYnxw4wZBrh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-04_03,2022-05-02_03,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 mlxscore=0
+ suspectscore=0 spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205040067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,153 +106,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Parisc List <linux-parisc@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>, Helge Deller <deller@gmx.de>,
- alpha <linux-alpha@vger.kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- linux-serial <linux-serial@vger.kernel.org>,
- Linux API <linux-api@vger.kernel.org>, Paul Mackerras <paulus@samba.org>,
- Matt Turner <mattst88@gmail.com>, Jiri Slaby <jirislaby@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>, stable@vger.kernel.org,
+ Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+RTAS runs in real mode (MSR[DR] and MSR[IR] unset) and in 32bits
+big endian mode (MSR[SF,LE] unset).
 
---8323329-777826785-1651653220=:1623
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+The change in MSR is done in enter_rtas() in a relatively complex way,
+since the MSR value could be hardcoded.
 
-On Wed, 4 May 2022, Arnd Bergmann wrote:
+Furthermore, a panic has been reported when hitting the watchdog interrupt
+while running in RTAS, this leads to the following stack trace:
 
-> On Wed, May 4, 2022 at 9:20 AM Ilpo Järvinen
-> <ilpo.jarvinen@linux.intel.com> wrote:
-> >
-> > Many archs have termbits.h as octal numbers. It makes hard for humans
-> > to parse the magnitude of large numbers correctly and to compare with
-> > hex ones of the same define.
-> >
-> > Convert octal values to hex.
-> >
-> > First step is an automated conversion with:
-> >
-> > for i in $(git ls-files | grep 'termbits\.h'); do
-> >         awk --non-decimal-data '/^#define\s+[A-Z][A-Z0-9]*\s+0[0-9]/ {
-> >                 l=int(((length($3) - 1) * 3 + 3) / 4);
-> >                 repl = sprintf("0x%0" l "x", $3);
-> >                 print gensub(/[^[:blank:]]+/, repl, 3);
-> >                 next} {print}' $i > $i~;
-> >         mv $i~ $i;
-> > done
-> >
-> > On top of that, some manual processing on alignment and number of zeros.
-> > In addition, small tweaks to formatting of a few comments on the same
-> > lines.
-> >
-> > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> 
-> Good idea!
-> 
-> I assume you already checked if additional file contents can be shared across
-> architectures? I think I've tried in the past but didn't really get
-> anywhere with
-> that.
-> 
-> After applying the patch locally, I still see a bunch of whitespace
-> differences in the
-> changed lines if I run
-> 
-> vimdiff arch/*/include/uapi/asm/termbits.h include/uapi/asm-generic/termbits.h
-> 
-> I think this mostly because you left the sparc version alone (it already
-> uses hex constants), but it may be nice to edit this a little more to
-> make the actual differences stick out more.
+[69244.027433][   C24] watchdog: CPU 24 Hard LOCKUP
+[69244.027442][   C24] watchdog: CPU 24 TB:997512652051031, last heartbeat TB:997504470175378 (15980ms ago)
+[69244.027451][   C24] Modules linked in: chacha_generic(E) libchacha(E) xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) libpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rng(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camellia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) algif_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rpcgss(E)
+nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netlink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) configfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E) t10_pi(E)
+[69244.027555][   C24]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf128mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) raid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
+[69244.027587][   C24] Supported: No, Unreleased kernel
+[69244.027600][   C24] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Tainted: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
+[69244.027609][   C24] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0000000000000000
+[69244.027612][   C24] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G            E  X     (5.14.21-150400.71.1.bz196362_2-default)
+[69244.027615][   C24] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 48800002  XER: 20040020
+[69244.027625][   C24] CFAR: 000000000000011c IRQMASK: 1
+[69244.027625][   C24] GPR00: 0000000000000003 ffffffffffffffff 0000000000000001 00000000000050dc
+[69244.027625][   C24] GPR04: 000000001ffb6100 0000000000000020 0000000000000001 000000001fb09010
+[69244.027625][   C24] GPR08: 0000000020000000 0000000000000000 0000000000000000 0000000000000000
+[69244.027625][   C24] GPR12: 80040000072a40a8 c00000000ff8b680 0000000000000007 0000000000000034
+[69244.027625][   C24] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001fbd1db0 000000001fb3f008
+[69244.027625][   C24] GPR20: 000000001fb41018 ffffffffffffffff 000000000000017f fffffffffffff68f
+[69244.027625][   C24] GPR24: 000000001fb18fe8 000000001fb3e000 000000001fb1adc0 000000001fb1cf40
+[69244.027625][   C24] GPR28: 000000001fb26000 000000001fb460f0 000000001fb17f18 000000001fb17000
+[69244.027663][   C24] NIP [000000001fb41050] 0x1fb41050
+[69244.027696][   C24] LR [000000001fb4104c] 0x1fb4104c
+[69244.027699][   C24] Call Trace:
+[69244.027701][   C24] Instruction dump:
+[69244.027723][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+[69244.027728][   C24] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+[69244.027762][T87504] Oops: Unrecoverable System Reset, sig: 6 [#1]
+[69244.028044][T87504] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+[69244.028089][T87504] Modules linked in: chacha_generic(E) libchacha(E) xxhash_generic(E) wp512(E) sha3_generic(E) rmd160(E) poly1305_generic(E) libpoly1305(E) michael_mic(E) md4(E) crc32_generic(E) cmac(E) ccm(E) algif_rng(E) twofish_generic(E) twofish_common(E) serpent_generic(E) fcrypt(E) des_generic(E) libdes(E) cast6_generic(E) cast5_generic(E) cast_common(E) camellia_generic(E) blowfish_generic(E) blowfish_common(E) algif_skcipher(E) algif_hash(E) gcm(E) algif_aead(E) af_alg(E) tun(E) rpcsec_gss_krb5(E) auth_rpcgss(E)
+nfsv4(E) dns_resolver(E) rpadlpar_io(EX) rpaphp(EX) xsk_diag(E) tcp_diag(E) udp_diag(E) raw_diag(E) inet_diag(E) unix_diag(E) af_packet_diag(E) netlink_diag(E) nfsv3(E) nfs_acl(E) nfs(E) lockd(E) grace(E) sunrpc(E) fscache(E) netfs(E) af_packet(E) rfkill(E) bonding(E) tls(E) ibmveth(EX) crct10dif_vpmsum(E) rtc_generic(E) drm(E) drm_panel_orientation_quirks(E) fuse(E) configfs(E) backlight(E) ip_tables(E) x_tables(E) dm_service_time(E) sd_mod(E) t10_pi(E)
+[69244.028171][T87504]  ibmvfc(EX) scsi_transport_fc(E) vmx_crypto(E) gf128mul(E) btrfs(E) blake2b_generic(E) libcrc32c(E) crc32c_vpmsum(E) xor(E) raid6_pq(E) dm_mirror(E) dm_region_hash(E) dm_log(E) sg(E) dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E)
+[69244.028307][T87504] Supported: No, Unreleased kernel
+[69244.028385][T87504] CPU: 24 PID: 87504 Comm: drmgr Kdump: loaded Tainted: G            E  X    5.14.21-150400.71.1.bz196362_2-default #1 SLE15-SP4 (unreleased) 0d821077ef4faa8dfaf370efb5fdca1fa35f4e2c
+[69244.028408][T87504] NIP:  000000001fb41050 LR: 000000001fb4104c CTR: 0000000000000000
+[69244.028418][T87504] REGS: c00000000fc33d60 TRAP: 0100   Tainted: G            E  X     (5.14.21-150400.71.1.bz196362_2-default)
+[69244.028429][T87504] MSR:  8000000002981000 <SF,VEC,VSX,ME>  CR: 48800002  XER: 20040020
+[69244.028444][T87504] CFAR: 000000000000011c IRQMASK: 1
+[69244.028444][T87504] GPR00: 0000000000000003 ffffffffffffffff 0000000000000001 00000000000050dc
+[69244.028444][T87504] GPR04: 000000001ffb6100 0000000000000020 0000000000000001 000000001fb09010
+[69244.028444][T87504] GPR08: 0000000020000000 0000000000000000 0000000000000000 0000000000000000
+[69244.028444][T87504] GPR12: 80040000072a40a8 c00000000ff8b680 0000000000000007 0000000000000034
+[69244.028444][T87504] GPR16: 000000001fbf6e94 000000001fbf6d84 000000001fbd1db0 000000001fb3f008
+[69244.028444][T87504] GPR20: 000000001fb41018 ffffffffffffffff 000000000000017f fffffffffffff68f
+[69244.028444][T87504] GPR24: 000000001fb18fe8 000000001fb3e000 000000001fb1adc0 000000001fb1cf40
+[69244.028444][T87504] GPR28: 000000001fb26000 000000001fb460f0 000000001fb17f18 000000001fb17000
+[69244.028534][T87504] NIP [000000001fb41050] 0x1fb41050
+[69244.028543][T87504] LR [000000001fb4104c] 0x1fb4104c
+[69244.028549][T87504] Call Trace:
+[69244.028554][T87504] Instruction dump:
+[69244.028561][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+[69244.028575][T87504] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+[69244.028607][T87504] ---[ end trace 3ddec07f638c34a2 ]---
 
-I took a look on further harmonizing, however, it turned out to be not 
-that simple. This is basically the pipeline I use to further cleanup the 
-differences and remove comments if you want to play yourself, just remove 
-stages from the tail to get the intermediate datas (gawk is required for 
---non-decimal-data):
+This happens because MSR[RI] is unset when entering RTAS but there is no
+valid reason to not set it here.
 
-$ git ls-files | grep 'termbits\.h' | xargs grep -h -e '#define' | awk --non-decimal-data '{if (NF < 3) {next}; printf("#define %s\t0x%08x\n", $2, $3)}' | sort | uniq -c | sort | awk '{print $1}' | uniq -c
-     82 1
-     74 2
-     14 3
-     58 4
-     11 5
-     54 6
+RTAS is expected to be called with MSR[RI] as specified in PAPR+ section
+"7.2.1 Machine State":
 
-So only 54 are the same for all archs (non-numeric defines such as EXT[AB] 
-will appear as 0x0 but at least those two seem the same across archs 
-anyway):
-      6 #define B0      0x00000000
-      6 #define B110    0x00000003
-      6 #define B1200   0x00000009
-      6 #define B134    0x00000004
-      6 #define B150    0x00000005
-      6 #define B1800   0x0000000a
-      6 #define B19200  0x0000000e
-      6 #define B200    0x00000006
-      6 #define B2400   0x0000000b
-      6 #define B300    0x00000007
-      6 #define B38400  0x0000000f
-      6 #define B4800   0x0000000c
-      6 #define B50     0x00000001
-      6 #define B600    0x00000008
-      6 #define B75     0x00000002
-      6 #define B9600   0x0000000d
-      6 #define BRKINT  0x00000002
-      6 #define BS0     0x00000000
-      6 #define CMSPAR  0x40000000
-      6 #define CR0     0x00000000
-      6 #define CRTSCTS 0x80000000
-      6 #define CS5     0x00000000
-      6 #define ECHO    0x00000008
-      6 #define EXTA    0x00000000
-      6 #define EXTB    0x00000000
-      6 #define FF0     0x00000000
-      6 #define IBSHIFT 0x00000010
-      6 #define ICRNL   0x00000100
-      6 #define IGNBRK  0x00000001
-      6 #define IGNCR   0x00000080
-      6 #define IGNPAR  0x00000004
-      6 #define INLCR   0x00000040
-      6 #define INPCK   0x00000010
-      6 #define ISTRIP  0x00000020
-      6 #define IXANY   0x00000800
-      6 #define NL0     0x00000000
-      6 #define NL1     0x00000100
-      6 #define OCRNL   0x00000008
-      6 #define OFDEL   0x00000080
-      6 #define OFILL   0x00000040
-      6 #define ONLRET  0x00000020
-      6 #define ONOCR   0x00000010
-      6 #define OPOST   0x00000001
-      6 #define PARMRK  0x00000008
-      6 #define TAB0    0x00000000
-      6 #define TCIFLUSH        0x00000000
-      6 #define TCIOFF  0x00000002
-      6 #define TCIOFLUSH       0x00000002
-      6 #define TCION   0x00000003
-      6 #define TCOFLUSH        0x00000001
-      6 #define TCOOFF  0x00000000
-      6 #define TCOON   0x00000001
-      6 #define TCSANOW 0x00000000
-      6 #define VT0     0x00000000
+ R1–7.2.1–9. If called with MSR[RI] equal to 1, then RTAS must protect
+ its own critical regions from recursion by setting the MSR[RI] bit to
+ 0 when in the critical regions.
 
-Sadly for the others, it just tends to be that one or two are different 
-from the rest.
+Fixing this by reviewing the way MSR is compute before calling RTAS. Now a
+hardcoded value meaning real mode, 32 bits big endian mode and Recoverable
+Interrupt is loaded. In the case MSR[S] is set, it will remain set while
+entering RTAS as only urfid can unset it (thanks Fabiano).
 
+In addition a check is added in do_enter_rtas() to detect calls made with
+MSR[RI] unset, as we are forcing it on later.
 
+This patch has been tested on the following machines:
+Power KVM Guest
+  P8 S822L (host Ubuntu kernel 5.11.0-49-generic)
+PowerVM LPAR
+  P8 9119-MME (FW860.A1)
+  p9 9008-22L (FW950.00)
+  P10 9080-HEX (FW1010.00)
 
+Changes in V3:
+ - Address Michael's comment on the commit's description and some comments
+   in the code. There is no functional change introduced in this version.
+
+Changes in V2:
+ - Change comment in code to indicate NMI (Nick's comment)
+ - Add reference to PAPR+ in the change log (Michael's comment)
+
+Cc: Fabiano Rosas <farosas@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+---
+ arch/powerpc/kernel/entry_64.S | 23 +++++++++++------------
+ arch/powerpc/kernel/rtas.c     |  9 +++++++++
+ 2 files changed, 20 insertions(+), 12 deletions(-)
+
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index 9581906b5ee9..fd77f1300ce2 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -330,22 +330,21 @@ _GLOBAL(enter_rtas)
+ 	clrldi	r4,r4,2			/* convert to realmode address */
+        	mtlr	r4
+ 
+-	li	r0,0
+-	ori	r0,r0,MSR_EE|MSR_SE|MSR_BE|MSR_RI
+-	andc	r0,r6,r0
+-	
+-        li      r9,1
+-        rldicr  r9,r9,MSR_SF_LG,(63-MSR_SF_LG)
+-	ori	r9,r9,MSR_IR|MSR_DR|MSR_FE0|MSR_FE1|MSR_FP|MSR_RI|MSR_LE
+-	andc	r6,r0,r9
+-
+ __enter_rtas:
+-	sync				/* disable interrupts so SRR0/1 */
+-	mtmsrd	r0			/* don't get trashed */
+-
+ 	LOAD_REG_ADDR(r4, rtas)
+ 	ld	r5,RTASENTRY(r4)	/* get the rtas->entry value */
+ 	ld	r4,RTASBASE(r4)		/* get the rtas->base value */
++
++	/* RTAS runs in 32bits big endian real mode but let MSR[RI] on as
++	 * we may hit NMI (SRESET or MCE). RTAS should disable RI in its
++	 * critical regions (as specified in PAPR+ section 7.2.1).
++	 * MSR[S] is not impacted by RFI_TO_KERNEL (only urfid can unset
++	 * it). So if MSR[S] is set, it will remain when entering RTAS.
++	 */
++	LOAD_REG_IMMEDIATE(r6, MSR_ME|MSR_RI)
++
++	li      r0,0
++	mtmsrd  r0,1                    /* disable RI before using SRR0/1 */
+ 	
+ 	mtspr	SPRN_SRR0,r5
+ 	mtspr	SPRN_SRR1,r6
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index 1f42aabbbab3..6bc89d9ccf63 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -49,6 +49,15 @@ void enter_rtas(unsigned long);
+ 
+ static inline void do_enter_rtas(unsigned long args)
+ {
++	unsigned long msr;
++
++	/*
++	 * Make sure MSR[RI] is currently enabled as it will be forced later
++	 * in enter_rtas.
++	 */
++	msr = mfmsr();
++	BUG_ON(!(msr & MSR_RI));
++
+ 	enter_rtas(args);
+ 
+ 	srr_regs_clobbered(); /* rtas uses SRRs, invalidate */
 -- 
- i.
+2.36.0
 
---8323329-777826785-1651653220=:1623--
