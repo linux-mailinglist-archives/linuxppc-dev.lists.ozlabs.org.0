@@ -1,42 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6AF51A1EA
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 16:12:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F6751A229
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 16:27:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ktf0L6yZtz3brQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 00:12:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtfKp1ng6z3c7g
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 00:27:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
+ smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33;
+ helo=metis.ext.pengutronix.de; envelope-from=mkl@pengutronix.de;
  receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4Ktdzv0yL8z3bcy
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 00:11:37 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 244E8ToY024218;
- Wed, 4 May 2022 09:08:29 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 244E8Txd024217;
- Wed, 4 May 2022 09:08:29 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Wed, 4 May 2022 09:08:29 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/vdso: Fix incorrect CFI in gettimeofday.S
-Message-ID: <20220504140829.GY25951@gate.crashing.org>
-References: <20220502125010.1319370-1-mpe@ellerman.id.au>
- <20220502142705.GU25951@gate.crashing.org>
- <878rrhv5x1.fsf@mpe.ellerman.id.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+X-Greylist: delayed 1043 seconds by postgrey-1.36 at boromir;
+ Thu, 05 May 2022 00:26:47 AEST
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
+ [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtfKM07jLz3bdC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 00:26:45 +1000 (AEST)
+Received: from gallifrey.ext.pengutronix.de
+ ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
+ by metis.ext.pengutronix.de with esmtps
+ (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.92)
+ (envelope-from <mkl@pengutronix.de>)
+ id 1nmFgM-0000h2-LG; Wed, 04 May 2022 16:08:46 +0200
+Received: from pengutronix.de (unknown
+ [IPv6:2a00:20:7019:a9b6:6aae:fc9e:d3ef:96db])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (Client did not present a certificate)
+ (Authenticated sender: mkl-all@blackshift.org)
+ by smtp.blackshift.org (Postfix) with ESMTPSA id 347A975CE1;
+ Wed,  4 May 2022 14:08:34 +0000 (UTC)
+Date: Wed, 4 May 2022 16:08:33 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v1 2/4] powerpc/mpc5xxx: Switch
+ mpc5xxx_get_bus_frequency() to use fwnode
+Message-ID: <20220504140833.b2itvapuqlssm74k@pengutronix.de>
+References: <20220504134449.64473-1-andriy.shevchenko@linux.intel.com>
+ <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="vz3cm7jicnfhqyjt"
 Content-Disposition: inline
-In-Reply-To: <878rrhv5x1.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.4.2.3i
+In-Reply-To: <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
+ SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,46 +65,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, amodra@gmail.com
+Cc: linux-ide@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Jiri Slaby <jirislaby@kernel.org>,
+ Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+ linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Anatolij Gustschin <agust@denx.de>, Wolfgang Grandegger <wg@grandegger.com>,
+ linux-can@vger.kernel.org, Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ Sergey Shtylyov <s.shtylyov@omp.ru>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
+ Mark Brown <broonie@kernel.org>, netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
 
-On Wed, May 04, 2022 at 10:27:54PM +1000, Michael Ellerman wrote:
-> Segher Boessenkool <segher@kernel.crashing.org> writes:
-> > Note that r1 is not the same as the CFA: r1 is the stack pointer, while
-> > the CFA is a DWARF concept.  Often (but not always) they point to the
-> > same thing, for us.  "When we change the stack pointer we should change
-> > the DWARF CFA as well"?
->  
-> Thanks, I reworded it a bit:
-> 
->     DWARF has a concept called the CFA (Canonical Frame Address), which on
->     powerpc is calculated as an offset from the stack pointer (r1). That
->     means when the stack pointer is changed there must be a corresponding
->     CFI directive to update the calculation of the CFA.
+--vz3cm7jicnfhqyjt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The CFA only uses r1 if it does not have a separate frame pointer, in
-which case that is used.  "... is usually calculated ..." maybe?  A bit
-of handwaving is better than giving the impression you are stating
-something exact, if you don't.
+On 04.05.2022 16:44:47, Andy Shevchenko wrote:
+> Switch mpc5xxx_get_bus_frequency() to use fwnode in order to help
+> cleaning up other parts of the kernel from OF specific code.
+>=20
+> No functional change intended.
+>=20
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  arch/powerpc/include/asm/mpc5xxx.h            |  9 +++-
+>  arch/powerpc/platforms/52xx/mpc52xx_gpt.c     |  2 +-
+>  arch/powerpc/sysdev/mpc5xxx_clocks.c          | 41 ++++++++++---------
+>  drivers/ata/pata_mpc52xx.c                    |  2 +-
+>  drivers/i2c/busses/i2c-mpc.c                  |  7 ++--
+>  drivers/net/can/mscan/mpc5xxx_can.c           |  2 +-
+>  drivers/net/ethernet/freescale/fec_mpc52xx.c  |  2 +-
+>  .../net/ethernet/freescale/fec_mpc52xx_phy.c  |  3 +-
+>  .../net/ethernet/freescale/fs_enet/mii-fec.c  |  4 +-
+>  drivers/spi/spi-mpc52xx.c                     |  2 +-
+>  drivers/tty/serial/mpc52xx_uart.c             |  4 +-
+>  11 files changed, 44 insertions(+), 34 deletions(-)
 
-> >>   2) If a function changes LR or any non-volatile register, the save
-> >>      location for those regs must be given. The cfi can be at any
-> >>      instruction after the saves up to the point that the reg is
-> >>      changed. (Exception: LR save should be described before a bl.)
-> >
-> > That isn't an exception?  bl changes the current LR after all :-)
->  
-> As Alan mentioned the exception is the the CFI has to appear before the
-> bl not after, I noted that in the change log.
+Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for mscan/mpc5xxx_can
 
-You have a bit of freedom where you place your CFI statements, but you
-cannot place them too late (or too early).  This is true for all CFI
-statements.  I suppose the final consequence of that can be a bit
-surprising here :-)
+regards,
+Marc
 
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde           |
+Embedded Linux                   | https://www.pengutronix.de  |
+Vertretung West/Dortmund         | Phone: +49-231-2826-924     |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-5555 |
 
-Segher
+--vz3cm7jicnfhqyjt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEBsvAIBsPu6mG7thcrX5LkNig010FAmJyiN4ACgkQrX5LkNig
+010OIAf8CBk7q4SlnkqYRtXPIROz3oNFhMidCM6GZg2jjdclJJWBQBKZcqVIqVOE
+d8lOgUvYv1HV6YvQfoaTflFSAabkzzrzJHOzvrPjpQN8m/g/jQWrtgnLsnXR6DQ8
++IlS6l/ePviEK1b1wBflbpnXNDvqyuZ1JI6raS33OtF23UfR9i3okaA7vtWhBH2p
+w/pqkLeh9WHNBneeJaf9q5ag2Z99PothsCek8lEUrwJYaw9/bn0is0JWC8Zjze4C
+skOkxpOERxfSedvx4WSFuU7U+CNYXk4/BkWQa/1dcLbzFuW/WdgAJDKFOtWTOI9C
+od+uCAGiK4UNsWkGX3PG24Mrvry9iw==
+=o7Bz
+-----END PGP SIGNATURE-----
+
+--vz3cm7jicnfhqyjt--
