@@ -1,66 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D2851B0A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 23:32:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C459051B1DB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 00:29:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ktqmg1fyDz3byb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 07:32:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kts2G55d5z3c7K
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 08:29:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qix03QWr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iBxsT8U8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=qix03QWr; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ktqm02BdSz2yQ9
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 07:32:00 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=iBxsT8U8; dkim-atps=neutral
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 31F07619E4
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 21:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B84BC385C7
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 21:31:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1651699916;
- bh=zFvzT8pCm+1ful8W/hZ4LOb35c/AZPHiTAR5f5uq/tc=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=qix03QWrW/M9Q01/CbNXabQPqALS0k2BKt6VxlOe1jiP/AezUZVDCvh4yTzGSZ1VX
- f3sd0OANEUGS9y8e49LguWWCyW4IIqICzTbIRENSe7H562JU9DKsizSMJGj0D1qgE0
- e3sbpXCVZ0YHdBu7pjY81yf79hjsGUtLgflShVgutaLE+7z6GG3nTPnUVFOGctNypM
- uPNVpy9CFsHRw2h5q6RwUUMPGQDWh/B3pMSzlWBDN62C8KEDNkvEiyYMjP44xLdr3z
- lxTJ/50ArU+B8Ay1W19vAfqkOvhBHHTgMSpDt0dLDSO9PzH0nQh5Pjqn5G0BCRwXrd
- JEEWLoC1A5IGg==
-Received: by mail-lj1-f172.google.com with SMTP id c15so3300974ljr.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 May 2022 14:31:56 -0700 (PDT)
-X-Gm-Message-State: AOAM532S7rBCS1H9N6ctxVoBEZoIClo62xatJxXS4X7ZvZ6ZKvL21LDr
- AWPihXcAf5/IkNSNey6u58GL9eNAI+dP4g4UgUw=
-X-Google-Smtp-Source: ABdhPJxAVZcK+UbsrIHV3UqhufeJ7C2MWsg9y8caQR3XP4mze6wyb/qHpchpXkh4iCCt0pJlSodAlnXDA871Nj1pC0U=
-X-Received: by 2002:adf:e106:0:b0:20a:b31b:213d with SMTP id
- t6-20020adfe106000000b0020ab31b213dmr17558428wrz.219.1651699904306; Wed, 04
- May 2022 14:31:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kts1c2Kpcz2yHX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 08:28:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1651703332; x=1683239332;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=iseNbFUPu4r/NGZXn1J3t8MNxJoP+Y5rD4HFKbxDpxI=;
+ b=iBxsT8U8rJHXcxQ/AL4/Z9gFib7wPHaoM4xOV9pVD+9b8NceoKadaFIA
+ OmbE1FR//0aO/888jpNi0hfMuzHW5in7AoIi5zT69iY3jQ0hIw6lioM8A
+ LNKsPkMu3aiLFP7rxVUGXbLBnRd6Z2zfdhwmRr9PZXPz8eC6FKMUtS9DM
+ V79v4Ibxrf831gQkiPtvUL+j2JI6BOebzV+M977mt9m+tBIlmkLhEYO5e
+ 6cadWSu6JTIlV4jQG0U5HgQ6Hq6U50mlFiUAhbsLLAhfHVWP341EvxSYz
+ z9LMxJYM64hKDuQaQSkEYvnu/FQorSRB/BsMzmW6SAOXxOGZMMTrpMmhj A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10337"; a="265511501"
+X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; d="scan'208";a="265511501"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2022 15:27:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; d="scan'208";a="517226448"
+Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
+ by orsmga003.jf.intel.com with ESMTP; 04 May 2022 15:27:41 -0700
+Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
+ (envelope-from <lkp@intel.com>) id 1nmNTA-000Bqd-Na;
+ Wed, 04 May 2022 22:27:40 +0000
+Date: Thu, 5 May 2022 06:27:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Sergey Shtylyov <s.shtylyov@omp.ru>,
+ Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+ Wolfram Sang <wsa-dev@sang-engineering.com>,
+ Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ Marc Kleine-Budde <mkl@pengutronix.de>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-can@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: Re: [PATCH v1 2/4] powerpc/mpc5xxx: Switch
+ mpc5xxx_get_bus_frequency() to use fwnode
+Message-ID: <202205050659.ppSbPqfb-lkp@intel.com>
+References: <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-References: <20220429135108.2781579-2-schnelle@linux.ibm.com>
- <20220504210840.GA469916@bhelgaas>
-In-Reply-To: <20220504210840.GA469916@bhelgaas>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Wed, 4 May 2022 23:31:28 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a0sJgMSpZB_Butx2gO0hapYZy-Dm_QH-hG5rOaq_ZgsXg@mail.gmail.com>
-Message-ID: <CAK8P3a0sJgMSpZB_Butx2gO0hapYZy-Dm_QH-hG5rOaq_ZgsXg@mail.gmail.com>
-Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select it
- as necessary
-To: Bjorn Helgaas <helgaas@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,79 +81,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>,
- "open list:IA64 \(Itanium\) PLATFORM" <linux-ia64@vger.kernel.org>,
- "open list:SUPERH" <linux-sh@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- Will Deacon <will@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-pci <linux-pci@vger.kernel.org>, Matt Turner <mattst88@gmail.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- Niklas Schnelle <schnelle@linux.ibm.com>,
- "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- Richard Henderson <rth@twiddle.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
- Borislav Petkov <bp@alien8.de>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: Paolo Abeni <pabeni@redhat.com>, kbuild-all@lists.01.org,
+ netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Mark Brown <broonie@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Anatolij Gustschin <agust@denx.de>, Wolfgang Grandegger <wg@grandegger.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 4, 2022 at 11:08 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
->
-> On Fri, Apr 29, 2022 at 03:49:59PM +0200, Niklas Schnelle wrote:
-> > We introduce a new HAS_IOPORT Kconfig option to indicate support for
-> > I/O Port access. In a future patch HAS_IOPORT=n will disable compilation
-> > of the I/O accessor functions inb()/outb() and friends on architectures
-> > which can not meaningfully support legacy I/O spaces such as s390 or
-> > where such support is optional.
->
-> So you plan to drop inb()/outb() on architectures where I/O port space
-> is optional?  So even platforms that have I/O port space may not be
-> able to use it?
->
-> This feels like a lot of work where the main benefit is to keep
-> Kconfig from offering drivers that aren't of interest on s390.
->
-> Granted, there may be issues where inb()/outb() does the wrong thing
-> such as dereferencing null pointers when I/O port space isn't
-> implemented.  I think that's a defect in inb()/outb() and could be
-> fixed there.
+Hi Andy,
 
-The current implementation in asm-generic/io.h implements inb()/outb()
-using readb()/writeb() with a fixed architecture specific offset.
+I love your patch! Perhaps something to improve:
 
-There are three possible things that can happen here:
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on wsa/i2c/for-next mkl-can-next/testing broonie-spi/for-next tty/tty-testing linus/master v5.18-rc5 next-20220504]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-a) there is a host bridge driver that maps its I/O ports to this window,
-    and everything works
-b) the address range is reserved and accessible but no host bridge
-   driver has mapped its registers there, so an access causes a
-   page fault
-c) the architecture does not define an offset, and accessing low I/O
-    ports ends up as a NULL pointer dereference
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/powerpc-52xx-Remove-dead-code-i-e-mpc52xx_get_xtal_freq/20220504-215701
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-pcm030_defconfig (https://download.01.org/0day-ci/archive/20220505/202205050659.ppSbPqfb-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/7bff10cee4f441153a56de337715dd4f40c55521
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Andy-Shevchenko/powerpc-52xx-Remove-dead-code-i-e-mpc52xx_get_xtal_freq/20220504-215701
+        git checkout 7bff10cee4f441153a56de337715dd4f40c55521
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/i2c/busses/
 
-The main goal is to avoid c), which is what happens on s390, but
-can also happen elsewhere. Catching b) would be nice as well,
-but is much harder to do from generic code as you'd need an
-architecture specific inline asm statement to insert a ex_table
-fixup, or a runtime conditional on each access.
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-         Arnd
+All warnings (new ones prefixed by >>):
+
+   drivers/i2c/busses/i2c-mpc.c: In function 'mpc_i2c_get_fdr_52xx':
+   drivers/i2c/busses/i2c-mpc.c:242:30: error: expected identifier or '(' before '=' token
+     242 |         struct fwnode_handle = of_fwnode_handle(node);
+         |                              ^
+   In file included from include/linux/of_address.h:6,
+                    from drivers/i2c/busses/i2c-mpc.c:14:
+   include/linux/of.h:176:10: error: expected statement before ')' token
+     176 |         })
+         |          ^
+   drivers/i2c/busses/i2c-mpc.c:242:32: note: in expansion of macro 'of_fwnode_handle'
+     242 |         struct fwnode_handle = of_fwnode_handle(node);
+         |                                ^~~~~~~~~~~~~~~~
+>> drivers/i2c/busses/i2c-mpc.c:243:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+     243 |         const struct mpc_i2c_divider *div = NULL;
+         |         ^~~~~
+   drivers/i2c/busses/i2c-mpc.c:250:62: error: 'fwnode' undeclared (first use in this function); did you mean 'node'?
+     250 |                 *real_clk = mpc5xxx_fwnode_get_bus_frequency(fwnode) / 2048;
+         |                                                              ^~~~~~
+         |                                                              node
+   drivers/i2c/busses/i2c-mpc.c:250:62: note: each undeclared identifier is reported only once for each function it appears in
+
+
+vim +243 drivers/i2c/busses/i2c-mpc.c
+
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  238  
+0b255e927d47b55 Bill Pemberton      2012-11-27  239  static int mpc_i2c_get_fdr_52xx(struct device_node *node, u32 clock,
+38a99bd7730efdd Arseny Solokha      2018-01-10  240  					  u32 *real_clk)
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  241  {
+7bff10cee4f4411 Andy Shevchenko     2022-05-04  242  	struct fwnode_handle = of_fwnode_handle(node);
+1904b03430ade1c Wolfgang Grandegger 2009-04-09 @243  	const struct mpc_i2c_divider *div = NULL;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  244  	unsigned int pvr = mfspr(SPRN_PVR);
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  245  	u32 divider;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  246  	int i;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  247  
+0c2daaafcdec726 Albrecht Dreﬂ       2010-02-17  248  	if (clock == MPC_I2C_CLOCK_LEGACY) {
+0c2daaafcdec726 Albrecht Dreﬂ       2010-02-17  249  		/* see below - default fdr = 0x3f -> div = 2048 */
+7bff10cee4f4411 Andy Shevchenko     2022-05-04  250  		*real_clk = mpc5xxx_fwnode_get_bus_frequency(fwnode) / 2048;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  251  		return -EINVAL;
+0c2daaafcdec726 Albrecht Dreﬂ       2010-02-17  252  	}
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  253  
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  254  	/* Determine divider value */
+7bff10cee4f4411 Andy Shevchenko     2022-05-04  255  	divider = mpc5xxx_fwnode_get_bus_frequency(fwnode) / clock;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  256  
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  257  	/*
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  258  	 * We want to choose an FDR/DFSR that generates an I2C bus speed that
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  259  	 * is equal to or lower than the requested speed.
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  260  	 */
+1904b03430ade1c Wolfgang Grandegger 2009-04-09  261  	for (i = 0; i < ARRAY_SIZE(mpc_i2c_dividers_52xx); i++) {
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  262  		div = &mpc_i2c_dividers_52xx[i];
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  263  		/* Old MPC5200 rev A CPUs do not support the high bits */
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  264  		if (div->fdr & 0xc0 && pvr == 0x80822011)
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  265  			continue;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  266  		if (div->divider >= divider)
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  267  			break;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  268  	}
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  269  
+7bff10cee4f4411 Andy Shevchenko     2022-05-04  270  	*real_clk = mpc5xxx_fwnode_get_bus_frequency(fwnode) / div->divider;
+0c2daaafcdec726 Albrecht Dreﬂ       2010-02-17  271  	return (int)div->fdr;
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  272  }
+f2bd5efe7238149 Wolfgang Grandegger 2009-04-07  273  
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
