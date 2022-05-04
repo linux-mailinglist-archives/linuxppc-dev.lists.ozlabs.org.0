@@ -1,40 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 253B851B062
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 23:22:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE72B51AF37
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 22:33:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtqXv6zl5z3byb
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 07:22:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtpSh5KK1z3bxk
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 06:33:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OPgq40SN;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=elvis.franken.de (client-ip=193.175.24.41; helo=elvis.franken.de;
- envelope-from=tsbogend@alpha.franken.de; receiver=<UNKNOWN>)
-X-Greylist: delayed 2930 seconds by postgrey-1.36 at boromir;
- Thu, 05 May 2022 07:21:58 AEST
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KtqXQ3CLFz3bZB
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 07:21:58 +1000 (AEST)
-Received: from uucp (helo=alpha)
- by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
- id 1nmLg4-0003MI-01; Wed, 04 May 2022 22:32:52 +0200
-Received: by alpha.franken.de (Postfix, from userid 1000)
- id B9C09C01D0; Wed,  4 May 2022 22:32:24 +0200 (CEST)
-Date: Wed, 4 May 2022 22:32:24 +0200
-From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 07/30] mips: ip22: Reword PANICED to PANICKED and remove
- useless header
-Message-ID: <20220504203224.GA23475@alpha.franken.de>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-8-gpiccoli@igalia.com>
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=wsa@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=OPgq40SN; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtpS42WPVz2ymb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 06:33:08 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 731EC617B5;
+ Wed,  4 May 2022 20:33:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BAAC385A5;
+ Wed,  4 May 2022 20:33:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651696386;
+ bh=vXTYk+3aszdO2rzyIDTdT5z/Wbvp6+A1bvIq0k3UvbY=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=OPgq40SNq7gJaguRYkkjMVj9iayuns37TLq7WTtexVmYo96BawSe0bOR4K/D2W4FJ
+ 42rN29mW3xrdhxkvu7lWr7VsGAIamcDlPWsSKqOnvCAAEGsOZSwPm2QUfFxc3OVICk
+ MHADMwhuww1L+AX5R+xcXsNXSlOhZ/Ql6Svj83FYkgylGkBHsQZyLx8SsL1hTOcXKL
+ rn9h2WZzmZctmPgJT1E6bwcdPStMKaWknN8GS1U+Um4XIT6wjYjAEOhLWfA6Ovwrl+
+ C1co2ZH00Lzg1gXRPOskNjAgyRINLwlHU+ml/UYW8ArR9WWCcnlx0o32XwDk2GZI5k
+ Jw4G+FQbFQRHw==
+Date: Wed, 4 May 2022 22:32:56 +0200
+From: Wolfram Sang <wsa@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] i2c: powermac: Prepare cleanup of powerpc's asm/prom.h
+Message-ID: <YnLi+E+UsgzPUxLJ@kunai>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-i2c@vger.kernel.org
+References: <f1785f7b2b9f79bb41525e3b5c3e06894852414f.1648833430.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="6Fhrsg5OnubBpYb0"
 Content-Disposition: inline
-In-Reply-To: <20220427224924.592546-8-gpiccoli@igalia.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <f1785f7b2b9f79bb41525e3b5c3e06894852414f.1648833430.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,46 +67,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- linux-xtensa@linux-xtensa.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
- linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
- john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, pmladek@suse.com,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, coresight@lists.linaro.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org,
- linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
- linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
- jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- kernel@gpiccoli.net, kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
- mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 27, 2022 at 07:49:01PM -0300, Guilherme G. Piccoli wrote:
-> Many other place in the kernel prefer the latter, so let's keep
-> it consistent in MIPS code as well. Also, removes a useless header.
-> 
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-> ---
->  arch/mips/sgi-ip22/ip22-reset.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
 
-applied to mips-next.
+--6Fhrsg5OnubBpYb0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thomas.
+On Sat, Apr 02, 2022 at 12:06:59PM +0200, Christophe Leroy wrote:
+> powerpc's asm/prom.h brings some headers that it doesn't
+> need itself.
+>=20
+> In order to clean it up, first add missing headers in
+> users of asm/prom.h
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+Applied to for-next, thanks!
+
+
+--6Fhrsg5OnubBpYb0
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmJy4vgACgkQFA3kzBSg
+KbaXpA//d/536N+cHqZzpvwBcWQbwtNpU/Cq/yyV3bsMD4Dtlo6DBSiMr8992OBz
+O9lO9ovmg8cVSl5h3zgvwErKd1wLi0YEYkUUmGsaqw+YZ0ReGhEoyZCMVLz2dnTk
+oNQ30UiLFdXxi2SbGEPXlMB7mJNpMFioCc/8xPSE2y4deuk3+gWUEoHmHmq9hP1Y
+Y+UXfFOIxu2bkJLmOmDvMWoWS/RhzdfHt8Cq8LMOFnsDzhGMvO1UqcLEu8B+rf+l
+sWddki6CLeMIHufhGcqDWBIu2oQNfeTPU8+fAaxh/Lu3QBzxoSnQEh3Px0pc3V6C
+GAFFu5Les9nYapcXLdTMe3dRajKlHIPBz8HbQ1nlcS9VPoOa/obAmP8J+6eAPseV
+py0rxQXjNjAiFrxStkp5fODk7b7FSI3/JvVBpZGTxbSdsDpFM22Tf23PmStdKxST
+gmwOXstxkJnv99xmbKmX5ih8hhM/0kjlFTE4MDCo33O2bI2425siWo+VfSpc3NgJ
+3i/q0RzwlWJqknZuyNjwYnLZZC57Kh738LDaM56WWl4KHSebsFU3Zihxgj5uJhmC
+zYNwJYe3fgpWsXDSiIgkeTkJ1oKEeVWG9n3sXNXVhNVO04exzBHZcOxnfIUbWOso
+W2Js0uf2MzcnqHk4hcbj5TCr37i2FsRsFToG3bA03mHNgJGCfBo=
+=mCzu
+-----END PGP SIGNATURE-----
+
+--6Fhrsg5OnubBpYb0--
