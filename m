@@ -2,81 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F185197E6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 09:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE8F519809
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 09:23:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtShG6wDWz3bgQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 17:12:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtSwc2gvwz3bf9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 17:23:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=BbmFkAbU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LuTBefda;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::42d;
- helo=mail-pf1-x42d.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=ilpo.jarvinen@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
- header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=BbmFkAbU; dkim-atps=neutral
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com
- [IPv6:2607:f8b0:4864:20::42d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=LuTBefda; dkim-atps=neutral
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KtSgX21m9z2xCB
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 17:11:49 +1000 (AEST)
-Received: by mail-pf1-x42d.google.com with SMTP id z16so474330pfh.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 May 2022 00:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:in-reply-to:content-transfer-encoding;
- bh=52Ofjcc0wakVR7XsYhREwkaBOLIZ5tcP8RWAoexv5a8=;
- b=BbmFkAbU/EHznY10Yg44fH8Na5TMQzvAcX6Brnn7nJmxn/qWJaH9IKjRD4vrdSdu44
- obmj9j1ShPn8jhSRYTBSEE6Wfm4kgL4K6Uaxd22BLDOVrnRUOVgmbzdsuhVi0Br+NMIi
- BvXrfHu/GU3W1GRQbEgIMBEVsSFAKiw31duI+piU7uKb9N9tIaQjBAI/xnJWHh/R1Z5J
- XBDr+3DAX2p9hw9xi9F7arJ2s/GqUCAqfiAxdw5gOQUZZadjSw9f1aOcOy4oYcpS6beH
- TZ73azXsfLtFhry17RYUuX61Y9tCRH0ylF0EbNyb0+tn0uiJ38OWm9+Q5ZgUEQEIqm6t
- zfLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=52Ofjcc0wakVR7XsYhREwkaBOLIZ5tcP8RWAoexv5a8=;
- b=2Kopc/xMye9h+0fKLAnp0onuz5/FZmjAtHoxAUg/9QTObTvdN1REu8vwN6ZOM4cZXt
- rVTBoBzIptO5pvr4hUSB8h3QuWimJWD+9bB/vKQT0EvolEg+oqHzRoE/B+ScOgzZ/t04
- SFc2qWfhZsXkayzfEq0fyKvisDKZVptZ5IE5K0hmU5PzXn/wYzPeHrwN0l3KACCTbF85
- u6QfiPIZYjfthJv1u/m5tltPISY4DClZrv8VxPvcWgN2dnXmrFOhAcvemoPo6qu7Qkf+
- B1b48HRqdkHfPQTvPzD4H+ZQPmK2fq+vzFkM4acllTL448HA+CnwVxic+CuyHXs9pOae
- X+/g==
-X-Gm-Message-State: AOAM532AOA2h0/GMsBokrBtwL7mfG7xKST0tehj/fmeGda5XLnRGyrwl
- u3BJPRJqhj6XaFMKjnKW6IdQrA==
-X-Google-Smtp-Source: ABdhPJwWxy/aMf3pnDbi+ni4M1fRwbvKXbt/my2mj97f0S9HdB09RGkQOWXNEOxkWS+D9xaiBGmplA==
-X-Received: by 2002:aa7:962e:0:b0:50d:5ed8:aa23 with SMTP id
- r14-20020aa7962e000000b0050d5ed8aa23mr19419109pfg.43.1651648304936; 
- Wed, 04 May 2022 00:11:44 -0700 (PDT)
-Received: from [10.61.2.177] (110-175-254-242.static.tpgi.com.au.
- [110.175.254.242]) by smtp.gmail.com with ESMTPSA id
- e9-20020a635449000000b003c14af505edsm11471085pgm.5.2022.05.04.00.11.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 May 2022 00:11:43 -0700 (PDT)
-Message-ID: <5cb86579-5e75-ac46-8f76-fac9ac405c47@ozlabs.ru>
-Date: Wed, 4 May 2022 17:11:37 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtSvY2tGhz3bcG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 17:22:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1651648937; x=1683184937;
+ h=date:from:to:cc:subject:message-id:mime-version;
+ bh=fby6jJV8PoqgaAqdPBGy+CPeZla9rt7IIF3wFX7961o=;
+ b=LuTBefdaQT6Shrzik+7JSciSIhzjzjtsZRDilg8YMo6m8Zo4c0J/SW6+
+ dMBlaGn/2HAaTBdWtOp0htHYoEwh4ilf//Gi57yD26JYfNkv5wG8gIl6O
+ FGtUGESwrXfyR5pRbz7O+KtKafMBj2Ih4zP56pwMPmNmuBGU3BgyCT+hW
+ dZZcsxCio2InjmWh4O1uavS38g53eSZVH8e8Doi8NMTHIUrbZRYEiByJZ
+ nxWDA9FFgHaTeudSog06etxa+xv3vDSPQ+6s+uk138eEdcXAixSFfbh7O
+ 7opQg771kVNpTUzXwHJVo2sGOikvIhAiD/lR+O+vqltEnEDNNz95EnIMI w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10336"; a="330674520"
+X-IronPort-AV: E=Sophos;i="5.91,197,1647327600"; d="scan'208";a="330674520"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2022 00:21:13 -0700
+X-IronPort-AV: E=Sophos;i="5.91,197,1647327600"; d="scan'208";a="693450272"
+Received: from unknown (HELO ijarvine-MOBL2) ([10.251.218.195])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2022 00:21:06 -0700
+Date: Wed, 4 May 2022 10:20:46 +0300 (EEST)
+From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Greg KH <gregkh@linuxfoundation.org>, 
+ linux-serial <linux-serial@vger.kernel.org>
+Subject: [PATCH 1/1] termbits: Convert octal defines to hex
+Message-ID: <2c8c96f-a12f-aadc-18ac-34c1d371929c@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101
- Thunderbird/100.0
-Subject: Re: [PATCH kernel] powerpc/llvm/lto: Allow LLVM LTO builds
-Content-Language: en-US
-To: Nick Desaulniers <ndesaulniers@google.com>
-References: <20220429064547.2334280-1-aik@ozlabs.ru>
- <CAKwvOdmUMhqhQhDCpWjMNiQQPvwOJB9MbUkF3RR0BL+H+DagmA@mail.gmail.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <CAKwvOdmUMhqhQhDCpWjMNiQQPvwOJB9MbUkF3RR0BL+H+DagmA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="8323329-1991360190-1651648872=:1623"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,291 +63,1235 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: llvm@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
- Nathan Chancellor <nathan@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>,
- Sami Tolvanen <samitolvanen@google.com>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Arnd Bergmann <arnd@arndb.de>, linux-parisc@vger.kernel.org,
+ linux-api@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linux-alpha@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Matt Turner <mattst88@gmail.com>,
+ Jiri Slaby <jirislaby@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323329-1991360190-1651648872=:1623
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
 
-On 5/4/22 07:21, Nick Desaulniers wrote:
-> On Thu, Apr 28, 2022 at 11:46 PM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
->>
->> This enables LTO_CLANG builds on POWER with the upstream version of
->> LLVM.
->>
->> LTO optimizes the output vmlinux binary and this may affect the FTP
->> alternative section if alt branches use "bc" (Branch Conditional) which
->> is limited by 16 bit offsets. This shows up in errors like:
->>
->> ld.lld: error: InputSection too large for range extension thunk vmlinux.o:(__ftr_alt_97+0xF0)
->>
->> This works around the issue by replacing "bc" in FTR_SECTION_ELSE with
->> "b" which allows 26 bit offsets.
->>
->> This catches the problem instructions in vmlinux.o before it LTO'ed:
->>
->> $ objdump -d -M raw -j __ftr_alt_97 vmlinux.o | egrep '\S+\s*\<bc\>'
->>    30:   00 00 82 40     bc      4,eq,30 <__ftr_alt_97+0x30>
->>    f0:   00 00 82 40     bc      4,eq,f0 <__ftr_alt_97+0xf0>
->>
->> This allows LTO builds for ppc64le_defconfig plus LTO options.
->> Note that DYNAMIC_FTRACE/FUNCTION_TRACER is not supported by LTO builds
->> but this is not POWERPC-specific.
-> 
-> $ ARCH=powerpc make LLVM=1 -j72 ppc64le_defconfig
-> $ ARCH=powerpc make LLVM=1 -j72 menuconfig
-> <disable FTRACE, enable LTO_CLANG_THIN>
-> $ ARCH=powerpc make LLVM=1 -j72
-> ...
->    VDSO64L arch/powerpc/kernel/vdso/vdso64.so.dbg
-> /usr/bin/powerpc64le-linux-gnu-ld:
-> /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: error
-> loading plugin:
-> /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: cannot open
-> shared object file: No such file or directory
-> clang-15: error: linker command failed with exit code 1 (use -v to see
-> invocation)
-> make[1]: *** [arch/powerpc/kernel/vdso/Makefile:67:
-> arch/powerpc/kernel/vdso/vdso64.so.dbg] Error 1
-> 
-> Looks like LLD isn't being invoked correctly to link the vdso.
-> Probably need to revisit
-> https://lore.kernel.org/lkml/20200901222523.1941988-1-ndesaulniers@google.com/
-> 
-> How were you working around this issue? Perhaps you built clang to
-> default to LLD? (there's a cmake option for that)
+Many archs have termbits.h as octal numbers. It makes hard for humans
+to parse the magnitude of large numbers correctly and to compare with
+hex ones of the same define.
 
+Convert octal values to hex.
 
-I was not.
+First step is an automated conversion with:
 
-Just did clean build like this:
+for i in $(git ls-files | grep 'termbits\.h'); do
+	awk --non-decimal-data '/^#define\s+[A-Z][A-Z0-9]*\s+0[0-9]/ {
+		l=int(((length($3) - 1) * 3 + 3) / 4);
+		repl = sprintf("0x%0" l "x", $3);
+		print gensub(/[^[:blank:]]+/, repl, 3);
+		next} {print}' $i > $i~;
+	mv $i~ $i;
+done
 
-mkdir ~/pbuild/llvm/llvm-lto-latest-cleanbuild
+On top of that, some manual processing on alignment and number of zeros.
+In addition, small tweaks to formatting of a few comments on the same 
+lines.
 
-cd ~/pbuild/llvm/llvm-lto-latest-cleanbuild
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
 
-CC='clang' CXX='clang++' cmake -G Ninja 
--DLLVM_ENABLE_PROJECTS="clang;lld" -DLLVM_TARGETS_TO_BUILD=PowerPC 
-~/p/llvm/llvm-latest/llvm/ -DLLVM_ENABLE_LTO=ON   -DLLVM_ENABLE_LLD=ON 
--DLLVM_BINUTILS_INCDIR=/usr/include -DCMAKE_BUILD_TYPE=Release
+I prefer this to go in though Greg's tty tree.
 
-ninja -j 50
+ arch/alpha/include/uapi/asm/termbits.h   | 202 ++++++++++-----------
+ arch/mips/include/uapi/asm/termbits.h    | 222 +++++++++++------------
+ arch/parisc/include/uapi/asm/termbits.h  | 220 +++++++++++-----------
+ arch/powerpc/include/uapi/asm/termbits.h | 202 ++++++++++-----------
+ include/uapi/asm-generic/termbits.h      | 220 +++++++++++-----------
+ 5 files changed, 533 insertions(+), 533 deletions(-)
 
-It builds fine:
+diff --git a/arch/alpha/include/uapi/asm/termbits.h b/arch/alpha/include/uapi/asm/termbits.h
+index 4575ba34a0ea..30dc7ff777b8 100644
+--- a/arch/alpha/include/uapi/asm/termbits.h
++++ b/arch/alpha/include/uapi/asm/termbits.h
+@@ -72,57 +72,57 @@ struct ktermios {
+ #define VTIME 17
+ 
+ /* c_iflag bits */
+-#define IGNBRK	0000001
+-#define BRKINT	0000002
+-#define IGNPAR	0000004
+-#define PARMRK	0000010
+-#define INPCK	0000020
+-#define ISTRIP	0000040
+-#define INLCR	0000100
+-#define IGNCR	0000200
+-#define ICRNL	0000400
+-#define IXON	0001000
+-#define IXOFF	0002000
+-#define IXANY	0004000
+-#define IUCLC	0010000
+-#define IMAXBEL	0020000
+-#define IUTF8	0040000
++#define IGNBRK	0x00001
++#define BRKINT	0x00002
++#define IGNPAR	0x00004
++#define PARMRK	0x00008
++#define INPCK	0x00010
++#define ISTRIP	0x00020
++#define INLCR	0x00040
++#define IGNCR	0x00080
++#define ICRNL	0x00100
++#define IXON	0x00200
++#define IXOFF	0x00400
++#define IXANY	0x00800
++#define IUCLC	0x01000
++#define IMAXBEL	0x02000
++#define IUTF8	0x04000
+ 
+ /* c_oflag bits */
+-#define OPOST	0000001
+-#define ONLCR	0000002
+-#define OLCUC	0000004
+-
+-#define OCRNL	0000010
+-#define ONOCR	0000020
+-#define ONLRET	0000040
+-
+-#define OFILL	00000100
+-#define OFDEL	00000200
+-#define NLDLY	00001400
+-#define   NL0	00000000
+-#define   NL1	00000400
+-#define   NL2	00001000
+-#define   NL3	00001400
+-#define TABDLY	00006000
+-#define   TAB0	00000000
+-#define   TAB1	00002000
+-#define   TAB2	00004000
+-#define   TAB3	00006000
+-#define CRDLY	00030000
+-#define   CR0	00000000
+-#define   CR1	00010000
+-#define   CR2	00020000
+-#define   CR3	00030000
+-#define FFDLY	00040000
+-#define   FF0	00000000
+-#define   FF1	00040000
+-#define BSDLY	00100000
+-#define   BS0	00000000
+-#define   BS1	00100000
+-#define VTDLY	00200000
+-#define   VT0	00000000
+-#define   VT1	00200000
++#define OPOST	0x00001
++#define ONLCR	0x00002
++#define OLCUC	0x00004
++
++#define OCRNL	0x00008
++#define ONOCR	0x00010
++#define ONLRET	0x00020
++
++#define OFILL	0x000040
++#define OFDEL	0x000080
++#define NLDLY	0x000300
++#define   NL0	0x000000
++#define   NL1	0x000100
++#define   NL2	0x000200
++#define   NL3	0x000300
++#define TABDLY	0x000c00
++#define   TAB0	0x000000
++#define   TAB1	0x000400
++#define   TAB2	0x000800
++#define   TAB3	0x000c00
++#define CRDLY	0x003000
++#define   CR0	0x000000
++#define   CR1	0x001000
++#define   CR2	0x002000
++#define   CR3	0x003000
++#define FFDLY	0x004000
++#define   FF0	0x000000
++#define   FF1	0x004000
++#define BSDLY	0x008000
++#define   BS0	0x000000
++#define   BS1	0x008000
++#define VTDLY	0x010000
++#define   VT0	0x000000
++#define   VT1	0x010000
+ /*
+  * Should be equivalent to TAB3, see description of TAB3 in
+  * POSIX.1-2008, Ch. 11.2.3 "Output Modes"
+@@ -130,60 +130,60 @@ struct ktermios {
+ #define XTABS	TAB3
+ 
+ /* c_cflag bit meaning */
+-#define CBAUD	0000037
+-#define  B0	0000000		/* hang up */
+-#define  B50	0000001
+-#define  B75	0000002
+-#define  B110	0000003
+-#define  B134	0000004
+-#define  B150	0000005
+-#define  B200	0000006
+-#define  B300	0000007
+-#define  B600	0000010
+-#define  B1200	0000011
+-#define  B1800	0000012
+-#define  B2400	0000013
+-#define  B4800	0000014
+-#define  B9600	0000015
+-#define  B19200	0000016
+-#define  B38400	0000017
++#define CBAUD		0x0000001f
++#define  B0		0x00000000	/* hang up */
++#define  B50		0x00000001
++#define  B75		0x00000002
++#define  B110		0x00000003
++#define  B134		0x00000004
++#define  B150		0x00000005
++#define  B200		0x00000006
++#define  B300		0x00000007
++#define  B600		0x00000008
++#define  B1200		0x00000009
++#define  B1800		0x0000000a
++#define  B2400		0x0000000b
++#define  B4800		0x0000000c
++#define  B9600		0x0000000d
++#define  B19200		0x0000000e
++#define  B38400		0x0000000f
+ #define EXTA B19200
+ #define EXTB B38400
+-#define CBAUDEX 0000000
+-#define  B57600   00020
+-#define  B115200  00021
+-#define  B230400  00022
+-#define  B460800  00023
+-#define  B500000  00024
+-#define  B576000  00025
+-#define  B921600  00026
+-#define B1000000  00027
+-#define B1152000  00030
+-#define B1500000  00031
+-#define B2000000  00032
+-#define B2500000  00033
+-#define B3000000  00034
+-#define B3500000  00035
+-#define B4000000  00036
+-#define BOTHER    00037
+-
+-#define CSIZE	00001400
+-#define   CS5	00000000
+-#define   CS6	00000400
+-#define   CS7	00001000
+-#define   CS8	00001400
+-
+-#define CSTOPB	00002000
+-#define CREAD	00004000
+-#define PARENB	00010000
+-#define PARODD	00020000
+-#define HUPCL	00040000
+-
+-#define CLOCAL	00100000
+-#define CMSPAR	  010000000000		/* mark or space (stick) parity */
+-#define CRTSCTS	  020000000000		/* flow control */
+-
+-#define CIBAUD	07600000
++#define CBAUDEX		0x00000000
++#define  B57600		0x00000010
++#define  B115200	0x00000011
++#define  B230400	0x00000012
++#define  B460800	0x00000013
++#define  B500000	0x00000014
++#define  B576000	0x00000015
++#define  B921600	0x00000016
++#define B1000000	0x00000017
++#define B1152000	0x00000018
++#define B1500000	0x00000019
++#define B2000000	0x0000001a
++#define B2500000	0x0000001b
++#define B3000000	0x0000001c
++#define B3500000	0x0000001d
++#define B4000000	0x0000001e
++#define BOTHER		0x0000001f
++
++#define CSIZE		0x00000300
++#define   CS5		0x00000000
++#define   CS6		0x00000100
++#define   CS7		0x00000200
++#define   CS8		0x00000300
++
++#define CSTOPB		0x00000400
++#define CREAD		0x00000800
++#define PARENB		0x00001000
++#define PARODD		0x00002000
++#define HUPCL		0x00004000
++
++#define CLOCAL		0x00008000
++#define CMSPAR		0x40000000	/* mark or space (stick) parity */
++#define CRTSCTS		0x80000000	/* flow control */
++
++#define CIBAUD		0x1f0000
+ #define IBSHIFT	16
+ 
+ /* c_lflag bits */
+diff --git a/arch/mips/include/uapi/asm/termbits.h b/arch/mips/include/uapi/asm/termbits.h
+index dfeffba729b7..d1315ccdb39a 100644
+--- a/arch/mips/include/uapi/asm/termbits.h
++++ b/arch/mips/include/uapi/asm/termbits.h
+@@ -80,131 +80,131 @@ struct ktermios {
+ #define VEOL		17		/* End-of-line character [ICANON].  */
+ 
+ /* c_iflag bits */
+-#define IGNBRK	0000001		/* Ignore break condition.  */
+-#define BRKINT	0000002		/* Signal interrupt on break.  */
+-#define IGNPAR	0000004		/* Ignore characters with parity errors.  */
+-#define PARMRK	0000010		/* Mark parity and framing errors.  */
+-#define INPCK	0000020		/* Enable input parity check.  */
+-#define ISTRIP	0000040		/* Strip 8th bit off characters.  */
+-#define INLCR	0000100		/* Map NL to CR on input.  */
+-#define IGNCR	0000200		/* Ignore CR.  */
+-#define ICRNL	0000400		/* Map CR to NL on input.  */
+-#define IUCLC	0001000		/* Map upper case to lower case on input.  */
+-#define IXON	0002000		/* Enable start/stop output control.  */
+-#define IXANY	0004000		/* Any character will restart after stop.  */
+-#define IXOFF	0010000		/* Enable start/stop input control.  */
+-#define IMAXBEL 0020000		/* Ring bell when input queue is full.	*/
+-#define IUTF8	0040000		/* Input is UTF-8 */
++#define IGNBRK	0x00001		/* Ignore break condition.  */
++#define BRKINT	0x00002		/* Signal interrupt on break.  */
++#define IGNPAR	0x00004		/* Ignore characters with parity errors.  */
++#define PARMRK	0x00008		/* Mark parity and framing errors.  */
++#define INPCK	0x00010		/* Enable input parity check.  */
++#define ISTRIP	0x00020		/* Strip 8th bit off characters.  */
++#define INLCR	0x00040		/* Map NL to CR on input.  */
++#define IGNCR	0x00080		/* Ignore CR.  */
++#define ICRNL	0x00100		/* Map CR to NL on input.  */
++#define IUCLC	0x00200		/* Map upper case to lower case on input.  */
++#define IXON	0x00400		/* Enable start/stop output control.  */
++#define IXANY	0x00800		/* Any character will restart after stop.  */
++#define IXOFF	0x01000		/* Enable start/stop input control.  */
++#define IMAXBEL	0x02000		/* Ring bell when input queue is full.	*/
++#define IUTF8	0x04000		/* Input is UTF-8 */
+ 
+ /* c_oflag bits */
+-#define OPOST	0000001		/* Perform output processing.  */
+-#define OLCUC	0000002		/* Map lower case to upper case on output.  */
+-#define ONLCR	0000004		/* Map NL to CR-NL on output.  */
+-#define OCRNL	0000010
+-#define ONOCR	0000020
+-#define ONLRET	0000040
+-#define OFILL	0000100
+-#define OFDEL	0000200
+-#define NLDLY	0000400
+-#define	  NL0	0000000
+-#define	  NL1	0000400
+-#define CRDLY	0003000
+-#define	  CR0	0000000
+-#define	  CR1	0001000
+-#define	  CR2	0002000
+-#define	  CR3	0003000
+-#define TABDLY	0014000
+-#define	  TAB0	0000000
+-#define	  TAB1	0004000
+-#define	  TAB2	0010000
+-#define	  TAB3	0014000
+-#define	  XTABS 0014000
+-#define BSDLY	0020000
+-#define	  BS0	0000000
+-#define	  BS1	0020000
+-#define VTDLY	0040000
+-#define	  VT0	0000000
+-#define	  VT1	0040000
+-#define FFDLY	0100000
+-#define	  FF0	0000000
+-#define	  FF1	0100000
++#define OPOST	0x00001		/* Perform output processing.  */
++#define OLCUC	0x00002		/* Map lower case to upper case on output.  */
++#define ONLCR	0x00004		/* Map NL to CR-NL on output.  */
++#define OCRNL	0x00008
++#define ONOCR	0x00010
++#define ONLRET	0x00020
++#define OFILL	0x00040
++#define OFDEL	0x00080
++#define NLDLY	0x00100
++#define	  NL0	0x00000
++#define	  NL1	0x00100
++#define CRDLY	0x00600
++#define	  CR0	0x00000
++#define	  CR1	0x00200
++#define	  CR2	0x00400
++#define	  CR3	0x00600
++#define TABDLY	0x01800
++#define	  TAB0	0x00000
++#define	  TAB1	0x00800
++#define	  TAB2	0x01000
++#define	  TAB3	0x01800
++#define	  XTABS	0x01800
++#define BSDLY	0x02000
++#define	  BS0	0x00000
++#define	  BS1	0x02000
++#define VTDLY	0x04000
++#define	  VT0	0x00000
++#define	  VT1	0x04000
++#define FFDLY	0x08000
++#define	  FF0	0x00000
++#define	  FF1	0x08000
+ /*
+ #define PAGEOUT ???
+ #define WRAP	???
+  */
+ 
+ /* c_cflag bit meaning */
+-#define CBAUD	0010017
+-#define	 B0	0000000		/* hang up */
+-#define	 B50	0000001
+-#define	 B75	0000002
+-#define	 B110	0000003
+-#define	 B134	0000004
+-#define	 B150	0000005
+-#define	 B200	0000006
+-#define	 B300	0000007
+-#define	 B600	0000010
+-#define	 B1200	0000011
+-#define	 B1800	0000012
+-#define	 B2400	0000013
+-#define	 B4800	0000014
+-#define	 B9600	0000015
+-#define	 B19200 0000016
+-#define	 B38400 0000017
++#define CBAUD		0x0000100f
++#define	 B0		0x00000000	/* hang up */
++#define	 B50		0x00000001
++#define	 B75		0x00000002
++#define	 B110		0x00000003
++#define	 B134		0x00000004
++#define	 B150		0x00000005
++#define	 B200		0x00000006
++#define	 B300		0x00000007
++#define	 B600		0x00000008
++#define	 B1200		0x00000009
++#define	 B1800		0x0000000a
++#define	 B2400		0x0000000b
++#define	 B4800		0x0000000c
++#define	 B9600		0x0000000d
++#define	 B19200		0x0000000e
++#define	 B38400		0x0000000f
+ #define EXTA B19200
+ #define EXTB B38400
+-#define CSIZE	0000060		/* Number of bits per byte (mask).  */
+-#define	  CS5	0000000		/* 5 bits per byte.  */
+-#define	  CS6	0000020		/* 6 bits per byte.  */
+-#define	  CS7	0000040		/* 7 bits per byte.  */
+-#define	  CS8	0000060		/* 8 bits per byte.  */
+-#define CSTOPB	0000100		/* Two stop bits instead of one.  */
+-#define CREAD	0000200		/* Enable receiver.  */
+-#define PARENB	0000400		/* Parity enable.  */
+-#define PARODD	0001000		/* Odd parity instead of even.	*/
+-#define HUPCL	0002000		/* Hang up on last close.  */
+-#define CLOCAL	0004000		/* Ignore modem status lines.  */
+-#define CBAUDEX 0010000
+-#define	   BOTHER 0010000
+-#define	   B57600 0010001
+-#define	  B115200 0010002
+-#define	  B230400 0010003
+-#define	  B460800 0010004
+-#define	  B500000 0010005
+-#define	  B576000 0010006
+-#define	  B921600 0010007
+-#define	 B1000000 0010010
+-#define	 B1152000 0010011
+-#define	 B1500000 0010012
+-#define	 B2000000 0010013
+-#define	 B2500000 0010014
+-#define	 B3000000 0010015
+-#define	 B3500000 0010016
+-#define	 B4000000 0010017
+-#define CIBAUD	  002003600000	/* input baud rate */
+-#define CMSPAR	  010000000000	/* mark or space (stick) parity */
+-#define CRTSCTS	  020000000000	/* flow control */
++#define CSIZE		0x00000030	/* Number of bits per byte (mask) */
++#define	  CS5		0x00000000	/* 5 bits per byte */
++#define	  CS6		0x00000010	/* 6 bits per byte */
++#define	  CS7		0x00000020	/* 7 bits per byte */
++#define	  CS8		0x00000030	/* 8 bits per byte */
++#define CSTOPB		0x00000040	/* Two stop bits instead of one */
++#define CREAD		0x00000080	/* Enable receiver */
++#define PARENB		0x00000100	/* Parity enable */
++#define PARODD		0x00000200	/* Odd parity instead of even */
++#define HUPCL		0x00000400	/* Hang up on last close */
++#define CLOCAL		0x00000800	/* Ignore modem status lines */
++#define CBAUDEX		0x00001000
++#define	   BOTHER	0x00001000
++#define	   B57600	0x00001001
++#define	  B115200	0x00001002
++#define	  B230400	0x00001003
++#define	  B460800	0x00001004
++#define	  B500000	0x00001005
++#define	  B576000	0x00001006
++#define	  B921600	0x00001007
++#define	 B1000000	0x00001008
++#define	 B1152000	0x00001009
++#define	 B1500000	0x0000100a
++#define	 B2000000	0x0000100b
++#define	 B2500000	0x0000100c
++#define	 B3000000	0x0000100d
++#define	 B3500000	0x0000100e
++#define	 B4000000	0x0000100f
++#define CIBAUD		0x100f0000	/* input baud rate */
++#define CMSPAR		0x40000000	/* mark or space (stick) parity */
++#define CRTSCTS		0x80000000	/* flow control */
+ 
+ #define IBSHIFT 16		/* Shift from CBAUD to CIBAUD */
+ 
+ /* c_lflag bits */
+-#define ISIG	0000001		/* Enable signals.  */
+-#define ICANON	0000002		/* Do erase and kill processing.  */
+-#define XCASE	0000004
+-#define ECHO	0000010		/* Enable echo.	 */
+-#define ECHOE	0000020		/* Visual erase for ERASE.  */
+-#define ECHOK	0000040		/* Echo NL after KILL.	*/
+-#define ECHONL	0000100		/* Echo NL even if ECHO is off.	 */
+-#define NOFLSH	0000200		/* Disable flush after interrupt.  */
+-#define IEXTEN	0000400		/* Enable DISCARD and LNEXT.  */
+-#define ECHOCTL 0001000		/* Echo control characters as ^X.  */
+-#define ECHOPRT 0002000		/* Hardcopy visual erase.  */
+-#define ECHOKE	0004000		/* Visual erase for KILL.  */
+-#define FLUSHO	0020000
+-#define PENDIN	0040000		/* Retype pending input (state).  */
+-#define TOSTOP	0100000		/* Send SIGTTOU for background output.	*/
+-#define ITOSTOP TOSTOP
+-#define EXTPROC 0200000		/* External processing on pty */
++#define ISIG	0x00001		/* Enable signals.  */
++#define ICANON	0x00002		/* Do erase and kill processing.  */
++#define XCASE	0x00004
++#define ECHO	0x00008		/* Enable echo.	 */
++#define ECHOE	0x00010		/* Visual erase for ERASE.  */
++#define ECHOK	0x00020		/* Echo NL after KILL.	*/
++#define ECHONL	0x00040		/* Echo NL even if ECHO is off.	 */
++#define NOFLSH	0x00080		/* Disable flush after interrupt.  */
++#define IEXTEN	0x00100		/* Enable DISCARD and LNEXT.  */
++#define ECHOCTL	0x00200		/* Echo control characters as ^X.  */
++#define ECHOPRT	0x00400		/* Hardcopy visual erase.  */
++#define ECHOKE	0x00800		/* Visual erase for KILL.  */
++#define FLUSHO	0x02000
++#define PENDIN	0x04000		/* Retype pending input (state).  */
++#define TOSTOP	0x08000		/* Send SIGTTOU for background output.	*/
++#define ITOSTOP	TOSTOP
++#define EXTPROC	0x10000		/* External processing on pty */
+ 
+ /* ioctl (fd, TIOCSERGETLSR, &result) where result may be as below */
+ #define TIOCSER_TEMT	0x01	/* Transmitter physically empty */
+diff --git a/arch/parisc/include/uapi/asm/termbits.h b/arch/parisc/include/uapi/asm/termbits.h
+index 40e920f8d683..6017ee08f099 100644
+--- a/arch/parisc/include/uapi/asm/termbits.h
++++ b/arch/parisc/include/uapi/asm/termbits.h
+@@ -61,127 +61,127 @@ struct ktermios {
+ 
+ 
+ /* c_iflag bits */
+-#define IGNBRK	0000001
+-#define BRKINT	0000002
+-#define IGNPAR	0000004
+-#define PARMRK	0000010
+-#define INPCK	0000020
+-#define ISTRIP	0000040
+-#define INLCR	0000100
+-#define IGNCR	0000200
+-#define ICRNL	0000400
+-#define IUCLC	0001000
+-#define IXON	0002000
+-#define IXANY	0004000
+-#define IXOFF	0010000
+-#define IMAXBEL	0040000
+-#define IUTF8	0100000
++#define IGNBRK	0x00001
++#define BRKINT	0x00002
++#define IGNPAR	0x00004
++#define PARMRK	0x00008
++#define INPCK	0x00010
++#define ISTRIP	0x00020
++#define INLCR	0x00040
++#define IGNCR	0x00080
++#define ICRNL	0x00100
++#define IUCLC	0x00200
++#define IXON	0x00400
++#define IXANY	0x00800
++#define IXOFF	0x01000
++#define IMAXBEL	0x04000
++#define IUTF8	0x08000
+ 
+ /* c_oflag bits */
+-#define OPOST	0000001
+-#define OLCUC	0000002
+-#define ONLCR	0000004
+-#define OCRNL	0000010
+-#define ONOCR	0000020
+-#define ONLRET	0000040
+-#define OFILL	0000100
+-#define OFDEL	0000200
+-#define NLDLY	0000400
+-#define   NL0	0000000
+-#define   NL1	0000400
+-#define CRDLY	0003000
+-#define   CR0	0000000
+-#define   CR1	0001000
+-#define   CR2	0002000
+-#define   CR3	0003000
+-#define TABDLY	0014000
+-#define   TAB0	0000000
+-#define   TAB1	0004000
+-#define   TAB2	0010000
+-#define   TAB3	0014000
+-#define   XTABS	0014000
+-#define BSDLY	0020000
+-#define   BS0	0000000
+-#define   BS1	0020000
+-#define VTDLY	0040000
+-#define   VT0	0000000
+-#define   VT1	0040000
+-#define FFDLY	0100000
+-#define   FF0	0000000
+-#define   FF1	0100000
++#define OPOST	0x00001
++#define OLCUC	0x00002
++#define ONLCR	0x00004
++#define OCRNL	0x00008
++#define ONOCR	0x00010
++#define ONLRET	0x00020
++#define OFILL	0x00040
++#define OFDEL	0x00080
++#define NLDLY	0x00100
++#define   NL0	0x00000
++#define   NL1	0x00100
++#define CRDLY	0x00600
++#define   CR0	0x00000
++#define   CR1	0x00200
++#define   CR2	0x00400
++#define   CR3	0x00600
++#define TABDLY	0x01800
++#define   TAB0	0x00000
++#define   TAB1	0x00800
++#define   TAB2	0x01000
++#define   TAB3	0x01800
++#define   XTABS	0x01800
++#define BSDLY	0x02000
++#define   BS0	0x00000
++#define   BS1	0x02000
++#define VTDLY	0x04000
++#define   VT0	0x00000
++#define   VT1	0x04000
++#define FFDLY	0x08000
++#define   FF0	0x00000
++#define   FF1	0x08000
+ 
+ /* c_cflag bit meaning */
+-#define CBAUD   0010017
+-#define  B0     0000000         /* hang up */
+-#define  B50    0000001
+-#define  B75    0000002
+-#define  B110   0000003
+-#define  B134   0000004
+-#define  B150   0000005
+-#define  B200   0000006
+-#define  B300   0000007
+-#define  B600   0000010
+-#define  B1200  0000011
+-#define  B1800  0000012
+-#define  B2400  0000013
+-#define  B4800  0000014
+-#define  B9600  0000015
+-#define  B19200 0000016
+-#define  B38400 0000017
++#define CBAUD		0x0000100f
++#define  B0		0x00000000	/* hang up */
++#define  B50		0x00000001
++#define  B75		0x00000002
++#define  B110		0x00000003
++#define  B134		0x00000004
++#define  B150		0x00000005
++#define  B200		0x00000006
++#define  B300		0x00000007
++#define  B600		0x00000008
++#define  B1200		0x00000009
++#define  B1800		0x0000000a
++#define  B2400		0x0000000b
++#define  B4800		0x0000000c
++#define  B9600		0x0000000d
++#define  B19200		0x0000000e
++#define  B38400		0x0000000f
+ #define EXTA B19200
+ #define EXTB B38400
+-#define CSIZE   0000060
+-#define   CS5   0000000
+-#define   CS6   0000020
+-#define   CS7   0000040
+-#define   CS8   0000060
+-#define CSTOPB  0000100
+-#define CREAD   0000200
+-#define PARENB  0000400
+-#define PARODD  0001000
+-#define HUPCL   0002000
+-#define CLOCAL  0004000
+-#define CBAUDEX 0010000
+-#define    BOTHER 0010000
+-#define    B57600 0010001
+-#define   B115200 0010002
+-#define   B230400 0010003
+-#define   B460800 0010004
+-#define   B500000 0010005
+-#define   B576000 0010006
+-#define   B921600 0010007
+-#define  B1000000 0010010
+-#define  B1152000 0010011
+-#define  B1500000 0010012
+-#define  B2000000 0010013
+-#define  B2500000 0010014
+-#define  B3000000 0010015
+-#define  B3500000 0010016
+-#define  B4000000 0010017
+-#define CIBAUD    002003600000		/* input baud rate */
+-#define CMSPAR    010000000000          /* mark or space (stick) parity */
+-#define CRTSCTS   020000000000          /* flow control */
++#define CSIZE		0x00000030
++#define   CS5		0x00000000
++#define   CS6		0x00000010
++#define   CS7		0x00000020
++#define   CS8		0x00000030
++#define CSTOPB		0x00000040
++#define CREAD		0x00000080
++#define PARENB		0x00000100
++#define PARODD		0x00000200
++#define HUPCL		0x00000400
++#define CLOCAL		0x00000800
++#define CBAUDEX		0x00001000
++#define    BOTHER	0x00001000
++#define    B57600	0x00001001
++#define   B115200	0x00001002
++#define   B230400	0x00001003
++#define   B460800	0x00001004
++#define   B500000	0x00001005
++#define   B576000	0x00001006
++#define   B921600	0x00001007
++#define  B1000000	0x00001008
++#define  B1152000	0x00001009
++#define  B1500000	0x0000100a
++#define  B2000000	0x0000100b
++#define  B2500000	0x0000100c
++#define  B3000000	0x0000100d
++#define  B3500000	0x0000100e
++#define  B4000000	0x0000100f
++#define CIBAUD		0x100f0000		/* input baud rate */
++#define CMSPAR		0x40000000		/* mark or space (stick) parity */
++#define CRTSCTS		0x80000000		/* flow control */
+ 
+ #define IBSHIFT	16		/* Shift from CBAUD to CIBAUD */
+ 
+ 
+ /* c_lflag bits */
+-#define ISIG    0000001
+-#define ICANON  0000002
+-#define XCASE   0000004
+-#define ECHO    0000010
+-#define ECHOE   0000020
+-#define ECHOK   0000040
+-#define ECHONL  0000100
+-#define NOFLSH  0000200
+-#define TOSTOP  0000400
+-#define ECHOCTL 0001000
+-#define ECHOPRT 0002000
+-#define ECHOKE  0004000
+-#define FLUSHO  0010000
+-#define PENDIN  0040000
+-#define IEXTEN  0100000
+-#define EXTPROC	0200000
++#define ISIG	0x00001
++#define ICANON	0x00002
++#define XCASE	0x00004
++#define ECHO	0x00008
++#define ECHOE	0x00010
++#define ECHOK	0x00020
++#define ECHONL	0x00040
++#define NOFLSH	0x00080
++#define TOSTOP	0x00100
++#define ECHOCTL	0x00200
++#define ECHOPRT	0x00400
++#define ECHOKE	0x00800
++#define FLUSHO	0x01000
++#define PENDIN	0x04000
++#define IEXTEN	0x08000
++#define EXTPROC	0x10000
+ 
+ /* tcflow() and TCXONC use these */
+ #define	TCOOFF		0
+diff --git a/arch/powerpc/include/uapi/asm/termbits.h b/arch/powerpc/include/uapi/asm/termbits.h
+index ed18bc61f63d..e4892f2d5592 100644
+--- a/arch/powerpc/include/uapi/asm/termbits.h
++++ b/arch/powerpc/include/uapi/asm/termbits.h
+@@ -64,115 +64,115 @@ struct ktermios {
+ #define VDISCARD	16
+ 
+ /* c_iflag bits */
+-#define IGNBRK	0000001
+-#define BRKINT	0000002
+-#define IGNPAR	0000004
+-#define PARMRK	0000010
+-#define INPCK	0000020
+-#define ISTRIP	0000040
+-#define INLCR	0000100
+-#define IGNCR	0000200
+-#define ICRNL	0000400
+-#define IXON	0001000
+-#define IXOFF	0002000
+-#define IXANY	0004000
+-#define IUCLC	0010000
+-#define IMAXBEL	0020000
+-#define	IUTF8	0040000
++#define IGNBRK	0x00001
++#define BRKINT	0x00002
++#define IGNPAR	0x00004
++#define PARMRK	0x00008
++#define INPCK	0x00010
++#define ISTRIP	0x00020
++#define INLCR	0x00040
++#define IGNCR	0x00080
++#define ICRNL	0x00100
++#define IXON	0x00200
++#define IXOFF	0x00400
++#define IXANY	0x00800
++#define IUCLC	0x01000
++#define IMAXBEL	0x02000
++#define	IUTF8	0x04000
+ 
+ /* c_oflag bits */
+-#define OPOST	0000001
+-#define ONLCR	0000002
+-#define OLCUC	0000004
+-
+-#define OCRNL	0000010
+-#define ONOCR	0000020
+-#define ONLRET	0000040
+-
+-#define OFILL	00000100
+-#define OFDEL	00000200
+-#define NLDLY	00001400
+-#define   NL0	00000000
+-#define   NL1	00000400
+-#define   NL2	00001000
+-#define   NL3	00001400
+-#define TABDLY	00006000
+-#define   TAB0	00000000
+-#define   TAB1	00002000
+-#define   TAB2	00004000
+-#define   TAB3	00006000
+-#define   XTABS	00006000	/* required by POSIX to == TAB3 */
+-#define CRDLY	00030000
+-#define   CR0	00000000
+-#define   CR1	00010000
+-#define   CR2	00020000
+-#define   CR3	00030000
+-#define FFDLY	00040000
+-#define   FF0	00000000
+-#define   FF1	00040000
+-#define BSDLY	00100000
+-#define   BS0	00000000
+-#define   BS1	00100000
+-#define VTDLY	00200000
+-#define   VT0	00000000
+-#define   VT1	00200000
++#define OPOST	0x00001
++#define ONLCR	0x00002
++#define OLCUC	0x00004
++
++#define OCRNL	0x00008
++#define ONOCR	0x00010
++#define ONLRET	0x00020
++
++#define OFILL	0x000040
++#define OFDEL	0x000080
++#define NLDLY	0x000300
++#define   NL0	0x000000
++#define   NL1	0x000100
++#define   NL2	0x000200
++#define   NL3	0x000300
++#define TABDLY	0x000c00
++#define   TAB0	0x000000
++#define   TAB1	0x000400
++#define   TAB2	0x000800
++#define   TAB3	0x000c00
++#define   XTABS	0x000c00	/* required by POSIX to == TAB3 */
++#define CRDLY	0x003000
++#define   CR0	0x000000
++#define   CR1	0x001000
++#define   CR2	0x002000
++#define   CR3	0x003000
++#define FFDLY	0x004000
++#define   FF0	0x000000
++#define   FF1	0x004000
++#define BSDLY	0x008000
++#define   BS0	0x000000
++#define   BS1	0x008000
++#define VTDLY	0x010000
++#define   VT0	0x000000
++#define   VT1	0x010000
+ 
+ /* c_cflag bit meaning */
+-#define CBAUD	0000377
+-#define  B0	0000000		/* hang up */
+-#define  B50	0000001
+-#define  B75	0000002
+-#define  B110	0000003
+-#define  B134	0000004
+-#define  B150	0000005
+-#define  B200	0000006
+-#define  B300	0000007
+-#define  B600	0000010
+-#define  B1200	0000011
+-#define  B1800	0000012
+-#define  B2400	0000013
+-#define  B4800	0000014
+-#define  B9600	0000015
+-#define  B19200	0000016
+-#define  B38400	0000017
++#define CBAUD		0x000000ff
++#define  B0		0x00000000	/* hang up */
++#define  B50		0x00000001
++#define  B75		0x00000002
++#define  B110		0x00000003
++#define  B134		0x00000004
++#define  B150		0x00000005
++#define  B200		0x00000006
++#define  B300		0x00000007
++#define  B600		0x00000008
++#define  B1200		0x00000009
++#define  B1800		0x0000000a
++#define  B2400		0x0000000b
++#define  B4800		0x0000000c
++#define  B9600		0x0000000d
++#define  B19200		0x0000000e
++#define  B38400		0x0000000f
+ #define  EXTA   B19200
+ #define  EXTB   B38400
+-#define  CBAUDEX 0000000
+-#define  B57600   00020
+-#define  B115200  00021
+-#define  B230400  00022
+-#define  B460800  00023
+-#define  B500000  00024
+-#define  B576000  00025
+-#define  B921600  00026
+-#define B1000000  00027
+-#define B1152000  00030
+-#define B1500000  00031
+-#define B2000000  00032
+-#define B2500000  00033
+-#define B3000000  00034
+-#define B3500000  00035
+-#define B4000000  00036
+-#define   BOTHER  00037
+-
+-#define CIBAUD	077600000
++#define CBAUDEX		0x00000000
++#define  B57600		0x00000010
++#define  B115200	0x00000011
++#define  B230400	0x00000012
++#define  B460800	0x00000013
++#define  B500000	0x00000014
++#define  B576000	0x00000015
++#define  B921600	0x00000016
++#define B1000000	0x00000017
++#define B1152000	0x00000018
++#define B1500000	0x00000019
++#define B2000000	0x0000001a
++#define B2500000	0x0000001b
++#define B3000000	0x0000001c
++#define B3500000	0x0000001d
++#define B4000000	0x0000001e
++#define   BOTHER	0x0000001f
++
++#define CIBAUD		0x00ff0000
+ #define IBSHIFT	16		/* Shift from CBAUD to CIBAUD */
+ 
+-#define CSIZE	00001400
+-#define   CS5	00000000
+-#define   CS6	00000400
+-#define   CS7	00001000
+-#define   CS8	00001400
+-
+-#define CSTOPB	00002000
+-#define CREAD	00004000
+-#define PARENB	00010000
+-#define PARODD	00020000
+-#define HUPCL	00040000
+-
+-#define CLOCAL	00100000
+-#define CMSPAR	  010000000000		/* mark or space (stick) parity */
+-#define CRTSCTS	  020000000000		/* flow control */
++#define CSIZE		0x00000300
++#define   CS5		0x00000000
++#define   CS6		0x00000100
++#define   CS7		0x00000200
++#define   CS8		0x00000300
++
++#define CSTOPB		0x00000400
++#define CREAD		0x00000800
++#define PARENB		0x00001000
++#define PARODD		0x00002000
++#define HUPCL		0x00004000
++
++#define CLOCAL		0x00008000
++#define CMSPAR		0x40000000	/* mark or space (stick) parity */
++#define CRTSCTS		0x80000000	/* flow control */
+ 
+ /* c_lflag bits */
+ #define ISIG	0x00000080
+diff --git a/include/uapi/asm-generic/termbits.h b/include/uapi/asm-generic/termbits.h
+index 2fbaf9ae89dd..470fd673ff84 100644
+--- a/include/uapi/asm-generic/termbits.h
++++ b/include/uapi/asm-generic/termbits.h
+@@ -60,126 +60,126 @@ struct ktermios {
+ #define VEOL2 16
+ 
+ /* c_iflag bits */
+-#define IGNBRK	0000001
+-#define BRKINT	0000002
+-#define IGNPAR	0000004
+-#define PARMRK	0000010
+-#define INPCK	0000020
+-#define ISTRIP	0000040
+-#define INLCR	0000100
+-#define IGNCR	0000200
+-#define ICRNL	0000400
+-#define IUCLC	0001000
+-#define IXON	0002000
+-#define IXANY	0004000
+-#define IXOFF	0010000
+-#define IMAXBEL	0020000
+-#define IUTF8	0040000
++#define IGNBRK	0x00001
++#define BRKINT	0x00002
++#define IGNPAR	0x00004
++#define PARMRK	0x00008
++#define INPCK	0x00010
++#define ISTRIP	0x00020
++#define INLCR	0x00040
++#define IGNCR	0x00080
++#define ICRNL	0x00100
++#define IUCLC	0x00200
++#define IXON	0x00400
++#define IXANY	0x00800
++#define IXOFF	0x01000
++#define IMAXBEL	0x02000
++#define IUTF8	0x04000
+ 
+ /* c_oflag bits */
+-#define OPOST	0000001
+-#define OLCUC	0000002
+-#define ONLCR	0000004
+-#define OCRNL	0000010
+-#define ONOCR	0000020
+-#define ONLRET	0000040
+-#define OFILL	0000100
+-#define OFDEL	0000200
+-#define NLDLY	0000400
+-#define   NL0	0000000
+-#define   NL1	0000400
+-#define CRDLY	0003000
+-#define   CR0	0000000
+-#define   CR1	0001000
+-#define   CR2	0002000
+-#define   CR3	0003000
+-#define TABDLY	0014000
+-#define   TAB0	0000000
+-#define   TAB1	0004000
+-#define   TAB2	0010000
+-#define   TAB3	0014000
+-#define   XTABS	0014000
+-#define BSDLY	0020000
+-#define   BS0	0000000
+-#define   BS1	0020000
+-#define VTDLY	0040000
+-#define   VT0	0000000
+-#define   VT1	0040000
+-#define FFDLY	0100000
+-#define   FF0	0000000
+-#define   FF1	0100000
++#define OPOST	0x00001
++#define OLCUC	0x00002
++#define ONLCR	0x00004
++#define OCRNL	0x00008
++#define ONOCR	0x00010
++#define ONLRET	0x00020
++#define OFILL	0x00040
++#define OFDEL	0x00080
++#define NLDLY	0x00100
++#define   NL0	0x00000
++#define   NL1	0x00100
++#define CRDLY	0x00600
++#define   CR0	0x00000
++#define   CR1	0x00200
++#define   CR2	0x00400
++#define   CR3	0x00600
++#define TABDLY	0x01800
++#define   TAB0	0x00000
++#define   TAB1	0x00800
++#define   TAB2	0x01000
++#define   TAB3	0x01800
++#define   XTABS	0x01800
++#define BSDLY	0x02000
++#define   BS0	0x00000
++#define   BS1	0x02000
++#define VTDLY	0x04000
++#define   VT0	0x00000
++#define   VT1	0x04000
++#define FFDLY	0x08000
++#define   FF0	0x00000
++#define   FF1	0x08000
+ 
+ /* c_cflag bit meaning */
+-#define CBAUD	0010017
+-#define  B0	0000000		/* hang up */
+-#define  B50	0000001
+-#define  B75	0000002
+-#define  B110	0000003
+-#define  B134	0000004
+-#define  B150	0000005
+-#define  B200	0000006
+-#define  B300	0000007
+-#define  B600	0000010
+-#define  B1200	0000011
+-#define  B1800	0000012
+-#define  B2400	0000013
+-#define  B4800	0000014
+-#define  B9600	0000015
+-#define  B19200	0000016
+-#define  B38400	0000017
++#define CBAUD		0x0000100f
++#define  B0		0x00000000	/* hang up */
++#define  B50		0x00000001
++#define  B75		0x00000002
++#define  B110		0x00000003
++#define  B134		0x00000004
++#define  B150		0x00000005
++#define  B200		0x00000006
++#define  B300		0x00000007
++#define  B600		0x00000008
++#define  B1200		0x00000009
++#define  B1800		0x0000000a
++#define  B2400		0x0000000b
++#define  B4800		0x0000000c
++#define  B9600		0x0000000d
++#define  B19200		0x0000000e
++#define  B38400		0x0000000f
+ #define EXTA B19200
+ #define EXTB B38400
+-#define CSIZE	0000060
+-#define   CS5	0000000
+-#define   CS6	0000020
+-#define   CS7	0000040
+-#define   CS8	0000060
+-#define CSTOPB	0000100
+-#define CREAD	0000200
+-#define PARENB	0000400
+-#define PARODD	0001000
+-#define HUPCL	0002000
+-#define CLOCAL	0004000
+-#define CBAUDEX 0010000
+-#define    BOTHER 0010000
+-#define    B57600 0010001
+-#define   B115200 0010002
+-#define   B230400 0010003
+-#define   B460800 0010004
+-#define   B500000 0010005
+-#define   B576000 0010006
+-#define   B921600 0010007
+-#define  B1000000 0010010
+-#define  B1152000 0010011
+-#define  B1500000 0010012
+-#define  B2000000 0010013
+-#define  B2500000 0010014
+-#define  B3000000 0010015
+-#define  B3500000 0010016
+-#define  B4000000 0010017
+-#define CIBAUD	  002003600000	/* input baud rate */
+-#define CMSPAR	  010000000000	/* mark or space (stick) parity */
+-#define CRTSCTS	  020000000000	/* flow control */
++#define CSIZE		0x00000030
++#define   CS5		0x00000000
++#define   CS6		0x00000010
++#define   CS7		0x00000020
++#define   CS8		0x00000030
++#define CSTOPB		0x00000040
++#define CREAD		0x00000080
++#define PARENB		0x00000100
++#define PARODD		0x00000200
++#define HUPCL		0x00000400
++#define CLOCAL		0x00000800
++#define CBAUDEX		0x00001000
++#define    BOTHER	0x00001000
++#define    B57600	0x00001001
++#define   B115200	0x00001002
++#define   B230400	0x00001003
++#define   B460800	0x00001004
++#define   B500000	0x00001005
++#define   B576000	0x00001006
++#define   B921600	0x00001007
++#define  B1000000	0x00001008
++#define  B1152000	0x00001009
++#define  B1500000	0x0000100a
++#define  B2000000	0x0000100b
++#define  B2500000	0x0000100c
++#define  B3000000	0x0000100d
++#define  B3500000	0x0000100e
++#define  B4000000	0x0000100f
++#define CIBAUD		0x100f0000	/* input baud rate */
++#define CMSPAR		0x40000000	/* mark or space (stick) parity */
++#define CRTSCTS		0x80000000	/* flow control */
+ 
+ #define IBSHIFT	  16		/* Shift from CBAUD to CIBAUD */
+ 
+ /* c_lflag bits */
+-#define ISIG	0000001
+-#define ICANON	0000002
+-#define XCASE	0000004
+-#define ECHO	0000010
+-#define ECHOE	0000020
+-#define ECHOK	0000040
+-#define ECHONL	0000100
+-#define NOFLSH	0000200
+-#define TOSTOP	0000400
+-#define ECHOCTL	0001000
+-#define ECHOPRT	0002000
+-#define ECHOKE	0004000
+-#define FLUSHO	0010000
+-#define PENDIN	0040000
+-#define IEXTEN	0100000
+-#define EXTPROC	0200000
++#define ISIG	0x00001
++#define ICANON	0x00002
++#define XCASE	0x00004
++#define ECHO	0x00008
++#define ECHOE	0x00010
++#define ECHOK	0x00020
++#define ECHONL	0x00040
++#define NOFLSH	0x00080
++#define TOSTOP	0x00100
++#define ECHOCTL	0x00200
++#define ECHOPRT	0x00400
++#define ECHOKE	0x00800
++#define FLUSHO	0x01000
++#define PENDIN	0x04000
++#define IEXTEN	0x08000
++#define EXTPROC	0x10000
+ 
+ /* tcflow() and TCXONC use these */
+ #define	TCOOFF		0
+-- 
+2.30.2
 
-[fstn1-p1 ~/p/kernels-llvm/llvm]$ find 
-/home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/ -iname LLVMgold.so 
--exec ls -l {} \;
--rwxrwxr-x 1 aik aik 39032840 May  4 13:06 
-/home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/lib/LLVMgold.so 
-
-
-
-
-
-and then in the kernel tree:
-
-
-PATH=/home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/bin:$PATH make 
--j64 
-O=/home/aik/pbuild/kernels-llvm/llvm-wip-llvm-latest-lto-full-cleanbuild/ 
-ARCH=powerpc LLVM_IAS=1 CC=clang LLVM=1 ppc64le_defconfig
-
-then enabled LTO in that .config and then just built "vmlinux":
-
-
-[fstn1-p1 ~/p/kernels-llvm/llvm]$ ls -l 
-/home/aik/pbuild/kernels-llvm/llvm-wip-llvm-latest-lto-full-cleanbuild/vmlinux 
-
--rwxrwxr-x 1 aik aik 48145272 May  4 17:00 
-/home/aik/pbuild/kernels-llvm/llvm-wip-llvm-latest-lto-full-cleanbuild/vmlinux
-
-which boots under qemu, the kernel version is:
-
-Preparing to boot Linux version 5.18.0-rc2_0bb153baeff0_a+fstn1 
-(aik@fstn1-p1) (clang version 15.0.0 (https://github.com/llvm/llvm-proje
-ct.git e29dc0c6fde284e7f05aa5f45b05c629c9fad295), LLD 15.0.0) #1 SMP Wed 
-May 4 16:54:16 AEST 2022
-
-
-
-Before I got to this point, I did many unspeakable things to that build 
-system so may be it is screwed in some way but I cannot pinpoint it.
-
-The installed clang/lld is 12.0.0-3ubuntu1~21.04.2 and 
--DLLVM_ENABLE_LLD=ON from cmake is to accelerate rebuilding of LLVM (for 
-bisecting). I'll try without it now, just takes ages to complete.
-
-> 
-> Perhaps for now I should just send:
-> ```
-> diff --git a/arch/powerpc/kernel/vdso/Makefile
-> b/arch/powerpc/kernel/vdso/Makefile
-> index 954974287ee7..8762e6513683 100644
-> --- a/arch/powerpc/kernel/vdso/Makefile
-> +++ b/arch/powerpc/kernel/vdso/Makefile
-> @@ -55,6 +55,11 @@ AS32FLAGS := -D__VDSO32__ -s
->   CC64FLAGS := -Wl,-soname=linux-vdso64.so.1
->   AS64FLAGS := -D__VDSO64__ -s
-> 
-> +ifneq ($(LLVM),)
-> +CC32FLAGS += -fuse-ld=lld
-> +CC64FLAGS += -fuse-ld=lld
-> +endif
-> +
->   targets += vdso32.lds
->   CPPFLAGS_vdso32.lds += -P -C -Upowerpc
->   targets += vdso64.lds
-> ```
-> 
-> 
->>
->> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
->> ---
->>
->> Note 1:
->> This is further development of
->> https://lore.kernel.org/all/20220211023125.1790960-1-aik@ozlabs.ru/T/
->>
->> Note 2:
->> CONFIG_ZSTD_COMPRESS and CONFIG_ZSTD_DECOMPRESS must be both "m" or "y"
->> or it won't link. For details:
->> https://lore.kernel.org/lkml/20220428043850.1706973-1-aik@ozlabs.ru/T/
-> 
-> Yeah, I just hit this:
-> ```
->    LTO     vmlinux.o
-> LLVM ERROR: Function Import: link error: linking module flags 'Code
-> Model': IDs have conflicting values in
-> 'lib/built-in.a(entropy_common.o at 5782)' and
-> 'lib/built-in.a(zstd_decompress_block.o at 6202)'
-> PLEASE submit a bug report to
-> https://github.com/llvm/llvm-project/issues/ and include the crash
-> backtrace.
-> LLVM ERROR: Failed to rename temporary file
-> .thinlto-cache/Thin-96f93f.tmp.o to
-> .thinlto-cache/llvmcache-A5B351EA452D46A86980E29C78B7260673348AAF: No
-> such file or directory
-> scripts/link-vmlinux.sh: line 76: 1240312 Aborted
-> ${LD} ${KBUILD_LDFLAGS} -r -o ${1} ${lds} ${objects}
-> make: *** [Makefile:1158: vmlinux] Error 134
-> ```
-> These two configs aren't easily modified in menuconfig. Perhaps you
-> could find the concise set of configs that need to be disabled for
-> this to be buildable? At least so others can test more easily, or even
-> so we can update Kconfig checks.
-
-
-I have posted v2:
-
-https://lore.kernel.org/lkml/20220429053329.2278740-1-aik@ozlabs.ru/T/
-
-with this one, the ppc64 defconfigs should just work.
-
-
->> ---
->>   arch/powerpc/Kconfig                   | 2 ++
->>   arch/powerpc/kernel/exceptions-64s.S   | 4 +++-
->>   arch/powerpc/lib/copyuser_64.S         | 3 ++-
->>   arch/powerpc/lib/feature-fixups-test.S | 3 +--
->>   arch/powerpc/lib/memcpy_64.S           | 3 ++-
->>   5 files changed, 10 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index 174edabb74fa..e2c7b5c1d0a6 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -158,6 +158,8 @@ config PPC
->>          select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
->>          select ARCH_WANT_LD_ORPHAN_WARN
->>          select ARCH_WEAK_RELEASE_ACQUIRE
->> +       select ARCH_SUPPORTS_LTO_CLANG
->> +       select ARCH_SUPPORTS_LTO_CLANG_THIN
->>          select BINFMT_ELF
->>          select BUILDTIME_TABLE_SORT
->>          select CLONE_BACKWARDS
->> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
->> index b66dd6f775a4..5b783bd51260 100644
->> --- a/arch/powerpc/kernel/exceptions-64s.S
->> +++ b/arch/powerpc/kernel/exceptions-64s.S
->> @@ -476,9 +476,11 @@ DEFINE_FIXED_SYMBOL(\name\()_common_real, text)
->>                  .if IHSRR_IF_HVMODE
->>                  BEGIN_FTR_SECTION
->>                  bne     masked_Hinterrupt
->> +               b       4f
->>                  FTR_SECTION_ELSE
->> -               bne     masked_interrupt
->>                  ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_206)
->> +               bne     masked_interrupt
->> +4:
->>                  .elseif IHSRR
->>                  bne     masked_Hinterrupt
->>                  .else
->> diff --git a/arch/powerpc/lib/copyuser_64.S b/arch/powerpc/lib/copyuser_64.S
->> index db8719a14846..d07f95eebc65 100644
->> --- a/arch/powerpc/lib/copyuser_64.S
->> +++ b/arch/powerpc/lib/copyuser_64.S
->> @@ -75,10 +75,11 @@ _GLOBAL(__copy_tofrom_user_base)
->>    * set is Power6.
->>    */
->>   test_feature = (SELFTEST_CASE == 1)
->> +       beq     .Ldst_aligned
->>   BEGIN_FTR_SECTION
->>          nop
->>   FTR_SECTION_ELSE
->> -       bne     .Ldst_unaligned
->> +       b       .Ldst_unaligned
->>   ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
->>                      CPU_FTR_UNALIGNED_LD_STD)
->>   .Ldst_aligned:
->> diff --git a/arch/powerpc/lib/feature-fixups-test.S b/arch/powerpc/lib/feature-fixups-test.S
->> index 480172fbd024..2751e42a9fd7 100644
->> --- a/arch/powerpc/lib/feature-fixups-test.S
->> +++ b/arch/powerpc/lib/feature-fixups-test.S
->> @@ -145,7 +145,6 @@ BEGIN_FTR_SECTION
->>   FTR_SECTION_ELSE
->>   2:     or      2,2,2
->>          PPC_LCMPI       r3,1
->> -       beq     3f
->>          blt     2b
->>          b       3f
->>          b       1b
->> @@ -160,10 +159,10 @@ globl(ftr_fixup_test6_expected)
->>   1:     or      1,1,1
->>   2:     or      2,2,2
->>          PPC_LCMPI       r3,1
->> -       beq     3f
->>          blt     2b
->>          b       3f
->>          b       1b
->> +       nop
->>   3:     or      1,1,1
->>          or      2,2,2
->>          or      3,3,3
->> diff --git a/arch/powerpc/lib/memcpy_64.S b/arch/powerpc/lib/memcpy_64.S
->> index 016c91e958d8..286c7e2d0883 100644
->> --- a/arch/powerpc/lib/memcpy_64.S
->> +++ b/arch/powerpc/lib/memcpy_64.S
->> @@ -50,10 +50,11 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
->>      At the time of writing the only CPU that has this combination of bits
->>      set is Power6. */
->>   test_feature = (SELFTEST_CASE == 1)
->> +       beq      .ldst_aligned
->>   BEGIN_FTR_SECTION
->>          nop
->>   FTR_SECTION_ELSE
->> -       bne     .Ldst_unaligned
->> +       b       .Ldst_unaligned
->>   ALT_FTR_SECTION_END(CPU_FTR_UNALIGNED_LD_STD | CPU_FTR_CP_USE_DCBTZ, \
->>                       CPU_FTR_UNALIGNED_LD_STD)
->>   .Ldst_aligned:
->> --
->> 2.30.2
->>
-> 
-> 
+--8323329-1991360190-1651648872=:1623--
