@@ -1,69 +1,106 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2CD51A142
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 15:47:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0AD51A144
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 15:47:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtdRR09fqz3bwg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 23:46:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtdSW1m2gz3c7P
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 23:47:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KfOxdHdv;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=de4hYoRL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=KfOxdHdv; dkim-atps=neutral
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=de4hYoRL; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KtdQl5MNQz2ywH
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 23:46:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651671983; x=1683207983;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=KZ4vphBXVfB/HfWb5Clb91wOAr0PLx69sTjqh3lXPSw=;
- b=KfOxdHdvdMyrnCAo/0ESDcRw3UAtRqrhI3wBb3RnG8/7ltlxTC5ujMeA
- 6c85J2WT83rA7bpOejT63ml56Tp8KAXy18li0f2dkDrrY4SNDuVLzCnQV
- OPo/NxnzgB0Exe2esI+IO6Ttyi5v6/+AwZ8Ru9Axl/JUnNu91n1n0AD2U
- uOQiPyekjNN45FmKaGTEcya9K5Ub/UYmpRQKfbGjbJ1VOcJLFqbZFKLEg
- goFeyQnm98BR2B67osaOP2l4K2hSbej7AWgt84h3KTDIvHDvRbvfqn6FQ
- kNUNdQd2TCzt+PwZqHQG06mPvSX74hrfGA7qX3zTu1pPGYQa/dLikp42Y w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10337"; a="267923634"
-X-IronPort-AV: E=Sophos;i="5.91,198,1647327600"; d="scan'208";a="267923634"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2022 06:45:19 -0700
-X-IronPort-AV: E=Sophos;i="5.91,198,1647327600"; d="scan'208";a="734403682"
-Received: from smile.fi.intel.com ([10.237.72.54])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2022 06:45:16 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1nmFJZ-00Btne-Fp; Wed, 04 May 2022 16:45:13 +0300
-Date: Wed, 4 May 2022 16:45:13 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v1 1/1] powerpc/83xx/mpc8349emitx: Get rid of of_node
- assignment
-Message-ID: <YnKDaTVDoqgFeQHz@smile.fi.intel.com>
-References: <20220323174342.56187-1-andriy.shevchenko@linux.intel.com>
- <CACRpkdbUWE8knM=9uUVLTX792Y8_J1aPj4KtFh=yJxaKi+ZqRw@mail.gmail.com>
- <Yk2PE7+oEEtGri95@smile.fi.intel.com>
- <CACRpkdbqfNiWQG6ayqMXACby4xkW0pY6JhdYE-x+pWkSxJU5TQ@mail.gmail.com>
- <87fsm7fkbt.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtdRl4qyhz3bbw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 May 2022 23:47:15 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 244Da7pv020599;
+ Wed, 4 May 2022 13:47:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=9O4NHsy2Aflkkz1h4753zGCEqCzmFogt0f6i14qhZDc=;
+ b=de4hYoRL272EDytHwrAVefJX41ttqjq78DP4gGFF4AmYbn9wzHlqvIacIcNfsReZGxuz
+ 7QMHk1QUnj8y/jJ5nWsj3SZj1AqmMbQYTZXuo950kFTV/FwS7TL2GHozfavSmeEFpaF3
+ wN9rZswd+9XXRe1yjHsVx3JQn69xYSi+ot8ke9qqUq3MovAeMroFdPWYyXLEuN036MXp
+ cUnfo7VMZeIAY8cgdKPE3Pl8XDJa6qCkTy/dKQ4lqtYUzeDbDuVwUUdpbqwPbckLqfUa
+ /iTglI9wvmuUk+iezNv3cHwA7p2h7n5hhqNMrHpSyZaW580WB5Hk+6jz9TfYqOdJ41uH oQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3futa6gaw0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 13:47:01 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 244DdChR029234;
+ Wed, 4 May 2022 13:47:01 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3futa6gavg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 13:47:00 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 244DcTMA025862;
+ Wed, 4 May 2022 13:46:58 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04ams.nl.ibm.com with ESMTP id 3frvr8wrgd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 May 2022 13:46:58 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 244DXaTg52429256
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 May 2022 13:33:36 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7DE224C044;
+ Wed,  4 May 2022 13:46:56 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D8BB4C046;
+ Wed,  4 May 2022 13:46:53 +0000 (GMT)
+Received: from [9.43.86.197] (unknown [9.43.86.197])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  4 May 2022 13:46:53 +0000 (GMT)
+Message-ID: <731c0038-a14c-8c13-1a98-c07fb0298a84@linux.ibm.com>
+Date: Wed, 4 May 2022 19:16:52 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87fsm7fkbt.fsf@mpe.ellerman.id.au>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 1/2] tools/perf: Add utility function to read
+ /proc/cpuinfo for any field
+Content-Language: en-US
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+ jolsa@kernel.org, disgoel@linux.vnet.ibm.com
+References: <20220428150829.30733-1-atrajeev@linux.vnet.ibm.com>
+ <20220428150829.30733-2-atrajeev@linux.vnet.ibm.com>
+From: kajoljain <kjain@linux.ibm.com>
+In-Reply-To: <20220428150829.30733-2-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Q9NEUHSnl_P29iHQUFxpnqXOWTGc9jOR
+X-Proofpoint-GUID: j6y5ID5sGO_H27CZJ-JvoY2so_6Ukwnn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-04_04,2022-05-04_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1011 malwarescore=0
+ mlxlogscore=999 impostorscore=0 phishscore=0 mlxscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205040086
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,46 +112,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus Walleij <linus.walleij@linaro.org>, linux-kernel@vger.kernel.org,
- Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org, Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 21, 2022 at 08:42:30AM +1000, Michael Ellerman wrote:
-> Linus Walleij <linus.walleij@linaro.org> writes:
-> > On Wed, Apr 6, 2022 at 3:02 PM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> >> On Mon, Mar 28, 2022 at 03:16:08PM +0200, Linus Walleij wrote:
-> >> > On Wed, Mar 23, 2022 at 6:43 PM Andy Shevchenko
-> >> > <andriy.shevchenko@linux.intel.com> wrote:
-> >> >
-> >> > > Let GPIO library to assign of_node from the parent device.
-> >> > > This allows to move GPIO library and drivers to use fwnode
-> >> > > APIs instead of being stuck with OF-only interfaces.
-> >> > >
-> >> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> >> >
-> >> > That's a nice patch.
-> >> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> >>
-> >> Thanks!
-> >>
-> >> Can we have this applied now?
-> >
-> > I think Michael Ellerman could help with this?
-> >
-> > Michael?
+
+
+On 4/28/22 20:38, Athira Rajeev wrote:
+> /proc/cpuinfo provides information about type of processor, number
+> of CPU's etc. Reading /proc/cpuinfo file outputs useful information
+> by field name like cpu, platform, model (depending on architecture)
+> and its value separated by colon.
 > 
-> Yep, I'll pick it up when I start putting things into next.
+> Add new utility function "cpuinfo_field" in "util/header.c" which
+> accepts field name as input string to search in /proc/cpuinfo content.
+> This returns the first matching value as resulting string. Example,
+> calling the function "cpuinfo_field(platform)" in powerpc returns
+> the platform value. This can be used to fetch processor information
+> from "cpuinfo" by other utilities/testcases.
 > 
-> That's usually the week after rc2, but I had a break for Easter.
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/util/header.c | 54 ++++++++++++++++++++++++++++++++++++++++
+>  tools/perf/util/header.h |  1 +
+>  2 files changed, 55 insertions(+)
+> 
+> diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+> index a27132e5a5ef..0c8dfd0c1e78 100644
+> --- a/tools/perf/util/header.c
+> +++ b/tools/perf/util/header.c
+> @@ -983,6 +983,60 @@ static int write_dir_format(struct feat_fd *ff,
+>  	return do_write(ff, &data->dir.version, sizeof(data->dir.version));
+>  }
+>  
+> +/*
+> + * Return entry from /proc/cpuinfo
+> + * indicated by "search" parameter.
+> + */
+> +char *cpuinfo_field(const char *search)
+> +{
+> +	FILE *file;
+> +	char *buf = NULL;
+> +	char *copy_buf = NULL, *p;
+> +	size_t len = 0;
+> +	int ret = -1;
+> +
+> +	if (!search)
+> +		return NULL;
+> +
+> +	file = fopen("/proc/cpuinfo", "r");
+> +	if (!file)
+> +		return NULL;
+> +
+> +	while (getline(&buf, &len, file) > 0) {
+> +		ret = strncmp(buf, search, strlen(search));
+> +		if (!ret)
+> +			break;
+Hi Athira,
+	Do we need ret variable. Since we will come out of the loop only when
+we reach EOF.
 
-Any new on this? I haven't seen it yet in Linux Next.
+> +	}
+> +
+> +	if (ret)
+> +		goto done;
+> +
+> +	/*
+> +	 * Trim the new line and separate
+> +	 * value for search field from ":"
+> +	 * in cpuinfo line output.
+> +	 * Example output line:
+> +	 * platform : <value>
+> +	 */
+> +	copy_buf = buf;
+> +	p = strchr(copy_buf, ':');
+> +	if (p && *(p+1) == ' ' && *(p+2))
 
--- 
-With Best Regards,
-Andy Shevchenko
+
+Can you try using strim instead to remove whitespaces. This function
+will remove leading and trailing whitespaces from the string.
+
+> +		copy_buf = p + 2;
+> +	p = strchr(copy_buf, '\n');
+
+do we need to replace `\n` here ?
 
 
+> +	if (p)
+> +		*p = '\0';
+> +
+> +	/* Copy the filtered string to buf */
+> +	strcpy(buf, copy_buf)
+
+You are initializing buf to NULL. So do we need to do fclose and return
+buf separately here? Can you move free(buf) in above condition and reuse
+`done` code.
+> +
+> +	fclose(file);
+> +	return buf;> +
+> +done:
+> +	free(buf);
+> +	fclose(file);
+> +	return NULL;
+> +}
+>  /*
+>   * Check whether a CPU is online
+>   *
+> diff --git a/tools/perf/util/header.h b/tools/perf/util/header.h
+> index 0eb4bc29a5a4..b0f754364bd4 100644
+> --- a/tools/perf/util/header.h
+> +++ b/tools/perf/util/header.h
+> @@ -166,4 +166,5 @@ int get_cpuid(char *buffer, size_t sz);
+>  
+>  char *get_cpuid_str(struct perf_pmu *pmu __maybe_unused);
+>  int strcmp_cpuid_str(const char *s1, const char *s2);
+> +char *cpuinfo_field(const char *search);
+>  #endif /* __PERF_HEADER_H */
