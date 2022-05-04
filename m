@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1839551ABF0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 19:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A72751AC6B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 May 2022 20:10:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ktl1n6QPHz3bfn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 03:58:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KtlGw6Y5kz3bqB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 04:10:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hG+nzQoX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=il4XHKFt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,40 +17,40 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=hG+nzQoX; 
+ header.s=k20201202 header.b=il4XHKFt; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ktl19277dz3bbp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 03:58:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KtlGK6Yrnz3bhR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 04:09:29 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id B9240618F8;
- Wed,  4 May 2022 17:58:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004B7C385A4;
- Wed,  4 May 2022 17:58:01 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id E720A6198D;
+ Wed,  4 May 2022 18:09:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2671AC385A4;
+ Wed,  4 May 2022 18:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1651687082;
- bh=wzXnasZ78VhWcyWzDggxLS2kE3GV40WE6obISeL6wYw=;
+ s=k20201202; t=1651687767;
+ bh=3kqhCh3SolC+njYvrb7YQlbkMsd43/qschNFbE7v3Ws=;
  h=From:To:Cc:Subject:Date:From;
- b=hG+nzQoXWc8YFm5HbNPZHG2c540IC6LcNVKSfVTopvlcryvURcgSido6nfjjgJFYg
- rz5cOJ/h0cwMlrJXXf2pM1j4PqUD7goQnnu59fBHwwTPF+cv3OQBvbtGg4x12cDgKJ
- qgaiiOdQHBXBYltqiekwvzctrNcGf2x/lOzD72smxbKJYH9F8hsPcE6QNbfaQNfYQA
- AdbuCfPQn1rN/8IB+70Qqag+/mIYM2ZX1bs4oyAhgwav8ZdJ2GW58e+YFdPxm5wP8r
- sZnzqIsiUWWTpJm2W6NV8AznHaV3oK4dhlmpADAHol+sd/OlR5xYb+2PZlmN8Z1pzs
- iAU6MkBMt4WsQ==
+ b=il4XHKFtZrHDm4R3lYlPB+0PXkhshnPKaJhlUEv5+5oFwY8GwlWrgOodHjYI9OSzP
+ uMd5kuvN1bSfQbJM5nzIDpsr2oXt5540xxSoG+3Bym0+CjnPlFZcBhxTcWwokhKJZB
+ SG7uK52bxDbXhk82tr5fbuNS4F6cVWetEWMx+uanTleLnUccgDLYhXf0sLehRvd+mL
+ 2izCqUROVPJMZpGotj5rYScky6sgw+QqMiHS1eGl9iI6tT2dYt0fvJPeliii7CyVEl
+ IsFZQOENiTQ8Hr9dRf+BLmAv9grs6aJOcgGcutV2ynOVCXDGbYa0dIJGEw5iDgNRpN
+ mM7tiaxAAs81w==
 Received: by pali.im (Postfix)
- id 10AEA96D; Wed,  4 May 2022 19:57:59 +0200 (CEST)
+ id 7AA0996D; Wed,  4 May 2022 20:09:24 +0200 (CEST)
 From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH] powerpc/pci: Add config option for using OF 'reg' for PCI
- domain
-Date: Wed,  4 May 2022 19:57:18 +0200
-Message-Id: <20220504175718.29011-1-pali@kernel.org>
+ Paul Mackerras <paulus@samba.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: [PATCH] powerpc/85xx: P2020: Add law_trgt_if property to PCIe DT nodes
+Date: Wed,  4 May 2022 20:08:22 +0200
+Message-Id: <20220504180822.29782-1-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -71,73 +71,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on
-device-tree properties"), powerpc kernel always fallback to PCI domain
-assignment from OF / Device Tree 'reg' property of the PCI controller.
+DT law_trgt_if property defines Local Access Window Target Interface.
 
-PCI code for other Linux architectures use increasing assignment of the PCI
-domain for individual controllers (assign the first free number), like it
-was also for powerpc prior mentioned commit.
+Local Access Window Target Interface is used for identifying individual
+peripheral and mapping its memory to CPU. Interface id is defined by
+hardware itself.
 
-Upgrading powerpc kernels from LTS 4.4 version (which does not contain
-mentioned commit) to new LTS versions brings a regression in domain
-assignment.
+U-Boot uses law_trgt_if DT property in PCIe nodes for configuring memory
+mapping of individual PCIe controllers.
 
-Fix this issue by introducing a new option CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG
-When this options is disabled then powerpc kernel would assign PCI domains
-in the similar way like it is doing kernel for other architectures and also
-how it was done prior that commit.
+Linux kernel fsl_pci.c driver currently does not touch Local Access Window
+and expects that U-Boot configures it properly.
 
-Fixes: 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on device-tree properties")
+Add law_trgt_if property to PCIe DT nodes for P2020. This allows usage of
+kernel P2020 PCIe DT nodes in U-Boot. And therefore allows to share P2020
+DTS files between Linux kernel and U-Boot.
+
 Signed-off-by: Pali Rohár <pali@kernel.org>
 ---
- arch/powerpc/Kconfig             | 10 ++++++++++
- arch/powerpc/kernel/pci-common.c |  4 ++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ arch/powerpc/boot/dts/fsl/p2020si-post.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 174edabb74fa..4dd3e3acddda 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -375,6 +375,16 @@ config PPC_OF_PLATFORM_PCI
- 	depends on PCI
- 	depends on PPC64 # not supported on 32 bits yet
+diff --git a/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi b/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi
+index 884e01bcb243..6345629524fe 100644
+--- a/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi
++++ b/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi
+@@ -48,6 +48,7 @@
+ 	bus-range = <0 255>;
+ 	clock-frequency = <33333333>;
+ 	interrupts = <26 2 0 0>;
++	law_trgt_if = <2>;
  
-+config PPC_PCI_DOMAIN_FROM_OF_REG
-+	bool "Use OF reg property for PCI domain"
-+	depends on PCI
-+	help
-+	  By default PCI domain for host bridge during its registration is
-+	  chosen as the lowest unused PCI domain number.
-+
-+	  When this option is enabled then PCI domain is determined from
-+	  the OF / Device Tree 'reg' property.
-+
- config ARCH_SUPPORTS_UPROBES
- 	def_bool y
+ 	pcie@0 {
+ 		reg = <0 0 0 0 0>;
+@@ -76,6 +77,7 @@
+ 	bus-range = <0 255>;
+ 	clock-frequency = <33333333>;
+ 	interrupts = <25 2 0 0>;
++	law_trgt_if = <1>;
  
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 8bc9cf62cd93..8cb6fc5302ae 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -74,7 +74,6 @@ void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops)
- static int get_phb_number(struct device_node *dn)
- {
- 	int ret, phb_id = -1;
--	u32 prop_32;
- 	u64 prop;
+ 	pcie@0 {
+ 		reg = <0 0 0 0 0>;
+@@ -105,6 +107,7 @@
+ 	bus-range = <0 255>;
+ 	clock-frequency = <33333333>;
+ 	interrupts = <24 2 0 0>;
++	law_trgt_if = <0>;
  
- 	/*
-@@ -83,7 +82,8 @@ static int get_phb_number(struct device_node *dn)
- 	 * reading "ibm,opal-phbid", only present in OPAL environment.
- 	 */
- 	ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
--	if (ret) {
-+	if (ret && IS_ENABLED(CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG)) {
-+		u32 prop_32;
- 		ret = of_property_read_u32_index(dn, "reg", 1, &prop_32);
- 		prop = prop_32;
- 	}
+ 	pcie@0 {
+ 		reg = <0 0 0 0 0>;
 -- 
 2.20.1
 
