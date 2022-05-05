@@ -1,58 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E15851C9AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 21:54:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F04551CBA3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:53:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvPXw71Xjz3c9G
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 05:54:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSBK1s1jz3c9N
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 07:53:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f2fc5oHe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gSD1byPq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=f2fc5oHe; 
- dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=gSD1byPq; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvPXK6Dr5z3bqt
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 05:53:53 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 6D166B82FCE;
- Thu,  5 May 2022 19:53:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68AFC385A4;
- Thu,  5 May 2022 19:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1651780425;
- bh=fYxm3dr57owbquhz9mi2JlUgAayGWIYeuWXgYwjDgu0=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=f2fc5oHeuzoxyJfE63Gjq/EPrO6txRg9hsHH/1s9bcAA7MB9R89IPW2XirzVZc74o
- JfbdqHGn2i9se2injqakFs9sJs55qbPwsXCW7U2z6292nsC5wpjZYOXUad+0rDxqWU
- dBktPS+QUeX5KA0qTdRvD/Jeg8g/VinXCSA1zNxox/sHlz0Qu+HDVGZRGj50as/vwO
- ee4WTtCWIAPTOcKicttAnfNz1to9P/EIAiFFNcHwyePB8PVEBnOd6hroIfxl+9c3Y0
- w8Ysllpp8ZwOIQgubSRRm20/01Cu9xOLyCR6eQMh+KyVf58T4+rzmnxImHp1ouw8wP
- UdmeA6sO/pypA==
-Date: Thu, 5 May 2022 14:53:42 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
- it as necessary
-Message-ID: <20220505195342.GA509942@bhelgaas>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvNGp2zLqz3bql
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 04:57:05 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 245IsCDC021810;
+ Thu, 5 May 2022 18:56:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=XNUaK5MXNumQ2GC419CM2tT56hGe0D54FACFQZzubag=;
+ b=gSD1byPqJD9U14RM7yqXNGjhCvGv5EceJcS49ikn+rpVMYCw5l/cE2/RfhpfxgDrdFXF
+ bkw+3uP6vU/C7MIPvjf+1/BQcDGTmd58m1jCKBcC75Xc3IwagCsVfPCOPegq8b4MZ3p/
+ mQN9mkPuV1Btua3UKzIpudLBdtJkA5WoYucCFThdzTDSpYwo6Nc6tDpcKD+hvfEHi+OM
+ CWja8vfEeVW5JzydzGv1uvP94K0n/yjRgwV8RQXFJagBheg9E5Imh/dRMjKSs9LZirwJ
+ /CWejco2WiCA9LRB8XRjw7cjAD2OqALQniaNM+6CBO4ZnFoxNe9gtVMrz4B16UghR6hV VA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvm92012c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 May 2022 18:56:22 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 245IuAu6029325;
+ Thu, 5 May 2022 18:56:21 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvm92011f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 May 2022 18:56:21 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 245IbA58012918;
+ Thu, 5 May 2022 18:55:39 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 3ftp7fvexe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 May 2022 18:55:39 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 245ItaGm14352888
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 5 May 2022 18:55:36 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B81D11C05B;
+ Thu,  5 May 2022 18:55:36 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6820611C04C;
+ Thu,  5 May 2022 18:55:10 +0000 (GMT)
+Received: from [9.211.36.212] (unknown [9.211.36.212])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  5 May 2022 18:55:10 +0000 (GMT)
+Message-ID: <3c34d8e2-6f84-933f-a4ed-338cd300d6b0@linux.ibm.com>
+Date: Fri, 6 May 2022 00:25:08 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 08/30] powerpc/setup: Refactor/untangle panic notifiers
+Content-Language: en-US
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, akpm@linux-foundation.org,
+ bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-9-gpiccoli@igalia.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <20220427224924.592546-9-gpiccoli@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FmL43udCg7zOaYTyNU5fYcYIiC3L3tsY
+X-Proofpoint-ORIG-GUID: op15TFwB187r4kWWn80Xf8P42QMt9UB1
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a3fmPExr70+fVb564hZdGAuPtYa-QxgMMe5KLpnY_sTrQ@mail.gmail.com>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-05_08,2022-05-05_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0 mlxscore=0
+ mlxlogscore=999 spamscore=0 phishscore=0 suspectscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205050125
+X-Mailman-Approved-At: Fri, 06 May 2022 07:52:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,77 +113,209 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>,
- "open list:IA64 \(Itanium\) PLATFORM" <linux-ia64@vger.kernel.org>,
- "open list:SUPERH" <linux-sh@vger.kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "open list:MIPS" <linux-mips@vger.kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
- "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
- Will Deacon <will@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-pci <linux-pci@vger.kernel.org>, Matt Turner <mattst88@gmail.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
- Niklas Schnelle <schnelle@linux.ibm.com>,
- "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
- Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
- Richard Henderson <rth@twiddle.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
- Borislav Petkov <bp@alien8.de>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org, will@kernel.org,
+ tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
+ mikelley@microsoft.com, john.ogness@linutronix.de, corbet@lwn.net,
+ paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
+ dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
+ linux-pm@vger.kernel.org, coresight@lists.linaro.org,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ bp@alien8.de, Nicholas Piggin <npiggin@gmail.com>, luto@kernel.org,
+ linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org,
+ linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@gpiccoli.net, linux-kernel@vger.kernel.org,
+ stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ vkuznets@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 05, 2022 at 07:39:42PM +0200, Arnd Bergmann wrote:
-> On Thu, May 5, 2022 at 6:10 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Wed, May 04, 2022 at 11:31:28PM +0200, Arnd Bergmann wrote:
-> > >
-> > > The main goal is to avoid c), which is what happens on s390, but
-> > > can also happen elsewhere. Catching b) would be nice as well,
-> > > but is much harder to do from generic code as you'd need an
-> > > architecture specific inline asm statement to insert a ex_table
-> > > fixup, or a runtime conditional on each access.
-> >
-> > Or s390 could implement its own inb().
-> >
-> > I'm hearing that generic powerpc kernels have to run both on machines
-> > that have I/O port space and those that don't.  That makes me think
-> > s390 could do something similar.
+
+
+On 28/04/22 4:19 am, Guilherme G. Piccoli wrote:
+> The panic notifiers infrastructure is a bit limited in the scope of
+> the callbacks - basically every kind of functionality is dropped
+> in a list that runs in the same point during the kernel panic path.
+> This is not really on par with the complexities and particularities
+> of architecture / hypervisors' needs, and a refactor is ongoing.
 > 
-> No, this is actually the current situation, and it makes absolutely no
-> sense. s390 has no way of implementing inb()/outb() because there
-> are no instructions for it and it cannot tunnel them through a virtual
-> address mapping like on most of the other architectures. (it has special
-> instructions for accessing memory space, which is not the same as
-> a pointer dereference here).
+> As part of this refactor, it was observed that powerpc has 2 notifiers,
+> with mixed goals: one is just a KASLR offset dumper, whereas the other
+> aims to hard-disable IRQs (necessary on panic path), warn firmware of
+> the panic event (fadump) and run low-level platform-specific machinery
+> that might stop kernel execution and never come back.
 > 
-> The existing implementation gets flagged as a NULL pointer dereference
-> by a compiler warning because it effectively is.
+> Clearly, the 2nd notifier has opposed goals: disable IRQs / fadump
+> should run earlier while low-level platform actions should
+> run late since it might not even return. Hence, this patch decouples
+> the notifiers splitting them in three:
+> 
+> - First one is responsible for hard-disable IRQs and fadump,
+> should run early;
+> 
+> - The kernel KASLR offset dumper is really an informative notifier,
+> harmless and may run at any moment in the panic path;
+> 
+> - The last notifier should run last, since it aims to perform
+> low-level actions for specific platforms, and might never return.
+> It is also only registered for 2 platforms, pseries and ps3.
+> 
+> The patch better documents the notifiers and clears the code too,
+> also removing a useless header.
+> 
+> Currently no functionality change should be observed, but after
+> the planned panic refactor we should expect more panic reliability
+> with this patch.
+> 
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-I think s390 currently uses the inb() in asm-generic/io.h, i.e.,
-"__raw_readb(PCI_IOBASE + addr)".  I understand that's a NULL pointer
-dereference because the default PCI_IOBASE is 0.
+The change looks good. I have tested it on an LPAR (ppc64).
 
-I mooted a s390 inb() implementation like "return ~0" because that's
-what happens on most arches when there's no device to respond to the
-inb().
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 
-The HAS_IOPORT dependencies are fairly ugly IMHO, and they clutter
-drivers that use I/O ports in some cases but not others.  But maybe
-it's the most practical way.
-
-Bjorn
+> ---
+> 
+> We'd like to thanks specially the MiniCloud infrastructure [0] maintainers,
+> that allow us to test PowerPC code in a very complete, functional and FREE
+> environment (there's no need even for adding a credit card, like many "free"
+> clouds require ¬¬ ).
+> 
+> [0] https://openpower.ic.unicamp.br/minicloud
+> 
+>   arch/powerpc/kernel/setup-common.c | 74 ++++++++++++++++++++++--------
+>   1 file changed, 54 insertions(+), 20 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+> index 518ae5aa9410..52f96b209a96 100644
+> --- a/arch/powerpc/kernel/setup-common.c
+> +++ b/arch/powerpc/kernel/setup-common.c
+> @@ -23,7 +23,6 @@
+>   #include <linux/console.h>
+>   #include <linux/screen_info.h>
+>   #include <linux/root_dev.h>
+> -#include <linux/notifier.h>
+>   #include <linux/cpu.h>
+>   #include <linux/unistd.h>
+>   #include <linux/serial.h>
+> @@ -680,8 +679,25 @@ int check_legacy_ioport(unsigned long base_port)
+>   }
+>   EXPORT_SYMBOL(check_legacy_ioport);
+>   
+> -static int ppc_panic_event(struct notifier_block *this,
+> -                             unsigned long event, void *ptr)
+> +/*
+> + * Panic notifiers setup
+> + *
+> + * We have 3 notifiers for powerpc, each one from a different "nature":
+> + *
+> + * - ppc_panic_fadump_handler() is a hypervisor notifier, which hard-disables
+> + *   IRQs and deal with the Firmware-Assisted dump, when it is configured;
+> + *   should run early in the panic path.
+> + *
+> + * - dump_kernel_offset() is an informative notifier, just showing the KASLR
+> + *   offset if we have RANDOMIZE_BASE set.
+> + *
+> + * - ppc_panic_platform_handler() is a low-level handler that's registered
+> + *   only if the platform wishes to perform final actions in the panic path,
+> + *   hence it should run late and might not even return. Currently, only
+> + *   pseries and ps3 platforms register callbacks.
+> + */
+> +static int ppc_panic_fadump_handler(struct notifier_block *this,
+> +				    unsigned long event, void *ptr)
+>   {
+>   	/*
+>   	 * panic does a local_irq_disable, but we really
+> @@ -691,45 +707,63 @@ static int ppc_panic_event(struct notifier_block *this,
+>   
+>   	/*
+>   	 * If firmware-assisted dump has been registered then trigger
+> -	 * firmware-assisted dump and let firmware handle everything else.
+> +	 * its callback and let the firmware handles everything else.
+>   	 */
+>   	crash_fadump(NULL, ptr);
+> -	if (ppc_md.panic)
+> -		ppc_md.panic(ptr);  /* May not return */
+> +
+>   	return NOTIFY_DONE;
+>   }
+>   
+> -static struct notifier_block ppc_panic_block = {
+> -	.notifier_call = ppc_panic_event,
+> -	.priority = INT_MIN /* may not return; must be done last */
+> -};
+> -
+> -/*
+> - * Dump out kernel offset information on panic.
+> - */
+>   static int dump_kernel_offset(struct notifier_block *self, unsigned long v,
+>   			      void *p)
+>   {
+>   	pr_emerg("Kernel Offset: 0x%lx from 0x%lx\n",
+>   		 kaslr_offset(), KERNELBASE);
+>   
+> -	return 0;
+> +	return NOTIFY_DONE;
+>   }
+>   
+> +static int ppc_panic_platform_handler(struct notifier_block *this,
+> +				      unsigned long event, void *ptr)
+> +{
+> +	/*
+> +	 * This handler is only registered if we have a panic callback
+> +	 * on ppc_md, hence NULL check is not needed.
+> +	 * Also, it may not return, so it runs really late on panic path.
+> +	 */
+> +	ppc_md.panic(ptr);
+> +
+> +	return NOTIFY_DONE;
+> +}
+> +
+> +static struct notifier_block ppc_fadump_block = {
+> +	.notifier_call = ppc_panic_fadump_handler,
+> +	.priority = INT_MAX, /* run early, to notify the firmware ASAP */
+> +};
+> +
+>   static struct notifier_block kernel_offset_notifier = {
+> -	.notifier_call = dump_kernel_offset
+> +	.notifier_call = dump_kernel_offset,
+> +};
+> +
+> +static struct notifier_block ppc_panic_block = {
+> +	.notifier_call = ppc_panic_platform_handler,
+> +	.priority = INT_MIN, /* may not return; must be done last */
+>   };
+>   
+>   void __init setup_panic(void)
+>   {
+> +	/* Hard-disables IRQs + deal with FW-assisted dump (fadump) */
+> +	atomic_notifier_chain_register(&panic_notifier_list,
+> +				       &ppc_fadump_block);
+> +
+>   	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && kaslr_offset() > 0)
+>   		atomic_notifier_chain_register(&panic_notifier_list,
+>   					       &kernel_offset_notifier);
+>   
+> -	/* PPC64 always does a hard irq disable in its panic handler */
+> -	if (!IS_ENABLED(CONFIG_PPC64) && !ppc_md.panic)
+> -		return;
+> -	atomic_notifier_chain_register(&panic_notifier_list, &ppc_panic_block);
+> +	/* Low-level platform-specific routines that should run on panic */
+> +	if (ppc_md.panic)
+> +		atomic_notifier_chain_register(&panic_notifier_list,
+> +					       &ppc_panic_block);
+>   }
+>   
+>   #ifdef CONFIG_CHECK_CACHE_COHERENCY
