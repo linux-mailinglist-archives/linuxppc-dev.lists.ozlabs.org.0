@@ -1,179 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0095F51CD04
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 01:55:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499DA51CD2F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 01:59:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvVtl13cRz3bym
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 09:55:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvVzY15Dtz3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 09:59:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=NPsXpnRb;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=PCPFOcR+;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K6vOm0+T;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=205.220.177.32;
- helo=mx0b-00069f02.pphosted.com; envelope-from=mike.kravetz@oracle.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2021-07-09 header.b=NPsXpnRb; 
- dkim=pass (1024-bit key;
- unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
- header.b=PCPFOcR+; dkim-atps=neutral
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com
- [205.220.177.32])
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=K6vOm0+T; dkim-atps=neutral
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVsw64hmz3050
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:54:24 +1000 (AEST)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 245LD91r026132;
- Thu, 5 May 2022 23:53:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2021-07-09;
- bh=A9+wXYUYyUAGlF0mbEuM+sIc/r/G9bD7HU7dyO9Lgpk=;
- b=NPsXpnRbFZ2cqnmvcfNd7Vo7NR8COb8sN7r9L1iVAjQyG2fn7PnR18mAMF8+/bKrYCe1
- sCf23FEE2+xnhf1H0YzDYRwIYDFKl8JT2jzGxsGs6L9Aomxsy0flQ24tPd8VZ6BfuJIk
- 9rjIo/2gac37o7DqzexDd+o9MrqkIfblAwUkz4FTGhFYkNcsIxIq8FH47SdvxKSIpQgT
- gNYdXEe0qH4eYx7+OK3r0j5X45Uw37O2JWwvOFqCVyh7rvIGymVCpTj5l7ncA7rVkzi1
- Ii2Lf2kNK5RIRGT9jgS42h71f4QB6WSv3ByqZcIMXvRtuk2XJA2ndcGm4260sCVJ7aq1 SQ== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3fruhcch99-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 05 May 2022 23:53:41 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.16.1.2/8.16.1.2)
- with SMTP id 245Nj2Nf017161; Thu, 5 May 2022 23:53:40 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id
- 3frujbc8fg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 05 May 2022 23:53:40 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DzDzLX4zeGK99M2hgjcxEU+riDLZKMbl+XZHNwn86KNj4XZDN3JyV90UdVQrc1UN1mx+24GgsCS5Vz7cVlH/YIWM58tif5GBOUv1hPyBBZaqBn4btzHruuwFVxu63LtObYD0qpI/pj0PaQBl9peHRY3Sfm8r6My0Qn/sOhfPRtpRg8bt6uIEXcSrPzsKibDrfHQld79DJvhj9HC7X3XanuIbYBD9v24jUm26Oh5143Z4IudZEd5/+GiPekQ2df2dI5zHimX/HlErFq5+rHqr9jrjCOY5ASC/OpSmKtd32KFIMBaUrFSS+N0MACfOjfgnJiU1wr3z9DPuFJT0EvgItg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=A9+wXYUYyUAGlF0mbEuM+sIc/r/G9bD7HU7dyO9Lgpk=;
- b=ErvhFWgq5qOuoWZ7GQyiJJDQKBYld6we/cAJBfZdg42wbN+gFrYdJFCm6tbGap11D/b4ffyXIAP/fbo7ucWB/O2ca0eMp2H7w6m4EZK1OCeGIzNB3JraE306FJy61TkrgG7rW0LSndQZpUqFhBABPI4Onf7+agm+Z4UnR+A9+OhnfP/qddru6mHSU0wXJeyMrAS4TbkzJ25l3l3COtLOc8vmJfUAtMDku0rfthUaFxdRvlDpBohVOP9w576xEe4DOW433qQu3htMkZ7+duOv73010h30PAob5mGwfKIxa23+PlicNnjGsnfJLc+/oUqBUckNW7lCQi69W6eoqk4x9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=A9+wXYUYyUAGlF0mbEuM+sIc/r/G9bD7HU7dyO9Lgpk=;
- b=PCPFOcR+60YMBlMgjAEDFOCLqDKzdHhHUtUfYfQXRqO7lYmZWBNwvegQG8J1DMgzY0Es34exGkbumcukuc7nWG0u3bwUwnZl2bXxH4MFdFwrGGpWllNVwmWrp2DuYW/qxi9AUuDtcV5MzfYRex7E9rwSr2rmZK9SGt2mCXFK9UQ=
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com (2603:10b6:a03:20d::23)
- by DM6PR10MB3833.namprd10.prod.outlook.com (2603:10b6:5:1d2::33) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5206.25; Thu, 5 May
- 2022 23:53:38 +0000
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::9d76:7926:9b76:f461]) by BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::9d76:7926:9b76:f461%7]) with mapi id 15.20.5206.024; Thu, 5 May 2022
- 23:53:38 +0000
-Message-ID: <5cab0eca-9630-a7c6-4f5d-5cb45ff82c83@oracle.com>
-Date: Thu, 5 May 2022 16:53:35 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- migration
-Content-Language: en-US
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, will@kernel.org
-References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
- <11b92502b3df0e0bba6a1dc71476d79cab6c79ba.1651216964.git.baolin.wang@linux.alibaba.com>
-From: Mike Kravetz <mike.kravetz@oracle.com>
-In-Reply-To: <11b92502b3df0e0bba6a1dc71476d79cab6c79ba.1651216964.git.baolin.wang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0390.namprd04.prod.outlook.com
- (2603:10b6:303:81::35) To BY5PR10MB4196.namprd10.prod.outlook.com
- (2603:10b6:a03:20d::23)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e82b4d86-edaf-45f4-aaf8-08da2ef279aa
-X-MS-TrafficTypeDiagnostic: DM6PR10MB3833:EE_
-X-Microsoft-Antispam-PRVS: <DM6PR10MB3833F118C4D75E89DD34E9D7E2C29@DM6PR10MB3833.namprd10.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: bnkD5keNChWMxZ9gCa6gI9MwwqVTC/KboBefSOEkshNrw9xKbeMD7como7mTxxl8JBRA0a589vu6N3PwJta0VyNGOZ6xTMDJGqalkUZRkvRCbNglbSLla3QapFBaALgZEmXyzunOVT1UfwNU4hQSkmWgEumUsxr2kgJrDmSpY2uq8uBSN/HfrzAnN1OZaOgHkN55joMF81PqarrjDxB2upvXAm3DlaghVcZzu3Rtm+QS/R6aUU6yTRIoraILiVrZh/lZfXchlSr+OuVTldoVNQm2WQF0Orjb2nsjuqlFg/huBHs16XTQof5I31PHzCLWMLhZkQECaiNjzLmQRGHjNTrDebzLPcY26vRUD4Y7POpxWsNjpwHuV+27gnqNiUR2cO7NCfpCUeyRKmyfGsYwGnWvNYAMb/VK2rizSPe3bq/KST80n9GDb4oWjeN6zU1qbTL9aVPVhgf2PqtEAOPgF2HPccKTz3nMpS4v6jvBB4J6XbAiSIefXmu+MdswiS+Q74EVyfbj3y69FnJdzA2442BUVxGE5H43dOG5aK0RPd9ZYJeQPT3IUoqBq2Yxdcabg81HiTNVbkqsOb7shiB73eDuz09gJxeZthxFa6Be1urDDU7nemWmw2o9W81wEMd8k35zw/H+vbIC9XpNe4kjZmBM18/8aKuxI5c+y6OroVwPF1PZGg61q/tA+qjhIEpPvZLnmZox4ISQoNA4+V0/9hTeUaXz3M0QsD9zs3sA6F+DZ4cifxo2onp+P/cYO6DS
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BY5PR10MB4196.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(366004)(7406005)(508600001)(5660300002)(7416002)(44832011)(6486002)(66476007)(8936002)(36756003)(2906002)(31686004)(316002)(8676002)(66556008)(4326008)(66946007)(6512007)(2616005)(6666004)(26005)(52116002)(186003)(53546011)(6506007)(38100700002)(31696002)(38350700002)(86362001)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TXZPY3NHMjQ4L3B5c2x6NlpwaitMeVZRZTZmb0dTR2ZTbzJVaGZYNFZLSGFr?=
- =?utf-8?B?Q1Y0Nndqc0hqTjlkNjUvZEgyeE1SNGtsdExOWk5MRTArN2h5aWlBY1hGL2x0?=
- =?utf-8?B?ejBtK3RZUEJmdjNTM3BFTWxaU2U2N2F2VjRUMW5iSExKci8vdkRIVkNGeWdo?=
- =?utf-8?B?MDZacmlxTU8xVGRYb043Q3ZSem9OSCtCOTg4UU1iOE5tMUU2NUVFaU9hVWRn?=
- =?utf-8?B?NUYvMHQ4bWxYaVZhcWxDWlF5WmZwRFoxNWtrL3EyOUx0ZlVWOEVEcmUrSE5h?=
- =?utf-8?B?bmxmWXYxejJMVzRQVHhMQWkrZVRSamtEYUV1ZkZVR3l5T2l3Miswai9jRXh2?=
- =?utf-8?B?ZWZVR0hlL21jdkVuZURuVWE2andMeFh0aXowdGFEQytiM20yYkZEMU1TZ2Qw?=
- =?utf-8?B?Y2ppYi94SmRVY1pNUFd5QnVrYTQycHRhR1E0Sy9memNuQ3JZY0o1NVBqUW1q?=
- =?utf-8?B?dmFoeDhsZlF4TThXK0pUdkVFbUJHYlF6cVY4eURnUjhXMVhnQU9FRlB1dkl2?=
- =?utf-8?B?TlFvdjIyeE1td3B2R01LcmwxTVBUbXZIT3U1Wm9CUHVzdS9lc2tYeWJBWGxq?=
- =?utf-8?B?RW1WNlZqcWtXU0NNWFIzTzdSdEt0WldicFFCZ1V3dWJHbGhVN25maGlrTldU?=
- =?utf-8?B?aVM4T2ZFVndKcmpOSXpLUlFWQW84UG8zcWt0WGFRNFhzLzhESkxpeGVpd3Jx?=
- =?utf-8?B?QVU5K2JYcHhlTjdkWnE1TFQ5REwrdTNQbU41aHRVOVZaaW9HeUZzdVJOeGRK?=
- =?utf-8?B?QWtEcFp4WkZlbEh2RjVNSk9Bc3h3QTJoK0FvUmJvbG9lUTdSK29pQmJMbHl4?=
- =?utf-8?B?dHVGR0lEVFhKdmx0bEl5SlErR21lZ2Y4Y2lqd2dxVytmczJ3bGQycnRQeVJz?=
- =?utf-8?B?VUhXaUZCT3VoekJTT0hVaU1ZRVFZblhnNVhPREJrRlFjTGtEWndHRTVRc1V0?=
- =?utf-8?B?SFF2TXFuREtjZE94ZGVlN25SRG8rcFN2cmUrcUxXMnpNTHQyM2dVc0Z4Ullh?=
- =?utf-8?B?Vjd1eW5NNVJiRXI4cXNPRThMNmNSQUhjUnlSY1ZmcjVBRlNDUDBVUmdVK3Zn?=
- =?utf-8?B?Y3l6cnFFWk42Y1FwUUJGOXdOWW5IN3FVWEl1ellVYTVRa3M4ODQyTXJjNkVs?=
- =?utf-8?B?MExKSkwvRmdpK1kwWDhwWllrMzJJbXg4THBvUVZBRmxoOURYWllTR0drV2Jk?=
- =?utf-8?B?Z2lYVmFxNDdMTWsxbGZVVVZNc1RmdkZpWVFJU2xHZFdoazNqczhya0lqeEtk?=
- =?utf-8?B?aUEzMmNoY3c2ZzgzQjg5dGw4QjFGeUJ3SFEvMFh6QzZGdjM4eXB4K0JUOHND?=
- =?utf-8?B?Yjd0THRuclU3ZXJ0bms2cCtqL213ZnVVbEMzWVBpcnhrMUtLd3lROW4xeFdD?=
- =?utf-8?B?VU5QWG9tQm9nb0VQOXE2cnV6Njd1WU4yN2Njc2wzZGpiNW5iME9iRjIrOFRq?=
- =?utf-8?B?WEdIZWE5T09FaTBwS24wNWdBdHpmYjdSSHpCUURFTk1pN1N5QUhhUjhNbito?=
- =?utf-8?B?eENlbXVaV05BOVR4K3RnOHpvc1hkZGNudnltUVBTSGtvcmt0N0dGcDNsSXh4?=
- =?utf-8?B?WGFVckE2TjhHN3REaFJIdkNVTlVvQlRENDlRcVBCWUhVQnN6S1hTbkd3b0Z5?=
- =?utf-8?B?ZE5pb1BtenF0dVhXYjdRWVpoVDlNRjlRZVN2azVIbDlGWWhJTC8zY09TT3cv?=
- =?utf-8?B?QmNPREZZVXp2Q1hHMzk1c0VOVVBaZExDczZ5MWRrbnd5QW1NMEZZZnFKMGZX?=
- =?utf-8?B?cHNJK0dwMFAxL0x4WERVcmduY29mZVJTZE1SajRPZVFpRUZFdXh3empvSzA1?=
- =?utf-8?B?dEx4SjZ5bnFwWlcxQlRzT2VyU2J2eGlyT3BQYTRFM2FsUlRIQ21aU2NEMSto?=
- =?utf-8?B?bjZNQ3pJQU5mcEdGNUhSWjdJQkhkc3BnaHVqMmdwdlcwRmtvMlZOblBWRDBi?=
- =?utf-8?B?dGhQRFFVRVF0YnpKZnA5MzRGRHFFakpkMXRrSEtpY0JFMFV5ZUozZXNDcGty?=
- =?utf-8?B?d2RwMXg3ZHBTK1lFcDk4a1N0QzEvcmtpdDlCTnJreDMzalRhbzNDTnduTFZa?=
- =?utf-8?B?RnBRTURlWU1veGlZR3VnQWZzRG9yZ3N4M0lydkl1dW5sSlN6b1lCTUNlTTJB?=
- =?utf-8?B?N3ZlaGE3cnJuRFovSnJkem1BS0VVNUpIQ1BQYzlOV0tkMjJqUC9VUm5XNXht?=
- =?utf-8?B?RkRaems2Nmg0QndDQkVEcHk1eHpGL1BmVG5vcTVScWs3ZG9mdXQ2K0NkVkN2?=
- =?utf-8?B?L1ZjdWNsNm1zWHdFUEx6d3ZXQ2VBRGF1K0lQV1RmSVJKTFZ6eVdzRDN2bjl0?=
- =?utf-8?B?dFRhU0xabTJVVmUvaFdhQU1sSldudHZIb2NlZldjckdRQjgwdlJFbmJPZDBP?=
- =?utf-8?Q?J6UxcxvKUEswB6GA=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e82b4d86-edaf-45f4-aaf8-08da2ef279aa
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB4196.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2022 23:53:38.8130 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E5T7WMELgiLbaPMEVV9E0tFeZALiNTF08+yfO3IaMZBzDpoDCwOYIu+qshuU7Fw/eSXQrwngK7bFqxiIWtEl2g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB3833
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.486, 18.0.858
- definitions=2022-05-05_10:2022-05-05,
- 2022-05-05 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxscore=0 adultscore=0
- bulkscore=0 suspectscore=0 mlxlogscore=817 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2205050150
-X-Proofpoint-GUID: VzSeLcTGNL8M4sL4QLvtS66MJppnyJ8Y
-X-Proofpoint-ORIG-GUID: VzSeLcTGNL8M4sL4QLvtS66MJppnyJ8Y
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVz02Z4wz2xC3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:58:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1651795132; x=1683331132;
+ h=from:to:cc:subject:date:message-id;
+ bh=soIVEyz4ojmtua+pu1aPxNtiC16PkqYVN1dD4v1+Mno=;
+ b=K6vOm0+TBehJ2CQeS0FAu3nPvMtLiLZF74ugExgRBFc3P7q+lzRRyIEI
+ xQgcLZkGCIINz9twUowe2n8YP1vI5lucgHKTY/q9kodBveuCCfmMUgX5y
+ 8JHo2PzKtq927wCFaTqJvu3jfgN0/QKcXF8pzckNevd+Oi4Xfbz5S0SyX
+ /03IIDisKNnLpbEHk+ULXEYwsWafGyHPkrO3Uc2le/qch8R+a66j4Qiw4
+ ivUiFqd0wMICV8J/2o5D+duk8nT77jHb3JerF4LFb59vPUqzV6GMFyzWa
+ faeYOvscMsHQtAv3KS8yWmsDVrI+Um8LnDHNb+OF/jG88UWj+nwBlEL/l g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437279"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437279"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 May 2022 16:57:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914315"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+ by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:43 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	x86@kernel.org
+Subject: [PATCH v6 00/29] x86: Implement an HPET-based hardlockup detector
+Date: Thu,  5 May 2022 16:59:39 -0700
+Message-Id: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -185,63 +62,485 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
- agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- arnd@arndb.de, ysato@users.sourceforge.jp, deller@gmx.de,
- borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com,
- linux-arm-kernel@lists.infradead.org, tsbogend@alpha.franken.de,
- linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, svens@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+ Andi Kleen <ak@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Joerg Roedel <joro@8bytes.org>, Ricardo Neri <ricardo.neri@intel.com>,
+ Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Tony Luck <tony.luck@intel.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/29/22 01:14, Baolin Wang wrote:
-> On some architectures (like ARM64), it can support CONT-PTE/PMD size
-> hugetlb, which means it can support not only PMD/PUD size hugetlb:
-> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
-> size specified.
-<snip>
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 6fdd198..7cf2408 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1924,13 +1924,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->  					break;
->  				}
->  			}
-> +
-> +			/* Nuke the hugetlb page table entry */
-> +			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->  		} else {
->  			flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
-> +			/* Nuke the page table entry. */
-> +			pteval = ptep_clear_flush(vma, address, pvmw.pte);
->  		}
->  
+Hi,
 
-On arm64 with CONT-PTE/PMD the returned pteval will have dirty or young set
-if ANY of the PTE/PMDs had dirty or young set.
+This is the sixth version of this patchset. It again took me a while to
+post this version as I have been working on other projects and implemented
+major reworks in the series.
 
-> -		/* Nuke the page table entry. */
-> -		pteval = ptep_clear_flush(vma, address, pvmw.pte);
-> -
->  		/* Set the dirty flag on the folio now the pte is gone. */
->  		if (pte_dirty(pteval))
->  			folio_mark_dirty(folio);
-> @@ -2015,7 +2017,10 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->  			pte_t swp_pte;
->  
->  			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
-> -				set_pte_at(mm, address, pvmw.pte, pteval);
-> +				if (folio_test_hugetlb(folio))
-> +					set_huge_pte_at(mm, address, pvmw.pte, pteval);
+This work has gone through several versions. I have incorporated feedback
+from Thomas Gleixner and others. Many of the patches have review tags (the
+patches for arch/x86 have review tags from the trusted x86 reviewers).
+I believe it is ready for review by the x86 maintainers. Thus, I have
+dropped the RFC qualifier.
 
-And, we will use that pteval for ALL the PTE/PMDs here.  So, we would set
-the dirty or young bit in ALL PTE/PMDs.
+I would especially appreciate review from the IOMMU experts on the patches
+for the AMD IOMMU (patches 11-13) and from the powerpc experts on the
+refactoring of the generic hardlockup detector (patches 18-20, 24, 28).
 
-Could that cause any issues?  May be more of a question for the arm64 people.
+Also, I observed the error in the expected TSC value has its largest value
+when the system just booted. Afterwards, the error becomes very small. In
+this version allows a larger than necessary error. I also would appreciate
+feedback on this particular. Perhaps the system can switch to this detector
+after boot and free up the PMU counters. Please see the Testing section for
+details.
+
+Previous version of the patches can be found in [1], [2], [3], [4], and
+[5]. Also, thanks to Thomas' feedback, this version handles the changes to
+the interrupt subsystem more cleanly and therefore it is not necessary to
+handle interrupt remapping separately [6] as in the last version.
+
+For easier review, please refer to the changelog below for a list of
+unchanged, updated, and new patches.
+
+== Problem statement
+
+In CPU architectures that do not have an non-maskable (NMI) watchdog, one
+can be constructed using any resource capable of issuing NMIs. In x86,
+this is done using a counter (one per CPU) of the Performance Monitoring
+Unit (PMU). PMU counters, however, are scarce and used mainly to profile
+workloads. Using them for the NMI watchdog is an overkill.
+
+Moreover, since the counter that the NMI watchdog uses cannot be shared
+with any other perf users, the current perf-event subsystem may return a
+false positive when validating certain metric groups. Certain metric groups
+may never get a chance to be scheduled [7], [8].
+
+== Description of the detector
+
+Unlike the perf-based hardlockup detector, this implementation is driven by
+a single source of NMIs: an HPET channel. One of the CPUs that the
+hardlockup detector monitors handles the HPET NMI. Upon reception, it
+issues a shorthand IPI to the rest of the CPUs. All CPUs will get the NMI,
+but only those online and being monitored will look for hardlockups.
+
+The time-stamp counter (TSC) is used to determine whether the HPET caused
+the NMI. When the HPET channel fires, we compute the value the TSC is
+expected to have the next time it fires. Once it does, we read the actual
+TSC value. If it falls within a small error window, we determine that the
+HPET channel issued the NMI. I have found experimentally that the expected
+TSC value consistently has an error of less than 0.2% (see further details
+in the Testing section).
+
+A side effect of using this detector is that in a kernel configured with
+NO_HZ_FULL, the CPUs specified in the nohz_full command-line argument would
+also receive the NMI IPI (but they would not look for hardlokcups). Thus,
+this hardlockup detector is an opt-in feature.
+
+This detector cannot be used on systems that disable the HPET, unless it is
+force-enabled.
+
+On AMD systems with interrupt remapping enabled, the detector can only be
+used in APIC physical mode (see patch 12).
+
+== Main updates in this version
+
+Thomas Gleixner pointed out several design issues:
+
+   1) In previous versions, the HPET channel targeted individual CPUs in a
+      round-robin manner. This required changing the affinity of the NMI.
+      Doing this with interrupt remapping is not feasible since there is
+      not an atomic, lock-less way of updating an IRTE in the interrupt
+      remapping domain.
+        + Solution: In this version, the affinity of the HPET timer never
+          changes while it is in operation. When a change in affinity is
+          needed (e.g., the handling CPU is going offline or stops being
+          monitored), the detector is disabled first.
+
+   2) In previous versions, I issued apic::send_IPI_mask_allbutself() to
+      trigger a hardlockup check on the monitored CPUs. This does not work
+      as the target cpumask and the contents of the APIC ICR would be
+      corrupted [9].
+        + Solution: Only use this detector when IPI shorthands [10] are
+          enabled in the system.
+
+   3) In previous versions, I added checks in the interrupt remapping
+      drivers checks to identify the HPET hardlockup detector IRQ and
+      changed its delivery mode. This looked hacky [11].
+        + Solution: As per suggestion from Thomas, I added an
+          X86_IRQ_ALLOC_AS_NMI to be used when allocating IRQs. Every
+          irq_domain in the IRQ hierarchy will configure the delivery mode
+          of the IRQ as specified in the IRQ config info.
+
+== Parts of this series ==
+
+For clarity, patches are grouped as follows:
+
+ 1) IRQ updates: Patches 1-13 refactor parts of the interrupt subsystem
+    and irq_chips to support separate delivery mode of each IRQ.  Thus,
+    specific IRQs can now be configured as NMIs as needed.
+
+ 2) HPET updates. Patches 14-17 prepare the HPET code to accommodate the
+    new detector: rework periodic programming, reserve and configure a
+    timer for the detector and expose a few existing functions.
+
+ 3) NMI watchdog. Patches 18-21 update the existing hardlockup detector
+    to uncouple it from perf, and introduces a new NMI handler category
+    intended to run after the NMI_LOCAL handlers.
+
+ 4) New HPET-based hardlockup detector. Patches 22-25
+
+ 5) Hardlockup detector management. Patches 26-29 are a collection of
+    miscellaneous patches to determine when to use the HPET hardlockup
+    detector and stop it if necessary. It also includes an x86-specific
+    shim hardlockup detector that selects between the perf- and hpet-based
+    implementations. It also switches back to the perf implementation if
+    the TSC becomes unstable.
+
+== Testing ==
+
+Tests were conducted on the master branch of the tip tree and are
+available here:
+
+git@github.com:ricardon/tip.git rneri/hpet-wdt-v6
+
++++ Tests for functional correctness
+
+I tested this series in a variety of server parts: Intel's Sapphire Rapids,
+Cooperlake, Icelake, Cascadelake, Snowridge, Skylake, Haswell, Broadwell,
+and IvyTown as well as AMD's Rome.
+
+I also tested the series in desktop parts such as Alderlake and Haswell,
+but had to use hpet=force in the command line.
+
+On these systems, the detector works with and without interrupt remapping,
+in both APIC physical and logical destination modes.
+
+I used the test_lockup kernel module to ensure that the hardlockups were
+detected:
+
+$ echo 10 > /proc/sys/kernel/watchdog_thresh
+$ modprobe test_lockup time_secs=20 iterations=1 state=R disable_irq
+
+Warnings in dmesg indicate that the hardlockup was detected.
+
++++ Characterization of the actual TSC value wrt to its expected value
+
+(NOTE: This same data is also presented in patch 23)
+
+Let tsc_delta be the difference between the value the TSC has now and the
+value it will have when the next HPET channel interrupt happens. Define the
+error window as a percentage of tsc_delta.
+
+Below is a table that characterizes the error in the error in the expected
+TSC value when the HPET channel fires in a subset of the systems I tested.
+It presents the error as a percentage of tsc_delta and in microseconds.
+
+The table summarizes the error of 4096 interrupts of the HPET channel
+collected after the system has been up for 5 minutes as well as since boot.
+
+The maximum observed error on any system is 0.045%. When the error since
+boot is considered, the maximum observed error is 0.198%.
+
+To find the most common error value (i.e., the mode), the collected data is
+grouped into buckets of 0.000001 percentage points of the error and 10ns,
+respectively. The most common error on any system is of 0.01317%
+
+watchdog_thresh     1s                10s                 60s
+Error wrt
+expected
+TSC value     %        us         %        us        %        us
+
+AMD EPYC 7742 64-Core Processor
+Abs max
+since boot 0.04517   451.74    0.00171   171.04   0.00034   201.89
+Abs max    0.04517   451.74    0.00171   171.04   0.00034   201.89
+Mode       0.00002     0.18    0.00002     2.07  -0.00003   -19.20
+
+Intel(R) Xeon(R) CPU E7-8890 - INTEL_FAM6_HASWELL_X
+abs max
+since boot 0.00811    81.15    0.00462   462.40   0.00014    81.65
+Abs max    0.00811    81.15    0.00084    84.31   0.00014    81.65
+Mode      -0.00422   -42.16   -0.00043   -42.50  -0.00007   -40.40
+
+Intel(R) Xeon(R) Platinum 8170M CPU @ 2.10GHz - INTEL_FAM6_SKYLAKE_X
+Abs max
+since boot 0.10530  1053.04    0.01324  1324.27   0.00407  2443.25
+Abs max    0.01166   116.59    0.00114   114.11   0.00024   143.47
+Mode      -0.01023  -102.32   -0.00103  -102.44  -0.00022  -132.38
+
+Intel(R) Xeon(R) CPU E5-2699A v4 @ 2.40GHz - INTEL_FAM6_BROADSWELL_X
+Abs max
+since boot 0.00010    99.34    0.00099    98.83   0.00016    97.50
+Abs max    0.00010    99.34    0.00099    98.83   0.00016    97.50
+Mode      -0.00007   -74.29   -0.00074   -73.99  -0.00012   -73.12
+
+Intel(R) Xeon(R) Gold 5318H CPU - INTEL_FAM6_COOPERLAKE_X
+Abs max
+since boot 0.11262  1126.17    0.01109  1109.17   0.00409  2455.73
+Abs max    0.01073   107.31    0.00109   109.02   0.00019   115.34
+Mode      -0.00953   -95.26   -0.00094   -93.63  -0.00015   -90.42
+
+Intel(R) Xeon(R) Platinum 8360Y CPU @ 2.40GHz - INTEL_FAM6_ICELAKE_X
+Abs max
+since boot 0.19853  1985.30    0.00784   783.53  -0.00017  -104.77
+Abs max    0.01550   155.02    0.00158   157.56   0.00020   117.74
+Mode      -0.01317  -131.65   -0.00136  -136.42  -0.00018  -105.06
+
+Thanks and BR,
+Ricardo
+
+== Changelog ==
+
+Changes since v5:
+ + Unchanged patches: 14, 15, 18, 19, 24, 25, 28
+ + Updated patches: 2, 8, 17, 21-23, 26, 29
+ + New patches: 1, 3-7, 9-16, 20, 27
+
+ * Added support in the interrupt subsystem to allocate IRQs with NMI mode.
+  (patches 1-13)
+ * Only enable the detector when IPI shorthands are enabled in the system.
+  (patch 22)
+ * Delayed the initialization of the hardlockup detector until after
+   calling smp_init(). Only then, we know whether IPI shorthands have been
+   enabled. (patch 20)
+ * Removed code to periodically update the affinity of the HPET NMI to
+   rotate among packages or groups of packages.
+ * Removed logic to group the monitored CPUs by groups. All CPUs in all
+   packages receive IPIs.
+ * Removed irq_work to change the affinity of the HPET channel interrupt.
+ * Updated the redirection hint in the Intel IOMMU IRTE to match the
+   destination mode. (patch 7)
+ * Correctly added support for NMI delivery mode in the AMD IOMMU.
+   (patches 11-13)
+ * Restart the NMI watchdog after refining tsc_khz. (patch 27)
+ * Added a check for the allowed maximum frequency of the HPET. (patch 17)
+ * Added hpet_hld_free_timer() to properly free the reserved HPET channel
+   if the initialization is not completed. (patch 17)
+ * Reworked the periodic setting the HPET channel. Rather than changing it
+   every time the channel is disabled or enabled, do it only once. While
+   at here, wrap the code in an initial setup function. (patch 22)
+ * Implemented hardlockup_detector_hpet_start() to be called when tsc_khz is
+   is refined. (patch 22)
+ * Reduced the error window of the expected TSC value at the time of the
+   HPET channel expiration. (patch 23)
+ * Described better the heuristics used to determine if the HPET channel
+   caused the NMI. (patch 23)
+ * Added a table to characterize the error in the expected TSC value when
+   the HPET channel fires. (patch 23)
+ * Added watchdog_nmi_start() to be used when tsc_khz is recalibrated.
+   (patch 26)
+ * Always build the x86-specific hardlockup detector shim; not only
+   when the HPET-based detector is selected. (patch 26)
+ * Relocated the declaration of hardlockup_detector_switch_to_perf() to
+   x86/nmi.h It does not depend on HPET.
+ * Use time_in_range64() to compare the actual TSC value vs the expected
+   value. This makes it more readable. (patch 22)
+ * Dropped pointless X86_64 || X86_32 check in Kconfig. (patch 26)
+
+Changes since v4:
+ * Added commentary on the tests performed on this feature. (Andi)
+ * Added a stub version of hardlockup_detector_switch_to_perf() for
+   !CONFIG_HPET_TIMER. (lkp)
+ * Use switch to select the type of x86 hardlockup detector. (Andi)
+ * Renamed a local variable in update_ticks_per_group(). (Andi)
+ * Made this hardlockup detector available to X86_32.
+ * Reworked logic to kick the HPET timer to remove a local variable.
+   (Andi)
+ * Added a comment on what type of timer channel will be assigned to the
+   detector. (Andi)
+ * Reworded help comment in the X86_HARDLOCKUP_DETECTOR_HPET Kconfig
+   option. (Andi)
+ * Removed unnecessary switch to level interrupt mode when disabling the
+   timer. (Andi)
+ * Disabled the HPET timer to avoid a race between an incoming interrupt
+   and an update of the MSI destination ID. (Ashok)
+ * Renamed hpet_hardlockup_detector_get_timer() as hpet_hld_get_timer()
+ * Added commentary on an undocumented udelay() when programming an
+   HPET channel in periodic mode. (Ashok)
+ * Reworked code to use new enumeration apic_delivery_modes and reworked
+   MSI message composition fields [13].
+ * Partitioned monitored CPUs into groups. Each CPU in the group is
+   inspected for hardlockups using an IPI.
+ * Use a round-robin mechanism to update the affinity of the HPET timer.
+   Affinity is updated every watchdog_thresh seconds to target the
+   handling CPU of the group.
+ * Moved update of the HPET interrupt affinity to an irq_work. (Thomas
+   Gleixner).
+ * Updated expiration of the HPET timer and the expected value of the
+   TSC based on the number of groups of monitored CPUs.
+ * Renamed hpet_set_comparator() to hpet_set_comparator_periodic() to
+   remove decision logic for periodic case. (Thomas Gleixner)
+ * Reworked timer reservation to use Thomas' rework on HPET channel
+   management [13].
+ * Removed hard-coded channel number for the hardlockup detector.
+ * Provided more details on the sequence of HPET channel reservation.
+   (Thomas Gleixner)
+ * Only reserve a channel for the hardlockup detector if enabled via
+   kernel command line. The function reserving the channel is called from
+   hardlockup detector. (Thomas Gleixner)
+ * Dropped hpet_hld_data::enabled_cpus and instead use cpumask_weight().
+ * Renamed hpet_hld_data::cpu_monitored_mask to
+   hld_data_data.cpu_monitored_mask and converted it to cpumask_var_t.
+ * Flushed out any outstanding interrupt before enabling the HPET channel.
+ * Removed unnecessary MSI_DATA_LEVEL_ASSERT from the MSI message.
+ * Added comments in hardlockup_detector_nmi_handler() to explain how
+   CPUs are targeted for an IPI.
+ * Updated code to only issue an IPI when needed (i.e., there are CPUs in
+   the group other than the handling CPU).
+ * Reworked hardlockup_detector_hpet_init() for readability.
+ * Now reserve the cpumasks in the hardlockup detector code and not in the
+   generic HPET code.
+ * Handle the case of watchdog_thresh = 0 when disabling the detector.
+
+Change since v3:
+ * Fixed yet another bug in periodic programming of the HPET timer that
+   prevented the system from booting.
+ * Fixed computation of HPET frequency to use hpet_readl() only.
+ * Added a missing #include in the watchdog_hld_hpet.c
+ * Fixed various typos and grammar errors (Randy Dunlap)
+
+Changes since v2:
+ * Added functionality to switch to the perf-based hardlockup
+   detector if the TSC becomes unstable (Thomas Gleixner).
+ * Brought back the round-robin mechanism proposed in v1 (this time not
+   using the interrupt subsystem). This also requires computing
+   expiration times as in v1 (Andi Kleen, Stephane Eranian).
+ * Fixed a bug in which using a periodic timer was not working(thanks
+   to Suravee Suthikulpanit!).
+ * In this version, I incorporate support for interrupt remapping in the
+   last 4 patches so that they can be reviewed separately if needed.
+ * Removed redundant documentation of functions (Thomas Gleixner).
+ * Added a new category of NMI handler, NMI_WATCHDOG, which executes after
+   NMI_LOCAL handlers (Andi Kleen).
+ * Updated handling of "nmi_watchdog" to support comma-separated
+   arguments.
+ * Undid split of the generic hardlockup detector into a separate file
+   (Thomas Gleixner).
+ * Added a new intermediate symbol CONFIG_HARDLOCKUP_DETECTOR_CORE to
+   select generic parts of the detector (Paul E. McKenney,
+   Thomas Gleixner).
+ * Removed use of struct cpumask in favor of a variable length array in
+   conjunction with kzalloc (Peter Zijlstra).
+ * Added CPU as argument hardlockup_detector_hpet_enable()/disable()
+   (Thomas Gleixner).
+ * Remove unnecessary export of function declarations, flags, and bit
+   fields (Thomas Gleixner).
+ * Removed  unnecessary check for FSB support when reserving timer for the
+   detector (Thomas Gleixner).
+ * Separated TSC code from HPET code in kick_timer() (Thomas Gleixner).
+ * Reworked condition to check if the expected TSC value is within the
+   error margin to avoid conditional (Peter Zijlstra).
+ * Removed TSC error margin from struct hld_data; use global variable
+   instead (Peter Zijlstra).
+ * Removed previously introduced watchdog_get_allowed_cpumask*() and
+   reworked hardlockup_detector_hpet_enable()/disable() to not need
+   access to watchdog_allowed_mask (Thomas Gleixner).
+
+Changes since v1:
+ * Removed reads to HPET registers at every NMI. Instead use the time-stamp
+   counter to infer the interrupt source (Thomas Gleixner, Andi Kleen).
+ * Do not target CPUs in a round-robin manner. Instead, the HPET timer
+   always targets the same CPU; other CPUs are monitored via an
+   interprocessor interrupt.
+ * Removed use of generic irq code to set interrupt affinity and NMI
+   delivery. Instead, configure the interrupt directly in HPET registers
+   (Thomas Gleixner).
+ * Removed the proposed ops structure for NMI watchdogs. Instead, split
+   the existing implementation into a generic library and perf-specific
+   infrastructure (Thomas Gleixner, Nicholas Piggin).
+ * Added an x86-specific shim hardlockup detector that selects between
+   HPET and perf infrastructures as needed (Nicholas Piggin).
+ * Removed locks taken in NMI and !NMI context. This was wrong and is no
+   longer needed (Thomas Gleixner).
+ * Fixed unconditional return NMI_HANDLED when the HPET timer is programmed
+   for FSB/MSI delivery (Peter Zijlstra).
+
+[1]. https://lore.kernel.org/lkml/1528851463-21140-1-git-send-email-ricardo.neri-calderon@linux.intel.com/
+[2]. https://lore.kernel.org/lkml/1551283518-18922-1-git-send-email-ricardo.neri-calderon@linux.intel.com/
+[3]. https://lore.kernel.org/lkml/1557842534-4266-1-git-send-email-ricardo.neri-calderon@linux.intel.com/
+[4]. https://lore.kernel.org/lkml/1558660583-28561-1-git-send-email-ricardo.neri-calderon@linux.intel.com/
+[5]. https://lore.kernel.org/lkml/20210504190526.22347-1-ricardo.neri-calderon@linux.intel.com/T/
+[6]. https://lore.kernel.org/linux-iommu/87lf8uhzk9.ffs@nanos.tec.linutronix.de/T/
+[7]. https://lore.kernel.org/lkml/20200117091341.GX2827@hirez.programming.kicks-ass.net/
+[8]. https://lore.kernel.org/lkml/1582581564-184429-1-git-send-email-kan.liang@linux.intel.com/
+[9]. https://lore.kernel.org/lkml/20210504190526.22347-1-ricardo.neri-calderon@linux.intel.com/T/#me7de1b4ff4a91166c1610a2883b1f77ffe8b6ddf
+[10]. https://lore.kernel.org/all/tip-dea978632e8400b84888bad20df0cd91c18f0aec@git.kernel.org/t/
+[11]. https://lore.kernel.org/linux-iommu/87lf8uhzk9.ffs@nanos.tec.linutronix.de/T/#mde9be6aca9119602e90e9293df9995aa056dafce
+
+[12]. https://lore.kernel.org/r/20201024213535.443185-6-dwmw2@infradead.org
+https://lore.kernel.org/all/tip-dea978632e8400b84888bad20df0cd91c18f0aec@git.kernel.org/t/
+[13]. https://lore.kernel.org/lkml/20190623132340.463097504@linutronix.de/
+
+Ricardo Neri (29):
+  irq/matrix: Expose functions to allocate the best CPU for new vectors
+  x86/apic: Add irq_cfg::delivery_mode
+  x86/apic/msi: Set the delivery mode individually for each IRQ
+  x86/apic: Add the X86_IRQ_ALLOC_AS_NMI irq allocation flag
+  x86/apic/vector: Do not allocate vectors for NMIs
+  x86/apic/vector: Implement support for NMI delivery mode
+  iommu/vt-d: Clear the redirection hint when the destination mode is
+    physical
+  iommu/vt-d: Rework prepare_irte() to support per-IRQ delivery mode
+  iommu/vt-d: Set the IRTE delivery mode individually for each IRQ
+  iommu/vt-d: Implement minor tweaks for NMI irqs
+  iommu/amd: Expose [set|get]_dev_entry_bit()
+  iommu/amd: Enable NMIPass when allocating an NMI irq
+  iommu/amd: Compose MSI messages for NMI irqs in non-IR format
+  x86/hpet: Expose hpet_writel() in header
+  x86/hpet: Add helper function hpet_set_comparator_periodic()
+  x86/hpet: Prepare IRQ assignments to use the X86_ALLOC_AS_NMI flag
+  x86/hpet: Reserve an HPET channel for the hardlockup detector
+  watchdog/hardlockup: Define a generic function to detect hardlockups
+  watchdog/hardlockup: Decouple the hardlockup detector from perf
+  init/main: Delay initialization of the lockup detector after
+    smp_init()
+  x86/nmi: Add an NMI_WATCHDOG NMI handler category
+  x86/watchdog/hardlockup: Add an HPET-based hardlockup detector
+  x86/watchdog/hardlockup/hpet: Determine if HPET timer caused NMI
+  watchdog/hardlockup: Use parse_option_str() to handle "nmi_watchdog"
+  watchdog/hardlockup/hpet: Only enable the HPET watchdog via a boot
+    parameter
+  x86/watchdog: Add a shim hardlockup detector
+  watchdog: Expose lockup_detector_reconfigure()
+  x86/tsc: Restart NMI watchdog after refining tsc_khz
+  x86/tsc: Switch to perf-based hardlockup detector if TSC become
+    unstable
+
+ .../admin-guide/kernel-parameters.txt         |   8 +-
+ arch/x86/Kconfig.debug                        |  13 +
+ arch/x86/include/asm/hpet.h                   |  49 ++
+ arch/x86/include/asm/hw_irq.h                 |   5 +-
+ arch/x86/include/asm/irqdomain.h              |   1 +
+ arch/x86/include/asm/nmi.h                    |   7 +
+ arch/x86/kernel/Makefile                      |   3 +
+ arch/x86/kernel/apic/apic.c                   |   2 +-
+ arch/x86/kernel/apic/vector.c                 |  48 ++
+ arch/x86/kernel/hpet.c                        | 162 ++++++-
+ arch/x86/kernel/nmi.c                         |  10 +
+ arch/x86/kernel/tsc.c                         |   8 +
+ arch/x86/kernel/watchdog_hld.c                |  91 ++++
+ arch/x86/kernel/watchdog_hld_hpet.c           | 458 ++++++++++++++++++
+ drivers/iommu/amd/amd_iommu.h                 |   3 +
+ drivers/iommu/amd/init.c                      |   4 +-
+ drivers/iommu/amd/iommu.c                     |  41 +-
+ drivers/iommu/intel/irq_remapping.c           |  32 +-
+ include/linux/irq.h                           |   4 +
+ include/linux/nmi.h                           |   8 +-
+ init/main.c                                   |   4 +-
+ kernel/Makefile                               |   2 +-
+ kernel/irq/matrix.c                           |  32 +-
+ kernel/watchdog.c                             |  12 +-
+ kernel/watchdog_hld.c                         |  50 +-
+ lib/Kconfig.debug                             |   4 +
+ 26 files changed, 994 insertions(+), 67 deletions(-)
+ create mode 100644 arch/x86/kernel/watchdog_hld.c
+ create mode 100644 arch/x86/kernel/watchdog_hld_hpet.c
+
 -- 
-Mike Kravetz
+2.17.1
+
