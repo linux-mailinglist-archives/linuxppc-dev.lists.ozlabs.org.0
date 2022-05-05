@@ -1,69 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B9C51CBC4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 00:00:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C6051CBEE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 00:10:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSLC2GdJz3f58
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 08:00:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSZQ2X6sz3bd7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 08:10:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=zqmv8cX5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IeOL0OKC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=fjasle.eu (client-ip=217.72.192.73; helo=mout.kundenserver.de;
- envelope-from=nicolas@fjasle.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256
- header.s=mail header.b=zqmv8cX5; dkim-atps=neutral
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvQP80fbxz3c7p
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 06:32:36 +1000 (AEST)
-Received: from leknes.fjasle.eu ([46.142.98.182]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MzQTm-1o06Fv05JY-00vQbk; Thu, 05 May 2022 22:31:31 +0200
-Received: by leknes.fjasle.eu (Postfix, from userid 1000)
- id 146A93C0A0; Thu,  5 May 2022 22:31:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
- t=1651782689; bh=9wlFO3MLyBOpHZvAd84sW/pY49tJqU65GeK3vStuX2I=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=zqmv8cX5aeN75BpS8wlPq/mhxNbMeyV64uEMViipkFTMdKvtNiGWbceJ+6Bh+JWwv
- D/4yHrbTFXWvkyqseXRLrnqsE2YvCZeKLiZHpYNAAZY931HxmxHvb1eVrhZqtPEcHZ
- N+olq3LtWu+5k3HoEQ7JcVJEIpPj6kokDR5VBw80=
-Date: Thu, 5 May 2022 22:31:28 +0200
-From: Nicolas Schier <nicolas@fjasle.eu>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH v3 15/15] kbuild: make *.mod rule robust against too long
- argument error
-Message-ID: <YnQ0IHNnQTIsxOxq@fjasle.eu>
-References: <20220505072244.1155033-1-masahiroy@kernel.org>
- <20220505072244.1155033-16-masahiroy@kernel.org>
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=IeOL0OKC; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvSYf0WCQz2yQ9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 08:10:13 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 245Kj2dZ017268;
+ Thu, 5 May 2022 22:10:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=MrU29fcn14GDRfr2Wf0nuMab2K7bMjsFzwPUGCuHLms=;
+ b=IeOL0OKC1v1S8AboEcKHTeG1Y/8yZ0RxeBiJAUASflulOXG0vaFQWhRDTarIP4uU9+gA
+ TpFq/fJ3UQQzHWhU0NiDWS7JBfxQ875zib9fpRWTI2GrrDPf2FyXtGid1LFbTwjUzmO6
+ V76xshUe3NENMzJ/3PEsdCRFplqrua5Gs813jRY3RdquaOjEzMDdGNK3Hrl2Sha6PzPG
+ MT3s5KZ7w7yjbpjn69MMWkdyCF2IMq2Gvud9Q67pWPAFBdjsAbUUeQOl5dqPs4cQ40lV
+ F2vZ9sGgO9hZ4aAqE+vvTaLgxY/I9kjERAPYrJ7QihSI+u26p6yPIDshGx0MqCVRpg2R pg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvnvrs8ws-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 May 2022 22:10:05 +0000
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 245Lu081027541;
+ Thu, 5 May 2022 22:10:05 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvnvrs8wk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 May 2022 22:10:04 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 245M8KcJ015766;
+ Thu, 5 May 2022 22:10:04 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma02wdc.us.ibm.com with ESMTP id 3frvra4e00-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 05 May 2022 22:10:04 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 245MA3uN24248682
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 5 May 2022 22:10:03 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8FA8C78060;
+ Thu,  5 May 2022 22:10:03 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 38FE57806A;
+ Thu,  5 May 2022 22:10:02 +0000 (GMT)
+Received: from [9.77.154.170] (unknown [9.77.154.170])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  5 May 2022 22:10:02 +0000 (GMT)
+Message-ID: <2cfb2cd8-3bad-3c66-b8ee-918d615f7719@linux.ibm.com>
+Date: Thu, 5 May 2022 15:10:01 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220505072244.1155033-16-masahiroy@kernel.org>
-X-Provags-ID: V03:K1:ATjjPZxZrxSYHnT3weErv12Bh2cwK2wHc1xFqX4u3bAi/heFx7b
- 6P8k3j2vwjJcl03Stj1aUwkOTwe+JjMDsmGjUfomIoBMI9IRoUX5GVrziiH2c+621UgNyjj
- 7HP/rVyptQpb5aIpXw+GYaWos4XrsiPnY5/fS3Irm+rP1103LXqYJA/yTGnAqsrsNPONEwQ
- NeGAeBdHijOVBbfFKB66A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:3fCxWeqq8qM=:x1Ie/460/d/tEUDvNpS5so
- ZwdXQMrhPFvIJ76JTZeI+3qvibQAZPa2auCxPlZTG7HNMVM/Ms+8tNxK7cnRWJmNC9JIBZN/R
- jycDf23YR9x2XM9wzD1tN8PGq+LjWFIPCF8qmIqOyIha1G3AWnrgXWzwDGEibaxL2w5T/1EGr
- VqdhS/NIQfdRHAy7LGo/2NhPMQmwJQVe+a8M7pkW0dziMW+DHdW2+lg6fBBLy5TYw24PL29gl
- U93VQx9JaiUFA9cyU9Usr/8LyjFbQsGFB+PQtrdkbwkzPvrz7znMPYxv2L7XNiwALtVMvG4Gn
- fdf8wN96hr3DCYvbP4x/T7onJRAzycE4Jw6lz1XTcwPD+fJKBDkT/nUIbOk15r2iZtygf0TjP
- nVxNOfpCfrMMZ128G64u1yLf7w7GzFe7u6eemCFcwt0NRfxPVft4ztjqmqX2aRsFsPrk2rycd
- a8TsEqJJzaOa+LaiSD7y9ZZVGDIMMehf/y0FekjgYQAvLzu3TUdSopZEg81CfWoC4eNm3pBF2
- MxETWqUKr8mXT81Jenk7nkwaxeCGcppdPTUhrBGx1BAIK116Nafgxuui84Afn8DnXDPbS/Goe
- /P8PI+yxECdIA20Co2ZCIy8edFdmMDD978LiMpQaMAJ39knPCG7IP7+iax8Ii4DNrQf624Lic
- KXu7v/rcBu7F8ihMgC7W3ntYhMzzC6MpRxG3u4dZRM9qis/tTKFcIbUiLm+5R1hkoJQo=
-X-Mailman-Approved-At: Fri, 06 May 2022 07:52:56 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH] powerpc/pci: Add config option for using OF 'reg' for PCI
+ domain
+Content-Language: en-US
+To: =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20220504175718.29011-1-pali@kernel.org>
+ <8ffa0287-de5e-4308-07d8-204ac2e7f63a@csgroup.eu>
+ <20220505093132.45ehu6pdfzmvt2xw@pali>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+In-Reply-To: <20220505093132.45ehu6pdfzmvt2xw@pali>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: eVQaPeDakQnT_t-afYqfmdwiYNj6v_v0
+X-Proofpoint-ORIG-GUID: F3tBA_U-4THprWI2NEKcngu3WBWHsgrj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-05_09,2022-05-05_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 phishscore=0 mlxscore=0 mlxlogscore=999
+ malwarescore=0 bulkscore=0 impostorscore=0 priorityscore=1501 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2205050142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,63 +113,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Kees Cook <keescook@chromium.org>,
- linux-kbuild@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-um@lists.infradead.org,
- linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 05, 2022 at 04:22:44PM +0900 Masahiro Yamada wrote:
-> Like built-in.a, the command length of the *.mod rule scales with
-> the depth of the directory times the number of objects in the Makefile.
+On 5/5/22 02:31, Pali Rohár wrote:
+> Hello!
 > 
-> Add $(obj)/ by the shell command (awk) instead of by Make's builtin
-> function.
+> On Thursday 05 May 2022 07:16:40 Christophe Leroy wrote:
+>> Le 04/05/2022 à 19:57, Pali Rohár a écrit :
+>>> Since commit 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on
+>>> device-tree properties"), powerpc kernel always fallback to PCI domain
+>>> assignment from OF / Device Tree 'reg' property of the PCI controller.
+>>>
+>>> PCI code for other Linux architectures use increasing assignment of the PCI
+>>> domain for individual controllers (assign the first free number), like it
+>>> was also for powerpc prior mentioned commit.
+>>>
+>>> Upgrading powerpc kernels from LTS 4.4 version (which does not contain
+>>> mentioned commit) to new LTS versions brings a regression in domain
+>>> assignment.
+>>
+>> Can you elaborate why it is a regression ?
+>>63a72284b159
+>> That commit says 'no functionnal changes', I'm having hard time 
+>> understanding how a nochange can be a regression.
 > 
-> In-tree modules still have some room to the limit (ARG_MAX=2097152),
-> but this is more future-proof for big modules in a deep directory.
-> 
-> For example, you can build i915 as a module (CONFIG_DRM_I915=m) and
-> compare drivers/gpu/drm/i915/.i915.mod.cmd with/without this commit.
-> 
-> The issue is more critical for external modules because the M= path
-> can be very long as Jeff Johnson reported before [1].
-> 
-> [1] https://lore.kernel.org/linux-kbuild/4c02050c4e95e4cb8cc04282695f8404@codeaurora.org/
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> 
-> (no changes since v2)
-> 
-> Changes in v2:
->   - New patch
-> 
->  scripts/Makefile.build | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index cea48762299c..e7b3f329d443 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -266,8 +266,8 @@ $(obj)/%.o: $(src)/%.c $(recordmcount_source) FORCE
->  	$(call if_changed_rule,cc_o_c)
->  	$(call cmd,force_checksrc)
->  
-> -cmd_mod = echo $(addprefix $(obj)/, $(call real-search, $*.o, .o, -objs -y -m)) | \
-> -	$(AWK) -v RS='( |\n)' '!x[$$0]++' > $@
-> +cmd_mod = echo $(call real-search, $*.o, .o, -objs -y -m) | \
-> +	$(AWK) -v RS='( |\n)' '!x[$$0]++ { print("$(obj)/"$$0) }' > $@
->  
->  $(obj)/%.mod: FORCE
->  	$(call if_changed,mod)
-> -- 
-> 2.32.0
+> It is not 'no functional change'. That commit completely changed PCI
+> domain assignment in a way that is incompatible with other architectures
+> and also incompatible with the way how it was done prior that commit.
 
-Thanks!  At work, some colleagues of mine stumbled over that problem, too.
+I agree that the "no functional change" statement is incorrect. However, for
+most powerpc platforms it ended up being simply a cosmetic behavior change. As
+far as I can tell there is nothing requiring domain ids to increase montonically
+from zero or that each architecture is required to use the same domain numbering
+scheme. Its hard to call this a true regression unless it actually broke
+something. The commit in question has been in the kernel since 4.8 which was
+released over 5 1/2 years ago.
 
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+With all that said looking closer at the code in question I think it is fair to
+assume that the author only intended this change for powernv and pseries
+platforms and not every powerpc platform. That change was done to make
+persistent naming easier to manage in userspace. Your change defaults back to
+the old behavior which will now break both powernv and pseries platforms with
+regard to hotplugging and persistent naming.
+
+We could properly limit it to powernv and pseries by using ibm,fw-phb-id instead
+of reg property in the look up that follows a failed ibm,opal-phbid lookup. I
+think this is acceptable as long as no other powerpc platforms have started
+using this behavior for persistent naming.
+
+-Tyrel
+
+> For example, prior that commit on P2020 RDB board were PCI domains 0, 1 and 2.
+> 
+> $ lspci
+> 0000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> 0000:01:00.0 USB controller: Texas Instruments TUSB73x0 SuperSpeed USB 3.0 xHCI Host Controller (rev 02)
+> 0001:02:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> 0001:03:00.0 Network controller: Qualcomm Atheros AR93xx Wireless Network Adapter (rev 01)
+> 0002:04:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> 0002:05:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac Wireless Network Adapter
+> 
+> After that commit on P2020 RDB board are PCI domains 0x8000, 0x9000 and 0xa000.
+> 
+> $ lspci
+> 8000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> 8000:01:00.0 USB controller: Texas Instruments TUSB73x0 SuperSpeed USB 3.0 xHCI Host Controller (rev 02)
+> 9000:02:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> 9000:03:00.0 Network controller: Qualcomm Atheros AR93xx Wireless Network Adapter (rev 01)
+> a000:04:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> a000:05:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac Wireless Network Adapter
+> 
+> It is somehow strange that PCI domains are not indexed one by one and
+> also that there is no domain 0
+> 
+> With my patch when CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG is not set, then
+> previous behavior used and PCI domains are again 0, 1 and 2.
+> 
+>> Usually we don't commit regressions to mainline ...
+>>
+>>
+>>>
+>>> Fix this issue by introducing a new option CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG
+>>> When this options is disabled then powerpc kernel would assign PCI domains
+>>> in the similar way like it is doing kernel for other architectures and also
+>>> how it was done prior that commit.
+>>
+>> You don't define CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG on by default, it 
+>> means this commit will change the behaviour. Is that expected ?
+>>
+>> Is that really worth a user selectable option ? Is the user able to 
+>> decide what he needs ?
+> 
+> Well, I hope that maintainers of that code answer to these questions.
+> 
+> In any case, I think that it could be a user selectable option as in
+> that commit is explained that in some situation is makes sense to do
+> PCI domain numbering based on DT reg.
+> 
+> But as I pointed above, upgrading from 4.4 TLS kernel to some new TLS
+> kernel brings above regression, so I think that there should be a way to
+> disable this behavior.
+> 
+> In my opinion, for people who are upgrading from 4.4 TLS kernel, this
+> option should be turned off by default (= do not change behavior). For
+> people who want same behaviour on powerpc as on other platforms, also it
+> should be turned off by default.
+> 
+>>>
+>>> Fixes: 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on device-tree properties")
+>>
+>> Is that really a fix ? What is the problem really ?
+> 
+> Problem is that PCI domains were changed in a way that is not compatible
+> neither with version prior that commit and neither with how other linux
+> platforms assign PCI domains for controllers.
+> 
+>>> Signed-off-by: Pali Rohár <pali@kernel.org>
+>>> ---
+>>>   arch/powerpc/Kconfig             | 10 ++++++++++
+>>>   arch/powerpc/kernel/pci-common.c |  4 ++--
+>>>   2 files changed, 12 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>>> index 174edabb74fa..4dd3e3acddda 100644
+>>> --- a/arch/powerpc/Kconfig
+>>> +++ b/arch/powerpc/Kconfig
+>>> @@ -375,6 +375,16 @@ config PPC_OF_PLATFORM_PCI
+>>>   	depends on PCI
+>>>   	depends on PPC64 # not supported on 32 bits yet
+>>>   
+>>> +config PPC_PCI_DOMAIN_FROM_OF_REG
+>>> +	bool "Use OF reg property for PCI domain"
+>>> +	depends on PCI
+>>
+>> Should it depend on PPC_OF_PLATFORM_PCI instead ?
+> 
+> No, PPC_OF_PLATFORM_PCI has line "depends on PPC64 # not supported on 32
+> bits yet". But it is already used also for e.g. P2020 which is 32-bit
+> platform.
+> 
+>>> +	help
+>>> +	  By default PCI domain for host bridge during its registration is
+>>> +	  chosen as the lowest unused PCI domain number.
+>>> +
+>>> +	  When this option is enabled then PCI domain is determined from
+>>> +	  the OF / Device Tree 'reg' property.
+>>> +
+>>>   config ARCH_SUPPORTS_UPROBES
+>>>   	def_bool y
+>>>   
+>>> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+>>> index 8bc9cf62cd93..8cb6fc5302ae 100644
+>>> --- a/arch/powerpc/kernel/pci-common.c
+>>> +++ b/arch/powerpc/kernel/pci-common.c
+>>> @@ -74,7 +74,6 @@ void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops)
+>>>   static int get_phb_number(struct device_node *dn)
+>>>   {
+>>>   	int ret, phb_id = -1;
+>>> -	u32 prop_32;
+>>>   	u64 prop;
+>>>   
+>>>   	/*
+>>> @@ -83,7 +82,8 @@ static int get_phb_number(struct device_node *dn)
+>>>   	 * reading "ibm,opal-phbid", only present in OPAL environment.
+>>>   	 */
+>>>   	ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
+>>
+>> This looks like very specific, it is not reflected in the commit log.
+> 
+> I have not changed nor touched this "ibm,opal-phbid" setting. And it was
+> not also touched in that mentioned patch. I see that no DTS file in
+> kernel use this option (so probably only DTS files supplied by
+> bootloader use it). So I thought that there is not reason to mention in
+> commit message.
+> 
+> But if you think so, I can add some info to commit message about it.
+> 
+>>> -	if (ret) {
+>>> +	if (ret && IS_ENABLED(CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG)) {
+>>> +		u32 prop_32;
+>>>   		ret = of_property_read_u32_index(dn, "reg", 1, &prop_32);
+>>>   		prop = prop_32;
+>>>   	}
+
