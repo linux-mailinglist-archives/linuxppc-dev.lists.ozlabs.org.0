@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1075C51B8E7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 09:28:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A57951B929
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 09:33:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kv4zr6D8Cz3cgh
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 17:28:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kv56H1L7yz3c7t
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 17:33:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=CZSbHVFm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=s8CzChdZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,34 +19,34 @@ Authentication-Results: lists.ozlabs.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=CZSbHVFm; 
+ header.s=dec2015msa header.b=s8CzChdZ; 
  dkim-atps=neutral
 Received: from conuserg-12.nifty.com (conuserg-12.nifty.com [210.131.2.79])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kv4wT6L8Xz3bbj
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 17:25:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kv4wn4w4Zz3c7J
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 17:25:29 +1000 (AEST)
 Received: from grover.sesame (133-32-177-133.west.xps.vectant.ne.jp
  [133.32.177.133]) (authenticated)
- by conuserg-12.nifty.com with ESMTP id 2457Nenn019426;
- Thu, 5 May 2022 16:23:46 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 2457Nenn019426
+ by conuserg-12.nifty.com with ESMTP id 2457Neno019426;
+ Thu, 5 May 2022 16:23:47 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 2457Neno019426
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1651735427;
- bh=vWIe6Hz1v6TN6G/VnDfKR17//GxSJcR4wll8Uklx9kI=;
+ s=dec2015msa; t=1651735428;
+ bh=jiny9e/0ekLHfzDMPj/sTAYkp3K4e6Ir8SZeJf0qunI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=CZSbHVFmHWUVZ1VYDxo4qTVmtK1DQkx05aFyb75DtQuxwykuQwLM1GEGYTVcN2AYy
- ZRYnGGFvrFdSLcMleP2JQYsOs41x+FT25Qe/9MZQaiR1nhJjDS6mYatL6nkxsPLZWm
- qI+Tx/R2vqo4ROnpxOcvbJLLAMDvYQ5/0Gygfjm5qlZxKanhPnvKI+5gFolY/A7qei
- sT4F+Aq7wiqzNyi4dfIx4wfwFSaR4Lqgylp5qByKxdfXW0y69Au4GY5WnqsUwYuDV+
- /svKyOJ5f5mej1QH7LKgybltl2t1e4x5ZOSJNBu+Q80h6pv0vlLGje8hbPdWfLukei
- slwvBQjHty62Q==
+ b=s8CzChdZOXXECM2SJqlUNY/RhAyMMyUj53jsSphu1U+2MxbScJI/0J74sbJu8dUVP
+ FvXOIHejc8zclit4u9J9UEq+wuFT42/BAOI+9YhBebmsgWrNKPRJCOpl66DmR5cNXU
+ AAH4LfUbUt2jr9/+WwldUA50jaKLwfgV0Vt6Mbglmro41BirayumolaEHice+urhim
+ YzIGOo5QiBzUFigZRKwD/Preqo125kSiD66lcLlMhrgPG6RwtPJnldGl+gdQq18juZ
+ bwQo7ErSMekWvQHB8+6TXyXu2TCug/4pBJ48orLidkmwiG2uk+hE57AmtmKzRpxIYW
+ UldyhAx1qO4aA==
 X-Nifty-SrcIP: [133.32.177.133]
 From: Masahiro Yamada <masahiroy@kernel.org>
 To: linux-kbuild@vger.kernel.org
-Subject: [PATCH v3 05/15] kbuild: generate a list of objects in vmlinux
-Date: Thu,  5 May 2022 16:22:34 +0900
-Message-Id: <20220505072244.1155033-6-masahiroy@kernel.org>
+Subject: [PATCH v3 06/15] kbuild: record symbol versions in *.cmd files
+Date: Thu,  5 May 2022 16:22:35 +0900
+Message-Id: <20220505072244.1155033-7-masahiroy@kernel.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220505072244.1155033-1-masahiroy@kernel.org>
 References: <20220505072244.1155033-1-masahiroy@kernel.org>
@@ -75,53 +75,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A *.mod file lists the member objects of a module, but vmlinux does
-not have such a file to list out all the member objects.
+When CONFIG_MODVERSIONS=y, the output from genksyms is saved in
+separate *.symversions files, and will be used much later when
+CONFIG_LTO_CLANG=y because it is impossible to update LLVM bit code
+here.
 
-Generate this list to allow modpost to know all the member objects.
+This approach is not robust because:
+
+ - *.symversions may or may not exist. If *.symversions does not
+   exist, we never know if it is missing for legitimate reason
+   (i.e. no EXPORT_SYMBOL) or something bad has happened (for
+   example, the user accidentally deleted it). Once it occurs,
+   it is not self-healing because *.symversions is generated
+   as a side effect.
+
+ - stale (i.e. invalid) *.symversions might be picked up if an
+   object is generated in a non-ordinary way, and corresponding
+   *.symversions (, which was generated by old builds) just happen
+   to exist.
+
+A more robust approach is to save symbol versions in *.cmd files
+because:
+
+ - *.cmd always exists (if the object is generated by if_changed
+   rule or friends). Even if the user accidentally deletes it,
+   it will be regenerated in the next build.
+
+ - *.cmd is always re-generated when the object is updated. This
+   avoid stale version information being picked up.
+
+I will remove *.symversions later.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Tested-by: Nicolas Schier <nicolas@fjasle.eu>
 Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
 ---
 
 (no changes since v2)
 
 Changes in v2:
-  - Move '> .vmlinux.objs' to the outside of the loop (Nicolas)
-  - Clean up .vmlinux.objs explicitly
+  - Fix CONFIG_MODULE_REL_CRCS=y case
 
- scripts/link-vmlinux.sh | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ scripts/Makefile.build | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index 20f44504a644..eceb3ee7ec06 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -311,6 +311,7 @@ cleanup()
- 	rm -f vmlinux.map
- 	rm -f vmlinux.o
- 	rm -f .vmlinux.d
-+	rm -f .vmlinux.objs
- }
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index f6a506318795..a1023868775f 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -171,10 +171,17 @@ ifdef CONFIG_MODVERSIONS
  
- # Use "make V=1" to debug this script
-@@ -342,6 +343,16 @@ ${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init need-builtin=1
- modpost_link vmlinux.o
- objtool_link vmlinux.o
- 
-+# Generate the list of objects in vmlinux
-+for f in ${KBUILD_VMLINUX_OBJS} ${KBUILD_VMLINUX_LIBS}; do
-+	case ${f} in
-+	*.a)
-+		${AR} t ${f} ;;
-+	*)
-+		echo ${f} ;;
-+	esac
-+done > .vmlinux.objs
+ # Generate .o.symversions files for each .o with exported symbols, and link these
+ # to the kernel and/or modules at the end.
 +
- # modpost vmlinux.o to check for section mismatches
- ${MAKE} -f "${srctree}/scripts/Makefile.modpost" MODPOST_VMLINUX=1
- 
++genksyms_format_rel_crc := [^_]*__crc_\([^ ]*\) = \.; LONG(\([^)]*\)).*
++genksyms_format_normal := __crc_\(.*\) = \(.*\);
++genksyms_format := $(if $(CONFIG_MODULE_REL_CRCS),$(genksyms_format_rel_crc),$(genksyms_format_normal))
++
+ gen_symversions =								\
+ 	if $(NM) $@ 2>/dev/null | grep -q __ksymtab; then			\
+ 		$(call cmd_gensymtypes_$(1),$(KBUILD_SYMTYPES),$(@:.o=.symtypes)) \
+ 		    > $@.symversions;						\
++		sed -n 's/$(genksyms_format)/$(pound)SYMVER \1 \2/p' $@.symversions \
++			>> $(dot-target).cmd;					\
+ 	else									\
+ 		rm -f $@.symversions;						\
+ 	fi
 -- 
 2.32.0
 
