@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8873251CD32
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:00:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59CFA51CD4B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:01:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvW0r3Vlyz3cYd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:00:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvW1f1NYqz3chn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:01:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ODpZzJGz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m6qjD9Vu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,38 +18,39 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=ODpZzJGz; dkim-atps=neutral
+ header.s=Intel header.b=m6qjD9Vu; dkim-atps=neutral
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVz53b0Zz2xC3
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:58:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVz6285yz2xC3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:58:58 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651795137; x=1683331137;
+ t=1651795139; x=1683331139;
  h=from:to:cc:subject:date:message-id:in-reply-to: references;
- bh=zlyJMMAdck3m7Lj6IAc06Z99mVZqGJ1kJoeEJPS6nAw=;
- b=ODpZzJGz1srq+KcJLXLiZg51a6+QGZm1DCdJBsDXcYCJ8wOWsx3oI4fw
- hlfoyxefutyjSsaMFiZstI2iSa0B5ZgZ/MQiVUq8LJnKrViL+TwMRCN2Z
- zZ6SNthv+QZKzpHyr6YOuKXl3QVR8bOGoN6D6sgxgYcUVi8HpI8r3EwyJ
- Gl27VTGffzR7vEpJWmprgpgBDE/o2oFvIBkYoaYZYbQi6876LCzj0duaf
- DxO6NCKBPLyWpQgT5Q/jS32dprHdTQgSk5vo8Yby16iQ21vqFnI4tC7nv
- /MqfJmFZBTxUZ/fLLcVWxfhJr/J3xtQZ1/npOiRO/sLfTnKwj1hPZ9yEc A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437286"
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437286"
+ bh=H881t49gt9ruU/EtOx7+sxhRpxmGtS427Z13jRF3PD8=;
+ b=m6qjD9VuVvrvKrzOrwMwx8E06K0fnEo+UIONm25Mw2fWjGlpbfU4be+u
+ Una0E4fLfPKOo43Iy9GMxBgcLC2PttLOoxGx3G8aFj+xHD5+GpQuWPGpk
+ plyS40LnjPkOVi8+hcE3/+ceTPx2YPXwoDx5lsVgjsn3Q6fAiB+GowIRu
+ 93ncyBtXeHIAc827I9036kpIjf3EfnEUYpx6TDXJHbOmyqT4iA2/X15zX
+ lnHeJDqM3AyFi/JfNiGniJUknQ/i07wWfKsXPfRbIj8ymeI5T4zvEalo+
+ BWYl9Sy3VwLNfw1nR9CWYYkB3gFFCL0gPI74FflCnBn9mh0czvpLx/Aiv g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437289"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437289"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2022 16:57:44 -0700
+ 05 May 2022 16:57:45 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914325"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914332"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:44 -0700
+ by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:45 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	x86@kernel.org
-Subject: [PATCH v6 02/29] x86/apic: Add irq_cfg::delivery_mode
-Date: Thu,  5 May 2022 16:59:41 -0700
-Message-Id: <20220506000008.30892-3-ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v6 03/29] x86/apic/msi: Set the delivery mode individually for
+ each IRQ
+Date: Thu,  5 May 2022 16:59:42 -0700
+Message-Id: <20220506000008.30892-4-ricardo.neri-calderon@linux.intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
 References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
@@ -78,18 +79,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, the delivery mode of all interrupts is set to the mode of the
-APIC driver in use. There are no restrictions in hardware to configure the
-delivery mode of each interrupt individually. Also, certain IRQs need to be
-configured with a specific delivery mode (e.g., NMI).
+There are no restrictions in hardware to set  MSI messages with its
+own delivery mode. Use the mode specified in the provided IRQ hardware
+configuration data. Since most of the IRQs are configured to use the
+delivery mode of the APIC driver in use (set in all of them to
+APIC_DELIVERY_MODE_FIXED), the only functional changes are where
+IRQs are configured to use a specific delivery mode.
 
-Add a new member, delivery_mode, to struct irq_cfg. Subsequent changesets
-will update every irq_domain to set the delivery mode of each IRQ to that
-specified in its irq_cfg data.
+Changing the utility function __irq_msi_compose_msg() takes care of
+implementing the change in the in the local APIC, PCI-MSI, and DMAR-MSI
+irq_chips.
 
-To keep the current behavior, when allocating an IRQ in the root domain
-(i.e., the x86_vector_domain), set the delivery mode of the IRQ as that of
-the APIC driver.
+The IO-APIC irq_chip configures the entries in the interrupt redirection
+table using the delivery mode specified in the corresponding MSI message.
+Since the MSI message is composed by a higher irq_chip in the hierarchy,
+it does not need to be updated.
 
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
@@ -97,74 +101,40 @@ Cc: Stephane Eranian <eranian@google.com>
 Cc: iommu@lists.linux-foundation.org
 Cc: linuxppc-dev@lists.ozlabs.org
 Cc: x86@kernel.org
-Reviewed-by: Ashok Raj <ashok.raj@intel.com>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 ---
 Changes since v5:
- * Updated indentation of the existing members of struct irq_cfg.
- * Reworded the commit message.
+ * Introduced this patch
 
 Changes since v4:
- * Rebased to use new enumeration apic_delivery_modes.
+ * N/A
 
 Changes since v3:
- * None
+ * N/A
 
 Changes since v2:
- * Reduced scope to only add the interrupt delivery mode in
-   struct irq_alloc_info.
+ * N/A
 
 Changes since v1:
- * Introduced this patch.
+ * N/A
 ---
- arch/x86/include/asm/hw_irq.h | 5 +++--
- arch/x86/kernel/apic/vector.c | 9 +++++++++
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ arch/x86/kernel/apic/apic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/hw_irq.h b/arch/x86/include/asm/hw_irq.h
-index d465ece58151..5ac5e6c603ee 100644
---- a/arch/x86/include/asm/hw_irq.h
-+++ b/arch/x86/include/asm/hw_irq.h
-@@ -88,8 +88,9 @@ struct irq_alloc_info {
- };
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index 189d3a5e471a..d1e12da1e9af 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -2528,7 +2528,7 @@ void __irq_msi_compose_msg(struct irq_cfg *cfg, struct msi_msg *msg,
+ 	msg->arch_addr_lo.dest_mode_logical = apic->dest_mode_logical;
+ 	msg->arch_addr_lo.destid_0_7 = cfg->dest_apicid & 0xFF;
  
- struct irq_cfg {
--	unsigned int		dest_apicid;
--	unsigned int		vector;
-+	unsigned int			dest_apicid;
-+	unsigned int			vector;
-+	enum apic_delivery_modes	delivery_mode;
- };
+-	msg->arch_data.delivery_mode = APIC_DELIVERY_MODE_FIXED;
++	msg->arch_data.delivery_mode = cfg->delivery_mode;
+ 	msg->arch_data.vector = cfg->vector;
  
- extern struct irq_cfg *irq_cfg(unsigned int irq);
-diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
-index 3e6f6b448f6a..838e220e8860 100644
---- a/arch/x86/kernel/apic/vector.c
-+++ b/arch/x86/kernel/apic/vector.c
-@@ -567,6 +567,7 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
- 		irqd->chip_data = apicd;
- 		irqd->hwirq = virq + i;
- 		irqd_set_single_target(irqd);
-+
- 		/*
- 		 * Prevent that any of these interrupts is invoked in
- 		 * non interrupt context via e.g. generic_handle_irq()
-@@ -577,6 +578,14 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
- 		/* Don't invoke affinity setter on deactivated interrupts */
- 		irqd_set_affinity_on_activate(irqd);
- 
-+		/*
-+		 * Initialize the delivery mode of this irq to match the
-+		 * default delivery mode of the APIC. Children irq domains
-+		 * may take the delivery mode from the individual irq
-+		 * configuration rather than from the APIC driver.
-+		 */
-+		apicd->hw_irq_cfg.delivery_mode = apic->delivery_mode;
-+
- 		/*
- 		 * Legacy vectors are already assigned when the IOAPIC
- 		 * takes them over. They stay on the same vector. This is
+ 	msg->address_hi = X86_MSI_BASE_ADDRESS_HIGH;
 -- 
 2.17.1
 
