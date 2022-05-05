@@ -1,74 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935D351B507
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 03:05:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA3F51B536
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 03:21:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KtwVF3ZQLz3bqd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 11:05:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OcdiUsjO;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ktws86Jn3z3c8n
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 11:21:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=OcdiUsjO; dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KtwTb3M2Wz2ymf
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 11:04:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651712691; x=1683248691;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=HOTvegPQV0wBWkw4gry8ln/1sFHr7kpC/Ihf5d3BMQE=;
- b=OcdiUsjOQZlDfB7XcrOCnq6q38VRyptnKJTSbaVrJMb4HWMCfpqTH1sn
- iGESjWZn+so3F/Jk/dY0TaD4jyxwkMDucm1J8V1ndNfra6e4MT0fcKRUt
- lr2vWsNF66qZnh6z9ha7l/BaVwrib4PjVJvA5G1Zlwtcm3VZ0Q13cxX/7
- Av17OL8iiKUcza1ofqPLiWyMiFNFyf7Y/xqIek69rBxw6LzVuWth3Ldd6
- xcjihrT807vXeF5x9QVS6NnNkeKnTkgoq9VYiSwAnRRsCgufNfkQ7WdwE
- 297NGoJmsYlnOsKDWy9CTgi+snrc7pNDie89p1JV+vZ49xsDoXQddomsg A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10337"; a="266791339"
-X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; d="scan'208";a="266791339"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 May 2022 18:03:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,199,1647327600"; d="scan'208";a="621059599"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 04 May 2022 18:03:36 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
- (envelope-from <lkp@intel.com>) id 1nmPu4-000Bws-2c;
- Thu, 05 May 2022 01:03:36 +0000
-Date: Thu, 5 May 2022 09:03:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Sergey Shtylyov <s.shtylyov@omp.ru>,
- Damien Le Moal <damien.lemoal@opensource.wdc.com>,
- Wolfram Sang <wsa-dev@sang-engineering.com>,
- Chris Packham <chris.packham@alliedtelesis.co.nz>,
- Marc Kleine-Budde <mkl@pengutronix.de>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-can@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: Re: [PATCH v1 2/4] powerpc/mpc5xxx: Switch
- mpc5xxx_get_bus_frequency() to use fwnode
-Message-ID: <202205050858.278Tyg5Q-lkp@intel.com>
-References: <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ktwrk4jKwz2yS3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 11:21:23 +1000 (AEST)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KtwnK3MHbzGpTN;
+ Thu,  5 May 2022 09:18:29 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 5 May 2022 09:21:12 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 5 May 2022 09:21:11 +0800
+Message-ID: <83e5bbe7-0880-3534-897a-156a4d2b4451@huawei.com>
+Date: Thu, 5 May 2022 09:21:11 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220504134449.64473-2-andriy.shevchenko@linux.intel.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: [PATCH -next v4 1/7] x86, powerpc: fix function define in
+ copy_mc_to_user
+Content-Language: en-US
+To: Tong Tiangen <tongtiangen@huawei.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Mark Rutland <mark.rutland@arm.com>, "James
+ Morse" <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Robin Murphy <robin.murphy@arm.com>, "Dave
+ Hansen" <dave.hansen@linux.intel.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Michael Ellerman <mpe@ellerman.id.au>, "Benjamin
+ Herrenschmidt" <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, 
+ "x86@kernel.org" <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
+References: <20220420030418.3189040-1-tongtiangen@huawei.com>
+ <20220420030418.3189040-2-tongtiangen@huawei.com>
+ <91011a66-b125-b445-1486-bada8e06b994@csgroup.eu>
+ <48f2779d-bc62-c7f5-c40e-7238a16b90fb@huawei.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <48f2779d-bc62-c7f5-c40e-7238a16b90fb@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,105 +69,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paolo Abeni <pabeni@redhat.com>, kbuild-all@lists.01.org,
- netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Mark Brown <broonie@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Anatolij Gustschin <agust@denx.de>, Wolfgang Grandegger <wg@grandegger.com>
+Cc: Xie XiuQi <xiexiuqi@huawei.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Guohanjun <guohanjun@huawei.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Andy,
 
-I love your patch! Yet something to improve:
+On 2022/5/3 9:06, Tong Tiangen wrote:
+>
+>
+> 在 2022/5/2 22:24, Christophe Leroy 写道:
+>>
+>>
+>> Le 20/04/2022 à 05:04, Tong Tiangen a écrit :
+>>> x86/powerpc has it's implementation of copy_mc_to_user but not use 
+>>> #define
+>>> to declare.
+>>>
+>>> This may cause problems, for example, if other architectures open
+>>> CONFIG_ARCH_HAS_COPY_MC, but want to use copy_mc_to_user() outside the
+>>> architecture, the code add to include/linux/uaddess.h is as follows:
+>>>
+>>>       #ifndef copy_mc_to_user
+>>>       static inline unsigned long __must_check
+>>>       copy_mc_to_user(void *dst, const void *src, size_t cnt)
+>>>       {
+>>>         ...
+>>>       }
+>>>       #endif
+>>>
+>>> Then this definition will conflict with the implementation of 
+>>> x86/powerpc
+>>> and cause compilation errors as follow:
+>>>
+>>> Fixes: ec6347bb4339 ("x86, powerpc: Rename memcpy_mcsafe() to 
+>>> copy_mc_to_{user, kernel}()")
+>>
+>> I don't understand, what does it fix really ? What was the
+>> (existing/real) bug introduced by that patch and that your are fixing ?
+>>
+>> If those defined had been expected and missing, we would have had a
+>> build failure. If you have one, can you describe it ?
+>
+It could prevent future problems when patch3 is introduced， and yes，for 
+now，
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on wsa/i2c/for-next mkl-can-next/testing broonie-spi/for-next tty/tty-testing linus/master v5.18-rc5 next-20220504]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/powerpc-52xx-Remove-dead-code-i-e-mpc52xx_get_xtal_freq/20220504-215701
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-pcm030_defconfig (https://download.01.org/0day-ci/archive/20220505/202205050858.278Tyg5Q-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/7bff10cee4f441153a56de337715dd4f40c55521
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Andy-Shevchenko/powerpc-52xx-Remove-dead-code-i-e-mpc52xx_get_xtal_freq/20220504-215701
-        git checkout 7bff10cee4f441153a56de337715dd4f40c55521
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-   drivers/i2c/busses/i2c-mpc.c: In function 'mpc_i2c_get_fdr_52xx':
->> drivers/i2c/busses/i2c-mpc.c:242:30: error: expected identifier or '(' before '=' token
-     242 |         struct fwnode_handle = of_fwnode_handle(node);
-         |                              ^
-   In file included from include/linux/of_address.h:6,
-                    from drivers/i2c/busses/i2c-mpc.c:14:
->> include/linux/of.h:176:10: error: expected statement before ')' token
-     176 |         })
-         |          ^
-   drivers/i2c/busses/i2c-mpc.c:242:32: note: in expansion of macro 'of_fwnode_handle'
-     242 |         struct fwnode_handle = of_fwnode_handle(node);
-         |                                ^~~~~~~~~~~~~~~~
-   drivers/i2c/busses/i2c-mpc.c:243:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-     243 |         const struct mpc_i2c_divider *div = NULL;
-         |         ^~~~~
->> drivers/i2c/busses/i2c-mpc.c:250:62: error: 'fwnode' undeclared (first use in this function); did you mean 'node'?
-     250 |                 *real_clk = mpc5xxx_fwnode_get_bus_frequency(fwnode) / 2048;
-         |                                                              ^~~~~~
-         |                                                              node
-   drivers/i2c/busses/i2c-mpc.c:250:62: note: each undeclared identifier is reported only once for each function it appears in
+this patch won't fix any issue，we could drop the fix tag, and update the 
+changelog.
 
 
-vim +242 drivers/i2c/busses/i2c-mpc.c
-
-   238	
-   239	static int mpc_i2c_get_fdr_52xx(struct device_node *node, u32 clock,
-   240						  u32 *real_clk)
-   241	{
- > 242		struct fwnode_handle = of_fwnode_handle(node);
-   243		const struct mpc_i2c_divider *div = NULL;
-   244		unsigned int pvr = mfspr(SPRN_PVR);
-   245		u32 divider;
-   246		int i;
-   247	
-   248		if (clock == MPC_I2C_CLOCK_LEGACY) {
-   249			/* see below - default fdr = 0x3f -> div = 2048 */
- > 250			*real_clk = mpc5xxx_fwnode_get_bus_frequency(fwnode) / 2048;
-   251			return -EINVAL;
-   252		}
-   253	
-   254		/* Determine divider value */
-   255		divider = mpc5xxx_fwnode_get_bus_frequency(fwnode) / clock;
-   256	
-   257		/*
-   258		 * We want to choose an FDR/DFSR that generates an I2C bus speed that
-   259		 * is equal to or lower than the requested speed.
-   260		 */
-   261		for (i = 0; i < ARRAY_SIZE(mpc_i2c_dividers_52xx); i++) {
-   262			div = &mpc_i2c_dividers_52xx[i];
-   263			/* Old MPC5200 rev A CPUs do not support the high bits */
-   264			if (div->fdr & 0xc0 && pvr == 0x80822011)
-   265				continue;
-   266			if (div->divider >= divider)
-   267				break;
-   268		}
-   269	
-   270		*real_clk = mpc5xxx_fwnode_get_bus_frequency(fwnode) / div->divider;
-   271		return (int)div->fdr;
-   272	}
-   273	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+> There will be build failure after patch 3 is added, there is a little
+> confusing for a reader of this commit in isolation.
+> In the next version, I will put this patch after patch 3.
+This is an alternative.
+>
+> Thanks,
+> Tong.
+> .
