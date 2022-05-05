@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FCE51CDA2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:10:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE32D51CDA6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:10:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvWD90wwGz3fWp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:10:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvWDr6Lwtz3fY4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:10:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KWPw36bZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Gt8kcUM+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,39 +18,39 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=KWPw36bZ; dkim-atps=neutral
+ header.s=Intel header.b=Gt8kcUM+; dkim-atps=neutral
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVzN0HBMz3byW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:59:11 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVzP6zjbz3cBX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:59:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651795153; x=1683331153;
+ t=1651795154; x=1683331154;
  h=from:to:cc:subject:date:message-id:in-reply-to: references;
- bh=t1y1ryZh2p05ZGgOOcX19YcqK36Xcxw5j/JRqkc11No=;
- b=KWPw36bZ0iBXnkpZNXSptsI1KRCSwaf/CckreaTFh98e/W/COYVgXH1L
- asIM8emWAB0AuE3BwofTbEJ2OmL3ox+Thwh8c6nY/T9utMIJMPbldyP2u
- GRWUsLzmnEAyZwaOQHtN9/ePYamD9DYMj+LEcSnnGiUbxgSY25niA3rF3
- yXvryXVwq5aCHO1Iu2pwzly8Qz+WmnvPF5rQqJqSONaa9OObD6PkMNxEs
- 3acCQLt/SwMmvWXg7v4Tv4Pi2hv8DD6QrObBOZj7C9j0I/3lr7saO/JZT
- Fp3s4PuoHIwx+kLPjrYOQJIHgsrl0wk2elRHfNWcECwpXv939aQzU7dJr A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437327"
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437327"
+ bh=/O+HEX9RnyO8ZBUK3lK021eADBWVL0Yl8Mx87L868do=;
+ b=Gt8kcUM+fOUhcWVHaIz8G87Ti30et8S+6Uw+DQxLqmYdLCMLbqfhO6G6
+ 2sFCgbv8YPmQ8FMJofeNBb24MFSxn32pDhzvH0yC7nGCZ45NQRDhMSDJ2
+ FXzy8R71N+dRzUBsLvfir/Xlpoy7X0pfltW0oBF5uK5C+f7VQE/H7nYa8
+ VicPM6U0ZvqGasABFK5pD4VusVJz+lXvQN8W2daU57LBGSrM3y/h9RwK9
+ /lmOLi9qcnF2LOFdAnJREx2VpdicB1APRWtI5mhfv/J5QCbTERoRpIBtp
+ uX0MtVa6fTwSXsesiABScfW/P6Xeq70SIN5IrZOzPMEeoT5EflICfK4on Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437328"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437328"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  05 May 2022 16:57:52 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914391"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914406"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:51 -0700
+ by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:52 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	x86@kernel.org
-Subject: [PATCH v6 18/29] watchdog/hardlockup: Define a generic function to
- detect hardlockups
-Date: Thu,  5 May 2022 16:59:57 -0700
-Message-Id: <20220506000008.30892-19-ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v6 19/29] watchdog/hardlockup: Decouple the hardlockup
+ detector from perf
+Date: Thu,  5 May 2022 16:59:58 -0700
+Message-Id: <20220506000008.30892-20-ricardo.neri-calderon@linux.intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
 References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
@@ -79,14 +79,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The procedure to detect hardlockups is independent of the underlying
-mechanism that generates the non-maskable interrupt used to drive the
-detector. Thus, it can be put in a separate, generic function. In this
-manner, it can be invoked by various implementations of the NMI watchdog.
+The current default implementation of the hardlockup detector assumes that
+it is implemented using perf events. However, the hardlockup detector can
+be driven by other sources of non-maskable interrupts (e.g., a properly
+configured timer).
 
-For this purpose, move the bulk of watchdog_overflow_callback() to the
-new function inspect_for_hardlockups(). This function can then be called
-from the applicable NMI handlers. No functional changes.
+Group and wrap in #ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF all the code
+specific to perf: create and manage perf events, stop and start the perf-
+based detector.
+
+The generic portion of the detector (monitor the timers' thresholds, check
+timestamps and detect hardlockups as well as the implementation of
+arch_touch_nmi_watchdog()) is now selected with the new intermediate config
+symbol CONFIG_HARDLOCKUP_DETECTOR_CORE.
+
+The perf-based implementation of the detector selects the new intermediate
+symbol. Other implementations should do the same.
 
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: Nicholas Piggin <npiggin@gmail.com>
@@ -106,67 +114,136 @@ Changes since v4:
  * None
 
 Changes since v3:
- * None
+ * Squashed into this patch a previous patch to make
+   arch_touch_nmi_watchdog() part of the core detector code.
 
 Changes since v2:
- * None
+ * Undid split of the generic hardlockup detector into a separate file.
+   (Thomas Gleixner)
+ * Added a new intermediate symbol CONFIG_HARDLOCKUP_DETECTOR_CORE to
+   select generic parts of the detector (Paul E. McKenney,
+   Thomas Gleixner).
 
 Changes since v1:
- * None
+ * Make the generic detector code with CONFIG_HARDLOCKUP_DETECTOR.
 ---
- include/linux/nmi.h   |  1 +
- kernel/watchdog_hld.c | 18 +++++++++++-------
- 2 files changed, 12 insertions(+), 7 deletions(-)
+ include/linux/nmi.h   |  5 ++++-
+ kernel/Makefile       |  2 +-
+ kernel/watchdog_hld.c | 32 ++++++++++++++++++++------------
+ lib/Kconfig.debug     |  4 ++++
+ 4 files changed, 29 insertions(+), 14 deletions(-)
 
 diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-index 750c7f395ca9..1b68f48ad440 100644
+index 1b68f48ad440..cf12380e51b3 100644
 --- a/include/linux/nmi.h
 +++ b/include/linux/nmi.h
-@@ -207,6 +207,7 @@ int proc_nmi_watchdog(struct ctl_table *, int , void *, size_t *, loff_t *);
- int proc_soft_watchdog(struct ctl_table *, int , void *, size_t *, loff_t *);
- int proc_watchdog_thresh(struct ctl_table *, int , void *, size_t *, loff_t *);
- int proc_watchdog_cpumask(struct ctl_table *, int, void *, size_t *, loff_t *);
-+void inspect_for_hardlockups(struct pt_regs *regs);
+@@ -94,8 +94,11 @@ static inline void hardlockup_detector_disable(void) {}
+ # define NMI_WATCHDOG_SYSCTL_PERM	0444
+ #endif
  
- #ifdef CONFIG_HAVE_ACPI_APEI_NMI
- #include <asm/nmi.h>
+-#if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
++#if defined(CONFIG_HARDLOCKUP_DETECTOR_CORE)
+ extern void arch_touch_nmi_watchdog(void);
++#endif
++
++#if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
+ extern void hardlockup_detector_perf_stop(void);
+ extern void hardlockup_detector_perf_restart(void);
+ extern void hardlockup_detector_perf_disable(void);
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 847a82bfe0e3..27e75b735ef7 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -95,7 +95,7 @@ obj-$(CONFIG_FAIL_FUNCTION) += fail_function.o
+ obj-$(CONFIG_KGDB) += debug/
+ obj-$(CONFIG_DETECT_HUNG_TASK) += hung_task.o
+ obj-$(CONFIG_LOCKUP_DETECTOR) += watchdog.o
+-obj-$(CONFIG_HARDLOCKUP_DETECTOR_PERF) += watchdog_hld.o
++obj-$(CONFIG_HARDLOCKUP_DETECTOR_CORE) += watchdog_hld.o
+ obj-$(CONFIG_SECCOMP) += seccomp.o
+ obj-$(CONFIG_RELAY) += relay.o
+ obj-$(CONFIG_SYSCTL) += utsname_sysctl.o
 diff --git a/kernel/watchdog_hld.c b/kernel/watchdog_hld.c
-index 247bf0b1582c..b352e507b17f 100644
+index b352e507b17f..bb6435978c46 100644
 --- a/kernel/watchdog_hld.c
 +++ b/kernel/watchdog_hld.c
-@@ -106,14 +106,8 @@ static struct perf_event_attr wd_hw_attr = {
- 	.disabled	= 1,
- };
+@@ -22,12 +22,8 @@
  
--/* Callback function for perf event subsystem */
--static void watchdog_overflow_callback(struct perf_event *event,
--				       struct perf_sample_data *data,
--				       struct pt_regs *regs)
-+void inspect_for_hardlockups(struct pt_regs *regs)
+ static DEFINE_PER_CPU(bool, hard_watchdog_warn);
+ static DEFINE_PER_CPU(bool, watchdog_nmi_touch);
+-static DEFINE_PER_CPU(struct perf_event *, watchdog_ev);
+-static DEFINE_PER_CPU(struct perf_event *, dead_event);
+-static struct cpumask dead_events_mask;
+ 
+ static unsigned long hardlockup_allcpu_dumped;
+-static atomic_t watchdog_cpus = ATOMIC_INIT(0);
+ 
+ notrace void arch_touch_nmi_watchdog(void)
  {
--	/* Ensure the watchdog never gets throttled */
--	event->hw.interrupts = 0;
+@@ -98,14 +94,6 @@ static inline bool watchdog_check_timestamp(void)
+ }
+ #endif
+ 
+-static struct perf_event_attr wd_hw_attr = {
+-	.type		= PERF_TYPE_HARDWARE,
+-	.config		= PERF_COUNT_HW_CPU_CYCLES,
+-	.size		= sizeof(struct perf_event_attr),
+-	.pinned		= 1,
+-	.disabled	= 1,
+-};
 -
+ void inspect_for_hardlockups(struct pt_regs *regs)
+ {
  	if (__this_cpu_read(watchdog_nmi_touch) == true) {
- 		__this_cpu_write(watchdog_nmi_touch, false);
- 		return;
-@@ -163,6 +157,16 @@ static void watchdog_overflow_callback(struct perf_event *event,
+@@ -157,6 +145,24 @@ void inspect_for_hardlockups(struct pt_regs *regs)
  	return;
  }
  
-+/* Callback function for perf event subsystem */
-+static void watchdog_overflow_callback(struct perf_event *event,
-+				       struct perf_sample_data *data,
-+				       struct pt_regs *regs)
-+{
-+	/* Ensure the watchdog never gets throttled */
-+	event->hw.interrupts = 0;
-+	inspect_for_hardlockups(regs);
-+}
++#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
++#undef pr_fmt
++#define pr_fmt(fmt) "NMI perf watchdog: " fmt
 +
- static int hardlockup_detector_event_create(void)
- {
- 	unsigned int cpu = smp_processor_id();
++static DEFINE_PER_CPU(struct perf_event *, watchdog_ev);
++static DEFINE_PER_CPU(struct perf_event *, dead_event);
++static struct cpumask dead_events_mask;
++
++static atomic_t watchdog_cpus = ATOMIC_INIT(0);
++
++static struct perf_event_attr wd_hw_attr = {
++	.type		= PERF_TYPE_HARDWARE,
++	.config		= PERF_COUNT_HW_CPU_CYCLES,
++	.size		= sizeof(struct perf_event_attr),
++	.pinned		= 1,
++	.disabled	= 1,
++};
++
+ /* Callback function for perf event subsystem */
+ static void watchdog_overflow_callback(struct perf_event *event,
+ 				       struct perf_sample_data *data,
+@@ -298,3 +304,5 @@ int __init hardlockup_detector_perf_init(void)
+ 	}
+ 	return ret;
+ }
++
++#endif /* CONFIG_HARDLOCKUP_DETECTOR_PERF */
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index 55b9acb2f524..1640532cdc6a 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1079,9 +1079,13 @@ config BOOTPARAM_SOFTLOCKUP_PANIC_VALUE
+ 	default 0 if !BOOTPARAM_SOFTLOCKUP_PANIC
+ 	default 1 if BOOTPARAM_SOFTLOCKUP_PANIC
+ 
++config HARDLOCKUP_DETECTOR_CORE
++	bool
++
+ config HARDLOCKUP_DETECTOR_PERF
+ 	bool
+ 	select SOFTLOCKUP_DETECTOR
++	select HARDLOCKUP_DETECTOR_CORE
+ 
+ #
+ # Enables a timestamp based low pass filter to compensate for perf based
 -- 
 2.17.1
 
