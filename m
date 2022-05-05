@@ -1,61 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B7751C502
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 18:19:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E8451C556
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 18:48:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvJnC5LN4z3c92
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:19:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lDheDQys;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvKQR4HBxz3cC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:48:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=lDheDQys; dkim-atps=neutral
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvJmY2KRMz3bft
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 02:19:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651767549; x=1683303549;
- h=date:from:to:cc:subject:message-id:mime-version:
- content-transfer-encoding;
- bh=prbGte/8BAHgcuXTWIRN6ZQY4QvityruUUNki/GcKgU=;
- b=lDheDQyskpB8ZEInG4QDdjSn3l74axf6ziwX2WwB2GL3PJTFvhB5dyZx
- 68KBFPkicTpnUoa8E5hq51Y1jI/VnoXDOm8HJV/i2dUEVU3541iLsglE0
- ETPRbDae9qTZO5bI5x6jnOn93YAwvyymDoBrbyOSxk4BKg1L1A8y74WuR
- YhcJans1fkSZLvwoDVQ/iq28FJ3n+9JJESfppQClSU3F0LOctXG2RU90n
- XQ7nCsxJ/zo6Gf3xXXmDLrLQTckNua4N4rKQ4lgwllY8lNm39WkqAb3XV
- TFhy79SN1nWJqQyEe3sjzTfNVc7PbBubmvkeD+g5LRQIPfJsk6frN33m7 A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="331157842"
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; d="scan'208";a="331157842"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 May 2022 09:16:43 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,201,1647327600"; d="scan'208";a="694730653"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
- by orsmga004.jf.intel.com with ESMTP; 05 May 2022 09:16:42 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
- (envelope-from <lkp@intel.com>) id 1nme9h-000CYK-98;
- Thu, 05 May 2022 16:16:41 +0000
-Date: Fri, 06 May 2022 00:15:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 36433b34c029f4181de26a82c94de8c88c339120
-Message-ID: <6273f834.x9v1igwcxUWiYvII%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvKPy5MmKz3bpB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 02:48:04 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KvKPp01sFz9sSn;
+ Thu,  5 May 2022 18:47:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id cyhOmyycsWZl; Thu,  5 May 2022 18:47:57 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KvKPn66Xmz9sSk;
+ Thu,  5 May 2022 18:47:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C1D138B78C;
+ Thu,  5 May 2022 18:47:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ZjXLIez351Rx; Thu,  5 May 2022 18:47:57 +0200 (CEST)
+Received: from [192.168.202.58] (unknown [192.168.202.58])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F35A98B763;
+ Thu,  5 May 2022 18:47:56 +0200 (CEST)
+Message-ID: <c10a1d91-bf3e-a0d9-dd2b-05174eae6750@csgroup.eu>
+Date: Thu, 5 May 2022 18:47:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v1 13/22] powerpc/ftrace: Use PPC_RAW_xxx() macros instead
+ of opencoding.
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Ingo Molnar <mingo@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>, Steven Rostedt <rostedt@goodmis.org>
+References: <cover.1648131740.git.christophe.leroy@csgroup.eu>
+ <bf3b854ca8f6f5abd29a7b2d9f74a7724fe35e33.1648131740.git.christophe.leroy@csgroup.eu>
+ <1650267275.b63dsc56ds.naveen@linux.ibm.com>
+ <4d338e24-7801-d17c-04a4-9afd2d7f9fd8@csgroup.eu>
+In-Reply-To: <4d338e24-7801-d17c-04a4-9afd2d7f9fd8@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,199 +69,174 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 36433b34c029f4181de26a82c94de8c88c339120  powerpc/ci: Pass SPARSE=2
 
-elapsed time: 13191m
 
-configs tested: 169
-configs skipped: 4
+Le 04/05/2022 à 14:39, Christophe Leroy a écrit :
+> 
+> 
+> Le 18/04/2022 à 09:38, Naveen N. Rao a écrit :
+>> Christophe Leroy wrote:
+>>> PPC_RAW_xxx() macros are self explanatory and less error prone
+>>> than open coding.
+>>>
+>>> Use them in ftrace.c
+>>>
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>> ---
+>>>   arch/powerpc/include/asm/ppc-opcode.h |  3 +++
+>>>   arch/powerpc/kernel/trace/ftrace.c    | 32 +++++++++------------------
+>>>   2 files changed, 14 insertions(+), 21 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/ppc-opcode.h
+>>> b/arch/powerpc/include/asm/ppc-opcode.h
+>>> index 82f1f0041c6f..281754aca0a3 100644
+>>> --- a/arch/powerpc/include/asm/ppc-opcode.h
+>>> +++ b/arch/powerpc/include/asm/ppc-opcode.h
+>>> @@ -294,6 +294,8 @@
+>>>   #define PPC_INST_BL            0x48000001
+>>>   #define PPC_INST_BRANCH_COND        0x40800000
+>>>
+>>> +#define PPC_INST_OFFSET24_MASK        0x03fffffc
+>>
+>> This corresponds to the LI field, per the ISA. See section 8.1.2/1.7:
+>> 'Instruction Fields'. Would it be better to name it PPC_INST_LI_MASK?
+> 
+> Isn't there a risk of confusing with the 'li' instruction ? Like we
+> could have PPC_INST_LI just like we have PPC_INST_ADD ?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I called it PPC_LI() and PPC_LI_MASK, similar to PPC_LO, PPC_HI etc ...
 
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-sh                           se7750_defconfig
-powerpc                      pcm030_defconfig
-xtensa                          iss_defconfig
-powerpc                      cm5200_defconfig
-arc                 nsimosci_hs_smp_defconfig
-m68k                          sun3x_defconfig
-ia64                      gensparse_defconfig
-powerpc                 mpc837x_rdb_defconfig
-m68k                       bvme6000_defconfig
-h8300                     edosk2674_defconfig
-arm                      footbridge_defconfig
-s390                             allmodconfig
-arc                     haps_hs_smp_defconfig
-parisc                           alldefconfig
-sh                         microdev_defconfig
-sh                            shmin_defconfig
-microblaze                      mmu_defconfig
-arm                         lpc18xx_defconfig
-riscv             nommu_k210_sdcard_defconfig
-mips                         db1xxx_defconfig
-powerpc                         ps3_defconfig
-h8300                    h8300h-sim_defconfig
-s390                       zfcpdump_defconfig
-ia64                          tiger_defconfig
-arm                          lpd270_defconfig
-powerpc                      pasemi_defconfig
-powerpc                      mgcoge_defconfig
-mips                           ip32_defconfig
-powerpc                        cell_defconfig
-powerpc                     tqm8555_defconfig
-powerpc                    klondike_defconfig
-m68k                       m5208evb_defconfig
-sh                           se7751_defconfig
-powerpc                 linkstation_defconfig
-x86_64               randconfig-c001-20220425
-arm                  randconfig-c002-20220425
-i386                 randconfig-c001-20220425
-x86_64                        randconfig-c001
-arm                  randconfig-c002-20220427
-arm                  randconfig-c002-20220501
-ia64                             allmodconfig
-ia64                             allyesconfig
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-i386                          randconfig-a003
-i386                          randconfig-a005
-i386                          randconfig-a001
-x86_64               randconfig-a015-20220425
-x86_64               randconfig-a014-20220425
-x86_64               randconfig-a011-20220425
-x86_64               randconfig-a013-20220425
-x86_64               randconfig-a012-20220425
-x86_64               randconfig-a016-20220425
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-i386                 randconfig-a014-20220425
-i386                 randconfig-a012-20220425
-i386                 randconfig-a011-20220425
-i386                 randconfig-a015-20220425
-i386                 randconfig-a013-20220425
-i386                 randconfig-a016-20220425
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220501
-s390                 randconfig-r044-20220501
-riscv                randconfig-r042-20220501
-arc                  randconfig-r043-20220502
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                               rhel-8.3
-x86_64                           rhel-8.3-syz
+> 
+> 
+> 
+>>
+>>> +
+>>>   /* Prefixes */
+>>>   #define PPC_INST_LFS            0xc0000000
+>>>   #define PPC_INST_STFS            0xd0000000
+>>> @@ -572,6 +574,7 @@
+>>>   #define PPC_RAW_EIEIO()            (0x7c0006ac)
+>>>
+>>>   #define PPC_RAW_BRANCH(addr)        (PPC_INST_BRANCH | ((addr) &
+>>> 0x03fffffc))
+>>> +#define PPC_RAW_BL(offset)        (0x48000001 | ((offset) &
+>>> PPC_INST_OFFSET24_MASK))
+>>>
+>>>   /* Deal with instructions that older assemblers aren't aware of */
+>>>   #define    PPC_BCCTR_FLUSH        stringify_in_c(.long
+>>> PPC_INST_BCCTR_FLUSH)
+>>> diff --git a/arch/powerpc/kernel/trace/ftrace.c
+>>> b/arch/powerpc/kernel/trace/ftrace.c
+>>> index fdc0412c1d8a..afb1d12838c9 100644
+>>> --- a/arch/powerpc/kernel/trace/ftrace.c
+>>> +++ b/arch/powerpc/kernel/trace/ftrace.c
+>>> @@ -90,19 +90,19 @@ static int test_24bit_addr(unsigned long ip,
+>>> unsigned long addr)
+>>>
+>>>   static int is_bl_op(ppc_inst_t op)
+>>>   {
+>>> -    return (ppc_inst_val(op) & 0xfc000003) == 0x48000001;
+>>> +    return (ppc_inst_val(op) & ~PPC_INST_OFFSET24_MASK) ==
+>>> PPC_RAW_BL(0);
+>>>   }
+>>>
+>>>   static int is_b_op(ppc_inst_t op)
+>>>   {
+>>> -    return (ppc_inst_val(op) & 0xfc000003) == 0x48000000;
+>>> +    return (ppc_inst_val(op) & ~PPC_INST_OFFSET24_MASK) ==
+>>> PPC_RAW_BRANCH(0);
+>>>   }
+>>>
+>>>   static unsigned long find_bl_target(unsigned long ip, ppc_inst_t op)
+>>>   {
+>>>       int offset;
+>>>
+>>> -    offset = (ppc_inst_val(op) & 0x03fffffc);
+>>> +    offset = (ppc_inst_val(op) & PPC_INST_OFFSET24_MASK);
+>>>       /* make it signed */
+>>>       if (offset & 0x02000000)
+>>>           offset |= 0xfe000000;
+>>> @@ -182,7 +182,7 @@ __ftrace_make_nop(struct module *mod,
+>>>        * Use a b +8 to jump over the load.
+>>>        */
+>>>
+>>> -    pop = ppc_inst(PPC_INST_BRANCH | 8);    /* b +8 */
+>>> +    pop = ppc_inst(PPC_RAW_BRANCH(8));    /* b +8 */
+>>>
+>>>       /*
+>>>        * Check what is in the next instruction. We can see ld
+>>> r2,40(r1), but
+>>> @@ -394,17 +394,8 @@ int ftrace_make_nop(struct module *mod,
+>>>   static int
+>>>   expected_nop_sequence(void *ip, ppc_inst_t op0, ppc_inst_t op1)
+>>>   {
+>>> -    /*
+>>> -     * We expect to see:
+>>> -     *
+>>> -     * b +8
+>>> -     * ld r2,XX(r1)
+>>> -     *
+>>> -     * The load offset is different depending on the ABI. For simplicity
+>>> -     * just mask it out when doing the compare.
+>>> -     */
+>>> -    if (!ppc_inst_equal(op0, ppc_inst(0x48000008)) ||
+>>> -        (ppc_inst_val(op1) & 0xffff0000) != 0xe8410000)
+>>> +    if (!ppc_inst_equal(op0, ppc_inst(PPC_RAW_BRANCH(8))) ||
+>>> +        !ppc_inst_equal(op1, ppc_inst(PPC_INST_LD_TOC)))
+>>
+>> It would be good to move PPC_INST_LD_TOC to ppc-opcode.h
+> 
+> It's not really just an instruction, it's closely linked to the ABI, so
+> does it really belong to ppc-opcode.h ? Maybe it could be better to have
+> it in ppc_asm.h instead, which already contains ABI related definitions ?
+> 
+> If we move it into ppc-opcode.h, then we also have to move
+> R2_STACK_OFFSET. Or should we use STK_GOT defined in ppc_asm.h and drop
+> R2_STACK_OFFSET ?
 
-clang tested configs:
-riscv                randconfig-c006-20220428
-mips                 randconfig-c004-20220428
-x86_64                        randconfig-c007
-i386                          randconfig-c001
-s390                 randconfig-c005-20220428
-arm                  randconfig-c002-20220428
-powerpc              randconfig-c003-20220428
-riscv                randconfig-c006-20220427
-mips                 randconfig-c004-20220427
-arm                  randconfig-c002-20220427
-powerpc              randconfig-c003-20220427
-powerpc              randconfig-c003-20220505
-arm                  randconfig-c002-20220505
-mips                 randconfig-c004-20220505
-s390                 randconfig-c005-20220505
-riscv                randconfig-c006-20220505
-arm                         palmz72_defconfig
-powerpc                    mvme5100_defconfig
-powerpc                      pmac32_defconfig
-mips                          ath25_defconfig
-powerpc                    socrates_defconfig
-mips                     cu1000-neo_defconfig
-riscv                             allnoconfig
-powerpc                        icon_defconfig
-arm                   milbeaut_m10v_defconfig
-i386                             allyesconfig
-arm                         hackkit_defconfig
-mips                           mtx1_defconfig
-powerpc                        fsp2_defconfig
-arm                      pxa255-idp_defconfig
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-x86_64               randconfig-a002-20220425
-x86_64               randconfig-a004-20220425
-x86_64               randconfig-a003-20220425
-x86_64               randconfig-a001-20220425
-x86_64               randconfig-a005-20220425
-x86_64               randconfig-a006-20220425
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64               randconfig-a011-20220502
-x86_64               randconfig-a014-20220502
-x86_64               randconfig-a012-20220502
-x86_64               randconfig-a013-20220502
-x86_64               randconfig-a016-20220502
-x86_64               randconfig-a015-20220502
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220501
-hexagon              randconfig-r041-20220501
+Looked at it in more details, looks like STK_GOT is an assembly only 
+symbol, and ppc_asm.h is dedicated to ASM allthough it has recently 
+leaked a bit into C.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+So I propose to leave it as is and do the change in a followup patch.
+
+
+> 
+>>
+>>>           return 0;
+>>>       return 1;
+>>>   }
+>>> @@ -412,7 +403,6 @@ expected_nop_sequence(void *ip, ppc_inst_t op0,
+>>> ppc_inst_t op1)
+>>>   static int
+>>>   expected_nop_sequence(void *ip, ppc_inst_t op0, ppc_inst_t op1)
+>>>   {
+>>> -    /* look for patched "NOP" on ppc64 with -mprofile-kernel or ppc32 */
+>>>       if (!ppc_inst_equal(op0, ppc_inst(PPC_RAW_NOP())))
+>>>           return 0;
+>>>       return 1;
+>>> @@ -738,11 +728,11 @@ int __init ftrace_dyn_arch_init(void)
+>>>       int i;
+>>>       unsigned int *tramp[] = { ftrace_tramp_text, ftrace_tramp_init };
+>>>       u32 stub_insns[] = {
+>>> -        0xe98d0000 | PACATOC,    /* ld      r12,PACATOC(r13)    */
+>>> -        0x3d8c0000,        /* addis   r12,r12,<high>    */
+>>> -        0x398c0000,        /* addi    r12,r12,<low>    */
+>>> -        0x7d8903a6,        /* mtctr   r12            */
+>>> -        0x4e800420,        /* bctr                */
+>>> +        PPC_RAW_LD(_R12, _R13, PACATOC),
+>>> +        PPC_RAW_ADDIS(_R12, _R12, 0),
+>>> +        PPC_RAW_ADDIS(_R12, _R12, 0),
+>>
+>> This should be PPC_RAW_ADDI.
+>>
+> 
+> Oops.
+> 
+> Christophe
