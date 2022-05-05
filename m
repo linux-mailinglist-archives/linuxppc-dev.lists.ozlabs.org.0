@@ -2,67 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DAD51C155
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 15:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE1A751C1C8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 16:00:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvFTY6rYMz3c7y
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:50:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvFhB5kL2z3c8n
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 00:00:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=WCAi+X3i;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hhdZBqTp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.91;
- helo=conssluserg-06.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=WCAi+X3i; 
- dkim-atps=neutral
-Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com
- [210.131.2.91])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvFSs683Lz3bXg
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 23:50:21 +1000 (AEST)
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com
- [209.85.214.180]) (authenticated)
- by conssluserg-06.nifty.com with ESMTP id 245Do2Nj015266
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 5 May 2022 22:50:03 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 245Do2Nj015266
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1651758603;
- bh=9oRpkNgyXXtV+zgGcTivzSiWJg6PL7lzsKUtb+il+xA=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=WCAi+X3iW2LWnS+cyU6Xwt+mVMFWGKNgvm1N4fQyjnqbm5kc3n8AZNfmfQahJf44C
- 8baCi4AzET7HA49g1FxlljYCIcyH27XetjJU5oHET938gKf0mwwJvz2T8HhpMNLCrz
- P9Pn3Km3/Y/vQeek7U0RGRx1wEMV/zynJog1koCSG/7blY0+bz+o/+V+nd0dhDVIgT
- ObLR1jGvcZqTTJusj3s304q3S0HOyD8i5NlnZKlgrayMMnTlwQhkOi3xewdpgkQ2UG
- FMtXR+0Z3J9CI9yvcXTbq4t0xxUsKdPB9BdEjyOOS3D5O8xVFTCPswe5Ah2kSLCHdl
- WLmJgONxSW2YA==
-X-Nifty-SrcIP: [209.85.214.180]
-Received: by mail-pl1-f180.google.com with SMTP id j14so4454820plx.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 May 2022 06:50:03 -0700 (PDT)
-X-Gm-Message-State: AOAM532vcbo+uMd0blOlrGWAOzKYVqC5W1t2t3dB8T0Lq4Tlb9dOX2+q
- x38ymv2Nyv0dCA+43IbZBIFaXEp2Kvon01gd11c=
-X-Google-Smtp-Source: ABdhPJwUvU2dd6I2MVotZAWGiD+mCtj6djZTY+lh8nRnnAK5x12OI9taA02MBGobfNqjKVY/3aiklbcYcNl4MlrBSIM=
-X-Received: by 2002:a17:90a:8405:b0:1bc:d521:b2c9 with SMTP id
- j5-20020a17090a840500b001bcd521b2c9mr6301241pjn.119.1651758602352; Thu, 05
- May 2022 06:50:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvFgZ6dWjz3bdR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 May 2022 23:59:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=hhdZBqTp; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KvFgX0SzKz4ySp;
+ Thu,  5 May 2022 23:59:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1651759176;
+ bh=BLmOX2JTJUtsf6cp+fQ5NjvJNurLWC3DJXNDMhwryvY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=hhdZBqTp0KxTl5o0xmkH99R1gX2msFo5zA156PlY86YUxIbU5ayfEs8ASsMIaeNyK
+ +k3arSXiRIBXDDDz8EwNzAoXJBONPP9oEGCTra5MONrZDVEVXtA/xjVdmmJ7zu5WCq
+ JH317o5mcUOrxUFMBjT9dzlXb+SV4YuCVfaFUIKeooJ/2ZACg2ktQauaKHgNvquTD9
+ mR2X/XRVj4ZBWq4U19N1NocMo2HU3qT90BagPJLSkdWoE6iob3Mk1fSLi2FIyythDf
+ MBBOlBvipa3ilILuBcnk18rHEP9y+bOaN5wdej9b0KFBHgXFYm9S24+rUUZk645iQL
+ tsqnaGFnrY4pg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] powerpc/ftrace: Remove ftrace init tramp once kernel
+ init is complete
+In-Reply-To: <20220323171834.42637-1-naveen.n.rao@linux.vnet.ibm.com>
+References: <20220323171834.42637-1-naveen.n.rao@linux.vnet.ibm.com>
+Date: Thu, 05 May 2022 23:59:32 +1000
+Message-ID: <87tua4t70b.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20220505072244.1155033-1-masahiroy@kernel.org>
- <20220505072244.1155033-3-masahiroy@kernel.org>
-In-Reply-To: <20220505072244.1155033-3-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 5 May 2022 22:48:55 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAREQt5rPGK8zsti_UA-dGFKfqHsVWbSgMLw-yLoeNkJeA@mail.gmail.com>
-Message-ID: <CAK7LNAREQt5rPGK8zsti_UA-dGFKfqHsVWbSgMLw-yLoeNkJeA@mail.gmail.com>
-Subject: Re: [PATCH v3 02/15] modpost: change the license of EXPORT_SYMBOL to
- bool type
-To: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,36 +59,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- Nicolas Schier a <nicolas@fjasle.eu>, Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-um@lists.infradead.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
- Kees Cook <keescook@chromium.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 5, 2022 at 4:24 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Stop using the ftrace trampoline for init section once kernel init is
+> complete.
 >
-> Currently, enum export is tristate, but export_unknown does not make
-> sense in any way.
->
-> If the symbol name starts with "__ksymtab_", but the section name
-> does not start with "___ksymtab+" or "___ksymtab_gpl+", it is not
-> an exported symbol. The variable name just happens to start with
-> "__ksymtab_". Do not call sym_add_exported() in this case.
->
-> __ksymtab_* is internally by EXPORT_SYMBOL(_GPL) but somebody may
+> Fixes: 67361cf8071286 ("powerpc/ftrace: Handle large kernel configs")
+> Cc: stable@vger.kernel.org # v4.20+
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> ---
+>  arch/powerpc/include/asm/ftrace.h  |  2 ++
+>  arch/powerpc/kernel/trace/ftrace.c | 15 ++++++++++++---
+>  arch/powerpc/mm/mem.c              |  2 ++
+>  3 files changed, 16 insertions(+), 3 deletions(-)
 
-I mean
-"... is internally used by ..."
+This breaks the corenet64_smp_defconfig build:
+
+  ld: arch/powerpc/mm/mem.o: in function `.free_initmem':
+  (.text+0x130): undefined reference to `.ftrace_free_init_tramp'
+  make[1]: *** [/home/michael/linux/Makefile:1158: vmlinux] Error 1
+  make: *** [Makefile:219: __sub-make] Error 2
 
 
+> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+> index d83758acd1c7c3..d329f4ad18944d 100644
+> --- a/arch/powerpc/include/asm/ftrace.h
+> +++ b/arch/powerpc/include/asm/ftrace.h
+> @@ -110,11 +110,13 @@ static inline u8 this_cpu_get_ftrace_enabled(void)
+>  	return get_paca()->ftrace_enabled;
+>  }
+>  
+> +void ftrace_free_init_tramp(void);
+>  #else /* CONFIG_PPC64 */
+>  static inline void this_cpu_disable_ftrace(void) { }
+>  static inline void this_cpu_enable_ftrace(void) { }
+>  static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled) { }
+>  static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
+> +static inline void ftrace_free_init_tramp(void) { }
+>  #endif /* CONFIG_PPC64 */
 
+I think because we need that stub to be defined.
 
--- 
-Best Regards
-Masahiro Yamada
+But this config does have PPC64=y but *doesn't* have DYNAMIC_FTRACE or
+FTRACE_SYSCALLS or FUNCTION_GRAPH_TRACER enabled.
+
+cheers
