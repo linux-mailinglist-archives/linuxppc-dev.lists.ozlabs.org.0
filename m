@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27C051CBB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:57:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A457251CBBC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:59:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSHN5gdLz3dt7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 07:57:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSJq3Vxdz3c7Z
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 07:59:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=P5JqnzKq;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=FaLJ+2jW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=fjasle.eu (client-ip=217.72.192.74; helo=mout.kundenserver.de;
+ smtp.mailfrom=fjasle.eu (client-ip=212.227.126.130; helo=mout.kundenserver.de;
  envelope-from=nicolas@fjasle.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256
- header.s=mail header.b=P5JqnzKq; dkim-atps=neutral
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+ header.s=mail header.b=FaLJ+2jW; dkim-atps=neutral
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvQCX2pY3z3brS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 06:24:20 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvQJN0HTXz3brH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 06:28:30 +1000 (AEST)
 Received: from leknes.fjasle.eu ([46.142.98.182]) by mrelayeu.kundenserver.de
- (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1Mz9EL-1o0vC22a9b-00wFu7; Thu, 05 May 2022 22:22:53 +0200
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MdwRi-1oLUuu0jeY-00b4o2; Thu, 05 May 2022 22:27:10 +0200
 Received: by leknes.fjasle.eu (Postfix, from userid 1000)
- id 9326E3C088; Thu,  5 May 2022 22:22:49 +0200 (CEST)
+ id B61AF3C088; Thu,  5 May 2022 22:27:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
- t=1651782169; bh=gLnf95DDjaMYGCRgX6K1aWAnNa4DMAQkns7Hsushh60=;
+ t=1651782424; bh=oGd2e0sWzuw2lfacuEfCkKF+JuznQDoibFgyz7j1FOw=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=P5JqnzKqtCgrYbwEuOhr7agnhA9+gQXyvraZM/aNsViPYwCcmXRoB0dY8HOQW2LE5
- kRtHvppRbVwP87SX7/jDtlvgKxxbcffwdHVginnFLXVfXr1beojclNn2h078mxS1z1
- 9QMmT/PWzqeujd3d3jGPQuxQtQuuSt//isIYhAZI=
-Date: Thu, 5 May 2022 22:22:49 +0200
+ b=FaLJ+2jWftfmPh62O8eA9LWVOpI6bCmG5q2wumrSva1zb8Lt/1da5TlQqhSISYxfV
+ 3pWN2pxZKshK6qG2ZAlazcmz8TTIL9aTwzrsh4MAmQGR8+JO8wVmXZblUEf84WC++W
+ TiErDSzNaNjx6X6fzUMEEHREyY6mRvxkVgjnPEo4=
+Date: Thu, 5 May 2022 22:27:04 +0200
 From: Nicolas Schier <nicolas@fjasle.eu>
 To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH v3 10/15] genksyms: adjust the output format to modpost
-Message-ID: <YnQyGUlhvUIZwoNy@fjasle.eu>
+Subject: Re: [PATCH v3 12/15] modpost: simplify the ->is_static initialization
+Message-ID: <YnQzGMfWqnP6CMir@fjasle.eu>
 References: <20220505072244.1155033-1-masahiroy@kernel.org>
- <20220505072244.1155033-11-masahiroy@kernel.org>
+ <20220505072244.1155033-13-masahiroy@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220505072244.1155033-11-masahiroy@kernel.org>
-X-Provags-ID: V03:K1:RUI2NxERijqBLuHI7G+nXGlaQN7ojuvdXw0yIKPmaAmlM/WXDvD
- z+undfnS5/BQmDavRN0dHs0z6ogRT8PP96LkZFU2gGTqewRhjkyZjh4El221JnzIHz6JwSJ
- FIhTrT6LlR9hlmohtlQUd6uMFu6QJ7kd2iTahnc9SV5tIegCWreRierRRGI87knT1tQKDev
- 5SuWioT/YknSjZKC8ulFg==
+In-Reply-To: <20220505072244.1155033-13-masahiroy@kernel.org>
+X-Provags-ID: V03:K1:LK2u+J2AhRjCi+eMNFHoFnTinbNPkEFuFiOuKWVtzJ00eRjm6z7
+ tNvjulmaQd0h6NqxBCm22IwvsWk8KlKkc6Ii6th88VKmMWg5MlEkkUpaXLqSy7hm061+Hs8
+ UD92p80tBHi8TG7LLOvYD2q5nEGx/b88ke8OExKVbAFL5cXXGXR/lOQyJDZrWpGGW8T00jj
+ JAPWLP7gyGdYvch2xT3Gw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jxZ5y2jNwbs=:j0VaPvAClzfPiR1zMMPS2V
- 4Blib3kzqTqZt1lgsARx53lSLe9k1NMGOsYT5OVcHQu4avv8lOHyCqM9ge5kRBsupEaTAiEDp
- YZvw50YwnVmqQi2z5eHO7+xqfM2iaEAj8EwyYJV5eiCo34hRU0J2uw6Ci3L0x4cOjIIPgx9/1
- zrcgC0WyzTJt9xSdNOKt0ektBE71fExhkTfIvbB1iEOfhOHXpF8jd0Ymtb0E8gOpN5eWtnVnB
- wG6sDDKzE74ixKhLuiFNjzicAIlE4GuGpkzVaBidxwpjMmDm2UeZrWYuJPKY7s/x3CCknfg/8
- WZn/PYyJjRa3LU9540K7cbgLBLPtalY1P8OwfhLXDst1Rjrb4WzFa3YuV+2aw6QjxcQr99jxo
- YrA1gYvz6DCU9L+AZTrv+JYfyE7wGJqgW+qy11WUnp1Gobv3OoFfQOBFfqELZonNPBSZ4eE4U
- XtlQV1ubC6gXN8m7nhZY3WwKKOswQGQ+cfwMy9MkT95n+ctFcpxNJrqVNM4T+3z6t8srLnLiu
- 0/Mwgj0E1+RWwtUWEpRSSLSBj7QOBfYMDywGzq5JMDZQbXNiB5yMXV7TM7WvPZVi2iO3EYdQQ
- 6TMgU4M620I5XBRPj1A7DVrOvt4A/uVy2Y44MtohxyNtOCaq4srTazIQazf69a2RHeiYwmpaJ
- gyM61KOlwm1QMxusvpBmDh/WQ4qBNSIr1JDl4Ir2cAq1H3uxxCTd6skGJOE975VRrmMw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OxAiCGOEiWk=:9v6pZlNBsR1l7vFzSHm9UI
+ /rD6j6qbY07+oT4+AyXX+8s8GdCCDK9+2h3F1C5GfCE4WbIIm1+MyqDLdz9pQ1kr1drl6HDQL
+ mLMC7CawdirGi/+SQAWuOxWNkG06NUrvND+SqkMCsISquldvjozq/TV+y219fr1VGCksL5Tro
+ F3em6lKfungyYh6g0OHXZlFaHPlPU5G8jos/UzxAYI2dqTiiu5Zi2YNXJyBVHiyJBDnR4du6f
+ oedVr8+AQ86/m7v8tG4KXewdDs+4LunPIEVMcQCZmcQBFkkMPzZAwTYv7b3+5Dkp+eFTafJIL
+ DOxPYInPHjDQZ3YpjNA8xpyYu2C/rRM+jb8P02LWzU6paRv/p9pgO/lOQL4oBIFQbqJ1DbtGa
+ CRIOFERb8zjO2S7jr1FGl44q4ySvT+X1TJkog7BMk0XG712rdLQ9IxQBh1oaKwTt8kslwrMNc
+ QVkL3lXMtoH9dj9fuLZzCnXUT7+sB+8wHMN73LyZWZfQoiCBuM17nLSL0LeRxvP36JCelL7Vl
+ 5zi8CbPjRaSVVtvh7nK22PIH9epnfrEF3wcpoBeVEThuZ1lEJZOvKSDuZH42mmhK5BCVV6FwG
+ wLCpKeZEzfsRzM+O+RKRbUDV03g0i9Qks6wQ4q3MTboCf81M1UyFXm7pDprkdC91RC066O/M4
+ nVtIm+BqMUkqLUXR31hp2A+GSF8kq8ZnuaKpMsOLt19fVst3NmNkq7ij/oFYqgxLNoks=
 X-Mailman-Approved-At: Fri, 06 May 2022 07:52:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,14 +84,11 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 05, 2022 at 04:22:39PM +0900 Masahiro Yamada wrote:
-> Make genksyms output symbol versions in the format modpost expects,
-> so the 'sed' is unneeded.
+On Thu, May 05, 2022 at 04:22:41PM +0900 Masahiro Yamada wrote:
+> ->is_static is set to true at allocation, then to false if the symbol
+> comes from the dump file.
 > 
-> This commit makes *.symversions completely unneeded.
-> 
-> I will keep *.symversions in .gitignore and 'make clean' for a while.
-> Otherwise, some people might be upset with 'git status'.
+> It is simpler to use !mod->from_dump as the init value.
 > 
 > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
@@ -101,45 +98,38 @@ On Thu, May 05, 2022 at 04:22:39PM +0900 Masahiro Yamada wrote:
 > Changes in v2:
 >   - New patch
 > 
->  scripts/Makefile.build      | 6 ------
->  scripts/genksyms/genksyms.c | 3 +--
->  2 files changed, 1 insertion(+), 8 deletions(-)
+>  scripts/mod/modpost.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index dff9220135c4..461998a2ad2b 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -165,16 +165,10 @@ ifdef CONFIG_MODVERSIONS
->  # o modpost will extract versions from that file and create *.c files that will
->  #   be compiled and linked to the kernel and/or modules.
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index e07542a90fc6..4edd5b223f49 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -242,7 +242,7 @@ static struct symbol *alloc_symbol(const char *name)
 >  
-> -genksyms_format := __crc_\(.*\) = \(.*\);
-> -
->  gen_symversions =								\
->  	if $(NM) $@ 2>/dev/null | grep -q __ksymtab; then			\
->  		$(call cmd_gensymtypes_$(1),$(KBUILD_SYMTYPES),$(@:.o=.symtypes)) \
-> -		    > $@.symversions;						\
-> -		sed -n 's/$(genksyms_format)/$(pound)SYMVER \1 \2/p' $@.symversions \
->  			>> $(dot-target).cmd;					\
-> -	else									\
-> -		rm -f $@.symversions;						\
->  	fi
->  
->  cmd_gen_symversions_c =	$(call gen_symversions,c)
-> diff --git a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
-> index 6e6933ae7911..f5dfdb9d80e9 100644
-> --- a/scripts/genksyms/genksyms.c
-> +++ b/scripts/genksyms/genksyms.c
-> @@ -680,8 +680,7 @@ void export_symbol(const char *name)
->  		if (flag_dump_defs)
->  			fputs(">\n", debugfile);
->  
-> -		/* Used as a linker script. */
-> -		printf("__crc_%s = 0x%08lx;\n", name, crc);
-> +		printf("#SYMVER %s 0x%08lx\n", name, crc);
->  	}
+>  	memset(s, 0, sizeof(*s));
+>  	strcpy(s->name, name);
+> -	s->is_static = true;
+> +
+>  	return s;
 >  }
 >  
+> @@ -376,6 +376,7 @@ static struct symbol *sym_add_exported(const char *name, struct module *mod,
+>  
+>  	s = alloc_symbol(name);
+>  	s->module = mod;
+> +	s->is_static = !mod->from_dump;
+>  	s->is_gpl_only = gpl_only;
+>  	list_add_tail(&s->list, &mod->exported_symbols);
+>  	hash_add_symbol(s);
+> @@ -2523,7 +2524,6 @@ static void read_dump(const char *fname)
+>  			mod->from_dump = true;
+>  		}
+>  		s = sym_add_exported(symname, mod, gpl_only);
+> -		s->is_static = false;
+>  		sym_set_crc(s, crc);
+>  		sym_update_namespace(symname, namespace);
+>  	}
 > -- 
 > 2.32.0
 
