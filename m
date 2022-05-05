@@ -1,106 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F04551CBA3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:53:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E996151CBA9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:54:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSBK1s1jz3c9N
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 07:53:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSCp61xQz3c7G
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 07:54:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gSD1byPq;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=PwCfqkix;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gSD1byPq; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvNGp2zLqz3bql
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 04:57:05 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 245IsCDC021810;
- Thu, 5 May 2022 18:56:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=XNUaK5MXNumQ2GC419CM2tT56hGe0D54FACFQZzubag=;
- b=gSD1byPqJD9U14RM7yqXNGjhCvGv5EceJcS49ikn+rpVMYCw5l/cE2/RfhpfxgDrdFXF
- bkw+3uP6vU/C7MIPvjf+1/BQcDGTmd58m1jCKBcC75Xc3IwagCsVfPCOPegq8b4MZ3p/
- mQN9mkPuV1Btua3UKzIpudLBdtJkA5WoYucCFThdzTDSpYwo6Nc6tDpcKD+hvfEHi+OM
- CWja8vfEeVW5JzydzGv1uvP94K0n/yjRgwV8RQXFJagBheg9E5Imh/dRMjKSs9LZirwJ
- /CWejco2WiCA9LRB8XRjw7cjAD2OqALQniaNM+6CBO4ZnFoxNe9gtVMrz4B16UghR6hV VA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvm92012c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 May 2022 18:56:22 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 245IuAu6029325;
- Thu, 5 May 2022 18:56:21 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvm92011f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 May 2022 18:56:21 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 245IbA58012918;
- Thu, 5 May 2022 18:55:39 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 3ftp7fvexe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 May 2022 18:55:39 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 245ItaGm14352888
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 May 2022 18:55:36 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B81D11C05B;
- Thu,  5 May 2022 18:55:36 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6820611C04C;
- Thu,  5 May 2022 18:55:10 +0000 (GMT)
-Received: from [9.211.36.212] (unknown [9.211.36.212])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  5 May 2022 18:55:10 +0000 (GMT)
-Message-ID: <3c34d8e2-6f84-933f-a4ed-338cd300d6b0@linux.ibm.com>
-Date: Fri, 6 May 2022 00:25:08 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 08/30] powerpc/setup: Refactor/untangle panic notifiers
-Content-Language: en-US
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, akpm@linux-foundation.org,
- bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-9-gpiccoli@igalia.com>
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20220427224924.592546-9-gpiccoli@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: FmL43udCg7zOaYTyNU5fYcYIiC3L3tsY
-X-Proofpoint-ORIG-GUID: op15TFwB187r4kWWn80Xf8P42QMt9UB1
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ smtp.mailfrom=fjasle.eu (client-ip=212.227.17.10; helo=mout.kundenserver.de;
+ envelope-from=nicolas@fjasle.eu; receiver=<UNKNOWN>)
+X-Greylist: delayed 569 seconds by postgrey-1.36 at boromir;
+ Fri, 06 May 2022 05:42:47 AEST
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvPHW6qsZz3bft
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 05:42:21 +1000 (AEST)
+Received: from leknes.fjasle.eu ([46.142.98.182]) by mrelayeu.kundenserver.de
+ (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MiIhU-1oH5uO3YH8-00fPtT; Thu, 05 May 2022 21:25:22 +0200
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+ id 38E543C088; Thu,  5 May 2022 21:25:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+ t=1651778720; bh=Cwl4zkdeQcVXSxZ/RPcnVgB7zM8oGINbzVc8Y2VMFBk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=PwCfqkixa12sjKmUlkGN0KNMba5H+CtsWqxRGlVdXRptb7TBIoy0BO7Sc1zRukI0i
+ EvUm1lkuiTNGLNT1bpJs98zozgIt6sLhIAOebglqQmNOD+itcraoJUvz+J1M7FySUT
+ 6hRW+SHN7GBvySLN/CpZb48xBVsXn+jeS7J2nWak=
+Date: Thu, 5 May 2022 21:25:20 +0200
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH v3 01/15] modpost: mitigate false-negatives for static
+ EXPORT_SYMBOL checks
+Message-ID: <YnQkoFahOeUVpZhj@fjasle.eu>
+References: <20220505072244.1155033-1-masahiroy@kernel.org>
+ <20220505072244.1155033-2-masahiroy@kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-05_08,2022-05-05_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 spamscore=0 phishscore=0 suspectscore=0 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205050125
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220505072244.1155033-2-masahiroy@kernel.org>
+X-Provags-ID: V03:K1:453ge2nHJXg6JLo5cZeMgSEFhVvVa0swhzjR0uQKtW94gAuyPQc
+ MTjdF1f5pbFygWaA0SosWLKNmyUdXwFK1CUqAPSkq2SKzmSgl51MwQo6xoMn3Z2qWshs+mq
+ zUww0m+Vg1VGGeeohNre8BVjxjh7qSjrYTbvLGMl0VUFNN4UdaEPPhevVoj5lG7DWNaJkaT
+ +cWvR/fsod9psxrnhT2vQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1I7YRGCbifg=:wiHGGZsjWiVsWflzSdZlf1
+ rnxSHlzLZbMlXQME6NsR23TczHKf6OFgpjIJRweoZDOt+P1A1+Y5ynWZFi1DUzWJOz1sKX0TM
+ LRwVI4ERpbHQcSO0gDL6tU6ksEw87Zm+bAHq0WXCrwZsZa6+Y5mRLCIcxUmo329FGyjYNyhdS
+ eG7aZnZWvzTXCARfGy1WslzyAgC8o6GEeHvAWVHxXESeqY8upGZMHXEI+uKbObPJTg0fEl3E7
+ NAoM9kJuatC3ZzJYV0EFKws1gCXTvip2bVKO/76Y3MvV0BFw8JDmr4hEJVRfSCNsQwoxvETEm
+ byFT8g0yFtZ76OUQrjgzr2+eiPV/xAeMTNluTgPdpr4zrzFMZs4/+ugUQNJ15EYFAC0sBYW1W
+ Pz3BGAUMOGllW0YjUQYhaqkW9sVp+UOPPJVZCClWZkiUGHSSLpgzeOhEorkO9iKmPcbeis2Hb
+ MUJjhwu8LEveg9G2hunBn0D3ktK0vBt0TVPu6g1sSL68SLfVws0jRqa39KUc8HOJ41b06YlIy
+ wFd3T3RT5uNwEXWYXjbev/LJZ0jLeMtsZkSbZ9rBnEFgQ/7s0XV+eQAmN0+BWqCDM3dzUO+Ym
+ xMlRbF8rqGdgTzXPN8gNZpFvlIHgugQ82P+/XzVVZr46f8pl/L9tlr6VPnEKmAGrgxWPn3PFH
+ f73++dR3OrYy55UT1C6nPNpG8/BjWlgNb3gzr+kTvM0/e/n3pIQ1OTs5w4FzgufxvWzg=
 X-Mailman-Approved-At: Fri, 06 May 2022 07:52:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -113,209 +75,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org, will@kernel.org,
- tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
- mikelley@microsoft.com, john.ogness@linutronix.de, corbet@lwn.net,
- paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, coresight@lists.linaro.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- bp@alien8.de, Nicholas Piggin <npiggin@gmail.com>, luto@kernel.org,
- linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org,
- linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, linux-kernel@vger.kernel.org,
- stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
- mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
- vkuznets@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ linux-kbuild@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-um@lists.infradead.org,
+ linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 28/04/22 4:19 am, Guilherme G. Piccoli wrote:
-> The panic notifiers infrastructure is a bit limited in the scope of
-> the callbacks - basically every kind of functionality is dropped
-> in a list that runs in the same point during the kernel panic path.
-> This is not really on par with the complexities and particularities
-> of architecture / hypervisors' needs, and a refactor is ongoing.
+On Thu, May 05, 2022 at 04:22:30PM +0900 Masahiro Yamada wrote:
+> The 'static' specifier and EXPORT_SYMBOL() are an odd combination.
 > 
-> As part of this refactor, it was observed that powerpc has 2 notifiers,
-> with mixed goals: one is just a KASLR offset dumper, whereas the other
-> aims to hard-disable IRQs (necessary on panic path), warn firmware of
-> the panic event (fadump) and run low-level platform-specific machinery
-> that might stop kernel execution and never come back.
+> Since commit 15bfc2348d54 ("modpost: check for static EXPORT_SYMBOL*
+> functions"), modpost tries to detect it, but there are false negatives.
 > 
-> Clearly, the 2nd notifier has opposed goals: disable IRQs / fadump
-> should run earlier while low-level platform actions should
-> run late since it might not even return. Hence, this patch decouples
-> the notifiers splitting them in three:
+> Here is the sample code.
 > 
-> - First one is responsible for hard-disable IRQs and fadump,
-> should run early;
+> [Sample 1]
 > 
-> - The kernel KASLR offset dumper is really an informative notifier,
-> harmless and may run at any moment in the panic path;
+>   Makefile:
 > 
-> - The last notifier should run last, since it aims to perform
-> low-level actions for specific platforms, and might never return.
-> It is also only registered for 2 platforms, pseries and ps3.
+>     obj-m += mymod1.o mymod2.o
 > 
-> The patch better documents the notifiers and clears the code too,
-> also removing a useless header.
+>   mymod1.c:
 > 
-> Currently no functionality change should be observed, but after
-> the planned panic refactor we should expect more panic reliability
-> with this patch.
+>     #include <linux/export.h>
+>     #include <linux/module.h>
+>     static void foo(void) {}
+>     EXPORT_SYMBOL(foo);
+>     MODULE_LICENSE("GPL");
 > 
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Hari Bathini <hbathini@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-
-The change looks good. I have tested it on an LPAR (ppc64).
-
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-
+>   mymod2.c:
+> 
+>     #include <linux/module.h>
+>     void foo(void) {}
+>     MODULE_LICENSE("GPL");
+> 
+> mymod1 exports the static symbol 'foo', but modpost cannot catch it
+> because it is fooled by the same name symbol in another module, mymod2.
+> (Without mymod2, modpost can detect the error in mymod1)
+> 
+> find_symbol() returns the first symbol found in the hash table with the
+> given name. This hash table is global, so it may return a symbol from
+> an unrelated module. So, a global symbol in a module may unset the
+> 'is_static' flag of another module.
+> 
+> To mitigate this issue, add sym_find_with_module(), which receives the
+> module pointer as the second argument. If non-NULL pointer is passed, it
+> returns the symbol in the specified module. If NULL is passed, it is
+> equivalent to find_module().
+> 
+> Please note there are still false positives in the composite module,
+> like below (or when both are built-in). I have no idea how to do this
+> correctly.
+> 
+> [Sample 2]  (not fixed by this commit)
+> 
+>   Makefile:
+>     obj-m += mymod.o
+>     mymod-objs := mymod1.o mymod2.o
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 > ---
+
+I like the detailed commit description!
+
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+
 > 
-> We'd like to thanks specially the MiniCloud infrastructure [0] maintainers,
-> that allow us to test PowerPC code in a very complete, functional and FREE
-> environment (there's no need even for adding a credit card, like many "free"
-> clouds require ¬¬ ).
+> (no changes since v2)
 > 
-> [0] https://openpower.ic.unicamp.br/minicloud
+> Changes in v2:
+>   - Rename the new func to sym_find_with_module()
 > 
->   arch/powerpc/kernel/setup-common.c | 74 ++++++++++++++++++++++--------
->   1 file changed, 54 insertions(+), 20 deletions(-)
+>  scripts/mod/modpost.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-> index 518ae5aa9410..52f96b209a96 100644
-> --- a/arch/powerpc/kernel/setup-common.c
-> +++ b/arch/powerpc/kernel/setup-common.c
-> @@ -23,7 +23,6 @@
->   #include <linux/console.h>
->   #include <linux/screen_info.h>
->   #include <linux/root_dev.h>
-> -#include <linux/notifier.h>
->   #include <linux/cpu.h>
->   #include <linux/unistd.h>
->   #include <linux/serial.h>
-> @@ -680,8 +679,25 @@ int check_legacy_ioport(unsigned long base_port)
->   }
->   EXPORT_SYMBOL(check_legacy_ioport);
->   
-> -static int ppc_panic_event(struct notifier_block *this,
-> -                             unsigned long event, void *ptr)
-> +/*
-> + * Panic notifiers setup
-> + *
-> + * We have 3 notifiers for powerpc, each one from a different "nature":
-> + *
-> + * - ppc_panic_fadump_handler() is a hypervisor notifier, which hard-disables
-> + *   IRQs and deal with the Firmware-Assisted dump, when it is configured;
-> + *   should run early in the panic path.
-> + *
-> + * - dump_kernel_offset() is an informative notifier, just showing the KASLR
-> + *   offset if we have RANDOMIZE_BASE set.
-> + *
-> + * - ppc_panic_platform_handler() is a low-level handler that's registered
-> + *   only if the platform wishes to perform final actions in the panic path,
-> + *   hence it should run late and might not even return. Currently, only
-> + *   pseries and ps3 platforms register callbacks.
-> + */
-> +static int ppc_panic_fadump_handler(struct notifier_block *this,
-> +				    unsigned long event, void *ptr)
->   {
->   	/*
->   	 * panic does a local_irq_disable, but we really
-> @@ -691,45 +707,63 @@ static int ppc_panic_event(struct notifier_block *this,
->   
->   	/*
->   	 * If firmware-assisted dump has been registered then trigger
-> -	 * firmware-assisted dump and let firmware handle everything else.
-> +	 * its callback and let the firmware handles everything else.
->   	 */
->   	crash_fadump(NULL, ptr);
-> -	if (ppc_md.panic)
-> -		ppc_md.panic(ptr);  /* May not return */
-> +
->   	return NOTIFY_DONE;
->   }
->   
-> -static struct notifier_block ppc_panic_block = {
-> -	.notifier_call = ppc_panic_event,
-> -	.priority = INT_MIN /* may not return; must be done last */
-> -};
-> -
-> -/*
-> - * Dump out kernel offset information on panic.
-> - */
->   static int dump_kernel_offset(struct notifier_block *self, unsigned long v,
->   			      void *p)
->   {
->   	pr_emerg("Kernel Offset: 0x%lx from 0x%lx\n",
->   		 kaslr_offset(), KERNELBASE);
->   
-> -	return 0;
-> +	return NOTIFY_DONE;
->   }
->   
-> +static int ppc_panic_platform_handler(struct notifier_block *this,
-> +				      unsigned long event, void *ptr)
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index b605f4a58759..a55fa2b88a9a 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -272,7 +272,7 @@ static void sym_add_unresolved(const char *name, struct module *mod, bool weak)
+>  	list_add_tail(&sym->list, &mod->unresolved_symbols);
+>  }
+>  
+> -static struct symbol *find_symbol(const char *name)
+> +static struct symbol *sym_find_with_module(const char *name, struct module *mod)
+>  {
+>  	struct symbol *s;
+>  
+> @@ -281,12 +281,17 @@ static struct symbol *find_symbol(const char *name)
+>  		name++;
+>  
+>  	for (s = symbolhash[tdb_hash(name) % SYMBOL_HASH_SIZE]; s; s = s->next) {
+> -		if (strcmp(s->name, name) == 0)
+> +		if (strcmp(s->name, name) == 0 && (!mod || s->module == mod))
+>  			return s;
+>  	}
+>  	return NULL;
+>  }
+>  
+> +static struct symbol *find_symbol(const char *name)
 > +{
-> +	/*
-> +	 * This handler is only registered if we have a panic callback
-> +	 * on ppc_md, hence NULL check is not needed.
-> +	 * Also, it may not return, so it runs really late on panic path.
-> +	 */
-> +	ppc_md.panic(ptr);
-> +
-> +	return NOTIFY_DONE;
+> +	return sym_find_with_module(name, NULL);
 > +}
 > +
-> +static struct notifier_block ppc_fadump_block = {
-> +	.notifier_call = ppc_panic_fadump_handler,
-> +	.priority = INT_MAX, /* run early, to notify the firmware ASAP */
-> +};
-> +
->   static struct notifier_block kernel_offset_notifier = {
-> -	.notifier_call = dump_kernel_offset
-> +	.notifier_call = dump_kernel_offset,
-> +};
-> +
-> +static struct notifier_block ppc_panic_block = {
-> +	.notifier_call = ppc_panic_platform_handler,
-> +	.priority = INT_MIN, /* may not return; must be done last */
->   };
->   
->   void __init setup_panic(void)
->   {
-> +	/* Hard-disables IRQs + deal with FW-assisted dump (fadump) */
-> +	atomic_notifier_chain_register(&panic_notifier_list,
-> +				       &ppc_fadump_block);
-> +
->   	if (IS_ENABLED(CONFIG_RANDOMIZE_BASE) && kaslr_offset() > 0)
->   		atomic_notifier_chain_register(&panic_notifier_list,
->   					       &kernel_offset_notifier);
->   
-> -	/* PPC64 always does a hard irq disable in its panic handler */
-> -	if (!IS_ENABLED(CONFIG_PPC64) && !ppc_md.panic)
-> -		return;
-> -	atomic_notifier_chain_register(&panic_notifier_list, &ppc_panic_block);
-> +	/* Low-level platform-specific routines that should run on panic */
-> +	if (ppc_md.panic)
-> +		atomic_notifier_chain_register(&panic_notifier_list,
-> +					       &ppc_panic_block);
->   }
->   
->   #ifdef CONFIG_CHECK_CACHE_COHERENCY
+>  struct namespace_list {
+>  	struct list_head list;
+>  	char namespace[];
+> @@ -2063,8 +2068,9 @@ static void read_symbols(const char *modname)
+>  
+>  		if (bind == STB_GLOBAL || bind == STB_WEAK) {
+>  			struct symbol *s =
+> -				find_symbol(remove_dot(info.strtab +
+> -						       sym->st_name));
+> +				sym_find_with_module(remove_dot(info.strtab +
+> +								sym->st_name),
+> +						     mod);
+>  
+>  			if (s)
+>  				s->is_static = false;
+> -- 
+> 2.32.0
+
+-- 
+epost|xmpp: nicolas@fjasle.eu          irc://oftc.net/nsc
+↳ gpg: 18ed 52db e34f 860e e9fb  c82b 7d97 0932 55a0 ce7f
+     -- frykten for herren er opphav til kunnskap --
