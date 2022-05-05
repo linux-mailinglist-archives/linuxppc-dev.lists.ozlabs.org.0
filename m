@@ -1,68 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E996151CBA9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:54:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936B251CBA6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 23:54:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSCp61xQz3c7G
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 07:54:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvSC22sgCz3byG
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 07:54:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=PwCfqkix;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=OX97Z/D1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=fjasle.eu (client-ip=212.227.17.10; helo=mout.kundenserver.de;
- envelope-from=nicolas@fjasle.eu; receiver=<UNKNOWN>)
-X-Greylist: delayed 569 seconds by postgrey-1.36 at boromir;
- Fri, 06 May 2022 05:42:47 AEST
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=OX97Z/D1; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvPHW6qsZz3bft
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 05:42:21 +1000 (AEST)
-Received: from leknes.fjasle.eu ([46.142.98.182]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MiIhU-1oH5uO3YH8-00fPtT; Thu, 05 May 2022 21:25:22 +0200
-Received: by leknes.fjasle.eu (Postfix, from userid 1000)
- id 38E543C088; Thu,  5 May 2022 21:25:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
- t=1651778720; bh=Cwl4zkdeQcVXSxZ/RPcnVgB7zM8oGINbzVc8Y2VMFBk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=PwCfqkixa12sjKmUlkGN0KNMba5H+CtsWqxRGlVdXRptb7TBIoy0BO7Sc1zRukI0i
- EvUm1lkuiTNGLNT1bpJs98zozgIt6sLhIAOebglqQmNOD+itcraoJUvz+J1M7FySUT
- 6hRW+SHN7GBvySLN/CpZb48xBVsXn+jeS7J2nWak=
-Date: Thu, 5 May 2022 21:25:20 +0200
-From: Nicolas Schier <nicolas@fjasle.eu>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH v3 01/15] modpost: mitigate false-negatives for static
- EXPORT_SYMBOL checks
-Message-ID: <YnQkoFahOeUVpZhj@fjasle.eu>
-References: <20220505072244.1155033-1-masahiroy@kernel.org>
- <20220505072244.1155033-2-masahiroy@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvP2841ywz3bfg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 05:31:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=26sf2Bz2SDgQmdCQw3Y4ZTnImgJ2MyGCiyio6ZL3q3Y=; b=OX97Z/D1CJSI6hriVTxC2kAnOw
+ 1KITEk45cAtwCpY9rkRCDUh3KDg2O2YzMgXcmuPrqXaafenIhWWC1+LyxgtF/580Mzq9ZdOBGqQII
+ szuZz7L+gnBGPa0DhyrfUrxKFOKAOdS+/7tX8dF3YT6RRRi5n+Pvq9GzAiarMSPSGIbrEUOikWcQ4
+ luIwkR5QmpMMR3ULcRXOtddO+8na/Jrhq18XXAepQbZ7X+3+2omWFwgyxPBez0WA9LEkMMiNJ8gOK
+ /vnX5br4i70krbeAId+z+Wo/kxx7sPLDtH+XBAxzqCS0vo9z0RVsXdy6BbySPaaEQO2JnHI7/cIaw
+ LlqXpVFA==;
+Received: from [179.113.53.197] (helo=[192.168.1.60])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1nmhB9-0009Pt-2n; Thu, 05 May 2022 21:30:24 +0200
+Message-ID: <95fd6c2b-8a80-7161-953c-0660c9cc046f@igalia.com>
+Date: Thu, 5 May 2022 16:28:55 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220505072244.1155033-2-masahiroy@kernel.org>
-X-Provags-ID: V03:K1:453ge2nHJXg6JLo5cZeMgSEFhVvVa0swhzjR0uQKtW94gAuyPQc
- MTjdF1f5pbFygWaA0SosWLKNmyUdXwFK1CUqAPSkq2SKzmSgl51MwQo6xoMn3Z2qWshs+mq
- zUww0m+Vg1VGGeeohNre8BVjxjh7qSjrYTbvLGMl0VUFNN4UdaEPPhevVoj5lG7DWNaJkaT
- +cWvR/fsod9psxrnhT2vQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1I7YRGCbifg=:wiHGGZsjWiVsWflzSdZlf1
- rnxSHlzLZbMlXQME6NsR23TczHKf6OFgpjIJRweoZDOt+P1A1+Y5ynWZFi1DUzWJOz1sKX0TM
- LRwVI4ERpbHQcSO0gDL6tU6ksEw87Zm+bAHq0WXCrwZsZa6+Y5mRLCIcxUmo329FGyjYNyhdS
- eG7aZnZWvzTXCARfGy1WslzyAgC8o6GEeHvAWVHxXESeqY8upGZMHXEI+uKbObPJTg0fEl3E7
- NAoM9kJuatC3ZzJYV0EFKws1gCXTvip2bVKO/76Y3MvV0BFw8JDmr4hEJVRfSCNsQwoxvETEm
- byFT8g0yFtZ76OUQrjgzr2+eiPV/xAeMTNluTgPdpr4zrzFMZs4/+ugUQNJ15EYFAC0sBYW1W
- Pz3BGAUMOGllW0YjUQYhaqkW9sVp+UOPPJVZCClWZkiUGHSSLpgzeOhEorkO9iKmPcbeis2Hb
- MUJjhwu8LEveg9G2hunBn0D3ktK0vBt0TVPu6g1sSL68SLfVws0jRqa39KUc8HOJ41b06YlIy
- wFd3T3RT5uNwEXWYXjbev/LJZ0jLeMtsZkSbZ9rBnEFgQ/7s0XV+eQAmN0+BWqCDM3dzUO+Ym
- xMlRbF8rqGdgTzXPN8gNZpFvlIHgugQ82P+/XzVVZr46f8pl/L9tlr6VPnEKmAGrgxWPn3PFH
- f73++dR3OrYy55UT1C6nPNpG8/BjWlgNb3gzr+kTvM0/e/n3pIQ1OTs5w4FzgufxvWzg=
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 08/30] powerpc/setup: Refactor/untangle panic notifiers
+Content-Language: en-US
+To: Hari Bathini <hbathini@linux.ibm.com>, akpm@linux-foundation.org,
+ bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-9-gpiccoli@igalia.com>
+ <3c34d8e2-6f84-933f-a4ed-338cd300d6b0@linux.ibm.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <3c34d8e2-6f84-933f-a4ed-338cd300d6b0@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Fri, 06 May 2022 07:52:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -75,132 +69,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Kees Cook <keescook@chromium.org>,
- linux-kbuild@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-um@lists.infradead.org,
- linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com,
- Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- linuxppc-dev@lists.ozlabs.org, Ard Biesheuvel <ardb@kernel.org>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org, will@kernel.org,
+ tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
+ mikelley@microsoft.com, john.ogness@linutronix.de, corbet@lwn.net,
+ paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
+ dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
+ linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
+ rcu@vger.kernel.org, bp@alien8.de, Nicholas Piggin <npiggin@gmail.com>,
+ luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@gpiccoli.net, linux-kernel@vger.kernel.org,
+ stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ vkuznets@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 05, 2022 at 04:22:30PM +0900 Masahiro Yamada wrote:
-> The 'static' specifier and EXPORT_SYMBOL() are an odd combination.
+On 05/05/2022 15:55, Hari Bathini wrote:
+> [...] 
 > 
-> Since commit 15bfc2348d54 ("modpost: check for static EXPORT_SYMBOL*
-> functions"), modpost tries to detect it, but there are false negatives.
+> The change looks good. I have tested it on an LPAR (ppc64).
 > 
-> Here is the sample code.
-> 
-> [Sample 1]
-> 
->   Makefile:
-> 
->     obj-m += mymod1.o mymod2.o
-> 
->   mymod1.c:
-> 
->     #include <linux/export.h>
->     #include <linux/module.h>
->     static void foo(void) {}
->     EXPORT_SYMBOL(foo);
->     MODULE_LICENSE("GPL");
-> 
->   mymod2.c:
-> 
->     #include <linux/module.h>
->     void foo(void) {}
->     MODULE_LICENSE("GPL");
-> 
-> mymod1 exports the static symbol 'foo', but modpost cannot catch it
-> because it is fooled by the same name symbol in another module, mymod2.
-> (Without mymod2, modpost can detect the error in mymod1)
-> 
-> find_symbol() returns the first symbol found in the hash table with the
-> given name. This hash table is global, so it may return a symbol from
-> an unrelated module. So, a global symbol in a module may unset the
-> 'is_static' flag of another module.
-> 
-> To mitigate this issue, add sym_find_with_module(), which receives the
-> module pointer as the second argument. If non-NULL pointer is passed, it
-> returns the symbol in the specified module. If NULL is passed, it is
-> equivalent to find_module().
-> 
-> Please note there are still false positives in the composite module,
-> like below (or when both are built-in). I have no idea how to do this
-> correctly.
-> 
-> [Sample 2]  (not fixed by this commit)
-> 
->   Makefile:
->     obj-m += mymod.o
->     mymod-objs := mymod1.o mymod2.o
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
+> Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 
-I like the detailed commit description!
-
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-
-> 
-> (no changes since v2)
-> 
-> Changes in v2:
->   - Rename the new func to sym_find_with_module()
-> 
->  scripts/mod/modpost.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index b605f4a58759..a55fa2b88a9a 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -272,7 +272,7 @@ static void sym_add_unresolved(const char *name, struct module *mod, bool weak)
->  	list_add_tail(&sym->list, &mod->unresolved_symbols);
->  }
->  
-> -static struct symbol *find_symbol(const char *name)
-> +static struct symbol *sym_find_with_module(const char *name, struct module *mod)
->  {
->  	struct symbol *s;
->  
-> @@ -281,12 +281,17 @@ static struct symbol *find_symbol(const char *name)
->  		name++;
->  
->  	for (s = symbolhash[tdb_hash(name) % SYMBOL_HASH_SIZE]; s; s = s->next) {
-> -		if (strcmp(s->name, name) == 0)
-> +		if (strcmp(s->name, name) == 0 && (!mod || s->module == mod))
->  			return s;
->  	}
->  	return NULL;
->  }
->  
-> +static struct symbol *find_symbol(const char *name)
-> +{
-> +	return sym_find_with_module(name, NULL);
-> +}
-> +
->  struct namespace_list {
->  	struct list_head list;
->  	char namespace[];
-> @@ -2063,8 +2068,9 @@ static void read_symbols(const char *modname)
->  
->  		if (bind == STB_GLOBAL || bind == STB_WEAK) {
->  			struct symbol *s =
-> -				find_symbol(remove_dot(info.strtab +
-> -						       sym->st_name));
-> +				sym_find_with_module(remove_dot(info.strtab +
-> +								sym->st_name),
-> +						     mod);
->  
->  			if (s)
->  				s->is_static = false;
-> -- 
-> 2.32.0
-
--- 
-epost|xmpp: nicolas@fjasle.eu          irc://oftc.net/nsc
-↳ gpg: 18ed 52db e34f 860e e9fb  c82b 7d97 0932 55a0 ce7f
-     -- frykten for herren er opphav til kunnskap --
+Thanks a bunch Hari, much appreciated!
