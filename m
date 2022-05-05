@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848FC51CD60
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:05:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E28F51CD63
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:06:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvW792mJlz3fNK
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:05:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvW7s3Dr1z3dv0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:06:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jr7qidgg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dO50ioh2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,38 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=jr7qidgg; dkim-atps=neutral
+ header.s=Intel header.b=dO50ioh2; dkim-atps=neutral
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVzG1wNfz3bx8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVzH0PD0z3c9C
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:59:06 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651795146; x=1683331146;
+ t=1651795147; x=1683331147;
  h=from:to:cc:subject:date:message-id:in-reply-to: references;
- bh=fO8Z/cunSnljRh67cIhZwnOKie+7UxkAbp0EHXuT2pk=;
- b=jr7qidggi392Nlhmw82nRWbtkXPDt4Rda+L6wak13wUMCyZyEWvyZafq
- apNWHbgmR6pGn+H/pBMtQbDf0FzG+PEE/qtkhvaTENTmYyHdFfx9pkK2C
- 5MgzI58nJ4zFEv0B02oqrxvLhVq+XCHG1/EALZhQf/bjBJEZan5oW2ri2
- jaeEKifGMFiY/Cx86Nca1E2PtMKaRD6au2x7cN5Zy0KxdT30UYkABgMc5
- Hh2gtCaAQzZwe0Q6lyQjbaNEDBWzxrJD4vb8XSMeN0HBjmkxVj5l0VwOv
- O1hkC535fTxdn462MyvW5/HlHKQU1W+Ve6KVBK3JuzAuInJDnN5WM/B9s g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437309"
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437309"
+ bh=3xUpwlx5TiZjojK61Skg6W12+8Hy6giKnPG/YThYLqA=;
+ b=dO50ioh2Q2FhzZgUkzHP3y6Ioac29Y3kzYrf78ZULq/t0sdY9kVvmHSb
+ cZhPSqTGgZYjMW3DK6wrcjdlLuwTiSKkl2i9Vi1pxParqxyfHv188rBtu
+ TayyvXLM5nBesK46gpB60dQhOf1E5CL2pN8If/UW2jqbRn3NaAq71mFs5
+ LmlYUC4VMETYi8yuhIRe6iss8HChdNG7ASipnMe3IV/5a1GWeRNnOrZLz
+ idwg2/NPG4qgqP5eDF+TPWcC+omEpaTBddUmexHBhS95o8FZS4FDQ4Dda
+ dAUHnN4YPJ3slWPkYu2PjpTdD5LTVhU1SAt4kTabDm+ddcR0bA7Cpr/67 Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437310"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437310"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  05 May 2022 16:57:49 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914361"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914367"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:48 -0700
+ by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:49 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	x86@kernel.org
-Subject: [PATCH v6 11/29] iommu/amd: Expose [set|get]_dev_entry_bit()
-Date: Thu,  5 May 2022 16:59:50 -0700
-Message-Id: <20220506000008.30892-12-ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v6 12/29] iommu/amd: Enable NMIPass when allocating an NMI irq
+Date: Thu,  5 May 2022 16:59:51 -0700
+Message-Id: <20220506000008.30892-13-ricardo.neri-calderon@linux.intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
 References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
@@ -78,15 +78,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-These functions are used to check and set specific bits in a Device Table
-Entry. For instance, they can be used to modify the setting of the NMIPass
-field.
+As per the AMD I/O Virtualization Technology (IOMMU) Specification, the
+AMD IOMMU only remaps fixed and arbitrated MSIs. NMIs are controlled
+by the NMIPass bit of a Device Table Entry. When set, the IOMMU passes
+through NMI interrupt messages unmapped. Otherwise, they are aborted.
 
-Currently, these functions are used only for ACPI-specified devices.
-However, an interrupt is to be allocated with NMI as delivery mode, the
-Device Table Entry needs modified accordingly in irq_remapping_alloc().
+Furthermore, Section 2.2.5 Table 19 states that the IOMMU will also
+abort NMIs when the destination mode is logical.
 
-As a first step expose these two functions. No functional changes.
+Update the NMIPass setting of a device's DTE when an NMI irq is being
+allocated. Only do so when the destination mode of the APIC is not
+logical.
 
 Cc: Andi Kleen <ak@linux.intel.com>
 Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
@@ -113,44 +115,45 @@ Changes since v2:
 Changes since v1:
  * N/A
 ---
- drivers/iommu/amd/amd_iommu.h | 3 +++
- drivers/iommu/amd/init.c      | 4 ++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/iommu/amd/iommu.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
-index 1ab31074f5b3..9f3d1564c84e 100644
---- a/drivers/iommu/amd/amd_iommu.h
-+++ b/drivers/iommu/amd/amd_iommu.h
-@@ -128,4 +128,7 @@ static inline void amd_iommu_apply_ivrs_quirks(void) { }
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index a1ada7bff44e..4d7421b6858d 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3156,6 +3156,15 @@ static int irq_remapping_alloc(struct irq_domain *domain, unsigned int virq,
+ 	    info->type != X86_IRQ_ALLOC_TYPE_PCI_MSIX)
+ 		return -EINVAL;
  
- extern void amd_iommu_domain_set_pgtable(struct protection_domain *domain,
- 					 u64 *root, int mode);
++	if (info->flags & X86_IRQ_ALLOC_AS_NMI) {
++		/* Only one IRQ per NMI */
++		if (nr_irqs != 1)
++			return -EINVAL;
 +
-+extern void set_dev_entry_bit(u16 devid, u8 bit);
-+extern int get_dev_entry_bit(u16 devid, u8 bit);
- #endif
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index b4a798c7b347..823e76b284f1 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -914,7 +914,7 @@ static void iommu_enable_gt(struct amd_iommu *iommu)
- }
++		/* NMIs are aborted when the destination mode is logical. */
++		if (apic->dest_mode_logical)
++			return -EPERM;
++	}
+ 	/*
+ 	 * With IRQ remapping enabled, don't need contiguous CPU vectors
+ 	 * to support multiple MSI interrupts.
+@@ -3208,6 +3217,15 @@ static int irq_remapping_alloc(struct irq_domain *domain, unsigned int virq,
+ 		goto out_free_parent;
+ 	}
  
- /* sets a specific bit in the device table entry. */
--static void set_dev_entry_bit(u16 devid, u8 bit)
-+void set_dev_entry_bit(u16 devid, u8 bit)
- {
- 	int i = (bit >> 6) & 0x03;
- 	int _bit = bit & 0x3f;
-@@ -922,7 +922,7 @@ static void set_dev_entry_bit(u16 devid, u8 bit)
- 	amd_iommu_dev_table[devid].data[i] |= (1UL << _bit);
- }
- 
--static int get_dev_entry_bit(u16 devid, u8 bit)
-+int get_dev_entry_bit(u16 devid, u8 bit)
- {
- 	int i = (bit >> 6) & 0x03;
- 	int _bit = bit & 0x3f;
++	if (info->flags & X86_IRQ_ALLOC_AS_NMI) {
++		struct amd_iommu *iommu = amd_iommu_rlookup_table[devid];
++
++		if (!get_dev_entry_bit(devid, DEV_ENTRY_NMI_PASS)) {
++			set_dev_entry_bit(devid, DEV_ENTRY_NMI_PASS);
++			iommu_flush_dte(iommu, devid);
++		}
++	}
++
+ 	for (i = 0; i < nr_irqs; i++) {
+ 		irq_data = irq_domain_get_irq_data(domain, virq + i);
+ 		cfg = irq_data ? irqd_cfg(irq_data) : NULL;
 -- 
 2.17.1
 
