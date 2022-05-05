@@ -2,66 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4216E51C56B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 18:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D72A951C5FF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 May 2022 19:21:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvKTf1P16z3bxM
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:51:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvL915qShz3c8r
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 03:21:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=rHlaH4vw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rjljow7i;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.82;
- helo=conssluserg-03.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=rHlaH4vw; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=rjljow7i; 
  dkim-atps=neutral
-Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
- [210.131.2.82])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvKSx6VVWz3bpB
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 02:50:41 +1000 (AEST)
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com
- [209.85.214.170]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id 245Go9R5032566
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 6 May 2022 01:50:09 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 245Go9R5032566
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1651769409;
- bh=ygzkm43GrcDzhqnHIxLfBnu2vDnA92BUs+zoxtrNQp8=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=rHlaH4vwxLfb6tf78FehbMA1mQ3g8XT18MOjx/BJwxbFFxQ1YA9zYdtWsfDchs3Ih
- CahvCWRRVGYUbjywaxHySSdky4cSBGE8SCjVlC6NKC0ytB84sGI+4F0/MvmGEg0j7P
- YRHRTM3JRNsgchINBv4VRhAbX8IE5L4F3v1/8Onkf7/5jet3veyQNovYi8deOW/cck
- RYzG5jNHNvAKotdWOSSgIRno8+HGyvEBY3FstpdKlOO/lESOG5gLeDU6kn0hRFhgDx
- xJUvl8jSXKth7RL2k9/i4vp52l8QIZxgXvEkZXiE9uvN5TFV9YodefmG8QUqhEXWho
- pnD19iFso237Q==
-X-Nifty-SrcIP: [209.85.214.170]
-Received: by mail-pl1-f170.google.com with SMTP id j14so4941045plx.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 May 2022 09:50:09 -0700 (PDT)
-X-Gm-Message-State: AOAM532lrAVGWXHwLFAAp4qzP1DFWfuiRy+2JE77+vfGQ14+PW4+K392
- 3JYFWKq8dbFrZcWI7Vcbua3d5yZpsdX8NyVZh1k=
-X-Google-Smtp-Source: ABdhPJxFVg1PsB/pcXjIvUrAmLyyIQeQ5R29SzsliD7Nd4EgMkoKbYvt+QAlfLIfjHz1WUxVGwqiQnWQOB1ShcOtmY0=
-X-Received: by 2002:a17:902:7891:b0:15e:cae9:7620 with SMTP id
- q17-20020a170902789100b0015ecae97620mr8573800pll.136.1651769408445; Thu, 05
- May 2022 09:50:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvL8M20VCz3bpw
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 03:21:23 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 07F8D61EE7;
+ Thu,  5 May 2022 17:21:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38302C385A4;
+ Thu,  5 May 2022 17:21:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651771279;
+ bh=an7j8IPPJIl/MRkD1QsQLwLeY+XBrbvfebPNYo3DWSk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=rjljow7iaxTF4AckWX0mfTOTxFp6DhGXt6VflWhRptJQ4OusqUircKHbO5hJKSa8v
+ MiPneIzA3UNKxRuCAwic+JzZzpG/6BVpeLh7+NlYYCpkW0MEu5rgeOafWfoBUbY1xP
+ G8qXCpUpHBB+/TztncWoqxrMYrrGsKqOF0VMf29nDx58x+YMgNBVAdU3FOCKtZCD2+
+ vM8LmoMfPF957zo+5epjzZn90xdhtUenR1rYbBZkXuJRDSj+CCqOvtnFE2Kmj/VLs9
+ yzlBLdD5lUS9wCPkRj1+GpdibeIkMJ0jRwIpbuiWF3dcTvPLIWGZblW2f2WVumGYcP
+ bIDlFD4VXNV8Q==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+ id 28F15400B1; Thu,  5 May 2022 14:21:15 -0300 (-03)
+Date: Thu, 5 May 2022 14:21:15 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] tools/perf/tests: Skip perf BPF test if clang is not
+ present
+Message-ID: <YnQHi5Mhvs2p7BG8@kernel.org>
+References: <20220505100039.58287-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
-References: <20220505072244.1155033-1-masahiroy@kernel.org>
-In-Reply-To: <20220505072244.1155033-1-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 6 May 2022 01:49:00 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATnCOKcbFXDY2Qik=6AJ31fQLKO+NW6fD-xY-muV5UQ-A@mail.gmail.com>
-Message-ID: <CAK7LNATnCOKcbFXDY2Qik=6AJ31fQLKO+NW6fD-xY-muV5UQ-A@mail.gmail.com>
-Subject: Re: [PATCH v3 00/15] kbuild: yet another series of cleanups (modpost, 
- LTO, MODULE_REL_CRCS)
-To: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220505100039.58287-1-atrajeev@linux.vnet.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,35 +67,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>,
- Nicolas Schier a <nicolas@fjasle.eu>, Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-um@lists.infradead.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
- Kees Cook <keescook@chromium.org>
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com,
+ disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 5, 2022 at 4:24 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
->
-> This is the third batch of cleanups in this development cycle.
+Em Thu, May 05, 2022 at 03:30:39PM +0530, Athira Rajeev escreveu:
+> Perf BPF filter test fails in environment where "clang"
+> is not installed.
+> 
+> Test failure logs:
+> 
+> <<>>
+>  42: BPF filter                    :
+>  42.1: Basic BPF filtering         : Skip
+>  42.2: BPF pinning                 : FAILED!
+>  42.3: BPF prologue generation     : FAILED!
+> <<>>
+> 
+> Enabling verbose option provided debug logs which says
+> clang/llvm needs to be installed. Snippet of verbose logs:
+> 
+> <<>>
+>  42.2: BPF pinning                  :
+>  --- start ---
+> test child forked, pid 61423
+> ERROR:	unable to find clang.
+> Hint:	Try to install latest clang/llvm to support BPF.
+>         Check your $PATH
+> 
+> <<logs_here>>
+> 
+> Failed to compile test case: 'Basic BPF llvm compile'
+> Unable to get BPF object, fix kbuild first
+> test child finished with -1
+>  ---- end ----
+> BPF filter subtest 2: FAILED!
+> <<>>
+> 
+> Here subtests, "BPF pinning" and "BPF prologue generation"
+> failed and logs shows clang/llvm is needed. After installing
+> clang, testcase passes.
+> 
+> Reason on why subtest failure happens though logs has proper
+> debug information:
+> Main function __test__bpf calls test_llvm__fetch_bpf_obj by
+> passing 4th argument as true ( 4th arguments maps to parameter
+> "force" in test_llvm__fetch_bpf_obj ). But this will cause
+> test_llvm__fetch_bpf_obj to skip the check for clang/llvm.
+> 
+> Snippet of code part which checks for clang based on
+> parameter "force" in test_llvm__fetch_bpf_obj:
+> 
+> <<>>
+> if (!force && (!llvm_param.user_set_param &&
+> <<>>
+> 
+> Since force is set to "false", test won't get skipped and
+> fails to compile test case. The BPF code compilation needs
+> clang, So pass the fourth argument as "false" and also skip
+> the test if reason for return is "TEST_SKIP"
+> 
+> After the patch:
+> 
+> <<>>
+>  42: BPF filter                    :
+>  42.1: Basic BPF filtering         : Skip
+>  42.2: BPF pinning                 : Skip
+>  42.3: BPF prologue generation     : Skip
+> <<>>
 
+Wouldn't it be better to add the reason for the skip, like other tests
+do?
 
-This series is available at:
-git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild.git
-lto-cleanup-v3
+E.g.:
 
+ 23: Watchpoint                                                      :
+ 23.1: Read Only Watchpoint                                          : Skip (missing hardware support)
+ 23.2: Write Only Watchpoint                                         : Ok
+ 23.3: Read / Write Watchpoint                                       : Ok
+ 23.4: Modify Watchpoint
 
+Something like:
 
+After the patch:
 
-
-
-
+<<>>
+ 42: BPF filter                    :
+ 42.1: Basic BPF filtering         : Skip (clang not installed)
+ 42.2: BPF pinning                 : Skip (clang not installed)
+ 42.3: BPF prologue generation     : Skip (clang not installed)
+<<>>
+ 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>  tools/perf/tests/bpf.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
+> index 57b9591f7cbb..ae62f01239e3 100644
+> --- a/tools/perf/tests/bpf.c
+> +++ b/tools/perf/tests/bpf.c
+> @@ -222,11 +222,11 @@ static int __test__bpf(int idx)
+>  
+>  	ret = test_llvm__fetch_bpf_obj(&obj_buf, &obj_buf_sz,
+>  				       bpf_testcase_table[idx].prog_id,
+> -				       true, NULL);
+> +				       false, NULL);
+>  	if (ret != TEST_OK || !obj_buf || !obj_buf_sz) {
+>  		pr_debug("Unable to get BPF object, %s\n",
+>  			 bpf_testcase_table[idx].msg_compile_fail);
+> -		if (idx == 0)
+> +		if ((idx == 0) || (ret == TEST_SKIP))
+>  			return TEST_SKIP;
+>  		else
+>  			return TEST_FAIL;
+> -- 
+> 2.35.1
 
 -- 
-Best Regards
-Masahiro Yamada
+
+- Arnaldo
