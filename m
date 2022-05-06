@@ -2,100 +2,102 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFF551D4C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 11:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E2151D4CF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 11:41:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kvlr9088Hz3cBv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 19:38:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kvltt3b2Lz3cFx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 19:41:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NDZinXc2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Jcy81Rkm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=NDZinXc2; dkim-atps=neutral
+ header.s=pp1 header.b=Jcy81Rkm; dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvlqS14zyz3bXg
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 19:38:11 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2468lHEv003940;
- Fri, 6 May 2022 09:38:06 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvlt92XcQz2x9M
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 19:40:33 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2469Oct9034343;
+ Fri, 6 May 2022 09:39:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=LWgBO7yJaS0z8Gd/WSnEZ1KfUGlpGPg1Lr57MuahqEM=;
- b=NDZinXc2VUvFTiFO8kzypZEqF2dVFa/FbmaZw+OLCnmycxV9zFTfGdreiFgTxD95z504
- wVsA3PibLK/xFPVZab0YS5XZrOcuTFDHaEJIo/BjrPLZiMXVcgm49hZy8pIXNLybUH2H
- AOFe6plykla/AxGSH7TjwqLomSZSu/JZnCzLA371ILubNaQUz1r5gwZ9QR2eVi+geKtc
- wWD1K9wqtW6LW8ibGWEVBxaLzhvGm/l1kFP6103JJv/dA70uctNQotcRNsuXeclMOs9C
- rOzYnVrrgWriNLw85HDkCFx9FUQ0gDvz4wa4H5+X0t/ZW41t3SbxFDE+XZPD7SDohm1p nA== 
+ h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=ATADAeU7AzydfhIN4/8/97TK5dyqxtus7XYokE/Psd4=;
+ b=Jcy81Rkmal8Ld6yZwfu+2ng9HRucfxxxvmTh1NcKgDURoKFNvKpcm1ZHWAW9Ir4VsKXR
+ pd2y9S2Hvk8+LLCXqCCGIlcAHnksaOG7x62nNIk7f9u5OsqdJlmnp7qjrs5zh8BXekJW
+ UxLN/+RAJYjcDJLpHGe/XPvOzrvx5TmFwBMZ5C22DhmJMbWejrrQcvD8oXjVn2NCDlpv
+ QlIXdMIK26thZIaJjEsL3zoyAVmuJWopg/ichRaLmBnr8LBayjLn4CEljPGJtUz3/LBw
+ 0D355aTEY3BPvr5wc49SyvN85iKKd7lM1rKR9YtXX8gl85JhRC5yd6ytJiuTYFSjc6G8 Cw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fw0fk123e-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fw11588x5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 09:38:06 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2468u6nN004981;
- Fri, 6 May 2022 09:38:05 GMT
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fw0fk122d-1
+ Fri, 06 May 2022 09:39:01 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2469Sb2s010674;
+ Fri, 6 May 2022 09:39:00 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fw11588w3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 09:38:05 +0000
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2469WZPn018727;
- Fri, 6 May 2022 09:38:03 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03fra.de.ibm.com with ESMTP id 3fscdk64t6-1
+ Fri, 06 May 2022 09:39:00 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2469WYqv027902;
+ Fri, 6 May 2022 09:38:57 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06ams.nl.ibm.com with ESMTP id 3fvg61135h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 09:38:02 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2469bx7f27001168
+ Fri, 06 May 2022 09:38:57 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 2469ctnm44892610
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 May 2022 09:37:59 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AAC2A5205A;
- Fri,  6 May 2022 09:37:59 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.211.85.201])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 6AE6B52067;
- Fri,  6 May 2022 09:37:55 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: [PATCH] tools/perf/tests: Skip perf BPF test if clang is not
- present
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <YnQHi5Mhvs2p7BG8@kernel.org>
-Date: Fri, 6 May 2022 15:07:51 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A0479956-31B6-41F1-9940-9ED95CC59E08@linux.vnet.ibm.com>
-References: <20220505100039.58287-1-atrajeev@linux.vnet.ibm.com>
- <YnQHi5Mhvs2p7BG8@kernel.org>
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
+ Fri, 6 May 2022 09:38:55 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 015EA42042;
+ Fri,  6 May 2022 09:38:55 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 30EBB42041;
+ Fri,  6 May 2022 09:38:53 +0000 (GMT)
+Received: from sig-9-145-46-59.uk.ibm.com (unknown [9.145.46.59])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  6 May 2022 09:38:53 +0000 (GMT)
+Message-ID: <157602011a72061dd31f92bd699e8c1f9a81c988.camel@linux.ibm.com>
+Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
+ it as necessary
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Bjorn Helgaas <helgaas@kernel.org>, Arnd Bergmann <arnd@kernel.org>,
+ John Garry <john.garry@huawei.com>
+Date: Fri, 06 May 2022 11:38:52 +0200
+In-Reply-To: <20220505195342.GA509942@bhelgaas>
+References: <20220505195342.GA509942@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: TvZ7XpMCkZHHl46xXx55ZGt709TSnFza
-X-Proofpoint-ORIG-GUID: b0B8A5v8q_e3Z1K2SUf12mX7TrtfpN3U
+X-Proofpoint-GUID: Izd-B44nIbHN-ZNsHTvoLMo3Drr04sYh
+X-Proofpoint-ORIG-GUID: VHp-W17L3sYL52T90zfXFVsNVoEuLE10
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-05-06_03,2022-05-05_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- suspectscore=0 spamscore=0 impostorscore=0 bulkscore=0 clxscore=1015
- adultscore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205060052
+ malwarescore=0
+ mlxlogscore=748 clxscore=1011 impostorscore=0 mlxscore=0 phishscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2202240000 definitions=main-2205060052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,166 +109,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>,
- kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>,
+ "open list:IA64 \(Itanium\) PLATFORM" <linux-ia64@vger.kernel.org>,
+ "open list:SUPERH" <linux-sh@vger.kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "open list:SPARC + UltraSPARC \(sparc/sparc64\)" <sparclinux@vger.kernel.org>,
+ "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+ Will Deacon <will@kernel.org>, linux-arch <linux-arch@vger.kernel.org>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
+ "maintainer:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-pci <linux-pci@vger.kernel.org>, Matt Turner <mattst88@gmail.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Arnd Bergmann <arnd@arndb.de>,
+ "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+ Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+ Richard Henderson <rth@twiddle.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, "open
+ list:ALPHA PORT" <linux-alpha@vger.kernel.org>, Borislav Petkov <bp@alien8.de>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND
+ 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, 2022-05-05 at 14:53 -0500, Bjorn Helgaas wrote:
+> On Thu, May 05, 2022 at 07:39:42PM +0200, Arnd Bergmann wrote:
+> > On Thu, May 5, 2022 at 6:10 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > On Wed, May 04, 2022 at 11:31:28PM +0200, Arnd Bergmann wrote:
+> > > > The main goal is to avoid c), which is what happens on s390, but
+> > > > can also happen elsewhere. Catching b) would be nice as well,
+> > > > but is much harder to do from generic code as you'd need an
+> > > > architecture specific inline asm statement to insert a ex_table
+> > > > fixup, or a runtime conditional on each access.
+> > > 
+> > > Or s390 could implement its own inb().
+> > > 
+> > > I'm hearing that generic powerpc kernels have to run both on machines
+> > > that have I/O port space and those that don't.  That makes me think
+> > > s390 could do something similar.
+> > 
+> > No, this is actually the current situation, and it makes absolutely no
+> > sense. s390 has no way of implementing inb()/outb() because there
+> > are no instructions for it and it cannot tunnel them through a virtual
+> > address mapping like on most of the other architectures. (it has special
+> > instructions for accessing memory space, which is not the same as
+> > a pointer dereference here).
+> > 
+> > The existing implementation gets flagged as a NULL pointer dereference
+> > by a compiler warning because it effectively is.
+> 
+> I think s390 currently uses the inb() in asm-generic/io.h, i.e.,
+> "__raw_readb(PCI_IOBASE + addr)".  I understand that's a NULL pointer
+> dereference because the default PCI_IOBASE is 0.
+> 
+> I mooted a s390 inb() implementation like "return ~0" because that's
+> what happens on most arches when there's no device to respond to the
+> inb().
+> 
+> The HAS_IOPORT dependencies are fairly ugly IMHO, and they clutter
+> drivers that use I/O ports in some cases but not others.  But maybe
+> it's the most practical way.
+> 
+> Bjorn
 
+I fear such stubs are kind of equivalent to my previous patch doing the
+same in asm-generic/io.h that was pulled and then unpulled by Linus.
+Maybe it would be slightly different if instead of a warning outX()
+would just be a NOP and inX() just returned ~0 but we're in essence
+pretending that we have these functions when we know they are nonsense.
 
-> On 05-May-2022, at 10:51 PM, Arnaldo Carvalho de Melo =
-<acme@kernel.org> wrote:
->=20
-> Em Thu, May 05, 2022 at 03:30:39PM +0530, Athira Rajeev escreveu:
->> Perf BPF filter test fails in environment where "clang"
->> is not installed.
->>=20
->> Test failure logs:
->>=20
->> <<>>
->> 42: BPF filter                    :
->> 42.1: Basic BPF filtering         : Skip
->> 42.2: BPF pinning                 : FAILED!
->> 42.3: BPF prologue generation     : FAILED!
->> <<>>
->>=20
->> Enabling verbose option provided debug logs which says
->> clang/llvm needs to be installed. Snippet of verbose logs:
->>=20
->> <<>>
->> 42.2: BPF pinning                  :
->> --- start ---
->> test child forked, pid 61423
->> ERROR:	unable to find clang.
->> Hint:	Try to install latest clang/llvm to support BPF.
->>        Check your $PATH
->>=20
->> <<logs_here>>
->>=20
->> Failed to compile test case: 'Basic BPF llvm compile'
->> Unable to get BPF object, fix kbuild first
->> test child finished with -1
->> ---- end ----
->> BPF filter subtest 2: FAILED!
->> <<>>
->>=20
->> Here subtests, "BPF pinning" and "BPF prologue generation"
->> failed and logs shows clang/llvm is needed. After installing
->> clang, testcase passes.
->>=20
->> Reason on why subtest failure happens though logs has proper
->> debug information:
->> Main function __test__bpf calls test_llvm__fetch_bpf_obj by
->> passing 4th argument as true ( 4th arguments maps to parameter
->> "force" in test_llvm__fetch_bpf_obj ). But this will cause
->> test_llvm__fetch_bpf_obj to skip the check for clang/llvm.
->>=20
->> Snippet of code part which checks for clang based on
->> parameter "force" in test_llvm__fetch_bpf_obj:
->>=20
->> <<>>
->> if (!force && (!llvm_param.user_set_param &&
->> <<>>
->>=20
->> Since force is set to "false", test won't get skipped and
->> fails to compile test case. The BPF code compilation needs
->> clang, So pass the fourth argument as "false" and also skip
->> the test if reason for return is "TEST_SKIP"
->>=20
->> After the patch:
->>=20
->> <<>>
->> 42: BPF filter                    :
->> 42.1: Basic BPF filtering         : Skip
->> 42.2: BPF pinning                 : Skip
->> 42.3: BPF prologue generation     : Skip
->> <<>>
->=20
-> Wouldn't it be better to add the reason for the skip, like other tests
-> do?
->=20
-> E.g.:
->=20
-> 23: Watchpoint                                                      :
-> 23.1: Read Only Watchpoint                                          : =
-Skip (missing hardware support)
-> 23.2: Write Only Watchpoint                                         : =
-Ok
-> 23.3: Read / Write Watchpoint                                       : =
-Ok
-> 23.4: Modify Watchpoint
->=20
-> Something like:
->=20
-> After the patch:
->=20
-> <<>>
-> 42: BPF filter                    :
-> 42.1: Basic BPF filtering         : Skip (clang not installed)
-> 42.2: BPF pinning                 : Skip (clang not installed)
-> 42.3: BPF prologue generation     : Skip (clang not installed)
+Another argument I see is that as shown by POWER9 we might start to see
+more platforms that just can't do I/O port access. E.g. I would also be
+surprised if Apple's M1 has I/O port access. Sooner or later I expect
+distributions on some platforms to only support such systems. For
+example on ppc a server distribution might only support IBM POWER
+without I/O port support before too long. Then having HAS_IOPORT allows
+to get rid of drivers that won't work anyway.
 
+There are also reports of probing a driver with I/O ports causing a
+system crash on systems without I/O port support. For example in this
+answer by John Garry (added so he may supply more information):
 
-Hi Arnaldo,
-
-I tried to use TEST_CASE_REASON("BPF pinning", bpf_pinning, "clang not =
-installed")
-
-The clang check is done in test_llvm__fetch_bpf_obj under some condition =
-checks:
-
-<<>>
-         /*
-         * Skip this test if user's .perfconfig doesn't set [llvm] =
-section
-         * and clang is not found in $PATH
-         */
-        if (!force && (!llvm_param.user_set_param &&
-                       llvm__search_clang())) {
-                pr_debug("No clang, skip this test\n");
-                return TEST_SKIP;
-        }
-<<>>
-
-But the reason for BPF skip could happen at other places also ie =
-non-root user, bpf support checks from check_env.
-So can't exactly print the skip reason to be clang since It could get =
-skipped from other environment checks too. Any suggestions Arnaldo ?
-
-Thanks
-Athira
-
-> <<>>
->=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->> tools/perf/tests/bpf.c | 4 ++--
->> 1 file changed, 2 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
->> index 57b9591f7cbb..ae62f01239e3 100644
->> --- a/tools/perf/tests/bpf.c
->> +++ b/tools/perf/tests/bpf.c
->> @@ -222,11 +222,11 @@ static int __test__bpf(int idx)
->>=20
->> 	ret =3D test_llvm__fetch_bpf_obj(&obj_buf, &obj_buf_sz,
->> 				       bpf_testcase_table[idx].prog_id,
->> -				       true, NULL);
->> +				       false, NULL);
->> 	if (ret !=3D TEST_OK || !obj_buf || !obj_buf_sz) {
->> 		pr_debug("Unable to get BPF object, %s\n",
->> 			 bpf_testcase_table[idx].msg_compile_fail);
->> -		if (idx =3D=3D 0)
->> +		if ((idx =3D=3D 0) || (ret =3D=3D TEST_SKIP))
->> 			return TEST_SKIP;
->> 		else
->> 			return TEST_FAIL;
->> --=20
->> 2.35.1
->=20
-> --=20
->=20
-> - Arnaldo
+https://lore.kernel.org/lkml/db043b76-880d-5fad-69cf-96abcd9cd34f@huawei.com/
 
