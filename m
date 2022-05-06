@@ -2,62 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617A251D281
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 09:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A430651D284
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 09:46:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvjKZ1CJPz3c9y
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 17:45:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvjLM3lHsz3cBS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 17:46:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=JEfgnl+V;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=c35fBELW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.183.193;
- helo=relay1-d.mail.gandi.net; envelope-from=clement.leger@bootlin.com;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256
- header.s=gm1 header.b=JEfgnl+V; dkim-atps=neutral
-X-Greylist: delayed 144179 seconds by postgrey-1.36 at boromir;
- Fri, 06 May 2022 17:45:08 AEST
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=c35fBELW; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvjK05sQzz2xF8
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 17:45:05 +1000 (AEST)
-Received: (Authenticated sender: clement.leger@bootlin.com)
- by mail.gandi.net (Postfix) with ESMTPSA id 7B0FE240010;
- Fri,  6 May 2022 07:44:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1651823100;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PGzNB4W4WfGK9PIJGUcSrH2CG36WKRbfkNH89DZr2pM=;
- b=JEfgnl+VgeNXkCi9WmNelq7MqYYGqUqE3V8lLJ1ouTRKtV4ZB+l7Y+vuBy9sONaFi/4Tss
- TpNmuLn+7xCOsMnTcXpQp1TdMztRBXLDwUtfL8Dx3WvdHairjaIGwDjd03qf61hDvOYOPW
- 3RsFKkZrQ8O7/c4fviwabahTxavVQ4NGYV990U6lWeMHvqUY12Xd0XqvXr0HutdQ7f818m
- dUq4rLktDIy/KAhfqcn+z7ZwkcgRDZUJmfeKxinV0HLx/aO0hkBoR5fG8lUSmX3a+uOYpL
- kB0dkTCQE4coldMuQ5k4HA2OuH3CMNo8/V1HkFe2rUkGwHhbSEWoKk2Bnq8FWQ==
-Date: Fri, 6 May 2022 09:43:39 +0200
-From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH 1/3] of: dynamic: add of_property_alloc() and
- of_property_free()
-Message-ID: <20220506094339.55b8aa63@fixe.home>
-In-Reply-To: <YnQLYjcIc0PjvWYR@robh.at.kernel.org>
-References: <20220504154033.750511-1-clement.leger@bootlin.com>
- <20220504154033.750511-2-clement.leger@bootlin.com>
- <9e470414-67a5-10ce-95eb-f8093fde70d4@csgroup.eu>
- <YnQLYjcIc0PjvWYR@robh.at.kernel.org>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvjKj6lFVz3by3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 17:45:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=76ci9KP4pdEawwj0Wkg2yGeqPx+7uXOp8RwNA7UZyyE=; b=c35fBELWFU6GviCTAqWHXuVy7s
+ Z478ICt13U3FdBywT70QE6XOkqnBKZYk7Ja3oO2rmUL2tZFKHatbOHp1Re+YyNwYOZgdtFkDw/c+o
+ 7z+YS1pFz7NwJHIGo8AcT0OOlmNS798DTLR2FZusC/c0tkNJtWr0rIHbNzFXgKsasN73TslY0HgpB
+ Rf3SrunJOuri5yApFRBuAheTesmAItIW8mPawcJAHfWP2H+42xwacpmTLNYT2AMBFvOmjJz9SNyzK
+ uV8tGNjNTrRE9AJyGGeR7qWVe8S2gq10PhK1FQ5H3auiy+gwaJtZWRdX4p06nScXx/0uS8VvLKhhy
+ dOL+M0Hg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=worktop.programming.kicks-ass.net)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1nmse9-000jAs-SA; Fri, 06 May 2022 07:45:06 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 697AF980E75; Fri,  6 May 2022 09:45:03 +0200 (CEST)
+Date: Fri, 6 May 2022 09:45:03 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: Re: [PATCH] bug: Use normal relative pointers in 'struct bug_entry'
+Message-ID: <20220506074503.GG2501@worktop.programming.kicks-ass.net>
+References: <afddb4548e93f6458ec1d9ec185a834c348eda33.1651798983.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afddb4548e93f6458ec1d9ec185a834c348eda33.1651798983.git.jpoimboe@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,62 +64,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Ohhoon Kwon <ohoono.kwon@samsung.com>, David Hildenbrand <david@redhat.com>,
- Steen Hegelund <steen.hegelund@microchip.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- YueHaibing <yuehaibing@huawei.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Allan Nielsen <allan.nielsen@microchip.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Laurent Dufour <ldufour@linux.ibm.com>, Frank Rowand <frowand.list@gmail.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le Thu, 5 May 2022 12:37:38 -0500,
-Rob Herring <robh@kernel.org> a =C3=A9crit :
+On Thu, May 05, 2022 at 06:09:45PM -0700, Josh Poimboeuf wrote:
+> With CONFIG_GENERIC_BUG_RELATIVE_POINTERS, the addr/file relative
+> pointers are calculated weirdly: based on the beginning of the bug_entry
+> struct address, rather than their respective pointer addresses.
+> 
+> Make the relative pointers less surprising to both humans and tools by
+> calculating them the normal way.
+> 
+> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 
-> > >  =20
-> > > -	/* mark the property as dynamic */
-> > > -	of_property_set_flag(new, OF_DYNAMIC);
-> > > +	prop->value =3D kzalloc(alloc_len, allocflags);
-> > > +	if (!prop->value)
-> > > +		goto out_err;
-> > >  =20
-> > > -	return new;
-> > > +	if (value)
-> > > +		memcpy(prop->value, value, value_len); =20
-> >=20
-> > Could you use kmemdup() instead of kzalloc+memcpy ? =20
->=20
-> I'd prefer there be 1 alloc for struct property and value instead of 2.=20
-> And maybe 'name' gets rolled into it too, but that gets a bit more=20
-> complicated to manage I think.=20
-
-At least for value it should be easy indeed. i'll check what I can do
-for the name.
-
->=20
-> With memcpy, note this series[1].
-
-Ok, good to know, should I base my series on that one ?
-
->=20
-> Rob
->=20
-> [1] https://lore.kernel.org/all/20220504014440.3697851-30-keescook@chromi=
-um.org/
-
-
---=20
-Cl=C3=A9ment L=C3=A9ger,
-Embedded Linux and Kernel engineer at Bootlin
-https://bootlin.com
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
