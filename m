@@ -2,57 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A430651D284
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 09:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D83AD51D291
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 09:51:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvjLM3lHsz3cBS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 17:46:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvjRs5G3wz3cBw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 17:51:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=c35fBELW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=AK/nPydJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::224;
+ helo=relay4-d.mail.gandi.net; envelope-from=clement.leger@bootlin.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=c35fBELW; 
- dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256
+ header.s=gm1 header.b=AK/nPydJ; dkim-atps=neutral
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [IPv6:2001:4b98:dc4:8::224])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvjKj6lFVz3by3
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 17:45:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=76ci9KP4pdEawwj0Wkg2yGeqPx+7uXOp8RwNA7UZyyE=; b=c35fBELWFU6GviCTAqWHXuVy7s
- Z478ICt13U3FdBywT70QE6XOkqnBKZYk7Ja3oO2rmUL2tZFKHatbOHp1Re+YyNwYOZgdtFkDw/c+o
- 7z+YS1pFz7NwJHIGo8AcT0OOlmNS798DTLR2FZusC/c0tkNJtWr0rIHbNzFXgKsasN73TslY0HgpB
- Rf3SrunJOuri5yApFRBuAheTesmAItIW8mPawcJAHfWP2H+42xwacpmTLNYT2AMBFvOmjJz9SNyzK
- uV8tGNjNTrRE9AJyGGeR7qWVe8S2gq10PhK1FQ5H3auiy+gwaJtZWRdX4p06nScXx/0uS8VvLKhhy
- dOL+M0Hg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=worktop.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1nmse9-000jAs-SA; Fri, 06 May 2022 07:45:06 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
- id 697AF980E75; Fri,  6 May 2022 09:45:03 +0200 (CEST)
-Date: Fri, 6 May 2022 09:45:03 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: Re: [PATCH] bug: Use normal relative pointers in 'struct bug_entry'
-Message-ID: <20220506074503.GG2501@worktop.programming.kicks-ass.net>
-References: <afddb4548e93f6458ec1d9ec185a834c348eda33.1651798983.git.jpoimboe@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvjRL0DhLz3bdF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 17:50:36 +1000 (AEST)
+Received: (Authenticated sender: clement.leger@bootlin.com)
+ by mail.gandi.net (Postfix) with ESMTPSA id 98185E000D;
+ Fri,  6 May 2022 07:50:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+ t=1651823429;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=mL7sWko/zEY1GKDqcFPw+UFI+rxOeH7QwJrlHZfz4xY=;
+ b=AK/nPydJipqNR7/LTq0Oh0NBKO5Xpwgy2vPit48NwT+fXefQVBBFNbZBGu4uzLX8zh+R8E
+ l98COuBzajZ62Ma6Yr5qHS/RX4ZT8dZi/0iPa8gISwhl1IOLq0wDl7vPK5+S5tBrSfRS3S
+ Vv2WvRTuOMcQTvHJypbz5lwne8EUK1namBL6Gs2g4GaZFwUhWTnlfdYmUIUcoflzQpL7cL
+ khQVgoVMxc2hCLixlzDABxy8HT9C5JOVX6lPD9DPuYSjZBuRY034T15iZ/T3TDzEpc+dz8
+ rvQLkCKD31v8tVr0jpiVApbQ24Az7LAY0Df5s4RFgvRx4l6bBKQoM1j2DTRUfw==
+Date: Fri, 6 May 2022 09:49:05 +0200
+From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Subject: Re: [PATCH 1/3] of: dynamic: add of_property_alloc() and
+ of_property_free()
+Message-ID: <20220506094905.27bc99aa@fixe.home>
+In-Reply-To: <YnQnayouXw9/jp/E@robh.at.kernel.org>
+References: <20220504154033.750511-1-clement.leger@bootlin.com>
+ <20220504154033.750511-2-clement.leger@bootlin.com>
+ <YnQnayouXw9/jp/E@robh.at.kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afddb4548e93f6458ec1d9ec185a834c348eda33.1651798983.git.jpoimboe@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,30 +66,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, devicetree@vger.kernel.org,
+ Ohhoon Kwon <ohoono.kwon@samsung.com>, David Hildenbrand <david@redhat.com>,
+ Steen Hegelund <steen.hegelund@microchip.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Allan Nielsen <allan.nielsen@microchip.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Laurent Dufour <ldufour@linux.ibm.com>, Frank Rowand <frowand.list@gmail.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 05, 2022 at 06:09:45PM -0700, Josh Poimboeuf wrote:
-> With CONFIG_GENERIC_BUG_RELATIVE_POINTERS, the addr/file relative
-> pointers are calculated weirdly: based on the beginning of the bug_entry
-> struct address, rather than their respective pointer addresses.
-> 
-> Make the relative pointers less surprising to both humans and tools by
-> calculating them the normal way.
-> 
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Le Thu, 5 May 2022 14:37:15 -0500,
+Rob Herring <robh@kernel.org> a =C3=A9crit :
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+
+> > +
+> > +/**
+> > + * of_property_alloc - Allocate a property dynamically.
+> > + * @name:	Name of the new property
+> > + * @value:	Value that will be copied into the new property value
+> > + * @value_len:	length of @value to be copied into the new property val=
+ue
+> > + * @len:	Length of new property value, must be greater than @value_len=
+ =20
+>=20
+> What's the usecase for the lengths being different? That doesn't seem=20
+> like a common case, so perhaps handle it with a NULL value and=20
+> non-zero length. Then the caller has to deal with populating=20
+> prop->value.
+
+That was actually something used by powerpc code but agreed, letting
+the user recopy it's values seems fine to me and the usage will be more
+clear.
+
+> >  	/*
+> > -	 * NOTE: There is no check for zero length value.
+> > -	 * In case of a boolean property, this will allocate a value
+> > -	 * of zero bytes. We do this to work around the use
+> > -	 * of of_get_property() calls on boolean values.
+> > +	 * Even if the property has no value, it must be set to a
+> > +	 * non-null value since of_get_property() is used to check
+> > +	 * some values that might or not have a values (ranges for
+> > +	 * instance). Moreover, when the node is released, prop->value
+> > +	 * is kfreed so the memory must come from kmalloc. =20
+>=20
+> Allowing for NULL value didn't turn out well...
+>=20
+> We know that we can do the kfree because OF_DYNAMIC is set IIRC...
+>=20
+> If we do 1 allocation for prop and value, then we can test=20
+> for "prop->value =3D=3D prop + 1" to determine if we need to free or not.
+
+Sounds like a good idea.
+
+--=20
+Cl=C3=A9ment L=C3=A9ger,
+Embedded Linux and Kernel engineer at Bootlin
+https://bootlin.com
