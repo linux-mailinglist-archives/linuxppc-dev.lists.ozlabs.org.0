@@ -2,47 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F3C51CFC5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 05:39:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F79651D050
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 06:29:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kvbs36fQ7z3c7F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 13:39:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kvcz03PhBz3c8T
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 14:29:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VRYLykty;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
- helo=out30-132.freemail.mail.aliyun.com;
- envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-132.freemail.mail.aliyun.com
- (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvbrf60PNz3bgC
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 13:38:37 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04426;
- MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=30; SR=0;
- TI=SMTPD_---0VCPvMM9_1651808302; 
-Received: from 30.32.96.193(mailfrom:baolin.wang@linux.alibaba.com
- fp:SMTPD_---0VCPvMM9_1651808302) by smtp.aliyun-inc.com(127.0.0.1);
- Fri, 06 May 2022 11:38:24 +0800
-Message-ID: <21b11024-e893-8c11-9b98-ab1d13413b61@linux.alibaba.com>
-Date: Fri, 6 May 2022 11:39:05 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvcyN6svFz3bqd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 14:28:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=VRYLykty; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KvcyM6Cjmz4xR1;
+ Fri,  6 May 2022 14:28:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1651811324;
+ bh=kPmBrmNZRI4k4ASBVGcaxanjDSU0xGdjd9PCFOJYtKU=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=VRYLyktyEbBTVMln6AL6zD9QNUWfb4mauaOnmx31I2SGV10dKbGbEg4YMxgEoOd5u
+ lBTYUprHkM36PGPopTZ0ExHzCGb+ANY9PTnv+Lwg5JlP8IWQ/yQkzeeeNIVbuyKUoE
+ bRO1rTdA1wTizwM+sqaAg+Z0OtP6CmgpsXXCNuuXfn7gV7r7bLI4IvZh5XFsJ4U26i
+ 3bvZKOA9nMzWavUkkfRzwWNtbY8UqqvSvnFmbH4l35aC8Hk7272rJNiFHb/dRYOnWC
+ 4XYqVqSNO09Rv2/6rvNh5tVUshPJiQcczQ5VwHsoucl8OkuBWHLMLtmgVP6OBHy6Ww
+ Ig7dnNUeJIY2A==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Julia Lawall <julia.lawall@inria.fr>, Joel Stanley <joel@jms.id.au>
+Subject: Re: [PATCH] powerpc: fix typos in comments
+In-Reply-To: <alpine.DEB.2.22.394.2205050949150.2425@hadrien>
+References: <20220430185654.5855-1-Julia.Lawall@inria.fr>
+ <CACPK8XdT3MNnArMhdz4X1GcSvXwnV9gLOrxJ8ZKRkT03LahW_A@mail.gmail.com>
+ <alpine.DEB.2.22.394.2205050949150.2425@hadrien>
+Date: Fri, 06 May 2022 14:28:39 +1000
+Message-ID: <87o80bthc8.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- migration
-To: Mike Kravetz <mike.kravetz@oracle.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, will@kernel.org
-References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
- <11b92502b3df0e0bba6a1dc71476d79cab6c79ba.1651216964.git.baolin.wang@linux.alibaba.com>
- <5cab0eca-9630-a7c6-4f5d-5cb45ff82c83@oracle.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <5cab0eca-9630-a7c6-4f5d-5cb45ff82c83@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,76 +60,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
- agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- arnd@arndb.de, ysato@users.sourceforge.jp, deller@gmx.de,
- borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com,
- linux-arm-kernel@lists.infradead.org, tsbogend@alpha.franken.de,
- linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, svens@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: kernel-janitors@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Julia Lawall <julia.lawall@inria.fr> writes:
+> On Thu, 5 May 2022, Joel Stanley wrote:
+>> On Sat, 30 Apr 2022 at 18:58, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+>> > Various spelling mistakes in comments.
+>> > Detected with the help of Coccinelle.
+>> >
+>> > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+>>
+>> I read the patch and it appears that all of the corrections are good.
+>> Thanks for sending it Julia.
+>>
+>> I'm not sure that one mega patch is the right way to go or not, so
+>> I'll leave that to mpe.
+>
+> I tried some other options, but wasn't satisfied with any of them.  But
+> just let me know if you want something else (by file? by subdirectory?)
 
+This was fine, I've picked it up (in my next-test branch).
 
-On 5/6/2022 7:53 AM, Mike Kravetz wrote:
-> On 4/29/22 01:14, Baolin Wang wrote:
->> On some architectures (like ARM64), it can support CONT-PTE/PMD size
->> hugetlb, which means it can support not only PMD/PUD size hugetlb:
->> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
->> size specified.
-> <snip>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 6fdd198..7cf2408 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -1924,13 +1924,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>   					break;
->>   				}
->>   			}
->> +
->> +			/* Nuke the hugetlb page table entry */
->> +			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->>   		} else {
->>   			flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
->> +			/* Nuke the page table entry. */
->> +			pteval = ptep_clear_flush(vma, address, pvmw.pte);
->>   		}
->>   
-> 
-> On arm64 with CONT-PTE/PMD the returned pteval will have dirty or young set
-> if ANY of the PTE/PMDs had dirty or young set.
+There were a few conflicts, but I fixed them up, and there would still
+be a few conflicts even if it was split into multiple patches.
 
-Right.
-
-> 
->> -		/* Nuke the page table entry. */
->> -		pteval = ptep_clear_flush(vma, address, pvmw.pte);
->> -
->>   		/* Set the dirty flag on the folio now the pte is gone. */
->>   		if (pte_dirty(pteval))
->>   			folio_mark_dirty(folio);
->> @@ -2015,7 +2017,10 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>   			pte_t swp_pte;
->>   
->>   			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
->> -				set_pte_at(mm, address, pvmw.pte, pteval);
->> +				if (folio_test_hugetlb(folio))
->> +					set_huge_pte_at(mm, address, pvmw.pte, pteval);
-> 
-> And, we will use that pteval for ALL the PTE/PMDs here.  So, we would set
-> the dirty or young bit in ALL PTE/PMDs.
-> 
-> Could that cause any issues?  May be more of a question for the arm64 people.
-
-I don't think this will cause any issues. Since the hugetlb can not be 
-split, and we should not lose the the dirty or young state if any 
-subpages were set. Meanwhile we already did like this in hugetlb.c:
-
-pte = huge_ptep_get_and_clear(mm, address, ptep);
-tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
-if (huge_pte_dirty(pte))
-	set_page_dirty(page);
+cheers
