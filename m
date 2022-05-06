@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F8551D3F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 11:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001D751D3F8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 11:06:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kvl5n6TqNz3dP4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 19:05:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kvl7L6K2Xz3cNX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 19:06:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=r/kq0k6Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LnassnH1;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,68 +18,68 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=r/kq0k6Q; dkim-atps=neutral
+ header.s=pp1 header.b=LnassnH1; dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvkj11BVXz3cF9
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 18:47:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvkj40LM8z3cD7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 18:47:35 +1000 (AEST)
 Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2467P56a021397;
- Fri, 6 May 2022 08:47:28 GMT
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2467P5lo021391;
+ Fri, 6 May 2022 08:47:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=OVHhYYE2DoRJgwYuzCv2oG1rM525VJJJSivPGZTdip0=;
- b=r/kq0k6QkKhd3qbVEhr35bdCYvQjLesyH8mYSwUdOO9LZrB8G24t4N1dL41wKjvrXfE5
- fOAPtcofhrsIIs5EVFzScO020FrwROE3w+HerWu+69tNvNiOGYk4qg5cRTYQdszNcNM3
- UAkb1XofkxbJ91zhLJ76uSXg+SbcUVXOCDG72dZT0yBAI2fSxz5haXeGPytnlDEX9RBM
- 9IQ0GjJ2/mck69FIQK0a21AmifPNh+HxMyvibPfZAgBPBGtYSXkezMRGfjtFiLpOdx5J
- MK94/Sd7b8puO+EWt5r47pYZFr3eavPFsZzo20dMCkbjT0EkuUNbsow06ZjhwZ1kwdi7 Ew== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvy929fg7-1
+ bh=aM2dcd5R+bj4ez+iaQcYKAJsU2ckAkOMIX/Apru/N48=;
+ b=LnassnH1AsCqyAv+Os4EDgU2P4HMbeIbnJznSJsEKlqYdioNtBYp+PgsFSfLJzXjxEa5
+ 7XxNdOplGjRS5ex3iQnqutK1xXKA2W6baULs8F2ES6uvbSq6/zo8KbxACWiYOlaG2Vu6
+ zIuxRfu0oF8j+HCR4vCzO30oGfQCtvjbAS6Yf1pCCGxmkk5FfNjMA+QfXkvLvInwe7xa
+ dx0RqsU+QBdP8d9nzJjpt+8EZkOwJE6SEFKRDNhIbTE947oLYjuXe4VOTfwEIHrfXBTQ
+ CR5C/znyy8Hf2ReLxCUkAF/Zk9uodoaUb1RlGMJcK4wIvZb67Ualp/FwW7S4BvbLxqrR cg== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvy929fhw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 08:47:27 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2468hJQQ013966;
- Fri, 6 May 2022 08:47:26 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 3fvg61118c-1
+ Fri, 06 May 2022 08:47:31 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2468gkNS014010;
+ Fri, 6 May 2022 08:47:29 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma05fra.de.ibm.com with ESMTP id 3frvr8ppvd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 08:47:26 +0000
+ Fri, 06 May 2022 08:47:29 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 2468lGdc30146982
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 2468lQP923003646
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 May 2022 08:47:16 GMT
+ Fri, 6 May 2022 08:47:26 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2DCCB4C04E;
+ by IMSVA (Postfix) with ESMTP id 180E74C04A;
+ Fri,  6 May 2022 08:47:26 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A41084C040;
  Fri,  6 May 2022 08:47:23 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C2C8D4C044;
- Fri,  6 May 2022 08:47:20 +0000 (GMT)
 Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
  [9.43.19.224]) by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  6 May 2022 08:47:20 +0000 (GMT)
+ Fri,  6 May 2022 08:47:23 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 32/35] selftest/powerpc/pmu: Add selftest for group constraint
- for unit and pmc field in p9
-Date: Fri,  6 May 2022 14:15:41 +0530
-Message-Id: <20220506084544.56527-33-kjain@linux.ibm.com>
+Subject: [PATCH 33/35] selftest/powerpc/pmu: Add selftest for group constraint
+ check for MMCRA thresh_ctl field
+Date: Fri,  6 May 2022 14:15:42 +0530
+Message-Id: <20220506084544.56527-34-kjain@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20220506084544.56527-1-kjain@linux.ibm.com>
 References: <20220506084544.56527-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: NWN_0j6y22V5RRLtLy733-66N4u6VYFG
-X-Proofpoint-GUID: NWN_0j6y22V5RRLtLy733-66N4u6VYFG
+X-Proofpoint-ORIG-GUID: qDKFCZy3CqmB7bgUFLFlZLnQvIcSW8ps
+X-Proofpoint-GUID: qDKFCZy3CqmB7bgUFLFlZLnQvIcSW8ps
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-05-06_03,2022-05-05_01,2022-02-23_01
@@ -106,38 +106,41 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Unit and pmu bits in the event code is used to program unit and pmc
-fields in Monitor Mode Control Register 1 (MMCR1). For power9 platform,
-incase unit field value is within 6 to 9, one of the event in the group
-should use PMC4. Otherwise event_open should fail for that group.
+Thresh control bits in the event code is used to program thresh_ctl
+field in Monitor Mode Control Register A (MMCRA: 48-55). When scheduling
+events as a group, all events in that group should match value in these
+bits. Otherwise event open for the sibling events will fail.
+
+Testcase uses event code PM_MRK_INST_CMPL (0x401e0) as leader and
+another event PM_THRESH_MET (101ec) as sibling event, and checks if
+group constraint checks for thresh_ctl field added correctly via perf interface.
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- .../powerpc/pmu/event_code_tests/Makefile     |  3 +-
- .../group_constraint_unit_test.c              | 74 +++++++++++++++++++
- 2 files changed, 76 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_unit_test.c
+ .../powerpc/pmu/event_code_tests/Makefile     |  2 +-
+ .../group_constraint_thresh_ctl_test.c        | 64 +++++++++++++++++++
+ 2 files changed, 65 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_ctl_test.c
 
 diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-index 374044062561..f72c73b5b79a 100644
+index f72c73b5b79a..16cbb2e52865 100644
 --- a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-@@ -5,7 +5,8 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
- 	group_constraint_repeat_test group_constraint_radix_scope_qual_test reserved_bits_mmcra_sample_elig_mode_test \
+@@ -6,7 +6,7 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
  	group_constraint_mmcra_sample_test invalid_event_code_test reserved_bits_mmcra_thresh_ctl_test \
  	blacklisted_events_test event_alternatives_tests_p9 event_alternatives_tests_p10 generic_events_valid_test \
--	group_constraint_l2l3_sel_test group_constraint_cache_test group_constraint_thresh_cmp_test
-+	group_constraint_l2l3_sel_test group_constraint_cache_test group_constraint_thresh_cmp_test \
-+	group_constraint_unit_test
+ 	group_constraint_l2l3_sel_test group_constraint_cache_test group_constraint_thresh_cmp_test \
+-	group_constraint_unit_test
++	group_constraint_unit_test group_constraint_thresh_ctl_test
  
  top_srcdir = ../../../../../..
  include ../../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_unit_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_unit_test.c
+diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_ctl_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_ctl_test.c
 new file mode 100644
-index 000000000000..a2c18923dcec
+index 000000000000..e0852ebc1671
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_unit_test.c
-@@ -0,0 +1,74 @@
++++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_ctl_test.c
+@@ -0,0 +1,64 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright 2022, Kajol Jain, IBM Corp.
@@ -150,67 +153,57 @@ index 000000000000..a2c18923dcec
 +#include "utils.h"
 +#include "../sampling_tests/misc.h"
 +
-+/* All successful D-side store dispatches for this thread with PMC 2 */
-+#define EventCode_1 0x26080
-+/* All successful D-side store dispatches for this thread with PMC 4 */
-+#define EventCode_2 0x46080
-+/* All successful D-side store dispatches for this thread that were L2 Miss with PMC 3 */
-+#define EventCode_3 0x36880
++/*
++ * Primary PMU events used here are PM_MRK_INST_CMPL (0x401e0) and
++ * PM_THRESH_MET (0x101ec).
++ * Threshold event selection used is issue to complete and issue to
++ * finished for cycles
++ * Sampling criteria is Load or Store only sampling
++ */
++#define EventCode_1 0x35340401e0
++#define EventCode_2 0x34340101ec
++#define EventCode_3 0x35340101ec
 +
 +/*
-+ * Testcase for group constraint check of unit and pmc bits which is
-+ * used to program corresponding unit and pmc field in Monitor Mode
-+ * Control Register 1 (MMCR1)
-+ * One of the event in the group should use PMC 4 incase units field
-+ * value is within 6 to 9 otherwise event_open for the group will fail.
++ * Testcase for group constraint check of thresh_ctl bits which is
++ * used to program thresh compare field in Monitor Mode Control Register A
++ * (MMCR0: 48-55).
++ * All events in the group should match thresh ctl bits otherwise
++ * event_open for the group will fail.
 + */
-+static int group_constraint_unit(void)
++static int group_constraint_thresh_ctl(void)
 +{
-+	struct event *e, events[3];
++	struct event event, leader;
 +
-+	/*
-+	 * Check for platform support for the test.
-+	 * Constraint to use PMC4 with one of the event in group,
-+	 * when the unit is within 6 to 9 is only applicable on
-+	 * power9.
-+	 */
++	/* Check for platform support for the test */
 +	SKIP_IF(platform_check_for_tests());
-+	SKIP_IF(have_hwcap2(PPC_FEATURE2_ARCH_3_1));
 +
-+	/* Init the events for the group contraint check for unit bits */
-+	e = &events[0];
-+	event_init(e, EventCode_1);
++	/* Init the events for the group contraint thresh control test */
++	event_init(&leader, EventCode_1);
++	FAIL_IF(event_open(&leader));
 +
-+	 /* Expected to fail as PMC 4 is not used with unit field value 6 to 9 */
-+	FAIL_IF(!event_open(&events[0]));
++	event_init(&event, EventCode_2);
 +
-+	/* Init the events for the group contraint check for unit bits */
-+	e = &events[1];
-+	event_init(e, EventCode_2);
++	/* Expected to fail as sibling and leader event request different thresh_ctl bits */
++	FAIL_IF(!event_open_with_group(&event, leader.fd));
 +
-+	/* Expected to pass as PMC 4 is used with unit field value 6 to 9 */
-+	FAIL_IF(event_open(&events[1]));
++	event_close(&event);
 +
-+	/* Init the event for the group contraint unit test */
-+	e = &events[2];
-+	event_init(e, EventCode_3);
++	/* Init the event for the group contraint thresh control test */
++	event_init(&event, EventCode_3);
 +
-+	/* Expected to fail as PMC4 is not being used */
-+	FAIL_IF(!event_open_with_group(&events[2], events[0].fd));
++	 /* Expected to succeed as sibling and leader event request same thresh_ctl bits */
++	FAIL_IF(event_open_with_group(&event, leader.fd));
 +
-+	/* Expected to succeed as event using PMC4 */
-+	FAIL_IF(event_open_with_group(&events[2], events[1].fd));
-+
-+	event_close(&events[0]);
-+	event_close(&events[1]);
-+	event_close(&events[2]);
++	event_close(&leader);
++	event_close(&event);
 +
 +	return 0;
 +}
 +
 +int main(void)
 +{
-+	return test_harness(group_constraint_unit, "group_constraint_unit");
++	return test_harness(group_constraint_thresh_ctl, "group_constraint_thresh_ctl");
 +}
 -- 
 2.31.1
