@@ -1,65 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF8351DFED
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 22:06:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D39A51E037
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 22:37:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kw1m25w1wz3cFP
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 06:06:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kw2S00GSdz3c7v
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 06:37:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zS7mT4GO;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5wkuYkNH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BZ77tpSE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1;
- helo=galois.linutronix.de; envelope-from=tglx@linutronix.de;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=zS7mT4GO; 
- dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=5wkuYkNH; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=BZ77tpSE; 
  dkim-atps=neutral
-Received: from galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kw1lQ54vKz3byZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 06:05:38 +1000 (AEST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1651867535;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=MVppxWloPHGJWVXPfoL2Mp1gCDmCbq5jYvkOUctTPwE=;
- b=zS7mT4GOFbktfGjTiNzsOezexuL61fgcFzjZlZAaPH7GPyJ2Q7bJAFEDsyscoPuCfFVQXy
- MQv9fxTolSCsKtYLSyZInAmifCbsge2rcmwRurq4fs6letvqkFnJbaTyhjCsRTPV60X6uE
- rinuSxovZT2eQZmTTINCqVtTXoHEFIdOgI1zfPR/KL1VUfVwn2fIFHM766ozhigodnfH5s
- jReDujbvbA2//EkDSTXQNLuOihMxNNQNvdzlCmWip8r6V8GGcekFaYq43MM8Slzjs9F8uF
- PGtWQGOFlmpNWcrTP2AzpuqH8ZoMSNTnNEko3cwpIKeOk6ve9AbhRkGjDS/MIg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1651867535;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=MVppxWloPHGJWVXPfoL2Mp1gCDmCbq5jYvkOUctTPwE=;
- b=5wkuYkNHIkwqACUXoQDb2h1xfBOD4wVbdnhxKNW06YuXNMEFHsj/QnO9X2mOg3FHRYYiy1
- G0NPRPNdhl+hS1AA==
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, x86@kernel.org
-Subject: Re: [PATCH v6 03/29] x86/apic/msi: Set the delivery mode
- individually for each IRQ
-In-Reply-To: <20220506000008.30892-4-ricardo.neri-calderon@linux.intel.com>
-References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-4-ricardo.neri-calderon@linux.intel.com>
-Date: Fri, 06 May 2022 22:05:34 +0200
-Message-ID: <8735hmh1f5.ffs@tglx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kw2RJ4RR1z3bcV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 06:36:44 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id C1BBCB8399C;
+ Fri,  6 May 2022 20:36:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF87C385A8;
+ Fri,  6 May 2022 20:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1651869397;
+ bh=FaJKk4lpjmUfqPc1hBjX7ULYsTAHts26Sy5B/hA3fJU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=BZ77tpSEMPlorPtTlNv9P5WqZNKxtLZgS0S6Ts8F6IiHcS6dlHeZyB21a+MHDJ2dJ
+ 0pGkIB57JhUYWdzg9eKLacQmaouWApXO0uQrWA1y+dURFpOBJXEI0YOxuz9+J2B7V+
+ F8DAURyLo5VWu5mmv19/PsPucV7H0iDsgv9yI/rv3dUtTYgjpm9WuLVIdg4Lqt0nEO
+ t4nNlilEQoUm5ohp12zan7pGYAf+DU3vAXTki29SrdNn2DauYom3mlwPbYpjhNp8uB
+ iEw/WbrWTgnx6Oct8z2Mz9Q4bjBogNpd4I5Vp9e3x5xbPxO0SBLNog/F5xsv1qSSfh
+ rNfGUvtpb316w==
+Received: by pali.im (Postfix)
+ id 3F1CE1141; Fri,  6 May 2022 22:36:34 +0200 (CEST)
+From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Subject: [PATCH] powerpc/85xx: P2020: Add fsl,mpc8548-pmc node
+Date: Fri,  6 May 2022 22:36:21 +0200
+Message-Id: <20220506203621.26314-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,64 +67,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
- Andi Kleen <ak@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- Joerg Roedel <joro@8bytes.org>, Ricardo Neri <ricardo.neri@intel.com>,
- Stephane Eranian <eranian@google.com>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Tony Luck <tony.luck@intel.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 05 2022 at 16:59, Ricardo Neri wrote:
-> There are no restrictions in hardware to set  MSI messages with its
-> own delivery mode.
+P2020 also contains Power Management Controller and their registers at
+offset 0xe0070 compatible with mpc8548. So add PMC node into DTS include
+file fsl/p2020si-post.dtsi
 
-"messages with its own" ? Plural/singular confusion.
+Signed-off-by: Pali Rohár <pali@kernel.org>
+---
+ arch/powerpc/boot/dts/fsl/p2020si-post.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> Use the mode specified in the provided IRQ hardware
-> configuration data. Since most of the IRQs are configured to use the
-> delivery mode of the APIC driver in use (set in all of them to
-> APIC_DELIVERY_MODE_FIXED), the only functional changes are where
-> IRQs are configured to use a specific delivery mode.
+diff --git a/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi b/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi
+index 6345629524fe..81b9ab2119be 100644
+--- a/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi
++++ b/arch/powerpc/boot/dts/fsl/p2020si-post.dtsi
+@@ -201,4 +201,9 @@
+ 		reg = <0xe0000 0x1000>;
+ 		fsl,has-rstcr;
+ 	};
++
++	pmc: power@e0070 {
++		compatible = "fsl,mpc8548-pmc";
++		reg = <0xe0070 0x20>;
++	};
+ };
+-- 
+2.20.1
 
-This does not parse. There are no functional changes due to this patch
-and there is no point talking about functional changes in subsequent
-patches here.
-
-> Changing the utility function __irq_msi_compose_msg() takes care of
-> implementing the change in the in the local APIC, PCI-MSI, and DMAR-MSI
-
-in the in the
-
-> irq_chips.
->
-> The IO-APIC irq_chip configures the entries in the interrupt redirection
-> table using the delivery mode specified in the corresponding MSI message.
-> Since the MSI message is composed by a higher irq_chip in the hierarchy,
-> it does not need to be updated.
-
-The point is that updating __irq_msi_compose_msg() covers _all_ MSI
-consumers including IO-APIC.
-
-I had to read that changelog 3 times to make sense of it. Something like
-this perhaps:
-
-  "x86/apic/msi: Use the delivery mode from irq_cfg for message composition
-
-   irq_cfg provides a delivery mode for each interrupt. Use it instead
-   of the hardcoded APIC_DELIVERY_MODE_FIXED. This allows to compose
-   messages for NMI delivery mode which is required to implement a HPET
-   based NMI watchdog.
-
-   No functional change as the default delivery mode is set to
-   APIC_DELIVERY_MODE_FIXED."
-
-Thanks,
-
-        tglx
