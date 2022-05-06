@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC6E51CDC2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:15:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1952F51CDC3
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 02:15:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvWKs5KLvz3fSP
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:15:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvWLY6fD5z3bxY
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:15:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fl+nh4xZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+KP8uHe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,38 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=fl+nh4xZ; dkim-atps=neutral
+ header.s=Intel header.b=W+KP8uHe; dkim-atps=neutral
 Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVzX09R6z3cDH
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:59:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KvVzY42Fdz3c8s
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 09:59:21 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1651795160; x=1683331160;
+ t=1651795161; x=1683331161;
  h=from:to:cc:subject:date:message-id:in-reply-to: references;
- bh=NgL6S1cr5J9GxlUSQa9DYNpqQacM6MNmaOCrW38i9fU=;
- b=fl+nh4xZVQAG8JOh5raNxTQObPa3E+IuUxFMvVhppyIz9TRWsJwaBMCz
- gdVH493VUUb0j4hvNlAEM4rrYv75vjkAcRFKV1UzGEChak7nrxuX7DFWT
- Kn/GDXNAgIfMxaT19n7iLzo1SahLYRXYj/OF+Y0cSthHH1j/S4tkm/gqV
- wlX6XrqSCHITFR+JFANpe3UL+qFRGCJnewwvoM2yuNnIlZvC/7nK1zwOf
- KjTdKuaxNMhqFGIj9jUVw91EOM9OsYO7din2j8lpuV1q51LJ78F8CVnEw
- OIa/43DTLgsByxoY8kPCzZU6whcOkhfoNX805m1BEGigSFYgBBJrYlZAM w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437340"
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437340"
+ bh=CEzigczvRyU1oQzEnVej8ViYVBfDe59Bvau/LRgGfAw=;
+ b=W+KP8uHeRkvUtM5OFzpaJjZgoPML5buCP51xu0xFx39QJ79Q3lkZC7H/
+ 2N542T1Xf4w5vWjlddB1kGAS/4GtclBNGk/d9wGeNHaOYhF2I7lcZZASt
+ Vf8+n34uFxHXIqBnmXio5SXcxPU5o6IZqRM5JTh+cieYsFivgFimocMZ7
+ ENZ8FZ+Nl00mC+oo94bBJywaTsChheTbmICBqf75Yvi7VtJo+GtNmBI6P
+ aSSp8TQmsqRfr9dLO0xqxcdUGYP2tafuqDwjkMW2IUG4RMuDog+cNaihr
+ /xjy+XR3/IuC16Kph0HoLXRE6ghQwPE26hog93hMzI8JKo5BUMtXiZKwl Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10338"; a="268437342"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="268437342"
 Received: from orsmga004.jf.intel.com ([10.7.209.38])
  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  05 May 2022 16:57:56 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914448"
+X-IronPort-AV: E=Sophos;i="5.91,203,1647327600"; d="scan'208";a="694914451"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:55 -0700
+ by orsmga004.jf.intel.com with ESMTP; 05 May 2022 16:57:56 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>,
 	x86@kernel.org
-Subject: [PATCH v6 26/29] x86/watchdog: Add a shim hardlockup detector
-Date: Thu,  5 May 2022 17:00:05 -0700
-Message-Id: <20220506000008.30892-27-ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH v6 27/29] watchdog: Expose lockup_detector_reconfigure()
+Date: Thu,  5 May 2022 17:00:06 -0700
+Message-Id: <20220506000008.30892-28-ricardo.neri-calderon@linux.intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
 References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
@@ -78,171 +78,90 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The generic hardlockup detector is based on perf. It also provides a set
-of weak functions that CPU architectures can override. Add a shim
-hardlockup detector for x86 that overrides such functions and can
-select between perf and HPET implementations of the detector.
+When there are multiple implementations of the NMI watchdog, there may be
+situations in which switching from one to another is needed. If the time-
+stamp counter becomes unstable, the HPET-based NMI watchdog can no longer
+be used. Similarly, the HPET-based NMI watchdog relies on tsc_khz and
+needs to be informed when it is refined.
 
-For clarity, add the intermediate Kconfig symbol X86_HARDLOCKUP_DETECTOR
-that is selected whenever the core of the hardlockup detector is
-selected.
+Reloading the NMI watchdog or switching to another hardlockup detector can
+be done cleanly by updating the arch-specific stub and then reconfiguring
+the whole lockup detector.
+
+Expose lockup_detector_reconfigure() to achieve this goal.
 
 Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Cc: Stephane Eranian <eranian@google.com>
 Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
 Cc: iommu@lists.linux-foundation.org
 Cc: linuxppc-dev@lists.ozlabs.org
 Cc: x86@kernel.org
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 ---
 Changes since v5:
- * Added watchdog_nmi_start() to be used when tsc_khz is recalibrated.
- * Always build the x86-specific hardlockup detector shim; not only
-   when the HPET-based detector is selected.
- * Corrected a typo in comment in watchdog_nmi_probe() (Ani)
- * Removed useless local ret variable in watchdog_nmi_enable(). (Ani)
+ * None
 
 Changes since v4:
- * Use a switch to enable and disable the various available detectors.
-   (Andi)
+ * Switching to the perf-based lockup detector under the hood is hacky.
+   Instead, reconfigure the whole lockup detector.
 
 Changes since v3:
- * Fixed style in multi-line comment. (Randy Dunlap)
+ * None
 
 Changes since v2:
- * Pass cpu number as argument to hardlockup_detector_[enable|disable].
-   (Thomas Gleixner)
+ * Introduced this patch.
 
 Changes since v1:
- * Introduced this patch: Added an x86-specific shim hardlockup
-   detector. (Nicholas Piggin)
+ * N/A
 ---
- arch/x86/Kconfig.debug         |  3 ++
- arch/x86/kernel/Makefile       |  2 +
- arch/x86/kernel/watchdog_hld.c | 85 ++++++++++++++++++++++++++++++++++
- 3 files changed, 90 insertions(+)
- create mode 100644 arch/x86/kernel/watchdog_hld.c
+ include/linux/nmi.h | 2 ++
+ kernel/watchdog.c   | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index bc34239589db..599001157847 100644
---- a/arch/x86/Kconfig.debug
-+++ b/arch/x86/Kconfig.debug
-@@ -6,6 +6,9 @@ config TRACE_IRQFLAGS_NMI_SUPPORT
- config EARLY_PRINTK_USB
- 	bool
+diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+index cf12380e51b3..73827a477288 100644
+--- a/include/linux/nmi.h
++++ b/include/linux/nmi.h
+@@ -16,6 +16,7 @@ void lockup_detector_init(void);
+ void lockup_detector_soft_poweroff(void);
+ void lockup_detector_cleanup(void);
+ bool is_hardlockup(void);
++void lockup_detector_reconfigure(void);
  
-+config X86_HARDLOCKUP_DETECTOR
-+	def_bool y if HARDLOCKUP_DETECTOR_CORE
-+
- config X86_VERBOSE_BOOTUP
- 	bool "Enable verbose x86 bootup info messages"
- 	default y
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index c700b00a2d86..af3d54e4c836 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -114,6 +114,8 @@ obj-$(CONFIG_KGDB)		+= kgdb.o
- obj-$(CONFIG_VM86)		+= vm86_32.o
- obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
+ extern int watchdog_user_enabled;
+ extern int nmi_watchdog_user_enabled;
+@@ -37,6 +38,7 @@ extern int sysctl_hardlockup_all_cpu_backtrace;
+ static inline void lockup_detector_init(void) { }
+ static inline void lockup_detector_soft_poweroff(void) { }
+ static inline void lockup_detector_cleanup(void) { }
++static inline void lockup_detector_reconfigure(void) { }
+ #endif /* !CONFIG_LOCKUP_DETECTOR */
  
-+obj-$(CONFIG_X86_HARDLOCKUP_DETECTOR) += watchdog_hld.o
-+
- obj-$(CONFIG_HPET_TIMER) 	+= hpet.o
- obj-$(CONFIG_X86_HARDLOCKUP_DETECTOR_HPET) += watchdog_hld_hpet.o
+ #ifdef CONFIG_SOFTLOCKUP_DETECTOR
+diff --git a/kernel/watchdog.c b/kernel/watchdog.c
+index 6443841a755f..e5b67544f8c8 100644
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -537,7 +537,7 @@ int lockup_detector_offline_cpu(unsigned int cpu)
+ 	return 0;
+ }
  
-diff --git a/arch/x86/kernel/watchdog_hld.c b/arch/x86/kernel/watchdog_hld.c
-new file mode 100644
-index 000000000000..ef11f0af4ef5
---- /dev/null
-+++ b/arch/x86/kernel/watchdog_hld.c
-@@ -0,0 +1,85 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * A shim hardlockup detector. It overrides the weak stubs of the generic
-+ * implementation to select between the perf- or the hpet-based implementation.
-+ *
-+ * Copyright (C) Intel Corporation 2022
-+ */
-+
-+#include <linux/nmi.h>
-+#include <asm/hpet.h>
-+
-+enum x86_hardlockup_detector {
-+	X86_HARDLOCKUP_DETECTOR_PERF,
-+	X86_HARDLOCKUP_DETECTOR_HPET,
-+};
-+
-+static enum __read_mostly x86_hardlockup_detector detector_type;
-+
-+int watchdog_nmi_enable(unsigned int cpu)
-+{
-+	switch (detector_type) {
-+	case X86_HARDLOCKUP_DETECTOR_PERF:
-+		hardlockup_detector_perf_enable();
-+		break;
-+	case X86_HARDLOCKUP_DETECTOR_HPET:
-+		hardlockup_detector_hpet_enable(cpu);
-+		break;
-+	default:
-+		return -ENODEV;
-+	}
-+
-+	return 0;
-+}
-+
-+void watchdog_nmi_disable(unsigned int cpu)
-+{
-+	switch (detector_type) {
-+	case X86_HARDLOCKUP_DETECTOR_PERF:
-+		hardlockup_detector_perf_disable();
-+		break;
-+	case X86_HARDLOCKUP_DETECTOR_HPET:
-+		hardlockup_detector_hpet_disable(cpu);
-+		break;
-+	}
-+}
-+
-+int __init watchdog_nmi_probe(void)
-+{
-+	int ret;
-+
-+	/*
-+	 * Try first with the HPET hardlockup detector. It will only
-+	 * succeed if selected at build time and requested in the
-+	 * nmi_watchdog command-line parameter. This ensures that the
-+	 * perf-based detector is used by default, if selected at
-+	 * build time.
-+	 */
-+	ret = hardlockup_detector_hpet_init();
-+	if (!ret) {
-+		detector_type = X86_HARDLOCKUP_DETECTOR_HPET;
-+		return ret;
-+	}
-+
-+	ret = hardlockup_detector_perf_init();
-+	if (!ret) {
-+		detector_type = X86_HARDLOCKUP_DETECTOR_PERF;
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+void watchdog_nmi_stop(void)
-+{
-+	/* Only the HPET lockup detector defines a stop function. */
-+	if (detector_type == X86_HARDLOCKUP_DETECTOR_HPET)
-+		hardlockup_detector_hpet_stop();
-+}
-+
-+void watchdog_nmi_start(void)
-+{
-+	/* Only the HPET lockup detector defines a start function. */
-+	if (detector_type == X86_HARDLOCKUP_DETECTOR_HPET)
-+		hardlockup_detector_hpet_start();
-+}
+-static void lockup_detector_reconfigure(void)
++void lockup_detector_reconfigure(void)
+ {
+ 	cpus_read_lock();
+ 	watchdog_nmi_stop();
+@@ -579,7 +579,7 @@ static __init void lockup_detector_setup(void)
+ }
+ 
+ #else /* CONFIG_SOFTLOCKUP_DETECTOR */
+-static void lockup_detector_reconfigure(void)
++void lockup_detector_reconfigure(void)
+ {
+ 	cpus_read_lock();
+ 	watchdog_nmi_stop();
 -- 
 2.17.1
 
