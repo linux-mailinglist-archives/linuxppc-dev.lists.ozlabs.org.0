@@ -2,14 +2,14 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177DE51DFD7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 21:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF8351DFED
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 22:06:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kw1VX71FMz3cB5
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 05:54:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kw1m25w1wz3cFP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 06:06:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Xc8Vtd93;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=/4l7akva;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zS7mT4GO;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=5wkuYkNH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,44 +19,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=Xc8Vtd93; 
+ header.s=2020 header.b=zS7mT4GO; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=/4l7akva; 
+ header.a=ed25519-sha256 header.s=2020e header.b=5wkuYkNH; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kw1Ty00nLz3bs0
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 05:53:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kw1lQ54vKz3byZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 06:05:38 +1000 (AEST)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1651866834;
+ s=2020; t=1651867535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=hPigNHr8wXW4Jsp9L+zcdiLLC2xp5wKYQoiAjHdLkb0=;
- b=Xc8Vtd935tKSHJ4TItbPhom70GX4iR+XaOHyoZEbq2TCP4h9WjKpN0MVzmsUbMnujiBgnV
- WXGzehvrucSX1BoXOdNpoMb3s0YNBoPdGbKtAB3wDRyptT25vNwG7QcC7LwRl3B15XR6VM
- FhGG5jK12XCNGha0igmSaWXXc2p4A3H1NRfSABcL1Z3IwAXCO4O3qpx16YQ/THdTjg92ya
- In409B3HY2BR55Mv7J/T3Np4Rdy7VMWpG58IDPN5+hY6NlLD7uyzePgQU6EvXGIFGFCODZ
- 3pB/pK2v3RdJoDZ1aaYSIcYs0qALgfVW7BGlvJCXH5N/7ExJVtGCxVmBC9jnxw==
+ bh=MVppxWloPHGJWVXPfoL2Mp1gCDmCbq5jYvkOUctTPwE=;
+ b=zS7mT4GOFbktfGjTiNzsOezexuL61fgcFzjZlZAaPH7GPyJ2Q7bJAFEDsyscoPuCfFVQXy
+ MQv9fxTolSCsKtYLSyZInAmifCbsge2rcmwRurq4fs6letvqkFnJbaTyhjCsRTPV60X6uE
+ rinuSxovZT2eQZmTTINCqVtTXoHEFIdOgI1zfPR/KL1VUfVwn2fIFHM766ozhigodnfH5s
+ jReDujbvbA2//EkDSTXQNLuOihMxNNQNvdzlCmWip8r6V8GGcekFaYq43MM8Slzjs9F8uF
+ PGtWQGOFlmpNWcrTP2AzpuqH8ZoMSNTnNEko3cwpIKeOk6ve9AbhRkGjDS/MIg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1651866834;
+ s=2020e; t=1651867535;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=hPigNHr8wXW4Jsp9L+zcdiLLC2xp5wKYQoiAjHdLkb0=;
- b=/4l7akvaVCpYSimscxE6emXgo2DDhYqJsbAjKJILCBQFs5NLOHNmvvAauEvq153gAwkORH
- f5cYHMQqOtGE5zCA==
+ bh=MVppxWloPHGJWVXPfoL2Mp1gCDmCbq5jYvkOUctTPwE=;
+ b=5wkuYkNHIkwqACUXoQDb2h1xfBOD4wVbdnhxKNW06YuXNMEFHsj/QnO9X2mOg3FHRYYiy1
+ G0NPRPNdhl+hS1AA==
 To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, x86@kernel.org
-Subject: Re: [PATCH v6 02/29] x86/apic: Add irq_cfg::delivery_mode
-In-Reply-To: <20220506000008.30892-3-ricardo.neri-calderon@linux.intel.com>
+Subject: Re: [PATCH v6 03/29] x86/apic/msi: Set the delivery mode
+ individually for each IRQ
+In-Reply-To: <20220506000008.30892-4-ricardo.neri-calderon@linux.intel.com>
 References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-3-ricardo.neri-calderon@linux.intel.com>
-Date: Fri, 06 May 2022 21:53:54 +0200
-Message-ID: <875ymih1yl.ffs@tglx>
+ <20220506000008.30892-4-ricardo.neri-calderon@linux.intel.com>
+Date: Fri, 06 May 2022 22:05:34 +0200
+Message-ID: <8735hmh1f5.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,54 +86,49 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, May 05 2022 at 16:59, Ricardo Neri wrote:
-> Currently, the delivery mode of all interrupts is set to the mode of the
-> APIC driver in use. There are no restrictions in hardware to configure the
-> delivery mode of each interrupt individually. Also, certain IRQs need
-> to be
+> There are no restrictions in hardware to set  MSI messages with its
+> own delivery mode.
 
-s/IRQ/interrupt/ Changelogs can do without acronyms.
+"messages with its own" ? Plural/singular confusion.
 
-> configured with a specific delivery mode (e.g., NMI).
+> Use the mode specified in the provided IRQ hardware
+> configuration data. Since most of the IRQs are configured to use the
+> delivery mode of the APIC driver in use (set in all of them to
+> APIC_DELIVERY_MODE_FIXED), the only functional changes are where
+> IRQs are configured to use a specific delivery mode.
+
+This does not parse. There are no functional changes due to this patch
+and there is no point talking about functional changes in subsequent
+patches here.
+
+> Changing the utility function __irq_msi_compose_msg() takes care of
+> implementing the change in the in the local APIC, PCI-MSI, and DMAR-MSI
+
+in the in the
+
+> irq_chips.
 >
-> Add a new member, delivery_mode, to struct irq_cfg. Subsequent changesets
-> will update every irq_domain to set the delivery mode of each IRQ to that
-> specified in its irq_cfg data.
->
-> To keep the current behavior, when allocating an IRQ in the root
-> domain
+> The IO-APIC irq_chip configures the entries in the interrupt redirection
+> table using the delivery mode specified in the corresponding MSI message.
+> Since the MSI message is composed by a higher irq_chip in the hierarchy,
+> it does not need to be updated.
 
-The root domain does not allocate an interrupt. The root domain
-allocates a vector for an interrupt. There is a very clear and technical
-destinction. Can you please be more careful about the wording?
+The point is that updating __irq_msi_compose_msg() covers _all_ MSI
+consumers including IO-APIC.
 
-> --- a/arch/x86/kernel/apic/vector.c
-> +++ b/arch/x86/kernel/apic/vector.c
-> @@ -567,6 +567,7 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
->  		irqd->chip_data = apicd;
->  		irqd->hwirq = virq + i;
->  		irqd_set_single_target(irqd);
-> +
+I had to read that changelog 3 times to make sense of it. Something like
+this perhaps:
 
-Stray newline.
+  "x86/apic/msi: Use the delivery mode from irq_cfg for message composition
 
->  		/*
->  		 * Prevent that any of these interrupts is invoked in
->  		 * non interrupt context via e.g. generic_handle_irq()
-> @@ -577,6 +578,14 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
->  		/* Don't invoke affinity setter on deactivated interrupts */
->  		irqd_set_affinity_on_activate(irqd);
->  
-> +		/*
-> +		 * Initialize the delivery mode of this irq to match the
+   irq_cfg provides a delivery mode for each interrupt. Use it instead
+   of the hardcoded APIC_DELIVERY_MODE_FIXED. This allows to compose
+   messages for NMI delivery mode which is required to implement a HPET
+   based NMI watchdog.
 
-s/irq/interrupt/
+   No functional change as the default delivery mode is set to
+   APIC_DELIVERY_MODE_FIXED."
 
-> +		 * default delivery mode of the APIC. Children irq domains
-> +		 * may take the delivery mode from the individual irq
-> +		 * configuration rather than from the APIC driver.
-> +		 */
-> +		apicd->hw_irq_cfg.delivery_mode = apic->delivery_mode;
-> +
->  		/*
->  		 * Legacy vectors are already assigned when the IOAPIC
->  		 * takes them over. They stay on the same vector. This is
+Thanks,
+
+        tglx
