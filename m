@@ -2,93 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF9551D3C6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D2351D3CA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 10:54:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KvkrR3RVLz3fCS
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 18:53:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvksB6ZJKz3chJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 18:54:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A+OANBlf;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IuBP2CYU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=A+OANBlf; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=IuBP2CYU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvkgy14GSz3c96
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 18:46:37 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2467cdUi002565;
- Fri, 6 May 2022 08:46:33 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvkh13yXcz3cDR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 18:46:41 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2468EECQ014124;
+ Fri, 6 May 2022 08:46:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=GqqXqrkJH53VoF/kvUfH4K/DLhl61FbSJzlARgEpyUY=;
- b=A+OANBlfZtW8YkeBkHHB2gKqkR5VwCpfEp+H7P4ufGMgZkVrQbHKZau8/OC8CnuvJr5d
- l9bFBoFVl/fu//hjHYN6pNFg7g0P9yvUAdKLm5qvJuS+//7NPVJe7rUi5TyWBqZQqFJK
- 5nVk7/nEqanrcLbbsUPTdtR0NMz2vimlYPOpmoucqkutKHRSrzYSnoqdESQH6gfSa2tU
- vshSTRTA/Hs6jkRV3UzNgwTOyv9nLcx7YbhQyoIo/XWGKYCL7qqXzZbnwvxKO1DIRdEr
- fvf0ppUXQ40tfKPHsn9HwM1bt8uCsktDZKL6hqw8phzo9w1DTO62+nCCCsZKXXnZVYHg Yw== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvy5hsgu9-1
+ bh=srxKCogy9ZH/rkdt7qcaNiapko0biqMf08RsedTcxTs=;
+ b=IuBP2CYU+omw6Zw0+/VNChAM/Ow6QtP9MtgoFi7vOLUSLkj3fvlJ0nm7AvLetF2ME2KV
+ Qd4XAgQ/PK9VYisXQQOvSoULd9xxF/9SpKcVaYk/jP57In3rWZlpVCfstevG9SbvdozM
+ 4XuJjw6dJZfOxNmZZyw0zAjgCjP3cZwl/sngg6Oe+4fIkxxRTs+OeSyjVjCT8XOrGHg0
+ Y1EniS5xa4MW73GvpsfNgYTiNKlRejxi1b0/Gt1eeoIKAGjBOd9BPTu9fcXlFS9k2u+G
+ nQ+eeQjhpLrEFvt7veZBctdqx6kRALnbdNgcct0QiBHZYsjDPJMIziFKVyFiQlWwuLZE Uw== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvyyu0k7f-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 08:46:32 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2468hGmU025057;
- Fri, 6 May 2022 08:46:31 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3ftp7fw6yp-1
+ Fri, 06 May 2022 08:46:36 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2468hgxc012016;
+ Fri, 6 May 2022 08:46:34 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma02fra.de.ibm.com with ESMTP id 3fuyn79tdp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 08:46:30 +0000
+ Fri, 06 May 2022 08:46:34 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 2468kKDj27197710
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 2468kVeL54198632
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 May 2022 08:46:20 GMT
+ Fri, 6 May 2022 08:46:31 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DFC704C044;
- Fri,  6 May 2022 08:46:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 3595C4C040;
+ Fri,  6 May 2022 08:46:31 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A6FA24C040;
- Fri,  6 May 2022 08:46:25 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 785954C04A;
+ Fri,  6 May 2022 08:46:28 +0000 (GMT)
 Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
  [9.43.19.224]) by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  6 May 2022 08:46:25 +0000 (GMT)
+ Fri,  6 May 2022 08:46:28 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 13/35] selftest/powerpc/pmu: Add selftest for mmcr1
- pmcxsel/unit/cache fields
-Date: Fri,  6 May 2022 14:15:22 +0530
-Message-Id: <20220506084544.56527-14-kjain@linux.ibm.com>
+Subject: [PATCH 14/35] selftest/powerpc/pmu: Add interface test for bhrb
+ disable field for non-branch samples
+Date: Fri,  6 May 2022 14:15:23 +0530
+Message-Id: <20220506084544.56527-15-kjain@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20220506084544.56527-1-kjain@linux.ibm.com>
 References: <20220506084544.56527-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: p6aKjweEe5haZdE_Q8apGc2eKvVSiY05
-X-Proofpoint-ORIG-GUID: p6aKjweEe5haZdE_Q8apGc2eKvVSiY05
+X-Proofpoint-ORIG-GUID: 013kTfT5uO-01d3q0ALlB4R-S2PtGB2z
+X-Proofpoint-GUID: 013kTfT5uO-01d3q0ALlB4R-S2PtGB2z
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-05-06_02,2022-05-05_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 adultscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 mlxscore=0 impostorscore=0
- malwarescore=0 clxscore=1015 spamscore=0 bulkscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2205060043
+ adultscore=0 suspectscore=0
+ priorityscore=1501 clxscore=1015 impostorscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205060043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,43 +106,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+The testcase uses "instructions" event to generate the
+samples and fetch Monitor Mode Control Register A (MMCRA)
+when overflow. Branch History Rolling Buffer(bhrb) disable bit
+is part of MMCRA which need to be verified by perf interface.
+Incase sample is not of branch type, bhrb disable bit is explicitly
+set to 1. Testcase checks if the bhrb disable bit is set of MMCRA
+register via perf interface for ISA v3.1 platform
 
-The testcase uses event code "0x21c040" to verify
-the settings for different fields in Monitor Mode Control
-Register 1 (MMCR1). The fields include PMCxSEL, PMCXCOMB
-PMCxUNIT, cache. Checks if these fields are translated
-correctly via perf interface to MMCR1
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
  .../powerpc/pmu/sampling_tests/Makefile       |  2 +-
- .../mmcr1_sel_unit_cache_test.c               | 77 +++++++++++++++++++
- 2 files changed, 78 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/pmu/sampling_tests/mmcr1_sel_unit_cache_test.c
+ .../mmcra_bhrb_disable_no_branch_test.c       | 64 +++++++++++++++++++
+ 2 files changed, 65 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c
 
 diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-index ed9befc2f836..f966d3359c6b 100644
+index f966d3359c6b..9e67351fb252 100644
 --- a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
 @@ -7,7 +7,7 @@ TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test
  		   mmcr3_src_test mmcra_thresh_marked_sample_test mmcra_thresh_cmp_test \
  		   mmcra_bhrb_ind_call_test mmcra_bhrb_any_test mmcra_bhrb_cond_test \
  		   mmcra_bhrb_disable_test bhrb_no_crash_wo_pmu_test intr_regs_no_crash_wo_pmu_test \
--		   bhrb_filter_map_test
-+		   bhrb_filter_map_test mmcr1_sel_unit_cache_test
+-		   bhrb_filter_map_test mmcr1_sel_unit_cache_test
++		   bhrb_filter_map_test mmcr1_sel_unit_cache_test mmcra_bhrb_disable_no_branch_test
  
  top_srcdir = ../../../../../..
  include ../../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcr1_sel_unit_cache_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcr1_sel_unit_cache_test.c
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c
 new file mode 100644
-index 000000000000..f0c003282630
+index 000000000000..488c865387e4
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcr1_sel_unit_cache_test.c
-@@ -0,0 +1,77 @@
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c
+@@ -0,0 +1,64 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Copyright 2022, Athira Rajeev, IBM Corp.
++ * Copyright 2022, Kajol Jain, IBM Corp.
 + */
 +
 +#include <stdio.h>
@@ -152,70 +152,57 @@ index 000000000000..f0c003282630
 +#include "misc.h"
 +#include "utils.h"
 +
-+#define MALLOC_SIZE     (0x10000 * 10)  /* Ought to be enough .. */
++extern void thirty_two_instruction_loop(int loops);
 +
-+/* The data cache was reloaded from local core's L3 due to a demand load */
-+#define EventCode 0x21c040
++/* Instructions */
++#define EventCode 0x500fa
 +
 +/*
-+ * A perf sampling test for mmcr1
-+ * fields : pmcxsel, unit, cache.
++ * A perf sampling test for mmcra
++ * field: bhrb_disable.
 + */
-+static int mmcr1_sel_unit_cache(void)
++static int mmcra_bhrb_disable_no_branch_test(void)
 +{
 +	struct event event;
 +	u64 *intr_regs;
-+	char *p;
-+	int i;
 +
-+	/* Check for platform support for the test */
++	/*
++	 * Check for platform support for the test.
++	 * This test is only aplicable on power10
++	 */
 +	SKIP_IF(check_pvr_for_sampling_tests());
++	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
 +
-+	p = malloc(MALLOC_SIZE);
-+	FAIL_IF(!p);
-+
-+	/* Init the event for the sampling test */
++	 /* Init the event for the sampling test */
 +	event_init_sampling(&event, EventCode);
 +	event.attr.sample_regs_intr = platform_extended_mask;
-+	event.attr.sample_period = 1;
++	event.attr.exclude_kernel = 1;
++
 +	FAIL_IF(event_open(&event));
 +	event.mmap_buffer = event_sample_buf_mmap(event.fd, 1);
 +
-+	event_enable(&event);
++	FAIL_IF(event_enable(&event));
 +
 +	/* workload to make the event overflow */
-+	for (i = 0; i < MALLOC_SIZE; i += 0x10000)
-+		p[i] = i;
++	thirty_two_instruction_loop(10000);
 +
-+	event_disable(&event);
-+
-+	/* Check for sample count */
-+	FAIL_IF(!collect_samples(event.mmap_buffer));
++	FAIL_IF(event_disable(&event));
 +
 +	intr_regs = get_intr_regs(&event, event.mmap_buffer);
 +
 +	/* Check for intr_regs */
 +	FAIL_IF(!intr_regs);
 +
-+	/*
-+	 * Verify that  pmcxsel, unit and cache field of MMCR1
-+	 * match with corresponding event code fields
-+	 */
-+	FAIL_IF(EV_CODE_EXTRACT(event.attr.config, pmcxsel) !=
-+			get_mmcr1_pmcxsel(get_reg_value(intr_regs, "MMCR1"), 1));
-+	FAIL_IF(EV_CODE_EXTRACT(event.attr.config, unit) !=
-+			get_mmcr1_unit(get_reg_value(intr_regs, "MMCR1"), 1));
-+	FAIL_IF(EV_CODE_EXTRACT(event.attr.config, cache) !=
-+			get_mmcr1_cache(get_reg_value(intr_regs, "MMCR1"), 1));
++	/* Verify that bhrb_disable bit is set in MMCRA for non-branch samples */
++	FAIL_IF(!get_mmcra_bhrb_disable(get_reg_value(intr_regs, "MMCRA"), 5));
 +
-+	free(p);
 +	event_close(&event);
 +	return 0;
 +}
 +
 +int main(void)
 +{
-+	FAIL_IF(test_harness(mmcr1_sel_unit_cache, "mmcr1_sel_unit_cache"));
++	return test_harness(mmcra_bhrb_disable_no_branch_test, "mmcra_bhrb_disable_no_branch_test");
 +}
 -- 
 2.31.1
