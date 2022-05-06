@@ -2,92 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D2E51D3E8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 11:00:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B31151D3E7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 11:00:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kvl0F1dbpz3cB7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 19:00:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KvkzW0Ztmz3cFK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 May 2022 19:00:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bUCHymx4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGngm+XM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=bUCHymx4; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=NGngm+XM; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvkhj1SSwz3cCF
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 18:47:16 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2468EJwn014224;
- Fri, 6 May 2022 08:47:12 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kvkhd0NKDz3cMk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 May 2022 18:47:12 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2468HZgT009588;
+ Fri, 6 May 2022 08:47:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=FfCOPWRyb0EJKTkK6HMCaa6FNWKMCI95aElws6pA3Ro=;
- b=bUCHymx4uuJZFrXfF9Ho7BHUmWD3Gb8srXol0mwJk9lwC42tJK8eKBHCfkSndpnu4YA3
- T26JdO1wzbMD84XIWUwBryM/Uy/kFFxXoPI6j6kXkbjJ5aAtOlmq+j8rcFn+1bVdUXR8
- RHSf5/H5v8YDo/yqEqfXJM077C2PEpjnI7pQxpByOlOEyhO0eq5DPvWm6dKIlAU4EMNQ
- ObjVQOEuAjIUApWwyPajpoEYVtnhebpCrabTj/tQxx1QA2Z8KTILJDIb6h7t7C/KO0pR
- xjXVgbiEOwUBlYAq2XPpJ1cgn2oMLe5PCZt94YF3HDMPN9rD3hrG5YhPDjHJ2cf3/X6F ag== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3fvyyu0kg8-1
+ bh=l6YL7hsKtDG6eJ31K+o2ArPYqt7csTUB/gDu8ZNVgQA=;
+ b=NGngm+XMp9jZ5SXk1iHIIbO4qre8qHkymNloFnpa4xfGxK8jhvRrSHPeTnCljgN6nVS4
+ Rse5sDu31w/Xzht+EC4UBlVDEqV5Ua4c6GHSApsaUmBI2vaHD6iAfnOVWhpAFvOgkuHH
+ JXW9SSoW9rlrK3VTGYS/aeTwy+Exx2s1dZtjriYrcAgyhfWrsb7Pxkx4bv2GJAkU63Kk
+ iTMBcfTITXXRmj1GzdTtdbZZ4S57EhOoOGjtCH2+WjmlVYA8P6zVtRoqN/yinuiBL/jQ
+ /aMbqIcoKFAiQJaQWY5GNdwR3BYtOvAfLddt3EUBUdvYVoCqg98qMLZsZfaf8wNtVuEQ MA== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fw01p0hvn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 08:47:12 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2468gbgE022317;
- Fri, 6 May 2022 08:47:03 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 3fvnaqgnun-1
+ Fri, 06 May 2022 08:47:08 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2468glq0007473;
+ Fri, 6 May 2022 08:47:06 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma01fra.de.ibm.com with ESMTP id 3fvm08gjwn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 May 2022 08:47:03 +0000
+ Fri, 06 May 2022 08:47:06 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 2468l0Nb31130060
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 2468XcaR53150124
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 6 May 2022 08:47:00 GMT
+ Fri, 6 May 2022 08:33:39 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48E944C046;
+ by IMSVA (Postfix) with ESMTP id 2293A4C044;
+ Fri,  6 May 2022 08:47:03 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C588A4C040;
  Fri,  6 May 2022 08:47:00 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF0594C044;
- Fri,  6 May 2022 08:46:57 +0000 (GMT)
 Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown
  [9.43.19.224]) by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  6 May 2022 08:46:57 +0000 (GMT)
+ Fri,  6 May 2022 08:47:00 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 24/35] selftest/powerpc/pmu: Add selftest for reserved bit
- check for MMCRA thresh_ctl field
-Date: Fri,  6 May 2022 14:15:33 +0530
-Message-Id: <20220506084544.56527-25-kjain@linux.ibm.com>
+Subject: [PATCH 25/35] selftest/powerpc/pmu: Add selftest for blacklist events
+ check in power9
+Date: Fri,  6 May 2022 14:15:34 +0530
+Message-Id: <20220506084544.56527-26-kjain@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20220506084544.56527-1-kjain@linux.ibm.com>
 References: <20220506084544.56527-1-kjain@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2CThsziwhFIg5h0wpSPViQMv0oezCpxW
-X-Proofpoint-GUID: 2CThsziwhFIg5h0wpSPViQMv0oezCpxW
+X-Proofpoint-GUID: PSVv_5tqYdK0tjQALIBa95lp_4WpKBEP
+X-Proofpoint-ORIG-GUID: PSVv_5tqYdK0tjQALIBa95lp_4WpKBEP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-05-06_02,2022-05-05_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0
- priorityscore=1501 clxscore=1015 impostorscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ suspectscore=0
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 impostorscore=0 mlxscore=0
+ malwarescore=0 phishscore=0 spamscore=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2202240000 definitions=main-2205060045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -108,80 +108,172 @@ Sender: "Linuxppc-dev"
 
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Testcase for reserved bits in Monitor Mode
-Control Register A (MMCRA) thresh_ctl bits.
-For MMCRA[48:51]/[52:55]) Threshold Start/Stop,
-0b11110000/0b00001111 is reserved.
+Some of the events are blacklisted in power9. The list
+of blacklisted events are noted in power9-events-list.h
+When trying to do event open for any of these blacklisted
+event will cause a failure. Testcase ensures that using
+blacklisted events will cause event_open to fail in power9.
+This test is only applicable on power9 DD2.1 and DD2.2 and
+hence test adds checks to skip on other platforms.
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- .../powerpc/pmu/event_code_tests/Makefile     |  2 +-
- .../reserved_bits_mmcra_thresh_ctl_test.c     | 44 +++++++++++++++++++
- 2 files changed, 45 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_thresh_ctl_test.c
+ .../powerpc/pmu/event_code_tests/Makefile     |   3 +-
+ .../blacklisted_events_test.c                 | 132 ++++++++++++++++++
+ 2 files changed, 134 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/pmu/event_code_tests/blacklisted_events_test.c
 
 diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-index 1ce1ef4586fd..e50570794337 100644
+index e50570794337..a5916a938154 100644
 --- a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-@@ -3,7 +3,7 @@ CFLAGS += -m64
+@@ -3,7 +3,8 @@ CFLAGS += -m64
  
  TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_test group_constraint_pmc_count_test \
  	group_constraint_repeat_test group_constraint_radix_scope_qual_test reserved_bits_mmcra_sample_elig_mode_test \
--	group_constraint_mmcra_sample_test invalid_event_code_test
-+	group_constraint_mmcra_sample_test invalid_event_code_test reserved_bits_mmcra_thresh_ctl_test
+-	group_constraint_mmcra_sample_test invalid_event_code_test reserved_bits_mmcra_thresh_ctl_test
++	group_constraint_mmcra_sample_test invalid_event_code_test reserved_bits_mmcra_thresh_ctl_test \
++	blacklisted_events_test
  
  top_srcdir = ../../../../../..
  include ../../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_thresh_ctl_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_thresh_ctl_test.c
+diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/blacklisted_events_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/blacklisted_events_test.c
 new file mode 100644
-index 000000000000..4ea1c2f8913f
+index 000000000000..fafeff19cb34
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_thresh_ctl_test.c
-@@ -0,0 +1,44 @@
++++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/blacklisted_events_test.c
+@@ -0,0 +1,132 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright 2022, Athira Rajeev, IBM Corp.
 + */
 +
 +#include <stdio.h>
++#include <sys/prctl.h>
++#include <limits.h>
 +#include "../event.h"
 +#include "../sampling_tests/misc.h"
 +
++#define PM_DTLB_MISS_16G 0x1c058
++#define PM_DERAT_MISS_2M 0x1c05a
++#define PM_DTLB_MISS_2M 0x1c05c
++#define PM_MRK_DTLB_MISS_1G 0x1d15c
++#define PM_DTLB_MISS_4K 0x2c056
++#define PM_DERAT_MISS_1G 0x2c05a
++#define PM_MRK_DERAT_MISS_2M 0x2d152
++#define PM_MRK_DTLB_MISS_4K  0x2d156
++#define PM_MRK_DTLB_MISS_16G 0x2d15e
++#define PM_DTLB_MISS_64K 0x3c056
++#define PM_MRK_DERAT_MISS_1G 0x3d152
++#define PM_MRK_DTLB_MISS_64K 0x3d156
++#define PM_DISP_HELD_SYNC_HOLD 0x4003c
++#define PM_DTLB_MISS_16M 0x4c056
++#define PM_DTLB_MISS_1G 0x4c05a
++#define PM_MRK_DTLB_MISS_16M 0x4c15e
++#define PM_MRK_ST_DONE_L2 0x10134
++#define PM_RADIX_PWC_L1_HIT 0x1f056
++#define PM_FLOP_CMPL 0x100f4
++#define PM_MRK_NTF_FIN 0x20112
++#define PM_RADIX_PWC_L2_HIT 0x2d024
++#define PM_IFETCH_THROTTLE 0x3405e
++#define PM_MRK_L2_TM_ST_ABORT_SISTER 0x3e15c
++#define PM_RADIX_PWC_L3_HIT 0x3f056
++#define PM_RUN_CYC_SMT2_MODE 0x3006c
++#define PM_TM_TX_PASS_RUN_INST 0x4e014
++
++#define PVR_POWER9_CUMULUS 0x00002000
++
++int blacklist_events_dd21[] = {
++	PM_MRK_ST_DONE_L2,
++	PM_RADIX_PWC_L1_HIT,
++	PM_FLOP_CMPL,
++	PM_MRK_NTF_FIN,
++	PM_RADIX_PWC_L2_HIT,
++	PM_IFETCH_THROTTLE,
++	PM_MRK_L2_TM_ST_ABORT_SISTER,
++	PM_RADIX_PWC_L3_HIT,
++	PM_RUN_CYC_SMT2_MODE,
++	PM_TM_TX_PASS_RUN_INST,
++	PM_DISP_HELD_SYNC_HOLD,
++};
++
++int blacklist_events_dd22[] = {
++	PM_DTLB_MISS_16G,
++	PM_DERAT_MISS_2M,
++	PM_DTLB_MISS_2M,
++	PM_MRK_DTLB_MISS_1G,
++	PM_DTLB_MISS_4K,
++	PM_DERAT_MISS_1G,
++	PM_MRK_DERAT_MISS_2M,
++	PM_MRK_DTLB_MISS_4K,
++	PM_MRK_DTLB_MISS_16G,
++	PM_DTLB_MISS_64K,
++	PM_MRK_DERAT_MISS_1G,
++	PM_MRK_DTLB_MISS_64K,
++	PM_DISP_HELD_SYNC_HOLD,
++	PM_DTLB_MISS_16M,
++	PM_DTLB_MISS_1G,
++	PM_MRK_DTLB_MISS_16M,
++};
++
++int pvr_min;
++
 +/*
-+ * Testcase for reserved bits in Monitor Mode
-+ * Control Register A (MMCRA) thresh_ctl bits.
-+ * For MMCRA[48:51]/[52:55]) Threshold Start/Stop,
-+ * 0b11110000/0b00001111 is reserved.
++ * check for power9 support for 2.1 and
++ * 2.2 model where blacklist is applicable.
++ */
++int check_for_power9_version(void)
++{
++	pvr_min = PVR_MIN(mfspr(SPRN_PVR));
++
++	SKIP_IF(PVR_VER(pvr) != POWER9);
++	SKIP_IF(!(pvr & PVR_POWER9_CUMULUS));
++
++	SKIP_IF(!(3 - pvr_min));
++
++	return 0;
++}
++
++/*
++ * Testcase to ensure that using blacklisted bits in
++ * event code should cause event_open to fail in power9
 + */
 +
-+static int reserved_bits_mmcra_thresh_ctl(void)
++static int blacklisted_events(void)
 +{
 +	struct event event;
++	int i = 0;
 +
 +	/* Check for platform support for the test */
 +	SKIP_IF(platform_check_for_tests());
 +
-+	/* Skip for Generic compat PMU */
++	/*
++	 * check for power9 support for 2.1 and
++	 * 2.2 model where blacklist is applicable.
++	 */
++	SKIP_IF(check_for_power9_version());
++
++	/* Skip for Generic compat mode */
 +	SKIP_IF(check_for_generic_compat_pmu());
 +
-+	/*
-+	 * MMCRA[48:51]/[52:55]) Threshold Start/Stop
-+	 * events Selection. 0b11110000/0b00001111 is reserved.
-+	 * Expected to fail when using these reserved values.
-+	 */
-+	event_init(&event, 0xf0340401e0);
-+	FAIL_IF(!event_open(&event));
-+
-+	event_init(&event, 0x0f340401e0);
-+	FAIL_IF(!event_open(&event));
++	if (pvr_min == 1) {
++		for (i = 0; i < ARRAY_SIZE(blacklist_events_dd21); i++) {
++			event_init(&event, blacklist_events_dd21[i]);
++			FAIL_IF(!event_open(&event));
++		}
++	} else if (pvr_min == 2) {
++		for (i = 0; i < ARRAY_SIZE(blacklist_events_dd22); i++) {
++			event_init(&event, blacklist_events_dd22[i]);
++			FAIL_IF(!event_open(&event));
++		}
++	}
 +
 +	return 0;
 +}
 +
 +int main(void)
 +{
-+	return test_harness(reserved_bits_mmcra_thresh_ctl, "reserved_bits_mmcra_thresh_ctl");
++	return test_harness(blacklisted_events, "blacklisted_events");
 +}
 -- 
 2.31.1
