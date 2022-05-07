@@ -2,68 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649AB51E7F9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 17:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C522A51E95F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 21:15:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KwW1Q1lSdz3cGj
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 01:04:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KwcbF46Nsz3cBX
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 05:15:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Goshd/Lu;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=V5byyGjS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d32;
- helo=mail-io1-xd32.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=Goshd/Lu; dkim-atps=neutral
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com
- [IPv6:2607:f8b0:4864:20::d32])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KwW0j66lfz3byS
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 01:03:47 +1000 (AEST)
-Received: by mail-io1-xd32.google.com with SMTP id c125so10948095iof.9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 07 May 2022 08:03:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=CnjdUOz3duiKD1Uau0ijtSb5UBL+OJmQOYvavWmoZQ0=;
- b=Goshd/Luda+YskWKjL4mFxR2CewMKg4Ngp0zTFvr681Uze/6UoYKLSsCuvwyykKdoV
- eJgShn/IfVaDwDxxqtuVaiypmwMCNkgs3U7eD/IHcA+NTKJnwNJDfV75hCAxJn6fhlbn
- 65xdlhRV1o+T88gQd3VVfV6lPkB4h/kQdWVILeyrrRGThVgkiWqwoup9fFr2v39EUzxX
- 2bCMEg8qAMivg4zNvG6un1RFKMTRIwY+K2H9Et54yjnONGwjlXCMIgrhaWsbrSHJ3CbF
- dLPxj2t56sOAmQTcpErCwm8om2QTvopW9vHpR2ZQYiHU3j7DhQkX5H4ADEhJCh74VYJo
- UmfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=CnjdUOz3duiKD1Uau0ijtSb5UBL+OJmQOYvavWmoZQ0=;
- b=2YZSCNymhLvO/mO/S7PxlrW3LVzLZXt8Ki88DpWocbvqezai/sQFZtJajlKUZ68uzd
- Ir7Nw/9eTtnPwzGo9op+nbcfBbw7VNbbKW/1D9Ye8T8t4fihAmO02J5M43oKfH8+/iCA
- /wlB6G32iJgm2I14sFDCJzrHbRMjTSxC6/SkCoo18FyjZSVZ0zj/kKHFk0QyFDHZcOv7
- 4A/7z/1ae3dLlvwD92mm+PyglWvSzk3pSEctHEc14zYIve5pXx2dXZah2W1O5kecfcDP
- yHQMKeRKMSn35KSAdnQ5StqbupQYvXJ+CN42HhYKng/UzkusgU2wtWgUSmUmMcjWDT2t
- z1iA==
-X-Gm-Message-State: AOAM5315bxw+W6C4kG9+qkAX2r3MKr7cmD/ZI+EzKFVzunq8Cgiy6tnl
- neXzh54M2YjkEIKwMllt6mpzuWiV+R7ArQQ/Axk=
-X-Google-Smtp-Source: ABdhPJyqVxv4uPynhji9t5jG0pJBv2D9XRWPEuRPww2y6vJC30NvmsubB9I6YkkamF8cCOWGkn9Xe0Ihs9a1gxmTp/4=
-X-Received: by 2002:a05:6602:2d90:b0:63d:b41e:e4e4 with SMTP id
- k16-20020a0566022d9000b0063db41ee4e4mr3321613iow.172.1651935822769; Sat, 07
- May 2022 08:03:42 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KwcZX5CpLz3brq
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 05:15:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=V5byyGjS; 
+ dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KwcZV5wzcz4ySx
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 05:14:58 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KwcZV5synz4ySy; Sun,  8 May 2022 05:14:58 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=V5byyGjS; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KwcZT1vQCz4ySx
+ for <linuxppc-dev@ozlabs.org>; Sun,  8 May 2022 05:14:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=/znyXJRLDsok/YXirIxLkxYec6QFvnOe+R9jljS85JE=; b=V5byyGjS+aQTtTXriJ+35IDUKR
+ v3q+TWlwj4c97wcCcmG8DlQY+MLorVgC38EJB7oc1omiLMr2+FTBkkNT4GK2gGUFTKhw71ormve2g
+ jQ+VriF3FmMYXJH5iKuw6xPC2FmfoHlPfaGz/SlL/EANgoW+fsRQ4Zsg0rKqQnLsKE0P3JqP/9YQZ
+ TaGz6w1h9ZZrYf0zs9Z3e/rtASJOB7tPUOKXX0ZVHJqa1aaxyv4ebPkedCgnz/d1FNDoXO57GrBmo
+ 1ivFTOe7e/CW+pCiPC4L2awJ8+JiW93SfrwgPIBj4WwwFVbeoisk1oVBiEC1/IgehgiBIJH2PdtBN
+ kiMQWe+w==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1nnPt9-0085Um-Iu; Sat, 07 May 2022 19:14:47 +0000
+Date: Sat, 7 May 2022 12:14:47 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: request_module DoS
+Message-ID: <YnbFJ0fn5gLTRLX7@bombadil.infradead.org>
+References: <YnXiuhdZ49pKL/dK@gondor.apana.org.au>
+ <77ecde32-e868-5804-d9a5-3bb22d314777@csgroup.eu>
+ <YnYnjLXm6atlznPT@bombadil.infradead.org>
 MIME-Version: 1.0
-References: <20220507052451.12890-1-ojeda@kernel.org>
- <CABVgOSm5S2=QYnHJ+B0JbYtFYKBDRZiOhE5YMKKUKZU56d17HQ@mail.gmail.com>
-In-Reply-To: <CABVgOSm5S2=QYnHJ+B0JbYtFYKBDRZiOhE5YMKKUKZU56d17HQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 7 May 2022 17:03:31 +0200
-Message-ID: <CANiq72=0ft6+QLbdwWD6cLm4FhWfv53GSg6HKEwxQ-q2N-UkOw@mail.gmail.com>
-Subject: Re: [PATCH v6 00/23] Rust support
-To: David Gow <davidgow@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YnYnjLXm6atlznPT@bombadil.infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,108 +79,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- rust-for-linux <rust-for-linux@vger.kernel.org>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-perf-users@vger.kernel.org,
- "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- Jarkko Sakkinen <jarkko@kernel.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, live-patching@vger.kernel.org,
- linux-riscv <linux-riscv@lists.infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- KUnit Development <kunit-dev@googlegroups.com>
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ "fnovak@us.ibm.com" <fnovak@us.ibm.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi David,
+On Sat, May 07, 2022 at 01:02:20AM -0700, Luis Chamberlain wrote:
+> You can try to reproduce by using adding a new test type for crypto-aegis256
+> on lib/test_kmod.c. These tests however can try something similar but other
+> modules.
+> 
+> /tools/testing/selftests/kmod/kmod.sh -t 0008
+> /tools/testing/selftests/kmod/kmod.sh -t 0009
+> 
+> I can't decipher this yet.
 
-On Sat, May 7, 2022 at 11:29 AM David Gow <davidgow@google.com> wrote:
->
-> It's great to see some KUnit support here!
+Without testing it... but something like this might be an easier
+reproducer:
 
-Thanks!
-
-> It's also possible to run these tests using the KUnit wrapper tool with:
-> $ ./tools/testing/kunit/kunit.py run --kconfig_add CONFIG_RUST=y
-> --make_options LLVM=1 --arch x86_64 'rust_kernel_doctests'
->
-> That also nicely formats the results.
-
-Indeed!
-
-    [16:55:52] ============ rust_kernel_doctests (70 subtests) ============
-    [16:55:52] [PASSED] rust_kernel_doctest_build_assert_rs_12_0
-    [16:55:52] [PASSED] rust_kernel_doctest_build_assert_rs_55_0
-    ...
-    [16:55:52] [PASSED] rust_kernel_doctest_types_rs_445_0
-    [16:55:52] [PASSED] rust_kernel_doctest_types_rs_509_0
-    [16:55:52] ============== [PASSED] rust_kernel_doctests ===============
-    [16:55:52] ============================================================
-    [16:55:52] Testing complete. Passed: 70, Failed: 0, Crashed: 0,
-    Skipped: 0, Errors: 0
-
-> That all being said, I can't say I'm thrilled with the test names
-> here: none of them are particularly descriptive, and they'll probably
-> not be static (which would make it difficult to track results /
-> regressions / etc between kernel versions). Neither of those are
-
-Yeah, the names are not great and would change from time to time
-across kernel versions.
-
-We could ask example writers to give each example a name, but that
-would make them fairly less convenient. For instance, sometimes they
-may be very small snippets interleaved with docs' prose (where giving
-a name may feel a bit of a burden, and people may end writing
-`foo_example1`, `foo_example2` etc. for each small "step" of an
-explanation). In other cases they may be very long, testing a wide API
-surface (e.g. when describing a module or type), where it is also hard
-to give non-generic names like `rbtree_doctest`. In those kind of
-cases, I think we would end up with not much better names than
-automatically generated ones.
-
-The other aspect is that, given they are part of the documentation,
-the prose or how things are explained/split may change, thus the
-doctests as well. For instance, one may need to split a very long
-`rbtree_doctest` in pieces, and then the name would need to change
-anyway.
-
-So I think we should avoid asking documentation writers to add a
-manual name, even if that means a bit ugly test names. Also this way
-they are consistently named. What do you think?
-
-One idea could be giving them a name based on the hash of the content
-and avoiding the line number, so that there is a higher chance for the
-name to stay the same even when the file gets modified for other
-reasons.
-
-> necessarily deal breakers, though it might make sense to hide them
-> behind a kernel option (like all other KUnit tests) so that they can
-> easily be excluded where they would otherwise clutter up results. (And
-
-Currently they are under `CONFIG_RUST_KERNEL_KUNIT_TEST` -- or do you
-mean something else?
-
-> if there's a way to properly name them, or maybe even split them into
-> per-file or per-module suites, that would make them a bit easier to
-> deal.) Additionally, there are some plans to taint the kernel[1] when
-
-Yeah, splitting them further is definitely possible. We are also
-likely splitting the `kernel` crate into several, which would also
-make the suites smaller etc. so perhaps further splits may not be
-needed.
-
-> Regardless, this is very neat, and I'm looking forward to taking a
-> closer look at it.
-
-Thanks again for taking a look and playing with it, I am glad you
-liked it! (even if it is just a first approximation, and only supports
-the `kernel` crate, etc.).
-
-Cheers,
-Miguel
+diff --git a/tools/testing/selftests/kmod/kmod.sh b/tools/testing/selftests/kmod/kmod.sh
+index afd42387e8b2..48b6b5ec6c1e 100755
+--- a/tools/testing/selftests/kmod/kmod.sh
++++ b/tools/testing/selftests/kmod/kmod.sh
+@@ -41,6 +41,7 @@ set -e
+ TEST_NAME="kmod"
+ TEST_DRIVER="test_${TEST_NAME}"
+ TEST_DIR=$(dirname $0)
++PROC_CONFIG="/proc/config.gz"
+ 
+ # This represents
+ #
+@@ -65,6 +66,7 @@ ALL_TESTS="$ALL_TESTS 0010:1:1"
+ ALL_TESTS="$ALL_TESTS 0011:1:1"
+ ALL_TESTS="$ALL_TESTS 0012:1:1"
+ ALL_TESTS="$ALL_TESTS 0013:1:1"
++ALL_TESTS="$ALL_TESTS 0014:150:1"
+ 
+ # Kselftest framework requirement - SKIP code is 4.
+ ksft_skip=4
+@@ -79,6 +81,19 @@ test_modprobe()
+        fi
+ }
+ 
++kconfig_has()
++{
++	if [ -f $PROC_CONFIG ]; then
++		if zgrep -q $1 $PROC_CONFIG 2>/dev/null; then
++			echo "yes"
++		else
++			echo "no"
++		fi
++	else
++			echo "no"
++	fi
++}
++
+ function allow_user_defaults()
+ {
+ 	if [ -z $DEFAULT_KMOD_DRIVER ]; then
+@@ -106,6 +121,8 @@ function allow_user_defaults()
+ 	fi
+ 
+ 	MODPROBE_LIMIT_FILE="${PROC_DIR}/kmod-limit"
++	HAS_CRYPTO_AEGIS256_MOD="$(kconfig_has CONFIG_CRYPTO_AEGIS256=m)"
++	HAS_CRYPTO_AEGIS256_BUILTIN="$(kconfig_has CONFIG_CRYPTO_AEGIS256=y)"
+ }
+ 
+ test_reqs()
+@@ -504,6 +521,21 @@ kmod_test_0013()
+ 		"cat /sys/module/${DEFAULT_KMOD_DRIVER}/sections/.*text | head -n1"
+ }
+ 
++kmod_test_0014()
++{
++	kmod_defaults_driver
++	MODPROBE_LIMIT=$(config_get_modprobe_limit)
++	let EXTRA=$MODPROBE_LIMIT/6
++	config_set_driver crypto-aegis256
++	config_num_thread_limit_extra $EXTRA
++	config_trigger ${FUNCNAME[0]}
++	if [[ "$HAS_CRYPTO_AEGIS256_MOD" == "yes" || "$HAS_CRYPTO_AEGIS256_BUILTIN" == "yes" ]]; then
++		config_expect_result ${FUNCNAME[0]} SUCCESS
++	else
++		config_expect_result ${FUNCNAME[0]} MODULE_NOT_FOUND
++	fi
++}
++
+ list_tests()
+ {
+ 	echo "Test ID list:"
+@@ -525,6 +557,7 @@ list_tests()
+ 	echo "0011 x $(get_test_count 0011) - test completely disabling module autoloading"
+ 	echo "0012 x $(get_test_count 0012) - test /proc/modules address visibility under CAP_SYSLOG"
+ 	echo "0013 x $(get_test_count 0013) - test /sys/module/*/sections/* visibility under CAP_SYSLOG"
++	echo "0014 x $(get_test_count 0014) - multithreaded - push kmod_concurrent over max_modprobes for request_module() for crypto-aegis256"
+ }
+ 
+ usage()
