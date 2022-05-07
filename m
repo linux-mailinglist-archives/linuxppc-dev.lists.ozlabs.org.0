@@ -1,181 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A77C051E5C7
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 10:59:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533D651E561
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 10:03:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KwLwr43QYz3cCD
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 18:59:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KwKgY1l2Bz3c91
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 18:03:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=szHQF+8l;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=ijtx8ilc;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=FdwqyopL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=205.220.165.32;
- helo=mx0a-00069f02.pphosted.com; envelope-from=mike.kravetz@oracle.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2021-07-09 header.b=szHQF+8l; 
- dkim=pass (1024-bit key;
- unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com
- header.b=ijtx8ilc; dkim-atps=neutral
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com
- [205.220.165.32])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KwLw32PbPz3bkv
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 18:59:12 +1000 (AEST)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 246FW2al030007;
- Fri, 6 May 2022 17:56:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2021-07-09;
- bh=dvzpIwt5+QcB24+EByvUA0dnLmNi8FJ99aXDZjGDbU8=;
- b=szHQF+8lv4TfY1qZu8KtHdXOMO9JhGkuR7v1rSdjMV4+gSaybmTsGN8hmPH/hygcgbzM
- wlUmNy7oBR8CI8OxlJtZvZwNSS9y6VYhUlnmcYdJmirqintgM+cAW8sIWHhmAEzl96ke
- Qg2gidSPDzMWZvbK/GtLGcaPxV5Cl0JwAVgP/V4FW9TqVBzAcjjJbhvwOKbLJk83q6vH
- fHALVF7as2aykVD8nao2EcEQPSBvBIlkSz9ZwY1kJPqxZZgRVeWjamfY9iKwC98Pqzrq
- RhlSyNVV0Lg0X6qXDT7qVr4T5e/IIKXBp/hCX+pCZD+0QlzaunN8EkNa30FYRslqUeUF CQ== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3fruq0pvvs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 06 May 2022 17:56:14 +0000
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.16.1.2/8.16.1.2)
- with SMTP id 246HtSCU026597; Fri, 6 May 2022 17:56:13 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2175.outbound.protection.outlook.com [104.47.59.175])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id
- 3fs1a8k75y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 06 May 2022 17:56:13 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eGm4n8FtnVnsiGxgrxhhbwHGduLBBRYr+Tw430xh9UjHuFfX7f/CS+BlALtj5KKGculHUPaT4K2xioGdhU64Rw7B9PbmmtA9rDzD6GU7h2ZfHonm2lOWOxHEyE+zSu0r3iqgcye/c/8+eH4QoQU3ahYHy9oImlgCpXl/2Q1sdehLoxWKfihJMU7uvBDfyF3NAVVHrGMhlvgvFCQqu8WD1RRXXRoFn8BwXkBJB9TvxvF+IKk/E8u04F9/AXO0KbRXqHZ5Dw6fzeXpPZlAeXvqOD+NbMznrbOlV8DoX+x8TBC+/JCQxYv4mfknHOkn3fUGGuguAk85tDplEoI+d0mbsA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dvzpIwt5+QcB24+EByvUA0dnLmNi8FJ99aXDZjGDbU8=;
- b=gxziFOax49XChajY/51gj+wxvP+YvY7/0L0RX58bwzaMj08zXZMpYcdVRRZ4MvcqljJYJ7W1SkEsWJIMjZdA4LuZRXMX+nK78+FUDV5xkmmX6rjXrWxzN/bEmbUQIuSOgCOqHGBWxQg1f/oDTCBdj3X36Y457r5XTPBSjFLI8NPs8J0UA52FWW5ZEIw+DECk4ClRK38X138Jt/nISd9PNEPdJkih40mSS1gJPEFBxkXhvnBbvlUUNlrCNpmYp5Rq+FVBOX+obQvXNHeB2eXLih2HNo9hmjatda7pQ/pBOHDtfoBeWRI5FzcsmzvVzBV9xArTUeIhMzdKaA8bnCIRHw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dvzpIwt5+QcB24+EByvUA0dnLmNi8FJ99aXDZjGDbU8=;
- b=ijtx8ilcoPusfnLBiELAw+1Q1dxZpPfgxAjUAl5LUHB4gJoUdMQQ7X8Rm4QPJl56ofP14pS5wJTjFvxLRwnTXGFa+/iV6qD3lKiS4QWEiPRnvevGkKqe6Q7S1iLAWhC92KbO+pvQob/9uvxo7gOXZMYydkc1WyfWflbt/B1CzVM=
-Received: from DM6PR10MB4201.namprd10.prod.outlook.com (2603:10b6:5:216::10)
- by DM6PR10MB3321.namprd10.prod.outlook.com (2603:10b6:5:1a7::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5206.24; Fri, 6 May
- 2022 17:56:10 +0000
-Received: from DM6PR10MB4201.namprd10.prod.outlook.com
- ([fe80::e81e:38af:cb6e:59e5]) by DM6PR10MB4201.namprd10.prod.outlook.com
- ([fe80::e81e:38af:cb6e:59e5%4]) with mapi id 15.20.5227.020; Fri, 6 May 2022
- 17:56:10 +0000
-Message-ID: <85bd80b4-b4fd-0d3f-a2e5-149559f2f387@oracle.com>
-Date: Fri, 6 May 2022 10:56:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- migration
-Content-Language: en-US
-To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
- catalin.marinas@arm.com, will@kernel.org
-References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
- <11b92502b3df0e0bba6a1dc71476d79cab6c79ba.1651216964.git.baolin.wang@linux.alibaba.com>
- <5cab0eca-9630-a7c6-4f5d-5cb45ff82c83@oracle.com>
- <21b11024-e893-8c11-9b98-ab1d13413b61@linux.alibaba.com>
-From: Mike Kravetz <mike.kravetz@oracle.com>
-In-Reply-To: <21b11024-e893-8c11-9b98-ab1d13413b61@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4P220CA0018.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:303:115::23) To DM6PR10MB4201.namprd10.prod.outlook.com
- (2603:10b6:5:216::10)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KwKfn6xlpz3bqT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 18:02:41 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=FdwqyopL; 
+ dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KwKfl65MPz4ySt
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 18:02:39 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KwKfl629xz4yT2; Sat,  7 May 2022 18:02:39 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=FdwqyopL; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KwKfl5vM7z4ySt
+ for <linuxppc-dev@ozlabs.org>; Sat,  7 May 2022 18:02:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=tkwqm4F2hiHn48xSzCVsvhwNdnMuIuUf64oXwgqKA2o=; b=FdwqyopLQocQ4VUeM3kit/rLZd
+ BdCK8pa/UDoY8GStioaWz3Y9ormyN3yqGPh59F/9DEe2bBcKDTGb4mcTbmYgEnjqz949gEmdYa9ga
+ 1vaCLqIJOBBcVyjEymlxsXHaGfo6zyM4b4WKctaxK2WWER63LxVvKVmYw1OEMzDWTSUOrfa07WVpv
+ BEOvUo32JxIF/YrSQrvOErKm4SO0bkJ/qx1weeUqGRSzowyQKbHOJO2lViU1mNQ82fLKqwQnwoals
+ uifmdUlKP20Oftxce+b4f0u7NxgHCkoXgNOpWHm1C2htb6HSGprKnk3XatWjhwxDJgFbuq9p5nm6I
+ SHem2w9A==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1nnFOO-006Rgs-Mo; Sat, 07 May 2022 08:02:20 +0000
+Date: Sat, 7 May 2022 01:02:20 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: request_module DoS
+Message-ID: <YnYnjLXm6atlznPT@bombadil.infradead.org>
+References: <YnXiuhdZ49pKL/dK@gondor.apana.org.au>
+ <77ecde32-e868-5804-d9a5-3bb22d314777@csgroup.eu>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c42a7592-f19c-49c3-a51c-08da2f89b423
-X-MS-TrafficTypeDiagnostic: DM6PR10MB3321:EE_
-X-Microsoft-Antispam-PRVS: <DM6PR10MB3321E56858F51C6BA7974186E2C59@DM6PR10MB3321.namprd10.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: zjKhOp3nWFz4YdOCaPRRB29ZRh7650JBF6YgVueZCZ9hOp8i+4hhbSmtohz6NxsIrCYgbg4UIoKxJQEABny3dxJx9fzkl9lwr7ookOEZB/H10gxyVVpWLHb3aA3jh8wLFaVg73yqU5vbqzRb6DbJAKGHz/NkgTSt+WcVGLaRcdumfHuQdsE6I5EjXTgSjEVQXH8jUyrOjpD+erGl/mMWAv47G/2iYqdVu5OD4RgtQv81qGr9VSmPZjQdN1QGLnpTgmAlC4qrn+92gLiUBlggUQ6EOxW1JLn5FOHxWA2TCTslYJdhZILh5KsLAHMCgDGjddTpU+tKzG8vaNJdFXh02V+bZEmPSm58lpP7wSKZt0lClfGWJ0ujwGpcs9Ny5OsJQ5YI7odL9Ix9FbRtOZeXJVec51AU8uspssF03N1kvYDmxblDI+8tZz9wXsQamQN83rN9Y6bTR75P8VGwrNDxdJ/NTdWQSgVXyantfRiFuLfMt8TyoA0+2OXjn1IFiBF6i1XXqbnuNmYIg+guQbZ7dcYPOUDx+s2K/pvpjMRgasdnKdh1CqdLxyLm1o/nzAP2ArpFkcEPbOMG2NUQc8lj+RUaybJH3XQ9sdK/Plpi34V/KxCzL7X7a+eCo50NOv26/EBh2CVTKmTQGeLrrOmp/UkRSfcZhri9L7bhI1Hv+bwea7wTz4LpZtMkdoG5kY1JUunUtja63ENWHvLzCY24lACpahgs4kuC6SBQcuVVtZRvdJK3tj9pI4DiiRjuz929GbuuBq05lkTrydnLlw8s+g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM6PR10MB4201.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230001)(366004)(53546011)(26005)(6506007)(2906002)(6666004)(83380400001)(52116002)(2616005)(186003)(6512007)(4326008)(316002)(5660300002)(36756003)(7416002)(7406005)(86362001)(31686004)(508600001)(6486002)(8936002)(38350700002)(38100700002)(31696002)(44832011)(66556008)(66476007)(66946007)(8676002)(43740500002)(45980500001);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bVBJeEJQZklNSVpPNGNSaUxWNXV4elgxUGZBazhibC9LeUYzMnFHVHFiRzc0?=
- =?utf-8?B?bWZTc2t0VlVQL2hFc1hOMWFSWG5IY2pJRSs1UlV4MjBUK0lBT1pSczJUNGMz?=
- =?utf-8?B?OUlYMktuajJJQnRkdUE4aVlHb1NlNHp4dFIxSHV0aGFWVGFTNWt5UnFTYy92?=
- =?utf-8?B?T0krTlZHamkycTYrLzN0c1h3U3RyTkJwSDUrazFLZDZieVhTemYrWVJZck4z?=
- =?utf-8?B?c2lJcG40RnMrRWFEWGJQbytBd2ZKN1NaZklKR09jSENvVEM3S3ViK2tEdUd6?=
- =?utf-8?B?T3U0cjBHM1B0U2VqVys5M3hCZHB6TGRKdmY3b08yajJhMkhmNm1DNFhBR1JX?=
- =?utf-8?B?WTRadVUzeWdTVkVZaUtPbmZjeEdJNmhpcFVJeFg4ZTEyRVlRd3ErVXhXMW1X?=
- =?utf-8?B?NU9xZEZ0ZXg5ZExJbHkybDNDblo1dkE4T3FaejR0Z3I3Yk9ZdGFVTUt1cVhJ?=
- =?utf-8?B?b3RpVWZSYmJnZm9TNmxEenhiQWlaQ01TWmNReFgwZHBoUEdGdWJOS3VIWlVY?=
- =?utf-8?B?NUEzUkZ4ejFQdnhUUEJCNEV3ZUNBZCtXN0Z2SUxZWDFEd09RZDgwVlhvbWw0?=
- =?utf-8?B?VEdQUWRWUFFRYngwdWhiaE1yVGVtZXRHdjNiUWlpL3lBUnFpY2orMmRQd2I1?=
- =?utf-8?B?aXRabzUzbzVLbncrWHFYS2NxT2FRWlhXbEVEdFpmeVVkUk1xRjhVTVRpSFEv?=
- =?utf-8?B?aEg2cmQ4NzV2RlJpdzAyVVA5bGZXTngyTFY0Uk83UXkzTGZ5OFMzTGNBL1FL?=
- =?utf-8?B?NmdsZTV3RFhzYnlTT2xBZXhFRzAzY3llYitwRVJhTGxhaFBhVEZMMnNERmhl?=
- =?utf-8?B?TWhNNS9lZU1mY2Q2SW42VWt1RnBzdDBZaGhoelMxU1RBY21RWnBVVUo1TDJw?=
- =?utf-8?B?ajYvSTBnL3FqYTRJWmlLMFFvQlRwRUNZRE81Z2dNbzQrZFdqSGNHSkdabVg0?=
- =?utf-8?B?ci83REsrRGRPOGc5d1U1YW1JRkppZTRldE83clI0NURiOHlPZytxMnN3NnZs?=
- =?utf-8?B?MTNLZVdaYzQ3ckFrTWJoVncxZEVkVk1Ua3c2ODZEa1Jvb0dkd2gwZGV3alZV?=
- =?utf-8?B?VVErVjJscm9KVUFwWStMSUdONlRwRGg3S1dOaHVqOFJNRVhBMXVTZVhWY3JP?=
- =?utf-8?B?TzZYaWJYWTNQcy9PMnR0M3AyS3pIeGZoQ1VHNVNuMVlHRWtWTDFWdUh1VHlo?=
- =?utf-8?B?aERUZWViaHNDRDh5NnB4OWxYc0ZUTERESlF5SUU3SUpUWnBjRVZqZjZaQjlI?=
- =?utf-8?B?NTZtNFpRdDdFRDhFb25QVHZCNlE2SFhwd2t0eURJRi96MHgrYzZJNXdFb3hU?=
- =?utf-8?B?RjFnbllTK1M2aFcwT1ZDdStjZjJncFFwSHp0WEdwUG1TWnhHL01tcE9kRVA3?=
- =?utf-8?B?am5PVmY3ZWpMVVdXQ1dUeHRiV25IWVNHNlhkYS9DWHVZTUt1VExBRTRNbWRC?=
- =?utf-8?B?S0E4WFZlcW1Td3I3ZVVRblhqditLRDN6UTBQNTBucG04anVIbkhLcmpSRklB?=
- =?utf-8?B?RUI1UFJVN1FNbFgvZkRrY0tRYWNSNGt4eG9pZ2hLOGRBbVFvdUhaNlRrWkIy?=
- =?utf-8?B?T25GUTYwWE1ubnVrMHJnUzZpT2NmT0hMSU1qaVRnbnRQM3liYTV3N1BoMnVM?=
- =?utf-8?B?QVRsa1lBc0NkZWlibHNZRFlNYWVPcEMyNGJwQ21ZTU1yVDA5OExsQnZOaDlS?=
- =?utf-8?B?c2pYYjFjRFg3aUFvYnliNlloSzIxSnBZTGt6emFOemQvMm9DL1FpeDMzVHR5?=
- =?utf-8?B?UFQ0UkE5ZzlEbG1Hb2liYnFLblZ1SGhJR2FweXI0ZUlFUmpSQ2xta2Z4eHRs?=
- =?utf-8?B?RmdkWGl5UU9taWpOVkI0UjBTcC9MQVBaOVJhRTJiRG1zOGRWLytlTU44cW50?=
- =?utf-8?B?bGI2VGdrS0l3UkxNOFBUdk53VnU0Rmt4bnBKVWpXc1UxSDUzUldNMmQ1akwv?=
- =?utf-8?B?bVd2YzZTUmFtenJPcVYyRURqS1NOdERiSThsU2tqeC9EWElyK1BGU053c1g0?=
- =?utf-8?B?QkFhV1dWbklFQ002MEo3S3NndzIxdmtZZjQ2aVFYVFkzRHFFSlhhMTlyZDZt?=
- =?utf-8?B?cFo4UG1uMU8zcEF2VGIvSlRXWGdBdGd0c0c0YWRtSXJGVGZaR2JMZklrQjVi?=
- =?utf-8?B?cERraVdDbi9CQjY2TFhNSVhTZ2RBWnlVWFYrK1RibnFydDdOSUxha1NxV1Na?=
- =?utf-8?B?d28rYlZPTlJQYmVLUzI2b2E2aTZ2aWpyOFZIb095MFVBRDY4NTV3QUU1Z0Nm?=
- =?utf-8?B?Vm44VWpLN3FRQ3hON0F1RDlHQzdkTkpCb1FaUUpKdDVwZjNWM2ljQ05DV1d6?=
- =?utf-8?B?dGVpZndiemNqd09UNkxzejQxOVFaemNlNkp5dDdXWjJsWUZRa3pOMjVKVlNp?=
- =?utf-8?Q?HguP9yiBHDzAad78=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c42a7592-f19c-49c3-a51c-08da2f89b423
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4201.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2022 17:56:10.7793 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XbKCDCkv5ffaYXs43rx2K4D3gvl9Z9W4Jll47blD0Y0FpxpJ/Dkvg0fG3DaE9jLohinFWXfZxZY/Ld8nYP07mg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB3321
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.486, 18.0.858
- definitions=2022-05-06_07:2022-05-05,
- 2022-05-06 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- bulkscore=0 malwarescore=0
- spamscore=0 mlxlogscore=845 mlxscore=0 suspectscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2205060091
-X-Proofpoint-ORIG-GUID: aKof-JxTZ_IL3JOHP418iQRiEd6Ec4Ty
-X-Proofpoint-GUID: aKof-JxTZ_IL3JOHP418iQRiEd6Ec4Ty
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <77ecde32-e868-5804-d9a5-3bb22d314777@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -187,106 +78,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
- agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- arnd@arndb.de, ysato@users.sourceforge.jp, deller@gmx.de,
- borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com,
- linux-arm-kernel@lists.infradead.org, tsbogend@alpha.franken.de,
- linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, svens@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ "fnovak@us.ibm.com" <fnovak@us.ibm.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/5/22 20:39, Baolin Wang wrote:
-> 
-> On 5/6/2022 7:53 AM, Mike Kravetz wrote:
->> On 4/29/22 01:14, Baolin Wang wrote:
->>> On some architectures (like ARM64), it can support CONT-PTE/PMD size
->>> hugetlb, which means it can support not only PMD/PUD size hugetlb:
->>> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
->>> size specified.
->> <snip>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index 6fdd198..7cf2408 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -1924,13 +1924,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>                       break;
->>>                   }
->>>               }
->>> +
->>> +            /* Nuke the hugetlb page table entry */
->>> +            pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->>>           } else {
->>>               flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
->>> +            /* Nuke the page table entry. */
->>> +            pteval = ptep_clear_flush(vma, address, pvmw.pte);
->>>           }
->>>   
->>
->> On arm64 with CONT-PTE/PMD the returned pteval will have dirty or young set
->> if ANY of the PTE/PMDs had dirty or young set.
-> 
-> Right.
-> 
->>
->>> -        /* Nuke the page table entry. */
->>> -        pteval = ptep_clear_flush(vma, address, pvmw.pte);
->>> -
->>>           /* Set the dirty flag on the folio now the pte is gone. */
->>>           if (pte_dirty(pteval))
->>>               folio_mark_dirty(folio);
->>> @@ -2015,7 +2017,10 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>               pte_t swp_pte;
->>>                 if (arch_unmap_one(mm, vma, address, pteval) < 0) {
->>> -                set_pte_at(mm, address, pvmw.pte, pteval);
->>> +                if (folio_test_hugetlb(folio))
->>> +                    set_huge_pte_at(mm, address, pvmw.pte, pteval);
->>
->> And, we will use that pteval for ALL the PTE/PMDs here.  So, we would set
->> the dirty or young bit in ALL PTE/PMDs.
->>
->> Could that cause any issues?  May be more of a question for the arm64 people.
-> 
-> I don't think this will cause any issues. Since the hugetlb can not be split, and we should not lose the the dirty or young state if any subpages were set. Meanwhile we already did like this in hugetlb.c:
-> 
-> pte = huge_ptep_get_and_clear(mm, address, ptep);
-> tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
-> if (huge_pte_dirty(pte))
->     set_page_dirty(page);
-> 
+On Sat, May 07, 2022 at 07:10:23AM +0000, Christophe Leroy wrote:
+> > There are some code paths in the kernel where you can reliably
+> > trigger a request_module of a non-existant module.  For example,
+> > if you attempt to load a non-existent crypto algorithm, or create
+> > a socket of a non-existent network family, it will result in a
+> > request_module call that is guaranteed to fail.
+> > 
+> > As user-space can do this repeatedly, it can quickly overwhelm
+> > the concurrency limit in kmod.  This in itself is expected,
+> > however, at least on some platforms this appears to result in
+> > a live-lock.  Here is an example triggered by stress-ng on ppc64:
+> > 
+> > [  579.845320] request_module: modprobe crypto-aegis256 cannot be processed, kmod busy with 50 threads for more than 5 seconds now
+> > [  580.414590] __request_module: 25 callbacks suppressed
+> > [  580.414597] request_module: kmod_concurrent_max (0) close to 0 (max_modprobes: 50), for module crypto-aegis256-all, throttling...
+> > [  580.423082] watchdog: CPU 784 self-detected hard LOCKUP @ plpar_hcall_norets_notrace+0x18/0x2c
+> > [  580.423097] watchdog: CPU 784 TB:1297691958559475, last heartbeat TB:1297686321743840 (11009ms ago)
+> > [  580.423099] Modules linked in: cast6_generic cast5_generic cast_common camellia_generic blowfish_generic blowfish_common tun nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill bonding tls ip_set nf_tables nfnetlink pseries_rng binfmt_misc drm drm_panel_orientation_quirks xfs libcrc32c sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp vmx_crypto dm_mirror dm_region_hash dm_log dm_mod fuse
+> > [  580.423136] CPU: 784 PID: 77071 Comm: stress-ng Kdump: loaded Not tainted 5.14.0-55.el9.ppc64le #1
+> > [  580.423139] NIP:  c0000000000f8ff4 LR: c0000000001f7c38 CTR: 0000000000000000
+> > [  580.423140] REGS: c0000043fdd7bd60 TRAP: 0900   Not tainted  (5.14.0-55.el9.ppc64le)
+> > [  580.423142] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28008202  XER: 20040000
+> > [  580.423148] CFAR: 0000000000000c00 IRQMASK: 1
+> >                 GPR00: 0000000028008202 c0000044c46b3850 c000000002a46f00 0000000000000000
+> >                 GPR04: ffffffffffffffff 0000000000000000 0000000000000010 c000000002a83060
+> >                 GPR08: 0000000000000000 0000000000000001 0000000000000001 0000000000000000
+> >                 GPR12: c0000000001b9530 c0000043ffe16700 0000000200000117 0000000010185ea8
+> >                 GPR16: 0000000010212150 0000000010186198 00000000101863a0 000000001021b3c0
+> >                 GPR20: 0000000000000001 0000000000000000 0000000000000001 00000000000000ff
+> >                 GPR24: c0000043f4a00e14 c0000043fafe0e00 000000000c440000 0000000000000000
+> >                 GPR28: c0000043f4a00e00 c0000043f4a00e00 c0000000021e0e00 c000000002561aa0
+> > [  580.423166] NIP [c0000000000f8ff4] plpar_hcall_norets_notrace+0x18/0x2c
+> > [  580.423168] LR [c0000000001f7c38] __pv_queued_spin_lock_slowpath+0x528/0x530
+> > [  580.423173] Call Trace:
+> > [  580.423174] [c0000044c46b3850] [0000000100006b60] 0x100006b60 (unreliable)
+> > [  580.423177] [c0000044c46b3910] [c000000000ea6948] _raw_spin_lock_irqsave+0xa8/0xc0
+> > [  580.423182] [c0000044c46b3940] [c0000000001dd7c0] prepare_to_wait_event+0x40/0x200
+> > [  580.423185] [c0000044c46b39a0] [c00000000019e9e0] __request_module+0x320/0x510
+> > [  580.423188] [c0000044c46b3ac0] [c0000000006f1a14] crypto_alg_mod_lookup+0x1e4/0x2e0
+> > [  580.423192] [c0000044c46b3b60] [c0000000006f2178] crypto_alloc_tfm_node+0xa8/0x1a0
+> > [  580.423194] [c0000044c46b3be0] [c0000000006f84f8] crypto_alloc_aead+0x38/0x50
+> > [  580.423196] [c0000044c46b3c00] [c00000000072cba0] aead_bind+0x70/0x140
+> > [  580.423199] [c0000044c46b3c40] [c000000000727824] alg_bind+0xb4/0x210
+> > [  580.423201] [c0000044c46b3cc0] [c000000000bc2ad4] __sys_bind+0x114/0x160
+> > [  580.423205] [c0000044c46b3d90] [c000000000bc2b48] sys_bind+0x28/0x40
+> > [  580.423207] [c0000044c46b3db0] [c000000000030880] system_call_exception+0x160/0x300
+> > [  580.423209] [c0000044c46b3e10] [c00000000000c168] system_call_vectored_common+0xe8/0x278
+> > [  580.423213] --- interrupt: 3000 at 0x7fff9b824464
+> > [  580.423214] NIP:  00007fff9b824464 LR: 0000000000000000 CTR: 0000000000000000
+> > [  580.423215] REGS: c0000044c46b3e80 TRAP: 3000   Not tainted  (5.14.0-55.el9.ppc64le)
+> > [  580.423216] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 42004802  XER: 00000000
+> > [  580.423221] IRQMASK: 0
+> >                 GPR00: 0000000000000147 00007fffdcff2780 00007fff9b917100 0000000000000004
+> >                 GPR04: 00007fffdcff27e0 0000000000000058 0000000000000000 0000000000000000
+> >                 GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> >                 GPR12: 0000000000000000 00007fff9bc9efe0 0000000200000117 0000000010185ea8
+> >                 GPR16: 0000000010212150 0000000010186198 00000000101863a0 000000001021b3c0
+> >                 GPR20: 0000000000000004 00007fffdcff2a00 0000000300000117 00000000101862b8
+> >                 GPR24: 0000000000000004 0000000046401570 0000000046401120 0000000046404650
+> >                 GPR28: 0000000000000020 0000000000000020 0000000000000060 0000000046404bf0
+> > [  580.423236] NIP [00007fff9b824464] 0x7fff9b824464
+> > [  580.423237] LR [0000000000000000] 0x0
+> > [  580.423238] --- interrupt: 3000
+> > [  580.423239] Instruction dump:
+> > [  580.423241] e8690000 7c0803a6 3884fff8 78630100 78840020 4bfffeb8 3c4c0295 3842df24
+> > [  580.423244] 7c421378 7c000026 90010008 44000022 <38800000> 988d0931 80010008 7c0ff120
+> > 
+> > Would it be possible to modify kmod so that in such cases that
+> > request_module calls fail more quickly rather than repeatedly
+> > obtaining a spinlock that appears to be under high contention?
 
-Agree that it 'should not' cause issues.  It just seems inconsistent.
-This is not a problem specifically with your patch, just the handling of
-CONT-PTE/PMD entries.
+kmod count limit is lockless but prepare_to_wait_event() does hold a
+lock...
 
-There does not appear to be an arm64 specific version of huge_ptep_get()
-that takes CONT-PTE/PMD into account.  So, huge_ptep_get() would only
-return the one specific value.  It would not take into account the dirty
-or young bits of CONT-PTE/PMDs like your new version of
-huge_ptep_get_and_clear.  Is that correct?  Or, am I missing something.
+You can try to reproduce by using adding a new test type for crypto-aegis256
+on lib/test_kmod.c. These tests however can try something similar but other
+modules.
 
-If I am correct, then code like the following may not work:
+/tools/testing/selftests/kmod/kmod.sh -t 0008
+/tools/testing/selftests/kmod/kmod.sh -t 0009
 
-static int gather_hugetlb_stats(pte_t *pte, unsigned long hmask,
-                unsigned long addr, unsigned long end, struct mm_walk *walk)
-{
-        pte_t huge_pte = huge_ptep_get(pte);
-        struct numa_maps *md;
-        struct page *page;
+I can't decipher this yet.
 
-        if (!pte_present(huge_pte))
-                return 0;
-
-        page = pte_page(huge_pte);
-
-        md = walk->private;
-        gather_stats(page, md, pte_dirty(huge_pte), 1);
-        return 0;
-}
-
--- 
-Mike Kravetz
+  Luis
