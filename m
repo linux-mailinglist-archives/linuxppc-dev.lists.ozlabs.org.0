@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A071851E451
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 07:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B9E51E4BF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 08:49:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KwGCQ1WmVz3cNF
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 15:27:14 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=qqr93irq;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KwJ223x01z3c7P
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 16:49:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.82;
- helo=conssluserg-03.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=qqr93irq; 
- dkim-atps=neutral
-Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com
- [210.131.2.82])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KwGBM4Vrdz3cCV
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 15:26:19 +1000 (AEST)
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com
- [209.85.214.176]) (authenticated)
- by conssluserg-03.nifty.com with ESMTP id 2475Q3BX030811
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 7 May 2022 14:26:03 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 2475Q3BX030811
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1651901163;
- bh=FfZkot1xX9/3A26jW6H/8b0WNAiDAR0EcY13U3/8Ct0=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=qqr93irqpgGLWGLyLAfqZgsX5jjfq/RxKBnTEtjWvy4l1rhh3kJW+UzHInES1fdpP
- vy8047FpoTUHyrZGZ3dBiaY96raqfLzcc0R5ltjccNpxcsHC+gtN8AWK45leUJAF0a
- wN4PyLzXKWrKpFZFBxqy889fCnpvScuWS2zV263IW+MXZckJktkX4gvmfDis0bGP1z
- +2bbAP6AeUiqwZswpayVSpWShE0GCEi6fb++fCFlydc/3wUbfzF7aMEe7pDQqZf1OX
- nQtlFGxp3reMpdFn/c4OMzT6b1IUi5LcW6bavRrv/jX4gj6m8YPjwXS2ftyDASBLfJ
- P91SLgQLkM0hw==
-X-Nifty-SrcIP: [209.85.214.176]
-Received: by mail-pl1-f176.google.com with SMTP id x18so9293156plg.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 06 May 2022 22:26:03 -0700 (PDT)
-X-Gm-Message-State: AOAM531PZswCLbLxqzKMRVhmooum7kvv60qEuIo3rXSiAQKgMiOxLRbJ
- clWvElevMhHWkb5GTUYtauIWKpNsNfzKK3tfu9o=
-X-Google-Smtp-Source: ABdhPJz/0IPfWjlKJGTu0YSnMBSWgwcJp83smiYNjc8NlYMvw4l6ht/5A57T92PaEldUnyvY+t3vLEb0KSQNQvhbfZs=
-X-Received: by 2002:a17:902:9887:b0:151:6e1c:7082 with SMTP id
- s7-20020a170902988700b001516e1c7082mr7014096plp.162.1651901162954; Fri, 06
- May 2022 22:26:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KwHzm62vNz3cJC
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 16:47:16 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+ by localhost (Postfix) with ESMTP id 4KwHzK0ckqz9sVq;
+ Sat,  7 May 2022 08:46:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+ by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id kQCu1Il80dM8; Sat,  7 May 2022 08:46:53 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KwHzD5hp5z9sVV;
+ Sat,  7 May 2022 08:46:48 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A977B8B770;
+ Sat,  7 May 2022 08:46:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id HMc5DPu-VFf8; Sat,  7 May 2022 08:46:48 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.101])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E789B8B76E;
+ Sat,  7 May 2022 08:46:47 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2476kc2W1320469
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+ Sat, 7 May 2022 08:46:38 +0200
+Received: (from chleroy@localhost)
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2476kZLE1320456;
+ Sat, 7 May 2022 08:46:35 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
+ christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, naveen.n.rao@linux.vnet.ibm.com
+Subject: [PATCH v2 00/25] powerpc: ftrace optimisation and cleanup and more
+ [v2]
+Date: Sat,  7 May 2022 08:46:02 +0200
+Message-Id: <cover.1651905939.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-References: <20220501130749.1123387-1-masahiroy@kernel.org>
- <YnT3GtU975OsXVuN@gondor.apana.org.au>
- <CAK7LNASkQ_14NYu7K_eEOG4boBMpKEXyrOzDJMOjcT5paC7E1A@mail.gmail.com>
- <YnXTPPXRlCpUvoKz@gondor.apana.org.au>
-In-Reply-To: <YnXTPPXRlCpUvoKz@gondor.apana.org.au>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sat, 7 May 2022 14:24:54 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAReyv20PAb1LdkoBhR_x1pvLQJA7a=jMZYf11TmK9h-iQ@mail.gmail.com>
-Message-ID: <CAK7LNAReyv20PAb1LdkoBhR_x1pvLQJA7a=jMZYf11TmK9h-iQ@mail.gmail.com>
-Subject: Re: [PATCH] crypto: vmx - Align the short log with Makefile cleanups
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Content-Type: text/plain; charset="UTF-8"
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1651905980; l=3734; s=20211009;
+ h=from:subject:message-id; bh=sB47Li5cspS+Q/H8GVp437MSeqxST6ZTmmFQ7liQjVo=;
+ b=+VMsngPikIwGNNaEsxH4AQJ2KbgCYHnSNkKjWOcg2MTB3VZJmKdqbiSAlgpgxIkiqekEeM3t8G/g
+ LnafOpzMA8g2jyJO1UZvDZx4OgECooe7zv4fVgGMmRqBONaUVHWg
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
+ pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,43 +75,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nayna Jain <nayna@linux.ibm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- =?UTF-8?Q?Breno_Leit=C3=A3o?= <leitao@debian.org>,
- Paulo Flabiano Smorigo <pfsmorigo@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 7, 2022 at 11:02 AM Herbert Xu <herbert@gondor.apana.org.au> wrote:
->
-> On Sat, May 07, 2022 at 12:25:32AM +0900, Masahiro Yamada wrote:
-> >
-> > Sorry, I just noticed the 0day bot had reported the error.
-> >
-> > I sent v2.    (CONFIG_LITTLE_ENDIAN  --> CONFIG_CPU_LITTLE_ENDIAN)
-> >
-> > https://lore.kernel.org/lkml/20220506150820.1310802-1-masahiroy@kernel.org/
-> >
-> >
-> > Could you replace it, or fix it up, please?
->
-> Please send me an incremental patch.
+This series provides optimisation and cleanup of ftrace on powerpc.
 
-Done.
+With this series ftrace activation is about 20% faster on an 8xx.
 
-BTW, you added a wrong Reported-by tag:
-https://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git/commit/?id=b52455a73db95ef90fd3c2be84db77b55be43f46
+At the end of the series come additional cleanups around ppc-opcode,
+that would likely conflict with this series if posted separately.
 
-It is a clean up patch, where 0day bot did not report anything.
+Main changes since v1 (details in after each individual patch description):
+- Added 3 patches (8, 9, 10) that convert PPC64_ELF_ABI_v{1/2} macros by CONFIG_PPC64_ELF_ABI_V{1/2}
+- Taken comments from Naveen
 
+Christophe Leroy (25):
+  powerpc/ftrace: Refactor prepare_ftrace_return()
+  powerpc/ftrace: Remove redundant create_branch() calls
+  powerpc/code-patching: Inline is_offset_in_{cond}_branch_range()
+  powerpc/ftrace: Use is_offset_in_branch_range()
+  powerpc/code-patching: Inline create_branch()
+  powerpc/ftrace: Inline ftrace_modify_code()
+  powerpc/ftrace: Use patch_instruction() return directly
+  powerpc: Add CONFIG_PPC64_ELF_ABI_V1 and CONFIG_PPC64_ELF_ABI_V2
+  powerpc: Replace PPC64_ELF_ABI_v{1/2} by CONFIG_PPC64_ELF_ABI_V{1/2}
+  powerpc: Finalise cleanup around ABI use
+  powerpc/ftrace: Make __ftrace_make_{nop/call}() common to PPC32 and
+    PPC64
+  powerpc/ftrace: Don't include ftrace.o for CONFIG_FTRACE_SYSCALLS
+  powerpc/ftrace: Use CONFIG_FUNCTION_TRACER instead of
+    CONFIG_DYNAMIC_FTRACE
+  powerpc/ftrace: Remove ftrace_plt_tramps[]
+  powerpc/ftrace: Use BRANCH_SET_LINK instead of value 1
+  powerpc/ftrace: Use PPC_RAW_xxx() macros instead of opencoding.
+  powerpc/ftrace: Use size macro instead of opencoding
+  powerpc/ftrace: Simplify expected_nop_sequence()
+  powerpc/ftrace: Minimise number of #ifdefs
+  powerpc/inst: Add __copy_inst_from_kernel_nofault()
+  powerpc/ftrace: Don't use copy_from_kernel_nofault() in
+    module_trampoline_target()
+  powerpc/inst: Remove PPC_INST_BRANCH
+  powerpc/modules: Use PPC_LI macros instead of opencoding
+  powerpc/inst: Remove PPC_INST_BL
+  powerpc/opcodes: Remove unused PPC_INST_XXX macros
 
-
+ arch/powerpc/Kconfig                     |   2 +-
+ arch/powerpc/Makefile                    |  12 +-
+ arch/powerpc/boot/Makefile               |   2 +
+ arch/powerpc/include/asm/code-patching.h |  65 +++-
+ arch/powerpc/include/asm/ftrace.h        |   4 +-
+ arch/powerpc/include/asm/inst.h          |  13 +-
+ arch/powerpc/include/asm/linkage.h       |   2 +-
+ arch/powerpc/include/asm/module.h        |   2 -
+ arch/powerpc/include/asm/ppc-opcode.h    |  22 +-
+ arch/powerpc/include/asm/ppc_asm.h       |   4 +-
+ arch/powerpc/include/asm/ptrace.h        |   2 +-
+ arch/powerpc/include/asm/sections.h      |  24 +-
+ arch/powerpc/include/asm/types.h         |   8 -
+ arch/powerpc/kernel/fadump.c             |  13 +-
+ arch/powerpc/kernel/head_64.S            |   2 +-
+ arch/powerpc/kernel/interrupt_64.S       |   2 +-
+ arch/powerpc/kernel/kprobes.c            |   6 +-
+ arch/powerpc/kernel/misc_64.S            |   2 +-
+ arch/powerpc/kernel/module.c             |   4 +-
+ arch/powerpc/kernel/module_32.c          |  23 +-
+ arch/powerpc/kernel/module_64.c          |   7 +-
+ arch/powerpc/kernel/ptrace/ptrace.c      |   6 -
+ arch/powerpc/kernel/trace/Makefile       |   5 +-
+ arch/powerpc/kernel/trace/ftrace.c       | 375 +++++++----------------
+ arch/powerpc/kvm/book3s_interrupts.S     |   2 +-
+ arch/powerpc/kvm/book3s_rmhandlers.S     |   2 +-
+ arch/powerpc/lib/code-patching.c         |  49 +--
+ arch/powerpc/lib/feature-fixups.c        |   2 +-
+ arch/powerpc/net/bpf_jit.h               |   4 +-
+ arch/powerpc/net/bpf_jit_comp.c          |   2 +-
+ arch/powerpc/net/bpf_jit_comp64.c        |   4 +-
+ arch/powerpc/platforms/Kconfig.cputype   |   6 +
+ 32 files changed, 262 insertions(+), 416 deletions(-)
 
 -- 
-Best Regards
-Masahiro Yamada
+2.35.1
+
