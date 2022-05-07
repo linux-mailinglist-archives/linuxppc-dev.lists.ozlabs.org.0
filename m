@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D00D51E4DA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 08:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 444E851E4DB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 08:52:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KwJ4m2TXJz3cLf
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 16:51:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KwJ5C1Btqz3fWN
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 May 2022 16:51:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KwJ0D6Yqtz3cFB
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 16:47:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KwJ0J4jQZz3cfW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 May 2022 16:47:44 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4KwHzS0RYWz9sW7;
- Sat,  7 May 2022 08:47:00 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4KwHzT2HxCz9sW9;
+ Sat,  7 May 2022 08:47:01 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
  by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 6fEQzL3IZRkc; Sat,  7 May 2022 08:46:59 +0200 (CEST)
+ with ESMTP id ERbnhwSI-FM7; Sat,  7 May 2022 08:47:01 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4KwHzF2GjBz9sWC;
+ by pegase2.c-s.fr (Postfix) with ESMTP id 4KwHzF1vxjz9sWB;
  Sat,  7 May 2022 08:46:49 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3D7228B76D;
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2E66B8B76C;
  Sat,  7 May 2022 08:46:49 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xnxPP2enzmLH; Sat,  7 May 2022 08:46:49 +0200 (CEST)
+ with ESMTP id ZrPl_R_oGIpV; Sat,  7 May 2022 08:46:49 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.101])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4861D8B7AE;
- Sat,  7 May 2022 08:46:48 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0A8F18B796;
+ Sat,  7 May 2022 08:46:47 +0200 (CEST)
 Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2476kdRv1320494
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 2476kdEi1320498
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
  Sat, 7 May 2022 08:46:39 +0200
 Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2476kddQ1320493;
+ by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 2476kd5b1320497;
  Sat, 7 May 2022 08:46:39 +0200
 X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
  christophe.leroy@csgroup.eu using -f
@@ -51,17 +51,18 @@ From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>,
  Michael Ellerman <mpe@ellerman.id.au>, naveen.n.rao@linux.vnet.ibm.com
-Subject: [PATCH v2 06/25] powerpc/ftrace: Inline ftrace_modify_code()
-Date: Sat,  7 May 2022 08:46:08 +0200
-Message-Id: <1597a06d57cfc80e6853838c4066e799bf6c7977.1651905939.git.christophe.leroy@csgroup.eu>
+Subject: [PATCH v2 07/25] powerpc/ftrace: Use patch_instruction() return
+ directly
+Date: Sat,  7 May 2022 08:46:09 +0200
+Message-Id: <49a8597230713e2633e7d9d7b56140787c4a7e20.1651905939.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <cover.1651905939.git.christophe.leroy@csgroup.eu>
 References: <cover.1651905939.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1651905980; l=1024; s=20211009;
- h=from:subject:message-id; bh=gUl26aWBapldceuYTq45qkCOSgpcMCNP7bN7cPhPsTs=;
- b=WT6snymGq9DyKbyK+M44HFBa0+wwDA9RXG6szH7aca86NJzk1TjqlmNq/3BY7/eNPtqv82n/InJa
- S1FBAaSICxSKp7NahflKfkBmO9xvFchzpY+t1imDWPbo3d7zwvL4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1651905980; l=3210; s=20211009;
+ h=from:subject:message-id; bh=Md4LXS00pJjwBL+ITuR9eEwWCBaAOzBbKV+lmd2htSc=;
+ b=H5igeLzoJPJdwFaJwJ/j2J2yfGc/CTt7OF686to8zMCYDsyRkIkz5dlwIcpr8y9RrYTe4VF1Op7T
+ la7hNiSwBbQmsbHmA8XmDMPwVFpz4n1ftMoIeTtahT5mZfK/iwHe
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
  pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
@@ -81,35 +82,97 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Inlining ftrace_modify_code(), it increases a bit the
-size of ftrace code but brings 5% improvment on ftrace
-activation.
+Instead of returning -EPERM when patch_instruction() fails,
+just return what patch_instruction returns.
 
-Usually in C files we let gcc decide what to do but here
-it really help to 'help' gcc to decide to inline, thought
-we don't want to force it with an __always_inline that
-would be too much for CONFIG_CC_OPTIMIZE_FOR_SIZE.
+That simplifies ftrace_modify_code():
+
+	   0:	94 21 ff c0 	stwu    r1,-64(r1)
+	   4:	93 e1 00 3c 	stw     r31,60(r1)
+	   8:	7c 7f 1b 79 	mr.     r31,r3
+	   c:	40 80 00 30 	bge     3c <ftrace_modify_code+0x3c>
+	  10:	93 c1 00 38 	stw     r30,56(r1)
+	  14:	7c 9e 23 78 	mr      r30,r4
+	  18:	7c a4 2b 78 	mr      r4,r5
+	  1c:	80 bf 00 00 	lwz     r5,0(r31)
+	  20:	7c 1e 28 40 	cmplw   r30,r5
+	  24:	40 82 00 34 	bne     58 <ftrace_modify_code+0x58>
+	  28:	83 c1 00 38 	lwz     r30,56(r1)
+	  2c:	7f e3 fb 78 	mr      r3,r31
+	  30:	83 e1 00 3c 	lwz     r31,60(r1)
+	  34:	38 21 00 40 	addi    r1,r1,64
+	  38:	48 00 00 00 	b       38 <ftrace_modify_code+0x38>
+				38: R_PPC_REL24	patch_instruction
+
+Before:
+
+	   0:	94 21 ff c0 	stwu    r1,-64(r1)
+	   4:	93 e1 00 3c 	stw     r31,60(r1)
+	   8:	7c 7f 1b 79 	mr.     r31,r3
+	   c:	40 80 00 4c 	bge     58 <ftrace_modify_code+0x58>
+	  10:	93 c1 00 38 	stw     r30,56(r1)
+	  14:	7c 9e 23 78 	mr      r30,r4
+	  18:	7c a4 2b 78 	mr      r4,r5
+	  1c:	80 bf 00 00 	lwz     r5,0(r31)
+	  20:	7c 08 02 a6 	mflr    r0
+	  24:	90 01 00 44 	stw     r0,68(r1)
+	  28:	7c 1e 28 40 	cmplw   r30,r5
+	  2c:	40 82 00 48 	bne     74 <ftrace_modify_code+0x74>
+	  30:	7f e3 fb 78 	mr      r3,r31
+	  34:	48 00 00 01 	bl      34 <ftrace_modify_code+0x34>
+				34: R_PPC_REL24	patch_instruction
+	  38:	80 01 00 44 	lwz     r0,68(r1)
+	  3c:	20 63 00 00 	subfic  r3,r3,0
+	  40:	83 c1 00 38 	lwz     r30,56(r1)
+	  44:	7c 63 19 10 	subfe   r3,r3,r3
+	  48:	7c 08 03 a6 	mtlr    r0
+	  4c:	83 e1 00 3c 	lwz     r31,60(r1)
+	  50:	38 21 00 40 	addi    r1,r1,64
+	  54:	4e 80 00 20 	blr
+
+It improves ftrace activation/deactivation duration by about 3%.
+
+Modify patch_instruction() return on failure to -EPERM in order to
+match with ftrace expectations. Other users of patch_instruction()
+do not care about the exact error value returned.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: More explanation in commit message
+v2: Make patch_instruction() return -EPERM in case of failure
 ---
- arch/powerpc/kernel/trace/ftrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/trace/ftrace.c | 5 +----
+ arch/powerpc/lib/code-patching.c   | 2 +-
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 41c45b9c7f39..98e82fa4980f 100644
+index 98e82fa4980f..1b05d33f96c6 100644
 --- a/arch/powerpc/kernel/trace/ftrace.c
 +++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -53,7 +53,7 @@ ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
- 	return op;
+@@ -78,10 +78,7 @@ ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_t new)
+ 	}
+ 
+ 	/* replace the text with the new text */
+-	if (patch_instruction((u32 *)ip, new))
+-		return -EPERM;
+-
+-	return 0;
++	return patch_instruction((u32 *)ip, new);
  }
  
--static int
-+static inline int
- ftrace_modify_code(unsigned long ip, ppc_inst_t old, ppc_inst_t new)
- {
- 	ppc_inst_t replaced;
+ /*
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 7adbdb05fee7..cd25c07df23c 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -32,7 +32,7 @@ static int __patch_instruction(u32 *exec_addr, ppc_inst_t instr, u32 *patch_addr
+ 	return 0;
+ 
+ failed:
+-	return -EFAULT;
++	return -EPERM;
+ }
+ 
+ int raw_patch_instruction(u32 *addr, ppc_inst_t instr)
 -- 
 2.35.1
 
