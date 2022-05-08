@@ -1,55 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E283151EF0D
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 20:07:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3282C51EF14
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 20:31:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxC1l3xFwz3cJD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 04:07:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KxCYW120Wz3cHn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 04:31:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=BeB2FaaW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=cMEmerC0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.83;
+ helo=conssluserg-04.nifty.com; envelope-from=masahiroy@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=BeB2FaaW; 
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=cMEmerC0; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from conssluserg-04.nifty.com (conssluserg-04.nifty.com
+ [210.131.2.83])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KxC123BMCz3bpj
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 04:06:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=dXIZlnwHK15rrJZENweUDVLbVsO7X3h09BOXkfnZAVs=; b=BeB2FaaWyCXFJfYPOVlGrRxyyh
- JkDouCOTyf7MkyluZIxxnUmR87Z/DW0C77jKJIqfoUoI4nPE1ilfTi9PvRLwTXhJhdLROFvWDHHMp
- 000VX4SrbogSTZvQ4ISTjHh4zNfXVtbK/k9ItAde5GaNKad/et01ucOFYnGCdxFOMk8ivYtMYUiOa
- LxiuMlpYfAy3bAi35IgiKblbkjCiRIRjJVG9azAjXg28jNJSRdKKWlpLRQquoU1LzZCBVcNqNjl2k
- T6r3MF4ww2+rXqRroJFYp5Aw18fci0MKTzKr92fIKjYfvoNR8En2Q9Oq1MQTSBonEX0blOhFfkm3u
- xJL5hOLA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red
- Hat Linux)) id 1nnlIH-002hid-TS; Sun, 08 May 2022 18:06:09 +0000
-Date: Sun, 8 May 2022 19:06:09 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH v6 00/23] Rust support
-Message-ID: <YngGkZTy+byxnD5n@casper.infradead.org>
-References: <20220507052451.12890-1-ojeda@kernel.org>
- <202205070056.ACC3C3D@keescook>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KxCXp5hn2z3bpj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 04:30:34 +1000 (AEST)
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com
+ [209.85.215.169]) (authenticated)
+ by conssluserg-04.nifty.com with ESMTP id 248IU6CN015089
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 9 May 2022 03:30:06 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 248IU6CN015089
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1652034606;
+ bh=lYdfiXpHTiwBCIC8Ig2nInkqB5OuwCT5uW2/zGo7dOE=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=cMEmerC0haPzAMsseBA0u5NCSJOpYa/e4X6PrzqlSV+bSZbf9aQ2aKqAv3RHC/AhV
+ xfoqt/Etmn9tMjGv1IqSyCv20jW9g/rI6RiBZkRzk/S61u6AEz5PhF8ZzoETI9242S
+ OT9F7UQRzWuaH2O35ACFv5hts0uPubkXibXfzOib4AZddVMhVbDqjEXi4Cn2to2WMK
+ c8XUpWGeLria3yAO1BOWYsf1blox2mNkzO6KJBvESxt5n8UBHJneaEPXB2v40VDt+2
+ 4rYAbK+I8szZGiS5o2MS887+husQeDGrf44xndkjt49MT8olk/H0iRasKhtKtK0cSR
+ r3EIi0nFSmslw==
+X-Nifty-SrcIP: [209.85.215.169]
+Received: by mail-pg1-f169.google.com with SMTP id 15so10269796pgf.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 May 2022 11:30:06 -0700 (PDT)
+X-Gm-Message-State: AOAM530LUzv4RIo+z/chRZYYvkBU08LSbfBStqL7KDS38ucDem4wOult
+ pLyie+qm8Gzs8A0K8nNvxoo77c+qflKkQ2Ml/KM=
+X-Google-Smtp-Source: ABdhPJzSZw3CPCsDznAcGlLU11AUbvg46ozEB8e0OAnUju+5EAH166Q3DSIdjEyp9NwVCGBOR0PvXe4zM/kxvMm2SEI=
+X-Received: by 2002:a05:6a00:24cc:b0:50d:58bf:5104 with SMTP id
+ d12-20020a056a0024cc00b0050d58bf5104mr12632485pfv.36.1652034605828; Sun, 08
+ May 2022 11:30:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202205070056.ACC3C3D@keescook>
+References: <20220505072244.1155033-1-masahiroy@kernel.org>
+In-Reply-To: <20220505072244.1155033-1-masahiroy@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 9 May 2022 03:28:55 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQg2JG2DAuRJmNLryDh_o_PoFUXnJ+6C=-AE+NXZy9pTg@mail.gmail.com>
+Message-ID: <CAK7LNAQg2JG2DAuRJmNLryDh_o_PoFUXnJ+6C=-AE+NXZy9pTg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/15] kbuild: yet another series of cleanups (modpost, 
+ LTO, MODULE_REL_CRCS)
+To: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,42 +73,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, rust-for-linux@vger.kernel.org,
- linux-doc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-gpio@vger.kernel.org,
- Jarkko Sakkinen <jarkko@kernel.org>, linux-kselftest@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, live-patching@vger.kernel.org,
- linux-riscv@lists.infradead.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com
+Cc: linux-s390 <linux-s390@vger.kernel.org>,
+ Nicolas Schier a <nicolas@fjasle.eu>, Peter Zijlstra <peterz@infradead.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-um@lists.infradead.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 07, 2022 at 01:06:18AM -0700, Kees Cook wrote:
-> On Sat, May 07, 2022 at 07:23:58AM +0200, Miguel Ojeda wrote:
-> > ## Patch series status
-> > 
-> > The Rust support is still to be considered experimental. However,
-> > support is good enough that kernel developers can start working on the
-> > Rust abstractions for subsystems and write drivers and other modules.
-> 
-> I'd really like to see this landed for a few reasons:
-> 
-> - It's under active development, and I'd rather review the changes
->   "normally", incrementally, etc. Right now it can be hard to re-review
->   some of the "mostly the same each version" patches in the series.
-> 
-> - I'd like to break the catch-22 of "ask for a new driver to be
->   written in rust but the rust support isn't landed" vs "the rust
->   support isn't landed because there aren't enough drivers". It
->   really feels like "release early, release often" is needed here;
->   it's hard to develop against -next. :)
-> 
-> Should we give it a try for this coming merge window?
+On Thu, May 5, 2022 at 4:24 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+>
+> This is the third batch of cleanups in this development cycle.
+>
+> Major changes in v3:
+>
+>  - Generate symbol CRCs as C code, and remove CONFIG_MODULE_REL_CRCS.
+>
+> Major changes in v2:
+>
+>  - V1 did not work with CONFIG_MODULE_REL_CRCS.
+>    I fixed this for v2.
+>
+>  - Reflect some review comments in v1
+>
+>  - Refactor the code more
+>
+>  - Avoid too long argument error
+>
+>
+> Masahiro Yamada (15):
+>   modpost: mitigate false-negatives for static EXPORT_SYMBOL checks
+>   modpost: change the license of EXPORT_SYMBOL to bool type
+>   modpost: merge add_{intree_flag,retpoline,staging_flag} to add_header
+>   modpost: move *.mod.c generation to write_mod_c_files()
+>   kbuild: generate a list of objects in vmlinux
+>   kbuild: record symbol versions in *.cmd files
+>   modpost: extract symbol versions from *.cmd files
+>   kbuild: link symbol CRCs at final link, removing
+>     CONFIG_MODULE_REL_CRCS
+>   kbuild: stop merging *.symversions
+>   genksyms: adjust the output format to modpost
+>   kbuild: do not create *.prelink.o for Clang LTO or IBT
+>   modpost: simplify the ->is_static initialization
+>   modpost: use hlist for hash table implementation
+>   kbuild: make built-in.a rule robust against too long argument error
+>   kbuild: make *.mod rule robust against too long argument error
 
-I'm broadly in favour of that.  It's just code, we can always drop it
-again or fix it.  There's sufficient development community around it
-that it's hardly going to become abandonware.
 
+Only 03-06 were applied.
+
+I will send v4 for the rest.
+(I rewrote the static EXPORT checks).
+
+>
+>  arch/powerpc/Kconfig         |   1 -
+>  arch/s390/Kconfig            |   1 -
+>  arch/um/Kconfig              |   1 -
+>  include/asm-generic/export.h |  22 +-
+>  include/linux/export.h       |  30 +--
+>  include/linux/symversion.h   |  13 +
+>  init/Kconfig                 |   4 -
+>  kernel/module.c              |  10 +-
+>  scripts/Kbuild.include       |   4 +
+>  scripts/Makefile.build       | 118 +++------
+>  scripts/Makefile.lib         |   7 -
+>  scripts/Makefile.modfinal    |   5 +-
+>  scripts/Makefile.modpost     |   9 +-
+>  scripts/genksyms/genksyms.c  |  18 +-
+>  scripts/link-vmlinux.sh      |  46 ++--
+>  scripts/mod/file2alias.c     |   2 -
+>  scripts/mod/list.h           |  52 ++++
+>  scripts/mod/modpost.c        | 449 ++++++++++++++++++++---------------
+>  scripts/mod/modpost.h        |   2 +
+>  19 files changed, 402 insertions(+), 392 deletions(-)
+>  create mode 100644 include/linux/symversion.h
+>
+> --
+> 2.32.0
+>
+> --
+> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
+> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
+> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20220505072244.1155033-1-masahiroy%40kernel.org.
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
