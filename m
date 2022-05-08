@@ -2,43 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99FD51EC8B
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 11:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCEB51ED38
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 13:12:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KwzkV4NJfz3cHs
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 19:38:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kx1qV39lcz3dQQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 21:12:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.56;
- helo=out30-56.freemail.mail.aliyun.com;
- envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-56.freemail.mail.aliyun.com
- (out30-56.freemail.mail.aliyun.com [115.124.30.56])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KwzjF6dzBz3bqw
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 19:37:05 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R421e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04395;
- MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=31; SR=0;
- TI=SMTPD_---0VCa0vT7_1652002616; 
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com
- fp:SMTPD_---0VCa0vT7_1652002616) by smtp.aliyun-inc.com(127.0.0.1);
- Sun, 08 May 2022 17:36:57 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org, mike.kravetz@oracle.com,
- catalin.marinas@arm.com, will@kernel.org
-Subject: [PATCH v2 3/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- unmapping
-Date: Sun,  8 May 2022 17:36:41 +0800
-Message-Id: <43b11b69e9f0d9d7e7960b86661db27cc404d0c7.1652002221.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
-References: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
-References: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kx1pL49j4z3c8m
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 21:11:38 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kx1pF4Cwdz4xXk;
+ Sun,  8 May 2022 21:11:33 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: nathanl@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+ npiggin@gmail.com, Haren Myneni <haren@linux.ibm.com>
+In-Reply-To: <76d156f8af1e03cc09369d68e0bfad0c40031bcc.camel@linux.ibm.com>
+References: <76d156f8af1e03cc09369d68e0bfad0c40031bcc.camel@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pseries/vas: Use QoS credits from the userspace
+Message-Id: <165200827416.2672957.5309405825160744751.b4-ty@ellerman.id.au>
+Date: Sun, 08 May 2022 21:11:14 +1000
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,116 +44,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
- agordeev@linux.ibm.com, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- arnd@arndb.de, ysato@users.sourceforge.jp, deller@gmx.de,
- borntraeger@linux.ibm.com, gor@linux.ibm.com, hca@linux.ibm.com,
- baolin.wang@linux.alibaba.com, linux-arm-kernel@lists.infradead.org,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, svens@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On some architectures (like ARM64), it can support CONT-PTE/PMD size
-hugetlb, which means it can support not only PMD/PUD size hugetlb:
-2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
-size specified.
+On Sat, 19 Mar 2022 02:28:09 -0700, Haren Myneni wrote:
+> The user can change the QoS credits dynamically with the
+> management console interface which notifies OS with sysfs. After
+> returning from the OS interface successfully, the management
+> console updates the hypervisor. Since the VAS capabilities in
+> the hypervisor is not updated when the OS gets the update,
+> the kernel is using the old total credits value from the
+> hypervisor. Fix this issue by using the new QoS credits
+> from the userspace instead of depending on VAS capabilities
+> from the hypervisor.
+> 
+> [...]
 
-When unmapping a hugetlb page, we will get the relevant page table
-entry by huge_pte_offset() only once to nuke it. This is correct
-for PMD or PUD size hugetlb, since they always contain only one
-pmd entry or pud entry in the page table.
+Applied to powerpc/fixes.
 
-However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
-since they can contain several continuous pte or pmd entry with
-same page table attributes, so we will nuke only one pte or pmd
-entry for this CONT-PTE/PMD size hugetlb page.
+[1/1] powerpc/pseries/vas: Use QoS credits from the userspace
+      https://git.kernel.org/powerpc/c/57831bfb5e78777dc399e351ed68ef77c3aee385
 
-And now try_to_unmap() is only passed a hugetlb page in the case
-where the hugetlb page is poisoned. Which means now we will unmap
-only one pte entry for a CONT-PTE or CONT-PMD size poisoned hugetlb
-page, and we can still access other subpages of a CONT-PTE or CONT-PMD
-size poisoned hugetlb page, which will cause serious issues possibly.
-
-So we should change to use huge_ptep_clear_flush() to nuke the
-hugetlb page table to fix this issue, which already considered
-CONT-PTE and CONT-PMD size hugetlb.
-
-We've already used set_huge_swap_pte_at() to set a poisoned
-swap entry for a poisoned hugetlb page. Meanwhile adding a VM_BUG_ON()
-to make sure the passed hugetlb page is poisoned in try_to_unmap().
-
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- mm/rmap.c | 39 ++++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 7cf2408..37c8fd2 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1530,6 +1530,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 
- 		if (folio_test_hugetlb(folio)) {
- 			/*
-+			 * The try_to_unmap() is only passed a hugetlb page
-+			 * in the case where the hugetlb page is poisoned.
-+			 */
-+			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
-+			/*
- 			 * huge_pmd_unshare may unmap an entire PMD page.
- 			 * There is no way of knowing exactly which PMDs may
- 			 * be cached for this mm, so we must flush them all.
-@@ -1564,28 +1569,28 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 					break;
- 				}
- 			}
-+			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
- 		} else {
- 			flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
--		}
--
--		/*
--		 * Nuke the page table entry. When having to clear
--		 * PageAnonExclusive(), we always have to flush.
--		 */
--		if (should_defer_flush(mm, flags) && !anon_exclusive) {
- 			/*
--			 * We clear the PTE but do not flush so potentially
--			 * a remote CPU could still be writing to the folio.
--			 * If the entry was previously clean then the
--			 * architecture must guarantee that a clear->dirty
--			 * transition on a cached TLB entry is written through
--			 * and traps if the PTE is unmapped.
-+			 * Nuke the page table entry. When having to clear
-+			 * PageAnonExclusive(), we always have to flush.
- 			 */
--			pteval = ptep_get_and_clear(mm, address, pvmw.pte);
-+			if (should_defer_flush(mm, flags) && !anon_exclusive) {
-+				/*
-+				 * We clear the PTE but do not flush so potentially
-+				 * a remote CPU could still be writing to the folio.
-+				 * If the entry was previously clean then the
-+				 * architecture must guarantee that a clear->dirty
-+				 * transition on a cached TLB entry is written through
-+				 * and traps if the PTE is unmapped.
-+				 */
-+				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
- 
--			set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
--		} else {
--			pteval = ptep_clear_flush(vma, address, pvmw.pte);
-+				set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
-+			} else {
-+				pteval = ptep_clear_flush(vma, address, pvmw.pte);
-+			}
- 		}
- 
- 		/*
--- 
-1.8.3.1
-
+cheers
