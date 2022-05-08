@@ -2,46 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D8C51EDB6
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 15:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E283151EF0D
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 20:07:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kx4W74BQnz3cFj
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 23:13:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KxC1l3xFwz3cJD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 04:07:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=BeB2FaaW;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132;
- helo=out30-132.freemail.mail.aliyun.com;
- envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-132.freemail.mail.aliyun.com
- (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=casper.20170209 header.b=BeB2FaaW; 
+ dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org
+ [IPv6:2001:8b0:10b:1236::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kx4Vf6LYqz2xh0
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 23:13:14 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04407;
- MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=31; SR=0;
- TI=SMTPD_---0VCaT1jO_1652015583; 
-Received: from 30.15.195.77(mailfrom:baolin.wang@linux.alibaba.com
- fp:SMTPD_---0VCaT1jO_1652015583) by smtp.aliyun-inc.com(127.0.0.1);
- Sun, 08 May 2022 21:13:05 +0800
-Message-ID: <474b8548-4e17-a6e7-a0f7-8f248aabe462@linux.alibaba.com>
-Date: Sun, 8 May 2022 21:13:44 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KxC123BMCz3bpj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 04:06:25 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=dXIZlnwHK15rrJZENweUDVLbVsO7X3h09BOXkfnZAVs=; b=BeB2FaaWyCXFJfYPOVlGrRxyyh
+ JkDouCOTyf7MkyluZIxxnUmR87Z/DW0C77jKJIqfoUoI4nPE1ilfTi9PvRLwTXhJhdLROFvWDHHMp
+ 000VX4SrbogSTZvQ4ISTjHh4zNfXVtbK/k9ItAde5GaNKad/et01ucOFYnGCdxFOMk8ivYtMYUiOa
+ LxiuMlpYfAy3bAi35IgiKblbkjCiRIRjJVG9azAjXg28jNJSRdKKWlpLRQquoU1LzZCBVcNqNjl2k
+ T6r3MF4ww2+rXqRroJFYp5Aw18fci0MKTzKr92fIKjYfvoNR8En2Q9Oq1MQTSBonEX0blOhFfkm3u
+ xJL5hOLA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red
+ Hat Linux)) id 1nnlIH-002hid-TS; Sun, 08 May 2022 18:06:09 +0000
+Date: Sun, 8 May 2022 19:06:09 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v6 00/23] Rust support
+Message-ID: <YngGkZTy+byxnD5n@casper.infradead.org>
+References: <20220507052451.12890-1-ojeda@kernel.org>
+ <202205070056.ACC3C3D@keescook>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v2 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- migration
-To: kernel test robot <lkp@intel.com>, akpm@linux-foundation.org,
- mike.kravetz@oracle.com, catalin.marinas@arm.com, will@kernel.org
-References: <1ec8a987be1a5400e077260a300d0079564b1472.1652002221.git.baolin.wang@linux.alibaba.com>
- <202205081910.mStoC5rj-lkp@intel.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <202205081910.mStoC5rj-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202205070056.ACC3C3D@keescook>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,87 +61,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-kernel@vger.kernel.org, James.Bottomley@hansenpartnership.com,
- paulus@samba.org, sparclinux@vger.kernel.org, agordeev@linux.ibm.com,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, arnd@arndb.de,
- ysato@users.sourceforge.jp, deller@gmx.de, borntraeger@linux.ibm.com,
- gor@linux.ibm.com, hca@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
- tsbogend@alpha.franken.de, kbuild-all@lists.01.org,
- linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, svens@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: linuxppc-dev@lists.ozlabs.org, rust-for-linux@vger.kernel.org,
+ linux-doc@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-gpio@vger.kernel.org,
+ Jarkko Sakkinen <jarkko@kernel.org>, linux-kselftest@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>, live-patching@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-arm-kernel@lists.infradead.org, kunit-dev@googlegroups.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+On Sat, May 07, 2022 at 01:06:18AM -0700, Kees Cook wrote:
+> On Sat, May 07, 2022 at 07:23:58AM +0200, Miguel Ojeda wrote:
+> > ## Patch series status
+> > 
+> > The Rust support is still to be considered experimental. However,
+> > support is good enough that kernel developers can start working on the
+> > Rust abstractions for subsystems and write drivers and other modules.
+> 
+> I'd really like to see this landed for a few reasons:
+> 
+> - It's under active development, and I'd rather review the changes
+>   "normally", incrementally, etc. Right now it can be hard to re-review
+>   some of the "mostly the same each version" patches in the series.
+> 
+> - I'd like to break the catch-22 of "ask for a new driver to be
+>   written in rust but the rust support isn't landed" vs "the rust
+>   support isn't landed because there aren't enough drivers". It
+>   really feels like "release early, release often" is needed here;
+>   it's hard to develop against -next. :)
+> 
+> Should we give it a try for this coming merge window?
 
-On 5/8/2022 8:01 PM, kernel test robot wrote:
-> Hi Baolin,
-> 
-> I love your patch! Yet something to improve:
-> 
-> [auto build test ERROR on akpm-mm/mm-everything]
-> [also build test ERROR on next-20220506]
-> [cannot apply to hnaz-mm/master arm64/for-next/core linus/master v5.18-rc5]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Baolin-Wang/Fix-CONT-PTE-PMD-size-hugetlb-issue-when-unmapping-or-migrating/20220508-174036
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-> config: x86_64-randconfig-a013 (https://download.01.org/0day-ci/archive/20220508/202205081910.mStoC5rj-lkp@intel.com/config)
-> compiler: gcc-11 (Debian 11.2.0-20) 11.2.0
-> reproduce (this is a W=1 build):
->          # https://github.com/intel-lab-lkp/linux/commit/907981b27213707fdb2f8a24c107d6752a09a773
->          git remote add linux-review https://github.com/intel-lab-lkp/linux
->          git fetch --no-tags linux-review Baolin-Wang/Fix-CONT-PTE-PMD-size-hugetlb-issue-when-unmapping-or-migrating/20220508-174036
->          git checkout 907981b27213707fdb2f8a24c107d6752a09a773
->          # save the config file
->          mkdir build_dir && cp config build_dir/.config
->          make W=1 O=build_dir ARCH=x86_64 SHELL=/bin/bash
-> 
-> If you fix the issue, kindly add following tag as appropriate
-> Reported-by: kernel test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->     mm/rmap.c: In function 'try_to_migrate_one':
->>> mm/rmap.c:1931:34: error: implicit declaration of function 'huge_ptep_clear_flush'; did you mean 'ptep_clear_flush'? [-Werror=implicit-function-declaration]
->      1931 |                         pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->           |                                  ^~~~~~~~~~~~~~~~~~~~~
->           |                                  ptep_clear_flush
->>> mm/rmap.c:1931:34: error: incompatible types when assigning to type 'pte_t' from type 'int'
->>> mm/rmap.c:2023:41: error: implicit declaration of function 'set_huge_pte_at'; did you mean 'set_huge_swap_pte_at'? [-Werror=implicit-function-declaration]
->      2023 |                                         set_huge_pte_at(mm, address, pvmw.pte, pteval);
->           |                                         ^~~~~~~~~~~~~~~
->           |                                         set_huge_swap_pte_at
->     cc1: some warnings being treated as errors
+I'm broadly in favour of that.  It's just code, we can always drop it
+again or fix it.  There's sufficient development community around it
+that it's hardly going to become abandonware.
 
-Thanks for reporting. I think I should add some dummy functions in 
-hugetlb.h file if the CONFIG_HUGETLB_PAGE is not selected. I can pass 
-the building with below changes and your config file.
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 306d6ef..9f71043 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1093,6 +1093,17 @@ static inline void set_huge_swap_pte_at(struct 
-mm_struct *mm, unsigned long addr
-                                         pte_t *ptep, pte_t pte, 
-unsigned long sz)
-  {
-  }
-+
-+static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
-+                                         unsigned long addr, pte_t *ptep)
-+{
-+       return ptep_get(ptep);
-+}
-+
-+static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long 
-addr,
-+                                  pte_t *ptep, pte_t pte)
-+{
-+}
-  #endif /* CONFIG_HUGETLB_PAGE */
