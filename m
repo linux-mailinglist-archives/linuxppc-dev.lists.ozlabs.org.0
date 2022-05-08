@@ -2,61 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8792B51F1D0
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 23:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C810251F21C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 03:13:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxHPJ2gCnz3cG1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 07:24:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KxNTk3cbCz3cCX
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 11:13:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G+Etlp88;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gIUFYKCQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::830;
+ helo=mail-qt1-x830.google.com; envelope-from=shengjiu.wang@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=G+Etlp88; dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=gIUFYKCQ; dkim-atps=neutral
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com
+ [IPv6:2607:f8b0:4864:20::830])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KxHNZ6Vc3z3c7j
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 07:23:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652045023; x=1683581023;
- h=date:from:to:cc:subject:message-id:mime-version:
- content-transfer-encoding;
- bh=A6H0k6brcU7pHQ8afpOPC7MFEz4JBkquyBke3AyoZVM=;
- b=G+Etlp8851k6QQjrD2KklPZlKa77A8mqkXmrwtk4vG56oGLWe4AVh15T
- GHYo/vu+G3aDqCZEXKrPlSZ2uXbOPQTCHV040KBr1QPNbsGiQ8OZkEBle
- M7vJfW8ZlQcYNjL75It1yPtXqzCm6Dc1nDALEUi3MByDud6CVIXYaUscT
- XBLZFiOu0Ci3o+748+oNvvqhyZXWuBHQOj+yUrsZEcobdEFIG1tRNqmL4
- ncCgpxZ4eyfc8jt1Vy1Hyc1v4ZSz0Hcl9BlaPTi2Fzb5vL2eDr+83EaSz
- mX6kwz73yAk9jeC2LIfbSI/rY9t3TcnHMq4ilUJfNR2dd4akxGODEVD2U Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10341"; a="329466783"
-X-IronPort-AV: E=Sophos;i="5.91,210,1647327600"; d="scan'208";a="329466783"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 May 2022 14:22:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,210,1647327600"; d="scan'208";a="622659083"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 08 May 2022 14:22:28 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
- (envelope-from <lkp@intel.com>) id 1nnoMG-000FqM-5G;
- Sun, 08 May 2022 21:22:28 +0000
-Date: Mon, 09 May 2022 05:21:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 348c71344111d7a48892e3e52264ff11956fc196
-Message-ID: <62783466.FhciSaH1AKJezeC7%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KwxWw6Rjqz2xF8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 17:58:51 +1000 (AEST)
+Received: by mail-qt1-x830.google.com with SMTP id y3so9015379qtn.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 May 2022 00:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=rZVhWVA+EdiAZkxXcgq5S21iMUVQBopURuPfX+xp/uQ=;
+ b=gIUFYKCQeN/B58sPwgdDuch1cOCuxKNjSrwNzscjlympP+cuTuAqg6INyjeEzu+6IS
+ bRycio946YWHG+w+7Bp5XrUWI2XN1IT4YCifS0wpudFLVHnWZFbp/lHFggVF2vttzAqH
+ xlUhPfrdJjGLwLADAOT7Co+88F8jg4wQnE1Eh3xFTP+KNJRC9ZGFP6d7UptIvt96K3Hf
+ HlEh/D7PObgDVhcwbmltRjJWQa7aIesVj/38/0J94Vt5Nf/WlPHKGoElLqw+Tw2n/ltE
+ uAuJJ8ALz0zU/hHVjOevEy83NwQyIRC22RwP9odiQgljHRxq8Jsy0GNFcg8sSvpfZcVz
+ kThA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=rZVhWVA+EdiAZkxXcgq5S21iMUVQBopURuPfX+xp/uQ=;
+ b=p+tw3+sINpnIQ+ri9v8pc8hpkaGDubCBqXVZ9/VygO4nAOY6kohM3hYlCq1YfqCgio
+ savw1l4I9iq7aAYWftrPJMzdhoHiYFIihOcqwZvEoZbFIYHzJ51rh+uOyIHKfTPkvfZC
+ D+/9d6B8uQLtgQCzNKlx4katxlwkd5WvnBKoGd+a/R82sNW6yJvnDDskztvxVnWJxBuE
+ 6PUpJsijfADnjEK+8IAXaThVFt6ofucVCnM7WyhqyIsjFUKakvCo0vSBcRISSNJbBikL
+ sMr4FLHe155w8R83VUOkL8Fs2rmvMNobRF2eieJt1XTg7EO6lw7waoa++yUvqAS9tNzw
+ F9Rw==
+X-Gm-Message-State: AOAM531u7jCIZI9J0YEVirljHCHMNI1o6DgOMtmJiXNsD+gcAtE0Ij4L
+ fICUKuQ5czsR3bmZlY+4/k++8v6xnIsfoxQJpKE=
+X-Google-Smtp-Source: ABdhPJyNd2eXVDqLQaJ2XSfZasJbZg++pVfPsBuzCeYRWHOHlaLxUTCqb6BQaZtTG0xKbNsZQYf7XOr/kc7ZoH7vedI=
+X-Received: by 2002:ac8:5ad1:0:b0:2f3:cf42:b3bc with SMTP id
+ d17-20020ac85ad1000000b002f3cf42b3bcmr5076602qtd.120.1651996726562; Sun, 08
+ May 2022 00:58:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20220507123101.10938-1-pieterjan.camerlynck@gmail.com>
+In-Reply-To: <20220507123101.10938-1-pieterjan.camerlynck@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Sun, 8 May 2022 15:58:35 +0800
+Message-ID: <CAA+D8APkCt4N9_Gm8324ffR-vAvX5e6eq7tegMy-MLMy4zRZVQ@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: fix incorrect mclk number in error message
+To: Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
+Content-Type: multipart/alternative; boundary="0000000000000e930105de7b7641"
+X-Mailman-Approved-At: Mon, 09 May 2022 11:12:57 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,183 +75,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 348c71344111d7a48892e3e52264ff11956fc196  powerpc/papr_scm: Fix buffer overflow issue with CONFIG_FORTIFY_SOURCE
+--0000000000000e930105de7b7641
+Content-Type: text/plain; charset="UTF-8"
 
-elapsed time: 739m
+On Sat, May 7, 2022 at 8:31 PM Pieterjan Camerlynck <
+pieterjan.camerlynck@gmail.com> wrote:
 
-configs tested: 153
-configs skipped: 100
+> In commit <c3ecef21c3f26> ("ASoC: fsl_sai: add sai master mode support")
+> the loop was changed to start iterating from 1 instead of 0. The error
+> message however was not updated, reporting the wrong clock to the user.
+>
+> Signed-off-by: Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
+>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-arm                           imxrt_defconfig
-arm                      footbridge_defconfig
-m68k                             alldefconfig
-arm                             ezx_defconfig
-powerpc64                           defconfig
-h8300                            alldefconfig
-powerpc                   motionpro_defconfig
-arm                        shmobile_defconfig
-sh                   sh7770_generic_defconfig
-arm                         lubbock_defconfig
-mips                        vocore2_defconfig
-ia64                         bigsur_defconfig
-mips                  decstation_64_defconfig
-h8300                       h8s-sim_defconfig
-sh                          kfr2r09_defconfig
-sh                           se7712_defconfig
-powerpc                     redwood_defconfig
-powerpc                 mpc837x_rdb_defconfig
-powerpc64                        alldefconfig
-arc                        nsimosci_defconfig
-um                           x86_64_defconfig
-arm                        spear6xx_defconfig
-powerpc                      cm5200_defconfig
-arm                          iop32x_defconfig
-arm                        trizeps4_defconfig
-sparc                       sparc64_defconfig
-ia64                             alldefconfig
-mips                       bmips_be_defconfig
-powerpc                     rainier_defconfig
-sparc                               defconfig
-sh                           se7750_defconfig
-sh                                  defconfig
-mips                 decstation_r4k_defconfig
-sh                ecovec24-romimage_defconfig
-arm                          lpd270_defconfig
-sh                           se7721_defconfig
-alpha                            allyesconfig
-sh                        apsh4ad0a_defconfig
-arm                       aspeed_g5_defconfig
-sh                           se7343_defconfig
-powerpc                       eiger_defconfig
-arm                           sunxi_defconfig
-powerpc                      mgcoge_defconfig
-sh                           se7751_defconfig
-mips                           xway_defconfig
-sh                           se7619_defconfig
-arm                         s3c6400_defconfig
-arc                              alldefconfig
-xtensa                    smp_lx200_defconfig
-powerpc                     pq2fads_defconfig
-m68k                             allmodconfig
-sh                          sdk7780_defconfig
-powerpc                    sam440ep_defconfig
-sh                           se7722_defconfig
-openrisc                            defconfig
-arm                         at91_dt_defconfig
-arm                           viper_defconfig
-x86_64                        randconfig-c001
-arm                  randconfig-c002-20220508
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-s390                             allyesconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                               rhel-8.3
+Best Regards
+Wang Shengjiu
 
-clang tested configs:
-x86_64                        randconfig-c007
-i386                          randconfig-c001
-powerpc              randconfig-c003-20220508
-riscv                randconfig-c006-20220508
-mips                 randconfig-c004-20220508
-arm                  randconfig-c002-20220508
-powerpc                     mpc512x_defconfig
-arm                           spitz_defconfig
-powerpc                     tqm8560_defconfig
-mips                     loongson2k_defconfig
-arm                              alldefconfig
-mips                        qi_lb60_defconfig
-powerpc                       ebony_defconfig
-powerpc                    ge_imp3a_defconfig
-arm                          pxa168_defconfig
-mips                      malta_kvm_defconfig
-arm                     davinci_all_defconfig
-powerpc                     tqm8540_defconfig
-mips                malta_qemu_32r6_defconfig
-powerpc                      acadia_defconfig
-arm                      pxa255-idp_defconfig
-mips                  cavium_octeon_defconfig
-arm                        vexpress_defconfig
-powerpc                  mpc885_ads_defconfig
-arm                         mv78xx0_defconfig
-powerpc                          allmodconfig
-mips                           rs90_defconfig
-i386                             allyesconfig
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-hexagon              randconfig-r045-20220509
-hexagon              randconfig-r045-20220508
-riscv                randconfig-r042-20220508
-hexagon              randconfig-r041-20220509
-hexagon              randconfig-r041-20220508
+> ---
+>  sound/soc/fsl/fsl_sai.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index ffc24afb5a7a..f0602077b385 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -1054,7 +1054,7 @@ static int fsl_sai_probe(struct platform_device
+> *pdev)
+>                 sai->mclk_clk[i] = devm_clk_get(&pdev->dev, tmp);
+>                 if (IS_ERR(sai->mclk_clk[i])) {
+>                         dev_err(&pdev->dev, "failed to get mclk%d clock:
+> %ld\n",
+> -                                       i + 1, PTR_ERR(sai->mclk_clk[i]));
+> +                                       i, PTR_ERR(sai->mclk_clk[i]));
+>                         sai->mclk_clk[i] = NULL;
+>                 }
+>         }
+> --
+> 2.25.1
+>
+>
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+--0000000000000e930105de7b7641
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Sat, May 7, 2022 at 8:31 PM Pieter=
+jan Camerlynck &lt;<a href=3D"mailto:pieterjan.camerlynck@gmail.com">pieter=
+jan.camerlynck@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">In commit &lt;c3ecef21c3f26&gt; (&quot;ASoC: fsl_sa=
+i: add sai master mode support&quot;)<br>
+the loop was changed to start iterating from 1 instead of 0. The error<br>
+message however was not updated, reporting the wrong clock to the user.<br>
+<br>
+Signed-off-by: Pieterjan Camerlynck &lt;<a href=3D"mailto:pieterjan.camerly=
+nck@gmail.com" target=3D"_blank">pieterjan.camerlynck@gmail.com</a>&gt;<br>=
+</blockquote><div><br></div><div>Acked-by: Shengjiu Wang &lt;<a href=3D"mai=
+lto:shengjiu.wang@gmail.com">shengjiu.wang@gmail.com</a>&gt;</div><div><br>=
+</div><div>Best Regards</div><div>Wang Shengjiu=C2=A0</div><blockquote clas=
+s=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
+gb(204,204,204);padding-left:1ex">
+---<br>
+=C2=A0sound/soc/fsl/fsl_sai.c | 2 +-<br>
+=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+<br>
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
+index ffc24afb5a7a..f0602077b385 100644<br>
+--- a/sound/soc/fsl/fsl_sai.c<br>
++++ b/sound/soc/fsl/fsl_sai.c<br>
+@@ -1054,7 +1054,7 @@ static int fsl_sai_probe(struct platform_device *pdev=
+)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sai-&gt;mclk_clk[i]=
+ =3D devm_clk_get(&amp;pdev-&gt;dev, tmp);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (IS_ERR(sai-&gt;=
+mclk_clk[i])) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 dev_err(&amp;pdev-&gt;dev, &quot;failed to get mclk%d clock: %ld=
+\n&quot;,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i + 1, PT=
+R_ERR(sai-&gt;mclk_clk[i]));<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0i, PTR_ER=
+R(sai-&gt;mclk_clk[i]));<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 sai-&gt;mclk_clk[i] =3D NULL;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div></div>
+
+--0000000000000e930105de7b7641--
