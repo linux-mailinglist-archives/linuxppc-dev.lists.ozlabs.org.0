@@ -2,34 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCEB51ED38
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 13:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D43951ED36
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 13:11:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kx1qV39lcz3dQQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 21:12:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kx1pg2Sk2z3cLs
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 21:11:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kx1pL49j4z3c8m
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 21:11:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kx1pH5Sfxz2xBF
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 21:11:35 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kx1pF4Cwdz4xXk;
- Sun,  8 May 2022 21:11:33 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kx1pG2YxMz4ySy;
+ Sun,  8 May 2022 21:11:34 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: nathanl@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- npiggin@gmail.com, Haren Myneni <haren@linux.ibm.com>
-In-Reply-To: <76d156f8af1e03cc09369d68e0bfad0c40031bcc.camel@linux.ibm.com>
-References: <76d156f8af1e03cc09369d68e0bfad0c40031bcc.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries/vas: Use QoS credits from the userspace
-Message-Id: <165200827416.2672957.5309405825160744751.b4-ty@ellerman.id.au>
-Date: Sun, 08 May 2022 21:11:14 +1000
+To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au,
+ linuxppc-dev@lists.ozlabs.org, dan.j.williams@intel.com, vaibhav@linux.ibm.com
+In-Reply-To: <20220505153451.35503-1-kjain@linux.ibm.com>
+References: <20220505153451.35503-1-kjain@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/papr_scm: Fix buffer overflow issue with
+ CONFIG_FORTIFY_SOURCE
+Message-Id: <165200827583.2672957.6785823772634051694.b4-ty@ellerman.id.au>
+Date: Sun, 08 May 2022 21:11:15 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,26 +44,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: nvdimm@lists.linux.dev, atrajeev@linux.vnet.ibm.com,
+ disgoel@linux.vnet.ibm.com, maddy@linux.ibm.com, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 19 Mar 2022 02:28:09 -0700, Haren Myneni wrote:
-> The user can change the QoS credits dynamically with the
-> management console interface which notifies OS with sysfs. After
-> returning from the OS interface successfully, the management
-> console updates the hypervisor. Since the VAS capabilities in
-> the hypervisor is not updated when the OS gets the update,
-> the kernel is using the old total credits value from the
-> hypervisor. Fix this issue by using the new QoS credits
-> from the userspace instead of depending on VAS capabilities
-> from the hypervisor.
+On Thu, 5 May 2022 21:04:51 +0530, Kajol Jain wrote:
+> With CONFIG_FORTIFY_SOURCE enabled, string functions will also perform
+> dynamic checks for string size which can panic the kernel,
+> like incase of overflow detection.
+> 
+> In papr_scm, papr_scm_pmu_check_events function uses stat->stat_id
+> with string operations, to populate the nvdimm_events_map array.
+> Since stat_id variable is not NULL terminated, the kernel panics
+> with CONFIG_FORTIFY_SOURCE enabled at boot time.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/pseries/vas: Use QoS credits from the userspace
-      https://git.kernel.org/powerpc/c/57831bfb5e78777dc399e351ed68ef77c3aee385
+[1/1] powerpc/papr_scm: Fix buffer overflow issue with CONFIG_FORTIFY_SOURCE
+      https://git.kernel.org/powerpc/c/348c71344111d7a48892e3e52264ff11956fc196
 
 cheers
