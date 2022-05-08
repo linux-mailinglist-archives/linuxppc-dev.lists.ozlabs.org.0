@@ -1,51 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C02051ED74
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 14:14:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC0B51EDA3
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 15:09:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kx3BY5mPHz3cf4
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 22:14:13 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kqbZLfR/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kx4Qp0WD9z3cK9
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 May 2022 23:09:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
+ helo=out30-57.freemail.mail.aliyun.com;
+ envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-57.freemail.mail.aliyun.com
+ (out30-57.freemail.mail.aliyun.com [115.124.30.57])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kx39Y5H6lz3cJw
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 22:13:21 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=kqbZLfR/; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Kx39V5trYz4ySy;
- Sun,  8 May 2022 22:13:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1652011998;
- bh=dxwY2t1/3j8Cm+1YL8a1tBfaNXSJojWCH9nMJ9l7iU4=;
- h=From:To:Cc:Subject:Date:From;
- b=kqbZLfR/pRB84uMw6FKl/RKDgyqbQ87vJJnknd7Ft2R3HInTeEzfCqLJ5JHpPDea+
- Z3Hs3msY39d+Me/06WcnEjie0iHwnCxq/uBBZM3URAS9b7wIZlocqE4Xp18Y9vPiLb
- EtZfhLgsnfk2YVlzlgRDWdghq/CBOUuKuQ0jVlsTyDmdkHYpppmSoPDw83/nk1e4XD
- ltYdxBjK2NsXaFD3u/mrPW6HTuH2D/VcYPDxws8RzaPE8nGJzW0z1i25I7iMl7AXSU
- ZqysRrw/zLvY879EuLdMZYU2ee631jFjlXaBLdzOXBpnvf1FBivh+XCMkNNxC9LJuX
- d3nnhj/IgEBsQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.18-4 tag
-Date: Sun, 08 May 2022 22:13:14 +1000
-Message-ID: <87fslkte79.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kx4QJ6LTHz3bd7
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 23:09:26 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R121e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
+ MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=31; SR=0;
+ TI=SMTPD_---0VCaceu-_1652015354; 
+Received: from 30.15.195.77(mailfrom:baolin.wang@linux.alibaba.com
+ fp:SMTPD_---0VCaceu-_1652015354) by smtp.aliyun-inc.com(127.0.0.1);
+ Sun, 08 May 2022 21:09:16 +0800
+Message-ID: <bf627d1a-42f8-77f3-6ac2-67edde2feb8a@linux.alibaba.com>
+Date: Sun, 8 May 2022 21:09:55 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v2 1/3] mm: change huge_ptep_clear_flush() to return the
+ original pte
+To: Muchun Song <songmuchun@bytedance.com>
+References: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
+ <012a484019e7ad77c39deab0af52a6755d8438c8.1652002221.git.baolin.wang@linux.alibaba.com>
+ <Ynek+b3k6PVN3x7J@FVFYT0MHHV2J.usts.net>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <Ynek+b3k6PVN3x7J@FVFYT0MHHV2J.usts.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,74 +53,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, haren@linux.ibm.com,
- linux-kernel@vger.kernel.org
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
+ linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
+ agordeev@linux.ibm.com, will@kernel.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, arnd@arndb.de, ysato@users.sourceforge.jp,
+ deller@gmx.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com,
+ gor@linux.ibm.com, hca@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
+ tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, svens@linux.ibm.com, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, mike.kravetz@oracle.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
-
-Hi Linus,
-
-Please pull some more powerpc fixes for 5.18:
-
-The following changes since commit bb82c574691daf8f7fa9a160264d15c5804cb769:
-
-  powerpc/perf: Fix 32bit compile (2022-04-21 23:26:47 +1000)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.18-4
-
-for you to fetch changes up to 348c71344111d7a48892e3e52264ff11956fc196:
-
-  powerpc/papr_scm: Fix buffer overflow issue with CONFIG_FORTIFY_SOURCE (2022-05-06 12:44:03 +1000)
-
-- ------------------------------------------------------------------
-powerpc fixes for 5.18 #4
-
- - Fix the DWARF CFI in our VDSO time functions, allowing gdb to backtrace through them
-   correctly.
-
- - Fix a buffer overflow in the papr_scm driver, only triggerable by hypervisor input.
-
- - A fix in the recently added QoS handling for VAS (used for communicating with
-   coprocessors).
-
-Thanks to: Alan Modra, Haren Myneni, Kajol Jain, Segher Boessenkool.
-
-- ------------------------------------------------------------------
-Haren Myneni (1):
-      powerpc/pseries/vas: Use QoS credits from the userspace
-
-Kajol Jain (1):
-      powerpc/papr_scm: Fix buffer overflow issue with CONFIG_FORTIFY_SOURCE
-
-Michael Ellerman (1):
-      powerpc/vdso: Fix incorrect CFI in gettimeofday.S
 
 
- arch/powerpc/kernel/vdso/gettimeofday.S    |  9 ++++++--
- arch/powerpc/platforms/pseries/papr_scm.c  |  7 ++----
- arch/powerpc/platforms/pseries/vas-sysfs.c | 19 +++++++++++-----
- arch/powerpc/platforms/pseries/vas.c       | 23 ++++++++++----------
- arch/powerpc/platforms/pseries/vas.h       |  2 +-
- 5 files changed, 36 insertions(+), 24 deletions(-)
------BEGIN PGP SIGNATURE-----
+On 5/8/2022 7:09 PM, Muchun Song wrote:
+> On Sun, May 08, 2022 at 05:36:39PM +0800, Baolin Wang wrote:
+>> It is incorrect to use ptep_clear_flush() to nuke a hugetlb page
+>> table when unmapping or migrating a hugetlb page, and will change
+>> to use huge_ptep_clear_flush() instead in the following patches.
+>>
+>> So this is a preparation patch, which changes the huge_ptep_clear_flush()
+>> to return the original pte to help to nuke a hugetlb page table.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
+> 
+> Reviewed-by: Muchun Song <songmuchun@bytedance.com>
 
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmJ3s60ACgkQUevqPMjh
-pYCE+xAAk+ButiF8vXxyO0/sWvW8F2qkGDvUlGn8Dwo8q8AaA70nCvzztcnBMScE
-KrUjJFOEAiQUKXCVsczWAcxQwPAkD6myTaoseUBNTc+fdeLiWzpAGRY9FTMR54M6
-UtPtiSCUnz2UJnU4gIfAEYGGsnF2PMKnBnEV4ROFNqqIAihmQjW7oU7iLq4kNSX6
-YOE5UPUpPSuyJgI1/KlseUuEsH/Hz0Fc3AvSEel+/pfTdPaIxed7Oxr116HsOHqJ
-Lda88F+4Tdk0OSC9Q9gzbyqQsvpIe2OTt9FQEuBbSAEV+eUbWuwBI44UVkpDDg/C
-HlcmxAGAoulLXTKrnt3RkjonLZuVwGCTgCJe9zTzWG00n1XzO6mvEuphyixlPsow
-7Ej5QLSWkGMZhZO+wTcJpgcCcZ4TEYtpf3T5iBR2DlcftIgmlJtmSS99mwgMZ7ct
-LaHYJDOlSRCtxQipAeHBtybe/ngsxYIdCjNlumbEbYY6tUg5+6jY8DMkJ6KFHAfk
-82h241dByF0YDW1HpG5D+RGpEvxTpQrFYhE9XPdOqQ07mwOzIg9DMmCLXrIofETV
-Ywb5+jY3DlpCZz0nxOHA+5SO1fealq8ZC4ZDKO3FErgqsUUCjuZJUbSLtFHGGRsF
-HIg+xDoXRpiGWwpIqrgozu2xxYE4AbDhe+sOVvF4APHTXIuP0+U=
-=Lyfd
------END PGP SIGNATURE-----
+Thanks for reviewing.
+
+> 
+> But one nit below:
+> 
+> [...]
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 8605d7e..61a21af 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -5342,7 +5342,7 @@ static vm_fault_t hugetlb_wp(struct mm_struct *mm, struct vm_area_struct *vma,
+>>   		ClearHPageRestoreReserve(new_page);
+>>   
+>>   		/* Break COW or unshare */
+>> -		huge_ptep_clear_flush(vma, haddr, ptep);
+>> +		(void)huge_ptep_clear_flush(vma, haddr, ptep);
+> 
+> Why add a "(void)" here? Is there any warning if no "(void)"?
+> IIUC, I think we can remove this, right?
+
+I did not meet any warning without the casting, but this is per Mike's 
+comment[1] to make the code consistent with other functions casting to 
+void type explicitly in hugetlb.c file.
+
+[1] 
+https://lore.kernel.org/all/495c4ebe-a5b4-afb6-4cb0-956c1b18d0cc@oracle.com/
