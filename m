@@ -2,30 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDB651F4E9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 09:12:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD66051F589
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 09:43:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxXRv047zz3bbn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 17:12:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KxY8351sYz3cFp
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 17:43:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=KZ5PzAAB;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 4KxXRQ3rkjz3bWf
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 17:12:01 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 72FC580531;
- Mon,  9 May 2022 03:11:52 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel] KVM: PPC: Book3s: Remove real mode interrupt
- controller hcalls handlers
-Date: Mon,  9 May 2022 17:11:50 +1000
-Message-Id: <20220509071150.181250-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.30.2
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::635;
+ helo=mail-pl1-x635.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com
+ header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256
+ header.s=20210112 header.b=KZ5PzAAB; dkim-atps=neutral
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com
+ [IPv6:2607:f8b0:4864:20::635])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KxY7N3TK5z2yMK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 17:43:09 +1000 (AEST)
+Received: by mail-pl1-x635.google.com with SMTP id n18so13094993plg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 00:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
+ h=message-id:date:mime-version:user-agent:subject:content-language
+ :from:to:cc:references:in-reply-to:content-transfer-encoding;
+ bh=ehuXX1FBMkXSxSIO1nrsalxMQ5cS613ljbe6bhV7rSM=;
+ b=KZ5PzAABnM7rZuNaEf3eccRR5cnr2G94ZV1XwtYplLCKyR7Q59KUGxguJ34iH486OD
+ HEDUAM2ilO8WK9tEaa1ANMzauRzjKj0RbCNHtZ0SYoraprpNC2WD3MtEQzQtQYHeVt4m
+ rMwT1Xue9YNWdTLjZQvLgNkFguieLN4YXPTP2v3BcKltwIAO9LlDInW7XG93PR4zzILt
+ CaM3xTwlATa+Kn9xRkIa6l8+V7BugxU0TdpJUetZsBK8+g1TKI6xOcmhu6+5agvM4he3
+ Kemu/c/+dpU1Rouv4Fp1Mg3Db9qmgMWsE0LkgjZyx9ukdGGN7uDy2pVFuoR7H5aBX5xw
+ MtpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+ :content-language:from:to:cc:references:in-reply-to
+ :content-transfer-encoding;
+ bh=ehuXX1FBMkXSxSIO1nrsalxMQ5cS613ljbe6bhV7rSM=;
+ b=3JnO6p57QblpNkWh9Y7ITLdPsvjTtGOvCg97XHPNnuvrKe0pg4kb+Nqf9/NWnUZEjU
+ WS/7QzSozPu8nFEwlQJibOuywN3icZVRP9MGUBNVHEv8CTOrvV98iuEL9c3pD/mG+GKb
+ 4JQGLfOelm0aR6RgmUiit16pV6JOtw/i35//VwE0XDk7PqOWiqh1d5Wn6Yfb0UUwloJv
+ 1D6NBpIAZ2Sw598mlYne7IKbkL8skSyOp5+0AqKWzMSHANhHxOaX4GSEywU0nLWOzRr1
+ D/ZRMiH3gplzPvacUtaNP03OCulfv614SjhpBH/MRBNBC8QPsYAIoXg8OGYQczxF8Xpy
+ J7aw==
+X-Gm-Message-State: AOAM532nPM4qofAmaFck2STcAClqH2vOw0FBQ3ZQI8zkxJC3mTi6Wujr
+ fmneiWcSVSkqMcjPPBzHHJNISA==
+X-Google-Smtp-Source: ABdhPJwMgzoh3Y2fXnk2/wstyuVnsZF2oNgkzIUibycLookoAo0VhhE5CajSIyQyjfIXih4W8ze5qQ==
+X-Received: by 2002:a17:90b:1d10:b0:1dc:dea8:d2ad with SMTP id
+ on16-20020a17090b1d1000b001dcdea8d2admr15400232pjb.174.1652082185680; 
+ Mon, 09 May 2022 00:43:05 -0700 (PDT)
+Received: from [10.61.2.177] (110-175-254-242.static.tpgi.com.au.
+ [110.175.254.242]) by smtp.gmail.com with ESMTPSA id
+ c80-20020a621c53000000b0050dc7628132sm8161048pfc.12.2022.05.09.00.43.01
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 May 2022 00:43:05 -0700 (PDT)
+Message-ID: <de7ae055-8cbb-1fd3-e1d7-93f51c2d3f4b@ozlabs.ru>
+Date: Mon, 9 May 2022 17:42:59 +1000
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:100.0) Gecko/20100101
+ Thunderbird/100.0
+Subject: Re: [PATCH kernel] powerpc/llvm/lto: Allow LLVM LTO builds
+Content-Language: en-US
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: Nick Desaulniers <ndesaulniers@google.com>
+References: <20220429064547.2334280-1-aik@ozlabs.ru>
+ <CAKwvOdmUMhqhQhDCpWjMNiQQPvwOJB9MbUkF3RR0BL+H+DagmA@mail.gmail.com>
+ <efe4ec7b-e1ec-84fc-cc49-7e22597ff417@ozlabs.ru>
+In-Reply-To: <efe4ec7b-e1ec-84fc-cc49-7e22597ff417@ozlabs.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -38,1567 +89,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
+Cc: llvm@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
+ Nathan Chancellor <nathan@kernel.org>, Sathvika Vasireddy <sv@linux.ibm.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently we have 2 sets of interrupt controller hypercalls handlers
-for real and virtual modes, this is from POWER8 times when switching
-MMU on was considered an expensive operation.
-
-POWER9 however does not have dependent threads and MMU is enabled for
-handling hcalls so the XIVE native or XICS-on-XIVE real mode handlers
-never execute on real P9 and later CPUs.
-
-This untemplate the handlers and only keeps the real mode handlers for
-XICS native (up to POWER8) and remove the rest of dead code. Changes
-in functions are mechanical except few missing empty lines to make
-checkpatch.pl happy.
-
-The default implemented hcalls list already contains XICS hcalls so
-no change there.
-
-This should not cause any behavioral change.
-
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
-
-Minus 153 lines nevertheless.
 
 
----
- arch/powerpc/kvm/Makefile               |   2 +-
- arch/powerpc/include/asm/kvm_ppc.h      |   7 -
- arch/powerpc/kvm/book3s_xive.h          |   7 -
- arch/powerpc/kvm/book3s_hv_builtin.c    |  64 ---
- arch/powerpc/kvm/book3s_hv_rm_xics.c    |   5 +
- arch/powerpc/kvm/book3s_hv_rm_xive.c    |  46 --
- arch/powerpc/kvm/book3s_xive.c          | 638 +++++++++++++++++++++++-
- arch/powerpc/kvm/book3s_xive_template.c | 636 -----------------------
- arch/powerpc/kvm/book3s_hv_rmhandlers.S |  12 +-
- 9 files changed, 632 insertions(+), 785 deletions(-)
- delete mode 100644 arch/powerpc/kvm/book3s_hv_rm_xive.c
- delete mode 100644 arch/powerpc/kvm/book3s_xive_template.c
+On 5/9/22 15:18, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 5/4/22 07:21, Nick Desaulniers wrote:
+>> On Thu, Apr 28, 2022 at 11:46 PM Alexey Kardashevskiy <aik@ozlabs.ru> 
+>> wrote:
+>>>
+>>> This enables LTO_CLANG builds on POWER with the upstream version of
+>>> LLVM.
+>>>
+>>> LTO optimizes the output vmlinux binary and this may affect the FTP
+>>> alternative section if alt branches use "bc" (Branch Conditional) which
+>>> is limited by 16 bit offsets. This shows up in errors like:
+>>>
+>>> ld.lld: error: InputSection too large for range extension thunk 
+>>> vmlinux.o:(__ftr_alt_97+0xF0)
+>>>
+>>> This works around the issue by replacing "bc" in FTR_SECTION_ELSE with
+>>> "b" which allows 26 bit offsets.
+>>>
+>>> This catches the problem instructions in vmlinux.o before it LTO'ed:
+>>>
+>>> $ objdump -d -M raw -j __ftr_alt_97 vmlinux.o | egrep '\S+\s*\<bc\>'
+>>>    30:   00 00 82 40     bc      4,eq,30 <__ftr_alt_97+0x30>
+>>>    f0:   00 00 82 40     bc      4,eq,f0 <__ftr_alt_97+0xf0>
+>>>
+>>> This allows LTO builds for ppc64le_defconfig plus LTO options.
+>>> Note that DYNAMIC_FTRACE/FUNCTION_TRACER is not supported by LTO builds
+>>> but this is not POWERPC-specific.
+>>
+>> $ ARCH=powerpc make LLVM=1 -j72 ppc64le_defconfig
+>> $ ARCH=powerpc make LLVM=1 -j72 menuconfig
+>> <disable FTRACE, enable LTO_CLANG_THIN>
+>> $ ARCH=powerpc make LLVM=1 -j72
+>> ...
+>>    VDSO64L arch/powerpc/kernel/vdso/vdso64.so.dbg
+>> /usr/bin/powerpc64le-linux-gnu-ld:
+>> /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: error
+>> loading plugin:
+>> /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: cannot open
+>> shared object file: No such file or directory
+>> clang-15: error: linker command failed with exit code 1 (use -v to see
+>> invocation)
+>> make[1]: *** [arch/powerpc/kernel/vdso/Makefile:67:
+>> arch/powerpc/kernel/vdso/vdso64.so.dbg] Error 1
+>>
+>> Looks like LLD isn't being invoked correctly to link the vdso.
+>> Probably need to revisit
+>> https://lore.kernel.org/lkml/20200901222523.1941988-1-ndesaulniers@google.com/
+>>
+>> How were you working around this issue? Perhaps you built clang to
+>> default to LLD? (there's a cmake option for that)
+> 
+> 
+> What option is that? I only add  -DLLVM_ENABLE_LLD=ON  which (I think) 
+> tells cmake to use lld to link the LLVM being built but does not seem to 
+> tell what the built clang should do.
+> 
+> Without -DLLVM_ENABLE_LLD=ON, building just fails:
+> 
+> [fstn1-p1 ~/pbuild/llvm/llvm-lto-latest-cleanbuild]$ ninja -j 100
+> [619/3501] Linking CXX executable bin/not
+> FAILED: bin/not
+> : && /usr/bin/clang++ -fPIC -fvisibility-inlines-hidden 
+> -Werror=date-time -Werror=unguarded-availability-new -Wall -Wextra 
+> -Wno-unused-parameter -Wwrite-strings -Wcast-qual 
+> -Wmissing-field-initializers -pedantic -Wno-long-long 
+> -Wc++98-compat-extra-semi -Wimplicit-fallthrough 
+> -Wcovered-switch-default -Wno-noexcept-type -Wnon-virtual-dtor 
+> -Wdelete-non-virtual-dtor -Wsuggest-override -Wstring-conversion 
+> -Wmisleading-indentation -fdiagnostics-color -ffunction-sections 
+> -fdata-sections -flto -O3 -DNDEBUG -flto 
+> -Wl,-rpath-link,/home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/./lib 
+> -Wl,--gc-sections utils/not/CMakeFiles/not.dir/not.cpp.o -o bin/not 
+> -Wl,-rpath,"\$ORIGIN/../lib"  -lpthread  lib/libLLVMSupport.a  -lrt 
+> -ldl  -lpthread  -lm  /usr/lib/powerpc64le-linux-gnu/libz.so 
+> /usr/lib/powerpc64le-linux-gnu/libtinfo.so  lib/libLLVMDemangle.a && :
+> /usr/bin/ld: lib/libLLVMSupport.a: error adding symbols: archive has no 
+> index; run ranlib to add one
+> clang: error: linker command failed with exit code 1 (use -v to see 
+> invocation)
+> [701/3501] Building CXX object 
+> utils/TableGen/CMakeFiles/llvm-tblgen.dir/GlobalISelEmitter.cpp.o
+> ninja: build stopped: subcommand failed.
+> 
+> 
+> 
+> My head hurts :(
+> The above example is running on PPC. Now I am trying x86 box:
+> 
 
-diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
-index 8e3681a86074..f17379b0f161 100644
---- a/arch/powerpc/kvm/Makefile
-+++ b/arch/powerpc/kvm/Makefile
-@@ -73,7 +73,7 @@ kvm-hv-$(CONFIG_PPC_TRANSACTIONAL_MEM) += \
- 	book3s_hv_tm.o
- 
- kvm-book3s_64-builtin-xics-objs-$(CONFIG_KVM_XICS) := \
--	book3s_hv_rm_xics.o book3s_hv_rm_xive.o
-+	book3s_hv_rm_xics.o
- 
- kvm-book3s_64-builtin-tm-objs-$(CONFIG_PPC_TRANSACTIONAL_MEM) += \
- 	book3s_hv_tm_builtin.o
-diff --git a/arch/powerpc/include/asm/kvm_ppc.h b/arch/powerpc/include/asm/kvm_ppc.h
-index 44200a27371b..a775377a570e 100644
---- a/arch/powerpc/include/asm/kvm_ppc.h
-+++ b/arch/powerpc/include/asm/kvm_ppc.h
-@@ -787,13 +787,6 @@ long kvmppc_rm_h_page_init(struct kvm_vcpu *vcpu, unsigned long flags,
- 			   unsigned long dest, unsigned long src);
- long kvmppc_hpte_hv_fault(struct kvm_vcpu *vcpu, unsigned long addr,
-                           unsigned long slb_v, unsigned int status, bool data);
--unsigned long kvmppc_rm_h_xirr(struct kvm_vcpu *vcpu);
--unsigned long kvmppc_rm_h_xirr_x(struct kvm_vcpu *vcpu);
--unsigned long kvmppc_rm_h_ipoll(struct kvm_vcpu *vcpu, unsigned long server);
--int kvmppc_rm_h_ipi(struct kvm_vcpu *vcpu, unsigned long server,
--                    unsigned long mfrr);
--int kvmppc_rm_h_cppr(struct kvm_vcpu *vcpu, unsigned long cppr);
--int kvmppc_rm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr);
- void kvmppc_guest_entry_inject_int(struct kvm_vcpu *vcpu);
- 
- /*
-diff --git a/arch/powerpc/kvm/book3s_xive.h b/arch/powerpc/kvm/book3s_xive.h
-index 09d0657596c3..1e48f72e8aa5 100644
---- a/arch/powerpc/kvm/book3s_xive.h
-+++ b/arch/powerpc/kvm/book3s_xive.h
-@@ -285,13 +285,6 @@ static inline u32 __xive_read_eq(__be32 *qpage, u32 msk, u32 *idx, u32 *toggle)
- 	return cur & 0x7fffffff;
- }
- 
--extern unsigned long xive_rm_h_xirr(struct kvm_vcpu *vcpu);
--extern unsigned long xive_rm_h_ipoll(struct kvm_vcpu *vcpu, unsigned long server);
--extern int xive_rm_h_ipi(struct kvm_vcpu *vcpu, unsigned long server,
--			 unsigned long mfrr);
--extern int xive_rm_h_cppr(struct kvm_vcpu *vcpu, unsigned long cppr);
--extern int xive_rm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr);
--
- /*
-  * Common Xive routines for XICS-over-XIVE and XIVE native
-  */
-diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-index 7e52d0beee77..88a8f6473c4e 100644
---- a/arch/powerpc/kvm/book3s_hv_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-@@ -489,70 +489,6 @@ static long kvmppc_read_one_intr(bool *again)
- 	return kvmppc_check_passthru(xisr, xirr, again);
- }
- 
--#ifdef CONFIG_KVM_XICS
--unsigned long kvmppc_rm_h_xirr(struct kvm_vcpu *vcpu)
--{
--	if (!kvmppc_xics_enabled(vcpu))
--		return H_TOO_HARD;
--	if (xics_on_xive())
--		return xive_rm_h_xirr(vcpu);
--	else
--		return xics_rm_h_xirr(vcpu);
--}
--
--unsigned long kvmppc_rm_h_xirr_x(struct kvm_vcpu *vcpu)
--{
--	if (!kvmppc_xics_enabled(vcpu))
--		return H_TOO_HARD;
--	vcpu->arch.regs.gpr[5] = get_tb();
--	if (xics_on_xive())
--		return xive_rm_h_xirr(vcpu);
--	else
--		return xics_rm_h_xirr(vcpu);
--}
--
--unsigned long kvmppc_rm_h_ipoll(struct kvm_vcpu *vcpu, unsigned long server)
--{
--	if (!kvmppc_xics_enabled(vcpu))
--		return H_TOO_HARD;
--	if (xics_on_xive())
--		return xive_rm_h_ipoll(vcpu, server);
--	else
--		return H_TOO_HARD;
--}
--
--int kvmppc_rm_h_ipi(struct kvm_vcpu *vcpu, unsigned long server,
--		    unsigned long mfrr)
--{
--	if (!kvmppc_xics_enabled(vcpu))
--		return H_TOO_HARD;
--	if (xics_on_xive())
--		return xive_rm_h_ipi(vcpu, server, mfrr);
--	else
--		return xics_rm_h_ipi(vcpu, server, mfrr);
--}
--
--int kvmppc_rm_h_cppr(struct kvm_vcpu *vcpu, unsigned long cppr)
--{
--	if (!kvmppc_xics_enabled(vcpu))
--		return H_TOO_HARD;
--	if (xics_on_xive())
--		return xive_rm_h_cppr(vcpu, cppr);
--	else
--		return xics_rm_h_cppr(vcpu, cppr);
--}
--
--int kvmppc_rm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr)
--{
--	if (!kvmppc_xics_enabled(vcpu))
--		return H_TOO_HARD;
--	if (xics_on_xive())
--		return xive_rm_h_eoi(vcpu, xirr);
--	else
--		return xics_rm_h_eoi(vcpu, xirr);
--}
--#endif /* CONFIG_KVM_XICS */
--
- void kvmppc_bad_interrupt(struct pt_regs *regs)
- {
- 	/*
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_xics.c b/arch/powerpc/kvm/book3s_hv_rm_xics.c
-index 587c33fc4564..e2246b715f68 100644
---- a/arch/powerpc/kvm/book3s_hv_rm_xics.c
-+++ b/arch/powerpc/kvm/book3s_hv_rm_xics.c
-@@ -479,6 +479,11 @@ static void icp_rm_down_cppr(struct kvmppc_xics *xics, struct kvmppc_icp *icp,
- 	}
- }
- 
-+unsigned long xics_rm_h_xirr_x(struct kvm_vcpu *vcpu)
-+{
-+	vcpu->arch.regs.gpr[5] = get_tb();
-+	return xics_rm_h_xirr(vcpu);
-+}
- 
- unsigned long xics_rm_h_xirr(struct kvm_vcpu *vcpu)
- {
-diff --git a/arch/powerpc/kvm/book3s_hv_rm_xive.c b/arch/powerpc/kvm/book3s_hv_rm_xive.c
-deleted file mode 100644
-index dd9880731bd6..000000000000
---- a/arch/powerpc/kvm/book3s_hv_rm_xive.c
-+++ /dev/null
-@@ -1,46 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/kernel.h>
--#include <linux/kvm_host.h>
--#include <linux/err.h>
--#include <linux/kernel_stat.h>
--#include <linux/pgtable.h>
--
--#include <asm/kvm_book3s.h>
--#include <asm/kvm_ppc.h>
--#include <asm/hvcall.h>
--#include <asm/xics.h>
--#include <asm/debug.h>
--#include <asm/synch.h>
--#include <asm/cputhreads.h>
--#include <asm/ppc-opcode.h>
--#include <asm/pnv-pci.h>
--#include <asm/opal.h>
--#include <asm/smp.h>
--#include <asm/xive.h>
--#include <asm/xive-regs.h>
--
--#include "book3s_xive.h"
--
--/* XXX */
--#include <asm/udbg.h>
--//#define DBG(fmt...) udbg_printf(fmt)
--#define DBG(fmt...) do { } while(0)
--
--static inline void __iomem *get_tima_phys(void)
--{
--	return local_paca->kvm_hstate.xive_tima_phys;
--}
--
--#undef XIVE_RUNTIME_CHECKS
--#define X_PFX xive_rm_
--#define X_STATIC
--#define X_STAT_PFX stat_rm_
--#define __x_tima		get_tima_phys()
--#define __x_eoi_page(xd)	((void __iomem *)((xd)->eoi_page))
--#define __x_trig_page(xd)	((void __iomem *)((xd)->trig_page))
--#define __x_writeb	__raw_rm_writeb
--#define __x_readw	__raw_rm_readw
--#define __x_readq	__raw_rm_readq
--#define __x_writeq	__raw_rm_writeq
--
--#include "book3s_xive_template.c"
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index c0ce5531d9bc..65515a96498a 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -30,27 +30,629 @@
- 
- #include "book3s_xive.h"
- 
--
--/*
-- * Virtual mode variants of the hcalls for use on radix/radix
-- * with AIL. They require the VCPU's VP to be "pushed"
-- *
-- * We still instantiate them here because we use some of the
-- * generated utility functions as well in this file.
-- */
--#define XIVE_RUNTIME_CHECKS
--#define X_PFX xive_vm_
--#define X_STATIC static
--#define X_STAT_PFX stat_vm_
--#define __x_tima		xive_tima
- #define __x_eoi_page(xd)	((void __iomem *)((xd)->eoi_mmio))
- #define __x_trig_page(xd)	((void __iomem *)((xd)->trig_mmio))
--#define __x_writeb	__raw_writeb
--#define __x_readw	__raw_readw
--#define __x_readq	__raw_readq
--#define __x_writeq	__raw_writeq
- 
--#include "book3s_xive_template.c"
-+/* Dummy interrupt used when taking interrupts out of a queue in H_CPPR */
-+#define XICS_DUMMY	1
-+
-+static void xive_vm_ack_pending(struct kvmppc_xive_vcpu *xc)
-+{
-+	u8 cppr;
-+	u16 ack;
-+
-+	/*
-+	 * Ensure any previous store to CPPR is ordered vs.
-+	 * the subsequent loads from PIPR or ACK.
-+	 */
-+	eieio();
-+
-+	/* Perform the acknowledge OS to register cycle. */
-+	ack = be16_to_cpu(__raw_readw(xive_tima + TM_SPC_ACK_OS_REG));
-+
-+	/* Synchronize subsequent queue accesses */
-+	mb();
-+
-+	/* XXX Check grouping level */
-+
-+	/* Anything ? */
-+	if (!((ack >> 8) & TM_QW1_NSR_EO))
-+		return;
-+
-+	/* Grab CPPR of the most favored pending interrupt */
-+	cppr = ack & 0xff;
-+	if (cppr < 8)
-+		xc->pending |= 1 << cppr;
-+
-+	/* Check consistency */
-+	if (cppr >= xc->hw_cppr)
-+		pr_warn("KVM-XIVE: CPU %d odd ack CPPR, got %d at %d\n",
-+			smp_processor_id(), cppr, xc->hw_cppr);
-+
-+	/*
-+	 * Update our image of the HW CPPR. We don't yet modify
-+	 * xc->cppr, this will be done as we scan for interrupts
-+	 * in the queues.
-+	 */
-+	xc->hw_cppr = cppr;
-+}
-+
-+static u8 xive_vm_esb_load(struct xive_irq_data *xd, u32 offset)
-+{
-+	u64 val;
-+
-+	if (offset == XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
-+		offset |= XIVE_ESB_LD_ST_MO;
-+
-+	val = __raw_readq(__x_eoi_page(xd) + offset);
-+#ifdef __LITTLE_ENDIAN__
-+	val >>= 64-8;
-+#endif
-+	return (u8)val;
-+}
-+
-+
-+static void xive_vm_source_eoi(u32 hw_irq, struct xive_irq_data *xd)
-+{
-+	/* If the XIVE supports the new "store EOI facility, use it */
-+	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
-+		__raw_writeq(0, __x_eoi_page(xd) + XIVE_ESB_STORE_EOI);
-+	else if (xd->flags & XIVE_IRQ_FLAG_LSI) {
-+		/*
-+		 * For LSIs the HW EOI cycle is used rather than PQ bits,
-+		 * as they are automatically re-triggred in HW when still
-+		 * pending.
-+		 */
-+		__raw_readq(__x_eoi_page(xd) + XIVE_ESB_LOAD_EOI);
-+	} else {
-+		uint64_t eoi_val;
-+
-+		/*
-+		 * Otherwise for EOI, we use the special MMIO that does
-+		 * a clear of both P and Q and returns the old Q,
-+		 * except for LSIs where we use the "EOI cycle" special
-+		 * load.
-+		 *
-+		 * This allows us to then do a re-trigger if Q was set
-+		 * rather than synthetizing an interrupt in software
-+		 */
-+		eoi_val = xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_00);
-+
-+		/* Re-trigger if needed */
-+		if ((eoi_val & 1) && __x_trig_page(xd))
-+			__raw_writeq(0, __x_trig_page(xd));
-+	}
-+}
-+
-+enum {
-+	scan_fetch,
-+	scan_poll,
-+	scan_eoi,
-+};
-+
-+static u32 xive_vm_scan_interrupts(struct kvmppc_xive_vcpu *xc,
-+				       u8 pending, int scan_type)
-+{
-+	u32 hirq = 0;
-+	u8 prio = 0xff;
-+
-+	/* Find highest pending priority */
-+	while ((xc->mfrr != 0xff || pending != 0) && hirq == 0) {
-+		struct xive_q *q;
-+		u32 idx, toggle;
-+		__be32 *qpage;
-+
-+		/*
-+		 * If pending is 0 this will return 0xff which is what
-+		 * we want
-+		 */
-+		prio = ffs(pending) - 1;
-+
-+		/* Don't scan past the guest cppr */
-+		if (prio >= xc->cppr || prio > 7) {
-+			if (xc->mfrr < xc->cppr) {
-+				prio = xc->mfrr;
-+				hirq = XICS_IPI;
-+			}
-+			break;
-+		}
-+
-+		/* Grab queue and pointers */
-+		q = &xc->queues[prio];
-+		idx = q->idx;
-+		toggle = q->toggle;
-+
-+		/*
-+		 * Snapshot the queue page. The test further down for EOI
-+		 * must use the same "copy" that was used by __xive_read_eq
-+		 * since qpage can be set concurrently and we don't want
-+		 * to miss an EOI.
-+		 */
-+		qpage = READ_ONCE(q->qpage);
-+
-+skip_ipi:
-+		/*
-+		 * Try to fetch from the queue. Will return 0 for a
-+		 * non-queueing priority (ie, qpage = 0).
-+		 */
-+		hirq = __xive_read_eq(qpage, q->msk, &idx, &toggle);
-+
-+		/*
-+		 * If this was a signal for an MFFR change done by
-+		 * H_IPI we skip it. Additionally, if we were fetching
-+		 * we EOI it now, thus re-enabling reception of a new
-+		 * such signal.
-+		 *
-+		 * We also need to do that if prio is 0 and we had no
-+		 * page for the queue. In this case, we have non-queued
-+		 * IPI that needs to be EOId.
-+		 *
-+		 * This is safe because if we have another pending MFRR
-+		 * change that wasn't observed above, the Q bit will have
-+		 * been set and another occurrence of the IPI will trigger.
-+		 */
-+		if (hirq == XICS_IPI || (prio == 0 && !qpage)) {
-+			if (scan_type == scan_fetch) {
-+				xive_vm_source_eoi(xc->vp_ipi,
-+						       &xc->vp_ipi_data);
-+				q->idx = idx;
-+				q->toggle = toggle;
-+			}
-+			/* Loop back on same queue with updated idx/toggle */
-+			WARN_ON(hirq && hirq != XICS_IPI);
-+			if (hirq)
-+				goto skip_ipi;
-+		}
-+
-+		/* If it's the dummy interrupt, continue searching */
-+		if (hirq == XICS_DUMMY)
-+			goto skip_ipi;
-+
-+		/* Clear the pending bit if the queue is now empty */
-+		if (!hirq) {
-+			pending &= ~(1 << prio);
-+
-+			/*
-+			 * Check if the queue count needs adjusting due to
-+			 * interrupts being moved away.
-+			 */
-+			if (atomic_read(&q->pending_count)) {
-+				int p = atomic_xchg(&q->pending_count, 0);
-+
-+				if (p) {
-+					WARN_ON(p > atomic_read(&q->count));
-+					atomic_sub(p, &q->count);
-+				}
-+			}
-+		}
-+
-+		/*
-+		 * If the most favoured prio we found pending is less
-+		 * favored (or equal) than a pending IPI, we return
-+		 * the IPI instead.
-+		 */
-+		if (prio >= xc->mfrr && xc->mfrr < xc->cppr) {
-+			prio = xc->mfrr;
-+			hirq = XICS_IPI;
-+			break;
-+		}
-+
-+		/* If fetching, update queue pointers */
-+		if (scan_type == scan_fetch) {
-+			q->idx = idx;
-+			q->toggle = toggle;
-+		}
-+	}
-+
-+	/* If we are just taking a "peek", do nothing else */
-+	if (scan_type == scan_poll)
-+		return hirq;
-+
-+	/* Update the pending bits */
-+	xc->pending = pending;
-+
-+	/*
-+	 * If this is an EOI that's it, no CPPR adjustment done here,
-+	 * all we needed was cleanup the stale pending bits and check
-+	 * if there's anything left.
-+	 */
-+	if (scan_type == scan_eoi)
-+		return hirq;
-+
-+	/*
-+	 * If we found an interrupt, adjust what the guest CPPR should
-+	 * be as if we had just fetched that interrupt from HW.
-+	 *
-+	 * Note: This can only make xc->cppr smaller as the previous
-+	 * loop will only exit with hirq != 0 if prio is lower than
-+	 * the current xc->cppr. Thus we don't need to re-check xc->mfrr
-+	 * for pending IPIs.
-+	 */
-+	if (hirq)
-+		xc->cppr = prio;
-+	/*
-+	 * If it was an IPI the HW CPPR might have been lowered too much
-+	 * as the HW interrupt we use for IPIs is routed to priority 0.
-+	 *
-+	 * We re-sync it here.
-+	 */
-+	if (xc->cppr != xc->hw_cppr) {
-+		xc->hw_cppr = xc->cppr;
-+		__raw_writeb(xc->cppr, xive_tima + TM_QW1_OS + TM_CPPR);
-+	}
-+
-+	return hirq;
-+}
-+
-+static unsigned long xive_vm_h_xirr(struct kvm_vcpu *vcpu)
-+{
-+	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
-+	u8 old_cppr;
-+	u32 hirq;
-+
-+	pr_devel("H_XIRR\n");
-+
-+	xc->stat_vm_h_xirr++;
-+
-+	/* First collect pending bits from HW */
-+	xive_vm_ack_pending(xc);
-+
-+	pr_devel(" new pending=0x%02x hw_cppr=%d cppr=%d\n",
-+		 xc->pending, xc->hw_cppr, xc->cppr);
-+
-+	/* Grab previous CPPR and reverse map it */
-+	old_cppr = xive_prio_to_guest(xc->cppr);
-+
-+	/* Scan for actual interrupts */
-+	hirq = xive_vm_scan_interrupts(xc, xc->pending, scan_fetch);
-+
-+	pr_devel(" got hirq=0x%x hw_cppr=%d cppr=%d\n",
-+		 hirq, xc->hw_cppr, xc->cppr);
-+
-+	/* That should never hit */
-+	if (hirq & 0xff000000)
-+		pr_warn("XIVE: Weird guest interrupt number 0x%08x\n", hirq);
-+
-+	/*
-+	 * XXX We could check if the interrupt is masked here and
-+	 * filter it. If we chose to do so, we would need to do:
-+	 *
-+	 *    if (masked) {
-+	 *        lock();
-+	 *        if (masked) {
-+	 *            old_Q = true;
-+	 *            hirq = 0;
-+	 *        }
-+	 *        unlock();
-+	 *    }
-+	 */
-+
-+	/* Return interrupt and old CPPR in GPR4 */
-+	vcpu->arch.regs.gpr[4] = hirq | (old_cppr << 24);
-+
-+	return H_SUCCESS;
-+}
-+
-+static unsigned long xive_vm_h_ipoll(struct kvm_vcpu *vcpu, unsigned long server)
-+{
-+	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
-+	u8 pending = xc->pending;
-+	u32 hirq;
-+
-+	pr_devel("H_IPOLL(server=%ld)\n", server);
-+
-+	xc->stat_vm_h_ipoll++;
-+
-+	/* Grab the target VCPU if not the current one */
-+	if (xc->server_num != server) {
-+		vcpu = kvmppc_xive_find_server(vcpu->kvm, server);
-+		if (!vcpu)
-+			return H_PARAMETER;
-+		xc = vcpu->arch.xive_vcpu;
-+
-+		/* Scan all priorities */
-+		pending = 0xff;
-+	} else {
-+		/* Grab pending interrupt if any */
-+		__be64 qw1 = __raw_readq(xive_tima + TM_QW1_OS);
-+		u8 pipr = be64_to_cpu(qw1) & 0xff;
-+
-+		if (pipr < 8)
-+			pending |= 1 << pipr;
-+	}
-+
-+	hirq = xive_vm_scan_interrupts(xc, pending, scan_poll);
-+
-+	/* Return interrupt and old CPPR in GPR4 */
-+	vcpu->arch.regs.gpr[4] = hirq | (xc->cppr << 24);
-+
-+	return H_SUCCESS;
-+}
-+
-+static void xive_vm_push_pending_to_hw(struct kvmppc_xive_vcpu *xc)
-+{
-+	u8 pending, prio;
-+
-+	pending = xc->pending;
-+	if (xc->mfrr != 0xff) {
-+		if (xc->mfrr < 8)
-+			pending |= 1 << xc->mfrr;
-+		else
-+			pending |= 0x80;
-+	}
-+	if (!pending)
-+		return;
-+	prio = ffs(pending) - 1;
-+
-+	__raw_writeb(prio, xive_tima + TM_SPC_SET_OS_PENDING);
-+}
-+
-+static void xive_vm_scan_for_rerouted_irqs(struct kvmppc_xive *xive,
-+					       struct kvmppc_xive_vcpu *xc)
-+{
-+	unsigned int prio;
-+
-+	/* For each priority that is now masked */
-+	for (prio = xc->cppr; prio < KVMPPC_XIVE_Q_COUNT; prio++) {
-+		struct xive_q *q = &xc->queues[prio];
-+		struct kvmppc_xive_irq_state *state;
-+		struct kvmppc_xive_src_block *sb;
-+		u32 idx, toggle, entry, irq, hw_num;
-+		struct xive_irq_data *xd;
-+		__be32 *qpage;
-+		u16 src;
-+
-+		idx = q->idx;
-+		toggle = q->toggle;
-+		qpage = READ_ONCE(q->qpage);
-+		if (!qpage)
-+			continue;
-+
-+		/* For each interrupt in the queue */
-+		for (;;) {
-+			entry = be32_to_cpup(qpage + idx);
-+
-+			/* No more ? */
-+			if ((entry >> 31) == toggle)
-+				break;
-+			irq = entry & 0x7fffffff;
-+
-+			/* Skip dummies and IPIs */
-+			if (irq == XICS_DUMMY || irq == XICS_IPI)
-+				goto next;
-+			sb = kvmppc_xive_find_source(xive, irq, &src);
-+			if (!sb)
-+				goto next;
-+			state = &sb->irq_state[src];
-+
-+			/* Has it been rerouted ? */
-+			if (xc->server_num == state->act_server)
-+				goto next;
-+
-+			/*
-+			 * Allright, it *has* been re-routed, kill it from
-+			 * the queue.
-+			 */
-+			qpage[idx] = cpu_to_be32((entry & 0x80000000) | XICS_DUMMY);
-+
-+			/* Find the HW interrupt */
-+			kvmppc_xive_select_irq(state, &hw_num, &xd);
-+
-+			/* If it's not an LSI, set PQ to 11 the EOI will force a resend */
-+			if (!(xd->flags & XIVE_IRQ_FLAG_LSI))
-+				xive_vm_esb_load(xd, XIVE_ESB_SET_PQ_11);
-+
-+			/* EOI the source */
-+			xive_vm_source_eoi(hw_num, xd);
-+
-+next:
-+			idx = (idx + 1) & q->msk;
-+			if (idx == 0)
-+				toggle ^= 1;
-+		}
-+	}
-+}
-+
-+static int xive_vm_h_cppr(struct kvm_vcpu *vcpu, unsigned long cppr)
-+{
-+	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
-+	struct kvmppc_xive *xive = vcpu->kvm->arch.xive;
-+	u8 old_cppr;
-+
-+	pr_devel("H_CPPR(cppr=%ld)\n", cppr);
-+
-+	xc->stat_vm_h_cppr++;
-+
-+	/* Map CPPR */
-+	cppr = xive_prio_from_guest(cppr);
-+
-+	/* Remember old and update SW state */
-+	old_cppr = xc->cppr;
-+	xc->cppr = cppr;
-+
-+	/*
-+	 * Order the above update of xc->cppr with the subsequent
-+	 * read of xc->mfrr inside push_pending_to_hw()
-+	 */
-+	smp_mb();
-+
-+	if (cppr > old_cppr) {
-+		/*
-+		 * We are masking less, we need to look for pending things
-+		 * to deliver and set VP pending bits accordingly to trigger
-+		 * a new interrupt otherwise we might miss MFRR changes for
-+		 * which we have optimized out sending an IPI signal.
-+		 */
-+		xive_vm_push_pending_to_hw(xc);
-+	} else {
-+		/*
-+		 * We are masking more, we need to check the queue for any
-+		 * interrupt that has been routed to another CPU, take
-+		 * it out (replace it with the dummy) and retrigger it.
-+		 *
-+		 * This is necessary since those interrupts may otherwise
-+		 * never be processed, at least not until this CPU restores
-+		 * its CPPR.
-+		 *
-+		 * This is in theory racy vs. HW adding new interrupts to
-+		 * the queue. In practice this works because the interesting
-+		 * cases are when the guest has done a set_xive() to move the
-+		 * interrupt away, which flushes the xive, followed by the
-+		 * target CPU doing a H_CPPR. So any new interrupt coming into
-+		 * the queue must still be routed to us and isn't a source
-+		 * of concern.
-+		 */
-+		xive_vm_scan_for_rerouted_irqs(xive, xc);
-+	}
-+
-+	/* Apply new CPPR */
-+	xc->hw_cppr = cppr;
-+	__raw_writeb(cppr, xive_tima + TM_QW1_OS + TM_CPPR);
-+
-+	return H_SUCCESS;
-+}
-+
-+static int xive_vm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr)
-+{
-+	struct kvmppc_xive *xive = vcpu->kvm->arch.xive;
-+	struct kvmppc_xive_src_block *sb;
-+	struct kvmppc_xive_irq_state *state;
-+	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
-+	struct xive_irq_data *xd;
-+	u8 new_cppr = xirr >> 24;
-+	u32 irq = xirr & 0x00ffffff, hw_num;
-+	u16 src;
-+	int rc = 0;
-+
-+	pr_devel("H_EOI(xirr=%08lx)\n", xirr);
-+
-+	xc->stat_vm_h_eoi++;
-+
-+	xc->cppr = xive_prio_from_guest(new_cppr);
-+
-+	/*
-+	 * IPIs are synthetized from MFRR and thus don't need
-+	 * any special EOI handling. The underlying interrupt
-+	 * used to signal MFRR changes is EOId when fetched from
-+	 * the queue.
-+	 */
-+	if (irq == XICS_IPI || irq == 0) {
-+		/*
-+		 * This barrier orders the setting of xc->cppr vs.
-+		 * subsquent test of xc->mfrr done inside
-+		 * scan_interrupts and push_pending_to_hw
-+		 */
-+		smp_mb();
-+		goto bail;
-+	}
-+
-+	/* Find interrupt source */
-+	sb = kvmppc_xive_find_source(xive, irq, &src);
-+	if (!sb) {
-+		pr_devel(" source not found !\n");
-+		rc = H_PARAMETER;
-+		/* Same as above */
-+		smp_mb();
-+		goto bail;
-+	}
-+	state = &sb->irq_state[src];
-+	kvmppc_xive_select_irq(state, &hw_num, &xd);
-+
-+	state->in_eoi = true;
-+
-+	/*
-+	 * This barrier orders both setting of in_eoi above vs,
-+	 * subsequent test of guest_priority, and the setting
-+	 * of xc->cppr vs. subsquent test of xc->mfrr done inside
-+	 * scan_interrupts and push_pending_to_hw
-+	 */
-+	smp_mb();
-+
-+again:
-+	if (state->guest_priority == MASKED) {
-+		arch_spin_lock(&sb->lock);
-+		if (state->guest_priority != MASKED) {
-+			arch_spin_unlock(&sb->lock);
-+			goto again;
-+		}
-+		pr_devel(" EOI on saved P...\n");
-+
-+		/* Clear old_p, that will cause unmask to perform an EOI */
-+		state->old_p = false;
-+
-+		arch_spin_unlock(&sb->lock);
-+	} else {
-+		pr_devel(" EOI on source...\n");
-+
-+		/* Perform EOI on the source */
-+		xive_vm_source_eoi(hw_num, xd);
-+
-+		/* If it's an emulated LSI, check level and resend */
-+		if (state->lsi && state->asserted)
-+			__raw_writeq(0, __x_trig_page(xd));
-+
-+	}
-+
-+	/*
-+	 * This barrier orders the above guest_priority check
-+	 * and spin_lock/unlock with clearing in_eoi below.
-+	 *
-+	 * It also has to be a full mb() as it must ensure
-+	 * the MMIOs done in source_eoi() are completed before
-+	 * state->in_eoi is visible.
-+	 */
-+	mb();
-+	state->in_eoi = false;
-+bail:
-+
-+	/* Re-evaluate pending IRQs and update HW */
-+	xive_vm_scan_interrupts(xc, xc->pending, scan_eoi);
-+	xive_vm_push_pending_to_hw(xc);
-+	pr_devel(" after scan pending=%02x\n", xc->pending);
-+
-+	/* Apply new CPPR */
-+	xc->hw_cppr = xc->cppr;
-+	__raw_writeb(xc->cppr, xive_tima + TM_QW1_OS + TM_CPPR);
-+
-+	return rc;
-+}
-+
-+static int xive_vm_h_ipi(struct kvm_vcpu *vcpu, unsigned long server,
-+			       unsigned long mfrr)
-+{
-+	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
-+
-+	pr_devel("H_IPI(server=%08lx,mfrr=%ld)\n", server, mfrr);
-+
-+	xc->stat_vm_h_ipi++;
-+
-+	/* Find target */
-+	vcpu = kvmppc_xive_find_server(vcpu->kvm, server);
-+	if (!vcpu)
-+		return H_PARAMETER;
-+	xc = vcpu->arch.xive_vcpu;
-+
-+	/* Locklessly write over MFRR */
-+	xc->mfrr = mfrr;
-+
-+	/*
-+	 * The load of xc->cppr below and the subsequent MMIO store
-+	 * to the IPI must happen after the above mfrr update is
-+	 * globally visible so that:
-+	 *
-+	 * - Synchronize with another CPU doing an H_EOI or a H_CPPR
-+	 *   updating xc->cppr then reading xc->mfrr.
-+	 *
-+	 * - The target of the IPI sees the xc->mfrr update
-+	 */
-+	mb();
-+
-+	/* Shoot the IPI if most favored than target cppr */
-+	if (mfrr < xc->cppr)
-+		__raw_writeq(0, __x_trig_page(&xc->vp_ipi_data));
-+
-+	return H_SUCCESS;
-+}
- 
- /*
-  * We leave a gap of a couple of interrupts in the queue to
-diff --git a/arch/powerpc/kvm/book3s_xive_template.c b/arch/powerpc/kvm/book3s_xive_template.c
-deleted file mode 100644
-index b0015e05d99a..000000000000
---- a/arch/powerpc/kvm/book3s_xive_template.c
-+++ /dev/null
-@@ -1,636 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright 2017 Benjamin Herrenschmidt, IBM Corporation
-- */
--
--/* File to be included by other .c files */
--
--#define XGLUE(a,b) a##b
--#define GLUE(a,b) XGLUE(a,b)
--
--/* Dummy interrupt used when taking interrupts out of a queue in H_CPPR */
--#define XICS_DUMMY	1
--
--static void GLUE(X_PFX,ack_pending)(struct kvmppc_xive_vcpu *xc)
--{
--	u8 cppr;
--	u16 ack;
--
--	/*
--	 * Ensure any previous store to CPPR is ordered vs.
--	 * the subsequent loads from PIPR or ACK.
--	 */
--	eieio();
--
--	/* Perform the acknowledge OS to register cycle. */
--	ack = be16_to_cpu(__x_readw(__x_tima + TM_SPC_ACK_OS_REG));
--
--	/* Synchronize subsequent queue accesses */
--	mb();
--
--	/* XXX Check grouping level */
--
--	/* Anything ? */
--	if (!((ack >> 8) & TM_QW1_NSR_EO))
--		return;
--
--	/* Grab CPPR of the most favored pending interrupt */
--	cppr = ack & 0xff;
--	if (cppr < 8)
--		xc->pending |= 1 << cppr;
--
--#ifdef XIVE_RUNTIME_CHECKS
--	/* Check consistency */
--	if (cppr >= xc->hw_cppr)
--		pr_warn("KVM-XIVE: CPU %d odd ack CPPR, got %d at %d\n",
--			smp_processor_id(), cppr, xc->hw_cppr);
--#endif
--
--	/*
--	 * Update our image of the HW CPPR. We don't yet modify
--	 * xc->cppr, this will be done as we scan for interrupts
--	 * in the queues.
--	 */
--	xc->hw_cppr = cppr;
--}
--
--static u8 GLUE(X_PFX,esb_load)(struct xive_irq_data *xd, u32 offset)
--{
--	u64 val;
--
--	if (offset == XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
--		offset |= XIVE_ESB_LD_ST_MO;
--
--	val =__x_readq(__x_eoi_page(xd) + offset);
--#ifdef __LITTLE_ENDIAN__
--	val >>= 64-8;
--#endif
--	return (u8)val;
--}
--
--
--static void GLUE(X_PFX,source_eoi)(u32 hw_irq, struct xive_irq_data *xd)
--{
--	/* If the XIVE supports the new "store EOI facility, use it */
--	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
--		__x_writeq(0, __x_eoi_page(xd) + XIVE_ESB_STORE_EOI);
--	else if (xd->flags & XIVE_IRQ_FLAG_LSI) {
--		/*
--		 * For LSIs the HW EOI cycle is used rather than PQ bits,
--		 * as they are automatically re-triggred in HW when still
--		 * pending.
--		 */
--		__x_readq(__x_eoi_page(xd) + XIVE_ESB_LOAD_EOI);
--	} else {
--		uint64_t eoi_val;
--
--		/*
--		 * Otherwise for EOI, we use the special MMIO that does
--		 * a clear of both P and Q and returns the old Q,
--		 * except for LSIs where we use the "EOI cycle" special
--		 * load.
--		 *
--		 * This allows us to then do a re-trigger if Q was set
--		 * rather than synthetizing an interrupt in software
--		 */
--		eoi_val = GLUE(X_PFX,esb_load)(xd, XIVE_ESB_SET_PQ_00);
--
--		/* Re-trigger if needed */
--		if ((eoi_val & 1) && __x_trig_page(xd))
--			__x_writeq(0, __x_trig_page(xd));
--	}
--}
--
--enum {
--	scan_fetch,
--	scan_poll,
--	scan_eoi,
--};
--
--static u32 GLUE(X_PFX,scan_interrupts)(struct kvmppc_xive_vcpu *xc,
--				       u8 pending, int scan_type)
--{
--	u32 hirq = 0;
--	u8 prio = 0xff;
--
--	/* Find highest pending priority */
--	while ((xc->mfrr != 0xff || pending != 0) && hirq == 0) {
--		struct xive_q *q;
--		u32 idx, toggle;
--		__be32 *qpage;
--
--		/*
--		 * If pending is 0 this will return 0xff which is what
--		 * we want
--		 */
--		prio = ffs(pending) - 1;
--
--		/* Don't scan past the guest cppr */
--		if (prio >= xc->cppr || prio > 7) {
--			if (xc->mfrr < xc->cppr) {
--				prio = xc->mfrr;
--				hirq = XICS_IPI;
--			}
--			break;
--		}
--
--		/* Grab queue and pointers */
--		q = &xc->queues[prio];
--		idx = q->idx;
--		toggle = q->toggle;
--
--		/*
--		 * Snapshot the queue page. The test further down for EOI
--		 * must use the same "copy" that was used by __xive_read_eq
--		 * since qpage can be set concurrently and we don't want
--		 * to miss an EOI.
--		 */
--		qpage = READ_ONCE(q->qpage);
--
--skip_ipi:
--		/*
--		 * Try to fetch from the queue. Will return 0 for a
--		 * non-queueing priority (ie, qpage = 0).
--		 */
--		hirq = __xive_read_eq(qpage, q->msk, &idx, &toggle);
--
--		/*
--		 * If this was a signal for an MFFR change done by
--		 * H_IPI we skip it. Additionally, if we were fetching
--		 * we EOI it now, thus re-enabling reception of a new
--		 * such signal.
--		 *
--		 * We also need to do that if prio is 0 and we had no
--		 * page for the queue. In this case, we have non-queued
--		 * IPI that needs to be EOId.
--		 *
--		 * This is safe because if we have another pending MFRR
--		 * change that wasn't observed above, the Q bit will have
--		 * been set and another occurrence of the IPI will trigger.
--		 */
--		if (hirq == XICS_IPI || (prio == 0 && !qpage)) {
--			if (scan_type == scan_fetch) {
--				GLUE(X_PFX,source_eoi)(xc->vp_ipi,
--						       &xc->vp_ipi_data);
--				q->idx = idx;
--				q->toggle = toggle;
--			}
--			/* Loop back on same queue with updated idx/toggle */
--#ifdef XIVE_RUNTIME_CHECKS
--			WARN_ON(hirq && hirq != XICS_IPI);
--#endif
--			if (hirq)
--				goto skip_ipi;
--		}
--
--		/* If it's the dummy interrupt, continue searching */
--		if (hirq == XICS_DUMMY)
--			goto skip_ipi;
--
--		/* Clear the pending bit if the queue is now empty */
--		if (!hirq) {
--			pending &= ~(1 << prio);
--
--			/*
--			 * Check if the queue count needs adjusting due to
--			 * interrupts being moved away.
--			 */
--			if (atomic_read(&q->pending_count)) {
--				int p = atomic_xchg(&q->pending_count, 0);
--				if (p) {
--#ifdef XIVE_RUNTIME_CHECKS
--					WARN_ON(p > atomic_read(&q->count));
--#endif
--					atomic_sub(p, &q->count);
--				}
--			}
--		}
--
--		/*
--		 * If the most favoured prio we found pending is less
--		 * favored (or equal) than a pending IPI, we return
--		 * the IPI instead.
--		 */
--		if (prio >= xc->mfrr && xc->mfrr < xc->cppr) {
--			prio = xc->mfrr;
--			hirq = XICS_IPI;
--			break;
--		}
--
--		/* If fetching, update queue pointers */
--		if (scan_type == scan_fetch) {
--			q->idx = idx;
--			q->toggle = toggle;
--		}
--	}
--
--	/* If we are just taking a "peek", do nothing else */
--	if (scan_type == scan_poll)
--		return hirq;
--
--	/* Update the pending bits */
--	xc->pending = pending;
--
--	/*
--	 * If this is an EOI that's it, no CPPR adjustment done here,
--	 * all we needed was cleanup the stale pending bits and check
--	 * if there's anything left.
--	 */
--	if (scan_type == scan_eoi)
--		return hirq;
--
--	/*
--	 * If we found an interrupt, adjust what the guest CPPR should
--	 * be as if we had just fetched that interrupt from HW.
--	 *
--	 * Note: This can only make xc->cppr smaller as the previous
--	 * loop will only exit with hirq != 0 if prio is lower than
--	 * the current xc->cppr. Thus we don't need to re-check xc->mfrr
--	 * for pending IPIs.
--	 */
--	if (hirq)
--		xc->cppr = prio;
--	/*
--	 * If it was an IPI the HW CPPR might have been lowered too much
--	 * as the HW interrupt we use for IPIs is routed to priority 0.
--	 *
--	 * We re-sync it here.
--	 */
--	if (xc->cppr != xc->hw_cppr) {
--		xc->hw_cppr = xc->cppr;
--		__x_writeb(xc->cppr, __x_tima + TM_QW1_OS + TM_CPPR);
--	}
--
--	return hirq;
--}
--
--X_STATIC unsigned long GLUE(X_PFX,h_xirr)(struct kvm_vcpu *vcpu)
--{
--	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
--	u8 old_cppr;
--	u32 hirq;
--
--	pr_devel("H_XIRR\n");
--
--	xc->GLUE(X_STAT_PFX,h_xirr)++;
--
--	/* First collect pending bits from HW */
--	GLUE(X_PFX,ack_pending)(xc);
--
--	pr_devel(" new pending=0x%02x hw_cppr=%d cppr=%d\n",
--		 xc->pending, xc->hw_cppr, xc->cppr);
--
--	/* Grab previous CPPR and reverse map it */
--	old_cppr = xive_prio_to_guest(xc->cppr);
--
--	/* Scan for actual interrupts */
--	hirq = GLUE(X_PFX,scan_interrupts)(xc, xc->pending, scan_fetch);
--
--	pr_devel(" got hirq=0x%x hw_cppr=%d cppr=%d\n",
--		 hirq, xc->hw_cppr, xc->cppr);
--
--#ifdef XIVE_RUNTIME_CHECKS
--	/* That should never hit */
--	if (hirq & 0xff000000)
--		pr_warn("XIVE: Weird guest interrupt number 0x%08x\n", hirq);
--#endif
--
--	/*
--	 * XXX We could check if the interrupt is masked here and
--	 * filter it. If we chose to do so, we would need to do:
--	 *
--	 *    if (masked) {
--	 *        lock();
--	 *        if (masked) {
--	 *            old_Q = true;
--	 *            hirq = 0;
--	 *        }
--	 *        unlock();
--	 *    }
--	 */
--
--	/* Return interrupt and old CPPR in GPR4 */
--	vcpu->arch.regs.gpr[4] = hirq | (old_cppr << 24);
--
--	return H_SUCCESS;
--}
--
--X_STATIC unsigned long GLUE(X_PFX,h_ipoll)(struct kvm_vcpu *vcpu, unsigned long server)
--{
--	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
--	u8 pending = xc->pending;
--	u32 hirq;
--
--	pr_devel("H_IPOLL(server=%ld)\n", server);
--
--	xc->GLUE(X_STAT_PFX,h_ipoll)++;
--
--	/* Grab the target VCPU if not the current one */
--	if (xc->server_num != server) {
--		vcpu = kvmppc_xive_find_server(vcpu->kvm, server);
--		if (!vcpu)
--			return H_PARAMETER;
--		xc = vcpu->arch.xive_vcpu;
--
--		/* Scan all priorities */
--		pending = 0xff;
--	} else {
--		/* Grab pending interrupt if any */
--		__be64 qw1 = __x_readq(__x_tima + TM_QW1_OS);
--		u8 pipr = be64_to_cpu(qw1) & 0xff;
--		if (pipr < 8)
--			pending |= 1 << pipr;
--	}
--
--	hirq = GLUE(X_PFX,scan_interrupts)(xc, pending, scan_poll);
--
--	/* Return interrupt and old CPPR in GPR4 */
--	vcpu->arch.regs.gpr[4] = hirq | (xc->cppr << 24);
--
--	return H_SUCCESS;
--}
--
--static void GLUE(X_PFX,push_pending_to_hw)(struct kvmppc_xive_vcpu *xc)
--{
--	u8 pending, prio;
--
--	pending = xc->pending;
--	if (xc->mfrr != 0xff) {
--		if (xc->mfrr < 8)
--			pending |= 1 << xc->mfrr;
--		else
--			pending |= 0x80;
--	}
--	if (!pending)
--		return;
--	prio = ffs(pending) - 1;
--
--	__x_writeb(prio, __x_tima + TM_SPC_SET_OS_PENDING);
--}
--
--static void GLUE(X_PFX,scan_for_rerouted_irqs)(struct kvmppc_xive *xive,
--					       struct kvmppc_xive_vcpu *xc)
--{
--	unsigned int prio;
--
--	/* For each priority that is now masked */
--	for (prio = xc->cppr; prio < KVMPPC_XIVE_Q_COUNT; prio++) {
--		struct xive_q *q = &xc->queues[prio];
--		struct kvmppc_xive_irq_state *state;
--		struct kvmppc_xive_src_block *sb;
--		u32 idx, toggle, entry, irq, hw_num;
--		struct xive_irq_data *xd;
--		__be32 *qpage;
--		u16 src;
--
--		idx = q->idx;
--		toggle = q->toggle;
--		qpage = READ_ONCE(q->qpage);
--		if (!qpage)
--			continue;
--
--		/* For each interrupt in the queue */
--		for (;;) {
--			entry = be32_to_cpup(qpage + idx);
--
--			/* No more ? */
--			if ((entry >> 31) == toggle)
--				break;
--			irq = entry & 0x7fffffff;
--
--			/* Skip dummies and IPIs */
--			if (irq == XICS_DUMMY || irq == XICS_IPI)
--				goto next;
--			sb = kvmppc_xive_find_source(xive, irq, &src);
--			if (!sb)
--				goto next;
--			state = &sb->irq_state[src];
--
--			/* Has it been rerouted ? */
--			if (xc->server_num == state->act_server)
--				goto next;
--
--			/*
--			 * Allright, it *has* been re-routed, kill it from
--			 * the queue.
--			 */
--			qpage[idx] = cpu_to_be32((entry & 0x80000000) | XICS_DUMMY);
--
--			/* Find the HW interrupt */
--			kvmppc_xive_select_irq(state, &hw_num, &xd);
--
--			/* If it's not an LSI, set PQ to 11 the EOI will force a resend */
--			if (!(xd->flags & XIVE_IRQ_FLAG_LSI))
--				GLUE(X_PFX,esb_load)(xd, XIVE_ESB_SET_PQ_11);
--
--			/* EOI the source */
--			GLUE(X_PFX,source_eoi)(hw_num, xd);
--
--		next:
--			idx = (idx + 1) & q->msk;
--			if (idx == 0)
--				toggle ^= 1;
--		}
--	}
--}
--
--X_STATIC int GLUE(X_PFX,h_cppr)(struct kvm_vcpu *vcpu, unsigned long cppr)
--{
--	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
--	struct kvmppc_xive *xive = vcpu->kvm->arch.xive;
--	u8 old_cppr;
--
--	pr_devel("H_CPPR(cppr=%ld)\n", cppr);
--
--	xc->GLUE(X_STAT_PFX,h_cppr)++;
--
--	/* Map CPPR */
--	cppr = xive_prio_from_guest(cppr);
--
--	/* Remember old and update SW state */
--	old_cppr = xc->cppr;
--	xc->cppr = cppr;
--
--	/*
--	 * Order the above update of xc->cppr with the subsequent
--	 * read of xc->mfrr inside push_pending_to_hw()
--	 */
--	smp_mb();
--
--	if (cppr > old_cppr) {
--		/*
--		 * We are masking less, we need to look for pending things
--		 * to deliver and set VP pending bits accordingly to trigger
--		 * a new interrupt otherwise we might miss MFRR changes for
--		 * which we have optimized out sending an IPI signal.
--		 */
--		GLUE(X_PFX,push_pending_to_hw)(xc);
--	} else {
--		/*
--		 * We are masking more, we need to check the queue for any
--		 * interrupt that has been routed to another CPU, take
--		 * it out (replace it with the dummy) and retrigger it.
--		 *
--		 * This is necessary since those interrupts may otherwise
--		 * never be processed, at least not until this CPU restores
--		 * its CPPR.
--		 *
--		 * This is in theory racy vs. HW adding new interrupts to
--		 * the queue. In practice this works because the interesting
--		 * cases are when the guest has done a set_xive() to move the
--		 * interrupt away, which flushes the xive, followed by the
--		 * target CPU doing a H_CPPR. So any new interrupt coming into
--		 * the queue must still be routed to us and isn't a source
--		 * of concern.
--		 */
--		GLUE(X_PFX,scan_for_rerouted_irqs)(xive, xc);
--	}
--
--	/* Apply new CPPR */
--	xc->hw_cppr = cppr;
--	__x_writeb(cppr, __x_tima + TM_QW1_OS + TM_CPPR);
--
--	return H_SUCCESS;
--}
--
--X_STATIC int GLUE(X_PFX,h_eoi)(struct kvm_vcpu *vcpu, unsigned long xirr)
--{
--	struct kvmppc_xive *xive = vcpu->kvm->arch.xive;
--	struct kvmppc_xive_src_block *sb;
--	struct kvmppc_xive_irq_state *state;
--	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
--	struct xive_irq_data *xd;
--	u8 new_cppr = xirr >> 24;
--	u32 irq = xirr & 0x00ffffff, hw_num;
--	u16 src;
--	int rc = 0;
--
--	pr_devel("H_EOI(xirr=%08lx)\n", xirr);
--
--	xc->GLUE(X_STAT_PFX,h_eoi)++;
--
--	xc->cppr = xive_prio_from_guest(new_cppr);
--
--	/*
--	 * IPIs are synthetized from MFRR and thus don't need
--	 * any special EOI handling. The underlying interrupt
--	 * used to signal MFRR changes is EOId when fetched from
--	 * the queue.
--	 */
--	if (irq == XICS_IPI || irq == 0) {
--		/*
--		 * This barrier orders the setting of xc->cppr vs.
--		 * subsquent test of xc->mfrr done inside
--		 * scan_interrupts and push_pending_to_hw
--		 */
--		smp_mb();
--		goto bail;
--	}
--
--	/* Find interrupt source */
--	sb = kvmppc_xive_find_source(xive, irq, &src);
--	if (!sb) {
--		pr_devel(" source not found !\n");
--		rc = H_PARAMETER;
--		/* Same as above */
--		smp_mb();
--		goto bail;
--	}
--	state = &sb->irq_state[src];
--	kvmppc_xive_select_irq(state, &hw_num, &xd);
--
--	state->in_eoi = true;
--
--	/*
--	 * This barrier orders both setting of in_eoi above vs,
--	 * subsequent test of guest_priority, and the setting
--	 * of xc->cppr vs. subsquent test of xc->mfrr done inside
--	 * scan_interrupts and push_pending_to_hw
--	 */
--	smp_mb();
--
--again:
--	if (state->guest_priority == MASKED) {
--		arch_spin_lock(&sb->lock);
--		if (state->guest_priority != MASKED) {
--			arch_spin_unlock(&sb->lock);
--			goto again;
--		}
--		pr_devel(" EOI on saved P...\n");
--
--		/* Clear old_p, that will cause unmask to perform an EOI */
--		state->old_p = false;
--
--		arch_spin_unlock(&sb->lock);
--	} else {
--		pr_devel(" EOI on source...\n");
--
--		/* Perform EOI on the source */
--		GLUE(X_PFX,source_eoi)(hw_num, xd);
--
--		/* If it's an emulated LSI, check level and resend */
--		if (state->lsi && state->asserted)
--			__x_writeq(0, __x_trig_page(xd));
--
--	}
--
--	/*
--	 * This barrier orders the above guest_priority check
--	 * and spin_lock/unlock with clearing in_eoi below.
--	 *
--	 * It also has to be a full mb() as it must ensure
--	 * the MMIOs done in source_eoi() are completed before
--	 * state->in_eoi is visible.
--	 */
--	mb();
--	state->in_eoi = false;
--bail:
--
--	/* Re-evaluate pending IRQs and update HW */
--	GLUE(X_PFX,scan_interrupts)(xc, xc->pending, scan_eoi);
--	GLUE(X_PFX,push_pending_to_hw)(xc);
--	pr_devel(" after scan pending=%02x\n", xc->pending);
--
--	/* Apply new CPPR */
--	xc->hw_cppr = xc->cppr;
--	__x_writeb(xc->cppr, __x_tima + TM_QW1_OS + TM_CPPR);
--
--	return rc;
--}
--
--X_STATIC int GLUE(X_PFX,h_ipi)(struct kvm_vcpu *vcpu, unsigned long server,
--			       unsigned long mfrr)
--{
--	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
--
--	pr_devel("H_IPI(server=%08lx,mfrr=%ld)\n", server, mfrr);
--
--	xc->GLUE(X_STAT_PFX,h_ipi)++;
--
--	/* Find target */
--	vcpu = kvmppc_xive_find_server(vcpu->kvm, server);
--	if (!vcpu)
--		return H_PARAMETER;
--	xc = vcpu->arch.xive_vcpu;
--
--	/* Locklessly write over MFRR */
--	xc->mfrr = mfrr;
--
--	/*
--	 * The load of xc->cppr below and the subsequent MMIO store
--	 * to the IPI must happen after the above mfrr update is
--	 * globally visible so that:
--	 *
--	 * - Synchronize with another CPU doing an H_EOI or a H_CPPR
--	 *   updating xc->cppr then reading xc->mfrr.
--	 *
--	 * - The target of the IPI sees the xc->mfrr update
--	 */
--	mb();
--
--	/* Shoot the IPI if most favored than target cppr */
--	if (mfrr < xc->cppr)
--		__x_writeq(0, __x_trig_page(&xc->vp_ipi_data));
--
--	return H_SUCCESS;
--}
-diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-index 44d74bfe05df..5003563ca38f 100644
---- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-+++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-@@ -1803,11 +1803,11 @@ hcall_real_table:
- 	.long	0		/* 0x5c */
- 	.long	0		/* 0x60 */
- #ifdef CONFIG_KVM_XICS
--	.long	DOTSYM(kvmppc_rm_h_eoi) - hcall_real_table
--	.long	DOTSYM(kvmppc_rm_h_cppr) - hcall_real_table
--	.long	DOTSYM(kvmppc_rm_h_ipi) - hcall_real_table
--	.long	DOTSYM(kvmppc_rm_h_ipoll) - hcall_real_table
--	.long	DOTSYM(kvmppc_rm_h_xirr) - hcall_real_table
-+	.long	DOTSYM(xics_rm_h_eoi) - hcall_real_table
-+	.long	DOTSYM(xics_rm_h_cppr) - hcall_real_table
-+	.long	DOTSYM(xics_rm_h_ipi) - hcall_real_table
-+	.long	0		/* 0x70 - H_IPOLL */
-+	.long	DOTSYM(xics_rm_h_xirr) - hcall_real_table
- #else
- 	.long	0		/* 0x64 - H_EOI */
- 	.long	0		/* 0x68 - H_CPPR */
-@@ -1977,7 +1977,7 @@ hcall_real_table:
- 	.long	0		/* 0x2f4 */
- 	.long	0		/* 0x2f8 */
- #ifdef CONFIG_KVM_XICS
--	.long	DOTSYM(kvmppc_rm_h_xirr_x) - hcall_real_table
-+	.long	DOTSYM(xics_rm_h_xirr_x) - hcall_real_table
- #else
- 	.long	0		/* 0x2fc - H_XIRR_X*/
- #endif
--- 
-2.30.2
+A bit of progress.
+
+cmake -G Ninja -DLLVM_ENABLE_PROJECTS="clang;lld" 
+-DLLVM_TARGET_ARCH=PowerPC -DLLVM_TARGETS_TO_BUILD=PowerPC 
+~/llvm-project//llvm -DLLVM_ENABLE_LTO=ON 
+-DLLVM_BINUTILS_INCDIR=/usr/lib/gcc/powerpc64le-linux-gnu/11/plugin/include/ 
+-DCMAKE_BUILD_TYPE=Release
+
+produces:
+
+-- Native target architecture is PowerPC 
+
+....
+-- LLVM host triple: x86_64-unknown-linux-gnu
+-- LLVM default target triple: x86_64-unknown-linux-gnu
+
+
+and the resulting "clang" can only to "Target: 
+x86_64-unknown-linux-gnu", how do you build LLVM exactly? Thanks,
+
 
