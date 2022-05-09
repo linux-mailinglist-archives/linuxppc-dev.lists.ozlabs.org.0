@@ -2,78 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6C851F21E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 03:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7684051F282
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 03:43:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxNW65jn0z3cg9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 11:14:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KxP8D261Xz3cGj
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 11:43:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=bytedance-com.20210112.gappssmtp.com header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=SyLOThmL;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=st/9uAHX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=songmuchun@bytedance.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=bytedance-com.20210112.gappssmtp.com
- header.i=@bytedance-com.20210112.gappssmtp.com header.a=rsa-sha256
- header.s=20210112 header.b=SyLOThmL; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kx4wL4BRqz2xZW
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 May 2022 23:32:00 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id c11so11578590plg.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 08 May 2022 06:32:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance-com.20210112.gappssmtp.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=PmPqsk4Ds+rkfpu3nL2hTmPZ4zZI7ndI1Rv+jcAXn+g=;
- b=SyLOThmLnXTk6qRKX1oo9DRLScsXkpBQJcjqc2ZX8BklsBr9Jd5/4XzS5R0rdBNn64
- Gj08t8HnQPHGWv/6lK5azajHcMs4BDXMAWO/si9Vg++doIk4TwR6gjg96i/2Ieo239U+
- GD/hhn1ajJzQO2Fu00Id46ibFUBWFedLdoweGjfehLyxDpd+kx2jhOMeAvgK4hJi70uy
- 2Sxen0AzDNegfxiv3X3keWQqOByVGhCLH68rwxiyhvd4lp5cQorNpjcRm00TCUGhYcZj
- TpQMhfYAi5LQjolnYmnz+/jetR/+obipzK9Rq4yk9iPkemX0aPQqHJMSY4KTNlniPFzy
- Gz1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=PmPqsk4Ds+rkfpu3nL2hTmPZ4zZI7ndI1Rv+jcAXn+g=;
- b=QZ80dbcr7cbjad6UBQXjDW/l9p04U/3QQpWw0Yox0T6oW6joyovrtnJIuX//VBBQyj
- knlc1yqruDHFDJ5vAzh6rOWAEAgXE2aoE7JPfb1/UPjGAJSrDneBsvFWmppptE2R5OPT
- 5IEv3u5qLtocw5sP3vQARSow6Hez8xwtSPyYfc/lCnznIbXxOOSk4ToBmofr0pnr8hoe
- fsnG5HgHizlN2u48yCHy0odJQ6TVV/KJzDrhaiaNH5ItlhZK+Z9IjJ4mwCqkvMfimN7z
- 9UB6XTw1YHBSriku89oLMk6Xx4mAiEm/O4LCq0NN8DQCKLCjnRAPjsH83EDay7lsGpFh
- 8Zxg==
-X-Gm-Message-State: AOAM533UHve1Ecj0+n7VopKdERsemFp7W6BipXbuixzBn25JoO/Qqrfs
- QptGGueVZv/E14yBOlCmr2lkrQ==
-X-Google-Smtp-Source: ABdhPJxahffH9rcJXLYibIJ0tdGcqVx0aeXH5wYUXoWTVBpSrJpN/ltMk318QQF+PAogtyB3/7uLhQ==
-X-Received: by 2002:a17:90b:4c88:b0:1dc:60c2:25b2 with SMTP id
- my8-20020a17090b4c8800b001dc60c225b2mr21748033pjb.133.1652016717528; 
- Sun, 08 May 2022 06:31:57 -0700 (PDT)
-Received: from localhost ([139.177.225.234]) by smtp.gmail.com with ESMTPSA id
- cj25-20020a056a00299900b0050dc76281e1sm6590444pfb.187.2022.05.08.06.31.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 May 2022 06:31:57 -0700 (PDT)
-Date: Sun, 8 May 2022 21:31:54 +0800
-From: Muchun Song <songmuchun@bytedance.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: [PATCH v2 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue
- when migration
-Message-ID: <YnfGSu8tPzTt9ozL@FVFYT0MHHV2J.usts.net>
-References: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
- <1ec8a987be1a5400e077260a300d0079564b1472.1652002221.git.baolin.wang@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KxP7S3Sjwz3bhK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 11:42:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=st/9uAHX; 
+ dkim-atps=neutral
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KxP7M6Ydqz4xcN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 11:42:39 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KxP7M6TxBz4xbN; Mon,  9 May 2022 11:42:39 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=st/9uAHX; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KxP7K5Z4Sz4xcN
+ for <linuxppc-dev@ozlabs.org>; Mon,  9 May 2022 11:42:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=NuGSALwoLk4dQeQSKTaMdHjmaUOrXItUM4Q9Ls2i1Oc=; b=st/9uAHX4XrWNsxGP0umYxBgg/
+ DrgyN0OrxK18w0lI8wKiK3F1D/ZSideEp6TClnHVf4bXj+DnLOprzL/kpcYX20rNnZtFUAETXnACI
+ NrR4dBKGcooh3o9pbYIL1sabjC/6C2u0qFbVrjmqt84jvw/ZBz1QJTJFugwHJ0YbOagNKbrERb7Xj
+ DC1/myYrbNRTE/3NKFrZPd6gi+AT5VS30OQ/+7+Vym0Hg84QwjQhsA/ZM0YwTHLW5nRPoBHW/aok7
+ S9gIxHOFhwaM6UnAi2Y5imadRrfhgPHUxG598VPJ3svXo/ekU30ulT9nLgyxLha257KeazjdpJuMG
+ YL/cNS4g==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1nnsPs-00BzTe-Q1; Mon, 09 May 2022 01:42:28 +0000
+Date: Sun, 8 May 2022 18:42:28 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: request_module DoS
+Message-ID: <YnhxhIsSTCwSPphy@bombadil.infradead.org>
+References: <YnXiuhdZ49pKL/dK@gondor.apana.org.au>
+ <77ecde32-e868-5804-d9a5-3bb22d314777@csgroup.eu>
+ <YnYnjLXm6atlznPT@bombadil.infradead.org>
+ <YnbFJ0fn5gLTRLX7@bombadil.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1ec8a987be1a5400e077260a300d0079564b1472.1652002221.git.baolin.wang@linux.alibaba.com>
-X-Mailman-Approved-At: Mon, 09 May 2022 11:12:57 +1000
+In-Reply-To: <YnbFJ0fn5gLTRLX7@bombadil.infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,51 +80,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
- agordeev@linux.ibm.com, will@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, arnd@arndb.de, ysato@users.sourceforge.jp,
- deller@gmx.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com,
- gor@linux.ibm.com, hca@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, svens@linux.ibm.com, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, mike.kravetz@oracle.com
+Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ "fnovak@us.ibm.com" <fnovak@us.ibm.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, May 08, 2022 at 05:36:40PM +0800, Baolin Wang wrote:
-> On some architectures (like ARM64), it can support CONT-PTE/PMD size
-> hugetlb, which means it can support not only PMD/PUD size hugetlb:
-> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
-> size specified.
+On Sat, May 07, 2022 at 12:14:47PM -0700, Luis Chamberlain wrote:
+> On Sat, May 07, 2022 at 01:02:20AM -0700, Luis Chamberlain wrote:
+> > You can try to reproduce by using adding a new test type for crypto-aegis256
+> > on lib/test_kmod.c. These tests however can try something similar but other
+> > modules.
+> > 
+> > /tools/testing/selftests/kmod/kmod.sh -t 0008
+> > /tools/testing/selftests/kmod/kmod.sh -t 0009
+> > 
+> > I can't decipher this yet.
 > 
-> When migrating a hugetlb page, we will get the relevant page table
-> entry by huge_pte_offset() only once to nuke it and remap it with
-> a migration pte entry. This is correct for PMD or PUD size hugetlb,
-> since they always contain only one pmd entry or pud entry in the
-> page table.
+> Without testing it... but something like this might be an easier
+> reproducer:
 > 
-> However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
-> since they can contain several continuous pte or pmd entry with
-> same page table attributes. So we will nuke or remap only one pte
-> or pmd entry for this CONT-PTE/PMD size hugetlb page, which is
-> not expected for hugetlb migration. The problem is we can still
-> continue to modify the subpages' data of a hugetlb page during
-> migrating a hugetlb page, which can cause a serious data consistent
-> issue, since we did not nuke the page table entry and set a
-> migration pte for the subpages of a hugetlb page.
-> 
-> To fix this issue, we should change to use huge_ptep_clear_flush()
-> to nuke a hugetlb page table, and remap it with set_huge_pte_at()
-> and set_huge_swap_pte_at() when migrating a hugetlb page, which
-> already considered the CONT-PTE or CONT-PMD size hugetlb.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> +	config_set_driver crypto-aegis256
 
-This looks fine to me.
+If the module is not present though nothing really happens, and so
+is it possible this is another issue?
 
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Below a bogus module request.
 
-Thanks.
+diff --git a/tools/testing/selftests/kmod/kmod.sh b/tools/testing/selftests/kmod/kmod.sh
+index afd42387e8b2..a747ad549940 100755
+--- a/tools/testing/selftests/kmod/kmod.sh
++++ b/tools/testing/selftests/kmod/kmod.sh
+@@ -65,6 +66,7 @@ ALL_TESTS="$ALL_TESTS 0010:1:1"
+ ALL_TESTS="$ALL_TESTS 0011:1:1"
+ ALL_TESTS="$ALL_TESTS 0012:1:1"
+ ALL_TESTS="$ALL_TESTS 0013:1:1"
++ALL_TESTS="$ALL_TESTS 0014:150:1"
+ 
+ # Kselftest framework requirement - SKIP code is 4.
+ ksft_skip=4
+@@ -504,6 +506,17 @@ kmod_test_0013()
+ 		"cat /sys/module/${DEFAULT_KMOD_DRIVER}/sections/.*text | head -n1"
+ }
+ 
++kmod_test_0014()
++{
++	kmod_defaults_driver
++	MODPROBE_LIMIT=$(config_get_modprobe_limit)
++	let EXTRA=$MODPROBE_LIMIT/6
++	config_set_driver bogus_module_does_not_exist
++	config_num_thread_limit_extra $EXTRA
++	config_trigger ${FUNCNAME[0]}
++	config_expect_result ${FUNCNAME[0]} MODULE_NOT_FOUND
++}
++
+ list_tests()
+ {
+ 	echo "Test ID list:"
+@@ -525,6 +538,7 @@ list_tests()
+ 	echo "0011 x $(get_test_count 0011) - test completely disabling module autoloading"
+ 	echo "0012 x $(get_test_count 0012) - test /proc/modules address visibility under CAP_SYSLOG"
+ 	echo "0013 x $(get_test_count 0013) - test /sys/module/*/sections/* visibility under CAP_SYSLOG"
++	echo "0014 x $(get_test_count 0014) - multithreaded - push kmod_concurrent over max_modprobes for request_module() for a missing module"
+ }
+ 
+ usage()
