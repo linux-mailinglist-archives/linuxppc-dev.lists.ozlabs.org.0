@@ -1,14 +1,14 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9285952062D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 22:48:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605B152062E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 22:48:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxtY63kYKz3cR7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 06:48:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KxtYm1cXDz3cgJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 06:48:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XES4qUCA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T40M0Shh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -18,36 +18,36 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=XES4qUCA; 
+ header.s=k20201202 header.b=T40M0Shh; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org
  [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KxtWp2zQkz3bbp
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KxtWp37Zsz3bbs
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 06:47:02 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id A5C05616EB;
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 1B341616FA;
+ Mon,  9 May 2022 20:47:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5777C385BA;
  Mon,  9 May 2022 20:46:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54442C385BC;
- Mon,  9 May 2022 20:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1652129218;
- bh=8b9BPSUDAbX/vgt6SHngGTCLvHF7koypNrvZpxSa5Rk=;
+ s=k20201202; t=1652129219;
+ bh=LPoqNytL/dcXDmLHjdnmp6kf5QofpJwXrg3EPyjgqos=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=XES4qUCAyhyBfNoKKttczOaGkMn9KiNfx7WItnK6Spbf90sutbnriX4PGoGcZBRx7
- qsycQkwhrnmzL7mcWeK6x5gmAIFRqp3AvdAxkirZw1uY1imLNVAjuQOQMhJJtNHqbi
- PzSl8jyD1QKQQRckCtHzJ1RK9EZ4+puJgxQ+YpXtWeu71t8qu8sPbhegJlJvzc9dXt
- sIKKsmI7NA8eFQ10/f8fC7iq2TvAwWa9qHpwo8776u5B5BUsTN7B7/QrbSY9F+Z0Bl
- hIgRlv3kHkMhzCBjFOiy77UsOcqJpSiZlkmxfeHLxhRDcElQOXDAaeuPW66aJJNEO+
- BC4x4giXWd8vA==
+ b=T40M0ShhTHT+jgDXHoKyf9PluyRWQACDA8mmu5u3L7mXyahxPpQcgh+5fJOGubg7R
+ e0qoGsdw9sWIKHfyJ++BPzzJXqMhb9xKZONQyzcXjLFIE4pqINaLp2aOPvSCuVD4H1
+ 3wtUwcQWrjOWFMIhk2lNd/nkg68EHozJHfZj990tLnHbbP9POMfolsaOyYdbIaaafh
+ Tr+gN1APyHp4KdLBCZ40fk0KCGsG4kaPiL0fSldtXekPOpH73KZFBitiN/7vMZTf5M
+ wyE22IhjHf22BOXTMWzqz/3Ejv8WcJP1XyncWJfDYaDwwBZyx4W9Jo3eHt6SDtBnYJ
+ Pj6UdKYdeqm7A==
 From: Nathan Chancellor <nathan@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 1/2] powerpc/vdso: Remove unused ENTRY in linker scripts
-Date: Mon,  9 May 2022 13:46:34 -0700
-Message-Id: <20220509204635.2539549-2-nathan@kernel.org>
+Subject: [PATCH 2/2] powerpc/vdso: Link with ld.lld when requested
+Date: Mon,  9 May 2022 13:46:35 -0700
+Message-Id: <20220509204635.2539549-3-nathan@kernel.org>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220509204635.2539549-1-nathan@kernel.org>
 References: <20220509204635.2539549-1-nathan@kernel.org>
@@ -72,75 +72,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When linking vdso{32,64}.so.dbg with ld.lld, there is a warning about
-not finding _start for the starting address:
+The PowerPC vDSO is linked with $(CC) instead of $(LD), which means the
+default linker of the compiler is used instead of the linker requested
+by the builder.
 
-  ld.lld: warning: cannot find entry symbol _start; not setting start address
-  ld.lld: warning: cannot find entry symbol _start; not setting start address
+  $ make ARCH=powerpc LLVM=1 mrproper defconfig arch/powerpc/kernel/vdso/
+  ...
 
-Looking at GCC + GNU ld, the entry point address is 0x0:
+  $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
 
-  $ llvm-readelf -h vdso{32,64}.so.dbg &| rg "(File|Entry point address):"
-  File: vdso32.so.dbg
-    Entry point address:               0x0
-  File: vdso64.so.dbg
-    Entry point address:               0x0
-
-This matches what ld.lld emits:
-
-  $ powerpc64le-linux-gnu-readelf -p .comment vdso{32,64}.so.dbg
-
-  File: vdso32.so.dbg
-
+  File: arch/powerpc/kernel/vdso/vdso32.so.dbg
   String dump of section '.comment':
-    [     0]  Linker: LLD 14.0.0
-    [    14]  clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+  [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
 
-  File: vdso64.so.dbg
-
+  File: arch/powerpc/kernel/vdso/vdso64.so.dbg
   String dump of section '.comment':
-    [     0]  Linker: LLD 14.0.0
-    [    14]  clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+  [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
 
-  $ llvm-readelf -h vdso{32,64}.so.dbg &| rg "(File|Entry point address):"
-  File: vdso32.so.dbg
-    Entry point address:               0x0
-  File: vdso64.so.dbg
-    Entry point address:               0x0
+The compiler option '-fuse-ld' tells the compiler which linker to use
+when it is invoked as both the compiler and linker. Use '-fuse-ld=lld'
+when LD=ld.lld has been specified (CONFIG_LD_IS_LLD) so that the vDSO is
+linked with the same linker as the rest of the kernel.
 
-Remove ENTRY to remove the warning, as it is unnecessary for the vDSO to
-function correctly.
+  $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
 
+  File: arch/powerpc/kernel/vdso/vdso32.so.dbg
+  String dump of section '.comment':
+  [     0] Linker: LLD 14.0.0
+  [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+
+  File: arch/powerpc/kernel/vdso/vdso64.so.dbg
+  String dump of section '.comment':
+  [     0] Linker: LLD 14.0.0
+  [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+
+LD can be a full path to ld.lld, which will not be handled properly by
+'-fuse-ld=lld' if the full path to ld.lld is outside of the compiler's
+search path. '-fuse-ld' can take a path to the linker but it is
+deprecated in clang 12.0.0; '--ld-path' is preferred for this scenario.
+
+Use '--ld-path' if it is supported, as it will handle a full path or
+just 'ld.lld' properly. See the LLVM commit below for the full details
+of '--ld-path'.
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/774
+Link: https://github.com/llvm/llvm-project/commit/1bc5c84710a8c73ef21295e63c19d10a8c71f2f5
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- arch/powerpc/kernel/vdso/vdso32.lds.S | 1 -
- arch/powerpc/kernel/vdso/vdso64.lds.S | 1 -
- 2 files changed, 2 deletions(-)
+ arch/powerpc/kernel/vdso/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso/vdso32.lds.S
-index 58e0099f70f4..e0d19d74455f 100644
---- a/arch/powerpc/kernel/vdso/vdso32.lds.S
-+++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
-@@ -13,7 +13,6 @@ OUTPUT_FORMAT("elf32-powerpcle", "elf32-powerpcle", "elf32-powerpcle")
- OUTPUT_FORMAT("elf32-powerpc", "elf32-powerpc", "elf32-powerpc")
- #endif
- OUTPUT_ARCH(powerpc:common)
--ENTRY(_start)
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 954974287ee7..096b0bf1335f 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -48,6 +48,7 @@ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
  
- SECTIONS
- {
-diff --git a/arch/powerpc/kernel/vdso/vdso64.lds.S b/arch/powerpc/kernel/vdso/vdso64.lds.S
-index 0288cad428b0..1a4a7bc4c815 100644
---- a/arch/powerpc/kernel/vdso/vdso64.lds.S
-+++ b/arch/powerpc/kernel/vdso/vdso64.lds.S
-@@ -13,7 +13,6 @@ OUTPUT_FORMAT("elf64-powerpcle", "elf64-powerpcle", "elf64-powerpcle")
- OUTPUT_FORMAT("elf64-powerpc", "elf64-powerpc", "elf64-powerpc")
- #endif
- OUTPUT_ARCH(powerpc:common64)
--ENTRY(_start)
+ ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
++ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
  
- SECTIONS
- {
+ CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
+ AS32FLAGS := -D__VDSO32__ -s
 -- 
 2.36.1
 
