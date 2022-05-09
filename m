@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABEF520351
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 19:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B963520378
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 19:20:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kxnj93fbFz3cFd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 03:09:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kxnxf3Q5Sz3byl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 03:20:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=XlxYVyti;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=FoDLMQ1C;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::135;
- helo=mail-lf1-x135.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::12a;
+ helo=mail-lf1-x12a.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=XlxYVyti; dkim-atps=neutral
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com
- [IPv6:2a00:1450:4864:20::135])
+ header.s=20210112 header.b=FoDLMQ1C; dkim-atps=neutral
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com
+ [IPv6:2a00:1450:4864:20::12a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KxnhX2ZrGz2xXw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 03:09:14 +1000 (AEST)
-Received: by mail-lf1-x135.google.com with SMTP id p26so11675390lfh.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 10:09:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kxnx01J4Jz3bhF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 03:20:02 +1000 (AEST)
+Received: by mail-lf1-x12a.google.com with SMTP id i10so24965932lfg.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 10:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=qmNh/UlR00KzKm2embL/8KXGrDJlEF5LNSh8Qse0tHI=;
- b=XlxYVyti/+Q7NqrSdb22SAIl6Y2j55Yg5g2k37ctvzV1ktFvUd3+GBrrXaqN+9NFeY
- 6EJHldsP4pwcrjQ2xzBRUlRSmr1Qray+IZ0Azb6pH9oGWAA6cH1MqKDYqSoobESAB3Tt
- eRGYGGgOM/icKjcAIArV0t0cRsOS98O3uc3oCmKTiATpvxAJt2dw7pFRGKnsUp5Fy6+q
- XIPCiWfYfE/TS6cBhvExSO/fG7/pxV+Gc6ing+pOzWL/ysqhEjHBgLIYNRnpXIBuNHwt
- 4ZGKV+R/g8mxG2EAM+mfZqER4WmDuwtD4WjdICN3razEbRrdkjkeh/S/AOCAatbdqrDm
- dp9g==
+ :cc; bh=Xq5ml2d/MeiCgCuvTz1iX/vBFJV/Zf5wkHsF94chv1Q=;
+ b=FoDLMQ1CUcXkPH5YH2WUvQkrh4wyHkUUHZHcdPJapmG1T0eHAY1wc8brR60ppGMa5J
+ MvFXF3tuoDWJ6lkuzwDg+uXRKK1dpjzfA/uB5GQC4TIBsPxsrPlb2FDEA+M+F9oDz5r4
+ vtrjLZL3T3cOwM7JK/DHccrk8RMKefToEtmE3ezQ84jzYnAtOuLgLmSS8SPIbwmYpL8e
+ +569UZLjUuKlLJxuLia9HvqCZWJPaqW6wxZ2wKVmnB6sIpUzIEuoLVasYEAtGywHS+dy
+ NOLgCVKyfJ/Tlp9jDY6Jr3DzFF11gOShM2S20Pm+kw6ankpEDU3X7veoarlOtuIzCHqv
+ rMIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=qmNh/UlR00KzKm2embL/8KXGrDJlEF5LNSh8Qse0tHI=;
- b=Oka+rXKRuTU3LZmecZbjPdk+VNYHkOzEzt8KOZTCCtvCnwBxgLE/49aXcrYeQV4kgm
- IiRrKYG47KOtBMtn1YVFnwu6DYaG5vhcE5EK6oi61LvHCdvetBi0WlIwOee2Hy8QCBr1
- 7dMjPqGv328WgzD48hoj5FIr3OVonfbWOK5XojDAIh6lmMq9Y+M06Wndtu3F2NaLHt+B
- 8Iua++1WwuihfTrj9BsMm6bC2ib76sialcYixwlUhgNQYEqCxBtwZQOl41cX8eAqQ7hy
- ZPN8A5m6b4Xt2CJJQZCtgWoQgCxVToI44KOjt6UrulvDZ71ceACppPjtCIOQrqEbKd4k
- uh/g==
-X-Gm-Message-State: AOAM532Q6bd0I9HBBCdRPp59JOKJhiPq52RWw1XiMmR23x5bpjQ4Bbbw
- PG9Shdlres/WCL5aQCUhx6SJI/4lvS9wPxeiT1M9Xg==
-X-Google-Smtp-Source: ABdhPJwxw3I1e8oaAvfUjbq5Ev4Yd8NjV0buUyZoAzr7cbILcvl2TRmROPbsKEb/6HUIdbYLzAigXpP3dNIEtdsX6aE=
-X-Received: by 2002:a05:6512:1d1:b0:471:f63a:b182 with SMTP id
- f17-20020a05651201d100b00471f63ab182mr13052968lfp.392.1652116149145; Mon, 09
- May 2022 10:09:09 -0700 (PDT)
+ bh=Xq5ml2d/MeiCgCuvTz1iX/vBFJV/Zf5wkHsF94chv1Q=;
+ b=dSGEFGqIk1KNd6IL28mdicMR9afu4Lv/I/jMZ8Tu9eicOF9H+J6pbb9PMnHZ6p8QUd
+ eEFMugQlL2noNLB+zy2lBJ15I9CPCbql6TLXjLHYzczxxpGfJdHoSjZqpcr0Uc9r79dj
+ SIQSiqPTtlvcUjS8ufB/sTstQPQzUtwTK4gGaSPB8Rw4HlwqnE3VaPS4VSc47mSucNxS
+ rsMNuFQykT7mWFw0uwbhoyTvywHnJD/FxEIgj/fD9Vhf1/EX1P4todcWO9+SNmWMcdmA
+ au5Ej6ZmTQWtEc6SFKKYSuy14jiBmMqevaXfUCKHrB0eUXPtbtBpQ9NarZXS99kHuQIX
+ mj8Q==
+X-Gm-Message-State: AOAM530wI+dEyThPDrp/LNg7/sa1HzO5+tvxIoS5sB4wFkl/Uc35PE2K
+ 1Dt5nQDhR1GDiff6pcDMcfoJRfTrIlk1l4bpikMm8w==
+X-Google-Smtp-Source: ABdhPJz9taxhLV4YRudjP7JD9rlg95k5LEcou1gLMLiVH/oLNlkumRLOmW/IlL/tmn/lb4A3bbzyo1/l2F7YyG1FIcQ=
+X-Received: by 2002:a19:4303:0:b0:473:f5fb:27b2 with SMTP id
+ q3-20020a194303000000b00473f5fb27b2mr12343182lfa.626.1652116799064; Mon, 09
+ May 2022 10:19:59 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220508190631.2386038-1-masahiroy@kernel.org>
- <20220508190631.2386038-2-masahiroy@kernel.org>
-In-Reply-To: <20220508190631.2386038-2-masahiroy@kernel.org>
+ <20220508190631.2386038-4-masahiroy@kernel.org>
+In-Reply-To: <20220508190631.2386038-4-masahiroy@kernel.org>
 From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 9 May 2022 10:08:57 -0700
-Message-ID: <CAKwvOdnawYY05Boy6FNUtBoi11z8yyMnfDzGUw0CDMT3vKuP5w@mail.gmail.com>
-Subject: Re: [PATCH v4 01/14] modpost: remove left-over cross_compile
- declaration
+Date: Mon, 9 May 2022 10:19:47 -0700
+Message-ID: <CAKwvOd=LR=UNOeWJDmM-McJ=FrCWTo8w1ox+KGMQCwCVpiUyFg@mail.gmail.com>
+Subject: Re: [PATCH v4 03/14] modpost: split the section mismatch checks into
+ section-check.c
 To: Masahiro Yamada <masahiroy@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,39 +86,61 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, May 8, 2022 at 12:09 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+On Sun, May 8, 2022 at 12:10 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
-> This is a remnant of commit 6543becf26ff ("mod/file2alias: make
-> modalias generation safe for cross compiling").
+> modpost.c is too big, and the half of the code is for section checks.
+> Split it.
+>
+> I fixed some style issues in the moved code.
+
+It would be helpful for review if the split and restyle were distinct
+patches.  Otherwise I can't tell what has changed.
+
+This does lose the ability to use git blame to get more context on
+some of the oddities in modpost (which I have found useful in the
+past).  I don't feel strongly though.
+
 >
 > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-
-Thanks for the patch! (I wonder if we should put our old mailing list
-in .mailmap?)
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-
 > ---
 >
 > Changes in v4:
 >   - New patch
 >
->  scripts/mod/modpost.h | 1 -
->  1 file changed, 1 deletion(-)
+>  scripts/mod/Makefile        |    2 +-
+>  scripts/mod/modpost.c       | 1202 +---------------------------------
+>  scripts/mod/modpost.h       |   34 +-
+>  scripts/mod/section-check.c | 1222 +++++++++++++++++++++++++++++++++++
+>  4 files changed, 1240 insertions(+), 1220 deletions(-)
+>  create mode 100644 scripts/mod/section-check.c
 >
-> diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
-> index cfa127d2bb8f..d9daeff07b83 100644
-> --- a/scripts/mod/modpost.h
-> +++ b/scripts/mod/modpost.h
-> @@ -174,7 +174,6 @@ static inline unsigned int get_secindex(const struct elf_info *info,
->  }
+> diff --git a/scripts/mod/Makefile b/scripts/mod/Makefile
+> index c9e38ad937fd..ca739c6c68a1 100644
+> --- a/scripts/mod/Makefile
+> +++ b/scripts/mod/Makefile
+> @@ -5,7 +5,7 @@ CFLAGS_REMOVE_empty.o += $(CC_FLAGS_LTO)
+>  hostprogs-always-y     += modpost mk_elfconfig
+>  always-y               += empty.o
 >
->  /* file2alias.c */
-> -extern unsigned int cross_build;
->  void handle_moddevtable(struct module *mod, struct elf_info *info,
->                         Elf_Sym *sym, const char *symname);
->  void add_moddevtable(struct buffer *buf, struct module *mod);
-> --
+> -modpost-objs   := modpost.o file2alias.o sumversion.o
+> +modpost-objs   := modpost.o section-check.o file2alias.o sumversion.o
+>
+>  devicetable-offsets-file := devicetable-offsets.h
+>
+> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> index a78b75f0eeb0..e7e2c70a98f5 100644
+> --- a/scripts/mod/modpost.c
+> +++ b/scripts/mod/modpost.c
+> @@ -31,7 +31,7 @@ static bool external_module;
+>  /* Only warn about unresolved symbols */
+>  static bool warn_unresolved;
+>
+> -static int sec_mismatch_count;
+> +int sec_mismatch_count;
 
+^ this should go in modpost.h if it is to be used in two translation
+units, rather than forward declaring it in section-check.c.  You did
+this for the functions.
 -- 
 Thanks,
 ~Nick Desaulniers
