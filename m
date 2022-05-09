@@ -1,71 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BCF520744
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 23:59:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDFD5209BE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 01:58:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kxw6q13Wsz3c7R
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 07:58:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kxymj13trz3c7R
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 09:58:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=PgydWL3i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=Gm1PabHN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::136;
- helo=mail-lf1-x136.google.com; envelope-from=ndesaulniers@google.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=PgydWL3i; dkim-atps=neutral
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com
- [IPv6:2a00:1450:4864:20::136])
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=Gm1PabHN; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kxw6B3XbZz2xsc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 07:58:25 +1000 (AEST)
-Received: by mail-lf1-x136.google.com with SMTP id i10so26122678lfg.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 14:58:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=aM58VLEYK3OPz+dxz/e3P39oZMoTQOHg5Skeyfuaw+k=;
- b=PgydWL3iTr2+I7wwsidaRzy2KvNTlCFmCHi3NEgdM4U5/OxxoUcNyUi0fZX095bEy/
- u8gfFHMeT9ZDIR9vAwTWhYx4Q08Bvi9ZqGTCPxANowlGLYBJgftCkf5TC0hi3fxt6CQK
- 3e35rJ9iQCJ+59jZJ9QsBy0XmRmoSDLxVdFxtIArysOaiMXvWR5HMlwmH0QKaXBRdnWX
- 2U7SFHMcBxI/JnZKhCginJrSqmQohQKV99PIH4qOOugMz8nruN1YMFhPjAjfN//X2XRj
- P/i0fiUqC5WNOpd9WnurknYwSXiWhhI1fvhCwGjzasF1gR0bsPggUfvDqfAQwWtvTZyI
- M0Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=aM58VLEYK3OPz+dxz/e3P39oZMoTQOHg5Skeyfuaw+k=;
- b=zTh0Glm/ndH2WLvTkjdPhCD9MTgnhihyvCHiKu5/X1ACJc+f1Ytvxqa9+Iqr26acnJ
- xpO2KiOZjbnalA4jdvYgHvx7oWd6NkBI7+Rr3ghIWHUg4tV+AVVpxKS4PWCSSEFcE1/v
- Oe0pv74lr/D7pVKZxcadUPjbX2WHKzvAc7ABXczCDjDYRrv6rZT4WegVc6HOY93a3X6M
- PhogpCZxLTVyrg9DDm7fWZg75J2vHhjwDgz1SM9qlGsTtFGoOET5zLAgIodhJ9IO0XyZ
- 2NAJuAIOuvz1RL8IilpO/2VvaIjHgHKkMo/17RVTWhMkIgMzFfFgwKMVyunYvzxu7s2Q
- csHg==
-X-Gm-Message-State: AOAM530eMEWM1du8CgBNfYp2sRgmr9NsuVDkqyqKwxuSUUnjkF1S6tsJ
- 2T0xSJCz/nYJDg9tLDzjbbnpPQzfh/FB9vcxH7UrIw==
-X-Google-Smtp-Source: ABdhPJxIH8+tsIhft4L3Ly9ibBwf8nUknmdWV0+D0qaUm7yXlZfZMRiNhcm2509AU0Xek7fJ/kWMwz5mBiDFGroZkhY=
-X-Received: by 2002:a05:6512:48f:b0:472:3c47:94a0 with SMTP id
- v15-20020a056512048f00b004723c4794a0mr14081977lfq.579.1652133501024; Mon, 09
- May 2022 14:58:21 -0700 (PDT)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KxgZq3DYXz3bWD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 May 2022 22:33:52 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=L3p0/83L4yDVyZoegOtsQfWmJV/6wtv6TZoOXChWFJg=; b=Gm1PabHNS+/VMjWNpRDgN0q7Gz
+ okgDM+2WHp5z93ZUGeQzJtlj40ch1Djul+F9LKvzWURwbafLBOoP/NgGu9GSmPuuE28KOgN2Dlog/
+ GHXl8dWWFH9IUIBQmU28gspF2npPpEWaJ19eWl8SzxR3mk4Q/F4kmhrZuCV0rVMHSE4nkq5aDi9ss
+ tskoNSlPr3h/0gKp/FmRCE42MZtPYeJf36WeID1+imZk2dUy5vrTX2Nb6oqUW3HqWx20YRVV7+Jqn
+ 2U5xO3lqX+ogULZEqtYM74LQ/XjYNOdW70A5rw6LBK7UHwdRlT2URD08Y6BIbm5BwJqTO8MAols4i
+ vbgjN92g==;
+Received: from [177.183.162.244] (helo=[192.168.0.5])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1no2ZO-0002Vw-CD; Mon, 09 May 2022 14:32:58 +0200
+Message-ID: <b5a1370c-1319-24d1-6b2a-629e5c8915ed@igalia.com>
+Date: Mon, 9 May 2022 09:32:27 -0300
 MIME-Version: 1.0
-References: <20220509204635.2539549-1-nathan@kernel.org>
- <20220509204635.2539549-3-nathan@kernel.org>
- <CAKwvOdkvF8AJudCcu=CVmU42eyVMJwUjQFnX+rpVF45bTR86Mg@mail.gmail.com>
- <YnmL6a8eObtstNjZ@dev-arch.thelio-3990X>
-In-Reply-To: <YnmL6a8eObtstNjZ@dev-arch.thelio-3990X>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 9 May 2022 14:58:09 -0700
-Message-ID: <CAKwvOdnbTGpNvXsum-cM8i5sWuATLHouaURE1vkjuOj5rzTuqw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] powerpc/vdso: Link with ld.lld when requested
-To: Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 01/30] x86/crash,reboot: Avoid re-disabling VMX in all
+ CPUs on crash/restart
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>,
+ Sean Christopherson <seanjc@google.com>, vkuznets@redhat.com
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-2-gpiccoli@igalia.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <20220427224924.592546-2-gpiccoli@igalia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Tue, 10 May 2022 09:58:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,121 +69,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, llvm@lists.linux.dev,
- patches@lists.linux.dev, Paul Mackerras <paulus@samba.org>,
- Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ linux-xtensa@linux-xtensa.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
+ linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
+ john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, "David P . Reed" <dpreed@deepplum.com>,
+ mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com,
+ xen-devel@lists.xenproject.org, dyoung@redhat.com, vgoyal@redhat.com,
+ pmladek@suse.com, dave.hansen@linux.intel.com, keescook@chromium.org,
+ arnd@arndb.de, linux-pm@vger.kernel.org, coresight@lists.linaro.org,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org,
+ linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ andriy.shevchenko@linux.intel.com, linux-arm-kernel@lists.infradead.org,
+ linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
+ kernel-dev@igalia.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 9, 2022 at 2:47 PM Nathan Chancellor <nathan@kernel.org> wrote:
->
-> On Mon, May 09, 2022 at 02:24:40PM -0700, Nick Desaulniers wrote:
-> > On Mon, May 9, 2022 at 1:47 PM Nathan Chancellor <nathan@kernel.org> wrote:
-> > >
-> > > The PowerPC vDSO is linked with $(CC) instead of $(LD), which means the
-> > > default linker of the compiler is used instead of the linker requested
-> > > by the builder.
-> > >
-> > >   $ make ARCH=powerpc LLVM=1 mrproper defconfig arch/powerpc/kernel/vdso/
-> > >   ...
-> > >
-> > >   $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
-> > >
-> > >   File: arch/powerpc/kernel/vdso/vdso32.so.dbg
-> > >   String dump of section '.comment':
-> > >   [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
-> > >
-> > >   File: arch/powerpc/kernel/vdso/vdso64.so.dbg
-> > >   String dump of section '.comment':
-> > >   [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
-> > >
-> > > The compiler option '-fuse-ld' tells the compiler which linker to use
-> > > when it is invoked as both the compiler and linker. Use '-fuse-ld=lld'
-> > > when LD=ld.lld has been specified (CONFIG_LD_IS_LLD) so that the vDSO is
-> > > linked with the same linker as the rest of the kernel.
-> > >
-> > >   $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
-> > >
-> > >   File: arch/powerpc/kernel/vdso/vdso32.so.dbg
-> > >   String dump of section '.comment':
-> > >   [     0] Linker: LLD 14.0.0
-> > >   [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
-> > >
-> > >   File: arch/powerpc/kernel/vdso/vdso64.so.dbg
-> > >   String dump of section '.comment':
-> > >   [     0] Linker: LLD 14.0.0
-> > >   [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
-> > >
-> > > LD can be a full path to ld.lld, which will not be handled properly by
-> > > '-fuse-ld=lld' if the full path to ld.lld is outside of the compiler's
-> > > search path. '-fuse-ld' can take a path to the linker but it is
-> > > deprecated in clang 12.0.0; '--ld-path' is preferred for this scenario.
-> > >
-> > > Use '--ld-path' if it is supported, as it will handle a full path or
-> > > just 'ld.lld' properly. See the LLVM commit below for the full details
-> > > of '--ld-path'.
-> >
-> > Perhaps worth adding some additional background from the cover letter
-> > to the commit message that will actually go into the kernel,
-> > particularly:
-> > 1. Kbuild mostly invokes the compiler and linker distinctly; the ppc
-> > vdso code uses the compiler as the linker driver though.
-> > 2. When doing so, depending on how the compiler was configured, the
-> > implicit default linker the compiler invokes might not match $LD.
->
-> Sure, I think I can clear up these two points with something like:
->
-> "The PowerPC vDSO uses $(CC) to link, which differs from the rest of the
-> kernel, which uses $(LD) directly. As a result, the default linker of
-> the compiler is used, which may differ from the linker requested by the
-> builder. For example:
->
-> <example above>
->
-> LLVM=1 sets LD=ld.lld but ld.lld is not used to link the vDSO; GNU ld is
-> because "ld" is the default linker for clang on most Linux platforms."
->
-> Thoughts?
+On 27/04/2022 19:48, Guilherme G. Piccoli wrote:
+> In the panic path we have a list of functions to be called, the panic
+> notifiers - such callbacks perform various actions in the machine's
+> last breath, and sometimes users want them to run before kdump. We
+> have the parameter "crash_kexec_post_notifiers" for that. When such
+> parameter is used, the function "crash_smp_send_stop()" is executed
+> to poweroff all secondary CPUs through the NMI-shootdown mechanism;
+> part of this process involves disabling virtualization features in
+> all CPUs (except the main one).
+> 
+> Now, in the emergency restart procedure we have also a way of
+> disabling VMX in all CPUs, using the same NMI-shootdown mechanism;
+> what happens though is that in case we already NMI-disabled all CPUs,
+> the emergency restart fails due to a second addition of the same items
+> in the NMI list, as per the following log output:
+> 
+> sysrq: Trigger a crash
+> Kernel panic - not syncing: sysrq triggered crash
+> [...]
+> Rebooting in 2 seconds..
+> list_add double add: new=<addr1>, prev=<addr2>, next=<addr1>.
+> ------------[ cut here ]------------
+> kernel BUG at lib/list_debug.c:29!
+> invalid opcode: 0000 [#1] PREEMPT SMP PTI
+> 
+> In order to reproduce the problem, users just need to set the kernel
+> parameter "crash_kexec_post_notifiers" *without* kdump set in any
+> system with the VMX feature present.
+> 
+> Since there is no benefit in re-disabling VMX in all CPUs in case
+> it was already done, this patch prevents that by guarding the restart
+> routine against doubly issuing NMIs unnecessarily. Notice we still
+> need to disable VMX locally in the emergency restart.
+> 
+> Fixes: ed72736183c4 ("x86/reboot: Force all cpus to exit VMX root if VMX is supported)
+> Fixes: 0ee59413c967 ("x86/panic: replace smp_send_stop() with kdump friendly version in panic path")
+> Cc: David P. Reed <dpreed@deepplum.com>
+> Cc: Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> ---
+>  arch/x86/include/asm/cpu.h |  1 +
+>  arch/x86/kernel/crash.c    |  8 ++++----
+>  arch/x86/kernel/reboot.c   | 14 ++++++++++++--
+>  3 files changed, 17 insertions(+), 6 deletions(-)
+> 
 
-SGTM
+Hi Paolo / Sean / Vitaly, sorry for the ping.
+But do you think this fix is OK from the VMX point-of-view?
 
->
-> > 3. This is a problem for LTO since clang may try to invoke ld.gold,
-> > which is not supported as of
-> > commit 75959d44f9dc ("kbuild: Fail if gold linker is detected")
->
-> Technically, it seemed like ld.bfd was being invoked but the LLVMgold
-> plugin did not exist. Regardless, moving to ld.lld will resolve that,
-> since the LLVMgold plugin won't be needed.
+I'd like to send a V2 of this set soon, so any review here is highly
+appreciated!
 
-Oh indeed, invoking clang with `-flto -###` shows it does invoke the
-system's linker with `-plugin path/to/LLVMgold.so`, not `ld.gold`
-itself.  I don't think we should use or depend on the LLVMgold.so
-plugin either (I suspect it will invoke ld.gold, but as you noticed, I
-don't bother to build LLVMgold.so).  So, perhaps reworded (feel free
-to reword further):
+Cheers,
 
-3. This is a problem for LTO since clang may try to invoke ld.bfd with
-the LLVMgold.so plugin.
-https://llvm.org/docs/GoldPlugin.html states that "usage of the LLVM
-gold plugin with ld.bfd is not tested and therefore not officially
-supported or recommended." Users should instead use ld.lld to drive
-linking for LTO with clang.
 
->
-> > 4. Using the linker as the driver can cause ld.bfd 2.26 to crash.
-> > https://lore.kernel.org/all/b2066ccd-2b81-6032-08e3-41105b400f75@csgroup.eu/
-> > (Though, I wonder if that's because I was trying to add
-> > --orphan-handling=warn, which we're not yet doing for the ppc vdso
-> > AFAICT).
->
-> I can add this if necessary but it seemed like there might have been
-> other problems reported? I could just add a blanket "linker driver had
-> issues, we'll try again later" or something of that effect?
+Guilherme
 
-Sure.
-
--- 
-Thanks,
-~Nick Desaulniers
