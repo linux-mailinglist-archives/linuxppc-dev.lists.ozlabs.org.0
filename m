@@ -1,71 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F882520841
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 01:14:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECDA5209CB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 02:02:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kxxns1MCNz3cHw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 09:14:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f6fWCk6p;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kxyrt2XrCz3dx3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 10:02:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1136;
- helo=mail-yw1-x1136.google.com; envelope-from=samitolvanen@google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=f6fWCk6p; dkim-atps=neutral
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com
- [IPv6:2607:f8b0:4864:20::1136])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KxxnD2qBxz3bqy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 09:13:51 +1000 (AEST)
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-2f7d621d1caso161486907b3.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 16:13:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=oazinpgomaqUG0jSYMm8ubizFPTzpD9YluLXTH1Uf+8=;
- b=f6fWCk6p41OZaY/aYptJIOS/H7gQoR2LQU/vFrk5Gn4NSNwuGdiZDiDStk7AbG3yZD
- IKBXb4w884/50UAgGFMYKZ1TW7UWPSrJsR6aU/0xVkQloWI1gv9dqJSDbnU+7ZRlaq+H
- 5q6FzLE9Jch5W51SjYRwMzmvNSaAVh59pmK1la7G6Ce7QS8+phGNXM1poUTxBJEghkkL
- rkNzGIHiR6cg7h2j0E68I08LETn6PDCH3Bk2j2CtnK3mFxMH+qkZYlQ5Mbk0pgP96vbx
- k86u84TYrd/iZlrt9edUpHqGeZQt6sH9DbxxljCpeCMl8DqbX8Q9LTMC9vVENf9lnOH2
- 8xnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=oazinpgomaqUG0jSYMm8ubizFPTzpD9YluLXTH1Uf+8=;
- b=e9HhgnaxzTISPaSMXLrhJ0ylVgTPhkG+DWW+5Kkni6VM3b6Ut/Ss4tLfPXU2Bj1ob5
- p3gTZFsIeKMzSL6xbgZ4WuLI9HivJavj9WpWr+J2M4x/S06QuY5MryTrTjwek5sBJJ3H
- 1RQEwPw2o//i37dQlyb35VEW5ZhpJ8WT7XpYa0RkhqyHyLn+hdbraGs4BTB6+SUXrYZD
- HJePKIrjinIyrkgKGjlDiKPZh37zzJWga0U3p+YYmfip8qgZfFod0qobpZLiye78GCFP
- nA3xW6Ra6JXNxMjw1q/dUL+VE7qX8juNwlBCyoAnAC68tRiOhW8OtFDTROItG3+sM798
- b6Lg==
-X-Gm-Message-State: AOAM530h6lWmE/PHZp0lzFipd0SMx2GwGe9TGptCvtrCxhGmPSL33M0q
- ZfIruISLfA2BM8avXIlonO2HbcoO8Lq8GeoHwZ+KTQ==
-X-Google-Smtp-Source: ABdhPJxssHqsbnbsTj81I2dSgjtFlZace94GadSqyvpd5jqz1pk64Y4lHyhr+1TXl7QDxSK2F5OuNrrpLo+K4Kc2AN8=
-X-Received: by 2002:a81:1108:0:b0:2f7:bf11:3fb9 with SMTP id
- 8-20020a811108000000b002f7bf113fb9mr17011668ywr.305.1652138027673; Mon, 09
- May 2022 16:13:47 -0700 (PDT)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=suzuki.poulose@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4KxmVm6PgWz2yb9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 02:15:43 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DD7641480;
+ Mon,  9 May 2022 09:15:08 -0700 (PDT)
+Received: from [10.57.1.248] (unknown [10.57.1.248])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 15C183F73D;
+ Mon,  9 May 2022 09:14:59 -0700 (PDT)
+Message-ID: <d9ec6f31-6125-0723-b7d7-5898abeb3289@arm.com>
+Date: Mon, 9 May 2022 17:14:58 +0100
 MIME-Version: 1.0
-References: <20220508190631.2386038-1-masahiroy@kernel.org>
- <20220508190631.2386038-10-masahiroy@kernel.org>
-In-Reply-To: <20220508190631.2386038-10-masahiroy@kernel.org>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Mon, 9 May 2022 16:13:11 -0700
-Message-ID: <CABCJKudnbTS=_2WgX63xb_3oCwt_6jwotqfoV5wSjkmfjuUJZQ@mail.gmail.com>
-Subject: Re: [PATCH v4 09/14] kbuild: do not create *.prelink.o for Clang LTO
- or IBT
-To: Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.8.1
+Subject: Re: [PATCH 09/30] coresight: cpu-debug: Replace mutex with
+ mutex_trylock on panic notifier
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>, akpm@linux-foundation.org,
+ bhe@redhat.com, pmladek@suse.com, kexec@lists.infradead.org
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-10-gpiccoli@igalia.com>
+ <3cafe4fd-8a0b-2633-44a3-2995abd6c38c@arm.com>
+ <65f24bc5-2211-0139-ee12-b2608e81ceb1@igalia.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <65f24bc5-2211-0139-ee12-b2608e81ceb1@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Tue, 10 May 2022 09:58:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,92 +51,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Nicolas Schier <nicolas@fjasle.eu>,
- linux-kbuild <linux-kbuild@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- LKML <linux-kernel@vger.kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-modules@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
+ linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
+ john.ogness@linutronix.de, corbet@lwn.net, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, Mike Leach <mike.leach@linaro.org>,
+ linux-xtensa@linux-xtensa.org, dave.hansen@linux.intel.com,
+ keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org,
+ coresight@lists.linaro.org, Leo Yan <leo.yan@linaro.org>,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
+ jgross@suse.com, Mathieu Poirier <mathieu.poirier@linaro.org>,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net,
+ linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
+ kernel-dev@igalia.com, linux-alpha@vger.kernel.org, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, May 8, 2022 at 12:10 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> When CONFIG_LTO_CLANG=y, additional intermediate *.prelink.o is created
-> for each module. Also, objtool is postponed until LLVM bitcode is
-> converted to ELF.
->
-> CONFIG_X86_KERNEL_IBT works in a similar way to postpone objtool until
-> objects are merged together.
->
-> This commit stops generating *.prelink.o, so the build flow will look
-> the same with/without LTO.
->
-> The following figures show how the LTO build currently works, and
-> how this commit is changing it.
->
-> Current build flow
-> ==================
->
->  [1] single-object module
->
->                                       $(LD)
->            $(CC)                     +objtool              $(LD)
->     foo.c --------------------> foo.o -----> foo.prelink.o -----> foo.ko
->                            (LLVM bitcode)        (ELF)       |
->                                                              |
->                                                  foo.mod.o --/
->
->  [2] multi-object module
->                                       $(LD)
->            $(CC)         $(AR)       +objtool               $(LD)
->     foo1.c -----> foo1.o -----> foo.o -----> foo.prelink.o -----> foo.ko
->                            |  (archive)          (ELF)       |
->     foo2.c -----> foo2.o --/                                 |
->                 (LLVM bitcode)                   foo.mod.o --/
->
->   One confusion is foo.o in multi-object module is an archive despite of
->   its suffix.
->
-> New build flow
-> ==============
->
->  [1] single-object module
->
->   Since there is only one object, we do not need to have the LLVM
->   bitcode stage. Use $(CC)+$(LD) to generate an ELF object in one
->   build rule. When LTO is disabled, $(LD) is unneeded because $(CC)
->   produces an ELF object.
->
->            $(CC)+$(LD)+objtool             $(LD)
->     foo.c ------------------------> foo.o -------> foo.ko
->                                     (ELF)    |
->                                              |
->                                  foo.mod.o --/
->
->  [2] multi-object module
->
->   Previously, $(AR) was used to combine LLVM bitcode into an archive,
->   but there was no technical reason to do so.
->   This commit just uses $(LD) to combine and convert them into a single
->   ELF object.
->
->                             $(LD)
->             $(CC)          +objtool        $(LD)
->     foo1.c -------> foo1.o -------> foo.o -------> foo.ko
->                               |     (ELF)    |
->     foo2.c -------> foo2.o ---/              |
->                 (LLVM bitcode)   foo.mod.o --/
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-> Tested-by: Nathan Chancellor <nathan@kernel.org>
+Hi
 
-Looks good, thanks for cleaning this up!
+On 09/05/2022 14:09, Guilherme G. Piccoli wrote:
+> On 28/04/2022 05:11, Suzuki K Poulose wrote:
+>> Hi Guilherme,
+>>
+>> On 27/04/2022 23:49, Guilherme G. Piccoli wrote:
+>>> The panic notifier infrastructure executes registered callbacks when
+>>> a panic event happens - such callbacks are executed in atomic context,
+>>> with interrupts and preemption disabled in the running CPU and all other
+>>> CPUs disabled. That said, mutexes in such context are not a good idea.
+>>>
+>>> This patch replaces a regular mutex with a mutex_trylock safer approach;
+>>> given the nature of the mutex used in the driver, it should be pretty
+>>> uncommon being unable to acquire such mutex in the panic path, hence
+>>> no functional change should be observed (and if it is, that would be
+>>> likely a deadlock with the regular mutex).
+>>>
+>>> Fixes: 2227b7c74634 ("coresight: add support for CPU debug module")
+>>> Cc: Leo Yan <leo.yan@linaro.org>
+>>> Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
+>>> Cc: Mike Leach <mike.leach@linaro.org>
+>>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+>>> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+>>
+>> How would you like to proceed with queuing this ? I am happy
+>> either way. In case you plan to push this as part of this
+>> series (I don't see any potential conflicts) :
+>>
+>> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> Hi Suzuki, some other maintainers are taking the patches to their next
+> branches for example. I'm working on V2, and I guess in the end would be
+> nice to reduce the size of the series a bit.
+> 
+> So, do you think you could pick this one for your coresight/next branch
+> (or even for rc cycle, your call - this is really a fix)?
+> This way, I won't re-submit this one in V2, since it's gonna be merged
+> already in your branch.
 
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+I have queued this to coresight/next.
 
-Sami
+Thanks
+Suzuki
