@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F6C520669
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 23:06:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A397A52069D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 May 2022 23:25:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxtyR3zKPz3byW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 07:06:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KxvNJ4mKfz3bxn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 07:25:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=orbrA4f7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=rnUNDFnv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::132;
- helo=mail-lf1-x132.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::134;
+ helo=mail-lf1-x134.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=orbrA4f7; dkim-atps=neutral
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com
- [IPv6:2a00:1450:4864:20::132])
+ header.s=20210112 header.b=rnUNDFnv; dkim-atps=neutral
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com
+ [IPv6:2a00:1450:4864:20::134])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kxtxp5DKTz3bZC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 07:06:05 +1000 (AEST)
-Received: by mail-lf1-x132.google.com with SMTP id y32so25966571lfa.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 14:06:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KxvMd2LgZz3bp3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 07:25:00 +1000 (AEST)
+Received: by mail-lf1-x134.google.com with SMTP id w19so26032728lfu.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 14:24:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=qjp1harQFIcR5JWDx27OsPZ+h/5ZSTnxNJxQGcpbR0Q=;
- b=orbrA4f77ogkxmKkJ3q/TQp+dmMTe5nI5SbmLDizn+BWtUFG8Veqt5b2zCd7XI/v0C
- 2++5tFvOTalN0KW1AA0axYrWYizghY3kpdrmvNXVto7XaPmPKHVWTdWCqiCR61V+lIkg
- s9CF/QQDbaxAdyboGRDA09JFYQbpAPBvbY7qhyf+Jc0KYGEYTOw7lFRqZNkDCG1ZGmLE
- QJz9STkUtJlmOiy/nR3lnfGOG5XYt59SxISOM8zb2RbNNEQgXqWZblTbq2UTP54SLCVz
- tubogND8mcPPvr46k7AtFlLzJbSUwmOkxP4rDRYyZelkIvBVWy1QkdJfJ62fVLEyPyIF
- FAKQ==
+ :cc; bh=f1ZKCNhZxORq8c7EgaL4dVwnuRxBSTms81kX0yogN9o=;
+ b=rnUNDFnvWbpL/h8Vf3izjlnms8lBTpny2gdCnHOxqB2MEGjnQ0lcLXPO+4vHqI7B9c
+ //N55s0emMp69g6AwrRl461noDFhya5c61TVnRUPS9vn0djdsBQGwRV2o8pSuEaVVdX1
+ RjxQYrD85ZPw7uCGi3fdbKwpemkp3qhK2YAQKPOjoPSaqDdVrRZ6Oq29cTAcskq6B8iT
+ KpFbcQeJcuNw9pJFKhoypmWObaWomuzk4bIYfYoL2Q0flenXImaomkousTnAE7/gQfFf
+ xE7jGrNTrS1xMdjQJv/q28vx69R7YgfucnQnAXcTyAzYy8gqcE/sTxMUD+jVf2MKUgaU
+ OOPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=qjp1harQFIcR5JWDx27OsPZ+h/5ZSTnxNJxQGcpbR0Q=;
- b=FMPmFg4PPzmTZSFMriW4or4pL/3pFbuMMDeZiQvZlRRCro/HH1AZg3XylJYGLOfwr9
- IvPHy6y6r0hWuc1rgonM2o3PvCxsRatnbsoZYqPUsfA5H3jgNAlIGVvic/chE54g4l3M
- hCfBUn3C0VtrqSCHhw38BxX6Km/PGUJYqxEp0gR8UxucYvsbejkcyuhdohKZ+e+5azl8
- guRty/1PtU2p/4GRAzIf+H3mzfeLOlVYCaMd1+CSLmosNvfPcXtG5TcUj+dCKhmk+5hC
- Bk4/0wv2za0AQBrno9V8nXFgr9cF+Env4KpLsYlK+ooM2d7ffRDelRinNgRx6OgqPafO
- U6AA==
-X-Gm-Message-State: AOAM530SWoj6MdNV40P/EQCW3J7RO8H4bkJnXe41UF6onlT6VdcvYyTf
- 2VjsQrJAmdr18OEk8S6newLXF0J5iiBHpbpwwukPPg==
-X-Google-Smtp-Source: ABdhPJysiyUy2xjHoY7K99LREor5hcP6IvAjiQlGyHJrA4xH+cD+Sc1vbSv1/2dj3A5+OpE+v2zcENJr5rPg1toaW24=
-X-Received: by 2002:a05:6512:1291:b0:473:b522:ef58 with SMTP id
- u17-20020a056512129100b00473b522ef58mr13857412lfs.190.1652130360612; Mon, 09
- May 2022 14:06:00 -0700 (PDT)
+ bh=f1ZKCNhZxORq8c7EgaL4dVwnuRxBSTms81kX0yogN9o=;
+ b=w/gXLivGs+9dLbtdIvdCEOIkwI3XdypTErMzG27EyKF5/Ul6+QwT4kHD2SXJH7aMVs
+ 04esIKHCzksIxaA8u5riylBoP5nTwACsswMksPp7ScYPPrdr4Pu6fHS4JCbI09ZH8iJ3
+ Sr6usV89HwsgDe7B9quYYLtydnatKrzWoMnVMv6XbYWDOY6MqAsO7JXCjI24ye74hpky
+ 4RzSJRWiLMGXPvVCB5q5+V+0wbcbovLbMl7X3VvjUgYp2nU1OGhVcKJRPEnxJvN1DUfs
+ nUE14I5n+30L4cOAN+bQpaHNOmddzxFcEcBv7o8dIR3VvToqkB95HVKTvFtXlqu4n8Sk
+ eazw==
+X-Gm-Message-State: AOAM531s5PQgeuZS6uMs1O7DmWm/BSvqGGBdWiaVHmS0UC6tDgZyaq8u
+ qiVL0L0qrMgz33TWva/VX4Kb6HPC0DsmNtGneJjT0A==
+X-Google-Smtp-Source: ABdhPJzlVJ4LdtgzZNGGoTW71AqVYfRQLEXQr1oqfWVq1fwCpHO+N4JyBlIGF/GxtN25yMeZ/G9OTyQPpYIokXa9cz0=
+X-Received: by 2002:a05:6512:48f:b0:472:3c47:94a0 with SMTP id
+ v15-20020a056512048f00b004723c4794a0mr13987721lfq.579.1652131492458; Mon, 09
+ May 2022 14:24:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220509204635.2539549-1-nathan@kernel.org>
- <20220509204635.2539549-2-nathan@kernel.org>
-In-Reply-To: <20220509204635.2539549-2-nathan@kernel.org>
+ <20220509204635.2539549-3-nathan@kernel.org>
+In-Reply-To: <20220509204635.2539549-3-nathan@kernel.org>
 From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 9 May 2022 14:05:48 -0700
-Message-ID: <CAKwvOdnqFRhFvhFeGzKiVCp53iULFMhKeGmgf=n_sCohRt3q0Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] powerpc/vdso: Remove unused ENTRY in linker scripts
+Date: Mon, 9 May 2022 14:24:40 -0700
+Message-ID: <CAKwvOdkvF8AJudCcu=CVmU42eyVMJwUjQFnX+rpVF45bTR86Mg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/vdso: Link with ld.lld when requested
 To: Nathan Chancellor <nathan@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -75,90 +75,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Fangrui Song <maskray@google.com>, Alexey Kardashevskiy <aik@ozlabs.ru>,
- llvm@lists.linux.dev, patches@lists.linux.dev,
- Paul Mackerras <paulus@samba.org>, Tom Rix <trix@redhat.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, llvm@lists.linux.dev,
+ patches@lists.linux.dev, Paul Mackerras <paulus@samba.org>,
+ Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 9, 2022 at 1:46 PM Nathan Chancellor <nathan@kernel.org> wrote:
+On Mon, May 9, 2022 at 1:47 PM Nathan Chancellor <nathan@kernel.org> wrote:
 >
-> When linking vdso{32,64}.so.dbg with ld.lld, there is a warning about
-> not finding _start for the starting address:
+> The PowerPC vDSO is linked with $(CC) instead of $(LD), which means the
+> default linker of the compiler is used instead of the linker requested
+> by the builder.
 >
->   ld.lld: warning: cannot find entry symbol _start; not setting start address
->   ld.lld: warning: cannot find entry symbol _start; not setting start address
+>   $ make ARCH=powerpc LLVM=1 mrproper defconfig arch/powerpc/kernel/vdso/
+>   ...
 >
-> Looking at GCC + GNU ld, the entry point address is 0x0:
+>   $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
 >
->   $ llvm-readelf -h vdso{32,64}.so.dbg &| rg "(File|Entry point address):"
->   File: vdso32.so.dbg
->     Entry point address:               0x0
->   File: vdso64.so.dbg
->     Entry point address:               0x0
->
-> This matches what ld.lld emits:
->
->   $ powerpc64le-linux-gnu-readelf -p .comment vdso{32,64}.so.dbg
->
->   File: vdso32.so.dbg
->
+>   File: arch/powerpc/kernel/vdso/vdso32.so.dbg
 >   String dump of section '.comment':
->     [     0]  Linker: LLD 14.0.0
->     [    14]  clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+>   [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
 >
->   File: vdso64.so.dbg
->
+>   File: arch/powerpc/kernel/vdso/vdso64.so.dbg
 >   String dump of section '.comment':
->     [     0]  Linker: LLD 14.0.0
->     [    14]  clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+>   [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
 >
->   $ llvm-readelf -h vdso{32,64}.so.dbg &| rg "(File|Entry point address):"
->   File: vdso32.so.dbg
->     Entry point address:               0x0
->   File: vdso64.so.dbg
->     Entry point address:               0x0
+> The compiler option '-fuse-ld' tells the compiler which linker to use
+> when it is invoked as both the compiler and linker. Use '-fuse-ld=lld'
+> when LD=ld.lld has been specified (CONFIG_LD_IS_LLD) so that the vDSO is
+> linked with the same linker as the rest of the kernel.
 >
-> Remove ENTRY to remove the warning, as it is unnecessary for the vDSO to
-> function correctly.
+>   $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
+>
+>   File: arch/powerpc/kernel/vdso/vdso32.so.dbg
+>   String dump of section '.comment':
+>   [     0] Linker: LLD 14.0.0
+>   [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+>
+>   File: arch/powerpc/kernel/vdso/vdso64.so.dbg
+>   String dump of section '.comment':
+>   [     0] Linker: LLD 14.0.0
+>   [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+>
+> LD can be a full path to ld.lld, which will not be handled properly by
+> '-fuse-ld=lld' if the full path to ld.lld is outside of the compiler's
+> search path. '-fuse-ld' can take a path to the linker but it is
+> deprecated in clang 12.0.0; '--ld-path' is preferred for this scenario.
+>
+> Use '--ld-path' if it is supported, as it will handle a full path or
+> just 'ld.lld' properly. See the LLVM commit below for the full details
+> of '--ld-path'.
 
-Right, the vdso is going to be injected into the process' mappings;
-what would it even mean for a DSO to have an entry point?
+Perhaps worth adding some additional background from the cover letter
+to the commit message that will actually go into the kernel,
+particularly:
+1. Kbuild mostly invokes the compiler and linker distinctly; the ppc
+vdso code uses the compiler as the linker driver though.
+2. When doing so, depending on how the compiler was configured, the
+implicit default linker the compiler invokes might not match $LD.
+3. This is a problem for LTO since clang may try to invoke ld.gold,
+which is not supported as of
+commit 75959d44f9dc ("kbuild: Fail if gold linker is detected")
+4. Using the linker as the driver can cause ld.bfd 2.26 to crash.
+https://lore.kernel.org/all/b2066ccd-2b81-6032-08e3-41105b400f75@csgroup.eu/
+(Though, I wonder if that's because I was trying to add
+--orphan-handling=warn, which we're not yet doing for the ppc vdso
+AFAICT).
+
 Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 
 >
+> Link: https://github.com/ClangBuiltLinux/linux/issues/774
+> Link: https://github.com/llvm/llvm-project/commit/1bc5c84710a8c73ef21295e63c19d10a8c71f2f5
 > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 > ---
->  arch/powerpc/kernel/vdso/vdso32.lds.S | 1 -
->  arch/powerpc/kernel/vdso/vdso64.lds.S | 1 -
->  2 files changed, 2 deletions(-)
+>  arch/powerpc/kernel/vdso/Makefile | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso/vdso32.lds.S
-> index 58e0099f70f4..e0d19d74455f 100644
-> --- a/arch/powerpc/kernel/vdso/vdso32.lds.S
-> +++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
-> @@ -13,7 +13,6 @@ OUTPUT_FORMAT("elf32-powerpcle", "elf32-powerpcle", "elf32-powerpcle")
->  OUTPUT_FORMAT("elf32-powerpc", "elf32-powerpc", "elf32-powerpc")
->  #endif
->  OUTPUT_ARCH(powerpc:common)
-> -ENTRY(_start)
+> diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+> index 954974287ee7..096b0bf1335f 100644
+> --- a/arch/powerpc/kernel/vdso/Makefile
+> +++ b/arch/powerpc/kernel/vdso/Makefile
+> @@ -48,6 +48,7 @@ UBSAN_SANITIZE := n
+>  KASAN_SANITIZE := n
 >
->  SECTIONS
->  {
-> diff --git a/arch/powerpc/kernel/vdso/vdso64.lds.S b/arch/powerpc/kernel/vdso/vdso64.lds.S
-> index 0288cad428b0..1a4a7bc4c815 100644
-> --- a/arch/powerpc/kernel/vdso/vdso64.lds.S
-> +++ b/arch/powerpc/kernel/vdso/vdso64.lds.S
-> @@ -13,7 +13,6 @@ OUTPUT_FORMAT("elf64-powerpcle", "elf64-powerpcle", "elf64-powerpcle")
->  OUTPUT_FORMAT("elf64-powerpc", "elf64-powerpc", "elf64-powerpc")
->  #endif
->  OUTPUT_ARCH(powerpc:common64)
-> -ENTRY(_start)
+>  ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
+> +ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
 >
->  SECTIONS
->  {
+>  CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
+>  AS32FLAGS := -D__VDSO32__ -s
 > --
 > 2.36.1
 >
