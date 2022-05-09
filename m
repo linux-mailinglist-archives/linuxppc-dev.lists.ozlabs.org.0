@@ -1,67 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAE85209CD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 02:03:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E13F35209CE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 02:03:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxytC3lg8z3dQw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 10:03:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kxytt5Ll1z3c7R
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 10:03:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=eLWL69Jp;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google header.b=fgQGgwon;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
- envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=eLWL69Jp; dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=mkhalfella@purestorage.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=purestorage.com header.i=@purestorage.com
+ header.a=rsa-sha256 header.s=google header.b=fgQGgwon; 
+ dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kxn353wD0z3bd4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 02:40:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=48dgNwNPuCnyD3VVOBf09xe2NjnTaXdW0ldox8dhrAY=; b=eLWL69Jp3Hs5nKIC07c/DVmIhZ
- tbuXXOS52wa7kstrEszNfv7tW4JmReP+jwvf/WSB2LnPtAjsR79TSRqPXDYlR/UhgTYs3JxE63TxY
- WFAF2HLKU7kQDGOjOij/SccvoodNoUy/77Q7Rw1bHNyMkUGePOlK3tPiGlMKv0HFeJaDvBKfB5C4T
- 7/g7A8xShBgXvVATUWH+9aEVvFCEwhRR4Tyt7Zyibz7aNPTHMnncwalkA+46VUbkJ44ERvwAtMmTs
- hWWtwgYVptx9ug9t6aPZQ1zrU+TA/lel56oNayZ3d7me/ZMI8w2lxg28JbHkciwHu/jkRujv3gimI
- sEcDvBWQ==;
-Received: from [177.183.162.244] (helo=[192.168.0.5])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1no6QL-0009Bp-09; Mon, 09 May 2022 18:39:53 +0200
-Message-ID: <92e03ebf-6a64-69dc-bf16-9552b9fedad8@igalia.com>
-Date: Mon, 9 May 2022 13:39:21 -0300
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kxq8d6zNLz3bbn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 04:15:09 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ t11-20020a17090ad50b00b001d95bf21996so77599pju.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 11:15:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=purestorage.com; s=google;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=SyowesK9U7eSVq7QMaQPegZAs2FL+kTvFFeYpSRPCwQ=;
+ b=fgQGgwonLNudSAc9oIt4TtM9RE17sdmswvDyDJ0PtqtNkRiny6l0en3Jkns0vr/kKi
+ 1UGmLm2hTfC2iwuhwJutDwXkb558QFwjLEUZRr4+xUePhvmoJ2ZyTUito0NusLIL+X+/
+ Z7PuITXKzLlUwXe3pq2kAYJxKJhXFaEg7hTbg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=SyowesK9U7eSVq7QMaQPegZAs2FL+kTvFFeYpSRPCwQ=;
+ b=0k93MjhrIAHH9bE3TdqIUiW6RKSJF8a0/B2vKR8FD7OKUQR9k4wzJ0E5OtSIqMWNaw
+ Jhbz2ay4f4z1Xj3bh2jPAYzHJFc1bB2Pfg54BlHalr7IFmrrE+itBuJ7NMb6zSoiMZee
+ Nmzq4ouaAsadQEFOYNLbmHIcgjO9+beaN9GqLGAnTTAOz5rTbN7HMiaA2AT/9NjDNQfw
+ fsm2KnTmb+fXL99seUhPO2CM67DFu2cZr6FuS0/M1xgsLoF3DzKuRjTWDwlbdvFLKafg
+ hnL/fXe3X5dsILFda9CgAZzC8m+S5GnAyyZLtTCXxH3cSDKaowGmGH6ncr3hkDZAkQ/h
+ MNsQ==
+X-Gm-Message-State: AOAM530KEZvuInpKtQVxXDQjbROO4lAwTv0cjQA/9VgqlHTuG002nR/u
+ y3kfG7JKRN48mF2YXxaQB+ft6A==
+X-Google-Smtp-Source: ABdhPJzFNBRQ2Q1XDKbHbd7ZYGXOOytDH274fEG/tp2JYfzyhz5+wsbzR7mkgvY/m4+E/0FXM7Wjsg==
+X-Received: by 2002:a17:903:240f:b0:158:b871:33ac with SMTP id
+ e15-20020a170903240f00b00158b87133acmr16950870plo.135.1652120106524; 
+ Mon, 09 May 2022 11:15:06 -0700 (PDT)
+Received: from irdv-mkhalfella.dev.purestorage.com ([208.88.158.129])
+ by smtp.googlemail.com with ESMTPSA id
+ m18-20020a170902db1200b0015e8d4eb293sm152377plx.221.2022.05.09.11.15.05
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 09 May 2022 11:15:05 -0700 (PDT)
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
+To: mkhalfella@purestorage.com
+Subject: [PATCH] PCI/AER: Iterate over error counters instead of error strings
+Date: Mon,  9 May 2022 18:14:41 +0000
+Message-Id: <20220509181441.31884-1-mkhalfella@purestorage.com>
+X-Mailer: git-send-email 2.29.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 24/30] panic: Refactor the panic path
-Content-Language: en-US
-To: "d.hatayama@fujitsu.com" <d.hatayama@fujitsu.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "bhe@redhat.com" <bhe@redhat.com>, "pmladek@suse.com" <pmladek@suse.com>,
- "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
- Mark Rutland <mark.rutland@arm.com>, Marc Zyngier <maz@kernel.org>,
- "mikelley@microsoft.com" <mikelley@microsoft.com>,
- Hari Bathini <hbathini@linux.ibm.com>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-25-gpiccoli@igalia.com>
- <TYAPR01MB6507D01F5694BC33628BB7DB95C69@TYAPR01MB6507.jpnprd01.prod.outlook.com>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <TYAPR01MB6507D01F5694BC33628BB7DB95C69@TYAPR01MB6507.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Tue, 10 May 2022 09:58:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,199 +80,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "halves@canonical.com" <halves@canonical.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "alejandro.j.jimenez@oracle.com" <alejandro.j.jimenez@oracle.com>,
- "linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>,
- "feng.tang@intel.com" <feng.tang@intel.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "hidehiro.kawai.ez@hitachi.com" <hidehiro.kawai.ez@hitachi.com>,
- "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
- "will@kernel.org" <will@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>,
- "linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
- "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
- "john.ogness@linutronix.de" <john.ogness@linutronix.de>,
- "corbet@lwn.net" <corbet@lwn.net>, "paulmck@kernel.org" <paulmck@kernel.org>,
- "fabiomirmar@gmail.com" <fabiomirmar@gmail.com>,
- "x86@kernel.org" <x86@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "bcm-kernel-feedback-list@broadcom.com"
- <bcm-kernel-feedback-list@broadcom.com>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- "dyoung@redhat.com" <dyoung@redhat.com>,
- "vgoyal@redhat.com" <vgoyal@redhat.com>,
- "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "keescook@chromium.org" <keescook@chromium.org>,
- "arnd@arndb.de" <arnd@arndb.de>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- "rcu@vger.kernel.org" <rcu@vger.kernel.org>, "bp@alien8.de" <bp@alien8.de>,
- "luto@kernel.org" <luto@kernel.org>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "openipmi-developer@lists.sourceforge.net"
- <openipmi-developer@lists.sourceforge.net>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "jgross@suse.com" <jgross@suse.com>,
- "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stern@rowland.harvard.edu" <stern@rowland.harvard.edu>,
- "senozhatsky@chromium.org" <senozhatsky@chromium.org>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
- "vkuznets@redhat.com" <vkuznets@redhat.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>, Meeta Saggi <msaggi@purestorage.com>,
+ Eric Badger <ebadger@purestorage.com>, Oliver O'Halloran <oohall@gmail.com>,
+ stable@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+ "open list:PCI ENHANCED ERROR HANDLING EEH FOR POWERPC"
+ <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hey Hatayma, thanks for your great analysis and no need for apologies!
+PCI AER stats counters sysfs attributes need to iterate over
+stats counters instead of stats names. Also, added a build
+time check to make sure all counters have entries in strings
+array.
 
-I'll comment/respond properly inline below, just noticing here that I've
-CCed Mark and Marc (from the ARM64 perspective), Michael (Hyper-V
-perspective) and Hari (PowerPC perspective), besides the usual suspects
-as Petr, Baoquan, etc.
+Fixes: 0678e3109a3c ("PCI/AER: Simplify __aer_print_error()")
+Cc: stable@vger.kernel.org
+Reported-by: Meeta Saggi <msaggi@purestorage.com>
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Meeta Saggi <msaggi@purestorage.com>
+Reviewed-by: Eric Badger <ebadger@purestorage.com>
+---
+ drivers/pci/pcie/aer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-On 09/05/2022 12:16, d.hatayama@fujitsu.com wrote:
-> Sorry for the delayed response. Unfortunately, I had 10 days holidays
-> until yesterday...
-> [...] 
->> +                       We currently have 4 lists of panic notifiers; based
->> +                       on the functionality and risk (for panic success) the
->> +                       callbacks are added in a given list. The lists are:
->> +                       - hypervisor/FW notification list (low risk);
->> +                       - informational list (low/medium risk);
->> +                       - pre_reboot list (higher risk);
->> +                       - post_reboot list (only run late in panic and after
->> +                       kdump, not configurable for now).
->> +                       This parameter defines the ordering of the first 3
->> +                       lists with regards to kdump; the levels determine
->> +                       which set of notifiers execute before kdump. The
->> +                       accepted levels are:
->> +                       0: kdump is the first thing to run, NO list is
->> +                       executed before kdump.
->> +                       1: only the hypervisor list is executed before kdump.
->> +                       2 (default level): the hypervisor list and (*if*
-> 
-> Hmmm, why are you trying to change default setting?
-> 
-> Based on the current design of kdump, it's natural to put what the
-> handlers for these level 1 and level 2 handlers do in
-> machine_crash_shutdown(), as these are necessary by default, right?
-> 
-> Or have you already tried that and figured out it's difficult in some
-> reason and reached the current design? If so, why is that difficult?
-> Could you point to if there is already such discussion online?
-> 
-> kdump is designed to perform as little things as possible before
-> transferring the execution to the 2nd kernel in order to increase
-> reliability. Just detour to panic() increases risks of kdump failure
-> in the sense of increasing the executed codes in the abnormal
-> situation, which is very the note in the explanation of
-> crash_kexec_post_notifiers.
-> 
-> Also, the current implementation of crash_kexec_post_notifiers uses
-> the panic notifier, but this is not from the technical
-> reason. Ideally, it should have been implemented in the context of
-> crash_kexec() independently of panic().
-> 
-> That is, it looks to me that, in addition to changing design of panic
-> notifier, you are trying to integrate shutdown code of the crash kexec
-> and the panic paths. If so, this is a big design change for kdump.
-> I'm concerned about increase of reliability. I'd like you to discuss
-> them carefully.
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9fa1f97e5b27..ce99a6d44786 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -533,7 +533,7 @@ static const char *aer_agent_string[] = {
+ 	u64 *stats = pdev->aer_stats->stats_array;			\
+ 	size_t len = 0;							\
+ 									\
+-	for (i = 0; i < ARRAY_SIZE(strings_array); i++) {		\
++	for (i = 0; i < ARRAY_SIZE(pdev->aer_stats->stats_array); i++) {\
+ 		if (strings_array[i])					\
+ 			len += sysfs_emit_at(buf, len, "%s %llu\n",	\
+ 					     strings_array[i],		\
+@@ -1342,6 +1342,11 @@ static int aer_probe(struct pcie_device *dev)
+ 	struct device *device = &dev->device;
+ 	struct pci_dev *port = dev->port;
+ 
++	BUILD_BUG_ON(ARRAY_SIZE(aer_correctable_error_string) <
++		     AER_MAX_TYPEOF_COR_ERRS);
++	BUILD_BUG_ON(ARRAY_SIZE(aer_uncorrectable_error_string) <
++		     AER_MAX_TYPEOF_UNCOR_ERRS);
++
+ 	/* Limit to Root Ports or Root Complex Event Collectors */
+ 	if ((pci_pcie_type(port) != PCI_EXP_TYPE_RC_EC) &&
+ 	    (pci_pcie_type(port) != PCI_EXP_TYPE_ROOT_PORT))
+-- 
+2.29.0
 
-From my understanding (specially based on both these threads [0] and
-[1]), 3 facts are clear and quite complex in nature:
-
-(a) Currently, the panic notifier list is a "no man's land" - it's a
-mess, all sort of callbacks are added there, some of them are extremely
-risk for breaking kdump, others are quite safe (like setting a
-variable). Petr's details in thread [0] are really clear and express in
-great way how confusing and conflicting the panic notifiers goals are.
-
-(b) In order to "address" problems in the antagonistic goals of
-notifiers (see point (a) above and thread [0]), we have this
-quirk/workaround called "crash_kexec_post_notifiers". This is useful,
-but (almost as for attesting how this is working as band-aid over
-complex and fundamental issues) see the following commits:
-
-a11589563e96 ("x86/Hyper-V: Report crash register data or kmsg before
-running crash kernel")
-
-06e629c25daa ("powerpc/fadump: Fix inaccurate CPU state info in vmcore
-generated with panic")
-
-They hardcode such workaround, because they *need* some notifiers'
-callbacks. But notice they *don't need all of them*, only some important
-ones (that usually are good considering the risk, it's a good
-cost/benefit). Since we currently have an all-or-nothing behavior for
-the panic notifiers, both PowerPC and Hyper-V end-up bringing all of
-them to run before kdump due to the lack of flexibility, increasing a
-lot the risk of failure for kdump.
-
-(c) To add on top of all such complexity, we don't have a custom
-machine_crash_shutdown() handler for some architectures like ARM64, and
-the feeling is that's not right to add a bunch of callbacks / complexity
-in such architecture code, specially since we have the notifiers
-infrastructure in the kernel. I've recently started a discussion about
-that with ARM64 community, please take a look in [1].
-
-With that said, we can use (a) + (b) + (c) to justify our argument here:
-the panic notifiers should be refactored! We need to try to encompass
-the antagonistic goals of kdump (wants to be the first thing to run,
-early as possible) VS. the notifiers that are necessary, even before
-kdump (like Hyper-V / PowerPC fadump ones, but there are more of these,
-the FW/hypervisors notifiers).
-
-I guarantee to you we cannot make 100% of people happy - the
-panic-related areas like kdump, etc are full of trade-offs. We improve
-something, other stuff breaks. This series attempts to clearly
-distribute the notifiers in 3 buckets, and introduces a level setting
-that tunes such buckets to run before or after the kdump in a highly
-flexible way, trying to make the most users happy and capable of tuning
-their systems.
-
-I understand that likely setting the notifiers to 0 would make kdump
-maintainers happy, because we'd keep the same behavior as before.
-But..then we make PPC / Hyper-V and some other users unsatisfied. Level
-2 seems to me a good compromise. I'm willing to add a KConfig option to
-allow distros to hard set their defaults - that might make sense to
-legacy distros as older RHEL / CentOS or server-only distros.
-
-Finally, you mention about integrating the crash shutdown and the panic
-paths - I'm not officially doing that, but I see that they are very
-related and all cases I've ever seen in the last 3-4 years I've been
-working with kdump, it was triggered from panic, from settings "panic_on_X".
-
-I understand we have the regular kexec path (!kdump), some notifiers
-might make sense in both paths, and in this case we could duplicate them
-(one callback, 2 notifier lists) and control against double execution. I
-tried doing that in patch 16 of this series (Hyper-V stuff), but due to
-the lack of ARM64 custom crash shutdown handler, I couldn't. We can
-think in some alternatives, and improve these (naturally)
-connected/related paths, but this is not the goal of this specific
-series. I'm hereby trying to improve/clarify the panic (and kdump) path,
-not the pure kexec path.
-
-Let me know if I can clarify more specific points you have or if there
-are flaws in my logic - I appreciate the discussions/reviews.
-Cheers,
-
-
-Guilherme
-
-
-
-[0] "notifier/panic: Introduce panic_notifier_filter" -
-https://lore.kernel.org/lkml/YfPxvzSzDLjO5ldp@alley/
-
-[1] "Should arm64 have a custom crash shutdown handler?" -
-https://lore.kernel.org/lkml/427a8277-49f0-4317-d6c3-4a15d7070e55@igalia.com/
