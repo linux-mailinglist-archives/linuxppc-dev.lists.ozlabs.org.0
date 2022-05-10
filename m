@@ -2,45 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7EAD520CD0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 06:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7051520D0F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 06:45:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ky4jw4Nqtz3brb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 14:26:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ky58H4sz8z3c9y
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 14:45:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=OrctmfTV;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
- helo=out30-57.freemail.mail.aliyun.com;
- envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-57.freemail.mail.aliyun.com
- (out30-57.freemail.mail.aliyun.com [115.124.30.57])
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::434;
+ helo=mail-wr1-x434.google.com; envelope-from=davidgow@google.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=OrctmfTV; dkim-atps=neutral
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com
+ [IPv6:2a00:1450:4864:20::434])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ky4jS3plxz3bfH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 14:26:02 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R271e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04357;
- MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=31; SR=0;
- TI=SMTPD_---0VCp29EM_1652156751; 
-Received: from 30.15.214.13(mailfrom:baolin.wang@linux.alibaba.com
- fp:SMTPD_---0VCp29EM_1652156751) by smtp.aliyun-inc.com(127.0.0.1);
- Tue, 10 May 2022 12:25:53 +0800
-Message-ID: <0db300f4-8a91-b330-5c6f-bbc63cf2f151@linux.alibaba.com>
-Date: Tue, 10 May 2022 12:26:32 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ky57d3BStz3bb0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 14:45:16 +1000 (AEST)
+Received: by mail-wr1-x434.google.com with SMTP id i5so22029981wrc.13
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 21:45:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=9s1dagxJlyBeoN8vXdOpsPpdS8AD1RWVJWE0n8ehmas=;
+ b=OrctmfTVDCxyYdwcxCtO+PuFgHBDMDC7Bjk3TGUWyuOKGBhKLCCiUkxtYUOPWSujka
+ /OoqstAYhrGXcYieyOQKBFbwQ9tdHrrlfAgfjS6rNqvPEA5JdQz3D4E5NS7VzL5WOf+E
+ ppcl6vbGTOThxdSbDLD0FF3VNmQjZYs0YaRKW2LrfcKbI7iiYsOvdodP6Nf3qoZXPgQF
+ Um1ef/9fJDTkVoHV63EAahHnEkdwxgxf/Hc8y1wACrWcQPfhb2xVBIshPVinpye5CGSN
+ DoHok7Lf+NgFTiQMqtYLLj/aSoKi0RaOM3+EWbBDgDeG8Kjhw/dRvI6d3AEZbIIqfLAr
+ UHxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=9s1dagxJlyBeoN8vXdOpsPpdS8AD1RWVJWE0n8ehmas=;
+ b=r4DGxwwG19bAsG0IPTpYQGEj7ezg0RarDWpYP4SP/TAy05gVjUt1TKmwyLzaAmFxu0
+ RipVuIzAsNpmokRGrInB5T1LgG4wr230RRZLbQ6DvPX/HUAamX8LmGBzOBn/VRhcxDdu
+ kNLg4/QC/gIilCJ5JwbViGJlHd3bvZl2VO5wgUvZXy0r/k9obtpYhef6d8te34mPT3PP
+ JYa2BjvKV5YpRpe/0AHYytuMkbCuRWbuyaNQm9MHsV6nJovI2BwcC6ZpTqas8nIciy4v
+ v5SyCVWOa/j4gvGTQgIOojjJWDxZxQMz784Qm7JhdeAKO4BLQmD6SPSxhFqtbwl+nFTg
+ euUw==
+X-Gm-Message-State: AOAM531LU7QRjTQ8SDVQ1kWtftN4FmTdmoNG4fcagVRTJrqMSwU2vl5v
+ tNIG0iA997K1JARmSQxKW/8WhoFTCHpkpH0hiaz+eA==
+X-Google-Smtp-Source: ABdhPJzfNwaPy5xjCTvC86K51nEH3yemeJZ1erUUa4xvtvCZqXN7MOjD5hnH0ntxxTlSOXapkot4g5ZMqXe6px9AH2Q=
+X-Received: by 2002:a5d:4806:0:b0:20a:da03:711b with SMTP id
+ l6-20020a5d4806000000b0020ada03711bmr16582569wrq.395.1652157908998; Mon, 09
+ May 2022 21:45:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v3 0/3] Fix CONT-PTE/PMD size hugetlb issue when unmapping
- or migrating
-To: Andrew Morton <akpm@linux-foundation.org>
-References: <cover.1652147571.git.baolin.wang@linux.alibaba.com>
- <20220509210404.6a43aff15d0d6b3af0741001@linux-foundation.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20220509210404.6a43aff15d0d6b3af0741001@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20220507052451.12890-1-ojeda@kernel.org>
+ <CABVgOSm5S2=QYnHJ+B0JbYtFYKBDRZiOhE5YMKKUKZU56d17HQ@mail.gmail.com>
+ <CANiq72=0ft6+QLbdwWD6cLm4FhWfv53GSg6HKEwxQ-q2N-UkOw@mail.gmail.com>
+In-Reply-To: <CANiq72=0ft6+QLbdwWD6cLm4FhWfv53GSg6HKEwxQ-q2N-UkOw@mail.gmail.com>
+From: David Gow <davidgow@google.com>
+Date: Tue, 10 May 2022 12:44:57 +0800
+Message-ID: <CABVgOSkrvfvA7Ay4GC5wg64S1gibvm5_U5VGBog3sw4_UFo8Cg@mail.gmail.com>
+Subject: Re: [PATCH v6 00/23] Rust support
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,51 +76,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
- agordeev@linux.ibm.com, will@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, gor@linux.ibm.com, deller@gmx.de,
- ysato@users.osdn.me, catalin.marinas@arm.com, borntraeger@linux.ibm.com,
- arnd@arndb.de, hca@linux.ibm.com, songmuchun@bytedance.com,
- linux-arm-kernel@lists.infradead.org, tsbogend@alpha.franken.de,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- svens@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
- mike.kravetz@oracle.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ rust-for-linux <rust-for-linux@vger.kernel.org>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-perf-users@vger.kernel.org,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ Jarkko Sakkinen <jarkko@kernel.org>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, live-patching@vger.kernel.org,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ KUnit Development <kunit-dev@googlegroups.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, May 7, 2022 at 11:03 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Hi David,
+>
+> On Sat, May 7, 2022 at 11:29 AM David Gow <davidgow@google.com> wrote:
+> >
+> > It's great to see some KUnit support here!
+>
+> Thanks!
+>
+> > It's also possible to run these tests using the KUnit wrapper tool with:
+> > $ ./tools/testing/kunit/kunit.py run --kconfig_add CONFIG_RUST=y
+> > --make_options LLVM=1 --arch x86_64 'rust_kernel_doctests'
+> >
+> > That also nicely formats the results.
+>
+> Indeed!
+>
+>     [16:55:52] ============ rust_kernel_doctests (70 subtests) ============
+>     [16:55:52] [PASSED] rust_kernel_doctest_build_assert_rs_12_0
+>     [16:55:52] [PASSED] rust_kernel_doctest_build_assert_rs_55_0
+>     ...
+>     [16:55:52] [PASSED] rust_kernel_doctest_types_rs_445_0
+>     [16:55:52] [PASSED] rust_kernel_doctest_types_rs_509_0
+>     [16:55:52] ============== [PASSED] rust_kernel_doctests ===============
+>     [16:55:52] ============================================================
+>     [16:55:52] Testing complete. Passed: 70, Failed: 0, Crashed: 0,
+>     Skipped: 0, Errors: 0
+>
 
+I've just sent out a pull request to get this working under UML as
+well, which would simplify running these further:
+https://github.com/Rust-for-Linux/linux/pull/766
 
-On 5/10/2022 12:04 PM, Andrew Morton wrote:
-> On Tue, 10 May 2022 11:45:57 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
-> 
->> Hi,
->>
->> Now migrating a hugetlb page or unmapping a poisoned hugetlb page, we'll
->> use ptep_clear_flush() and set_pte_at() to nuke the page table entry
->> and remap it, and this is incorrect for CONT-PTE or CONT-PMD size hugetlb
->> page,
-> 
-> It would be helpful to describe why it's wrong.  Something like "should
-> use huge_ptep_clear_flush() and huge_ptep_clear_flush() for this
-> purpose"?
+> > That all being said, I can't say I'm thrilled with the test names
+> > here: none of them are particularly descriptive, and they'll probably
+> > not be static (which would make it difficult to track results /
+> > regressions / etc between kernel versions). Neither of those are
+>
+> Yeah, the names are not great and would change from time to time
+> across kernel versions.
+>
+> We could ask example writers to give each example a name, but that
+> would make them fairly less convenient. For instance, sometimes they
+> may be very small snippets interleaved with docs' prose (where giving
+> a name may feel a bit of a burden, and people may end writing
+> `foo_example1`, `foo_example2` etc. for each small "step" of an
+> explanation). In other cases they may be very long, testing a wide API
+> surface (e.g. when describing a module or type), where it is also hard
+> to give non-generic names like `rbtree_doctest`. In those kind of
+> cases, I think we would end up with not much better names than
+> automatically generated ones.
+>
+> The other aspect is that, given they are part of the documentation,
+> the prose or how things are explained/split may change, thus the
+> doctests as well. For instance, one may need to split a very long
+> `rbtree_doctest` in pieces, and then the name would need to change
+> anyway.
+>
+> So I think we should avoid asking documentation writers to add a
+> manual name, even if that means a bit ugly test names. Also this way
+> they are consistently named. What do you think?
 
-Sorry for the confusing description. I described the problem explicitly 
-in each patch's commit message.
+Yeah, these are all fair points: particularly for small doctests.
 
-https://lore.kernel.org/all/ea5abf529f0997b5430961012bfda6166c1efc8c.1652147571.git.baolin.wang@linux.alibaba.com/
-https://lore.kernel.org/all/730ea4b6d292f32fb10b7a4e87dad49b0eb30474.1652147571.git.baolin.wang@linux.alibaba.com/
+Maybe having an optional name, which more significant tests could use
+to override the file:line names? That could be useful for a few of the
+larger, more often referenced tests.
 
-> 
->> which will cause potential data consistent issue. This patch set
->> will change to use hugetlb related APIs to fix this issue, please find
->> details in each patch. Thanks.
-> 
-> Is a cc:stable needed here?  And are we able to identify a target for a
-> Fixes: tag?
+> One idea could be giving them a name based on the hash of the content
+> and avoiding the line number, so that there is a higher chance for the
+> name to stay the same even when the file gets modified for other
+> reasons.
 
-I think need a cc:stable tag, however I am not sure the target fixes 
-tag, since we should trace back to the introduction of CONT-PTE/PMD 
-hugetlb? 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
+Ugh: it's a bit ugly either way. I suspect that file:line is still
+probably better, if only because we need some way of looking up the
+test in the code if it fails. I'd hate for people to be randomly
+hashing bits of just to find out what test is failing.
+
+> > necessarily deal breakers, though it might make sense to hide them
+> > behind a kernel option (like all other KUnit tests) so that they can
+> > easily be excluded where they would otherwise clutter up results. (And
+>
+> Currently they are under `CONFIG_RUST_KERNEL_KUNIT_TEST` -- or do you
+> mean something else?
+>
+
+Oops: I missed that (one of the issues with testing this on a
+different machine which had a rust toolchain). Looks good to me.
+
+> > if there's a way to properly name them, or maybe even split them into
+> > per-file or per-module suites, that would make them a bit easier to
+> > deal.) Additionally, there are some plans to taint the kernel[1] when
+>
+> Yeah, splitting them further is definitely possible. We are also
+> likely splitting the `kernel` crate into several, which would also
+> make the suites smaller etc. so perhaps further splits may not be
+> needed.
+
+Ah: I didn't realise the plan was always to have crate-specific
+suites, and possibly to split things up.
+
+The KTAP output specification does actually support arbitrary nesting
+(though KUnit itself doesn't at the moment), which would potentially
+be an option if (e.g.) providing the complete module nesting made
+sense. I'm not convinced that'd make things easier to read, though.
+
+> > Regardless, this is very neat, and I'm looking forward to taking a
+> > closer look at it.
+>
+> Thanks again for taking a look and playing with it, I am glad you
+> liked it! (even if it is just a first approximation, and only supports
+> the `kernel` crate, etc.).
+>
+> Cheers,
+> Miguel
+
+Thanks,
+-- David
