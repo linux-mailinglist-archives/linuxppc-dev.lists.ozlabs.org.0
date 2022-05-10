@@ -1,56 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C072A520C8A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 06:04:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7EAD520CD0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 06:26:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ky4Dw4T2Xz3cDs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 14:04:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=r+cD5N6b;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ky4jw4Nqtz3brb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 14:26:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=korg header.b=r+cD5N6b; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
+ helo=out30-57.freemail.mail.aliyun.com;
+ envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-57.freemail.mail.aliyun.com
+ (out30-57.freemail.mail.aliyun.com [115.124.30.57])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ky4DD30Rtz30FR
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 14:04:11 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 23CFC60DE0;
- Tue, 10 May 2022 04:04:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748DCC385A6;
- Tue, 10 May 2022 04:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
- s=korg; t=1652155446;
- bh=6OF+9C9FRL/t2E9bNeco9SygrOB7dQke1qTazheJwmM=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=r+cD5N6bK5cMK3KiBjz/TIE0kRJfxClVYedgOaDY6iruFtbN69I0EnTrs28Odgw2B
- MPfR9kQZKLh7AzrNokC+xb2QjO4x0B/CskDab9TBGZx07zjP3Yerqr9YNFkFVMGD3p
- VJh3Vtf4VnZ1h7g0napFf0tAy+VjYNyYdsYerxPc=
-Date: Mon, 9 May 2022 21:04:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: Re: [PATCH v3 0/3] Fix CONT-PTE/PMD size hugetlb issue when
- unmapping or migrating
-Message-Id: <20220509210404.6a43aff15d0d6b3af0741001@linux-foundation.org>
-In-Reply-To: <cover.1652147571.git.baolin.wang@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ky4jS3plxz3bfH
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 14:26:02 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R271e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04357;
+ MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=31; SR=0;
+ TI=SMTPD_---0VCp29EM_1652156751; 
+Received: from 30.15.214.13(mailfrom:baolin.wang@linux.alibaba.com
+ fp:SMTPD_---0VCp29EM_1652156751) by smtp.aliyun-inc.com(127.0.0.1);
+ Tue, 10 May 2022 12:25:53 +0800
+Message-ID: <0db300f4-8a91-b330-5c6f-bbc63cf2f151@linux.alibaba.com>
+Date: Tue, 10 May 2022 12:26:32 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v3 0/3] Fix CONT-PTE/PMD size hugetlb issue when unmapping
+ or migrating
+To: Andrew Morton <akpm@linux-foundation.org>
 References: <cover.1652147571.git.baolin.wang@linux.alibaba.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <20220509210404.6a43aff15d0d6b3af0741001@linux-foundation.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20220509210404.6a43aff15d0d6b3af0741001@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -78,24 +67,36 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 10 May 2022 11:45:57 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 
-> Hi,
+
+On 5/10/2022 12:04 PM, Andrew Morton wrote:
+> On Tue, 10 May 2022 11:45:57 +0800 Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
 > 
-> Now migrating a hugetlb page or unmapping a poisoned hugetlb page, we'll
-> use ptep_clear_flush() and set_pte_at() to nuke the page table entry
-> and remap it, and this is incorrect for CONT-PTE or CONT-PMD size hugetlb
-> page,
+>> Hi,
+>>
+>> Now migrating a hugetlb page or unmapping a poisoned hugetlb page, we'll
+>> use ptep_clear_flush() and set_pte_at() to nuke the page table entry
+>> and remap it, and this is incorrect for CONT-PTE or CONT-PMD size hugetlb
+>> page,
+> 
+> It would be helpful to describe why it's wrong.  Something like "should
+> use huge_ptep_clear_flush() and huge_ptep_clear_flush() for this
+> purpose"?
 
-It would be helpful to describe why it's wrong.  Something like "should
-use huge_ptep_clear_flush() and huge_ptep_clear_flush() for this
-purpose"?
+Sorry for the confusing description. I described the problem explicitly 
+in each patch's commit message.
 
-> which will cause potential data consistent issue. This patch set
-> will change to use hugetlb related APIs to fix this issue, please find
-> details in each patch. Thanks.
+https://lore.kernel.org/all/ea5abf529f0997b5430961012bfda6166c1efc8c.1652147571.git.baolin.wang@linux.alibaba.com/
+https://lore.kernel.org/all/730ea4b6d292f32fb10b7a4e87dad49b0eb30474.1652147571.git.baolin.wang@linux.alibaba.com/
 
-Is a cc:stable needed here?  And are we able to identify a target for a
-Fixes: tag?
+> 
+>> which will cause potential data consistent issue. This patch set
+>> will change to use hugetlb related APIs to fix this issue, please find
+>> details in each patch. Thanks.
+> 
+> Is a cc:stable needed here?  And are we able to identify a target for a
+> Fixes: tag?
 
-
+I think need a cc:stable tag, however I am not sure the target fixes 
+tag, since we should trace back to the introduction of CONT-PTE/PMD 
+hugetlb? 66b3923a1a0f ("arm64: hugetlb: add support for PTE contiguous bit")
