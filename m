@@ -1,44 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E990522302
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 19:40:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B93B52246C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 20:55:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyQLS37Z0z3cK0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 03:40:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyS0z1Vrfz3cM7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 04:55:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GdqPf84p;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
- helo=ams.source.kernel.org;
- envelope-from=srs0=uvqw=vs=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org
- [IPv6:2604:1380:4601:e00::1])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=GdqPf84p; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyQL20qPGz3bpB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 03:40:25 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 5AC4FB81EB9;
- Tue, 10 May 2022 17:40:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749E5C385C2;
- Tue, 10 May 2022 17:40:16 +0000 (UTC)
-Date: Tue, 10 May 2022 13:40:14 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 23/30] printk: kmsg_dump: Introduce helper to inform
- number of dumpers
-Message-ID: <20220510134014.3923ccba@gandalf.local.home>
-In-Reply-To: <20220427224924.592546-24-gpiccoli@igalia.com>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-24-gpiccoli@igalia.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyS075YKNz3bjq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 04:55:03 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24AIFd7x013308;
+ Tue, 10 May 2022 18:54:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=zj+ciaKGYskhPPR9+F46t3cZTHZTJSZYUcobdcGfY+c=;
+ b=GdqPf84pDuoWF/mb8XaEXHAXHpL2lymIqptlQCzRzbMJnB/vXkT5KmefvjMGYolibVjn
+ QFgN4pRa/Pd2lfn/KQh/YUEjmjfhQwG8sdh9I18vLnimL0twg9cE2I9APyIhnte0xFDa
+ LH/BOUVP87rrbwyXG8lC/+JUaiudbWe4c/SrmSsaMfSXRHahJICZT9XdFyjsY6kqn6Ao
+ R+es308b7tnxjWV1N7qYx30dPsKhh48q5NdJt2eyV6V5u8EWIJbI/W0CsPNRSyrRAVZi
+ woQIm84gCryidwFlGsX1RkEPdGBRoaWwieiTIwc0CcG7negrctCJimcU0NjqDGdmRani Og== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fyw628rgh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 May 2022 18:54:54 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24AIiuI6022838;
+ Tue, 10 May 2022 18:54:54 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fyw628rg4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 May 2022 18:54:54 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24AId58f016614;
+ Tue, 10 May 2022 18:54:52 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma03wdc.us.ibm.com with ESMTP id 3fwgd9f1p3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 May 2022 18:54:52 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24AIsqP733030520
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 10 May 2022 18:54:52 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2449D13605E;
+ Tue, 10 May 2022 18:54:52 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 38ED9136059;
+ Tue, 10 May 2022 18:54:50 +0000 (GMT)
+Received: from [9.160.170.88] (unknown [9.160.170.88])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 10 May 2022 18:54:50 +0000 (GMT)
+Message-ID: <08d9470c-20db-52b8-7015-84f0ed29ad0c@linux.ibm.com>
+Date: Tue, 10 May 2022 11:54:49 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH] powerpc/eeh: Drop redundant spinlock initialization
+Content-Language: en-US
+To: Haowen Bai <baihaowen@meizu.com>, Russell Currey <ruscur@russell.cc>,
+ "Oliver O'Halloran" <oohall@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <1652176394-4331-1-git-send-email-baihaowen@meizu.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+In-Reply-To: <1652176394-4331-1-git-send-email-baihaowen@meizu.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ZDWTDKdbQcJ5VCuhPJargC0sHL62Pyj_
+X-Proofpoint-GUID: oOxcxjEcoqwPVorQ5dp9o_-uGRqKN_hi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-10_05,2022-05-10_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0
+ spamscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=875 mlxscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 clxscore=1011 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2205100079
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,50 +113,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- linux-xtensa@linux-xtensa.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
- linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
- john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, pmladek@suse.com,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, coresight@lists.linaro.org,
- linux-um@lists.infradead.org, rcu@vger.kernel.org, gregkh@linuxfoundation.org,
- bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
- openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
- vkuznets@redhat.com, linux-arm-kernel@lists.infradead.org,
- linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
- kernel-dev@igalia.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Apr 2022 19:49:17 -0300
-"Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
+On 5/10/22 02:53, Haowen Bai wrote:
+> slot_errbuf_lock has declared and initialized by DEFINE_SPINLOCK,
+> so we don't need to spin_lock_init again, drop it.
+> 
+> Signed-off-by: Haowen Bai <baihaowen@meizu.com>
+> ---
+>  arch/powerpc/platforms/pseries/eeh_pseries.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> index f9af879c0222..77b476093e06 100644
+> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
+> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+> @@ -848,7 +848,6 @@ static int __init eeh_pseries_init(void)
+>  	}
+> 
+>  	/* Initialize error log lock and size */
 
-> Currently we don't have a way to check if there are dumpers set,
-> except counting the list members maybe. This patch introduces a very
-> simple helper to provide this information, by just keeping track of
-> registered/unregistered kmsg dumpers. It's going to be used on the
-> panic path in the subsequent patch.
+Update the comment, or just drop it entirely?
 
-FYI, it is considered "bad form" to reference in the change log "this
-patch". We know this is a patch. The change log should just talk about what
-is being done. So can you reword your change logs (you do this is almost
-every patch). Here's what I would reword the above to be:
+-Tyrel
 
- Currently we don't have a way to check if there are dumpers set, except
- perhaps by counting the list members. Introduce a very simple helper to
- provide this information, by just keeping track of registered/unregistered
- kmsg dumpers. This will simplify the refactoring of the panic path.
+> -	spin_lock_init(&slot_errbuf_lock);
+>  	eeh_error_buf_size = rtas_token("rtas-error-log-max");
+>  	if (eeh_error_buf_size == RTAS_UNKNOWN_SERVICE) {
+>  		pr_info("%s: unknown EEH error log size\n",
 
-
--- Steve
