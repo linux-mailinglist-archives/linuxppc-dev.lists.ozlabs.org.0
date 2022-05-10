@@ -1,57 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E427521BB9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 16:16:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD01521CFA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 16:50:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyKq32kFMz3cMb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 00:16:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyLYc524zz3cGH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 00:50:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=BeTzacf3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hIU0MLSy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=BeTzacf3; dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyKpR47h7z3bmV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 00:16:14 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 932901F896;
- Tue, 10 May 2022 14:16:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1652192171; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=A8/NZJeBAhTKLHLb3PoAvlXD/AvbEgaBaR5HXaRNdkM=;
- b=BeTzacf3mS4VoGHK6i1jVn2p93FIleajbiX/lqLZYQzEPT5BuEThdtby46ST2AJUboj/I/
- VqEG9r83Q4xijGW9lCE2hweKm6E7raa+vKstZ+w2OtTvG5P31Un3HT5rf7nvpJdK7CHBFy
- VZPQPYk1mnBdJ3vUcDiFbXkwBcjlkRU=
-Received: from suse.cz (unknown [10.100.208.146])
+ smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=hIU0MLSy; 
+ dkim-atps=neutral
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 01C5F2C141;
- Tue, 10 May 2022 14:16:09 +0000 (UTC)
-Date: Tue, 10 May 2022 16:16:06 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 10/30] alpha: Clean-up the panic notifier code
-Message-ID: <YnpzpkfuwzJYbPYj@alley>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-11-gpiccoli@igalia.com>
- <f6def662-5742-b3a8-544f-bf15c636d83d@igalia.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyLY11xMkz3cB6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 00:49:41 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by sin.source.kernel.org (Postfix) with ESMTPS id 2A920CE1F2B;
+ Tue, 10 May 2022 14:49:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BFFC385C9;
+ Tue, 10 May 2022 14:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1652194177;
+ bh=Te2sD/cDnoun0AwDA9vgLsTlUYlmrjjvVc6ECCVxxpU=;
+ h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+ b=hIU0MLSy0U+hyR4yUULyOPI3PieQ6tkGZURG/I4Dz+y3wN7FQMcaIjyArGXSlH501
+ i4OI+tJXfFqeHf+KdssFjQadGcCfVK4Hz8qRXku6q2hrQARzijqwkZOX1HxcDXriCS
+ MK17vqz9geYAtwDWTZJJnhMh+lq0G2kBjoVzZJz9yt7UodOZEAjDxPl9cwSvW6JASA
+ OUymGcyaf3i8CuAShTtf+yD2elx0XdAHUX6K+29C+SHNqhk7TOYyv8GdARoHhVgGNT
+ Gn1WPVdEzE34Ma+a8+yt/nXgSziTHn1SMqjrDIcq3csEopB/qWro43E3uw3G7ZkI9E
+ pbekd+u8gNhsA==
+From: Mark Brown <broonie@kernel.org>
+To: Xiubo.Lee@gmail.com, alsa-devel@alsa-project.org, perex@perex.cz,
+ krzk+dt@kernel.org, shengjiu.wang@nxp.com, lgirdwood@gmail.com,
+ nicoleotsuka@gmail.com, festevam@gmail.com, devicetree@vger.kernel.org,
+ shengjiu.wang@gmail.com, robh+dt@kernel.org, tiwai@suse.com
+In-Reply-To: <1652087663-1908-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1652087663-1908-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 1/2] ASoC: fsl_micfil: Add support for i.MX8MPlus
+Message-Id: <165219417472.388769.13970240077661005048.b4-ty@kernel.org>
+Date: Tue, 10 May 2022 15:49:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f6def662-5742-b3a8-544f-bf15c636d83d@igalia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,58 +65,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, will@kernel.org,
- openipmi-developer@lists.sourceforge.net, linux-leds@vger.kernel.org,
- linux-s390@vger.kernel.org, mikelley@microsoft.com, john.ogness@linutronix.de,
- bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org, fabiomirmar@gmail.com,
- x86@kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com,
- xen-devel@lists.xenproject.org, Matt Turner <mattst88@gmail.com>,
- dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
- rcu@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- luto@kernel.org, linux-tegra@vger.kernel.org, rth@gcc.gnu.org,
- andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
- linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, tglx@linutronix.de,
- mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
- bp@alien8.de, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 2022-05-09 11:13:17, Guilherme G. Piccoli wrote:
-> On 27/04/2022 19:49, Guilherme G. Piccoli wrote:
-> > The alpha panic notifier has some code issues, not following
-> > the conventions of other notifiers. Also, it might halt the
-> > machine but still it is set to run as early as possible, which
-> > doesn't seem to be a good idea.
+On Mon, 9 May 2022 17:14:22 +0800, Shengjiu Wang wrote:
+> On i.MX8Plus there are two updates for micfil module.
+> 
+> One is that the output format is S32_LE, only the 24 more
+> significative bits have information, the other bits are always
+> zero. Add 'formats' variable in soc data to distinguish the
+> format on different platform.
+> Another is that the fifo depth is 32 entries.
+> 
+> [...]
 
-Yeah, it is pretty strange behavior.
+Applied to
 
-I looked into the history. This notifier was added into the alpha code
-in 2.4.0-test2pre2. In this historic code, the default panic() code
-either rebooted after a timeout or ended in a infinite loop. There
-was not crasdump at that times.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-The notifier allowed to change the behavior. There were 3 notifiers:
+Thanks!
 
-   + mips and mips64 ended with blinking in panic()
-   + alpha did __halt() in this srm case
+[1/2] ASoC: fsl_micfil: Add support for i.MX8MPlus
+      commit: cb05dac1bc34ad701972503ca1a75b51ae4478ff
+[2/2] ASoC: dt-bindings: fsl,micfil: Add compatible string for imx8mp
+      commit: 7b46eb1bf9534a75ff072a01e774b79e6a17cfdd
 
-They both still do this. I guess that it is some historic behavior
-that people using these architectures are used to.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Anyway, it makes sense to do this as the last notifier after
-dumping other information.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Reviewed-by: Petr Mladek <pmladek@suse.com>
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Best Regards,
-Petr
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
