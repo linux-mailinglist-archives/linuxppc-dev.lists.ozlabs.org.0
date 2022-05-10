@@ -1,67 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D6D5209CF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 02:04:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02209520AAB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 03:28:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KxyvY71Rvz3fFL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 10:04:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=R4xQzwtx;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ky0m50Tnbz3bdF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 11:28:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=amazon.de (client-ip=207.171.190.10;
- helo=smtp-fw-33001.amazon.com; envelope-from=prvs=121c1e825=graf@amazon.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256
- header.s=amazon201209 header.b=R4xQzwtx; 
- dkim-atps=neutral
-Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com
- [207.171.190.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131;
+ helo=out30-131.freemail.mail.aliyun.com;
+ envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
+Received: from out30-131.freemail.mail.aliyun.com
+ (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kxt2t3VRhz3bYq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 06:25:25 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
- t=1652127927; x=1683663927;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cbosptKrbMIe8k/Gv5F/V00Xlc9whGQqaQE8iFl+sCE=;
- b=R4xQzwtxcW1N0pi1gYUHadMX+pRTNfDmjzGnb1q9BcmzH0WGe90RvJop
- +kRzce1LK6EodqbOzl3Y8LRUQtJLJ6GhjulGbNjTX5pGkhcD2F0DAX5fu
- SSdTDLC3swj3nZCeIapvvOhoi9oun1ZQ1LRMinrkw/ssnKLAxejL7zSZ6 Q=;
-X-IronPort-AV: E=Sophos;i="5.91,212,1647302400"; d="scan'208";a="193768546"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO
- email-inbound-relay-pdx-2a-2dbf0206.us-west-2.amazon.com) ([10.43.8.2])
- by smtp-border-fw-33001.sea14.amazon.com with ESMTP; 09 May 2022 20:24:06 +0000
-Received: from EX13MTAUWC002.ant.amazon.com
- (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
- by email-inbound-relay-pdx-2a-2dbf0206.us-west-2.amazon.com (Postfix) with
- ESMTPS id 39CADA2846; Mon,  9 May 2022 20:24:05 +0000 (UTC)
-Received: from EX13D20UWC001.ant.amazon.com (10.43.162.244) by
- EX13MTAUWC002.ant.amazon.com (10.43.162.240) with Microsoft SMTP Server (TLS)
- id 15.0.1497.32; Mon, 9 May 2022 20:24:04 +0000
-Received: from u79c5a0a55de558.ant.amazon.com (10.43.160.180) by
- EX13D20UWC001.ant.amazon.com (10.43.162.244) with Microsoft SMTP Server (TLS)
- id 15.0.1497.32; Mon, 9 May 2022 20:24:02 +0000
-From: Alexander Graf <graf@amazon.com>
-To: <kvm@vger.kernel.org>
-Subject: [PATCH] KVM: PPC: Book3S PR: Enable MSR_DR for switch_mmu_context()
-Date: Mon, 9 May 2022 22:23:55 +0200
-Message-ID: <20220509202355.13985-1-graf@amazon.com>
-X-Mailer: git-send-email 2.28.0.394.ge197136389
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ky0lg2LNtz3bcy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 11:27:40 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R231e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=alimailimapcm10staff010182156082;
+ MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=32; SR=0;
+ TI=SMTPD_---0VCo8GaE_1652146048; 
+Received: from 30.15.214.13(mailfrom:baolin.wang@linux.alibaba.com
+ fp:SMTPD_---0VCo8GaE_1652146048) by smtp.aliyun-inc.com(127.0.0.1);
+ Tue, 10 May 2022 09:27:31 +0800
+Message-ID: <86671cb8-51e7-0e8e-430a-a325887391b3@linux.alibaba.com>
+Date: Tue, 10 May 2022 09:28:08 +0800
 MIME-Version: 1.0
-X-Originating-IP: [10.43.160.180]
-X-ClientProxiedBy: EX13D01UWA002.ant.amazon.com (10.43.160.74) To
- EX13D20UWC001.ant.amazon.com (10.43.162.244)
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 3/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
+ unmapping
+To: Peter Xu <peterx@redhat.com>, Mike Kravetz <mike.kravetz@oracle.com>
+References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
+ <c91e04ebb792ef7b72966edea8bd6fa2dfa5bfa7.1651216964.git.baolin.wang@linux.alibaba.com>
+ <20220429220214.4cfc5539@thinkpad>
+ <bcb4a3b0-4fcd-af3a-2a2c-fd662d9eaba9@linux.alibaba.com>
+ <20220502160232.589a6111@thinkpad>
+ <48a05075-a323-e7f1-9e99-6c0d106eb2cb@linux.alibaba.com>
+ <20220503120343.6264e126@thinkpad>
+ <927dfbf4-c899-b88a-4d58-36a637d611f9@oracle.com>
+ <YnlEQvipCM6hnIYT@xz-m1.local>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <YnlEQvipCM6hnIYT@xz-m1.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 10 May 2022 09:58:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,73 +59,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matt Evans <matt@ozlabs.org>, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
+ linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
+ agordeev@linux.ibm.com, will@kernel.org, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, arnd@arndb.de, ysato@users.sourceforge.jp,
+ deller@gmx.de, catalin.marinas@arm.com,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, borntraeger@linux.ibm.com,
+ gor@linux.ibm.com, hca@linux.ibm.com, linux-arm-kernel@lists.infradead.org,
+ tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, svens@linux.ibm.com, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 863771a28e27 ("powerpc/32s: Convert switch_mmu_context() to C")
-moved the switch_mmu_context() to C. While in principle a good idea, it
-meant that the function now uses the stack. The stack is not accessible
-from real mode though.
-
-So to keep calling the function, let's turn on MSR_DR while we call it.
-That way, all pointer references to the stack are handled virtually.
-
-Reported-by: Matt Evans <matt@ozlabs.org>
-Fixes: 863771a28e27 ("powerpc/32s: Convert switch_mmu_context() to C")
-Signed-off-by: Alexander Graf <graf@amazon.com>
-Cc: stable@vger.kernel.org
----
- arch/powerpc/kvm/book3s_32_sr.S | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_32_sr.S b/arch/powerpc/kvm/book3s_32_sr.S
-index e3ab9df6cf19..bd4f798f7a46 100644
---- a/arch/powerpc/kvm/book3s_32_sr.S
-+++ b/arch/powerpc/kvm/book3s_32_sr.S
-@@ -122,11 +122,21 @@
- 
- 	/* 0x0 - 0xb */
- 
--	/* 'current->mm' needs to be in r4 */
--	tophys(r4, r2)
--	lwz	r4, MM(r4)
--	tophys(r4, r4)
--	/* This only clobbers r0, r3, r4 and r5 */
-+	/* switch_mmu_context() needs paging, let's enable it */
-+	mfmsr   r9
-+	ori     r11, r9, MSR_DR
-+	mtmsr   r11
-+	sync
-+
-+	/* Calling switch_mmu_context(<inv>, current->mm, <inv>); */
-+	lwz	r4, MM(r2)
- 	bl	switch_mmu_context
- 
-+	/* Disable paging again */
-+	mfmsr   r9
-+	li      r6, MSR_DR
-+	andc    r9, r9, r6
-+	mtmsr	r9
-+	sync
-+
- .endm
--- 
-2.28.0.394.ge197136389
 
 
+On 5/10/2022 12:41 AM, Peter Xu wrote:
+> On Fri, May 06, 2022 at 12:07:13PM -0700, Mike Kravetz wrote:
+>> On 5/3/22 03:03, Gerald Schaefer wrote:
+>>> On Tue, 3 May 2022 10:19:46 +0800
+>>> Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
+>>>> On 5/2/2022 10:02 PM, Gerald Schaefer wrote:
+> 
+> [...]
+> 
+>>>> Please see previous code, we'll use the original pte value to check if
+>>>> it is uffd-wp armed, and if need to mark it dirty though the hugetlbfs
+>>>> is set noop_dirty_folio().
+>>>>
+>>>> pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
+>>>
+>>> Uh, ok, that wouldn't work on s390, but we also don't have
+>>> CONFIG_PTE_MARKER_UFFD_WP / HAVE_ARCH_USERFAULTFD_WP set, so
+>>> I guess we will be fine (for now).
+>>>
+>>> Still, I find it a bit unsettling that pte_install_uffd_wp_if_needed()
+>>> would work on a potential hugetlb *pte, directly de-referencing it
+>>> instead of using huge_ptep_get().
+>>>
+>>> The !pte_none(*pte) check at the beginning would be broken in the
+>>> hugetlb case for s390 (not sure about other archs, but I think s390
+>>> might be the only exception strictly requiring huge_ptep_get()
+>>> for de-referencing hugetlb *pte pointers).
+> 
+> We could have used is_vm_hugetlb_page(vma) within the helper so as to
+> properly use either generic pte or hugetlb version of pte fetching.  We may
+> want to conditionally do set_[huge_]pte_at() too at the end.
+> 
+> I could prepare a patch for that even if it's not really anything urgently
+> needed. I assume that won't need to block this patchset since we need the
+> pteval for pte_dirty() check anyway and uffd-wp definitely needs it too.
 
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
-
+OK. Thanks Peter.
