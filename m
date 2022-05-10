@@ -1,57 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D795226F2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 00:38:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793935226F3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 00:38:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyXxb4N7Kz3cJc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 08:38:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyXyL2vxVz3cLh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 08:38:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=OcxDFXmK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=sx6DF8Po;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=OcxDFXmK; dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=sx6DF8Po; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyH5p5Qkrz3c94
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 22:14:22 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 671FF1F8B8;
- Tue, 10 May 2022 12:14:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1652184859; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=z0qCXGbgchboCgbitrJZObbFnXC/YqP7fhEXmnIw2vY=;
- b=OcxDFXmKKoVdDJUxSKREkD35h3cfh7L/UHzdGP/cbflejeipwrciY4AbOjnQu6DKNCs7aq
- Tea2QFXBj209QcyaHp7BuefH2IIusivsxr3vlgfi6p9lZaMFpVOppWn8lIP/+rweBZrcrm
- +Lwt8IUC7jK6VwI0ouYkElgPt01wPwE=
-Received: from suse.cz (unknown [10.100.208.146])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 552522C141;
- Tue, 10 May 2022 12:14:16 +0000 (UTC)
-Date: Tue, 10 May 2022 14:14:16 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 05/30] misc/pvpanic: Convert regular spinlock into
- trylock on panic path
-Message-ID: <YnpXGOXicwdy1E6n@alley>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-6-gpiccoli@igalia.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyJ922W8bz2ybB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 23:02:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=JWyep5EFfEPXN0/UUFSWkvsTwBT4W/fOxchQHhKa4RM=; b=sx6DF8PoUIO1mHu5cZY1RxwoA9
+ niB1KysO8rrmF0zp8Z8GTN/NtCj2d4QR4yv3E2E5W17RExRi8A0KAmcw+03c1G1ooU/Pm21U+zIEh
+ 0zp/hEbV2HUhNtVPnHFdp5DB6IlN6W8R3VOm7oythqBX2GRaLpOj+rJPIjIYg4FRTMuO76QGoLFC6
+ YTJOWt6WzTDBhnK8IJgaIHAnWrK2atb9lCglavMKbFL3MElzKi625NHcWNdIldxGBU96c/pM4S0g8
+ wJXsSSNXtcQC2Akbyu07xQvQmC9j0tVwKiovTIAilxmwfqg23OLqdBOLywiRmkuVFih5uNhaytVXp
+ cz9YcgaQ==;
+Received: from [177.183.162.244] (helo=[192.168.0.5])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1noPUd-0004lT-6O; Tue, 10 May 2022 15:01:35 +0200
+Message-ID: <0a20dd06-f459-638e-cb4d-8255ab1a1f23@igalia.com>
+Date: Tue, 10 May 2022 10:00:58 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220427224924.592546-6-gpiccoli@igalia.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 05/30] misc/pvpanic: Convert regular spinlock into trylock
+ on panic path
+Content-Language: en-US
+To: Petr Mladek <pmladek@suse.com>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-6-gpiccoli@igalia.com> <YnpXGOXicwdy1E6n@alley>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <YnpXGOXicwdy1E6n@alley>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Wed, 11 May 2022 08:37:45 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -93,34 +97,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 2022-04-27 19:48:59, Guilherme G. Piccoli wrote:
-> The pvpanic driver relies on panic notifiers to execute a callback
-> on panic event. Such function is executed in atomic context - the
-> panic function disables local IRQs, preemption and all other CPUs
-> that aren't running the panic code.
+On 10/05/2022 09:14, Petr Mladek wrote:
+> [...]
+>> With that said, it's dangerous to use regular spinlocks in such path,
+>> as introduced by commit b3c0f8774668 ("misc/pvpanic: probe multiple instances").
+>> This patch fixes that by replacing regular spinlocks with the trylock
+>> safer approach.
 > 
-> With that said, it's dangerous to use regular spinlocks in such path,
-> as introduced by commit b3c0f8774668 ("misc/pvpanic: probe multiple instances").
-> This patch fixes that by replacing regular spinlocks with the trylock
-> safer approach.
+> It seems that the lock is used just to manipulating a list. A super
+> safe solution would be to use the rcu API: rcu_add_rcu() and
+> list_del_rcu() under rcu_read_lock(). The spin lock will not be
+> needed and the list will always be valid.
+> 
+> The advantage would be that it will always call members that
+> were successfully added earlier. That said, I am not familiar
+> with pvpanic and am not sure if it is worth it.
+> 
+>> It also fixes an old comment (about a long gone framebuffer code) and
+>> the notifier priority - we should execute hypervisor notifiers early,
+>> deferring this way the panic action to the hypervisor, as expected by
+>> the users that are setting up pvpanic.
+> 
+> This should be done in a separate patch. It changes the behavior.
+> Also there might be a discussion whether it really should be
+> the maximal priority.
+> 
+> Best Regards,
+> Petr
 
-It seems that the lock is used just to manipulating a list. A super
-safe solution would be to use the rcu API: rcu_add_rcu() and
-list_del_rcu() under rcu_read_lock(). The spin lock will not be
-needed and the list will always be valid.
+Thanks for the review Petr. Patch was already merged - my goal was to be
+concise, i.e., a patch per driver / module, so the patch kinda fixes
+whatever I think is wrong with the driver with regards panic handling.
 
-The advantage would be that it will always call members that
-were successfully added earlier. That said, I am not familiar
-with pvpanic and am not sure if it is worth it.
+Do you think it worth to remove this patch from Greg's branch just to
+split it in 2? Personally I think it's not worth, but opinions are welcome.
 
-> It also fixes an old comment (about a long gone framebuffer code) and
-> the notifier priority - we should execute hypervisor notifiers early,
-> deferring this way the panic action to the hypervisor, as expected by
-> the users that are setting up pvpanic.
+About the RCU part, this one really could be a new patch, a good
+improvement patch - it makes sense to me, we can think about that after
+the fixes I guess.
 
-This should be done in a separate patch. It changes the behavior.
-Also there might be a discussion whether it really should be
-the maximal priority.
+Cheers,
 
-Best Regards,
-Petr
+
+Guilherme
