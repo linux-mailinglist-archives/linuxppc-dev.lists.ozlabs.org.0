@@ -2,57 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A26B52218A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 18:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6857C5221ED
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 19:07:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyP4g0sZQz3cMf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 02:43:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyPbm2TP2z3cLp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 03:07:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SG253sua;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uJcj/V3x;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org;
- receiver=<UNKNOWN>)
+ helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=SG253sua; 
+ header.s=k20201202 header.b=uJcj/V3x; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org
  [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyP4315Rfz3bsF
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 02:43:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyPb75SGKz30FR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 03:06:43 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 8BA1861811;
- Tue, 10 May 2022 16:43:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C14C385A6;
- Tue, 10 May 2022 16:43:09 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B128C61811;
+ Tue, 10 May 2022 17:06:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5473C385A6;
+ Tue, 10 May 2022 17:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1652200991;
- bh=Osg1O0gfa6ZkJPjBpOrkM1rXaweWgHooysorOXbKftU=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=SG253suakgSw/EN+cXtrkyjj6aWCkxwrbCbP7C0HSUz/KfL9A6Vx4aeAY6gHLL/zK
- Ig/jhuTc7srNJMuXg8I3xGqrmiHxoSwZQiu5XNG+vcxoeaNuD8SwYUmAwdpg2PvtsX
- MpPy2zHkZCbErrHZecpOuX2nCTX41ds2hoJA0idx7X7ROHLRuS93+5p7XfBG9vBJBD
- +vkSNa3ypaT5L6QmF6BfBVCSIK9q3bhncdsZ5Yu4H/cJ+Yulisq7PiKnwg/z/cBrCR
- mVqqxmHRCgXEPo2OqbB+8jN15fPu9j2moaT3HEQDubZBxY0v4EEMpEQZCjIxPT4y4b
- YYOf7ALzDkFLw==
-Date: Tue, 10 May 2022 11:43:05 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Mohamed Khalfella <mkhalfella@purestorage.com>
-Subject: Re: [PATCH] PCI/AER: Iterate over error counters instead of error
- strings
-Message-ID: <20220510164305.GA678149@bhelgaas>
+ s=k20201202; t=1652202401;
+ bh=q7J2WH5N5gDwoaobqal2v9K8HktLcbKwiFlz3iwpMzs=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=uJcj/V3xREczRWzdVb+5/WQHqIlpZzwyzx2IHFnYiPL3RutyXtON2J95PqifSejaL
+ /RTkpfhzhOzTFj/NyCHPMK4p2a747h0eGHMljZ73Vgd9UTkB0QdajoDi1XX9COIMIq
+ xciIaoNyQ2iAHaATBix3sY8dsHYi0hqzDDAV+xYOm2Mhzvn1LItFRtuDgRe61lcyhj
+ v+sqCDoZAZd9LSYiGIQgDw9Q74z5+KgsWEPSQ6w6ShrTrldZmxRMVbkvp3AV8ZxNuQ
+ I6Pv5xONVwOKKB3S5YVFbgDFEEDRfPwFqDzdb3DS9JOkg0TgGwzrJaVzSSMe9b7gNm
+ RXkCvIYO1Kdbg==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+ id AFDC0400B1; Tue, 10 May 2022 14:06:38 -0300 (-03)
+Date: Tue, 10 May 2022 14:06:38 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH] tools/perf/tests: Skip perf BPF test if clang is not
+ present
+Message-ID: <YnqbnixOveerC9Yt@kernel.org>
+References: <20220505100039.58287-1-atrajeev@linux.vnet.ibm.com>
+ <YnQHi5Mhvs2p7BG8@kernel.org>
+ <A0479956-31B6-41F1-9940-9ED95CC59E08@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220509181441.31884-1-mkhalfella@purestorage.com>
+In-Reply-To: <A0479956-31B6-41F1-9940-9ED95CC59E08@linux.vnet.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,115 +69,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>, Meeta Saggi <msaggi@purestorage.com>,
- Eric Badger <ebadger@purestorage.com>, Oliver O'Halloran <oohall@gmail.com>,
- stable@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
- Rajat Jain <rajatja@google.com>,
- "open list:PCI ENHANCED ERROR HANDLING \(EEH\) FOR POWERPC"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>,
+ kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-[+cc Rajat]
-
-On Mon, May 09, 2022 at 06:14:41PM +0000, Mohamed Khalfella wrote:
-> PCI AER stats counters sysfs attributes need to iterate over
-> stats counters instead of stats names. 
-
-Thanks for catching this; it definitely looks like a real issue!  I
-guess you're probably seeing junk in the sysfs files?
-
-It would be helpful to reviewers if this said *why* we need to iterate
-over the counters instead of the names.  I think the problem is that
-the current code reads past the end of the stats counters.
-
-There are parallel arrays here:
-
-  #define AER_MAX_TYPEOF_COR_ERRS         16
-  #define AER_MAX_TYPEOF_UNCOR_ERRS       27
-
-  aer_correctable_error_string[32]                               # 32
-  pdev->aer_stats->dev_cor_errs[AER_MAX_TYPEOF_COR_ERRS]         # 16
-  aer_uncorrectable_error_string[32]                             # 32
-  pdev->aer_stats->dev_fatal_errs[AER_MAX_TYPEOF_UNCOR_ERRS]     # 27
-  pdev->aer_stats->dev_nonfatal_errs[AER_MAX_TYPEOF_UNCOR_ERRS]  # 27
-
-And here's the current use of them:
-
-  #define aer_stats_dev_attr(..., stats_array, strings_array, ...)
-    for (i = 0; i < ARRAY_SIZE(strings_array); i++) {
-      if (strings_array[i])
-	sysfs_emit_at(..., strings_array[i], stats[i]);          (1)
-      else if (stats[i])
-	sysfs_emit_at(..., stats[i]);                            (2)
-
-  aer_stats_dev_attr(..., dev_cor_errs, aer_correctable_error_string,
-  aer_stats_dev_attr(..., dev_fatal_errs, aer_uncorrectable_error_string,
-  aer_stats_dev_attr(..., dev_nonfatal_errs, aer_uncorrectable_error_string,
-
-The current loop iterates over 0..31, which is safe at (1) because the
-non-NULL strings are at aer_correctable_error_string[0..15] and
-aer_uncorrectable_error_string[0..26].
-
-But it is unsafe at (2) because it references dev_cor_errs[16..31],
-dev_fatal_errs[27..31], and dev_nonfatal_errs[27..31], which are past
-the end of the arrays.
-
-> Also, added a build time check to make sure all counters have
-> entries in strings array.
->
-> Fixes: 0678e3109a3c ("PCI/AER: Simplify __aer_print_error()")
-
-Yep, I blew it there.  Rajat did it correctly when he added this with
-81aa5206f9a7 ("PCI/AER: Add sysfs attributes to provide AER stats and
-breakdown"), and I broke it by extending the string arrays to 32
-entries.
-
-> Cc: stable@vger.kernel.org
-> Reported-by: Meeta Saggi <msaggi@purestorage.com>
-> Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-> Reviewed-by: Meeta Saggi <msaggi@purestorage.com>
-> Reviewed-by: Eric Badger <ebadger@purestorage.com>
-> ---
->  drivers/pci/pcie/aer.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+Em Fri, May 06, 2022 at 03:07:51PM +0530, Athira Rajeev escreveu:
 > 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 9fa1f97e5b27..ce99a6d44786 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -533,7 +533,7 @@ static const char *aer_agent_string[] = {
->  	u64 *stats = pdev->aer_stats->stats_array;			\
->  	size_t len = 0;							\
->  									\
-> -	for (i = 0; i < ARRAY_SIZE(strings_array); i++) {		\
-> +	for (i = 0; i < ARRAY_SIZE(pdev->aer_stats->stats_array); i++) {\
->  		if (strings_array[i])					\
->  			len += sysfs_emit_at(buf, len, "%s %llu\n",	\
->  					     strings_array[i],		\
+> 
+> > On 05-May-2022, at 10:51 PM, Arnaldo Carvalho de Melo <acme@kernel.org> wrote:
+> > 
+> > Em Thu, May 05, 2022 at 03:30:39PM +0530, Athira Rajeev escreveu:
+> >> Perf BPF filter test fails in environment where "clang"
+> >> is not installed.
+> >> 
+> >> Test failure logs:
+> >> 
+> >> <<>>
+> >> 42: BPF filter                    :
+> >> 42.1: Basic BPF filtering         : Skip
+> >> 42.2: BPF pinning                 : FAILED!
+> >> 42.3: BPF prologue generation     : FAILED!
+> >> <<>>
+> >> 
+> >> Enabling verbose option provided debug logs which says
+> >> clang/llvm needs to be installed. Snippet of verbose logs:
+> >> 
+> >> <<>>
+> >> 42.2: BPF pinning                  :
+> >> --- start ---
+> >> test child forked, pid 61423
+> >> ERROR:	unable to find clang.
+> >> Hint:	Try to install latest clang/llvm to support BPF.
+> >>        Check your $PATH
+> >> 
+> >> <<logs_here>>
+> >> 
+> >> Failed to compile test case: 'Basic BPF llvm compile'
+> >> Unable to get BPF object, fix kbuild first
+> >> test child finished with -1
+> >> ---- end ----
+> >> BPF filter subtest 2: FAILED!
+> >> <<>>
+> >> 
+> >> Here subtests, "BPF pinning" and "BPF prologue generation"
+> >> failed and logs shows clang/llvm is needed. After installing
+> >> clang, testcase passes.
+> >> 
+> >> Reason on why subtest failure happens though logs has proper
+> >> debug information:
+> >> Main function __test__bpf calls test_llvm__fetch_bpf_obj by
+> >> passing 4th argument as true ( 4th arguments maps to parameter
+> >> "force" in test_llvm__fetch_bpf_obj ). But this will cause
+> >> test_llvm__fetch_bpf_obj to skip the check for clang/llvm.
+> >> 
+> >> Snippet of code part which checks for clang based on
+> >> parameter "force" in test_llvm__fetch_bpf_obj:
+> >> 
+> >> <<>>
+> >> if (!force && (!llvm_param.user_set_param &&
+> >> <<>>
+> >> 
+> >> Since force is set to "false", test won't get skipped and
+> >> fails to compile test case. The BPF code compilation needs
+> >> clang, So pass the fourth argument as "false" and also skip
+> >> the test if reason for return is "TEST_SKIP"
+> >> 
+> >> After the patch:
+> >> 
+> >> <<>>
+> >> 42: BPF filter                    :
+> >> 42.1: Basic BPF filtering         : Skip
+> >> 42.2: BPF pinning                 : Skip
+> >> 42.3: BPF prologue generation     : Skip
+> >> <<>>
+> > 
+> > Wouldn't it be better to add the reason for the skip, like other tests
+> > do?
+> > 
+> > E.g.:
+> > 
+> > 23: Watchpoint                                                      :
+> > 23.1: Read Only Watchpoint                                          : Skip (missing hardware support)
+> > 23.2: Write Only Watchpoint                                         : Ok
+> > 23.3: Read / Write Watchpoint                                       : Ok
+> > 23.4: Modify Watchpoint
+> > 
+> > Something like:
+> > 
+> > After the patch:
+> > 
+> > <<>>
+> > 42: BPF filter                    :
+> > 42.1: Basic BPF filtering         : Skip (clang not installed)
+> > 42.2: BPF pinning                 : Skip (clang not installed)
+> > 42.3: BPF prologue generation     : Skip (clang not installed)
+> 
+> 
+> Hi Arnaldo,
+> 
+> I tried to use TEST_CASE_REASON("BPF pinning", bpf_pinning, "clang not installed")
+> 
+> The clang check is done in test_llvm__fetch_bpf_obj under some condition checks:
+> 
+> <<>>
+>          /*
+>          * Skip this test if user's .perfconfig doesn't set [llvm] section
+>          * and clang is not found in $PATH
+>          */
+>         if (!force && (!llvm_param.user_set_param &&
+>                        llvm__search_clang())) {
+>                 pr_debug("No clang, skip this test\n");
+>                 return TEST_SKIP;
+>         }
+> <<>>
+> 
+> But the reason for BPF skip could happen at other places also ie non-root user, bpf support checks from check_env.
+> So can't exactly print the skip reason to be clang since It could get skipped from other environment checks too. Any suggestions Arnaldo ?
 
-I think maybe we should populate the currently NULL entries in the
-string[] arrays and simplify the code here, e.g.,
+We have cases where the framework isn't flexible enough to say exactly
+what was the reason for the failure and we use language such as "maybe
+clang isn't installed or some other reason?"
 
-  static const char *aer_correctable_error_string[] = {
-        "RxErr",                        /* Bit Position 0       */
-        "dev_cor_errs_bit[1]",
-	...
+- Arnaldo
+ 
+> Thanks
+> Athira
+> 
+> > <<>>
+> > 
+> >> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> >> ---
+> >> tools/perf/tests/bpf.c | 4 ++--
+> >> 1 file changed, 2 insertions(+), 2 deletions(-)
+> >> 
+> >> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
+> >> index 57b9591f7cbb..ae62f01239e3 100644
+> >> --- a/tools/perf/tests/bpf.c
+> >> +++ b/tools/perf/tests/bpf.c
+> >> @@ -222,11 +222,11 @@ static int __test__bpf(int idx)
+> >> 
+> >> 	ret = test_llvm__fetch_bpf_obj(&obj_buf, &obj_buf_sz,
+> >> 				       bpf_testcase_table[idx].prog_id,
+> >> -				       true, NULL);
+> >> +				       false, NULL);
+> >> 	if (ret != TEST_OK || !obj_buf || !obj_buf_sz) {
+> >> 		pr_debug("Unable to get BPF object, %s\n",
+> >> 			 bpf_testcase_table[idx].msg_compile_fail);
+> >> -		if (idx == 0)
+> >> +		if ((idx == 0) || (ret == TEST_SKIP))
+> >> 			return TEST_SKIP;
+> >> 		else
+> >> 			return TEST_FAIL;
+> >> -- 
+> >> 2.35.1
+> > 
+> > -- 
+> > 
+> > - Arnaldo
 
-  if (stats[i])
-    len += sysfs_emit_at(buf, len, "%s %llu\n", strings_array[i], stats[i]);
+-- 
 
-It's a little more data space, but easier to verify.
-
-> @@ -1342,6 +1342,11 @@ static int aer_probe(struct pcie_device *dev)
->  	struct device *device = &dev->device;
->  	struct pci_dev *port = dev->port;
->  
-> +	BUILD_BUG_ON(ARRAY_SIZE(aer_correctable_error_string) <
-> +		     AER_MAX_TYPEOF_COR_ERRS);
-> +	BUILD_BUG_ON(ARRAY_SIZE(aer_uncorrectable_error_string) <
-> +		     AER_MAX_TYPEOF_UNCOR_ERRS);
-
-And make these check for "!=" instead of "<".
+- Arnaldo
