@@ -1,101 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D176D520D22
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 07:06:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8F6520DB1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 08:19:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ky5cQ5JTtz3c9k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 15:06:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ky7Cz2KWdz3cG8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 16:19:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GiEQG3JK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=KSp7v7Zr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::102b;
+ helo=mail-pj1-x102b.google.com; envelope-from=maskray@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=GiEQG3JK; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=KSp7v7Zr; dkim-atps=neutral
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com
+ [IPv6:2607:f8b0:4864:20::102b])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Ky5bd4CR8z3bft
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 15:06:04 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24A4cQAk020354;
- Tue, 10 May 2022 05:06:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=Y1KfjmGhhSYAr8guizGm45XQlWDCQy09ghm/+4OkzjY=;
- b=GiEQG3JK4C4J1L8ilnLdEImdsSn0gnogO/dXvTUO0ZetVQOZWsVUOVu4cfM36UmEg0rB
- mEDCQYxpu1LZ8FG0ZflGebHyM3Ewz68IFRzYRbYCjuxyOyJOQ17laB2U3boxomWZKcJw
- r7PRRkUDXU0d6r3yAlpuqDOLey+A7CrLFnv0rxOyZPwBne4ZGJGpChU79Fd2EkHEu1sn
- Md/fASGG5rdoVXqeJU52y2P03Wb71LPL5Wy+nATh68W0rGb1E0HrTyIUS07HR8QCez+W
- jUxjudGdxys51pmbpnAOCzk4L2sJ6JW4VLqq7Hkt95TlwqWzO9ktLMoFkY2wJ25dRx1p lA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fyfk0ssay-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 May 2022 05:06:01 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24A4ear0025092;
- Tue, 10 May 2022 05:06:01 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fyfk0ssa5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 May 2022 05:06:00 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24A537XT001636;
- Tue, 10 May 2022 05:05:58 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma06ams.nl.ibm.com with ESMTP id 3fwg1j3f08-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 10 May 2022 05:05:58 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 24A55ewK35193162
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 10 May 2022 05:05:40 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9F21C52050;
- Tue, 10 May 2022 05:05:56 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.28.175])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 3618252051;
- Tue, 10 May 2022 05:05:55 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
-Subject: Re: [powerpc]Kernel crash while running xfstests (generic/250)
- [next-20220404]
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <B34CE5E9-8635-4DF0-AC0D-FB887462DFD6@linux.ibm.com>
-Date: Tue, 10 May 2022 10:35:53 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <838D9600-D92F-4AD9-9E97-0116E2C01654@linux.ibm.com>
-References: <A3B628C9-A20B-4621-BC8C-C79B270297E1@linux.ibm.com>
- <B34CE5E9-8635-4DF0-AC0D-FB887462DFD6@linux.ibm.com>
-To: linux-block@vger.kernel.org, snitzer@redhat.com
-X-Mailer: Apple Mail (2.3696.80.82.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cG5qL99cVGOmas-zKOfarxXZEISLQ0va
-X-Proofpoint-ORIG-GUID: kqywdsARjZjTGXm3kGfc3Ps007M1rEAM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-09_06,2022-05-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011
- priorityscore=1501 phishscore=0 adultscore=0 mlxscore=0 malwarescore=0
- impostorscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205100020
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Ky7CH22L5z3bl1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 16:18:34 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id x88so3486395pjj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 May 2022 23:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=xq7XvBCbmw8HPlQEPR058TJmCcUUbtMzbjoLGwh0Bxs=;
+ b=KSp7v7ZrmUZ/qxs1SD7Cw6JFhGnrMWyuMzxrL+IcLLUqsBTRKW5hgFVtT4vlF6DxF8
+ nG6Opi33oIHg48t3VitJWNruOQw7sHxR9A7ddbanAxajZU8xVtCQlC4+P8H3U6Iw0nOr
+ FybrNjEhWgAKy6PiVnoDkKxBzDGxfcpNWejwNd40xrbhucMxCrsH5gjIKoIuShSgG9Lt
+ hAQnS/eSlu33FyWk+O3ZtvDqcF6k+Bp6EmUnNS3aGdlxMG8pHzTnpT1D/R+hm8DbiXWH
+ BlgFyNwCgeZ993Rb8/RGamxloWB6pU+hZpZbfV6Za8ECMT+DGtIAcpPrOEtj5V1tzi8G
+ U0RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=xq7XvBCbmw8HPlQEPR058TJmCcUUbtMzbjoLGwh0Bxs=;
+ b=F9h6KLqsLoeRS2w/5fBd+xQObzpgX8GwDfLcWfqQoSzCdeMH9hEsGxB0F0sZJafplN
+ GvEc1b+crAv5WvPBjmS9K86e0EVmVxT3hpbLvAE95x9LHPR6pTEAAXYaP3VV6NL1OkMO
+ kzHH4q8GhVcbmKDKLqA1JsswTAqbf3dokq1QIMcyqa0KdSBynLrLW0OoU/mHrChdrTe4
+ mZPtrijJC7eUbzb2SAuR/odJue6hlSwcU1ndWV05I5NnjRp+chGEopFvR0ywG9POR9Pc
+ rTVu9MF1Vznk/6Xq+ZD3ziRbkUgmQ3C6wU0OEwdJodEcrvFuoM7+rN52+P6174GHFbE7
+ notg==
+X-Gm-Message-State: AOAM5318zoyP5Cd2UPMHguuOq/XHpjZNtLuEb3RHli72KxpnQV0HgquR
+ clyq6qUKRAuynLKOANz5SwRN8w==
+X-Google-Smtp-Source: ABdhPJytd9g+tMHVqY+h/nzEmxskN6Ae07Au2eklyzYLluwDsfzzQ02SJuwiOSHtgubO1UL0W9rW9w==
+X-Received: by 2002:a17:902:9b93:b0:15f:17ce:3b97 with SMTP id
+ y19-20020a1709029b9300b0015f17ce3b97mr6303757plp.174.1652163509456; 
+ Mon, 09 May 2022 23:18:29 -0700 (PDT)
+Received: from google.com ([2620:15c:2ce:200:9543:36e:1e36:a909])
+ by smtp.gmail.com with ESMTPSA id
+ y15-20020a1709029b8f00b0015e8d4eb25dsm1012905plp.167.2022.05.09.23.18.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 May 2022 23:18:28 -0700 (PDT)
+Date: Mon, 9 May 2022 23:18:25 -0700
+From: Fangrui Song <maskray@google.com>
+To: Nick Desaulniers <ndesaulniers@google.com>
+Subject: Re: [PATCH kernel] powerpc/llvm/lto: Allow LLVM LTO builds
+Message-ID: <20220510061825.yuaip52umxcabknr@google.com>
+References: <20220429064547.2334280-1-aik@ozlabs.ru>
+ <CAKwvOdmUMhqhQhDCpWjMNiQQPvwOJB9MbUkF3RR0BL+H+DagmA@mail.gmail.com>
+ <efe4ec7b-e1ec-84fc-cc49-7e22597ff417@ozlabs.ru>
+ <de7ae055-8cbb-1fd3-e1d7-93f51c2d3f4b@ozlabs.ru>
+ <YnlYemdzBDCobK/d@dev-arch.thelio-3990X>
+ <CAKwvOdk_wNfo1GA1MsOehTuTpBQqNi3xhHHyLmkpyTr0wPj1Tg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAKwvOdk_wNfo1GA1MsOehTuTpBQqNi3xhHHyLmkpyTr0wPj1Tg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,144 +86,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dm-devel@redhat.com, riteshh@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- open list <linux-kernel@vger.kernel.org>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, llvm@lists.linux.dev,
+ Nicholas Piggin <npiggin@gmail.com>, Nathan Chancellor <nathan@kernel.org>,
+ Sathvika Vasireddy <sv@linux.ibm.com>, Sami Tolvanen <samitolvanen@google.com>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 2022-05-09, Nick Desaulniers wrote:
+>On Mon, May 9, 2022 at 11:08 AM Nathan Chancellor <nathan@kernel.org> wrote:
+>>
+>> Hi Alexey,
+>>
+>> On Mon, May 09, 2022 at 05:42:59PM +1000, Alexey Kardashevskiy wrote:
+>> >
+>> >
+>> > On 5/9/22 15:18, Alexey Kardashevskiy wrote:
+>> > >
+>> > >
+>> > > On 5/4/22 07:21, Nick Desaulniers wrote:
+>> > > > On Thu, Apr 28, 2022 at 11:46 PM Alexey Kardashevskiy
+>> > > > <aik@ozlabs.ru> wrote:
+>> > > > >
+>> > > > > This enables LTO_CLANG builds on POWER with the upstream version of
+>> > > > > LLVM.
+>> > > > >
+>> > > > > LTO optimizes the output vmlinux binary and this may affect the FTP
+>> > > > > alternative section if alt branches use "bc" (Branch Conditional) which
+>> > > > > is limited by 16 bit offsets. This shows up in errors like:
+>> > > > >
+>> > > > > ld.lld: error: InputSection too large for range extension thunk
+>> > > > > vmlinux.o:(__ftr_alt_97+0xF0)
+>> > > > >
+>> > > > > This works around the issue by replacing "bc" in FTR_SECTION_ELSE with
+>> > > > > "b" which allows 26 bit offsets.
+>> > > > >
+>> > > > > This catches the problem instructions in vmlinux.o before it LTO'ed:
+>> > > > >
+>> > > > > $ objdump -d -M raw -j __ftr_alt_97 vmlinux.o | egrep '\S+\s*\<bc\>'
+>> > > > >    30:   00 00 82 40     bc      4,eq,30 <__ftr_alt_97+0x30>
+>> > > > >    f0:   00 00 82 40     bc      4,eq,f0 <__ftr_alt_97+0xf0>
+>> > > > >
+>> > > > > This allows LTO builds for ppc64le_defconfig plus LTO options.
+>> > > > > Note that DYNAMIC_FTRACE/FUNCTION_TRACER is not supported by LTO builds
+>> > > > > but this is not POWERPC-specific.
+>> > > >
+>> > > > $ ARCH=powerpc make LLVM=1 -j72 ppc64le_defconfig
+>> > > > $ ARCH=powerpc make LLVM=1 -j72 menuconfig
+>> > > > <disable FTRACE, enable LTO_CLANG_THIN>
+>> > > > $ ARCH=powerpc make LLVM=1 -j72
+>> > > > ...
+>> > > >    VDSO64L arch/powerpc/kernel/vdso/vdso64.so.dbg
+>> > > > /usr/bin/powerpc64le-linux-gnu-ld:
+>> > > > /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: error
+>> > > > loading plugin:
+>> > > > /android0/llvm-project/llvm/build/bin/../lib/LLVMgold.so: cannot open
+>> > > > shared object file: No such file or directory
+>> > > > clang-15: error: linker command failed with exit code 1 (use -v to see
+>> > > > invocation)
+>> > > > make[1]: *** [arch/powerpc/kernel/vdso/Makefile:67:
+>> > > > arch/powerpc/kernel/vdso/vdso64.so.dbg] Error 1
+>> > > >
+>> > > > Looks like LLD isn't being invoked correctly to link the vdso.
+>> > > > Probably need to revisit
+>> > > > https://lore.kernel.org/lkml/20200901222523.1941988-1-ndesaulniers@google.com/
+>> > > >
+>> > > > How were you working around this issue? Perhaps you built clang to
+>> > > > default to LLD? (there's a cmake option for that)
+>> > >
+>> > >
+>> > > What option is that? I only add  -DLLVM_ENABLE_LLD=ON  which (I think)
+>>
+>> The option Nick is referring to here is CLANG_DEFAULT_LINKER, which sets
+>> the default linker when clang is invoked as the linker driver, which the
+>> PowerPC vDSO Makefile does. We have been trying to move all parts of the
+>> kernel to compile with $(CC) and link with $(LD) so that the default
+>> linker invoked by the compiler is taken out of the equation.
+>>
+>> For what it's worth, I think that the error Nick is seeing is due to a
+>> lack of the LLVMgold.so plugin on his system, which is built when
+>> -DLLVM_BINUTILS_INCDIR=... is included in the list of CMake variables,
+>> which you have. The LLVMgold.so plugin is needed when doing LTO with
+>> GNU ld, which is the case with the vDSO currently for the reason I
+>> mentioned above. We could work around this with Nick's proposed
+>> '-fuse-ld=lld' patch or just disable LTO for the vDSO.
+>>
+>> https://llvm.org/docs/GoldPlugin.html
+>
+>Ah, and ld.gold is currently banned by
+>commit 75959d44f9dc ("kbuild: Fail if gold linker is detected")
+>which landed in v5.4-rc1. So the ppc vdso build isn't quite as
+>hermetic as we'd like.
+>
+>>
+>> My version of the hack would probably be:
+>>
+>> ccflags-$(CONFIG_LD_IS_LLD) += -fuse-ld=lld
+>> asflags-$(CONFIG_LD_IS_LLD) += -fuse-ld=lld
+>
+>LGTM; want to send that as a formal patch? That would also address
+>https://github.com/ClangBuiltLinux/linux/issues/774.
+>
+>>
+>> > > tells cmake to use lld to link the LLVM being built but does not seem to
+>> > > tell what the built clang should do.
+>>
+>> Right, -DLLVM_ENABLE_LLD=ON is equivalent to -DLLVM_USE_LINKER=lld,
+>> except when doing a multi-stage build:
+>>
+>> https://llvm.org/docs/CMake.html#llvm-related-variables
+>>
+>> > >
+>> > > Without -DLLVM_ENABLE_LLD=ON, building just fails:
+>> > >
+>> > > [fstn1-p1 ~/pbuild/llvm/llvm-lto-latest-cleanbuild]$ ninja -j 100
+>> > > [619/3501] Linking CXX executable bin/not
+>> > > FAILED: bin/not
+>> > > : && /usr/bin/clang++ -fPIC -fvisibility-inlines-hidden
+>> > > -Werror=date-time -Werror=unguarded-availability-new -Wall -Wextra
+>> > > -Wno-unused-parameter -Wwrite-strings -Wcast-qual
+>> > > -Wmissing-field-initializers -pedantic -Wno-long-long
+>> > > -Wc++98-compat-extra-semi -Wimplicit-fallthrough
+>> > > -Wcovered-switch-default -Wno-noexcept-type -Wnon-virtual-dtor
+>> > > -Wdelete-non-virtual-dtor -Wsuggest-override -Wstring-conversion
+>> > > -Wmisleading-indentation -fdiagnostics-color -ffunction-sections
+>> > > -fdata-sections -flto -O3 -DNDEBUG -flto
+>> > > -Wl,-rpath-link,/home/aik/pbuild/llvm/llvm-lto-latest-cleanbuild/./lib
+>> > > -Wl,--gc-sections utils/not/CMakeFiles/not.dir/not.cpp.o -o bin/not
+>> > > -Wl,-rpath,"\$ORIGIN/../lib"  -lpthread  lib/libLLVMSupport.a  -lrt
+>> > > -ldl  -lpthread  -lm  /usr/lib/powerpc64le-linux-gnu/libz.so
+>> > > /usr/lib/powerpc64le-linux-gnu/libtinfo.so  lib/libLLVMDemangle.a && :
+>> > > /usr/bin/ld: lib/libLLVMSupport.a: error adding symbols: archive has no
+>> > > index; run ranlib to add one
+>
+>Sounds like a bug with llvm cmake on ppc hosts.
+>
+>The other error about
+>
+>> /usr/bin/ld: lib/libLLVMObject.a: error adding symbols: file format not
+>recognized
+>
+>Is likely because GNU ld doesn't recognize LLVM IR, which is what's
+>passed to the linker when you build LLVM itself with LTO via
+>`-DLLVM_ENABLE_LTO=ON`.
 
+GNU ld needs -plugin path/to/LLVMgold.so to recognize LLVM bitcode files.
+As discussed, LLVMgold.so is not specified...
 
-> On 07-Apr-2022, at 10:19 AM, Sachin Sant <sachinp@linux.ibm.com> =
-wrote:
->=20
->=20
->> On 04-Apr-2022, at 5:04 PM, Sachin Sant <sachinp@linux.ibm.com> =
-wrote:
->>=20
->> While running xfstests(ext4 or XFS as fs) on a Power10 LPAR booted =
-with today=E2=80=99s
->> next (5.18.0-rc1-next-20220404) following crash is seen.=20
->>=20
->> This problem was possibly introduced with 5.17.0-next-20220330.=20
->> Git bisect leads me to following patch
->> commit 1d158814db8e7b3cbca0f2c8d9242fbec4fbc57e
->>   dm: conditionally enable BIOSET_PERCPU_CACHE for dm_io bioset
->>=20
->=20
-> Continue to see this problem with latest next.=20
+`error adding symbols: archive has no index` indicates another problem.
+An archive needs to be built with llvm-ar or `ar -plugin path/to/LLVMgold.so`
+to include LLVM IR symbols in the archive symbol table. ld.lld < 14.0.0
+does not support such archives.
+See https://maskray.me/blog/2022-01-16-archives-and-start-lib#thin-archives-without-a-symbol-table
 
-I can still recreate this issue against latest linux-next build.
-
-[ 1536.883400] Buffer I/O error on dev dm-0, logical block 10485497, =
-async page read
-[ 1536.936018] XFS (dm-0): Unmounting Filesystem
-[ 1536.938849] XFS (dm-0): Mounting V5 Filesystem
-[ 1536.946007] XFS (dm-0): Ending clean mount
-[ 1536.947926] xfs filesystem being mounted at /mnt/scratch supports =
-timestamps until 2038 (0x7fffffff)
-[ 1537.052850] XFS (dm-0): Unmounting Filesystem
-[ 1537.083979] BUG: Unable to handle kernel data access at =
-0x5deadbeef0000122
-[ 1537.083982] Faulting instruction address: 0xc00000000015b0bc
-[ 1537.083984] Oops: Kernel access of bad area, sig: 11 [#1]
-[ 1537.084000] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D2048 NUMA =
-pSeries
-[ 1537.084006] Modules linked in: dm_snapshot(E) dm_bufio(E) loop(E) =
-dm_flakey(E) xfs(E) dm_mod(E) nft_fib_inet(E) nft_fib_ipv4(E) =
-nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) =
-nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) =
-nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) rfkill(E) ip_set(E) =
-nf_tables(E) bonding(E) tls(E) libcrc32c(E) nfnetlink(E) sunrpc(E) =
-nd_pmem(E) nd_btt(E) dax_pmem(E) pseries_rng(E) papr_scm(E) libnvdimm(E) =
-vmx_crypto(E) ext4(E) mbcache(E) jbd2(E) sd_mod(E) t10_pi(E) =
-crc64_rocksoft(E) crc64(E) sg(E) ibmvscsi(E) ibmveth(E) =
-scsi_transport_srp(E) fuse(E) [last unloaded: scsi_debug]
-[ 1537.084056] CPU: 10 PID: 970489 Comm: dmsetup Tainted: G            E =
-    5.18.0-rc6-next-20220509 #2
-[ 1537.084061] NIP:  c00000000015b0bc LR: c00000000015afe8 CTR: =
-c000000000753bb0
-[ 1537.084064] REGS: c0000000211fb610 TRAP: 0380   Tainted: G            =
-E      (5.18.0-rc6-next-20220509)
-[ 1537.084068] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  =
-CR: 24024824  XER: 20040000
-[ 1537.084078] CFAR: c00000000015aff0 IRQMASK: 0=20
-[ 1537.084078] GPR00: c00000000015afe8 c0000000211fb8b0 c000000002a7cf00 =
-0000000000000000=20
-[ 1537.084078] GPR04: c0000000f98a1378 0000000000000000 c0000000f5043b50 =
-c00000043463e280=20
-[ 1537.084078] GPR08: c00000043463e280 5deadbeef0000100 5deadbeef0000122 =
-c00800000214dcb0=20
-[ 1537.084078] GPR12: c000000000753bb0 c000000abfff1700 0000000155ee0b60 =
-00007fffa7c29da8=20
-[ 1537.084078] GPR16: 00007fffa7c29da8 00007fffa7c29da8 00007fffa7c63670 =
-0000000000000000=20
-[ 1537.084078] GPR20: 00007fffa7c33388 00007fffa7c62040 0000000155ee0b90 =
-0000000000000131=20
-[ 1537.084078] GPR24: c0000000025adb68 ffffffffffffffff c0000000025adb30 =
-c000000103a5e000=20
-[ 1537.084078] GPR28: c000000002a23ce8 c0000000f98a1378 0000000000000017 =
-0000000000000000=20
-[ 1537.084117] NIP [c00000000015b0bc] =
-__cpuhp_state_remove_instance+0x19c/0x2c0
-[ 1537.084125] LR [c00000000015afe8] =
-__cpuhp_state_remove_instance+0xc8/0x2c0
-[ 1537.084130] Call Trace:
-[ 1537.084131] [c0000000211fb8b0] [c00000000015afe8] =
-__cpuhp_state_remove_instance+0xc8/0x2c0 (unreliable)
-[ 1537.084138] [c0000000211fb920] [c000000000753c14] =
-bioset_exit+0x64/0x280
-[ 1537.084144] [c0000000211fb9c0] [c008000002137744] =
-cleanup_mapped_device+0x4c/0x1c0 [dm_mod]
-[ 1537.084155] [c0000000211fba00] [c008000002137a60] =
-__dm_destroy+0x1a8/0x360 [dm_mod]
-[ 1537.084163] [c0000000211fbaa0] [c0080000021445c0] =
-dev_remove+0x1b8/0x290 [dm_mod]
-[ 1537.084172] [c0000000211fbb30] [c00800000214488c] =
-ctl_ioctl+0x1f4/0x7d0 [dm_mod]
-[ 1537.084181] [c0000000211fbd40] [c008000002144e88] =
-dm_ctl_ioctl+0x20/0x40 [dm_mod]
-[ 1537.084190] [c0000000211fbd60] [c00000000055ff28] =
-sys_ioctl+0xf8/0x190
-[ 1537.084195] [c0000000211fbdb0] [c00000000003377c] =
-system_call_exception+0x17c/0x350
-[ 1537.084200] [c0000000211fbe10] [c00000000000c54c] =
-system_call_common+0xec/0x270
-[ 1537.084205] --- interrupt: c00 at 0x7fffa7529210
-[ 1537.084208] NIP:  00007fffa7529210 LR: 00007fffa7c26824 CTR: =
-0000000000000000
-[ 1537.084211] REGS: c0000000211fbe80 TRAP: 0c00   Tainted: G            =
-E      (5.18.0-rc6-next-20220509)
-[ 1537.084215] MSR:  800000000280f033 =
-<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24004484  XER: 00000000
-[ 1537.084224] IRQMASK: 0=20
-[ 1537.084224] GPR00: 0000000000000036 00007fffc7448c30 00007fffa7607300 =
-0000000000000003=20
-[ 1537.084224] GPR04: 00000000c138fd04 0000000155ee0b60 0000000000000004 =
-00007fffa7c33f98=20
-[ 1537.084224] GPR08: 0000000000000003 0000000000000000 0000000000000000 =
-0000000000000000=20
-[ 1537.084224] GPR12: 0000000000000000 00007fffa7d0fa80 0000000155ee0b60 =
-00007fffa7c29da8=20
-[ 1537.084224] GPR16: 00007fffa7c29da8 00007fffa7c29da8 00007fffa7c63670 =
-0000000000000000=20
-[ 1537.084224] GPR20: 00007fffa7c33388 00007fffa7c62040 0000000155ee0b90 =
-0000000155ee02e0=20
-[ 1537.084224] GPR24: 00007fffa7c29da8 00007fffa7c29da8 00007fffa7c29da8 =
-00007fffa7c29da8=20
-[ 1537.084224] GPR28: 0000000000000001 00007fffa7c29da8 0000000000000000 =
-00007fffa7c29da8=20
-[ 1537.084261] NIP [00007fffa7529210] 0x7fffa7529210
-[ 1537.084263] LR [00007fffa7c26824] 0x7fffa7c26824
-[ 1537.084265] --- interrupt: c00
-[ 1537.084267] Instruction dump:
-[ 1537.084270] 60000000 7f69db78 7f83e040 7c7f07b4 7bea1f24 419cffb4 =
-eae10028 eb210038=20
-[ 1537.084276] eb610048 e93d0000 e95d0008 2fa90000 <f92a0000> 419e0008 =
-f9490008 3d405dea=20
-[ 1537.084284] ---[ end trace 0000000000000000 ]---
-[ 1537.106557]=20
-[ 1538.106559] Kernel panic - not syncing: Fatal exception
-
-- Sachin
-
+While named LLVMgold.so, the plugin supports all of gold, ld.bfd, ar, and ranlib.
