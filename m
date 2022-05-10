@@ -1,78 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F57E52136D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 13:17:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4CA521385
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 13:20:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyFr94D0bz3cHh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 21:17:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyFvF2LHxz3c9C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 21:20:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=P3c5o4HP;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=GgCLy01e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e;
- helo=mail-pf1-x42e.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=P3c5o4HP; dkim-atps=neutral
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com
- [IPv6:2607:f8b0:4864:20::42e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=amazon.de (client-ip=72.21.196.25; helo=smtp-fw-2101.amazon.com;
+ envelope-from=prvs=122be4948=graf@amazon.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256
+ header.s=amazon201209 header.b=GgCLy01e; 
+ dkim-atps=neutral
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyFq24PT2z3c7R
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 21:16:29 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id j6so14652522pfe.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 04:16:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=itXK+rSLc1QihSjSoLaf7Q70y9HboDnIPkUMbBBhjnc=;
- b=P3c5o4HPneI+4Z47/3z0XyAHSGtCqvR/q0W4Nq/bwgtUcYH0Uy0Jd0jWxYk3ghvprP
- M0MmtF9mSteO6SObGM+KeBSRL/Th4Qu4mVxig0ifQZanH/5wImDWSHEoJhwowNlgQztq
- +fdho63/Z8O8Z+lPnO6hj/iRJm5XvhSDG1+J1izpbMQslnk4JvepsnrwPHrDGzxgn5TR
- vcaqxwR/GfEGirCr+I2kPVsku19Q8PppQZVPQfxI8KglDGZCMvJ1WONiiaZUQFmDypie
- o8tTi9z3MKBG9nHO9duRSWery/b9fOyTFXWIIbFoAAf1r0nJxinLTdMxGhUiFTNW8gL+
- 06eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=itXK+rSLc1QihSjSoLaf7Q70y9HboDnIPkUMbBBhjnc=;
- b=HOoSB9DqYSV3xuQovDYi4rMuDl3sH4icT71dwcr7U7PuwGJ2dPQVNVyHdMLT5qK+o0
- n2GZk7EHhwfvGcQVVdlgaR/gx599m92eb4GySXZJpr2pEjsEj+8+6e9Xe06FBzUBEEZY
- yJUcMf2yaGe9GSZVeO3HFUCrR/4DuoXR9HuA8gm5gQc9OUQSynLeDPn6oN3F0BJ0PERt
- y1/PsBJhS70uKho5th4AjLPR66QoTHp5CPJOjpqw0uRxUQDfYbA3b/cZS6IJaxgkm+Gu
- FMTRupNEcFpmbrbMdCik8lW2k6uO6TfCiAoejBx8QGJM/JVurP4AmU8wHOlh8Ri8aP4c
- 4dTA==
-X-Gm-Message-State: AOAM533Mg76GjgYAZ8qIM7mwjQ6gxP3TLC9k7LdqqIljW1X/5Z1bbcan
- +gdqKPczSi+GCdH6IV/WMV8=
-X-Google-Smtp-Source: ABdhPJzVsABH4Oig0yRdlWGkgOiTbMOjWkvb+1zdab8hPOxvRkmGZAkmCY+fGQiGE352GRJimRZReg==
-X-Received: by 2002:a05:6a00:21c2:b0:4fe:81f:46c7 with SMTP id
- t2-20020a056a0021c200b004fe081f46c7mr19960372pfj.5.1652181387580; 
- Tue, 10 May 2022 04:16:27 -0700 (PDT)
-Received: from localhost (193-116-127-232.tpgi.com.au. [193.116.127.232])
- by smtp.gmail.com with ESMTPSA id
- z29-20020aa79f9d000000b0050dc7628170sm10462375pfr.74.2022.05.10.04.16.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 10 May 2022 04:16:26 -0700 (PDT)
-Date: Tue, 10 May 2022 21:16:21 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v6 28/29] x86/tsc: Restart NMI watchdog after refining
- tsc_khz
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, Thomas Gleixner
- <tglx@linutronix.de>, x86@kernel.org
-References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-29-ricardo.neri-calderon@linux.intel.com>
-In-Reply-To: <20220506000008.30892-29-ricardo.neri-calderon@linux.intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyFtf0wJJz2ymS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 21:19:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+ t=1652181578; x=1683717578;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=X4Q7oI+5uOvx0zCxStXfcdou0TUG9aiiGSJ0KXdxXIc=;
+ b=GgCLy01eDwrJszv4qAB0DU423Jz2mVnEN3kaCkHujqU+f4rC06YRegDe
+ uAaMK8NoOU/2Aha4zirNu5/UACPJzA5dkkObmfgFBLG9LqCfDIj7pawhb
+ dwp89zWcNLtnEjj1wKlLdC51oiGV/Uhqr5nkmOMoHESpO7WRwjYiRDDNV 4=;
+X-IronPort-AV: E=Sophos;i="5.91,214,1647302400"; d="scan'208";a="196825572"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO
+ email-inbound-relay-iad-1d-54a073b7.us-east-1.amazon.com) ([10.43.8.2])
+ by smtp-border-fw-2101.iad2.amazon.com with ESMTP; 10 May 2022 11:18:21 +0000
+Received: from EX13MTAUWC001.ant.amazon.com
+ (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+ by email-inbound-relay-iad-1d-54a073b7.us-east-1.amazon.com (Postfix) with
+ ESMTPS id 7186184C0F; Tue, 10 May 2022 11:18:19 +0000 (UTC)
+Received: from EX13D20UWC001.ant.amazon.com (10.43.162.244) by
+ EX13MTAUWC001.ant.amazon.com (10.43.162.135) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.32; Tue, 10 May 2022 11:18:18 +0000
+Received: from u79c5a0a55de558.ant.amazon.com (10.43.160.178) by
+ EX13D20UWC001.ant.amazon.com (10.43.162.244) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.32; Tue, 10 May 2022 11:18:16 +0000
+From: Alexander Graf <graf@amazon.com>
+To: <kvm@vger.kernel.org>
+Subject: [PATCH v2] KVM: PPC: Book3S PR: Enable MSR_DR for switch_mmu_context()
+Date: Tue, 10 May 2022 13:18:09 +0200
+Message-ID: <20220510111809.15987-1-graf@amazon.com>
+X-Mailer: git-send-email 2.28.0.394.ge197136389
 MIME-Version: 1.0
-Message-Id: <1652180070.1r874kr0tg.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.43.160.178]
+X-ClientProxiedBy: EX13D16UWC003.ant.amazon.com (10.43.162.15) To
+ EX13D20UWC001.ant.amazon.com (10.43.162.244)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,91 +70,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
- Andi Kleen <ak@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- Joerg Roedel <joro@8bytes.org>, linux-kernel@vger.kernel.org,
- Stephane Eranian <eranian@google.com>, Ricardo Neri <ricardo.neri@intel.com>,
- iommu@lists.linux-foundation.org, Tony Luck <tony.luck@intel.com>,
- Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Matt Evans <matt@ozlabs.org>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, stable@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Ricardo Neri's message of May 6, 2022 10:00 am:
-> The HPET hardlockup detector relies on tsc_khz to estimate the value of
-> that the TSC will have when its HPET channel fires. A refined tsc_khz
-> helps to estimate better the expected TSC value.
->=20
-> Using the early value of tsc_khz may lead to a large error in the expecte=
-d
-> TSC value. Restarting the NMI watchdog detector has the effect of kicking
-> its HPET channel and make use of the refined tsc_khz.
->=20
-> When the HPET hardlockup is not in use, restarting the NMI watchdog is
-> a noop.
->=20
-> Cc: Andi Kleen <ak@linux.intel.com>
-> Cc: Stephane Eranian <eranian@google.com>
-> Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
-> Cc: iommu@lists.linux-foundation.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: x86@kernel.org
-> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> ---
-> Changes since v5:
->  * Introduced this patch
->=20
-> Changes since v4
->  * N/A
->=20
-> Changes since v3
->  * N/A
->=20
-> Changes since v2:
->  * N/A
->=20
-> Changes since v1:
->  * N/A
-> ---
->  arch/x86/kernel/tsc.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-> index cafacb2e58cc..cc1843044d88 100644
-> --- a/arch/x86/kernel/tsc.c
-> +++ b/arch/x86/kernel/tsc.c
-> @@ -1386,6 +1386,12 @@ static void tsc_refine_calibration_work(struct wor=
-k_struct *work)
->  	/* Inform the TSC deadline clockevent devices about the recalibration *=
-/
->  	lapic_update_tsc_freq();
-> =20
-> +	/*
-> +	 * If in use, the HPET hardlockup detector relies on tsc_khz.
-> +	 * Reconfigure it to make use of the refined tsc_khz.
-> +	 */
-> +	lockup_detector_reconfigure();
+Commit 863771a28e27 ("powerpc/32s: Convert switch_mmu_context() to C")
+moved the switch_mmu_context() to C. While in principle a good idea, it
+meant that the function now uses the stack. The stack is not accessible
+from real mode though.
 
-I don't know if the API is conceptually good.
+So to keep calling the function, let's turn on MSR_DR while we call it.
+That way, all pointer references to the stack are handled virtually.
 
-You change something that the lockup detector is currently using,=20
-*while* the detector is running asynchronously, and then reconfigure
-it. What happens in the window? If this code is only used for small
-adjustments maybe it does not really matter but in principle it's
-a bad API to export.
+In addition, make sure to save/restore r12 in an SPRG, as it may get
+clobbered by the C function.
 
-lockup_detector_reconfigure as an internal API is okay because it
-reconfigures things while the watchdog is stopped [actually that
-looks untrue for soft dog which uses watchdog_thresh in
-is_softlockup(), but that should be fixed].
+Reported-by: Matt Evans <matt@ozlabs.org>
+Fixes: 863771a28e27 ("powerpc/32s: Convert switch_mmu_context() to C")
+Signed-off-by: Alexander Graf <graf@amazon.com>
+Cc: stable@vger.kernel.org # v5.14+
 
-You're the arch so you're allowed to stop the watchdog and configure
-it, e.g., hardlockup_detector_perf_stop() is called in arch/.
+---
 
-So you want to disable HPET watchdog if it was enabled, then update
-wherever you're using tsc_khz, then re-enable.
+v1 -> v2:
 
-Thanks,
-Nick
+  - Save and restore R12, so that we don't touch volatile registers
+    while calling into C.
+---
+ arch/powerpc/kvm/book3s_32_sr.S | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
+
+diff --git a/arch/powerpc/kvm/book3s_32_sr.S b/arch/powerpc/kvm/book3s_32_sr.S
+index e3ab9df6cf19..1ce13e3ab072 100644
+--- a/arch/powerpc/kvm/book3s_32_sr.S
++++ b/arch/powerpc/kvm/book3s_32_sr.S
+@@ -122,11 +122,27 @@
+ 
+ 	/* 0x0 - 0xb */
+ 
+-	/* 'current->mm' needs to be in r4 */
+-	tophys(r4, r2)
+-	lwz	r4, MM(r4)
+-	tophys(r4, r4)
+-	/* This only clobbers r0, r3, r4 and r5 */
++	/* switch_mmu_context() clobbers r12, rescue it */
++	SET_SCRATCH0(r12)
++
++	/* switch_mmu_context() needs paging, let's enable it */
++	mfmsr   r9
++	ori     r11, r9, MSR_DR
++	mtmsr   r11
++	sync
++
++	/* Calling switch_mmu_context(<inv>, current->mm, <inv>); */
++	lwz	r4, MM(r2)
+ 	bl	switch_mmu_context
+ 
++	/* Disable paging again */
++	mfmsr   r9
++	li      r6, MSR_DR
++	andc    r9, r9, r6
++	mtmsr	r9
++	sync
++
++	/* restore r12 */
++	GET_SCRATCH0(r12)
++
+ .endm
+-- 
+2.28.0.394.ge197136389
+
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
+
