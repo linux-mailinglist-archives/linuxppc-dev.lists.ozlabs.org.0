@@ -2,60 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BDE65220FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 18:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C7D52210D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 18:20:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyNWZ0xBcz3cFk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 02:18:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyNYs3Wjzz3cLc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 02:20:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=C2KkFYKU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=DbTNnQAN;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
- envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=C2KkFYKU; dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52a;
+ helo=mail-pg1-x52a.google.com; envelope-from=keescook@chromium.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=DbTNnQAN; dkim-atps=neutral
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com
+ [IPv6:2607:f8b0:4864:20::52a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyNVr631Qz2xrs
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 02:17:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
- References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=DG+kC/U+ySej5D6tfV4OCa8YH0d8ESpuNC4bFJt4RU8=; b=C2KkFYKUIxmXZpa9w2+Tc0j2Ea
- RFFr76ch465vsOUiMZW1uqZNDnhRYy0QqpFeaougTFG9GOX2EvcKO8NnFtvJdvaTDSvmTGm5I6bLE
- gx/SYLZAEuVfjx7NJeu1tB8cieKdzixVjql/phg2ZRqRsu9xZgqdP1nbzw6Nv7UUXN3Dua0weQYl6
- +N3ACyNpHY020LPMtgokauBK3/rzBv0qIzP0VJEueNDPsJdk0Noe60ugWXyfyRTapgsSXBPVXAg4/
- oobDhrEfQYteiYAwrodL1TGkVGLJREzPqDYfYYN3sh0JBT6vnlq6trf1vxZCJI19NPJiA+YiSFKJe
- qkMs6K7A==;
-Received: from [177.183.162.244] (helo=[192.168.0.5])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1noSY8-0008UD-Jz; Tue, 10 May 2022 18:17:24 +0200
-Message-ID: <244a412c-4589-28d1-bb77-d3648d4f0b12@igalia.com>
-Date: Tue, 10 May 2022 13:16:54 -0300
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyNYF18JHz3bsF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 02:20:00 +1000 (AEST)
+Received: by mail-pg1-x52a.google.com with SMTP id 137so405472pgb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 09:20:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=9+Df9lfV5BwTT/sLBioPDv57rZs72h8hdScRQUqmfRs=;
+ b=DbTNnQANFcOXKwYHrReNWPiVuWl37/eCn4xpzxdHqJGhGuDe4NiGluHjLalIKfeceQ
+ alveLnONa7r6tMV6vwpk/x2irD0RL1pBt++semHssHPj+E0dC5AwNOvBOEzK1KFqzsoL
+ ZpRW0OsU6syK+H/xXU4Gg5J8fATjoQZiJ0V5c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=9+Df9lfV5BwTT/sLBioPDv57rZs72h8hdScRQUqmfRs=;
+ b=f7uR+3EyzmDKdIiOAasJSMxD7XB7zSF8HjJ/4wRWi2uTqjViMxl2CwynPsgbsgB5xd
+ JmUdPX7Wo4FsyqtCEUTee2vU5uHNPGbD/Zhg9sJ93mk19Rq3oiSSuR83fQLt6n/oWCUC
+ 2Bo0RmyHS0SSEugDLXnetAPoIgjgyWIEsiLaRwyBxFo2NToYQTQ8kvjxIZmUHoZKIw5X
+ h80AExKdTOGVwLdwXC9IbmXh1Kurx+eDv7cg/yam0YLdbqYdoj105KuEUotrzl9yiPLT
+ hxx7fTJOmy4+bJR8conQPe83u3zJ/b9in1Vyh0LlYVhqapZ2sZnrb2f0Q9nSrQFMZNLY
+ nQFQ==
+X-Gm-Message-State: AOAM533JAHueUu26QcnI6J3V9vZzZFDQ+I/gFy+8n6ZSL8YaIvGD/GuP
+ G9sQyBGPLq7+PXYcJlADKOuR+Q==
+X-Google-Smtp-Source: ABdhPJwzS6y0yYlhwv0j5NGUmmES9XNaWWTJ+WEmYXv9m0JkzXUvVE28UhT6GLMK52JLwaAtdFpfew==
+X-Received: by 2002:a65:63d9:0:b0:374:6b38:c6b3 with SMTP id
+ n25-20020a6563d9000000b003746b38c6b3mr17713801pgv.195.1652199597370; 
+ Tue, 10 May 2022 09:19:57 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id
+ t8-20020a170902e84800b0015ea3a491a1sm2332544plg.191.2022.05.10.09.19.56
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 May 2022 09:19:56 -0700 (PDT)
+Date: Tue, 10 May 2022 09:19:56 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH -next] powerpc: add support for syscall stack randomization
+Message-ID: <202205100917.5480D91@keescook>
+References: <20220505111932.228814-1-xiujianfeng@huawei.com>
+ <1652173338.7bltwybi0c.astroid@bobo.none>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 14/30] panic: Properly identify the panic event to the
- notifiers' callbacks
-Content-Language: en-US
-To: Petr Mladek <pmladek@suse.com>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-15-gpiccoli@igalia.com> <YnqBsXBImU64PAOL@alley>
-From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <YnqBsXBImU64PAOL@alley>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1652173338.7bltwybi0c.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,81 +79,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
- linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
- john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
- rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
- linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
- linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
- kernel-dev@igalia.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
+Cc: mark.rutland@arm.com, Xiu Jianfeng <xiujianfeng@huawei.com>,
+ linux-kernel@vger.kernel.org, paulus@samba.org,
+ linux-hardening@vger.kernel.org, tglx@linutronix.de,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/05/2022 12:16, Petr Mladek wrote:
-> [...]
-> Hmm, this looks like a hack. PANIC_UNUSED will never be used.
-> All notifiers will be always called with PANIC_NOTIFIER.
+On Tue, May 10, 2022 at 07:23:46PM +1000, Nicholas Piggin wrote:
+> Excerpts from Xiu Jianfeng's message of May 5, 2022 9:19 pm:
+> > Add support for adding a random offset to the stack while handling
+> > syscalls. This patch uses mftb() instead of get_random_int() for better
+> > performance.
 > 
-> The @val parameter is normally used when the same notifier_list
-> is used in different situations.
+> Hey, very nice.
+
+Agreed! :)
+
+> > [...]
+> > @@ -82,6 +83,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+> >  
+> >  	kuap_lock();
+> >  
+> > +	add_random_kstack_offset();
+> >  	regs->orig_gpr3 = r3;
+> >  
+> >  	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
 > 
-> But you are going to use it when the same notifier is used
-> in more lists. This is normally distinguished by the @nh
-> (atomic_notifier_head) parameter.
+> This looks like the right place. I wonder why other interrupts don't
+> get the same treatment. Userspace can induce the kernel to take a 
+> synchronous interrupt, or wait for async ones. Smaller surface area 
+> maybe but certain instruction emulation for example could result in
+> significant logic that depends on user state. Anyway that's for
+> hardening gurus to ponder.
+
+I welcome it being used for any userspace controllable entry to the
+kernel! :)
+
+Also, related, have you validated the result using the LKDTM test?
+See tools/testing/selftests/lkdtm/stack-entropy.sh
+
 > 
-> IMHO, it is a bad idea. First, it would confuse people because
-> it does not follow the original design of the parameters.
-> Second, the related code must be touched anyway when
-> the notifier is moved into another list so it does not
-> help much.
+> > @@ -405,6 +407,7 @@ interrupt_exit_user_prepare_main(unsigned long ret, struct pt_regs *regs)
+> >  
+> >  	/* Restore user access locks last */
+> >  	kuap_user_restore(regs);
+> > +	choose_random_kstack_offset(mftb() & 0xFF);
+> >  
+> >  	return ret;
+> >  }
 > 
-> Or do I miss anything, please?
+> So this seems to be what x86 and s390 do, but why are we choosing a
+> new offset for every interrupt when it's only used on a syscall?
+> I would rather you do what arm64 does and just choose the offset
+> at the end of system_call_exception.
 > 
-> Best Regards,
-> Petr
+> I wonder why the choose is separated from the add? I guess it's to
+> avoid a data dependency for stack access on an expensive random
+> function, so that makes sense (a comment would be nice in the
+> generic code).
 
-Hi Petr, thanks for the review.
-
-I'm not strong attached to this patch, so we could drop it and refactor
-the code of next patches to use the @nh as identification - but
-personally, I feel this parameter could be used to identify the list
-that called such function, in other words, what is the event that
-triggered the callback. Some notifiers are even declared with this
-parameter called "ev", like the event that triggers the notifier.
+How does this read? I can send a "real" patch if it looks good:
 
 
-You mentioned 2 cases:
+diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
+index 1468caf001c0..ad3e80275c74 100644
+--- a/include/linux/randomize_kstack.h
++++ b/include/linux/randomize_kstack.h
+@@ -40,8 +40,11 @@ DECLARE_PER_CPU(u32, kstack_offset);
+  */
+ #define KSTACK_OFFSET_MAX(x)	((x) & 0x3FF)
+ 
+-/*
+- * These macros must be used during syscall entry when interrupts and
++/**
++ * add_random_kstack_offset - Increase stack utilization by previously
++ *			      chosen random offset
++ *
++ * This should be used in the syscall entry path when interrupts and
+  * preempt are disabled, and after user registers have been stored to
+  * the stack.
+  */
+@@ -55,6 +58,24 @@ DECLARE_PER_CPU(u32, kstack_offset);
+ 	}								\
+ } while (0)
+ 
++/**
++ * choose_random_kstack_offset - Choose the random offsset for the next
++ *				 add_random_kstack_offset()
++ *
++ * This should only be used during syscall exit when interrupts and
++ * preempt are disabled, and before user registers have been restored
++ * from the stack. This is done to frustrate attack attempts from
++ * userspace to learn the offset:
++ * - Maximize the timing uncertainty visible from userspace: if the
++ *   the offset is chosen at syscall entry, userspace has much more
++ *   control over the timing between chosen offsets. "How long will we
++ *   be in kernel mode?" tends to be more difficult to know than "how
++ *   long will be be in user mode?"
++ * - Reduce the lifetime of the new offset sitting in memory during
++ *   kernel mode execution. Exposures of "thread-local" (e.g. current,
++ *   percpu, etc) memory contents tends to be easier than arbitrary
++ *   location memory exposures.
++ */
+ #define choose_random_kstack_offset(rand) do {				\
+ 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
+ 				&randomize_kstack_offset)) {		\
 
-(a) Same notifier_list used in different situations;
 
-(b) Same *notifier callback* used in different lists;
-
-Mine is case (b), right? Can you show me an example of case (a)? You can
-see in the following patches (or grep the kernel) that people are using
-this identification parameter to determine which kind of OOPS trigger
-the callback to condition the execution of the function to specific
-cases. IIUIC, this is more or less what I'm doing, but extending the
-idea for panic notifiers.
-
-Again, as a personal preference, it makes sense to me using id's VS
-comparing pointers to differentiate events/callers.
-
-Cheers,
-
-
-Guilherme
+-- 
+Kees Cook
