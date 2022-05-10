@@ -1,57 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A3B521DF5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 17:16:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BDE65220FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 May 2022 18:18:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyM8D5tGwz3ccr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 01:16:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyNWZ0xBcz3cFk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 02:18:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=fGhdvJlP;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=C2KkFYKU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=fGhdvJlP; dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=C2KkFYKU; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyM7c0Snjz2xvL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 01:16:10 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out1.suse.de (Postfix) with ESMTP id 88D9E21BB4;
- Tue, 10 May 2022 15:16:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1652195767; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=OZqtmv8UjkqRBSiOYZ6ar9KDyJT6hDNxXl9SSULCXTQ=;
- b=fGhdvJlPt//dq0KQAtVijfj/ESEJ/OC2EKpevE2XN9mzQ9A1L9iCAxeXNQ+pUyb1Mv1UlE
- HCruB1nKt1ZaJRQk1txzbCvkQt9XnVOQap2jC6oxObMWliWuUvAfiBCulbtCmC4sio8+xa
- +ZqWsGMsijF1KXpHWJf4ANyjUo2sNOU=
-Received: from suse.cz (unknown [10.100.208.146])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 2901B2C141;
- Tue, 10 May 2022 15:16:06 +0000 (UTC)
-Date: Tue, 10 May 2022 17:16:01 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyNVr631Qz2xrs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 02:17:54 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=DG+kC/U+ySej5D6tfV4OCa8YH0d8ESpuNC4bFJt4RU8=; b=C2KkFYKUIxmXZpa9w2+Tc0j2Ea
+ RFFr76ch465vsOUiMZW1uqZNDnhRYy0QqpFeaougTFG9GOX2EvcKO8NnFtvJdvaTDSvmTGm5I6bLE
+ gx/SYLZAEuVfjx7NJeu1tB8cieKdzixVjql/phg2ZRqRsu9xZgqdP1nbzw6Nv7UUXN3Dua0weQYl6
+ +N3ACyNpHY020LPMtgokauBK3/rzBv0qIzP0VJEueNDPsJdk0Noe60ugWXyfyRTapgsSXBPVXAg4/
+ oobDhrEfQYteiYAwrodL1TGkVGLJREzPqDYfYYN3sh0JBT6vnlq6trf1vxZCJI19NPJiA+YiSFKJe
+ qkMs6K7A==;
+Received: from [177.183.162.244] (helo=[192.168.0.5])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1noSY8-0008UD-Jz; Tue, 10 May 2022 18:17:24 +0200
+Message-ID: <244a412c-4589-28d1-bb77-d3648d4f0b12@igalia.com>
+Date: Tue, 10 May 2022 13:16:54 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
 Subject: Re: [PATCH 14/30] panic: Properly identify the panic event to the
  notifiers' callbacks
-Message-ID: <YnqBsXBImU64PAOL@alley>
+Content-Language: en-US
+To: Petr Mladek <pmladek@suse.com>
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-15-gpiccoli@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220427224924.592546-15-gpiccoli@igalia.com>
+ <20220427224924.592546-15-gpiccoli@igalia.com> <YnqBsXBImU64PAOL@alley>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <YnqBsXBImU64PAOL@alley>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,11 +78,10 @@ Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
  bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
  dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
  dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, coresight@lists.linaro.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
- openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
- vkuznets@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
+ rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
+ linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
  linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
  netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
  linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
@@ -89,51 +92,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed 2022-04-27 19:49:08, Guilherme G. Piccoli wrote:
-> The notifiers infrastructure provides a way to pass an "id" to the
-> callbacks to determine what kind of event happened, i.e., what is
-> the reason behind they getting called.
+On 10/05/2022 12:16, Petr Mladek wrote:
+> [...]
+> Hmm, this looks like a hack. PANIC_UNUSED will never be used.
+> All notifiers will be always called with PANIC_NOTIFIER.
 > 
-> The panic notifier currently pass 0, but this is soon to be
-> used in a multi-targeted notifier, so let's pass a meaningful
-> "id" over there.
->
-> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-> ---
->  include/linux/panic_notifier.h | 5 +++++
->  kernel/panic.c                 | 2 +-
->  2 files changed, 6 insertions(+), 1 deletion(-)
+> The @val parameter is normally used when the same notifier_list
+> is used in different situations.
 > 
-> diff --git a/include/linux/panic_notifier.h b/include/linux/panic_notifier.h
-> index 41e32483d7a7..07dced83a783 100644
-> --- a/include/linux/panic_notifier.h
-> +++ b/include/linux/panic_notifier.h
-> @@ -9,4 +9,9 @@ extern struct atomic_notifier_head panic_notifier_list;
->  
->  extern bool crash_kexec_post_notifiers;
->  
-> +enum panic_notifier_val {
-> +	PANIC_UNUSED,
-> +	PANIC_NOTIFIER = 0xDEAD,
-> +};
+> But you are going to use it when the same notifier is used
+> in more lists. This is normally distinguished by the @nh
+> (atomic_notifier_head) parameter.
+> 
+> IMHO, it is a bad idea. First, it would confuse people because
+> it does not follow the original design of the parameters.
+> Second, the related code must be touched anyway when
+> the notifier is moved into another list so it does not
+> help much.
+> 
+> Or do I miss anything, please?
+> 
+> Best Regards,
+> Petr
 
-Hmm, this looks like a hack. PANIC_UNUSED will never be used.
-All notifiers will be always called with PANIC_NOTIFIER.
+Hi Petr, thanks for the review.
 
-The @val parameter is normally used when the same notifier_list
-is used in different situations.
+I'm not strong attached to this patch, so we could drop it and refactor
+the code of next patches to use the @nh as identification - but
+personally, I feel this parameter could be used to identify the list
+that called such function, in other words, what is the event that
+triggered the callback. Some notifiers are even declared with this
+parameter called "ev", like the event that triggers the notifier.
 
-But you are going to use it when the same notifier is used
-in more lists. This is normally distinguished by the @nh
-(atomic_notifier_head) parameter.
 
-IMHO, it is a bad idea. First, it would confuse people because
-it does not follow the original design of the parameters.
-Second, the related code must be touched anyway when
-the notifier is moved into another list so it does not
-help much.
+You mentioned 2 cases:
 
-Or do I miss anything, please?
+(a) Same notifier_list used in different situations;
 
-Best Regards,
-Petr
+(b) Same *notifier callback* used in different lists;
+
+Mine is case (b), right? Can you show me an example of case (a)? You can
+see in the following patches (or grep the kernel) that people are using
+this identification parameter to determine which kind of OOPS trigger
+the callback to condition the execution of the function to specific
+cases. IIUIC, this is more or less what I'm doing, but extending the
+idea for panic notifiers.
+
+Again, as a personal preference, it makes sense to me using id's VS
+comparing pointers to differentiate events/callers.
+
+Cheers,
+
+
+Guilherme
