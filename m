@@ -1,72 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC17523CD9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 20:48:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B661B523CE0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 20:50:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz3pQ66Mdz3cK8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 04:48:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz3rq4W5gz3cJp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 04:50:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=cA8UQtFo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L7zWc1Ou;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::12e;
- helo=mail-lf1-x12e.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=cA8UQtFo; dkim-atps=neutral
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
- [IPv6:2a00:1450:4864:20::12e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=L7zWc1Ou; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz3nq2jZSz3brf
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 04:48:14 +1000 (AEST)
-Received: by mail-lf1-x12e.google.com with SMTP id p26so5095687lfh.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 11:48:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=LjOBAquXwgrrgXm8VNOmvziGW6n+WunCBS4qV3JJbEM=;
- b=cA8UQtFoVUliUtfWSv912J6B0ub0HcxW8gmIXite+joZhlMbpeCS+bUAZWYfMzZ8Xa
- G/fJOfLTcngtIL8G90CQr+73lLbCL1AHxsh2R+qmJrgmJRTCuyNKXj7cliEo28pPuXQj
- 6w3VaEUFPmnSDKtF91NPiV/sgjc8ZRv71y4uYb9hxeHwZUr5je/pDiqFgm2aSZ7bIISf
- /1UJjBBsIPYSlsXi1kwAQ99jbSUPR+9P2r7SaKBX1wGFQEJXaWfpYonbpRKCQDD6CxUK
- Dp+b87CVNCLP2zVCceaShTI1HSRNKEIjVASMSKh/ElRg8CR6aP+J3pZQ1S3J5UZUSIaH
- 1EZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=LjOBAquXwgrrgXm8VNOmvziGW6n+WunCBS4qV3JJbEM=;
- b=iZ8OuGYJRYwCiSci7UmKjZfbc5LpI409aOoF9jK/Zk6LbD5P1eJxIFaR36SmIZ9iHR
- oxq7rOwOjnop3AsWiuy0E61T8a40QGe5NMi0DMGB1pBzHjIRfZBLA1PF7hzAVFzzoRsT
- n7Nv1NMvDbTHMbld9Yqc7qD4Lua4ag8bU4Esybh6/qA7kd30OvT79XQTxZ5uNE4mEsfP
- Z0B8+ZZxVqlvkPri5OHmnvz3KZXAlltMibaS8RuwjT2zSCnrfBkVwMDBlmfkIcOECH+t
- LB2gWyNd5WS3GEDnnVejdNPgWpEr5UcBL43837jGNzcB1x+Tw9NhiJCDiY0gw1GT5KkW
- 7xKA==
-X-Gm-Message-State: AOAM530/WrZXcebGCHtSuXLoL3fHxU+Kn4JENnXwcmSo2nukIoPjEz7K
- O6zlUAk3SXcEopxSSsv9TwqDO/7GHss8IaQGTy6ujQ==
-X-Google-Smtp-Source: ABdhPJwORYNYs+f4SpR17x+QtOIu9Uo6dxlRowGZd30bvV7AXP2VnNh+RNLxsgttKR9yFrJ+aoveRa6JaxEnp5h+sgs=
-X-Received: by 2002:a05:6512:1d1:b0:471:f63a:b182 with SMTP id
- f17-20020a05651201d100b00471f63ab182mr20624164lfp.392.1652294887500; Wed, 11
- May 2022 11:48:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz3rF57sQz3brf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 04:50:21 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 2331160F02;
+ Wed, 11 May 2022 18:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE446C340EE;
+ Wed, 11 May 2022 18:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1652295017;
+ bh=W9rLIkC4kkgzqycQuHkA/UVojPhdH7N+sZBFCymIYMw=;
+ h=From:To:Cc:Subject:Date:From;
+ b=L7zWc1OuyqYs4BtULyThnE4ZHBy3tF1C8dR4qLEgmXCt1qSQAjXpqbFarMmV8YjJH
+ E0GLJaxtgCrWSO9P7xcFf4g3BzRFQUyZIMlNEjzsbXhYkADb1+b1bD1iotYgpALtoy
+ wmQrSZT7C0zoVdH2sCAVyVgx8ZhfVYCztyU3QIHy5I0Yts7azUbKT25jBORdbXBJ9b
+ mHOiy1C4jIHYEkI72o145Ewn6IBTbocEow8Y4KfJrhZqCNV/6j0JKc+oMuvIZMjvyH
+ pdihbuNI2sgBgFLCxspf3HHY+SvA/Fhxp9xz1/EmLrQ2vAHDDGZR5m00hzWR6aSQod
+ cx0H76qW6J0Lw==
+From: Nathan Chancellor <nathan@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2 0/2] Link the PowerPC vDSO with ld.lld
+Date: Wed, 11 May 2022 11:49:59 -0700
+Message-Id: <20220511185001.3269404-1-nathan@kernel.org>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-References: <20220508190631.2386038-1-masahiroy@kernel.org>
- <20220508190631.2386038-4-masahiroy@kernel.org>
- <CAKwvOd=LR=UNOeWJDmM-McJ=FrCWTo8w1ox+KGMQCwCVpiUyFg@mail.gmail.com>
- <CAK7LNARGNEDzPPUsPjDXsXUUUPSFK2erQRuyPocR_v5hTYRihg@mail.gmail.com>
-In-Reply-To: <CAK7LNARGNEDzPPUsPjDXsXUUUPSFK2erQRuyPocR_v5hTYRihg@mail.gmail.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Wed, 11 May 2022 11:47:56 -0700
-Message-ID: <CAKwvOdmK4oH0t8Q6F19sWKX1fT=AgS=kfvn05FT01HffLJwgMQ@mail.gmail.com>
-Subject: Re: [PATCH v4 03/14] modpost: split the section mismatch checks into
- section-check.c
-To: Masahiro Yamada <masahiroy@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,57 +62,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- clang-built-linux <llvm@lists.linux.dev>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-modules <linux-modules@vger.kernel.org>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, llvm@lists.linux.dev,
+ Nick Desaulniers <ndesaulniers@google.com>, patches@lists.linux.dev,
+ Nathan Chancellor <nathan@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 9, 2022 at 11:57 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> > > diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> > > index a78b75f0eeb0..e7e2c70a98f5 100644
-> > > --- a/scripts/mod/modpost.c
-> > > +++ b/scripts/mod/modpost.c
-> > > @@ -31,7 +31,7 @@ static bool external_module;
-> > >  /* Only warn about unresolved symbols */
-> > >  static bool warn_unresolved;
-> > >
-> > > -static int sec_mismatch_count;
-> > > +int sec_mismatch_count;
-> >
-> > ^ this should go in modpost.h if it is to be used in two translation
-> > units, rather than forward declaring it in section-check.c.  You did
-> > this for the functions.
->
->
-> Sorry, I do not understand.
->
->
-> In modpost.h, I put the declaration:
->
->   extern int sec_mismatch_count;
->
-> If I moved it to the header without 'extern'
-> I would get multiple definitions.
+Hi all,
 
-Yeah, you need to _declare_ it w/ extern in the header, then _define_
-it in one source file.
+This series is an alternative to the one proposed by Nick before the
+PowerPC vDSO unification in commit fd1feade75fb ("powerpc/vdso: Merge
+vdso64 and vdso32 into a single directory"):
 
-That way, if the type ever changes, the sources will agree on type in
-all source files. You will get a redefinition error if the definition
-changes the type of the variable since the last declaration.
+https://lore.kernel.org/20200901222523.1941988-1-ndesaulniers@google.com/
 
-What you're doing is forward declaring, which works, and is a common
-pattern for (bloated) C++, but is less type safe than sharing a single
-common declaration between multiple source files via a single common
-shared header. (Sorry I didn't respond before you sent v5)
+Normally, we try to make compiling and linking two separate stages so
+that they can be done by $(CC) and $(LD) respectively, which is more in
+line with what the user expects, versus using the compiler as a linker
+driver and relying on the implicit default linker value. However, as
+shown in the above thread, getting this right for the PowerPC vDSO is a
+little tricky due to the linker emulation values.
+
+The unification might make this easier but that needs further
+investigation. To avoid regressing ld.bfd while enabling support for
+linking the vDSO with ld.lld, we can tell the compiler to use ld.lld via
+either '--ld-path=' (clang 12.0.0) or '-fuse-ld=lld'.
+
+The first patch avoids a warning from ld.lld when linking both vDSO
+objects and the second patch adds the flags.
+
+This should help avoid the issue noticed during Alexey's LTO bring up:
+
+https://lore.kernel.org/CAKwvOdmUMhqhQhDCpWjMNiQQPvwOJB9MbUkF3RR0BL+H+DagmA@mail.gmail.com/
+
+Changelog:
+
+v1 -> v2: https://lore.kernel.org/20220509204635.2539549-1-nathan@kernel.org/
+
+* Flush out the second commit message much more with information from
+  this cover letter and the other threads (Alexey's LTO enablement and
+  Nick's initial stab at converting to $(CC) + $(LD)) [Nick].
+
+* Add Nick and Alexey's tags.
+
+Nathan Chancellor (2):
+  powerpc/vdso: Remove unused ENTRY in linker scripts
+  powerpc/vdso: Link with ld.lld when requested
+
+ arch/powerpc/kernel/vdso/Makefile     | 1 +
+ arch/powerpc/kernel/vdso/vdso32.lds.S | 1 -
+ arch/powerpc/kernel/vdso/vdso64.lds.S | 1 -
+ 3 files changed, 1 insertion(+), 2 deletions(-)
+
+
+base-commit: b6b1c3ce06ca438eb24e0f45bf0e63ecad0369f5
 -- 
-Thanks,
-~Nick Desaulniers
+2.36.1
+
