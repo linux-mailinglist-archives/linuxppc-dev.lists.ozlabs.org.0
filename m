@@ -1,98 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45FD524086
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 01:07:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA4D524087
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 01:07:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz9XS3mWBz3cGk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 09:07:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz9Y967Mhz3cdH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 09:07:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lxUbqAEO;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qcdkim header.b=DcSvKcr6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com;
+ smtp.mailfrom=quicinc.com (client-ip=199.106.114.39;
+ helo=alexa-out-sd-02.qualcomm.com; envelope-from=quic_jjohnson@quicinc.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=lxUbqAEO; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256
+ header.s=qcdkim header.b=DcSvKcr6; dkim-atps=neutral
+X-Greylist: delayed 124 seconds by postgrey-1.36 at boromir;
+ Thu, 12 May 2022 05:53:46 AEST
+Received: from alexa-out-sd-02.qualcomm.com (alexa-out-sd-02.qualcomm.com
+ [199.106.114.39])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz16S08hKz3brb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 02:47:27 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24BESoKr028080;
- Wed, 11 May 2022 16:46:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=tjIW4ViQYza/lnoDnWyOhboEO5kjiPdt7taCyynzKFw=;
- b=lxUbqAEO3GqUpU+Tuw2IWXF1fzXIGSDn1j9FVHjMmFIPrrH/+bQrVN9PaaYcbEJhBJIr
- 7d0t++ZFM6UKMdcnwcUF0YasHW2SP51KwmfPJnRgOou9+kRarIXLa3hIMjmu5cX5t3FO
- 6rItwaIor28IfP+e6c0HY1HIerMLLjGg06tg70umpoMhCUKjDu0piWYCrZz/VisJ+s0b
- 0DuyX+X+ttOZsVNhvwPdzqfPCbp/RA3MDqZWBEVZBj0PN/wvhGTqQYzQ4imgN+k8TjhU
- NC3v9IrNMZOoN56TSdKZo20ktYuMVwJV19grssXUZ/JxpGndCu9D0HmYa5fO310s9Ten QA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g0etx3406-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 16:46:00 +0000
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24BGebih023228;
- Wed, 11 May 2022 16:45:59 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g0etx33y1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 16:45:59 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24BGgY6p030999;
- Wed, 11 May 2022 16:45:56 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3fwgd8wsc9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 16:45:55 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24BGjqsM27197764
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 May 2022 16:45:52 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BA0B35204E;
- Wed, 11 May 2022 16:45:52 +0000 (GMT)
-Received: from osiris (unknown [9.145.80.86])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id B9FCE52050;
- Wed, 11 May 2022 16:45:50 +0000 (GMT)
-Date: Wed, 11 May 2022 18:45:49 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 22/30] panic: Introduce the panic post-reboot notifier list
-Message-ID: <YnvoPe2cTS31qbjb@osiris>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-23-gpiccoli@igalia.com>
- <7017c234-7c73-524a-11b6-fefdd5646f59@igalia.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz5FQ2pdYz2xrc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 05:53:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qcdkim;
+ t=1652298826; x=1683834826;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=tJUoH32r2DhYogH9Td6X47AQDJfM19sTpFtOpSyDiTg=;
+ b=DcSvKcr6T826MM4GuJSgsAscnhiXY8UBJHld5i4cpc9gUlOGOt1rwJrg
+ KFA6M9h04obYyUfbB0HzZPV/OrHsyd7WWvsnCl2MTkpEzQMRFIGXNVE7V
+ ZNRtGk++XYgnTNSJAsUcveCmiXHveMTAXgQiJF5MbzZN6UkBVZmHQUpqo 8=;
+Received: from unknown (HELO ironmsg03-sd.qualcomm.com) ([10.53.140.143])
+ by alexa-out-sd-02.qualcomm.com with ESMTP; 11 May 2022 12:51:38 -0700
+X-QCInternal: smtphost
+Received: from nasanex01c.na.qualcomm.com ([10.47.97.222])
+ by ironmsg03-sd.qualcomm.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2022 12:51:38 -0700
+Received: from nalasex01a.na.qualcomm.com (10.47.209.196) by
+ nasanex01c.na.qualcomm.com (10.47.97.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.22; Wed, 11 May 2022 12:51:38 -0700
+Received: from [10.110.84.131] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.22; Wed, 11 May
+ 2022 12:51:37 -0700
+Message-ID: <8babc23b-5e24-f662-6c4a-eb1c30e0e6da@quicinc.com>
+Date: Wed, 11 May 2022 12:51:36 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7017c234-7c73-524a-11b6-fefdd5646f59@igalia.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: P8jYmW-Xe3lS0Lxn9LfjJuLQx8-pWyu5
-X-Proofpoint-ORIG-GUID: 3EoVOe4XNkWaSjwGnBLNECSOqY142ccD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-11_07,2022-05-11_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- clxscore=1015 malwarescore=0 phishscore=0 mlxscore=0 adultscore=0
- suspectscore=0 mlxlogscore=429 bulkscore=0 impostorscore=0
- priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2202240000 definitions=main-2205110076
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v4 03/14] modpost: split the section mismatch checks into
+ section-check.c
+Content-Language: en-US
+To: Masahiro Yamada <masahiroy@kernel.org>, Nick Desaulniers
+ <ndesaulniers@google.com>
+References: <20220508190631.2386038-1-masahiroy@kernel.org>
+ <20220508190631.2386038-4-masahiroy@kernel.org>
+ <CAKwvOd=LR=UNOeWJDmM-McJ=FrCWTo8w1ox+KGMQCwCVpiUyFg@mail.gmail.com>
+ <CAK7LNARGNEDzPPUsPjDXsXUUUPSFK2erQRuyPocR_v5hTYRihg@mail.gmail.com>
+ <CAKwvOdmK4oH0t8Q6F19sWKX1fT=AgS=kfvn05FT01HffLJwgMQ@mail.gmail.com>
+ <CAK7LNAR5preB59HJH1-F_ZfEmoF3N8b9z4eRhYzsEVwu_XUH4Q@mail.gmail.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <CAK7LNAR5preB59HJH1-F_ZfEmoF3N8b9z4eRhYzsEVwu_XUH4Q@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-Mailman-Approved-At: Thu, 12 May 2022 09:06:31 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -105,66 +85,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- linux-xtensa@linux-xtensa.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, john.ogness@linutronix.de,
- Alexander Gordeev <agordeev@linux.ibm.com>, will@kernel.org,
- tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
- mikelley@microsoft.com, arnd@arndb.de, bhe@redhat.com, corbet@lwn.net,
- paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>, dyoung@redhat.com,
- vgoyal@redhat.com, mhiramat@kernel.org, pmladek@suse.com,
- dave.hansen@linux.intel.com, keescook@chromium.org,
- Vasily Gorbik <gor@linux.ibm.com>, linux-pm@vger.kernel.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- gregkh@linuxfoundation.org, bp@alien8.de, luto@kernel.org,
- linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
- linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
- Sven Schnelle <svens@linux.ibm.com>, kernel-dev@igalia.com,
- linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ clang-built-linux <llvm@lists.linux.dev>, Linux Kernel
+ Mailing List <linux-kernel@vger.kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Sami
+ Tolvanen <samitolvanen@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-modules <linux-modules@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 09, 2022 at 11:16:10AM -0300, Guilherme G. Piccoli wrote:
-> On 27/04/2022 19:49, Guilherme G. Piccoli wrote:
-> > Currently we have 3 notifier lists in the panic path, which will
-> > be wired in a way to allow the notifier callbacks to run in
-> > different moments at panic time, in a subsequent patch.
-> > 
-> > But there is also an odd set of architecture calls hardcoded in
-> > the end of panic path, after the restart machinery. They're
-> > responsible for late time tunings / events, like enabling a stop
-> > button (Sparc) or effectively stopping the machine (s390).
-> > 
-> > This patch introduces yet another notifier list to offer the
-> > architectures a way to add callbacks in such late moment on
-> > panic path without the need of ifdefs / hardcoded approaches.
-> > 
-> > Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> > Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> > Cc: "David S. Miller" <davem@davemloft.net>
-> > Cc: Heiko Carstens <hca@linux.ibm.com>
-> > Cc: Sven Schnelle <svens@linux.ibm.com>
-> > Cc: Vasily Gorbik <gor@linux.ibm.com>
-> > Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+On 5/11/2022 12:27 PM, Masahiro Yamada wrote:
+> On Thu, May 12, 2022 at 3:48 AM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+>>
+>> On Mon, May 9, 2022 at 11:57 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>>>
+>>>>> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+>>>>> index a78b75f0eeb0..e7e2c70a98f5 100644
+>>>>> --- a/scripts/mod/modpost.c
+>>>>> +++ b/scripts/mod/modpost.c
+>>>>> @@ -31,7 +31,7 @@ static bool external_module;
+>>>>>   /* Only warn about unresolved symbols */
+>>>>>   static bool warn_unresolved;
+>>>>>
+>>>>> -static int sec_mismatch_count;
+>>>>> +int sec_mismatch_count;
+>>>>
+>>>> ^ this should go in modpost.h if it is to be used in two translation
+>>>> units, rather than forward declaring it in section-check.c.  You did
+>>>> this for the functions.
+>>>
+>>>
+>>> Sorry, I do not understand.
+>>>
+>>>
+>>> In modpost.h, I put the declaration:
+>>>
+>>>    extern int sec_mismatch_count;
+>>>
+>>> If I moved it to the header without 'extern'
+>>> I would get multiple definitions.
+>>
+>> Yeah, you need to _declare_ it w/ extern in the header, then _define_
+>> it in one source file.
+>>
+>> That way, if the type ever changes, the sources will agree on type in
+>> all source files. You will get a redefinition error if the definition
+>> changes the type of the variable since the last declaration.
+>>
+>> What you're doing is forward declaring, which works, and is a common
+>> pattern for (bloated) C++, but is less type safe than sharing a single
+>> common declaration between multiple source files via a single common
+>> shared header. (Sorry I didn't respond before you sent v5)
 > 
-> Hey S390/SPARC folks, sorry for the ping!
+> Sorry, I still do not understand your suggestion.
 > 
-> Any reviews on this V1 would be greatly appreciated, I'm working on V2
-> and seeking feedback in the non-reviewed patches.
+> 
+> Could you provide me with a code diff
+> showing how to do this better?
 
-Sorry, missed that this is quite s390 specific. So, yes, this looks
-good to me and nice to see that one of the remaining CONFIG_S390 in
-common code will be removed!
+I think you are doing exactly what he's asking for:
+declare it with extern in the header (modpost.h change)
+define it in one source file (modpost.c change)
 
-For the s390 bits:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
