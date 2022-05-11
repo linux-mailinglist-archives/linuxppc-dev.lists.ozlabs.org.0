@@ -1,44 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB9D52327A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 14:05:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C37523505
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 16:08:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kytrg3KwBz3brf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 22:05:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyxbN0tFrz3cBg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 00:08:48 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mpfwWa1g;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131;
- helo=out30-131.freemail.mail.aliyun.com;
- envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-131.freemail.mail.aliyun.com
- (out30-131.freemail.mail.aliyun.com [115.124.30.131])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=mpfwWa1g; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyxZf2xTNz3bf9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 00:08:10 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KytrH1KBVz3brf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 22:04:46 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R111e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04394;
- MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=32; SR=0;
- TI=SMTPD_---0VCwISV4_1652270676; 
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com
- fp:SMTPD_---0VCwISV4_1652270676) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 11 May 2022 20:04:37 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	mike.kravetz@oracle.com
-Subject: [PATCH v4 3/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- unmapping
-Date: Wed, 11 May 2022 20:04:19 +0800
-Message-Id: <0a2e547238cad5bc153a85c3e9658cb9d55f9cac.1652270205.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <cover.1652270205.git.baolin.wang@linux.alibaba.com>
-References: <cover.1652270205.git.baolin.wang@linux.alibaba.com>
-In-Reply-To: <cover.1652270205.git.baolin.wang@linux.alibaba.com>
-References: <cover.1652270205.git.baolin.wang@linux.alibaba.com>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id B805461D18
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 14:08:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 29A43C34114
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 14:08:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1652278087;
+ bh=loFO38aGKNW5ZEIPyPtBpvpmw/LDghXQzue7omFBfw8=;
+ h=From:To:Subject:Date:In-Reply-To:References:From;
+ b=mpfwWa1gPlBRuBzzOM+Z2U5kCJSfhvx2hG1AHYXPenwgiUDXMWDHPVpi+MBE1zo+2
+ 3fFw+2POzUPd+oyib1wMvmjbEDuY3CdVs+SVTBd4r/CIH2hxg+Oh4YdMmPF3tZ5WtV
+ gYPKwmk07itZOdJ+bhl1MaY01hRQiXyywfghuXrv1dpNOMsODrSHuqBhjzmBK8eP1X
+ bsFGhDlkM8w3zosi66NNYEhrThv63qoKeo9/mBFRBXkszMK3wFUt1bCZsKlURR+oqw
+ nMJTM4ZroUVrvQllfyTi6ZpXsz5CqQG1ljLAtI3RUyDbZ77Mp9Ak79kKJ0JnZqWQsD
+ 36VoGWN4H5dyg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
+ from userid 48) id 1589CC05FF5; Wed, 11 May 2022 14:08:07 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
+ running its' testsuite
+Date: Wed, 11 May 2022 14:08:06 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215389-206035-TaY0Cz6X4w@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
+References: <bug-215389-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,119 +82,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, James.Bottomley@HansenPartnership.com,
- linux-mm@kvack.org, paulus@samba.org, sparclinux@vger.kernel.org,
- agordeev@linux.ibm.com, will@kernel.org, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, arnd@arndb.de, ysato@users.sourceforge.jp,
- deller@gmx.de, catalin.marinas@arm.com, borntraeger@linux.ibm.com,
- gor@linux.ibm.com, hca@linux.ibm.com, baolin.wang@linux.alibaba.com,
- songmuchun@bytedance.com, linux-arm-kernel@lists.infradead.org,
- tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, svens@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On some architectures (like ARM64), it can support CONT-PTE/PMD size
-hugetlb, which means it can support not only PMD/PUD size hugetlb:
-2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
-size specified.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
 
-When unmapping a hugetlb page, we will get the relevant page table
-entry by huge_pte_offset() only once to nuke it. This is correct
-for PMD or PUD size hugetlb, since they always contain only one
-pmd entry or pud entry in the page table.
+--- Comment #18 from Erhard F. (erhard_f@mailbox.org) ---
+Ok, and another problem during building via distcc on the G4, still
+LOWMEM_SIZE=3D0x28000000 (kernel v5.17.6).
 
-However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
-since they can contain several continuous pte or pmd entry with
-same page table attributes, so we will nuke only one pte or pmd
-entry for this CONT-PTE/PMD size hugetlb page.
+[...]
+Oops: Kernel stack overflow, sig: 11 [#1]
+BE PAGE_SIZE=3D4K MMU=3DHash SMP NR_CPUS=3D2 PowerMac
+Modules linked in: auth_rpcgss nfsv4 dns_resolver nfs lockd grace sunrpc
+ghash_generic gf128mul gcm ccm algif_aead des_generic libdes ctr cbc ecb
+algif_skcipher aes_generic libaes cmac sha512_generic sha1_generic sha1_pow=
+erpc
+md5 md5_ppc md4 hid_generic b43legacy usbhid mac80211 hid libarc4 cfg80211
+snd_aoa_codec_tas rfkill snd_aoa_fabric_layout snd_aoa evdev mac_hid
+therm_windtunnel firewire_ohci firewire_core crc_itu_t sr_mod cdrom ohci_pci
+8250_pci radeon snd_aoa_i2sbus ohci_hcd snd_aoa_soundbus ssb snd_pcm ehci_p=
+ci
+snd_timer pcmcia snd soundcore pcmcia_core hwmon 8250 ehci_hcd i2c_algo_bit
+8250_base drm_ttm_helper serial_mctrl_gpio ttm drm_kms_helper usbcore
+syscopyarea sysfillrect sysimgblt usb_common fb_sys_fops pkcs8_key_parser f=
+use
+drm drm_panel_orientation_quirks configfs
+CPU: 0 PID: 24122 Comm: sh Not tainted 5.17.6-gentoo-PMacG4 #1
+NIP:  c0018614 LR: 00000000 CTR: c103cbe0
+REGS: e7fe9f50 TRAP: 0000   Not tainted  (5.17.6-gentoo-PMacG4)
+MSR:  00001030 <ME,IR,DR>  CR: 00000001  XER: c000e234
 
-And now try_to_unmap() is only passed a hugetlb page in the case
-where the hugetlb page is poisoned. Which means now we will unmap
-only one pte entry for a CONT-PTE or CONT-PMD size poisoned hugetlb
-page, and we can still access other subpages of a CONT-PTE or CONT-PMD
-size poisoned hugetlb page, which will cause serious issues possibly.
+GPR00: a78bfe90 80002288 00000000 d6a5e1a0 e991de60 0068c6c4 a7a3ff98 c1099=
+000=20
+GPR08: 00000000 e991dec0 d6a5e1a0 80002288 005900d0 0068fff4 00000000 00000=
+007=20
+GPR16: 00000029 00000007 00bc44b0 a7ddafe8 a78bfe90 fffff000 00000000 00000=
+000=20
+GPR24: 005900d0 0068c6c4 c0dcc7a0 c1402b48 caa899c0 c103cbe0 c4ce9400 c08fe=
+234=20
+NIP [c0018614] interrupt_return+0x17c/0x190
+LR [00000000] 0x0
+Call Trace:
+Instruction dump:
+40860018 7ccff120 80c10028 80010010 80210014 4c000064 7ccff120 7d3043a6=20
+392100c0 80c10028 80010010 80210014 <91210000> 7d3042a6 4c000064 7c000828=20
+---[ end trace 0000000000000000 ]---
 
-So we should change to use huge_ptep_clear_flush() to nuke the
-hugetlb page table to fix this issue, which already considered
-CONT-PTE and CONT-PMD size hugetlb.
 
-We've already used set_huge_swap_pte_at() to set a poisoned
-swap entry for a poisoned hugetlb page. Meanwhile adding a VM_BUG_ON()
-to make sure the passed hugetlb page is poisoned in try_to_unmap().
+@Christophe: Would it be helpful for these issues to try a KASAN build?
 
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
----
- mm/rmap.c | 39 ++++++++++++++++++++++-----------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
+--=20
+You may reply to this email to add a comment.
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 4e96daf..219e287 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1528,6 +1528,11 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 
- 		if (folio_test_hugetlb(folio)) {
- 			/*
-+			 * The try_to_unmap() is only passed a hugetlb page
-+			 * in the case where the hugetlb page is poisoned.
-+			 */
-+			VM_BUG_ON_PAGE(!PageHWPoison(subpage), subpage);
-+			/*
- 			 * huge_pmd_unshare may unmap an entire PMD page.
- 			 * There is no way of knowing exactly which PMDs may
- 			 * be cached for this mm, so we must flush them all.
-@@ -1562,28 +1567,28 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 					break;
- 				}
- 			}
-+			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
- 		} else {
- 			flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
--		}
--
--		/*
--		 * Nuke the page table entry. When having to clear
--		 * PageAnonExclusive(), we always have to flush.
--		 */
--		if (should_defer_flush(mm, flags) && !anon_exclusive) {
- 			/*
--			 * We clear the PTE but do not flush so potentially
--			 * a remote CPU could still be writing to the folio.
--			 * If the entry was previously clean then the
--			 * architecture must guarantee that a clear->dirty
--			 * transition on a cached TLB entry is written through
--			 * and traps if the PTE is unmapped.
-+			 * Nuke the page table entry. When having to clear
-+			 * PageAnonExclusive(), we always have to flush.
- 			 */
--			pteval = ptep_get_and_clear(mm, address, pvmw.pte);
-+			if (should_defer_flush(mm, flags) && !anon_exclusive) {
-+				/*
-+				 * We clear the PTE but do not flush so potentially
-+				 * a remote CPU could still be writing to the folio.
-+				 * If the entry was previously clean then the
-+				 * architecture must guarantee that a clear->dirty
-+				 * transition on a cached TLB entry is written through
-+				 * and traps if the PTE is unmapped.
-+				 */
-+				pteval = ptep_get_and_clear(mm, address, pvmw.pte);
- 
--			set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
--		} else {
--			pteval = ptep_clear_flush(vma, address, pvmw.pte);
-+				set_tlb_ubc_flush_pending(mm, pte_dirty(pteval));
-+			} else {
-+				pteval = ptep_clear_flush(vma, address, pvmw.pte);
-+			}
- 		}
- 
- 		/*
--- 
-1.8.3.1
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
