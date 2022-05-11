@@ -2,96 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D098A5235A9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 16:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0875235B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 16:38:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KyyC64cM1z3cBS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 00:36:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyyFm0fgkz3bxZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 00:38:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E6Uzd+bJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=q4V4bgTZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1;
+ helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=E6Uzd+bJ; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=q4V4bgTZ; 
+ dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org
+ [IPv6:2604:1380:4601:e00::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KyyBL1nTFz2xsc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 00:35:37 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24BESlKj030703;
- Wed, 11 May 2022 14:35:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=/RhSBzw+sRTlHspPoLa1gTznLHsi6spQDcfp8fP2hTo=;
- b=E6Uzd+bJj/jIMrFvF8JXgJ8dngUZKGKNUjm/YEhN+i9z0YdXL2+3n1DlCuW8oKhqSHSE
- OTV4sR7LnuRt5LZOXJwR6uzCeAJMRvYWCMFBTnD4+g/wfQVrqu8QROK4BHCMA4R/LyRn
- w7Jf0XMoJ/TMA46YfflPXpmkVh5TxRfKX3JTukulQ6izwe+eLgnHAVgwjd2MQmrPpgdO
- Vo3JEz+S/FL5/VuOofoNVa/KQtT7qHVYHGkYK97qU+xOptLz7fJp125vCAaZ0dUDIoaK
- vxoSPiXZBp7fhcBoPLcJmM55JwzkBNwI6wtzqekBDEJCMj8VjXz3ogewP0BjUYGLcIGj ng== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g0cmdujb7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 14:35:34 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24BELJwq015114;
- Wed, 11 May 2022 14:35:32 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma06ams.nl.ibm.com with ESMTP id 3fyrkk1h13-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 14:35:32 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24BEZUaP46530868
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 May 2022 14:35:30 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 044C84204B;
- Wed, 11 May 2022 14:35:30 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B56D342047;
- Wed, 11 May 2022 14:35:28 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.17.157])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 11 May 2022 14:35:28 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
-Subject: Re: [powerpc] Kernel oops while running xfstests w/ext4
- (5.18-rc6-next-20220510)
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <849697D9-0BF2-435F-B4F0-BC971269A9AA@linux.ibm.com>
-Date: Wed, 11 May 2022 20:05:27 +0530
-Message-Id: <78688136-AE1B-4D57-8E94-C18AE8C4E006@linux.ibm.com>
-References: <849697D9-0BF2-435F-B4F0-BC971269A9AA@linux.ibm.com>
-To: Ext4 Developers List <linux-ext4@vger.kernel.org>
-X-Mailer: Apple Mail (2.3696.80.82.1.1)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: GgflpWSNvIX723aeUyAJzrWtCF6-IETZ
-X-Proofpoint-GUID: GgflpWSNvIX723aeUyAJzrWtCF6-IETZ
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KyyF66Wfxz2xsc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 00:38:02 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 0BB5FB8242A;
+ Wed, 11 May 2022 14:37:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B20C34116;
+ Wed, 11 May 2022 14:37:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1652279876;
+ bh=wRJpDokbT09JoxdEz3qkThYC2F/0ZTNg1AOWctYJMSs=;
+ h=From:To:Cc:Subject:Date:From;
+ b=q4V4bgTZiX/taCIvVcOREIB5ZXlmOfkWli9h6tmhqT2Hz64PJLa8Eyp4fJqvbW9sm
+ 8ZbSkCHcy/bbG0NesPyx4nKlwf3RsAb+B83AWQn5sgqKcHzXz8qltAc0eZ35zdBSZY
+ ovzbo5kqiZ9sixMcOsv5HRxbizW4gKvZar2ziWR7uRCren3Ab1xbAelUc079P934zl
+ Dhr2sOv8jIi1uSObVRzLc4KyQK0+gz9oXTmxsEmzdXietnl+gmjKoFJ+4ByCxg8FxF
+ xOS50NDRvnJ9oxQVFmtEeVb01zsPUdDhLp+wlYgCIkcGEU83zdJpZ0dRgjrSQdZxy5
+ 3NpzQv+sLGwzA==
+Received: by pali.im (Postfix)
+ id A707C21A6; Wed, 11 May 2022 16:37:53 +0200 (CEST)
+From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
+To: Rob Herring <robh+dt@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers
+Date: Wed, 11 May 2022 16:37:12 +0200
+Message-Id: <20220511143712.22550-1-pali@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-11_07,2022-05-11_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0
- mlxlogscore=999 adultscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0
- phishscore=0 impostorscore=0 priorityscore=1501 bulkscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2205110068
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,163 +65,503 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- riteshh@linux.ibm.com
+Cc: devicetree@vger.kernel.org, Josef Schlehofer <josef.schlehofer@nic.cz>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Marek Behun <marek.behun@nic.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+CZ.NIC Turris 1.0 and 1.1 are open source routers, they have dual-core
+PowerPC Freescale P2020 CPU and are based on Freescale P2020RDB-PC-A board.
+Hardware design is fully open source, all firmware and hardware design
+files are available at Turris project website:
 
+https://docs.turris.cz/hw/turris-1x/turris-1x/
+https://project.turris.cz/en/hardware.html
 
-> On 11-May-2022, at 2:56 PM, Sachin Sant <sachinp@linux.ibm.com> wrote:
->=20
-> While running xfstests (specifically ext4/032) w/ext4 on a POWER9 LPAR ru=
-nning
-> linux-next version 5.18.0-rc6-next-20220510 following crash is seen:
->=20
-> [  472.486440] EXT4-fs (loop0): resized filesystem to 41943040
-> [  472.760888] BUG: Kernel NULL pointer dereference at 0x0000002c
-> [  472.760891] Faulting instruction address: 0xc0000000007729f4
-> [  472.760894] Oops: Kernel access of bad area, sig: 11 [#1]
-> [  472.760913] LE PAGE_SIZE=3D64K MMU=3DHash SMP NR_CPUS=3D2048 NUMA pSer=
-ies
-> [  472.760921] Modules linked in: loop(E) dm_mod(E) nft_fib_inet(E) nft_f=
-ib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) =
-nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_con=
-ntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) ip_set(E) bonding(E) rfkill(E=
-) tls(E) nf_tables(E) libcrc32c(E) nfnetlink(E) sunrpc(E) pseries_rng(E) vm=
-x_crypto(E) ext4(E) mbcache(E) jbd2(E) sr_mod(E) cdrom(E) sd_mod(E) sg(E) l=
-pfc(E) nvmet_fc(E) nvmet(E) ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) nv=
-me_fc(E) nvme(E) nvme_fabrics(E) nvme_core(E) t10_pi(E) scsi_transport_fc(E=
-) crc64_rocksoft(E) crc64(E) tg3(E) ipmi_devintf(E) ipmi_msghandler(E) fuse=
-(E)
-> [  472.761006] CPU: 8 PID: 5139 Comm: kworker/u193:0 Tainted: G          =
-  E     5.18.0-rc6-next-20220510 #2
-> [  472.761013] Workqueue: loop0 loop_rootcg_workfn [loop]
-> [  472.761027] NIP:  c0000000007729f4 LR: c00000000077331c CTR: c00000000=
-09e9ac0
-> [  472.761032] REGS: c00000002d95b3a0 TRAP: 0380   Tainted: G            =
-E      (5.18.0-rc6-next-20220510)
-> [  472.761038] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  =
-CR: 24008822  XER: 00000000
-> [  472.761057] CFAR: c000000000772b80 IRQMASK: 0=20
-> [  472.761057] GPR00: c00000000077331c c00000002d95b640 c000000002a7cf00 =
-c00000002d95b8e0=20
-> [  472.761057] GPR04: c00000006fd58200 0000000000000001 0000000000000010 =
-0000000000000040=20
-> [  472.761057] GPR08: 0000000000000020 0000000000000000 0000000000010000 =
-c0080000089570f8=20
-> [  472.761057] GPR12: 0000000000008000 c00000001ec46300 0000000000000000 =
-c000000054e32200=20
-> [  472.761057] GPR16: 5deadbeef0000100 0000000000000000 0000000000000000 =
-0000000000000000=20
-> [  472.761057] GPR20: 000000007fffffff c009fffffc817a00 c00000002d95b748 =
-c00000002d95b8e0=20
-> [  472.761057] GPR24: 0000000000000001 0000000000000000 c0000000842b1c00 =
-0000000000000000=20
-> [  472.761057] GPR28: 0000000000000000 0000000000000000 c00000006fd58200 =
-c00000002d95b8e0=20
-> [  472.761126] NIP [c0000000007729f4] blk_add_rq_to_plug+0x74/0x1d0
-> [  472.761135] LR [c00000000077331c] blk_mq_try_issue_list_directly+0x18c=
-/0x1d0
-> [  472.761141] Call Trace:
-> [  472.761144] [c00000002d95b640] [c0000000842b1c00] 0xc0000000842b1c00 (=
-unreliable)
-> [  472.761153] [c00000002d95b680] [c000000000773244] blk_mq_try_issue_lis=
-t_directly+0xb4/0x1d0
-> [  472.761160] [c00000002d95b6d0] [c00000000077b38c] blk_mq_sched_insert_=
-requests+0x13c/0x240
-> [  472.761168] [c00000002d95b720] [c000000000772658] blk_mq_flush_plug_li=
-st+0x118/0x440
-> [  472.761175] [c00000002d95b7c0] [c00000000075ecbc] __blk_flush_plug+0x1=
-7c/0x200
-> [  472.761183] [c00000002d95b840] [c00000000075efe0] blk_finish_plug+0x50=
-/0x70
-> [  472.761190] [c00000002d95b870] [c00000000061a2a4] __iomap_dio_rw+0x444=
-/0x960
-> [  472.761200] [c00000002d95ba60] [c00000000061a7e0] iomap_dio_rw+0x20/0x=
-90
-> [  472.761208] [c00000002d95ba80] [c008000008c56424] ext4_file_read_iter+=
-0x17c/0x2d0 [ext4]
-> [  472.761237] [c00000002d95bac0] [c008000009822aa8] lo_rw_aio.isra.36+0x=
-260/0x320 [loop]
-> [  472.761245] [c00000002d95bb40] [c008000009824030] loop_process_work+0x=
-448/0xb70 [loop]
-> [  472.761253] [c00000002d95bc90] [c000000000183744] process_one_work+0x2=
-b4/0x5b0
-> [  472.761262] [c00000002d95bd30] [c000000000183ab8] worker_thread+0x78/0=
-x600
-> [  472.761269] [c00000002d95bdc0] [c0000000001901d4] kthread+0x124/0x130
-> [  472.761276] [c00000002d95be10] [c00000000000ce04] ret_from_kernel_thre=
-ad+0x5c/0x64
-> [  472.761284] Instruction dump:
-> [  472.761288] 893f0014 38e00040 39000020 2fa90000 7d283f9e 7e8a4840 4094=
-00b4 e93e0000=20
-> [  472.761300] e9290068 71290008 40820024 3d400001 <813d002c> 614affff 7e=
-895040 41950090=20
-> [  472.761314] ---[ end trace 0000000000000000 ]---
-> [  472.769088]=20
-> [  473.769091] Kernel panic - not syncing: Fatal exception
->=20
-> 5.18.0-rc6-next-20220509 build did not exhibit this problem.
-> Will try git bisect and report back with results.
->=20
+Signed-off-by: Pali Rohár <pali@kernel.org>
+---
+ arch/powerpc/boot/dts/turris1x.dts | 470 +++++++++++++++++++++++++++++
+ 1 file changed, 470 insertions(+)
+ create mode 100644 arch/powerpc/boot/dts/turris1x.dts
 
-Unfortunately git bisect doesn=E2=80=99t seem to help.
-first bad commit: [3aedd17333a514c6f2542ed305d940e7a970a6f2]=20
-          Merge branch 'next' of git://git.kernel.org/pub/scm/linux/kernel/=
-git/ulfh/mmc.git
+diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
+new file mode 100644
+index 000000000000..2a624f117586
+--- /dev/null
++++ b/arch/powerpc/boot/dts/turris1x.dts
+@@ -0,0 +1,470 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Turris 1.x Device Tree Source
++ *
++ * Copyright 2013 - 2022 CZ.NIC z.s.p.o. (http://www.nic.cz/)
++ *
++ * Pinout, Schematics and Altium hardware design files are open source
++ * and available at: https://docs.turris.cz/hw/turris-1x/turris-1x/
++ */
++
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/leds/common.h>
++/include/ "fsl/p2020si-pre.dtsi"
++
++/ {
++	model = "Turris 1.x";
++	compatible = "cznic,turris1x", "fsl,P2020RDB-PC"; /* fsl,P2020RDB-PC is required for booting Linux */
++
++	aliases {
++		ethernet0 = &enet0;
++		ethernet1 = &enet1;
++		ethernet2 = &enet2;
++		serial0 = &serial0;
++		serial1 = &serial1;
++		pci0 = &pci0;
++		pci1 = &pci1;
++		pci2 = &pci2;
++		spi0 = &spi0;
++	};
++
++	memory {
++		device_type = "memory";
++	};
++
++	soc: soc@ffe00000 {
++		ranges = <0x0 0x0 0xffe00000 0x00100000>;
++
++		i2c@3000 {
++			/* PCA9557PW GPIO controller for boot config */
++			gpio-controller@18 {
++				compatible = "nxp,pca9557";
++				label = "bootcfg";
++				reg = <0x18>;
++				#gpio-cells = <2>;
++				gpio-controller;
++				polarity = <0x00>;
++			};
++
++			/* STM32F030R8T6 MCU for power control */
++			power-control@32 {
++				/*
++				 * Turris Power Control firmware runs on STM32F0 MCU.
++				 * This firmware is open source and available at:
++				 * https://gitlab.nic.cz/turris/hw/turris_power_control
++				 */
++				reg = <0x32>;
++			};
++
++			/* SA56004ED temperature control */
++			temperature-sensor@4c {
++				compatible = "nxp,sa56004";
++				reg = <0x4c>;
++				interrupt-parent = <&gpio>;
++				interrupts = <12 IRQ_TYPE_LEVEL_LOW>, /* GPIO12 - ALERT pin */
++					     <13 IRQ_TYPE_LEVEL_LOW>; /* GPIO13 - CRIT pin */
++			};
++
++			/* DDR3 SPD/EEPROM */
++			eeprom@52 {
++				compatible = "atmel,spd";
++				reg = <0x52>;
++			};
++
++			/* ATSHA204-TH-DA-T crypto module */
++			crypto@64 {
++				compatible = "atmel,atsha204";
++				reg = <0x64>;
++			};
++
++			/* IDT6V49205BNLGI clock generator */
++			clock-generator@69 {
++				compatible = "idt,6v49205b";
++				reg = <0x69>;
++			};
++
++			/* MCP79402-I/ST Protected EEPROM */
++			eeprom@57 {
++				reg = <0x57>;
++			};
++
++			/* MCP79402-I/ST RTC */
++			rtc@6f {
++				compatible = "microchip,mcp7940x";
++				reg = <0x6f>;
++				interrupt-parent = <&gpio>;
++				interrupts = <14 0>; /* GPIO14 - MFP pin */
++			};
++		};
++
++		/* SPI on connector P1 */
++		spi0: spi@7000 {
++		};
++
++		gpio: gpio-controller@fc00 {
++			#interrupt-cells = <2>;
++			interrupt-controller;
++		};
++
++		/* Connected to SMSC USB2412-DZK 2-Port USB 2.0 Hub Controller */
++		usb@22000 {
++			phy_type = "ulpi";
++			dr_mode = "host";
++		};
++
++		enet0: ethernet@24000 {
++			/* Connected to port 6 of QCA8337N-AL3C switch */
++			phy-connection-type = "rgmii-id";
++
++			fixed-link {
++				speed = <1000>;
++				full-duplex;
++			};
++		};
++
++		mdio@24520 {
++			/* QCA8337N-AL3C switch with integrated ethernet PHYs for LAN ports */
++			switch@10 {
++				compatible = "qca,qca8337";
++				interrupts = <2 1 0 0>;
++				reg = <0x10>;
++
++				ports {
++					#address-cells = <1>;
++					#size-cells = <0>;
++
++					port@0 {
++						reg = <0>;
++						label = "cpu1";
++						ethernet = <&enet1>;
++						phy-mode = "rgmii-id";
++
++						fixed-link {
++							speed = <1000>;
++							full-duplex;
++						};
++					};
++
++					port@1 {
++						reg = <1>;
++						label = "lan5";
++					};
++
++					port@2 {
++						reg = <2>;
++						label = "lan4";
++					};
++
++					port@3 {
++						reg = <3>;
++						label = "lan3";
++					};
++
++					port@4 {
++						reg = <4>;
++						label = "lan2";
++					};
++
++					port@5 {
++						reg = <5>;
++						label = "lan1";
++					};
++
++					port@6 {
++						reg = <6>;
++						label = "cpu0";
++						ethernet = <&enet0>;
++						phy-mode = "rgmii-id";
++
++						fixed-link {
++							speed = <1000>;
++							full-duplex;
++						};
++					};
++				};
++			};
++
++			/* KSZ9031RNXCA ethernet phy for WAN port */
++			phy: ethernet-phy@7 {
++				interrupts = <3 1 0 0>;
++				reg = <0x7>;
++			};
++		};
++
++		ptp_clock@24e00 {
++			fsl,tclk-period = <5>;
++			fsl,tmr-prsc = <200>;
++			fsl,tmr-add = <0xcccccccd>;
++			fsl,tmr-fiper1 = <0x3b9ac9fb>;
++			fsl,tmr-fiper2 = <0x0001869b>;
++			fsl,max-adj = <249999999>;
++		};
++
++		enet1: ethernet@25000 {
++			/* Connected to port 0 of QCA8337N-AL3C switch */
++			phy-connection-type = "rgmii-id";
++
++			fixed-link {
++				speed = <1000>;
++				full-duplex;
++			};
++		};
++
++		mdio@25520 {
++			status = "disabled";
++		};
++
++		enet2: ethernet@26000 {
++			/* Connected to KSZ9031RNXCA ethernet phy (WAN port) */
++			label = "wan";
++			phy-handle = <&phy>;
++			phy-connection-type = "rgmii-id";
++		};
++
++		mdio@26520 {
++			status = "disabled";
++		};
++
++		sdhc@2e000 {
++			bus-width = <4>;
++			cd-gpios = <&gpio 8 GPIO_ACTIVE_LOW>;
++		};
++	};
++
++	lbc: localbus@ffe05000 {
++		reg = <0 0xffe05000 0 0x1000>;
++
++		ranges = <0x0 0x0 0x0 0xef000000 0x01000000>, /* NOR */
++			 <0x1 0x0 0x0 0xff800000 0x00040000>, /* NAND */
++			 <0x3 0x0 0x0 0xffa00000 0x00020000>; /* CPLD */
++
++		/* S29GL128P90TFIR10 NOR */
++		nor@0,0 {
++			compatible = "cfi-flash";
++			reg = <0x0 0x0 0x01000000>;
++			bank-width = <2>;
++			device-width = <1>;
++
++			partitions {
++				compatible = "fixed-partitions";
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				partition@0 {
++					/* 128 kB for Device Tree Blob */
++					reg = <0x00000000 0x00020000>;
++					label = "dtb";
++				};
++
++				partition@20000 {
++					/* 1.7 MB for Rescue Linux Kernel Image */
++					reg = <0x00020000 0x001a0000>;
++					label = "rescue-kernel";
++				};
++
++				partition@1c0000 {
++					/* 1.5 MB for Rescue JFFS2 Root File System */
++					reg = <0x001c0000 0x00180000>;
++					label = "rescue-rootfs";
++				};
++
++				partition@340000 {
++					/* 11 MB for TAR.XZ Backup with content of NAND Root File System */
++					reg = <0x00340000 0x00b00000>;
++					label = "backup-rootfs";
++				};
++
++				partition@e40000 {
++					/* 768 kB for Certificates JFFS2 File System */
++					reg = <0x00e40000 0x000c0000>;
++					label = "certificates";
++				};
++
++				/* free unused space 0x00f00000-0x00f20000 */
++
++				partition@f20000 {
++					/* 128 kB for U-Boot Environment Variables */
++					reg = <0x00f20000 0x00020000>;
++					label = "u-boot-env";
++				};
++
++				partition@f40000 {
++					/* 768 kB for U-Boot Bootloader Image */
++					reg = <0x00f40000 0x000c0000>;
++					label = "u-boot";
++				};
++			};
++		};
++
++		/* MT29F2G08ABAEAWP:E NAND */
++		nand@1,0 {
++			compatible = "fsl,p2020-fcm-nand", "fsl,elbc-fcm-nand";
++			reg = <0x1 0x0 0x00040000>;
++			nand-ecc-mode = "soft";
++			nand-ecc-algo = "bch";
++
++			partitions {
++				compatible = "fixed-partitions";
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				partition@0 {
++					/* 256 MB for UBI with one volume: UBIFS Root File System */
++					reg = <0x00000000 0x10000000>;
++					label = "rootfs";
++				};
++			};
++		};
++
++		/* LCMXO1200C-3FTN256C FPGA */
++		cpld@3,0 {
++			/*
++			 * Turris CPLD firmware which runs on this Lattice FPGA,
++			 * is extended version of P1021RDB-PC CPLD v4.1 firmware.
++			 * It is backward compatible with its original version
++			 * and the only extension is support for Turris LEDs.
++			 * Turris CPLD firmware is open source and available at:
++			 * https://gitlab.nic.cz/turris/hw/turris_cpld/-/blob/master/CZ_NIC_Router_CPLD.v
++			 */
++			compatible = "cznic,turris1x-cpld", "fsl,p1021rdb-pc-cpld", "simple-bus";
++			reg = <0x3 0x0 0x30>;
++			#address-cells = <1>;
++			#size-cells = <1>;
++			ranges = <0x0 0x3 0x0 0x00020000>;
++
++			/* MAX6370KA+T watchdog */
++			watchdog@2 {
++				/*
++				 * CPLD firmware maps SET0, SET1 and SET2
++				 * input logic of MAX6370KA+T chip to CPLD
++				 * memory space at byte offset 0x2. WDI
++				 * input logic is outside of the CPLD and
++				 * connected via external GPIO.
++				 */
++				compatible = "maxim,max6370";
++				reg = <0x02 0x01>;
++				gpios = <&gpio 11 GPIO_ACTIVE_LOW>;
++			};
++
++			led-controller@13 {
++				/*
++				 * LEDs are controlled by CPLD firmware.
++				 * All five LAN LEDs share common RGB settings
++				 * and so it is not possible to set different
++				 * colors on different LAN ports.
++				 */
++				compatible = "cznic,turris1x-leds";
++				reg = <0x13 0x1d>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				multi-led@0 {
++					reg = <0x0>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_WAN;
++				};
++
++				multi-led@1 {
++					reg = <0x1>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_LAN;
++					function-enumerator = <5>;
++				};
++
++				multi-led@2 {
++					reg = <0x2>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_LAN;
++					function-enumerator = <4>;
++				};
++
++				multi-led@3 {
++					reg = <0x3>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_LAN;
++					function-enumerator = <3>;
++				};
++
++				multi-led@4 {
++					reg = <0x4>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_LAN;
++					function-enumerator = <2>;
++				};
++
++				multi-led@5 {
++					reg = <0x5>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_LAN;
++					function-enumerator = <1>;
++				};
++
++				multi-led@6 {
++					reg = <0x6>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_WLAN;
++				};
++
++				multi-led@7 {
++					reg = <0x7>;
++					color = <LED_COLOR_ID_RGB>;
++					function = LED_FUNCTION_POWER;
++				};
++			};
++		};
++	};
++
++	pci2: pcie@ffe08000 {
++		/*
++		 * PCIe bus for on-board TUSB7340RKM USB 3.0 xHCI controller.
++		 * This xHCI controller is available only on Turris 1.1 boards.
++		 * Turris 1.0 boards have nothing connected to this PCIe bus,
++		 * so system would see only PCIe Root Port of this PCIe Root
++		 * Complex. TUSB7340RKM xHCI controller has four SuperSpeed
++		 * channels. Channel 0 is connected to the front USB 3.0 port,
++		 * channel 1 (but only USB 2.0 subset) to USB 2.0 pins on mPCIe
++		 * slot 1 (CN5), channels 2 and 3 to connector P600.
++		 *
++		 * P2020 PCIe Root Port uses 1MB of PCIe MEM and xHCI controller
++		 * uses 64kB + 8kB of PCIe MEM. No PCIe IO is used or required.
++		 * So allocate 2MB of PCIe MEM for this PCIe bus.
++		 */
++		reg = <0 0xffe08000 0 0x1000>;
++		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00200000>, /* MEM */
++			 <0x01000000 0x0 0x00000000 0 0xffc20000 0x0 0x00010000>; /* IO */
++
++		pcie@0 {
++			ranges;
++		};
++	};
++
++	pci1: pcie@ffe09000 {
++		/* PCIe bus on mPCIe slot 2 (CN6) for expansion mPCIe card */
++		reg = <0 0xffe09000 0 0x1000>;
++		ranges = <0x02000000 0x0 0xa0000000 0 0xa0000000 0x0 0x20000000>, /* MEM */
++			 <0x01000000 0x0 0x00000000 0 0xffc10000 0x0 0x00010000>; /* IO */
++
++		pcie@0 {
++			ranges;
++		};
++	};
++
++	pci0: pcie@ffe0a000 {
++		/*
++		 * PCIe bus on mPCIe slot 1 (CN5) for expansion mPCIe card.
++		 * Turris 1.1 boards have in this mPCIe slot additional USB 2.0
++		 * pins via channel 1 of TUSB7340RKM xHCI controller and also
++		 * additional SIM card slot, both for USB-based WWAN cards.
++		 */
++		reg = <0 0xffe0a000 0 0x1000>;
++		ranges = <0x02000000 0x0 0x80000000 0 0x80000000 0x0 0x20000000>, /* MEM */
++			 <0x01000000 0x0 0x00000000 0 0xffc00000 0x0 0x00010000>; /* IO */
++
++		pcie@0 {
++			ranges;
++		};
++	};
++};
++
++/include/ "fsl/p2020si-post.dtsi"
+-- 
+2.20.1
 
-# git bisect log
-git bisect start
-# bad: [3bf222d317a20170ee17f082626c1e0f83537e13] Add linux-next specific f=
-iles for 20220510
-git bisect bad 3bf222d317a20170ee17f082626c1e0f83537e13
-# good: [c5eb0a61238dd6faf37f58c9ce61c9980aaffd7a] Linux 5.18-rc6
-git bisect good c5eb0a61238dd6faf37f58c9ce61c9980aaffd7a
-# good: [5b0c7020c4bf2cfed914323a7d58777c47df6bf8] Merge branch 'drm-next' =
-of git://git.freedesktop.org/git/drm/drm.git
-git bisect good 5b0c7020c4bf2cfed914323a7d58777c47df6bf8
-# bad: [d11e84253a18f5afa5bb6e7da8509ba249435c0c] Merge branch 'next' of gi=
-t://git.kernel.org/pub/scm/virt/kvm/kvm.git
-git bisect bad d11e84253a18f5afa5bb6e7da8509ba249435c0c
-# good: [24f8d248db54c383b01e373355d8655810832192] Merge branch 'next' of g=
-it://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git
-git bisect good 24f8d248db54c383b01e373355d8655810832192
-# bad: [52be5c3c2431cb82789bd9cdb5169f7a2538a8af] Merge branch 'for-next' o=
-f git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git
-git bisect bad 52be5c3c2431cb82789bd9cdb5169f7a2538a8af
-# good: [020a5624b05bb35b24beb1e405ecf38a37c3c238] Merge branch 'pcmcia-nex=
-t' of git://git.kernel.org/pub/scm/linux/kernel/git/brodo/linux.git
-git bisect good 020a5624b05bb35b24beb1e405ecf38a37c3c238
-# bad: [528beacf1e5a082c15738652115e8eed516e925d] Merge branch 'master' of =
-https://scm.osdn.net/gitroot/tomoyo/tomoyo-test1.git
-git bisect bad 528beacf1e5a082c15738652115e8eed516e925d
-# bad: [e8f0eb6a4d1b9775d1ba3ed5b95bbb9cdbe663a0] Merge branch 'for-next' o=
-f git://git.kernel.org/pub/scm/linux/kernel/git/sre/linux-power-supply.git
-git bisect bad e8f0eb6a4d1b9775d1ba3ed5b95bbb9cdbe663a0
-# good: [7a0587496a6233b9ffa8441573d38f8844751066] dt-bindings: mmc: sdhci-=
-am654: Add flag to force setting of TESTCD bit
-git bisect good 7a0587496a6233b9ffa8441573d38f8844751066
-# good: [17a9f73d45ea74b2beb009c29ad38569990c3453] dt-bindings: mmc: sdhci-=
-msm: Add compatible string for sm8150
-git bisect good 17a9f73d45ea74b2beb009c29ad38569990c3453
-# good: [3474b838f4204c21d108183d9268611d961a428f] dt-bindings: Drop undocu=
-mented i.MX iomuxc-gpr bindings in examples
-git bisect good 3474b838f4204c21d108183d9268611d961a428f
-# good: [0c9ee5ba7555016afd1efc9598c3f83de5d83470] mmc: sdhci-brcmstb: Fix =
-compiler warning
-git bisect good 0c9ee5ba7555016afd1efc9598c3f83de5d83470
-# good: [d96a89407e5f682d1cb22569d91784506c784863] power: supply: bq24190_c=
-harger: using pm_runtime_resume_and_get instead of pm_runtime_get_sync
-git bisect good d96a89407e5f682d1cb22569d91784506c784863
-# bad: [6d4c27440f59a40aa8df6ad5ed3ff8ae50048870] Merge branch 'for-mfd-nex=
-t' of git://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git
-git bisect bad 6d4c27440f59a40aa8df6ad5ed3ff8ae50048870
-# bad: [3aedd17333a514c6f2542ed305d940e7a970a6f2] Merge branch 'next' of gi=
-t://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git
-git bisect bad 3aedd17333a514c6f2542ed305d940e7a970a6f2
-# first bad commit: [3aedd17333a514c6f2542ed305d940e7a970a6f2] Merge branch=
- 'next' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc.git
-
--Sachin
