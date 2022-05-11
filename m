@@ -2,58 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385EF522AAD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 06:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B1E522BA3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 07:28:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kyh4t0wmKz3cM3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 13:59:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kyk350BXSz3cJt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 15:28:33 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pZ7INeRK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.43;
- helo=out30-43.freemail.mail.aliyun.com;
- envelope-from=baolin.wang@linux.alibaba.com; receiver=<UNKNOWN>)
-Received: from out30-43.freemail.mail.aliyun.com
- (out30-43.freemail.mail.aliyun.com [115.124.30.43])
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
+ helo=mail-pl1-x632.google.com; envelope-from=linmq006@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=pZ7INeRK; dkim-atps=neutral
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
+ [IPv6:2607:f8b0:4864:20::632])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kyh4Q5mZGz3bfC
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 13:59:32 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R161e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e04423;
- MF=baolin.wang@linux.alibaba.com; NM=1; PH=DS; RN=31; SR=0;
- TI=SMTPD_---0VCu38tE_1652241558; 
-Received: from 30.30.99.144(mailfrom:baolin.wang@linux.alibaba.com
- fp:SMTPD_---0VCu38tE_1652241558) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 11 May 2022 11:59:22 +0800
-Message-ID: <84209c7b-ac3e-fa3b-75fc-d76ec7c99d68@linux.alibaba.com>
-Date: Wed, 11 May 2022 11:59:57 +0800
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kyk2N2g4Jz3bVH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 15:27:55 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id j14so838414plx.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 May 2022 22:27:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xhdm254L1jYhgvQgbJzDhHX/1k7BNUYa5TibU3+NCCw=;
+ b=pZ7INeRKE7ikbL0Wp1J2nkeg5H+ixeNlVyt8PYCddh2qShvjPh+hek64IhQ72pjYiI
+ 7emBeRFo+ZBiSd6HXcaXOmhC+lL3WiJqfw6jXaPXvYjcjTJk8+EAcrW7nBNknBW8MamG
+ y3IM79TAD97U/nTxtEo9yvf5XYzIF4gzw+u7IgzhoT3ceHSuOUOwpuYMb/KzCmOlru5l
+ 9aNHlqiUqt3TaR84XMjujDYI71Svp937IGTCm9Oiuv+bXoeSRUiGHWiNMlWtcPUtFmKD
+ BYh9nNVtPT2zfyA8wsUHIo3lHKyxQV33wgLC9Voh85/bQ8qPt9QSI43AUrUeQuBnwwSu
+ gbdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=xhdm254L1jYhgvQgbJzDhHX/1k7BNUYa5TibU3+NCCw=;
+ b=Hcrw8d1z6k7/GDvZc/mOL822j7BiLkJLzPjGkNQxhAtVSR6Jkmny2doZf5YnnSilEZ
+ 7TC7NYQIjdDMM0fAlfLTQ3UrGhg2+fZfhwWEAruI0im+UySCBI1o3fsl91yzAyW+FQuc
+ oUTzWqi4e8TazWsVNN0OP7mhxxs8E7JlmLwnkqcgyLwOSKee/f6jH5BbLkmkoVyF+r5U
+ EYYB7CTt6thJOnqkPlEAdUlBwnLy5U+hC/DXS9gdC/+n9fF6C36+YL31euO5LziUBoFc
+ lyTJDrAaKPchOB0BXi1AoRfdH+7hUf7JpOsk9T8UVkhp4Fzw7LdxrmCTYPizsR7WhI+0
+ ZbOw==
+X-Gm-Message-State: AOAM533UeLPe1Sz1G+iFS8QnXt/7ZJdy6LoUka4qyR08kIx1n8HTQi6G
+ ocPOg5ppvPHF84Q6tnFV5zU=
+X-Google-Smtp-Source: ABdhPJxp27enUzauf894HfT9NP3kw4axhqglDt0NeLn5w5FytMmzOkolsl2i+qdZja+aIx6uEVmDBQ==
+X-Received: by 2002:a17:902:7fc2:b0:153:3c90:17b9 with SMTP id
+ t2-20020a1709027fc200b001533c9017b9mr24081383plb.61.1652246872324; 
+ Tue, 10 May 2022 22:27:52 -0700 (PDT)
+Received: from localhost.localdomain ([202.120.234.246])
+ by smtp.googlemail.com with ESMTPSA id
+ s12-20020a170902c64c00b0015e8d4eb2e6sm588632pls.304.2022.05.10.22.27.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 10 May 2022 22:27:51 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ NXP Linux Team <linux-imx@nxp.com>, Ye Guojin <ye.guojin@zte.com.cn>,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: imx-hdmi: Fix refcount leak in imx_hdmi_probe
+Date: Wed, 11 May 2022 09:27:40 +0400
+Message-Id: <20220511052740.46903-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH v3 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- migration
-To: Andrew Morton <akpm@linux-foundation.org>, mike.kravetz@oracle.com,
- catalin.marinas@arm.com, will@kernel.org, songmuchun@bytedance.com,
- tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
- deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
- agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
- ysato@users.osdn.me, dalias@libc.org, davem@davemloft.net, arnd@arndb.de,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1652147571.git.baolin.wang@linux.alibaba.com>
- <ea5abf529f0997b5430961012bfda6166c1efc8c.1652147571.git.baolin.wang@linux.alibaba.com>
- <20220510161739.fdea4d78dde8471033aab22b@linux-foundation.org>
- <20220510162847.d9cf3c767e755a54699fb121@linux-foundation.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20220510162847.d9cf3c767e755a54699fb121@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,77 +87,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linmq006@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+of_find_device_by_node() takes reference, we should use put_device()
+to release it. when devm_kzalloc() fails, it doesn't have a
+put_device(), it will cause refcount leak.
+Add missing put_device() to fix this.
 
+Fixes: 6a5f850aa83a ("ASoC: fsl: Add imx-hdmi machine driver")
+Fixes: f670b274f7f6 ("ASoC: imx-hdmi: add put_device() after of_find_device_by_node()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ sound/soc/fsl/imx-hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 5/11/2022 7:28 AM, Andrew Morton wrote:
-> On Tue, 10 May 2022 16:17:39 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
->>> +
->>> +static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->>> +					  unsigned long addr, pte_t *ptep)
->>> +{
->>> +	return ptep_get(ptep);
->>> +}
->>> +
->>> +static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
->>> +				   pte_t *ptep, pte_t pte)
->>> +{
->>> +}
->>>   #endif	/* CONFIG_HUGETLB_PAGE */
->>>   
->>
->> This blows up nommu (arm allnoconfig):
->>
->> In file included from fs/io_uring.c:71:
->> ./include/linux/hugetlb.h: In function 'huge_ptep_clear_flush':
->> ./include/linux/hugetlb.h:1100:16: error: implicit declaration of function 'ptep_get' [-Werror=implicit-function-declaration]
->>   1100 |         return ptep_get(ptep);
->>        |                ^~~~~~~~
->>
->>
->> huge_ptep_clear_flush() is only used in CONFIG_NOMMU=n files, so I simply
->> zapped this change.
->>
-> 
-> Well that wasn't a great success.  Doing this instead.  It's pretty
-> nasty - something nicer would be nicer please.
+diff --git a/sound/soc/fsl/imx-hdmi.c b/sound/soc/fsl/imx-hdmi.c
+index 929f69b758af..ec149dc73938 100644
+--- a/sound/soc/fsl/imx-hdmi.c
++++ b/sound/soc/fsl/imx-hdmi.c
+@@ -126,6 +126,7 @@ static int imx_hdmi_probe(struct platform_device *pdev)
+ 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data) {
+ 		ret = -ENOMEM;
++		put_device(&cpu_pdev->dev);
+ 		goto fail;
+ 	}
+ 
+-- 
+2.25.1
 
-Thanks for fixing the building issue. I'll look at this to simplify the 
-dummy function. Myabe just remove the ptep_get().
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1097,7 +1097,7 @@ static inline void set_huge_swap_pte_at(struct 
-mm_struct *mm, unsigned long addr
-  static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
-                                           unsigned long addr, pte_t *ptep)
-  {
--       return ptep_get(ptep);
-+       return *ptep;
-  }
-
-> 
-> --- a/include/linux/hugetlb.h~mm-rmap-fix-cont-pte-pmd-size-hugetlb-issue-when-migration-fix
-> +++ a/include/linux/hugetlb.h
-> @@ -1094,6 +1094,7 @@ static inline void set_huge_swap_pte_at(
->   {
->   }
->   
-> +#ifdef CONFIG_MMU
->   static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
->   					  unsigned long addr, pte_t *ptep)
->   {
-> @@ -1104,6 +1105,7 @@ static inline void set_huge_pte_at(struc
->   				   pte_t *ptep, pte_t pte)
->   {
->   }
-> +#endif
->   #endif	/* CONFIG_HUGETLB_PAGE */
->   
->   static inline spinlock_t *huge_pte_lock(struct hstate *h,
-> _
