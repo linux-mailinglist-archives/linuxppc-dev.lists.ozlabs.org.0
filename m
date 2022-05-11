@@ -1,58 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E59523C83
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 20:32:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC17523CD9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 20:48:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz3Rl5KNpz3cFY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 04:32:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz3pQ66Mdz3cK8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 04:48:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Qcn39IAK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=cA8UQtFo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::12e;
+ helo=mail-lf1-x12e.google.com; envelope-from=ndesaulniers@google.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=Qcn39IAK; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz3R357p9z3bdY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 04:31:59 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=cA8UQtFo; dkim-atps=neutral
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com
+ [IPv6:2a00:1450:4864:20::12e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 5567661E10;
- Wed, 11 May 2022 18:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9515DC340EE;
- Wed, 11 May 2022 18:31:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1652293915;
- bh=kCCerywDBBA4IoO0PQrQlUEkZgZN+MEjD0xdMDToPjE=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=Qcn39IAKfSZ3kVwQqk2Qd7kGZxgL7autk6gImQe2p1Z1BA0+NUzAfqXPQgXEj3iZP
- 4hxPiwtWPyhqlq6ntnITR9+UDo0ZMWte7t/bAxiyMPMHgdkkqjhSoJVVGMSq+/l7+n
- 3SBYaQvurQbkuz3xETTtxhMBZPAxp5Y+7rb/qTTwFAsHG74d3iGbFCZtQ8FucEDXmd
- 77J6QUilwyUZbbkD5Upw4pO8R5YntXB3txq86VCccaUXL6/l2tWMCr/enlFbuGOvjJ
- GFXOe5MVgzocjUnCIeEvjUVGEAKcXxkEuPQED2Du/PD/39a3ZbUulGlNuLu6OmCMTn
- AlOZGeTdq13PA==
-From: Mark Brown <broonie@kernel.org>
-To: Xiubo.Lee@gmail.com, festevam@gmail.com, perex@perex.cz,
- shengjiu.wang@gmail.com, shengjiu.wang@nxp.com, alsa-devel@alsa-project.org,
- tiwai@suse.com, nicoleotsuka@gmail.com, lgirdwood@gmail.com
-In-Reply-To: <1651925654-32060-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1651925654-32060-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 1/2] ASoc: fsl_micfil: explicitly clear software reset bit
-Message-Id: <165229391332.338959.11028062899331313513.b4-ty@kernel.org>
-Date: Wed, 11 May 2022 19:31:53 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz3nq2jZSz3brf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 04:48:14 +1000 (AEST)
+Received: by mail-lf1-x12e.google.com with SMTP id p26so5095687lfh.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 11:48:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=LjOBAquXwgrrgXm8VNOmvziGW6n+WunCBS4qV3JJbEM=;
+ b=cA8UQtFoVUliUtfWSv912J6B0ub0HcxW8gmIXite+joZhlMbpeCS+bUAZWYfMzZ8Xa
+ G/fJOfLTcngtIL8G90CQr+73lLbCL1AHxsh2R+qmJrgmJRTCuyNKXj7cliEo28pPuXQj
+ 6w3VaEUFPmnSDKtF91NPiV/sgjc8ZRv71y4uYb9hxeHwZUr5je/pDiqFgm2aSZ7bIISf
+ /1UJjBBsIPYSlsXi1kwAQ99jbSUPR+9P2r7SaKBX1wGFQEJXaWfpYonbpRKCQDD6CxUK
+ Dp+b87CVNCLP2zVCceaShTI1HSRNKEIjVASMSKh/ElRg8CR6aP+J3pZQ1S3J5UZUSIaH
+ 1EZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=LjOBAquXwgrrgXm8VNOmvziGW6n+WunCBS4qV3JJbEM=;
+ b=iZ8OuGYJRYwCiSci7UmKjZfbc5LpI409aOoF9jK/Zk6LbD5P1eJxIFaR36SmIZ9iHR
+ oxq7rOwOjnop3AsWiuy0E61T8a40QGe5NMi0DMGB1pBzHjIRfZBLA1PF7hzAVFzzoRsT
+ n7Nv1NMvDbTHMbld9Yqc7qD4Lua4ag8bU4Esybh6/qA7kd30OvT79XQTxZ5uNE4mEsfP
+ Z0B8+ZZxVqlvkPri5OHmnvz3KZXAlltMibaS8RuwjT2zSCnrfBkVwMDBlmfkIcOECH+t
+ LB2gWyNd5WS3GEDnnVejdNPgWpEr5UcBL43837jGNzcB1x+Tw9NhiJCDiY0gw1GT5KkW
+ 7xKA==
+X-Gm-Message-State: AOAM530/WrZXcebGCHtSuXLoL3fHxU+Kn4JENnXwcmSo2nukIoPjEz7K
+ O6zlUAk3SXcEopxSSsv9TwqDO/7GHss8IaQGTy6ujQ==
+X-Google-Smtp-Source: ABdhPJwORYNYs+f4SpR17x+QtOIu9Uo6dxlRowGZd30bvV7AXP2VnNh+RNLxsgttKR9yFrJ+aoveRa6JaxEnp5h+sgs=
+X-Received: by 2002:a05:6512:1d1:b0:471:f63a:b182 with SMTP id
+ f17-20020a05651201d100b00471f63ab182mr20624164lfp.392.1652294887500; Wed, 11
+ May 2022 11:48:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20220508190631.2386038-1-masahiroy@kernel.org>
+ <20220508190631.2386038-4-masahiroy@kernel.org>
+ <CAKwvOd=LR=UNOeWJDmM-McJ=FrCWTo8w1ox+KGMQCwCVpiUyFg@mail.gmail.com>
+ <CAK7LNARGNEDzPPUsPjDXsXUUUPSFK2erQRuyPocR_v5hTYRihg@mail.gmail.com>
+In-Reply-To: <CAK7LNARGNEDzPPUsPjDXsXUUUPSFK2erQRuyPocR_v5hTYRihg@mail.gmail.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Wed, 11 May 2022 11:47:56 -0700
+Message-ID: <CAKwvOdmK4oH0t8Q6F19sWKX1fT=AgS=kfvn05FT01HffLJwgMQ@mail.gmail.com>
+Subject: Re: [PATCH v4 03/14] modpost: split the section mismatch checks into
+ section-check.c
+To: Masahiro Yamada <masahiroy@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,45 +78,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ clang-built-linux <llvm@lists.linux.dev>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-modules <linux-modules@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 7 May 2022 20:14:13 +0800, Shengjiu Wang wrote:
-> SRES is self-cleared bit, but REG_MICFIL_CTRL1 is defined as
-> non volatile register, it still remain in regmap cache after set,
-> then every update of REG_MICFIL_CTRL1, software reset happens.
-> to avoid this, clear it explicitly.
-> 
-> 
+On Mon, May 9, 2022 at 11:57 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> > > diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> > > index a78b75f0eeb0..e7e2c70a98f5 100644
+> > > --- a/scripts/mod/modpost.c
+> > > +++ b/scripts/mod/modpost.c
+> > > @@ -31,7 +31,7 @@ static bool external_module;
+> > >  /* Only warn about unresolved symbols */
+> > >  static bool warn_unresolved;
+> > >
+> > > -static int sec_mismatch_count;
+> > > +int sec_mismatch_count;
+> >
+> > ^ this should go in modpost.h if it is to be used in two translation
+> > units, rather than forward declaring it in section-check.c.  You did
+> > this for the functions.
+>
+>
+> Sorry, I do not understand.
+>
+>
+> In modpost.h, I put the declaration:
+>
+>   extern int sec_mismatch_count;
+>
+> If I moved it to the header without 'extern'
+> I would get multiple definitions.
 
-Applied to
+Yeah, you need to _declare_ it w/ extern in the header, then _define_
+it in one source file.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+That way, if the type ever changes, the sources will agree on type in
+all source files. You will get a redefinition error if the definition
+changes the type of the variable since the last declaration.
 
-Thanks!
-
-[1/2] ASoc: fsl_micfil: explicitly clear software reset bit
-      commit: 292709b9cf3ba470af94b62c9bb60284cc581b79
-[2/2] ASoc: fsl_micfil: explicitly clear CHnF flags
-      commit: b776c4a4618ec1b5219d494c423dc142f23c4e8f
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
+What you're doing is forward declaring, which works, and is a common
+pattern for (bloated) C++, but is less type safe than sharing a single
+common declaration between multiple source files via a single common
+shared header. (Sorry I didn't respond before you sent v5)
+-- 
 Thanks,
-Mark
+~Nick Desaulniers
