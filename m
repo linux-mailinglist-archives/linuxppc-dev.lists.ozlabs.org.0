@@ -2,97 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143B9523239
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 13:55:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9305352333E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 14:38:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kytdp6GM4z3cGk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 21:55:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KyvbZ2rSpz3cHX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 22:38:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JjL7RbQU;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=PzdYpVjD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=JjL7RbQU; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=PzdYpVjD; dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kysj31qQFz2yb6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 21:13:26 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 9864A1F37E;
+ Wed, 11 May 2022 11:13:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1652267602; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FC1sflG6Id2SKeEdl4FJxU/B3titx078hgJ9iLge96M=;
+ b=PzdYpVjDm9GZjow/EUq37H7ookCOkOdew3j+O3sWtMh70hNVOnxtZzKqOPpZDQnacwtKh8
+ hTKee3j+Sl0MntfBuf4Onekv+PULsWjOAIitLyhS1jfqtNLxp3KL+emXCY3ZW29THEdaU3
+ +LT7bZxhID8yMwqQ2reWXTGMidRsh/s=
+Received: from suse.cz (pathway.suse.cz [10.100.12.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kytd553ttz3bw4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 21:55:05 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24BAWeUn000900;
- Wed, 11 May 2022 11:54:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=OiqG13vW+36US08Un+Ci8ZfFPyPy+VaCDI4KenlxvcU=;
- b=JjL7RbQUt4G59UaORaLcg7g8JcZezjsa2JOpw4tU4JS9NTkFP38el8/sTh+2TzavFESb
- /vNiHNKcsIX3WmWV4muLYX02GG9C4pJnvIGoJE84iEheuH4lKsradJ41FuKuDrX1ho4B
- mTOTHmFa4pHIPfUq/KxsDQoCb/PKO74UmwJ+AhdppxUBJJshlA8yPVx6mr9PySMNjmgu
- xPsXC2PDWQlZEVaZUsH/OP6drbDymiuWyEG9xWYuBCMLxUyRLRO88jf5ci2dehIF79F4
- /0lrdAOOpTTQaswlVQU4n2I/MjSb50cDSEe+BN21P+b8uEB63QKPnMaY6oRgDw9jp6bq kw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g054jqx5u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 11:54:53 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24BB6aO9026975;
- Wed, 11 May 2022 11:54:53 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g054jqx5f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 11:54:53 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24BBrbuW021715;
- Wed, 11 May 2022 11:54:50 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma06ams.nl.ibm.com with ESMTP id 3fyrkk1ae4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 May 2022 11:54:50 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24BBsl3H21823802
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 11 May 2022 11:54:47 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 959B711C04C;
- Wed, 11 May 2022 11:54:47 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BCB4211C04A;
- Wed, 11 May 2022 11:54:40 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.211.43.135])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 11 May 2022 11:54:40 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org
-Subject: [PATCH V2] tools/perf/tests: Skip perf BPF test if clang is not
- present
-Date: Wed, 11 May 2022 17:24:38 +0530
-Message-Id: <20220511115438.84032-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+ by relay2.suse.de (Postfix) with ESMTPS id BC7822C141;
+ Wed, 11 May 2022 11:13:20 +0000 (UTC)
+Date: Wed, 11 May 2022 13:13:20 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: John Ogness <john.ogness@linutronix.de>
+Subject: Re: [PATCH 04/30] firmware: google: Convert regular spinlock into
+ trylock on panic path
+Message-ID: <20220511111320.GB26047@pathway.suse.cz>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-5-gpiccoli@igalia.com>
+ <CAE=gft5Pq25L4KFoPWbftkPF-JN1ex2yws77mMJ4GQnn9W0L2g@mail.gmail.com>
+ <adcf6d0e-c37c-6ede-479e-29959d03d8c0@igalia.com>
+ <YnpOv4hAPV4b+6v4@alley>
+ <20220510132015.38923cb2@gandalf.local.home>
+ <87h75xkwg9.fsf@jogness.linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ZE_Lcvm19bOmqMU684MYWXxNVJYbbBxa
-X-Proofpoint-GUID: _auU4c1WDTaACS6TElFdDkeZVyFz1COE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-11_03,2022-05-11_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- bulkscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- adultscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2205110053
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h75xkwg9.fsf@jogness.linutronix.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Wed, 11 May 2022 22:38:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,119 +70,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- linux-perf-users@vger.kernel.org, kjain@linux.ibm.com,
- disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ David Gow <davidgow@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-leds@vger.kernel.org,
+ linux-s390@vger.kernel.org, mikelley@microsoft.com, paulmck@kernel.org,
+ bhe@redhat.com, Jonathan Corbet <corbet@lwn.net>, fabiomirmar@gmail.com,
+ x86@kernel.org, Evan Green <evgreen@chromium.org>,
+ Ard Biesheuvel <ardb@kernel.org>, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
+ dave.hansen@linux.intel.com, Kees Cook <keescook@chromium.org>,
+ Arnd Bergmann <arnd@arndb.de>, Linux PM <linux-pm@vger.kernel.org>,
+ linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>,
+ rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, luto@kernel.org,
+ linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, senozhatsky@chromium.org,
+ vkuznets@redhat.com, linux-edac@vger.kernel.org, jgross@suse.com,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net,
+ kexec@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>,
+ Alan Stern <stern@rowland.harvard.edu>,
+ "Guilherme G. Piccoli" <gpiccoli@igalia.com>, d.hatayama@jp.fujitsu.com,
+ mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ Julius Werner <jwerner@chromium.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Perf BPF filter test fails in environment where "clang"
-is not installed.
+On Tue 2022-05-10 21:46:38, John Ogness wrote:
+> On 2022-05-10, Steven Rostedt <rostedt@goodmis.org> wrote:
+> >> As already mentioned in the other reply, panic() sometimes stops the
+> >> other CPUs using NMI, for example, see kdump_nmi_shootdown_cpus().
+> >> 
+> >> Another situation is when the CPU using the lock ends in some
+> >> infinite loop because something went wrong. The system is in
+> >> an unpredictable state during panic().
+> >> 
+> >> I am not sure if this is possible with the code under gsmi_dev.lock
+> >> but such things really happen during panic() in other subsystems.
+> >> Using trylock in the panic() code path is a good practice.
+> >
+> > I believe that Peter Zijlstra had a special spin lock for NMIs or
+> > early printk, where it would not block if the lock was held on the
+> > same CPU. That is, if an NMI happened and paniced while this lock was
+> > held on the same CPU, it would not deadlock. But it would block if the
+> > lock was held on another CPU.
+> 
+> Yes. And starting with 5.19 it will be carrying the name that _you_ came
+> up with (cpu_sync):
+> 
+> printk_cpu_sync_get_irqsave()
+> printk_cpu_sync_put_irqrestore()
 
-Test failure logs:
+There is a risk that this lock might become a big kernel lock.
 
-<<>>
- 42: BPF filter                    :
- 42.1: Basic BPF filtering         : Skip
- 42.2: BPF pinning                 : FAILED!
- 42.3: BPF prologue generation     : FAILED!
-<<>>
+This special lock would need to be used even during normal
+system operation. It does not make sense to suddenly start using
+another lock during panic.
 
-Enabling verbose option provided debug logs which says
-clang/llvm needs to be installed. Snippet of verbose logs:
+So I think that we should think twice before using it.
+I would prefer using trylock of the original lock when
+possible during panic.
 
-<<>>
- 42.2: BPF pinning                  :
- --- start ---
-test child forked, pid 61423
-ERROR:	unable to find clang.
-Hint:	Try to install latest clang/llvm to support BPF.
-        Check your $PATH
+It is possible that I miss something.
 
-<<logs_here>>
-
-Failed to compile test case: 'Basic BPF llvm compile'
-Unable to get BPF object, fix kbuild first
-test child finished with -1
- ---- end ----
-BPF filter subtest 2: FAILED!
-<<>>
-
-Here subtests, "BPF pinning" and "BPF prologue generation"
-failed and logs shows clang/llvm is needed. After installing
-clang, testcase passes.
-
-Reason on why subtest failure happens though logs has proper
-debug information:
-Main function __test__bpf calls test_llvm__fetch_bpf_obj by
-passing 4th argument as true ( 4th arguments maps to parameter
-"force" in test_llvm__fetch_bpf_obj ). But this will cause
-test_llvm__fetch_bpf_obj to skip the check for clang/llvm.
-
-Snippet of code part which checks for clang based on
-parameter "force" in test_llvm__fetch_bpf_obj:
-
-<<>>
-if (!force && (!llvm_param.user_set_param &&
-<<>>
-
-Since force is set to "false", test won't get skipped and
-fails to compile test case. The BPF code compilation needs
-clang, So pass the fourth argument as "false" and also skip
-the test if reason for return is "TEST_SKIP"
-
-After the patch:
-
-<<>>
- 42: BPF filter                    :
- 42.1: Basic BPF filtering         : Skip
- 42.2: BPF pinning                 : Skip
- 42.3: BPF prologue generation     : Skip
-<<>>
-
-Fixes: ba1fae431e74 ("perf test: Add 'perf test BPF'")
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
-Changelog:
- Addressed review comments from Arnaldo by adding
- reason for skipping of testcase.
-
- tools/perf/tests/bpf.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
-index 57b9591f7cbb..17c023823713 100644
---- a/tools/perf/tests/bpf.c
-+++ b/tools/perf/tests/bpf.c
-@@ -222,11 +222,11 @@ static int __test__bpf(int idx)
- 
- 	ret = test_llvm__fetch_bpf_obj(&obj_buf, &obj_buf_sz,
- 				       bpf_testcase_table[idx].prog_id,
--				       true, NULL);
-+				       false, NULL);
- 	if (ret != TEST_OK || !obj_buf || !obj_buf_sz) {
- 		pr_debug("Unable to get BPF object, %s\n",
- 			 bpf_testcase_table[idx].msg_compile_fail);
--		if (idx == 0)
-+		if ((idx == 0) || (ret == TEST_SKIP))
- 			return TEST_SKIP;
- 		else
- 			return TEST_FAIL;
-@@ -364,9 +364,11 @@ static int test__bpf_prologue_test(struct test_suite *test __maybe_unused,
- static struct test_case bpf_tests[] = {
- #ifdef HAVE_LIBBPF_SUPPORT
- 	TEST_CASE("Basic BPF filtering", basic_bpf_test),
--	TEST_CASE("BPF pinning", bpf_pinning),
-+	TEST_CASE_REASON("BPF pinning", bpf_pinning,
-+			"clang isn't installed or environment missing BPF support"),
- #ifdef HAVE_BPF_PROLOGUE
--	TEST_CASE("BPF prologue generation", bpf_prologue_test),
-+	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
-+			"clang isn't installed or environment missing BPF support"),
- #else
- 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
- #endif
--- 
-2.31.1
-
+Best Regards,
+Petr
