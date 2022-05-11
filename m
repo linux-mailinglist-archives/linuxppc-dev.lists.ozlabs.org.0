@@ -1,56 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A4B523CE6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 20:52:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBB4523D6A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 May 2022 21:29:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz3tH5Z9Nz3chW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 04:52:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kz4jq5zqYz3byl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 05:29:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=A3PwFceq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=S17erul5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.90;
+ helo=conssluserg-05.nifty.com; envelope-from=masahiroy@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=A3PwFceq; 
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=S17erul5; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz3rH2fbmz3bwX
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 04:50:23 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com
+ [210.131.2.90])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id A34F960FC6;
- Wed, 11 May 2022 18:50:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9460C34100;
- Wed, 11 May 2022 18:50:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1652295021;
- bh=uWfZdAk0PxnLwPOVrQC6qfy5AARkFg7cXs9CQ8AeM34=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=A3PwFceqTQ44qGMGOap/dWKbgcX9jy1AOjkJKFLhpDq7W2TKxtALPu0kZq3cRBwAj
- 5D2MIyngAkgsrxpW3KfgeC6fYrX73fBPnuNyV9PYsMSuu6AnMQPT+IIINbzSgTC9O0
- lcWRSLBOaj9ws0/TKIYFKqnnCSTcatJqcO5shqIYPjCsmbSojG0DtpNrun1nHxb8Nd
- zOvjKkftg2KNS43RXehoD6R4xTTxoi0gOwstKCjf6XtH76dMISO7hMBezQmowuH78D
- 64ZUvDtMmuFaQEJbGNDbLoDjK7cGgZBGXgrNTxDvVuywFJpGy19mQPqp9Tw4X6Ey68
- Fj+iXS9ykjvzA==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 2/2] powerpc/vdso: Link with ld.lld when requested
-Date: Wed, 11 May 2022 11:50:01 -0700
-Message-Id: <20220511185001.3269404-3-nathan@kernel.org>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220511185001.3269404-1-nathan@kernel.org>
-References: <20220511185001.3269404-1-nathan@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kz4j96YSSz30FR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 05:29:17 +1000 (AEST)
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com
+ [209.85.216.48]) (authenticated)
+ by conssluserg-05.nifty.com with ESMTP id 24BJSoue002248
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 04:28:50 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 24BJSoue002248
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1652297330;
+ bh=EaTId7H8QGxZ4wR/UutapdHBioVSBlwASrI8kZas40s=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=S17erul53RNIeBjJYir+J8mpHUWqK7sXKHJMWRa/l2xSCxZgrdV1dU3+5hX9DFRPB
+ CxgugLFeqTZ4qkrOp/w8aAs9LC1q5WTQ18lo39qoonMr7iIjV8mWFGdEhV4ZCcs80q
+ 2791ONW4kWbmvpu0bg8Ie6WMg2pBrWyRDmAD0TVba9wY0wF1xKvLuuao/XsCXNDByB
+ 38FzgA8r7So3M8VePGduejUpewfBieSKGIXseq+GW7ZP4YbOEsCZ9Y+Cm76syaoNJ6
+ t7jCNxWrBvLyml46hUxkvSFtyWpcS1C/UwFi4wohFk8Ysn7VrS2i2PxIpRBTLc+/r3
+ YjPePFoJdPHHA==
+X-Nifty-SrcIP: [209.85.216.48]
+Received: by mail-pj1-f48.google.com with SMTP id
+ l11-20020a17090a49cb00b001d923a9ca99so2951632pjm.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 12:28:50 -0700 (PDT)
+X-Gm-Message-State: AOAM531U6LSvT8UWylPDht/awE5Irfi0yhBeBagJeXcdl8fjdfez4VPa
+ K2sXAZcySROsrj+9yfIlKN6tGTq6FrL/tKBYRWg=
+X-Google-Smtp-Source: ABdhPJxpFvdEXgne/7yspfTVFpO5mJeb/64Ugd7xcTnf7hLoDN02lbCll4CkYvhtMmE1NpBHpwbzLRyJwjcVkvMYkaw=
+X-Received: by 2002:a17:903:1205:b0:15e:8cbc:fd2b with SMTP id
+ l5-20020a170903120500b0015e8cbcfd2bmr26952485plh.99.1652297329721; Wed, 11
+ May 2022 12:28:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220508190631.2386038-1-masahiroy@kernel.org>
+ <20220508190631.2386038-4-masahiroy@kernel.org>
+ <CAKwvOd=LR=UNOeWJDmM-McJ=FrCWTo8w1ox+KGMQCwCVpiUyFg@mail.gmail.com>
+ <CAK7LNARGNEDzPPUsPjDXsXUUUPSFK2erQRuyPocR_v5hTYRihg@mail.gmail.com>
+ <CAKwvOdmK4oH0t8Q6F19sWKX1fT=AgS=kfvn05FT01HffLJwgMQ@mail.gmail.com>
+In-Reply-To: <CAKwvOdmK4oH0t8Q6F19sWKX1fT=AgS=kfvn05FT01HffLJwgMQ@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 12 May 2022 04:27:37 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR5preB59HJH1-F_ZfEmoF3N8b9z4eRhYzsEVwu_XUH4Q@mail.gmail.com>
+Message-ID: <CAK7LNAR5preB59HJH1-F_ZfEmoF3N8b9z4eRhYzsEVwu_XUH4Q@mail.gmail.com>
+Subject: Re: [PATCH v4 03/14] modpost: split the section mismatch checks into
+ section-check.c
+To: Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,95 +78,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, llvm@lists.linux.dev,
- Nick Desaulniers <ndesaulniers@google.com>, patches@lists.linux.dev,
- Nathan Chancellor <nathan@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Tom Rix <trix@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390 <linux-s390@vger.kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ clang-built-linux <llvm@lists.linux.dev>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
+ linux-modules <linux-modules@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The PowerPC vDSO uses $(CC) to link, which differs from the rest of the
-kernel, which uses $(LD) directly. As a result, the default linker of
-the compiler is used, which may differ from the linker requested by the
-builder. For example:
+On Thu, May 12, 2022 at 3:48 AM Nick Desaulniers
+<ndesaulniers@google.com> wrote:
+>
+> On Mon, May 9, 2022 at 11:57 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > > > diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+> > > > index a78b75f0eeb0..e7e2c70a98f5 100644
+> > > > --- a/scripts/mod/modpost.c
+> > > > +++ b/scripts/mod/modpost.c
+> > > > @@ -31,7 +31,7 @@ static bool external_module;
+> > > >  /* Only warn about unresolved symbols */
+> > > >  static bool warn_unresolved;
+> > > >
+> > > > -static int sec_mismatch_count;
+> > > > +int sec_mismatch_count;
+> > >
+> > > ^ this should go in modpost.h if it is to be used in two translation
+> > > units, rather than forward declaring it in section-check.c.  You did
+> > > this for the functions.
+> >
+> >
+> > Sorry, I do not understand.
+> >
+> >
+> > In modpost.h, I put the declaration:
+> >
+> >   extern int sec_mismatch_count;
+> >
+> > If I moved it to the header without 'extern'
+> > I would get multiple definitions.
+>
+> Yeah, you need to _declare_ it w/ extern in the header, then _define_
+> it in one source file.
+>
+> That way, if the type ever changes, the sources will agree on type in
+> all source files. You will get a redefinition error if the definition
+> changes the type of the variable since the last declaration.
+>
+> What you're doing is forward declaring, which works, and is a common
+> pattern for (bloated) C++, but is less type safe than sharing a single
+> common declaration between multiple source files via a single common
+> shared header. (Sorry I didn't respond before you sent v5)
 
-  $ make ARCH=powerpc LLVM=1 mrproper defconfig arch/powerpc/kernel/vdso/
-  ...
+Sorry, I still do not understand your suggestion.
 
-  $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
 
-  File: arch/powerpc/kernel/vdso/vdso32.so.dbg
-  String dump of section '.comment':
-  [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
+Could you provide me with a code diff
+showing how to do this better?
 
-  File: arch/powerpc/kernel/vdso/vdso64.so.dbg
-  String dump of section '.comment':
-  [     0] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
 
-LLVM=1 sets LD=ld.lld but ld.lld is not used to link the vDSO; GNU ld is
-because "ld" is the default linker for clang on most Linux platforms.
 
-This is a problem for Clang's Link Time Optimization as implemented in
-the kernel because use of GNU ld with LTO requires the LLVMgold plugin,
-which is not technically supported for ld.bfd per
-https://llvm.org/docs/GoldPlugin.html. Furthermore, if LLVMgold.so is
-missing from a user's system, the build will fail, even though LTO as it
-is implemented in the kernel requires ld.lld to avoid this dependency in
-the first place.
-
-Ultimately, the PowerPC vDSO should be converted to compiling and
-linking with $(CC) and $(LD) respectively but there were issues last
-time this was tried, potentially due to older but supported tool
-versions. To avoid regressing GCC + binutils, use the compiler option
-'-fuse-ld', which tells the compiler which linker to use when it is
-invoked as both the compiler and linker. Use '-fuse-ld=lld' when
-LD=ld.lld has been specified (CONFIG_LD_IS_LLD) so that the vDSO is
-linked with the same linker as the rest of the kernel.
-
-  $ llvm-readelf -p .comment arch/powerpc/kernel/vdso/vdso{32,64}.so.dbg
-
-  File: arch/powerpc/kernel/vdso/vdso32.so.dbg
-  String dump of section '.comment':
-  [     0] Linker: LLD 14.0.0
-  [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
-
-  File: arch/powerpc/kernel/vdso/vdso64.so.dbg
-  String dump of section '.comment':
-  [     0] Linker: LLD 14.0.0
-  [    14] clang version 14.0.0 (Fedora 14.0.0-1.fc37)
-
-LD can be a full path to ld.lld, which will not be handled properly by
-'-fuse-ld=lld' if the full path to ld.lld is outside of the compiler's
-search path. '-fuse-ld' can take a path to the linker but it is
-deprecated in clang 12.0.0; '--ld-path' is preferred for this scenario.
-
-Use '--ld-path' if it is supported, as it will handle a full path or
-just 'ld.lld' properly. See the LLVM commit below for the full details
-of '--ld-path'.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/774
-Link: https://github.com/llvm/llvm-project/commit/1bc5c84710a8c73ef21295e63c19d10a8c71f2f5
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Tested-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/powerpc/kernel/vdso/Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 954974287ee7..096b0bf1335f 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -48,6 +48,7 @@ UBSAN_SANITIZE := n
- KASAN_SANITIZE := n
- 
- ccflags-y := -shared -fno-common -fno-builtin -nostdlib -Wl,--hash-style=both
-+ccflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
- 
- CC32FLAGS := -Wl,-soname=linux-vdso32.so.1 -m32
- AS32FLAGS := -D__VDSO32__ -s
 -- 
-2.36.1
-
+Best Regards
+Masahiro Yamada
