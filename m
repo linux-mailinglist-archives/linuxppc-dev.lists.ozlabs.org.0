@@ -2,61 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF215242A8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 04:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45190524301
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 05:07:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzFtX1xztz3cGf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 12:23:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzGsf1BNBz3cBF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 13:07:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JJaWq2C2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=d6ZqPlGq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52e;
+ helo=mail-pg1-x52e.google.com; envelope-from=kernelfans@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=JJaWq2C2; dkim-atps=neutral
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=d6ZqPlGq; dkim-atps=neutral
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com
+ [IPv6:2607:f8b0:4864:20::52e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzFst0Gbdz3bd6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 12:22:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652322146; x=1683858146;
- h=date:from:to:cc:subject:message-id:mime-version:
- content-transfer-encoding;
- bh=ZtlrV2/BbOt1QS8TIGHQDwmo5k0JWQVuPPIbwySsEgE=;
- b=JJaWq2C2NgEqBvBgBt0nty0hk6R0P/mmhBCReGJIW8Gk5665fGBi+e+d
- EdbmfEs039yt06LMJjQLwTxVXK6tECAFmE+KpglWtZegmnSZbKS39gTBq
- 2Jw+Cb4G7SiuIUwlwN4Bc2onBjzVBYxh+xpLkL6IlaQX3JYO1xYkTxMx/
- XZXBDXzW0kZHfDaqmGLUN9VwigpcwVTiQO+Kkq3GJdnW3beqx3ZbUh6Ta
- N892Ok7xP4nAvcIXrSprgrXEZygUUTAEvSOd0dqNyEjIwxhjW7PZQSFtD
- gcTeSjBg6DhcnuQtBZE1Sx+TJo9DAaxyc1kJ6mtAVGlYuVEI2T3WLqmfR w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10344"; a="332905259"
-X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="332905259"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2022 19:21:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="624203476"
-Received: from lkp-server01.sh.intel.com (HELO 5056e131ad90) ([10.239.97.150])
- by fmsmga008.fm.intel.com with ESMTP; 11 May 2022 19:21:13 -0700
-Received: from kbuild by 5056e131ad90 with local (Exim 4.95)
- (envelope-from <lkp@intel.com>) id 1noyS1-000JqM-5d;
- Thu, 12 May 2022 02:21:13 +0000
-Date: Thu, 12 May 2022 10:20:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- ee8348496c77e3737d0a6cda307a521f2cff954f
-Message-ID: <627c6ee7.UonPG94m+zEpoRs1%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzGs10nQWz3bdP
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 13:06:44 +1000 (AEST)
+Received: by mail-pg1-x52e.google.com with SMTP id g184so3432041pgc.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 20:06:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=1zm77XuKLZiFKCTXff9/DZf2N76nza4knTVrJw3dY7k=;
+ b=d6ZqPlGqZU64GDD4AaDMtWZonPd74O6ETXNgB4PxggKQxFnT45BAv3MNchxszSGq7j
+ ZhgXTpXcrDwIeX426COYuKuBgM/U+tU3IZHjmnoLieyXRgAEgKOcfGPzuzD8RbXISyrB
+ 82Pv0j/XIdHrQcdb32iFTjuE3h0ZSXGAE70DG3fpOdgp+OfwiYhxEUDaSLPLrq4lnt3Q
+ Wq2TOJMTTlT0tBFZDbXRkdNJRYiCvheTmW131DugG073TzojAiGVGKX/RZWgrlu888Vr
+ +LfMfKsgmleZ62f3O9ve2rXuyFTi/XbyEp80vqt4Ti/jOdPpFTaLUjOENmIBTfGI67Kh
+ 18aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=1zm77XuKLZiFKCTXff9/DZf2N76nza4knTVrJw3dY7k=;
+ b=ubtxEINP6tEzGtzLNQUm0CRyo+hTBQSo3SirxVBmHq3TxTqVhSp7Bk9O/i3bNyMgw8
+ NOMg5yAsC9vXLw5bhPduvQHS9rmvMFeq/p9gOvwhxUC1FNNzfhgJ5CVoUM80ao1m57Pg
+ /bvdoiWzxVwl1EaXC1+oc0LifLhWbF9G+/X0PuZ/xMvy1XoYTBKApS5HleMSZX1ofIYg
+ c162mkDuSqla+Budk5TncJyCrmM/fDkhogEk3KLJOa0MEjSb1kmz7sAyI7LAucbNPIFs
+ mGm7A0tT95syB5NI6Z2WBkHkEWS2TIg6W4ekEIHxU9rXZey7M4S1+ZOEfvNNtL0GMkay
+ jFnw==
+X-Gm-Message-State: AOAM531mcFacx0tUkm+nzV/0ZoqZImJNWdW8I3/Xh6mEPsOyXMyRxtuT
+ 5OJv6ARJOPxBxxIa3fqytOw/A0lP2A==
+X-Google-Smtp-Source: ABdhPJz+qdiTcvw4bPKG8OCo9I2d73PxA49RGqUHPWRCJ9GqlXcyuwY3unb7/BI6LdSPeVzPvJ+2oA==
+X-Received: by 2002:a62:7994:0:b0:4e1:58c4:ddfd with SMTP id
+ u142-20020a627994000000b004e158c4ddfdmr9287569pfc.65.1652324801708; 
+ Wed, 11 May 2022 20:06:41 -0700 (PDT)
+Received: from piliu.users.ipa.redhat.com ([209.132.188.80])
+ by smtp.gmail.com with ESMTPSA id
+ e13-20020aa7980d000000b0050dc762815bsm2488162pfl.53.2022.05.11.20.06.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 11 May 2022 20:06:41 -0700 (PDT)
+From: Pingfan Liu <kernelfans@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCHv4 1/2] cpu/hotplug: Keep cpu hotplug disabled until the
+ rebooting cpu is stable
+Date: Thu, 12 May 2022 11:06:18 +0800
+Message-Id: <20220512030619.13426-2-kernelfans@gmail.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20220512030619.13426-1-kernelfans@gmail.com>
+References: <20220512030619.13426-1-kernelfans@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,211 +83,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Vincent Donnefort <vincent.donnefort@arm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Randy Dunlap <rdunlap@infradead.org>,
+ YueHaibing <yuehaibing@huawei.com>, Pingfan Liu <kernelfans@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>,
+ Baokun Li <libaokun1@huawei.com>, Eric Biederman <ebiederm@xmission.com>,
+ kexec@lists.infradead.org, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: ee8348496c77e3737d0a6cda307a521f2cff954f  KVM: PPC: Book3S PR: Enable MSR_DR for switch_mmu_context()
+smp_shutdown_nonboot_cpus() repeats the same code chunk as
+migrate_to_reboot_cpu() to ensure that the rebooting happens on a valid
+cpu.
 
-elapsed time: 751m
+	if (!cpu_online(primary_cpu))
+		primary_cpu = cpumask_first(cpu_online_mask);
 
-configs tested: 182
-configs skipped: 114
+This is due to an unexpected cpu-down event like the following:
+kernel_kexec()
+   migrate_to_reboot_cpu();
+   cpu_hotplug_enable();
+                        -----------> comes a cpu_down(this_cpu) on other cpu
+   machine_shutdown();
+     smp_shutdown_nonboot_cpus();    which needs to re-check "if (!cpu_online(primary_cpu))"
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Although the kexec-reboot task can get through a cpu_down() on its cpu,
+this code looks a little confusing.
 
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                 randconfig-c001-20220509
-arm                       imx_v6_v7_defconfig
-powerpc                       ppc64_defconfig
-xtensa                  cadence_csp_defconfig
-sh                           se7705_defconfig
-ia64                            zx1_defconfig
-arm                        mini2440_defconfig
-arm                        multi_v7_defconfig
-m68k                        m5272c3_defconfig
-sh                          rsk7201_defconfig
-arm                         at91_dt_defconfig
-h8300                            allyesconfig
-arm                           h3600_defconfig
-arm                          iop32x_defconfig
-arm                         cm_x300_defconfig
-powerpc                        warp_defconfig
-powerpc                     taishan_defconfig
-sh                          r7785rp_defconfig
-sh                                  defconfig
-powerpc                  storcenter_defconfig
-arm                           stm32_defconfig
-arm                       aspeed_g5_defconfig
-powerpc                    sam440ep_defconfig
-sh                           se7619_defconfig
-powerpc                      pasemi_defconfig
-sh                           se7721_defconfig
-sh                           sh2007_defconfig
-i386                                defconfig
-m68k                             allmodconfig
-powerpc                     sequoia_defconfig
-sh                          polaris_defconfig
-sh                            hp6xx_defconfig
-sparc                            alldefconfig
-arc                         haps_hs_defconfig
-sparc                       sparc64_defconfig
-m68k                          multi_defconfig
-sh                          sdk7780_defconfig
-s390                             allyesconfig
-s390                       zfcpdump_defconfig
-arc                          axs103_defconfig
-m68k                       m5208evb_defconfig
-powerpc                      pcm030_defconfig
-mips                       capcella_defconfig
-nios2                         10m50_defconfig
-mips                            ar7_defconfig
-xtensa                    smp_lx200_defconfig
-sh                         microdev_defconfig
-arm                          simpad_defconfig
-ia64                         bigsur_defconfig
-xtensa                       common_defconfig
-sh                          kfr2r09_defconfig
-sh                            migor_defconfig
-powerpc                     tqm8555_defconfig
-parisc                generic-32bit_defconfig
-alpha                            allyesconfig
-m68k                        mvme147_defconfig
-powerpc                        cell_defconfig
-ia64                                defconfig
-m68k                             alldefconfig
-openrisc                            defconfig
-sh                          lboxre2_defconfig
-sh                           se7722_defconfig
-arm                          exynos_defconfig
-openrisc                  or1klitex_defconfig
-microblaze                          defconfig
-m68k                       m5249evb_defconfig
-arc                           tb10x_defconfig
-arc                            hsdk_defconfig
-mips                            gpr_defconfig
-sh                           se7724_defconfig
-sh                          rsk7203_defconfig
-sh                      rts7751r2d1_defconfig
-powerpc                     tqm8548_defconfig
-powerpc                 mpc834x_itx_defconfig
-openrisc                         alldefconfig
-powerpc                      cm5200_defconfig
-x86_64               randconfig-c001-20220509
-arm                  randconfig-c002-20220509
-m68k                             allyesconfig
-m68k                                defconfig
-nios2                               defconfig
-arc                              allyesconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a015-20220509
-x86_64               randconfig-a012-20220509
-x86_64               randconfig-a016-20220509
-x86_64               randconfig-a014-20220509
-x86_64               randconfig-a013-20220509
-x86_64               randconfig-a011-20220509
-i386                 randconfig-a011-20220509
-i386                 randconfig-a013-20220509
-i386                 randconfig-a016-20220509
-i386                 randconfig-a015-20220509
-i386                 randconfig-a014-20220509
-i386                 randconfig-a012-20220509
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220509
-s390                 randconfig-r044-20220509
-riscv                randconfig-r042-20220509
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                               rhel-8.3
+Tracing down the git history, the cpu_hotplug_enable() called by
+kernel_kexec() is introduced by commit 011e4b02f1da ("powerpc, kexec:
+Fix "Processor X is stuck" issue during kexec from ST mode"), which
+wakes up all offline cpu by cpu_up(cpu). Later, it is required by the
+architectures(arm/arm64/ia64/riscv) which resort to cpu hot-removing to
+achieve kexec-reboot by
+smp_shutdown_nonboot_cpus()->cpu_down_maps_locked().
 
-clang tested configs:
-x86_64               randconfig-c007-20220509
-s390                 randconfig-c005-20220509
-i386                 randconfig-c001-20220509
-powerpc              randconfig-c003-20220509
-riscv                randconfig-c006-20220509
-mips                 randconfig-c004-20220509
-arm                  randconfig-c002-20220509
-s390                 randconfig-c005-20220510
-powerpc              randconfig-c003-20220510
-x86_64                        randconfig-c007
-riscv                randconfig-c006-20220510
-mips                 randconfig-c004-20220510
-i386                          randconfig-c001
-arm                  randconfig-c002-20220510
-powerpc                      acadia_defconfig
-powerpc                    mvme5100_defconfig
-arm                                 defconfig
-mips                        omega2p_defconfig
-powerpc                     tqm8560_defconfig
-hexagon                             defconfig
-arm                       aspeed_g4_defconfig
-powerpc                 mpc836x_rdk_defconfig
-arm                          collie_defconfig
-arm                          pxa168_defconfig
-x86_64               randconfig-a006-20220509
-x86_64               randconfig-a002-20220509
-x86_64               randconfig-a001-20220509
-x86_64               randconfig-a004-20220509
-x86_64               randconfig-a005-20220509
-x86_64               randconfig-a003-20220509
-i386                 randconfig-a004-20220509
-i386                 randconfig-a006-20220509
-i386                 randconfig-a002-20220509
-i386                 randconfig-a003-20220509
-i386                 randconfig-a001-20220509
-i386                 randconfig-a005-20220509
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
+Hence, the cpu_hotplug_enable() in kernel_kexec() is an architecture
+requirement.
 
+By deferring the cpu hotplug enable to a more proper point, where
+smp_shutdown_nonboot_cpus() holds cpu_add_remove_lock, the
+unexpected cpu-down event is squashed out and the rebooting cpu can keep
+unchanged. (For powerpc, no gains from this change.)
+
+As a result, the repeated code chunk can be removed and in [2/2], the
+callsites of smp_shutdown_nonboot_cpus() can be consistent.
+
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vincent Donnefort <vincent.donnefort@arm.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: YueHaibing <yuehaibing@huawei.com>
+Cc: Baokun Li <libaokun1@huawei.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: kexec@lists.infradead.org
+To: linuxppc-dev@lists.ozlabs.org
+To: linux-kernel@vger.kernel.org
+---
+ arch/powerpc/kexec/core_64.c |  1 +
+ kernel/cpu.c                 | 10 +++++-----
+ kernel/kexec_core.c          | 11 +++++------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 6cc7793b8420..8ccf22197f08 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -224,6 +224,7 @@ static void wake_offline_cpus(void)
+ 
+ static void kexec_prepare_cpus(void)
+ {
++	cpu_hotplug_enable();
+ 	wake_offline_cpus();
+ 	smp_call_function(kexec_smp_down, NULL, /* wait */0);
+ 	local_irq_disable();
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index d0a9aa0b42e8..4415370f0e91 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1236,12 +1236,12 @@ void smp_shutdown_nonboot_cpus(unsigned int primary_cpu)
+ 	cpu_maps_update_begin();
+ 
+ 	/*
+-	 * Make certain the cpu I'm about to reboot on is online.
+-	 *
+-	 * This is inline to what migrate_to_reboot_cpu() already do.
++	 * At this point, the cpu hotplug is still disabled by
++	 * migrate_to_reboot_cpu() to guarantee that the rebooting happens on
++	 * the selected CPU.  But cpu_down_maps_locked() returns -EBUSY, if
++	 * cpu_hotplug_disabled. So re-enable CPU hotplug here.
+ 	 */
+-	if (!cpu_online(primary_cpu))
+-		primary_cpu = cpumask_first(cpu_online_mask);
++	__cpu_hotplug_enable();
+ 
+ 	for_each_online_cpu(cpu) {
+ 		if (cpu == primary_cpu)
+diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+index 68480f731192..1bd5a8c95a20 100644
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -1168,14 +1168,13 @@ int kernel_kexec(void)
+ 		kexec_in_progress = true;
+ 		kernel_restart_prepare("kexec reboot");
+ 		migrate_to_reboot_cpu();
+-
+ 		/*
+-		 * migrate_to_reboot_cpu() disables CPU hotplug assuming that
+-		 * no further code needs to use CPU hotplug (which is true in
+-		 * the reboot case). However, the kexec path depends on using
+-		 * CPU hotplug again; so re-enable it here.
++		 * migrate_to_reboot_cpu() disables CPU hotplug and pin the
++		 * rebooting thread on the selected CPU. If an architecture
++		 * requires CPU hotplug to achieve kexec reboot, it should
++		 * enable the hotplug in the architecture specific code
+ 		 */
+-		cpu_hotplug_enable();
++
+ 		pr_notice("Starting new kernel\n");
+ 		machine_shutdown();
+ 	}
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.31.1
+
