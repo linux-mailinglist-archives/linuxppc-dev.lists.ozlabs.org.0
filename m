@@ -1,58 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136E8524712
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 09:36:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A45E524747
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 09:47:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzNrV6crMz3c8s
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 17:36:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzP4W71CBz3c8J
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 17:47:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OWma9deJ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EUPTfN/Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzNqr60V4z3bdj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 17:36:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=OWma9deJ; 
- dkim-atps=neutral
-Received: by gandalf.ozlabs.org (Postfix)
- id 4KzNqq6RLjz4ySc; Thu, 12 May 2022 17:36:07 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KzNqp1SzYz4xLb;
- Thu, 12 May 2022 17:36:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1652340967;
- bh=5EuEaOPBOgTgQeLLGN9nkQYemAL9SDnOk2IHw2qGTj0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=OWma9deJBEfxE1EAijxBhozMREsSw6QEKSrSwCqqzY8+hi60VQfIp1+GTvPg44U47
- WracVc12aEJdCGrrvqs2Ak59FGuvYFF8RROlKRq5dYj4eZPpkUaHP0S2jAK5AVUlni
- 7VTFB1YrC31keOmLYy8iqa9SZzXsetA56C5rxZgCY5tPP7itRvU6mVZfezmAt8yTXH
- hk2cNaDXgeYTRD7/4PDhXYSUUECOfYJYyewprVKtqWfqak1zmLG1Ooksme7NM4bS10
- czSCayMc/RCphRUYUFgXMDGETg8TBtaHd/Q4ws8wg6s7GsKg/Xf04wvbPe92vlRjJr
- 72K412eWqhU/w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: request_module DoS
-In-Reply-To: <Ynvl6wCQRFdYsHar@bombadil.infradead.org>
-References: <YnXiuhdZ49pKL/dK@gondor.apana.org.au>
- <874k1zt0ec.fsf@mpe.ellerman.id.au>
- <Ynk9j6DQmVGAA3Jf@bombadil.infradead.org>
- <Ynvl6wCQRFdYsHar@bombadil.infradead.org>
-Date: Thu, 12 May 2022 17:36:02 +1000
-Message-ID: <871qwz8aot.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=EUPTfN/Q; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzP3n0Rt6z3bWx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 17:46:28 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24C3saF9023733;
+ Thu, 12 May 2022 07:46:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=u/HX+YIQDemSbo0tofUx+It043BrUiawINxAJnsesf0=;
+ b=EUPTfN/Qwj6fXPZuHJ7NxzBywDvwNAm5f/pNKgPvL1/uhB+nybwvpgIgJ6mpsYidM9kG
+ D2z8qye3q1yvA8wsTvGHX2Lf9F1XjO8xE3SWB53nixSbHDic9VWC3ibLR6lALoIJR5Kr
+ HVG2wB3NJJjwvNkAmP+lxUaOGRXoISRBb8MItIOJXaKX+iq7YuHdFotJzhydRNd7hwnL
+ +mEVhzfsqgT54PuZn0JIDDyR/QG6PHwMj73TB8wvsQAgp9YuTZ2wI5ulyrM5sSxFZHOt
+ 3T1NZrggfjvTsZdPtsQKJ9e1Ac9zErFn1pIScWewZQlu8ZDnlcr54rW91BYpQOQhbmd/ ZA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g0tre3rga-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 May 2022 07:46:03 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24C7YXou012661;
+ Thu, 12 May 2022 07:46:02 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g0tre3rfh-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 May 2022 07:46:02 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24C7bbh7015479;
+ Thu, 12 May 2022 07:45:59 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03fra.de.ibm.com with ESMTP id 3g0kn78h57-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 12 May 2022 07:45:59 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24C7jun936962584
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 12 May 2022 07:45:57 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DA89CA4055;
+ Thu, 12 May 2022 07:45:56 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C4873A404D;
+ Thu, 12 May 2022 07:45:48 +0000 (GMT)
+Received: from hbathini-workstation.ibm.com.com (unknown [9.211.109.30])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 12 May 2022 07:45:48 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: bpf@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH 0/5] Atomics support for eBPF on powerpc
+Date: Thu, 12 May 2022 13:15:41 +0530
+Message-Id: <20220512074546.231616-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: omjGLebeLYNhEoo0IG3X2s8bSLP1n9Eu
+X-Proofpoint-ORIG-GUID: hSg7q-ZNvNhzsiuXlMeeVPo83_4_SAXe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-11_07,2022-05-12_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 mlxscore=0
+ malwarescore=0 clxscore=1011 bulkscore=0 adultscore=0 mlxlogscore=683
+ priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205120034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,121 +103,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org, fnovak@us.ibm.com, linux-modules@vger.kernel.org
+Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, netdev@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Yonghong Song <yhs@fb.com>,
+ KP Singh <kpsingh@kernel.org>, Jordan Niethe <jniethe5@gmail.com>,
+ Martin KaFai Lau <kafai@fb.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Luis Chamberlain <mcgrof@kernel.org> writes:
-> On Mon, May 09, 2022 at 09:13:03AM -0700, Luis Chamberlain wrote:
->> On Mon, May 09, 2022 at 09:23:39PM +1000, Michael Ellerman wrote:
->> > Herbert Xu <herbert@gondor.apana.org.au> writes:
->> > > Hi:
->> > >
->> > > There are some code paths in the kernel where you can reliably
->> > > trigger a request_module of a non-existant module.  For example,
->> > > if you attempt to load a non-existent crypto algorithm, or create
->> > > a socket of a non-existent network family, it will result in a
->> > > request_module call that is guaranteed to fail.
->> > >
->> > > As user-space can do this repeatedly, it can quickly overwhelm
->> > > the concurrency limit in kmod.  This in itself is expected,
->> > > however, at least on some platforms this appears to result in
->> > > a live-lock.  Here is an example triggered by stress-ng on ppc64:
->> > >
->> > > [  529.853264] request_module: kmod_concurrent_max (0) close to 0 (max_modprobes: 50), for module crypto-aegis128l, throttling...
->> > ...
->> > > [  580.414590] __request_module: 25 callbacks suppressed
->> > > [  580.414597] request_module: kmod_concurrent_max (0) close to 0 (max_modprobes: 50), for module crypto-aegis256-all, throttling...
->> > > [  580.423082] watchdog: CPU 784 self-detected hard LOCKUP @ plpar_hcall_norets_notrace+0x18/0x2c
->> > > [  580.423097] watchdog: CPU 784 TB:1297691958559475, last heartbeat TB:1297686321743840 (11009ms ago)
->> > > [  580.423099] Modules linked in: cast6_generic cast5_generic cast_common camellia_generic blowfish_generic blowfish_common tun nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill bonding tls ip_set nf_tables nfnetlink pseries_rng binfmt_misc drm drm_panel_orientation_quirks xfs libcrc32c sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp vmx_crypto dm_mirror dm_region_hash dm_log dm_mod fuse
->> > > [  580.423136] CPU: 784 PID: 77071 Comm: stress-ng Kdump: loaded Not tainted 5.14.0-55.el9.ppc64le #1
->> > > [  580.423139] NIP:  c0000000000f8ff4 LR: c0000000001f7c38 CTR: 0000000000000000
->> > > [  580.423140] REGS: c0000043fdd7bd60 TRAP: 0900   Not tainted  (5.14.0-55.el9.ppc64le)
->> > > [  580.423142] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28008202  XER: 20040000
->> > > [  580.423148] CFAR: 0000000000000c00 IRQMASK: 1
->> > >                GPR00: 0000000028008202 c0000044c46b3850 c000000002a46f00 0000000000000000
->> > >                GPR04: ffffffffffffffff 0000000000000000 0000000000000010 c000000002a83060
->> > >                GPR08: 0000000000000000 0000000000000001 0000000000000001 0000000000000000
->> > >                GPR12: c0000000001b9530 c0000043ffe16700 0000000200000117 0000000010185ea8
->> > >                GPR16: 0000000010212150 0000000010186198 00000000101863a0 000000001021b3c0
->> > >                GPR20: 0000000000000001 0000000000000000 0000000000000001 00000000000000ff
->> > >                GPR24: c0000043f4a00e14 c0000043fafe0e00 000000000c440000 0000000000000000
->> > >                GPR28: c0000043f4a00e00 c0000043f4a00e00 c0000000021e0e00 c000000002561aa0
->> > > [  580.423166] NIP [c0000000000f8ff4] plpar_hcall_norets_notrace+0x18/0x2c
->> > > [  580.423168] LR [c0000000001f7c38] __pv_queued_spin_lock_slowpath+0x528/0x530
->> > > [  580.423173] Call Trace:
->> > > [  580.423174] [c0000044c46b3850] [0000000100006b60] 0x100006b60 (unreliable)
->> > > [  580.423177] [c0000044c46b3910] [c000000000ea6948] _raw_spin_lock_irqsave+0xa8/0xc0
->> > > [  580.423182] [c0000044c46b3940] [c0000000001dd7c0] prepare_to_wait_event+0x40/0x200
->> > > [  580.423185] [c0000044c46b39a0] [c00000000019e9e0] __request_module+0x320/0x510
->> > > [  580.423188] [c0000044c46b3ac0] [c0000000006f1a14] crypto_alg_mod_lookup+0x1e4/0x2e0
->> > > [  580.423192] [c0000044c46b3b60] [c0000000006f2178] crypto_alloc_tfm_node+0xa8/0x1a0
->> > > [  580.423194] [c0000044c46b3be0] [c0000000006f84f8] crypto_alloc_aead+0x38/0x50
->> > > [  580.423196] [c0000044c46b3c00] [c00000000072cba0] aead_bind+0x70/0x140
->> > > [  580.423199] [c0000044c46b3c40] [c000000000727824] alg_bind+0xb4/0x210
->> > > [  580.423201] [c0000044c46b3cc0] [c000000000bc2ad4] __sys_bind+0x114/0x160
->> > > [  580.423205] [c0000044c46b3d90] [c000000000bc2b48] sys_bind+0x28/0x40
->> > > [  580.423207] [c0000044c46b3db0] [c000000000030880] system_call_exception+0x160/0x300
->> > > [  580.423209] [c0000044c46b3e10] [c00000000000c168] system_call_vectored_common+0xe8/0x278
->> > > [  580.423213] --- interrupt: 3000 at 0x7fff9b824464
->> > > [  580.423214] NIP:  00007fff9b824464 LR: 0000000000000000 CTR: 0000000000000000
->> > > [  580.423215] REGS: c0000044c46b3e80 TRAP: 3000   Not tainted  (5.14.0-55.el9.ppc64le)
->> > > [  580.423216] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 42004802  XER: 00000000
->> > > [  580.423221] IRQMASK: 0
->> > >                GPR00: 0000000000000147 00007fffdcff2780 00007fff9b917100 0000000000000004
->> > >                GPR04: 00007fffdcff27e0 0000000000000058 0000000000000000 0000000000000000
->> > >                GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
->> > >                GPR12: 0000000000000000 00007fff9bc9efe0 0000000200000117 0000000010185ea8
->> > >                GPR16: 0000000010212150 0000000010186198 00000000101863a0 000000001021b3c0
->> > >                GPR20: 0000000000000004 00007fffdcff2a00 0000000300000117 00000000101862b8
->> > >                GPR24: 0000000000000004 0000000046401570 0000000046401120 0000000046404650
->> > >                GPR28: 0000000000000020 0000000000000020 0000000000000060 0000000046404bf0
->> > > [  580.423236] NIP [00007fff9b824464] 0x7fff9b824464
->> > > [  580.423237] LR [0000000000000000] 0x0
->> > > [  580.423238] --- interrupt: 3000
->> > > [  580.423239] Instruction dump:
->> > > [  580.423241] e8690000 7c0803a6 3884fff8 78630100 78840020 4bfffeb8 3c4c0295 3842df24
->> > > [  580.423244] 7c421378 7c000026 90010008 44000022 <38800000> 988d0931 80010008 7c0ff120
->> > >
->> > > Would it be possible to modify kmod so that in such cases that
->> > > request_module calls fail more quickly rather than repeatedly
->> > > obtaining a spinlock that appears to be under high contention?
->> >
->> > If you run stress-ng with a timeout does the system eventually recover?
->>
->> OK the respective stress-ng test should be something like:
->>
->> ./stress-ng --af-alg 8192
->>
->> I had left this running overnight on x86_64 without issues:
->>
->> sudo ./tools/testing/selftests/kmod/kmod.sh -t 0009
->>
->> Going to leave the above stress-ng call running in a loop to see
->> if I can reproduce the live lock on x86_64.
->
-> The following loop has been running on 5.18.0-rc5-next-20220506 since
-> May 9 without any issues on x86_64:
->
-> while true; do sudo ./stress-ng --af-alg 8192; done
+This patchset adds atomic operations to the eBPF instruction set on
+powerpc. The instructions that are added here can be summarised with
+this list of kernel operations for ppc64:
 
-I ran the above on a ppc64le system here, no issues. But it's only a 32
-CPU machine.
+* atomic[64]_[fetch_]add
+* atomic[64]_[fetch_]and
+* atomic[64]_[fetch_]or
+* atomic[64]_[fetch_]xor
+* atomic[64]_xchg
+* atomic[64]_cmpxchg
 
-> Can someone try this on ppc64le system? At this point I am not convinced
-> this issue is generic.
+and this list of kernel operations for ppc32:
 
-Does your x86 system have at least 784 CPUs?
+* atomic_[fetch_]add
+* atomic_[fetch_]and
+* atomic_[fetch_]or
+* atomic_[fetch_]xor
+* atomic_xchg
+* atomic_cmpxchg
 
-I don't know where the original report came from, but the trace shows
-"CPU 784", which would usually indicate a system with at least that many
-CPUs.
+The following are left out of scope for this effort:
 
-I would hope we can handle that many CPUs banging on a spin lock without
-throwing traces, but maybe not. It could also be that the system is
-under load and the hypervisor has scheduled us off for too long.
+* 64 bit operations on ppc32.
+* Explicit memory barriers, 16 and 8 bit operations on both ppc32
+  & ppc64.
 
-cheers
+The first patch adds support for bitwsie atomic operations on ppc64.
+The next patch adds fetch variant support for these instructions. The
+third patch adds support for xchg and cmpxchg atomic operations on
+ppc64. Patch #4 adds support for 32-bit atomic bitwise operations on
+ppc32. patch #5 adds support for xchg and cmpxchg atomic operations
+on ppc32.
+
+
+Hari Bathini (5):
+  bpf ppc64: add support for BPF_ATOMIC bitwise operations
+  bpf ppc64: add support for atomic fetch operations
+  bpf ppc64: Add instructions for atomic_[cmp]xchg
+  bpf ppc32: add support for BPF_ATOMIC bitwise operations
+  bpf ppc32: Add instructions for atomic_[cmp]xchg
+
+ arch/powerpc/net/bpf_jit_comp32.c | 62 +++++++++++++++++-----
+ arch/powerpc/net/bpf_jit_comp64.c | 87 +++++++++++++++++++++----------
+ 2 files changed, 108 insertions(+), 41 deletions(-)
+
+-- 
+2.35.1
+
