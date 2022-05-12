@@ -1,62 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AF1524F9D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 16:13:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C45524FA1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 16:14:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzYfs0zh0z3cdP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 00:13:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzYgW4FBCz3cM6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 00:14:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=csshdifP;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jnJCUtKP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=csshdifP; 
+ header.s=k20201202 header.b=jnJCUtKP; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzYdd4dRdz2xvF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 00:12:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzYdp1R3bz3c8S
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 00:13:02 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 7279661B6B;
- Thu, 12 May 2022 14:12:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F089EC385B8;
- Thu, 12 May 2022 14:12:46 +0000 (UTC)
+ by ams.source.kernel.org (Postfix) with ESMTPS id 70BB2B82832;
+ Thu, 12 May 2022 14:12:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE53CC385B8;
+ Thu, 12 May 2022 14:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1652364770;
- bh=0hh3VnoWdrScswPThoUAz7IHRdvYsSrWyfqva7PClQk=;
+ s=k20201202; t=1652364778;
+ bh=fS5LIWilDa+hz2Ola1gsUeyqJCEe4vAjSZHbZ6Wyv2I=;
  h=From:To:In-Reply-To:References:Subject:Date:From;
- b=csshdifPDDyuUKSgp96tlCgn60qYxckukQoSlyWxGcwgKeeuti4z2ik9F9AnEWPCQ
- isX4F+ZF4oFv6jtdWDMIwvW7h+mwk8AMvBzc17Q4186w43TgYeDmTf5G7VgxDDn3S0
- RN9WdsvQ939yycBgwp05MFZzXm7q0mXcwul1Fs9wKvIPht9HmyUd5UZm2upwxUoOur
- YZA9p0Q+EeWkWGKVit6GzIzoN/4hnfuv1cZBflk+uW5jReIYP+qTu9YR6WEODsaKfI
- dEovtkWepZcuPx/1G0rjE+e+GeyWKsFYJZejW2RpRAuzMBaVLiFc8q95X30AlBWoxH
- g74dxMGfow4Rw==
+ b=jnJCUtKPLyvpYm1omocXcq4bY8fiwWPyNoHSOf2muv4nzjc4/pCzJXco+WbVrys2B
+ nVU67xTgNAzmd+KG0jtvtElGYqRyg4AFF0nh7MbnT8oPfogz3e4wGg2D94E5fDhhHb
+ AnwD31Bt8FKC8TtmDIYg1SikcscL4PtqVPqSOzy5PKSWj/T5w/Rxx4Ei3WkJlrgVEq
+ hS5foECa1v5ajLahqJFojqngPid8DGO+Dc/9zdpYOEWo/7eQbOMe9RZlrPR43A1WLi
+ Ii0tbKzsw8OnyryC5YIB6Qi4o5SEMUVQ2JmMHo4cJz0/uYbJXoT5peO0DKv/vb5Ook
+ SznOxKhgvpj5w==
 From: Mark Brown <broonie@kernel.org>
 To: Fabio Estevam <festevam@gmail.com>, alsa-devel@alsa-project.org,
  Takashi Iwai <tiwai@suse.com>, linuxppc-dev@lists.ozlabs.org,
- shawnguo@kernel.org, Jaroslav Kysela <perex@perex.cz>,
+ shawnguo@kernel.org, ye.guojin@zte.com.cn, Jaroslav Kysela <perex@perex.cz>,
  linux-arm-kernel@lists.infradead.org, Shengjiu Wang <shengjiu.wang@gmail.com>,
- kernel@pengutronix.de, Nicolin Chen <nicoleotsuka@gmail.com>,
- linux-kernel@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
- linux-imx@nxp.com, linmq006@gmail.com, richard.zhao@linaro.org,
- Xiubo Li <Xiubo.Lee@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20220511065803.3957-1-linmq006@gmail.com>
-References: <20220511065803.3957-1-linmq006@gmail.com>
-Subject: Re: [PATCH] ASoC: fsl: Fix refcount leak in imx_sgtl5000_probe
-Message-Id: <165236476669.1016627.799553310382817495.b4-ty@kernel.org>
-Date: Thu, 12 May 2022 15:12:46 +0100
+ kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-imx@nxp.com, linmq006@gmail.com, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20220511052740.46903-1-linmq006@gmail.com>
+References: <20220511052740.46903-1-linmq006@gmail.com>
+Subject: Re: [PATCH] ASoC: imx-hdmi: Fix refcount leak in imx_hdmi_probe
+Message-Id: <165236477462.1016627.3973321279072799571.b4-ty@kernel.org>
+Date: Thu, 12 May 2022 15:12:54 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -75,10 +73,11 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 11 May 2022 10:58:03 +0400, Miaoqian Lin wrote:
-> of_find_i2c_device_by_node() takes a reference,
-> In error paths, we should call put_device() to drop
-> the reference to aviod refount leak.
+On Wed, 11 May 2022 09:27:40 +0400, Miaoqian Lin wrote:
+> of_find_device_by_node() takes reference, we should use put_device()
+> to release it. when devm_kzalloc() fails, it doesn't have a
+> put_device(), it will cause refcount leak.
+> Add missing put_device() to fix this.
 > 
 > 
 
@@ -88,8 +87,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: fsl: Fix refcount leak in imx_sgtl5000_probe
-      commit: 41cd312dfe980af869c3503b4d38e62ed20dd3b7
+[1/1] ASoC: imx-hdmi: Fix refcount leak in imx_hdmi_probe
+      commit: ed46731d8e86c8d65f5fc717671e1f1f6c3146d2
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
