@@ -2,67 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E27A524462
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 06:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 136E8524712
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 09:36:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzJv91fZXz3cNN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 14:38:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzNrV6crMz3c8s
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 17:36:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=xXD+m8oS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=OWma9deJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=softfail (domain owner discourages use of this
- host) smtp.mailfrom=kernel.org (client-ip=210.131.2.90;
- helo=conssluserg-05.nifty.com; envelope-from=masahiroy@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
- header.s=dec2015msa header.b=xXD+m8oS; 
- dkim-atps=neutral
-Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com
- [210.131.2.90])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzJtC2hmyz3cCd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 14:37:55 +1000 (AEST)
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com
- [209.85.214.179]) (authenticated)
- by conssluserg-05.nifty.com with ESMTP id 24C4bPLs022954
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 13:37:26 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 24C4bPLs022954
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
- s=dec2015msa; t=1652330246;
- bh=IUVNjJxNI8Y2N6J08VzVrWq/34IrVEKJXOQ5ZZINgIk=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=xXD+m8oSWbCTXA/qPnGHaiS/QVg/PxSHsr4fIhcqjOlaZsP1KJqpZNwCpRKJ4KH2S
- pCHiA69DicaE9dMqlpi9Lj88GUELYSKbzkpXSmyIESxuhMReVp3jIoaO+lKFMk97gI
- xctCZYMzFOZewSVp4xOsU2bELYT0AkGcMSyubPfRkaReQxW15ssceEaoYRb9yxmH90
- FhS1gpSkMSK50KWjOWLoFWZyA6hzoKZmA/7W7dEPf1CdpWk2lk8qT9Gww/6r0PNsZy
- 0XL5fnSft5EpmOVuLcLCkAczz4fmjDSGFh/LVYhPsnoVdZZtVFlb9PWQs9wQ5qb9y9
- 3rd3eU5/5oh+g==
-X-Nifty-SrcIP: [209.85.214.179]
-Received: by mail-pl1-f179.google.com with SMTP id c11so3762914plg.13
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 May 2022 21:37:25 -0700 (PDT)
-X-Gm-Message-State: AOAM530WlaWDQYip65MtqXRwxgcl75pRoun3XlN+Xg9YrByjtdWsqYhr
- ZzRQrSemmBEr7yhRDs/VzBK+xO7utnp0yS2W6Rs=
-X-Google-Smtp-Source: ABdhPJxIUnQ07JXrHxlmHeRUWu09ufIC94QEfhLUzNSqT72tmaZ5IS17kMlGKNSvGNHedylj1IZCjWj5ZROsWHhla+w=
-X-Received: by 2002:a17:902:9887:b0:151:6e1c:7082 with SMTP id
- s7-20020a170902988700b001516e1c7082mr27988770plp.162.1652330245039; Wed, 11
- May 2022 21:37:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzNqr60V4z3bdj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 17:36:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=OWma9deJ; 
+ dkim-atps=neutral
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KzNqq6RLjz4ySc; Thu, 12 May 2022 17:36:07 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KzNqp1SzYz4xLb;
+ Thu, 12 May 2022 17:36:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1652340967;
+ bh=5EuEaOPBOgTgQeLLGN9nkQYemAL9SDnOk2IHw2qGTj0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=OWma9deJBEfxE1EAijxBhozMREsSw6QEKSrSwCqqzY8+hi60VQfIp1+GTvPg44U47
+ WracVc12aEJdCGrrvqs2Ak59FGuvYFF8RROlKRq5dYj4eZPpkUaHP0S2jAK5AVUlni
+ 7VTFB1YrC31keOmLYy8iqa9SZzXsetA56C5rxZgCY5tPP7itRvU6mVZfezmAt8yTXH
+ hk2cNaDXgeYTRD7/4PDhXYSUUECOfYJYyewprVKtqWfqak1zmLG1Ooksme7NM4bS10
+ czSCayMc/RCphRUYUFgXMDGETg8TBtaHd/Q4ws8wg6s7GsKg/Xf04wvbPe92vlRjJr
+ 72K412eWqhU/w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Subject: Re: request_module DoS
+In-Reply-To: <Ynvl6wCQRFdYsHar@bombadil.infradead.org>
+References: <YnXiuhdZ49pKL/dK@gondor.apana.org.au>
+ <874k1zt0ec.fsf@mpe.ellerman.id.au>
+ <Ynk9j6DQmVGAA3Jf@bombadil.infradead.org>
+ <Ynvl6wCQRFdYsHar@bombadil.infradead.org>
+Date: Thu, 12 May 2022 17:36:02 +1000
+Message-ID: <871qwz8aot.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20220508190631.2386038-1-masahiroy@kernel.org>
- <20220508190631.2386038-3-masahiroy@kernel.org>
-In-Reply-To: <20220508190631.2386038-3-masahiroy@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 12 May 2022 13:36:13 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARhgfkSP+jmoTF2nVJtd=amPTNsNRjgaV+H7NhgjV+6Bw@mail.gmail.com>
-Message-ID: <CAK7LNARhgfkSP+jmoTF2nVJtd=amPTNsNRjgaV+H7NhgjV+6Bw@mail.gmail.com>
-Subject: Re: [PATCH v4 02/14] modpost: change the license of EXPORT_SYMBOL to
- bool type
-To: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,311 +64,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390 <linux-s390@vger.kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- Peter Zijlstra <peterz@infradead.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nathan Chancellor <nathan@kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Sami Tolvanen <samitolvanen@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
- linux-modules <linux-modules@vger.kernel.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@ozlabs.org, fnovak@us.ibm.com, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 9, 2022 at 4:09 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+Luis Chamberlain <mcgrof@kernel.org> writes:
+> On Mon, May 09, 2022 at 09:13:03AM -0700, Luis Chamberlain wrote:
+>> On Mon, May 09, 2022 at 09:23:39PM +1000, Michael Ellerman wrote:
+>> > Herbert Xu <herbert@gondor.apana.org.au> writes:
+>> > > Hi:
+>> > >
+>> > > There are some code paths in the kernel where you can reliably
+>> > > trigger a request_module of a non-existant module.  For example,
+>> > > if you attempt to load a non-existent crypto algorithm, or create
+>> > > a socket of a non-existent network family, it will result in a
+>> > > request_module call that is guaranteed to fail.
+>> > >
+>> > > As user-space can do this repeatedly, it can quickly overwhelm
+>> > > the concurrency limit in kmod.  This in itself is expected,
+>> > > however, at least on some platforms this appears to result in
+>> > > a live-lock.  Here is an example triggered by stress-ng on ppc64:
+>> > >
+>> > > [  529.853264] request_module: kmod_concurrent_max (0) close to 0 (max_modprobes: 50), for module crypto-aegis128l, throttling...
+>> > ...
+>> > > [  580.414590] __request_module: 25 callbacks suppressed
+>> > > [  580.414597] request_module: kmod_concurrent_max (0) close to 0 (max_modprobes: 50), for module crypto-aegis256-all, throttling...
+>> > > [  580.423082] watchdog: CPU 784 self-detected hard LOCKUP @ plpar_hcall_norets_notrace+0x18/0x2c
+>> > > [  580.423097] watchdog: CPU 784 TB:1297691958559475, last heartbeat TB:1297686321743840 (11009ms ago)
+>> > > [  580.423099] Modules linked in: cast6_generic cast5_generic cast_common camellia_generic blowfish_generic blowfish_common tun nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill bonding tls ip_set nf_tables nfnetlink pseries_rng binfmt_misc drm drm_panel_orientation_quirks xfs libcrc32c sd_mod t10_pi sg ibmvscsi ibmveth scsi_transport_srp vmx_crypto dm_mirror dm_region_hash dm_log dm_mod fuse
+>> > > [  580.423136] CPU: 784 PID: 77071 Comm: stress-ng Kdump: loaded Not tainted 5.14.0-55.el9.ppc64le #1
+>> > > [  580.423139] NIP:  c0000000000f8ff4 LR: c0000000001f7c38 CTR: 0000000000000000
+>> > > [  580.423140] REGS: c0000043fdd7bd60 TRAP: 0900   Not tainted  (5.14.0-55.el9.ppc64le)
+>> > > [  580.423142] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28008202  XER: 20040000
+>> > > [  580.423148] CFAR: 0000000000000c00 IRQMASK: 1
+>> > >                GPR00: 0000000028008202 c0000044c46b3850 c000000002a46f00 0000000000000000
+>> > >                GPR04: ffffffffffffffff 0000000000000000 0000000000000010 c000000002a83060
+>> > >                GPR08: 0000000000000000 0000000000000001 0000000000000001 0000000000000000
+>> > >                GPR12: c0000000001b9530 c0000043ffe16700 0000000200000117 0000000010185ea8
+>> > >                GPR16: 0000000010212150 0000000010186198 00000000101863a0 000000001021b3c0
+>> > >                GPR20: 0000000000000001 0000000000000000 0000000000000001 00000000000000ff
+>> > >                GPR24: c0000043f4a00e14 c0000043fafe0e00 000000000c440000 0000000000000000
+>> > >                GPR28: c0000043f4a00e00 c0000043f4a00e00 c0000000021e0e00 c000000002561aa0
+>> > > [  580.423166] NIP [c0000000000f8ff4] plpar_hcall_norets_notrace+0x18/0x2c
+>> > > [  580.423168] LR [c0000000001f7c38] __pv_queued_spin_lock_slowpath+0x528/0x530
+>> > > [  580.423173] Call Trace:
+>> > > [  580.423174] [c0000044c46b3850] [0000000100006b60] 0x100006b60 (unreliable)
+>> > > [  580.423177] [c0000044c46b3910] [c000000000ea6948] _raw_spin_lock_irqsave+0xa8/0xc0
+>> > > [  580.423182] [c0000044c46b3940] [c0000000001dd7c0] prepare_to_wait_event+0x40/0x200
+>> > > [  580.423185] [c0000044c46b39a0] [c00000000019e9e0] __request_module+0x320/0x510
+>> > > [  580.423188] [c0000044c46b3ac0] [c0000000006f1a14] crypto_alg_mod_lookup+0x1e4/0x2e0
+>> > > [  580.423192] [c0000044c46b3b60] [c0000000006f2178] crypto_alloc_tfm_node+0xa8/0x1a0
+>> > > [  580.423194] [c0000044c46b3be0] [c0000000006f84f8] crypto_alloc_aead+0x38/0x50
+>> > > [  580.423196] [c0000044c46b3c00] [c00000000072cba0] aead_bind+0x70/0x140
+>> > > [  580.423199] [c0000044c46b3c40] [c000000000727824] alg_bind+0xb4/0x210
+>> > > [  580.423201] [c0000044c46b3cc0] [c000000000bc2ad4] __sys_bind+0x114/0x160
+>> > > [  580.423205] [c0000044c46b3d90] [c000000000bc2b48] sys_bind+0x28/0x40
+>> > > [  580.423207] [c0000044c46b3db0] [c000000000030880] system_call_exception+0x160/0x300
+>> > > [  580.423209] [c0000044c46b3e10] [c00000000000c168] system_call_vectored_common+0xe8/0x278
+>> > > [  580.423213] --- interrupt: 3000 at 0x7fff9b824464
+>> > > [  580.423214] NIP:  00007fff9b824464 LR: 0000000000000000 CTR: 0000000000000000
+>> > > [  580.423215] REGS: c0000044c46b3e80 TRAP: 3000   Not tainted  (5.14.0-55.el9.ppc64le)
+>> > > [  580.423216] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 42004802  XER: 00000000
+>> > > [  580.423221] IRQMASK: 0
+>> > >                GPR00: 0000000000000147 00007fffdcff2780 00007fff9b917100 0000000000000004
+>> > >                GPR04: 00007fffdcff27e0 0000000000000058 0000000000000000 0000000000000000
+>> > >                GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>> > >                GPR12: 0000000000000000 00007fff9bc9efe0 0000000200000117 0000000010185ea8
+>> > >                GPR16: 0000000010212150 0000000010186198 00000000101863a0 000000001021b3c0
+>> > >                GPR20: 0000000000000004 00007fffdcff2a00 0000000300000117 00000000101862b8
+>> > >                GPR24: 0000000000000004 0000000046401570 0000000046401120 0000000046404650
+>> > >                GPR28: 0000000000000020 0000000000000020 0000000000000060 0000000046404bf0
+>> > > [  580.423236] NIP [00007fff9b824464] 0x7fff9b824464
+>> > > [  580.423237] LR [0000000000000000] 0x0
+>> > > [  580.423238] --- interrupt: 3000
+>> > > [  580.423239] Instruction dump:
+>> > > [  580.423241] e8690000 7c0803a6 3884fff8 78630100 78840020 4bfffeb8 3c4c0295 3842df24
+>> > > [  580.423244] 7c421378 7c000026 90010008 44000022 <38800000> 988d0931 80010008 7c0ff120
+>> > >
+>> > > Would it be possible to modify kmod so that in such cases that
+>> > > request_module calls fail more quickly rather than repeatedly
+>> > > obtaining a spinlock that appears to be under high contention?
+>> >
+>> > If you run stress-ng with a timeout does the system eventually recover?
+>>
+>> OK the respective stress-ng test should be something like:
+>>
+>> ./stress-ng --af-alg 8192
+>>
+>> I had left this running overnight on x86_64 without issues:
+>>
+>> sudo ./tools/testing/selftests/kmod/kmod.sh -t 0009
+>>
+>> Going to leave the above stress-ng call running in a loop to see
+>> if I can reproduce the live lock on x86_64.
 >
-> There were more EXPORT_SYMBOL types in the past. The following commits
-> removed unused ones.
+> The following loop has been running on 5.18.0-rc5-next-20220506 since
+> May 9 without any issues on x86_64:
 >
->  - f1c3d73e973c ("module: remove EXPORT_SYMBOL_GPL_FUTURE")
->  - 367948220fce ("module: remove EXPORT_UNUSED_SYMBOL*")
->
-> There are 3 remaining in enum export, but export_unknown does not make
-> any sense because we never expect such a situation like "we do not know
-> how it was exported".
->
-> If the symbol name starts with "__ksymtab_", but the section name
-> does not start with "___ksymtab+" or "___ksymtab_gpl+", it is not an
-> exported symbol.
->
-> It occurs when a variable starting with "__ksymtab_" is directly defined:
->
->    int __ksymtab_foo;
->
-> Presumably, there is no practical issue for using such a weird variable
-> name (but there is no good reason for doing so, either).
->
-> Anyway, that is not an exported symbol. Setting export_unknown is not
-> the right thing to do. Do not call sym_add_exported() in this case.
->
-> With pointless export_unknown removed, the export type finally becomes
-> boolean (either EXPORT_SYMBOL or EXPORT_SYMBOL_GPL).
->
-> I renamed the field name to is_gpl_only. EXPORT_SYMBOL_GPL sets it true.
-> Only GPL-compatible modules can use it.
->
-> I removed the orphan comment, "How a symbol is exported", which is
-> unrelated to sec_mismatch_count. It is about enum export.
-> See commit bd5cbcedf446 ("kbuild: export-type enhancement to modpost.c")
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-> Tested-by: Nathan Chancellor <nathan@kernel.org>
-> ---
+> while true; do sudo ./stress-ng --af-alg 8192; done
 
-Applied to linux-kbuild.
+I ran the above on a ppc64le system here, no issues. But it's only a 32
+CPU machine.
 
+> Can someone try this on ppc64le system? At this point I am not convinced
+> this issue is generic.
 
->
-> Changes in v4:
->   - Rebase again because I dropped
->      https://patchwork.kernel.org/project/linux-kbuild/patch/20220501084032.1025918-11-masahiroy@kernel.org/
->   - Remove warning message because I plan to change this hunk again in a later commit
->   - Remove orphan comment
->
-> Changes in v3:
->   - New patch
->
->  scripts/mod/modpost.c | 108 ++++++++++++------------------------------
->  1 file changed, 30 insertions(+), 78 deletions(-)
->
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index d9efbd5b31a6..a78b75f0eeb0 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -30,7 +30,7 @@ static bool all_versions;
->  static bool external_module;
->  /* Only warn about unresolved symbols */
->  static bool warn_unresolved;
-> -/* How a symbol is exported */
-> +
->  static int sec_mismatch_count;
->  static bool sec_mismatch_warn_only = true;
->  /* ignore missing files */
-> @@ -47,12 +47,6 @@ static bool error_occurred;
->  #define MAX_UNRESOLVED_REPORTS 10
->  static unsigned int nr_unresolved;
->
-> -enum export {
-> -       export_plain,
-> -       export_gpl,
-> -       export_unknown
-> -};
-> -
->  /* In kernel, this size is defined in linux/module.h;
->   * here we use Elf_Addr instead of long for covering cross-compile
->   */
-> @@ -219,7 +213,7 @@ struct symbol {
->         bool crc_valid;
->         bool weak;
->         bool is_static;         /* true if symbol is not global */
-> -       enum export  export;       /* Type of export */
-> +       bool is_gpl_only;       /* exported by EXPORT_SYMBOL_GPL */
->         char name[];
->  };
->
-> @@ -316,34 +310,6 @@ static void add_namespace(struct list_head *head, const char *namespace)
->         }
->  }
->
-> -static const struct {
-> -       const char *str;
-> -       enum export export;
-> -} export_list[] = {
-> -       { .str = "EXPORT_SYMBOL",            .export = export_plain },
-> -       { .str = "EXPORT_SYMBOL_GPL",        .export = export_gpl },
-> -       { .str = "(unknown)",                .export = export_unknown },
-> -};
-> -
-> -
-> -static const char *export_str(enum export ex)
-> -{
-> -       return export_list[ex].str;
-> -}
-> -
-> -static enum export export_no(const char *s)
-> -{
-> -       int i;
-> -
-> -       if (!s)
-> -               return export_unknown;
-> -       for (i = 0; export_list[i].export != export_unknown; i++) {
-> -               if (strcmp(export_list[i].str, s) == 0)
-> -                       return export_list[i].export;
-> -       }
-> -       return export_unknown;
-> -}
-> -
->  static void *sym_get_data_by_offset(const struct elf_info *info,
->                                     unsigned int secindex, unsigned long offset)
->  {
-> @@ -374,18 +340,6 @@ static const char *sec_name(const struct elf_info *info, int secindex)
->
->  #define strstarts(str, prefix) (strncmp(str, prefix, strlen(prefix)) == 0)
->
-> -static enum export export_from_secname(struct elf_info *elf, unsigned int sec)
-> -{
-> -       const char *secname = sec_name(elf, sec);
-> -
-> -       if (strstarts(secname, "___ksymtab+"))
-> -               return export_plain;
-> -       else if (strstarts(secname, "___ksymtab_gpl+"))
-> -               return export_gpl;
-> -       else
-> -               return export_unknown;
-> -}
-> -
->  static void sym_update_namespace(const char *symname, const char *namespace)
->  {
->         struct symbol *s = find_symbol(symname);
-> @@ -405,7 +359,7 @@ static void sym_update_namespace(const char *symname, const char *namespace)
->  }
->
->  static struct symbol *sym_add_exported(const char *name, struct module *mod,
-> -                                      enum export export)
-> +                                      bool gpl_only)
->  {
->         struct symbol *s = find_symbol(name);
->
-> @@ -417,7 +371,7 @@ static struct symbol *sym_add_exported(const char *name, struct module *mod,
->
->         s = alloc_symbol(name);
->         s->module = mod;
-> -       s->export    = export;
-> +       s->is_gpl_only = gpl_only;
->         list_add_tail(&s->list, &mod->exported_symbols);
->         hash_add_symbol(s);
->
-> @@ -689,8 +643,6 @@ static void handle_modversion(const struct module *mod,
->  static void handle_symbol(struct module *mod, struct elf_info *info,
->                           const Elf_Sym *sym, const char *symname)
->  {
-> -       const char *name;
-> -
->         switch (sym->st_shndx) {
->         case SHN_COMMON:
->                 if (strstarts(symname, "__gnu_lto_")) {
-> @@ -724,12 +676,15 @@ static void handle_symbol(struct module *mod, struct elf_info *info,
->         default:
->                 /* All exported symbols */
->                 if (strstarts(symname, "__ksymtab_")) {
-> -                       enum export export;
-> +                       const char *name, *secname;
->
->                         name = symname + strlen("__ksymtab_");
-> -                       export = export_from_secname(info,
-> -                                                    get_secindex(info, sym));
-> -                       sym_add_exported(name, mod, export);
-> +                       secname = sec_name(info, get_secindex(info, sym));
-> +
-> +                       if (strstarts(secname, "___ksymtab_gpl+"))
-> +                               sym_add_exported(name, mod, true);
-> +                       else if (strstarts(secname, "___ksymtab+"))
-> +                               sym_add_exported(name, mod, false);
->                 }
->                 if (strcmp(symname, "init_module") == 0)
->                         mod->has_init = true;
-> @@ -2140,20 +2095,6 @@ void buf_write(struct buffer *buf, const char *s, int len)
->         buf->pos += len;
->  }
->
-> -static void check_for_gpl_usage(enum export exp, const char *m, const char *s)
-> -{
-> -       switch (exp) {
-> -       case export_gpl:
-> -               error("GPL-incompatible module %s.ko uses GPL-only symbol '%s'\n",
-> -                     m, s);
-> -               break;
-> -       case export_plain:
-> -       case export_unknown:
-> -               /* ignore */
-> -               break;
-> -       }
-> -}
-> -
->  static void check_exports(struct module *mod)
->  {
->         struct symbol *s, *exp;
-> @@ -2192,8 +2133,9 @@ static void check_exports(struct module *mod)
->                         add_namespace(&mod->missing_namespaces, exp->namespace);
->                 }
->
-> -               if (!mod->is_gpl_compatible)
-> -                       check_for_gpl_usage(exp->export, basename, exp->name);
-> +               if (!mod->is_gpl_compatible && exp->is_gpl_only)
-> +                       error("GPL-incompatible module %s.ko uses GPL-only symbol '%s'\n",
-> +                             basename, exp->name);
->         }
->  }
->
-> @@ -2437,6 +2379,7 @@ static void read_dump(const char *fname)
->                 unsigned int crc;
->                 struct module *mod;
->                 struct symbol *s;
-> +               bool gpl_only;
->
->                 if (!(symname = strchr(line, '\t')))
->                         goto fail;
-> @@ -2454,12 +2397,22 @@ static void read_dump(const char *fname)
->                 crc = strtoul(line, &d, 16);
->                 if (*symname == '\0' || *modname == '\0' || *d != '\0')
->                         goto fail;
-> +
-> +               if (!strcmp(export, "EXPORT_SYMBOL_GPL")) {
-> +                       gpl_only = true;
-> +               } else if (!strcmp(export, "EXPORT_SYMBOL")) {
-> +                       gpl_only = false;
-> +               } else {
-> +                       error("%s: unknown license %s. skip", symname, export);
-> +                       continue;
-> +               }
-> +
->                 mod = find_module(modname);
->                 if (!mod) {
->                         mod = new_module(modname);
->                         mod->from_dump = true;
->                 }
-> -               s = sym_add_exported(symname, mod, export_no(export));
-> +               s = sym_add_exported(symname, mod, gpl_only);
->                 s->is_static = false;
->                 sym_set_crc(symname, crc);
->                 sym_update_namespace(symname, namespace);
-> @@ -2481,9 +2434,9 @@ static void write_dump(const char *fname)
->                 if (mod->from_dump)
->                         continue;
->                 list_for_each_entry(sym, &mod->exported_symbols, list) {
-> -                       buf_printf(&buf, "0x%08x\t%s\t%s\t%s\t%s\n",
-> +                       buf_printf(&buf, "0x%08x\t%s\t%s\tEXPORT_SYMBOL%s\t%s\n",
->                                    sym->crc, sym->name, mod->name,
-> -                                  export_str(sym->export),
-> +                                  sym->is_gpl_only ? "_GPL" : "",
->                                    sym->namespace ?: "");
->                 }
->         }
-> @@ -2604,9 +2557,8 @@ int main(int argc, char **argv)
->
->                 for (s = symbolhash[n]; s; s = s->next) {
->                         if (s->is_static)
-> -                               error("\"%s\" [%s] is a static %s\n",
-> -                                     s->name, s->module->name,
-> -                                     export_str(s->export));
-> +                               error("\"%s\" [%s] is a static EXPORT_SYMBOL\n",
-> +                                     s->name, s->module->name);
->                 }
->         }
->
-> --
-> 2.32.0
->
-> --
-> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20220508190631.2386038-3-masahiroy%40kernel.org.
+Does your x86 system have at least 784 CPUs?
 
+I don't know where the original report came from, but the trace shows
+"CPU 784", which would usually indicate a system with at least that many
+CPUs.
 
+I would hope we can handle that many CPUs banging on a spin lock without
+throwing traces, but maybe not. It could also be that the system is
+under load and the hypervisor has scheduled us off for too long.
 
--- 
-Best Regards
-Masahiro Yamada
+cheers
