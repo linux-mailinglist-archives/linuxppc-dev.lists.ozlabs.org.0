@@ -2,61 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAEE52417C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 02:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E78D52418C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 02:31:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzCGh4ctsz3cGT
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 10:25:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzCPp1KJJz3cGH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 10:31:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n5E+XsWq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cSDIJgwR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mga12.intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=n5E+XsWq; dkim-atps=neutral
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ header.s=Intel header.b=cSDIJgwR; dkim-atps=neutral
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzCG063r9z3bfC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 10:24:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzCP638Msz2yZc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 10:30:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652315081; x=1683851081;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=FXGLp4kn6zowFU/uMojpzoAT+8Tt5jfdv5yfT9ck7Mg=;
- b=n5E+XsWqWzRlviyInD2X7jRDlvorCqKz9KNZa15Deq1TZxvqq+M85JT2
- 0PfYdGixjCMUkS9G5rMQvP634+8peYVfCUQdP+t769l4uy+ygjRP04lRc
- Kx2mYUd0/2ozOoUssAYKHjcx1Vx8iMurwICzGRi0r+LyRvc5/eKdN5RBV
- j1EvQomSbUuarGcBszfA9+HF+o0l0An6iatYhtAlFUXKH19ld+BywYD0v
- 5BY/+B5LMRi0Kuo6oxa9juc8z9Exg5NEoJByLx4IMlYpGBegEnbSQpOBF
- FVYfLosUUs8EklZvE6CtCAMeJKZ5x0oOhRxfp7E3ehaNrYDgl3nd4IImb g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10344"; a="249743383"
-X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="249743383"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2022 17:23:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="594395631"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga008.jf.intel.com with ESMTP; 11 May 2022 17:23:27 -0700
-Date: Wed, 11 May 2022 17:26:58 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v6 02/29] x86/apic: Add irq_cfg::delivery_mode
-Message-ID: <20220512002658.GB16273@ranerica-svr.sc.intel.com>
-References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-3-ricardo.neri-calderon@linux.intel.com>
- <875ymih1yl.ffs@tglx>
+ t=1652315450; x=1683851450;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=QVmwNynkT04gSDeDkYvO4d7kGnKP1A1Q5Qz1j6zm5lk=;
+ b=cSDIJgwRdYdodLSg+urzdu7diuzRwax0sQBFUXkYWPB+EMs2sksq61YZ
+ QHXLw+Ns/6LAtwigPbKYBBwoKhqfb2hJkbMUL1kkVyPrgQQLViDJuwobQ
+ 5uEbhzEXAiRbeIuLGVAhw2zk8ylUXj/1IjWpI6nvhFGVLtJESCHRfq+UE
+ ggbFTbZpdlPsOMO3hyR3AIXwQ8JA+h8UejF534d1Il/uYTW5E8mnQPpKX
+ ONyc7xPmVgzJNYyuDtgw3aLGXUi2w4mRNHuZKay84hVFCQvs5UVDb7XBF
+ EzcP1ebo51toLlb9VyOpAGSGrAyZWOZdijwNK3pStz0paAX4IbCbS206R Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10344"; a="267434087"
+X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="267434087"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2022 17:29:48 -0700
+X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="572305211"
+Received: from wancheny-mobl.amr.corp.intel.com (HELO [10.209.114.21])
+ ([10.209.114.21])
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2022 17:29:47 -0700
+Message-ID: <54ab824c-44a9-239a-9380-2f051f26a079@linux.intel.com>
+Date: Wed, 11 May 2022 17:29:45 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <875ymih1yl.ffs@tglx>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Firefox/91.0 Thunderbird/91.7.0
+Subject: Re: [PATCH v3] PCI/AER: Handle Multi UnCorrectable/Correctable errors
+ properly
+Content-Language: en-US
+To: Bjorn Helgaas <helgaas@kernel.org>
+References: <20220511234024.GA831116@bhelgaas>
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20220511234024.GA831116@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,83 +71,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
- Andi Kleen <ak@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- Ricardo Neri <ricardo.neri@intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Tony Luck <tony.luck@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Oliver OHalloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 06, 2022 at 09:53:54PM +0200, Thomas Gleixner wrote:
-> On Thu, May 05 2022 at 16:59, Ricardo Neri wrote:
-> > Currently, the delivery mode of all interrupts is set to the mode of the
-> > APIC driver in use. There are no restrictions in hardware to configure the
-> > delivery mode of each interrupt individually. Also, certain IRQs need
-> > to be
-> 
-> s/IRQ/interrupt/ Changelogs can do without acronyms.
 
-Sure. I will sanitize all the changelogs to remove acronyms.
 
+On 5/11/22 4:40 PM, Bjorn Helgaas wrote:
+> On Mon, Apr 18, 2022 at 03:02:37PM +0000, Kuppuswamy Sathyanarayanan wrote:
+>> Currently the aer_irq() handler returns IRQ_NONE for cases without bits
+>> PCI_ERR_ROOT_UNCOR_RCV or PCI_ERR_ROOT_COR_RCV are set. But this
+>> assumption is incorrect.
+>>
+>> Consider a scenario where aer_irq() is triggered for a correctable
+>> error, and while we process the error and before we clear the error
+>> status in "Root Error Status" register, if the same kind of error
+>> is triggered again, since aer_irq() only clears events it saw, the
+>> multi-bit error is left in tact. This will cause the interrupt to fire
+>> again, resulting in entering aer_irq() with just the multi-bit error
+>> logged in the "Root Error Status" register.
+>>
+>> Repeated AER recovery test has revealed this condition does happen
+>> and this prevents any new interrupt from being triggered. Allow to
+>> process interrupt even if only multi-correctable (BIT 1) or
+>> multi-uncorrectable bit (BIT 3) is set.
+>>
+>> Also note that, for cases with only multi-bit error is set, since this
+>> is not the first occurrence of the error, PCI_ERR_ROOT_ERR_SRC may have
+>> zero or some junk value. So we cannot cleanly process this error
+>> information using aer_isr_one_error(). All we are attempting with this
+>> fix is to make sure error interrupt processing can continue in this
+>> scenario.
+>>
+>> This error can be reproduced by making following changes to the
+>> aer_irq() function and by executing the given test commands.
+>>
+>>   static irqreturn_t aer_irq(int irq, void *context)
+>>           struct aer_err_source e_src = {};
+>>
+>>           pci_read_config_dword(rp, aer + PCI_ERR_ROOT_STATUS,
+>> 				&e_src.status);
+>>   +       pci_dbg(pdev->port, "Root Error Status: %04x\n",
+>>   +		e_src.status);
+>>           if (!(e_src.status & AER_ERR_STATUS_MASK))
 > 
-> > configured with a specific delivery mode (e.g., NMI).
-> >
-> > Add a new member, delivery_mode, to struct irq_cfg. Subsequent changesets
-> > will update every irq_domain to set the delivery mode of each IRQ to that
-> > specified in its irq_cfg data.
-> >
-> > To keep the current behavior, when allocating an IRQ in the root
-> > domain
+> Do you mean
 > 
-> The root domain does not allocate an interrupt. The root domain
-> allocates a vector for an interrupt. There is a very clear and technical
-> destinction. Can you please be more careful about the wording?
+>    if (!(e_src.status & (PCI_ERR_ROOT_UNCOR_RCV|PCI_ERR_ROOT_COR_RCV)))
+> 
+> here?  AER_ERR_STATUS_MASK would be after this fix.
 
-I will review the wording in the changelogs.
-
-> 
-> > --- a/arch/x86/kernel/apic/vector.c
-> > +++ b/arch/x86/kernel/apic/vector.c
-> > @@ -567,6 +567,7 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
-> >  		irqd->chip_data = apicd;
-> >  		irqd->hwirq = virq + i;
-> >  		irqd_set_single_target(irqd);
-> > +
-> 
-> Stray newline.
-
-Sorry! I will remove it.
-> 
-> >  		/*
-> >  		 * Prevent that any of these interrupts is invoked in
-> >  		 * non interrupt context via e.g. generic_handle_irq()
-> > @@ -577,6 +578,14 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
-> >  		/* Don't invoke affinity setter on deactivated interrupts */
-> >  		irqd_set_affinity_on_activate(irqd);
-> >  
-> > +		/*
-> > +		 * Initialize the delivery mode of this irq to match the
-> 
-> s/irq/interrupt/
-
-I will make this change.
-
-Thanks and BR,
-Ricardo
+Yes. You are correct. Do you want me to update it and Fixes tag
+and send next version?
 
 > 
-> > +		 * default delivery mode of the APIC. Children irq domains
-> > +		 * may take the delivery mode from the individual irq
-> > +		 * configuration rather than from the APIC driver.
-> > +		 */
-> > +		apicd->hw_irq_cfg.delivery_mode = apic->delivery_mode;
-> > +
-> >  		/*
-> >  		 * Legacy vectors are already assigned when the IOAPIC
-> >  		 * takes them over. They stay on the same vector. This is
+>>                   return IRQ_NONE;
+>>
+>>   +       mdelay(5000);
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
