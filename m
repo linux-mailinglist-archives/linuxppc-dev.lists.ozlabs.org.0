@@ -2,54 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2058F524EF7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 15:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AD9524F54
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 16:03:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzYHr0hmgz3cHX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 23:57:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzYRH5LFrz3cJs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 00:03:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YQSjZ/8q;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=q3SRuDuz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=jpoimboe@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=YQSjZ/8q; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzYHD3LYfz3bYJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 23:56:56 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=q3SRuDuz; dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzYQd38d4z3bYJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 00:03:20 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id 600DB21B2F;
+ Thu, 12 May 2022 14:03:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1652364196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=LqB96ySSQJ4ly+3J+rYGGuH/Fd7fkvILEbloF31pDTM=;
+ b=q3SRuDuz1bsrtNT6AQbijhKvd/E1pyV5ISS04f4B5Eo/MpxJkThlvlpzsrdXZrusqFVq1r
+ 7s+CTa1eDnSZSlcSzDLMEjhXIjmmjm5vpsFw4wJd/0EtFszB2sl8NlJGjykorM6dG2+lpF
+ 5FiP1kelHffEWxoWnmRZqh37k1tv6Lg=
+Received: from suse.cz (unknown [10.100.208.146])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 928CD61866;
- Thu, 12 May 2022 13:56:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3BFC385B8;
- Thu, 12 May 2022 13:56:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1652363813;
- bh=u0smFFjUMhTt/JBgvJi9NyfEjj+cWk3ypDQeMQ3aJQ4=;
- h=From:To:Cc:Subject:Date:From;
- b=YQSjZ/8qzkUrg4jBFbJ0ShB7zfZdd5+Vz6ERJ0AfwP1CsLwbxnsUyOX0WZD2QZwxz
- enYTZorYc+5wR27nsoX76nz3wjw9qNHrybHqm70Egb09wnOWMNPaOIju7I5C17wS01
- 0M31Rt/yoGjKYDvuxrs63VwAGhB8Hk06yMZthHINx7MuNheHwm11UqpzlWdKIwBheo
- Wd2zR0EUPDgxWoHybXb6WkgP+1bMa/emh8qjnaKvZg4MHPB8Ax3I0g53tTvoGx8iyv
- EhKLYRmTy5cdCN7xbt3MV3/Xkk/O0d0cmknxF2lmDTsTMGMibQ8+z9XkpZCB4kdUuq
- YJ0E29+vf9nOg==
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2] bug: Use normal relative pointers in 'struct bug_entry'
-Date: Thu, 12 May 2022 06:56:23 -0700
-Message-Id: <f0e05be797a16f4fc2401eeb88c8450dcbe61df6.1652362951.git.jpoimboe@kernel.org>
-X-Mailer: git-send-email 2.34.1
+ by relay2.suse.de (Postfix) with ESMTPS id 5C2702C141;
+ Thu, 12 May 2022 14:03:13 +0000 (UTC)
+Date: Thu, 12 May 2022 16:03:10 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: Re: [PATCH 24/30] panic: Refactor the panic path
+Message-ID: <Yn0TnsWVxCcdB2yO@alley>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-25-gpiccoli@igalia.com>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220427224924.592546-25-gpiccoli@igalia.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,207 +62,410 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
+ linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
+ john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
+ dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
+ linux-pm@vger.kernel.org, coresight@lists.linaro.org,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ vkuznets@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
+ kernel-dev@igalia.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With CONFIG_GENERIC_BUG_RELATIVE_POINTERS, the addr/file relative
-pointers are calculated weirdly: based on the beginning of the bug_entry
-struct address, rather than their respective pointer addresses.
+Hello,
 
-Make the relative pointers less surprising to both humans and tools by
-calculating them the normal way.
+first, I am sorry for stepping into the discussion so late.
+I was busy with some other stuff and this patchset is far
+from trivial.
 
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Sven Schnelle <svens@linux.ibm.com> # s390
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Tested-by: Mark Rutland <mark.rutland@arm.com> [arm64]
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
----
-v2:
-- fix ppc64le C macros (and actually test them)
+Second, thanks a lot for putting so much effort into it.
+Most of the changes look pretty good, especially all
+the fixes of particular notifiers and split into
+four lists.
 
- arch/arm64/include/asm/asm-bug.h |  4 ++--
- arch/powerpc/include/asm/bug.h   | 14 ++++++++------
- arch/riscv/include/asm/bug.h     |  4 ++--
- arch/s390/include/asm/bug.h      |  5 +++--
- arch/x86/include/asm/bug.h       |  2 +-
- lib/bug.c                        | 15 +++++++--------
- 6 files changed, 23 insertions(+), 21 deletions(-)
+Though this patch will need some more love. See below
+for more details.
 
-diff --git a/arch/arm64/include/asm/asm-bug.h b/arch/arm64/include/asm/asm-bug.h
-index 03f52f84a4f3..c762038ba400 100644
---- a/arch/arm64/include/asm/asm-bug.h
-+++ b/arch/arm64/include/asm/asm-bug.h
-@@ -14,7 +14,7 @@
- 	14472:	.string file;					\
- 		.popsection;					\
- 								\
--		.long 14472b - 14470b;				\
-+		.long 14472b - .;				\
- 		.short line;
- #else
- #define _BUGVERBOSE_LOCATION(file, line)
-@@ -25,7 +25,7 @@
- #define __BUG_ENTRY(flags) 				\
- 		.pushsection __bug_table,"aw";		\
- 		.align 2;				\
--	14470:	.long 14471f - 14470b;			\
-+	14470:	.long 14471f - .;			\
- _BUGVERBOSE_LOCATION(__FILE__, __LINE__)		\
- 		.short flags; 				\
- 		.popsection;				\
-diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
-index ecbae1832de3..61a4736355c2 100644
---- a/arch/powerpc/include/asm/bug.h
-+++ b/arch/powerpc/include/asm/bug.h
-@@ -13,7 +13,8 @@
- #ifdef CONFIG_DEBUG_BUGVERBOSE
- .macro __EMIT_BUG_ENTRY addr,file,line,flags
- 	 .section __bug_table,"aw"
--5001:	 .4byte \addr - 5001b, 5002f - 5001b
-+5001:	 .4byte \addr - .
-+	 .4byte 5002f - .
- 	 .short \line, \flags
- 	 .org 5001b+BUG_ENTRY_SIZE
- 	 .previous
-@@ -24,7 +25,7 @@
- #else
- .macro __EMIT_BUG_ENTRY addr,file,line,flags
- 	 .section __bug_table,"aw"
--5001:	 .4byte \addr - 5001b
-+5001:	 .4byte \addr - .
- 	 .short \flags
- 	 .org 5001b+BUG_ENTRY_SIZE
- 	 .previous
-@@ -49,15 +50,16 @@
- #ifdef CONFIG_DEBUG_BUGVERBOSE
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
--	"2:\t.4byte 1b - 2b, %0 - 2b\n"		\
--	"\t.short %1, %2\n"			\
-+	"2:	.4byte 1b - .\n"		\
-+	"	.4byte %0 - .\n"		\
-+	"	.short %1, %2\n"		\
- 	".org 2b+%3\n"				\
- 	".previous\n"
- #else
- #define _EMIT_BUG_ENTRY				\
- 	".section __bug_table,\"aw\"\n"		\
--	"2:\t.4byte 1b - 2b\n"			\
--	"\t.short %2\n"				\
-+	"2:	.4byte 1b - .\n"		\
-+	"	.short %2\n"			\
- 	".org 2b+%3\n"				\
- 	".previous\n"
- #endif
-diff --git a/arch/riscv/include/asm/bug.h b/arch/riscv/include/asm/bug.h
-index d3804a2f9aad..1aaea81fb141 100644
---- a/arch/riscv/include/asm/bug.h
-+++ b/arch/riscv/include/asm/bug.h
-@@ -30,8 +30,8 @@
- typedef u32 bug_insn_t;
- 
- #ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
--#define __BUG_ENTRY_ADDR	RISCV_INT " 1b - 2b"
--#define __BUG_ENTRY_FILE	RISCV_INT " %0 - 2b"
-+#define __BUG_ENTRY_ADDR	RISCV_INT " 1b - ."
-+#define __BUG_ENTRY_FILE	RISCV_INT " %0 - ."
- #else
- #define __BUG_ENTRY_ADDR	RISCV_PTR " 1b"
- #define __BUG_ENTRY_FILE	RISCV_PTR " %0"
-diff --git a/arch/s390/include/asm/bug.h b/arch/s390/include/asm/bug.h
-index 0b25f28351ed..aebe1e22c7be 100644
---- a/arch/s390/include/asm/bug.h
-+++ b/arch/s390/include/asm/bug.h
-@@ -15,7 +15,8 @@
- 		"1:	.asciz	\""__FILE__"\"\n"		\
- 		".previous\n"					\
- 		".section __bug_table,\"awM\",@progbits,%2\n"	\
--		"2:	.long	0b-2b,1b-2b\n"			\
-+		"2:	.long	0b-.\n"				\
-+		"	.long	1b-.\n"				\
- 		"	.short	%0,%1\n"			\
- 		"	.org	2b+%2\n"			\
- 		".previous\n"					\
-@@ -30,7 +31,7 @@
- 	asm_inline volatile(					\
- 		"0:	mc	0,0\n"				\
- 		".section __bug_table,\"awM\",@progbits,%1\n"	\
--		"1:	.long	0b-1b\n"			\
-+		"1:	.long	0b-.\n"				\
- 		"	.short	%0\n"				\
- 		"	.org	1b+%1\n"			\
- 		".previous\n"					\
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index aaf0cb0db4ae..a3ec87d198ac 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -18,7 +18,7 @@
- #ifdef CONFIG_X86_32
- # define __BUG_REL(val)	".long " __stringify(val)
- #else
--# define __BUG_REL(val)	".long " __stringify(val) " - 2b"
-+# define __BUG_REL(val)	".long " __stringify(val) " - ."
- #endif
- 
- #ifdef CONFIG_DEBUG_BUGVERBOSE
-diff --git a/lib/bug.c b/lib/bug.c
-index 45a0584f6541..c223a2575b72 100644
---- a/lib/bug.c
-+++ b/lib/bug.c
-@@ -6,8 +6,7 @@
- 
-   CONFIG_BUG - emit BUG traps.  Nothing happens without this.
-   CONFIG_GENERIC_BUG - enable this code.
--  CONFIG_GENERIC_BUG_RELATIVE_POINTERS - use 32-bit pointers relative to
--	the containing struct bug_entry for bug_addr and file.
-+  CONFIG_GENERIC_BUG_RELATIVE_POINTERS - use 32-bit relative pointers for bug_addr and file
-   CONFIG_DEBUG_BUGVERBOSE - emit full file+line information for each BUG
- 
-   CONFIG_BUG and CONFIG_DEBUG_BUGVERBOSE are potentially user-settable
-@@ -53,10 +52,10 @@ extern struct bug_entry __start___bug_table[], __stop___bug_table[];
- 
- static inline unsigned long bug_addr(const struct bug_entry *bug)
- {
--#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
--	return bug->bug_addr;
-+#ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-+	return (unsigned long)&bug->bug_addr_disp + bug->bug_addr_disp;
- #else
--	return (unsigned long)bug + bug->bug_addr_disp;
-+	return bug->bug_addr;
- #endif
- }
- 
-@@ -131,10 +130,10 @@ void bug_get_file_line(struct bug_entry *bug, const char **file,
- 		       unsigned int *line)
- {
- #ifdef CONFIG_DEBUG_BUGVERBOSE
--#ifndef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
--	*file = bug->file;
-+#ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
-+	*file = (const char *)&bug->file_disp + bug->file_disp;
- #else
--	*file = (const char *)bug + bug->file_disp;
-+	*file = bug->file;
- #endif
- 	*line = bug->line;
- #else
--- 
-2.34.1
 
+On Wed 2022-04-27 19:49:18, Guilherme G. Piccoli wrote:
+> The panic() function is somewhat convoluted - a lot of changes were
+> made over the years, adding comments that might be misleading/outdated
+> now, it has a code structure that is a bit complex to follow, with
+> lots of conditionals, for example. The panic notifier list is something
+> else - a single list, with multiple callbacks of different purposes,
+> that run in a non-deterministic order and may affect hardly kdump
+> reliability - see the "crash_kexec_post_notifiers" workaround-ish flag.
+> 
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -3784,6 +3791,33 @@
+>  			timeout < 0: reboot immediately
+>  			Format: <timeout>
+>  
+> +	panic_notifiers_level=
+> +			[KNL] Set the panic notifiers execution order.
+> +			Format: <unsigned int>
+> +			We currently have 4 lists of panic notifiers; based
+> +			on the functionality and risk (for panic success) the
+> +			callbacks are added in a given list. The lists are:
+> +			- hypervisor/FW notification list (low risk);
+> +			- informational list (low/medium risk);
+> +			- pre_reboot list (higher risk);
+> +			- post_reboot list (only run late in panic and after
+> +			kdump, not configurable for now).
+> +			This parameter defines the ordering of the first 3
+> +			lists with regards to kdump; the levels determine
+> +			which set of notifiers execute before kdump. The
+> +			accepted levels are:
+
+This talks only about kdump. The reality is much more complicated.
+The level affect the order of:
+
+    + notifiers vs. kdump
+    + notifiers vs. crash_dump
+    + crash_dump vs. kdump
+
+There might theoretically many variants of the ordering of kdump,
+crash_dump, and the 4 notifier list. Some variants do not make
+much sense. You choose 5 variants and tried to select them by
+a level number.
+
+The question is if we really could easily describe the meaning this
+way. It is not only about a "level" of notifiers before kdump. It is
+also about the ordering of crash_dump vs. kdump. IMHO, "level"
+semantic does not fit there.
+
+Maybe more parameters might be easier to understand the effect.
+Anyway, we first need to agree on the chosen variants.
+I am going to discuss it more in the code, see below.
+
+
+
+> +			0: kdump is the first thing to run, NO list is
+> +			executed before kdump.
+> +			1: only the hypervisor list is executed before kdump.
+> +			2 (default level): the hypervisor list and (*if*
+> +			there's any kmsg_dumper defined) the informational
+> +			list are executed before kdump.
+> +			3: both the hypervisor and the informational lists
+> +			(always) execute before kdump.
+> +			4: the 3 lists (hypervisor, info and pre_reboot)
+> +			execute before kdump - this behavior is analog to the
+> +			deprecated parameter "crash_kexec_post_notifiers".
+> +
+>  	panic_print=	Bitmask for printing system info when panic happens.
+>  			User can chose combination of the following bits:
+>  			bit 0: print all tasks info
+> --- a/kernel/panic.c
+> +++ b/kernel/panic.c
+> @@ -183,6 +195,112 @@ static void panic_print_sys_info(bool console_flush)
+>  		ftrace_dump(DUMP_ALL);
+>  }
+>  
+> +/*
+> + * Helper that accumulates all console flushing routines executed on panic.
+> + */
+> +static void console_flushing(void)
+> +{
+> +#ifdef CONFIG_VT
+> +	unblank_screen();
+> +#endif
+> +	console_unblank();
+> +
+> +	/*
+> +	 * In this point, we may have disabled other CPUs, hence stopping the
+> +	 * CPU holding the lock while still having some valuable data in the
+> +	 * console buffer.
+> +	 *
+> +	 * Try to acquire the lock then release it regardless of the result.
+> +	 * The release will also print the buffers out. Locks debug should
+> +	 * be disabled to avoid reporting bad unlock balance when panic()
+> +	 * is not being called from OOPS.
+> +	 */
+> +	debug_locks_off();
+> +	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
+> +
+> +	panic_print_sys_info(true);
+> +}
+> +
+> +#define PN_HYPERVISOR_BIT	0
+> +#define PN_INFO_BIT		1
+> +#define PN_PRE_REBOOT_BIT	2
+> +#define PN_POST_REBOOT_BIT	3
+> +
+> +/*
+> + * Determine the order of panic notifiers with regards to kdump.
+> + *
+> + * This function relies in the "panic_notifiers_level" kernel parameter
+> + * to determine how to order the notifiers with regards to kdump. We
+> + * have currently 5 levels. For details, please check the kernel docs for
+> + * "panic_notifiers_level" at Documentation/admin-guide/kernel-parameters.txt.
+> + *
+> + * Default level is 2, which means the panic hypervisor and informational
+> + * (unless we don't have any kmsg_dumper) lists will execute before kdump.
+> + */
+> +static void order_panic_notifiers_and_kdump(void)
+> +{
+> +	/*
+> +	 * The parameter "crash_kexec_post_notifiers" is deprecated, but
+> +	 * valid. Users that set it want really all panic notifiers to
+> +	 * execute before kdump, so it's effectively the same as setting
+> +	 * the panic notifiers level to 4.
+> +	 */
+> +	if (panic_notifiers_level >= 4 || crash_kexec_post_notifiers)
+> +		return;
+> +
+> +	/*
+> +	 * Based on the level configured (smaller than 4), we clear the
+> +	 * proper bits in "panic_notifiers_bits". Notice that this bitfield
+> +	 * is initialized with all notifiers set.
+> +	 */
+> +	switch (panic_notifiers_level) {
+> +	case 3:
+> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> +		break;
+> +	case 2:
+> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> +
+> +		if (!kmsg_has_dumpers())
+> +			clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> +		break;
+> +	case 1:
+> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> +		clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> +		break;
+> +	case 0:
+> +		clear_bit(PN_PRE_REBOOT_BIT, &panic_notifiers_bits);
+> +		clear_bit(PN_INFO_BIT, &panic_notifiers_bits);
+> +		clear_bit(PN_HYPERVISOR_BIT, &panic_notifiers_bits);
+> +		break;
+> +	}
+> +}
+>
+> +/*
+> + * Set of helpers to execute the panic notifiers only once.
+> + * Just the informational notifier cares about the return.
+> + */
+> +static inline bool notifier_run_once(struct atomic_notifier_head head,
+> +				     char *buf, long bit)
+> +{
+> +	if (test_and_change_bit(bit, &panic_notifiers_bits)) {
+> +		atomic_notifier_call_chain(&head, PANIC_NOTIFIER, buf);
+> +		return true;
+> +	}
+> +	return false;
+> +}
+
+Here is the code using the above functions. It helps to discuss
+the design and logic.
+
+<kernel/panic.c>
+	order_panic_notifiers_and_kdump();
+
+	/* If no level, we should kdump ASAP. */
+	if (!panic_notifiers_level)
+		__crash_kexec(NULL);
+
+	crash_smp_send_stop();
+	panic_notifier_hypervisor_once(buf);
+
+	if (panic_notifier_info_once(buf))
+		kmsg_dump(KMSG_DUMP_PANIC);
+
+	panic_notifier_pre_reboot_once(buf);
+
+	__crash_kexec(NULL);
+
+	panic_notifier_hypervisor_once(buf);
+
+	if (panic_notifier_info_once(buf))
+		kmsg_dump(KMSG_DUMP_PANIC);
+
+	panic_notifier_pre_reboot_once(buf);
+</kernel/panic.c>
+
+I have to say that the logic is very unclear. Almost all
+functions are called twice:
+
+   + __crash_kexec()
+   + kmsg_dump()
+   + panic_notifier_hypervisor_once()
+   + panic_notifier_pre_reboot_once()
+   + panic_notifier_info_once()
+
+It is pretty hard to find what functions are always called in the same
+order and where the order can be inverted.
+
+The really used code path is defined by order_panic_notifiers_and_kdump()
+that encodes "level" into "bits". The bits are then flipped in
+panic_notifier_*_once() calls that either do something or not.
+kmsg_dump() is called according to the bit flip.
+
+It is an interesting approach. I guess that you wanted to avoid too
+many if/then/else levels in panic(). But honestly, it looks like
+a black magic to me.
+
+IMHO, it is always easier to follow if/then/else logic than using
+a translation table that requires additional bit flips when
+a value is used more times.
+
+Also I guess that it is good proof that "level" abstraction does
+not fit here. Normal levels would not need this kind of magic.
+
+
+OK, the question is how to make it better. Let's start with
+a clear picture of the problem:
+
+1. panic() has basically two funtions:
+
+      + show/store debug information (optional ways and amount)
+      + do something with the system (reboot, stay hanged)
+
+
+2. There are 4 ways how to show/store the information:
+
+      + tell hypervisor to store what it is interested about
+      + crash_dump
+      + kmsg_dump()
+      + consoles
+
+  , where crash_dump and consoles are special:
+
+     + crash_dump does not return. Instead it ends up with reboot.
+
+     + Consoles work transparently. They just need an extra flush
+       before reboot or staying hanged.
+
+
+3. The various notifiers do things like:
+
+     + tell hypervisor about the crash
+     + print more information (also stop watchdogs)
+     + prepare system for reboot (touch some interfaces)
+     + prepare system for staying hanged (blinking)
+
+   Note that it pretty nicely matches the 4 notifier lists.
+
+
+Now, we need to decide about the ordering. The main area is how
+to store the debug information. Consoles are transparent so
+the quesition is about:
+
+     + hypervisor
+     + crash_dump
+     + kmsg_dump
+
+Some people need none and some people want all. There is a
+risk that system might hung at any stage. This why people want to
+make the order configurable.
+
+But crash_dump() does not return when it succeeds. And kmsg_dump()
+users havn't complained about hypervisor problems yet. So, that
+two variants might be enough:
+
+    + crash_dump (hypervisor, kmsg_dump as fallback)
+    + hypervisor, kmsg_dump, crash_dump
+
+One option "panic_prefer_crash_dump" should be enough.
+And the code might look like:
+
+void panic()
+{
+[...]
+	dump_stack();
+	kgdb_panic(buf);
+
+	< ---  here starts the reworked code --- >
+
+	/* crash dump is enough when enabled and preferred. */
+	if (panic_prefer_crash_dump)
+		__crash_kexec(NULL);
+
+	/* Stop other CPUs and focus on handling the panic state. */
+	if (has_kexec_crash_image)
+		crash_smp_send_stop();
+	else
+		smp_send_stop()
+
+	/* Notify hypervisor about the system panic. */
+	atomic_notifier_call_chain(&panic_hypervisor_list, 0, NULL);
+
+	/*
+	 * No need to risk extra info when there is no kmsg dumper
+	 * registered.
+	 */
+	if (!has_kmsg_dumper())
+		__crash_kexec(NULL);
+
+	/* Add extra info from different subsystems. */
+	atomic_notifier_call_chain(&panic_info_list, 0, NULL);
+
+	kmsg_dump(KMSG_DUMP_PANIC);
+	__crash_kexec(NULL);
+
+	/* Flush console */
+	unblank_screen();
+	console_unblank();
+	debug_locks_off();
+	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
+
+	if (panic_timeout > 0) {
+		delay()
+	}
+
+	/*
+	 * Prepare system for eventual reboot and allow custom
+	 * reboot handling.
+	 */
+	atomic_notifier_call_chain(&panic_reboot_list, 0, NULL);
+
+	if (panic_timeout != 0) {
+		reboot();
+	}
+
+	/*
+	 * Prepare system for the infinite waiting, for example,
+	 * setup blinking.
+	 */
+	atomic_notifier_call_chain(&panic_loop_list, 0, NULL);
+
+	infinite_loop();
+}
+
+
+__crash_kexec() is there 3 times but otherwise the code looks
+quite straight forward.
+
+Note 1: I renamed the two last notifier list. The name 'post-reboot'
+	did sound strange from the logical POV ;-)
+
+Note 2: We have to avoid the possibility to call "reboot" list
+	before kmsg_dump(). All callbacks providing info
+	have to be in the info list. It a callback combines
+	info and reboot functionality then it should be split.
+
+	There must be another way to calm down problematic
+	info callbacks. And it has to be solved when such
+	a problem is reported. Is there any known issue, please?
+
+It is possible that I have missed something important.
+But I would really like to make the logic as simple as possible.
+
+Best Regards,
+Petr
