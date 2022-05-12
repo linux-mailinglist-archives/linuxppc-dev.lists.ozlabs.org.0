@@ -1,53 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DB1524DB7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 15:04:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC6E524E0A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 15:17:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzX6n2043z3c7Q
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 23:04:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzXQ11B6mz3cCd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 23:17:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=D/Ze8kpb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=DgXI6vDF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzX6B6Dn6z2x9G
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 23:04:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzXPL3T6vz2yMK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 23:17:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=D/Ze8kpb; 
+ header.a=rsa-sha256 header.s=201909 header.b=DgXI6vDF; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4KzX686K5Bz4xLb;
- Thu, 12 May 2022 23:04:00 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4KzXPF6hr7z4xLb;
+ Thu, 12 May 2022 23:17:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1652360641;
- bh=0uAQzRywcoHe5qPTXv99UHIxtB59cyjehM95bNbBvXk=;
+ s=201909; t=1652361426;
+ bh=gYQv0AS0gD3iTDUtUFbFD436ahJqXiZXz8+LVEIcXjY=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=D/Ze8kpbYRGb3QeCDS8mFRlw8WCqKkvXEfh/RzBhC2BvKw7mKfMr4bYxEGbS7XdD0
- 65J/yFKK9jGe879/HsQq858opPkVlRwszM9jKV8HgjTyAjGEJzEE4mFDBBGpc3GVeE
- Ww3ebDCRmCMu8vZ/3a1+i3pJvgK4+OpCK8kxstzfJnKpygfD/5yoL/lqm3E4zQ1kMw
- 1XcJOwvVv+N5K2aDWgGJ287AMx6ghdx0I0mUidtmpwV9hn4lNo7vHnuf0x3nkFXngo
- YJe+hpGN4kEDMUNkj7AJMCWeiH3U22TNK91I3h+Ovd4KePoM7TfH5yr7R+/9CtyJVe
- CZ310SBi7JwJQ==
+ b=DgXI6vDFoOhQlNw2D3j6l7p9Bo8NxO46sWtXM8r+OYiyMftvvKeZ+YigIjT5fPK7o
+ qs7zCef6LfYSz032M6qHnAc0bmnx7uQ/WxBPhiFl8Pob/lmnwkWrQW6EBHPqj3v0mE
+ BUjjaxw4ou8ESl+UqnJFXaNSJpiAWIJCYhAPt/hhFc2XuEoDWRjSUvkwIhH7yIyBd4
+ NJvpVPUlNtq+1EGWYxAWX3S4ypqkd8noZTBJt+9sgPF8AzspNgP4zVdd25GQTpw3zZ
+ MR158s156buU2q9Qq24SFts9hiB7De9hl/ZGXZ7DC7NvDVOQBx903T4+MnWrsyqNU/
+ /ZQE1z9/wcHUA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Kees Cook <keescook@chromium.org>, Nicholas Piggin <npiggin@gmail.com>
+To: xiujianfeng <xiujianfeng@huawei.com>, Nicholas Piggin
+ <npiggin@gmail.com>, benh@kernel.crashing.org,
+ christophe.leroy@csgroup.eu, mark.rutland@arm.com, paulus@samba.org,
+ tglx@linutronix.de
 Subject: Re: [PATCH -next] powerpc: add support for syscall stack randomization
-In-Reply-To: <202205100917.5480D91@keescook>
+In-Reply-To: <a1dcd50b-0819-df54-a963-ebb0551e3356@huawei.com>
 References: <20220505111932.228814-1-xiujianfeng@huawei.com>
- <1652173338.7bltwybi0c.astroid@bobo.none> <202205100917.5480D91@keescook>
-Date: Thu, 12 May 2022 23:03:57 +1000
-Message-ID: <87r14y7via.fsf@mpe.ellerman.id.au>
+ <1652173338.7bltwybi0c.astroid@bobo.none>
+ <a1dcd50b-0819-df54-a963-ebb0551e3356@huawei.com>
+Date: Thu, 12 May 2022 23:17:04 +1000
+Message-ID: <87pmki7uwf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,85 +65,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, Xiu Jianfeng <xiujianfeng@huawei.com>,
- linux-kernel@vger.kernel.org, paulus@samba.org,
- linux-hardening@vger.kernel.org, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Kees Cook <keescook@chromium.org> writes:
-> On Tue, May 10, 2022 at 07:23:46PM +1000, Nicholas Piggin wrote:
-...
->> 
->> I wonder why the choose is separated from the add? I guess it's to
->> avoid a data dependency for stack access on an expensive random
->> function, so that makes sense (a comment would be nice in the
->> generic code).
->
-> How does this read? I can send a "real" patch if it looks good:
->
->
-> diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
-> index 1468caf001c0..ad3e80275c74 100644
-> --- a/include/linux/randomize_kstack.h
-> +++ b/include/linux/randomize_kstack.h
-> @@ -40,8 +40,11 @@ DECLARE_PER_CPU(u32, kstack_offset);
->   */
->  #define KSTACK_OFFSET_MAX(x)	((x) & 0x3FF)
->  
-> -/*
-> - * These macros must be used during syscall entry when interrupts and
-> +/**
-> + * add_random_kstack_offset - Increase stack utilization by previously
-> + *			      chosen random offset
-> + *
-> + * This should be used in the syscall entry path when interrupts and
- 
-I would say "called" rather than used, but that's a nit-pick.
-
->   * preempt are disabled, and after user registers have been stored to
->   * the stack.
->   */
-> @@ -55,6 +58,24 @@ DECLARE_PER_CPU(u32, kstack_offset);
->  	}								\
->  } while (0)
->  
-> +/**
-> + * choose_random_kstack_offset - Choose the random offsset for the next
-> + *				 add_random_kstack_offset()
-
-The name "choose" tricked me into thinking the offset is used verbatim.
-But it's actually xor'ed into the existing offset.
-
-I was pretty dubious about using mftb (~= rdtsc) based on that, but the
-xor makes me less worried.
-
-Obviously you don't want to change the name now, but it would be good if
-the doc comment mentioned that the value is combined with the existing
-value, not used as-is.
-
-> + * This should only be used during syscall exit when interrupts and
-> + * preempt are disabled, and before user registers have been restored
-> + * from the stack. This is done to frustrate attack attempts from
-> + * userspace to learn the offset:
-> + * - Maximize the timing uncertainty visible from userspace: if the
-> + *   the offset is chosen at syscall entry, userspace has much more
-
-You have a "the the" across the line-break there.
-
-> + *   control over the timing between chosen offsets. "How long will we
-> + *   be in kernel mode?" tends to be more difficult to know than "how
-> + *   long will be be in user mode?"
-> + * - Reduce the lifetime of the new offset sitting in memory during
-> + *   kernel mode execution. Exposures of "thread-local" (e.g. current,
-> + *   percpu, etc) memory contents tends to be easier than arbitrary
-> + *   location memory exposures.
-> + */
->  #define choose_random_kstack_offset(rand) do {				\
->  	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
->  				&randomize_kstack_offset)) {		\
->
-
-cheers
+eGl1amlhbmZlbmcgPHhpdWppYW5mZW5nQGh1YXdlaS5jb20+IHdyaXRlczoNCj4g5ZyoIDIwMjIv
+NS8xMCAxNzoyMywgTmljaG9sYXMgUGlnZ2luIOWGmemBkzoNCj4+IEV4Y2VycHRzIGZyb20gWGl1
+IEppYW5mZW5nJ3MgbWVzc2FnZSBvZiBNYXkgNSwgMjAyMiA5OjE5IHBtOg0KPj4+IEFkZCBzdXBw
+b3J0IGZvciBhZGRpbmcgYSByYW5kb20gb2Zmc2V0IHRvIHRoZSBzdGFjayB3aGlsZSBoYW5kbGlu
+Zw0KPj4+IHN5c2NhbGxzLiBUaGlzIHBhdGNoIHVzZXMgbWZ0YigpIGluc3RlYWQgb2YgZ2V0X3Jh
+bmRvbV9pbnQoKSBmb3IgYmV0dGVyDQo+Pj4gcGVyZm9ybWFuY2UuDQo+Pg0KLi4uDQo+Pg0KPj4+
+IEBAIC00MDUsNiArNDA3LDcgQEAgaW50ZXJydXB0X2V4aXRfdXNlcl9wcmVwYXJlX21haW4odW5z
+aWduZWQgbG9uZyByZXQsIHN0cnVjdCBwdF9yZWdzICpyZWdzKQ0KPj4+DQo+Pj4gICAJLyogUmVz
+dG9yZSB1c2VyIGFjY2VzcyBsb2NrcyBsYXN0ICovDQo+Pj4gICAJa3VhcF91c2VyX3Jlc3RvcmUo
+cmVncyk7DQo+Pj4gKwljaG9vc2VfcmFuZG9tX2tzdGFja19vZmZzZXQobWZ0YigpICYgMHhGRik7
+DQo+Pj4NCj4+PiAgIAlyZXR1cm4gcmV0Ow0KPj4+ICAgfQ0KPj4gU28gdGhpcyBzZWVtcyB0byBi
+ZSB3aGF0IHg4NiBhbmQgczM5MCBkbywgYnV0IHdoeSBhcmUgd2UgY2hvb3NpbmcgYQ0KPj4gbmV3
+IG9mZnNldCBmb3IgZXZlcnkgaW50ZXJydXB0IHdoZW4gaXQncyBvbmx5IHVzZWQgb24gYSBzeXNj
+YWxsPw0KPj4gSSB3b3VsZCByYXRoZXIgeW91IGRvIHdoYXQgYXJtNjQgZG9lcyBhbmQganVzdCBj
+aG9vc2UgdGhlIG9mZnNldA0KPj4gYXQgdGhlIGVuZCBvZiBzeXN0ZW1fY2FsbF9leGNlcHRpb24u
+DQo+IHRoYW5rcyBmb3IgeW91IHN1Z2dlc3Rpb24sIHdpbGwgZG8gaW4gdjIuDQo+Pg0KPj4gSSB3
+b25kZXIgd2h5IHRoZSBjaG9vc2UgaXMgc2VwYXJhdGVkIGZyb20gdGhlIGFkZD8gSSBndWVzcyBp
+dCdzIHRvDQo+PiBhdm9pZCBhIGRhdGEgZGVwZW5kZW5jeSBmb3Igc3RhY2sgYWNjZXNzIG9uIGFu
+IGV4cGVuc2l2ZSByYW5kb20NCj4+IGZ1bmN0aW9uLCBzbyB0aGF0IG1ha2VzIHNlbnNlIChhIGNv
+bW1lbnQgd291bGQgYmUgbmljZSBpbiB0aGUNCj4+IGdlbmVyaWMgY29kZSkuDQo+Pg0KPj4gSSBk
+b24ndCBhY3R1YWxseSBrbm93IGlmIG1mdGIoKSBpcyBjaGVhcGVyIGhlcmUgdGhhbiBhIFJORy4g
+SXQNCj4+IG1heSBub3QgYmUgY29uZGl0aW9uZWQgYWxsIHRoYXQgd2VsbCBlaXRoZXIuIEkgd291
+bGQgYmUgdGVtcHRlZA0KDQo+ICNpZiBkZWZpbmVkKF9fcG93ZXJwYzY0X18pICYmIChkZWZpbmVk
+KENPTkZJR19QUENfQ0VMTCkgfHwNCj4gZGVmaW5lZChDT05GSUdfRTUwMCkpDQo+ICNkZWZpbmUg
+bWZ0YigpwqDCoMKgwqDCoMKgwqDCoMKgICh7dW5zaWduZWQgbG9uZyBydmFsO8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPiAgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhc20gdm9sYXRpbGUowqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgXA0KPiAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgIjkwOsKgwqDCoCBtZnNwciAlMCwgJTI7XG4iwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIFwNCj4gQVNNX0ZUUl9JRlNFVCjCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+ICDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgIjk3OsKgwqDCoCBjbXB3aSAlMCwwO1xuIsKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+ICDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgIsKgwqDCoMKgwqDCoCBiZXEtIDkwYjtcbiIsICIiLCAlMSnCoMKg
+IFwNCj4gIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgOiAi
+PXIiIChydmFsKSBcDQo+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIDogImkiIChDUFVfRlRSX0NFTExfVEJfQlVHKSwgImkiIChTUFJOX1RCUkwpIDoNCj4g
+ImNyMCIpOyBcDQo+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIHJ2YWw7fSkNCj4gI2VsaWYgZGVmaW5lZChDT05GSUdfUFBDXzh4eCkNCj4gI2RlZmluZSBt
+ZnRiKCnCoMKgwqDCoMKgwqDCoMKgwqAgKHt1bnNpZ25lZCBsb25nIHJ2YWw7wqDCoCBcDQo+ICDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFzbSB2b2xhdGls
+ZSgibWZ0YmwgJTAiIDogIj1yIiAocnZhbCkpOyBydmFsO30pDQo+ICNlbHNlDQo+ICNkZWZpbmUg
+bWZ0YigpwqDCoMKgwqDCoMKgwqDCoMKgICh7dW5zaWduZWQgbG9uZyBydmFsO8KgwqAgXA0KPiAg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhc20gdm9sYXRp
+bGUoIm1mc3ByICUwLCAlMSIgOiBcDQo+ICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgIj1yIiAocnZhbCkgOiAi
+aSIgKFNQUk5fVEJSTCkpOw0KPiBydmFsO30pDQo+ICNlbmRpZiAvKiAhQ09ORklHX1BQQ19DRUxM
+ICovDQo+DQo+IHRoZXJlIGFyZSAzIGltcGxlbWVudGF0aW9ucyBvZiBtZnRiKCkgaW4NCj4gYXJj
+aC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Zkc28vdGltZWJhc2UuaCwNCj4NCj4gdGhlIGxhc3QgdHdv
+IGNhc2VzIGhhdmUgb25seSBvbmUgaW5zdHJ1Y3Rpb24sIEl0J3Mgb2J2aW91c2x5IGNoZWFwZXIN
+Cj4gdGhhbiBnZXRfcmFuZG9tX2ludCwNCg0KSnVzdCBiZWNhdXNlIGl0J3Mgb25lIGluc3RydWN0
+aW9uIGRvZXNuJ3QgbWVhbiBpdCdzIG9idmlvdXNseSBjaGVhcGVyLg0KT24gc29tZSBDUFVzIG1m
+dGIgdGFrZXMgMTBzIG9mIGN5Y2xlcywgYW5kIGNhbiBhbHNvIHN0YWxsIHRoZSBwaXBlbGluZS4N
+Cg0KQnV0IGxvb2tpbmcgYXQgZ2V0X3JhbmRvbV91MzIoKSBpdCBkb2VzIGxvb2sgcHJldHR5IGNv
+bXBsaWNhdGVkLCBpdA0KdGFrZXMgYSBsb2NrIGFuZCBzbyBvbi4gSXQncyBhbHNvIHNpbGx5IHRv
+IGNhbGwgZ2V0X3JhbmRvbV91MzIoKSBmb3INCjQtYml0cyBvZiByYW5kb21uZXNzLg0KDQpNeSBp
+bml0aWFsIGltcHJlc3Npb24gd2FzIHRoYXQgbWZ0YigpIGlzIHRvbyBwcmVkaWN0YWJsZSB0byBi
+ZSB1c2VmdWwNCmFnYWluc3QgYSBkZXRlcm1pbmVkIGF0dGFja2VyLiBCdXQgbG9va2luZyBjbG9z
+ZXIgSSBzZWUgdGhhdA0KY2hvb3NlX3JhbmRvbV9rc3RhY2tfb2Zmc2V0KCkgeG9yJ3MgdGhlIHZh
+bHVlIHdlIHBhc3Mgd2l0aCB0aGUgZXhpc3RpbmcNCnZhbHVlLiBTbyB0aGF0IG1ha2VzIG1lIGxl
+c3Mgd29ycmllZCBhYm91dCB1c2luZyBtZnRiKCkuDQoNCldlIGNvdWxkIGFkZGl0aW9uYWxseSBj
+YWxsIGNob29zZV9yYW5kb21fa3N0YWNrX29mZnNldChnZXRfcmFuZG9tX2ludCgpKQ0KbGVzcyBy
+ZWd1bGFybHksIGVnLiBkdXJpbmcgY29udGV4dCBzd2l0Y2guIEJ1dCBJIGd1ZXNzIHRoYXQncyB0
+b28NCmluZnJlcXVlbnQgdG8gYWN0dWFsbHkgbWFrZSBhbnkgZGlmZmVyZW5jZS4NCg0KQnV0IGxp
+bWl0aW5nIGl0IHRvIDQtYml0cyBvZiByYW5kb21uZXNzIHNlZW1zIGluc3VmZmljaWVudC4gSXQg
+c2VlbXMNCmxpa2Ugd2Ugc2hvdWxkIGFsbG93IHRoZSBmdWxsIDYgKDEwKSBiaXRzLCBhbmQgYW55
+b25lIHR1cm5pbmcgdGhpcw0Kb3B0aW9uIG9uIHNob3VsZCBwcm9iYWJseSBhbHNvIGNvbnNpZGVy
+IGluY3JlYXNpbmcgdGhlaXIgc3RhY2sgc2l6ZS4NCg0KQWxzbyBkaWQgeW91IGNoZWNrIHRoZSBo
+ZWxwIHRleHQgYWJvdXQgc3RhY2stcHJvdGVjdG9yIHVuZGVyDQpIQVZFX0FSQ0hfUkFORE9NSVpF
+X0tTVEFDS19PRkZTRVQ/DQoNCmNoZWVycw0K
