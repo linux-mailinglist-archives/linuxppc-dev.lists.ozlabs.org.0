@@ -1,63 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0C7524160
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 02:07:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAEE52417C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 02:25:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzBtQ2VJMz3cDM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 10:07:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzCGh4ctsz3cGT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 10:25:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A/wj7Cvw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n5E+XsWq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.126; helo=mga18.intel.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mga12.intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
  envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=A/wj7Cvw; dkim-atps=neutral
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ header.s=Intel header.b=n5E+XsWq; dkim-atps=neutral
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzBsf3yf9z3bdj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 10:07:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzCG063r9z3bfC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 10:24:38 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652314022; x=1683850022;
+ t=1652315081; x=1683851081;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=iEGg3ZUCdx9uygbP/iQOaVPDEP0BAuMfZKqEQ1Cahnc=;
- b=A/wj7CvwuwphXbdEoY3pdiRRNfXQmu2atGrW8hAYZZbzKQxO2uE8MV3I
- fYOGo+GgKumiE2+vQvRw+HJzSS4uDQ583yfDG+t7PzQ3gwUsyr1pylvBu
- XqpgTONMYnTECe5br39KJKE9OSLclZMdxtEFO34dSNFlBv0NdkOs6hhOU
- JIPH2XFl6ge/lpyF+DX5aA6Y2vdNL+Bm8Pr7L17Xk5Nhm1c/HT4x9nogl
- E4T/+gofgTTBml0J7NeBlFmin8mO6sqY1Xi7y0ZOWXrXxl2XGlgFWPRdK
- RhouA59aOMajjtz9PltWP1Mja88Me5Ip8vgyaZtbc9a8203Jy0p8CzbzY g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10344"; a="251897472"
-X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="251897472"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2022 17:05:53 -0700
+ bh=FXGLp4kn6zowFU/uMojpzoAT+8Tt5jfdv5yfT9ck7Mg=;
+ b=n5E+XsWqWzRlviyInD2X7jRDlvorCqKz9KNZa15Deq1TZxvqq+M85JT2
+ 0PfYdGixjCMUkS9G5rMQvP634+8peYVfCUQdP+t769l4uy+ygjRP04lRc
+ Kx2mYUd0/2ozOoUssAYKHjcx1Vx8iMurwICzGRi0r+LyRvc5/eKdN5RBV
+ j1EvQomSbUuarGcBszfA9+HF+o0l0An6iatYhtAlFUXKH19ld+BywYD0v
+ 5BY/+B5LMRi0Kuo6oxa9juc8z9Exg5NEoJByLx4IMlYpGBegEnbSQpOBF
+ FVYfLosUUs8EklZvE6CtCAMeJKZ5x0oOhRxfp7E3ehaNrYDgl3nd4IImb g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10344"; a="249743383"
+X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="249743383"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 May 2022 17:23:29 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="658374063"
+X-IronPort-AV: E=Sophos;i="5.91,218,1647327600"; d="scan'208";a="594395631"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by FMSMGA003.fm.intel.com with ESMTP; 11 May 2022 17:05:53 -0700
-Date: Wed, 11 May 2022 17:09:24 -0700
+ by orsmga008.jf.intel.com with ESMTP; 11 May 2022 17:23:27 -0700
+Date: Wed, 11 May 2022 17:26:58 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v6 01/29] irq/matrix: Expose functions to allocate the
- best CPU for new vectors
-Message-ID: <20220512000924.GA16273@ranerica-svr.sc.intel.com>
+Subject: Re: [PATCH v6 02/29] x86/apic: Add irq_cfg::delivery_mode
+Message-ID: <20220512002658.GB16273@ranerica-svr.sc.intel.com>
 References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-2-ricardo.neri-calderon@linux.intel.com>
- <878rreh27n.ffs@tglx>
+ <20220506000008.30892-3-ricardo.neri-calderon@linux.intel.com>
+ <875ymih1yl.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <878rreh27n.ffs@tglx>
+In-Reply-To: <875ymih1yl.ffs@tglx>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,54 +81,70 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 06, 2022 at 09:48:28PM +0200, Thomas Gleixner wrote:
-> Ricardo,
-
-Thank you very much for your feedback Thomas! I am sorry for my late reply, I
-had been out of office.
-
-> 
+On Fri, May 06, 2022 at 09:53:54PM +0200, Thomas Gleixner wrote:
 > On Thu, May 05 2022 at 16:59, Ricardo Neri wrote:
-> > Certain types of interrupts, such as NMI, do not have an associated vector.
-> > They, however, target specific CPUs. Thus, when assigning the destination
-> > CPU, it is beneficial to select the one with the lowest number of
-> > vectors.
+> > Currently, the delivery mode of all interrupts is set to the mode of the
+> > APIC driver in use. There are no restrictions in hardware to configure the
+> > delivery mode of each interrupt individually. Also, certain IRQs need
+> > to be
 > 
-> Why is that beneficial especially in the context of a NMI watchdog which
-> then broadcasts the NMI to all other CPUs?
+> s/IRQ/interrupt/ Changelogs can do without acronyms.
 
-My intent was not the NMI watchdog specifically but potential use cases that do
-not involve NMI broadcasts. If the NMI targets a single CPU, it is best to
-select the CPU with the lowest vector allocation count.
+Sure. I will sanitize all the changelogs to remove acronyms.
 
 > 
-> That's wishful thinking perhaps, but I don't see any benefit at all.
+> > configured with a specific delivery mode (e.g., NMI).
+> >
+> > Add a new member, delivery_mode, to struct irq_cfg. Subsequent changesets
+> > will update every irq_domain to set the delivery mode of each IRQ to that
+> > specified in its irq_cfg data.
+> >
+> > To keep the current behavior, when allocating an IRQ in the root
+> > domain
 > 
-> > Prepend the functions matrix_find_best_cpu_managed() and
-> > matrix_find_best_cpu_managed()
+> The root domain does not allocate an interrupt. The root domain
+> allocates a vector for an interrupt. There is a very clear and technical
+> destinction. Can you please be more careful about the wording?
+
+I will review the wording in the changelogs.
+
 > 
-> The same function prepended twice becomes two functions :)
+> > --- a/arch/x86/kernel/apic/vector.c
+> > +++ b/arch/x86/kernel/apic/vector.c
+> > @@ -567,6 +567,7 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
+> >  		irqd->chip_data = apicd;
+> >  		irqd->hwirq = virq + i;
+> >  		irqd_set_single_target(irqd);
+> > +
 > 
+> Stray newline.
 
-Sorry, I missed this.
-
-> > with the irq_ prefix and expose them for
-> > IRQ controllers to use when allocating and activating vector-less IRQs.
+Sorry! I will remove it.
 > 
-> There is no such thing like a vectorless IRQ. NMIs have a vector. Can we
-> please describe facts and not pulled out of thin air concepts which do
-> not exist?
+> >  		/*
+> >  		 * Prevent that any of these interrupts is invoked in
+> >  		 * non interrupt context via e.g. generic_handle_irq()
+> > @@ -577,6 +578,14 @@ static int x86_vector_alloc_irqs(struct irq_domain *domain, unsigned int virq,
+> >  		/* Don't invoke affinity setter on deactivated interrupts */
+> >  		irqd_set_affinity_on_activate(irqd);
+> >  
+> > +		/*
+> > +		 * Initialize the delivery mode of this irq to match the
+> 
+> s/irq/interrupt/
 
-Thank you for the clarification. I see your point. I wrote this patch because
-maskable interrupts and NMIs have different entry points. As you state,
-however, the also have a vector.
+I will make this change.
 
-I can drop this patch.
-
-BR,
+Thanks and BR,
 Ricardo
 
 > 
-> Thanks,
-> 
->         tglx
+> > +		 * default delivery mode of the APIC. Children irq domains
+> > +		 * may take the delivery mode from the individual irq
+> > +		 * configuration rather than from the APIC driver.
+> > +		 */
+> > +		apicd->hw_irq_cfg.delivery_mode = apic->delivery_mode;
+> > +
+> >  		/*
+> >  		 * Legacy vectors are already assigned when the IOAPIC
+> >  		 * takes them over. They stay on the same vector. This is
