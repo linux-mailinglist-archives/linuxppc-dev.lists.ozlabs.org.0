@@ -1,62 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC4C525242
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 18:14:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6D25253F6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 19:44:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4KzcLM04Mkz3cNM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 02:14:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4KzfKV3Y2Sz3cB6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 03:44:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=v5VORm6y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=87.98.180.222; helo=9.mo552.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 165584 seconds by postgrey-1.36 at boromir;
- Fri, 13 May 2022 02:14:29 AEST
-Received: from 9.mo552.mail-out.ovh.net (9.mo552.mail-out.ovh.net
- [87.98.180.222])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4KzcKx3SSDz3bxS
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 02:14:26 +1000 (AEST)
-Received: from mxplan5.mail.ovh.net (unknown [10.109.146.228])
- by mo552.mail-out.ovh.net (Postfix) with ESMTPS id 92B1024EA4;
- Thu, 12 May 2022 16:14:18 +0000 (UTC)
-Received: from kaod.org (37.59.142.101) by DAG4EX1.mxp5.local (172.16.2.31)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.6; Thu, 12 May
- 2022 18:14:17 +0200
-Authentication-Results: garm.ovh; auth=pass
- (GARM-101G0047b61092e-eff4-4052-83bb-9054023d8a3d,
- 72056902518AC1F5BD4797AAAB6E76FEAFBFF81B) smtp.auth=clg@kaod.org
-X-OVh-ClientIp: 82.64.250.170
-Message-ID: <cc8cf48b-8acf-c281-a3b2-5acd49e38dfd@kaod.org>
-Date: Thu, 12 May 2022 18:14:17 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4KzfJk4kHMz3bxk
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 03:43:34 +1000 (AEST)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4KzfJh6Pvxz4ySd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 03:43:32 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+ id 4KzfJh6LL3z4xTX; Fri, 13 May 2022 03:43:32 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=mcgrof@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
+ header.s=bombadil.20210309 header.b=v5VORm6y; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by gandalf.ozlabs.org (Postfix) with ESMTPS id 4KzfJh6Dj4z4xR7;
+ Fri, 13 May 2022 03:43:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=GDncwLKphn/XZKopA1l8aEKODmu6Bj+8jDWkzig0Mlc=; b=v5VORm6ydKBJVYTVx2qzPm0X4n
+ YQfDJBSgMcZYJuWgHmve2wHpzkb0hCvcXqAo7doJHNBfw7BwNSzleBoKEu3ZRjnsyEO8TmQseSYpr
+ jr6EOX90POYPE6pFppucFilLWH3RLL3yef5L5pSGRsAOvN7Wr6z/XSKq2UXVdUq4w4/JS2Ho1+eK1
+ YNvheGtOLSp8qWZsMMcHYnt8JKjGs2Xjk51K8yQrNQxUqezHKSoAhP8aCL8XnptqeifSCgzwREEdH
+ NK4AimkTNmKo7O8d4Eq1S7YBMIwMHCw+jzLHNDyN8/AcO44bQ3FuND+JbHuJ6xsqZWnyc3vTkbeb1
+ fKhOzEKA==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2
+ (Red Hat Linux)) id 1npCqT-00D1fT-5d; Thu, 12 May 2022 17:43:25 +0000
+Date: Thu, 12 May 2022 10:43:25 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: request_module DoS
+Message-ID: <Yn1HPSvyT4kAW7I/@bombadil.infradead.org>
+References: <YnXiuhdZ49pKL/dK@gondor.apana.org.au>
+ <874k1zt0ec.fsf@mpe.ellerman.id.au>
+ <Ynk9j6DQmVGAA3Jf@bombadil.infradead.org>
+ <Ynvl6wCQRFdYsHar@bombadil.infradead.org>
+ <871qwz8aot.fsf@mpe.ellerman.id.au>
+ <87v8ub6jk1.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH] powerpc/xive: Fix refcount leak in xive_spapr_init
-Content-Language: en-US
-To: Miaoqian Lin <linmq006@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
- <paulus@samba.org>, Nick Child <nick.child@ibm.com>, Christophe JAILLET
- <christophe.jaillet@wanadoo.fr>, Ammar Faizi <ammarfaizi2@gmail.com>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
-References: <20220512090535.33397-1-linmq006@gmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20220512090535.33397-1-linmq006@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [37.59.142.101]
-X-ClientProxiedBy: DAG7EX1.mxp5.local (172.16.2.61) To DAG4EX1.mxp5.local
- (172.16.2.31)
-X-Ovh-Tracer-GUID: 89c32f8e-8e1a-4e55-a27b-1b57f752691f
-X-Ovh-Tracer-Id: 3628212452218538799
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvfedrgeejgdelhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfhfhfgjtgfgihesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeeigedvffekgeeftedutddttdevudeihfegudffkeeitdekkeetkefhffelveelleenucfkpheptddrtddrtddrtddpfeejrdehledrudegvddruddtudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphhouhhtpdhhvghlohepmhigphhlrghnhedrmhgrihhlrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdpnhgspghrtghpthhtohepuddprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v8ub6jk1.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,62 +77,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@ozlabs.org, fnovak@us.ibm.com, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/12/22 11:05, Miaoqian Lin wrote:
-> of_find_compatible_node() returns a node pointer with refcount
-> incremented, we should use of_node_put() on it when done.
-> Add missing of_node_put() to avoid refcount leak.
+On Thu, May 12, 2022 at 10:07:26PM +1000, Michael Ellerman wrote:
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+> > Luis Chamberlain <mcgrof@kernel.org> writes:
+> ...
+> >
+> >> Can someone try this on ppc64le system? At this point I am not convinced
+> >> this issue is generic.
+> >
+> > Does your x86 system have at least 784 CPUs?
+> >
+> > I don't know where the original report came from, but the trace shows
+> > "CPU 784", which would usually indicate a system with at least that many
+> > CPUs.
 > 
-> Fixes: eac1e731b59e ("powerpc/xive: guest exploitation of the XIVE interrupt controller")
-> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
-> ---
->   arch/powerpc/sysdev/xive/spapr.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
+> Update, apparently the report originally came from IBM, so I'll chase it
+> up internally.
 > 
-> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-> index 29456c255f9f..503f544d28e2 100644
-> --- a/arch/powerpc/sysdev/xive/spapr.c
-> +++ b/arch/powerpc/sysdev/xive/spapr.c
-> @@ -830,12 +830,12 @@ bool __init xive_spapr_init(void)
->   	/* Resource 1 is the OS ring TIMA */
->   	if (of_address_to_resource(np, 1, &r)) {
->   		pr_err("Failed to get thread mgmnt area resource\n");
-> -		return false;
-> +		goto err_put;
->   	}
->   	tima = ioremap(r.start, resource_size(&r));
->   	if (!tima) {
->   		pr_err("Failed to map thread mgmnt area\n");
-> -		return false;
-> +		goto err_put;
->   	}
->   
->   	if (!xive_get_max_prio(&max_prio))
-> @@ -871,6 +871,7 @@ bool __init xive_spapr_init(void)
->   	if (!xive_core_init(np, &xive_spapr_ops, tima, TM_QW1_OS, max_prio))
->   		goto err_mem_free;
->   
-> +	of_node_put(np);
->   	pr_info("Using %dkB queues\n", 1 << (xive_queue_shift - 10));
->   	return true;
->   
-> @@ -878,6 +879,8 @@ bool __init xive_spapr_init(void)
->   	xive_irq_bitmap_remove_all();
->   err_unmap:
->   	iounmap(tima);
-> +err_put:
-> +	of_node_put(np);
->   	return false;
->   }
->   
+> I think you're right that there's probably no issue in the module code,
+> sorry to waste your time.
 
+It gives me testing happiness to know that may be the case :)
+
+  Luis
