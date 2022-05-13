@@ -2,52 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9349A525733
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 May 2022 23:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 921A35259B7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 04:32:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Kzldr0yXjz3c9J
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 07:43:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Kzt2n317Gz3cGv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 12:32:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DdZyoDmd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WiRAD0gc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=DdZyoDmd; 
+ header.s=k20201202 header.b=WiRAD0gc; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4Kzld81bqWz3brM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 07:43:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4Kzt246L33z2xKK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 12:31:40 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id DCC59B82B1C
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 21:43:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 967C2C34100
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 May 2022 21:43:02 +0000 (UTC)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 65670620F4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 02:31:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C2D98C385B8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 02:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1652391782;
- bh=DqfX6e5F4s5f6AW0jNnUhsN0xoDyoQOPxoU15zi1PMk=;
+ s=k20201202; t=1652409094;
+ bh=lrl7pwaqDgPgSjg56XA3YDrCz7Vw8u7QbMBkkr96C9w=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=DdZyoDmdq4a8okfNueZGOQOdF3JgkPRyYU2ODFkXkdMqdIlRZNMhgo85yqnwHV0s1
- 1q58mabooNwUPOPx6Ba6EyGzsIO/O/3bfJbjfNfV+PQhbs9Ln28KZEqfdHZAuR2MUK
- tf6PzwYKNisIJdjgVTY+IHh+CXbP3DnMwBMAd9fTk7lPlOIMCFvyO3eOTdDunTl2bg
- SZglIgRlWq9DUog8DV9DuYeHlae+LrrXch/dDjUIiV068w0F+h9+CRaocAGPA4DdWv
- kQyoCM5MDpiNnI4xz1zJsBY8VRhrsCaHN58727jyGKIINeerL3+2WCU+KFprZky/MA
- 0uNxUTO+aJmOw==
+ b=WiRAD0gcPjwZAZ9kPlRp5BsAJ7JCfDWN7SlTUJEblpcbyIMqnehzfTAgKq9f4jRPX
+ /CsAyEI3icqTKpNHkrve3//ZzecZKpKKjWi3kYVqLyGWUIiE8GyIC+QmRhyw3pb2Nx
+ wPmw41n9vEc2giU6XfKzMx+CLbY7T/ahzJJoL7LbIxhLJ9++AR/OiJGJcR0Tx+KdzR
+ gk8TvXzfd0it2orjwgzhGQBiq922GRaNZiPmcBFh6x0tfhsqcZ/whJzbxpuHe0pSou
+ sL/yAk5QfXUiryqrYdL3FNSH5zRFw/1BkHZRs/O1iGt++NIp4/ssu5/EAQeZYAATq+
+ OZayWro+D4eEg==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id 7F78BC05FD6; Thu, 12 May 2022 21:43:02 +0000 (UTC)
+ from userid 48) id A1975C05FD2; Fri, 13 May 2022 02:31:34 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
  running its' testsuite
-Date: Thu, 12 May 2022 21:43:02 +0000
+Date: Fri, 13 May 2022 02:31:34 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -56,14 +58,14 @@ X-Bugzilla-Component: PPC-32
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
+X-Bugzilla-Who: michael@ellerman.id.au
+X-Bugzilla-Status: ASSIGNED
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-215389-206035-wp7fBjjFvO@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status cc
+Message-ID: <bug-215389-206035-MRY1LktjfY@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
 References: <bug-215389-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -88,18 +90,17 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
 
---- Comment #20 from Erhard F. (erhard_f@mailbox.org) ---
-DEBUG_STACKOVERFLOW and KFENCE have been enabled already in the builds I did
-here (see kernel attached kernel .config here).
+Michael Ellerman (michael@ellerman.id.au) changed:
 
-However if I enable (inline) KASAN the kernel won't boot at all. I get drop=
-ped
-out in OpenFirmware console with:
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |ASSIGNED
+                 CC|                            |michael@ellerman.id.au
 
-[...]
-Finalizing device tree... using OF tree (promptr=3Dff847240)
-
-Invalid memory access at %SRR0: 40000000 %SRR1: 00000000
+--- Comment #21 from Michael Ellerman (michael@ellerman.id.au) ---
+Increasing the stack size (CONFIG_THREAD_SHIFT) might avoid the stack overf=
+lows
+and allow you to debug the original issue in isolation.
 
 --=20
 You may reply to this email to add a comment.
