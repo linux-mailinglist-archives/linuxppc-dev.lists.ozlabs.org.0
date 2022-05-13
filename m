@@ -1,64 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF1F526CDB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 00:15:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED83526D08
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 00:44:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L0NHW0KdNz3cFK
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 08:15:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L0Nxb6q40z3cMK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 08:44:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KwxDDGDh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ObSfTv7W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=KwxDDGDh; dkim-atps=neutral
-Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=ObSfTv7W; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L0Nww3h7Yz2xsm
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 May 2022 08:44:00 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L0NGq2tWWz309l
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 May 2022 08:14:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652480067; x=1684016067;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=cxef9S28Y+ZsR9yxpw47GL3tVgcHUSJqzLfqt+5PNSo=;
- b=KwxDDGDho01tCETTbUZOSdKONnNOcXoWoF+wx93bmGD9kOSpAdRwaCYy
- f3APdxvIO8VHhtw1QaUJs1wVz+Ppe9eLAR2G6Xkj6tfEvVckxyctv1jkP
- fdLQu4FHO6oXEhICd1ywKU0bqpOEFnHziObsYQrHEx+Bf9Wd2Zu32aNvJ
- UDP/ulhrSNg56Xee4BlrmEeX8tvUaXyYlBrtrGZq1SkE5WePd58f6qyFL
- wKacdJ8N7w1PMGc7oZPgtU6jnSkUZINq8gZsPmBGcAOEqPNxWybd9SSCY
- jtZ0H4BJlCUNZKl0IBd59JsxMHFCsv+W8JUGqRlQGXt5yT2mdeeLqoCXY A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10346"; a="331028444"
-X-IronPort-AV: E=Sophos;i="5.91,223,1647327600"; d="scan'208";a="331028444"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 May 2022 15:13:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,223,1647327600"; d="scan'208";a="543454884"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga006.jf.intel.com with ESMTP; 13 May 2022 15:13:15 -0700
-Date: Fri, 13 May 2022 15:16:50 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v6 22/29] x86/watchdog/hardlockup: Add an HPET-based
- hardlockup detector
-Message-ID: <20220513221650.GA8691@ranerica-svr.sc.intel.com>
-References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-23-ricardo.neri-calderon@linux.intel.com>
- <877d6uref8.ffs@tglx>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 72A2D60F6E;
+ Fri, 13 May 2022 22:43:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9F9C34100;
+ Fri, 13 May 2022 22:43:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1652481836;
+ bh=CijBO6wAUnPaCFQTl2hJH05BXYHWLo9sWJxBUdgdKoc=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=ObSfTv7WKs96jZfkU1xpZM/cHsUgFN9XhcihtZr+JLZs2bE7cJWtRdFiOLCuEELBV
+ BFPwv/vgXbiEqNviB7tWKSWcYi32cpJvRhAFzN9aC7g3VZZ4mPzm4OG/u+fMdKX9ch
+ MRI5bkl3B/oc+bYOwqSo8zYN+jRjxc0b87h8AAO85VslQHPD+x/RF8d1kW9dcvPU+Z
+ em5k2gFi5Vwp32LQEmTvX+8VHZW7cjKURGA1McGbgJA2RZn1v4HcWjt40VGFjYdFG9
+ sSPqpEcq2btfkN+YJ1zmujV2kPKUje0nsGDTK1jPwS4iHLjD0c8kMLCXnOLjoxLF/z
+ yu8L9P+aJhbwg==
+Received: by pali.im (Postfix)
+ id C9DA22B90; Sat, 14 May 2022 00:43:53 +0200 (CEST)
+Date: Sat, 14 May 2022 00:43:53 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Ash Logan <ash@heyquark.com>
+Subject: Re: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
+Message-ID: <20220513224353.n56qg5fhstbaqhfz@pali>
+References: <20220302044406.63401-1-ash@heyquark.com>
+ <20220302044406.63401-12-ash@heyquark.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <877d6uref8.ffs@tglx>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20220302044406.63401-12-ash@heyquark.com>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,61 +66,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
- Andi Kleen <ak@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- Ricardo Neri <ricardo.neri@intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Tony Luck <tony.luck@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, robh+dt@kernel.org, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 09, 2022 at 04:03:39PM +0200, Thomas Gleixner wrote:
-> On Thu, May 05 2022 at 17:00, Ricardo Neri wrote:
-> > +	if (is_hpet_hld_interrupt(hdata)) {
-> > +		/*
-> > +		 * Kick the timer first. If the HPET channel is periodic, it
-> > +		 * helps to reduce the delta between the expected TSC value and
-> > +		 * its actual value the next time the HPET channel fires.
-> > +		 */
-> > +		kick_timer(hdata, !(hdata->has_periodic));
-> > +
-> > +		if (cpumask_weight(hld_data->monitored_cpumask) > 1) {
-> > +			/*
-> > +			 * Since we cannot know the source of an NMI, the best
-> > +			 * we can do is to use a flag to indicate to all online
-> > +			 * CPUs that they will get an NMI and that the source of
-> > +			 * that NMI is the hardlockup detector. Offline CPUs
-> > +			 * also receive the NMI but they ignore it.
-> > +			 *
-> > +			 * Even though we are in NMI context, we have concluded
-> > +			 * that the NMI came from the HPET channel assigned to
-> > +			 * the detector, an event that is infrequent and only
-> > +			 * occurs in the handling CPU. There should not be races
-> > +			 * with other NMIs.
-> > +			 */
-> > +			cpumask_copy(hld_data->inspect_cpumask,
-> > +				     cpu_online_mask);
-> > +
-> > +			/* If we are here, IPI shorthands are enabled. */
-> > +			apic->send_IPI_allbutself(NMI_VECTOR);
+On Wednesday 02 March 2022 15:44:05 Ash Logan wrote:
+> pgtable_32.c:mapin_ram loops over each valid memory range, which means
+> non-contiguous memory just works.
+
+Hello! Does it mean that non-contiguous memory works for any 32-bit
+powerpc platform, and not only for wiiu? If yes, should not be
+non-contiguous memory support enabled for all 32-bit ppc boards then?
+
+> Signed-off-by: Ash Logan <ash@heyquark.com>
+> ---
+>  arch/powerpc/mm/init_32.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> So if the monitored cpumask is a subset of online CPUs, which is the
-> case when isolation features are enabled, then you still send NMIs to
-> those isolated CPUs. I'm sure the isolation folks will be enthused.
-
-Yes, I acknowledged this limitation in the cover letter. I should also update
-Documentation/admin-guide/lockup-watchdogs.rst.
-
-This patchset proposes the HPET NMI watchdog as an opt-in feature.
-
-Perhaps the limitation might be mitigated by adding a check for non-housekeeping
-and non-monitored CPUs in exc_nmi(). However, that will not eliminate the
-problem of isolated CPUs also getting the NMI.
-
-Thanks and BR,
-Ricardo
+> diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
+> index 3d690be48e84..59a84629d9a0 100644
+> --- a/arch/powerpc/mm/init_32.c
+> +++ b/arch/powerpc/mm/init_32.c
+> @@ -125,10 +125,10 @@ void __init MMU_init(void)
+>  	 * lowmem_end_addr is initialized below.
+>  	 */
+>  	if (memblock.memory.cnt > 1) {
+> -#ifndef CONFIG_WII
+> +#if !defined(CONFIG_WII) && !defined(CONFIG_WIIU)
+>  		memblock_enforce_memory_limit(memblock.memory.regions[0].size);
+>  		pr_warn("Only using first contiguous memory region\n");
+> -#else
+> +#elif defined(CONFIG_WII)
+>  		wii_memory_fixups();
+>  #endif
+>  	}
+> -- 
+> 2.35.1
+> 
