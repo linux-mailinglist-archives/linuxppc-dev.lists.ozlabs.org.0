@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEA652695E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 20:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94F9F526960
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 May 2022 20:34:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L0HN40xpzz3cBf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 04:33:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L0HPF2tnRz3c90
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 04:34:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=nmRRtC83;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=f2A4SIp5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::a32;
- helo=mail-vk1-xa32.google.com; envelope-from=irogers@google.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::e2f;
+ helo=mail-vs1-xe2f.google.com; envelope-from=irogers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=nmRRtC83; dkim-atps=neutral
-Received: from mail-vk1-xa32.google.com (mail-vk1-xa32.google.com
- [IPv6:2607:f8b0:4864:20::a32])
+ header.s=20210112 header.b=f2A4SIp5; dkim-atps=neutral
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com
+ [IPv6:2607:f8b0:4864:20::e2f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L0HMN18RPz3c7Y
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 May 2022 04:33:02 +1000 (AEST)
-Received: by mail-vk1-xa32.google.com with SMTP id o132so4592812vko.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 11:33:02 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L0HNf28fRz2xBV
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 May 2022 04:34:10 +1000 (AEST)
+Received: by mail-vs1-xe2f.google.com with SMTP id w124so9259826vsb.8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 May 2022 11:34:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UFf5Q+rPZWFlwxbruD9mEK3GGUJ5TDV+dFP9Ogo+EEY=;
- b=nmRRtC83/FAP/XCofwyh9YtCWj24sUP7ZHPXBO4+gp3Qsj4xnqTuGQkgYm51zkVlE1
- bnaQXVkreD/u27e7d6c2f/NaYoXesUMcal397EsLm6IloZzshUWIiBniyzHaLF6FJ99/
- A3QY610WzlPl3Hhic4Nur8/VNFGwOH3/1bHFcca6Jnhb7IgBY2MtaEDJlP/gT9FlQVfm
- 04zkq/xWEAehEymHgiz/w9z7ESizM4iToF++RTyQT9QlhWjJ9Zy7tyWDJKilT9ytL9lu
- DGlutkahdBnxVbc9NYyz/0jS5e2iG76yesrqTrbOEAM42/+7HwhSCMLD0O8NJZCJH5R8
- MUiA==
+ :cc; bh=XxaAhTM7z7ZXAcsBxj173aYKUbXdWRM6Ctvy2Vo1MV8=;
+ b=f2A4SIp536wPkDPMvn62DM+ukUpqK2CvHmbKz3bIo6KqP004+abgMpMcG57+7cpmmM
+ QAhsnzVEQDU34hQTs1zeb8dZsZ9EBmN7BqIOfTlTRi18K+R3Kb9OIy8yLO7YeIxYEPKs
+ Q8JOQx+js3N5E/mH+LWaNdt2nMv2sPpy5IcVUh5xm1hUVxxJLbgjxV1WOqTGFwmBOJqA
+ zm96PP5nwSUCGMb8paUZ/mGdoE5tMa3ea5YQRjJhZMa5o2ByJlvXg950Kq38BJLS1JK+
+ jDgPwlCbZhevgvJqeQrjGrQczx4tGKnCg++6iHVWjsHFVZYbBL3jt3i6cYNGIOIGJUR5
+ i1RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=UFf5Q+rPZWFlwxbruD9mEK3GGUJ5TDV+dFP9Ogo+EEY=;
- b=c2gmrqZNPkvLsXM8Reha1NRTgCC3i1V7jMHehZxdZ8Ru+6TAamLfzHDvRk+v44Cz1F
- UjP/bk5aQ13nfho7vK6rBTG9Ij5N0koiDSalKrGCBUxu1OsF2t3ZT9l8em0lNWII0YHp
- vmbA+Nno5wovB0/A0Bvrq6a/xziVikGYSoRad/6L6kK1i/gk/WLsGyTtsOOLYMAQYB8S
- q9TX1JxY2FcsMQIX/GRv1FfPPddEYCZs1JdxOh4D2K54RFyjHt/dpIkHTvvfRAsZs15w
- RlCIX5I8Jqoe3n+Bze74JtZnFzDYl/eCqX9A1nyL0Cd1wylR0A79inSyAHPuc49ptIjC
- dAHA==
-X-Gm-Message-State: AOAM531mRLJGH6AfqLImQ17CXu1iLIhRY+tzsRphCHRgJmaFKmro6P/3
- EtllEhlIhh2sS0x6/260QaaY6gqgqZYHgsBdleLiSg==
-X-Google-Smtp-Source: ABdhPJx7MS1mGT06m/TZc33QRflyBrwzQPiiU9PrGQlrymD/eEqsWLY7m+a09rLOoqeE5sqfIW2M4EKnmu5mTftpzkk=
-X-Received: by 2002:a1f:9fc4:0:b0:345:5848:4f44 with SMTP id
- i187-20020a1f9fc4000000b0034558484f44mr2919556vke.2.1652466777767; Fri, 13
- May 2022 11:32:57 -0700 (PDT)
+ bh=XxaAhTM7z7ZXAcsBxj173aYKUbXdWRM6Ctvy2Vo1MV8=;
+ b=TY/Pup/18sJ3uNxmKQy2mfdKmpJdgzN8zUhRT6z3COemVAw5NtSuXzQwbd1afDGXOz
+ gxcyuqnyXTLU1lDPWyl28ZtCzYTB52R68yzzQ8YLE+d6UEGcsWLM9pOqHlaeKl438quW
+ INE6Ft3AjCDe1NRryPs4lRa/XVhkZ8n10FyHal7q0IO+YaWGa5dcVxqW1fdIF9dX9wDD
+ 7glBXsBzMdmU5ZlS+VkUu8oQcbpklCKV7O/DRKr8iJQrPRlupPtipC8rdnBYVhxWPkOy
+ FYKLNSGeMQkDHlGkef404M7he9y4XA2AyPMZWgZ0Cn4k64U2qhexMrbBjMvQ9IYtwZ2h
+ pCcQ==
+X-Gm-Message-State: AOAM530g3IfVxO+5iSHGhJSAVXCEy9bU6Rlyo5sg8+MzMQZCDkZALOBv
+ kIwFds2PZOk5xM5TzKqgiQ535v2Idf/1ZdlCFCKIxg==
+X-Google-Smtp-Source: ABdhPJzSCnp+qEb5zTwkmlHIVcD1jGMriYVuqe1xvpRO2qBWeUcfYknco+S9NCOq7kjF7fo89nwRrNSz+TIYD6wqZH8=
+X-Received: by 2002:a05:6102:2929:b0:32d:6662:72e2 with SMTP id
+ cz41-20020a056102292900b0032d666272e2mr2943899vsb.56.1652466846453; Fri, 13
+ May 2022 11:34:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220511115438.84032-1-atrajeev@linux.vnet.ibm.com>
- <be9726bc462d3b00243bd2161fb8e153b919db1e.camel@linux.vnet.ibm.com>
-In-Reply-To: <be9726bc462d3b00243bd2161fb8e153b919db1e.camel@linux.vnet.ibm.com>
+References: <20220511114959.84002-1-atrajeev@linux.vnet.ibm.com>
+ <151b1538daf92259702242dbf734230aea3199fe.camel@linux.vnet.ibm.com>
+In-Reply-To: <151b1538daf92259702242dbf734230aea3199fe.camel@linux.vnet.ibm.com>
 From: Ian Rogers <irogers@google.com>
-Date: Fri, 13 May 2022 11:32:45 -0700
-Message-ID: <CAP-5=fX7XXHUzQvKQf-bmWxkJpMUTaRSca8oOo4w-3TgF_mHYQ@mail.gmail.com>
-Subject: Re: [PATCH V2] tools/perf/tests: Skip perf BPF test if clang is not
- present
+Date: Fri, 13 May 2022 11:33:55 -0700
+Message-ID: <CAP-5=fVAfjUHvhLF2E2UZo+BwneSex0GV5BgbHAV6bvdUxj_9w@mail.gmail.com>
+Subject: Re: [PATCH V2] tools/perf/tests: Fix session topology test to skip
+ the test in guest environment
 To: Disha Goel <disgoel@linux.vnet.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,7 +83,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 12, 2022 at 11:16 PM Disha Goel <disgoel@linux.vnet.ibm.com> wrote:
+On Thu, May 12, 2022 at 11:18 PM Disha Goel <disgoel@linux.vnet.ibm.com> wrote:
 >
 >
 >
@@ -91,124 +91,39 @@ On Thu, May 12, 2022 at 11:16 PM Disha Goel <disgoel@linux.vnet.ibm.com> wrote:
 > From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 > To: acme@kernel.org, jolsa@kernel.org
 > Cc: mpe@ellerman.id.au, linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, irogers@google.com
-> Subject: [PATCH V2] tools/perf/tests: Skip perf BPF test if clang is not present
-> Date: Wed, 11 May 2022 17:24:38 +0530
+> Subject: [PATCH V2] tools/perf/tests: Fix session topology test to skip the test in guest environment
+> Date: Wed, 11 May 2022 17:19:59 +0530
 >
-> Perf BPF filter test fails in environment where "clang"
+> The session topology test fails in powerpc pSeries platform.
 >
-> is not installed.
->
->
-> Test failure logs:
->
+> Test logs:
 >
 > <<>>
 >
->  42: BPF filter                    :
->
->  42.1: Basic BPF filtering         : Skip
->
->  42.2: BPF pinning                 : FAILED!
->
->  42.3: BPF prologue generation     : FAILED!
+> Session topology : FAILED!
 >
 > <<>>
 >
 >
-> Enabling verbose option provided debug logs which says
+> This testcases tests cpu topology by checking the core_id and
 >
-> clang/llvm needs to be installed. Snippet of verbose logs:
+> socket_id stored in perf_env from perf session. The data from
 >
+> perf session is compared with the cpu topology information
 >
-> <<>>
+> from "/sys/devices/system/cpu/cpuX/topology" like core_id,
 >
->  42.2: BPF pinning                  :
+> physical_package_id. In case of virtual environment, detail
 >
->  --- start ---
+> like physical_package_id is restricted to be exposed. Hence
 >
-> test child forked, pid 61423
+> physical_package_id is set to -1. The testcase fails on such
 >
-> ERROR: unable to find clang.
->
-> Hint: Try to install latest clang/llvm to support BPF.
->
->         Check your $PATH
+> platforms since socket_id can't be fetched from topology info.
 >
 >
-> <<logs_here>>
+> Skip the testcase in powerpc if physical_package_id returns -1
 >
->
-> Failed to compile test case: 'Basic BPF llvm compile'
->
-> Unable to get BPF object, fix kbuild first
->
-> test child finished with -1
->
->  ---- end ----
->
-> BPF filter subtest 2: FAILED!
->
-> <<>>
->
->
-> Here subtests, "BPF pinning" and "BPF prologue generation"
->
-> failed and logs shows clang/llvm is needed. After installing
->
-> clang, testcase passes.
->
->
-> Reason on why subtest failure happens though logs has proper
->
-> debug information:
->
-> Main function __test__bpf calls test_llvm__fetch_bpf_obj by
->
-> passing 4th argument as true ( 4th arguments maps to parameter
->
-> "force" in test_llvm__fetch_bpf_obj ). But this will cause
->
-> test_llvm__fetch_bpf_obj to skip the check for clang/llvm.
->
->
-> Snippet of code part which checks for clang based on
->
-> parameter "force" in test_llvm__fetch_bpf_obj:
->
->
-> <<>>
->
-> if (!force && (!llvm_param.user_set_param &&
->
-> <<>>
->
->
-> Since force is set to "false", test won't get skipped and
->
-> fails to compile test case. The BPF code compilation needs
->
-> clang, So pass the fourth argument as "false" and also skip
->
-> the test if reason for return is "TEST_SKIP"
->
->
-> After the patch:
->
->
-> <<>>
->
->  42: BPF filter                    :
->
->  42.1: Basic BPF filtering         : Skip
->
->  42.2: BPF pinning                 : Skip
->
->  42.3: BPF prologue generation     : Skip
->
-> <<>>
->
->
-> Fixes: ba1fae431e74 ("perf test: Add 'perf test BPF'")
 >
 > Signed-off-by: Athira Rajeev <
 >
@@ -220,84 +135,72 @@ On Thu, May 12, 2022 at 11:16 PM Disha Goel <disgoel@linux.vnet.ibm.com> wrote:
 >
 > Changelog:
 >
->  Addressed review comments from Arnaldo by adding
+> v1 -> v2:
 >
->  reason for skipping of testcase.
+>  Addressed review comments from Arnaldo and Michael Ellerman.
+>
+>  skip the test in powerpc when physical_package_id is set to
+>
+>  -1.
+>
+>  Dropped patch 1 from V1 since current change doesn't use info
+>
+>  from /proc/cpuinfo and rather uses physical_package_id value.
 >
 >
->  tools/perf/tests/bpf.c | 10 ++++++----
+>  tools/perf/tests/topology.c | 11 +++++++++++
 >
->  1 file changed, 6 insertions(+), 4 deletions(-)
+>  1 file changed, 11 insertions(+)
 >
 >
-> Tested the patch on powerpc and powernv, perf BPF test works fine with the patch.
+> Tested the patch on powerpc and powernv, session topology test works fine with the patch.
 >
 > Tested-by: Disha Goel <disgoel@linux.vnet.ibm.com>
 
+
 Acked-by: Ian Rogers <irogers@google.com>
 
-Thanks!
+Thanks,
 Ian
 
-> diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
+> diff --git a/tools/perf/tests/topology.c b/tools/perf/tests/topology.c
 >
-> index 57b9591f7cbb..17c023823713 100644
+> index ee1e3dcbc0bd..d23a9e322ff5 100644
 >
-> --- a/tools/perf/tests/bpf.c
+> --- a/tools/perf/tests/topology.c
 >
-> +++ b/tools/perf/tests/bpf.c
+> +++ b/tools/perf/tests/topology.c
 >
-> @@ -222,11 +222,11 @@ static int __test__bpf(int idx)
+> @@ -109,6 +109,17 @@ static int check_cpu_topology(char *path, struct perf_cpu_map *map)
 >
->
->   ret = test_llvm__fetch_bpf_obj(&obj_buf, &obj_buf_sz,
->
->         bpf_testcase_table[idx].prog_id,
->
-> -       true, NULL);
->
-> +       false, NULL);
->
->   if (ret != TEST_OK || !obj_buf || !obj_buf_sz) {
->
->   pr_debug("Unable to get BPF object, %s\n",
->
->   bpf_testcase_table[idx].msg_compile_fail);
->
-> - if (idx == 0)
->
-> + if ((idx == 0) || (ret == TEST_SKIP))
+>   && strncmp(session->header.env.arch, "aarch64", 7))
 >
 >   return TEST_SKIP;
 >
->   else
 >
->   return TEST_FAIL;
+> + /*
 >
-> @@ -364,9 +364,11 @@ static int test__bpf_prologue_test(struct test_suite *test __maybe_unused,
+> + * In powerpc pSeries platform, not all the topology information
 >
->  static struct test_case bpf_tests[] = {
+> + * are exposed via sysfs. Due to restriction, detail like
 >
->  #ifdef HAVE_LIBBPF_SUPPORT
+> + * physical_package_id will be set to -1. Hence skip this
 >
->   TEST_CASE("Basic BPF filtering", basic_bpf_test),
+> + * test if physical_package_id returns -1 for cpu from perf_cpu_map.
 >
-> - TEST_CASE("BPF pinning", bpf_pinning),
+> + */
 >
-> + TEST_CASE_REASON("BPF pinning", bpf_pinning,
+> + if (strncmp(session->header.env.arch, "powerpc", 7)) {
 >
-> + "clang isn't installed or environment missing BPF support"),
+> + if (cpu__get_socket_id(perf_cpu_map__cpu(map, 0)) == -1)
 >
->  #ifdef HAVE_BPF_PROLOGUE
+> + return TEST_SKIP;
 >
-> - TEST_CASE("BPF prologue generation", bpf_prologue_test),
+> + }
 >
-> + TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
+> +
 >
-> + "clang isn't installed or environment missing BPF support"),
+>   TEST_ASSERT_VAL("Session header CPU map not set", session->header.env.cpu);
 >
->  #else
 >
->   TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
->
->  #endif
+>   for (i = 0; i < session->header.env.nr_cpus_avail; i++) {
