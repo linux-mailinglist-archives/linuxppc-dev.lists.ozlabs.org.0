@@ -1,15 +1,15 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804BA526FF4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 10:16:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C4D526FFC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 10:18:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L0dd40kB6z3cBP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 18:16:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L0dgV2sk7z3c8T
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 May 2022 18:18:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=Tm0Wc2Hr;
-	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=DQ1ba3l4;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=cHjQpeFh;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=4QyQkuDj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -19,45 +19,45 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256
- header.s=2020 header.b=Tm0Wc2Hr; 
+ header.s=2020 header.b=cHjQpeFh; 
  dkim=pass header.d=linutronix.de header.i=@linutronix.de
- header.a=ed25519-sha256 header.s=2020e header.b=DQ1ba3l4; 
+ header.a=ed25519-sha256 header.s=2020e header.b=4QyQkuDj; 
  dkim-atps=neutral
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L0dcM3rm1z3bcp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 May 2022 18:15:31 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L0dfs71rXz2xh0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 May 2022 18:17:41 +1000 (AEST)
 From: Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020; t=1652516125;
+ s=2020; t=1652516259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UHF9WVJF89fHPJq0+8oiweP3wjgNVxTMSM/vRu60nYc=;
- b=Tm0Wc2HrL4EoLv6k4cC472VP8Biprl05MvetpUZPEzW0ctnc4AfNAc9GzrCaDwbUR7asay
- k9meZSHbxU07Wx7caJes3ehRYibTz13rBlObuMSuFk7ZgN3LUGwEFHSwzQDAbs76ml91Iv
- TfrRfjYmgQ6VlChzQQtCqbE57X4yHCjEY/nFJ+u//Q0QW7b86PnnHZ0bks5Z5KNxstDgFB
- 8ieqdzZXwb8nQd54BAROxS5Y0qPLEeda5doQcCE+EFzABk7gxmFkNcD+FzEZp8aT5/YOg/
- zBTpa9/aRp4PQD0V/GvzjQhFx5s/3qzmVoPUo4/nyL1Yd+fdRZVYofcuJu1UWQ==
+ bh=ptxkYIfclqy5O/gMkPytM7FecBAPXApyhBHx/s6t5+k=;
+ b=cHjQpeFhBi4mMqPWUFdjjdKbCNxSUbeCTq7e9TuG54QoSwZllWwAyWn/VA2bxfbp8FS79W
+ lpKpONGN1xhSlu8/eUzJRYbZ8z2/7An4yFUXSfE69IHtfw3wF6lHivRNX1/x1EP43Mxg+m
+ 2YzOH1KhXwKXiNv80jZNKNSgxmxnjKjeDjsWmZo7PZev0MONnAMymFNV4PW0L08JGwT5Dg
+ XeCV5Hvab1ALlurGE9Sq5nyeVvDP0baDIxSjf5ud747JWKgjVTe0VrA/BAmffaTatkL5Fl
+ PsToyX+G9Z4WITvp+Bj9egqL+hjA9Kgbm3/OPtSDBuAAsUQm8y4Dgg3PUukvnA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
- s=2020e; t=1652516125;
+ s=2020e; t=1652516259;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UHF9WVJF89fHPJq0+8oiweP3wjgNVxTMSM/vRu60nYc=;
- b=DQ1ba3l4HOXe/g0FH1Hxfxmq/Jov5eLSl+952ajCcfZuyexUDsvo3a6HGCEtaOgGvBGZVv
- W7XCCMG7O6GU1PCg==
+ bh=ptxkYIfclqy5O/gMkPytM7FecBAPXApyhBHx/s6t5+k=;
+ b=4QyQkuDjHvg4QNWDVHeMxsVLfTUC/+wKMBTajewFUyM/io2iH9gFUIPw+ugISd8SAFk2b1
+ J7VmY4C7MwqIN+Bg==
 To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Subject: Re: [PATCH v6 05/29] x86/apic/vector: Do not allocate vectors for NMIs
-In-Reply-To: <20220513234542.GC9074@ranerica-svr.sc.intel.com>
+Subject: Re: [PATCH v6 15/29] x86/hpet: Add helper function
+ hpet_set_comparator_periodic()
+In-Reply-To: <20220513211944.GE22683@ranerica-svr.sc.intel.com>
 References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-6-ricardo.neri-calderon@linux.intel.com>
- <87zgjufjrf.ffs@tglx> <20220513180320.GA22683@ranerica-svr.sc.intel.com>
- <87v8u9rwce.ffs@tglx> <20220513234542.GC9074@ranerica-svr.sc.intel.com>
-Date: Sat, 14 May 2022 10:15:24 +0200
-Message-ID: <87sfpcsf6r.ffs@tglx>
+ <20220506000008.30892-16-ricardo.neri-calderon@linux.intel.com>
+ <87mtfufifa.ffs@tglx> <20220513211944.GE22683@ranerica-svr.sc.intel.com>
+Date: Sat, 14 May 2022 10:17:38 +0200
+Message-ID: <87pmkgsf31.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,29 +84,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 13 2022 at 16:45, Ricardo Neri wrote:
-> On Fri, May 13, 2022 at 10:50:09PM +0200, Thomas Gleixner wrote:
->> > Also, if lapic_nmi_controller.irq_set_affinity() is NULL, then irq_chips
->> > INTEL-IR, AMD-IR, those using msi_domain_set_affinity() need to check for NULL.
->> > They currently unconditionally call the parent irq_chip's irq_set_affinity().
->> > I see that there is a irq_chip_set_affinity_parent() function. Perhaps it can
->> > be used for this check?
->> 
->> Yes, this lacks obviously a NMI specific set_affinity callback and this
->> can be very trivial and does not have any of the complexity of interrupt
->> affinity assignment. First online CPU in the mask with a fallback to any
->> online CPU.
+On Fri, May 13 2022 at 14:19, Ricardo Neri wrote:
+> On Fri, May 06, 2022 at 11:41:13PM +0200, Thomas Gleixner wrote:
+>> The argument about not bloating the code
+>> with an "obvious???" function which is quite small is slightly beyond my
+>> comprehension level.
 >
-> Why would we need a fallback to any online CPU? Shouldn't it fail if it cannot
-> find an online CPU in the mask?
-
-Might as well fail. Let me think about it.
-
->> I did not claim that this is complete. This was for illustration.
+> That obvious function would look like this:
 >
-> In the reworked patch, may I add a Co-developed-by with your name and your SOB?
+> void hpet_set_comparator_one_shot(int channel, u32 delta)
+> {
+> 	u32 count;
+>
+> 	count = hpet_readl(HPET_COUNTER);
+> 	count += delta;
+> 	hpet_writel(count, HPET_Tn_CMP(channel));
+> }
 
-Suggested-by is good enough.
+This function only works reliably when the delta is large. See
+hpet_clkevt_set_next_event().
 
 Thanks,
 
