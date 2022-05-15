@@ -1,35 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDA7527710
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 12:36:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BC2527701
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 12:33:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L1JhQ4ZB0z3fnJ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 20:36:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L1Jch6nlRz3fB3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 20:33:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L1JZT3F48z3cfv
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 May 2022 20:31:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L1JZK2SZxz3ccl
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 May 2022 20:31:05 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L1JZS74thz4xY4;
- Sun, 15 May 2022 20:31:12 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L1JZK1VHPz4xZ2;
+ Sun, 15 May 2022 20:31:05 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mopsfelder@gmail.com, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-In-Reply-To: <cover.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2 0/3] powerpc: Remove system call emulation
-Message-Id: <165261051926.1047019.4518036835145159230.b4-ty@ellerman.id.au>
-Date: Sun, 15 May 2022 20:28:39 +1000
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+In-Reply-To: <a4ca63dd4c4b09e1906d08fb814af5a41d0f3fcb.1644651363.git.christophe.leroy@csgroup.eu>
+References: <a4ca63dd4c4b09e1906d08fb814af5a41d0f3fcb.1644651363.git.christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: Reduce csum_add() complexity for PPC64
+Message-Id: <165261052038.1047019.18164887384692464073.b4-ty@ellerman.id.au>
+Date: Sun, 15 May 2022 20:28:40 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,28 +44,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 30 Mar 2022 19:37:16 +0530, Naveen N. Rao wrote:
-> Since v1, the main change is to use helpers to decode primary/extended
-> opcode and the addition of macros for some of the used opcodes.
+On Sat, 12 Feb 2022 08:36:17 +0100, Christophe Leroy wrote:
+> PPC64 does everything in C, gcc is able to skip calculation
+> when one of the operands in zero.
 > 
-> - Naveen
+> Move the constant folding in PPC32 part.
 > 
-> 
+> This helps GCC and reduces ppc64_defconfig by 170 bytes.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/3] powerpc: Sort and de-dup primary opcodes in ppc-opcode.h
-      https://git.kernel.org/powerpc/c/f31c618373f2051a32e30002d8eacad7bbbd3885
-[2/3] powerpc: Reject probes on instructions that can't be single stepped
-      https://git.kernel.org/powerpc/c/54cdacd7d3b3c1a8dc10965f56c8b5eb8eda1a33
-[3/3] powerpc/64: remove system call instruction emulation
-      https://git.kernel.org/powerpc/c/a553476c44fb6bd3dc3a7e5efef8f130f0f34850
+[1/1] powerpc: Reduce csum_add() complexity for PPC64
+      https://git.kernel.org/powerpc/c/f206fdd9d41bf7deb96219b8ca3499a5abd79b83
 
 cheers
