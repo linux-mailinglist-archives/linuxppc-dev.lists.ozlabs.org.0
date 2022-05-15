@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0A45276ED
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 12:31:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5DB52770C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 12:35:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L1JZY1q4Xz3cjR
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 20:31:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L1Jgc14Yjz3fgH
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 20:35:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
@@ -14,21 +14,23 @@ Received: from gandalf.ozlabs.org (mail.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L1JZD5JNXz2xgN
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 May 2022 20:31:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L1JZR56NXz3cgW
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 May 2022 20:31:11 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L1JZB3KJxz4xXS;
- Sun, 15 May 2022 20:30:58 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L1JZR1w8kz4xbP;
+ Sun, 15 May 2022 20:31:11 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, llvm@lists.linux.dev
-In-Reply-To: <20220406070038.3704604-1-aik@ozlabs.ru>
-References: <20220406070038.3704604-1-aik@ozlabs.ru>
-Subject: Re: [PATCH kernel v3] powerpc/boot: Stop using RELACOUNT
-Message-Id: <165261051395.1047019.1825598688195889072.b4-ty@ellerman.id.au>
-Date: Sun, 15 May 2022 20:28:33 +1000
+To: Julia Lawall <Julia.Lawall@inria.fr>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+In-Reply-To: <20220430185654.5855-1-Julia.Lawall@inria.fr>
+References: <20220430185654.5855-1-Julia.Lawall@inria.fr>
+Subject: Re: [PATCH] powerpc: fix typos in comments
+Message-Id: <165261051630.1047019.9188451042641849521.b4-ty@ellerman.id.au>
+Date: Sun, 15 May 2022 20:28:36 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,27 +45,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Nick Desaulniers <ndesaulniers@google.com>
+Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 6 Apr 2022 17:00:38 +1000, Alexey Kardashevskiy wrote:
-> So far the RELACOUNT tag from the ELF header was containing the exact
-> number of R_PPC_RELATIVE/R_PPC64_RELATIVE relocations. However the LLVM's
-> recent change [1] make it equal-or-less than the actual number which
-> makes it useless.
+On Sat, 30 Apr 2022 20:56:54 +0200, Julia Lawall wrote:
+> Various spelling mistakes in comments.
+> Detected with the help of Coccinelle.
 > 
-> This replaces RELACOUNT in zImage loader with a pair of RELASZ and RELAENT.
-> The vmlinux relocation code is fixed in commit d79976918852
-> ("powerpc/64: Add UADDR64 relocation support").
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/boot: Stop using RELACOUNT
-      https://git.kernel.org/powerpc/c/c14d31bae372e050b053f2511fb3f0f90c27e4f9
+[1/1] powerpc: fix typos in comments
+      https://git.kernel.org/powerpc/c/1fd02f6605b855b4af2883f29a2abc88bdf17857
 
 cheers
