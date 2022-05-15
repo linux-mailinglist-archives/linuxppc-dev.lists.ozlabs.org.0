@@ -2,35 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5DB52770C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 12:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCDA7527710
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 12:36:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L1Jgc14Yjz3fgH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 20:35:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L1JhQ4ZB0z3fnJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 May 2022 20:36:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L1JZR56NXz3cgW
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 May 2022 20:31:11 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L1JZT3F48z3cfv
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 May 2022 20:31:13 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L1JZR1w8kz4xbP;
- Sun, 15 May 2022 20:31:11 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L1JZS74thz4xY4;
+ Sun, 15 May 2022 20:31:12 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Julia Lawall <Julia.Lawall@inria.fr>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <20220430185654.5855-1-Julia.Lawall@inria.fr>
-References: <20220430185654.5855-1-Julia.Lawall@inria.fr>
-Subject: Re: [PATCH] powerpc: fix typos in comments
-Message-Id: <165261051630.1047019.9188451042641849521.b4-ty@ellerman.id.au>
-Date: Sun, 15 May 2022 20:28:36 +1000
+To: mopsfelder@gmail.com, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+In-Reply-To: <cover.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
+References: <cover.1648648712.git.naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2 0/3] powerpc: Remove system call emulation
+Message-Id: <165261051926.1047019.4518036835145159230.b4-ty@ellerman.id.au>
+Date: Sun, 15 May 2022 20:28:39 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,21 +44,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-janitors@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 30 Apr 2022 20:56:54 +0200, Julia Lawall wrote:
-> Various spelling mistakes in comments.
-> Detected with the help of Coccinelle.
+On Wed, 30 Mar 2022 19:37:16 +0530, Naveen N. Rao wrote:
+> Since v1, the main change is to use helpers to decode primary/extended
+> opcode and the addition of macros for some of the used opcodes.
+> 
+> - Naveen
 > 
 > 
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc: fix typos in comments
-      https://git.kernel.org/powerpc/c/1fd02f6605b855b4af2883f29a2abc88bdf17857
+[1/3] powerpc: Sort and de-dup primary opcodes in ppc-opcode.h
+      https://git.kernel.org/powerpc/c/f31c618373f2051a32e30002d8eacad7bbbd3885
+[2/3] powerpc: Reject probes on instructions that can't be single stepped
+      https://git.kernel.org/powerpc/c/54cdacd7d3b3c1a8dc10965f56c8b5eb8eda1a33
+[3/3] powerpc/64: remove system call instruction emulation
+      https://git.kernel.org/powerpc/c/a553476c44fb6bd3dc3a7e5efef8f130f0f34850
 
 cheers
