@@ -1,68 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712DA528301
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 13:19:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7109528528
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 15:17:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L1xbf6vHfz3cFv
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 21:19:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L20DJ5snRz3c9V
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 23:17:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LYQ5Gtiw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=GQwDChHi;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::634;
- helo=mail-ej1-x634.google.com; envelope-from=festevam@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=LYQ5Gtiw; dkim-atps=neutral
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
- [IPv6:2a00:1450:4864:20::634])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L1xb351M1z3brW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 May 2022 21:18:54 +1000 (AEST)
-Received: by mail-ej1-x634.google.com with SMTP id n10so27999380ejk.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 May 2022 04:18:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=pmfsIHbJLueJ35bgeNRJJDeDJTrJmP4/XqfMWtgXDDU=;
- b=LYQ5GtiwSVm7LNB+PreZgfk443WWrmBicaCw3pTCFbG34FCjiXhosbAYFm87ix7mRR
- DJbuykytG5jHe5EG6osBFZxVeuf8Z9hE8BDt9SzTkRybx6abf40mMW5G+xJSRv/p/a1f
- qTRa7keeTPtp1GGGOXHQM8N0eQoLXj7ea7UHeT88fG/iZdc4Xg9jPafY821hsfF0XHEy
- zJoRgyRZjzvJpPyk/BgrDPkinijKPpOc1RW0z0SVAEEADPXcaVQInavPQMoLhiRkc7Qu
- 2Crt2OFfk1vkgIzdYsOgdea//NZRgRHX6lwxGlINBvHBd7IctLjbcdlueThFG4D5/uMU
- o+wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=pmfsIHbJLueJ35bgeNRJJDeDJTrJmP4/XqfMWtgXDDU=;
- b=lP3KIxYPnTK+jCFzbg84TIHh4gViHqO+rYB2KJ8AwjsgtHO6Hcqr9SovLw7uOqLHMt
- jsaN9UKhMkv8cx5um7UaG4uvAnRJ/Fmq40uAkaqcksHMJGM3WCnNKiUua9AS0aOxPOMe
- GUS1OFz0uJbZxh6D6FI3e9TAzPcnFrszK7weHL0OSJG/jHxUK2rU7e0XuNp0v9Ei/l3O
- l8yssdrbzOWuKv+UFzLJ9B4DO4r10GcbsaZdWO3XE7jsPBiJh5QweYxu7Ryx9OAnB73b
- 5rzaD8jJWDINgiQmAI95v8Zv0RF1B9rcbbMNbHohZBlloAufh1dGRHIKOifVP32uHstx
- hZOw==
-X-Gm-Message-State: AOAM530jcMm6Uqj6cEHalwVwqeJjJyvjyCv1TbfTIQg7SLrR6GQt8itp
- s67qwv/urV3YAKpr3kw4Ed9Hy/HTLw6wirFvQXI=
-X-Google-Smtp-Source: ABdhPJwgrDSEMVCmTZL7/2CDNe+hDmsyDMJ6mbkGGNi7nbYA9oDjQdMYkNNbKIpX/huxznQlvqJnWRbR8UjgvHonpTk=
-X-Received: by 2002:a17:907:7b9f:b0:6f4:d8c5:392c with SMTP id
- ne31-20020a1709077b9f00b006f4d8c5392cmr14484077ejc.652.1652699928032; Mon, 16
- May 2022 04:18:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L20Ch714Rz2xCB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 May 2022 23:17:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=GQwDChHi; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L20Cf32jWz4xY4;
+ Mon, 16 May 2022 23:17:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1652707039;
+ bh=BinEdrmN1IkeDmoVZqub01efpb7Nl+pPavZ2VguRhB8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=GQwDChHi2C9rxpY12mVi5aomHKBVnXwpW+ydOUmhYEgngymwbz3o1ZN3Js+Km17BH
+ x6ssM68YNge53K354dk40xswpHqqsj4hW1HQ2FNYsadaANAomq0TS4H2AZr2zTcgmg
+ 9ekTXOB19V3728GYE+Qdgo49ckXPYgzgXzHcaH2MjQM+B6pHvYn+zwOJ+lh10Ozjw8
+ mmGEq/eUQo2wpCB6Mcjz+NFiJKpM+odHMfvc6W0VUZRiXUdgOtBslVMdZ2XoVoYRpn
+ byQIUoJnCeJEmSQihDhySk+evUJd81/GkuJm5sbG9DCWAW25R+4AXkq2eNJ5S0Kc3Y
+ Y1lxo0RwxgJMg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Arnout Vandecappelle <arnout@mind.be>, Joel Stanley <joel@jms.id.au>
+Subject: Re: [Buildroot] [PATCH] linux: Fix powerpc64le defconfig selection
+In-Reply-To: <a18d0411-9134-2ee7-62d0-4ba6a1780846@mind.be>
+References: <20220510022055.67582-1-joel@jms.id.au>
+ <a18d0411-9134-2ee7-62d0-4ba6a1780846@mind.be>
+Date: Mon, 16 May 2022 23:17:13 +1000
+Message-ID: <87a6bh7h2e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <1652688372-10274-1-git-send-email-shengjiu.wang@nxp.com>
-In-Reply-To: <1652688372-10274-1-git-send-email-shengjiu.wang@nxp.com>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 16 May 2022 08:18:38 -0300
-Message-ID: <CAOMZO5DB9xNfdqffk6k8vLaC6efvGPtUx7NaA5AF1BYL37yaOw@mail.gmail.com>
-Subject: Re: [PATCH 0/3] ASoC: fsl_sai: Add support for i.MX8MM, MP, ULP
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,27 +60,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
- Shengjiu Wang <shengjiu.wang@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, buildroot@buildroot.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Shengjiu,
-
-On Mon, May 16, 2022 at 5:18 AM Shengjiu Wang <shengjiu.wang@nxp.com> wrote:
+Arnout Vandecappelle <arnout@mind.be> writes:
+> On 10/05/2022 04:20, Joel Stanley wrote:
+>> The default defconfig target for the 64 bit powerpc kernel is
+>> ppc64_defconfig, the big endian configuration.
+>>=20
+>> When building for powerpc64le users want the little endian kernel as
+>> they can't boot LE userspace on a BE kernel.
+>>=20
+>> Fix up the defconfig used in this case. This will avoid the following
+>> autobuilder failure:
+>>=20
+>>   VDSO32A arch/powerpc/kernel/vdso32/sigtramp.o
+>>   cc1: error: =E2=80=98-m32=E2=80=99 not supported in this configuratioin
+>>   make[4]: *** [arch/powerpc/kernel/vdso32/Makefile:49: arch/powerpc/ker=
+nel/vdso32/sigtramp.o] Error 1
+>>=20
+>>   http://autobuild.buildroot.net/results/dd76d53bab56470c0b83e296872d7bb=
+90f9e8296/
+>>=20
+>> Note that the failure indicates the toolchain is configured to disable
+>> the 32 bit target, causing the kernel to fail when building the 32 bit
+>> VDSO. This is only a problem on the BE kernel as the LE kernel disables
+>> CONFIG_COMPAT, aka 32 bit userspace support, by default.
+>>=20
+>> Signed-off-by: Joel Stanley <joel@jms.id.au>
 >
-> ASoC: fsl_sai: Add support for i.MX8MM, MP, ULP platforms
+>   Applied to master, thanks. However, the defconfig mechanism for *all* p=
+owerpc=20
+> seems pretty broken. Here's what we have in 5.16, before that there was=20
+> something similar:
 >
-> Shengjiu Wang (3):
->   ASoC: fsl_sai: Add support for i.MX8MM
->   ASoC: fsl_sai: Add support for i.MX8M Plus
->   ASoC: fsl_sai: Add support for i.MX8ULP
+> # If we're on a ppc/ppc64/ppc64le machine use that defconfig, otherwise j=
+ust use
+> # ppc64_defconfig because we have nothing better to go on.
+> uname :=3D $(shell uname -m)
+> KBUILD_DEFCONFIG :=3D $(if $(filter ppc%,$(uname)),$(uname),ppc64)_defcon=
+fig
+>
+>   So I guess we should use a specific defconfig for *all* powerpc.
+>
+>   The arch-default defconfig is generally not really reliable, for exampl=
+e for=20
+> arm it always takes v7_multi, but that won't work for v7m targets...
 
-For the series:
+There's a fundamental problem that just the "arch" is not sufficient
+detail when you're building a kernel.
 
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Two CPUs that implement the same user-visible "arch" may differ enough
+at the kernel level to require a different defconfig.
+
+Having said that I think we could handle this better in the powerpc
+kernel. Other arches allow specifying a different value for ARCH, which
+then is fed into the defconfig.
+
+That way you could at least pass ARCH=3Dppc/ppc64/ppc64le, and get an
+appropriate defconfig.
+
+I'll work on some kernel changes for that.
+
+cheers
