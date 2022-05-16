@@ -2,67 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE1B5288FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 17:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94885289DB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 18:10:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L23JX3PLxz3cDG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 01:36:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L243B4VZgz3c7v
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 02:10:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=FcOPep8e;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=FcOPep8e; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L23J74cJhz2xBv
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 May 2022 01:36:21 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4L23J04XPKz9sv6;
- Mon, 16 May 2022 17:36:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id UNIQeZVrcqmx; Mon, 16 May 2022 17:36:16 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4L23J03kcSz9sv5;
- Mon, 16 May 2022 17:36:16 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7154C8B76E;
- Mon, 16 May 2022 17:36:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ziEXgnIYi9U0; Mon, 16 May 2022 17:36:16 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4FE728B763;
- Mon, 16 May 2022 17:36:16 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 24GFa7Ol2667221
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Mon, 16 May 2022 17:36:07 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 24GFa6232667218;
- Mon, 16 May 2022 17:36:06 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/irq: Remove arch_local_irq_restore() for
- !CONFIG_CC_HAS_ASM_GOTO
-Date: Mon, 16 May 2022 17:36:04 +0200
-Message-Id: <58df50c9e77e2ed945bacdead30412770578886b.1652715336.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.1
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L242b6fjtz3bwT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 May 2022 02:09:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=ZFn50ampduPG9oGRQUX2BMS6rY0kjBJ3j8a67GHebAM=; b=FcOPep8ePTWgqhN9kkuewdcNEP
+ c+0DcuW1jGVdOvrXyeFbQQqAUYMA09npC4Byr3YGEoB/g2NkzWTt5Pixw+6iQWFOoxmTbFxaaHkCP
+ GYMvVe3H+uOm3cet8cNwDTa56BrpIyiq1AnVWz2iVREpdKhDi1ibK7mTGwEsf+7L1BvRA0jP/ip7K
+ 3Wv2lFsKQ8u4mnZSuMW4kfL4laBmHOrAwA4a8EfUlxz4QT/0au4zO1sGM8rm2FSym85ndF4P4dT3N
+ BwBBCS9eObHRceuash+pnFltB0GDgdDLOd7W2xfGhQiSAKVeJrd4klCmODWnoEukEx3MhnUQk8Saq
+ p8THRBQA==;
+Received: from [177.183.162.244] (helo=[192.168.0.5])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1nqdHp-006sJN-Dt; Mon, 16 May 2022 18:09:33 +0200
+Message-ID: <9f20619a-b405-2dc6-9771-b574b6f5058b@igalia.com>
+Date: Mon, 16 May 2022 13:09:04 -0300
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1652715344; l=3201; s=20211009;
- h=from:subject:message-id; bh=C31tbK0iwmtdja7r/jhK/x9hBYZZUMb/QQwP/WTCnUY=;
- b=dptpsagpthJSiCP0y80IMh2sPCLb/+m+bpXU237qpmhqJz9mqWXsRUwKqQ/ZcgPiX0TaeQjj4ysM
- yrtfFei9CHM591sAlc+JeuEV7DEWbOT+CfG8VzwNdg5LLl1UJNMk
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 23/30] printk: kmsg_dump: Introduce helper to inform
+ number of dumpers
+Content-Language: en-US
+To: Petr Mladek <pmladek@suse.com>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-24-gpiccoli@igalia.com>
+ <20220510134014.3923ccba@gandalf.local.home>
+ <c8818906-f113-82b6-b58b-d47ae0c16b4f@igalia.com> <YoJkpAp8XdS7ROgd@alley>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <YoJkpAp8XdS7ROgd@alley>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,115 +69,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
+ linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
+ john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
+ dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
+ linux-pm@vger.kernel.org, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, bp@alien8.de,
+ luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ vkuznets@redhat.com, linux-edac@vger.kernel.org, jgross@suse.com,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-All supported versions of GCC support asm goto.
+On 16/05/2022 11:50, Petr Mladek wrote:
+> [...]
+> Shame on me that I do not care that much about the style of the commit
+> message :-)
+> 
+> Anyway, the code looks good to me. With the better commit message:
+> 
+> Reviewed-by: Petr Mladek <pmladek@suse.com>
+> 
 
-Remove the !CONFIG_CC_HAS_ASM_GOTO version of arch_local_irq_restore()
+Heheh, cool - I'll add your tag and improve the message in V2.
+Thanks,
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/irq.c | 77 ---------------------------------------
- 1 file changed, 77 deletions(-)
 
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index c768cde03e36..dd09919c3c66 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -216,7 +216,6 @@ static inline void replay_soft_interrupts_irqrestore(void)
- #define replay_soft_interrupts_irqrestore() replay_soft_interrupts()
- #endif
- 
--#ifdef CONFIG_CC_HAS_ASM_GOTO
- notrace void arch_local_irq_restore(unsigned long mask)
- {
- 	unsigned char irq_happened;
-@@ -312,82 +311,6 @@ notrace void arch_local_irq_restore(unsigned long mask)
- 	__hard_irq_enable();
- 	preempt_enable();
- }
--#else
--notrace void arch_local_irq_restore(unsigned long mask)
--{
--	unsigned char irq_happened;
--
--	/* Write the new soft-enabled value */
--	irq_soft_mask_set(mask);
--	if (mask)
--		return;
--
--	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--		WARN_ON_ONCE(in_nmi() || in_hardirq());
--
--	/*
--	 * From this point onward, we can take interrupts, preempt,
--	 * etc... unless we got hard-disabled. We check if an event
--	 * happened. If none happened, we know we can just return.
--	 *
--	 * We may have preempted before the check below, in which case
--	 * we are checking the "new" CPU instead of the old one. This
--	 * is only a problem if an event happened on the "old" CPU.
--	 *
--	 * External interrupt events will have caused interrupts to
--	 * be hard-disabled, so there is no problem, we
--	 * cannot have preempted.
--	 */
--	irq_happened = get_irq_happened();
--	if (!irq_happened) {
--		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--			WARN_ON_ONCE(!(mfmsr() & MSR_EE));
--		return;
--	}
--
--	/* We need to hard disable to replay. */
--	if (!(irq_happened & PACA_IRQ_HARD_DIS)) {
--		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
--			WARN_ON_ONCE(!(mfmsr() & MSR_EE));
--		__hard_irq_disable();
--		local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
--	} else {
--		/*
--		 * We should already be hard disabled here. We had bugs
--		 * where that wasn't the case so let's dbl check it and
--		 * warn if we are wrong. Only do that when IRQ tracing
--		 * is enabled as mfmsr() can be costly.
--		 */
--		if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG)) {
--			if (WARN_ON_ONCE(mfmsr() & MSR_EE))
--				__hard_irq_disable();
--		}
--
--		if (irq_happened == PACA_IRQ_HARD_DIS) {
--			local_paca->irq_happened = 0;
--			__hard_irq_enable();
--			return;
--		}
--	}
--
--	/*
--	 * Disable preempt here, so that the below preempt_enable will
--	 * perform resched if required (a replayed interrupt may set
--	 * need_resched).
--	 */
--	preempt_disable();
--	irq_soft_mask_set(IRQS_ALL_DISABLED);
--	trace_hardirqs_off();
--
--	replay_soft_interrupts_irqrestore();
--	local_paca->irq_happened = 0;
--
--	trace_hardirqs_on();
--	irq_soft_mask_set(IRQS_ENABLED);
--	__hard_irq_enable();
--	preempt_enable();
--}
--#endif
- EXPORT_SYMBOL(arch_local_irq_restore);
- 
- /*
--- 
-2.35.1
-
+Guilherme
