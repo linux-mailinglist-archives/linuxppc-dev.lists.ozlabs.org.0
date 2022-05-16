@@ -1,67 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4F55286AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 16:13:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE93452878D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 16:50:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L21Sv4Yt6z3byG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 00:13:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L22HY5SLnz3c7b
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 00:50:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Cn5VNekr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=S4QT9bHI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=Cn5VNekr; dkim-atps=neutral
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=S4QT9bHI; dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L22Gw659Dz30Lk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 May 2022 00:50:16 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out2.suse.de (Postfix) with ESMTP id 8A0901FB39;
+ Mon, 16 May 2022 14:50:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1652712613; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=KQiIlBeAtlsgCeLOjjHzTpkuGh7+XAuIIUDB14idFd4=;
+ b=S4QT9bHIulh2DX7+Td1E1eHZ8ylXqLGd87dgOU5qON7f0TC2viT1I31ABT9u1YFo+zVF7s
+ CRf1jIcOXQaAUTOOLTnLyfyBeX0en2TY7mgyp7gvJnFWNhPu01YU8FRcK1p4/UGj8Io8lk
+ XM2tY8ZdnQQ59J0fQXUB5igw6KG7gMQ=
+Received: from suse.cz (unknown [10.100.201.202])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L21SG42m3z2xsc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 May 2022 00:13:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652710398; x=1684246398;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=q8T0jBh7cGQQ4AUWl+1aBVbwpP+Txn2+ZD1GDsXUmwY=;
- b=Cn5VNekrEnPPa9Jsye535dFObXMGdnFUTS0DqPSdpoK9LrA3CK4gWRXY
- rsQvi4YLiKZqgBv84VuiFGfEhXg+sIC6TjkNGZWgz/DZjw1sTME40Nx8W
- 4YlS3PF1+NlROWP9ROT/LjgJXSNKRg/jnIu+gm2OirH3FbXzCBNtau6C2
- ZQqO7NxAMEW6sCGt9VguPE70Ix0K812vL2We0Yi8JLbnS8keCLSPbGot0
- +oS0lofJiY/cqk55LmTxNlHH4FK8mBCo/9O0koGzBOLIYe5flW1syIK18
- rRMWln3OF86HOTLUBaTKwHXg3rXB+0xn9RzwaZk9ftLVlzWBtndkFRh/U A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10348"; a="333897358"
-X-IronPort-AV: E=Sophos;i="5.91,230,1647327600"; d="scan'208";a="333897358"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2022 07:13:12 -0700
-X-IronPort-AV: E=Sophos;i="5.91,230,1647327600"; d="scan'208";a="638258613"
-Received: from smile.fi.intel.com ([10.237.72.54])
- by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 May 2022 07:13:05 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1nqbQv-0006ib-VU; Mon, 16 May 2022 17:10:49 +0300
-Date: Mon, 16 May 2022 17:10:49 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 4/4] powerpc/52xx: Convert to use fwnode API
-Message-ID: <YoJbaTNJFV2A1Etw@smile.fi.intel.com>
-References: <20220507100147.5802-1-andriy.shevchenko@linux.intel.com>
- <20220507100147.5802-4-andriy.shevchenko@linux.intel.com>
- <877d6l7fmy.fsf@mpe.ellerman.id.au>
- <YoJaGGwfoSYhaT13@smile.fi.intel.com>
+ by relay2.suse.de (Postfix) with ESMTPS id 0B9D32C142;
+ Mon, 16 May 2022 14:50:13 +0000 (UTC)
+Date: Mon, 16 May 2022 16:50:12 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: Re: [PATCH 23/30] printk: kmsg_dump: Introduce helper to inform
+ number of dumpers
+Message-ID: <YoJkpAp8XdS7ROgd@alley>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-24-gpiccoli@igalia.com>
+ <20220510134014.3923ccba@gandalf.local.home>
+ <c8818906-f113-82b6-b58b-d47ae0c16b4f@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YoJaGGwfoSYhaT13@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <c8818906-f113-82b6-b58b-d47ae0c16b4f@igalia.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,51 +65,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ide@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Jiri Slaby <jirislaby@kernel.org>,
- Damien Le Moal <damien.lemoal@opensource.wdc.com>,
- linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Anatolij Gustschin <agust@denx.de>, Wolfgang Grandegger <wg@grandegger.com>,
- linux-can@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Sergey Shtylyov <s.shtylyov@omp.ru>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
- chris.packham@alliedtelesis.co.nz, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
+ sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
+ linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
+ john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
+ fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
+ dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
+ linux-pm@vger.kernel.org, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, bp@alien8.de,
+ luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ vkuznets@redhat.com, linux-edac@vger.kernel.org, jgross@suse.com,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 16, 2022 at 05:05:12PM +0300, Andy Shevchenko wrote:
-> On Mon, May 16, 2022 at 11:48:05PM +1000, Michael Ellerman wrote:
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
-> > > We may convert the GPT driver to use fwnode API for the sake
-> > > of consistency of the used APIs inside the driver.
+On Wed 2022-05-11 17:03:51, Guilherme G. Piccoli wrote:
+> On 10/05/2022 14:40, Steven Rostedt wrote:
+> > On Wed, 27 Apr 2022 19:49:17 -0300
+> > "Guilherme G. Piccoli" <gpiccoli@igalia.com> wrote:
 > > 
-> > I'm not sure about this one.
+> >> Currently we don't have a way to check if there are dumpers set,
+> >> except counting the list members maybe. This patch introduces a very
+> >> simple helper to provide this information, by just keeping track of
+> >> registered/unregistered kmsg dumpers. It's going to be used on the
+> >> panic path in the subsequent patch.
 > > 
-> > It's more consistent to use fwnode in this driver, but it's very
-> > inconsistent with the rest of the powerpc code. We have basically no
-> > uses of the fwnode APIs at the moment.
+> > FYI, it is considered "bad form" to reference in the change log "this
+> > patch". We know this is a patch. The change log should just talk about what
+> > is being done. So can you reword your change logs (you do this is almost
+> > every patch). Here's what I would reword the above to be:
+> > 
+> >  Currently we don't have a way to check if there are dumpers set, except
+> >  perhaps by counting the list members. Introduce a very simple helper to
+> >  provide this information, by just keeping track of registered/unregistered
+> >  kmsg dumpers. This will simplify the refactoring of the panic path.
 > 
-> Fair point!
-> 
-> > It seems like a pretty straight-forward conversion, but there could
-> > easily be a bug in there, I don't have any way to test it. Do you?
-> 
-> Nope, only compile testing. The important part of this series is to
-> clean up of_node from GPIO library, so since here it's a user of
-> it I want to do that. This patch is just ad-hoc conversion that I
-> noticed is possible. But there is no any requirement to do so.
-> 
-> Lemme drop this from v3.
+> Thanks for the hint, you're right - it's almost in all of my patches.
+> I'll reword all of them (except the ones already merged) to remove this
+> "bad form".
 
-I just realize that there is no point to send a v3. You can just apply
-first 3 patches. Or is your comment against entire series?
+Shame on me that I do not care that much about the style of the commit
+message :-)
 
--- 
-With Best Regards,
-Andy Shevchenko
+Anyway, the code looks good to me. With the better commit message:
 
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 
+Best Regards,
+Petr
