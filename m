@@ -1,98 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E32527C39
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 05:11:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361E4527E5E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 09:15:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L1kmc0bDXz3c97
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 13:11:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L1rB31cs3z3cF6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 17:15:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm2 header.b=Ml186vML;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=X4HnhMxm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hcv+RN0X;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=64.147.123.20;
- helo=wout4-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm2 header.b=Ml186vML; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm1 header.b=X4HnhMxm; 
- dkim-atps=neutral
-X-Greylist: delayed 418 seconds by postgrey-1.36 at boromir;
- Mon, 16 May 2022 13:10:47 AEST
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com
- [64.147.123.20])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=hcv+RN0X; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L1klq6Qpsz30QN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 May 2022 13:10:47 +1000 (AEST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
- by mailout.west.internal (Postfix) with ESMTP id E741F3200916;
- Sun, 15 May 2022 23:03:43 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute2.internal (MEProxy); Sun, 15 May 2022 23:03:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
- :cc:content-transfer-encoding:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:sender:subject:subject:to:to; s=fm2; t=1652670223; x=
- 1652756623; bh=a8Iw5DRNEUiaxkH9rG0K7BHwId2BfCmqpY9OPCbFiK4=; b=M
- l186vMLcC23CXP9/YAQU8V76YmLCPb1s8dFZdX9ZA1/YiAQPo1z3k5BAK6o5BemB
- hvuw0cmfbCpQqIql8MLP0/t2HxR1Zq+eepIWMAZEs1ZQ4UouvgK2NVZ1rg0QaNXG
- C8X4fhDDax1JASizy7uudqadmdzmeF7RJG1rkm/NvlKgkMIDN9PCstGCZgl32GMG
- X5GDKJYaxcfJkClgvpVysTOaBImZnivQx+10hQb6xm9xqi7mtD55aLu8u4aW+Gra
- mvdcCLbWn2Q0fhNoqcMNqL25qjdDLq9mG4HvpLDxWiYOEhcfsPcr7+wp4uDmi+HE
- ZWOiUZamSyBYnwU1glMgQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm1; t=1652670223; x=1652756623; bh=a8Iw5DRNEUiax
- kH9rG0K7BHwId2BfCmqpY9OPCbFiK4=; b=X4HnhMxm2Fdj0Yd64bYasXLuEkXqe
- 9fs9VqRkMHggKTHI36903V+bqo3E4G9esd5bvQUplC/MTbv/gzza4eMPyoAE9Z/T
- lHawlHxGfAzoChJADitOHxTcABF5+dpFXVp3Dy3bHllspU6uImBkeldPh4SIUzD3
- 3/QfzcCINtAx7F8nDOvAwq0/Vr4/QwiAbVdFZm6rs+L+Ilmbki1qDkaAkSxCkniN
- Vc00NDGzEDzUhVhIDgca9/0PSI+3QxGBlfBFrIiUtMZAT+65TvTY2j9Yy7SNH5U2
- zZCKZzg4UCTPniCmQc7UOjQIf9ujAWDr5vBcCcIwqRIryvo4kZdbKSZhw==
-X-ME-Sender: <xms:D7-BYjypHufM25weacgoxTMuFi2KcgPN4nH7JTWGwO2oVcJJgsPKYA>
- <xme:D7-BYrQSYEeU_TLXIBAfIqKeUQYxji_yL988_Mzlno3XQ9NCoBN9d4g4jSuOwTW1s
- C_6K_aa1X9yqO6Pqw>
-X-ME-Received: <xmr:D7-BYtUGBgIKoSx0weijs5ycoq52LMUrjMg65eOGh_C150SewgAhER7T0m2H3HwS7u9Z6HosVrHl5vV3yKg1i6Eukn5zLxUTDTTvhtWrL8P-ypZXtuo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrheeggdeilecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculdduhedmnecujfgurhepkffuhffvvegjfhgtgfffgggfsehtsgertddt
- reejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
- hsvghllhdrtggtqeenucggtffrrghtthgvrhhnpedtgfeuffeghedujefftdekgeetffej
- feffgeevleejjeekjeevueetueegheeghfenucffohhmrghinhepghhithhhuhgsrdgtoh
- hmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhhu
- shgtuhhrsehruhhsshgvlhhlrdgttg
-X-ME-Proxy: <xmx:D7-BYtiy840V_6ZzpL1z8nOrMSRBaT-UH4pk2LLMnlBCsAyV1xhtLw>
- <xmx:D7-BYlD61M6CfsuucYlLWEXOTS3eb3ErUFBnLboAOGnXNRmaOb9TSA>
- <xmx:D7-BYmIQOQwAT41y-6nYK1gRiPSkQ7xP9VaMjdIdxUQt13WxwdEgtw>
- <xmx:D7-BYtwNyXnOtKhGBVKg3LHZ6V5u6gfPdLEobuDWKHvuBGDqkHLi_A>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 15 May 2022 23:03:38 -0400 (EDT)
-Message-ID: <a76d41c28918dbdf046e5bc73b9ed67a093e02a1.camel@russell.cc>
-Subject: Re: [PATCH 3/5] bpf ppc64: Add instructions for atomic_[cmp]xchg
-From: Russell Currey <ruscur@russell.cc>
-To: Hari Bathini <hbathini@linux.ibm.com>, bpf@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-In-Reply-To: <20220512074546.231616-4-hbathini@linux.ibm.com>
-References: <20220512074546.231616-1-hbathini@linux.ibm.com>
- <20220512074546.231616-4-hbathini@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Date: Mon, 16 May 2022 13:03:35 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L1r9P04Kzz2ybB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 May 2022 17:14:48 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24G6ilj8019795;
+ Mon, 16 May 2022 07:14:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=jrK92z1fMS1G5fS2yCOS0DIPPrVxajCkMlNWCV+MDYY=;
+ b=hcv+RN0XlSsjUit07dDtJYr4AGkVYLN8uZAQ5k8NPYCFHN5SRUbigLHgCcpnjkm4Bvuu
+ 558yitPh0YZ1nLUvLS/bRNLQ8ztP1KPGYhkdSJbeyTO1KNtfKjZ0EhWsjroY0NNU5nJo
+ PCmfrEt93vP3pifZsSJljz4sTpaPblwrianlL11DvPSgG9OmIt+4iDmAlHTi7lagRHQN
+ IODgyNo/mWVy8zuZHll4lMCf4Vdf6YD5bsfI8CvCt2ERnUxCCS9UFyoThAp52IuWbZYu
+ 69BnMwF8OIjAbuXdb5bhs+ETu3ntTUus6Ix/oZclKzTjcFQUaJiqebpVX8dcH5CPwgSf Xw== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g3hm6rhps-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 May 2022 07:14:39 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24G78jeP005605;
+ Mon, 16 May 2022 07:14:37 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma01fra.de.ibm.com with ESMTP id 3g2428sqh6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 16 May 2022 07:14:37 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24G7EXXO39584192
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 16 May 2022 07:14:33 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 996A742057;
+ Mon, 16 May 2022 07:14:33 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8CDC442049;
+ Mon, 16 May 2022 07:14:32 +0000 (GMT)
+Received: from li-NotSettable.ibm.com.com (unknown [9.43.74.115])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 16 May 2022 07:14:32 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2] powerpc/ftrace: Remove ftrace init tramp once kernel init
+ is complete
+Date: Mon, 16 May 2022 12:44:22 +0530
+Message-Id: <20220516071422.463738-1-naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-User-Agent: Evolution 3.44.1 
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8gBQ4nYH4LYfygUisl7KJ4BugmLRziRa
+X-Proofpoint-ORIG-GUID: 8gBQ4nYH4LYfygUisl7KJ4BugmLRziRa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-15_11,2022-05-13_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 impostorscore=0
+ clxscore=1015 phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205160036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,128 +96,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>,
- netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Paul Mackerras <paulus@samba.org>, Jordan Niethe <jniethe5@gmail.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Yonghong Song <yhs@fb.com>,
- KP Singh <kpsingh@kernel.org>, Martin KaFai Lau <kafai@fb.com>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVGh1LCAyMDIyLTA1LTEyIGF0IDEzOjE1ICswNTMwLCBIYXJpIEJhdGhpbmkgd3JvdGU6Cj4g
-VGhpcyBhZGRzIHR3byBhdG9taWMgb3Bjb2RlcyBCUEZfWENIRyBhbmQgQlBGX0NNUFhDSEcgb24g
-cHBjNjQsIGJvdGgKPiBvZiB3aGljaCBpbmNsdWRlIHRoZSBCUEZfRkVUQ0ggZmxhZy7CoCBUaGUg
-a2VybmVsJ3MgYXRvbWljX2NtcHhjaGcKPiBvcGVyYXRpb24gZnVuZGFtZW50YWxseSBoYXMgMyBv
-cGVyYW5kcywgYnV0IHdlIG9ubHkgaGF2ZSB0d28gcmVnaXN0ZXIKPiBmaWVsZHMuIFRoZXJlZm9y
-ZSB0aGUgb3BlcmFuZCB3ZSBjb21wYXJlIGFnYWluc3QgKHRoZSBrZXJuZWwncyBBUEkKPiBjYWxs
-cyBpdCAnb2xkJykgaXMgaGFyZC1jb2RlZCB0byBiZSBCUEZfUkVHX1IwLiBBbHNvLCBrZXJuZWwn
-cwo+IGF0b21pY19jbXB4Y2hnIHJldHVybnMgdGhlIHByZXZpb3VzIHZhbHVlIGF0IGRzdF9yZWcg
-KyBvZmYuIEpJVCB0aGUKPiBzYW1lIGZvciBCUEYgdG9vIHdpdGggcmV0dXJuIHZhbHVlIHB1dCBp
-biBCUEZfUkVHXzAuCj4gCj4gwqAgQlBGX1JFR19SMCA9IGF0b21pY19jbXB4Y2hnKGRzdF9yZWcg
-KyBvZmYsIEJQRl9SRUdfUjAsIHNyY19yZWcpOwo+IAo+IFNpZ25lZC1vZmYtYnk6IEhhcmkgQmF0
-aGluaSA8aGJhdGhpbmlAbGludXguaWJtLmNvbT4KPiAtLS0KPiDCoGFyY2gvcG93ZXJwYy9uZXQv
-YnBmX2ppdF9jb21wNjQuYyB8IDI4ICsrKysrKysrKysrKysrKysrKysrKysrKy0tLS0KPiDCoDEg
-ZmlsZSBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQo+IAo+IGRpZmYg
-LS1naXQgYS9hcmNoL3Bvd2VycGMvbmV0L2JwZl9qaXRfY29tcDY0LmMKPiBiL2FyY2gvcG93ZXJw
-Yy9uZXQvYnBmX2ppdF9jb21wNjQuYwo+IGluZGV4IDUwNGZhNDU5ZjlmMy4uZGY5ZTIwYjIyY2Ni
-IDEwMDY0NAo+IC0tLSBhL2FyY2gvcG93ZXJwYy9uZXQvYnBmX2ppdF9jb21wNjQuYwo+ICsrKyBi
-L2FyY2gvcG93ZXJwYy9uZXQvYnBmX2ppdF9jb21wNjQuYwo+IEBAIC03ODMsNiArNzgzLDkgQEAg
-aW50IGJwZl9qaXRfYnVpbGRfYm9keShzdHJ1Y3QgYnBmX3Byb2cgKmZwLCB1MzIKPiAqaW1hZ2Us
-IHN0cnVjdCBjb2RlZ2VuX2NvbnRleHQgKgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgICovCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjYXNlIEJQRl9TVFggfCBC
-UEZfQVRPTUlDIHwgQlBGX1c6Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBjYXNl
-IEJQRl9TVFggfCBCUEZfQVRPTUlDIHwgQlBGX0RXOgo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgdTMyIHNhdmVfcmVnID0gdG1wMl9yZWc7Cj4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1MzIgcmV0X3JlZyA9IHNy
-Y19yZWc7CgpIaSBIYXJpLAoKU29tZSBjb21waWxlcnNbMF1bMV0gZG9uJ3QgbGlrZSB0aGVzZSBs
-YXRlIGRlY2xhcmF0aW9ucyBhZnRlciBjYXNlCmxhYmVsczoKCiAgIGFyY2gvcG93ZXJwYy9uZXQv
-YnBmX2ppdF9jb21wNjQuYzogSW4gZnVuY3Rpb24g4oCYYnBmX2ppdF9idWlsZF9ib2R54oCZOgog
-ICBhcmNoL3Bvd2VycGMvbmV0L2JwZl9qaXRfY29tcDY0LmM6NzgxOjQ6IGVycm9yOiBhIGxhYmVs
-IGNhbiBvbmx5IGJlCiAgIHBhcnQgb2YgYSBzdGF0ZW1lbnQgYW5kIGEgZGVjbGFyYXRpb24gaXMg
-bm90IGEgc3RhdGVtZW50CiAgICAgICB1MzIgc2F2ZV9yZWcgPSB0bXAyX3JlZzsKICAgICAgIF5+
-fgogICBhcmNoL3Bvd2VycGMvbmV0L2JwZl9qaXRfY29tcDY0LmM6NzgyOjQ6IGVycm9yOiBleHBl
-Y3RlZCBleHByZXNzaW9uCiAgIGJlZm9yZSDigJh1MzLigJkKICAgICAgIHUzMiByZXRfcmVnID0g
-c3JjX3JlZzsKICAgICAgIF5+fgogICBhcmNoL3Bvd2VycGMvbmV0L2JwZl9qaXRfY29tcDY0LmM6
-ODE5OjU6IGVycm9yOiDigJhyZXRfcmVn4oCZIHVuZGVjbGFyZWQKICAgKGZpcnN0IHVzZSBpbiB0
-aGlzIGZ1bmN0aW9uKTsgZGlkIHlvdSBtZWFuIOKAmGRzdF9yZWfigJk/CiAgICAgICAgcmV0X3Jl
-ZyA9IGJwZl90b19wcGMoQlBGX1JFR18wKTsKICAgCkFkZGluZyBhIHNlbWljb2xvbiBmaXhlcyB0
-aGUgZmlyc3QgaXNzdWUsIGkuZS4KCiAgIGNhc2UgQlBGX1NUWCB8IEJQRl9BVE9NSUMgfCBCUEZf
-RFc6IDsKICAgCmJ1dCB0aGVuIGl0IGp1c3QgY29tcGxhaW5zIGFib3V0IG1peGVkIGRlY2xhcmF0
-aW9ucyBhbmQgY29kZSBpbnN0ZWFkLgoKU28geW91IHNob3VsZCBkZWNsYXJlIHNhdmVfcmVnIGFu
-ZCByZXRfcmVnIGF0IHRoZSBiZWdpbm5pbmcgb2YgdGhlIGZvcgpsb29wIGxpa2UgdGhlIHJlc3Qg
-b2YgdGhlIHZhcmlhYmxlcy4KCi0gUnVzc2VsbAoKWzBdOiBnY2MgNS41LjAKaHR0cHM6Ly9naXRo
-dWIuY29tL3J1c2N1ci9saW51eC1jaS9ydW5zLzY0MTg1NDYxOTM/Y2hlY2tfc3VpdGVfZm9jdXM9
-dHJ1ZSNzdGVwOjQ6MTIyClsxXTogY2xhbmcgMTIuMApodHRwczovL2dpdGh1Yi5jb20vcnVzY3Vy
-L2xpbnV4LWNpL3J1bnMvNjQxODU0NTMzOD9jaGVja19zdWl0ZV9mb2N1cz10cnVlI3N0ZXA6NDox
-MTcKCj4gKwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oC8qIEdldCBvZmZzZXQgaW50byBUTVBfUkVHXzEgKi8KPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBFTUlUKFBQQ19SQVdfTEkodG1wMV9yZWcsIG9mZikp
-Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRtcF9p
-ZHggPSBjdHgtPmlkeCAqIDQ7Cj4gQEAgLTgxMyw2ICs4MTYsMjQgQEAgaW50IGJwZl9qaXRfYnVp
-bGRfYm9keShzdHJ1Y3QgYnBmX3Byb2cgKmZwLCB1MzIKPiAqaW1hZ2UsIHN0cnVjdCBjb2RlZ2Vu
-X2NvbnRleHQgKgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGNhc2UgQlBGX1hPUiB8IEJQRl9GRVRDSDoKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgRU1JVChQUENfUkFXX1hPUih0
-bXAyX3JlZywgdG1wMl9yZWcsCj4gc3JjX3JlZykpOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiArwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGNhc2UgQlBGX0NNUFhDSEc6
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgLyoKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBSZXR1cm4gb2xkIHZhbHVlIGluIEJQRl9SRUdfMCBmb3IK
-PiBCUEZfQ01QWENIRyAmCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICogaW4gc3JjX3JlZyBmb3Igb3RoZXIgY2FzZXMuCj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgICovCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgcmV0X3JlZyA9IGJwZl90b19wcGMoQlBGX1JFR18wKTsKPiArCj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgLyogQ29tcGFyZSB3aXRoIG9sZCB2YWx1ZSBpbiBCUEZfUjAKPiAqLwo+ICvCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlm
-IChzaXplID09IEJQRl9EVykKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgRU1JVChQUENfUkFXX0NN
-UEQoYnBmX3RvX3BwYygKPiBCUEZfUkVHXzApLCB0bXAyX3JlZykpOwo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVsc2UKPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgRU1JVChQUENfUkFXX0NNUFcoYnBmX3RvX3BwYygKPiBCUEZf
-UkVHXzApLCB0bXAyX3JlZykpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoC8qIERvbid0IHNldCBpZiBkaWZmZXJlbnQgZnJv
-bSBvbGQKPiB2YWx1ZSAqLwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoFBQQ19CQ0NfU0hPUlQoQ09ORF9ORSwgKGN0eC0+aWR4
-ICsgMykKPiAqIDQpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGZhbGx0aHJvdWdoOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgY2FzZSBCUEZfWENIRzoKPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzYXZlX3Jl
-ZyA9IHNyY19yZWc7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgYnJlYWs7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgZGVmYXVsdDoKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcHJfZXJyX3JhdGVsaW1pdGVk
-KAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgImVCUEYgZmlsdGVyIGF0b21pYyBvcCBjb2RlCj4g
-JTAyeCAoQCVkKSB1bnN1cHBvcnRlZFxuIiwKPiBAQCAtODIyLDE1ICs4NDMsMTQgQEAgaW50IGJw
-Zl9qaXRfYnVpbGRfYm9keShzdHJ1Y3QgYnBmX3Byb2cgKmZwLCB1MzIKPiAqaW1hZ2UsIHN0cnVj
-dCBjb2RlZ2VuX2NvbnRleHQgKgo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgLyogc3RvcmUgbmV3IHZhbHVlICovCj4gwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHNpemUgPT0gQlBGX0RXKQo+IC3C
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoEVNSVQoUFBDX1JBV19TVERDWCh0bXAyX3JlZywKPiB0bXAxX3JlZywgZHN0X3JlZykpOwo+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoEVNSVQoUFBDX1JBV19TVERDWChzYXZlX3JlZywKPiB0bXAxX3JlZywgZHN0X3JlZykp
-Owo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGVsc2UK
-PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqBFTUlUKFBQQ19SQVdfU1RXQ1godG1wMl9yZWcsCj4gdG1wMV9yZWcsIGRzdF9yZWcp
-KTsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBFTUlUKFBQQ19SQVdfU1RXQ1goc2F2ZV9yZWcsCj4gdG1wMV9yZWcsIGRzdF9y
-ZWcpKTsKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAv
-KiB3ZSdyZSBkb25lIGlmIHRoaXMgc3VjY2VlZGVkICovCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgUFBDX0JDQ19TSE9SVChDT05EX05FLCB0bXBfaWR4
-KTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-LyogRm9yIHRoZSBCUEZfRkVUQ0ggdmFyaWFudCwgZ2V0IG9sZCB2YWx1ZQo+IGludG8gc3JjX3Jl
-ZyAqLwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlm
-IChpbW0gJiBCUEZfRkVUQ0gpCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgRU1JVChQUENfUkFXX01SKHNyY19yZWcsIF9SMCkp
-Owo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoEVNSVQoUFBDX1JBV19NUihyZXRfcmVnLCBfUjApKTsKPiDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiDCoAo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgLyoKCg==
+Stop using the ftrace trampoline for init section once kernel init is
+complete.
+
+Fixes: 67361cf8071286 ("powerpc/ftrace: Handle large kernel configs")
+Cc: stable@vger.kernel.org # v4.20+
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+---
+v2: Update #ifdef to also check for CONFIG_FUNCTION_TRACER to address a
+build break seen with corenet64_smp_defconfig.
+
+
+ arch/powerpc/include/asm/ftrace.h  |  4 +++-
+ arch/powerpc/kernel/trace/ftrace.c | 15 ++++++++++++---
+ arch/powerpc/mm/mem.c              |  2 ++
+ 3 files changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index d83758acd1c7c3..44a37a2b6a1cfa 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -86,7 +86,7 @@ static inline bool arch_syscall_match_sym_name(const char *sym, const char *name
+ #endif /* PPC64_ELF_ABI_v1 */
+ #endif /* CONFIG_FTRACE_SYSCALLS */
+ 
+-#ifdef CONFIG_PPC64
++#if defined(CONFIG_PPC64) && defined(CONFIG_FUNCTION_TRACER)
+ #include <asm/paca.h>
+ 
+ static inline void this_cpu_disable_ftrace(void)
+@@ -110,11 +110,13 @@ static inline u8 this_cpu_get_ftrace_enabled(void)
+ 	return get_paca()->ftrace_enabled;
+ }
+ 
++void ftrace_free_init_tramp(void);
+ #else /* CONFIG_PPC64 */
+ static inline void this_cpu_disable_ftrace(void) { }
+ static inline void this_cpu_enable_ftrace(void) { }
+ static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled) { }
+ static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
++static inline void ftrace_free_init_tramp(void) { }
+ #endif /* CONFIG_PPC64 */
+ #endif /* !__ASSEMBLY__ */
+ 
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index 4ee04aacf9f13c..a778f2ae1f3f50 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -306,9 +306,7 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
+ 
+ 	/* Is this a known long jump tramp? */
+ 	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
+-		if (!ftrace_tramps[i])
+-			break;
+-		else if (ftrace_tramps[i] == tramp)
++		if (ftrace_tramps[i] == tramp)
+ 			return 0;
+ 
+ 	/* Is this a known plt tramp? */
+@@ -863,6 +861,17 @@ void arch_ftrace_update_code(int command)
+ 
+ extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
+ 
++void ftrace_free_init_tramp(void)
++{
++	int i;
++
++	for (i = 0; i < NUM_FTRACE_TRAMPS && ftrace_tramps[i]; i++)
++		if (ftrace_tramps[i] == (unsigned long)ftrace_tramp_init) {
++			ftrace_tramps[i] = 0;
++			return;
++		}
++}
++
+ int __init ftrace_dyn_arch_init(void)
+ {
+ 	int i;
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index 4d221d033804ef..149635e5c16534 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -22,6 +22,7 @@
+ #include <asm/kasan.h>
+ #include <asm/svm.h>
+ #include <asm/mmzone.h>
++#include <asm/ftrace.h>
+ 
+ #include <mm/mmu_decl.h>
+ 
+@@ -312,6 +313,7 @@ void free_initmem(void)
+ 	ppc_md.progress = ppc_printk_progress;
+ 	mark_initmem_nx();
+ 	free_initmem_default(POISON_FREE_INITMEM);
++	ftrace_free_init_tramp();
+ }
+ 
+ /*
+
+base-commit: f5802608e604dbedd4e791a43dd7732b68fcacae
+-- 
+2.36.1
 
