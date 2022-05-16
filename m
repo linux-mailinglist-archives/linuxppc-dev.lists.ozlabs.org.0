@@ -1,90 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361E4527E5E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 09:15:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4D7527E94
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 09:30:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L1rB31cs3z3cF6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 17:15:23 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hcv+RN0X;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L1rW00pf0z3cCf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 May 2022 17:30:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=hcv+RN0X; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L1r9P04Kzz2ybB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 May 2022 17:14:48 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24G6ilj8019795;
- Mon, 16 May 2022 07:14:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=jrK92z1fMS1G5fS2yCOS0DIPPrVxajCkMlNWCV+MDYY=;
- b=hcv+RN0XlSsjUit07dDtJYr4AGkVYLN8uZAQ5k8NPYCFHN5SRUbigLHgCcpnjkm4Bvuu
- 558yitPh0YZ1nLUvLS/bRNLQ8ztP1KPGYhkdSJbeyTO1KNtfKjZ0EhWsjroY0NNU5nJo
- PCmfrEt93vP3pifZsSJljz4sTpaPblwrianlL11DvPSgG9OmIt+4iDmAlHTi7lagRHQN
- IODgyNo/mWVy8zuZHll4lMCf4Vdf6YD5bsfI8CvCt2ERnUxCCS9UFyoThAp52IuWbZYu
- 69BnMwF8OIjAbuXdb5bhs+ETu3ntTUus6Ix/oZclKzTjcFQUaJiqebpVX8dcH5CPwgSf Xw== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g3hm6rhps-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 May 2022 07:14:39 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24G78jeP005605;
- Mon, 16 May 2022 07:14:37 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma01fra.de.ibm.com with ESMTP id 3g2428sqh6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 16 May 2022 07:14:37 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24G7EXXO39584192
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 May 2022 07:14:33 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 996A742057;
- Mon, 16 May 2022 07:14:33 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CDC442049;
- Mon, 16 May 2022 07:14:32 +0000 (GMT)
-Received: from li-NotSettable.ibm.com.com (unknown [9.43.74.115])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 16 May 2022 07:14:32 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/ftrace: Remove ftrace init tramp once kernel init
- is complete
-Date: Mon, 16 May 2022 12:44:22 +0530
-Message-Id: <20220516071422.463738-1-naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.27.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com;
+ envelope-from=xiujianfeng@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L1rVb1wTwz2ypD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 May 2022 17:29:40 +1000 (AEST)
+Received: from dggpeml500023.china.huawei.com (unknown [172.30.72.53])
+ by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L1rTW2qhnzhZCc;
+ Mon, 16 May 2022 15:28:47 +0800 (CST)
+Received: from [10.67.110.112] (10.67.110.112) by
+ dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 16 May 2022 15:29:33 +0800
+Subject: Re: [PATCH -next] powerpc: add support for syscall stack randomization
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, <benh@kernel.crashing.org>,
+ <christophe.leroy@csgroup.eu>, <mark.rutland@arm.com>, <paulus@samba.org>,
+ <tglx@linutronix.de>
+References: <20220505111932.228814-1-xiujianfeng@huawei.com>
+ <1652173338.7bltwybi0c.astroid@bobo.none>
+ <a1dcd50b-0819-df54-a963-ebb0551e3356@huawei.com>
+ <87pmki7uwf.fsf@mpe.ellerman.id.au>
+From: xiujianfeng <xiujianfeng@huawei.com>
+Message-ID: <bf8abb20-0aca-24b2-0f24-bc977af1fa1c@huawei.com>
+Date: Mon, 16 May 2022 15:29:33 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
+In-Reply-To: <87pmki7uwf.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8gBQ4nYH4LYfygUisl7KJ4BugmLRziRa
-X-Proofpoint-ORIG-GUID: 8gBQ4nYH4LYfygUisl7KJ4BugmLRziRa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-15_11,2022-05-13_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 bulkscore=0 suspectscore=0 impostorscore=0
- clxscore=1015 phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
- spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205160036
+X-Originating-IP: [10.67.110.112]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpeml500023.china.huawei.com (7.185.36.114)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,109 +57,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-hardening@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stop using the ftrace trampoline for init section once kernel init is
-complete.
 
-Fixes: 67361cf8071286 ("powerpc/ftrace: Handle large kernel configs")
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
-v2: Update #ifdef to also check for CONFIG_FUNCTION_TRACER to address a
-build break seen with corenet64_smp_defconfig.
+在 2022/5/12 21:17, Michael Ellerman 写道:
+> xiujianfeng <xiujianfeng@huawei.com> writes:
+>> 在 2022/5/10 17:23, Nicholas Piggin 写道:
+>>> Excerpts from Xiu Jianfeng's message of May 5, 2022 9:19 pm:
+>>>> Add support for adding a random offset to the stack while handling
+>>>> syscalls. This patch uses mftb() instead of get_random_int() for better
+>>>> performance.
+> ...
+>>>> @@ -405,6 +407,7 @@ interrupt_exit_user_prepare_main(unsigned long ret, struct pt_regs *regs)
+>>>>
+>>>>    	/* Restore user access locks last */
+>>>>    	kuap_user_restore(regs);
+>>>> +	choose_random_kstack_offset(mftb() & 0xFF);
+>>>>
+>>>>    	return ret;
+>>>>    }
+>>> So this seems to be what x86 and s390 do, but why are we choosing a
+>>> new offset for every interrupt when it's only used on a syscall?
+>>> I would rather you do what arm64 does and just choose the offset
+>>> at the end of system_call_exception.
+>> thanks for you suggestion, will do in v2.
+>>> I wonder why the choose is separated from the add? I guess it's to
+>>> avoid a data dependency for stack access on an expensive random
+>>> function, so that makes sense (a comment would be nice in the
+>>> generic code).
+>>>
+>>> I don't actually know if mftb() is cheaper here than a RNG. It
+>>> may not be conditioned all that well either. I would be tempted
+>> #if defined(__powerpc64__) && (defined(CONFIG_PPC_CELL) ||
+>> defined(CONFIG_E500))
+>> #define mftb()          ({unsigned long rval;                           \
+>>                           asm volatile(                                   \
+>>                                   "90:    mfspr %0, %2;\n"                \
+>> ASM_FTR_IFSET(                          \
+>>                                           "97:    cmpwi %0,0;\n"          \
+>>                                           "       beq- 90b;\n", "", %1)   \
+>>                           : "=r" (rval) \
+>>                           : "i" (CPU_FTR_CELL_TB_BUG), "i" (SPRN_TBRL) :
+>> "cr0"); \
+>>                           rval;})
+>> #elif defined(CONFIG_PPC_8xx)
+>> #define mftb()          ({unsigned long rval;   \
+>>                           asm volatile("mftbl %0" : "=r" (rval)); rval;})
+>> #else
+>> #define mftb()          ({unsigned long rval;   \
+>>                           asm volatile("mfspr %0, %1" : \
+>>                                        "=r" (rval) : "i" (SPRN_TBRL));
+>> rval;})
+>> #endif /* !CONFIG_PPC_CELL */
+>>
+>> there are 3 implementations of mftb() in
+>> arch/powerpc/include/asm/vdso/timebase.h,
+>>
+>> the last two cases have only one instruction, It's obviously cheaper
+>> than get_random_int,
+> Just because it's one instruction doesn't mean it's obviously cheaper.
+> On some CPUs mftb takes 10s of cycles, and can also stall the pipeline.
+>
+> But looking at get_random_u32() it does look pretty complicated, it
+> takes a lock and so on. It's also silly to call get_random_u32() for
+> 4-bits of randomness.
+>
+> My initial impression was that mftb() is too predictable to be useful
+> against a determined attacker. But looking closer I see that
+> choose_random_kstack_offset() xor's the value we pass with the existing
+> value. So that makes me less worried about using mftb().
+>
+> We could additionally call choose_random_kstack_offset(get_random_int())
+> less regularly, eg. during context switch. But I guess that's too
+> infrequent to actually make any difference.
+>
+> But limiting it to 4-bits of randomness seems insufficient. It seems
+> like we should allow the full 6 (10) bits, and anyone turning this
+> option on should probably also consider increasing their stack size.
+>
+> Also did you check the help text about stack-protector under
+> HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET?
 
+thanks for your reminder, will disable stack-protector for interrupt.c 
+in v2,
 
- arch/powerpc/include/asm/ftrace.h  |  4 +++-
- arch/powerpc/kernel/trace/ftrace.c | 15 ++++++++++++---
- arch/powerpc/mm/mem.c              |  2 ++
- 3 files changed, 17 insertions(+), 4 deletions(-)
+just like arm64 do.
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index d83758acd1c7c3..44a37a2b6a1cfa 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -86,7 +86,7 @@ static inline bool arch_syscall_match_sym_name(const char *sym, const char *name
- #endif /* PPC64_ELF_ABI_v1 */
- #endif /* CONFIG_FTRACE_SYSCALLS */
- 
--#ifdef CONFIG_PPC64
-+#if defined(CONFIG_PPC64) && defined(CONFIG_FUNCTION_TRACER)
- #include <asm/paca.h>
- 
- static inline void this_cpu_disable_ftrace(void)
-@@ -110,11 +110,13 @@ static inline u8 this_cpu_get_ftrace_enabled(void)
- 	return get_paca()->ftrace_enabled;
- }
- 
-+void ftrace_free_init_tramp(void);
- #else /* CONFIG_PPC64 */
- static inline void this_cpu_disable_ftrace(void) { }
- static inline void this_cpu_enable_ftrace(void) { }
- static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled) { }
- static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
-+static inline void ftrace_free_init_tramp(void) { }
- #endif /* CONFIG_PPC64 */
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 4ee04aacf9f13c..a778f2ae1f3f50 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -306,9 +306,7 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
- 
- 	/* Is this a known long jump tramp? */
- 	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
--		if (!ftrace_tramps[i])
--			break;
--		else if (ftrace_tramps[i] == tramp)
-+		if (ftrace_tramps[i] == tramp)
- 			return 0;
- 
- 	/* Is this a known plt tramp? */
-@@ -863,6 +861,17 @@ void arch_ftrace_update_code(int command)
- 
- extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
- 
-+void ftrace_free_init_tramp(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < NUM_FTRACE_TRAMPS && ftrace_tramps[i]; i++)
-+		if (ftrace_tramps[i] == (unsigned long)ftrace_tramp_init) {
-+			ftrace_tramps[i] = 0;
-+			return;
-+		}
-+}
-+
- int __init ftrace_dyn_arch_init(void)
- {
- 	int i;
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 4d221d033804ef..149635e5c16534 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -22,6 +22,7 @@
- #include <asm/kasan.h>
- #include <asm/svm.h>
- #include <asm/mmzone.h>
-+#include <asm/ftrace.h>
- 
- #include <mm/mmu_decl.h>
- 
-@@ -312,6 +313,7 @@ void free_initmem(void)
- 	ppc_md.progress = ppc_printk_progress;
- 	mark_initmem_nx();
- 	free_initmem_default(POISON_FREE_INITMEM);
-+	ftrace_free_init_tramp();
- }
- 
- /*
-
-base-commit: f5802608e604dbedd4e791a43dd7732b68fcacae
--- 
-2.36.1
-
+>
+> cheers
