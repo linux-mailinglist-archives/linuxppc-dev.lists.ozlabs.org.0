@@ -1,59 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F04452A2CA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 15:11:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC0C52A44A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 16:07:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L2c2z1v6zz3cFS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 23:11:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L2dH01yx3z3cDX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 00:07:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=FE8yzrSt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dI2gVmi4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=FE8yzrSt; dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L2c2N3mKrz2yn2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 May 2022 23:11:23 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id 0C7941F88E;
- Tue, 17 May 2022 13:11:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1652793080; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=R3V2DPM1jjc4jD8tVw3U8Rq3S0Maoan+sJ+xup8d8sI=;
- b=FE8yzrStcygQwANxOmZrJZbOrCy87Ou5DJ3FGcXlGzv/8KcD1Q9vQAYohnpV6O9yl65Qfm
- zyx0GaYk63CmAg8xlzK3VRV5wlBb3dplZbLwFVDWl++Ff8DNSFdVejZHiQCHUg6G6gVRgz
- J3YUEPeJCts4dfmVUl5hnzLG7sbV2vU=
-Received: from suse.cz (unknown [10.100.201.202])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=dI2gVmi4; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id D75DF2C141;
- Tue, 17 May 2022 13:11:17 +0000 (UTC)
-Date: Tue, 17 May 2022 15:11:10 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 14/30] panic: Properly identify the panic event to the
- notifiers' callbacks
-Message-ID: <YoOe7ifxfW8CEHdt@alley>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-15-gpiccoli@igalia.com>
- <YnqBsXBImU64PAOL@alley>
- <244a412c-4589-28d1-bb77-d3648d4f0b12@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <244a412c-4589-28d1-bb77-d3648d4f0b12@igalia.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L2dGF0N3Gz3bnr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 00:06:44 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24HDv79q031385;
+ Tue, 17 May 2022 14:06:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=RQpuJV7Fl07kSdTKKiK3KqeU5dPaT+/n+ofBgmntp2M=;
+ b=dI2gVmi4Wn4pfK7AWBGOQwS0Ak8hubl9RmtT74i8bNxERQu7aS5sW+wXsFPHSbYUZe93
+ bc9SVSy79+bCt/tCTNApzneBUY8YqftV6MtQG8YAaDuu3vDkWvi+5Fr4I8b6bmQm2/Hn
+ idP2oRoUVXWNdFV7mR6R4G39zkeRy6AgV8S4LtdTm82ql4Ug0qzThYIF9+VrMABRsTZg
+ TCkoZQ8t2d6FtOcT1APL2tt4g0DDdPUesf3c+ny5ESGnvFOyjIKvCBIHVEoGttwYwMqd
+ DbKm+AqSpAnVgNrhIj+UonaCsV3dhTjmpMiBIRtCfG6DpynqVaXOZe4m8W7bNvoHYzie Sg== 
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g4d1t07f9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 May 2022 14:06:37 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24HDvmHs016778;
+ Tue, 17 May 2022 14:06:35 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma04fra.de.ibm.com with ESMTP id 3g2428uf80-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 May 2022 14:06:35 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24HE6WGF43188548
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 May 2022 14:06:32 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 238B642047;
+ Tue, 17 May 2022 14:06:32 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4E5924203F;
+ Tue, 17 May 2022 14:06:29 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.163.5.59])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue, 17 May 2022 14:06:28 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
+Subject: Re: [PATCH 2/2] powerpc/perf: Fix the threshold compare group
+ constraint for power9
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20220506061015.43916-2-kjain@linux.ibm.com>
+Date: Tue, 17 May 2022 19:36:24 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2E9D3C37-F4FB-4480-B007-49E1ABD0A36D@linux.vnet.ibm.com>
+References: <20220506061015.43916-1-kjain@linux.ibm.com>
+ <20220506061015.43916-2-kjain@linux.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+X-Mailer: Apple Mail (2.3654.120.0.1.13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: DcY6Cm88DgH1KVyWvr_4O5j0L4yQMHC4
+X-Proofpoint-GUID: DcY6Cm88DgH1KVyWvr_4O5j0L4yQMHC4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-17_03,2022-05-17_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
+ malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205170087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,140 +102,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, linux-mips@vger.kernel.org, hidehiro.kawai.ez@hitachi.com,
- sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de,
- linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, mikelley@microsoft.com,
- john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
- dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
- rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
- linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
- linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
- netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
- kernel-dev@igalia.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ disgoel@linux.vnet.ibm.com, Nageswara Sastry <rnsastry@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 2022-05-10 13:16:54, Guilherme G. Piccoli wrote:
-> On 10/05/2022 12:16, Petr Mladek wrote:
-> > [...]
-> > Hmm, this looks like a hack. PANIC_UNUSED will never be used.
-> > All notifiers will be always called with PANIC_NOTIFIER.
-> > 
-> > The @val parameter is normally used when the same notifier_list
-> > is used in different situations.
-> > 
-> > But you are going to use it when the same notifier is used
-> > in more lists. This is normally distinguished by the @nh
-> > (atomic_notifier_head) parameter.
-> > 
-> > IMHO, it is a bad idea. First, it would confuse people because
-> > it does not follow the original design of the parameters.
-> > Second, the related code must be touched anyway when
-> > the notifier is moved into another list so it does not
-> > help much.
-> > 
-> > Or do I miss anything, please?
-> > 
-> > Best Regards,
-> > Petr
-> 
-> Hi Petr, thanks for the review.
-> 
-> I'm not strong attached to this patch, so we could drop it and refactor
-> the code of next patches to use the @nh as identification - but
-> personally, I feel this parameter could be used to identify the list
-> that called such function, in other words, what is the event that
-> triggered the callback. Some notifiers are even declared with this
-> parameter called "ev", like the event that triggers the notifier.
-> 
-> 
-> You mentioned 2 cases:
-> 
-> (a) Same notifier_list used in different situations;
-> 
-> (b) Same *notifier callback* used in different lists;
-> 
-> Mine is case (b), right? Can you show me an example of case (a)?
-
-There are many examples of case (a):
-
-   + module_notify_list:
-	MODULE_STATE_LIVE, 	/* Normal state. */
-	MODULE_STATE_COMING,	/* Full formed, running module_init. */
-	MODULE_STATE_GOING,	/* Going away. */
-	MODULE_STATE_UNFORMED,	/* Still setting it up. */
 
 
-   + netdev_chain:
+> On 06-May-2022, at 11:40 AM, Kajol Jain <kjain@linux.ibm.com> wrote:
+>=20
+> Thresh compare bits for a event is used to program thresh compare
+> field in Monitor Mode Control Register A (MMCRA: 9-18 bits for =
+power9).
+> When scheduling events as a group, all events in that group should
+> match value in threshold bits (like thresh compare, thresh control,
+> thresh select). Otherwise event open for the sibling events should =
+fail.
+> But in the current code, incase thresh compare bits are not valid,
+> we are not failing in group_constraint function which can result
+> in invalid group schduling.
+>=20
+> Fix the issue by returning -1 incase event is threshold and threshold
+> compare value is not valid.
+>=20
+> Thresh control bits in the event code is used to program thresh_ctl
+> field in Monitor Mode Control Register A (MMCRA: 48-55). In below =
+example,
+> the scheduling of group events PM_MRK_INST_CMPL (873534401e0) and
+> PM_THRESH_MET (8734340101ec) is expected to fail as both event
+> request different thresh control bits and invalid thresh compare =
+value.
+>=20
+> Result before the patch changes:
+>=20
+> [command]# perf stat -e "{r8735340401e0,r8734340101ec}" sleep 1
+>=20
+> Performance counter stats for 'sleep 1':
+>=20
+>            11,048      r8735340401e0
+>             1,967      r8734340101ec
+>=20
+>       1.001354036 seconds time elapsed
+>=20
+>       0.001421000 seconds user
+>       0.000000000 seconds sys
+>=20
+> Result after the patch changes:
+>=20
+> [command]# perf stat -e "{r8735340401e0,r8734340101ec}" sleep 1
+> Error:
+> The sys_perf_event_open() syscall returned with 22 (Invalid argument)
+> for event (r8735340401e0).
+> /bin/dmesg | grep -i perf may provide additional information.
+>=20
+> Fixes: 78a16d9fc1206 ("powerpc/perf: Avoid FAB_*_MATCH checks for =
+power9")
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 
-	NETDEV_UP	= 1,	/* For now you can't veto a device up/down */
-	NETDEV_DOWN,
-	NETDEV_REBOOT,		/* Tell a protocol stack a network interface
-				   detected a hardware crash and restarted
-				   - we can use this eg to kick tcp sessions
-				   once done */
-	NETDEV_CHANGE,		/* Notify device state change */
-	NETDEV_REGISTER,
-	NETDEV_UNREGISTER,
-	NETDEV_CHANGEMTU,	/* notify after mtu change happened */
-	NETDEV_CHANGEADDR,	/* notify after the address change */
-	NETDEV_PRE_CHANGEADDR,	/* notify before the address change */
-	NETDEV_GOING_DOWN,
-	...
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-    + vt_notifier_list:
+Thanks
+Athira
+> ---
+> arch/powerpc/perf/isa207-common.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/perf/isa207-common.c =
+b/arch/powerpc/perf/isa207-common.c
+> index 013b06af6fe6..bb5d64862bc9 100644
+> --- a/arch/powerpc/perf/isa207-common.c
+> +++ b/arch/powerpc/perf/isa207-common.c
+> @@ -508,7 +508,8 @@ int isa207_get_constraint(u64 event, unsigned long =
+*maskp, unsigned long *valp,
+> 		if (event_is_threshold(event) && =
+is_thresh_cmp_valid(event)) {
+> 			mask  |=3D CNST_THRESH_MASK;
+> 			value |=3D CNST_THRESH_VAL(event >> =
+EVENT_THRESH_SHIFT);
+> -		}
+> +		} else if (event_is_threshold(event))
+> +			return -1;
+> 	} else {
+> 		/*
+> 		 * Special case for PM_MRK_FAB_RSP_MATCH and =
+PM_MRK_FAB_RSP_MATCH_CYC,
+> --=20
+> 2.31.1
+>=20
 
-	#define VT_ALLOCATE		0x0001 /* Console got allocated */
-	#define VT_DEALLOCATE		0x0002 /* Console will be deallocated */
-	#define VT_WRITE		0x0003 /* A char got output */
-	#define VT_UPDATE		0x0004 /* A bigger update occurred */
-	#define VT_PREWRITE		0x0005 /* A char is about to be written to the console */
-
-    + die_chain:
-
-	DIE_OOPS = 1,
-	DIE_INT3,
-	DIE_DEBUG,
-	DIE_PANIC,
-	DIE_NMI,
-	DIE_DIE,
-	DIE_KERNELDEBUG,
-	...
-
-These all call the same list/chain in different situations.
-The situation is distinguished by @val.
-
-
-> You can see in the following patches (or grep the kernel) that people are using
-> this identification parameter to determine which kind of OOPS trigger
-> the callback to condition the execution of the function to specific
-> cases.
-
-Could you please show me some existing code for case (b)?
-I am not able to find any except in your patches.
-
-Anyway, the solution in 16th patch is bad, definitely.
-hv_die_panic_notify_crash() uses "val" to disinguish
-both:
-
-     + "panic_notifier_list" vs "die_chain"
-     + die_val when callen via "die_chain"
-
-The API around "die_chain" API is not aware of enum panic_notifier_val
-and the API using "panic_notifier_list" is not aware of enum die_val.
-As I said, it is mixing apples and oranges and it is error prone.
-
-Best Regards,
-Petr
