@@ -2,62 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AB452AB06
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 20:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0B452AC77
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 22:08:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L2lKK67Vsz3c1K
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 04:39:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FD7Dott6;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L2nH35qFyz3cHX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 06:07:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=FD7Dott6; dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=realitydiluted.com (client-ip=63.228.164.32;
+ helo=home.bethel-hill.org; envelope-from=sjhill@realitydiluted.com;
+ receiver=<UNKNOWN>)
+Received: from home.bethel-hill.org (home.bethel-hill.org [63.228.164.32])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L2lJh0Ky6z3bwH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 04:39:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652812756; x=1684348756;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=FTTY9ZFMfeTd8CI19p2u5YEYLQvqFSdIkPKeSEcRj4U=;
- b=FD7Dott6oS0M5edJnP8wfp0Qj5cE+gInDmyySgw5MZxdOklABZmvaYeW
- cD+iF9U3uGjYCo317YX8QViEoyZS8MIXDlogepr+kkmbi/Ewb5mp2bPOe
- eRl6AtrTBnopHrSjsV0UP7fYMAkjZ8RrEY57NY/qspuIZa5n5sEo+HzwM
- LeXkeQ7Dv/kTMA6stOs7+XiBJjzhGFNU6lKhJSiReqw5/9KyXJHosY3Ge
- qZwBOUIHdxqL75MEA6GZOHb2LjMCiVNzjjfAhStWkaa5r5wRRAcMXpzOd
- 4I94TAmvCEmEfVHHe+iB1lH34pP8zXJaUoC4WmzNgVod0ZE5k8muE/1H9 Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="357693324"
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; d="scan'208";a="357693324"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 May 2022 11:38:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; d="scan'208";a="555910452"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
- by orsmga002.jf.intel.com with ESMTP; 17 May 2022 11:38:12 -0700
-Date: Tue, 17 May 2022 11:41:54 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v6 21/29] x86/nmi: Add an NMI_WATCHDOG NMI handler category
-Message-ID: <20220517184154.GA6711@ranerica-svr.sc.intel.com>
-References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
- <20220506000008.30892-22-ricardo.neri-calderon@linux.intel.com>
- <87a6bqrelv.ffs@tglx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L2nGc4RPJz3bwG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 06:07:36 +1000 (AEST)
+Received: by home.bethel-hill.org with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.89)
+ (envelope-from <sjhill@realitydiluted.com>) id 1nr3Tf-0005kQ-19
+ for linuxppc-dev@lists.ozlabs.org; Tue, 17 May 2022 15:07:31 -0500
+Message-ID: <11a88986-a4e1-8318-b992-fcc5933f9e75@realitydiluted.com>
+Date: Tue, 17 May 2022 15:07:30 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a6bqrelv.ffs@tglx>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+To: linuxppc-dev@lists.ozlabs.org
+Content-Language: en-US
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+Subject: Looking for old boards with Galileo / Marvell Discovery chips on them.
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------rwFpAhgnc574AOiPBY1cnMTT"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,51 +45,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
- Andi Kleen <ak@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
- Joerg Roedel <joro@8bytes.org>, x86@kernel.org,
- Ricardo Neri <ricardo.neri@intel.com>, Stephane Eranian <eranian@google.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Tony Luck <tony.luck@intel.com>, Nicholas Piggin <npiggin@gmail.com>,
- Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 09, 2022 at 03:59:40PM +0200, Thomas Gleixner wrote:
-> On Thu, May 05 2022 at 17:00, Ricardo Neri wrote:
-> > Add a NMI_WATCHDOG as a new category of NMI handler. This new category
-> > is to be used with the HPET-based hardlockup detector. This detector
-> > does not have a direct way of checking if the HPET timer is the source of
-> > the NMI. Instead, it indirectly estimates it using the time-stamp counter.
-> >
-> > Therefore, we may have false-positives in case another NMI occurs within
-> > the estimated time window. For this reason, we want the handler of the
-> > detector to be called after all the NMI_LOCAL handlers. A simple way
-> > of achieving this with a new NMI handler category.
-> >
-> > @@ -379,6 +385,10 @@ static noinstr void default_do_nmi(struct pt_regs *regs)
-> >  	}
-> >  	raw_spin_unlock(&nmi_reason_lock);
-> >  
-> > +	handled = nmi_handle(NMI_WATCHDOG, regs);
-> > +	if (handled == NMI_HANDLED)
-> > +		goto out;
-> > +
-> 
-> How is this supposed to work reliably?
-> 
-> If perf is active and the HPET NMI and the perf NMI come in around the
-> same time, then nmi_handle(LOCAL) can swallow the NMI and the watchdog
-> won't be checked. Because MSI is strictly edge and the message is only
-> sent once, this can result in a stale watchdog, no?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------rwFpAhgnc574AOiPBY1cnMTT
+Content-Type: multipart/mixed; boundary="------------Ol1LbWBoa4yC7BAkQQalGiJd";
+ protected-headers="v1"
+From: "Steven J. Hill" <sjhill@realitydiluted.com>
+To: linuxppc-dev@lists.ozlabs.org
+Message-ID: <11a88986-a4e1-8318-b992-fcc5933f9e75@realitydiluted.com>
+Subject: Looking for old boards with Galileo / Marvell Discovery chips on
+ them.
 
-This is true. Instead, at the end of each NMI I should _also_ check if the TSC
-is within the expected value of the HPET NMI watchdog. In this way, unrelated
-NMIs (e.g., perf NMI) are handled and we don't miss the NMI from the HPET
-channel.
+--------------Ol1LbWBoa4yC7BAkQQalGiJd
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Thanks and BR,
-Ricardo
+SGVsbG8uDQoNCkN1cnJlbnRseSBsb29raW5nIGZvciBvbGQgRVY2NDI2MCBhbmQgRVY2NDM2
+MCBkZXZlbG9wbWVudCBib2FyZHMuIElmIHlvdSANCmhhdmUgYW55IHRvIHNlbGwsIHBsZWFz
+ZSBjb250YWN0IG1lLiBUcmllZCBjb250YWN0aW5nIE1hcmsgR3JlZXIgb2YgbGlzdCwgDQpi
+dXQgbm90IHN1cmUgaWYgaGUgZ290IGFueSBvZiBteSBlbWFpbC4gT2gsIGFsc28gbG9va2lu
+ZyBmb3IgYSBCREkyMDAwIG9yIA0KQkRJMzAwMCBpZiB5b3UgaGF2ZSBvbmUgdG8gc2VsbC4g
+VGhhbmsgeW91Lg0KDQotU3RldmUNCg==
+
+--------------Ol1LbWBoa4yC7BAkQQalGiJd--
+
+--------------rwFpAhgnc574AOiPBY1cnMTT
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wmMEABEIACMWIQQ7FeQaKpedass6DAiDIrkfYhzfpwUCYoQAggUDAAAAAAAKCRCDIrkfYhzfp1K6
+AJ40NpsRwwsfub794NJV65SMJgLoCACfVpvJwlZxSDY1LWwOn6ppo5sItJ4=
+=1NYy
+-----END PGP SIGNATURE-----
+
+--------------rwFpAhgnc574AOiPBY1cnMTT--
