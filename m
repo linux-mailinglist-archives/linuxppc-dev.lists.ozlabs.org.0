@@ -1,56 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88698529564
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 01:39:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3555297A6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 05:07:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L2G1v1wyRz3c8X
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 09:39:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L2Ldk3K4pz3by2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 13:07:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=QLY2t/FK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KKGw9guo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L2G1H44Rhz2yHL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 May 2022 09:39:15 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=ricardo.neri-calderon@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=QLY2t/FK; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L2G166yl7z4xZ2;
- Tue, 17 May 2022 09:39:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1652744351;
- bh=shMAgr3KnLfduKB2nfq7HCfF2fOXsMLLY0bGSFIz4Ms=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=QLY2t/FKtddLoKYu8LG0sSKbrlIDbQb907F8fJRC5dkfgoQ4VcE8ZYWVwVOoK7EM4
- xzfu8+So2JKiaEzF7GSQJ9gueS9zaiy8W0ZSlhez0VFXy4Wb0j8KP+yhCabzAY1A+C
- 0FgNnaqMk20UWxmOM3R6jumDaJQD3hLDqa2kTOU3pR8ceSVpLscdB0G74mWPjxfypW
- 1YbJXhatDs5+BG95Jjxs9mw7zFQliQ6Q027nffmAN+9od+JVIb8Te0z/N9Z2mv7B/v
- RTBKi84QByAmv5PC2z6tmhRB7b8jCnaApdBNfdiJ8XpCmLW2Ws4btTP6KU81mSwIaj
- LQs8XWcGd88vg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 4/4] powerpc/52xx: Convert to use fwnode API
-In-Reply-To: <YoJbaTNJFV2A1Etw@smile.fi.intel.com>
-References: <20220507100147.5802-1-andriy.shevchenko@linux.intel.com>
- <20220507100147.5802-4-andriy.shevchenko@linux.intel.com>
- <877d6l7fmy.fsf@mpe.ellerman.id.au> <YoJaGGwfoSYhaT13@smile.fi.intel.com>
- <YoJbaTNJFV2A1Etw@smile.fi.intel.com>
-Date: Tue, 17 May 2022 09:38:56 +1000
-Message-ID: <874k1p6oa7.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=KKGw9guo; dkim-atps=neutral
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L2Lcz6nDdz30QN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 May 2022 13:06:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1652756820; x=1684292820;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1eXK/Lt9/M/kHEgyQGFmbYTuXrCc0mJ/GpdZrACprGU=;
+ b=KKGw9guolZB4TGnePbzXOxOYsGSHqLp5mnjFsf0c4Ss9C8fS7WwDsX0Q
+ d3MlSjJvWUPwysSrQnQdoq0Eso4Z3vwcWLdVLT4wQSEHuIObcIQmynMzk
+ E67ySG7UxS3bQZfdNRtxf2Im56UAmkyaw7kTpq8knX8MRsr4RfhKoYWzu
+ 3rIxh7LzxCXVAHCGKqj6Dz8QzjAgkp49CnDmBX+8xLx3MAf5beHlbouve
+ hSYPP3aNxuE0ClKOpzn3gluJKI52+ej+qP9//wV9G7FAfBXGd/f7opfMu
+ F3NNJLD5hik+T3KuNBsG+Pyi+tLzQ2jP7nQzH+uM7CqEcCLXWcJQduRel Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10349"; a="268618147"
+X-IronPort-AV: E=Sophos;i="5.91,231,1647327600"; d="scan'208";a="268618147"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 May 2022 20:05:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,231,1647327600"; d="scan'208";a="660399844"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+ by FMSMGA003.fm.intel.com with ESMTP; 16 May 2022 20:05:54 -0700
+Date: Mon, 16 May 2022 20:09:35 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v6 29/29] x86/tsc: Switch to perf-based hardlockup
+ detector if TSC become unstable
+Message-ID: <20220517030935.GA2678@ranerica-svr.sc.intel.com>
+References: <20220506000008.30892-1-ricardo.neri-calderon@linux.intel.com>
+ <20220506000008.30892-30-ricardo.neri-calderon@linux.intel.com>
+ <1652184158.yhzceh3nwk.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1652184158.yhzceh3nwk.astroid@bobo.none>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,56 +70,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ide@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
- Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Jiri Slaby <jirislaby@kernel.org>,
- Damien Le Moal <damien.lemoal@opensource.wdc.com>,
- linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- Anatolij Gustschin <agust@denx.de>, Wolfgang Grandegger <wg@grandegger.com>,
- linux-can@vger.kernel.org, Mark Brown <broonie@kernel.org>,
- Marc Kleine-Budde <mkl@pengutronix.de>, Sergey Shtylyov <s.shtylyov@omp.ru>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
- chris.packham@alliedtelesis.co.nz, netdev@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+ Andi Kleen <ak@linux.intel.com>, linuxppc-dev@lists.ozlabs.org,
+ Joerg Roedel <joro@8bytes.org>, x86@kernel.org, linux-kernel@vger.kernel.org,
+ Stephane Eranian <eranian@google.com>, Ricardo Neri <ricardo.neri@intel.com>,
+ iommu@lists.linux-foundation.org, Tony Luck <tony.luck@intel.com>,
+ Suravee Suthikulpanit <Suravee.Suthikulpanit@amd.com>,
+ Thomas Gleixner <tglx@linutronix.de>, David Woodhouse <dwmw2@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
-> On Mon, May 16, 2022 at 05:05:12PM +0300, Andy Shevchenko wrote:
->> On Mon, May 16, 2022 at 11:48:05PM +1000, Michael Ellerman wrote:
->> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
->> > > We may convert the GPT driver to use fwnode API for the sake
->> > > of consistency of the used APIs inside the driver.
->> > 
->> > I'm not sure about this one.
->> > 
->> > It's more consistent to use fwnode in this driver, but it's very
->> > inconsistent with the rest of the powerpc code. We have basically no
->> > uses of the fwnode APIs at the moment.
->> 
->> Fair point!
->> 
->> > It seems like a pretty straight-forward conversion, but there could
->> > easily be a bug in there, I don't have any way to test it. Do you?
->> 
->> Nope, only compile testing. The important part of this series is to
->> clean up of_node from GPIO library, so since here it's a user of
->> it I want to do that. This patch is just ad-hoc conversion that I
->> noticed is possible. But there is no any requirement to do so.
->> 
->> Lemme drop this from v3.
->
-> I just realize that there is no point to send a v3. You can just apply
-> first 3 patches. Or is your comment against entire series?
+On Tue, May 10, 2022 at 10:14:00PM +1000, Nicholas Piggin wrote:
+> Excerpts from Ricardo Neri's message of May 6, 2022 10:00 am:
+> > The HPET-based hardlockup detector relies on the TSC to determine if an
+> > observed NMI interrupt was originated by HPET timer. Hence, this detector
+> > can no longer be used with an unstable TSC.
+> > 
+> > In such case, permanently stop the HPET-based hardlockup detector and
+> > start the perf-based detector.
+> > 
+> > Cc: Andi Kleen <ak@linux.intel.com>
+> > Cc: Stephane Eranian <eranian@google.com>
+> > Cc: "Ravi V. Shankar" <ravi.v.shankar@intel.com>
+> > Cc: iommu@lists.linux-foundation.org
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Cc: x86@kernel.org
+> > Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+> > Reviewed-by: Tony Luck <tony.luck@intel.com>
+> > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > ---
+> > Changes since v5:
+> >  * Relocated the delcaration of hardlockup_detector_switch_to_perf() to
+> >    x86/nmi.h It does not depend on HPET.
+> >  * Removed function stub. The shim hardlockup detector is always for x86.
+> > 
+> > Changes since v4:
+> >  * Added a stub version of hardlockup_detector_switch_to_perf() for
+> >    !CONFIG_HPET_TIMER. (lkp)
+> >  * Reconfigure the whole lockup detector instead of unconditionally
+> >    starting the perf-based hardlockup detector.
+> > 
+> > Changes since v3:
+> >  * None
+> > 
+> > Changes since v2:
+> >  * Introduced this patch.
+> > 
+> > Changes since v1:
+> >  * N/A
+> > ---
+> >  arch/x86/include/asm/nmi.h     | 6 ++++++
+> >  arch/x86/kernel/tsc.c          | 2 ++
+> >  arch/x86/kernel/watchdog_hld.c | 6 ++++++
+> >  3 files changed, 14 insertions(+)
+> > 
+> > diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
+> > index 4a0d5b562c91..47752ff67d8b 100644
+> > --- a/arch/x86/include/asm/nmi.h
+> > +++ b/arch/x86/include/asm/nmi.h
+> > @@ -63,4 +63,10 @@ void stop_nmi(void);
+> >  void restart_nmi(void);
+> >  void local_touch_nmi(void);
+> >  
+> > +#ifdef CONFIG_X86_HARDLOCKUP_DETECTOR
+> > +void hardlockup_detector_switch_to_perf(void);
+> > +#else
+> > +static inline void hardlockup_detector_switch_to_perf(void) { }
+> > +#endif
+> > +
+> >  #endif /* _ASM_X86_NMI_H */
+> > diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+> > index cc1843044d88..74772ffc79d1 100644
+> > --- a/arch/x86/kernel/tsc.c
+> > +++ b/arch/x86/kernel/tsc.c
+> > @@ -1176,6 +1176,8 @@ void mark_tsc_unstable(char *reason)
+> >  
+> >  	clocksource_mark_unstable(&clocksource_tsc_early);
+> >  	clocksource_mark_unstable(&clocksource_tsc);
+> > +
+> > +	hardlockup_detector_switch_to_perf();
+> >  }
+> >  
+> >  EXPORT_SYMBOL_GPL(mark_tsc_unstable);
+> > diff --git a/arch/x86/kernel/watchdog_hld.c b/arch/x86/kernel/watchdog_hld.c
+> > index ef11f0af4ef5..7940977c6312 100644
+> > --- a/arch/x86/kernel/watchdog_hld.c
+> > +++ b/arch/x86/kernel/watchdog_hld.c
+> > @@ -83,3 +83,9 @@ void watchdog_nmi_start(void)
+> >  	if (detector_type == X86_HARDLOCKUP_DETECTOR_HPET)
+> >  		hardlockup_detector_hpet_start();
+> >  }
+> > +
+> > +void hardlockup_detector_switch_to_perf(void)
+> > +{
+> > +	detector_type = X86_HARDLOCKUP_DETECTOR_PERF;
+> 
+> Another possible problem along the same lines here,
+> isn't your watchdog still running at this point? And
+> it uses detector_type in the switch.
+> 
+> > +	lockup_detector_reconfigure();
+> 
+> Actually the detector_type switch is used in some
+> functions called by lockup_detector_reconfigure()
+> e.g., watchdog_nmi_stop, so this seems buggy even
+> without concurrent watchdog.
 
-No, my comment is just about this patch.
+Yes, this true. I missed this race.
 
-I don't mind converting to new APIs when it's blocking some other
-cleanup. But given the age of this code I think it's probably better to
-just leave the rest of it as-is, unless someone volunteers to test it.
+> 
+> Is this switching a good idea in general? The admin
+> has asked for non-standard option because they want
+> more PMU counterss available and now it eats a
+> counter potentially causing a problem rather than
+> detecting one.
 
-So yeah I'll just take patches 1-3 of this v2 series, no need to resend.
+Agreed. A very valid point.
+> 
+> I would rather just disable with a warning if it were
+> up to me. If you *really* wanted to be fancy then
+> allow admin to re-enable via proc maybe.
 
-cheers
+I think that in either case, /proc/sys/kernel/nmi_watchdog
+need to be updated to reflect that the NMI watchdog has
+been disabled. That would require to expose other interfaces
+of the watchdog.
+
+Thanks and BR,
+Ricardo
