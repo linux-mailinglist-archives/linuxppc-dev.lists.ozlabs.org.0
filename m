@@ -2,88 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCFC52A7B1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 18:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 726D152A7F2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 18:31:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L2h5j1g7Rz3cFb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 02:14:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L2hSq1vN6z3cFP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 02:31:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OHCcMmA1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
- helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
- receiver=<UNKNOWN>)
-X-Greylist: delayed 2428 seconds by postgrey-1.36 at boromir;
- Wed, 18 May 2022 02:14:06 AEST
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L2h5B1BJkz2xh0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 02:14:05 +1000 (AEST)
-Received: from in01.mta.xmission.com ([166.70.13.51]:56996)
- by out03.mta.xmission.com with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1nqzCV-008zaP-Nq; Tue, 17 May 2022 09:33:31 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:38502
- helo=email.froward.int.ebiederm.org.xmission.com)
- by in01.mta.xmission.com with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1nqzCU-00CBh4-Iq; Tue, 17 May 2022 09:33:31 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-References: <20220425174128.11455-1-naveen.n.rao@linux.vnet.ibm.com>
- <YoNqJ/MOSIVwKP/o@MiWiFi-R3L-srv>
- <1652782155.56t7mah8ib.naveen@linux.ibm.com>
-Date: Tue, 17 May 2022 10:32:18 -0500
-In-Reply-To: <1652782155.56t7mah8ib.naveen@linux.ibm.com> (Naveen N. Rao's
- message of "Tue, 17 May 2022 15:49:41 +0530")
-Message-ID: <8735h8b2f1.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=OHCcMmA1; dkim-atps=neutral
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L2hS54T7Lz3bhK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 02:30:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1652805029; x=1684341029;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=0NqJ5VwhtJ3tBjditXPJfSf+c2F9/tHzdRAp1qZ01bI=;
+ b=OHCcMmA1qITj2beSCllK2hJ6483/Gr12fmCF93rg6mYbzeCDFU/HFnFY
+ 4Gj5d/MSE2wHPa4nw5XkeXNyuK31ZnfHyXKt/wfnzLROr0bx2KMl+h2uO
+ YkQXWZMHPxXcIkah5kSygD8UaXRJKuNoxId+pPC6akrHUpEr2NKTUsWDj
+ EoIkI9kB+bMJXhDZBLV6NzW0oPDxu1m5NhchA9zx7yxK+UTosSp91Fxse
+ q/iS5NrB96RTZOhQRQKJ1x6oCdswW7Duje55nqaQoQlOrUMaCcWR4a1AL
+ oIrfA2Ar8XSR4gwiUj1t6teQbKtByGydBysAx0W1+cub0l5osOzM93854 g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="258802649"
+X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; d="scan'208";a="258802649"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 May 2022 09:30:15 -0700
+X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; d="scan'208";a="626561602"
+Received: from smile.fi.intel.com ([10.237.72.54])
+ by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 May 2022 09:30:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.95)
+ (envelope-from <andriy.shevchenko@linux.intel.com>)
+ id 1nr05E-0008C4-Vy; Tue, 17 May 2022 19:30:04 +0300
+Date: Tue, 17 May 2022 19:30:04 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 4/4] powerpc/52xx: Convert to use fwnode API
+Message-ID: <YoPNjPp3LMF2+qKS@smile.fi.intel.com>
+References: <20220507100147.5802-1-andriy.shevchenko@linux.intel.com>
+ <20220507100147.5802-4-andriy.shevchenko@linux.intel.com>
+ <877d6l7fmy.fsf@mpe.ellerman.id.au>
+ <YoJaGGwfoSYhaT13@smile.fi.intel.com>
+ <YoJbaTNJFV2A1Etw@smile.fi.intel.com>
+ <874k1p6oa7.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1nqzCU-00CBh4-Iq; ; ;
- mid=<8735h8b2f1.fsf@email.froward.int.ebiederm.org>; ; ;
- hst=in01.mta.xmission.com; ; ; ip=68.227.174.4; ; ; frm=ebiederm@xmission.com;
- ; ; spf=softfail
-X-XM-AID: U2FsdGVkX1+Rsm9jiHl7RP207+UxFb0FJ9BaNggLsNY=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
-X-Spam-Level: ******
-X-Spam-Status: No, score=6.7 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,TR_Symld_Words,T_TM2_M_HEADER_IN_MSG,XMGappySubj_01,
- XMSubLong,XMSubMetaSSxObfu_00,XM_SPF_SoftFail autolearn=disabled
- version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.4965] *  0.7 XMSubLong Long Subject
- *  0.5 XMGappySubj_01 Very gappy subject
- *  1.5 TR_Symld_Words too many words that have symbols inside
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
- *  1.6 XMSubMetaSSxObfu_00 Obfuscated Sorta Sexy Verb
- *  2.5 XM_SPF_SoftFail SPF-SoftFail
-X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ******;"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 510 ms - load_scoreonly_sql: 0.12 (0.0%),
- signal_user_changed: 13 (2.6%), b_tie_ro: 11 (2.2%), parse: 1.65
- (0.3%), extract_message_metadata: 7 (1.4%), get_uri_detail_list: 3.2
- (0.6%), tests_pri_-1000: 6 (1.1%), tests_pri_-950: 1.93 (0.4%),
- tests_pri_-900: 1.52 (0.3%), tests_pri_-90: 162 (31.8%), check_bayes:
- 159 (31.3%), b_tokenize: 10 (2.0%), b_tok_get_all: 9 (1.8%),
- b_comp_prob: 4.0 (0.8%), b_tok_touch_all: 132 (25.8%), b_finish: 1.16
- (0.2%), tests_pri_0: 289 (56.7%), check_dkim_signature: 0.89 (0.2%),
- check_dkim_adsp: 3.5 (0.7%), poll_dns_idle: 0.73 (0.1%), tests_pri_10:
- 2.8 (0.5%), tests_pri_500: 12 (2.4%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH] kexec_file: Drop pr_err in weak implementations of
- arch_kexec_apply_relocations[_add]
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <874k1p6oa7.fsf@mpe.ellerman.id.au>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,61 +75,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org,
- linux-kernel@vger.kernel.org, Baoquan He <bhe@redhat.com>
+Cc: linux-ide@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+ Paul Mackerras <paulus@samba.org>, linux-i2c@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Jiri Slaby <jirislaby@kernel.org>,
+ Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+ linux-serial@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ Anatolij Gustschin <agust@denx.de>, Wolfgang Grandegger <wg@grandegger.com>,
+ linux-can@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, Sergey Shtylyov <s.shtylyov@omp.ru>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
+ chris.packham@alliedtelesis.co.nz, netdev@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, May 17, 2022 at 09:38:56AM +1000, Michael Ellerman wrote:
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
+> > On Mon, May 16, 2022 at 05:05:12PM +0300, Andy Shevchenko wrote:
+> >> On Mon, May 16, 2022 at 11:48:05PM +1000, Michael Ellerman wrote:
+> >> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> writes:
+> >> > > We may convert the GPT driver to use fwnode API for the sake
+> >> > > of consistency of the used APIs inside the driver.
+> >> > 
+> >> > I'm not sure about this one.
+> >> > 
+> >> > It's more consistent to use fwnode in this driver, but it's very
+> >> > inconsistent with the rest of the powerpc code. We have basically no
+> >> > uses of the fwnode APIs at the moment.
+> >> 
+> >> Fair point!
+> >> 
+> >> > It seems like a pretty straight-forward conversion, but there could
+> >> > easily be a bug in there, I don't have any way to test it. Do you?
+> >> 
+> >> Nope, only compile testing. The important part of this series is to
+> >> clean up of_node from GPIO library, so since here it's a user of
+> >> it I want to do that. This patch is just ad-hoc conversion that I
+> >> noticed is possible. But there is no any requirement to do so.
+> >> 
+> >> Lemme drop this from v3.
+> >
+> > I just realize that there is no point to send a v3. You can just apply
+> > first 3 patches. Or is your comment against entire series?
+> 
+> No, my comment is just about this patch.
+> 
+> I don't mind converting to new APIs when it's blocking some other
+> cleanup. But given the age of this code I think it's probably better to
+> just leave the rest of it as-is, unless someone volunteers to test it.
+> 
+> So yeah I'll just take patches 1-3 of this v2 series, no need to resend.
+
+Thanks!
+
+One note though, the fwnode_for_each_parent_node() is not yet available in
+upstream, but will be after v5.19-rc1. It means the patch 3 can't be applied
+without that. That's why LKP complained on patch 4 in this series.
+
+That said, the easiest way is to postpone it till v5.19-rc1 is out.
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Looking at this the pr_err is absolutely needed.  If an unsupported case
-winds up in the purgatory blob and the code can't handle it things
-will fail silently much worse later.  So the proposed patch is
-unfortunately the wrong direction.
-
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
-
-> Baoquan He wrote:
->> On 04/25/22 at 11:11pm, Naveen N. Rao wrote:
->>> kexec_load_purgatory() can fail for many reasons - there is no need to
->>> print an error when encountering unsupported relocations.
->>> This solves a build issue on powerpc with binutils v2.36 and newer [1].
->>> Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
->>> symbols") [2], binutils started dropping section symbols that it thought
->> I am not familiar with binutils, while wondering if this exists in other
->> ARCHes except of ppc. Arm64 doesn't have the ARCH override either, do we
->> have problem with it?
->
-> I'm not aware of this specific file causing a problem on other architectures -
-> perhaps the config options differ enough. There are however more reports of
-> similar issues affecting other architectures with the llvm integrated assembler:
-> https://github.com/ClangBuiltLinux/linux/issues/981
->
->> 
->>> were unused.  This isn't an issue in general, but with kexec_file.c, gcc
->>> is placing kexec_arch_apply_relocations[_add] into a separate
->>> .text.unlikely section and the section symbol ".text.unlikely" is being
->>> dropped. Due to this, recordmcount is unable to find a non-weak symbol
->> But arch_kexec_apply_relocations_add is weak symbol on ppc.
->
-> Yes. Note that it is just the section symbol that gets dropped. The section is
-> still present and will continue to hold the symbols for the functions
-> themselves.
-
-So we have a case where binutils thinks it is doing something useful
-and our kernel specific tool gets tripped up by it.
-
-Reading the recordmcount code it looks like it is finding any symbol
-within a section but ignoring weak symbols.  So I suspect the only
-remaining symbol in the section is __weak and that confuses
-recordmcount.
-
-Does removing the __weak annotation on those functions fix the build
-error?  If so we can restructure the kexec code to simply not use __weak
-symbols.
-
-Otherwise the fix needs to be in recordmcount or binutils, and we should
-loop whoever maintains recordmcount in to see what they can do.
-
-Eric
