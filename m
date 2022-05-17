@@ -2,13 +2,13 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC2352A6C4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 17:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E1952A6D9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 May 2022 17:35:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L2gC34tmzz3cF9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 01:34:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L2gD76Wgyz3cMh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 01:35:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=NsQp7JvD;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=Kd/s+xrC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
@@ -17,13 +17,13 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
- header.s=20170329 header.b=NsQp7JvD; dkim-atps=neutral
+ header.s=20170329 header.b=Kd/s+xrC; dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L2gBT3W5Kz3bbB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 01:33:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L2gCX4FSrz3bbB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 01:34:32 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
@@ -31,28 +31,29 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
  Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=sBxOdf5zzlugJkhZHabZzTAtpXD19gBRD4MewoqTr3w=; b=NsQp7JvDHeiG0InrgCzgj6qEMn
- +0HDDirskWRJUwtuX9QZNgVpRKlGO/3aNrbmen6tXlKUhuV0+BbQy2aMCyUUGcetLiuWPChDYhZG2
- uActfFtkCGU4c6w7jw5eo3KbRLxEWlPGvaIXcW9KuVcgcDuIdvQJ7CUukGXL9th36+kW270UNj6cp
- KwfiG//V+ceMXkXz56bGppHfbEL7x2Yf8p2OfzRzA+P3gciDRGzrJlW3tYAmf8L72SPmNmKgXgiQH
- oN/Ktah8yVYeK7YuYx/7jPfAZeKiiCyehjDs7pB9vGbI0WRx7KI28Glco3R/cH3PEM9mA0rVYqkMG
- 3w57FnRw==;
+ bh=H3qrTQv7Tt4PXBVt8796c6Ly9chEP2DhR9UJaIWJhqo=; b=Kd/s+xrChiBK9NaSmFnFXM3RYc
+ UbvPwTdgYlS5Qa0rscW/rbtbKNYmUFJYz6cuBPp5A2fzucoID0yV96EUGF05FAOiWz8RXWusO+AHA
+ 8G50ebt3m708xrBW8WQ3edVZ8TFa1h54Wb9WFcR4fr7CEuRFULxnhNWBP/+YYHyvucLESFjbnRE2j
+ n9qbZb3QL+2yKsrt97dJ6Amu5IZoY/oVzVzN5MU2xEsTlE/L+2AbQmiktH83j3MJhKZ0jI46IVrKr
+ LNwCY2ghNt9ogJWj8KzB1ejgALFJxydhnjupRBVywOgqfhSwQwo7FdrzyqWruEBFvoxYw8EKWcKt2
+ QJUgWtTw==;
 Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120]
  helo=[192.168.1.60]) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1nqzCM-008c9O-8K; Tue, 17 May 2022 17:33:22 +0200
-Message-ID: <007af382-dcf5-b06d-acad-08f8d6ec7f8b@igalia.com>
-Date: Tue, 17 May 2022 12:32:39 -0300
+ id 1nqzDK-008cDX-EE; Tue, 17 May 2022 17:34:22 +0200
+Message-ID: <31f96f73-46b5-aa6f-a5db-5052c6f3fc92@igalia.com>
+Date: Tue, 17 May 2022 12:33:52 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [PATCH 15/30] bus: brcmstb_gisb: Clean-up panic/die notifiers
+Subject: Re: [PATCH 17/30] tracing: Improve panic/die notifiers
 Content-Language: en-US
-To: Petr Mladek <pmladek@suse.com>, Florian Fainelli <f.fainelli@gmail.com>
+To: Petr Mladek <pmladek@suse.com>, rostedt@goodmis.org
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-16-gpiccoli@igalia.com> <YnqEqDnMfUgC4dM6@alley>
+ <20220427224924.592546-18-gpiccoli@igalia.com>
+ <20220511114541.GC26047@pathway.suse.cz>
 From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <YnqEqDnMfUgC4dM6@alley>
+In-Reply-To: <20220511114541.GC26047@pathway.suse.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -77,39 +78,41 @@ Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
  bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
  dyoung@redhat.com, vgoyal@redhat.com, linux-xtensa@linux-xtensa.org,
  dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de,
- linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org,
- rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org,
- linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- andriy.shevchenko@linux.intel.com, vkuznets@redhat.com,
- linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
- jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- kernel@gpiccoli.net, kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rcu@vger.kernel.org,
+ bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ vkuznets@redhat.com, linux-edac@vger.kernel.org, jgross@suse.com,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
  stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
  mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
- akpm@linux-foundation.org, Brian Norris <computersforpeace@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10/05/2022 12:28, Petr Mladek wrote:
+On 11/05/2022 08:45, Petr Mladek wrote:
 > [...]
-> IMHO, the check of the @self parameter was the proper solution.
+> DIE_OOPS and PANIC_NOTIFIER are from different enum.
+> It feels like comparing apples with oranges here.
 > 
-> "gisb_die_notifier" list uses @val from enum die_val.
-> "gisb_panic_notifier" list uses @val from enum panic_notifier_val.
+> IMHO, the proper way to unify the two notifiers is
+> a check of the @self parameter. Something like:
 > 
-> These are unrelated types. It might easily break when
-> someone defines the same constant also in enum die_val.
+> static int trace_die_panic_handler(struct notifier_block *self,
+> 				unsigned long ev, void *unused)
+> {
+> 	if (self == trace_die_notifier && val != DIE_OOPS)
+> 		goto out;
+> 
+> 	ftrace_dump(ftrace_dump_on_oops);
+> out:
+> 	return NOTIFY_DONE;
+> }
 > 
 > Best Regards,
 > Petr
 
-OK Petr, I'll drop this idea for V2 - will just remove the useless
-header / prototype then. (CC Florian)
+OK Petr, thanks - will implement your suggestion in V2 (CC Steven)
 
-
-Cheers,
-
-
-Guilherme
+Cheers!
