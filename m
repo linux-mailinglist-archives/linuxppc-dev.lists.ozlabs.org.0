@@ -1,71 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537BD52C24E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 20:30:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9415152C24F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 20:31:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3M4M1qDKz3cJK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 04:30:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3M523BQrz3cdm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 04:31:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=ZlfIsU0t;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Dlt6KKCt;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wMsWtuBh;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=qmyJSBzX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
  envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256
- header.s=susede2_rsa header.b=ZlfIsU0t; 
+ header.s=susede2_rsa header.b=wMsWtuBh; 
  dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256
- header.s=susede2_ed25519 header.b=Dlt6KKCt; 
+ header.s=susede2_ed25519 header.b=qmyJSBzX; 
  dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3M3m6Nvgz2yph
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3M3m6TXdz3050
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 04:30:12 +1000 (AEST)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id E0AA221BB6;
- Wed, 18 May 2022 18:30:09 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 349FF1F9C4;
+ Wed, 18 May 2022 18:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1652898609; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=LFhkKZCpJuuSRVngySn7Ria9bqnykwodBJ+TQBeWJWw=;
- b=ZlfIsU0teixeYsjuE71J9WhX7c+tZIinjK6xK27iqO3YsO9IuDVWLZH8mOVXo/yDWpjFZh
- H/7kHegqMjZyv75f2+HSO5QT8GMallPReoj98LESG/4G/yo8VLg5n0xJCAYbOHdSdi73zp
- 7fRnF4dEu1ZJY+nTAi/BH0CE6rBqrBA=
+ t=1652898610; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LhFDl2NOlV91LYZ76ENca4DEnibAY9AsTKgpOxk6/Lc=;
+ b=wMsWtuBhE56i8OgwKTz+ZhItOV2OWx6xUDrHDlFg3KYXU/3jkr67BwkzfM9q3OT7w9i18P
+ uZexzv1A4dzD8aTkoVKIYYXfmCn1uem2xb2Rn4jbbOJuYeynO9qkCMjb0hqv3IEHfvIXeH
+ IGpIpdpTda/GRF/exK08N/7qejbyXjc=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1652898609;
+ s=susede2_ed25519; t=1652898610;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=LFhkKZCpJuuSRVngySn7Ria9bqnykwodBJ+TQBeWJWw=;
- b=Dlt6KKCtllACFZibNb6QiwXu2hr+rnAauJAKKmfx44rDm75gWp2baS4A1cROG/vhVd8luP
- /1iq4/j1/DTCfmDQ==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LhFDl2NOlV91LYZ76ENca4DEnibAY9AsTKgpOxk6/Lc=;
+ b=qmyJSBzXsHKtMCjXRivek24kDukp5WMRHl3fYz3MMpdK836l/NuDX/tt1BAV/3E9BPlA6m
+ 5IGAkWzZr1MlooDw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 959A013A6D;
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id E4DBE13ADC;
  Wed, 18 May 2022 18:30:09 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 1oedIzE7hWLPGgAAMHmgww
+ by imap2.suse-dmz.suse.de with ESMTPSA id QKQCNzE7hWLPGgAAMHmgww
  (envelope-from <tzimmermann@suse.de>); Wed, 18 May 2022 18:30:09 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com, airlied@linux.ie, daniel@ffwll.ch, deller@gmx.de,
  maxime@cerno.tech, sam@ravnborg.org, msuchanek@suse.de, mpe@ellerman.id.au,
  benh@kernel.crashing.org, paulus@samba.org
-Subject: [PATCH 0/2] drm: Add driverof PowerPC OF displays
-Date: Wed, 18 May 2022 20:30:04 +0200
-Message-Id: <20220518183006.14548-1-tzimmermann@suse.de>
+Subject: [PATCH 1/2] MAINTAINERS: Broaden scope of simpledrm entry
+Date: Wed, 18 May 2022 20:30:05 +0200
+Message-Id: <20220518183006.14548-2-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220518183006.14548-1-tzimmermann@suse.de>
+References: <20220518183006.14548-1-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,24 +91,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerPC's Open Firmware offers a simple display buffer for graphics
-output. Add ofdrm, a DRM driver for the device. As with the existing
-simpledrm driver, the graphics hardware is pre-initialized by the
-firmware. The driver only provides blitting, no actual DRM modesetting
-is possible.
+There will be more DRM drivers for firmware-provided framebuffers. Use
+the existing entry for simpledrm instead of adding a new one for each
+driver. Also add DRM's aperture helpers, which are part of the driver's
+infrastructure.
 
-Thomas Zimmermann (2):
-  MAINTAINERS: Broaden scope of simpledrm entry
-  drm/tiny: Add ofdrm for Open Firmware framebuffers
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+---
+ MAINTAINERS | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- MAINTAINERS                   |   5 +-
- drivers/gpu/drm/tiny/Kconfig  |  12 +
- drivers/gpu/drm/tiny/Makefile |   1 +
- drivers/gpu/drm/tiny/ofdrm.c  | 748 ++++++++++++++++++++++++++++++++++
- drivers/video/fbdev/Kconfig   |   1 +
- 5 files changed, 766 insertions(+), 1 deletion(-)
- create mode 100644 drivers/gpu/drm/tiny/ofdrm.c
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5c1fd93d9050..43d833273ae9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6388,13 +6388,15 @@ S:	Orphan / Obsolete
+ F:	drivers/gpu/drm/savage/
+ F:	include/uapi/drm/savage_drm.h
+ 
+-DRM DRIVER FOR SIMPLE FRAMEBUFFERS
++DRM DRIVER FOR FIRMWARE FRAMEBUFFERS
+ M:	Thomas Zimmermann <tzimmermann@suse.de>
+ M:	Javier Martinez Canillas <javierm@redhat.com>
+ L:	dri-devel@lists.freedesktop.org
+ S:	Maintained
+ T:	git git://anongit.freedesktop.org/drm/drm-misc
++F:	drivers/gpu/drm/drm_aperture.c
+ F:	drivers/gpu/drm/tiny/simpledrm.c
++F:	include/drm/drm_aperture.h
+ 
+ DRM DRIVER FOR SIS VIDEO CARDS
+ S:	Orphan / Obsolete
 -- 
 2.36.1
 
