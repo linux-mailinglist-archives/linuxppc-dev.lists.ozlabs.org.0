@@ -2,50 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7431552BD8B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 16:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E31A152BD99
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 16:49:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3FgJ2zJXz3cDf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 00:27:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h64CfWLn;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3G9B5w5wz3cLT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 00:49:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=xmission.com (client-ip=166.70.13.232;
+ helo=out02.mta.xmission.com; envelope-from=ebiederm@xmission.com;
+ receiver=<UNKNOWN>)
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3Ffj4T8Pz3c1K
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 00:26:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=h64CfWLn; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L3Ffj3X8yz4xXn;
- Thu, 19 May 2022 00:26:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1652883997;
- bh=hwMCErkIOXv7XSecVpNDbKAAgMQDrUk9YOniBMytWfc=;
- h=From:To:Subject:Date:From;
- b=h64CfWLndlrGYLS+CvMjd+6jLcNL3vh4pwSTZ4U+7KiTzit8x9ZNniDzmE9t6Xrju
- czUFp7jg+VAF97weetVPLHgsxS12I1kbktrymM35d76BP5WKf7FXwn5ldcVjGy8S4f
- D7H1QnMrJ36r4/M5v4zL/VEmsZsYvmEuQYDWBD2vrjz06LptREwyN6XV3n+Y0Eyqql
- xjGSG6Di2fopcvkVF4VMY7oRkBgovapHAtO0VKxkN0TTVGIhs4GrmrxRrt+ppfH0Oq
- D1dK3kCafycblT2HrRtMOWM+ZV1krGswdLQrz8G/fyISfTc1WSSVxjXU8FeXH61oiu
- 1iIalm5yHk96g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc: Fix all occurences of "the the"
-Date: Thu, 19 May 2022 00:26:29 +1000
-Message-Id: <20220518142629.513007-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.35.3
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3G8l6Cqcz2yn2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 00:49:10 +1000 (AEST)
+Received: from in01.mta.xmission.com ([166.70.13.51]:32848)
+ by out02.mta.xmission.com with esmtps (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1nrKz3-002PxL-IC; Wed, 18 May 2022 08:49:05 -0600
+Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:38630
+ helo=email.froward.int.ebiederm.org.xmission.com)
+ by in01.mta.xmission.com with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1nrKz2-0003X1-BV; Wed, 18 May 2022 08:49:05 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20220425174128.11455-1-naveen.n.rao@linux.vnet.ibm.com>
+ <YoNqJ/MOSIVwKP/o@MiWiFi-R3L-srv>
+ <1652782155.56t7mah8ib.naveen@linux.ibm.com>
+ <8735h8b2f1.fsf@email.froward.int.ebiederm.org>
+ <87v8u3o9tk.fsf@mpe.ellerman.id.au>
+Date: Wed, 18 May 2022 09:48:40 -0500
+In-Reply-To: <87v8u3o9tk.fsf@mpe.ellerman.id.au> (Michael Ellerman's message
+ of "Wed, 18 May 2022 12:26:15 +1000")
+Message-ID: <875ym2aoc7.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-XM-SPF: eid=1nrKz2-0003X1-BV; ; ;
+ mid=<875ym2aoc7.fsf@email.froward.int.ebiederm.org>; ; ;
+ hst=in01.mta.xmission.com; ; ; ip=68.227.174.4; ; ; frm=ebiederm@xmission.com;
+ ; ; spf=softfail
+X-XM-AID: U2FsdGVkX18OF6jAwaXaz6ojJSRU8FUF7d0ERwA10Zc=
+X-SA-Exim-Connect-IP: 68.227.174.4
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa01.xmission.com
+X-Spam-Level: ******
+X-Spam-Status: No, score=6.8 required=8.0 tests=ALL_TRUSTED,BAYES_50,
+ DCC_CHECK_NEGATIVE,TR_Symld_Words,T_SCC_BODY_TEXT_LINE,
+ T_TM2_M_HEADER_IN_MSG,XMGappySubj_01,XMSubLong,XMSubMetaSSxObfu_00,
+ XM_B_SpammyWords,XM_SPF_SoftFail autolearn=disabled version=3.4.2
+X-Spam-Virus: No
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+ *      [score: 0.4970]
+ *  1.5 TR_Symld_Words too many words that have symbols inside
+ *  0.5 XMGappySubj_01 Very gappy subject
+ *  0.7 XMSubLong Long Subject
+ *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+ * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+ *      [sa01 1397; Body=1 Fuz1=1 Fuz2=1]
+ *  0.2 XM_B_SpammyWords One or more commonly used spammy words
+ * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+ *  2.5 XM_SPF_SoftFail SPF-SoftFail
+ *  1.6 XMSubMetaSSxObfu_00 Obfuscated Sorta Sexy Verb
+X-Spam-DCC: XMission; sa01 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ******;Michael Ellerman <mpe@ellerman.id.au>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 613 ms - load_scoreonly_sql: 0.04 (0.0%),
+ signal_user_changed: 4.5 (0.7%), b_tie_ro: 3.1 (0.5%), parse: 1.33
+ (0.2%), extract_message_metadata: 15 (2.4%), get_uri_detail_list: 3.4
+ (0.6%), tests_pri_-1000: 11 (1.8%), tests_pri_-950: 1.08 (0.2%),
+ tests_pri_-900: 0.78 (0.1%), tests_pri_-90: 60 (9.7%), check_bayes: 58
+ (9.5%), b_tokenize: 9 (1.5%), b_tok_get_all: 12 (2.0%), b_comp_prob:
+ 3.6 (0.6%), b_tok_touch_all: 30 (4.9%), b_finish: 0.73 (0.1%),
+ tests_pri_0: 440 (71.8%), check_dkim_signature: 0.42 (0.1%),
+ check_dkim_adsp: 2.6 (0.4%), poll_dns_idle: 65 (10.7%), tests_pri_10:
+ 2.0 (0.3%), tests_pri_500: 75 (12.2%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] kexec_file: Drop pr_err in weak implementations of
+ arch_kexec_apply_relocations[_add]
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,213 +99,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Baoquan He <bhe@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rather than waiting for the bots to fix these one-by-one, fix all
-occurences of "the the" throughout arch/powerpc.
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/boot/wrapper                  | 2 +-
- arch/powerpc/kernel/eeh_pe.c               | 2 +-
- arch/powerpc/kernel/head_64.S              | 2 +-
- arch/powerpc/kernel/pci-common.c           | 2 +-
- arch/powerpc/kernel/smp.c                  | 2 +-
- arch/powerpc/kvm/book3s_64_entry.S         | 2 +-
- arch/powerpc/kvm/book3s_xive_native.c      | 2 +-
- arch/powerpc/mm/cacheflush.c               | 2 +-
- arch/powerpc/mm/pgtable.c                  | 2 +-
- arch/powerpc/platforms/52xx/mpc52xx_gpt.c  | 2 +-
- arch/powerpc/platforms/chrp/setup.c        | 2 +-
- arch/powerpc/platforms/powernv/pci-ioda.c  | 2 +-
- arch/powerpc/platforms/powernv/pci-sriov.c | 2 +-
- arch/powerpc/xmon/xmon.c                   | 2 +-
- 14 files changed, 14 insertions(+), 14 deletions(-)
+> "Eric W. Biederman" <ebiederm@xmission.com> writes:
+>> Looking at this the pr_err is absolutely needed.  If an unsupported case
+>> winds up in the purgatory blob and the code can't handle it things
+>> will fail silently much worse later.
+>
+> It won't fail later, it will fail the syscall.
+>
+> sys_kexec_file_load()
+>   kimage_file_alloc_init()
+>     kimage_file_prepare_segments()
+>       arch_kexec_kernel_image_load()
+>         kexec_image_load_default()
+>           image->fops->load()
+>             elf64_load()        # powerpc
+>             bzImage64_load()    # x86
+>               kexec_load_purgatory()
+>                 kexec_apply_relocations()
+>
+> Which does:
+>
+> 	if (relsec->sh_type == SHT_RELA)
+> 		ret = arch_kexec_apply_relocations_add(pi, section,
+> 						       relsec, symtab);
+> 	else if (relsec->sh_type == SHT_REL)
+> 		ret = arch_kexec_apply_relocations(pi, section,
+> 						   relsec, symtab);
+> 	if (ret)
+> 		return ret;
+>
+> And that error is bubbled all the way back up. So as long as
+> arch_kexec_apply_relocations() returns an error the syscall will fail
+> back to userspace and there'll be an error message at that level.
+>
+> It's true that having nothing printed in dmesg makes it harder to work
+> out why the syscall failed. But it's a kernel bug if there are unhandled
+> relocations in the kernel-supplied purgatory code, so a user really has
+> no way to do anything about the error even if it is printed.
 
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 9184eda780fd..55978f32fa77 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -162,7 +162,7 @@ while [ "$#" -gt 0 ]; do
- 	fi
- 	;;
-     --no-gzip)
--        # a "feature" of the the wrapper script is that it can be used outside
-+        # a "feature" of the wrapper script is that it can be used outside
-         # the kernel tree. So keeping this around for backwards compatibility.
-         compression=
- 	uboot_comp=none
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index d7a9cf376831..d2873d17d2b1 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -302,7 +302,7 @@ struct eeh_pe *eeh_pe_get(struct pci_controller *phb, int pe_no)
-  * @new_pe_parent.
+Good point.  I really hadn't noticed the error code in there when I
+looked.
+
+I still don't think changing the functionality of the code because of
+a tool issue is the right solution.
+
+
+>> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+>>
+>>> Baoquan He wrote:
+>>>> On 04/25/22 at 11:11pm, Naveen N. Rao wrote:
+>>>>> kexec_load_purgatory() can fail for many reasons - there is no need to
+>>>>> print an error when encountering unsupported relocations.
+>>>>> This solves a build issue on powerpc with binutils v2.36 and newer [1].
+>>>>> Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
+>>>>> symbols") [2], binutils started dropping section symbols that it thought
+>>>> I am not familiar with binutils, while wondering if this exists in other
+>>>> ARCHes except of ppc. Arm64 doesn't have the ARCH override either, do we
+>>>> have problem with it?
+>>>
+>>> I'm not aware of this specific file causing a problem on other architectures -
+>>> perhaps the config options differ enough. There are however more reports of
+>>> similar issues affecting other architectures with the llvm integrated assembler:
+>>> https://github.com/ClangBuiltLinux/linux/issues/981
+>>>
+>>>>
+>>>>> were unused.  This isn't an issue in general, but with kexec_file.c, gcc
+>>>>> is placing kexec_arch_apply_relocations[_add] into a separate
+>>>>> .text.unlikely section and the section symbol ".text.unlikely" is being
+>>>>> dropped. Due to this, recordmcount is unable to find a non-weak symbol
+>>>> But arch_kexec_apply_relocations_add is weak symbol on ppc.
+>>>
+>>> Yes. Note that it is just the section symbol that gets dropped. The section is
+>>> still present and will continue to hold the symbols for the functions
+>>> themselves.
+>>
+>> So we have a case where binutils thinks it is doing something useful
+>> and our kernel specific tool gets tripped up by it.
+>
+> It's not just binutils, the LLVM assembler has the same behavior.
+>
+>> Reading the recordmcount code it looks like it is finding any symbol
+>> within a section but ignoring weak symbols.  So I suspect the only
+>> remaining symbol in the section is __weak and that confuses
+>> recordmcount.
+>>
+>> Does removing the __weak annotation on those functions fix the build
+>> error?  If so we can restructure the kexec code to simply not use __weak
+>> symbols.
+>>
+>> Otherwise the fix needs to be in recordmcount or binutils, and we should
+>> loop whoever maintains recordmcount in to see what they can do.
+>
+> It seems that recordmcount is not really maintained anymore now that x86
+> uses objtool?
+>
+> There've been several threads about fixing recordmcount, but none of
+> them seem to have lead to a solution.
+
+That is unfortunate.
+
+> These weak symbol vs recordmcount problems have been worked around going
+> back as far as 2020:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/elfcore.h?id=6e7b64b9dd6d96537d816ea07ec26b7dedd397b9
+
+I am more than happy to adopt the kind of solution that was adopted
+there in elfcore.h and simply get rid of __weak symbols in the kexec
+code.
+
+Using __weak symbols is really not the common kernel way of doing
+things.  Using __weak symbols introduces a bit of magic in how the
+kernel gets built that is unnecessary.
+
+Can someone verify that deleting __weak is enough to get powerpc to
+build?  AKA:
+
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 8347fc158d2b..7f4ca8dbe26f 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -117,7 +117,7 @@ int __weak arch_kexec_kernel_verify_sig(struct kimage *image, void *buf,
   *
-  * If @new_pe_parent is NULL then the new PE will be inserted under
-- * directly under the the PHB.
-+ * directly under the PHB.
+  * Return: 0 on success, negative errno on error.
   */
- int eeh_pe_tree_insert(struct eeh_dev *edev, struct eeh_pe *new_pe_parent)
+-int __weak
++int
+ arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
+                                 const Elf_Shdr *relsec, const Elf_Shdr *symtab)
  {
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index f85660d054bd..d3eea633d11a 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -111,7 +111,7 @@ END_FTR_SECTION(0, 1)
- #ifdef CONFIG_RELOCATABLE
- 	/* This flag is set to 1 by a loader if the kernel should run
- 	 * at the loaded address instead of the linked address.  This
--	 * is used by kexec-tools to keep the the kdump kernel in the
-+	 * is used by kexec-tools to keep the kdump kernel in the
- 	 * crash_kernel region.  The loader is responsible for
- 	 * observing the alignment requirement.
- 	 */
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 63ed90ba9f0b..068410cd54a3 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -42,7 +42,7 @@
- 
- #include "../../../drivers/pci/pci.h"
- 
--/* hose_spinlock protects accesses to the the phb_bitmap. */
-+/* hose_spinlock protects accesses to the phb_bitmap. */
- static DEFINE_SPINLOCK(hose_spinlock);
- LIST_HEAD(hose_list);
- 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 4335efcb3184..bcefab484ea6 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -874,7 +874,7 @@ static int parse_thread_groups(struct device_node *dn,
-  * @tg : The thread-group structure of the CPU node which @cpu belongs
-  *       to.
+@@ -134,7 +134,7 @@ arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
   *
-- * Returns the index to tg->thread_list that points to the the start
-+ * Returns the index to tg->thread_list that points to the start
-  * of the thread_group that @cpu belongs to.
-  *
-  * Returns -1 if cpu doesn't belong to any of the groups pointed to by
-diff --git a/arch/powerpc/kvm/book3s_64_entry.S b/arch/powerpc/kvm/book3s_64_entry.S
-index e42d1c609e47..e43704547a1e 100644
---- a/arch/powerpc/kvm/book3s_64_entry.S
-+++ b/arch/powerpc/kvm/book3s_64_entry.S
-@@ -124,7 +124,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
- 
- /*
-  * "Skip" interrupts are part of a trick KVM uses a with hash guests to load
-- * the faulting instruction in guest memory from the the hypervisor without
-+ * the faulting instruction in guest memory from the hypervisor without
-  * walking page tables.
-  *
-  * When the guest takes a fault that requires the hypervisor to load the
-diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
-index f81ba6f84e72..5271c33fe79e 100644
---- a/arch/powerpc/kvm/book3s_xive_native.c
-+++ b/arch/powerpc/kvm/book3s_xive_native.c
-@@ -209,7 +209,7 @@ static int kvmppc_xive_native_reset_mapped(struct kvm *kvm, unsigned long irq)
- 
- 	/*
- 	 * Clear the ESB pages of the IRQ number being mapped (or
--	 * unmapped) into the guest and let the the VM fault handler
-+	 * unmapped) into the guest and let the VM fault handler
- 	 * repopulate with the appropriate ESB pages (device or IC)
- 	 */
- 	pr_debug("clearing esb pages for girq 0x%lx\n", irq);
-diff --git a/arch/powerpc/mm/cacheflush.c b/arch/powerpc/mm/cacheflush.c
-index 63363787e000..0e9b4879c0f9 100644
---- a/arch/powerpc/mm/cacheflush.c
-+++ b/arch/powerpc/mm/cacheflush.c
-@@ -12,7 +12,7 @@ static inline bool flush_coherent_icache(void)
- 	/*
- 	 * For a snooping icache, we still need a dummy icbi to purge all the
- 	 * prefetched instructions from the ifetch buffers. We also need a sync
--	 * before the icbi to order the the actual stores to memory that might
-+	 * before the icbi to order the actual stores to memory that might
- 	 * have modified instructions with the icbi.
- 	 */
- 	if (cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index 6ec5a7dd7913..e6166b71d36d 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -351,7 +351,7 @@ EXPORT_SYMBOL_GPL(vmalloc_to_phys);
-  * (4) hugepd pointer, _PAGE_PTE = 0 and bits [2..6] indicate size of table
-  *
-  * So long as we atomically load page table pointers we are safe against teardown,
-- * we can follow the address down to the the page and take a ref on it.
-+ * we can follow the address down to the page and take a ref on it.
-  * This function need to be called with interrupts disabled. We use this variant
-  * when we have MSR[EE] = 0 but the paca->irq_soft_mask = IRQS_ENABLED
+  * Return: 0 on success, negative errno on error.
   */
-diff --git a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-index 60691b9a248c..968f5b727273 100644
---- a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-+++ b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-@@ -5,7 +5,7 @@
-  * Copyright (c) 2009 Secret Lab Technologies Ltd.
-  * Copyright (c) 2008 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-  *
-- * This file is a driver for the the General Purpose Timer (gpt) devices
-+ * This file is a driver for the General Purpose Timer (gpt) devices
-  * found on the MPC5200 SoC.  Each timer has an IO pin which can be used
-  * for GPIO or can be used to raise interrupts.  The timer function can
-  * be used independently from the IO pin, or it can be used to control
-diff --git a/arch/powerpc/platforms/chrp/setup.c b/arch/powerpc/platforms/chrp/setup.c
-index ef4c2b15f9dd..5d237da43b64 100644
---- a/arch/powerpc/platforms/chrp/setup.c
-+++ b/arch/powerpc/platforms/chrp/setup.c
-@@ -253,7 +253,7 @@ static void __noreturn briq_restart(char *cmd)
-  * Per default, input/output-device points to the keyboard/screen
-  * If no card is installed, the built-in serial port is used as a fallback.
-  * But unfortunately, the firmware does not connect /chosen/{stdin,stdout}
-- * the the built-in serial node. Instead, a /failsafe node is created.
-+ * the built-in serial node. Instead, a /failsafe node is created.
-  */
- static __init void chrp_init(void)
+-int __weak
++int
+ arch_kexec_apply_relocations(struct purgatory_info *pi, Elf_Shdr *section,
+                             const Elf_Shdr *relsec, const Elf_Shdr *symtab)
  {
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 6fbf265a0818..d9e16f8a652d 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2384,7 +2384,7 @@ static void pnv_ioda_setup_pe_res(struct pnv_ioda_pe *pe,
- 
- /*
-  * This function is supposed to be called on basis of PE from top
-- * to bottom style. So the the I/O or MMIO segment assigned to
-+ * to bottom style. So the I/O or MMIO segment assigned to
-  * parent PE could be overridden by its child PEs if necessary.
-  */
- static void pnv_ioda_setup_pe_seg(struct pnv_ioda_pe *pe)
-diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
-index fe3d111b881c..7195133b26bb 100644
---- a/arch/powerpc/platforms/powernv/pci-sriov.c
-+++ b/arch/powerpc/platforms/powernv/pci-sriov.c
-@@ -22,7 +22,7 @@
-  * have the same requirement.
-  *
-  * For a SR-IOV BAR things are a little more awkward since size and alignment
-- * are not coupled. The alignment is set based on the the per-VF BAR size, but
-+ * are not coupled. The alignment is set based on the per-VF BAR size, but
-  * the total BAR area is: number-of-vfs * per-vf-size. The number of VFs
-  * isn't necessarily a power of two, so neither is the total size. To fix that
-  * we need to finesse (read: hack) the Linux BAR allocator so that it will
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 2b7e99697757..fff81c2300fa 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -372,7 +372,7 @@ static void write_ciabr(unsigned long ciabr)
-  * set_ciabr() - set the CIABR
-  * @addr:	The value to set.
-  *
-- * This function sets the correct privilege value into the the HW
-+ * This function sets the correct privilege value into the HW
-  * breakpoint address before writing it up in the CIABR register.
-  */
- static void set_ciabr(unsigned long addr)
--- 
-2.35.3
 
+If that change is verified to work a proper patch that keeps x86 and
+s390 building that have actual implementations should not be too
+difficult to write.
+
+Eric
