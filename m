@@ -2,59 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9E852B84A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 13:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D44652B84B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 13:08:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L39Dt2pv5z3cNN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 21:07:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L39FX6kszz3cJc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 21:08:00 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=j0w4/FD8;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=T0gGp12c;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
+ smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
  envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=j0w4/FD8; dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+ header.s=susede1 header.b=T0gGp12c; dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L34cH5Qswz3bdM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 17:38:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L352n3TzKz3bbQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 17:58:24 +1000 (AEST)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id F09A21F9A4;
- Wed, 18 May 2022 07:38:52 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTP id 1B35021B9A;
+ Wed, 18 May 2022 07:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1652859533; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1652860701; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+lyyDjAjgyfEhWEBfN0EDdR6Jmx4pHSl+tBKIhX1g7c=;
- b=j0w4/FD8BT6n50PoBFWZ2B9hxn1McNizrLx3lcvWYTHgmFBxhdJUV3RAv4Ssdii4QSileV
- Dl88LCOs7NY6Zlry9hleanS5GY4TpOEfeqkhXf/HNSrx5fV+jFGy5YS3+L30Mt6n4dNsLm
- vyO1S4F65bAw7AbpuXo9HU2OHf85ddo=
+ bh=QH8rZRpDaB1rKzYBSvbHTkuJfXIZgq5PPOEyov0S61g=;
+ b=T0gGp12c0pU5b8b1i3GTuIGm3SeP3EhRpXPECQNn/enftlsKdapz4VZkfCcS2uIPqM17q+
+ /PBA3AVHUNLBKEckN04LlFAw1RfXD18Ad2wMfhhColdg9InPjS0Cl4zZnO5bfZL0Ln9Soj
+ 5NqvLRJqL5BZI+4DmlPHTXzoYIVJS4o=
 Received: from suse.cz (unknown [10.100.201.202])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id 5D79B2C142;
- Wed, 18 May 2022 07:38:52 +0000 (UTC)
-Date: Wed, 18 May 2022 09:38:52 +0200
+ by relay2.suse.de (Postfix) with ESMTPS id 0683D2C142;
+ Wed, 18 May 2022 07:58:19 +0000 (UTC)
+Date: Wed, 18 May 2022 09:58:18 +0200
 From: Petr Mladek <pmladek@suse.com>
 To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
-Message-ID: <YoSijKwuwbY9uHxG@alley>
+Message-ID: <YoSnGmBJ3kYs5WMf@alley>
 References: <20220427224924.592546-1-gpiccoli@igalia.com>
  <20220427224924.592546-20-gpiccoli@igalia.com>
  <YoJZVZl/MH0KiE/J@alley>
  <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com>
  <YoOpyW1+q+Z5as78@alley>
- <d72b9aab-675c-ac89-b73a-b1de4a0b722d@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d72b9aab-675c-ac89-b73a-b1de4a0b722d@igalia.com>
+In-Reply-To: <YoOpyW1+q+Z5as78@alley>
 X-Mailman-Approved-At: Wed, 18 May 2022 21:06:24 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -115,47 +114,46 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 2022-05-17 13:42:06, Guilherme G. Piccoli wrote:
-> On 17/05/2022 10:57, Petr Mladek wrote:
-> >> Disagree here, I'm CCing Florian for information.
-> >>
-> >> This notifier preserves RAM so it's *very interesting* if we have
-> >> kmsg_dump() for example, but maybe might be also relevant in case kdump
-> >> kernel is configured to store something in a persistent RAM (then,
-> >> without this notifier, after kdump reboots the system data would be lost).
+On Tue 2022-05-17 15:57:34, Petr Mladek wrote:
+> On Mon 2022-05-16 12:06:17, Guilherme G. Piccoli wrote:
+> > >> --- a/drivers/soc/bcm/brcmstb/pm/pm-arm.c
+> > >> +++ b/drivers/soc/bcm/brcmstb/pm/pm-arm.c
+> > >> @@ -814,7 +814,7 @@ static int brcmstb_pm_probe(struct platform_device *pdev)
+> > >>  		goto out;
+> > >>  	}
+> > >>  
+> > >> -	atomic_notifier_chain_register(&panic_notifier_list,
+> > >> +	atomic_notifier_chain_register(&panic_hypervisor_list,
+> > >>  				       &brcmstb_pm_panic_nb);
+> > > 
+> > > I am not sure about this one. It instruct some HW to preserve DRAM.
+> > > IMHO, it better fits into pre_reboot category but I do not have
+> > > strong opinion.
 > > 
-> > I see. It is actually similar problem as with
-> > drivers/firmware/google/gsmi.c.
+> > Disagree here, I'm CCing Florian for information.
 > > 
-> > I does similar things like kmsg_dump() so it should be called in
-> > the same location (after info notifier list and before kdump).
-> > 
-> > A solution might be to put it at these notifiers at the very
-> > end of the "info" list or make extra "dump" notifier list.
+> > This notifier preserves RAM so it's *very interesting* if we have
+> > kmsg_dump() for example, but maybe might be also relevant in case kdump
+> > kernel is configured to store something in a persistent RAM (then,
+> > without this notifier, after kdump reboots the system data would be lost).
 > 
-> Here I still disagree. I've commented in the other response thread
-> (about Google gsmi) about the semantics of the hypervisor list, but
-> again: this list should contain callbacks that
-> 
-> (a) Should run early, _by default_ before a kdump;
-> (b) Communicate with the firmware/hypervisor in a "low-risk" way;
-> 
-> Imagine a scenario where users configure kdump kernel to save something
-> in a persistent form in DRAM - it'd be like a late pstore, in the next
-> kernel. This callback enables that, it's meant to inform FW "hey, panic
-> happened, please from now on don't clear the RAM in the next FW-reboot".
-> I don't see a reason to postpone that - let's see if the maintainers
-> have an opinion.
+> I see. It is actually similar problem as with
+> drivers/firmware/google/gsmi.c.
 
-I have answered this in more detail in the other reply, see
-https://lore.kernel.org/r/YoShZVYNAdvvjb7z@alley
+As discussed in the other other reply, it seems that both affected
+notifiers do not store kernel logs and should stay in the "hypervisor".
 
-I agree that both notifiers in
+> I does similar things like kmsg_dump() so it should be called in
+> the same location (after info notifier list and before kdump).
+>
+> A solution might be to put it at these notifiers at the very
+> end of the "info" list or make extra "dump" notifier list.
 
-    drivers/soc/bcm/brcmstb/pm/pm-arm.c
-    drivers/firmware/google/gsmi.c
-
-better fit into the hypervisor list after all.
+I just want to point out that the above idea has problems.
+Notifiers storing kernel log need to be treated as kmsg_dump().
+In particular, we would  need to know if there are any.
+We do not need to call "info" notifier list before kdump
+when there is no kernel log dumper registered.
 
 Best Regards,
 Petr
