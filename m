@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2647A52BB87
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 15:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC33552BB88
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 15:41:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3Df46s5Yz3ccg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 23:41:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3Dfm5h5pz3cgv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 23:41:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ACA4d9lp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=gqT6ZkZV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030;
- helo=mail-pj1-x1030.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::629;
+ helo=mail-pl1-x629.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=ACA4d9lp; dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com
- [IPv6:2607:f8b0:4864:20::1030])
+ header.s=20210112 header.b=gqT6ZkZV; dkim-atps=neutral
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com
+ [IPv6:2607:f8b0:4864:20::629])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3Dcq1pGpz3bnZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 23:39:54 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id
- w17-20020a17090a529100b001db302efed6so2074390pjh.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 06:39:54 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3Dcr3wdhz3bnZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 23:39:56 +1000 (AEST)
+Received: by mail-pl1-x629.google.com with SMTP id q4so1779124plr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 06:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=OFl1HhVES07t6DHx5+P8BFykBmF4tP6j1v+lhHoGjME=;
- b=ACA4d9lpWMlsi+mAqQJY/htJX4ILL6Sv3YEM8/dHEd9lVqta3VTZ8r4NHHosRUIZ0+
- UeAO98+uK+ekOQ0vEACH/EciYTnscZEPNmv2YLJLFlOQ2+16FS+FbH5Nwo84X6xE7zsf
- CmPZUasmyAdWO81+CRb0bKHO3yLREpe/X9RYMowbgoJLnDFmZ7shd/qOfvlblJ6XdsRp
- 284TUtz2vTNaEXc7NlHWq2UBDRi30QIMTORkhreBBMmxjT3QGudnfqYFKODQSDzE6sBC
- Mt1BvUtmG0OJa4fp0narPvbWEuejL/Smq4t0dfn6sAW+j7LfW4GiWHaMHbI2+FDMRL/H
- Tz5Q==
+ bh=i0vgS96GLBLXkSrXITwi/dfU9tWZr9GtH8pnmUDTwik=;
+ b=gqT6ZkZVFt6RR69kX2q46eXETnURysexzo4utf9bGgRJ4j+ldci06+uuS8L4Sjy4ir
+ +esOs/E3dNoJxma6BOOKP5qI6J48Wg7jUyObxwtjwVPCkGyVytft4zk1cBNAxZy6wWH8
+ 3U0qwmYg3ySDQKZDEDY2HuXSpmgyfRDEEWe+f14I5yjSINnQPuzL/rpkUCyKWWwIdJAN
+ JZAhjcuKUXq/Wyrk3gpmWUWKqzQjWq6AeN/b7U98U+52UlXAheQtgcbvdNk3LsnmtHB1
+ G9n4q5QJiLg4i8quktM0MjAyf+YgIegatxdV7O2kpLuQKVjKclDCHf72BOA6Jh89nLmJ
+ MZ+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=OFl1HhVES07t6DHx5+P8BFykBmF4tP6j1v+lhHoGjME=;
- b=P89NgmxqvOBIXCk+hcLwc8Awr1lXpFWKV6eISwT1eAmmKyicUGjOz8dp6UmRLtjhz1
- lhJFy6UqKB9e5rT0ypLw/tjoTkrob9P0sD+DwZysppJmAVL1cmVWePUf9Y9EHh9gnPBe
- BmO2ve8SGBvdAQ0AaQxfLuXXVoWffPBO76ywz10w5GgaaAAsveqlnbMLkWEJqPTLwLt9
- RV/UEO+9ZkwnYQX5SqLO8qXYdB4ynEt4tgIqaRM55/g3Ji5NPd7UCaJKsafIkZL8CBvs
- gSrlh3BuAKUdVCz+d8sdTUQkjseKGPvJnr+7aThwXhHV9TFgF+rI7/giGq6MF+r3UpQO
- E0Dg==
-X-Gm-Message-State: AOAM530Ba3yn0yp186SL0H1N94HFofM/99dt78TFYoW7tuGWQZxwoIxd
- 0A7pIWe7b4CSw99FyLYKsENF39i1EvUq/g==
-X-Google-Smtp-Source: ABdhPJwaKrU4A8Pa61BHO3K02ZaBEyPiELkuS3f5WkQ/b31RC1cVyVbPA6lm/6ces6YrPnZmkmxh/Q==
-X-Received: by 2002:a17:90a:1f4f:b0:1d8:23d9:de1e with SMTP id
- y15-20020a17090a1f4f00b001d823d9de1emr66972pjy.42.1652881191649; 
- Wed, 18 May 2022 06:39:51 -0700 (PDT)
+ bh=i0vgS96GLBLXkSrXITwi/dfU9tWZr9GtH8pnmUDTwik=;
+ b=b1jyG9lZTQHViECTTbotjaUoxPRRPRq6aev4m3gIIPwPG8lTj4CQnx+yZQ/5p02FtB
+ mzNQSzSjJ92kB7oPDpXeCzySwqPgqc3D9WvNDa8iLQZEpfzkXHzcj1cWY9D35Ct1Sm4G
+ mUQgmWYeIBlMITJTbUGgfd5DRjltW3HtepkfEneYd1BoZYepfG8QaYKOPindvsTfD4eD
+ 0VYw043Q9tecf6nEvKTc5erZ0JTmknwQgBGu2Ya72Em9ZD4aBMrkKzIII8tSopIRthqE
+ IDdvjV4jBjq790sLvLK7iPlUEyCor/Vt86gVBngH6YfPGc17Nv5G2iDug30TT1bFpOV6
+ mp0A==
+X-Gm-Message-State: AOAM5303R6NjqR0y0CWyYLWMDQdD3cONJpP9FOjy68ug8zp/Kwo2BgHb
+ f1hy0C8lriEeoJ4wm2y/f9V1xgEHuFBj8w==
+X-Google-Smtp-Source: ABdhPJyi+5uJaVhgHw8EHz3kI16LUEi98pKX/1zA0TRwbHqvHiBIaaU+l0KZdv23/ujEB5NeKEU/UQ==
+X-Received: by 2002:a17:90b:e89:b0:1dc:18dc:26a0 with SMTP id
+ fv9-20020a17090b0e8900b001dc18dc26a0mr43205pjb.188.1652881194146; 
+ Wed, 18 May 2022 06:39:54 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([193.114.105.210])
  by smtp.gmail.com with ESMTPSA id
- t20-20020a170902e1d400b0015e8d4eb209sm1677511pla.83.2022.05.18.06.39.49
+ t20-20020a170902e1d400b0015e8d4eb209sm1677511pla.83.2022.05.18.06.39.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 May 2022 06:39:51 -0700 (PDT)
+ Wed, 18 May 2022 06:39:53 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/4] powerpc/pseries: Add wait interval counters to VPA
-Date: Wed, 18 May 2022 23:39:32 +1000
-Message-Id: <20220518133935.3878954-2-npiggin@gmail.com>
+Subject: [PATCH 3/4] KVM: PPC: Book3S HV: Implement scheduling wait interval
+ counters in the VPA
+Date: Wed, 18 May 2022 23:39:33 +1000
+Message-Id: <20220518133935.3878954-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220518133935.3878954-1-npiggin@gmail.com>
 References: <20220518133935.3878954-1-npiggin@gmail.com>
@@ -87,41 +87,139 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The hypervisor exposes accumulated partition scheduling interval times
-in the VPA (lppaca). These can be used to implement a simple stolen time
-in the guest without complex and costly dtl scanning.
+PAPR specifies accumulated virtual processor wait intervals that relate
+to partition scheduling interval times. Implement these counters in the
+same way as they are repoted by dtl.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/lppaca.h | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 62 ++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 21 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
-index c390ec377bae..34d44cb17c87 100644
---- a/arch/powerpc/include/asm/lppaca.h
-+++ b/arch/powerpc/include/asm/lppaca.h
-@@ -104,14 +104,18 @@ struct lppaca {
- 	volatile __be32 dispersion_count; /* dispatch changed physical cpu */
- 	volatile __be64 cmo_faults;	/* CMO page fault count */
- 	volatile __be64 cmo_fault_time;	/* CMO page fault time */
--	u8	reserved10[104];
-+	u8	reserved10[64];		/* [S]PURR expropriated/donated */
-+	volatile __be64 enqueue_dispatch_tb; /* Total TB enqueue->dispatch */
-+	volatile __be64 ready_enqueue_tb; /* Total TB ready->enqueue */
-+	volatile __be64 wait_ready_tb;	/* Total TB wait->ready */
-+	u8	reserved11[16];
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 0a0835edb64a..9f8795d2b0c3 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -732,16 +732,15 @@ static u64 vcore_stolen_time(struct kvmppc_vcore *vc, u64 now)
+ }
  
- 	/* cacheline 4-5 */
+ static void __kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
++					struct lppaca *vpa,
+ 					unsigned int pcpu, u64 now,
+ 					unsigned long stolen)
+ {
+ 	struct dtl_entry *dt;
+-	struct lppaca *vpa;
  
- 	__be32	page_ins;		/* CMO Hint - # page ins by OS */
--	u8	reserved11[148];
-+	u8	reserved12[148];
- 	volatile __be64 dtl_idx;	/* Dispatch Trace Log head index */
--	u8	reserved12[96];
-+	u8	reserved13[96];
- } ____cacheline_aligned;
+ 	dt = vcpu->arch.dtl_ptr;
+-	vpa = vcpu->arch.vpa.pinned_addr;
  
- #define lppaca_of(cpu)	(*paca_ptrs[cpu]->lppaca_ptr)
+-	if (!dt || !vpa)
++	if (!dt)
+ 		return;
+ 
+ 	dt->dispatch_reason = 7;
+@@ -762,29 +761,23 @@ static void __kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
+ 	/* order writing *dt vs. writing vpa->dtl_idx */
+ 	smp_wmb();
+ 	vpa->dtl_idx = cpu_to_be64(++vcpu->arch.dtl_index);
+-	vcpu->arch.dtl.dirty = true;
+-}
+-
+-static void kvmppc_create_dtl_entry_p9(struct kvm_vcpu *vcpu,
+-				       struct kvmppc_vcore *vc,
+-				       u64 now)
+-{
+-	unsigned long stolen;
+ 
+-	stolen = vc->stolen_tb - vcpu->arch.stolen_logged;
+-	vcpu->arch.stolen_logged = vc->stolen_tb;
+-
+-	__kvmppc_create_dtl_entry(vcpu, vc->pcpu, now, stolen);
++	/* vcpu->arch.dtl.dirty is set by the caller */
+ }
+ 
+-static void kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
+-				    struct kvmppc_vcore *vc)
++static void kvmppc_update_vpa_dispatch(struct kvm_vcpu *vcpu,
++				       struct kvmppc_vcore *vc)
+ {
++	struct lppaca *vpa;
+ 	unsigned long stolen;
+ 	unsigned long core_stolen;
+ 	u64 now;
+ 	unsigned long flags;
+ 
++	vpa = vcpu->arch.vpa.pinned_addr;
++	if (!vpa)
++		return;
++
+ 	now = mftb();
+ 
+ 	core_stolen = vcore_stolen_time(vc, now);
+@@ -795,7 +788,34 @@ static void kvmppc_create_dtl_entry(struct kvm_vcpu *vcpu,
+ 	vcpu->arch.busy_stolen = 0;
+ 	spin_unlock_irqrestore(&vcpu->arch.tbacct_lock, flags);
+ 
+-	__kvmppc_create_dtl_entry(vcpu, vc->pcpu, now + vc->tb_offset, stolen);
++	vpa->enqueue_dispatch_tb = cpu_to_be64(be64_to_cpu(vpa->enqueue_dispatch_tb) + stolen);
++
++	__kvmppc_create_dtl_entry(vcpu, vpa, vc->pcpu, now + vc->tb_offset, stolen);
++
++	vcpu->arch.vpa.dirty = true;
++}
++
++static void kvmppc_update_vpa_dispatch_p9(struct kvm_vcpu *vcpu,
++				       struct kvmppc_vcore *vc,
++				       u64 now)
++{
++	struct lppaca *vpa;
++	unsigned long stolen;
++	unsigned long stolen_delta;
++
++	vpa = vcpu->arch.vpa.pinned_addr;
++	if (!vpa)
++		return;
++
++	stolen = vc->stolen_tb;
++	stolen_delta = stolen - vcpu->arch.stolen_logged;
++	vcpu->arch.stolen_logged = stolen;
++
++	vpa->enqueue_dispatch_tb = cpu_to_be64(stolen);
++
++	__kvmppc_create_dtl_entry(vcpu, vpa, vc->pcpu, now, stolen_delta);
++
++	vcpu->arch.vpa.dirty = true;
+ }
+ 
+ /* See if there is a doorbell interrupt pending for a vcpu */
+@@ -3820,7 +3840,7 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
+ 			 * kvmppc_core_prepare_to_enter.
+ 			 */
+ 			kvmppc_start_thread(vcpu, pvc);
+-			kvmppc_create_dtl_entry(vcpu, pvc);
++			kvmppc_update_vpa_dispatch(vcpu, pvc);
+ 			trace_kvm_guest_enter(vcpu);
+ 			if (!vcpu->arch.ptid)
+ 				thr0_done = true;
+@@ -4392,7 +4412,7 @@ static int kvmppc_run_vcpu(struct kvm_vcpu *vcpu)
+ 		if ((vc->vcore_state == VCORE_PIGGYBACK ||
+ 		     vc->vcore_state == VCORE_RUNNING) &&
+ 			   !VCORE_IS_EXITING(vc)) {
+-			kvmppc_create_dtl_entry(vcpu, vc);
++			kvmppc_update_vpa_dispatch(vcpu, vc);
+ 			kvmppc_start_thread(vcpu, vc);
+ 			trace_kvm_guest_enter(vcpu);
+ 		} else if (vc->vcore_state == VCORE_SLEEPING) {
+@@ -4575,7 +4595,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+ 
+ 	tb = mftb();
+ 
+-	kvmppc_create_dtl_entry_p9(vcpu, vc, tb + vc->tb_offset);
++	kvmppc_update_vpa_dispatch_p9(vcpu, vc, tb + vc->tb_offset);
+ 
+ 	trace_kvm_guest_enter(vcpu);
+ 
 -- 
 2.35.1
 
