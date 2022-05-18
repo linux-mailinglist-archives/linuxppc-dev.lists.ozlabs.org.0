@@ -2,83 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5AD52B79D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 12:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA82B52B869
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 13:19:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L382q29QHz3f5f
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 20:13:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L39W44dzNz3cJK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 21:19:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FiFA70hB;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=IGrp0s5L;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=kc6++Pc9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.133.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=FiFA70hB; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=IGrp0s5L; 
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L39VS031Hz3bb0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 21:19:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=kc6++Pc9; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.133.124])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L380q17JFz3dx6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 20:11:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1652868709;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nTmAGYeo/KWqrKBReXCJ9t3d+BdhVvSDQVlxQc2ZGz4=;
- b=FiFA70hBn3hM1fEokQtKMAefQ0fT5x0hvNyXXyoYBSWF6xl/Af8Rh9TEnaI3jFDzYzkPc5
- qyV1F8a3ouXQ56FUTz7O331VsaNj8p/sE722P8tfT8XAaB6aWiYh3r24VRKyK1NldiQPdk
- Hf7NUUpfq6/Na2sg4oorizHFRxrVvPc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1652868710;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=nTmAGYeo/KWqrKBReXCJ9t3d+BdhVvSDQVlxQc2ZGz4=;
- b=IGrp0s5Ln1C7fd1SXcCZH1195J19UK2Np5gxnQfRT6TgZi2/TyCpMBaujWuul6Q/kO2YcU
- rY+D+X+lnJwcJFNFUIkkmSl/mDS2VaaAccYKWACHItMWKELekZ1TEkxEmLmFp/CZ23cti2
- STzt9DHPUcIm8HkPpFgAWRBBNElG1XM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-410--n_Ee2GzPv6Nx4IpeWbu0g-1; Wed, 18 May 2022 06:11:46 -0400
-X-MC-Unique: -n_Ee2GzPv6Nx4IpeWbu0g-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BBC7780B712;
- Wed, 18 May 2022 10:11:45 +0000 (UTC)
-Received: from localhost (ovpn-13-59.pek2.redhat.com [10.72.13.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CC81E1410DD5;
- Wed, 18 May 2022 10:11:44 +0000 (UTC)
-Date: Wed, 18 May 2022 18:11:41 +0800
-From: Baoquan He <bhe@redhat.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH] kexec_file: Drop pr_err in weak implementations of
- arch_kexec_apply_relocations[_add]
-Message-ID: <YoTGXQvQutAR5PZY@MiWiFi-R3L-srv>
-References: <20220425174128.11455-1-naveen.n.rao@linux.vnet.ibm.com>
- <YoNqJ/MOSIVwKP/o@MiWiFi-R3L-srv>
- <1652782155.56t7mah8ib.naveen@linux.ibm.com>
- <8735h8b2f1.fsf@email.froward.int.ebiederm.org>
- <87v8u3o9tk.fsf@mpe.ellerman.id.au>
- <YoSk+jRjNQtUL50d@MiWiFi-R3L-srv>
- <1652864763.xpq371r1wx.naveen@linux.ibm.com>
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L39VN1yvhz4xVP;
+ Wed, 18 May 2022 21:19:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1652872748;
+ bh=INuX9O1IpEtUTzC6kCGyh8Jm7VeQJzuBU2ZaIDDAs2k=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=kc6++Pc9tP7sM3sl1kuk5x93XTnxicRThAJ3MYfhJjEWMWVLUZFDyk+OP6WEc7kx4
+ QD6A5s6ZYg6SoMxfgCUqkWqrXocW8WENiso45OYN8wRfMQPubEDIhxE5MRRyKVmnS7
+ +fdUQzjR0U50KVu6Y2HPcvBt3/bGhNyLOdzas6wRM4BwFGTJIfdCU2blUo4SWLOTZu
+ 4rcQ1Jv664j0G2aFXMdhBCJET5jTH8UbFYQbbE8ghpSYg1taxZFt9o3Um6H4EDYyLT
+ DclLaYMy9K08TAMbIM+lFMqzYnFSLGx5Hc8YzEH7fhGmJbCXzrRjKZm7gItKDun6Of
+ ZOZ8HWVbNX+dQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Benjamin
+ Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v3 19/25] powerpc/ftrace: Minimise number of #ifdefs
+In-Reply-To: <1652866821.cdcfe8bs78.naveen@linux.ibm.com>
+References: <cover.1652074503.git.christophe.leroy@csgroup.eu>
+ <18ce6708d6f8c71d87436f9c6019f04df4125128.1652074503.git.christophe.leroy@csgroup.eu>
+ <1652866821.cdcfe8bs78.naveen@linux.ibm.com>
+Date: Wed, 18 May 2022 21:19:06 +1000
+Message-ID: <87leuznl5h.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1652864763.xpq371r1wx.naveen@linux.ibm.com>
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,46 +63,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org,
- "Eric W. Biederman" <ebiederm@xmission.com>, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/18/22 at 02:48pm, Naveen N. Rao wrote:
-> Baoquan He wrote:
-> > On 05/18/22 at 12:26pm, Michael Ellerman wrote:
-> > > 
-> > > It seems that recordmcount is not really maintained anymore now that x86
-> > > uses objtool?
-> > > 
-> > > There've been several threads about fixing recordmcount, but none of
-> > > them seem to have lead to a solution.
-> > > 
-> > > These weak symbol vs recordmcount problems have been worked around going
-> > > back as far as 2020:
-> > 
-> > It gives me feeling that llvm or recordmcount should make adjustment,
-> > but not innocent kernel code, if there are a lot of places reported.
-> > I am curious how llvm or recordmcount dev respond to this.
-> 
-> As Michael stated, this is not just llvm - binutils has also adopted the
-> same and "unused" section symbols are being dropped.
-> 
-> For recordmcount, there were a few threads and approaches that have been
-> tried:
-> - https://patchwork.ozlabs.org/project/linuxppc-dev/patch/cd0f6bdfdf1ee096fb2c07e7b38940921b8e9118.1637764848.git.christophe.leroy@csgroup.eu/
-> - https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=297434&state=*
-> 
-> Objtool has picked up a more appropriate fix for this recently, and
-> long-term, we would like to move to using objtool for ftrace purposes:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/tools/objtool/elf.c?id=4abff6d48dbcea8200c7ea35ba70c242d128ebf3
-> 
-> While that is being pursued, we want to unbreak some of the CI and users who
-> are hitting this.
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Christophe Leroy wrote:
+>> A lot of #ifdefs can be replaced by IS_ENABLED()
+>> 
+>> Do so.
+>> 
+>> This requires to have kernel_toc_addr() defined at all time
+>> as well as PPC_INST_LD_TOC and PPC_INST_STD_LR.
+>> 
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>> v2: Moved the setup of pop outside of the big if()/else() in __ftrace_make_nop()
+>> ---
+>>  arch/powerpc/include/asm/code-patching.h |   2 -
+>>  arch/powerpc/include/asm/module.h        |   2 -
+>>  arch/powerpc/include/asm/sections.h      |  24 +--
+>>  arch/powerpc/kernel/trace/ftrace.c       | 182 +++++++++++------------
+>>  4 files changed, 103 insertions(+), 107 deletions(-)
+>> 
+>
+> <snip>
+>
+>> @@ -710,6 +707,9 @@ void arch_ftrace_update_code(int command)
+>> 
+>>  #ifdef CONFIG_PPC64
+>>  #define PACATOC offsetof(struct paca_struct, kernel_toc)
+>> +#else
+>> +#define PACATOC 0
+>> +#endif
+>
+> This conflicts with my fix for the ftrace init tramp:
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220516071422.463738-1-naveen.n.rao@linux.vnet.ibm.com/
+>
+> It probably makes sense to retain #ifdef CONFIG_PPC64, so that we can 
+> get rid of the PACATOC. Here is an incremental diff:
 
-I see, thanks for the details. I would persue fix in recordmcount if
-possible, while has no objection to fix it in kernel with justification
-if have to. Given my limited linking knowledge, leave this to other
-expert to decide.
+Where is the incremental diff meant to apply?
 
+It doesn't apply on top of patch 19, or at the end of the series.
+
+cheers
+
+> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+> index da1a2f8ebb72f3..28169a1ccc7377 100644
+> --- a/arch/powerpc/kernel/trace/ftrace.c
+> +++ b/arch/powerpc/kernel/trace/ftrace.c
+> @@ -701,11 +701,6 @@ void arch_ftrace_update_code(int command)
+>  }
+>  
+>  #ifdef CONFIG_PPC64
+> -#define PACATOC offsetof(struct paca_struct, kernel_toc)
+> -#else
+> -#define PACATOC 0
+> -#endif
+> -
+>  extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
+>  
+>  void ftrace_free_init_tramp(void)
+> @@ -724,7 +719,7 @@ int __init ftrace_dyn_arch_init(void)
+>  	int i;
+>  	unsigned int *tramp[] = { ftrace_tramp_text, ftrace_tramp_init };
+>  	u32 stub_insns[] = {
+> -		PPC_RAW_LD(_R12, _R13, PACATOC),
+> +		PPC_RAW_LD(_R12, _R13, offsetof(struct paca_struct, kernel_toc)),
+>  		PPC_RAW_ADDIS(_R12, _R12, 0),
+>  		PPC_RAW_ADDI(_R12, _R12, 0),
+>  		PPC_RAW_MTCTR(_R12),
+> @@ -733,9 +728,6 @@ int __init ftrace_dyn_arch_init(void)
+>  	unsigned long addr;
+>  	long reladdr;
+>  
+> -	if (IS_ENABLED(CONFIG_PPC32))
+> -		return 0;
+> -
+>  	addr = ppc_global_function_entry((void *)FTRACE_REGS_ADDR);
+>  	reladdr = addr - kernel_toc_addr();
+>  
+> @@ -754,6 +746,7 @@ int __init ftrace_dyn_arch_init(void)
+>  
+>  	return 0;
+>  }
+> +#endif
+>  
+>  #ifdef CONFIG_FUNCTION_GRAPH_TRACER
+>  
+>
+> - Naveen
