@@ -1,62 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B050B52B077
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 04:22:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4E652B079
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 04:26:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L2xZc4RLwz3by3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 12:22:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L2xhH3w1qz3c8c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 12:26:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=irHXcq84;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NZ9E0WAM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
- header.s=Intel header.b=irHXcq84; dkim-atps=neutral
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L2xYw3DmFz3bjq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 12:21:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1652840484; x=1684376484;
- h=date:from:to:cc:subject:message-id:mime-version:
- content-transfer-encoding;
- bh=uywjbggpeseay136CuWJdtjRHPw2A1O6QwkQvD6L5Ws=;
- b=irHXcq84tWkHGx6IGa/0kv9hsUcestIDqlzq+AL0fG4qIT3FRe1dpjzF
- Wf0yDrteqCg2O2vZZ/ZB6UQAkhYBaCY04JlCS0mv7BziqYPA9i7YWoGSn
- xxzNorPlM+5O1IDxYMIpm7yCTJdcKI4x4naSB8DYVhIPNe6svCC5I4UC/
- dZmiV76+fkuN04xRqGoDLOjPBLOk3S80OnhfKMRsQl0RNHjjFG5RtdR35
- HuPwge9A+GJfSb8IB8Sky2giDIwEq6Dk3tU8504BH+HkEol/4TeWDANPG
- vAPkJbAvOzu/voQ1eqkUxs231R4L5RI1Lctxpd5t1XSMHAtJd9UdpjHBY A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10350"; a="271562215"
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; d="scan'208";a="271562215"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 May 2022 19:20:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,233,1647327600"; d="scan'208";a="523269914"
-Received: from lkp-server02.sh.intel.com (HELO 242b25809ac7) ([10.239.97.151])
- by orsmga003.jf.intel.com with ESMTP; 17 May 2022 19:20:12 -0700
-Received: from kbuild by 242b25809ac7 with local (Exim 4.95)
- (envelope-from <lkp@intel.com>) id 1nr9IJ-0001hX-Ng;
- Wed, 18 May 2022 02:20:11 +0000
-Date: Wed, 18 May 2022 10:19:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
- 2852ebfa10afdcefff35ec72c8da97141df9845c
-Message-ID: <628457ac.ZiJZ8y+f3FxhjQVF%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L2xgc6zt1z3bgC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 12:26:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=NZ9E0WAM; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L2xgb17Rlz4xLR;
+ Wed, 18 May 2022 12:26:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1652840780;
+ bh=u8hjBqGeDsxKY2xXutPvYF6jcmzD6hAUIg/lOJ1zE0U=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=NZ9E0WAMwihSqFIlV6+kygWjO/bVYwjUWYZSRzf13YUZn7xwIO7IoXV3VnaUTh8U0
+ +vJiNI9d2Ol0LEP8I3pbk3cpFWlCHDUXDksWvXwxXAfwuwlFNKnDkjRxxJtu0Aei38
+ z8CjsZAIP/UGUiXO513L8HJew7vSnaaU09wT1Sq08CzwPAUu+7GnB6W4Z8RDA3fo1h
+ PzjM3mxTP94UnOuhwiQcNZLI7tjXMtLVSX+RFZDlWCsQXMbiZy0WPY2SQa+3B6H9zW
+ EVnjj7yjhW8DYrBpW4ZeyA5wEsMsImbxmHX22LLlP/5M/2lRQp49KeCAyvJtm0462V
+ pBk+8//8CjxGQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Eric W. Biederman" <ebiederm@xmission.com>, "Naveen N. Rao"
+ <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] kexec_file: Drop pr_err in weak implementations of
+ arch_kexec_apply_relocations[_add]
+In-Reply-To: <8735h8b2f1.fsf@email.froward.int.ebiederm.org>
+References: <20220425174128.11455-1-naveen.n.rao@linux.vnet.ibm.com>
+ <YoNqJ/MOSIVwKP/o@MiWiFi-R3L-srv>
+ <1652782155.56t7mah8ib.naveen@linux.ibm.com>
+ <8735h8b2f1.fsf@email.froward.int.ebiederm.org>
+Date: Wed, 18 May 2022 12:26:15 +1000
+Message-ID: <87v8u3o9tk.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,147 +63,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Baoquan He <bhe@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-branch HEAD: 2852ebfa10afdcefff35ec72c8da97141df9845c  KVM: PPC: Book3S HV Nested: L2 LPCR should inherit L1 LPES setting
+"Eric W. Biederman" <ebiederm@xmission.com> writes:
+> Looking at this the pr_err is absolutely needed.  If an unsupported case
+> winds up in the purgatory blob and the code can't handle it things
+> will fail silently much worse later.
 
-elapsed time: 724m
+It won't fail later, it will fail the syscall.
 
-configs tested: 119
-configs skipped: 104
+sys_kexec_file_load()
+  kimage_file_alloc_init()
+    kimage_file_prepare_segments()
+      arch_kexec_kernel_image_load()
+        kexec_image_load_default()
+          image->fops->load()
+            elf64_load()        # powerpc
+            bzImage64_load()    # x86
+              kexec_load_purgatory()
+                kexec_apply_relocations()
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Which does:
 
-gcc tested configs:
-arm64                               defconfig
-arm64                            allyesconfig
-arm                              allmodconfig
-arm                                 defconfig
-arm                              allyesconfig
-i386                 randconfig-c001-20220516
-m68k                        m5407c3_defconfig
-m68k                             allmodconfig
-sparc                       sparc64_defconfig
-mips                            ar7_defconfig
-s390                             allyesconfig
-sh                           se7712_defconfig
-arm                          pxa3xx_defconfig
-sh                           se7206_defconfig
-sh                   sh7724_generic_defconfig
-m68k                       m5249evb_defconfig
-arm                           h5000_defconfig
-sh                           se7724_defconfig
-powerpc                 mpc85xx_cds_defconfig
-riscv             nommu_k210_sdcard_defconfig
-m68k                       m5208evb_defconfig
-sh                             sh03_defconfig
-sh                ecovec24-romimage_defconfig
-sh                          r7780mp_defconfig
-powerpc                       ppc64_defconfig
-arc                        nsimosci_defconfig
-powerpc                     pq2fads_defconfig
-sh                         ecovec24_defconfig
-mips                            gpr_defconfig
-m68k                       bvme6000_defconfig
-arm                  randconfig-c002-20220516
-x86_64               randconfig-c001-20220516
-ia64                                defconfig
-m68k                             allyesconfig
-m68k                                defconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                               defconfig
-alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-s390                                defconfig
-s390                             allmodconfig
-parisc                              defconfig
-parisc64                            defconfig
-parisc                           allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                          allyesconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-x86_64               randconfig-a012-20220516
-x86_64               randconfig-a016-20220516
-x86_64               randconfig-a011-20220516
-x86_64               randconfig-a014-20220516
-x86_64               randconfig-a013-20220516
-x86_64               randconfig-a015-20220516
-i386                 randconfig-a016-20220516
-i386                 randconfig-a013-20220516
-i386                 randconfig-a015-20220516
-i386                 randconfig-a012-20220516
-i386                 randconfig-a014-20220516
-i386                 randconfig-a011-20220516
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-s390                 randconfig-r044-20220516
-riscv                randconfig-r042-20220516
-arc                  randconfig-r043-20220516
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                         rhel-8.3-kunit
-x86_64                               rhel-8.3
+	if (relsec->sh_type == SHT_RELA)
+		ret = arch_kexec_apply_relocations_add(pi, section,
+						       relsec, symtab);
+	else if (relsec->sh_type == SHT_REL)
+		ret = arch_kexec_apply_relocations(pi, section,
+						   relsec, symtab);
+	if (ret)
+		return ret;
 
-clang tested configs:
-powerpc              randconfig-c003-20220516
-riscv                randconfig-c006-20220516
-mips                 randconfig-c004-20220516
-arm                  randconfig-c002-20220516
-x86_64               randconfig-c007-20220516
-i386                 randconfig-c001-20220516
-s390                 randconfig-c005-20220516
-mips                         tb0287_defconfig
-powerpc                      ppc44x_defconfig
-powerpc                    mvme5100_defconfig
-arm                     davinci_all_defconfig
-i386                 randconfig-a001-20220516
-i386                 randconfig-a003-20220516
-i386                 randconfig-a005-20220516
-i386                 randconfig-a004-20220516
-i386                 randconfig-a006-20220516
-i386                 randconfig-a002-20220516
-x86_64               randconfig-a001-20220516
-x86_64               randconfig-a006-20220516
-x86_64               randconfig-a003-20220516
-x86_64               randconfig-a005-20220516
-x86_64               randconfig-a002-20220516
-x86_64               randconfig-a004-20220516
-hexagon              randconfig-r045-20220516
-hexagon              randconfig-r041-20220516
+And that error is bubbled all the way back up. So as long as
+arch_kexec_apply_relocations() returns an error the syscall will fail
+back to userspace and there'll be an error message at that level.
 
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+It's true that having nothing printed in dmesg makes it harder to work
+out why the syscall failed. But it's a kernel bug if there are unhandled
+relocations in the kernel-supplied purgatory code, so a user really has
+no way to do anything about the error even if it is printed.
+
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+>
+>> Baoquan He wrote:
+>>> On 04/25/22 at 11:11pm, Naveen N. Rao wrote:
+>>>> kexec_load_purgatory() can fail for many reasons - there is no need to
+>>>> print an error when encountering unsupported relocations.
+>>>> This solves a build issue on powerpc with binutils v2.36 and newer [1].
+>>>> Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
+>>>> symbols") [2], binutils started dropping section symbols that it thought
+>>> I am not familiar with binutils, while wondering if this exists in other
+>>> ARCHes except of ppc. Arm64 doesn't have the ARCH override either, do we
+>>> have problem with it?
+>>
+>> I'm not aware of this specific file causing a problem on other architectures -
+>> perhaps the config options differ enough. There are however more reports of
+>> similar issues affecting other architectures with the llvm integrated assembler:
+>> https://github.com/ClangBuiltLinux/linux/issues/981
+>>
+>>>
+>>>> were unused.  This isn't an issue in general, but with kexec_file.c, gcc
+>>>> is placing kexec_arch_apply_relocations[_add] into a separate
+>>>> .text.unlikely section and the section symbol ".text.unlikely" is being
+>>>> dropped. Due to this, recordmcount is unable to find a non-weak symbol
+>>> But arch_kexec_apply_relocations_add is weak symbol on ppc.
+>>
+>> Yes. Note that it is just the section symbol that gets dropped. The section is
+>> still present and will continue to hold the symbols for the functions
+>> themselves.
+>
+> So we have a case where binutils thinks it is doing something useful
+> and our kernel specific tool gets tripped up by it.
+
+It's not just binutils, the LLVM assembler has the same behavior.
+
+> Reading the recordmcount code it looks like it is finding any symbol
+> within a section but ignoring weak symbols.  So I suspect the only
+> remaining symbol in the section is __weak and that confuses
+> recordmcount.
+>
+> Does removing the __weak annotation on those functions fix the build
+> error?  If so we can restructure the kexec code to simply not use __weak
+> symbols.
+>
+> Otherwise the fix needs to be in recordmcount or binutils, and we should
+> loop whoever maintains recordmcount in to see what they can do.
+
+It seems that recordmcount is not really maintained anymore now that x86
+uses objtool?
+
+There've been several threads about fixing recordmcount, but none of
+them seem to have lead to a solution.
+
+These weak symbol vs recordmcount problems have been worked around going
+back as far as 2020:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/linux/elfcore.h?id=6e7b64b9dd6d96537d816ea07ec26b7dedd397b9
+
+cheers
