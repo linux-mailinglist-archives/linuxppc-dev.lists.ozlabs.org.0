@@ -1,73 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8F452BB89
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 15:42:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7431552BD8B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 16:27:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3Dgb0L9rz3chY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 23:42:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3FgJ2zJXz3cDf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 00:27:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AzuW54yF;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=h64CfWLn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633;
- helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=AzuW54yF; dkim-atps=neutral
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com
- [IPv6:2607:f8b0:4864:20::633])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3Dcs30ZSz3c7p
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 23:39:57 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id bh5so1795438plb.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 06:39:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=Fvtg033ODf5bpD5YmPMWzbt0qPpMWnaEIFxLAkDAMVc=;
- b=AzuW54yFXVzHql4fnlFj6WgbfzDM6dahxIB6AVHLyspdcErTFQEtKnuSEsRhBQ+G0k
- ks9aIhUC2XvzpZz3eU7HSCazSqQYnfkIvqMKh9c6n1my/dOrUiB6GbQG5h2ZLu5n0QpZ
- WxSB+sV8iMJOkyiuZHmbf8phxOVllHyOQk3TO4L735u6NXE5VuC+UOBoRQTzwgIJDz3q
- wbVXJLz6LA6GYX5/c8KTegxDBjrkzCiw8kLj3GTnC3KpGFcaPYTyLWXhhx5KR7nt9yUP
- EBfqtJQgE2NgWcmaIMZQfXJui2NJj3b0dFnry9E7v20O1opi7VGEVXbEFJ+2D9n6I/+y
- RkzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=Fvtg033ODf5bpD5YmPMWzbt0qPpMWnaEIFxLAkDAMVc=;
- b=TTUbfAJZopKWeMJAaGk8EOAwtW9sV2lVO0L8/0wDmCeCkD/oCRwq4Xw+VhabwHYc0T
- mLTtoajThL3WxywRaiwADucZzaWVniQDliWLJlhIF9onm0yZg6NT2RyoFKgo+5zVPh9o
- x7LtK4ZQTPwVW1WOL0lHL+vN4mZRzhnNMXsre3kLJ62zmInSH+/6O8znd/lwNamDmUit
- xJfy1Wpq3pVHoZm6lgip0d6oJomjd/OoFIHs+g/IpEvyPNfGQwN+Eo7xTuacyX/V0FHK
- hZOWY6DBqdnsubPcw4onVv3E311Es3ElgAA+ofjsRg4hg7v1zOHc5ehZeJlko9D9y7KH
- E3ZQ==
-X-Gm-Message-State: AOAM533i09P1sWNgC9UNy+yYvnDHEA1E2Al2EGzL+AyxC4lPiqQ6iA2h
- GeDym2iKWpxyFj93AzOW8d984O2oBdwH4w==
-X-Google-Smtp-Source: ABdhPJzsck2ZwD4f+5qNfFP5flKuCngQkMsHPGb4bgofVwkJ/ECF8SgvfNbREgqG7kNZPwaNGor/Zw==
-X-Received: by 2002:a17:90b:2250:b0:1df:665c:79d1 with SMTP id
- hk16-20020a17090b225000b001df665c79d1mr34103pjb.220.1652881196752; 
- Wed, 18 May 2022 06:39:56 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([193.114.105.210])
- by smtp.gmail.com with ESMTPSA id
- t20-20020a170902e1d400b0015e8d4eb209sm1677511pla.83.2022.05.18.06.39.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 May 2022 06:39:56 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/4] powerpc/pseries: Implement CONFIG_PARAVIRT_TIME_ACCOUNTING
-Date: Wed, 18 May 2022 23:39:34 +1000
-Message-Id: <20220518133935.3878954-4-npiggin@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220518133935.3878954-1-npiggin@gmail.com>
-References: <20220518133935.3878954-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3Ffj4T8Pz3c1K
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 00:26:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=h64CfWLn; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L3Ffj3X8yz4xXn;
+ Thu, 19 May 2022 00:26:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1652883997;
+ bh=hwMCErkIOXv7XSecVpNDbKAAgMQDrUk9YOniBMytWfc=;
+ h=From:To:Subject:Date:From;
+ b=h64CfWLndlrGYLS+CvMjd+6jLcNL3vh4pwSTZ4U+7KiTzit8x9ZNniDzmE9t6Xrju
+ czUFp7jg+VAF97weetVPLHgsxS12I1kbktrymM35d76BP5WKf7FXwn5ldcVjGy8S4f
+ D7H1QnMrJ36r4/M5v4zL/VEmsZsYvmEuQYDWBD2vrjz06LptREwyN6XV3n+Y0Eyqql
+ xjGSG6Di2fopcvkVF4VMY7oRkBgovapHAtO0VKxkN0TTVGIhs4GrmrxRrt+ppfH0Oq
+ D1dK3kCafycblT2HrRtMOWM+ZV1krGswdLQrz8G/fyISfTc1WSSVxjXU8FeXH61oiu
+ 1iIalm5yHk96g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc: Fix all occurences of "the the"
+Date: Thu, 19 May 2022 00:26:29 +1000
+Message-Id: <20220518142629.513007-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,149 +57,213 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CONFIG_VIRT_CPU_ACCOUNTING_GEN under pseries does not implement
-stolen time accounting. Implement it with the paravirt time
-accounting option.
+Rather than waiting for the bots to fix these one-by-one, fix all
+occurences of "the the" throughout arch/powerpc.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- .../admin-guide/kernel-parameters.txt         |  6 +++---
- arch/powerpc/include/asm/paravirt.h           | 12 ++++++++++++
- arch/powerpc/platforms/pseries/Kconfig        |  8 ++++++++
- arch/powerpc/platforms/pseries/lpar.c         | 11 +++++++++++
- arch/powerpc/platforms/pseries/setup.c        | 19 +++++++++++++++++++
- 5 files changed, 53 insertions(+), 3 deletions(-)
+ arch/powerpc/boot/wrapper                  | 2 +-
+ arch/powerpc/kernel/eeh_pe.c               | 2 +-
+ arch/powerpc/kernel/head_64.S              | 2 +-
+ arch/powerpc/kernel/pci-common.c           | 2 +-
+ arch/powerpc/kernel/smp.c                  | 2 +-
+ arch/powerpc/kvm/book3s_64_entry.S         | 2 +-
+ arch/powerpc/kvm/book3s_xive_native.c      | 2 +-
+ arch/powerpc/mm/cacheflush.c               | 2 +-
+ arch/powerpc/mm/pgtable.c                  | 2 +-
+ arch/powerpc/platforms/52xx/mpc52xx_gpt.c  | 2 +-
+ arch/powerpc/platforms/chrp/setup.c        | 2 +-
+ arch/powerpc/platforms/powernv/pci-ioda.c  | 2 +-
+ arch/powerpc/platforms/powernv/pci-sriov.c | 2 +-
+ arch/powerpc/xmon/xmon.c                   | 2 +-
+ 14 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 3f1cc5e317ed..855fc7b02261 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3604,9 +3604,9 @@
- 			[X86,PV_OPS] Disable paravirtualized VMware scheduler
- 			clock and use the default one.
- 
--	no-steal-acc	[X86,PV_OPS,ARM64] Disable paravirtualized steal time
--			accounting. steal time is computed, but won't
--			influence scheduler behaviour
-+	no-steal-acc	[X86,PV_OPS,ARM64,PPC/PSERIES] Disable paravirtualized
-+			steal time accounting. steal time is computed, but
-+			won't influence scheduler behaviour
- 
- 	nolapic		[X86-32,APIC] Do not enable or use the local APIC.
- 
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index eb7df559ae74..f5ba1a3c41f8 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -21,6 +21,18 @@ static inline bool is_shared_processor(void)
- 	return static_branch_unlikely(&shared_processor);
- }
- 
-+#ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-+extern struct static_key paravirt_steal_enabled;
-+extern struct static_key paravirt_steal_rq_enabled;
-+
-+u64 pseries_paravirt_steal_clock(int cpu);
-+
-+static inline u64 paravirt_steal_clock(int cpu)
-+{
-+	return pseries_paravirt_steal_clock(cpu);
-+}
-+#endif
-+
- /* If bit 0 is set, the cpu has been ceded, conferred, or preempted */
- static inline u32 yield_count_of(int cpu)
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index 9184eda780fd..55978f32fa77 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -162,7 +162,7 @@ while [ "$#" -gt 0 ]; do
+ 	fi
+ 	;;
+     --no-gzip)
+-        # a "feature" of the the wrapper script is that it can be used outside
++        # a "feature" of the wrapper script is that it can be used outside
+         # the kernel tree. So keeping this around for backwards compatibility.
+         compression=
+ 	uboot_comp=none
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index d7a9cf376831..d2873d17d2b1 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -302,7 +302,7 @@ struct eeh_pe *eeh_pe_get(struct pci_controller *phb, int pe_no)
+  * @new_pe_parent.
+  *
+  * If @new_pe_parent is NULL then the new PE will be inserted under
+- * directly under the the PHB.
++ * directly under the PHB.
+  */
+ int eeh_pe_tree_insert(struct eeh_dev *edev, struct eeh_pe *new_pe_parent)
  {
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-index f7fd91d153a4..d4306ebdca5e 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -24,13 +24,21 @@ config PPC_PSERIES
- 	select SWIOTLB
- 	default y
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index f85660d054bd..d3eea633d11a 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -111,7 +111,7 @@ END_FTR_SECTION(0, 1)
+ #ifdef CONFIG_RELOCATABLE
+ 	/* This flag is set to 1 by a loader if the kernel should run
+ 	 * at the loaded address instead of the linked address.  This
+-	 * is used by kexec-tools to keep the the kdump kernel in the
++	 * is used by kexec-tools to keep the kdump kernel in the
+ 	 * crash_kernel region.  The loader is responsible for
+ 	 * observing the alignment requirement.
+ 	 */
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index 63ed90ba9f0b..068410cd54a3 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -42,7 +42,7 @@
  
-+config PARAVIRT
-+	bool
-+
- config PARAVIRT_SPINLOCKS
- 	bool
+ #include "../../../drivers/pci/pci.h"
  
-+config PARAVIRT_TIME_ACCOUNTING
-+	select PARAVIRT
-+	bool
-+
- config PPC_SPLPAR
- 	bool "Support for shared-processor logical partitions"
- 	depends on PPC_PSERIES
- 	select PARAVIRT_SPINLOCKS if PPC_QUEUED_SPINLOCKS
-+	select PARAVIRT_TIME_ACCOUNTING if VIRT_CPU_ACCOUNTING_GEN
- 	default y
- 	help
- 	  Enabling this option will make the kernel run more efficiently
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 760581c5752f..1965b7d7d8f1 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -661,6 +661,17 @@ static int __init vcpudispatch_stats_procfs_init(void)
- }
+-/* hose_spinlock protects accesses to the the phb_bitmap. */
++/* hose_spinlock protects accesses to the phb_bitmap. */
+ static DEFINE_SPINLOCK(hose_spinlock);
+ LIST_HEAD(hose_list);
  
- machine_device_initcall(pseries, vcpudispatch_stats_procfs_init);
-+
-+#ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-+u64 pseries_paravirt_steal_clock(int cpu)
-+{
-+	struct lppaca *lppaca = &lppaca_of(cpu);
-+
-+	return be64_to_cpu(READ_ONCE(lppaca->enqueue_dispatch_tb)) +
-+		be64_to_cpu(READ_ONCE(lppaca->ready_enqueue_tb));
-+}
-+#endif
-+
- #endif /* CONFIG_PPC_SPLPAR */
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 4335efcb3184..bcefab484ea6 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -874,7 +874,7 @@ static int parse_thread_groups(struct device_node *dn,
+  * @tg : The thread-group structure of the CPU node which @cpu belongs
+  *       to.
+  *
+- * Returns the index to tg->thread_list that points to the the start
++ * Returns the index to tg->thread_list that points to the start
+  * of the thread_group that @cpu belongs to.
+  *
+  * Returns -1 if cpu doesn't belong to any of the groups pointed to by
+diff --git a/arch/powerpc/kvm/book3s_64_entry.S b/arch/powerpc/kvm/book3s_64_entry.S
+index e42d1c609e47..e43704547a1e 100644
+--- a/arch/powerpc/kvm/book3s_64_entry.S
++++ b/arch/powerpc/kvm/book3s_64_entry.S
+@@ -124,7 +124,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
  
- void vpa_init(int cpu)
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 955ff8aa1644..691c9add4a5a 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -78,6 +78,20 @@
- DEFINE_STATIC_KEY_FALSE(shared_processor);
- EXPORT_SYMBOL(shared_processor);
+ /*
+  * "Skip" interrupts are part of a trick KVM uses a with hash guests to load
+- * the faulting instruction in guest memory from the the hypervisor without
++ * the faulting instruction in guest memory from the hypervisor without
+  * walking page tables.
+  *
+  * When the guest takes a fault that requires the hypervisor to load the
+diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+index f81ba6f84e72..5271c33fe79e 100644
+--- a/arch/powerpc/kvm/book3s_xive_native.c
++++ b/arch/powerpc/kvm/book3s_xive_native.c
+@@ -209,7 +209,7 @@ static int kvmppc_xive_native_reset_mapped(struct kvm *kvm, unsigned long irq)
  
-+#ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-+struct static_key paravirt_steal_enabled;
-+struct static_key paravirt_steal_rq_enabled;
-+
-+static bool steal_acc = true;
-+static int __init parse_no_stealacc(char *arg)
-+{
-+	steal_acc = false;
-+	return 0;
-+}
-+
-+early_param("no-steal-acc", parse_no_stealacc);
-+#endif
-+
- int CMO_PrPSP = -1;
- int CMO_SecPSP = -1;
- unsigned long CMO_PageSize = (ASM_CONST(1) << IOMMU_PAGE_SHIFT_4K);
-@@ -831,6 +845,11 @@ static void __init pSeries_setup_arch(void)
- 		if (lppaca_shared_proc(get_lppaca())) {
- 			static_branch_enable(&shared_processor);
- 			pv_spinlocks_init();
-+#ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-+			static_key_slow_inc(&paravirt_steal_enabled);
-+			if (steal_acc)
-+				static_key_slow_inc(&paravirt_steal_rq_enabled);
-+#endif
- 		}
+ 	/*
+ 	 * Clear the ESB pages of the IRQ number being mapped (or
+-	 * unmapped) into the guest and let the the VM fault handler
++	 * unmapped) into the guest and let the VM fault handler
+ 	 * repopulate with the appropriate ESB pages (device or IC)
+ 	 */
+ 	pr_debug("clearing esb pages for girq 0x%lx\n", irq);
+diff --git a/arch/powerpc/mm/cacheflush.c b/arch/powerpc/mm/cacheflush.c
+index 63363787e000..0e9b4879c0f9 100644
+--- a/arch/powerpc/mm/cacheflush.c
++++ b/arch/powerpc/mm/cacheflush.c
+@@ -12,7 +12,7 @@ static inline bool flush_coherent_icache(void)
+ 	/*
+ 	 * For a snooping icache, we still need a dummy icbi to purge all the
+ 	 * prefetched instructions from the ifetch buffers. We also need a sync
+-	 * before the icbi to order the the actual stores to memory that might
++	 * before the icbi to order the actual stores to memory that might
+ 	 * have modified instructions with the icbi.
+ 	 */
+ 	if (cpu_has_feature(CPU_FTR_COHERENT_ICACHE)) {
+diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
+index 6ec5a7dd7913..e6166b71d36d 100644
+--- a/arch/powerpc/mm/pgtable.c
++++ b/arch/powerpc/mm/pgtable.c
+@@ -351,7 +351,7 @@ EXPORT_SYMBOL_GPL(vmalloc_to_phys);
+  * (4) hugepd pointer, _PAGE_PTE = 0 and bits [2..6] indicate size of table
+  *
+  * So long as we atomically load page table pointers we are safe against teardown,
+- * we can follow the address down to the the page and take a ref on it.
++ * we can follow the address down to the page and take a ref on it.
+  * This function need to be called with interrupts disabled. We use this variant
+  * when we have MSR[EE] = 0 but the paca->irq_soft_mask = IRQS_ENABLED
+  */
+diff --git a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
+index 60691b9a248c..968f5b727273 100644
+--- a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
++++ b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
+@@ -5,7 +5,7 @@
+  * Copyright (c) 2009 Secret Lab Technologies Ltd.
+  * Copyright (c) 2008 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
+  *
+- * This file is a driver for the the General Purpose Timer (gpt) devices
++ * This file is a driver for the General Purpose Timer (gpt) devices
+  * found on the MPC5200 SoC.  Each timer has an IO pin which can be used
+  * for GPIO or can be used to raise interrupts.  The timer function can
+  * be used independently from the IO pin, or it can be used to control
+diff --git a/arch/powerpc/platforms/chrp/setup.c b/arch/powerpc/platforms/chrp/setup.c
+index ef4c2b15f9dd..5d237da43b64 100644
+--- a/arch/powerpc/platforms/chrp/setup.c
++++ b/arch/powerpc/platforms/chrp/setup.c
+@@ -253,7 +253,7 @@ static void __noreturn briq_restart(char *cmd)
+  * Per default, input/output-device points to the keyboard/screen
+  * If no card is installed, the built-in serial port is used as a fallback.
+  * But unfortunately, the firmware does not connect /chosen/{stdin,stdout}
+- * the the built-in serial node. Instead, a /failsafe node is created.
++ * the built-in serial node. Instead, a /failsafe node is created.
+  */
+ static __init void chrp_init(void)
+ {
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 6fbf265a0818..d9e16f8a652d 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -2384,7 +2384,7 @@ static void pnv_ioda_setup_pe_res(struct pnv_ioda_pe *pe,
  
- 		ppc_md.power_save = pseries_lpar_idle;
+ /*
+  * This function is supposed to be called on basis of PE from top
+- * to bottom style. So the the I/O or MMIO segment assigned to
++ * to bottom style. So the I/O or MMIO segment assigned to
+  * parent PE could be overridden by its child PEs if necessary.
+  */
+ static void pnv_ioda_setup_pe_seg(struct pnv_ioda_pe *pe)
+diff --git a/arch/powerpc/platforms/powernv/pci-sriov.c b/arch/powerpc/platforms/powernv/pci-sriov.c
+index fe3d111b881c..7195133b26bb 100644
+--- a/arch/powerpc/platforms/powernv/pci-sriov.c
++++ b/arch/powerpc/platforms/powernv/pci-sriov.c
+@@ -22,7 +22,7 @@
+  * have the same requirement.
+  *
+  * For a SR-IOV BAR things are a little more awkward since size and alignment
+- * are not coupled. The alignment is set based on the the per-VF BAR size, but
++ * are not coupled. The alignment is set based on the per-VF BAR size, but
+  * the total BAR area is: number-of-vfs * per-vf-size. The number of VFs
+  * isn't necessarily a power of two, so neither is the total size. To fix that
+  * we need to finesse (read: hack) the Linux BAR allocator so that it will
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index 2b7e99697757..fff81c2300fa 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -372,7 +372,7 @@ static void write_ciabr(unsigned long ciabr)
+  * set_ciabr() - set the CIABR
+  * @addr:	The value to set.
+  *
+- * This function sets the correct privilege value into the the HW
++ * This function sets the correct privilege value into the HW
+  * breakpoint address before writing it up in the CIABR register.
+  */
+ static void set_ciabr(unsigned long addr)
 -- 
-2.35.1
+2.35.3
 
