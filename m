@@ -1,53 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F2B52AF45
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 02:40:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985C452AFAC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 03:11:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L2vK15RVDz3cFZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 10:40:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L2w1V3wMgz3c8r
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 11:11:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ifBigZ+V;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mLIfT9w9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L2vJR2xksz3bmR
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 10:39:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=srs0=1vmm=v2=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ifBigZ+V; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=mLIfT9w9; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L2vJM1qpTz4xZ2;
- Wed, 18 May 2022 10:39:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1652834372;
- bh=PfasWlhYL5IIEatPGqyd0PllM8n5gWkCvmvKfOjR5ZI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ifBigZ+VFYy/C+eimo7bpL5w+3/z23uyazvVk5US29tdXqfEiyiE2kgsivrZ9PIIY
- xi0/+sPtH+wVDTUG0qAjQJTiIjqyDqlL2IbsUzxiu+s+dCJ4zWZp+Ehr10/1HqDsYt
- hEKGFpjk44MjU3NvI8HBJAVNkEuJSlxBdnD/xv1GMNgSd69NNeAHvGIltaDYCpZLAr
- uq0Vu4JdKVZ4PcikfUl4RGDPutZ8MoQlrUs82K/KMzD7oqdCZepJvmEPNAhwA6RjgK
- os8uDWp7ExAUFBZdGl8wH36Vnq/WpSfhCyHnbhrrSltUexy+gwulzJLOZshcUK0aCG
- VuB3+hsPMHw2A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Al Viro <viro@zeniv.linux.org.uk>, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] net: unexport csum_and_copy_{from,to}_user
-In-Reply-To: <YoQcNkB6R/E3vf51@zeniv-ca.linux.org.uk>
-References: <20220421070440.1282704-1-hch@lst.de>
- <YoQcNkB6R/E3vf51@zeniv-ca.linux.org.uk>
-Date: Wed, 18 May 2022 10:39:17 +1000
-Message-ID: <87y1yzoeru.fsf@mpe.ellerman.id.au>
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L2w0p1rNvz2yjS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 11:11:06 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 34C6C615D3;
+ Wed, 18 May 2022 01:11:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9471AC385B8;
+ Wed, 18 May 2022 01:11:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1652836261;
+ bh=0JohyQWS56e9PsJ/aORrWTbXqvcpO0LM4k4hDLaFxSc=;
+ h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+ b=mLIfT9w9lPhfdw9FKFVlZVkdTmBxuuusCSUEyodBbq+pJnMSrBSJy8XXuyRwLyRia
+ Qot+dznXqo4P5ZnAcmGr9OtuW6I38udInffyXceCjESIAJfHhf2njRgj1RfSSOirAp
+ tQvhq1+8QM2LwwENv67K2GIAy2juTmUiR2Mr4ugevZ4gvcpWsV12uhtM30/Dnh78gg
+ Iv1R1Ino0+RjXba1EPwBX5XaiYPGU+x82E9FmkEVEQUPYlXjEEIkQjXLXV0xi1f+HJ
+ UMO0InwYprDxMrYeGGdjyrEcHr7cyCZmsuWb96s+30VVhGLm7ooLuN9+B8L5iP9QKO
+ v8djKpv1v1BKw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+ id 349865C051B; Tue, 17 May 2022 18:11:01 -0700 (PDT)
+Date: Tue, 17 May 2022 18:11:01 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Chen Zhongjin <chenzhongjin@huawei.com>
+Subject: Re: [PATCH v4] locking/csd_lock: change csdlock_debug from
+ early_param to __setup
+Message-ID: <20220518011101.GK1790663@paulmck-ThinkPad-P17-Gen-1>
+References: <20220510094639.106661-1-chenzhongjin@huawei.com>
+ <9b3e61b8-ecab-08ff-a3b6-83d6862ead77@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9b3e61b8-ecab-08ff-a3b6-83d6862ead77@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,27 +68,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-alpha@vger.kernel.org,
- akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Reply-To: paulmck@kernel.org
+Cc: linux-arch@vger.kernel.org, jgross@suse.com, gor@linux.ibm.com,
+ peterz@infradead.org, gregkh@linuxfoundation.org, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, namit@vmware.com,
+ tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Al Viro <viro@zeniv.linux.org.uk> writes:
-> On Thu, Apr 21, 2022 at 09:04:40AM +0200, Christoph Hellwig wrote:
->> csum_and_copy_from_user and csum_and_copy_to_user are exported by
->> a few architectures, but not actually used in modular code.  Drop
->> the exports.
->> 
->> Signed-off-by: Christoph Hellwig <hch@lst.de>
->
-> Acked-by: Al Viro <viro@zeniv.linux.org.uk>
->
-> Not sure which tree should it go through - Arnd's, perhaps?
+On Tue, May 17, 2022 at 11:22:04AM +0800, Chen Zhongjin wrote:
+> On 2022/5/10 17:46, Chen Zhongjin wrote:
+> > csdlock_debug uses early_param and static_branch_enable() to enable
+> > csd_lock_wait feature, which triggers a panic on arm64 with config:
+> > CONFIG_SPARSEMEM=y
+> > CONFIG_SPARSEMEM_VMEMMAP=n
+> > 
+> > With CONFIG_SPARSEMEM_VMEMMAP=n, __nr_to_section is called in
+> > static_key_enable() and returns NULL which makes NULL dereference
+> > because mem_section is initialized in sparse_init() which is later
+> > than parse_early_param() stage.
+> > 
+> > For powerpc this is also broken, because early_param stage is
+> > earlier than jump_label_init() so static_key_enable won't work.
+> > powerpc throws an warning: "static key 'xxx' used before call
+> > to jump_label_init()".
+> > 
+> > Thus, early_param is too early for csd_lock_wait to run
+> > static_branch_enable(), so changes it to __setup to fix these.
+> > 
+> > Fixes: 8d0968cc6b8f ("locking/csd_lock: Add boot parameter for controlling CSD lock debugging")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Chen jingwen <chenjingwen6@huawei.com>
+> > Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+> > ---
+> > Change v3 -> v4:
+> > Fix title and description because this fix is also applied
+> > to powerpc.
+> > For more detailed arm64 bug report see:
+> > https://lore.kernel.org/linux-arm-kernel/e8715911-f835-059d-27f8-cc5f5ad30a07@huawei.com/t/
+> > 
+> > Change v2 -> v3:
+> > Add module name in title
+> > 
+> > Change v1 -> v2:
+> > Fix return 1 for __setup
+> > ---
+> >  kernel/smp.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/kernel/smp.c b/kernel/smp.c
+> > index 65a630f62363..381eb15cd28f 100644
+> > --- a/kernel/smp.c
+> > +++ b/kernel/smp.c
+> > @@ -174,9 +174,9 @@ static int __init csdlock_debug(char *str)
+> >  	if (val)
+> >  		static_branch_enable(&csdlock_debug_enabled);
+> >  
+> > -	return 0;
+> > +	return 1;
+> >  }
+> > -early_param("csdlock_debug", csdlock_debug);
+> > +__setup("csdlock_debug=", csdlock_debug);
+> >  
+> >  static DEFINE_PER_CPU(call_single_data_t *, cur_csd);
+> >  static DEFINE_PER_CPU(smp_call_func_t, cur_csd_func);
+> 
+> Ping for review. Thanks！
 
-It's already in akpm's tree:
+I have pulled it into -rcu for testing and further review.  It might
+well need to go through some other path, though.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?h=mm-nonmm-stable&id=6308499b5e99c0c903fde2c605e41d9a86c4be6c
-
-cheers
+								Thanx, Paul
