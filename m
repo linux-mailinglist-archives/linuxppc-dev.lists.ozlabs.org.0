@@ -2,84 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380AD52C0F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 19:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D3552C203
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 20:20:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3KcF0SDcz3cDX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 03:24:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3LrD74YYz3cHw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 04:20:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=mind.be header.i=@mind.be header.a=rsa-sha256 header.s=google header.b=QXIHKcoy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M/+uNR8W;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=essensium.com (client-ip=2a00:1450:4864:20::634;
- helo=mail-ej1-x634.google.com;
- envelope-from=arnout.vandecappelle@essensium.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=mind.be header.i=@mind.be header.a=rsa-sha256
- header.s=google header.b=QXIHKcoy; dkim-atps=neutral
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com
- [IPv6:2a00:1450:4864:20::634])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=M/+uNR8W; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3KbW3mZYz2xXw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 03:24:04 +1000 (AEST)
-Received: by mail-ej1-x634.google.com with SMTP id tk15so5125375ejc.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 10:24:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mind.be; s=google;
- h=message-id:date:mime-version:user-agent:subject:content-language:to
- :cc:references:from:organization:in-reply-to
- :content-transfer-encoding;
- bh=nOSMeRQ9IOFC/cHF7h/iXHPCI8fOU6NkF/uXwE87O/E=;
- b=QXIHKcoypdwzF96wIGc1c4CSId7WZaF1gdjYzuJVd4Dm9xnk9ZXOUa3zNXqXyvYTJZ
- JFNtkL8kW78vDDBtp338hSFe8zqLYyIJXABILzlLKSBDoTDY5oO8phgC0DwC2CkIaRIc
- Y6OWLFzJJcRlGv9Y1td07dLLYMvIZvOvm8mzAoe5OoWOu8BQ+nyn0lYsM+UFpN+15W9b
- KN8vCZrZ2u9i2sBOs37P5gS156JM1p0TBdf6cM3WNnnDQshMDH8jApckI72k3ogwU2vI
- 9I3oJJEJt0mxXXuv1sOKfCxB86FnhOpb+nwy3YCmW7C/sT2tCpAG31DrQy8fjO+Q58TO
- 1svg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:organization:in-reply-to
- :content-transfer-encoding;
- bh=nOSMeRQ9IOFC/cHF7h/iXHPCI8fOU6NkF/uXwE87O/E=;
- b=TeG8UCPCMZAB7k18eN8tRpcVxRUdTlytNIlOc6Kr1uM918km3VQCB6v7EUpBQRmGT9
- /efjGEbWU8GzyJHDnnBehuAWGtx2A96CdCQbmOHvG1FIHppPzJg1nLsmZ7NQZF5/MAaQ
- yzmGu7RZ0Is49zEfT5ltLzjzNcAh03F87GG7G293XonIMlTKl32hA7U/dKBPlrkYVEph
- PAMQyi/vXluzhmTDX+UAudBeLv5aQtk3/5UvZtR4io2sLozM77CbQ63CeFs7fXGwvlix
- hpi1BUV9svApJA6GJU1rlmuYnGpg070GG71lPpxGLkc/ZA/fJprT3BEAhcb+4xIX4weT
- FSFw==
-X-Gm-Message-State: AOAM532OQ2n1BECshjO+gS8X9XMp+GHInv2kBqnx2iPlW9z355FNGVKK
- kXaj+/ZrTLpOf8WVAOAwf4ByEg==
-X-Google-Smtp-Source: ABdhPJzy68GKpOEIzqSBT2wTahCxefmG7YolupJ1yL+2WvXAGgJ3zWJ2USvPbM3YTcFJ2Rx1se9MSw==
-X-Received: by 2002:a17:907:7247:b0:6f9:bb40:efd8 with SMTP id
- ds7-20020a170907724700b006f9bb40efd8mr557790ejc.273.1652894638359; 
- Wed, 18 May 2022 10:23:58 -0700 (PDT)
-Received: from ?IPV6:2a02:1811:3a7e:7b00:1400:24ea:cbca:e681?
- (ptr-9fplejn4os7m3x31ny9.18120a2.ip6.access.telenet.be.
- [2a02:1811:3a7e:7b00:1400:24ea:cbca:e681])
- by smtp.gmail.com with ESMTPSA id
- er21-20020a170907739500b006fe50668941sm1160258ejc.158.2022.05.18.10.23.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 18 May 2022 10:23:57 -0700 (PDT)
-Message-ID: <693a9659-d2f2-8a74-2402-592a429af336@mind.be>
-Date: Wed, 18 May 2022 19:23:55 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [Buildroot] [PATCH] linux: Fix powerpc64le defconfig selection
-Content-Language: en-GB
-To: Michael Ellerman <mpe@ellerman.id.au>, Joel Stanley <joel@jms.id.au>
-References: <20220510022055.67582-1-joel@jms.id.au>
- <a18d0411-9134-2ee7-62d0-4ba6a1780846@mind.be>
- <87a6bh7h2e.fsf@mpe.ellerman.id.au>
-From: Arnout Vandecappelle <arnout@mind.be>
-Organization: Essensium/Mind
-In-Reply-To: <87a6bh7h2e.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3LqX11w0z3c7k
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 04:19:35 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24IIHYLO019334;
+ Wed, 18 May 2022 18:19:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=BIZAjSskEX4ZGsdDdyHF4V6S1IvnQosszACzcUTuvvw=;
+ b=M/+uNR8WKwNu7M/JW2Pzi3TO/M0oRujQrYJ5g/izFNcOqG+O0AOT8aeX7buNbbyPlb8t
+ S/YXv75ZZqS5xtiP8D4yUVyabftWddM39a+CnoJdh96n+fAMrUJ9w0mt+n/CPpVZBGQM
+ 6SwZ2cPsZXUQ7TmVBWqYzBmMyfRRLuO6jJeP9I7zr/frclNpGjmYYOWGw62BXgfAAdxr
+ M+SiYLAQqsHwp6bD9IMex/flLT83efWBxOVK7RiZbdlBpkRU8V/fVj6EcoyGrt142Byp
+ yhRkzoqn+yXNApSoGXXhyLBILuaYR61wmYuHEF3HwIHmTfaVCKP9spNGh9JnD1YjKhuV kA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g55xxg151-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 May 2022 18:19:15 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24II8XKa011871;
+ Wed, 18 May 2022 18:19:13 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 3g2429e34f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 18 May 2022 18:19:13 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24IIJAao52232462
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 18 May 2022 18:19:10 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AB51C4C046;
+ Wed, 18 May 2022 18:19:10 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 118784C040;
+ Wed, 18 May 2022 18:19:09 +0000 (GMT)
+Received: from li-NotSettable.ibm.com.com (unknown [9.43.19.36])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 18 May 2022 18:19:08 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Eric Biederman <ebiederm@xmission.com>
+Subject: [PATCH] kexec_file: Drop weak attribute from
+ arch_kexec_apply_relocations[_add]
+Date: Wed, 18 May 2022 23:48:28 +0530
+Message-Id: <20220518181828.645877-1-naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: uPzPQywlzQTS2FrupWy_fWcu16Q8beLq
+X-Proofpoint-ORIG-GUID: uPzPQywlzQTS2FrupWy_fWcu16Q8beLq
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-18_06,2022-05-17_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=689 bulkscore=0
+ clxscore=1015 mlxscore=0 priorityscore=1501 lowpriorityscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205180106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,78 +99,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, buildroot@buildroot.org
+Cc: kexec@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
+symbols") [1], binutils (v2.36+) started dropping section symbols that
+it thought were unused.  This isn't an issue in general, but with
+kexec_file.c, gcc is placing kexec_arch_apply_relocations[_add] into a
+separate .text.unlikely section and the section symbol ".text.unlikely"
+is being dropped. Due to this, recordmcount is unable to find a non-weak
+symbol in .text.unlikely to generate a relocation record against.
 
+Address this by dropping the weak attribute from these functions:
+- arch_kexec_apply_relocations() is not overridden by any architecture
+  today, so just drop the weak attribute.
+- arch_kexec_apply_relocations_add() is only overridden by x86 and s390.
+  Retain the function prototype for those and move the weak
+  implementation into the header as a static inline for other
+  architectures.
 
-On 16/05/2022 15:17, Michael Ellerman wrote:
-> Arnout Vandecappelle <arnout@mind.be> writes:
->> On 10/05/2022 04:20, Joel Stanley wrote:
->>> The default defconfig target for the 64 bit powerpc kernel is
->>> ppc64_defconfig, the big endian configuration.
->>>
->>> When building for powerpc64le users want the little endian kernel as
->>> they can't boot LE userspace on a BE kernel.
->>>
->>> Fix up the defconfig used in this case. This will avoid the following
->>> autobuilder failure:
->>>
->>>    VDSO32A arch/powerpc/kernel/vdso32/sigtramp.o
->>>    cc1: error: ‘-m32’ not supported in this configuratioin
->>>    make[4]: *** [arch/powerpc/kernel/vdso32/Makefile:49: arch/powerpc/kernel/vdso32/sigtramp.o] Error 1
->>>
->>>    http://autobuild.buildroot.net/results/dd76d53bab56470c0b83e296872d7bb90f9e8296/
->>>
->>> Note that the failure indicates the toolchain is configured to disable
->>> the 32 bit target, causing the kernel to fail when building the 32 bit
->>> VDSO. This is only a problem on the BE kernel as the LE kernel disables
->>> CONFIG_COMPAT, aka 32 bit userspace support, by default.
->>>
->>> Signed-off-by: Joel Stanley <joel@jms.id.au>
->>
->>    Applied to master, thanks. However, the defconfig mechanism for *all* powerpc
->> seems pretty broken. Here's what we have in 5.16, before that there was
->> something similar:
->>
->> # If we're on a ppc/ppc64/ppc64le machine use that defconfig, otherwise just use
->> # ppc64_defconfig because we have nothing better to go on.
->> uname := $(shell uname -m)
->> KBUILD_DEFCONFIG := $(if $(filter ppc%,$(uname)),$(uname),ppc64)_defconfig
->>
->>    So I guess we should use a specific defconfig for *all* powerpc.
->>
->>    The arch-default defconfig is generally not really reliable, for example for
->> arm it always takes v7_multi, but that won't work for v7m targets...
-> 
-> There's a fundamental problem that just the "arch" is not sufficient
-> detail when you're building a kernel.
+[1] https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=d1bcae833b32f1
 
-  Yes, which is pretty much unavoidable.
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+---
+ include/linux/kexec.h | 28 ++++++++++++++++++++++++----
+ kernel/kexec_file.c   | 19 +------------------
+ 2 files changed, 25 insertions(+), 22 deletions(-)
 
-> Two CPUs that implement the same user-visible "arch" may differ enough
-> at the kernel level to require a different defconfig.
-> 
-> Having said that I think we could handle this better in the powerpc
-> kernel. Other arches allow specifying a different value for ARCH, which
-> then is fed into the defconfig.
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index 58d1b58a971e34..e656f981f43a73 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -193,10 +193,6 @@ void *kexec_purgatory_get_symbol_addr(struct kimage *image, const char *name);
+ int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
+ 				  unsigned long buf_len);
+ void *arch_kexec_kernel_image_load(struct kimage *image);
+-int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+-				     Elf_Shdr *section,
+-				     const Elf_Shdr *relsec,
+-				     const Elf_Shdr *symtab);
+ int arch_kexec_apply_relocations(struct purgatory_info *pi,
+ 				 Elf_Shdr *section,
+ 				 const Elf_Shdr *relsec,
+@@ -229,6 +225,30 @@ extern int crash_exclude_mem_range(struct crash_mem *mem,
+ 				   unsigned long long mend);
+ extern int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
+ 				       void **addr, unsigned long *sz);
++
++#if defined(CONFIG_X86_64) || defined(CONFIG_S390)
++int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
++				     Elf_Shdr *section,
++				     const Elf_Shdr *relsec,
++				     const Elf_Shdr *symtab);
++#else
++/*
++ * arch_kexec_apply_relocations_add - apply relocations of type RELA
++ * @pi:		Purgatory to be relocated.
++ * @section:	Section relocations applying to.
++ * @relsec:	Section containing RELAs.
++ * @symtab:	Corresponding symtab.
++ *
++ * Return: 0 on success, negative errno on error.
++ */
++static inline int
++arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
++				 const Elf_Shdr *relsec, const Elf_Shdr *symtab)
++{
++	pr_err("RELA relocation unsupported.\n");
++	return -ENOEXEC;
++}
++#endif /* CONFIG_X86_64 || CONFIG_S390 */
+ #endif /* CONFIG_KEXEC_FILE */
+ 
+ #ifdef CONFIG_KEXEC_ELF
+diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
+index 8347fc158d2b96..6bae253b4d315e 100644
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -108,23 +108,6 @@ int __weak arch_kexec_kernel_verify_sig(struct kimage *image, void *buf,
+ }
+ #endif
+ 
+-/*
+- * arch_kexec_apply_relocations_add - apply relocations of type RELA
+- * @pi:		Purgatory to be relocated.
+- * @section:	Section relocations applying to.
+- * @relsec:	Section containing RELAs.
+- * @symtab:	Corresponding symtab.
+- *
+- * Return: 0 on success, negative errno on error.
+- */
+-int __weak
+-arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
+-				 const Elf_Shdr *relsec, const Elf_Shdr *symtab)
+-{
+-	pr_err("RELA relocation unsupported.\n");
+-	return -ENOEXEC;
+-}
+-
+ /*
+  * arch_kexec_apply_relocations - apply relocations of type REL
+  * @pi:		Purgatory to be relocated.
+@@ -134,7 +117,7 @@ arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
+  *
+  * Return: 0 on success, negative errno on error.
+  */
+-int __weak
++int
+ arch_kexec_apply_relocations(struct purgatory_info *pi, Elf_Shdr *section,
+ 			     const Elf_Shdr *relsec, const Elf_Shdr *symtab)
+ {
 
-  I don't know if it's worth bothering with that. It certainly would not make 
-our life easier, because it would mean we need to set ARCH correctly. If we can 
-do that, we can just as well set the defconfig correctly.
+base-commit: ef1302160bfb19f804451d0e919266703501c875
+-- 
+2.36.1
 
-> That way you could at least pass ARCH=ppc/ppc64/ppc64le, and get an
-> appropriate defconfig.
-> 
-> I'll work on some kernel changes for that.
-
-  I think the most important thing is that it makes no sense to rely on uname 
-when ARCH and/or CROSS_COMPILE are set.
-
-  Regards,
-  Arnout
-
-> 
-> cheers
