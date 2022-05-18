@@ -2,53 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E6252BB4D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 15:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F64352BB6E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 15:21:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3Csq30DSz3cG1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 23:06:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IRUWSxUO;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3DCq6Hlxz3cKk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 May 2022 23:21:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.130; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3CsF2sVrz3bXy
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 23:05:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=IRUWSxUO; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L3CsF0szhz4xVP;
- Wed, 18 May 2022 23:05:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1652879137;
- bh=GuVwZp/TlOFSd6W4AKwTAir7ZsMlh2c6/tLElwH66Dc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=IRUWSxUOK1ibcO8aDVNgHkp7JrjimbYml1PjCRrRr/nyaNFo7FlmHMZFRo+CecmEr
- pPnKZhGYRcRfNMqcupDxKyuT5e06PsCu+FoFmV9IuGQnse6HkqKhqD9JvdZfGL50Px
- +7HtKH5gaBlOdcQb1hmyvI5OxHEhHEX9s+rRWTb9rTJ1HD31V5PI7Zr2H4zZDcnA4R
- Fb21erq8gnFJvjmT9zJr7w/g5v1WueTD3ddkutKbrfnScu95LPU9l59qeywGBmZqXD
- Hw+NOrfhBqfp+Py1ggGPsfmdpr773i76m4mB/fYjdwCrFIz53M2stERNQigvw/Pj9k
- ZbIlT6RYuBf6A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
- jolsa@kernel.org
-Subject: Re: [PATCH] tools/perf/test: Fix perf all PMU test to skip
- hv_24x7/hv_gpci tests on powerpc
-In-Reply-To: <20220518092903.7065-1-atrajeev@linux.vnet.ibm.com>
-References: <20220518092903.7065-1-atrajeev@linux.vnet.ibm.com>
-Date: Wed, 18 May 2022 23:05:36 +1000
-Message-ID: <87czgbng7z.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3DCL4t6wz3bqk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 23:21:17 +1000 (AEST)
+Received: from mail-yw1-f173.google.com ([209.85.128.173]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N5FxN-1nhSH61Olh-011BLU for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May
+ 2022 15:21:13 +0200
+Received: by mail-yw1-f173.google.com with SMTP id
+ 00721157ae682-2f16645872fso24109297b3.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 06:21:12 -0700 (PDT)
+X-Gm-Message-State: AOAM530/x3MIczREqpiwgY433+cFOuWpr+0uqsrs98RcC1544M9Mrkh7
+ bMUPPUkBE7tvIYiq0+A39RiQolbXMEpVa1iJt34=
+X-Google-Smtp-Source: ABdhPJwBjy4ur3XLA4K8ugyaq6ZpN4zxCDmLVI7nhrJH0342w016iDhD3WX3/lYGpyx1rpcDzpcnq5gSYG2aj9C9IIk=
+X-Received: by 2002:a81:ad7:0:b0:2e6:84de:3223 with SMTP id
+ 206-20020a810ad7000000b002e684de3223mr31357253ywk.209.1652880071778; Wed, 18
+ May 2022 06:21:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220505125123.2088143-1-mpe@ellerman.id.au>
+ <c6cbd41c-4cef-d4d7-324a-b4c3e2498262@csgroup.eu>
+ <87fsl7nggr.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87fsl7nggr.fsf@mpe.ellerman.id.au>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 18 May 2022 14:21:08 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a17qq2dpyv1SzD=VmXWAs0JQiyG-AQL=Uv+N6xQzoMsQQ@mail.gmail.com>
+Message-ID: <CAK8P3a17qq2dpyv1SzD=VmXWAs0JQiyG-AQL=Uv+N6xQzoMsQQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] powerpc: Add generic PAGE_SIZE config symbols
+To: Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:wgzAIagHr9G0JV75n8H1xkUkkAtYpF3M7Yq+OmvihI4ugSzhlh8
+ d6GzPXfSk8Fhw8Xs0Mhzj3VeWanObiTEsRyzsT//yQkMUs2B90Kl34RqLDVlyGsoTiBZuAE
+ IBJYuMilRXfvl0fxDvCP+Cy6a8xGN+hEyl4sWfLc/FQzCW2jABZAjYW6K5KIMsxzYNn+DdC
+ gX+MBWkwbzvHSeZ0lSAbA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:RkahmqynRvE=:uMcTjznJ74NLEiCIAJz19X
+ SH3n9QdpJUme2dpCA23Z+8N05z0xAxt/c8JMlKU/BzVQ5BI5EasRMHIEDnBoUh1+6q5hQyI6d
+ VwogTGEDkof/GFw/pdvsj9cvXC/QqstZl+7+U/p935VfwlLP7+Fd9PJthRhMjAvCdyNY6bfc1
+ sMdmSBYmUJXUPdUx/0hkw3XMVOOuHpP99A4H1q88OOfRVEMxLiKZW90zZno5tLmXJFQ7TKZ/B
+ Ksr7+eOrBp5Oa3dTALZrUGsp++PSG+xq8uuvvLxow/hTPTWYNnMaH9taeWK7BHEjGyKucX4Iz
+ lfe9pYObfoqmsZOHOoHQiWAVbebHU43fWvOhedkfNhXAtm2KB2bJpYXFRUfKXOSTu5hWvaeld
+ j087jKY8eJpzGxZOWlqdkt5drcmLIcl3QRxElpU/U7WAwTk+Z5SMrriGkYNIfytkQ7MkZAD8h
+ NY66ADQpy5mev2hKezSm66SKPyjxpfykKI5hdc/Qy3VvxokXGXOSQcwXL4HcFVUinH1oVFmVJ
+ FcVcYj4LG1x3eyYsJbc3CrHLp4585konb34LDeozqEnyuNc+fieu7en3zGK/i1MyXXPhGvFrt
+ NDbVR1V+hG6qyNPaJbAsa5Pi7XbkFk5jeYE8RZ/ZL4m7prXjOIxGHN+CQvwoGoHJIVwYDmQwg
+ gwhmrKimShb1Nd0kNX6xi4D6HskiAMi2hlfieCm80lKXq4JGv3gnVzUOksTd+MNg93Y6u+6ZS
+ 0rOIdB/tiZQqTvjYof/kboSuQKdLbUZihxFlXQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,55 +73,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
- kjain@linux.ibm.com, linux-perf-users@vger.kernel.org,
- disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
-> "perf all PMU test" picks the input events from
-> "perf list --raw-dump pmu" list and runs "perf stat -e"
-> for each of the event in the list. In case of powerpc, the
-> PowerVM environment supports events from hv_24x7 and hv_gpci
-> PMU which is of example format like below:
-> - hv_24x7/CPM_ADJUNCT_INST,domain=?,core=?/
-> - hv_gpci/event,partition_id=?/
+On Wed, May 18, 2022 at 2:00 PM Michael Ellerman <mpe@ellerman.id.au> wrote=
+:
 >
-> The value for "?" needs to be filled in depending on
-> system and respective event. CPM_ADJUNCT_INST needs have
-> core value and domain value. hv_gpci event needs partition_id.
-> Similarly, there are other events for hv_24x7 and hv_gpci
-> having "?" in event format. Hence skip these events on powerpc
-> platform since values like partition_id, domain is specific
-> to system and event.
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> > Le 05/05/2022 =C3=A0 14:51, Michael Ellerman a =C3=A9crit :
+> >> Other arches (sh, mips, hexagon) use standard names for PAGE_SIZE
+> >> related config symbols.
+> >>
+> >> Add matching symbols for powerpc, which are enabled by default but
+> >> depend on our architecture specific PAGE_SIZE symbols.
+> >>
+> >> This allows generic/driver code to express dependencies on the PAGE_SI=
+ZE
+> >> without needing to refer to architecture specific config symbols.
+> >
+> > I guess next step should be to get rid of powerpc specific symbols and
+> > use generic symbols instead.
+> >
+> > We have (only) 111 occurences of it.
 >
-> Fixes: 3d5ac9effcc6 ("perf test: Workload test of all PMUs")
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->  tools/perf/tests/shell/stat_all_pmu.sh | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/tools/perf/tests/shell/stat_all_pmu.sh b/tools/perf/tests/shell/stat_all_pmu.sh
-> index b30dba455f36..4a854b545bec 100755
-> --- a/tools/perf/tests/shell/stat_all_pmu.sh
-> +++ b/tools/perf/tests/shell/stat_all_pmu.sh
-> @@ -5,6 +5,16 @@
->  set -e
->  
->  for p in $(perf list --raw-dump pmu); do
-> +  # In powerpc, skip the events for hv_24x7 and hv_gpci.
-> +  # These events needs input values to be filled in for
-> +  # core, chip, patition id based on system.
-> +  # Example: hv_24x7/CPM_ADJUNCT_INST,domain=?,core=?/
-> +  # hv_gpci/event,partition_id=?/
-> +  # Hence skip these events for ppc.
-> +  if lscpu  |grep ppc && echo "$p" |grep -Eq 'hv_24x7|hv_gpci' ; then
+> I thought about doing that, but it's quite a bit of churn. Maybe it's
+> worth it though to avoid confusion between the two symbols.
 
-My system doesn't have lscpu installed, why not use `uname -m`.
+I have actually done this at some point, but for some reason never sent it =
+out,
+see my old patch at:
 
-But why check for ppc at all, the name of the pmu seems unique enough -
-no one else is going to call their pmu something so odd :)
+https://git.kernel.org/pub/scm/linux/kernel/git/arnd/playground.git/commit/=
+?h=3Drandconfig-5.15-next&id=3D184c7273ee367fda3626e35f0079f181075690c8
 
-cheers
+Feel free to take ideas or the entire patch from that.
+
+      Arnd
