@@ -2,42 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FE152D2F1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 14:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 422C352D2A9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 14:39:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3qSb2lRgz3bm2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 22:49:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3qDP1x2bz3bl6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 22:39:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=ixEjEQjW;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3qS75Jjzz2xKq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 22:49:26 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 01A6D1A0B77;
- Thu, 19 May 2022 14:49:23 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com
- (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id AA4A71A0B82;
- Thu, 19 May 2022 14:49:22 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id DF5CC180031E;
- Thu, 19 May 2022 20:49:20 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
- shengjiu.wang@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
- perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode
-Date: Thu, 19 May 2022 20:36:48 +0800
-Message-Id: <1652963808-14515-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3qCm3h32z2yV6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 22:38:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ixEjEQjW; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L3qCk1prqz4xD8;
+ Thu, 19 May 2022 22:38:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1652963922;
+ bh=0TLro0SA/18NlSBFMn34S0cBax5+uzY+PqBTBfpLaa8=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=ixEjEQjW69Mx2eWMN4fzDXSXawcYVEirqaPxB7v9sgT6QIHXCbcjAdsivobDJaLJK
+ UMzbL6sTifdgbTHOOU6oKJVvTm0q04bc7PJM2wS/IWMAjcMjnIeXOZQpqLtYU92GFX
+ SrXMtaKo/xULjAoQGw5uO6Is+G13WPNSOWVP3ID7nn3udbbjz6e8cpPnPBBE8JpuVL
+ cpgiui4vGw9cjSf1tHpfU7DUQrV7bG4FZ+xAYAwqIdXpMH2pnwc/ij+5+YbHvh86Er
+ OZQikVMlCJGVfunRptq97E9fGMR1sPk5PwxVo7qhrfZqYCvOBD3sPbStq7Nj55e1GY
+ HLeMXjObQxQUw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Oliver O'Halloran
+ <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/powernv/pci: Drop VF MPS fixup
+In-Reply-To: <23fd8d03-965b-a252-020e-4185c2ef5681@csgroup.eu>
+References: <20200902035159.1762596-1-oohall@gmail.com>
+ <23fd8d03-965b-a252-020e-4185c2ef5681@csgroup.eu>
+Date: Thu, 19 May 2022 22:38:40 +1000
+Message-ID: <871qwpofxr.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,38 +61,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On i.MX8MM, the MCTL_MCLK_EN bit it is not only the gate
-for MCLK output to PAD, but also the gate bit between
-root clock and SAI module, So it is need to be enabled
-for master mode, otherwise there is no bclk generated.
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 02/09/2020 =C3=A0 05:51, Oliver O'Halloran a =C3=A9crit=C2=A0:
+>> The MPS field in the VF config space is marked as reserved in current
+>> versions of the SR-IOV spec. In other words, this fixup doesn't do
+>> anything.
+>>=20
+>> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+>
+> A lot of cleanup patches from Oliver were merged in Septembre 2020 but=20
+> not this one.
+>
+> Any reason ?
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_sai.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+It wasn't clear to me that it's safe to remove. The commit that added it
+seemed to think it was important.
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index fa950dde5310..dae16a14f177 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -437,6 +437,12 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *dai, bool tx, u32 freq)
- 				   FSL_SAI_CR2_DIV_MASK | FSL_SAI_CR2_BYP,
- 				   savediv / 2 - 1);
- 
-+	if (sai->soc_data->max_register >= FSL_SAI_MCTL) {
-+		/* SAI is in master mode at this point, so enable MCLK */
-+		regmap_update_bits(sai->regmap, FSL_SAI_MCTL,
-+				   FSL_SAI_MCTL_MCLK_EN, FSL_SAI_MCTL_MCLK_EN);
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.17.1
+The fact that it's out-of-spec doesn't mean we don't have some hardware
+somewhere that relies on that.
 
+cheers
