@@ -2,49 +2,103 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564B352D0AE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 12:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 682C352D17B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 13:30:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3mZm6T82z3c2h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 20:40:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3nhM1Lsvz3c2M
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 21:29:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o0hgANyb;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com;
- envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3mZG3whvz3004
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 20:39:29 +1000 (AEST)
-Received: from kwepemi100004.china.huawei.com (unknown [172.30.72.53])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4L3mWj3ZpKzgYNX;
- Thu, 19 May 2022 18:37:21 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- kwepemi100004.china.huawei.com (7.221.188.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 19 May 2022 18:38:44 +0800
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 19 May 2022 18:38:42 +0800
-Message-ID: <151148fe-cd9d-eb81-6aeb-3aae1691b3dd@huawei.com>
-Date: Thu, 19 May 2022 18:38:42 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH -next v4 7/7] arm64: add cow to machine check safe
-To: Mark Rutland <mark.rutland@arm.com>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
- <20220420030418.3189040-8-tongtiangen@huawei.com> <Yn581SnKPGlhbgoU@lakrids>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <Yn581SnKPGlhbgoU@lakrids>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=o0hgANyb; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3ngf54DNz2yXM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 21:29:17 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24JAhDLB007597;
+ Thu, 19 May 2022 11:29:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=O3Xnp/cIzP7P3Fq9kkYBnT0KpBfNxk2EVA8eEmfjDsU=;
+ b=o0hgANybuPPfk9PF+V8In5HZEeQdiWrg8UBkvzfx8BIgX+XvC58+kz4ykJY0LGirgiSP
+ HWBMlg3B4z96bbMqzQBu2JZfAKGilq5X6t1OD3lh28/JQnJj3nLkW1xw2dkaxV/E+UmN
+ mf+Ga6cYMbztOgHCRmvUihBnhcMsjLRrFZ54tWtyaWEijLO++1QBn504K1wn0GgFH0RS
+ pyrCEAcCDLY+YARc3Do2e3/04FVAjILbknzcjWA3f3T8OTk5Au1E/cmADu97nUndUqlM
+ r6ieZbQiEyt2B0luXxcUbWCqmmC9v00INM3snrSkz4MKHwzkb9wqRjPYOIa4Lq2ATaly Ow== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g5mcus06u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 May 2022 11:29:11 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24JBTBI5028183;
+ Thu, 19 May 2022 11:29:11 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g5mcus068-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 May 2022 11:29:11 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24JBStXE030878;
+ Thu, 19 May 2022 11:29:09 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06ams.nl.ibm.com with ESMTP id 3g23pjf734-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 19 May 2022 11:29:09 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24JBT6rh49414406
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 19 May 2022 11:29:06 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B87284C050;
+ Thu, 19 May 2022 11:29:06 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4C5FD4C046;
+ Thu, 19 May 2022 11:29:02 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.211.122.132])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Thu, 19 May 2022 11:29:01 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
+Subject: Re: [PATCH V2 1/2] powerpc/perf: Add support for caps under sysfs in
+ powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <CAP-5=fWN3Sgyp_hTyYvDrLrnr-7dj6ozERn0tDm5MrU2SEJ2Fg@mail.gmail.com>
+Date: Thu, 19 May 2022 16:58:58 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4D9BD7B3-1FA0-4EFE-A7D9-75BBB84ED308@linux.vnet.ibm.com>
+References: <20220518085502.6914-1-atrajeev@linux.vnet.ibm.com>
+ <CAP-5=fWN3Sgyp_hTyYvDrLrnr-7dj6ozERn0tDm5MrU2SEJ2Fg@mail.gmail.com>
+To: Ian Rogers <irogers@google.com>
+X-Mailer: Apple Mail (2.3654.120.0.1.13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4JXdsjQEl9oCTsorM0lmM6IU_0rPU4v2
+X-Proofpoint-ORIG-GUID: hYOYK1UwVuvAxwKc8g2eGkHAUFOyv_x_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-19_02,2022-05-19_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ phishscore=0 mlxlogscore=999 malwarescore=0 clxscore=1011 mlxscore=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205190061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,353 +110,269 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>,
- Will Deacon <will@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
- x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Catalin
- Marinas <catalin.marinas@arm.com>, Xie XiuQi <xiexiuqi@huawei.com>,
- Borislav Petkov <bp@alien8.de>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.vnet.ibm.com, Nageswara Sastry <rnsastry@linux.ibm.com>,
+ Kajol Jain <kjain@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org,
+ Jiri Olsa <jolsa@kernel.org>, disgoel@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-在 2022/5/13 23:44, Mark Rutland 写道:
-> On Wed, Apr 20, 2022 at 03:04:18AM +0000, Tong Tiangen wrote:
->> In the cow(copy on write) processing, the data of the user process is
->> copied, when hardware memory error is encountered during copy, only the
->> relevant processes are affected, so killing the user process and isolate
->> the user page with hardware memory errors is a more reasonable choice than
->> kernel panic.
-> 
-> There are plenty of other places we'll access user pages via a kernel
-> alias (e.g. when performing IO), so why is this special?
-> 
-> To be clear, I am not entirely averse to this, but it seems like this is
-> being done because it's easy to do rather than necessarily being all
-> that useful, and I'm not keen on having to duplicate a bunch of logic
-> for this.
-
-Yeah, There are lots of cases, COW is selected because it is more 
-general. In addition, this provides the machine check safe capability of 
-page copy(copy_highpage_mc), valuable cases can be based on this step by 
-step[1].
-
-[1]https://lore.kernel.org/all/20220429000947.2172219-1-jiaqiyan@google.com/T/
-
-Thanks,
-Tong.
-
-> 
->> Add new helper copy_page_mc() which provide a page copy implementation with
->> machine check safe. At present, only used in cow. In future, we can expand
->> more scenes. As long as the consequences of page copy failure are not
->> fatal(eg: only affect user process), we can use this helper.
->>
->> The copy_page_mc() in copy_page_mc.S is largely borrows from copy_page()
->> in copy_page.S and the main difference is copy_page_mc() add extable entry
->> to every load/store insn to support machine check safe. largely to keep the
->> patch simple. If needed those optimizations can be folded in.
->>
->> Add new extable type EX_TYPE_COPY_PAGE_MC which used in copy_page_mc().
->>
->> This type only be processed in fixup_exception_mc(), The reason is that
->> copy_page_mc() is consistent with copy_page() except machine check safe is
->> considered, and copy_page() do not need to consider exception fixup.
->>
->> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
->> ---
->>   arch/arm64/include/asm/asm-extable.h |  5 ++
->>   arch/arm64/include/asm/page.h        | 10 ++++
->>   arch/arm64/lib/Makefile              |  2 +
->>   arch/arm64/lib/copy_page_mc.S        | 86 ++++++++++++++++++++++++++++
->>   arch/arm64/mm/copypage.c             | 36 ++++++++++--
->>   arch/arm64/mm/extable.c              |  2 +
->>   include/linux/highmem.h              |  8 +++
->>   mm/memory.c                          |  2 +-
->>   8 files changed, 144 insertions(+), 7 deletions(-)
->>   create mode 100644 arch/arm64/lib/copy_page_mc.S
->>
->> diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
->> index 80410899a9ad..74c056ddae15 100644
->> --- a/arch/arm64/include/asm/asm-extable.h
->> +++ b/arch/arm64/include/asm/asm-extable.h
->> @@ -14,6 +14,7 @@
->>   /* _MC indicates that can fixup from machine check errors */
->>   #define EX_TYPE_UACCESS_MC		5
->>   #define EX_TYPE_UACCESS_MC_ERR_ZERO	6
->> +#define EX_TYPE_COPY_PAGE_MC		7
->>   
->>   #ifdef __ASSEMBLY__
->>   
->> @@ -42,6 +43,10 @@
->>   	__ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_UACCESS_MC, 0)
->>   	.endm
->>   
->> +	.macro          _asm_extable_copy_page_mc, insn, fixup
->> +	__ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_COPY_PAGE_MC, 0)
->> +	.endm
->> +
->>   /*
->>    * Create an exception table entry for `insn` if `fixup` is provided. Otherwise
->>    * do nothing.
->> diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
->> index 993a27ea6f54..832571a7dddb 100644
->> --- a/arch/arm64/include/asm/page.h
->> +++ b/arch/arm64/include/asm/page.h
->> @@ -29,6 +29,16 @@ void copy_user_highpage(struct page *to, struct page *from,
->>   void copy_highpage(struct page *to, struct page *from);
->>   #define __HAVE_ARCH_COPY_HIGHPAGE
->>   
->> +#ifdef CONFIG_ARCH_HAS_COPY_MC
->> +extern void copy_page_mc(void *to, const void *from);
->> +void copy_highpage_mc(struct page *to, struct page *from);
->> +#define __HAVE_ARCH_COPY_HIGHPAGE_MC
->> +
->> +void copy_user_highpage_mc(struct page *to, struct page *from,
->> +		unsigned long vaddr, struct vm_area_struct *vma);
->> +#define __HAVE_ARCH_COPY_USER_HIGHPAGE_MC
->> +#endif
->> +
->>   struct page *alloc_zeroed_user_highpage_movable(struct vm_area_struct *vma,
->>   						unsigned long vaddr);
->>   #define __HAVE_ARCH_ALLOC_ZEROED_USER_HIGHPAGE_MOVABLE
->> diff --git a/arch/arm64/lib/Makefile b/arch/arm64/lib/Makefile
->> index 29490be2546b..0d9f292ef68a 100644
->> --- a/arch/arm64/lib/Makefile
->> +++ b/arch/arm64/lib/Makefile
->> @@ -15,6 +15,8 @@ endif
->>   
->>   lib-$(CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE) += uaccess_flushcache.o
->>   
->> +lib-$(CONFIG_ARCH_HAS_COPY_MC) += copy_page_mc.o
->> +
->>   obj-$(CONFIG_CRC32) += crc32.o
->>   
->>   obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
->> diff --git a/arch/arm64/lib/copy_page_mc.S b/arch/arm64/lib/copy_page_mc.S
->> new file mode 100644
->> index 000000000000..655161363dcf
->> --- /dev/null
->> +++ b/arch/arm64/lib/copy_page_mc.S
->> @@ -0,0 +1,86 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +/*
->> + * Copyright (C) 2012 ARM Ltd.
->> + */
->> +
->> +#include <linux/linkage.h>
->> +#include <linux/const.h>
->> +#include <asm/assembler.h>
->> +#include <asm/page.h>
->> +#include <asm/cpufeature.h>
->> +#include <asm/alternative.h>
->> +#include <asm/asm-extable.h>
->> +
->> +#define CPY_MC(l, x...)		\
->> +9999:   x;			\
->> +	_asm_extable_copy_page_mc    9999b, l
->> +
->> +/*
->> + * Copy a page from src to dest (both are page aligned) with machine check
->> + *
->> + * Parameters:
->> + *	x0 - dest
->> + *	x1 - src
->> + */
->> +SYM_FUNC_START(__pi_copy_page_mc)
->> +alternative_if ARM64_HAS_NO_HW_PREFETCH
->> +	// Prefetch three cache lines ahead.
->> +	prfm	pldl1strm, [x1, #128]
->> +	prfm	pldl1strm, [x1, #256]
->> +	prfm	pldl1strm, [x1, #384]
->> +alternative_else_nop_endif
->> +
->> +CPY_MC(9998f, ldp	x2, x3, [x1])
->> +CPY_MC(9998f, ldp	x4, x5, [x1, #16])
->> +CPY_MC(9998f, ldp	x6, x7, [x1, #32])
->> +CPY_MC(9998f, ldp	x8, x9, [x1, #48])
->> +CPY_MC(9998f, ldp	x10, x11, [x1, #64])
->> +CPY_MC(9998f, ldp	x12, x13, [x1, #80])
->> +CPY_MC(9998f, ldp	x14, x15, [x1, #96])
->> +CPY_MC(9998f, ldp	x16, x17, [x1, #112])
->> +
->> +	add	x0, x0, #256
->> +	add	x1, x1, #128
->> +1:
->> +	tst	x0, #(PAGE_SIZE - 1)
->> +
->> +alternative_if ARM64_HAS_NO_HW_PREFETCH
->> +	prfm	pldl1strm, [x1, #384]
->> +alternative_else_nop_endif
->> +
->> +CPY_MC(9998f, stnp	x2, x3, [x0, #-256])
->> +CPY_MC(9998f, ldp	x2, x3, [x1])
->> +CPY_MC(9998f, stnp	x4, x5, [x0, #16 - 256])
->> +CPY_MC(9998f, ldp	x4, x5, [x1, #16])
->> +CPY_MC(9998f, stnp	x6, x7, [x0, #32 - 256])
->> +CPY_MC(9998f, ldp	x6, x7, [x1, #32])
->> +CPY_MC(9998f, stnp	x8, x9, [x0, #48 - 256])
->> +CPY_MC(9998f, ldp	x8, x9, [x1, #48])
->> +CPY_MC(9998f, stnp	x10, x11, [x0, #64 - 256])
->> +CPY_MC(9998f, ldp	x10, x11, [x1, #64])
->> +CPY_MC(9998f, stnp	x12, x13, [x0, #80 - 256])
->> +CPY_MC(9998f, ldp	x12, x13, [x1, #80])
->> +CPY_MC(9998f, stnp	x14, x15, [x0, #96 - 256])
->> +CPY_MC(9998f, ldp	x14, x15, [x1, #96])
->> +CPY_MC(9998f, stnp	x16, x17, [x0, #112 - 256])
->> +CPY_MC(9998f, ldp	x16, x17, [x1, #112])
->> +
->> +	add	x0, x0, #128
->> +	add	x1, x1, #128
->> +
->> +	b.ne	1b
->> +
->> +CPY_MC(9998f, stnp	x2, x3, [x0, #-256])
->> +CPY_MC(9998f, stnp	x4, x5, [x0, #16 - 256])
->> +CPY_MC(9998f, stnp	x6, x7, [x0, #32 - 256])
->> +CPY_MC(9998f, stnp	x8, x9, [x0, #48 - 256])
->> +CPY_MC(9998f, stnp	x10, x11, [x0, #64 - 256])
->> +CPY_MC(9998f, stnp	x12, x13, [x0, #80 - 256])
->> +CPY_MC(9998f, stnp	x14, x15, [x0, #96 - 256])
->> +CPY_MC(9998f, stnp	x16, x17, [x0, #112 - 256])
->> +
->> +9998:	ret
->> +
->> +SYM_FUNC_END(__pi_copy_page_mc)
->> +SYM_FUNC_ALIAS(copy_page_mc, __pi_copy_page_mc)
->> +EXPORT_SYMBOL(copy_page_mc)
->> diff --git a/arch/arm64/mm/copypage.c b/arch/arm64/mm/copypage.c
->> index 0dea80bf6de4..0f28edfcb234 100644
->> --- a/arch/arm64/mm/copypage.c
->> +++ b/arch/arm64/mm/copypage.c
->> @@ -14,13 +14,8 @@
->>   #include <asm/cpufeature.h>
->>   #include <asm/mte.h>
->>   
->> -void copy_highpage(struct page *to, struct page *from)
->> +static void do_mte(struct page *to, struct page *from, void *kto, void *kfrom)
->>   {
->> -	void *kto = page_address(to);
->> -	void *kfrom = page_address(from);
->> -
->> -	copy_page(kto, kfrom);
->> -
->>   	if (system_supports_mte() && test_bit(PG_mte_tagged, &from->flags)) {
->>   		set_bit(PG_mte_tagged, &to->flags);
->>   		page_kasan_tag_reset(to);
->> @@ -35,6 +30,15 @@ void copy_highpage(struct page *to, struct page *from)
->>   		mte_copy_page_tags(kto, kfrom);
->>   	}
->>   }
->> +
->> +void copy_highpage(struct page *to, struct page *from)
->> +{
->> +	void *kto = page_address(to);
->> +	void *kfrom = page_address(from);
->> +
->> +	copy_page(kto, kfrom);
->> +	do_mte(to, from, kto, kfrom);
->> +}
->>   EXPORT_SYMBOL(copy_highpage);
->>   
->>   void copy_user_highpage(struct page *to, struct page *from,
->> @@ -44,3 +48,23 @@ void copy_user_highpage(struct page *to, struct page *from,
->>   	flush_dcache_page(to);
->>   }
->>   EXPORT_SYMBOL_GPL(copy_user_highpage);
->> +
->> +#ifdef CONFIG_ARCH_HAS_COPY_MC
->> +void copy_highpage_mc(struct page *to, struct page *from)
->> +{
->> +	void *kto = page_address(to);
->> +	void *kfrom = page_address(from);
->> +
->> +	copy_page_mc(kto, kfrom);
->> +	do_mte(to, from, kto, kfrom);
->> +}
->> +EXPORT_SYMBOL(copy_highpage_mc);
-> 
-> IIUC the do_mte() portion won't handle mermoy errors, so this isn't
-> actually going to recover safely.
-> 
+> On 19-May-2022, at 10:12 AM, Ian Rogers <irogers@google.com> wrote:
+>=20
+> On Wed, May 18, 2022 at 1:55 AM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
+>>=20
+>> Add caps support under "/sys/bus/event_source/devices/<pmu>/"
+>> for powerpc. This directory can be used to expose some of the
+>> specific features that powerpc PMU supports to the user.
+>> Example: pmu_name. The name of PMU registered will depend on
+>> platform, say power9 or power10 or it could be Generic Compat
+>> PMU.
+>>=20
+>> Currently the only way to know which is the registered
+>> PMU is from the dmesg logs. But clearing the dmesg will make it
+>> difficult to know exact PMU backend used. And even extracting
+>> from dmesg will be complicated, as we need  to parse the dmesg
+>> logs and add filters for pmu name. Whereas by exposing it via
+>> caps will make it easy as we just need to directly read it from
+>> the sysfs.
+>=20
+> For ARM and x86 in the perf tool this is normally done through a cpuid
+> like function, is there a reason to differ on Power?
+>=20
 > Thanks,
-> Mark.
+> Ian
 
-OK, Missing that, do_mte needs to be handled.
+Hi Ian,
 
-Thanks,
-Tong.
+Thanks for review. The information from cpuid or cpuinfo will provide
+us the information of the platform/model/machine etc. In case of =
+powerpc,
+we have one case where, though platform points to specific generation of =
+the
+processor, say power9 or power10, the registered PMU could point to
+different one. To be specific, this is named as Generic Compat PMU which
+is a fallback PMU. This gets registered when the distro doesn't have =
+support
+for platform specific PMU. In that case distro will have a Generic
+Compat PMU registered which supports basic features for performance =
+monitoring.
+This information can't be fetched from the cpuid data since that will =
+point
+to current platform.
 
-> 
->> +
->> +void copy_user_highpage_mc(struct page *to, struct page *from,
->> +			unsigned long vaddr, struct vm_area_struct *vma)
+So the pmu_name exposed via "caps" will be useful to detect the PMU
+registered and also we target to use this information in some of our
+selftests.
+
+Thanks
+Athira
+>=20
+>> Add a caps directory to /sys/bus/event_source/devices/cpu/
+>> for power8, power9, power10 and generic compat PMU in respective
+>> PMU driver code. Update the pmu_name file under caps folder
+>> in core-book3s using "attr_update".
+>>=20
+>> The information exposed currently:
+>> - pmu_name : Underlying PMU name from the driver
+>>=20
+>> Example result with power9 pmu:
+>>=20
+>> # ls /sys/bus/event_source/devices/cpu/caps
+>> pmu_name
+>>=20
+>> # cat /sys/bus/event_source/devices/cpu/caps/pmu_name
+>> POWER9
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> Changelog:
+>> v1 -> v2:
+>> Move the show function as generic in core-book3s
+>> and update show function using sysfs_emit and ppmu->name
+>> Added Documention for this ABI in patch 2.
+>> Notes: The caps directory is implemented in PMU for other
+>> architectures already. Reference commit for x86:
+>> commit b00233b53065 ("perf/x86: Export some PMU attributes in caps/ =
+directory")
+>>=20
+>> arch/powerpc/perf/core-book3s.c        | 31 =
+++++++++++++++++++++++++++
+>> arch/powerpc/perf/generic-compat-pmu.c | 10 +++++++++
+>> arch/powerpc/perf/power10-pmu.c        | 10 +++++++++
+>> arch/powerpc/perf/power8-pmu.c         | 10 +++++++++
+>> arch/powerpc/perf/power9-pmu.c         | 10 +++++++++
+>> 5 files changed, 71 insertions(+)
+>>=20
+>> diff --git a/arch/powerpc/perf/core-book3s.c =
+b/arch/powerpc/perf/core-book3s.c
+>> index b5b42cf0a703..a208f502a80b 100644
+>> --- a/arch/powerpc/perf/core-book3s.c
+>> +++ b/arch/powerpc/perf/core-book3s.c
+>> @@ -2488,6 +2488,33 @@ static int power_pmu_prepare_cpu(unsigned int =
+cpu)
+>>       return 0;
+>> }
+>>=20
+>> +static ssize_t pmu_name_show(struct device *cdev,
+>> +               struct device_attribute *attr,
+>> +               char *buf)
 >> +{
->> +	copy_highpage_mc(to, from);
->> +	flush_dcache_page(to);
+>> +       if (ppmu)
+>> +               return sysfs_emit(buf, "%s\n", ppmu->name);
+>> +
+>> +       return 0;
 >> +}
->> +EXPORT_SYMBOL_GPL(copy_user_highpage_mc);
->> +#endif
->> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
->> index 1023ccdb2f89..4c882d36dd64 100644
->> --- a/arch/arm64/mm/extable.c
->> +++ b/arch/arm64/mm/extable.c
->> @@ -110,6 +110,8 @@ bool fixup_exception_mc(struct pt_regs *regs)
->>   		return ex_handler_uaccess_type(ex, regs, FIXUP_TYPE_MC);
->>   	case EX_TYPE_UACCESS_MC_ERR_ZERO:
->>   		return ex_handler_uaccess_err_zero(ex, regs);
->> +	case EX_TYPE_COPY_PAGE_MC:
->> +		return ex_handler_fixup(ex, regs);
->>   
->>   	}
->>   
->> diff --git a/include/linux/highmem.h b/include/linux/highmem.h
->> index 39bb9b47fa9c..a9dbf331b038 100644
->> --- a/include/linux/highmem.h
->> +++ b/include/linux/highmem.h
->> @@ -283,6 +283,10 @@ static inline void copy_user_highpage(struct page *to, struct page *from,
->>   
->>   #endif
->>   
->> +#ifndef __HAVE_ARCH_COPY_USER_HIGHPAGE_MC
->> +#define copy_user_highpage_mc copy_user_highpage
->> +#endif
 >> +
->>   #ifndef __HAVE_ARCH_COPY_HIGHPAGE
->>   
->>   static inline void copy_highpage(struct page *to, struct page *from)
->> @@ -298,6 +302,10 @@ static inline void copy_highpage(struct page *to, struct page *from)
->>   
->>   #endif
->>   
->> +#ifndef __HAVE_ARCH_COPY_HIGHPAGE_MC
->> +#define cop_highpage_mc copy_highpage
->> +#endif
+>> +static DEVICE_ATTR_RO(pmu_name);
 >> +
->>   static inline void memcpy_page(struct page *dst_page, size_t dst_off,
->>   			       struct page *src_page, size_t src_off,
->>   			       size_t len)
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 76e3af9639d9..d5f62234152d 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -2767,7 +2767,7 @@ static inline bool cow_user_page(struct page *dst, struct page *src,
->>   	unsigned long addr = vmf->address;
->>   
->>   	if (likely(src)) {
->> -		copy_user_highpage(dst, src, addr, vma);
->> +		copy_user_highpage_mc(dst, src, addr, vma);
->>   		return true;
->>   	}
->>   
->> -- 
->> 2.25.1
->>
-> .
+>> +static struct attribute *pmu_caps_attrs[] =3D {
+>> +       &dev_attr_pmu_name.attr,
+>> +       NULL
+>> +};
+>> +
+>> +static const struct attribute_group pmu_caps_group =3D {
+>> +       .name  =3D "caps",
+>> +       .attrs =3D pmu_caps_attrs,
+>> +};
+>> +
+>> +static const struct attribute_group *pmu_caps_groups[] =3D {
+>> +       &pmu_caps_group,
+>> +       NULL,
+>> +};
+>> +
+>> int __init register_power_pmu(struct power_pmu *pmu)
+>> {
+>>       if (ppmu)
+>> @@ -2498,6 +2525,10 @@ int __init register_power_pmu(struct power_pmu =
+*pmu)
+>>               pmu->name);
+>>=20
+>>       power_pmu.attr_groups =3D ppmu->attr_groups;
+>> +
+>> +       if (ppmu->flags & PPMU_ARCH_207S)
+>> +               power_pmu.attr_update =3D pmu_caps_groups;
+>> +
+>>       power_pmu.capabilities |=3D (ppmu->capabilities & =
+PERF_PMU_CAP_EXTENDED_REGS);
+>>=20
+>> #ifdef MSR_HV
+>> diff --git a/arch/powerpc/perf/generic-compat-pmu.c =
+b/arch/powerpc/perf/generic-compat-pmu.c
+>> index f3db88aee4dd..817c69863038 100644
+>> --- a/arch/powerpc/perf/generic-compat-pmu.c
+>> +++ b/arch/powerpc/perf/generic-compat-pmu.c
+>> @@ -151,9 +151,19 @@ static const struct attribute_group =
+generic_compat_pmu_format_group =3D {
+>>       .attrs =3D generic_compat_pmu_format_attr,
+>> };
+>>=20
+>> +static struct attribute *generic_compat_pmu_caps_attrs[] =3D {
+>> +       NULL
+>> +};
+>> +
+>> +static struct attribute_group generic_compat_pmu_caps_group =3D {
+>> +       .name  =3D "caps",
+>> +       .attrs =3D generic_compat_pmu_caps_attrs,
+>> +};
+>> +
+>> static const struct attribute_group *generic_compat_pmu_attr_groups[] =
+=3D {
+>>       &generic_compat_pmu_format_group,
+>>       &generic_compat_pmu_events_group,
+>> +       &generic_compat_pmu_caps_group,
+>>       NULL,
+>> };
+>>=20
+>> diff --git a/arch/powerpc/perf/power10-pmu.c =
+b/arch/powerpc/perf/power10-pmu.c
+>> index c6d51e7093cf..d1adcd9f52e2 100644
+>> --- a/arch/powerpc/perf/power10-pmu.c
+>> +++ b/arch/powerpc/perf/power10-pmu.c
+>> @@ -258,6 +258,15 @@ static const struct attribute_group =
+power10_pmu_format_group =3D {
+>>       .attrs =3D power10_pmu_format_attr,
+>> };
+>>=20
+>> +static struct attribute *power10_pmu_caps_attrs[] =3D {
+>> +       NULL
+>> +};
+>> +
+>> +static struct attribute_group power10_pmu_caps_group =3D {
+>> +       .name  =3D "caps",
+>> +       .attrs =3D power10_pmu_caps_attrs,
+>> +};
+>> +
+>> static const struct attribute_group *power10_pmu_attr_groups_dd1[] =3D =
+{
+>>       &power10_pmu_format_group,
+>>       &power10_pmu_events_group_dd1,
+>> @@ -267,6 +276,7 @@ static const struct attribute_group =
+*power10_pmu_attr_groups_dd1[] =3D {
+>> static const struct attribute_group *power10_pmu_attr_groups[] =3D {
+>>       &power10_pmu_format_group,
+>>       &power10_pmu_events_group,
+>> +       &power10_pmu_caps_group,
+>>       NULL,
+>> };
+>>=20
+>> diff --git a/arch/powerpc/perf/power8-pmu.c =
+b/arch/powerpc/perf/power8-pmu.c
+>> index e37b1e714d2b..2518f5375d4a 100644
+>> --- a/arch/powerpc/perf/power8-pmu.c
+>> +++ b/arch/powerpc/perf/power8-pmu.c
+>> @@ -187,9 +187,19 @@ static const struct attribute_group =
+power8_pmu_events_group =3D {
+>>       .attrs =3D power8_events_attr,
+>> };
+>>=20
+>> +static struct attribute *power8_pmu_caps_attrs[] =3D {
+>> +       NULL
+>> +};
+>> +
+>> +static struct attribute_group power8_pmu_caps_group =3D {
+>> +       .name  =3D "caps",
+>> +       .attrs =3D power8_pmu_caps_attrs,
+>> +};
+>> +
+>> static const struct attribute_group *power8_pmu_attr_groups[] =3D {
+>>       &isa207_pmu_format_group,
+>>       &power8_pmu_events_group,
+>> +       &power8_pmu_caps_group,
+>>       NULL,
+>> };
+>>=20
+>> diff --git a/arch/powerpc/perf/power9-pmu.c =
+b/arch/powerpc/perf/power9-pmu.c
+>> index c393e837648e..5c654ce1a417 100644
+>> --- a/arch/powerpc/perf/power9-pmu.c
+>> +++ b/arch/powerpc/perf/power9-pmu.c
+>> @@ -258,9 +258,19 @@ static const struct attribute_group =
+power9_pmu_format_group =3D {
+>>       .attrs =3D power9_pmu_format_attr,
+>> };
+>>=20
+>> +static struct attribute *power9_pmu_caps_attrs[] =3D {
+>> +       NULL
+>> +};
+>> +
+>> +static struct attribute_group power9_pmu_caps_group =3D {
+>> +       .name  =3D "caps",
+>> +       .attrs =3D power9_pmu_caps_attrs,
+>> +};
+>> +
+>> static const struct attribute_group *power9_pmu_attr_groups[] =3D {
+>>       &power9_pmu_format_group,
+>>       &power9_pmu_events_group,
+>> +       &power9_pmu_caps_group,
+>>       NULL,
+>> };
+>>=20
+>> --
+>> 2.31.1
+
