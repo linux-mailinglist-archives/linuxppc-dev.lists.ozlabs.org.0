@@ -2,79 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90CF152C93C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 03:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C13352C9B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 04:17:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3XP60nnVz3cJ2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 11:30:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3YRM60jgz3c9N
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 12:17:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j3bNQK/0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TjF3X4Yp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=amodra@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::22d;
+ helo=mail-oi1-x22d.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=j3bNQK/0; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
+ header.s=20210112 header.b=TjF3X4Yp; dkim-atps=neutral
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com
+ [IPv6:2607:f8b0:4864:20::22d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3XNP6tBhz3bpR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 11:30:13 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id
- nk9-20020a17090b194900b001df2fcdc165so7381593pjb.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 18:30:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3YQh6Nsfz3bdg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 12:17:15 +1000 (AEST)
+Received: by mail-oi1-x22d.google.com with SMTP id l16so4898577oil.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 19:17:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=date:from:to:cc:subject:message-id:references:mime-version
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=ppQkdN3U3kYlVxMV5Z9jXIZ8+Vg0fdo5GtuLao/EQYo=;
- b=j3bNQK/0zS3hA2VcozHusb4jvoBqPS4vq1yRQ8vrnlFPnBDdJMUVDir2OKIkN6jRI1
- X15tVMft0nmInyzz1PiwM+sjfggKtF82q3s8nLHbKVOUAKzoWc8CtpzoBQsPSbgrUUmZ
- 136nFNGXg+c/EK/XOopFQlWXJsOcR0TiMZzJ6KJobLOPuylfpB0X8VFSmEH5pxg9tOyn
- hsOU5McJAom1Kjc2H3Yb9n41FneHyOjdBts3kpa358vE+4CNOLsva4y0kFeq9MTD0E6N
- kZnLfIt0qKiwmDzEAwx4c4BED72KsxOEvc5fYHJClZ17Kp/pZwKBeHNRlTE2t0X8yPei
- iU2w==
+ bh=Y0e3s4RapEZi4G82QiUsPIelUiN1IwZyRHMRAQVsVPE=;
+ b=TjF3X4Yp0lgg/uvmElGGdNAeDdcPn9oRbm26OiQxEN0veObjN1zwzYv1fWgv9H6mkA
+ Q5ExoilldaN1jk8RmuAJvFMjgau4nOWa5vtPeK2Yi+09Ht3EciK7E/7K1upUH1+M4Kuf
+ IkOCKikay4euKRiYPMBBPnkI6L5GmmnqD9zil6r5BVJaW67STbw0ZOzrZsmrEpge/e0C
+ 3IYhv6tS5jha+Xb5W+KCQknbJhrHB98OBX/t15tJ/9rm3Stz6plqgNgPNk99apyCy9Y9
+ LRtaiH5DOn1Q0Odedhump91EyePUY264rNNSFCGMG72Q0IZHo+p9Of+ORN+2aCjf8aCo
+ S7tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=ppQkdN3U3kYlVxMV5Z9jXIZ8+Vg0fdo5GtuLao/EQYo=;
- b=NSDkoBmC3L2otXA3HWWMMSObfJyRS9uucpzy+CLk56aGGQKMUcJ2UnYFFWCRCys9Cn
- 9+ykrm8PNefgd5m+nfgKBexfLR/TXlWmBvpKfdJRsXhM7soUm8KMi97jGopgm3rPcMcx
- GaQxDCRBD43SxMp6YVOm8s3uCBOPreXW2kkNhuASrSZmoCbHE+UtSVeX/TY/380AjTyL
- Ur/GZVGqUGlpV+1LI+RJufGeQteIM7rQ6eQQnShF53cMktKSOKJrpuYx+vScAZ0wCBOW
- VuSewxeKJdJohOTMsZH5P8nyaEQ/hSnsVpNQQGwOZdvM4KTGEXA/AmGGbGR7O5Y1uxqH
- UYnA==
-X-Gm-Message-State: AOAM533dkYdgLl8zsd6zwh7QrjXnW36WpPV/R1QcWgS6Nth9pqyXiF3v
- d85bkCGxQvZLLf40jzna7ns=
-X-Google-Smtp-Source: ABdhPJzHWBUDheBY0VRGgTkerfy/yu4Xv1QMTa0+i0a3eOA3C9cxNCy6qQGPXhtMuVxEyP7b/7lZfw==
-X-Received: by 2002:a17:90b:33c6:b0:1dc:ba92:41bb with SMTP id
- lk6-20020a17090b33c600b001dcba9241bbmr2419489pjb.26.1652923808842; 
- Wed, 18 May 2022 18:30:08 -0700 (PDT)
-Received: from squeak.grove.modra.org (158.106.96.58.static.exetel.com.au.
- [58.96.106.158]) by smtp.gmail.com with ESMTPSA id
- s14-20020a17090302ce00b0015eb200cc00sm2270091plk.138.2022.05.18.18.30.07
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=Y0e3s4RapEZi4G82QiUsPIelUiN1IwZyRHMRAQVsVPE=;
+ b=wj1dH3j5qnUmYUm7xD7lMqXlnbW/ovVvu0wUd9fY1ylZrkpjOCz7GeVySPLtAjrnny
+ 21iSfDWWu46bPE8BH+huzQpNXCGaefxnqJRkFv2Xdd/vHk3KDl5A68KC5Dq852TIkQu5
+ rkx4q8G8+qeCBCyogEwdUUos9Dk8nj4ykJgP7kHXpyYTrjU00/eiceF/X4QCOXmxCAE4
+ +zBeV6fyz+RtY96/d+E3hsJA80m1WRU0w5Qjfi4sm4PvD5D9ljKncXOswt1iQEuL9eoy
+ G/3fn6Ew0Y1E/5NXMyleIja15yo75zIbYg591WpjBWRU3BAWNZjqCWytGVtdKak6iDtc
+ Z10Q==
+X-Gm-Message-State: AOAM532QEvXzuqbNgY9JfR6v5FclA34AbrLgpTsugtkDtvaT9WejmMJr
+ i6WZ+GVfJFBk86FQNmDUdis=
+X-Google-Smtp-Source: ABdhPJwLRMRuhNzPfOMPwta8qqogSiaN5c910UJjyq42LdbAbyM+PuLisYYCj19ZdZxfvWR70QSokA==
+X-Received: by 2002:aca:61c1:0:b0:2ec:d091:ff53 with SMTP id
+ v184-20020aca61c1000000b002ecd091ff53mr1662399oib.235.1652926632701; 
+ Wed, 18 May 2022 19:17:12 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ h61-20020a9d2f43000000b0060603221263sm1338227otb.51.2022.05.18.19.17.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 18 May 2022 18:30:07 -0700 (PDT)
-Received: by squeak.grove.modra.org (Postfix, from userid 1000)
- id EDFDF1140152; Thu, 19 May 2022 11:00:04 +0930 (ACST)
-Date: Thu, 19 May 2022 11:00:04 +0930
-From: Alan Modra <amodra@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/vdso: Fix incorrect CFI in gettimeofday.S
-Message-ID: <YoWdnBdDhd8gk1hV@squeak.grove.modra.org>
-References: <20220502125010.1319370-1-mpe@ellerman.id.au>
- <1652772528.r6qrwbbda5.naveen@linux.ibm.com>
- <877d6kpcfq.fsf@mpe.ellerman.id.au>
+ Wed, 18 May 2022 19:17:09 -0700 (PDT)
+Date: Wed, 18 May 2022 19:17:06 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v1 3/4] powerpc/code-patching: Use jump_label for testing
+ freed initmem
+Message-ID: <20220519021706.GA3526833@roeck-us.net>
+References: <cover.1647962456.git.christophe.leroy@csgroup.eu>
+ <0aee964721cab7316cffde21a2ca223cee14d373.1647962456.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <877d6kpcfq.fsf@mpe.ellerman.id.au>
+In-Reply-To: <0aee964721cab7316cffde21a2ca223cee14d373.1647962456.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,58 +83,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 17, 2022 at 10:32:09PM +1000, Michael Ellerman wrote:
-> "Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
-> > Michael Ellerman wrote:
-> >>
-> >> diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
-> >> index eb9c81e1c218..0aee255e9cbb 100644
-> >> --- a/arch/powerpc/kernel/vdso/gettimeofday.S
-> >> +++ b/arch/powerpc/kernel/vdso/gettimeofday.S
-> >> @@ -22,12 +22,15 @@
-> >>  .macro cvdso_call funct call_time=0
-> >>    .cfi_startproc
-> >>  	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
-> >> +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
-> >>  	mflr		r0
-> >> -  .cfi_register lr, r0
-> >>  	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
-> >> +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
-> >>  	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
-> >
-> > <snip>
-> >
-> >> @@ -46,6 +50,7 @@
-> >>  	mtlr		r0
-> >>    .cfi_restore lr
-> >>  	addi		r1, r1, 2 * PPC_MIN_STKFRM
-> >> +  .cfi_def_cfa_offset 0
-> >
-> > Should this be .cfi_adjust_cfa_offset, given that we used that at the
-> > start of the function?
->  
-> AIUI "adjust x" is offset += x, whereas "def x" is offset = x.
+On Tue, Mar 22, 2022 at 04:40:20PM +0100, Christophe Leroy wrote:
+> Once init is done, initmem is freed forever so no need to
+> test system_state at every call to patch_instruction().
+> 
+> Use jump_label.
+> 
+> This reduces by 2% the time needed to activate ftrace on an 8xx.
+> 
 
-Yes.
+It also causes the qemu mpc8544ds emulation to crash.
 
-> So we could use adjust here, but we'd need to adjust by -(2 * PPC_MIN_STKFRM).
+BUG: Unable to handle kernel data access on write at 0xc122eb34
+Faulting instruction address: 0xc001b580
+Oops: Kernel access of bad area, sig: 11 [#1]
+BE PAGE_SIZE=4K MPC8544 DS
+Modules linked in:
+CPU: 0 PID: 1 Comm: swapper Not tainted 5.18.0-rc7-next-20220518 #1
+NIP:  c001b580 LR: c001b560 CTR: 00000003
+REGS: c5107dd0 TRAP: 0300   Not tainted  (5.18.0-rc7-next-20220518)
+MSR:  00009000 <EE,ME>  CR: 24000882  XER: 00000000
+DEAR: c122eb34 ESR: 00800000
+GPR00: c001b560 c5107ec0 c5120020 10000000 00000000 00000078 0c000000 cfffffff
+GPR08: c001e9ec 00000001 00000007 00000000 44000882 00000000 c0005178 00000000
+GPR16: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+GPR24: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 c1230000
+NIP [c001b580] free_initmem+0x48/0xa8
+LR [c001b560] free_initmem+0x28/0xa8
+Call Trace:
+[c5107ec0] [c001b560] free_initmem+0x28/0xa8 (unreliable)
+[c5107ee0] [c00051b0] kernel_init+0x38/0x150
+[c5107f00] [c001626c] ret_from_kernel_thread+0x5c/0x64
+Instruction dump:
+3fe0c123 912a00dc 90010024 48000665 3d20c218 8929fa65 2c090000 41820058
+813feb34 2c090000 4082003c 39200001 <913feb34> 80010024 3cc0c114 83e1001c
 
-Yes.
+Reverting this patch fixes the problem.
 
-> It seemed clearer to just set the offset back to 0, which is what it is
-> at the start of the function.
+Guenter
 
-Yes.  In detail, both .cfi_def_cfa_offset and .cfi_adjust_cfa_offset
-are interpreteted by the assembler into DW_CFA_def_cfa_offset byte
-codes, so you should get the same .eh_frame contents if using Naveen's
-suggestion.  It boils down to style really, and the most common style
-is to use ".cfi_def_cfa_offset 0" here.
-
--- 
-Alan Modra
-Australia Development Lab, IBM
+---
+# bad: [736ee37e2e8eed7fe48d0a37ee5a709514d478b3] Add linux-next specific files for 20220518
+# good: [42226c989789d8da4af1de0c31070c96726d990c] Linux 5.18-rc7
+git bisect start 'HEAD' 'v5.18-rc7'
+# bad: [555b5fa93f08980ccb6bc8e196226046fe047901] Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git
+git bisect bad 555b5fa93f08980ccb6bc8e196226046fe047901
+# bad: [8f5ef5e622d3f217d6542779723566099f370c31] Merge branch 'for-next' of git://git.kernel.org/pub/scm/fs/xfs/xfs-linux.git
+git bisect bad 8f5ef5e622d3f217d6542779723566099f370c31
+# good: [2b7d17d4b7c1ff40f58b0d32be40fc0bb6c582fb] soc: document merges
+git bisect good 2b7d17d4b7c1ff40f58b0d32be40fc0bb6c582fb
+# good: [4964f9250fbf76cb0b9c1124d5b9ab65de9bfd0e] Merge branch 'clk-next' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git
+git bisect good 4964f9250fbf76cb0b9c1124d5b9ab65de9bfd0e
+# bad: [18fae10a22071ccd0a2c44df2749ff482132774e] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux.git
+git bisect bad 18fae10a22071ccd0a2c44df2749ff482132774e
+# bad: [b4a5aaaa51e4ab7f03eec509d3710d50e52e87a6] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux.git
+git bisect bad b4a5aaaa51e4ab7f03eec509d3710d50e52e87a6
+# bad: [b6b1c3ce06ca438eb24e0f45bf0e63ecad0369f5] powerpc/rtas: Keep MSR[RI] set when calling RTAS
+git bisect bad b6b1c3ce06ca438eb24e0f45bf0e63ecad0369f5
+# good: [87ccc6684d3b57e3073f77cf28396b3037154193] powerpc/book3e: Fix sparse report in mm/nohash/fsl_book3e.c
+git bisect good 87ccc6684d3b57e3073f77cf28396b3037154193
+# good: [f31c618373f2051a32e30002d8eacad7bbbd3885] powerpc: Sort and de-dup primary opcodes in ppc-opcode.h
+git bisect good f31c618373f2051a32e30002d8eacad7bbbd3885
+# good: [9290c379d19774d8de6e2b895d756004dbad9ce5] powerpc/8xx: Simplify flush_tlb_kernel_range()
+git bisect good 9290c379d19774d8de6e2b895d756004dbad9ce5
+# bad: [d8d2af70b98109418bb16ff6638d7c1c4336f7fe] cxl/ocxl: Prepare cleanup of powerpc's asm/prom.h
+git bisect bad d8d2af70b98109418bb16ff6638d7c1c4336f7fe
+# bad: [b033767848c4115e486b1a51946de3bee2ac0fa6] powerpc/code-patching: Use jump_label for testing freed initmem
+git bisect bad b033767848c4115e486b1a51946de3bee2ac0fa6
+# good: [cb3ac45214c03852430979a43180371a44b74596] powerpc/code-patching: Don't call is_vmalloc_or_module_addr() without CONFIG_MODULES
+git bisect good cb3ac45214c03852430979a43180371a44b74596
+# first bad commit: [b033767848c4115e486b1a51946de3bee2ac0fa6] powerpc/code-patching: Use jump_label for testing freed initmem
