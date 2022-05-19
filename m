@@ -1,104 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4AE52CF62
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 11:29:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B0952CFFD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 11:58:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3l1D0KJTz3c1P
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 19:29:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3lg93m9Xz3brf
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 19:58:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZ9OQbZV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=O4mumotZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=TZ9OQbZV; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ header.s=pp1 header.b=O4mumotZ; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3l0S4yRxz2yjS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 19:28:40 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24J9Rgia019896;
- Thu, 19 May 2022 09:28:27 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3lfT20dSz301M
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 19:58:08 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24J9hCU2012542;
+ Thu, 19 May 2022 09:58:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Us/wTEHc1pNDKFsixu7C15Rmob4t3fstlrDv4JPRNqI=;
- b=TZ9OQbZVdf4/KzGepqqFN47sgCQ5mcFAp8Qs3f1uesfJEOlIWGsh4uH01bXzbAESpVUp
- P7++5pAwqOZPNbu6v/2aQjkvcetjRbDiPp/m6VZ6iw1EZFl3kG/9eLW95RqULFouhXkU
- 3MgWYsdXrhflkbcY49lVIYn+fsz0awSf9S+oVvb7/xLQLfGGhShUZut1qNHkGFNp6JaA
- sZa8wLbbxlFePHkQlLMUHd3FffcASrALjaE+8JIx6zR8OSgAT4IX/fufy2A9d0RZhA3v
- ALl7IR95rPuR8xKl+T2sioFRzykr9FIr9NesJ9vD18vS8lQTOlOEa80gyqS2Th60EYW3 kg== 
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=wFxZx8W8bwWKQXM4PE9relH1M19uKEVIoOHvXjmxzbU=;
+ b=O4mumotZ46+ydNvH1co10GHxp+tztAaQxup2Rl6WHOQHhqYixn26v7X4Gq2qKCCOCqSB
+ aXIIer4nXatJ2TwGQI+AY82WQoVvEemIjywbxm3mK21tPXFJkXT0AQYli5b/2u8E1JlQ
+ gF4v/dfwKjzw6Ia5hkPGRzklR5OE/zey/02R7IcRMs9QOqe6U4/3wTalqXQdBd9xfq/9
+ unQfcO9CRi7DCZ0r2x7L9fB5xcE1xdq8yUwy0qDqWAEo41cu64XhOLQQ9I1wz3gziv4H
+ DWntE41MnhRAWESlEwEpS6UirU4dt29kB/Lh8CYGZZNh1yItM8wUUyyceWFM1c0gaEGm GA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g5k9j80m1-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g5kgqgaba-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 May 2022 09:28:27 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24J9SQsu022825;
- Thu, 19 May 2022 09:28:26 GMT
+ Thu, 19 May 2022 09:58:00 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24J9i95D014484;
+ Thu, 19 May 2022 09:58:00 GMT
 Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
  [169.51.49.102])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g5k9j80ke-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g5kgqgaav-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 May 2022 09:28:26 +0000
+ Thu, 19 May 2022 09:58:00 +0000
 Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24J9D9md032301;
- Thu, 19 May 2022 09:28:24 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma06ams.nl.ibm.com with ESMTP id 3g23pjf15f-1
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24J9qdnV004511;
+ Thu, 19 May 2022 09:57:58 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma06ams.nl.ibm.com with ESMTP id 3g23pjf2j5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 19 May 2022 09:28:24 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24J9SMA943778392
+ Thu, 19 May 2022 09:57:58 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24J9vtPO43712794
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 19 May 2022 09:28:22 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8E37B4C04A;
- Thu, 19 May 2022 09:28:22 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 245BF4C044;
- Thu, 19 May 2022 09:28:22 +0000 (GMT)
-Received: from localhost (unknown [9.43.24.187])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 19 May 2022 09:28:22 +0000 (GMT)
-Date: Thu, 19 May 2022 14:58:20 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH] kexec_file: Drop weak attribute from
- arch_kexec_apply_relocations[_add]
-To: Baoquan He <bhe@redhat.com>, "Eric W. Biederman" <ebiederm@xmission.com>
-References: <20220518181828.645877-1-naveen.n.rao@linux.vnet.ibm.com>
- <87ee0q7b92.fsf@email.froward.int.ebiederm.org>
- <YoWySwbszfdZS9LU@MiWiFi-R3L-srv>
-In-Reply-To: <YoWySwbszfdZS9LU@MiWiFi-R3L-srv>
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1652951723.o9i6ngwfda.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: raQvea1ubc_0i3LcAh7XWdVHZP2Pjm14
-X-Proofpoint-ORIG-GUID: WhrT_x4KNw1w69x52_JAdnAvHv0PXd0F
+ Thu, 19 May 2022 09:57:55 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 542995204F;
+ Thu, 19 May 2022 09:57:55 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.211.121.120])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 01FEE52050;
+ Thu, 19 May 2022 09:57:50 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
+Subject: Re: [PATCH] tools/perf/test: Fix perf all PMU test to skip
+ hv_24x7/hv_gpci tests on powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <87czgbng7z.fsf@mpe.ellerman.id.au>
+Date: Thu, 19 May 2022 15:27:46 +0530
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
+Message-Id: <A6483EC1-243E-425D-97CE-9DC886513793@linux.vnet.ibm.com>
+References: <20220518092903.7065-1-atrajeev@linux.vnet.ibm.com>
+ <87czgbng7z.fsf@mpe.ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3654.120.0.1.13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cFbCfnA_CCrgqkA48CV_07VbJ8jFvjja
+X-Proofpoint-ORIG-GUID: qFYHz4GcHc_XrI0Y1-P11WK2NosKW7S0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-19_01,2022-05-19_01,2022-02-23_01
+ definitions=2022-05-19_02,2022-05-19_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 suspectscore=0
- malwarescore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
- mlxlogscore=266 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205190053
+ adultscore=0 spamscore=0
+ phishscore=0 clxscore=1011 suspectscore=0 bulkscore=0 mlxscore=0
+ impostorscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205190055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,72 +107,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: Ian Rogers <irogers@google.com>, maddy@linux.vnet.ibm.com,
+ Nageswara Sastry <rnsastry@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org,
+ Jiri Olsa <jolsa@kernel.org>, disgoel@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Baoquan He wrote:
-> Hi Eric,
+
+
+> On 18-May-2022, at 6:35 PM, Michael Ellerman <mpe@ellerman.id.au> =
+wrote:
 >=20
-> On 05/18/22 at 04:59pm, Eric W. Biederman wrote:
->> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+>> "perf all PMU test" picks the input events from
+>> "perf list --raw-dump pmu" list and runs "perf stat -e"
+>> for each of the event in the list. In case of powerpc, the
+>> PowerVM environment supports events from hv_24x7 and hv_gpci
+>> PMU which is of example format like below:
+>> - hv_24x7/CPM_ADJUNCT_INST,domain=3D?,core=3D?/
+>> - hv_gpci/event,partition_id=3D?/
 >>=20
->> > Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
->> > symbols") [1], binutils (v2.36+) started dropping section symbols that
->> > it thought were unused.  This isn't an issue in general, but with
->> > kexec_file.c, gcc is placing kexec_arch_apply_relocations[_add] into a
->> > separate .text.unlikely section and the section symbol ".text.unlikely"
->> > is being dropped. Due to this, recordmcount is unable to find a non-we=
-ak
->> > symbol in .text.unlikely to generate a relocation record against.
->> >
->> > Address this by dropping the weak attribute from these functions:
->> > - arch_kexec_apply_relocations() is not overridden by any architecture
->> >   today, so just drop the weak attribute.
->> > - arch_kexec_apply_relocations_add() is only overridden by x86 and s39=
-0.
->> >   Retain the function prototype for those and move the weak
->> >   implementation into the header as a static inline for other
->> >   architectures.
->> >
->> > [1] https://sourceware.org/git/?p=3Dbinutils-gdb.git;a=3Dcommit;h=3Dd1=
-bcae833b32f1
+>> The value for "?" needs to be filled in depending on
+>> system and respective event. CPM_ADJUNCT_INST needs have
+>> core value and domain value. hv_gpci event needs partition_id.
+>> Similarly, there are other events for hv_24x7 and hv_gpci
+>> having "?" in event format. Hence skip these events on powerpc
+>> platform since values like partition_id, domain is specific
+>> to system and event.
 >>=20
->> Any chance you can also get machine_kexec_post_load,
->> crash_free_reserved_phys_range, arch_kexec_protect_protect_crashkres,
->> arch_kexec_unprotect_crashkres, arch_kexec_kernel_image_probe,
->> arch_kexec_kernel_image_probe, arch_kimage_file_post_load_cleanup,
->> arch_kexec_kernel_verify_sig, and arch_kexec_locate_mem_hole as well.
-
-I've posted a v2 that uses the approach suggested by Michael, and=20
-something that was in use in kexec already. If you are ok with that=20
-approach, I will take a stab at converting the rest of the functions=20
-that are marked __weak.
-
+>> Fixes: 3d5ac9effcc6 ("perf test: Workload test of all PMUs")
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> tools/perf/tests/shell/stat_all_pmu.sh | 10 ++++++++++
+>> 1 file changed, 10 insertions(+)
 >>=20
->> That is everything in kexec that uses a __weak symbol.  If we can't
->> count on them working we might as well just get rid of the rest
->> preemptively.
+>> diff --git a/tools/perf/tests/shell/stat_all_pmu.sh =
+b/tools/perf/tests/shell/stat_all_pmu.sh
+>> index b30dba455f36..4a854b545bec 100755
+>> --- a/tools/perf/tests/shell/stat_all_pmu.sh
+>> +++ b/tools/perf/tests/shell/stat_all_pmu.sh
+>> @@ -5,6 +5,16 @@
+>> set -e
+>>=20
+>> for p in $(perf list --raw-dump pmu); do
+>> +  # In powerpc, skip the events for hv_24x7 and hv_gpci.
+>> +  # These events needs input values to be filled in for
+>> +  # core, chip, patition id based on system.
+>> +  # Example: hv_24x7/CPM_ADJUNCT_INST,domain=3D?,core=3D?/
+>> +  # hv_gpci/event,partition_id=3D?/
+>> +  # Hence skip these events for ppc.
+>> +  if lscpu  |grep ppc && echo "$p" |grep -Eq 'hv_24x7|hv_gpci' ; =
+then
 >=20
-> Is there a new rule that __weak is not suggested in kernel any more?
-> Please help provide a pointer if yes, so that I can learn that.
-
-I'm not aware of a move away from __weak in the kernel, in general.=20
-Steven doesn't prefer it for ftrace, and other maintainers may have a=20
-preference.
-
+> My system doesn't have lscpu installed, why not use `uname -m`.
 >=20
-> In my mind, __weak is very simple and clear as a mechanism to add
-> ARCH related functionality.
+> But why check for ppc at all, the name of the pmu seems unique enough =
+-
+> no one else is going to call their pmu something so odd :)
 
-Notwithstanding the ftrace issue, the other caveat with __weak functions=20
-are that they still make it into the final vmlinux even if they are=20
-overridden. That is, you will have instructions from both the __weak=20
-variant as well as from the overridden variant in the final vmlinux,=20
-which can add up if the weak variants are non-trivial.=20
+Thanks Michael for the review.
+Yes, I can directly use pmu name :)=20
 
+Will address this change in V2
 
-- Naveen
+Thanks
+Athira
+>=20
+> cheers
 
