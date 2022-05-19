@@ -2,89 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965E352DC2B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 20:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C71DD52DCCD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 20:30:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3yLl49c2z3bTR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 04:00:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3z1X5l1Bz3bm1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 04:30:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BbEcvDyV;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
- helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
+ smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2d;
+ helo=mail-oa1-x2d.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=BbEcvDyV; dkim-atps=neutral
+Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com
+ [IPv6:2001:4860:4864:20::2d])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3yLJ2461z2xKs
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 03:59:50 +1000 (AEST)
-Received: from in02.mta.xmission.com ([166.70.13.52]:36212)
- by out03.mta.xmission.com with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1nrkR5-00ENiG-OH; Thu, 19 May 2022 11:59:43 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:38802
- helo=email.froward.int.ebiederm.org.xmission.com)
- by in02.mta.xmission.com with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1nrkR3-006e82-PA; Thu, 19 May 2022 11:59:43 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Baoquan He <bhe@redhat.com>
-References: <20220518181828.645877-1-naveen.n.rao@linux.vnet.ibm.com>
- <87ee0q7b92.fsf@email.froward.int.ebiederm.org>
- <YoWySwbszfdZS9LU@MiWiFi-R3L-srv>
-Date: Thu, 19 May 2022 12:59:17 -0500
-In-Reply-To: <YoWySwbszfdZS9LU@MiWiFi-R3L-srv> (Baoquan He's message of "Thu, 
- 19 May 2022 10:58:19 +0800")
-Message-ID: <87bkvt4d56.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3z0t1Bgqz2ywl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 04:29:49 +1000 (AEST)
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-e656032735so7851703fac.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 11:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:date:from:to:cc:subject:message-id:mime-version
+ :content-disposition;
+ bh=CebFhyYrHA9qyenphvt66UOHmXFE+xmKVw8/99ZVMrI=;
+ b=BbEcvDyVv+Ydj5Curj0uOZzUm7Y2C3b1AoRxnMmnho5SbVkNnLXCW75iaiBllx0pC9
+ 9JfRUk7l8DPJxhocFrgzSX6+M7XEbWvgjPMrVaEgx2mX//tpwj6Bk3xq17A3/sEBTAuD
+ VcBBQCt3M+AVOp4aNNUGhEvl8lCpIODBpGqn2chRmfvMHONRqIxQeE/XHp2A5A3lawzB
+ WKMJ1UKmfn798brfXuF+cuuo7c/bC7Z0DMpbGIjSUh/4Leb9jUHt284UganttTbXyeKF
+ BaClhqgexI0GkPcI/fU6zLgUc3uIwpfY5Sms1ODpeTt9ghi7c0+Hp1ilSOzr00nyjRrs
+ FzQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :mime-version:content-disposition;
+ bh=CebFhyYrHA9qyenphvt66UOHmXFE+xmKVw8/99ZVMrI=;
+ b=vH84FkQVSYvEPdhUoW14mQX1pEuMnOYuatChpR8seZsE4vLQvSFK5l1GUfFzsddJ3c
+ KzVWW/mArhEi15YEHn7+5VgG4GXvMAXfAnIXcgcFzf1nMJS+cMvpzv7EO2MW+1KXzqsY
+ Yov4Tv2zSJTpNZ59cVmpxBZjNIqic55H/WrxtL/nc+ne6QM7wyOuyfYyg+4Dojex6KIK
+ 64W5WUw9onjyJSFGVBZtVfp3XWTm1tMJ2XWyaR/IIeZl0Dqt1EOY2vzsuFkcwQht3+Cz
+ nVfYfr5w0sUIC85PC81ByxUFbGtFBijzGnIOf2tFhXWsC1v5jU4LrPTBIkONsSAUPCVJ
+ HjVA==
+X-Gm-Message-State: AOAM5322d3rvDswjLrjEUdcg7vQKS6rrp81U8ZZBXZyAkT0XNQaeu8FK
+ NAIrFLytHjDewdMKCP7JNLc=
+X-Google-Smtp-Source: ABdhPJwV1DyKvn/eltAGDpEdsrre6oNgNJic/9ukILKyeBUu0/8OT0Jalw7WF7viVMdnavsUkifHgg==
+X-Received: by 2002:a05:6870:23a8:b0:e9:85b0:83e9 with SMTP id
+ e40-20020a05687023a800b000e985b083e9mr3931630oap.65.1652984980287; 
+ Thu, 19 May 2022 11:29:40 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ z11-20020a056870e14b00b000f1a2378a12sm1892oaa.37.2022.05.19.11.29.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 May 2022 11:29:39 -0700 (PDT)
+Date: Thu, 19 May 2022 11:29:37 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc/fsl_book3e: Don't set rodata RO too early
+Message-ID: <20220519182937.GA80472@roeck-us.net>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1nrkR3-006e82-PA; ; ;
- mid=<87bkvt4d56.fsf@email.froward.int.ebiederm.org>; ; ;
- hst=in02.mta.xmission.com; ; ; ip=68.227.174.4; ; ; frm=ebiederm@xmission.com;
- ; ; spf=softfail
-X-XM-AID: U2FsdGVkX1/rSxyKigaHMoSccMUFZ8spyBuVsjtCT6w=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa01.xmission.com
-X-Spam-Level: ******
-X-Spam-Status: No, score=6.7 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,TR_Symld_Words,T_SCC_BODY_TEXT_LINE,
- T_TM2_M_HEADER_IN_MSG,XMGappySubj_01,XMSubLong,XMSubMetaSSxObfu_00,
- XM_SPF_SoftFail autolearn=disabled version=3.4.2
-X-Spam-Virus: No
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.4999]
- *  1.5 TR_Symld_Words too many words that have symbols inside
- *  0.5 XMGappySubj_01 Very gappy subject
- *  0.7 XMSubLong Long Subject
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa01 1397; Body=1 Fuz1=1 Fuz2=1]
- * -0.0 T_SCC_BODY_TEXT_LINE No description available.
- *  2.5 XM_SPF_SoftFail SPF-SoftFail
- *  1.6 XMSubMetaSSxObfu_00 Obfuscated Sorta Sexy Verb
-X-Spam-DCC: XMission; sa01 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ******;Baoquan He <bhe@redhat.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 1394 ms - load_scoreonly_sql: 0.04 (0.0%),
- signal_user_changed: 4.8 (0.3%), b_tie_ro: 3.3 (0.2%), parse: 1.12
- (0.1%), extract_message_metadata: 12 (0.8%), get_uri_detail_list: 2.8
- (0.2%), tests_pri_-1000: 8 (0.6%), tests_pri_-950: 1.07 (0.1%),
- tests_pri_-900: 0.77 (0.1%), tests_pri_-90: 48 (3.4%), check_bayes: 47
- (3.4%), b_tokenize: 6 (0.4%), b_tok_get_all: 8 (0.6%), b_comp_prob:
- 1.84 (0.1%), b_tok_touch_all: 28 (2.0%), b_finish: 0.75 (0.1%),
- tests_pri_0: 1308 (93.8%), check_dkim_signature: 0.40 (0.0%),
- check_dkim_adsp: 2.8 (0.2%), poll_dns_idle: 0.24 (0.0%), tests_pri_10:
- 1.78 (0.1%), tests_pri_500: 6 (0.4%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH] kexec_file: Drop weak attribute from
- arch_kexec_apply_relocations[_add]
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,69 +80,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Baoquan He <bhe@redhat.com> writes:
+On Thu, May 19, 2022 at 07:24:15PM +0200, Christophe Leroy wrote:
+> On fsl_book3e, rodata is set read-only at the same time as
+> init text is set NX at the end of init. That's too early.
+> 
+> As both action are performed at the same time, delay both
+> actions to the time rodata is expected to be made read-only.
+> 
+> It means we will have a small window with init mem freed but
+> still executable. It shouldn't be an issue though, especially
+> because the said memory gets poisoned and should therefore
+> result to a bad instruction fault in case it gets executer.
 
-> Hi Eric,
->
-> On 05/18/22 at 04:59pm, Eric W. Biederman wrote:
->> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
->> 
->> > Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
->> > symbols") [1], binutils (v2.36+) started dropping section symbols that
->> > it thought were unused.  This isn't an issue in general, but with
->> > kexec_file.c, gcc is placing kexec_arch_apply_relocations[_add] into a
->> > separate .text.unlikely section and the section symbol ".text.unlikely"
->> > is being dropped. Due to this, recordmcount is unable to find a non-weak
->> > symbol in .text.unlikely to generate a relocation record against.
->> >
->> > Address this by dropping the weak attribute from these functions:
->> > - arch_kexec_apply_relocations() is not overridden by any architecture
->> >   today, so just drop the weak attribute.
->> > - arch_kexec_apply_relocations_add() is only overridden by x86 and s390.
->> >   Retain the function prototype for those and move the weak
->> >   implementation into the header as a static inline for other
->> >   architectures.
->> >
->> > [1] https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=d1bcae833b32f1
->> 
->> Any chance you can also get machine_kexec_post_load,
->> crash_free_reserved_phys_range, arch_kexec_protect_protect_crashkres,
->> arch_kexec_unprotect_crashkres, arch_kexec_kernel_image_probe,
->> arch_kexec_kernel_image_probe, arch_kimage_file_post_load_cleanup,
->> arch_kexec_kernel_verify_sig, and arch_kexec_locate_mem_hole as well.
->> 
->> That is everything in kexec that uses a __weak symbol.  If we can't
->> count on them working we might as well just get rid of the rest
->> preemptively.
->
-> Is there a new rule that __weak is not suggested in kernel any more?
-> Please help provide a pointer if yes, so that I can learn that.
->
-> In my mind, __weak is very simple and clear as a mechanism to add
-> ARCH related functionality.
+executed
 
-You should be able to trace the conversation back for all of the details
-but if you can't here is the summary.
+> 
+> mmu_mark_initmem_nx() is bailing out before doing anything when
+> CONFIG_STRICT_KERNEL_RWX is not selected or rodata_enabled is false.
+> 
+> mmu_mark_rodata_ro() is called only when CONFIG_STRICT_KERNEL_RWX
+> is selected and rodata_enabled is true so this is equivalent.
+> 
+> Move code from mmu_mark_initmem_nx() into mmu_mark_rodata_ro() and
+> remove the call to strict_kernel_rwx_enabled() which is not needed
+> anymore.
+> 
+> Reported-by: Guenter Roeck <linux@roeck-us.net>
+> Fixes: d5970045cf9e ("powerpc/fsl_booke: Update of TLBCAMs after init")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-There is a tool that some architectures use called recordmcount.  The
-recordmcount looks for a symbol in a section, and ignores all weak
-symbols.  In certain cases sections become so simple there are only weak
-symbols.  At which point recordmcount fails.
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Which means in practice __weak symbols are unreliable and don't work
-to add ARCH related functionality.
-
-Given that __weak symbols fail randomly I would much rather have simpler
-code that doesn't fail.  It has never been the case that __weak symbols
-have been very common in the kernel.  I expect they are something like
-bool that have been gaining traction.  Still given that __weak symbols
-don't work.  I don't want them.
-
-Eric
+Guenter
