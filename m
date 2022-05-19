@@ -1,85 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E4D52C608
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 00:14:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CF152C93C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 03:30:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3S2b6X0Mz3cJq
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 08:14:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3XP60nnVz3cJ2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 11:30:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=j3bNQK/0;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.232;
- helo=out02.mta.xmission.com; envelope-from=ebiederm@xmission.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
+ helo=mail-pj1-x1036.google.com; envelope-from=amodra@gmail.com;
  receiver=<UNKNOWN>)
-Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=j3bNQK/0; dkim-atps=neutral
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
+ [IPv6:2607:f8b0:4864:20::1036])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3S2541v1z2x9p
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 08:14:03 +1000 (AEST)
-Received: from in02.mta.xmission.com ([166.70.13.52]:60424)
- by out02.mta.xmission.com with esmtps (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1nrRva-003Y9P-Hy; Wed, 18 May 2022 16:13:58 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:38702
- helo=email.froward.int.ebiederm.org.xmission.com)
- by in02.mta.xmission.com with esmtpsa (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.93)
- (envelope-from <ebiederm@xmission.com>)
- id 1nrRvZ-002wWx-3I; Wed, 18 May 2022 16:13:58 -0600
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-References: <20220518181828.645877-1-naveen.n.rao@linux.vnet.ibm.com>
-Date: Wed, 18 May 2022 16:59:37 -0500
-In-Reply-To: <20220518181828.645877-1-naveen.n.rao@linux.vnet.ibm.com> (Naveen
- N. Rao's message of "Wed, 18 May 2022 23:48:28 +0530")
-Message-ID: <87ee0q7b92.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3XNP6tBhz3bpR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 11:30:13 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id
+ nk9-20020a17090b194900b001df2fcdc165so7381593pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 May 2022 18:30:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=ppQkdN3U3kYlVxMV5Z9jXIZ8+Vg0fdo5GtuLao/EQYo=;
+ b=j3bNQK/0zS3hA2VcozHusb4jvoBqPS4vq1yRQ8vrnlFPnBDdJMUVDir2OKIkN6jRI1
+ X15tVMft0nmInyzz1PiwM+sjfggKtF82q3s8nLHbKVOUAKzoWc8CtpzoBQsPSbgrUUmZ
+ 136nFNGXg+c/EK/XOopFQlWXJsOcR0TiMZzJ6KJobLOPuylfpB0X8VFSmEH5pxg9tOyn
+ hsOU5McJAom1Kjc2H3Yb9n41FneHyOjdBts3kpa358vE+4CNOLsva4y0kFeq9MTD0E6N
+ kZnLfIt0qKiwmDzEAwx4c4BED72KsxOEvc5fYHJClZ17Kp/pZwKBeHNRlTE2t0X8yPei
+ iU2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=ppQkdN3U3kYlVxMV5Z9jXIZ8+Vg0fdo5GtuLao/EQYo=;
+ b=NSDkoBmC3L2otXA3HWWMMSObfJyRS9uucpzy+CLk56aGGQKMUcJ2UnYFFWCRCys9Cn
+ 9+ykrm8PNefgd5m+nfgKBexfLR/TXlWmBvpKfdJRsXhM7soUm8KMi97jGopgm3rPcMcx
+ GaQxDCRBD43SxMp6YVOm8s3uCBOPreXW2kkNhuASrSZmoCbHE+UtSVeX/TY/380AjTyL
+ Ur/GZVGqUGlpV+1LI+RJufGeQteIM7rQ6eQQnShF53cMktKSOKJrpuYx+vScAZ0wCBOW
+ VuSewxeKJdJohOTMsZH5P8nyaEQ/hSnsVpNQQGwOZdvM4KTGEXA/AmGGbGR7O5Y1uxqH
+ UYnA==
+X-Gm-Message-State: AOAM533dkYdgLl8zsd6zwh7QrjXnW36WpPV/R1QcWgS6Nth9pqyXiF3v
+ d85bkCGxQvZLLf40jzna7ns=
+X-Google-Smtp-Source: ABdhPJzHWBUDheBY0VRGgTkerfy/yu4Xv1QMTa0+i0a3eOA3C9cxNCy6qQGPXhtMuVxEyP7b/7lZfw==
+X-Received: by 2002:a17:90b:33c6:b0:1dc:ba92:41bb with SMTP id
+ lk6-20020a17090b33c600b001dcba9241bbmr2419489pjb.26.1652923808842; 
+ Wed, 18 May 2022 18:30:08 -0700 (PDT)
+Received: from squeak.grove.modra.org (158.106.96.58.static.exetel.com.au.
+ [58.96.106.158]) by smtp.gmail.com with ESMTPSA id
+ s14-20020a17090302ce00b0015eb200cc00sm2270091plk.138.2022.05.18.18.30.07
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 18 May 2022 18:30:07 -0700 (PDT)
+Received: by squeak.grove.modra.org (Postfix, from userid 1000)
+ id EDFDF1140152; Thu, 19 May 2022 11:00:04 +0930 (ACST)
+Date: Thu, 19 May 2022 11:00:04 +0930
+From: Alan Modra <amodra@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/vdso: Fix incorrect CFI in gettimeofday.S
+Message-ID: <YoWdnBdDhd8gk1hV@squeak.grove.modra.org>
+References: <20220502125010.1319370-1-mpe@ellerman.id.au>
+ <1652772528.r6qrwbbda5.naveen@linux.ibm.com>
+ <877d6kpcfq.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1nrRvZ-002wWx-3I; ; ;
- mid=<87ee0q7b92.fsf@email.froward.int.ebiederm.org>; ; ;
- hst=in02.mta.xmission.com; ; ; ip=68.227.174.4; ; ; frm=ebiederm@xmission.com;
- ; ; spf=softfail
-X-XM-AID: U2FsdGVkX19j5afT7cfR1QMALWtaSChY2lnR9xJRogY=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
-X-Spam-Level: ******
-X-Spam-Status: No, score=6.7 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,TR_Symld_Words,T_TM2_M_HEADER_IN_MSG,XMGappySubj_01,
- XMSubLong,XMSubMetaSSxObfu_00,XM_SPF_SoftFail autolearn=disabled
- version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.4999] *  0.7 XMSubLong Long Subject
- *  0.5 XMGappySubj_01 Very gappy subject
- *  1.5 TR_Symld_Words too many words that have symbols inside
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
- *  2.5 XM_SPF_SoftFail SPF-SoftFail
- *  1.6 XMSubMetaSSxObfu_00 Obfuscated Sorta Sexy Verb
-X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ******;"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 740 ms - load_scoreonly_sql: 0.12 (0.0%),
- signal_user_changed: 14 (1.9%), b_tie_ro: 12 (1.6%), parse: 1.88
- (0.3%), extract_message_metadata: 21 (2.9%), get_uri_detail_list: 4.8
- (0.7%), tests_pri_-1000: 17 (2.3%), tests_pri_-950: 1.68 (0.2%),
- tests_pri_-900: 1.37 (0.2%), tests_pri_-90: 245 (33.1%), check_bayes:
- 243 (32.8%), b_tokenize: 13 (1.8%), b_tok_get_all: 10 (1.4%),
- b_comp_prob: 3.4 (0.5%), b_tok_touch_all: 211 (28.5%), b_finish: 1.19
- (0.2%), tests_pri_0: 414 (55.9%), check_dkim_signature: 1.00 (0.1%),
- check_dkim_adsp: 3.7 (0.5%), poll_dns_idle: 1.01 (0.1%), tests_pri_10:
- 4.5 (0.6%), tests_pri_500: 13 (1.8%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH] kexec_file: Drop weak attribute from
- arch_kexec_apply_relocations[_add]
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877d6kpcfq.fsf@mpe.ellerman.id.au>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,138 +86,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kexec@lists.infradead.org
+Cc: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
-
-> Since commit d1bcae833b32f1 ("ELF: Don't generate unused section
-> symbols") [1], binutils (v2.36+) started dropping section symbols that
-> it thought were unused.  This isn't an issue in general, but with
-> kexec_file.c, gcc is placing kexec_arch_apply_relocations[_add] into a
-> separate .text.unlikely section and the section symbol ".text.unlikely"
-> is being dropped. Due to this, recordmcount is unable to find a non-weak
-> symbol in .text.unlikely to generate a relocation record against.
->
-> Address this by dropping the weak attribute from these functions:
-> - arch_kexec_apply_relocations() is not overridden by any architecture
->   today, so just drop the weak attribute.
-> - arch_kexec_apply_relocations_add() is only overridden by x86 and s390.
->   Retain the function prototype for those and move the weak
->   implementation into the header as a static inline for other
->   architectures.
->
-> [1] https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=d1bcae833b32f1
-
-Any chance you can also get machine_kexec_post_load,
-crash_free_reserved_phys_range, arch_kexec_protect_protect_crashkres,
-arch_kexec_unprotect_crashkres, arch_kexec_kernel_image_probe,
-arch_kexec_kernel_image_probe, arch_kimage_file_post_load_cleanup,
-arch_kexec_kernel_verify_sig, and arch_kexec_locate_mem_hole as well.
-
-That is everything in kexec that uses a __weak symbol.  If we can't
-count on them working we might as well just get rid of the rest
-preemptively.
-
-Could you also address Andrews concerns by using a Kconfig symbol that
-the architectures that implement the symbol can select.
-
-I don't want to ask too much of a volunteer but if you are willing
-addressing both of those would be a great help.
-
-Eric
-
-> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
->  include/linux/kexec.h | 28 ++++++++++++++++++++++++----
->  kernel/kexec_file.c   | 19 +------------------
->  2 files changed, 25 insertions(+), 22 deletions(-)
->
-> diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-> index 58d1b58a971e34..e656f981f43a73 100644
-> --- a/include/linux/kexec.h
-> +++ b/include/linux/kexec.h
-> @@ -193,10 +193,6 @@ void *kexec_purgatory_get_symbol_addr(struct kimage *image, const char *name);
->  int arch_kexec_kernel_image_probe(struct kimage *image, void *buf,
->  				  unsigned long buf_len);
->  void *arch_kexec_kernel_image_load(struct kimage *image);
-> -int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
-> -				     Elf_Shdr *section,
-> -				     const Elf_Shdr *relsec,
-> -				     const Elf_Shdr *symtab);
->  int arch_kexec_apply_relocations(struct purgatory_info *pi,
->  				 Elf_Shdr *section,
->  				 const Elf_Shdr *relsec,
-> @@ -229,6 +225,30 @@ extern int crash_exclude_mem_range(struct crash_mem *mem,
->  				   unsigned long long mend);
->  extern int crash_prepare_elf64_headers(struct crash_mem *mem, int kernel_map,
->  				       void **addr, unsigned long *sz);
-> +
-> +#if defined(CONFIG_X86_64) || defined(CONFIG_S390)
-> +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
-> +				     Elf_Shdr *section,
-> +				     const Elf_Shdr *relsec,
-> +				     const Elf_Shdr *symtab);
-> +#else
-> +/*
-> + * arch_kexec_apply_relocations_add - apply relocations of type RELA
-> + * @pi:		Purgatory to be relocated.
-> + * @section:	Section relocations applying to.
-> + * @relsec:	Section containing RELAs.
-> + * @symtab:	Corresponding symtab.
-> + *
-> + * Return: 0 on success, negative errno on error.
-> + */
-> +static inline int
-> +arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
-> +				 const Elf_Shdr *relsec, const Elf_Shdr *symtab)
-> +{
-> +	pr_err("RELA relocation unsupported.\n");
-> +	return -ENOEXEC;
-> +}
-> +#endif /* CONFIG_X86_64 || CONFIG_S390 */
->  #endif /* CONFIG_KEXEC_FILE */
+On Tue, May 17, 2022 at 10:32:09PM +1000, Michael Ellerman wrote:
+> "Naveen N. Rao" <naveen.n.rao@linux.ibm.com> writes:
+> > Michael Ellerman wrote:
+> >>
+> >> diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vdso/gettimeofday.S
+> >> index eb9c81e1c218..0aee255e9cbb 100644
+> >> --- a/arch/powerpc/kernel/vdso/gettimeofday.S
+> >> +++ b/arch/powerpc/kernel/vdso/gettimeofday.S
+> >> @@ -22,12 +22,15 @@
+> >>  .macro cvdso_call funct call_time=0
+> >>    .cfi_startproc
+> >>  	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> >> +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
+> >>  	mflr		r0
+> >> -  .cfi_register lr, r0
+> >>  	PPC_STLU	r1, -PPC_MIN_STKFRM(r1)
+> >> +  .cfi_adjust_cfa_offset PPC_MIN_STKFRM
+> >>  	PPC_STL		r0, PPC_MIN_STKFRM + PPC_LR_STKOFF(r1)
+> >
+> > <snip>
+> >
+> >> @@ -46,6 +50,7 @@
+> >>  	mtlr		r0
+> >>    .cfi_restore lr
+> >>  	addi		r1, r1, 2 * PPC_MIN_STKFRM
+> >> +  .cfi_def_cfa_offset 0
+> >
+> > Should this be .cfi_adjust_cfa_offset, given that we used that at the
+> > start of the function?
 >  
->  #ifdef CONFIG_KEXEC_ELF
-> diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-> index 8347fc158d2b96..6bae253b4d315e 100644
-> --- a/kernel/kexec_file.c
-> +++ b/kernel/kexec_file.c
-> @@ -108,23 +108,6 @@ int __weak arch_kexec_kernel_verify_sig(struct kimage *image, void *buf,
->  }
->  #endif
->  
-> -/*
-> - * arch_kexec_apply_relocations_add - apply relocations of type RELA
-> - * @pi:		Purgatory to be relocated.
-> - * @section:	Section relocations applying to.
-> - * @relsec:	Section containing RELAs.
-> - * @symtab:	Corresponding symtab.
-> - *
-> - * Return: 0 on success, negative errno on error.
-> - */
-> -int __weak
-> -arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
-> -				 const Elf_Shdr *relsec, const Elf_Shdr *symtab)
-> -{
-> -	pr_err("RELA relocation unsupported.\n");
-> -	return -ENOEXEC;
-> -}
-> -
->  /*
->   * arch_kexec_apply_relocations - apply relocations of type REL
->   * @pi:		Purgatory to be relocated.
-> @@ -134,7 +117,7 @@ arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
->   *
->   * Return: 0 on success, negative errno on error.
->   */
-> -int __weak
-> +int
->  arch_kexec_apply_relocations(struct purgatory_info *pi, Elf_Shdr *section,
->  			     const Elf_Shdr *relsec, const Elf_Shdr *symtab)
->  {
->
-> base-commit: ef1302160bfb19f804451d0e919266703501c875
+> AIUI "adjust x" is offset += x, whereas "def x" is offset = x.
+
+Yes.
+
+> So we could use adjust here, but we'd need to adjust by -(2 * PPC_MIN_STKFRM).
+
+Yes.
+
+> It seemed clearer to just set the offset back to 0, which is what it is
+> at the start of the function.
+
+Yes.  In detail, both .cfi_def_cfa_offset and .cfi_adjust_cfa_offset
+are interpreteted by the assembler into DW_CFA_def_cfa_offset byte
+codes, so you should get the same .eh_frame contents if using Naveen's
+suggestion.  It boils down to style really, and the most common style
+is to use ".cfi_def_cfa_offset 0" here.
+
+-- 
+Alan Modra
+Australia Development Lab, IBM
