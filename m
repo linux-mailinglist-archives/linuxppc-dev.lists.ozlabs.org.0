@@ -1,72 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE59252D50B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 15:49:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AB152D748
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 17:19:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L3rnr6QCxz3blS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 May 2022 23:49:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L3tn92GVBz2yyh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 01:19:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HiZDP/WI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Nb3friqR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72e;
- helo=mail-qk1-x72e.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=HiZDP/WI; dkim-atps=neutral
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com
- [IPv6:2607:f8b0:4864:20::72e])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256
+ header.s=Intel header.b=Nb3friqR; dkim-atps=neutral
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3rn76GXqz2y7V
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 23:49:14 +1000 (AEST)
-Received: by mail-qk1-x72e.google.com with SMTP id m1so4731277qkn.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 06:49:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=W8MbGFRNbe96lGFVMX7wSKQfvTzv7PtCyYQ4f5kYm+k=;
- b=HiZDP/WIS4fDtO/U3UYUP4YZkIoBiZWzkLOwaS8e+2Ym6BQgEWVLFkTTOLnZUYrkOa
- 9KXJ/WshJxXA/trZqIwZne/k+T6u5R7TLGBk864nuxs8vXI3eykTdKKdtYaZ0hcSWzMR
- cBe97u37O7vkKetIdHQGtuwvafvbr5kU+CRb7rgZ3ABddKCLMZNRSeN/Os8Scp4556Dn
- YdNgpDN9bnsecnNMl23qfXHWPTlaQmCeX+Oi73nocfAok0RpWnhqYYV02uQg+cNDE4XY
- tLeMy0H0yff9pPwOR+AYQX95RoR7OYLDYdDjYd+AX8ccpri7TvWjUj3fkwEvgVFr5MLn
- UymA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=W8MbGFRNbe96lGFVMX7wSKQfvTzv7PtCyYQ4f5kYm+k=;
- b=hg9Ud6vbw6mpHxupOwAWCgDbVWGFMWvuPqjkzVHrRx9ITIijx0v6xv6Tq3MEkJzZc0
- vUuL4EwUNZa+JnPOTeN9yMEWyv9c/UpLszcAe+b+7bkSqNafSCRD3rCZIQv5hLVJs8og
- PdNXyARV5VrNR4CUP9k0DExcgKoa1zxNgeR5v8Pi8IbDMHcSwVbFR9KuwZ7OiXoJPqCA
- EbaV9gDI/U+wxe4PuBmT4Sc8bZWrgHbROjn5swYo8nE5KRkCb3w8fpCXji/3oAgSTAc+
- Rp6QsZ+Je2NblgUXvtymUfTZKnyk7hlT/A6cFhY2HrLSLi+8KWm7NjTsLOQgfRwHkvC+
- yXmA==
-X-Gm-Message-State: AOAM531GfCg3lyVS4sioZG5/eHv3tBFJHyQqFJTsKFadSiLb7HXWTUet
- LvUdAu1/6dkQJqX6h/npJ0+LcLaDDpUIsKSdnYA=
-X-Google-Smtp-Source: ABdhPJx1XIulWswUonjgYqNjS2K3jifCHlmdYJBrxNd5RtoDFfLU9Z8yCXIXjNUzI7Hv7AwhDhsELlKnJF3gvkWxWQ0=
-X-Received: by 2002:a05:620a:1903:b0:67d:243b:a8ae with SMTP id
- bj3-20020a05620a190300b0067d243ba8aemr3052110qkb.142.1652968150544; Thu, 19
- May 2022 06:49:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3tmS2PSvz2yL6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 01:18:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1652973528; x=1684509528;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=9Zsg46ZEcQlkoKtsE67ncfy4PgbeqNyaojjUkYedI74=;
+ b=Nb3friqRvbBpXZQRVPik6VGx/Q7aBZZa/83/VvbZs3yvtog/6nM7WZEM
+ woqp446j2+4CzGvoUvAjB3fkgb4aGdT130i+3IbWLRCoEjicx4jUG3YDT
+ KC8+YAVogr4RTrTAV7MrKqOoqC8bhI2+ZEIIYemC6WaJambHi7CumCNMK
+ 3gh/jQLf/HIDOdaswrWJ7RitA6TYPf1RILCHLQFjFl9qHO/Q8STZTBaQ1
+ pU5XX/Gtb3989O2quQhJL6nD4NZrGi637MGyvAOb5mcprfmCSTCZeAx77
+ +u38BvyQup5a5s5qgUd4KG/o8bKwr/TmqDXJLCpfc4A7z0N/L48yL9MX7 A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10352"; a="335291179"
+X-IronPort-AV: E=Sophos;i="5.91,237,1647327600"; d="scan'208";a="335291179"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2022 08:18:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,237,1647327600"; d="scan'208";a="674059304"
+Received: from lkp-server02.sh.intel.com (HELO 242b25809ac7) ([10.239.97.151])
+ by fmsmga002.fm.intel.com with ESMTP; 19 May 2022 08:18:41 -0700
+Received: from kbuild by 242b25809ac7 with local (Exim 4.95)
+ (envelope-from <lkp@intel.com>) id 1nrhvE-0003gJ-P0;
+ Thu, 19 May 2022 15:18:40 +0000
+Date: Thu, 19 May 2022 23:17:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Eric Biederman <ebiederm@xmission.com>
+Subject: Re: [PATCH v2] kexec_file: Drop weak attribute from
+ arch_kexec_apply_relocations[_add]
+Message-ID: <202205192320.CoXevcfR-lkp@intel.com>
+References: <20220519091237.676736-1-naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
-References: <20200902035159.1762596-1-oohall@gmail.com>
- <23fd8d03-965b-a252-020e-4185c2ef5681@csgroup.eu>
- <871qwpofxr.fsf@mpe.ellerman.id.au>
-In-Reply-To: <871qwpofxr.fsf@mpe.ellerman.id.au>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Thu, 19 May 2022 23:49:01 +1000
-Message-ID: <CAOSf1CEwbpryhv3q4ab9zQVRhu2_GrBe1e8ECELvKYHAxuc97g@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/powernv/pci: Drop VF MPS fixup
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220519091237.676736-1-naveen.n.rao@linux.vnet.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,41 +72,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>, kbuild-all@lists.01.org,
+ linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 19, 2022 at 10:38 PM Michael Ellerman <mpe@ellerman.id.au> wrot=
-e:
->
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> > Le 02/09/2020 =C3=A0 05:51, Oliver O'Halloran a =C3=A9crit :
-> >> The MPS field in the VF config space is marked as reserved in current
-> >> versions of the SR-IOV spec. In other words, this fixup doesn't do
-> >> anything.
-> >>
-> >> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> >
-> > A lot of cleanup patches from Oliver were merged in Septembre 2020 but
-> > not this one.
-> >
-> > Any reason ?
->
-> It wasn't clear to me that it's safe to remove. The commit that added it
-> seemed to think it was important.
->
-> The fact that it's out-of-spec doesn't mean we don't have some hardware
-> somewhere that relies on that.
+Hi "Naveen,
 
-There is no hardware that depends on it. It was added in response to a
-bug report on the IBM internal bugzilla about virtual functions not
-reporting the same MPS as the physical function in the output of
-lspci. This is by design since MPS is a property that is only relevant
-to the PF. There was a corresponding patch to skiboot to intercept
-writes to the MPS field of VFs which was used to fake a writable MPS
-field in firmware. I removed that hack in 2019
-(https://github.com/open-power/skiboot/commit/22057f868f3b2b1fd02647a738f6d=
-a0858b5eb6c)
-since it was pointless and was causing other problems. There's no real
-reason to keep this code around IMO.
+I love your patch! Yet something to improve:
+
+[auto build test ERROR on f993aed406eaf968ba3867a76bb46c95336a33d0]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Naveen-N-Rao/kexec_file-Drop-weak-attribute-from-arch_kexec_apply_relocations-_add/20220519-171432
+base:   f993aed406eaf968ba3867a76bb46c95336a33d0
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20220519/202205192320.CoXevcfR-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/67171688c71cb5b05f26e0dfc45eec8d8d1428ff
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Naveen-N-Rao/kexec_file-Drop-weak-attribute-from-arch_kexec_apply_relocations-_add/20220519-171432
+        git checkout 67171688c71cb5b05f26e0dfc45eec8d8d1428ff
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=s390 SHELL=/bin/bash arch/s390/
+
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   In file included from arch/s390/kernel/machine_kexec_reloc.c:3:
+>> arch/s390/include/asm/kexec.h:89:38: error: unknown type name 'Elf_Shdr'; did you mean 'elf_shdr'?
+      89 |                                      Elf_Shdr *section,
+         |                                      ^~~~~~~~
+         |                                      elf_shdr
+   arch/s390/include/asm/kexec.h:90:44: error: unknown type name 'Elf_Shdr'
+      90 |                                      const Elf_Shdr *relsec,
+         |                                            ^~~~~~~~
+   arch/s390/include/asm/kexec.h:91:44: error: unknown type name 'Elf_Shdr'
+      91 |                                      const Elf_Shdr *symtab);
+         |                                            ^~~~~~~~
+
+
+vim +89 arch/s390/include/asm/kexec.h
+
+    85	
+    86	#ifdef CONFIG_KEXEC_FILE
+    87	struct purgatory_info;
+    88	int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+  > 89					     Elf_Shdr *section,
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
