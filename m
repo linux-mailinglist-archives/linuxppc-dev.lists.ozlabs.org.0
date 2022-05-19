@@ -2,68 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4441652DFEA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 00:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B7B352DFEB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 00:18:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L443s0VShz3dp2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 08:17:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L444Y0QRFz3drZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 08:18:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=MIZxC16q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=BvKT+R1L;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a;
- helo=mail-pj1-x102a.google.com; envelope-from=shengjiu.wang@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
+ helo=mail-pj1-x102c.google.com; envelope-from=kent.overstreet@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20210112 header.b=MIZxC16q; dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com
- [IPv6:2607:f8b0:4864:20::102a])
+ header.s=20210112 header.b=BvKT+R1L; dkim-atps=neutral
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L3rc21F18z2xt3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 23:41:20 +1000 (AEST)
-Received: by mail-pj1-x102a.google.com with SMTP id l14so5375903pjk.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 06:41:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L3xZt39hzz2yyS
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 03:25:41 +1000 (AEST)
+Received: by mail-pj1-x102c.google.com with SMTP id
+ v5-20020a17090a7c0500b001df84fa82f8so5822630pjf.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 10:25:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=KxYwSx6y+x9fI4ECFbVQikUh9lZgIve5uIAAey7MnwE=;
- b=MIZxC16q0VSU0b43u7W+CLYxPfvPz1+WzHV3Y885LYlyxzsl8w1dzb4yowWbDil9FO
- qcLrrpYa76H3KZCWVf0czGg+YtGLiCNVY/TiBopbJKWIU5T1+zcNd/JGyosw7qPrAxZ/
- gSv5eFDjLN1YWgNFs/qLj9lC2YzJ+0KMdexFHfRsvPda9tnHbd0Cnl+gQXBtspCtGoJf
- nVYhMvZJF5e+gy1Is1V4UVZaQbjGz+G/wZpGhgEs66XTmPtfIbxQaKnIZ0Aqf7XPVUrG
- By+GaWIEsaCLIxTW6j2iPsSZ9o7+c+cDFpuWssP5KOoVDfiFvTt1UgBoQudniepkNkNK
- +WiA==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=rEarPetEXD2YQGYpP7hMIqZiYpJpE1Z8lNf7Sa8/vnM=;
+ b=BvKT+R1LR16GPqLiARV7wcahKZ+cTX7B1WFyzIgW4hu0pijp9ZDuxh7G7Lb+PRW9Ro
+ 2qoy61P1sC7EX5TaLJCfxaTiqwMSUfKj+HKHWv+XESmte/fUTDq8rX+MMG2DXMvgLzb7
+ BAJGmPZvtx8klQ8YYw63yWIcOx50kplligC27G+nY/HwDNThlOE7pmHTd5e9ar5kGBYc
+ nG6BWGZqdWOD9Hhqg0uIySkC7895FxVxRlASpPpSjZ/6K9hgcvQDQUXwLDKUgrjIMfpl
+ bYtM5L6p+M6dNYAm9uwUmSg3BV7HTuZMsbIZ9WDXvW0pmP0VpOvFOQlrdvEMezW5gDsz
+ jHPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=KxYwSx6y+x9fI4ECFbVQikUh9lZgIve5uIAAey7MnwE=;
- b=kPq5ytrXejTpUZbDyP9W7oWlDxu/nB7/z6UiQ8WexiC3j97Ef1L21sMTkH9rZXKuA7
- fmEiWSHc9fT9wc5myDIzwxBpChUAsX3C3otVaC/ib/4DSDINKftpikmBKFsrYKJQFRRY
- hj64HzvHmF2xeHCC5rtdmw9GoDH9JawQBV/I9K88f9SHXVxupB45sDOxZsgr5Bf4G6aE
- VYdaMuQCHLlad0J/EGzcz7nffmGC77gPPr33f+qrUZilSIZLyReiiOdTKR/E+6t5QAp0
- T+V+899jRqM5GiDrOJFmDOzQZKj8SMcFTpPg/Jeu8EVy2/GgujwYc6vpJSPPy2u1Nn3f
- TxfQ==
-X-Gm-Message-State: AOAM531yXzIX6d0wOncp2N0kW6Zppo9z4qs+iCNMZGcxqz0Dv07kZc58
- ymYHRpe3mYFi5H0fBSNaiksKNz8IDlYF6FGSy2w=
-X-Google-Smtp-Source: ABdhPJwN938ux3fm5gzJLBtrYIriAnpPWyMjwWJI5wVfv18y6DyL30G7BSWkmIfhyqf4W/oQVIhbkGKg821ZgIO5w/Q=
-X-Received: by 2002:a17:90a:6f06:b0:1df:c19b:627d with SMTP id
- d6-20020a17090a6f0600b001dfc19b627dmr5305839pjk.95.1652967677567; Thu, 19 May
- 2022 06:41:17 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=rEarPetEXD2YQGYpP7hMIqZiYpJpE1Z8lNf7Sa8/vnM=;
+ b=guhg02tNVathPq+wBflj99NGy7uut9h4yp2Ft8J2/7pmGsFy3MHZU1pP63uMQglhbD
+ K3Qxn/ygZqNUgPcwmhGJFHyxJRSmZIvtQAXuCYWFrKyYs6NHpMp0ssXFc49W7wtX8X0w
+ bctFdpXQynZjWa1ExztlOPogF4DBZEqO588SH1/GImupmumb6gOW+LljdX6sD3gioMh5
+ clK8pimr/fzHAKi8Oz2IPHlNJ2CKCyZZjl0qCkb2oz+GDIad8ddCDunqXL5CQJFCKNlS
+ OqQTLu3wzc7URIacDSzxyk4TcGoFGEtRFi8t49Ey1rujlqDJwB8VlBZptiEjS9cTUKTs
+ WfLw==
+X-Gm-Message-State: AOAM532Hq6cDN3QruEhCb9VQu8LYC51NAe9kFvH9WaLzRXW2KLHxYh9d
+ OuGZQUGXUZTdqKuKKGpaWw==
+X-Google-Smtp-Source: ABdhPJx077FrrQzngojinN9YIPS8DTnwKt1wyQ2e8JYS8VQR6eUnIjK3DYbihQXLLI0Y31FjLK4qjw==
+X-Received: by 2002:a17:903:1211:b0:15e:8208:8cc0 with SMTP id
+ l17-20020a170903121100b0015e82088cc0mr5844421plh.52.1652981136600; 
+ Thu, 19 May 2022 10:25:36 -0700 (PDT)
+Received: from zaphod.evilpiepirate.org (068-119-229-002.res.spectrum.com.
+ [68.119.229.2]) by smtp.gmail.com with ESMTPSA id
+ y4-20020a655a04000000b003c6ab6ba06csm3859126pgs.79.2022.05.19.10.25.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 19 May 2022 10:25:35 -0700 (PDT)
+From: Kent Overstreet <kent.overstreet@gmail.com>
+To: linux-kernel@vger.kernel.org, linux-mm@vger.kernel.org, pmladek@suse.com,
+ rostedt@goodmis.org, senozhatsky@chromium.org
+Subject: [PATCH v2 26/28] powerpc: Convert to printbuf
+Date: Thu, 19 May 2022 13:24:19 -0400
+Message-Id: <20220519172421.162394-27-kent.overstreet@gmail.com>
+X-Mailer: git-send-email 2.36.0
+In-Reply-To: <20220519172421.162394-1-kent.overstreet@gmail.com>
+References: <20220519172421.162394-1-kent.overstreet@gmail.com>
 MIME-Version: 1.0
-References: <1652963808-14515-1-git-send-email-shengjiu.wang@nxp.com>
- <CAOMZO5DtpoH0dLDX3=Sv4UUpX_=66VEZPsJUWQNnYviApfMLKQ@mail.gmail.com>
-In-Reply-To: <CAOMZO5DtpoH0dLDX3=Sv4UUpX_=66VEZPsJUWQNnYviApfMLKQ@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 19 May 2022 21:41:06 +0800
-Message-ID: <CAA+D8AOp+rNdzXUD+MomS5H87Kv5whMLpCqUrha15Xpbm2Mu2w@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Enable MCTL_MCLK_EN bit for master mode
-To: Fabio Estevam <festevam@gmail.com>
-Content-Type: multipart/alternative; boundary="0000000000003f249805df5d87b8"
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 20 May 2022 08:15:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,90 +84,318 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
- Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: andriy.shevchenko@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
+ Kent Overstreet <kent.overstreet@gmail.com>, willy@infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---0000000000003f249805df5d87b8
-Content-Type: text/plain; charset="UTF-8"
+This converts from seq_buf to printbuf. We're using printbuf in external
+buffer mode, so it's a direct conversion, aside from some trivial
+refactoring in cpu_show_meltdown() to make the code more consistent.
 
-On Thu, May 19, 2022 at 9:23 PM Fabio Estevam <festevam@gmail.com> wrote:
+Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/kernel/process.c             | 16 +++--
+ arch/powerpc/kernel/security.c            | 75 ++++++++++-------------
+ arch/powerpc/platforms/pseries/papr_scm.c | 34 +++++-----
+ 3 files changed, 57 insertions(+), 68 deletions(-)
 
-> Hi Shengjiu,
->
-> On Thu, May 19, 2022 at 9:49 AM Shengjiu Wang <shengjiu.wang@nxp.com>
-> wrote:
->
-> > diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> > index fa950dde5310..dae16a14f177 100644
-> > --- a/sound/soc/fsl/fsl_sai.c
-> > +++ b/sound/soc/fsl/fsl_sai.c
-> > @@ -437,6 +437,12 @@ static int fsl_sai_set_bclk(struct snd_soc_dai
-> *dai, bool tx, u32 freq)
-> >                                    FSL_SAI_CR2_DIV_MASK |
-> FSL_SAI_CR2_BYP,
-> >                                    savediv / 2 - 1);
-> >
-> > +       if (sai->soc_data->max_register >= FSL_SAI_MCTL) {
->
-> Isn't it a bit fragile to take this decision based on the number of
-> SAI registers in the SoC?
->
-> What about adding a specific field in soc_data for such a purpose?
->
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 984813a4d5..f6f7804516 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -39,7 +39,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/elf-randomize.h>
+ #include <linux/pkeys.h>
+-#include <linux/seq_buf.h>
++#include <linux/printbuf.h>
+ 
+ #include <asm/interrupt.h>
+ #include <asm/io.h>
+@@ -1399,32 +1399,30 @@ void show_user_instructions(struct pt_regs *regs)
+ {
+ 	unsigned long pc;
+ 	int n = NR_INSN_TO_PRINT;
+-	struct seq_buf s;
+ 	char buf[96]; /* enough for 8 times 9 + 2 chars */
++	struct printbuf s = PRINTBUF_EXTERN(buf, sizeof(buf));
+ 
+ 	pc = regs->nip - (NR_INSN_TO_PRINT * 3 / 4 * sizeof(int));
+ 
+-	seq_buf_init(&s, buf, sizeof(buf));
+-
+ 	while (n) {
+ 		int i;
+ 
+-		seq_buf_clear(&s);
++		printbuf_reset(&s);
+ 
+ 		for (i = 0; i < 8 && n; i++, n--, pc += sizeof(int)) {
+ 			int instr;
+ 
+ 			if (copy_from_user_nofault(&instr, (void __user *)pc,
+ 					sizeof(instr))) {
+-				seq_buf_printf(&s, "XXXXXXXX ");
++				pr_buf(&s, "XXXXXXXX ");
+ 				continue;
+ 			}
+-			seq_buf_printf(&s, regs->nip == pc ? "<%08x> " : "%08x ", instr);
++			pr_buf(&s, regs->nip == pc ? "<%08x> " : "%08x ", instr);
+ 		}
+ 
+-		if (!seq_buf_has_overflowed(&s))
++		if (printbuf_remaining(&s))
+ 			pr_info("%s[%d]: code: %s\n", current->comm,
+-				current->pid, s.buffer);
++				current->pid, s.buf);
+ 	}
+ }
+ 
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index e159d4093d..5c9bad138c 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -10,7 +10,7 @@
+ #include <linux/memblock.h>
+ #include <linux/nospec.h>
+ #include <linux/prctl.h>
+-#include <linux/seq_buf.h>
++#include <linux/printbuf.h>
+ #include <linux/debugfs.h>
+ 
+ #include <asm/asm-prototypes.h>
+@@ -144,31 +144,28 @@ void __init setup_spectre_v2(void)
+ #ifdef CONFIG_PPC_BOOK3S_64
+ ssize_t cpu_show_meltdown(struct device *dev, struct device_attribute *attr, char *buf)
+ {
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	bool thread_priv;
+ 
+ 	thread_priv = security_ftr_enabled(SEC_FTR_L1D_THREAD_PRIV);
+ 
+ 	if (rfi_flush) {
+-		struct seq_buf s;
+-		seq_buf_init(&s, buf, PAGE_SIZE - 1);
+ 
+-		seq_buf_printf(&s, "Mitigation: RFI Flush");
++		pr_buf(&s, "Mitigation: RFI Flush");
+ 		if (thread_priv)
+-			seq_buf_printf(&s, ", L1D private per thread");
+-
+-		seq_buf_printf(&s, "\n");
+-
+-		return s.len;
++			pr_buf(&s, ", L1D private per thread");
++
++		pr_buf(&s, "\n");
++	} else if (thread_priv) {
++		pr_buf(&s, "Vulnerable: L1D private per thread\n");
++	} else if (!security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV) &&
++		   !security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR)) {
++		pr_buf(&s, "Not affected\n");
++	} else {
++		pr_buf(&s, "Vulnerable\n");
+ 	}
+ 
+-	if (thread_priv)
+-		return sprintf(buf, "Vulnerable: L1D private per thread\n");
+-
+-	if (!security_ftr_enabled(SEC_FTR_L1D_FLUSH_HV) &&
+-	    !security_ftr_enabled(SEC_FTR_L1D_FLUSH_PR))
+-		return sprintf(buf, "Not affected\n");
+-
+-	return sprintf(buf, "Vulnerable\n");
++	return printbuf_written(&s);
+ }
+ 
+ ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *buf)
+@@ -179,70 +176,66 @@ ssize_t cpu_show_l1tf(struct device *dev, struct device_attribute *attr, char *b
+ 
+ ssize_t cpu_show_spectre_v1(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+-	struct seq_buf s;
+-
+-	seq_buf_init(&s, buf, PAGE_SIZE - 1);
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 
+ 	if (security_ftr_enabled(SEC_FTR_BNDS_CHK_SPEC_BAR)) {
+ 		if (barrier_nospec_enabled)
+-			seq_buf_printf(&s, "Mitigation: __user pointer sanitization");
++			pr_buf(&s, "Mitigation: __user pointer sanitization");
+ 		else
+-			seq_buf_printf(&s, "Vulnerable");
++			pr_buf(&s, "Vulnerable");
+ 
+ 		if (security_ftr_enabled(SEC_FTR_SPEC_BAR_ORI31))
+-			seq_buf_printf(&s, ", ori31 speculation barrier enabled");
++			pr_buf(&s, ", ori31 speculation barrier enabled");
+ 
+-		seq_buf_printf(&s, "\n");
++		pr_buf(&s, "\n");
+ 	} else
+-		seq_buf_printf(&s, "Not affected\n");
++		pr_buf(&s, "Not affected\n");
+ 
+-	return s.len;
++	return printbuf_written(&s);
+ }
+ 
+ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+-	struct seq_buf s;
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	bool bcs, ccd;
+ 
+-	seq_buf_init(&s, buf, PAGE_SIZE - 1);
+-
+ 	bcs = security_ftr_enabled(SEC_FTR_BCCTRL_SERIALISED);
+ 	ccd = security_ftr_enabled(SEC_FTR_COUNT_CACHE_DISABLED);
+ 
+ 	if (bcs || ccd) {
+-		seq_buf_printf(&s, "Mitigation: ");
++		pr_buf(&s, "Mitigation: ");
+ 
+ 		if (bcs)
+-			seq_buf_printf(&s, "Indirect branch serialisation (kernel only)");
++			pr_buf(&s, "Indirect branch serialisation (kernel only)");
+ 
+ 		if (bcs && ccd)
+-			seq_buf_printf(&s, ", ");
++			pr_buf(&s, ", ");
+ 
+ 		if (ccd)
+-			seq_buf_printf(&s, "Indirect branch cache disabled");
++			pr_buf(&s, "Indirect branch cache disabled");
+ 
+ 	} else if (count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
+-		seq_buf_printf(&s, "Mitigation: Software count cache flush");
++		pr_buf(&s, "Mitigation: Software count cache flush");
+ 
+ 		if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW)
+-			seq_buf_printf(&s, " (hardware accelerated)");
++			pr_buf(&s, " (hardware accelerated)");
+ 
+ 	} else if (btb_flush_enabled) {
+-		seq_buf_printf(&s, "Mitigation: Branch predictor state flush");
++		pr_buf(&s, "Mitigation: Branch predictor state flush");
+ 	} else {
+-		seq_buf_printf(&s, "Vulnerable");
++		pr_buf(&s, "Vulnerable");
+ 	}
+ 
+ 	if (bcs || ccd || count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
+ 		if (link_stack_flush_type != BRANCH_CACHE_FLUSH_NONE)
+-			seq_buf_printf(&s, ", Software link stack flush");
++			pr_buf(&s, ", Software link stack flush");
+ 		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_HW)
+-			seq_buf_printf(&s, " (hardware accelerated)");
++			pr_buf(&s, " (hardware accelerated)");
+ 	}
+ 
+-	seq_buf_printf(&s, "\n");
++	pr_buf(&s, "\n");
+ 
+-	return s.len;
++	return printbuf_written(&s);
+ }
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index f48e87ac89..e55a9af397 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -12,7 +12,7 @@
+ #include <linux/libnvdimm.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+-#include <linux/seq_buf.h>
++#include <linux/printbuf.h>
+ #include <linux/nd.h>
+ 
+ #include <asm/plpar_wrappers.h>
+@@ -843,7 +843,7 @@ static ssize_t perf_stats_show(struct device *dev,
+ {
+ 	int index;
+ 	ssize_t rc;
+-	struct seq_buf s;
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	struct papr_scm_perf_stat *stat;
+ 	struct papr_scm_perf_stats *stats;
+ 	struct nvdimm *dimm = to_nvdimm(dev);
+@@ -866,18 +866,17 @@ static ssize_t perf_stats_show(struct device *dev,
+ 	 * values. Since stat_id is essentially a char string of
+ 	 * 8 bytes, simply use the string format specifier to print it.
+ 	 */
+-	seq_buf_init(&s, buf, PAGE_SIZE);
+ 	for (index = 0, stat = stats->scm_statistic;
+ 	     index < be32_to_cpu(stats->num_statistics);
+ 	     ++index, ++stat) {
+-		seq_buf_printf(&s, "%.8s = 0x%016llX\n",
+-			       stat->stat_id,
+-			       be64_to_cpu(stat->stat_val));
++		pr_buf(&s, "%.8s = 0x%016llX\n",
++		       stat->stat_id,
++		       be64_to_cpu(stat->stat_val));
+ 	}
+ 
+ free_stats:
+ 	kfree(stats);
+-	return rc ? rc : (ssize_t)seq_buf_used(&s);
++	return rc ?: printbuf_written(&s);
+ }
+ static DEVICE_ATTR_ADMIN_RO(perf_stats);
+ 
+@@ -886,7 +885,7 @@ static ssize_t flags_show(struct device *dev,
+ {
+ 	struct nvdimm *dimm = to_nvdimm(dev);
+ 	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
+-	struct seq_buf s;
++	struct printbuf s = PRINTBUF_EXTERN(buf, PAGE_SIZE);
+ 	u64 health;
+ 	int rc;
+ 
+@@ -897,29 +896,28 @@ static ssize_t flags_show(struct device *dev,
+ 	/* Copy health_bitmap locally, check masks & update out buffer */
+ 	health = READ_ONCE(p->health_bitmap);
+ 
+-	seq_buf_init(&s, buf, PAGE_SIZE);
+ 	if (health & PAPR_PMEM_UNARMED_MASK)
+-		seq_buf_printf(&s, "not_armed ");
++		pr_buf(&s, "not_armed ");
+ 
+ 	if (health & PAPR_PMEM_BAD_SHUTDOWN_MASK)
+-		seq_buf_printf(&s, "flush_fail ");
++		pr_buf(&s, "flush_fail ");
+ 
+ 	if (health & PAPR_PMEM_BAD_RESTORE_MASK)
+-		seq_buf_printf(&s, "restore_fail ");
++		pr_buf(&s, "restore_fail ");
+ 
+ 	if (health & PAPR_PMEM_ENCRYPTED)
+-		seq_buf_printf(&s, "encrypted ");
++		pr_buf(&s, "encrypted ");
+ 
+ 	if (health & PAPR_PMEM_SMART_EVENT_MASK)
+-		seq_buf_printf(&s, "smart_notify ");
++		pr_buf(&s, "smart_notify ");
+ 
+ 	if (health & PAPR_PMEM_SCRUBBED_AND_LOCKED)
+-		seq_buf_printf(&s, "scrubbed locked ");
++		pr_buf(&s, "scrubbed locked ");
+ 
+-	if (seq_buf_used(&s))
+-		seq_buf_printf(&s, "\n");
++	if (printbuf_written(&s))
++		pr_buf(&s, "\n");
+ 
+-	return seq_buf_used(&s);
++	return printbuf_written(&s);
+ }
+ DEVICE_ATTR_RO(flags);
+ 
+-- 
+2.36.0
 
-'max_register' is one field in the soc_data,  until now in our internal
-usage it seems ok for using this condition.
-
-Thanks.
-
-Best regards
-Wang shengjiu
-
---0000000000003f249805df5d87b8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, May 19, 2022 at 9:23 PM Fabio=
- Estevam &lt;<a href=3D"mailto:festevam@gmail.com">festevam@gmail.com</a>&g=
-t; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
-x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi She=
-ngjiu,<br>
-<br>
-On Thu, May 19, 2022 at 9:49 AM Shengjiu Wang &lt;<a href=3D"mailto:shengji=
-u.wang@nxp.com" target=3D"_blank">shengjiu.wang@nxp.com</a>&gt; wrote:<br>
-<br>
-&gt; diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
-&gt; index fa950dde5310..dae16a14f177 100644<br>
-&gt; --- a/sound/soc/fsl/fsl_sai.c<br>
-&gt; +++ b/sound/soc/fsl/fsl_sai.c<br>
-&gt; @@ -437,6 +437,12 @@ static int fsl_sai_set_bclk(struct snd_soc_dai *d=
-ai, bool tx, u32 freq)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 FSL_SAI_CR2_DIV_MAS=
-K | FSL_SAI_CR2_BYP,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 savediv / 2 - 1);<b=
-r>
-&gt;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0if (sai-&gt;soc_data-&gt;max_register &gt;=
-=3D FSL_SAI_MCTL) {<br>
-<br>
-Isn&#39;t it a bit fragile to take this decision based on the number of<br>
-SAI registers in the SoC?<br>
-<br>
-What about adding a specific field in soc_data for such a purpose?<br></blo=
-ckquote><div><br></div><div>&#39;max_register&#39; is one field in the soc_=
-data,=C2=A0 until=C2=A0now in our internal</div><div>usage it seems ok for =
-using this condition.</div><div><br></div><div>Thanks.</div><div><br></div>=
-<div>Best regards</div><div>Wang shengjiu</div><div>=C2=A0</div></div></div=
->
-
---0000000000003f249805df5d87b8--
