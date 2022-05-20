@@ -1,44 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9F552EC69
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 14:42:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BDA252EC40
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 14:37:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4RFx4PGqz3blG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 22:42:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4R816QJGz3cgC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 22:37:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=T6IF6o4t;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Void lookup limit
- of 2 exceeded) smtp.mailfrom=mansr.com (client-ip=2001:8b0:ca0d:1::2;
- helo=unicorn.mansr.com; envelope-from=mans@mansr.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 380 seconds by postgrey-1.36 at boromir;
- Fri, 20 May 2022 22:42:22 AEST
-Received: from unicorn.mansr.com (unicorn.mansr.com [IPv6:2001:8b0:ca0d:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=T6IF6o4t; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4RFV3N15z2yWr
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 22:42:21 +1000 (AEST)
-Received: from raven.mansr.com (raven.mansr.com [IPv6:2001:8b0:ca0d:1::3])
- by unicorn.mansr.com (Postfix) with ESMTPS id 6406615361;
- Fri, 20 May 2022 13:35:48 +0100 (BST)
-Received: by raven.mansr.com (Postfix, from userid 51770)
- id 4D31721A3D6; Fri, 20 May 2022 13:35:48 +0100 (BST)
-From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] net: fs_enet: sync rx dma buffer before reading
-References: <20220519192443.28681-1-mans@mansr.com>
- <03f24864-9d4d-b4f9-354a-f3b271c0ae66@csgroup.eu>
-Date: Fri, 20 May 2022 13:35:48 +0100
-In-Reply-To: <03f24864-9d4d-b4f9-354a-f3b271c0ae66@csgroup.eu> (Christophe
- Leroy's message of "Fri, 20 May 2022 05:39:38 +0000")
-Message-ID: <yw1xmtfc9yaj.fsf@mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4R7K2rhfz2yLJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 22:37:00 +1000 (AEST)
+Received: by mail-pl1-x62b.google.com with SMTP id d22so7232883plr.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 05:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=pfgqFsTOUgXBDu5bDyAL2tx0ss8x2jsp1L7XsD88tdw=;
+ b=T6IF6o4tHH9Gu44hBxaf50ZZBcUeVwAOcwZn1o9+d4JOAdCw1TySJ3sedAAMCHVdXc
+ pctQeAF9JuDVdoxC5ojbPehyvDk9iusmY5boq7J05Dk8lyYwxwmfnVsZ3UwAKNEdcb5O
+ xEvuc1sKes50BR49j32RbuzonkzaAFS8Q7Hdq//EJ/vLehSFA1UEnqTpLrqvk8MSE9UC
+ QM9i2fMCQh5GieDAAbxtWvqY+QXF/gUOC8Odr0/8be3QX2eAfko3FtyMnjk7TUJt1ZP7
+ 1jF7yrjL3eSQWTRDgj1LpRsVwduCkzT+VTWg2DvvLDE1WWGQIE5Pb2NL5CN24QMPYlPS
+ qdRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=pfgqFsTOUgXBDu5bDyAL2tx0ss8x2jsp1L7XsD88tdw=;
+ b=BhEhDu1zHUP8Plxfh0fniXACeWULRWwfTAiqEJsK94ZL5GsyL3gldwaYu890uo7Nib
+ mHZzIgep82pjCTUKKEXlatzTUaa22QpqQlkNSfm6Z5CIwlJT3HnqWffir/7cs9nFKRdy
+ XnMkt2bjxmJ+R5mEnBqMX7AcX+X2oYfIf9dxKNyYntvysh1m7lu6dgLjVdR4HG0OuQUg
+ UvicnVXeP5ctAGCwOLMzJNKUIYs/8jdqwbQ7TzhnVebzS4iF48BP8+H6fiMYEUIre6PQ
+ mGNn3DJ7Yu7BqJ2C/cUi441QorvGPe09H2wCUGWTTHt3z1Pq3G9hmhkOBin+YaPLsulP
+ oPuw==
+X-Gm-Message-State: AOAM532sp05t7n1pdasX2nVKuIOuKKiZTaVJD+HAAtS8YjZf+6/iHkdE
+ VED6ZM7c9GCr2fUAm7RFpU87j9GosxM=
+X-Google-Smtp-Source: ABdhPJwOrk85B4xlVMD7ZMQqUD8vN+Ccy8JoFvpsOAxxWPiUGY86r4TeBO8vKWfqTvJbEMb7d89HOA==
+X-Received: by 2002:a17:90a:6308:b0:1de:fb6c:5944 with SMTP id
+ e8-20020a17090a630800b001defb6c5944mr10804569pjj.60.1653050217426; 
+ Fri, 20 May 2022 05:36:57 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (124-171-74-249.tpgi.com.au.
+ [124.171.74.249]) by smtp.gmail.com with ESMTPSA id
+ y21-20020aa78555000000b0050dc76281fbsm1656211pfn.213.2022.05.20.05.36.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 20 May 2022 05:36:57 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/vdso: Fix __kernel_sync_dicache sequence with
+ coherent icache
+Date: Fri, 20 May 2022 22:36:49 +1000
+Message-Id: <20220520123649.258440-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,84 +80,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Dan Malek <dan@embeddededge.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Eric Dumazet <edumazet@google.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Vitaly Bordug <vbordug@ru.mvista.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Joakim Tjernlund <joakim.tjernlund@lumentis.se>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+Processors with coherent icache require the sequence sync ; icbi ; isync
+to entire store->execute coherency. icbi (to any address) must be
+executed to ensure isync flushes the pipeline. See "POWER9 Processor
+User's Manual, 4.6.2.2 Instruction Cache Block Invalidate (icbi)" for
+details.
 
-> Le 19/05/2022 =E0 21:24, Mans Rullgard a =E9crit=A0:
->> The dma_sync_single_for_cpu() call must precede reading the received
->> data. Fix this.
->
-> See original commit 070e1f01827c. It explicitely says that the cache=20
-> must be invalidate _AFTER_ the copy.
->
-> The cache is initialy invalidated by dma_map_single(), so before the=20
-> copy the cache is already clean.
->
-> After the copy, data is in the cache. In order to allow re-use of the=20
-> skb, it must be put back in the same condition as before, in extenso the=
-=20
-> cache must be invalidated in order to be in the same situation as after=20
-> dma_map_single().
->
-> So I think your change is wrong.
+__kernel_sync_dicache is missing icbi for the coherent icache path.
+Add it.
 
-OK, looking at it more closely, the change is at least unnecessary since
-there will be a cache invalidation between each use of the buffer either
-way.  Please disregard the patch.  Sorry for the noise.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/vdso/cacheflush.S | 1 +
+ 1 file changed, 1 insertion(+)
 
->>=20
->> Fixes: 070e1f01827c ("net: fs_enet: don't unmap DMA when packet len is b=
-elow copybreak")
->> Signed-off-by: Mans Rullgard <mans@mansr.com>
->> ---
->>   drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 8 ++++----
->>   1 file changed, 4 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/dri=
-vers/net/ethernet/freescale/fs_enet/fs_enet-main.c
->> index b3dae17e067e..432ce10cbfd0 100644
->> --- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
->> +++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
->> @@ -240,14 +240,14 @@ static int fs_enet_napi(struct napi_struct *napi, =
-int budget)
->>                                  /* +2 to make IP header L1 cache aligne=
-d */
->>                                  skbn =3D netdev_alloc_skb(dev, pkt_len =
-+ 2);
->>                                  if (skbn !=3D NULL) {
->> +                                       dma_sync_single_for_cpu(fep->dev,
->> +                                               CBDR_BUFADDR(bdp),
->> +                                               L1_CACHE_ALIGN(pkt_len),
->> +                                               DMA_FROM_DEVICE);
->>                                          skb_reserve(skbn, 2);   /* alig=
-n IP header */
->>                                          skb_copy_from_linear_data(skb,
->>                                                        skbn->data, pkt_l=
-en);
->>                                          swap(skb, skbn);
->> -                                       dma_sync_single_for_cpu(fep->dev,
->> -                                               CBDR_BUFADDR(bdp),
->> -                                               L1_CACHE_ALIGN(pkt_len),
->> -                                               DMA_FROM_DEVICE);
->>                                  }
->>                          } else {
->>                                  skbn =3D netdev_alloc_skb(dev, ENET_RX_=
-FRSIZE);
->> --
->> 2.35.1
->>=20
+diff --git a/arch/powerpc/kernel/vdso/cacheflush.S b/arch/powerpc/kernel/vdso/cacheflush.S
+index d4e43ab2d5df..0085ae464dac 100644
+--- a/arch/powerpc/kernel/vdso/cacheflush.S
++++ b/arch/powerpc/kernel/vdso/cacheflush.S
+@@ -91,6 +91,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
+ 3:
+ 	crclr	cr0*4+so
+ 	sync
++	icbi	0,r1
+ 	isync
+ 	li	r3,0
+ 	blr
+-- 
+2.35.1
 
---=20
-M=E5ns Rullg=E5rd
