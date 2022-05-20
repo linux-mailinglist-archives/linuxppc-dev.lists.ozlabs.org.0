@@ -2,67 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7569252EC3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 14:36:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9F552EC69
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 14:42:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4R773J3tz3cKp
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 22:36:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4RFx4PGqz3blG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 22:42:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.74; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-X-Greylist: delayed 308 seconds by postgrey-1.36 at boromir;
- Fri, 20 May 2022 22:36:25 AEST
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+ spf=permerror (SPF Permanent Error: Void lookup limit
+ of 2 exceeded) smtp.mailfrom=mansr.com (client-ip=2001:8b0:ca0d:1::2;
+ helo=unicorn.mansr.com; envelope-from=mans@mansr.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 380 seconds by postgrey-1.36 at boromir;
+ Fri, 20 May 2022 22:42:22 AEST
+Received: from unicorn.mansr.com (unicorn.mansr.com [IPv6:2001:8b0:ca0d:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4R6d5kslz2yK2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 22:36:25 +1000 (AEST)
-Received: from mail-yb1-f174.google.com ([209.85.219.174]) by
- mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
- id 1M3lgL-1nrCZQ1Bit-000ukx for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May
- 2022 14:31:11 +0200
-Received: by mail-yb1-f174.google.com with SMTP id p139so13905237ybc.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 05:31:10 -0700 (PDT)
-X-Gm-Message-State: AOAM531KNPcgMWBDO5OU2eecDETMwuAJkiWosh8+qh0o949d5ExvdNRl
- jWuth0ku/UDztaAOUhSq+hH+WnSrzzV8ZBsN38w=
-X-Google-Smtp-Source: ABdhPJzM0/g+q1PRwguziGorhB8SDUsN9iEFZbR/3vnqE9X6zeZuqHYx8uEJ7JXjS9vB4zG423aFir2s+dxjeU1ONqo=
-X-Received: by 2002:a25:31c2:0:b0:641:660f:230f with SMTP id
- x185-20020a2531c2000000b00641660f230fmr9208955ybx.472.1653049869839; Fri, 20
- May 2022 05:31:09 -0700 (PDT)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4RFV3N15z2yWr
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 22:42:21 +1000 (AEST)
+Received: from raven.mansr.com (raven.mansr.com [IPv6:2001:8b0:ca0d:1::3])
+ by unicorn.mansr.com (Postfix) with ESMTPS id 6406615361;
+ Fri, 20 May 2022 13:35:48 +0100 (BST)
+Received: by raven.mansr.com (Postfix, from userid 51770)
+ id 4D31721A3D6; Fri, 20 May 2022 13:35:48 +0100 (BST)
+From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] net: fs_enet: sync rx dma buffer before reading
+References: <20220519192443.28681-1-mans@mansr.com>
+ <03f24864-9d4d-b4f9-354a-f3b271c0ae66@csgroup.eu>
+Date: Fri, 20 May 2022 13:35:48 +0100
+In-Reply-To: <03f24864-9d4d-b4f9-354a-f3b271c0ae66@csgroup.eu> (Christophe
+ Leroy's message of "Fri, 20 May 2022 05:39:38 +0000")
+Message-ID: <yw1xmtfc9yaj.fsf@mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20220519031345.2134401-1-kuba@kernel.org>
-In-Reply-To: <20220519031345.2134401-1-kuba@kernel.org>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Fri, 20 May 2022 13:30:50 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3_4fNQV51V0-QUnuTr4dK0-S_ffeFzfA8vG1uGh8vyhg@mail.gmail.com>
-Message-ID: <CAK8P3a3_4fNQV51V0-QUnuTr4dK0-S_ffeFzfA8vG1uGh8vyhg@mail.gmail.com>
-Subject: Re: [PATCH net-next] eth: de4x5: remove support for Generic DECchip &
- DIGITAL EtherWORKS PCI/EISA
-To: Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:4DNiUpEaC+69SL5KQkB95/4DmjZDb5zG8tN3FFoD9Rww+rlO6rW
- Q9mdL1jaJMOG5sIkd1HluvJZ1FZ877yVvVZZTm6ZPekug2d7gK4nxwgi8G3cZcFU7vCClhH
- LqjkU0ZFbocxzuuTpO7Gn0kYT0d/3gDHjScaqu7U+bT8sxXWIicFi64ZmkAn/MSCcmlIaC1
- Bz0N2b64xP9d3Sa8v8KRQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZUB5bkq4gTM=:naH8uxo6tlnXfHAsabs/Pr
- X6PWReRh6Uopty1u8yc9LZsYhXAd3sp3LJBsF57sE9pTgv2o6UZ2hQ/Kse8qErOq7kd+XDmlX
- F/42aLj/bE8IYyx898Z+4hlYjjqZWvXvMXzxzCp2quhhgtLIWPPvkVamK7gVq9pCr6pHGLkrD
- Lw290rrgwLO3vxhbNpfthd+yT2ReZhNO9SorB9aU8jcG5Uw2SX0/wAr3HNUTZY7gXZm9DDFDG
- Yrph5ZnpAlTAQoBtfuJIiF8Xdke9ljeDmTUxDRhjxcz/FbHelAvcUH2q7AY0WcG+rQ3Ng+baG
- 45rS9r1zymVjRNl0Dz1QJmjkbi04yJ20VO2xt0R2x4D/G+KhG1BK82BudcAOyvlJyZrTUp3LW
- JPinZLil5VjAhZDAzhqWwHtHa/uOGphaficfakX2KkfFbXIsgQOt9gXwGMeYSVgggSuwgsvqT
- UWEOYTNcjl181VMXiG4BgOelxqsJl9LmFrW6OA+/T16ueVR1RJ/iGnpd3lDS+iyWFq/UIyRr+
- Rfu+8qZ0LMSypWf1vKFXsU3Zo29OSisr4/91VzCCiPDxj7g0X1lRPLRn+PWstl2Y3lZrLSP0O
- 8+M9VPQRePT6RAiyMa+9lUjZLwCubNf7w6eky0gZWifaByUZJbhGyd5If4CThARa8pClkntOT
- skVcU9QBTFSW8c0oGxkPiDKe9suTtoMrrqxJNlHEAHDA9jAzeVEgmOoDKWYaquxk/fJVk2m3E
- y+0OjKd38+caoLjpUB7JN5e8aAgO2Bg1jyWZQ3ZfPPE+o2B3IuqwwavpPfUyekuGFtBADa8sp
- AFdd8an9nynbwSwiTf7Zrb4mGIEK6XDp4a2DPNcTat1rtwwuuTCCOTsjSsvLblRaeoCRkVeOW
- 4ou+Ut4MXDI8nAH925Iw==
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,58 +50,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, arnd@arndb.de,
- corbet@lwn.net, netdev@vger.kernel.org, sburla@marvell.com,
- linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, edumazet@google.com, paulus@samba.org,
- vburru@marvell.com, zhangyue1@kylinos.cn, pabeni@redhat.com,
- aayarekar@marvell.com, davem@davemloft.net
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Dan Malek <dan@embeddededge.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Eric Dumazet <edumazet@google.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Vitaly Bordug <vbordug@ru.mvista.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Joakim Tjernlund <joakim.tjernlund@lumentis.se>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 19, 2022 at 4:13 AM Jakub Kicinski <kuba@kernel.org> wrote:
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+
+> Le 19/05/2022 =E0 21:24, Mans Rullgard a =E9crit=A0:
+>> The dma_sync_single_for_cpu() call must precede reading the received
+>> data. Fix this.
 >
-> Looks like almost all changes to this driver had been tree-wide
-> refactoring since git era begun. There is one commit from Al
-> 15 years ago which could potentially be fixing a real bug.
+> See original commit 070e1f01827c. It explicitely says that the cache=20
+> must be invalidate _AFTER_ the copy.
 >
-> The driver is using virt_to_bus() and is a real magnet for pointless
-> cleanups. It seems unlikely to have real users. Let's try to shed
-> this maintenance burden.
+> The cache is initialy invalidated by dma_map_single(), so before the=20
+> copy the cache is already clean.
 >
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: corbet@lwn.net
-> CC: tsbogend@alpha.franken.de
-> CC: mpe@ellerman.id.au
-> CC: benh@kernel.crashing.org
-> CC: paulus@samba.org
-> CC: sburla@marvell.com
-> CC: vburru@marvell.com
-> CC: aayarekar@marvell.com
-> CC: arnd@arndb.de
+> After the copy, data is in the cache. In order to allow re-use of the=20
+> skb, it must be put back in the same condition as before, in extenso the=
+=20
+> cache must be invalidated in order to be in the same situation as after=20
+> dma_map_single().
+>
+> So I think your change is wrong.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+OK, looking at it more closely, the change is at least unnecessary since
+there will be a cache invalidation between each use of the buffer either
+way.  Please disregard the patch.  Sorry for the noise.
 
-> ---
->  .../device_drivers/ethernet/dec/de4x5.rst     |  189 -
->  .../device_drivers/ethernet/index.rst         |    1 -
->  arch/mips/configs/mtx1_defconfig              |    1 -
->  arch/powerpc/configs/chrp32_defconfig         |    1 -
->  arch/powerpc/configs/ppc6xx_defconfig         |    1 -
->  drivers/net/ethernet/dec/tulip/Kconfig        |   15 -
->  drivers/net/ethernet/dec/tulip/Makefile       |    1 -
->  drivers/net/ethernet/dec/tulip/de4x5.c        | 5591 -----------------
->  drivers/net/ethernet/dec/tulip/de4x5.h        | 1017 ---
+>>=20
+>> Fixes: 070e1f01827c ("net: fs_enet: don't unmap DMA when packet len is b=
+elow copybreak")
+>> Signed-off-by: Mans Rullgard <mans@mansr.com>
+>> ---
+>>   drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 8 ++++----
+>>   1 file changed, 4 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/dri=
+vers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+>> index b3dae17e067e..432ce10cbfd0 100644
+>> --- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+>> +++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+>> @@ -240,14 +240,14 @@ static int fs_enet_napi(struct napi_struct *napi, =
+int budget)
+>>                                  /* +2 to make IP header L1 cache aligne=
+d */
+>>                                  skbn =3D netdev_alloc_skb(dev, pkt_len =
++ 2);
+>>                                  if (skbn !=3D NULL) {
+>> +                                       dma_sync_single_for_cpu(fep->dev,
+>> +                                               CBDR_BUFADDR(bdp),
+>> +                                               L1_CACHE_ALIGN(pkt_len),
+>> +                                               DMA_FROM_DEVICE);
+>>                                          skb_reserve(skbn, 2);   /* alig=
+n IP header */
+>>                                          skb_copy_from_linear_data(skb,
+>>                                                        skbn->data, pkt_l=
+en);
+>>                                          swap(skb, skbn);
+>> -                                       dma_sync_single_for_cpu(fep->dev,
+>> -                                               CBDR_BUFADDR(bdp),
+>> -                                               L1_CACHE_ALIGN(pkt_len),
+>> -                                               DMA_FROM_DEVICE);
+>>                                  }
+>>                          } else {
+>>                                  skbn =3D netdev_alloc_skb(dev, ENET_RX_=
+FRSIZE);
+>> --
+>> 2.35.1
+>>=20
 
-
-I checked the defconfig files to make sure we are not removing the
-last ethernet driver from
-one of them. mtx1 has built-in networking and no PCI slot, so this is
-definitely fine.
-the ppc32 configs are for machines with PCI slots and also enable
-multiple drivers but I saw
-nothing specifically needing this card.
-
-       Arnd
+--=20
+M=E5ns Rullg=E5rd
