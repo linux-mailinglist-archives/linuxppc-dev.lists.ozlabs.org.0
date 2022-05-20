@@ -1,53 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DECF52E918
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 11:43:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8D852E9B3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 12:13:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4MGX1Zybz3gTd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 19:43:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4Mxw3Wr0z3bs0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 20:13:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=hN05wL0P;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=khAPDsHc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4LnT0TKZz3dwQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 19:21:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=hN05wL0P; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L4LnQ3rFKz4xD1;
- Fri, 20 May 2022 19:21:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1653038475;
- bh=MxobZIVex1WYxvwLCRoknMYiYengi9AOSU9k2JGBEwk=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=hN05wL0PzkdKWI6Hu+3AM6aEPJ1dRut2HbyQcgOjbPRvGBWl6CvMnbzalp7Wy7D49
- Gl4GGIsWy85FaHMOadUyKYUQCOu/C7y9ewQOUsVJOQ/hI6rDGoa5nOTtXkE0Ab/iYN
- l+Nn0m8NTRMVoxa6aphAiki3d0dQX6ZNMujhb0uVc+b/jqS9VlmONzKIJdKRhHzJGu
- pF6Vf8DEA005VWl8F4f9038eXsvhDCh7nl5Xgxpbc3+SXwYPdxv0QgjpfN8RH+x6nI
- 1Is8jZkHXVsHQxsI8jNJjdRtnJqxHQjljR2EVqXmhUSp3y1s6xZtXCASlO0TQUypaC
- h+bwbK3CETOCQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nicholas Piggin via Libc-alpha <libc-alpha@sourceware.org>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC Linux patch] powerpc: add documentation for HWCAPs
-In-Reply-To: <20220520051528.98097-1-npiggin@gmail.com>
-References: <20220520051528.98097-1-npiggin@gmail.com>
-Date: Fri, 20 May 2022 19:21:09 +1000
-Message-ID: <87wnegmuey.fsf@mpe.ellerman.id.au>
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=khAPDsHc; dkim-atps=neutral
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4Mx83ZKJz2yb6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 20:12:59 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24K9t1f5015088;
+ Fri, 20 May 2022 10:12:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=03W+KVCf05ryBpIQznhubjGjNBUYpOjO41ZnD0L+yZY=;
+ b=khAPDsHcfXx79sQeQGGf7zJirqbTPDlZM9P91zN9C81f5yokRd7+zqTQ6sooGALl7EF+
+ ttCRLzUidUzYPckYx56Mwwb/ES+P99/tzw5WDkFVvfYmEdapuiK+ov5gx9WvppRDpa9g
+ v9z0eV9Bk/l+QZnOQPUROnMqIZLKHU88mOFDgaDUls2mDOzib8YLXLzZCqXs+xl4Okyg
+ c442eTLoeUX/ReoxVQivB04p2YXzICFZ3Op0IgIU/qPXp37dQa7p+zDzULKgkSjUfasZ
+ XTzoaUA8kaL9en7NBWBgjtk8wblfMNP1eB8UijleJEnWuINopeQ0geqnXGFI/mXB43sT AA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g65m5m1x4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 10:12:49 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24K9e0pQ029598;
+ Fri, 20 May 2022 10:12:49 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g65m5m1wm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 10:12:49 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24KA7FcG022448;
+ Fri, 20 May 2022 10:12:47 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma05fra.de.ibm.com with ESMTP id 3g4j3gk86v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 10:12:47 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 24K9wlGd40042866
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 May 2022 09:58:47 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 40D6A4C046;
+ Fri, 20 May 2022 10:12:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EB10F4C040;
+ Fri, 20 May 2022 10:12:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.163.31.125])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 20 May 2022 10:12:37 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, mpe@ellerman.id.au
+Subject: [PATCH V3] tools/perf/test: Fix perf all PMU test to skip
+ hv_24x7/hv_gpci tests on powerpc
+Date: Fri, 20 May 2022 15:42:36 +0530
+Message-Id: <20220520101236.17249-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: P3t1m_5cJo1TKPkjLQPk1RLXiH_V5YKx
+X-Proofpoint-ORIG-GUID: XZmE3eOwJARec2zzlTf2ubhndWCst_8O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-20_03,2022-05-20_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0
+ spamscore=0 bulkscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
+ definitions=main-2205200073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,321 +104,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gcc@gcc.gnu.org, libc-alpha@sourceware.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ kjain@linux.ibm.com, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin via Libc-alpha <libc-alpha@sourceware.org> writes:
-> This takes the arm64 file and adjusts it for powerpc. Feature
-> descriptions are vaguely handwaved by me.
-> ---
+"perf all PMU test" picks the input events from
+"perf list --raw-dump pmu" list and runs "perf stat -e"
+for each of the event in the list. In case of powerpc, the
+PowerVM environment supports events from hv_24x7 and hv_gpci
+PMU which is of example format like below:
+- hv_24x7/CPM_ADJUNCT_INST,domain=?,core=?/
+- hv_gpci/event,partition_id=?/
 
-Thanks for attempting to document this.
+The value for "?" needs to be filled in depending on
+system and respective event. CPM_ADJUNCT_INST needs have
+core value and domain value. hv_gpci event needs partition_id.
+Similarly, there are other events for hv_24x7 and hv_gpci
+having "?" in event format. Hence skip these events on powerpc
+platform since values like partition_id, domain is specific
+to system and event.
 
-> Anybody care to expand on or correct the meaning of these entries or
-> bikeshed the wording of the intro? Many of them are no longer used
-> anywhere by upstream kernels and even where they are it's not always
-> quite clear what the exact intent was, a lot of them are old history
-> and I don't know what or where they are used.
->
-> I may try to get these descriptions pushed into the ABI doc after a
-> time, but for now they can live in the kernel tree.
->
-> Thanks,
-> Nick
->
->  Documentation/powerpc/elf_hwcaps.rst | 192 +++++++++++++++++++++++++++
->  1 file changed, 192 insertions(+)
->  create mode 100644 Documentation/powerpc/elf_hwcaps.rst
->
-> diff --git a/Documentation/powerpc/elf_hwcaps.rst b/Documentation/powerpc/elf_hwcaps.rst
-> new file mode 100644
-> index 000000000000..d712aae8b867
-> --- /dev/null
-> +++ b/Documentation/powerpc/elf_hwcaps.rst
-> @@ -0,0 +1,192 @@
-> +.. _elf_hwcaps_index:
-> +
-> +==================
-> +POWERPC ELF hwcaps
-> +==================
-> +
-> +This document describes the usage and semantics of the powerpc ELF hwcaps.
-> +
-> +
-> +1. Introduction
-> +---------------
-> +
-> +Some hardware or software features are only available on some CPU
-> +implementations, and/or with certain kernel configurations, but have no
-> +architected discovery mechanism available to userspace code. The kernel
+Fixes: 3d5ac9effcc6 ("perf test: Workload test of all PMUs")
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+Changelog:
+ v2 -> v3:
+ Fixed patition/partition/ as pointed out by Ian Rogers.
 
-By "no architected discovery mechanism" you mean nothing in the ISA, but
-I think a reader might not understand that. After all HWCAP is an
-"architected discovery mechanism", architected by the kernel and libc.
+ v1 -> v2:
+ Instead of checking for platform, used the pmu name
+ ie, hv_24x7 and hv_gpci to skip the test since this
+ pmu name is specific to powerpc as suggested by
+ Michael Ellerman.
 
-Maybe just say "no other discovery mechanism".
+ tools/perf/tests/shell/stat_all_pmu.sh | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-> +exposes the presence of these features to userspace through a set
-> +of flags called hwcaps, exposed in the auxilliary vector.
->
-> +
-> +Userspace software can test for features by acquiring the AT_HWCAP or
-> +AT_HWCAP2 entry of the auxiliary vector, and testing whether the relevant
-> +flags are set, e.g.::
-> +
-> +	bool floating_point_is_present(void)
-> +	{
-> +		unsigned long hwcaps = getauxval(AT_HWCAP);
-> +		if (hwcaps & PPC_FEATURE_HAS_FPU)
-> +			return true;
-> +
-> +		return false;
-> +	}
-> +
-> +Where software relies on a feature described by a hwcap, it should check
-> +the relevant hwcap flag to verify that the feature is present before
-> +attempting to make use of the feature.
-> +
-> +Features cannot be probed reliably through other means. When a feature
-> +is not available, attempting to use it may result in unpredictable
-> +behaviour, and is not guaranteed to result in any reliable indication
-> +that the feature is unavailable, such as a SIGILL.
+diff --git a/tools/perf/tests/shell/stat_all_pmu.sh b/tools/perf/tests/shell/stat_all_pmu.sh
+index b30dba455f36..7d046bb8a7b9 100755
+--- a/tools/perf/tests/shell/stat_all_pmu.sh
++++ b/tools/perf/tests/shell/stat_all_pmu.sh
+@@ -5,6 +5,16 @@
+ set -e
+ 
+ for p in $(perf list --raw-dump pmu); do
++  # In powerpc, skip the events for hv_24x7 and hv_gpci.
++  # These events needs input values to be filled in for
++  # core, chip, partition id based on system.
++  # Example: hv_24x7/CPM_ADJUNCT_INST,domain=?,core=?/
++  # hv_gpci/event,partition_id=?/
++  # Hence skip these events for ppc.
++  if echo "$p" |grep -Eq 'hv_24x7|hv_gpci' ; then
++    echo "Skipping: Event '$p' in powerpc"
++    continue
++  fi
+   echo "Testing $p"
+   result=$(perf stat -e "$p" true 2>&1)
+   if ! echo "$result" | grep -q "$p" && ! echo "$result" | grep -q "<not supported>" ; then
+-- 
+2.35.1
 
-I'd just drop the "such as a SIGILL", don't give people ideas :)
-
-> +2. hwcap allocation
-> +-------------------
-> +
-> +HWCAPs are allocated as described in Power Architecture 64-Bit ELF V2 ABI
-
-Are we calling them hwcaps or HWCAPs?
-
-> +Specification (which will be reflected in the kernel's uapi headers).
-> +
-> +3. The hwcaps exposed in AT_HWCAP
-> +---------------------------------
-> +
-> +PPC_FEATURE_32
-> +    32-bit CPU
-> +
-> +PPC_FEATURE_64
-> +    64-bit CPU (userspace may be running in 32-bit mode).
-> +
-> +PPC_FEATURE_601_INSTR
-> +    The processor is PowerPC 601
-
-Unused in the kernel since:
-  f0ed73f3fa2c ("powerpc: Remove PowerPC 601")
-
-> +PPC_FEATURE_HAS_ALTIVEC
-> +    Vector (aka Altivec, VSX) facility is available.
-> +
-> +PPC_FEATURE_HAS_FPU
-> +    Floating point facility is available.
-> +
-> +PPC_FEATURE_HAS_MMU
-> +    Memory management unit is present.
-> +
-> +PPC_FEATURE_HAS_4xxMAC
-> +    ?
-
-First appeared in v2.4.9.2, as part of "Paul Mackerras: PPC update (big re-org)":
-
-  https://github.com/mpe/linux-fullhistory/commit/dccd38599dad0588f4fb254c0a188b7c70af02e1
-
-No extra context I can see.
-
-I think all our 4xx (40x or 44x) CPUs have that set, so seems like it
-just means "is a 40x or 44x".
-
-> +PPC_FEATURE_UNIFIED_CACHE
-> +    ?
-
-Unused in the kernel since:
-  39c8bf2b3cc1 ("powerpc: Retire e200 core (mpc555x processor)")
-
-> +PPC_FEATURE_HAS_SPE
-> +    ?
-
-AFAIK means the CPU supports SPE (Signal Processing Engine) instructions.
-
-They were documented in ISA v2.07 Book I chapter 8.
-
-Not to be confused with the Cell SPEs.
-
-I think GCC has dropped support for SPE, so at some point we may want to
-drop the kernel support also, as it will be increasingly untested.
-
-> +PPC_FEATURE_HAS_EFP_SINGLE
-> +    ?
-
-Seems to be SPE related, only set on CPUs that also have SPE.
-
-> +PPC_FEATURE_HAS_EFP_DOUBLE
-> +    ?
-
-As above.
-
-> +PPC_FEATURE_NO_TB
-> +    The timebase facility (mftb instruction) is not available.
-> +
-
-Unused in the kernel since:
-  f0ed73f3fa2c ("powerpc: Remove PowerPC 601")
-
-> +PPC_FEATURE_POWER4
-> +    The processor is POWER4.
-
-We dropped Power4 support in:
-
-  471d7ff8b51b ("powerpc/64s: Remove POWER4 support")
-
-But that bit is still set for PPC970/FX/MP.
-
-> +PPC_FEATURE_POWER5
-> +    The processor is POWER5.
-> +
-> +PPC_FEATURE_POWER5_PLUS
-> +    The processor is POWER5+.
-> +
-> +PPC_FEATURE_CELL
-> +    The processor is Cell.
-> +
-> +PPC_FEATURE_BOOKE
-> +    The processor implements the BookE architecture.
-> +
-> +PPC_FEATURE_SMT
-> +    The processor implements SMT.
-> +
-> +PPC_FEATURE_ICACHE_SNOOP
-> +    The processor icache is coherent with the dcache, and instruction storage
-> +    can be made consistent with data storage for the purpose of executing
-> +    instructions with the instruction sequence:
-> +        sync
-> +        icbi (to any address)
-> +        isync
-
-Where did you get that from, the ISA?
-
-> +PPC_FEATURE_ARCH_2_05
-> +    The processor supports the v2.05 userlevel architecture. Processors
-> +    supporting later architectures also set this feature.
-> +
-> +PPC_FEATURE_PA6T
-> +    The processor is PA6T.
-> +
-> +PPC_FEATURE_HAS_DFP
-> +    DFP facility is available.
-> +
-> +PPC_FEATURE_POWER6_EXT
-> +    The processor is POWER6.
-> +
-> +PPC_FEATURE_ARCH_2_06
-> +    The processor supports the v2.06 userlevel architecture. Processors
-> +    supporting later architectures also set this feature.
-> +
-> +PPC_FEATURE_HAS_VSX
-> +    VSX facility is available.
-> +
-> +PPC_FEATURE_PSERIES_PERFMON_COMPAT
-
-Explanation in:
-  0f4733147520 ("powerpc: Add PPC_FEATURE_PSERIES_PERFMON_COMPAT")
-
-But AFAIK only oprofile ever used that, not perf, or maybe perfmon2 uses it?
-
-> +PPC_FEATURE_TRUE_LE
-> +    Reserved, do not use
-
-No it's not reserved, you read the comment wrong :)
-
-/* Reserved - do not use		0x00000004 */
-#define PPC_FEATURE_TRUE_LE		0x00000002
-#define PPC_FEATURE_PPC_LE		0x00000001
-
-It's 4 that's reserved.
-
-> +PPC_FEATURE_PPC_LE
-> +    Reserved, do not use
-
-There's some discussion of the two LE properties here:
-
-  fab5db97e44f ("[PATCH] powerpc: Implement support for setting little-endian mode via prctl")
-
-But it doesn't really explain the difference.
-
-And this commit:
-
-  651d765d0b2c ("[PATCH] Add a prctl to change the endianness of a process.")
-
-Added the prctl flags:
-
-# define PR_ENDIAN_LITTLE	1	/* True little endian mode */
-# define PR_ENDIAN_PPC_LITTLE	2	/* "PowerPC" pseudo little endian */
-
-Which matches my recollection that PPC_LE is somehow not proper little
-endian, but I've forgotten why. Someone older than me will remember :)
-
-> +3. The hwcaps exposed in AT_HWCAP2
-> +----------------------------------
-> +
-> +PPC_FEATURE2_ARCH_2_07
-> +    The processor supports the v2.07 userlevel architecture. Processors
-> +    supporting later architectures also set this feature.
-> +
-> +PPC_FEATURE2_HTM
-> +    Transactional Memory feature is available.
-> +
-> +PPC_FEATURE2_DSCR
-> +    DSCR facility is available.
-> +
-> +PPC_FEATURE2_EBB
-> +    EBB facility is available.
-> +
-> +PPC_FEATURE2_ISEL
-> +    isel instruction is available. This is superseded by ARCH_2_07 and
-> +    later.
-> +
-> +PPC_FEATURE2_TAR
-> +    VSX facility is available.
-
-Typo?
-
-It means the CPU has the "tar" register. I suspect it's never used.
-
-> +PPC_FEATURE2_VEC_CRYPTO
-> +    v2.07 crypto instructions are available.
-> +
-> +PPC_FEATURE2_HTM_NOSC
-> +    System calls fail if called in a transactional state, see
-> +    Documentation/powerpc/syscall64-abi.rst
-> +
-> +PPC_FEATURE2_ARCH_3_00
-> +    The processor supports the v3.0B / v3.0C userlevel architecture. Processors
-> +    supporting later architectures also set this feature.
-> +
-> +PPC_FEATURE2_HAS_IEEE128
-> +    IEEE 128 is available? What instructions/data?
-> +
-> +PPC_FEATURE2_DARN
-> +    darn instruction is available.
-> +
-> +PPC_FEATURE2_SCV
-> +    scv instruction is available.
-> +
-> +PPC_FEATURE2_HTM_NO_SUSPEND
-> +    A limited Transactional Memory facility that does not support suspend is
-> +    available, see Documentation/powerpc/transactional_memory.rst.
-> +
-> +PPC_FEATURE2_ARCH_3_1
-> +    The processor supports the v3.1 userlevel architecture. Processors
-> +    supporting later architectures also set this feature.
-> +
-> +PPC_FEATURE2_MMA
-> +    MMA facility is available.
-
-
-cheers
