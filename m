@@ -1,65 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F44952EC10
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 14:30:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7569252EC3C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 14:36:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4R016QxYz3btH
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 22:30:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n//aSrT8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4R773J3tz3cKp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 22:36:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=n//aSrT8; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4QzQ2MTKz2yK2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 22:30:10 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 2FAC061E07;
- Fri, 20 May 2022 12:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351AEC385A9;
- Fri, 20 May 2022 12:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1653049806;
- bh=AqlsiTiDuwleDs60bALNrrGbJz64ZW8+v9vBuAfjIdE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=n//aSrT8ReVB2j6Z6WCHL/0E27hvzGhZhsyLSdtYHrlW7pApWXEOxRsVVHnaPu4by
- 7jZvcFfdaRPJj8AShcRrqy/G/9Te5hyyU7E031UruMFJyaqVbdSwmBokv3CR6j+NFV
- Xvb4JAUzvnOOXOLojKlgRveQavW5WHUqP2IibyHS3HXgnUQyS+FKQ6TrTslYASokRK
- UXuFIwAZ5/9Sz3inokKAhG1YblBR8djEbp9loldJhx+kXD+Y5rD9nCya7K44TDqIgT
- OAdD+mqc1Tu/4Mst2Bl6M7wV6q3Mi3l1Kpwcvu+SAKT0ERpwyYafOGKoDWhVoDmPp2
- 3TdVlbbVTcZOA==
-Received: by pali.im (Postfix)
- id E90F45F2; Fri, 20 May 2022 14:30:02 +0200 (CEST)
-Date: Fri, 20 May 2022 14:30:02 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: linux-mm@kvack.org
-Subject: Re: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
-Message-ID: <20220520123002.rd46p5ty6wumi7cc@pali>
-References: <20220302044406.63401-1-ash@heyquark.com>
- <20220302044406.63401-12-ash@heyquark.com>
- <20220513224353.n56qg5fhstbaqhfz@pali>
- <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
- <20220520080454.c3cqodsdbfbkmg56@pali>
- <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.74; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+X-Greylist: delayed 308 seconds by postgrey-1.36 at boromir;
+ Fri, 20 May 2022 22:36:25 AEST
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4R6d5kslz2yK2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 22:36:25 +1000 (AEST)
+Received: from mail-yb1-f174.google.com ([209.85.219.174]) by
+ mrelayeu.kundenserver.de (mreue109 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1M3lgL-1nrCZQ1Bit-000ukx for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May
+ 2022 14:31:11 +0200
+Received: by mail-yb1-f174.google.com with SMTP id p139so13905237ybc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 05:31:10 -0700 (PDT)
+X-Gm-Message-State: AOAM531KNPcgMWBDO5OU2eecDETMwuAJkiWosh8+qh0o949d5ExvdNRl
+ jWuth0ku/UDztaAOUhSq+hH+WnSrzzV8ZBsN38w=
+X-Google-Smtp-Source: ABdhPJzM0/g+q1PRwguziGorhB8SDUsN9iEFZbR/3vnqE9X6zeZuqHYx8uEJ7JXjS9vB4zG423aFir2s+dxjeU1ONqo=
+X-Received: by 2002:a25:31c2:0:b0:641:660f:230f with SMTP id
+ x185-20020a2531c2000000b00641660f230fmr9208955ybx.472.1653049869839; Fri, 20
+ May 2022 05:31:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
-User-Agent: NeoMutt/20180716
+References: <20220519031345.2134401-1-kuba@kernel.org>
+In-Reply-To: <20220519031345.2134401-1-kuba@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 20 May 2022 13:30:50 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3_4fNQV51V0-QUnuTr4dK0-S_ffeFzfA8vG1uGh8vyhg@mail.gmail.com>
+Message-ID: <CAK8P3a3_4fNQV51V0-QUnuTr4dK0-S_ffeFzfA8vG1uGh8vyhg@mail.gmail.com>
+Subject: Re: [PATCH net-next] eth: de4x5: remove support for Generic DECchip &
+ DIGITAL EtherWORKS PCI/EISA
+To: Jakub Kicinski <kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:4DNiUpEaC+69SL5KQkB95/4DmjZDb5zG8tN3FFoD9Rww+rlO6rW
+ Q9mdL1jaJMOG5sIkd1HluvJZ1FZ877yVvVZZTm6ZPekug2d7gK4nxwgi8G3cZcFU7vCClhH
+ LqjkU0ZFbocxzuuTpO7Gn0kYT0d/3gDHjScaqu7U+bT8sxXWIicFi64ZmkAn/MSCcmlIaC1
+ Bz0N2b64xP9d3Sa8v8KRQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ZUB5bkq4gTM=:naH8uxo6tlnXfHAsabs/Pr
+ X6PWReRh6Uopty1u8yc9LZsYhXAd3sp3LJBsF57sE9pTgv2o6UZ2hQ/Kse8qErOq7kd+XDmlX
+ F/42aLj/bE8IYyx898Z+4hlYjjqZWvXvMXzxzCp2quhhgtLIWPPvkVamK7gVq9pCr6pHGLkrD
+ Lw290rrgwLO3vxhbNpfthd+yT2ReZhNO9SorB9aU8jcG5Uw2SX0/wAr3HNUTZY7gXZm9DDFDG
+ Yrph5ZnpAlTAQoBtfuJIiF8Xdke9ljeDmTUxDRhjxcz/FbHelAvcUH2q7AY0WcG+rQ3Ng+baG
+ 45rS9r1zymVjRNl0Dz1QJmjkbi04yJ20VO2xt0R2x4D/G+KhG1BK82BudcAOyvlJyZrTUp3LW
+ JPinZLil5VjAhZDAzhqWwHtHa/uOGphaficfakX2KkfFbXIsgQOt9gXwGMeYSVgggSuwgsvqT
+ UWEOYTNcjl181VMXiG4BgOelxqsJl9LmFrW6OA+/T16ueVR1RJ/iGnpd3lDS+iyWFq/UIyRr+
+ Rfu+8qZ0LMSypWf1vKFXsU3Zo29OSisr4/91VzCCiPDxj7g0X1lRPLRn+PWstl2Y3lZrLSP0O
+ 8+M9VPQRePT6RAiyMa+9lUjZLwCubNf7w6eky0gZWifaByUZJbhGyd5If4CThARa8pClkntOT
+ skVcU9QBTFSW8c0oGxkPiDKe9suTtoMrrqxJNlHEAHDA9jAzeVEgmOoDKWYaquxk/fJVk2m3E
+ y+0OjKd38+caoLjpUB7JN5e8aAgO2Bg1jyWZQ3ZfPPE+o2B3IuqwwavpPfUyekuGFtBADa8sp
+ AFdd8an9nynbwSwiTf7Zrb4mGIEK6XDp4a2DPNcTat1rtwwuuTCCOTsjSsvLblRaeoCRkVeOW
+ 4ou+Ut4MXDI8nAH925Iw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,79 +74,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, robh+dt@kernel.org, paulus@samba.org,
- Ash Logan <ash@heyquark.com>, linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
+Cc: tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, arnd@arndb.de,
+ corbet@lwn.net, netdev@vger.kernel.org, sburla@marvell.com,
+ linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, edumazet@google.com, paulus@samba.org,
+ vburru@marvell.com, zhangyue1@kylinos.cn, pabeni@redhat.com,
+ aayarekar@marvell.com, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+ linux-mm
+On Thu, May 19, 2022 at 4:13 AM Jakub Kicinski <kuba@kernel.org> wrote:
+>
+> Looks like almost all changes to this driver had been tree-wide
+> refactoring since git era begun. There is one commit from Al
+> 15 years ago which could potentially be fixing a real bug.
+>
+> The driver is using virt_to_bus() and is a real magnet for pointless
+> cleanups. It seems unlikely to have real users. Let's try to shed
+> this maintenance burden.
+>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> CC: corbet@lwn.net
+> CC: tsbogend@alpha.franken.de
+> CC: mpe@ellerman.id.au
+> CC: benh@kernel.crashing.org
+> CC: paulus@samba.org
+> CC: sburla@marvell.com
+> CC: vburru@marvell.com
+> CC: aayarekar@marvell.com
+> CC: arnd@arndb.de
 
-Do you know what are requirements for kernel to support non-contiguous
-memory support and what is needed to enable it for 32-bit powerpc?
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-Currently powerpc arch code does not support "memblock.memory.cnt > 1"
-except for WII which seems like a hack... See below.
+> ---
+>  .../device_drivers/ethernet/dec/de4x5.rst     |  189 -
+>  .../device_drivers/ethernet/index.rst         |    1 -
+>  arch/mips/configs/mtx1_defconfig              |    1 -
+>  arch/powerpc/configs/chrp32_defconfig         |    1 -
+>  arch/powerpc/configs/ppc6xx_defconfig         |    1 -
+>  drivers/net/ethernet/dec/tulip/Kconfig        |   15 -
+>  drivers/net/ethernet/dec/tulip/Makefile       |    1 -
+>  drivers/net/ethernet/dec/tulip/de4x5.c        | 5591 -----------------
+>  drivers/net/ethernet/dec/tulip/de4x5.h        | 1017 ---
 
-On Friday 20 May 2022 20:44:04 Ash Logan wrote:
-> On 20/5/22 18:04, Pali Rohár wrote:
-> > On Friday 20 May 2022 13:41:04 Ash Logan wrote:
-> >> On 14/5/22 08:43, Pali Rohár wrote:
-> >>> On Wednesday 02 March 2022 15:44:05 Ash Logan wrote:
-> >>>> pgtable_32.c:mapin_ram loops over each valid memory range, which means
-> >>>> non-contiguous memory just works.
-> >>>
-> >>> Hello! Does it mean that non-contiguous memory works for any 32-bit
-> >>> powerpc platform, and not only for wiiu? If yes, should not be
-> >>> non-contiguous memory support enabled for all 32-bit ppc boards then?
-> >>
-> >> Hi! Sorry for my delayed response. As best I can tell, it does indeed
-> >> Just Work, but I have only been able to test on wiiu which is missing a
-> >> lot of features other boards have (like PCI) - so it's possible there's
-> >> still an assumption elsewhere in the kernel that I haven't hit.
-> >>
-> >> As best I can tell, the Wii and Wii U are the only 32-bit powerpc boards
-> >> out there where it's even possible to have non-contiguous memory.
-> > 
-> > What is the reason that those two boards are the **only**? Is there some
-> > specific requirement from bootloader or hardware to "enable"
-> > non-contiguous memory support?
-> 
-> Not that I know of, I was just saying that I was only aware of those two
-> boards where the memory map isn't contiguous, and that is the only place
-> where it has been tested. Evidently you know of another board!
-> 
-> > I'm interested in enabling non-contiguous memory support for P2020-based
-> > board as it has gaps in its 32-bit memory layout and which could be used
-> > for RAM mapping when 4GB DDR3 module is plugged in (default is 2GB).
-> 
-> If it's like the Wii or Wii U (some memory at 0, a gap for MMIO or
-> whatever, then more memory at a higher address) then you should try a
-> patch along these lines, because barring the unknowns I mentioned before
-> it should work. At least as far as I'm aware ;)
-> 
-> >>>> Signed-off-by: Ash Logan <ash@heyquark.com>
-> >>>> ---
-> >>>>  arch/powerpc/mm/init_32.c | 4 ++--
-> >>>>  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>>>
-> >>>> diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
-> >>>> index 3d690be48e84..59a84629d9a0 100644
-> >>>> --- a/arch/powerpc/mm/init_32.c
-> >>>> +++ b/arch/powerpc/mm/init_32.c
-> >>>> @@ -125,10 +125,10 @@ void __init MMU_init(void)
-> >>>>  	 * lowmem_end_addr is initialized below.
-> >>>>  	 */
-> >>>>  	if (memblock.memory.cnt > 1) {
-> >>>> -#ifndef CONFIG_WII
-> >>>> +#if !defined(CONFIG_WII) && !defined(CONFIG_WIIU)
-> >>>>  		memblock_enforce_memory_limit(memblock.memory.regions[0].size);
-> >>>>  		pr_warn("Only using first contiguous memory region\n");
-> >>>> -#else
-> >>>> +#elif defined(CONFIG_WII)
-> >>>>  		wii_memory_fixups();
-> >>>>  #endif
-> >>>>  	}
-> >>>> -- 
-> >>>> 2.35.1
-> >>>>
+
+I checked the defconfig files to make sure we are not removing the
+last ethernet driver from
+one of them. mtx1 has built-in networking and no PCI slot, so this is
+definitely fine.
+the ppc32 configs are for machines with PCI slots and also enable
+multiple drivers but I saw
+nothing specifically needing this card.
+
+       Arnd
