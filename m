@@ -2,131 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B7652E80D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 10:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9064552E7FD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 10:48:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4L5b3FLyz3dny
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 18:50:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4L3637p6z3bt4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 18:48:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=aia/QyHk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aZjezkrD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=samsung.com (client-ip=203.254.224.25; helo=mailout2.samsung.com;
- envelope-from=maninder1.s@samsung.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256
- header.s=mail20170921 header.b=aia/QyHk; 
- dkim-atps=neutral
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=aZjezkrD; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4L4v2qzbz2xB1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 18:49:34 +1000 (AEST)
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
- by mailout2.samsung.com (KnoxPortal) with ESMTP id
- 20220520083916epoutp023cb1a42d725b95d6d8f1594f01295d96~ww3GiYS5L1883218832epoutp02L;
- Fri, 20 May 2022 08:39:16 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com
- 20220520083916epoutp023cb1a42d725b95d6d8f1594f01295d96~ww3GiYS5L1883218832epoutp02L
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1653035956;
- bh=UsfrS4UvuS4dFM05SqF8Ta7tbBY/QrlkptYTWqQNH+E=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=aia/QyHkPpm/zR9tj4Cj7Hno19svunmYHyHwsInquziQDKY6IlXghgdpNSmRLJkwO
- rMMgMNRRTwdODovo4wXmgmRKS2FfG2tsdIrmOBUT4Rusv/VF9vkaCQC3zAi4lJgly2
- CJZrPhtTbfKzpzk8glBclSgx019w9KpRKn0+ZccE=
-Received: from epsmges5p3new.samsung.com (unknown [182.195.42.75]) by
- epcas5p4.samsung.com (KnoxPortal) with ESMTP id
- 20220520083915epcas5p4ec28bb7c4b401490d717d8b028e47e93~ww3FwITUq1733217332epcas5p44;
- Fri, 20 May 2022 08:39:15 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
- epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
- 5B.93.09762.3B357826; Fri, 20 May 2022 17:39:15 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
- epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
- 20220520083805epcas5p40642f5a7f9844c61792cd3ac41ac01d3~ww2E389Eb1223812238epcas5p4E;
- Fri, 20 May 2022 08:38:05 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
- epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20220520083805epsmtrp14fa161785f4b8b8d2ec9823b3eae2ad9~ww2E2p3KN0239102391epsmtrp1b;
- Fri, 20 May 2022 08:38:05 +0000 (GMT)
-X-AuditID: b6c32a4b-1fdff70000002622-65-628753b319ca
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
- epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
- 25.08.08924.D6357826; Fri, 20 May 2022 17:38:05 +0900 (KST)
-Received: from localhost.localdomain (unknown [107.109.224.44]) by
- epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20220520083757epsmtip233116cea119605d9acfdc1abbb98de9a~ww19d5gaj3055430554epsmtip28;
- Fri, 20 May 2022 08:37:57 +0000 (GMT)
-From: Maninder Singh <maninder1.s@samsung.com>
-To: keescook@chromium.org, pmladek@suse.com, bcain@quicinc.com,
- mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, satishkh@cisco.com,
- sebaddel@cisco.com, kartilak@cisco.com, jejb@linux.ibm.com,
- martin.petersen@oracle.com, mcgrof@kernel.org, jason.wessel@windriver.com,
- daniel.thompson@linaro.org, dianders@chromium.org,
- naveen.n.rao@linux.ibm.com, anil.s.keshavamurthy@intel.com,
- davem@davemloft.net, mhiramat@kernel.org, peterz@infradead.org,
- mingo@redhat.com, will@kernel.org, longman@redhat.com, boqun.feng@gmail.com,
- rostedt@goodmis.org, senozhatsky@chromium.org,
- andriy.shevchenko@linux.intel.com, linux@rasmusvillemoes.dk,
- akpm@linux-foundation.org, arnd@arndb.de
-Subject: [PATCH 5/5] kallsyms: remove unsed API lookup_symbol_attrs
-Date: Fri, 20 May 2022 14:07:01 +0530
-Message-Id: <20220520083701.2610975-6-maninder1.s@samsung.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220520083701.2610975-1-maninder1.s@samsung.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4L1m1K3Cz3dQb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 18:46:51 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24K8i9Nb038354;
+ Fri, 20 May 2022 08:46:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=2UM2F/tBEu7oRCsSMclhmBlUPqAMJ13a5X/w3r4lp28=;
+ b=aZjezkrDYW+3XXt1FBBhu2WLX4S6wutAYQLEl3UL2F70GQQoVw82t2sj2eSr/9Va3IIW
+ Sx7EP+gMC0CRrYWl3Kp7FYgOsLMcILglNZ6IckoFlPwHgo+xqKC2Kd3XyBW5AjE0hjJD
+ 9nZtgdsJYozgEqKvIsAWHObZY0U1ceGX5DRJU0TLOXQVg6QgVauXBH2tWHzjglOO8QEX
+ ORCk3qx43Bz7o+n3Q/gAhBUfciTSfviHE0FOxoV4C+TTW3fzENDz9NUoVS2Ye2gWUW99
+ VPmFUkdAZmfhVVU174C4dyq3SKgI4RAaIcTDvebucHdqz/xxKuwkYH6Fm6wuppxYhYtM VQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g67r500xg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 08:46:44 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24K8k8ck005401;
+ Fri, 20 May 2022 08:46:43 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g67r500x4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 08:46:43 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24K8bAqD023408;
+ Fri, 20 May 2022 08:46:41 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma03fra.de.ibm.com with ESMTP id 3g2428xx68-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 08:46:41 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 24K8Wf4B48955736
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 May 2022 08:32:41 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 49ECF4203F;
+ Fri, 20 May 2022 08:46:38 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4ED9F42041;
+ Fri, 20 May 2022 08:46:32 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.163.31.125])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 20 May 2022 08:46:31 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, mpe@ellerman.id.au
+Subject: [PATCH V3 1/2] powerpc/perf: Add support for caps under sysfs in
+ powerpc
+Date: Fri, 20 May 2022 14:16:29 +0530
+Message-Id: <20220520084630.15181-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA01TfUxTVxzNfX0fBVPyBBfvIBsbC05RYc4577IJyzTL0w3nwjYzNwdFX5BI
- kbV2sI/MCgUHiGuQD2lLsZAhFgaUryDfFMdnBxaRgUAEQaHAoMigIgFW+kbmf+f8zvndc89N
- Lp/nnEi58kPDz7PicGGYB+mIVzTt2L67NOBS8BulPRTSd5hJpC4qIFFSdDqGqicGcLSS3Eyh
- kWo5jizRsTxUUHYRQ6MrBhIZp4copO6yCX/mNpLojnKRQFMaHUCjzWUYyu6rwFB/vgQZE0VI
- rjcRqKa2DUez8koS3a1Sk0imshJIoY3hocS/bLNRpYZEy9ZVAnU0t+KoKSsORzdaVjHUp3gE
- UM6Nbai74TqGymS25PyUFQrlXbYQqOB2DoVakhowtDa6QKC6X4YxZPxNBVDiswyAqvXZJMot
- +p1ChrZMgOSD+973ZpafJQNGJTPhTMqynmDKbvZjTLZZhjO3lEMUI6+7TzGleV5MTo0ZYy5P
- ywmmRBdPMoO9NSTTem0ZZxTZDYDRtH3KdF3TgmOuJxzfO82GhX7Hin18gxzPDOU9JiLGPaOm
- RzpxGYh1TwAOfEi/Be8Wl5IJwJHvTFcDqJi08DjyBEDz03qKI/MAli52gI2V9OpOjBOqALTW
- rgKO/ANg/GUFb91F0t5QV1WDr+MttJ6Ei0b/dROPHsJg4YSFWhdc6INwYCbevoDTnnCksNuO
- BbQv1K5qcC7OHWZ0W+1+B9oP9s0M4pxnM2zLGLNjns0TU66yXxzStY5wbGncVolvI4fgROPL
- 3DkucLKljOKwKzT/GkdxlkhYrrjArcoBrFenkJzHD46ZtMS6h0fvgEVVPtz4JZjaXohxsU4w
- aXkM4+YCWKnZwJ5Q3l9McNgNzs/N/VeFgU2djTj3WMkAmiavkgrwivK5Osrn6ij/j74OeDrw
- IhshEYWwkn0Re8PZSG+JUCSRhod4nzonKgH2/+L1USV4OGzxNgCMDwwA8nkeWwRAJA92FpwW
- fv8DKz4XKJaGsRIDcOPjHlsF9NrFYGc6RHiePcuyEax4Q8X4Dq4y7M5tn9dFPytNBVHDn3TB
- qMBevfBI1/Fdkq+7s75ofDN2oTygZ2vl4R9Ptn9jPLLywI/EpVfLye3tj9QTA/wpjXXSY6L4
- aeCFPzpmnVJ3BmTHfGbOP/ll5M1Dqlu7Kw86bwu5EuHV66t7OzowxCUt98q8dPaA1XQ0vmTm
- SXvOzIGizHH3o0Pl8dITToJ7cWLfhb87EvZaej4//m3Fx24qg1vAqzXvXprXhavPDgZ+eCp1
- oTXNa080HZWeZk7K72kX7pfOkgmblpaC/EFmkPaBZX9oKlHUdvjhY113fWdMLFp7jR69N/fB
- rvvvuA9vOtYj1XZ+pczaOVUX+oLTTwEi44K/OmdzrQcuOSPc48UTS4T/ApmcuBOeBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0xTdxiH/Z+ec3rJGGeF4BksMqto0gHOIdub6JiJW3JiFhnRZAynrMwT
- 0NHKWnGic6lYueNYwwK0FbmEi6VO65ChdIyVpbYD5bJFKLSZlZVSIIWYOCKFulK2xG9Pfs+T
- vF9eHkfYS0TzjstOsXKZJFdECvCuflFsgvRgcdab11doMA54SdDdMJBQWViDQc/MJA6ragsX
- XD0qHBYLL3HA0HkBg6lVMwmD804u6IaC4n7rryQMa/4hYK5ej2DK0olB03gXBvYOBQyWS0Fl
- HCHA9LMNhwVVNwl/3NWRoNQuEVDVeJED5WPBbUpTT4J/KUDAgMWKQ//VIhza7gUwGK9yI2hu
- 2wajfQ0YdCqDlzuqV7nQXrFIgOG3Zi7cq+zD4PnUUwJ6Sx5hMNiiRVC+XIegx9hEQuuN61ww
- 264gUDmS9yYy/mU1YrTKEZyp9hsJpvOaHWOavEqcuaNxchlV7wSX+bFdzDSbvBhTMa8imFv6
- UpJxPDSRjLXWjzNVTX2IqbelMUO1jeij6AzBnmNs7vHTrHxHymeCHGf7NJHniTsz73qAK9Gl
- 2DLE59HULrqm5wFWhgQ8IdWN6OWGGXJdxNDPAgv4OkfQ1wIe7nr0BNG6b2uINUFSibT+rglf
- E5GUk6Sniy+HKg7lweibLitnrYqg9tGTvtIQ41Qc7fphNMRhVArdGKj/70QsXTe6xF1jPvUe
- Pe5zhHZhsLFUN5Lr/Su0re7v0M4J9hdvazlViNK8oDQvqAaE6dGrbJ5Cmi1V7Mx7S8Z+laiQ
- SBX5suzEz09Kb6HQi4nF3cikX0w0I4yHzIjmcUSRYUiqyhKGHZMUnGXlJzPl+bmswoxieLho
- Y9hwmS1TSGVLTrFfsGweK//fYjx+tBI7YTQmGeJnde6MidSi0iTVmQGXzukLXw0Pm9k6mbDP
- 942sfLfk7a9lfv/RykPuHe5DHanTFbrph0eYp+fTV9Rfnk+98rtNkHM6OS7jWUG/Y/cd/i+F
- aV6zs9k6S+79fv8ndm3xhN7kOMHJlFrISiYeb4lq5be0PUpfeGfTOZ5hxZMp9tcMHNjy6eEN
- +qRsdUTlk4Vau2BMNnw7P6Fkv3nznrqX5g98cLREXdKtvhp12X/zp8dpvr9Syy6oLTHuubMH
- 7wtmz/25a+z5+60bVWmvf7jJLrNu8bhFrqjtkckb3hgZSv+uaC78tcMfCzQJj1MiJrcuZhkL
- 4t3e5SPvGl/uUsVtFuGKHMlOMUeukPwLrdBORtEDAAA=
-X-CMS-MailID: 20220520083805epcas5p40642f5a7f9844c61792cd3ac41ac01d3
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-X-CMS-RootMailID: 20220520083805epcas5p40642f5a7f9844c61792cd3ac41ac01d3
-References: <20220520083701.2610975-1-maninder1.s@samsung.com>
- <CGME20220520083805epcas5p40642f5a7f9844c61792cd3ac41ac01d3@epcas5p4.samsung.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: FIj2d82alGAnAUKL9JXC8K4ELby-80yY
+X-Proofpoint-ORIG-GUID: 4pdTL-g2eeAb54R5fdM46a0HoXgAWECu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-20_03,2022-05-19_03,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015
+ mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 mlxlogscore=999 impostorscore=0 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205200061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,155 +104,215 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: v.narang@samsung.com, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-kernel@vger.kernel.org, onkarnath.1@samsung.com,
- kgdb-bugreport@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
- Maninder Singh <maninder1.s@samsung.com>, linuxppc-dev@lists.ozlabs.org,
- linux-modules@vger.kernel.org
+Cc: irogers@google.com, maddy@linux.vnet.ibm.com, rnsastry@linux.ibm.com,
+ kjain@linux.ibm.com, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, disgoel@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-with commit '7878c231dae0 ("slab: remove /proc/slab_allocators")'
-lookup_symbol_attrs usage is removed.
+Add caps support under "/sys/bus/event_source/devices/<pmu>/"
+for powerpc. This directory can be used to expose some of the
+specific features that powerpc PMU supports to the user.
+Example: pmu_name. The name of PMU registered will depend on
+platform, say power9 or power10 or it could be Generic Compat
+PMU.
 
-Thus removing redundant API.
+Currently the only way to know which is the registered
+PMU is from the dmesg logs. But clearing the dmesg will make it
+difficult to know exact PMU backend used. And even extracting
+from dmesg will be complicated, as we need  to parse the dmesg
+logs and add filters for pmu name. Whereas by exposing it via
+caps will make it easy as we just need to directly read it from
+the sysfs.
 
-Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+Add a caps directory to /sys/bus/event_source/devices/cpu/
+for power8, power9, power10 and generic compat PMU in respective
+PMU driver code. Update the pmu_name file under caps folder
+in core-book3s using "attr_update".
+
+The information exposed currently:
+ - pmu_name : Underlying PMU name from the driver
+
+Example result with power9 pmu:
+
+ # ls /sys/bus/event_source/devices/cpu/caps
+pmu_name
+
+ # cat /sys/bus/event_source/devices/cpu/caps/pmu_name
+POWER9
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- include/linux/kallsyms.h |  6 ------
- include/linux/module.h   |  6 ------
- kernel/kallsyms.c        | 28 ----------------------------
- kernel/module/kallsyms.c | 28 ----------------------------
- 4 files changed, 68 deletions(-)
+Changelog:
+ v2 -> v3:
+ Removed the newline in sysfs_emit.
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index 8fe535fd848a..b78e9d942a77 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -91,7 +91,6 @@ extern int sprint_backtrace(char *buffer, size_t size, unsigned long address);
- extern int sprint_backtrace_build_id(char *buffer, size_t size, unsigned long address);
- 
- int lookup_symbol_name(unsigned long addr, char *symname, size_t size);
--int lookup_symbol_attrs(unsigned long addr, unsigned long *size, unsigned long *offset, char *modname, char *name);
- 
- /* How and when do we show kallsyms values? */
- extern bool kallsyms_show_value(const struct cred *cred);
-@@ -153,11 +152,6 @@ static inline int lookup_symbol_name(unsigned long addr, char *symname, size_t s
- 	return -ERANGE;
- }
- 
--static inline int lookup_symbol_attrs(unsigned long addr, unsigned long *size, unsigned long *offset, char *modname, char *name)
--{
--	return -ERANGE;
--}
--
- static inline bool kallsyms_show_value(const struct cred *cred)
- {
- 	return false;
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 9b91209d615f..4c5f8f99a252 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -658,7 +658,6 @@ const char *module_address_lookup(unsigned long addr,
- 			    char **modname, const unsigned char **modbuildid,
- 			    char *namebuf, size_t buf_size);
- int lookup_module_symbol_name(unsigned long addr, char *symname, size_t size);
--int lookup_module_symbol_attrs(unsigned long addr, unsigned long *size, unsigned long *offset, char *modname, char *name);
- 
- int register_module_notifier(struct notifier_block *nb);
- int unregister_module_notifier(struct notifier_block *nb);
-@@ -766,11 +765,6 @@ static inline int lookup_module_symbol_name(unsigned long addr, char *symname, s
- 	return -ERANGE;
- }
- 
--static inline int lookup_module_symbol_attrs(unsigned long addr, unsigned long *size, unsigned long *offset, char *modname, char *name)
--{
--	return -ERANGE;
--}
--
- static inline int module_get_kallsym(unsigned int symnum, unsigned long *value,
- 					char *type, char *name,
- 					char *module_name, int *exported)
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-index d6efce28505d..96ad59b5b2fd 100644
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -430,34 +430,6 @@ int lookup_symbol_name(unsigned long addr, char *symname, size_t size)
+ v1 -> v2:
+ Move the show function as generic in core-book3s
+ and update show function using sysfs_emit and ppmu->name
+ Added Documention for this ABI in patch 2.
+ Notes: The caps directory is implemented in PMU for other
+ architectures already. Reference commit for x86:
+ commit b00233b53065 ("perf/x86: Export some PMU attributes in caps/ directory")
+
+ arch/powerpc/perf/core-book3s.c        | 31 ++++++++++++++++++++++++++
+ arch/powerpc/perf/generic-compat-pmu.c | 10 +++++++++
+ arch/powerpc/perf/power10-pmu.c        | 10 +++++++++
+ arch/powerpc/perf/power8-pmu.c         | 10 +++++++++
+ arch/powerpc/perf/power9-pmu.c         | 10 +++++++++
+ 5 files changed, 71 insertions(+)
+
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index b5b42cf0a703..80237fd07010 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2488,6 +2488,33 @@ static int power_pmu_prepare_cpu(unsigned int cpu)
  	return 0;
  }
  
--int lookup_symbol_attrs(unsigned long addr, unsigned long *size,
--			unsigned long *offset, char *modname, char *name)
--{
--	int res;
--
--	name[0] = '\0';
--	name[KSYM_NAME_LEN - 1] = '\0';
--
--	if (is_ksym_addr(addr)) {
--		unsigned long pos;
--
--		pos = get_symbol_pos(addr, size, offset);
--		/* Grab name */
--		kallsyms_expand_symbol(get_symbol_offset(pos),
--				       name, KSYM_NAME_LEN);
--		modname[0] = '\0';
--		goto found;
--	}
--	/* See if it's in a module. */
--	res = lookup_module_symbol_attrs(addr, size, offset, modname, name);
--	if (res)
--		return res;
--
--found:
--	cleanup_symbol_name(name);
--	return 0;
--}
--
- /* Look up a kernel symbol and return it in a text buffer. */
- static int __sprint_symbol(char *buffer, size_t buf_size, unsigned long address,
- 			   int symbol_offset, int add_offset, int add_buildid)
-diff --git a/kernel/module/kallsyms.c b/kernel/module/kallsyms.c
-index c982860405c6..e6f16c62a888 100644
---- a/kernel/module/kallsyms.c
-+++ b/kernel/module/kallsyms.c
-@@ -375,34 +375,6 @@ int lookup_module_symbol_name(unsigned long addr, char *symname, size_t size)
- 	return -ERANGE;
- }
- 
--int lookup_module_symbol_attrs(unsigned long addr, unsigned long *size,
--			       unsigned long *offset, char *modname, char *name)
--{
--	struct module *mod;
--
--	preempt_disable();
--	list_for_each_entry_rcu(mod, &modules, list) {
--		if (mod->state == MODULE_STATE_UNFORMED)
--			continue;
--		if (within_module(addr, mod)) {
--			const char *sym;
--
--			sym = find_kallsyms_symbol(mod, addr, size, offset);
--			if (!sym)
--				goto out;
--			if (modname)
--				strscpy(modname, mod->name, MODULE_NAME_LEN);
--			if (name)
--				strscpy(name, sym, KSYM_NAME_LEN);
--			preempt_enable();
--			return 0;
--		}
--	}
--out:
--	preempt_enable();
--	return -ERANGE;
--}
--
- int module_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
- 		       char *name, char *module_name, int *exported)
++static ssize_t pmu_name_show(struct device *cdev,
++		struct device_attribute *attr,
++		char *buf)
++{
++	if (ppmu)
++		return sysfs_emit(buf, "%s", ppmu->name);
++
++	return 0;
++}
++
++static DEVICE_ATTR_RO(pmu_name);
++
++static struct attribute *pmu_caps_attrs[] = {
++	&dev_attr_pmu_name.attr,
++	NULL
++};
++
++static const struct attribute_group pmu_caps_group = {
++	.name  = "caps",
++	.attrs = pmu_caps_attrs,
++};
++
++static const struct attribute_group *pmu_caps_groups[] = {
++	&pmu_caps_group,
++	NULL,
++};
++
+ int __init register_power_pmu(struct power_pmu *pmu)
  {
+ 	if (ppmu)
+@@ -2498,6 +2525,10 @@ int __init register_power_pmu(struct power_pmu *pmu)
+ 		pmu->name);
+ 
+ 	power_pmu.attr_groups = ppmu->attr_groups;
++
++	if (ppmu->flags & PPMU_ARCH_207S)
++		power_pmu.attr_update = pmu_caps_groups;
++
+ 	power_pmu.capabilities |= (ppmu->capabilities & PERF_PMU_CAP_EXTENDED_REGS);
+ 
+ #ifdef MSR_HV
+diff --git a/arch/powerpc/perf/generic-compat-pmu.c b/arch/powerpc/perf/generic-compat-pmu.c
+index f3db88aee4dd..817c69863038 100644
+--- a/arch/powerpc/perf/generic-compat-pmu.c
++++ b/arch/powerpc/perf/generic-compat-pmu.c
+@@ -151,9 +151,19 @@ static const struct attribute_group generic_compat_pmu_format_group = {
+ 	.attrs = generic_compat_pmu_format_attr,
+ };
+ 
++static struct attribute *generic_compat_pmu_caps_attrs[] = {
++	NULL
++};
++
++static struct attribute_group generic_compat_pmu_caps_group = {
++	.name  = "caps",
++	.attrs = generic_compat_pmu_caps_attrs,
++};
++
+ static const struct attribute_group *generic_compat_pmu_attr_groups[] = {
+ 	&generic_compat_pmu_format_group,
+ 	&generic_compat_pmu_events_group,
++	&generic_compat_pmu_caps_group,
+ 	NULL,
+ };
+ 
+diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
+index c6d51e7093cf..d1adcd9f52e2 100644
+--- a/arch/powerpc/perf/power10-pmu.c
++++ b/arch/powerpc/perf/power10-pmu.c
+@@ -258,6 +258,15 @@ static const struct attribute_group power10_pmu_format_group = {
+ 	.attrs = power10_pmu_format_attr,
+ };
+ 
++static struct attribute *power10_pmu_caps_attrs[] = {
++	NULL
++};
++
++static struct attribute_group power10_pmu_caps_group = {
++	.name  = "caps",
++	.attrs = power10_pmu_caps_attrs,
++};
++
+ static const struct attribute_group *power10_pmu_attr_groups_dd1[] = {
+ 	&power10_pmu_format_group,
+ 	&power10_pmu_events_group_dd1,
+@@ -267,6 +276,7 @@ static const struct attribute_group *power10_pmu_attr_groups_dd1[] = {
+ static const struct attribute_group *power10_pmu_attr_groups[] = {
+ 	&power10_pmu_format_group,
+ 	&power10_pmu_events_group,
++	&power10_pmu_caps_group,
+ 	NULL,
+ };
+ 
+diff --git a/arch/powerpc/perf/power8-pmu.c b/arch/powerpc/perf/power8-pmu.c
+index e37b1e714d2b..2518f5375d4a 100644
+--- a/arch/powerpc/perf/power8-pmu.c
++++ b/arch/powerpc/perf/power8-pmu.c
+@@ -187,9 +187,19 @@ static const struct attribute_group power8_pmu_events_group = {
+ 	.attrs = power8_events_attr,
+ };
+ 
++static struct attribute *power8_pmu_caps_attrs[] = {
++	NULL
++};
++
++static struct attribute_group power8_pmu_caps_group = {
++	.name  = "caps",
++	.attrs = power8_pmu_caps_attrs,
++};
++
+ static const struct attribute_group *power8_pmu_attr_groups[] = {
+ 	&isa207_pmu_format_group,
+ 	&power8_pmu_events_group,
++	&power8_pmu_caps_group,
+ 	NULL,
+ };
+ 
+diff --git a/arch/powerpc/perf/power9-pmu.c b/arch/powerpc/perf/power9-pmu.c
+index c393e837648e..5c654ce1a417 100644
+--- a/arch/powerpc/perf/power9-pmu.c
++++ b/arch/powerpc/perf/power9-pmu.c
+@@ -258,9 +258,19 @@ static const struct attribute_group power9_pmu_format_group = {
+ 	.attrs = power9_pmu_format_attr,
+ };
+ 
++static struct attribute *power9_pmu_caps_attrs[] = {
++	NULL
++};
++
++static struct attribute_group power9_pmu_caps_group = {
++	.name  = "caps",
++	.attrs = power9_pmu_caps_attrs,
++};
++
+ static const struct attribute_group *power9_pmu_attr_groups[] = {
+ 	&power9_pmu_format_group,
+ 	&power9_pmu_events_group,
++	&power9_pmu_caps_group,
+ 	NULL,
+ };
+ 
 -- 
-2.17.1
+2.35.1
 
