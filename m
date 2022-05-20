@@ -1,98 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B383152EFD2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 17:58:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988FE52EFD9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 17:59:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4WbT57yDz3bkg
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 May 2022 01:58:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4WdQ3Kq1z3bv8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 May 2022 01:59:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=trRjO9Rk;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=ZfPQ6RMz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::42c;
+ helo=mail-wr1-x42c.google.com; envelope-from=irogers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=trRjO9Rk; dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20210112 header.b=ZfPQ6RMz; dkim-atps=neutral
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com
+ [IPv6:2a00:1450:4864:20::42c])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4WZm2BZsz3bXn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 May 2022 01:57:35 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24KDhpfS012784;
- Fri, 20 May 2022 15:57:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=h+FMIaMbYBHmr462sNYgkwt/IvmyaI0IcvD2SRf4XwY=;
- b=trRjO9RkedfAEozyJ/l90fCrha7/oKs0gGqNWq68RlVgyBPahqrblSI6dPWjNJuJnKiC
- PFcoSRxfK3ilsxy5fiw/Gy2qGOIjpboPifsQUYFKIbjLXTW6dI38OgVb3Upr3QTImKyd
- okDUg/Nv3e3Y0RfvCH9qB8fWe8BBmHDZ1qCSwDpJccKVlaA2zLmjvoW7MbuZ8cqghcLT
- HUs4EbNvW9uOz0ZnwztraiL0rnDA+fgj135fMAilnoi7WVg3gxK8Pme68bmeePqPcz1I
- YBboF7jiQxznwGutDfTLIaJLTBpdr1r5BFbBIUXA0djT9+C3bDDX0nK73kNd0TwVi8IB aw== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g6c4835mm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 May 2022 15:57:29 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24KFUdZ3017013;
- Fri, 20 May 2022 15:57:29 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g6c4835m2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 May 2022 15:57:28 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24KFs9YN025089;
- Fri, 20 May 2022 15:57:27 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04ams.nl.ibm.com with ESMTP id 3g2429h2wf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 May 2022 15:57:27 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24KFvNwL20840808
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 May 2022 15:57:23 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D33C9AE055;
- Fri, 20 May 2022 15:57:23 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8526AAE04D;
- Fri, 20 May 2022 15:57:23 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.68.37])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 20 May 2022 15:57:23 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com
-Subject: [PATCH] powerpc/64s: Don't read H_BLOCK_REMOVE characteristics in
- radix mode
-Date: Fri, 20 May 2022 17:57:21 +0200
-Message-Id: <20220520155721.10211-1-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.36.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4Wcn3Hksz2ywr
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 May 2022 01:59:20 +1000 (AEST)
+Received: by mail-wr1-x42c.google.com with SMTP id t6so12076600wra.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 08:59:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+PwFAuFgONb+vg0ZLZxC6Xv2WfN46rPNU+1JbG6LHMk=;
+ b=ZfPQ6RMzXBoOdMkQC/e3gsjgM43Gs/A6hC2+e8rExFj7C19n6ZFMS5dy88XesH8E0x
+ Soy5IhKWEUlL7e0zPU+1ZdhaVQQsGMjf8oDyXq2wtOENSVB0DDFSuxzbK5UYtFgoSCKa
+ YI2nBrJiBMrCjh6EEeQ9YVVabOB8yKwLMQVQhPQkThZmoxfED9izWaZDR1t8pdgBf/dF
+ k5uVVA/rzoZQezo0C724OfIGoXewBHrhvNZA5z+JagR37COX4IPCPo+hERs5F9L9Vonl
+ uMmKcvFnMZ1zzL9ahnYqTU6UaasTdYTewSVO/jOay0Ntg94hk9KWHM3Dd3W8IzRF/oG/
+ MkNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+PwFAuFgONb+vg0ZLZxC6Xv2WfN46rPNU+1JbG6LHMk=;
+ b=Q/6+h4dGdf9h6SzvTaytI+C/ty745lR7Q+25CdBK5ztFkdgFDvyLQEDj6bQBVLEdxd
+ P2HM69659TxuXNBspUAkg4YIWt3UAEtaxWsJF4DLx9q727bDhnLAACg3YPIJlyShR9za
+ gbZKsUys1EfMPww5BgbotkpgW5UacL04FODOd4YkiqN7l0bsuvDwwz4wXpK+U/SJgalT
+ tnXHSFhLcT5R+yJAphC+RoccC9/p/pqT4hxbSOxsQEnnR8cWalATEp99SGtA5EgST99P
+ bET+FDhQL3L4sTUmSQhty/MW3LrVH0u7AYB7pAtHq0S09bMCIBIRJ3Ycwz8ULiwEPww2
+ kAww==
+X-Gm-Message-State: AOAM532+MkvuegyF3zjYIsqYXyg0nc51vijr1xENgNUhogotvk5gL4v3
+ 2ktUvWtKa8hZb78Jf5mC/P2hpnuI5b/4l5dfpEY7+w==
+X-Google-Smtp-Source: ABdhPJz3KxMmXQxeNwT0z3srN5Ei4fSMZ+Vn6Mfq8zTE0XRnBM+G3mMbPmQPJiAvD7LzJ9phdKW0QzCXaz6fmvd5SrM=
+X-Received: by 2002:a5d:598f:0:b0:20c:83c9:b05b with SMTP id
+ n15-20020a5d598f000000b0020c83c9b05bmr8913185wri.343.1653062354562; Fri, 20
+ May 2022 08:59:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LNzXv5lovOiCpHs6gGL84tbuLKGxxBaX
-X-Proofpoint-ORIG-GUID: 9FE4Q_Y2SokTdK3DT22wtauNZjiRzOL2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-20_04,2022-05-20_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 clxscore=1015 adultscore=0
- suspectscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205200105
+References: <20220519154324.12531-1-atrajeev@linux.vnet.ibm.com>
+ <CAP-5=fXrtTe=6-z8-OMzG60XZmA92nHEhc94+NyCJK-ZPDekPQ@mail.gmail.com>
+ <YoedbRTgfdQs+7H0@kernel.org>
+In-Reply-To: <YoedbRTgfdQs+7H0@kernel.org>
+From: Ian Rogers <irogers@google.com>
+Date: Fri, 20 May 2022 08:59:00 -0700
+Message-ID: <CAP-5=fUyD=njaTYeGQkCL-KnNxB8M64G9Fe1_2_HS9w1AsKUqw@mail.gmail.com>
+Subject: Re: [PATCH V2] tools/perf/test: Fix perf all PMU test to skip
+ hv_24x7/hv_gpci tests on powerpc
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,34 +77,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, rnsastry@linux.ibm.com,
+ linux-perf-users@vger.kernel.org, maddy@linux.vnet.ibm.com, jolsa@kernel.org,
+ kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no need to read the H_BLOCK_REMOVE characteristics when running in
-Radix mode because this hcall is never called.
+On Fri, May 20, 2022 at 6:53 AM Arnaldo Carvalho de Melo
+<acme@kernel.org> wrote:
+>
+> Em Thu, May 19, 2022 at 11:45:07AM -0700, Ian Rogers escreveu:
+> > On Thu, May 19, 2022 at 8:43 AM Athira Rajeev
+> > <atrajeev@linux.vnet.ibm.com> wrote:
+> > >
+> > > "perf all PMU test" picks the input events from
+> > > "perf list --raw-dump pmu" list and runs "perf stat -e"
+> > > for each of the event in the list. In case of powerpc, the
+> > > PowerVM environment supports events from hv_24x7 and hv_gpci
+> > > PMU which is of example format like below:
+> > > - hv_24x7/CPM_ADJUNCT_INST,domain=?,core=?/
+> > > - hv_gpci/event,partition_id=?/
+> > >
+> > > The value for "?" needs to be filled in depending on
+> > > system and respective event. CPM_ADJUNCT_INST needs have
+> > > core value and domain value. hv_gpci event needs partition_id.
+> > > Similarly, there are other events for hv_24x7 and hv_gpci
+> > > having "?" in event format. Hence skip these events on powerpc
+> > > platform since values like partition_id, domain is specific
+> > > to system and event.
+> > >
+> > > Fixes: 3d5ac9effcc6 ("perf test: Workload test of all PMUs")
+> > > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> > > ---
+> > > Changelog:
+> > >  v1 -> v2:
+> > >  Instead of checking for platform, used the pmu name
+> > >  ie, hv_24x7 and hv_gpci to skip the test since this
+> > >  pmu name is specific to powerpc as suggested by
+> > >  Michael Ellerman.
+> > >
+> > >  tools/perf/tests/shell/stat_all_pmu.sh | 10 ++++++++++
+> > >  1 file changed, 10 insertions(+)
+> > >
+> > > diff --git a/tools/perf/tests/shell/stat_all_pmu.sh b/tools/perf/tests/shell/stat_all_pmu.sh
+> > > index b30dba455f36..7d046bb8a7b9 100755
+> > > --- a/tools/perf/tests/shell/stat_all_pmu.sh
+> > > +++ b/tools/perf/tests/shell/stat_all_pmu.sh
+> > > @@ -5,6 +5,16 @@
+> > >  set -e
+> > >
+> > >  for p in $(perf list --raw-dump pmu); do
+> > > +  # In powerpc, skip the events for hv_24x7 and hv_gpci.
+> > > +  # These events needs input values to be filled in for
+> > > +  # core, chip, patition id based on system.
+> > nit: s/patition/partition/
+> > > +  # Example: hv_24x7/CPM_ADJUNCT_INST,domain=?,core=?/
+> >
+> > I've no problem with this patch, we may need to do similar for other
+>
+> Can I take this as an Acked-by?
+>
+> - Arnaldo
 
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/setup.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index c9fcc30a0365..654d2b999c25 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -803,7 +803,8 @@ static void __init pSeries_setup_arch(void)
- 
- 	pseries_setup_security_mitigations();
- #ifdef CONFIG_PPC_64S_HASH_MMU
--	pseries_lpar_read_hblkrm_characteristics();
-+	if (!radix_enabled())
-+		pseries_lpar_read_hblkrm_characteristics();
- #endif
- 
- 	/* By default, only probe PCI (can be overridden by rtas_pci) */
--- 
-2.36.1
+Acked-by: Ian Rogers <irogers@google.com>
 
+Thanks,
+Ian
+
+> > architectures. For this specific problem I wonder if rather than
+> > skipping the event the event can be fixed with domain and core set to
+> > 1 ? This would provide a little additional coverage.
+> >
+> > Thanks,
+> > Ian
+> >
+> > > +  # hv_gpci/event,partition_id=?/
+> > > +  # Hence skip these events for ppc.
+> > > +  if echo "$p" |grep -Eq 'hv_24x7|hv_gpci' ; then
+> > > +    echo "Skipping: Event '$p' in powerpc"
+> > > +    continue
+> > > +  fi
+> > >    echo "Testing $p"
+> > >    result=$(perf stat -e "$p" true 2>&1)
+> > >    if ! echo "$result" | grep -q "$p" && ! echo "$result" | grep -q "<not supported>" ; then
+> > > --
+> > > 2.35.1
+> > >
+>
+> --
+>
+> - Arnaldo
