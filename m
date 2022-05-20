@@ -1,110 +1,101 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4891952E4E5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 08:20:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1758952E51B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 08:36:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4GmJ1D6tz3bkx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 16:20:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4H6x0FCRz3bnr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 16:36:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q/CmH/bZ;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q/CmH/bZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bP1qSjNU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Q/CmH/bZ; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Q/CmH/bZ; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=bP1qSjNU; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4GlY2ZSyz306K
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 16:19:18 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1653027556;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WWnyUXwbnXllaQ0uv1b5t0P1ieqzLCHOX4I/wGwYkZE=;
- b=Q/CmH/bZlJbP2zcoLA06Tv8UczHuWptZ8IYNexBppNGvD8aRrlyh+PyRIeEWaxq5/5dOCr
- yWc6ABqjkSS+j2sfvPj6iEhneTkBuRUBC31/0G9LkuRV1trxltTLIryFaq+1aaWP2scceD
- sSXp4/lowLtgn2yBk0ha33+eqeKRfMM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1653027556;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WWnyUXwbnXllaQ0uv1b5t0P1ieqzLCHOX4I/wGwYkZE=;
- b=Q/CmH/bZlJbP2zcoLA06Tv8UczHuWptZ8IYNexBppNGvD8aRrlyh+PyRIeEWaxq5/5dOCr
- yWc6ABqjkSS+j2sfvPj6iEhneTkBuRUBC31/0G9LkuRV1trxltTLIryFaq+1aaWP2scceD
- sSXp4/lowLtgn2yBk0ha33+eqeKRfMM=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-581-tKbe8ofbNl6JKxvaimnwSw-1; Fri, 20 May 2022 02:19:14 -0400
-X-MC-Unique: tKbe8ofbNl6JKxvaimnwSw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- z5-20020a5d4d05000000b0020e6457f2b4so1828694wrt.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 May 2022 23:19:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20210112;
- h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
- :content-language:to:cc:references:from:in-reply-to
- :content-transfer-encoding;
- bh=WWnyUXwbnXllaQ0uv1b5t0P1ieqzLCHOX4I/wGwYkZE=;
- b=6e1Ul8vxXOeWOsvATj+Nr7zvLuQSGsBGEdccCw5zuHmgG2BbwESDsHSXgYWawWevJS
- AF6VqtPWgRYGU+AH0Hy8AqJa6FERu/NunejYWYB65ZgZIuJdyLsYl5KKP6/WkRJYGeq+
- NBMHVDe49A44XHnMmgcOXWFV5dmEKB4nwINtuPyL5Qp4dSxXvNk7GtWxOsDBFI/WR2pS
- WlCDm+l77i6idE/nT7NhZwlO2tc3KtIRcKwXemyidVEIRL2ft2danz5l3oGGkVvq8r3z
- KOru6KdbBCoId8HXI0tCTA31fg3W7HMaREB+EgOvjt1vqTQvRmJWFrkPAkGiIpwKPM7g
- 8/sA==
-X-Gm-Message-State: AOAM530tPAD5ry/SWaL3I/gRRGWn/lNjISMyEI7MA1hWwhnH+ROA/0At
- NfqHSyntM3LvNChydkhG3kdLLzSk2e6NUETlWZxSM/6SJyyR3MqR2fZNQ85T/xJ+exrl/I52Lf7
- Aff4h0N4HEXU/jszWLTwKtry7IQ==
-X-Received: by 2002:adf:ea0a:0:b0:20f:afa:c885 with SMTP id
- q10-20020adfea0a000000b0020f0afac885mr947012wrm.640.1653027553117; 
- Thu, 19 May 2022 23:19:13 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw1apKhwtDuwN5y6ql+wtzPt4dv5/GCFcazI5SvaYczGFn7reMg6aU/08qipp7Qzw+vBvg6qg==
-X-Received: by 2002:adf:ea0a:0:b0:20f:afa:c885 with SMTP id
- q10-20020adfea0a000000b0020f0afac885mr946992wrm.640.1653027552861; 
- Thu, 19 May 2022 23:19:12 -0700 (PDT)
-Received: from [192.168.1.129] (205.pool92-176-231.dynamic.orange.es.
- [92.176.231.205]) by smtp.gmail.com with ESMTPSA id
- s26-20020adfa29a000000b0020d069148bcsm1433018wra.110.2022.05.19.23.19.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 19 May 2022 23:19:12 -0700 (PDT)
-Message-ID: <84a550c3-dcef-17ac-0ae5-666cdf0fb67e@redhat.com>
-Date: Fri, 20 May 2022 08:19:11 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH 2/2] drm/tiny: Add ofdrm for Open Firmware framebuffers
-To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
- msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org
-References: <20220518183006.14548-1-tzimmermann@suse.de>
- <20220518183006.14548-3-tzimmermann@suse.de>
-From: Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <20220518183006.14548-3-tzimmermann@suse.de>
-Authentication-Results: relay.mimecast.com;
- auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4H6D282pz2ywq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 16:35:32 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24K3gj6D024642;
+ Fri, 20 May 2022 06:35:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=v9YYjzHU11NbkyrnI5KQ5A1goiZHidYQ+j6W7mt2Rr8=;
+ b=bP1qSjNUOAOWqLMBGOxLuy2Z8DS+8C660nu4vK05w2wB63pSF96nrwClFuBXjhtjIuBM
+ 5YDTjixSFzHdI15IRGnoKbtEIyraXQOkPIRNkPYoIQU/sfA3U+O+nFtf3x6zn3jkqQSQ
+ +bU2kzc/Y91JqAge2BrNtXbCzt90VumVb3OPuG+7ssbRrVlCZQd8SSPubBD5zvNGGaXE
+ xwg8kHMkTyo2qSK4VtnpnTjt9BD3NCID4GxKJT5GmnniOEMjtHxc4p06gRrmpIqHZvLx
+ qzSX/tJ25ijEihM/rTvh1sKRyZdSWtOmCbVcOX7Z/aQ7ZSgPshhe3kVwU6hT26dU+pjP bw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g63a92rqs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 06:35:24 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24K6Dkp3014087;
+ Fri, 20 May 2022 06:35:23 GMT
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g63a92rq5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 06:35:23 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24K6R3iU000696;
+ Fri, 20 May 2022 06:35:21 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma02fra.de.ibm.com with ESMTP id 3g2428q3fb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 20 May 2022 06:35:20 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24K6ZHEP51970470
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 20 May 2022 06:35:17 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E87652050;
+ Fri, 20 May 2022 06:35:17 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.163.31.125])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 558D05204F;
+ Fri, 20 May 2022 06:35:12 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
+Subject: Re: [PATCH V2] tools/perf/test: Fix perf all PMU test to skip
+ hv_24x7/hv_gpci tests on powerpc
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <CAP-5=fXrtTe=6-z8-OMzG60XZmA92nHEhc94+NyCJK-ZPDekPQ@mail.gmail.com>
+Date: Fri, 20 May 2022 12:05:08 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <93469FA8-07C5-4710-953C-5C74B197FAE3@linux.vnet.ibm.com>
+References: <20220519154324.12531-1-atrajeev@linux.vnet.ibm.com>
+ <CAP-5=fXrtTe=6-z8-OMzG60XZmA92nHEhc94+NyCJK-ZPDekPQ@mail.gmail.com>
+To: Ian Rogers <irogers@google.com>
+X-Mailer: Apple Mail (2.3654.120.0.1.13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9ohRuhBXWmGj7TmEN1k3g7ss7qg6GbSH
+X-Proofpoint-ORIG-GUID: KNckq4WJro7mebAgbYypzXhBB0z6GBRE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-20_02,2022-05-19_03,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205200048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,258 +107,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org
+Cc: maddy@linux.vnet.ibm.com, Nageswara Sastry <rnsastry@linux.ibm.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, linux-perf-users@vger.kernel.org,
+ Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>,
+ disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Thomas,
-
-On 5/18/22 20:30, Thomas Zimmermann wrote:
-
->  
-> +config DRM_OFDRM
-> +	tristate "Open Firmware display driver"
-> +	depends on DRM && MMU && PPC
-
-Shouldn't depend on OF? I mean, is a DRM driver for Open Firmware after all :)
-
-I know that the old drivers/video/fbdev/offb.c doesn't, but I think that is a
-but and should `depends on OF || COMPILE_TEST`
-
-> +
-> +/*
-> + * Helpers for display nodes
-> + */
-> +
-> +static int display_get_validated_int(struct drm_device *dev, const char *name, uint32_t value)
-> +{
-> +	if (value > INT_MAX) {
-> +		drm_err(dev, "invalid framebuffer %s of %u\n", name, value);
-> +		return -EINVAL;
-> +	}
-> +	return (int)value;
-> +}
-> +
-> +static int display_get_validated_int0(struct drm_device *dev, const char *name, uint32_t value)
-> +{
-> +	if (!value) {
-> +		drm_err(dev, "invalid framebuffer %s of %u\n", name, value);
-> +		return -EINVAL;
-> +	}
-> +	return display_get_validated_int(dev, name, value);
-> +}
-> +
-
-These two helpers are the same that we already have in simpledrm.c, maybe could
-include a preparatory patch that moves to drivers/gpu/drm/drm_format_helper.c
-and make them public for drivers to use ? Or maybe even as static inline in
-include/drm/drm_format_helper.h ?
-
-> +static const struct drm_format_info *display_get_validated_format(struct drm_device *dev,
-> +								  u32 depth)
-> +{
-> +	const struct drm_format_info *info;
-> +	u32 format;
-> +
-> +	switch (depth) {
-> +	case 8:
-> +		format = drm_mode_legacy_fb_format(8, 8);
-> +		break;
-> +	case 15:
-
-I think is customary now to add /* fall through */ here to silence GCC warns ?
-
-> +}
-> +
-> +static int display_read_u32_of(struct drm_device *dev, struct device_node *of_node,
-> +			       const char *name, u32 *value)
-> +{
-> +	int ret = of_property_read_u32(of_node, name, value);
-> +
-> +	if (ret)
-> +		drm_err(dev, "cannot parse framebuffer %s: error %d\n", name, ret);
-> +	return ret;
-> +}
-> +
-
-[snip]
-
-> +static u64 display_get_address_of(struct drm_device *dev, struct device_node *of_node)
-> +{
-> +	u32 address;
-> +	int ret;
-> +
-> +	/*
-> +	 * Not all devices provide an address property, it's not
-> +	 * a bug if this fails. The driver will try to find the
-> +	 * framebuffer base address from the device's memory regions.
-> +	 */
-> +	ret = of_property_read_u32(of_node, "address", &address);
-> +	if (ret)
-> +		return OF_BAD_ADDR;
-> +
-> +	return address;
-> +}
-> +
-
-All these helpers seems to be quite generic and something that other OF
-drivers could benefit from. Maybe add them to drivers/gpu/drm/drm_of.c ?
-
-> +#if defined(CONFIG_PCI)
-> +static struct pci_dev *display_get_pci_dev_of(struct drm_device *dev, struct device_node *of_node)
-> +{
-> +	const __be32 *vendor_p, *device_p;
-> +	u32 vendor, device;
-> +	struct pci_dev *pcidev;
-> +
-> +	vendor_p = of_get_property(of_node, "vendor-id", NULL);
-> +	if (!vendor_p)
-> +		return ERR_PTR(-ENODEV);
-> +	vendor = be32_to_cpup(vendor_p);
-> +
-> +	device_p = of_get_property(of_node, "device-id", NULL);
-> +	if (!device_p)
-> +		return ERR_PTR(-ENODEV);
-> +	device = be32_to_cpup(device_p);
-> +
-> +	pcidev = pci_get_device(vendor, device, NULL);
-> +	if (!pcidev)
-> +		return ERR_PTR(-ENODEV);
-> +
-> +	return pcidev;
-> +}
-> +#else
-> +static struct pci_dev *display_get_pci_dev_of(struct drm_device *dev, struct device_node *of_node)
-> +{
-> +	return ERR_PTR(-ENODEV);
-> +}
-> +#endif
-> +
-
-Unsure about this one, I don't see other display driver using a "vendor-id"
-or "device-id" when looking at Documentation/devicetree/bindings/, so guess
-this one would have to remain in the driver and not in a helper library.
-
-But since you have #ifdefery here, maybe would be cleaner to have that stub
-defined as static inline in include/drm/drm_of.h ?
 
 
-> +static struct ofdrm_device *ofdrm_device_of_dev(struct drm_device *dev)
-> +{
-> +	return container_of(dev, struct ofdrm_device, dev);
-> +}
-> +
-> +/*
-> + *  OF display settings
-> + */
-> +
+> On 20-May-2022, at 12:15 AM, Ian Rogers <irogers@google.com> wrote:
+>=20
+> On Thu, May 19, 2022 at 8:43 AM Athira Rajeev
+> <atrajeev@linux.vnet.ibm.com> wrote:
+>>=20
+>> "perf all PMU test" picks the input events from
+>> "perf list --raw-dump pmu" list and runs "perf stat -e"
+>> for each of the event in the list. In case of powerpc, the
+>> PowerVM environment supports events from hv_24x7 and hv_gpci
+>> PMU which is of example format like below:
+>> - hv_24x7/CPM_ADJUNCT_INST,domain=3D?,core=3D?/
+>> - hv_gpci/event,partition_id=3D?/
+>>=20
+>> The value for "?" needs to be filled in depending on
+>> system and respective event. CPM_ADJUNCT_INST needs have
+>> core value and domain value. hv_gpci event needs partition_id.
+>> Similarly, there are other events for hv_24x7 and hv_gpci
+>> having "?" in event format. Hence skip these events on powerpc
+>> platform since values like partition_id, domain is specific
+>> to system and event.
+>>=20
+>> Fixes: 3d5ac9effcc6 ("perf test: Workload test of all PMUs")
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>> ---
+>> Changelog:
+>> v1 -> v2:
+>> Instead of checking for platform, used the pmu name
+>> ie, hv_24x7 and hv_gpci to skip the test since this
+>> pmu name is specific to powerpc as suggested by
+>> Michael Ellerman.
+>>=20
+>> tools/perf/tests/shell/stat_all_pmu.sh | 10 ++++++++++
+>> 1 file changed, 10 insertions(+)
+>>=20
+>> diff --git a/tools/perf/tests/shell/stat_all_pmu.sh =
+b/tools/perf/tests/shell/stat_all_pmu.sh
+>> index b30dba455f36..7d046bb8a7b9 100755
+>> --- a/tools/perf/tests/shell/stat_all_pmu.sh
+>> +++ b/tools/perf/tests/shell/stat_all_pmu.sh
+>> @@ -5,6 +5,16 @@
+>> set -e
+>>=20
+>> for p in $(perf list --raw-dump pmu); do
+>> +  # In powerpc, skip the events for hv_24x7 and hv_gpci.
+>> +  # These events needs input values to be filled in for
+>> +  # core, chip, patition id based on system.
+> nit: s/patition/partition/
+>> +  # Example: hv_24x7/CPM_ADJUNCT_INST,domain=3D?,core=3D?/
+>=20
+> I've no problem with this patch, we may need to do similar for other
+> architectures. For this specific problem I wonder if rather than
+> skipping the event the event can be fixed with domain and core set to
+> 1 ? This would provide a little additional coverage.
 
-This seems like another candidate to move to the include/drm/drm_of.h header. 
+Hi Ian,
 
-> +static struct drm_display_mode ofdrm_mode(unsigned int width, unsigned int height)
-> +{
-> +	struct drm_display_mode mode = { OFDRM_MODE(width, height) };
-> +
-> +	mode.clock = mode.hdisplay * mode.vdisplay * 60 / 1000 /* kHz */;
+Thanks for review. Yeah, we looked at the option of having default value =
+of 0.
+But then we could still fail due to the partition privilege. These PMU =
+counters expose per-core and per-chip
+data and partition needs additional privileges to get these pmu data.
+Hence the skip :)
 
-Maybe a comment here about the clock value chosen ?
+Thanks
+Athira
 
-> +	drm_mode_set_name(&mode);
-> +
-> +	return mode;
-> +}
-> +
-
-[snip]
-
-> +
-> +	/*
-> +	 * Never use pcim_ or other managed helpers on the returned PCI
-> +	 * device. Otherwise, probing the native driver will fail for
-> +	 * resource conflicts. PCI-device management has to be tied to
-> +	 * the lifetime of the platform device until the native driver
-> +	 * takes over.
-> +	 */
-
-Ah, was this the issue that you mentioned the other day? How interesting.
-
-
-> +/*
-> + * Support all formats of OF display and maybe more; in order
-> + * of preference. The display's update function will do any
-> + * conversion necessary.
-> + *
-> + * TODO: Add blit helpers for remaining formats and uncomment
-> + *       constants.
-> + */
-> +static const uint32_t ofdrm_default_formats[] = {
-> +	DRM_FORMAT_XRGB8888,
-> +	DRM_FORMAT_RGB565,
-> +	//DRM_FORMAT_XRGB1555,
-
-Wonder if makes sense to keep this commented and the TODO, why not
-leave that format from first version and just do it as follow-up ?
-
-> +static const struct drm_connector_funcs ofdrm_connector_funcs = {
-> +	.reset = drm_atomic_helper_connector_reset,
-> +	.fill_modes = drm_helper_probe_single_connector_modes,
-> +	.destroy = drm_connector_cleanup,
-> +	.atomic_duplicate_state = drm_atomic_helper_connector_duplicate_state,
-> +	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
-> +};
-
-All of the callbacks used comes from helper libraries so I maybe we
-could have a macro or something to set those ? It's the same set that
-are used in simpledrm so it would make sense to have them defined in
-the same place.
-
-> +static const struct drm_mode_config_funcs ofdrm_mode_config_funcs = {
-> +	.fb_create = drm_gem_fb_create_with_dirty,
-> +	.atomic_check = drm_atomic_helper_check,
-> +	.atomic_commit = drm_atomic_helper_commit,
-> +};
-> +
-
-Same for these. We could also have a macro to define this for both
-simpledrm and ofdrm.
-
-> +static const uint32_t *ofdrm_device_formats(struct ofdrm_device *odev, size_t *nformats_out)
-> +{
-> +	struct drm_device *dev = &odev->dev;
-> +	size_t i;
-> +
-> +	if (odev->nformats)
-> +		goto out; /* don't rebuild list on recurring calls */
-> +
-
-Nice optimization to cache this.
-
-> +	/*
-> +	 * TODO: The ofdrm driver converts framebuffers to the native
-> +	 * format when copying them to device memory. If there are more
-> +	 * formats listed than supported by the driver, the native format
-> +	 * is not supported by the conversion helpers. Therefore *only*
-> +	 * support the native format and add a conversion helper ASAP.
-> +	 */
-> +	if (drm_WARN_ONCE(dev, i != odev->nformats,
-> +			  "format conversion helpers required for %p4cc",
-> +			  &odev->format->format)) {
-> +		odev->nformats = 1;
-> +	}
-> +
-
-Interesting. Did you find some formats that were not supported ?
-
-The rest of the patch looks good to me, thanks a lot for writing this.
-
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-
--- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
+>=20
+> Thanks,
+> Ian
+>=20
+>> +  # hv_gpci/event,partition_id=3D?/
+>> +  # Hence skip these events for ppc.
+>> +  if echo "$p" |grep -Eq 'hv_24x7|hv_gpci' ; then
+>> +    echo "Skipping: Event '$p' in powerpc"
+>> +    continue
+>> +  fi
+>>   echo "Testing $p"
+>>   result=3D$(perf stat -e "$p" true 2>&1)
+>>   if ! echo "$result" | grep -q "$p" && ! echo "$result" | grep -q =
+"<not supported>" ; then
+>> --
+>> 2.35.1
 
