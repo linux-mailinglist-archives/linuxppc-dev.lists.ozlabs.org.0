@@ -2,52 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E99852EA10
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 12:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 484AB52EA1D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 12:44:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4NYt36Lhz3bt2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 20:41:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=pMWZBKi2;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4Ndt0nJpz3cd9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 20:44:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=heyquark.com (client-ip=2001:4b98:dc4:8::224;
+ helo=relay4-d.mail.gandi.net; envelope-from=ash@heyquark.com;
+ receiver=<UNKNOWN>)
+X-Greylist: delayed 25376 seconds by postgrey-1.36 at boromir;
+ Fri, 20 May 2022 20:44:26 AEST
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [IPv6:2001:4b98:dc4:8::224])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4NYH59Vrz30RP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 20:40:51 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=pMWZBKi2; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L4NYD43MVz4xXj;
- Fri, 20 May 2022 20:40:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
- s=201909; t=1653043251;
- bh=kLvXGUJ3/ReQbtc7FZG4S2UHVHzM/605lq9b6IyiY5M=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=pMWZBKi2JiSg+r6at1yci6wwlaKqROcHmumy1qm2oKAprlF7OjcdtRnL4YzJI0ww7
- sD2U1Ve/WujuCckOohm/ghb7M2rTLRAwbRVbneALWNRVCOFweOj4Zqw+AiW9Qd6YZ5
- W8BcHWFaEuMsjmgGl/FVfHm//aeurxvN5nPWIZtI1sM70KGr6t0eNoNv7Jklm+Psb0
- uWvsjppTeHZvH5lbRxbKW7wZyqx2ocpwCpyz87TjsFA6JEPD90EbiYrFICy2ODn2bl
- Dty+eeRKILrhrPZyMVQ2MjxpU8FQLn9KXVqel0TNRihZ+MlyNDRF0C2Afqo96JN5nC
- hHtsMOodRK9Mg==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Subject: Re: [PATCH net-next] eth: de4x5: remove support for Generic DECchip
- & DIGITAL EtherWORKS PCI/EISA
-In-Reply-To: <20220519031345.2134401-1-kuba@kernel.org>
-References: <20220519031345.2134401-1-kuba@kernel.org>
-Date: Fri, 20 May 2022 20:40:48 +1000
-Message-ID: <87o7zsmqq7.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4NdQ0bmZz3bjq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 20:44:24 +1000 (AEST)
+Received: (Authenticated sender: ash@heyquark.com)
+ by mail.gandi.net (Postfix) with ESMTPSA id 04FB3E000B;
+ Fri, 20 May 2022 10:44:08 +0000 (UTC)
+Message-ID: <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
+Date: Fri, 20 May 2022 20:44:04 +1000
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
+Content-Language: en-US
+To: =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
+References: <20220302044406.63401-1-ash@heyquark.com>
+ <20220302044406.63401-12-ash@heyquark.com>
+ <20220513224353.n56qg5fhstbaqhfz@pali>
+ <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
+ <20220520080454.c3cqodsdbfbkmg56@pali>
+From: Ash Logan <ash@heyquark.com>
+In-Reply-To: <20220520080454.c3cqodsdbfbkmg56@pali>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,48 +52,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, arnd@arndb.de,
- corbet@lwn.net, netdev@vger.kernel.org, sburla@marvell.com,
- linux-doc@vger.kernel.org, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, edumazet@google.com, paulus@samba.org,
- vburru@marvell.com, Jakub Kicinski <kuba@kernel.org>, zhangyue1@kylinos.cn,
- pabeni@redhat.com, aayarekar@marvell.com
+Cc: linux-kernel@vger.kernel.org, robh+dt@kernel.org, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jakub Kicinski <kuba@kernel.org> writes:
-> Looks like almost all changes to this driver had been tree-wide
-> refactoring since git era begun. There is one commit from Al
-> 15 years ago which could potentially be fixing a real bug.
->
-> The driver is using virt_to_bus() and is a real magnet for pointless
-> cleanups. It seems unlikely to have real users. Let's try to shed
-> this maintenance burden.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: corbet@lwn.net
-> CC: tsbogend@alpha.franken.de
-> CC: mpe@ellerman.id.au
-> CC: benh@kernel.crashing.org
-> CC: paulus@samba.org
-> CC: sburla@marvell.com
-> CC: vburru@marvell.com
-> CC: aayarekar@marvell.com
-> CC: arnd@arndb.de
-> CC: zhangyue1@kylinos.cn
-> CC: linux-doc@vger.kernel.org
-> CC: linux-mips@vger.kernel.org
-> CC: linuxppc-dev@lists.ozlabs.org
-> CC: linux-parisc@vger.kernel.org
-> ---
->  .../device_drivers/ethernet/dec/de4x5.rst     |  189 -
->  .../device_drivers/ethernet/index.rst         |    1 -
->  arch/mips/configs/mtx1_defconfig              |    1 -
->  arch/powerpc/configs/chrp32_defconfig         |    1 -
->  arch/powerpc/configs/ppc6xx_defconfig         |    1 -
+On 20/5/22 18:04, Pali Rohár wrote:
+> On Friday 20 May 2022 13:41:04 Ash Logan wrote:
+>> On 14/5/22 08:43, Pali Rohár wrote:
+>>> On Wednesday 02 March 2022 15:44:05 Ash Logan wrote:
+>>>> pgtable_32.c:mapin_ram loops over each valid memory range, which means
+>>>> non-contiguous memory just works.
+>>>
+>>> Hello! Does it mean that non-contiguous memory works for any 32-bit
+>>> powerpc platform, and not only for wiiu? If yes, should not be
+>>> non-contiguous memory support enabled for all 32-bit ppc boards then?
+>>
+>> Hi! Sorry for my delayed response. As best I can tell, it does indeed
+>> Just Work, but I have only been able to test on wiiu which is missing a
+>> lot of features other boards have (like PCI) - so it's possible there's
+>> still an assumption elsewhere in the kernel that I haven't hit.
+>>
+>> As best I can tell, the Wii and Wii U are the only 32-bit powerpc boards
+>> out there where it's even possible to have non-contiguous memory.
+> 
+> What is the reason that those two boards are the **only**? Is there some
+> specific requirement from bootloader or hardware to "enable"
+> non-contiguous memory support?
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Not that I know of, I was just saying that I was only aware of those two
+boards where the memory map isn't contiguous, and that is the only place
+where it has been tested. Evidently you know of another board!
 
-cheers
+> I'm interested in enabling non-contiguous memory support for P2020-based
+> board as it has gaps in its 32-bit memory layout and which could be used
+> for RAM mapping when 4GB DDR3 module is plugged in (default is 2GB).
+
+If it's like the Wii or Wii U (some memory at 0, a gap for MMIO or
+whatever, then more memory at a higher address) then you should try a
+patch along these lines, because barring the unknowns I mentioned before
+it should work. At least as far as I'm aware ;)
+
+>>>> Signed-off-by: Ash Logan <ash@heyquark.com>
+>>>> ---
+>>>>  arch/powerpc/mm/init_32.c | 4 ++--
+>>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
+>>>> index 3d690be48e84..59a84629d9a0 100644
+>>>> --- a/arch/powerpc/mm/init_32.c
+>>>> +++ b/arch/powerpc/mm/init_32.c
+>>>> @@ -125,10 +125,10 @@ void __init MMU_init(void)
+>>>>  	 * lowmem_end_addr is initialized below.
+>>>>  	 */
+>>>>  	if (memblock.memory.cnt > 1) {
+>>>> -#ifndef CONFIG_WII
+>>>> +#if !defined(CONFIG_WII) && !defined(CONFIG_WIIU)
+>>>>  		memblock_enforce_memory_limit(memblock.memory.regions[0].size);
+>>>>  		pr_warn("Only using first contiguous memory region\n");
+>>>> -#else
+>>>> +#elif defined(CONFIG_WII)
+>>>>  		wii_memory_fixups();
+>>>>  #endif
+>>>>  	}
+>>>> -- 
+>>>> 2.35.1
+>>>>
