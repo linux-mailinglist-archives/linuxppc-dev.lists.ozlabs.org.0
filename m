@@ -2,93 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF5852E8B5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 11:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AF9452E8B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 11:24:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4LrY4MyBz3f6k
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 19:23:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4LsS00NJz3dxH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 19:24:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HAakZ1bh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z/+HFqQP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=HAakZ1bh; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=Z/+HFqQP; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4LkS071tz3blW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 19:18:39 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24K5XQGG003983;
- Fri, 20 May 2022 09:18:35 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4LkW2Jbsz3bpY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 19:18:43 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24K7ZHPu022524;
+ Fri, 20 May 2022 09:18:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=EFIYQ3fnYOBdcggZElDQxQjh053hL+XDK6fupET2rSI=;
- b=HAakZ1bhDUAknU3vzrFuoK5WSlJNDyh7Zk030GSL1Y8y3oVNT6FtoGK4epil7xYP4T8V
- 6bIW9hgnCD+Mjd3mRSe7zq+tG2iNgzka5l0TBWMKc3NMQ66W8il2850vlBIAA9AAWtMn
- MLqFRUgAyGg+0zEHwFTUNomgNDk3c6QkdooEngyNNqsF+1JgtynDh8RQqyEQUkXToG7T
- TxxkhufkUUdK7DKuCYsqmVC0wFc0kxcHKyT7Jqjy1UUHEyBNrM76w3x84B1sluDaOYnH
- F6hPi9R7mQ6VZ6Vb4pfR506RMtjrZed9i13ir6AEUOXBCaU0aF2hnvdcVPuPV4cX7naV gg== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g64xrbw1t-1
+ bh=Ztn6+1CzfQFpj/C6joZPygKkbCVy4xRNhex/LYxLBAM=;
+ b=Z/+HFqQPfkLTCZrZePpXTbmw2Zz1Dvzqj3CJiNZJcpOAqqs77V7sZlZx/dTA2GhX2GM1
+ fkntY100ynzII+O18bdzE0TFRPiaOMEYILR0g7fjx/tpEo1sQCFx/fgnJpLAtTEMrbOc
+ v9l3SnsNRca3MRBhGZV38gxIiFRy6rsKKqZlMaI4Mjd/2Bfvjz/w5hLCGrX9X99t7xiL
+ zt/M+gNjwPqDQj9G7vyBmmONggi8lUVdNV4uda47KUbUwvLi5210oDmHxKmG1Wel1vla
+ RWeFu0od6/VFSku1gbhi2LOUlzDqimbUYwE9p3xmXQ+YvRPVJQL/5fJDdR4noUNefWNX rA== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g62qne6uj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 May 2022 09:18:35 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24K9Epo8026615;
- Fri, 20 May 2022 09:18:33 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 3g2429ghtf-1
+ Fri, 20 May 2022 09:18:39 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24K9Et7E013040;
+ Fri, 20 May 2022 09:18:37 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma01fra.de.ibm.com with ESMTP id 3g2428ybqt-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 20 May 2022 09:18:33 +0000
+ Fri, 20 May 2022 09:18:37 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24K9IUIA31392136
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24K9IYJY22938056
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 20 May 2022 09:18:30 GMT
+ Fri, 20 May 2022 09:18:34 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B5AD4C046;
+ by IMSVA (Postfix) with ESMTP id 2B61F4C040;
+ Fri, 20 May 2022 09:18:34 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F3D8D4C044;
  Fri, 20 May 2022 09:18:30 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2BC184C040;
- Fri, 20 May 2022 09:18:27 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.163.31.125])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 20 May 2022 09:18:26 +0000 (GMT)
+ Fri, 20 May 2022 09:18:30 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH V2 08/35] selftest/powerpc/pmu: Add interface test for bhrb
- disable field
-Date: Fri, 20 May 2022 14:47:24 +0530
-Message-Id: <20220520091751.17000-9-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V2 09/35] selftest/powerpc/pmu: Refactor the platform check
+ and add macros to find array size/PVR
+Date: Fri, 20 May 2022 14:47:25 +0530
+Message-Id: <20220520091751.17000-10-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220520091751.17000-1-atrajeev@linux.vnet.ibm.com>
 References: <20220520091751.17000-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: exSArTyJU7i0HA8_vfcJYNMKS6IbaLU2
-X-Proofpoint-ORIG-GUID: exSArTyJU7i0HA8_vfcJYNMKS6IbaLU2
+X-Proofpoint-ORIG-GUID: uVDui3Er3nMWAe_x-BsIsrAIp0qbHIhz
+X-Proofpoint-GUID: uVDui3Er3nMWAe_x-BsIsrAIp0qbHIhz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-05-20_03,2022-05-20_01,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 adultscore=0
- spamscore=0 bulkscore=0 suspectscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 clxscore=1015 mlxlogscore=950 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205200066
+ priorityscore=1501
+ suspectscore=0 clxscore=1015 impostorscore=0 mlxscore=0 bulkscore=0
+ adultscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
+ lowpriorityscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2202240000 definitions=main-2205200066
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,123 +107,124 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kajol Jain <kjain@linux.ibm.com>
+The platform check for selftest support "check_pvr_for_sampling_tests"
+is specific to sampling tests which includes PVR check, presence of
+PMU and extended regs support. Extended regs support is needed for
+sampling tests which tests whether PMU registers are programmed
+correctly. There could be other sampling tests which may not need
+extended regs, example, bhrb filter tests which only needs validity
+check via event open.
 
-The testcase uses "instructions" event to generate the
-samples and fetch Monitor Mode Control Register A (MMCRA)
-when overflow. Branch History Rolling Buffer(bhrb) disable bit
-is part of MMCRA which need to be verified by perf interface.
-Testcase checks if the bhrb disable bit of MMCRA register is
-programmed correctly via perf interface for ISA v3.1 platform
-Also make get_mmcra_ifm return type as u64.
+Hence refactor the platform check to have a common function
+"platform_check_for_tests" that checks only for PVR check
+and presence of PMU. The existing function
+"check_pvr_for_sampling_tests" will invoke the common function
+and also will include checks for extended regs specific for
+sampling. The common function can also be used by tests other
+than sampling like event code tests.
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Add macro to find array size ("ARRAY_SIZE") to sampling
+tests "misc.h" file. This can be used in next tests to
+find event array size. Also update "include/reg.h" to
+add macros to find minor and major version from PVR which
+will be used in testcases.
+
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- .../powerpc/pmu/sampling_tests/Makefile       |  3 +-
- .../powerpc/pmu/sampling_tests/misc.h         |  2 +-
- .../sampling_tests/mmcra_bhrb_disable_test.c  | 66 +++++++++++++++++++
- 3 files changed, 69 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c
+ tools/testing/selftests/powerpc/include/reg.h |  4 ++++
+ .../powerpc/pmu/sampling_tests/misc.c         | 20 +++++++++++++++----
+ .../powerpc/pmu/sampling_tests/misc.h         |  3 +++
+ 3 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-index 53569fbb1cda..f4da49d55d57 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-@@ -5,7 +5,8 @@ TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test
- 		   mmcr0_pmcjce_test mmcr0_fc56_pmc1ce_test mmcr0_fc56_pmc56_test \
- 		   mmcr1_comb_test mmcr2_l2l3_test mmcr2_fcs_fch_test \
- 		   mmcr3_src_test mmcra_thresh_marked_sample_test mmcra_thresh_cmp_test \
--		   mmcra_bhrb_ind_call_test mmcra_bhrb_any_test mmcra_bhrb_cond_test
-+		   mmcra_bhrb_ind_call_test mmcra_bhrb_any_test mmcra_bhrb_cond_test \
-+		   mmcra_bhrb_disable_test
+diff --git a/tools/testing/selftests/powerpc/include/reg.h b/tools/testing/selftests/powerpc/include/reg.h
+index c422be8a42b2..2ac7a4c7749c 100644
+--- a/tools/testing/selftests/powerpc/include/reg.h
++++ b/tools/testing/selftests/powerpc/include/reg.h
+@@ -55,6 +55,10 @@
+ #define PVR_VER(pvr)	(((pvr) >>  16) & 0xFFFF)
+ #define SPRN_PVR	0x11F
  
- top_srcdir = ../../../../../..
- include ../../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
-index c0e923f38793..874a1596add8 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
-@@ -188,7 +188,7 @@ static inline int get_mmcra_sm(u64 mmcra, int pmc)
- 	return ((mmcra >> 42) & 0x3);
++#define PVR_CFG(pvr)    (((pvr) >>  8) & 0xF)   /* Configuration field */
++#define PVR_MAJ(pvr)    (((pvr) >>  4) & 0xF)   /* Major revision field */
++#define PVR_MIN(pvr)    (((pvr) >>  0) & 0xF)   /* Minor revision field */
++
+ #define SPRN_DSCR_PRIV 0x11	/* Privilege State DSCR */
+ #define SPRN_DSCR      0x03	/* Data Stream Control Register */
+ #define SPRN_PPR       896	/* Program Priority Register */
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
+index 045e6204fba6..98768856f678 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
+@@ -121,12 +121,10 @@ int check_extended_regs_support(void)
+ 	return -1;
  }
  
--static inline int get_mmcra_bhrb_disable(u64 mmcra, int pmc)
-+static inline u64 get_mmcra_bhrb_disable(u64 mmcra, int pmc)
+-int check_pvr_for_sampling_tests(void)
++int platform_check_for_tests(void)
  {
- 	if (pvr == POWER10)
- 		return mmcra & BHRB_DISABLE;
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c
-new file mode 100644
-index 000000000000..186a853c0f62
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c
-@@ -0,0 +1,66 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2022, Kajol Jain, IBM Corp.
-+ */
-+
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+#include "../event.h"
-+#include "misc.h"
-+#include "utils.h"
-+
-+extern void thirty_two_instruction_loop(int loops);
-+
-+/* Instructions */
-+#define EventCode 0x500fa
-+
-+/*
-+ * A perf sampling test for mmcra
-+ * field: bhrb_disable.
-+ */
-+static int mmcra_bhrb_disable_test(void)
-+{
-+	struct event event;
-+	u64 *intr_regs;
-+
-+	/*
-+	 * Check for platform support for the test.
-+	 * This test is only aplicable on power10
-+	 */
-+	SKIP_IF(check_pvr_for_sampling_tests());
-+	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
-+
-+	 /* Init the event for the sampling test */
-+	event_init_sampling(&event, EventCode);
-+	event.attr.sample_regs_intr = platform_extended_mask;
-+	event.attr.sample_type |= PERF_SAMPLE_BRANCH_STACK;
-+	event.attr.branch_sample_type = PERF_SAMPLE_BRANCH_ANY;
-+	event.attr.exclude_kernel = 1;
-+
-+	FAIL_IF(event_open(&event));
-+	event.mmap_buffer = event_sample_buf_mmap(event.fd, 1);
-+
-+	FAIL_IF(event_enable(&event));
-+
-+	/* workload to make the event overflow */
-+	thirty_two_instruction_loop(10000);
-+
-+	FAIL_IF(event_disable(&event));
-+
-+	intr_regs = get_intr_regs(&event, event.mmap_buffer);
-+
-+	/* Check for intr_regs */
-+	FAIL_IF(!intr_regs);
-+
-+	/* Verify that bhrb_disable bit is set in MMCRA */
-+	FAIL_IF(get_mmcra_bhrb_disable(get_reg_value(intr_regs, "MMCRA"), 5));
-+
-+	event_close(&event);
+ 	pvr = PVR_VER(mfspr(SPRN_PVR));
+ 
+-	platform_extended_mask = perf_get_platform_reg_mask();
+-
+ 	/*
+ 	 * Check for supported platforms
+ 	 * for sampling test
+@@ -138,19 +136,33 @@ int check_pvr_for_sampling_tests(void)
+ 	 * Check PMU driver registered by looking for
+ 	 * PPC_FEATURE2_EBB bit in AT_HWCAP2
+ 	 */
+-	if (!have_hwcap2(PPC_FEATURE2_EBB))
++	if (!have_hwcap2(PPC_FEATURE2_EBB) || !have_hwcap2(PPC_FEATURE2_ARCH_3_00))
+ 		goto out;
+ 
 +	return 0;
++
++out:
++	printf("%s: Tests un-supported for this platform\n", __func__);
++	return -1;
 +}
 +
-+int main(void)
++int check_pvr_for_sampling_tests(void)
 +{
-+	return test_harness(mmcra_bhrb_disable_test, "mmcra_bhrb_disable_test");
-+}
++	SKIP_IF(platform_check_for_tests());
++
++	platform_extended_mask = perf_get_platform_reg_mask();
+ 	/* check if platform supports extended regs */
+ 	if (check_extended_regs_support())
+ 		goto out;
+ 
+ 	init_ev_encodes();
+ 	return 0;
++
+ out:
+ 	printf("%s: Sampling tests un-supported\n", __func__);
+ 	return -1;
+ }
++
+ /*
+  * Allocate mmap buffer of "mmap_pages" number of
+  * pages.
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
+index 874a1596add8..4181755cf5a0 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
+@@ -18,6 +18,8 @@
+ #define MMCR1_RSQ       0x200000000000ULL /* radix scope qual field */
+ #define BHRB_DISABLE    0x2000000000ULL /* MMCRA BHRB DISABLE bit */
+ 
++#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
++
+ extern int ev_mask_pmcxsel, ev_shift_pmcxsel;
+ extern int ev_mask_marked, ev_shift_marked;
+ extern int ev_mask_comb, ev_shift_comb;
+@@ -36,6 +38,7 @@ extern int ev_mask_mmcr3_src, ev_shift_mmcr3_src;
+ extern int pvr;
+ extern u64 platform_extended_mask;
+ extern int check_pvr_for_sampling_tests(void);
++extern int platform_check_for_tests(void);
+ 
+ /*
+  * Event code field extraction macro.
 -- 
 2.35.1
 
