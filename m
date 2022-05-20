@@ -2,58 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF9252F1D0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 19:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8A852F1D3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 May 2022 19:45:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L4Yy23RGBz3bsH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 May 2022 03:44:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L4Yyk2Skhz3cgg
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 May 2022 03:45:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sUUH8mll;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=pHF2/Hc2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c33;
+ helo=mail-oo1-xc33.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=sUUH8mll; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L4YxN366tz2yg5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 May 2022 03:43:52 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=pHF2/Hc2; dkim-atps=neutral
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com
+ [IPv6:2607:f8b0:4864:20::c33])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 3EEF960EB3;
- Fri, 20 May 2022 17:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF91C385A9;
- Fri, 20 May 2022 17:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1653068628;
- bh=rPqzA293aWRPWC7lXotl+If9E12i2+bUeADIQeb5a2g=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=sUUH8mllbuZL6HHd3vA70wS9VSj62/sIUB0SI8G/+Xtv5tyLYhdMqLJ0UgypHAi0J
- Na0HX1HL8ghPo2sQRbI0e4cAAIFr6xsvJJFFwQZ5Pdsmwbo8wdj2ktCzSdgJDfejk3
- yAcv9JnQwuv6YjCrGgDfdAl4H4hsQzjJrczsdZ9Ung4m9eH/Ih//TMXcI7+W3K6gra
- qaCcnsioUOM2vzfuG9E+A8oINvDsyQYQdXa+Y5HLlBtgelx+0NAqg9QqVUKDWK3Q1D
- ERb8k/034Jh9cdVGKrLe4ip2u01/HAe2sbSYO6PUkW4aXDiox4+Tq8QLkEAqCTh39U
- bSm1rsW8i2nag==
-Date: Fri, 20 May 2022 10:43:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] net: fs_enet: sync rx dma buffer before reading
-Message-ID: <20220520104347.2b1b658a@kernel.org>
-In-Reply-To: <b11dcb32-5915-c1c8-9f0e-3cfc57b55792@csgroup.eu>
-References: <20220519192443.28681-1-mans@mansr.com>
- <03f24864-9d4d-b4f9-354a-f3b271c0ae66@csgroup.eu>
- <yw1xmtfc9yaj.fsf@mansr.com>
- <b11dcb32-5915-c1c8-9f0e-3cfc57b55792@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L4Yxz1gMcz3bsH
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 May 2022 03:44:22 +1000 (AEST)
+Received: by mail-oo1-xc33.google.com with SMTP id
+ s11-20020a4ab54b000000b0035f0178dfcfso1636097ooo.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 May 2022 10:44:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:message-id:date:mime-version:user-agent:subject
+ :content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=WyiL1ty1TX9eGoECLXqnVlWl+qyOL28rm0F3LiqWh9E=;
+ b=pHF2/Hc24MEutmfdmxbkKXT9c/7rQlCwvmF78VPTZ+tjwzKtY9/RuVISJbYxHwqNsD
+ Xzt3SLHKa2d5qa+OqYscZ+OTiRwFqMJAHwzZkdk+Z/waItSSH9WSnRBUrYoyeNQ/FKSd
+ dcDuLuJcagcnaZdGnWMkZNnOBfiMOjFzIB4laKqjyJUH53sH4GX5OunDb9/gdLnsK3aI
+ w/DAhKZZEutRq9pvpMje87d6IZ62xhcuZ3ZXBQQkoGXAWIGvfzP6BFvv5GXz4zvuFT0d
+ zaBR0KkP4mbwm9sICv9SPsmZlQwmSQ1FjYWyB1TwfquY0RwXMxW9VlT+YETigLXajwRK
+ AGSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+ :subject:content-language:to:cc:references:from:in-reply-to
+ :content-transfer-encoding;
+ bh=WyiL1ty1TX9eGoECLXqnVlWl+qyOL28rm0F3LiqWh9E=;
+ b=NZIgyN3g5XjKkJbVSUk3//E+hQs5vxgqKK5R0R0UM2f+6uyWRI8fbToHVQdG+trBfM
+ OBWcuHYe0hTqwdXeumsGAntGeXDGSxQJ7gj9FQaEUQLqp26/Agjy2bPiuR1fB8xJf9W8
+ 7LG1+/Y79hPB2RbYqj05jT3OZvzkm0wgm5j52MD9cuvZrCT6rB0GS6NUNqU9W81p7CT1
+ uFJvk8L3s3ScP8q5XSiU1bB1Md05xp0JY0z/lpJIVUmfuxHvESYuXVHlP9AN7Ow3u+2W
+ Xcl7RY1GHA3k1nL7/5Sw38/c28h/Uj+peAo3EZ5o6i7+fHXXT2Dv0ZKX9ZlLazeGUBTz
+ qCZQ==
+X-Gm-Message-State: AOAM531a9EUdCY48VHTEoqF9AEWr9GbfSluNP0aRyKpJ2RhHD1Zg5Izx
+ bS8pbAt8MCPud68xkMMEs4E=
+X-Google-Smtp-Source: ABdhPJxeWLwdtILwiGAbwJfS6uXJXlDG1K4sgXzkQHx+MSR6qYmkKv1ONdkB1X6MmkGPbYnZrxAYjQ==
+X-Received: by 2002:a05:6820:515:b0:35f:3213:e694 with SMTP id
+ m21-20020a056820051500b0035f3213e694mr4711826ooj.42.1653068655867; 
+ Fri, 20 May 2022 10:44:15 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
+ ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ y199-20020a4a45d0000000b0040e699e8d8asm643181ooa.45.2022.05.20.10.44.13
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 20 May 2022 10:44:14 -0700 (PDT)
+Message-ID: <070470fb-20bb-0345-b19e-49d164f2bbcc@roeck-us.net>
+Date: Fri, 20 May 2022 10:44:12 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v1 1/4] powerpc/pseries: hvcall.h: add H_WATCHDOG opcode, 
+ H_NOOP return code
+Content-Language: en-US
+To: Scott Cheloha <cheloha@linux.ibm.com>, linux-watchdog@vger.kernel.org
+References: <20220520172055.32220-1-cheloha@linux.ibm.com>
+From: Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20220520172055.32220-1-cheloha@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,55 +89,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Dan Malek <dan@embeddededge.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Eric Dumazet <edumazet@google.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Vitaly Bordug <vbordug@ru.mvista.com>, Paolo Abeni <pabeni@redhat.com>,
- Joakim Tjernlund <joakim.tjernlund@lumentis.se>,
- "David S. Miller" <davem@davemloft.net>
+Cc: nathanl@linux.ibm.com, wvoigt@us.ibm.com, aik@ozlabs.ru,
+ vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org,
+ brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 20 May 2022 12:54:56 +0000 Christophe Leroy wrote:
-> Le 20/05/2022 =C3=A0 14:35, M=C3=A5ns Rullg=C3=A5rd a =C3=A9crit=C2=A0:
-> > Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> >> See original commit 070e1f01827c. It explicitely says that the cache
-> >> must be invalidate _AFTER_ the copy.
-> >>
-> >> The cache is initialy invalidated by dma_map_single(), so before the
-> >> copy the cache is already clean.
-> >>
-> >> After the copy, data is in the cache. In order to allow re-use of the
-> >> skb, it must be put back in the same condition as before, in extenso t=
-he
-> >> cache must be invalidated in order to be in the same situation as after
-> >> dma_map_single().
-> >>
-> >> So I think your change is wrong. =20
-> >=20
-> > OK, looking at it more closely, the change is at least unnecessary since
-> > there will be a cache invalidation between each use of the buffer either
-> > way.  Please disregard the patch.  Sorry for the noise.
-> >  =20
->=20
-> I also looked deeper.
->=20
-> Indeed it was implemented in kernel 4.9 or 4.8. At that time=20
-> dma_unmap_single() was a no-op, it was not doing any sync/invalidation=20
-> at all, invalidation was done only at mapping, so when we were reusing=20
-> the skb it was necessary to clean the cache _AFTER_ the copy as if it=20
-> was a new mapping.
->=20
-> Today a sync is done at both map and unmap, so it doesn't really matter=20
-> whether we do the invalidation before or after the copy when we re-use=20
-> the skb.
+On 5/20/22 10:20, Scott Cheloha wrote:
+> PAPR v2.12 defines a new hypercall, H_WATCHDOG.  The hypercall permits
+> guest control of one or more virtual watchdog timers.
+> 
+> Add the opcode for the H_WATCHDOG hypercall to hvcall.h.  While here,
+> add a definition for H_NOOP, a possible return code for H_WATCHDOG.
+> 
+> Signed-off-by: Scott Cheloha <cheloha@linux.ibm.com>
 
-Hm, I think the patch is necessary, sorry if you're also saying that
-and I'm misinterpreting.=20
+Please provide a change log against the earlier RFC series.
 
-Without the dma_sync_single_for_cpu() if swiotlb is used the data
-will not be copied back into the original buffer if there is no sync.
+Thanks,
+Guenter
+
+> ---
+>   arch/powerpc/include/asm/hvcall.h | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+> index d92a20a85395..4b4f69c35b4f 100644
+> --- a/arch/powerpc/include/asm/hvcall.h
+> +++ b/arch/powerpc/include/asm/hvcall.h
+> @@ -87,6 +87,7 @@
+>   #define H_P7		-60
+>   #define H_P8		-61
+>   #define H_P9		-62
+> +#define H_NOOP		-63
+>   #define H_TOO_BIG	-64
+>   #define H_UNSUPPORTED	-67
+>   #define H_OVERLAP	-68
+> @@ -324,7 +325,8 @@
+>   #define H_RPT_INVALIDATE	0x448
+>   #define H_SCM_FLUSH		0x44C
+>   #define H_GET_ENERGY_SCALE_INFO	0x450
+> -#define MAX_HCALL_OPCODE	H_GET_ENERGY_SCALE_INFO
+> +#define H_WATCHDOG		0x45C
+> +#define MAX_HCALL_OPCODE	H_WATCHDOG
+>   
+>   /* Scope args for H_SCM_UNBIND_ALL */
+>   #define H_UNBIND_SCOPE_ALL (0x1)
+
