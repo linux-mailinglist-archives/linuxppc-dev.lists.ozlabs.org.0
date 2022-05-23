@@ -2,68 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D7153158B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 20:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8147F5315C3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 21:39:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6R9M48Pjz3btT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 04:45:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6SMt30F4z3byF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 05:39:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=UstXh4Ww;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=G67mgEOc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::22f;
- helo=mail-lj1-x22f.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62a;
+ helo=mail-pl1-x62a.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20210112 header.b=UstXh4Ww; dkim-atps=neutral
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com
- [IPv6:2a00:1450:4864:20::22f])
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=G67mgEOc; dkim-atps=neutral
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com
+ [IPv6:2607:f8b0:4864:20::62a])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6R8l13dpz3bYG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 04:45:09 +1000 (AEST)
-Received: by mail-lj1-x22f.google.com with SMTP id m6so18295687ljb.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 May 2022 11:45:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20210112;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=oOWZUBJqNcdlgAF3ozzceIWa1QLe3KoX8JwY9UNGHd4=;
- b=UstXh4WwiSYrL1ybcoTWRmyZsv9hEjc6PjZMBIKnBZP0zhT7iTun1KvXZ8H17U8qSH
- iz+7+bLHxdtL7wvkFkMIpdZu3lQ51hwOwKdx/wG4KzaJXykJmazsGwA7t4UGAtTePw/B
- mK+BUuXVrIeuhZNDEKPHGY+iv6YBe6R27v/utPWafsuvsLf2TmGu2ewgAfZSdKBowv4l
- LoP4BWbhRDtTjeIcpB3tIiVwfN42D2mxokpmBrGJMTT5Dd6TNpI3j9kQxH/bd3ESREMT
- XevvqDcVtKuqvXq0zcj3Z/G0wAyCfCELfimVoPf+6+u9hcQLdRX4KGz8yIs0FLopHIeq
- RhLw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6SMG0P20z305G
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 05:39:19 +1000 (AEST)
+Received: by mail-pl1-x62a.google.com with SMTP id n18so13995487plg.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 May 2022 12:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=9i0mf5EWjId+dJhDG42zI0t8gO1U5xR/fPTtg8h/guQ=;
+ b=G67mgEOcbKAzzfRqWT2tyqM6K9pitcq9pbTVcwT0LjmKZNi0oiqVsX8V97hEFwl2hf
+ AMnpF3tfbp0thJvNCE4CX5dI4O8ELTGwmxs1K5fhCNP737yCqZGbfIr/xW9c33Xf+LOK
+ scdJ+18kS7hWnfRSUS9ItgijmeteaopgZF3uU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=oOWZUBJqNcdlgAF3ozzceIWa1QLe3KoX8JwY9UNGHd4=;
- b=Bn0e2F56nv5zv0q7plnVS68LXbxIz8sSISBlBzno9Zd8PzoTA0Uo1ACBMU5P1lMnzW
- 0GJFZmGeERXKDOHj3Vpt2n/9JlmlQPc6eRDDDBrOTb7nLQNCGCAt6gPbLQUnHI/I7j9I
- uamBZU7eR2ggVpa2ddXI2LVpHq/41mo1uTkYRdjP3cKI12VpV9sBFPkSW/sw8usVKx6a
- VfKnOOHuKBSqtg+tcrxeYNmVj+OzfGd6Y4dEorDc40xnFEXicQkZEBVbJgn/0gW7o3TG
- yDbltcZJE6mXHH34C9W3x1vbJpWr2ysg2Sg8pucG7UuviCfGQn+1gfHIiU6rYLMiduRw
- bdLw==
-X-Gm-Message-State: AOAM530o3ifgBJZ8JV0i17gmCP+trNoPNrMqoogFy28ktIoOxm9Ra1GZ
- cFXt++EcsNavoAZRB838fwRSrZRIcYp3JpIUb3O1+g==
-X-Google-Smtp-Source: ABdhPJyqr3CCsMipzHURp2FsSWTJB3upstez3xIYqCFafcp/ENDyuWVgPX2GXxQPyyXKkJMEh1xX8mg+wI61pNqucdI=
-X-Received: by 2002:a2e:98cd:0:b0:253:df46:323e with SMTP id
- s13-20020a2e98cd000000b00253df46323emr9603557ljj.295.1653331503220; Mon, 23
- May 2022 11:45:03 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=9i0mf5EWjId+dJhDG42zI0t8gO1U5xR/fPTtg8h/guQ=;
+ b=v6ajixM3W4jNB/Zp6EHw0RdTo95FrtRfnpmAbfOHNCPuUu97sZidozlqG59sossndu
+ KT3Eb+CuKXXCQKK+fK38vEaQ6X7APZxeUZwQDwayhhN7ZqYG3+VXp4H7iL5UfDu/C71f
+ CRxMz+t1GYaxu8BoMvLPAZ8doT8QJNrpng61alcjAHPJMw2cZgUW87VSyhqBogmJCWi9
+ m1rLV41bQ0MqkCL/DFPNvqKuFxsTvI1b3ZIz2XT5dZ7TgtghSti4Gcp/rtja/HubkjIM
+ 0RVgkSI/pNjysrZn3xF+a+xh0p29YndAWqrcfH7IPILkkzxWK0k/G51R9C/X6zJrj76R
+ TQ2w==
+X-Gm-Message-State: AOAM530UdieFTJhi8c41oIZxnCeSmIzcNmisn2yRbilAMGMsUClpFwWc
+ YsjhKc1mzLUtkm+0YYWcOr+qjQ==
+X-Google-Smtp-Source: ABdhPJwpmlrfLvCqOEAWUHk/iFb9vTBCFvDV+XiSslGuIShWmQMdDaruCMB2aTz4o4uZEjpK38rAug==
+X-Received: by 2002:a17:902:f605:b0:14d:9e11:c864 with SMTP id
+ n5-20020a170902f60500b0014d9e11c864mr24236615plg.54.1653334755308; 
+ Mon, 23 May 2022 12:39:15 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id
+ a9-20020a62bd09000000b0051827128aeasm7543246pff.131.2022.05.23.12.39.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 23 May 2022 12:39:14 -0700 (PDT)
+Date: Mon, 23 May 2022 12:39:12 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 0/5] kallsyms: make kallsym APIs more safe with scnprintf
+Message-ID: <202205231238.FAF6D28@keescook>
+References: <CGME20220520083715epcas5p400b11adef4d540756c985feb20ba29bc@epcas5p4.samsung.com>
+ <20220520083701.2610975-1-maninder1.s@samsung.com>
+ <YonTOL4zC4CytVrn@infradead.org>
 MIME-Version: 1.0
-References: <20220523020209.11810-1-ojeda@kernel.org>
- <20220523020209.11810-22-ojeda@kernel.org>
-In-Reply-To: <20220523020209.11810-22-ojeda@kernel.org>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Mon, 23 May 2022 11:44:51 -0700
-Message-ID: <CAKwvOdkTjxNEmCTnuH5f41WB50ef6ErBM2Kp2zJ-t9q_5U8rBA@mail.gmail.com>
-Subject: Re: [PATCH v7 21/25] Kbuild: add Rust support
-To: Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YonTOL4zC4CytVrn@infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,111 +80,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sven Van Asbroeck <thesven73@gmail.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Miguel Cano <macanroj@gmail.com>,
- Paul Mackerras <paulus@samba.org>, Gary Guo <gary@garyguo.net>,
- Douglas Su <d0u9.su@outlook.com>, Borislav Petkov <bp@alien8.de>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Masahiro Yamada <masahiroy@kernel.org>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Ingo Molnar <mingo@redhat.com>, Wedson Almeida Filho <wedsonaf@google.com>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Antonio Terceiro <antonio.terceiro@linaro.org>,
- Adam Bratschi-Kaye <ark.email@gmail.com>, Albert Ou <aou@eecs.berkeley.edu>,
- rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
- Boqun Feng <boqun.feng@gmail.com>, linux-um@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, Daniel Xu <dxu@dxuuu.xyz>,
- David Gow <davidgow@google.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
- linux-arm-kernel@lists.infradead.org, Michal Marek <michal.lkml@markovi.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Boris-Chengbiao Zhou <bobo1239@web.de>, Jarkko Sakkinen <jarkko@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
- Finn Behrens <me@kloenk.de>, Johannes Berg <johannes@sipsolutions.net>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: peterz@infradead.org, linux@rasmusvillemoes.dk,
+ linux-kernel@vger.kernel.org, paulus@samba.org, linux-hexagon@vger.kernel.org,
+ agordeev@linux.ibm.com, will@kernel.org, linux-s390@vger.kernel.org,
+ daniel.thompson@linaro.org, arnd@arndb.de, linux-scsi@vger.kernel.org,
+ onkarnath.1@samsung.com, anil.s.keshavamurthy@intel.com, kartilak@cisco.com,
+ kgdb-bugreport@lists.sourceforge.net, naveen.n.rao@linux.ibm.com,
+ longman@redhat.com, borntraeger@linux.ibm.com, jejb@linux.ibm.com,
+ mhiramat@kernel.org, v.narang@samsung.com, pmladek@suse.com,
+ satishkh@cisco.com, boqun.feng@gmail.com, gor@linux.ibm.com, hca@linux.ibm.com,
+ rostedt@goodmis.org, linux-fsdevel@vger.kernel.org,
+ andriy.shevchenko@linux.intel.com, mingo@redhat.com, bcain@quicinc.com,
+ martin.petersen@oracle.com, dianders@chromium.org, sebaddel@cisco.com,
+ senozhatsky@chromium.org, mcgrof@kernel.org, svens@linux.ibm.com,
+ jason.wessel@windriver.com, Maninder Singh <maninder1.s@samsung.com>,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net,
+ linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> +choice
-> +       prompt "Optimization level"
-> +       default RUST_OPT_LEVEL_SIMILAR_AS_CHOSEN_FOR_C
-> +       depends on RUST
-> +       help
-> +         Controls rustc's `-Copt-level` codegen option.
-> +
-> +         This flag controls the optimization level.
-> +
-> +         If unsure, say "Similar as chosen for C".
-> +
-> +config RUST_OPT_LEVEL_SIMILAR_AS_CHOSEN_FOR_C
-> +       bool "Similar as chosen for C"
-> +       help
-> +         This choice will pick a similar optimization level as chosen in
-> +         the "Compiler optimization level" for C:
-> +
-> +             -O2 is currently mapped to -Copt-level=2
-> +             -O3 is currently mapped to -Copt-level=3
-> +             -Os is currently mapped to -Copt-level=s
-> +
-> +         The mapping may change over time to follow the intended semantics
-> +         of the choice for C as sensibly as possible.
-> +
-> +         This is the default.
-> +
-> +config RUST_OPT_LEVEL_0
-> +       bool "No optimizations (-Copt-level=0)"
-> +       help
-> +         Not recommended for most purposes. It may come in handy for debugging
-> +         suspected optimizer bugs, unexpected undefined behavior, etc.
-> +
-> +         Note that this level will *not* enable debug assertions nor overflow
-> +         checks on its own (like it happens when interacting with rustc
-> +         directly). Use the corresponding configuration options to control
-> +         that instead, orthogonally.
-> +
-> +         Note this level may cause excessive stack usage, which can lead to stack
-> +         overflow and subsequent crashes.
-> +
-> +config RUST_OPT_LEVEL_1
-> +       bool "Basic optimizations (-Copt-level=1)"
-> +       help
-> +         Useful for debugging without getting too lost, but without
-> +         the overhead and boilerplate of no optimizations at all.
-> +
-> +         Note this level may cause excessive stack usage, which can lead to stack
-> +         overflow and subsequent crashes.
-> +
-> +config RUST_OPT_LEVEL_2
-> +       bool "Some optimizations (-Copt-level=2)"
-> +       help
-> +         The sensible choice in most cases.
-> +
-> +config RUST_OPT_LEVEL_3
-> +       bool "All optimizations (-Copt-level=3)"
-> +       help
-> +         Yet more performance (hopefully).
-> +
-> +config RUST_OPT_LEVEL_S
-> +       bool "Optimize for size (-Copt-level=s)"
-> +       help
-> +         Smaller kernel, ideally without too much performance loss.
-> +
-> +config RUST_OPT_LEVEL_Z
-> +       bool "Optimize for size, no loop vectorization (-Copt-level=z)"
-> +       help
-> +         Like the previous level, but also turn off loop vectorization.
+On Sat, May 21, 2022 at 11:07:52PM -0700, Christoph Hellwig wrote:
+> On Fri, May 20, 2022 at 02:06:56PM +0530, Maninder Singh wrote:
+> > kallsyms functionality depends on KSYM_NAME_LEN directly.
+> > but if user passed array length lesser than it, sprintf
+> > can cause issues of buffer overflow attack.
+> > 
+> > So changing *sprint* and *lookup* APIs in this patch set
+> > to have buffer size as an argument and replacing sprintf with
+> > scnprintf.
+> 
+> This is still a pretty horrible API.  Passing something like
+> a struct seq_buf seems like the much better API here.  Also with
+> the amount of arguments and by reference passing it might be worth
+> to pass them as a structure while you're at it.
 
-I'm super not into having the rust optimization level differ from the
-C optimization level.  This is just someone having too much fun
-wrapping every compiler flag in a kbuild option.  Either folks wan't
-smaller size or more optimizations. Allowing for RUST_OPT_LEVEL_S and
-CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE or RUST_OPT_LEVEL_3 and
-CONFIG_CC_OPTIMIZE_FOR_SIZE is just wacky nonsense that's going to
-make randconfig bug reports more confusing to tease out.
+Yeah, I agree. It really seems like seq_buf would be nicer.
+
 -- 
-Thanks,
-~Nick Desaulniers
+Kees Cook
