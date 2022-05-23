@@ -1,56 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E04653154D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 19:32:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E5C53153A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 19:26:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6PYD6lN3z3bs4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 03:32:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6PQ04jBlz3bqv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 03:26:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=e7/mj6uB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SNB/lAD3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org
- header.a=rsa-sha256 header.s=korg header.b=e7/mj6uB; 
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=SNB/lAD3; 
  dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org
  [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6PXc5JX0z2yjS
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 03:32:16 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6PPN23k9z2ynL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 03:26:00 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id E4AB961117;
- Mon, 23 May 2022 17:32:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD88C385A9;
- Mon, 23 May 2022 17:32:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
- s=korg; t=1653327134;
- bh=hpOjpmyQvfaALi4mtyz1e6kIE+O99SXN5GXatvJOfqY=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=e7/mj6uBhViSHW8MHpakrHrW3qWOSSlB6jIYAeJIHi3kq3TgIsHT1ya+23VHvTKiq
- eyzZU+ypL4DXJcNV1D+EF1+pqCSfw76PfX5lJoIKkcysJvTPMdA8MuBifDRM6iCUfb
- 2/eKJstLpAZ9hxZDB948sjb53E201F5mwt+jil5Q=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 5.17 132/158] perf test bpf: Skip test if clang is not present
-Date: Mon, 23 May 2022 19:04:49 +0200
-Message-Id: <20220523165852.300414915@linuxfoundation.org>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220523165830.581652127@linuxfoundation.org>
-References: <20220523165830.581652127@linuxfoundation.org>
-User-Agent: quilt/0.66
+ by dfw.source.kernel.org (Postfix) with ESMTPS id A3395611D1;
+ Mon, 23 May 2022 17:25:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7D2C34116;
+ Mon, 23 May 2022 17:25:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1653326756;
+ bh=dh+fAnKS8WI2flC692OoPZ+G9PyKzBI6qdryJjOK4yQ=;
+ h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+ b=SNB/lAD3U3bfcbSAR6YCwn69/9c7U6PhIVPDgyDiIAomqxgdDZGAYA56IR3NfTHAp
+ yV/d4aKVwc/vf6shLn0B4YQNS34p4LRUoNosg7+m38wgYO2RIxHBkc1e6KUUui6Xlx
+ eXCwXGyaAZrC8pu9HCIJnzId3g+TG+blUKS2akJCBWwG9OsfW5U6Vc8QLJZnr50ymh
+ UKNFnOwuPsv3oivbZ53kX6e+Emhih1XL5sKKjTi9zuyXX7mB6yiuzzQddjKQ5vKpSq
+ NsRN9J7/WUPxrZDY4jqXgg5+XtqsPC31S6DiTTNvacHFJWujiH9yQk+d5zDwEewg8b
+ BmGPTe+Yg7SNw==
+From: Mark Brown <broonie@kernel.org>
+To: festevam@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com,
+ nicoleotsuka@gmail.com, perex@perex.cz, shengjiu.wang@gmail.com,
+ Xiubo.Lee@gmail.com, tiwai@suse.com, shengjiu.wang@nxp.com
+In-Reply-To: <1653284661-18964-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1653284661-18964-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: Fix FSL_SAI_xDR/xFR definition
+Message-Id: <165332675410.2124944.12107532437710717569.b4-ty@kernel.org>
+Date: Mon, 23 May 2022 18:25:54 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,139 +66,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>,
- Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
- Nageswara R Sastry <rnsastry@linux.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- Arnaldo Carvalho de Melo <acme@redhat.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, Jiri Olsa <jolsa@kernel.org>,
- Kajol Jain <kjain@linux.ibm.com>, Wang Nan <wangnan0@huawei.com>,
- Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+On Mon, 23 May 2022 13:44:21 +0800, Shengjiu Wang wrote:
+> There are multiple xDR and xFR registers, the index is
+> from 0 to 7. FSL_SAI_xDR and FSL_SAI_xFR is abandoned,
+> replace them with FSL_SAI_xDR0 and FSL_SAI_xFR0.
+> 
+> 
 
-[ Upstream commit 8994e97be3eb3c3a7b59d6223018ffab8c272e2d ]
+Applied to
 
-Perf BPF filter test fails in environment where "clang" is not
-installed.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Test failure logs:
+Thanks!
 
-<<>>
- 42: BPF filter                    :
- 42.1: Basic BPF filtering         : Skip
- 42.2: BPF pinning                 : FAILED!
- 42.3: BPF prologue generation     : FAILED!
-<<>>
+[1/1] ASoC: fsl_sai: Fix FSL_SAI_xDR/xFR definition
+      commit: e4dd748dc87cf431af7b3954963be0d9f6150217
 
-Enabling verbose option provided debug logs which says clang/llvm needs
-to be installed. Snippet of verbose logs:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-<<>>
- 42.2: BPF pinning                  :
- --- start ---
-test child forked, pid 61423
-ERROR:	unable to find clang.
-Hint:	Try to install latest clang/llvm to support BPF.
-        Check your $PATH
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-<<logs_here>>
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-Failed to compile test case: 'Basic BPF llvm compile'
-Unable to get BPF object, fix kbuild first
-test child finished with -1
- ---- end ----
-BPF filter subtest 2: FAILED!
-<<>>
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-Here subtests, "BPF pinning" and "BPF prologue generation" failed and
-logs shows clang/llvm is needed. After installing clang, testcase
-passes.
-
-Reason on why subtest failure happens though logs has proper debug
-information:
-
-Main function __test__bpf calls test_llvm__fetch_bpf_obj by
-passing 4th argument as true ( 4th arguments maps to parameter
-"force" in test_llvm__fetch_bpf_obj ). But this will cause
-test_llvm__fetch_bpf_obj to skip the check for clang/llvm.
-
-Snippet of code part which checks for clang based on
-parameter "force" in test_llvm__fetch_bpf_obj:
-
-<<>>
-if (!force && (!llvm_param.user_set_param &&
-<<>>
-
-Since force is set to "false", test won't get skipped and fails to
-compile test case. The BPF code compilation needs clang, So pass the
-fourth argument as "false" and also skip the test if reason for return
-is "TEST_SKIP"
-
-After the patch:
-
-<<>>
- 42: BPF filter                    :
- 42.1: Basic BPF filtering         : Skip
- 42.2: BPF pinning                 : Skip
- 42.3: BPF prologue generation     : Skip
-<<>>
-
-Fixes: ba1fae431e74bb42 ("perf test: Add 'perf test BPF'")
-Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
-Acked-by: Ian Rogers <irogers@google.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Cc: Wang Nan <wangnan0@huawei.com>
-Link: https://lore.kernel.org/r/20220511115438.84032-1-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/perf/tests/bpf.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/tools/perf/tests/bpf.c b/tools/perf/tests/bpf.c
-index 573490530194..592ab02d5ba3 100644
---- a/tools/perf/tests/bpf.c
-+++ b/tools/perf/tests/bpf.c
-@@ -222,11 +222,11 @@ static int __test__bpf(int idx)
- 
- 	ret = test_llvm__fetch_bpf_obj(&obj_buf, &obj_buf_sz,
- 				       bpf_testcase_table[idx].prog_id,
--				       true, NULL);
-+				       false, NULL);
- 	if (ret != TEST_OK || !obj_buf || !obj_buf_sz) {
- 		pr_debug("Unable to get BPF object, %s\n",
- 			 bpf_testcase_table[idx].msg_compile_fail);
--		if (idx == 0)
-+		if ((idx == 0) || (ret == TEST_SKIP))
- 			return TEST_SKIP;
- 		else
- 			return TEST_FAIL;
-@@ -370,9 +370,11 @@ static int test__bpf_prologue_test(struct test_suite *test __maybe_unused,
- static struct test_case bpf_tests[] = {
- #ifdef HAVE_LIBBPF_SUPPORT
- 	TEST_CASE("Basic BPF filtering", basic_bpf_test),
--	TEST_CASE("BPF pinning", bpf_pinning),
-+	TEST_CASE_REASON("BPF pinning", bpf_pinning,
-+			"clang isn't installed or environment missing BPF support"),
- #ifdef HAVE_BPF_PROLOGUE
--	TEST_CASE("BPF prologue generation", bpf_prologue_test),
-+	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test,
-+			"clang isn't installed or environment missing BPF support"),
- #else
- 	TEST_CASE_REASON("BPF prologue generation", bpf_prologue_test, "not compiled in"),
- #endif
--- 
-2.35.1
-
-
-
+Thanks,
+Mark
