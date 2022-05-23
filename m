@@ -2,104 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AAA53114A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 16:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 820C7531F37
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 01:27:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6KHR4fgnz3bkY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 00:20:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6YQH2Zw6z3bxZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 09:27:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MR4Rn/6i;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=O+C3jDB0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=murphyp@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=MR4Rn/6i; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6KGh6xbdz2yMj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 00:19:56 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24NEDjnV002727;
- Mon, 23 May 2022 14:19:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=qBmsxwi4lCespPhYuPLAJWW5ORIDnogvPNtq63ieWjs=;
- b=MR4Rn/6ifwjhYZ8bj6mNkJSs8P87N89AM7kOS5wnoqC+7jydVeS3oOoqltejdDsDbcjB
- IJLBbjfTN1UPDLOI61NWLRfP9v7GI3AClftLy2nTk9Dcyde7VwEkRT5iFJVAKkmynb+k
- oprRdxJGNnw8FPQROGRtWC3aMXLU/s50PYQYGDV8t5JVCf7H5FSCFqIK3h5W3S00Kov/
- PfIBg1+m+dOWEWW6DLlMtEQN0gY6HlSXrdpOZ6EQ+ksGiv7UcDoE7wYOPLcjQqRmxUzy
- oDu5McdHomlA0CntyQY4kT7vwwmbwLmKMoLz9/EjJfZDMkSb48XWet3MDUohAG/mKOeT ZA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8buc049q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 May 2022 14:19:50 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24NEIRgw022590;
- Mon, 23 May 2022 14:19:50 GMT
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8buc049j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 May 2022 14:19:50 +0000
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24NEIpIN022605;
- Mon, 23 May 2022 14:19:49 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com
- (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
- by ppma02dal.us.ibm.com with ESMTP id 3g6qq9crek-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 May 2022 14:19:49 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24NEJmN428901768
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 May 2022 14:19:48 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8BCECBE051;
- Mon, 23 May 2022 14:19:48 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 05005BE056;
- Mon, 23 May 2022 14:19:48 +0000 (GMT)
-Received: from [9.160.107.32] (unknown [9.160.107.32])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 23 May 2022 14:19:47 +0000 (GMT)
-Message-ID: <27e05114-fd3a-b7cc-1bdd-05d8eaf0b483@linux.ibm.com>
-Date: Mon, 23 May 2022 09:19:47 -0500
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=O+C3jDB0; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6L9x0RJPz3bXS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 01:00:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=keKJrvyQ/+r75XOnYYRl19FO+VGyiPJcwICfZxDBkqs=; b=O+C3jDB0Vwu4Y/gkTmW/RCmTwy
+ kNqD2emzzlOs/8A7J1xO/TSH5qapt6sCckUwfqeKLJwoCrpUi4pUQfOKCsbI70QtSFMdfNTmFr+H0
+ NXT6Oh9iPuG4hVKz84ZvxHpmEirVLNSMQMza54o3VmB+D23FpdTtf7JnpYZ61zk10z8NLp053Dtmb
+ 5G5TvLT8W+VF+imYpIQccZx+LAQHhkmqjWgwAULVFomENEWSpKhN5UeAVPt+Y1vZC04/4FyRoMtUE
+ OHqcld4S4ftUjXzRb6CJS95k+7T+FIlHKMRNj13Qcs75Xk/j3Ix2WaTpEwsP72+2bzr+hEFsSu6v0
+ WUJ5ifAA==;
+Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120]
+ helo=[192.168.1.60]) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1nt9XQ-00GTti-N1; Mon, 23 May 2022 17:00:05 +0200
+Message-ID: <0fac8c71-6f18-d15c-23f5-075dbc45f3f9@igalia.com>
+Date: Mon, 23 May 2022 11:56:12 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.0
-Subject: Re: [RFC Linux patch] powerpc: add documentation for HWCAPs
+Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20220520051528.98097-1-npiggin@gmail.com>
- <c1f6c6c9-4cc7-0dcb-360d-9ae0df6378b4@linux.ibm.com>
- <1653091346.1a5h1ae3pd.astroid@bobo.none>
-From: Paul E Murphy <murphyp@linux.ibm.com>
-In-Reply-To: <1653091346.1a5h1ae3pd.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Scott Branden <scott.branden@broadcom.com>, Petr Mladek
+ <pmladek@suse.com>, Sebastian Reichel <sre@kernel.org>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Desmond yan <desmond.yan@broadcom.com>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-20-gpiccoli@igalia.com> <YoJZVZl/MH0KiE/J@alley>
+ <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com> <YoOpyW1+q+Z5as78@alley>
+ <d72b9aab-675c-ac89-b73a-b1de4a0b722d@igalia.com>
+ <81878a67-21f1-fee8-1add-f381bc8b05df@broadcom.com>
+ <edbaa4fa-561c-6f5e-f2ab-43ae68acaede@igalia.com>
+ <d1cc0bee-2a98-0c2e-8796-6fb7fae6b803@broadcom.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <d1cc0bee-2a98-0c2e-8796-6fb7fae6b803@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: iwiQ7e3rQkxS3vx6qxmaMpdUasbj9GXf
-X-Proofpoint-GUID: v1u-EZaBbZFjIMDskUdp7D2rBgkdccIa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-23_06,2022-05-23_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 adultscore=0
- impostorscore=0 mlxscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
- mlxlogscore=975 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205230079
+X-Mailman-Approved-At: Tue, 24 May 2022 09:26:49 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,60 +75,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gcc@gcc.gnu.org, libc-alpha@sourceware.org
+Cc: Paul Mackerras <paulus@samba.org>, Justin Chen <justinpopo6@gmail.com>,
+ Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ stern@rowland.harvard.edu, xen-devel@lists.xenproject.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, linux-pm@vger.kernel.org,
+ linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>,
+ luto@kernel.org, Mihai Carabas <mihai.carabas@oracle.com>, tglx@linutronix.de,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ Sven Schnelle <svens@linux.ibm.com>, akpm@linux-foundation.org,
+ linux-hyperv@vger.kernel.org, dave.hansen@linux.intel.com,
+ linux-s390@vger.kernel.org, Stephen Hemminger <sthemmin@microsoft.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, vgoyal@redhat.com, mhiramat@kernel.org,
+ Andrea Parri <parri.andrea@gmail.com>, linux-xtensa@linux-xtensa.org,
+ john.ogness@linutronix.de, Markus Mayer <mmayer@broadcom.com>,
+ hidehiro.kawai.ez@hitachi.com, linux-arm-kernel@lists.infradead.org,
+ kernel-dev@igalia.com, fabiomirmar@gmail.com, halves@canonical.com,
+ alejandro.j.jimenez@oracle.com, feng.tang@intel.com,
+ zhenwei pi <pizhenwei@bytedance.com>, will@kernel.org,
+ Doug Berger <opendmb@gmail.com>, bhe@redhat.com, corbet@lwn.net,
+ Dexuan Cui <decui@microsoft.com>, Evan Green <evgreen@chromium.org>,
+ bcm-kernel-feedback-list@broadcom.com, Tianyu Lan <Tianyu.Lan@microsoft.com>,
+ keescook@chromium.org, arnd@arndb.de, Haiyang Zhang <haiyangz@microsoft.com>,
+ rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de,
+ openipmi-developer@lists.sourceforge.net,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-alpha@vger.kernel.org, Brian Norris <computersforpeace@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, peterz@infradead.org,
+ linux-remoteproc@vger.kernel.org, mikelley@microsoft.com,
+ sparclinux@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+ Ard Biesheuvel <ardb@kernel.org>, linux-leds@vger.kernel.org, x86@kernel.org,
+ mingo@redhat.com, dyoung@redhat.com, paulmck@kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ Shile Zhang <shile.zhang@linux.alibaba.com>,
+ Wang ShaoBo <bobo.shaobowang@huawei.com>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ David Gow <davidgow@google.com>, linux-tegra@vger.kernel.org,
+ andriy.shevchenko@linux.intel.com, Hari Bathini <hbathini@linux.ibm.com>,
+ linux-edac@vger.kernel.org, jgross@suse.com, netdev@vger.kernel.org,
+ kernel@gpiccoli.net, kexec@lists.infradead.org, linux-mips@vger.kernel.org,
+ Julius Werner <jwerner@chromium.org>, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 5/20/22 7:11 PM, Nicholas Piggin wrote:
-> Excerpts from Paul E Murphy's message of May 21, 2022 12:21 am:
+On 19/05/2022 16:20, Scott Branden wrote:
+> [...] 
+>> Hi Scott / Desmond, thanks for the detailed answer! Is this adapter
+>> designed to run in x86 only or you have other architectures' use cases?
+> The adapter may be used in any PCIe design that supports DMA.
+> So it may be possible to run in arm64 servers.
 >>
+>> [...]
+>> With that said, and given this is a lightweight notifier that ideally
+>> should run ASAP, I'd keep this one in the hypervisor list. We can
+>> "adjust" the semantic of this list to include lightweight notifiers that
+>> reset adapters.
+> Sounds the best to keep system operating as tested today.
 >>
->> On 5/20/22 12:15 AM, Nicholas Piggin via Gcc wrote:
->>> +PPC_FEATURE2_TAR
->>> +    VSX facility is available.
->>
->> Was manipulating the tar spr was once a privileged instruction, is this
->> a hint userspace can use the related instructions?
-> 
-> It can be disabled with facility control, and I guess there was
-> some consideration for how it might be used, e.g., "system software"
-> could use it for its own purpose then clear the bit for the application.
-> 
-> In practice I don't really know what makes use of this or whether
-> anything sanely can, it's marked reserved in the ABI. Would be
-> interesting to know whether there is much benefit to use it in the
-> compiler. The kernel could actually use it for something nifty if we
-> were able to prevent userspace from accessing it entirely...
+>> With that said, Petr has a point - not always such list is going to be
+>> called before kdump. So, that makes me think in another idea: what if we
+>> have another list, but not on panic path, but instead in the custom
+>> crash_shutdown()? Drivers could add callbacks there that must execute
+>> before kexec/kdump, no matter what.
+> It may be beneficial for some other drivers but for our use we would 
+> then need to register for the panic path and the crash_shutdown path. 
+> We notify the VK card for 2 purposes: one to stop DMA so memory stop 
+> changing during a kdump.  And also to get the card into a good state so 
+> resets happen cleanly.
 
-It might be useful as a scratch register for indirect branches in some 
-odd cases, such as golang's preemptive userspace threading.  Though, it 
-seems more trouble than its worth for a very limited benefit.
+Thanks Scott! With that, I guess it's really better to keep this
+notifier in this hypervisor/early list - I'm planning to do that for V2.
+Unless Petr or somebody has strong feelings against that, of course.
 
-> 
->>> +
->>> +PPC_FEATURE2_HAS_IEEE128
->>> +    IEEE 128 is available? What instructions/data?
->>
->> Maybe something like "IEEE 128 binary floating point instructions are
->> supported.  Individual instruction availability is dependent on the
->> reported architecture version."?
-> 
-> Right, I just didn't know what architectural class of instructions
-> those are. Is it just VSX in general or are there some specific
-> things we can name?
-
-I think ISA 3.1 buckets this into an OpenPOWER Linux Optional Feature 
-for "Quad-precision floating-point (QFP)".  I guess ISA 3.0 predates 
-those categorizations.
+Cheers,
 
 
->>> +PPC_FEATURE2_MMA
->>> +    MMA facility is available.
->>
->> Maybe another note that specific instruction availability may depend on
->> the reported architecture version?
-Yep. I wonder if it would help to note how these align (or don't) with 
-the various OpenPOWER features.
+Guilherme
