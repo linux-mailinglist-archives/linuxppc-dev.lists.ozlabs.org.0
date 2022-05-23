@@ -1,62 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9AC5315F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 22:24:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081325315FB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 22:41:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6TM46tSyz3bmw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 06:24:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6TlN694Mz3bqx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 06:41:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NKEVA1i2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=fPCMiuZn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com;
+ envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=NKEVA1i2; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6TLR0GNbz305b
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 06:23:42 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id 5A8AE61495;
- Mon, 23 May 2022 20:23:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45343C385AA;
- Mon, 23 May 2022 20:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1653337418;
- bh=cRmLCYxqZ/oPtyUyAbrJ2vSaCtJhJTaXonVzm1gzzZc=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=NKEVA1i2oilfkHiewDOhRCD2VgzU1ad8Meq+dybp0PEy6huQ+sA3jCZFN5B3i1p4d
- aRYuziRfx0xW0yhhxyrZns9P/1t2w7+H9uU2sxzu80/1JGRsKtt/rm0ybMQ9OLJIWG
- e8Avm6N7lI1+kCy5871Ae8jJr3GAFOKjB2jGLj4FI4ileAGPymwlmfonXfCTbb9xxC
- aZsaB4ZlkKHmOhwUJrFihy0GKOaOxUsG34Bz1WdBxHvLAcz3Ms+pc4KtNG+gLpktCx
- LrLFA9YVBGMML3Tt9+tMZRG+GpwUqWhE4CixX67CBqFQJg1Hv9GvMN/fRR39N5hRFx
- TO1c31n0Wvamg==
-Date: Mon, 23 May 2022 13:23:36 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] net: fs_enet: sync rx dma buffer before reading
-Message-ID: <20220523132336.073965a5@kernel.org>
-In-Reply-To: <20220521104430.1212bed5@kernel.org>
-References: <20220519192443.28681-1-mans@mansr.com>
- <03f24864-9d4d-b4f9-354a-f3b271c0ae66@csgroup.eu>
- <yw1xmtfc9yaj.fsf@mansr.com>
- <b11dcb32-5915-c1c8-9f0e-3cfc57b55792@csgroup.eu>
- <20220520104347.2b1b658a@kernel.org>
- <d8cc1123-30d2-d65b-84b1-2ffee0d50aab@csgroup.eu>
- <20220521104430.1212bed5@kernel.org>
+ unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256
+ header.s=20170329 header.b=fPCMiuZn; dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6Tkk1D0Kz308w
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 06:41:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+ References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=LG2HkLvcft3PZ/5y+RaNtcoQpztQykGkc8EQp8pxJfI=; b=fPCMiuZns16FgBzoGF9Je3OLkO
+ LL4L2QHAG/wGtiXgEhS21zRsWqE1LMzGwwDxe6f9KpfZaY9eV7CGD4vwhcqTRNInSSR1HDaLnpPpS
+ miMpU8/+9j0GmfawjCEu88Tqk7uAI9V6UbtlRLQsT2Paj7KpRr9Eexx/1nt9uyC0/PRdqZ6qso//5
+ 331flFwFw5rYDxq1lD4s7YGntuImz8x8p2XDCS463SY8sQhksTBKudAp4pKnME8DpTbZ4fGAvbQxT
+ wafY442u8mSqR6x/cwniP7CEUq4fd8W+eVImWzP4xrptC52doj1jXiLwbdsJQSnWbw0nF1P7Xd8f/
+ wPYC4mSw==;
+Received: from 200-161-159-120.dsl.telesp.net.br ([200.161.159.120]
+ helo=[192.168.1.60]) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1ntEr0-00Gje9-7b; Mon, 23 May 2022 22:40:38 +0200
+Message-ID: <0dda86c0-3a54-8c70-d1e7-18bbb4d41bab@igalia.com>
+Date: Mon, 23 May 2022 17:40:07 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 12/30] parisc: Replace regular spinlock with spin_trylock
+ on panic path
+Content-Language: en-US
+To: Helge Deller <deller@gmx.de>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-13-gpiccoli@igalia.com>
+ <6a7c924a-54a9-c5ea-8a9d-3ea92987b436@gmx.de>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <6a7c924a-54a9-c5ea-8a9d-3ea92987b436@gmx.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,37 +68,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?B?TcOlbnMgUnVsbGfDpXJk?= <mans@mansr.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- Dan Malek <dan@embeddededge.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Eric Dumazet <edumazet@google.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Vitaly Bordug <vbordug@ru.mvista.com>, Paolo Abeni <pabeni@redhat.com>,
- Joakim Tjernlund <joakim.tjernlund@lumentis.se>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ linux-xtensa@linux-xtensa.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ hidehiro.kawai.ez@hitachi.com, sparclinux@vger.kernel.org, will@kernel.org,
+ tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
+ mikelley@microsoft.com, john.ogness@linutronix.de, bhe@redhat.com,
+ corbet@lwn.net, paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org,
+ mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com,
+ xen-devel@lists.xenproject.org, dyoung@redhat.com, vgoyal@redhat.com,
+ pmladek@suse.com, dave.hansen@linux.intel.com, keescook@chromium.org,
+ arnd@arndb.de, linux-pm@vger.kernel.org, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, rcu@vger.kernel.org, gregkh@linuxfoundation.org,
+ bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ vkuznets@redhat.com, linux-edac@vger.kernel.org, jgross@suse.com,
+ linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net,
+ kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com,
+ mhiramat@kernel.org, kernel-dev@igalia.com, linux-alpha@vger.kernel.org,
+ akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 21 May 2022 10:44:30 -0700 Jakub Kicinski wrote:
-> > Well, I say the contrary.
-> > 
-> > On the mainline the patch may be applied as is, it won't harm.
-> > 
-> > However, it is gets applied to kernel 4.9 (based on the fixes: tag), it 
-> > will break the driver for at least powerpc 8xx.  
+On 28/04/2022 13:55, Helge Deller wrote:
+> [...]
+> You may add:
+> Acked-by: Helge Deller <deller@gmx.de> # parisc
 > 
-> I see, we should make a note of that in the commit message so it doesn't
-> get sucked into stable.
-> 
-> > I don't know how SWIOTLB works or even what it is, does any of the 
-> > microcontrollers embedding freescale ethernet uses that at all ?  
-> 
-> AFAIU SWIOTLB basically forces the use of bounce buffers even if the
-> device can reach the entire DRAM. I think some people also use it for
-> added security? IDK. I mostly use it to check if I'm using the DMA API
-> "right" :)
+> Helge
 
-If what I said makes sense please repost the patch, the current version
-has been dropped from patchwork already.
+Hi Helge, do you think would be possible to still pick this one for
+v5.19 or do you prefer to hold for the next release?
+
+I'm working on V2, so if it's merged for 5.19 I won't send it again.
+Thanks,
+
+
+Guilherme
