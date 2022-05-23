@@ -1,60 +1,96 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E5C53153A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 19:26:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCAC53155E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 19:58:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6PQ04jBlz3bqv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 03:26:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6Q6Z35qmz3bn4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 03:58:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SNB/lAD3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dfQhiHm7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
- helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=SNB/lAD3; 
- dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org
- [IPv6:2604:1380:4641:c500::1])
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=dfQhiHm7; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6PPN23k9z2ynL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 03:26:00 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id A3395611D1;
- Mon, 23 May 2022 17:25:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7D2C34116;
- Mon, 23 May 2022 17:25:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1653326756;
- bh=dh+fAnKS8WI2flC692OoPZ+G9PyKzBI6qdryJjOK4yQ=;
- h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
- b=SNB/lAD3U3bfcbSAR6YCwn69/9c7U6PhIVPDgyDiIAomqxgdDZGAYA56IR3NfTHAp
- yV/d4aKVwc/vf6shLn0B4YQNS34p4LRUoNosg7+m38wgYO2RIxHBkc1e6KUUui6Xlx
- eXCwXGyaAZrC8pu9HCIJnzId3g+TG+blUKS2akJCBWwG9OsfW5U6Vc8QLJZnr50ymh
- UKNFnOwuPsv3oivbZ53kX6e+Emhih1XL5sKKjTi9zuyXX7mB6yiuzzQddjKQ5vKpSq
- NsRN9J7/WUPxrZDY4jqXgg5+XtqsPC31S6DiTTNvacHFJWujiH9yQk+d5zDwEewg8b
- BmGPTe+Yg7SNw==
-From: Mark Brown <broonie@kernel.org>
-To: festevam@gmail.com, alsa-devel@alsa-project.org, lgirdwood@gmail.com,
- nicoleotsuka@gmail.com, perex@perex.cz, shengjiu.wang@gmail.com,
- Xiubo.Lee@gmail.com, tiwai@suse.com, shengjiu.wang@nxp.com
-In-Reply-To: <1653284661-18964-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1653284661-18964-1-git-send-email-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_sai: Fix FSL_SAI_xDR/xFR definition
-Message-Id: <165332675410.2124944.12107532437710717569.b4-ty@kernel.org>
-Date: Mon, 23 May 2022 18:25:54 +0100
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6Q4N2wDTz2xKs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 03:56:19 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24NH3MNK013513;
+ Mon, 23 May 2022 17:56:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=xA+n5KuvnS1mmwKufHJ2VRnPKjS5ifUNWGp8AErsg04=;
+ b=dfQhiHm7XbJMQjzeikIgXM0Jj3ArCA2IFbg5cuxjGgK7z5Xc4FikWOwQbs0sxdxg7lI1
+ /K8K/qlWMGUOgpj6TdZ64ADd78iHzPUZgoFQxjB1mCvc/a2SS2Wv2USzsvCvK2ji0OGf
+ wDjDUYeD7mgo4LPrgKxmKhB39DnsYfSh2LEY7Y5p+ipjSLB43dFOkTP5WKZZ9XKXVCXF
+ hzioc7iXGmOEIvCqOvRQvyVqqxaCv/JI/EENd2+/NcsVxqlEZ9zyNvQ+136oRoeZ5Z9I
+ XCWjXhM+nAe4+ZV1/TVIVCQ14IYhhuS/Sw+RdaESxqOvVL4Wfgqs473VLQZPLCGOrQDw yg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8eb3rxaj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 May 2022 17:56:01 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24NHh26X004994;
+ Mon, 23 May 2022 17:56:00 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.102])
+ by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8eb3rxa0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 May 2022 17:56:00 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+ by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24NHg8B6015068;
+ Mon, 23 May 2022 17:55:59 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma06ams.nl.ibm.com with ESMTP id 3g6qbjb6rc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 23 May 2022 17:55:58 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24NHtu8S49873212
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 23 May 2022 17:55:56 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 726205204F;
+ Mon, 23 May 2022 17:55:56 +0000 (GMT)
+Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown
+ [9.43.16.198])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 723A45204E;
+ Mon, 23 May 2022 17:55:53 +0000 (GMT)
+From: Sathvika Vasireddy <sv@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH 0/4] objtool: Enable and implement --mcount option on
+ powerpc
+Date: Mon, 23 May 2022 23:25:44 +0530
+Message-Id: <20220523175548.922671-1-sv@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dbzbUcjglD0wgs08Lkd6cMUdgT_QV4eW
+X-Proofpoint-ORIG-GUID: JMYLGJ1AjAqcPy-3KSDSAe5fWDkJrL2q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-23_07,2022-05-23_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1
+ bulkscore=0 impostorscore=0
+ clxscore=1011 mlxscore=1 spamscore=1 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=226 suspectscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205230099
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,42 +102,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, aik@ozlabs.ru,
+ sv@linux.ibm.com, rostedt@goodmis.org, jpoimboe@redhat.com,
+ naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 23 May 2022 13:44:21 +0800, Shengjiu Wang wrote:
-> There are multiple xDR and xFR registers, the index is
-> from 0 to 7. FSL_SAI_xDR and FSL_SAI_xFR is abandoned,
-> replace them with FSL_SAI_xDR0 and FSL_SAI_xFR0.
-> 
-> 
+These patches are rebased on top of objtool/core
+branch of the tip tree, and work only on ppc64le
+for now. 
 
-Applied to
+Note: With this patch set, there are still some 
+warnings seen with ppc64le kernel build.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Sathvika Vasireddy (4):
+  objtool: Add --mnop as an option to --mcount
+  objtool: Enable objtool to run only on files with ftrace enabled
+  objtool/powerpc: Enable objtool to be built on ppc
+  objtool/powerpc: Add --mcount specific implementation
 
-Thanks!
+ Makefile                                      |  4 +-
+ arch/powerpc/Kconfig                          |  2 +
+ arch/x86/Kconfig                              |  1 +
+ scripts/Makefile.build                        |  5 +-
+ tools/objtool/arch/powerpc/Build              |  2 +
+ tools/objtool/arch/powerpc/decode.c           | 87 +++++++++++++++++++
+ .../arch/powerpc/include/arch/cfi_regs.h      | 11 +++
+ tools/objtool/arch/powerpc/include/arch/elf.h |  8 ++
+ .../arch/powerpc/include/arch/endianness.h    |  9 ++
+ .../arch/powerpc/include/arch/special.h       | 21 +++++
+ tools/objtool/arch/powerpc/special.c          | 19 ++++
+ tools/objtool/builtin-check.c                 | 14 +++
+ tools/objtool/check.c                         | 31 ++++---
+ tools/objtool/elf.c                           | 13 +++
+ tools/objtool/include/objtool/builtin.h       |  1 +
+ tools/objtool/include/objtool/elf.h           |  1 +
+ 16 files changed, 212 insertions(+), 17 deletions(-)
+ create mode 100644 tools/objtool/arch/powerpc/Build
+ create mode 100644 tools/objtool/arch/powerpc/decode.c
+ create mode 100644 tools/objtool/arch/powerpc/include/arch/cfi_regs.h
+ create mode 100644 tools/objtool/arch/powerpc/include/arch/elf.h
+ create mode 100644 tools/objtool/arch/powerpc/include/arch/endianness.h
+ create mode 100644 tools/objtool/arch/powerpc/include/arch/special.h
+ create mode 100644 tools/objtool/arch/powerpc/special.c
 
-[1/1] ASoC: fsl_sai: Fix FSL_SAI_xDR/xFR definition
-      commit: e4dd748dc87cf431af7b3954963be0d9f6150217
+-- 
+2.25.1
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
