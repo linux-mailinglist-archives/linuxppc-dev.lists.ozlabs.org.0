@@ -2,106 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6812F5311CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 18:10:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0B85311DB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 May 2022 18:19:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6MkQ23nsz3bly
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 02:10:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6Mwf1qTwz3btr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 02:19:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZD0yAXI3;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=dieU2w40;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::32;
+ helo=mail-oa1-x32.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=ZD0yAXI3; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=dieU2w40; dkim-atps=neutral
+Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com
+ [IPv6:2001:4860:4864:20::32])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6Mjg55T5z2xnG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 02:09:58 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24NFUGXH022928;
- Mon, 23 May 2022 16:09:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=GWi2svyv4xiTKuEkdoZOSj7G+LZzUVwd+iYBidPDUGU=;
- b=ZD0yAXI3NDFafBxw9P2NRSMwV30PmEiX2qNRVPao1IPEKL5HM+tjLqJmnGFvvMR9EaPd
- CXDdak0pB010MbHT/VSBoXefgESh2dhsBhtm4QTrWk2dltXOccnJYafppEHKEzyvU/Ps
- AYyifKRXC+6tERA5yq8uMaSaVAvDs/oWhY18ZT9+MCXy/jlOONMm+6cMcHG2ZaBK/mq+
- QDkE0CsL3ymm6H6SALO+YctA1TzlwK9X65/Vjtu1W6Wg2FSZBfBeqn3SIS8isnrppuX6
- BanEtEAfv/7gR1oq6kjA1ZC/T3KAieFmiIC6hZbolKUj+fWqbaSTga2PCcKzQiFw/1MK Lg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8axj3x24-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 May 2022 16:09:46 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24NG9jvN005804;
- Mon, 23 May 2022 16:09:46 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8axj3x16-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 May 2022 16:09:46 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24NFwRmS028633;
- Mon, 23 May 2022 16:09:43 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma03ams.nl.ibm.com with ESMTP id 3g6qq933jn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 23 May 2022 16:09:43 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24NG9fO246531026
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 23 May 2022 16:09:41 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 74A30A4051;
- Mon, 23 May 2022 16:09:41 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 32C01A404D;
- Mon, 23 May 2022 16:09:41 +0000 (GMT)
-Received: from [9.101.4.33] (unknown [9.101.4.33])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 23 May 2022 16:09:41 +0000 (GMT)
-Message-ID: <913bcf4d-dc78-dacb-4891-43a882f50017@linux.ibm.com>
-Date: Mon, 23 May 2022 18:09:40 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6Mvy5S44z301F
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 02:18:54 +1000 (AEST)
+Received: by mail-oa1-x32.google.com with SMTP id
+ 586e51a60fabf-f18e6ff0f6so19041288fac.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 May 2022 09:18:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=sender:message-id:date:mime-version:user-agent:content-language:to
+ :cc:references:from:subject:in-reply-to:content-transfer-encoding;
+ bh=hQcgMTFMJYnyHnemQfKiYLe9sphIr8EWIxdDBht7rsM=;
+ b=dieU2w40td4lVVuMYpChFlJijG4d/mRbTWuTkfLJO+rd5dTHUvtF90DCLbRWn9VOrL
+ mX//C2UJB8sj+RRFEC7+9H6TeuH3ZkjwcV6Ys77lSzWNLiwcaAveA6r1ER9SXwQFWx40
+ 8A8C6ttPUP15uYrXIkcPpWNJN6BalKyF700rzIrWCaW0mpgkmLMRKgx3ijlQYI10tpQ0
+ ECnQfMulZuNzDQ1dJ7D76v52tei6kEqGPhmr6vo0EACV7xKUsISIOIiGG/K+gr5eJqej
+ 4vUBViwvjS/DYwYy9utos9soLpsGYqRI8C4FF24KynA4nL2nCTrF7Jy+JbkOixmA9hYF
+ 9NNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20210112;
+ h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
+ :content-language:to:cc:references:from:subject:in-reply-to
+ :content-transfer-encoding;
+ bh=hQcgMTFMJYnyHnemQfKiYLe9sphIr8EWIxdDBht7rsM=;
+ b=AAqTEhJKrnyLPPvHhvwDHqxkjcip6A/LOtta4W5TOyZZtdGETd5U6U+dPz21b0Zb6Y
+ VMhdo+VnpbW3ucUJcNSI7lEmP5iioZrBLdigpDs64Aqwqk+zoSs50tiqN4xqPzA5nQA4
+ e5qt9ZlIKDaP45cEiuYPd0wOWDuWR2QrgxA2U7hiMIrItMT/ofqqWSXQaLzfh543A22w
+ yJhDd0jgi1EKBUD/UCMbrG5Zu9JFp+kAZloOMEq5XZuUgZA6S0BJQtOGZopDAIxAV6Y0
+ jmhp4CsGPTUrSFaFWgk3F5UvOMMSWov6JLppfnBH/+1NZv1wZhOC+BqgR2YLwVRNTDX0
+ KNDQ==
+X-Gm-Message-State: AOAM530flVOnIu1RomSor29NNaV3ubpiuxLEIaNsG/SRQdGtomN211Da
+ 9GcmcstBz3ckDMXn76bVk1w=
+X-Google-Smtp-Source: ABdhPJzEeMLEErIRmEqmOqh6pwlmTVu5iDNzBHUXaHlkhoYmpIg+hOdekbZa4kGCcVymO31EtbGIsw==
+X-Received: by 2002:a05:6870:659e:b0:f1:8d7a:9f36 with SMTP id
+ fp30-20020a056870659e00b000f18d7a9f36mr12120928oab.217.1653322730772; 
+ Mon, 23 May 2022 09:18:50 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c?
+ ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ i1-20020a9d6501000000b0060ae002cd3bsm4053518otl.55.2022.05.23.09.18.47
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 23 May 2022 09:18:49 -0700 (PDT)
+Message-ID: <0ecdb673-b9a8-40af-7dee-2ba7fe739e5f@roeck-us.net>
+Date: Mon, 23 May 2022 09:18:47 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.9.0
-Subject: Re: [PATCH] powerpc/64s: Don't read H_BLOCK_REMOVE characteristics in
- radix mode
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
 Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "npiggin@gmail.com" <npiggin@gmail.com>
-References: <20220520155721.10211-1-ldufour@linux.ibm.com>
- <d87cca6d-8cc9-3347-f74a-28f12889cfe1@csgroup.eu>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <d87cca6d-8cc9-3347-f74a-28f12889cfe1@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bWbvRjAI3Z_YOw8z6DsLYMrMT_ea3MZk
-X-Proofpoint-GUID: xMHkeSi2CqnMpaGYbyj0Zg262cyz_h7v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-23_06,2022-05-23_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 adultscore=0
- mlxscore=0 impostorscore=0 spamscore=0 phishscore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2205230087
+To: Guo Ren <guoren@kernel.org>
+References: <20220322144003.2357128-1-guoren@kernel.org>
+ <20220322144003.2357128-21-guoren@kernel.org>
+ <20220523054550.GA1511899@roeck-us.net>
+ <CAJF2gTSCcYif4DEpvrJ6d02no3CU_viyE+OkhhjCV3VsGmcT5Q@mail.gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH V9 20/20] riscv: compat: Add COMPAT Kbuild skeletal support
+In-Reply-To: <CAJF2gTSCcYif4DEpvrJ6d02no3CU_viyE+OkhhjCV3VsGmcT5Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,42 +90,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/05/2022, 18:15:39, Christophe Leroy wrote:
+On 5/23/22 08:18, Guo Ren wrote:
+> I tested Palmer's branch, it's okay:
+> 8810d7feee5a (HEAD -> for-next, palmer/for-next) riscv: Don't output a
+> bogus mmu-type on a no MMU kernel
 > 
+> I also tested linux-next, it's okay:
 > 
-> Le 20/05/2022 à 17:57, Laurent Dufour a écrit :
->> There is no need to read the H_BLOCK_REMOVE characteristics when running in
->> Radix mode because this hcall is never called.
+> rv64_rootfs:
+> # uname -a
+> Linux buildroot 5.18.0-next-20220523 #7 SMP Mon May 23 11:15:17 EDT
+> 2022 riscv64 GNU/Linux
+> #
+
+That is is ok with one setup doesn't mean it is ok with
+all setups. It is not ok with my root file system (from
+https://github.com/groeck/linux-build-test/tree/master/rootfs/riscv64),
+with qemu v6.2.
+
+> #
+> #
+> # ls /lib
+> ld-uClibc-1.0.39.so  libatomic.so.1       libgcc_s.so
+> ld-uClibc.so.0       libatomic.so.1.2.0   libgcc_s.so.1
+> ld-uClibc.so.1       libc.so.0            libuClibc-1.0.39.so
+> libatomic.so         libc.so.1            modules
+> 
+
+My root file system uses musl.
+
+Guenter
+
+> rv32_rootfs:
+> buildroot login: root
+> # uname -a
+> Linux buildroot 5.18.0-next-20220523 #7 SMP Mon May 23 11:15:17 EDT
+> 2022 riscv64 GNU/Linux
+> # ls /lib
+> ld-linux-riscv32-ilp32d.so.1  libm.so.6
+> libanl.so.1                   libnss_dns.so.2
+> libatomic.so                  libnss_files.so.2
+> libatomic.so.1                libpthread.so.0
+> libatomic.so.1.2.0            libresolv.so.2
+> libc.so.6                     librt.so.1
+> libcrypt.so.1                 libthread_db.so.1
+> libdl.so.2                    libutil.so.1
+> libgcc_s.so                   modules
+> libgcc_s.so.1
+> 
+> Here is my qemu version:
+> commit 19f13a92cef8405052e0f73d5289f9e15474dad3 (HEAD ->
+> riscv-to-apply.next, alistair/riscv-to-apply.next)
+> Author: Tsukasa OI <research_trasio@irq.a4lg.com>
+> Date:   Sun May 15 11:56:11 2022 +0900
+> 
+>      target/riscv: Move/refactor ISA extension checks
+> 
+>      We should separate "check" and "configure" steps as possible.
+>      This commit separates both steps except vector/Zfinx-related checks.
+> 
+>      Signed-off-by: Tsukasa OI <research_trasio@irq.a4lg.com>
+>      Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+>      Message-Id:
+> <c3145fa37a529484cf3047c8cb9841e9effad4b0.1652583332.git.research_trasio@irq.a4lg.com>
+>      Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+> 
+> On Mon, May 23, 2022 at 1:45 PM Guenter Roeck <linux@roeck-us.net> wrote:
 >>
->> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> On Tue, Mar 22, 2022 at 10:40:03PM +0800, guoren@kernel.org wrote:
+>>> From: Guo Ren <guoren@linux.alibaba.com>
+>>>
+>>> Adds initial skeletal COMPAT Kbuild (Running 32bit U-mode on
+>>> 64bit S-mode) support.
+>>>   - Setup kconfig & dummy functions for compiling.
+>>>   - Implement compat_start_thread by the way.
+>>>
+>>> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+>>> Signed-off-by: Guo Ren <guoren@kernel.org>
+>>> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+>>> Tested-by: Heiko Stuebner <heiko@sntech.de>
+>>> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+>>
+>> With this patch in linux-next, all my riscv64 emulations crash.
+>>
+>> [   11.600082] Run /sbin/init as init process
+>> [   11.628561] init[1]: unhandled signal 11 code 0x1 at 0x0000000000000000 in libc.so[ffffff8ad39000+a4000]
+>> [   11.629398] CPU: 0 PID: 1 Comm: init Not tainted 5.18.0-rc7-next-20220520 #1
+>> [   11.629462] Hardware name: riscv-virtio,qemu (DT)
+>> [   11.629546] epc : 00ffffff8ada1100 ra : 00ffffff8ada13c8 sp : 00ffffffc58199f0
+>> [   11.629586]  gp : 00ffffff8ad39000 tp : 00ffffff8ade0998 t0 : ffffffffffffffff
+>> [   11.629598]  t1 : 00ffffffc5819fd0 t2 : 0000000000000000 s0 : 00ffffff8ade0cc0
+>> [   11.629610]  s1 : 00ffffff8ade0cc0 a0 : 0000000000000000 a1 : 00ffffffc5819a00
+>> [   11.629622]  a2 : 0000000000000001 a3 : 000000000000001e a4 : 00ffffffc5819b00
+>> [   11.629634]  a5 : 00ffffffc5819b00 a6 : 0000000000000000 a7 : 0000000000000000
+>> [   11.629645]  s2 : 00ffffff8ade0ac8 s3 : 00ffffff8ade0ec8 s4 : 00ffffff8ade0728
+>> [   11.629656]  s5 : 00ffffff8ade0a90 s6 : 0000000000000000 s7 : 00ffffffc5819e40
+>> [   11.629667]  s8 : 00ffffff8ade0ca0 s9 : 00ffffff8addba50 s10: 0000000000000000
+>> [   11.629678]  s11: 0000000000000000 t3 : 0000000000000002 t4 : 0000000000000001
+>> [   11.629688]  t5 : 0000000000020000 t6 : ffffffffffffffff
+>> [   11.629699] status: 0000000000004020 badaddr: 0000000000000000 cause: 000000000000000d
+>> [   11.633421] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+>> [   11.633664] CPU: 0 PID: 1 Comm: init Not tainted 5.18.0-rc7-next-20220520 #1
+>> [   11.633784] Hardware name: riscv-virtio,qemu (DT)
+>> [   11.633881] Call Trace:
+>> [   11.633960] [<ffffffff80005e72>] dump_backtrace+0x1c/0x24
+>> [   11.634162] [<ffffffff809aa9ec>] show_stack+0x2c/0x38
+>> [   11.634274] [<ffffffff809b8482>] dump_stack_lvl+0x60/0x8e
+>> [   11.634386] [<ffffffff809b84c4>] dump_stack+0x14/0x1c
+>> [   11.634491] [<ffffffff809aaca0>] panic+0x116/0x2e2
+>> [   11.634596] [<ffffffff80015540>] do_exit+0x7ce/0x7d4
+>> [   11.634707] [<ffffffff80015666>] do_group_exit+0x24/0x7c
+>> [   11.634817] [<ffffffff80022294>] get_signal+0x7ee/0x830
+>> [   11.634924] [<ffffffff800051c0>] do_notify_resume+0x6c/0x41c
+>> [   11.635037] [<ffffffff80003ad4>] ret_from_exception+0x0/0x10
+>>
+>> Guenter
+>>
 >> ---
->>   arch/powerpc/platforms/pseries/setup.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
->> index c9fcc30a0365..654d2b999c25 100644
->> --- a/arch/powerpc/platforms/pseries/setup.c
->> +++ b/arch/powerpc/platforms/pseries/setup.c
->> @@ -803,7 +803,8 @@ static void __init pSeries_setup_arch(void)
->>   
->>   	pseries_setup_security_mitigations();
->>   #ifdef CONFIG_PPC_64S_HASH_MMU
->> -	pseries_lpar_read_hblkrm_characteristics();
->> +	if (!radix_enabled())
->> +		pseries_lpar_read_hblkrm_characteristics();
->>   #endif
+>> # bad: [18ecd30af1a8402c162cca1bd58771c0e5be7815] Add linux-next specific files for 20220520
+>> # good: [42226c989789d8da4af1de0c31070c96726d990c] Linux 5.18-rc7
+>> git bisect start 'HEAD' 'v5.18-rc7'
+>> # bad: [f9b63740b666dd9887eb0282d21b5f65bb0cadd0] Merge branch 'master' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git
+>> git bisect bad f9b63740b666dd9887eb0282d21b5f65bb0cadd0
+>> # bad: [7db97132097c5973ff77466d0ee681650af653de] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux
+>> git bisect bad 7db97132097c5973ff77466d0ee681650af653de
+>> # good: [2b7d17d4b7c1ff40f58b0d32be40fc0bb6c582fb] soc: document merges
+>> git bisect good 2b7d17d4b7c1ff40f58b0d32be40fc0bb6c582fb
+>> # good: [69c9668f853fdd409bb8abbb37d615785510b29a] Merge branch 'clk-next' of git://git.kernel.org/pub/scm/linux/kernel/git/clk/linux.git
+>> git bisect good 69c9668f853fdd409bb8abbb37d615785510b29a
+>> # bad: [1577f290aa0d4c5b29c03c46ef52e4952a21bfbb] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/s390/linux.git
+>> git bisect bad 1577f290aa0d4c5b29c03c46ef52e4952a21bfbb
+>> # good: [34f0971f8ca73d7e5502b4cf299788a9402120f7] powerpc/powernv/flash: Check OPAL flash calls exist before using
+>> git bisect good 34f0971f8ca73d7e5502b4cf299788a9402120f7
+>> # good: [0349d7dfc70a26b3facd8ca97de34980d4b60954] Merge branch 'mips-next' of git://git.kernel.org/pub/scm/linux/kernel/git/mips/linux.git
+>> git bisect good 0349d7dfc70a26b3facd8ca97de34980d4b60954
+>> # bad: [20bfb54d3b121699674c17a854c5ebc7a8f97d81] Merge branch 'for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git
+>> git bisect bad 20bfb54d3b121699674c17a854c5ebc7a8f97d81
+>> # bad: [9be8459298eadb39b9fe9974b890239e9c123107] riscv: compat: Add COMPAT Kbuild skeletal support
+>> git bisect bad 9be8459298eadb39b9fe9974b890239e9c123107
+>> # good: [01abdfeac81b5f56062d0a78f2cdc805db937a75] riscv: compat: Support TASK_SIZE for compat mode
+>> git bisect good 01abdfeac81b5f56062d0a78f2cdc805db937a75
+>> # good: [f4b395e6f1a588ed6c9a30474e58cf6b27b65783] riscv: compat: Add hw capability check for elf
+>> git bisect good f4b395e6f1a588ed6c9a30474e58cf6b27b65783
+>> # good: [3092eb45637573c5e435fbf5eaf9516316e5f9c6] riscv: compat: vdso: Add setup additional pages implementation
+>> git bisect good 3092eb45637573c5e435fbf5eaf9516316e5f9c6
+>> # good: [4608c159594fb40a5101357d4f614fdde9ce1fdb] riscv: compat: ptrace: Add compat_arch_ptrace implement
+>> git bisect good 4608c159594fb40a5101357d4f614fdde9ce1fdb
+>> # first bad commit: [9be8459298eadb39b9fe9974b890239e9c123107] riscv: compat: Add COMPAT Kbuild skeletal support
 > 
-> As far as I can see the function always exists so the #ifdef can be removed.
-
-You're right, I'll do that in the v2
-
->>   
->>   	/* By default, only probe PCI (can be overridden by rtas_pci) */
+> 
+> 
 
