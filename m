@@ -1,37 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E8F5328FC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:29:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4695328F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:28:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sRq68JXz3hZt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:29:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sQZ56f7z3fSh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:28:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s853dvHz3dPY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:16:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s834PVHz3bsr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:16:03 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s852x09z4yTX;
- Tue, 24 May 2022 21:16:05 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s810S6Qz4yTT;
+ Tue, 24 May 2022 21:16:01 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: paulus@samba.org, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- gregkh@linuxfoundation.org, benh@kernel.crashing.org, haren@linux.ibm.com,
- mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
- Zheng Bin <zhengbin13@huawei.com>
-In-Reply-To: <20220511033507.2745992-1-zhengbin13@huawei.com>
-References: <20220511033507.2745992-1-zhengbin13@huawei.com>
-Subject: Re: [PATCH -next] powerpc/pseries/vas: Call misc_deregister if sysfs
- init fails
-Message-Id: <165339058660.1718562.17170565423375451543.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:09:46 +1000
+To: benh@kernel.crashing.org, mpe@ellerman.id.au, nick.child@ibm.com,
+ Peng Wu <wupeng58@huawei.com>
+In-Reply-To: <20220425081245.21705-1-wupeng58@huawei.com>
+References: <20220425081245.21705-1-wupeng58@huawei.com>
+Subject: Re: [PATCH -next] powerpc/iommu: Add missing of_node_put in
+ iommu_init_early_dart
+Message-Id: <165339058771.1718562.10340726142485751524.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:09:47 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,20 +44,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gaochao49@huawei.com
+Cc: linuxppc-dev@lists.ozlabs.org, liwei391@huawei.com,
+ wangxiongfeng2@huawei.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 11 May 2022 11:35:07 +0800, Zheng Bin wrote:
-> Undo effects of misc_register if sysfs init fails after
-> misc_register.
+On Mon, 25 Apr 2022 08:12:45 +0000, Peng Wu wrote:
+> The device_node pointer is returned by of_find_compatible_node
+> with refcount incremented. We should use of_node_put() to avoid
+> the refcount leak.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries/vas: Call misc_deregister if sysfs init fails
-      https://git.kernel.org/powerpc/c/426e5805226358dbe9af233347c5bf3c81f2125c
+[1/1] powerpc/iommu: Add missing of_node_put in iommu_init_early_dart
+      https://git.kernel.org/powerpc/c/57b742a5b8945118022973e6416b71351df512fb
 
 cheers
