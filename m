@@ -1,45 +1,42 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA7B53320A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:54:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF00A533280
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 22:32:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L74fc2Swjz3cDs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 05:54:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L75VH5dm8z3bkQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 06:32:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4L74fD2gMzz3bcW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 05:54:27 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 24OJqGUX030520;
- Tue, 24 May 2022 14:52:16 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 24OJqGgw030519;
- Tue, 24 May 2022 14:52:16 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Tue, 24 May 2022 14:52:16 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
-Message-ID: <20220524195216.GL25951@gate.crashing.org>
-References: <20220524093939.30927-1-pali@kernel.org>
- <20220524175955.GI25951@gate.crashing.org>
- <20220524181255.bmszzxmbwzv7zed7@pali>
- <20220524185247.GK25951@gate.crashing.org>
- <20220524191610.hnodzz2j7mlgthey@pali>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+ smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.125; helo=smtp.smtpout.orange.fr;
+ envelope-from=christophe.jaillet@wanadoo.fr; receiver=<UNKNOWN>)
+Received: from smtp.smtpout.orange.fr (smtp03.smtpout.orange.fr
+ [80.12.242.125])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L75Tr0cdbz308w
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 06:32:13 +1000 (AEST)
+Received: from [192.168.1.18] ([90.11.191.102]) by smtp.orange.fr with ESMTPA
+ id tb4xnPisO4Ltqtb4xnh97t; Tue, 24 May 2022 22:24:36 +0200
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: YWZlNiIxYWMyZDliZWIzOTcwYTEyYzlhMmU3ZiQ1M2U2MzfzZDfyZTMxZTBkMTYyNDBjNDJlZmQ3ZQ==
+X-ME-Date: Tue, 24 May 2022 22:24:36 +0200
+X-ME-IP: 90.11.191.102
+Message-ID: <27777e38-5967-6c87-210a-626461ec125c@wanadoo.fr>
+Date: Tue, 24 May 2022 22:24:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH V2] platforms/83xx: Use of_device_get_match_data()
+Content-Language: en-GB
+To: cgel.zte@gmail.com, oss@buserror.net
+References: <20220225010737.2038781-1-chi.minghao@zte.com.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20220225010737.2038781-1-chi.minghao@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220524191610.hnodzz2j7mlgthey@pali>
-User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,31 +48,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Zeal Robot <zealci@zte.com.cn>, linux-kernel@vger.kernel.org,
+ Minghao Chi <chi.minghao@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 24, 2022 at 09:16:10PM +0200, Pali Roh�r wrote:
-> On Tuesday 24 May 2022 13:52:47 Segher Boessenkool wrote:
-> > Aha.  Right, because this config forces -mspe it requires one of these
-> > CPUs.
-> > 
-> > You can use a powerpc-linux compiler instead, and everything will just
-> > work.  These CPUs are still supported, in all of GCC 9 .. GCC 12 :-)
+Le 25/02/2022 à 02:07, cgel.zte@gmail.com a écrit :
+> From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
 > 
-> Ok. I can use different "generic" powerpc compiler (It should work fine
-> as you said, as it has also -mcpu=8540 option). But I think that
-> compilation of kernel should be supported also by that gcc 8.5.0 e500
-> compiler.
+> Use of_device_get_match_data() to simplify the code.
+> v1->v2:
+> 	Add a judgment on the return value of the A function as NULL
+> 
+> Reported-by: Zeal Robot <zealci@zte.com.cn>
+> Signed-off-by: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
+> ---
+>   arch/powerpc/platforms/83xx/suspend.c | 7 ++-----
+>   1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/83xx/suspend.c b/arch/powerpc/platforms/83xx/suspend.c
+> index bb147d34d4a6..6d47a5b81485 100644
+> --- a/arch/powerpc/platforms/83xx/suspend.c
+> +++ b/arch/powerpc/platforms/83xx/suspend.c
+> @@ -322,18 +322,15 @@ static const struct platform_suspend_ops mpc83xx_suspend_ops = {
+>   static const struct of_device_id pmc_match[];
 
-That linuxspe compiler you mean.  Sure, why not, the more the merrier,
-as long as it doesn't get in the way of other stuff, I won't protest.
+Hi,
+I think that the line above can now be removed as well.
 
-But please don't confuse people: you are talking about a
-powerpc-linuxspe compiler, not e500, which is supported just fine by
-current GCC trunk still, and does not have such limitations :-)
+just my 2c.
+
+CJ
 
 
-Segher
+>   static int pmc_probe(struct platform_device *ofdev)
+>   {
+> -	const struct of_device_id *match;
+>   	struct device_node *np = ofdev->dev.of_node;
+>   	struct resource res;
+>   	const struct pmc_type *type;
+>   	int ret = 0;
+>   
+> -	match = of_match_device(pmc_match, &ofdev->dev);
+> -	if (!match)
+> +	type = of_device_get_match_data(&ofdev->dev);
+> +	if (!type)
+>   		return -EINVAL;
+>   
+> -	type = match->data;
+> -
+>   	if (!of_device_is_available(np))
+>   		return -ENODEV;
+>   
+
