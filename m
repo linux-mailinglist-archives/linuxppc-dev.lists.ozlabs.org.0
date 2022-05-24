@@ -2,34 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0487A53283E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D075A532852
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:55:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rgF6VlKz3cgy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:54:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rhT4zQ7z3cdf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:55:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rfY2kgkz308C
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:53:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rfZ5qfKz30Hf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:53:58 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rfV6LYqz4xZv;
- Tue, 24 May 2022 20:53:54 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rfZ54jXz4ySb;
+ Tue, 24 May 2022 20:53:58 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220509071150.181250-1-aik@ozlabs.ru>
-References: <20220509071150.181250-1-aik@ozlabs.ru>
-Subject: Re: [PATCH kernel] KVM: PPC: Book3s: Remove real mode interrupt
- controller hcalls handlers
-Message-Id: <165338951343.1711920.16474509167223655967.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 20:51:53 +1000
+To: Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220328215831.320409-1-farosas@linux.ibm.com>
+References: <20220328215831.320409-1-farosas@linux.ibm.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix vcore_blocked tracepoint
+Message-Id: <165338951438.1711920.10689960042369328588.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 20:51:54 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,25 +43,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org, Cédric Le Goater <clg@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
+Cc: kvm-ppc@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 9 May 2022 17:11:50 +1000, Alexey Kardashevskiy wrote:
-> Currently we have 2 sets of interrupt controller hypercalls handlers
-> for real and virtual modes, this is from POWER8 times when switching
-> MMU on was considered an expensive operation.
+On Mon, 28 Mar 2022 18:58:31 -0300, Fabiano Rosas wrote:
+> We removed most of the vcore logic from the P9 path but there's still
+> a tracepoint that tried to dereference vc->runner.
 > 
-> POWER9 however does not have dependent threads and MMU is enabled for
-> handling hcalls so the XIVE native or XICS-on-XIVE real mode handlers
-> never execute on real P9 and later CPUs.
 > 
-> [...]
 
 Applied to powerpc/topic/ppc-kvm.
 
-[1/1] KVM: PPC: Book3s: Remove real mode interrupt controller hcalls handlers
-      https://git.kernel.org/powerpc/c/b22af9041927075b82bcaf4b6c7a354688198d47
+[1/1] KVM: PPC: Book3S HV: Fix vcore_blocked tracepoint
+      https://git.kernel.org/powerpc/c/ad55bae7dc364417434b69dd6c30104f20d0f84d
 
 cheers
