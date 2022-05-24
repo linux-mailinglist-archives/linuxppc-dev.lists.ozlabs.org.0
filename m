@@ -2,58 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9C35326A2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 11:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 639515326DE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 11:52:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6q234mg3z3bwZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 19:40:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6qJ01zcTz3byY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 19:52:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I86vb4PB;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KNkIBPnY;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQG6Waka;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
- envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=I86vb4PB; 
+ smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
+ helo=us-smtp-delivery-124.mimecast.com; envelope-from=fweimer@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=KNkIBPnY; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=XQG6Waka; 
  dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6q1S4nnjz30BP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 19:40:12 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+Received: from us-smtp-delivery-124.mimecast.com
+ (us-smtp-delivery-124.mimecast.com [170.10.129.124])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by dfw.source.kernel.org (Postfix) with ESMTPS id AA32F6164E;
- Tue, 24 May 2022 09:40:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE16DC385AA;
- Tue, 24 May 2022 09:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1653385209;
- bh=XsiPB+YmgXZsRlXprg01ZA3bkNDDn/VDzc7T4K91VkQ=;
- h=From:To:Cc:Subject:Date:From;
- b=I86vb4PBaO9vScyygfzJ8J4eaAUxqUdt7VKo32RX6XV/TOxkMEZwtuXWPvTR8XawH
- cJdtEIJqjJPQsHGQ4lXTeP3jZXjTM2KWg0JC8TgtO0vxfiae/eAAEPzn24QfYX0mSW
- bdZ7FzX0Kgs+xoXpwknpvubbysG7H8dR1EZFn1WRrGGB3Y8x6ybPgwJkMN6YNSLFjo
- 7+OrKyweIoplXE66LAsGUuqo+Kd8jvCoszAcHZBsKc846Y5P7jbL5uYZKjazxfZuxH
- lktWa1+wA1mxXpRwTDcfpWX9BVn34w3o2Wkhfa1sVHdP7Ac1ZNxKkkx4JmS34X5kRr
- HN5mXjfCaK4rQ==
-Received: by pali.im (Postfix)
- id 392A09ED; Tue, 24 May 2022 11:40:06 +0200 (CEST)
-From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
-Date: Tue, 24 May 2022 11:39:39 +0200
-Message-Id: <20220524093939.30927-1-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6qHK2c7kz306M
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 19:52:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1653385927;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dxpTtBcAtLU7r3o+c7ZTUOtNOGtPG+TxJcZeMbIa8E4=;
+ b=KNkIBPnY/UXvrLg4P5TUDJJAypudUm1yfhcWO/NKxdyDWbEQklJSUqQEGTm/hRkvprVZrg
+ 8GCj0ScZ8ktycJgDHHNXQLGfBE7H83sNF7wmjsPfJ5mq56Wl+R1FmmIlPDAjOnxoiB8X6q
+ vmtcnRaJ/EQo3nC0WNe9RLt3ofCnUFI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1653385928;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dxpTtBcAtLU7r3o+c7ZTUOtNOGtPG+TxJcZeMbIa8E4=;
+ b=XQG6Waka4dwMZf2nkp/qEEONf5u8Hft+eT6yLK4JjK53cjTD9UE6hC30mwPoXx4HbEv0HR
+ fLSL/jYUrdp00a3xjnY0YAsWE478xDPv6yjabDNT+DD0dvYJh9q/0vE0BlqYB29i7qdMP4
+ 4UPATI43spgIW/fSHXpawGPUdUGKwpc=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-489-s0IbF0sePq61O3CWu5DCUw-1; Tue, 24 May 2022 05:52:03 -0400
+X-MC-Unique: s0IbF0sePq61O3CWu5DCUw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 46E2F299E763;
+ Tue, 24 May 2022 09:52:03 +0000 (UTC)
+Received: from oldenburg.str.redhat.com (unknown [10.39.192.56])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CA4BB492C3B;
+ Tue, 24 May 2022 09:52:01 +0000 (UTC)
+From: Florian Weimer <fweimer@redhat.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH Linux] powerpc: add documentation for HWCAPs
+References: <20220524093828.505575-1-npiggin@gmail.com>
+Date: Tue, 24 May 2022 11:52:00 +0200
+In-Reply-To: <20220524093828.505575-1-npiggin@gmail.com> (Nicholas Piggin's
+ message of "Tue, 24 May 2022 19:38:28 +1000")
+Message-ID: <87ee0juukf.fsf@oldenburg.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.9
+Authentication-Results: relay.mimecast.com;
+ auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=fweimer@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +88,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: gcc@gcc.gnu.org, libc-alpha@sourceware.org, linuxppc-dev@lists.ozlabs.org,
+ Paul E Murphy <murphyp@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-gcc e500 compiler does not support -mcpu=powerpc option. When it is
-specified then gcc throws compile error:
+* Nicholas Piggin:
 
-  gcc: error: unrecognized argument in option ‘-mcpu=powerpc’
-  gcc: note: valid arguments to ‘-mcpu=’ are: 8540 8548 native
+> +2. Facilities
+> +-------------
+> +The Power ISA uses the term "facility" to describe a class of instructions,
+> +registers, interrupts, etc. The presence or absence of a facility indicates
+> +whether this class is available to be used, but the specifics depend on the
+> +ISA version. For example, if the VSX facility is available, the VSX
+> +instructions that can be used differ between the v3.0B and v3.1B ISA
+> +verstions.
 
-So do not set -mcpu=powerpc option when CONFIG_E500 is set. Correct option
--mcpu=8540 for CONFIG_E500 is set few lines below in that Makefile.
+The 2.07 ISA manual also has categories.  ISA 3.0 made a lot of things
+mandatory.  It may make sense to clarify that feature bits for mandatory
+aspects of the ISA are still set, to help with backwards compatibility.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/powerpc/Makefile | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index eb541e730d3c..87f9f29ac9d2 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -22,11 +22,16 @@ ifdef CONFIG_PPC32
- # or platform code sets later on the command line, but they are needed
- # to set a sane 32-bit cpu target for the 64-bit cross compiler which
- # may default to the wrong ISA.
-+# Never set -mcpu=powerpc option for gcc e500 compiler because this
-+# option is unsupported and throws error. The correct option for
-+# CONFIG_E500 is -mcpu=8540 and it is set few lines below.
-+ifndef CONFIG_E500
- KBUILD_CFLAGS		+= -mcpu=powerpc
- KBUILD_AFLAGS		+= -mcpu=powerpc
- endif
- endif
- endif
-+endif
- 
- ifdef CONFIG_PPC_BOOK3S_32
- KBUILD_CFLAGS		+= -mcpu=powerpc
--- 
-2.20.1
+Thanks,
+Florian
 
