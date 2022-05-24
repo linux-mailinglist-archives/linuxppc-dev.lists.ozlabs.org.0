@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8602C5328D1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2315328DA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:23:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sJD3Q54z3gBN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:23:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sK349jVz3gLl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:23:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
@@ -14,21 +14,21 @@ Received: from gandalf.ozlabs.org (mail.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7p2Q3Dz3cd9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7q5Lq8z3bl3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:51 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7p1QD4z4yT5;
- Tue, 24 May 2022 21:15:50 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7q44Bdz4yT8;
+ Tue, 24 May 2022 21:15:51 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
-In-Reply-To: <20220322045638.10443-1-maddy@linux.ibm.com>
-References: <20220322045638.10443-1-maddy@linux.ibm.com>
-Subject: Re: [PATCH] selftest/powerpc/pmu/ebb: remove fixed_instruction.S
-Message-Id: <165339059080.1718562.62560284365315376.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:09:50 +1000
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220518142629.513007-1-mpe@ellerman.id.au>
+References: <20220518142629.513007-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc: Fix all occurences of "the the"
+Message-Id: <165339059160.1718562.261920556528529992.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:09:51 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,26 +43,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, shuah@kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 22 Mar 2022 10:26:38 +0530, Madhavan Srinivasan wrote:
-> Commit 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs") added
-> selftest testcases to verify EBB interface. instruction_count_test.c
-> testcase needs a fixed loop function to count overhead. Instead of
-> using the thirty_two_instruction_loop() in fixed_instruction_loop.S
-> in ebb folder, file is linked with thirty_two_instruction_loop() in
-> loop.S from top folder. Since fixed_instruction_loop.S not used, patch
-> removes the file.
+On Thu, 19 May 2022 00:26:29 +1000, Michael Ellerman wrote:
+> Rather than waiting for the bots to fix these one-by-one, fix all
+> occurences of "the the" throughout arch/powerpc.
 > 
-> [...]
+> 
 
 Applied to powerpc/next.
 
-[1/1] selftest/powerpc/pmu/ebb: remove fixed_instruction.S
-      https://git.kernel.org/powerpc/c/079e5fd3a1e41c186c1bc4166d409d22e70729bf
+[1/1] powerpc: Fix all occurences of "the the"
+      https://git.kernel.org/powerpc/c/87c78b612f4feccdcf4019351206ebe0e3dfe828
 
 cheers
