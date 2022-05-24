@@ -1,68 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C51533005
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:03:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE0F53303D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:13:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L729x4z8bz3cDt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 04:03:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L72Pp38Qbz3c8M
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 04:13:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Fpqfein5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JKhfeDp2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
+ envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256
- header.s=casper.20170209 header.b=Fpqfein5; 
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=JKhfeDp2; 
  dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org
- [IPv6:2001:8b0:10b:1236::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L72944Q3gz3cdM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 04:02:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=y1TnWebPhJ1BojdW0cvueZgENLRV8F2gmqpv6bJIuPc=; b=Fpqfein5bh92hXEpVGleAKPEuZ
- yWch4DkG4Dx1jtgWEfvCef0HqeHBC5L1gYIXmDtb4MmCqTATCSYmlGOQ1vI/9OZIR15L1Au0EVlUd
- ijhgcll3q96D6F9krdEPKqSj+AqUY/pb9cdFQtxvs8ea/wtVuJGkfwslMTzxEMk9rEnmk0F98U1J/
- vF0dHBaOyHvK9xQo6W0IjRaskFXRYhd1RklUvQBdk7Vtw4fBl8hzECMNzC+97AAd7399VxIWPhred
- CtW2NtgHjpkUGdNfL/pUADxg8UafiifiLetN+tQ8nEI1j5sKcfiAd2+TsyV6We74E++c+BvbgUBjF
- SL1CJSJA==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
- id 1ntYrG-00HIoU-JF; Tue, 24 May 2022 18:02:14 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id AFF113002BE;
- Tue, 24 May 2022 20:02:12 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id A0E1C201A996B; Tue, 24 May 2022 20:02:12 +0200 (CEST)
-Date: Tue, 24 May 2022 20:02:12 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH v2 5/7] objtool: Enable objtool to run only on files
- with ftrace enabled
-Message-ID: <Yo0dpDuK3ilphNAA@hirez.programming.kicks-ass.net>
-References: <cover.1653398233.git.christophe.leroy@csgroup.eu>
- <cf3013dfad89ad5ac7d16d56dced72d7c138a20e.1653398233.git.christophe.leroy@csgroup.eu>
- <Yo0dgyqAOuwU6gHq@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L72PC1SWzz3bZc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 04:13:03 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ams.source.kernel.org (Postfix) with ESMTPS id AEE1FB817F2;
+ Tue, 24 May 2022 18:12:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D58FC34100;
+ Tue, 24 May 2022 18:12:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1653415978;
+ bh=KKmMzhfMf2IUd80WmWmo3TqKi63TjvQ6ruuivE274NE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=JKhfeDp24SV7L2MG5nT3JiaoEWk7MC6y/f25RRCQNNA885YCRwhNSQOAK1HuTXtMW
+ x0gruMGOJwK1JtKvfnjDrCJ/LP6hd6kgiXO5VJZFMdP6L6i/+oPA4Ng6Cs+IWDUvqJ
+ CLVizSwmt5oIdFUAsr/HuShZ5fOeRIxjBqfneZLqcDuOFcRkK5COjRxxL7jBda/+1N
+ /XCx46wQhIhZYtXatGNW4c7JWCgsBTRIxygEoM6vfYnbN68D2viVOqshKshd5o4Hjv
+ 5bBJcgS/QTh3RCLrQrR5Xtxafl3bR1M98AllZHWSE62zLXaBTGnKNf1cxd1BJDXcUL
+ B5Mn4Vast99tA==
+Received: by pali.im (Postfix)
+ id 37C6F9ED; Tue, 24 May 2022 20:12:55 +0200 (CEST)
+Date: Tue, 24 May 2022 20:12:55 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
+Message-ID: <20220524181255.bmszzxmbwzv7zed7@pali>
+References: <20220524093939.30927-1-pali@kernel.org>
+ <20220524175955.GI25951@gate.crashing.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Yo0dgyqAOuwU6gHq@hirez.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220524175955.GI25951@gate.crashing.org>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,43 +67,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, jpoimboe@redhat.com, linux-kernel@vger.kernel.org,
- rostedt@goodmis.org, sv@linux.ibm.com, Paul Mackerras <paulus@samba.org>,
- naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz, linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 24, 2022 at 08:01:39PM +0200, Peter Zijlstra wrote:
-> On Tue, May 24, 2022 at 03:17:45PM +0200, Christophe Leroy wrote:
-> > From: Sathvika Vasireddy <sv@linux.ibm.com>
-> > 
-> > This patch makes sure objtool runs only on the object files
-> > that have ftrace enabled, instead of running on all the object
-> > files.
-> > 
-> > Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> > Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
-> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > ---
-> >  scripts/Makefile.build | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> > index 2e0c3f9c1459..06ceffd92921 100644
-> > --- a/scripts/Makefile.build
-> > +++ b/scripts/Makefile.build
-> > @@ -258,8 +258,8 @@ else
-> >  # 'OBJECT_FILES_NON_STANDARD_foo.o := 'y': skip objtool checking for a file
-> >  # 'OBJECT_FILES_NON_STANDARD_foo.o := 'n': override directory skip for a file
-> >  
-> > -$(obj)/%.o: objtool-enabled = $(if $(filter-out y%, \
-> > -	$(OBJECT_FILES_NON_STANDARD_$(basetarget).o)$(OBJECT_FILES_NON_STANDARD)n),y)
-> > +$(obj)/%.o: objtool-enabled = $(and $(if $(filter-out y%, $(OBJECT_FILES_NON_STANDARD_$(basetarget).o)$(OBJECT_FILES_NON_STANDARD)n),y),        \
-> > +        $(if $(findstring $(strip $(CC_FLAGS_FTRACE)),$(_c_flags)),y),y)
+On Tuesday 24 May 2022 12:59:55 Segher Boessenkool wrote:
+> Hi!
 > 
-> I think this breaks x86, quite a bit of files have ftrace disabled but
-> very much must run objtool anyway.
+> On Tue, May 24, 2022 at 11:39:39AM +0200, Pali Rohár wrote:
+> > gcc e500 compiler does not support -mcpu=powerpc option. When it is
+> > specified then gcc throws compile error:
+> > 
+> >   gcc: error: unrecognized argument in option ‘-mcpu=powerpc’
+> >   gcc: note: valid arguments to ‘-mcpu=’ are: 8540 8548 native
+> 
+> What?  Are you using some modified version of GCC, perhaps?
 
-Also; since the Changelog gives 0 clue as to what problem it's trying to
-solve, I can't suggest anything.
+Hello! I'm using official gcc version, no special modification.
+
+> No version of GCC that isn't hamstrung can have this output.
+
+gcc for e500 cores has really this output when you pass -mcpu=powerpc.
+
+Upstream gcc dropped support for e500 cores during development of
+version 9. But you can still compile and install gcc 8.5.0 (last version
+of gcc 8) which has this full e500 support.
+
+Really, you can easily try it. Debian 10 (Buster) has gcc 8.3.0 in its
+default installation and also provides packages with cross compilers.
+Just run 'sudo apt install gcc-powerpc-linux-gnuspe' on desktop amd64
+version of Debian 10, it will install e500 cross compiler.
+
+-mcpu=8540 specify e500v1 and -mcpu=8548 specify e500v2
