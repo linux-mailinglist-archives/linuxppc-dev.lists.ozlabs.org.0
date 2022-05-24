@@ -2,64 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05FF5532A55
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 14:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CEF53251F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 10:18:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6tkq6qFvz2ypf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 22:27:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6nBm0lwKz3bwX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 18:18:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=cmANZ9ka;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rX/X6cHA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
- header.s=susede1 header.b=cmANZ9ka; dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6mvW2kXlz2yLg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 18:04:55 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
- by smtp-out2.suse.de (Postfix) with ESMTP id C6A001F8B8;
- Tue, 24 May 2022 08:04:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1653379492; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+HrTVIvXJDgrzNQFl8Mhx0wGW/HWHO1IHY/NT0Ch0wc=;
- b=cmANZ9kaIvAGzRMHaeCxB0LLBkrlXozlKGlr2MQNHSGuBkVg9GZ4ULppK80AYEMbn3sHQ3
- SRCkpAxtJlotC4dIBTUf4LWabWRfn+CV2iXTLVzyyBDKp8B9onijAa8QBBUxy4R2DAxIkT
- C3aqZP5pWFL7HdTOLlEm50sKDepVyxc=
-Received: from suse.cz (unknown [10.100.201.202])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
+ header.s=pp1 header.b=rX/X6cHA; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by relay2.suse.de (Postfix) with ESMTPS id A47272C141;
- Tue, 24 May 2022 08:04:51 +0000 (UTC)
-Date: Tue, 24 May 2022 10:04:51 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 19/30] panic: Add the panic hypervisor notifier list
-Message-ID: <YoyRo6gJrr4lsFpD@alley>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-20-gpiccoli@igalia.com>
- <YoJZVZl/MH0KiE/J@alley>
- <ad082ce7-db50-13bb-3dbb-9b595dfa78be@igalia.com>
- <YoOpyW1+q+Z5as78@alley>
- <d72b9aab-675c-ac89-b73a-b1de4a0b722d@igalia.com>
- <81878a67-21f1-fee8-1add-f381bc8b05df@broadcom.com>
- <edbaa4fa-561c-6f5e-f2ab-43ae68acaede@igalia.com>
- <d1cc0bee-2a98-0c2e-8796-6fb7fae6b803@broadcom.com>
- <0fac8c71-6f18-d15c-23f5-075dbc45f3f9@igalia.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6nB16mB9z2yYd
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 18:17:29 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24O7OBup011291;
+ Tue, 24 May 2022 08:17:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=LhRVKKB0DusQKiHLqperXZcxbEcQnxElZXIcFrsIBvM=;
+ b=rX/X6cHAs46I7VxQcdX2PSe0W4fpZpGmDJVrTVZV/YbN4BDVLVTX9VP3JYqI+X4bng6x
+ f2o7S78xA4zQjC/sy3ExlwfdMZBPD7DEipAxP8YeIGSu+DK2E6SnvLNVV4sqf24ndFI4
+ 1KxdI1p2uMFRb+hFMjPUWBU62Q72J9sQDzJyqnfjIxXuyUkK2iPE12yG8LNX0GrLLFn9
+ nIgv2Tz5H6ANfWIKg2SsT3DB9vSWimlgB2YpUMYsaC6LCp+2fRuXAvjjOTuH54JzEAxc
+ 4n36PFGX/2d5ZrGEcUiNBPzDHTIOrwbOW2ZJ2/DqZIxd3WDDH0rfXxBeoXitXJ9iZBER qg== 
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.108])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8r4g4du8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 May 2022 08:17:19 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+ by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24O7wtSw025309;
+ Tue, 24 May 2022 08:17:17 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma05fra.de.ibm.com with ESMTP id 3g6qq8ubd7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 24 May 2022 08:17:17 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 24O8GQD522741464
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 24 May 2022 08:16:26 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD518A405C;
+ Tue, 24 May 2022 08:17:14 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 68B0EA4054;
+ Tue, 24 May 2022 08:17:14 +0000 (GMT)
+Received: from [9.101.4.33] (unknown [9.101.4.33])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 24 May 2022 08:17:14 +0000 (GMT)
+Message-ID: <3ed0804d-dbcd-f83b-f806-cb979a6a9dfa@linux.ibm.com>
+Date: Tue, 24 May 2022 10:17:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0fac8c71-6f18-d15c-23f5-075dbc45f3f9@igalia.com>
-X-Mailman-Approved-At: Tue, 24 May 2022 22:27:19 +1000
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.0
+Subject: Re: [PATCH] powerpc/64s: Only set HAVE_ARCH_UNMAPPED_AREA when
+ CONFIG_PPC_64S_HASH_MMU is set
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+References: <e438c6cc09f94085e56733ed2d6e84333c35292a.1653370913.git.christophe.leroy@csgroup.eu>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <e438c6cc09f94085e56733ed2d6e84333c35292a.1653370913.git.christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: lBdtqxVQfAZSxcdk_J8UISZlh7-BsUMJ
+X-Proofpoint-ORIG-GUID: lBdtqxVQfAZSxcdk_J8UISZlh7-BsUMJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-24_05,2022-05-23_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 lowpriorityscore=0
+ mlxlogscore=999 mlxscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2202240000 definitions=main-2205240044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,90 +105,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, Justin Chen <justinpopo6@gmail.com>,
- Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- stern@rowland.harvard.edu, xen-devel@lists.xenproject.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>, linux-pm@vger.kernel.org,
- linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>,
- luto@kernel.org, Mihai Carabas <mihai.carabas@oracle.com>, tglx@linutronix.de,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
- akpm@linux-foundation.org, linux-hyperv@vger.kernel.org,
- dave.hansen@linux.intel.com, linux-s390@vger.kernel.org,
- Stephen Hemminger <sthemmin@microsoft.com>, Vasily Gorbik <gor@linux.ibm.com>,
- vgoyal@redhat.com, Sven Schnelle <svens@linux.ibm.com>,
- Andrea Parri <parri.andrea@gmail.com>, linux-xtensa@linux-xtensa.org,
- john.ogness@linutronix.de, Scott Branden <scott.branden@broadcom.com>,
- Doug Berger <opendmb@gmail.com>, Markus Mayer <mmayer@broadcom.com>,
- hidehiro.kawai.ez@hitachi.com, linux-arm-kernel@lists.infradead.org,
- kernel-dev@igalia.com, fabiomirmar@gmail.com, halves@canonical.com,
- alejandro.j.jimenez@oracle.com, feng.tang@intel.com,
- zhenwei pi <pizhenwei@bytedance.com>, will@kernel.org,
- Florian Fainelli <f.fainelli@gmail.com>, bhe@redhat.com, corbet@lwn.net,
- Dexuan Cui <decui@microsoft.com>, Evan Green <evgreen@chromium.org>,
- bcm-kernel-feedback-list@broadcom.com, Tianyu Lan <Tianyu.Lan@microsoft.com>,
- keescook@chromium.org, arnd@arndb.de, Haiyang Zhang <haiyangz@microsoft.com>,
- rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de,
- openipmi-developer@lists.sourceforge.net,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Sebastian Reichel <sre@kernel.org>, linux-alpha@vger.kernel.org,
- Brian Norris <computersforpeace@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, peterz@infradead.org,
- linux-remoteproc@vger.kernel.org, mikelley@microsoft.com,
- sparclinux@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
- Ard Biesheuvel <ardb@kernel.org>, linux-leds@vger.kernel.org, x86@kernel.org,
- mingo@redhat.com, Desmond yan <desmond.yan@broadcom.com>, dyoung@redhat.com,
- paulmck@kernel.org, Heiko Carstens <hca@linux.ibm.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Wang ShaoBo <bobo.shaobowang@huawei.com>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- David Gow <davidgow@google.com>, linux-tegra@vger.kernel.org,
- andriy.shevchenko@linux.intel.com, Hari Bathini <hbathini@linux.ibm.com>,
- linux-edac@vger.kernel.org, jgross@suse.com, netdev@vger.kernel.org,
- kernel@gpiccoli.net, kexec@lists.infradead.org, linux-mips@vger.kernel.org,
- Julius Werner <jwerner@chromium.org>, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 2022-05-23 11:56:12, Guilherme G. Piccoli wrote:
-> On 19/05/2022 16:20, Scott Branden wrote:
-> > [...] 
-> >> Hi Scott / Desmond, thanks for the detailed answer! Is this adapter
-> >> designed to run in x86 only or you have other architectures' use cases?
-> > The adapter may be used in any PCIe design that supports DMA.
-> > So it may be possible to run in arm64 servers.
-> >>
-> >> [...]
-> >> With that said, and given this is a lightweight notifier that ideally
-> >> should run ASAP, I'd keep this one in the hypervisor list. We can
-> >> "adjust" the semantic of this list to include lightweight notifiers that
-> >> reset adapters.
-> > Sounds the best to keep system operating as tested today.
-> >>
-> >> With that said, Petr has a point - not always such list is going to be
-> >> called before kdump. So, that makes me think in another idea: what if we
-> >> have another list, but not on panic path, but instead in the custom
-> >> crash_shutdown()? Drivers could add callbacks there that must execute
-> >> before kexec/kdump, no matter what.
-> > It may be beneficial for some other drivers but for our use we would 
-> > then need to register for the panic path and the crash_shutdown path. 
-> > We notify the VK card for 2 purposes: one to stop DMA so memory stop 
-> > changing during a kdump.  And also to get the card into a good state so 
-> > resets happen cleanly.
+On 24/05/2022, 07:42:05, Christophe Leroy wrote:
+> When CONFIG_PPC_64S_HASH_MMU is not set, slice.c is not built and
+> arch_get_unmapped_area() and arch_get_unmapped_area_topdown() are
+> not provided because RADIX uses the generic ones.
 > 
-> Thanks Scott! With that, I guess it's really better to keep this
-> notifier in this hypervisor/early list - I'm planning to do that for V2.
-> Unless Petr or somebody has strong feelings against that, of course.
+> Therefore, neither set HAVE_ARCH_UNMAPPED_AREA nor
+> HAVE_ARCH_UNMAPPED_AREA_TOPDOWN.
+> 
+> Reported-by: Laurent Dufour <ldufour@linux.ibm.com>
+> Fixes: ab57bd7570d4 ("powerpc/mm: Move get_unmapped_area functions to slice.c")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
 
-I am fine with it because we do not have a better solution at the
-moment.
+FWIW,
+Tested-by: Laurent Dufour <ldufour@linux.ibm.com>
 
-It might be a good candidate for the 5th notifier list mentioned
-in the thread https://lore.kernel.org/r/YoyQyHHfhIIXSX0U@alley .
-But I am not sure if the 5th list is worth the complexity.
+---
+>  arch/powerpc/include/asm/book3s/64/slice.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/64/slice.h b/arch/powerpc/include/asm/book3s/64/slice.h
+> index b8eb4ad271b9..5fbe18544cbd 100644
+> --- a/arch/powerpc/include/asm/book3s/64/slice.h
+> +++ b/arch/powerpc/include/asm/book3s/64/slice.h
+> @@ -4,11 +4,13 @@
+>  
+>  #ifndef __ASSEMBLY__
+>  
+> +#ifdef CONFIG_PPC_64S_HASH_MMU
+>  #ifdef CONFIG_HUGETLB_PAGE
+>  #define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+>  #endif
+>  #define HAVE_ARCH_UNMAPPED_AREA
+>  #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
+> +#endif
+>  
+>  #define SLICE_LOW_SHIFT		28
+>  #define SLICE_LOW_TOP		(0x100000000ul)
 
-Best Regards,
-Petr
