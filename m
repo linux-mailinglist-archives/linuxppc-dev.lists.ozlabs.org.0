@@ -2,35 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60B75328A2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D41C45328DE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:24:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sBK4ljJz3dQf
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:18:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sKt5msVz3gVM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:24:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7W1v4fz3bl3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7s3PS4z3cf1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:53 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7W0ylMz4ySn;
- Tue, 24 May 2022 21:15:35 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7s2lKpz4yTF;
+ Tue, 24 May 2022 21:15:53 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <58df50c9e77e2ed945bacdead30412770578886b.1652715336.git.christophe.leroy@csgroup.eu>
-References: <58df50c9e77e2ed945bacdead30412770578886b.1652715336.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/irq: Remove arch_local_irq_restore() for
- !CONFIG_CC_HAS_ASM_GOTO
-Message-Id: <165339056457.1718562.15689752456221396279.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:09:24 +1000
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+In-Reply-To: <20220516071422.463738-1-naveen.n.rao@linux.vnet.ibm.com>
+References: <20220516071422.463738-1-naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2] powerpc/ftrace: Remove ftrace init tramp once kernel
+ init is complete
+Message-Id: <165339056569.1718562.5469057552925659494.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:09:25 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -45,21 +45,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 16 May 2022 17:36:04 +0200, Christophe Leroy wrote:
-> All supported versions of GCC support asm goto.
-> 
-> Remove the !CONFIG_CC_HAS_ASM_GOTO version of arch_local_irq_restore()
+On Mon, 16 May 2022 12:44:22 +0530, Naveen N. Rao wrote:
+> Stop using the ftrace trampoline for init section once kernel init is
+> complete.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/irq: Remove arch_local_irq_restore() for !CONFIG_CC_HAS_ASM_GOTO
-      https://git.kernel.org/powerpc/c/5fe855169f9782c669f640b66242662209ffb72a
+[1/1] powerpc/ftrace: Remove ftrace init tramp once kernel init is complete
+      https://git.kernel.org/powerpc/c/84ade0a6655bee803d176525ef457175cbf4df22
 
 cheers
