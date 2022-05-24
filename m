@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F7853289D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8602C5328D1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:23:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6s962wCNz3f0N
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:16:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sJD3Q54z3gBN
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:23:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
@@ -14,21 +14,21 @@ Received: from gandalf.ozlabs.org (mail.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7S61mxz3bpj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7p2Q3Dz3cd9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:50 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7S4TV3z4xbt;
- Tue, 24 May 2022 21:15:32 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7p1QD4z4yT5;
+ Tue, 24 May 2022 21:15:50 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: cgel.zte@gmail.com, oss@buserror.net
-In-Reply-To: <20220225010737.2038781-1-chi.minghao@zte.com.cn>
-References: <20220225010737.2038781-1-chi.minghao@zte.com.cn>
-Subject: Re: [PATCH V2] platforms/83xx: Use of_device_get_match_data()
-Message-Id: <165339058975.1718562.18046170909472116174.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:09:49 +1000
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
+In-Reply-To: <20220322045638.10443-1-maddy@linux.ibm.com>
+References: <20220322045638.10443-1-maddy@linux.ibm.com>
+Subject: Re: [PATCH] selftest/powerpc/pmu/ebb: remove fixed_instruction.S
+Message-Id: <165339059080.1718562.62560284365315376.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:09:50 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,25 +43,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zeal Robot <zealci@zte.com.cn>, linux-kernel@vger.kernel.org,
- Minghao Chi <chi.minghao@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, shuah@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 25 Feb 2022 01:07:37 +0000, cgel.zte@gmail.com wrote:
-> From: Minghao Chi (CGEL ZTE) <chi.minghao@zte.com.cn>
-> 
-> Use of_device_get_match_data() to simplify the code.
-> v1->v2:
-> 	Add a judgment on the return value of the A function as NULL
-> 
+On Tue, 22 Mar 2022 10:26:38 +0530, Madhavan Srinivasan wrote:
+> Commit 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs") added
+> selftest testcases to verify EBB interface. instruction_count_test.c
+> testcase needs a fixed loop function to count overhead. Instead of
+> using the thirty_two_instruction_loop() in fixed_instruction_loop.S
+> in ebb folder, file is linked with thirty_two_instruction_loop() in
+> loop.S from top folder. Since fixed_instruction_loop.S not used, patch
+> removes the file.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] platforms/83xx: Use of_device_get_match_data()
-      https://git.kernel.org/powerpc/c/8a57c3cc2bcb8df98c239d6804fd01834960b7d2
+[1/1] selftest/powerpc/pmu/ebb: remove fixed_instruction.S
+      https://git.kernel.org/powerpc/c/079e5fd3a1e41c186c1bc4166d409d22e70729bf
 
 cheers
