@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5D25328DB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 649B65328E3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:25:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sKT3Z3Sz3gQd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:24:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sLj2q7lz3gdS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:25:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
@@ -14,22 +14,21 @@ Received: from gandalf.ozlabs.org (mail.ozlabs.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7r5nfyz3cdp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7t6Hn6z3cff
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:54 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7r1sC7z4yTC;
- Tue, 24 May 2022 21:15:52 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7t5FBZz4yTK;
+ Tue, 24 May 2022 21:15:54 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nathan Chancellor <nathan@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20220511185001.3269404-1-nathan@kernel.org>
-References: <20220511185001.3269404-1-nathan@kernel.org>
-Subject: Re: [PATCH v2 0/2] Link the PowerPC vDSO with ld.lld
-Message-Id: <165339051787.1718562.10503050450628067652.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:08:37 +1000
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220307182734.289289-1-npiggin@gmail.com>
+References: <20220307182734.289289-1-npiggin@gmail.com>
+Subject: Re: [PATCH 1/2] powerpc/64: Bump SIGSTKSZ and MINSIGSTKSZ
+Message-Id: <165339052002.1718562.17542776315274726550.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:08:40 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,35 +43,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Tom Rix <trix@redhat.com>,
- llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
- patches@lists.linux.dev, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Tulio Magno Quites Machado Filho <tuliom@linux.ibm.com>,
+ Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 11 May 2022 11:49:59 -0700, Nathan Chancellor wrote:
-> This series is an alternative to the one proposed by Nick before the
-> PowerPC vDSO unification in commit fd1feade75fb ("powerpc/vdso: Merge
-> vdso64 and vdso32 into a single directory"):
-> 
-> https://lore.kernel.org/20200901222523.1941988-1-ndesaulniers@google.com/
-> 
-> Normally, we try to make compiling and linking two separate stages so
-> that they can be done by $(CC) and $(LD) respectively, which is more in
-> line with what the user expects, versus using the compiler as a linker
-> driver and relying on the implicit default linker value. However, as
-> shown in the above thread, getting this right for the PowerPC vDSO is a
-> little tricky due to the linker emulation values.
+On Tue, 8 Mar 2022 04:27:33 +1000, Nicholas Piggin wrote:
+> The sad tale of SIGSTKSZ and MINSIGSTKSZ is documented in glibc.git
+> commit f7c399cff5bd ("PowerPC SIGSTKSZ"), which explains why glibc
+> does not use the kernel defines for these constants. Since then in
+> fact there has been a further expansion of the signal stack frame size
+> on little-endian with linux commit 573ebfa6601f ("powerpc: Increase
+> stack redzone for 64-bit userspace to 512 bytes"), which has caused
+> it to exceed even the glibc defines.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/vdso: Remove unused ENTRY in linker scripts
-      https://git.kernel.org/powerpc/c/e247172854a57d1a7213bb835ecb4a40ce9bb2b9
-[2/2] powerpc/vdso: Link with ld.lld when requested
-      https://git.kernel.org/powerpc/c/4406b12214f6592909b63dabdea86d69f1b5ba2e
+[1/2] powerpc/64: Bump SIGSTKSZ and MINSIGSTKSZ
+      https://git.kernel.org/powerpc/c/2f82ec19757f58549467db568c56e7dfff8af283
+[2/2] powerpc/signal: Report minimum signal frame size to userspace via AT_MINSIGSTKSZ
+      https://git.kernel.org/powerpc/c/2896b2dff49d0377e4372f470dcddbcb26f2be59
 
 cheers
