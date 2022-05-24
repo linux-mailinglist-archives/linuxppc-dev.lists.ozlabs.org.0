@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52851533088
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:36:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFE15330B7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:55:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L72vm1s3Fz3cCm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 04:36:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L73L92QYHz3bk7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 04:55:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -14,27 +14,29 @@ Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org;
  receiver=<UNKNOWN>)
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4L72vM70j1z2y0B
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 04:35:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 4L73Kj0mDTz3bdY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 04:55:04 +1000 (AEST)
 Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 24OIWbnb027426;
- Tue, 24 May 2022 13:32:37 -0500
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 24OIqnf7028066;
+ Tue, 24 May 2022 13:52:49 -0500
 Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 24OIWai1027425;
- Tue, 24 May 2022 13:32:36 -0500
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 24OIqmBx028065;
+ Tue, 24 May 2022 13:52:48 -0500
 X-Authentication-Warning: gate.crashing.org: segher set sender to
  segher@kernel.crashing.org using -f
-Date: Tue, 24 May 2022 13:32:36 -0500
+Date: Tue, 24 May 2022 13:52:47 -0500
 From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Florian Weimer <fweimer@redhat.com>
-Subject: Re: [PATCH Linux] powerpc: add documentation for HWCAPs
-Message-ID: <20220524183236.GJ25951@gate.crashing.org>
-References: <20220524093828.505575-1-npiggin@gmail.com>
- <87ee0juukf.fsf@oldenburg.str.redhat.com>
+To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
+Message-ID: <20220524185247.GK25951@gate.crashing.org>
+References: <20220524093939.30927-1-pali@kernel.org>
+ <20220524175955.GI25951@gate.crashing.org>
+ <20220524181255.bmszzxmbwzv7zed7@pali>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87ee0juukf.fsf@oldenburg.str.redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220524181255.bmszzxmbwzv7zed7@pali>
 User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -47,31 +49,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gcc@gcc.gnu.org, libc-alpha@sourceware.org, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul E Murphy <murphyp@linux.ibm.com>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 24, 2022 at 11:52:00AM +0200, Florian Weimer wrote:
-> * Nicholas Piggin:
+On Tue, May 24, 2022 at 08:12:55PM +0200, Pali Rohár wrote:
+> On Tuesday 24 May 2022 12:59:55 Segher Boessenkool wrote:
+> > On Tue, May 24, 2022 at 11:39:39AM +0200, Pali Rohár wrote:
+> > > gcc e500 compiler does not support -mcpu=powerpc option. When it is
+> > > specified then gcc throws compile error:
+> > > 
+> > >   gcc: error: unrecognized argument in option ‘-mcpu=powerpc’
+> > >   gcc: note: valid arguments to ‘-mcpu=’ are: 8540 8548 native
+> > 
+> > What?  Are you using some modified version of GCC, perhaps?
 > 
-> > +2. Facilities
-> > +-------------
-> > +The Power ISA uses the term "facility" to describe a class of instructions,
-> > +registers, interrupts, etc. The presence or absence of a facility indicates
-> > +whether this class is available to be used, but the specifics depend on the
-> > +ISA version. For example, if the VSX facility is available, the VSX
-> > +instructions that can be used differ between the v3.0B and v3.1B ISA
-> > +verstions.
+> Hello! I'm using official gcc version, no special modification.
 > 
-> The 2.07 ISA manual also has categories.  ISA 3.0 made a lot of things
-> mandatory.  It may make sense to clarify that feature bits for mandatory
-> aspects of the ISA are still set, to help with backwards compatibility.
+> > No version of GCC that isn't hamstrung can have this output.
+> 
+> gcc for e500 cores has really this output when you pass -mcpu=powerpc.
+> 
+> Upstream gcc dropped support for e500 cores during development of
+> version 9.
 
-Linux runs on ISA 1.xx and ISA 2.01 machines still.  "Category" wasn't
-invented for either yet either, but similar concepts did exist of
-course.
+This isn't true.  The SPE instruction extension is no longer supported
+(because it wasn't maintained).  Everything else still works.
+
+> But you can still compile and install gcc 8.5.0 (last version
+> of gcc 8) which has this full e500 support.
+> 
+> Really, you can easily try it. Debian 10 (Buster) has gcc 8.3.0 in its
+> default installation and also provides packages with cross compilers.
+> Just run 'sudo apt install gcc-powerpc-linux-gnuspe' on desktop amd64
+> version of Debian 10, it will install e500 cross compiler.
+> 
+> -mcpu=8540 specify e500v1 and -mcpu=8548 specify e500v2
+
+Aha.  Right, because this config forces -mspe it requires one of these
+CPUs.
+
+You can use a powerpc-linux compiler instead, and everything will just
+work.  These CPUs are still supported, in all of GCC 9 .. GCC 12 :-)
 
 
 Segher
