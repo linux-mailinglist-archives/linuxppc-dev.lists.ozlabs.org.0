@@ -2,34 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2C3532851
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2BF53285E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:58:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rh400Bhz3dtl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:55:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rlV1RqDz3fVK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:58:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rfZ1Dnzz30Hf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:53:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rfh6Gzqz3bl8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:54:04 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rfX1zQrz4xbt;
- Tue, 24 May 2022 20:53:56 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rfh119Lz4yT3;
+ Tue, 24 May 2022 20:54:04 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Bagas Sanjaya <bagasdotme@gmail.com>, linux-doc@vger.kernel.org
-In-Reply-To: <20220506070747.16309-1-bagasdotme@gmail.com>
-References: <20220506070747.16309-1-bagasdotme@gmail.com>
-Subject: Re: [PATCH RESEND] KVM: powerpc: remove extraneous asterisk from
- rm_host_ipi_action comment
-Message-Id: <165338950668.1711920.11760808136343682711.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 20:51:46 +1000
+To: akpm@linux-foundation.org, bharata@linux.ibm.com, linuxram@us.ibm.com,
+ Felix.Kuehling@amd.com, mpe@ellerman.id.au, paulus@samba.org,
+ benh@kernel.crashing.org, maciej.szmigiero@oracle.com, maz@kernel.org,
+ david@redhat.com, Xiaomeng Tong <xiam0nd.tong@gmail.com>,
+ liam.howlett@oracle.com, apopple@nvidia.com
+In-Reply-To: <20220414062103.8153-1-xiam0nd.tong@gmail.com>
+References: <20220414062103.8153-1-xiam0nd.tong@gmail.com>
+Subject: Re: [RESEND][PATCH] KVM: PPC: Book3S HV: fix incorrect NULL check on
+ list iterator
+Message-Id: <165338950780.1711920.5897036006589907982.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 20:51:47 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,32 +47,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anders Roxell <anders.roxell@linaro.org>, kvm@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>, Fabiano Rosas <farosas@linux.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
- Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
- Suresh Warrier <warrier@linux.vnet.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 6 May 2022 14:07:47 +0700, Bagas Sanjaya wrote:
-> kernel test robot reported kernel-doc warning for rm_host_ipi_action():
+On Thu, 14 Apr 2022 14:21:03 +0800, Xiaomeng Tong wrote:
+> The bug is here:
+> 	if (!p)
+>                 return ret;
 > 
-> >> arch/powerpc/kvm/book3s_hv_rm_xics.c:887: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
->     * Host Operations poked by RM KVM
-> 
-> Since the function is static, remove the extraneous (second) asterisk at
-> the head of function comment.
+> The list iterator value 'p' will *always* be set and non-NULL by
+> list_for_each_entry(), so it is incorrect to assume that the iterator
+> value will be NULL if the list is empty or no element is found.
 > 
 > [...]
 
 Applied to powerpc/topic/ppc-kvm.
 
-[1/1] KVM: powerpc: remove extraneous asterisk from rm_host_ipi_action comment
-      https://git.kernel.org/powerpc/c/d53c36e6c83863fde4a2748411c31bc4853a0936
+[1/1] KVM: PPC: Book3S HV: fix incorrect NULL check on list iterator
+      https://git.kernel.org/powerpc/c/300981abddcb13f8f06ad58f52358b53a8096775
 
 cheers
