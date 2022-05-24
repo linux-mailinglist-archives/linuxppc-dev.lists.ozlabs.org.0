@@ -1,33 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8897B53285B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:57:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2AE353285D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:57:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rkX3rg2z3fLw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:57:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rl43ddGz3fQq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:57:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rff6Jt3z3bw4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:54:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rfg46hCz3bxr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:54:03 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rff5ZpYz4ySq;
- Tue, 24 May 2022 20:54:02 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rfg3Hhpz4ySt;
+ Tue, 24 May 2022 20:54:03 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220122105639.3477407-1-npiggin@gmail.com>
-References: <20220122105639.3477407-1-npiggin@gmail.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: HFSCR[PREFIX] does not exist
-Message-Id: <165338949317.1711920.6996336061138999333.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 20:51:33 +1000
+In-Reply-To: <20220123114725.3549202-1-npiggin@gmail.com>
+References: <20220123114725.3549202-1-npiggin@gmail.com>
+Subject: Re: [PATCH] KVM: PPC: Book3S HV P9: Optimise loads around context
+ switch
+Message-Id: <165338949438.1711920.13741769008335923096.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 20:51:34 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,16 +48,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 22 Jan 2022 20:56:39 +1000, Nicholas Piggin wrote:
-> This facility is controlled by FSCR only. Reserved bits should not be
-> set in the HFSCR register (although it's likely harmless as this
-> position would not be re-used, and the L0 is forgiving here too).
+On Sun, 23 Jan 2022 21:47:25 +1000, Nicholas Piggin wrote:
+> It is better to get all loads for the register values in flight
+> before starting to switch LPID, PID, and LPCR because those
+> mtSPRs are expensive and serialising.
 > 
+> This also just tidies up the code for a potential future change
+> to the context switching sequence.
 > 
+> [...]
 
 Applied to powerpc/topic/ppc-kvm.
 
-[1/1] KVM: PPC: Book3S HV: HFSCR[PREFIX] does not exist
-      https://git.kernel.org/powerpc/c/861604614a94a7aabc111e4a18aaf5d56d270e8a
+[1/1] KVM: PPC: Book3S HV P9: Optimise loads around context switch
+      https://git.kernel.org/powerpc/c/361234d7a1c9a5290d33e35d49821b7a32a32854
 
 cheers
