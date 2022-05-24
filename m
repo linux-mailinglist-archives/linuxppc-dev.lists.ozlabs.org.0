@@ -2,96 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8C85323C8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 09:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F19F85324BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 10:01:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6lkw37smz3bpY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 17:12:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6mqz6C1Gz3bkt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 18:01:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gI51vRW1;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=PgXddxLS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=gI51vRW1; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256
+ header.s=susede1 header.b=PgXddxLS; dkim-atps=neutral
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6mqL73ndz2y0B
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 18:01:17 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+ by smtp-out1.suse.de (Postfix) with ESMTP id 15D07219F1;
+ Tue, 24 May 2022 08:01:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1653379274; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=YfQDkbqSOT+1qjQjuAj/jCMAhUotd54M/3ml94s/xOo=;
+ b=PgXddxLSPksORjL/S6Twz65MXnqRLkhNWsZMkeMCJl5txCWJEZdmdegZfTAX/9coTEEbNM
+ 8MuciDtA/meSONuDDeUgJuaMT6sJm3SP6OoP4PPs2H8u+yjTfPOAegS/VmQ3g6ca5OFCQB
+ kRtlLyoJ6CAvfuEa9KvE4DbHA1Jh8JI=
+Received: from suse.cz (unknown [10.100.201.202])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6lk96VjVz2ynL
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 17:11:45 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24O6pu1p000755;
- Tue, 24 May 2022 07:11:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=date : from : subject :
- to : cc : references : in-reply-to : mime-version : message-id :
- content-type : content-transfer-encoding; s=pp1;
- bh=xCmdj8t4HE2+lEfhZnxB0HOEDNmJRl/m5MAIicP9obM=;
- b=gI51vRW1e2oD3q0hUp3aFAO9+2ACWQk3Lc7qFiKB3cHxoX3pJGhluXmYcoHmZQMTLeAq
- 0NFBwoj8U2M0s9Jh5knj+Pn8eJduOHbiFnH6k20qARDsu5AoRo+3zdEfaMHkupCeOEx+
- Q6YSrv18MB99+FH3IF3A9CHPy+mHxX12zmWFBBXIo9n+KVmbufMH43k4vRkg27c7V9BM
- 41xli/XKNRwsZRQ/BhDZyjYFO0vsG31Oc8DMdX9CKbgOlMhQXgeol35xrBD2yqPNBSYz
- AkHPiaHcs2Wb/Mc/Cr0ubeDiv4xUkFiWgt3iI8HQGSCIwbjuNaqE8B4CWdvzQyawNReH pg== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.102])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g8tf9rce3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 May 2022 07:11:34 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
- by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24O78Fnm018985;
- Tue, 24 May 2022 07:11:31 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma06ams.nl.ibm.com with ESMTP id 3g6qbjc0ba-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 May 2022 07:11:31 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24O7BTGv18809298
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 May 2022 07:11:29 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4DB7CA405B;
- Tue, 24 May 2022 07:11:29 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA1EDA4054;
- Tue, 24 May 2022 07:11:28 +0000 (GMT)
-Received: from localhost (unknown [9.199.154.182])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 24 May 2022 07:11:28 +0000 (GMT)
-Date: Tue, 24 May 2022 12:41:27 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: linux-next: changed messages in qemu boot
-To: Michael Ellerman <mpe@ellerman.id.au>, Stephen Rothwell
- <sfr@canb.auug.org.au>
-References: <20220520233602.2738d87c@canb.auug.org.au>
- <1653069342.3xtfot6wli.naveen@linux.ibm.com>
- <87czg3mzyi.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87czg3mzyi.fsf@mpe.ellerman.id.au>
+ by relay2.suse.de (Postfix) with ESMTPS id 8ADCF2C141;
+ Tue, 24 May 2022 08:01:12 +0000 (UTC)
+Date: Tue, 24 May 2022 10:01:12 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Subject: Re: [PATCH 24/30] panic: Refactor the panic path
+Message-ID: <YoyQyHHfhIIXSX0U@alley>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-25-gpiccoli@igalia.com>
+ <Yn0TnsWVxCcdB2yO@alley>
+ <d313eec2-96b6-04e3-35cd-981f103d010e@igalia.com>
+ <20220519234502.GA194232@MiWiFi-R3L-srv>
+ <ded31ec0-076b-2c5b-0fe6-0c274954821f@igalia.com>
 MIME-Version: 1.0
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1653375606.b65qo262yf.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SbT-gNwLs02CdnQVMakjPqbSX-2HUjUv
-X-Proofpoint-ORIG-GUID: SbT-gNwLs02CdnQVMakjPqbSX-2HUjUv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-05-24_05,2022-05-23_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0
- spamscore=0 impostorscore=0 phishscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 malwarescore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2202240000
- definitions=main-2205240039
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ded31ec0-076b-2c5b-0fe6-0c274954821f@igalia.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,48 +66,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux =?iso-8859-1?q?Kernel=0A?= Mailing List <linux-kernel@vger.kernel.org>
+Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
+ gregkh@linuxfoundation.org, peterz@infradead.org,
+ alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
+ feng.tang@intel.com, "michael Kelley \(LINUX\)" <mikelley@microsoft.com>,
+ hidehiro.kawai.ez@hitachi.com, sparclinux@vger.kernel.org, will@kernel.org,
+ tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
+ john.ogness@linutronix.de, Baoquan He <bhe@redhat.com>, corbet@lwn.net,
+ paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
+ bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
+ linux-mips@vger.kernel.org, Dave Young <dyoung@redhat.com>, vgoyal@redhat.com,
+ linux-xtensa@linux-xtensa.org, dave.hansen@linux.intel.com,
+ keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
+ bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
+ vkuznets@redhat.com, linux-arm-kernel@lists.infradead.org,
+ linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org,
+ netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stern@rowland.harvard.edu,
+ senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, mhiramat@kernel.org,
+ kernel-dev@igalia.com, linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman wrote:
-> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
->> Stephen Rothwell wrote:
->=20
->> The below diff fixes it for me:
->>
->> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/tr=
-ace/ftrace.c
->> index 46c002a8388804..7418da705d43ac 100644
->> --- a/arch/powerpc/kernel/trace/ftrace.c
->> +++ b/arch/powerpc/kernel/trace/ftrace.c
->> @@ -746,7 +746,7 @@ int __init ftrace_dyn_arch_init(void)
->> =20
->>         reladdr =3D addr - kernel_toc_addr();
->> =20
->> -       if (reladdr >=3D SZ_2G || reladdr < -SZ_2G) {
->> +       if (reladdr >=3D SZ_2G || reladdr < -_UL(SZ_2G)) {
->>                 pr_err("Address of %ps out of range of kernel_toc.\n",
->>                                 (void *)addr);
->>                 return -1;
->=20
-> I did:
->=20
-> 	if (reladdr >=3D SZ_2G || reladdr < -(long)SZ_2G) {
+On Fri 2022-05-20 08:23:33, Guilherme G. Piccoli wrote:
+> On 19/05/2022 20:45, Baoquan He wrote:
+> > [...]
+> >> I really appreciate the summary skill you have, to convert complex
+> >> problems in very clear and concise ideas. Thanks for that, very useful!
+> >> I agree with what was summarized above.
+> > 
+> > I want to say the similar words to Petr's reviewing comment when I went
+> > through the patches and traced each reviewing sub-thread to try to
+> > catch up. Petr has reivewed this series so carefully and given many
+> > comments I want to ack immediately.
+> > 
+> > I agree with most of the suggestions from Petr to this patch, except of
+> > one tiny concern, please see below inline comment.
+> 
+> Hi Baoquan, thanks! I'm glad you're also reviewing that =)
+> 
+> 
+> > [...]
+> > 
+> > I like the proposed skeleton of panic() and code style suggested by
+> > Petr very much. About panic_prefer_crash_dump which might need be added,
+> > I hope it has a default value true. This makes crash_dump execute at
+> > first by default just as before, unless people specify
+> > panic_prefer_crash_dump=0|n|off to disable it. Otherwise we need add
+> > panic_prefer_crash_dump=1 in kernel and in our distros to enable kdump,
+> > this is inconsistent with the old behaviour.
+> 
+> I'd like to understand better why the crash_kexec() must always be the
+> first thing in your use case. If we keep that behavior, we'll see all
+> sorts of workarounds - see the last patches of this series, Hyper-V and
+> PowerPC folks hardcoded "crash_kexec_post_notifiers" in order to force
+> execution of their relevant notifiers (like the vmbus disconnect,
+> specially in arm64 that has no custom machine_crash_shutdown, or the
+> fadump case in ppc). This led to more risk in kdump.
+> 
+> The thing is: with the notifiers' split, we tried to keep only the most
+> relevant/necessary stuff in this first list, things that ultimately
+> should improve kdump reliability or if not, at least not break it. My
+> feeling is that, with this series, we should change the idea/concept
+> that kdump must run first nevertheless, not matter what. We're here
+> trying to accommodate the antagonistic goals of hypervisors that need
+> some clean-up (even for kdump to work) VS. kdump users, that wish a
+> "pristine" system reboot ASAP after the crash.
 
-That was my first attempt.
+Good question. I wonder if Baoquan knows about problems caused by the
+particular notifiers that will end up in the hypervisor list. Note
+that there will be some shuffles and the list will be slightly
+different in V2.
 
-> Which more closely matches what the old code did, and I think is more
-> obvious? ie. we don't want to negate the unsigned value, we want a
-> signed value, and then the negative of that.
+Anyway, I see four possible solutions:
 
-When you put it like that... :D
-In hindsight, I agree though -- _UL() isn't necessarily better.
+  1. The most conservative approach is to keep the current behavior
+     and call kdump first by default.
 
+  2. A medium conservative approach to change the default default
+     behavior and call hypervisor and eventually the info notifiers
+     before kdump. There still would be the possibility to call kdump
+     first by the command line parameter.
 
-Thanks,
-Naveen
+  3. Remove the possibility to call kdump first completely. It would
+     assume that all the notifiers in the info list are super safe
+     or that they make kdump actually more safe.
 
+  4. Create one more notifier list for operations that always should
+     be called before crash_dump.
+
+Regarding the extra notifier list (4th solution). It is not clear to
+me whether it would be always called even before hypervisor list or
+when kdump is not enabled. We must not over-engineer it.
+
+2nd proposal looks like a good compromise. But maybe we could do
+this change few releases later. The notifiers split is a big
+change on its own.
+
+Best Regards,
+Petr
