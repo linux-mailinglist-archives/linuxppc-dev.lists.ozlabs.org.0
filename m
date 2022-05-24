@@ -1,33 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281C5532855
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:56:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2C3532851
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:55:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rjk11YSz3fBT
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:56:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6rh400Bhz3dtl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:55:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rfd4HdQz3brx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:54:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6rfZ1Dnzz30Hf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:53:58 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rfd3Z1zz4xYY;
- Tue, 24 May 2022 20:54:01 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6rfX1zQrz4xbt;
+ Tue, 24 May 2022 20:53:56 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220303053315.1056880-1-npiggin@gmail.com>
-References: <20220303053315.1056880-1-npiggin@gmail.com>
-Subject: Re: [PATCH 0/6] KVM: PPC: Book3S HV interrupt fixes
-Message-Id: <165338950547.1711920.6804386197310741563.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 20:51:45 +1000
+To: Bagas Sanjaya <bagasdotme@gmail.com>, linux-doc@vger.kernel.org
+In-Reply-To: <20220506070747.16309-1-bagasdotme@gmail.com>
+References: <20220506070747.16309-1-bagasdotme@gmail.com>
+Subject: Re: [PATCH RESEND] KVM: powerpc: remove extraneous asterisk from
+ rm_host_ipi_action comment
+Message-Id: <165338950668.1711920.11760808136343682711.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 20:51:46 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,34 +44,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Cédric Le Goater <clg@kaod.org>
+Cc: Anders Roxell <anders.roxell@linaro.org>, kvm@vger.kernel.org,
+ Arnd Bergmann <arnd@arndb.de>, Fabiano Rosas <farosas@linux.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+ Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Suresh Warrier <warrier@linux.vnet.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 3 Mar 2022 15:33:09 +1000, Nicholas Piggin wrote:
-> This series fixes up a bunch of little interrupt issues which were found
-> by inspection haven't seem to have caused big problems but possibly
-> could or could cause the occasional latency spike from a temporarily lost
-> interrupt.
+On Fri, 6 May 2022 14:07:47 +0700, Bagas Sanjaya wrote:
+> kernel test robot reported kernel-doc warning for rm_host_ipi_action():
 > 
-> The big thing is the xive context change. Currently we run an L2 with
-> its L1's xive OS context pushed. I'm proposing that we instead treat
-> that as an escalation similar to cede.
+> >> arch/powerpc/kvm/book3s_hv_rm_xics.c:887: warning: This comment starts with '/**', but isn't a kernel-doc comment. Refer Documentation/doc-guide/kernel-doc.rst
+>     * Host Operations poked by RM KVM
+> 
+> Since the function is static, remove the extraneous (second) asterisk at
+> the head of function comment.
 > 
 > [...]
 
-Patches 2-6 applied to powerpc/topic/ppc-kvm.
+Applied to powerpc/topic/ppc-kvm.
 
-[2/6] KVM: PPC: Book3S HV P9: Inject pending xive interrupts at guest entry
-      https://git.kernel.org/powerpc/c/026728dc5d41f830e8194fe01e432dd4eb9b3d9a
-[3/6] KVM: PPC: Book3S HV P9: Move cede logic out of XIVE escalation rearming
-      https://git.kernel.org/powerpc/c/ad5ace91c55e7bd16813617f67bcb7619d51a295
-[4/6] KVM: PPC: Book3S HV P9: Split !nested case out from guest entry
-      https://git.kernel.org/powerpc/c/42b4a2b347b09e7ee4c86f7121e3b45214b63e69
-[5/6] KVM: PPC: Book3S HV Nested: L2 must not run with L1 xive context
-      https://git.kernel.org/powerpc/c/11681b79b1ab52e7625844d7ce52c4d5201a43b2
-[6/6] KVM: PPC: Book3S HV Nested: L2 LPCR should inherit L1 LPES setting
-      https://git.kernel.org/powerpc/c/2852ebfa10afdcefff35ec72c8da97141df9845c
+[1/1] KVM: powerpc: remove extraneous asterisk from rm_host_ipi_action comment
+      https://git.kernel.org/powerpc/c/d53c36e6c83863fde4a2748411c31bc4853a0936
 
 cheers
