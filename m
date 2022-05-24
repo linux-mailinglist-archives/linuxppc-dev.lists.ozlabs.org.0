@@ -2,34 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4695328F6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BCD532899
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:16:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sQZ56f7z3fSh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:28:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6s8150mlz3chp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:16:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s834PVHz3bsr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:16:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7P1vx8z2yh9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:29 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s810S6Qz4yTT;
- Tue, 24 May 2022 21:16:01 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7L641vz4xZ5;
+ Tue, 24 May 2022 21:15:26 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: benh@kernel.crashing.org, mpe@ellerman.id.au, nick.child@ibm.com,
- Peng Wu <wupeng58@huawei.com>
-In-Reply-To: <20220425081245.21705-1-wupeng58@huawei.com>
-References: <20220425081245.21705-1-wupeng58@huawei.com>
-Subject: Re: [PATCH -next] powerpc/iommu: Add missing of_node_put in
- iommu_init_early_dart
-Message-Id: <165339058771.1718562.10340726142485751524.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:09:47 +1000
+To: tyreld@linux.ibm.com, Haowen Bai <baihaowen@meizu.com>
+In-Reply-To: <1652232476-9696-1-git-send-email-baihaowen@meizu.com>
+References: <08d9470c-20db-52b8-7015-84f0ed29ad0c@linux.ibm.com>
+ <1652232476-9696-1-git-send-email-baihaowen@meizu.com>
+Subject: Re: [PATCH V2] powerpc/eeh: Drop redundant spinlock initialization
+Message-Id: <165339058873.1718562.5563457249542011872.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:09:48 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -44,22 +44,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, liwei391@huawei.com,
- wangxiongfeng2@huawei.com, linux-kernel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, oohall@gmail.com, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 25 Apr 2022 08:12:45 +0000, Peng Wu wrote:
-> The device_node pointer is returned by of_find_compatible_node
-> with refcount incremented. We should use of_node_put() to avoid
-> the refcount leak.
+On Wed, 11 May 2022 09:27:56 +0800, Haowen Bai wrote:
+> slot_errbuf_lock has declared and initialized by DEFINE_SPINLOCK,
+> so we don't need to spin_lock_init again, drop it.
 > 
 > 
 
 Applied to powerpc/next.
 
-[1/1] powerpc/iommu: Add missing of_node_put in iommu_init_early_dart
-      https://git.kernel.org/powerpc/c/57b742a5b8945118022973e6416b71351df512fb
+[1/1] powerpc/eeh: Drop redundant spinlock initialization
+      https://git.kernel.org/powerpc/c/3def164a5cedad9117859dd4610cae2cc59cb6d2
 
 cheers
