@@ -1,76 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09030531F6C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 01:53:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D1C5320E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 04:23:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6Z0w70zlz308V
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 09:53:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6dKW3rg7z3byF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:23:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UesfZqxB;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Vz/0zOkh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org;
- envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6dJr6zWxz2ypj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 12:22:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=k20201202 header.b=UesfZqxB; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Vz/0zOkh; 
  dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6Z075bv2z2ypf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 09:53:11 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ams.source.kernel.org (Postfix) with ESMTPS id 975FCB80187
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 May 2022 23:53:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3ACE0C34100
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 May 2022 23:53:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1653349985;
- bh=hYbMhAd4i7IftSoEVQL6tzJwWG5ir+zwMbb8E/AyS2Y=;
- h=From:To:Subject:Date:In-Reply-To:References:From;
- b=UesfZqxBmXYxC3DEPYmDJ0EGqEH6ygt7L/bldfgUhZQQmyyD/TH+XyQ0sfmnNdBX9
- SSIOIAvzuan4l8UjCtY83eoxQ+227fJD7AdwsZc7a3j10/euPqq2a3wRz6NSUiWFXT
- iY18gIX6tKJiuu/zQpCXmIbWYkMGb6TDBquKQJap530Dd9BL5cIQvWvKxY5FrT3gvU
- OqMocF7VUnBHc88zu1N9Y77UzBv/N9o4k8VT6ToOr6Rkf35gDXwM+xrjIb0ikU9YGl
- mUSH4IavRozAp+IaCSdShdKdOaPLDqm0BE9ZjnmuBixkiAFAn0GkUrmn7jlj439HZ7
- cmhwsQWybuYZg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix,
- from userid 48) id 1D9D0C05FD2; Mon, 23 May 2022 23:53:05 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 215803] ppc64le(P9):  BUG: Kernel NULL pointer dereference on
- read at 0x00000060  NIP: do_remove_conflicting_framebuffers+0x184/0x1d0
-Date: Mon, 23 May 2022 23:53:04 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: CLOSED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status
-Message-ID: <bug-215803-206035-HeNhjd33xS@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-215803-206035@https.bugzilla.kernel.org/>
-References: <bug-215803-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6dJq1p1dz4xYY;
+ Tue, 24 May 2022 12:22:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1653358972;
+ bh=23gpOQQJ/fv8/qwDF68c85b3c418u/QJJTgIjBTIEYY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Vz/0zOkh11h32x1S+vJ0dfgu+9jJgWUJNHb0CchW47kngs0PqZLMKT7noGRBVFEwE
+ 39XRrPncQJjqRDMGqzleHq0xMSJOoyAeGnmsgCeOWcevvawiwHUQL05alQKkjBDNr2
+ DB/mKxEjKdt3VtW72OKus9OFCAh+QQr5LPwIYflgraXq1NiXjFZ4CDkql2MlO6JRvj
+ hRiWh8rPsSysHWoFNTliHIKLSaeZpQQyAa2uyOJAUJBlY2tJzgh6rRoTXwIKdFnXI1
+ IecCU3YpTi4TzIfXCuaGB4wpSGR4qMCnuiZT7O9cFV448cQc4aSLfUe5qPMy/fUyrP
+ GpTB+KpFeXJlw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Stephen Rothwell
+ <sfr@canb.auug.org.au>
+Subject: Re: linux-next: changed messages in qemu boot
+In-Reply-To: <1653069342.3xtfot6wli.naveen@linux.ibm.com>
+References: <20220520233602.2738d87c@canb.auug.org.au>
+ <1653069342.3xtfot6wli.naveen@linux.ibm.com>
+Date: Tue, 24 May 2022 12:22:45 +1000
+Message-ID: <87czg3mzyi.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,25 +60,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D215803
+"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+> Stephen Rothwell wrote:
+>> Hi all,
+>> 
+>> Today's linux-next bboot of the powerpc pseries_le_defconfig build
+>> produced these different kernel messages (diff from yesterday's tree):
+>> 
+>> - ftrace: allocating 33658 entries in 13 pages
+>> - ftrace: allocated 13 pages with 3 groups
+>> + ftrace-powerpc: Address of ftrace_regs_caller out of range of kernel_toc.
+>
+> Thanks for the report. I think that is due to:
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/bb6626e884acffe87b58736291df57db3deaa9b9.1652074503.git.christophe.leroy@csgroup.eu/
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+Yep, I bisected it there.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|RESOLVED                    |CLOSED
+I should really read my email before bisecting :)
 
---- Comment #6 from Michael Ellerman (michael@ellerman.id.au) ---
-The fix was merged into v5.18-rc2 as:
+> The below diff fixes it for me:
+>
+> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+> index 46c002a8388804..7418da705d43ac 100644
+> --- a/arch/powerpc/kernel/trace/ftrace.c
+> +++ b/arch/powerpc/kernel/trace/ftrace.c
+> @@ -746,7 +746,7 @@ int __init ftrace_dyn_arch_init(void)
+>  
+>         reladdr = addr - kernel_toc_addr();
+>  
+> -       if (reladdr >= SZ_2G || reladdr < -SZ_2G) {
+> +       if (reladdr >= SZ_2G || reladdr < -_UL(SZ_2G)) {
+>                 pr_err("Address of %ps out of range of kernel_toc.\n",
+>                                 (void *)addr);
+>                 return -1;
 
-https://git.kernel.org/torvalds/c/0f525289ff0ddeb380813bd81e0f9bdaaa1c9078
+I did:
 
---=20
-You may reply to this email to add a comment.
+	if (reladdr >= SZ_2G || reladdr < -(long)SZ_2G) {
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+
+Which more closely matches what the old code did, and I think is more
+obvious? ie. we don't want to negate the unsigned value, we want a
+signed value, and then the negative of that.
+
+cheers
