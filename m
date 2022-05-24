@@ -2,33 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840F85328A8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD415328BE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:19:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sD5341Xz3fVQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:19:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sDW0bZpz3fRd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:19:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7d3NPkz3bnn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7f17hVz3c9m
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:42 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7Z28Jtz4ySg;
- Tue, 24 May 2022 21:15:38 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7f0P1kz4ySq;
+ Tue, 24 May 2022 21:15:42 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-In-Reply-To: <20220427224924.592546-1-gpiccoli@igalia.com>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
-Subject: Re: (subset) [PATCH 00/30] The panic notifiers refactor
-Message-Id: <165339051490.1718562.1423253645001601000.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:08:34 +1000
+To: linuxppc-dev@lists.ozlabs.org, Kevin Hao <haokexin@gmail.com>
+In-Reply-To: <20220329085709.4132729-1-haokexin@gmail.com>
+References: <20220329085709.4132729-1-haokexin@gmail.com>
+Subject: Re: [PATCH] powerpc: Export mmu_feature_keys[] as non-GPL
+Message-Id: <165339051583.1718562.2766738766777540660.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:08:35 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -43,30 +42,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nathaniel Filardo <nwfilardo@gmail.com>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 Apr 2022 19:48:54 -0300, Guilherme G. Piccoli wrote:
-> Hey folks, this is an attempt to improve/refactor the dated panic notifiers
-> infrastructure. This is strongly based in a suggestion made by Pter Mladek [0]
-> some time ago, and it's finally ready. Below I'll detail the patch ordering,
-> testing made, etc.
-> First, a bit about the reason behind this.
-> 
-> The panic notifiers list is an infrastructure that allows callbacks to execute
-> during panic time. Happens that anybody can add functions there, no ordering
-> is enforced (by default) and the decision to execute or not such notifiers
-> before kdump may lead to high risk of failure in crash scenarios - default is
-> not to execute any of them. There is a parameter acting as a switch for that.
-> But some architectures require some notifiers, so..it's messy.
+On Tue, 29 Mar 2022 16:57:09 +0800, Kevin Hao wrote:
+> When the mmu_feature_keys[] was introduced in the commit c12e6f24d413
+> ("powerpc: Add option to use jump label for mmu_has_feature()"),
+> it is unlikely that it would be used either directly or indirectly in
+> the out of tree modules. So we export it as GPL only. But with the
+> evolution of the codes, especially the PPC_KUAP support, it may be
+> indirectly referenced by some primitive macro or inline functions such
+> as get_user() or __copy_from_user_inatomic(), this will make it
+> impossible to build many non GPL modules (such as ZFS) on ppc
+> architecture. Fix this by exposing the mmu_feature_keys[] to the
+> non-GPL modules too.
 > 
 > [...]
 
-Patch 8 applied to powerpc/next.
+Applied to powerpc/next.
 
-[08/30] powerpc/setup: Refactor/untangle panic notifiers
-        https://git.kernel.org/powerpc/c/e2aa34ce80a26d24a0333da9402d533885f239c9
+[1/1] powerpc: Export mmu_feature_keys[] as non-GPL
+      https://git.kernel.org/powerpc/c/d9e5c3e9e75162f845880535957b7fd0b4637d23
 
 cheers
