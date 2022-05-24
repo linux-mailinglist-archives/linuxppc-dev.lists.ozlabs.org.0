@@ -1,83 +1,133 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994BF532757
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:19:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE3D532768
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 12:21:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6qv43mX0z3bl8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:19:44 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=coiOFpc1;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=coiOFpc1;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6qwg3c6jz3c81
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 20:21:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=170.10.129.124;
- helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=coiOFpc1; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=coiOFpc1; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com
- (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+ smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::607;
+ helo=fra01-mr2-obe.outbound.protection.outlook.com;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01on0607.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:7e19::607])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6qtR4hLgz306m
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:19:10 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1653387548;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5hjdGDxm/5eb7UZfehykEkfZZM041fRa5GaKQ9lwQHI=;
- b=coiOFpc11mYJhqFSEKNXM0p8xmAEndA0pHu7bzn5GjhVfOCtithu5RZWMhQ1sIT43h0T7Y
- H7ISM24jrLZgiPfv/PGC2vWOqb/qg4r2ZqY/exr/gXUeoTyCEyl5WCpN7ou9G37RxFdpYQ
- wb3PbvX/3D7kVx9834w9RjnJy0x9b7s=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1653387548;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5hjdGDxm/5eb7UZfehykEkfZZM041fRa5GaKQ9lwQHI=;
- b=coiOFpc11mYJhqFSEKNXM0p8xmAEndA0pHu7bzn5GjhVfOCtithu5RZWMhQ1sIT43h0T7Y
- H7ISM24jrLZgiPfv/PGC2vWOqb/qg4r2ZqY/exr/gXUeoTyCEyl5WCpN7ou9G37RxFdpYQ
- wb3PbvX/3D7kVx9834w9RjnJy0x9b7s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-13-cdRBusv8OiWHr2Ge-bjGGw-1; Tue, 24 May 2022 06:19:03 -0400
-X-MC-Unique: cdRBusv8OiWHr2Ge-bjGGw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7889A101A52C;
- Tue, 24 May 2022 10:19:00 +0000 (UTC)
-Received: from localhost (ovpn-13-156.pek2.redhat.com [10.72.13.156])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2727240E7F0C;
- Tue, 24 May 2022 10:18:59 +0000 (UTC)
-Date: Tue, 24 May 2022 18:18:55 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH 24/30] panic: Refactor the panic path
-Message-ID: <YoyxD3WApHpa/N1n@MiWiFi-R3L-srv>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-25-gpiccoli@igalia.com>
- <Yn0TnsWVxCcdB2yO@alley>
- <d313eec2-96b6-04e3-35cd-981f103d010e@igalia.com>
- <20220519234502.GA194232@MiWiFi-R3L-srv>
- <ded31ec0-076b-2c5b-0fe6-0c274954821f@igalia.com>
- <YoyQyHHfhIIXSX0U@alley>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6qwB0DsVz2yHZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 20:20:40 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ANUtTy5NbBGbihXkwp3CfwqCL9gVfGbH85ld6vlAjOTDqHoWF8yMuC2X5mTw5J5DIJcqoJ3GXLBthDawPS7Z6923GmOtKy91vIajJOzmNQJOjzKUWk8ubShepw/SvP4gdHgzgzXDW2G0U9mWcFXxBlzajJe3+KbPYGnVN4Qhs5POrvyvSvoV0GY7gd7HHtF4nqmoCXuOZ6YJFccLqdY5KmfCaIEwZZHDrWDxsQsijqChbqB8xPCt1Gz7yYYw2QlspfGQ/5RehbbftJmkMREEMfDxwAC8qFVJNIBw0eEqacBVNbTRxDpN0rTodaaO3g7PHjs5ScrRSwecA59fJEBVUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qUxwFR2mD+fsOTdeoMo9gBu9uc1lpQbprJ6CvoD3kp4=;
+ b=BO3dKJ2ism/9cNmEYksFqB4sUxT5kwkbWwjRA6XCrPYMmc03su1CJa2pApcM+yopXffDxEoGBN+bpQUkJJH3KE3DYMqE9LlboaZuz36gTMk5T90hSqAsfR2Y8V5k6D7I/wns1P+W2Ne0AkGh+7patJ+8I+ey85NCOapqaAqvPgNjuk9byI0F2Xcsy6ywHSms1wz7rAttzyxeXcYro31M7OcEJxYtYRkYEXodskZ6YkAzSC53U9Fwn+ZoXpxOtNP02XciS1vIdCbkVLUowv8Hggg3BGbPtV+y/w4701ZOYoUPeQJZzOylj4L4IiXmsBKxhJwL8xqB72zfE9RYc82eFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MRZP264MB2284.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:a::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.14; Tue, 24 May
+ 2022 10:20:17 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::b15e:862f:adf7:5356]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::b15e:862f:adf7:5356%5]) with mapi id 15.20.5273.023; Tue, 24 May 2022
+ 10:20:17 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Sathvika
+ Vasireddy <sv@linux.ibm.com>
+Subject: Re: [RFC PATCH 1/4] objtool: Add --mnop as an option to --mcount
+Thread-Topic: [RFC PATCH 1/4] objtool: Add --mnop as an option to --mcount
+Thread-Index: AQHYbs5i62JTj/rxWkqEHmudNaUwOq0tui6AgAAWjQCAAAFigA==
+Date: Tue, 24 May 2022 10:20:17 +0000
+Message-ID: <d45030be-3f6b-ebeb-3d63-bf7a96d3ff3b@csgroup.eu>
+References: <20220523175548.922671-1-sv@linux.ibm.com>
+ <20220523175548.922671-2-sv@linux.ibm.com>
+ <26c7bfc8-3089-034a-70c0-8857d7cd3a99@csgroup.eu>
+ <1653386854.o7nss9hzc9.naveen@linux.ibm.com>
+In-Reply-To: <1653386854.o7nss9hzc9.naveen@linux.ibm.com>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: e5b1b310-e02f-4f5f-a66c-08da3d6f0020
+x-ms-traffictypediagnostic: MRZP264MB2284:EE_
+x-microsoft-antispam-prvs: <MRZP264MB2284448B489D53AC6E8D9BA2EDD79@MRZP264MB2284.FRAP264.PROD.OUTLOOK.COM>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: EUaksFbHDXrxQ5ZIollXjwQN+VLGY9ruOjDnKtW0nQQipmnBcdPyqTbKo2Zlq24EM82sNWt9jW31Rvw8EGUMwtjvdxFWjJgcUyxJnkL2+CJw9t7KGme9xAGZui+g2uquVM6aUHuL2Y8VGLfaITwciaMygp/RP0E9P8fhj0TM8QNTl9uaie1izFy/+NibVLO5hUTzJF+AtXI68FbJk6qMDekh2Cdi6vME8fttWrZnicaakpKsyIpe3V2V81IDMesZ29pbquR3LnWiC7/W10FVz8g7beczaYDMazDBrlodMopEXLY/VMs4VO5omP92vHRmasuzfmlUQmFJA+Dy0AcdJMgHTgDXXpx7oel+SFC8tEqW29BRAFteT/e9fhYHB42lpnMGSRkoiTKdbbdtKtACD6u2X/OEwcUniJVppC3M7Xu1ApIFbqsOYDJJv6oupNDiMWnQMKYmr9ZeK/qYV3a8oG0yOg7+7eqnDg2/5X4RW7U7wDFYhf3YHrW4rsl2036XmNc88/1HmMyxi/bnMRA582z5QeJ2qtK8BMLoJQ6RNH73dQc3kQXhWHvJuQj7SB4uKl/CaJ4tqNXHenm7vqHQ84UIlnLBPdFkp26QUd3KQRse/1DmsvkN5j4Voq6Ukxzn98RY46QwCoQjFuVBJLliYCzxclfCql8Lyz9QnqkHppKClAxWI2mSrG3qG0RJ9naakDOBgxCKjUi6+mzyB0+pk9+vIAjCwpu6lTrn4Hjd4P9TwTUe3YkCS2DLdvW1EhNYw3H+xT/jJSf+q2BEqc1TMg==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
+ SFS:(13230001)(4636009)(366004)(8676002)(71200400001)(66446008)(64756008)(36756003)(26005)(122000001)(66946007)(66556008)(66476007)(4326008)(83380400001)(76116006)(6512007)(5660300002)(91956017)(38100700002)(38070700005)(316002)(2616005)(110136005)(31686004)(8936002)(6506007)(6486002)(54906003)(86362001)(508600001)(66574015)(186003)(7416002)(2906002)(31696002)(4744005)(44832011)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OSs4SHMrTm5RZlF0RmVxNVhlU09mbjFXNGYzVWxtY1ppcDhNTS9qamFOZ0Jm?=
+ =?utf-8?B?bi9BZU9RYlJjS1VPbTNJOXdraXNHaDQxRzVpOEVrZTE4endKRFhOU3lFaDd5?=
+ =?utf-8?B?YVQ2akpYNzFyeW12Q0ppZjBNVnlxdEJpeEthZjR3NEFzUFNScEpZZ2Ivb1B2?=
+ =?utf-8?B?UTlraVNsUzZiWFRsZGU1c1M5TUl0b3E4VTc1dU1BQko3WkxOUlMxVzFhUzZQ?=
+ =?utf-8?B?TEY3US8vRGhlSWlIQ0p3R2ZYa29OMW9DcjRZN2NJTktlU2NTb1hCZ2RxMy9D?=
+ =?utf-8?B?c0s0S21PV2p2Qlo5R25zUUI3M0ZpbEl4N1lheXZMUHU1dUxINnFFNmtUK3Z2?=
+ =?utf-8?B?N25TVFVic1ZyWU16UmYrTXQ1aWFMVk11VTFvUzAvYjNzcWNGMzU1RnZDbEpu?=
+ =?utf-8?B?UkxWclFFRm5HQ3ZaK2JaZ1hNTm9GaWNIS1pQRkpiV1FpdEVreUpxdFArUW1m?=
+ =?utf-8?B?Y2VURjRMTWtOM1B2SFFGaWJuWmhsUk12clA0TldreFJKZExqUWREdVNrRU0v?=
+ =?utf-8?B?M1VDb3FXdjVJdnlJWlJhQVlHb0RHOEdTNkhFUU5BRXJhTUNIMytueE9ZcndI?=
+ =?utf-8?B?V24xdFl3SEFHY0p5aHdrZGdDK0Mzb1pBVTJuWmZkdk5MME9NVCtjT2k0V0pC?=
+ =?utf-8?B?bHNEU0RJT2txVkR5OU5KWngydXc5am5zOGtQWEx5MlBvRHR5NjQ4Uy81RW5s?=
+ =?utf-8?B?QkRZaFRMQkhHb2RmcHJhbE5XY3RpTTJvMnNweVFidHppRU9zVTRMcWVDRFAx?=
+ =?utf-8?B?S1praEFKV0Y3YWlOMzBEQWxUdXNsYTVWenlka0E1S2hyZlpVbG1QZk15WlFZ?=
+ =?utf-8?B?cENNSmI1K2w3VFRyT0VSN2lNU0l0RUlKZE91TzVIL0pyamxHNnoxcWRYckZr?=
+ =?utf-8?B?dUltemRqMjM2dUVUYzByU2J3YzI4a3MyUHAwekZCRTVRR3UrTWVSMm13ZG51?=
+ =?utf-8?B?MHZsN016MHFmMERJQ2tKdmRLeFJiUWFxY3pGQ2g1SXg0bTFhTnpjaVZoZVhC?=
+ =?utf-8?B?c3pHc1krNnc3RnkrUXAvMXBQTXdHT1FsdDJpOWR3ZmJqdC9rU1hpQTYrcHho?=
+ =?utf-8?B?ajNncXlCWVZta1hiNE9vZDhEdzlWaXJQUHBuOTk3cFZqUkJBTTU5eDV5TS9C?=
+ =?utf-8?B?SmlvRGhkY0JSZitCdm4zeW1mWDN6NzlCeFYxeDRtZGZYZ1JZRW5yelhwK2JH?=
+ =?utf-8?B?OXh0Y1dCUmErYlZqOWtOMDNxQXFSaU81OHFSL2RNaHZpRHdyNklhb1UzZ3Ir?=
+ =?utf-8?B?YjRJVk5Rd25MUENqcVFRcWh0RTlLR1BwUUgzd1hDeHVSSjMrelBMMXFRcXNG?=
+ =?utf-8?B?S0ZVSTllTmliWkZwR3FvSHZXcEZpZ1RMRktaRVVOOUYyUGNyVlM3dDg4alY5?=
+ =?utf-8?B?SGFIcFNZK2VpOEJxYWN3Q2NOWEFsc2ZYMjR4ekVaRkY5WVNMUnpZVkcvZ3hE?=
+ =?utf-8?B?T2VsRXZveElza3dRTzkrODFyRVhZUERiM3JPWEJIejM5REd5N2VKcnYwbmty?=
+ =?utf-8?B?VkthSnlBbE93ZzhEMGJTdndhMVdBbFlvd2RhVkVoa240L2NtSUFtd1lFTjNz?=
+ =?utf-8?B?TllTL2VRNDV3cnhOT1VsUnRuRFpDSVJST3FDOUZYOVdiYTJjaTg4RDhSR3hY?=
+ =?utf-8?B?YlRNT1pyQlgyQUJNUnBLOEJFMjRoUUhnajUrT3ZwQVluQlZzcHVndkV6cEl3?=
+ =?utf-8?B?TnhMWW1WcS9ublBYWnNVeGpjNzQ0bUJoQVRwbUtsU09UZ1hVeHJabHAzTkRB?=
+ =?utf-8?B?NnUxc3hBckpycDZUVUpUVlF1eURVWEQ3Zm14WHJZQjJuVkNiK3kzaUVnOWtj?=
+ =?utf-8?B?Rm5PTHVScXpLMUZlZ1lERW15a2hpZGkxSWNhaXp4OE1lV3dzUkpFYitGQnUz?=
+ =?utf-8?B?MHZQZjRJeDFHTFR5YVhYL0FUTExEWFRrNDdyeEgvRCs3TVJaNnF4eTFIN1ZY?=
+ =?utf-8?B?TWxxR3VmbHl1b1h3R1hUVWpzQ1N2L3hxMUJEdXFsT0RhNUxoTE1lVTNhZ0RO?=
+ =?utf-8?B?NHIxL1NPRkpwSTdTVTZhTmNWeVdNa0thcFBBTEM4dVcrekdDYkx1UFAvU3R5?=
+ =?utf-8?B?Umx5ZkpFN2pDcGw1MzJBMHJTZmhhaEJReGJNRnBodFVxVHQrdHNQTlYySllz?=
+ =?utf-8?B?cjJBR1ptZXNJMUlkRlRsL2ZucU1UWlVwVWdRUThzVXR6UXpxOTlCeUNES2o0?=
+ =?utf-8?B?U29nRG84aGVwNWd0T1FxQTlTckFCRjNDaEpSYnpBRE9maDJkRkNlZ1ZuQ2pH?=
+ =?utf-8?B?VXNzODEwdUNaTk9HZjF5QmtuZ0RVdzBnOVM4cDBvUzlDK2ZJZGwxeXdFVFNC?=
+ =?utf-8?B?c0w5aXVGcUx3aFVqdTYzVlQrOUQwWGN0bkhzT1Rna1VzRndDZ3lkSkNwemVz?=
+ =?utf-8?Q?bj0SowqYsGkuuffTCh+DAA3uYQzCdCh/dSnKj?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9C76866535FF684D99C4B936C01B26A8@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YoyQyHHfhIIXSX0U@alley>
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: e5b1b310-e02f-4f5f-a66c-08da3d6f0020
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 May 2022 10:20:17.8838 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 5Db7O47J9dWnKxkmOJ2naF6mU7PYQ/wotCqaJksfko+xMUhrJybMhtizUGSSwxpgsnmqu+r9c9fjzxLK27JZahQjPRqTuytI63KHP/kHvsM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2284
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,144 +139,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, halves@canonical.com,
- gregkh@linuxfoundation.org, peterz@infradead.org,
- alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org,
- feng.tang@intel.com, "michael Kelley \(LINUX\)" <mikelley@microsoft.com>,
- hidehiro.kawai.ez@hitachi.com, sparclinux@vger.kernel.org, will@kernel.org,
- tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org,
- john.ogness@linutronix.de, corbet@lwn.net, paulmck@kernel.org,
- fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com,
- bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org,
- linux-mips@vger.kernel.org, Dave Young <dyoung@redhat.com>, vgoyal@redhat.com,
- linux-xtensa@linux-xtensa.org, dave.hansen@linux.intel.com,
- keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org,
- linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org,
- bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org,
- openipmi-developer@lists.sourceforge.net, andriy.shevchenko@linux.intel.com,
- senozhatsky@chromium.org, vkuznets@redhat.com,
- linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
- jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
- kernel@gpiccoli.net, kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- stern@rowland.harvard.edu, "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- d.hatayama@jp.fujitsu.com, mhiramat@kernel.org, kernel-dev@igalia.com,
- linux-alpha@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "rostedt@goodmis.org" <rostedt@goodmis.org>,
+ "peterz@infradead.org" <peterz@infradead.org>,
+ "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "mbenes@suse.cz" <mbenes@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 05/24/22 at 10:01am, Petr Mladek wrote:
-> On Fri 2022-05-20 08:23:33, Guilherme G. Piccoli wrote:
-> > On 19/05/2022 20:45, Baoquan He wrote:
-> > > [...]
-> > >> I really appreciate the summary skill you have, to convert complex
-> > >> problems in very clear and concise ideas. Thanks for that, very useful!
-> > >> I agree with what was summarized above.
-> > > 
-> > > I want to say the similar words to Petr's reviewing comment when I went
-> > > through the patches and traced each reviewing sub-thread to try to
-> > > catch up. Petr has reivewed this series so carefully and given many
-> > > comments I want to ack immediately.
-> > > 
-> > > I agree with most of the suggestions from Petr to this patch, except of
-> > > one tiny concern, please see below inline comment.
-> > 
-> > Hi Baoquan, thanks! I'm glad you're also reviewing that =)
-> > 
-> > 
-> > > [...]
-> > > 
-> > > I like the proposed skeleton of panic() and code style suggested by
-> > > Petr very much. About panic_prefer_crash_dump which might need be added,
-> > > I hope it has a default value true. This makes crash_dump execute at
-> > > first by default just as before, unless people specify
-> > > panic_prefer_crash_dump=0|n|off to disable it. Otherwise we need add
-> > > panic_prefer_crash_dump=1 in kernel and in our distros to enable kdump,
-> > > this is inconsistent with the old behaviour.
-> > 
-> > I'd like to understand better why the crash_kexec() must always be the
-> > first thing in your use case. If we keep that behavior, we'll see all
-> > sorts of workarounds - see the last patches of this series, Hyper-V and
-> > PowerPC folks hardcoded "crash_kexec_post_notifiers" in order to force
-> > execution of their relevant notifiers (like the vmbus disconnect,
-> > specially in arm64 that has no custom machine_crash_shutdown, or the
-> > fadump case in ppc). This led to more risk in kdump.
-> > 
-> > The thing is: with the notifiers' split, we tried to keep only the most
-> > relevant/necessary stuff in this first list, things that ultimately
-> > should improve kdump reliability or if not, at least not break it. My
-> > feeling is that, with this series, we should change the idea/concept
-> > that kdump must run first nevertheless, not matter what. We're here
-> > trying to accommodate the antagonistic goals of hypervisors that need
-> > some clean-up (even for kdump to work) VS. kdump users, that wish a
-> > "pristine" system reboot ASAP after the crash.
-> 
-> Good question. I wonder if Baoquan knows about problems caused by the
-> particular notifiers that will end up in the hypervisor list. Note
-> that there will be some shuffles and the list will be slightly
-> different in V2.
-
-Yes, I knew some of them. Please check my response to Guilherme.
-
-We have bug to track the issue on Hyper-V in which failure happened
-during panic notifiers running, haven't come to kdump. Seems both of
-us sent mail replying to Guilherme at the same time. 
-
-> 
-> Anyway, I see four possible solutions:
-> 
->   1. The most conservative approach is to keep the current behavior
->      and call kdump first by default.
-> 
->   2. A medium conservative approach to change the default default
->      behavior and call hypervisor and eventually the info notifiers
->      before kdump. There still would be the possibility to call kdump
->      first by the command line parameter.
-> 
->   3. Remove the possibility to call kdump first completely. It would
->      assume that all the notifiers in the info list are super safe
->      or that they make kdump actually more safe.
-> 
->   4. Create one more notifier list for operations that always should
->      be called before crash_dump.
-
-I would vote for 1 or 4 without any hesitation, and prefer 4. I ever
-suggest the variant of solution 4 in v1 reviewing. That's taking those
-notifiers out of list and enforcing to execute them before kdump. E.g
-the one on HyperV to terminate VMbus connection. Maybe solution 4 is
-better to provide a determinate way for people to add necessary code
-at the earliest part.
-
-> 
-> Regarding the extra notifier list (4th solution). It is not clear to
-> me whether it would be always called even before hypervisor list or
-> when kdump is not enabled. We must not over-engineer it.
-
-One thing I would like to notice is, no matter how perfect we split the
-lists this time, we can't gurantee people will add notifiers reasonablly
-in the future. And people from different sub-component may not do
-sufficient investigation and add them to fulfil their local purpose.
-
-The current panic notifers list is the best example. Hyper-V actually
-wants to run some necessary code before kdump, but not all of them, they
-just add it, ignoring the original purpose of
-crash_kexec_post_notifiers. I guess they do like this just because it's
-easy to do, no need to bother changing code in generic place.
-
-Solution 4 can make this no doubt, that's why I like it better.
-
-> 
-> 2nd proposal looks like a good compromise. But maybe we could do
-> this change few releases later. The notifiers split is a big
-> change on its own.
-
-As I replied to Guilherme, solution 2 will cause regression if not
-calling kdump firstly. Solution 3 leaves people space to make mistake,
-they could add nontifier into wrong list.
-
-I would like to note again that the panic notifiers are optional to run,
-while kdump is expectd once loaded, from the original purpose. I guess
-people I know will still have this thought, e.g Hatayama, Masa, they are
-truly often use panic notifiers like this on their company's system.
-
+DQoNCkxlIDI0LzA1LzIwMjIgw6AgMTI6MTUsIE5hdmVlbiBOLiBSYW8gYSDDqWNyaXTCoDoNCj4g
+Q2hyaXN0b3BoZSBMZXJveSB3cm90ZToNCj4+DQo+Pg0KPj4gTGUgMjMvMDUvMjAyMiDDoCAxOTo1
+NSwgU2F0aHZpa2EgVmFzaXJlZGR5IGEgw6ljcml0wqA6DQo+Pj4gQXJjaGl0ZWN0dXJlcyBjYW4g
+c2VsZWN0IEhBVkVfTk9QX01DT1VOVCBpZiB0aGV5IGNob29zZQ0KPj4+IHRvIG5vcCBvdXQgbWNv
+dW50IGNhbGwgc2l0ZXMuIElmIHRoYXQgY29uZmlnIG9wdGlvbiBpcw0KPj4+IHNlbGVjdGVkLCB0
+aGVuIC0tbW5vcCBpcyBwYXNzZWQgYXMgYW4gb3B0aW9uIHRvIG9ianRvb2wsDQo+Pj4gYWxvbmcg
+d2l0aCAtLW1jb3VudC4NCj4+Pg0KPj4NCj4+IElzIHRoZXJlIGEgcmVhc29uIG5vdCB0byBub3Ag
+b3V0IG1jb3VudCBjYWxsIHNpdGVzIG9uIHBvd2VycGMgYXMgd2VsbCA/DQo+IA0KPiBZZXMsIGlm
+IHRoZXJlIGFyZSBmdW5jdGlvbnMgdGhhdCBhcmUgb3V0IG9mIHJhbmdlIG9mIF9tY291bnQoKSwg
+dGhlbiB0aGUgDQo+IGxpbmtlciB3b3VsZCBoYXZlIGluc2VydGVkIGxvbmcgYnJhbmNoIHRyYW1w
+b2xpbmVzLiBXZSBkZXRlY3Qgc3VjaCBjYXNlcyANCj4gZHVyaW5nIGJvb3QuIEJ1dCwgaWYgd2Ug
+bm9wIG91dCB0aGUgX21jb3VudCBjYWxsIHNpdGVzIGR1cmluZyBidWlsZCANCj4gdGltZSwgd2Ug
+d2lsbCBuZWVkIHNvbWUgb3RoZXIgd2F5IHRvIGlkZW50aWZ5IHRoZXNlLg0KPiANCg0KQnV0IGRv
+ZXMgaXQgcmVhbGx5IG1hdHRlciB3aGV0aGVyIF9tY291bnQgaXMgcmVhY2hhYmxlIG9yIG5vdCA/
+DQoNCl9tY291bnQgaXMgbmV2ZXIgdXNlZCwgYW5kIHRoZSBmdW5jdGlvbiB3ZSB3YW50IHRvIGNh
+bGwgaW4gbGlldSBvZiANCl9tY291bnQgbWlnaHQgYmUgcmVhY2hhYmxlIHdoaWxlIF9tY291bnQg
+aXMgbm90IG9yIG1pZ2h0IGJlIHVucmVhY2hhYmxlIA0Kd2hpbGUgX21jb3VudCBpcy4NCg0KQ2hy
+aXN0b3BoZQ==
