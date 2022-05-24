@@ -1,131 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDBB53262D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 11:13:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4052532638
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 11:18:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6pR34RCYz3bfh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 19:13:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6pXZ4P33z3bkT
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 19:18:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CdVy/Hor;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::624;
- helo=fra01-pr2-obe.outbound.protection.outlook.com;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com
- (mail-pr2fra01on0624.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7e18::624])
+ smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=CdVy/Hor; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6pQW2F6Xz304r
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 19:13:22 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AL9AgL6G9gpbVknapW8mIHyKgYXWT5AaiL80/UtjaGZbZIyHKWZi00GU1T5geHN4NH7zPHBXnPigWd7AQ2DdJuejv6iEa/c+Zdz7O35T8ZmaiV0SD+7LAff38MuoKXFrHjoMWqgZRXtTTtmCFg217LCjERbfauT0dHcEZDjf/5cAJywpAJ2S2SK7IFwSxAb4rZz4vp0Vy1cLaJnxSC7NRBBgmXdXG7PV3SBabtV8Phic45EnKmPzFKVWKFO7vN2P1oZDK+wImAQ1aTRZyLuic4mavmdxBWQqMbdxGxh9ajYD3uMknFcX6b2igEuZLC5JLCZjOfu/rUic+Idi6S+dvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j2BojYEfjRmDeW+ZDbG2c2hVwTTkcICILvA9GpaG/Jc=;
- b=XpCD8Tnul6+FqVhU9cHu7U6ZccAdI6JT23ysmTu+XQnOQsY37Kb2kTEavh8QAe4ODg7aisCvVMP6sTU49ER/w6rEFsTnNGOWprZHE7yioACH/Bg3Jwu5ivNSgGqY1fM27phDLYSQPo+mwfna2NPSvmONBBXNSu2Jvv7JZ7qg94AIRuqYJOiDpCpAzTm/VJzSvMt8vIhvPpvA4FtqTfWnX2NQdk9N4gqW/L8u9GtPu4ZXL/M5qNEz5A5G7+TrdDvDbOhO3Zgl09B1Dyiuttziv+gZdtTF/qDu7+4eECLdYEvgYjh7X5EShMm3TDO8vs/8WaORukPM8CQ4+DTikVBSUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by MR1P264MB3153.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:3a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.14; Tue, 24 May
- 2022 09:13:01 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::b15e:862f:adf7:5356]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::b15e:862f:adf7:5356%5]) with mapi id 15.20.5273.023; Tue, 24 May 2022
- 09:13:01 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Sathvika Vasireddy <sv@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [RFC PATCH 3/4] objtool/powerpc: Enable objtool to be built on ppc
-Thread-Topic: [RFC PATCH 3/4] objtool/powerpc: Enable objtool to be built on
- ppc
-Thread-Index: AQHYbs5oW4G4eChZ9keNzjZGbSmP8a0tv1AA
-Date: Tue, 24 May 2022 09:13:01 +0000
-Message-ID: <005ffe8a-166e-d3bb-4e42-0ece6f5aada7@csgroup.eu>
-References: <20220523175548.922671-1-sv@linux.ibm.com>
- <20220523175548.922671-4-sv@linux.ibm.com>
-In-Reply-To: <20220523175548.922671-4-sv@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 07061eb3-543b-426c-c708-08da3d659a66
-x-ms-traffictypediagnostic: MR1P264MB3153:EE_
-x-microsoft-antispam-prvs: <MR1P264MB3153F2E19B3FD302DABA7221EDD79@MR1P264MB3153.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hUFdRKRH9GBTSOw9GMaP61ZtUwFUieawHvMW25hN4TcCteQJIA5tzMxM9im0gaW71Nvc1quHV+YDR6FNld+aKp9gtFoD79Y8dhY6feDHtQVPmYhhwD2ZQOvdO62BjWV3eDVHiiFzhYb4HoiM502gOC9NbNyMQ5IG1R+YyStR94oXXn5F+/JEiJuT96/3/JJfngkqRXeikbH9rcBWOXrAqtdwCBxqAu3bVDmjU0mepODMPDqOXknYdMYoNtXG5lDWrg39bL1s5foHmOWR+qeHbScQ2LxaGEBXxDow+l0UURdunsOs01LDvQ5V5diz67TQaDqX3p/LW5ue7g+E0RYoGa9jg44Kj8l/HI5cwGj7dC8dIHucOiqNEWtGJY4lMfLUfkr65NQIQyBAMKnoGcXt6Di3hd275gUu30V86fcGTcu9WH64XFSzh0WxrDY0IWcgkEKs7Q6eNnQb8ZuJuCM/nUvK1Se1AATuRHpp8T9jyyQKz0byHMdJnPRudfGDooRZW80g/O630yhOxfLpSZEetZhd/f3hqSmMQcj343MtLbvFZD6IsOpixJkWfyKSV4UDsAn1RxfkGf3cOEclnLd7GKJyfUh2Q0oMK/+OEqrym4Mu/8zH0LSKbBOYz9VawhK/zUDoNGYpQSp9llx7//mMeqYfm3dZW5NAmOjZwg7OcOFSZ6glYRPwgfYawdjR+voHuqrplBUgszPYGVKwbIzCHidrlfGTLk8kN28qaANgMcqGrZa+BO1Y2B9/OnVy05mvRylqjWMH9+EnugrnIGMn/w==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230001)(4636009)(366004)(76116006)(4326008)(66946007)(6512007)(8676002)(91956017)(86362001)(66556008)(26005)(66476007)(64756008)(31696002)(66446008)(66574015)(122000001)(6506007)(71200400001)(31686004)(36756003)(316002)(508600001)(38100700002)(6486002)(7416002)(54906003)(38070700005)(8936002)(5660300002)(83380400001)(44832011)(186003)(110136005)(2906002)(2616005)(45980500001)(43740500002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VGpiTFNiaXdPSEZxV3NGTXZhdXJVZzNVM2xkWmFaWk9DQ3d1WnF5cFFadlZZ?=
- =?utf-8?B?bHBETXlWakRxSThVaXVZbXpEc1NHb0dQVVNqSUhMcW13Rmd1cldvc2h2aXly?=
- =?utf-8?B?QnNPL2NYVFBCQ1BPL055M1hEUXNhUDIrbHp2TGxicDNUazVpMGpKcE1pOERW?=
- =?utf-8?B?NHdqZWljckpEamlpVTEvY2QvVU5Cc3BWbGF6bmdmQ0hPU0hiTSs5K0VWTmVx?=
- =?utf-8?B?TnJUWS9UanFXeU9qVHh1NUJlZUpQaDVCWklCZWdFV1g2NEpzai9GK3Y2S0lK?=
- =?utf-8?B?MXVQTnh1RERBbHVVL0NJa0Y3ZU9vUkNLekxIRURiRjU5R2M4RlVHc080MWZH?=
- =?utf-8?B?ODBWSzJxL1ZyMEtkcDVkQVVQdmxQQmFRQmhEcUxDSGh5MlFKYlAyTllxRmYv?=
- =?utf-8?B?K0lSYVFWdG5uVzExc3JDRUZaYk1EM2tMVVNpTU5WZEhUbGJIYkZNNEFDcjZs?=
- =?utf-8?B?T0lHRlgyQ0hMbldwblU4YWpieWpKMmIxNUllQTlyRWN5ak84aTlITGZ3WlI5?=
- =?utf-8?B?MkdjcEI4RWZweWRIWUVJWUw2WjJ6MXlCWkoxQjU0dkNuaUMzd21PNVVOMTNS?=
- =?utf-8?B?M3BNdzNUZVhxaml0R005TEtySXNRT25YcHIxVDNxTHFQRWI4OWRrMmorYXcy?=
- =?utf-8?B?M3UzU1dmUUE0MVJ4M0lnOTFJVzB0YVNEMUtWK2xvNk1kcjBibG5pd1VxaTRC?=
- =?utf-8?B?NEZweDViaGdtQ3pocXNZOEhoM1JyckltZVJpZmZ0RlM1R3loWE5Id1BKeUp5?=
- =?utf-8?B?YzNlTDNQWWJRMmZPbVEyMVE3Z1Fxc3JyQU5hN2VieEhUM0RQWUliamFuZnVq?=
- =?utf-8?B?ZHRkNHFDMjJYVjJqZTlNRXpGR1d0OGFrNnBrd0dlaWtmOHdWa24vQ2Z0UWJr?=
- =?utf-8?B?QWNuN25ENmxVVjBCa05aSTQ4KzUzdHU2Qld0aVdMQThZMGhrbng0U3VtRzNU?=
- =?utf-8?B?VWdVOXpvdE1YUDNsU0o3eCtJdXQ5cmlUcWZ5eWlBZ0p5bDhUNU9Cc0NNSGVU?=
- =?utf-8?B?N3FyeGFEaW1NMXROWVZmQkRlZk1BMFhpdW9UUWo4RTdTckQvRmpMTHhxZk9m?=
- =?utf-8?B?d0lhVnd6d2tDNTlPa0hqQ0p0NmVPNWg2a3dtZDdiYTdCTlo4elZ2a2ptblJv?=
- =?utf-8?B?L1ZUa2tZU2l5UXBqbmtmUGpQRmFhSjdkendBaDk0MGNEOXg5Ky9meHV4WjlW?=
- =?utf-8?B?RGJzVkpFUS9ja09XRHRoejRvVzNsK1l1OEMxcEovNXp0cC80UVdHS3lCQkw1?=
- =?utf-8?B?cW04Q3dhclBCZHozUnBuWWpnOXhMWE5zMUNwWUtDSkxFSHE3dFdLOHlndUYr?=
- =?utf-8?B?ZHNBK3NjK3N4NWRlenloWnRGMlBUclpGWTVYQS83VTVGWGFQUlYwRGprQUdR?=
- =?utf-8?B?eGxPd04xV3ByenZpaVU4REhLL1paUkVWWHM3ZWNKWXhnMFRDRFd1RjNIdXhB?=
- =?utf-8?B?bHJIcEo3RmxtTlQwa21GZHA5OXJmWWo4ZlRKL2VXYUFpbXVHRWxnQWVOanBK?=
- =?utf-8?B?dExhYXZoWnNZWHdBNDAzREM0N09FNExjQjVtcUE4Tlh0bDRyRDdwNVBUcm5i?=
- =?utf-8?B?bjhnZy9yU0sxTFVka3ZkWDFqcTFoK1NaL2tnU3ArcEhkTTVPdzh3d1Jza2Ix?=
- =?utf-8?B?alc0U1V0MUJxamJmbmI0RjRSOWJMTVFRdzJuUWRDS1VudEVTVytRSVVZY1h1?=
- =?utf-8?B?cHkzaDFRbmJNanFYR1EzVEtlY0poUklMb0l6VlRNdGI1UXpjazJXc2FhZ3dE?=
- =?utf-8?B?a0ttYWpkaHBURGJub2kzQ2lmQTNjd1IwVHgxSnNXbENOMzAvVnEySjdUWm9M?=
- =?utf-8?B?TVBnaTJhYkxlOFpMOThJUkhhQW9iN2ZtS3hyREVMTVJnbkVCSzYzeXIwc05n?=
- =?utf-8?B?OURtcUc2UXRXNThRNExEQ3ZPSTFCSXpxMTRlZmlYeC9UWVdxZDBIRDRiQUtp?=
- =?utf-8?B?QlVCN1VrY3U3dnRSTjI0aEhOY2hrYWx5WFVjcUMvVE4rR0xLSHU2eWhGbGsv?=
- =?utf-8?B?OHpuUVVCZTBUVFBKL25DcmpPaUxmNUpWN2xaQmMvN0U4ZUFjenNGQ05MTlIz?=
- =?utf-8?B?bVVzMFdnTWo3TTlkTmg3Vjhnd3N2M2Q2Ym1DVUFmMkxvWmRDekR6NEttNTlp?=
- =?utf-8?B?dHVYQWtrbk9vNFJ4WFRteGJiTTdpMHJLbkpkUFNSazVrc2ZRZmpTTW93NTVG?=
- =?utf-8?B?VnJodnhlQzJENlJ0UklhdXVKbElxaHJaZmJxbzM2RXVZbnFtUCt2MUROdCtT?=
- =?utf-8?B?YW0zMDhWTTc3USthZTIrVzJMVzZSRXhNNWRXcG9lZko3OXF3S2ZjUEtTY2to?=
- =?utf-8?B?VGxqOVhFU203Q0ZIOE5NaUJRWXdqNlNOWGR6YXUrOG8zMEVOcE9JMyszYUxO?=
- =?utf-8?Q?wvPLelwd2Drz7h/wJMj43KcnuARYmgY8rg0GX?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <412905EB1B2FB94ABC5328768C247C96@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6pWw4DFRz305H
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 19:18:04 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id C0F1A61636;
+ Tue, 24 May 2022 09:17:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFC4C385AA;
+ Tue, 24 May 2022 09:17:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1653383879;
+ bh=OMRg6RS0dHTmt7O6aXgEAUU1MxtYjlSj/o98QizTVSk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=CdVy/Horm/2348ZsqmIqO3ZZwr8Q5XnwBEGbP3TmKDNF2SG1/Lp9Efk5nvaSs50dX
+ RNTTjlBp4I1JkQX5H7zMFw2QRgxv+H+CUK8vx+fXd7mfvAeZwYsno7ONj7vevq04xM
+ OmIOnhUIQhlGpBdttDDPbAJaxKT+rnHfW39YY0t9R6dIB2CdkmlPjqlWIgKggVfm58
+ v+MC/w7Feim2uuBMCwMtp/laNkb1uJpFGxJdVzdDy7NlqBIv52airCe3ILY6CyqQy0
+ XpTpDPDxlhs0PAqMoRDxJ1oQa3J1CIhKO+trVm1EER4/eGJ00dPSTJQ9TcUtXg7xU8
+ XIoPN4eYASFOA==
+Received: by pali.im (Postfix)
+ id 2A20D9ED; Tue, 24 May 2022 11:17:56 +0200 (CEST)
+Date: Tue, 24 May 2022 11:17:56 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/pci: Add config option for using OF 'reg' for
+ PCI domain
+Message-ID: <20220524091756.gur2phuonjz5tuhm@pali>
+References: <20220504175718.29011-1-pali@kernel.org>
+ <8ffa0287-de5e-4308-07d8-204ac2e7f63a@csgroup.eu>
+ <20220505093132.45ehu6pdfzmvt2xw@pali>
+ <2cfb2cd8-3bad-3c66-b8ee-918d615f7719@linux.ibm.com>
+ <20220505223302.2ydcssvdgoyqv7e5@pali>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07061eb3-543b-426c-c708-08da3d659a66
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 May 2022 09:13:01.7452 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wd3h0bhvO/QpAIBE/ydE142ePkbphzoRh/eSM7ymvhUDOmXsuecF6B7c+tsnOXRH7LCCVZ55qkpZDGO5p42Nskpk3wruoeLeGSmFqdLLF1k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB3153
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220505223302.2ydcssvdgoyqv7e5@pali>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,137 +72,232 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "peterz@infradead.org" <peterz@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>,
- "jpoimboe@redhat.com" <jpoimboe@redhat.com>,
- "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>,
- "mbenes@suse.cz" <mbenes@suse.cz>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ Paul Mackerras <paulus@samba.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDIzLzA1LzIwMjIgw6AgMTk6NTUsIFNhdGh2aWthIFZhc2lyZWRkeSBhIMOpY3JpdMKg
-Og0KPiBUaGlzIHBhdGNoIGFkZHMgW3N0dWJdIGltcGxlbWVudGF0aW9ucyBmb3IgcmVxdWlyZWQN
-Cj4gZnVuY3Rpb25zLCBpbm9yZGVyIHRvIGVuYWJsZSBvYmp0b29sIGJ1aWxkIG9uIHBvd2VycGMu
-DQoNClNob3VsZCB3ZSBwdXQgc29tZSBleGl0KCkgb3IgYWJvcnQoKSBpbiB0aGUgc3R1YnMgdGhh
-dCBhcmUgbm90IHN1cHBvc2VkIA0KdG8gYmUgdXNlZCBhdCBhbGwgPw0KDQo+IA0KPiBTaWduZWQt
-b2ZmLWJ5OiBTYXRodmlrYSBWYXNpcmVkZHkgPHN2QGxpbnV4LmlibS5jb20+DQo+IC0tLQ0KPiAg
-IGFyY2gvcG93ZXJwYy9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxICsNCj4g
-ICB0b29scy9vYmp0b29sL2FyY2gvcG93ZXJwYy9CdWlsZCAgICAgICAgICAgICAgfCAgMiArDQo+
-ICAgdG9vbHMvb2JqdG9vbC9hcmNoL3Bvd2VycGMvZGVjb2RlLmMgICAgICAgICAgIHwgNzMgKysr
-KysrKysrKysrKysrKysrKw0KPiAgIC4uLi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hcmNoL2NmaV9y
-ZWdzLmggICAgICB8IDExICsrKw0KPiAgIHRvb2xzL29ianRvb2wvYXJjaC9wb3dlcnBjL2luY2x1
-ZGUvYXJjaC9lbGYuaCB8ICA4ICsrDQo+ICAgLi4uL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FyY2gv
-ZW5kaWFubmVzcy5oICAgIHwgIDkgKysrDQo+ICAgLi4uL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2Fy
-Y2gvc3BlY2lhbC5oICAgICAgIHwgMjEgKysrKysrDQo+ICAgdG9vbHMvb2JqdG9vbC9hcmNoL3Bv
-d2VycGMvc3BlY2lhbC5jICAgICAgICAgIHwgMTkgKysrKysNCj4gICA4IGZpbGVzIGNoYW5nZWQs
-IDE0NCBpbnNlcnRpb25zKCspDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRvb2xzL29ianRvb2wv
-YXJjaC9wb3dlcnBjL0J1aWxkDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRvb2xzL29ianRvb2wv
-YXJjaC9wb3dlcnBjL2RlY29kZS5jDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRvb2xzL29ianRv
-b2wvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXJjaC9jZmlfcmVncy5oDQo+ICAgY3JlYXRlIG1vZGUg
-MTAwNjQ0IHRvb2xzL29ianRvb2wvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXJjaC9lbGYuaA0KPiAg
-IGNyZWF0ZSBtb2RlIDEwMDY0NCB0b29scy9vYmp0b29sL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2Fy
-Y2gvZW5kaWFubmVzcy5oDQo+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRvb2xzL29ianRvb2wvYXJj
-aC9wb3dlcnBjL2luY2x1ZGUvYXJjaC9zcGVjaWFsLmgNCj4gICBjcmVhdGUgbW9kZSAxMDA2NDQg
-dG9vbHMvb2JqdG9vbC9hcmNoL3Bvd2VycGMvc3BlY2lhbC5jDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
-YXJjaC9wb3dlcnBjL0tjb25maWcgYi9hcmNoL3Bvd2VycGMvS2NvbmZpZw0KPiBpbmRleCAxNzRl
-ZGFiYjc0ZmEuLjczMmEzZjkxZWU1ZSAxMDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL0tjb25m
-aWcNCj4gKysrIGIvYXJjaC9wb3dlcnBjL0tjb25maWcNCj4gQEAgLTIzMiw2ICsyMzIsNyBAQCBj
-b25maWcgUFBDDQo+ICAgCXNlbGVjdCBIQVZFX01PRF9BUkNIX1NQRUNJRklDDQo+ICAgCXNlbGVj
-dCBIQVZFX05NSQkJCQlpZiBQRVJGX0VWRU5UUyB8fCAoUFBDNjQgJiYgUFBDX0JPT0szUykNCj4g
-ICAJc2VsZWN0IEhBVkVfT1BUUFJPQkVTDQo+ICsJc2VsZWN0IEhBVkVfT0JKVE9PTAkJCWlmIFBQ
-QzY0DQo+ICAgCXNlbGVjdCBIQVZFX1BFUkZfRVZFTlRTDQo+ICAgCXNlbGVjdCBIQVZFX1BFUkZf
-RVZFTlRTX05NSQkJaWYgUFBDNjQNCj4gICAJc2VsZWN0IEhBVkVfUEVSRl9SRUdTDQo+IGRpZmYg
-LS1naXQgYS90b29scy9vYmp0b29sL2FyY2gvcG93ZXJwYy9CdWlsZCBiL3Rvb2xzL29ianRvb2wv
-YXJjaC9wb3dlcnBjL0J1aWxkDQo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+IGluZGV4IDAwMDAw
-MDAwMDAwMC4uZDI0ZDU2MzZhNWI4DQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvdG9vbHMvb2Jq
-dG9vbC9hcmNoL3Bvd2VycGMvQnVpbGQNCj4gQEAgLTAsMCArMSwyIEBADQo+ICtvYmp0b29sLXkg
-Kz0gZGVjb2RlLm8NCj4gK29ianRvb2wteSArPSBzcGVjaWFsLm8NCj4gZGlmZiAtLWdpdCBhL3Rv
-b2xzL29ianRvb2wvYXJjaC9wb3dlcnBjL2RlY29kZS5jIGIvdG9vbHMvb2JqdG9vbC9hcmNoL3Bv
-d2VycGMvZGVjb2RlLmMNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAw
-MDAwLi5lM2I3N2E2Y2UzNTcNCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi90b29scy9vYmp0b29s
-L2FyY2gvcG93ZXJwYy9kZWNvZGUuYw0KPiBAQCAtMCwwICsxLDczIEBADQo+ICsvLyBTUERYLUxp
-Y2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlcg0KPiArDQo+ICsjaW5jbHVkZSA8c3Rk
-aW8uaD4NCj4gKyNpbmNsdWRlIDxzdGRsaWIuaD4NCj4gKyNpbmNsdWRlIDxvYmp0b29sL2NoZWNr
-Lmg+DQo+ICsjaW5jbHVkZSA8b2JqdG9vbC9lbGYuaD4NCj4gKyNpbmNsdWRlIDxvYmp0b29sL2Fy
-Y2guaD4NCj4gKyNpbmNsdWRlIDxvYmp0b29sL3dhcm4uaD4NCj4gKyNpbmNsdWRlIDxvYmp0b29s
-L2J1aWx0aW4uaD4NCj4gKw0KPiArdW5zaWduZWQgbG9uZyBhcmNoX2Rlc3RfcmVsb2Nfb2Zmc2V0
-KGludCBhZGRlbmQpDQo+ICt7DQo+ICsJcmV0dXJuIGFkZGVuZDsNCj4gK30NCj4gKw0KPiArYm9v
-bCBhcmNoX2NhbGxlZV9zYXZlZF9yZWcodW5zaWduZWQgY2hhciByZWcpDQo+ICt7DQo+ICsJcmV0
-dXJuIGZhbHNlOw0KPiArfQ0KPiArDQo+ICtpbnQgYXJjaF9kZWNvZGVfaGludF9yZWcodTggc3Bf
-cmVnLCBpbnQgKmJhc2UpDQo+ICt7DQo+ICsJcmV0dXJuIDA7DQo+ICt9DQo+ICsNCj4gK2NvbnN0
-IGNoYXIgKmFyY2hfbm9wX2luc24oaW50IGxlbikNCj4gK3sNCj4gKwlyZXR1cm4gTlVMTDsNCj4g
-K30NCj4gKw0KPiArY29uc3QgY2hhciAqYXJjaF9yZXRfaW5zbihpbnQgbGVuKQ0KPiArew0KPiAr
-CXJldHVybiBOVUxMOw0KPiArfQ0KPiArDQo+ICtpbnQgYXJjaF9kZWNvZGVfaW5zdHJ1Y3Rpb24o
-c3RydWN0IG9ianRvb2xfZmlsZSAqZmlsZSwgY29uc3Qgc3RydWN0IHNlY3Rpb24gKnNlYywNCj4g
-KwkJCSAgICB1bnNpZ25lZCBsb25nIG9mZnNldCwgdW5zaWduZWQgaW50IG1heGxlbiwNCj4gKwkJ
-CSAgICB1bnNpZ25lZCBpbnQgKmxlbiwgZW51bSBpbnNuX3R5cGUgKnR5cGUsDQo+ICsJCQkgICAg
-dW5zaWduZWQgbG9uZyAqaW1tZWRpYXRlLA0KPiArCQkJICAgIHN0cnVjdCBsaXN0X2hlYWQgKm9w
-c19saXN0KQ0KPiArew0KPiArCXUzMiBpbnNuOw0KPiArDQo+ICsJKmltbWVkaWF0ZSA9IDA7DQo+
-ICsJbWVtY3B5KCZpbnNuLCBzZWMtPmRhdGEtPmRfYnVmK29mZnNldCwgNCk7DQo+ICsJKmxlbiA9
-IDQ7DQo+ICsJKnR5cGUgPSBJTlNOX09USEVSOw0KPiArDQo+ICsJcmV0dXJuIDA7DQo+ICt9DQo+
-ICsNCj4gK3Vuc2lnbmVkIGxvbmcgYXJjaF9qdW1wX2Rlc3RpbmF0aW9uKHN0cnVjdCBpbnN0cnVj
-dGlvbiAqaW5zbikNCj4gK3sNCj4gKwlyZXR1cm4gaW5zbi0+b2Zmc2V0ICsgIGluc24tPmltbWVk
-aWF0ZTsNCj4gK30NCj4gKw0KPiArdm9pZCBhcmNoX2luaXRpYWxfZnVuY19jZmlfc3RhdGUoc3Ry
-dWN0IGNmaV9pbml0X3N0YXRlICpzdGF0ZSkNCj4gK3sNCj4gKwlpbnQgaTsNCj4gKw0KPiArCWZv
-ciAoaSA9IDA7IGkgPCBDRklfTlVNX1JFR1M7IGkrKykgew0KPiArCQlzdGF0ZS0+cmVnc1tpXS5i
-YXNlID0gQ0ZJX1VOREVGSU5FRDsNCj4gKwkJc3RhdGUtPnJlZ3NbaV0ub2Zmc2V0ID0gMDsNCj4g
-Kwl9DQo+ICsNCj4gKwkvKiBpbml0aWFsIENGQSAoY2FsbCBmcmFtZSBhZGRyZXNzKSAqLw0KPiAr
-CXN0YXRlLT5jZmEuYmFzZSA9IENGSV9TUDsNCj4gKwlzdGF0ZS0+Y2ZhLm9mZnNldCA9IDA7DQo+
-ICsNCj4gKwkvKiBpbml0aWFsIExSIChyZXR1cm4gYWRkcmVzcykgKi8NCj4gKwlzdGF0ZS0+cmVn
-c1tDRklfUkFdLmJhc2UgPSBDRklfQ0ZBOw0KPiArCXN0YXRlLT5yZWdzW0NGSV9SQV0ub2Zmc2V0
-ID0gMDsNCj4gK30NCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL29ianRvb2wvYXJjaC9wb3dlcnBjL2lu
-Y2x1ZGUvYXJjaC9jZmlfcmVncy5oIGIvdG9vbHMvb2JqdG9vbC9hcmNoL3Bvd2VycGMvaW5jbHVk
-ZS9hcmNoL2NmaV9yZWdzLmgNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAw
-MDAwMDAwLi41OTYzOGViZWFmYzgNCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi90b29scy9vYmp0
-b29sL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FyY2gvY2ZpX3JlZ3MuaA0KPiBAQCAtMCwwICsxLDEx
-IEBADQo+ICsvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAqLw0K
-PiArDQo+ICsjaWZuZGVmIF9PQkpUT09MX0NGSV9SRUdTX0gNCj4gKyNkZWZpbmUgX09CSlRPT0xf
-Q0ZJX1JFR1NfSA0KPiArDQo+ICsjZGVmaW5lIENGSV9CUCAxDQo+ICsjZGVmaW5lIENGSV9TUCBD
-RklfQlANCj4gKyNkZWZpbmUgQ0ZJX1JBIDMyDQo+ICsjZGVmaW5lIENGSV9OVU1fUkVHUyAzMw0K
-PiArDQo+ICsjZW5kaWYNCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL29ianRvb2wvYXJjaC9wb3dlcnBj
-L2luY2x1ZGUvYXJjaC9lbGYuaCBiL3Rvb2xzL29ianRvb2wvYXJjaC9wb3dlcnBjL2luY2x1ZGUv
-YXJjaC9lbGYuaA0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiBpbmRleCAwMDAwMDAwMDAwMDAu
-LjNjOGViYjdkMmE2Yg0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBiL3Rvb2xzL29ianRvb2wvYXJj
-aC9wb3dlcnBjL2luY2x1ZGUvYXJjaC9lbGYuaA0KPiBAQCAtMCwwICsxLDggQEANCj4gKy8qIFNQ
-RFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVyICovDQo+ICsNCj4gKyNpZm5k
-ZWYgX09CSlRPT0xfQVJDSF9FTEYNCj4gKyNkZWZpbmUgX09CSlRPT0xfQVJDSF9FTEYNCj4gKw0K
-PiArI2RlZmluZSBSX05PTkUgUl9QUENfTk9ORQ0KPiArDQo+ICsjZW5kaWYgLyogX09CSlRPT0xf
-QVJDSF9FTEYgKi8NCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL29ianRvb2wvYXJjaC9wb3dlcnBjL2lu
-Y2x1ZGUvYXJjaC9lbmRpYW5uZXNzLmggYi90b29scy9vYmp0b29sL2FyY2gvcG93ZXJwYy9pbmNs
-dWRlL2FyY2gvZW5kaWFubmVzcy5oDQo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+IGluZGV4IDAw
-MDAwMDAwMDAwMC4uN2MzNjI1MjdkYTIwDQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvdG9vbHMv
-b2JqdG9vbC9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hcmNoL2VuZGlhbm5lc3MuaA0KPiBAQCAtMCww
-ICsxLDkgQEANCj4gKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9yLWxhdGVy
-ICovDQo+ICsjaWZuZGVmIF9BUkNIX0VORElBTk5FU1NfSA0KPiArI2RlZmluZSBfQVJDSF9FTkRJ
-QU5ORVNTX0gNCj4gKw0KPiArI2luY2x1ZGUgPGVuZGlhbi5oPg0KPiArDQo+ICsjZGVmaW5lIF9f
-VEFSR0VUX0JZVEVfT1JERVIgX19MSVRUTEVfRU5ESUFODQo+ICsNCj4gKyNlbmRpZiAvKiBfQVJD
-SF9FTkRJQU5ORVNTX0ggKi8NCj4gZGlmZiAtLWdpdCBhL3Rvb2xzL29ianRvb2wvYXJjaC9wb3dl
-cnBjL2luY2x1ZGUvYXJjaC9zcGVjaWFsLmggYi90b29scy9vYmp0b29sL2FyY2gvcG93ZXJwYy9p
-bmNsdWRlL2FyY2gvc3BlY2lhbC5oDQo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+IGluZGV4IDAw
-MDAwMDAwMDAwMC4uZmZlZjlhZGE3MTMzDQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIvdG9vbHMv
-b2JqdG9vbC9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hcmNoL3NwZWNpYWwuaA0KPiBAQCAtMCwwICsx
-LDIxIEBADQo+ICsvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMC1vci1sYXRlciAq
-Lw0KPiArI2lmbmRlZiBfUFBDX0FSQ0hfU1BFQ0lBTF9IDQo+ICsjZGVmaW5lIF9QUENfQVJDSF9T
-UEVDSUFMX0gNCj4gKw0KPiArI2RlZmluZSBFWF9FTlRSWV9TSVpFIDgNCj4gKyNkZWZpbmUgRVhf
-T1JJR19PRkZTRVQgMA0KPiArI2RlZmluZSBFWF9ORVdfT0ZGU0VUIDQNCj4gKw0KPiArI2RlZmlu
-ZSBKVU1QX0VOVFJZX1NJWkUgMTYNCj4gKyNkZWZpbmUgSlVNUF9PUklHX09GRlNFVCAwDQo+ICsj
-ZGVmaW5lIEpVTVBfTkVXX09GRlNFVCA0DQo+ICsjZGVmaW5lIEpVTVBfS0VZX09GRlNFVCA4DQo+
-ICsNCj4gKyNkZWZpbmUgQUxUX0VOVFJZX1NJWkUgMTINCj4gKyNkZWZpbmUgQUxUX09SSUdfT0ZG
-U0VUIDANCj4gKyNkZWZpbmUgQUxUX05FV19PRkZTRVQgNA0KPiArI2RlZmluZSBBTFRfRkVBVFVS
-RV9PRkZTRVQgOA0KPiArI2RlZmluZSBBTFRfT1JJR19MRU5fT0ZGU0VUIDEwDQo+ICsjZGVmaW5l
-IEFMVF9ORVdfTEVOX09GRlNFVCAxMQ0KPiArDQo+ICsjZW5kaWYgLyogX1BQQ19BUkNIX1NQRUNJ
-QUxfSCAqLw0KPiBkaWZmIC0tZ2l0IGEvdG9vbHMvb2JqdG9vbC9hcmNoL3Bvd2VycGMvc3BlY2lh
-bC5jIGIvdG9vbHMvb2JqdG9vbC9hcmNoL3Bvd2VycGMvc3BlY2lhbC5jDQo+IG5ldyBmaWxlIG1v
-ZGUgMTAwNjQ0DQo+IGluZGV4IDAwMDAwMDAwMDAwMC4uZTNlNzVjYmFiODU4DQo+IC0tLSAvZGV2
-L251bGwNCj4gKysrIGIvdG9vbHMvb2JqdG9vbC9hcmNoL3Bvd2VycGMvc3BlY2lhbC5jDQo+IEBA
-IC0wLDAgKzEsMTkgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wLW9y
-LWxhdGVyDQo+ICsjaW5jbHVkZSA8c3RyaW5nLmg+DQo+ICsNCj4gKyNpbmNsdWRlIDxvYmp0b29s
-L3NwZWNpYWwuaD4NCj4gKyNpbmNsdWRlIDxvYmp0b29sL2J1aWx0aW4uaD4NCj4gKw0KPiArDQo+
-ICtib29sIGFyY2hfc3VwcG9ydF9hbHRfcmVsb2NhdGlvbihzdHJ1Y3Qgc3BlY2lhbF9hbHQgKnNw
-ZWNpYWxfYWx0LA0KPiArCQkJCSBzdHJ1Y3QgaW5zdHJ1Y3Rpb24gKmluc24sDQo+ICsJCQkJIHN0
-cnVjdCByZWxvYyAqcmVsb2MpDQo+ICt7DQo+ICsJcmV0dXJuIGZhbHNlOw0KPiArfQ0KPiArDQo+
-ICtzdHJ1Y3QgcmVsb2MgKmFyY2hfZmluZF9zd2l0Y2hfdGFibGUoc3RydWN0IG9ianRvb2xfZmls
-ZSAqZmlsZSwNCj4gKwkJCQkgICAgc3RydWN0IGluc3RydWN0aW9uICppbnNuKQ0KPiArew0KPiAr
-CXJldHVybiBOVUxMOw0KPiArfQ==
+On Friday 06 May 2022 00:33:02 Pali Rohár wrote:
+> On Thursday 05 May 2022 15:10:01 Tyrel Datwyler wrote:
+> > On 5/5/22 02:31, Pali Rohár wrote:
+> > > Hello!
+> > > 
+> > > On Thursday 05 May 2022 07:16:40 Christophe Leroy wrote:
+> > >> Le 04/05/2022 à 19:57, Pali Rohár a écrit :
+> > >>> Since commit 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on
+> > >>> device-tree properties"), powerpc kernel always fallback to PCI domain
+> > >>> assignment from OF / Device Tree 'reg' property of the PCI controller.
+> > >>>
+> > >>> PCI code for other Linux architectures use increasing assignment of the PCI
+> > >>> domain for individual controllers (assign the first free number), like it
+> > >>> was also for powerpc prior mentioned commit.
+> > >>>
+> > >>> Upgrading powerpc kernels from LTS 4.4 version (which does not contain
+> > >>> mentioned commit) to new LTS versions brings a regression in domain
+> > >>> assignment.
+> > >>
+> > >> Can you elaborate why it is a regression ?
+> > >>63a72284b159
+> > >> That commit says 'no functionnal changes', I'm having hard time 
+> > >> understanding how a nochange can be a regression.
+> > > 
+> > > It is not 'no functional change'. That commit completely changed PCI
+> > > domain assignment in a way that is incompatible with other architectures
+> > > and also incompatible with the way how it was done prior that commit.
+> > 
+> > I agree that the "no functional change" statement is incorrect. However, for
+> > most powerpc platforms it ended up being simply a cosmetic behavior change. As
+> > far as I can tell there is nothing requiring domain ids to increase montonically
+> > from zero or that each architecture is required to use the same domain numbering
+> > scheme.
+> 
+> That is truth. But it looks really suspicious why domains are not
+> assigned monotonically. Some scripts / applications are using PCI
+> location (domain:bus:dev:func) for remembering PCI device and domain
+> change can cause issue for config files. And some (older) applications
+> expects existence of domain zero. In systems without hot plug support
+> with small number of domains (e.g. 3) it means that there are always
+> domains 0, 1 and 2.
+> 
+> > Its hard to call this a true regression unless it actually broke
+> > something. The commit in question has been in the kernel since 4.8 which was
+> > released over 5 1/2 years ago.
+> 
+> I agree, it really depends on how you look at it.
+> 
+> The important is that lot of people are using LTS versions and are doing
+> upgrades when LTS support is dropped. Which for 4.4 now happened. So not
+> all smaller or "cosmetic" changes could be detected until longer LTS
+> period pass.
+> 
+> > With all that said looking closer at the code in question I think it is fair to
+> > assume that the author only intended this change for powernv and pseries
+> > platforms and not every powerpc platform. That change was done to make
+> > persistent naming easier to manage in userspace.
+> 
+> I agree that this behavior change may be useful in some situations and I
+> do not object this need.
+> 
+> > Your change defaults back to
+> > the old behavior which will now break both powernv and pseries platforms with
+> > regard to hotplugging and persistent naming.
+> 
+> I was aware of it, that change could cause issues. And that is why I
+> added config option for choosing behavior. So users would be able to
+> choose what they need.
+> 
+> > We could properly limit it to powernv and pseries by using ibm,fw-phb-id instead
+> > of reg property in the look up that follows a failed ibm,opal-phbid lookup. I
+> > think this is acceptable as long as no other powerpc platforms have started
+> > using this behavior for persistent naming.
+> 
+> And what about setting that new config option to enabled by default for
+> those series?
+> 
+> Or is there issue with introduction of the new config option?
+
+PING? Any opinion?
+
+> One of the point is that it is really a good idea to have similar/same
+> behavior for all linux platforms. And if it cannot be enabled by default
+> (for backward compatibility) add at least some option, so new platforms
+> can start using it or users can decide to switch behavior.
+> 
+> > -Tyrel
+> > 
+> > > For example, prior that commit on P2020 RDB board were PCI domains 0, 1 and 2.
+> > > 
+> > > $ lspci
+> > > 0000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> > > 0000:01:00.0 USB controller: Texas Instruments TUSB73x0 SuperSpeed USB 3.0 xHCI Host Controller (rev 02)
+> > > 0001:02:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> > > 0001:03:00.0 Network controller: Qualcomm Atheros AR93xx Wireless Network Adapter (rev 01)
+> > > 0002:04:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> > > 0002:05:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac Wireless Network Adapter
+> > > 
+> > > After that commit on P2020 RDB board are PCI domains 0x8000, 0x9000 and 0xa000.
+> > > 
+> > > $ lspci
+> > > 8000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> > > 8000:01:00.0 USB controller: Texas Instruments TUSB73x0 SuperSpeed USB 3.0 xHCI Host Controller (rev 02)
+> > > 9000:02:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> > > 9000:03:00.0 Network controller: Qualcomm Atheros AR93xx Wireless Network Adapter (rev 01)
+> > > a000:04:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
+> > > a000:05:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac Wireless Network Adapter
+> > > 
+> > > It is somehow strange that PCI domains are not indexed one by one and
+> > > also that there is no domain 0
+> > > 
+> > > With my patch when CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG is not set, then
+> > > previous behavior used and PCI domains are again 0, 1 and 2.
+> > > 
+> > >> Usually we don't commit regressions to mainline ...
+> > >>
+> > >>
+> > >>>
+> > >>> Fix this issue by introducing a new option CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG
+> > >>> When this options is disabled then powerpc kernel would assign PCI domains
+> > >>> in the similar way like it is doing kernel for other architectures and also
+> > >>> how it was done prior that commit.
+> > >>
+> > >> You don't define CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG on by default, it 
+> > >> means this commit will change the behaviour. Is that expected ?
+> > >>
+> > >> Is that really worth a user selectable option ? Is the user able to 
+> > >> decide what he needs ?
+> > > 
+> > > Well, I hope that maintainers of that code answer to these questions.
+> > > 
+> > > In any case, I think that it could be a user selectable option as in
+> > > that commit is explained that in some situation is makes sense to do
+> > > PCI domain numbering based on DT reg.
+> > > 
+> > > But as I pointed above, upgrading from 4.4 TLS kernel to some new TLS
+> > > kernel brings above regression, so I think that there should be a way to
+> > > disable this behavior.
+> > > 
+> > > In my opinion, for people who are upgrading from 4.4 TLS kernel, this
+> > > option should be turned off by default (= do not change behavior). For
+> > > people who want same behaviour on powerpc as on other platforms, also it
+> > > should be turned off by default.
+> > > 
+> > >>>
+> > >>> Fixes: 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on device-tree properties")
+> > >>
+> > >> Is that really a fix ? What is the problem really ?
+> > > 
+> > > Problem is that PCI domains were changed in a way that is not compatible
+> > > neither with version prior that commit and neither with how other linux
+> > > platforms assign PCI domains for controllers.
+> > > 
+> > >>> Signed-off-by: Pali Rohár <pali@kernel.org>
+> > >>> ---
+> > >>>   arch/powerpc/Kconfig             | 10 ++++++++++
+> > >>>   arch/powerpc/kernel/pci-common.c |  4 ++--
+> > >>>   2 files changed, 12 insertions(+), 2 deletions(-)
+> > >>>
+> > >>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > >>> index 174edabb74fa..4dd3e3acddda 100644
+> > >>> --- a/arch/powerpc/Kconfig
+> > >>> +++ b/arch/powerpc/Kconfig
+> > >>> @@ -375,6 +375,16 @@ config PPC_OF_PLATFORM_PCI
+> > >>>   	depends on PCI
+> > >>>   	depends on PPC64 # not supported on 32 bits yet
+> > >>>   
+> > >>> +config PPC_PCI_DOMAIN_FROM_OF_REG
+> > >>> +	bool "Use OF reg property for PCI domain"
+> > >>> +	depends on PCI
+> > >>
+> > >> Should it depend on PPC_OF_PLATFORM_PCI instead ?
+> > > 
+> > > No, PPC_OF_PLATFORM_PCI has line "depends on PPC64 # not supported on 32
+> > > bits yet". But it is already used also for e.g. P2020 which is 32-bit
+> > > platform.
+> > > 
+> > >>> +	help
+> > >>> +	  By default PCI domain for host bridge during its registration is
+> > >>> +	  chosen as the lowest unused PCI domain number.
+> > >>> +
+> > >>> +	  When this option is enabled then PCI domain is determined from
+> > >>> +	  the OF / Device Tree 'reg' property.
+> > >>> +
+> > >>>   config ARCH_SUPPORTS_UPROBES
+> > >>>   	def_bool y
+> > >>>   
+> > >>> diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+> > >>> index 8bc9cf62cd93..8cb6fc5302ae 100644
+> > >>> --- a/arch/powerpc/kernel/pci-common.c
+> > >>> +++ b/arch/powerpc/kernel/pci-common.c
+> > >>> @@ -74,7 +74,6 @@ void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops)
+> > >>>   static int get_phb_number(struct device_node *dn)
+> > >>>   {
+> > >>>   	int ret, phb_id = -1;
+> > >>> -	u32 prop_32;
+> > >>>   	u64 prop;
+> > >>>   
+> > >>>   	/*
+> > >>> @@ -83,7 +82,8 @@ static int get_phb_number(struct device_node *dn)
+> > >>>   	 * reading "ibm,opal-phbid", only present in OPAL environment.
+> > >>>   	 */
+> > >>>   	ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
+> > >>
+> > >> This looks like very specific, it is not reflected in the commit log.
+> > > 
+> > > I have not changed nor touched this "ibm,opal-phbid" setting. And it was
+> > > not also touched in that mentioned patch. I see that no DTS file in
+> > > kernel use this option (so probably only DTS files supplied by
+> > > bootloader use it). So I thought that there is not reason to mention in
+> > > commit message.
+> > > 
+> > > But if you think so, I can add some info to commit message about it.
+> > > 
+> > >>> -	if (ret) {
+> > >>> +	if (ret && IS_ENABLED(CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG)) {
+> > >>> +		u32 prop_32;
+> > >>>   		ret = of_property_read_u32_index(dn, "reg", 1, &prop_32);
+> > >>>   		prop = prop_32;
+> > >>>   	}
+> > 
