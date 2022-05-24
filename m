@@ -2,32 +2,33 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67875328EA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 727555328F4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 13:27:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sMx5r8jz3grS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:26:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L6sPc2Ydbz3h9k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 May 2022 21:27:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s7x0fHnz3cgx
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:15:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L6s800Psrz3cDk
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 May 2022 21:16:00 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7x01MJz4yTN;
- Tue, 24 May 2022 21:15:56 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L6s7z6qnFz4yTQ;
+ Tue, 24 May 2022 21:15:59 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>, Pali Rohár <pali@kernel.org>
-In-Reply-To: <20220506203621.26314-1-pali@kernel.org>
-References: <20220506203621.26314-1-pali@kernel.org>
-Subject: Re: [PATCH] powerpc/85xx: P2020: Add fsl,mpc8548-pmc node
-Message-Id: <165339056016.1718562.7051892610899050151.b4-ty@ellerman.id.au>
-Date: Tue, 24 May 2022 21:09:20 +1000
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20220404101536.104794-1-ruscur@russell.cc>
+References: <20220404101536.104794-1-ruscur@russell.cc>
+Subject: Re: [PATCH v2 1/2] powerpc/powernv: Get L1D flush requirements from
+ device-tree
+Message-Id: <165339056252.1718562.14599568205155142624.b4-ty@ellerman.id.au>
+Date: Tue, 24 May 2022 21:09:22 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,22 +43,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: mopsfelder@gmail.com, joel@jms.id.au, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 6 May 2022 22:36:21 +0200, Pali Rohár wrote:
-> P2020 also contains Power Management Controller and their registers at
-> offset 0xe0070 compatible with mpc8548. So add PMC node into DTS include
-> file fsl/p2020si-post.dtsi
+On Mon, 4 Apr 2022 20:15:35 +1000, Russell Currey wrote:
+> The device-tree properties no-need-l1d-flush-msr-pr-1-to-0 and
+> no-need-l1d-flush-kernel-on-user-access are the equivalents of
+> H_CPU_BEHAV_NO_L1D_FLUSH_ENTRY and H_CPU_BEHAV_NO_L1D_FLUSH_UACCESS
+> from the H_GET_CPU_CHARACTERISTICS hcall on pseries respectively.
 > 
+> In commit d02fa40d759f ("powerpc/powernv: Remove POWER9 PVR version
+> check for entry and uaccess flushes") the condition for disabling the
+> L1D flush on kernel entry and user access was changed from any non-P9
+> CPU to only checking P7 and P8.  Without the appropriate device-tree
+> checks for newer processors on powernv, these flushes are unnecessarily
+> enabled on those systems.  This patch corrects this.
 > 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/85xx: P2020: Add fsl,mpc8548-pmc node
-      https://git.kernel.org/powerpc/c/294299b3d39e8b4ae10c12ef1ed71405ef7b1e43
+[1/2] powerpc/powernv: Get L1D flush requirements from device-tree
+      https://git.kernel.org/powerpc/c/2efee6adb56159288bce9d1ab51fc9056d7007d4
+[2/2] powerpc/powernv: Get STF barrier requirements from device-tree
+      https://git.kernel.org/powerpc/c/d2a3c131981d4498571908df95c3c9393a00adf5
 
 cheers
