@@ -1,41 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8B65335AD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 05:20:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1446D5335D5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 05:28:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L7GXZ5Qnxz3bqf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 13:20:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L7GkV74DSz3bxt
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 13:28:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=b+cO+/rH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57;
- helo=gate.crashing.org; envelope-from=benh@kernel.crashing.org;
- receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 4L7GX93DDHz2ywM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 13:19:52 +1000 (AEST)
-Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 24P3FVYw012347;
- Tue, 24 May 2022 22:15:32 -0500
-Message-ID: <ede15a37b9e854a50c9d67b890bdebb25642a003.camel@kernel.crashing.org>
-Subject: Re: [PATCH 2/2] drm/tiny: Add ofdrm for Open Firmware framebuffers
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>, Javier Martinez Canillas
- <javierm@redhat.com>, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
- msuchanek@suse.de, mpe@ellerman.id.au, paulus@samba.org
-Date: Wed, 25 May 2022 13:15:31 +1000
-In-Reply-To: <8cd53439-46f1-117c-7aae-7630a6466ab8@suse.de>
-References: <20220518183006.14548-1-tzimmermann@suse.de>
- <20220518183006.14548-3-tzimmermann@suse.de>
- <84a550c3-dcef-17ac-0ae5-666cdf0fb67e@redhat.com>
- <8cd53439-46f1-117c-7aae-7630a6466ab8@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L7Gh52ph0z3bbV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 13:26:45 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=b+cO+/rH; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4L7Gh36NTqz4xXg;
+ Wed, 25 May 2022 13:26:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+ s=201909; t=1653449203;
+ bh=n/3ns0H//VfRhKNoO+NlPF5S2Z+X9/PKdIBLevlIVsc=;
+ h=From:To:Cc:Subject:Date:From;
+ b=b+cO+/rHgE6gAYCpHsD3x8QsRelqD63Be/uO5u8WHb/9Zij7U44bkYaSvTC4oA0e8
+ KDpdLGICW4f2HHPotwlBd8DCzev1Gf7SO4Yz9zw4jN3XX0+C+L3mwX4DVpSCyEF6Yc
+ 1eAzW4pfbur8+ctsZh1NvKReJsZ85BuOUA12IzA+/UEUbRkowSKtx/jC6RCBxeIFEk
+ VQSXSBtZe/BNdkWtAgRCioCFAOjAnERJUnd+zZ6CmQXSD13Hgfe2gAsA/G9hddJkaV
+ 3gYm97xyhBFeRonFgetqWY+IBKdhfd1GFS+2+823bhjO3buSC0DmNn0RvO7MCGiB29
+ s8OIg104C5XJw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc: Don't select HAVE_IRQ_EXIT_ON_IRQ_STACK
+Date: Wed, 25 May 2022 13:26:39 +1000
+Message-Id: <20220525032639.1947280-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,24 +58,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org
+Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2022-05-22 at 21:35 +0200, Thomas Zimmermann wrote:
-> > Interesting. Did you find some formats that were not supported ?
-> 
-> We still don't support XRGB1555. If the native buffer uses this format, 
-> we'd have no conversion helper. In this case, we rely on userspace/fbcon 
-> to use the native format exclusively.  (BTW, I asked one of my coworkers 
-> to implement XRGB1555 to make her familiar with DRM. That's why I 
-> haven't sent a patch yet.)
-> 
+The HAVE_IRQ_EXIT_ON_IRQ_STACK option tells generic code that irq_exit()
+is called while still running on the hard irq stack (hardirq_ctx[] in
+the powerpc code).
 
-Various old macs do 1555 ...
+Selecting the option means the generic code will *not* switch to the
+softirq stack before running softirqs, because the code is already
+running on the (mostly empty) hard irq stack.
 
-Cheers,
-Ben.
+But since commit 1b1b6a6f4cc0 ("powerpc: handle irq_enter/irq_exit in
+interrupt handler wrappers"), irq_exit() is now called on the regular task
+stack, not the hard irq stack.
+
+That's because previously irq_exit() was called in __do_irq() which is
+run on the hard irq stack, but now it is called in
+interrupt_async_exit_prepare() which is called from do_irq() constructed
+by the wrapper macro, which is after the switch back to the task stack.
+
+So drop HAVE_IRQ_EXIT_ON_IRQ_STACK from the Kconfig. This will mean an
+extra stack switch when processing some interrupts, but should
+significantly reduce the likelihood of stack overflow.
+
+It also means the softirq stack will be used for running softirqs from
+other interrupts that don't use the hard irq stack, eg. timer interrupts.
+
+Fixes: 1b1b6a6f4cc0 ("powerpc: handle irq_enter/irq_exit in interrupt handler wrappers")
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f5ed355e75e6..7e7d12ae9ecb 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -221,7 +221,6 @@ config PPC
+ 	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI && !HAVE_HARDLOCKUP_DETECTOR_ARCH
+ 	select HAVE_HW_BREAKPOINT		if PERF_EVENTS && (PPC_BOOK3S || PPC_8xx)
+ 	select HAVE_IOREMAP_PROT
+-	select HAVE_IRQ_EXIT_ON_IRQ_STACK
+ 	select HAVE_IRQ_TIME_ACCOUNTING
+ 	select HAVE_KERNEL_GZIP
+ 	select HAVE_KERNEL_LZMA			if DEFAULT_UIMAGE
+-- 
+2.35.3
 
