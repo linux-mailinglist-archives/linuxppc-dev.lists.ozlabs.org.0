@@ -2,71 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350CB5340E3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 18:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22311534111
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 18:09:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L7bPY1SDfz3c9m
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 02:00:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L7bc10BPMz3bkT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 02:09:21 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FlOwZrOq;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org;
+ envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=k20201202 header.b=FlOwZrOq; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L7bbJ63qfz2ysv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 02:08:41 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L7bN513cVz3bkW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 01:59:00 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
- by localhost (Postfix) with ESMTP id 4L7bMn2chTz9tFN;
- Wed, 25 May 2022 17:58:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
- by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 9vEVZE9HpWyB; Wed, 25 May 2022 17:58:45 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase2.c-s.fr (Postfix) with ESMTP id 4L7bMk5NFmz9tFP;
- Wed, 25 May 2022 17:58:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9FE958B77A;
- Wed, 25 May 2022 17:58:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id htU6u_JrvheR; Wed, 25 May 2022 17:58:42 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.180])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 28D0E8B778;
- Wed, 25 May 2022 17:58:42 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 24PFwR0e419152
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Wed, 25 May 2022 17:58:27 +0200
-Received: (from chleroy@localhost)
- by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 24PFwRZn419151;
- Wed, 25 May 2022 17:58:27 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to
- christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, peterz@infradead.org,
- aik@ozlabs.ru, sv@linux.ibm.com, rostedt@goodmis.org,
- jpoimboe@redhat.com, naveen.n.rao@linux.vnet.ibm.com, mbenes@suse.cz
-Subject: [RFC PATCH v1 4/4] powerpc/static_call: Implement inline static calls
-Date: Wed, 25 May 2022 17:58:17 +0200
-Message-Id: <2e74b10072ca594c394dd1c445d827505725f27a.1653494186.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <cover.1653494186.git.christophe.leroy@csgroup.eu>
-References: <cover.1653494186.git.christophe.leroy@csgroup.eu>
+ by dfw.source.kernel.org (Postfix) with ESMTPS id EFE1C6160E
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 16:08:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A31C3411B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 16:08:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1653494918;
+ bh=yKZpZ7SIZeLHb0X8nC5bqkpDaZyHuZo++7kw37oIcGQ=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=FlOwZrOqfkixLh2Sz/ijPE+iWSPo1vExFZD8oDnS3R9OR4unlRzyuyrdhSTR1zgpg
+ E/nrlCNvYXUleRxXew2pxNa99VDWB7/TvfNzZJn/IzByDauDFummkfOCALKNj7hGy3
+ MJPC+HjoczAhgNxYjyIAmpbUczVCJ4vd9FfnSVys7pc7ov/5BhJV0T5+04OyMvo1U9
+ 7A7T4q4IVFxmGUv8Dq12u11u9pFd3Pt44InDRzFzt93f/gvv35sx+q79xDPNdd4yfE
+ ePJJ+sAEJvQkBvzOh72x1laK5N0nTl2IQ7KT36kI0pCYx3Vmqnb5T5/M/AhWTdwkIN
+ Yrb+uvO13Rfzg==
+Received: by mail-vk1-f181.google.com with SMTP id bs5so10114304vkb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 09:08:38 -0700 (PDT)
+X-Gm-Message-State: AOAM530TewTKD0gFyh3jMjVrxZzNfMvescJQux0WR2rpI2FoPKI9V3rb
+ /H51fKWW/sBbnB2OLlDW7l2eWS/casWvrOxfQbw=
+X-Google-Smtp-Source: ABdhPJw1WHHqxuzdMTtb2eEqwRRFtvXa8jU3vxrvtrww8g1vIS4KjJWMDyxFq63Hm2BXr071eyutBaZ38+UIdXynb6U=
+X-Received: by 2002:a1f:2106:0:b0:357:a8c9:a8d6 with SMTP id
+ h6-20020a1f2106000000b00357a8c9a8d6mr5907118vkh.2.1653494913806; Wed, 25 May
+ 2022 09:08:33 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1653494295; l=4004; s=20211009;
- h=from:subject:message-id; bh=Si7ViaXO/clzpQWdQFEHD12KLid8Hfc27sgBafOTn9A=;
- b=1u5j19ZyGAUOZn2Be1bpzfdF3Xi2Yq69UCl1H3WI+qNHuP6EbAvpWnSmUmfc2ZpXvf04Wy3rRcpp
- U79BvpfHCtkQcDPtHARpwiTtn1Wu3Tw0mXJ4Jt1PDGSvb0bEGsTW
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519;
- pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+References: <20220322144003.2357128-1-guoren@kernel.org>
+ <20220524220646.GA3990738@roeck-us.net>
+ <6435704.4vTCxPXJkl@diego> <3418219.V25eIC5XRa@diego>
+In-Reply-To: <3418219.V25eIC5XRa@diego>
+From: Guo Ren <guoren@kernel.org>
+Date: Thu, 26 May 2022 00:08:22 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTTkpHLZf-+VXZE_gCn=5ZJ5FS3jOxKLVoMyL4i=baPd7Q@mail.gmail.com>
+Message-ID: <CAJF2gTTkpHLZf-+VXZE_gCn=5ZJ5FS3jOxKLVoMyL4i=baPd7Q@mail.gmail.com>
+Subject: Re: [PATCH V9 20/20] riscv: compat: Add COMPAT Kbuild skeletal support
+To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,118 +73,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
+ Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-csky@vger.kernel.org,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv <linux-riscv@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Guenter Roeck <linux@roeck-us.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement inline static calls:
-- Put a 'bl' to the destination function
-- Put a 'nop' when the destination function is NULL
-- Put a 'li r3,0' when the destination is the RET0 function
+Thx Heiko & Guenter,
 
-For the time being it only works if the destination is
-within 32Mb from the caller.
+On Wed, May 25, 2022 at 7:10 PM Heiko St=C3=BCbner <heiko@sntech.de> wrote:
+>
+> Am Mittwoch, 25. Mai 2022, 12:57:30 CEST schrieb Heiko St=C3=BCbner:
+> > Am Mittwoch, 25. Mai 2022, 00:06:46 CEST schrieb Guenter Roeck:
+> > > On Wed, May 25, 2022 at 01:46:38AM +0800, Guo Ren wrote:
+> > > [ ... ]
+> > >
+> > > > > The problem is come from "__dls3's vdso decode part in musl's
+> > > > > ldso/dynlink.c". The ehdr->e_phnum & ehdr->e_phentsize are wrong.
+> > > > >
+> > > > > I think the root cause is from musl's implementation with the wro=
+ng
+> > > > > elf parser. I would fix that soon.
+> > > > Not elf parser, it's "aux vector just past environ[]". I think I co=
+uld
+> > > > solve this, but anyone who could help dig in is welcome.
+> > > >
+> > >
+> > > I am not sure I understand what you are saying here. Point is that my
+> > > root file system, generated with musl a year or so ago, crashes with
+> > > your patch set applied. That is a regression, even if there is a bug
+> > > in musl.
+Thx for the report, it's a valuable regression for riscv-compat.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/Kconfig                          |  1 +
- arch/powerpc/include/asm/static_call.h        |  2 +
- arch/powerpc/kernel/static_call.c             | 41 ++++++++++++-------
- tools/objtool/arch/powerpc/include/arch/elf.h |  1 +
- 4 files changed, 31 insertions(+), 14 deletions(-)
+> >
+> > Also as I said in the other part of the thread, the rootfs seems innoce=
+nt,
+> > as my completely-standard Debian riscv64 rootfs is also affected.
+> >
+> > The merged version seems to be v12 [0] - not sure how we this discussio=
+n
+> > ended up in v9, but I just tested this revision in two variants:
+> >
+> > - v5.17 + this v9 -> works nicely
+>
+> I take that back ... now going back to that build I somehow also run into
+> that issue here ... will investigate more.
+Yeah, it's my fault. I've fixed up it, please have a try:
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 5ef8bf8eb202..3257a1c258d8 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -246,6 +246,7 @@ config PPC
- 	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
- 	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
- 	select HAVE_STATIC_CALL			if PPC32
-+	select HAVE_STATIC_CALL_INLINE		if PPC32
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select HAVE_VIRT_CPU_ACCOUNTING
- 	select HUGETLB_PAGE_SIZE_VARIABLE	if PPC_BOOK3S_64 && HUGETLB_PAGE
-diff --git a/arch/powerpc/include/asm/static_call.h b/arch/powerpc/include/asm/static_call.h
-index de1018cc522b..e3d5d3823dac 100644
---- a/arch/powerpc/include/asm/static_call.h
-+++ b/arch/powerpc/include/asm/static_call.h
-@@ -26,4 +26,6 @@
- #define ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)	__PPC_SCT(name, "blr")
- #define ARCH_DEFINE_STATIC_CALL_RET0_TRAMP(name)	__PPC_SCT(name, "b .+20")
- 
-+#define CALL_INSN_SIZE		4
-+
- #endif /* _ASM_POWERPC_STATIC_CALL_H */
-diff --git a/arch/powerpc/kernel/static_call.c b/arch/powerpc/kernel/static_call.c
-index 863a7aa24650..fd25954cfd24 100644
---- a/arch/powerpc/kernel/static_call.c
-+++ b/arch/powerpc/kernel/static_call.c
-@@ -9,25 +9,38 @@ void arch_static_call_transform(void *site, void *tramp, void *func, bool tail)
- 	int err;
- 	bool is_ret0 = (func == __static_call_return0);
- 	unsigned long target = (unsigned long)(is_ret0 ? tramp + PPC_SCT_RET0 : func);
--	bool is_short = is_offset_in_branch_range((long)target - (long)tramp);
--
--	if (!tramp)
--		return;
- 
- 	mutex_lock(&text_mutex);
- 
--	if (func && !is_short) {
--		err = patch_instruction(tramp + PPC_SCT_DATA, ppc_inst(target));
--		if (err)
--			goto out;
-+	if (tramp) {
-+		bool is_short = is_offset_in_branch_range((long)target - (long)tramp);
-+
-+		if (func && !is_short) {
-+			err = patch_instruction(tramp + PPC_SCT_DATA, ppc_inst(target));
-+			if (err)
-+				goto out;
-+		}
-+
-+		if (!func)
-+			err = patch_instruction(tramp, ppc_inst(PPC_RAW_BLR()));
-+		else if (is_short)
-+			err = patch_branch(tramp, target, 0);
-+		else
-+			err = patch_instruction(tramp, ppc_inst(PPC_RAW_NOP()));
- 	}
- 
--	if (!func)
--		err = patch_instruction(tramp, ppc_inst(PPC_RAW_BLR()));
--	else if (is_short)
--		err = patch_branch(tramp, target, 0);
--	else
--		err = patch_instruction(tramp, ppc_inst(PPC_RAW_NOP()));
-+	if (site) {
-+		bool is_short = is_offset_in_branch_range((long)func - (long)site);
-+
-+		if (!func)
-+			err = patch_instruction(site, ppc_inst(PPC_RAW_NOP()));
-+		else if (is_ret0)
-+			err = patch_instruction(site, ppc_inst(PPC_RAW_LI(_R3, 0)));
-+		else if (is_short)
-+			err = patch_branch(site, target, BRANCH_SET_LINK);
-+		else
-+			panic("%s: function %pS is out of reach of %pS\n", __func__, func, site);
-+	}
- out:
- 	mutex_unlock(&text_mutex);
- 
-diff --git a/tools/objtool/arch/powerpc/include/arch/elf.h b/tools/objtool/arch/powerpc/include/arch/elf.h
-index 3c8ebb7d2a6b..18784c764c14 100644
---- a/tools/objtool/arch/powerpc/include/arch/elf.h
-+++ b/tools/objtool/arch/powerpc/include/arch/elf.h
-@@ -4,5 +4,6 @@
- #define _OBJTOOL_ARCH_ELF
- 
- #define R_NONE R_PPC_NONE
-+#define R_REL32	R_PPC_REL32
- 
- #endif /* _OBJTOOL_ARCH_ELF */
--- 
-2.35.3
+https://lore.kernel.org/linux-riscv/20220525160404.2930984-1-guoren@kernel.=
+org/T/#u
 
+>
+>
+> > - v5.18-rc6 + this v9 (rebased onto it) -> breaks the boot
+> >   The only rebase-conflict was with the introduction of restartable
+> >   sequences and removal of the tracehook include, but turning CONFIG_RS=
+EQ
+> >   off doesn't seem to affect the breakage.
+> >
+> > So it looks like something changed between 5.17 and 5.18 that causes th=
+e issue.
+> >
+> >
+> > Heiko
+> >
+> >
+> > [0] https://lore.kernel.org/all/20220405071314.3225832-1-guoren@kernel.=
+org/
+> >
+>
+>
+>
+>
+
+
+--=20
+Best Regards
+ Guo Ren
+
+ML: https://lore.kernel.org/linux-csky/
