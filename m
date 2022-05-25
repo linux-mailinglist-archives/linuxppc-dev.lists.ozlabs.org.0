@@ -1,41 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E6153445C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 21:38:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E1853449E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 21:57:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L7hDx20Lgz3c7L
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 05:38:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L7hfr18YRz307g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 05:57:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Vkuk7I4Y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=sntech.de
- (client-ip=185.11.138.130; helo=gloria.sntech.de;
- envelope-from=heiko@sntech.de; receiver=<UNKNOWN>)
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L7hDT3Tlwz3bWg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 05:37:42 +1000 (AEST)
-Received: from ip5b412258.dynamic.kabel-deutschland.de ([91.65.34.88]
- helo=diego.localnet)
- by gloria.sntech.de with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <heiko@sntech.de>)
- id 1ntwp4-0007pS-Ng; Wed, 25 May 2022 21:37:34 +0200
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-To: Guo Ren <guoren@kernel.org>
-Subject: Re: [PATCH V9 20/20] riscv: compat: Add COMPAT Kbuild skeletal support
-Date: Wed, 25 May 2022 21:37:33 +0200
-Message-ID: <1766627.8hzESeGDPO@diego>
-In-Reply-To: <CAJF2gTTkpHLZf-+VXZE_gCn=5ZJ5FS3jOxKLVoMyL4i=baPd7Q@mail.gmail.com>
-References: <20220322144003.2357128-1-guoren@kernel.org>
- <3418219.V25eIC5XRa@diego>
- <CAJF2gTTkpHLZf-+VXZE_gCn=5ZJ5FS3jOxKLVoMyL4i=baPd7Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:4641:c500::1;
+ helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=korg header.b=Vkuk7I4Y; 
+ dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org
+ [IPv6:2604:1380:4641:c500::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L7hfC4rYWz305S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 05:56:34 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by dfw.source.kernel.org (Postfix) with ESMTPS id 89CDB619E8;
+ Wed, 25 May 2022 19:56:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CD6C34117;
+ Wed, 25 May 2022 19:56:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+ s=korg; t=1653508589;
+ bh=X7C0hmbhpTB3GvF0P9XEj7WCHI8xPxoJdQtXCB0lpQE=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=Vkuk7I4YJwHwtgvQIjGGD67euU0yYsX+7dtU16FLwEvLwi8PlinTP7bamF/qsXX/R
+ IemM4F1pZ/EVFJHycMBf5kl0RU9XRXgUsO0QL9o39JffkmNZtp/VWKGSmqu7oh8ZQC
+ UU4QOnoINatpfxKdNgO8djo5bg0LXrduj8PpsVzg=
+Date: Wed, 25 May 2022 12:56:27 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Subject: Re: [PATCH] kexec_file: Drop weak attribute from
+ arch_kexec_apply_relocations[_add]
+Message-Id: <20220525125627.acf27b28bb67417a6683a1d9@linux-foundation.org>
+In-Reply-To: <877d6g0zxq.fsf@email.froward.int.ebiederm.org>
+References: <20220518181828.645877-1-naveen.n.rao@linux.vnet.ibm.com>
+ <87ee0q7b92.fsf@email.froward.int.ebiederm.org>
+ <YoWySwbszfdZS9LU@MiWiFi-R3L-srv>
+ <87bkvt4d56.fsf@email.froward.int.ebiederm.org>
+ <20220520104641.GB194232@MiWiFi-R3L-srv>
+ <877d6g0zxq.fsf@email.froward.int.ebiederm.org>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,103 +68,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>,
- Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-csky@vger.kernel.org,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Guenter Roeck <linux@roeck-us.net>
+Cc: Baoquan He <bhe@redhat.com>, kexec@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Am Mittwoch, 25. Mai 2022, 18:08:22 CEST schrieb Guo Ren:
-> Thx Heiko & Guenter,
->=20
-> On Wed, May 25, 2022 at 7:10 PM Heiko St=FCbner <heiko@sntech.de> wrote:
-> >
-> > Am Mittwoch, 25. Mai 2022, 12:57:30 CEST schrieb Heiko St=FCbner:
-> > > Am Mittwoch, 25. Mai 2022, 00:06:46 CEST schrieb Guenter Roeck:
-> > > > On Wed, May 25, 2022 at 01:46:38AM +0800, Guo Ren wrote:
-> > > > [ ... ]
-> > > >
-> > > > > > The problem is come from "__dls3's vdso decode part in musl's
-> > > > > > ldso/dynlink.c". The ehdr->e_phnum & ehdr->e_phentsize are wron=
-g.
-> > > > > >
-> > > > > > I think the root cause is from musl's implementation with the w=
-rong
-> > > > > > elf parser. I would fix that soon.
-> > > > > Not elf parser, it's "aux vector just past environ[]". I think I =
-could
-> > > > > solve this, but anyone who could help dig in is welcome.
-> > > > >
-> > > >
-> > > > I am not sure I understand what you are saying here. Point is that =
-my
-> > > > root file system, generated with musl a year or so ago, crashes with
-> > > > your patch set applied. That is a regression, even if there is a bug
-> > > > in musl.
-> Thx for the report, it's a valuable regression for riscv-compat.
->=20
-> > >
-> > > Also as I said in the other part of the thread, the rootfs seems inno=
-cent,
-> > > as my completely-standard Debian riscv64 rootfs is also affected.
-> > >
-> > > The merged version seems to be v12 [0] - not sure how we this discuss=
-ion
-> > > ended up in v9, but I just tested this revision in two variants:
-> > >
-> > > - v5.17 + this v9 -> works nicely
-> >
-> > I take that back ... now going back to that build I somehow also run in=
-to
-> > that issue here ... will investigate more.
-> Yeah, it's my fault. I've fixed up it, please have a try:
->=20
-> https://lore.kernel.org/linux-riscv/20220525160404.2930984-1-guoren@kerne=
-l.org/T/#u
+On Fri, 20 May 2022 14:25:05 -0500 "Eric W. Biederman" <ebiederm@xmission.com> wrote:
 
-very cool that you found the issue.
-I've tested your patch and it seems to fix the issue for me.
+> > I am not strongly against taking off __weak, just wondering if there's
+> > chance to fix it in recordmcount, and the cost comparing with kernel fix;
+> > except of this issue, any other weakness of __weak. Noticed Andrew has
+> > picked this patch, as a witness of this moment, raise a tiny concern.
+> 
+> I just don't see what else we can realistically do.
 
-Thanks for figuring out the cause
-Heiko
+I think converting all of the kexec __weaks to use the ifdef approach
+makes sense, if only because kexec is now using two different styles.
 
+But for now, I'll send Naveen's v2 patch in to Linus to get us out of
+trouble.
 
-> > > - v5.18-rc6 + this v9 (rebased onto it) -> breaks the boot
-> > >   The only rebase-conflict was with the introduction of restartable
-> > >   sequences and removal of the tracehook include, but turning CONFIG_=
-RSEQ
-> > >   off doesn't seem to affect the breakage.
-> > >
-> > > So it looks like something changed between 5.17 and 5.18 that causes =
-the issue.
-> > >
-> > >
-> > > Heiko
-> > >
-> > >
-> > > [0] https://lore.kernel.org/all/20220405071314.3225832-1-guoren@kerne=
-l.org/
-> > >
-> >
-> >
-> >
-> >
->=20
->=20
->=20
-
-
-
+I'm thinking that we should add cc:stable to that patch as well, to
+reduce the amount of problems which people experience when using newer
+binutils on older kernels?
 
