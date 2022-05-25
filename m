@@ -2,66 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99599533B46
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 13:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE31533815
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 10:14:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L7SxJ3hf6z3c8B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 21:08:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L7P462vYZz3bff
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 18:14:30 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=B8TgxKi/;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.160.181;
- helo=mail-qt1-f181.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c;
+ helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com
- [209.85.160.181])
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20210112 header.b=B8TgxKi/; dkim-atps=neutral
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com
+ [IPv6:2607:f8b0:4864:20::102c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L7NrQ27mzz3029
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 18:04:21 +1000 (AEST)
-Received: by mail-qt1-f181.google.com with SMTP id g3so16416893qtb.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 01:04:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L7P3T2GMRz304r
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 18:13:56 +1000 (AEST)
+Received: by mail-pj1-x102c.google.com with SMTP id
+ m14-20020a17090a414e00b001df77d29587so1028991pjg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 01:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20210112;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=aqYCoIzg60DLqB/tqybZ9OyNDKLGdd2bS+Db0jc9Llw=;
+ b=B8TgxKi/iavlYWh/t0g6JJBvT2u8o6RMuZt+Pdfehs87C5x272QcGUYtdepe4dvWKx
+ t4OsbbDlOUP0n9nuw/VxlceEyf8nc7mi+E0315eQ/5WvFxruUMh/aRr+dGoqDWZTeP9m
+ PtPiZ0y7cGt5VH9QzkHO6BuraDbuLZAk00dj2+bZ5noDvGntA9xDakuSHtDxkgXwWi7C
+ 38vXLeroCOivaj12QkEEjxXilkTKGrVz39g/0WQjF2q9ilPp6KvdDtyhGNNS5CTCrSj0
+ HQhXCm9Tg6T+yvCnNgoOJtJrrZngh/Xs8VLNkUO7KvXzQgMu3sduYQIKGCESEnM5HN0N
+ T5pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20210112;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=AP6YAmjuideizUL7mupGqzQ5PgkASmXHUBF+HT7ISso=;
- b=NQvL89RAPItDT/nFOW/7hz6avmzW6OR7Y2zfChnu9JK3WRHGjOLkZQ3Pym6T6x0zPL
- GMxLseNZWESoUWZXtEH4m3G+3w/e+GLUX0XiztLm7vywCChxup8KmPCOBFAad3SfN3PY
- BixpYwXQBErwVF5k/o+FAWU7HRu82QoZqsIsUZBC4iM78+9/23eMz9x19qjF45viEUDN
- /xm8+0B7SFvOZl+Vv9J/ACCurSIJbTJx9NhUxqG+wV3nZ/l+vuTzNYQmOPPVq0DSalJo
- bP8674jpsRAfXOhALsLVirlGMzSnXVKcryAHuzs9QWHv6hPrF/CtBTI3PlQlXCE9yvPa
- BuvQ==
-X-Gm-Message-State: AOAM533sLf6xYxMCDknfkNEPtgiQMwRnuDEwkkKm2KGSdlmW7//ZGc04
- U1aEbF1gEebJsnVgmqD1WUxqbBu2gs0qmQ==
-X-Google-Smtp-Source: ABdhPJzHEz77DwQzbMjwrUlC0vXkeWd07a1AeYIaBjUnptgUCeao3u/cnNVkrTFwPLtTifuVfauQgw==
-X-Received: by 2002:a05:622a:1998:b0:2f9:4415:49e6 with SMTP id
- u24-20020a05622a199800b002f9441549e6mr4834294qtc.423.1653465856682; 
- Wed, 25 May 2022 01:04:16 -0700 (PDT)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com.
- [209.85.219.170]) by smtp.gmail.com with ESMTPSA id
- j23-20020ac85517000000b002f939be4868sm974216qtq.19.2022.05.25.01.04.16
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 May 2022 01:04:16 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id t26so34929890ybt.3
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 01:04:16 -0700 (PDT)
-X-Received: by 2002:a05:6902:120e:b0:634:6f29:6b84 with SMTP id
- s14-20020a056902120e00b006346f296b84mr30228977ybu.604.1653465845434; Wed, 25
- May 2022 01:04:05 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=aqYCoIzg60DLqB/tqybZ9OyNDKLGdd2bS+Db0jc9Llw=;
+ b=03q1yhFc6ANqH2iBwOfUOqUhGcKlm8RJvpMAy3kAHAxut90BAkxyJMXpaNQ+vE1BZQ
+ mg3b+6U0eWJMZLnN0XKRrvC2C9LeTKG8C3VoeZgh2nCSPxyO6hMtKVGa1dXVlPyYUexg
+ lOfH/3EEjOf0+RbbAP25/EM6AC6f7EzW5rILWeHhcm4jcPxywiHl/T3Sm+KrXUZsgTlv
+ 7Ghiq0I9dtsbd9ahcILcnCGSfv7vDpRweVRghO+Jb3wxKUoiiwDO6GQNhs3NgORULDIR
+ VpQKtxL4OLtc+zME0u2RByuDSbFqPukt6xt5LVivuvODq7YSEuEX5i8DTH7PGbp8OB4p
+ Kb+w==
+X-Gm-Message-State: AOAM5337VgnI3kDiMZ99kHwlFy0s9Lx573cD6YkEX2pB/IhEdXesH92K
+ EqvdR5P5N40ToCt5Kpbde/90lCCjDlnW5g==
+X-Google-Smtp-Source: ABdhPJyB3P56IBRcoGvJv60eO376pPHKsyyUuKpsGMY5wJETB51gQCFpWlLBFZBbAcvZkn31/EW9/w==
+X-Received: by 2002:a17:902:f685:b0:161:8df3:7f50 with SMTP id
+ l5-20020a170902f68500b001618df37f50mr30639814plg.106.1653466434097; 
+ Wed, 25 May 2022 01:13:54 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (220-244-74-131.tpgi.com.au.
+ [220.244.74.131]) by smtp.gmail.com with ESMTPSA id
+ q22-20020a170902789600b0016230703ca3sm4960936pll.231.2022.05.25.01.13.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 25 May 2022 01:13:52 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64: Remove PPC64 special case for cputime accounting
+ default
+Date: Wed, 25 May 2022 18:13:46 +1000
+Message-Id: <20220525081346.871535-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-References: <20220524234531.1949-1-peterx@redhat.com>
-In-Reply-To: <20220524234531.1949-1-peterx@redhat.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 25 May 2022 10:03:53 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWpCUGXn=KzfpfZqResRR41XkBKZiQQVo_O_Hq+KMcDKg@mail.gmail.com>
-Message-ID: <CAMuHMdWpCUGXn=KzfpfZqResRR41XkBKZiQQVo_O_Hq+KMcDKg@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: Avoid unnecessary page fault retires on shared
- memory types
-To: Peter Xu <peterx@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Wed, 25 May 2022 21:08:31 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,111 +81,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- Linux MM <linux-mm@kvack.org>, Rich Felker <dalias@libc.org>,
- Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, linux-ia64@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>,
- linux-riscv <linux-riscv@lists.infradead.org>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
- linux-snps-arc@lists.infradead.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-xtensa@linux-xtensa.org,
- linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>,
- Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- linux-sh@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- linux-arm-kernel@lists.infradead.org, Vineet Gupta <vgupta@kernel.org>,
- Stafford Horne <shorne@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Andrea Arcangeli <aarcange@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Vasily Gorbik <gor@linux.ibm.com>, Brian Cain <bcain@quicinc.com>,
- Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>,
- linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@suse.cz>, Richard Henderson <rth@twiddle.net>,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Sven Schnelle <svens@linux.ibm.com>, Guo Ren <guoren@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Johannes Berg <johannes@sipsolutions.net>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 25, 2022 at 1:45 AM Peter Xu <peterx@redhat.com> wrote:
-> I observed that for each of the shared file-backed page faults, we're very
-> likely to retry one more time for the 1st write fault upon no page.  It's
-> because we'll need to release the mmap lock for dirty rate limit purpose
-> with balance_dirty_pages_ratelimited() (in fault_dirty_shared_page()).
->
-> Then after that throttling we return VM_FAULT_RETRY.
->
-> We did that probably because VM_FAULT_RETRY is the only way we can return
-> to the fault handler at that time telling it we've released the mmap lock.
->
-> However that's not ideal because it's very likely the fault does not need
-> to be retried at all since the pgtable was well installed before the
-> throttling, so the next continuous fault (including taking mmap read lock,
-> walk the pgtable, etc.) could be in most cases unnecessary.
->
-> It's not only slowing down page faults for shared file-backed, but also add
-> more mmap lock contention which is in most cases not needed at all.
->
-> To observe this, one could try to write to some shmem page and look at
-> "pgfault" value in /proc/vmstat, then we should expect 2 counts for each
-> shmem write simply because we retried, and vm event "pgfault" will capture
-> that.
->
-> To make it more efficient, add a new VM_FAULT_COMPLETED return code just to
-> show that we've completed the whole fault and released the lock.  It's also
-> a hint that we should very possibly not need another fault immediately on
-> this page because we've just completed it.
->
-> This patch provides a ~12% perf boost on my aarch64 test VM with a simple
-> program sequentially dirtying 400MB shmem file being mmap()ed and these are
-> the time it needs:
->
->   Before: 650.980 ms (+-1.94%)
->   After:  569.396 ms (+-1.38%)
->
-> I believe it could help more than that.
->
-> We need some special care on GUP and the s390 pgfault handler (for gmap
-> code before returning from pgfault), the rest changes in the page fault
-> handlers should be relatively straightforward.
->
-> Another thing to mention is that mm_account_fault() does take this new
-> fault as a generic fault to be accounted, unlike VM_FAULT_RETRY.
->
-> I explicitly didn't touch hmm_vma_fault() and break_ksm() because they do
-> not handle VM_FAULT_RETRY even with existing code, so I'm literally keeping
-> them as-is.
->
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+Distro kernels tend to be moving to VIRT_CPU_ACCOUNTING_GEN, and there
+is not much reason why PPC64 should be special here.
 
->  arch/m68k/mm/fault.c          |  4 ++++
+VIRT_CPU_ACCOUNTING_NATIVE does provide scaled vtime and stolen time
+apportioned between system and user time, and vtime accounting is not
+unconditionally enabled, and possibly other things. But it would be
+better at this point to extend GEN to cover important missing features
+rather than directing users back to a less used option.
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+After implementing stolen time for GEN for powerpc, can we try this and
+see who screams?
 
-Gr{oetje,eeting}s,
+Thanks,
+Nick
 
-                        Geert
+ init/Kconfig | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+diff --git a/init/Kconfig b/init/Kconfig
+index ddcbefe535e9..544ed8b0707a 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -473,8 +473,7 @@ config VIRT_CPU_ACCOUNTING
+ 
+ choice
+ 	prompt "Cputime accounting"
+-	default TICK_CPU_ACCOUNTING if !PPC64
+-	default VIRT_CPU_ACCOUNTING_NATIVE if PPC64
++	default TICK_CPU_ACCOUNTING
+ 
+ # Kind of a stub config for the pure tick based cputime accounting
+ config TICK_CPU_ACCOUNTING
+-- 
+2.35.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
