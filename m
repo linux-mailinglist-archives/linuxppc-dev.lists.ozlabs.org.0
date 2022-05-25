@@ -2,99 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A25533D5F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 15:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE21533D60
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 15:11:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L7Wdw11P0z3cjC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 23:10:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L7Wff1g9Yz3dqF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 May 2022 23:11:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YEN4KEns;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pmt0mds4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=YEN4KEns; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ header.s=pp1 header.b=Pmt0mds4; dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4L7Wb411TRz2yWn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 23:08:15 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24PC1Pxg024467;
- Wed, 25 May 2022 13:08:10 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4L7Wb5141fz2yXP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 23:08:16 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24PADnvO031016;
+ Wed, 25 May 2022 13:08:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=j4u10FCt2s6dyFBW4Gj/RFJx4anrZBZGqUPiSW4qhOY=;
- b=YEN4KEnskrGcb51maMtCAiqgPy5qw44OS15Ukxqf5iiyI+p+Kw6qznRO8gf8x3kk46rc
- FP0gh6sht7wjO5Th3JyeUK93vLAxYkvvPo44Gr18L2fKmr3AZzgKpKD4DbLRP23fOrBE
- 85RgWybpEvMP9XyojMSIhkqPXL61Udz82f3QuaP2qvCXYAGAQm7NiMFpDmlPP2hMF5LR
- vaphyxelAtmwugmtUb9/ez4bqocE/s4OoOiWKUtbcShxkVErnhWS9D7mKq8YiT1S/4u8
- FNyLNMuCRnIZLmTXxTSWzWwQo1aQg9vLFV3hS8QIlN5eICYscg1yF7l12YThcW6MPPkf IQ== 
+ bh=vv5w6BgrXAZq46Vi3QPC78EeVojY2aj9GVMeO0Lha7E=;
+ b=Pmt0mds42cgvgAJX7uumc99b3Fs9UQhKSU5c7um7v9AJTpUu1PhBuzgKiWRBI8WEJYSY
+ p3YBV62dpzuVI2HUccLRBH8xI3787/yXRldUUryOYtTeMY1ZDtisx7ITR77rrcIJxb6u
+ mN2xhdLhch71YLNAMyASwUFJlCAHZdtkUAFRVTWPX7kcckxakpg95gqs/Lj8vG3M4/ld
+ 0Mfjz+OxsFmSJ9X/urMBm9eS55TXTDXByl3GPSCUfxttTRZG5kZm+1T7y570r/IxZBzp
+ VYOtcPZiMMePpIPUsdAhMW865Ea0v+EFzDzWN8L3Ef1LIl5AN0SMndMcoeL0ABLYThNu hQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g9h91ckmu-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g9jgxk6ft-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 May 2022 13:08:10 +0000
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24PCfqgv031112;
- Wed, 25 May 2022 13:08:10 GMT
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3g9h91ckmh-1
+ Wed, 25 May 2022 13:08:13 +0000
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24PChjSG006457;
+ Wed, 25 May 2022 13:08:12 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3g9jgxk6f9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 May 2022 13:08:10 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24PD2S8m008699;
- Wed, 25 May 2022 13:08:09 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma04wdc.us.ibm.com with ESMTP id 3g93uyp4hm-1
+ Wed, 25 May 2022 13:08:12 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24PD23IA032221;
+ Wed, 25 May 2022 13:08:11 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
+ [9.57.198.24]) by ppma03dal.us.ibm.com with ESMTP id 3g93utfkwp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 25 May 2022 13:08:09 +0000
+ Wed, 25 May 2022 13:08:11 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 24PD89Q937355922
+ by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 24PD8BeK63963394
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 25 May 2022 13:08:09 GMT
+ Wed, 25 May 2022 13:08:11 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3B554112065;
+ by IMSVA (Postfix) with ESMTP id 0B052112064;
+ Wed, 25 May 2022 13:08:11 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 94995112061;
  Wed, 25 May 2022 13:08:09 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DB2DE112061;
- Wed, 25 May 2022 13:08:07 +0000 (GMT)
 Received: from li-4707e44c-227d-11b2-a85c-f336a85283d9.ibm.com.com (unknown
  [9.160.108.97]) by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 25 May 2022 13:08:07 +0000 (GMT)
+ Wed, 25 May 2022 13:08:09 +0000 (GMT)
 From: Fabiano Rosas <farosas@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/5] KVM: PPC: Book3S HV: Decouple the debug timing from the
- P8 entry path
-Date: Wed, 25 May 2022 10:05:52 -0300
-Message-Id: <20220525130554.2614394-4-farosas@linux.ibm.com>
+Subject: [PATCH 4/5] KVM: PPC: Book3S HV: Expose timing functions to module
+ code
+Date: Wed, 25 May 2022 10:05:53 -0300
+Message-Id: <20220525130554.2614394-5-farosas@linux.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220525130554.2614394-1-farosas@linux.ibm.com>
 References: <20220525130554.2614394-1-farosas@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: S4WLK-sAdwE-r1Iay444j9MmyfTYtu8w
-X-Proofpoint-GUID: rcZ8RUskNkEX2fFSBP_mE13gf4bNNytl
+X-Proofpoint-GUID: DUvSat0oGC5fiGtf71zxhe8ILLGkl242
+X-Proofpoint-ORIG-GUID: jGfmf8kyCqERUOX0_DXe_rcw6RSlC1H6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
  definitions=2022-05-25_03,2022-05-25_02,2022-02-23_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 suspectscore=0 malwarescore=0
- mlxscore=0 bulkscore=0 mlxlogscore=915 priorityscore=1501 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2205250067
+ spamscore=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ clxscore=1015 malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2205250067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,128 +111,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We are currently doing the timing for debug purposes of the P9 entry
-path using the accumulators and terminology defined by the old entry
-path for P8 machines.
-
-Not only the "real-mode" and "napping" mentions are out of place for
-the P9 Radix entry path but also we cannot change them because the
-timing code is coupled to the structures defined in struct
-kvm_vcpu_arch.
-
-Add a new CONFIG_KVM_BOOK3S_HV_P9_TIMING to enable the timing code for
-the P9 entry path. For now, just add the new CONFIG and duplicate the
-structures. A subsequent patch will add the P9 changes.
+The next patch adds new timing points to the P9 entry path, some of
+which are in the module code, so we need to export the timing
+functions.
 
 Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
 ---
- arch/powerpc/include/asm/kvm_host.h   |  8 ++++++++
- arch/powerpc/kvm/Kconfig              | 14 +++++++++++++-
- arch/powerpc/kvm/book3s_hv.c          | 13 +++++++++++--
- arch/powerpc/kvm/book3s_hv_p9_entry.c |  2 +-
- 4 files changed, 33 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/book3s_hv.h          | 10 ++++++++++
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 11 ++---------
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
-index faf301d0dec0..37f03665bfa2 100644
---- a/arch/powerpc/include/asm/kvm_host.h
-+++ b/arch/powerpc/include/asm/kvm_host.h
-@@ -826,11 +826,19 @@ struct kvm_vcpu_arch {
- #ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
- 	struct kvmhv_tb_accumulator *cur_activity;	/* What we're timing */
- 	u64	cur_tb_start;			/* when it started */
-+#ifdef CONFIG_KVM_BOOK3S_HV_P9_TIMING
- 	struct kvmhv_tb_accumulator rm_entry;	/* real-mode entry code */
- 	struct kvmhv_tb_accumulator rm_intr;	/* real-mode intr handling */
- 	struct kvmhv_tb_accumulator rm_exit;	/* real-mode exit code */
- 	struct kvmhv_tb_accumulator guest_time;	/* guest execution */
- 	struct kvmhv_tb_accumulator cede_time;	/* time napping inside guest */
-+#else
-+	struct kvmhv_tb_accumulator rm_entry;	/* real-mode entry code */
-+	struct kvmhv_tb_accumulator rm_intr;	/* real-mode intr handling */
-+	struct kvmhv_tb_accumulator rm_exit;	/* real-mode exit code */
-+	struct kvmhv_tb_accumulator guest_time;	/* guest execution */
-+	struct kvmhv_tb_accumulator cede_time;	/* time napping inside guest */
-+#endif
- #endif /* CONFIG_KVM_BOOK3S_HV_EXIT_TIMING */
- };
- 
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index 73f8277df7d1..191347f44731 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -130,10 +130,22 @@ config KVM_BOOK3S_64_PR
- config KVM_BOOK3S_HV_EXIT_TIMING
- 	bool
- 
-+config KVM_BOOK3S_HV_P9_TIMING
-+	bool "Detailed timing for the P9 entry point"
-+	select KVM_BOOK3S_HV_EXIT_TIMING
-+	depends on KVM_BOOK3S_HV_POSSIBLE && DEBUG_FS
-+	help
-+	  Calculate time taken for each vcpu in various parts of the
-+	  code. The total, minimum and maximum times in nanoseconds
-+	  together with the number of executions are reported in debugfs in
-+	  kvm/vm#/vcpu#/timings.
+diff --git a/arch/powerpc/kvm/book3s_hv.h b/arch/powerpc/kvm/book3s_hv.h
+index 6b7f07d9026b..2f2e59d7d433 100644
+--- a/arch/powerpc/kvm/book3s_hv.h
++++ b/arch/powerpc/kvm/book3s_hv.h
+@@ -40,3 +40,13 @@ void switch_pmu_to_guest(struct kvm_vcpu *vcpu,
+ 			    struct p9_host_os_sprs *host_os_sprs);
+ void switch_pmu_to_host(struct kvm_vcpu *vcpu,
+ 			    struct p9_host_os_sprs *host_os_sprs);
 +
-+	  If unsure, say N.
-+
- config KVM_BOOK3S_HV_P8_TIMING
- 	bool "Detailed timing for hypervisor real-mode code (for POWER8)"
- 	select KVM_BOOK3S_HV_EXIT_TIMING
--	depends on KVM_BOOK3S_HV_POSSIBLE && DEBUG_FS
-+	depends on KVM_BOOK3S_HV_POSSIBLE && DEBUG_FS && !KVM_BOOK3S_HV_P9_TIMING
- 	help
- 	  Calculate time taken for each vcpu in the real-mode guest entry,
- 	  exit, and interrupt handling code, plus time spent in the guest
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 6fa518f6501d..69a6b40d58b9 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -2653,11 +2653,19 @@ static struct debugfs_timings_element {
- 	const char *name;
- 	size_t offset;
- } timings[] = {
 +#ifdef CONFIG_KVM_BOOK3S_HV_P9_TIMING
- 	{"rm_entry",	offsetof(struct kvm_vcpu, arch.rm_entry)},
- 	{"rm_intr",	offsetof(struct kvm_vcpu, arch.rm_intr)},
- 	{"rm_exit",	offsetof(struct kvm_vcpu, arch.rm_exit)},
- 	{"guest",	offsetof(struct kvm_vcpu, arch.guest_time)},
- 	{"cede",	offsetof(struct kvm_vcpu, arch.cede_time)},
++void accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator *next);
++#define start_timing(vcpu, next) accumulate_time(vcpu, next)
++#define end_timing(vcpu) accumulate_time(vcpu, NULL)
 +#else
-+	{"rm_entry",	offsetof(struct kvm_vcpu, arch.rm_entry)},
-+	{"rm_intr",	offsetof(struct kvm_vcpu, arch.rm_intr)},
-+	{"rm_exit",	offsetof(struct kvm_vcpu, arch.rm_exit)},
-+	{"guest",	offsetof(struct kvm_vcpu, arch.guest_time)},
-+	{"cede",	offsetof(struct kvm_vcpu, arch.cede_time)},
++#define accumulate_time(vcpu, next) do {} while (0)
++#define start_timing(vcpu, next) do {} while (0)
++#define end_timing(vcpu) do {} while (0)
 +#endif
- };
- 
- #define N_TIMINGS	(ARRAY_SIZE(timings))
-@@ -2776,8 +2784,9 @@ static const struct file_operations debugfs_timings_ops = {
- /* Create a debugfs directory for the vcpu */
- static int kvmppc_arch_create_vcpu_debugfs_hv(struct kvm_vcpu *vcpu, struct dentry *debugfs_dentry)
- {
--	debugfs_create_file("timings", 0444, debugfs_dentry, vcpu,
--			    &debugfs_timings_ops);
-+	if (cpu_has_feature(CPU_FTR_ARCH_300) == IS_ENABLED(CONFIG_KVM_BOOK3S_HV_P9_TIMING))
-+		debugfs_create_file("timings", 0444, debugfs_dentry, vcpu,
-+				    &debugfs_timings_ops);
- 	return 0;
- }
- 
 diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-index f7591b6c92d1..f8ce473149b7 100644
+index f8ce473149b7..8b2a9a360e4e 100644
 --- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
 +++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
-@@ -437,7 +437,7 @@ void restore_p9_host_os_sprs(struct kvm_vcpu *vcpu,
- }
+@@ -438,7 +438,7 @@ void restore_p9_host_os_sprs(struct kvm_vcpu *vcpu,
  EXPORT_SYMBOL_GPL(restore_p9_host_os_sprs);
  
--#ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
-+#ifdef CONFIG_KVM_BOOK3S_HV_P9_TIMING
- static void __accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator *next)
+ #ifdef CONFIG_KVM_BOOK3S_HV_P9_TIMING
+-static void __accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator *next)
++void accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator *next)
  {
  	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 	struct kvmhv_tb_accumulator *curr;
+@@ -468,14 +468,7 @@ static void __accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator
+ 	smp_wmb();
+ 	curr->seqcount = seq + 2;
+ }
+-
+-#define start_timing(vcpu, next) __accumulate_time(vcpu, next)
+-#define end_timing(vcpu) __accumulate_time(vcpu, NULL)
+-#define accumulate_time(vcpu, next) __accumulate_time(vcpu, next)
+-#else
+-#define start_timing(vcpu, next) do {} while (0)
+-#define end_timing(vcpu) do {} while (0)
+-#define accumulate_time(vcpu, next) do {} while (0)
++EXPORT_SYMBOL_GPL(accumulate_time);
+ #endif
+ 
+ static inline u64 mfslbv(unsigned int idx)
 -- 
 2.35.1
 
