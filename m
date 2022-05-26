@@ -2,55 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937595352DF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 19:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EFE5352E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 19:50:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L8FnV3N6fz3bqx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 03:49:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L8FpW2BWrz3bsg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 03:50:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=JLuVePeO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=iwVnWKzQ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.20; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=JLuVePeO;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=iwVnWKzQ;
 	dkim-atps=neutral
-X-Greylist: delayed 347 seconds by postgrey-1.36 at boromir; Fri, 27 May 2022 03:49:00 AEST
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.20])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8FmX6TMgz3073
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 03:48:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653586973;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8Fmy6nrfz3bl7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 03:49:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653587347;
     s=strato-dkim-0002; d=xenosoft.de;
     h=Subject:From:Cc:To:Date:Message-ID:Cc:Date:From:Subject:Sender;
-    bh=dQw+UwC02s2QPcxHpvDcxCMQ7EmpJyHQMwsORD/xVF4=;
-    b=JLuVePeO/ijJKAqjWWuoISnKKiR2ZnTWQumrjoyBT1GaFP7dyNc5Fw+NmA8d8jjQtS
-    fbPKfFRT27AD09SMOZY+Nqq4pNL7j8fG0xSUPcWijGQgS31CVLb/YFZorJeyOZnNLANc
-    8PzCFetfdDAg2byV34Y9L2mHhZsqsZevERbni+Dn82dTEfrQIN80gUqOUjRU69XsbM1c
-    CkqJOqGwGmVIfIefOJ89ofITewZ6iSLu87dOhaO/tmU49NwszXhZGs5tfiIjGpT9lKoz
-    52L4TRyksjEpoPGzw/iINSb3+iKWjXIEdyBQYtaTXY0PuykY/ZT/EX/MaudzQqfss46T
-    bB9Q==
+    bh=oUDgVBLgOCWPkanF0RLx52Um7VhME37XFr7i9mGIzvo=;
+    b=iwVnWKzQVuSG/UHUM9MalJEssPeHX0Shr/UqFE4/eBUSa7Ed5GybfhSekXIKVGW5LW
+    OfQj7aEcIvsFhJmvny1du9gSpwwvLOmBrZtxJph6QO/eEAc3R/DNURTH0dQuGPXBBx+C
+    TpSrw3AIt9YqQT6J5P+tfNojma1ermlJ5Isjc7U7qN2VyaNZDZz2NW7p0JLOl7EsxV0H
+    KUXrEFfBmsQHSth3yDWFUwmK8f92DTgVSMMFOu/mO0iB6N/CYkLeKmEYAcqBzwa+7QV9
+    UrbylLgdlryfB5AIjFKZqi8kxuMKmlec1EUSHDooQz4EZXYPaUxhi0apd0vp5KGigKS8
+    +VQw==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwiG6HeSKopMvJ0u31jxWJ9YE8/3IA=="
 X-RZG-CLASS-ID: mo00
 Received: from [IPV6:2a02:8109:8980:4474:c1f4:d29b:5ee1:2705]
     by smtp.strato.de (RZmta 47.45.0 AUTH)
-    with ESMTPSA id 205ca1y4QHgpcQJ
+    with ESMTPSA id 205ca1y4QHn6cQg
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Thu, 26 May 2022 19:42:51 +0200 (CEST)
-Content-Type: multipart/mixed; boundary="------------jwnccUZolZN00oTFcIM9vTTG"
-Message-ID: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
-Date: Thu, 26 May 2022 19:42:51 +0200
+    Thu, 26 May 2022 19:49:06 +0200 (CEST)
+Content-Type: multipart/mixed; boundary="------------1qlA7Z2tqDjDCrxV4zEnORCu"
+Message-ID: <dca99f49-6872-6cd9-7314-dc3225d743ff@xenosoft.de>
+Date: Thu, 26 May 2022 19:49:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
  Gecko/20100101 Thunderbird/91.9.1
 Content-Language: de-DE
-To: rob.herring@calxeda.com
+To: Rob Herring <robh@kernel.org>
 From: Christian Zigotzky <chzigotzky@xenosoft.de>
 Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
  devicetree updates for 5.19
@@ -70,7 +69,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This is a multi-part message in MIME format.
---------------jwnccUZolZN00oTFcIM9vTTG
+--------------1qlA7Z2tqDjDCrxV4zEnORCu
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
@@ -93,8 +92,9 @@ Christian
 [2] 
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=86c87bea6b42100c67418af690919c44de6ede6e
 [3] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/of/platform.c?id=86c87bea6b42100c67418af690919c44de6ede6e
---------------jwnccUZolZN00oTFcIM9vTTG
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/of/platform.c?id=86c87bea6b42100c67418af690919c44de6ede6e 
+
+--------------1qlA7Z2tqDjDCrxV4zEnORCu
 Content-Type: text/plain; charset=UTF-8; name="of.patch"
 Content-Disposition: attachment; filename="of.patch"
 Content-Transfer-Encoding: base64
@@ -123,7 +123,7 @@ KHJjKTsKIAkJfQorCQlpZiAob2ZfaXJxX3RvX3Jlc291cmNlX3RhYmxlKG5wLCByZXMsIG51
 bV9pcnEpICE9IG51bV9pcnEpCisJCQlwcl9kZWJ1Zygibm90IGFsbCBsZWdhY3kgSVJRIHJl
 c291cmNlcyBtYXBwZWQgZm9yICVwT0ZuXG4iLAorCQkJCSBucCk7CiAJfQogCiAJZGV2LT5k
 ZXYub2Zfbm9kZSA9IG9mX25vZGVfZ2V0KG5wKTsK
---------------jwnccUZolZN00oTFcIM9vTTG
+--------------1qlA7Z2tqDjDCrxV4zEnORCu
 Content-Type: text/plain; charset=UTF-8; name="cyrus-5.19-alpha1.config"
 Content-Disposition: attachment; filename="cyrus-5.19-alpha1.config"
 Content-Transfer-Encoding: base64
@@ -3242,4 +3242,4 @@ TlUgaXMgbm90IHNldApDT05GSUdfQVJDSF9VU0VfTUVNVEVTVD15CiMgQ09ORklHX01FTVRF
 U1QgaXMgbm90IHNldAojIGVuZCBvZiBLZXJuZWwgVGVzdGluZyBhbmQgQ292ZXJhZ2UKIyBl
 bmQgb2YgS2VybmVsIGhhY2tpbmcK
 
---------------jwnccUZolZN00oTFcIM9vTTG--
+--------------1qlA7Z2tqDjDCrxV4zEnORCu--
