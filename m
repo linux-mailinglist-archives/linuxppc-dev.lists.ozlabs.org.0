@@ -2,50 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7907C53494E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 05:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 908285349A5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 06:05:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L7tt03CdQz3brm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 13:37:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L7vVC2tXPz3blS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 14:05:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hLLrqk/d;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=vgupta@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hLLrqk/d;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L7tsX5637z2yyh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 13:37:01 +1000 (AEST)
-Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L7tqz2sp6zjX7b;
-	Thu, 26 May 2022 11:35:43 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 26 May 2022 11:36:44 +0800
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 26 May 2022 11:36:42 +0800
-Message-ID: <87bdb1c6-5803-d9c0-9208-432027ae1d8b@huawei.com>
-Date: Thu, 26 May 2022 11:36:41 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L7ty352Zvz305v
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 13:40:59 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 13040615AC;
+	Thu, 26 May 2022 03:40:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBA1C385B8;
+	Thu, 26 May 2022 03:40:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1653536455;
+	bh=/FC3fRDbTNCC3O7WmAhxUVAkmggWpUFeLv7OpR1lxLg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hLLrqk/dSj3ABZgHj+oG01SXfcPdfcPLbCPW5c/vtlKKjGhr826rFN6lLQogyE6R+
+	 V4+rLm9jBH6we4JcRrEMO+7ArvhQ4vUukeFX5qG0umNfJEjOVl7t+dToTe7orX2kZK
+	 bSWoDGynO3/vHi04K7UfgRIeRSjHN5GtmmMIX2USGvftGI9pdfeJrjgnAmxrltc5n0
+	 8y833O4MCr4JKKzVPSDGbAvYYjpDQY/dQCqYoM1yOIlCVTJtDFNiHcFx0Vs05+lAF0
+	 ALTHrfJeOAfPcImvCexeRL9L6Mpy6p/bjPRzg8B1971s8Zq8YHz1AyoKFvxIGL0AWO
+	 PHAjKqVSOf5bw==
+Message-ID: <8f6add25-2e8f-4533-fa42-e43db0e32f2d@kernel.org>
+Date: Wed, 25 May 2022 20:40:51 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH -next v4 3/7] arm64: add support for machine check error
- safe
-To: Mark Rutland <mark.rutland@arm.com>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
- <20220420030418.3189040-4-tongtiangen@huawei.com> <Yn54mA7KnlAs1dER@lakrids>
- <46e5954c-a9a8-f4a8-07cc-de42e2753051@huawei.com>
- <Yo3pP/Y+6HHuVBns@FVFF77S0Q05N>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <Yo3pP/Y+6HHuVBns@FVFF77S0Q05N>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH v3] mm: Avoid unnecessary page fault retires on shared
+ memory types
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20220524234531.1949-1-peterx@redhat.com>
+From: Vineet Gupta <vgupta@kernel.org>
+In-Reply-To: <20220524234531.1949-1-peterx@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Thu, 26 May 2022 14:04:55 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,82 +65,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>, Will Deacon <will@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Ingo
- Molnar <mingo@redhat.com>, Catalin
- Marinas <catalin.marinas@arm.com>, Xie XiuQi <xiexiuqi@huawei.com>, Borislav Petkov <bp@alien8.de>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-ia64@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-xtensa@linux-xtensa.org, linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org, linux-sh@vger.kernel.org, Ing
+ o Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-arm-kernel@lists.infradead.org, Vineet Gupta <vgupta@kernel.org>, Stafford Horne <shorne@gmail.com>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Andrea Arcangeli <aarcange@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Brian Cain <bcain@quicinc.com>, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@su
+ se.cz>, Richard Henderson <rth@twiddle.net>, Chris Za
+
+nkel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Guo Ren <guoren@kernel.org>, Borislav Petkov <bp@alien8.de>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-在 2022/5/25 16:30, Mark Rutland 写道:
-> On Thu, May 19, 2022 at 02:29:54PM +0800, Tong Tiangen wrote:
->>
->>
->> 在 2022/5/13 23:26, Mark Rutland 写道:
->>> On Wed, Apr 20, 2022 at 03:04:14AM +0000, Tong Tiangen wrote:
->>>> During the processing of arm64 kernel hardware memory errors(do_sea()), if
->>>> the errors is consumed in the kernel, the current processing is panic.
->>>> However, it is not optimal.
->>>>
->>>> Take uaccess for example, if the uaccess operation fails due to memory
->>>> error, only the user process will be affected, kill the user process
->>>> and isolate the user page with hardware memory errors is a better choice.
->>>
->>> Conceptually, I'm fine with the idea of constraining what we do for a
->>> true uaccess, but I don't like the implementation of this at all, and I
->>> think we first need to clean up the arm64 extable usage to clearly
->>> distinguish a uaccess from another access.
->>
->> OK,using EX_TYPE_UACCESS and this extable type could be recover, this is
->> more reasonable.
-> 
-> Great.
-> 
->> For EX_TYPE_UACCESS_ERR_ZERO, today we use it for kernel accesses in a
->> couple of cases, such as
->> get_user/futex/__user_cache_maint()/__user_swpX_asm(),
-> 
-> Those are all user accesses.
-> 
-> However, __get_kernel_nofault() and __put_kernel_nofault() use
-> EX_TYPE_UACCESS_ERR_ZERO by way of __{get,put}_mem_asm(), so we'd need to
-> refactor that code to split the user/kernel cases higher up the callchain.
-> 
->> your suggestion is:
->> get_user continues to use EX_TYPE_UACCESS_ERR_ZERO and the other cases use
->> new type EX_TYPE_FIXUP_ERR_ZERO?
-> 
-> Yes, that's the rough shape. We could make the latter EX_TYPE_KACCESS_ERR_ZERO
-> to be clearly analogous to EX_TYPE_UACCESS_ERR_ZERO, and with that I susepct we
-> could remove EX_TYPE_FIXUP.
-> 
-> Thanks,
-> Mark.
-According to your suggestion, i think the definition is like this:
+On 5/24/22 16:45, Peter Xu wrote:
+> I observed that for each of the shared file-backed page faults, we're very
+> likely to retry one more time for the 1st write fault upon no page.  It's
+> because we'll need to release the mmap lock for dirty rate limit purpose
+> with balance_dirty_pages_ratelimited() (in fault_dirty_shared_page()).
+>
+> Then after that throttling we return VM_FAULT_RETRY.
+>
+> We did that probably because VM_FAULT_RETRY is the only way we can return
+> to the fault handler at that time telling it we've released the mmap lock.
+>
+> However that's not ideal because it's very likely the fault does not need
+> to be retried at all since the pgtable was well installed before the
+> throttling, so the next continuous fault (including taking mmap read lock,
+> walk the pgtable, etc.) could be in most cases unnecessary.
+>
+> It's not only slowing down page faults for shared file-backed, but also add
+> more mmap lock contention which is in most cases not needed at all.
+>
+> To observe this, one could try to write to some shmem page and look at
+> "pgfault" value in /proc/vmstat, then we should expect 2 counts for each
+> shmem write simply because we retried, and vm event "pgfault" will capture
+> that.
+>
+> To make it more efficient, add a new VM_FAULT_COMPLETED return code just to
+> show that we've completed the whole fault and released the lock.  It's also
+> a hint that we should very possibly not need another fault immediately on
+> this page because we've just completed it.
+>
+> This patch provides a ~12% perf boost on my aarch64 test VM with a simple
+> program sequentially dirtying 400MB shmem file being mmap()ed and these are
+> the time it needs:
+>
+>    Before: 650.980 ms (+-1.94%)
+>    After:  569.396 ms (+-1.38%)
+>
+> I believe it could help more than that.
+>
+> We need some special care on GUP and the s390 pgfault handler (for gmap
+> code before returning from pgfault), the rest changes in the page fault
+> handlers should be relatively straightforward.
+>
+> Another thing to mention is that mm_account_fault() does take this new
+> fault as a generic fault to be accounted, unlike VM_FAULT_RETRY.
+>
+> I explicitly didn't touch hmm_vma_fault() and break_ksm() because they do
+> not handle VM_FAULT_RETRY even with existing code, so I'm literally keeping
+> them as-is.
+>
+> Signed-off-by: Peter Xu<peterx@redhat.com>
+> ---
+>
+> v3:
+> - Rebase to akpm/mm-unstable
+> - Copy arch maintainers
+> ---
+>    arch/arc/mm/fault.c           |  4 ++++
 
-#define EX_TYPE_NONE                    0
-#define EX_TYPE_FIXUP                   1    --> delete
-#define EX_TYPE_BPF                     2
-#define EX_TYPE_UACCESS_ERR_ZERO        3
-#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD  4
-#define EX_TYPE_UACCESS		        xx   --> add
-#define EX_TYPE_KACCESS_ERR_ZERO        xx   --> add
-[The value defined by the macro here is temporary]
+Acked-by: Vineet Gupta <vgupta@kernel.org>
 
-There are two points to modify:
-
-1、_get_kernel_nofault() and __put_kernel_nofault()  using 
-EX_TYPE_KACCESS_ERR_ZERO, Other positions using 
-EX_TYPE_UACCESS_ERR_ZERO keep unchanged.
-
-2、delete EX_TYPE_FIXUP.
-
-There is no doubt about others. As for EX_TYPE_FIXUP, I think it needs 
-to be retained, _cond_extable(EX_TYPE_FIXUP) is still in use in assembler.h.
-
-Thanks,
-Tong.
-
-> .
+Thx,
+-Vineet
