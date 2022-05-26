@@ -2,62 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12454534795
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 02:40:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C22AE53482B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 03:30:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L7py80BTxz3brW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 10:40:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OzeAYiRZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L7r3d5fx5z3bkZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 11:30:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OzeAYiRZ;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=zhengyongjun3@huawei.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 932 seconds by postgrey-1.36 at boromir; Thu, 26 May 2022 11:30:16 AEST
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L7pxS2Pb9z2xX6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 10:40:12 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 9656AB81EAA
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 00:40:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603C7C34113
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 00:40:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1653525607;
-	bh=XbYpsC9yEq2qbfVcCMnpASOsc0x6dM1zetw0N7lzPwE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=OzeAYiRZdsB0yXNS0g4T0S862JWB2B/LUQvACOo5rMGE2n7o9TZvPB27hB71zz38y
-	 vo9jrOt3g7Uz6Ayo1wV41mp4/BSeoUVtantEuSKD5nAs/iu8jdCOVoUa11gVT2bdrc
-	 Te2G/7HFQTTP7+EIraOOvVasWY1jJOE6CNGvIfHnnTricGNK2En6oABwY37E52bEjy
-	 OerKaDd5ZbVw2Fhm6RTHF/WOyuj0HDTUusgZKY1QYwx5AzZBjQ/IDqX+0Q3Igt0ccj
-	 na8+zgUeTUqSTMCBGY8rJGZE3RXEGnIg6ufUHZKVlRoUxxV42EVxFThlBwDoaMNG68
-	 /qk7UI4Wse96g==
-Received: by mail-vs1-f54.google.com with SMTP id j7so45295vsj.7
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 May 2022 17:40:07 -0700 (PDT)
-X-Gm-Message-State: AOAM5325RG3QN8oIUZkhFxv5ar7YvMeNi4moCqpYH5GZzFVM74kOpwb9
-	kcdVBCMbksqyx0MYqfu7TbWfr2dOzGmo2P/Hwh4=
-X-Google-Smtp-Source: ABdhPJx0cJkHljwuAHpyaehwgqdzrKWDw6u17/hHUkJNA8qg9NggwxKoibBsRSciUSmCfyeKXeu5IRU/QTIMEigENhQ=
-X-Received: by 2002:a67:c117:0:b0:337:a2ea:98e3 with SMTP id
- d23-20020a67c117000000b00337a2ea98e3mr8547786vsj.59.1653525606376; Wed, 25
- May 2022 17:40:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L7r3D2h1qz2ysv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 11:30:11 +1000 (AEST)
+Received: from kwepemi500013.china.huawei.com (unknown [172.30.72.55])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4L7qj23hMwzDqQZ;
+	Thu, 26 May 2022 09:14:30 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemi500013.china.huawei.com
+ (7.221.188.120) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 26 May
+ 2022 09:14:34 +0800
+From: Zheng Yongjun <zhengyongjun3@huawei.com>
+To: <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] powerpc: Fix refcount leak in fsl_setup_msi_irqs
+Date: Thu, 26 May 2022 01:09:35 +0000
+Message-ID: <20220526010935.32138-1-zhengyongjun3@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-References: <20220322144003.2357128-1-guoren@kernel.org> <3418219.V25eIC5XRa@diego>
- <CAJF2gTTkpHLZf-+VXZE_gCn=5ZJ5FS3jOxKLVoMyL4i=baPd7Q@mail.gmail.com> <1766627.8hzESeGDPO@diego>
-In-Reply-To: <1766627.8hzESeGDPO@diego>
-From: Guo Ren <guoren@kernel.org>
-Date: Thu, 26 May 2022 08:39:54 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRrrwDUOTqLDTxZLNnWM1LXEq4VFVB8jZPdYvnS2i0ung@mail.gmail.com>
-Message-ID: <CAJF2gTRrrwDUOTqLDTxZLNnWM1LXEq4VFVB8jZPdYvnS2i0ung@mail.gmail.com>
-Subject: Re: [PATCH V9 20/20] riscv: compat: Add COMPAT Kbuild skeletal support
-To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.208]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemi500013.china.huawei.com (7.221.188.120)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,104 +46,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Guo Ren <guoren@linux.alibaba.com>, Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, the arch/x86 maintainers <x86@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-csky@vger.kernel.org, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, sparclinux <sparclinux@vger.kernel.org>, linux-riscv <linux-riscv@lists.infradead.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>, Guenter Roeck <linux@roeck-us.net>
+Cc: paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 26, 2022 at 3:37 AM Heiko St=C3=BCbner <heiko@sntech.de> wrote:
->
-> Am Mittwoch, 25. Mai 2022, 18:08:22 CEST schrieb Guo Ren:
-> > Thx Heiko & Guenter,
-> >
-> > On Wed, May 25, 2022 at 7:10 PM Heiko St=C3=BCbner <heiko@sntech.de> wr=
-ote:
-> > >
-> > > Am Mittwoch, 25. Mai 2022, 12:57:30 CEST schrieb Heiko St=C3=BCbner:
-> > > > Am Mittwoch, 25. Mai 2022, 00:06:46 CEST schrieb Guenter Roeck:
-> > > > > On Wed, May 25, 2022 at 01:46:38AM +0800, Guo Ren wrote:
-> > > > > [ ... ]
-> > > > >
-> > > > > > > The problem is come from "__dls3's vdso decode part in musl's
-> > > > > > > ldso/dynlink.c". The ehdr->e_phnum & ehdr->e_phentsize are wr=
-ong.
-> > > > > > >
-> > > > > > > I think the root cause is from musl's implementation with the=
- wrong
-> > > > > > > elf parser. I would fix that soon.
-> > > > > > Not elf parser, it's "aux vector just past environ[]". I think =
-I could
-> > > > > > solve this, but anyone who could help dig in is welcome.
-> > > > > >
-> > > > >
-> > > > > I am not sure I understand what you are saying here. Point is tha=
-t my
-> > > > > root file system, generated with musl a year or so ago, crashes w=
-ith
-> > > > > your patch set applied. That is a regression, even if there is a =
-bug
-> > > > > in musl.
-> > Thx for the report, it's a valuable regression for riscv-compat.
-> >
-> > > >
-> > > > Also as I said in the other part of the thread, the rootfs seems in=
-nocent,
-> > > > as my completely-standard Debian riscv64 rootfs is also affected.
-> > > >
-> > > > The merged version seems to be v12 [0] - not sure how we this discu=
-ssion
-> > > > ended up in v9, but I just tested this revision in two variants:
-> > > >
-> > > > - v5.17 + this v9 -> works nicely
-> > >
-> > > I take that back ... now going back to that build I somehow also run =
-into
-> > > that issue here ... will investigate more.
-> > Yeah, it's my fault. I've fixed up it, please have a try:
-> >
-> > https://lore.kernel.org/linux-riscv/20220525160404.2930984-1-guoren@ker=
-nel.org/T/#u
->
-> very cool that you found the issue.
-> I've tested your patch and it seems to fix the issue for me.
->
-> Thanks for figuring out the cause
-I should thx Guenter Roeck, It just surprised me that compat_vdso
-could work with quite a lot of rv64 apps.
+of_parse_phandle() returns a node pointer with refcount incremented,
+we should use of_node_put() on it when not need anymore.
+Add missing of_node_put() to avoid refcount leak.
 
-> Heiko
->
->
-> > > > - v5.18-rc6 + this v9 (rebased onto it) -> breaks the boot
-> > > >   The only rebase-conflict was with the introduction of restartable
-> > > >   sequences and removal of the tracehook include, but turning CONFI=
-G_RSEQ
-> > > >   off doesn't seem to affect the breakage.
-> > > >
-> > > > So it looks like something changed between 5.17 and 5.18 that cause=
-s the issue.
-> > > >
-> > > >
-> > > > Heiko
-> > > >
-> > > >
-> > > > [0] https://lore.kernel.org/all/20220405071314.3225832-1-guoren@ker=
-nel.org/
-> > > >
-> > >
-> > >
-> > >
-> > >
-> >
-> >
-> >
->
->
->
->
+Fixes: 895d603f945ba ("powerpc/fsl_msi: add support for the fsl, msi property in PCI nodes")
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+---
+ arch/powerpc/sysdev/fsl_msi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index b3475ae9f236..dcc6c8997b09 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -207,6 +207,7 @@ static int fsl_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 			dev_err(&pdev->dev,
+ 				"node %pOF has an invalid fsl,msi phandle %u\n",
+ 				hose->dn, np->phandle);
++			of_node_put(np);
+ 			return -EINVAL;
+ 		}
+ 	}
+-- 
+2.17.1
 
---=20
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
