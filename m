@@ -1,41 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA83534CC5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 11:51:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B7E534DA7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 13:01:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L839g6kmFz3blX
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 19:51:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L84kF2n2Lz3by8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 May 2022 21:01:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PJKcfNeV;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L839C6DhDz2yw1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 19:51:07 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 665981474;
-	Thu, 26 May 2022 02:50:33 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.2.68])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 28ACF3F73D;
-	Thu, 26 May 2022 02:50:27 -0700 (PDT)
-Date: Thu, 26 May 2022 10:50:23 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Subject: Re: [PATCH -next v4 3/7] arm64: add support for machine check error
- safe
-Message-ID: <Yo9NX8BvQQXryHDV@FVFF77S0Q05N>
-References: <20220420030418.3189040-1-tongtiangen@huawei.com>
- <20220420030418.3189040-4-tongtiangen@huawei.com>
- <Yn54mA7KnlAs1dER@lakrids>
- <46e5954c-a9a8-f4a8-07cc-de42e2753051@huawei.com>
- <Yo3pP/Y+6HHuVBns@FVFF77S0Q05N>
- <87bdb1c6-5803-d9c0-9208-432027ae1d8b@huawei.com>
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PJKcfNeV;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L84jX2jSZz30BV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 May 2022 21:00:47 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24QAtDUC016023;
+	Thu, 26 May 2022 11:00:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=l8ymdFPKx9NxSBaBHmNxGdEPPBdO9GWM3Uxv/hg8+Qk=;
+ b=PJKcfNeViCG0zC4CppH69vpjIXO0Kf5zZ4KSXIoneJcTYLPfvgfaYCwri7TCo3RIqmEC
+ Gg5Ri9q3zU4Aysin8WKpVcxqNjreU5THuO1Dc1+ZeOiRGiaEUKd9KyIYCQbwPKZLwNKk
+ ZwRUCFaF4MIzQQKMZ4rZ9aGALqbf1N90xx6NW6OTIvKy+b7fvkady7ad6YB9k3V7Mxsq
+ QgGhpGykfS3hfXhMc4kZd61LSJBMohNlMm8awHBPcSZWcJYU5wMPKrt1aR8qaNyCL+RH
+ i2boShNZIbOd6t8WCa9nBaoYBy4fSn+U7wWYmON3rSvdXI1KOPBT6nw39/VPvdfPAxfU Zg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ga87er24k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 May 2022 11:00:30 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24QAv9lU026100;
+	Thu, 26 May 2022 11:00:29 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ga87er23s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 May 2022 11:00:29 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24QAqchF027501;
+	Thu, 26 May 2022 11:00:27 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma06ams.nl.ibm.com with ESMTP id 3g93uwag3u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 May 2022 11:00:27 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24QB0Pes47776178
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 May 2022 11:00:25 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 108F54C04A;
+	Thu, 26 May 2022 11:00:25 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 47B034C046;
+	Thu, 26 May 2022 11:00:24 +0000 (GMT)
+Received: from localhost (unknown [9.43.88.34])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 26 May 2022 11:00:24 +0000 (GMT)
+Date: Thu, 26 May 2022 16:30:22 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH] kexec_file: Drop weak attribute from
+ arch_kexec_apply_relocations[_add]
+To: Andrew Morton <akpm@linux-foundation.org>,
+        "Eric W. Biederman"
+	<ebiederm@xmission.com>
+References: <20220518181828.645877-1-naveen.n.rao@linux.vnet.ibm.com>
+	<87ee0q7b92.fsf@email.froward.int.ebiederm.org>
+	<YoWySwbszfdZS9LU@MiWiFi-R3L-srv>
+	<87bkvt4d56.fsf@email.froward.int.ebiederm.org>
+	<20220520104641.GB194232@MiWiFi-R3L-srv>
+	<877d6g0zxq.fsf@email.froward.int.ebiederm.org>
+	<20220525125627.acf27b28bb67417a6683a1d9@linux-foundation.org>
+In-Reply-To: <20220525125627.acf27b28bb67417a6683a1d9@linux-foundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87bdb1c6-5803-d9c0-9208-432027ae1d8b@huawei.com>
+User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
+Message-Id: <1653562638.7zk3zmzd88.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MfXC3c06CYrObppP6N9usjnRovuCi-VE
+X-Proofpoint-ORIG-GUID: XQr1JTPr7tfOQdpRu52eY4NCSM3eMPMd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-26_03,2022-05-25_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
+ impostorscore=0 suspectscore=0 adultscore=0 mlxlogscore=982
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2205260052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,104 +106,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>, Will Deacon <will@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Xie XiuQi <xiexiuqi@huawei.com>, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Baoquan He <bhe@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 26, 2022 at 11:36:41AM +0800, Tong Tiangen wrote:
-> 
-> 
-> 在 2022/5/25 16:30, Mark Rutland 写道:
-> > On Thu, May 19, 2022 at 02:29:54PM +0800, Tong Tiangen wrote:
-> > > 
-> > > 
-> > > 在 2022/5/13 23:26, Mark Rutland 写道:
-> > > > On Wed, Apr 20, 2022 at 03:04:14AM +0000, Tong Tiangen wrote:
-> > > > > During the processing of arm64 kernel hardware memory errors(do_sea()), if
-> > > > > the errors is consumed in the kernel, the current processing is panic.
-> > > > > However, it is not optimal.
-> > > > > 
-> > > > > Take uaccess for example, if the uaccess operation fails due to memory
-> > > > > error, only the user process will be affected, kill the user process
-> > > > > and isolate the user page with hardware memory errors is a better choice.
-> > > > 
-> > > > Conceptually, I'm fine with the idea of constraining what we do for a
-> > > > true uaccess, but I don't like the implementation of this at all, and I
-> > > > think we first need to clean up the arm64 extable usage to clearly
-> > > > distinguish a uaccess from another access.
-> > > 
-> > > OK,using EX_TYPE_UACCESS and this extable type could be recover, this is
-> > > more reasonable.
-> > 
-> > Great.
-> > 
-> > > For EX_TYPE_UACCESS_ERR_ZERO, today we use it for kernel accesses in a
-> > > couple of cases, such as
-> > > get_user/futex/__user_cache_maint()/__user_swpX_asm(),
-> > 
-> > Those are all user accesses.
-> > 
-> > However, __get_kernel_nofault() and __put_kernel_nofault() use
-> > EX_TYPE_UACCESS_ERR_ZERO by way of __{get,put}_mem_asm(), so we'd need to
-> > refactor that code to split the user/kernel cases higher up the callchain.
-> > 
-> > > your suggestion is:
-> > > get_user continues to use EX_TYPE_UACCESS_ERR_ZERO and the other cases use
-> > > new type EX_TYPE_FIXUP_ERR_ZERO?
-> > 
-> > Yes, that's the rough shape. We could make the latter EX_TYPE_KACCESS_ERR_ZERO
-> > to be clearly analogous to EX_TYPE_UACCESS_ERR_ZERO, and with that I susepct we
-> > could remove EX_TYPE_FIXUP.
-> > 
-> > Thanks,
-> > Mark.
-> According to your suggestion, i think the definition is like this:
-> 
-> #define EX_TYPE_NONE                    0
-> #define EX_TYPE_FIXUP                   1    --> delete
-> #define EX_TYPE_BPF                     2
-> #define EX_TYPE_UACCESS_ERR_ZERO        3
-> #define EX_TYPE_LOAD_UNALIGNED_ZEROPAD  4
-> #define EX_TYPE_UACCESS		        xx   --> add
-> #define EX_TYPE_KACCESS_ERR_ZERO        xx   --> add
-> [The value defined by the macro here is temporary]
+Andrew Morton wrote:
+> On Fri, 20 May 2022 14:25:05 -0500 "Eric W. Biederman" <ebiederm@xmission=
+.com> wrote:
+>=20
+>> > I am not strongly against taking off __weak, just wondering if there's
+>> > chance to fix it in recordmcount, and the cost comparing with kernel f=
+ix;
+>> > except of this issue, any other weakness of __weak. Noticed Andrew has
+>> > picked this patch, as a witness of this moment, raise a tiny concern.
+>>=20
+>> I just don't see what else we can realistically do.
+>=20
+> I think converting all of the kexec __weaks to use the ifdef approach
+> makes sense, if only because kexec is now using two different styles.
+>=20
+> But for now, I'll send Naveen's v2 patch in to Linus to get us out of
+> trouble.
 
-Almost; you don't need to add EX_TYPE_UACCESS here, as you can use
-EX_TYPE_UACCESS_ERR_ZERO for that.
+Thanks!
 
-We already have:
+>=20
+> I'm thinking that we should add cc:stable to that patch as well, to
+> reduce the amount of problems which people experience when using newer
+> binutils on older kernels?
 
-| #define _ASM_EXTABLE_UACCESS_ERR(insn, fixup, err)		\
-|         _ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, err, wzr)
-
-... and we can add:
-
-| #define _ASM_EXTABLE_UACCESS(insn, fixup)			\
-|         _ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
+Yes, please. I missed tagging this for stable. It looks like this is=20
+applicable all the way back to v4.9 (though I haven't tested if=20
+recordmcount fails in the same manner with those older kernel levels). I=20
+will post backports once this gets into linus' tree.
 
 
-... and maybe we should use 'xzr' rather than 'wzr' for clarity.
-
-> There are two points to modify:
-> 
-> 1、_get_kernel_nofault() and __put_kernel_nofault()  using
-> EX_TYPE_KACCESS_ERR_ZERO, Other positions using EX_TYPE_UACCESS_ERR_ZERO
-> keep unchanged.
-
-That sounds right to me. This will require refactoring __raw_{get,put}_mem()
-and __{get,put}_mem_asm().
-
-> 2、delete EX_TYPE_FIXUP.
-> 
-> There is no doubt about others. As for EX_TYPE_FIXUP, I think it needs to be
-> retained, _cond_extable(EX_TYPE_FIXUP) is still in use in assembler.h.
-
-We use _cond_extable for cache maintenance uaccesses, so those should be moved
-over to to EX_TYPE_UACCESS_ERR_ZERO. We can rename _cond_extable to
-_cond_uaccess_extable for clarity.
-
-That will require restructuring asm-extable.h a bit. If that turns out to be
-painful I'm happy to take a look.
-
-Thanks,
-Mark.
+- Naveen
