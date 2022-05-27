@@ -1,66 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A424D5363FE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 16:23:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C0E53643D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 16:36:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L8n9N47njz3cB1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 00:23:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L8nRl24VVz3bsr
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 00:36:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9LNqgcF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dl3EZvrI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=srs0=cqga=wd=paulmck-thinkpad-p17-gen-1.home=paulmck@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9LNqgcF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dl3EZvrI;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8n8m247gz30Qr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 00:23:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8nR85zcQz30Dp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 00:35:48 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 4E35EB8253A
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 14:23:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001E9C34100
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 14:23:14 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 7B84FCE1102;
+	Fri, 27 May 2022 14:35:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E58C34100;
+	Fri, 27 May 2022 14:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1653661395;
-	bh=uNxUH+hPrnZb11CQFBjeceOe6V12EqBy9Sh5LQdN0I8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=f9LNqgcFkJIe07M7N9HZGQotGjMMaDUfeYyf95SxtPNwMzFJhJTl5rKjUnPkHXqaK
-	 fvlXclKgeOYoOj9t6Z6hTBmaW+oOa+C2bDsSPNA8SJ60jKc/3pRvpZdc5UyH+r/O9V
-	 8Bh1ptGkjbhP5b9/J5IFFxSRrnWFmh88YcxowmxjiUB65n/jBK9o8JJX02Y9B1Yq0u
-	 UYYuBXKZLaP8RyOsQqN7iXXz+7yYcfIzoOD7jPKpAcdiSpW1D4LudOpozk1xkqD5W7
-	 kHulOkyE2NV6lqmeik637JiRtRQgB1++1gZwbiqlTj7+V+i2pRzuE2aPDDDBCkCIsQ
-	 Siy4BO/qPzHiQ==
-Received: by mail-pf1-f181.google.com with SMTP id bo5so4476612pfb.4
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 07:23:14 -0700 (PDT)
-X-Gm-Message-State: AOAM53296+3Qj+/0wu0l5RFvrQRiWefS7W/GARu9dy/iiYMhakRo8S3V
-	sImgpdC/+h4CeCHBHGg68U4vm+bvkvxjg7LTmA==
-X-Google-Smtp-Source: ABdhPJyC9f/oNhDZ2gCxY8DjjgnlgYMkpaz81iMEa64oAKWJbQw2AYmlKLXKvwbFpyqwASa98b2bPJWqw+eITVxaGHc=
-X-Received: by 2002:a05:6a00:170e:b0:519:3571:903e with SMTP id
- h14-20020a056a00170e00b005193571903emr4211750pfc.30.1653661394502; Fri, 27
- May 2022 07:23:14 -0700 (PDT)
+	s=k20201202; t=1653662143;
+	bh=cYPrafUlXVQNBb3sN7LraPZL4NtMQ7Z/TH3LC/ErqyU=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=Dl3EZvrIwQGY2kIbUfZa5w98XqH90bsc2cXnkgL2UC2Akdk8IzH/KboFrUjMdGET0
+	 bHqFLXIBsR9E11nY6pa72axBX9D6GVbe93nQels2Zu4Yp+5pAtTrjBQiTgV5GluhXY
+	 yd6HPAsaHfMFLhD9ghH9PGjK/EH7pZLU/6gEDNkL1pmHBJYZJo5rCzxmDg4IFbvWxj
+	 E5h7C78ETFS12aD/RMqTBPol5wczeIsgnuF3ds/lI5qomruRsOcE/WxIG46ItP2J61
+	 IFtbL9hf1dQCA/5+b110cD4PdBy1KIoomm/pjLc19ms7z4lrgt3nud4SAbWWyYeMQ3
+	 RZjCKYUpm4rKg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 640F15C017C; Fri, 27 May 2022 07:35:43 -0700 (PDT)
+Date: Fri, 27 May 2022 07:35:43 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Chen Zhongjin <chenzhongjin@huawei.com>
+Subject: Re: [PATCH v4] locking/csd_lock: change csdlock_debug from
+ early_param to __setup
+Message-ID: <20220527143543.GP1790663@paulmck-ThinkPad-P17-Gen-1>
+References: <20220510094639.106661-1-chenzhongjin@huawei.com>
+ <9b3e61b8-ecab-08ff-a3b6-83d6862ead77@huawei.com>
+ <20220518011101.GK1790663@paulmck-ThinkPad-P17-Gen-1>
+ <fd69f464-4cc9-859e-d38d-bda85e6b33a6@huawei.com>
 MIME-Version: 1.0
-References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
- <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu> <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
- <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de> <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
- <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
-In-Reply-To: <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 27 May 2022 09:23:00 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
-Message-ID: <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
-Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after the
- devicetree updates for 5.19
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fd69f464-4cc9-859e-d38d-bda85e6b33a6@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,265 +66,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Reply-To: paulmck@kernel.org
+Cc: linux-arch@vger.kernel.org, jgross@suse.com, gor@linux.ibm.com, peterz@infradead.org, gregkh@linuxfoundation.org, rdunlap@infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, namit@vmware.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, mingo@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 27, 2022 at 3:33 AM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
->
-> On 27 May 2022 at 10:14 am, Prabhakar Mahadev Lad wrote:
-> > Hi,
-> >
-> >> -----Original Message-----
-> >> From: Christian Zigotzky <chzigotzky@xenosoft.de>
-> >> Sent: 27 May 2022 09:06
-> >> To: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>;
-> >> Christophe Leroy <christophe.leroy@csgroup.eu>; Rob Herring
-> >> <robh@kernel.org>
-> >> Cc: Darren Stevens <darren@stevens-zone.net>; linuxppc-dev <linuxppc-
-> >> dev@lists.ozlabs.org>; mad skateman <madskateman@gmail.com>; R.T.Dicki=
-nson
-> >> <rtd2@xtra.co.nz>; Christian Zigotzky <info@xenosoft.de>
-> >> Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
-> >> devicetree updates for 5.19
-> >>
-> >> On 27 May 2022 at 09:56 am, Prabhakar Mahadev Lad wrote:
-> >>> Hi,
+On Fri, May 27, 2022 at 02:49:03PM +0800, Chen Zhongjin wrote:
+> Hi,
+> 
+> On 2022/5/18 9:11, Paul E. McKenney wrote:
+> > On Tue, May 17, 2022 at 11:22:04AM +0800, Chen Zhongjin wrote:
+> >> On 2022/5/10 17:46, Chen Zhongjin wrote:
+> >>> csdlock_debug uses early_param and static_branch_enable() to enable
+> >>> csd_lock_wait feature, which triggers a panic on arm64 with config:
+> >>> CONFIG_SPARSEMEM=y
+> >>> CONFIG_SPARSEMEM_VMEMMAP=n
 > >>>
-> >>>> -----Original Message-----
-> >>>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >>>> Sent: 27 May 2022 08:23
-> >>>> To: Christian Zigotzky <chzigotzky@xenosoft.de>;
-> >>>> rob.herring@calxeda.com; Prabhakar Mahadev Lad
-> >>>> <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> >>>> Cc: Darren Stevens <darren@stevens-zone.net>; linuxppc-dev <linuxppc=
--
-> >>>> dev@lists.ozlabs.org>; mad skateman <madskateman@gmail.com>;
-> >>>> R.T.Dickinson <rtd2@xtra.co.nz>; Christian Zigotzky
-> >>>> <info@xenosoft.de>
-> >>>> Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after
-> >>>> the devicetree updates for 5.19
-> >>>>
-> >>>> Hi
-> >>>>
-> >>>> Le 26/05/2022 =C3=A0 19:42, Christian Zigotzky a =C3=A9crit :
-> >>>>> Hello,
-> >>>>>
-> >>>>> My keyboard and mouse don't work anymore with my Cyrus+ board with =
-a
-> >>>>> FSL
-> >>>>> P50x0 PowerPC SoC [1] after the devicetree updates for 5.19 [2].
-> >>>>> After reverting the devicetree updates, my keyboard and mouse work
-> >>>>> without any problems.
-> >>>>> I figured out that the issue is in the patch for the file platform.=
-c
-> >>>>> [3].  I created a patch for reverting the problematic code. (see
-> >>>>> attachment)
-> >>>>> After reverting the changes with the attached patch, the keyboard
-> >>>>> and mouse work again.
-> >>>>> Please check your changes in the file platform.c [3].
-> >>>>>
-> >>>>> Thanks,
-> >>>>> Christian
-> >>>>>
-> >>>>> [1]
-> >>>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2F=
-wiki.
-> >>>>> amiga.org%2Findex.php%3Ftitle%3DX5000&amp;data=3D05%7C01%7Cprabhaka=
-r.m
-> >>>>> ah
-> >>>>> adev-lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C5=
-3
-> >>>>> d8
-> >>>>> 2571da1947e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown=
-%
-> >>>>> 7C
-> >>>>> TWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJ=
-X
-> >>>>> VC
-> >>>>> I6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DfSABvBDi%2FYlqU1eydQB6%2F4BzxX=
-kqR
-> >>>>> M0
-> >>>>> Ln9hdInyTp6w%3D&amp;reserved=3D0
-> >>>>> [2]
-> >>>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2=
-Fgit.
-> >>>>> kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.gi=
-t
-> >>>>> %2
-> >>>>> Fcommit%2F%3Fid%3D86c87bea6b42100c67418af690919c44de6ede6e&amp;data=
-=3D
-> >>>>> 05
-> >>>>> %7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.com%7C4e9c08d1e3874a3=
-4
-> >>>>> bd
-> >>>>> 4208da3fb1c007%7C53d82571da1947e49cb4625a166a4a2a%7C0%7C0%7C6378923=
-2
-> >>>>> 99
-> >>>>> 12063922%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMz=
-I
-> >>>>> iL
-> >>>>> CJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DENkjlza0J=
-7xF
-> >>>>> iI
-> >>>>> aPUwMBxHBIkXJNkT%2BLTZ3xuPz%2B10Q%3D&amp;reserved=3D0
-> >>>>>
-> >>>>> [3]
-> >>>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2=
-Fgit.
-> >>>>> kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.gi=
-t
-> >>>>> %2
-> >>>>> Fdiff%2Fdrivers%2Fof%2Fplatform.c%3Fid%3D86c87bea6b42100c67418af690=
-9
-> >>>>> 19
-> >>>>> c44de6ede6e&amp;data=3D05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.rene=
-sas
-> >>>>> .c
-> >>>>> om%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d82571da1947e49cb4625a166=
-a
-> >>>>> 4a
-> >>>>> 2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4=
-w
-> >>>>> Lj
-> >>>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7=
-C
-> >>>>> &a
-> >>>>> mp;sdata=3DyEJUK%2BGK2dzWARC5rfhsSSFSwD%2BLZm8aNNHqQhPYP7Y%3D&amp;r=
-ese
-> >>>>> rv
-> >>>>> ed=3D0
-> >>>> Based on your patch I would say the culprit commit is
-> >>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F=
-git
-> >>>> hub.c%2F&amp;data=3D05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.=
-com
-> >>>> %7Cbf899ff2084643971c7908da3fb7d4b9%7C53d82571da1947e49cb4625a166a4a=
-2
-> >>>> a%7C0%7C1%7C637892356025845542%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wL=
-j
-> >>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000%7C%7C%7C=
-&
-> >>>> amp;sdata=3D%2FzI4yueF6Pc%2Fpvh7Ax9WilnaYX8ozFTRyQpiVaaacbg%3D&amp;r=
-ese
-> >>>> rved=3D0
-> >>>> om%2Ftorvalds%2Flinux%2Fcommit%2Fa1a2b7125e1079cfcc13a116aa3af3df2f9=
-e
-> >>>> 002b&
-> >>>> amp;data=3D05%7C01%7Cprabhakar.mahadev-
-> >>>> lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d8257=
-1
-> >>>> da194
-> >>>> 7e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZ=
-s
-> >>>> b3d8e
-> >>>> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C=
-3
-> >>>> 000%7
-> >>>> C%7C%7C&amp;sdata=3DONR1CiaSID6q4%2Fo%2BI6MlPA4ij89BJphQRpEu5tQxvYQ%=
-3D&
-> >>>> amp;r
-> >>>> eserved=3D0
-> >>>>
-> >>>> commit a1a2b7125e1079cfcc13a116aa3af3df2f9e002b
-> >>>> Author: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> >>>> Date:   Wed Mar 16 20:06:33 2022 +0000
-> >>>>
-> >>>>        of/platform: Drop static setup of IRQ resource from DT core
-> >>>>
-> >>>>        Now that all the DT drivers have switched to platform_get_irq=
-()
-> >>>> we can now
-> >>>>        safely drop the static setup of IRQ resource from DT core cod=
-e.
-> >>>>
-> >>>>        With the above change hierarchical setup of irq domains is no
-> >> longer
-> >>>>        bypassed and thus allowing hierarchical interrupt domains to
-> >> describe
-> >>>>        interrupts using "interrupts" DT property.
-> >>>>
-> >>>>        Signed-off-by: Lad Prabhakar <prabhakar.mahadev-
-> >>>> lad.rj@bp.renesas.com>
-> >>>>        Acked-by: Marc Zyngier <maz@kernel.org>
-> >>>>        Tested-by: Marc Zyngier <maz@kernel.org>
-> >>>>        Signed-off-by: Rob Herring <robh@kernel.org>
-> >>>>        Link:
-> >>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F=
-lor
-> >>>> e.ker%2F&amp;data=3D05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.=
-com
-> >>>> %7Cbf899ff2084643971c7908da3fb7d4b9%7C53d82571da1947e49cb4625a166a4a=
-2
-> >>>> a%7C0%7C1%7C637892356025845542%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wL=
-j
-> >>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000%7C%7C%7C=
-&
-> >>>> amp;sdata=3DR%2FhdNkjna6kT31Fy9L3HjrDscWR743O%2BAY8sITu9pVE%3D&amp;r=
-ese
-> >>>> rved=3D0
-> >>>> nel.org%2Fr%2F20220316200633.28974-1-prabhakar.mahadev-
-> >>>> lad.rj%40bp.renesas.com&amp;data=3D05%7C01%7Cprabhakar.mahadev-
-> >>>> lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d8257=
-1
-> >>>> da194
-> >>>> 7e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZ=
-s
-> >>>> b3d8e
-> >>>> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C=
-3
-> >>>> 000%7
-> >>>> C%7C%7C&amp;sdata=3Dri76vfLpmxe7vFDAlsBjyrSSkuTMz0ydftu3XObLGLA%3D&a=
-mp;
-> >>>> reser
-> >>>> ved=3D0
-> >>>>
-> >>> Looks like the driver which you are using has not been converted to u=
-se
-> >> platform_get_irq(), could you please check that.
-> >>> Cheers,
-> >>> Prabhakar
-> >> Do you mean the mouse and keyboard driver?
+> >>> With CONFIG_SPARSEMEM_VMEMMAP=n, __nr_to_section is called in
+> >>> static_key_enable() and returns NULL which makes NULL dereference
+> >>> because mem_section is initialized in sparse_init() which is later
+> >>> than parse_early_param() stage.
+> >>>
+> >>> For powerpc this is also broken, because early_param stage is
+> >>> earlier than jump_label_init() so static_key_enable won't work.
+> >>> powerpc throws an warning: "static key 'xxx' used before call
+> >>> to jump_label_init()".
+> >>>
+> >>> Thus, early_param is too early for csd_lock_wait to run
+> >>> static_branch_enable(), so changes it to __setup to fix these.
+> >>>
+> >>> Fixes: 8d0968cc6b8f ("locking/csd_lock: Add boot parameter for controlling CSD lock debugging")
+> >>> Cc: stable@vger.kernel.org
+> >>> Reported-by: Chen jingwen <chenjingwen6@huawei.com>
+> >>> Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+> >>> ---
+> >>> Change v3 -> v4:
+> >>> Fix title and description because this fix is also applied
+> >>> to powerpc.
+> >>> For more detailed arm64 bug report see:
+> >>> https://lore.kernel.org/linux-arm-kernel/e8715911-f835-059d-27f8-cc5f5ad30a07@huawei.com/t/
+> >>>
+> >>> Change v2 -> v3:
+> >>> Add module name in title
+> >>>
+> >>> Change v1 -> v2:
+> >>> Fix return 1 for __setup
+> >>> ---
+> >>>  kernel/smp.c | 4 ++--
+> >>>  1 file changed, 2 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/kernel/smp.c b/kernel/smp.c
+> >>> index 65a630f62363..381eb15cd28f 100644
+> >>> --- a/kernel/smp.c
+> >>> +++ b/kernel/smp.c
+> >>> @@ -174,9 +174,9 @@ static int __init csdlock_debug(char *str)
+> >>>  	if (val)
+> >>>  		static_branch_enable(&csdlock_debug_enabled);
+> >>>  
+> >>> -	return 0;
+> >>> +	return 1;
+> >>>  }
+> >>> -early_param("csdlock_debug", csdlock_debug);
+> >>> +__setup("csdlock_debug=", csdlock_debug);
+> >>>  
+> >>>  static DEFINE_PER_CPU(call_single_data_t *, cur_csd);
+> >>>  static DEFINE_PER_CPU(smp_call_func_t, cur_csd_func);
 > >>
-> > No it could be your gpio/pinctrl driver assuming the keyboard/mouse are=
- using GPIO's. If you are using interrupts then it might be some hierarchal=
- irqc driver in drivers/irqchip/.
-> >
-> > Cheers,
-> > Prabhakar
-> Good to know. I only use unmodified drivers from the official Linux
-> kernel so it's not an issue of the Cyrus+ board.
+> >> Ping for review. Thanks！
+> > 
+> > I have pulled it into -rcu for testing and further review.  It might
+> > well need to go through some other path, though.
+> >> 								Thanx, Paul
+> > .
+> 
+> So did it have any result? Do we have any idea to fix that except delaying the
+> set timing? I guess that maybe not using static_branch can work for this, but it
+> still needs to be evaluated for performance influence of not enabled situation.
 
-The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
-resources to a child platform device. Can you try the following
-change:
+It was in -next for a short time without complaints.  It will go back
+into -next after the merge window closes.  If there are no objections,
+I would include it in my pull request for the next merge window (v5.20).
 
-diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr=
--of.c
-index 44a7e58a26e3..47d9b7be60da 100644
---- a/drivers/usb/host/fsl-mph-dr-of.c
-+++ b/drivers/usb/host/fsl-mph-dr-of.c
-@@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
-                                        const char *name, int id)
- {
-        struct platform_device *pdev;
--       const struct resource *res =3D ofdev->resource;
--       unsigned int num =3D ofdev->num_resources;
-        int retval;
-
-        pdev =3D platform_device_alloc(name, id);
-@@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_device_registe=
-r(
-        if (retval)
-                goto error;
-
--       if (num) {
--               retval =3D platform_device_add_resources(pdev, res, num);
--               if (retval)
--                       goto error;
--       }
-+       pdev->dev.of_node =3D ofdev->dev.of_node;
-
-        retval =3D platform_device_add(pdev);
-        if (retval)
+							Thanx, Paul
