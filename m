@@ -1,67 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536D0535B7B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 10:33:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E21D1535D78
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 11:37:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L8dNy6w4Bz3brV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 18:33:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L8fqG6ldMz3c6F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 19:37:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ovpGZuSc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M2/yJLI3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=81.169.146.170; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=ovpGZuSc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M2/yJLI3;
 	dkim-atps=neutral
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.170])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8dNJ6qhTz2ynh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 18:32:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653640356;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=7ku+VKztMkZ1eqrIUVqJPJGdD5prOLSHLmjAXmxlheQ=;
-    b=ovpGZuScqIg7VsK1V0LwPW8lLJf59Ddn/sc/gS3ScIifQniCH1kWOsgBcOk80NiJf8
-    OkQbo8CIq/OBn8Q9r5ij0x1SzdH53ECWReLKuShe3kK3sMVI0OAMyytD/PukOwXFbipl
-    5/3Fhn1NsFDSiKRD/PiuTkXqa8x4RlyDZt1w8+CvStQLFKUBmB0ShM1hc8kewTdvLZBF
-    EV0UU9DwDv+MVD9GVdTLY9PsY9znRGXhko68Z6r8Slaw//FsRVZTUpMWPsCIH7zf50Jg
-    Pnd0SivZgzVBhVtXxOIIx4HsEGQvbirLNV1jMrHGlb8DPw01zkzflTdoqZhEjH810GNI
-    W18A==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwjW6ENWaVbcdCVpgifkNbNTSisTgw=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPV6:2a02:8109:8980:4474:31d6:7769:fc09:c5bc]
-    by smtp.strato.de (RZmta 47.45.0 AUTH)
-    with ESMTPSA id 205ca1y4R8WZdok
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Fri, 27 May 2022 10:32:35 +0200 (CEST)
-Message-ID: <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
-Date: Fri, 27 May 2022 10:32:35 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8fpV1VWRz2yxS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 19:37:05 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24R8wtBu000420;
+	Fri, 27 May 2022 09:36:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=/3yhtcLV7lGw1O774Uj3YB+h1YJJQMkZuXgBVStyG1I=;
+ b=M2/yJLI3eFZtBs1FuFgCL5WalrJ0IGN7srYzhcEtEVvAAFwudph3NKOEmhxEO2geNBEz
+ x1ekL6rwU72zQ4ANWO8Q34mM7oKrlECb3T6PFMzb3efDP0yEcRB5EW71mkIEadr/sVIg
+ EkZK01+lspZdCcQdnsC9C3LAHlw7O+iYMjEr8l5icRGvPLg7hqAxZgweWo0qn4MSEX7G
+ q+AKz8O1n1DgYALF8AhMse09pqelh3YyeVd+nNE/QFrcYLYbIriEfNl3duLUzGvj753B
+ 8PLpr51T6m6g67/zMdINnIQ3kM0PCdQ1wRTZXQljDj0a7yZ2GQ42Fo38+E7uEBp59/mF /w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gaum30my7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 May 2022 09:36:16 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24R9WHZ2028821;
+	Fri, 27 May 2022 09:36:15 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gaum30mxh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 May 2022 09:36:15 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24R9CccZ005327;
+	Fri, 27 May 2022 09:36:13 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma03ams.nl.ibm.com with ESMTP id 3g93ux3r7e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 May 2022 09:36:12 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24R9aAB617236406
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 27 May 2022 09:36:10 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 91E93A4054;
+	Fri, 27 May 2022 09:36:10 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F35E0A405C;
+	Fri, 27 May 2022 09:36:09 +0000 (GMT)
+Received: from osiris (unknown [9.145.57.114])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+	Fri, 27 May 2022 09:36:09 +0000 (GMT)
+Date: Fri, 27 May 2022 11:36:08 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 1/2] locking/lockref: Use try_cmpxchg64 in CMPXCHG_LOOP
+ macro
+Message-ID: <YpCbiBCx1o38uhhX@osiris>
+References: <CAHk-=wh1XeaxWXG5QziGA4ds918UnW1hO924kusgVB-wGj+9Og@mail.gmail.com>
+ <871qwgmqws.fsf@mpe.ellerman.id.au>
+ <Yo91omfDZtTgXhyn@FVFF77S0Q05N.cambridge.arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.9.1
-Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
- devicetree updates for 5.19
-Content-Language: de-DE
-To: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Rob Herring <robh@kernel.org>
-References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
- <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu>
- <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
- <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de>
- <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yo91omfDZtTgXhyn@FVFF77S0Q05N.cambridge.arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IInokStyvhEzGjfG9nWgkGvGO89yAxRN
+X-Proofpoint-ORIG-GUID: ZMfPYhuHlVUkExUVG7NJSGyAZDOiDEYf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.486,FMLib:17.11.64.514
+ definitions=2022-05-27_03,2022-05-25_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 adultscore=0 phishscore=0 clxscore=1011
+ bulkscore=0 mlxlogscore=674 spamscore=0 impostorscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2205270044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,180 +98,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+Cc: Waiman.Long@hp.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, the arch/x86 maintainers <x86@kernel.org>, Uros Bizjak <ubizjak@gmail.com>, Russell King <linux@armlinux.org.uk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, Catalin Marinas <catalin.marinas@arm.com>, Thomas Gleixner <tglx@linutronix.de>, Paul McKenney <paulmck@linux.vnet.ibm.com>, Linus Torvalds <torvalds@linux-foundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27 May 2022 at 10:14 am, Prabhakar Mahadev Lad wrote:
-> Hi,
->
->> -----Original Message-----
->> From: Christian Zigotzky <chzigotzky@xenosoft.de>
->> Sent: 27 May 2022 09:06
->> To: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>;
->> Christophe Leroy <christophe.leroy@csgroup.eu>; Rob Herring
->> <robh@kernel.org>
->> Cc: Darren Stevens <darren@stevens-zone.net>; linuxppc-dev <linuxppc-
->> dev@lists.ozlabs.org>; mad skateman <madskateman@gmail.com>; R.T.Dickinson
->> <rtd2@xtra.co.nz>; Christian Zigotzky <info@xenosoft.de>
->> Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
->> devicetree updates for 5.19
->>
->> On 27 May 2022 at 09:56 am, Prabhakar Mahadev Lad wrote:
->>> Hi,
->>>
->>>> -----Original Message-----
->>>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
->>>> Sent: 27 May 2022 08:23
->>>> To: Christian Zigotzky <chzigotzky@xenosoft.de>;
->>>> rob.herring@calxeda.com; Prabhakar Mahadev Lad
->>>> <prabhakar.mahadev-lad.rj@bp.renesas.com>
->>>> Cc: Darren Stevens <darren@stevens-zone.net>; linuxppc-dev <linuxppc-
->>>> dev@lists.ozlabs.org>; mad skateman <madskateman@gmail.com>;
->>>> R.T.Dickinson <rtd2@xtra.co.nz>; Christian Zigotzky
->>>> <info@xenosoft.de>
->>>> Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after
->>>> the devicetree updates for 5.19
->>>>
->>>> Hi
->>>>
->>>> Le 26/05/2022 à 19:42, Christian Zigotzky a écrit :
->>>>> Hello,
->>>>>
->>>>> My keyboard and mouse don't work anymore with my Cyrus+ board with a
->>>>> FSL
->>>>> P50x0 PowerPC SoC [1] after the devicetree updates for 5.19 [2].
->>>>> After reverting the devicetree updates, my keyboard and mouse work
->>>>> without any problems.
->>>>> I figured out that the issue is in the patch for the file platform.c
->>>>> [3].  I created a patch for reverting the problematic code. (see
->>>>> attachment)
->>>>> After reverting the changes with the attached patch, the keyboard
->>>>> and mouse work again.
->>>>> Please check your changes in the file platform.c [3].
->>>>>
->>>>> Thanks,
->>>>> Christian
->>>>>
->>>>> [1]
->>>>> https://jpn01.safelinks.protection.outlook.com/?url=http%3A%2F%2Fwiki.
->>>>> amiga.org%2Findex.php%3Ftitle%3DX5000&amp;data=05%7C01%7Cprabhakar.m
->>>>> ah
->>>>> adev-lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53
->>>>> d8
->>>>> 2571da1947e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown%
->>>>> 7C
->>>>> TWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJX
->>>>> VC
->>>>> I6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=fSABvBDi%2FYlqU1eydQB6%2F4BzxXkqR
->>>>> M0
->>>>> Ln9hdInyTp6w%3D&amp;reserved=0
->>>>> [2]
->>>>> https://jpn01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.
->>>>> kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git
->>>>> %2
->>>>> Fcommit%2F%3Fid%3D86c87bea6b42100c67418af690919c44de6ede6e&amp;data=
->>>>> 05
->>>>> %7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34
->>>>> bd
->>>>> 4208da3fb1c007%7C53d82571da1947e49cb4625a166a4a2a%7C0%7C0%7C63789232
->>>>> 99
->>>>> 12063922%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzI
->>>>> iL
->>>>> CJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=ENkjlza0J7xF
->>>>> iI
->>>>> aPUwMBxHBIkXJNkT%2BLTZ3xuPz%2B10Q%3D&amp;reserved=0
->>>>>
->>>>> [3]
->>>>> https://jpn01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.
->>>>> kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git
->>>>> %2
->>>>> Fdiff%2Fdrivers%2Fof%2Fplatform.c%3Fid%3D86c87bea6b42100c67418af6909
->>>>> 19
->>>>> c44de6ede6e&amp;data=05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas
->>>>> .c
->>>>> om%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d82571da1947e49cb4625a166a
->>>>> 4a
->>>>> 2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4w
->>>>> Lj
->>>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C
->>>>> &a
->>>>> mp;sdata=yEJUK%2BGK2dzWARC5rfhsSSFSwD%2BLZm8aNNHqQhPYP7Y%3D&amp;rese
->>>>> rv
->>>>> ed=0
->>>> Based on your patch I would say the culprit commit is
->>>> https://jpn01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit
->>>> hub.c%2F&amp;data=05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.com
->>>> %7Cbf899ff2084643971c7908da3fb7d4b9%7C53d82571da1947e49cb4625a166a4a2
->>>> a%7C0%7C1%7C637892356025845542%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLj
->>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000%7C%7C%7C&
->>>> amp;sdata=%2FzI4yueF6Pc%2Fpvh7Ax9WilnaYX8ozFTRyQpiVaaacbg%3D&amp;rese
->>>> rved=0
->>>> om%2Ftorvalds%2Flinux%2Fcommit%2Fa1a2b7125e1079cfcc13a116aa3af3df2f9e
->>>> 002b&
->>>> amp;data=05%7C01%7Cprabhakar.mahadev-
->>>> lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d82571
->>>> da194
->>>> 7e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZs
->>>> b3d8e
->>>> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3
->>>> 000%7
->>>> C%7C%7C&amp;sdata=ONR1CiaSID6q4%2Fo%2BI6MlPA4ij89BJphQRpEu5tQxvYQ%3D&
->>>> amp;r
->>>> eserved=0
->>>>
->>>> commit a1a2b7125e1079cfcc13a116aa3af3df2f9e002b
->>>> Author: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->>>> Date:   Wed Mar 16 20:06:33 2022 +0000
->>>>
->>>>        of/platform: Drop static setup of IRQ resource from DT core
->>>>
->>>>        Now that all the DT drivers have switched to platform_get_irq()
->>>> we can now
->>>>        safely drop the static setup of IRQ resource from DT core code.
->>>>
->>>>        With the above change hierarchical setup of irq domains is no
->> longer
->>>>        bypassed and thus allowing hierarchical interrupt domains to
->> describe
->>>>        interrupts using "interrupts" DT property.
->>>>
->>>>        Signed-off-by: Lad Prabhakar <prabhakar.mahadev-
->>>> lad.rj@bp.renesas.com>
->>>>        Acked-by: Marc Zyngier <maz@kernel.org>
->>>>        Tested-by: Marc Zyngier <maz@kernel.org>
->>>>        Signed-off-by: Rob Herring <robh@kernel.org>
->>>>        Link:
->>>> https://jpn01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flor
->>>> e.ker%2F&amp;data=05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.com
->>>> %7Cbf899ff2084643971c7908da3fb7d4b9%7C53d82571da1947e49cb4625a166a4a2
->>>> a%7C0%7C1%7C637892356025845542%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLj
->>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000%7C%7C%7C&
->>>> amp;sdata=R%2FhdNkjna6kT31Fy9L3HjrDscWR743O%2BAY8sITu9pVE%3D&amp;rese
->>>> rved=0
->>>> nel.org%2Fr%2F20220316200633.28974-1-prabhakar.mahadev-
->>>> lad.rj%40bp.renesas.com&amp;data=05%7C01%7Cprabhakar.mahadev-
->>>> lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d82571
->>>> da194
->>>> 7e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZs
->>>> b3d8e
->>>> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3
->>>> 000%7
->>>> C%7C%7C&amp;sdata=ri76vfLpmxe7vFDAlsBjyrSSkuTMz0ydftu3XObLGLA%3D&amp;
->>>> reser
->>>> ved=0
->>>>
->>> Looks like the driver which you are using has not been converted to use
->> platform_get_irq(), could you please check that.
->>> Cheers,
->>> Prabhakar
->> Do you mean the mouse and keyboard driver?
->>
-> No it could be your gpio/pinctrl driver assuming the keyboard/mouse are using GPIO's. If you are using interrupts then it might be some hierarchal irqc driver in drivers/irqchip/.
->
-> Cheers,
-> Prabhakar
-Good to know. I only use unmodified drivers from the official Linux 
-kernel so it's not an issue of the Cyrus+ board.
+On Thu, May 26, 2022 at 01:42:35PM +0100, Mark Rutland wrote:
+> On Thu, May 26, 2022 at 10:14:59PM +1000, Michael Ellerman wrote:
+> > Linus Torvalds <torvalds@linux-foundation.org> writes:
+> > > On Wed, May 25, 2022 at 7:40 AM Uros Bizjak <ubizjak@gmail.com> wrote:
+> > >>
+> > >> Use try_cmpxchg64 instead of cmpxchg64 in CMPXCHG_LOOP macro.
+> > >> x86 CMPXCHG instruction returns success in ZF flag, so this
+> > >> change saves a compare after cmpxchg (and related move instruction
+> > >> in front of cmpxchg). The main loop of lockref_get improves from:
+> > >
+> > > Ack on this one regardless of the 32-bit x86 question.
+> > >
+> > > HOWEVER.
+> > >
+> > > I'd like other architectures to pipe up too, because I think right now
+> > > x86 is the only one that implements that "arch_try_cmpxchg()" family
+> > > of operations natively, and I think the generic fallback for when it
+> > > is missing might be kind of nasty.
+> > >
+> > > Maybe it ends up generating ok code, but it's also possible that it
+> > > just didn't matter when it was only used in one place in the
+> > > scheduler.
+> > 
+> > This patch seems to generate slightly *better* code on powerpc.
+> > 
+> > I see one register-to-register move that gets shifted slightly later, so
+> > that it's skipped on the path that returns directly via the SUCCESS
+> > case.
+> 
+> FWIW, I see the same on arm64; a register-to-register move gets moved out of
+> the success path. That changes the register allocation, and resulting in one
+> fewer move, but otherwise the code generation is the same.
 
--- Christian
+Just for the records: s390 code generation changes the same like on
+powerpc; so looks good.
