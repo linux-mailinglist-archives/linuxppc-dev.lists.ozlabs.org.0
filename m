@@ -2,92 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2585368C8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 00:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A424D5363FE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 16:23:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L8zv00BHvz3c8W
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 08:27:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L8n9N47njz3cB1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 00:23:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WIfUgyR3;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HQ26E/8H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9LNqgcF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WIfUgyR3;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HQ26E/8H;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9LNqgcF;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8mPX1MKwz3bjM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 23:49:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1653659352;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3wM6LMtd0WRKF0TJX2qWAIusndSWh4uKD1DEnhNev8=;
-	b=WIfUgyR3uI44SncvgBDlloIPoiJ4oXFvi9DEgchlJnH8B6ElLV28aWiCXlx8I+6a+Z4vaF
-	LFU9xvV+BoUctq7RW0jtgPCK5pygZEAMbz7NO/ATulJonl2lmngzyy4++phiD6DrwfWiTG
-	9/0IKLhjzZbwABUmolaMt2lmreFZbhM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1653659353;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u3wM6LMtd0WRKF0TJX2qWAIusndSWh4uKD1DEnhNev8=;
-	b=HQ26E/8HE7O/HRA1lyEaJHfmaroRGyQP8JKqOBfQQKAPspEDD1GBZDax+Uw8b7AqZCf8+b
-	DUZ/A8rpcQ78fWynizmogQZq65+tMQf6t6fpgNGKTd8QDdK92gTRvwHPsWlKzBtSGcrAfb
-	sQ6+snXta8+QlnEZme4oMg46TsbQ9fk=
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com
- [209.85.166.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-516-f4CZ58xsOMWOwWkntkwn1g-1; Fri, 27 May 2022 09:49:08 -0400
-X-MC-Unique: f4CZ58xsOMWOwWkntkwn1g-1
-Received: by mail-il1-f197.google.com with SMTP id i9-20020a056e021d0900b002d1f6f8960aso2926566ila.9
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 06:49:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=u3wM6LMtd0WRKF0TJX2qWAIusndSWh4uKD1DEnhNev8=;
-        b=75YSpcavvELBPLBvQxS9w2G6xk5IyoF8tUW7kdixDusy9SWQ5ndnMs0h9/JnJbOh0V
-         ajNTPvQpgRB4vYqMcF2I930+6ZVb4PMxII0xBtm6oRncAUJEr548GBmRc/qUsjwuvClh
-         tYfwVQqqKs2HCzLSZu49hmIWp89Tba6IoT3TU2pdozRMp4zmtkDrpbwSrPp9Lwx03gxM
-         IXt8Fbx2BCg7o6K61tVI56bIgLPjdrhBRju/47hWLNhdTKEGVpMnvkxI2xijratw8La/
-         ndwzrlvbW9jgzN7AXrj8BFen4i2EjlNEvKxnfaNm1vIKyD17R36OcEsjSM/qZG2Xpps2
-         8RSg==
-X-Gm-Message-State: AOAM533sF3f7+7H45p37wFPPu/kuLNIipblTILLyhTYOcPfr/9XRCa5f
-	YGbuSTW4UuLlrTwldfYNH6SrxQGU83hUSSabqfHKB6bG9UtwrPhbyG23vV31+7wcxKYA0ymPM4K
-	f/LEjjvMg50xPQ2hV7Si6g03eAQ==
-X-Received: by 2002:a05:6602:1584:b0:664:ab0f:5339 with SMTP id e4-20020a056602158400b00664ab0f5339mr10502586iow.146.1653659347417;
-        Fri, 27 May 2022 06:49:07 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzCqN3qwLLuYZMqrMI7aGsb6Zn5OHs31WIJQ3aUgDc8PhP19ReX/GZlaKbEBJ1PdD9YunS6AA==
-X-Received: by 2002:a05:6602:1584:b0:664:ab0f:5339 with SMTP id e4-20020a056602158400b00664ab0f5339mr10502527iow.146.1653659347005;
-        Fri, 27 May 2022 06:49:07 -0700 (PDT)
-Received: from xz-m1.local (cpec09435e3e0ee-cmc09435e3e0ec.cpe.net.cable.rogers.com. [99.241.198.116])
-        by smtp.gmail.com with ESMTPSA id x25-20020a029719000000b0032b3a7817d6sm563254jai.154.2022.05.27.06.49.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 May 2022 06:49:06 -0700 (PDT)
-Date: Fri, 27 May 2022 09:49:01 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Subject: Re: [PATCH v3] mm: Avoid unnecessary page fault retires on shared
- memory types
-Message-ID: <YpDWzX8dyh1259Mo@xz-m1.local>
-References: <20220524234531.1949-1-peterx@redhat.com>
- <YpDCzvLER9AYJJc8@osiris>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8n8m247gz30Qr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 00:23:20 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 4E35EB8253A
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 14:23:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001E9C34100
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 14:23:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1653661395;
+	bh=uNxUH+hPrnZb11CQFBjeceOe6V12EqBy9Sh5LQdN0I8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=f9LNqgcFkJIe07M7N9HZGQotGjMMaDUfeYyf95SxtPNwMzFJhJTl5rKjUnPkHXqaK
+	 fvlXclKgeOYoOj9t6Z6hTBmaW+oOa+C2bDsSPNA8SJ60jKc/3pRvpZdc5UyH+r/O9V
+	 8Bh1ptGkjbhP5b9/J5IFFxSRrnWFmh88YcxowmxjiUB65n/jBK9o8JJX02Y9B1Yq0u
+	 UYYuBXKZLaP8RyOsQqN7iXXz+7yYcfIzoOD7jPKpAcdiSpW1D4LudOpozk1xkqD5W7
+	 kHulOkyE2NV6lqmeik637JiRtRQgB1++1gZwbiqlTj7+V+i2pRzuE2aPDDDBCkCIsQ
+	 Siy4BO/qPzHiQ==
+Received: by mail-pf1-f181.google.com with SMTP id bo5so4476612pfb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 07:23:14 -0700 (PDT)
+X-Gm-Message-State: AOAM53296+3Qj+/0wu0l5RFvrQRiWefS7W/GARu9dy/iiYMhakRo8S3V
+	sImgpdC/+h4CeCHBHGg68U4vm+bvkvxjg7LTmA==
+X-Google-Smtp-Source: ABdhPJyC9f/oNhDZ2gCxY8DjjgnlgYMkpaz81iMEa64oAKWJbQw2AYmlKLXKvwbFpyqwASa98b2bPJWqw+eITVxaGHc=
+X-Received: by 2002:a05:6a00:170e:b0:519:3571:903e with SMTP id
+ h14-20020a056a00170e00b005193571903emr4211750pfc.30.1653661394502; Fri, 27
+ May 2022 07:23:14 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YpDCzvLER9AYJJc8@osiris>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=peterx@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Mailman-Approved-At: Sat, 28 May 2022 08:25:59 +1000
+References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
+ <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu> <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de> <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
+In-Reply-To: <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
+From: Rob Herring <robh@kernel.org>
+Date: Fri, 27 May 2022 09:23:00 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
+Message-ID: <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
+Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after the
+ devicetree updates for 5.19
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,174 +72,265 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Catalin Marinas <catalin.marinas@arm.com>, David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, linux-mm@kvack.org, Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-ia64@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, linux-riscv@lists.infradead.org, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Janosch Frank <frankja@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, Helge Deller <deller@gmx.de>, Alistair Popple <apopple@nvidia.com>, Hugh Dickins <hughd@google.com>, Russell King <linux@armlinux.org.uk>, linux-csky
- @vger.kernel.org, linux-alpha@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-arm-kernel@lists.infradead.org, Vineet Gupta <vgupta@kernel.org>, Stafford Horne <shorne@gmail.com>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Andrea Arcangeli <aarcange@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Brian Cain <bcain@quicinc.com>, linux-xtensa@linux-xtensa.org, Johannes Weiner <hannes@cmpxchg.org>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, Vlastimil 
- Babka <vbabka@suse.cz>, Richard Henderson <rth@twiddl
-
-e.net>, Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Guo Ren <guoren@kernel.org>, Borislav Petkov <bp@alien8.de>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, Heiko,
+On Fri, May 27, 2022 at 3:33 AM Christian Zigotzky
+<chzigotzky@xenosoft.de> wrote:
+>
+> On 27 May 2022 at 10:14 am, Prabhakar Mahadev Lad wrote:
+> > Hi,
+> >
+> >> -----Original Message-----
+> >> From: Christian Zigotzky <chzigotzky@xenosoft.de>
+> >> Sent: 27 May 2022 09:06
+> >> To: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>;
+> >> Christophe Leroy <christophe.leroy@csgroup.eu>; Rob Herring
+> >> <robh@kernel.org>
+> >> Cc: Darren Stevens <darren@stevens-zone.net>; linuxppc-dev <linuxppc-
+> >> dev@lists.ozlabs.org>; mad skateman <madskateman@gmail.com>; R.T.Dicki=
+nson
+> >> <rtd2@xtra.co.nz>; Christian Zigotzky <info@xenosoft.de>
+> >> Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
+> >> devicetree updates for 5.19
+> >>
+> >> On 27 May 2022 at 09:56 am, Prabhakar Mahadev Lad wrote:
+> >>> Hi,
+> >>>
+> >>>> -----Original Message-----
+> >>>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> >>>> Sent: 27 May 2022 08:23
+> >>>> To: Christian Zigotzky <chzigotzky@xenosoft.de>;
+> >>>> rob.herring@calxeda.com; Prabhakar Mahadev Lad
+> >>>> <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> >>>> Cc: Darren Stevens <darren@stevens-zone.net>; linuxppc-dev <linuxppc=
+-
+> >>>> dev@lists.ozlabs.org>; mad skateman <madskateman@gmail.com>;
+> >>>> R.T.Dickinson <rtd2@xtra.co.nz>; Christian Zigotzky
+> >>>> <info@xenosoft.de>
+> >>>> Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after
+> >>>> the devicetree updates for 5.19
+> >>>>
+> >>>> Hi
+> >>>>
+> >>>> Le 26/05/2022 =C3=A0 19:42, Christian Zigotzky a =C3=A9crit :
+> >>>>> Hello,
+> >>>>>
+> >>>>> My keyboard and mouse don't work anymore with my Cyrus+ board with =
+a
+> >>>>> FSL
+> >>>>> P50x0 PowerPC SoC [1] after the devicetree updates for 5.19 [2].
+> >>>>> After reverting the devicetree updates, my keyboard and mouse work
+> >>>>> without any problems.
+> >>>>> I figured out that the issue is in the patch for the file platform.=
+c
+> >>>>> [3].  I created a patch for reverting the problematic code. (see
+> >>>>> attachment)
+> >>>>> After reverting the changes with the attached patch, the keyboard
+> >>>>> and mouse work again.
+> >>>>> Please check your changes in the file platform.c [3].
+> >>>>>
+> >>>>> Thanks,
+> >>>>> Christian
+> >>>>>
+> >>>>> [1]
+> >>>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttp%3A%2F%2F=
+wiki.
+> >>>>> amiga.org%2Findex.php%3Ftitle%3DX5000&amp;data=3D05%7C01%7Cprabhaka=
+r.m
+> >>>>> ah
+> >>>>> adev-lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C5=
+3
+> >>>>> d8
+> >>>>> 2571da1947e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown=
+%
+> >>>>> 7C
+> >>>>> TWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJ=
+X
+> >>>>> VC
+> >>>>> I6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DfSABvBDi%2FYlqU1eydQB6%2F4BzxX=
+kqR
+> >>>>> M0
+> >>>>> Ln9hdInyTp6w%3D&amp;reserved=3D0
+> >>>>> [2]
+> >>>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2=
+Fgit.
+> >>>>> kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.gi=
+t
+> >>>>> %2
+> >>>>> Fcommit%2F%3Fid%3D86c87bea6b42100c67418af690919c44de6ede6e&amp;data=
+=3D
+> >>>>> 05
+> >>>>> %7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.com%7C4e9c08d1e3874a3=
+4
+> >>>>> bd
+> >>>>> 4208da3fb1c007%7C53d82571da1947e49cb4625a166a4a2a%7C0%7C0%7C6378923=
+2
+> >>>>> 99
+> >>>>> 12063922%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMz=
+I
+> >>>>> iL
+> >>>>> CJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&amp;sdata=3DENkjlza0J=
+7xF
+> >>>>> iI
+> >>>>> aPUwMBxHBIkXJNkT%2BLTZ3xuPz%2B10Q%3D&amp;reserved=3D0
+> >>>>>
+> >>>>> [3]
+> >>>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2=
+Fgit.
+> >>>>> kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.gi=
+t
+> >>>>> %2
+> >>>>> Fdiff%2Fdrivers%2Fof%2Fplatform.c%3Fid%3D86c87bea6b42100c67418af690=
+9
+> >>>>> 19
+> >>>>> c44de6ede6e&amp;data=3D05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.rene=
+sas
+> >>>>> .c
+> >>>>> om%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d82571da1947e49cb4625a166=
+a
+> >>>>> 4a
+> >>>>> 2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4=
+w
+> >>>>> Lj
+> >>>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7=
+C
+> >>>>> &a
+> >>>>> mp;sdata=3DyEJUK%2BGK2dzWARC5rfhsSSFSwD%2BLZm8aNNHqQhPYP7Y%3D&amp;r=
+ese
+> >>>>> rv
+> >>>>> ed=3D0
+> >>>> Based on your patch I would say the culprit commit is
+> >>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F=
+git
+> >>>> hub.c%2F&amp;data=3D05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.=
+com
+> >>>> %7Cbf899ff2084643971c7908da3fb7d4b9%7C53d82571da1947e49cb4625a166a4a=
+2
+> >>>> a%7C0%7C1%7C637892356025845542%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wL=
+j
+> >>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000%7C%7C%7C=
+&
+> >>>> amp;sdata=3D%2FzI4yueF6Pc%2Fpvh7Ax9WilnaYX8ozFTRyQpiVaaacbg%3D&amp;r=
+ese
+> >>>> rved=3D0
+> >>>> om%2Ftorvalds%2Flinux%2Fcommit%2Fa1a2b7125e1079cfcc13a116aa3af3df2f9=
+e
+> >>>> 002b&
+> >>>> amp;data=3D05%7C01%7Cprabhakar.mahadev-
+> >>>> lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d8257=
+1
+> >>>> da194
+> >>>> 7e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZ=
+s
+> >>>> b3d8e
+> >>>> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C=
+3
+> >>>> 000%7
+> >>>> C%7C%7C&amp;sdata=3DONR1CiaSID6q4%2Fo%2BI6MlPA4ij89BJphQRpEu5tQxvYQ%=
+3D&
+> >>>> amp;r
+> >>>> eserved=3D0
+> >>>>
+> >>>> commit a1a2b7125e1079cfcc13a116aa3af3df2f9e002b
+> >>>> Author: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> >>>> Date:   Wed Mar 16 20:06:33 2022 +0000
+> >>>>
+> >>>>        of/platform: Drop static setup of IRQ resource from DT core
+> >>>>
+> >>>>        Now that all the DT drivers have switched to platform_get_irq=
+()
+> >>>> we can now
+> >>>>        safely drop the static setup of IRQ resource from DT core cod=
+e.
+> >>>>
+> >>>>        With the above change hierarchical setup of irq domains is no
+> >> longer
+> >>>>        bypassed and thus allowing hierarchical interrupt domains to
+> >> describe
+> >>>>        interrupts using "interrupts" DT property.
+> >>>>
+> >>>>        Signed-off-by: Lad Prabhakar <prabhakar.mahadev-
+> >>>> lad.rj@bp.renesas.com>
+> >>>>        Acked-by: Marc Zyngier <maz@kernel.org>
+> >>>>        Tested-by: Marc Zyngier <maz@kernel.org>
+> >>>>        Signed-off-by: Rob Herring <robh@kernel.org>
+> >>>>        Link:
+> >>>> https://jpn01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2F=
+lor
+> >>>> e.ker%2F&amp;data=3D05%7C01%7Cprabhakar.mahadev-lad.rj%40bp.renesas.=
+com
+> >>>> %7Cbf899ff2084643971c7908da3fb7d4b9%7C53d82571da1947e49cb4625a166a4a=
+2
+> >>>> a%7C0%7C1%7C637892356025845542%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wL=
+j
+> >>>> AwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C2000%7C%7C%7C=
+&
+> >>>> amp;sdata=3DR%2FhdNkjna6kT31Fy9L3HjrDscWR743O%2BAY8sITu9pVE%3D&amp;r=
+ese
+> >>>> rved=3D0
+> >>>> nel.org%2Fr%2F20220316200633.28974-1-prabhakar.mahadev-
+> >>>> lad.rj%40bp.renesas.com&amp;data=3D05%7C01%7Cprabhakar.mahadev-
+> >>>> lad.rj%40bp.renesas.com%7C4e9c08d1e3874a34bd4208da3fb1c007%7C53d8257=
+1
+> >>>> da194
+> >>>> 7e49cb4625a166a4a2a%7C0%7C0%7C637892329912063922%7CUnknown%7CTWFpbGZ=
+s
+> >>>> b3d8e
+> >>>> yJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C=
+3
+> >>>> 000%7
+> >>>> C%7C%7C&amp;sdata=3Dri76vfLpmxe7vFDAlsBjyrSSkuTMz0ydftu3XObLGLA%3D&a=
+mp;
+> >>>> reser
+> >>>> ved=3D0
+> >>>>
+> >>> Looks like the driver which you are using has not been converted to u=
+se
+> >> platform_get_irq(), could you please check that.
+> >>> Cheers,
+> >>> Prabhakar
+> >> Do you mean the mouse and keyboard driver?
+> >>
+> > No it could be your gpio/pinctrl driver assuming the keyboard/mouse are=
+ using GPIO's. If you are using interrupts then it might be some hierarchal=
+ irqc driver in drivers/irqchip/.
+> >
+> > Cheers,
+> > Prabhakar
+> Good to know. I only use unmodified drivers from the official Linux
+> kernel so it's not an issue of the Cyrus+ board.
 
-On Fri, May 27, 2022 at 02:23:42PM +0200, Heiko Carstens wrote:
-> On Tue, May 24, 2022 at 07:45:31PM -0400, Peter Xu wrote:
-> > I observed that for each of the shared file-backed page faults, we're very
-> > likely to retry one more time for the 1st write fault upon no page.  It's
-> > because we'll need to release the mmap lock for dirty rate limit purpose
-> > with balance_dirty_pages_ratelimited() (in fault_dirty_shared_page()).
-> > 
-> > Then after that throttling we return VM_FAULT_RETRY.
-> > 
-> > We did that probably because VM_FAULT_RETRY is the only way we can return
-> > to the fault handler at that time telling it we've released the mmap lock.
-> > 
-> > However that's not ideal because it's very likely the fault does not need
-> > to be retried at all since the pgtable was well installed before the
-> > throttling, so the next continuous fault (including taking mmap read lock,
-> > walk the pgtable, etc.) could be in most cases unnecessary.
-> > 
-> > It's not only slowing down page faults for shared file-backed, but also add
-> > more mmap lock contention which is in most cases not needed at all.
-> > 
-> > To observe this, one could try to write to some shmem page and look at
-> > "pgfault" value in /proc/vmstat, then we should expect 2 counts for each
-> > shmem write simply because we retried, and vm event "pgfault" will capture
-> > that.
-> > 
-> > To make it more efficient, add a new VM_FAULT_COMPLETED return code just to
-> > show that we've completed the whole fault and released the lock.  It's also
-> > a hint that we should very possibly not need another fault immediately on
-> > this page because we've just completed it.
-> > 
-> > This patch provides a ~12% perf boost on my aarch64 test VM with a simple
-> > program sequentially dirtying 400MB shmem file being mmap()ed and these are
-> > the time it needs:
-> > 
-> >   Before: 650.980 ms (+-1.94%)
-> >   After:  569.396 ms (+-1.38%)
-> > 
-> > I believe it could help more than that.
-> > 
-> > We need some special care on GUP and the s390 pgfault handler (for gmap
-> > code before returning from pgfault), the rest changes in the page fault
-> > handlers should be relatively straightforward.
-> > 
-> > Another thing to mention is that mm_account_fault() does take this new
-> > fault as a generic fault to be accounted, unlike VM_FAULT_RETRY.
-> > 
-> > I explicitly didn't touch hmm_vma_fault() and break_ksm() because they do
-> > not handle VM_FAULT_RETRY even with existing code, so I'm literally keeping
-> > them as-is.
-> > 
-> > Signed-off-by: Peter Xu <peterx@redhat.com>
-> ...
-> > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> > index e173b6187ad5..9503a7cfaf03 100644
-> > --- a/arch/s390/mm/fault.c
-> > +++ b/arch/s390/mm/fault.c
-> > @@ -339,6 +339,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  	unsigned long address;
-> >  	unsigned int flags;
-> >  	vm_fault_t fault;
-> > +	bool need_unlock = true;
-> >  	bool is_write;
-> >  
-> >  	tsk = current;
-> > @@ -433,6 +434,13 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  			goto out_up;
-> >  		goto out;
-> >  	}
-> > +
-> > +	/* The fault is fully completed (including releasing mmap lock) */
-> > +	if (fault & VM_FAULT_COMPLETED) {
-> > +		need_unlock = false;
-> > +		goto out_gmap;
-> > +	}
-> > +
-> >  	if (unlikely(fault & VM_FAULT_ERROR))
-> >  		goto out_up;
-> >  
-> > @@ -452,6 +460,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  		mmap_read_lock(mm);
-> >  		goto retry;
-> >  	}
-> > +out_gmap:
-> >  	if (IS_ENABLED(CONFIG_PGSTE) && gmap) {
-> >  		address =  __gmap_link(gmap, current->thread.gmap_addr,
-> >  				       address);
-> > @@ -466,7 +475,8 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-> >  	}
-> >  	fault = 0;
-> >  out_up:
-> > -	mmap_read_unlock(mm);
-> > +	if (need_unlock)
-> > +		mmap_read_unlock(mm);
-> >  out:
-> 
-> This seems to be incorrect. __gmap_link() requires the mmap_lock to be
-> held. Christian, Janosch, or David, could you please check?
+The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
+resources to a child platform device. Can you try the following
+change:
 
-Thanks for pointing that out.  Indeed I see the clue right above the
-comment of __gmap_link():
+diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr=
+-of.c
+index 44a7e58a26e3..47d9b7be60da 100644
+--- a/drivers/usb/host/fsl-mph-dr-of.c
++++ b/drivers/usb/host/fsl-mph-dr-of.c
+@@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
+                                        const char *name, int id)
+ {
+        struct platform_device *pdev;
+-       const struct resource *res =3D ofdev->resource;
+-       unsigned int num =3D ofdev->num_resources;
+        int retval;
 
-/*
- * ...
- * The mmap_lock of the mm that belongs to the address space must be held
- * when this function gets called.
- */
-int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
+        pdev =3D platform_device_alloc(name, id);
+@@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_device_registe=
+r(
+        if (retval)
+                goto error;
 
-A further fact is it'll walk the pgtable right afterwards, assuming
-gmap->mm will definitely be the current mm or it'll definitely go wrong.
+-       if (num) {
+-               retval =3D platform_device_add_resources(pdev, res, num);
+-               if (retval)
+-                       goto error;
+-       }
++       pdev->dev.of_node =3D ofdev->dev.of_node;
 
-I'll change s390 to retake the lock with the new COMPLETE retcode, so at
-least it'll avoid one pgtable work procedure even if the lock overhead was
-kept.
-
-With that, one more possible further optimization for s390 only will be
-conditionally not taking that lock when !CONFIG_PGSTE, but I have totally
-no idea whether that'll be a common use case, so I plan to leave that for
-later in all cases.
-
-Actually after doing that the whole changeset of s390 is even more
-straightforward:
-
----8<---
-diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-index e173b6187ad5..4608cc962ecf 100644
---- a/arch/s390/mm/fault.c
-+++ b/arch/s390/mm/fault.c
-@@ -433,6 +433,17 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-                        goto out_up;
-                goto out;
-        }
-+
-+       /* The fault is fully completed (including releasing mmap lock) */
-+       if (fault & VM_FAULT_COMPLETED) {
-+               /*
-+                * Gmap will need the mmap lock again, so retake it.  TODO:
-+                * only conditionally take the lock when CONFIG_PGSTE set.
-+                */
-+               mmap_read_lock(mm);
-+               goto out_gmap;
-+       }
-+
-        if (unlikely(fault & VM_FAULT_ERROR))
-                goto out_up;
- 
-@@ -452,6 +463,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
-                mmap_read_lock(mm);
-                goto retry;
-        }
-+out_gmap:
-        if (IS_ENABLED(CONFIG_PGSTE) && gmap) {
-                address =  __gmap_link(gmap, current->thread.gmap_addr,
-                                       address);
----8<---
-
-Thanks,
-
--- 
-Peter Xu
-
+        retval =3D platform_device_add(pdev);
+        if (retval)
