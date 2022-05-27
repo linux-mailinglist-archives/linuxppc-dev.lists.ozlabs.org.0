@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0757E535AAF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 09:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFCA535ABB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 09:54:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L8cQP6ZlSz3c2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 17:49:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L8cXZ6RYSz3bcp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 May 2022 17:54:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=FIWjv21H;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=crnmnpxg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.166; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=FIWjv21H;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=crnmnpxg;
 	dkim-atps=neutral
-X-Greylist: delayed 50573 seconds by postgrey-1.36 at boromir; Fri, 27 May 2022 17:48:51 AEST
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8cPb5Mgqz2yp0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 17:48:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653637715;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L8cWq3vKtz2yjS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 May 2022 17:54:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653638042;
     s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    h=In-Reply-To:From:Cc:To:References:Subject:Date:Message-ID:Cc:Date:
     From:Subject:Sender;
-    bh=aCP2TZkcxHJ+48G7YvIzQuWcwnlFw0A3oGLlV2FodhY=;
-    b=FIWjv21HIa2Qt3OYmLWa3QhTWoTMOPxGo/3CXnGuOoQv/tyeoac9OYyGh2LDQTQ2Ia
-    OC2ZN3kgtcorpY8cVyK9iLyC2b0yQlpdbDPWWEqV4VXxx0pJyYnluCgUDmuv5MgC5V+t
-    wJp8WmVQLsA2tIMLdEhAiesIkdv+fTVqIOBD7pitxDUGVdkEZ3lWdJ5ET8LdZzjtZrze
-    5+b9p9s3FG0Nd0x5KHELqkCXCufQpUZ7kH7xnwzqLicgG7W4/qsfKxJFXbeyvEoOfE84
-    zkv2OcLuSqy+0artxy62tib4Lfi7i9ruQmu7g0EwMUgWTn4cYsoIwMHLNiQc98EVkK0C
-    uzJQ==
+    bh=wmAkT0rL230uyk9YdOr6qXCpLpYTI4KJUXbXvvxSc0g=;
+    b=crnmnpxgMZ8OBuB0Wa/CCjY5IaHGhBpJUPky3UQzJhQQb7yYCxiudtwGfTCO952aYM
+    Mz+E6Y0Jla5hu40ArWKF8wDPMOe0Muxvs6rCVuBMdTDWBFig/yOcfoyr+1HfvE21InOn
+    t6hr6zSK3lb2yHcD9PrZVBxpz6t2TzPaPqKMXuat8XairOU6UrKjC7s/Ssm+WP2fMGqy
+    NyOw6EUxbBO+lSBr0agdP/PfiHE56F94ZOP6jS9UDxxWD1k/xYoTRqPkfccQ6DzS015Y
+    qFnP7vHolD7B8EYhBzlPjb2jevmGqojI5bTZpq65nB/NGqZgb+5/FIpfIZzLqFTOIUPf
+    kTnA==
 Authentication-Results: strato.com;
     dkim=none
 X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwjW6ENWaVbcdCVpgifkNbNTSisTgw=="
 X-RZG-CLASS-ID: mo00
 Received: from [IPV6:2a02:8109:8980:4474:31d6:7769:fc09:c5bc]
     by smtp.strato.de (RZmta 47.45.0 AUTH)
-    with ESMTPSA id 205ca1y4R7mYdfO
+    with ESMTPSA id 205ca1y4R7s1dgN
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
 	(Client did not present a certificate);
-    Fri, 27 May 2022 09:48:34 +0200 (CEST)
-Content-Type: multipart/mixed; boundary="------------leLJQJ2zDrROc14PJ5ZTQfRa"
-Message-ID: <b9d3ed06-a8b5-487c-a58e-9296df63417c@xenosoft.de>
-Date: Fri, 27 May 2022 09:48:33 +0200
+    Fri, 27 May 2022 09:54:01 +0200 (CEST)
+Content-Type: multipart/mixed; boundary="------------eg0wKJluLQAowr02rfu0BV0P"
+Message-ID: <1df7e131-5c21-67d3-a0a4-8482d12dc6d9@xenosoft.de>
+Date: Fri, 27 May 2022 09:54:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
  Gecko/20100101 Thunderbird/91.9.1
-Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
+Subject: Fwd: [FSL P50x0] Keyboard and mouse don't work anymore after the
  devicetree updates for 5.19
 Content-Language: de-DE
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
+References: <b9d3ed06-a8b5-487c-a58e-9296df63417c@xenosoft.de>
+To: "robh@kernel.org >> Rob Herring" <robh@kernel.org>,
+ "christophe.leroy@csgroup.eu >> Christophe Leroy"
+ <christophe.leroy@csgroup.eu>,
  Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
- <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu>
 From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu>
+In-Reply-To: <b9d3ed06-a8b5-487c-a58e-9296df63417c@xenosoft.de>
+X-Forwarded-Message-Id: <b9d3ed06-a8b5-487c-a58e-9296df63417c@xenosoft.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,14 +71,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "R.T.Dickinson" <rtd2@xtra.co.nz>, mad skateman <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
+Cc: "darren@stevens-zone.net >> Darren Stevens" <darren@stevens-zone.net>, "linuxppc-dev@lists.ozlabs.org >> linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "rtd2@xtra.co.nz >> R.T.Dickinson" <rtd2@xtra.co.nz>, "madskateman@gmail.com >> mad skateman" <madskateman@gmail.com>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 This is a multi-part message in MIME format.
---------------leLJQJ2zDrROc14PJ5ZTQfRa
+--------------eg0wKJluLQAowr02rfu0BV0P
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+
+Rob's email address corrected.
+
+-- Christian
+
 
 On 27 May 2022 at 09:23 am, Christophe Leroy wrote:
 > Hi
@@ -112,23 +117,23 @@ On 27 May 2022 at 09:23 am, Christophe Leroy wrote:
 >
 > commit a1a2b7125e1079cfcc13a116aa3af3df2f9e002b
 > Author: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> Date:   Wed Mar 16 20:06:33 2022 +0000
+> Date: Wed Mar 16 20:06:33 2022 +0000
 >
->       of/platform: Drop static setup of IRQ resource from DT core
+> of/platform: Drop static setup of IRQ resource from DT core
 >
->       Now that all the DT drivers have switched to platform_get_irq() we
+> Now that all the DT drivers have switched to platform_get_irq() we
 > can now
->       safely drop the static setup of IRQ resource from DT core code.
+> safely drop the static setup of IRQ resource from DT core code.
 >
->       With the above change hierarchical setup of irq domains is no longer
->       bypassed and thus allowing hierarchical interrupt domains to describe
->       interrupts using "interrupts" DT property.
+> With the above change hierarchical setup of irq domains is no longer
+> bypassed and thus allowing hierarchical interrupt domains to describe
+> interrupts using "interrupts" DT property.
 >
->       Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
->       Acked-by: Marc Zyngier <maz@kernel.org>
->       Tested-by: Marc Zyngier <maz@kernel.org>
->       Signed-off-by: Rob Herring <robh@kernel.org>
->       Link:
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Acked-by: Marc Zyngier <maz@kernel.org>
+> Tested-by: Marc Zyngier <maz@kernel.org>
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> Link:
 > https://lore.kernel.org/r/20220316200633.28974-1-prabhakar.mahadev-lad.rj@bp.renesas.com
 >
 >
@@ -146,7 +151,7 @@ dts, and the dtsi file.
 
 Thanks,
 Christian
---------------leLJQJ2zDrROc14PJ5ZTQfRa
+--------------eg0wKJluLQAowr02rfu0BV0P
 Content-Type: text/plain; charset=UTF-8; name="p5040si-pre.dtsi"
 Content-Disposition: attachment; filename="p5040si-pre.dtsi"
 Content-Transfer-Encoding: base64
@@ -220,7 +225,7 @@ Y2xvY2tzID0gPCZjbG9ja2dlbiAxIDM+OwoJCQluZXh0LWxldmVsLWNhY2hlID0gPCZMMl8z
 PjsKCQkJZnNsLHBvcnRpZC1tYXBwaW5nID0gPDB4MTAwMDAwMDA+OwoJCQlMMl8zOiBsMi1j
 YWNoZSB7CgkJCQluZXh0LWxldmVsLWNhY2hlID0gPCZjcGM+OwoJCQl9OwoJCX07Cgl9Owp9
 Owo=
---------------leLJQJ2zDrROc14PJ5ZTQfRa
+--------------eg0wKJluLQAowr02rfu0BV0P
 Content-Type: text/plain; charset=UTF-8; name="cyrus_p5040.dts"
 Content-Disposition: attachment; filename="cyrus_p5040.dts"
 Content-Transfer-Encoding: base64
@@ -326,7 +331,7 @@ PSA8MHgwMjAwMDAwMCAwIDB4ZTAwMDAwMDAKCQkJCSAgMHgwMjAwMDAwMCAwIDB4ZTAwMDAw
 MDAKCQkJCSAgMCAweDIwMDAwMDAwCgoJCQkJICAweDAxMDAwMDAwIDAgMHgwMDAwMDAwMAoJ
 CQkJICAweDAxMDAwMDAwIDAgMHgwMDAwMDAwMAoJCQkJICAwIDB4MDAwMTAwMDA+OwoJCX07
 Cgl9Owp9OwoKL2luY2x1ZGUvICJwNTA0MHNpLXBvc3QuZHRzaSIK
---------------leLJQJ2zDrROc14PJ5ZTQfRa
+--------------eg0wKJluLQAowr02rfu0BV0P
 Content-Type: application/octet-stream; name="cyrus-p5040.dtb"
 Content-Disposition: attachment; filename="cyrus-p5040.dtb"
 Content-Transfer-Encoding: base64
@@ -919,4 +924,4 @@ ACNncGlvLWNlbGxzAGdwaW8tY29udHJvbGxlcgBwaHlfdHlwZQBwb3J0MABkcl9tb2RlAGZz
 bCxzZWMtZXJhAGZzbCxxbWFuLXBvcnRhbHMAbWVtb3J5LXJlZ2lvbgBmc2wsYm1hbi1wb3J0
 YWxzAGJ1cy1yYW5nZQBpbnRlcnJ1cHQtbWFwLW1hc2sAaW50ZXJydXB0LW1hcAA=
 
---------------leLJQJ2zDrROc14PJ5ZTQfRa--
+--------------eg0wKJluLQAowr02rfu0BV0P--
