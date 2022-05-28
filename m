@@ -2,49 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6903536CA0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 13:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E256536CB7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 13:50:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L9KcK5ypVz3c8p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 21:45:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L9Kk10S3Lz2xnP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 21:50:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oKAohRxl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NgMKiBS6;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oKAohRxl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NgMKiBS6;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L9KbZ0snCz2x9v
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 21:44:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L9KjN6nVDz2xgN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 21:50:00 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 396E560DB6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 11:44:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9B9F7C34100
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 11:44:54 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id EB27460E0A
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 11:49:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5921DC34100
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 11:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1653738294;
-	bh=LNJmi9CLzCl/0rc4Tk9iagsfhZhkAf5y7IfOutEhLVw=;
+	s=k20201202; t=1653738598;
+	bh=V/VVIDWNI5r98v+gIi2izUGO3YE57IIWnGW283eNgVE=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=oKAohRxlV7lSx09eYMgH8X8HUlpI+Yz42qyw3v6gZ9oxQX0CurMLbO4D5yhm4kLRm
-	 X/6MZV9NXpEDcjwvtAbAhtAGqHSYvH3wAiIIEMiZoH2zltE9uGuVh6HnPnnEKhNmKV
-	 mBl7G9CMy8AHweunKdSxHkB69B9bHN7xfhPhvo3AlCDPKr9NrrakCQfdPnBieap40L
-	 VIDElwuIzwXxYOICfvOt/xf5mIA89UUCxSFCbLBxzkXJL3wNH23i6p7A/ZEQm2633i
-	 jbmfVkDgiJ0zvYEZhT6NEtTqbJngxMNbIeYoON5whaJD/jC27jYisA3yGV204U7UdI
-	 r5vC3rDiWmh3w==
+	b=NgMKiBS63littwQwhfAEUAmAxley6OAIQsR04X2TrsOBXP+b3wuGEB3+om0mSzFII
+	 9y+HtamEVQy5+Vc4aaToXbiqfmuiE0/eVZlDcD2a0xVz8bOzrIIE4AQrhyHFYakqeo
+	 FYB75RMSO/54wxdD+wEGV94kq+Hd6haQLtvhyU3G0q4K7xoV0IGAVmNGsmnhRUXwWa
+	 nbZD/sovo2ElJs/sClgog47QVCeYkl7gr8ocnW2l8MJUH0+AutfRnntPIt8Ad8ntaL
+	 webpgIlHbv4lEMFhetwAOD8NzwRj0wKPsPNoTbrhKteEyiAPz5usc2yoSUViBI0VHh
+	 WzUIaLqnGCrTA==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 8C93AC05FD4; Sat, 28 May 2022 11:44:54 +0000 (UTC)
+	id 40FDAC05FD2; Sat, 28 May 2022 11:49:58 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216041] Stack overflow at boot (do_IRQ: stack overflow: 1984)
- on a PowerMac G4 DP, KASAN debug build
-Date: Sat, 28 May 2022 11:44:54 +0000
+Subject: [Bug 215389] pagealloc: memory corruption at building glibc-2.33 and
+ running its' testsuite
+Date: Sat, 28 May 2022 11:49:57 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
@@ -54,15 +54,15 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
+X-Bugzilla-Status: ASSIGNED
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-216041-206035-cbAemCHsLK@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216041-206035@https.bugzilla.kernel.org/>
-References: <bug-216041-206035@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-215389-206035-VQKyNLKZOh@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-215389-206035@https.bugzilla.kernel.org/>
+References: <bug-215389-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -82,12 +82,11 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216041
+https://bugzilla.kernel.org/show_bug.cgi?id=3D215389
 
---- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 301067
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D301067&action=3Dedit
-kernel .config (5.18.0, PowerMac G4 DP)
+--- Comment #27 from Erhard F. (erhard_f@mailbox.org) ---
+I opened a new bug for the stack issue which contains a bit more data.
+Hopefully the output is of some help (see bug #216041).
 
 --=20
 You may reply to this email to add a comment.
