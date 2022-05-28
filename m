@@ -1,63 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2675A536A35
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 04:20:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6BC536B38
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 08:32:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L954Y00k9z3chR
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 12:20:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mhM1VRpA;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L9Bg6467zz3fCY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 16:32:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mhM1VRpA;
-	dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L953F57pVz2xgN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 12:19:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1653704377; x=1685240377;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2NL8AxS86M7I5dU8Wh+2S1D09Ly5vSoSMttxS33i76c=;
-  b=mhM1VRpARLKEFnFRAUjxQwVBFlApW78eHUyCVCrvoajFOWGHs1jYKPi4
-   6W0lAdgoDekewOmW6w8odgJ4VUbVPmVev9hQJt5k0Kqn0x3DABg0uMAfn
-   ePJwau2RzuY6tQeIRkZM2ELZTcbReF3guxwIYcDU/rVRXYlOPQBGlMIt/
-   YvSIc/fa5tO+jWhHvupwCxoAkjFsLoxpB6ZCz+P9JAdFylTPN1adPIJDK
-   8UMnKFtZn5zg4Pq5jNNynZz0eN+uLfuHHL1yMquklsg6HN5OOWadXnk84
-   IdfymvTbrmK4oaNpa14jGu0cEwV+i+0uHVkhlZNZRo+E+iapEeDMe5yLq
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10360"; a="273428307"
-X-IronPort-AV: E=Sophos;i="5.91,257,1647327600"; 
-   d="scan'208";a="273428307"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2022 19:18:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,257,1647327600"; 
-   d="scan'208";a="631846080"
-Received: from lkp-server01.sh.intel.com (HELO db63a1be7222) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 27 May 2022 19:18:33 -0700
-Received: from kbuild by db63a1be7222 with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1num2D-0005NC-4L;
-	Sat, 28 May 2022 02:18:33 +0000
-Date: Sat, 28 May 2022 10:17:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS
- dcf280e6f80be280ca7dd1b058f038654e4a18dd
-Message-ID: <62918647.10iuOgMcbjMtOcLu%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L9BcF2JXVz3bqd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 16:30:05 +1000 (AEST)
+Received: from kwepemi500010.china.huawei.com (unknown [172.30.72.55])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4L9BZb6mHvzjX5R;
+	Sat, 28 May 2022 14:28:39 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
+ kwepemi500010.china.huawei.com (7.221.188.191) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sat, 28 May 2022 14:29:25 +0800
+Received: from localhost.localdomain (10.175.112.125) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sat, 28 May 2022 14:29:24 +0800
+From: Tong Tiangen <tongtiangen@huawei.com>
+To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
+	<tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Robin Murphy <robin.murphy@arm.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+	Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+	<benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
+	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH -next v5 0/8]arm64: add machine check safe support
+Date: Sat, 28 May 2022 06:50:48 +0000
+Message-ID: <20220528065056.1034168-1-tongtiangen@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,140 +58,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Tong Tiangen <tongtiangen@huawei.com>, Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: dcf280e6f80be280ca7dd1b058f038654e4a18dd  powerpc/64: Include cache.h directly in paca.h
+With the increase of memory capacity and density, the probability of
+memory error increases. The increasing size and density of server RAM
+in the data center and cloud have shown increased uncorrectable memory
+errors.
 
-elapsed time: 725m
+Currently, the kernel has a mechanism to recover from hardware memory
+errors. This patchset provides an new recovery mechanism.
 
-configs tested: 115
-configs skipped: 3
+For arm64, the hardware memory error handling is do_sea() which divided
+into two cases:
+ 1. The user state consumed the memory errors, the solution is kill the
+    user process and isolate the error page.
+ 2. The kernel state consumed the memory errors, the solution is panic.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+For case 2, Undifferentiated panic maybe not the optimal choice, it can be
+handled better, in some scenarios, we can avoid panic, such as uaccess, if the
+uaccess fails due to memory error, only the user process will be affected,
+kill the user process and isolate the user page with hardware memory errors
+is a better choice.
 
-gcc tested configs:
-arm                              allmodconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-arm                                 defconfig
-arm64                               defconfig
-i386                          randconfig-c001
-sh                             sh03_defconfig
-xtensa                           alldefconfig
-arc                     haps_hs_smp_defconfig
-powerpc                 mpc8540_ads_defconfig
-sh                            hp6xx_defconfig
-mips                 decstation_r4k_defconfig
-xtensa                    xip_kc705_defconfig
-powerpc                     tqm8555_defconfig
-sh                            shmin_defconfig
-arm                           u8500_defconfig
-sh                           se7712_defconfig
-powerpc                     ep8248e_defconfig
-sh                          sdk7786_defconfig
-xtensa                  cadence_csp_defconfig
-sh                          kfr2r09_defconfig
-ia64                                defconfig
-powerpc64                           defconfig
-arm                        shmobile_defconfig
-nios2                         10m50_defconfig
-powerpc                   currituck_defconfig
-arm                          lpd270_defconfig
-arm                  randconfig-c002-20220526
-arm                  randconfig-c002-20220524
-x86_64                        randconfig-c001
-ia64                             allmodconfig
-ia64                             allyesconfig
-riscv                             allnoconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-alpha                               defconfig
-csky                                defconfig
-nios2                            allyesconfig
-alpha                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-h8300                            allyesconfig
-xtensa                           allyesconfig
-arc                                 defconfig
-sh                               allmodconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc64                            defconfig
-s390                                defconfig
-s390                             allmodconfig
-s390                             allyesconfig
-sparc                               defconfig
-i386                             allyesconfig
-sparc                            allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-i386                          randconfig-a003
-i386                          randconfig-a001
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220524
-s390                 randconfig-r044-20220524
-riscv                randconfig-r042-20220524
-arc                  randconfig-r043-20220526
-s390                 randconfig-r044-20220526
-riscv                randconfig-r042-20220526
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                            allmodconfig
-riscv                            allyesconfig
-x86_64                    rhel-8.3-kselftests
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
+This patchset can be divided into two parts:
+ 1. Patch 1~4    - do some restructuring to arm64 extable.
+ 2. Patch 5~8    - arm64 add support for machine check safe framework,
+ then ,add two specific scenarios(uaccess/cow) to machine check safe.
 
-clang tested configs:
-arm                      pxa255-idp_defconfig
-arm                       aspeed_g4_defconfig
-mips                     cu1830-neo_defconfig
-x86_64                        randconfig-a005
-x86_64                        randconfig-a003
-x86_64                        randconfig-a001
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-hexagon              randconfig-r045-20220524
-hexagon              randconfig-r041-20220524
-hexagon              randconfig-r045-20220527
-hexagon              randconfig-r041-20220527
-s390                 randconfig-r044-20220527
-riscv                randconfig-r042-20220527
+Since V4:
+ 1. According Michael's suggestion, add patch5.
+ 2. According Mark's suggestiog, do some restructuring to arm64
+ extable, then a new adaptation of machine check safe support is made based
+ on this.
+ 3. According Mark's suggestion, support machine check safe in do_mte() in
+ cow scene.
+ 4. In V4, two patches have been merged into -next, so V5 not send these
+ two patches.
+
+Since V3:
+ 1. According to Robin's suggestion, direct modify user_ldst and
+ user_ldp in asm-uaccess.h and modify mte.S.
+ 2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
+ and copy_to_user.S.
+ 3. According to Robin's suggestion, using micro in copy_page_mc.S to
+ simplify code.
+ 4. According to KeFeng's suggestion, modify powerpc code in patch1.
+ 5. According to KeFeng's suggestion, modify mm/extable.c and some code
+ optimization.
+
+Since V2:
+ 1. According to Mark's suggestion, all uaccess can be recovered due to
+    memory error.
+ 2. Scenario pagecache reading is also supported as part of uaccess
+    (copy_to_user()) and duplication code problem is also solved. 
+    Thanks for Robin's suggestion.
+ 3. According Mark's suggestion, update commit message of patch 2/5.
+ 4. According Borisllav's suggestion, update commit message of patch 1/5.
+
+Since V1:
+ 1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
+   ARM64_UCE_KERNEL_RECOVERY.
+ 2.Add two new scenes, cow and pagecache reading.
+ 3.Fix two small bug(the first two patch).
+
+V1 in here:
+https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
+
+Tong Tiangen (8):
+  arm64: extable: add new extable type EX_TYPE_KACCESS_ERR_ZERO support
+  arm64: extable: make uaaccess helper use extable type
+    EX_TYPE_UACCESS_ERR_ZERO
+  arm64: extable: move _cond_extable to _cond_uaccess_extable
+  arm64: extable: cleanup redundant extable type EX_TYPE_FIXUP
+  Add generic fallback version of copy_mc_to_user()
+  arm64: add support for machine check error safe
+  arm64: add uaccess to machine check safe
+  arm64: add cow to machine check safe
+
+ arch/arm64/Kconfig                   |  1 +
+ arch/arm64/include/asm/asm-extable.h | 45 +++++++++----
+ arch/arm64/include/asm/asm-uaccess.h | 12 ++--
+ arch/arm64/include/asm/assembler.h   |  4 +-
+ arch/arm64/include/asm/extable.h     |  1 +
+ arch/arm64/include/asm/mte.h         |  4 ++
+ arch/arm64/include/asm/page.h        | 10 +++
+ arch/arm64/include/asm/uaccess.h     | 94 ++++++++++++++--------------
+ arch/arm64/lib/Makefile              |  2 +
+ arch/arm64/lib/copy_from_user.S      |  8 +--
+ arch/arm64/lib/copy_page_mc.S        | 82 ++++++++++++++++++++++++
+ arch/arm64/lib/copy_to_user.S        |  8 +--
+ arch/arm64/lib/mte.S                 | 19 ++++++
+ arch/arm64/mm/copypage.c             | 41 +++++++++---
+ arch/arm64/mm/extable.c              | 22 ++++++-
+ arch/arm64/mm/fault.c                | 27 +++++++-
+ arch/powerpc/include/asm/uaccess.h   |  1 +
+ arch/x86/include/asm/uaccess.h       |  1 +
+ include/linux/highmem.h              |  8 +++
+ include/linux/uaccess.h              |  9 +++
+ mm/memory.c                          |  2 +-
+ 21 files changed, 314 insertions(+), 87 deletions(-)
+ create mode 100644 arch/arm64/lib/copy_page_mc.S
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.25.1
+
