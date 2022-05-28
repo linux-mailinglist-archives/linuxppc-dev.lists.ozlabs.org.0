@@ -1,46 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B74536C27
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 11:51:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 855D6536C35
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 12:02:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L9H4S0055z3cCm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 19:51:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L9HJv4Cg9z3c9C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 20:02:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=J3xVbKzm;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=xiujianfeng@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=J3xVbKzm;
+	dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L9H3z1PjBz2yjC
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 19:50:49 +1000 (AEST)
-Received: from dggpeml500023.china.huawei.com (unknown [172.30.72.55])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4L9H1L4J6KzgYQ2;
-	Sat, 28 May 2022 17:48:38 +0800 (CST)
-Received: from [10.67.110.112] (10.67.110.112) by
- dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Sat, 28 May 2022 17:50:13 +0800
-Subject: Re: [PATCH -next, v2] powerpc: add support for syscall stack
- randomization
-From: xiujianfeng <xiujianfeng@huawei.com>
-To: <mpe@ellerman.id.au>, <benh@kernel.crashing.org>, <paulus@samba.org>,
-	<npiggin@gmail.com>, <christophe.leroy@csgroup.eu>, <tglx@linutronix.de>,
-	<mark.rutland@arm.com>
-References: <20220516073225.112875-1-xiujianfeng@huawei.com>
-Message-ID: <e7b0d68b-914d-7283-827c-101988923929@huawei.com>
-Date: Sat, 28 May 2022 17:50:12 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.9.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L9HJG1X9sz309K
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 20:01:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653732079;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=sbW/gFw34LfylgQ4q1IITyiYEDsJUEtGMqQj5XMQ+rM=;
+    b=J3xVbKzmUnjEddXZZ3RK1LV/spy6udmegVw96XjfHY4nCqW7Mw/DkLScok06uohZcH
+    Cw3yAJctbDs9honuBQvQWv0TS4Kw86+ViedONzQplnpH7cBjLWr4JIZSl2N1rm0/yJoc
+    ih4Wok95qGhRpPXv6RifW1I6ZtXKL4KTruu1XwboqBHIX0n0OIBIfBjWoijI4a+xADdC
+    lu9oVZnk1jT0dyZb7IquUrDglqSz3d3DE9xP2zIuSan9Ix7/AOtFblmoQyEt0F3AVqMa
+    N9nZyPaHtt7asg3fwMpBnUq1VB8WT6/jJp4/57nB3A9RohgPxwqtuLAqBn52XGikW1E/
+    ib6A==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwjR6VFJ75I/3hsuT3TLPFiWDLPBCg=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPV6:2a02:8109:8980:4474:4017:e56c:e898:2b8d]
+    by smtp.strato.de (RZmta 47.45.0 AUTH)
+    with ESMTPSA id 205ca1y4SA1IgL5
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sat, 28 May 2022 12:01:18 +0200 (CEST)
+Content-Type: multipart/mixed; boundary="------------zVsZdGeK2A7zrZ8Q9MgWrRH1"
+Message-ID: <ea464a1d-407d-7a30-16f8-3efd32eca039@xenosoft.de>
+Date: Sat, 28 May 2022 12:01:18 +0200
 MIME-Version: 1.0
-In-Reply-To: <20220516073225.112875-1-xiujianfeng@huawei.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.110.112]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500023.china.huawei.com (7.185.36.114)
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.1
+Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after the
+ devicetree updates for 5.19
+Content-Language: de-DE
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: Rob Herring <robh@kernel.org>
+References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
+ <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu>
+ <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de>
+ <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
+ <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
+ <f2945a3f-04c6-9685-3193-62d02e6453b8@xenosoft.de>
+In-Reply-To: <f2945a3f-04c6-9685-3193-62d02e6453b8@xenosoft.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,111 +74,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-friendly ping....
+This is a multi-part message in MIME format.
+--------------zVsZdGeK2A7zrZ8Q9MgWrRH1
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-�� 2022/5/16 15:32, Xiu Jianfeng д��:
-> Add support for adding a random offset to the stack while handling
-> syscalls. This patch uses mftb() instead of get_random_int() for better
-> performance.
+On 28 May 2022 at 10:05 am, Christian Zigotzky wrote:
+> On 27 May 2022 at 04:23 am, Rob Herring wrote:
+>> The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
+>> resources to a child platform device. Can you try the following
+>> change:
+>>
+>> diff --git a/drivers/usb/host/fsl-mph-dr-of.c 
+>> b/drivers/usb/host/fsl-mph-dr-of.c
+>> index 44a7e58a26e3..47d9b7be60da 100644
+>> --- a/drivers/usb/host/fsl-mph-dr-of.c
+>> +++ b/drivers/usb/host/fsl-mph-dr-of.c
+>> @@ -80,8 +80,6 @@ static struct platform_device 
+>> *fsl_usb2_device_register(
+>>                                          const char *name, int id)
+>>   {
+>>          struct platform_device *pdev;
+>> -       const struct resource *res = ofdev->resource;
+>> -       unsigned int num = ofdev->num_resources;
+>>          int retval;
+>>
+>>          pdev = platform_device_alloc(name, id);
+>> @@ -106,11 +104,7 @@ static struct platform_device 
+>> *fsl_usb2_device_register(
+>>          if (retval)
+>>                  goto error;
+>>
+>> -       if (num) {
+>> -               retval = platform_device_add_resources(pdev, res, num);
+>> -               if (retval)
+>> -                       goto error;
+>> -       }
+>> +       pdev->dev.of_node = ofdev->dev.of_node;
+>>
+>>          retval = platform_device_add(pdev);
+>>          if (retval)
+> Hi Rob,
 >
-> In order to avoid unconditional stack canaries on syscall entry (due to
-> the use of alloca()), also disable stack protector to avoid triggering
-> needless checks and slowing down the entry path. As there is no general
-> way to control stack protector coverage with a function attribute, this
-> must be disabled at the compilation unit level.
+> Thanks a lot for your patch! :-)
 >
-> Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+> First attempt with the latest git kernel:
 >
-> ---
-> Changes in v2:
->    -move choose choose_random_kstack_offset() to the end of system_call_exception
->    -allow full 6 (10) bits of entropy
->    -disable stack-protector for interrupt.c
-> ---
->   arch/powerpc/Kconfig            |  1 +
->   arch/powerpc/kernel/Makefile    |  7 +++++++
->   arch/powerpc/kernel/interrupt.c | 19 ++++++++++++++++++-
->   3 files changed, 26 insertions(+), 1 deletion(-)
+> patching file a/drivers/usb/host/fsl-mph-dr-of.c
+> Hunk #1 FAILED at 80.
+> Hunk #2 FAILED at 106.
+> 2 out of 2 hunks FAILED -- saving rejects to file 
+> a/drivers/usb/host/fsl-mph-dr-of.c.rej
 >
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 98309eeae09c..2f0019a0054e 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -192,6 +192,7 @@ config PPC
->   	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
->   	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
->   	select HAVE_ARCH_KFENCE			if PPC_BOOK3S_32 || PPC_8xx || 40x
-> +	select HAVE_ARCH_RANDOMIZE_KSTACK_OFFSET
->   	select HAVE_ARCH_KGDB
->   	select HAVE_ARCH_MMAP_RND_BITS
->   	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
-> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
-> index 4ddd161aef32..5c5e85b8229b 100644
-> --- a/arch/powerpc/kernel/Makefile
-> +++ b/arch/powerpc/kernel/Makefile
-> @@ -40,6 +40,13 @@ CFLAGS_cputable.o += -DDISABLE_BRANCH_PROFILING
->   CFLAGS_btext.o += -DDISABLE_BRANCH_PROFILING
->   endif
->   
-> +#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
-> +# Remove stack protector to avoid triggering unneeded stack canary
-> +# checks due to randomize_kstack_offset.
-> +CFLAGS_REMOVE_interrupt.o = -fstack-protector -fstack-protector-strong
-> +CFLAGS_interrupt.o += -fno-stack-protector
-> +#endif
-> +
->   obj-y				:= cputable.o syscalls.o \
->   				   irq.o align.o signal_$(BITS).o pmc.o vdso.o \
->   				   process.o systbl.o idle.o \
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-> index 784ea3289c84..d7cdcb6fc336 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -4,6 +4,7 @@
->   #include <linux/err.h>
->   #include <linux/compat.h>
->   #include <linux/sched/debug.h> /* for show_regs */
-> +#include <linux/randomize_kstack.h>
->   
->   #include <asm/kup.h>
->   #include <asm/cputime.h>
-> @@ -78,10 +79,12 @@ notrace long system_call_exception(long r3, long r4, long r5,
->   				   long r6, long r7, long r8,
->   				   unsigned long r0, struct pt_regs *regs)
->   {
-> +	long ret;
->   	syscall_fn f;
->   
->   	kuap_lock();
->   
-> +	add_random_kstack_offset();
->   	regs->orig_gpr3 = r3;
->   
->   	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
-> @@ -229,7 +232,21 @@ notrace long system_call_exception(long r3, long r4, long r5,
->   		f = (void *)sys_call_table[r0];
->   	}
->   
-> -	return f(r3, r4, r5, r6, r7, r8);
-> +	ret = f(r3, r4, r5, r6, r7, r8);
-> +	/*
-> +	 * Ultimately, this value will get limited by KSTACK_OFFSET_MAX(),
-> +	 * so the maximum stack offset is 1k bytes(10 bits).
-> +	 *
-> +	 * The actual entropy will be further reduced by the compiler when
-> +	 * applying stack alignment constraints: the powerpc architecture
-> +	 * may have two kinds of stack alignment(16-bytes and 8-bytes).
-> +	 *
-> +	 * So the resulting 6 or 7 bits of entropy is seen in SP[9:4] or SP[9:3].
-> +	 *
-> +	 */
-> +	choose_random_kstack_offset(mftb());
-> +
-> +	return ret;
->   }
->   
->   static notrace void booke_load_dbcr0(void)
+> I created a new patch with your modifications. (see attachment)
+>
+> Unfortunately I can't test it. The git kernel doesn't compile currently.
+>
+> powerpc-linux-gnu-ld: net/rds/tcp_stats.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/wireless/wext-spy.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/wireless/wext-priv.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/bcast.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/bearer.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/core.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/link.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/discover.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/msg.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/name_distr.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/subscr.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/name_table.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/net.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/netlink.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/netlink_compat.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/node.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/eth_media.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/topsrv.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/group.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/trace.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/tipc/udp_media.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/sysctl.o:(.bss+0x40): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/crypto.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/tipc/diag.o:(.bss+0x0): multiple definition 
+> of `____cacheline_aligned'; init/version.o:(.bss+0x0): first defined here
+> powerpc-linux-gnu-ld: net/9p/trans_common.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/9p/trans_virtio.o:(.bss+0x40): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/6lowpan/ndisc.o:(.bss+0x0): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> powerpc-linux-gnu-ld: net/sysctl_net.o:(.bss+0x80): multiple 
+> definition of `____cacheline_aligned'; init/version.o:(.bss+0x0): 
+> first defined here
+> make: *** [Makefile:1160: vmlinux] Error 1
+>
+> @All
+> Could you please check the multiple definition of 
+> `____cacheline_aligned'?
+>
+> Thanks,
+> Christian
+>
+Fix at
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220527112035.2842155-1-mpe@ellerman.id.au/
+
+Christophe
+
+------
+
+Thank you for your hint. It compiles with the paca.patch.
+
+@Rob
+Unfortunately with your modifications I get a boot loop.
+
+I compiled it also with the reverting patch (see attachment) and then it 
+boots and works.
+
+Thanks,
+Christian
+
+--------------zVsZdGeK2A7zrZ8Q9MgWrRH1
+Content-Type: text/plain; charset=UTF-8; name="of.patch"
+Content-Disposition: attachment; filename="of.patch"
+Content-Transfer-Encoding: base64
+
+LS0tIGEvZHJpdmVycy9vZi9wbGF0Zm9ybS5jCTIwMjItMDUtMjYgMTg6NDY6MTUuNTUxNjU2
+MDI1ICswMjAwCisrKyBiL2RyaXZlcnMvb2YvcGxhdGZvcm0uYwkyMDIyLTA1LTIyIDIxOjUy
+OjMxLjAwMDAwMDAwMCArMDIwMApAQCAtMTE0LDMxICsxMTQsMzUgQEAgc3RydWN0IHBsYXRm
+b3JtX2RldmljZSAqb2ZfZGV2aWNlX2FsbG9jKAogCQkJCSAgc3RydWN0IGRldmljZSAqcGFy
+ZW50KQogewogCXN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKmRldjsKLQlpbnQgcmMsIGksIG51
+bV9yZWcgPSAwOworCWludCByYywgaSwgbnVtX3JlZyA9IDAsIG51bV9pcnE7CiAJc3RydWN0
+IHJlc291cmNlICpyZXMsIHRlbXBfcmVzOwogCiAJZGV2ID0gcGxhdGZvcm1fZGV2aWNlX2Fs
+bG9jKCIiLCBQTEFURk9STV9ERVZJRF9OT05FKTsKIAlpZiAoIWRldikKIAkJcmV0dXJuIE5V
+TEw7CiAKLQkvKiBjb3VudCB0aGUgaW8gcmVzb3VyY2VzICovCisJLyogY291bnQgdGhlIGlv
+IGFuZCBpcnEgcmVzb3VyY2VzICovCiAJd2hpbGUgKG9mX2FkZHJlc3NfdG9fcmVzb3VyY2Uo
+bnAsIG51bV9yZWcsICZ0ZW1wX3JlcykgPT0gMCkKIAkJbnVtX3JlZysrOworCW51bV9pcnEg
+PSBvZl9pcnFfY291bnQobnApOwogCiAJLyogUG9wdWxhdGUgdGhlIHJlc291cmNlIHRhYmxl
+ICovCi0JaWYgKG51bV9yZWcpIHsKLQkJcmVzID0ga2NhbGxvYyhudW1fcmVnLCBzaXplb2Yo
+KnJlcyksIEdGUF9LRVJORUwpOworCWlmIChudW1faXJxIHx8IG51bV9yZWcpIHsKKwkJcmVz
+ID0ga2NhbGxvYyhudW1faXJxICsgbnVtX3JlZywgc2l6ZW9mKCpyZXMpLCBHRlBfS0VSTkVM
+KTsKIAkJaWYgKCFyZXMpIHsKIAkJCXBsYXRmb3JtX2RldmljZV9wdXQoZGV2KTsKIAkJCXJl
+dHVybiBOVUxMOwogCQl9CiAKLQkJZGV2LT5udW1fcmVzb3VyY2VzID0gbnVtX3JlZzsKKwkJ
+ZGV2LT5udW1fcmVzb3VyY2VzID0gbnVtX3JlZyArIG51bV9pcnE7CiAJCWRldi0+cmVzb3Vy
+Y2UgPSByZXM7CiAJCWZvciAoaSA9IDA7IGkgPCBudW1fcmVnOyBpKyssIHJlcysrKSB7CiAJ
+CQlyYyA9IG9mX2FkZHJlc3NfdG9fcmVzb3VyY2UobnAsIGksIHJlcyk7CiAJCQlXQVJOX09O
+KHJjKTsKIAkJfQorCQlpZiAob2ZfaXJxX3RvX3Jlc291cmNlX3RhYmxlKG5wLCByZXMsIG51
+bV9pcnEpICE9IG51bV9pcnEpCisJCQlwcl9kZWJ1Zygibm90IGFsbCBsZWdhY3kgSVJRIHJl
+c291cmNlcyBtYXBwZWQgZm9yICVwT0ZuXG4iLAorCQkJCSBucCk7CiAJfQogCiAJZGV2LT5k
+ZXYub2Zfbm9kZSA9IG9mX25vZGVfZ2V0KG5wKTsK
+
+--------------zVsZdGeK2A7zrZ8Q9MgWrRH1--
