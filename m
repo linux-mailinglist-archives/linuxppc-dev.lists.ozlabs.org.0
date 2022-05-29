@@ -1,73 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A25536E17
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 May 2022 20:51:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB2B537018
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 May 2022 08:57:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4L9W325g4Sz3c7N
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 May 2022 04:50:54 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Irsku3R6;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4L9q9t1K8Jz3blk
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 May 2022 16:57:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Irsku3R6;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4L9W2J1rsXz3bk4
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 May 2022 04:50:16 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id AA46E60E8D
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 18:50:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 16D26C34100
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 May 2022 18:50:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1653763813;
-	bh=w5S6+3n9UCFdsdmPFHj/szHr2oMxQob6Q7qqQ2u40pw=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Irsku3R6l+Ae672VFE7uscRf9wtgcjEtm1VXYYppQr1+tFX1bSv+e7rIA25yj4CH8
-	 mQXkLQ011F+tfQtDUaOmKChAskNw1y44hWx5sB024QujJGgP09JScG2pHnxhpY5x16
-	 b30fSDfkY2puaOwslr+4VrCqL3xtsd9bBA+MzQEogPu2OYFse4LjCRXI71uAc1woY2
-	 Kwe16zb8ROlPmtIMdBRs/1FUblrHCHFX2tjnz8gl7a6pKUP7eEiygzsCxOhB9CkLpB
-	 trM9iOLHT1ZYVEG1wEjHZWsEzglK7+TcPsbpHkISc8UdEsZpKX8HOjK6ZucaQateMZ
-	 ebuHIISBLKRLQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id F1234C05FD4; Sat, 28 May 2022 18:50:12 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216041] Stack overflow at boot (do_IRQ: stack overflow: 1984)
- on a PowerMac G4 DP, KASAN debug build
-Date: Sat, 28 May 2022 18:50:12 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: arnd@arndb.de
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-216041-206035-VofFoHiJIj@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216041-206035@https.bugzilla.kernel.org/>
-References: <bug-216041-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4L9q9Q3X5Vz2yny
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 May 2022 16:57:28 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nvCrD-0001Nl-TF; Sun, 29 May 2022 08:56:59 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nvCr5-005D0y-Nd; Sun, 29 May 2022 08:56:50 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nvCr3-00Cp8z-H3; Sun, 29 May 2022 08:56:49 +0200
+Date: Sun, 29 May 2022 08:56:37 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+	Li Zhengyu <lizhengyu3@huawei.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: Re: [PATCH v2] kexec_file: Drop weak attribute from
+ arch_kexec_apply_relocations[_add]
+Message-ID: <20220529065637.xgapqjp2342flbuj@pengutronix.de>
+References: <20220519091237.676736-1-naveen.n.rao@linux.vnet.ibm.com>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kx2r5dh4j5uektvu"
+Content-Disposition: inline
+In-Reply-To: <20220519091237.676736-1-naveen.n.rao@linux.vnet.ibm.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,45 +57,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Eric Biederman <ebiederm@xmission.com>, kernel@pengutronix.de, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216041
 
-Arnd Bergmann (arnd@arndb.de) changed:
+--kx2r5dh4j5uektvu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |arnd@arndb.de
+Hello,
 
---- Comment #4 from Arnd Bergmann (arnd@arndb.de) ---
-Setting it higher is probably a good idea, but there really isn't a safe li=
-mit
-with KASAN, at least if KASAN_STACK is active, running with KASAN always ha=
-s a
-risk of running into stack overflow issues.
+on current linux-next ARCH=3Driscv allmodconfig breaks with:
 
-One thing that sticks out is that there is an interrupt on the same stack as
-the task, in=20
+  CC      arch/riscv/kernel/elf_kexec.o
+arch/riscv/kernel/elf_kexec.c:345:5: error: redefinition of =E2=80=98arch_k=
+exec_apply_relocations_add=E2=80=99
+  345 | int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from arch/riscv/kernel/elf_kexec.c:16:
+include/linux/kexec.h:236:1: note: previous definition of =E2=80=98arch_kex=
+ec_apply_relocations_add=E2=80=99 with type =E2=80=98int(struct purgatory_i=
+nfo *, Elf64_Shdr *, const Elf64_Shdr *, const Elf64_Shdr *)=E2=80=99 {aka =
+=E2=80=98int(struct purgatory_info *, struct elf64_shdr *, const struct elf=
+64_shdr *, const struct elf64_shdr *)=E2=80=99}
+  236 | arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shd=
+r *section,
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[eaa1c800] [c0009258] do_IRQ+0x20/0x34
-[eaa1c820] [c00045b4] HardwareInterrupt_virt+0x108/0x10c
-[eaa1c920] [c0c59b2c] __schedule+0x3f0/0x9dc
-[eaa1c9b0] [c0c5a18c] schedule+0x74/0x13c
+(I think) because there is a conflict between the two commits:
 
+233c1e6c319c kexec_file: drop weak attribute from arch_kexec_apply_relocati=
+ons[_add]
+838b3e28488f RISC-V: Load purgatory in kexec_file
 
-It looks like on ppc32, as of 547db12fd8a0 ("powerpc/32: Use vmapped stacks=
- for
-interrupts"), you have either VMAP_STACK (to detect stack overflows) or IRQ
-stacks (to make them less likely). I think you really want both instead, and
-allocate the  IRQ stacks from vmalloc space as well.
+And so next is broken starting from
+164a9037b1d33f28ba27671c16ec1c23d4a11acf which merges the riscv tree.
 
-The ext4 read path is a bit wasteful with KASAN enabled, using 1776 bytes f=
-rom
-ext4_lookup to ext4_read_bh, but not excessively so.
+Best regards
+Uwe
 
 --=20
-You may reply to this email to add a comment.
+Pengutronix e.K.                           | Uwe Kleine-K=C3=B6nig         =
+   |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+--kx2r5dh4j5uektvu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKTGRsACgkQwfwUeK3K
+7AmDxAf9Ggb6UqEX3OJcHfUAj6XII7Pgm7ANdk/sgjvS9u4KABETUJ4Dub8m44b7
+YzTKjAz6Aoat5x0aX/BoeMEGOLKrO10yBqljertv1U3F28A0fvUejuJJoBHnmQHO
+A2rACjr5HuulnTTeF3vSwtxdKVzyR5bT4ys1ELO0drRWIdeds63oFpM3vg/7Dhkm
+6DGR26o5+bBCUsDlpnNlSTy4bqMaXAtqnImET8yrafbTbDhSXbwO57dOlfT0QmTC
+p2LoUfw5d64itPHNimGmnAJxtoJEET/gGLFzTbZIJk84CEydkc+3/2DyFU3rwHTZ
+DBh5qrnvrwgxqtYd5zu0HPAfvgDQMA==
+=tj8R
+-----END PGP SIGNATURE-----
+
+--kx2r5dh4j5uektvu--
