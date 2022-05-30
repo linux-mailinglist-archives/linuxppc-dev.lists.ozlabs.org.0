@@ -1,53 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AF05373CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 06:04:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7707537445
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 07:27:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LBMHk4tl0z3bsL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 14:04:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LBP6g53nqz3bhf
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 15:27:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UCycBCGZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mI4wZWAz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=mI4wZWAz;
+	dkim-atps=neutral
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBMH55hm1z2xXV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 14:04:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=UCycBCGZ;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LBMH50Q5zz4xD2;
-	Mon, 30 May 2022 14:04:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1653883457;
-	bh=x0svsTO+jOFwH/KVWpk821pyzNznqc/zH685jsc3xAo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UCycBCGZN4FwwG9NtPjTOTY9Z6WdyBcbaCY1PV8XmA12shhVCHuzIe5pdqh2qYFyk
-	 PvtxE+XWmWXjkR889bgopN8vT1jB3UHEMi7kCJEHHylLZwHJy4YWI6hcRkKXK3da3R
-	 kqDNRTvZol2gq/YWneJ5EK/RWA4uYCtAO1l2ZY3ixLtsy3wr87J4ZWsCsNQDfZ8MJk
-	 qQTb9AyVIt7AFnTWq0hZOGBdZY0as/KlU0ZmYbT6HjW2OB2YKu0E8IB1/VqHkWB0z6
-	 u6COQPyxQl+Wdp58uKjrK4Dj8FYXNKb93F/LQ7zUWabwIGqegG1utiF9qIwyF5SzSU
-	 a+TD/72hO8qWA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Peter Xu <peterx@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v4] mm: Avoid unnecessary page fault retires on shared
- memory types
-In-Reply-To: <20220527193936.30678-1-peterx@redhat.com>
-References: <20220527193936.30678-1-peterx@redhat.com>
-Date: Mon, 30 May 2022 14:04:12 +1000
-Message-ID: <87mtezll8j.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBP615Jz5z2yLg
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 15:26:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1653888378;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=5A0kRRxHfEc7Fxt0H50pX6bx3RpoDsMSH7BzXZpO2Ac=;
+    b=mI4wZWAzg+Xllia9lkw60Z3Yqaln5TD+Jj+oPvjw4JajrN1aWwIraOMWUX/Qwir+zN
+    7xBAUKnqJepXDFls3QFhQEurV6077hVnLt77bx7vqHOHDRhdAwN4EuYUeDZHJ6aGdqCe
+    JV+gS9gSuVPYUITfNdL4HD6Et3nNklemq0YVPjHN1EeGxLmlm4kq2aVM/YaY9MRrELiY
+    N5NuWMtLMozw+7As52vokO1BNzLnhUkyW9Xg3PjCRwxNDj92keFzT8VCgdvDCE567T22
+    uznKwq1+deR+hM48Axy7YqZGO7OI2i5JVh3yG7aYdRBSBm8rKycb4LQE3RDCokqx4et4
+    HbQQ==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwiH4V6fojV0dIN6I1TxxPKaB/gU2A=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPV6:2a02:8109:8980:4474:b803:54e0:138e:6901]
+    by smtp.strato.de (RZmta 47.45.0 AUTH)
+    with ESMTPSA id 205ca1y4U5QGjFr
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 30 May 2022 07:26:16 +0200 (CEST)
+Message-ID: <83ff7361-d54c-ac39-9ccb-0926c3a3d8e2@xenosoft.de>
+Date: Mon, 30 May 2022 07:26:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.9.1
+Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after the
+ devicetree updates for 5.19
+Content-Language: de-DE
+To: Rob Herring <robh@kernel.org>
+References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
+ <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu>
+ <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de>
+ <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
+ <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,21 +74,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Peter Xu <peterx@redhat.com> writes:
-> I observed that for each of the shared file-backed page faults, we're very
-> likely to retry one more time for the 1st write fault upon no page.  It's
-> because we'll need to release the mmap lock for dirty rate limit purpose
-> with balance_dirty_pages_ratelimited() (in fault_dirty_shared_page()).
+On 27 May 2022 at 04:23 pm, Rob Herring wrote:
+> The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
+> resources to a child platform device. Can you try the following
+> change:
 >
-...
+> diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
+> index 44a7e58a26e3..47d9b7be60da 100644
+> --- a/drivers/usb/host/fsl-mph-dr-of.c
+> +++ b/drivers/usb/host/fsl-mph-dr-of.c
+> @@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
+>                                          const char *name, int id)
+>   {
+>          struct platform_device *pdev;
+> -       const struct resource *res = ofdev->resource;
+> -       unsigned int num = ofdev->num_resources;
+>          int retval;
+>
+>          pdev = platform_device_alloc(name, id);
+> @@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_device_register(
+>          if (retval)
+>                  goto error;
+>
+> -       if (num) {
+> -               retval = platform_device_add_resources(pdev, res, num);
+> -               if (retval)
+> -                       goto error;
+> -       }
+> +       pdev->dev.of_node = ofdev->dev.of_node;
+>
+>          retval = platform_device_add(pdev);
+>          if (retval)
+Hello Rob,
 
->  arch/powerpc/mm/copro_fault.c |  5 +++++
->  arch/powerpc/mm/fault.c       |  5 +++++
+Thanks a lot for your patch! Unfortunately, this leads to a boot loop. 
+Do you have another idea?
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-
-cheers
+Thanks,
+Christian
