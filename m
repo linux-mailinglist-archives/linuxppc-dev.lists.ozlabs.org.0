@@ -2,58 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E045398F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 23:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC2B538916
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 01:12:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCQrx5Rpgz3bdK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 07:48:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LBrlZ1K1Gz3bkS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 09:12:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=eWO5aV77;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=rEab6xQw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk (client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142; helo=pandora.armlinux.org.uk; envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=palmer@rivosinc.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256 header.s=pandora-2019 header.b=eWO5aV77;
+	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=rEab6xQw;
 	dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBqnf47ZZz3dwC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 08:28:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=X1hcG5cF1NoC5nq4+hCb0hCmo39XmqfIWCQv7rPcgiY=; b=eWO5aV77vvkJjiIBqgvW710GQg
-	vUFpMDqMEiL6x6ehzs6twDngkNGKUCWf6p0gPNkVCdkYzUw4LohwjCkbeTx8br66JQ7mVPtlFLMAi
-	xQcE5BjaQXarYfxDsH9yBV6dUpkSOMYJDs3BtWTQ4SSfUqnhd6to3hN2nDYg0iCK1Krd9LT4iFvjg
-	Ik0agmYKrpsdks9sCll0o0GWDMKu4hL9tSGpQYAEFCRiExWDQVcXArLgj2GXuayL4xHkmOik3D3ZQ
-	9qVxLOOoUoADGIZLeIqMaBNrZhrWx0nOuXrU8ztpJxaIADUreCyUV7juN+/yevGYx+EE3X+fJsrQS
-	sKNCXHqw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:60894)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1nvnqW-0004Nv-OC; Mon, 30 May 2022 23:26:44 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1nvnpx-0001lw-PQ; Mon, 30 May 2022 23:26:09 +0100
-Date: Mon, 30 May 2022 23:26:09 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Peter Xu <peterx@redhat.com>
-Subject: Re: [PATCH v5] mm: Avoid unnecessary page fault retires on shared
- memory types
-Message-ID: <YpVEgWHzzH3ZtVzA@shell.armlinux.org.uk>
-References: <20220530183450.42886-1-peterx@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220530183450.42886-1-peterx@redhat.com>
-X-Mailman-Approved-At: Wed, 01 Jun 2022 07:48:20 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBrkv2dBlz2yyQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 09:11:33 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id i18so11617069pfk.7
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 16:11:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
+        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XccysWYb9npF6/LhDMMloDpt6bBM9wjai1M7rMuSIWA=;
+        b=rEab6xQwEY+eak1x8ft2kjj07SA4kneFvxf9adlurZbtSov84bRMpGloFeGQOBjiJE
+         OQ2qrUSAwSfpyJM2Fcl4HvAPv3VSoYYPvdnUj2w6JucpE9uPQ0mnkx71/OhVqYg2+CWg
+         BBQ/lbXI6x43ekWTRCgZ/Dm9K31i4HWACdKAO2U24CgCYtqI5zT0cLGqr9Ia8zvNX5Pp
+         +rFWp27IhTGXJMo46x6MaK4PZXfQ2VWP1+42/N4/90uwBRCpvCKB4ArBfcdGDt08Vcxx
+         q1AC3Q/Ldch9FHiiWGDvfctYxhGuvdatyIXFs2ah/NxknnESi/6v7I4Rby1xMSc8iLxh
+         ULIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
+         :mime-version:content-transfer-encoding;
+        bh=XccysWYb9npF6/LhDMMloDpt6bBM9wjai1M7rMuSIWA=;
+        b=vCwmFXs3xJNHcaZTTNq9hsq9puANXn0tjWXydGvPbxUXLzWKI8XyHEm0waNV7QtZ2E
+         du4aRx6oVBSIjLMreFLceIyLcOwy2PT6FfWRWOt4B+JoXIphFRwLfnYs5NIEFRMVn3Sk
+         s1Hr4etPBsJTnD4QCHhYO+0n4dRix6sejAD8W/ROImG7r7zCxFjqab66md8K1R5o/9rV
+         IEMDDto7DNd6mBL5BKXmySj6JOkYbzR6T8kMdQIisAEeuJBg+gR4/GbyjqG9YHRHogyF
+         efAR5QdjK1fNkNpJYI9pepuNW2z20Z98D0yylB9m0r/Esi8mMn8IQsDsBKOBVkVWfT9W
+         fCeg==
+X-Gm-Message-State: AOAM533i0qH6ph6pus597LIaNqtbySbKr1Dfu1dnBDpmupLJGeJDmCYR
+	HsZq72aEpszpcoZqfzZrRYOkJw==
+X-Google-Smtp-Source: ABdhPJywJkfeRl2r1A5LD7jIeXFcAGYOXC/vSUBBTpRc2bJNyDatde0HYxiGJjkDLh3XNObv/FtM4g==
+X-Received: by 2002:a05:6a00:248c:b0:519:27f7:28a8 with SMTP id c12-20020a056a00248c00b0051927f728a8mr20376570pfv.32.1653952288194;
+        Mon, 30 May 2022 16:11:28 -0700 (PDT)
+Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
+        by smtp.gmail.com with ESMTPSA id z125-20020a626583000000b00518119900e9sm9372102pfb.53.2022.05.30.16.11.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 May 2022 16:11:27 -0700 (PDT)
+Date: Mon, 30 May 2022 16:11:27 -0700 (PDT)
+X-Google-Original-Date: Mon, 30 May 2022 16:11:25 PDT (-0700)
+Subject: Re: [PATCH] RISC-V: Prepare dropping week attribute from arch_kexec_apply_relocations[_add]
+In-Reply-To: <20220530194133.udwdjsb2l33hsiil@pengutronix.de>
+From: Palmer Dabbelt <palmer@rivosinc.com>
+To: u.kleine-koenig@pengutronix.de
+Message-ID: <mhng-99e09fbd-fa71-40fc-92da-ff4af0d209a5@palmer-mbp2014>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,98 +76,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <apopple@nvidia.com>, linux-ia64@vger.kernel.org, linux-xtensa@linux-xtensa.org, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, linux-mips@vger.kernel.org, "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, linux-mm@kvack.org, Rich Felker <dalias@libc.org>, Paul Mackerras <paulus@samba.org>, "H . Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Stafford Horne <shorne@gmail.com>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Andrea Arcangeli <aarcange@redhat.com>, linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org, Janosch Frank <frankja@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-sh@vger.kernel.org, Richard Weinberger <richard@nod.at>, Helge Deller <deller@gmx.de>, x86@kernel.org, Hugh Dickins <hughd@google.com>, linux-csky@vger.kernel.org, Ingo Molnar <ming
- o@kernel.org>, linux-alpha@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-arm-kernel@lists.infradead.org, Vineet Gupta <vgupta@kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Catalin Marinas <catalin.marinas@arm.com>, Jonas Bonn <jonas@southpole.se>, Albert Ou <aou@eecs.berkeley.edu>, Vasily Gorbik <gor@linux.ibm.com>, Chris Zankel <chris@zankel.net>, Heiko Carstens <hca@linux.ibm.com>, Johannes Weiner <hannes@cmpxchg.org>, linux-um@lists.infradead.org, Nicholas Piggin <npiggin@gmail.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, Borislav Petkov <bp@alien8.de>, Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, Richard Henderson <rt
- h@twiddle.net>, Brian Cain <bcain@quicinc.com>, Micha
-
-l Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>, linux-kernel@vger.kernel.org, Dinh Nguyen <dinguyen@kernel.org>, linux-riscv@lists.infradead.org, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, Guo Ren <guoren@kernel.org>, linux-hexagon@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: wangkefeng.wang@huawei.com, guoren@linux.alibaba.com, sunnanyong@huawei.com, jszhang@kernel.org, mick@ics.forth.gr, linux-riscv@lists.infradead.org, Stephen Rothwell <sfr@canb.auug.org.au>, alex@ghiti.fr, naveen.n.rao@linux.vnet.ibm.com, lizhengyu3@huawei.com, aou@eecs.berkeley.edu, liaochang1@huawei.com, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Topel <bjorn.topel@gmail.com>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, penberg@kernel.org, ebiederm@xmission.com, kernel@pengutronix.de, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 30, 2022 at 02:34:50PM -0400, Peter Xu wrote:
-> I observed that for each of the shared file-backed page faults, we're very
-> likely to retry one more time for the 1st write fault upon no page.  It's
-> because we'll need to release the mmap lock for dirty rate limit purpose
-> with balance_dirty_pages_ratelimited() (in fault_dirty_shared_page()).
-> 
-> Then after that throttling we return VM_FAULT_RETRY.
-> 
-> We did that probably because VM_FAULT_RETRY is the only way we can return
-> to the fault handler at that time telling it we've released the mmap lock.
-> 
-> However that's not ideal because it's very likely the fault does not need
-> to be retried at all since the pgtable was well installed before the
-> throttling, so the next continuous fault (including taking mmap read lock,
-> walk the pgtable, etc.) could be in most cases unnecessary.
-> 
-> It's not only slowing down page faults for shared file-backed, but also add
-> more mmap lock contention which is in most cases not needed at all.
-> 
-> To observe this, one could try to write to some shmem page and look at
-> "pgfault" value in /proc/vmstat, then we should expect 2 counts for each
-> shmem write simply because we retried, and vm event "pgfault" will capture
-> that.
-> 
-> To make it more efficient, add a new VM_FAULT_COMPLETED return code just to
-> show that we've completed the whole fault and released the lock.  It's also
-> a hint that we should very possibly not need another fault immediately on
-> this page because we've just completed it.
-> 
-> This patch provides a ~12% perf boost on my aarch64 test VM with a simple
-> program sequentially dirtying 400MB shmem file being mmap()ed and these are
-> the time it needs:
-> 
->   Before: 650.980 ms (+-1.94%)
->   After:  569.396 ms (+-1.38%)
-> 
-> I believe it could help more than that.
-> 
-> We need some special care on GUP and the s390 pgfault handler (for gmap
-> code before returning from pgfault), the rest changes in the page fault
-> handlers should be relatively straightforward.
-> 
-> Another thing to mention is that mm_account_fault() does take this new
-> fault as a generic fault to be accounted, unlike VM_FAULT_RETRY.
-> 
-> I explicitly didn't touch hmm_vma_fault() and break_ksm() because they do
-> not handle VM_FAULT_RETRY even with existing code, so I'm literally keeping
-> them as-is.
-> 
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Acked-by: Vineet Gupta <vgupta@kernel.org>
-> Acked-by: Guo Ren <guoren@kernel.org>
-> Acked-by: Max Filippov <jcmvbkbc@gmail.com>
-> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Reviewed-by: Alistair Popple <apopple@nvidia.com>
-> Reviewed-by: Ingo Molnar <mingo@kernel.org>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+On Mon, 30 May 2022 12:41:33 PDT (-0700), u.kleine-koenig@pengutronix.de wrote:
+> Hello,
+>
+> On Mon, May 30, 2022 at 11:58:16AM -0700, Palmer Dabbelt wrote:
+>> On Mon, 30 May 2022 00:42:02 PDT (-0700), u.kleine-koenig@pengutronix.de wrote:
+>> > Without this change arch/riscv/kernel/elf_kexec.c fails to compile once
+>> > commit 233c1e6c319c ("kexec_file: drop weak attribute from
+>> > arch_kexec_apply_relocations[_add]") is also contained in the tree.
+>> > This currently happens in next-20220527.
+>> > 
+>> > Prepare the RISC-V similar to the s390 adaption done in 233c1e6c319c.
+>> > This is safe to do on top of the riscv change even without the change to
+>> > arch_kexec_apply_relocations.
+>> > 
+>> > Fixes: 838b3e28488f ("RISC-V: Load purgatory in kexec_file")
+>> > Looks-good-to: liaochang (A) <liaochang1@huawei.com>
+>> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>> > ---
+>> > 
+>> > On Mon, May 30, 2022 at 09:43:26AM +0800, liaochang (A) wrote:
+>> > > > I can confirm that doing
+>> > > > > diff --git a/arch/riscv/include/asm/kexec.h
+>> > > b/arch/riscv/include/asm/kexec.h
+>> > > > index 206217b23301..eee260e8ab30 100644
+>> > > > --- a/arch/riscv/include/asm/kexec.h
+>> > > > +++ b/arch/riscv/include/asm/kexec.h
+>> > > > @@ -55,6 +55,13 @@ extern riscv_kexec_method riscv_kexec_norelocate;
+>> > > >  >  #ifdef CONFIG_KEXEC_FILE
+>> > > >  extern const struct kexec_file_ops elf_kexec_ops;
+>> > > > +
+>> > > > +struct purgatory_info;
+>> > > > +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+>> > > > +				     Elf_Shdr *section,
+>> > > > +				     const Elf_Shdr *relsec,
+>> > > > +				     const Elf_Shdr *symtab);
+>> > > > +#define arch_kexec_apply_relocations_add arch_kexec_apply_relocations_add
+>> > > >  #endif
+>> > > >  >  #endif
+>> > > 
+>> > > LGTM, you could send a fixup patch to riscv, thanks.
+>> > > 
+>> > > > > on top of 838b3e28488f results in a compilable tree. And when
+>> > > merging
+>> > > > 233c1e6c319c into this, it is still building.
+>> > > > > I'm not enough into kexec (and riscv) to judge if this is
+>> > > sensible, or
+>> > > > create a useful commit log but the obvious way forward is to apply the
+>> > > > above patch to the riscv tree before it hits Linus' tree.
+>> > 
+>> > Ok, here comes a patch with a generic commit log.
+>> > 
+>> > @riscv people: If you prefer, squash it into 838b3e28488f.
+>> 
+>> Sorry, just saw this after I sent my version of the fix.  They're the same,
+>> but do you mind sending a full-on patch so I can merge it?
+>
+> Sorry, I don't understand your request. I found
+> https://lore.kernel.org/linux-riscv/20220530180408.16239-1-palmer@rivosinc.com/
+>
+> but I don't know what a full-on patch is and what stops you merging my
+> patch. 
+>
+> Is it that it's in reply to a patch series and b4 fails to fetch the
+> right patch and you ask to send it in a new thread?
 
-For:
+Ya, with the reply bits in there my mail merge (which unfortunately 
+isn't b4, I haven't gotten around to converting yet) got tripped up.  
+It's kind of easy to for me to screw something up trying to pull bits 
+out of replies and such, but I think this one was pretty simple (looks 
+like maybe some PGP or MIME thing was the issue).
 
-> diff --git a/arch/arm/mm/fault.c b/arch/arm/mm/fault.c
-> index a062e07516dd..46cccd6bf705 100644
-> --- a/arch/arm/mm/fault.c
-> +++ b/arch/arm/mm/fault.c
-> @@ -322,6 +322,10 @@ do_page_fault(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
->  		return 0;
->  	}
->  
-> +	/* The fault is fully completed (including releasing mmap lock) */
-> +	if (fault & VM_FAULT_COMPLETED)
-> +		return 0;
-> +
->  	if (!(fault & VM_FAULT_ERROR)) {
->  		if (fault & VM_FAULT_RETRY) {
->  			flags |= FAULT_FLAG_TRIED;
-
-Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+I just put 
+<https://git.kernel.org/pub/scm/linux/kernel/git/palmer/linux.git/commit/?h=for-next&id=7699f7aacf3ebfee51c670b6f796b2797f0f7487> 
+on my staging branch, it looks OK to me but LMK if there's a problem.
 
 Thanks!
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 40Mbps down 10Mbps up. Decent connectivity at last!
+>
+> Best regards
+> Uwe
+>
+> -- 
+> Pengutronix e.K.                           | Uwe Kleine-König            |
+> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
