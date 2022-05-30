@@ -2,62 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6DE5372AD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 May 2022 23:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A755388DD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 00:27:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LBB9w73htz3bl3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 07:14:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WU1siCUX;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LBqlQ2CxPz3cgw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 08:26:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WU1siCUX;
-	dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=liaochang1@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBB8c5Jkzz2yV6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 07:13:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1653858784; x=1685394784;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lVQZENgjdyQuoHD2ZdB7NWFOxeEaDLnh72CTMU9d364=;
-  b=WU1siCUX3nCrYN+30B4d1ixaIcd55KIilEFg+7yPDIxEUu7VlgIG18IS
-   8eF6os9HSJroq91S2fq9kUpMNOI4CD8rk+3bMknFa4PrHqtkg8TrgfqsU
-   csiqypJ4wrr+BfSflSrGg+afiMBZpoveUMbCuZARti9m6DAq6TT9vOQAl
-   zRE8uGWVDdEXxh9dC2hJNIy5YYSTNMRZO0tRvXOHBVHhLOJ3+07ya0cHC
-   4WXm47BeT2V2LMfnDEyjnc9SpStIsPcAtXr1swwc5LaTJzgMSC+3S0+13
-   lTxWunJnjJ35Soc99mderpLxYL6erdst+ZuLb7+rq1OBp3BjDTo90hvf2
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10362"; a="255331275"
-X-IronPort-AV: E=Sophos;i="5.91,261,1647327600"; 
-   d="scan'208";a="255331275"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2022 14:12:00 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,261,1647327600"; 
-   d="scan'208";a="678868761"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 29 May 2022 14:11:59 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1nvQCc-0001FE-C2;
-	Sun, 29 May 2022 21:11:58 +0000
-Date: Mon, 30 May 2022 05:11:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS
- 16332b7fbbe46581ddac80c6d32834c1269bc450
-Message-ID: <6293e18b.9xVPcFrroYjqkIxB%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBJ8q1ZDSz2xss
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 11:43:35 +1000 (AEST)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.56])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LBJ7K4K7JzjX0y;
+	Mon, 30 May 2022 09:42:21 +0800 (CST)
+Received: from [10.67.110.108] (10.67.110.108) by
+ kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 30 May 2022 09:43:27 +0800
+Message-ID: <59e8faec-05fd-805d-7de0-4b0508f8467f@huawei.com>
+Date: Mon, 30 May 2022 09:43:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v2] kexec_file: Drop weak attribute from
+ arch_kexec_apply_relocations[_add]
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20220519091237.676736-1-naveen.n.rao@linux.vnet.ibm.com>
+ <20220529065637.xgapqjp2342flbuj@pengutronix.de>
+ <264786d9-7756-19e0-2742-8b8d17f5ace5@csgroup.eu>
+ <20220529140655.bnd4fgggccrorj4t@pengutronix.de>
+From: "liaochang (A)" <liaochang1@huawei.com>
+In-Reply-To: <20220529140655.bnd4fgggccrorj4t@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.108]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Tue, 31 May 2022 08:25:41 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,154 +55,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Andrew Morton <akpm@linux-foundation.org>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@rivosinc.com>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Eric Biederman <ebiederm@xmission.com>, "kernel@pengutronix.de" <kernel@pengutronix.de>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Li Zhengyu <lizhengyu3@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 16332b7fbbe46581ddac80c6d32834c1269bc450  Automatic merge of 'master' into merge (2022-05-29 10:31)
 
-elapsed time: 725m
 
-configs tested: 126
-configs skipped: 3
+在 2022/5/29 22:06, Uwe Kleine-König 写道:
+> Hello,
+> 
+> On Sun, May 29, 2022 at 09:46:47AM +0000, Christophe Leroy wrote:
+>> Le 29/05/2022 à 08:56, Uwe Kleine-König a écrit :
+>>> Hello,
+>>>
+>>> on current linux-next ARCH=riscv allmodconfig breaks with:
+>>>
+>>>    CC      arch/riscv/kernel/elf_kexec.o
+>>> arch/riscv/kernel/elf_kexec.c:345:5: error: redefinition of ‘arch_kexec_apply_relocations_add’
+>>>    345 | int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+>>>        |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>> In file included from arch/riscv/kernel/elf_kexec.c:16:
+>>> include/linux/kexec.h:236:1: note: previous definition of ‘arch_kexec_apply_relocations_add’ with type ‘int(struct purgatory_info *, Elf64_Shdr *, const Elf64_Shdr *, const Elf64_Shdr *)’ {aka ‘int(struct purgatory_info *, struct elf64_shdr *, const struct elf64_shdr *, const struct elf64_shdr *)’}
+>>>    236 | arch_kexec_apply_relocations_add(struct purgatory_info *pi, Elf_Shdr *section,
+>>>        | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>>
+>>> (I think) because there is a conflict between the two commits:
+>>>
+>>> 233c1e6c319c kexec_file: drop weak attribute from arch_kexec_apply_relocations[_add]
+>>> 838b3e28488f RISC-V: Load purgatory in kexec_file
+>>>
+>>> And so next is broken starting from
+>>> 164a9037b1d33f28ba27671c16ec1c23d4a11acf which merges the riscv tree.
+>>>
+>>
+>> In arch/riscv/include/asm/kexec.h, do the same as s390 did in commit 
+>> 233c1e6c319c:
+>>
+>> diff --git a/arch/s390/include/asm/kexec.h b/arch/s390/include/asm/kexec.h
+>> index 7f3c9ac34bd8..540dd469b088 100644
+>> --- a/arch/s390/include/asm/kexec.h
+>> +++ b/arch/s390/include/asm/kexec.h
+>> @@ -83,4 +83,12 @@ struct kimage_arch {
+>>   extern const struct kexec_file_ops s390_kexec_image_ops;
+>>   extern const struct kexec_file_ops s390_kexec_elf_ops;
+>>
+>> +#ifdef CONFIG_KEXEC_FILE
+>> +struct purgatory_info;
+>> +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+>> +				     Elf_Shdr *section,
+>> +				     const Elf_Shdr *relsec,
+>> +				     const Elf_Shdr *symtab);
+>> +#define arch_kexec_apply_relocations_add arch_kexec_apply_relocations_add
+>> +#endif
+>>   #endif /*_S390_KEXEC_H */
+> 
+> I can confirm that doing
+> 
+> diff --git a/arch/riscv/include/asm/kexec.h b/arch/riscv/include/asm/kexec.h
+> index 206217b23301..eee260e8ab30 100644
+> --- a/arch/riscv/include/asm/kexec.h
+> +++ b/arch/riscv/include/asm/kexec.h
+> @@ -55,6 +55,13 @@ extern riscv_kexec_method riscv_kexec_norelocate;
+>  
+>  #ifdef CONFIG_KEXEC_FILE
+>  extern const struct kexec_file_ops elf_kexec_ops;
+> +
+> +struct purgatory_info;
+> +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+> +				     Elf_Shdr *section,
+> +				     const Elf_Shdr *relsec,
+> +				     const Elf_Shdr *symtab);
+> +#define arch_kexec_apply_relocations_add arch_kexec_apply_relocations_add
+>  #endif
+>  
+>  #endif
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+LGTM, you could send a fixup patch to riscv, thanks.
 
-gcc tested configs:
-arm                              allmodconfig
-arm                              allyesconfig
-arm                                 defconfig
-arm64                               defconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-mips                     decstation_defconfig
-powerpc                 mpc834x_mds_defconfig
-arm                           stm32_defconfig
-arm                            xcep_defconfig
-xtensa                           alldefconfig
-powerpc                     sequoia_defconfig
-m68k                        m5407c3_defconfig
-powerpc                 mpc8540_ads_defconfig
-mips                        bcm47xx_defconfig
-arc                           tb10x_defconfig
-powerpc                     pq2fads_defconfig
-arm                      footbridge_defconfig
-arm                           h3600_defconfig
-mips                     loongson1b_defconfig
-powerpc                        cell_defconfig
-sh                           se7750_defconfig
-m68k                          amiga_defconfig
-arc                                 defconfig
-parisc                           allyesconfig
-arm                       aspeed_g5_defconfig
-powerpc                     tqm8541_defconfig
-m68k                          atari_defconfig
-sh                          r7785rp_defconfig
-powerpc                      pcm030_defconfig
-sh                     magicpanelr2_defconfig
-sh                           se7619_defconfig
-arc                              alldefconfig
-m68k                          multi_defconfig
-arm                  randconfig-c002-20220529
-x86_64                        randconfig-c001
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                             allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-m68k                                defconfig
-alpha                               defconfig
-csky                                defconfig
-alpha                            allyesconfig
-nios2                            allyesconfig
-h8300                            allyesconfig
-sh                               allmodconfig
-xtensa                           allyesconfig
-parisc                              defconfig
-s390                             allmodconfig
-s390                                defconfig
-s390                             allyesconfig
-parisc64                            defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-i386                                defconfig
-i386                             allyesconfig
-sparc                               defconfig
-sparc                            allyesconfig
-nios2                               defconfig
-arc                              allyesconfig
-mips                             allyesconfig
-mips                             allmodconfig
-powerpc                           allnoconfig
-powerpc                          allmodconfig
-powerpc                          allyesconfig
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-arc                  randconfig-r043-20220529
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                            allmodconfig
-riscv                    nommu_k210_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_virt_defconfig
-riscv                               defconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-x86_64                         rhel-8.3-kunit
-x86_64                           rhel-8.3-syz
-x86_64                          rhel-8.3-func
-x86_64                    rhel-8.3-kselftests
-x86_64                              defconfig
-x86_64                                  kexec
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-
-clang tested configs:
-powerpc              randconfig-c003-20220529
-x86_64                        randconfig-c007
-arm                  randconfig-c002-20220529
-mips                 randconfig-c004-20220529
-riscv                randconfig-c006-20220529
-i386                          randconfig-c001
-s390                 randconfig-c005-20220529
-arm                      tct_hammer_defconfig
-mips                         tb0219_defconfig
-arm                         hackkit_defconfig
-x86_64                           allyesconfig
-mips                           ip22_defconfig
-arm                        neponset_defconfig
-mips                          rm200_defconfig
-powerpc                    socrates_defconfig
-mips                  cavium_octeon_defconfig
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r041-20220529
-hexagon              randconfig-r045-20220529
-s390                 randconfig-r044-20220529
-riscv                randconfig-r042-20220529
+> 
+> on top of 838b3e28488f results in a compilable tree. And when merging
+> 233c1e6c319c into this, it is still building.
+> 
+> I'm not enough into kexec (and riscv) to judge if this is sensible, or
+> create a useful commit log but the obvious way forward is to apply the
+> above patch to the riscv tree before it hits Linus' tree.
+> 
+> Best regards
+> Uwe
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+BR,
+Liao, Chang
