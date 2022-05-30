@@ -1,69 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC2B538916
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 01:12:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D8B538924
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 01:17:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LBrlZ1K1Gz3bkS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 09:12:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LBrs74J4qz3c8j
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 09:16:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=rEab6xQw;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=SWOO5qaZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rivosinc.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=palmer@rivosinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=stgolabs.net (client-ip=23.83.209.135; helo=olivedrab.birch.relay.mailchannels.net; envelope-from=dave@stgolabs.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=rivosinc-com.20210112.gappssmtp.com header.i=@rivosinc-com.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=rEab6xQw;
+	dkim=pass (2048-bit key; unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=SWOO5qaZ;
 	dkim-atps=neutral
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+Received: from olivedrab.birch.relay.mailchannels.net (olivedrab.birch.relay.mailchannels.net [23.83.209.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBrqj5Cqnz2yyQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 09:15:44 +1000 (AEST)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 5D6E76C16BA;
+	Mon, 30 May 2022 23:15:40 +0000 (UTC)
+Received: from pdx1-sub0-mail-a312.dreamhost.com (unknown [127.0.0.6])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id B84A16C1608;
+	Mon, 30 May 2022 23:15:39 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1653952539; a=rsa-sha256;
+	cv=none;
+	b=7u5PxFAULAzGfwlnquoQvAg/UEr8Lakcz5XG65ihCNJV8rjZoFM4xuNRGjfDHJPOSTB3MJ
+	+rLAAnMri16ye6ZUQ7LpvmVSe4JTw/Wsxebrrdr3YyQw8JyvwwndC9rTihCHlEAL4qnWYz
+	4tZQwddO40+eJBzVUy4ByNmdy30qvJKAaYJpntdO7HUpFj5524KWYfPsZyiSzC6l6z/foj
+	HjbBG5obvhfGGvbyUbLodUUSy8oJ2hr8FObUb+tfnaFhVgs8LPk1lQXg/YyE4Xx6SzZaQp
+	G+vBvzkgJMS+5o5pjHwHW1X2+bbLLWdzGe6pdkn/rpgukXkIStQbrzPIw0XP6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1653952539;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CTIylgDlf3e+RiEnLIJjWrizgO0Y+1XwvuDvHKKokNo=;
+	b=RE2aoUCcjqvZ064MRtcadDLi5OrLtbMLXRP6tvQsutuGw8rWI0qKVCQi+DfQDuhvBi20Oa
+	Ow7vgmM9MUjcF1RBgQNl9Ar4N07NWxKJ0ddxaA5lCBE/5bRqWGPg5C0z44yoNJlvYUG1Q8
+	K3xTeT0btyGFh7l0hJ7c+JM55In/DoTzEe5Cim4FGT5ksw+mEW4wK2/kvjPPNBFn63isPo
+	juqgke13Cj+eMAon86Vv6X9SUjs6J9lBvH/0Q2KXbb0gaAdov57OtY4GEqEKWZ9zlTdW7Q
+	bGBZh3MTkHPx9udFjiTZUwjh87xXlT9YLt5oh748uzrY/HUrKzE/qa4wJg37Ew==
+ARC-Authentication-Results: i=1;
+	rspamd-54ff499d4f-jfs9l;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Average-Tangy: 39a916fa00139767_1653952540243_1245808343
+X-MC-Loop-Signature: 1653952540243:63556705
+X-MC-Ingress-Time: 1653952540243
+Received: from pdx1-sub0-mail-a312.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.98.242.203 (trex/6.7.1);
+	Mon, 30 May 2022 23:15:40 +0000
+Received: from localhost.localdomain (unknown [104.36.31.105])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBrkv2dBlz2yyQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 09:11:33 +1000 (AEST)
-Received: by mail-pf1-x431.google.com with SMTP id i18so11617069pfk.7
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 16:11:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
-        h=date:subject:in-reply-to:cc:from:to:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XccysWYb9npF6/LhDMMloDpt6bBM9wjai1M7rMuSIWA=;
-        b=rEab6xQwEY+eak1x8ft2kjj07SA4kneFvxf9adlurZbtSov84bRMpGloFeGQOBjiJE
-         OQ2qrUSAwSfpyJM2Fcl4HvAPv3VSoYYPvdnUj2w6JucpE9uPQ0mnkx71/OhVqYg2+CWg
-         BBQ/lbXI6x43ekWTRCgZ/Dm9K31i4HWACdKAO2U24CgCYtqI5zT0cLGqr9Ia8zvNX5Pp
-         +rFWp27IhTGXJMo46x6MaK4PZXfQ2VWP1+42/N4/90uwBRCpvCKB4ArBfcdGDt08Vcxx
-         q1AC3Q/Ldch9FHiiWGDvfctYxhGuvdatyIXFs2ah/NxknnESi/6v7I4Rby1xMSc8iLxh
-         ULIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:subject:in-reply-to:cc:from:to:message-id
-         :mime-version:content-transfer-encoding;
-        bh=XccysWYb9npF6/LhDMMloDpt6bBM9wjai1M7rMuSIWA=;
-        b=vCwmFXs3xJNHcaZTTNq9hsq9puANXn0tjWXydGvPbxUXLzWKI8XyHEm0waNV7QtZ2E
-         du4aRx6oVBSIjLMreFLceIyLcOwy2PT6FfWRWOt4B+JoXIphFRwLfnYs5NIEFRMVn3Sk
-         s1Hr4etPBsJTnD4QCHhYO+0n4dRix6sejAD8W/ROImG7r7zCxFjqab66md8K1R5o/9rV
-         IEMDDto7DNd6mBL5BKXmySj6JOkYbzR6T8kMdQIisAEeuJBg+gR4/GbyjqG9YHRHogyF
-         efAR5QdjK1fNkNpJYI9pepuNW2z20Z98D0yylB9m0r/Esi8mMn8IQsDsBKOBVkVWfT9W
-         fCeg==
-X-Gm-Message-State: AOAM533i0qH6ph6pus597LIaNqtbySbKr1Dfu1dnBDpmupLJGeJDmCYR
-	HsZq72aEpszpcoZqfzZrRYOkJw==
-X-Google-Smtp-Source: ABdhPJywJkfeRl2r1A5LD7jIeXFcAGYOXC/vSUBBTpRc2bJNyDatde0HYxiGJjkDLh3XNObv/FtM4g==
-X-Received: by 2002:a05:6a00:248c:b0:519:27f7:28a8 with SMTP id c12-20020a056a00248c00b0051927f728a8mr20376570pfv.32.1653952288194;
-        Mon, 30 May 2022 16:11:28 -0700 (PDT)
-Received: from localhost (76-210-143-223.lightspeed.sntcca.sbcglobal.net. [76.210.143.223])
-        by smtp.gmail.com with ESMTPSA id z125-20020a626583000000b00518119900e9sm9372102pfb.53.2022.05.30.16.11.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 May 2022 16:11:27 -0700 (PDT)
-Date: Mon, 30 May 2022 16:11:27 -0700 (PDT)
-X-Google-Original-Date: Mon, 30 May 2022 16:11:25 PDT (-0700)
-Subject: Re: [PATCH] RISC-V: Prepare dropping week attribute from arch_kexec_apply_relocations[_add]
-In-Reply-To: <20220530194133.udwdjsb2l33hsiil@pengutronix.de>
-From: Palmer Dabbelt <palmer@rivosinc.com>
-To: u.kleine-koenig@pengutronix.de
-Message-ID: <mhng-99e09fbd-fa71-40fc-92da-ff4af0d209a5@palmer-mbp2014>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a312.dreamhost.com (Postfix) with ESMTPSA id 4LBrqb0DDJz4C;
+	Mon, 30 May 2022 16:15:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1653952539;
+	bh=CTIylgDlf3e+RiEnLIJjWrizgO0Y+1XwvuDvHKKokNo=;
+	h=From:To:Cc:Subject:Date:Content-Transfer-Encoding;
+	b=SWOO5qaZQ0TteFE/jV/muVadvdOggd+kJ3R38M+wWDSAMTwkiIu5bnSuGixZDSS6U
+	 LLD9ZCCfGOzLrASvidgx/FrQ+zpSeBVDNGqbbGODpp9kngfSjpsfvQkcjrsb87cupH
+	 Pij4XH1FOi9DLexobSQNjS/dkzJoc3+WyPHoSsC4tV/ZQZAL8nxEO090/hCvFuhsDY
+	 qpEQGvFsEHcjuQWhv+6nlVVpNy+r29Bb4wsJDQdHmlUu7oV/uz7ff4wTkpqyzX4/as
+	 qPRDusxZukp//J2higDuoF3x4mzYMYagHJo8ceF6/o6hHOvoV14Mepvy+1T1uT3CGE
+	 uUR6YqX5zi+/A==
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: linux-scsi@vger.kernel.org
+Subject: [PATCH 06/10] scsi/ibmvscsi_tgt: Replace work tasklet with threaded irq
+Date: Mon, 30 May 2022 16:15:08 -0700
+Message-Id: <20220530231512.9729-7-dave@stgolabs.net>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220530231512.9729-1-dave@stgolabs.net>
+References: <20220530231512.9729-1-dave@stgolabs.net>
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,91 +102,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, guoren@linux.alibaba.com, sunnanyong@huawei.com, jszhang@kernel.org, mick@ics.forth.gr, linux-riscv@lists.infradead.org, Stephen Rothwell <sfr@canb.auug.org.au>, alex@ghiti.fr, naveen.n.rao@linux.vnet.ibm.com, lizhengyu3@huawei.com, aou@eecs.berkeley.edu, liaochang1@huawei.com, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Topel <bjorn.topel@gmail.com>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, penberg@kernel.org, ebiederm@xmission.com, kernel@pengutronix.de, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
+Cc: ejb@linux.ibm.com, martin.petersen@oracle.com, bigeasy@linutronix.de, Michael Cyr <mikecyr@linux.ibm.com>, dave@stgolabs.net, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 30 May 2022 12:41:33 PDT (-0700), u.kleine-koenig@pengutronix.de wrote:
-> Hello,
->
-> On Mon, May 30, 2022 at 11:58:16AM -0700, Palmer Dabbelt wrote:
->> On Mon, 30 May 2022 00:42:02 PDT (-0700), u.kleine-koenig@pengutronix.de wrote:
->> > Without this change arch/riscv/kernel/elf_kexec.c fails to compile once
->> > commit 233c1e6c319c ("kexec_file: drop weak attribute from
->> > arch_kexec_apply_relocations[_add]") is also contained in the tree.
->> > This currently happens in next-20220527.
->> > 
->> > Prepare the RISC-V similar to the s390 adaption done in 233c1e6c319c.
->> > This is safe to do on top of the riscv change even without the change to
->> > arch_kexec_apply_relocations.
->> > 
->> > Fixes: 838b3e28488f ("RISC-V: Load purgatory in kexec_file")
->> > Looks-good-to: liaochang (A) <liaochang1@huawei.com>
->> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
->> > ---
->> > 
->> > On Mon, May 30, 2022 at 09:43:26AM +0800, liaochang (A) wrote:
->> > > > I can confirm that doing
->> > > > > diff --git a/arch/riscv/include/asm/kexec.h
->> > > b/arch/riscv/include/asm/kexec.h
->> > > > index 206217b23301..eee260e8ab30 100644
->> > > > --- a/arch/riscv/include/asm/kexec.h
->> > > > +++ b/arch/riscv/include/asm/kexec.h
->> > > > @@ -55,6 +55,13 @@ extern riscv_kexec_method riscv_kexec_norelocate;
->> > > >  >  #ifdef CONFIG_KEXEC_FILE
->> > > >  extern const struct kexec_file_ops elf_kexec_ops;
->> > > > +
->> > > > +struct purgatory_info;
->> > > > +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
->> > > > +				     Elf_Shdr *section,
->> > > > +				     const Elf_Shdr *relsec,
->> > > > +				     const Elf_Shdr *symtab);
->> > > > +#define arch_kexec_apply_relocations_add arch_kexec_apply_relocations_add
->> > > >  #endif
->> > > >  >  #endif
->> > > 
->> > > LGTM, you could send a fixup patch to riscv, thanks.
->> > > 
->> > > > > on top of 838b3e28488f results in a compilable tree. And when
->> > > merging
->> > > > 233c1e6c319c into this, it is still building.
->> > > > > I'm not enough into kexec (and riscv) to judge if this is
->> > > sensible, or
->> > > > create a useful commit log but the obvious way forward is to apply the
->> > > > above patch to the riscv tree before it hits Linus' tree.
->> > 
->> > Ok, here comes a patch with a generic commit log.
->> > 
->> > @riscv people: If you prefer, squash it into 838b3e28488f.
->> 
->> Sorry, just saw this after I sent my version of the fix.  They're the same,
->> but do you mind sending a full-on patch so I can merge it?
->
-> Sorry, I don't understand your request. I found
-> https://lore.kernel.org/linux-riscv/20220530180408.16239-1-palmer@rivosinc.com/
->
-> but I don't know what a full-on patch is and what stops you merging my
-> patch. 
->
-> Is it that it's in reply to a patch series and b4 fails to fetch the
-> right patch and you ask to send it in a new thread?
+Tasklets have long been deprecated as being too heavy on the system
+by running in irq context - and this is not a performance critical
+path. If a higher priority process wants to run, it must wait for
+the tasklet to finish before doing so. A more suitable equivalent
+is to converted to threaded irq instead and deal with the async
+work in task context.
 
-Ya, with the reply bits in there my mail merge (which unfortunately 
-isn't b4, I haven't gotten around to converting yet) got tripped up.  
-It's kind of easy to for me to screw something up trying to pull bits 
-out of replies and such, but I think this one was pretty simple (looks 
-like maybe some PGP or MIME thing was the issue).
+Cc: Michael Cyr <mikecyr@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Davidlohr Bueso <dave@stgolabs.net>
+---
+ drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c | 17 +++++++----------
+ drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h |  1 -
+ 2 files changed, 7 insertions(+), 11 deletions(-)
 
-I just put 
-<https://git.kernel.org/pub/scm/linux/kernel/git/palmer/linux.git/commit/?h=for-next&id=7699f7aacf3ebfee51c670b6f796b2797f0f7487> 
-on my staging branch, it looks OK to me but LMK if there's a problem.
+diff --git a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+index eee1a24f7e15..fafadb7158a3 100644
+--- a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
++++ b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.c
+@@ -2948,9 +2948,8 @@ static irqreturn_t ibmvscsis_interrupt(int dummy, void *data)
+ 	struct scsi_info *vscsi = data;
+ 
+ 	vio_disable_interrupts(vscsi->dma_dev);
+-	tasklet_schedule(&vscsi->work_task);
+ 
+-	return IRQ_HANDLED;
++	return IRQ_WAKE_THREAD;
+ }
+ 
+ /**
+@@ -3317,7 +3316,7 @@ static int ibmvscsis_rdma(struct ibmvscsis_cmd *cmd, struct scatterlist *sg,
+  *
+  * Note: this is an edge triggered interrupt. It can not be shared.
+  */
+-static void ibmvscsis_handle_crq(unsigned long data)
++static irqreturn_t ibmvscsis_handle_crq(int irq, void *data)
+ {
+ 	struct scsi_info *vscsi = (struct scsi_info *)data;
+ 	struct viosrp_crq *crq;
+@@ -3340,7 +3339,7 @@ static void ibmvscsis_handle_crq(unsigned long data)
+ 		dev_dbg(&vscsi->dev, "handle_crq, don't process: flags 0x%x, state 0x%hx\n",
+ 			vscsi->flags, vscsi->state);
+ 		spin_unlock_bh(&vscsi->intr_lock);
+-		return;
++	        goto done;
+ 	}
+ 
+ 	rc = vscsi->flags & SCHEDULE_DISCONNECT;
+@@ -3417,6 +3416,8 @@ static void ibmvscsis_handle_crq(unsigned long data)
+ 		vscsi->state);
+ 
+ 	spin_unlock_bh(&vscsi->intr_lock);
++done:
++	return IRQ_HANDLED;
+ }
+ 
+ static int ibmvscsis_probe(struct vio_dev *vdev,
+@@ -3530,9 +3531,6 @@ static int ibmvscsis_probe(struct vio_dev *vdev,
+ 	dev_dbg(&vscsi->dev, "probe hrc %ld, client partition num %d\n",
+ 		hrc, vscsi->client_data.partition_number);
+ 
+-	tasklet_init(&vscsi->work_task, ibmvscsis_handle_crq,
+-		     (unsigned long)vscsi);
+-
+ 	init_completion(&vscsi->wait_idle);
+ 	init_completion(&vscsi->unconfig);
+ 
+@@ -3544,7 +3542,8 @@ static int ibmvscsis_probe(struct vio_dev *vdev,
+ 		goto unmap_buf;
+ 	}
+ 
+-	rc = request_irq(vdev->irq, ibmvscsis_interrupt, 0, "ibmvscsis", vscsi);
++	rc = request_threaded_irq(vdev->irq, ibmvscsis_interrupt,
++				  ibmvscsis_handle_crq, 0, "ibmvscsis", vscsi);
+ 	if (rc) {
+ 		rc = -EPERM;
+ 		dev_err(&vscsi->dev, "probe: request_irq failed, rc %d\n", rc);
+@@ -3565,7 +3564,6 @@ static int ibmvscsis_probe(struct vio_dev *vdev,
+ free_buf:
+ 	kfree(vscsi->map_buf);
+ destroy_queue:
+-	tasklet_kill(&vscsi->work_task);
+ 	ibmvscsis_unregister_command_q(vscsi);
+ 	ibmvscsis_destroy_command_q(vscsi);
+ free_timer:
+@@ -3602,7 +3600,6 @@ static void ibmvscsis_remove(struct vio_dev *vdev)
+ 	dma_unmap_single(&vdev->dev, vscsi->map_ioba, PAGE_SIZE,
+ 			 DMA_BIDIRECTIONAL);
+ 	kfree(vscsi->map_buf);
+-	tasklet_kill(&vscsi->work_task);
+ 	ibmvscsis_destroy_command_q(vscsi);
+ 	ibmvscsis_freetimer(vscsi);
+ 	ibmvscsis_free_cmds(vscsi);
+diff --git a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h
+index 7ae074e5d7a1..b66c982b8b00 100644
+--- a/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h
++++ b/drivers/scsi/ibmvscsi_tgt/ibmvscsi_tgt.h
+@@ -295,7 +295,6 @@ struct scsi_info {
+ 	struct vio_dev *dma_dev;
+ 	struct srp_target target;
+ 	struct ibmvscsis_tport tport;
+-	struct tasklet_struct work_task;
+ 	struct work_struct proc_work;
+ };
+ 
+-- 
+2.36.1
 
-Thanks!
-
->
-> Best regards
-> Uwe
->
-> -- 
-> Pengutronix e.K.                           | Uwe Kleine-König            |
-> Industrial Linux Solutions                 | https://www.pengutronix.de/ |
