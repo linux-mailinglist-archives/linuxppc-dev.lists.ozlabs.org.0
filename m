@@ -1,54 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 349345375B2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 09:43:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32BA153767B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 10:27:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LBS861H7Bz3bnF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 17:43:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LBT6V0h2Zz3bt2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 May 2022 18:27:14 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=YJcm463Y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=YJcm463Y;
+	dkim-atps=neutral
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBS7f1X8xz302N
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 17:43:07 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1nva2d-0006ni-4F; Mon, 30 May 2022 09:42:19 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1nva2W-005PS2-BU; Mon, 30 May 2022 09:42:10 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1nva2T-00D2mA-SD; Mon, 30 May 2022 09:42:09 +0200
-Date: Mon, 30 May 2022 09:42:02 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Li Zhengyu <lizhengyu3@huawei.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH] RISC-V: Prepare dropping week attribute from
- arch_kexec_apply_relocations[_add]
-Message-ID: <20220530074202.pydmbbgvbtaugw5j@pengutronix.de>
-References: <20220519091237.676736-1-naveen.n.rao@linux.vnet.ibm.com>
- <20220529065637.xgapqjp2342flbuj@pengutronix.de>
- <264786d9-7756-19e0-2742-8b8d17f5ace5@csgroup.eu>
- <20220529140655.bnd4fgggccrorj4t@pengutronix.de>
- <59e8faec-05fd-805d-7de0-4b0508f8467f@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LBT5s5Bw3z302d
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 May 2022 18:26:40 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C9C0E1F9D1;
+	Mon, 30 May 2022 08:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1653899196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=yB78K+idfIOhoquiDkc12+zxCwXF1N7eE1XHWyLJ5vM=;
+	b=YJcm463Y7/cO9dzFQpkc+gUhjQ/W8Al+YEIl7aM4VSGo+yG7ynyRFwsOQogzGAAmZVrcW0
+	fQlKwqd3mHwiL7MEmM2Qb5vC9q7etJjOCqT7fkUqy+r0ApyqxeRqszQCUChv2Sc+OA1vOg
+	+OOdEVeHx0NVPIvbcjLE8cqsPm1ToRI=
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6B59313AFD;
+	Mon, 30 May 2022 08:26:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id 41fwGLx/lGLgEgAAMHmgww
+	(envelope-from <jgross@suse.com>); Mon, 30 May 2022 08:26:36 +0000
+From: Juergen Gross <jgross@suse.com>
+To: xen-devel@lists.xenproject.org,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] xen: replace xen_remap() with memremap()
+Date: Mon, 30 May 2022 10:26:34 +0200
+Message-Id: <20220530082634.6339-1-jgross@suse.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="izltdsmj2dkmzuym"
-Content-Disposition: inline
-In-Reply-To: <59e8faec-05fd-805d-7de0-4b0508f8467f@huawei.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,114 +67,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangkefeng.wang@huawei.com, guoren@linux.alibaba.com, sunnanyong@huawei.com, Palmer Dabbelt <palmer@rivosinc.com>, jszhang@kernel.org, mick@ics.forth.gr, linux-riscv@lists.infradead.org, Stephen Rothwell <sfr@canb.auug.org.au>, alex@ghiti.fr, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Li Zhengyu <lizhengyu3@huawei.com>, aou@eecs.berkeley.edu, "liaochang \(A\)" <liaochang1@huawei.com>, paul.walmsley@sifive.com, bjorn.topel@gmail.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, penberg@kernel.org, Eric Biederman <ebiederm@xmission.com>, kernel@pengutronix.de, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, kernel test robot <lkp@intel.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Jiri Slaby <jirislaby@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+xen_remap() is used to establish mappings for frames not under direct
+control of the kernel: for Xenstore and console ring pages, and for
+grant pages of non-PV guests.
 
---izltdsmj2dkmzuym
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Today xen_remap() is defined to use ioremap() on x86 (doing uncached
+mappings), and ioremap_cache() on Arm (doing cached mappings).
 
-Without this change arch/riscv/kernel/elf_kexec.c fails to compile once
-commit 233c1e6c319c ("kexec_file: drop weak attribute from
-arch_kexec_apply_relocations[_add]") is also contained in the tree.
-This currently happens in next-20220527.
+Uncached mappings for those use cases are bad for performance, so they
+should be avoided if possible. As all use cases of xen_remap() don't
+require uncached mappings (the mapped area is always physical RAM),
+a mapping using the standard WB cache mode is fine.
 
-Prepare the RISC-V similar to the s390 adaption done in 233c1e6c319c.
-This is safe to do on top of the riscv change even without the change to
-arch_kexec_apply_relocations.
+As sparse is flagging some of the xen_remap() use cases to be not
+appropriate for iomem(), as the result is not annotated with the
+__iomem modifier, eliminate xen_remap() completely and replace all
+use cases with memremap() specifying the MEMREMAP_WB caching mode.
 
-Fixes: 838b3e28488f ("RISC-V: Load purgatory in kexec_file")
-Looks-good-to: liaochang (A) <liaochang1@huawei.com>
-Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+xen_unmap() can be replaced with memunmap().
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 ---
+ arch/x86/include/asm/xen/page.h   | 3 ---
+ drivers/tty/hvc/hvc_xen.c         | 2 +-
+ drivers/xen/grant-table.c         | 6 +++---
+ drivers/xen/xenbus/xenbus_probe.c | 8 ++++----
+ include/xen/arm/page.h            | 3 ---
+ 5 files changed, 8 insertions(+), 14 deletions(-)
 
-On Mon, May 30, 2022 at 09:43:26AM +0800, liaochang (A) wrote:
-> > I can confirm that doing
-> >=20
-> > diff --git a/arch/riscv/include/asm/kexec.h b/arch/riscv/include/asm/ke=
-xec.h
-> > index 206217b23301..eee260e8ab30 100644
-> > --- a/arch/riscv/include/asm/kexec.h
-> > +++ b/arch/riscv/include/asm/kexec.h
-> > @@ -55,6 +55,13 @@ extern riscv_kexec_method riscv_kexec_norelocate;
-> > =20
-> >  #ifdef CONFIG_KEXEC_FILE
-> >  extern const struct kexec_file_ops elf_kexec_ops;
-> > +
-> > +struct purgatory_info;
-> > +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
-> > +				     Elf_Shdr *section,
-> > +				     const Elf_Shdr *relsec,
-> > +				     const Elf_Shdr *symtab);
-> > +#define arch_kexec_apply_relocations_add arch_kexec_apply_relocations_=
-add
-> >  #endif
-> > =20
-> >  #endif
->=20
-> LGTM, you could send a fixup patch to riscv, thanks.
->=20
-> >=20
-> > on top of 838b3e28488f results in a compilable tree. And when merging
-> > 233c1e6c319c into this, it is still building.
-> >=20
-> > I'm not enough into kexec (and riscv) to judge if this is sensible, or
-> > create a useful commit log but the obvious way forward is to apply the
-> > above patch to the riscv tree before it hits Linus' tree.
-
-Ok, here comes a patch with a generic commit log.=20
-
-@riscv people: If you prefer, squash it into 838b3e28488f.
-
-Best regards
-Uwe
-
- arch/riscv/include/asm/kexec.h | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/arch/riscv/include/asm/kexec.h b/arch/riscv/include/asm/kexec.h
-index 206217b23301..eee260e8ab30 100644
---- a/arch/riscv/include/asm/kexec.h
-+++ b/arch/riscv/include/asm/kexec.h
-@@ -55,6 +55,13 @@ extern riscv_kexec_method riscv_kexec_norelocate;
-=20
- #ifdef CONFIG_KEXEC_FILE
- extern const struct kexec_file_ops elf_kexec_ops;
-+
-+struct purgatory_info;
-+int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
-+				     Elf_Shdr *section,
-+				     const Elf_Shdr *relsec,
-+				     const Elf_Shdr *symtab);
-+#define arch_kexec_apply_relocations_add arch_kexec_apply_relocations_add
+diff --git a/arch/x86/include/asm/xen/page.h b/arch/x86/include/asm/xen/page.h
+index 1fc67df50014..fa9ec20783fa 100644
+--- a/arch/x86/include/asm/xen/page.h
++++ b/arch/x86/include/asm/xen/page.h
+@@ -347,9 +347,6 @@ unsigned long arbitrary_virt_to_mfn(void *vaddr);
+ void make_lowmem_page_readonly(void *vaddr);
+ void make_lowmem_page_readwrite(void *vaddr);
+ 
+-#define xen_remap(cookie, size) ioremap((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ static inline bool xen_arch_need_swiotlb(struct device *dev,
+ 					 phys_addr_t phys,
+ 					 dma_addr_t dev_addr)
+diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
+index ebaf7500f48f..7c23112dc923 100644
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -253,7 +253,7 @@ static int xen_hvm_console_init(void)
+ 	if (r < 0 || v == 0)
+ 		goto err;
+ 	gfn = v;
+-	info->intf = xen_remap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE);
++	info->intf = memremap(gfn << XEN_PAGE_SHIFT, XEN_PAGE_SIZE, MEMREMAP_WB);
+ 	if (info->intf == NULL)
+ 		goto err;
+ 	info->vtermno = HVC_COOKIE;
+diff --git a/drivers/xen/grant-table.c b/drivers/xen/grant-table.c
+index 1a1aec0a88a1..2f4f0ed5d8f8 100644
+--- a/drivers/xen/grant-table.c
++++ b/drivers/xen/grant-table.c
+@@ -632,7 +632,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	if (xen_auto_xlat_grant_frames.count)
+ 		return -EINVAL;
+ 
+-	vaddr = xen_remap(addr, XEN_PAGE_SIZE * max_nr_gframes);
++	vaddr = memremap(addr, XEN_PAGE_SIZE * max_nr_gframes, MEMREMAP_WB);
+ 	if (vaddr == NULL) {
+ 		pr_warn("Failed to ioremap gnttab share frames (addr=%pa)!\n",
+ 			&addr);
+@@ -640,7 +640,7 @@ int gnttab_setup_auto_xlat_frames(phys_addr_t addr)
+ 	}
+ 	pfn = kcalloc(max_nr_gframes, sizeof(pfn[0]), GFP_KERNEL);
+ 	if (!pfn) {
+-		xen_unmap(vaddr);
++		memunmap(vaddr);
+ 		return -ENOMEM;
+ 	}
+ 	for (i = 0; i < max_nr_gframes; i++)
+@@ -659,7 +659,7 @@ void gnttab_free_auto_xlat_frames(void)
+ 	if (!xen_auto_xlat_grant_frames.count)
+ 		return;
+ 	kfree(xen_auto_xlat_grant_frames.pfn);
+-	xen_unmap(xen_auto_xlat_grant_frames.vaddr);
++	memunmap(xen_auto_xlat_grant_frames.vaddr);
+ 
+ 	xen_auto_xlat_grant_frames.pfn = NULL;
+ 	xen_auto_xlat_grant_frames.count = 0;
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index d367f2bd2b93..58b732dcbfb8 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -752,8 +752,8 @@ static void xenbus_probe(void)
+ 	xenstored_ready = 1;
+ 
+ 	if (!xen_store_interface) {
+-		xen_store_interface = xen_remap(xen_store_gfn << XEN_PAGE_SHIFT,
+-						XEN_PAGE_SIZE);
++		xen_store_interface = memremap(xen_store_gfn << XEN_PAGE_SHIFT,
++					       XEN_PAGE_SIZE, MEMREMAP_WB);
+ 		/*
+ 		 * Now it is safe to free the IRQ used for xenstore late
+ 		 * initialization. No need to unbind: it is about to be
+@@ -1009,8 +1009,8 @@ static int __init xenbus_init(void)
  #endif
-=20
- #endif
+ 			xen_store_gfn = (unsigned long)v;
+ 			xen_store_interface =
+-				xen_remap(xen_store_gfn << XEN_PAGE_SHIFT,
+-					  XEN_PAGE_SIZE);
++				memremap(xen_store_gfn << XEN_PAGE_SHIFT,
++					 XEN_PAGE_SIZE, MEMREMAP_WB);
+ 			if (xen_store_interface->connection != XENSTORE_CONNECTED)
+ 				wait = true;
+ 		}
+diff --git a/include/xen/arm/page.h b/include/xen/arm/page.h
+index 7e199c6656b9..e5c84ff28c8b 100644
+--- a/include/xen/arm/page.h
++++ b/include/xen/arm/page.h
+@@ -109,9 +109,6 @@ static inline bool set_phys_to_machine(unsigned long pfn, unsigned long mfn)
+ 	return __set_phys_to_machine(pfn, mfn);
+ }
+ 
+-#define xen_remap(cookie, size) ioremap_cache((cookie), (size))
+-#define xen_unmap(cookie) iounmap((cookie))
+-
+ bool xen_arch_need_swiotlb(struct device *dev,
+ 			   phys_addr_t phys,
+ 			   dma_addr_t dev_addr);
+-- 
+2.35.3
 
-base-commit: 838b3e28488f702e2b5477b393f009b2639d2b1a
---=20
-2.36.1
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---izltdsmj2dkmzuym
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKUdUEACgkQwfwUeK3K
-7AnmPQf+IN+rB4o/lVwe+g3nQDfd/LaYheXdhsHmaXF/6uNO5ya9wxPbn66pESxt
-l1koX5LbpqE0geRqIuHtWqxOxsRfhTp7TYNB0KRBuMKPMikGZ8zsd2halcf8DVzc
-TYf7Iz1T49mUZCAOnzUozlX6DLLFWP1CrelQWBePufBtYUzqdFjNRXmoxMuRSUQP
-rJnOFN8EWAokXC8ZCtmqHr/rGZka6+BVpxN7QGPBv2uxrRfEUfh7+JGw72f8BImg
-KzYA7hXaR42x+gv+ilqDTe4h7MNy/6tmUzqToba0hIeG4WNCIhzqG+mBp4iBO3n2
-yEwq9TSpGdW4uIr0YDQx9mp6hz4jwA==
-=CgD8
------END PGP SIGNATURE-----
-
---izltdsmj2dkmzuym--
