@@ -1,92 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127D5538AE0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 07:28:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 896E7538B1E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 07:59:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LC15Y0TmQz3bWt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 15:28:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y8hsD7Bm;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LC1nf166Lz3bvb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 15:59:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y8hsD7Bm;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LC14p6KvNz2yxS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 15:27:38 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 24V2K0RK024723;
-	Tue, 31 May 2022 05:27:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=PT5JtTPRZQDI4w0OM0wq5EeAWJPlSipYKeQ/cQVBe84=;
- b=Y8hsD7BmBM418ki+GIUIpbJ+9kIJ8ByUyQr93TN43l3rXIxX0GjoTGEK5UyS0UZHQv5H
- Kn6vsm6ydAFasl9FlE1xZU5MNdeFv19jZyzKkwSkTY1vpGcH31RzDLZtLOf6HIodNMz5
- KTKrz4qDYkLjBFyVO5jTdkO5JOqALbxnmJSVVpSnTMP+R1vIoUtkYFOTB2FftViN2o7k
- +JSh+iNBXYQKWxyrhooocbc6+ULkJbH+GQgPCudZanlKi0YI3FWJekS/0HOAmwQQzzfq
- 9ctXcF7SCEIA6BTXc0p6/GxHelKhipZz5EXS3Ppq1MUCNY1Vgau9+pI+PqgQDq0eO2DE Bg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gda53ac6r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 May 2022 05:27:20 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 24V5FVfc019175;
-	Tue, 31 May 2022 05:27:19 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gda53ac6c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 May 2022 05:27:19 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 24V57DJX015405;
-	Tue, 31 May 2022 05:27:17 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma04ams.nl.ibm.com with ESMTP id 3gbcae3j1x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 31 May 2022 05:27:17 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 24V5REi916843150
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 31 May 2022 05:27:14 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A88D211C04C;
-	Tue, 31 May 2022 05:27:14 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54D0A11C04A;
-	Tue, 31 May 2022 05:27:10 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.43.34.53])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Tue, 31 May 2022 05:27:10 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Tue, 31 May 2022 10:57:09 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH v2] of: check previous kernel's ima-kexec-buffer against
- memory bounds
-In-Reply-To: <20220526015240.GA2884362-robh@kernel.org>
-References: <20220524055042.1527968-1-vaibhav@linux.ibm.com>
- <20220526015240.GA2884362-robh@kernel.org>
-Date: Tue, 31 May 2022 10:57:09 +0530
-Message-ID: <87h756ff0y.fsf@vajain21.in.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: R2s4D36h56biMphvC_rMY7PtyfsreFsy
-X-Proofpoint-ORIG-GUID: 4m1hsAWBxReN2px9sIiPiHsphA8vz2zn
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LC1nB2Hx5z2ywc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 15:59:09 +1000 (AEST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nvutV-0000d1-Mm; Tue, 31 May 2022 07:58:17 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nvutO-005aW1-EE; Tue, 31 May 2022 07:58:09 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1nvutL-00DF4g-Ha; Tue, 31 May 2022 07:58:07 +0200
+Date: Tue, 31 May 2022 07:58:03 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Palmer Dabbelt <palmer@rivosinc.com>
+Subject: Re: [PATCH] RISC-V: Prepare dropping week attribute from
+ arch_kexec_apply_relocations[_add]
+Message-ID: <20220531055803.prq5fj6lajzqiiiu@pengutronix.de>
+References: <20220530194133.udwdjsb2l33hsiil@pengutronix.de>
+ <mhng-99e09fbd-fa71-40fc-92da-ff4af0d209a5@palmer-mbp2014>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-05-31_01,2022-05-30_03,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
- impostorscore=0 spamscore=0 mlxscore=0 suspectscore=0 adultscore=0
- priorityscore=1501 mlxlogscore=682 phishscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2205310025
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yslkboxts2p5evg7"
+Content-Disposition: inline
+In-Reply-To: <mhng-99e09fbd-fa71-40fc-92da-ff4af0d209a5@palmer-mbp2014>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,17 +56,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, Prakhar Srivastava <prsriva@linux.microsoft.com>, Lakshmi Ramasubramanian <nramas@linux.microsoft.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Thiago Jung Bauermann <bauerman@linux.ibm.com>, Robin Murphy <robin.murphy@arm.com>
+Cc: wangkefeng.wang@huawei.com, guoren@linux.alibaba.com, sunnanyong@huawei.com, jszhang@kernel.org, mick@ics.forth.gr, linux-riscv@lists.infradead.org, Stephen Rothwell <sfr@canb.auug.org.au>, alex@ghiti.fr, naveen.n.rao@linux.vnet.ibm.com, lizhengyu3@huawei.com, aou@eecs.berkeley.edu, liaochang1@huawei.com, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Topel <bjorn.topel@gmail.com>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, penberg@kernel.org, ebiederm@xmission.com, kernel@pengutronix.de, akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for looking into this patch Rob,
 
-I have addressed your review comment in v3 of the patch posted at
-https://lore.kernel.org/all/20220531041446.3334259-1-vaibhav@linux.ibm.com/
+--yslkboxts2p5evg7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-<snip>
+On Mon, May 30, 2022 at 04:11:27PM -0700, Palmer Dabbelt wrote:
+> On Mon, 30 May 2022 12:41:33 PDT (-0700), u.kleine-koenig@pengutronix.de =
+wrote:
+> > Hello,
+> >=20
+> > On Mon, May 30, 2022 at 11:58:16AM -0700, Palmer Dabbelt wrote:
+> > > On Mon, 30 May 2022 00:42:02 PDT (-0700), u.kleine-koenig@pengutronix=
+=2Ede wrote:
+> > > > Without this change arch/riscv/kernel/elf_kexec.c fails to compile =
+once
+> > > > commit 233c1e6c319c ("kexec_file: drop weak attribute from
+> > > > arch_kexec_apply_relocations[_add]") is also contained in the tree.
+> > > > This currently happens in next-20220527.
+> > > > > Prepare the RISC-V similar to the s390 adaption done in
+> > > 233c1e6c319c.
+> > > > This is safe to do on top of the riscv change even without the chan=
+ge to
+> > > > arch_kexec_apply_relocations.
+> > > > > Fixes: 838b3e28488f ("RISC-V: Load purgatory in kexec_file")
+> > > > Looks-good-to: liaochang (A) <liaochang1@huawei.com>
+> > > > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > > > ---
+> > > > > On Mon, May 30, 2022 at 09:43:26AM +0800, liaochang (A) wrote:
+> > > > > > I can confirm that doing
+> > > > > > > diff --git a/arch/riscv/include/asm/kexec.h
+> > > > > b/arch/riscv/include/asm/kexec.h
+> > > > > > index 206217b23301..eee260e8ab30 100644
+> > > > > > --- a/arch/riscv/include/asm/kexec.h
+> > > > > > +++ b/arch/riscv/include/asm/kexec.h
+> > > > > > @@ -55,6 +55,13 @@ extern riscv_kexec_method riscv_kexec_norelo=
+cate;
+> > > > > >  >  #ifdef CONFIG_KEXEC_FILE
+> > > > > >  extern const struct kexec_file_ops elf_kexec_ops;
+> > > > > > +
+> > > > > > +struct purgatory_info;
+> > > > > > +int arch_kexec_apply_relocations_add(struct purgatory_info *pi,
+> > > > > > +				     Elf_Shdr *section,
+> > > > > > +				     const Elf_Shdr *relsec,
+> > > > > > +				     const Elf_Shdr *symtab);
+> > > > > > +#define arch_kexec_apply_relocations_add arch_kexec_apply_relo=
+cations_add
+> > > > > >  #endif
+> > > > > >  >  #endif
+> > > > > > > LGTM, you could send a fixup patch to riscv, thanks.
+> > > > > > > > > on top of 838b3e28488f results in a compilable tree. And
+> > > when
+> > > > > merging
+> > > > > > 233c1e6c319c into this, it is still building.
+> > > > > > > I'm not enough into kexec (and riscv) to judge if this is
+> > > > > sensible, or
+> > > > > > create a useful commit log but the obvious way forward is to ap=
+ply the
+> > > > > > above patch to the riscv tree before it hits Linus' tree.
+> > > > > Ok, here comes a patch with a generic commit log.
+> > > > > @riscv people: If you prefer, squash it into 838b3e28488f.
+> > >=20
+> > > Sorry, just saw this after I sent my version of the fix.  They're the=
+ same,
+> > > but do you mind sending a full-on patch so I can merge it?
+> >=20
+> > Sorry, I don't understand your request. I found
+> > https://lore.kernel.org/linux-riscv/20220530180408.16239-1-palmer@rivos=
+inc.com/
+> >=20
+> > but I don't know what a full-on patch is and what stops you merging my
+> > patch.
+> >=20
+> > Is it that it's in reply to a patch series and b4 fails to fetch the
+> > right patch and you ask to send it in a new thread?
+>=20
+> Ya, with the reply bits in there my mail merge (which unfortunately isn't
+> b4, I haven't gotten around to converting yet) got tripped up.  It's kind=
+ of
+> easy to for me to screw something up trying to pull bits out of replies a=
+nd
+> such, but I think this one was pretty simple (looks like maybe some PGP or
+> MIME thing was the issue).
+>=20
+> I just put <https://git.kernel.org/pub/scm/linux/kernel/git/palmer/linux.=
+git/commit/?h=3Dfor-next&id=3D7699f7aacf3ebfee51c670b6f796b2797f0f7487>
+> on my staging branch, it looks OK to me but LMK if there's a problem.
 
--- 
-Cheers
-~ Vaibhav
+there is indeed a problem, but caused by me: If you are ready to rewrite
+it, please do s/week/weak/ in the subject line. Otherwise looks good to
+me.
+
+Best regards and thanks,
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--yslkboxts2p5evg7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEfnIqFpAYrP8+dKQLwfwUeK3K7AkFAmKVrmgACgkQwfwUeK3K
+7Almtgf/cMTh8gUXGvy16o7kg3cs7a7GFj0o1WI4oidOclFTc/fWRvKtowa8AzI/
+6zEA161snauy6f6RwV4kPudFteGkKV7AuNL93UYf5cLx1yEel9XMhht0KJU+HEPw
+2eaZboB92XdTrvCfnxSanTst4F33A+LK6bD6Yz+B1QZF5gCHB7GqAoTNYTK8EguB
+oHEUMlx6qCWHeC1qBGj8ldLK4kvZqL8eC3yKHezMZVa94PJJsE6KbAKBQGB3D1KN
+GfSkmkRa3fENCxe+2/WOrhLU6qhEFJqwPfEwz7V5xmQgmzlml6xdM5oxccN6E3EC
+o3yYJzG+N0fIbD3b1gHR61LRNFn5rg==
+=23PP
+-----END PGP SIGNATURE-----
+
+--yslkboxts2p5evg7--
