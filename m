@@ -1,53 +1,126 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A7A538B58
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 08:22:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C8C538B5C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 08:25:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LC2HZ0gfQz3c8T
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 16:22:02 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aJPovUqG;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LC2MB3R2Rz3btt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 May 2022 16:25:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::612; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on0612.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::612])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LC2Gx2RR1z30gd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 16:21:29 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=aJPovUqG;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LC2Gx1THNz4xZK;
-	Tue, 31 May 2022 16:21:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1653978089;
-	bh=hA2+qCVUaFsRK+tIdoI5KcdEVKaUAZx6jHnZdgtOsS0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aJPovUqGJyFQMKLvaOHzCEypjq6J9Vv9uY5xeGiynouWyQWsdZYEfFY+n3Djz+DEG
-	 lf1ECLLKMQMSeADGdUOcyAI1iRRBNbMXOfdlfjJkE2BtI7vlHjAY2UUabdo/G9ijDd
-	 o+dn03kk6TnW87eVazGwWnaBmukxFvlcorSFk4pGOlCebiwWwH6KWfbi86anlC3wfd
-	 MyfTKip7I1BvGoc4VKhIi3NJQQhCxbnQcBKpE1gz1N9D7iOsPmQ5tvH7Xq7HXa6Y6T
-	 DxxNXYYacA8jQmLG74Z6TVx2uFmvQ7pH1XXaKh+HzUKPgfRplBDMA1riUZ/4LbKiWW
-	 /R0duKJbDg26g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH] powerpc/irq: Increase stack_overflow detection limit
- when KASAN is enabled
-In-Reply-To: <a07c6616ea19a28e9af6008b58ff6ac6ae90efa1.1653927631.git.christophe.leroy@csgroup.eu>
-References: <a07c6616ea19a28e9af6008b58ff6ac6ae90efa1.1653927631.git.christophe.leroy@csgroup.eu>
-Date: Tue, 31 May 2022 16:21:28 +1000
-Message-ID: <87ee0akys7.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LC2Lm22THz30BV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 16:24:47 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=n0BYuwyy7HsMejwKEj5M+XoGXgl0S4HqAwxsIEZCa7O6z4z9DMbuQhxXyBq8A5eTyaePMRSjKQ3TkYBKfHp+aGxLgrGcfvBC0W0ApB5S+xDVl1GXznkflGUjdv/aDnl3p2TFX/13zsmI08qxx7hmkiSIVpgoGsBrOYd8dGX2Y280D6FFOquI7yqph2ptyuynrIKIN9PWmJ1elHhXGzDaamy3fsszdS1wKM1j0XgyzvDqpOmKVSRS/prHzA3ehyYi6Vf4PFdT9IObpDIi0TB9tkNCjrjtHzuYrS+epl8EIJTTPuulnSjEDv6k4WaEROnqP7NcIOsKEM1UATP0nbtRZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=D7IIyLUL86BTNPUJzAtUA/NH4AoBrgT8V5n87+bHziM=;
+ b=ARRp3bVtTDP9UM+GEKaW/FfMfGNH25yepNdF7YMvrmzxJwDF3pjvYwNYt6Y4cjEtGzThmkK9QrxDqyPUnq3IHjpaupIYYy1olPWCgHhoOoQHI1pfKxZMSwlSV+FPfFIgb1a1nyDOWpMPKXvfD6X4E5B1bAQV9IpAgg2cf0uGBe6nWt/jkMMKedxocR0T+kA+niHAHlMKG9Shu5ZcwCFi3Q7Ae0wHOfkuYHFq/lsD8tqezoCCLQoPHaoNhbYzBgHl8CAFRibUfvX2GEQvjGQSL9t5CVG5mYW1L729LkRydwUvJ5RlGl3kbq1z+syQWy1Nhf4EWHF6pbSaIyArWE6aNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB2356.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:35::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.12; Tue, 31 May
+ 2022 06:24:26 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::b15e:862f:adf7:5356]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::b15e:862f:adf7:5356%5]) with mapi id 15.20.5293.019; Tue, 31 May 2022
+ 06:24:26 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Michael Ellerman
+	<patch-notifications@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Subject: Re: [PATCH v1 0/4] Kill the time spent in patch_instruction()
+Thread-Topic: [PATCH v1 0/4] Kill the time spent in patch_instruction()
+Thread-Index: AQHYPgMuEw69Ny4KjUGygXqB4JUsF60gESMAgALl+4CAAGKkAIAVmFsA
+Date: Tue, 31 May 2022 06:24:26 +0000
+Message-ID: <b5fb2df0-911b-ee84-9377-fc426c081adc@csgroup.eu>
+References: <cover.1647962456.git.christophe.leroy@csgroup.eu>
+ <165261053687.1047019.4165741740473209888.b4-ty@ellerman.id.au>
+ <f1481139-9ed6-3e00-e73e-87d4319c614d@csgroup.eu>
+ <874k1opc6l.fsf@mpe.ellerman.id.au>
+In-Reply-To: <874k1opc6l.fsf@mpe.ellerman.id.au>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 24c47a93-e415-44e3-df28-08da42ce35ec
+x-ms-traffictypediagnostic: MR1P264MB2356:EE_
+x-microsoft-antispam-prvs:  <MR1P264MB2356C4A939A1AD7BFB6B9AB8EDDC9@MR1P264MB2356.FRAP264.PROD.OUTLOOK.COM>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  H9NzOXdP2BqB19tciOiIJNIGQI+mgT0/8B6cjbBsISFzU0WXTHZqUIlz55AIgZJpWhh4VOhTBXvM7bPxqHMkyhpBufg01URLz40b/CH1Z4h3dzBr4E8Bdmja/d4Yhs+TOZiUDGMqSF3DC/869r2yAzWJb9ENN0nMei0luOHwrMFn4Qz+YRP+qgUl13Sw8k9Sbqi1yxms+6CYyUlAKQp/P+6f13WtNmCMSErZIbxd1oQ7YKHJgH4YA/2YlGDW9bMQ5jd1X3S75XC/8C/ZikjbAaxUTg0FkoQOBnhyxQZogyoUsx2u4m4xwNwaxSKi5nmSOF8lUedH8hcW9z3tjmGsnGPo2Mbf19nptKoWfMfDOEhJX65iFzWAbS1d0CWsif3F8+68QYfJyDiLD/6fLLcHtbjdhqnaTl4BFy/CKEE0AcJVc9hoAKhkBXx6uJBcMQ6yDY4pxsRcfsODqAr5J3Gr3vVbmSCEZJYsC7YS2B726pIUgQSrqzJJYOoSv829KKnMRpK7vaOmZK2Bscd8a/KYNT4yQMfITeba9hSe1b0wtMIyCtJw7JfeJ3KpOvlEo0Kkb0NHStZJOAaMk3ZklIwazspB6dCOEJQk8MAnyF9+EkN1T1PuBDXgtCM28cbtcly+68OqG2Lzz9+PnNgwv79ByzbZAPWZxaU0lmGV9/9wQCZBWmM+7aDEf8zvG4XD8XrmmO1rxRbU1aaRMceX+UlnVpkg5dtwxtPdUZH8TtkvZm/TtjcE0JwCuRLe/+clYM5TMGaLiaeywcterVY8Ia+jCLiDuy2tyUEgVkm4Md0b5I2CrzCY9cJ4PRt2VdLjKLc7df24WmOshfru7UkQ7TPnPvHSKThGpa4s+Pe6QlQHMN0=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(44832011)(6486002)(71200400001)(5660300002)(122000001)(508600001)(8936002)(6512007)(83380400001)(186003)(966005)(2616005)(66574015)(26005)(38070700005)(2906002)(86362001)(6506007)(31696002)(38100700002)(8676002)(4326008)(31686004)(76116006)(66476007)(66446008)(66946007)(316002)(66556008)(64756008)(91956017)(36756003)(54906003)(110136005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?Tys2MjQ2NnBESEVOMFc2RkN3TThZVWVEL1dLekFPSDVQRkdTeWhuMHFqbksv?=
+ =?utf-8?B?SUpZaUd6N2t1bGJoekxmeElleXduMk5kYjNvOExnd1RaRHZ0Z3hmTWNkaE5q?=
+ =?utf-8?B?VDM2YVVHY1FRVDh4M2RCdFgzaVBmZ3hWNU0ydXA2aGlKRGZGK3RWdVRnUjZS?=
+ =?utf-8?B?Mk1xQTBTZ1ZPWFAxWmZycElOdW9CYnFML2N2cmdnZzFmam43ZEF0UGV0cTlz?=
+ =?utf-8?B?Q1JMWVlOK2F3TTVQdlJwWnUvS1RHTlRWTHFaeUhWdkhxL3BuNE5ScTVRL3hW?=
+ =?utf-8?B?cEFtc2NiV3J5aVNLUE40bzcyYVBuMm4rb3Y0VFoyOVRFTDQvVmFtaHRsK1h6?=
+ =?utf-8?B?R3JlNFpJRks0eStOL1NyWEdkdUFFeS9ma2NmWExkcC9NMWE4WVRzOGVRY2tq?=
+ =?utf-8?B?d0JkNVJTRzR3QzJFSDc2dnZ0c0FQYlp4YmJObW9ZemFUUzRlUzVMUUQrSjIv?=
+ =?utf-8?B?c01Sek9HdUI2NitTWGswK0JIRXYxQlFMUVlES0lDbW5KRUpvY1dMSXpNR1FW?=
+ =?utf-8?B?a1hyUnMzQUZOeEoxbDRidUZNZDFMc1hlMkQzeUZ2eDJQZkZvRkVhL2RlY2t1?=
+ =?utf-8?B?R2tVbFVQS01KVFJ2Qjl3QWVKNXZEQzFQeHM3TUpDbmVPelkrWDVpOG5VOXNS?=
+ =?utf-8?B?S1lBWEkyMFBkUU1IVTcybEpRckYxcTU4OFppQ2NKaFNRSTY0S2tRdjVjcDNT?=
+ =?utf-8?B?ajFWaW45VERiR01wQUFYc2ZxZVpaZnRZQUpUMTZETHpjaStsRTlSWFR6UTB1?=
+ =?utf-8?B?MXNnYWYySEUxekNmTHN0Yjc4dlJjRGZZWXVxZ3ZvZjN3d2loNzRRMDRCbzMy?=
+ =?utf-8?B?UGlkV1F3d0Z6c3dteUpMV0JSV0tjL1l2TnNlaFZBM3k0eGVmeSt0YkNBOFY3?=
+ =?utf-8?B?NmVITEVYTGtESHY5V1d5aStEUGwxdWQ0UHdYWU1ra1RxejlNYU1qWlQ4aXM3?=
+ =?utf-8?B?cDJrQ0Vqa2ZnQUErQXZpZHdWOEkrR3g5cE9Ca1dHbWg1QjZ0Mks4My9jY05K?=
+ =?utf-8?B?TnNISHVQQUJkajdtMWJqaGZUN0RaZ0FlL0xIVEVQVHpJMnhSMkE3ejhjb2Iy?=
+ =?utf-8?B?RkI0M1FQazh5YXZXSTdOc2tGeDN2dzI4bXU2Y3pHOGNMcUF1dWNlTEN5Z25G?=
+ =?utf-8?B?MjkyMXFSZ3VnY2thMlZlNzIreDRGU2RZekU3blJKaElDL3RRaWo3dmplSWR4?=
+ =?utf-8?B?eG9JVHVoWFA5NTV1Y05MSGJvM3ZERU0xWXYwSVZBRjNWZ2hESXFheTFxczJm?=
+ =?utf-8?B?ZFlwQ24xd0tzVEdRTjBua00vMS9EZTdvdFBvZGJLb3NwbHFpeWw5ZUZteUFT?=
+ =?utf-8?B?dFpYbHFPM3V0aUJQaHRLU2d0SW5QUlBIN2E2TFEySHpsUnhpRk84dkVnamp0?=
+ =?utf-8?B?SGtOUk5uRWMwUEl5d1NsSDAzcVVudWVhREkya3VLVUdqTUhwU3IzNElnQUtU?=
+ =?utf-8?B?dGpmbThlUjBBVGUvL2tuNnB1MnliQXdHY053V1ZMUFZtblZJQWJDaVVCaHhv?=
+ =?utf-8?B?bkgwSFpqaWxSYnVVTDJTZWJIeEx6MmV2aE8rWWI1WGh3M3lVZ3JlZ25oVktW?=
+ =?utf-8?B?cGJzMVl1Smphd2tTeWx2SUdadFRtQ1RrVW0ycFhmeXd1MWFMeGpVUFZFMmFj?=
+ =?utf-8?B?RW1oRXJFQ0xORG5yMFp4UmRpL0VkNHhXZEpWQkt2Q2IwMVB4RWRsWmI2Rm1p?=
+ =?utf-8?B?Q3NMZDZZMFFJbC9RTjYvSVE4NzlzYTIvN2dWd3o1VGRKOVNEMnd4dlpTa3hQ?=
+ =?utf-8?B?OWNlWmd3Q3IvM2E1TjRISUVrN1VSa2l0RXZyejJUbW8rNDYyVXVkckJSUS9U?=
+ =?utf-8?B?NE5OTit5MmVjR0JVOU9FUzRvTmlhbUpKUk1jaFdnMTZ2MDNOM21WS0d4a0RK?=
+ =?utf-8?B?aXViMUlTYWhBYlpxQktDc2h4WW4vSkNUL2FRVEs2aGRQaDRrSjJNSW5JUHhm?=
+ =?utf-8?B?VitKcGs0MEZmcCsvVzRGUnBZTEVzdVdMdmd4dG51alZUODR3Y3dVSHlEQWx0?=
+ =?utf-8?B?QW1QZkRyZVk1WnBrbmNHN2NBUFdxcllSYTE4ZVlvRjh1VWpDaFpRV0gyQXNF?=
+ =?utf-8?B?YkFnRnYrOHdCY1lpSkFLanR5L24zZ1UrYzBsdjBzU3ZaNHVJUVBTNzdqdzlV?=
+ =?utf-8?B?bVh3WHBCV1BsS2NLNmhmNVIvRmRSVmsxaVBid0w0dVV0bk9sWWQ0SjhIVDRB?=
+ =?utf-8?B?U0UrZEphUi9ycXFiaEE0eEM0MkgzSGJYT0NvaVllZlJTa0RMU0VtSkpLdXhm?=
+ =?utf-8?B?cG1qTHpuYldSdmdKVWR3SnVXNFhmamZzdkg4UDVKOEtXbWd3aFJ6b0x3ZEtn?=
+ =?utf-8?B?a2gzNitnVmF3dWYrdXNOUllRRnlwWGNGTWUzeHF5MlJwRDM5TkxOVkp1Y1M1?=
+ =?utf-8?Q?PpCtLvq954L84aWCXhGDTievE9m1grD/pyYT1?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EE116EB281E33C439E0563849C715D6B@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24c47a93-e415-44e3-df28-08da42ce35ec
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 May 2022 06:24:26.1602
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YjobcJulx3KsDW2GoveXoyOHPYowRU5GLgyhvFlFJUFjjxdR775bik53s0eDPC48oppHyalPd/+DBGuxPeG4lexY5ZqI1Fz2c5Ff624oq8c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB2356
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,125 +132,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Erhard Furtner <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> When KASAN is enabled, as shown by the Oops below, the 2k limit is not
-> enough to allow stack dump after a stack overflow detection when
-> CONFIG_DEBUG_STACKOVERFLOW is selected:
->
-> 	do_IRQ: stack overflow: 1984
-> 	CPU: 0 PID: 126 Comm: systemd-udevd Not tainted 5.18.0-gentoo-PMacG4 #1
-> 	Call Trace:
-> 	Oops: Kernel stack overflow, sig: 11 [#1]
-> 	BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
-> 	Modules linked in: sr_mod cdrom radeon(+) ohci_pci(+) hwmon i2c_algo_bit drm_ttm_helper ttm drm_dp_helper snd_aoa_i2sbus snd_aoa_soundbus snd_pcm ehci_pci snd_timer ohci_hcd snd ssb ehci_hcd 8250_pci soundcore drm_kms_helper pcmcia 8250 pcmcia_core syscopyarea usbcore sysfillrect 8250_base sysimgblt serial_mctrl_gpio fb_sys_fops usb_common pkcs8_key_parser fuse drm drm_panel_orientation_quirks configfs
-> 	CPU: 0 PID: 126 Comm: systemd-udevd Not tainted 5.18.0-gentoo-PMacG4 #1
-> 	NIP:  c02e5558 LR: c07eb3bc CTR: c07f46a8
-> 	REGS: e7fe9f50 TRAP: 0000   Not tainted  (5.18.0-gentoo-PMacG4)
-> 	MSR:  00001032 <ME,IR,DR,RI>  CR: 44a14824  XER: 20000000
->
-> 	GPR00: c07eb3bc eaa1c000 c26baea0 eaa1c0a0 00000008 00000000 c07eb3bc eaa1c010
-> 	GPR08: eaa1c0a8 04f3f3f3 f1f1f1f1 c07f4c84 44a14824 0080f7e4 00000005 00000010
-> 	GPR16: 00000025 eaa1c154 eaa1c158 c0dbad64 00000020 fd543810 eaa1c0a0 eaa1c29e
-> 	GPR24: c0dbad44 c0db8740 05ffffff fd543802 eaa1c150 c0c9a3c0 eaa1c0a0 c0c9a3c0
-> 	NIP [c02e5558] kasan_check_range+0xc/0x2b4
-> 	LR [c07eb3bc] format_decode+0x80/0x604
-> 	Call Trace:
-> 	[eaa1c000] [c07eb3bc] format_decode+0x80/0x604 (unreliable)
-> 	[eaa1c070] [c07f4dac] vsnprintf+0x128/0x938
-> 	[eaa1c110] [c07f5788] sprintf+0xa0/0xc0
-> 	[eaa1c180] [c0154c1c] __sprint_symbol.constprop.0+0x170/0x198
-> 	[eaa1c230] [c07ee71c] symbol_string+0xf8/0x260
-> 	[eaa1c430] [c07f46d0] pointer+0x15c/0x710
-> 	[eaa1c4b0] [c07f4fbc] vsnprintf+0x338/0x938
-> 	[eaa1c550] [c00e8fa0] vprintk_store+0x2a8/0x678
-> 	[eaa1c690] [c00e94e4] vprintk_emit+0x174/0x378
-> 	[eaa1c6d0] [c00ea008] _printk+0x9c/0xc0
-> 	[eaa1c750] [c000ca94] show_stack+0x21c/0x260
-> 	[eaa1c7a0] [c07d0bd4] dump_stack_lvl+0x60/0x90
-> 	[eaa1c7c0] [c0009234] __do_IRQ+0x170/0x174
-> 	[eaa1c800] [c0009258] do_IRQ+0x20/0x34
-> 	[eaa1c820] [c00045b4] HardwareInterrupt_virt+0x108/0x10c
-
-Is this actually caused by KASAN? There's no stack frames in there that
-are KASAN related AFAICS.
-
-Seems like the 2K limit is never going to be enough even if KASAN is not
-enabled. Presumably we just haven't noticed because we don't trigger the
-check unless KASAN is enabled.
-
-> ...
->
-> Increase the limit to 3k when KASAN is enabled.
->
-> While at it remove the 'inline' keywork for check_stack_overflow().
-> This function is called only once so it will be inlined regardless.
-
-I'd rather that was a separate change, in case it has some unintended
-affect.
-
-> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/kernel/irq.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-> index 873e6dffb868..5ff4cf69fc2f 100644
-> --- a/arch/powerpc/kernel/irq.c
-> +++ b/arch/powerpc/kernel/irq.c
-> @@ -53,6 +53,7 @@
->  #include <linux/vmalloc.h>
->  #include <linux/pgtable.h>
->  #include <linux/static_call.h>
-> +#include <linux/sizes.h>
->  
->  #include <linux/uaccess.h>
->  #include <asm/interrupt.h>
-> @@ -184,7 +185,7 @@ u64 arch_irq_stat_cpu(unsigned int cpu)
->  	return sum;
->  }
->  
-> -static inline void check_stack_overflow(void)
-> +static void check_stack_overflow(void)
->  {
->  	long sp;
->  
-> @@ -193,11 +194,14 @@ static inline void check_stack_overflow(void)
->
-
-Wouldn't it be cleaner to just do:
-
-#ifdef CONFIG_KASAN
-#define STACK_CHECK_LIMIT (3 * 1024)
-#else
-#define STACK_CHECK_LIMIT (2 * 1024)
-#endif
-
->  	sp = current_stack_pointer & (THREAD_SIZE - 1);
->  
-> -	/* check for stack overflow: is there less than 2KB free? */
-> -	if (unlikely(sp < 2048)) {
- 
-+	if (unlikely(sp < STACK_CHECK_LIMIT)) {
- 
-And then the code could stay as it is?
-
-cheers
-
-> -		pr_err("do_IRQ: stack overflow: %ld\n", sp);
-> -		dump_stack();
-> -	}
-> +	/* check for stack overflow: is there less than 2/3KB free? */
-> +	if (!IS_ENABLED(KASAN) && likely(sp >= SZ_2K))
-> +		return;
-> +	if (IS_ENABLED(KASAN) && likely(sp >= SZ_2K + SZ_1K))
-> +		return;
-> +
-> +	pr_err("do_IRQ: stack overflow: %ld\n", sp);
-> +	dump_stack();
->  }
+DQoNCkxlIDE3LzA1LzIwMjIgw6AgMTQ6MzcsIE1pY2hhZWwgRWxsZXJtYW4gYSDDqWNyaXTCoDoN
+Cj4gQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiB3cml0ZXM6
+DQo+PiBMZSAxNS8wNS8yMDIyIMOgIDEyOjI4LCBNaWNoYWVsIEVsbGVybWFuIGEgw6ljcml0wqA6
+DQo+Pj4gT24gVHVlLCAyMiBNYXIgMjAyMiAxNjo0MDoxNyArMDEwMCwgQ2hyaXN0b3BoZSBMZXJv
+eSB3cm90ZToNCj4+Pj4gVGhpcyBzZXJpZXMgcmVkdWNlcyBieSA3MCUgdGhlIHRpbWUgcmVxdWly
+ZWQgdG8gYWN0aXZhdGUNCj4+Pj4gZnRyYWNlIG9uIGFuIDh4eCB3aXRoIENPTkZJR19TVFJJQ1Rf
+S0VSTkVMX1JXWC4NCj4+Pj4NCj4+Pj4gTWVhc3VyZSBpcyBwZXJmb3JtZWQgaW4gZnVuY3Rpb24g
+ZnRyYWNlX3JlcGxhY2VfY29kZSgpIHVzaW5nIG1mdGIoKQ0KPj4+PiBhcm91bmQgdGhlIGxvb3Au
+DQo+Pj4+DQo+Pj4+IFdpdGggdGhlIHNlcmllcywNCj4+Pj4gLSBXaXRob3V0IENPTkZJR19TVFJJ
+Q1RfS0VSTkVMX1JXWCwgNDE2MDAwIFRCIHRpY2tzIGFyZSBtZWFzdXJlZC4NCj4+Pj4gLSBXaXRo
+IENPTkZJR19TVFJJQ1RfS0VSTkVMX1JXWCwgNTQ2MDAwIFRCIHRpY2tzIGFyZSBtZWFzdXJlZC4N
+Cj4+Pj4NCj4+Pj4gWy4uLl0NCj4+Pg0KPj4+IFBhdGNoZXMgMSwgMyBhbmQgNCBhcHBsaWVkIHRv
+IHBvd2VycGMvbmV4dC4NCj4+Pg0KPj4+IFsxLzRdIHBvd2VycGMvY29kZS1wYXRjaGluZzogRG9u
+J3QgY2FsbCBpc192bWFsbG9jX29yX21vZHVsZV9hZGRyKCkgd2l0aG91dCBDT05GSUdfTU9EVUxF
+Uw0KPj4+ICAgICAgICAgaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wb3dlcnBjL2MvY2IzYWM0NTIx
+NGMwMzg1MjQzMDk3OWE0MzE4MDM3MWE0NGI3NDU5Ng0KPj4+IFszLzRdIHBvd2VycGMvY29kZS1w
+YXRjaGluZzogVXNlIGp1bXBfbGFiZWwgZm9yIHRlc3RpbmcgZnJlZWQgaW5pdG1lbQ0KPj4+ICAg
+ICAgICAgaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wb3dlcnBjL2MvYjAzMzc2Nzg0OGM0MTE1ZTQ4
+NmIxYTUxOTQ2ZGUzYmVlMmFjMGZhNg0KPj4+IFs0LzRdIHBvd2VycGMvY29kZS1wYXRjaGluZzog
+VXNlIGp1bXBfbGFiZWwgdG8gY2hlY2sgaWYgcG9raW5nX2luaXQoKSBpcyBkb25lDQo+Pj4gICAg
+ICAgICBodHRwczovL2dpdC5rZXJuZWwub3JnL3Bvd2VycGMvYy8xNzUxMjg5MjY4ZWY5NTlkYjY4
+YjBiNmY3OThkOTA0ZDY0MDMzMDlhDQo+Pj4NCj4+DQo+PiBQYXRjaCAyIHdhcyB0aGUga2V5c3Rv
+bmUgb2YgdGhpcyBzZXJpZXMuIFdoYXQgaGFwcGVuZWQgdG8gaXQgPw0KPiANCj4gSXQgYnJva2Ug
+b24gNjQtYml0LiBJIHRoaW5rIEkga25vdyB3aHkgYnV0IEkgaGF2ZW4ndCBoYWQgdGltZSB0byB0
+ZXN0DQo+IGl0LiBXaWxsIHRyeSBhbmQgZ2V0IGl0IGZpeGVkIGluIHRoZSBuZXh0IGRheSBvciB0
+d28uDQo+IA0KDQpZb3UgZGlkbid0IGZpbmQgYW55IHNvbHV0aW9uIGF0IHRoZSBlbmQsIG9yIGRp
+ZG4ndCBoYXZlIHRpbWUgPw0KDQpXaGF0IHdhcyB0aGUgcHJvYmxlbSBleGFjdGx5ID8gSSBtYWRl
+IGEgcXVpY2sgdHJ5IG9uIFFFTVUgYW5kIGl0IHdhcyANCndvcmtpbmcgYXMgZXhwZWN0ZWQuDQoN
+CkNocmlzdG9waGU=
