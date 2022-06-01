@@ -2,35 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD5B53AB04
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 18:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344E853ABD4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 19:26:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCvbX6GQ7z3c9J
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 02:23:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LCwzS0tfbz3bq7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 03:26:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GHO+qMWQ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCvb84VJLz3bkH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 02:23:30 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 251GKOUe017174;
-	Wed, 1 Jun 2022 11:20:24 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 251GKN16017173;
-	Wed, 1 Jun 2022 11:20:23 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Wed, 1 Jun 2022 11:20:23 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64: Drop ppc_inst_as_str()
-Message-ID: <20220601162023.GW25951@gate.crashing.org>
-References: <20220531065936.3674348-1-mpe@ellerman.id.au> <20220531222715.GT25951@gate.crashing.org> <87fskopsui.fsf@mpe.ellerman.id.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GHO+qMWQ;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCwyq3SVCz3bl7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 03:25:39 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id DA5C2B81BC3;
+	Wed,  1 Jun 2022 17:25:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301D1C385A5;
+	Wed,  1 Jun 2022 17:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1654104334;
+	bh=jMMe7B3BhgdISh7uct3BKpjV+FPEgE6gFytMtHtHl0c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GHO+qMWQe5cP8tmgUQqj8fPGjJwS3Otgz+OXIEdGPVJSradD7wwZvicTh/XeTN6xn
+	 36cftZjh2U4vxTC907inz6H2ofvk+02etbYJZRSA3kWg1Zraq122z9y1G6zY5uAzjM
+	 9xDC4IBmiXmiVoI5M28u6BmC46gm/t04m9/d3Uk738NKcetPPZ1x+AIx5ihXth0Frb
+	 Ch9UusaL6Sktiv1EghEBMMueZ59I77EcbHnOJL4/Jl32ORyzuRmi00q7R572WE5XOK
+	 /zF9VgHnpoTDGhq77ORqvchBakQOe3gxA1stj2MKAJaA3beP0uvbuDT0szSX/KVl+i
+	 ui6hmrXqhf3Iw==
+Date: Wed, 1 Jun 2022 10:25:31 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 09/15] swiotlb: make the swiotlb_init interface more
+ useful
+Message-ID: <YpehC7BwBlnuxplF@dev-arch.thelio-3990X>
+References: <20220404050559.132378-1-hch@lst.de>
+ <20220404050559.132378-10-hch@lst.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87fskopsui.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.4.2.3i
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220404050559.132378-10-hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,105 +62,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org, David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 01, 2022 at 08:43:01PM +1000, Michael Ellerman wrote:
-> Segher Boessenkool <segher@kernel.crashing.org> writes:
-> > Hi!
-> >
-> > On Tue, May 31, 2022 at 04:59:36PM +1000, Michael Ellerman wrote:
-> >> More problematically it doesn't compile at all with GCC 12, due to the
-> >> fact that it returns the char buffer declared inside the macro:
-> >
-> > It returns a pointer to a buffer on stack.  It is not valid C to access
-> > that buffer after the function has returned (and indeed it does not
-> > work, in general).
+Hi Christoph,
+
+On Mon, Apr 04, 2022 at 07:05:53AM +0200, Christoph Hellwig wrote:
+> Pass a bool to pass if swiotlb needs to be enabled based on the
+> addressing needs and replace the verbose argument with a set of
+> flags, including one to force enable bounce buffering.
 > 
-> It's a statement expression though, not a function. So it doesn't return
-> as such, that would be obviously wrong.
-
-Yes, wrong language, my bad.  But luckily it doesn't matter if this is a
-function or not anyway: the question is about scopes and lifetimes :-)
-
-> But I'm not a language lawyer, so presumably it's not valid to refer to
-> the variable after it's gone out of scope.
+> Note that this patch removes the possibility to force xen-swiotlb
+> use using swiotlb=force on the command line on x86 (arm and arm64
+> never supported that), but this interface will be restored shortly.
 > 
-> Although we do use that same pattern in many places where the value of
-> the expression is a scalar type.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-It's an object with automatic storage duration.  Its lifetime ends when
-the scope is left, which is at the end of the statement expression, so
-before the object is used.
+I bisected a performance regression in WSL2 to this change as commit
+c6af2aa9ffc9 ("swiotlb: make the swiotlb_init interface more useful") in
+mainline (bisect log below). I initially noticed it because accessing the
+Windows filesystem through the /mnt/c mount is about 40x slower if I am doing
+my math right based on the benchmarks below.
 
-The value of the expression can be used just fine, sure, but the object
-it points to has ceased to exist, so dereferencing that pointer is
-undefined behaviour.
+Before:
 
-> >> A simpler solution is to just print the value as an unsigned long. For
-> >> normal instructions the output is identical. For prefixed instructions
-> >> the value is printed as a single 64-bit quantity, whereas previously the
-> >> low half was printed first. But that is good enough for debug output,
-> >> especially as prefixed instructions will be rare in practice.
-> >
-> > Prefixed insns might be somewhat rare currently, but it will not stay
-> > that way.
-> 
-> These are all printing kernel instructions, not userspace. I should have
-> said that in the change log.
+$ uname -r; and hyperfine "ls -l /mnt/c/Users/natec/Downloads"
+5.18.0-rc3-microsoft-standard-WSL2-00008-ga3e230926708
+Benchmark 1: ls -l /mnt/c/Users/natec/Downloads
+  Time (mean ± σ):     564.5 ms ±  24.1 ms    [User: 2.5 ms, System: 130.3 ms]
+  Range (min … max):   510.2 ms … 588.0 ms    10 runs
 
-Ah!  In that case, it will take quite a bit longer before you will see
-many prefixed insns, sure.
+After
 
-> The kernel doesn't build for -mcpu=power10 because we haven't done any
-> changes for pcrel.
-> 
-> We will do that one day, but not soon.
+$ uname -r; and hyperfine "ls -l /mnt/c/Users/natec/Downloads"
+5.18.0-rc3-microsoft-standard-WSL2-00009-gc6af2aa9ffc9
+Benchmark 1: ls -l /mnt/c/Users/natec/Downloads
+  Time (mean ± σ):     23.282 s ±  1.220 s    [User: 0.013 s, System: 0.101 s]
+  Range (min … max):   21.793 s … 25.317 s    10 runs
 
-Yeah, pcrel is the big hitter currently.  But with the extra opcode
-space we have now, maybe something else will show up that even the
-kernel will use.  I cannot predict the future very well :-)
+I do see 'swiotlb=force' on the cmdline:
 
-> > It is not hard to fix the problem here?  The only tricky part is that
-> > ppc_inst_as_ulong swaps the two halves for LE, for as far as I can see
-> > no reason at all :-(
-> >
-> > If it didn't it would be easy to detect prefixed insns (because they
-> > then are guaranteed to be > 0xffffffff), and it is easy to print them
-> > with a space between the two opcodes, with a utility function:
-> >
-> > void print_insn_bytes_nicely(unsigned long insn)
-> > {
-> > 	if (insn > 0xffffffff)
-> > 		printf("%08x ", insn >> 32);
-> > 	printf("%08x", insn & 0xffffffff);
-> > }
-> 
-> We don't want to do that because it can lead to interleaving messages
-> between different CPUs in the kernel log.
+$ cat /proc/cmdline
+initrd=\initrd.img panic=-1 nr_cpus=8 swiotlb=force earlycon=uart8250,io,0x3f8,115200 console=hvc0 debug pty.legacy_count=0
 
-Yuck.
+/mnt/c appears to be a 9p mount, not sure if that is relevant here:
 
-void print_insn_bytes_nicely(unsigned long insn)
-{
-	if (insn > 0xffffffff)
-		printf("%08x ", insn >> 32, insn & 0xffffffff);
-	else
-		printf("%08x", insn & 0xffffffff);
-}
+$ mount &| grep /mnt/c
+drvfs on /mnt/c type 9p (rw,noatime,dirsync,aname=drvfs;path=C:\;uid=1000;gid=1000;symlinkroot=/mnt/,mmap,access=client,msize=262144,trans=virtio)
 
-But it makes things much less enticing, alright.
+If there is any other information I can provide, please let me know.
 
-> In the medium term there's some changes to printk that might land soon
-> (printbuf), which would mean we could more easily define a custom printk
-> formatter for printing prefixed instructions.
+Cheers,
+Nathan
 
-Yeah :-)
-
-What about the more fundamental thing?  Have the order of the two halves
-of a prefixed insn as ulong not depend on endianness?  It really is two
-opcodes, and the prefixed one is first, always, even in LE.
-
-
-Segher
+# bad: [700170bf6b4d773e328fa54ebb70ba444007c702] Merge tag 'nfs-for-5.19-1' of git://git.linux-nfs.org/projects/anna/linux-nfs
+# good: [4b0986a3613c92f4ec1bdc7f60ec66fea135991f] Linux 5.18
+git bisect start '700170bf6b4d773e328fa54ebb70ba444007c702' 'v5.18'
+# good: [86c87bea6b42100c67418af690919c44de6ede6e] Merge tag 'devicetree-for-5.19' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux
+git bisect good 86c87bea6b42100c67418af690919c44de6ede6e
+# bad: [ae862183285cbb2ef9032770d98ffa9becffe9d5] Merge tag 'arm-dt-5.19' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
+git bisect bad ae862183285cbb2ef9032770d98ffa9becffe9d5
+# good: [2518f226c60d8e04d18ba4295500a5b0b8ac7659] Merge tag 'drm-next-2022-05-25' of git://anongit.freedesktop.org/drm/drm
+git bisect good 2518f226c60d8e04d18ba4295500a5b0b8ac7659
+# bad: [babf0bb978e3c9fce6c4eba6b744c8754fd43d8e] Merge tag 'xfs-5.19-for-linus' of git://git.kernel.org/pub/scm/fs/xfs/xfs-linux
+git bisect bad babf0bb978e3c9fce6c4eba6b744c8754fd43d8e
+# good: [beed983621fbdfd291e6e3a0cdc4d10517e60af8] ASoC: Intel: avs: Machine board registration
+git bisect good beed983621fbdfd291e6e3a0cdc4d10517e60af8
+# good: [fbe86daca0ba878b04fa241b85e26e54d17d4229] Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi
+git bisect good fbe86daca0ba878b04fa241b85e26e54d17d4229
+# good: [166afc45ed5523298541fd0297f9ad585cc2708c] Merge tag 'reflink-speedups-5.19_2022-04-28' of git://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux into xfs-5.19-for-next
+git bisect good 166afc45ed5523298541fd0297f9ad585cc2708c
+# bad: [e375780b631a5fc2a61a3b4fa12429255361a31e] Merge tag 'fsnotify_for_v5.19-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jack/linux-fs
+git bisect bad e375780b631a5fc2a61a3b4fa12429255361a31e
+# bad: [4a37f3dd9a83186cb88d44808ab35b78375082c9] dma-direct: don't over-decrypt memory
+git bisect bad 4a37f3dd9a83186cb88d44808ab35b78375082c9
+# bad: [742519538e6b07250c8085bbff4bd358bc03bf16] swiotlb: pass a gfp_mask argument to swiotlb_init_late
+git bisect bad 742519538e6b07250c8085bbff4bd358bc03bf16
+# good: [9bbe7a7fc126e3d14fefa4b035854aba080926d9] arm/xen: don't check for xen_initial_domain() in xen_create_contiguous_region
+git bisect good 9bbe7a7fc126e3d14fefa4b035854aba080926d9
+# good: [a3e230926708125205ffd06d3dc2175a8263ae7e] x86: centralize setting SWIOTLB_FORCE when guest memory encryption is enabled
+git bisect good a3e230926708125205ffd06d3dc2175a8263ae7e
+# bad: [8ba2ed1be90fc210126f68186564707478552c95] swiotlb: add a SWIOTLB_ANY flag to lift the low memory restriction
+git bisect bad 8ba2ed1be90fc210126f68186564707478552c95
+# bad: [c6af2aa9ffc9763826607bc2664ef3ea4475ed18] swiotlb: make the swiotlb_init interface more useful
+git bisect bad c6af2aa9ffc9763826607bc2664ef3ea4475ed18
+# first bad commit: [c6af2aa9ffc9763826607bc2664ef3ea4475ed18] swiotlb: make the swiotlb_init interface more useful
