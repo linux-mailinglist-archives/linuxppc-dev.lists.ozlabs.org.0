@@ -1,59 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5861F539B21
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 04:10:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C20C539B57
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 04:53:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCXgL1mRRz3bmt
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 12:10:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LCYcB6d7sz3bl4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 12:53:14 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=S4+SSTWL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=m2EycO58;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.50; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=bagasdotme@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=S4+SSTWL;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=m2EycO58;
 	dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCXff6Flqz2xrS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 12:10:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654049409;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=PejTb7qqL8A+3fq/zmYUzlXvjpEQH4ImNn6KURSI4Bc=;
-    b=S4+SSTWL9wQkyiwmBeJVhSvMTJozEs67h91yOzug1CBzhxzOFlruEG4yzkCUMNBDrk
-    OOm2l3JYwz39NREKSpagZz7ojs5RFQDrkRcggynt5wKnCNI7DrbvDtdo/Bwq1jc5e1HW
-    ZzUqJiH+BVMuZz790lc4TQsoiylWuDWlusWKJSqfnqllmeDkM/kBGM0JP4X/0+f27IHn
-    yiv5Wy0sa2/K+OJmC5pmU9BP/xmnxiTpcPNhnhcpSdaaJzURvFgVAMhCbFnQi6vsIere
-    tz0OHAo6XBJmEtqqTdxQYje/O5v63HOcU1ZC6z9txyDNSBvSYpUo7+XlZceXBKeFjIoL
-    wYyA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7aWdyjbowwH7c8C2Z2K+7E1uylhWIoA8F4n9O30S0"
-X-RZG-CLASS-ID: mo00
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 47.45.0 AUTH)
-    with ESMTPSA id 205ca1y512A8sIG
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 1 Jun 2022 04:10:08 +0200 (CEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCYbY04g4z2yMj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 12:52:40 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id l7-20020a17090aaa8700b001dd1a5b9965so741276pjq.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 May 2022 19:52:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=U/LdHjgkKQR9c1pFdxPe1+kCYGuz8uBK8l8SqH25EJM=;
+        b=m2EycO58iayRzm1kxcDcgLFV/MdZgoflZpYXSA0ZfhwhxpCTavWaM0gh3j2JZV6W1c
+         xL7nRq7aVa+GWYj4en6mQdbEpGGWwW3HL+OAkNfymgnaEBpwXBxMN+l+wiphH832r0LT
+         LfNyDitFlnCe5AgSF4v6NNNpy8zJKDZa9e3UqlEPgyviQGXWDvwq5/B6/T/WU+w3KhM9
+         ygDP/cDK1ftGXwj9naDxci0M6BeWMBw6A4nIc7SXOq5EtlrHrYe2mFhns8PLgjvIAO2W
+         iVjBetYLFw9ZDCdG8/clSe3n27+tzSAnWydXMrxy1XiR9gmzfCEQwvysAGvcjR2rRXGJ
+         lWNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=U/LdHjgkKQR9c1pFdxPe1+kCYGuz8uBK8l8SqH25EJM=;
+        b=MOM/nhV7YIwlLfhB45U+xfSEXtJKWmLLBw+z37Ga5LWyxE2CPtAHljWcQMLjgx0mTM
+         SGIor+mgu5Vyy+8E5BcSr6lIMup8flC8eoYJAVQ3XUO6Sw21Y7RGBVMjbcITBNdXRW4t
+         I0fgNBbwRLGQySmlXVgjrHI6fcgiqExPkQp9chUdTNCJrxaR/XzzTrO8twR08hDsqFaH
+         xMoCvWtPF4h9NhgGcNUkdRUhUg9NgptN8fVhpPud268r3uWYRVk1Uf9hLJVb8ypGk6eW
+         TJKaJ0lp9sIKMAXv7z8qc4sh2sqgGix97aWGgIKWPJdO0ehT5JDYuAHOUn1S8+77w6kV
+         fzMg==
+X-Gm-Message-State: AOAM5339rmznkL3EDBwjzNTAhla5Miol4IjGQ2pwMyWZl+xYjdWDE80X
+	DdKUahEcx6wLNfd8+Fl0xw0Bofqpg2W/og==
+X-Google-Smtp-Source: ABdhPJw5IjFkfq3yuClWAbbZR66c4eyol+5MN1bA/Z6B327STKtSZf99CoUQ1q12TsI/tLvLh5qWOA==
+X-Received: by 2002:a17:902:a981:b0:156:229d:6834 with SMTP id bh1-20020a170902a98100b00156229d6834mr62118025plb.128.1654051957670;
+        Tue, 31 May 2022 19:52:37 -0700 (PDT)
+Received: from localhost (subs03-180-214-233-86.three.co.id. [180.214.233.86])
+        by smtp.gmail.com with ESMTPSA id e12-20020a170902ed8c00b0015e8d4eb278sm225762plj.194.2022.05.31.19.52.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 May 2022 19:52:36 -0700 (PDT)
+Date: Wed, 1 Jun 2022 09:52:32 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: outside array bounds error on ppc64_defconfig, GCC 12.1.0
+Message-ID: <YpbUcPrm61RLIiZF@debian.me>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after the devicetree updates for 5.19
-Date: Wed, 1 Jun 2022 04:10:07 +0200
-Message-Id: <84D1E144-6BC4-4320-8F68-0701E263A398@xenosoft.de>
-References: <CAL_JsqK+OqML54Dfs_JNeM1_od9EBGf-eMH_4sXgpjqs2R-iYQ@mail.gmail.com>
-In-Reply-To: <CAL_JsqK+OqML54Dfs_JNeM1_od9EBGf-eMH_4sXgpjqs2R-iYQ@mail.gmail.com>
-To: Rob Herring <robh@kernel.org>
-X-Mailer: iPhone Mail (19F77)
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,26 +73,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Cc: Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>, Nicholas Piggin <npiggin@gmail.com>, Yang Li <yang.lee@linux.alibaba.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 31. May 2022, at 15:46, Rob Herring <robh@kernel.org> wrote:
+Hi,
 
-Do you have a dmesg log?
+I'm trying to verify Drop ppc_inst_as_str() patch on [1] by performing
+ppc64_defconfig build with powerpc64-unknown-linux-gnu-gcc (GCC 12.1.0).
+The patch is applied on top of powerpc tree, next branch.
 
-The other way to fix is creating a IRQ resource and adding it to the
-child device resources.
+I got outside array bounds error:
 
-Rob
+  CC      arch/powerpc/kernel/dbell.o
+In function 'do_byte_reverse',
+    inlined from 'do_vec_store' at arch/powerpc/lib/sstep.c:722:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3509:9:
+arch/powerpc/lib/sstep.c:286:25: error: array subscript [3, 4] is outside array bounds of 'union <anonymous>[1]' [-Werror=array-bounds]
+  286 |                 up[0] = byterev_8(up[3]);
+      |                         ^~~~~~~~~~~~~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:708:11: note: at offset [24, 39] into object 'u' of size 16
+  708 |         } u;
+      |           ^
+In function 'do_byte_reverse',
+    inlined from 'do_vec_store' at arch/powerpc/lib/sstep.c:722:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3509:9:
+arch/powerpc/lib/sstep.c:287:23: error: array subscript [3, 4] is outside array bounds of 'union <anonymous>[1]' [-Werror=array-bounds]
+  287 |                 up[3] = tmp;
+      |                 ~~~~~~^~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:708:11: note: at offset [24, 39] into object 'u' of size 16
+  708 |         } u;
+      |           ^
+In function 'do_byte_reverse',
+    inlined from 'do_vec_store' at arch/powerpc/lib/sstep.c:722:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3509:9:
+arch/powerpc/lib/sstep.c:288:23: error: array subscript 2 is outside array bounds of 'union <anonymous>[1]' [-Werror=array-bounds]
+  288 |                 tmp = byterev_8(up[2]);
+      |                       ^~~~~~~~~~~~~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:708:11: note: at offset 16 into object 'u' of size 16
+  708 |         } u;
+      |           ^
+In function 'do_byte_reverse',
+    inlined from 'do_vec_store' at arch/powerpc/lib/sstep.c:722:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3509:9:
+arch/powerpc/lib/sstep.c:289:23: error: array subscript 2 is outside array bounds of 'union <anonymous>[1]' [-Werror=array-bounds]
+  289 |                 up[2] = byterev_8(up[1]);
+      |                 ~~~~~~^~~~~~~~~~~~~~~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:708:11: note: at offset 16 into object 'u' of size 16
+  708 |         } u;
+      |           ^
+In function 'do_byte_reverse',
+    inlined from 'do_vec_load' at arch/powerpc/lib/sstep.c:691:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3438:9:
+arch/powerpc/lib/sstep.c:286:25: error: array subscript [3, 4] is outside array bounds of 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds]
+  286 |                 up[0] = byterev_8(up[3]);
+      |                         ^~~~~~~~~~~~~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+  681 |         } u = {};
+      |           ^
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+In function 'do_byte_reverse',
+    inlined from 'do_vec_load' at arch/powerpc/lib/sstep.c:691:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3438:9:
+arch/powerpc/lib/sstep.c:287:23: error: array subscript [3, 4] is outside array bounds of 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds]
+  287 |                 up[3] = tmp;
+      |                 ~~~~~~^~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+  681 |         } u = {};
+      |           ^
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset [24, 39] into object 'u' of size 16
+In function 'do_byte_reverse',
+    inlined from 'do_vec_load' at arch/powerpc/lib/sstep.c:691:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3438:9:
+arch/powerpc/lib/sstep.c:288:23: error: array subscript 2 is outside array bounds of 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds]
+  288 |                 tmp = byterev_8(up[2]);
+      |                       ^~~~~~~~~~~~~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+  681 |         } u = {};
+      |           ^
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+In function 'do_byte_reverse',
+    inlined from 'do_vec_load' at arch/powerpc/lib/sstep.c:691:3,
+    inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3438:9:
+arch/powerpc/lib/sstep.c:289:23: error: array subscript 2 is outside array bounds of 'u8[16]' {aka 'unsigned char[16]'} [-Werror=array-bounds]
+  289 |                 up[2] = byterev_8(up[1]);
+      |                 ~~~~~~^~~~~~~~~~~~~~~~~~
+arch/powerpc/lib/sstep.c: In function 'emulate_loadstore':
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+  681 |         } u = {};
+      |           ^
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+arch/powerpc/lib/sstep.c:681:11: note: at offset 16 into object 'u' of size 16
+  CC      arch/powerpc/kernel/jump_label.o
+cc1: all warnings being treated as errors
+make[2]: *** [scripts/Makefile.build:271: arch/powerpc/lib/sstep.o] Error 1
 
-=E2=80=94=E2=80=94
+These errors above are unrelated to the patch.
 
-Rob,
+[1]: https://lore.kernel.org/linuxppc-dev/20220531065936.3674348-1-mpe@ellerman.id.au/
 
-Do you mean a dmesg from the boot loop?
-The other way is a good idea.
+Thanks.
 
-Cheers,
-Christian=
-
+-- 
+An old man doll... just what I always wanted! - Clara
