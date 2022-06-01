@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6BFB53A7F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 16:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A588353A7F7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 16:05:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCrWY4Jtsz3frc
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 00:05:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LCrXB4Sgnz3fw2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 00:05:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f83itaVN;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qIrgYAEB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f83itaVN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qIrgYAEB;
 	dkim-atps=neutral
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCrLr3ZZ0z3c5C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 23:57:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCrLv02Xfz3f2s
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 23:57:42 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id CBEFA61633;
-	Wed,  1 Jun 2022 13:57:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEEAC385B8;
-	Wed,  1 Jun 2022 13:57:37 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 4D102615B9;
+	Wed,  1 Jun 2022 13:57:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039F9C385A5;
+	Wed,  1 Jun 2022 13:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654091858;
-	bh=G1gax5Xss8HQPWq41h/Wu8k+afvXNnM5IWX6Ml/e6dY=;
+	s=k20201202; t=1654091860;
+	bh=y5FpsC0QGeen2RQowSl2Y0D8H3xk4G0Akqg3acr5AMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f83itaVNGpEp69DxQ9U8gp7J0etHZnLjX9HN61AHWpgzLjxIUQfBHGemnLUYF3hui
-	 dV7QT7VWfbO5HvtHkW8pP6Yr9Usz3sESml5oe3v902rEELQdcCx3t/0HH/Xv5/9Qtx
-	 lvcxvUJCtTDk4e0qXKb8cnseoKPri+Nz3DweOJ0Q+qlzknmXGOpC1HKtXHbR1DD2gg
-	 Ut3F+W+KXheuMZ3TIQC/dPcqaJgMWUtTY1X8ztoXzqcBKnQAV94a2L0xmlDNRHe38V
-	 O5K4W3bsB6UByzO4oLoodQkigcqcXuDpoHZT/w4NeIKj6PVfhfEIA0IixHqqtrbUs5
-	 WjELZKlY6ztnA==
+	b=qIrgYAEBkIAy22gsKEiViB+9+Uc+iucBhvgbury8XIPgpY5gyuqjYxyPAl1+yYref
+	 n3ETADrYR7GAPyrEe0BOpUCyzLjQJtaW9IjZe/8HFUwnt4I5RJ/vafUCvuH0WozeRL
+	 S/0Xu6ONR4QzxIC5Bg6ChPR0tVkJMXhiNe7vIJdimq0pauJArvRjAEd95QiDcgIT9i
+	 FWCsugc6YyeRzcduNev8Lzz9MscTCEpFtenxlgBtTn2iZdAOCA3Eo8LtZO11CcB+rQ
+	 Tnr1bAAytp6yqPZX2NQG8WObL6qKGZuh6fOTE2XgjgnnAkdC9ndjkrWBpJQ03lhQ5p
+	 i6jUqBcEQFEvQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 30/37] powerpc/xics: fix refcount leak in icp_opal_init()
-Date: Wed,  1 Jun 2022 09:56:15 -0400
-Message-Id: <20220601135622.2003939-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 31/37] powerpc/powernv: fix missing of_node_put in uv_init()
+Date: Wed,  1 Jun 2022 09:56:16 -0400
+Message-Id: <20220601135622.2003939-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220601135622.2003939-1-sashal@kernel.org>
 References: <20220601135622.2003939-1-sashal@kernel.org>
@@ -62,37 +62,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, nick.child@ibm.com, Lv Ruyi <lv.ruyi@zte.com.cn>, maz@kernel.org, linuxppc-dev@lists.ozlabs.org, Zeal Robot <zealci@zte.com.cn>
+Cc: Sasha Levin <sashal@kernel.org>, Lv Ruyi <lv.ruyi@zte.com.cn>, linuxppc-dev@lists.ozlabs.org, Zeal Robot <zealci@zte.com.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 From: Lv Ruyi <lv.ruyi@zte.com.cn>
 
-[ Upstream commit 5dd9e27ea4a39f7edd4bf81e9e70208e7ac0b7c9 ]
+[ Upstream commit 3ffa9fd471f57f365bc54fc87824c530422f64a5 ]
 
-The of_find_compatible_node() function returns a node pointer with
-refcount incremented, use of_node_put() on it when done.
+of_find_compatible_node() returns node pointer with refcount incremented,
+use of_node_put() on it when done.
 
 Reported-by: Zeal Robot <zealci@zte.com.cn>
 Signed-off-by: Lv Ruyi <lv.ruyi@zte.com.cn>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220402013419.2410298-1-lv.ruyi@zte.com.cn
+Link: https://lore.kernel.org/r/20220407090043.2491854-1-lv.ruyi@zte.com.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/xics/icp-opal.c | 1 +
+ arch/powerpc/platforms/powernv/ultravisor.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/sysdev/xics/icp-opal.c b/arch/powerpc/sysdev/xics/icp-opal.c
-index 675d708863d5..db0452e7c351 100644
---- a/arch/powerpc/sysdev/xics/icp-opal.c
-+++ b/arch/powerpc/sysdev/xics/icp-opal.c
-@@ -196,6 +196,7 @@ int icp_opal_init(void)
+diff --git a/arch/powerpc/platforms/powernv/ultravisor.c b/arch/powerpc/platforms/powernv/ultravisor.c
+index e4a00ad06f9d..67c8c4b2d8b1 100644
+--- a/arch/powerpc/platforms/powernv/ultravisor.c
++++ b/arch/powerpc/platforms/powernv/ultravisor.c
+@@ -55,6 +55,7 @@ static int __init uv_init(void)
+ 		return -ENODEV;
  
- 	printk("XICS: Using OPAL ICP fallbacks\n");
- 
-+	of_node_put(np);
- 	return 0;
- }
+ 	uv_memcons = memcons_init(node, "memcons");
++	of_node_put(node);
+ 	if (!uv_memcons)
+ 		return -ENOENT;
  
 -- 
 2.35.1
