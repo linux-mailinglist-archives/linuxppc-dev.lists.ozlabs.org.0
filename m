@@ -1,52 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6EBD53A2E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 12:43:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F9AD53A4E3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 14:25:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCm3260sLz3bs9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 20:43:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LCpJr0FZwz3btW
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 22:25:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SGK4Jueb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N7nz4v8d;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCm2P0BlJz303H
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 20:43:09 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SGK4Jueb;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N7nz4v8d;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LCm2K1bPjz4xD3;
-	Wed,  1 Jun 2022 20:43:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654080185;
-	bh=iUKIUrhMHK4ttrOOu57fetqNzVkHyhKlyYv1yueBWls=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=SGK4Juebxf3g8m3c4rLVuRws25FkxlZ5eveJHAkUcrMgTGt9UaAX0DrNYbFHzL5i2
-	 23NF7xtrf3xYrRo5er78BniCWkHmv8pjJuHWUMiI30YbuEI6JHmQPGckciddvrI84c
-	 x5a+abFo7tJDwTMkHH3M5IXuySY7h0TPWYaGEf9wm63hHceTtQj9bWUrUjD6OmHBME
-	 knNCq4zvFUTRI4fy2TdCHKFlFJdrEzw1jqG4XtxTPJEKHLs4l4QR4qYVU4ALyKiO9f
-	 M1ByahG/XXWBj6KhJQUp1OBA/Bh6aUXYavw8unwQsoIaSSAeSCVDmi6dqcidJwYC+u
-	 UAMFOYfFMJIGA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] powerpc/64: Drop ppc_inst_as_str()
-In-Reply-To: <20220531222715.GT25951@gate.crashing.org>
-References: <20220531065936.3674348-1-mpe@ellerman.id.au>
- <20220531222715.GT25951@gate.crashing.org>
-Date: Wed, 01 Jun 2022 20:43:01 +1000
-Message-ID: <87fskopsui.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCpJ86KQmz30BP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 22:25:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654086313; x=1685622313;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=yP2VCbuxwpAtkxJbhJmqdtjCZ2SBroOqZ3dphxWtEpk=;
+  b=N7nz4v8dEKTp22wG1jMMNeZrPSLWjzwevWOmnaO+Z4etqEjIdsuaoYJE
+   Rud4tl3Axy2IfrcUjCAr1Ol5ywC+/YlJKQ6dpgKWQXCb32MsPUHp534ef
+   W8IRGy2QOMaGeKGgYDFDsrXqMa2onte4G5pWFmRBYNnT//LbjEqge53zS
+   zt0o6YKEVTMONDBPJYiHulOoWAjX42Vh5TBAbMHmils8ArNl2Y3zvYkek
+   JOjmp4bWSEcUAu5kDGFHHni2+YJ4TbcHay14nGadl22TFlWOuMHKLS9d6
+   6ZvW3pcHHj9O3hZ5iE76wcCjBQ5+s3CWr+0e4obMj4mMGAChDMMQvda/Y
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="275648163"
+X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
+   d="scan'208";a="275648163"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 05:24:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,268,1647327600"; 
+   d="scan'208";a="612295095"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by orsmga001.jf.intel.com with ESMTP; 01 Jun 2022 05:24:00 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1nwNOJ-0003x4-WF;
+	Wed, 01 Jun 2022 12:24:00 +0000
+Date: Wed, 1 Jun 2022 20:23:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/6] powerpc: Provide syscall wrapper
+Message-ID: <202206012020.14R31W6c-lkp@intel.com>
+References: <20220601054850.250287-2-rmclure@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220601054850.250287-2-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,67 +69,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rohan McLure <rmclure@linux.ibm.com>, kbuild-all@lists.01.org, Andrew Donnellan <ajd@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Segher Boessenkool <segher@kernel.crashing.org> writes:
-> Hi!
->
-> On Tue, May 31, 2022 at 04:59:36PM +1000, Michael Ellerman wrote:
->> More problematically it doesn't compile at all with GCC 12, due to the
->> fact that it returns the char buffer declared inside the macro:
->
-> It returns a pointer to a buffer on stack.  It is not valid C to access
-> that buffer after the function has returned (and indeed it does not
-> work, in general).
+Hi Rohan,
 
-It's a statement expression though, not a function. So it doesn't return
-as such, that would be obviously wrong.
+Thank you for the patch! Yet something to improve:
 
-But I'm not a language lawyer, so presumably it's not valid to refer to
-the variable after it's gone out of scope.
+[auto build test ERROR on v5.18]
+[also build test ERROR on next-20220601]
+[cannot apply to powerpc/next scottwood/next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-Although we do use that same pattern in many places where the value of
-the expression is a scalar type.
+url:    https://github.com/intel-lab-lkp/linux/commits/Rohan-McLure/powerpc-Add-ZERO_GPRS-macros-for-register-clears/20220601-135400
+base:    4b0986a3613c92f4ec1bdc7f60ec66fea135991f
+config: powerpc64-allnoconfig (https://download.01.org/0day-ci/archive/20220601/202206012020.14R31W6c-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/c3efdfac99806b0d7ef4ee781283404448addc69
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Rohan-McLure/powerpc-Add-ZERO_GPRS-macros-for-register-clears/20220601-135400
+        git checkout c3efdfac99806b0d7ef4ee781283404448addc69
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kernel/
 
->> A simpler solution is to just print the value as an unsigned long. For
->> normal instructions the output is identical. For prefixed instructions
->> the value is printed as a single 64-bit quantity, whereas previously the
->> low half was printed first. But that is good enough for debug output,
->> especially as prefixed instructions will be rare in practice.
->
-> Prefixed insns might be somewhat rare currently, but it will not stay
-> that way.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-These are all printing kernel instructions, not userspace. I should have
-said that in the change log.
+All errors (new ones prefixed by >>):
 
-The kernel doesn't build for -mcpu=power10 because we haven't done any
-changes for pcrel.
+   In file included from include/linux/syscalls.h:98,
+                    from arch/powerpc/kernel/signal_64.c:23:
+>> arch/powerpc/include/asm/syscall_wrapper.h:78:14: error: no previous prototype for 'sys_rt_sigreturn' [-Werror=missing-prototypes]
+      78 |         long sys_##sname(void)                                                  \
+         |              ^~~~
+   arch/powerpc/kernel/signal_64.c:736:1: note: in expansion of macro 'SYSCALL_DEFINE0'
+     736 | SYSCALL_DEFINE0(rt_sigreturn)
+         | ^~~~~~~~~~~~~~~
+   cc1: all warnings being treated as errors
 
-We will do that one day, but not soon.
 
-> It is not hard to fix the problem here?  The only tricky part is that
-> ppc_inst_as_ulong swaps the two halves for LE, for as far as I can see
-> no reason at all :-(
->
-> If it didn't it would be easy to detect prefixed insns (because they
-> then are guaranteed to be > 0xffffffff), and it is easy to print them
-> with a space between the two opcodes, with a utility function:
->
-> void print_insn_bytes_nicely(unsigned long insn)
-> {
-> 	if (insn > 0xffffffff)
-> 		printf("%08x ", insn >> 32);
-> 	printf("%08x", insn & 0xffffffff);
-> }
+vim +/sys_rt_sigreturn +78 arch/powerpc/include/asm/syscall_wrapper.h
 
-We don't want to do that because it can lead to interleaving messages
-between different CPUs in the kernel log.
+    49	
+    50	#define __SYSCALL_DEFINEx(x, name, ...)						\
+    51		asmlinkage long __powerpc_sys##name(const struct pt_regs *regs);	\
+    52		ALLOW_ERROR_INJECTION(__powerpc_sys##name, ERRNO);			\
+    53		long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));				\
+    54		static long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__));		\
+    55		static inline long __do_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));	\
+    56		asmlinkage long __powerpc_sys##name(const struct pt_regs *regs)		\
+    57		{									\
+    58			return __se_sys##name(SC_POWERPC_REGS_TO_ARGS(x,__VA_ARGS__));	\
+    59		}									\
+    60		long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))				\
+    61		{									\
+    62			return __do_sys##name(__MAP(x,__SC_CAST,__VA_ARGS__));		\
+    63		}									\
+    64		static long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))		\
+    65		{									\
+    66			long ret = __do_sys##name(__MAP(x,__SC_CAST,__VA_ARGS__));	\
+    67			__MAP(x,__SC_TEST,__VA_ARGS__);					\
+    68			__PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));		\
+    69			return ret;							\
+    70		}									\
+    71		static inline long __do_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))
+    72	
+    73	#define SYSCALL_DEFINE0(sname)							\
+    74		SYSCALL_METADATA(_##sname, 0);						\
+    75		long sys_##name(void);							\
+    76		asmlinkage long __powerpc_sys_##sname(const struct pt_regs *__unused);	\
+    77		ALLOW_ERROR_INJECTION(__powerpc_sys_##sname, ERRNO);			\
+  > 78		long sys_##sname(void)							\
+    79		{									\
+    80			return __powerpc_sys_##sname(NULL);				\
+    81		}									\
+    82		asmlinkage long __powerpc_sys_##sname(const struct pt_regs *__unused)
+    83	
 
-In the medium term there's some changes to printk that might land soon
-(printbuf), which would mean we could more easily define a custom printk
-formatter for printing prefixed instructions.
-
-cheers
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
