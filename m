@@ -2,78 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70EB53AA61
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 17:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A40153AA8E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 17:55:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCtlf3prrz3byL
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 01:45:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LCtyh10SNz3cg3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 01:55:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aJ0SNzCG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qhv5Ff0E;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::36; helo=mail-oa1-x36.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=aJ0SNzCG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qhv5Ff0E;
 	dkim-atps=neutral
-Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCtky6L8Dz3bY6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 01:45:13 +1000 (AEST)
-Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-f33f0f5b1dso3218076fac.8
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jun 2022 08:45:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:message-id:date:mime-version:user-agent:content-language:to
-         :cc:references:from:subject:in-reply-to:content-transfer-encoding;
-        bh=CxGPdJ+d3VmCiVOx15dnO86NTnzcGQYc9otHCDK4uKA=;
-        b=aJ0SNzCGXtaMFOHq+yCghe0IeO4G9Elty0yPxLB77/+1ujGlHW0sINLxyIjdo63SA3
-         JfhoO9EqTsoZDYPbneUjYMp0cnQGRFF8P45SHLX4QE2fsodSq3ZpCnmdKd1lXLEHZqMd
-         hN8DY10MGvZPLx8FLIWCoo45PlKN8B6CHw+Gp+MtjjyLT0mPxQOO1W63diVqH6G0WzUY
-         +i5unjChkPo5khqc9kxy7PC4Wv83cvrbD3FEahAC0xXDjN7Jie1eRHCE4F//t89AspvD
-         Kvq5VNdjEDZm+2duCyA6ViAyDPmdjVC2AUUVWkDiq4piP7gK1O0X0QkaFR8PSJ2NGBNI
-         i6sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:message-id:date:mime-version:user-agent
-         :content-language:to:cc:references:from:subject:in-reply-to
-         :content-transfer-encoding;
-        bh=CxGPdJ+d3VmCiVOx15dnO86NTnzcGQYc9otHCDK4uKA=;
-        b=Dwr9jss3Ixs08uwIMPpUULym8VZxku2Chn56jnxYN/Ohs15yl3WfscjiCluZqYOIRV
-         SsFwSENBvxmSi+GXIpxuO5W4kjUEnbUpePz1iMv/UfVHejXYbivjodrHech8RUYZzbke
-         kQIj40aFNlfq61mE9o6WZo7cnQasV1fHzyFV2s1PS4Koek8vFu/7Wp7rBVwsUrgBD20h
-         gH5P2nDiv2mP1JErhs49SNWKmYcevfAzz6f1Xdl0bvHF93Xc3wjHfXbaWsqIrRnZsMjz
-         MSYy787VHRPvvjxdud7h1jCW8A4QkEPukmp5bgrnoHgVzsuIoDUGbXub3kE5lfIUo3EY
-         CKlg==
-X-Gm-Message-State: AOAM532uiyQo35UJ40YvW1zaHahnmwkxUKq+lmN86rkFIzsAk2qm8aO/
-	xa2XYuiE/8SvrVK1PbXgwFs=
-X-Google-Smtp-Source: ABdhPJz6xXrJ8vF6Af+LhH1lpt9jxSDQvqzDv4qVriyQtAWfN/GaC3ZxdDeWydFQdNcUBQ5XUiKldA==
-X-Received: by 2002:a05:6870:65a9:b0:f5:da7a:17d with SMTP id fp41-20020a05687065a900b000f5da7a017dmr39512oab.218.1654098306012;
-        Wed, 01 Jun 2022 08:45:06 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id q16-20020a056870e89000b000f337992dfbsm779712oan.53.2022.06.01.08.45.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 01 Jun 2022 08:45:05 -0700 (PDT)
-Message-ID: <a6090ef3-f597-e10b-010b-cc32bff08c93@roeck-us.net>
-Date: Wed, 1 Jun 2022 08:45:03 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCtwW4qm9z3bkH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 01:53:31 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 251FC8pp030213;
+	Wed, 1 Jun 2022 15:53:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=MRgMY47LU6wCqbjlqxb5jdwNFxFSB8A52fHgX01565w=;
+ b=Qhv5Ff0ETa+nwsz+9gG5JhttJrM9NIM3SuXZnhK0SAomUDPWpzHE2rTl4/fMWawbJlCR
+ lkNUsbwZDz2Rge2M5TnVL13GXsGQPoMtgkLdJb68xzICtEcbNUvz8AOzlHhjn+Eu4Pxf
+ jetcGUqmadNdHYfCsnOYb6ldi6q/RglEwv1mJpPelRwqavsw8drizv9h+JzH75o/oQWi
+ Xv026KjeFKsCzJp6f7iyJj8Ke30Ssx23RWLvezSvyNSWG1+qB+PRWXfliakTv/E5oboX
+ 47WWTQ2R86vBSwi6PSrfPr/cZ8s6nja0IThXaLeOuHbx5jAAeIPxtrwZxFeoxxVmIT4u Qw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3geahu8vvy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jun 2022 15:53:23 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 251FkZRQ009083;
+	Wed, 1 Jun 2022 15:53:23 GMT
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3geahu8vve-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jun 2022 15:53:23 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 251FdVq6028254;
+	Wed, 1 Jun 2022 15:53:20 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma01fra.de.ibm.com with ESMTP id 3gbcakmdwt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jun 2022 15:53:20 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 251FrHst49283484
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Jun 2022 15:53:17 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 47BC04203F;
+	Wed,  1 Jun 2022 15:53:17 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D308C42041;
+	Wed,  1 Jun 2022 15:53:16 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.145.172.57])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Jun 2022 15:53:16 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        nathanl@linux.ibm.com, haren@linux.vnet.ibm.com, npiggin@gmail.com
+Subject: [PATCH 0/2] Disabling NMI watchdog during LPM's memory transfer
+Date: Wed,  1 Jun 2022 17:53:13 +0200
+Message-Id: <20220601155315.35109-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Content-Language: en-US
-To: Scott Cheloha <cheloha@linux.ibm.com>
-References: <20220520183552.33426-1-cheloha@linux.ibm.com>
- <20220520183552.33426-5-cheloha@linux.ibm.com>
- <74498c4b-7b6a-3864-1ae8-57e848a1254c@ozlabs.ru>
- <1f007ad5-8367-9593-bb80-d3564f3cf997@roeck-us.net>
- <YpeArFvOWtk6TQ5r@rascal-austin-ibm-com>
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v1 4/4] watchdog/pseries-wdt: initial support for PAPR
- H_WATCHDOG timers
-In-Reply-To: <YpeArFvOWtk6TQ5r@rascal-austin-ibm-com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gJ0EAOCenuno_Jn4XAe5BO1P4ZIEZZzb
+X-Proofpoint-ORIG-GUID: GUvyGmwzfG_6074J50lKXAKG7KoRev8F
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-01_05,2022-06-01_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=941 adultscore=0
+ mlxscore=0 phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1015 spamscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
+ definitions=main-2206010072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,126 +94,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, wvoigt@us.ibm.com, linux-watchdog@vger.kernel.org, Alexey Kardashevskiy <aik@ozlabs.ru>, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/1/22 08:07, Scott Cheloha wrote:
-[ ... ]
->>>> +static unsigned long action = PSERIES_WDTF_ACTION_HARD_RESTART;
->>>> +
->>>> +static int action_get(char *buf, const struct kernel_param *kp)
->>>> +{
->>>> +    int val;
->>>> +
->>>> +    switch (action) {
->>>> +    case PSERIES_WDTF_ACTION_HARD_POWEROFF:
->>>> +        val = 1;
->>>> +        break;
->>>> +    case PSERIES_WDTF_ACTION_HARD_RESTART:
->>>> +        val = 2;
->>>> +        break;
->>>> +    case PSERIES_WDTF_ACTION_DUMP_RESTART:
->>>> +        val = 3;
->>>> +        break;
->>>> +    default:
->>>> +        return -EINVAL;
->>>> +    }
->>>> +    return sprintf(buf, "%d\n", val);
->>>> +}
->>>> +
->>>> +static int action_set(const char *val, const struct kernel_param *kp)
->>>> +{
->>>> +    int choice;
->>>> +
->>>> +    if (kstrtoint(val, 10, &choice))
->>>> +        return -EINVAL;
->>>> +    switch (choice) {
->>>> +    case 1:
->>>> +        action = PSERIES_WDTF_ACTION_HARD_POWEROFF;
->>>> +        return 0;
->>>> +    case 2:
->>>> +        action = PSERIES_WDTF_ACTION_HARD_RESTART;
->>>> +        return 0;
->>>> +    case 3:
->>>> +        action = PSERIES_WDTF_ACTION_DUMP_RESTART;
->>>> +        return 0;
->>>> +    }
->>>> +    return -EINVAL;
->>>> +}
->>>> +
->>>> +static const struct kernel_param_ops action_ops = {
->>>> +    .get = action_get,
->>>> +    .set = action_set,
->>>> +};
->>>> +module_param_cb(action, &action_ops, NULL, 0444);
->>>
->>>
->>> 0644 here and below?
->>>
->>
->> That would make the module parameters have to be runtime
->> configurable, which does not make sense at least for
->> the two parameters below.
-> 
-> Agreed.
-> 
->> I don't know though if it is really valuable to have all the
->> above code instead of just
->> storing the action numbers and doing the conversion to action
->> once in the probe function. The above code really only
->> makes sense if the action is changeable during runtime and more
->> is done that just converting it to another value.
-> 
-> Having a setter that runs exactly once during module attach is
-> obvious.  We need a corresponding .get() method to convert on the way
-> out anyway.
-> 
+When a partition is transferred, once it arrives at the destination node,
+the partition is active but much of its memory must be transferred from the
+start node.
 
-Why would a get method be needed if the module parameter is just kept as-is ?
+It depends on the activity in the partition, but the more CPU the partition
+has, the more memory to be transferred is likely to be. This causes latency
+when accessing pages that need to be transferred, and often, for large
+partitions, it triggers the NMI watchdog.
 
-> I don't see any upside to moving the action_set() code into
-> pseries_wdt_probe() aside from maybe shaving a few SLOC.  The module
-> is already very compact.
-> 
+The NMI watchdog causes the CPU stack to dump where it appears to be
+stuck. In this case, it does not bring much information since it can happen
+during any memory access of the kernel.
 
-I disagree. The get method is unnecessary. The module parameter values (1..3)
-add unnecessary complexity. It could as well be 0..2, making it easier to convert.
-The actual action could be stored in struct pseries_wdt, or converted using something
-like
+In addition, the NMI interrupt mechanism is not secure and can generate a
+dump system in the event that the interruption is taken while MSR[RI]=0.
 
-u8 pseries_actions[] = {
-	PSERIES_WDTF_ACTION_HARD_POWEROFF,
-	PSERIES_WDTF_ACTION_HARD_RESTART,
-	PSERIES_WDTF_ACTION_DUMP_RESTART
-};
+Given how often hard lockups are detected when transferring large
+partitions, it seems best to disable the watchdog NMI until the memory
+transfer from the start node is complete.
 
-	flags = pseries_actions[action] | PSERIES_WDTF_OP_START;
+The first patch in this series waits for the memory transfer to complete,
+the second disables the watchdog NMI just before stopping the CPUs and
+reactivates it when the memory transfer is complete.
 
-or, alternatively, in probe
+Laurent Dufour (2):
+  powerpc/mobility: Wait for memory transfer to complete
+  powerpc/mobility: disabling hard lockup watchdog during LPM
 
-	if (action > 2)
-		return -EINVAL;
-	pw->action = pseries_actions[action];
-and, in the start function,
-	flags = pw->action | PSERIES_WDTF_OP_START;
+ arch/powerpc/platforms/pseries/mobility.c | 40 +++++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 2 deletions(-)
 
-That not only reduces code size but also improves readability.
-get/set methods are useful, but should be limited to cases where they
-are really needed, ie do something besides converting values. You could argue
-that you want to be able to change the reboot method on the fly, by making
-the module parameter writeable, but then the .set method should actually
-change the method accordingly and not just convert values. And even then
-I'd argue that it would be better not to convert the 'action' value itself
-but to keep it at 0, 1, 2 (or 1, 2, 3 if you prefer) and use param_get_uint
-(or param_get_ulong) for the get method.
+-- 
+2.36.1
 
-Regarding max_timeout, we have calculations such as
-
-	unsigned int t = wdd->timeout * 1000;
-
-in the assumption that timeouts larger than UINT_MAX/1000 seconds (or ~50 days)
-don't really make much sense. watchdog_timeout_invalid() will also return -EINVAL
-if the provided timeout value is larger than UINT_MAX / 1000.
-
-Guenter
