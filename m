@@ -1,123 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF47539FA4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 10:38:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F82B539FFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 11:01:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCjGk3Sc3z3brQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 18:38:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LCjnJ5NGwz3bks
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 19:01:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kBc8P1yl;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e18::609; helo=fra01-pr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from FRA01-PR2-obe.outbound.protection.outlook.com (mail-pr2fra01on0609.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e18::609])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kBc8P1yl;
+	dkim-atps=neutral
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCjGC4n5hz2xh0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 18:38:10 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lwnYhXux3okpkTV+ZeHk1Wgz8cPlQ0x2ecoPymWM746nKLqiHyZhsFMWD/ZgnVAy23BJu0Mb90vB7Nr3W9PDdXhU/lpU9A96lGSDRcxtu1zWGaaXqGOpO4uqwx9CIObA8TUPOw6wZ1lwo3wtbhNm6wdzTbcg/eWo16sfwuJLmgbf68VPEQFluayB4BKbgMYMmdR7iXZRiwMZdYb5R0q5POXail/mpAqjm9swZBVxSrZ7AvYRKZfTMytUvXy+tsOil9rG/+GdRcMB3ga35TQ+bpdyMOvNDqrZGpi5/U88PYakMrMSsKOzQZSy6hg6q4bFhitaVGzERSjfWMjA65jmAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pXtB+lQV35sb93xSCXkXLK460ARvCSf1Mhd7UaruILw=;
- b=hCS39earL5WnnMiiCYwlcsYJrmzmnKMLeWU11vKaqwnp5msJvNGQqlI4rLDv0epyfPl864ipNGZ8v2g2EmEzJ536pFwPWJgP23FKa+UedzptuaxMr84rZTqZ53XpJAHCONBimkZ/ofW+MrsQ0+KJWKbd2w9pGXwWI1DvJiGbB1krvdxErF5WWIFfORX1uAhe0vuxGBzSwQ92P82N1esP2qYLt581eUitsMFfixDrXlcys61TWn/CVlL9OeKcEfsz9WS/LK17/jMf1ho3upyYe3EBIwBAavPe2EFoed8uWq02RXLL3nM4KJlYZHzk3UrksYqRyve6xPvtE3tZG5iWdA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
- by PR1P264MB3664.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:186::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.12; Wed, 1 Jun
- 2022 08:37:51 +0000
-Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::b15e:862f:adf7:5356]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
- ([fe80::b15e:862f:adf7:5356%5]) with mapi id 15.20.5293.019; Wed, 1 Jun 2022
- 08:37:51 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Rohan McLure <rmclure@linux.ibm.com>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH 6/6] powerpc/64s: Clear gprs on interrupt routine entry
-Thread-Topic: [PATCH 6/6] powerpc/64s: Clear gprs on interrupt routine entry
-Thread-Index: AQHYdXvm8NjCcAjuYEqtghyPvfyVEK06OsiA
-Date: Wed, 1 Jun 2022 08:37:50 +0000
-Message-ID: <cf4d8995-9729-0570-e6f1-78532f2ec26e@csgroup.eu>
-References: <20220601054850.250287-1-rmclure@linux.ibm.com>
- <20220601054850.250287-6-rmclure@linux.ibm.com>
-In-Reply-To: <20220601054850.250287-6-rmclure@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 7b7fd8d3-1f04-4655-fb0e-08da43aa0398
-x-ms-traffictypediagnostic: PR1P264MB3664:EE_
-x-microsoft-antispam-prvs:  <PR1P264MB3664AA9D09DABD2951534C88EDDF9@PR1P264MB3664.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  4wiqHhQ6LDJ+cpc1Sn9bdipDh0+tfP0JJWMW7ryNhhnVUfA+QjmucmKPMk25ykAvZse0te7lI70R5IrQmbm/qDoVoPP4lmXcLLHqVRLEmN5yWU6hS/jgQH59Yj+1ifM2Qha+d6r2anEYfm4fyRY+C28UhLtdRsjq/fT5XVWPPWbjZ1pEnUaU7flXZa5O+tKxZOymuOyXT0jXscnvwr5Lshe5YYSqCw0JOGPPycAioV6dWJlvg/EeekcEGaAgrwl0clLcV0oIdjBdTrNNFTnsSKYzrOlAuzP6W1GWFExBRiaEdfME9l/XQw4cgj0n+f9QBC4EHWtC4cS5lB9FqShzWdRZ4eg0MEnBdJ3IkwiK9fcW/zdx4au883kJQYgZBMlghMw8eN5C8ntqwOuaO4ij5klWmpYIEv+Dx1iVpE2dQ98n3E+zqA7gylVQ8gwapoGtEj7TaFSfs9ey//eFDLWjx9ZIzDOw/H/n/XAVn/WthGj1QJpOaJDspBMZbY7t/6t8dhLoQFj4vmll3hzCuc2bCD3CR7qMMhfSHGKJ6xCxiGNtHY9aeYSxnBV5jgFLXId3Ujm3/47d+BXTT5YPoF/4giPnQn8hQfydbF+Y7HmvUKhLh4lOP19ZwLCwAzu1o9gwUMpT+UjAEwV09OUO8YK+LvREq2FT0dOJm9WKee+KfG+lT7b8kjltsOFjz0KsXcTPsJ/P0GhuXEKdSwQNfSKLJRD48LYu/pLFfJNdv+oxTXNiadrq4BThO/hFH64urqsxCNgsO25+oyjcar2b7XV3F0lbCCgoZYs4SDwWEoINP6Y=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(8936002)(38100700002)(2906002)(122000001)(66476007)(66946007)(76116006)(66556008)(8676002)(64756008)(31686004)(66446008)(38070700005)(91956017)(4326008)(5660300002)(66574015)(44832011)(71200400001)(6506007)(83380400001)(316002)(186003)(508600001)(26005)(6512007)(31696002)(36756003)(2616005)(86362001)(6486002)(110136005)(21314003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?NFBSZk5hQ1BTY0NLcDZSZXF5WGozT2xXM25aSkJveE9rbTVmQUlBTkw1TzQr?=
- =?utf-8?B?MXU0OHpkWGFWa2NZdWU3Rm5RcGtDQS80WXdhOTBsT3RMZ01xMEEwSll6elNh?=
- =?utf-8?B?S1JTbzdFeDVYaVNhZlVPTFB3K0hmZUNGZkdyTmdIMlp1SnJTR1pITGx5ZmFS?=
- =?utf-8?B?d01JQlUrVTMwMDZTVENnc0k2azhodDVwU2RvUFBzMEpUNWJRU2xybURDTFh6?=
- =?utf-8?B?TkQ3UXVvOE1GWU9sbnNZQW5XR0xLZ0U1eDMrOW8vMld2QVp5aUQzM3VuOGlR?=
- =?utf-8?B?Qk92N1hUUXVOYnFZbjJTelRtNzlJWmk1NGRyZWF2c0gyVjF6SW9KT1czNWNx?=
- =?utf-8?B?ZFhGMVlHbzRpVldwN0FCSVVZWTdJRG02Y1h0akg4WlhiMFZMd3JXWkJwV3d0?=
- =?utf-8?B?b2Mra25kLzBBdWpSc0lwLzZEdFUrQnozUUwxdStXSC9FS1lMcHJXNGVNdGdk?=
- =?utf-8?B?bDFpc1BxM0ZwdEU0UGlXZmh1RWhxS1BQbDlQeERVNGRmWjBsbWdLVXkxTVp5?=
- =?utf-8?B?aGloYUk3aTl2alIwS20rZXJ6TmxGK0s3MVg5S1hqSUJBaVUwYmd2bjNNbDI0?=
- =?utf-8?B?aWE5cGpvNmVJRTAxck1VcFFHOWdmMW1DZDhyV1JuSmdNTkZ6cUUvaFp3NXQv?=
- =?utf-8?B?b1hicVR1ZU5kdEI4VGQwdzhPMm9ORDlkWWVnTDBURytlMEROS1o4c0xReG9N?=
- =?utf-8?B?R1lCUWpYcThNMTFVMFpIUnVReEtJOE1qYkU4YzZ2TTZmWlBwVmh2M0FBaDFI?=
- =?utf-8?B?QVBVMHF5V1RZYTRIUlcxamRPQW4rY0tIblVXZmFuSHJJRmkyZXB0RTVlK0dY?=
- =?utf-8?B?b2lQQ3pLSkJaUVZKcWtuaU5hUjZYSzByMmVweFlPUWtTMHN5NWtCblN2SzNx?=
- =?utf-8?B?UHZ0allTdjZkL1pYUWdpT3krMDlGS2cvbGpZTnZtRFhnUWtUbGRIeWx0b2NK?=
- =?utf-8?B?SE8zcXhPcXRjMDdHd1pxTllsS0YzcXpHclFnQk9hZEUySm9Yd0tJTjB2WS9R?=
- =?utf-8?B?blRrTGY0STNPNVBwNTZPRGdOYmlsd1hRWnF2OG1qTndaUkpnYTFNSHZBT2J5?=
- =?utf-8?B?bGx2UlNyMFlQa2lNdHBINHBzazErd1cvRm5tenlja1pZTWxwdmZSamV6dXg3?=
- =?utf-8?B?ekhiRU5iVDdmK0N2MzVzU2t1YTYycm5NYTFxS2RoTjdOcHN3ajBwZTdwNTJH?=
- =?utf-8?B?SFF5REdVQzJPMmppemVSb2tib2dreTh5Z2xFaWY1V3I1NEI1aURYREhPbXQx?=
- =?utf-8?B?MnZkTTJ2MkNQTEw1M1Z1RlhqN09GcnIyQnVualNEc2FUcU9GeFVhR1Fkb25w?=
- =?utf-8?B?dUVFc281TTI4V0hWWW9pK2FEMlZkWmpaZVRiODhhVDJDNnhEcDRjYWxmbEky?=
- =?utf-8?B?WkFpSy9PaklkWmZiV01yZWlFaDVrZXZQZGVJRzNJRCtYRlNKbGRIS01udGo4?=
- =?utf-8?B?c09PUFNkZ0V2bm9Td0pFTHozVnByZ04vSzZXdCtjZHpYOTFGREFuMFFUSE9q?=
- =?utf-8?B?Z1RTWmQ3UWJNeWZSS1VyR3NPTGFJai9JVkppSXR4SU1yT2p4Z1BFaVBEWXVW?=
- =?utf-8?B?aTFJbjE1c1BobldCbWpVWVZBbzZQd0dOZDd0bGRXRUNmQlBjM2o5RHltOHNN?=
- =?utf-8?B?aWsxNFNyemJyNThBZllpOU9obG9kSjJWQ01JNlpxZzdNZy9paVhpMFdNM0NM?=
- =?utf-8?B?REdzYU5VaVgrNU1IM1pzNGFrRVZ5SGt6RzNuY2hNTEM0RTRVTFRhZGFSU2RR?=
- =?utf-8?B?QlJBL2o2a3pWMDJyVTBoZWJFNGlCUEZXdmJVaU5uT1oyY1JNTFJ5Vnl6MnFJ?=
- =?utf-8?B?WG52a0cxaithV2FkYUdlaEdEbUh3enRYRjEya2pvZktZaDc0MUcrM2hQV2U0?=
- =?utf-8?B?M09BNjJabGpVOExwL0dTTW1hNDkzRWhLeCtEeHQzOEt1cmdrT1I4SDlNSzY1?=
- =?utf-8?B?V0pyVWt2ZkZ2T0RHSlMwWU8wUytqUzEvb0RZS3NXSGthbU91ckw0bmVPWlF2?=
- =?utf-8?B?WFhYM3VEM202ZXpzdGFSekdhdGZqeVdDekdUUTJCQ3dkNTllWHdGNnZURTN1?=
- =?utf-8?B?ckxCZ1l1VCt3aExKb1FBblluUGNDV3dMMDBVTDNlSkFxOVd5MTVVektacTRH?=
- =?utf-8?B?enpXMFhkd1JBRkFTWnFzbmhmQU00aHpDMWp3T0dMakRnaDNpZmRFQ0lrbU5s?=
- =?utf-8?B?RVVEOG44ZG11VGJyTHRtaStWYkJZa256a2FZMWlyazBKNGhWQlprSFBkWWxQ?=
- =?utf-8?B?NmRYNTFwNUtLNnZLOHViZUF0V0QzQnovM3NIcEZ4czN1SzVkb0lmdDg0OCs0?=
- =?utf-8?B?V2tOVUFxcEFUOHBRYUEyc3Qyc2p0MXpibFVaWVlEYXlwVEpDU1JKUU5UMHp6?=
- =?utf-8?Q?nMJYDsfIdARIdrkFvFVwq/gQh7dkH00nTOiqa?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E797BDCC53F0E640A1EC8EF5567616DC@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCjmb5TcNz306Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jun 2022 19:00:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654074064; x=1685610064;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bdVg1VUMec80CM1eBb5q0I4PuqkD3X8vjB9ksxnSYCY=;
+  b=kBc8P1yltYu4xGlC/yzB3b2cK06qbs7Qr+4K3iE8lQZkNw7RFyj1qDKN
+   pHmjyQrsTSSajG5tfIRD/ivsGarrW3F8QcGanwvF4ydSISKT90Y7QXx30
+   Gyrs3d3YFItwKsrhhm7KV/AP8IfvKcMQGA9WwSeCSlVD7NXibo/Wzj4r0
+   H+1FsMfumIs9/OSX8ZgJUwSAbrSrMpJLTAgClxMtEQ7DPBs5vo/umsSiz
+   juAXHrtbJiX6T2KqH9XEcfmWQ2uZnKY9PcnkbY5+uRPgJZVg2XQyqXTUO
+   a9Ypg/8pXPEWWyBA/IVI8Z/H7W6ExO57SmESN+ORlidXZtQd5EexGqSw8
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10364"; a="273088468"
+X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
+   d="scan'208";a="273088468"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2022 01:59:55 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,266,1647327600"; 
+   d="scan'208";a="679999285"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by fmsmga002.fm.intel.com with ESMTP; 01 Jun 2022 01:59:53 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1nwKCm-0003m8-PZ;
+	Wed, 01 Jun 2022 08:59:52 +0000
+Date: Wed, 1 Jun 2022 16:59:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Rohan McLure <rmclure@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 2/6] powerpc: Provide syscall wrapper
+Message-ID: <202206011624.sRj0DSyf-lkp@intel.com>
+References: <20220601054850.250287-2-rmclure@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b7fd8d3-1f04-4655-fb0e-08da43aa0398
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2022 08:37:50.9892
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: kX6NgL40B1q0+C0K0+3AwHv6+e7jfHH3iFfd5QtevBl4Z+M9TISTZYQJz8ssxDYl6URkH7LdhANYYCg82h4vEkMVxtf/VJkM1x9d7qSsHQg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR1P264MB3664
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220601054850.250287-2-rmclure@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,120 +69,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "npiggin@gmail.com" <npiggin@gmail.com>
+Cc: Rohan McLure <rmclure@linux.ibm.com>, kbuild-all@lists.01.org, Andrew Donnellan <ajd@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDAxLzA2LzIwMjIgw6AgMDc6NDgsIFJvaGFuIE1jTHVyZSBhIMOpY3JpdMKgOg0KPiBa
-ZXJvIEdQUlMgcjAsIHIyLXIxMSwgcjE0LXIzMSwgb24gZW50cnkgaW50byB0aGUga2VybmVsIGZv
-ciBhbGwNCj4gb3RoZXIgaW50ZXJydXB0IHNvdXJjZXMgdG8gbGltaXQgaW5mbHVlbmNlIG9mIHVz
-ZXItc3BhY2UgdmFsdWVzDQo+IGluIHBvdGVudGlhbCBzcGVjdWxhdGlvbiBnYWRnZXRzLiBUaGUg
-cmVtYWluaW5nIGdwcnMgYXJlIG92ZXJ3cml0dGVuIGJ5DQo+IGVudHJ5IG1hY3JvcyB0byBpbnRl
-cnJ1cHQgaGFuZGxlcnMsIGlycmVzcGVjdGl2ZSBvZiB3aGV0aGVyIG9yIG5vdCBhDQo+IGdpdmVu
-IGhhbmRsZXIgY29uc3VtZXMgdGhlc2UgcmVnaXN0ZXIgdmFsdWVzLg0KPiANCj4gUHJpb3IgdG8g
-dGhpcyBjb21taXQsIHIxNC1yMzEgYXJlIHJlc3RvcmVkIG9uIGEgcGVyLWludGVycnVwdCBiYXNp
-cyBhdA0KPiBleGl0LCBidXQgbm93IHRoZXkgYXJlIGFsd2F5cyByZXN0b3JlZC4gUmVtb3ZlIGV4
-cGxpY2l0IFJFU1RfTlZHUFJTDQo+IGludm9jYXRpb25zIG9uIGludGVycnVwdCBlbnRyeSBhbmQg
-c2ltcGxpZnkgZXhpdCBsb2dpYy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IFJvaGFuIE1jTHVyZSA8
-cm1jbHVyZUBsaW51eC5pYm0uY29tPg0KPiAtLS0NCj4gICBhcmNoL3Bvd2VycGMva2VybmVsL2V4
-Y2VwdGlvbnMtNjRzLlMgfCAxOSArKysrKysrLS0tLS0tLS0tLS0tDQo+ICAgYXJjaC9wb3dlcnBj
-L2tlcm5lbC9pbnRlcnJ1cHRfNjQuUyAgIHwgIDkgKystLS0tLS0tDQo+ICAgMiBmaWxlcyBjaGFu
-Z2VkLCA5IGluc2VydGlvbnMoKyksIDE5IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBh
-L2FyY2gvcG93ZXJwYy9rZXJuZWwvZXhjZXB0aW9ucy02NHMuUyBiL2FyY2gvcG93ZXJwYy9rZXJu
-ZWwvZXhjZXB0aW9ucy02NHMuUw0KPiBpbmRleCAxMDI4OTZmYzZhODYuLjhlMmMxYzkyNGE0ZCAx
-MDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL2tlcm5lbC9leGNlcHRpb25zLTY0cy5TDQo+ICsr
-KyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvZXhjZXB0aW9ucy02NHMuUw0KPiBAQCAtNTAyLDYgKzUw
-Miw3IEBAIERFRklORV9GSVhFRF9TWU1CT0woXG5hbWVcKClfY29tbW9uX3JlYWwsIHRleHQpDQo+
-ICAgCXN0ZAlyMTAsMChyMSkJCS8qIG1ha2Ugc3RhY2sgY2hhaW4gcG9pbnRlcgkqLw0KPiAgIAlz
-dGQJcjAsR1BSMChyMSkJCS8qIHNhdmUgcjAgaW4gc3RhY2tmcmFtZQkqLw0KPiAgIAlzdGQJcjEw
-LEdQUjEocjEpCQkvKiBzYXZlIHIxIGluIHN0YWNrZnJhbWUJKi8NCj4gKwlaRVJPX0dQUigwKQ0K
-PiAgIA0KPiAgIAkvKiBNYXJrIG91ciBbSF1TUlJzIHZhbGlkIGZvciByZXR1cm4gKi8NCj4gICAJ
-bGkJcjEwLDENCj4gQEAgLTUzOCwxNCArNTM5LDE3IEBAIEVORF9GVFJfU0VDVElPTl9JRlNFVChD
-UFVfRlRSX0hBU19QUFIpDQo+ICAgCWxkCXIxMCxJQVJFQStFWF9SMTAocjEzKQ0KPiAgIAlzdGQJ
-cjksR1BSOShyMSkNCj4gICAJc3RkCXIxMCxHUFIxMChyMSkNCj4gKwlaRVJPX0dQUlMoOSwgMTAp
-DQo+ICAgCWxkCXI5LElBUkVBK0VYX1IxMShyMTMpCS8qIG1vdmUgcjExIC0gcjEzIHRvIHN0YWNr
-ZnJhbWUJKi8NCj4gICAJbGQJcjEwLElBUkVBK0VYX1IxMihyMTMpDQo+ICAgCWxkCXIxMSxJQVJF
-QStFWF9SMTMocjEzKQ0KPiAgIAlzdGQJcjksR1BSMTEocjEpDQo+ICAgCXN0ZAlyMTAsR1BSMTIo
-cjEpDQo+ICAgCXN0ZAlyMTEsR1BSMTMocjEpDQo+ICsJWkVST19HUFIoMTEpIC8qIGtlZXAgcjEy
-IChbSF1TUlIxL01TUiksIHIxMyAoUEFDQSkgZm9yIGludGVycnVwdCByb3V0aW5lICovDQo+ICAg
-DQo+ICAgCVNBVkVfTlZHUFJTKHIxKQ0KPiArCVpFUk9fTlZHUFJTKCkNCj4gICANCj4gICAJLmlm
-IElEQVINCj4gICAJLmlmIElJU0lERQ0KPiBAQCAtNTc3LDggKzU4MSw5IEBAIEJFR0lOX0ZUUl9T
-RUNUSU9ODQo+ICAgRU5EX0ZUUl9TRUNUSU9OX0lGU0VUKENQVV9GVFJfQ0ZBUikNCj4gICAJbGQJ
-cjEwLElBUkVBK0VYX0NUUihyMTMpDQo+ICAgCXN0ZAlyMTAsX0NUUihyMSkNCj4gLQlzdGQJcjIs
-R1BSMihyMSkJCS8qIHNhdmUgcjIgaW4gc3RhY2tmcmFtZQkqLw0KPiArCVNBVkVfR1BSKDIsIHIx
-KQkJCS8qIHNhdmUgcjIgaW4gc3RhY2tmcmFtZQkqLw0KPiAgIAlTQVZFX0dQUlMoMywgOCwgcjEp
-CQkvKiBzYXZlIHIzIC0gcjggaW4gc3RhY2tmcmFtZSAgICovDQo+ICsJWkVST19HUFJTKDIsIDgp
-DQoNCldoYXQncyB0aGUgcG9pbnQgaW4gY2xlYXJpbmcgcjIgd2hlcmVhcyBpdCB3aWxsIGJlIG92
-ZXJ3cml0dGVuIGp1c3QgYmVsb3cgPw0KDQo+ICAgCW1mbHIJcjkJCQkvKiBHZXQgTFIsIGxhdGVy
-IHNhdmUgdG8gc3RhY2sJKi8NCj4gICAJbGQJcjIsUEFDQVRPQyhyMTMpCQkvKiBnZXQga2VybmVs
-IFRPQyBpbnRvIHIyCSovDQo+ICAgCXN0ZAlyOSxfTElOSyhyMSkNCj4gQEAgLTY5Niw2ICs3MDEs
-NyBAQCBFTkRfRlRSX1NFQ1RJT05fSUZTRVQoQ1BVX0ZUUl9DRkFSKQ0KPiAgIAltdGxyCXI5DQo+
-ICAgCWxkCXI5LF9DQ1IocjEpDQo+ICAgCW10Y3IJcjkNCj4gKwlSRVNUX05WR1BSUyhyMSkNCj4g
-ICAJUkVTVF9HUFJTKDIsIDEzLCByMSkNCj4gICAJUkVTVF9HUFIoMCwgcjEpDQo+ICAgCS8qIHJl
-c3RvcmUgb3JpZ2luYWwgcjEuICovDQo+IEBAIC0xMzY4LDExICsxMzc0LDYgQEAgQUxUX01NVV9G
-VFJfU0VDVElPTl9FTkRfSUZDTFIoTU1VX0ZUUl9UWVBFX1JBRElYKQ0KPiAgIAliCWludGVycnVw
-dF9yZXR1cm5fc3JyDQo+ICAgDQo+ICAgMToJYmwJZG9fYnJlYWsNCj4gLQkvKg0KPiAtCSAqIGRv
-X2JyZWFrKCkgbWF5IGhhdmUgY2hhbmdlZCB0aGUgTlYgR1BSUyB3aGlsZSBoYW5kbGluZyBhIGJy
-ZWFrcG9pbnQuDQo+IC0JICogSWYgc28sIHdlIG5lZWQgdG8gcmVzdG9yZSB0aGVtIHdpdGggdGhl
-aXIgdXBkYXRlZCB2YWx1ZXMuDQo+IC0JICovDQo+IC0JUkVTVF9OVkdQUlMocjEpDQo+ICAgCWIJ
-aW50ZXJydXB0X3JldHVybl9zcnINCj4gICANCj4gICANCj4gQEAgLTE1OTgsNyArMTU5OSw2IEBA
-IEVYQ19DT01NT05fQkVHSU4oYWxpZ25tZW50X2NvbW1vbikNCj4gICAJR0VOX0NPTU1PTiBhbGln
-bm1lbnQNCj4gICAJYWRkaQlyMyxyMSxTVEFDS19GUkFNRV9PVkVSSEVBRA0KPiAgIAlibAlhbGln
-bm1lbnRfZXhjZXB0aW9uDQo+IC0JUkVTVF9OVkdQUlMocjEpIC8qIGluc3RydWN0aW9uIGVtdWxh
-dGlvbiBtYXkgY2hhbmdlIEdQUnMgKi8NCj4gICAJYglpbnRlcnJ1cHRfcmV0dXJuX3Nycg0KPiAg
-IA0KPiAgIA0KPiBAQCAtMTcwOCw3ICsxNzA4LDYgQEAgRVhDX0NPTU1PTl9CRUdJTihwcm9ncmFt
-X2NoZWNrX2NvbW1vbikNCj4gICAuTGRvX3Byb2dyYW1fY2hlY2s6DQo+ICAgCWFkZGkJcjMscjEs
-U1RBQ0tfRlJBTUVfT1ZFUkhFQUQNCj4gICAJYmwJcHJvZ3JhbV9jaGVja19leGNlcHRpb24NCj4g
-LQlSRVNUX05WR1BSUyhyMSkgLyogaW5zdHJ1Y3Rpb24gZW11bGF0aW9uIG1heSBjaGFuZ2UgR1BS
-cyAqLw0KPiAgIAliCWludGVycnVwdF9yZXR1cm5fc3JyDQo+ICAgDQo+ICAgDQo+IEBAIC0yMTM5
-LDcgKzIxMzgsNiBAQCBFWENfQ09NTU9OX0JFR0lOKGVtdWxhdGlvbl9hc3Npc3RfY29tbW9uKQ0K
-PiAgIAlHRU5fQ09NTU9OIGVtdWxhdGlvbl9hc3Npc3QNCj4gICAJYWRkaQlyMyxyMSxTVEFDS19G
-UkFNRV9PVkVSSEVBRA0KPiAgIAlibAllbXVsYXRpb25fYXNzaXN0X2ludGVycnVwdA0KPiAtCVJF
-U1RfTlZHUFJTKHIxKSAvKiBpbnN0cnVjdGlvbiBlbXVsYXRpb24gbWF5IGNoYW5nZSBHUFJzICov
-DQo+ICAgCWIJaW50ZXJydXB0X3JldHVybl9oc3JyDQo+ICAgDQo+ICAgDQo+IEBAIC0yNDU3LDcg
-KzI0NTUsNiBAQCBFWENfQ09NTU9OX0JFR0lOKGZhY2lsaXR5X3VuYXZhaWxhYmxlX2NvbW1vbikN
-Cj4gICAJR0VOX0NPTU1PTiBmYWNpbGl0eV91bmF2YWlsYWJsZQ0KPiAgIAlhZGRpCXIzLHIxLFNU
-QUNLX0ZSQU1FX09WRVJIRUFEDQo+ICAgCWJsCWZhY2lsaXR5X3VuYXZhaWxhYmxlX2V4Y2VwdGlv
-bg0KPiAtCVJFU1RfTlZHUFJTKHIxKSAvKiBpbnN0cnVjdGlvbiBlbXVsYXRpb24gbWF5IGNoYW5n
-ZSBHUFJzICovDQo+ICAgCWIJaW50ZXJydXB0X3JldHVybl9zcnINCj4gICANCj4gICANCj4gQEAg
-LTI0ODUsNyArMjQ4Miw2IEBAIEVYQ19DT01NT05fQkVHSU4oaF9mYWNpbGl0eV91bmF2YWlsYWJs
-ZV9jb21tb24pDQo+ICAgCUdFTl9DT01NT04gaF9mYWNpbGl0eV91bmF2YWlsYWJsZQ0KPiAgIAlh
-ZGRpCXIzLHIxLFNUQUNLX0ZSQU1FX09WRVJIRUFEDQo+ICAgCWJsCWZhY2lsaXR5X3VuYXZhaWxh
-YmxlX2V4Y2VwdGlvbg0KPiAtCVJFU1RfTlZHUFJTKHIxKSAvKiBYWFggU2hvdWxkbid0IGJlIG5l
-Y2Vzc2FyeSBpbiBwcmFjdGljZSAqLw0KPiAgIAliCWludGVycnVwdF9yZXR1cm5faHNycg0KPiAg
-IA0KPiAgIA0KPiBAQCAtMjcxMSw3ICsyNzA3LDYgQEAgRVhDX0NPTU1PTl9CRUdJTihhbHRpdmVj
-X2Fzc2lzdF9jb21tb24pDQo+ICAgCWFkZGkJcjMscjEsU1RBQ0tfRlJBTUVfT1ZFUkhFQUQNCj4g
-ICAjaWZkZWYgQ09ORklHX0FMVElWRUMNCj4gICAJYmwJYWx0aXZlY19hc3Npc3RfZXhjZXB0aW9u
-DQo+IC0JUkVTVF9OVkdQUlMocjEpIC8qIGluc3RydWN0aW9uIGVtdWxhdGlvbiBtYXkgY2hhbmdl
-IEdQUnMgKi8NCj4gICAjZWxzZQ0KPiAgIAlibAl1bmtub3duX2V4Y2VwdGlvbg0KPiAgICNlbmRp
-Zg0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2tlcm5lbC9pbnRlcnJ1cHRfNjQuUyBiL2Fy
-Y2gvcG93ZXJwYy9rZXJuZWwvaW50ZXJydXB0XzY0LlMNCj4gaW5kZXggOTI3NDBkOTg4OWEzLi4z
-Yzc0MmMwN2Y0YjYgMTAwNjQ0DQo+IC0tLSBhL2FyY2gvcG93ZXJwYy9rZXJuZWwvaW50ZXJydXB0
-XzY0LlMNCj4gKysrIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9pbnRlcnJ1cHRfNjQuUw0KPiBAQCAt
-NDQyLDkgKzQ0Miw2IEBAIGludGVycnVwdF9yZXR1cm5fXHNyclwoKV91c2VyOiAvKiBtYWtlIGJh
-Y2t0cmFjZXMgbWF0Y2ggdGhlIF9rZXJuZWwgdmFyaWFudCAqLw0KPiAgIF9BU01fTk9LUFJPQkVf
-U1lNQk9MKGludGVycnVwdF9yZXR1cm5fXHNyclwoKV91c2VyKQ0KPiAgIAlhZGRpCXIzLHIxLFNU
-QUNLX0ZSQU1FX09WRVJIRUFEDQo+ICAgCWJsCWludGVycnVwdF9leGl0X3VzZXJfcHJlcGFyZQ0K
-DQpUaGVuIHNob3VsZCB3ZSBtYWtlIGludGVycnVwdF9leGl0X3VzZXJfcHJlcGFyZSgpIGEgdm9p
-ZCBmdW5jdGlvbiBpZiB3ZSANCmRvbid0IHVzZSB0aGUgcmV0dXJuZWQgdmFsdWUgYW55bW9yZSA/
-DQoNCj4gLQljbXBkaQlyMywwDQo+IC0JYm5lLQkuTHJlc3RvcmVfbnZncHJzX1xzcnINCj4gLQku
-THJlc3RvcmVfbnZncHJzX1xzcnJcKClfY29udDoNCj4gICAJc3RkCXIxLFBBQ0FfRVhJVF9TQVZF
-X1IxKHIxMykgLyogc2F2ZSByMSBmb3IgcmVzdGFydCAqLw0KPiAgICNpZmRlZiBDT05GSUdfUFBD
-X0JPT0szUw0KPiAgIC5MaW50ZXJydXB0X3JldHVybl9cc3JyXCgpX3VzZXJfcnN0X3N0YXJ0Og0K
-PiBAQCAtNDU4LDYgKzQ1NSw3IEBAIF9BU01fTk9LUFJPQkVfU1lNQk9MKGludGVycnVwdF9yZXR1
-cm5fXHNyclwoKV91c2VyKQ0KPiAgIAlzdGIJcjExLFBBQ0FJUlFIQVBQRU5FRChyMTMpICMgY2xl
-YXIgb3V0IHBvc3NpYmxlIEhBUkRfRElTDQo+ICAgDQo+ICAgLkxmYXN0X3VzZXJfaW50ZXJydXB0
-X3JldHVybl9cc3JyXCgpOg0KPiArCVJFU1RfTlZHUFJTKHIxKQ0KPiAgICNpZmRlZiBDT05GSUdf
-UFBDX0JPT0szUw0KPiAgIAkuaWZjIFxzcnIsc3JyDQo+ICAgCWxieglyNCxQQUNBU1JSX1ZBTElE
-KHIxMykNCj4gQEAgLTUyNywxMCArNTI1LDYgQEAgQUxUX0ZUUl9TRUNUSU9OX0VORF9JRkNMUihD
-UFVfRlRSX1NUQ1hfQ0hFQ0tTX0FERFJFU1MpDQo+ICAgCWIJLgkvKiBwcmV2ZW50IHNwZWN1bGF0
-aXZlIGV4ZWN1dGlvbiAqLw0KPiAgIC5MaW50ZXJydXB0X3JldHVybl9cc3JyXCgpX3VzZXJfcnN0
-X2VuZDoNCj4gICANCj4gLS5McmVzdG9yZV9udmdwcnNfXHNyclwoKToNCj4gLQlSRVNUX05WR1BS
-UyhyMSkNCj4gLQliCS5McmVzdG9yZV9udmdwcnNfXHNyclwoKV9jb250DQo+IC0NCj4gICAjaWZk
-ZWYgQ09ORklHX1BQQ19CT09LM1MNCj4gICBpbnRlcnJ1cHRfcmV0dXJuX1xzcnJcKClfdXNlcl9y
-ZXN0YXJ0Og0KPiAgIF9BU01fTk9LUFJPQkVfU1lNQk9MKGludGVycnVwdF9yZXR1cm5fXHNyclwo
-KV91c2VyX3Jlc3RhcnQpDQo+IEBAIC01NzEsNiArNTY1LDcgQEAgX0FTTV9OT0tQUk9CRV9TWU1C
-T0woaW50ZXJydXB0X3JldHVybl9cc3JyXCgpX2tlcm5lbCkNCj4gICAxOg0KPiAgIA0KPiAgIC5M
-ZmFzdF9rZXJuZWxfaW50ZXJydXB0X3JldHVybl9cc3JyXCgpOg0KPiArCVJFU1RfTlZHUFJTKHIx
-KQ0KPiAgIAljbXBkaQljcjEscjMsMA0KPiAgICNpZmRlZiBDT05GSUdfUFBDX0JPT0szUw0KPiAg
-IAkuaWZjIFxzcnIsc3Jy
+Hi Rohan,
+
+Thank you for the patch! Perhaps something to improve:
+
+[auto build test WARNING on v5.18]
+[also build test WARNING on next-20220601]
+[cannot apply to powerpc/next scottwood/next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Rohan-McLure/powerpc-Add-ZERO_GPRS-macros-for-register-clears/20220601-135400
+base:    4b0986a3613c92f4ec1bdc7f60ec66fea135991f
+config: powerpc-allyesconfig (https://download.01.org/0day-ci/archive/20220601/202206011624.sRj0DSyf-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/c3efdfac99806b0d7ef4ee781283404448addc69
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Rohan-McLure/powerpc-Add-ZERO_GPRS-macros-for-register-clears/20220601-135400
+        git checkout c3efdfac99806b0d7ef4ee781283404448addc69
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kernel/
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/syscalls.h:98,
+                    from arch/powerpc/kernel/syscalls.c:19:
+>> arch/powerpc/include/asm/syscall_wrapper.h:78:14: warning: no previous prototype for 'sys_switch_endian' [-Wmissing-prototypes]
+      78 |         long sys_##sname(void)                                                  \
+         |              ^~~~
+   arch/powerpc/kernel/syscalls.c:114:1: note: in expansion of macro 'SYSCALL_DEFINE0'
+     114 | SYSCALL_DEFINE0(switch_endian)
+         | ^~~~~~~~~~~~~~~
+
+
+vim +/sys_switch_endian +78 arch/powerpc/include/asm/syscall_wrapper.h
+
+    49	
+    50	#define __SYSCALL_DEFINEx(x, name, ...)						\
+    51		asmlinkage long __powerpc_sys##name(const struct pt_regs *regs);	\
+    52		ALLOW_ERROR_INJECTION(__powerpc_sys##name, ERRNO);			\
+    53		long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));				\
+    54		static long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__));		\
+    55		static inline long __do_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__));	\
+    56		asmlinkage long __powerpc_sys##name(const struct pt_regs *regs)		\
+    57		{									\
+    58			return __se_sys##name(SC_POWERPC_REGS_TO_ARGS(x,__VA_ARGS__));	\
+    59		}									\
+    60		long sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))				\
+    61		{									\
+    62			return __do_sys##name(__MAP(x,__SC_CAST,__VA_ARGS__));		\
+    63		}									\
+    64		static long __se_sys##name(__MAP(x,__SC_LONG,__VA_ARGS__))		\
+    65		{									\
+    66			long ret = __do_sys##name(__MAP(x,__SC_CAST,__VA_ARGS__));	\
+    67			__MAP(x,__SC_TEST,__VA_ARGS__);					\
+    68			__PROTECT(x, ret,__MAP(x,__SC_ARGS,__VA_ARGS__));		\
+    69			return ret;							\
+    70		}									\
+    71		static inline long __do_sys##name(__MAP(x,__SC_DECL,__VA_ARGS__))
+    72	
+    73	#define SYSCALL_DEFINE0(sname)							\
+    74		SYSCALL_METADATA(_##sname, 0);						\
+    75		long sys_##name(void);							\
+    76		asmlinkage long __powerpc_sys_##sname(const struct pt_regs *__unused);	\
+    77		ALLOW_ERROR_INJECTION(__powerpc_sys_##sname, ERRNO);			\
+  > 78		long sys_##sname(void)							\
+    79		{									\
+    80			return __powerpc_sys_##sname(NULL);				\
+    81		}									\
+    82		asmlinkage long __powerpc_sys_##sname(const struct pt_regs *__unused)
+    83	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
