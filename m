@@ -2,60 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B8C53ACEE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jun 2022 20:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F413253AEB4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 00:32:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LCydV0jpMz3c7N
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 04:40:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LD3mF4Njdz3byW
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 08:31:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SV4cmB3M;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ULcew1XH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SV4cmB3M;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ULcew1XH;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LCycp5rlyz3blF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 04:40:10 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id B8B8761684;
-	Wed,  1 Jun 2022 18:40:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E30C385B8;
-	Wed,  1 Jun 2022 18:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654108806;
-	bh=vpZ1oNTlay8NWlxGY9rUMzeRkjnKLNWUB5LHGYBDV9E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SV4cmB3MpgVr8rN3mq/AgsHnJ59ZjgcffarURyAfkAdkEzNpXND21AvmUXs/TCSKG
-	 JN6Kln9Qh2fKKoNGqhtzaeN3GVMD5O+WlHNEGZq1+TVFKTgXvUeTxpOC2opw2jzy3M
-	 bzs+i28vGY/FzwHvhAo/7MfauYLqirVh5qrYbf/9uggvCsKOW9dGOrTbtu8Bly2ogq
-	 gdOF0hMn+j3+XeZkNnzwCZiw7gyMKIj6V8TC3bRb8s5c+amjSWyv+xMo80ucbbrM+M
-	 K8Ccnhjy4g9orAMgOh/NR3ZQR6ir+xGwf35PRNSGyFHOR15Ppn2g/2bRwSBc69z3WO
-	 cpjY5uJWVEvrQ==
-Date: Wed, 1 Jun 2022 11:40:03 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 09/15] swiotlb: make the swiotlb_init interface more
- useful
-Message-ID: <Ypeyg2Dm/WfoKDZt@dev-arch.thelio-3990X>
-References: <20220404050559.132378-1-hch@lst.de>
- <20220404050559.132378-10-hch@lst.de>
- <YpehC7BwBlnuxplF@dev-arch.thelio-3990X>
- <20220601173441.GB27582@lst.de>
- <YpemDuzdoaO3rijX@Ryzen-9-3900X.>
- <20220601175743.GA28082@lst.de>
- <Yper7agk7XfCCQNa@dev-arch.thelio-3990X>
- <20220601182141.GA28309@lst.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LD3lT4rVdz2ywq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 08:31:16 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 251MJVom019512;
+	Wed, 1 Jun 2022 22:30:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=+5/18BLA72TKuGiuxuqZG0l+eZJKEbnP1n493Jc3yQc=;
+ b=ULcew1XHhTO8l593RTNqVpxnxohk87d27kNZwUJWcqHUUtZltsEKpDIobPQRGf5dcKay
+ RlSSPbkvPoxFlkPxpYuadJArZnaWVlCZFmMUp4bDhbhKIW+4RSBIUMxUODcPnu4Mq7VX
+ YBkLUAPctHZ66BNjTLdpEyHh0WWSbM0f3BFPuqtMIscR8xTZviwQkHpWXqvDWwDjuyzH
+ U0HXL8PY/ZQ20uVA/2pdl9X8Evi4+Cl15VELqVJFe7Ab19NcpNxdyGzqhkR7li/yQKdI
+ /fzN5J28YMAu9ffAuVRSu1tCZVcpZieQ9CM+p0WFvn3NbO8Vrtn9rd64XIbnVTwFL31P 6A== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gegtag4q7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jun 2022 22:30:55 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 251MOw7g009569;
+	Wed, 1 Jun 2022 22:30:55 GMT
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gegtag4q0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jun 2022 22:30:55 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 251MMA5G010699;
+	Wed, 1 Jun 2022 22:30:54 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+	by ppma01dal.us.ibm.com with ESMTP id 3gcxt5n7u4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 Jun 2022 22:30:53 +0000
+Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 251MUqud32637388
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Jun 2022 22:30:52 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 62B116E053;
+	Wed,  1 Jun 2022 22:30:52 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 447846E04E;
+	Wed,  1 Jun 2022 22:30:48 +0000 (GMT)
+Received: from [9.160.56.145] (unknown [9.160.56.145])
+	by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Jun 2022 22:30:48 +0000 (GMT)
+Message-ID: <42d9e1af-5576-ed8a-be3a-9dfea6ce1041@linux.ibm.com>
+Date: Wed, 1 Jun 2022 15:30:47 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220601182141.GA28309@lst.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 1/3] of: dynamic: add of_property_alloc() and
+ of_property_free()
+Content-Language: en-US
+To: Rob Herring <robh@kernel.org>,
+        =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?=
+ <clement.leger@bootlin.com>
+References: <20220504154033.750511-1-clement.leger@bootlin.com>
+ <20220504154033.750511-2-clement.leger@bootlin.com>
+ <YnQnayouXw9/jp/E@robh.at.kernel.org>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+In-Reply-To: <YnQnayouXw9/jp/E@robh.at.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: DIonMy0GmUQItNu3YfS1Rr2sP5IeIsKx
+X-Proofpoint-GUID: WJv2mS3lP6uCH3yBV2z2fOXy0vR9JIip
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-01_08,2022-06-01_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1011 spamscore=0
+ adultscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
+ impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206010088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,88 +104,226 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, x86@kernel.org, linux-ia64@vger.kernel.org, linux-pci@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, Stefano Stabellini <sstabellini@kernel.org>, Joerg Roedel <joro@8bytes.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>, tboot-devel@lists.sourceforge.net, xen-devel@lists.xenproject.org, David Woodhouse <dwmw2@infradead.org>, Tom Lendacky <thomas.lendacky@amd.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, linux-arm-kernel@lists.infradead.org, Juergen Gross <jgross@suse.com>, linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org, iommu@lists.linux-foundation.org, Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, David Hildenbrand <david@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Steen Hegelund <steen.hegelund@microchip.com>, Daniel Henrique Barboza <danielhb413@gmail.com>, YueHaibing <yuehaibing@huawei.com>, linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ohhoon Kwon <ohoono.kwon@samsung.com>, Allan Nielsen <allan.nielsen@microchip.com>, Andrew Morton <akpm@linux-foundation.org>, Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Horatiu Vultur <horatiu.vultur@microchip.com>, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 01, 2022 at 08:21:41PM +0200, Christoph Hellwig wrote:
-> On Wed, Jun 01, 2022 at 11:11:57AM -0700, Nathan Chancellor wrote:
-> > On Wed, Jun 01, 2022 at 07:57:43PM +0200, Christoph Hellwig wrote:
-> > > On Wed, Jun 01, 2022 at 10:46:54AM -0700, Nathan Chancellor wrote:
-> > > > On Wed, Jun 01, 2022 at 07:34:41PM +0200, Christoph Hellwig wrote:
-> > > > > Can you send me the full dmesg and the content of
-> > > > > /sys/kernel/debug/swiotlb/io_tlb_nslabs for a good and a bad boot?
-> > > > 
-> > > > Sure thing, they are attached! If there is anything else I can provide
-> > > > or test, I am more than happy to do so.
-> > > 
-> > > Nothing interesting.  But the performance numbers almost look like
-> > > swiotlb=force got ignored before (even if I can't explain why).
-> > 
-> > I was able to get my performance back with this diff but I don't know if
-> > this is a hack or a proper fix in the context of the series.
+On 5/5/22 12:37, Rob Herring wrote:
+> On Wed, May 04, 2022 at 05:40:31PM +0200, Clément Léger wrote:
+>> Add function which allows to dynamically allocate and free properties.
+>> Use this function internally for all code that used the same logic
+>> (mainly __of_prop_dup()).
+>>
+>> Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+>> ---
+>>  drivers/of/dynamic.c | 101 ++++++++++++++++++++++++++++++-------------
+>>  include/linux/of.h   |  16 +++++++
+>>  2 files changed, 88 insertions(+), 29 deletions(-)
+>>
+>> diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+>> index cd3821a6444f..e8700e509d2e 100644
+>> --- a/drivers/of/dynamic.c
+>> +++ b/drivers/of/dynamic.c
+>> @@ -313,9 +313,7 @@ static void property_list_free(struct property *prop_list)
+>>  
+>>  	for (prop = prop_list; prop != NULL; prop = next) {
+>>  		next = prop->next;
+>> -		kfree(prop->name);
+>> -		kfree(prop->value);
+>> -		kfree(prop);
+>> +		of_property_free(prop);
+>>  	}
+>>  }
+>>  
+>> @@ -367,48 +365,95 @@ void of_node_release(struct kobject *kobj)
+>>  }
+>>  
+>>  /**
+>> - * __of_prop_dup - Copy a property dynamically.
+>> - * @prop:	Property to copy
+>> + * of_property_free - Free a property allocated dynamically.
+>> + * @prop:	Property to be freed
+>> + */
+>> +void of_property_free(const struct property *prop)
+>> +{
+>> +	kfree(prop->value);
+>> +	kfree(prop->name);
+>> +	kfree(prop);
+>> +}
+>> +EXPORT_SYMBOL(of_property_free);
+>> +
+>> +/**
+>> + * of_property_alloc - Allocate a property dynamically.
+>> + * @name:	Name of the new property
+>> + * @value:	Value that will be copied into the new property value
+>> + * @value_len:	length of @value to be copied into the new property value
+>> + * @len:	Length of new property value, must be greater than @value_len
 > 
-> This looks good, but needs a little tweak.  I'd go for this variant of
-> it:
-
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-
-Thanks a lot for the quick fix!
-
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index dfa1de89dc944..cb50f8d383606 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -192,7 +192,7 @@ void __init swiotlb_update_mem_attributes(void)
->  }
->  
->  static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
-> -				    unsigned long nslabs, bool late_alloc)
-> +		unsigned long nslabs, unsigned int flags, bool late_alloc)
->  {
->  	void *vaddr = phys_to_virt(start);
->  	unsigned long bytes = nslabs << IO_TLB_SHIFT, i;
-> @@ -203,8 +203,7 @@ static void swiotlb_init_io_tlb_mem(struct io_tlb_mem *mem, phys_addr_t start,
->  	mem->index = 0;
->  	mem->late_alloc = late_alloc;
->  
-> -	if (swiotlb_force_bounce)
-> -		mem->force_bounce = true;
-> +	mem->force_bounce = swiotlb_force_bounce || (flags & SWIOTLB_FORCE);
->  
->  	spin_lock_init(&mem->lock);
->  	for (i = 0; i < mem->nslabs; i++) {
-> @@ -275,8 +274,7 @@ void __init swiotlb_init_remap(bool addressing_limit, unsigned int flags,
->  		panic("%s: Failed to allocate %zu bytes align=0x%lx\n",
->  		      __func__, alloc_size, PAGE_SIZE);
->  
-> -	swiotlb_init_io_tlb_mem(mem, __pa(tlb), nslabs, false);
-> -	mem->force_bounce = flags & SWIOTLB_FORCE;
-> +	swiotlb_init_io_tlb_mem(mem, __pa(tlb), nslabs, flags, false);
->  
->  	if (flags & SWIOTLB_VERBOSE)
->  		swiotlb_print_info();
-> @@ -348,7 +346,7 @@ int swiotlb_init_late(size_t size, gfp_t gfp_mask,
->  
->  	set_memory_decrypted((unsigned long)vstart,
->  			     (nslabs << IO_TLB_SHIFT) >> PAGE_SHIFT);
-> -	swiotlb_init_io_tlb_mem(mem, virt_to_phys(vstart), nslabs, true);
-> +	swiotlb_init_io_tlb_mem(mem, virt_to_phys(vstart), nslabs, 0, true);
->  
->  	swiotlb_print_info();
->  	return 0;
-> @@ -835,8 +833,8 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
->  
->  		set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
->  				     rmem->size >> PAGE_SHIFT);
-> -		swiotlb_init_io_tlb_mem(mem, rmem->base, nslabs, false);
-> -		mem->force_bounce = true;
-> +		swiotlb_init_io_tlb_mem(mem, rmem->base, nslabs, SWIOTLB_FORCE,
-> +				false);
->  		mem->for_alloc = true;
->  
->  		rmem->priv = mem;
+> What's the usecase for the lengths being different? That doesn't seem 
+> like a common case, so perhaps handle it with a NULL value and 
+> non-zero length. Then the caller has to deal with populating 
+> prop->value.
 > 
+>>   * @allocflags:	Allocation flags (typically pass GFP_KERNEL)
+>>   *
+>> - * Copy a property by dynamically allocating the memory of both the
+>> + * Create a property by dynamically allocating the memory of both the
+>>   * property structure and the property name & contents. The property's
+>>   * flags have the OF_DYNAMIC bit set so that we can differentiate between
+>>   * dynamically allocated properties and not.
+>>   *
+>>   * Return: The newly allocated property or NULL on out of memory error.
+>>   */
+>> -struct property *__of_prop_dup(const struct property *prop, gfp_t allocflags)
+>> +struct property *of_property_alloc(const char *name, const void *value,
+>> +				   int value_len, int len, gfp_t allocflags)
+>>  {
+>> -	struct property *new;
+>> +	int alloc_len = len;
+>> +	struct property *prop;
+>> +
+>> +	if (len < value_len)
+>> +		return NULL;
+>>  
+>> -	new = kzalloc(sizeof(*new), allocflags);
+>> -	if (!new)
+>> +	prop = kzalloc(sizeof(*prop), allocflags);
+>> +	if (!prop)
+>>  		return NULL;
+>>  
+>> +	prop->name = kstrdup(name, allocflags);
+>> +	if (!prop->name)
+>> +		goto out_err;
+>> +
+>>  	/*
+>> -	 * NOTE: There is no check for zero length value.
+>> -	 * In case of a boolean property, this will allocate a value
+>> -	 * of zero bytes. We do this to work around the use
+>> -	 * of of_get_property() calls on boolean values.
+>> +	 * Even if the property has no value, it must be set to a
+>> +	 * non-null value since of_get_property() is used to check
+>> +	 * some values that might or not have a values (ranges for
+>> +	 * instance). Moreover, when the node is released, prop->value
+>> +	 * is kfreed so the memory must come from kmalloc.
+> 
+> Allowing for NULL value didn't turn out well...
+> 
+> We know that we can do the kfree because OF_DYNAMIC is set IIRC...
+> 
+> If we do 1 allocation for prop and value, then we can test 
+> for "prop->value == prop + 1" to determine if we need to free or not.
 
-Cheers,
-Nathan
+If its a single allocation do we even need a test? Doesn't kfree(prop) take care
+of the property and the trailing memory allocated for the value?
+
+-Tyrel
+
+> 
+>>  	 */
+>> -	new->name = kstrdup(prop->name, allocflags);
+>> -	new->value = kmemdup(prop->value, prop->length, allocflags);
+>> -	new->length = prop->length;
+>> -	if (!new->name || !new->value)
+>> -		goto err_free;
+>> +	if (!alloc_len)
+>> +		alloc_len = 1;
+>>  
+>> -	/* mark the property as dynamic */
+>> -	of_property_set_flag(new, OF_DYNAMIC);
+>> +	prop->value = kzalloc(alloc_len, allocflags);
+>> +	if (!prop->value)
+>> +		goto out_err;
+>>  
+>> -	return new;
+>> +	if (value)
+>> +		memcpy(prop->value, value, value_len);
+>> +
+>> +	prop->length = len;
+>> +	of_property_set_flag(prop, OF_DYNAMIC);
+>> +
+>> +	return prop;
+>> +
+>> +out_err:
+>> +	of_property_free(prop);
+>>  
+>> - err_free:
+>> -	kfree(new->name);
+>> -	kfree(new->value);
+>> -	kfree(new);
+>>  	return NULL;
+>>  }
+>> +EXPORT_SYMBOL(of_property_alloc);
+>> +
+>> +/**
+>> + * __of_prop_dup - Copy a property dynamically.
+>> + * @prop:	Property to copy
+>> + * @allocflags:	Allocation flags (typically pass GFP_KERNEL)
+>> + *
+>> + * Copy a property by dynamically allocating the memory of both the
+>> + * property structure and the property name & contents. The property's
+>> + * flags have the OF_DYNAMIC bit set so that we can differentiate between
+>> + * dynamically allocated properties and not.
+>> + *
+>> + * Return: The newly allocated property or NULL on out of memory error.
+>> + */
+>> +struct property *__of_prop_dup(const struct property *prop, gfp_t allocflags)
+>> +{
+>> +	return of_property_alloc(prop->name, prop->value, prop->length,
+>> +				 prop->length, allocflags);
+> 
+> This can now be a static inline.
+> 
+>> +}
+>>  
+>>  /**
+>>   * __of_node_dup() - Duplicate or create an empty device node dynamically.
+>> @@ -447,9 +492,7 @@ struct device_node *__of_node_dup(const struct device_node *np,
+>>  			if (!new_pp)
+>>  				goto err_prop;
+>>  			if (__of_add_property(node, new_pp)) {
+>> -				kfree(new_pp->name);
+>> -				kfree(new_pp->value);
+>> -				kfree(new_pp);
+>> +				of_property_free(new_pp);
+>>  				goto err_prop;
+>>  			}
+>>  		}
+>> diff --git a/include/linux/of.h b/include/linux/of.h
+>> index 04971e85fbc9..6b345eb71c19 100644
+>> --- a/include/linux/of.h
+>> +++ b/include/linux/of.h
+>> @@ -1463,6 +1463,11 @@ enum of_reconfig_change {
+>>  };
+>>  
+>>  #ifdef CONFIG_OF_DYNAMIC
+>> +extern struct property *of_property_alloc(const char *name, const void *value,
+>> +					  int value_len, int len,
+>> +					  gfp_t allocflags);
+>> +extern void of_property_free(const struct property *prop);
+>> +
+>>  extern int of_reconfig_notifier_register(struct notifier_block *);
+>>  extern int of_reconfig_notifier_unregister(struct notifier_block *);
+>>  extern int of_reconfig_notify(unsigned long, struct of_reconfig_data *rd);
+>> @@ -1507,6 +1512,17 @@ static inline int of_changeset_update_property(struct of_changeset *ocs,
+>>  	return of_changeset_action(ocs, OF_RECONFIG_UPDATE_PROPERTY, np, prop);
+>>  }
+>>  #else /* CONFIG_OF_DYNAMIC */
+>> +
+>> +static inline struct property *of_property_alloc(const char *name,
+>> +						 const void *value,
+>> +						 int value_len, int len,
+>> +						 gfp_t allocflags)
+>> +{
+>> +	return NULL;
+>> +}
+>> +
+>> +static inline  void of_property_free(const struct property *prop) {}
+>> +
+>>  static inline int of_reconfig_notifier_register(struct notifier_block *nb)
+>>  {
+>>  	return -EINVAL;
+>> -- 
+>> 2.34.1
+>>
+>>
+
