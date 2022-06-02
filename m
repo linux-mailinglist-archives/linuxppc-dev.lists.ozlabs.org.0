@@ -2,68 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5766B53B433
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 09:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C16F153B43E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 09:19:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LDHNL70cFz3c7F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 17:15:30 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kjIm42IQ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LDHSw5WDPz3c8x
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 17:19:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=cgel.zte@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kjIm42IQ;
-	dkim-atps=neutral
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=zhangqilong3@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LDHMk69Cwz301N
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 17:14:57 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id u12-20020a17090a1d4c00b001df78c7c209so8568036pju.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jun 2022 00:14:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=T86Xkl4zAQRDqlX+Sbg7KzV+2Znm3kmGhJEJ2gH5oPs=;
-        b=kjIm42IQKm9p8crvtuLlXRMrgIPGHqf/cbX5Jp1nkyGBMxpECnqZ5tNw4G30RPSxSl
-         ihT2VakbiG/ZXL6SWwJp0zuQ7kQ8ePWf8/YKs4gc0Fj5aAxPTjQzdgDFlI52vn/qTfxY
-         cjAU9JiqpoH+7H2BLO9XA48OAW57jwI7UKzmewXbkmcjWWnVmYin3Mh8utHbnOGfqaBo
-         cD1jkJAmTugEOEEctTHVa+GoP0iAFf3DXCI9k5QRDWt42VAAe/Gcz7HYnjFTIvdHH2NQ
-         D8R/hTPIsSDjcxWOgyKWl6jTZpX27yZUh6IbNcbzODpP3uB4O/YQ/UO2LD9O63doGyfL
-         vvaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=T86Xkl4zAQRDqlX+Sbg7KzV+2Znm3kmGhJEJ2gH5oPs=;
-        b=AWHJvGKzKi7pM3aiX7wjAZvOXHhnrsZ51wXs/ct/m1YBIlOOrOEvHrtllGkuf1YKcY
-         BiFXQCFfqxQdgTQsv7/tU+sli41Sln0Eb2Lh1aAthgqXQTD5UR8uxTMwQJSU/rbCrhLi
-         59/Udty42+rZG+tc41DaoiEHCC+uNbghgb8E2IVZHzjRLKI3rv1npoa5Xgcz+2rI3VrI
-         gLiPAzW5TjXKYbAuf1PVx71kr90tgPe4jt6w7Z5V0LAdVBuPkpYpaNi6/g6rZidJY2cZ
-         VvHUxvtv3YY+FS703K8qM+DZGSDB6p1rkfiQ6mBNT1bRSyHAVAzz4pHlGlBTVaH0FExr
-         KaiQ==
-X-Gm-Message-State: AOAM532MVb5zDAd3kIryEcOCWGMoWszHBZYTkKk08Zk34ZDm86TJ5gCl
-	tPvb+aiLpO4mhSfh7RrpdhI=
-X-Google-Smtp-Source: ABdhPJwZZAKpu/HC9yA8XNgWRXb+XzH/3iyXB2zHZjMV/93ih8NOdK4sZduf3oXx1JZX6HglGbpQ6A==
-X-Received: by 2002:a17:902:f60c:b0:156:82c9:e44b with SMTP id n12-20020a170902f60c00b0015682c9e44bmr3519920plg.106.1654154093526;
-        Thu, 02 Jun 2022 00:14:53 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id p23-20020a1709027ed700b00163cb0a8392sm2674737plb.168.2022.06.02.00.14.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jun 2022 00:14:52 -0700 (PDT)
-From: cgel.zte@gmail.com
-X-Google-Original-From: chi.minghao@zte.com.cn
-To: shengjiu.wang@gmail.com
-Subject: [PATCH] ASoC: imx-audmux: remove unnecessary check of clk_disable_unprepare
-Date: Thu,  2 Jun 2022 07:14:48 +0000
-Message-Id: <20220602071448.277968-1-chi.minghao@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LDHSV6g51z301N
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jun 2022 17:19:06 +1000 (AEST)
+Received: from kwepemi100013.china.huawei.com (unknown [172.30.72.55])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LDHPq3DzZzgYlg;
+	Thu,  2 Jun 2022 15:16:47 +0800 (CST)
+Received: from kwepemm600014.china.huawei.com (7.193.23.54) by
+ kwepemi100013.china.huawei.com (7.221.188.136) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 2 Jun 2022 15:18:28 +0800
+Received: from huawei.com (10.90.53.225) by kwepemm600014.china.huawei.com
+ (7.193.23.54) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Thu, 2 Jun
+ 2022 15:18:28 +0800
+From: zhangqilong <zhangqilong3@huawei.com>
+To: <shengjiu.wang@gmail.com>, <Xiubo.Lee@gmail.com>, <perex@perex.cz>,
+	<tiwai@suse.com>
+Subject: [PATCH V4] ASoC: fsl_xcvr:Fix unbalanced pm_runtime_enable in fsl_xcvr_probe
+Date: Thu, 2 Jun 2022 15:20:24 +0800
+Message-ID: <20220602072024.33236-1-zhangqilong3@huawei.com>
+X-Mailer: git-send-email 2.26.0.106.g9fadedd
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.90.53.225]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemm600014.china.huawei.com (7.193.23.54)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,46 +51,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, Zeal Robot <zealci@zte.com.cn>, lgirdwood@gmail.com, Minghao Chi <chi.minghao@zte.com.cn>, perex@perex.cz, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com, linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, festevam@gmail.com, lgirdwood@gmail.com, nicoleotsuka@gmail.com, broonie@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Minghao Chi <chi.minghao@zte.com.cn>
+a) Add missing pm_runtime_disable() when probe error out. It could
+avoid pm_runtime implementation complains when removing and probing
+again the driver.
+b) Add remove for missing pm_runtime_disable().
 
-Because clk_disable_unprepare already checked NULL clock
-parameter, so the additional checks are unnecessary, just remove them.
-
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Minghao Chi <chi.minghao@zte.com.cn>
+Fix:c590fa80b3928 ("ASoC: fsl_xcvr: register platform component before registering cpu dai")
+Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
 ---
- sound/soc/fsl/imx-audmux.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+v2:
+- Add remove to put PM usage counter.
 
-diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
-index dfa05d40b276..f434fa7decc1 100644
---- a/sound/soc/fsl/imx-audmux.c
-+++ b/sound/soc/fsl/imx-audmux.c
-@@ -71,8 +71,7 @@ static ssize_t audmux_read_file(struct file *file, char __user *user_buf,
- 	ptcr = readl(audmux_base + IMX_AUDMUX_V2_PTCR(port));
- 	pdcr = readl(audmux_base + IMX_AUDMUX_V2_PDCR(port));
- 
--	if (audmux_clk)
--		clk_disable_unprepare(audmux_clk);
-+	clk_disable_unprepare(audmux_clk);
- 
- 	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!buf)
-@@ -218,8 +217,7 @@ int imx_audmux_v2_configure_port(unsigned int port, unsigned int ptcr,
- 	writel(ptcr, audmux_base + IMX_AUDMUX_V2_PTCR(port));
- 	writel(pdcr, audmux_base + IMX_AUDMUX_V2_PDCR(port));
- 
--	if (audmux_clk)
--		clk_disable_unprepare(audmux_clk);
-+	clk_disable_unprepare(audmux_clk);
- 
- 	return 0;
+v3:
+- Modify the commit message.
+---
+ sound/soc/fsl/fsl_xcvr.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index d0556c79fdb1..55e640cba87d 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1228,6 +1228,7 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
+ 	 */
+ 	ret = devm_snd_dmaengine_pcm_register(dev, NULL, 0);
+ 	if (ret) {
++		pm_runtime_disable(dev);
+ 		dev_err(dev, "failed to pcm register\n");
+ 		return ret;
+ 	}
+@@ -1235,6 +1236,7 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
+ 	ret = devm_snd_soc_register_component(dev, &fsl_xcvr_comp,
+ 					      &fsl_xcvr_dai, 1);
+ 	if (ret) {
++		pm_runtime_disable(dev);
+ 		dev_err(dev, "failed to register component %s\n",
+ 			fsl_xcvr_comp.name);
+ 	}
+@@ -1242,6 +1244,12 @@ static int fsl_xcvr_probe(struct platform_device *pdev)
+ 	return ret;
  }
+ 
++static int fsl_xcvr_remove(struct platform_device *pdev)
++{
++	pm_runtime_disable(&pdev->dev);
++	return 0;
++}
++
+ static __maybe_unused int fsl_xcvr_runtime_suspend(struct device *dev)
+ {
+ 	struct fsl_xcvr *xcvr = dev_get_drvdata(dev);
+@@ -1370,6 +1378,7 @@ static struct platform_driver fsl_xcvr_driver = {
+ 		.pm = &fsl_xcvr_pm_ops,
+ 		.of_match_table = fsl_xcvr_dt_ids,
+ 	},
++	.remove = fsl_xcvr_remove,
+ };
+ module_platform_driver(fsl_xcvr_driver);
+ 
 -- 
-2.25.1
-
+2.31.1
 
