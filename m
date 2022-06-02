@@ -1,86 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686F053BB7B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 17:19:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2CD53BD9C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jun 2022 19:54:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LDV6N2NxWz3bxk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 01:19:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LDYZ328RTz3bw6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 03:54:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UU6SwoCo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AQXfA2se;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LDV5g2ksyz3bkK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 01:18:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=cheloha@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UU6SwoCo;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AQXfA2se;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4LDV5c0J91z4xZD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 01:18:28 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4LDV5c0Cw1z4xXF; Fri,  3 Jun 2022 01:18:28 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2e; helo=mail-oa1-x2e.google.com; envelope-from=groeck7@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UU6SwoCo;
-	dkim-atps=neutral
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4LDV5c05jWz4x7V;
-	Fri,  3 Jun 2022 01:18:27 +1000 (AEST)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-f2a4c51c45so7101336fac.9;
-        Thu, 02 Jun 2022 08:18:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=fIposw9bqQ/A/8+/bJlACkRyYumL8k5kj0sa3GrGDf4=;
-        b=UU6SwoCo6VxWFctnTFZFCpqb4KbprqRWac1seiCMaVK5Oc23l19yk4ET1SoPpjDK8I
-         cIGMhTfOtWjIRzEVJLCztWa86AAvLIx5y6+oQS1KZmwsnWWqhRLXc1nZPHD3XjcJT/cG
-         fjwFinsfiWbzkMYGEJoG70DZs+Kyus+KLgo5KwWwAtxWTSjzCMUGgPYvwasN1TybnEqk
-         /p3rJrPT2g0d5/vUh/sCQOLQre/277BJwEdcmLh0X+HE5tx3Pf90jPWQqFIYmgmRaQYW
-         UhlX2kF6YWWoHQMq2nDUhBbR81imMMJmeL9m3Dvd83AQQVFoydxTjVTx20Us2U++aaNR
-         dLTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to;
-        bh=fIposw9bqQ/A/8+/bJlACkRyYumL8k5kj0sa3GrGDf4=;
-        b=drTaJWZvqN6dtt05GRieUqAzFU2Px3vRdYwFThv+XU5xrX1thg734RhaAHB3QZTyoC
-         GqsitwxuOeYXVVxjSec/0s/MRMw1v8TwxfkDA18CkurtkIeUynPcxRQJqmvtQkmAJw/9
-         M2MFMpzNXTKzfTGw5rE5a+lEhXuCT4ZhlfqGd08dGWCcZBeSB0qo9ZemDa7kFCfDa+bK
-         x2BYZnKj4O9u9VSwvhcRcj3L6iHgOXjymBxykB212ziss5tYz0wNlntdSnZpz/gjExYU
-         NPS17ayUQRFZbG1g/swNFPSKtdl7yFZoDlNfHDPa8ao8NffNbIxPiLRZ4AePa4hT2Q6V
-         Vy4A==
-X-Gm-Message-State: AOAM531ZfzxodwjWcqY1gpGk/iaVSv5LIlLwGGSEKr1BCAHGWRe0I345
-	okuq5nVMlLzmtGeo4QANEzBH313HmAE=
-X-Google-Smtp-Source: ABdhPJysFKTT0rMzWrVQR/Pj+qn73S351ApiUhtjS+V2jtNpRHalJoYqTIOGZA/kI7QN5jMtRRsUcw==
-X-Received: by 2002:a05:6870:8888:b0:e9:a3eb:a52d with SMTP id m8-20020a056870888800b000e9a3eba52dmr3059463oam.181.1654183102140;
-        Thu, 02 Jun 2022 08:18:22 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t11-20020a9d728b000000b0060b66b6641fsm2257002otj.5.2022.06.02.08.18.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jun 2022 08:18:21 -0700 (PDT)
-Date: Thu, 2 Jun 2022 08:18:19 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Paul Mackerras <paulus@ozlabs.org>
-Subject: Re: [PATCH v2 3/6] powerpc: Book3S 64-bit outline-only KASAN support
-Message-ID: <20220602151819.GA1057366@roeck-us.net>
-References: <YoTEb2BaH3MDkH+2@cleo>
- <YoTE69OQwiG7z+Gu@cleo>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LDYYL6Q7gz3bkK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 03:54:13 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 252H1Bt1015485;
+	Thu, 2 Jun 2022 17:54:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=/AOMAB4jrHJ7iDP6NhxsrYS7ZS2h10/BDzF5cTYrCvg=;
+ b=AQXfA2se0wOEBJrX3mSTBDOfR0GP+hZc9IcsrbSzfhl9SdpixoscQ/oaP9/PsLDUdoDI
+ y1RsIUYYepnTI7VMyi2QPSEUvUhUT+o6RjyXE/HQCs8hTG8p7fAdwFVFWgv/R2xFdAxB
+ g/M6PMmLoHg4wRLtSwWzOZhQeEYEllzwNESMMX6PKIa9wnUjuj2GCNKc7dckARfvrmrD
+ otsxur7O5PzExYyQ+Ecn74+6KgImKO1wIkPBUpVGwiVkSviCnEQLF/AeX7k1IgQTs3gv
+ OWlVjbkayj7ols18QzGYM4oxmreq0rC32c2wqB+vZ4TVKwVudSxvOU37FQsRTovhdgGL GQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gevu4pq6f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jun 2022 17:54:07 +0000
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 252H9KVc003811;
+	Thu, 2 Jun 2022 17:54:07 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gevu4pq6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jun 2022 17:54:07 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 252Ho3YB012965;
+	Thu, 2 Jun 2022 17:54:06 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+	by ppma02wdc.us.ibm.com with ESMTP id 3gbc93431x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jun 2022 17:54:06 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 252Hs58f28180898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Jun 2022 17:54:05 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B3F4AC605A;
+	Thu,  2 Jun 2022 17:54:05 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 937A3C6059;
+	Thu,  2 Jun 2022 17:54:05 +0000 (GMT)
+Received: from localhost (unknown [9.41.178.126])
+	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Thu,  2 Jun 2022 17:54:05 +0000 (GMT)
+From: Scott Cheloha <cheloha@linux.ibm.com>
+To: linux-watchdog@vger.kernel.org
+Subject: [PATCH v2 0/4] pseries-wdt: initial support for H_WATCHDOG-based watchdog timers
+Date: Thu,  2 Jun 2022 12:53:49 -0500
+Message-Id: <20220602175353.68942-1-cheloha@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: t7RTpSfJ-J27zp-xtXlycfpzS_l9hs9b
+X-Proofpoint-GUID: hHBHgXDHIUOzUDb0-w-QkgG5wpWMryyK
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YoTE69OQwiG7z+Gu@cleo>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-02_05,2022-06-02_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
+ definitions=main-2206020073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,52 +94,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: nathanl@linux.ibm.com, wvoigt@us.ibm.com, aik@ozlabs.ru, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+PAPR v2.12 defines a new hypercall, H_WATCHDOG.  This patch series
+adds support for this hypercall to powerpc/pseries kernels and
+introduces a new watchdog driver, "pseries-wdt", for the virtual
+timers exposed by the hypercall.
 
-On Wed, May 18, 2022 at 08:05:31PM +1000, Paul Mackerras wrote:
-> From: Daniel Axtens <dja@axtens.net>
-> 
-> Implement a limited form of KASAN for Book3S 64-bit machines running under
-> the Radix MMU, supporting only outline mode.
-> 
->  - Enable the compiler instrumentation to check addresses and maintain the
->    shadow region. (This is the guts of KASAN which we can easily reuse.)
-> 
->  - Require kasan-vmalloc support to handle modules and anything else in
->    vmalloc space.
-> 
->  - KASAN needs to be able to validate all pointer accesses, but we can't
->    instrument all kernel addresses - only linear map and vmalloc. On boot,
->    set up a single page of read-only shadow that marks all iomap and
->    vmemmap accesses as valid.
-> 
->  - Document KASAN in powerpc docs.
-> 
+This series is preceded by the following:
 
-With this patch applied, powerpc:allmodconfig builds fail as follows.
+RFC v1: https://lore.kernel.org/linux-watchdog/20220413165104.179144-1-cheloha@linux.ibm.com/
+RFC v2: https://lore.kernel.org/linux-watchdog/20220509174357.5448-1-cheloha@linux.ibm.com/
+PATCH v1: https://lore.kernel.org/linux-watchdog/20220520183552.33426-1-cheloha@linux.ibm.com/
 
-Building powerpc:allmodconfig ... failed
---------------
-Error log:
-Error: External symbol 'memset' referenced from prom_init.c
-make[3]: [arch/powerpc/kernel/Makefile:202: arch/powerpc/kernel/prom_init_check] Error 1 (ignored)
-powerpc64-linux-ld: drivers/gpu/drm/amd/amdgpu/../display/dc/dml/display_mode_lib.o uses hard float, drivers/gpu/drm/amd/amdgpu/../display/dc/dcn31/dcn31_resource.o uses soft float
-powerpc64-linux-ld: failed to merge target specific data of file drivers/gpu/drm/amd/amdgpu/../display/dc/dcn31/dcn31_resource.o
-powerpc64-linux-ld: drivers/gpu/drm/amd/amdgpu/../display/dc/dml/display_mode_lib.o uses hard float, drivers/gpu/drm/amd/amdgpu/../display/dc/dcn315/dcn315_resource.o uses soft float
-powerpc64-linux-ld: failed to merge target specific data of file drivers/gpu/drm/amd/amdgpu/../display/dc/dcn315/dcn315_resource.o
-powerpc64-linux-ld: drivers/gpu/drm/amd/amdgpu/../display/dc/dml/display_mode_lib.o uses hard float, drivers/gpu/drm/amd/amdgpu/../display/dc/dcn316/dcn316_resource.o uses soft float
-powerpc64-linux-ld: failed to merge target specific data of file drivers/gpu/drm/amd/amdgpu/../display/dc/dcn316/dcn316_resource.o
-make[5]: [scripts/Makefile.build:435: drivers/gpu/drm/amd/amdgpu/amdgpu.o] Error 1 (ignored)
-make[2]: *** No rule to make target 'drivers/gpu/drm/amd/amdgpu/amdgpu.o', needed by 'modules-only.symvers'.  Stop.
-make[1]: [Makefile:1753: modules] Error 2 (ignored)
+Changes of note from PATCH v1:
 
-This is with gcc 11.3 and binutils 2.38. I also tried with gcc 11.2 and
-binutils 2.36.1, with the same results.
+- Trim down the large comment documenting the H_WATCHDOG hypercall.
+  The comment is likely to rot, so remove anything we aren't using
+  and anything overly obvious.
 
-Reverting this patch fixes the problem.
+- Remove any preprocessor definitions not actually used in the module
+  right now.  If we want to use other features offered by the hypercall
+  we can add them in later.  They're just clutter until then.
 
-Guenter
+- Simplify the "action" module parameter.  The value is now an index
+  into an array of possible timeoutAction values.  This design removes
+  the need for the custom get/set methods used in PATCH v1.
+
+  Now we merely need to check that the "action" value is a valid
+  index during pseries_wdt_probe().  Easy.
+
+- Make the timeoutAction a member of pseries_wdt, "action".  This
+  eliminates the use of a global variable during pseries_wdt_start().
+
+- Use watchdog_init_timeout() idiomatically.  Check its return value
+  and error out of pseries_wdt_probe() if it fails.
+
+
