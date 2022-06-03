@@ -2,72 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11E853C9B1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 14:09:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39AEE53C9CF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 14:16:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LF1sc55qrz3c87
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 22:09:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LF21B19HRz3c1g
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 22:16:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eEx/CXv9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=cFOF6qQS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=linmq006@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=linmq006@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=eEx/CXv9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=cFOF6qQS;
 	dkim-atps=neutral
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LF1ry4W1xz3blR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 22:09:20 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id s14so6700652plk.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jun 2022 05:09:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LF20W33f7z307n
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 22:15:54 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id bo5so7066138pfb.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jun 2022 05:15:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:subject:date:message-id:mime-version
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=0DhV/bSEDMfWlEIgmxZfIXZk2f8EJJW/Clb9Xr6LaGQ=;
-        b=eEx/CXv91F51gHGzlP7zjr9bT6WbxjasgQZstRm/f9Ke5zHlfqu2OS/yhdaAju55bb
-         BalsuxJl0Y78g3SLsgX8pZznbSfrZYhG1ofOJDV9G1hW5ljIQ1vIPK2z/Z1Vf29/7ZWz
-         Gt70+XKZVBu4Zj/oUWxNQ9CLYzPQWhL2L/D8YQB+JW4hCbFuoyPeSpRKa1j9iLbUpsvm
-         UFLQSONOD3o0qyMBYhB8RM1ryy40J0050hObaakm1jGSyktzcDISJsLA8P5fqUUckmNy
-         nAYWOcuL/lh3+1IMgWH06/XSCY1uDSarD7XsE5LTRaItxGkvs8MrpO7z3LGSY/SqDDPc
-         vONQ==
+        bh=a9U3qsBSVaLdxBGwysRPnWNY0hSOW5bqS3fMTtRWlOU=;
+        b=cFOF6qQSycOAg+gIAm34Ht6pACgpcLc5A505loomEOpN92Mvqy9AKHANFvo1LeIseH
+         TQV7gpyd2J8BkQT/qSveitZGLV5UoZXMPoR3f0aJArnGeB4ufeVzCN1yvq8bsGUxonD1
+         YdcYdCWfxufluBuZzcb3L3MqHcpEKqr7RdDUHnWDumNGdghvFLJtvJJI56Z3s0lxFxvu
+         T2VF48gcILXr+DG8X1OhDunUj1p87J8vaLHFtOmGKRkrB+CltTsjFwleOHXYtNlvCYcI
+         bq+nLcz+m98PqzqkNqMD54IGMTy3SmbfqZQwxitiKUw3fG60dgqLfbk48eCf5EDMTrgp
+         qCVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=0DhV/bSEDMfWlEIgmxZfIXZk2f8EJJW/Clb9Xr6LaGQ=;
-        b=CqA1TyYrLqoH8a3qDyefE8YRq57iO5agGqj45fB19TEtP68lt4qDsbXv4fTyVhnKrQ
-         lHieeI51+pngpJUGqgd78obG1AY5FsKtBn49KvbIEZpzgUggMWPyIrG79NgMPo57YtOO
-         vbWzVigYJMUFE8JN42RiJ4D+eGZ8hqKsWUvrosrDyNm6pW6stfTBezuRJi+cq/Dcb1pI
-         UXKF1l1R6+2fUsydmnz8bOxCfA529MxtYk4dXb+DcGmZxYIoEt9PsLJtxru8plPBNEN5
-         c4m7/dcMDzQMZ1bef+Hvzb9P2IWj4TADGOaSUJeivcluaXjcwF+SN6JgAnod/Vf5IOxb
-         pSUQ==
-X-Gm-Message-State: AOAM532lrsCUD0hI7H/D+GoDNoDoOFEqaLh6Rh1E1sqgNnjCWePCOvjv
-	Sb50YIT0iAxEdo6dvnlHzQ8=
-X-Google-Smtp-Source: ABdhPJxL50NVd//ZW4zr/fI3E4mFR5M/jjEmELF8syGQR/bbikYMpaN4MnfTXHNT5RAt/SCYxeB1tg==
-X-Received: by 2002:a17:902:ef50:b0:156:486f:b593 with SMTP id e16-20020a170902ef5000b00156486fb593mr9964208plx.104.1654258156469;
-        Fri, 03 Jun 2022 05:09:16 -0700 (PDT)
+        bh=a9U3qsBSVaLdxBGwysRPnWNY0hSOW5bqS3fMTtRWlOU=;
+        b=oLXM4aQRKZNvzQphyQQoQSa55J3/1q+YbzzxO1lvfbNRBbHaS/LiMwhR6D4z5hcmc1
+         6VttkWKzj3vDKVQ+HMbKmFf2ixFcKbdCgQvt9tnYUbUFbULLKebam9u8u2IHmNE6fsUE
+         7nUCNX0+woTPpwkrOBIYm7tNXU1FlcnOFwDe3plgYKd6mssSGtXgIoVSQOjlW2Ten4tg
+         e8r3gHzXSCDD6tijZzoT4Go4ATCfgHW6quOvV2UMD+3uHihasDh/YtlO27dX7XvPjjsn
+         c5bsWGIekMBg8CzMoeU/p88Jx315EcxC3Vi2gik5axR3MXlNPtFPmAh71cMnWwBt191C
+         NfDQ==
+X-Gm-Message-State: AOAM532ql2oBo0QC6TCIKk5vTp/WEIs434TXOoTDhJ4DsaJp+PshZsbo
+	K7urh4THStTgoiZXCDo5AyQ=
+X-Google-Smtp-Source: ABdhPJxsP/J9XGCwUjJcprDJ7lbiUGLbMFq/EQv37a5Rd/1TTPKJOGhRPLSO9Vu4n7hyI2qVikFmFQ==
+X-Received: by 2002:a65:63d1:0:b0:3c6:25b2:22ba with SMTP id n17-20020a6563d1000000b003c625b222bamr8702993pgv.360.1654258551714;
+        Fri, 03 Jun 2022 05:15:51 -0700 (PDT)
 Received: from localhost.localdomain ([202.120.234.246])
-        by smtp.googlemail.com with ESMTPSA id e14-20020a170902ed8e00b0015edfccfdb5sm5312741plj.50.2022.06.03.05.09.11
+        by smtp.googlemail.com with ESMTPSA id bg13-20020a17090b0d8d00b001e08461ceaesm7545215pjb.37.2022.06.03.05.15.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jun 2022 05:09:15 -0700 (PDT)
+        Fri, 03 Jun 2022 05:15:51 -0700 (PDT)
 From: Miaoqian Lin <linmq006@gmail.com>
-To: Scott Wood <oss@buserror.net>,
+To: Jeremy Kerr <jk@ozlabs.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
 	Paul Mackerras <paulus@samba.org>,
-	Nick Child <nick.child@ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Miaoqian Lin <linmq006@gmail.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/85xx: Fix reference leak in xes_mpc85xx_setup_arch
-Date: Fri,  3 Jun 2022 16:09:05 +0400
-Message-Id: <20220603120907.19999-1-linmq006@gmail.com>
+Subject: [PATCH] powerpc/spufs: Fix refcount leak in spufs_init_isolated_loader
+Date: Fri,  3 Jun 2022 16:15:42 +0400
+Message-Id: <20220603121543.22884-1-linmq006@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -82,6 +80,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linmq006@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -89,25 +88,24 @@ of_find_node_by_path() returns remote device nodepointer with
 refcount incremented, we should use of_node_put() on it when done.
 Add missing of_node_put() to avoid refcount leak.
 
-Fixes: format:3038acf9091f ("powerpc/85xx: Add platform support for X-ES MPC85xx boards")
+Fixes: 0afacde3df4c ("[POWERPC] spufs: allow isolated mode apps by starting the SPE loader")
 Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 ---
- arch/powerpc/platforms/85xx/xes_mpc85xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/platforms/cell/spufs/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/85xx/xes_mpc85xx.c b/arch/powerpc/platforms/85xx/xes_mpc85xx.c
-index 5836e4ecb7a0..93f67b430714 100644
---- a/arch/powerpc/platforms/85xx/xes_mpc85xx.c
-+++ b/arch/powerpc/platforms/85xx/xes_mpc85xx.c
-@@ -130,6 +130,8 @@ static void __init xes_mpc85xx_setup_arch(void)
- 	mpc85xx_smp_init();
+diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
+index 34334c32b7f5..320008528edd 100644
+--- a/arch/powerpc/platforms/cell/spufs/inode.c
++++ b/arch/powerpc/platforms/cell/spufs/inode.c
+@@ -660,6 +660,7 @@ spufs_init_isolated_loader(void)
+ 		return;
  
- 	fsl_pci_assign_primary();
-+
-+	of_node_put(root);
- }
+ 	loader = of_get_property(dn, "loader", &size);
++	of_node_put(dn);
+ 	if (!loader)
+ 		return;
  
- machine_arch_initcall(xes_mpc8572, mpc85xx_common_publish_devices);
 -- 
 2.25.1
 
