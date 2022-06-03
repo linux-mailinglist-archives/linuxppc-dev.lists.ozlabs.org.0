@@ -2,93 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E005A53C737
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 11:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 118DB53C73B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 11:05:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LDxgG5hrRz3bq9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 19:00:42 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ILuGkWuh;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LDxmG6kKkz3brQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 19:05:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ILuGkWuh;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=212.227.126.135; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LDxfY5X8sz307n
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 19:00:05 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2538ZqP5024778;
-	Fri, 3 Jun 2022 08:59:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=KkC/e61vN+BG1vovzdU2z8GhhLcq4mtcI91ynJs1oX0=;
- b=ILuGkWuhiXM9/uGqGuR/ziOo4DFJrlVYrRKz/T+c6ZGKOXrlw97Tc+lNm2O3C6A5Z0Cg
- 0EVrHYBp7HcgWufVDNRKxENOcgW2Wcr4UKZuxhzySLj4rhz4Hu47Eh8lggZPqunnTUNf
- gVhzju+/pKIZbEsTZZsZFnPuHqxwLu9anzwvbEWDmJu03f/3kVPadWp5W2bQlQHnESqP
- +DkjKIbo2BfArEHX6nspswxOIb9wQ8pYNU0p6LQ/nHlxWSTVWk/4b8YZEzBLLrskkp8v
- HMvFEriuifSjt14CoUW3Labub4QMslTSkzOxPBcVp3znbkngaUMTgM41hEDLBB11gkS+ 9w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gfbnm3xfa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Jun 2022 08:59:56 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2538xuLl008984;
-	Fri, 3 Jun 2022 08:59:56 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gfbnm3xew-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Jun 2022 08:59:56 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2538plTF032658;
-	Fri, 3 Jun 2022 08:59:54 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma01fra.de.ibm.com with ESMTP id 3gbcakp7r0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 03 Jun 2022 08:59:54 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2538xp0a52166974
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 3 Jun 2022 08:59:52 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E09B842042;
-	Fri,  3 Jun 2022 08:59:51 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C2654203F;
-	Fri,  3 Jun 2022 08:59:51 +0000 (GMT)
-Received: from [9.145.173.148] (unknown [9.145.173.148])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri,  3 Jun 2022 08:59:51 +0000 (GMT)
-Message-ID: <666cedea-2dbc-254e-467b-c02a3a2d8795@linux.ibm.com>
-Date: Fri, 3 Jun 2022 10:59:51 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LDxls2330z2xtt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 19:04:40 +1000 (AEST)
+Received: from mail-yb1-f176.google.com ([209.85.219.176]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MnWx3-1nXN332Oov-00jbPa for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jun
+ 2022 11:04:36 +0200
+Received: by mail-yb1-f176.google.com with SMTP id i11so12630967ybq.9
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jun 2022 02:04:35 -0700 (PDT)
+X-Gm-Message-State: AOAM531Ev/ZY0KVpGlOEm0b/3c3iDVI8OBIGV+je6OM1XFLMrfW+olMb
+	fmhgfJ6BKZpv8PDFHF6qAsL3OinTuyetwhixT3U=
+X-Google-Smtp-Source: ABdhPJxGeAN8L2TTa0OmtBnvf4prUEPKeEHwR00kai2asR+SRjF378BlWEUj7OqmnmyKUf8fALtBotqjUdd/y3nsm5s=
+X-Received: by 2002:a25:69c4:0:b0:65c:ed2b:9106 with SMTP id
+ e187-20020a2569c4000000b0065ced2b9106mr9755993ybc.394.1654247074548; Fri, 03
+ Jun 2022 02:04:34 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.9.1
-Subject: Re: [PATCH 0/2] Disabling NMI watchdog during LPM's memory transfer
-Content-Language: en-US
-To: Nathan Lynch <nathanl@linux.ibm.com>
-References: <20220601155315.35109-1-ldufour@linux.ibm.com>
- <87a6av0wxk.fsf@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <87a6av0wxk.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ikFcWkRnP4pOqHpU7tGUgANBv3tq1Mzs
-X-Proofpoint-ORIG-GUID: pKvRbHwiYmeKDEEZ99YzuA_AjUfnDQoa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-03_02,2022-06-02_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
- adultscore=0 phishscore=0 bulkscore=0 mlxscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206030035
+References: <20220601054850.250287-1-rmclure@linux.ibm.com> <20220601054850.250287-2-rmclure@linux.ibm.com>
+In-Reply-To: <20220601054850.250287-2-rmclure@linux.ibm.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 3 Jun 2022 11:04:18 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3jm=02geTcJcfLNpshx1bR1jAnLTzimaaAhB=mGHfJzg@mail.gmail.com>
+Message-ID: <CAK8P3a3jm=02geTcJcfLNpshx1bR1jAnLTzimaaAhB=mGHfJzg@mail.gmail.com>
+Subject: Re: [PATCH 2/6] powerpc: Provide syscall wrapper
+To: Rohan McLure <rmclure@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:vVWg/yClqwrF7SlejYbyLhSLJnwkrA/T6muVkZXl6nQHpOOETMk
+ EutWxUppeC40vbVX7jBfoX0fmOZCrc5af3Qsm+q4vu8p802/2yjCW+x3FupN/9QUHubmr59
+ NDj721X7Ln6SjOtl1S7Xmzg8o1TDjSA1sZwnmtoETqP+6xZnZKnTJNMcaMsNWtNDr1yy7cX
+ GdVC5uORClartCY0weAgQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xCqq3D4A/OM=:uT+uBUC1Of0w6NFgwMfqUd
+ 3Yh/ijgHnE+ahB/Zsqc0VdJn1shiB5XwGlgSptyB0QmWiFspxTga4f93IWcOz2cYphXP3wmuG
+ R7radOCNOLORcsj5tkLoSEqkiKh1E0MYtM99K9zPLNCYI2lBIUwCEb1fT3T+JZj2jEEizc6eP
+ V0ePVprmBZT5XcPGtgqMlb5kk0eFQe7e4L3DjRaxZbhKVPvx0V/AFeTsPSSdsQl3sKTdYQz5l
+ 6al8MPVmmgC9tb6s0dOaMR/QpiPyp+x52ICGSZcAx/7j2vxgeN8a/ivH3Hnmd6EFHF5qNR84c
+ nhjtCjqaWjKPQBaLu2OIf0a6VtYzOt4T2HgcYi4fFfj57ydQF3bH6pLjaEHYXoXdD6zfm/sY0
+ xhN8cvrMicK/K1oZopPrTTayrrDdvR6qc015xhP7hWye64gZ6tzRrlgPg9rZK0GJGYT/AccZ5
+ jatvO3219Osn2f9/A+l/MnTWt1tU5M0plJ48w47PU1wMCQP4fvFd9ciTO9341qy5EErSvo1io
+ 4rE2l6Cjto5WIIk6zsIByOrwToLGZYEEQcU/groUn1UYvvziGcZSqRy3cJAJwy/q8bj0mEkUY
+ hQWBFgyFoB+PuOhzxeyx/Mcgaqy+ogxG63xT2lveZlFAlXQ5WYA1daHMPrcWxR3b1fLAvDncg
+ OhLPOtk/HJeaidBfrjoOVgvcWqm1Ygkll5blqjFXJdc86ybsd5ZQp2APuEJ9LRJCqyILRwgBQ
+ +ciLF/qLD2bZJGT0vU8hAXmJju9EfhN4EuyO4w==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,97 +66,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org, haren@linux.vnet.ibm.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Andrew Donnellan <ajd@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02/06/2022, 19:58:31, Nathan Lynch wrote:
-> Laurent Dufour <ldufour@linux.ibm.com> writes:
->> When a partition is transferred, once it arrives at the destination node,
->> the partition is active but much of its memory must be transferred from the
->> start node.
->>
->> It depends on the activity in the partition, but the more CPU the partition
->> has, the more memory to be transferred is likely to be. This causes latency
->> when accessing pages that need to be transferred, and often, for large
->> partitions, it triggers the NMI watchdog.
-> 
-> It also triggers warnings from other watchdogs and subsystems that
-> have soft latency requirements  - softlockup, RCU, workqueue. The issue
-> is more general than the NMI watchdog.
+On Wed, Jun 1, 2022 at 7:48 AM Rohan McLure <rmclure@linux.ibm.com> wrote:
+>
+> Syscall wrapper implemented as per s390, x86, arm64, providing the
+> option for gprs to be cleared on entry to the kernel, reducing caller
+> influence influence on speculation within syscall routine. The wrapper
+> is a macro that emits syscall handler implementations with parameters
+> passed by stack pointer.
+>
+> For platforms supporting this syscall wrapper, emit symbols with usual
+> in-register parameters (`sys...`) to support calls to syscall handlers
+> from within the kernel.
 
-I agree, but, as you can read in the title, this series is focusing on the
-NMI watchdog which may have some dangerous side effects.
+Nice work!
 
->> The NMI watchdog causes the CPU stack to dump where it appears to be
->> stuck. In this case, it does not bring much information since it can happen
->> during any memory access of the kernel.
-> 
-> When the site of a watchdog backtrace shows a thread stuck on a routine
-> memory access as opposed to something like a lock acquisition, that is
-> actually useful information that shouldn't be discarded. It tells us the
-> platform is failing to adequately virtualize partition memory. This
-> isn't a benign situation and it's likely to unacceptably affect real
-> workloads. The kernel is ideally situated to detect and warn about this.
-> 
+> Syscalls are wrapped on all platforms except Cell processor. SPUs require
+> access syscall prototypes which are omitted with ARCH_HAS_SYSCALL_WRAPPER
+> enabled.
 
-I agree, but the information provided are most of the time misleading,
-pointing to various part in the kernel where the last page fault of a
-series generated by the kernel happened. There is no real added value,
-since this is well known that the memory transfer is introducing latency
-that is detected by the kernel. Furthermore, soft lockups are still
-triggered and report as well this latency without any side effect.
+Right, I think it's ok to leave out the SPU side. In the long run, I
+would like to
+go back to requiring the prototypes for everything on all architectures, to
+enforce type checking, but that's a separate piece of work.
 
->> In addition, the NMI interrupt mechanism is not secure and can generate a
->> dump system in the event that the interruption is taken while
->> MSR[RI]=0.
-> 
-> This sounds like a general problem with that facility that isn't
-> specific to partition migration? Maybe it should be disabled altogether
-> until that can be fixed?
+> +/*
+> + * For PowerPC specific syscall implementations, wrapper takes exact name and
+> + * return type for a given function.
+> + */
+> +
+> +#ifdef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
+> +#define PPC_SYSCALL_DEFINE(x, type, name, ...)                                 \
+> +       asmlinkage type __powerpc_##name(const struct pt_regs *regs);           \
+> +       ALLOW_ERROR_INJECTION(__powerpc_##name, ERRNO);                         \
+> +       type sys_##name(__MAP(x,__SC_DECL,__VA_ARGS__));                        \
+> +       static type __se_##name(__MAP(x,__SC_LONG,__VA_ARGS__));                \
+> +       static inline type __do_##name(__MAP(x,__SC_DECL,__VA_ARGS__));         \
 
-We already discuss that with Nick and it sounds that it is not so easy to
-fix that. Furthermore, the NMI watchdog is considered as last option for
-analyzing a potential dying system. So taking the risk of generating a
-crash because of the NMI interrupt looks acceptable. But disabling it
-totally because of that is not the right option.
+What is the benefit of having a separate set of macros for this? I think that
+adds more complexity than it saves in the end.
 
-In the LPM's case, the system is dependent on the LPM's latency, it is not
-really dying or in a really bad shape, so that risk is too expansive.
+> @@ -68,52 +69,63 @@ unsigned long compat_sys_mmap2(unsigned long addr, size_t len,
+>  #define merge_64(high, low) ((u64)high << 32) | low
+>  #endif
+>
+> -compat_ssize_t compat_sys_pread64(unsigned int fd, char __user *ubuf, compat_size_t count,
+> -                            u32 reg6, u32 pos1, u32 pos2)
+> +PPC_SYSCALL_DEFINE(6, compat_ssize_t, compat_sys_pread64,
+> +                  unsigned int, fd,
+> +                  char __user *, ubuf, compat_size_t, count,
+> +                  u32, reg6, u32, pos1, u32, pos2)
+>  {
+>         return ksys_pread64(fd, ubuf, count, merge_64(pos1, pos2));
+>  }
 
-Fixing the latency at the source is definitively the best option, and the
-PHYP team is already investigating that. But, in the meantime, there is a
-way to prevent the system to die because of that side effect by disabling
-the NMI watchdog during the memory transfer.
+We now have generalized versions of most of these system calls, as of 5.19-rc1
+with the addition of the riscv compat support. I think it would be
+best to try removing
+the powerpc private versions wherever possible and use the common version,
+modifying it further where necessary.
 
-> 
->> Given how often hard lockups are detected when transferring large
->> partitions, it seems best to disable the watchdog NMI until the memory
->> transfer from the start node is complete.
-> 
-> At this time, I'm far from convinced. Disabling the watchdog is going to
-> make the underlying problems in the platform and/or network harder to
-> understand.
+If this doesn't work for some of the syscalls, can you use the
+COMPAT_SYSCALL_DEFINE for those in place of PPC_SYSCALL_DEFINE?
 
-I was also reluctant, and would like the NMI watchdog to remain active
-during LPM. But there is currently no other way to work around the LPM's
-latency, and its potential risk of system crash.
-
-I've spent a lot of time analyzing many crashes happening during LPM and
-all of them are now pointing to the NMI watchdog issue. Furthermore, on a
-system with thousands of CPUs, I saw a system crash because a CPU was not
-able to respond in time (1s) to the NMI interrupt and thus generate the panic.
-
-In addition, we now know that a RTAS call, made right after the system is
-running again on the arrival side, is taking ages and is most of the time
-triggering the NMI watchdog.
-
-There are  ongoing investigations to clarify where and how this latency is
-happening. I'm not excluding any other issue in the Linux kernel, but right
-now, this looks to be the best option to prevent system crash during LPM.
-
-I'm hoping that the PHYP team will be able to improve that latency. At that
-time, this commit can be reverted, but until then, I don't see how we can
-do without that workaround.
-
-Laurent.
+     Arnd
