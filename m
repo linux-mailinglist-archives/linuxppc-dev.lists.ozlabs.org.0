@@ -2,35 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FFBA53CA3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 14:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3008153CA6D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 15:09:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LF2px1NZ1z3bm9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 22:52:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LF39p0lYLz3cCC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jun 2022 23:09:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LF2pS1BKnz3bks
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 22:52:15 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 253Cn6T7022427;
-	Fri, 3 Jun 2022 07:49:06 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 253Cn5Tt022424;
-	Fri, 3 Jun 2022 07:49:05 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Fri, 3 Jun 2022 07:49:05 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH] powerpc/64: Drop ppc_inst_as_str()
-Message-ID: <20220603124905.GD25951@gate.crashing.org>
-References: <20220531065936.3674348-1-mpe@ellerman.id.au> <20220531222715.GT25951@gate.crashing.org> <87fskopsui.fsf@mpe.ellerman.id.au> <20220601162023.GW25951@gate.crashing.org> <CACzsE9qZ0OTv07Tw8OM+K_Md904ZzW6mfnu-qb8OSwznWCgufQ@mail.gmail.com> <20220602084654.GZ25951@gate.crashing.org> <CACzsE9o8wQj+cCqQmWefKttqHtJ2PpmDULbaiCH=DK3Cj6i1ow@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACzsE9o8wQj+cCqQmWefKttqHtJ2PpmDULbaiCH=DK3Cj6i1ow@mail.gmail.com>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LF39P2Tldz2y8Q
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jun 2022 23:08:38 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4LF39F0wZDz9t45;
+	Fri,  3 Jun 2022 15:08:33 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id lF_iJMp3a-XF; Fri,  3 Jun 2022 15:08:33 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4LF39D74YQz9t3h;
+	Fri,  3 Jun 2022 15:08:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E182F8B7B0;
+	Fri,  3 Jun 2022 15:08:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ckdADoihYxs8; Fri,  3 Jun 2022 15:08:32 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.36])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9B08B8B76D;
+	Fri,  3 Jun 2022 15:08:32 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 253D8JIO1041553
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 3 Jun 2022 15:08:19 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 253D8FEU1041552;
+	Fri, 3 Jun 2022 15:08:15 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2] powerpc/irq: Increase stack_overflow detection limit when KASAN is enabled
+Date: Fri,  3 Jun 2022 15:08:14 +0200
+Message-Id: <e8b4eb82a126c3c6c352173a544fe94609ff660b.1654261687.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.35.3
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1654261694; l=3850; s=20211009; h=from:subject:message-id; bh=Oa8LJrFPcXOQ0zvnRaIeT/fwAZFNzRdcXco0Fj1xSO4=; b=EmXmfVumULC2rYCIeJyJTeLSZWcQWO6ZSLi5jFwfAzuFOqgxFDOgG860ZQzPMIyzMPNx2Puq8U4h 4CsIxhh5CEE37Qot54BnPf26PvDdlFAZ5yIm4hgUJryFj9qzn/cS
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,55 +67,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Erhard Furtner <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+When KASAN is enabled, as shown by the Oops below, the 2k limit is not
+enough to allow stack dump after a stack overflow detection when
+CONFIG_DEBUG_STACKOVERFLOW is selected:
 
-On Fri, Jun 03, 2022 at 03:03:05PM +1000, Jordan Niethe wrote:
-> On Thu, Jun 2, 2022 at 6:49 PM Segher Boessenkool
-> <segher@kernel.crashing.org> wrote:
-> > On Thu, Jun 02, 2022 at 01:01:04PM +1000, Jordan Niethe wrote:
-> > > > What about the more fundamental thing?  Have the order of the two halves
-> > > > of a prefixed insn as ulong not depend on endianness?  It really is two
-> > > > opcodes, and the prefixed one is first, always, even in LE.
-> > > The reason would be the value of as ulong is then used to write a
-> > > prefixed instruction to
-> > > memory with std.
-> > > If both endiannesses had the halves the same one of them would store
-> > > the suffix in front of the prefix.
-> >
-> > You cannot do such a (possibly) unaligned access from C though, not
-> > without invoking undefined behaviour.  The compiler usually lets you get
-> > away with it, but there are no guarantees.  You can make sure you only
-> > ever do such an access from assembler code of course.
-> 
-> Would using inline assembly to do it be ok?
+	do_IRQ: stack overflow: 1984
+	CPU: 0 PID: 126 Comm: systemd-udevd Not tainted 5.18.0-gentoo-PMacG4 #1
+	Call Trace:
+	Oops: Kernel stack overflow, sig: 11 [#1]
+	BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 PowerMac
+	Modules linked in: sr_mod cdrom radeon(+) ohci_pci(+) hwmon i2c_algo_bit drm_ttm_helper ttm drm_dp_helper snd_aoa_i2sbus snd_aoa_soundbus snd_pcm ehci_pci snd_timer ohci_hcd snd ssb ehci_hcd 8250_pci soundcore drm_kms_helper pcmcia 8250 pcmcia_core syscopyarea usbcore sysfillrect 8250_base sysimgblt serial_mctrl_gpio fb_sys_fops usb_common pkcs8_key_parser fuse drm drm_panel_orientation_quirks configfs
+	CPU: 0 PID: 126 Comm: systemd-udevd Not tainted 5.18.0-gentoo-PMacG4 #1
+	NIP:  c02e5558 LR: c07eb3bc CTR: c07f46a8
+	REGS: e7fe9f50 TRAP: 0000   Not tainted  (5.18.0-gentoo-PMacG4)
+	MSR:  00001032 <ME,IR,DR,RI>  CR: 44a14824  XER: 20000000
 
-You cannot refer to the instruction words as one 8-byte integer in
-memory (with "m" or similar), since such a thing is not valid C.  You
-can input the address of it to the inline asm of course, and use a
-clobber "memory", or also give it the actual memory as input, but as
-bytes or words or such, with something like
-  "m"(*(const u32 (*)[2]) ptr)
+	GPR00: c07eb3bc eaa1c000 c26baea0 eaa1c0a0 00000008 00000000 c07eb3bc eaa1c010
+	GPR08: eaa1c0a8 04f3f3f3 f1f1f1f1 c07f4c84 44a14824 0080f7e4 00000005 00000010
+	GPR16: 00000025 eaa1c154 eaa1c158 c0dbad64 00000020 fd543810 eaa1c0a0 eaa1c29e
+	GPR24: c0dbad44 c0db8740 05ffffff fd543802 eaa1c150 c0c9a3c0 eaa1c0a0 c0c9a3c0
+	NIP [c02e5558] kasan_check_range+0xc/0x2b4
+	LR [c07eb3bc] format_decode+0x80/0x604
+	Call Trace:
+	[eaa1c000] [c07eb3bc] format_decode+0x80/0x604 (unreliable)
+	[eaa1c070] [c07f4dac] vsnprintf+0x128/0x938
+	[eaa1c110] [c07f5788] sprintf+0xa0/0xc0
+	[eaa1c180] [c0154c1c] __sprint_symbol.constprop.0+0x170/0x198
+	[eaa1c230] [c07ee71c] symbol_string+0xf8/0x260
+	[eaa1c430] [c07f46d0] pointer+0x15c/0x710
+	[eaa1c4b0] [c07f4fbc] vsnprintf+0x338/0x938
+	[eaa1c550] [c00e8fa0] vprintk_store+0x2a8/0x678
+	[eaa1c690] [c00e94e4] vprintk_emit+0x174/0x378
+	[eaa1c6d0] [c00ea008] _printk+0x9c/0xc0
+	[eaa1c750] [c000ca94] show_stack+0x21c/0x260
+	[eaa1c7a0] [c07d0bd4] dump_stack_lvl+0x60/0x90
+	[eaa1c7c0] [c0009234] __do_IRQ+0x170/0x174
+	[eaa1c800] [c0009258] do_IRQ+0x20/0x34
+	[eaa1c820] [c00045b4] HardwareInterrupt_virt+0x108/0x10c
+...
 
-> > Swapping the two halves of a register costs at most one insn.  It is
-> > harmful premature optimisation to make this single cycle advantage
-> > override more important consideration (almost everything else :-) )
-> 
-> I'm not sure I follow. We are not doing this as an optimisation, but
-> out of the necessity of writing
-> the prefixed instruction to memory in a single instruction so that we
-> don't end up with half an
-> instruction in the kernel image.
+An investigation shows that on PPC32, calling dump_stack() requires
+more than 1k when KASAN is not selected and a bit more than 2k bytes
+when KASAN is selected.
 
-Ah.  That does not necessitate having this different for LE at all
-though!  The function that does the patching has to do it as one
-atomic memory access (which an ld only is because prefixed insns cannot
-cross 64-byte address boundaries btw), but that does not mean the kernel
-has to use the packing into one u64 it needs for that anywhere else,
-certainly not if that just complicates matters!
+On PPC64 the registers are twice the size of PPC32 registers, so the
+need should be approximately twice the need on PPC32.
 
+In the meantime we have THREAD_SIZE which is twice larger on PPC64
+than PPC32, and twice larger when KASAN is selected.
 
-Segher
+So we can easily use the value of THREAD_SIZE to set the limit.
+
+On PPC32, THREAD_SIZE is 8k without KASAN and 16k with KASAN.
+On PPC64, THREAD_SIZE is 16k without KASAN.
+
+To be on the safe side, leave 2k on PPC32 without KASAN, 4k with
+KASAN, and 4k on PPC64 without KASAN. It means the limit should be
+one fourth of THREAD_SIZE.
+
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+v2: Use a ratio of THREAD_SIZE
+---
+ arch/powerpc/kernel/irq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 32409cdcbed0..72abf438a22e 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -191,8 +191,8 @@ static inline void check_stack_overflow(unsigned long sp)
+ 
+ 	sp = current_stack_pointer & (THREAD_SIZE - 1);
+ 
+-	/* check for stack overflow: is there less than 2KB free? */
+-	if (unlikely(sp < 2048)) {
++	/* check for stack overflow: is there less than 1/4th free? */
++	if (unlikely(sp < THREAD_SIZE / 4)) {
+ 		pr_err("do_IRQ: stack overflow: %ld\n", sp);
+ 		dump_stack();
+ 	}
+-- 
+2.35.3
+
