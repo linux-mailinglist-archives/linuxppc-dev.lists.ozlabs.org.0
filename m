@@ -2,51 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F78A53D3FC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jun 2022 01:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C7253D62B
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jun 2022 10:53:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LFKcQ3FPsz3bpy
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jun 2022 09:59:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LFYRs37hFz3byY
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jun 2022 18:52:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VEpgatTq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=P1D+qmFK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.78; helo=conuserg-11.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VEpgatTq;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=P1D+qmFK;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from conuserg-11.nifty.com (conuserg-11.nifty.com [210.131.2.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LFKbq5lMLz30BP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Jun 2022 09:59:03 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9483D60AE3;
-	Fri,  3 Jun 2022 23:58:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56C1C385A9;
-	Fri,  3 Jun 2022 23:58:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654300739;
-	bh=0BSB0KdJ9TZOGWmSitv+cPteX1vDEFfMvQFuucYCfS8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=VEpgatTqZ3vbeJ6CESNEHBVV/eafdAvzizMYVPxwY2w2PrVkXxaYaoSC7STz5vN8O
-	 oOYGSShPOij3kbgr/AXDqqMcdFpa6paCxFHeRks4vGIwa6LelF+o1UNbLuQxd6kVwT
-	 PwedxrQ5J6a6IPpYDoE769AC/mbXl4PYsWhAm3l4TWFtQut2K+jSRM3tb0YRxZSDhz
-	 LSMnN2A0xyUlfmuIocYzzl9XoLqGHRhZLalwmwmNJakY8tLC/v7+rkgoHwBh9OFuLp
-	 8JjOaPsaDD/SlpHkU1ZgxVBPfzqLjIWapsO7kx8VXMO9Ix3JHmt/RvVn8Xytkl65lH
-	 e+XFKCW9PVK+Q==
-Date: Fri, 3 Jun 2022 18:58:56 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Mohamed Khalfella <mkhalfella@purestorage.com>
-Subject: Re: [PATCH] PCI/AER: Iterate over error counters instead of error
-Message-ID: <20220603235856.GA117911@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LFYRB24NJz302N
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Jun 2022 18:52:21 +1000 (AEST)
+Received: from grover.sesame (133-32-177-133.west.xps.vectant.ne.jp [133.32.177.133]) (authenticated)
+	by conuserg-11.nifty.com with ESMTP id 2548p0xo013521;
+	Sat, 4 Jun 2022 17:51:00 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com 2548p0xo013521
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+	s=dec2015msa; t=1654332661;
+	bh=FEAy194PWq95HNbYDnr1IqurmUH0R2wQrRmS1HC000s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=P1D+qmFKkOacKls3HlfteNNBNbd46qHxatZFOoNxKzKI7qCjiD7P5mXwp51JouN3e
+	 WvF8ToAxeBgnAny1boG6PxhPcFE42TG+1OSnhr8UtAAdz6ncuHuVA8tYENs6QfI3sM
+	 R7zrVo8VuWsASAk7d2fQbqnma/rf8H1xhe6AIQvgD7tfZNaCMvngd+gv9Z7Ts9DriX
+	 13zgBwgocKc9E2+G04x8jh+7ayALIgY71pdsjLPXaAxidMveTXBtRz/2VdmC2kvynE
+	 XgeL5A8l2/cFWe37pBB8rsG3m6zg1mV5SdHi56K64Ec4xfdDZdXuPvUfnN3zpyZUwQ
+	 XIOXj7GpyrfGw==
+X-Nifty-SrcIP: [133.32.177.133]
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: get rid of #include <generated/compile.h>
+Date: Sat,  4 Jun 2022 17:50:50 +0900
+Message-Id: <20220604085050.4078927-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220603221247.5118-1-mkhalfella@purestorage.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,58 +55,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, ebadger@purestorage.com, oohall@gmail.com, msaggi@purestorage.com, bhelgaas@google.com, rajatja@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, Jason Yan <yanaijie@huawei.com>, Scott Wood <oss@buserror.net>, Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org, Diana Craciun <diana.craciun@nxp.com>, Paul Mackerras <paulus@samba.org>, Frank Rowand <frank.rowand@sony.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 03, 2022 at 10:12:47PM +0000, Mohamed Khalfella wrote:
-> Is there any chance for this to land in 5.19?
+You cannot include <generated/compile.h> here because it is generated
+in init/Makefile but there is no guarantee that it happens before
+arch/powerpc/mm/nohash/kaslr_booke.c is compiled for parallel builds.
 
-Too late for v5.19, since the merge window will end in a couple days.
-Remind me again if you don't see it in -next by v5.20-rc5 or so.
+The places where you can reliably include <generated/compile.h> are:
 
-> On 5/10/22 14:17, Mohamed Khalfella wrote:
-> > > Thanks for catching this; it definitely looks like a real issue!  I
-> > > guess you're probably seeing junk in the sysfs files?
-> > 
-> > That is correct. The initial report was seeing junk when reading sysfs
-> > files. As descibed, this is happening because we reading data past the
-> > end of the stats counters array.
-> > 
-> > 
-> > > I think maybe we should populate the currently NULL entries in the
-> > > string[] arrays and simplify the code here, e.g.,
-> > > 
-> > > static const char *aer_correctable_error_string[] = {
-> > >        "RxErr",                        /* Bit Position 0       */
-> > >        "dev_cor_errs_bit[1]",
-> > >	...
-> > >
-> > >  if (stats[i])
-> > >    len += sysfs_emit_at(buf, len, "%s %llu\n", strings_array[i], stats[i]);
-> > 
-> > Doing it this way will change the output format. In this case we will show
-> > stats only if their value is greater than zero. The current code shows all the
-> > stats those have names (regardless of their value) plus those have non-zero
-> > values.
-> > 
-> > >> @@ -1342,6 +1342,11 @@ static int aer_probe(struct pcie_device *dev)
-> > >>  	struct device *device = &dev->device;
-> > >>  	struct pci_dev *port = dev->port;
-> > >>
-> > >> +	BUILD_BUG_ON(ARRAY_SIZE(aer_correctable_error_string) <
-> > >> +		     AER_MAX_TYPEOF_COR_ERRS);
-> > >> +	BUILD_BUG_ON(ARRAY_SIZE(aer_uncorrectable_error_string) <
-> > >> +		     AER_MAX_TYPEOF_UNCOR_ERRS);
-> > >
-> > > And make these check for "!=" instead of "<".
-> 
-> I am happy to remove these BUILD_BUG_ON() if you think it is a good
-> idea to do so.
+  - init/          (because init/Makefile can specify the dependency)
+  - arch/*/boot/   (because it is compiled after vmlinux)
 
-I think it's good to enforce correctness there somehow, so let's leave
-them there unless somebody has a better idea.
+Commit f231e4333312 ("hexagon: get rid of #include <generated/compile.h>")
+fixed the last breakage at that time, but powerpc re-added this.
 
-> > This will require unnecessarily extending stats arrays to have 32 entries
-> > in order to match names arrays. If you don't feel strogly about changing
-> > "<" to "!=", I prefer to keep the code as it is. 
+<genearated/compile.h> was unneeded because 'build_str' is almost the
+same as 'linux_banner' defined in init/version.c
+
+Let's copy the solution from MIPS.
+(get_random_boot() in arch/mips/kernel/relocate.c)
+
+Fixes: 6a38ea1d7b94 ("powerpc/fsl_booke/32: randomize the kernel image offset")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+If this gets into the mainline before -rc2 or -rc3,
+I will base my kbuild work on top of this.
+
+
+ arch/powerpc/mm/nohash/kaslr_booke.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/mm/nohash/kaslr_booke.c b/arch/powerpc/mm/nohash/kaslr_booke.c
+index 96c38f971603..5f81c076621f 100644
+--- a/arch/powerpc/mm/nohash/kaslr_booke.c
++++ b/arch/powerpc/mm/nohash/kaslr_booke.c
+@@ -18,7 +18,6 @@
+ #include <asm/prom.h>
+ #include <asm/kdump.h>
+ #include <mm/mmu_decl.h>
+-#include <generated/compile.h>
+ #include <generated/utsrelease.h>
+ 
+ struct regions {
+@@ -36,10 +35,6 @@ struct regions {
+ 	int reserved_mem_size_cells;
+ };
+ 
+-/* Simplified build-specific string for starting entropy. */
+-static const char build_str[] = UTS_RELEASE " (" LINUX_COMPILE_BY "@"
+-		LINUX_COMPILE_HOST ") (" LINUX_COMPILER ") " UTS_VERSION;
+-
+ struct regions __initdata regions;
+ 
+ static __init void kaslr_get_cmdline(void *fdt)
+@@ -70,7 +65,8 @@ static unsigned long __init get_boot_seed(void *fdt)
+ {
+ 	unsigned long hash = 0;
+ 
+-	hash = rotate_xor(hash, build_str, sizeof(build_str));
++	/* build-specific string for starting entropy. */
++	hash = rotate_xor(hash, linux_banner, strlen(linux_banner));
+ 	hash = rotate_xor(hash, fdt, fdt_totalsize(fdt));
+ 
+ 	return hash;
+-- 
+2.32.0
+
