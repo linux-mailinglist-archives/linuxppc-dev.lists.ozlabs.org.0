@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA38253D942
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jun 2022 04:25:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6291B53D925
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jun 2022 04:02:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LG0nt4WZhz3blp
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jun 2022 12:25:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LG0HH3x2tz3c7S
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jun 2022 12:02:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SKhU/q9W;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=buserror.net (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-X-Greylist: delayed 2305 seconds by postgrey-1.36 at boromir; Sun, 05 Jun 2022 12:24:41 AEST
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LG0nP3df3z302N
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jun 2022 12:24:41 +1000 (AEST)
-Received: from [2601:449:8480:af0::de51]
-	by baldur.buserror.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <oss@buserror.net>)
-	id 1nxfJ4-00D9V8-IG; Sat, 04 Jun 2022 20:43:54 -0500
-Message-ID: <198e1080c142048ce6c8705a569fe0a0461e3682.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Masahiro Yamada <masahiroy@kernel.org>, Michael Ellerman
-	 <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Date: Sat, 04 Jun 2022 20:43:53 -0500
-In-Reply-To: <20220604085050.4078927-1-masahiroy@kernel.org>
-References: <20220604085050.4078927-1-masahiroy@kernel.org>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LG0Gg32zfz2ywR
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jun 2022 12:01:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=SKhU/q9W;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LG0GZ74KWz4xD8;
+	Sun,  5 Jun 2022 12:01:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1654394487;
+	bh=ZebXCvVgYyoDD7R+hexZUA6pHVkZP2KZ/lhCRG9v1Nw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=SKhU/q9WEzDGPnswYIpnFpNztIfIGHL0Vw9SnjJGCGwl4292sdSAj+JPj4A5xkzQb
+	 B+y7yf7HOYRhAFgS4FVK1Tub7rZqA/nsXwbNOsJFgdbfvBM7sIZHD4SD7kFL0RzFkh
+	 4LAZuDBJ2i+GfAD0qdoBjleSWz7y3T0/nVDNPuVFtorZf3m6oBOfj9s66A2CtkfvCC
+	 W1+3qpbYbqxrMo+T6K2Yxddet2CdAE2SRRRfV3eF8sxv1HkTH+reURjf75ivPf0bqu
+	 Q0yL9l09vNrOMBoVQI5ppwupEBNnxca/NZZL6J6wgQOW+K2G2tsvoHRJ8kqMmlDtuR
+	 Ikh4iERgGVRCA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH v1] kernel/reboot: Change registration order of legacy
+ power-off handler
+In-Reply-To: <20220524212118.425702-1-dmitry.osipenko@collabora.com>
+References: <20220524212118.425702-1-dmitry.osipenko@collabora.com>
+Date: Sun, 05 Jun 2022 12:01:22 +1000
+Message-ID: <8735gjq365.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0::de51
-X-SA-Exim-Rcpt-To: masahiroy@kernel.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, benh@kernel.crashing.org, paulus@samba.org, christophe.leroy@csgroup.eu, diana.craciun@nxp.com, frank.rowand@sony.com, yanaijie@huawei.com, robh@kernel.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Report: 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-	*      [score: 0.0000]
-Subject: Re: [PATCH] powerpc: get rid of #include <generated/compile.h>
-X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,43 +59,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Jason Yan <yanaijie@huawei.com>, linux-kernel@vger.kernel.org, Diana Craciun <diana.craciun@nxp.com>, Paul Mackerras <paulus@samba.org>, Frank Rowand <frank.rowand@sony.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2022-06-04 at 17:50 +0900, Masahiro Yamada wrote:
-> You cannot include <generated/compile.h> here because it is generated
-> in init/Makefile but there is no guarantee that it happens before
-> arch/powerpc/mm/nohash/kaslr_booke.c is compiled for parallel builds.
-> 
-> The places where you can reliably include <generated/compile.h> are:
-> 
->   - init/          (because init/Makefile can specify the dependency)
->   - arch/*/boot/   (because it is compiled after vmlinux)
-> 
-> Commit f231e4333312 ("hexagon: get rid of #include <generated/compile.h>")
-> fixed the last breakage at that time, but powerpc re-added this.
-> 
-> <genearated/compile.h> was unneeded because 'build_str' is almost the
-> same as 'linux_banner' defined in init/version.c
-> 
-> Let's copy the solution from MIPS.
-> (get_random_boot() in arch/mips/kernel/relocate.c)
-> 
-> Fixes: 6a38ea1d7b94 ("powerpc/fsl_booke/32: randomize the kernel image
-> offset")
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
+> We're unconditionally registering sys-off handler for the legacy
+> pm_power_off() callback, this causes problem for platforms that don't
+> use power-off handlers at all and should be halted. Now reboot syscall
+> assumes that there is a power-off handler installed and tries to power
+> off system instead of halting it.
+>
+> To fix the trouble, move the handler's registration to the reboot syscall
+> and check the pm_power_off() presence.
+
+I'm seeing a qemu virtual machine (ppce500) fail to power off using the
+gpio-poweroff driver. I bisected it to this commit.
+
+I think the problem is that the machine is going via kernel_power_off(),
+not sys_reboot(), and so legacy_pm_power_off() has not been registered.
+
+If I just put the core_initcall back then it works as before. Not sure
+if that's a safe change in general though.
+
+cheers
+
+
+
+> Fixes: 0e2110d2e910 ("kernel/reboot: Add kernel_can_power_off()")
+> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 > ---
-> 
-> If this gets into the mainline before -rc2 or -rc3,
-> I will base my kbuild work on top of this.
-> 
-> 
->  arch/powerpc/mm/nohash/kaslr_booke.c | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-
-Acked-by: Scott Wood <oss@buserror.net>
-
--Scott
-
-
+>  kernel/reboot.c | 33 +++++++++++++++++----------------
+>  1 file changed, 17 insertions(+), 16 deletions(-)
+>
+> diff --git a/kernel/reboot.c b/kernel/reboot.c
+> index 0bdc64ecf4f6..a091145ee710 100644
+> --- a/kernel/reboot.c
+> +++ b/kernel/reboot.c
+> @@ -569,22 +569,6 @@ static int legacy_pm_power_off(struct sys_off_data *data)
+>  	return NOTIFY_DONE;
+>  }
+>  
+> -/*
+> - * Register sys-off handlers for legacy PM callbacks. This allows legacy
+> - * PM callbacks co-exist with the new sys-off API.
+> - *
+> - * TODO: Remove legacy handlers once all legacy PM users will be switched
+> - *       to the sys-off based APIs.
+> - */
+> -static int __init legacy_pm_init(void)
+> -{
+> -	register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
+> -				 legacy_pm_power_off, NULL);
+> -
+> -	return 0;
+> -}
+> -core_initcall(legacy_pm_init);
+> -
+>  static void do_kernel_power_off_prepare(void)
+>  {
+>  	blocking_notifier_call_chain(&power_off_prep_handler_list, 0, NULL);
+> @@ -646,6 +630,7 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+>  		void __user *, arg)
+>  {
+>  	struct pid_namespace *pid_ns = task_active_pid_ns(current);
+> +	struct sys_off_handler *sys_off = NULL;
+>  	char buffer[256];
+>  	int ret = 0;
+>  
+> @@ -670,6 +655,21 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+>  	if (ret)
+>  		return ret;
+>  
+> +	/*
+> +	 * Register sys-off handlers for legacy PM callback. This allows
+> +	 * legacy PM callbacks temporary co-exist with the new sys-off API.
+> +	 *
+> +	 * TODO: Remove legacy handlers once all legacy PM users will be
+> +	 *       switched to the sys-off based APIs.
+> +	 */
+> +	if (pm_power_off) {
+> +		sys_off = register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
+> +						   SYS_OFF_PRIO_DEFAULT,
+> +						   legacy_pm_power_off, NULL);
+> +		if (IS_ERR(sys_off))
+> +			return PTR_ERR(sys_off);
+> +	}
+> +
+>  	/* Instead of trying to make the power_off code look like
+>  	 * halt when pm_power_off is not set do it the easy way.
+>  	 */
+> @@ -727,6 +727,7 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+>  		break;
+>  	}
+>  	mutex_unlock(&system_transition_mutex);
+> +	unregister_sys_off_handler(sys_off);
+>  	return ret;
+>  }
+>  
+> -- 
+> 2.35.3
