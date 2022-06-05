@@ -1,67 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B0253D885
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jun 2022 22:31:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA38253D942
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jun 2022 04:25:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LFrxN5VQhz3c8Z
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jun 2022 06:31:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google header.b=P9CwzByv;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LG0nt4WZhz3blp
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jun 2022 12:25:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=mkhalfella@purestorage.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google header.b=P9CwzByv;
-	dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=buserror.net (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 2305 seconds by postgrey-1.36 at boromir; Sun, 05 Jun 2022 12:24:41 AEST
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LFrwr0k5tz30JK
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jun 2022 06:30:31 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id 3-20020a17090a174300b001e426a02ac5so11551997pjm.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 Jun 2022 13:30:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=/HBb0ZDkKChS7u7W92q6z+RJ56Q8ZTddXO5nLVdm7Ds=;
-        b=P9CwzByv7YgasmohkFwhBdbjzvwEj+asz8ddZId+WOAo1rW80xt71SlfNQjChfKryA
-         wsOQcEWIagvMoLVuqx/Wl04bzWcJiucwtVHxpf+pl+ZTjtZY57pdASshNB27LMmG+Zjx
-         uWQ1GkoBKbMEn58u3OWvQ2kPRb7gAZzYQXH8Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/HBb0ZDkKChS7u7W92q6z+RJ56Q8ZTddXO5nLVdm7Ds=;
-        b=WElzD4R+g7NoF+kA0QNZal4/q+yeEHDNP9JauXDDHezDDBExNFZy20OpmOP7tj8eLV
-         ZoiUaX0FbZj2VOtHD8X7yVyZJ9oxEp1Mmuv3kytTdezcsNa0Z3kJe1MrDjz+YYFdnkvj
-         0Z99xrmWr1Oy1WvenH6erCg2ZrSKBmbTrTCx6TmhlNckZQEn/IOG9NmvFQGIHJW8vLzr
-         EMVfKimKcHwMuV9kl24bgdbNNwlkVmfqDLgO/8J9aiVcN7pMVxhf1xiLJG4auNaU+4jN
-         l8tp3Y/R+zm/6GShXPlQAcE5FAwoQMgfJnNuTSaPSbLcnQMA6pWd0RhtzOB2G5LKFdOi
-         igDw==
-X-Gm-Message-State: AOAM5326JK1Df4cFMaF1yxDuJTmhinuWWF/aPNQYsuQ2n53j0oI9NrZ1
-	q9XScNkeTAmW1YTGKwy3KWVB7w==
-X-Google-Smtp-Source: ABdhPJwtXs6I68jQqRzep0xqec3GlALJ3iL77SWf2Owq4SCVbCGHKE8Dm7lcxheeLXbH6VLIAOVrIw==
-X-Received: by 2002:a17:902:eccc:b0:167:5c6e:31e4 with SMTP id a12-20020a170902eccc00b001675c6e31e4mr5543306plh.90.1654374628607;
-        Sat, 04 Jun 2022 13:30:28 -0700 (PDT)
-Received: from irdv-mkhalfella.dev.purestorage.com ([208.88.158.128])
-        by smtp.googlemail.com with ESMTPSA id l63-20020a638842000000b003f61c311e79sm6530196pgd.56.2022.06.04.13.30.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 04 Jun 2022 13:30:27 -0700 (PDT)
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
-To: helgaas@kernel.org
-Subject: Re: [PATCH] PCI/AER: Iterate over error counters instead of error
-Date: Sat,  4 Jun 2022 20:30:21 +0000
-Message-Id: <20220604203021.10663-1-mkhalfella@purestorage.com>
-X-Mailer: git-send-email 2.29.0
-In-Reply-To: <20220603235856.GA117911@bhelgaas>
-References: <20220603235856.GA117911@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LG0nP3df3z302N
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jun 2022 12:24:41 +1000 (AEST)
+Received: from [2601:449:8480:af0::de51]
+	by baldur.buserror.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <oss@buserror.net>)
+	id 1nxfJ4-00D9V8-IG; Sat, 04 Jun 2022 20:43:54 -0500
+Message-ID: <198e1080c142048ce6c8705a569fe0a0461e3682.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Masahiro Yamada <masahiroy@kernel.org>, Michael Ellerman
+	 <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Date: Sat, 04 Jun 2022 20:43:53 -0500
+In-Reply-To: <20220604085050.4078927-1-masahiroy@kernel.org>
+References: <20220604085050.4078927-1-masahiroy@kernel.org>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0::de51
+X-SA-Exim-Rcpt-To: masahiroy@kernel.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, benh@kernel.crashing.org, paulus@samba.org, christophe.leroy@csgroup.eu, diana.craciun@nxp.com, frank.rowand@sony.com, yanaijie@huawei.com, robh@kernel.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
+	autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Report: 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+	*      [score: 0.0000]
+Subject: Re: [PATCH] powerpc: get rid of #include <generated/compile.h>
+X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,62 +58,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, msaggi@purestorage.com, ebadger@purestorage.com, oohall@gmail.com, stable@vger.kernel.org, mkhalfella@purestorage.com, bhelgaas@google.com, rajatja@google.com, linuxppc-dev@lists.ozlabs.org
+Cc: Rob Herring <robh@kernel.org>, Jason Yan <yanaijie@huawei.com>, linux-kernel@vger.kernel.org, Diana Craciun <diana.craciun@nxp.com>, Paul Mackerras <paulus@samba.org>, Frank Rowand <frank.rowand@sony.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/3/22 16:58, Bjorn Helgaas wrote:
-> On Fri, Jun 03, 2022 at 10:12:47PM +0000, Mohamed Khalfella wrote:
->> Is there any chance for this to land in 5.19?
->
-> Too late for v5.19, since the merge window will end in a couple days.
-> Remind me again if you don't see it in -next by v5.20-rc5 or so.
->
+On Sat, 2022-06-04 at 17:50 +0900, Masahiro Yamada wrote:
+> You cannot include <generated/compile.h> here because it is generated
+> in init/Makefile but there is no guarantee that it happens before
+> arch/powerpc/mm/nohash/kaslr_booke.c is compiled for parallel builds.
+> 
+> The places where you can reliably include <generated/compile.h> are:
+> 
+>   - init/          (because init/Makefile can specify the dependency)
+>   - arch/*/boot/   (because it is compiled after vmlinux)
+> 
+> Commit f231e4333312 ("hexagon: get rid of #include <generated/compile.h>")
+> fixed the last breakage at that time, but powerpc re-added this.
+> 
+> <genearated/compile.h> was unneeded because 'build_str' is almost the
+> same as 'linux_banner' defined in init/version.c
+> 
+> Let's copy the solution from MIPS.
+> (get_random_boot() in arch/mips/kernel/relocate.c)
+> 
+> Fixes: 6a38ea1d7b94 ("powerpc/fsl_booke/32: randomize the kernel image
+> offset")
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+> If this gets into the mainline before -rc2 or -rc3,
+> I will base my kbuild work on top of this.
+> 
+> 
+>  arch/powerpc/mm/nohash/kaslr_booke.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 
-Thank you. I will keep an eye on -next.
+Acked-by: Scott Wood <oss@buserror.net>
 
->> On 5/10/22 14:17, Mohamed Khalfella wrote:
->>>> Thanks for catching this; it definitely looks like a real issue!  I
->>>> guess you're probably seeing junk in the sysfs files?
->>>
->>> That is correct. The initial report was seeing junk when reading sysfs
->>> files. As descibed, this is happening because we reading data past the
->>> end of the stats counters array.
->>>
->>>
->>>> I think maybe we should populate the currently NULL entries in the
->>>> string[] arrays and simplify the code here, e.g.,
->>>>
->>>> static const char *aer_correctable_error_string[] = {
->>>>        "RxErr",                        /* Bit Position 0       */
->>>>        "dev_cor_errs_bit[1]",
->>>> 	...
->>>>
->>>>  if (stats[i])
->>>>    len += sysfs_emit_at(buf, len, "%s %llu\n", strings_array[i], stats[i]);
->>>
->>> Doing it this way will change the output format. In this case we will show
->>> stats only if their value is greater than zero. The current code shows all the
->>> stats those have names (regardless of their value) plus those have non-zero
->>> values.
->>>
->>>>> @@ -1342,6 +1342,11 @@ static int aer_probe(struct pcie_device *dev)
->>>>>  	struct device *device = &dev->device;
->>>>>  	struct pci_dev *port = dev->port;
->>>>>
->>>>> +	BUILD_BUG_ON(ARRAY_SIZE(aer_correctable_error_string) <
->>>>> +		     AER_MAX_TYPEOF_COR_ERRS);
->>>>> +	BUILD_BUG_ON(ARRAY_SIZE(aer_uncorrectable_error_string) <
->>>>> +		     AER_MAX_TYPEOF_UNCOR_ERRS);
->>>>
->>>> And make these check for "!=" instead of "<".
->>
->> I am happy to remove these BUILD_BUG_ON() if you think it is a good
->> idea to do so.
->
-> I think it's good to enforce correctness there somehow, so let's leave
-> them there unless somebody has a better idea.
->
->>> This will require unnecessarily extending stats arrays to have 32 entries
->>> in order to match names arrays. If you don't feel strogly about changing
->>> "<" to "!=", I prefer to keep the code as it is. 
+-Scott
+
+
