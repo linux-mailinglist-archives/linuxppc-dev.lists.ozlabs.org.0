@@ -2,68 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F4D53E5A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 18:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B0C53F26F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 01:14:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LGz8Y6Twtz3bnW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 02:14:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UMIYBcMd;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LH8TB42zNz3brd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 09:14:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UMIYBcMd;
-	dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gonehiking.org (client-ip=64.68.200.34; helo=mailout.easymail.ca; envelope-from=khalid@gonehiking.org; receiver=<UNKNOWN>)
+X-Greylist: delayed 323 seconds by postgrey-1.36 at boromir; Tue, 07 Jun 2022 02:40:58 AEST
+Received: from mailout.easymail.ca (mailout.easymail.ca [64.68.200.34])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGz7v06ZZz2yMk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:14:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654532026;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=jnoAQR+eQFXRht5t3HZx8trK2TLP/6adig1PsrMlFcM=;
-    b=UMIYBcMdBGIstS5IZRr+E9zP+QdR4zOZlkb2GsJFAViZs95l+tUJqwbo+QDwR0vWoj
-    KR2sIxa0Drx8BL/SFtwz228rqO5AvP909C6f18XnKlCOc/mXLFGpli4KpPjqimpxld04
-    fWKCLx6A5T7iDa5Wbcn/7yQde/sryC341pYpKawgps+TJ6k6Q8PIGBesClzWa0XS8Ukw
-    O/Gix05prddoP23zvujSzdbDyCFekvEiwtQHjiWLx91oS4vHLbAJnsuW2IDWFXtBtKPu
-    gtH9pqcX08P5VcJD5EnSwhdcv+cYAmjCt4yZck0+0kBgYgc5qoFNodNPTyGWWt7JCkiR
-    0zUg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwiAuoN3kkXTmDpYkhOSZ/7t3wfYbQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPV6:2a02:8109:8980:4474:ec7e:9b89:b7f7:718b]
-    by smtp.strato.de (RZmta 47.45.0 AUTH)
-    with ESMTPSA id 205ca1y56GDj8Pu
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 6 Jun 2022 18:13:45 +0200 (CEST)
-Message-ID: <1e5fd88f-80dc-d48a-0812-4724765db489@xenosoft.de>
-Date: Mon, 6 Jun 2022 18:13:45 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGzky4127z2ygC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:40:56 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mailout.easymail.ca (Postfix) with ESMTP id F0673E0E57;
+	Mon,  6 Jun 2022 16:35:29 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at emo08-pco.easydns.vpn
+Received: from mailout.easymail.ca ([127.0.0.1])
+	by localhost (emo08-pco.easydns.vpn [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id hhyNN48mX6Hb; Mon,  6 Jun 2022 16:35:29 +0000 (UTC)
+Received: from mail.gonehiking.org (unknown [38.15.45.1])
+	by mailout.easymail.ca (Postfix) with ESMTPA id 87721E0E2D;
+	Mon,  6 Jun 2022 16:35:29 +0000 (UTC)
+Received: from [192.168.1.4] (internal [192.168.1.4])
+	by mail.gonehiking.org (Postfix) with ESMTP id 689583EF5B;
+	Mon,  6 Jun 2022 10:35:28 -0600 (MDT)
+Message-ID: <d39fc9bb-07c1-ad74-1e89-d2aa80578cd4@gonehiking.org>
+Date: Mon, 6 Jun 2022 10:35:28 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.10.0
-Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
- devicetree updates for 5.19
-Content-Language: de-DE
-To: Rob Herring <robh@kernel.org>
-References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
- <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu>
- <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
- <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de>
- <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
- <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
- <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
- <CAL_JsqJs17p-hw-U3WAkT69y3V4kuc_-O8tU=Sr8KWHPvbWJpA@mail.gmail.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <CAL_JsqJs17p-hw-U3WAkT69y3V4kuc_-O8tU=Sr8KWHPvbWJpA@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH 5/6] scsi: remove stale BusLogic driver
+Content-Language: en-US
+To: Arnd Bergmann <arnd@kernel.org>
+References: <20220606084109.4108188-1-arnd@kernel.org>
+ <20220606084109.4108188-6-arnd@kernel.org>
+From: Khalid Aziz <khalid@gonehiking.org>
+In-Reply-To: <20220606084109.4108188-6-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Tue, 07 Jun 2022 09:14:18 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,107 +56,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Reply-To: khalid@gonehiking.org
+Cc: linux-arch@vger.kernel.org, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linuxppc-dev@lists.ozlabs.org, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, Matt Wang <wwentao@vmware.com>, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 06 June 2022 at 04:58 pm, Rob Herring wrote:
-> On Fri, May 27, 2022 at 9:23 AM Rob Herring <robh@kernel.org> wrote:
->> On Fri, May 27, 2022 at 3:33 AM Christian Zigotzky
->> <chzigotzky@xenosoft.de> wrote:
->>> On 27 May 2022 at 10:14 am, Prabhakar Mahadev Lad wrote:
->>>> Hi,
->>>>
->>>>> -----Original Message-----
->>>>> From: Christian Zigotzky <chzigotzky@xenosoft.de>
->>>>>
->>>>> On 27 May 2022 at 09:56 am, Prabhakar Mahadev Lad wrote:
->>>>>> Hi,
->>>>>>
->>>>>>> -----Original Message-----
->>>>>>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
-> [...]
->
->>>>>> Looks like the driver which you are using has not been converted to use
->>>>> platform_get_irq(), could you please check that.
->>>>>> Cheers,
->>>>>> Prabhakar
->>>>> Do you mean the mouse and keyboard driver?
->>>>>
->>>> No it could be your gpio/pinctrl driver assuming the keyboard/mouse are using GPIO's. If you are using interrupts then it might be some hierarchal irqc driver in drivers/irqchip/.
->>>>
->>>> Cheers,
->>>> Prabhakar
->>> Good to know. I only use unmodified drivers from the official Linux
->>> kernel so it's not an issue of the Cyrus+ board.
->> The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
->> resources to a child platform device. Can you try the following
->> change:
->>
->> diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
->> index 44a7e58a26e3..47d9b7be60da 100644
->> --- a/drivers/usb/host/fsl-mph-dr-of.c
->> +++ b/drivers/usb/host/fsl-mph-dr-of.c
->> @@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
->>                                          const char *name, int id)
->>   {
->>          struct platform_device *pdev;
->> -       const struct resource *res = ofdev->resource;
->> -       unsigned int num = ofdev->num_resources;
->>          int retval;
->>
->>          pdev = platform_device_alloc(name, id);
->> @@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_device_register(
->>          if (retval)
->>                  goto error;
->>
->> -       if (num) {
->> -               retval = platform_device_add_resources(pdev, res, num);
->> -               if (retval)
->> -                       goto error;
->> -       }
->> +       pdev->dev.of_node = ofdev->dev.of_node;
-> >From the log, I think you also need to add this line:
->
-> pdev->dev.of_node_reused = true;
->
->>          retval = platform_device_add(pdev);
->>          if (retval)
-Hello Rob,
+On 6/6/22 02:41, Arnd Bergmann wrote:
+> From: Arnd Bergmann<arnd@arndb.de>
+> 
+> The BusLogic driver is the last remaining driver that relies on the
+> deprecated bus_to_virt() function, which in turn only works on a few
+> architectures, and is incompatible with both swiotlb and iommu support.
+> 
+> Before commit 391e2f25601e ("[SCSI] BusLogic: Port driver to 64-bit."),
+> the driver had a dependency on x86-32, presumably because of this
+> problem. However, the change introduced another bug that made it still
+> impossible to use the driver on any 64-bit machine.
+> 
+> This was in turn fixed in commit 56f396146af2 ("scsi: BusLogic: Fix
+> 64-bit system enumeration error for Buslogic"), 8 years later.
+> 
+> The fact that this was found at all is an indication that there are
+> users, and it seems that Maciej, Matt and Khalid all have access to
+> this hardware, but if it took eight years to find the problem,
+> it's likely that nobody actually relies on it.
+> 
+> Remove it as part of the global virt_to_bus()/bus_to_virt() removal.
+> If anyone is still interested in keeping this driver, the alternative
+> is to stop it from using bus_to_virt(), possibly along the lines of
+> how dpt_i2o gets around the same issue.
+> 
+> Cc: Maciej W. Rozycki<macro@orcam.me.uk>
+> Cc: Matt Wang<wwentao@vmware.com>
+> Cc: Khalid Aziz<khalid@gonehiking.org>
+> Signed-off-by: Arnd Bergmann<arnd@arndb.de>
+> ---
+>   Documentation/scsi/BusLogic.rst   |  581 ---
+>   Documentation/scsi/FlashPoint.rst |  176 -
+>   MAINTAINERS                       |    7 -
+>   drivers/scsi/BusLogic.c           | 3727 --------------
+>   drivers/scsi/BusLogic.h           | 1284 -----
+>   drivers/scsi/FlashPoint.c         | 7560 -----------------------------
+>   drivers/scsi/Kconfig              |   24 -
+>   7 files changed, 13359 deletions(-)
+>   delete mode 100644 Documentation/scsi/BusLogic.rst
+>   delete mode 100644 Documentation/scsi/FlashPoint.rst
+>   delete mode 100644 drivers/scsi/BusLogic.c
+>   delete mode 100644 drivers/scsi/BusLogic.h
+>   delete mode 100644 drivers/scsi/FlashPoint.c
 
-Thanks a lot for your answer.
-
-Is the following patch correct?
-
---- a/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:10:26.797688422 
-+0200
-+++ b/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:15:01.668594809 
-+0200
-@@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_
-                      const char *name, int id)
-  {
-      struct platform_device *pdev;
--    const struct resource *res = ofdev->resource;
--    unsigned int num = ofdev->num_resources;
-      int retval;
-
-      pdev = platform_device_alloc(name, id);
-@@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_
-      if (retval)
-          goto error;
-
--    if (num) {
--        retval = platform_device_add_resources(pdev, res, num);
--        if (retval)
--            goto error;
--    }
-+    pdev->dev.of_node = ofdev->dev.of_node;
-+    pdev->dev.of_node_reused = true;
-
-      retval = platform_device_add(pdev);
-      if (retval)
-
----
+I would say no to removing BusLogic driver. Virtualbox is another 
+consumer of this driver. This driver is very old but I would rather fix 
+the issues than remove it until we do not have any users.
 
 Thanks,
-Christian
+Khalid
