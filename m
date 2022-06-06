@@ -1,33 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E07053E41A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 12:40:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C64FA53E49E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 15:07:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LGqlW4G7Wz3c7l
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 20:40:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LGv0850Grz3bhf
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 23:07:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dWQMsN0g;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=<UNKNOWN>)
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LGql559Nyz2yK2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 20:40:33 +1000 (AEST)
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 9DC8C92009C; Mon,  6 Jun 2022 12:40:21 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 9686692009B;
-	Mon,  6 Jun 2022 11:40:21 +0100 (BST)
-Date: Mon, 6 Jun 2022 11:40:21 +0100 (BST)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 5/6] scsi: remove stale BusLogic driver
-In-Reply-To: <20220606084109.4108188-6-arnd@kernel.org>
-Message-ID: <alpine.DEB.2.21.2206061057060.19680@angie.orcam.me.uk>
-References: <20220606084109.4108188-1-arnd@kernel.org> <20220606084109.4108188-6-arnd@kernel.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGtzX1DQnz2xXw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 23:06:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dWQMsN0g;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LGtzS1HY4z4xXJ;
+	Mon,  6 Jun 2022 23:06:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1654520788;
+	bh=i9e500zxu1g22ahZBxmWTFnpIkC2mYPGVdl0FhelEpQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=dWQMsN0g3Pei2Ht3cSkeFHMQ7DeuSfJQ8YJ7hCWpHh/MkiHZFHawvu1KDSUtn4LoT
+	 RYFaVmj4Y6yttBQOmopkcolRZIS99m4KkC2aPTSPJqvxfAzH/DZwkluVBOma6DpNWa
+	 6f54LQStn+KpWh0dy/ft1VsVJP9XR46hXsm2lUVxhfP8aQQV//F6ED2vSoSnoq/NK4
+	 YxYbJlfhCEPkqVK8QvAtvvvD9leoxHKTT+zSV1EEcIIVkf4Nx7fk4i90u76BKXXGO2
+	 Z3xpMzuix8i4tb9pluZoqysV45gH3ZtNLBwe+GwYF244mtu0npsq5ZLntI93eEwhVh
+	 AYOfn25To4wig==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Dmitry Osipenko <dmitry.osipenko@collabora.com>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH v1] kernel/reboot: Change registration order of legacy
+ power-off handler
+In-Reply-To: <e597fd8e-d0d1-dd1c-b889-86cfca60f0f6@collabora.com>
+References: <20220524212118.425702-1-dmitry.osipenko@collabora.com>
+ <8735gjq365.fsf@mpe.ellerman.id.au>
+ <e597fd8e-d0d1-dd1c-b889-86cfca60f0f6@collabora.com>
+Date: Mon, 06 Jun 2022 23:06:23 +1000
+Message-ID: <87r142ndps.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,34 +61,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linuxppc-dev@lists.ozlabs.org, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, Matt Wang <wwentao@vmware.com>, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 6 Jun 2022, Arnd Bergmann wrote:
+Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
+> Hi Michael,
+>
+> On 6/5/22 05:01, Michael Ellerman wrote:
+>> Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
+>>> We're unconditionally registering sys-off handler for the legacy
+>>> pm_power_off() callback, this causes problem for platforms that don't
+>>> use power-off handlers at all and should be halted. Now reboot syscall
+>>> assumes that there is a power-off handler installed and tries to power
+>>> off system instead of halting it.
+>>>
+>>> To fix the trouble, move the handler's registration to the reboot syscall
+>>> and check the pm_power_off() presence.
+>>
+>> I'm seeing a qemu virtual machine (ppce500) fail to power off using the
+>> gpio-poweroff driver. I bisected it to this commit.
+>>
+>> I think the problem is that the machine is going via kernel_power_off(),
+>> not sys_reboot(), and so legacy_pm_power_off() has not been registered.
+>>
+>> If I just put the core_initcall back then it works as before. Not sure
+>> if that's a safe change in general though.
+>
+> Thank you very much for the testing and reporting the problem! I see now the two more cases that were missed previously:
+>
+> 1. There is the orderly_poweroff() used by some drivers.
+> 2. PowerPC may invoke do_kernel_power_off() directly from xmon code.
+>
+> Could you please test this change:
 
-> This was in turn fixed in commit 56f396146af2 ("scsi: BusLogic: Fix
-> 64-bit system enumeration error for Buslogic"), 8 years later.
-> 
-> The fact that this was found at all is an indication that there are
-> users, and it seems that Maciej, Matt and Khalid all have access to
-> this hardware, but if it took eight years to find the problem,
-> it's likely that nobody actually relies on it.
+That works, thanks.
 
- Umm, I use it with a 32-bit system, so it would be quite an issue for me 
-to discover a problem with 64-bit configurations.  And I quite rely on 
-this system for various stuff too!
+I tested both sysrq-o and the xmon power off path.
 
-> Remove it as part of the global virt_to_bus()/bus_to_virt() removal.
-> If anyone is still interested in keeping this driver, the alternative
-> is to stop it from using bus_to_virt(), possibly along the lines of
-> how dpt_i2o gets around the same issue.
+I couldn't come up with an easy way to test the orderly_poweroff()
+path, but it boils down to basically the same code in the end.
 
- Thanks for the pointer and for cc-ing me.  Please refrain from removing 
-the driver at least for this release cycle and let me fix it.  It should 
-be easy to mimic what I did for the defza driver: all bus addresses in the 
-DMA API come associated with virtual addresses, so it is just a matter of 
-recording those somewhere for later use rather than trying to mess up with 
-bus addresses to figure out a reverse mapping.
+Tested-by: Michael Ellerman <mpe@ellerman.id.au>
 
-  Maciej
+cheers
