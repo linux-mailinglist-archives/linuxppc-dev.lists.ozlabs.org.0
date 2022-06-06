@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734B953E1C6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 10:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9952953E1C7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 10:50:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LGnHd2JTVz3f2q
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 18:50:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LGnJJ3Nwsz3f6p
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 18:50:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YxK8uSmp;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CCK6R9fY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YxK8uSmp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=CCK6R9fY;
 	dkim-atps=neutral
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGdGY2Lk0z2yK2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 12:48:35 +1000 (AEST)
-Received: by mail-lf1-x12a.google.com with SMTP id h23so21246211lfe.4
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jun 2022 19:48:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGdk1362Cz30BK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 13:08:55 +1000 (AEST)
+Received: by mail-lf1-x131.google.com with SMTP id a15so21280351lfb.9
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jun 2022 20:08:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=sv6oZK17zG5gvA5QEnVohTQARmrTfyrgFMPCXyJ6Nxc=;
-        b=YxK8uSmp4knvlPLa1cmR9hlwFc95gbYXpVzlMto5nfIcsC3ZLT0aP1aQPf5uv+moXg
-         tWnfGqKYNy1Qr3ZFAy7KEFRkZ50DGvFameg0CeUDWckVcZkU9tV4DxLrjS9XehN50swp
-         HhP3FOlgxpoFah4fMB9z+pg4iYNY2i3dnLOVxfqxyHLetCeMYMKOyWqK0z474Cc9ZNj9
-         w13cN6ZEIrEK1biiTr9DvWz7mRvCRNxRsQmiFF50w6PzHLalu6y+NPNEbUNT4Ng9y3js
-         RqXYg8O43eqRLDmwobIRlJfxHIThWRqndXOThQzJ9yoNie6KDPszi4nfrFjjyDNc0hOB
-         yBnQ==
+        bh=G2x6Km6jqmzUcms9TJteVuhDuyeG5cr45Q2FwBy0BUc=;
+        b=CCK6R9fYFA6FcUuhSHpVJrg7bqI1Q6u2hrGOxBQr5cCj3b+oYek9Rkz9VhsSa5hVqL
+         W3IdO6AMLNyE/IsPHZEBo5+xJYifb7XniGljFIEU8ZyTe4y1zObFV2983/ilcRDfzYnM
+         TFMw9bHgvY2Sv3yFGXSeIvKdMC8G0wl8MAnfpYJrzx6jSsyPR7iZkp+C7uP8mYmUTMMN
+         5klo/sEoo0vDpy+0krLD7QXWJljBaBUhpr/9DSMR6A5lkeMej1BNTPhE8YZMrcjud2bP
+         +YI9cvVMWjA4ZWijXH8KArha7QoQjTSOWll/1I19qlusHOREB/QxWlwa1Jro9jII3DTE
+         vd+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=sv6oZK17zG5gvA5QEnVohTQARmrTfyrgFMPCXyJ6Nxc=;
-        b=j5LNUtTpU44u+NMQpMTQaZg4jjweh8GV4m6o1sFuFc59dJsDcJ3x+JCMGlPVeXgCMO
-         CtiVqcm7iuX9bCxyOorUZJPTN22U80TaAAtNqLgAvd2o99CPyThBIzR1GSYUXvD1WPP+
-         FrxjqOKvCV0jdrEsuB+day4RyOWW0Nt1pBxpmNeRm7FmEtS0MNA/jDQhorj9ssPQk3nm
-         Qhf3G7oWm1wbrspUBxt1iA1R74EPihQChhZu5gJz34DIUHQmS0hj+vOvVdEEOlV4l+ie
-         nH/aePnRRdk/M5W7Wui0wM6d39Ku0c9hlTdGG6pXdbhDpZTz3easvkYeJQROqBZxl5Hb
-         u39w==
-X-Gm-Message-State: AOAM531x1ZMuvCm+RPq/9iaqAPpAF495QJgTvX64mQrCP9Q46aUX1FKE
-	cAW6Ud/I1q7EmizLS9KXBZxrROF2ptLGnXvNOuEFF+SH2Cw=
-X-Google-Smtp-Source: ABdhPJxguDa9DnaYK7r4Z2SKweViulzegbAUrScOFa7SaHNHi81lzmI5LDHNMrkF0P8kmDDqES8dZzNdIH7nlCCSkng=
-X-Received: by 2002:a05:6512:3e25:b0:478:fd30:7b7c with SMTP id
- i37-20020a0565123e2500b00478fd307b7cmr19433458lfv.285.1654483710697; Sun, 05
- Jun 2022 19:48:30 -0700 (PDT)
+        bh=G2x6Km6jqmzUcms9TJteVuhDuyeG5cr45Q2FwBy0BUc=;
+        b=7ho16sUOXsQy+2pB5ac/Ep87M2/r79pB8vmPlBETT5DDTvI+jU9AI2OpEVZa2fpOFh
+         MKKPAH/iGqHnshQe0Wk1QbvzVbSQ/VPXWAPvyB8/woGtV0Gf5CxpBK4421r2qhjQGDgY
+         uRg6uW7Y3n3aIjECgJX4vIQXlbECo48MuDz9OtdOXBkd6BMY2WydSPZUvBYWw4NsxzSC
+         S2TBLOP6AtOsgs5RCRxvB7gAg09rJhV8dRVTlyR8zqOdk5mmmtBOsVULylbVWQLLzlg/
+         3txIVQCNfHIY8sGZsH6vVNj7/g02+5PlkBjOW1n8LZHQK3DJp7FxCX2NlcSzy0+Uv7EO
+         kIaA==
+X-Gm-Message-State: AOAM532ZkJLk7tyWR80rFDwnU+2ogjynQm6pm/GiXsHNxhD6OClMaEdS
+	liokbc/p1TehDJqD/vG9ATwmblakTkwKr8tZemQ=
+X-Google-Smtp-Source: ABdhPJyxIQkRNb/4Awsg9fDOiczn7ze05jH4883awHV7OMNsYV0FAJjOMfHcUI2NJvEU9biFnXSg0O8yCFq0KKTarDw=
+X-Received: by 2002:a05:6512:1399:b0:448:9f0b:bf4f with SMTP id
+ p25-20020a056512139900b004489f0bbf4fmr13663742lfa.67.1654484931130; Sun, 05
+ Jun 2022 20:08:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220601092342.3328644-1-m.felsch@pengutronix.de> <20220601092342.3328644-2-m.felsch@pengutronix.de>
-In-Reply-To: <20220601092342.3328644-2-m.felsch@pengutronix.de>
+References: <20220602072024.33236-1-zhangqilong3@huawei.com>
+In-Reply-To: <20220602072024.33236-1-zhangqilong3@huawei.com>
 From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 6 Jun 2022 10:48:19 +0800
-Message-ID: <CAA+D8AMKt8SH2M_zd-6dYBAb2X=3X1p5V=yW72bXohjBCBh9wg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] ASoC: fsl_sai: convert to dev_err_probe
-To: Marco Felsch <m.felsch@pengutronix.de>
-Content-Type: multipart/alternative; boundary="000000000000dce4d905e0be8195"
+Date: Mon, 6 Jun 2022 11:08:39 +0800
+Message-ID: <CAA+D8APj13+dJwTaaNLtJqjiNSmJDCpE7yfReingZYAuXHVOtw@mail.gmail.com>
+Subject: Re: [PATCH V4] ASoC: fsl_xcvr:Fix unbalanced pm_runtime_enable in fsl_xcvr_probe
+To: zhangqilong <zhangqilong3@huawei.com>
+Content-Type: multipart/alternative; boundary="0000000000009b396105e0beca21"
 X-Mailman-Approved-At: Mon, 06 Jun 2022 18:49:00 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,273 +73,184 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Liam Girdwood <lgirdwood@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Sascha Hauer <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>
+Cc: alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---000000000000dce4d905e0be8195
+--0000000000009b396105e0beca21
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jun 1, 2022 at 5:23 PM Marco Felsch <m.felsch@pengutronix.de> wrote:
+On Thu, Jun 2, 2022 at 3:18 PM zhangqilong <zhangqilong3@huawei.com> wrote:
 
-> Make use of the new macro to get device defered information for free
-> and to cleanup the code a bit. No functional changes.
+> a) Add missing pm_runtime_disable() when probe error out. It could
+> avoid pm_runtime implementation complains when removing and probing
+> again the driver.
+> b) Add remove for missing pm_runtime_disable().
 >
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> Fix:c590fa80b3928 ("ASoC: fsl_xcvr: register platform component before
+> registering cpu dai")
+> Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+>
+
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+
+Best regards
+Wang shengjiu
+
 > ---
->  sound/soc/fsl/fsl_sai.c | 33 +++++++++++----------------------
->  1 file changed, 11 insertions(+), 22 deletions(-)
+> v2:
+> - Add remove to put PM usage counter.
 >
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index a7637d602f3c..3e54f1f71c1e 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -1034,21 +1034,15 @@ static int fsl_sai_probe(struct platform_device
+> v3:
+> - Modify the commit message.
+> ---
+>  sound/soc/fsl/fsl_xcvr.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+> index d0556c79fdb1..55e640cba87d 100644
+> --- a/sound/soc/fsl/fsl_xcvr.c
+> +++ b/sound/soc/fsl/fsl_xcvr.c
+> @@ -1228,6 +1228,7 @@ static int fsl_xcvr_probe(struct platform_device
 > *pdev)
+>          */
+>         ret = devm_snd_dmaengine_pcm_register(dev, NULL, 0);
+>         if (ret) {
+> +               pm_runtime_disable(dev);
+>                 dev_err(dev, "failed to pcm register\n");
+>                 return ret;
 >         }
->
->         sai->regmap = devm_regmap_init_mmio(dev, base,
-> &fsl_sai_regmap_config);
-> -       if (IS_ERR(sai->regmap)) {
-> -               dev_err(dev, "regmap init failed\n");
-> -               return PTR_ERR(sai->regmap);
-> -       }
-> +       if (IS_ERR(sai->regmap))
-> +               return dev_err_probe(dev, PTR_ERR(sai->regmap), "regmap
-> init failed\n");
->
->         sai->bus_clk = devm_clk_get(dev, "bus");
->         /* Compatible with old DTB cases */
->         if (IS_ERR(sai->bus_clk) && PTR_ERR(sai->bus_clk) != -EPROBE_DEFER)
->                 sai->bus_clk = devm_clk_get(dev, "sai");
-> -       if (IS_ERR(sai->bus_clk)) {
-> -               dev_err(dev, "failed to get bus clock: %ld\n",
-> -                               PTR_ERR(sai->bus_clk));
-> -               /* -EPROBE_DEFER */
-> -               return PTR_ERR(sai->bus_clk);
-> -       }
-> +       if (IS_ERR(sai->bus_clk))
-> +               return dev_err_probe(dev, PTR_ERR(sai->bus_clk), "failed
-> to get bus clock\n");
->
->         for (i = 1; i < FSL_SAI_MCLK_MAX; i++) {
->                 sprintf(tmp, "mclk%d", i);
-> @@ -1067,14 +1061,12 @@ static int fsl_sai_probe(struct platform_device
+> @@ -1235,6 +1236,7 @@ static int fsl_xcvr_probe(struct platform_device
 > *pdev)
->
->         irq = platform_get_irq(pdev, 0);
->         if (irq < 0)
-> -               return irq;
-> +               return dev_err_probe(dev, irq, "failed to get the irq\n");
->
-
-This change is not needed,  platform_get_irq() has done the same operation.
-
-best regards
-wang shengjiu
-
->
->         ret = devm_request_irq(dev, irq, fsl_sai_isr, IRQF_SHARED,
->                                np->name, sai);
-> -       if (ret) {
-> -               dev_err(dev, "failed to claim irq %u\n", irq);
-> -               return ret;
-> -       }
-> +       if (ret)
-> +               return dev_err_probe(dev, ret, "failed to claim irq %u\n",
-> irq);
->
->         memcpy(&sai->cpu_dai_drv, &fsl_sai_dai_template,
->                sizeof(fsl_sai_dai_template));
-> @@ -1089,8 +1081,7 @@ static int fsl_sai_probe(struct platform_device
-> *pdev)
->         if (of_find_property(np, "fsl,sai-synchronous-rx", NULL) &&
->             of_find_property(np, "fsl,sai-asynchronous", NULL)) {
->                 /* error out if both synchronous and asynchronous are
-> present */
-> -               dev_err(dev, "invalid binding for synchronous mode\n");
-> -               return -EINVAL;
-> +               return dev_err_probe(dev, -EINVAL, "invalid binding for
-> synchronous mode\n");
+>         ret = devm_snd_soc_register_component(dev, &fsl_xcvr_comp,
+>                                               &fsl_xcvr_dai, 1);
+>         if (ret) {
+> +               pm_runtime_disable(dev);
+>                 dev_err(dev, "failed to register component %s\n",
+>                         fsl_xcvr_comp.name);
 >         }
->
->         if (of_find_property(np, "fsl,sai-synchronous-rx", NULL)) {
-> @@ -1109,14 +1100,12 @@ static int fsl_sai_probe(struct platform_device
+> @@ -1242,6 +1244,12 @@ static int fsl_xcvr_probe(struct platform_device
 > *pdev)
->         if (of_find_property(np, "fsl,sai-mclk-direction-output", NULL) &&
->             of_device_is_compatible(np, "fsl,imx6ul-sai")) {
->                 gpr =
-> syscon_regmap_lookup_by_compatible("fsl,imx6ul-iomuxc-gpr");
-> -               if (IS_ERR(gpr)) {
-> -                       dev_err(dev, "cannot find iomuxc registers\n");
-> -                       return PTR_ERR(gpr);
-> -               }
-> +               if (IS_ERR(gpr))
-> +                       return dev_err_probe(dev, PTR_ERR(gpr), "cannot
-> find iomuxc registers\n");
+>         return ret;
+>  }
 >
->                 index = of_alias_get_id(np, "sai");
->                 if (index < 0)
-> -                       return index;
-> +                       return dev_err_probe(dev, index, "cannot find sai
-> aliases\n");
+> +static int fsl_xcvr_remove(struct platform_device *pdev)
+> +{
+> +       pm_runtime_disable(&pdev->dev);
+> +       return 0;
+> +}
+> +
+>  static __maybe_unused int fsl_xcvr_runtime_suspend(struct device *dev)
+>  {
+>         struct fsl_xcvr *xcvr = dev_get_drvdata(dev);
+> @@ -1370,6 +1378,7 @@ static struct platform_driver fsl_xcvr_driver = {
+>                 .pm = &fsl_xcvr_pm_ops,
+>                 .of_match_table = fsl_xcvr_dt_ids,
+>         },
+> +       .remove = fsl_xcvr_remove,
+>  };
+>  module_platform_driver(fsl_xcvr_driver);
 >
->                 regmap_update_bits(gpr, IOMUXC_GPR1, MCLK_DIR(index),
->                                    MCLK_DIR(index));
 > --
-> 2.30.2
+> 2.31.1
 >
 >
 
---000000000000dce4d905e0be8195
+--0000000000009b396105e0beca21
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 1, 2022 at 5:23 PM Marco =
-Felsch &lt;<a href=3D"mailto:m.felsch@pengutronix.de">m.felsch@pengutronix.=
-de</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-">Make use of the new macro to get device defered information for free<br>
-and to cleanup the code a bit. No functional changes.<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jun 2, 2022 at 3:18 PM zhangq=
+ilong &lt;<a href=3D"mailto:zhangqilong3@huawei.com">zhangqilong3@huawei.co=
+m</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
+:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
+>a) Add missing pm_runtime_disable() when probe error out. It could<br>
+avoid pm_runtime implementation complains when removing and probing<br>
+again the driver.<br>
+b) Add remove for missing pm_runtime_disable().<br>
 <br>
-Signed-off-by: Marco Felsch &lt;<a href=3D"mailto:m.felsch@pengutronix.de" =
-target=3D"_blank">m.felsch@pengutronix.de</a>&gt;<br>
+Fix:c590fa80b3928 (&quot;ASoC: fsl_xcvr: register platform component before=
+ registering cpu dai&quot;)<br>
+Signed-off-by: Zhang Qilong &lt;<a href=3D"mailto:zhangqilong3@huawei.com" =
+target=3D"_blank">zhangqilong3@huawei.com</a>&gt;<br></blockquote><div><br>=
+</div><div>Acked-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmai=
+l.com">shengjiu.wang@gmail.com</a>&gt;</div><div><br></div><div>Best regard=
+s</div><div>Wang shengjiu=C2=A0</div><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex">
 ---<br>
-=C2=A0sound/soc/fsl/fsl_sai.c | 33 +++++++++++----------------------<br>
-=C2=A01 file changed, 11 insertions(+), 22 deletions(-)<br>
+v2:<br>
+- Add remove to put PM usage counter.<br>
 <br>
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c<br>
-index a7637d602f3c..3e54f1f71c1e 100644<br>
---- a/sound/soc/fsl/fsl_sai.c<br>
-+++ b/sound/soc/fsl/fsl_sai.c<br>
-@@ -1034,21 +1034,15 @@ static int fsl_sai_probe(struct platform_device *pd=
-ev)<br>
+v3:<br>
+- Modify the commit message.<br>
+---<br>
+=C2=A0sound/soc/fsl/fsl_xcvr.c | 9 +++++++++<br>
+=C2=A01 file changed, 9 insertions(+)<br>
+<br>
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c<br>
+index d0556c79fdb1..55e640cba87d 100644<br>
+--- a/sound/soc/fsl/fsl_xcvr.c<br>
++++ b/sound/soc/fsl/fsl_xcvr.c<br>
+@@ -1228,6 +1228,7 @@ static int fsl_xcvr_probe(struct platform_device *pde=
+v)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D devm_snd_dmaengine_pcm_register(dev, NU=
+LL, 0);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ret) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pm_runtime_disable(=
+dev);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_err(dev, &quot;=
+failed to pcm register\n&quot;);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return ret;<br>
 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 sai-&gt;regmap =3D devm_regmap_init_mmio(dev, b=
-ase, &amp;fsl_sai_regmap_config);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(sai-&gt;regmap)) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dev_err(dev, &quot;=
-regmap init failed\n&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return PTR_ERR(sai-=
-&gt;regmap);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(sai-&gt;regmap))<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return dev_err_prob=
-e(dev, PTR_ERR(sai-&gt;regmap), &quot;regmap init failed\n&quot;);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 sai-&gt;bus_clk =3D devm_clk_get(dev, &quot;bus=
-&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Compatible with old DTB cases */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (IS_ERR(sai-&gt;bus_clk) &amp;&amp; PTR_ERR(=
-sai-&gt;bus_clk) !=3D -EPROBE_DEFER)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sai-&gt;bus_clk =3D=
- devm_clk_get(dev, &quot;sai&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(sai-&gt;bus_clk)) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dev_err(dev, &quot;=
-failed to get bus clock: %ld\n&quot;,<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0PTR_ERR(sai-&gt;bus_clk));<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* -EPROBE_DEFER */=
-<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return PTR_ERR(sai-=
-&gt;bus_clk);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(sai-&gt;bus_clk))<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return dev_err_prob=
-e(dev, PTR_ERR(sai-&gt;bus_clk), &quot;failed to get bus clock\n&quot;);<br=
->
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 for (i =3D 1; i &lt; FSL_SAI_MCLK_MAX; i++) {<b=
-r>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 sprintf(tmp, &quot;=
-mclk%d&quot;, i);<br>
-@@ -1067,14 +1061,12 @@ static int fsl_sai_probe(struct platform_device *pd=
-ev)<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 irq =3D platform_get_irq(pdev, 0);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (irq &lt; 0)<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return irq;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return dev_err_prob=
-e(dev, irq, &quot;failed to get the irq\n&quot;);<br></blockquote><div><br>=
-</div><div>This change is not needed,=C2=A0 platform_get_irq() has done the=
- same operation.</div><div><br></div><div>best regards</div><div>wang sheng=
-jiu</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D devm_request_irq(dev, irq, fsl_sai_isr,=
- IRQF_SHARED,<br>
+@@ -1235,6 +1236,7 @@ static int fsl_xcvr_probe(struct platform_device *pde=
+v)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 ret =3D devm_snd_soc_register_component(dev, &a=
+mp;fsl_xcvr_comp,<br>
 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0np-&gt;name, sai);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dev_err(dev, &quot;=
-failed to claim irq %u\n&quot;, irq);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0if (ret)<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return dev_err_prob=
-e(dev, ret, &quot;failed to claim irq %u\n&quot;, irq);<br>
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 &amp;fsl_xcvr_dai, 1);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (ret) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pm_runtime_disable(=
+dev);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_err(dev, &quot;=
+failed to register component %s\n&quot;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 <a href=3D"http://fsl_xcvr_comp.name" rel=3D"noreferrer" target=
+=3D"_blank">fsl_xcvr_comp.name</a>);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+@@ -1242,6 +1244,12 @@ static int fsl_xcvr_probe(struct platform_device *pd=
+ev)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return ret;<br>
+=C2=A0}<br>
 <br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 memcpy(&amp;sai-&gt;cpu_dai_drv, &amp;fsl_sai_d=
-ai_template,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0sizeof(fsl_sai_dai_t=
-emplate));<br>
-@@ -1089,8 +1081,7 @@ static int fsl_sai_probe(struct platform_device *pdev=
++static int fsl_xcvr_remove(struct platform_device *pdev)<br>
++{<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0pm_runtime_disable(&amp;pdev-&gt;dev);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0return 0;<br>
++}<br>
++<br>
+=C2=A0static __maybe_unused int fsl_xcvr_runtime_suspend(struct device *dev=
 )<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (of_find_property(np, &quot;fsl,sai-synchron=
-ous-rx&quot;, NULL) &amp;&amp;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 of_find_property(np, &quot;fsl,sa=
-i-asynchronous&quot;, NULL)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 /* error out if bot=
-h synchronous and asynchronous are present */<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0dev_err(dev, &quot;=
-invalid binding for synchronous mode\n&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return -EINVAL;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return dev_err_prob=
-e(dev, -EINVAL, &quot;invalid binding for synchronous mode\n&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct fsl_xcvr *xcvr =3D dev_get_drvdata(dev);=
 <br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (of_find_property(np, &quot;fsl,sai-synchron=
-ous-rx&quot;, NULL)) {<br>
-@@ -1109,14 +1100,12 @@ static int fsl_sai_probe(struct platform_device *pd=
-ev)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (of_find_property(np, &quot;fsl,sai-mclk-dir=
-ection-output&quot;, NULL) &amp;&amp;<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 of_device_is_compatible(np, &quot=
-;fsl,imx6ul-sai&quot;)) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 gpr =3D syscon_regm=
-ap_lookup_by_compatible(&quot;fsl,imx6ul-iomuxc-gpr&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(gpr)) {<=
-br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0dev_err(dev, &quot;cannot find iomuxc registers\n&quot;);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return PTR_ERR(gpr);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (IS_ERR(gpr))<br=
->
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return dev_err_probe(dev, PTR_ERR(gpr), &quot;cannot find iomuxc =
-registers\n&quot;);<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 index =3D of_alias_=
-get_id(np, &quot;sai&quot;);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (index &lt; 0)<b=
+@@ -1370,6 +1378,7 @@ static struct platform_driver fsl_xcvr_driver =3D {<b=
 r>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return index;<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0return dev_err_probe(dev, index, &quot;cannot find sai aliases\n&=
-quot;);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .pm =3D &amp;fsl_xc=
+vr_pm_ops,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 .of_match_table =3D=
+ fsl_xcvr_dt_ids,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.remove =3D fsl_xcvr_remove,<br>
+=C2=A0};<br>
+=C2=A0module_platform_driver(fsl_xcvr_driver);<br>
 <br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 regmap_update_bits(=
-gpr, IOMUXC_GPR1, MCLK_DIR(index),<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MCLK_DIR(index));<br>
 -- <br>
-2.30.2<br>
+2.31.1<br>
 <br>
 </blockquote></div></div>
 
---000000000000dce4d905e0be8195--
+--0000000000009b396105e0beca21--
