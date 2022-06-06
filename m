@@ -2,60 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A8A53E548
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 17:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F4D53E5A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 18:14:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LGxYX45hSz3brd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 01:02:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LGz8Y6Twtz3bnW
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 02:14:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Apz8+ZKO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UMIYBcMd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Apz8+ZKO;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UMIYBcMd;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGxXv2ZNpz2xsm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 01:02:07 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 692C0B81A82
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 15:02:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C4AC36AFF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 15:02:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654527722;
-	bh=q53e8R7rif+9VorkencnO96O5zseGyAcQ5tiTh4wb5o=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Apz8+ZKOfRfLg28N7czbQCp5u1APChOU6nUGQX9FaMmYF1sAaX/E+Ib6PkoNMTzP7
-	 8jDO0yt1/l7zDqKQc6tX4/clq/6HkX/3W3KZ8nM3wihQ+jMlDOK9ZA4eyqtiXknfW8
-	 nDehGJBGcME9NWhLnKjuKwi1RHsvWVfiUTSGjzwMBXLmNypEOY8dRiUMaB2ZPKhMqN
-	 +sCEMynb2DFl+FqYA+WAgVaik3iEnEQyHuNJCcowrCU57ufs9pWJIioY3E4DJJPNzW
-	 kpZWUqqFJEO2bKuHGgUG6lR6HDAoCyo7pL/NzPacNwyF3UCEA3Cxsbw6IvBn5Rr2+E
-	 lkYasSc/0weOA==
-Received: by mail-yb1-f170.google.com with SMTP id v22so26177257ybd.5
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jun 2022 08:02:02 -0700 (PDT)
-X-Gm-Message-State: AOAM530rIzTYqd/JC9n4o80jf3073o6buYyxNDgMLAhu1UGoDEBAToD4
-	/3Lc9MQgGSu6ZRWj3tJEJummm4SLK2QIZS+yeqk=
-X-Google-Smtp-Source: ABdhPJzbUSlIedBRNZiWpM9ElJ4TvjZNZhTiqJfwPbhlO6M7rgoOI9pHprJDL1o+SM/GSywwOf+ElbD7ZGPkUhXAozo=
-X-Received: by 2002:a25:db8a:0:b0:65c:b04a:f612 with SMTP id
- g132-20020a25db8a000000b0065cb04af612mr24920915ybf.106.1654527721136; Mon, 06
- Jun 2022 08:02:01 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGz7v06ZZz2yMk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:14:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1654532026;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=jnoAQR+eQFXRht5t3HZx8trK2TLP/6adig1PsrMlFcM=;
+    b=UMIYBcMdBGIstS5IZRr+E9zP+QdR4zOZlkb2GsJFAViZs95l+tUJqwbo+QDwR0vWoj
+    KR2sIxa0Drx8BL/SFtwz228rqO5AvP909C6f18XnKlCOc/mXLFGpli4KpPjqimpxld04
+    fWKCLx6A5T7iDa5Wbcn/7yQde/sryC341pYpKawgps+TJ6k6Q8PIGBesClzWa0XS8Ukw
+    O/Gix05prddoP23zvujSzdbDyCFekvEiwtQHjiWLx91oS4vHLbAJnsuW2IDWFXtBtKPu
+    gtH9pqcX08P5VcJD5EnSwhdcv+cYAmjCt4yZck0+0kBgYgc5qoFNodNPTyGWWt7JCkiR
+    0zUg==
+Authentication-Results: strato.com;
+    dkim=none
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwiAuoN3kkXTmDpYkhOSZ/7t3wfYbQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPV6:2a02:8109:8980:4474:ec7e:9b89:b7f7:718b]
+    by smtp.strato.de (RZmta 47.45.0 AUTH)
+    with ESMTPSA id 205ca1y56GDj8Pu
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 6 Jun 2022 18:13:45 +0200 (CEST)
+Message-ID: <1e5fd88f-80dc-d48a-0812-4724765db489@xenosoft.de>
+Date: Mon, 6 Jun 2022 18:13:45 +0200
 MIME-Version: 1.0
-References: <20220606084109.4108188-1-arnd@kernel.org> <Yp3ID86TBFxl7qyL@kroah.com>
-In-Reply-To: <Yp3ID86TBFxl7qyL@kroah.com>
-From: Arnd Bergmann <arnd@kernel.org>
-Date: Mon, 6 Jun 2022 17:01:44 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a15RuR3VOPLPV3SfdBAGuoyor6o7JMs3kC5dNB5nfDuKA@mail.gmail.com>
-Message-ID: <CAK8P3a15RuR3VOPLPV3SfdBAGuoyor6o7JMs3kC5dNB5nfDuKA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] phase out CONFIG_VIRT_TO_BUS
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.10.0
+Subject: [FSL P50x0] Keyboard and mouse don't work anymore after the
+ devicetree updates for 5.19
+Content-Language: de-DE
+To: Rob Herring <robh@kernel.org>
+References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
+ <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu>
+ <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de>
+ <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de>
+ <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
+ <CAL_JsqJs17p-hw-U3WAkT69y3V4kuc_-O8tU=Sr8KWHPvbWJpA@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <CAL_JsqJs17p-hw-U3WAkT69y3V4kuc_-O8tU=Sr8KWHPvbWJpA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,20 +75,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linux-scsi <linux-scsi@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linux-m68k <linux-m68k@lists.linux-m68k.org>, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>, Parisc List <linux-parisc@vger.kernel.org>, alpha <linux-alpha@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 6, 2022 at 11:25 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On 06 June 2022 at 04:58 pm, Rob Herring wrote:
+> On Fri, May 27, 2022 at 9:23 AM Rob Herring <robh@kernel.org> wrote:
+>> On Fri, May 27, 2022 at 3:33 AM Christian Zigotzky
+>> <chzigotzky@xenosoft.de> wrote:
+>>> On 27 May 2022 at 10:14 am, Prabhakar Mahadev Lad wrote:
+>>>> Hi,
+>>>>
+>>>>> -----Original Message-----
+>>>>> From: Christian Zigotzky <chzigotzky@xenosoft.de>
+>>>>>
+>>>>> On 27 May 2022 at 09:56 am, Prabhakar Mahadev Lad wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>>> -----Original Message-----
+>>>>>>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> [...]
 >
-> I'll take patches 1 and 2 right now through my staging tree if that's
-> ok.
+>>>>>> Looks like the driver which you are using has not been converted to use
+>>>>> platform_get_irq(), could you please check that.
+>>>>>> Cheers,
+>>>>>> Prabhakar
+>>>>> Do you mean the mouse and keyboard driver?
+>>>>>
+>>>> No it could be your gpio/pinctrl driver assuming the keyboard/mouse are using GPIO's. If you are using interrupts then it might be some hierarchal irqc driver in drivers/irqchip/.
+>>>>
+>>>> Cheers,
+>>>> Prabhakar
+>>> Good to know. I only use unmodified drivers from the official Linux
+>>> kernel so it's not an issue of the Cyrus+ board.
+>> The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
+>> resources to a child platform device. Can you try the following
+>> change:
+>>
+>> diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
+>> index 44a7e58a26e3..47d9b7be60da 100644
+>> --- a/drivers/usb/host/fsl-mph-dr-of.c
+>> +++ b/drivers/usb/host/fsl-mph-dr-of.c
+>> @@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
+>>                                          const char *name, int id)
+>>   {
+>>          struct platform_device *pdev;
+>> -       const struct resource *res = ofdev->resource;
+>> -       unsigned int num = ofdev->num_resources;
+>>          int retval;
+>>
+>>          pdev = platform_device_alloc(name, id);
+>> @@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_device_register(
+>>          if (retval)
+>>                  goto error;
+>>
+>> -       if (num) {
+>> -               retval = platform_device_add_resources(pdev, res, num);
+>> -               if (retval)
+>> -                       goto error;
+>> -       }
+>> +       pdev->dev.of_node = ofdev->dev.of_node;
+> >From the log, I think you also need to add this line:
+>
+> pdev->dev.of_node_reused = true;
+>
+>>          retval = platform_device_add(pdev);
+>>          if (retval)
+Hello Rob,
 
-Yes, that's perfect, as there are no actual interdependencies with the
-other drivers -- applying the last patch first would just hide the driver
-I'm removing here.
+Thanks a lot for your answer.
+
+Is the following patch correct?
+
+--- a/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:10:26.797688422 
++0200
++++ b/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:15:01.668594809 
++0200
+@@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_
+                      const char *name, int id)
+  {
+      struct platform_device *pdev;
+-    const struct resource *res = ofdev->resource;
+-    unsigned int num = ofdev->num_resources;
+      int retval;
+
+      pdev = platform_device_alloc(name, id);
+@@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_
+      if (retval)
+          goto error;
+
+-    if (num) {
+-        retval = platform_device_add_resources(pdev, res, num);
+-        if (retval)
+-            goto error;
+-    }
++    pdev->dev.of_node = ofdev->dev.of_node;
++    pdev->dev.of_node_reused = true;
+
+      retval = platform_device_add(pdev);
+      if (retval)
+
+---
 
 Thanks,
-
-      Arnd
+Christian
