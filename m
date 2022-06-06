@@ -2,49 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B0C53F26F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 01:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F22153E5CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 18:58:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LH8TB42zNz3brd
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 09:14:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LH0700kHDz3bkw
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 02:58:20 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=YONWZn/E;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gonehiking.org (client-ip=64.68.200.34; helo=mailout.easymail.ca; envelope-from=khalid@gonehiking.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 323 seconds by postgrey-1.36 at boromir; Tue, 07 Jun 2022 02:40:58 AEST
-Received: from mailout.easymail.ca (mailout.easymail.ca [64.68.200.34])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e5ab; helo=madras.collabora.co.uk; envelope-from=dmitry.osipenko@collabora.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=YONWZn/E;
+	dkim-atps=neutral
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGzky4127z2ygC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:40:56 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by mailout.easymail.ca (Postfix) with ESMTP id F0673E0E57;
-	Mon,  6 Jun 2022 16:35:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at emo08-pco.easydns.vpn
-Received: from mailout.easymail.ca ([127.0.0.1])
-	by localhost (emo08-pco.easydns.vpn [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id hhyNN48mX6Hb; Mon,  6 Jun 2022 16:35:29 +0000 (UTC)
-Received: from mail.gonehiking.org (unknown [38.15.45.1])
-	by mailout.easymail.ca (Postfix) with ESMTPA id 87721E0E2D;
-	Mon,  6 Jun 2022 16:35:29 +0000 (UTC)
-Received: from [192.168.1.4] (internal [192.168.1.4])
-	by mail.gonehiking.org (Postfix) with ESMTP id 689583EF5B;
-	Mon,  6 Jun 2022 10:35:28 -0600 (MDT)
-Message-ID: <d39fc9bb-07c1-ad74-1e89-d2aa80578cd4@gonehiking.org>
-Date: Mon, 6 Jun 2022 10:35:28 -0600
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LH06P0rrsz2yRK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:57:46 +1000 (AEST)
+Received: from dimapc.. (109-252-138-163.dynamic.spd-mgts.ru [109.252.138.163])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dmitry.osipenko)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id 60BFF6601C72;
+	Mon,  6 Jun 2022 17:57:38 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1654534658;
+	bh=FIM8GIMepvfnT4TQY6iQ3wpMknXZhv7KK8TRc4lbx5s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YONWZn/EaULMwx0P2lLlZ6TNlQne7C9taGsOhCqpOvnf/WD5a+7HtSra1qVT8PzO5
+	 ojtHkBlPKFJ7IswrQoiHmRsp4hGCVBCGLefXiJ5hX46H848bwPCdDFxkw0hC0II95d
+	 mFLlTR17jOKfrUYCPn0q905VuZ2WfEErlUGYqbDAGHPpMXexGYXEFjCR3rGDff7bW5
+	 Mmko2QII3kn72nAvQLANVJimNKekHDYoDJUT7AJ+VKfHd/SOAvwHqAC53na/UYrxqg
+	 SuRCTnfA0MEreVTueWYbJZaA6NpF6flNj1j+5Tyd5gEfPQc9Kgit/hIBKsUcDJ3S8/
+	 BALJPxR8zhZPw==
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v1] kernel/reboot: Fix powering off using a non-syscall code paths
+Date: Mon,  6 Jun 2022 19:56:40 +0300
+Message-Id: <20220606165640.634811-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH 5/6] scsi: remove stale BusLogic driver
-Content-Language: en-US
-To: Arnd Bergmann <arnd@kernel.org>
-References: <20220606084109.4108188-1-arnd@kernel.org>
- <20220606084109.4108188-6-arnd@kernel.org>
-From: Khalid Aziz <khalid@gonehiking.org>
-In-Reply-To: <20220606084109.4108188-6-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 07 Jun 2022 09:14:18 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,58 +59,132 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: khalid@gonehiking.org
-Cc: linux-arch@vger.kernel.org, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linuxppc-dev@lists.ozlabs.org, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, Matt Wang <wwentao@vmware.com>, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>, linux-pm@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/6/22 02:41, Arnd Bergmann wrote:
-> From: Arnd Bergmann<arnd@arndb.de>
-> 
-> The BusLogic driver is the last remaining driver that relies on the
-> deprecated bus_to_virt() function, which in turn only works on a few
-> architectures, and is incompatible with both swiotlb and iommu support.
-> 
-> Before commit 391e2f25601e ("[SCSI] BusLogic: Port driver to 64-bit."),
-> the driver had a dependency on x86-32, presumably because of this
-> problem. However, the change introduced another bug that made it still
-> impossible to use the driver on any 64-bit machine.
-> 
-> This was in turn fixed in commit 56f396146af2 ("scsi: BusLogic: Fix
-> 64-bit system enumeration error for Buslogic"), 8 years later.
-> 
-> The fact that this was found at all is an indication that there are
-> users, and it seems that Maciej, Matt and Khalid all have access to
-> this hardware, but if it took eight years to find the problem,
-> it's likely that nobody actually relies on it.
-> 
-> Remove it as part of the global virt_to_bus()/bus_to_virt() removal.
-> If anyone is still interested in keeping this driver, the alternative
-> is to stop it from using bus_to_virt(), possibly along the lines of
-> how dpt_i2o gets around the same issue.
-> 
-> Cc: Maciej W. Rozycki<macro@orcam.me.uk>
-> Cc: Matt Wang<wwentao@vmware.com>
-> Cc: Khalid Aziz<khalid@gonehiking.org>
-> Signed-off-by: Arnd Bergmann<arnd@arndb.de>
-> ---
->   Documentation/scsi/BusLogic.rst   |  581 ---
->   Documentation/scsi/FlashPoint.rst |  176 -
->   MAINTAINERS                       |    7 -
->   drivers/scsi/BusLogic.c           | 3727 --------------
->   drivers/scsi/BusLogic.h           | 1284 -----
->   drivers/scsi/FlashPoint.c         | 7560 -----------------------------
->   drivers/scsi/Kconfig              |   24 -
->   7 files changed, 13359 deletions(-)
->   delete mode 100644 Documentation/scsi/BusLogic.rst
->   delete mode 100644 Documentation/scsi/FlashPoint.rst
->   delete mode 100644 drivers/scsi/BusLogic.c
->   delete mode 100644 drivers/scsi/BusLogic.h
->   delete mode 100644 drivers/scsi/FlashPoint.c
+There are other methods of powering off machine than the reboot syscall.
+Previously we missed to coved those methods and it created power-off
+regression for some machines, like the PowerPC e500. Fix this problem
+by moving the legacy sys-off handler registration to the latest phase
+of power-off process and making the kernel_can_power_off() to check the
+legacy pm_power_off presence.
 
-I would say no to removing BusLogic driver. Virtualbox is another 
-consumer of this driver. This driver is very old but I would rather fix 
-the issues than remove it until we do not have any users.
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> # ppce500
+Reported-by: Michael Ellerman <mpe@ellerman.id.au> # ppce500
+Fixes: da007f171fc9 ("kernel/reboot: Change registration order of legacy power-off handler")
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+---
+ kernel/reboot.c | 46 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 26 insertions(+), 20 deletions(-)
 
-Thanks,
-Khalid
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index 3b19b123efec..b5a71d1ff603 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -320,6 +320,7 @@ static struct sys_off_handler platform_sys_off_handler;
+ static struct sys_off_handler *alloc_sys_off_handler(int priority)
+ {
+ 	struct sys_off_handler *handler;
++	gfp_t flags;
+ 
+ 	/*
+ 	 * Platforms like m68k can't allocate sys_off handler dynamically
+@@ -330,7 +331,12 @@ static struct sys_off_handler *alloc_sys_off_handler(int priority)
+ 		if (handler->cb_data)
+ 			return ERR_PTR(-EBUSY);
+ 	} else {
+-		handler = kzalloc(sizeof(*handler), GFP_KERNEL);
++		if (system_state > SYSTEM_RUNNING)
++			flags = GFP_ATOMIC;
++		else
++			flags = GFP_KERNEL;
++
++		handler = kzalloc(sizeof(*handler), flags);
+ 		if (!handler)
+ 			return ERR_PTR(-ENOMEM);
+ 	}
+@@ -440,7 +446,7 @@ void unregister_sys_off_handler(struct sys_off_handler *handler)
+ {
+ 	int err;
+ 
+-	if (!handler)
++	if (IS_ERR_OR_NULL(handler))
+ 		return;
+ 
+ 	if (handler->blocking)
+@@ -615,7 +621,23 @@ static void do_kernel_power_off_prepare(void)
+  */
+ void do_kernel_power_off(void)
+ {
++	struct sys_off_handler *sys_off = NULL;
++
++	/*
++	 * Register sys-off handlers for legacy PM callback. This allows
++	 * legacy PM callbacks temporary co-exist with the new sys-off API.
++	 *
++	 * TODO: Remove legacy handlers once all legacy PM users will be
++	 *       switched to the sys-off based APIs.
++	 */
++	if (pm_power_off)
++		sys_off = register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
++						   SYS_OFF_PRIO_DEFAULT,
++						   legacy_pm_power_off, NULL);
++
+ 	atomic_notifier_call_chain(&power_off_handler_list, 0, NULL);
++
++	unregister_sys_off_handler(sys_off);
+ }
+ 
+ /**
+@@ -626,7 +648,8 @@ void do_kernel_power_off(void)
+  */
+ bool kernel_can_power_off(void)
+ {
+-	return !atomic_notifier_call_chain_is_empty(&power_off_handler_list);
++	return !atomic_notifier_call_chain_is_empty(&power_off_handler_list) ||
++		pm_power_off;
+ }
+ EXPORT_SYMBOL_GPL(kernel_can_power_off);
+ 
+@@ -661,7 +684,6 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+ 		void __user *, arg)
+ {
+ 	struct pid_namespace *pid_ns = task_active_pid_ns(current);
+-	struct sys_off_handler *sys_off = NULL;
+ 	char buffer[256];
+ 	int ret = 0;
+ 
+@@ -686,21 +708,6 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+ 	if (ret)
+ 		return ret;
+ 
+-	/*
+-	 * Register sys-off handlers for legacy PM callback. This allows
+-	 * legacy PM callbacks temporary co-exist with the new sys-off API.
+-	 *
+-	 * TODO: Remove legacy handlers once all legacy PM users will be
+-	 *       switched to the sys-off based APIs.
+-	 */
+-	if (pm_power_off) {
+-		sys_off = register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
+-						   SYS_OFF_PRIO_DEFAULT,
+-						   legacy_pm_power_off, NULL);
+-		if (IS_ERR(sys_off))
+-			return PTR_ERR(sys_off);
+-	}
+-
+ 	/* Instead of trying to make the power_off code look like
+ 	 * halt when pm_power_off is not set do it the easy way.
+ 	 */
+@@ -758,7 +765,6 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
+ 		break;
+ 	}
+ 	mutex_unlock(&system_transition_mutex);
+-	unregister_sys_off_handler(sys_off);
+ 	return ret;
+ }
+ 
+-- 
+2.35.3
+
