@@ -2,49 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A63D53E3EA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 11:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E07053E41A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 12:40:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LGp5J6cxQz306d
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 19:26:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o5+R3V8o;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LGqlW4G7Wz3c7l
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 20:40:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o5+R3V8o;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGp4j3wsgz2ypR
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 19:25:40 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 9E9DF61316;
-	Mon,  6 Jun 2022 09:25:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FA8C385A9;
-	Mon,  6 Jun 2022 09:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1654507538;
-	bh=SGyOc8QTUXhFBU0FK2dbWFATxGIrz/5ZeL4pH3h6UnI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o5+R3V8oO4+EAgAGTpyjUIQqB3KNAeJts/jhrJSGEBRzH1PN9a+gCBfvBwaJfsi0j
-	 S+xDAbHwdHZEgYXeWMOFMcC/5op2p7s+cMgBf8QSuvMTb6YuVTYwduPx5uxc+DOYFd
-	 fr4c0yZ5gapUx5x3IKS7vTtcG+YZNWc9Hh4gX5Rc=
-Date: Mon, 6 Jun 2022 11:25:35 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=<UNKNOWN>)
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LGql559Nyz2yK2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 20:40:33 +1000 (AEST)
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 9DC8C92009C; Mon,  6 Jun 2022 12:40:21 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 9686692009B;
+	Mon,  6 Jun 2022 11:40:21 +0100 (BST)
+Date: Mon, 6 Jun 2022 11:40:21 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
 To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 0/6] phase out CONFIG_VIRT_TO_BUS
-Message-ID: <Yp3ID86TBFxl7qyL@kroah.com>
-References: <20220606084109.4108188-1-arnd@kernel.org>
+Subject: Re: [PATCH 5/6] scsi: remove stale BusLogic driver
+In-Reply-To: <20220606084109.4108188-6-arnd@kernel.org>
+Message-ID: <alpine.DEB.2.21.2206061057060.19680@angie.orcam.me.uk>
+References: <20220606084109.4108188-1-arnd@kernel.org> <20220606084109.4108188-6-arnd@kernel.org>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220606084109.4108188-1-arnd@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,34 +39,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linux-m68k@lists.linux-m68k.org, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-arch@vger.kernel.org, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linuxppc-dev@lists.ozlabs.org, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, Matt Wang <wwentao@vmware.com>, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 06, 2022 at 10:41:03AM +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The virt_to_bus/bus_to_virt interface has been deprecated for
-> decades. After Jakub Kicinski put a lot of work into cleaning out the
-> network drivers using them, there are only a couple of other drivers
-> left, which can all be removed or otherwise cleaned up, to remove the
-> old interface for good.
-> 
-> Any out of tree drivers using virt_to_bus() should be converted to
-> using the dma-mapping interfaces, typically dma_alloc_coherent()
-> or dma_map_single()).
-> 
-> There are a few m68k and ppc32 specific drivers that keep using the
-> interfaces, but these are all guarded with architecture-specific
-> Kconfig dependencies, and are not actually broken.
-> 
-> There are still a number of drivers that are using virt_to_phys()
-> and phys_to_virt() in place of dma-mapping operations, and these
-> are often broken, but they are out of scope for this series.
+On Mon, 6 Jun 2022, Arnd Bergmann wrote:
 
-I'll take patches 1 and 2 right now through my staging tree if that's
-ok.
+> This was in turn fixed in commit 56f396146af2 ("scsi: BusLogic: Fix
+> 64-bit system enumeration error for Buslogic"), 8 years later.
+> 
+> The fact that this was found at all is an indication that there are
+> users, and it seems that Maciej, Matt and Khalid all have access to
+> this hardware, but if it took eight years to find the problem,
+> it's likely that nobody actually relies on it.
 
-thanks,
+ Umm, I use it with a 32-bit system, so it would be quite an issue for me 
+to discover a problem with 64-bit configurations.  And I quite rely on 
+this system for various stuff too!
 
-greg k-h
+> Remove it as part of the global virt_to_bus()/bus_to_virt() removal.
+> If anyone is still interested in keeping this driver, the alternative
+> is to stop it from using bus_to_virt(), possibly along the lines of
+> how dpt_i2o gets around the same issue.
+
+ Thanks for the pointer and for cc-ing me.  Please refrain from removing 
+the driver at least for this release cycle and let me fix it.  It should 
+be easy to mimic what I did for the defza driver: all bus addresses in the 
+DMA API come associated with virtual addresses, so it is just a matter of 
+recording those somewhere for later use rather than trying to mess up with 
+bus addresses to figure out a reverse mapping.
+
+  Maciej
