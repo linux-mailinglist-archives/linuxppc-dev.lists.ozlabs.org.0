@@ -1,53 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F22153E5CD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 18:58:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1582553E6A2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 19:07:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LH0700kHDz3bkw
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 02:58:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LH0KM6YSMz303k
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 03:07:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=YONWZn/E;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hJkgt2ZY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e5ab; helo=madras.collabora.co.uk; envelope-from=dmitry.osipenko@collabora.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.a=rsa-sha256 header.s=mail header.b=YONWZn/E;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hJkgt2ZY;
 	dkim-atps=neutral
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LH06P0rrsz2yRK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:57:46 +1000 (AEST)
-Received: from dimapc.. (109-252-138-163.dynamic.spd-mgts.ru [109.252.138.163])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LH0Jl3j7hz2yw3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 03:06:47 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	(Authenticated sender: dmitry.osipenko)
-	by madras.collabora.co.uk (Postfix) with ESMTPSA id 60BFF6601C72;
-	Mon,  6 Jun 2022 17:57:38 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1654534658;
-	bh=FIM8GIMepvfnT4TQY6iQ3wpMknXZhv7KK8TRc4lbx5s=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YONWZn/EaULMwx0P2lLlZ6TNlQne7C9taGsOhCqpOvnf/WD5a+7HtSra1qVT8PzO5
-	 ojtHkBlPKFJ7IswrQoiHmRsp4hGCVBCGLefXiJ5hX46H848bwPCdDFxkw0hC0II95d
-	 mFLlTR17jOKfrUYCPn0q905VuZ2WfEErlUGYqbDAGHPpMXexGYXEFjCR3rGDff7bW5
-	 Mmko2QII3kn72nAvQLANVJimNKekHDYoDJUT7AJ+VKfHd/SOAvwHqAC53na/UYrxqg
-	 SuRCTnfA0MEreVTueWYbJZaA6NpF6flNj1j+5Tyd5gEfPQc9Kgit/hIBKsUcDJ3S8/
-	 BALJPxR8zhZPw==
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v1] kernel/reboot: Fix powering off using a non-syscall code paths
-Date: Mon,  6 Jun 2022 19:56:40 +0300
-Message-Id: <20220606165640.634811-1-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.35.3
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 59B3D60FF9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 17:06:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5827C3411D
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 17:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1654535204;
+	bh=GKK8Z3jcC7feB94sG//8HMqaJAY9gBwtueuI+WJ7YyM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hJkgt2ZYONGcLsy2WqMFfDBO6hjzJLXi6vXGQEe3YMAFrD55tVhdf2y9RuSseT62t
+	 9SdIJ+xdzepMFWf7/TKj9Iw6ncAdUYdSxz8gwkjFEjOlJMzAH9p90lUJQTSLaeXuSf
+	 cwmypezY8cO7rJWSlNGl4cl4el+AOkDT1fVcEGz8Aqae71gstzOYDm1f9jaVckJm7c
+	 2ZJDGF1+KwAYToeZz+mFKeLQvN/Ox/SQzh9E0k0a2BY7tkOtvEXXYgViF9Uupyhq+3
+	 HKJpcvWthh8iDaGG9+Ac8+Di8Fo3Ad/0WVsnKerIePM4XH4Kfb4n37Amv70t6mk6cj
+	 rel2BFScoHA/Q==
+Received: by mail-vs1-f42.google.com with SMTP id q14so14298151vsr.12
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jun 2022 10:06:44 -0700 (PDT)
+X-Gm-Message-State: AOAM532ucB5MKLusT/cWqfZ4vMWOSc2FdgnDjIvVpqpHob7PjFhTw4P0
+	3E5ScIqlYC/oSIJw/4zWYBCXk6zzYBphOyfK7A==
+X-Google-Smtp-Source: ABdhPJx34xO4TB35zKyB9NtJRm8fQVRYxWbOQ8mTsU7yHSaCGqOvcDTPFa7vUFWLcPqn0NpuBZ7rbySqsHHxkfH9+gc=
+X-Received: by 2002:a05:6102:3d0f:b0:34b:bdd0:baef with SMTP id
+ i15-20020a0561023d0f00b0034bbdd0baefmr2455288vsv.85.1654535203689; Mon, 06
+ Jun 2022 10:06:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
+ <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu> <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de> <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+ <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de> <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
+ <CAL_JsqJs17p-hw-U3WAkT69y3V4kuc_-O8tU=Sr8KWHPvbWJpA@mail.gmail.com> <1e5fd88f-80dc-d48a-0812-4724765db489@xenosoft.de>
+In-Reply-To: <1e5fd88f-80dc-d48a-0812-4724765db489@xenosoft.de>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 6 Jun 2022 12:06:32 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqJXXGBcuO+921DNf1yYCbUX4Mv19kQds1rkFM8q8kwxSg@mail.gmail.com>
+Message-ID: <CAL_JsqJXXGBcuO+921DNf1yYCbUX4Mv19kQds1rkFM8q8kwxSg@mail.gmail.com>
+Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after the
+ devicetree updates for 5.19
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,132 +72,113 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>, linux-pm@vger.kernel.org
+Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are other methods of powering off machine than the reboot syscall.
-Previously we missed to coved those methods and it created power-off
-regression for some machines, like the PowerPC e500. Fix this problem
-by moving the legacy sys-off handler registration to the latest phase
-of power-off process and making the kernel_can_power_off() to check the
-legacy pm_power_off presence.
+On Mon, Jun 6, 2022 at 11:14 AM Christian Zigotzky
+<chzigotzky@xenosoft.de> wrote:
+>
+> On 06 June 2022 at 04:58 pm, Rob Herring wrote:
+> > On Fri, May 27, 2022 at 9:23 AM Rob Herring <robh@kernel.org> wrote:
+> >> On Fri, May 27, 2022 at 3:33 AM Christian Zigotzky
+> >> <chzigotzky@xenosoft.de> wrote:
+> >>> On 27 May 2022 at 10:14 am, Prabhakar Mahadev Lad wrote:
+> >>>> Hi,
+> >>>>
+> >>>>> -----Original Message-----
+> >>>>> From: Christian Zigotzky <chzigotzky@xenosoft.de>
+> >>>>>
+> >>>>> On 27 May 2022 at 09:56 am, Prabhakar Mahadev Lad wrote:
+> >>>>>> Hi,
+> >>>>>>
+> >>>>>>> -----Original Message-----
+> >>>>>>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > [...]
+> >
+> >>>>>> Looks like the driver which you are using has not been converted to use
+> >>>>> platform_get_irq(), could you please check that.
+> >>>>>> Cheers,
+> >>>>>> Prabhakar
+> >>>>> Do you mean the mouse and keyboard driver?
+> >>>>>
+> >>>> No it could be your gpio/pinctrl driver assuming the keyboard/mouse are using GPIO's. If you are using interrupts then it might be some hierarchal irqc driver in drivers/irqchip/.
+> >>>>
+> >>>> Cheers,
+> >>>> Prabhakar
+> >>> Good to know. I only use unmodified drivers from the official Linux
+> >>> kernel so it's not an issue of the Cyrus+ board.
+> >> The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
+> >> resources to a child platform device. Can you try the following
+> >> change:
+> >>
+> >> diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
+> >> index 44a7e58a26e3..47d9b7be60da 100644
+> >> --- a/drivers/usb/host/fsl-mph-dr-of.c
+> >> +++ b/drivers/usb/host/fsl-mph-dr-of.c
+> >> @@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
+> >>                                          const char *name, int id)
+> >>   {
+> >>          struct platform_device *pdev;
+> >> -       const struct resource *res = ofdev->resource;
+> >> -       unsigned int num = ofdev->num_resources;
+> >>          int retval;
+> >>
+> >>          pdev = platform_device_alloc(name, id);
+> >> @@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_device_register(
+> >>          if (retval)
+> >>                  goto error;
+> >>
+> >> -       if (num) {
+> >> -               retval = platform_device_add_resources(pdev, res, num);
+> >> -               if (retval)
+> >> -                       goto error;
+> >> -       }
+> >> +       pdev->dev.of_node = ofdev->dev.of_node;
+> > >From the log, I think you also need to add this line:
+> >
+> > pdev->dev.of_node_reused = true;
+> >
+> >>          retval = platform_device_add(pdev);
+> >>          if (retval)
+> Hello Rob,
+>
+> Thanks a lot for your answer.
+>
+> Is the following patch correct?
 
-Tested-by: Michael Ellerman <mpe@ellerman.id.au> # ppce500
-Reported-by: Michael Ellerman <mpe@ellerman.id.au> # ppce500
-Fixes: da007f171fc9 ("kernel/reboot: Change registration order of legacy power-off handler")
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- kernel/reboot.c | 46 ++++++++++++++++++++++++++--------------------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+Yes
 
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index 3b19b123efec..b5a71d1ff603 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -320,6 +320,7 @@ static struct sys_off_handler platform_sys_off_handler;
- static struct sys_off_handler *alloc_sys_off_handler(int priority)
- {
- 	struct sys_off_handler *handler;
-+	gfp_t flags;
- 
- 	/*
- 	 * Platforms like m68k can't allocate sys_off handler dynamically
-@@ -330,7 +331,12 @@ static struct sys_off_handler *alloc_sys_off_handler(int priority)
- 		if (handler->cb_data)
- 			return ERR_PTR(-EBUSY);
- 	} else {
--		handler = kzalloc(sizeof(*handler), GFP_KERNEL);
-+		if (system_state > SYSTEM_RUNNING)
-+			flags = GFP_ATOMIC;
-+		else
-+			flags = GFP_KERNEL;
-+
-+		handler = kzalloc(sizeof(*handler), flags);
- 		if (!handler)
- 			return ERR_PTR(-ENOMEM);
- 	}
-@@ -440,7 +446,7 @@ void unregister_sys_off_handler(struct sys_off_handler *handler)
- {
- 	int err;
- 
--	if (!handler)
-+	if (IS_ERR_OR_NULL(handler))
- 		return;
- 
- 	if (handler->blocking)
-@@ -615,7 +621,23 @@ static void do_kernel_power_off_prepare(void)
-  */
- void do_kernel_power_off(void)
- {
-+	struct sys_off_handler *sys_off = NULL;
-+
-+	/*
-+	 * Register sys-off handlers for legacy PM callback. This allows
-+	 * legacy PM callbacks temporary co-exist with the new sys-off API.
-+	 *
-+	 * TODO: Remove legacy handlers once all legacy PM users will be
-+	 *       switched to the sys-off based APIs.
-+	 */
-+	if (pm_power_off)
-+		sys_off = register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
-+						   SYS_OFF_PRIO_DEFAULT,
-+						   legacy_pm_power_off, NULL);
-+
- 	atomic_notifier_call_chain(&power_off_handler_list, 0, NULL);
-+
-+	unregister_sys_off_handler(sys_off);
- }
- 
- /**
-@@ -626,7 +648,8 @@ void do_kernel_power_off(void)
-  */
- bool kernel_can_power_off(void)
- {
--	return !atomic_notifier_call_chain_is_empty(&power_off_handler_list);
-+	return !atomic_notifier_call_chain_is_empty(&power_off_handler_list) ||
-+		pm_power_off;
- }
- EXPORT_SYMBOL_GPL(kernel_can_power_off);
- 
-@@ -661,7 +684,6 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
- 		void __user *, arg)
- {
- 	struct pid_namespace *pid_ns = task_active_pid_ns(current);
--	struct sys_off_handler *sys_off = NULL;
- 	char buffer[256];
- 	int ret = 0;
- 
-@@ -686,21 +708,6 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
- 	if (ret)
- 		return ret;
- 
--	/*
--	 * Register sys-off handlers for legacy PM callback. This allows
--	 * legacy PM callbacks temporary co-exist with the new sys-off API.
--	 *
--	 * TODO: Remove legacy handlers once all legacy PM users will be
--	 *       switched to the sys-off based APIs.
--	 */
--	if (pm_power_off) {
--		sys_off = register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
--						   SYS_OFF_PRIO_DEFAULT,
--						   legacy_pm_power_off, NULL);
--		if (IS_ERR(sys_off))
--			return PTR_ERR(sys_off);
--	}
--
- 	/* Instead of trying to make the power_off code look like
- 	 * halt when pm_power_off is not set do it the easy way.
- 	 */
-@@ -758,7 +765,6 @@ SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
- 		break;
- 	}
- 	mutex_unlock(&system_transition_mutex);
--	unregister_sys_off_handler(sys_off);
- 	return ret;
- }
- 
--- 
-2.35.3
-
+>
+> --- a/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:10:26.797688422
+> +0200
+> +++ b/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:15:01.668594809
+> +0200
+> @@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_
+>                       const char *name, int id)
+>   {
+>       struct platform_device *pdev;
+> -    const struct resource *res = ofdev->resource;
+> -    unsigned int num = ofdev->num_resources;
+>       int retval;
+>
+>       pdev = platform_device_alloc(name, id);
+> @@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_
+>       if (retval)
+>           goto error;
+>
+> -    if (num) {
+> -        retval = platform_device_add_resources(pdev, res, num);
+> -        if (retval)
+> -            goto error;
+> -    }
+> +    pdev->dev.of_node = ofdev->dev.of_node;
+> +    pdev->dev.of_node_reused = true;
+>
+>       retval = platform_device_add(pdev);
+>       if (retval)
+>
+> ---
+>
+> Thanks,
+> Christian
