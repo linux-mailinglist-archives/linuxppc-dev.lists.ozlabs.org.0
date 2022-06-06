@@ -2,42 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105F853E3DF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 11:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A63D53E3EA
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 11:26:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LGnry0BJgz3bwX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 19:15:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LGp5J6cxQz306d
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jun 2022 19:26:12 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o5+R3V8o;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux-m68k.org (client-ip=195.130.132.49; helo=gauss.telenet-ops.be; envelope-from=geert@linux-m68k.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 401 seconds by postgrey-1.36 at boromir; Mon, 06 Jun 2022 19:15:05 AEST
-Received: from gauss.telenet-ops.be (gauss.telenet-ops.be [195.130.132.49])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o5+R3V8o;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGnrT6KfBz2yWn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 19:15:05 +1000 (AEST)
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-	by gauss.telenet-ops.be (Postfix) with ESMTPS id 4LGnhZ734Dz4x21d
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 11:08:14 +0200 (CEST)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed30:4ddc:2f16:838f:9c0c])
-	by albert.telenet-ops.be with bizsmtp
-	id fl8C270034e6eDr06l8Cbl; Mon, 06 Jun 2022 11:08:14 +0200
-Received: from geert (helo=localhost)
-	by ramsan.of.borg with local-esmtp (Exim 4.93)
-	(envelope-from <geert@linux-m68k.org>)
-	id 1ny8iZ-002urS-KO; Mon, 06 Jun 2022 11:08:11 +0200
-Date: Mon, 6 Jun 2022 11:08:11 +0200 (CEST)
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-X-X-Sender: geert@ramsan.of.borg
-To: linux-kernel@vger.kernel.org
-Subject: Re: Build regressions/improvements in v5.19-rc1
-In-Reply-To: <20220606082201.2792145-1-geert@linux-m68k.org>
-Message-ID: <alpine.DEB.2.22.394.2206061104510.695137@ramsan.of.borg>
-References: <CAHk-=wgZt-YDSKfdyES2p6A_KJoG8DwQ0mb9CeS8jZYp+0Y2Rw@mail.gmail.com> <20220606082201.2792145-1-geert@linux-m68k.org>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LGp4j3wsgz2ypR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jun 2022 19:25:40 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9E9DF61316;
+	Mon,  6 Jun 2022 09:25:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FA8C385A9;
+	Mon,  6 Jun 2022 09:25:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1654507538;
+	bh=SGyOc8QTUXhFBU0FK2dbWFATxGIrz/5ZeL4pH3h6UnI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o5+R3V8oO4+EAgAGTpyjUIQqB3KNAeJts/jhrJSGEBRzH1PN9a+gCBfvBwaJfsi0j
+	 S+xDAbHwdHZEgYXeWMOFMcC/5op2p7s+cMgBf8QSuvMTb6YuVTYwduPx5uxc+DOYFd
+	 fr4c0yZ5gapUx5x3IKS7vTtcG+YZNWc9Hh4gX5Rc=
+Date: Mon, 6 Jun 2022 11:25:35 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Subject: Re: [PATCH 0/6] phase out CONFIG_VIRT_TO_BUS
+Message-ID: <Yp3ID86TBFxl7qyL@kroah.com>
+References: <20220606084109.4108188-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220606084109.4108188-1-arnd@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,69 +56,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, Kees Cook <keescook@chromium.org>, linux-scsi@vger.kernel.org, linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org, sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linux-m68k@lists.linux-m68k.org, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 6 Jun 2022, Geert Uytterhoeven wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v5.19-rc1[1] compared to v5.18[2].
->
-> Summarized:
->  - build errors: +9/-10
+On Mon, Jun 06, 2022 at 10:41:03AM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The virt_to_bus/bus_to_virt interface has been deprecated for
+> decades. After Jakub Kicinski put a lot of work into cleaning out the
+> network drivers using them, there are only a couple of other drivers
+> left, which can all be removed or otherwise cleaned up, to remove the
+> old interface for good.
+> 
+> Any out of tree drivers using virt_to_bus() should be converted to
+> using the dma-mapping interfaces, typically dma_alloc_coherent()
+> or dma_map_single()).
+> 
+> There are a few m68k and ppc32 specific drivers that keep using the
+> interfaces, but these are all guarded with architecture-specific
+> Kconfig dependencies, and are not actually broken.
+> 
+> There are still a number of drivers that are using virt_to_phys()
+> and phys_to_virt() in place of dma-mapping operations, and these
+> are often broken, but they are out of scope for this series.
 
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/f2906aa863381afb0015a9eb7fefad885d4e5a56/ (all 135 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/4b0986a3613c92f4ec1bdc7f60ec66fea135991f/ (131 out of 135 configs)
+I'll take patches 1 and 2 right now through my staging tree if that's
+ok.
 
-> 9 error regressions:
->  + /kisskb/src/arch/um/include/asm/page.h: error: too few arguments to function 'to_phys':  => 105:20
->  + /kisskb/src/drivers/nvdimm/pmem.c: error: conflicting types for 'to_phys':  => 48:20
->  + /kisskb/src/drivers/nvdimm/pmem.c: error: control reaches end of non-void function [-Werror=return-type]:  => 324:1
+thanks,
 
-um-x86_64/um-allyesconfig
-
->  + /kisskb/src/arch/xtensa/kernel/entry.S: Error: unknown pseudo-op: `.bss':  => 2176
-
-xtensa-gcc11/xtensa-allmodconfig
-
->  + /kisskb/src/drivers/tty/serial/sh-sci.c: error: unused variable 'sport' [-Werror=unused-variable]:  => 2655:26
-
-sh4-gcc11/se7619_defconfig
-sh4-gcc11/sh-allmodconfig
-
-Fix available
-https://lore.kernel.org/all/4ed0a7a0d3fa912a5b44c451884818f2c138ef42.1644914600.git.geert+renesas@glider.be
-
->  + /kisskb/src/include/linux/fortify-string.h: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]:  => 344:25
-
-powerpc-gcc11/ppc64_book3e_allmodconfig
-
->  + /kisskb/src/include/ufs/ufshci.h: error: initializer element is not constant:  => 245:36
-
-mipsel-gcc5/mips-allmodconfig
-powerpc-gcc5/powerpc-allmodconfig
-
-FTR, include/ufs/ufshci.h lacks a MAINTAINERS entry.
-
->  + error: relocation truncated to fit: R_SPARC_WDISP22 against `.init.text':  => (.head.text+0x5100), (.head.text+0x5040)
->  + error: relocation truncated to fit: R_SPARC_WDISP22 against symbol `leon_smp_cpu_startup' defined in .text section in arch/sparc/kernel/trampoline_32.o:  => (.init.text+0xa4)
-
-sparc64-gcc5/sparc-allmodconfig
-
-> 3 warning regressions:
-
->  + arch/m68k/configs/multi_defconfig: warning: symbol value 'm' invalid for ZPOOL:  => 61
->  + arch/m68k/configs/sun3_defconfig: warning: symbol value 'm' invalid for ZPOOL:  => 37
-
-Will be fixed by the m68k defconfig update for v5.20.
-
-Gr{oetje,eeting}s,
-
- 						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
- 							    -- Linus Torvalds
+greg k-h
