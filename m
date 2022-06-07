@@ -2,72 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F44453F83F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 10:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE5F53F90A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 11:06:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LHNvN47nlz3bfc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 18:34:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LHPbs4WxQz3btT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 19:06:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DFqC2OTf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GWNy+uYh;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DFqC2OTf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GWNy+uYh;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LHNtg4CQ7z3bZc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 18:34:03 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id BC9C4616C9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 08:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2DE10C385A5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 08:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654590839;
-	bh=Ri0VfvkL165NezpI8+Nka48Oe3VOuuqb/8gF7Fo1mEo=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=DFqC2OTfGzpCdR+xM8Q4kZDARTr7UinmVVFIZnEziKtV6qN8Aq+68JjYbvGsjqzE7
-	 7j01dUBFOq4teBRpG3v38gxprycppxqnqNMPdxr0tJvXXO18eMGn1UN+rwi6WNM4SW
-	 gMqzBOPzVHBNmLXutiTxUoqFB5V6knvl7WkPK+FUBrgAd5BFemB5d0tvTf70fb9D6+
-	 nY14BBjSoAYq7gKSj6rqJBANvpaKJ5cE0dGHY2SSHD1gtPdzdYnD3hcjx5Oyg2qDhl
-	 46ylvVw4gPQ1zOV8c+n3EvUUFwr01ozNaAqNywc50bczG9//6uHMa3x4S9K8EGRYDT
-	 oomE/TEUiyVAw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id CFC89C05FD4; Tue,  7 Jun 2022 08:33:58 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216090] GCC12: printk.h:446:44: error: using a dangling pointer
- to '__str'
-Date: Tue, 07 Jun 2022 08:33:57 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: aros@gmx.com
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: ANSWERED
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-216090-206035-S4a9jjxtQN@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216090-206035@https.bugzilla.kernel.org/>
-References: <bug-216090-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LHPb638qJz30Qc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 19:05:37 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2578DSs3026664;
+	Tue, 7 Jun 2022 09:05:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=wIF17mc88TQDikBWbO5rcF1fzzeQJu0QKNUSoKAazAg=;
+ b=GWNy+uYhBNqEAfS3OhoGZZcWezgFNBXaGolxBwjyiDWEKHLatI7Zf5JOFyZk7NkGMRSz
+ QTd8rhNQ3wwVOH1LE0WXE1cL1Cw+uOsATZYiFGjM7YW5dhyy/VrgY7FetyRYeIqzvctT
+ zYWZHUFSyNItujAp5rpQl476N+Gq/pF8msYhtsRVRyLMDzXcoi6Rfi7+xB4LtRiQ8FSI
+ 01gv2Rvua6lWlu+qN8KAaUPcdS75QAWE3sy7gbv7dxRI70jO8iEdnjaenTnrGprf1XeS
+ N1nYS3oXoWJqEpE+J+G5xs7/PFtJkUyqTReDxgEOmIbbYSm4PCf8XEiU5CrGQInTKDdn nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gj2yms1q6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jun 2022 09:05:27 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2578H5BP007254;
+	Tue, 7 Jun 2022 09:05:26 GMT
+Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gj2yms1pf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jun 2022 09:05:26 +0000
+Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
+	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2578pjmB012598;
+	Tue, 7 Jun 2022 09:05:24 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma06fra.de.ibm.com with ESMTP id 3gfxnj2qxj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jun 2022 09:05:24 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 257958XR21758334
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Jun 2022 09:05:08 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 67BEE11C04A;
+	Tue,  7 Jun 2022 09:05:22 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EB05311C04C;
+	Tue,  7 Jun 2022 09:05:21 +0000 (GMT)
+Received: from [9.171.53.11] (unknown [9.171.53.11])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue,  7 Jun 2022 09:05:21 +0000 (GMT)
+Message-ID: <96560c72-3c24-f4fd-4212-3daa26c0f96f@linux.ibm.com>
+Date: Tue, 7 Jun 2022 11:05:21 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH] cxl: Fix refcount leak in cxl_calc_capp_routing
+Content-Language: en-US
+To: Miaoqian Lin <linmq006@gmail.com>, Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Lombard <clombard@linux.vnet.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20220605060038.62217-1-linmq006@gmail.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+In-Reply-To: <20220605060038.62217-1-linmq006@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -TzHRbacfZORohthD5M3Eik4ozt_Wj-0
+X-Proofpoint-ORIG-GUID: ybabcjRcUJTIDj3fzWbz9mQkkuuf99zO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-07_03,2022-06-03_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999 bulkscore=0
+ adultscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206070037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,22 +107,38 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216090
 
-Artem S. Tashkinov (aros@gmx.com) changed:
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEW                         |RESOLVED
-         Resolution|---                         |ANSWERED
+On 05/06/2022 08:00, Miaoqian Lin wrote:
+> of_get_next_parent() returns a node pointer with refcount incremented,
+> we should use of_node_put() on it when not need anymore.
+> This function only calls of_node_put() in normal path,
+> missing it in the error path.
+> Add missing of_node_put() to avoid refcount leak.
+> 
+> Fixes: f24be42aab37 ("cxl: Add psl9 specific code")
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
 
---- Comment #1 from Artem S. Tashkinov (aros@gmx.com) ---
-Linux kernel developers are well aware of the regressions related to GCC 12=
-.x.
-Patches are being worked on.
 
---=20
-You may reply to this email to add a comment.
+Indeed. Thanks!
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+   Fred
+
+
+> ---
+>   drivers/misc/cxl/pci.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/misc/cxl/pci.c b/drivers/misc/cxl/pci.c
+> index 3de0aea62ade..62385a529d86 100644
+> --- a/drivers/misc/cxl/pci.c
+> +++ b/drivers/misc/cxl/pci.c
+> @@ -387,6 +387,7 @@ int cxl_calc_capp_routing(struct pci_dev *dev, u64 *chipid,
+>   	rc = get_phb_index(np, phb_index);
+>   	if (rc) {
+>   		pr_err("cxl: invalid phb index\n");
+> +		of_node_put(np);
+>   		return rc;
+>   	}
+>   
