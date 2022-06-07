@@ -1,73 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB0053F3E7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 04:27:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4743253F736
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 09:30:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LHDlH2R8vz3blc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 12:27:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ee5rqWXO;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LHMT60ynnz3bl5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 17:30:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ee5rqWXO;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.176; helo=mail-qt1-f176.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LHDkY3G1Jz2yg5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 12:26:29 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 1D68B61252
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:26:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E8FFC385A9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 02:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654568784;
-	bh=rOD9UdTvMykJ2UexcoJU5CxUACkPInCVVQE0ukR8OrQ=;
-	h=From:To:Subject:Date:From;
-	b=Ee5rqWXO2TpQmC0OrOjGFpaHAWgKQdY3BnnBbs6Z3PjmHklxFrLw1o9+s0V/qfm3p
-	 QoUG/GzajqKLqsj4LwTczPv9j6KTXl3HQgRPS2rDmHFIcpKlY6G5AvDxKZjCNGdklm
-	 1lV8TJA8UnZlK3oH0SvmH3upHyeitOArxY3laAujiswe4BD6nZLxFKU5FLNL/rKd7f
-	 776GLPZUa63sXniPfddOJ2x7t7IM3Icy6wBWRzd9eP2TKlc9g+fnvriADD2/3YPrNF
-	 6214pzd8vxRtNP4IziM1WqsRsHY4tVx3ESEDcVqFWUpIiXwgZHnaUckKMVmt+uqLkQ
-	 gJ05lLk6B7Mhg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 5BF76C05FD4; Tue,  7 Jun 2022 02:26:24 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216090] New: GCC12: printk.h:446:44: error: using a dangling
- pointer to '__str'
-Date: Tue, 07 Jun 2022 02:26:24 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: vt@altlinux.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version
- cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
- priority component assigned_to reporter cf_regression
-Message-ID: <bug-216090-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LHMSg48KXz3bnP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 17:29:54 +1000 (AEST)
+Received: by mail-qt1-f176.google.com with SMTP id ew15so12041484qtb.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jun 2022 00:29:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/vvSp91df5DXi30Fd3pExmyOkjiZTMAg5zYSvB9bVbM=;
+        b=AKkoesU8QJ/pv96FrPEkVb+uqhIXlWkwzSl4lv4gAJqsxAtzXWO6sXVVN6BdlMKUrr
+         6TaPwOG4Hjf11eiKynQkMYRHMzeGdAVjzB7+Mkw+MjbUjc6dqxuAe67NHWT9n8C4XyTk
+         pVbEHpwuque1gqNjAOG1r5Qw4rayeLAke8N5aHKot6jf+74a/luytHVyjG1TqPpzZ6MB
+         uTWXPxRBbGCenWew8LcJxv7YWjaEYGysxBlYdXS7mSLyR+z03j7qeEM05ae0Fb+AtNDA
+         96xNhX3ISJmqowpbItW0dPuPjQqBb3yFELDhfCHGMpFpEZmNc/hQCDVk5f4UdZA0g/c6
+         mrfA==
+X-Gm-Message-State: AOAM532iWJJZqbMJoLapvRo7omZhA7/ht0Jj7gt9czaU7y1uLsGClaVC
+	TyfdQq2FQkAOdWa8MX4FaT3lVG8yHKN7Mw==
+X-Google-Smtp-Source: ABdhPJx6KEVi6fbYn2G0eSeieL67Zfe2m5gmpq6akCv9DDYfbSaL5R0tSJsoTkfdL1fUBrg5A6mkKw==
+X-Received: by 2002:a05:622a:142:b0:304:9915:3789 with SMTP id v2-20020a05622a014200b0030499153789mr21779401qtw.59.1654586990834;
+        Tue, 07 Jun 2022 00:29:50 -0700 (PDT)
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com. [209.85.219.172])
+        by smtp.gmail.com with ESMTPSA id j20-20020a05620a411400b006a377a015d4sm14581103qko.39.2022.06.07.00.29.49
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jun 2022 00:29:50 -0700 (PDT)
+Received: by mail-yb1-f172.google.com with SMTP id f34so29700920ybj.6
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jun 2022 00:29:49 -0700 (PDT)
+X-Received: by 2002:a25:7307:0:b0:65c:b98a:f592 with SMTP id
+ o7-20020a257307000000b0065cb98af592mr28407064ybc.380.1654586989616; Tue, 07
+ Jun 2022 00:29:49 -0700 (PDT)
 MIME-Version: 1.0
+References: <20220606084109.4108188-1-arnd@kernel.org> <20220606084109.4108188-7-arnd@kernel.org>
+In-Reply-To: <20220606084109.4108188-7-arnd@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 7 Jun 2022 09:29:38 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXi2LkrWSs9=D9tSfhz+YDHB+638F6JdmgQ7V8Gj1ehqQ@mail.gmail.com>
+Message-ID: <CAMuHMdXi2LkrWSs9=D9tSfhz+YDHB+638F6JdmgQ7V8Gj1ehqQ@mail.gmail.com>
+Subject: Re: [PATCH 6/6] arch/*/: remove CONFIG_VIRT_TO_BUS
+To: Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,92 +65,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Linux-Arch <linux-arch@vger.kernel.org>, scsi <linux-scsi@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, linux-m68k <linux-m68k@lists.linux-m68k.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, Linux IOMMU <iommu@lists.linux-foundation.org>, Parisc List <linux-parisc@vger.kernel.org>, alpha <linux-alpha@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216090
+On Mon, Jun 6, 2022 at 11:10 AM Arnd Bergmann <arnd@kernel.org> wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> All architecture-independent users of virt_to_bus() and bus_to_virt()
+> have been fixed to use the dma mapping interfaces or have been
+> removed now.  This means the definitions on most architectures, and the
+> CONFIG_VIRT_TO_BUS symbol are now obsolete and can be removed.
+>
+> The only exceptions to this are a few network and scsi drivers for m68k
+> Amiga and VME machines and ppc32 Macintosh. These drivers work correctly
+> with the old interfaces and are probably not worth changing.
+>
+> On alpha and parisc, virt_to_bus() were still used in asm/floppy.h.
+> alpha can use isa_virt_to_bus() like x86 does, and parisc can just
+> open-code the virt_to_phys() here, as this is architecture specific
+> code.
+>
+> I tried updating the bus-virt-phys-mapping.rst documentation, which
+> started as an email from Linus to explain some details of the Linux-2.0
+> driver interfaces. The bits about virt_to_bus() were declared obsolete
+> backin 2000, and the rest is not all that relevant any more, so in the
+> end I just decided to remove the file completely.
+>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-            Bug ID: 216090
-           Summary: GCC12: printk.h:446:44: error: using a dangling
-                    pointer to '__str'
-           Product: Platform Specific/Hardware
-           Version: 2.5
-    Kernel Version: 5.17.13
-          Hardware: All
-                OS: Linux
-              Tree: Mainline
-            Status: NEW
-          Severity: normal
-          Priority: P1
-         Component: PPC-64
-          Assignee: platform_ppc-64@kernel-bugs.osdl.org
-          Reporter: vt@altlinux.org
-        Regression: Yes
+>  arch/m68k/Kconfig                             |   1 -
+>  arch/m68k/include/asm/virtconvert.h           |   4 +-
 
-There is build error on GCC 12:
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
+Gr{oetje,eeting}s,
 
-  [00:00:26]   CC      arch/powerpc/kernel/trace/ftrace.o
-  [00:00:26] In file included from ./include/asm-generic/bug.h:22,
-  [00:00:26]                  from ./arch/powerpc/include/asm/bug.h:149,
-  [00:00:26]                  from ./include/linux/bug.h:5,
-  [00:00:26]                  from ./include/linux/thread_info.h:13,
-  [00:00:26]                  from ./include/asm-generic/preempt.h:5,
-  [00:00:26]                  from
-./arch/powerpc/include/generated/asm/preempt.h:1,
-  [00:00:26]                  from ./include/linux/preempt.h:78,
-  [00:00:26]                  from ./include/linux/spinlock.h:55,
-  [00:00:26]                  from arch/powerpc/kernel/trace/ftrace.c:16:
-  [00:00:26] arch/powerpc/kernel/trace/ftrace.c: In function
-'ftrace_modify_code':
-  [00:00:26] ./include/linux/printk.h:446:44: error: using a dangling point=
-er
-to '__str' [-Werror=3Ddangling-pointer=3D]
-  [00:00:26]   446 | #define printk(fmt, ...) printk_index_wrap(_printk, fm=
-t,
-##__VA_ARGS__)
-  [00:00:26]       |                                            ^
-  [00:00:26] ./include/linux/printk.h:418:17: note: in definition of macro
-'printk_index_wrap'
-  [00:00:26]   418 |                 _p_func(_fmt, ##__VA_ARGS__);=20=20=20=
-=20=20=20=20=20=20=20=20=20=20
-             \
-  [00:00:26]       |                 ^~~~~~~
-  [00:00:26] ./include/linux/printk.h:489:9: note: in expansion of macro
-'printk'
-  [00:00:26]   489 |         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
-  [00:00:26]       |         ^~~~~~
-  [00:00:26] arch/powerpc/kernel/trace/ftrace.c:76:17: note: in expansion of
-macro 'pr_err'
-  [00:00:26]    76 |                 pr_err("%p: replaced (%s) !=3D old (%s=
-)",
-  [00:00:26]       |                 ^~~~~~
-  [00:00:26] In file included from
-./arch/powerpc/include/asm/code-patching.h:14,
-  [00:00:26]                  from arch/powerpc/kernel/trace/ftrace.c:27:
-  [00:00:26] ./arch/powerpc/include/asm/inst.h:156:14: note: '__str' declar=
-ed
-here
-  [00:00:26]   156 |         char __str[PPC_INST_STR_LEN];   \
-  [00:00:26]       |              ^~~~~
-  [00:00:26] ./include/linux/printk.h:418:33: note: in expansion of macro
-'ppc_inst_as_str'
-  [00:00:26]   418 |                 _p_func(_fmt, ##__VA_ARGS__);=20=20=20=
-=20=20=20=20=20=20=20=20=20=20
-             \
-  [00:00:26]       |                                 ^~~~~~~~~~~
-  [00:00:26] ./include/linux/printk.h:446:26: note: in expansion of macro
-'printk_index_wrap'
-  [00:00:26]   446 | #define printk(fmt, ...) printk_index_wrap(_printk, fm=
-t,
-##__VA_ARGS__)
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-This may be related discussion:
-https://lore.kernel.org/all/20220601162023.GW25951@gate.crashing.org/T/
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
