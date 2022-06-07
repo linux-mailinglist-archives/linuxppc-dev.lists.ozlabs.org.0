@@ -2,51 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B1B53FEDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 14:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECABA54013E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 16:24:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LHVD95w0zz3bk5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jun 2022 22:34:33 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CyKzGazU;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LHXfW5SPzz3c8k
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jun 2022 00:24:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LHVCX6fjbz3bfc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jun 2022 22:34:00 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=CyKzGazU;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LHVCQ55dqz4xD5;
-	Tue,  7 Jun 2022 22:33:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654605238;
-	bh=xsqLotJgLRyhHSsJOogHV2acGAb2fC5jAOSFmHOIGA8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CyKzGazU3+2K8KiXkFolMw7JQl3fOZLWg6z5Qa5Pu4HecLtJDYCw5wZXMKOpJGtNH
-	 ls59IpcNb+xkojsRvHCc4fWQ+jCa6EIATKhLPnYyeuNIQ3bM/kCbodmjHfgOjgkZkS
-	 4h1lW8cbZe+o+0DbG3jBJCA91u30ggP5RKfw27leNpg5nQnN6glbcE5esgg3QrVgMC
-	 F6vtgSRCeacrQYA+phjt3HatLp44B4mYcMY4ThklAxFfrqM77MDq/rb5P0zDTt02T0
-	 PGQo6ASa5inpNApELNIR+n6jSj0aWCgLFiNBXcmQyCK7Xw/Luq/s+wYpHBJDE3Ehpr
-	 xujYS3Qf+FLTQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH 6/6] arch/*/: remove CONFIG_VIRT_TO_BUS
-In-Reply-To: <20220606084109.4108188-7-arnd@kernel.org>
-References: <20220606084109.4108188-1-arnd@kernel.org>
- <20220606084109.4108188-7-arnd@kernel.org>
-Date: Tue, 07 Jun 2022 22:33:49 +1000
-Message-ID: <87y1y8tzyq.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LHXf223QYz3084
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jun 2022 00:23:35 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-160-GwpNDfyfMIKAFzFYkoJBmA-1; Tue, 07 Jun 2022 15:23:27 +0100
+X-MC-Unique: GwpNDfyfMIKAFzFYkoJBmA-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.36; Tue, 7 Jun 2022 15:23:26 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.036; Tue, 7 Jun 2022 15:23:25 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Michael Ellerman' <mpe@ellerman.id.au>, Bagas Sanjaya
+	<bagasdotme@gmail.com>, "linuxppc-dev@lists.ozlabs.org"
+	<linuxppc-dev@lists.ozlabs.org>
+Subject: RE: outside array bounds error on ppc64_defconfig, GCC 12.1.0
+Thread-Topic: outside array bounds error on ppc64_defconfig, GCC 12.1.0
+Thread-Index: AQHYehMfGrZ1ohRgvU+RLIptsHpWBK1D/qnw
+Date: Tue, 7 Jun 2022 14:23:25 +0000
+Message-ID: <d38aeb0d6f2040369256ee640b44fafe@AcuMS.aculab.com>
+References: <YpbUcPrm61RLIiZF@debian.me> <87mtepns81.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87mtepns81.fsf@mpe.ellerman.id.au>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,38 +61,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-m68k@lists.linux-m68k.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Martyn Welch <martyn@welchs.me.uk>, Manohar Vanga <manohar.vanga@gmail.com>, linuxppc-dev@lists.ozlabs.org, Denis Efremov <efremov@linux.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>, Yang Li <yang.lee@linux.alibaba.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Arnd Bergmann <arnd@kernel.org> writes:
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index be68c1f02b79..48e1aa0536b6 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -277,7 +277,6 @@ config PPC
->  	select SYSCTL_EXCEPTION_TRACE
->  	select THREAD_INFO_IN_TASK
->  	select TRACE_IRQFLAGS_SUPPORT
-> -	select VIRT_TO_BUS			if !PPC64
->  	#
->  	# Please keep this list sorted alphabetically.
->  	#
+From: Michael Ellerman
+> Sent: 07 June 2022 03:05
+>=20
+> Bagas Sanjaya <bagasdotme@gmail.com> writes:
+> > Hi,
+> >
+> > I'm trying to verify Drop ppc_inst_as_str() patch on [1] by performing
+> > ppc64_defconfig build with powerpc64-unknown-linux-gnu-gcc (GCC 12.1.0)=
+.
+> > The patch is applied on top of powerpc tree, next branch.
+>=20
+> Yeah I see it too.
+>=20
+> > I got outside array bounds error:
+> >
+> >   CC      arch/powerpc/kernel/dbell.o
+> > In function 'do_byte_reverse',
+> >     inlined from 'do_vec_store' at arch/powerpc/lib/sstep.c:722:3,
+> >     inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3509:9=
+:
+> > arch/powerpc/lib/sstep.c:286:25: error: array subscript [3, 4] is outsi=
+de array bounds of 'union
+> <anonymous>[1]' [-Werror=3Darray-bounds]
+> >   286 |                 up[0] =3D byterev_8(up[3]);
+> >       |                         ^~~~~~~~~~~~~~~~
+> >
+> > arch/owerpc/lib/sstep.c: In function 'emulate_loadstore':
+> > arch/powerpc/lib/sstep.c:708:11: note: at offset [24, 39] into object '=
+u' of size 16
+> >   708 |         } u;
+> >       |           ^
+> > In function 'do_byte_reverse',
+> >     inlined from 'do_vec_store' at arch/powerpc/lib/sstep.c:722:3,
+> >     inlined from 'emulate_loadstore' at arch/powerpc/lib/sstep.c:3509:9=
+:
+> > arch/powerpc/lib/sstep.c:287:23: error: array subscript [3, 4] is outsi=
+de array bounds of 'union
+> <anonymous>[1]' [-Werror=3Darray-bounds]
+> >   287 |                 up[3] =3D tmp;
+> >       |                 ~~~~~~^~~~~
+>=20
+> This happens because we have a generic byte reverse function
+> (do_byte_reverse()), that takes a size as a parameter. So it will
+> reverse 8, 16, 32 bytes etc.
+>=20
+> In some cases the compiler can see that we're passing a pointer to
+> storage that is smaller than 32 bytes, but it isn't convinced that the
+> size parameter is also smaller than 32 bytes.
+>=20
+> Which I think is reasonable, the code that sets the size is separate
+> from this code, so the compiler can't really deduce that it's safe.
+>=20
+> I don't see a really simple fix. I tried clamping the size parameter to
+> do_byte_reverse() with max(), but that didn't work :/
 
-> diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-> index c5a5f7c9b231..73fcd5cdb662 100644
-> --- a/arch/powerpc/include/asm/io.h
-> +++ b/arch/powerpc/include/asm/io.h
-> @@ -985,8 +985,6 @@ static inline void * bus_to_virt(unsigned long address)
->  }
->  #define bus_to_virt bus_to_virt
->  
-> -#define page_to_bus(page)	(page_to_phys(page) + PCI_DRAM_OFFSET)
-> -
->  #endif /* CONFIG_PPC32 */
-  
-Seems that's not used by any drivers, so fine to remove.
+I had a quick look at the code - it is somewhat horrid!
+Not really surprising the compiler is confused.
+Although it shouldn't be outputting that error message
+unless it is certain.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Could it be re-written to read the data into an __u128
+(or whatever the compiler type is).
+Optionally byteswap the entire thing (swap the words and
+then byteswap each word).
+The do a put_user_8/16/32/64() to write out the value.
 
-cheers
+I think that would remove all the memory accesses and make
+it a lot faster as well.
+
+=09David
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
