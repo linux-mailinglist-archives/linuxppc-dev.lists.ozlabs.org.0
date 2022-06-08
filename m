@@ -2,53 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDB3544038
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 01:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE7A544036
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 01:58:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJPNF5Tm0z3f5Z
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 09:59:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJPLz4NJKz3chb
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 09:58:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qz2/QcW+;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=E4ma1UJk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=qz2/QcW+;
-	dkim-atps=neutral
 Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJ96q6RJBz3bkJ
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJ96q3Kwhz3bjX
 	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 00:47:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=T8wRwm6eLEEe+d6prOVCLJdHQ0FxyXLfs5ZoW8qxROY=; b=qz2/QcW+8oRBpx5oORnEf+GtM8
-	q1YrQyf1tmyPcNQqEPrXFmduaozueI1j9rg8SJ6zBna7Uz8lvnEwB+B+wyKCf5pGe3lOvB4F+TeAD
-	F9tyHNLVtk1V2IJAmR3uomZgujNpMa70W2bEyEOoERgoVaups+pxLymddoQIwXqrmFio0yWVivIGv
-	IsqY6h6gyND3FQXvxxlKKrgtcZk2R0bnOmFFyBY0qQH0BnYniwDC01FuURzwOyZMFoXutRSidDScS
-	SGPdVyuHTbrYBEgBLfjjxHu+bvwr+Z2Livrdq6BQDnc77vplqPh7z9gL7QwK+/3eqINZJiDgrTyxM
-	zjRENbJA==;
+	bh=lz2MUgDITA4yYb0U+PMz5bsqmEWyVbYbLXt1grP5wdc=; b=E4ma1UJky4lYLkF7WsmuwBiBAR
+	ZNOCNP37EHcDipS0h5pGpc7Z83q2l0F9r1qoT2IwS4JaVORLNk9Y8kD1/G4PQ/WPrdROyQRafl+bw
+	8kEHexR7OAoHvsHpcXrvfDNKNmCb7vZaRmG5jCMjvkiVnlyjOoCZYPiCN2YUEe0s+KCLCMKw1lusn
+	c//k/ch+ZMfy68BfHEU9q/SBuHFmKkFeZQNGD+V4Ey9G51j7RCAyIzKlUBl1/EhiN9VFEuwMKKqHS
+	exZwnsJXFjdzNoY07XCZXRHpvxrUSpp80Ad7Sk+AHygZ2w1HtBhHyFFImsUsvO1nkQsZm+y1UkgzW
+	W9tgnQAA==;
 Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
 	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nywx6-0066Da-9x; Wed, 08 Jun 2022 14:46:33 +0000
+	id 1nywx6-0066Do-Kq; Wed, 08 Jun 2022 14:46:33 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0452B302F4F;
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 0CE1C302F57;
 	Wed,  8 Jun 2022 16:46:24 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id C421820C119B8; Wed,  8 Jun 2022 16:46:18 +0200 (CEST)
-Message-ID: <20220608144518.073801916@infradead.org>
+	id CB17620C119BB; Wed,  8 Jun 2022 16:46:18 +0200 (CEST)
+Message-ID: <20220608144518.199614455@infradead.org>
 User-Agent: quilt/0.66
-Date: Wed, 08 Jun 2022 16:27:57 +0200
+Date: Wed, 08 Jun 2022 16:27:59 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: peterz@infradead.org
-Subject: [PATCH 34/36] cpuidle,omap3: Push RCU-idle into omap_sram_idle()
+Subject: [PATCH 36/36] cpuidle,clk: Remove trace_.*_rcuidle()
 References: <20220608142723.103523089@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -73,89 +70,44 @@ Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-OMAP3 uses full SoC suspend modes as idle states, as such it needs the
-whole power-domain and clock-domain code from the idle path.
-
-All that code is not suitable to run with RCU disabled, as such push
-RCU-idle deeper still.
+OMAP was the one and only user.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/arm/mach-omap2/cpuidle34xx.c |    4 +---
- arch/arm/mach-omap2/pm.h          |    2 +-
- arch/arm/mach-omap2/pm34xx.c      |   12 ++++++++++--
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/clk/clk.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm/mach-omap2/cpuidle34xx.c
-+++ b/arch/arm/mach-omap2/cpuidle34xx.c
-@@ -133,9 +133,7 @@ static int omap3_enter_idle(struct cpuid
- 	}
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -978,12 +978,12 @@ static void clk_core_disable(struct clk_
+ 	if (--core->enable_count > 0)
+ 		return;
  
- 	/* Execute ARM wfi */
--	cpuidle_rcu_enter();
--	omap_sram_idle();
--	cpuidle_rcu_exit();
-+	omap_sram_idle(true);
+-	trace_clk_disable_rcuidle(core);
++	trace_clk_disable(core);
  
- 	/*
- 	 * Call idle CPU PM enter notifier chain to restore
---- a/arch/arm/mach-omap2/pm.h
-+++ b/arch/arm/mach-omap2/pm.h
-@@ -29,7 +29,7 @@ static inline int omap4_idle_init(void)
+ 	if (core->ops->disable)
+ 		core->ops->disable(core->hw);
  
- extern void *omap3_secure_ram_storage;
- extern void omap3_pm_off_mode_enable(int);
--extern void omap_sram_idle(void);
-+extern void omap_sram_idle(bool rcuidle);
- extern int omap_pm_clkdms_setup(struct clockdomain *clkdm, void *unused);
+-	trace_clk_disable_complete_rcuidle(core);
++	trace_clk_disable_complete(core);
  
- #if defined(CONFIG_PM_OPP)
---- a/arch/arm/mach-omap2/pm34xx.c
-+++ b/arch/arm/mach-omap2/pm34xx.c
-@@ -26,6 +26,7 @@
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <linux/of.h>
-+#include <linux/cpuidle.h>
- 
- #include <trace/events/power.h>
- 
-@@ -174,7 +175,7 @@ static int omap34xx_do_sram_idle(unsigne
- 	return 0;
+ 	clk_core_disable(core->parent);
  }
+@@ -1037,12 +1037,12 @@ static int clk_core_enable(struct clk_co
+ 		if (ret)
+ 			return ret;
  
--void omap_sram_idle(void)
-+void omap_sram_idle(bool rcuidle)
- {
- 	/* Variable to tell what needs to be saved and restored
- 	 * in omap_sram_idle*/
-@@ -254,11 +255,18 @@ void omap_sram_idle(void)
- 	 */
- 	if (save_state)
- 		omap34xx_save_context(omap3_arm_context);
-+
-+	if (rcuidle)
-+		cpuidle_rcu_enter();
-+
- 	if (save_state == 1 || save_state == 3)
- 		cpu_suspend(save_state, omap34xx_do_sram_idle);
- 	else
- 		omap34xx_do_sram_idle(save_state);
+-		trace_clk_enable_rcuidle(core);
++		trace_clk_enable(core);
  
-+	if (rcuidle)
-+		rcuidle_rcu_exit();
-+
- 	/* Restore normal SDRC POWER settings */
- 	if (cpu_is_omap3430() && omap_rev() >= OMAP3430_REV_ES3_0 &&
- 	    (omap_type() == OMAP2_DEVICE_TYPE_EMU ||
-@@ -316,7 +324,7 @@ static int omap3_pm_suspend(void)
+ 		if (core->ops->enable)
+ 			ret = core->ops->enable(core->hw);
  
- 	omap3_intc_suspend();
+-		trace_clk_enable_complete_rcuidle(core);
++		trace_clk_enable_complete(core);
  
--	omap_sram_idle();
-+	omap_sram_idle(false);
- 
- restore:
- 	/* Restore next_pwrsts */
+ 		if (ret) {
+ 			clk_core_disable(core->parent);
 
 
