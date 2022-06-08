@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD814544056
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 02:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D501D54405F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 02:10:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJPbf3gc5z3g82
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 10:09:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJPcw56R2z3fKq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 10:10:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=c0sBpB4E;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=npWDxkQd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=c0sBpB4E;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=npWDxkQd;
 	dkim-atps=neutral
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJ96y4DlFz3bkm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 00:47:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJ96z5PKrz3bdy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 00:47:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Type:MIME-Version:References:
 	Subject:Cc:To:From:Date:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:
 	Content-ID:Content-Description:In-Reply-To;
-	bh=+nBTmu8be4dn87X4h4i4v5hXqWi/FDQJ2e0V2G49JnI=; b=c0sBpB4EJtpUlMJmM1BtzQg1jI
-	4PcdDgJzYOowDoMnmKAFYhNbpvRYzsV7kRFyLJf62+ZuPqPEFAxeBvm38jC9EIzinrmdPRpzRnIth
-	ZjcGrFN3FC2OLDiPw1MQ9GiO/ueu64sxGeUIVMfNNGZ1I6IAzUSGlYS50yZYH/qpVkumUW9sz9ylw
-	NiQ4O2XB8H8Hk/RXSmU/7i/042dpY1RsaqJxDbzJ3hgd+h+vW2daHvNujHxeLDb2O3c/EAvt6fmpH
-	/CT3Hd5fJEQuF8uryywQG23Lx98/8viggcr1njgwvu2L7IHYIVv/w/rdZa7aTRE+XIf9ro7DYS6a3
-	okJs1Mxg==;
+	bh=pxqjaMyXYMAIciLaWxKe0qnmRXZim+cyW3iOuZrk594=; b=npWDxkQdpsP/KSbB8UVk7cSTfR
+	iAvH2EDMYqweSjq8GVWChqEcX/9BIHnt+/9Lh2o73ASUuV3YGe0N1gseF/G3NKGkJrIf+0It9dNyi
+	FAvR8qXc2Wg9XRPiJtu0ItkxyceEVaw/05Yp7Ekb/y4g2aezSDA4pvjQ6wKPUVatsqaVeKHbB2bcq
+	mZiZTyBSaEWIyApTNtwFIeiNSKagNK4BMp9uLK4X+ZDckF4tkdR4/twee7LOTtORPxdg1htlaoW41
+	LiZVginb/4mTy1FluTeIqpvVDv2MTNtlL+Aa4yxsbdvio0znFSvZKUdNiAQUmElpo3cRSF9a3DUwX
+	Ck0o5LKQ==;
 Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nywx3-00ChYC-JV; Wed, 08 Jun 2022 14:46:29 +0000
+	id 1nywx4-00ChYj-7G; Wed, 08 Jun 2022 14:46:30 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A3BE9302EEA;
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id CC219302F27;
 	Wed,  8 Jun 2022 16:46:23 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 0)
-	id 9DB8020C10EDE; Wed,  8 Jun 2022 16:46:18 +0200 (CEST)
-Message-ID: <20220608144517.507286638@infradead.org>
+	id A74D220C119A3; Wed,  8 Jun 2022 16:46:18 +0200 (CEST)
+Message-ID: <20220608144517.633293983@infradead.org>
 User-Agent: quilt/0.66
-Date: Wed, 08 Jun 2022 16:27:48 +0200
+Date: Wed, 08 Jun 2022 16:27:50 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: peterz@infradead.org
-Subject: [PATCH 25/36] time/tick-broadcast: Remove RCU_NONIDLE usage
+Subject: [PATCH 27/36] cpuidle,mwait: Make noinstr clean
 References: <20220608142723.103523089@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -73,52 +73,77 @@ Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-No callers left that have already disabled RCU.
+vmlinux.o: warning: objtool: intel_idle_s2idle+0x6e: call to __monitor.constprop.0() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle_irq+0x8c: call to __monitor.constprop.0() leaves .noinstr.text section
+vmlinux.o: warning: objtool: intel_idle+0x73: call to __monitor.constprop.0() leaves .noinstr.text section
+
+vmlinux.o: warning: objtool: mwait_idle+0x88: call to clflush() leaves .noinstr.text section
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- kernel/time/tick-broadcast-hrtimer.c |   29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ arch/x86/include/asm/mwait.h         |   12 ++++++------
+ arch/x86/include/asm/special_insns.h |    2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/kernel/time/tick-broadcast-hrtimer.c
-+++ b/kernel/time/tick-broadcast-hrtimer.c
-@@ -56,25 +56,20 @@ static int bc_set_next(ktime_t expires,
- 	 * hrtimer callback function is currently running, then
- 	 * hrtimer_start() cannot move it and the timer stays on the CPU on
- 	 * which it is assigned at the moment.
-+	 */
-+	hrtimer_start(&bctimer, expires, HRTIMER_MODE_ABS_PINNED_HARD);
-+	/*
-+	 * The core tick broadcast mode expects bc->bound_on to be set
-+	 * correctly to prevent a CPU which has the broadcast hrtimer
-+	 * armed from going deep idle.
- 	 *
--	 * As this can be called from idle code, the hrtimer_start()
--	 * invocation has to be wrapped with RCU_NONIDLE() as
--	 * hrtimer_start() can call into tracing.
-+	 * As tick_broadcast_lock is held, nothing can change the cpu
-+	 * base which was just established in hrtimer_start() above. So
-+	 * the below access is safe even without holding the hrtimer
-+	 * base lock.
- 	 */
--	RCU_NONIDLE( {
--		hrtimer_start(&bctimer, expires, HRTIMER_MODE_ABS_PINNED_HARD);
--		/*
--		 * The core tick broadcast mode expects bc->bound_on to be set
--		 * correctly to prevent a CPU which has the broadcast hrtimer
--		 * armed from going deep idle.
--		 *
--		 * As tick_broadcast_lock is held, nothing can change the cpu
--		 * base which was just established in hrtimer_start() above. So
--		 * the below access is safe even without holding the hrtimer
--		 * base lock.
--		 */
--		bc->bound_on = bctimer.base->cpu_base->cpu;
--	} );
-+	bc->bound_on = bctimer.base->cpu_base->cpu;
-+
- 	return 0;
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -25,7 +25,7 @@
+ #define TPAUSE_C01_STATE		1
+ #define TPAUSE_C02_STATE		0
+ 
+-static inline void __monitor(const void *eax, unsigned long ecx,
++static __always_inline void __monitor(const void *eax, unsigned long ecx,
+ 			     unsigned long edx)
+ {
+ 	/* "monitor %eax, %ecx, %edx;" */
+@@ -33,7 +33,7 @@ static inline void __monitor(const void
+ 		     :: "a" (eax), "c" (ecx), "d"(edx));
  }
  
+-static inline void __monitorx(const void *eax, unsigned long ecx,
++static __always_inline void __monitorx(const void *eax, unsigned long ecx,
+ 			      unsigned long edx)
+ {
+ 	/* "monitorx %eax, %ecx, %edx;" */
+@@ -41,7 +41,7 @@ static inline void __monitorx(const void
+ 		     :: "a" (eax), "c" (ecx), "d"(edx));
+ }
+ 
+-static inline void __mwait(unsigned long eax, unsigned long ecx)
++static __always_inline void __mwait(unsigned long eax, unsigned long ecx)
+ {
+ 	mds_idle_clear_cpu_buffers();
+ 
+@@ -76,8 +76,8 @@ static inline void __mwait(unsigned long
+  * EAX                     (logical) address to monitor
+  * ECX                     #GP if not zero
+  */
+-static inline void __mwaitx(unsigned long eax, unsigned long ebx,
+-			    unsigned long ecx)
++static __always_inline void __mwaitx(unsigned long eax, unsigned long ebx,
++				     unsigned long ecx)
+ {
+ 	/* No MDS buffer clear as this is AMD/HYGON only */
+ 
+@@ -86,7 +86,7 @@ static inline void __mwaitx(unsigned lon
+ 		     :: "a" (eax), "b" (ebx), "c" (ecx));
+ }
+ 
+-static inline void __sti_mwait(unsigned long eax, unsigned long ecx)
++static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
+ {
+ 	mds_idle_clear_cpu_buffers();
+ 	/* "mwait %eax, %ecx;" */
+--- a/arch/x86/include/asm/special_insns.h
++++ b/arch/x86/include/asm/special_insns.h
+@@ -196,7 +196,7 @@ static inline void load_gs_index(unsigne
+ 
+ #endif /* CONFIG_PARAVIRT_XXL */
+ 
+-static inline void clflush(volatile void *__p)
++static __always_inline void clflush(volatile void *__p)
+ {
+ 	asm volatile("clflush %0" : "+m" (*(volatile char __force *)__p));
+ }
 
 
