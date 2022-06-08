@@ -2,46 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662EA54407F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 02:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27876544080
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 02:22:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJPsK2Hn3z3hPX
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 10:21:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJPsz00bTz3f8q
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 10:21:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ivA4OAsW;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.175; helo=mail-yb1-f175.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ivA4OAsW;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJFhf2y0sz3bdF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 04:13:21 +1000 (AEST)
-Received: by mail-yb1-f175.google.com with SMTP id i39so9837355ybj.9
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jun 2022 11:13:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZQePx5uIM1fUidMEiJVM5nuB6ZzPVeEu38qEpc1UrpE=;
-        b=IdcptieX5xRcmlDo2eYf0ZefoNn6k6CFAjfN/VXKI9uV2WNKIXzI7aLDo03D+ztbnV
-         N+zTzjxwYbA85H+GG28Fi5lVR1aaX9MgwB19ABtTWfDyMbn1oRxttfCet1AKYgOJ5u9Q
-         9o02/YV0UTCMuQq5ZRLbd/dnGYOTOwjn3t7nZdKiNNkPzs1vZoRY56P8+YhfAlXlLtJc
-         elO8cua7zFYyt3ImK90EUubbSwtgVPgabxM+ogeUzCiefIh5LC8OtwQDMD32f/th1q0e
-         h7JhubAE2eWWi8CskkaHfXrcetjWAPBY7wP4TS2zlBwVUcVnk8qdS2L4TO4sdC38PNaM
-         rOeQ==
-X-Gm-Message-State: AOAM5309ChLqA3zF0X4B4OB7Hx10FeA8Q0/Mao7I7L8pqaJHRNyhIC1W
-	ZTRJ3CHOcD3HFXVsHHq9TTSAoPkUFh4eae4qoXg=
-X-Google-Smtp-Source: ABdhPJyd1CrHem+vVK3IGyX/t5xH0MretwaFF4fsfRB0Td7tNKI/Gb3F1VH58WOF1ULS3yEBVcV2AFovGma6uhuJi5U=
-X-Received: by 2002:a5b:4a:0:b0:663:7c5b:a5ba with SMTP id e10-20020a5b004a000000b006637c5ba5bamr17352131ybp.81.1654711998678;
- Wed, 08 Jun 2022 11:13:18 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJFr30DyZz3blX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 04:19:46 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 1A15261BF3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jun 2022 18:19:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14774C341C8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jun 2022 18:19:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1654712382;
+	bh=BrMt+22N41uzooUnzPUoRXnpI1kF+bmp+ST9j+9wk1U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ivA4OAsW++8ZjxCbAwaoJ4Ocmy2TO84fUgcc0eOwQ9vYXwb7n8+Jq0xRwRWkWNi7m
+	 2mQKJfAbLxccKBQFu8niWLiJU96zAPpyqwrQxX9EcN88eoNKLPGJeANYb1Znd4y9hz
+	 bAf7wgePUqsrEBUO6emkpmOnfpaMfDJdTM5qtmuk5Ijn5mgQ8ilrPW8fSRwcgqMc6y
+	 YGs6H6mPqrzoKjoZXIrcahMFQeQFREusERs4S+7IqrWPqwoTFrn4eRORAAXTG1vJRa
+	 qkxvMJUm1Ox+d4+km9NwSPsMtD1wJ8Mh/S1tL34v9XjYShxa+CAnhoFREDXQ91d4Vm
+	 JCAM7//qgFtDg==
+Received: by mail-yb1-f174.google.com with SMTP id r82so37827757ybc.13
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jun 2022 11:19:42 -0700 (PDT)
+X-Gm-Message-State: AOAM533VXkZcZ9YBvNZKkVgxZIvcH4VwQhfPzYsfBrlCo/sza9yF7h8I
+	ojCl7IELIzfvys0TyAzNhmbZBLvs67kubhZt1t8=
+X-Google-Smtp-Source: ABdhPJzriHyGLGwDai2rVcky87dr5my3t8HULhAS0zE1LEI+/L1Wv0eduSFTK2BSoTXq6GOLOf6KiMiv8mt8c35aPAU=
+X-Received: by 2002:a81:4a82:0:b0:2ff:94b4:b4d1 with SMTP id
+ x124-20020a814a82000000b002ff94b4b4d1mr38668766ywa.130.1654712370883; Wed, 08
+ Jun 2022 11:19:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144516.047149313@infradead.org>
-In-Reply-To: <20220608144516.047149313@infradead.org>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 8 Jun 2022 20:13:07 +0200
-Message-ID: <CAJZ5v0g=jcRkMhVoNkZzSaM0viK0C7WN6T5C1_3VQ5GGGQkSzQ@mail.gmail.com>
-Subject: Re: [PATCH 02/36] x86/idle: Replace x86_idle with a static_call
-To: Peter Zijlstra <peterz@infradead.org>
+References: <20220608000014.3054333-1-jarkko@profian.com> <CAMj1kXFsdEq6XZ6eOuf8Ks-F4qgneVxFeLYNN_S4JaPy8koEyw@mail.gmail.com>
+In-Reply-To: <CAMj1kXFsdEq6XZ6eOuf8Ks-F4qgneVxFeLYNN_S4JaPy8koEyw@mail.gmail.com>
+From: Song Liu <song@kernel.org>
+Date: Wed, 8 Jun 2022 11:19:19 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW7NZXepczZGyV2Ti4hNSupLBoKgA64K=zJN4uVBTxN37g@mail.gmail.com>
+Message-ID: <CAPhsuW7NZXepczZGyV2Ti4hNSupLBoKgA64K=zJN4uVBTxN37g@mail.gmail.com>
+Subject: Re: [PATCH] kprobes: Enable tracing for mololithic kernel images
+To: Ard Biesheuvel <ardb@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Thu, 09 Jun 2022 09:55:19 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -55,132 +68,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Benjamin Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, srivatsa@csail.mit.edu, linux-arch <linux-arch@vger.kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Andy Gross <agross@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, dl-linux-imx <linux-imx@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org, mattst88@gmail.com, Christian Borntraeger <borntraeger@linux.ibm.com>, Michael Turquette <mturquette@baylibre.com>, sammy@sammy.net, Petr Mladek <pmladek@suse.com>, Linux PM <linux-pm@vger.kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, Thomas Gleixner <tglx@
- linutronix.de>, Linux OMAP Mailing List <linux-omap@vger.kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, rth@twiddle.net, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, Sven Schnelle <svens@linux.ibm.com>, jolsa@kernel.org, Paul Mackerras <paulus@samba.org>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, virtualization@lists.linux-foundation.org, James Bottomley <James.Bottomley@hansenpartnership.com>, jcmvbkbc@gmail.com, Thierry Reding <thierry.reding@gmail.com>, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, John Ogness <john.ogness@linutronix.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>, Jon H
- unter <jonathanh@nvidia.com>, Mathieu Desnoyers <math
+Cc: Dan Li <ashimida@linux.alibaba.com>, Heiko Stuebner <heiko@sntech.de>, Linus Walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Javier Martinez Canillas <javierm@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Guenter Roeck <linux@roeck-us.net>, =?UTF-8?Q?Andr=C3=A9_Almeida?= <andrealmeid@igalia.com>, Michael Roth <michael.roth@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Andrey Konovalov <andreyknvl@gmail.com>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Wu Caize <zepan@sipeed.com>, Guo Ren <guoren@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, Luis Machado <luis.machado@linaro.org>, Atsushi Nemoto
+  <anemo@mba.ocn.ne.jp>, Dave Hansen <dave.hansen@linux.intel.com>, Joey Gouly <joey.gouly@arm.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, linux-s390@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Helge Deller <deller@gmx.de>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Sven Schnelle <svens@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>, Vasily Gorbik <gor@linux.ibm.com>, Philipp Tomsich <philipp.tomsich@vrull.eu>, Dave Anglin <dave.anglin@bell.net>, linux-arm-kernel@lists.infradead.org, Daniel Axtens <dja@axtens.net>, Nicolas Pitre <nico@fluxnic.net>, Jarkko Sakkinen <jarkko@kernel.org>, "Eric W. Biederman" <ebiederm@xmission.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Daniel Bristot de Oliveira <bristot@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, Emil Renner Berthing <kernel@esmil.dk>, Jordan Niethe <jniethe5@gmail.com>, Atish Patra <atishp@atishpatra.org>, Alexei Starovoito
+ v <ast@kernel.org>, Will Deacon <will@kernel.org>, Ma
 
-ieu.desnoyers@efficios.com>, Frederic Weisbecker <frederic@kernel.org>, Len Brown <lenb@kernel.org>, linux-xtensa@linux-xtensa.org, Sascha Hauer <kernel@pengutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, linux-alpha@vger.kernel.org, linux-m68k <linux-m68k@lists.linux-m68k.org>, Stafford Horne <shorne@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, chris@zankel.net, Stephen Boyd <sboyd@kernel.org>, dinguyen@kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, lpieralisi@kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Kevin Hilman <khilman@kernel.org>, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, Mel Gorman <mgorman@suse.de>, Jacob Pan <jacob.jun.pan@linux.intel.com>, Arnd Bergmann <arnd@arndb.d
- e>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk <linux-clk@vger.kernel.org>, Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, bcain@quicinc.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, David Miller <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Tony Lindgren <tony@atomide.com>, amakhalov@vmware.com, Bjorn Andersson <bjorn.andersson@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv <linux-riscv@lists.infradead.org>, anton.ivanov@cambridgegreys.com, jonas@southpole.se, Yury Norov <yury.norov@gmail.com>, Richard Weinberger <richard@nod.at>, the arch/x86 maintainers <x86@kernel.org>, Russell King - ARM Linux <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, "P
- aul E. McKenney" <paulmck@kernel.org>, Heiko Carstens
- <hca@linux.ibm.com>, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra <linux-tegra@vger.kernel.org>, namhyung@kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jpoimboe@kernel.org, Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, ink@jurassic.park.msu.ru, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+sahiro Yamada <masahiroy@kernel.org>, Jarkko Sakkinen <jarkko@profian.com>, Sami Tolvanen <samitolvanen@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Alexander Egorenkov <egorenar@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Nathaniel McCallum <nathaniel@profian.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tobias Huschle <huschle@linux.ibm.com>, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz>, Chen Zhongjin <chenzhongjin@huawei.
+ com>, linux-riscv@lists.infradead.org, X86 ML <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Aaron Tomlin <atomlin@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, Liao Chang <liaochang1@huawei.com>, Paul Walmsley <paul.walmsley@sifive.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Richter <tmricht@linux.ibm.com>, linux-mips@vger.kernel.org, Changbin Du <changbin.du@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 8, 2022 at 4:47 PM Peter Zijlstra <peterz@infradead.org> wrote:
+On Wed, Jun 8, 2022 at 9:28 AM Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> Typical boot time setup; no need to suffer an indirect call for that.
+> Hello Jarkko,
 >
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+> On Wed, 8 Jun 2022 at 02:02, Jarkko Sakkinen <jarkko@profian.com> wrote:
+> >
+> > Tracing with kprobes while running a monolithic kernel is currently
+> > impossible because CONFIG_KPROBES is dependent of CONFIG_MODULES.  This
+> > dependency is a result of kprobes code using the module allocator for the
+> > trampoline code.
+> >
+> > Detaching kprobes from modules helps to squeeze down the user space,
+> > e.g. when developing new core kernel features, while still having all
+> > the nice tracing capabilities.
+> >
+> > For kernel/ and arch/*, move module_alloc() and module_memfree() to
+> > module_alloc.c, and compile as part of vmlinux when either CONFIG_MODULES
+> > or CONFIG_KPROBES is enabled.  In addition, flag kernel module specific
+> > code with CONFIG_MODULES.
+> >
+> > As the result, kprobes can be used with a monolithic kernel.
+>
+> I think I may have mentioned this the previous time as well, but I
+> don't think this is the right approach.
+>
+> Kprobes uses alloc_insn_page() to allocate executable memory, but the
+> requirements for this memory are radically different compared to
+> loadable modules, which need to be within an arch-specific distance of
+> the core kernel, need KASAN backing etc etc.
 
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+I think the distance of core kernel requirement is the same for kprobe
+alloc_insn_page and modules, no?
 
-> ---
->  arch/x86/kernel/process.c |   50 +++++++++++++++++++++++++---------------------
->  1 file changed, 28 insertions(+), 22 deletions(-)
+Thanks,
+Song
+
 >
-> --- a/arch/x86/kernel/process.c
-> +++ b/arch/x86/kernel/process.c
-> @@ -24,6 +24,7 @@
->  #include <linux/cpuidle.h>
->  #include <linux/acpi.h>
->  #include <linux/elf-randomize.h>
-> +#include <linux/static_call.h>
->  #include <trace/events/power.h>
->  #include <linux/hw_breakpoint.h>
->  #include <asm/cpu.h>
-> @@ -692,7 +693,23 @@ void __switch_to_xtra(struct task_struct
->  unsigned long boot_option_idle_override = IDLE_NO_OVERRIDE;
->  EXPORT_SYMBOL(boot_option_idle_override);
+> This is why arm64, for instance, does not implement alloc_insn_page()
+> in terms of module_alloc() [and likely does not belong in this patch
+> for that reason]
+
+
+
 >
-> -static void (*x86_idle)(void);
-> +/*
-> + * We use this if we don't have any better idle routine..
-> + */
-> +void __cpuidle default_idle(void)
-> +{
-> +       raw_safe_halt();
-> +}
-> +#if defined(CONFIG_APM_MODULE) || defined(CONFIG_HALTPOLL_CPUIDLE_MODULE)
-> +EXPORT_SYMBOL(default_idle);
-> +#endif
-> +
-> +DEFINE_STATIC_CALL_NULL(x86_idle, default_idle);
-> +
-> +static bool x86_idle_set(void)
-> +{
-> +       return !!static_call_query(x86_idle);
-> +}
->
->  #ifndef CONFIG_SMP
->  static inline void play_dead(void)
-> @@ -715,28 +732,17 @@ void arch_cpu_idle_dead(void)
->  /*
->   * Called from the generic idle code.
->   */
-> -void arch_cpu_idle(void)
-> -{
-> -       x86_idle();
-> -}
-> -
-> -/*
-> - * We use this if we don't have any better idle routine..
-> - */
-> -void __cpuidle default_idle(void)
-> +void __cpuidle arch_cpu_idle(void)
->  {
-> -       raw_safe_halt();
-> +       static_call(x86_idle)();
->  }
-> -#if defined(CONFIG_APM_MODULE) || defined(CONFIG_HALTPOLL_CPUIDLE_MODULE)
-> -EXPORT_SYMBOL(default_idle);
-> -#endif
->
->  #ifdef CONFIG_XEN
->  bool xen_set_default_idle(void)
->  {
-> -       bool ret = !!x86_idle;
-> +       bool ret = x86_idle_set();
->
-> -       x86_idle = default_idle;
-> +       static_call_update(x86_idle, default_idle);
->
->         return ret;
->  }
-> @@ -859,20 +865,20 @@ void select_idle_routine(const struct cp
->         if (boot_option_idle_override == IDLE_POLL && smp_num_siblings > 1)
->                 pr_warn_once("WARNING: polling idle and HT enabled, performance may degrade\n");
->  #endif
-> -       if (x86_idle || boot_option_idle_override == IDLE_POLL)
-> +       if (x86_idle_set() || boot_option_idle_override == IDLE_POLL)
->                 return;
->
->         if (boot_cpu_has_bug(X86_BUG_AMD_E400)) {
->                 pr_info("using AMD E400 aware idle routine\n");
-> -               x86_idle = amd_e400_idle;
-> +               static_call_update(x86_idle, amd_e400_idle);
->         } else if (prefer_mwait_c1_over_halt(c)) {
->                 pr_info("using mwait in idle threads\n");
-> -               x86_idle = mwait_idle;
-> +               static_call_update(x86_idle, mwait_idle);
->         } else if (cpu_feature_enabled(X86_FEATURE_TDX_GUEST)) {
->                 pr_info("using TDX aware idle routine\n");
-> -               x86_idle = tdx_safe_halt;
-> +               static_call_update(x86_idle, tdx_safe_halt);
->         } else
-> -               x86_idle = default_idle;
-> +               static_call_update(x86_idle, default_idle);
->  }
->
->  void amd_e400_c1e_apic_setup(void)
-> @@ -925,7 +931,7 @@ static int __init idle_setup(char *str)
->                  * To continue to load the CPU idle driver, don't touch
->                  * the boot_option_idle_override.
->                  */
-> -               x86_idle = default_idle;
-> +               static_call_update(x86_idle, default_idle);
->                 boot_option_idle_override = IDLE_HALT;
->         } else if (!strcmp(str, "nomwait")) {
->                 /*
->
+> Is there any reason kprobes cannot simply use vmalloc()?
 >
