@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6EE544FC2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 16:47:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1D7544FB6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 16:45:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJn4l3Cnbz3f3f
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 00:47:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJn2f19Q4z3c8c
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 00:45:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJn2J0HDCz3bmQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 00:45:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJn2F6gyPz3bmQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 00:45:25 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LJn2D62bSz4xZ0;
-	Fri, 10 Jun 2022 00:45:24 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LJn2F4PkVz4xD1;
+	Fri, 10 Jun 2022 00:45:25 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>, Masahiro Yamada <masahiroy@kernel.org>
-In-Reply-To: <20220604085050.4078927-1-masahiroy@kernel.org>
-References: <20220604085050.4078927-1-masahiroy@kernel.org>
-Subject: Re: [PATCH] powerpc: get rid of #include <generated/compile.h>
-Message-Id: <165478587541.589231.1462511723617855253.b4-ty@ellerman.id.au>
-Date: Fri, 10 Jun 2022 00:44:35 +1000
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20220609133245.573565-1-mpe@ellerman.id.au>
+References: <20220609133245.573565-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
+Message-Id: <165478587632.589231.14367330461176321926.b4-ty@ellerman.id.au>
+Date: Fri, 10 Jun 2022 00:44:36 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,25 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, Jason Yan <yanaijie@huawei.com>, linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>, Paul Mackerras <paulus@samba.org>, Frank Rowand <frank.rowand@sony.com>, Diana Craciun <diana.craciun@nxp.com>
+Cc: ariel.miculas@belden.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 4 Jun 2022 17:50:50 +0900, Masahiro Yamada wrote:
-> You cannot include <generated/compile.h> here because it is generated
-> in init/Makefile but there is no guarantee that it happens before
-> arch/powerpc/mm/nohash/kaslr_booke.c is compiled for parallel builds.
+On Thu, 9 Jun 2022 23:32:45 +1000, Michael Ellerman wrote:
+> The ptrace PEEKUSR/POKEUSR (aka PEEKUSER/POKEUSER) API allows a process
+> to read/write registers of another process.
 > 
-> The places where you can reliably include <generated/compile.h> are:
-> 
->   - init/          (because init/Makefile can specify the dependency)
->   - arch/*/boot/   (because it is compiled after vmlinux)
+> To get/set a register, the API takes an index into an imaginary address
+> space called the "USER area", where the registers of the process are
+> laid out in some fashion.
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc: get rid of #include <generated/compile.h>
-      https://git.kernel.org/powerpc/c/7ad4bd887d27c6b6ffbef216f19c19f8fe2b8f52
+[1/1] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
+      https://git.kernel.org/powerpc/c/8e1278444446fc97778a5e5c99bca1ce0bbc5ec9
 
 cheers
