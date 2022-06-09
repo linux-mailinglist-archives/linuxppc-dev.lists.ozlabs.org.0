@@ -1,54 +1,107 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791F054654B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:15:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ECD454654C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:15:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJK83Hnhz3dvj
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:15:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJKw1DCsz3dpR
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:15:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=DMcdvAOR;
+	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=QU5y3jf9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hotmail.com (client-ip=2a01:111:f400:feae::803; helo=apc01-psa-obe.outbound.protection.outlook.com; envelope-from=wenhu.wang@hotmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=DMcdvAOR;
+	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=QU5y3jf9;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJg2968Llz3blX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:14:56 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 8501C21E03;
-	Thu,  9 Jun 2022 10:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1654769687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DrcvBEFljM5p6TtbSeEidSTZ/fg57f/9Kkfw39rL09Y=;
-	b=DMcdvAORR690fi8pr+U8fk3+hyZsj7Tt5x9qwl047KjZChmxVjUcAfS5VoE+jvBI94jRA8
-	x1qWl9NmnYPcL1/wsN/jGmXJEl3+KOTwVVBHmebd33G6ciWPS6jZdzz9VOlvQCAFmLQ8Zj
-	Z7XOIERpCYK8sshW0SQuT7wCuIg0KcE=
-Received: from suse.cz (unknown [10.100.208.146])
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01olkn20803.outbound.protection.outlook.com [IPv6:2a01:111:f400:feae::803])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 311FB2C141;
-	Thu,  9 Jun 2022 10:14:40 +0000 (UTC)
-Date: Thu, 9 Jun 2022 12:14:42 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
-Message-ID: <YqHIEthhhi5e+Mtb@alley>
-References: <20220608142723.103523089@infradead.org>
- <20220608144517.444659212@infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJgNK16gsz3bjX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:30:39 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=S8i4Re1EoJeWuL1mYdy4xJ2JwCwr1SfaVSoeArM2Hn2yaDsz5A8aXE/5flKi/jQDqHyYCw6P5bNpm4AWIOcZm5yJlACkmlhNXzJeKyiPjcOqv4MORjfZ8m1VccIp1t/zGEUTilZ+K/SSWCrVo2GdIKAbTwyjIFtkURwPZFeiY9xENjro/izolZuyeM+jy9l/9iNMbJ1wX8T2NM7nsNoiP8PmD+aKubrXw0tjmtqsJjKmlHb+P8IrsgagYZ12mEqbwC9q2ik5+H69DcnB6HbQiplNAKna80aIomOD/b8bsJwdjSFBcGcMQFx8uZcP88wfnoywXrUvMKPqeqiC3/OdBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BvgOYuOPv2moA19OINoxDOjiZIr8ezSiG6KJfoBeH44=;
+ b=JtN0pqUITyQYyyYpZwGrNgTwdjrFBfkoj2QYUhQ0qKbXS4ZbNgJMEtj+kuvxkfTBxtC544qHRu+sHCid7x2Hf4Qelxh5/GnsyHmvvrk+Q/7RGtTWNligV1FId2ryoXsL3cjzlt5TOJgLUs8N/7G4ZyMFnVVVEo9PgsP4FUYghpIA07F1xQqKQS9ogIg6i6cS1CX0U2R3kV23X6I3L3oW23sd9ROWJD05SjjZTfBQq6+rQFkpG1z2JZgaLZ/YQndO7zqboxh65CLxxZWCzHSS0O1ljgN3oYyHoQBjE+m4KnEnagp8ACOVqzQIxfO0fxWW2YhO/S6ahKB/qwCP1ZYEqg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BvgOYuOPv2moA19OINoxDOjiZIr8ezSiG6KJfoBeH44=;
+ b=QU5y3jf9Mec32A+ahiMK5rFe/JYMPxEzu6Uq6xhyeV+4vUzBJHp0Lpbeom07A4nkgAWjujB+eEwya9VU+pGxXKho3qekZTEbLCclWX5oNzDYEPoolT055C1CszgQ574cbVUiw7Xx4z0agUxAyVIMynqMDFyMEOkmk8mK9puRfYWZv5K3Zkf20B/rwpm3k6Zjv2nDLq6vIvJCSM6SWShAzgb/mIaGJi0iOAf8zYlcx0dYFvXUUjXVeGkEvHx6A9fGzmNlM7hyBsLpNZWxCO+pkvTlSvxn0u1MKMRaD81rEJlxfwEBuwcSCDxsJamvY6kfACcPzR31duRNAHKb+ijm+g==
+Received: from SG2PR01MB2951.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:76::15) by TY2PR0101MB2607.apcprd01.prod.exchangelabs.com
+ (2603:1096:404:b6::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.12; Thu, 9 Jun
+ 2022 10:30:16 +0000
+Received: from SG2PR01MB2951.apcprd01.prod.exchangelabs.com
+ ([fe80::a1f7:b32:baa1:3d12]) by SG2PR01MB2951.apcprd01.prod.exchangelabs.com
+ ([fe80::a1f7:b32:baa1:3d12%7]) with mapi id 15.20.5332.013; Thu, 9 Jun 2022
+ 10:30:16 +0000
+From: Wang Wenhu <wenhu.wang@hotmail.com>
+To: gregkh@linuxfoundation.org,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH 0/2] uio:ppc: cache-sram driver implementation
+Date: Thu,  9 Jun 2022 03:28:53 -0700
+Message-ID:  <SG2PR01MB2951A22F0FB4B17E284898B19FA79@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [1NoisRLF5HCMdrjJSB3qNTU1k+sQDIVr]
+X-ClientProxiedBy: OS3PR01CA0025.jpnprd01.prod.outlook.com
+ (2603:1096:604:db::12) To SG2PR01MB2951.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:76::15)
+X-Microsoft-Original-Message-ID:  <20220609102855.272270-1-wenhu.wang@hotmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220608144517.444659212@infradead.org>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 10846fc5-e50f-4555-4d86-08da4a03094f
+X-MS-Exchange-SLBlob-MailProps: 	EpEO96k6WonAGWAYIHxzt372mDgmmxv3apB7nGlCULGCj68c1CUhNkYVlEMpm0/HC6qtSlQRwOuTlOIrvKMbVfMI5vDXOkpC7dXGopjFNb5Deog2oGYXQnuLpFbYJy8cqJxPJ4vkzSQK7JD6uSfSlLcf3SMeMudGSP9Di8+6R71LG7bvHJwwPWTiwAldqWfzkea93MobM7sLodLSZgv7g4b9JhskPM0jnqPZSEtpRjgdQlAVkwIkufAK2Ru8nIMw+39p8LXKY1LIsejwYBtjjFt97Ml5ICq/u4PsrOxc9xFJ2LB3zI8fm71YrK9CiN3xuJB9kkLPaTkBptcCAokKtdKTKfLay0BzL3X0sJu5ebRVDoys9sbLyajBWWcEhhIlt7cIEvyJVWjLMY2YJ/DtUR7OfdvvjjN8yg8Vdo2tW2GvZGs38KArWr3QPe4nbgG79fmx5cpBUWuyr2MNFq5hXjAjF44CzMzuAkdztRYtBwmO/C3ta/REuNTs5o+tVuyAS6hdQzbO0doJbjcoM+NCey8dv/v0SjM9Ipwk/aHKPNrU3HEHlCfHf4q4zXHz9XXyW8y+REUppJ140I/6UGcun+yiECdySts6MiMUZBe4SSb/q9NSlJ/THhrQ/ySmw3F23MmMCcT1d5cfwnoGUhbh6n0BdrSePrfsIVz8J6FKeoQHUMQBhMzVqfKRrPlDBGQidsHboi94oSyj87dTPL89uEeEig2jJvNq1WEhN+dU7FnTg92w3KmiETHiIZgodZEB5lZm/IVrlM0=
+X-MS-TrafficTypeDiagnostic: TY2PR0101MB2607:EE_
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	5YkcuhvbyQzp9LCwX2j5227vRL9gi4gfBgXxXq+7jqRVGtAQVPIWxc29UWA2bPyortbrki26sQRYI6vFPz3lpQl4/OO5Kls2jt7KWqdZ8brPQXQ7gKaqR5sn9VYJyNrJNU+maN7Yioidpwrao2qEwC3XHAfyezNm5B5wN/lUM2/TDs9eYW6t56eL5Bxkvb79kNC4zmMAD8hxvOY3Vk2egHcqSPbIsGimXhk1wzec9HBCW3aLD0g2cvCc3FmUuNrHixAu9Ggzqd0A0KalpmjOuvFdKFfBcvxAW4iJIli0VQh0M81ZsuyvHTedq9bEUuB5WCCKSMAz//lwoCmVVWqXHAM7pu24EkqMIP1ldyDJCadJfyoIemFAPyLANr93a9ta3kevCtowOE7IN9b3+Zw0ltpGu3DW2EB3ya+StfhIIjefk3hLv/aWvqHAmcaRRYHuaqMQddcj2tSrF6A7gJAJlWs8r/qJzauTtlLkfDg6hOio1ZE7YuNKv4ONAprYy3YljPOqYeXa6ITV6Do035Cv2GZYi81Ibt2tZZA/bMa56QS6QteOWw6qEGuj33RII/iqtMkg40uAkGOQS+h2ZSPVIQ==
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?oHO8dDJuazR/jVZI0t6wRNY6QBcMywnE39UjsJBD9R4v6fA2GI9nXl6zb7fm?=
+ =?us-ascii?Q?GNURr2VnYURTiWUjacGSWwOleNxVVXhU3l0V4xqVAu91DOxmUgfGKujOaSxL?=
+ =?us-ascii?Q?0f75U5AcNyW2XqQmHfp+sWE9zIXz+rmi/kEfElC1ssvy61qA/f5GsRPzx3O6?=
+ =?us-ascii?Q?ZfihzJej3fnxSlaEzoC0pO2E5sito5kJiwSXr6/CpplnoTjH7nCCnLkPwWoe?=
+ =?us-ascii?Q?foerHybU6DsicclVEK5nwP3A5sRhw3PlOP0ko1xD2lHyjyeyLHMwNQha/8Mq?=
+ =?us-ascii?Q?yDBXvQquZ32N7LgPOSxdi24sys7lEYqa/tOsxlfws/Dmo0pDyJv3wHKpCB9z?=
+ =?us-ascii?Q?muG1WS/1nbwyz0REKAkDDllWgOsFdksqKv2DuRTF3MX4bm8QzWejWmIVQwqi?=
+ =?us-ascii?Q?VSIjdnyQSkVViC0/DAG3Wcj5tI8J2/GrC13Dl4S3XgrngfRXUuGSYr5tFsq3?=
+ =?us-ascii?Q?8t6RFRwSNIaaZBXZXxLuKjvzBpNgvra9nWPK4VyonNdAFKMybRSNPvw0/UOM?=
+ =?us-ascii?Q?eUM2Y+Q8h1O+2xZNQW1b1OCzwsb9qQ4Trl6ftByfvd1LHaslDwh0dSYyq37N?=
+ =?us-ascii?Q?RccGWf/i4uIot7qte2PAvjvNGtyuhVC0olMmeNgE969+KKyK+jpnLd0SkyR+?=
+ =?us-ascii?Q?sEWl+ShnvCJ86JkI8TSgJ6otZO2h55+njY/sM7mTIW8OwBBBmjGi8cHBBFe/?=
+ =?us-ascii?Q?CrEm0ZvK8oJTfxuJ9YS40TBIwdTwwr2mfSz7hhDS+Lt6WlHsdRK0aRy0CPmE?=
+ =?us-ascii?Q?H4IT3wwHwH6feR7yrs7UXLyWDQf6R0T6OUtWZaqFRv5gSiFaUHKewjU20rVm?=
+ =?us-ascii?Q?csGIUX+y43djbXj52rs3SN81d3fMzbEESGwMCpHcNqp8jehTx0fUw+4f8zUa?=
+ =?us-ascii?Q?iApd4+6+xLrwaasCx2C17VCLVZiNtdlmypRkuVHTGAW/RnfFNHigTHZWFF/G?=
+ =?us-ascii?Q?H9HImyusF1q+cF3JzhWtuq+fDhiRti60Tj3yySznyJYKbVbFaq0Lg/3AsyYN?=
+ =?us-ascii?Q?H/Na2kVbAGc3oX07jvRepgrB2YO8kkA0WTeL+ufrwzmeBzfKQzWksEPQxFFe?=
+ =?us-ascii?Q?AKIUbxb2E2bASfsoiJSAEFeMKbphSjMCktI2Gu6RqAY6VomWzvxs+jJZKAZK?=
+ =?us-ascii?Q?c2cGeK2WatshsCLVnFDN0wVxdT/TwSVsHUx4qDHrusl0hSVGGb9E5HinniaN?=
+ =?us-ascii?Q?Cu4nSCw/oad+ObtP7wRa/JjgCTqUPcspVqQuyytJL+Y/+vsoanRNMsKDf2cf?=
+ =?us-ascii?Q?ynazAXvCqpgEjKGb/lGJ33aMKwN2Rq2pxtB9mV0Nnr+Y9U5TrO7748BRV47v?=
+ =?us-ascii?Q?yI9JvR688PJiZYcrXT64UBylnmlOXxs44FZCpHUVERMoCwtHv+oPaIVeTnlM?=
+ =?us-ascii?Q?uwymY84NC9klrCR/ctf7dQLP9EtTGP/HQl/fdD1pS5aF74xXhSDxOMhyulLn?=
+ =?us-ascii?Q?qM15r7jj2cQ=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-d8e84.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 10846fc5-e50f-4555-4d86-08da4a03094f
+X-MS-Exchange-CrossTenant-AuthSource: SG2PR01MB2951.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2022 10:30:15.6018
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY2PR0101MB2607
 X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -61,62 +114,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James
- .Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.p
- an@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ul
-
-li.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, ink@
- jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Wang Wenhu <wenhu.wang@hotmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sending again. The previous attempt was rejected by several
-recipients. It was caused by a mail server changes on my side.
+Patch 1 exports the symbol ioremap_coherent which is used by the driver.
+Patch 2 is the implementation of uio driver for freescale mpc85xx.
 
-I am sorry for spamming those who got the 1st mail already.
+Wang Wenhu (2):
+  powerpc:mm: export symbol ioremap_coherent
+  uio:powerpc:mpc85xx: l2-cache-sram uio driver implementation
 
-On Wed 2022-06-08 16:27:47, Peter Zijlstra wrote:
-> The problem, per commit fc98c3c8c9dc ("printk: use rcuidle console
-> tracepoint"), was printk usage from the cpuidle path where RCU was
-> already disabled.
-> 
-> Per the patches earlier in this series, this is no longer the case.
+ arch/powerpc/mm/ioremap.c             |   1 +
+ drivers/uio/Kconfig                   |  10 +
+ drivers/uio/Makefile                  |   1 +
+ drivers/uio/uio_fsl_85xx_cache_sram.c | 286 ++++++++++++++++++++++++++
+ 4 files changed, 298 insertions(+)
+ create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
 
-My understanding is that this series reduces a lot the amount
-of code called with RCU disabled. As a result the particular printk()
-call mentioned by commit fc98c3c8c9dc ("printk: use rcuidle console
-tracepoint") is called with RCU enabled now. Hence this particular
-problem is fixed better way now.
+-- 
+2.25.1
 
-But is this true in general?
-Does this "prevent" calling printk() a safe way in code with
-RCU disabled?
-
-I am not sure if anyone cares. printk() is the best effort
-functionality because of the consoles code anyway. Also I wonder
-if anyone uses this trace_console().
-
-Therefore if this patch allows to remove some tricky tracing
-code then it might be worth it. But if trace_console_rcuidle()
-variant is still going to be available then I would keep using it.
-
-Best Regards,
-Petr
-
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  kernel/printk/printk.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -2238,7 +2238,7 @@ static u16 printk_sprint(char *text, u16
->  		}
->  	}
->  
-> -	trace_console_rcuidle(text, text_len);
-> +	trace_console(text, text_len);
->  
->  	return text_len;
->  }
-> 
