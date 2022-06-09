@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5203546540
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 791F054654B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:15:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJHk5sMkz3f5r
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:13:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJK83Hnhz3dvj
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:15:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=bn7nWKrT;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=DMcdvAOR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=bn7nWKrT;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=DMcdvAOR;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJfm33Q3bz3bkR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:02:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UbbDgBiwip0YBZOTZVQugfugvsZnYOECFEm/sChB2KE=; b=bn7nWKrTByqCttAV7Tb+hk3S6t
-	I/mkMmJ369JvRCOAATit3qrnLrVVApCU3MZIi6lIKiFAlbStRcA30X0UFUd1T8D12fVQnVKa7hYPR
-	K7EYNQp37UzeZk78mCBcTmEsaKr3iz0rWwxCle8s1uG3rrOkr/TW+qX1Zj/6s0Og8NDJ1jJvyTCIJ
-	X/UPiCnCV5l95zgrnKFHSTcoAhPMEQ49r4HzYtVzZmCksowLBW+PMICGN33p7tE1QEHeN+zrII/zd
-	ec7l/iKVKEAoDbJibxSRhGbBYgET1Ue5jZm0b5HeYxPcLQDm5a8x7p7RxjPba9/By/81XUqzodwzS
-	pNWm9E9w==;
-Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=worktop.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzEzM-006LJR-Mm; Thu, 09 Jun 2022 10:02:07 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 2E614981287; Thu,  9 Jun 2022 12:02:04 +0200 (CEST)
-Date: Thu, 9 Jun 2022 12:02:04 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Petr Mladek <pmladek@suse.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJg2968Llz3blX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:14:56 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 8501C21E03;
+	Thu,  9 Jun 2022 10:14:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1654769687; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DrcvBEFljM5p6TtbSeEidSTZ/fg57f/9Kkfw39rL09Y=;
+	b=DMcdvAORR690fi8pr+U8fk3+hyZsj7Tt5x9qwl047KjZChmxVjUcAfS5VoE+jvBI94jRA8
+	x1qWl9NmnYPcL1/wsN/jGmXJEl3+KOTwVVBHmebd33G6ciWPS6jZdzz9VOlvQCAFmLQ8Zj
+	Z7XOIERpCYK8sshW0SQuT7wCuIg0KcE=
+Received: from suse.cz (unknown [10.100.208.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 311FB2C141;
+	Thu,  9 Jun 2022 10:14:40 +0000 (UTC)
+Date: Thu, 9 Jun 2022 12:14:42 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Peter Zijlstra <peterz@infradead.org>
 Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
-Message-ID: <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
+Message-ID: <YqHIEthhhi5e+Mtb@alley>
 References: <20220608142723.103523089@infradead.org>
  <20220608144517.444659212@infradead.org>
- <YqG6URbihTNCk9YR@alley>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YqG6URbihTNCk9YR@alley>
+In-Reply-To: <20220608144517.444659212@infradead.org>
 X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,49 +70,53 @@ li.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@josh
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 09, 2022 at 11:16:46AM +0200, Petr Mladek wrote:
-> On Wed 2022-06-08 16:27:47, Peter Zijlstra wrote:
-> > The problem, per commit fc98c3c8c9dc ("printk: use rcuidle console
-> > tracepoint"), was printk usage from the cpuidle path where RCU was
-> > already disabled.
-> > 
-> > Per the patches earlier in this series, this is no longer the case.
+Sending again. The previous attempt was rejected by several
+recipients. It was caused by a mail server changes on my side.
+
+I am sorry for spamming those who got the 1st mail already.
+
+On Wed 2022-06-08 16:27:47, Peter Zijlstra wrote:
+> The problem, per commit fc98c3c8c9dc ("printk: use rcuidle console
+> tracepoint"), was printk usage from the cpuidle path where RCU was
+> already disabled.
 > 
-> My understanding is that this series reduces a lot the amount
-> of code called with RCU disabled. As a result the particular printk()
-> call mentioned by commit fc98c3c8c9dc ("printk: use rcuidle console
-> tracepoint") is called with RCU enabled now. Hence this particular
-> problem is fixed better way now.
+> Per the patches earlier in this series, this is no longer the case.
+
+My understanding is that this series reduces a lot the amount
+of code called with RCU disabled. As a result the particular printk()
+call mentioned by commit fc98c3c8c9dc ("printk: use rcuidle console
+tracepoint") is called with RCU enabled now. Hence this particular
+problem is fixed better way now.
+
+But is this true in general?
+Does this "prevent" calling printk() a safe way in code with
+RCU disabled?
+
+I am not sure if anyone cares. printk() is the best effort
+functionality because of the consoles code anyway. Also I wonder
+if anyone uses this trace_console().
+
+Therefore if this patch allows to remove some tricky tracing
+code then it might be worth it. But if trace_console_rcuidle()
+variant is still going to be available then I would keep using it.
+
+Best Regards,
+Petr
+
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  kernel/printk/printk.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> But is this true in general?
-> Does this "prevent" calling printk() a safe way in code with
-> RCU disabled?
-
-On x86_64, yes. Other architectures, less so.
-
-Specifically, the objtool noinstr validation pass will warn at build
-time (DEBUG_ENTRY=y) if any noinstr/cpuidle code does a call to
-non-vetted code like printk().
-
-At the same time; there's a few hacks that allow WARN to work, but
-mostly if you hit WARN in entry/noinstr you get to keep the pieces in
-any case.
-
-On other architecture we'll need to rely on runtime coverage with
-PROVE_RCU. That is, if a splat like in the above mentioned commit
-happens again, we'll need to fix it by adjusting the callchain, not by
-mucking about with RCU state.
-
-> I am not sure if anyone cares. printk() is the best effort
-> functionality because of the consoles code anyway. Also I wonder
-> if anyone uses this trace_console().
-
-This is the tracepoint used to spool all of printk into ftrace, I
-suspect there's users, but I haven't used it myself.
-
-> Therefore if this patch allows to remove some tricky tracing
-> code then it might be worth it. But if trace_console_rcuidle()
-> variant is still going to be available then I would keep using it.
-
-My ultimate goal is to delete trace_.*_rcuidle() and RCU_NONIDLE()
-entirely. We're close, but not quite there yet.
+> --- a/kernel/printk/printk.c
+> +++ b/kernel/printk/printk.c
+> @@ -2238,7 +2238,7 @@ static u16 printk_sprint(char *text, u16
+>  		}
+>  	}
+>  
+> -	trace_console_rcuidle(text, text_len);
+> +	trace_console(text, text_len);
+>  
+>  	return text_len;
+>  }
+> 
