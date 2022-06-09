@@ -2,97 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECFBE5455FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 22:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8498B54575C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 00:25:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJx9H5pNvz3btV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 06:52:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJzDY2xxnz3byk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 08:25:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WvxNFub2;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PwhGrfYr;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WvxNFub2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PwhGrfYr;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJx8W1yLcz3bnS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 06:51:22 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 259Ke1NF031809;
-	Thu, 9 Jun 2022 20:50:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=OYb7fmi6uf795mXZci9merV7G1HMLFuosh8C6tmoeMQ=;
- b=WvxNFub2z2o790QvxGHr5lBxOcsro83ZQjCIHUuTRBr8T/j3jV1kSe0W/pfvmDEX7sGk
- 6ZOjvCsnOjxt43xobddH0BsLOk/ed4jqJNw+Il96/npQiHroumSYGYQYSr3SNawAKXCi
- 5PUWYSovvZZ4O7s8HvX5+7JPuTOArh/ZHnv1Q08XYUnwDzbHZ+16AwG/kiS4naLWrM8t
- u2JcYyYhc3gChtCjU3reN7f2cOoiR3zTj80bwA3FKwi3EA6ajREoD/YTYfV2H2J4Or8K
- MiU9vYuNso0gMajQ+8yDRvFNH25skqWUuJ+NGe8rfnyrB9gxuyTdzXeQvK9Qy395YLN/ vg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkphpsjf1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jun 2022 20:50:49 +0000
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 259KehJ9007649;
-	Thu, 9 Jun 2022 20:50:49 GMT
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkphpsjem-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jun 2022 20:50:48 +0000
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
-	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 259KLO03010630;
-	Thu, 9 Jun 2022 20:50:47 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-	by ppma04dal.us.ibm.com with ESMTP id 3gfy1anj5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jun 2022 20:50:47 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 259KolRX26018050
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jun 2022 20:50:47 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17B13AC059;
-	Thu,  9 Jun 2022 20:50:47 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E1FE6AC05B;
-	Thu,  9 Jun 2022 20:50:45 +0000 (GMT)
-Received: from [9.160.59.133] (unknown [9.160.59.133])
-	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jun 2022 20:50:45 +0000 (GMT)
-Message-ID: <33844c9a-6721-b2fb-5514-8f04501e990e@linux.ibm.com>
-Date: Thu, 9 Jun 2022 13:50:45 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJzCx3Rz1z3bYG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 08:24:29 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 3708FB83095;
+	Thu,  9 Jun 2022 22:24:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973AFC34114;
+	Thu,  9 Jun 2022 22:24:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1654813464;
+	bh=vspykPiylcjgEjkFhXI0pGm+yV8L27ibQgb31xTuVlQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PwhGrfYrEtq143rPkBC+5E4Q9Wmc4A4J7GUMIMVaT0tU+zzohnuB7QuzWm7k9zyFa
+	 JdGsAM4BuS6dDii5IrbA0d6p4/ZfyOw62jY+uep5NffX2J5qMJR7z1KMigkUFRnjB9
+	 JgTisM/PdBgXZbMxYe6PIEe8dflv/4LI0mDIYsxX2rROps6RfPrlgQSpeXV3ZMSdDv
+	 PGbIQWET4qtq7zW12rOxvE25HEoFqImGv62R6naU5fGsG62vB5fIHF3q4qdQEBtRUO
+	 0+QNW9e78nBqlwZ2ohToyhaQaQZSXZdU6p2Cvd8ncxvSmKcAxXnUeXoPh4F1+yES7X
+	 33TuAQBZ5RXvQ==
+Received: by pali.im (Postfix)
+	id 870602558; Fri, 10 Jun 2022 00:24:20 +0200 (CEST)
+Date: Fri, 10 Jun 2022 00:24:20 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: linux-mm@kvack.org
+Subject: Re: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
+Message-ID: <20220609222420.ponpoodiqmaqtwht@pali>
+References: <20220302044406.63401-1-ash@heyquark.com>
+ <20220302044406.63401-12-ash@heyquark.com>
+ <20220513224353.n56qg5fhstbaqhfz@pali>
+ <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
+ <20220520080454.c3cqodsdbfbkmg56@pali>
+ <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
+ <20220520123002.rd46p5ty6wumi7cc@pali>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH] powerpc/pci: Add config option for using OF 'reg' for PCI
- domain
-Content-Language: en-US
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        =?UTF-8?Q?Pali_Roh=c3=a1r?=
- <pali@kernel.org>
-References: <20220609193451.GA525883@bhelgaas>
- <67f021ff-b54c-3e84-756a-d0044d633007@igalia.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-In-Reply-To: <67f021ff-b54c-3e84-756a-d0044d633007@igalia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: mDbjLWzOE9MZP5ElMY-yCC-CKkT9UEUh
-X-Proofpoint-GUID: V0dvIu7O1Smq4_DxzZAc425-LHHmt850
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-09_15,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 adultscore=0 impostorscore=0 clxscore=1011 mlxscore=0
- suspectscore=0 lowpriorityscore=0 mlxlogscore=999 bulkscore=0
- malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206090076
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220520123002.rd46p5ty6wumi7cc@pali>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,119 +69,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Guowen Shan <gshan@redhat.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, robh+dt@kernel.org, paulus@samba.org, Ash Logan <ash@heyquark.com>, linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/9/22 13:21, Guilherme G. Piccoli wrote:
-> First of all, thanks for looping me Bjorn! Much appreciated.
-> I'm also CCing Ben and Gavin, that know a lot of PPC PCI stuff.
+On Friday 20 May 2022 14:30:02 Pali Rohár wrote:
+> + linux-mm
 > 
-> 
-> On 09/06/2022 16:34, Bjorn Helgaas wrote:
->> [...]
->>>>>>>>>>> Upgrading powerpc kernels from LTS 4.4 version (which does not
->>>>>>>>>>> contain mentioned commit) to new LTS versions brings a
->>>>>>>>>>> regression in domain assignment.
->>>>>>>>>>
->>>>>>>>>> Can you elaborate why it is a regression ?
->>>>>>>>>> 63a72284b159 That commit says 'no functionnal changes', I'm
->>>>>>>>>> having hard time understanding how a nochange can be a
->>>>>>>>>> regression.
->>>>>>>>>
->>>>>>>>> It is not 'no functional change'. That commit completely changed
->>>>>>>>> PCI domain assignment in a way that is incompatible with other
->>>>>>>>> architectures and also incompatible with the way how it was done
->>>>>>>>> prior that commit.
->>>>>>>>
->>>>>>>> I agree that the "no functional change" statement is incorrect.
->>>>>>>> However, for most powerpc platforms it ended up being simply a
->>>>>>>> cosmetic behavior change. As far as I can tell there is nothing
->>>>>>>> requiring domain ids to increase montonically from zero or that
->>>>>>>> each architecture is required to use the same domain numbering
->>>>>>>> scheme.
-> 
-> Strongly agree here in both points: first, this was not a "no functional
-> change" thing, and I apologize for adding this in the commit message.
-> What I meant is that: despite changing the numbering, (as Tyrel said)
-> nothing should require increasing monotonic mutable PCI domains. At
-> least, I'm not aware of such requirement in any spec or even in the
-> kernel and adjacent tooling.
-> 
-> 
->>>>>>> [...]
->>>>>>>> We could properly limit it to powernv and pseries by using
->>>>>>>> ibm,fw-phb-id instead of reg property in the look up that follows
->>>>>>>> a failed ibm,opal-phbid lookup. I think this is acceptable as long
->>>>>>>> as no other powerpc platforms have started using this behavior for
->>>>>>>> persistent naming.
->>>>>>>
->>>>>>> And what about setting that new config option to enabled by default
->>>>>>> for those series?
-> 
-> I don't remember all the details about PPC dt, but it should already be
-> restricted to pseries/powernv, right? At least, the commit has a comment:
-> 
-> /* If not pseries nor powernv, or if fixed PHB numbering tried to add
->  * the same PHB number twice, then fallback to dynamic PHB numbering.*/
-> 
-> If this is *not* restricted to these 2 platforms, I agree with Pali's
-> approach, although I'd consider the correct is to keep the persistent
-> domain scheme for both pnv and pseries, as it's working like this for 5
-> years and counting, and this *does* prevent a lot of issues with PCI
-> hotplugging in PPC servers.
+> Do you know what are requirements for kernel to support non-contiguous
+> memory support and what is needed to enable it for 32-bit powerpc?
 
-I mentioned this in a previous post, but it is clear the Author's intent was for
-this only to apply to powernv and pseries platforms. However, it only really
-checks for powernv, and if that fails it does a read the reg property for the
-domain which works for and PPC platform. If we really only want this on powernv
-and pseries and revert all other PPC platforms back we can fix this with a
-pseries check instead of a config property. Using ibm,fw-phb-id instead of reg
-property if ibm,opal-phbid lookup fails does the trick.
+Any hints?
 
--Tyrel
-
+> Currently powerpc arch code does not support "memblock.memory.cnt > 1"
+> except for WII which seems like a hack... See below.
 > 
-> 
->>> [...]
->>>> I forgot to ask before about the actual regression here.  The commit
->>>> log says domain numbers are different, but I don't know the connection
->>>> from there to something failing.  I assume there's some script or
->>>> config file that depends on specific domain numbers?  And that
->>>> dependency is (hopefully) powerpc-specific?
->>>
->>> You assume correct. For example this is the way how OpenWRT handles PCI
->>> devices (but not only OpenWRT). This OpenWRT case is not
->>> powerpc-specific but generic to all architectures. This is just one
->>> example.
->>
->> So basically everybody uses D/b/d/f for persistent names.  That's ...
->> well, somewhat stable for things soldered down or in a motherboard
->> slot, but a terrible idea for things that can be hot-plugged.
->>
->> Even for more core things, it's possible for firmware to change bus
->> numbering between boots.  For example, if a complicated hierarchy is
->> cold-plugged into one slot, firmware is likely to assign different bus
->> numbers on the next boot to make room for it.  Obviously this can also
->> happen as a hot-add, and Linux needs the flexibility to do similar
->> renumbering then, although we don't support it yet.
->>
->> It looks like 63a72284b159 was intended to make domain numbers *more*
->> consistent, so it's ironic that this actually broke something by
->> changing domain numbers.  Maybe there's a way to limit the scope of
->> 63a72284b159 so it avoids the breakage.  I don't know enough about the
->> powerpc landscape to even guess at how.
-> 
-> I don't considereit breaks the userspace since this is definitely no
-> stable ABI (or if it is, I'm not aware and my apologies). If scripts
-> rely on that, they are doing the wrong thing it seems.
-> 
-> With that said, I'm definitely not against improving the situation with
-> Pali's KConfig - just think that we somehow should keep the persistent
-> behavior for powernv and pseries.
-> Hopefully PPC folks has more to say on that!
-> Cheers,
-> 
-> 
-> Guilherme
-
+> On Friday 20 May 2022 20:44:04 Ash Logan wrote:
+> > On 20/5/22 18:04, Pali Rohár wrote:
+> > > On Friday 20 May 2022 13:41:04 Ash Logan wrote:
+> > >> On 14/5/22 08:43, Pali Rohár wrote:
+> > >>> On Wednesday 02 March 2022 15:44:05 Ash Logan wrote:
+> > >>>> pgtable_32.c:mapin_ram loops over each valid memory range, which means
+> > >>>> non-contiguous memory just works.
+> > >>>
+> > >>> Hello! Does it mean that non-contiguous memory works for any 32-bit
+> > >>> powerpc platform, and not only for wiiu? If yes, should not be
+> > >>> non-contiguous memory support enabled for all 32-bit ppc boards then?
+> > >>
+> > >> Hi! Sorry for my delayed response. As best I can tell, it does indeed
+> > >> Just Work, but I have only been able to test on wiiu which is missing a
+> > >> lot of features other boards have (like PCI) - so it's possible there's
+> > >> still an assumption elsewhere in the kernel that I haven't hit.
+> > >>
+> > >> As best I can tell, the Wii and Wii U are the only 32-bit powerpc boards
+> > >> out there where it's even possible to have non-contiguous memory.
+> > > 
+> > > What is the reason that those two boards are the **only**? Is there some
+> > > specific requirement from bootloader or hardware to "enable"
+> > > non-contiguous memory support?
+> > 
+> > Not that I know of, I was just saying that I was only aware of those two
+> > boards where the memory map isn't contiguous, and that is the only place
+> > where it has been tested. Evidently you know of another board!
+> > 
+> > > I'm interested in enabling non-contiguous memory support for P2020-based
+> > > board as it has gaps in its 32-bit memory layout and which could be used
+> > > for RAM mapping when 4GB DDR3 module is plugged in (default is 2GB).
+> > 
+> > If it's like the Wii or Wii U (some memory at 0, a gap for MMIO or
+> > whatever, then more memory at a higher address) then you should try a
+> > patch along these lines, because barring the unknowns I mentioned before
+> > it should work. At least as far as I'm aware ;)
+> > 
+> > >>>> Signed-off-by: Ash Logan <ash@heyquark.com>
+> > >>>> ---
+> > >>>>  arch/powerpc/mm/init_32.c | 4 ++--
+> > >>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >>>>
+> > >>>> diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
+> > >>>> index 3d690be48e84..59a84629d9a0 100644
+> > >>>> --- a/arch/powerpc/mm/init_32.c
+> > >>>> +++ b/arch/powerpc/mm/init_32.c
+> > >>>> @@ -125,10 +125,10 @@ void __init MMU_init(void)
+> > >>>>  	 * lowmem_end_addr is initialized below.
+> > >>>>  	 */
+> > >>>>  	if (memblock.memory.cnt > 1) {
+> > >>>> -#ifndef CONFIG_WII
+> > >>>> +#if !defined(CONFIG_WII) && !defined(CONFIG_WIIU)
+> > >>>>  		memblock_enforce_memory_limit(memblock.memory.regions[0].size);
+> > >>>>  		pr_warn("Only using first contiguous memory region\n");
+> > >>>> -#else
+> > >>>> +#elif defined(CONFIG_WII)
+> > >>>>  		wii_memory_fixups();
+> > >>>>  #endif
+> > >>>>  	}
+> > >>>> -- 
+> > >>>> 2.35.1
+> > >>>>
