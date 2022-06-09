@@ -1,53 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD466545F47
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 10:35:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4EF546522
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:09:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKDmp5XBxz3cBS
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 18:35:22 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=baikalelectronics.ru header.i=@baikalelectronics.ru header.a=rsa-sha256 header.s=mail header.b=Ven35Z8y;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJBp6Vp7z3cgb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:09:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baikalelectronics.ru (client-ip=87.245.175.230; helo=mail.baikalelectronics.com; envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=baikalelectronics.ru header.i=@baikalelectronics.ru header.a=rsa-sha256 header.s=mail header.b=Ven35Z8y;
-	dkim-atps=neutral
-Received: from mail.baikalelectronics.com (mail.baikalelectronics.com [87.245.175.230])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKDmB6YrTz3bln
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 18:34:49 +1000 (AEST)
-Received: from mail (mail.baikal.int [192.168.51.25])
-	by mail.baikalelectronics.com (Postfix) with ESMTP id 6B34716A0;
-	Fri, 10 Jun 2022 11:26:38 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.baikalelectronics.com 6B34716A0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=baikalelectronics.ru; s=mail; t=1654849599;
-	bh=KPuOVwi0cvFmfZI8ZO6CHQ/WVhFl8GOmzgX8MXxNTEg=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=Ven35Z8y6h+XqxatQDpl/bdOE5CGJOaq0vrRX7cHa+Tdhb2w0WO4YByAqBlaf3mml
-	 QQLxukPxSYC2bH/MNpAWMt6KbqyOX8z7rcq13LxoKO5lRTTVERUIAfuuZnOQgOLpbQ
-	 EmsF0ROzoQ1/91/s3iOujC9IjKvaS3K2cQPbvc5o=
-Received: from localhost (192.168.53.207) by mail (192.168.51.25) with
- Microsoft SMTP Server (TLS) id 15.0.1395.4; Fri, 10 Jun 2022 11:25:46 +0300
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To: Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Minghuan Lian
-	<minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang
-	<roy.zang@nxp.com>, =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Jingoo Han <jingoohan1@gmail.com>, Gustavo Pimentel
-	<gustavo.pimentel@synopsys.com>
-Subject: [PATCH v4 13/18] PCI: dwc: Add start_link/stop_link inliners
-Date: Fri, 10 Jun 2022 11:25:29 +0300
-Message-ID: <20220610082535.12802-14-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20220610082535.12802-1-Sergey.Semin@baikalelectronics.ru>
-References: <20220610082535.12802-1-Sergey.Semin@baikalelectronics.ru>
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=atomide.com (client-ip=72.249.23.125; helo=muru.com; envelope-from=tony@atomide.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 435 seconds by postgrey-1.36 at boromir; Thu, 09 Jun 2022 17:46:44 AEST
+Received: from muru.com (muru.com [72.249.23.125])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJbl807TCz3bn4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 17:46:43 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by muru.com (Postfix) with ESMTPS id 88FEF80F1;
+	Thu,  9 Jun 2022 07:34:50 +0000 (UTC)
+Date: Thu, 9 Jun 2022 10:39:22 +0300
+From: Tony Lindgren <tony@atomide.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 33/36] cpuidle,omap3: Use WFI for omap3_pm_idle()
+Message-ID: <YqGjqgSrTRseJW6M@atomide.com>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144518.010587032@infradead.org>
+ <CAK8P3a0g-fNu9=BUECSXcNeWT7XWHQMnSXZE-XYE+5eakHxKxA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a0g-fNu9=BUECSXcNeWT7XWHQMnSXZE-XYE+5eakHxKxA@mail.gmail.com>
+X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,192 +41,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pci@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Serge Semin <Sergey.Semin@baikalelectronics.ru>, Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Juri Lelli <juri.lelli@redhat.com>, Rafael Wysocki <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Ben Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, srivatsa@csail.mit.edu, linux-arch <linux-arch@vger.kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Andy Gross <agross@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, NXP Linux Team <linux-imx@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, xen-devel <xen-devel@lists.xenproject.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Michael Turquette <mturquette@baylibre.com>, Sam Creasey <sammy@sammy.net>, Petr Mladek <pmladek@suse.com>, Linux PM list <linux-pm@vger.kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um <linux-um@lists.infrade
+ ad.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-omap <linux-omap@vger.kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Richard Henderson <rth@twiddle.net>, gregkh <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, Sven Schnelle <svens@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Paul Mackerras <paulus@samba.org>, Mark Rutland <mark.rutland@arm.com>, "open list:IA64 \(Itanium\) PLATFORM" <linux-ia64@vger.kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE" <virtualization@lists.linux-foundation.org>, James Bottomley <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Xuerui Wang <kernel@xen0n.name>, quic_neeraju@quicinc.com, linux-s390 <linux-s390@vger.kernel.org>, vschneid@redhat.com, John Ogn
+ ess <john.ogness@linutronix.de>, Yoshinori Sato <ysat
+
+o@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>, Jonathan Hunter <jonathanh@nvidia.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Frederic Weisbecker <frederic@kernel.org>, Len Brown <lenb@kernel.org>, "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>, Sascha Hauer <kernel@pengutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, alpha <linux-alpha@vger.kernel.org>, linux-m68k <linux-m68k@lists.linux-m68k.org>, Stafford Horne <shorne@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Chris Zankel <chris@zankel.net>, Stephen Boyd <sboyd@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Daniel Bristot de Oliveira <bristot@redhat.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, lpieralisi@kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Joel Fernandes <
+ joel@joelfernandes.org>, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Kevin Hilman <khilman@kernel.org>, linux-csky@vger.kernel.org, Pv-drivers <pv-drivers@vmware.com>, "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>, Mel Gorman <mgorman@suse.de>, jacob.jun.pan@linux.intel.com, Yury Norov <yury.norov@gmail.com>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, Vineet Gupta <vgupta@kernel.org>, linux-clk <linux-clk@vger.kernel.org>, Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, bcain@quicinc.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, David Miller <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Peter Zijlstra <peterz@infradead.org>, amakhalov@vmware.com, Bjorn Andersson <bjorn.andersson@linaro.org>, "H. Peter Anvin" <hp
+ a@zytor.com>, sparclinux <sparclinux@vger.kernel.org>
+, "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>, linux-riscv <linux-riscv@lists.infradead.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Jonas Bonn <jonas@southpole.se>, Richard Weinberger <richard@nod.at>, the arch/x86 maintainers <x86@kernel.org>, Russell King - ARM Linux <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Openrisc <openrisc@lists.librecores.org>, Paul Walmsley <paul.walmsley@sifive.com>, "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jpoimboe@kernel.org, Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, Ivan Ko
+ kshaysky <ink@jurassic.park.msu.ru>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There are several places in the generic DW PCIe code where the
-platform-specific PCIe link start/stop methods are called after making
-sure the ops handler and the callbacks are specified. Instead of repeating
-the same pattern over and over let's define the static-inline methods in
-the DW PCIe header file and use them in the relevant parts of the driver.
+* Arnd Bergmann <arnd@arndb.de> [220608 18:18]:
+> On Wed, Jun 8, 2022 at 4:27 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > arch_cpu_idle() is a very simple idle interface and exposes only a
+> > single idle state and is expected to not require RCU and not do any
+> > tracing/instrumentation.
+> >
+> > As such, omap_sram_idle() is not a valid implementation. Replace it
+> > with the simple (shallow) omap3_do_wfi() call. Leaving the more
+> > complicated idle states for the cpuidle driver.
 
-Note returning a negative error from the EP link start procedure if the
-start_link pointer isn't specified doesn't really make much sense since it
-perfectly normal to have such platform. Moreover even pci_epc_start()
-doesn't fail if no epc->ops->start callback is spotted. As a side-effect
-of this modification we can set the generic DW PCIe and Layerscape EP
-platform drivers free from the empty start_link callbacks and as such
-entirely dummy dw_pcie_ops instances.
+Agreed it makes sense to limit deeper idle states to cpuidle. Hopefully
+there is some informative splat for attempting to use arch_cpu_ide()
+for deeper idle states :)
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> I see similar code in omap2:
+> 
+> omap2_pm_idle()
+>  -> omap2_enter_full_retention()
+>      -> omap2_sram_suspend()
+> 
+> Is that code path safe to use without RCU or does it need a similar change?
 
----
+Seems like a similar change should be done for omap2. Then anybody who
+cares to implement a minimal cpuidle support can do so.
 
-Changelog v4:
-- This is a new patch created on the v4 lap of the series.
----
- drivers/pci/controller/dwc/pci-layerscape-ep.c    | 12 ------------
- drivers/pci/controller/dwc/pcie-designware-ep.c   |  8 ++------
- drivers/pci/controller/dwc/pcie-designware-host.c | 10 ++++------
- drivers/pci/controller/dwc/pcie-designware-plat.c | 10 ----------
- drivers/pci/controller/dwc/pcie-designware.h      | 14 ++++++++++++++
- 5 files changed, 20 insertions(+), 34 deletions(-)
+Regards,
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index 39f4664bd84c..ad99707b3b99 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -32,15 +32,6 @@ struct ls_pcie_ep {
- 	const struct ls_pcie_ep_drvdata *drvdata;
- };
- 
--static int ls_pcie_establish_link(struct dw_pcie *pci)
--{
--	return 0;
--}
--
--static const struct dw_pcie_ops dw_ls_pcie_ep_ops = {
--	.start_link = ls_pcie_establish_link,
--};
--
- static const struct pci_epc_features*
- ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
- {
-@@ -106,19 +97,16 @@ static const struct dw_pcie_ep_ops ls_pcie_ep_ops = {
- 
- static const struct ls_pcie_ep_drvdata ls1_ep_drvdata = {
- 	.ops = &ls_pcie_ep_ops,
--	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
- };
- 
- static const struct ls_pcie_ep_drvdata ls2_ep_drvdata = {
- 	.func_offset = 0x20000,
- 	.ops = &ls_pcie_ep_ops,
--	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
- };
- 
- static const struct ls_pcie_ep_drvdata lx2_ep_drvdata = {
- 	.func_offset = 0x8000,
- 	.ops = &ls_pcie_ep_ops,
--	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
- };
- 
- static const struct of_device_id ls_pcie_ep_of_match[] = {
-diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
-index 7ad349c32082..15b8059544e3 100644
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -435,8 +435,7 @@ static void dw_pcie_ep_stop(struct pci_epc *epc)
- 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 
--	if (pci->ops && pci->ops->stop_link)
--		pci->ops->stop_link(pci);
-+	dw_pcie_stop_link(pci);
- }
- 
- static int dw_pcie_ep_start(struct pci_epc *epc)
-@@ -444,10 +443,7 @@ static int dw_pcie_ep_start(struct pci_epc *epc)
- 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 
--	if (!pci->ops || !pci->ops->start_link)
--		return -EINVAL;
--
--	return pci->ops->start_link(pci);
-+	return dw_pcie_start_link(pci);
- }
- 
- static const struct pci_epc_features*
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index fa107e8dd2ab..f57f456aa543 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -408,8 +408,8 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 
- 	dw_pcie_setup_rc(pp);
- 
--	if (!dw_pcie_link_up(pci) && pci->ops && pci->ops->start_link) {
--		ret = pci->ops->start_link(pci);
-+	if (!dw_pcie_link_up(pci)) {
-+		ret = dw_pcie_start_link(pci);
- 		if (ret)
- 			goto err_free_msi;
- 	}
-@@ -426,8 +426,7 @@ int dw_pcie_host_init(struct pcie_port *pp)
- 	return 0;
- 
- err_stop_link:
--	if (pci->ops && pci->ops->stop_link)
--		pci->ops->stop_link(pci);
-+	dw_pcie_stop_link(pci);
- 
- err_free_msi:
- 	if (pp->has_msi_ctrl)
-@@ -443,8 +442,7 @@ void dw_pcie_host_deinit(struct pcie_port *pp)
- 	pci_stop_root_bus(pp->bridge->bus);
- 	pci_remove_root_bus(pp->bridge->bus);
- 
--	if (pci->ops && pci->ops->stop_link)
--		pci->ops->stop_link(pci);
-+	dw_pcie_stop_link(pci);
- 
- 	if (pp->has_msi_ctrl)
- 		dw_pcie_free_msi(pp);
-diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
-index 0c5de87d3cc6..abf1afac6064 100644
---- a/drivers/pci/controller/dwc/pcie-designware-plat.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
-@@ -36,15 +36,6 @@ static const struct of_device_id dw_plat_pcie_of_match[];
- static const struct dw_pcie_host_ops dw_plat_pcie_host_ops = {
- };
- 
--static int dw_plat_pcie_establish_link(struct dw_pcie *pci)
--{
--	return 0;
--}
--
--static const struct dw_pcie_ops dw_pcie_ops = {
--	.start_link = dw_plat_pcie_establish_link,
--};
--
- static void dw_plat_pcie_ep_init(struct dw_pcie_ep *ep)
- {
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
-@@ -140,7 +131,6 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	pci->dev = dev;
--	pci->ops = &dw_pcie_ops;
- 
- 	dw_plat_pcie->pci = pci;
- 	dw_plat_pcie->mode = mode;
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index 7d6e9b7576be..8ba239292634 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -365,6 +365,20 @@ static inline void dw_pcie_dbi_ro_wr_dis(struct dw_pcie *pci)
- 	dw_pcie_writel_dbi(pci, reg, val);
- }
- 
-+static inline int dw_pcie_start_link(struct dw_pcie *pci)
-+{
-+	if (pci->ops && pci->ops->start_link)
-+		return pci->ops->start_link(pci);
-+
-+	return 0;
-+}
-+
-+static inline void dw_pcie_stop_link(struct dw_pcie *pci)
-+{
-+	if (pci->ops && pci->ops->stop_link)
-+		pci->ops->stop_link(pci);
-+}
-+
- #ifdef CONFIG_PCIE_DW_HOST
- irqreturn_t dw_handle_msi_irq(struct pcie_port *pp);
- void dw_pcie_setup_rc(struct pcie_port *pp);
--- 
-2.35.1
-
+Tony
