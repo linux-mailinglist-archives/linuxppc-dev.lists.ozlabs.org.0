@@ -1,55 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A91954436E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 07:58:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F179654450D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 09:47:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJYKt2Xzzz3cdF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 15:58:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJblQ5dzQz3bm2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 17:46:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F2o+ddHo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=D/ACygWE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=michaele@au1.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F2o+ddHo;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=D/ACygWE;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJXwt1SCQz3bkZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 15:39:58 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJbkg4V2yz3bk9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 17:46:18 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2596Du3o020649;
+	Thu, 9 Jun 2022 07:46:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=pp1; bh=LKc4Qkftkhm6rdS8OZ9MxW+psHBAVnTIc+1bOxxa1ZE=;
+ b=D/ACygWEMj3aDxbi57K1RXQIkzleAWfufRkaA+44vGNpnudpgm94NrX8GvtW3F8MN/o3
+ T3JSFIAHO6Jt/E1xXbttFgr+2nwH8FYb0HxZhaPM5pfnOoBGARoca14Cn6/v02akg1jB
+ ifnwgpmiz09s+8N6MxB2VXCi+P+xfcRMisTKLr8WIs5mSGPBl6HdjPxxnAQK3YD8kz2u
+ WsfHZaT5+ysnEnoaBOWiFp6Vlv51tbA8nxTB005ETqHSik4zsU/azdwReUeniaYRwS7b
+ 7BZy49Y1oil7/eGjypOoXDIjZ0cgSEH8tuFUR2680tIKrJNFaDFi8bPkHsmFBCm4QUQF XA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkbdmsmna-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jun 2022 07:46:14 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2597jRHT023319;
+	Thu, 9 Jun 2022 07:46:13 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkbdmsmmt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jun 2022 07:46:13 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2597KwFx001860;
+	Thu, 9 Jun 2022 07:46:12 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma03fra.de.ibm.com with ESMTP id 3gfy18w6fa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jun 2022 07:46:12 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2597k9uC45089268
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jun 2022 07:46:09 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C0A8442042;
+	Thu,  9 Jun 2022 07:46:09 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BB4942047;
+	Thu,  9 Jun 2022 07:46:09 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jun 2022 07:46:09 +0000 (GMT)
+Received: from localhost (sasvpn-9-085-036-117.sasj.japan.ibm.com [9.85.36.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 86B8BB82C1F;
-	Thu,  9 Jun 2022 05:39:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C191AC34114;
-	Thu,  9 Jun 2022 05:39:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654753192;
-	bh=ZBzW7c26dslHeRr0ieKbrHN+05ZdER8p0imFsIG2U6Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F2o+ddHoBAh/ztSTEKLJZaE98wUIiQxUNoAdW7BKWVIFeAQYKxd9oL3vnlesLyKiT
-	 VPKotdlsvpJZKg7TX7GrDwbwHGgxs3Qf8sMkZdCE0hRTpjzlMCugH24kzF76BmzYme
-	 FUzeMivArYzPXUNpXIYaEwcOX33YkdGM40VXdm0o37FlvFRqULsbkJoYQ5wnf0eIx0
-	 TsgucyhkqJSUb8zaXjI6z38KzJrwe/5gEy/qHB66zJJ+NN0dJalvYXl+h/dTuz52xO
-	 KDwJeNKP7bAq38rvYsyIpD7YkTJTxX5WVGn8fBd514jOuj6Fut8wOy/CTcFyzoQstK
-	 voCzneXRcBiJw==
-Date: Thu, 9 Jun 2022 08:37:54 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH] kprobes: Enable tracing for mololithic kernel images
-Message-ID: <YqGHMs4ha7JMvODf@iki.fi>
-References: <20220608000014.3054333-1-jarkko@profian.com>
- <CAMj1kXFsdEq6XZ6eOuf8Ks-F4qgneVxFeLYNN_S4JaPy8koEyw@mail.gmail.com>
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id BD3AB600FE;
+	Thu,  9 Jun 2022 17:45:57 +1000 (AEST)
+From: Michael Ellerman <michaele@au1.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>,
+        Laurent Dufour
+ <ldufour@linux.ibm.com>
+Subject: Re: [PATCH 0/2] Disabling NMI watchdog during LPM's memory transfer
+In-Reply-To: <874k0x1s1d.fsf@linux.ibm.com>
+References: <20220601155315.35109-1-ldufour@linux.ibm.com>
+ <87a6av0wxk.fsf@linux.ibm.com>
+ <666cedea-2dbc-254e-467b-c02a3a2d8795@linux.ibm.com>
+ <874k0x1s1d.fsf@linux.ibm.com>
+Date: Thu, 09 Jun 2022 17:45:49 +1000
+Message-ID: <87zgimfff6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFsdEq6XZ6eOuf8Ks-F4qgneVxFeLYNN_S4JaPy8koEyw@mail.gmail.com>
-X-Mailman-Approved-At: Thu, 09 Jun 2022 15:57:19 +1000
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: L3LMogi31C_Ggb2EXwJxoFkg1dMcNZUZ
+X-Proofpoint-ORIG-GUID: w3q-E7AZatuWMwgqO1w7hT97xjld8Ryq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-09_07,2022-06-07_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 bulkscore=0 phishscore=0
+ spamscore=0 clxscore=1011 mlxscore=0 mlxlogscore=999 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206090029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,58 +104,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dan Li <ashimida@linux.alibaba.com>, Heiko Stuebner <heiko@sntech.de>, Linus Walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Javier Martinez Canillas <javierm@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Guenter Roeck <linux@roeck-us.net>, =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>, Michael Roth <michael.roth@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Andrey Konovalov <andreyknvl@gmail.com>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Wu Caize <zepan@sipeed.com>, Guo Ren <guoren@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, Luis Machado <luis.machado@linaro.org>, Atsushi Nemo
- to <anemo@mba.ocn.ne.jp>, Dave Hansen <dave.hansen@linux.intel.com>, Joey Gouly <joey.gouly@arm.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Song Liu <song@kernel.org>, linux-s390@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Helge Deller <deller@gmx.de>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Sven Schnelle <svens@linux.ibm.com>, Tom Lendacky <thomas.lendacky@amd.com>, Vasily Gorbik <gor@linux.ibm.com>, Philipp Tomsich <philipp.tomsich@vrull.eu>, Dave Anglin <dave.anglin@bell.net>, linux-arm-kernel@lists.infradead.org, Daniel Axtens <dja@axtens.net>, Nicolas Pitre <nico@fluxnic.net>, "Eric W. Biederman" <ebiederm@xmission.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Daniel Bristot de Oliveira <bristot@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, Emil Renner Berthing <kernel@esmil.dk>, Jordan Niethe <jniethe5@gmail.com>, Atish Patra <atishp@atishpatra.org>, Alexei Starovoitov <ast@
- kernel.org>, Will Deacon <will@kernel.org>, Masahiro 
-
-Yamada <masahiroy@kernel.org>, Jarkko Sakkinen <jarkko@profian.com>, Sami Tolvanen <samitolvanen@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Alexander Egorenkov <egorenar@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Nathaniel McCallum <nathaniel@profian.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tobias Huschle <huschle@linux.ibm.com>, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz>, Chen Zhongjin <chenzhongjin@huawei.com>, l
- inux-riscv@lists.infradead.org, X86 ML <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Aaron Tomlin <atomlin@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, Liao Chang <liaochang1@huawei.com>, Paul Walmsley <paul.walmsley@sifive.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Richter <tmricht@linux.ibm.com>, linux-mips@vger.kernel.org, Changbin Du <changbin.du@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, haren@linux.vnet.ibm.com, paulus@samba.org, linux-kernel@vger.kernel.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 08, 2022 at 06:27:51PM +0200, Ard Biesheuvel wrote:
-> Hello Jarkko,
-> 
-> On Wed, 8 Jun 2022 at 02:02, Jarkko Sakkinen <jarkko@profian.com> wrote:
-> >
-> > Tracing with kprobes while running a monolithic kernel is currently
-> > impossible because CONFIG_KPROBES is dependent of CONFIG_MODULES.  This
-> > dependency is a result of kprobes code using the module allocator for the
-> > trampoline code.
-> >
-> > Detaching kprobes from modules helps to squeeze down the user space,
-> > e.g. when developing new core kernel features, while still having all
-> > the nice tracing capabilities.
-> >
-> > For kernel/ and arch/*, move module_alloc() and module_memfree() to
-> > module_alloc.c, and compile as part of vmlinux when either CONFIG_MODULES
-> > or CONFIG_KPROBES is enabled.  In addition, flag kernel module specific
-> > code with CONFIG_MODULES.
-> >
-> > As the result, kprobes can be used with a monolithic kernel.
-> 
-> I think I may have mentioned this the previous time as well, but I
-> don't think this is the right approach.
+Nathan Lynch <nathanl@linux.ibm.com> writes:
+> Laurent Dufour <ldufour@linux.ibm.com> writes:
+...
+>
+>> There are  ongoing investigations to clarify where and how this latency is
+>> happening. I'm not excluding any other issue in the Linux kernel, but right
+>> now, this looks to be the best option to prevent system crash during
+>> LPM.
+>
+> It will prevent the likely crash mode for enterprise distros with
+> default watchdog tunables that our internal test environments happen to
+> use. But if someone were to run the same scenario with softlockup_panic
+> enabled, or with the RCU stall timeout lower than the watchdog
+> threshold, the failure mode would be different.
+>
+> Basically I'm saying:
+> * Some users may actually want the OS to panic when it's in this state,
+>   because their applications can't work correctly.
+> * But if we're going to inhibit one watchdog, we should inhibit them
+>   all.
 
-OK, I apologize for my ignorance. It's been a while.
+I'm sympathetic to both of your arguments.
 
-> Kprobes uses alloc_insn_page() to allocate executable memory, but the
-> requirements for this memory are radically different compared to
-> loadable modules, which need to be within an arch-specific distance of
-> the core kernel, need KASAN backing etc etc.
-> 
-> This is why arm64, for instance, does not implement alloc_insn_page()
-> in terms of module_alloc() [and likely does not belong in this patch
-> for that reason]
-> 
-> Is there any reason kprobes cannot simply use vmalloc()?
+But I think there is a key difference between the NMI watchdog and other
+watchdogs, which is that the NMI watchdog will use the unsafe NMI to
+interrupt other CPUs, and that can cause the system to crash when other
+watchdogs would just print a backtrace.
 
-All arch's, except nios2 use vmalloc() in the end for module_alloc().
-nios2 uses kmalloc() for the reasons that I'm not aware of, but it does
-not support kprobes in the first place.
+We had the same problem with the rcu_sched stall detector until we
+changed it to use the "safe" NMI, see:
+  5cc05910f26e ("powerpc/64s: Wire up arch_trigger_cpumask_backtrace()")
 
-Based on this, I think that could work out just fine.
 
-I could cope with that.
+So even if the NMI watchdog is disabled there are still the other
+watchdogs enabled, which should print backtraces by default, and if
+desired can also be configured to cause a panic.
 
-BR, Jarkko
+Instead of disabling the NMI watchdog, can we instead increase the
+timeout (by how much?) during LPM, so that it is less likely to fire in
+normal usage, but is still there as a backup if the system is completely
+clogged.
+
+cheers
