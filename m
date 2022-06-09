@@ -2,54 +2,125 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07EF154653C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B11D546546
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:14:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJH4687jz3f31
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:13:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJJW0Hgcz3f7v
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:14:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=cB9XFjQV;
+	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=q0tizpIe;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=belden.com (client-ip=205.220.178.250; helo=mx0b-00015a02.pphosted.com; envelope-from=prvs=7159c858d4=ariel.miculas@belden.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=cB9XFjQV;
+	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=q0tizpIe;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+X-Greylist: delayed 859 seconds by postgrey-1.36 at boromir; Thu, 09 Jun 2022 20:11:02 AEST
+Received: from mx0b-00015a02.pphosted.com (mx0b-00015a02.pphosted.com [205.220.178.250])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJfRw0dhKz3bkC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 19:48:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=9jA4mchnYQoJ5XaXo73/qgoc6iaW5C3P1k7XaYKsS1U=; b=cB9XFjQVxWqfDyzeN0qaxTZuLD
-	YLcvVXkDGRGNOtMLtEgH+zL1QwGa+jRQrKiDu6o+KwcqUIios781clMIKdQSQtEcXojjpXyjmvj46
-	euyjd4m+n/z+pXAWpiww5AHKVJISuO8dbwfn2kdK+vnbm4iQMh9u58KvobfYp6DKnGfTofnM78Yt0
-	Jz76LJDB6p5dvl91aPCez/Dj+sFAkswEne+HjI0PWGc0G7Uh6QasF9s0y9AlvQ8RjyVaUQ4ilXQ62
-	Z4qivKfe5pGVxrpCjV/g6X6ndctS6ICj5/6oYIabFd8D02kUsNuFDdK3DNDO+pifvTslSQOhwvIep
-	NfI5oq7A==;
-Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=worktop.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1nzElj-00DR5R-4H; Thu, 09 Jun 2022 09:47:59 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 100CA981287; Thu,  9 Jun 2022 11:47:58 +0200 (CEST)
-Date: Thu, 9 Jun 2022 11:47:57 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Tony Lindgren <tony@atomide.com>
-Subject: Re: [PATCH 33/36] cpuidle,omap3: Use WFI for omap3_pm_idle()
-Message-ID: <YqHBzbAiqaZeoipw@worktop.programming.kicks-ass.net>
-References: <20220608142723.103523089@infradead.org>
- <20220608144518.010587032@infradead.org>
- <CAK8P3a0g-fNu9=BUECSXcNeWT7XWHQMnSXZE-XYE+5eakHxKxA@mail.gmail.com>
- <YqGjqgSrTRseJW6M@atomide.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJfxf6kMFz3blW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:10:56 +1000 (AEST)
+Received: from pps.filterd (m0264210.ppops.net [127.0.0.1])
+	by mx0a-00015a02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2598qmLj025059
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Jun 2022 04:56:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=belden.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=podpps1; bh=WFpyIfR/JFvLg7ap/w5QXz8ahJGkfTDNeujkdOlJpFE=;
+ b=q0tizpIeYL0jTTvxkD4XbLItuketVrAlxpvbgCmtqqCm6JRuteNF6MVCv+pry1UhGmL6
+ ekibkRnQLaodcuIS+kv87bALAh7v0ZMy1mtbjVF6Il5EoqIIIcNBdYxUwn9qIN0gGDMN
+ wLqMUTHmVrIQ8/eOAfY8RgI7fCGhKEdPujx4d1VHBYBtFOPeMQeNb55HSq5N8dwLqC0F
+ D9CGOO9bXhr2wRxzwCaT+i3RrunagTTX41Jqv5JFbqtexes4W9YmG3UHw/xDb170rmSy
+ 1rKoRn5T4sSlTa7GoBJGwNyQ6lEsvJLXyRfI16b65c6GP7Tiqo70vUY1MqeaWp3hxm0B ow== 
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2175.outbound.protection.outlook.com [104.47.58.175])
+	by mx0a-00015a02.pphosted.com (PPS) with ESMTPS id 3gjuft3mhe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jun 2022 04:56:34 -0500
+Received: from PH0PR18MB5069.namprd18.prod.outlook.com (2603:10b6:510:169::8)
+ by CY4PR1801MB1992.namprd18.prod.outlook.com (2603:10b6:910:78::36) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.19; Thu, 9 Jun
+ 2022 09:53:01 +0000
+Received: from PH0PR18MB5069.namprd18.prod.outlook.com
+ ([fe80::f5ab:d45e:69de:f99c]) by PH0PR18MB5069.namprd18.prod.outlook.com
+ ([fe80::f5ab:d45e:69de:f99c%3]) with mapi id 15.20.5332.013; Thu, 9 Jun 2022
+ 09:53:01 +0000
+From: Ariel Miculas <ariel.miculas@belden.com>
+To: linuxppc-dev@lists.ozlabs.org, christian.johannes@belden.com
+Subject: [PATCH] powerpc/ptrace: Fix buffer overflow when handling PTRACE_PEEKUSER and PTRACE_POKEUSER
+Date: Thu,  9 Jun 2022 12:52:35 +0300
+Message-Id: <20220609095235.37863-1-ariel.miculas@belden.com>
+X-Mailer: git-send-email 2.36.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR09CA0079.eurprd09.prod.outlook.com
+ (2603:10a6:802:29::23) To PH0PR18MB5069.namprd18.prod.outlook.com
+ (2603:10b6:510:169::8)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YqGjqgSrTRseJW6M@atomide.com>
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: c4af59e0-d7ed-48ac-0335-08da49fdd71c
+X-MS-TrafficTypeDiagnostic: CY4PR1801MB1992:EE_
+X-Microsoft-Antispam-PRVS: 	<CY4PR1801MB19927EF244C34FB19BE0E5AE80A79@CY4PR1801MB1992.namprd18.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	KFYk2m0J5O5//E/0yLPDjUT9MB7WvGIerIlPAj+Oe2kH8PRVB5UQD35gJWOsMThVwLOljQCXGSMP20I1jj5asvnPiH4Gq1Qqd1EIGAJOat0WWMPT2Eipbd7IR8UWXAEkwu5RYSlhZU+ok5wcy7yFtNyV5ghS/Q9UhP7lauxZI/fN5PVFH6cqPYOadnhhLktIjKgqgiMSFowSIG/WiGPx9l1XXyML3+wSCVloVKAM9xdDt17Y8KPz4aDbkfey3rEOLcnuxgt/W5+o9HdttEi3ibLkOQ3BIy2+vu+5GiA4MUqFbR2P0xreOB6eCisVGlS6K1+zdeUyvQK4pUn6fO0TeNp2CN35uCfkDzJVcEhXvC5xGUvFxgCUkfBy6kbxU8ZggRVdkMLigFKhA3VnLjcEJuGnaHDTpLiPlo0W3UqHBdyDw0SO1lcKs1/Xznc3waVAOJzfYKM/5atFloY+a/spQIB4akKVrw0XHxcOP8FXShFTwmHVLsteZ53DbP9DXXIy9eZul+He3NEAvI9Iq1Vlx9dO1/NQMKZqsYVUf+iQrIDh/x1lBrpFl2fDLV7oDJmbgJLKYweSnsducpSwWyw7/sRs2LBjNUHi/FWD2fwoQQ/TxvUOjcv7KEM/+Jt9Kj0qYPE6vNh9VQxA5dqCcTbL2PYzE4OMSJarx/SFx7+nDuF/nszU3txhK78Wjx1al+fEyNbEHd0kRaw/c8q0hzTvt+HNdHQ9MJ69JI9aYez5exA=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR18MB5069.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(966005)(6486002)(186003)(66556008)(5660300002)(508600001)(4326008)(66476007)(2616005)(8676002)(107886003)(1076003)(2906002)(52116002)(8936002)(6666004)(6636002)(316002)(86362001)(83380400001)(36756003)(44832011)(6512007)(6506007)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?cXFkStdnL/xcWRspjSrRZk3cg50bJQ3035NM0wLYv4pE4faqHeTcg8z2PBd/?=
+ =?us-ascii?Q?ssTUKEEQGq9S7p1xvZTZ5KCr9RNIP5OIbbMHaUhCRTDxmFv7jO/16L98Kc6V?=
+ =?us-ascii?Q?ZfyEo2zBqHbcFRMkZ0Whd4NPV3SzooSglGKeI+YbVF9kUQ1GwPmjVk6nXK4f?=
+ =?us-ascii?Q?lZ4hHE6mBkRw7x0lBpK7AxXg9miZP7OGzCBoh6TYRKHhlL+ohE14LVn5m3HV?=
+ =?us-ascii?Q?Gvzx11lEwCXc68TdMUncd5qJXuhAv90RIECb2chnXeDlsyzB/P274IBYLe3q?=
+ =?us-ascii?Q?HmLhhqFx25/y73Uhx66e39EWBHetszL6TI/PBYtCLUoHkRRUVeG3Ky/lGe7Y?=
+ =?us-ascii?Q?ZA/MvADAOTynbIct/s/i+j9wkihf+bIAGJ7nozbsu4zAcexWkLrHMYCwqwoe?=
+ =?us-ascii?Q?lFWS98Yl0AwIFd3Vlg1Prx+jqZhfb3IJF1q3BGcwF1T6gjCTqtI/dgDqC/Tb?=
+ =?us-ascii?Q?LMj+K9i6kpVmDIT9n1ad78tocoFzKPHvXi/e742KmktqRoUDKjijmZ3Y/9v2?=
+ =?us-ascii?Q?Mla2CEFPb9XQftD5/Gy6LTWD9YSi+z0sY+MKqGdHyqsEJnoQqpS+LuIJkTGV?=
+ =?us-ascii?Q?iOkANZM/BMrwSrZjSdx3zCzfi70fYxtj+v+0UOlVJTA3jETp+VwGAQr9pIsp?=
+ =?us-ascii?Q?fdhqX3pLppQSANz5k0ukOOmbzDYRpfLMxYhuVfXSCBo2b/IyzfeuhQ/s8JbZ?=
+ =?us-ascii?Q?xWSbyR6O3TwqOE7id30zTjkH+xn4uZnlfGvqLVXn1hqa1hCljcmvmVsDh8V9?=
+ =?us-ascii?Q?7Mw2eJYYOKmsx37yJBVqFmiIxd/kuLDcchsbZc+hMue6OiTK+6pvp1OhC4Wu?=
+ =?us-ascii?Q?lzbdU52f2ndjtwORNuoQJPBtQ2sXdjwO4dlmcc9OzljhV2LNOx+LWnPTetrr?=
+ =?us-ascii?Q?iDfxtQUTJq026ixbAx+DT+J5o/zpA+jlnU/jONvmMw8Lg3qLsA3jIGmxei7S?=
+ =?us-ascii?Q?riJ87qU5BSZEzZuQwD8u5jvk3RwiPZYYN4JkraQqiUtg5JEzL16mqWvT5l88?=
+ =?us-ascii?Q?3tdvQ1Qa4Al9VQNZ5Vgm/kst0m/T3Kmf0+UGQPFF1GEujGHlw/TN15ZpfxyB?=
+ =?us-ascii?Q?/rPG9mUn0HO+eKCAo3xvU6fkI0bsXWcojsCDmZo6FMvs277ivdBqEJEdBE/S?=
+ =?us-ascii?Q?PHNd35CEbprHGLrxRugUIvjDLaBN5u3EtySNypmLfgkxvuz8gkN6ej96P/pp?=
+ =?us-ascii?Q?dZiXK+m+p39TWVMgtK7DT7mmEhQ6CgKIHCWCsdye+8+znZwWbr2DYqMecZ65?=
+ =?us-ascii?Q?QMaEpJPvwHvvOtHnycoeShUVIF5xZmYuxZwTT5DeiShvMLM9BZ4t8i/zQ2Tu?=
+ =?us-ascii?Q?9RXDffuoYAsNbGZ0AFpf/EYNGdJyTB1VjW8EVbHgwpdwRKbCvi79dxq/mDR9?=
+ =?us-ascii?Q?u1EaQfUanONPpqA+A3tg5vi6DXL7x+SschilnIn6GcLrNX3+XT8TOGa2alPF?=
+ =?us-ascii?Q?+93+UZDveXqUokqss2USSRblSfRoKiTnXWtcwEEUZOUharb3Ei7z/F16yje/?=
+ =?us-ascii?Q?souerHK1+uZ9aBrQVwRNd+X+kIgI4bHmYEcw8oWfXV49VdsRHZnqv5m2uqEZ?=
+ =?us-ascii?Q?OYG9g6mOSCdv3ha+3kKA4w431+y0FMZTQv0zBmKHFmKbgeP5CMixxHmvl4kK?=
+ =?us-ascii?Q?GA13957pH5yvt4RNuvXCyYK5bgXDsI9M4Rba8uB3fbz1Nhs/H369N+/aflz5?=
+ =?us-ascii?Q?I5x6y91/cSLCvJ8+wDysZE7f9PskEYaKFi6bY6aDoQuHzTId71gYyX43EJNc?=
+ =?us-ascii?Q?HoavGU1e/7nvhrLiibSvrJm9YOTuTUFRn2dYXHHOTaL2nuv3vlMEa2GjCFkp?=
+X-MS-Exchange-AntiSpam-MessageData-1: lniP5uw6C8ftRzxYISK4x66iZpPCQVWd/LQ=
+X-OriginatorOrg: belden.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4af59e0-d7ed-48ac-0335-08da49fdd71c
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR18MB5069.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2022 09:53:01.2868
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0f7367b1-44f7-45a7-bb10-563965c5f2e5
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 38AB/tNOdZfkC8mCfyc2YjXYQoUEQJMOt9E85IJZ1hJQhUmfdnRyPuQdVIAvrHt5NhNd6ijnQZ3za2mmV0iE2FhQGU9Pjg5lzQ1pDtejwXI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1801MB1992
+X-Proofpoint-GUID: 4DpmvFxzoGB_H_qySdgU3-2fOQkshwsN
+X-Proofpoint-ORIG-GUID: 4DpmvFxzoGB_H_qySdgU3-2fOQkshwsN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-09_08,2022-06-07_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=575 clxscore=1011 spamscore=0 impostorscore=0 malwarescore=0
+ priorityscore=1501 adultscore=0 phishscore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206090040
+X-Proofpoint-TriggeredRule: module.spam.rule.outbound_notspam
 X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -62,38 +133,116 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juri Lelli <juri.lelli@redhat.com>, Rafael Wysocki <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Ben Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, srivatsa@csail.mit.edu, linux-arch <linux-arch@vger.kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Andy Gross <agross@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, NXP Linux Team <linux-imx@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, xen-devel <xen-devel@lists.xenproject.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Michael Turquette <mturquette@baylibre.com>, Sam Creasey <sammy@sammy.net>, Petr Mladek <pmladek@suse.com>, Linux PM list <linux-pm@vger.kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um <linux-um@lists.infrade
- ad.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-omap <linux-omap@vger.kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, Richard Henderson <rth@twiddle.net>, gregkh <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, Sven Schnelle <svens@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Paul Mackerras <paulus@samba.org>, Mark Rutland <mark.rutland@arm.com>, "open list:IA64 \(Itanium\) PLATFORM" <linux-ia64@vger.kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, "open list:DRM DRIVER FOR QEMU'S CIRRUS DEVICE" <virtualization@lists.linux-foundation.org>, James Bottomley <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, Xuerui Wang <kernel@xen0n.name>, quic_neeraju@quicinc.com, linux-s390 <linux-s390@vger.kernel.org>, vschneid@redhat.com, John Ogn
- ess <john.ogness@linutronix.de>, Yoshinori Sato <ysat
-
-o@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Will Deacon <will@kernel.org>, Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>, Jonathan Hunter <jonathanh@nvidia.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Frederic Weisbecker <frederic@kernel.org>, Len Brown <lenb@kernel.org>, "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>, Sascha Hauer <kernel@pengutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, alpha <linux-alpha@vger.kernel.org>, linux-m68k <linux-m68k@lists.linux-m68k.org>, Stafford Horne <shorne@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Chris Zankel <chris@zankel.net>, Stephen Boyd <sboyd@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, Daniel Bristot de Oliveira <bristot@redhat.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, lpieralisi@kernel.org, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Joel Fernandes <joel@
- joelfernandes.org>, Fabio Estevam <festevam@gmail.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Kevin Hilman <khilman@kernel.org>, linux-csky@vger.kernel.org, "open list:SYNOPSYS ARC ARCHITECTURE" <linux-snps-arc@lists.infradead.org>, Mel Gorman <mgorman@suse.de>, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, Hans Ulli Kroll <ulli.kroll@googlemail.com>, Vineet Gupta <vgupta@kernel.org>, linux-clk <linux-clk@vger.kernel.org>, Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, bcain@quicinc.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, David Miller <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Pv-drivers <pv-drivers@vmware.com>, amakhalov@vmware.com, Bjorn Andersson <bjorn.andersson@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.k
- ernel.org>, "open list:QUALCOMM HEXAGON..." <linux-he
-xagon@vger.kernel.org>, linux-riscv <linux-riscv@lists.infradead.org>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, Jonas Bonn <jonas@southpole.se>, Yury Norov <yury.norov@gmail.com>, Richard Weinberger <richard@nod.at>, the arch/x86 maintainers <x86@kernel.org>, Russell King - ARM Linux <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Openrisc <openrisc@lists.librecores.org>, Paul Walmsley <paul.walmsley@sifive.com>, "open list:TEGRA ARCHITECTURE SUPPORT" <linux-tegra@vger.kernel.org>, Namhyung Kim <namhyung@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jpoimboe@kernel.org, Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, Ivan Kokshaysky
-  <ink@jurassic.park.msu.ru>, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Ariel Miculas <ariel.miculas@belden.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 09, 2022 at 10:39:22AM +0300, Tony Lindgren wrote:
-> * Arnd Bergmann <arnd@arndb.de> [220608 18:18]:
-> > On Wed, Jun 8, 2022 at 4:27 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> > >
-> > > arch_cpu_idle() is a very simple idle interface and exposes only a
-> > > single idle state and is expected to not require RCU and not do any
-> > > tracing/instrumentation.
-> > >
-> > > As such, omap_sram_idle() is not a valid implementation. Replace it
-> > > with the simple (shallow) omap3_do_wfi() call. Leaving the more
-> > > complicated idle states for the cpuidle driver.
-> 
-> Agreed it makes sense to limit deeper idle states to cpuidle. Hopefully
-> there is some informative splat for attempting to use arch_cpu_ide()
-> for deeper idle states :)
+This fixes the gdbserver issue on PPC32 described here:
+Link: https://linuxppc-dev.ozlabs.narkive.com/C46DRek4/debug-problems-on-ppc-83xx-target-due-to-changed-struct-task-struct
 
-The arch_cpu_idle() interface doesn't allow one to express a desire for
-deeper states. I'm not sure how anyone could even attempt this.
+On PPC32, the user space code considers the floating point to be an
+array of unsigned int (32 bits) - the index passed in is based on
+this assumption.
 
-But given what OMAP needs to go deeper, this would involve things that
-require RCU, combine that with the follow up patches that rip out all
-the trace_.*_rcuidle() hackery from the power and clock domain code,
-PROVE_RCU should scream if anybody were to attempt it.
+fp_state is a matrix consisting of 32 lines
+/* FP and VSX 0-31 register set /
+struct thread_fp_state {
+u64 fpr[32][TS_FPRWIDTH] attribute((aligned(16)));
+u64 fpscr; / Floating point status */
+};
+
+On PPC32, PT_FPSCR is defined as: (PT_FPR0 + 2*32 + 1)
+
+This means the fpr index validation allows a range from 0 to 65, leading
+to out-of-bounds array access. This ends up corrupting
+threads_struct->state, which holds the state of the task. Thus, threads
+incorrectly transition from a running state to a traced state and get
+stuck in that state.
+
+On PPC32 it's ok to assume that TS_FPRWIDTH is 1 because CONFIG_VSX is
+PPC64 specific. TS_FPROFFSET can be safely ignored, thus the assumption
+that fpr is an array of 32 elements of type u64 holds true.
+
+Solution taken from arch/powerpc/kernel/ptrace32.c
+
+Signed-off-by: Ariel Miculas <ariel.miculas@belden.com>
+---
+ arch/powerpc/kernel/ptrace/ptrace-fpu.c | 31 +++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
+index 5dca19361316..93695abbbdfb 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-fpu.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
+@@ -6,9 +6,16 @@
+ 
+ #include "ptrace-decl.h"
+ 
++#ifdef CONFIG_PPC32
++/* Macros to workout the correct index for the FPR in the thread struct */
++#define FPRNUMBER(i) (((i) - PT_FPR0) >> 1)
++#define FPRHALF(i) (((i) - PT_FPR0) & 1)
++#define FPRINDEX(i) TS_FPRWIDTH * FPRNUMBER(i) * 2 + FPRHALF(i)
++#endif
++
+ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
+ {
+-#ifdef CONFIG_PPC_FPU_REGS
++#if defined(CONFIG_PPC_FPU_REGS) && !defined(CONFIG_PPC32)
+ 	unsigned int fpidx = index - PT_FPR0;
+ #endif
+ 
+@@ -17,10 +24,20 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
+ 
+ #ifdef CONFIG_PPC_FPU_REGS
+ 	flush_fp_to_thread(child);
++#ifdef CONFIG_PPC32
++	/*
++	 * the user space code considers the floating point
++	 * to be an array of unsigned int (32 bits) - the
++	 * index passed in is based on this assumption.
++	 */
++	*data = ((unsigned int *)child->thread.fp_state.fpr)
++		[FPRINDEX(index)];
++#else
+ 	if (fpidx < (PT_FPSCR - PT_FPR0))
+ 		memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
+ 	else
+ 		*data = child->thread.fp_state.fpscr;
++#endif
+ #else
+ 	*data = 0;
+ #endif
+@@ -30,7 +47,7 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
+ 
+ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
+ {
+-#ifdef CONFIG_PPC_FPU_REGS
++#if defined(CONFIG_PPC_FPU_REGS) && !defined(CONFIG_PPC32)
+ 	unsigned int fpidx = index - PT_FPR0;
+ #endif
+ 
+@@ -39,10 +56,20 @@ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
+ 
+ #ifdef CONFIG_PPC_FPU_REGS
+ 	flush_fp_to_thread(child);
++#ifdef CONFIG_PPC32
++	/*
++	 * the user space code considers the floating point
++	 * to be an array of unsigned int (32 bits) - the
++	 * index passed in is based on this assumption.
++	 */
++	((unsigned int *)child->thread.fp_state.fpr)
++		[FPRINDEX(index)] = data;
++#else
+ 	if (fpidx < (PT_FPSCR - PT_FPR0))
+ 		memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
+ 	else
+ 		child->thread.fp_state.fpscr = data;
++#endif
+ #endif
+ 
+ 	return 0;
+-- 
+2.36.1
+
