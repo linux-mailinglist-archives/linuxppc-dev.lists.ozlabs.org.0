@@ -1,52 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69379544D4C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 15:17:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AAC544DC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 15:33:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJl5C2Ctxz3c8W
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 23:17:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJlR93qVqz3c8q
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 23:33:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=jNfas8vR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i9VCJiMj;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJlQV3pbdz3bmw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 23:32:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=jNfas8vR;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i9VCJiMj;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJl4b1qNbz3bmR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 23:17:18 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 0A22CB82DD9;
-	Thu,  9 Jun 2022 13:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590A0C34114;
-	Thu,  9 Jun 2022 13:17:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1654780633;
-	bh=VWVhudhXitwHFDO5y5M/fP2VcY4/QVsKqgiTQAOqbeQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jNfas8vROLNPT8oBljMNAoiNvmlwO40wcKpZRWyQ5mgTG3wPDiQstZ+YzXDw1k0KQ
-	 GLFNkH9n+GsmQvqV+qwracnYThiNtNc9lgg4POoooqy2PIy6aoOadL1qCSGYgagcgH
-	 NUndr56byvLXB6rtQ/xPqnsKz9YbfNn0rMy2n3R4=
-Date: Thu, 9 Jun 2022 15:17:10 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wang Wenhu <wenhu.wang@hotmail.com>
-Subject: Re: [PATCH 2/2] uio:powerpc:mpc85xx: l2-cache-sram uio driver
- implementation
-Message-ID: <YqHy1uXwCLlJmftr@kroah.com>
-References: <20220609102855.272270-1-wenhu.wang@hotmail.com>
- <SG2PR01MB295139AA7360917B2C4846E19FA79@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LJlQV1Qqwz4xZ0;
+	Thu,  9 Jun 2022 23:32:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1654781570;
+	bh=QROGr7b6VtqqQnUuVKAoAdV9fxjw6q91OzZZf93eSOU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i9VCJiMjaMUMW+Y581BrOrz8kRGuKT85YT7t5G816uCP+646ZvykhbH9KX58+ZXnu
+	 IL6e5umyxPa1PH7hO6u4ee7F6zN85L9AOxsBvE+D+92T2IymtUAaJJfpG/pms2xAyV
+	 CYOXuf8GJgWfTWssRdmlPEV6Zzin4YAUg6JwDhRMrtCmRIqfh1cEMfTfd15p+UhMUr
+	 0Wob3DA2VnuqdFjZGyMENoGJG2wMhN8RbVBhcQf0li+vDZDMg2tLAFchylO9D1xQH7
+	 hX2+hYU8yNz/3KNClILrCqvBTqUHdkZfVSdSXCQQAMR0takOe552yvulONzNAi2OWX
+	 nR10ezBOfruuA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
+Date: Thu,  9 Jun 2022 23:32:45 +1000
+Message-Id: <20220609133245.573565-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SG2PR01MB295139AA7360917B2C4846E19FA79@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,262 +56,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: ariel.miculas@belden.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 09, 2022 at 03:28:55AM -0700, Wang Wenhu wrote:
-> The l2-cache could be optionally configured as SRAM partly or fully.
-> Users can make use of it as a block of independent memory that offers
-> special usage, such as for debuging or other cratical status info
-> storage which keeps consistently even when the whole system crashed.
-> 
-> The hardware related configuration process utilized the work of the
-> earlier implementation, which has been removed now.
-> See: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=dc21ed2aef4150fc2fcf58227a4ff24502015c03
-> 
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Wang Wenhu <wenhu.wang@hotmail.com>
-> ---
->  drivers/uio/Kconfig                   |  10 +
->  drivers/uio/Makefile                  |   1 +
->  drivers/uio/uio_fsl_85xx_cache_sram.c | 286 ++++++++++++++++++++++++++
->  3 files changed, 297 insertions(+)
->  create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
-> 
-> diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
-> index 2e16c5338e5b..9199ced03880 100644
-> --- a/drivers/uio/Kconfig
-> +++ b/drivers/uio/Kconfig
-> @@ -105,6 +105,16 @@ config UIO_NETX
->  	  To compile this driver as a module, choose M here; the module
->  	  will be called uio_netx.
->  
-> +config UIO_FSL_85XX_CACHE_SRAM
-> +	tristate "Freescale 85xx Cache-Sram driver"
-> +	depends on FSL_SOC_BOOKE && PPC32
-> +	help
-> +	  Generic driver for accessing the Cache-Sram form user level. This
-> +	  is extremely helpful for some user-space applications that require
-> +	  high performance memory accesses.
-> +
-> +	  If you don't know what to do here, say N.
+The ptrace PEEKUSR/POKEUSR (aka PEEKUSER/POKEUSER) API allows a process
+to read/write registers of another process.
 
-Module name information?
+To get/set a register, the API takes an index into an imaginary address
+space called the "USER area", where the registers of the process are
+laid out in some fashion.
 
-> +
->  config UIO_FSL_ELBC_GPCM
->  	tristate "eLBC/GPCM driver"
->  	depends on FSL_LBC
-> diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
-> index f2f416a14228..1ba07d92a1b1 100644
-> --- a/drivers/uio/Makefile
-> +++ b/drivers/uio/Makefile
-> @@ -12,3 +12,4 @@ obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
->  obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
->  obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
->  obj-$(CONFIG_UIO_DFL)	+= uio_dfl.o
-> +obj-$(CONFIG_UIO_FSL_85XX_CACHE_SRAM)	+= uio_fsl_85xx_cache_sram.o
-> diff --git a/drivers/uio/uio_fsl_85xx_cache_sram.c b/drivers/uio/uio_fsl_85xx_cache_sram.c
-> new file mode 100644
-> index 000000000000..d363f9d2b179
-> --- /dev/null
-> +++ b/drivers/uio/uio_fsl_85xx_cache_sram.c
-> @@ -0,0 +1,286 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2022 Wang Wenhu <wenhu.wang@hotmail.com>
-> + * All rights reserved.
-> + */
-> +
-> +#include <linux/platform_device.h>
-> +#include <linux/uio_driver.h>
-> +#include <linux/stringify.h>
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/of_address.h>
-> +#include <linux/io.h>
-> +
-> +#define DRIVER_NAME		"uio_mpc85xx_cache_sram"
-> +#define UIO_INFO_VER	"0.0.1"
-> +#define UIO_NAME		"uio_cache_sram"
-> +
-> +#define L2CR_L2FI				0x40000000	/* L2 flash invalidate */
-> +#define L2CR_L2IO				0x00200000	/* L2 instruction only */
-> +#define L2CR_SRAM_ZERO			0x00000000	/* L2SRAM zero size */
-> +#define L2CR_SRAM_FULL			0x00010000	/* L2SRAM full size */
-> +#define L2CR_SRAM_HALF			0x00020000	/* L2SRAM half size */
-> +#define L2CR_SRAM_TWO_HALFS		0x00030000	/* L2SRAM two half sizes */
-> +#define L2CR_SRAM_QUART			0x00040000	/* L2SRAM one quarter size */
-> +#define L2CR_SRAM_TWO_QUARTS	0x00050000	/* L2SRAM two quarter size */
-> +#define L2CR_SRAM_EIGHTH		0x00060000	/* L2SRAM one eighth size */
-> +#define L2CR_SRAM_TWO_EIGHTH	0x00070000	/* L2SRAM two eighth size */
-> +
-> +#define L2SRAM_OPTIMAL_SZ_SHIFT	0x00000003	/* Optimum size for L2SRAM */
-> +
-> +#define L2SRAM_BAR_MSK_LO18		0xFFFFC000	/* Lower 18 bits */
-> +#define L2SRAM_BARE_MSK_HI4		0x0000000F	/* Upper 4 bits */
-> +
-> +enum cache_sram_lock_ways {
-> +	LOCK_WAYS_ZERO,
-> +	LOCK_WAYS_EIGHTH,
-> +	LOCK_WAYS_TWO_EIGHTH,
+The kernel then maps that index to a particular register in its own data
+structures and gets/sets the value.
 
-Why not have values for these?
+The API only allows a single machine-word to be read/written at a time.
+So 4 bytes on 32-bit kernels and 8 bytes on 64-bit kernels.
 
-> +	LOCK_WAYS_HALF = 4,
-> +	LOCK_WAYS_FULL = 8,
-> +};
-> +
-> +struct mpc85xx_l2ctlr {
-> +	u32	ctl;		/* 0x000 - L2 control */
+The way floating point registers (FPRs) are addressed is somewhat
+complicated, because double precision float values are 64-bit even on
+32-bit CPUs. That means on 32-bit kernels each FPR occupies two
+word-sized locations in the USER area. On 64-bit kernels each FPR
+occupies one word-sized location in the USER area.
 
-What is the endian of these u32 values?  You map them directly to
-memory, so they must be specified some way, right?  Please make it
-obvious what they are.
+Internally the kernel stores the FPRs in an array of u64s, or if VSX is
+enabled, an array of pairs of u64s where one half of each pair stores
+the FPR. Which half of the pair stores the FPR depends on the kernel's
+endianness.
 
-> +	u8	res1[0xC];
-> +	u32	ewar0;		/* 0x010 - External write address 0 */
-> +	u32	ewarea0;	/* 0x014 - External write address extended 0 */
-> +	u32	ewcr0;		/* 0x018 - External write ctrl */
-> +	u8	res2[4];
-> +	u32	ewar1;		/* 0x020 - External write address 1 */
-> +	u32	ewarea1;	/* 0x024 - External write address extended 1 */
-> +	u32	ewcr1;		/* 0x028 - External write ctrl 1 */
-> +	u8	res3[4];
-> +	u32	ewar2;		/* 0x030 - External write address 2 */
-> +	u32	ewarea2;	/* 0x034 - External write address extended 2 */
-> +	u32	ewcr2;		/* 0x038 - External write ctrl 2 */
-> +	u8	res4[4];
-> +	u32	ewar3;		/* 0x040 - External write address 3 */
-> +	u32	ewarea3;	/* 0x044 - External write address extended 3 */
-> +	u32	ewcr3;		/* 0x048 - External write ctrl 3 */
-> +	u8	res5[0xB4];
-> +	u32	srbar0;		/* 0x100 - SRAM base address 0 */
-> +	u32	srbarea0;	/* 0x104 - SRAM base addr reg ext address 0 */
-> +	u32	srbar1;		/* 0x108 - SRAM base address 1 */
-> +	u32	srbarea1;	/* 0x10C - SRAM base addr reg ext address 1 */
-> +	u8	res6[0xCF0];
-> +	u32	errinjhi;	/* 0xE00 - Error injection mask high */
-> +	u32	errinjlo;	/* 0xE04 - Error injection mask low */
-> +	u32	errinjctl;	/* 0xE08 - Error injection tag/ecc control */
-> +	u8	res7[0x14];
-> +	u32	captdatahi;	/* 0xE20 - Error data high capture */
-> +	u32	captdatalo;	/* 0xE24 - Error data low capture */
-> +	u32	captecc;	/* 0xE28 - Error syndrome */
-> +	u8	res8[0x14];
-> +	u32	errdet;		/* 0xE40 - Error detect */
-> +	u32	errdis;		/* 0xE44 - Error disable */
-> +	u32	errinten;	/* 0xE48 - Error interrupt enable */
-> +	u32	errattr;	/* 0xE4c - Error attribute capture */
-> +	u32	erradrrl;	/* 0xE50 - Error address capture low */
-> +	u32	erradrrh;	/* 0xE54 - Error address capture high */
-> +	u32	errctl;		/* 0xE58 - Error control */
-> +	u8	res9[0x1A4];
-> +};
-> +
-> +static int uio_cache_sram_setup(struct platform_device *pdev,
-> +				phys_addr_t base, u8 ways)
-> +{
-> +	struct mpc85xx_l2ctlr __iomem *l2ctlr = of_iomap(pdev->dev.of_node, 0);
-> +
-> +	if (!l2ctlr) {
-> +		dev_err(&pdev->dev, "can not map l2 controller\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* write bits[0-17] to srbar0 */
-> +	out_be32(&l2ctlr->srbar0, lower_32_bits(base) & L2SRAM_BAR_MSK_LO18);
-> +
-> +	/* write bits[18-21] to srbare0 */
-> +#ifdef CONFIG_PHYS_64BIT
+To handle the different layouts of the FPRs depending on VSX/no-VSX and
+big/little endian, the TS_FPR() macro was introduced.
 
-No #ifdef in .c files please.
+Unfortunately the TS_FPR() macro does not take into account the fact
+that the addressing of each FPR differs between 32-bit and 64-bit
+kernels. It just takes the index into the "USER area" passed from
+userspace and indexes into the fp_state.fpr array.
 
-> +	out_be32(&l2ctlr->srbarea0, upper_32_bits(base) & L2SRAM_BARE_MSK_HI4);
-> +#endif
-> +
-> +	clrsetbits_be32(&l2ctlr->ctl, L2CR_L2E, L2CR_L2FI);
-> +
-> +	switch (ways) {
-> +	case LOCK_WAYS_EIGHTH:
-> +		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_EIGHTH);
-> +		break;
-> +
-> +	case LOCK_WAYS_TWO_EIGHTH:
-> +		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_QUART);
-> +		break;
-> +
-> +	case LOCK_WAYS_HALF:
-> +		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_HALF);
-> +		break;
-> +
-> +	case LOCK_WAYS_FULL:
-> +	default:
-> +		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_FULL);
-> +		break;
-> +	}
-> +	eieio();
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct vm_operations_struct uio_cache_sram_vm_ops = {
-> +#ifdef CONFIG_HAVE_IOREMAP_PROT
+On 32-bit there are 64 indexes that address FPRs, but only 32 entries in
+the fp_state.fpr array, meaning the user can read/write 256 bytes past
+the end of the array. Because the fp_state sits in the middle of the
+thread_struct there are various fields than can be overwritten,
+including some pointers. As such it may be exploitable.
 
-Same here.
+It has also been observed to cause systems to hang or otherwise
+misbehave when using gdbserver, and is probably the root cause of this
+report which could not be easily reproduced:
+  https://lore.kernel.org/linuxppc-dev/dc38afe9-6b78-f3f5-666b-986939e40fc6@keymile.com/
 
-> +	.access = generic_access_phys,
-> +#endif
-> +};
-> +
-> +static int uio_cache_sram_mmap(struct uio_info *info,
-> +				struct vm_area_struct *vma)
-> +{
-> +	struct uio_mem *mem = info->mem;
-> +
-> +	if (mem->addr & ~PAGE_MASK)
-> +		return -ENODEV;
-> +
-> +	if ((vma->vm_end - vma->vm_start > mem->size) ||
-> +		(mem->size == 0) ||
-> +		(mem->memtype != UIO_MEM_PHYS))
-> +		return -EINVAL;
-> +
-> +	vma->vm_ops = &uio_cache_sram_vm_ops;
-> +	vma->vm_page_prot = pgprot_cached(vma->vm_page_prot);
-> +
-> +	return remap_pfn_range(vma,
-> +						   vma->vm_start,
-> +						   mem->addr >> PAGE_SHIFT,
-> +						   vma->vm_end - vma->vm_start,
-> +						   vma->vm_page_prot);
+Rather than trying to make the TS_FPR() macro even more complicated to
+fix the bug, or add more macros, instead add a special-case for 32-bit
+kernels. This is more obvious and hopefully avoids a similar bug
+happening again in future.
 
-Odd indentation, did you use checkpatch.pl on your patch?
+Note that because 32-bit kernels never have VSX enabled the code doesn't
+need to consider TS_FPRWIDTH/OFFSET at all. Add a BUILD_BUG_ON() to
+ensure that 32-bit && VSX is never enabled.
 
-> +}
-> +
-> +static int uio_cache_sram_probe(struct platform_device *pdev)
-> +{
-> +	struct device_node *node = pdev->dev.of_node;
-> +	struct uio_info *info;
-> +	struct uio_mem *uiomem;
-> +	const char *dt_name;
-> +	phys_addr_t mem_base;
-> +	u32 l2cache_size;
-> +	u32 mem_size;
-> +	u32 rem;
-> +	u8 ways;
-> +	int ret;
-> +
-> +	if (!node) {
-> +		dev_err(&pdev->dev, "device's of_node is null\n");
+Fixes: 87fec0514f61 ("powerpc: PTRACE_PEEKUSR/PTRACE_POKEUSER of FPR registers in little endian builds")
+Cc: stable@vger.kernel.org # v3.13+
+Reported-by: Ariel Miculas <ariel.miculas@belden.com>
+Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/ptrace/ptrace-fpu.c | 20 ++++++++++++++------
+ arch/powerpc/kernel/ptrace/ptrace.c     |  3 +++
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
-How can that happen?
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
+index 5dca19361316..09c49632bfe5 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-fpu.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
+@@ -17,9 +17,13 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
+ 
+ #ifdef CONFIG_PPC_FPU_REGS
+ 	flush_fp_to_thread(child);
+-	if (fpidx < (PT_FPSCR - PT_FPR0))
+-		memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
+-	else
++	if (fpidx < (PT_FPSCR - PT_FPR0)) {
++		if (IS_ENABLED(CONFIG_PPC32))
++			// On 32-bit the index we are passed refers to 32-bit words
++			*data = ((u32 *)child->thread.fp_state.fpr)[fpidx];
++		else
++			memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
++	} else
+ 		*data = child->thread.fp_state.fpscr;
+ #else
+ 	*data = 0;
+@@ -39,9 +43,13 @@ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
+ 
+ #ifdef CONFIG_PPC_FPU_REGS
+ 	flush_fp_to_thread(child);
+-	if (fpidx < (PT_FPSCR - PT_FPR0))
+-		memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
+-	else
++	if (fpidx < (PT_FPSCR - PT_FPR0)) {
++		if (IS_ENABLED(CONFIG_PPC32))
++			// On 32-bit the index we are passed refers to 32-bit words
++			((u32 *)child->thread.fp_state.fpr)[fpidx] = data;
++		else
++			memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
++	} else
+ 		child->thread.fp_state.fpscr = data;
+ #endif
+ 
+diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
+index 4d2dc22d4a2d..5d7a72b41ae7 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace.c
++++ b/arch/powerpc/kernel/ptrace/ptrace.c
+@@ -444,4 +444,7 @@ void __init pt_regs_check(void)
+ 	 * real registers.
+ 	 */
+ 	BUILD_BUG_ON(PT_DSCR < sizeof(struct user_pt_regs) / sizeof(unsigned long));
++
++	// ptrace_get/put_fpr() rely on PPC32 and VSX being incompatible
++	BUILD_BUG_ON(IS_ENABLED(CONFIG_PPC32) && IS_ENABLED(CONFIG_VSX));
+ }
+-- 
+2.35.3
 
-> +		return -EINVAL;
-> +	}
-
-thanks,
-
-greg k-h
