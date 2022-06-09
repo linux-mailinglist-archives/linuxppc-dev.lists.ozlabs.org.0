@@ -1,66 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A0454657F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:25:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD36546581
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:26:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJY82WQMz3g5y
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:25:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJYp6SpGz3g84
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:26:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tKaXvF9Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Rmtz/+ZP;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=song@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=jacob.jun.pan@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tKaXvF9Q;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Rmtz/+ZP;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJzly3NxWz3bg4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 08:48:46 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 3EBECB830AE
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 22:48:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527A2C341E5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 22:48:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654814920;
-	bh=fXQHcxnj09/NTw2WTFOlO+YMcNuPa2JywCYJxs8h+OI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tKaXvF9QRb62Y+vempgVpRbPDoZKp3cW4FtttO8/7E0uh+KETERHOu8TdTzwWAwrU
-	 xGtYH/7o85i8ECoYtdzu2/ShEXy+m07iogmJ9CUJeAlDjbQ2g3dhnnWKivbd6l611c
-	 ETEuLIgJTOC8tmx8PPLKakpM2Y2Dg6Cu1wXK+Dtq8oLRIw63QxqKIzj32OHFg3Gsw6
-	 AGkKVZWTMj49Mv8nIzBDTZVpv3vfd2s0qEMP1rFfNqr6ubzI6iC51MVz/LLcWo+V7V
-	 Kl+ZJHKlUAAw9KLyuLFScyw6YZsSX2/8Tbyln3mxluYtmDgtXTwVPl4MHJ2O27WoCG
-	 e1lej69VaPWJw==
-Received: by mail-yb1-f178.google.com with SMTP id r82so44128752ybc.13
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jun 2022 15:48:40 -0700 (PDT)
-X-Gm-Message-State: AOAM531bR+YMHiH6dE6Ffkjn8t/n96/J4axHXsdb3uYGO6SqH/HOcR5I
-	rJZ85pvqyLghM76WFLHVCHQmgFe47xROXXa4Few=
-X-Google-Smtp-Source: ABdhPJzemSM5GrpgirpnnQNTEDsYpAOxmoxNmoSmK2+phEV9mudE18JL5yVLSDRq4A8vq3lyLIBxhhDyWWNd79LGZgg=
-X-Received: by 2002:a25:3b49:0:b0:664:5a43:5895 with SMTP id
- i70-20020a253b49000000b006645a435895mr1766286yba.9.1654814908410; Thu, 09 Jun
- 2022 15:48:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LK11Z3Vpqz3bk8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 09:45:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654818338; x=1686354338;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/qix89+4Yux2UyS3QMBWmKLCne+VvkXES21cCGFIhLs=;
+  b=Rmtz/+ZPRYUOrR+s9ROYx14MficsNUmAPcTPEMYF2GqrAObEMEpu3VPP
+   lKIQOuYB+ibWZPVHSDToGsIbzCgph3d4VkOtAZeDAPypLpUvs6L5p3uOe
+   r2wsszHq9i5b9Fl7jACu0HD2/9qkQ5eMj4AbR1w2C3iCIYPdGuQC6Th/h
+   FoXX9fO4nAxFVdDu/XmoGlolbip4c6gQ8e7DvikL09bMxx6jRVZusJieN
+   UoL9io3vtzEqj2f5BFzKmA4O5n7UUbwGJFXA1FTAP8Py/u5pU1EQcR8V2
+   u3Ctez3BjFvxH2J76howHILOYthy8EQ6F9jzG2MxOQ7uHzy/y8qLhzuFf
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="278263541"
+X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
+   d="scan'208";a="278263541"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 16:45:19 -0700
+X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
+   d="scan'208";a="610480359"
+Received: from jacob-builder.jf.intel.com (HELO jacob-builder) ([10.7.198.157])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 16:45:19 -0700
+Date: Thu, 9 Jun 2022 16:49:21 -0700
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 04/36] cpuidle,intel_idle: Fix CPUIDLE_FLAG_IRQ_ENABLE
+Message-ID: <20220609164921.5e61711d@jacob-builder>
+In-Reply-To: <20220608144516.172460444@infradead.org>
+References: <20220608142723.103523089@infradead.org>
+	<20220608144516.172460444@infradead.org>
+Organization: OTC
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20220608000014.3054333-1-jarkko@profian.com> <CAJF2gTQgCn2CyZ4+VBqEEBT2b4+1KxoEXxrd+Ritk=58+U8EFA@mail.gmail.com>
- <YqAy0qjI4Lktk/uJ@iki.fi> <20220608232115.ccd4399f4a1d133e9b65c2a9@kernel.org>
- <CAPhsuW6iUieQvA6KqzSLgtxmjkVSWCuVwNA338DATb_myHxo7w@mail.gmail.com>
- <CAPhsuW6BzUtqnjvaGJScXRpghs0_V_phpdyd4_oAKhvmkX-GFw@mail.gmail.com>
- <YqEF6+YKqCHsWZJW@bombadil.infradead.org> <20220609034852.GA30873@lst.de>
- <YqH0iEgsi6+bwS3x@bombadil.infradead.org> <e7dedb9086193ca7682edc10fabc4195894e5146.camel@intel.com>
-In-Reply-To: <e7dedb9086193ca7682edc10fabc4195894e5146.camel@intel.com>
-From: Song Liu <song@kernel.org>
-Date: Thu, 9 Jun 2022 15:48:17 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW4rF1cFmdSUZD=Tw4QRmOf=v+V_2EhEphzJA5teqOrH0Q@mail.gmail.com>
-Message-ID: <CAPhsuW4rF1cFmdSUZD=Tw4QRmOf=v+V_2EhEphzJA5teqOrH0Q@mail.gmail.com>
-Subject: Re: [PATCH] kprobes: Enable tracing for mololithic kernel images
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -73,38 +68,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "ashimida@linux.alibaba.com" <ashimida@linux.alibaba.com>, "heiko@sntech.de" <heiko@sntech.de>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "linus.walleij@linaro.org" <linus.walleij@linaro.org>, "paulus@samba.org" <paulus@samba.org>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "hch@lst.de" <hch@lst.de>, "javierm@redhat.com" <javierm@redhat.com>, "geert@linux-m68k.org" <geert@linux-m68k.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "linux@roeck-us.net" <linux@roeck-us.net>, "andrealmeid@igalia.com" <andrealmeid@igalia.com>, "michael.roth@amd.com" <michael.roth@amd.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "tglx@linutronix.de" <tglx@linutronix.de>, "andreyknvl@gmail.com" <andreyknvl@gmail.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "svens@linux.ibm.com" <svens@linux.ibm.com>, "zepan@sipeed.com" <zepan@sipeed.com>, "guoren@kerne
- l.org" <guoren@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "mark.rutland@arm.com" <mark.rutland@arm.com>, "luis.machado@linaro.org" <luis.machado@linaro.org>, "anemo@mba.ocn.ne.jp" <anemo@mba.ocn.ne.jp>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "joey.gouly@arm.com" <joey.gouly@arm.com>, "James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "iii@linux.ibm.com" <iii@linux.ibm.com>, "anup@brainfault.org" <anup@brainfault.org>, "deller@gmx.de" <deller@gmx.de>, "Keshavamurthy, Anil S" <anil.s.keshavamurthy@intel.com>, "mhiramat@kernel.org" <mhiramat@kernel.org>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, "philipp.tomsich@vrull.eu" <philipp.tomsich@vrull.eu>, "dave.anglin@bell.net" <dave.anglin@bell.net>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "dja@axtens.net" <dja@axte
- ns.net>, "nico@fluxnic.net" <nico@fluxnic.net>, "jark
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, rth@twiddle.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualizatio
+ n@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradea
+ d.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com
 
-ko@kernel.org" <jarkko@kernel.org>, "ebiederm@xmission.com" <ebiederm@xmission.com>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "bristot@redhat.com" <bristot@redhat.com>, "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>, "kernel@esmil.dk" <kernel@esmil.dk>, "jniethe5@gmail.com" <jniethe5@gmail.com>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "ast@kernel.org" <ast@kernel.org>, "will@kernel.org" <will@kernel.org>, "masahiroy@kernel.org" <masahiroy@kernel.org>, "Sakkinen, Jarkko" <jarkko@profian.com>, "samitolvanen@google.com" <samitolvanen@google.com>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "elver@google.com" <elver@google.com>, "keescook@chromium.org" <keescook@chromium.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "nathan@kernel.org" <nathan@kernel.org>, "rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>, "broonie@kernel.org" <broonie@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "egorenar@linux.ibm.com" <egorenar@lin
- ux.ibm.com>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "nathaniel@profian.com" <nathaniel@profian.com>, "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "huschle@linux.ibm.com" <huschle@linux.ibm.com>, "peterz@infradead.org" <peterz@infradead.org>, "hpa@zytor.com" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "yangtiezhu@loongson.cn" <yangtiezhu@loongson.cn>, "mbenes@suse.cz" <mbenes@suse.cz>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>, "ardb@kernel.org" <ardb@kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, "atomlin@redhat.com" <atomlin@redhat.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.ed
- u>, "hca@linux.ibm.com" <hca@linux.ibm.com>, "liaocha
-ng1@huawei.com" <liaochang1@huawei.com>, "atishp@atishpatra.org" <atishp@atishpatra.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>, "tmricht@linux.ibm.com" <tmricht@linux.ibm.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "changbin.du@intel.com" <changbin.du@intel.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
+, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dab
+ belt.com, anup@brainfault.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 9, 2022 at 11:41 AM Edgecombe, Rick P
-<rick.p.edgecombe@intel.com> wrote:
->
-> On Thu, 2022-06-09 at 06:24 -0700, Luis Chamberlain wrote:
+Hi Peter,
 
-[...]
+On Wed, 08 Jun 2022 16:27:27 +0200, Peter Zijlstra <peterz@infradead.org>
+wrote:
 
->
-> Like say for a next step we moved prog pack out of bpf into core code,
-> gave it it's own copy of module_alloc(), and then made kprobes use it.
-> Then we would have something with improved W^X guard rails, and kprobes
-> would not depend on modules anymore. I think maybe it's a step in the
-> right direction, even if it's not perfect.
+> Commit c227233ad64c ("intel_idle: enable interrupts before C1 on
+> Xeons") wrecked intel_idle in two ways:
+> 
+>  - must not have tracing in idle functions
+>  - must return with IRQs disabled
+> 
+> Additionally, it added a branch for no good reason.
+> 
+> Fixes: c227233ad64c ("intel_idle: enable interrupts before C1 on Xeons")
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  drivers/idle/intel_idle.c |   48
+> +++++++++++++++++++++++++++++++++++----------- 1 file changed, 37
+> insertions(+), 11 deletions(-)
+> 
+> --- a/drivers/idle/intel_idle.c
+> +++ b/drivers/idle/intel_idle.c
+> @@ -129,21 +137,37 @@ static unsigned int mwait_substates __in
+>   *
+>   * Must be called under local_irq_disable().
+>   */
+nit: this comment is no long true, right?
 
-I was also thinking about where to put the prog pack allocator eventually.
-Shall it be part of mm code or module code?
+> +
+> -static __cpuidle int intel_idle(struct cpuidle_device *dev,
+> -				struct cpuidle_driver *drv, int index)
+> +static __always_inline int __intel_idle(struct cpuidle_device *dev,
+> +					struct cpuidle_driver *drv, int
+> index) {
+>  	struct cpuidle_state *state = &drv->states[index];
+>  	unsigned long eax = flg2MWAIT(state->flags);
+>  	unsigned long ecx = 1; /* break on interrupt flag */
+>  
+> -	if (state->flags & CPUIDLE_FLAG_IRQ_ENABLE)
+> -		local_irq_enable();
+> -
+>  	mwait_idle_with_hints(eax, ecx);
+>  
+>  	return index;
+>  }
+>  
+> +static __cpuidle int intel_idle(struct cpuidle_device *dev,
+> +				struct cpuidle_driver *drv, int index)
+> +{
+> +	return __intel_idle(dev, drv, index);
+> +}
+> +
+> +static __cpuidle int intel_idle_irq(struct cpuidle_device *dev,
+> +				    struct cpuidle_driver *drv, int
+> index) +{
+> +	int ret;
+> +
+> +	raw_local_irq_enable();
+> +	ret = __intel_idle(dev, drv, index);
+> +	raw_local_irq_disable();
+> +
+> +	return ret;
+> +}
+> +
+>  /**
+>   * intel_idle_s2idle - Ask the processor to enter the given idle state.
+>   * @dev: cpuidle device of the target CPU.
+> @@ -1801,6 +1824,9 @@ static void __init intel_idle_init_cstat
+>  		/* Structure copy. */
+>  		drv->states[drv->state_count] =
+> cpuidle_state_table[cstate]; 
+> +		if (cpuidle_state_table[cstate].flags &
+> CPUIDLE_FLAG_IRQ_ENABLE)
+> +			drv->states[drv->state_count].enter =
+> intel_idle_irq; +
+>  		if ((disabled_states_mask & BIT(drv->state_count)) ||
+>  		    ((icpu->use_acpi || force_use_acpi) &&
+>  		     intel_idle_off_by_default(mwait_hint) &&
+> 
+> 
 
-Btw, prog pack has more challenges with W^X requirement:
-1. The arch need to have text poke mechanism;
-2. Some users of prog pack need to learn to use the ROXbuffer with text poke,
-  for example, how to calculate relative address differently.
 
 Thanks,
-Song
+
+Jacob
