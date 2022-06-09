@@ -2,48 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2AAC544DC0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 15:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3493544DE9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 15:42:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJlR93qVqz3c8q
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 23:33:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJldK5vxqz3c8W
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 23:42:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i9VCJiMj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j6NCY82a;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJlQV3pbdz3bmw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 23:32:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=i9VCJiMj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j6NCY82a;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LJlQV1Qqwz4xZ0;
-	Thu,  9 Jun 2022 23:32:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654781570;
-	bh=QROGr7b6VtqqQnUuVKAoAdV9fxjw6q91OzZZf93eSOU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=i9VCJiMjaMUMW+Y581BrOrz8kRGuKT85YT7t5G816uCP+646ZvykhbH9KX58+ZXnu
-	 IL6e5umyxPa1PH7hO6u4ee7F6zN85L9AOxsBvE+D+92T2IymtUAaJJfpG/pms2xAyV
-	 CYOXuf8GJgWfTWssRdmlPEV6Zzin4YAUg6JwDhRMrtCmRIqfh1cEMfTfd15p+UhMUr
-	 0Wob3DA2VnuqdFjZGyMENoGJG2wMhN8RbVBhcQf0li+vDZDMg2tLAFchylO9D1xQH7
-	 hX2+hYU8yNz/3KNClILrCqvBTqUHdkZfVSdSXCQQAMR0takOe552yvulONzNAi2OWX
-	 nR10ezBOfruuA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
-Date: Thu,  9 Jun 2022 23:32:45 +1000
-Message-Id: <20220609133245.573565-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJlck70Pdz3bmX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 23:41:42 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 642A0B82DE6;
+	Thu,  9 Jun 2022 13:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8304C34114;
+	Thu,  9 Jun 2022 13:41:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1654782099;
+	bh=YfwemhhRNfHkDcE7hmvHDoWfd3apl8aK4u9+a87TYAU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=j6NCY82atJdRW+KDfnW10DrMSfLqY+EmOIQyNSG4Tfr3eoio+yE9T2rPOp1IeO1E+
+	 PGqCi7NT+bUklMuWQinSASg0FxPEAW31dDfB6AErks7p6O43T12oUgPkfCzuP53h2p
+	 O4bporKziDJnDVZ/9Z5AUn2PCu6JNev8RDpud/cbmgpyRDlN7MdIU/OToaqCtFiknN
+	 +xMaYj7UO9+y+X6z4JVWNAbNmH36Sar2yz5w5oRbcAv8Hy5MNAhVHEkuP6TcfApGsd
+	 Yj5N3r9FLXNbmjD+IcFuVY7X/St6Us9AvlKDNAlD97hMtGVXaX4H91wL22A67T0UMb
+	 gNdr6wJFeQGjQ==
+From: Mark Brown <broonie@kernel.org>
+To: cgel.zte@gmail.com, shengjiu.wang@gmail.com
+In-Reply-To: <20220606033705.291048-1-chi.minghao@zte.com.cn>
+References: <20220606033705.291048-1-chi.minghao@zte.com.cn>
+Subject: Re: [PATCH V2] ASoC: imx-audmux: remove unnecessary check of clk_disable_unprepare/clk_prepare_enable
+Message-Id: <165478209647.1066808.13320829803906102569.b4-ty@kernel.org>
+Date: Thu, 09 Jun 2022 14:41:36 +0100
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -56,122 +59,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ariel.miculas@belden.com
+Cc: alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linuxppc-dev@lists.ozlabs.org, zealci@zte.com.cn, lgirdwood@gmail.com, chi.minghao@zte.com.cn, perex@perex.cz, nicoleotsuka@gmail.com, linux-arm-kernel@lists.infradead.org, festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ptrace PEEKUSR/POKEUSR (aka PEEKUSER/POKEUSER) API allows a process
-to read/write registers of another process.
+On Mon, 6 Jun 2022 03:37:05 +0000, cgel.zte@gmail.com wrote:
+> From: Minghao Chi <chi.minghao@zte.com.cn>
+> 
+> Because clk_disable_unprepare/clk_prepare_enable already checked NULL clock
+> parameter, so the additional checks are unnecessary, just remove them.
+> 
+> 
 
-To get/set a register, the API takes an index into an imaginary address
-space called the "USER area", where the registers of the process are
-laid out in some fashion.
+Applied to
 
-The kernel then maps that index to a particular register in its own data
-structures and gets/sets the value.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-The API only allows a single machine-word to be read/written at a time.
-So 4 bytes on 32-bit kernels and 8 bytes on 64-bit kernels.
+Thanks!
 
-The way floating point registers (FPRs) are addressed is somewhat
-complicated, because double precision float values are 64-bit even on
-32-bit CPUs. That means on 32-bit kernels each FPR occupies two
-word-sized locations in the USER area. On 64-bit kernels each FPR
-occupies one word-sized location in the USER area.
+[1/1] ASoC: imx-audmux: remove unnecessary check of clk_disable_unprepare/clk_prepare_enable
+      commit: 142d456204cf4dabe18be59e043d806440f609d4
 
-Internally the kernel stores the FPRs in an array of u64s, or if VSX is
-enabled, an array of pairs of u64s where one half of each pair stores
-the FPR. Which half of the pair stores the FPR depends on the kernel's
-endianness.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-To handle the different layouts of the FPRs depending on VSX/no-VSX and
-big/little endian, the TS_FPR() macro was introduced.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Unfortunately the TS_FPR() macro does not take into account the fact
-that the addressing of each FPR differs between 32-bit and 64-bit
-kernels. It just takes the index into the "USER area" passed from
-userspace and indexes into the fp_state.fpr array.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-On 32-bit there are 64 indexes that address FPRs, but only 32 entries in
-the fp_state.fpr array, meaning the user can read/write 256 bytes past
-the end of the array. Because the fp_state sits in the middle of the
-thread_struct there are various fields than can be overwritten,
-including some pointers. As such it may be exploitable.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-It has also been observed to cause systems to hang or otherwise
-misbehave when using gdbserver, and is probably the root cause of this
-report which could not be easily reproduced:
-  https://lore.kernel.org/linuxppc-dev/dc38afe9-6b78-f3f5-666b-986939e40fc6@keymile.com/
-
-Rather than trying to make the TS_FPR() macro even more complicated to
-fix the bug, or add more macros, instead add a special-case for 32-bit
-kernels. This is more obvious and hopefully avoids a similar bug
-happening again in future.
-
-Note that because 32-bit kernels never have VSX enabled the code doesn't
-need to consider TS_FPRWIDTH/OFFSET at all. Add a BUILD_BUG_ON() to
-ensure that 32-bit && VSX is never enabled.
-
-Fixes: 87fec0514f61 ("powerpc: PTRACE_PEEKUSR/PTRACE_POKEUSER of FPR registers in little endian builds")
-Cc: stable@vger.kernel.org # v3.13+
-Reported-by: Ariel Miculas <ariel.miculas@belden.com>
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/kernel/ptrace/ptrace-fpu.c | 20 ++++++++++++++------
- arch/powerpc/kernel/ptrace/ptrace.c     |  3 +++
- 2 files changed, 17 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-index 5dca19361316..09c49632bfe5 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-@@ -17,9 +17,13 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0))
--		memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
--	else
-+	if (fpidx < (PT_FPSCR - PT_FPR0)) {
-+		if (IS_ENABLED(CONFIG_PPC32))
-+			// On 32-bit the index we are passed refers to 32-bit words
-+			*data = ((u32 *)child->thread.fp_state.fpr)[fpidx];
-+		else
-+			memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
-+	} else
- 		*data = child->thread.fp_state.fpscr;
- #else
- 	*data = 0;
-@@ -39,9 +43,13 @@ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0))
--		memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
--	else
-+	if (fpidx < (PT_FPSCR - PT_FPR0)) {
-+		if (IS_ENABLED(CONFIG_PPC32))
-+			// On 32-bit the index we are passed refers to 32-bit words
-+			((u32 *)child->thread.fp_state.fpr)[fpidx] = data;
-+		else
-+			memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
-+	} else
- 		child->thread.fp_state.fpscr = data;
- #endif
- 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 4d2dc22d4a2d..5d7a72b41ae7 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -444,4 +444,7 @@ void __init pt_regs_check(void)
- 	 * real registers.
- 	 */
- 	BUILD_BUG_ON(PT_DSCR < sizeof(struct user_pt_regs) / sizeof(unsigned long));
-+
-+	// ptrace_get/put_fpr() rely on PPC32 and VSX being incompatible
-+	BUILD_BUG_ON(IS_ENABLED(CONFIG_PPC32) && IS_ENABLED(CONFIG_VSX));
- }
--- 
-2.35.3
-
+Thanks,
+Mark
