@@ -1,126 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B11D546546
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:14:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5203546540
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:13:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJJW0Hgcz3f7v
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:14:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJHk5sMkz3f5r
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:13:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=q0tizpIe;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=bn7nWKrT;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=belden.com (client-ip=205.220.178.250; helo=mx0b-00015a02.pphosted.com; envelope-from=prvs=7159c858d4=ariel.miculas@belden.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=q0tizpIe;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=bn7nWKrT;
 	dkim-atps=neutral
-X-Greylist: delayed 859 seconds by postgrey-1.36 at boromir; Thu, 09 Jun 2022 20:11:02 AEST
-Received: from mx0b-00015a02.pphosted.com (mx0b-00015a02.pphosted.com [205.220.178.250])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJfxf6kMFz3blW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:10:56 +1000 (AEST)
-Received: from pps.filterd (m0264210.ppops.net [127.0.0.1])
-	by mx0a-00015a02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2598qmLj025059
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Jun 2022 04:56:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=belden.com; h=from : to : cc :
- subject : date : message-id : content-transfer-encoding : content-type :
- mime-version; s=podpps1; bh=WFpyIfR/JFvLg7ap/w5QXz8ahJGkfTDNeujkdOlJpFE=;
- b=q0tizpIeYL0jTTvxkD4XbLItuketVrAlxpvbgCmtqqCm6JRuteNF6MVCv+pry1UhGmL6
- ekibkRnQLaodcuIS+kv87bALAh7v0ZMy1mtbjVF6Il5EoqIIIcNBdYxUwn9qIN0gGDMN
- wLqMUTHmVrIQ8/eOAfY8RgI7fCGhKEdPujx4d1VHBYBtFOPeMQeNb55HSq5N8dwLqC0F
- D9CGOO9bXhr2wRxzwCaT+i3RrunagTTX41Jqv5JFbqtexes4W9YmG3UHw/xDb170rmSy
- 1rKoRn5T4sSlTa7GoBJGwNyQ6lEsvJLXyRfI16b65c6GP7Tiqo70vUY1MqeaWp3hxm0B ow== 
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2175.outbound.protection.outlook.com [104.47.58.175])
-	by mx0a-00015a02.pphosted.com (PPS) with ESMTPS id 3gjuft3mhe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jun 2022 04:56:34 -0500
-Received: from PH0PR18MB5069.namprd18.prod.outlook.com (2603:10b6:510:169::8)
- by CY4PR1801MB1992.namprd18.prod.outlook.com (2603:10b6:910:78::36) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5314.19; Thu, 9 Jun
- 2022 09:53:01 +0000
-Received: from PH0PR18MB5069.namprd18.prod.outlook.com
- ([fe80::f5ab:d45e:69de:f99c]) by PH0PR18MB5069.namprd18.prod.outlook.com
- ([fe80::f5ab:d45e:69de:f99c%3]) with mapi id 15.20.5332.013; Thu, 9 Jun 2022
- 09:53:01 +0000
-From: Ariel Miculas <ariel.miculas@belden.com>
-To: linuxppc-dev@lists.ozlabs.org, christian.johannes@belden.com
-Subject: [PATCH] powerpc/ptrace: Fix buffer overflow when handling PTRACE_PEEKUSER and PTRACE_POKEUSER
-Date: Thu,  9 Jun 2022 12:52:35 +0300
-Message-Id: <20220609095235.37863-1-ariel.miculas@belden.com>
-X-Mailer: git-send-email 2.36.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1PR09CA0079.eurprd09.prod.outlook.com
- (2603:10a6:802:29::23) To PH0PR18MB5069.namprd18.prod.outlook.com
- (2603:10b6:510:169::8)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJfm33Q3bz3bkR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:02:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UbbDgBiwip0YBZOTZVQugfugvsZnYOECFEm/sChB2KE=; b=bn7nWKrTByqCttAV7Tb+hk3S6t
+	I/mkMmJ369JvRCOAATit3qrnLrVVApCU3MZIi6lIKiFAlbStRcA30X0UFUd1T8D12fVQnVKa7hYPR
+	K7EYNQp37UzeZk78mCBcTmEsaKr3iz0rWwxCle8s1uG3rrOkr/TW+qX1Zj/6s0Og8NDJ1jJvyTCIJ
+	X/UPiCnCV5l95zgrnKFHSTcoAhPMEQ49r4HzYtVzZmCksowLBW+PMICGN33p7tE1QEHeN+zrII/zd
+	ec7l/iKVKEAoDbJibxSRhGbBYgET1Ue5jZm0b5HeYxPcLQDm5a8x7p7RxjPba9/By/81XUqzodwzS
+	pNWm9E9w==;
+Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=worktop.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1nzEzM-006LJR-Mm; Thu, 09 Jun 2022 10:02:07 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 2E614981287; Thu,  9 Jun 2022 12:02:04 +0200 (CEST)
+Date: Thu, 9 Jun 2022 12:02:04 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
+Message-ID: <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144517.444659212@infradead.org>
+ <YqG6URbihTNCk9YR@alley>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: c4af59e0-d7ed-48ac-0335-08da49fdd71c
-X-MS-TrafficTypeDiagnostic: CY4PR1801MB1992:EE_
-X-Microsoft-Antispam-PRVS: 	<CY4PR1801MB19927EF244C34FB19BE0E5AE80A79@CY4PR1801MB1992.namprd18.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	KFYk2m0J5O5//E/0yLPDjUT9MB7WvGIerIlPAj+Oe2kH8PRVB5UQD35gJWOsMThVwLOljQCXGSMP20I1jj5asvnPiH4Gq1Qqd1EIGAJOat0WWMPT2Eipbd7IR8UWXAEkwu5RYSlhZU+ok5wcy7yFtNyV5ghS/Q9UhP7lauxZI/fN5PVFH6cqPYOadnhhLktIjKgqgiMSFowSIG/WiGPx9l1XXyML3+wSCVloVKAM9xdDt17Y8KPz4aDbkfey3rEOLcnuxgt/W5+o9HdttEi3ibLkOQ3BIy2+vu+5GiA4MUqFbR2P0xreOB6eCisVGlS6K1+zdeUyvQK4pUn6fO0TeNp2CN35uCfkDzJVcEhXvC5xGUvFxgCUkfBy6kbxU8ZggRVdkMLigFKhA3VnLjcEJuGnaHDTpLiPlo0W3UqHBdyDw0SO1lcKs1/Xznc3waVAOJzfYKM/5atFloY+a/spQIB4akKVrw0XHxcOP8FXShFTwmHVLsteZ53DbP9DXXIy9eZul+He3NEAvI9Iq1Vlx9dO1/NQMKZqsYVUf+iQrIDh/x1lBrpFl2fDLV7oDJmbgJLKYweSnsducpSwWyw7/sRs2LBjNUHi/FWD2fwoQQ/TxvUOjcv7KEM/+Jt9Kj0qYPE6vNh9VQxA5dqCcTbL2PYzE4OMSJarx/SFx7+nDuF/nszU3txhK78Wjx1al+fEyNbEHd0kRaw/c8q0hzTvt+HNdHQ9MJ69JI9aYez5exA=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR18MB5069.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(966005)(6486002)(186003)(66556008)(5660300002)(508600001)(4326008)(66476007)(2616005)(8676002)(107886003)(1076003)(2906002)(52116002)(8936002)(6666004)(6636002)(316002)(86362001)(83380400001)(36756003)(44832011)(6512007)(6506007)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?cXFkStdnL/xcWRspjSrRZk3cg50bJQ3035NM0wLYv4pE4faqHeTcg8z2PBd/?=
- =?us-ascii?Q?ssTUKEEQGq9S7p1xvZTZ5KCr9RNIP5OIbbMHaUhCRTDxmFv7jO/16L98Kc6V?=
- =?us-ascii?Q?ZfyEo2zBqHbcFRMkZ0Whd4NPV3SzooSglGKeI+YbVF9kUQ1GwPmjVk6nXK4f?=
- =?us-ascii?Q?lZ4hHE6mBkRw7x0lBpK7AxXg9miZP7OGzCBoh6TYRKHhlL+ohE14LVn5m3HV?=
- =?us-ascii?Q?Gvzx11lEwCXc68TdMUncd5qJXuhAv90RIECb2chnXeDlsyzB/P274IBYLe3q?=
- =?us-ascii?Q?HmLhhqFx25/y73Uhx66e39EWBHetszL6TI/PBYtCLUoHkRRUVeG3Ky/lGe7Y?=
- =?us-ascii?Q?ZA/MvADAOTynbIct/s/i+j9wkihf+bIAGJ7nozbsu4zAcexWkLrHMYCwqwoe?=
- =?us-ascii?Q?lFWS98Yl0AwIFd3Vlg1Prx+jqZhfb3IJF1q3BGcwF1T6gjCTqtI/dgDqC/Tb?=
- =?us-ascii?Q?LMj+K9i6kpVmDIT9n1ad78tocoFzKPHvXi/e742KmktqRoUDKjijmZ3Y/9v2?=
- =?us-ascii?Q?Mla2CEFPb9XQftD5/Gy6LTWD9YSi+z0sY+MKqGdHyqsEJnoQqpS+LuIJkTGV?=
- =?us-ascii?Q?iOkANZM/BMrwSrZjSdx3zCzfi70fYxtj+v+0UOlVJTA3jETp+VwGAQr9pIsp?=
- =?us-ascii?Q?fdhqX3pLppQSANz5k0ukOOmbzDYRpfLMxYhuVfXSCBo2b/IyzfeuhQ/s8JbZ?=
- =?us-ascii?Q?xWSbyR6O3TwqOE7id30zTjkH+xn4uZnlfGvqLVXn1hqa1hCljcmvmVsDh8V9?=
- =?us-ascii?Q?7Mw2eJYYOKmsx37yJBVqFmiIxd/kuLDcchsbZc+hMue6OiTK+6pvp1OhC4Wu?=
- =?us-ascii?Q?lzbdU52f2ndjtwORNuoQJPBtQ2sXdjwO4dlmcc9OzljhV2LNOx+LWnPTetrr?=
- =?us-ascii?Q?iDfxtQUTJq026ixbAx+DT+J5o/zpA+jlnU/jONvmMw8Lg3qLsA3jIGmxei7S?=
- =?us-ascii?Q?riJ87qU5BSZEzZuQwD8u5jvk3RwiPZYYN4JkraQqiUtg5JEzL16mqWvT5l88?=
- =?us-ascii?Q?3tdvQ1Qa4Al9VQNZ5Vgm/kst0m/T3Kmf0+UGQPFF1GEujGHlw/TN15ZpfxyB?=
- =?us-ascii?Q?/rPG9mUn0HO+eKCAo3xvU6fkI0bsXWcojsCDmZo6FMvs277ivdBqEJEdBE/S?=
- =?us-ascii?Q?PHNd35CEbprHGLrxRugUIvjDLaBN5u3EtySNypmLfgkxvuz8gkN6ej96P/pp?=
- =?us-ascii?Q?dZiXK+m+p39TWVMgtK7DT7mmEhQ6CgKIHCWCsdye+8+znZwWbr2DYqMecZ65?=
- =?us-ascii?Q?QMaEpJPvwHvvOtHnycoeShUVIF5xZmYuxZwTT5DeiShvMLM9BZ4t8i/zQ2Tu?=
- =?us-ascii?Q?9RXDffuoYAsNbGZ0AFpf/EYNGdJyTB1VjW8EVbHgwpdwRKbCvi79dxq/mDR9?=
- =?us-ascii?Q?u1EaQfUanONPpqA+A3tg5vi6DXL7x+SschilnIn6GcLrNX3+XT8TOGa2alPF?=
- =?us-ascii?Q?+93+UZDveXqUokqss2USSRblSfRoKiTnXWtcwEEUZOUharb3Ei7z/F16yje/?=
- =?us-ascii?Q?souerHK1+uZ9aBrQVwRNd+X+kIgI4bHmYEcw8oWfXV49VdsRHZnqv5m2uqEZ?=
- =?us-ascii?Q?OYG9g6mOSCdv3ha+3kKA4w431+y0FMZTQv0zBmKHFmKbgeP5CMixxHmvl4kK?=
- =?us-ascii?Q?GA13957pH5yvt4RNuvXCyYK5bgXDsI9M4Rba8uB3fbz1Nhs/H369N+/aflz5?=
- =?us-ascii?Q?I5x6y91/cSLCvJ8+wDysZE7f9PskEYaKFi6bY6aDoQuHzTId71gYyX43EJNc?=
- =?us-ascii?Q?HoavGU1e/7nvhrLiibSvrJm9YOTuTUFRn2dYXHHOTaL2nuv3vlMEa2GjCFkp?=
-X-MS-Exchange-AntiSpam-MessageData-1: lniP5uw6C8ftRzxYISK4x66iZpPCQVWd/LQ=
-X-OriginatorOrg: belden.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4af59e0-d7ed-48ac-0335-08da49fdd71c
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR18MB5069.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2022 09:53:01.2868
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0f7367b1-44f7-45a7-bb10-563965c5f2e5
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 38AB/tNOdZfkC8mCfyc2YjXYQoUEQJMOt9E85IJZ1hJQhUmfdnRyPuQdVIAvrHt5NhNd6ijnQZ3za2mmV0iE2FhQGU9Pjg5lzQ1pDtejwXI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1801MB1992
-X-Proofpoint-GUID: 4DpmvFxzoGB_H_qySdgU3-2fOQkshwsN
-X-Proofpoint-ORIG-GUID: 4DpmvFxzoGB_H_qySdgU3-2fOQkshwsN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-09_08,2022-06-07_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=575 clxscore=1011 spamscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 phishscore=0 suspectscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206090040
-X-Proofpoint-TriggeredRule: module.spam.rule.outbound_notspam
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YqG6URbihTNCk9YR@alley>
 X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -133,116 +61,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ariel Miculas <ariel.miculas@belden.com>
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualization@lists.linux-foundation.org, James
+ .Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.p
+ an@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ul
+
+li.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfault.org, ink@
+ jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This fixes the gdbserver issue on PPC32 described here:
-Link: https://linuxppc-dev.ozlabs.narkive.com/C46DRek4/debug-problems-on-ppc-83xx-target-due-to-changed-struct-task-struct
+On Thu, Jun 09, 2022 at 11:16:46AM +0200, Petr Mladek wrote:
+> On Wed 2022-06-08 16:27:47, Peter Zijlstra wrote:
+> > The problem, per commit fc98c3c8c9dc ("printk: use rcuidle console
+> > tracepoint"), was printk usage from the cpuidle path where RCU was
+> > already disabled.
+> > 
+> > Per the patches earlier in this series, this is no longer the case.
+> 
+> My understanding is that this series reduces a lot the amount
+> of code called with RCU disabled. As a result the particular printk()
+> call mentioned by commit fc98c3c8c9dc ("printk: use rcuidle console
+> tracepoint") is called with RCU enabled now. Hence this particular
+> problem is fixed better way now.
+> 
+> But is this true in general?
+> Does this "prevent" calling printk() a safe way in code with
+> RCU disabled?
 
-On PPC32, the user space code considers the floating point to be an
-array of unsigned int (32 bits) - the index passed in is based on
-this assumption.
+On x86_64, yes. Other architectures, less so.
 
-fp_state is a matrix consisting of 32 lines
-/* FP and VSX 0-31 register set /
-struct thread_fp_state {
-u64 fpr[32][TS_FPRWIDTH] attribute((aligned(16)));
-u64 fpscr; / Floating point status */
-};
+Specifically, the objtool noinstr validation pass will warn at build
+time (DEBUG_ENTRY=y) if any noinstr/cpuidle code does a call to
+non-vetted code like printk().
 
-On PPC32, PT_FPSCR is defined as: (PT_FPR0 + 2*32 + 1)
+At the same time; there's a few hacks that allow WARN to work, but
+mostly if you hit WARN in entry/noinstr you get to keep the pieces in
+any case.
 
-This means the fpr index validation allows a range from 0 to 65, leading
-to out-of-bounds array access. This ends up corrupting
-threads_struct->state, which holds the state of the task. Thus, threads
-incorrectly transition from a running state to a traced state and get
-stuck in that state.
+On other architecture we'll need to rely on runtime coverage with
+PROVE_RCU. That is, if a splat like in the above mentioned commit
+happens again, we'll need to fix it by adjusting the callchain, not by
+mucking about with RCU state.
 
-On PPC32 it's ok to assume that TS_FPRWIDTH is 1 because CONFIG_VSX is
-PPC64 specific. TS_FPROFFSET can be safely ignored, thus the assumption
-that fpr is an array of 32 elements of type u64 holds true.
+> I am not sure if anyone cares. printk() is the best effort
+> functionality because of the consoles code anyway. Also I wonder
+> if anyone uses this trace_console().
 
-Solution taken from arch/powerpc/kernel/ptrace32.c
+This is the tracepoint used to spool all of printk into ftrace, I
+suspect there's users, but I haven't used it myself.
 
-Signed-off-by: Ariel Miculas <ariel.miculas@belden.com>
----
- arch/powerpc/kernel/ptrace/ptrace-fpu.c | 31 +++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+> Therefore if this patch allows to remove some tricky tracing
+> code then it might be worth it. But if trace_console_rcuidle()
+> variant is still going to be available then I would keep using it.
 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-index 5dca19361316..93695abbbdfb 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-@@ -6,9 +6,16 @@
- 
- #include "ptrace-decl.h"
- 
-+#ifdef CONFIG_PPC32
-+/* Macros to workout the correct index for the FPR in the thread struct */
-+#define FPRNUMBER(i) (((i) - PT_FPR0) >> 1)
-+#define FPRHALF(i) (((i) - PT_FPR0) & 1)
-+#define FPRINDEX(i) TS_FPRWIDTH * FPRNUMBER(i) * 2 + FPRHALF(i)
-+#endif
-+
- int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
- {
--#ifdef CONFIG_PPC_FPU_REGS
-+#if defined(CONFIG_PPC_FPU_REGS) && !defined(CONFIG_PPC32)
- 	unsigned int fpidx = index - PT_FPR0;
- #endif
- 
-@@ -17,10 +24,20 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
-+#ifdef CONFIG_PPC32
-+	/*
-+	 * the user space code considers the floating point
-+	 * to be an array of unsigned int (32 bits) - the
-+	 * index passed in is based on this assumption.
-+	 */
-+	*data = ((unsigned int *)child->thread.fp_state.fpr)
-+		[FPRINDEX(index)];
-+#else
- 	if (fpidx < (PT_FPSCR - PT_FPR0))
- 		memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
- 	else
- 		*data = child->thread.fp_state.fpscr;
-+#endif
- #else
- 	*data = 0;
- #endif
-@@ -30,7 +47,7 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
- 
- int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
- {
--#ifdef CONFIG_PPC_FPU_REGS
-+#if defined(CONFIG_PPC_FPU_REGS) && !defined(CONFIG_PPC32)
- 	unsigned int fpidx = index - PT_FPR0;
- #endif
- 
-@@ -39,10 +56,20 @@ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
-+#ifdef CONFIG_PPC32
-+	/*
-+	 * the user space code considers the floating point
-+	 * to be an array of unsigned int (32 bits) - the
-+	 * index passed in is based on this assumption.
-+	 */
-+	((unsigned int *)child->thread.fp_state.fpr)
-+		[FPRINDEX(index)] = data;
-+#else
- 	if (fpidx < (PT_FPSCR - PT_FPR0))
- 		memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
- 	else
- 		child->thread.fp_state.fpscr = data;
-+#endif
- #endif
- 
- 	return 0;
--- 
-2.36.1
-
+My ultimate goal is to delete trace_.*_rcuidle() and RCU_NONIDLE()
+entirely. We're close, but not quite there yet.
