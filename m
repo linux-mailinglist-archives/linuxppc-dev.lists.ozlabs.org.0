@@ -2,79 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00325448F4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 12:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4741544C04
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 14:31:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJgSh41WTz3c4h
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 20:34:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LJk3F4qDCz3c85
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jun 2022 22:31:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JFxcjDXl;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EoGAG3Le;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=VeE8mygK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JFxcjDXl;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EoGAG3Le;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=VeE8mygK;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJgS254KMz3bll
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 20:33:54 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2598hWn5028389;
-	Thu, 9 Jun 2022 10:33:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=aw/B5klr7ijqtIU4+lA2AmVyo6mgkMt5M8K3+MR+grs=;
- b=JFxcjDXltTFDYWhxBF+LTyUy8io9YuY6sQHmrc7e4yKYzJ+fOKemupoZo8coedWk5Hxf
- jVxvzKAXLjerwCr6lSBvwTN7l3YqLaEmptA2eMTzNHM1zKJSDh2/5F59a87OYE7ugFWe
- oDyzK0G9S9QigT/v9UdpIkTPd/F3+qjcTe+3XE8rJj+p1uHbGeXS1KkVFcB+0tDphGbi
- PR9+bTQhewFeO6BvD5ZoWxtm7lU2pjXxqFnS0evaqQakHrCY6OxUHjQSD5GXUxyt3LOH
- /+YU+V1jcDDNzywCplE5D5/JAf6u0AFbJXgZZPCirT5CHApgb55gHRLMwfGiXXfmOpGL iA== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkdkq9yw9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jun 2022 10:33:47 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 259ALqUI010270;
-	Thu, 9 Jun 2022 10:33:45 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma03ams.nl.ibm.com with ESMTP id 3gfy19es48-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jun 2022 10:33:45 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 259AXg1G20578712
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jun 2022 10:33:42 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 919D5A405F;
-	Thu,  9 Jun 2022 10:33:42 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 96CC3A406B;
-	Thu,  9 Jun 2022 10:33:41 +0000 (GMT)
-Received: from li-NotSettable.ibm.com.com (unknown [9.43.114.46])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu,  9 Jun 2022 10:33:41 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Enable execve syscall exit tracepoint
-Date: Thu,  9 Jun 2022 16:03:28 +0530
-Message-Id: <20220609103328.41306-1-naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.27.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJk2Z72vbz3bmH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jun 2022 22:30:30 +1000 (AEST)
+Date: Thu, 9 Jun 2022 14:30:17 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1654777819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rx20vBwQrFJxboggEamckdADOxqPZbwTBqK3xGl2Ggw=;
+	b=EoGAG3LeCifcc2wJNJfa2mGGcUsVm1+REYwAzKBDYfLoQT+uhikwHPu0fKWD7+kE4+IVRx
+	debRveVAReWChn28q93/jAS/SKhYjXW1wzH2zB6AQ3/qpgFzpF2vECmRt5HydwUrBmSqXM
+	zKnJxKlpAzjjNl/UV31YKatU9TpSKHcTKGgvC9pabVYcCNNw2FX9IaiJPVsQCD9XQOI6UN
+	S6V+YqBfyIGkehTmsqGk42bpMew3Tnkxe+/H3rWf5PmfM1/OshSI3dBeYWQvrr7EfbqgKg
+	rUspljf2odJCelvyz9S2Kv6grCLvfrLX567s5IjRILvCnM9BEOIdJtbZyPjQOw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1654777819;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rx20vBwQrFJxboggEamckdADOxqPZbwTBqK3xGl2Ggw=;
+	b=VeE8mygK3kPVkG5+l69zYa30HBaVnhwn5vTRFwiqjcLaffU0jLclXF5nEyWpX/CwCzisRd
+	wFjBimEIePkkVgBQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Davidlohr Bueso <dave@stgolabs.net>
+Subject: Re: [PATCH 08/10] scsi/ibmvfc: Replace tasklet with work
+Message-ID: <YqHn2Rn5nePSJ0PG@linutronix.de>
+References: <20220530231512.9729-1-dave@stgolabs.net>
+ <20220530231512.9729-9-dave@stgolabs.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: xC-T8E5EHA8_mae6HpUhB-Yfl0JgBbfp
-X-Proofpoint-ORIG-GUID: xC-T8E5EHA8_mae6HpUhB-Yfl0JgBbfp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-09_08,2022-06-07_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=841
- impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206090040
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20220530231512.9729-9-dave@stgolabs.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,59 +68,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, ejb@linux.ibm.com, linux-scsi@vger.kernel.org, martin.petersen@oracle.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On execve[at], we are zero'ing out most of the thread register state
-including gpr[0], which contains the syscall number. Due to this, we
-fail to trigger the syscall exit tracepoint properly. Fix this by
-retaining gpr[0] in the thread register state.
+On 2022-05-30 16:15:10 [-0700], Davidlohr Bueso wrote:
+> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvf=
+c.c
+> index d0eab5700dc5..31b1900489e7 100644
+> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+> @@ -891,7 +891,7 @@ static void ibmvfc_release_crq_queue(struct ibmvfc_ho=
+st *vhost)
+> =20
+>  	ibmvfc_dbg(vhost, "Releasing CRQ\n");
+>  	free_irq(vdev->irq, vhost);
+> -	tasklet_kill(&vhost->tasklet);
+> +        cancel_work_sync(&vhost->work);
+s/ {8}/\t/
 
-Before this patch:
-  # tail /sys/kernel/debug/tracing/trace
-	       cat-123     [000] .....    61.449351: sys_execve(filename:
-  7fffa6b23448, argv: 7fffa6b233e0, envp: 7fffa6b233f8)
-	       cat-124     [000] .....    62.428481: sys_execve(filename:
-  7fffa6b23448, argv: 7fffa6b233e0, envp: 7fffa6b233f8)
-	      echo-125     [000] .....    65.813702: sys_execve(filename:
-  7fffa6b23378, argv: 7fffa6b233a0, envp: 7fffa6b233b0)
-	      echo-125     [000] .....    65.822214: sys_execveat(fd: 0,
-  filename: 1009ac48, argv: 7ffff65d0c98, envp: 7ffff65d0ca8, flags: 0)
+is there a reason not to use threaded interrupts? The workqueue _might_
+migrate to another CPU. The locking ensures that nothing bad happens but
+ibmvfc_tasklet() has this piece:
 
-After this patch:
-  # tail /sys/kernel/debug/tracing/trace
-	       cat-127     [000] .....   100.416262: sys_execve(filename:
-  7fffa41b3448, argv: 7fffa41b33e0, envp: 7fffa41b33f8)
-	       cat-127     [000] .....   100.418203: sys_execve -> 0x0
-	      echo-128     [000] .....   103.873968: sys_execve(filename:
-  7fffa41b3378, argv: 7fffa41b33a0, envp: 7fffa41b33b0)
-	      echo-128     [000] .....   103.875102: sys_execve -> 0x0
-	      echo-128     [000] .....   103.882097: sys_execveat(fd: 0,
-  filename: 1009ac48, argv: 7fffd10d2148, envp: 7fffd10d2158, flags: 0)
-	      echo-128     [000] .....   103.883225: sys_execveat -> 0x0
+|         spin_lock_irqsave(vhost->host->host_lock, flags);
+=E2=80=A6
+|                 while ((async =3D ibmvfc_next_async_crq(vhost)) !=3D NULL=
+) {
+|                         ibmvfc_handle_async(async, vhost);
+|                         async->valid =3D 0;
+|                         wmb();
+|                 }
+=E2=80=A6
+|                 vio_enable_interrupts(vdev);
+potentially enables interrupts which fires right away.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/process.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+|                 if ((async =3D ibmvfc_next_async_crq(vhost)) !=3D NULL) {
+|                         vio_disable_interrupts(vdev);
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index d00b20c6596671..bb4da23ecdd7c2 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1854,7 +1854,7 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
- 		tm_reclaim_current(0);
- #endif
- 
--	memset(regs->gpr, 0, sizeof(regs->gpr));
-+	memset(&regs->gpr[1], 0, sizeof(regs->gpr) - sizeof(regs->gpr[0]));
- 	regs->ctr = 0;
- 	regs->link = 0;
- 	regs->xer = 0;
+disables it again.
 
-base-commit: 16332b7fbbe46581ddac80c6d32834c1269bc450
--- 
-2.36.1
+|         }
+|=20
+|         spin_unlock(vhost->crq.q_lock);
+|         spin_unlock_irqrestore(vhost->host->host_lock, flags);
 
+If the worker runs on another CPU then the CPU servicing the interrupt
+will be blocked on the lock which is not nice.
+
+My guess is that you could enable interrupts right before unlocking but
+is a different story.
+
+>  	do {
+>  		if (rc)
+>  			msleep(100);
+
+Sebastian
