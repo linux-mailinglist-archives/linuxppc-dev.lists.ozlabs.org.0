@@ -1,85 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B95545DC1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 09:47:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD466545F47
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 10:35:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKCjK40Hnz3bwZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 17:47:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKDmp5XBxz3cBS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 18:35:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LXqQbnSi;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=baikalelectronics.ru header.i=@baikalelectronics.ru header.a=rsa-sha256 header.s=mail header.b=Ven35Z8y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baikalelectronics.ru (client-ip=87.245.175.230; helo=mail.baikalelectronics.com; envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LXqQbnSi;
+	dkim=pass (1024-bit key; unprotected) header.d=baikalelectronics.ru header.i=@baikalelectronics.ru header.a=rsa-sha256 header.s=mail header.b=Ven35Z8y;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKChZ3xlqz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 17:46:37 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A5xRkw008495;
-	Fri, 10 Jun 2022 07:46:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=pc8m+/UKYEn3uIRmUUvBET7hGvTQWixAH7EnOzXeuLg=;
- b=LXqQbnSigGREsmG7vMd9bd9wCGtQcNtjZexL6fKp3QX+c04LLnVItRaFQVVkUjoT70uw
- grNHXWKohY56Te/bmJ9qKOe+9RVadQFZnYWPhTCWQG/+LklQQWU1xmYmuMQXJPWKM+mF
- Dd+p1m0L2tNsMpWCEzeIRxubFLG414k+AEQh1qwZ4bSBCmGlqvztMEuaBRSbhb9mRHbN
- 9j7AfMlF5uB2eUVIU5QMegf/Zwi8FezNE1zyjK+ANYU4V8Us9arc9hevr8/SN+TMnT3v
- zLliEEUZqEs+LeevqQb0p2sGeDbz6QzVwKFpyoPWZOxCitDxh9eYe74d0YXdNIW97vDb CA== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm09xspkg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 07:46:33 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25A7LWZ1016367;
-	Fri, 10 Jun 2022 07:46:31 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma05fra.de.ibm.com with ESMTP id 3gfy18x928-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 07:46:30 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25A7kR4c20775220
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jun 2022 07:46:27 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F41A4C040;
-	Fri, 10 Jun 2022 07:46:27 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A2244C04E;
-	Fri, 10 Jun 2022 07:46:25 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.163.7.130])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Fri, 10 Jun 2022 07:46:24 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 14.0 \(3654.120.0.1.13\))
-Subject: Re: [PATCH v2] powerpc/perf: Give generic PMU a nice name
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20220610044006.2095806-1-joel@jms.id.au>
-Date: Fri, 10 Jun 2022 13:16:20 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A506984B-31A6-43E2-8F1F-9F01621539A1@linux.vnet.ibm.com>
-References: <20220610044006.2095806-1-joel@jms.id.au>
-To: Joel Stanley <joel@jms.id.au>
-X-Mailer: Apple Mail (2.3654.120.0.1.13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: uLu7BFB0Rv6kUw0kpDfuDzd28vDNGQgl
-X-Proofpoint-ORIG-GUID: uLu7BFB0Rv6kUw0kpDfuDzd28vDNGQgl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-10_02,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 impostorscore=0
- bulkscore=0 phishscore=0 clxscore=1011 mlxlogscore=999 mlxscore=0
- malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2204290000 definitions=main-2206100025
+Received: from mail.baikalelectronics.com (mail.baikalelectronics.com [87.245.175.230])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKDmB6YrTz3bln
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 18:34:49 +1000 (AEST)
+Received: from mail (mail.baikal.int [192.168.51.25])
+	by mail.baikalelectronics.com (Postfix) with ESMTP id 6B34716A0;
+	Fri, 10 Jun 2022 11:26:38 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.baikalelectronics.com 6B34716A0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=baikalelectronics.ru; s=mail; t=1654849599;
+	bh=KPuOVwi0cvFmfZI8ZO6CHQ/WVhFl8GOmzgX8MXxNTEg=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=Ven35Z8y6h+XqxatQDpl/bdOE5CGJOaq0vrRX7cHa+Tdhb2w0WO4YByAqBlaf3mml
+	 QQLxukPxSYC2bH/MNpAWMt6KbqyOX8z7rcq13LxoKO5lRTTVERUIAfuuZnOQgOLpbQ
+	 EmsF0ROzoQ1/91/s3iOujC9IjKvaS3K2cQPbvc5o=
+Received: from localhost (192.168.53.207) by mail (192.168.51.25) with
+ Microsoft SMTP Server (TLS) id 15.0.1395.4; Fri, 10 Jun 2022 11:25:46 +0300
+From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+To: Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Minghuan Lian
+	<minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang
+	<roy.zang@nxp.com>, =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Jingoo Han <jingoohan1@gmail.com>, Gustavo Pimentel
+	<gustavo.pimentel@synopsys.com>
+Subject: [PATCH v4 13/18] PCI: dwc: Add start_link/stop_link inliners
+Date: Fri, 10 Jun 2022 11:25:29 +0300
+Message-ID: <20220610082535.12802-14-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20220610082535.12802-1-Sergey.Semin@baikalelectronics.ru>
+References: <20220610082535.12802-1-Sergey.Semin@baikalelectronics.ru>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,51 +59,192 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: linux-pci@vger.kernel.org, Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Serge Semin <Sergey.Semin@baikalelectronics.ru>, Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+There are several places in the generic DW PCIe code where the
+platform-specific PCIe link start/stop methods are called after making
+sure the ops handler and the callbacks are specified. Instead of repeating
+the same pattern over and over let's define the static-inline methods in
+the DW PCIe header file and use them in the relevant parts of the driver.
 
+Note returning a negative error from the EP link start procedure if the
+start_link pointer isn't specified doesn't really make much sense since it
+perfectly normal to have such platform. Moreover even pci_epc_start()
+doesn't fail if no epc->ops->start callback is spotted. As a side-effect
+of this modification we can set the generic DW PCIe and Layerscape EP
+platform drivers free from the empty start_link callbacks and as such
+entirely dummy dw_pcie_ops instances.
 
-> On 10-Jun-2022, at 10:10 AM, Joel Stanley <joel@jms.id.au> wrote:
->=20
-> When booting on a machine that uses the compat pmu driver we see this:
->=20
-> [    0.071192] GENERIC_COMPAT performance monitor hardware support =
-registered
->=20
-> Which is a bit shouty. Give it a nicer name.
->=20
-> Signed-off-by: Joel Stanley <joel@jms.id.au>
-> ---
-> v2: Go with ISAv3
->=20
-> arch/powerpc/perf/generic-compat-pmu.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/perf/generic-compat-pmu.c =
-b/arch/powerpc/perf/generic-compat-pmu.c
-> index f3db88aee4dd..16392962c511 100644
-> --- a/arch/powerpc/perf/generic-compat-pmu.c
-> +++ b/arch/powerpc/perf/generic-compat-pmu.c
-> @@ -292,7 +292,7 @@ static int generic_compute_mmcr(u64 event[], int =
-n_ev,
-> }
->=20
-> static struct power_pmu generic_compat_pmu =3D {
-> -	.name			=3D "GENERIC_COMPAT",
-> +	.name			=3D "ISAv3",
+Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 
+---
 
-Looks good.
+Changelog v4:
+- This is a new patch created on the v4 lap of the series.
+---
+ drivers/pci/controller/dwc/pci-layerscape-ep.c    | 12 ------------
+ drivers/pci/controller/dwc/pcie-designware-ep.c   |  8 ++------
+ drivers/pci/controller/dwc/pcie-designware-host.c | 10 ++++------
+ drivers/pci/controller/dwc/pcie-designware-plat.c | 10 ----------
+ drivers/pci/controller/dwc/pcie-designware.h      | 14 ++++++++++++++
+ 5 files changed, 20 insertions(+), 34 deletions(-)
 
-
-Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-
-> 	.n_counter		=3D MAX_PMU_COUNTERS,
-> 	.add_fields		=3D ISA207_ADD_FIELDS,
-> 	.test_adder		=3D ISA207_TEST_ADDER,
-> --=20
-> 2.35.1
->=20
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index 39f4664bd84c..ad99707b3b99 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -32,15 +32,6 @@ struct ls_pcie_ep {
+ 	const struct ls_pcie_ep_drvdata *drvdata;
+ };
+ 
+-static int ls_pcie_establish_link(struct dw_pcie *pci)
+-{
+-	return 0;
+-}
+-
+-static const struct dw_pcie_ops dw_ls_pcie_ep_ops = {
+-	.start_link = ls_pcie_establish_link,
+-};
+-
+ static const struct pci_epc_features*
+ ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+ {
+@@ -106,19 +97,16 @@ static const struct dw_pcie_ep_ops ls_pcie_ep_ops = {
+ 
+ static const struct ls_pcie_ep_drvdata ls1_ep_drvdata = {
+ 	.ops = &ls_pcie_ep_ops,
+-	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
+ };
+ 
+ static const struct ls_pcie_ep_drvdata ls2_ep_drvdata = {
+ 	.func_offset = 0x20000,
+ 	.ops = &ls_pcie_ep_ops,
+-	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
+ };
+ 
+ static const struct ls_pcie_ep_drvdata lx2_ep_drvdata = {
+ 	.func_offset = 0x8000,
+ 	.ops = &ls_pcie_ep_ops,
+-	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
+ };
+ 
+ static const struct of_device_id ls_pcie_ep_of_match[] = {
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 7ad349c32082..15b8059544e3 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -435,8 +435,7 @@ static void dw_pcie_ep_stop(struct pci_epc *epc)
+ 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 
+-	if (pci->ops && pci->ops->stop_link)
+-		pci->ops->stop_link(pci);
++	dw_pcie_stop_link(pci);
+ }
+ 
+ static int dw_pcie_ep_start(struct pci_epc *epc)
+@@ -444,10 +443,7 @@ static int dw_pcie_ep_start(struct pci_epc *epc)
+ 	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 
+-	if (!pci->ops || !pci->ops->start_link)
+-		return -EINVAL;
+-
+-	return pci->ops->start_link(pci);
++	return dw_pcie_start_link(pci);
+ }
+ 
+ static const struct pci_epc_features*
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index fa107e8dd2ab..f57f456aa543 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -408,8 +408,8 @@ int dw_pcie_host_init(struct pcie_port *pp)
+ 
+ 	dw_pcie_setup_rc(pp);
+ 
+-	if (!dw_pcie_link_up(pci) && pci->ops && pci->ops->start_link) {
+-		ret = pci->ops->start_link(pci);
++	if (!dw_pcie_link_up(pci)) {
++		ret = dw_pcie_start_link(pci);
+ 		if (ret)
+ 			goto err_free_msi;
+ 	}
+@@ -426,8 +426,7 @@ int dw_pcie_host_init(struct pcie_port *pp)
+ 	return 0;
+ 
+ err_stop_link:
+-	if (pci->ops && pci->ops->stop_link)
+-		pci->ops->stop_link(pci);
++	dw_pcie_stop_link(pci);
+ 
+ err_free_msi:
+ 	if (pp->has_msi_ctrl)
+@@ -443,8 +442,7 @@ void dw_pcie_host_deinit(struct pcie_port *pp)
+ 	pci_stop_root_bus(pp->bridge->bus);
+ 	pci_remove_root_bus(pp->bridge->bus);
+ 
+-	if (pci->ops && pci->ops->stop_link)
+-		pci->ops->stop_link(pci);
++	dw_pcie_stop_link(pci);
+ 
+ 	if (pp->has_msi_ctrl)
+ 		dw_pcie_free_msi(pp);
+diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
+index 0c5de87d3cc6..abf1afac6064 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-plat.c
++++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
+@@ -36,15 +36,6 @@ static const struct of_device_id dw_plat_pcie_of_match[];
+ static const struct dw_pcie_host_ops dw_plat_pcie_host_ops = {
+ };
+ 
+-static int dw_plat_pcie_establish_link(struct dw_pcie *pci)
+-{
+-	return 0;
+-}
+-
+-static const struct dw_pcie_ops dw_pcie_ops = {
+-	.start_link = dw_plat_pcie_establish_link,
+-};
+-
+ static void dw_plat_pcie_ep_init(struct dw_pcie_ep *ep)
+ {
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+@@ -140,7 +131,6 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	pci->dev = dev;
+-	pci->ops = &dw_pcie_ops;
+ 
+ 	dw_plat_pcie->pci = pci;
+ 	dw_plat_pcie->mode = mode;
+diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+index 7d6e9b7576be..8ba239292634 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.h
++++ b/drivers/pci/controller/dwc/pcie-designware.h
+@@ -365,6 +365,20 @@ static inline void dw_pcie_dbi_ro_wr_dis(struct dw_pcie *pci)
+ 	dw_pcie_writel_dbi(pci, reg, val);
+ }
+ 
++static inline int dw_pcie_start_link(struct dw_pcie *pci)
++{
++	if (pci->ops && pci->ops->start_link)
++		return pci->ops->start_link(pci);
++
++	return 0;
++}
++
++static inline void dw_pcie_stop_link(struct dw_pcie *pci)
++{
++	if (pci->ops && pci->ops->stop_link)
++		pci->ops->stop_link(pci);
++}
++
+ #ifdef CONFIG_PCIE_DW_HOST
+ irqreturn_t dw_handle_msi_irq(struct pcie_port *pp);
+ void dw_pcie_setup_rc(struct pcie_port *pp);
+-- 
+2.35.1
 
