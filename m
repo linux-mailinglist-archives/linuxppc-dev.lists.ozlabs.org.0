@@ -1,72 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4FAE546805
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 16:04:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7826546806
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 16:05:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKN4v4NCMz3fDH
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 00:04:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKN5Y5gF1z3ffn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 00:05:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p5AalfA8;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BWTCjmjC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p5AalfA8;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BWTCjmjC;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKMc54NDHz3bm9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 23:43:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKMzM47rCz3g89
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 23:59:59 +1000 (AEST)
 Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ADIk0R023572;
-	Fri, 10 Jun 2022 13:43:13 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ADIiNb023542;
+	Fri, 10 Jun 2022 13:59:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=YZJCWQJDl8EpxaIDAUr/SfBqa9hdH6rdD3xk0ObGKak=;
- b=p5AalfA8Zus6fGbn+6E/WYgP+MLYMrIpHAjB5dvdxUrnTn3oG4SZUVlFtRFnu+jDGicV
- W8e8X4jKa7HSuYnXi/ux+NmNl4XAqNC2Ub6MU0znEc+li24Ho8KM4gBjf9cS9p/Czery
- Ab4k7cXhtV5hTm8v1Oxj8rLz+/kEuT/0fMsTAEXCkbi4JtGMOV/ifWjKUF2eFgKCwD+U
- w1i0hA60djSVNCqCONidHlqnpWIBIhox3hOdKhFT7dL80Ae63Wi5y9a4y4SripoDiTB1
- I9FMGWoyEqezVFPaCtXQ0Qf6gnudmKROdmOfwXDpFCjs2ZFP/jGof5boqvn7N1U00Rie /Q== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm6qurj4a-1
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=f4aq0u3gKzc7phMU3PgLH4gEl81nO1j9Vq1ikMfl1qU=;
+ b=BWTCjmjCR/A3NJxxKqkGyU2w90TQni48BHKCiujxYEdE/vg8imgNpml5pyKKkkrMbkO9
+ k5PB/YkLjgN+KxW4+tCU2B84ChgXJrAmP15Bcmf+Yl7kUeMwn0lCLg4U5KOdizlThLbi
+ +yBhmwDMvaitIA3Chfq48FkO0/2vmsbWFB/BLJdbQU6Ytkk2zBL6awCGfgDi40uoKMi8
+ zMPg570hX2RZA6GxihTvq5R1Q68a8Jz3Mz1tmMKgaCvOtkwESVzpXjh4ltumNRU9u93/
+ phOSEFDZ+4gFlmszYBtJkYc8kcn13T//KE6E9HE+eRIWfO+K+x5Bx7pEe0V1s3C/0njq Tg== 
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm6qurujs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 13:43:13 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ADaCP6004584;
-	Fri, 10 Jun 2022 13:43:11 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma03ams.nl.ibm.com with ESMTP id 3gfy19g9sx-1
+	Fri, 10 Jun 2022 13:59:53 +0000
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ADa8bc007047;
+	Fri, 10 Jun 2022 13:59:51 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma02fra.de.ibm.com with ESMTP id 3gfy196hmh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 13:43:11 +0000
+	Fri, 10 Jun 2022 13:59:50 +0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ADh8te22544868
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ADxlBG19530122
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jun 2022 13:43:08 GMT
+	Fri, 10 Jun 2022 13:59:47 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3FCFF5204E;
-	Fri, 10 Jun 2022 13:43:08 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 4B09752050;
+	Fri, 10 Jun 2022 13:59:47 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.163.7.130])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id EB26C52051;
-	Fri, 10 Jun 2022 13:43:05 +0000 (GMT)
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B205852052;
+	Fri, 10 Jun 2022 13:59:41 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH V3 35/35] selftest/powerpc/pmu: Add test for hardware cache events
-Date: Fri, 10 Jun 2022 19:11:13 +0530
-Message-Id: <20220610134113.62991-36-atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, disgoel@linux.vnet.ibm.com
+Subject: [PATCH] tools/perf/tests: Fix session topology test comparison check
+Date: Fri, 10 Jun 2022 19:29:39 +0530
+Message-Id: <20220610135939.63361-1-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220610134113.62991-1-atrajeev@linux.vnet.ibm.com>
-References: <20220610134113.62991-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6HbuIlPP_QHhF0tCF_5O1AdMU1PVsy0A
-X-Proofpoint-ORIG-GUID: 6HbuIlPP_QHhF0tCF_5O1AdMU1PVsy0A
+X-Proofpoint-GUID: Tswhf1-I05yyeEShKuVhJnXsWYvfubQg
+X-Proofpoint-ORIG-GUID: Tswhf1-I05yyeEShKuVhJnXsWYvfubQg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
  definitions=2022-06-10_06,2022-06-09_02,2022-02-23_01
@@ -86,137 +83,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, rnsastry@linux.ibm.com, tmricht@linux.ibm.com, linux-perf-users@vger.kernel.org, kjain@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kajol Jain <kjain@linux.ibm.com>
+commit cfd7092c31ae ("perf test session topology: Fix test to
+skip the test in guest environment") added check to skip the
+testcase if the socket_id can't be fetched from topology info.
+But the condition check uses strncmp which should be changed to
+!strncmp and to correctly match platform. Patch fixes this
+condition check.
 
-The testcase checks if the transalation of a generic hardware cache
-event is done properly via perf interface. The hardware cache events
-has type as PERF_TYPE_HW_CACHE and each event points to raw event
-code id.
-
-Testcase checks different combination of cache level,
-cache event operation type and cache event result type and verify
-for a given event code, whether transalation matches with the current
-cache event mappings via perf interface.
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Fixes: cfd7092c31ae ("perf test session topology: Fix test to skip the test in guest environment")
+Reported-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- .../powerpc/pmu/event_code_tests/Makefile     |  3 +-
- .../hw_cache_event_type_test.c                | 88 +++++++++++++++++++
- 2 files changed, 90 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c
+ tools/perf/tests/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-index 755993d210f2..4e07d7046457 100644
---- a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-@@ -6,7 +6,8 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
- 	group_constraint_mmcra_sample_test invalid_event_code_test reserved_bits_mmcra_thresh_ctl_test \
- 	blacklisted_events_test event_alternatives_tests_p9 event_alternatives_tests_p10 generic_events_valid_test \
- 	group_constraint_l2l3_sel_test group_constraint_cache_test group_constraint_thresh_cmp_test \
--	group_constraint_unit_test group_constraint_thresh_ctl_test group_constraint_thresh_sel_test
-+	group_constraint_unit_test group_constraint_thresh_ctl_test group_constraint_thresh_sel_test \
-+	hw_cache_event_type_test
- 
- top_srcdir = ../../../../../..
- include ../../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c
-new file mode 100644
-index 000000000000..a45b1da5b568
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2022, Kajol Jain, IBM Corp.
-+ */
-+
-+#include <stdio.h>
-+#include <stdlib.h>
-+
-+#include "../event.h"
-+#include "utils.h"
-+#include "../sampling_tests/misc.h"
-+
-+/*
-+ * Load Missed L1, for power9 its pointing to PM_LD_MISS_L1_FIN (0x2c04e) and
-+ * for power10 its pointing to PM_LD_MISS_L1 (0x3e054)
-+ *
-+ * Hardware cache level : PERF_COUNT_HW_CACHE_L1D
-+ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_READ
-+ * Hardware cache event result type : PERF_COUNT_HW_CACHE_RESULT_MISS
-+ */
-+#define EventCode_1 0x10000
-+/*
-+ * Hardware cache level : PERF_COUNT_HW_CACHE_L1D
-+ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_WRITE
-+ * Hardware cache event result type : PERF_COUNT_HW_CACHE_RESULT_ACCESS
-+ */
-+#define EventCode_2 0x0100
-+/*
-+ * Hardware cache level : PERF_COUNT_HW_CACHE_DTLB
-+ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_WRITE
-+ * Hardware cache event result type : PERF_COUNT_HW_CACHE_RESULT_ACCESS
-+ */
-+#define EventCode_3 0x0103
-+/*
-+ * Hardware cache level : PERF_COUNT_HW_CACHE_L1D
-+ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_READ
-+ * Hardware cache event result type : Invalid ( > PERF_COUNT_HW_CACHE_RESULT_MAX)
-+ */
-+#define EventCode_4 0x030000
-+
-+/*
-+ * A perf test to check valid hardware cache events.
-+ */
-+static int hw_cache_event_type_test(void)
-+{
-+	struct event event;
-+
-+	/* Check for platform support for the test */
-+	SKIP_IF(platform_check_for_tests());
-+
-+	/* Skip for Generic compat PMU */
-+	SKIP_IF(check_for_generic_compat_pmu());
-+
-+	/* Init the event to test hardware cache event */
-+	event_init_opts(&event, EventCode_1, PERF_TYPE_HW_CACHE, "event");
-+
-+	/* Expected to success as its pointing to L1 load miss */
-+	FAIL_IF(event_open(&event));
-+	event_close(&event);
-+
-+	/* Init the event to test hardware cache event */
-+	event_init_opts(&event, EventCode_2, PERF_TYPE_HW_CACHE, "event");
-+
-+	/* Expected to fail as the corresponding cache event entry have 0 in that index */
-+	FAIL_IF(!event_open(&event));
-+	event_close(&event);
-+
-+	/* Init the event to test hardware cache event */
-+	event_init_opts(&event, EventCode_3, PERF_TYPE_HW_CACHE, "event");
-+
-+	/* Expected to fail as the corresponding cache event entry have -1 in that index */
-+	FAIL_IF(!event_open(&event));
-+	event_close(&event);
-+
-+	/* Init the event to test hardware cache event */
-+	event_init_opts(&event, EventCode_4, PERF_TYPE_HW_CACHE, "event");
-+
-+	/* Expected to fail as hardware cache event result type is Invalid */
-+	FAIL_IF(!event_open(&event));
-+	event_close(&event);
-+
-+	return 0;
-+}
-+
-+int main(void)
-+{
-+	return test_harness(hw_cache_event_type_test, "hw_cache_event_type_test");
-+}
+diff --git a/tools/perf/tests/topology.c b/tools/perf/tests/topology.c
+index d23a9e322ff5..0b4f61b6cc6b 100644
+--- a/tools/perf/tests/topology.c
++++ b/tools/perf/tests/topology.c
+@@ -115,7 +115,7 @@ static int check_cpu_topology(char *path, struct perf_cpu_map *map)
+ 	 * physical_package_id will be set to -1. Hence skip this
+ 	 * test if physical_package_id returns -1 for cpu from perf_cpu_map.
+ 	 */
+-	if (strncmp(session->header.env.arch, "powerpc", 7)) {
++	if (!strncmp(session->header.env.arch, "ppc64le", 7)) {
+ 		if (cpu__get_socket_id(perf_cpu_map__cpu(map, 0)) == -1)
+ 			return TEST_SKIP;
+ 	}
 -- 
 2.35.1
 
