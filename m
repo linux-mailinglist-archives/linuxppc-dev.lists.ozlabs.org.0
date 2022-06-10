@@ -1,94 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23844545A86
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 05:34:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C1C545B2C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 06:37:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LK6531kKSz3btb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:33:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LK7Vf2Nbjz3c1d
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 14:37:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kqW41dbI;
+	dkim=fail reason="signature verification failed" (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=ScyMJdbq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42b; helo=mail-wr1-x42b.google.com; envelope-from=joel.stan@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kqW41dbI;
+	dkim=pass (1024-bit key; secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256 header.s=google header.b=ScyMJdbq;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LK64K42VLz3blQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 13:33:20 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A3ADZb020701;
-	Fri, 10 Jun 2022 03:33:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=bDvK75IE7BxNskFywFSlovQPblDDOqSGlEaEyaxklRY=;
- b=kqW41dbISpnsi28FlmWHOiFRI/JgjrjJOJoEeZt/RbziG9ley5XLs7YiXSl0nQ8H74gn
- J3mGPK1titVIydHooROwgkkGrlkbWDGKBsfP/UjWFxitYtjEY/2ULm56aLXKbg5mZPV3
- K6pwjf1JwEy3PUj0brHq0ImvSZGHOCK7xfzeQs8AvPverQXLOonDEzOS2FV5wvis51dn
- mVeSCQGuTLy9Y/s3LGqaPwZZeyVvXcxjdzHdUu5hmv9NKg5fuVu/cCyAlesBYhkhlunF
- yOU6AYIjhBPm/hahxwPW2PXQsR1ISFDMo8yo/KpiV+yvRt26t2mwk+wEaVoMstgtql2n Cg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkwjc0fay-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 03:33:13 +0000
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25A3WJeg006681;
-	Fri, 10 Jun 2022 03:33:12 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkwjc0f9x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 03:33:12 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25A36bWe020491;
-	Fri, 10 Jun 2022 03:33:10 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma03ams.nl.ibm.com with ESMTP id 3gfy19fndv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 03:33:10 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25A3X8PN19202402
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jun 2022 03:33:08 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0D69242042;
-	Fri, 10 Jun 2022 03:33:08 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B7314203F;
-	Fri, 10 Jun 2022 03:33:05 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.84.186.134])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Fri, 10 Jun 2022 03:33:04 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
-Subject: Re: [PATCH 1/6] powerpc: Add ZERO_GPRS macros for register clears
-From: Rohan McLure <rmclure@linux.ibm.com>
-In-Reply-To: <20220601160023.GV25951@gate.crashing.org>
-Date: Fri, 10 Jun 2022 13:32:58 +1000
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <88BD925A-D6A8-4983-A573-7D9CEE51CDE7@linux.ibm.com>
-References: <20220601054850.250287-1-rmclure@linux.ibm.com>
- <20220601160023.GV25951@gate.crashing.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>,
-        christophe.leroy@csgroup.eu
-X-Mailer: Apple Mail (2.3696.100.31)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5HDQRWbc4wSlnL-z2qWdMH4Gp4E07eRG
-X-Proofpoint-GUID: PZmKhFFmS0I6JTz0aLQ5Kz0HttNWKBlD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-10_01,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
- mlxscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206100010
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LK7V16gVWz3bl6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 14:37:12 +1000 (AEST)
+Received: by mail-wr1-x42b.google.com with SMTP id c21so1804976wrb.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jun 2022 21:37:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rI30E8KhaGbK7VA0Gqe6IZwSFhEFZvKjvya7u50m/Qw=;
+        b=ScyMJdbqkd/JYHatq4bpH/E3ogRYCBw5pwSvdbFCzq7GeeBdCJ8d95AwPZ+2wKDIn7
+         jxxdFgu1yw5aqOs7hCdjqbl9iSaT/yVIET1Nev8vSOpWcxYCzTrs0aC+Oop573junJjL
+         gjCoqv4yVZUIeALSh05Hb9RnsScd/7vBrt1sU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rI30E8KhaGbK7VA0Gqe6IZwSFhEFZvKjvya7u50m/Qw=;
+        b=vUuXkkIayV07hckCwtPpb6ajEsisFDS8sT0FAc4WYVgm4TjsGU49XNKem1wky13qRY
+         i7YKiiagl8edNGg6tc2PyXveESfGskfaenJhktDkycKa0Nh5eIV9//SfnRHXNUgqGblV
+         thJu7m1zTDcOLIzVcNPuv6Vmr411z06jtTQ/uiBMF/5dOO05vORGfmy/cnqoNG7q4Xvd
+         6cqGNgNOq9XNbYxnHxlN3fNNUYE+fHvymPUAQAp6KFKjBVEB8uDZU7UqQe3oN2H0Ic1V
+         tWEMraCXbJfvYbrghk1ijzTeifToOxBMrXI8PnuDFrTZ3W2XhkDXmJYr/zmj7I7sAXFr
+         YK9A==
+X-Gm-Message-State: AOAM530Etj3jAlwk39vyNDmkXfKC2zqdXQZoBAjxTE+6Iv27V6arvqEs
+	0UlFvuCZv6PWF/ZIZ6zofPD6jq8L2HduZAMfU3U=
+X-Google-Smtp-Source: ABdhPJwjY+/6BJPZACSmWfX4NFQUfPGJJ53v/pfOLH4dkBJOOGaOfbWWanDehi9h+1LCBySQWN2O2oQnlz6PG90T+ac=
+X-Received: by 2002:a5d:428f:0:b0:210:30cd:3753 with SMTP id
+ k15-20020a5d428f000000b0021030cd3753mr41508372wrq.549.1654835825542; Thu, 09
+ Jun 2022 21:37:05 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220526063723.51471-1-joel@jms.id.au> <407cd655-748e-a276-4c2b-d214a33f8981@linux.ibm.com>
+In-Reply-To: <407cd655-748e-a276-4c2b-d214a33f8981@linux.ibm.com>
+From: Joel Stanley <joel@jms.id.au>
+Date: Fri, 10 Jun 2022 04:36:53 +0000
+Message-ID: <CACPK8XezJHOcZxwnM+k1R1VkY+Cz1P=TyK0L0EVqqJU6WRhJrA@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/perf: Give generic PMU a nice name
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,54 +69,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Paul Mackerras <paulus@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> On 2 Jun 2022, at 2:00 am, Segher Boessenkool =
-<segher@kernel.crashing.org> wrote:
->=20
-> Hi!
->=20
-> On Wed, Jun 01, 2022 at 03:48:45PM +1000, Rohan McLure wrote:
->> +.macro BINOP_REGS op, rhs, start, end
->> +	.Lreg=3D\start
->> +	.rept (\end - \start + 1)
->> +	\op .Lreg, \rhs
->> +	.Lreg=3D.Lreg+1
->> +	.endr
->> +.endm
->=20
-> This is for unary operations, not binary operations (there is only one
-> item on the RHS).  You can in principle put a string "a,b" in the rhs
-> parameter, but in practice you need a or b to depend on the loop =
-counter
-> as well, so even such trickiness won't do.  Make the naming less
-> confusing, maybe?  Or don't have an unused extra level of abstraction =
-in
-> the first place :-)
->=20
->=20
-> Segher
+On Tue, 31 May 2022 at 08:53, Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
+>
+>
+> On 5/26/22 12:07 PM, Joel Stanley wrote:
+> > When booting on a machine that uses the compat pmu driver we see this:
+> >
+> >   [    0.071192] GENERIC_COMPAT performance monitor hardware support registered
+> Sorry that was my mistake.
+> I agree having it as ISAv3 is better.
 
-Thanks Segher, Christophe for reviewing this.
+Okay. The downside of this is it's not as clear that you're using a
+fallback driver.
 
-Yep I see how having a macro to perform rX =3D rX <> Y for arbitrary =
-infix <> and operand
-is unlikely to find much use outside of ZERO_GPRS. As I resubmit this =
-patch series I
-will rename it to ZERO_REGS or similar to be more explicitly coupled to =
-ZERO_GPRS.
+I'll send a v2 with ISAv3
 
-Something like this I was thinking:
-
-.macro ZERO_REGS start, end
-	.Lreg=3D\start
-	.rept (\end - \start + 1)
-	li	.Lreg, 0
-	.Lreg=3D.Lreg+1
-	.endr
-.endm
-
-Thanks,
-Rohan=
+>
+> Maddy
+>
+> >
+> > Which is a bit shouty. Give it a nicer name.
+> >
+> > Signed-off-by: Joel Stanley <joel@jms.id.au>
+> > ---
+> >
+> > Other options:
+> >
+> >   - ISAv3 (because it is relevant for PowerISA 3.0B and beyond, see the
+> >     comment in init_generic_compat_pmu)
+> >
+> >   - Generic Compat (same, but less shouty)
+> >
+> >   arch/powerpc/perf/generic-compat-pmu.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/arch/powerpc/perf/generic-compat-pmu.c b/arch/powerpc/perf/generic-compat-pmu.c
+> > index f3db88aee4dd..5be5a5ebaf42 100644
+> > --- a/arch/powerpc/perf/generic-compat-pmu.c
+> > +++ b/arch/powerpc/perf/generic-compat-pmu.c
+> > @@ -292,7 +292,7 @@ static int generic_compute_mmcr(u64 event[], int n_ev,
+> >   }
+> >
+> >   static struct power_pmu generic_compat_pmu = {
+> > -     .name                   = "GENERIC_COMPAT",
+> > +     .name                   = "Architected",
+> >       .n_counter              = MAX_PMU_COUNTERS,
+> >       .add_fields             = ISA207_ADD_FIELDS,
+> >       .test_adder             = ISA207_TEST_ADDER,
