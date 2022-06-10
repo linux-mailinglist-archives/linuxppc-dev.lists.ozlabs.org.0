@@ -2,65 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69E0546593
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D3E8546594
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:30:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJfS4qHsz3gQs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:30:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJg72xctz3cdK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:30:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JLgr0kTD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PwDM2JUn;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::431; helo=mail-wr1-x431.google.com; envelope-from=ariel.miculas@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32c; helo=mail-wm1-x32c.google.com; envelope-from=ariel.miculas@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JLgr0kTD;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=PwDM2JUn;
 	dkim-atps=neutral
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKGsX1Z7Gz3brR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 20:09:34 +1000 (AEST)
-Received: by mail-wr1-x431.google.com with SMTP id k19so35831039wrd.8
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 03:09:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKH4n2JVhz3bqL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 20:19:20 +1000 (AEST)
+Received: by mail-wm1-x32c.google.com with SMTP id o37-20020a05600c512500b0039c4ba4c64dso909657wms.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 03:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=FBM65lOE0QCie1fmK0Dd5CZzENs7e6mZHCY1s9tNCus=;
-        b=JLgr0kTD1+Pfn86kyTGt+BZ7QYhM9EPNu4OaAaK3IMPyDg3solmPi4PwoLol34y+Oq
-         cSTlvs5FKYPBq/2mP1lrBRpfCGtd6MFQRx3p+q/zb78Cv6feApnc9M27wPTAHMzcvfgi
-         znKSTaLGzHXptMPAvNZyYrLPD4oLabCOMFBIZE5z3jGXbQIlQJWbsURdMq1/j4t0Uwgh
-         hekiSHCG6mc9mkWyiPeGOVFC2Kk33nNHmtKQZNg7fYT8hbRFK2WZlpAHCsqu7sWEhKsJ
-         2L3xvRVQbY3CrLtgQqr/yIdUNyGUsj8nB5CMw3Dj1PBtm6omf3FHf//g3FSQUppLniYQ
-         RKqg==
+        bh=zY4+lp4pr5IsVeoihGvcsTPoBE5AuFSkdFxCMhcJJms=;
+        b=PwDM2JUnFEg5SXKPkVZFXUed/iQepRi3fhrX5fTC0ZbKzUVcRoRvQ0ObJBJyOfdJH5
+         n0zZDX0++SMA6eNPiGh3D1oQCOTRzekjv6RQgqy7HIqvfMk6as6LmeVq4sWCFRLV/SGW
+         oa08ibq99cz7dQDGqCgQx5KD/DiU0YbEMWpDlcw13Reudl7lWrCdAeMnViUnlw7GoZ+L
+         yEsHQma8lQv9/8/+YA+D6KKW0EDPaUfeFrJmjpCdoQG1gtOsdaeHqSJRLxPvf0/7hqcm
+         mswywPvFxqRKuQwSayEx9+kE6WL6EJpB7XLNPLM/TZD496KY93qpAZTvGP3zv4y4JZZe
+         YyJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=FBM65lOE0QCie1fmK0Dd5CZzENs7e6mZHCY1s9tNCus=;
-        b=tAHlne/OkN+uNVO+ccTXIipfWYpqA6eoos/cGj1+0+RguQnQxDPVP6hQMJRgcNGQIV
-         YX10qXu5wqKXGLbyYSUrcaiiI4853eZqGnQX59PDtFJ8eF9bc2B4qxUoTiYaqm6TijGI
-         /MXIiy3eB4mTQwDbrhPEOAEK22f6jk/IHPKehPQ2pPNSutlE2gYX46sDvVfI21Lhtczu
-         X3a7gK1oWpQFGGhmn3UNQiCkqOGpUR2viie4Ram5t2a/3aIay9U0/ayfo4ydfpPajl4/
-         X3P0P87SFaI/HPdb16Py0F2rD9MXUNMtrPf67wua0LaMCV5aEaRlNsFc4s8KMWk/7n5N
-         A7jw==
-X-Gm-Message-State: AOAM5338pmvD12qLF0WIh2CtKrMmvCwrZXHNr2Jvg30mZc1437QX6TYO
-	Tn7ZlJKsVXRBBybKAPxeDFea/rfqBzg=
-X-Google-Smtp-Source: ABdhPJyesuFob34J6DQzDgHeih7ls8OE8R4gjX3wI3NBSjEJ4UpQ6UxyoMPQZfEpD5BsIQuGufdlmA==
-X-Received: by 2002:a05:6000:12c8:b0:213:584:3d7 with SMTP id l8-20020a05600012c800b00213058403d7mr43461512wrx.125.1654855766835;
-        Fri, 10 Jun 2022 03:09:26 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:2f0e:300a:9e00:2481:9781:af4:1fd0])
-        by smtp.gmail.com with ESMTPSA id l14-20020adfe58e000000b002117ef160fbsm26913767wrm.21.2022.06.10.03.09.25
+        bh=zY4+lp4pr5IsVeoihGvcsTPoBE5AuFSkdFxCMhcJJms=;
+        b=48wQS3QXyDQjDbZQksR/7Y7qTfDDbg4mR+ee+JX4BqpcqlmzCE9gkKkS2nczCsLW25
+         LKM+BqUBuDre2WxGiLZgnroApp4GsVBUxUmTzoD7BzbaSmx56JIiZmSKL0UYabsOXALb
+         bPdxQ/MZOwgoNH+9bRcCPOZmoo5sRZlynfc/FxjP144DvYFiMcqGkI6sFFjy+6BKsTUp
+         xP9B7qxZIXUWJ2sZ7eaYZ2GxICo8XgxAsTmG/X1ahARM31cLpaq1yu8UOmmWQr1eVoJ5
+         WIo+zKyqYf7AkkKLnhQWNH1a5RA5Ks5lMoqJXFO4tKaCa/IYVcIIfy1LerTwGeliV43b
+         SMNg==
+X-Gm-Message-State: AOAM532O2A+qRgiW/HpBbQyITl8nXvMtU+1RS9ukHoFRysaxO1rJhEj9
+	3EdIlG2XCfsgL2/3agwJ5MankqpO40E=
+X-Google-Smtp-Source: ABdhPJwf7CDUtQoUsJZJbW+H7opSdPv6O/trfif88NXCUpZ/1Fc5o3TE5mQ+fD/nRNIDK1j03eO+Sg==
+X-Received: by 2002:a05:600c:3b20:b0:397:6311:c0c7 with SMTP id m32-20020a05600c3b2000b003976311c0c7mr7914901wms.69.1654856355942;
+        Fri, 10 Jun 2022 03:19:15 -0700 (PDT)
+Received: from arch-luxoft.luxoft.com ([2a02:2f0e:300a:9e00:2481:9781:af4:1fd0])
+        by smtp.gmail.com with ESMTPSA id f62-20020a1c3841000000b0039746638d6esm2437080wma.33.2022.06.10.03.19.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jun 2022 03:09:26 -0700 (PDT)
+        Fri, 10 Jun 2022 03:19:15 -0700 (PDT)
 From: Ariel Miculas <ariel.miculas@gmail.com>
-X-Google-Original-From: Ariel Miculas <ariel.miculas@belden.com>
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [PATCH] powerpc/32: Fix FPR index validation and fpscr access
-Date: Fri, 10 Jun 2022 13:09:19 +0300
-Message-Id: <20220610100919.240777-1-ariel.miculas@belden.com>
+Date: Fri, 10 Jun 2022 13:18:51 +0300
+Message-Id: <20220610101851.246538-1-ariel.miculas@gmail.com>
 X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -79,6 +78,8 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Ariel Miculas <ariel.miculas@belden.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+
+From: Ariel Miculas <ariel.miculas@belden.com>
 
 On PPC32, there are two indexes used for each FPR.
 
