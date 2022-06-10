@@ -2,40 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA940546589
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6650D546582
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:26:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJbQ5Q1wz3gF0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:27:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJZc1mXbz3g7q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:26:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
 	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=40rJpqa4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKD3c64Tcz3by8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 18:03:08 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=belden.com (client-ip=205.220.166.249; helo=mx0a-00015a02.pphosted.com; envelope-from=prvs=7160f83243=ariel.miculas@belden.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
 	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=40rJpqa4;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4LKD3X3gmZz4xZC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 18:03:04 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4LKD3X3dQkz4xZD; Fri, 10 Jun 2022 18:03:04 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=belden.com (client-ip=205.220.166.249; helo=mx0a-00015a02.pphosted.com; envelope-from=prvs=7160f83243=ariel.miculas@belden.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=40rJpqa4;
-	dkim-atps=neutral
+X-Greylist: delayed 2788 seconds by postgrey-1.36 at boromir; Fri, 10 Jun 2022 18:03:01 AEST
 Received: from mx0a-00015a02.pphosted.com (mx0a-00015a02.pphosted.com [205.220.166.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4LKD3X1P3Lz4xZC
-	for <linuxppc-dev@ozlabs.org>; Fri, 10 Jun 2022 18:03:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKD3T5Kzrz3c1g
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 18:02:59 +1000 (AEST)
 Received: from pps.filterd (m0264209.ppops.net [127.0.0.1])
 	by mx0a-00015a02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A4f9ej024575;
 	Fri, 10 Jun 2022 04:02:46 -0400
