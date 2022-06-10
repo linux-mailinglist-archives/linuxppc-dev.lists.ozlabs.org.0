@@ -1,49 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18346546FBA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 00:44:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2A754700D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 01:38:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKbd00KqVz3c8p
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 08:44:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKcpH0jY5z3cj1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 09:37:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=odvOjgG1;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KVeAginJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKbcM4LtCz3bm9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 08:44:19 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=odvOjgG1;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KVeAginJ;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LKbcK4QC5z4xZ4;
-	Sat, 11 Jun 2022 08:44:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654901057;
-	bh=5NlNhUrggI6y4thnepq778xkltxmDRahIYixN/3Gg/k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=odvOjgG1y0xrW1wOKg/qtjgqOx9MCB2SQooHcmvVWPGC05oolojpFviMwEyw/CrGc
-	 ozlsRxsAT3ySyJy4rn7ur0/qAU7BbYZpmElBxU8Scjqawuj8ZfA+H5xx6ZCGOnr/lo
-	 6/N6oYHiayNrfoPK2zP6EyMo83O2lLEkZyQG01NJsMa+o10/LJlgMHiNEICKUoN6JP
-	 sthcd2MxummU1km2fOsBGvjAYS+ie+3uthNZGnEMQt/+7rXsd8woTD4zoc7jKJSJGV
-	 wKZT4P8FySmkgUx5WtgCL7ttm68xDxDldnselfLsRul5m3RKWbmFZvkoybDmCJWjvK
-	 EdmNE9Z8Mf15w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <stable@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>
-Subject: [PATCH v5.18] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
-Date: Sat, 11 Jun 2022 08:44:11 +1000
-Message-Id: <20220610224411.926565-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKclg2Ylpz2ywr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 09:35:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654904143; x=1686440143;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Js4f9kz2YaYmoc0VfWWcGpSWtATIkYgM+SbstpVR+cU=;
+  b=KVeAginJ38tC6kTqBToW7zI5YSXFiwbVW/CRMSNydT6mWQHg8ImlFreY
+   W3XYi3saEiImQZAVnu5MpiurealvAeHbxK5CXEyq3hDmLCKb4iWiFMlis
+   Wkj43t80NCfDPGcEff5PjFtJliKEJuRHJ1NqFZCwW2R1jn66AsVi9RwhS
+   PhCeZeCGFHiLmVYXxUYLHnAZJ9Cw5rW32IOBEJVRFEbV/cfVAJ1zsx48N
+   7wm0qL3cn7HxOLHIWdHgdhpQhv3HYshCTOgOyasmEDPsB0nzTNXN5xyRA
+   RCcdtJUtaRkk1dhrdiFtqKkmsNq99VClsrGM7RJUs+hHOxyYNbZChg/Pv
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10374"; a="276561758"
+X-IronPort-AV: E=Sophos;i="5.91,291,1647327600"; 
+   d="scan'208";a="276561758"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 16:35:35 -0700
+X-IronPort-AV: E=Sophos;i="5.91,291,1647327600"; 
+   d="scan'208";a="638384941"
+Received: from pleung-mobl1.amr.corp.intel.com (HELO localhost) ([10.212.33.34])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 16:35:35 -0700
+From: ira.weiny@intel.com
+To: linux-api@vger.kernel.org
+Subject: [RFC PATCH 0/6] User pkey minor bug fixes
+Date: Fri, 10 Jun 2022 16:35:27 -0700
+Message-Id: <20220610233533.3649584-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,125 +62,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Ira Weiny <ira.weiny@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, Sohil Mehta <sohil.mehta@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 8e1278444446fc97778a5e5c99bca1ce0bbc5ec9 upstream.
+From: Ira Weiny <ira.weiny@intel.com>
 
-The ptrace PEEKUSR/POKEUSR (aka PEEKUSER/POKEUSER) API allows a process
-to read/write registers of another process.
 
-To get/set a register, the API takes an index into an imaginary address
-space called the "USER area", where the registers of the process are
-laid out in some fashion.
+While evaluating the possibility of defining a new type for pkeys within the
+kernel I found a couple of minor bugs.
 
-The kernel then maps that index to a particular register in its own data
-structures and gets/sets the value.
+Because these patches clean up the return codes from system calls I'm sending
+this out RFC hoping that users will speak up if anything breaks.
 
-The API only allows a single machine-word to be read/written at a time.
-So 4 bytes on 32-bit kernels and 8 bytes on 64-bit kernels.
+I'm not too concerned about pkey_free() because it is unlikely that anyone is
+checking the return code.  Interestingly enough, glibc recommends not calling
+pkey_free() because it does not change the access rights to the key and may be
+subsequently allocated again.[1][2]
 
-The way floating point registers (FPRs) are addressed is somewhat
-complicated, because double precision float values are 64-bit even on
-32-bit CPUs. That means on 32-bit kernels each FPR occupies two
-word-sized locations in the USER area. On 64-bit kernels each FPR
-occupies one word-sized location in the USER area.
+The pkey_alloc() is more concerning.  However, I checked the Chrome source and
+it does not differentiate among the return codes and maps all errors into
+kNoMemoryProtectionKey.
 
-Internally the kernel stores the FPRs in an array of u64s, or if VSX is
-enabled, an array of pairs of u64s where one half of each pair stores
-the FPR. Which half of the pair stores the FPR depends on the kernel's
-endianness.
+glibc says it returns ENOSYS if the system does not support pkeys but I don't
+see where ENOSYS is returned?  AFAICS it just returns what the kernel returns.
+So it is probably up to user of glibc.
 
-To handle the different layouts of the FPRs depending on VSX/no-VSX and
-big/little endian, the TS_FPR() macro was introduced.
+In addition I've enhanced the pkey tests to verify and test the changes.
 
-Unfortunately the TS_FPR() macro does not take into account the fact
-that the addressing of each FPR differs between 32-bit and 64-bit
-kernels. It just takes the index into the "USER area" passed from
-userspace and indexes into the fp_state.fpr array.
+Thanks to Rick Edgecombe and Sohil Mehta for internal review.
 
-On 32-bit there are 64 indexes that address FPRs, but only 32 entries in
-the fp_state.fpr array, meaning the user can read/write 256 bytes past
-the end of the array. Because the fp_state sits in the middle of the
-thread_struct there are various fields than can be overwritten,
-including some pointers. As such it may be exploitable.
 
-It has also been observed to cause systems to hang or otherwise
-misbehave when using gdbserver, and is probably the root cause of this
-report which could not be easily reproduced:
-  https://lore.kernel.org/linuxppc-dev/dc38afe9-6b78-f3f5-666b-986939e40fc6@keymile.com/
+[1] Quote from manual/memory.texi:
 
-Rather than trying to make the TS_FPR() macro even more complicated to
-fix the bug, or add more macros, instead add a special-case for 32-bit
-kernels. This is more obvious and hopefully avoids a similar bug
-happening again in future.
+Calling this function does not change the access rights of the freed
+protection key.  The calling thread and other threads may retain access
+to it, even if it is subsequently allocated again.  For this reason, it
+is not recommended to call the @code{pkey_free} function.
 
-Note that because 32-bit kernels never have VSX enabled the code doesn't
-need to consider TS_FPRWIDTH/OFFSET at all. Add a BUILD_BUG_ON() to
-ensure that 32-bit && VSX is never enabled.
+[2] PKS had a similar issue and went to statically allocated keys instead.
 
-Fixes: 87fec0514f61 ("powerpc: PTRACE_PEEKUSR/PTRACE_POKEUSER of FPR registers in little endian builds")
-Cc: stable@vger.kernel.org # v3.13+
-Reported-by: Ariel Miculas <ariel.miculas@belden.com>
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220609133245.573565-1-mpe@ellerman.id.au
----
- arch/powerpc/kernel/ptrace/ptrace-fpu.c | 20 ++++++++++++++------
- arch/powerpc/kernel/ptrace/ptrace.c     |  3 +++
- 2 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-index 5dca19361316..09c49632bfe5 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-@@ -17,9 +17,13 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0))
--		memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
--	else
-+	if (fpidx < (PT_FPSCR - PT_FPR0)) {
-+		if (IS_ENABLED(CONFIG_PPC32))
-+			// On 32-bit the index we are passed refers to 32-bit words
-+			*data = ((u32 *)child->thread.fp_state.fpr)[fpidx];
-+		else
-+			memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
-+	} else
- 		*data = child->thread.fp_state.fpscr;
- #else
- 	*data = 0;
-@@ -39,9 +43,13 @@ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0))
--		memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
--	else
-+	if (fpidx < (PT_FPSCR - PT_FPR0)) {
-+		if (IS_ENABLED(CONFIG_PPC32))
-+			// On 32-bit the index we are passed refers to 32-bit words
-+			((u32 *)child->thread.fp_state.fpr)[fpidx] = data;
-+		else
-+			memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
-+	} else
- 		child->thread.fp_state.fpscr = data;
- #endif
- 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 6d5026a9db4f..eab6fa59d9d2 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -450,4 +450,7 @@ void __init pt_regs_check(void)
- #else
- 	BUILD_BUG_ON(IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS));
- #endif
-+
-+	// ptrace_get/put_fpr() rely on PPC32 and VSX being incompatible
-+	BUILD_BUG_ON(IS_ENABLED(CONFIG_PPC32) && IS_ENABLED(CONFIG_VSX));
- }
+Ira Weiny (6):
+  testing/pkeys: Add command line options
+  testing/pkeys: Don't use uninitialized variable
+  testing/pkeys: Add additional test for pkey_alloc()
+  pkeys: Lift pkey hardware check for pkey_alloc()
+  pkeys: Up level pkey_free() checks
+  pkeys: Change mm_pkey_free() to void
+
+ arch/powerpc/include/asm/pkeys.h             | 18 ++---
+ arch/x86/include/asm/pkeys.h                 |  7 +-
+ include/linux/pkeys.h                        |  5 +-
+ mm/mprotect.c                                | 13 +++-
+ tools/testing/selftests/vm/pkey-helpers.h    |  7 +-
+ tools/testing/selftests/vm/protection_keys.c | 75 +++++++++++++++++---
+ 6 files changed, 86 insertions(+), 39 deletions(-)
+
+
+base-commit: 874c8ca1e60b2c564a48f7e7acc40d328d5c8733
 -- 
-2.35.3
+2.35.1
 
