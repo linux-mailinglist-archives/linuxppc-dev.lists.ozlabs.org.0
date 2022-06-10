@@ -1,79 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA04F546796
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 15:48:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F1454679B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 15:49:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKMk24RVBz3fJb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 23:48:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKMkm4DtTz3f24
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 23:49:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AZXU3mFM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g7pR2iDf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AZXU3mFM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=g7pR2iDf;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKMZc4KPlz3bwb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 23:42:00 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ADT27L015079;
-	Fri, 10 Jun 2022 13:41:57 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKMZg6z1Yz3cKB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 23:42:03 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ADDP5o032243;
+	Fri, 10 Jun 2022 13:41:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=ByOcO8rmjSyJe3X2pMMo92RxsVNvLr67u5yPErq1bqU=;
- b=AZXU3mFMHl6eE6nKHmD5+1x/wcc9mUSJcoaoNF8OZKhD4dnzWjwPXKTUtpEbAeyVx3rN
- KpZstD0LCA06qLnnrzk2u/Jdo2YoltBfSGWhMnLZLZqKDzYG2PQwusRYpOYe0UosV3ah
- Ew+79nZY89u0q+TkcLdn75agLOkahd1ye++k42sIpBplsSYIdpA0DgJPOdkomiB8H9zO
- pWwHKjNyrAy31FcwiFKKCkM3xm8G+xRMXVk9yT4gyQVu5+9h3CV3AeBiFqRFQKa6Ua5v
- biiWMUd7DWPHVOI6WYjal16yemuVWs+IvIR7uCVMzcHoUxJk1/0fOBgNGhfovGyLPiZx JQ== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm6vn0akd-1
+ bh=F+O/2nlc7gY+twNgknuY2EiVJZo3VrTPNDLGr0oGmzI=;
+ b=g7pR2iDfK4/GroKFFHjcHL0Jf1mJ/HpRohT+PcbKk5wFAbmqeFuNEnJdEJKHluLQ7/gG
+ ePNpSQHObQXRpljxHzW4iD9GlR9bY6uU8kDUJgJsdvwMUGgbWqnh5QyUBlcwl5nG1+j/
+ x0oJG24a+iDwIPwT5tc4mSWKYdhrByP6moPfn0BX3AtfqOYGty+xoAFIQvDeH4rWxmt8
+ 6k7WEy4RGi5mTzHmyvK/kTLqaSgHXyvOkbjT/p3/UNb+r5M9s88tj3eeoTgzYHBeat0S
+ bviOPcx304vp1o6JO4djj6891y4tzDjvMF/tQ0e4ImEX3SLJPnhdSSy14loCyHneVIA2 fA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm6na0hgh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 13:41:56 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ADZuOZ006996;
-	Fri, 10 Jun 2022 13:41:54 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma02fra.de.ibm.com with ESMTP id 3gfy196h83-1
+	Fri, 10 Jun 2022 13:41:59 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ADaCOv004584;
+	Fri, 10 Jun 2022 13:41:57 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03ams.nl.ibm.com with ESMTP id 3gfy19g9r5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 13:41:54 +0000
+	Fri, 10 Jun 2022 13:41:57 +0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ADfpDt9109806
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ADfXCV23986654
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jun 2022 13:41:51 GMT
+	Fri, 10 Jun 2022 13:41:33 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56D145204E;
-	Fri, 10 Jun 2022 13:41:51 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 578D95204F;
+	Fri, 10 Jun 2022 13:41:54 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.163.7.130])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0D2F752051;
-	Fri, 10 Jun 2022 13:41:48 +0000 (GMT)
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 0F95D5204E;
+	Fri, 10 Jun 2022 13:41:51 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH V3 10/35] selftest/powerpc/pmu: Add selftest to check branch stack enablement will not crash on any platforms
-Date: Fri, 10 Jun 2022 19:10:48 +0530
-Message-Id: <20220610134113.62991-11-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V3 11/35] selftest/powerpc/pmu: Add selftest to check PERF_SAMPLE_REGS_INTR option will not crash on any platforms
+Date: Fri, 10 Jun 2022 19:10:49 +0530
+Message-Id: <20220610134113.62991-12-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220610134113.62991-1-atrajeev@linux.vnet.ibm.com>
 References: <20220610134113.62991-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: spWVSYycEY87he_iK4B2rfKLQlzTlcNg
-X-Proofpoint-ORIG-GUID: spWVSYycEY87he_iK4B2rfKLQlzTlcNg
+X-Proofpoint-GUID: cLDGn_J0yjjpVVHjky6lxM2VdPnM-F9F
+X-Proofpoint-ORIG-GUID: cLDGn_J0yjjpVVHjky6lxM2VdPnM-F9F
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
  definitions=2022-06-10_06,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
- mlxscore=0 adultscore=0 spamscore=0 priorityscore=1501 phishscore=0
- bulkscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=999 clxscore=1015
+ adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2204290000 definitions=main-2206100056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -90,46 +90,46 @@ Cc: kjain@linux.ibm.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While enabling branch stack for an event, BHRB (Branch History
-Rolling Buffer) filter is set using bhrb_filter_map() callback.
-This callback is not defined for cases like generic_compat_pmu
-or in case where there is no PMU registered. A fix was added
-in kernel to address a crash issue observed while enabling branch
-stack for environments which doesn't have this callback.
-commit b460b512417a ("powerpc/perf: Fix crashes with
-generic_compat_pmu & BHRB").
+With sampling, --intr-regs option is used for capturing
+interrupt regs. When --intr-regs option is used, PMU code
+uses is_sier_available() function which uses PMU flags in
+the code. In environment where platform specific PMU is
+not registered, PMU flags is not defined. A fix was added
+in kernel to address crash while accessing is_sier_available()
+function when pmu is not set. commit f75e7d73bdf7 ("powerpc/perf:
+Fix crash with is_sier_available when pmu is not set").
 
-Add perf sampling test to exercise this code path and make
-sure enabling branch stack shouldn't crash in any platform.
-Testcase uses software event cycles since software event is
-available and can be used even in cases without PMU.
+Add perf sampling test to exercise this code and make sure
+enabling intr_regs shouldn't crash in any platform. Testcase
+uses software event cycles since software event will work even
+in cases without PMU.
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
  .../powerpc/pmu/sampling_tests/Makefile       |  2 +-
- .../bhrb_no_crash_wo_pmu_test.c               | 59 +++++++++++++++++++
- 2 files changed, 60 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_no_crash_wo_pmu_test.c
+ .../intr_regs_no_crash_wo_pmu_test.c          | 57 +++++++++++++++++++
+ 2 files changed, 58 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/pmu/sampling_tests/intr_regs_no_crash_wo_pmu_test.c
 
 diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
-index f4da49d55d57..8d4839cde013 100644
+index 8d4839cde013..8d4566dac440 100644
 --- a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
 @@ -6,7 +6,7 @@ TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test
  		   mmcr1_comb_test mmcr2_l2l3_test mmcr2_fcs_fch_test \
  		   mmcr3_src_test mmcra_thresh_marked_sample_test mmcra_thresh_cmp_test \
  		   mmcra_bhrb_ind_call_test mmcra_bhrb_any_test mmcra_bhrb_cond_test \
--		   mmcra_bhrb_disable_test
-+		   mmcra_bhrb_disable_test bhrb_no_crash_wo_pmu_test
+-		   mmcra_bhrb_disable_test bhrb_no_crash_wo_pmu_test
++		   mmcra_bhrb_disable_test bhrb_no_crash_wo_pmu_test intr_regs_no_crash_wo_pmu_test
  
  top_srcdir = ../../../../../..
  include ../../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_no_crash_wo_pmu_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_no_crash_wo_pmu_test.c
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/intr_regs_no_crash_wo_pmu_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/intr_regs_no_crash_wo_pmu_test.c
 new file mode 100644
-index 000000000000..4644c6782974
+index 000000000000..839d2d225da0
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_no_crash_wo_pmu_test.c
-@@ -0,0 +1,59 @@
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/intr_regs_no_crash_wo_pmu_test.c
+@@ -0,0 +1,57 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright 2022, Athira Rajeev, IBM Corp.
@@ -144,21 +144,20 @@ index 000000000000..4644c6782974
 +
 +/*
 + * A perf sampling test for making sure
-+ * enabling branch stack doesn't crash in any
-+ * environment, say:
++ * sampling with -intr-regs doesn't crash
++ * in any environment, say:
 + *  - With generic compat PMU
 + *  - without any PMU registered
-+ *  - With platform specific PMU
-+ *  A fix for bhrb sampling crash was added in kernel
-+ *  via commit: b460b512417a ("powerpc/perf: Fix crashes
-+ *  with generic_compat_pmu & BHRB")
++ *  - With platform specific PMU.
++ *  A fix for crash with intr_regs was
++ *  addressed in commit: f75e7d73bdf7 in kernel.
 + *
-+ * This testcase exercises this code by doing branch
-+ * stack enable for software event. s/w event is used
-+ * since software event will work even in platform
++ * This testcase exercises this code path by doing
++ * intr_regs using software event. Software event is
++ * used since s/w event will work even in platform
 + * without PMU.
 + */
-+static int bhrb_no_crash_wo_pmu_test(void)
++static int intr_regs_no_crash_wo_pmu_test(void)
 +{
 +	struct event event;
 +
@@ -170,14 +169,13 @@ index 000000000000..4644c6782974
 +	event_init_opts(&event, 0, PERF_TYPE_SOFTWARE, "cycles");
 +
 +	event.attr.sample_period = 1000;
-+	event.attr.sample_type = PERF_SAMPLE_BRANCH_STACK;
++	event.attr.sample_type = PERF_SAMPLE_REGS_INTR;
 +	event.attr.disabled = 1;
 +
 +	/*
-+	 * Return code of event_open is not
-+	 * considered since test just expects no crash from
-+	 * using PERF_SAMPLE_BRANCH_STACK. Also for environment
-+	 * like generic compat PMU, branch stack is unsupported.
++	 * Return code of event_open is not considered
++	 * since test just expects no crash from using
++	 * PERF_SAMPLE_REGS_INTR.
 +	 */
 +	event_open(&event);
 +
@@ -187,7 +185,7 @@ index 000000000000..4644c6782974
 +
 +int main(void)
 +{
-+	return test_harness(bhrb_no_crash_wo_pmu_test, "bhrb_no_crash_wo_pmu_test");
++	return test_harness(intr_regs_no_crash_wo_pmu_test, "intr_regs_no_crash_wo_pmu_test");
 +}
 -- 
 2.35.1
