@@ -1,126 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F47546595
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:31:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE87954676E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 15:38:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJgv2QyGz3f7Z
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:31:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKMVF6L7lz3bx5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 23:38:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=ZGA7s3H9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PQtipTDW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=belden.com (client-ip=205.220.166.249; helo=mx0a-00015a02.pphosted.com; envelope-from=prvs=7160f83243=ariel.miculas@belden.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=ZGA7s3H9;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PQtipTDW;
 	dkim-atps=neutral
-Received: from mx0a-00015a02.pphosted.com (mx0a-00015a02.pphosted.com [205.220.166.249])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKHHn4pw6z3btD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 20:28:47 +1000 (AEST)
-Received: from pps.filterd (m0264209.ppops.net [127.0.0.1])
-	by mx0a-00015a02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A09SmE021591;
-	Fri, 10 Jun 2022 06:28:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=belden.com; h=from : to : cc :
- subject : date : message-id : content-transfer-encoding : content-type :
- mime-version; s=podpps1; bh=FBM65lOE0QCie1fmK0Dd5CZzENs7e6mZHCY1s9tNCus=;
- b=ZGA7s3H9zJPwI7CO3/4bdko1/pDUkWOnBK2Waapz/yUeGl6ZFWgMOxzCKOSCgMtgfJQ+
- seNd08KyJAtVS//jfuPPB5J4ug6p9wQ1BjPMKLC/roX/kXy7lk74pYsBABKIBxOik5Fn
- 0xJKrj/0sElgRkwu81IeZACPLHmnLgq/s2aVun7TMlT4kR2MoV4zx0ssrxMVVkT+51UG
- xVqhmc7Xm9EXheWXOpvvtSv4Vy0GdoqBBe5FkIofPE1xDhXsO4+vN4/EDBbXusTWzJfJ
- ArX2xsTadAZZV7FZFtlLNVqR0nE7SH2ratsHtpAigVpVTvgeU77xxXPPGa3b+fYY6VTS MA== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2171.outbound.protection.outlook.com [104.47.56.171])
-	by mx0a-00015a02.pphosted.com (PPS) with ESMTPS id 3gjqryrwvs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jun 2022 06:28:40 -0400
-Received: from PH0PR18MB5069.namprd18.prod.outlook.com (2603:10b6:510:169::8)
- by CO3PR18MB4974.namprd18.prod.outlook.com (2603:10b6:303:176::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.13; Fri, 10 Jun
- 2022 10:28:38 +0000
-Received: from PH0PR18MB5069.namprd18.prod.outlook.com
- ([fe80::f5ab:d45e:69de:f99c]) by PH0PR18MB5069.namprd18.prod.outlook.com
- ([fe80::f5ab:d45e:69de:f99c%3]) with mapi id 15.20.5332.013; Fri, 10 Jun 2022
- 10:28:37 +0000
-From: Ariel Miculas <ariel.miculas@belden.com>
-To: christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc/32: Fix FPR index validation and fpscr access
-Date: Fri, 10 Jun 2022 13:28:21 +0300
-Message-Id: <20220610102821.252729-1-ariel.miculas@belden.com>
-X-Mailer: git-send-email 2.36.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1PR0302CA0008.eurprd03.prod.outlook.com
- (2603:10a6:800:e9::18) To PH0PR18MB5069.namprd18.prod.outlook.com
- (2603:10b6:510:169::8)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKMTY2yV3z3bkC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 23:37:36 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ADIiE8023542;
+	Fri, 10 Jun 2022 13:35:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Nv5m7qgMnFXTupaZo4Jf0rCTifEw0xb/z1HHR1ZsH8M=;
+ b=PQtipTDWscTREqnhXSrVaokUDRoo3NnESee5aKmg1QkEx3ALWRNDNBgkRnEzHHj+R2+5
+ Kq6KoUoQocieC5nCnl/lEuLW/L/IV20WS84+XplG4IOZRF6PSLGNlWlS/bME6oIf53yz
+ M6Y7ovMi0/3u5a21WWIn7C6ClWdCy0I8EMFUzLdKOXas2kKPCK5Pt+zW8HAG/g1eUpzb
+ wQYd5bpA9GRIS8qz3KbMH1pcp0qCOEZI1lMalNiqiPQ0Bn1nCJTP1dEqFQ1Bz6UU2Hsd
+ pwk8uhgrhHmZL0cAQKBdORoCKsPT13KxenZ2QePffZM3BkAettHoUlEjnw8FwQwDK9Un DA== 
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm6qurb7e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jun 2022 13:35:17 +0000
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ADSZL0002894;
+	Fri, 10 Jun 2022 13:35:15 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma01fra.de.ibm.com with ESMTP id 3gfy19ehx2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jun 2022 13:35:15 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ADZC0l19595772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jun 2022 13:35:12 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A7824C044;
+	Fri, 10 Jun 2022 13:35:12 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D82684C040;
+	Fri, 10 Jun 2022 13:35:08 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.72.99])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 10 Jun 2022 13:35:08 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, vaibhav@linux.ibm.com
+Subject: [PATCH] powerpc/papr_scm: Fix nvdimm event mappings
+Date: Fri, 10 Jun 2022 19:04:31 +0530
+Message-Id: <20220610133431.410514-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0e0f14ba-7578-412f-62d0-08da4acbfae3
-X-MS-TrafficTypeDiagnostic: CO3PR18MB4974:EE_
-X-Microsoft-Antispam-PRVS: 	<CO3PR18MB49746BB70E2C9EA1CA3688BB80A69@CO3PR18MB4974.namprd18.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	8JKAupVtTEku6KFqkgZ+1+2WHLnJGta4R3QSa5wdm/DKtNw/OHZtoz58c2Uf0kTmzwW73MnMs3VkEF5qqbgRpBDCW3ZAenB3s3ut6pwUcfIaA9s71rNuMtvGYdCC/NoQuWaioAqxVP+aq6fINi9JFcjil5nbr1s+bqROkoxZlwLoXYGMtzfvngDES7ZOJGVi3L5CtLb8ob9b8ifN1M6oy8iKGdtN7KvicZAVYhRs5h1SWvxbPXLyGDzlSXFJKGvg8ZjJ4TCRoQllSRaVJuaaDchu5v5qBbD2/kcEhaWcJVCsKURbVfinYR1GYHgRkPZAFNWbGQUgbQhGDSpRB5im+KDcCIqbjVc02VqGPLL2VHI/J8blkcXCNH23lEQGCitH7zsdr/MRKJblBnG+ccjqEAe1zyfYcK4mQLfG/GO1KK+evhcCrK9dmNNsbU4+ZHCfpEyssJbz/20lAhYXD0pdDQFulEEL3oqjjxCzEKp2NxBAp0tHE982k1eLz5Okxp6FkzTON5PIj9Atedane8GnVE/SV0f0qHxezWcGiIiHnAzyxu7yjClQ/2Uc3rQN7mUgR5c8XxVVCOPp4rRyB+a/0f5ZU4Ana5ICJTp7zlcSF1TiAFoOuVgWJwB9XZRIYOJCt2XsHxNr6u8mq28vsJA0xw==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR18MB5069.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66946007)(508600001)(66556008)(2906002)(66476007)(4326008)(8676002)(5660300002)(6666004)(6486002)(8936002)(83380400001)(44832011)(186003)(1076003)(86362001)(316002)(107886003)(38100700002)(36756003)(2616005)(6916009)(6512007)(6506007)(52116002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?uBJHkrNWGqTR+GNzKm4YlryGwsNuzSXWsQvqxdCGY2oz6wJFcW50t7ONfxNy?=
- =?us-ascii?Q?twzdBCpNmrTnmEuzjMtsn+khks8lwoBJF6Haf6ZJXz+w5tn8ByUwjdtgve9f?=
- =?us-ascii?Q?eVHrHZTepJAzOGVXyfdgTPjK9Q4dLB5zzNJ5kjmoYVqLun6bLeD3KBNbC3gz?=
- =?us-ascii?Q?0p7OrhrEXRx7gRr/UyJVW/Kr1bO9CZWox2VEMGJI3tcB7B7wsC8M8K6d6q0U?=
- =?us-ascii?Q?DIg+Tc8yvQSlXe8XngWuBV4ixhD60MulgufOyjyNqNIWpG6MtDMRUbKw0Cjz?=
- =?us-ascii?Q?+/vKXmYwo1RuFAzz/Yeb27HsInLX5zRoGqdEAB1AWoK6XbdvsPUfCuog9lgl?=
- =?us-ascii?Q?jCkPG/yHhPv3bqdPr8KtAaiNKc78dqixB/dUqNsOQTdvZrgNJMcRU1OKIeUz?=
- =?us-ascii?Q?uzrlkIANLaSNjSWy6M2ZKgfD5bakOWi2d6GbHYSg9kkrIQ1BE2Cx54qmaZiL?=
- =?us-ascii?Q?/kMbwlBleBcY6GWDnn41sGJj5cO5IpIxrgl6m0siMQ61TGlCJA68LN2bhepm?=
- =?us-ascii?Q?ugJkrg8uc7ZaMoIusj6lyF9AWpAnWu4R/3nIUPo7643Pof+IKbhx86aP9SPX?=
- =?us-ascii?Q?SeUWS6dhbchTCaW2WyEcGcdl5bsg468i2Zl3I07s1jUr3wXPVB5qCmn21j6n?=
- =?us-ascii?Q?hgQpqOxHG4eecaO06OzXQH3snTMPt620r184yV7wCxM0aKFYbd6mOxExxb6F?=
- =?us-ascii?Q?ShIAHpCM1qg6eig/msSl47nFQ81BHj3e3E1q6a4k2X2+Vs4+vbE9xwZZnapY?=
- =?us-ascii?Q?9KgEOOosE4uFjS3tCyixdgh+iFQxTNkjDpRKcYVQyDn4pDZHQnOP6Ht8NEx/?=
- =?us-ascii?Q?YUjawFE9qgauaNlYw4u0AhNTuAsYzNNiTD2aWYeIYD+4PkR+bK86f+18062m?=
- =?us-ascii?Q?40CzfbuVmBAoQUVXLm6W8+sr5KjRdeLSFE171tYvK5Avo4Amz/KWcFBm8GmL?=
- =?us-ascii?Q?7O2S592wjHfIxq+odm5wdEr/wyA4ZrMPPexzRQtcXsirKGJk4WGADpZ2LtED?=
- =?us-ascii?Q?Y5PiOYnSa70LvvGOV5IZ7I+WN8YPKKOsYhDdNv0lc8f+Yc3EKSfb+T0yX5KS?=
- =?us-ascii?Q?zmbL1PBMlzjtEl2xBl+gO88i4JyBOEdNKsiqumJhug+jpGJJ2wP1CBWvlf+a?=
- =?us-ascii?Q?ZiMRSOvcOyH6E0NphvoGibq2bfNsFmgVfa5umPXDXDcgZARQ+Amn5Lemp8zv?=
- =?us-ascii?Q?lHZs58dysQXxAezfQE7pFSiYoztOcZKozsIlyenH9Z+NLBVVIWqINZju7yJy?=
- =?us-ascii?Q?GwYkzAtgBmj7r+DwmA+3LUfxg6dRKg30TGdHiCYSCZoChBsqrIM6f6wWlREU?=
- =?us-ascii?Q?SS71dmJjiP6lbe+b2tqaZD+kYLffi2sZApTl/bFBvOThpwYwjU05Y0XhWJw+?=
- =?us-ascii?Q?8rGGeJ9zse6dWPsRyh0jgKrPju1mRS2UGJKvxWnqHvjGhh/hRhd53pzsRNld?=
- =?us-ascii?Q?/1Dz/bp0a3rZEVh9ZfhqSZyKpD9lcozxZFA1+NvBjAJ0REhKCO5NKdd2h0qN?=
- =?us-ascii?Q?YivQORBrJi4+JDIB3LxoaVqZgR0xqbppoMG4QuUF0s9/q8Wz4ivbb9lP/VkY?=
- =?us-ascii?Q?iL8Pf4VMY6QPW35e3Qh3EXxbfqprk1RTl9KJqwBbyTi8kL5tjd45fHaxMEEq?=
- =?us-ascii?Q?0wMacheMu6I/EFdL/LJQ0otqAg6ts4M1NCL5yTIwGvejOEzgABQPPdMX9tzP?=
- =?us-ascii?Q?NG115IqEYAOiVOnNCczC+mQpui7Z0sz9shf7Lp37k1sd5QPaQWjHGwLbgLLV?=
- =?us-ascii?Q?EBuqKgmmHcUiiVabPdK4faxYygJ9xR3/0lJAlj91294pQAr/n+wbcIWR/HpO?=
-X-MS-Exchange-AntiSpam-MessageData-1: EqoD4vt8DD4eYEUvm3JlsGmuCS2+tftitSg=
-X-OriginatorOrg: belden.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e0f14ba-7578-412f-62d0-08da4acbfae3
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR18MB5069.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2022 10:28:37.6400
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0f7367b1-44f7-45a7-bb10-563965c5f2e5
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BFtZCP+cdf2CrZZyLW6MN1HlgF0HR2TBoDeiJTjc9FzewYsiGXoOP3Xx32N69V8r/KEQUPTbZe18ZFVp/cEqRdgvKUFyEXTQcFbVycTMDEs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO3PR18MB4974
-X-Proofpoint-ORIG-GUID: XwypwcRcIO9qeot965_oVr_CJbrvMuzx
-X-Proofpoint-GUID: XwypwcRcIO9qeot965_oVr_CJbrvMuzx
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: P68vYUAe1FpUp9F8kHx2nIevoGAt7mdU
+X-Proofpoint-ORIG-GUID: P68vYUAe1FpUp9F8kHx2nIevoGAt7mdU
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-10_04,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015
- mlxlogscore=496 lowpriorityscore=0 spamscore=0 suspectscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206100039
-X-Proofpoint-TriggeredRule: module.spam.rule.outbound_notspam
-X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
+ definitions=2022-06-10_06,2022-06-09_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ mlxlogscore=999 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ clxscore=1011 impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206100056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,72 +86,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ariel Miculas <ariel.miculas@belden.com>, linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev, atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, maddy@linux.ibm.com, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, dan.j.williams@intel.com, disgoel@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On PPC32, there are two indexes used for each FPR.
+Commit 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+adds performance monitoring support for papr-scm nvdimm devices via
+perf interface. It also adds one array in papr_scm_priv
+structure called "nvdimm_events_map", to dynamically save the stat_id
+for events specified in nvdimm driver code "nd_perf.c".
 
-The last two indexes into the imaginary address space "USER area" are
-used to access fpscr instead of the FPR registers. Fix the validation
-condition so that the access of the FPR array doesn't overflow into
-fpscr.  Also split the access of fpscr into high part and low part.
+Right now the mapping is done based on the result of 
+H_SCM_PERFORMANCE_STATS hcall, when all the stats are
+requested. Currently there is an assumption, that a
+certain stat will always be found at a specific offset
+in the stat buffer. The assumption may not be true or
+documented as part of PAPR documentation. Fixing it,
+by adding a static mapping for nvdimm events to
+corresponding stat-id, and removing the map from
+papr_scm_priv structure.
 
-Signed-off-by: Ariel Miculas <ariel.miculas@belden.com>
+Fixes: 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- arch/powerpc/kernel/ptrace/ptrace-fpu.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ arch/powerpc/platforms/pseries/papr_scm.c | 59 ++++++++++-------------
+ 1 file changed, 25 insertions(+), 34 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-index 09c49632bfe5..eabc05b439f1 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-@@ -17,14 +17,18 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 181b855b3050..5434c654a797 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -124,9 +124,6 @@ struct papr_scm_priv {
  
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0)) {
--		if (IS_ENABLED(CONFIG_PPC32))
-+	if (IS_ENABLED(CONFIG_PPC32)) {
-+		if ((fpidx >> 1) < (PT_FPSCR - PT_FPR0) >> 1)
- 			// On 32-bit the index we are passed refers to 32-bit words
- 			*data = ((u32 *)child->thread.fp_state.fpr)[fpidx];
- 		else
-+			*data = ((u32 *)&child->thread.fp_state.fpscr)[fpidx & 1];
-+	} else {
-+		if (fpidx < (PT_FPSCR - PT_FPR0))
- 			memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
--	} else
--		*data = child->thread.fp_state.fpscr;
-+		else
-+			*data = child->thread.fp_state.fpscr;
-+	}
- #else
- 	*data = 0;
- #endif
-@@ -43,14 +47,18 @@ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
+ 	/* The bits which needs to be overridden */
+ 	u64 health_bitmap_inject_mask;
+-
+-	/* array to have event_code and stat_id mappings */
+-	u8 *nvdimm_events_map;
+ };
  
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0)) {
--		if (IS_ENABLED(CONFIG_PPC32))
-+	if (IS_ENABLED(CONFIG_PPC32)) {
-+		if ((fpidx >> 1) < (PT_FPSCR - PT_FPR0) >> 1)
- 			// On 32-bit the index we are passed refers to 32-bit words
- 			((u32 *)child->thread.fp_state.fpr)[fpidx] = data;
- 		else
-+			((u32 *)&child->thread.fp_state.fpscr)[fpidx & 1] = data;
-+	} else {
-+		if (fpidx < (PT_FPSCR - PT_FPR0))
- 			memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
--	} else
--		child->thread.fp_state.fpscr = data;
-+		else
-+			child->thread.fp_state.fpscr = data;
-+	}
- #endif
+ static int papr_scm_pmem_flush(struct nd_region *nd_region,
+@@ -350,6 +347,26 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
+ #ifdef CONFIG_PERF_EVENTS
+ #define to_nvdimm_pmu(_pmu)	container_of(_pmu, struct nvdimm_pmu, pmu)
  
- 	return 0;
++static const char * const nvdimm_events_map[] = {
++	"N/A",
++	"CtlResCt",
++	"CtlResTm",
++	"PonSecs ",
++	"MemLife ",
++	"CritRscU",
++	"HostLCnt",
++	"HostSCnt",
++	"HostSDur",
++	"HostLDur",
++	"MedRCnt ",
++	"MedWCnt ",
++	"MedRDur ",
++	"MedWDur ",
++	"CchRHCnt",
++	"CchWHCnt",
++	"FastWCnt",
++};
++
+ static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev, u64 *count)
+ {
+ 	struct papr_scm_perf_stat *stat;
+@@ -361,7 +378,7 @@ static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev,
+ 	size = sizeof(struct papr_scm_perf_stats) +
+ 		sizeof(struct papr_scm_perf_stat);
+ 
+-	if (!p || !p->nvdimm_events_map)
++	if (!p)
+ 		return -EINVAL;
+ 
+ 	stats = kzalloc(size, GFP_KERNEL);
+@@ -370,7 +387,7 @@ static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev,
+ 
+ 	stat = &stats->scm_statistic[0];
+ 	memcpy(&stat->stat_id,
+-	       &p->nvdimm_events_map[event->attr.config * sizeof(stat->stat_id)],
++	       nvdimm_events_map[event->attr.config],
+ 		sizeof(stat->stat_id));
+ 	stat->stat_val = 0;
+ 
+@@ -460,10 +477,9 @@ static void papr_scm_pmu_del(struct perf_event *event, int flags)
+ 
+ static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu *nd_pmu)
+ {
+-	struct papr_scm_perf_stat *stat;
+ 	struct papr_scm_perf_stats *stats;
+ 	u32 available_events;
+-	int index, rc = 0;
++	int rc = 0;
+ 
+ 	available_events = (p->stat_buffer_len  - sizeof(struct papr_scm_perf_stats))
+ 			/ sizeof(struct papr_scm_perf_stat);
+@@ -473,34 +489,12 @@ static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu
+ 	/* Allocate the buffer for phyp where stats are written */
+ 	stats = kzalloc(p->stat_buffer_len, GFP_KERNEL);
+ 	if (!stats) {
+-		rc = -ENOMEM;
+-		return rc;
++		return -ENOMEM;
+ 	}
+ 
+ 	/* Called to get list of events supported */
+ 	rc = drc_pmem_query_stats(p, stats, 0);
+-	if (rc)
+-		goto out;
+ 
+-	/*
+-	 * Allocate memory and populate nvdimm_event_map.
+-	 * Allocate an extra element for NULL entry
+-	 */
+-	p->nvdimm_events_map = kcalloc(available_events + 1,
+-				       sizeof(stat->stat_id),
+-				       GFP_KERNEL);
+-	if (!p->nvdimm_events_map) {
+-		rc = -ENOMEM;
+-		goto out;
+-	}
+-
+-	/* Copy all stat_ids to event map */
+-	for (index = 0, stat = stats->scm_statistic;
+-	     index < available_events; index++, ++stat) {
+-		memcpy(&p->nvdimm_events_map[index * sizeof(stat->stat_id)],
+-		       &stat->stat_id, sizeof(stat->stat_id));
+-	}
+-out:
+ 	kfree(stats);
+ 	return rc;
+ }
+@@ -536,7 +530,7 @@ static void papr_scm_pmu_register(struct papr_scm_priv *p)
+ 
+ 	rc = register_nvdimm_pmu(nd_pmu, p->pdev);
+ 	if (rc)
+-		goto pmu_register_err;
++		goto pmu_check_events_err;
+ 
+ 	/*
+ 	 * Set archdata.priv value to nvdimm_pmu structure, to handle the
+@@ -545,8 +539,6 @@ static void papr_scm_pmu_register(struct papr_scm_priv *p)
+ 	p->pdev->archdata.priv = nd_pmu;
+ 	return;
+ 
+-pmu_register_err:
+-	kfree(p->nvdimm_events_map);
+ pmu_check_events_err:
+ 	kfree(nd_pmu);
+ pmu_err_print:
+@@ -1557,7 +1549,6 @@ static int papr_scm_remove(struct platform_device *pdev)
+ 		unregister_nvdimm_pmu(pdev->archdata.priv);
+ 
+ 	pdev->archdata.priv = NULL;
+-	kfree(p->nvdimm_events_map);
+ 	kfree(p->bus_desc.provider_name);
+ 	kfree(p);
+ 
 -- 
-2.36.1
+2.31.1
 
