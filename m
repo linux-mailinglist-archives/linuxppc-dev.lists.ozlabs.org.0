@@ -2,62 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8498B54575C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 00:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23844545A86
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 05:34:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LJzDY2xxnz3byk
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 08:25:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LK6531kKSz3btb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:33:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PwhGrfYr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kqW41dbI;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PwhGrfYr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kqW41dbI;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LJzCx3Rz1z3bYG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 08:24:29 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 3708FB83095;
-	Thu,  9 Jun 2022 22:24:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973AFC34114;
-	Thu,  9 Jun 2022 22:24:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1654813464;
-	bh=vspykPiylcjgEjkFhXI0pGm+yV8L27ibQgb31xTuVlQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PwhGrfYrEtq143rPkBC+5E4Q9Wmc4A4J7GUMIMVaT0tU+zzohnuB7QuzWm7k9zyFa
-	 JdGsAM4BuS6dDii5IrbA0d6p4/ZfyOw62jY+uep5NffX2J5qMJR7z1KMigkUFRnjB9
-	 JgTisM/PdBgXZbMxYe6PIEe8dflv/4LI0mDIYsxX2rROps6RfPrlgQSpeXV3ZMSdDv
-	 PGbIQWET4qtq7zW12rOxvE25HEoFqImGv62R6naU5fGsG62vB5fIHF3q4qdQEBtRUO
-	 0+QNW9e78nBqlwZ2ohToyhaQaQZSXZdU6p2Cvd8ncxvSmKcAxXnUeXoPh4F1+yES7X
-	 33TuAQBZ5RXvQ==
-Received: by pali.im (Postfix)
-	id 870602558; Fri, 10 Jun 2022 00:24:20 +0200 (CEST)
-Date: Fri, 10 Jun 2022 00:24:20 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: linux-mm@kvack.org
-Subject: Re: [PATCH 11/12] powerpc: wiiu: don't enforce flat memory
-Message-ID: <20220609222420.ponpoodiqmaqtwht@pali>
-References: <20220302044406.63401-1-ash@heyquark.com>
- <20220302044406.63401-12-ash@heyquark.com>
- <20220513224353.n56qg5fhstbaqhfz@pali>
- <d84e4d24-f350-80fc-6c31-b7e7f8d429f4@heyquark.com>
- <20220520080454.c3cqodsdbfbkmg56@pali>
- <935b426a-6c64-beb0-907f-8c3f0a089ab7@heyquark.com>
- <20220520123002.rd46p5ty6wumi7cc@pali>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220520123002.rd46p5ty6wumi7cc@pali>
-User-Agent: NeoMutt/20180716
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LK64K42VLz3blQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 13:33:20 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A3ADZb020701;
+	Fri, 10 Jun 2022 03:33:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=bDvK75IE7BxNskFywFSlovQPblDDOqSGlEaEyaxklRY=;
+ b=kqW41dbISpnsi28FlmWHOiFRI/JgjrjJOJoEeZt/RbziG9ley5XLs7YiXSl0nQ8H74gn
+ J3mGPK1titVIydHooROwgkkGrlkbWDGKBsfP/UjWFxitYtjEY/2ULm56aLXKbg5mZPV3
+ K6pwjf1JwEy3PUj0brHq0ImvSZGHOCK7xfzeQs8AvPverQXLOonDEzOS2FV5wvis51dn
+ mVeSCQGuTLy9Y/s3LGqaPwZZeyVvXcxjdzHdUu5hmv9NKg5fuVu/cCyAlesBYhkhlunF
+ yOU6AYIjhBPm/hahxwPW2PXQsR1ISFDMo8yo/KpiV+yvRt26t2mwk+wEaVoMstgtql2n Cg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkwjc0fay-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jun 2022 03:33:13 +0000
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25A3WJeg006681;
+	Fri, 10 Jun 2022 03:33:12 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gkwjc0f9x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jun 2022 03:33:12 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25A36bWe020491;
+	Fri, 10 Jun 2022 03:33:10 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03ams.nl.ibm.com with ESMTP id 3gfy19fndv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jun 2022 03:33:10 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25A3X8PN19202402
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jun 2022 03:33:08 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0D69242042;
+	Fri, 10 Jun 2022 03:33:08 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2B7314203F;
+	Fri, 10 Jun 2022 03:33:05 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.84.186.134])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+	Fri, 10 Jun 2022 03:33:04 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
+Subject: Re: [PATCH 1/6] powerpc: Add ZERO_GPRS macros for register clears
+From: Rohan McLure <rmclure@linux.ibm.com>
+In-Reply-To: <20220601160023.GV25951@gate.crashing.org>
+Date: Fri, 10 Jun 2022 13:32:58 +1000
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <88BD925A-D6A8-4983-A573-7D9CEE51CDE7@linux.ibm.com>
+References: <20220601054850.250287-1-rmclure@linux.ibm.com>
+ <20220601160023.GV25951@gate.crashing.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+        christophe.leroy@csgroup.eu
+X-Mailer: Apple Mail (2.3696.100.31)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 5HDQRWbc4wSlnL-z2qWdMH4Gp4E07eRG
+X-Proofpoint-GUID: PZmKhFFmS0I6JTz0aLQ5Kz0HttNWKBlD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-10_01,2022-06-09_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 lowpriorityscore=0
+ mlxscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 phishscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206100010
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,80 +100,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, robh+dt@kernel.org, paulus@samba.org, Ash Logan <ash@heyquark.com>, linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
+Cc: linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Friday 20 May 2022 14:30:02 Pali Rohár wrote:
-> + linux-mm
-> 
-> Do you know what are requirements for kernel to support non-contiguous
-> memory support and what is needed to enable it for 32-bit powerpc?
+> On 2 Jun 2022, at 2:00 am, Segher Boessenkool =
+<segher@kernel.crashing.org> wrote:
+>=20
+> Hi!
+>=20
+> On Wed, Jun 01, 2022 at 03:48:45PM +1000, Rohan McLure wrote:
+>> +.macro BINOP_REGS op, rhs, start, end
+>> +	.Lreg=3D\start
+>> +	.rept (\end - \start + 1)
+>> +	\op .Lreg, \rhs
+>> +	.Lreg=3D.Lreg+1
+>> +	.endr
+>> +.endm
+>=20
+> This is for unary operations, not binary operations (there is only one
+> item on the RHS).  You can in principle put a string "a,b" in the rhs
+> parameter, but in practice you need a or b to depend on the loop =
+counter
+> as well, so even such trickiness won't do.  Make the naming less
+> confusing, maybe?  Or don't have an unused extra level of abstraction =
+in
+> the first place :-)
+>=20
+>=20
+> Segher
 
-Any hints?
+Thanks Segher, Christophe for reviewing this.
 
-> Currently powerpc arch code does not support "memblock.memory.cnt > 1"
-> except for WII which seems like a hack... See below.
-> 
-> On Friday 20 May 2022 20:44:04 Ash Logan wrote:
-> > On 20/5/22 18:04, Pali Rohár wrote:
-> > > On Friday 20 May 2022 13:41:04 Ash Logan wrote:
-> > >> On 14/5/22 08:43, Pali Rohár wrote:
-> > >>> On Wednesday 02 March 2022 15:44:05 Ash Logan wrote:
-> > >>>> pgtable_32.c:mapin_ram loops over each valid memory range, which means
-> > >>>> non-contiguous memory just works.
-> > >>>
-> > >>> Hello! Does it mean that non-contiguous memory works for any 32-bit
-> > >>> powerpc platform, and not only for wiiu? If yes, should not be
-> > >>> non-contiguous memory support enabled for all 32-bit ppc boards then?
-> > >>
-> > >> Hi! Sorry for my delayed response. As best I can tell, it does indeed
-> > >> Just Work, but I have only been able to test on wiiu which is missing a
-> > >> lot of features other boards have (like PCI) - so it's possible there's
-> > >> still an assumption elsewhere in the kernel that I haven't hit.
-> > >>
-> > >> As best I can tell, the Wii and Wii U are the only 32-bit powerpc boards
-> > >> out there where it's even possible to have non-contiguous memory.
-> > > 
-> > > What is the reason that those two boards are the **only**? Is there some
-> > > specific requirement from bootloader or hardware to "enable"
-> > > non-contiguous memory support?
-> > 
-> > Not that I know of, I was just saying that I was only aware of those two
-> > boards where the memory map isn't contiguous, and that is the only place
-> > where it has been tested. Evidently you know of another board!
-> > 
-> > > I'm interested in enabling non-contiguous memory support for P2020-based
-> > > board as it has gaps in its 32-bit memory layout and which could be used
-> > > for RAM mapping when 4GB DDR3 module is plugged in (default is 2GB).
-> > 
-> > If it's like the Wii or Wii U (some memory at 0, a gap for MMIO or
-> > whatever, then more memory at a higher address) then you should try a
-> > patch along these lines, because barring the unknowns I mentioned before
-> > it should work. At least as far as I'm aware ;)
-> > 
-> > >>>> Signed-off-by: Ash Logan <ash@heyquark.com>
-> > >>>> ---
-> > >>>>  arch/powerpc/mm/init_32.c | 4 ++--
-> > >>>>  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >>>>
-> > >>>> diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
-> > >>>> index 3d690be48e84..59a84629d9a0 100644
-> > >>>> --- a/arch/powerpc/mm/init_32.c
-> > >>>> +++ b/arch/powerpc/mm/init_32.c
-> > >>>> @@ -125,10 +125,10 @@ void __init MMU_init(void)
-> > >>>>  	 * lowmem_end_addr is initialized below.
-> > >>>>  	 */
-> > >>>>  	if (memblock.memory.cnt > 1) {
-> > >>>> -#ifndef CONFIG_WII
-> > >>>> +#if !defined(CONFIG_WII) && !defined(CONFIG_WIIU)
-> > >>>>  		memblock_enforce_memory_limit(memblock.memory.regions[0].size);
-> > >>>>  		pr_warn("Only using first contiguous memory region\n");
-> > >>>> -#else
-> > >>>> +#elif defined(CONFIG_WII)
-> > >>>>  		wii_memory_fixups();
-> > >>>>  #endif
-> > >>>>  	}
-> > >>>> -- 
-> > >>>> 2.35.1
-> > >>>>
+Yep I see how having a macro to perform rX =3D rX <> Y for arbitrary =
+infix <> and operand
+is unlikely to find much use outside of ZERO_GPRS. As I resubmit this =
+patch series I
+will rename it to ZERO_REGS or similar to be more explicitly coupled to =
+ZERO_GPRS.
+
+Something like this I was thinking:
+
+.macro ZERO_REGS start, end
+	.Lreg=3D\start
+	.rept (\end - \start + 1)
+	li	.Lreg, 0
+	.Lreg=3D.Lreg+1
+	.endr
+.endm
+
+Thanks,
+Rohan=
