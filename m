@@ -2,78 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE48546803
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 16:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4FAE546805
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 16:04:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKN493r3Dz3gbX
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 00:04:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKN4v4NCMz3fDH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 00:04:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GM3OdU+4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p5AalfA8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GM3OdU+4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=p5AalfA8;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKMc25sD5z3dQY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 23:43:14 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ADDVLn032303;
-	Fri, 10 Jun 2022 13:43:10 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKMc54NDHz3bm9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 23:43:17 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ADIk0R023572;
+	Fri, 10 Jun 2022 13:43:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=MMva3TOI0LgdSg3m6+ErKN4iRu1ijQUOW+a1VgNtEZU=;
- b=GM3OdU+4xpXno6vfrNg057ZFTPFHBqnXl7t4O6cWBpDpRimfhjuFsmBD8KEonpJEUnpB
- 1yvLIfnpUxOjolZ00aNHFDsad+1BCLh1L5v6uCFwm0+EGpF+tQ3uupGVll0KIE5N63rc
- Z33fVRa38KJZQsLj4ZIzktN92MfTtToiNeWcaiLchqnsiJe4rolycsExzwcu9xOrw/2C
- scen/J1I49hucMjoUPU6ElROnMrk94MjdzK7uA4waX7/ZCF9Xc3edrfXfpyMfFjfBGrF
- 17KZFGkyax5NYfhdVWmo9nzvUBrFOR8kwwDzo6paMFc/bCUAT8u1eYJcCxzLM7fCJpqm jw== 
+ bh=YZJCWQJDl8EpxaIDAUr/SfBqa9hdH6rdD3xk0ObGKak=;
+ b=p5AalfA8Zus6fGbn+6E/WYgP+MLYMrIpHAjB5dvdxUrnTn3oG4SZUVlFtRFnu+jDGicV
+ W8e8X4jKa7HSuYnXi/ux+NmNl4XAqNC2Ub6MU0znEc+li24Ho8KM4gBjf9cS9p/Czery
+ Ab4k7cXhtV5hTm8v1Oxj8rLz+/kEuT/0fMsTAEXCkbi4JtGMOV/ifWjKUF2eFgKCwD+U
+ w1i0hA60djSVNCqCONidHlqnpWIBIhox3hOdKhFT7dL80Ae63Wi5y9a4y4SripoDiTB1
+ I9FMGWoyEqezVFPaCtXQ0Qf6gnudmKROdmOfwXDpFCjs2ZFP/jGof5boqvn7N1U00Rie /Q== 
 Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm6na0j6r-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gm6qurj4a-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 13:43:09 +0000
+	Fri, 10 Jun 2022 13:43:13 +0000
 Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ADa0pk004499;
-	Fri, 10 Jun 2022 13:43:08 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma03ams.nl.ibm.com with ESMTP id 3gfy19g9sv-1
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ADaCP6004584;
+	Fri, 10 Jun 2022 13:43:11 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03ams.nl.ibm.com with ESMTP id 3gfy19g9sx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jun 2022 13:43:08 +0000
+	Fri, 10 Jun 2022 13:43:11 +0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ADh52H19399026
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ADh8te22544868
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jun 2022 13:43:05 GMT
+	Fri, 10 Jun 2022 13:43:08 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3EB2852050;
-	Fri, 10 Jun 2022 13:43:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3FCFF5204E;
+	Fri, 10 Jun 2022 13:43:08 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.163.7.130])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id E14F852051;
-	Fri, 10 Jun 2022 13:43:02 +0000 (GMT)
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id EB26C52051;
+	Fri, 10 Jun 2022 13:43:05 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH V3 34/35] selftest/powerpc/pmu: Add selftest for group constraint check for MMCRA thresh_sel field
-Date: Fri, 10 Jun 2022 19:11:12 +0530
-Message-Id: <20220610134113.62991-35-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH V3 35/35] selftest/powerpc/pmu: Add test for hardware cache events
+Date: Fri, 10 Jun 2022 19:11:13 +0530
+Message-Id: <20220610134113.62991-36-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220610134113.62991-1-atrajeev@linux.vnet.ibm.com>
 References: <20220610134113.62991-1-atrajeev@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6AeeIwpUVxDsNRe4XWrY6zSh68nl8aFF
-X-Proofpoint-ORIG-GUID: 6AeeIwpUVxDsNRe4XWrY6zSh68nl8aFF
+X-Proofpoint-GUID: 6HbuIlPP_QHhF0tCF_5O1AdMU1PVsy0A
+X-Proofpoint-ORIG-GUID: 6HbuIlPP_QHhF0tCF_5O1AdMU1PVsy0A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
  definitions=2022-06-10_06,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=999 clxscore=1015
- adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
- phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ mlxlogscore=999 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2204290000 definitions=main-2206100056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -92,42 +92,43 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Kajol Jain <kjain@linux.ibm.com>
 
-Thresh select bits in the event code is used to program thresh_sel
-field in Monitor Mode Control Register A (MMCRA: 45-47). When scheduling
-events as a group, all events in that group should match value in these
-bits. Otherwise event open for the sibling events will fail.
+The testcase checks if the transalation of a generic hardware cache
+event is done properly via perf interface. The hardware cache events
+has type as PERF_TYPE_HW_CACHE and each event points to raw event
+code id.
 
-Testcase uses event code PM_MRK_INST_CMPL (0x401e0) as leader and
-another event PM_THRESH_MET (0x101ec) as sibling event, and checks
-if group constraint checks for thresh_sel field added correctly via
-perf interface.
+Testcase checks different combination of cache level,
+cache event operation type and cache event result type and verify
+for a given event code, whether transalation matches with the current
+cache event mappings via perf interface.
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- .../powerpc/pmu/event_code_tests/Makefile     |  2 +-
- .../group_constraint_thresh_sel_test.c        | 63 +++++++++++++++++++
- 2 files changed, 64 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_sel_test.c
+ .../powerpc/pmu/event_code_tests/Makefile     |  3 +-
+ .../hw_cache_event_type_test.c                | 88 +++++++++++++++++++
+ 2 files changed, 90 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c
 
 diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-index 16cbb2e52865..755993d210f2 100644
+index 755993d210f2..4e07d7046457 100644
 --- a/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
 +++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/Makefile
-@@ -6,7 +6,7 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
+@@ -6,7 +6,8 @@ TEST_GEN_PROGS := group_constraint_pmc56_test group_pmc56_exclude_constraints_te
  	group_constraint_mmcra_sample_test invalid_event_code_test reserved_bits_mmcra_thresh_ctl_test \
  	blacklisted_events_test event_alternatives_tests_p9 event_alternatives_tests_p10 generic_events_valid_test \
  	group_constraint_l2l3_sel_test group_constraint_cache_test group_constraint_thresh_cmp_test \
--	group_constraint_unit_test group_constraint_thresh_ctl_test
-+	group_constraint_unit_test group_constraint_thresh_ctl_test group_constraint_thresh_sel_test
+-	group_constraint_unit_test group_constraint_thresh_ctl_test group_constraint_thresh_sel_test
++	group_constraint_unit_test group_constraint_thresh_ctl_test group_constraint_thresh_sel_test \
++	hw_cache_event_type_test
  
  top_srcdir = ../../../../../..
  include ../../../lib.mk
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_sel_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_sel_test.c
+diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c
 new file mode 100644
-index 000000000000..50a8cd843ce7
+index 000000000000..a45b1da5b568
 --- /dev/null
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_sel_test.c
-@@ -0,0 +1,63 @@
++++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/hw_cache_event_type_test.c
+@@ -0,0 +1,88 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright 2022, Kajol Jain, IBM Corp.
@@ -141,47 +142,72 @@ index 000000000000..50a8cd843ce7
 +#include "../sampling_tests/misc.h"
 +
 +/*
-+ * Primary PMU events used here are PM_MRK_INST_CMPL (0x401e0) and
-+ * PM_THRESH_MET (0x101ec).
-+ * Threshold event selection used is issue to complete
-+ * Sampling criteria is Load or Store only sampling
++ * Load Missed L1, for power9 its pointing to PM_LD_MISS_L1_FIN (0x2c04e) and
++ * for power10 its pointing to PM_LD_MISS_L1 (0x3e054)
++ *
++ * Hardware cache level : PERF_COUNT_HW_CACHE_L1D
++ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_READ
++ * Hardware cache event result type : PERF_COUNT_HW_CACHE_RESULT_MISS
 + */
-+#define EventCode_1 0x35340401e0
-+#define EventCode_2 0x35540101ec
-+#define EventCode_3 0x35340101ec
++#define EventCode_1 0x10000
++/*
++ * Hardware cache level : PERF_COUNT_HW_CACHE_L1D
++ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_WRITE
++ * Hardware cache event result type : PERF_COUNT_HW_CACHE_RESULT_ACCESS
++ */
++#define EventCode_2 0x0100
++/*
++ * Hardware cache level : PERF_COUNT_HW_CACHE_DTLB
++ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_WRITE
++ * Hardware cache event result type : PERF_COUNT_HW_CACHE_RESULT_ACCESS
++ */
++#define EventCode_3 0x0103
++/*
++ * Hardware cache level : PERF_COUNT_HW_CACHE_L1D
++ * Hardware cache event operation type : PERF_COUNT_HW_CACHE_OP_READ
++ * Hardware cache event result type : Invalid ( > PERF_COUNT_HW_CACHE_RESULT_MAX)
++ */
++#define EventCode_4 0x030000
 +
 +/*
-+ * Testcase for group constraint check of thresh_sel bits which is
-+ * used to program thresh select field in Monitor Mode Control Register A
-+ * (MMCRA: 45-57).
-+ * All events in the group should match thresh sel bits otherwise
-+ * event_open for the group will fail.
++ * A perf test to check valid hardware cache events.
 + */
-+static int group_constraint_thresh_sel(void)
++static int hw_cache_event_type_test(void)
 +{
-+	struct event event, leader;
++	struct event event;
 +
 +	/* Check for platform support for the test */
 +	SKIP_IF(platform_check_for_tests());
 +
-+	/* Init the events for the group contraint thresh select test */
-+	event_init(&leader, EventCode_1);
-+	FAIL_IF(event_open(&leader));
++	/* Skip for Generic compat PMU */
++	SKIP_IF(check_for_generic_compat_pmu());
 +
-+	event_init(&event, EventCode_2);
++	/* Init the event to test hardware cache event */
++	event_init_opts(&event, EventCode_1, PERF_TYPE_HW_CACHE, "event");
 +
-+	/* Expected to fail as sibling and leader event request different thresh_sel bits */
-+	FAIL_IF(!event_open_with_group(&event, leader.fd));
-+
++	/* Expected to success as its pointing to L1 load miss */
++	FAIL_IF(event_open(&event));
 +	event_close(&event);
 +
-+	/* Init the event for the group contraint thresh select test */
-+	event_init(&event, EventCode_3);
++	/* Init the event to test hardware cache event */
++	event_init_opts(&event, EventCode_2, PERF_TYPE_HW_CACHE, "event");
 +
-+	 /* Expected to succeed as sibling and leader event request same thresh_sel bits */
-+	FAIL_IF(event_open_with_group(&event, leader.fd));
++	/* Expected to fail as the corresponding cache event entry have 0 in that index */
++	FAIL_IF(!event_open(&event));
++	event_close(&event);
 +
-+	event_close(&leader);
++	/* Init the event to test hardware cache event */
++	event_init_opts(&event, EventCode_3, PERF_TYPE_HW_CACHE, "event");
++
++	/* Expected to fail as the corresponding cache event entry have -1 in that index */
++	FAIL_IF(!event_open(&event));
++	event_close(&event);
++
++	/* Init the event to test hardware cache event */
++	event_init_opts(&event, EventCode_4, PERF_TYPE_HW_CACHE, "event");
++
++	/* Expected to fail as hardware cache event result type is Invalid */
++	FAIL_IF(!event_open(&event));
 +	event_close(&event);
 +
 +	return 0;
@@ -189,7 +215,7 @@ index 000000000000..50a8cd843ce7
 +
 +int main(void)
 +{
-+	return test_harness(group_constraint_thresh_sel, "group_constraint_thresh_sel");
++	return test_harness(hw_cache_event_type_test, "hw_cache_event_type_test");
 +}
 -- 
 2.35.1
