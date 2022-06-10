@@ -2,52 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A023A54700F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 01:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D078054700B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 01:36:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKcqZ3LCkz3f1L
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 09:39:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKcmy3qTmz3dQL
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 09:36:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=H3PWXX7s;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Du1hwDz4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=H3PWXX7s;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Du1hwDz4;
 	dkim-atps=neutral
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKclk6rmgz3bsl
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 09:35:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKclg4fkNz3brd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 09:35:42 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654904147; x=1686440147;
+  t=1654904143; x=1686440143;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MchtFdici9/LHAAi4sFR4mcD0phAyK+8tBE2Ictb0Iw=;
-  b=H3PWXX7swU59nKtgN+ZEcRbD9PpABbPEgcCFAPNCPYcg+b45rL8MiMlR
-   b51nPY0TrILvfYJjC59G0/asrtF8IQ92WCxk0oz+Zm8hygWE7hwpanppo
-   sYsGyEXgGUUeH3v/dyGk1Lr5E1KwTtKNRQHZeVEYy304nDnU1/LxZ+isy
-   kJeny6MvxIsmu1T3r18Pd0nI9B0+u08FKpwG7r7S4Xe2Xe01gIHPVdGMQ
-   /cot8UPlikYgsPMwxXdjOQE9athC+sWZysqaWwH9+6m77AU4j434ICFgz
-   7BPmgkm/Yl3qo7SUU8Ch7JYMte5qVI4kUREwkvXygTTqLkeiwDKxPidGv
+  bh=E0S7lAVxIGr1gPnTIVSUeXKWXCH1YKeQN7klBTJ1vLE=;
+  b=Du1hwDz4O4Pbao+KCYxLbOm02gHBA/Q0EIpiQOsPyyJeg23DqldjzMB5
+   xgSOp6czBX3qu7PcRztbODCYfqPTH/IyfY9g+3Krz76TXsNqQGAC59yAR
+   idxwFWVFnJ60e+Lf/U01PRBotIuCY3+wOhR8acJHkaMVwYhbQwIFmvp9l
+   k1WDE82UKH3ys060e4sT6JTsGrftSb243u1zQ2eBe0IxL2EXHfknxHHFX
+   UqHm5uxfvecqP7TM57dP2AyaiwIWQg6NmNuYIboLg4ROfbLUb9cXjFoDS
+   1JTIYdNO3m++QSXKXfVTsMF83o+DEKLvtaxp9GCqIwkUs0CGTCBxdnCt0
    g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10374"; a="341834940"
+X-IronPort-AV: E=McAfee;i="6400,9594,10374"; a="278579385"
 X-IronPort-AV: E=Sophos;i="5.91,291,1647327600"; 
-   d="scan'208";a="341834940"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 16:35:39 -0700
+   d="scan'208";a="278579385"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 16:35:40 -0700
 X-IronPort-AV: E=Sophos;i="5.91,291,1647327600"; 
-   d="scan'208";a="581302597"
+   d="scan'208";a="909166943"
 Received: from pleung-mobl1.amr.corp.intel.com (HELO localhost) ([10.212.33.34])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 16:35:38 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 16:35:40 -0700
 From: ira.weiny@intel.com
 To: linux-api@vger.kernel.org
-Subject: [RFC PATCH 4/6] pkeys: Lift pkey hardware check for pkey_alloc()
-Date: Fri, 10 Jun 2022 16:35:31 -0700
-Message-Id: <20220610233533.3649584-5-ira.weiny@intel.com>
+Subject: [RFC PATCH 5/6] pkeys: Up level pkey_free() checks
+Date: Fri, 10 Jun 2022 16:35:32 -0700
+Message-Id: <20220610233533.3649584-6-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220610233533.3649584-1-ira.weiny@intel.com>
 References: <20220610233533.3649584-1-ira.weiny@intel.com>
@@ -70,19 +70,16 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-pkey_alloc() is documented to return ENOSPC when the hardware does not
-support pkeys.  On x86, pkey_alloc() incorrectly returns EINVAL.
+x86 is missing a hardware check for pkey support in pkey_free().  While
+the net result is the same (-EINVAL returned), pkey_free() has well
+defined behavior which will be easier to maintain in one place.
 
-This is because mm_pkey_alloc() does not check for pkey support before
-returning a key.  Therefore, if the keys are not exhausted pkey_alloc()
-continues on to call arch_set_user_pkey_access().  Unfortunately, when
-arch_set_user_pkey_access() detects the failed support it overwrites the
-ENOSPC return value with EINVAL.
+For powerpc the return code is -1 rather than -EINVAL.  This changes
+that behavior slightly but this is very unlikely to break any user
+space.
 
-Ensure consistent behavior across architectures by lifting this check to
-the core mm code.
-
-Remove a couple of 'we' references in code comments as well.
+Lift the checks for pkey_free() to the core mm code and ensure
+consistency with returning -EINVAL.
 
 Cc: ahaas@chromium.org
 Cc: clemensb@chromium.org
@@ -91,62 +88,77 @@ Cc: jkummerow@chromium.org
 Cc: manoskouk@chromium.org
 Cc: thibaudm@chromium.org
 Cc: Florian Weimer <fweimer@redhat.com>
-Cc: Sohil Mehta <sohil.mehta@intel.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-api@vger.kernel.org
+Cc: Sohil Mehta <sohil.mehta@intel.com>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: linux-api@vger.kernel.org
-Fixes: e8c24d3a23a4 ("x86/pkeys: Allocation/free syscalls")
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 
 ---
-Thanks to Sohil for pointing out that the commit message could be more
-clear WRT how EINVAL is returned incorrectly.
+Thanks to Sohil for suggesting I mention the powerpc return value in the
+commit message.
+
+Also Sohil suggested changing mm_pkey_free() from int to void.  This is
+added as a separate patch with his suggested by.
 ---
- arch/powerpc/include/asm/pkeys.h | 8 +++-----
- mm/mprotect.c                    | 3 +++
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ arch/powerpc/include/asm/pkeys.h | 6 ------
+ arch/x86/include/asm/pkeys.h     | 3 ---
+ mm/mprotect.c                    | 8 ++++++--
+ 3 files changed, 6 insertions(+), 11 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
-index 59a2c7dbc78f..2c8351248793 100644
+index 2c8351248793..e96aa91f817b 100644
 --- a/arch/powerpc/include/asm/pkeys.h
 +++ b/arch/powerpc/include/asm/pkeys.h
-@@ -85,18 +85,16 @@ static inline bool mm_pkey_is_allocated(struct mm_struct *mm, int pkey)
- static inline int mm_pkey_alloc(struct mm_struct *mm)
- {
- 	/*
--	 * Note: this is the one and only place we make sure that the pkey is
-+	 * Note: this is the one and only place to make sure that the pkey is
- 	 * valid as far as the hardware is concerned. The rest of the kernel
- 	 * trusts that only good, valid pkeys come out of here.
- 	 */
- 	u32 all_pkeys_mask = (u32)(~(0x0));
- 	int ret;
+@@ -107,12 +107,6 @@ static inline int mm_pkey_alloc(struct mm_struct *mm)
  
+ static inline int mm_pkey_free(struct mm_struct *mm, int pkey)
+ {
 -	if (!mmu_has_feature(MMU_FTR_PKEY))
 -		return -1;
- 	/*
--	 * Are we out of pkeys? We must handle this specially because ffz()
--	 * behavior is undefined if there are no zeros.
-+	 * Out of pkeys?  Handle this specially because ffz() behavior is
-+	 * undefined if there are no zeros.
- 	 */
- 	if (mm_pkey_allocation_map(mm) == all_pkeys_mask)
- 		return -1;
+-
+-	if (!mm_pkey_is_allocated(mm, pkey))
+-		return -EINVAL;
+-
+ 	__mm_pkey_free(mm, pkey);
+ 
+ 	return 0;
+diff --git a/arch/x86/include/asm/pkeys.h b/arch/x86/include/asm/pkeys.h
+index 2e6c04d8a45b..da02737cc4d1 100644
+--- a/arch/x86/include/asm/pkeys.h
++++ b/arch/x86/include/asm/pkeys.h
+@@ -107,9 +107,6 @@ int mm_pkey_alloc(struct mm_struct *mm)
+ static inline
+ int mm_pkey_free(struct mm_struct *mm, int pkey)
+ {
+-	if (!mm_pkey_is_allocated(mm, pkey))
+-		return -EINVAL;
+-
+ 	mm_set_pkey_free(mm, pkey);
+ 
+ 	return 0;
 diff --git a/mm/mprotect.c b/mm/mprotect.c
-index ba5592655ee3..56d35de33725 100644
+index 56d35de33725..41458e729c27 100644
 --- a/mm/mprotect.c
 +++ b/mm/mprotect.c
-@@ -773,6 +773,9 @@ SYSCALL_DEFINE2(pkey_alloc, unsigned long, flags, unsigned long, init_val)
- 	int pkey;
- 	int ret;
+@@ -803,10 +803,14 @@ SYSCALL_DEFINE2(pkey_alloc, unsigned long, flags, unsigned long, init_val)
  
-+	if (!arch_pkeys_enabled())
-+		return -ENOSPC;
+ SYSCALL_DEFINE1(pkey_free, int, pkey)
+ {
+-	int ret;
++	int ret = -EINVAL;
 +
- 	/* No flags supported yet. */
- 	if (flags)
- 		return -EINVAL;
++	if (!arch_pkeys_enabled())
++		return ret;
+ 
+ 	mmap_write_lock(current->mm);
+-	ret = mm_pkey_free(current->mm, pkey);
++	if (mm_pkey_is_allocated(current->mm, pkey))
++		ret = mm_pkey_free(current->mm, pkey);
+ 	mmap_write_unlock(current->mm);
+ 
+ 	/*
 -- 
 2.35.1
 
