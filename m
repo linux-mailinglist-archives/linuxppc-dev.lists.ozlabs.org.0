@@ -2,124 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375DC546591
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B69E0546593
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 13:30:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJdp14WWz3dQ5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:29:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKJfS4qHsz3gQs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jun 2022 21:30:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=2zMJGYYz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JLgr0kTD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=belden.com (client-ip=205.220.166.249; helo=mx0a-00015a02.pphosted.com; envelope-from=prvs=7160f83243=ariel.miculas@belden.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::431; helo=mail-wr1-x431.google.com; envelope-from=ariel.miculas@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=belden.com header.i=@belden.com header.a=rsa-sha256 header.s=podpps1 header.b=2zMJGYYz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=JLgr0kTD;
 	dkim-atps=neutral
-Received: from mx0a-00015a02.pphosted.com (mx0a-00015a02.pphosted.com [205.220.166.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKGdZ3Tdlz3bqd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 19:59:05 +1000 (AEST)
-Received: from pps.filterd (m0264209.ppops.net [127.0.0.1])
-	by mx0a-00015a02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25A0Ybvt021592
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 05:59:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=belden.com; h=from : to : cc :
- subject : date : message-id : content-transfer-encoding : content-type :
- mime-version; s=podpps1; bh=FBM65lOE0QCie1fmK0Dd5CZzENs7e6mZHCY1s9tNCus=;
- b=2zMJGYYznbH/02Fuon8Pi6os2wrL+6qbrcxovHEJSEhxk/vp0z7tl/KV0CtDtOYz+fPZ
- IKiqvcW+r4L2qkxsiZlZLasflmoeezIeiYV/6kkzPzFN/IB4GCfotU50u2/PjDq3BcGM
- Cvwm4qMvpatRaUr/7rSfxoxF8J1oT71tgFMRSu40w9SdXyjLC59nPWP0wDiPZ1/KeRSd
- u7W/sM3h0NIe1iaKYNnj4Tu1J9RB3bRTf4wh4fguj+aRSns8K6qnmaKWOMopT43P1qAg
- CmOu305NgAEQY+/MqAoOB/UA0dD8U5RKC8YKV03j6wbbdGbELCoiXFa2mVavex2gXxQf 1w== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2174.outbound.protection.outlook.com [104.47.56.174])
-	by mx0a-00015a02.pphosted.com (PPS) with ESMTPS id 3gjqryru9s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 05:59:02 -0400
-Received: from PH0PR18MB5069.namprd18.prod.outlook.com (2603:10b6:510:169::8)
- by MN2PR18MB3215.namprd18.prod.outlook.com (2603:10b6:208:167::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5293.19; Fri, 10 Jun
- 2022 09:58:58 +0000
-Received: from PH0PR18MB5069.namprd18.prod.outlook.com
- ([fe80::f5ab:d45e:69de:f99c]) by PH0PR18MB5069.namprd18.prod.outlook.com
- ([fe80::f5ab:d45e:69de:f99c%3]) with mapi id 15.20.5332.013; Fri, 10 Jun 2022
- 09:58:58 +0000
-From: Ariel Miculas <ariel.miculas@belden.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKGsX1Z7Gz3brR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 20:09:34 +1000 (AEST)
+Received: by mail-wr1-x431.google.com with SMTP id k19so35831039wrd.8
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jun 2022 03:09:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FBM65lOE0QCie1fmK0Dd5CZzENs7e6mZHCY1s9tNCus=;
+        b=JLgr0kTD1+Pfn86kyTGt+BZ7QYhM9EPNu4OaAaK3IMPyDg3solmPi4PwoLol34y+Oq
+         cSTlvs5FKYPBq/2mP1lrBRpfCGtd6MFQRx3p+q/zb78Cv6feApnc9M27wPTAHMzcvfgi
+         znKSTaLGzHXptMPAvNZyYrLPD4oLabCOMFBIZE5z3jGXbQIlQJWbsURdMq1/j4t0Uwgh
+         hekiSHCG6mc9mkWyiPeGOVFC2Kk33nNHmtKQZNg7fYT8hbRFK2WZlpAHCsqu7sWEhKsJ
+         2L3xvRVQbY3CrLtgQqr/yIdUNyGUsj8nB5CMw3Dj1PBtm6omf3FHf//g3FSQUppLniYQ
+         RKqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=FBM65lOE0QCie1fmK0Dd5CZzENs7e6mZHCY1s9tNCus=;
+        b=tAHlne/OkN+uNVO+ccTXIipfWYpqA6eoos/cGj1+0+RguQnQxDPVP6hQMJRgcNGQIV
+         YX10qXu5wqKXGLbyYSUrcaiiI4853eZqGnQX59PDtFJ8eF9bc2B4qxUoTiYaqm6TijGI
+         /MXIiy3eB4mTQwDbrhPEOAEK22f6jk/IHPKehPQ2pPNSutlE2gYX46sDvVfI21Lhtczu
+         X3a7gK1oWpQFGGhmn3UNQiCkqOGpUR2viie4Ram5t2a/3aIay9U0/ayfo4ydfpPajl4/
+         X3P0P87SFaI/HPdb16Py0F2rD9MXUNMtrPf67wua0LaMCV5aEaRlNsFc4s8KMWk/7n5N
+         A7jw==
+X-Gm-Message-State: AOAM5338pmvD12qLF0WIh2CtKrMmvCwrZXHNr2Jvg30mZc1437QX6TYO
+	Tn7ZlJKsVXRBBybKAPxeDFea/rfqBzg=
+X-Google-Smtp-Source: ABdhPJyesuFob34J6DQzDgHeih7ls8OE8R4gjX3wI3NBSjEJ4UpQ6UxyoMPQZfEpD5BsIQuGufdlmA==
+X-Received: by 2002:a05:6000:12c8:b0:213:584:3d7 with SMTP id l8-20020a05600012c800b00213058403d7mr43461512wrx.125.1654855766835;
+        Fri, 10 Jun 2022 03:09:26 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:2f0e:300a:9e00:2481:9781:af4:1fd0])
+        by smtp.gmail.com with ESMTPSA id l14-20020adfe58e000000b002117ef160fbsm26913767wrm.21.2022.06.10.03.09.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jun 2022 03:09:26 -0700 (PDT)
+From: Ariel Miculas <ariel.miculas@gmail.com>
+X-Google-Original-From: Ariel Miculas <ariel.miculas@belden.com>
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [PATCH] powerpc/32: Fix FPR index validation and fpscr access
-Date: Fri, 10 Jun 2022 12:58:24 +0300
-Message-Id: <20220610095824.234551-1-ariel.miculas@belden.com>
+Date: Fri, 10 Jun 2022 13:09:19 +0300
+Message-Id: <20220610100919.240777-1-ariel.miculas@belden.com>
 X-Mailer: git-send-email 2.36.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: AM0PR10CA0048.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:150::28) To PH0PR18MB5069.namprd18.prod.outlook.com
- (2603:10b6:510:169::8)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 7664994b-80ec-466a-cd69-08da4ac7d645
-X-MS-TrafficTypeDiagnostic: MN2PR18MB3215:EE_
-X-Microsoft-Antispam-PRVS: 	<MN2PR18MB3215D33E2550713277C4129D80A69@MN2PR18MB3215.namprd18.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	59R3SGhnaFYNcmonnEgfKckCqQREEdEbfnbc72Dmc5lqo9ktRRQq2v+nwtPXYdHIxgEsmFbV04J3GymlibFjG6yLruAmARM+g53yPrrZAWXvqgnLtAEmjQ54X8KHz62gaDMVaNwCr1yGHQDN8APyhIXc1mMIZc1gLnED+oreJ0ohFpXkID8bxpEzSdekBu//CnrU+aAXybp7rDN87k3bJWv0vQ0SHX9IGjVs2yFiW1fEw4dzvXoyZgO4pU5Lbp9oeYRjCDKdQ27IZDrBiEYwN9ta7iTbfcEzZQihADa+vkwtnyaGxSGFcfkgpcBrzpf/4Wyva+G0BPqqzoHrmZ577GVGXN3GXvSqUqwc5jACDWrVA6WNTUFsJcIgvWROc6gpIdcid1+yhlM8xjIpCIAiRcxUvwCpZs4r8DC2/AN2HaFXyOaXpYLpk7VKypx5q8/nkHH8ZXiNOR0F02BCYwbo0M8PR4K9VgPGHRvaXTfORBmf5ZK2IzaFIC2oYgodnH1/6DC855qLG63dnBG+1wD6AAG2otVCb0rSuWfe/kivB1VqIIQRQePko+C4b7hwN6cT7q1Rbj/B5IJmEQGuXEmpp4lnKxBFqPk4Dc1PNtLnmTed74P4c4I0wuBOfx+a8WH8Fav0WOyU85XI3AXCTOB+3g==
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR18MB5069.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(66556008)(107886003)(6486002)(6916009)(66476007)(2906002)(66946007)(316002)(6512007)(83380400001)(36756003)(44832011)(5660300002)(8936002)(6506007)(8676002)(86362001)(2616005)(4326008)(508600001)(52116002)(38100700002)(6666004)(186003)(1076003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?LNBwCQsX3LyfDtls/vTcx3/h3k7dIVV91usranA5aiEqof59YWvfCytS4Xc2?=
- =?us-ascii?Q?MQwcjjN0y5VRe8V0vgmLmrbwo2CRj9cxUkSPJWPw987543DAG430KV4wP/rf?=
- =?us-ascii?Q?3y1UEnrsVWjcXfTQEKTpB9AHwAyGCVG3rf0fouJDJEM0L+oBG4ymOwZD6S5z?=
- =?us-ascii?Q?7Wa5gb8a8JbuzA9knVc2vclpG4QBvDHBvpu7Nv6kOn16n8u56jxyYrW8g34N?=
- =?us-ascii?Q?6QUdfUudyRWTiqvGNg9qUQehubvXy37j2mXo0HRl+MvlEpUpFt/FDcJxbzKk?=
- =?us-ascii?Q?3Qgi9a2FznQczNdUUWv+MHIZ1sgoiBkD1QPx+5G+R2UW/BB1xMPyqZTp8mzX?=
- =?us-ascii?Q?wtBk0mnaR1zZU7qPj6xYd8IaD+Tw7GmGjcs8h0DW2vN5F5Y5PjHsDWS+xxSE?=
- =?us-ascii?Q?z/Tavt8/fWQ+Rj7y2nPBmNxs4TcSrIQUG/o6p7hDmuOdSXvAuT5473nPoKeg?=
- =?us-ascii?Q?Ezo/8yTwrBcSw0agC8RhX9HCWOzUfBaJtpAx4gV6FCE5aBHciEbREYGGN+dy?=
- =?us-ascii?Q?5KydSLPcaR60eZElZrzGAzZCUWeqISDvWCfwCk32Ys739jd1S32g88grf5mO?=
- =?us-ascii?Q?2LPPJ6rXZDzekuJl6EiIfhP8xFRolH23z4v2Kp0bawwZQCsJLwygt1AD7nCA?=
- =?us-ascii?Q?0133FeyGoNiw6w7UQfJRsd4U3jWtW++B+CfHvl37OAx/Vc8ylzNYAI3wBG3d?=
- =?us-ascii?Q?BSIpv/6Dav9VZ2Tk670K1orBBuOMZmdrZlR99ufhCZC127sslsDbcQl0bnDr?=
- =?us-ascii?Q?lv/92SHdNV7EuXyVQyzhqLgblCzKigqr1vdSh9nFkUl5KwzlRXA1aV6Vb4An?=
- =?us-ascii?Q?PnLgRNYZElW/A7fqVc2lCtoZLvM6bMbgvvz+P4uytULRcvUOSwshTH5rhFp2?=
- =?us-ascii?Q?+dME6VTchu3fEF+24XRGucxfuQWruJPwDM8Hncrmyl04XiXbkdHFmFWzWYVN?=
- =?us-ascii?Q?2O+a64493dQEjeMsXLZ7dKA+Jc5KRjTWFKWFT0OaD/dBj8ori6V3bMWzZGUF?=
- =?us-ascii?Q?BYI8Dr8eDqbcMrSVyxG0QzWDYOtGRCtlRSqZB3KQXN4wLt0rxRGzdai520PP?=
- =?us-ascii?Q?1qitgUSCh0sYvkb+1TNK7TwlXlDdOpYQnZBhu7byoh8tjOe+FkdmuQsVhe/g?=
- =?us-ascii?Q?+ZSogqXCtmEtTjLyDBg76spiMq3A475UiKJ6QtHn/ra9BMzAhDyN0e3oUJSK?=
- =?us-ascii?Q?WwNTvQiPj+kuYUAGOBKlkpg37ujHbUj8CADrDpFy6sLbTTElw/cvCmPYdNsu?=
- =?us-ascii?Q?TdcABdNDzF5UFbvzMTHNlXFs3bvWHzFtks5yEpewuv4oSfwxsRi2Ryl/OKxH?=
- =?us-ascii?Q?b5jropeCEein1PLaFJLTJUiK4oA16UIcQpyqz+BzHNRXJXPqDF47/Aykb+Zd?=
- =?us-ascii?Q?b+P88jwDDRSOkY++isD4iTS2dOqi1FUDfpakzrPzyLsMhu7fAEZ23kBh73oJ?=
- =?us-ascii?Q?gEu3O2Gz4Kir8n3F0u/DoSZ12qxQwzrHQK2dKbrA9/nHDjJPojpx2YIdOLFt?=
- =?us-ascii?Q?SUQpDjA3BYalU3m/Q29lFhcDk4pD8SfeCmcU60BNHt8u5irSD/okAqgUCun2?=
- =?us-ascii?Q?/q0dleDhQbAeoxF8y+8gAJ2qTaGWK3OUQreMOdnR/MYMq3Or42EKRqTkOis6?=
- =?us-ascii?Q?ZR1lqfcOj3ufCyYQw1U1EvkC80XRw3hyKN9F8Mr5cV9Znfy3DZ0tsESRlJR4?=
- =?us-ascii?Q?fTwgY2B4BJUi918/xZTFydxoad1R2LxdnFUwoBIHX+FmCFjIvPeA/wHcB2ak?=
- =?us-ascii?Q?J5qVw/T/JZTDZ3+ZpktzGKFfHe0u7tO54WfejihD11qgRKS1PuCqCeh32pMD?=
-X-MS-Exchange-AntiSpam-MessageData-1: MiwV7/w8x3JPtKwbadvwPXsS0M3gLiR+vM0=
-X-OriginatorOrg: belden.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7664994b-80ec-466a-cd69-08da4ac7d645
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR18MB5069.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2022 09:58:58.1598
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0f7367b1-44f7-45a7-bb10-563965c5f2e5
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hhQSrEuxUOQEXDFN0k+qZDQL1j//GsjO7C+B54T6xIwrbJ4hnaGEv6GBlVh2aoJh40PK4SgZ8SpGkB0k17N+wlfq9C2IjvX29OUsEDHyN4E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR18MB3215
-X-Proofpoint-ORIG-GUID: Hf8-9shor96AAZ5qTGn7ZNUiCJCuYmSQ
-X-Proofpoint-GUID: Hf8-9shor96AAZ5qTGn7ZNUiCJCuYmSQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-10_04,2022-06-09_02,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 bulkscore=0 adultscore=0 priorityscore=1501 clxscore=1015
- mlxlogscore=489 lowpriorityscore=0 spamscore=0 suspectscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206100037
-X-Proofpoint-TriggeredRule: module.spam.rule.outbound_notspam
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 10 Jun 2022 21:09:20 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
