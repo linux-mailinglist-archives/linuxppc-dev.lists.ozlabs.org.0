@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917785475F5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 17:11:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD3C15475F8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 17:12:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LL1WP3VpXz3c8k
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jun 2022 01:11:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LL1X25Fm8z3cCc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jun 2022 01:12:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=fi/Fit2A;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Jf/zYard;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=qlft=ws=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=qlft=ws=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=fi/Fit2A;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Jf/zYard;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LL1VF6Dq6z3bwZ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jun 2022 01:10:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LL1VL6sfXz3c8h
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jun 2022 01:10:34 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D4C5861011;
-	Sat, 11 Jun 2022 15:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4952C34116;
-	Sat, 11 Jun 2022 15:10:26 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 762FFB80139;
+	Sat, 11 Jun 2022 15:10:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C450C34116;
+	Sat, 11 Jun 2022 15:10:29 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="fi/Fit2A"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Jf/zYard"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1654960225;
+	t=1654960228;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WtiQjpbrmFMKm8d6BMUt1LLUM1Fss83aLjhZrpuPa8s=;
-	b=fi/Fit2Ac2yfEKIE3LESs5pbpE5Qy0X/dsCadZc398g2mcii6u14EquZ3G+PUeCkNzSrPw
-	9ll8uim29ds+8p9hfSOr4pBW4oacKLCFUdjU/aVxRl60a1nm9EUXeGn7pMo3zOKbeByuEp
-	qBfMr4kkW2NZQO9oNr/QhqtuW8uA308=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 01cd7939 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-	Sat, 11 Jun 2022 15:10:25 +0000 (UTC)
+	bh=QdcNQU1UhQ5cbCNPYnKzZnO7muhDqBUHBRz3u3Gocpo=;
+	b=Jf/zYardCd2cfsyECtXtggUTkQrJ/lSwOjTEtrOF+VdtGXDbsXv9DvnzD2EXhj6qchVSP3
+	535T/Y19QmFhaZItU7bLjuSqtbhLZoyVL+Se7QssvDyeN7czw+My2qNvy6HHPOBVYm1S2+
+	2K2++mq5Z+ghzFW71DX4+rEFv2kvgS0=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 3ce93f86 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+	Sat, 11 Jun 2022 15:10:27 +0000 (UTC)
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
 To: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3 1/3] powerpc/microwatt: wire up rng during setup_arch
-Date: Sat, 11 Jun 2022 17:10:13 +0200
-Message-Id: <20220611151015.548325-2-Jason@zx2c4.com>
+Subject: [PATCH v3 2/3] powerpc/powernv: wire up rng during setup_arch
+Date: Sat, 11 Jun 2022 17:10:14 +0200
+Message-Id: <20220611151015.548325-3-Jason@zx2c4.com>
 In-Reply-To: <20220611151015.548325-1-Jason@zx2c4.com>
 References: <20220611151015.548325-1-Jason@zx2c4.com>
 MIME-Version: 1.0
@@ -78,53 +78,54 @@ messages that don't add much.
 Cc: stable@vger.kernel.org
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Fixes: c25769fddaec ("powerpc/microwatt: Add support for hardware random number generator")
+Fixes: a4da0d50b2a0 ("powerpc: Implement arch_get_random_long/int() for powernv")
 Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 ---
- arch/powerpc/platforms/microwatt/microwatt.h |  7 +++++++
- arch/powerpc/platforms/microwatt/rng.c       | 10 +++-------
- arch/powerpc/platforms/microwatt/setup.c     |  8 ++++++++
- 3 files changed, 18 insertions(+), 7 deletions(-)
- create mode 100644 arch/powerpc/platforms/microwatt/microwatt.h
+ arch/powerpc/platforms/powernv/powernv.h |  2 ++
+ arch/powerpc/platforms/powernv/rng.c     | 18 +++++-------------
+ arch/powerpc/platforms/powernv/setup.c   |  2 ++
+ 3 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/platforms/microwatt/microwatt.h b/arch/powerpc/platforms/microwatt/microwatt.h
-new file mode 100644
-index 000000000000..335417e95e66
---- /dev/null
-+++ b/arch/powerpc/platforms/microwatt/microwatt.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _MICROWATT_H
-+#define _MICROWATT_H
+diff --git a/arch/powerpc/platforms/powernv/powernv.h b/arch/powerpc/platforms/powernv/powernv.h
+index e297bf4abfcb..fd3f5e1eb10b 100644
+--- a/arch/powerpc/platforms/powernv/powernv.h
++++ b/arch/powerpc/platforms/powernv/powernv.h
+@@ -42,4 +42,6 @@ ssize_t memcons_copy(struct memcons *mc, char *to, loff_t pos, size_t count);
+ u32 __init memcons_get_size(struct memcons *mc);
+ struct memcons *__init memcons_init(struct device_node *node, const char *mc_prop_name);
+ 
++void powernv_rng_init(void);
 +
-+void microwatt_rng_init(void);
-+
-+#endif /* _MICROWATT_H */
-diff --git a/arch/powerpc/platforms/microwatt/rng.c b/arch/powerpc/platforms/microwatt/rng.c
-index 7bc4d1cbfaf0..8ece87d005c8 100644
---- a/arch/powerpc/platforms/microwatt/rng.c
-+++ b/arch/powerpc/platforms/microwatt/rng.c
-@@ -11,6 +11,7 @@
- #include <asm/archrandom.h>
- #include <asm/cputable.h>
+ #endif /* _POWERNV_H */
+diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
+index e3d44b36ae98..c86bf097e407 100644
+--- a/arch/powerpc/platforms/powernv/rng.c
++++ b/arch/powerpc/platforms/powernv/rng.c
+@@ -17,6 +17,7 @@
+ #include <asm/prom.h>
  #include <asm/machdep.h>
-+#include "microwatt.h"
+ #include <asm/smp.h>
++#include "powernv.h"
  
  #define DARN_ERR 0xFFFFFFFFFFFFFFFFul
  
-@@ -29,7 +30,7 @@ static int microwatt_get_random_darn(unsigned long *v)
+@@ -84,24 +85,20 @@ static int powernv_get_random_darn(unsigned long *v)
  	return 1;
  }
  
--static __init int rng_init(void)
-+void __init microwatt_rng_init(void)
+-static int __init initialise_darn(void)
++static void __init initialise_darn(void)
  {
  	unsigned long val;
  	int i;
-@@ -37,12 +38,7 @@ static __init int rng_init(void)
+ 
+ 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
+-		return -ENODEV;
++		return;
+ 
  	for (i = 0; i < 10; i++) {
- 		if (microwatt_get_random_darn(&val)) {
- 			ppc_md.get_random_seed = microwatt_get_random_darn;
+ 		if (powernv_get_random_darn(&val)) {
+ 			ppc_md.get_random_seed = powernv_get_random_darn;
 -			return 0;
 +			return;
  		}
@@ -134,37 +135,45 @@ index 7bc4d1cbfaf0..8ece87d005c8 100644
 -
 -	return -EIO;
  }
--machine_subsys_initcall(, rng_init);
-diff --git a/arch/powerpc/platforms/microwatt/setup.c b/arch/powerpc/platforms/microwatt/setup.c
-index 0b02603bdb74..6b32539395a4 100644
---- a/arch/powerpc/platforms/microwatt/setup.c
-+++ b/arch/powerpc/platforms/microwatt/setup.c
-@@ -16,6 +16,8 @@
- #include <asm/xics.h>
- #include <asm/udbg.h>
  
-+#include "microwatt.h"
-+
- static void __init microwatt_init_IRQ(void)
- {
- 	xics_init();
-@@ -32,10 +34,16 @@ static int __init microwatt_populate(void)
+ int powernv_get_random_long(unsigned long *v)
+@@ -163,14 +160,12 @@ static __init int rng_create(struct device_node *dn)
+ 
+ 	rng_init_per_cpu(rng, dn);
+ 
+-	pr_info_once("Registering arch random hook.\n");
+-
+ 	ppc_md.get_random_seed = powernv_get_random_long;
+ 
+ 	return 0;
  }
- machine_arch_initcall(microwatt, microwatt_populate);
  
-+static void __init microwatt_setup_arch(void)
-+{
-+	microwatt_rng_init();
-+}
+-static __init int rng_init(void)
++void __init powernv_rng_init(void)
+ {
+ 	struct device_node *dn;
+ 	int rc;
+@@ -188,7 +183,4 @@ static __init int rng_init(void)
+ 	}
+ 
+ 	initialise_darn();
+-
+-	return 0;
+ }
+-machine_subsys_initcall(powernv, rng_init);
+diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
+index 824c3ad7a0fa..a5fcb6796b22 100644
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -203,6 +203,8 @@ static void __init pnv_setup_arch(void)
+ 	pnv_check_guarded_cores();
+ 
+ 	/* XXX PMCS */
 +
- define_machine(microwatt) {
- 	.name			= "microwatt",
- 	.probe			= microwatt_probe,
- 	.init_IRQ		= microwatt_init_IRQ,
-+	.setup_arch		= microwatt_setup_arch,
- 	.progress		= udbg_progress,
- 	.calibrate_decr		= generic_calibrate_decr,
- };
++	powernv_rng_init();
+ }
+ 
+ static void __init pnv_init(void)
 -- 
 2.35.1
 
