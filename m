@@ -1,50 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B4A547247
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 07:52:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE73547270
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 08:52:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKn671C4Qz3cBk
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 15:52:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dwHDl623;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKpS75Jtqz3cfc
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 16:52:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKn5T1ysXz3blv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 15:51:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dwHDl623;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LKn5S0T9Dz4xD3;
-	Sat, 11 Jun 2022 15:51:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654926700;
-	bh=jqLHmZQPlPTDrh3903074ZZl72DXRvnF/K24MiuPSgM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dwHDl6236k8rmJv7b+xWXGSDEI9GnIHu4+fvX/a6UGwpETI5jYbDrw9QLGjihIYEA
-	 VIWRdS8WkWV+8O7AOrt4rY1a1+uiiYCs6/3fQRBEApTexuigxCvGE0aREGdkXQwHCa
-	 QixACI64JZ0rkU9RiYGFoLxSsX4xtXvZEg6k+Lx6HbfNBuh+6S33Ynoj1HDYRtd1jH
-	 BeFDF3AMHpao3UMBYUUYbJz0H/imJLyGcY4Ozw2oJyByo8DBRIz4vpqcPfgJ+S9E2P
-	 ZuM4aP9bBCAgH+q6X8CvohLiWDJeemK/zWJtTR9fJ8Qll+ccoZPt0v1MUnlDziXcGn
-	 syYN9kL7PpBcQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <stable@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>
-Subject: [PATCH v5.4] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
-Date: Sat, 11 Jun 2022 15:51:10 +1000
-Message-Id: <20220611055110.955499-1-mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKpRf1n4tz2ynx
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 16:52:26 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4LKpRW1dZTz9tRp;
+	Sat, 11 Jun 2022 08:52:23 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id NVdwKS_-U3pH; Sat, 11 Jun 2022 08:52:23 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4LKpRW0KLkz9tR5;
+	Sat, 11 Jun 2022 08:52:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E50F18B77C;
+	Sat, 11 Jun 2022 08:52:22 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id YO9bKdaJQ4Ri; Sat, 11 Jun 2022 08:52:22 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.192])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BFE98B768;
+	Sat, 11 Jun 2022 08:52:22 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 25B6q9S5674767
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sat, 11 Jun 2022 08:52:09 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 25B6q528674764;
+	Sat, 11 Jun 2022 08:52:05 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: Restore CONFIG_DEBUG_INFO in defconfigs
+Date: Sat, 11 Jun 2022 08:51:57 +0200
+Message-Id: <98a4c2603bf9e4b776e219f5b8541d23aa24e854.1654930308.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1654930315; l=11553; s=20211009; h=from:subject:message-id; bh=mJPG5OKAktxtwKL8QLdInypfepNupuQhNmiePguoAjM=; b=CjW/vScIQXs5mMTAcnC/zyJckoz4dV5etC0lhQEcUKpi0kGiA5G6qUt7yUCIbD9Fd/fongtCZceJ NgZnX1fFCFbYuTfa2jnnpTov+kkg4V1kpy0F24BQlpgz+FlCdBfv
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,118 +67,304 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 8e1278444446fc97778a5e5c99bca1ce0bbc5ec9 upstream.
+Commit f9b3cd245784 ("Kconfig.debug: make DEBUG_INFO selectable from a
+choice") broke the selection of CONFIG_DEBUG_INFO by powerpc defconfigs.
 
-The ptrace PEEKUSR/POKEUSR (aka PEEKUSER/POKEUSER) API allows a process
-to read/write registers of another process.
+It is now necessary to select one of the three DEBUG_INFO_DWARF*
+options to get DEBUG_INFO enabled.
 
-To get/set a register, the API takes an index into an imaginary address
-space called the "USER area", where the registers of the process are
-laid out in some fashion.
+Replace DEBUG_INFO=y by DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y in all
+defconfigs using the following command:
 
-The kernel then maps that index to a particular register in its own data
-structures and gets/sets the value.
+sed -i s/DEBUG_INFO=y/DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y/g `git grep -l DEBUG_INFO arch/powerpc/configs/`
 
-The API only allows a single machine-word to be read/written at a time.
-So 4 bytes on 32-bit kernels and 8 bytes on 64-bit kernels.
-
-The way floating point registers (FPRs) are addressed is somewhat
-complicated, because double precision float values are 64-bit even on
-32-bit CPUs. That means on 32-bit kernels each FPR occupies two
-word-sized locations in the USER area. On 64-bit kernels each FPR
-occupies one word-sized location in the USER area.
-
-Internally the kernel stores the FPRs in an array of u64s, or if VSX is
-enabled, an array of pairs of u64s where one half of each pair stores
-the FPR. Which half of the pair stores the FPR depends on the kernel's
-endianness.
-
-To handle the different layouts of the FPRs depending on VSX/no-VSX and
-big/little endian, the TS_FPR() macro was introduced.
-
-Unfortunately the TS_FPR() macro does not take into account the fact
-that the addressing of each FPR differs between 32-bit and 64-bit
-kernels. It just takes the index into the "USER area" passed from
-userspace and indexes into the fp_state.fpr array.
-
-On 32-bit there are 64 indexes that address FPRs, but only 32 entries in
-the fp_state.fpr array, meaning the user can read/write 256 bytes past
-the end of the array. Because the fp_state sits in the middle of the
-thread_struct there are various fields than can be overwritten,
-including some pointers. As such it may be exploitable.
-
-It has also been observed to cause systems to hang or otherwise
-misbehave when using gdbserver, and is probably the root cause of this
-report which could not be easily reproduced:
-  https://lore.kernel.org/linuxppc-dev/dc38afe9-6b78-f3f5-666b-986939e40fc6@keymile.com/
-
-Rather than trying to make the TS_FPR() macro even more complicated to
-fix the bug, or add more macros, instead add a special-case for 32-bit
-kernels. This is more obvious and hopefully avoids a similar bug
-happening again in future.
-
-Note that because 32-bit kernels never have VSX enabled the code doesn't
-need to consider TS_FPRWIDTH/OFFSET at all. Add a BUILD_BUG_ON() to
-ensure that 32-bit && VSX is never enabled.
-
-Fixes: 87fec0514f61 ("powerpc: PTRACE_PEEKUSR/PTRACE_POKEUSER of FPR registers in little endian builds")
-Cc: stable@vger.kernel.org # v3.13+
-Reported-by: Ariel Miculas <ariel.miculas@belden.com>
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220609133245.573565-1-mpe@ellerman.id.au
+Fixes: f9b3cd245784 ("Kconfig.debug: make DEBUG_INFO selectable from a choice")
+Cc: stable@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/ptrace.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ arch/powerpc/configs/44x/akebono_defconfig    | 2 +-
+ arch/powerpc/configs/44x/currituck_defconfig  | 2 +-
+ arch/powerpc/configs/44x/fsp2_defconfig       | 2 +-
+ arch/powerpc/configs/44x/iss476-smp_defconfig | 2 +-
+ arch/powerpc/configs/44x/warp_defconfig       | 2 +-
+ arch/powerpc/configs/52xx/lite5200b_defconfig | 2 +-
+ arch/powerpc/configs/52xx/motionpro_defconfig | 2 +-
+ arch/powerpc/configs/52xx/tqm5200_defconfig   | 2 +-
+ arch/powerpc/configs/adder875_defconfig       | 2 +-
+ arch/powerpc/configs/ep8248e_defconfig        | 2 +-
+ arch/powerpc/configs/ep88xc_defconfig         | 2 +-
+ arch/powerpc/configs/fsl-emb-nonhw.config     | 2 +-
+ arch/powerpc/configs/mgcoge_defconfig         | 2 +-
+ arch/powerpc/configs/mpc5200_defconfig        | 2 +-
+ arch/powerpc/configs/mpc8272_ads_defconfig    | 2 +-
+ arch/powerpc/configs/mpc885_ads_defconfig     | 2 +-
+ arch/powerpc/configs/ppc6xx_defconfig         | 2 +-
+ arch/powerpc/configs/pq2fads_defconfig        | 2 +-
+ arch/powerpc/configs/ps3_defconfig            | 2 +-
+ arch/powerpc/configs/tqm8xx_defconfig         | 2 +-
+ 20 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
-index 8c92febf5f44..63bfc5250b67 100644
---- a/arch/powerpc/kernel/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace.c
-@@ -3014,8 +3014,13 @@ long arch_ptrace(struct task_struct *child, long request,
- 
- 			flush_fp_to_thread(child);
- 			if (fpidx < (PT_FPSCR - PT_FPR0))
--				memcpy(&tmp, &child->thread.TS_FPR(fpidx),
--				       sizeof(long));
-+				if (IS_ENABLED(CONFIG_PPC32)) {
-+					// On 32-bit the index we are passed refers to 32-bit words
-+					tmp = ((u32 *)child->thread.fp_state.fpr)[fpidx];
-+				} else {
-+					memcpy(&tmp, &child->thread.TS_FPR(fpidx),
-+					       sizeof(long));
-+				}
- 			else
- 				tmp = child->thread.fp_state.fpscr;
- 		}
-@@ -3047,8 +3052,13 @@ long arch_ptrace(struct task_struct *child, long request,
- 
- 			flush_fp_to_thread(child);
- 			if (fpidx < (PT_FPSCR - PT_FPR0))
--				memcpy(&child->thread.TS_FPR(fpidx), &data,
--				       sizeof(long));
-+				if (IS_ENABLED(CONFIG_PPC32)) {
-+					// On 32-bit the index we are passed refers to 32-bit words
-+					((u32 *)child->thread.fp_state.fpr)[fpidx] = data;
-+				} else {
-+					memcpy(&child->thread.TS_FPR(fpidx), &data,
-+					       sizeof(long));
-+				}
- 			else
- 				child->thread.fp_state.fpscr = data;
- 			ret = 0;
-@@ -3398,4 +3408,7 @@ void __init pt_regs_check(void)
- 		     offsetof(struct user_pt_regs, result));
- 
- 	BUILD_BUG_ON(sizeof(struct user_pt_regs) > sizeof(struct pt_regs));
-+
-+	// ptrace_get/put_fpr() rely on PPC32 and VSX being incompatible
-+	BUILD_BUG_ON(IS_ENABLED(CONFIG_PPC32) && IS_ENABLED(CONFIG_VSX));
- }
+diff --git a/arch/powerpc/configs/44x/akebono_defconfig b/arch/powerpc/configs/44x/akebono_defconfig
+index 4bc549c6edc5..fde4824f235e 100644
+--- a/arch/powerpc/configs/44x/akebono_defconfig
++++ b/arch/powerpc/configs/44x/akebono_defconfig
+@@ -118,7 +118,7 @@ CONFIG_CRAMFS=y
+ CONFIG_NLS_DEFAULT="n"
+ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ISO8859_1=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+ CONFIG_XMON=y
+diff --git a/arch/powerpc/configs/44x/currituck_defconfig b/arch/powerpc/configs/44x/currituck_defconfig
+index 717827219921..7283b7d4a1a5 100644
+--- a/arch/powerpc/configs/44x/currituck_defconfig
++++ b/arch/powerpc/configs/44x/currituck_defconfig
+@@ -73,7 +73,7 @@ CONFIG_NFS_FS=y
+ CONFIG_NFS_V3_ACL=y
+ CONFIG_NFS_V4=y
+ CONFIG_NLS_DEFAULT="n"
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+ CONFIG_XMON=y
+diff --git a/arch/powerpc/configs/44x/fsp2_defconfig b/arch/powerpc/configs/44x/fsp2_defconfig
+index 8da316e61a08..3fdfbb29b854 100644
+--- a/arch/powerpc/configs/44x/fsp2_defconfig
++++ b/arch/powerpc/configs/44x/fsp2_defconfig
+@@ -110,7 +110,7 @@ CONFIG_XZ_DEC=y
+ CONFIG_PRINTK_TIME=y
+ CONFIG_MESSAGE_LOGLEVEL_DEFAULT=3
+ CONFIG_DYNAMIC_DEBUG=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+ CONFIG_CRYPTO_CBC=y
+diff --git a/arch/powerpc/configs/44x/iss476-smp_defconfig b/arch/powerpc/configs/44x/iss476-smp_defconfig
+index c11e777b2f3d..0f6380e1e612 100644
+--- a/arch/powerpc/configs/44x/iss476-smp_defconfig
++++ b/arch/powerpc/configs/44x/iss476-smp_defconfig
+@@ -56,7 +56,7 @@ CONFIG_PROC_KCORE=y
+ CONFIG_TMPFS=y
+ CONFIG_CRAMFS=y
+ # CONFIG_NETWORK_FILESYSTEMS is not set
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+ CONFIG_PPC_EARLY_DEBUG=y
+diff --git a/arch/powerpc/configs/44x/warp_defconfig b/arch/powerpc/configs/44x/warp_defconfig
+index 47252c2d7669..20891c413149 100644
+--- a/arch/powerpc/configs/44x/warp_defconfig
++++ b/arch/powerpc/configs/44x/warp_defconfig
+@@ -88,7 +88,7 @@ CONFIG_NLS_UTF8=y
+ CONFIG_CRC_CCITT=y
+ CONFIG_CRC_T10DIF=y
+ CONFIG_PRINTK_TIME=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DEBUG_FS=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+diff --git a/arch/powerpc/configs/52xx/lite5200b_defconfig b/arch/powerpc/configs/52xx/lite5200b_defconfig
+index 63368e677506..7db479dcbc0c 100644
+--- a/arch/powerpc/configs/52xx/lite5200b_defconfig
++++ b/arch/powerpc/configs/52xx/lite5200b_defconfig
+@@ -58,6 +58,6 @@ CONFIG_NFS_FS=y
+ CONFIG_NFS_V4=y
+ CONFIG_ROOT_NFS=y
+ CONFIG_PRINTK_TIME=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DETECT_HUNG_TASK=y
+ # CONFIG_DEBUG_BUGVERBOSE is not set
+diff --git a/arch/powerpc/configs/52xx/motionpro_defconfig b/arch/powerpc/configs/52xx/motionpro_defconfig
+index 72762da94846..6186ead1e105 100644
+--- a/arch/powerpc/configs/52xx/motionpro_defconfig
++++ b/arch/powerpc/configs/52xx/motionpro_defconfig
+@@ -84,7 +84,7 @@ CONFIG_ROOT_NFS=y
+ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_PRINTK_TIME=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DETECT_HUNG_TASK=y
+ # CONFIG_DEBUG_BUGVERBOSE is not set
+ CONFIG_CRYPTO_ECB=y
+diff --git a/arch/powerpc/configs/52xx/tqm5200_defconfig b/arch/powerpc/configs/52xx/tqm5200_defconfig
+index a3c8ca74032c..e6735b945327 100644
+--- a/arch/powerpc/configs/52xx/tqm5200_defconfig
++++ b/arch/powerpc/configs/52xx/tqm5200_defconfig
+@@ -85,7 +85,7 @@ CONFIG_ROOT_NFS=y
+ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_PRINTK_TIME=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DETECT_HUNG_TASK=y
+ # CONFIG_DEBUG_BUGVERBOSE is not set
+ CONFIG_CRYPTO_ECB=y
+diff --git a/arch/powerpc/configs/adder875_defconfig b/arch/powerpc/configs/adder875_defconfig
+index 5326bc739279..7f35d5bc1229 100644
+--- a/arch/powerpc/configs/adder875_defconfig
++++ b/arch/powerpc/configs/adder875_defconfig
+@@ -45,7 +45,7 @@ CONFIG_CRAMFS=y
+ CONFIG_NFS_FS=y
+ CONFIG_ROOT_NFS=y
+ CONFIG_CRC32_SLICEBY4=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DEBUG_FS=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+diff --git a/arch/powerpc/configs/ep8248e_defconfig b/arch/powerpc/configs/ep8248e_defconfig
+index 00d69965f898..8df6d3a293e3 100644
+--- a/arch/powerpc/configs/ep8248e_defconfig
++++ b/arch/powerpc/configs/ep8248e_defconfig
+@@ -59,7 +59,7 @@ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ASCII=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_NLS_UTF8=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ # CONFIG_SCHED_DEBUG is not set
+ CONFIG_BDI_SWITCH=y
+diff --git a/arch/powerpc/configs/ep88xc_defconfig b/arch/powerpc/configs/ep88xc_defconfig
+index f5c3e72da719..a98ef6a4abef 100644
+--- a/arch/powerpc/configs/ep88xc_defconfig
++++ b/arch/powerpc/configs/ep88xc_defconfig
+@@ -48,6 +48,6 @@ CONFIG_CRAMFS=y
+ CONFIG_NFS_FS=y
+ CONFIG_ROOT_NFS=y
+ CONFIG_CRC32_SLICEBY4=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+diff --git a/arch/powerpc/configs/fsl-emb-nonhw.config b/arch/powerpc/configs/fsl-emb-nonhw.config
+index df37efed0aec..f14c6dbd7346 100644
+--- a/arch/powerpc/configs/fsl-emb-nonhw.config
++++ b/arch/powerpc/configs/fsl-emb-nonhw.config
+@@ -24,7 +24,7 @@ CONFIG_CRYPTO_PCBC=m
+ CONFIG_CRYPTO_SHA256=y
+ CONFIG_CRYPTO_SHA512=y
+ CONFIG_DEBUG_FS=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DEBUG_KERNEL=y
+ CONFIG_DEBUG_SHIRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+diff --git a/arch/powerpc/configs/mgcoge_defconfig b/arch/powerpc/configs/mgcoge_defconfig
+index dcc8dccf54f3..498d35db7833 100644
+--- a/arch/powerpc/configs/mgcoge_defconfig
++++ b/arch/powerpc/configs/mgcoge_defconfig
+@@ -73,7 +73,7 @@ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ASCII=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_NLS_UTF8=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DEBUG_FS=y
+ CONFIG_MAGIC_SYSRQ=y
+ # CONFIG_SCHED_DEBUG is not set
+diff --git a/arch/powerpc/configs/mpc5200_defconfig b/arch/powerpc/configs/mpc5200_defconfig
+index 83d801307178..c0fe5e76604a 100644
+--- a/arch/powerpc/configs/mpc5200_defconfig
++++ b/arch/powerpc/configs/mpc5200_defconfig
+@@ -122,6 +122,6 @@ CONFIG_ROOT_NFS=y
+ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_PRINTK_TIME=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_DEBUG_KERNEL=y
+ CONFIG_DETECT_HUNG_TASK=y
+diff --git a/arch/powerpc/configs/mpc8272_ads_defconfig b/arch/powerpc/configs/mpc8272_ads_defconfig
+index 00a4d2bf43b2..4145ef5689ca 100644
+--- a/arch/powerpc/configs/mpc8272_ads_defconfig
++++ b/arch/powerpc/configs/mpc8272_ads_defconfig
+@@ -67,7 +67,7 @@ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ASCII=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_NLS_UTF8=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+ CONFIG_BDI_SWITCH=y
+diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
+index c74dc76b1d0d..700115d85d6f 100644
+--- a/arch/powerpc/configs/mpc885_ads_defconfig
++++ b/arch/powerpc/configs/mpc885_ads_defconfig
+@@ -71,7 +71,7 @@ CONFIG_ROOT_NFS=y
+ CONFIG_CRYPTO=y
+ CONFIG_CRYPTO_DEV_TALITOS=y
+ CONFIG_CRC32_SLICEBY4=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DEBUG_FS=y
+ CONFIG_DEBUG_VM_PGTABLE=y
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index b622ecd73286..91967824272e 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -1065,7 +1065,7 @@ CONFIG_NLS_ISO8859_14=m
+ CONFIG_NLS_ISO8859_15=m
+ CONFIG_NLS_KOI8_R=m
+ CONFIG_NLS_KOI8_U=m
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_HEADERS_INSTALL=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DEBUG_KERNEL=y
+diff --git a/arch/powerpc/configs/pq2fads_defconfig b/arch/powerpc/configs/pq2fads_defconfig
+index 9d8a76857c6f..9d63e2e65211 100644
+--- a/arch/powerpc/configs/pq2fads_defconfig
++++ b/arch/powerpc/configs/pq2fads_defconfig
+@@ -68,7 +68,7 @@ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ASCII=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_NLS_UTF8=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
+ # CONFIG_SCHED_DEBUG is not set
+diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
+index 7c95fab4b920..2d9ac233da68 100644
+--- a/arch/powerpc/configs/ps3_defconfig
++++ b/arch/powerpc/configs/ps3_defconfig
+@@ -153,7 +153,7 @@ CONFIG_NLS_CODEPAGE_437=y
+ CONFIG_NLS_ISO8859_1=y
+ CONFIG_CRC_CCITT=m
+ CONFIG_CRC_T10DIF=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DEBUG_MEMORY_INIT=y
+ CONFIG_DEBUG_STACKOVERFLOW=y
+diff --git a/arch/powerpc/configs/tqm8xx_defconfig b/arch/powerpc/configs/tqm8xx_defconfig
+index 77857d513022..083c2e57520a 100644
+--- a/arch/powerpc/configs/tqm8xx_defconfig
++++ b/arch/powerpc/configs/tqm8xx_defconfig
+@@ -55,6 +55,6 @@ CONFIG_CRAMFS=y
+ CONFIG_NFS_FS=y
+ CONFIG_ROOT_NFS=y
+ CONFIG_CRC32_SLICEBY4=y
+-CONFIG_DEBUG_INFO=y
++CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
+ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_DETECT_HUNG_TASK=y
 -- 
 2.35.3
 
