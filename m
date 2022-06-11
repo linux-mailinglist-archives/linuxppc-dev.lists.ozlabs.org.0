@@ -1,48 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEF7547224
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 07:09:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B4A547247
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 07:52:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKm945cGBz3cMq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 15:09:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKn671C4Qz3cBk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 15:52:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=X/QMVcLG;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dwHDl623;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKm8R3VrPz3bm5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 15:09:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKn5T1ysXz3blv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 15:51:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=X/QMVcLG;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=dwHDl623;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LKm8M4Jvsz4xD3;
-	Sat, 11 Jun 2022 15:09:07 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LKn5S0T9Dz4xD3;
+	Sat, 11 Jun 2022 15:51:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654924147;
-	bh=FhOalpnI/+I9rXvRtHIyt2sKKspl2W2BwIzV/GOUnJ4=;
+	s=201909; t=1654926700;
+	bh=jqLHmZQPlPTDrh3903074ZZl72DXRvnF/K24MiuPSgM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=X/QMVcLGS2Gw799dVfwNTz5bOBoK16m4ddNeZhvWQJpqozRSkUp03yafzGEknnnVo
-	 AfNFCauzH1T+nABzSwyNtwyBx2j8ScjCchRbLem3Z/HuoWAeoCf/eTieniMn0kPoN7
-	 1XG1aSC7eGiYUnadWsMNtAOkfYf/dfn+mJXWn91/xMMuKSRRRsCrz6Gz4j3tDpNYlz
-	 3EIbwE+bVUQIo30avXzENpXOzGwgLfMwISvjsMk1jUkKq9/mnnrBWbIVw68p/ZtnTc
-	 iRkpBxXL5HVp9CGXvk3RW+lphYlXH/Twnt3EgyJDxLq0toQ+A+oG/wp7S094jAE5A4
-	 zlfyVZc08W23A==
+	b=dwHDl6236k8rmJv7b+xWXGSDEI9GnIHu4+fvX/a6UGwpETI5jYbDrw9QLGjihIYEA
+	 VIWRdS8WkWV+8O7AOrt4rY1a1+uiiYCs6/3fQRBEApTexuigxCvGE0aREGdkXQwHCa
+	 QixACI64JZ0rkU9RiYGFoLxSsX4xtXvZEg6k+Lx6HbfNBuh+6S33Ynoj1HDYRtd1jH
+	 BeFDF3AMHpao3UMBYUUYbJz0H/imJLyGcY4Ozw2oJyByo8DBRIz4vpqcPfgJ+S9E2P
+	 ZuM4aP9bBCAgH+q6X8CvohLiWDJeemK/zWJtTR9fJ8Qll+ccoZPt0v1MUnlDziXcGn
+	 syYN9kL7PpBcQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <stable@vger.kernel.org>,
 	<gregkh@linuxfoundation.org>
-Subject: [PATCH v5.10] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
-Date: Sat, 11 Jun 2022 15:09:01 +1000
-Message-Id: <20220611050901.949379-1-mpe@ellerman.id.au>
+Subject: [PATCH v5.4] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
+Date: Sat, 11 Jun 2022 15:51:10 +1000
+Message-Id: <20220611055110.955499-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -122,14 +122,14 @@ Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Link: https://lore.kernel.org/r/20220609133245.573565-1-mpe@ellerman.id.au
 ---
- arch/powerpc/kernel/ptrace/ptrace.c | 21 +++++++++++++++++----
+ arch/powerpc/kernel/ptrace.c | 21 +++++++++++++++++----
  1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index f6e51be47c6e..9ea9ee513ae1 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -75,8 +75,13 @@ long arch_ptrace(struct task_struct *child, long request,
+diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
+index 8c92febf5f44..63bfc5250b67 100644
+--- a/arch/powerpc/kernel/ptrace.c
++++ b/arch/powerpc/kernel/ptrace.c
+@@ -3014,8 +3014,13 @@ long arch_ptrace(struct task_struct *child, long request,
  
  			flush_fp_to_thread(child);
  			if (fpidx < (PT_FPSCR - PT_FPR0))
@@ -145,7 +145,7 @@ index f6e51be47c6e..9ea9ee513ae1 100644
  			else
  				tmp = child->thread.fp_state.fpscr;
  		}
-@@ -108,8 +113,13 @@ long arch_ptrace(struct task_struct *child, long request,
+@@ -3047,8 +3052,13 @@ long arch_ptrace(struct task_struct *child, long request,
  
  			flush_fp_to_thread(child);
  			if (fpidx < (PT_FPSCR - PT_FPR0))
@@ -161,10 +161,10 @@ index f6e51be47c6e..9ea9ee513ae1 100644
  			else
  				child->thread.fp_state.fpscr = data;
  			ret = 0;
-@@ -478,4 +488,7 @@ void __init pt_regs_check(void)
- 	 * real registers.
- 	 */
- 	BUILD_BUG_ON(PT_DSCR < sizeof(struct user_pt_regs) / sizeof(unsigned long));
+@@ -3398,4 +3408,7 @@ void __init pt_regs_check(void)
+ 		     offsetof(struct user_pt_regs, result));
+ 
+ 	BUILD_BUG_ON(sizeof(struct user_pt_regs) > sizeof(struct pt_regs));
 +
 +	// ptrace_get/put_fpr() rely on PPC32 and VSX being incompatible
 +	BUILD_BUG_ON(IS_ENABLED(CONFIG_PPC32) && IS_ENABLED(CONFIG_VSX));
