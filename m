@@ -2,47 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BFA54704F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 01:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A6354707D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 02:20:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKd7F5qshz3cdY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 09:52:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKdls05bJz3cFl
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 10:20:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=othqJQFU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n+uAf2Rb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKd6c4Qbyz3bkR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 09:52:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKdlH64SSz3bl4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 10:20:27 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=othqJQFU;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n+uAf2Rb;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LKd6V2pqyz4xD7;
-	Sat, 11 Jun 2022 09:52:02 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LKdlH4z01z4xD7;
+	Sat, 11 Jun 2022 10:20:27 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654905122;
-	bh=ZKybvV7bn4H/0lDOiyRSwmPsyTKrdsEqAz9URJoRbuQ=;
+	s=201909; t=1654906827;
+	bh=SbyVkW30XJMxVw2Gk6H9g/s5MXMRghTSIc6MLFUR1gY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=othqJQFUC9NNhL+r0x05PhEhaAyvURQb5Fb73YHQS+n9DBdZ+CJXfsjlK8VEAi/Fm
-	 1M1OUfvbzB/9H7nEWeOCwV5uEJSuDS8W+9PDIH9nhfoYSqfrRQ5xNLycLoMXEerl+y
-	 qMuUne2HcOIWST5C6UAGViLvejUwqqBpZrhBh3EVORQcNp9NpMMFTo3kMNs9iKwEtZ
-	 pij2/ggNMwL3u3Kugi5aOQiHxDuP+sHu0Uys5n8CwLzlSWYSlc1efL3Nvukwhxp/wV
-	 ywqjaaifEFPX5rH4H+NwO0jQPBNYfrqO8uDK5NWoOAVKun9BkxOtXr0216GgxAN+sY
-	 I129UEfI2ss+g==
+	b=n+uAf2RbJPJ/SzqJ0PxwrOlnPJDTNW2Oq8f7R4uEdLmYlTEvpCVOkBzzFHEEBZFkv
+	 P6sTwZWbnGxZ4PY3eUUHvTNgeIqsz0HDbv9wQFBToJK2darfOZ9/R6AkMc/5uh40JV
+	 qCIpN2UMf0ikPO8EaF/DUdbmJ49mNvhIpaHc70QaJyogz8k78ij1U5tbFQJOHQMnpP
+	 mqQC7o08UiPspoa8Dp198/js7loMgA8/mBs9Ixsol/dpwluD8e6s078PUu64toF4pm
+	 0jsbdKIGs/RRDP10ndDcfi96JtaH/RPxtLQwbIGJ61ZxU+0ldCN+snw2dkxGIYqYeI
+	 kkvD/+oQaDVXQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <stable@vger.kernel.org>,
 	<gregkh@linuxfoundation.org>
-Subject: [PATCH v5.17] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
-Date: Sat, 11 Jun 2022 09:51:55 +1000
-Message-Id: <20220610235155.930069-1-mpe@ellerman.id.au>
+Subject: [PATCH v5.15] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
+Date: Sat, 11 Jun 2022 10:20:23 +1000
+Message-Id: <20220611002023.935574-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -165,10 +165,10 @@ index 5dca19361316..09c49632bfe5 100644
  #endif
  
 diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index c43f77e2ac31..6d45fa288015 100644
+index 7c7093c17c45..ff5e46dbf7c5 100644
 --- a/arch/powerpc/kernel/ptrace/ptrace.c
 +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -445,4 +445,7 @@ void __init pt_regs_check(void)
+@@ -446,4 +446,7 @@ void __init pt_regs_check(void)
  	 * real registers.
  	 */
  	BUILD_BUG_ON(PT_DSCR < sizeof(struct user_pt_regs) / sizeof(unsigned long));
