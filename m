@@ -1,67 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A015475D8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 16:54:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E2A5475F1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 17:10:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LL17z3GpNz3cht
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jun 2022 00:54:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LL1Vl3Pkjz3cKm
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jun 2022 01:10:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=cCMlvlL8;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=kttCWqMq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=qlft=ws=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=qlft=ws=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=cCMlvlL8;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=kttCWqMq;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LL17735Wtz3ccy
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jun 2022 00:53:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LL1VD5LVRz306l
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jun 2022 01:10:28 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2034760C20
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 14:53:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF96C34116
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 14:53:52 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id EFEAF61001;
+	Sat, 11 Jun 2022 15:10:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97C3C34116;
+	Sat, 11 Jun 2022 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="cCMlvlL8"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="kttCWqMq"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1654959230;
+	t=1654960222;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9pqfqYStan/I+ZPRU4QEBBVfKsXKknoHw/gVA4DBjss=;
-	b=cCMlvlL88ETLh+cy6Ts0vJzddbvibYSmVHTkV3G+hCcnf9RmnMAYubkyW85I7DTWGIjDGa
-	A9PphnTqjP140Jy/9wURS+hYtBrr0aGB5XVrpyeEEWbvf5/N8D0cdfccVmQ3uc2YE6+e3J
-	hMEXvreG4gWlHSkNEyzHRtBoqRtiySM=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 538044c7 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO)
-	for <linuxppc-dev@lists.ozlabs.org>;
-	Sat, 11 Jun 2022 14:53:50 +0000 (UTC)
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-3137eb64b67so15451347b3.12
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 07:53:50 -0700 (PDT)
-X-Gm-Message-State: AOAM5339S6nm+yZpku51EigzxN/QYQ3vtq2PchCKBc5/9PB0YdCiJR5N
-	zrqPPlA4H9BkkaH+agOhZTSsmQdsiAdxMRVZ0AQ=
-X-Google-Smtp-Source: ABdhPJwgmnQjNeYtkfIN6xGH9ZFfcVbNxRhMGQJjaIN0Dh1KWfZ5lVm1oeHb/OBW4MjKj2SuINtm8f6mvvXx4Gwkyek=
-X-Received: by 2002:a81:6c04:0:b0:313:c938:ba1b with SMTP id
- h4-20020a816c04000000b00313c938ba1bmr7414813ywc.231.1654959229974; Sat, 11
- Jun 2022 07:53:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220611100447.5066-1-Jason@zx2c4.com> <20220611100447.5066-2-Jason@zx2c4.com>
- <6432586f-9eb9-ac71-7934-c48da09a928e@csgroup.eu> <CAHmME9rBWcdZtJCQ1WZAPOJtnA6u4w0ub4s4M+UW60gMSNgWrQ@mail.gmail.com>
- <YqSqqq0zC7yDOQib@zx2c4.com> <c94deb33-c28e-12c1-e3b1-aebd4249baa3@csgroup.eu>
-In-Reply-To: <c94deb33-c28e-12c1-e3b1-aebd4249baa3@csgroup.eu>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qF416RNckkOUpRlpwH6/BPTNNSan6sPETx4V80w0A2c=;
+	b=kttCWqMq4NWyq0k+UrViGCTrQpBQXIUTG+7tlS7oTxPOiebyfjDs6JuVV2JZade3OUE8aZ
+	CwQoFQub0jXH1Vr0emNUG6e0U5Px9+iRZ+lhTRcLPw/WoDCcUvqy8UxVEkuUEvtoXE2b6I
+	pWr7ROxHzpLwwzTOAChNvf9WxYM2Kxs=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 121c7299 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+	Sat, 11 Jun 2022 15:10:22 +0000 (UTC)
 From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Sat, 11 Jun 2022 16:53:39 +0200
-X-Gmail-Original-Message-ID: <CAHmME9pNGrSWNuYNV4jZCPiAk5NzNRt3LuZuBMhS-GVobaeiMQ@mail.gmail.com>
-Message-ID: <CAHmME9pNGrSWNuYNV4jZCPiAk5NzNRt3LuZuBMhS-GVobaeiMQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] powerpc/microwatt: wire up rng during setup_arch
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v3 0/3] powerpc: wire up rng during setup_arch
+Date: Sat, 11 Jun 2022 17:10:12 +0200
+Message-Id: <20220611151015.548325-1-Jason@zx2c4.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,23 +61,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+The platform's RNG must be available before random_init() in order to be
+useful for initial seeding, which in turn means that it needs to be
+called from setup_arch(), rather than from an init call. This series
+wires that up properly on the three platforms that currently initialize
+the RNG from the wrong place.
 
-On Sat, Jun 11, 2022 at 4:49 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
-> Then you have:
->
-> arch/powerpc/platforms/powernv/powernv.h
-> arch/powerpc/platforms/pseries/pseries.h
->
-> and you can add
->
-> arch/powerpc/platforms/microwatt/microwatt.h
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Oh, terrific, thanks. I'll do that.
+Jason A. Donenfeld (3):
+  powerpc/microwatt: wire up rng during setup_arch
+  powerpc/powernv: wire up rng during setup_arch
+  powerpc/pseries: wire up rng during setup_arch
 
-Jason
+ arch/powerpc/platforms/microwatt/microwatt.h |  7 +++++++
+ arch/powerpc/platforms/microwatt/rng.c       | 10 +++-------
+ arch/powerpc/platforms/microwatt/setup.c     |  8 ++++++++
+ arch/powerpc/platforms/powernv/powernv.h     |  2 ++
+ arch/powerpc/platforms/powernv/rng.c         | 18 +++++-------------
+ arch/powerpc/platforms/powernv/setup.c       |  2 ++
+ arch/powerpc/platforms/pseries/pseries.h     |  2 ++
+ arch/powerpc/platforms/pseries/rng.c         | 11 +++--------
+ arch/powerpc/platforms/pseries/setup.c       |  1 +
+ 9 files changed, 33 insertions(+), 28 deletions(-)
+ create mode 100644 arch/powerpc/platforms/microwatt/microwatt.h
+
+-- 
+2.35.1
+
