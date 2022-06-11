@@ -2,59 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE73547270
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 08:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3D35472CC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 10:12:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKpS75Jtqz3cfc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 16:52:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKrCP57tgz3cdb
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 18:12:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=h+8trSs6;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=qlft=ws=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=h+8trSs6;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKpRf1n4tz2ynx
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 16:52:26 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4LKpRW1dZTz9tRp;
-	Sat, 11 Jun 2022 08:52:23 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id NVdwKS_-U3pH; Sat, 11 Jun 2022 08:52:23 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4LKpRW0KLkz9tR5;
-	Sat, 11 Jun 2022 08:52:23 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E50F18B77C;
-	Sat, 11 Jun 2022 08:52:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id YO9bKdaJQ4Ri; Sat, 11 Jun 2022 08:52:22 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.6.192])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BFE98B768;
-	Sat, 11 Jun 2022 08:52:22 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 25B6q9S5674767
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 11 Jun 2022 08:52:09 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 25B6q528674764;
-	Sat, 11 Jun 2022 08:52:05 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Restore CONFIG_DEBUG_INFO in defconfigs
-Date: Sat, 11 Jun 2022 08:51:57 +0200
-Message-Id: <98a4c2603bf9e4b776e219f5b8541d23aa24e854.1654930308.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKrBm07dzz3bnr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 18:11:27 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 17833B837EF;
+	Sat, 11 Jun 2022 08:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295ADC34116;
+	Sat, 11 Jun 2022 08:11:21 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="h+8trSs6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1654935079;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JhE9QV1bIqPw2urSYw+/iYLr0eUuZ5Re2c1gfvfbv5E=;
+	b=h+8trSs6BSUBjfcUc3USmvwUUElptBvOObS+NJYTCuXivUasQP+rq7vks3W3Hn/QkQYQxj
+	Dq+LADDqdzoRHFjAjJAteEdtOe2CTO3BQ0zBox050twqW6TqN+685aDbZ/EV0GWNBuWvJA
+	GZkJalKoSsWBZSz4rXKvAQuT0ZrcSDQ=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 88227a06 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+	Sat, 11 Jun 2022 08:11:19 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/rng: wire up during setup_arch
+Date: Sat, 11 Jun 2022 10:11:14 +0200
+Message-Id: <20220611081114.449165-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1654930315; l=11553; s=20211009; h=from:subject:message-id; bh=mJPG5OKAktxtwKL8QLdInypfepNupuQhNmiePguoAjM=; b=CjW/vScIQXs5mMTAcnC/zyJckoz4dV5etC0lhQEcUKpi0kGiA5G6qUt7yUCIbD9Fd/fongtCZceJ NgZnX1fFCFbYuTfa2jnnpTov+kkg4V1kpy0F24BQlpgz+FlCdBfv
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -67,304 +60,205 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit f9b3cd245784 ("Kconfig.debug: make DEBUG_INFO selectable from a
-choice") broke the selection of CONFIG_DEBUG_INFO by powerpc defconfigs.
+The platform's RNG must be available before random_init() in order to be
+useful for initial seeding, which in turn means that it needs to be
+called from setup_arch(), rather than from an init call. Fortunately,
+each platform already has a setup_arch function pointer, which means
+it's easy to wire this up for each of the three platforms that have an
+RNG. This commit also removes some noisy log messages that don't add
+much.
 
-It is now necessary to select one of the three DEBUG_INFO_DWARF*
-options to get DEBUG_INFO enabled.
-
-Replace DEBUG_INFO=y by DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y in all
-defconfigs using the following command:
-
-sed -i s/DEBUG_INFO=y/DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y/g `git grep -l DEBUG_INFO arch/powerpc/configs/`
-
-Fixes: f9b3cd245784 ("Kconfig.debug: make DEBUG_INFO selectable from a choice")
 Cc: stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 ---
- arch/powerpc/configs/44x/akebono_defconfig    | 2 +-
- arch/powerpc/configs/44x/currituck_defconfig  | 2 +-
- arch/powerpc/configs/44x/fsp2_defconfig       | 2 +-
- arch/powerpc/configs/44x/iss476-smp_defconfig | 2 +-
- arch/powerpc/configs/44x/warp_defconfig       | 2 +-
- arch/powerpc/configs/52xx/lite5200b_defconfig | 2 +-
- arch/powerpc/configs/52xx/motionpro_defconfig | 2 +-
- arch/powerpc/configs/52xx/tqm5200_defconfig   | 2 +-
- arch/powerpc/configs/adder875_defconfig       | 2 +-
- arch/powerpc/configs/ep8248e_defconfig        | 2 +-
- arch/powerpc/configs/ep88xc_defconfig         | 2 +-
- arch/powerpc/configs/fsl-emb-nonhw.config     | 2 +-
- arch/powerpc/configs/mgcoge_defconfig         | 2 +-
- arch/powerpc/configs/mpc5200_defconfig        | 2 +-
- arch/powerpc/configs/mpc8272_ads_defconfig    | 2 +-
- arch/powerpc/configs/mpc885_ads_defconfig     | 2 +-
- arch/powerpc/configs/ppc6xx_defconfig         | 2 +-
- arch/powerpc/configs/pq2fads_defconfig        | 2 +-
- arch/powerpc/configs/ps3_defconfig            | 2 +-
- arch/powerpc/configs/tqm8xx_defconfig         | 2 +-
- 20 files changed, 20 insertions(+), 20 deletions(-)
+ arch/powerpc/platforms/microwatt/rng.c   |  9 ++-------
+ arch/powerpc/platforms/microwatt/setup.c |  8 ++++++++
+ arch/powerpc/platforms/powernv/rng.c     | 17 ++++-------------
+ arch/powerpc/platforms/powernv/setup.c   |  4 ++++
+ arch/powerpc/platforms/pseries/rng.c     | 11 ++---------
+ arch/powerpc/platforms/pseries/setup.c   |  3 +++
+ 6 files changed, 23 insertions(+), 29 deletions(-)
 
-diff --git a/arch/powerpc/configs/44x/akebono_defconfig b/arch/powerpc/configs/44x/akebono_defconfig
-index 4bc549c6edc5..fde4824f235e 100644
---- a/arch/powerpc/configs/44x/akebono_defconfig
-+++ b/arch/powerpc/configs/44x/akebono_defconfig
-@@ -118,7 +118,7 @@ CONFIG_CRAMFS=y
- CONFIG_NLS_DEFAULT="n"
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_XMON=y
-diff --git a/arch/powerpc/configs/44x/currituck_defconfig b/arch/powerpc/configs/44x/currituck_defconfig
-index 717827219921..7283b7d4a1a5 100644
---- a/arch/powerpc/configs/44x/currituck_defconfig
-+++ b/arch/powerpc/configs/44x/currituck_defconfig
-@@ -73,7 +73,7 @@ CONFIG_NFS_FS=y
- CONFIG_NFS_V3_ACL=y
- CONFIG_NFS_V4=y
- CONFIG_NLS_DEFAULT="n"
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_XMON=y
-diff --git a/arch/powerpc/configs/44x/fsp2_defconfig b/arch/powerpc/configs/44x/fsp2_defconfig
-index 8da316e61a08..3fdfbb29b854 100644
---- a/arch/powerpc/configs/44x/fsp2_defconfig
-+++ b/arch/powerpc/configs/44x/fsp2_defconfig
-@@ -110,7 +110,7 @@ CONFIG_XZ_DEC=y
- CONFIG_PRINTK_TIME=y
- CONFIG_MESSAGE_LOGLEVEL_DEFAULT=3
- CONFIG_DYNAMIC_DEBUG=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_CRYPTO_CBC=y
-diff --git a/arch/powerpc/configs/44x/iss476-smp_defconfig b/arch/powerpc/configs/44x/iss476-smp_defconfig
-index c11e777b2f3d..0f6380e1e612 100644
---- a/arch/powerpc/configs/44x/iss476-smp_defconfig
-+++ b/arch/powerpc/configs/44x/iss476-smp_defconfig
-@@ -56,7 +56,7 @@ CONFIG_PROC_KCORE=y
- CONFIG_TMPFS=y
- CONFIG_CRAMFS=y
- # CONFIG_NETWORK_FILESYSTEMS is not set
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_PPC_EARLY_DEBUG=y
-diff --git a/arch/powerpc/configs/44x/warp_defconfig b/arch/powerpc/configs/44x/warp_defconfig
-index 47252c2d7669..20891c413149 100644
---- a/arch/powerpc/configs/44x/warp_defconfig
-+++ b/arch/powerpc/configs/44x/warp_defconfig
-@@ -88,7 +88,7 @@ CONFIG_NLS_UTF8=y
- CONFIG_CRC_CCITT=y
- CONFIG_CRC_T10DIF=y
- CONFIG_PRINTK_TIME=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
-diff --git a/arch/powerpc/configs/52xx/lite5200b_defconfig b/arch/powerpc/configs/52xx/lite5200b_defconfig
-index 63368e677506..7db479dcbc0c 100644
---- a/arch/powerpc/configs/52xx/lite5200b_defconfig
-+++ b/arch/powerpc/configs/52xx/lite5200b_defconfig
-@@ -58,6 +58,6 @@ CONFIG_NFS_FS=y
- CONFIG_NFS_V4=y
- CONFIG_ROOT_NFS=y
- CONFIG_PRINTK_TIME=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DETECT_HUNG_TASK=y
- # CONFIG_DEBUG_BUGVERBOSE is not set
-diff --git a/arch/powerpc/configs/52xx/motionpro_defconfig b/arch/powerpc/configs/52xx/motionpro_defconfig
-index 72762da94846..6186ead1e105 100644
---- a/arch/powerpc/configs/52xx/motionpro_defconfig
-+++ b/arch/powerpc/configs/52xx/motionpro_defconfig
-@@ -84,7 +84,7 @@ CONFIG_ROOT_NFS=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_PRINTK_TIME=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DETECT_HUNG_TASK=y
- # CONFIG_DEBUG_BUGVERBOSE is not set
- CONFIG_CRYPTO_ECB=y
-diff --git a/arch/powerpc/configs/52xx/tqm5200_defconfig b/arch/powerpc/configs/52xx/tqm5200_defconfig
-index a3c8ca74032c..e6735b945327 100644
---- a/arch/powerpc/configs/52xx/tqm5200_defconfig
-+++ b/arch/powerpc/configs/52xx/tqm5200_defconfig
-@@ -85,7 +85,7 @@ CONFIG_ROOT_NFS=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_PRINTK_TIME=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DETECT_HUNG_TASK=y
- # CONFIG_DEBUG_BUGVERBOSE is not set
- CONFIG_CRYPTO_ECB=y
-diff --git a/arch/powerpc/configs/adder875_defconfig b/arch/powerpc/configs/adder875_defconfig
-index 5326bc739279..7f35d5bc1229 100644
---- a/arch/powerpc/configs/adder875_defconfig
-+++ b/arch/powerpc/configs/adder875_defconfig
-@@ -45,7 +45,7 @@ CONFIG_CRAMFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CRC32_SLICEBY4=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
-diff --git a/arch/powerpc/configs/ep8248e_defconfig b/arch/powerpc/configs/ep8248e_defconfig
-index 00d69965f898..8df6d3a293e3 100644
---- a/arch/powerpc/configs/ep8248e_defconfig
-+++ b/arch/powerpc/configs/ep8248e_defconfig
-@@ -59,7 +59,7 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- # CONFIG_SCHED_DEBUG is not set
- CONFIG_BDI_SWITCH=y
-diff --git a/arch/powerpc/configs/ep88xc_defconfig b/arch/powerpc/configs/ep88xc_defconfig
-index f5c3e72da719..a98ef6a4abef 100644
---- a/arch/powerpc/configs/ep88xc_defconfig
-+++ b/arch/powerpc/configs/ep88xc_defconfig
-@@ -48,6 +48,6 @@ CONFIG_CRAMFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CRC32_SLICEBY4=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
-diff --git a/arch/powerpc/configs/fsl-emb-nonhw.config b/arch/powerpc/configs/fsl-emb-nonhw.config
-index df37efed0aec..f14c6dbd7346 100644
---- a/arch/powerpc/configs/fsl-emb-nonhw.config
-+++ b/arch/powerpc/configs/fsl-emb-nonhw.config
-@@ -24,7 +24,7 @@ CONFIG_CRYPTO_PCBC=m
- CONFIG_CRYPTO_SHA256=y
- CONFIG_CRYPTO_SHA512=y
- CONFIG_DEBUG_FS=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DEBUG_KERNEL=y
- CONFIG_DEBUG_SHIRQ=y
- CONFIG_DETECT_HUNG_TASK=y
-diff --git a/arch/powerpc/configs/mgcoge_defconfig b/arch/powerpc/configs/mgcoge_defconfig
-index dcc8dccf54f3..498d35db7833 100644
---- a/arch/powerpc/configs/mgcoge_defconfig
-+++ b/arch/powerpc/configs/mgcoge_defconfig
-@@ -73,7 +73,7 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- # CONFIG_SCHED_DEBUG is not set
-diff --git a/arch/powerpc/configs/mpc5200_defconfig b/arch/powerpc/configs/mpc5200_defconfig
-index 83d801307178..c0fe5e76604a 100644
---- a/arch/powerpc/configs/mpc5200_defconfig
-+++ b/arch/powerpc/configs/mpc5200_defconfig
-@@ -122,6 +122,6 @@ CONFIG_ROOT_NFS=y
- CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_PRINTK_TIME=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DEBUG_KERNEL=y
- CONFIG_DETECT_HUNG_TASK=y
-diff --git a/arch/powerpc/configs/mpc8272_ads_defconfig b/arch/powerpc/configs/mpc8272_ads_defconfig
-index 00a4d2bf43b2..4145ef5689ca 100644
---- a/arch/powerpc/configs/mpc8272_ads_defconfig
-+++ b/arch/powerpc/configs/mpc8272_ads_defconfig
-@@ -67,7 +67,7 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_BDI_SWITCH=y
-diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
-index c74dc76b1d0d..700115d85d6f 100644
---- a/arch/powerpc/configs/mpc885_ads_defconfig
-+++ b/arch/powerpc/configs/mpc885_ads_defconfig
-@@ -71,7 +71,7 @@ CONFIG_ROOT_NFS=y
- CONFIG_CRYPTO=y
- CONFIG_CRYPTO_DEV_TALITOS=y
- CONFIG_CRC32_SLICEBY4=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DEBUG_FS=y
- CONFIG_DEBUG_VM_PGTABLE=y
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index b622ecd73286..91967824272e 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -1065,7 +1065,7 @@ CONFIG_NLS_ISO8859_14=m
- CONFIG_NLS_ISO8859_15=m
- CONFIG_NLS_KOI8_R=m
- CONFIG_NLS_KOI8_U=m
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_HEADERS_INSTALL=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DEBUG_KERNEL=y
-diff --git a/arch/powerpc/configs/pq2fads_defconfig b/arch/powerpc/configs/pq2fads_defconfig
-index 9d8a76857c6f..9d63e2e65211 100644
---- a/arch/powerpc/configs/pq2fads_defconfig
-+++ b/arch/powerpc/configs/pq2fads_defconfig
-@@ -68,7 +68,7 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ASCII=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_NLS_UTF8=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
- # CONFIG_SCHED_DEBUG is not set
-diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
-index 7c95fab4b920..2d9ac233da68 100644
---- a/arch/powerpc/configs/ps3_defconfig
-+++ b/arch/powerpc/configs/ps3_defconfig
-@@ -153,7 +153,7 @@ CONFIG_NLS_CODEPAGE_437=y
- CONFIG_NLS_ISO8859_1=y
- CONFIG_CRC_CCITT=m
- CONFIG_CRC_T10DIF=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DEBUG_MEMORY_INIT=y
- CONFIG_DEBUG_STACKOVERFLOW=y
-diff --git a/arch/powerpc/configs/tqm8xx_defconfig b/arch/powerpc/configs/tqm8xx_defconfig
-index 77857d513022..083c2e57520a 100644
---- a/arch/powerpc/configs/tqm8xx_defconfig
-+++ b/arch/powerpc/configs/tqm8xx_defconfig
-@@ -55,6 +55,6 @@ CONFIG_CRAMFS=y
- CONFIG_NFS_FS=y
- CONFIG_ROOT_NFS=y
- CONFIG_CRC32_SLICEBY4=y
--CONFIG_DEBUG_INFO=y
-+CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_MAGIC_SYSRQ=y
- CONFIG_DETECT_HUNG_TASK=y
+diff --git a/arch/powerpc/platforms/microwatt/rng.c b/arch/powerpc/platforms/microwatt/rng.c
+index 7bc4d1cbfaf0..d13f656910ad 100644
+--- a/arch/powerpc/platforms/microwatt/rng.c
++++ b/arch/powerpc/platforms/microwatt/rng.c
+@@ -29,7 +29,7 @@ static int microwatt_get_random_darn(unsigned long *v)
+ 	return 1;
+ }
+ 
+-static __init int rng_init(void)
++__init void microwatt_rng_init(void)
+ {
+ 	unsigned long val;
+ 	int i;
+@@ -37,12 +37,7 @@ static __init int rng_init(void)
+ 	for (i = 0; i < 10; i++) {
+ 		if (microwatt_get_random_darn(&val)) {
+ 			ppc_md.get_random_seed = microwatt_get_random_darn;
+-			return 0;
++			return;
+ 		}
+ 	}
+-
+-	pr_warn("Unable to use DARN for get_random_seed()\n");
+-
+-	return -EIO;
+ }
+-machine_subsys_initcall(, rng_init);
+diff --git a/arch/powerpc/platforms/microwatt/setup.c b/arch/powerpc/platforms/microwatt/setup.c
+index 0b02603bdb74..23c996dcc870 100644
+--- a/arch/powerpc/platforms/microwatt/setup.c
++++ b/arch/powerpc/platforms/microwatt/setup.c
+@@ -32,10 +32,18 @@ static int __init microwatt_populate(void)
+ }
+ machine_arch_initcall(microwatt, microwatt_populate);
+ 
++__init void microwatt_rng_init(void);
++
++static void __init microwatt_setup_arch(void)
++{
++	microwatt_rng_init();
++}
++
+ define_machine(microwatt) {
+ 	.name			= "microwatt",
+ 	.probe			= microwatt_probe,
+ 	.init_IRQ		= microwatt_init_IRQ,
++	.setup_arch		= microwatt_setup_arch,
+ 	.progress		= udbg_progress,
+ 	.calibrate_decr		= generic_calibrate_decr,
+ };
+diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
+index e3d44b36ae98..ef24e72a1b69 100644
+--- a/arch/powerpc/platforms/powernv/rng.c
++++ b/arch/powerpc/platforms/powernv/rng.c
+@@ -84,24 +84,20 @@ static int powernv_get_random_darn(unsigned long *v)
+ 	return 1;
+ }
+ 
+-static int __init initialise_darn(void)
++static void __init initialise_darn(void)
+ {
+ 	unsigned long val;
+ 	int i;
+ 
+ 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
+-		return -ENODEV;
++		return;
+ 
+ 	for (i = 0; i < 10; i++) {
+ 		if (powernv_get_random_darn(&val)) {
+ 			ppc_md.get_random_seed = powernv_get_random_darn;
+-			return 0;
++			return;
+ 		}
+ 	}
+-
+-	pr_warn("Unable to use DARN for get_random_seed()\n");
+-
+-	return -EIO;
+ }
+ 
+ int powernv_get_random_long(unsigned long *v)
+@@ -163,14 +159,12 @@ static __init int rng_create(struct device_node *dn)
+ 
+ 	rng_init_per_cpu(rng, dn);
+ 
+-	pr_info_once("Registering arch random hook.\n");
+-
+ 	ppc_md.get_random_seed = powernv_get_random_long;
+ 
+ 	return 0;
+ }
+ 
+-static __init int rng_init(void)
++__init void powernv_rng_init(void)
+ {
+ 	struct device_node *dn;
+ 	int rc;
+@@ -188,7 +182,4 @@ static __init int rng_init(void)
+ 	}
+ 
+ 	initialise_darn();
+-
+-	return 0;
+ }
+-machine_subsys_initcall(powernv, rng_init);
+diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
+index 824c3ad7a0fa..a0c5217bc5c0 100644
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -184,6 +184,8 @@ static void __init pnv_check_guarded_cores(void)
+ 	}
+ }
+ 
++__init void powernv_rng_init(void);
++
+ static void __init pnv_setup_arch(void)
+ {
+ 	set_arch_panic_timeout(10, ARCH_PANIC_TIMEOUT);
+@@ -203,6 +205,8 @@ static void __init pnv_setup_arch(void)
+ 	pnv_check_guarded_cores();
+ 
+ 	/* XXX PMCS */
++
++	powernv_rng_init();
+ }
+ 
+ static void __init pnv_init(void)
+diff --git a/arch/powerpc/platforms/pseries/rng.c b/arch/powerpc/platforms/pseries/rng.c
+index 6268545947b8..d39bfce39aa1 100644
+--- a/arch/powerpc/platforms/pseries/rng.c
++++ b/arch/powerpc/platforms/pseries/rng.c
+@@ -24,19 +24,12 @@ static int pseries_get_random_long(unsigned long *v)
+ 	return 0;
+ }
+ 
+-static __init int rng_init(void)
++__init void pseries_rng_init(void)
+ {
+ 	struct device_node *dn;
+-
+ 	dn = of_find_compatible_node(NULL, NULL, "ibm,random");
+ 	if (!dn)
+-		return -ENODEV;
+-
+-	pr_info("Registering arch random hook.\n");
+-
++		return;
+ 	ppc_md.get_random_seed = pseries_get_random_long;
+-
+ 	of_node_put(dn);
+-	return 0;
+ }
+-machine_subsys_initcall(pseries, rng_init);
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index afb074269b42..7f3ee2658163 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -779,6 +779,8 @@ static resource_size_t pseries_pci_iov_resource_alignment(struct pci_dev *pdev,
+ }
+ #endif
+ 
++__init void pseries_rng_init(void);
++
+ static void __init pSeries_setup_arch(void)
+ {
+ 	set_arch_panic_timeout(10, ARCH_PANIC_TIMEOUT);
+@@ -839,6 +841,7 @@ static void __init pSeries_setup_arch(void)
+ 	}
+ 
+ 	ppc_md.pcibios_root_bridge_prepare = pseries_root_bridge_prepare;
++	pseries_rng_init();
+ }
+ 
+ static void pseries_panic(char *str)
 -- 
-2.35.3
+2.35.1
 
