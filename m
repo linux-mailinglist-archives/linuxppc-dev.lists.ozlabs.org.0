@@ -2,50 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A6354707D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 02:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B4C5471BC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 06:08:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKdls05bJz3cFl
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 10:20:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKkpn2C8Nz3cdN
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 14:08:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n+uAf2Rb;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fndtXzf0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKdlH64SSz3bl4
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 10:20:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n+uAf2Rb;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fndtXzf0;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LKdlH4z01z4xD7;
-	Sat, 11 Jun 2022 10:20:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1654906827;
-	bh=SbyVkW30XJMxVw2Gk6H9g/s5MXMRghTSIc6MLFUR1gY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n+uAf2RbJPJ/SzqJ0PxwrOlnPJDTNW2Oq8f7R4uEdLmYlTEvpCVOkBzzFHEEBZFkv
-	 P6sTwZWbnGxZ4PY3eUUHvTNgeIqsz0HDbv9wQFBToJK2darfOZ9/R6AkMc/5uh40JV
-	 qCIpN2UMf0ikPO8EaF/DUdbmJ49mNvhIpaHc70QaJyogz8k78ij1U5tbFQJOHQMnpP
-	 mqQC7o08UiPspoa8Dp198/js7loMgA8/mBs9Ixsol/dpwluD8e6s078PUu64toF4pm
-	 0jsbdKIGs/RRDP10ndDcfi96JtaH/RPxtLQwbIGJ61ZxU+0ldCN+snw2dkxGIYqYeI
-	 kkvD/+oQaDVXQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <stable@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>
-Subject: [PATCH v5.15] powerpc/32: Fix overread/overwrite of thread_struct via ptrace
-Date: Sat, 11 Jun 2022 10:20:23 +1000
-Message-Id: <20220611002023.935574-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKkp61XCZz3blm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 14:08:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654920494; x=1686456494;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=v1Fn+Gwf2s6PfsO+5S3bh0OQlRV/J0T0vPjCYfuQGvI=;
+  b=fndtXzf0jpN4Dyuty6uxlobLSQZTLeivBtHPVYC19VczgbONhJyds8v1
+   nL/7O40ZZF2TzVdY6ZQ7j1zfLLr75gnni2PWiifs2xfRaWsCX5iDIoYUa
+   iWtTmOvXpuSuy79B/nXwDZBd8B7oM3tjmHzNnJGnNCuuCk7PGTYW4lJsi
+   +AFEpYLT7RBLyPDkmO9Loky1EWue1TzmASwZpSJ0UZ9KeumIs5bBQzuh/
+   UwAD31qPEUlp4cJqUanS5yl+TSCw5daqdAP2MpOG+0PbcdqN6WJBUHnzj
+   ajKZZIwUCZ8O4WqXLwgcr8uLWfmL/WlvHxIAnnFzEvLF5vzJgYzrJPHhi
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10374"; a="341872431"
+X-IronPort-AV: E=Sophos;i="5.91,292,1647327600"; 
+   d="scan'208";a="341872431"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 21:08:02 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,292,1647327600"; 
+   d="scan'208";a="581399159"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 10 Jun 2022 21:08:01 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1nzsPo-000IWv-T7;
+	Sat, 11 Jun 2022 04:08:00 +0000
+Date: Sat, 11 Jun 2022 12:07:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS
+ 8582c0462f3d6c6067962623f1072daf25f6d560
+Message-ID: <62a4150f.40pF9LVmdZOVq66U%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,125 +69,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sashal@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 8e1278444446fc97778a5e5c99bca1ce0bbc5ec9 upstream.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 8582c0462f3d6c6067962623f1072daf25f6d560  Automatic merge of 'fixes' into merge (2022-06-10 00:07)
 
-The ptrace PEEKUSR/POKEUSR (aka PEEKUSER/POKEUSER) API allows a process
-to read/write registers of another process.
+elapsed time: 2212m
 
-To get/set a register, the API takes an index into an imaginary address
-space called the "USER area", where the registers of the process are
-laid out in some fashion.
+configs tested: 83
+configs skipped: 3
 
-The kernel then maps that index to a particular register in its own data
-structures and gets/sets the value.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The API only allows a single machine-word to be read/written at a time.
-So 4 bytes on 32-bit kernels and 8 bytes on 64-bit kernels.
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+ia64                                defconfig
+ia64                             allmodconfig
+ia64                             allyesconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+nios2                            allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+h8300                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+sparc                               defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+i386                          randconfig-a001
+i386                          randconfig-a003
+i386                          randconfig-a005
+i386                          randconfig-a014
+i386                          randconfig-a012
+i386                          randconfig-a016
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a006
+arc                  randconfig-r043-20220608
+s390                 randconfig-r044-20220608
+riscv                randconfig-r042-20220608
+arc                  randconfig-r043-20220609
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                         rhel-8.3-kunit
+x86_64                           rhel-8.3-syz
+x86_64                          rhel-8.3-func
+x86_64                    rhel-8.3-kselftests
 
-The way floating point registers (FPRs) are addressed is somewhat
-complicated, because double precision float values are 64-bit even on
-32-bit CPUs. That means on 32-bit kernels each FPR occupies two
-word-sized locations in the USER area. On 64-bit kernels each FPR
-occupies one word-sized location in the USER area.
+clang tested configs:
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a004
+i386                          randconfig-a006
+i386                          randconfig-a013
+i386                          randconfig-a011
+i386                          randconfig-a015
+hexagon              randconfig-r045-20220609
+s390                 randconfig-r044-20220609
+riscv                randconfig-r042-20220609
+hexagon              randconfig-r041-20220609
+hexagon              randconfig-r045-20220608
+hexagon              randconfig-r041-20220608
 
-Internally the kernel stores the FPRs in an array of u64s, or if VSX is
-enabled, an array of pairs of u64s where one half of each pair stores
-the FPR. Which half of the pair stores the FPR depends on the kernel's
-endianness.
-
-To handle the different layouts of the FPRs depending on VSX/no-VSX and
-big/little endian, the TS_FPR() macro was introduced.
-
-Unfortunately the TS_FPR() macro does not take into account the fact
-that the addressing of each FPR differs between 32-bit and 64-bit
-kernels. It just takes the index into the "USER area" passed from
-userspace and indexes into the fp_state.fpr array.
-
-On 32-bit there are 64 indexes that address FPRs, but only 32 entries in
-the fp_state.fpr array, meaning the user can read/write 256 bytes past
-the end of the array. Because the fp_state sits in the middle of the
-thread_struct there are various fields than can be overwritten,
-including some pointers. As such it may be exploitable.
-
-It has also been observed to cause systems to hang or otherwise
-misbehave when using gdbserver, and is probably the root cause of this
-report which could not be easily reproduced:
-  https://lore.kernel.org/linuxppc-dev/dc38afe9-6b78-f3f5-666b-986939e40fc6@keymile.com/
-
-Rather than trying to make the TS_FPR() macro even more complicated to
-fix the bug, or add more macros, instead add a special-case for 32-bit
-kernels. This is more obvious and hopefully avoids a similar bug
-happening again in future.
-
-Note that because 32-bit kernels never have VSX enabled the code doesn't
-need to consider TS_FPRWIDTH/OFFSET at all. Add a BUILD_BUG_ON() to
-ensure that 32-bit && VSX is never enabled.
-
-Fixes: 87fec0514f61 ("powerpc: PTRACE_PEEKUSR/PTRACE_POKEUSER of FPR registers in little endian builds")
-Cc: stable@vger.kernel.org # v3.13+
-Reported-by: Ariel Miculas <ariel.miculas@belden.com>
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220609133245.573565-1-mpe@ellerman.id.au
----
- arch/powerpc/kernel/ptrace/ptrace-fpu.c | 20 ++++++++++++++------
- arch/powerpc/kernel/ptrace/ptrace.c     |  3 +++
- 2 files changed, 17 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-fpu.c b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-index 5dca19361316..09c49632bfe5 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-fpu.c
-@@ -17,9 +17,13 @@ int ptrace_get_fpr(struct task_struct *child, int index, unsigned long *data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0))
--		memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
--	else
-+	if (fpidx < (PT_FPSCR - PT_FPR0)) {
-+		if (IS_ENABLED(CONFIG_PPC32))
-+			// On 32-bit the index we are passed refers to 32-bit words
-+			*data = ((u32 *)child->thread.fp_state.fpr)[fpidx];
-+		else
-+			memcpy(data, &child->thread.TS_FPR(fpidx), sizeof(long));
-+	} else
- 		*data = child->thread.fp_state.fpscr;
- #else
- 	*data = 0;
-@@ -39,9 +43,13 @@ int ptrace_put_fpr(struct task_struct *child, int index, unsigned long data)
- 
- #ifdef CONFIG_PPC_FPU_REGS
- 	flush_fp_to_thread(child);
--	if (fpidx < (PT_FPSCR - PT_FPR0))
--		memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
--	else
-+	if (fpidx < (PT_FPSCR - PT_FPR0)) {
-+		if (IS_ENABLED(CONFIG_PPC32))
-+			// On 32-bit the index we are passed refers to 32-bit words
-+			((u32 *)child->thread.fp_state.fpr)[fpidx] = data;
-+		else
-+			memcpy(&child->thread.TS_FPR(fpidx), &data, sizeof(long));
-+	} else
- 		child->thread.fp_state.fpscr = data;
- #endif
- 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 7c7093c17c45..ff5e46dbf7c5 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -446,4 +446,7 @@ void __init pt_regs_check(void)
- 	 * real registers.
- 	 */
- 	BUILD_BUG_ON(PT_DSCR < sizeof(struct user_pt_regs) / sizeof(unsigned long));
-+
-+	// ptrace_get/put_fpr() rely on PPC32 and VSX being incompatible
-+	BUILD_BUG_ON(IS_ENABLED(CONFIG_PPC32) && IS_ENABLED(CONFIG_VSX));
- }
 -- 
-2.35.3
-
+0-DAY CI Kernel Test Service
+https://01.org/lkp
