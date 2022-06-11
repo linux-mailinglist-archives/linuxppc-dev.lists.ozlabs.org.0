@@ -2,53 +2,134 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3D35472CC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 10:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 513505472F9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 10:43:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LKrCP57tgz3cdb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 18:12:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LKrvn1SMHz3cFH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 18:43:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=h+8trSs6;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=p1U1wLZp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=qlft=ws=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::60e; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=h+8trSs6;
+	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=p1U1wLZp;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on060e.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::60e])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKrBm07dzz3bnr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 18:11:27 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 17833B837EF;
-	Sat, 11 Jun 2022 08:11:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295ADC34116;
-	Sat, 11 Jun 2022 08:11:21 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="h+8trSs6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1654935079;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=JhE9QV1bIqPw2urSYw+/iYLr0eUuZ5Re2c1gfvfbv5E=;
-	b=h+8trSs6BSUBjfcUc3USmvwUUElptBvOObS+NJYTCuXivUasQP+rq7vks3W3Hn/QkQYQxj
-	Dq+LADDqdzoRHFjAjJAteEdtOe2CTO3BQ0zBox050twqW6TqN+685aDbZ/EV0GWNBuWvJA
-	GZkJalKoSsWBZSz4rXKvAQuT0ZrcSDQ=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 88227a06 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-	Sat, 11 Jun 2022 08:11:19 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/rng: wire up during setup_arch
-Date: Sat, 11 Jun 2022 10:11:14 +0200
-Message-Id: <20220611081114.449165-1-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LKrv15zjtz3bkR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jun 2022 18:42:51 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j2m2JdOhVZMZXsNthd0XJHULnyBbsWL6pfAGQWTA8CPlPQxXtNI85xWpKgRMj+6J8bzckoZlnu4WO9PD7uaif9u2FXORfDLJr0aCE3zwSG4cOoDlYqB0R2ygRrzmzC/9AlKMPbViYEdK2kDO3ql3wiQgD+/VIHshv67I15sEKZV5YkRwie0SXgav1djQ+AD5ipuiyhBCeT8VUfkznbbA6stRPuMP/hznbNaC4zQHZiuIj8E5vz0h06za4AnfUQCak9JW3AJ+FF4rcC6ZEupBQ3SZJscRvbQM+yQCdt8ZeEGJHRWDibmnoZ2grYVA4UXWiHof0swf+S8HcC9+tVNuzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RQUv/BYhZh52fZjV6sLTZ7Lsd7d9+7JFRgcFJCGeVtY=;
+ b=d7jbBXMBsFyaL2fd8ga7mW3caGbcylxoJvPSD0eOQrpGt4CubEshSPR+Xjim4ZUM41Jv/+QD8h1VVzqzP6XNCHsg5fGztOjIBya9DrivJC2DpWJdExBUCz+bfVCW2XD4rkVR6E5qiNzWBvN8J+gb3NZM+7gA+L5F5jfMssiHDu96uXXQsUi4LaM3YD1VTXfFyZANpdvzuqhY0y2AeZ/PZw3aAs2E1w9kd27vH0QlmrN+rAY+E5RrMaVfea08iCzcxTWbnDYdZks+5PemabzTwAWhtIN3L09Gx8UfNg1napC1Aumx2vv/JxCv358B0mgxfJBXB2gr9Cz5F+jmn7qcxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
+ dkim=pass header.d=csgroup.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RQUv/BYhZh52fZjV6sLTZ7Lsd7d9+7JFRgcFJCGeVtY=;
+ b=p1U1wLZpcLe3zHVFhoRo5lJXXdpD/F6rmd6TBCBaKS2Yh+7XLDUoqSAiIku5dNm/reGWOyF83oY0umbiFxtnI2my2BBH5eKdQTiNPUSu1Od+SeWk69iSbdRvINJ4oEqgMuuNcVxYgTmHyfl2/ch52a4Kp1VgUYOnjMVIwqlK/wTSh+PtjPLNhhF6ZeCTxXzuDiFxZviPWag97NKw9gbFHP5TcxUYAVacG00XxfvNQz064ETN+sWoh6MFgYG1xJYast+AJABXukfm2ITBGrUQxloalVUzjMGZRyF51QB/2MFYJ6hVIuD1mq0UiTwACQdMaP+3LaxgW2SgzmYpqzst6Q==
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:31::15)
+ by MR1P264MB1524.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:10::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.12; Sat, 11 Jun
+ 2022 08:42:28 +0000
+Received: from MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::b15e:862f:adf7:5356]) by MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::b15e:862f:adf7:5356%6]) with mapi id 15.20.5332.016; Sat, 11 Jun 2022
+ 08:42:28 +0000
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Rohan McLure <rmclure@linux.ibm.com>, Segher Boessenkool
+	<segher@kernel.crashing.org>
+Subject: Re: [PATCH 1/6] powerpc: Add ZERO_GPRS macros for register clears
+Thread-Topic: [PATCH 1/6] powerpc: Add ZERO_GPRS macros for register clears
+Thread-Index: AQHYdXtpaW8/+lAeO0S/NXN9LWGx5606tm+AgA1UKACAAejOAA==
+Date: Sat, 11 Jun 2022 08:42:27 +0000
+Message-ID: <d79992ce-d49b-314a-cb64-8804f43f6c03@csgroup.eu>
+References: <20220601054850.250287-1-rmclure@linux.ibm.com>
+ <20220601160023.GV25951@gate.crashing.org>
+ <88BD925A-D6A8-4983-A573-7D9CEE51CDE7@linux.ibm.com>
+In-Reply-To: <88BD925A-D6A8-4983-A573-7D9CEE51CDE7@linux.ibm.com>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=csgroup.eu;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c09892b5-98f6-4817-2e17-08da4b8650bb
+x-ms-traffictypediagnostic: MR1P264MB1524:EE_
+x-microsoft-antispam-prvs:  <MR1P264MB1524094452B47CC5021EAB99EDA99@MR1P264MB1524.FRAP264.PROD.OUTLOOK.COM>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  m9wKSxW8No3wdeb3Ls6zDphLetNeZvMDj6fDyP4wfyBYG3rGN8I2rF7yF2+lQKhl6vmV+GFikq/Qkali8WqFBfapDOHsRvHef6p4x0qLQXL0Kgt51yxmGa0yRMVWK1pW44OLVeTgts4EkR/UclBnih0XveqRV33hsVfb2lsdUSav4i9PoSFAkb4pwrsOgo81iU1uP9Ww9jcrs3TZEyYIjRELyGss2sdLnd/LONbPfga4/ze15lzQy6aQIq06pu6mY3QSddLVFG3CVfKsuZYxNzuaZW0t86+6o2ytPTWZvbnq9IX7L++mhtbD1kDBchM5XmgDlbAwVSBWkPfHuVg09HS6GnTrq1VkPbKPbTminErj8lDm45Iytd08uJo5yjZZRXiyCYGYSnreipQdZV7uWQMrfS9PgYFEUYkNaA1UayVOspv7L1qPAf0G3Ig7/ZRPX0UQq3L6SyQsJkHdPimWyP+hfTrtBl/ImFbDvy2T6/JD9R5kqJ1jhUM/wSxyujBAZ7Mh3SHhGw+nD+/br7YMESZ74si6RWh9V3nefPO0srEWtR0HAwSSOfXMfkwgvS/w/PL9/gKb3eXtgNxsdLjrpQHsATnwUB5dJWk0zpnPLYpPPvpVe23LnEQS89nHhHklrY3k3V83zJD15eRFS4ZdfuM0cYCKIQdF7S53+4LC6p/0coGyTu+ut1aQXffkoeZP7TpWSJxEdnoQvVUxZZvusqbwE7IthLrDpRNV91pMmpyi79umkL2Dgrk0xpwTijvraGU4Nlq2ERsbSGA5Mc4cIQ==
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(38100700002)(6486002)(44832011)(71200400001)(5660300002)(8936002)(508600001)(186003)(66574015)(110136005)(2616005)(2906002)(6506007)(31696002)(26005)(53546011)(86362001)(6512007)(76116006)(38070700005)(66946007)(91956017)(36756003)(66476007)(66446008)(54906003)(122000001)(64756008)(66556008)(316002)(31686004)(8676002)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?ajQ5dDVWZHdWa2VjdUN5SEVGSHlNTXBzZDc4WDlCRURqc3FORWFoTE91WExI?=
+ =?utf-8?B?NDk1a1NrNGhoTkZyWjNwTHEvVk53Z3U5VDdTamtVN1pPRGNWOUZQY3hZZzY5?=
+ =?utf-8?B?OWF2amN3dnhGZDI2b3BhZiswUHFlQzlsbjc3MmJOWEJteHZ0bXJ4cjB6dzg5?=
+ =?utf-8?B?ZUZjKzdBUmFRZnNjVnpyS2ExcUtDZm9PRFl0ZUxaYVY3ZU1ISEJkV3BzeTE1?=
+ =?utf-8?B?SFo1UVpXY3ZpdTdtNmFvaEFQVFBzMWZHOFJaekJ6b2ljL3VWTTRLRURZMXQy?=
+ =?utf-8?B?NkhMT3llUWlKdDlWUDZoMGpyQWIxS2p1MkJDODB1MkwyYk5BbzhmMmd6ZktY?=
+ =?utf-8?B?djhsZlgxaDJzbDU2Z1FXNktRb0FqMHZZOU9PNFI5YThZREpqMGMwazE3K3pN?=
+ =?utf-8?B?YnBsU2JQRzZETkxNQXZ6L3ZPc0xscklLV05lMC9WNzB3eGNRd2hCc2JXa3J0?=
+ =?utf-8?B?V1JWS3NNaEFBRFV0V0lsUlQyQlZVZERPTTJvcGY3dERZV0FCL3hMV3o4WHg5?=
+ =?utf-8?B?MHBLZmFlMmRkUVd3LzdhZ3E0WVVvVWVZOVZsamxYUjBwYi9taEdOQVU4OHpS?=
+ =?utf-8?B?OG1hZmJZQitTaTcyVTgzcU9xeUJZTGRGeGNFL256UXd1V3FWNEsxeTBJR3B0?=
+ =?utf-8?B?YUpTTnphQ1dMRE9Eb3JPa1pOSVcwQjlsNStXT2Vqd005bGMrbGhRS3RtdWlG?=
+ =?utf-8?B?RHlLb1drRGtYT1d6emVxVmFmQWhwbmFBK25LblI0T203K2FFVWdFZVlxTkVX?=
+ =?utf-8?B?ZEN2SG84ck5UNDRWeTlHS3FXTW9DVUNEOEJ0OEYybjI4Y0N3d3h1WmdlRWN6?=
+ =?utf-8?B?RzJsQmQ5Q3RUQkoxYjJ6Q3BsSkFWYVlRcGtucFYyeXRyeGtwTlAzVmx6aFcv?=
+ =?utf-8?B?QlZuZUJKSFN4NGw5eUplMHJoZ1JwdjBWYUQ1N1dVU2h2ZDNPM3k2ZzZkWmFF?=
+ =?utf-8?B?b0RuNTlobkpWRG92NnBNUXJqYSt0ZlRVVjNGNDVhR3NsTmgxM3N1RjNJcVYy?=
+ =?utf-8?B?L003L2xBSitsdk5keVphbTNhRkJBU1VxQ0xFeFR2azQxM3dRWE95RjhWb29W?=
+ =?utf-8?B?Wk9wbXIreGhQemtRUEdvZGNnOVBVd1VncUZiL2RuaUhoeUlRVERHYjJBTDlD?=
+ =?utf-8?B?Y1FrSFpSZzVzY29nK2N2dzJiWlNMRDhYOERQb3orWXQ4ckJGNjEvRDNaQmRw?=
+ =?utf-8?B?Qk9SdUdOWU1wQ1BQQXFRYlpaTCt3T01kTkpKQUV6OGpndjZ6MDNmRnhwMXV4?=
+ =?utf-8?B?V01ya2k2SGRubm5HSnZJcFlXUXFjUFJYQmxvOCtTUFp0eWh2S0l3ZW03a3FO?=
+ =?utf-8?B?Z2ptQ2VJWktpZFlweE0xTHJOTTArNFhzMVkvRVVYaXh5R085STNXSGc2TVhv?=
+ =?utf-8?B?KzVkT2tOWTZlM1lNdXYrQml5QjRHT0UwQTZ4azRVQU0wbkFSdWRBNnBldGd1?=
+ =?utf-8?B?QWZpSE02N0N5MFZ4cFhWNEZReUg2SlE4SGFQQjZJT0hSZU13U1VGbXZrZjhr?=
+ =?utf-8?B?d1ZIOFpadzhONG9HVFRZalNVck1BTmxTZE9UUkdPUGFxUFdSQkdaS3ExSW1F?=
+ =?utf-8?B?TzU1bWxOWk5ndUdlYXQ3Z0ZCbkVTRXo2ZU1VVlpyM0o3cmVacDZNdWtyMUhx?=
+ =?utf-8?B?RlpsckQrVEJkOFBuMUNURTBQN25jZHhxS3Vkc3RTMXozQ0hmdlBBeStVQzl4?=
+ =?utf-8?B?dElxeENkeFE2b3RnU21FM05RSm1QMkdLMm9GN1RGL3NsanhvUHF2cWRQTjNG?=
+ =?utf-8?B?ZGY2S1MrUUJrMEtnZW1CcHlyVDVodXRiSlpoZGJ0bmVpSHlLazhVc01yMi9a?=
+ =?utf-8?B?by9sSVVkamZmNDFkUnpQSElrWnppRFlkUmJWMlVTZDFiVkx3b3EwVXRRUnhp?=
+ =?utf-8?B?by9XU2d3NkdDOFNESlJVZ0swcHVXOWg2V1ZKMGNqbnNZUE8wQnZRU2VxYThD?=
+ =?utf-8?B?dVJ5RVhuMzFxdTFCeVhCWm1obHFxcDF2ZGEvMjRaeHgrZlh6QmZQRmUzYUUw?=
+ =?utf-8?B?M2lCbU84TnhNbUM4SnhleWJSdVFRemdvRWlBaDU4Kzk3M2NldGlrQSt0V2pT?=
+ =?utf-8?B?NWJhUHR3K1JCK29ZYnY1ZDlTcStzdTJhcEJKZDJ4aThtalVqREtISkh1eW9W?=
+ =?utf-8?B?bTdIU28xd2hOMjNMbXc4d29qQ2l0bk0rbEhRVzhYUGxJK0VzcmZtcFNDODZT?=
+ =?utf-8?B?ZHFqeWkxcHkwSGFJV1AvRjBlb2Z3Q3hHdzZtbjR5THNyc3ZsTDdVUFZUd012?=
+ =?utf-8?B?ZzhXZzdVbnFycE1BdVdpOXVYZ0RUT3dKV0x2WHNXNkxZQW1HWWlzeGxFeVk1?=
+ =?utf-8?B?N0dVbmxnNVJhZit2a3JxSlFzWnNDT1JHenYzUkRwbVRGM01OSHBZeEpWVGVa?=
+ =?utf-8?Q?ljMAKV1NIxXjj7TNBUwsZY1mb9Pu90gbtY3k4?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1866D4D9B55C9C49995575E3F2406207@FRAP264.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: csgroup.eu
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MRZP264MB2988.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: c09892b5-98f6-4817-2e17-08da4b8650bb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jun 2022 08:42:27.8335
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: L5WNfbiJCpz54pScNH7F7K9X9dMqRNBCoxgr5F21LRGVHNOp9atHwDXjPrFkoIKku5FHSZfhTgnrPF5XvCGKnUoA/zBwhiL/c2/hm9sEirQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB1524
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,205 +141,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "npiggin@gmail.com" <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The platform's RNG must be available before random_init() in order to be
-useful for initial seeding, which in turn means that it needs to be
-called from setup_arch(), rather than from an init call. Fortunately,
-each platform already has a setup_arch function pointer, which means
-it's easy to wire this up for each of the three platforms that have an
-RNG. This commit also removes some noisy log messages that don't add
-much.
-
-Cc: stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- arch/powerpc/platforms/microwatt/rng.c   |  9 ++-------
- arch/powerpc/platforms/microwatt/setup.c |  8 ++++++++
- arch/powerpc/platforms/powernv/rng.c     | 17 ++++-------------
- arch/powerpc/platforms/powernv/setup.c   |  4 ++++
- arch/powerpc/platforms/pseries/rng.c     | 11 ++---------
- arch/powerpc/platforms/pseries/setup.c   |  3 +++
- 6 files changed, 23 insertions(+), 29 deletions(-)
-
-diff --git a/arch/powerpc/platforms/microwatt/rng.c b/arch/powerpc/platforms/microwatt/rng.c
-index 7bc4d1cbfaf0..d13f656910ad 100644
---- a/arch/powerpc/platforms/microwatt/rng.c
-+++ b/arch/powerpc/platforms/microwatt/rng.c
-@@ -29,7 +29,7 @@ static int microwatt_get_random_darn(unsigned long *v)
- 	return 1;
- }
- 
--static __init int rng_init(void)
-+__init void microwatt_rng_init(void)
- {
- 	unsigned long val;
- 	int i;
-@@ -37,12 +37,7 @@ static __init int rng_init(void)
- 	for (i = 0; i < 10; i++) {
- 		if (microwatt_get_random_darn(&val)) {
- 			ppc_md.get_random_seed = microwatt_get_random_darn;
--			return 0;
-+			return;
- 		}
- 	}
--
--	pr_warn("Unable to use DARN for get_random_seed()\n");
--
--	return -EIO;
- }
--machine_subsys_initcall(, rng_init);
-diff --git a/arch/powerpc/platforms/microwatt/setup.c b/arch/powerpc/platforms/microwatt/setup.c
-index 0b02603bdb74..23c996dcc870 100644
---- a/arch/powerpc/platforms/microwatt/setup.c
-+++ b/arch/powerpc/platforms/microwatt/setup.c
-@@ -32,10 +32,18 @@ static int __init microwatt_populate(void)
- }
- machine_arch_initcall(microwatt, microwatt_populate);
- 
-+__init void microwatt_rng_init(void);
-+
-+static void __init microwatt_setup_arch(void)
-+{
-+	microwatt_rng_init();
-+}
-+
- define_machine(microwatt) {
- 	.name			= "microwatt",
- 	.probe			= microwatt_probe,
- 	.init_IRQ		= microwatt_init_IRQ,
-+	.setup_arch		= microwatt_setup_arch,
- 	.progress		= udbg_progress,
- 	.calibrate_decr		= generic_calibrate_decr,
- };
-diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
-index e3d44b36ae98..ef24e72a1b69 100644
---- a/arch/powerpc/platforms/powernv/rng.c
-+++ b/arch/powerpc/platforms/powernv/rng.c
-@@ -84,24 +84,20 @@ static int powernv_get_random_darn(unsigned long *v)
- 	return 1;
- }
- 
--static int __init initialise_darn(void)
-+static void __init initialise_darn(void)
- {
- 	unsigned long val;
- 	int i;
- 
- 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
--		return -ENODEV;
-+		return;
- 
- 	for (i = 0; i < 10; i++) {
- 		if (powernv_get_random_darn(&val)) {
- 			ppc_md.get_random_seed = powernv_get_random_darn;
--			return 0;
-+			return;
- 		}
- 	}
--
--	pr_warn("Unable to use DARN for get_random_seed()\n");
--
--	return -EIO;
- }
- 
- int powernv_get_random_long(unsigned long *v)
-@@ -163,14 +159,12 @@ static __init int rng_create(struct device_node *dn)
- 
- 	rng_init_per_cpu(rng, dn);
- 
--	pr_info_once("Registering arch random hook.\n");
--
- 	ppc_md.get_random_seed = powernv_get_random_long;
- 
- 	return 0;
- }
- 
--static __init int rng_init(void)
-+__init void powernv_rng_init(void)
- {
- 	struct device_node *dn;
- 	int rc;
-@@ -188,7 +182,4 @@ static __init int rng_init(void)
- 	}
- 
- 	initialise_darn();
--
--	return 0;
- }
--machine_subsys_initcall(powernv, rng_init);
-diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 824c3ad7a0fa..a0c5217bc5c0 100644
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -184,6 +184,8 @@ static void __init pnv_check_guarded_cores(void)
- 	}
- }
- 
-+__init void powernv_rng_init(void);
-+
- static void __init pnv_setup_arch(void)
- {
- 	set_arch_panic_timeout(10, ARCH_PANIC_TIMEOUT);
-@@ -203,6 +205,8 @@ static void __init pnv_setup_arch(void)
- 	pnv_check_guarded_cores();
- 
- 	/* XXX PMCS */
-+
-+	powernv_rng_init();
- }
- 
- static void __init pnv_init(void)
-diff --git a/arch/powerpc/platforms/pseries/rng.c b/arch/powerpc/platforms/pseries/rng.c
-index 6268545947b8..d39bfce39aa1 100644
---- a/arch/powerpc/platforms/pseries/rng.c
-+++ b/arch/powerpc/platforms/pseries/rng.c
-@@ -24,19 +24,12 @@ static int pseries_get_random_long(unsigned long *v)
- 	return 0;
- }
- 
--static __init int rng_init(void)
-+__init void pseries_rng_init(void)
- {
- 	struct device_node *dn;
--
- 	dn = of_find_compatible_node(NULL, NULL, "ibm,random");
- 	if (!dn)
--		return -ENODEV;
--
--	pr_info("Registering arch random hook.\n");
--
-+		return;
- 	ppc_md.get_random_seed = pseries_get_random_long;
--
- 	of_node_put(dn);
--	return 0;
- }
--machine_subsys_initcall(pseries, rng_init);
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index afb074269b42..7f3ee2658163 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -779,6 +779,8 @@ static resource_size_t pseries_pci_iov_resource_alignment(struct pci_dev *pdev,
- }
- #endif
- 
-+__init void pseries_rng_init(void);
-+
- static void __init pSeries_setup_arch(void)
- {
- 	set_arch_panic_timeout(10, ARCH_PANIC_TIMEOUT);
-@@ -839,6 +841,7 @@ static void __init pSeries_setup_arch(void)
- 	}
- 
- 	ppc_md.pcibios_root_bridge_prepare = pseries_root_bridge_prepare;
-+	pseries_rng_init();
- }
- 
- static void pseries_panic(char *str)
--- 
-2.35.1
-
+DQoNCkxlIDEwLzA2LzIwMjIgw6AgMDU6MzIsIFJvaGFuIE1jTHVyZSBhIMOpY3JpdMKgOg0KPj4g
+T24gMiBKdW4gMjAyMiwgYXQgMjowMCBhbSwgU2VnaGVyIEJvZXNzZW5rb29sIDxzZWdoZXJAa2Vy
+bmVsLmNyYXNoaW5nLm9yZz4gd3JvdGU6DQo+Pg0KPj4gSGkhDQo+Pg0KPj4gT24gV2VkLCBKdW4g
+MDEsIDIwMjIgYXQgMDM6NDg6NDVQTSArMTAwMCwgUm9oYW4gTWNMdXJlIHdyb3RlOg0KPj4+ICsu
+bWFjcm8gQklOT1BfUkVHUyBvcCwgcmhzLCBzdGFydCwgZW5kDQo+Pj4gKwkuTHJlZz1cc3RhcnQN
+Cj4+PiArCS5yZXB0IChcZW5kIC0gXHN0YXJ0ICsgMSkNCj4+PiArCVxvcCAuTHJlZywgXHJocw0K
+Pj4+ICsJLkxyZWc9LkxyZWcrMQ0KPj4+ICsJLmVuZHINCj4+PiArLmVuZG0NCj4+DQo+PiBUaGlz
+IGlzIGZvciB1bmFyeSBvcGVyYXRpb25zLCBub3QgYmluYXJ5IG9wZXJhdGlvbnMgKHRoZXJlIGlz
+IG9ubHkgb25lDQo+PiBpdGVtIG9uIHRoZSBSSFMpLiAgWW91IGNhbiBpbiBwcmluY2lwbGUgcHV0
+IGEgc3RyaW5nICJhLGIiIGluIHRoZSByaHMNCj4+IHBhcmFtZXRlciwgYnV0IGluIHByYWN0aWNl
+IHlvdSBuZWVkIGEgb3IgYiB0byBkZXBlbmQgb24gdGhlIGxvb3AgY291bnRlcg0KPj4gYXMgd2Vs
+bCwgc28gZXZlbiBzdWNoIHRyaWNraW5lc3Mgd29uJ3QgZG8uICBNYWtlIHRoZSBuYW1pbmcgbGVz
+cw0KPj4gY29uZnVzaW5nLCBtYXliZT8gIE9yIGRvbid0IGhhdmUgYW4gdW51c2VkIGV4dHJhIGxl
+dmVsIG9mIGFic3RyYWN0aW9uIGluDQo+PiB0aGUgZmlyc3QgcGxhY2UgOi0pDQo+Pg0KPj4NCj4+
+IFNlZ2hlcg0KPiANCj4gVGhhbmtzIFNlZ2hlciwgQ2hyaXN0b3BoZSBmb3IgcmV2aWV3aW5nIHRo
+aXMuDQo+IA0KPiBZZXAgSSBzZWUgaG93IGhhdmluZyBhIG1hY3JvIHRvIHBlcmZvcm0gclggPSBy
+WCA8PiBZIGZvciBhcmJpdHJhcnkgaW5maXggPD4gYW5kIG9wZXJhbmQNCj4gaXMgdW5saWtlbHkg
+dG8gZmluZCBtdWNoIHVzZSBvdXRzaWRlIG9mIFpFUk9fR1BSUy4gQXMgSSByZXN1Ym1pdCB0aGlz
+IHBhdGNoIHNlcmllcyBJDQo+IHdpbGwgcmVuYW1lIGl0IHRvIFpFUk9fUkVHUyBvciBzaW1pbGFy
+IHRvIGJlIG1vcmUgZXhwbGljaXRseSBjb3VwbGVkIHRvIFpFUk9fR1BSUy4NCj4gDQo+IFNvbWV0
+aGluZyBsaWtlIHRoaXMgSSB3YXMgdGhpbmtpbmc6DQo+IA0KPiAubWFjcm8gWkVST19SRUdTIHN0
+YXJ0LCBlbmQNCj4gCS5McmVnPVxzdGFydA0KPiAJLnJlcHQgKFxlbmQgLSBcc3RhcnQgKyAxKQ0K
+PiAJbGkJLkxyZWcsIDANCj4gCS5McmVnPS5McmVnKzENCj4gCS5lbmRyDQo+IC5lbmRtDQo+IA0K
+DQpJJ2QgaGF2ZSBhIHByZWZlcmVuY2UgZm9yIHVzaW5nIGEgdmVyYiwgZm9yIGluc3RhbmNlIFpF
+Uk9JU0VfUkVHUyBvciANCkNMRUFSX1JFR1MNCg0KQ2hyaXN0b3BoZQ==
