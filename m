@@ -2,132 +2,105 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4478D5476E5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jun 2022 19:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FE9547B1C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jun 2022 19:04:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LL4jF19Yhz3c93
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jun 2022 03:35:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LLgyk5xv1z3cFN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 03:03:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=D4uHSG6z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XE82b6HJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=2a01:111:f400:7e19::616; helo=fra01-mr2-obe.outbound.protection.outlook.com; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LLgxw6vRVz3blY
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 03:03:16 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=csgroup.eu header.i=@csgroup.eu header.a=rsa-sha256 header.s=selector1 header.b=D4uHSG6z;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XE82b6HJ;
 	dkim-atps=neutral
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com (mail-mr2fra01on0616.outbound.protection.outlook.com [IPv6:2a01:111:f400:7e19::616])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4LLgxr3DKrz4xZK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 03:03:12 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4LLgxr2xjJz4xZc; Mon, 13 Jun 2022 03:03:12 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XE82b6HJ;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LL4hT2LFVz3bq7
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jun 2022 03:34:31 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BhWJyXYnPaumtKpfsO3t8yFGyvBXbciSm6olnEBoaGLXnxO2+bddtF6Yn3lgS3OKsY8qEUfBJySMNLOpD8SBUC0jnXJUzQTh/b8+CkNoM9lERegG/nmpSv0whmRCoBKRSfuQ8nYkMvtJAbee0zdZsJJFSoRA8w/skEeTbaEeWVbAeByfitCgS8RgI93VsEyIAiCVW1A3ayIbQbYlIOPvMCD8acn0x1rLYaDVR5MtV1XxsUOFLh/AmwAmsq/wPSt9CJN0HDUm3YJPtbutO8f83/EAQdXQTJ8N/zmXF+CoKTP+op+Tl/tJUIwu+ve+mLISOWxlzEr3CuUsFt5TpLzKRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h3QdjV12gy/vMBaxMJ2P8R1xYT3+l9M4nCqG+AuA0W4=;
- b=DKcW/jHI2SuVNJz4zm2RZgkUC0MYaktF9Po7fAPGte9ruqSHgCCb+9QGc0MmPp94+oKuEPacoAsIg3o5VwSLeOa8mGhoGk2ubnLIBQnxU/Skh5HMWgNHYSAq40Val9cUdTreb6IaovYVYMSFtlLQZN97c3Ax7vFKKkjwrTWqkeJwr8/eE3hI2I4edWzsXJx+6mK5+2plS5UlmU7yDBo9/xd7MZFIMfww2GAR3LKKbGFfUVh7LtGvm2MyW9I3JLl0DZqazzHxZ5xzexAhM3tgqRGp6JJ99YAVXo7blXRx8mydaxhnBJhrExzqI/JG+nYqcv/U1c43h3ptg7dTNjNFHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=csgroup.eu; dmarc=pass action=none header.from=csgroup.eu;
- dkim=pass header.d=csgroup.eu; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=csgroup.eu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h3QdjV12gy/vMBaxMJ2P8R1xYT3+l9M4nCqG+AuA0W4=;
- b=D4uHSG6z98BhjhatHUCPdpM5urLgsbDvGx7irOK2Ky+ioceIpg2i2YugFaz3dtV3mNDj2DE54QFPTcoit9UX1oP0n4wOALPM9cjvIYetg+6LWJ45Kn9dOZSCG9wAzvX6Ynu5tMdteomza5GtgXmB48z6aAiyXIu4jwCRGrLA87xc+RFTdfP75nBTEGlG6B/Wvwbvi3rOcs9YJyQcIbCzZbOq9bSQomfZ7MRs4h2PbLMc7mAFspcN4mbee2dI6fIUvl8JO5edhfLQK0jpGXSgfmSKNhLl8sz+xbblp6hAXwlwzza5bdysvk9oB8YJGqlXDyEt7GMANCvazepDyVeN7w==
-Received: from MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:3d::7) by
- MR1P264MB3107.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:3c::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5332.11; Sat, 11 Jun 2022 17:34:09 +0000
-Received: from MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
- ([fe80::958f:a26:4984:ffd7]) by MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
- ([fe80::958f:a26:4984:ffd7%7]) with mapi id 15.20.5332.016; Sat, 11 Jun 2022
- 17:34:09 +0000
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Hari Bathini <hbathini@linux.ibm.com>, "bpf@vger.kernel.org"
-	<bpf@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: [PATCH v2 5/5] bpf ppc32: Add instructions for atomic_[cmp]xchg
-Thread-Topic: [PATCH v2 5/5] bpf ppc32: Add instructions for atomic_[cmp]xchg
-Thread-Index: AQHYfOKiP0Kmxh1HNUmQDTasHboavq1KeSSA
-Date: Sat, 11 Jun 2022 17:34:09 +0000
-Message-ID: <f09b59ee-c965-a140-4d03-723830cba66d@csgroup.eu>
-References: <20220610155552.25892-1-hbathini@linux.ibm.com>
- <20220610155552.25892-6-hbathini@linux.ibm.com>
-In-Reply-To: <20220610155552.25892-6-hbathini@linux.ibm.com>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=csgroup.eu;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 11f5fa5c-9391-472a-0c7e-08da4bd0977e
-x-ms-traffictypediagnostic: MR1P264MB3107:EE_
-x-microsoft-antispam-prvs:  <MR1P264MB3107A439F1DC51959D907C06EDA99@MR1P264MB3107.FRAP264.PROD.OUTLOOK.COM>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  12LBXLhLAWUux6qv9IBKYP+g/ni07qRH3JjrloaPOzSvL1C2Piwyy2uDZck+uar8g3gfkkgs4IbV/NKKfsTGiepB7aKcWnonTlWWWpC+BqG0w9NEF9gDRonUSavOX2gQu0DuFyseuvy+79UWiyEsGkUDVIanAnAb/6OWqI6Q16KeUl0eRq0cAxHeqVKwOxrxVPUTv4q6SOkfO27AEyuutI9KjXzklVybrc6Ms5YrAvPRQn9vHuUwZgOCzVwnUvPqW0yPvOU4nQuGhAUXRw17sUv4XWANZhHCLSGlhjDinhJMiuwjiyt1JxU2tf/EWDdsflwBgapBTikDSIJDPNYhTdqiN9zuJXl5ZlOUMWA0noC6EN84Xm2cBXHn9wFwCLUTuMKa0c3tsa5+qiq+UBxbgIhg3qq0o2BT13y2mmSfeA63uycMQTbRu9cCcIcU51wn6MzOXlfcRF1TtfLMOLyRa4FkL8EIsutVlyxsv07rjYOw92Qd3aE1Z5wW4mfZvIbITUSxjFiy0OeFs2tdbapuc8SZFl8eg+ot8xxIcAISdbEDD5lR/m7QVDDE+Q9QBzFh9b/v0s+X8JWTShtAGGZZi979WpYTPirLwTIkGimodcHozddPQnqknAD9gDVTMQICpc5m6Eyqa6sVyGu8sVOFJrd4ZpZxtXY6XzXjwxSPgBrSQ8Gf7Y+Y/r5Tk8fEwu5aHiUFZP+PPcaiUC8+lgnzMWsmnxitw2fKU3VxUwB3rlbiyxf1Ug8ixuK98f+S26j/LPPDKjQtR7nAvF2sP8/Oxg==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230016)(4636009)(366004)(8676002)(7416002)(76116006)(66946007)(66556008)(66476007)(66446008)(64756008)(4326008)(6486002)(6512007)(508600001)(5660300002)(8936002)(91956017)(44832011)(71200400001)(26005)(38070700005)(2906002)(36756003)(316002)(31686004)(38100700002)(186003)(54906003)(122000001)(110136005)(83380400001)(86362001)(6506007)(31696002)(2616005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?eE83N0FCbnl1OHNYcExFZVV5cmZ6d2JhZkFTbm10OStzMS83SFdLcDk3em5a?=
- =?utf-8?B?QURuWWhFT24wNXRhVW8zMC9rbEU0cjlBeFZZTVVKWmExS2txcjV2NkR0ejNB?=
- =?utf-8?B?MUd0bURGZjhIWStRMXdjWnB6djRWeU5jYThwLzdFTHJ6ZXVGY20wb0J4aTZo?=
- =?utf-8?B?STNxNFg1L1Z1VFIxT3FOVG5PSHBaaWo3QnZvSUlxSXhRS0VEVm5QYTdJd20w?=
- =?utf-8?B?OURXQXFObTA1UUtibjZ2T3ZOWFpRdWhpamtaVmErQjlTNXJHSDRvS1FtY3M2?=
- =?utf-8?B?K2ZUcFNYaEZ6MjkxREhSYmRvVDlGTENtbGtJVjJVRkpoN0RJTEFxeDVKdjRt?=
- =?utf-8?B?ZHF5dWRHdnFuRXNKTmRiRUZxZDZFeVlPZE1RY3JYUEFqSDA5c21ZdllEZEhq?=
- =?utf-8?B?WTY0LzIzTkNrVUVoNk5sSGZlbnpqUkExbE9XVXVvOGM0Q0swcElTcENFWEdl?=
- =?utf-8?B?TnBnT3V5UWNGelZSNTBVM1FBejNxRkZTRmlSeXJud3B3Y1I4SW93VkdLVWdq?=
- =?utf-8?B?Yi9vNDBSM3Q3bTVRLzJqZktZeFl5UkpTdFV3Q3lhL3kyN0tkU1RHR3lOMGFC?=
- =?utf-8?B?b0JHV3dVWjBJNnVTSjlOenU0c1hvcEVJdDcxTnp6ZmYreEg4ejNNM3QzalNW?=
- =?utf-8?B?ajNaQnVmSHVzckVnVjZtaitKZ2RjWU9Xb0NiMVhEZFFUU1MvWDlSQUhnMDBS?=
- =?utf-8?B?WVYveG1CMndid092emkyVWxTemhvdkFNZHM1OFRlTm9nVjRqdENUSXVFc01E?=
- =?utf-8?B?Qmd2cVh2anZneXBpeFR4bUlHVHkyMUoxKzhoYncvcHZONmNIMyt3SktiZzN1?=
- =?utf-8?B?bzIxQWhZLzhQb2lMbjNydWJNUTNLZVpqaFVRN0E5ZGIxbHcxbTZ1RkZpSlRP?=
- =?utf-8?B?c2xQK1VkdDBSOGcwM0dnMmxkaTlRRTlpakI1RG10L01LcHlmNjByOWR0QjZX?=
- =?utf-8?B?ekkrMWxJQVV1ZmI2dkdmV3pMM3dLQ2ZMTWZTemFRVCtvT1dwUDQxY0FzbTFt?=
- =?utf-8?B?bnFyMkh0TElob2FCUjF3V1ozNi9jdGFLTmVPZXlUbGEzL3V0QjZKWU1TYlFN?=
- =?utf-8?B?byt4cWxxejkwTjVydjdGNzBRbmZzWmt5bjZ5S2N2bFppYVp1b1FNSm1RZWV6?=
- =?utf-8?B?NVUzZm1rSUU3Qk5ZcG5adnlubDdMYkJBL1pKM1h2aWVRWEQvZTBVUWl0S0wx?=
- =?utf-8?B?bEY1YnhLb1VRbmk3OFdYZk9FSmZqU0hJZllaUU5LZXhxSDZ3UlRLcGhxd2dQ?=
- =?utf-8?B?RG1YOVBXeHQxUmtYRnlMRjlDNWpXVGlVQ2thNFFLbWVSSDVIWmFMZUd3Q1V2?=
- =?utf-8?B?TFI3YWViKzlZRXV0ZEtKQ3gxRnBrR0xhM2RKc0pwdkJ4NU5XWFBKMkluOHNa?=
- =?utf-8?B?NnNjVWk3QkJ5VzZ2bW1ZT09pamwyYUxaaW9oVW9wV01ZUEtDeEVtQVlZeVg2?=
- =?utf-8?B?cGZvb2crY1dhUW5yb3A2ZjdmZTFjRXYxTzlNWWNPMVBuYUp4akdmY1pQRG90?=
- =?utf-8?B?YWx3dlREbVBxc3JXaERQK1h1eDNabHhTc2ZoM3c1UnEwVFVxbVhOb2JTZVlI?=
- =?utf-8?B?UXV3RDE4UnFxZHRIcjdQL1RlbjRLMTZxeXRPdi92dkNDKzluemVKZytXK0xM?=
- =?utf-8?B?TUVYVmZVbnhWQVRia3owWGZXT0VNYVNEOS9ESGFub0FCbkFTS3hObjRiVFpZ?=
- =?utf-8?B?ajNObWhmTjhlUkg3RWl4eFBFMG1OTFh1Wk9LUkp5R0xycFpndEFLNkdacjNJ?=
- =?utf-8?B?c0ozUDVsUWFzUG1TTkJMUWthTU5EUmkwd29sdDRwTlBPQXo3RTJVTXVJZjhD?=
- =?utf-8?B?UHNXNlRCM3VJYkZHY2lXbmZ6L0pybGZ6WE5XNTExa0NXZ09TUDlDSURHZ2Yr?=
- =?utf-8?B?UEpUSndzbzIwbDUvSUhCUURjMURqVndJTEh0TUtiZ2tySHFwaUlNNW1HZnNk?=
- =?utf-8?B?SEEyTzFEa1NNU2tzS3g1TFgwNk5GSjJkdEZrMlJnQkc4N0JlQVFpVXBrTC9M?=
- =?utf-8?B?RXluRjlFZ3BNQkppbG5sU2Vtenk1aEJCTUdPd1Z1dFpScHo4cm5FME8yR3lM?=
- =?utf-8?B?SEd4QjVZNlhaOFlreDZQS2J4RzNKcU9HUFdFQ1NkaU45OVN1SDZqQzFWejRF?=
- =?utf-8?B?K0krZ29pRnJFb1QyNVo0WjV2VFd0WWFBcmc1OTg1M2EvNjYwM1hFR1gxQTkx?=
- =?utf-8?B?anVqWVZHaWFZWWpqbFY0STRVVGlCMVdkTHdxdlNDb1lwM1FDUEJTT1d2cW0v?=
- =?utf-8?B?eDhIM1hXVVZpY2YwdHFicHNvSTJuRGFJU2lZTFRPK3I5SlJON0tUMkRPVWpq?=
- =?utf-8?B?eGFkLzYvdHFCclBaMTltelNMaTdITHdLTXlkUExMUVBqYThvKy82Vkl5Rm9S?=
- =?utf-8?Q?cGNeZq3nfIvZlKkAtVG2rmltopBZOrDVsVpXd?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E52B2CA47083E04A96200B53D803DF9E@FRAP264.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4LLgxq4fz3z4xZK
+	for <linuxppc-dev@ozlabs.org>; Mon, 13 Jun 2022 03:03:10 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25CFjexx009764;
+	Sun, 12 Jun 2022 17:02:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : reply-to : references : mime-version : content-type
+ : in-reply-to; s=pp1; bh=TJtJylOP7ogjKCrysXoMjriFf1a5dRJ/YnNa7fGEQzI=;
+ b=XE82b6HJkQHkmzqb56N3lcNC+ZVNtzYy4Sr27Ec3PSxT+HXs8gFN3sQZ07EDdEaug0Fs
+ zroWopWuvpxmcMRVNoFF8Gj/kp5EgZ85WNqjk72KsOC5sTdgwimxP4qaCGAn9Q0oG2eO
+ hLgIXIrFY5eEswABhxf1+gWifgazE5qSc2GO1Edx3h9PPsUz6BIZcbKCgywEcAUzKAZ1
+ txn00KuEWJVmYd1loSTZ8up7s67Df5EjMkblFEmdH0jN4lA3TIGP1fqOXM8xA9D0lSAo
+ o5DtDl5Ve48KpdXNpuXClBBoMGzF5Clw3aVC1yvCB6rFktz26TwKC8KepqUwUwAIkp8y FA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gn4p4h6qp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 12 Jun 2022 17:02:59 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25CGmdWW021429;
+	Sun, 12 Jun 2022 17:02:59 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gn4p4h6qf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 12 Jun 2022 17:02:59 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25CGom8L018675;
+	Sun, 12 Jun 2022 17:02:57 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma03ams.nl.ibm.com with ESMTP id 3gmjp99n8x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 12 Jun 2022 17:02:56 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25CH2roN18284908
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 12 Jun 2022 17:02:53 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C0B3AA4051;
+	Sun, 12 Jun 2022 17:02:53 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C0DDFA4040;
+	Sun, 12 Jun 2022 17:02:51 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.43.31.82])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+	Sun, 12 Jun 2022 17:02:51 +0000 (GMT)
+Date: Sun, 12 Jun 2022 22:32:48 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [PATCH v6] PCI hotplug: rpaphp: Error out on busy status from
+ get-sensor-state
+Message-ID: <20220612170248.l6ftaneqjfof2jrc@in.ibm.com>
+References: <165099464934.1658371.1526973220374528897.stgit@jupiter>
+ <20220428204740.GA42242@bhelgaas>
 MIME-Version: 1.0
-X-OriginatorOrg: csgroup.eu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MR1P264MB2980.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11f5fa5c-9391-472a-0c7e-08da4bd0977e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Jun 2022 17:34:09.2622
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 9914def7-b676-4fda-8815-5d49fb3b45c8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tvQ0iZ6Q52ItIoB+qx53+c4IjQz4E1Cj0dyBr1IbaTmBWr46zVuuHTaHPrncIv5SI0Efcx2WF2UOGBTcpgrulVN189+X3KyEyc7PgZLOjZw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MR1P264MB3107
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220428204740.GA42242@bhelgaas>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Qeq_uA94OiD7W3Co2q7WRTwHeo6m-oVC
+X-Proofpoint-ORIG-GUID: qVO4gMlyd9cg7qO6huB_tlqlL05oakLp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-12_07,2022-06-09_02,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
+ malwarescore=0 impostorscore=0 mlxscore=0 mlxlogscore=999 spamscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206120084
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,69 +112,214 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Yonghong Song <yhs@fb.com>, KP Singh <kpsingh@kernel.org>, Jordan Niethe <jniethe5@gmail.com>, Martin KaFai Lau <kafai@fb.com>
+Reply-To: mahesh@linux.ibm.com
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>, linux-pci <linux-pci@vger.kernel.org>, Linux Kernel <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@ozlabs.org>, Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQoNCkxlIDEwLzA2LzIwMjIgw6AgMTc6NTUsIEhhcmkgQmF0aGluaSBhIMOpY3JpdMKgOg0KPiBU
-aGlzIGFkZHMgdHdvIGF0b21pYyBvcGNvZGVzIEJQRl9YQ0hHIGFuZCBCUEZfQ01QWENIRyBvbiBw
-cGMzMiwgYm90aA0KPiBvZiB3aGljaCBpbmNsdWRlIHRoZSBCUEZfRkVUQ0ggZmxhZy4gIFRoZSBr
-ZXJuZWwncyBhdG9taWNfY21weGNoZw0KPiBvcGVyYXRpb24gZnVuZGFtZW50YWxseSBoYXMgMyBv
-cGVyYW5kcywgYnV0IHdlIG9ubHkgaGF2ZSB0d28gcmVnaXN0ZXINCj4gZmllbGRzLiBUaGVyZWZv
-cmUgdGhlIG9wZXJhbmQgd2UgY29tcGFyZSBhZ2FpbnN0ICh0aGUga2VybmVsJ3MgQVBJDQo+IGNh
-bGxzIGl0ICdvbGQnKSBpcyBoYXJkLWNvZGVkIHRvIGJlIEJQRl9SRUdfUjAuIEFsc28sIGtlcm5l
-bCdzDQo+IGF0b21pY19jbXB4Y2hnIHJldHVybnMgdGhlIHByZXZpb3VzIHZhbHVlIGF0IGRzdF9y
-ZWcgKyBvZmYuIEpJVCB0aGUNCj4gc2FtZSBmb3IgQlBGIHRvbyB3aXRoIHJldHVybiB2YWx1ZSBw
-dXQgaW4gQlBGX1JFR18wLg0KPiANCj4gICAgQlBGX1JFR19SMCA9IGF0b21pY19jbXB4Y2hnKGRz
-dF9yZWcgKyBvZmYsIEJQRl9SRUdfUjAsIHNyY19yZWcpOw0KPiANCj4gU2lnbmVkLW9mZi1ieTog
-SGFyaSBCYXRoaW5pIDxoYmF0aGluaUBsaW51eC5pYm0uY29tPg0KPiAtLS0NCj4gDQo+IENoYW5n
-ZXMgaW4gdjI6DQo+ICogTW92ZWQgdmFyaWFibGUgZGVjbGFyYXRpb24gdG8gYXZvaWQgbGF0ZSBk
-ZWNsYXJhdGlvbiBlcnJvciBvbg0KPiAgICBzb21lIGNvbXBpbGVycy4NCj4gKiBUcmllZCB0byBt
-YWtlIGNvZGUgcmVhZGFibGUgYW5kIGNvbXBhY3QuDQo+IA0KPiANCj4gICBhcmNoL3Bvd2VycGMv
-bmV0L2JwZl9qaXRfY29tcDMyLmMgfCAyNSArKysrKysrKysrKysrKysrKysrKysrLS0tDQo+ICAg
-MSBmaWxlIGNoYW5nZWQsIDIyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+IA0KPiBk
-aWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL25ldC9icGZfaml0X2NvbXAzMi5jIGIvYXJjaC9wb3dl
-cnBjL25ldC9icGZfaml0X2NvbXAzMi5jDQo+IGluZGV4IDI4ZGM2YTFhOGYyZi4uNDNmMWM3NmQ0
-OGNlIDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvbmV0L2JwZl9qaXRfY29tcDMyLmMNCj4g
-KysrIGIvYXJjaC9wb3dlcnBjL25ldC9icGZfaml0X2NvbXAzMi5jDQo+IEBAIC0yOTcsNiArMjk3
-LDcgQEAgaW50IGJwZl9qaXRfYnVpbGRfYm9keShzdHJ1Y3QgYnBmX3Byb2cgKmZwLCB1MzIgKmlt
-YWdlLCBzdHJ1Y3QgY29kZWdlbl9jb250ZXh0ICoNCj4gICAJCXUzMiBheF9yZWcgPSBicGZfdG9f
-cHBjKEJQRl9SRUdfQVgpOw0KPiAgIAkJdTMyIHRtcF9yZWcgPSBicGZfdG9fcHBjKFRNUF9SRUcp
-Ow0KPiAgIAkJdTMyIHNpemUgPSBCUEZfU0laRShjb2RlKTsNCj4gKwkJdTMyIHNhdmVfcmVnLCBy
-ZXRfcmVnOw0KPiAgIAkJczE2IG9mZiA9IGluc25baV0ub2ZmOw0KPiAgIAkJczMyIGltbSA9IGlu
-c25baV0uaW1tOw0KPiAgIAkJYm9vbCBmdW5jX2FkZHJfZml4ZWQ7DQo+IEBAIC03OTksNiArODAw
-LDkgQEAgaW50IGJwZl9qaXRfYnVpbGRfYm9keShzdHJ1Y3QgYnBmX3Byb2cgKmZwLCB1MzIgKmlt
-YWdlLCBzdHJ1Y3QgY29kZWdlbl9jb250ZXh0ICoNCj4gICAJCSAqIEJQRl9TVFggQVRPTUlDIChh
-dG9taWMgb3BzKQ0KPiAgIAkJICovDQo+ICAgCQljYXNlIEJQRl9TVFggfCBCUEZfQVRPTUlDIHwg
-QlBGX1c6DQo+ICsJCQlzYXZlX3JlZyA9IF9SMDsNCj4gKwkJCXJldF9yZWcgPSBzcmNfcmVnOw0K
-PiArDQo+ICAgCQkJYnBmX3NldF9zZWVuX3JlZ2lzdGVyKGN0eCwgdG1wX3JlZyk7DQo+ICAgCQkJ
-YnBmX3NldF9zZWVuX3JlZ2lzdGVyKGN0eCwgYXhfcmVnKTsNCj4gICANCj4gQEAgLTgyOSw2ICs4
-MzMsMjEgQEAgaW50IGJwZl9qaXRfYnVpbGRfYm9keShzdHJ1Y3QgYnBmX3Byb2cgKmZwLCB1MzIg
-KmltYWdlLCBzdHJ1Y3QgY29kZWdlbl9jb250ZXh0ICoNCj4gICAJCQljYXNlIEJQRl9YT1IgfCBC
-UEZfRkVUQ0g6DQo+ICAgCQkJCUVNSVQoUFBDX1JBV19YT1IoX1IwLCBfUjAsIHNyY19yZWcpKTsN
-Cj4gICAJCQkJYnJlYWs7DQo+ICsJCQljYXNlIEJQRl9DTVBYQ0hHOg0KPiArCQkJCS8qDQo+ICsJ
-CQkJICogUmV0dXJuIG9sZCB2YWx1ZSBpbiBCUEZfUkVHXzAgZm9yIEJQRl9DTVBYQ0hHICYNCj4g
-KwkJCQkgKiBpbiBzcmNfcmVnIGZvciBvdGhlciBjYXNlcy4NCj4gKwkJCQkgKi8NCj4gKwkJCQly
-ZXRfcmVnID0gYnBmX3RvX3BwYyhCUEZfUkVHXzApOw0KPiArDQo+ICsJCQkJLyogQ29tcGFyZSB3
-aXRoIG9sZCB2YWx1ZSBpbiBCUEZfUkVHXzAgKi8NCj4gKwkJCQlFTUlUKFBQQ19SQVdfQ01QVyhi
-cGZfdG9fcHBjKEJQRl9SRUdfMCksIF9SMCkpOw0KPiArCQkJCS8qIERvbid0IHNldCBpZiBkaWZm
-ZXJlbnQgZnJvbSBvbGQgdmFsdWUgKi8NCj4gKwkJCQlQUENfQkNDX1NIT1JUKENPTkRfTkUsIChj
-dHgtPmlkeCArIDMpICogNCk7DQo+ICsJCQkJZmFsbHRocm91Z2g7DQo+ICsJCQljYXNlIEJQRl9Y
-Q0hHOg0KPiArCQkJCXNhdmVfcmVnID0gc3JjX3JlZzsNCg0KSSdtIGEgYml0IGxvc3QsIHdoZW4g
-c2F2ZV9yZWcgaXMgc3JjX3JlZywgZG9uJ3Qgd2UgZXhwZWN0IHRoZSB1cHBlciBwYXJ0IA0KKGll
-IHNyY19yZWcgLSAxKSB0byBiZSBleHBsaWNpdGVseSB6ZXJvaXNlZCA/DQoNCj4gKwkJCQlicmVh
-azsNCj4gICAJCQlkZWZhdWx0Og0KPiAgIAkJCQlwcl9lcnJfcmF0ZWxpbWl0ZWQoImVCUEYgZmls
-dGVyIGF0b21pYyBvcCBjb2RlICUwMnggKEAlZCkgdW5zdXBwb3J0ZWRcbiIsDQo+ICAgCQkJCQkJ
-ICAgY29kZSwgaSk7DQo+IEBAIC04MzYsMTUgKzg1NSwxNSBAQCBpbnQgYnBmX2ppdF9idWlsZF9i
-b2R5KHN0cnVjdCBicGZfcHJvZyAqZnAsIHUzMiAqaW1hZ2UsIHN0cnVjdCBjb2RlZ2VuX2NvbnRl
-eHQgKg0KPiAgIAkJCX0NCj4gICANCj4gICAJCQkvKiBzdG9yZSBuZXcgdmFsdWUgKi8NCj4gLQkJ
-CUVNSVQoUFBDX1JBV19TVFdDWChfUjAsIHRtcF9yZWcsIGRzdF9yZWcpKTsNCj4gKwkJCUVNSVQo
-UFBDX1JBV19TVFdDWChzYXZlX3JlZywgdG1wX3JlZywgZHN0X3JlZykpOw0KPiAgIAkJCS8qIHdl
-J3JlIGRvbmUgaWYgdGhpcyBzdWNjZWVkZWQgKi8NCj4gICAJCQlQUENfQkNDX1NIT1JUKENPTkRf
-TkUsIHRtcF9pZHgpOw0KPiAgIA0KPiAgIAkJCS8qIEZvciB0aGUgQlBGX0ZFVENIIHZhcmlhbnQs
-IGdldCBvbGQgZGF0YSBpbnRvIHNyY19yZWcgKi8NCj4gICAJCQlpZiAoaW1tICYgQlBGX0ZFVENI
-KSB7DQo+IC0JCQkJRU1JVChQUENfUkFXX01SKHNyY19yZWcsIGF4X3JlZykpOw0KPiArCQkJCUVN
-SVQoUFBDX1JBV19NUihyZXRfcmVnLCBheF9yZWcpKTsNCj4gICAJCQkJaWYgKCFmcC0+YXV4LT52
-ZXJpZmllcl96ZXh0KQ0KPiAtCQkJCQlFTUlUKFBQQ19SQVdfTEkoc3JjX3JlZ19oLCAwKSk7DQo+
-ICsJCQkJCUVNSVQoUFBDX1JBV19MSShyZXRfcmVnIC0gMSwgMCkpOyAvKiBoaWdoZXIgMzItYml0
-ICovDQo+ICAgCQkJfQ0KPiAgIAkJCWJyZWFrOw0KPiAgIA==
+On 2022-04-28 15:47:40 Thu, Bjorn Helgaas wrote:
+> On Tue, Apr 26, 2022 at 11:07:39PM +0530, Mahesh Salgaonkar wrote:
+> > When certain PHB HW failure causes phyp to recover PHB, it marks the PE
+> > state as temporarily unavailable until recovery is complete. This also
+> > triggers an EEH handler in Linux which needs to notify drivers, and perform
+> > recovery. But before notifying the driver about the PCI error it uses
+> > get_adapter_state()->get-sensor-state() operation of the hotplug_slot to
+> > determine if the slot contains a device or not. if the slot is empty, the
+>                                                   If
+> > recovery is skipped entirely.
+> > 
+> > However on certain PHB failures, the rtas call get-sensor-state() returns
+> > extended busy error (9902) until PHB is recovered by phyp. Once PHB is
+> > recovered, the get-sensor-state() returns success with correct presence
+> > status. The RTAS call interface rtas_get_sensor() loops over the rtas call
+> > on extended delay return code (9902) until the return value is either
+> > success (0) or error (-1). This causes the EEH handler to get stuck for ~6
+> > seconds before it could notify that the pci error has been detected and
+> > stop any active operations. Hence with running I/O traffic, during this 6
+> > seconds, the network driver continues its operation and hits a timeout
+> > (netdev watchdog). On timeouts, network driver go into ffdc capture mode
+> 
+> I assume ffdc == First Failure Data Capture (please expand and remove
+> the redundant "capture")  Is this a powerpc thing?  "ffdc" doesn't
+> occur in drivers/net, so I don't know what network driver this refers
+> to.
+
+Sorry for delay in response.
+
+What I meant by ffdc here is that bnx2 driver calls bnx2x_panic_dump()
+soon after netdev watchdog timeout, and starts dumping additional debug
+information to console.
+
+======
+[ 9416.991596] bnx2x: [bnx2x_panic_dump:930(enP19p1s0f1)]begin crash dump -----------------
+[ 9416.991599] bnx2x: [bnx2x_panic_dump:940(enP19p1s0f1)]def_idx(0x438)  def_att_idx(0x4)  attn_state(0x0)  spq_prod_idx(0x42) next_stats_cnt(0x413)
+[ 9416.991604] bnx2x: [bnx2x_panic_dump:945(enP19p1s0f1)]DSB: attn bits(0x0)  ack(0x100)  id(0x0)  idx(0x4)
+[ 9416.991608] bnx2x: [bnx2x_panic_dump:946(enP19p1s0f1)]     def (0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x43c 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0)  igu_sb_id(0xff)  igu_seg_id(0xff) pf_id(0xff)  vnic_id(0xff)  vf_id(0xff)  vf_valid (0xff) state(0xff)
+[...]
+[...]
+[ 9417.778071] bnx2x: [bnx2x_mc_assert:751(enP19p1s0f1)]USTORM_ASSERT_INDEX 0x2f = 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+[ 9417.778077] bnx2x: [bnx2x_mc_assert:751(enP19p1s0f1)]USTORM_ASSERT_INDEX 0x30 = 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+[ 9417.778083] bnx2x: [bnx2x_mc_assert:751(enP19p1s0f1)]USTORM_ASSERT_INDEX 0x31 = 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+[ 9417.778086] bnx2x: [bnx2x_mc_assert:763(enP19p1s0f1)]Chip Revision: everest3, FW Version: 7_13_15
+[ 9417.778091] bnx2x: [bnx2x_panic_dump:1202(enP19p1s0f1)]end crash dump -----------------
+======
+
+> 
+> > and reset path assuming the PCI device is in fatal condition. This
+> > sometimes causes EEH recovery to fail. This impacts the ssh connection and
+> > leads to the system being inaccessible.
+> > 
+> > ------------
+> > [52732.244731] DEBUG: ibm_read_slot_reset_state2()
+> > [52732.244762] DEBUG: ret = 0, rets[0]=5, rets[1]=1, rets[2]=4000, rets[3]=>
+> > [52732.244798] DEBUG: in eeh_slot_presence_check
+> > [52732.244804] DEBUG: error state check
+> > [52732.244807] DEBUG: Is slot hotpluggable
+> > [52732.244810] DEBUG: hotpluggable ops ?
+> > [52732.244953] DEBUG: Calling ops->get_adapter_status
+> > [52732.244958] DEBUG: calling rpaphp_get_sensor_state
+> > [52736.564262] ------------[ cut here ]------------
+> > [52736.564299] NETDEV WATCHDOG: enP64p1s0f3 (tg3): transmit queue 0 timed o>
+> > [52736.564324] WARNING: CPU: 1442 PID: 0 at net/sched/sch_generic.c:478 dev>
+> > [...]
+> > [52736.564505] NIP [c000000000c32368] dev_watchdog+0x438/0x440
+> > [52736.564513] LR [c000000000c32364] dev_watchdog+0x434/0x440
+> > ------------
+> > 
+> > To avoid this issue, fix the pci hotplug driver (rpaphp) to return an error
+> > if the slot presence state can not be detected immediately while PE is in
+> > EEH recovery state. Current implementation uses rtas_get_sensor() API which
+> > blocks the slot check state until rtas call returns success. Change
+> > rpaphp_get_sensor_state() to invoke rtas_call(get-sensor-state) directly
+> > only if the respective pe is in EEH recovery state, and take actions based
+> > on rtas return status.
+> 
+> I'm not too clear on what the problem is.  I guess you don't want the
+> netdev watchdog timeout.  Is the NIC still operating?  It's just the
+> PHB leading to the NIC that has an issue?
+
+Yes, NIC stops functioning. Since EEH handler delays the reporting of
+PCI error to driver, it starts its own recovery while pHyp is still
+recovering the PHB.  As part of recovery, driver tries to reset the
+device and it keeps failing since every PCI read/write returns ff's. And
+when EEH recovery kicks-in, the driver is unable to recover the device.
+To get the NIC working again it needs a reboot or re-assign the I/O
+adapter from HMC. Hence, it becomes important to inform driver about the
+PCI error detection as early as possible. This way driver is aware of PCI
+error and waits for EEH handler's next action for successful recovery.
+This way driver does not try its own recovery to mess things up while
+pHyp is still recovering the PHB.
+
+[ 9531.168587] EEH: Beginning: 'slot_reset'
+[ 9531.168601] PCI 0013:01:00.0#10000: EEH: Invoking bnx2x->slot_reset()
+[...]
+[ 9614.110094] bnx2x: [bnx2x_func_stop:9129(enP19p1s0f0)]FUNC_STOP ramrod failed. Running a dry transaction
+[ 9614.110300] bnx2x: [bnx2x_igu_int_disable:902(enP19p1s0f0)]BUG! Proper val not read from IGU!
+[ 9629.178067] bnx2x: [bnx2x_fw_command:3055(enP19p1s0f0)]FW failed to respond!
+[ 9629.178085] bnx2x 0013:01:00.0 enP19p1s0f0: bc 7.10.4
+[ 9629.178091] bnx2x: [bnx2x_fw_dump_lvl:789(enP19p1s0f0)]Cannot dump MCP info while in PCI error
+[ 9644.241813] bnx2x: [bnx2x_io_slot_reset:14245(enP19p1s0f0)]IO slot reset --> driver unload
+[...]
+[ 9644.241819] PCI 0013:01:00.0#10000: EEH: bnx2x driver reports: 'disconnect'
+[ 9644.241823] PCI 0013:01:00.1#10000: EEH: Invoking bnx2x->slot_reset()
+[ 9644.241827] bnx2x: [bnx2x_io_slot_reset:14229(enP19p1s0f1)]IO slot reset initializing...
+[ 9644.241916] bnx2x 0013:01:00.1: enabling device (0140 -> 0142)
+[ 9644.258604] bnx2x: [bnx2x_io_slot_reset:14245(enP19p1s0f1)]IO slot reset --> driver unload
+[ 9644.258612] PCI 0013:01:00.1#10000: EEH: bnx2x driver reports: 'disconnect'
+[ 9644.258615] EEH: Finished:'slot_reset' with aggregate recovery state:'disconnect'
+[ 9644.258620] EEH: Unable to recover from failure from PHB#13-PE#10000.
+[ 9644.261811] EEH: Beginning: 'error_detected(permanent failure)'
+[...]
+[ 9644.261823] EEH: Finished:'error_detected(permanent failure)'
+
+> 
+> Apparently the remedy is to return -ENODEV (from SLOT_NOT_USABLE ==
+> -9002) from rpaphp_get_sensor_state() instead of doing the retries.
+> It would be good to explain why *that* is safe.
+
+This remedy is only for PE which is in EEH recovery mode. In all other
+cases there is no functionality change. This way EEH handler will not be
+blocked on rpaphp_get_sensor_state() and can immediately notify driver
+about the PCI error and stop any active operations.
+
+> 
+> > In normal cases (non-EEH case) rpaphp_get_sensor_state() will continue to
+> > invoke rtas_get_sensor() as it was earlier with no change in existing
+> > behavior.
+> 
+> Nits:
+> Follow historical convention in subject line.
+> s/phyp/pHyp/   (or whatever the normal styling is)
+> s/pe/PE/       (used inconsistently above and in comment)
+> s/rtas/RTAS/   (Michael mentioned this already, but I guess you missed some)
+> s/pci/PCI/
+> s/ffdc/First Failure Data Capture/   (or the correct expansion)
+> Make similar changes in the comment below.
+> 
+
+Sure, will do.
+
+[...]
+> > +}
+> > +
+> > +/*
+> > + * get_adapter_status() can be called by the EEH handler during EEH recovery.
+> > + * On certain PHB failures, the rtas call get-sensor-state() returns extended
+> > + * busy error (9902) until PHB is recovered by phyp. The rtas call interface
+> > + * rtas_get_sensor() loops over the rtas call on extended delay return code
+> > + * (9902) until the return value is either success (0) or error (-1). This
+> > + * causes the EEH handler to get stuck for ~6 seconds before it could notify
+> > + * that the pci error has been detected and stop any active operations. This
+> > + * sometimes causes EEH recovery to fail. To avoid this issue, invoke
+> > + * rtas_call(get-sensor-state) directly if the respective pe is in EEH recovery
+> > + * state and return -EBUSY error based on rtas return status. This will help
+> > + * the EEH handler to notify the driver about the pci error immediately and
+> > + * successfully proceed with EEH recovery steps.
+> > + */
+> > +static int __rpaphp_get_sensor_state(struct slot *slot, int *state)
+> > +{
+> > +	int rc;
+> > +#ifdef CONFIG_EEH
+> > +	int token = rtas_token("get-sensor-state");
+> > +	struct pci_dn *pdn;
+> > +	struct eeh_pe *pe;
+> > +	struct pci_controller *phb = PCI_DN(slot->dn)->phb;
+> > +
+> > +	if (token == RTAS_UNKNOWN_SERVICE)
+> > +		return -ENOENT;
+> > +
+> > +	/*
+> > +	 * Fallback to existing method for empty slot or pe isn't in EEH
+> > +	 * recovery.
+> > +	 */
+> > +	if (list_empty(&PCI_DN(phb->dn)->child_list))
+> > +		goto fallback;
+> > +
+> > +	pdn = list_first_entry(&PCI_DN(phb->dn)->child_list,
+> > +			       struct pci_dn, list);
+> 
+> I guess you don't need locking to ensure that child_list doesn't
+> become empty between the list_empty() and the list_first_entry()?
+
+Maybe I can switch to use of list_first_entry_or_null() ?
+
+> I didn't see locking at other places that traverse it, but it's not
+> obvious to me what protects it.
+> 
+> > +	pe = eeh_dev_to_pe(pdn->edev);
+> > +	if (pe && (pe->state & EEH_PE_RECOVERING)) {
+> > +		rc = rtas_call(token, 2, 2, state, DR_ENTITY_SENSE,
+> > +			       slot->index);
+> > +		if (rc)
+> > +			rc = rtas_to_errno(rc);
+> > +		return rc;
+> 
+> I'd probably make rtas_to_errno(0) return 0, then do:
+> 
+>   return rtas_to_errno(rc);
+> 
+
+Agree.
+
+Thanks,
+-Mahesh.
