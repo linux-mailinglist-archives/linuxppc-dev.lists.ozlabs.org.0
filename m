@@ -1,49 +1,64 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8127547C81
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jun 2022 23:35:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32859547D42
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 03:16:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LLnzV33Nvz3ch4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 07:35:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LLtvF13F7z3cC1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 11:16:41 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PxWK/9l6;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2001:67c:670:201:290:27ff:fe1d:cc33; helo=metis.ext.pengutronix.de; envelope-from=ukl@pengutronix.de; receiver=<UNKNOWN>)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PxWK/9l6;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LLnz20ry9z3bm7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 07:34:35 +1000 (AEST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1o0VDq-0007Pl-1K; Sun, 12 Jun 2022 23:34:14 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1o0VDj-000AuT-3g; Sun, 12 Jun 2022 23:34:06 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1o0VDh-00FuUl-Rp; Sun, 12 Jun 2022 23:34:05 +0200
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Anatolij Gustschin <agust@denx.de>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/52xx: Mark gpt driver as not removable
-Date: Sun, 12 Jun 2022 23:34:00 +0200
-Message-Id: <20220612213400.159257-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.36.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LLttZ3Sbnz3bm0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 11:16:06 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 019D4611FC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 01:16:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAE0C3411F
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 01:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1655082960;
+	bh=T/oPYXJvfTUUTAn3CsqoozPh9/pXSGnZmlhYNE8gbWs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PxWK/9l6TdsQa77yV2AJPnGPvbYWhjRLP+wFfrNAXLjgtstoiHZXCMoo8B2IqcL7y
+	 rJYzFIT+mHg3ZKrHvaheUxROxBUNvqFs2qlykv4MpcQSZOCcE5InVYzVY9gAedqrzl
+	 FnuwwSzIfvkZHuyrFJ7SxGf5qezL+KsNEXhVx5VKfPjeumd7apyl49oYKlxtRU1zpg
+	 GDBh5Hgh8YUFAxR7RJZPuea54fZ5P93OWebgMT4J8xA0g1zF/FoCx8KzlVZ5id19aY
+	 dSaS71/WhW/0o+WHBrRP1zFeukLpZRbthXoRShYwKaOPOzZU843Ve5m0UWJoV8qtRs
+	 VsQDIkfPoli1Q==
+Received: by mail-ua1-f53.google.com with SMTP id v19so1673584uae.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jun 2022 18:16:00 -0700 (PDT)
+X-Gm-Message-State: AOAM533IylUj6m0lKNhJj2G8I37TLnzUcqaHd2ffSuS19zNCMwB5fC2O
+	7vzKTSCojLGA0riCVo35dCIqgQJfHmCOP9Jerqw=
+X-Google-Smtp-Source: ABdhPJy022BVkvpX4bwvrgAxTSG7Jz6gfQIdan6W4shKCc4lN35Y4ktHFEjUhhT0WI19MsTm4e13W+ximSNeINXMAlQ=
+X-Received: by 2002:ab0:3459:0:b0:378:ec81:4a8b with SMTP id
+ a25-20020ab03459000000b00378ec814a8bmr14374212uaq.83.1655082959409; Sun, 12
+ Jun 2022 18:15:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1608; h=from:subject; bh=Hh648+gLAqK/mB1nufVXQVV3QN/Ix3v7rjvdmjuOOME=; b=owEBbQGS/pANAwAKAcH8FHityuwJAcsmYgBiplu+v888DLJBwL+hApWQurNwIl0i9W+bQXyekIHe wiNUfDWJATMEAAEKAB0WIQR+cioWkBis/z50pAvB/BR4rcrsCQUCYqZbvgAKCRDB/BR4rcrsCWUUB/ wON2CQHL15u3l4dG78DDc1nHxI7aSDZp7mzIFN7wYzjBc0ckEEz9afK//KJfJvVGrw7wEOv0ZaBWYD IEQV1Umglnn7DRA4EAbWyhIpHpOnyhYGL2v1/JdomzxK4BR74+qZnmNlCT4IuNcTKhkaqxn2VLalTb xSuXzvWHeWMUcLG2YQ1nlwkV5LRh4ZjnQ4yRbO4dWaTknCCelPOigeDXRRDfo6Z5nZvChn2BNq8OFj NOGlz9LrJ0/R/bngneyfpg8sUVaqw2qyH6Vc3IXa9L13CVUZPR6yKq0QH6go5rpe+AFoK6AAbzEgt6 G/DpMaL7OBDH0IljUAA2/3M5W9PZ6k
-X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+References: <20220405071314.3225832-1-guoren@kernel.org> <20220405071314.3225832-3-guoren@kernel.org>
+ <20220608094108.GA18122@asgard.redhat.com>
+In-Reply-To: <20220608094108.GA18122@asgard.redhat.com>
+From: Guo Ren <guoren@kernel.org>
+Date: Mon, 13 Jun 2022 09:15:48 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTQhFbN3mK0jco=NAKZr4qCgvX4zkw3h6jdffr66Rz7REQ@mail.gmail.com>
+Message-ID: <CAJF2gTQhFbN3mK0jco=NAKZr4qCgvX4zkw3h6jdffr66Rz7REQ@mail.gmail.com>
+Subject: Re: [PATCH V12 02/20] uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64
+ in fcntl.h
+To: Eugene Syromiatnikov <esyr@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,55 +70,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org, kernel@pengutronix.de, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, the arch/x86 maintainers <x86@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Nathan Chancellor <nathan@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, sparclinux <sparclinux@vger.kernel.org>, linux-riscv <linux-riscv@lists.infradead.org>, ldv@strace.io, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>, Linux ARM <linux-arm-kernel@lists.infradead.org>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Returning an error code (here -EBUSY) from a remove callback doesn't
-prevent the driver from being unloaded. The only effect is that an error
-message is emitted and the driver is removed anyhow.
+On Wed, Jun 8, 2022 at 5:41 PM Eugene Syromiatnikov <esyr@redhat.com> wrote=
+:
+>
+> On Tue, Apr 05, 2022 at 03:12:56PM +0800, guoren@kernel.org wrote:
+> > From: Christoph Hellwig <hch@lst.de>
+> >
+> > Note that before this change they were never visible to userspace due
+> > to the fact that CONFIG_64BIT is only set for kernel builds.
+>
+> > -#ifndef CONFIG_64BIT
+> > +#if __BITS_PER_LONG =3D=3D 32 || defined(__KERNEL__)
+>
+> Actually, it's quite the opposite: "ifndef" usage made it vailable at all=
+ times
+> to the userspace, and this change has actually broken building strace
+> with the latest kernel headers[1][2].  There could be some debate
+> whether having these F_*64 definitions exposed to the user space 64-bit
+> applications, but it seems that were no harm (as they were exposed alread=
+y
+> for quite some time), and they are useful at least for strace for compat
+> application tracing purposes.
+>
+> [1] https://github.com/strace/strace/runs/6779763146?check_suite_focus=3D=
+true#step:4:3222
+> [2] https://pipelines.actions.githubusercontent.com/serviceHosts/e5309ebd=
+-8a2f-43f4-a212-b52080275b5d/_apis/pipelines/1/runs/1473/signedlogcontent/1=
+2?urlExpires=3D2022-06-08T09%3A37%3A13.9248496Z&urlSigningMethod=3DHMACV1&u=
+rlSignature=3DfIT7vd0O4NNRwzwKWLXY4UVZBIIF3XiVI9skAsGvV0I%3D
+>
+Yes, there is no CONFIG_64BIT in userspace, we shouldn't limit it with
+(__BITS_PER_LONG =3D=3D 32 || defined(__KERNEL__)) to break the
+compatibility. Just export F_*64 definitions permanently.
 
-So instead drop the remove function (which is equivalent to returning zero)
-and set the suppress_bind_attrs property to make it impossible to unload
-the driver via sysfs.
+--=20
+Best Regards
+ Guo Ren
 
-This is a preparation for making platform remove callbacks return void.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- arch/powerpc/platforms/52xx/mpc52xx_gpt.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-index 968f5b727273..b2c24cab4b1e 100644
---- a/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-+++ b/arch/powerpc/platforms/52xx/mpc52xx_gpt.c
-@@ -755,11 +755,6 @@ static int mpc52xx_gpt_probe(struct platform_device *ofdev)
- 	return 0;
- }
- 
--static int mpc52xx_gpt_remove(struct platform_device *ofdev)
--{
--	return -EBUSY;
--}
--
- static const struct of_device_id mpc52xx_gpt_match[] = {
- 	{ .compatible = "fsl,mpc5200-gpt", },
- 
-@@ -772,10 +767,10 @@ static const struct of_device_id mpc52xx_gpt_match[] = {
- static struct platform_driver mpc52xx_gpt_driver = {
- 	.driver = {
- 		.name = "mpc52xx-gpt",
-+		.suppress_bind_attrs = true,
- 		.of_match_table = mpc52xx_gpt_match,
- 	},
- 	.probe = mpc52xx_gpt_probe,
--	.remove = mpc52xx_gpt_remove,
- };
- 
- static int __init mpc52xx_gpt_init(void)
-
-base-commit: f2906aa863381afb0015a9eb7fefad885d4e5a56
--- 
-2.36.1
-
+ML: https://lore.kernel.org/linux-csky/
