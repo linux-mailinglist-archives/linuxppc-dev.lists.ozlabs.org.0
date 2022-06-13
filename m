@@ -2,61 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46DB5484D2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 13:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807C15484D3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 13:32:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LM8Xp5dZpz3f9g
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 21:31:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LM8YS2z2Mz3brp
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 21:32:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KfgXbb7S;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hln/7KIU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=mhiramat@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=jiangshanlai@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KfgXbb7S;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hln/7KIU;
 	dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LLsFT4S3mz3bks
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 10:02:21 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 2A92BCE0EC7;
-	Mon, 13 Jun 2022 00:02:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5FFC34115;
-	Mon, 13 Jun 2022 00:01:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655078536;
-	bh=ZlQBYr8CVFKg9jC19bbC2S1Ejn+8iBBKa/BTt5EXxNE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KfgXbb7SVWFGWbNXSuj16bpGceUsLtbDu1Hewt3CIJPbVPDc+xtiyzOSrQiSfJ3L5
-	 V5Nf70q9aNZ9pP28hqCcRB82eBPGnElrWZOc+Jddd6fTOaRWgSoINxmSJrnG1bzPJ7
-	 5ZuprE6bDAzV6ZNjZBF0A7gpmfjtQmeOIGu2fNilLUuiiu1FSE40vcKKC0MsJaNJwh
-	 pBDnu9DBKYoe6n0hxC5YypdAubYP0kE0WkRnj3EbBwdD/PCFyaR+mKjVYvBZ8b1/nO
-	 JWT1yveTzJdM1Eej+Ox9IUke9l8mofawIhq3C9185eoPW8CeCvmxzr/ba+FtPTbAt/
-	 jkwNZn9Cqb+hA==
-Date: Mon, 13 Jun 2022 09:01:54 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] kprobes: Enable tracing for mololithic kernel images
-Message-Id: <20220613090154.13331896ce8692afc0584cce@kernel.org>
-In-Reply-To: <de3ab735-54f7-c97b-1d2f-bed0ad4ff366@csgroup.eu>
-References: <20220608000014.3054333-1-jarkko@profian.com>
-	<CAJF2gTQgCn2CyZ4+VBqEEBT2b4+1KxoEXxrd+Ritk=58+U8EFA@mail.gmail.com>
-	<YqAy0qjI4Lktk/uJ@iki.fi>
-	<20220608232115.ccd4399f4a1d133e9b65c2a9@kernel.org>
-	<CAPhsuW6iUieQvA6KqzSLgtxmjkVSWCuVwNA338DATb_myHxo7w@mail.gmail.com>
-	<YqHx1d+MwRLLzGQe@iki.fi>
-	<CAMj1kXGGyO-DL9hjKYKR2sp87s4KExiQybES8pp4JgqJcHkfLA@mail.gmail.com>
-	<20220612211802.30a16623e8b0a55122b02386@kernel.org>
-	<de3ab735-54f7-c97b-1d2f-bed0ad4ff366@csgroup.eu>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LM4R20X5tz308C
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 18:26:21 +1000 (AEST)
+Received: by mail-wm1-x334.google.com with SMTP id x6-20020a1c7c06000000b003972dfca96cso2625473wmc.4
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 01:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
+        b=hln/7KIUboOODQa9/Iv7zWAXFI8kFLhiLL+AWnA7ZL0itAJaB93eguKFQupB8Lv94a
+         mnMuLqlfVsMy6aSBFmNweaacWKXWw7aT6TScazfBGhspJqqH/PMOPWdnnnaxNLaf842d
+         D+3NPCattkXMe8VyippSy6AVlz1Q90Igxi/lQII1yr2hkIK0YZRpsj0TKs2Px7tXlVgY
+         915w6r1r+N9IHNGMPf7O4C6rOlcjLzR4xSEqc3Zfq8tMbY0ayFsU19Cug+0HkT25Saig
+         zkxTdXbzsbpEfsV6HhW0WtRME3JJZVdyKx57BtFZ0WE2gh0TSNH76QSkgUTVIoEuHNxT
+         f/gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
+        b=lIV6THk+L6WMesHoiSKWEMvnMifUEEyCh0NZ177rO55i/NEVINe8XGciIYDdAQ2rIX
+         uBBAxhiu9RL4Rqmn7AfYwmFS8HrDU8WWDZpzbFnSIgn/lS7a5u8eVM+409kmZHurcKX1
+         9WwdGodjRT4w4Ume7jXDx9YCOfmHd+r1sPYZJFLTXWxP8/42zr/3Ot4WfGZsf60Pj+Fv
+         BbewE8FnhG4nP0k84sJ6Y9OcFe1rUatM8QzQ/tE6NtDDBP7fyEIRJA/36hi+A3uGg1+S
+         sZCV0Knapo1TKDB+mB5kefCSmzXbDUOxNuH6pvtBJAo8wo00o6T1h5Bf0OF3XwCBlrVt
+         +H5w==
+X-Gm-Message-State: AOAM530rajDWOdyizk1/V2tKPPPhOLjBMNWEzcfvelS6MM1zr1Lw37cA
+	ByTvjc1Qxp5VsyoLtqnYNQrv74UxyCY7ymoSfAc=
+X-Google-Smtp-Source: ABdhPJxgJ3qlsWHXb4q5Q9LeHOXh1hQWbFNdZBk/6atfvyd1YyWRPGtuhT6/ZUDmb0vG1CLuyzfEgHlG2xi/itwptM8=
+X-Received: by 2002:a05:600c:1c9a:b0:39c:7db4:90c3 with SMTP id
+ k26-20020a05600c1c9a00b0039c7db490c3mr13053942wms.161.1655108772491; Mon, 13
+ Jun 2022 01:26:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220608142723.103523089@infradead.org> <20220608144517.251109029@infradead.org>
+In-Reply-To: <20220608144517.251109029@infradead.org>
+From: Lai Jiangshan <jiangshanlai@gmail.com>
+Date: Mon, 13 Jun 2022 16:26:01 +0800
+Message-ID: <CAJhGHyCnu_BsKf5STMMJKMWm0NVZ8qXT8Qh=BhhCjSSgwchL3Q@mail.gmail.com>
+Subject: Re: [PATCH 21/36] x86/tdx: Remove TDX_HCALL_ISSUE_STI
+To: Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Mon, 13 Jun 2022 21:27:22 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -69,124 +73,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dan Li <ashimida@linux.alibaba.com>, Heiko Stuebner <heiko@sntech.de>, Linus Walleij <linus.walleij@linaro.org>, Guo Ren <guoren@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Javier Martinez Canillas <javierm@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Guenter Roeck <linux@roeck-us.net>, =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>, Michael Roth <michael.roth@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Andrey Konovalov <andreyknvl@gmail.com>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>, Wu Caize <zepan@sipeed.com>, Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, Luis Machado <luis.machado@linaro.org>, Atsushi Nemoto <ane
- mo@mba.ocn.ne.jp>, Dave Hansen <dave.hansen@linux.intel.com>, Joey Gouly <joey.gouly@arm.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Song Liu <song@kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Ilya Leoshkevich <iii@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Helge Deller <deller@gmx.de>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, Vasily Gorbik <gor@linux.ibm.com>, Philipp Tomsich <philipp.tomsich@vrull.eu>, Dave Anglin <dave.anglin@bell.net>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Daniel Axtens <dja@axtens.net>, Nicolas Pitre <nico@fluxnic.net>, Jarkko Sakkinen <jarkko@kernel.org>, "Eric W. Biederman" <ebiederm@xmission.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Daniel Bristot de Oliveira <bristot@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, Emil Renner Berthing <kernel@esmil.dk>, Jordan Niethe <jniethe5@gmail.com>, Atish Patra <atishp@atishpatra.org>, Alexei
-  Starovoitov <ast@kernel.org>, Will Deacon <will@kern
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, Huacai Chen <chenhuacai@kernel.org>, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme <acme@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, Richard Henderson <rth@twiddle.net>, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kern
+ el.org, Dave Hansen <dave.hansen@linux.intel.com>, virtualization@lists.linux-foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, Alexander Shishkin <alexander.shishkin@linux.intel.com>, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrov
+ sky@oracle.com>, khilman@kernel.org, linux-csky@vger.
 
-el.org>, Masahiro Yamada <masahiroy@kernel.org>, Jarkko Sakkinen <jarkko@profian.com>, Sami Tolvanen <samitolvanen@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Alexander Egorenkov <egorenar@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Nathaniel McCallum <nathaniel@profian.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tobias Huschle <huschle@linux.ibm.com>, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz
- >, Chen Zhongjin <chenzhongjin@huawei.com>, Ard Biesheuvel <ardb@kernel.org>, the arch/x86 maintainers <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-riscv <linux-riscv@lists.infradead.org>, Ingo Molnar <mingo@redhat.com>, Aaron Tomlin <atomlin@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, Liao Chang <liaochang1@huawei.com>, Paul Walmsley <paul.walmsley@sifive.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Richter <tmricht@linux.ibm.com>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Changbin Du <changbin.du@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
+kernel.org, VMware Inc <pv-drivers@vmware.com>, linux-snps-arc@lists.infradead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, kirill.shutemov@linux.intel.com, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, Isaku Yamahata <isaku.yamahata@gmail.com>, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, Richard Weinberger <richard@nod.at>, X86 ML <x86@kernel.org>, linux@armlinux.org.uk, Ingo Molnar <mingo@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, paulmck@ker
+ nel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra@vger.kernel.org, Namhyung Kim <namhyung@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jpoimboe@kernel.org, Juergen Gross <jgross@suse.com>, monstr@monstr.eu, linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, ink@jurassic.park.msu.ru, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 12 Jun 2022 15:59:29 +0000
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+On Wed, Jun 8, 2022 at 10:48 PM Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> Now that arch_cpu_idle() is expected to return with IRQs disabled,
+> avoid the useless STI/CLI dance.
+>
+> Per the specs this is supposed to work, but nobody has yet relied up
+> this behaviour so broken implementations are possible.
 
-> 
-> 
-> Le 12/06/2022 à 14:18, Masami Hiramatsu (Google) a écrit :
-> > [You don't often get email from mhiramat@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> > 
-> > On Thu, 9 Jun 2022 15:23:16 +0200
-> > Ard Biesheuvel <ardb@kernel.org> wrote:
-> > 
-> >> On Thu, 9 Jun 2022 at 15:14, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >>>
-> >>> On Wed, Jun 08, 2022 at 09:12:34AM -0700, Song Liu wrote:
-> >>>> On Wed, Jun 8, 2022 at 7:21 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
-> >>>>>
-> >>>>> Hi Jarkko,
-> >>>>>
-> >>>>> On Wed, 8 Jun 2022 08:25:38 +0300
-> >>>>> Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >>>>>
-> >>>>>> On Wed, Jun 08, 2022 at 10:35:42AM +0800, Guo Ren wrote:
-> >>>>>>> .
-> >>>>>>>
-> >>>>>>> On Wed, Jun 8, 2022 at 8:02 AM Jarkko Sakkinen <jarkko@profian.com> wrote:
-> >>>>>>>>
-> >>>>>>>> Tracing with kprobes while running a monolithic kernel is currently
-> >>>>>>>> impossible because CONFIG_KPROBES is dependent of CONFIG_MODULES.  This
-> >>>>>>>> dependency is a result of kprobes code using the module allocator for the
-> >>>>>>>> trampoline code.
-> >>>>>>>>
-> >>>>>>>> Detaching kprobes from modules helps to squeeze down the user space,
-> >>>>>>>> e.g. when developing new core kernel features, while still having all
-> >>>>>>>> the nice tracing capabilities.
-> >>>>>>>>
-> >>>>>>>> For kernel/ and arch/*, move module_alloc() and module_memfree() to
-> >>>>>>>> module_alloc.c, and compile as part of vmlinux when either CONFIG_MODULES
-> >>>>>>>> or CONFIG_KPROBES is enabled.  In addition, flag kernel module specific
-> >>>>>>>> code with CONFIG_MODULES.
-> >>>>>>>>
-> >>>>>>>> As the result, kprobes can be used with a monolithic kernel.
-> >>>>>>> It's strange when MODULES is n, but vmlinux still obtains module_alloc.
-> >>>>>>>
-> >>>>>>> Maybe we need a kprobe_alloc, right?
-> >>>>>>
-> >>>>>> Perhaps not the best name but at least it documents the fact that
-> >>>>>> they use the same allocator.
-> >>>>>>
-> >>>>>> Few years ago I carved up something "half-way there" for kprobes,
-> >>>>>> and I used the name text_alloc() [*].
-> >>>>>>
-> >>>>>> [*] https://lore.kernel.org/all/20200724050553.1724168-1-jarkko.sakkinen@linux.intel.com/
-> >>>>>
-> >>>>> Yeah, I remember that. Thank you for updating your patch!
-> >>>>> I think the idea (split module_alloc() from CONFIG_MODULE) is good to me.
-> >>>>> If module support maintainers think this name is not good, you may be
-> >>>>> able to rename it as text_alloc() and make the module_alloc() as a
-> >>>>> wrapper of it.
-> >>>>
-> >>>> IIUC, most users of module_alloc() use it to allocate memory for text, except
-> >>>> that module code uses it for both text and data. Therefore, I guess calling it
-> >>>> text_alloc() is not 100% accurate until we change the module code (to use
-> >>>> a different API to allocate memory for data).
-> >>>
-> >>> After reading the feedback, I'd stay on using module_alloc() because
-> >>> it has arch-specific quirks baked in. Easier to deal with them in one
-> >>> place.
-> >>>
-> >>
-> >> In that case, please ensure that you enable this only on architectures
-> >> where it is needed. arm64 implements alloc_insn_page() without relying
-> >> on module_alloc() so I would not expect to see any changes there.
-> > 
-> > Hmm, what about adding CONFIG_ARCH_HAVE_ALLOC_INSN_PAGE and check it?
-> > If it is defined, kprobes will not define the __weak function, but
-> > if not, it will use module_alloc()?
-> > 
-> 
-> I'm not sure I understand. What's the problem with the __weak function 
-> here ?
-> 
-> If we don't define the __weak alloc_insn_page() when arch has 
-> CONFIG_ARCH_HAVE_ALLOC_INSN_PAGE, then what's the point in making it weak ?
-> 
-> powerpc has it's own alloc_insn_page(), but calls module_alloc(). So how 
-> will it work ?
+I'm totally newbie here.
 
-Good point! In that case, it will need to separate the module_alloc()
-from kmodule support even without the __weak.
+The point of safe_halt() is that STI must be used and be used
+directly before HLT to enable IRQ during the halting and stop
+the halting if there is any IRQ.
 
-Thank you,
+In TDX case, STI must be used directly before the hypercall.
+Otherwise, no IRQ can come and the vcpu would be stalled forever.
 
-> 
-> void *alloc_insn_page(void)
-> {
-> 	void *page;
-> 
-> 	page = module_alloc(PAGE_SIZE);
-> 	if (!page)
-> 		return NULL;
-> 
-> 	if (strict_module_rwx_enabled()) {
-> 		set_memory_ro((unsigned long)page, 1);
-> 		set_memory_x((unsigned long)page, 1);
-> 	}
-> 	return page;
-> }
-> 
-> Christophe
+Although the hypercall has an "irq_disabled" argument.
+But the hypervisor doesn't (and can't) touch the IRQ flags no matter
+what the "irq_disabled" argument is.  The IRQ is not enabled during
+the halting if the IRQ is disabled before the hypercall even if
+irq_disabled=false.
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+The "irq_disabled" argument is used for workaround purposes:
+https://lore.kernel.org/kvm/c020ee0b90c424a7010e979c9b32a28e9c488a51.1651774251.git.isaku.yamahata@intel.com/
+
+Hope my immature/incorrect reply elicits a real response from
+others.
+
+Thanks
+Lai
