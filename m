@@ -1,32 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E9454BD3B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:03:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CB854BD3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:03:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2WG4JvCz3f09
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:03:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2Wj0kzCz3f43
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:03:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=atomide.com (client-ip=72.249.23.125; helo=muru.com; envelope-from=tony@atomide.com; receiver=<UNKNOWN>)
 Received: from muru.com (muru.com [72.249.23.125])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LM9wj2P5cz3bc8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 22:33:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LM9yF4wGKz3bd4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 22:35:17 +1000 (AEST)
 Received: from localhost (localhost [127.0.0.1])
-	by muru.com (Postfix) with ESMTPS id 07F638191;
-	Mon, 13 Jun 2022 12:29:14 +0000 (UTC)
-Date: Mon, 13 Jun 2022 15:33:54 +0300
+	by muru.com (Postfix) with ESMTPS id 5285681CC;
+	Mon, 13 Jun 2022 12:30:34 +0000 (UTC)
+Date: Mon, 13 Jun 2022 15:35:14 +0300
 From: Tony Lindgren <tony@atomide.com>
 To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 12/36] cpuidle,omap2: Push RCU-idle into driver
-Message-ID: <YqcusjKzpN/d0qFf@atomide.com>
+Subject: Re: [PATCH 34/36] cpuidle,omap3: Push RCU-idle into omap_sram_idle()
+Message-ID: <YqcvAmiDSOAOAdA9@atomide.com>
 References: <20220608142723.103523089@infradead.org>
- <20220608144516.677524509@infradead.org>
+ <20220608144518.073801916@infradead.org>
+ <YqC6iJx4ygSmry0G@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220608144516.677524509@infradead.org>
+In-Reply-To: <YqC6iJx4ygSmry0G@hirez.programming.kicks-ass.net>
 X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -48,11 +49,27 @@ rndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.or
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Peter Zijlstra <peterz@infradead.org> [220608 14:42]:
-> Doing RCU-idle outside the driver, only to then temporarily enable it
-> again, some *four* times, before going idle is daft.
+* Peter Zijlstra <peterz@infradead.org> [220608 15:00]:
+> On Wed, Jun 08, 2022 at 04:27:57PM +0200, Peter Zijlstra wrote:
+> > @@ -254,11 +255,18 @@ void omap_sram_idle(void)
+> >  	 */
+> >  	if (save_state)
+> >  		omap34xx_save_context(omap3_arm_context);
+> > +
+> > +	if (rcuidle)
+> > +		cpuidle_rcu_enter();
+> > +
+> >  	if (save_state == 1 || save_state == 3)
+> >  		cpu_suspend(save_state, omap34xx_do_sram_idle);
+> >  	else
+> >  		omap34xx_do_sram_idle(save_state);
+> >  
+> > +	if (rcuidle)
+> > +		rcuidle_rcu_exit();
+> 
+> *sigh* so much for this having been exposed to the robots for >2 days :/
 
-Maybe update the subject line with s/omap2/omap4/, other than that:
+I tested your git branch of these patches, so:
 
 Reviewed-by: Tony Lindgren <tony@atomide.com>
 Tested-by: Tony Lindgren <tony@atomide.com>
