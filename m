@@ -1,87 +1,162 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342E154BD41
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:05:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9B754BD47
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:05:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2YG141xz3fGX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:05:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2Z80YBGz3fHX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:05:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U/Z2Abzy;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U/Z2Abzy;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iNWZb4V+;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dzickus@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=sohil.mehta@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U/Z2Abzy;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U/Z2Abzy;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iNWZb4V+;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMNbV684Vz3blC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 06:34:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1655152480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zJ3o9gagT1LwA2F/N5VMrWXdxfCfYoRUSB67GxAoAGI=;
-	b=U/Z2AbzyjdC5cuXLXB8FZS1SsFq6XFptscGwlUSZzPzj5QKYyYacXbK4IfdpJcsMhC4+oZ
-	u7zZnDGRpJloIFhbCFrjir4HJv174RLfzo8NOzpkht1PeN589QuBB3XUFcY1wgP0EA8OAn
-	nu9afmlh5rIIVce9wCacKqeMu+zZtY8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1655152480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zJ3o9gagT1LwA2F/N5VMrWXdxfCfYoRUSB67GxAoAGI=;
-	b=U/Z2AbzyjdC5cuXLXB8FZS1SsFq6XFptscGwlUSZzPzj5QKYyYacXbK4IfdpJcsMhC4+oZ
-	u7zZnDGRpJloIFhbCFrjir4HJv174RLfzo8NOzpkht1PeN589QuBB3XUFcY1wgP0EA8OAn
-	nu9afmlh5rIIVce9wCacKqeMu+zZtY8=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-484-uBZn_71kNzm_-1iIcL8zYg-1; Mon, 13 Jun 2022 16:34:36 -0400
-X-MC-Unique: uBZn_71kNzm_-1iIcL8zYg-1
-Received: by mail-io1-f72.google.com with SMTP id k4-20020a6b4004000000b006697f6074e6so3272675ioa.11
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 13:34:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zJ3o9gagT1LwA2F/N5VMrWXdxfCfYoRUSB67GxAoAGI=;
-        b=baboHJj9HKeJbI/gskxqlI+D4pkzPSX37lHUVZAEOdjK6hQAM9WtVcx0OCjGCvUm70
-         6nVzLc6OJrLXlCBRgqemJkSZcPknurYXMaBgXaLTzxk+9s1AGyTv0iy3OpumuH4Gm5Vj
-         4VNKGmKPA1oMNl4uHLksHSFwi3bJRYwICeZueqB3uPqR2/f8a+lit1oCheKwhQlyygL3
-         ewbtdv5iUX8HPY/VgSuLgqYIe4Yub75xwlUTSKhYjrX6dAkfIAvwngzVDerlAJrK4Qjb
-         Ob5zEULQxG5Od6ecBGhUi8c9VDdq+CdrAEqLU7NdNhKN1HOAH+Ripb3iirhlvIhNrh9w
-         13bQ==
-X-Gm-Message-State: AOAM531ATa0EI9v60LuWZCESlptdbaYF74FAjfcbAQYq+ev6YpEt1Ww3
-	x7PTPceWOwh4+S8LSPFyJsa/UcFALvEZDkVRYaQCflKV/FN1DkHnv3Igo4J1h0uFfZy/9//Clw/
-	uhItQRRsa+hhUNn+NMW46aKwO3x/CKmLfdVPGFVGKDA==
-X-Received: by 2002:a02:6a1e:0:b0:331:f9b9:a920 with SMTP id l30-20020a026a1e000000b00331f9b9a920mr931072jac.44.1655152475664;
-        Mon, 13 Jun 2022 13:34:35 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzboJiU0xW9IO+XtKqOga/jyO3pBg0f0X4mxhvo9NPyV/keDBddD2fe3nfiECYwsG0F7G27++sbQVnFHyLZKdo=
-X-Received: by 2002:a02:6a1e:0:b0:331:f9b9:a920 with SMTP id
- l30-20020a026a1e000000b00331f9b9a920mr931061jac.44.1655152475430; Mon, 13 Jun
- 2022 13:34:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMQcg44dkz2ywQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 08:05:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655157955; x=1686693955;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=kfqQdWnf8nyGKmbShbH1jqXSRauX6cTReT0/HMkfsR8=;
+  b=iNWZb4V+GSA2tLR93KvRDSkG52ohkyMIiy3MXBm5tx4jdUTqAd5AlNaM
+   HIjniWfBhBOTtX0fsxKn41dQihWeBdcEEEtOk1z0kCjql9SVmuHsIPCDB
+   SyTKDsf+nQ6Gj9hAdVgXkabUF6CO1Z91imKL6pg8gnbitkz+TysJLQMLY
+   iWdcHNv72YyT+i6DBB06ZntvGar5wgX1Y24F9hb3MZ5oBh47hKWWvtR0u
+   ti3KFDjQyrK91hf9kF4kyg6eLIstcbskqlITaaWOAtloQBGdJLag7/FWY
+   wQDL6CkysKZgGbxERoMFJVwbeaM5h6md8UML4e2u2fFPRJWgyq7PnQbkt
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="258870530"
+X-IronPort-AV: E=Sophos;i="5.91,298,1647327600"; 
+   d="scan'208";a="258870530"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2022 15:05:40 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,298,1647327600"; 
+   d="scan'208";a="726475615"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by fmsmga001.fm.intel.com with ESMTP; 13 Jun 2022 15:05:40 -0700
+Received: from orsmsx608.amr.corp.intel.com (10.22.229.21) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 13 Jun 2022 15:05:40 -0700
+Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
+ ORSMSX608.amr.corp.intel.com (10.22.229.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 13 Jun 2022 15:05:39 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27 via Frontend Transport; Mon, 13 Jun 2022 15:05:39 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.101)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.27; Mon, 13 Jun 2022 15:05:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZajYrBppHv+DXyTsjELokrbMnmn2W2j6lIC5IP+9JlgXMXphpocZVjyujmm152nGdkpMep4R9tGWlTL4bTCaNwFWJ2TZ+NT/6VFMFKmg1Bh710SzxDGFitmmFPTM9Bp7Dt4DKxHfSgdLDZteoNemLynJPB2a0lJme/uzvWC39ZcFctZZpvdsUWsFH1b4p9Hv6BeOTHWArcfXD5gOl1P+KfU3Hun/wv2R6FgDWlGzuoHqUeOuNigzWCojx2EfDsMvU3A0BVgTTDrYR8BnuZr3vcQTtd7rhEdJQvofeUFpvGZqGOwtfdSXOsoZkw71toSDpL83J/lPAu4J8TyJYsJlJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G4/fJH8U7c0osbyonKmjt7NGcwIKFuupZWWRS/IMlG0=;
+ b=cii81jrmete3V/shLN0F3yz6ySUucoHbCCpYkHjE5I50AWN5sCpc9UCa5Gsb+R61/3qvNUKK5WxMAbHkEMyYMLjh5E7BnI4EpXTPSWr7p3s+GWruQCC0skJBHiRkzSyyfzU9APmxIYP6KYV0zk5ml8WoQuKOZO4a/DsdR20b4aa1S4o8Dktvp4fDtkuVDzw2aCklRuyhCX2+b4eh4KujdS3snCQXKxeHFOUnFtrLFJCJy98iMnC/YaFgkAIXBE1HwSifv0Rw55N89Sepn5ti3RKAexBzQlPJ3wdWONVrXnnb2dyFrqn6lk6eOKwte3TuXYESfYyaPCNWVv9IGSGRYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BYAPR11MB3320.namprd11.prod.outlook.com (2603:10b6:a03:18::25)
+ by BYAPR11MB2935.namprd11.prod.outlook.com (2603:10b6:a03:82::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.20; Mon, 13 Jun
+ 2022 22:05:32 +0000
+Received: from BYAPR11MB3320.namprd11.prod.outlook.com
+ ([fe80::a4e0:2e7e:45de:a62]) by BYAPR11MB3320.namprd11.prod.outlook.com
+ ([fe80::a4e0:2e7e:45de:a62%6]) with mapi id 15.20.5332.020; Mon, 13 Jun 2022
+ 22:05:32 +0000
+Message-ID: <948bc7f4-f1c0-9b79-0eac-df8659b22753@intel.com>
+Date: Mon, 13 Jun 2022 15:05:30 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [RFC PATCH 0/6] User pkey minor bug fixes
+Content-Language: en-US
+To: <ira.weiny@intel.com>, <linux-api@vger.kernel.org>
+References: <20220610233533.3649584-1-ira.weiny@intel.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <20220610233533.3649584-1-ira.weiny@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY5PR13CA0013.namprd13.prod.outlook.com
+ (2603:10b6:a03:180::26) To BYAPR11MB3320.namprd11.prod.outlook.com
+ (2603:10b6:a03:18::25)
 MIME-Version: 1.0
-References: <CAK18DXZKs2PNmLndeGYqkPxmrrBR=6ca3bhyYCj=GhyA7dHfAQ@mail.gmail.com>
- <874k0vgyo6.fsf@mpe.ellerman.id.au>
-In-Reply-To: <874k0vgyo6.fsf@mpe.ellerman.id.au>
-From: Donald Zickus <dzickus@redhat.com>
-Date: Mon, 13 Jun 2022 16:34:24 -0400
-Message-ID: <CAK18DXbZ+Ma-cvJ2GdgGxzX59Y8Lgirv4FRst2YPdP+arOrg9A@mail.gmail.com>
-Subject: Re: ppc64le bzImage and Build_id elf note
-To: Michael Ellerman <mpe@ellerman.id.au>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=dzickus@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: multipart/alternative; boundary="00000000000058fb8005e15a377a"
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: bc619bae-ba1e-437c-758e-08da4d88d5b0
+X-MS-TrafficTypeDiagnostic: BYAPR11MB2935:EE_
+X-Microsoft-Antispam-PRVS: <BYAPR11MB293574AAF82559844777CE0CE5AB9@BYAPR11MB2935.namprd11.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 8fnE2FD+5/VBPfo5PzRsbhpgaRXrFKrV8OQjaxGTtWjcJkYEFMpnxLoegtsZMgDHjy3QxJZEw3yJFW39CtYIr7lc4P5JwV7/ASJ28yUAe9DEhVjRxq73oBehp21LNM6UV+HNnxPuJ8Flde8dBeLdB3kFUz39bWjKJN6S1tN12VQSSCBmIOTuJB1dvxnwDT2xUH88xOXpUmbinJCYcGz5Vx0JM68/5bqiVCEPqnmkOAcobBEIJTlo/4Qj7uL7j3+h6SgwVILz7jlOVBWQO06JryjGoZwhrJCwhVIw47IeFkSI2f4xE/HvebSn65W+rcgwQ4ZOrbbmkndzcI99YfDToSto0+sb/SxVgEdrNrWBkFCI8MqQN71oeQrRtRYeKdrAKkrWbkPGU0GDkDw1hKQ3xW1nhmd25tUZxz41kUokqtFIUYp3kDROfc8Zot+QRAsQpjDh2GuLc/i9wh/AE7TV1orFDXu5i/BAG5vxYA1vNVmPhFvCCtIn4hSc58vayBxTMYd3MailBaf56SvoWEnik1z+CM9ZR5sgjyTZVCD1AFATx4oqDfyO3mkgHapUVtoJ0tCqxOQcCrg8iZXedDJyBUF+BVdDJ8yO73mJt+J5h1iRlHD2/pxRgn30UY8c7D5ExkFt+SMxFkn29vW1e46y3KMvwauiCncbiKQEvqje9oj71dRif0LzTF9mLHTHvs+ASawj6zaYYAakv52Oy4GXxjxnSD6HUl/XdtpQvsf2aEw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3320.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(508600001)(2906002)(66946007)(6486002)(8676002)(66556008)(316002)(53546011)(86362001)(31686004)(6512007)(6506007)(26005)(66476007)(4326008)(31696002)(38100700002)(36756003)(83380400001)(186003)(2616005)(8936002)(5660300002)(82960400001)(4744005)(44832011)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TkZQcHNJV1lwRVpXZW0vWW5IakFINDhTMnYzWkJpMVpwKytPUWtZcEd0OUhP?=
+ =?utf-8?B?N090MUlqdndHVGtIWW1Wb281S2c5VHZJdW1pVkFTUUIzSlN0dk01dnFxN2ha?=
+ =?utf-8?B?amRuRXJxQ1k4c3pmQmNOQUlhajdtQ2FPTjZLY0lNbFI2L3E4U29RVEJCQ2p3?=
+ =?utf-8?B?TTUxRWhqVGVTOGZlbjhwV2p0V0Q1cFJ5Q1FnaDhuZUw3d3F6QW5HM1A4emkz?=
+ =?utf-8?B?QXN6S3lFU1dML0xISGt0WlZaMVhNNG0wS1UwbHJ1YWU2dlV5SWRRdnowbFVj?=
+ =?utf-8?B?QzQ4M3pwL0p3TkFpUlM4ZEY3WVFPSlJmdDdnN2VCVFEvN2R4T1dtemt0bUJo?=
+ =?utf-8?B?RGl3SENFY1dOMWtsYmhLTHdFdm9MaHp3Z00xOGw1c1dna2Z0QmpnWUxFQnhL?=
+ =?utf-8?B?ZlprbkE5eGlUOXhKSVE4MkFOZDRZdUNIWnhyQlA4RHFHcjlOYldxQWZ0cHJt?=
+ =?utf-8?B?Z2Y5MVFmdEJJQVY4VHNLaEU5c21iaDkzU2IrVk43eEtTRHAvUHIzOHhNZkNL?=
+ =?utf-8?B?WUloZ0tTWW5ISC90b0N2SkdyclhQcFp0ckRMcmhpQ3VDSUpqR0xvTWdVV0NU?=
+ =?utf-8?B?dVZrMldzclBadDJBcW9IY1JoNFc4NmpXL1M2cGhBeVRpcEFxREwwMmRscWtQ?=
+ =?utf-8?B?SzBTc1RBeTdkS3V4WTRRbllKOXZxZ2w3azBkYWhqc2lMaHVDTThIKzhPK1V6?=
+ =?utf-8?B?RTJWR3N0MmovUmJ5QWZubitFV2pvVnI3ZXJaRFVwbGFCeGV1V3pwZUVhNkVT?=
+ =?utf-8?B?ZlhMcUpCc2haWUdOdEpObXlnNTRVYm02Ty9kRWxJRDdjVnVrd1BWZStLSzNp?=
+ =?utf-8?B?ZU5JaG15QnNmYm1oUG55MU9tamVxSmNveUhqN2swQXFUVTJqQVVNaHBwZGJZ?=
+ =?utf-8?B?L0xzSlY1Z3V2VUV6QnFXR1ZNa2pUVU13MXpidVFtaXNETHRndDkrOHhxdHVN?=
+ =?utf-8?B?VGM5b0wxSnhJcUgvWlpMTU9wOFhFelEzcFVlSGJWM2lSRnB1aFhZUXZveXM0?=
+ =?utf-8?B?dEpRbUVIMjl2MkhseW0xcnMraitSTzlwYW83cHFJYWtIVkw5cHYvUElVbkZZ?=
+ =?utf-8?B?M1FDZW9PL2NuYWRPM1pOSGlSMU5HZW5NTTl2WWJHRmkyeGdZUWh6RDYxdHc3?=
+ =?utf-8?B?OUQwbnhHNk9BdU9mNVZqWHNpUlhrQlh2Vzc5UzZ0bktienUrYmd5NkpnT203?=
+ =?utf-8?B?ZktLOVlYVUNObkVFSzJjZzRXNXVlekN1ZzE3VEVYWG5NVTZyMEV1VXo2U0hE?=
+ =?utf-8?B?b003U2FLd0JiTEc3SGFVRkMwaUNub3JNRTFoT2Jta1hPb1RGb3RuY0h5akt2?=
+ =?utf-8?B?VDMxTUZCQ1gwaThaTEJMMmdXalRYa3dickxENDNMTElRelVMWXdjQlR5NmFF?=
+ =?utf-8?B?aTc3d2M5TzlqL1NTWFlLM0V2eHk3T21CVkVralRQOTMwbkhXdjQ4amtMZ3VG?=
+ =?utf-8?B?SSs5WmtuRjNic1g5bkxYa3B5U0NkNUNmdFREdTVNbG9nSWRibXNvaWxPN1Vr?=
+ =?utf-8?B?amdZMUlaQXhGZFkwenU2VE03Y1lNa2U4SllOVTRoTW1NTDVvZFJkUHRaYlhh?=
+ =?utf-8?B?VE13UFl6LzFYNnhQd0NsSkFJV2VCMm91OU1zOG9vN0FPRk4xVCtZNkMvaC9Y?=
+ =?utf-8?B?d3F3Mzd1Tlh5MXNRRE1od2RTTDNCeDJHTFJySXZvVDFsZE5vN05GZy83VFdQ?=
+ =?utf-8?B?Y0VDNWVhb0prOEh5RkROeXZtK0hhVnFDajJUYUp5UUVlRVROYzY5T0dUYjJr?=
+ =?utf-8?B?emdrZGlzWko1UHh2cVkxY29VNjlZWkQxRXpHSXdMcWtQUmZxRmJTTElLd3Zj?=
+ =?utf-8?B?eHhERmFNdlJGcTVUMTJBZndCdUNYbUxLbFEwZ0o1UTAzbi8wZis1U25TM0w1?=
+ =?utf-8?B?OGQ4ajg4RSt3RWozVEVwc1dzYWZzeGtLRDM1ODJiMjloTHJBdHhGeXBUTFJm?=
+ =?utf-8?B?ZFJxamtrZHBkYzM1c0FFNkZRVjNrUkpzYXVKVEtMcHhsZjFRSzdPeFl5bmdm?=
+ =?utf-8?B?cE1FbEt6Y1RQYmQ0bUpVQUlxYXd2L2dTY1JaSVdmbEx0MUoxWVhGdXJiN1d5?=
+ =?utf-8?B?STNHcUd0dnM0NlZLT1F6eXg5clFxcDB1R0k2bmZYYVp1WitucG9NcTBnaHlx?=
+ =?utf-8?B?WkhYbmplaHZ6ZUF1ak5pcDRtVHdmNlFHOVVMS0dCUzBDUDhDRlBPL29tWTY0?=
+ =?utf-8?B?R29idVpvODlCVlVudEwyUk1TdnRUdE81dGJEek9hYU90UXJMbFNLTzBiNGxt?=
+ =?utf-8?B?dXJsbWRmYk5EVmR1RTZvY0NSN2JIbUt4SUhpQkkxcExUZWQwQmdBR0tZWjRK?=
+ =?utf-8?B?NFg2elFCZ2J4UFZRTC9OVENacHY4WEwxKy9xV0hDUXJqbXMxdlA3UT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc619bae-ba1e-437c-758e-08da4d88d5b0
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3320.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 22:05:32.3755
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: glKFweOdkMjJyP0pg7K2iSXu7Z43FlHsvJx7LR1bvZVpkVfJ6z6S/AWwHtiCsPepCkOERaedan5Lj4uywvpWsQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB2935
+X-OriginatorOrg: intel.com
 X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,351 +169,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bruno Goncalves <bgoncalv@redhat.com>, Justin Forbes <jforbes@redhat.com>, linuxppc-dev@lists.ozlabs.org, Daniel Horak <dhorak@redhat.com>, Veronika Kabatova <vkabatov@redhat.com>
+Cc: linux-mm@kvack.org, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---00000000000058fb8005e15a377a
-Content-Type: text/plain; charset="UTF-8"
+On 6/10/2022 4:35 PM, ira.weiny@intel.com wrote:
 
-On Wed, Jun 8, 2022 at 7:52 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> 
+> glibc says it returns ENOSYS if the system does not support pkeys but I don't
+> see where ENOSYS is returned?  AFAICS it just returns what the kernel returns.
+> So it is probably up to user of glibc.
+> 
 
-> Donald Zickus <dzickus@redhat.com> writes:
-> > Hi Michael,
-> >
-> > I am working on two packaging issues with Fedora and CKI that I am hoping
-> > you can give me some guidance on.
-> >
-> > 1 - Fedora has always packaged an eu-strip'd vmlinux file for powerpc.
-> The
-> > other arches we support used native compressed images.  I was looking
-> into
-> > using powerpc's zImage (pseries) binary to remove the powerpc workarounds
-> > in our rpm spec file.
->
-> What's the motivation for using the zImage?
->
-> My naive hope was that as more advanced boot loaders become the norm we
-> could eventually get rid of the zImage.
->
-> It's generally a pain to work with, and a bit crufty, it also doesn't
-> get as much testing as booting the vmlinux, so I'd be a little wary of
-> switching to it.
->
+Implementation of the pkeys system calls is arch specific and 
+conditional. See kernel/sys_ni.c
 
-My motivation really is to remove some of manual stripping out of our
-specfile and use something more community builtin and address my second
-issue.
+glibc is probably talking about ENOSYS being returned when the 
+architecture doesn't have support or the CONFIG option is disabled on 
+supported architectures.
 
-If zImage isn't the right path to pursue, that is fine by me.  Perhaps I
-just want vmlinux.stripped.
-
-
-> There's also multiple zImages (and others), although admittedly for the
-> platforms that Fedora supports the zImage.pseries should work (I think).
->
-> > However, the rpmbuild fails because it can't find a build-id with
-> > eu-readelf -n zImage.  Sure enough the build-id is found in vmlinux and
-> > vmlinux.stripped but disappears with vmlinux.stripped.gz.
->
-> Looks like other arches use objcopy rather than strip, maybe that's it?
->
-> > I had hoped
-> > arch/powerpc/boot/addnote would stick it back in but it doesn't (I am
-> > ignorant of how addnote works).
->
-> addnote adds some notes that firmware needs to read, it doesn't do
-> anything else, though maybe it could.
->
-> > eu-readelf -n  data
-> > vmlinux:
-> >
-> > Displaying notes found in: .notes
-> >   Owner                Data size        Description
-> >   GNU                  0x00000014       NT_GNU_BUILD_ID (unique build ID
-> > bitstring)
-> >     Build ID: b4c026d72ead7b4316a221cddb7f2b10d75fb313
-> >   Linux                0x00000004       func
-> >    description data: 00 00 00 00
-> >   Linux                0x00000001       OPEN
-> >    description data: 00
-> >   PowerPC              0x00000004       NT_VERSION (version)
-> >    description data: 01 00 00 00
-> >
-> > zImage:
-> >
-> > Displaying notes found at file offset 0x00000158 with length 0x0000002c:
-> >   Owner                Data size        Description
-> >   PowerPC              0x00000018       Unknown note type: (0x00001275)
-> >    description data: ff ff ff ff 02 00 00 00 ff ff ff ff ff ff ff ff ff
-> ff
-> > ff ff 00 00 40 00
-> >
-> > Displaying notes found at file offset 0x00000184 with length 0x00000044:
-> >   Owner                Data size        Description
-> >   IBM,RPA-Client-[...] 0x00000020       Unknown note type: (0x12759999)
-> >    description data: 00 00 00 00 00 00 00 40 00 00 00 00 00 00 00 28 00
-> 00
-> > 00 01 ff ff ff ff 00 00 00 00 00 00 00 01
-> >
-> > Is this something that can be addressed?  Or should I/we expect the
-> > build-id to never make it into the zImage and just continue with our
-> > current vmlinux process?
->
-> Maybe :)
->
-> Is it correct for the build-id to be copied into the zImage anyway? It's
-> a different binary so shouldn't it have a different build-id?
->
-> If you have a zImage and a vmlinux with the same build-id isn't that
-> going to confuse debugging tools?
->
-
-My understanding is the debug tools use vmlinux anyway (at least for
-Fedora) which is stored in our -debuginfo package.  While the booted image
-(compressed) is stored in the traditional kernel rpm.  My understanding is
-the build is the same whether compressed or not so having a similar
-build-id made sense.  But I am a little ignorant here.
-
-
-
-> > 2 - CKI builds kernels using 'make targz-pkg'.  The arches we support
-> > (x86_64, s390, aarch64) provide compressed binaries to package using
-> > KBUILD_IMAGE or a specific entry in scripts/package/buildtar.  As a
-> result,
-> > because powerpc doesn't have a KBUILD_IMAGE variable defined, the script
-> > builds vmlinx and cp's that to vmlinux-kbuild.  The problem with powerpc
-> is
-> > that vmlinux for us is huge ( >256MB) and cp'ing that to vmlinux-kbuild
-> > occupies > 512MB of /boot and our distro runs out of disk space on that
-> > partition.
->
-> Is that just because it has debug info built in? I thought the distro
-> solution for that was doing split debug info?
->
-
-Yes, our rpm specfile stores vmlinux in -debuginfo and strips vmlinux to
-store in the normal kernel rpm.
-
-But our kernel CI service, CKI uses the upstream's 'make targz-pkg' for
-easier consumption by the upstream community that may not use rpms.  That
-Makefile target doesn't have any stripping.  I was hoping to add that.
-
-
->
-> > I was hoping to add a patch to arch/powerpc/Makefile that defines
-> > KBUILD_IMAGE:=$(boot)/zImage (mimicing arch/s390), which I believe would
-> > solve our problem.  However, that circles back to our first problem
-> above.
-> >
-> > Thoughts?  Help?
->
-
-> Happy to try and help, though see my concerns at the top about using
-> zImage.
->
-
-If zImage isn't the right approach, would you be open to adding a variable
-in arch/powerpc/Makefile
-
-KBUILD_IMAGE:= $(obj)/vmlinux.strip
-
-though I think that file is created and removed while building the zImage.
-
-
-It is a small tweak, but one I was trying to avoid hacking into our source
-code.
-
-Cheers,
-Don
-
-
-> cheers
->
->
-
---00000000000058fb8005e15a377a
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 8, 2022 at 7:52 AM Michae=
-l Ellerman &lt;<a href=3D"mailto:mpe@ellerman.id.au">mpe@ellerman.id.au</a>=
-&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
-0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Dona=
-ld Zickus &lt;<a href=3D"mailto:dzickus@redhat.com" target=3D"_blank">dzick=
-us@redhat.com</a>&gt; writes:<br>
-&gt; Hi Michael,<br>
-&gt;<br>
-&gt; I am working on two packaging issues with Fedora and CKI that I am hop=
-ing<br>
-&gt; you can give me some guidance on.<br>
-&gt;<br>
-&gt; 1 - Fedora has always packaged an eu-strip&#39;d vmlinux file for powe=
-rpc.=C2=A0 The<br>
-&gt; other arches we support used native compressed images.=C2=A0 I was loo=
-king into<br>
-&gt; using powerpc&#39;s zImage (pseries) binary to remove the powerpc work=
-arounds<br>
-&gt; in our rpm spec file.<br>
-<br>
-What&#39;s the motivation for using the zImage?<br>
-<br>
-My naive hope was that as more advanced boot loaders become the norm we<br>
-could eventually get rid of the zImage.<br>
-<br>
-It&#39;s generally a pain to work with, and a bit crufty, it also doesn&#39=
-;t<br>
-get as much testing as booting the vmlinux, so I&#39;d be a little wary of<=
-br>
-switching to it.<br></blockquote><div><br></div><div>My motivation really i=
-s to remove some of manual stripping out of our specfile and use something =
-more community builtin and address my second issue. <br></div><div><br></di=
-v><div>If zImage isn&#39;t the right path to pursue, that is fine by me.=C2=
-=A0 Perhaps I just want vmlinux.stripped.</div><div><br></div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">
-<br>
-There&#39;s also multiple zImages (and others), although admittedly for the=
-<br>
-platforms that Fedora supports the zImage.pseries should work (I think).<br=
->
-<br>
-&gt; However, the rpmbuild fails because it can&#39;t find a build-id with<=
-br>
-&gt; eu-readelf -n zImage.=C2=A0 Sure enough the build-id is found in vmlin=
-ux and<br>
-&gt; vmlinux.stripped but disappears with vmlinux.stripped.gz.<br>
-<br>
-Looks like other arches use objcopy rather than strip, maybe that&#39;s it?=
-<br>
-<br>
-&gt; I had hoped<br>
-&gt; arch/powerpc/boot/addnote would stick it back in but it doesn&#39;t (I=
- am<br>
-&gt; ignorant of how addnote works).<br>
-<br>
-addnote adds some notes that firmware needs to read, it doesn&#39;t do<br>
-anything else, though maybe it could.<br>
-<br>
-&gt; eu-readelf -n=C2=A0 data<br>
-&gt; vmlinux:<br>
-&gt;<br>
-&gt; Displaying notes found in: .notes<br>
-&gt;=C2=A0 =C2=A0Owner=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 Data size=C2=A0 =C2=A0 =C2=A0 =C2=A0 Description<br>
-&gt;=C2=A0 =C2=A0GNU=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 0x00000014=C2=A0 =C2=A0 =C2=A0 =C2=A0NT_GNU_BUILD_ID (unique build =
-ID<br>
-&gt; bitstring)<br>
-&gt;=C2=A0 =C2=A0 =C2=A0Build ID: b4c026d72ead7b4316a221cddb7f2b10d75fb313<=
-br>
-&gt;=C2=A0 =C2=A0Linux=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 0x00000004=C2=A0 =C2=A0 =C2=A0 =C2=A0func<br>
-&gt;=C2=A0 =C2=A0 description data: 00 00 00 00<br>
-&gt;=C2=A0 =C2=A0Linux=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 0x00000001=C2=A0 =C2=A0 =C2=A0 =C2=A0OPEN<br>
-&gt;=C2=A0 =C2=A0 description data: 00<br>
-&gt;=C2=A0 =C2=A0PowerPC=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0x=
-00000004=C2=A0 =C2=A0 =C2=A0 =C2=A0NT_VERSION (version)<br>
-&gt;=C2=A0 =C2=A0 description data: 01 00 00 00<br>
-&gt;<br>
-&gt; zImage:<br>
-&gt;<br>
-&gt; Displaying notes found at file offset 0x00000158 with length 0x0000002=
-c:<br>
-&gt;=C2=A0 =C2=A0Owner=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 Data size=C2=A0 =C2=A0 =C2=A0 =C2=A0 Description<br>
-&gt;=C2=A0 =C2=A0PowerPC=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0x=
-00000018=C2=A0 =C2=A0 =C2=A0 =C2=A0Unknown note type: (0x00001275)<br>
-&gt;=C2=A0 =C2=A0 description data: ff ff ff ff 02 00 00 00 ff ff ff ff ff =
-ff ff ff ff ff<br>
-&gt; ff ff 00 00 40 00<br>
-&gt;<br>
-&gt; Displaying notes found at file offset 0x00000184 with length 0x0000004=
-4:<br>
-&gt;=C2=A0 =C2=A0Owner=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 Data size=C2=A0 =C2=A0 =C2=A0 =C2=A0 Description<br>
-&gt;=C2=A0 =C2=A0IBM,RPA-Client-[...] 0x00000020=C2=A0 =C2=A0 =C2=A0 =C2=A0=
-Unknown note type: (0x12759999)<br>
-&gt;=C2=A0 =C2=A0 description data: 00 00 00 00 00 00 00 40 00 00 00 00 00 =
-00 00 28 00 00<br>
-&gt; 00 01 ff ff ff ff 00 00 00 00 00 00 00 01<br>
-&gt;<br>
-&gt; Is this something that can be addressed?=C2=A0 Or should I/we expect t=
-he<br>
-&gt; build-id to never make it into the zImage and just continue with our<b=
-r>
-&gt; current vmlinux process?<br>
-<br>
-Maybe :)<br>
-<br>
-Is it correct for the build-id to be copied into the zImage anyway? It&#39;=
-s<br>
-a different binary so shouldn&#39;t it have a different build-id?<br>
-<br>
-If you have a zImage and a vmlinux with the same build-id isn&#39;t that<br=
->
-going to confuse debugging tools?<br></blockquote><div><br></div><div>My un=
-derstanding is the debug tools use vmlinux anyway (at least for Fedora) whi=
-ch is stored in our -debuginfo package.=C2=A0 While the booted image (compr=
-essed) is stored in the traditional kernel rpm.=C2=A0 My understanding is t=
-he build is the same whether compressed or not so having a similar build-id=
- made sense.=C2=A0 But I am a little ignorant here.</div><div><br></div><di=
-v><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-&gt; 2 - CKI builds kernels using &#39;make targz-pkg&#39;.=C2=A0 The arche=
-s we support<br>
-&gt; (x86_64, s390, aarch64) provide compressed binaries to package using<b=
-r>
-&gt; KBUILD_IMAGE or a specific entry in scripts/package/buildtar.=C2=A0 As=
- a result,<br>
-&gt; because powerpc doesn&#39;t have a KBUILD_IMAGE variable defined, the =
-script<br>
-&gt; builds vmlinx and cp&#39;s that to vmlinux-kbuild.=C2=A0 The problem w=
-ith powerpc is<br>
-&gt; that vmlinux for us is huge ( &gt;256MB) and cp&#39;ing that to vmlinu=
-x-kbuild<br>
-&gt; occupies &gt; 512MB of /boot and our distro runs out of disk space on =
-that<br>
-&gt; partition.<br>
-<br>
-Is that just because it has debug info built in? I thought the distro<br>
-solution for that was doing split debug info?<br></blockquote><div><br></di=
-v><div>Yes, our rpm specfile stores vmlinux in -debuginfo and strips vmlinu=
-x to store in the normal kernel rpm.</div><div><br></div><div>But our kerne=
-l CI service, CKI uses the upstream&#39;s &#39;make targz-pkg&#39; for easi=
-er consumption by the upstream community that may not use rpms.=C2=A0 That =
-Makefile target doesn&#39;t have any stripping.=C2=A0 I was hoping to add t=
-hat.</div><div>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">
-<br>
-&gt; I was hoping to add a patch to arch/powerpc/Makefile that defines<br>
-&gt; KBUILD_IMAGE:=3D$(boot)/zImage (mimicing arch/s390), which I believe w=
-ould<br>
-&gt; solve our problem.=C2=A0 However, that circles back to our first probl=
-em above.<br>
-&gt;<br>
-&gt; Thoughts?=C2=A0 Help?<br></blockquote><div></div><blockquote class=3D"=
-gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(20=
-4,204,204);padding-left:1ex">
-<br>
-Happy to try and help, though see my concerns at the top about using zImage=
-.<br></blockquote><div><br></div><div>If zImage isn&#39;t the right approac=
-h, would you be open to adding a variable in arch/powerpc/Makefile</div><di=
-v><br></div><div>KBUILD_IMAGE:=3D $(obj)/vmlinux.strip</div><div><br></div>=
-<div>though I think that file is created and removed while building the zIm=
-age.</div><div><br></div><div><br></div><div>It is a small tweak, but one I=
- was trying to avoid hacking into our source code.</div><div><br></div><div=
->Cheers,</div><div>Don</div><div><br></div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex">
-<br>
-cheers<br>
-<br>
-</blockquote></div></div>
-
---00000000000058fb8005e15a377a--
-
+Thanks,
+Sohil
