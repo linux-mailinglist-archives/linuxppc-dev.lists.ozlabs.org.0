@@ -1,149 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F38548E6A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 18:18:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7673E549998
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 19:15:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMGvm4d5Vz3bry
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 02:18:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMJ983KPMz3c8S
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 03:15:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SmjljTAk;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=F9Dmyjwz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52e; helo=mail-pg1-x52e.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SmjljTAk;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=F9Dmyjwz;
 	dkim-atps=neutral
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMGtv0DD0z2yj3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 02:17:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655137063; x=1686673063;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=Q03VEoc5MNS4PxJVkJNGtQifuU3RXSsSLPUiX8TLnHc=;
-  b=SmjljTAkSbRV8JHEF1CfbyNvzIegNvv8mtrjjy6EgVKlO+xFt3eDhfsb
-   J+Md6Cb4B+S6lginaNqlhZupxb7ljIidUrJqWvRDJUPj4v4LtTkpP2pMM
-   BN+Syn/FsAIxrWumjmit7PXSuOO4etELMbVoFY+PRjlpHwkgFYwvStkhd
-   RCKN0YpHguWqhBxNf4KWnXbzuUHuCsPe+6uzlmE3083hjF1PE8PO3Etr1
-   bGhfmguHomA3n7Q5dKh+H8/DTpR2SajZnUm2uJCb/j5Ou75XBU3uT18xv
-   D3W5RnjazReuEvlWLVxHZP4vud0TppUOjOE5zPrWC3URndlU4FablXSDU
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="364662835"
-X-IronPort-AV: E=Sophos;i="5.91,297,1647327600"; 
-   d="scan'208";a="364662835"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2022 09:16:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,297,1647327600"; 
-   d="scan'208";a="568098463"
-Received: from orsmsx606.amr.corp.intel.com ([10.22.229.19])
-  by orsmga002.jf.intel.com with ESMTP; 13 Jun 2022 09:16:08 -0700
-Received: from orsmsx604.amr.corp.intel.com (10.22.229.17) by
- ORSMSX606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 13 Jun 2022 09:16:08 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27 via Frontend Transport; Mon, 13 Jun 2022 09:16:08 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.176)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2308.27; Mon, 13 Jun 2022 09:16:07 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WpEdCQg1llJC1d+dpRSM3OHVoFrzQ/O8FENRDrIKCOVHj0XyYO2WYvzIHPFuybP9AEiMfYDiUbdkrGdBxabXaVRIr4DTGjI/nreUqLm+CooSUAvu5EAawzOL+DCfBv6M/rd4doO+VIPT9opDIGqKC0+QicznJ2qyJ8ReWfFHRE6cYBl82Akj+4Z+EievAF5vKUJd3+kiFpXBOIlZLbgHzltw10kASuPbG+vJfADZJKX73qAXtA2vUTQekNN4NU1y0rOe3506wI6h1ZYcu32ZqlmQUTZ/q3DCTdLkeJEpK6oaTFbG2VM0W9uyPkJl4c90Lt7a6XH1xrpqoShpbCKBeQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FaKKrPF5MtbKacJrZJxKpvigdXx5rxsoodWNbzvU2Gs=;
- b=Yehsx50H4H+ehvGRCgJYKrEHZ90k1vyNCh+tocOaZZ8NipZsGXTdixnF/QQNRPF6WOgvnnKE6dIS+VcGS6P3FD5PMxqdADEuSW3PnDyZ76SOXgTWw4FvlLsPrERB6JXl+6tJDcLlzzx/+UMq4TJ+kcQshP3AgG4tdvI+mG4ZH+CCBSIY3OuTNJ0qjaOneHOK69Etd7JbSZy5PFUkJMXo3FGZuKZP0Nqx/cC3ugvdJl8UcX+pmrTdCoL8YerkC/bETOUgJjAh3PPB0BPRMyxu66a2Yf7YBTxiHkex9u1PSOxfPLcMohcHeapw7wnIZM0/SpXKLZKOh/A63zSro9ud2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6311.namprd11.prod.outlook.com (2603:10b6:8:a6::21) by
- MW3PR11MB4762.namprd11.prod.outlook.com (2603:10b6:303:5d::21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.5332.12; Mon, 13 Jun 2022 16:16:05 +0000
-Received: from DM4PR11MB6311.namprd11.prod.outlook.com
- ([fe80::d4e9:9ae1:29b2:90c]) by DM4PR11MB6311.namprd11.prod.outlook.com
- ([fe80::d4e9:9ae1:29b2:90c%5]) with mapi id 15.20.5332.020; Mon, 13 Jun 2022
- 16:16:05 +0000
-Date: Mon, 13 Jun 2022 09:16:01 -0700
-From: Ira Weiny <ira.weiny@intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMJ8V62YLz3bhs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 03:14:32 +1000 (AEST)
+Received: by mail-pg1-x52e.google.com with SMTP id 129so6118858pgc.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 10:14:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=q3ll5jEP2t2CsOV5mJ9Lm/eNFB2SHb8fwGUCCDQrsO0=;
+        b=F9Dmyjwzv2BEelHz7PJex+FuAbmYcPkwAbOQWV7DkB6t+QTRrVMnlcX6ZYZwZOjH8E
+         9y5wWh+yhRfIpe69TakkGIbElqr5S2LK6a9iqYRNZAq85N9BEYBPmuaqLwdKgBO5mXU1
+         uFtWLQc+4ZR54mskxEeTmr1fDcj55QLyl1l8o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=q3ll5jEP2t2CsOV5mJ9Lm/eNFB2SHb8fwGUCCDQrsO0=;
+        b=HH9+ow5vPtKqlwJr8iwMeQSVUnmzWF2FssmQCPsIOqAx0s14nng21nLpYY/wV3Ny/y
+         AD1nwdnYj2538e9JL/VKRay8OV+qyPiYE8XwNT2n1CRwRIGeY8QCbH8jJK3YiUWcLpwW
+         Pd7KLswY3XrodAyNRsryS5xN/IdGCI0vkL0TiJa2GhfDCoshNjb1tkqScx1xm0LaII8m
+         SKDLjMDk9T4pfq92/3j6LsTe7ngHP0+lWDU6jW+aHDu53jNe00g78Q1bmeUWYSBWurXK
+         ZXh8HbDrFf0zYT/HoKbK/nUj3Fs5I9z6SBMH35qysxlfmcnVlw82lDy0cuJazPVAcBKb
+         jwTQ==
+X-Gm-Message-State: AOAM532EDKM83RZZ+RoWP4qc4DvaKdy0HY+G2qqMfzDQipUwyzK9K0+c
+	ypVm4CGyJ0wWOBcWJHe2G4NPTw==
+X-Google-Smtp-Source: ABdhPJyID9xIthmByLOSbmLQ+hZGxlQijKuPUli3jnD6NTly8DKqdxatMXFTWRIwuHQv0whCqlLxfA==
+X-Received: by 2002:a62:140c:0:b0:51b:bd14:6859 with SMTP id 12-20020a62140c000000b0051bbd146859mr346192pfu.28.1655140467272;
+        Mon, 13 Jun 2022 10:14:27 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id iz3-20020a170902ef8300b0015e9d4a5d27sm5407597plb.23.2022.06.13.10.14.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jun 2022 10:14:26 -0700 (PDT)
+Date: Mon, 13 Jun 2022 10:14:26 -0700
+From: Kees Cook <keescook@chromium.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 6/6] pkeys: Change mm_pkey_free() to void
-Message-ID: <YqdiwVQE9jzf++jQ@iweiny-desk3>
-References: <20220610233533.3649584-1-ira.weiny@intel.com>
- <20220610233533.3649584-7-ira.weiny@intel.com>
- <af035c24-36f6-7d55-5be7-b52cfe26e2c6@csgroup.eu>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <af035c24-36f6-7d55-5be7-b52cfe26e2c6@csgroup.eu>
-X-ClientProxiedBy: SJ0PR13CA0183.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::8) To DM4PR11MB6311.namprd11.prod.outlook.com
- (2603:10b6:8:a6::21)
+Subject: Re: [PATCH] powerpc: Restore CONFIG_DEBUG_INFO in defconfigs
+Message-ID: <202206131014.B0552BDB8@keescook>
+References: <98a4c2603bf9e4b776e219f5b8541d23aa24e854.1654930308.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 8fccd6a2-2e3a-4f8f-85c7-08da4d58049a
-X-MS-TrafficTypeDiagnostic: MW3PR11MB4762:EE_
-X-Microsoft-Antispam-PRVS: <MW3PR11MB47624F6C776982BE43C87852F7AB9@MW3PR11MB4762.namprd11.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: jzHV700DCwVcve2+B/cjOh19o7+eb4GGsAJRvDDosWPBgs8UH/+c+/Hwv7jP50cVwRmpzT3XjGIHFrgCuUwBVAKsMYcyGxSxrxNN8l6GW4GgJc+4dQBwvvRZa4BNvLIQioMKUNLnzzA2L/jNtMrOz8IwmYoM7Hh/8/RUZaVUL7zQCqLRuR7Y3tyVPK4nRp/khjLrL2uC7lKeaNBMqtknN2xmIxPWVzBvU7GwLcA48ekI9sXW+Cu0cSqX43+hgdEiMctCitxlPfplgq/OetOuR5Y94TmWWu4ZrbgcT3qgk4rvvFPjwOeuILlLk5Q7NJqDk58urmsG1FGkDrQgu20CXF859RaY+LDBH+51qmxS/tqUB29Rec3HIQcKWPtW8HXhcrzGHxSfMdpMB77CTVTvbyb6By5N1LprLEnGUl7RaDPhqEBrt+s9NdlViOWt1wXT+1MIj+R3FvED4pBoIsCALm22FWGZBvn44Mb+hE8bNB7L3JRDUBnHA5/ju73O2i6eWOYG+sUC4taPA8gCaoGCsDWKPG7Aa8XSMFRsoczEZGuMc7zb//8DqJSSP9g6ZlUOD0Q049fsWpefN7DkNc7Qpw6JyZJ7AqInDBB3tm/gMejAauf1sV3+Na/QxPABhHn2Cu0Y8O335RRBdKLznwsvHg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6311.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(366004)(26005)(86362001)(6506007)(6916009)(6666004)(6486002)(33716001)(8936002)(2906002)(8676002)(38100700002)(66556008)(66476007)(54906003)(4326008)(66946007)(66574015)(82960400001)(316002)(44832011)(6512007)(9686003)(186003)(83380400001)(508600001)(5660300002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?J5o6WREwYcXVpo0ra4wv4TX7gWep/6nRK6KlvonYFK1zUPSaWh7sBw7Ou6?=
- =?iso-8859-1?Q?UaR0JHAEO6nAZAOo5U5mlD+CwXHQkXwac92rkiopygUlo8m14oEr/Oja1o?=
- =?iso-8859-1?Q?QivF9abJbRfG5h3a/tzNHqpdvsNeyVtFo+3eVEpu8ztoOseCPR/h4sMgpW?=
- =?iso-8859-1?Q?K0G7fzk4xY7WNPvBFNLEmiT0b5UZ7+XDhJv+evF85DaxFnGSBU4I6I1igL?=
- =?iso-8859-1?Q?wCJABMtO5zPpukwevrPxAEDjcrdlr6IXIjkCTHAoFkkH7awILTfuoq2IdP?=
- =?iso-8859-1?Q?lFBas2QoydNc3Jx/oQN5aukU0AFvv+qi4tDqRIyWFz/BX/rUHYrOcN74Fk?=
- =?iso-8859-1?Q?ewIJCP4XX5hq60pZv8BWYYySWmQlZKqACDetr0Xim4LlhPNb81VD1vMs+3?=
- =?iso-8859-1?Q?bAfj4THUM1dcFfO5DcRH50ucfVvJXjk3fKspOj478pEkEIa944SJnCceAq?=
- =?iso-8859-1?Q?dK7igC1eNkU5H4s+fhXScwD+Mt9OkqyHY8cEuWkE6cubKou0LtNa19rh+W?=
- =?iso-8859-1?Q?VNSUdaMuPs73GNuA3Ujy3gzn/fjCmQGfL3fIE9xqhbqv+daWuJ20f4hQxh?=
- =?iso-8859-1?Q?/XRgjOoavkdrzOxJWOvSTjBtmogoC77EGU9PjfYSBvHocnlCsl0pZwLoDg?=
- =?iso-8859-1?Q?Sop8fIT02oWWOw2raCW3a7hqdD0EDjam+k6/K+ur77ThQ4qmnV5D8nfGXo?=
- =?iso-8859-1?Q?EC+4OakN6In69DLosTiJ7bVeyvaD7FzaA+/dHjY3vzvdmqRHFRHFUbDHC9?=
- =?iso-8859-1?Q?1IAmRi9dCs1XUEbpI7x5U/UCbjWrE2LsGZ2EkRgFP9ApfrwvEb0JWBF5gL?=
- =?iso-8859-1?Q?5M6SW5H6wGJEdjqXRZ3AGMYSRUs3ZY+J0VRVWkas7l6xYSK8nFvioBIPTX?=
- =?iso-8859-1?Q?5tHbuIa827/kRY02imoxXyDHSYLfM1kHYlAyKDysUQwgLHhQ7M7M07ejtK?=
- =?iso-8859-1?Q?tVcpegLm3DXQFc0UDa5CnnhJfrrdZszMWRJYMAisc1Dm5jzSOUXlWCcyGw?=
- =?iso-8859-1?Q?nfOY3MWnmhRUtAcNVUoCJr0lJItVijO0bkWILPYchGjDsocQEkFMRh0zeH?=
- =?iso-8859-1?Q?nvFhS+THpTEYZkjor8Tj2XKnWxwGCNJGi8csEN+0OtY4bnairTUCJY/Tvj?=
- =?iso-8859-1?Q?wIop42kuXjxG6QXDVgHHGfNMPGx1en6dq/Geo7sik/C3vBJilBo1GGLm18?=
- =?iso-8859-1?Q?+xExeAYyphQPqoMITVfhn41p2m2ColvJvVSfvC3c6O1BNqGRPAatUOHuMs?=
- =?iso-8859-1?Q?/CqLe14qPsoyTT+xSnSlytgBMqWtBYsQKVFfP5FmRIXnXU0um+2YPAfrS1?=
- =?iso-8859-1?Q?siYc4fMwTeDc9ycQCY4YwHKWCTQa/Gz6O6eMLEydAQ2+s53eAbLwMniP7m?=
- =?iso-8859-1?Q?kTHkDRV6eA27qLgJ/Fp1En5PwYdOxNneEgWhbZnSGGKAlsUpXZgz7GIGNp?=
- =?iso-8859-1?Q?Fy8Kv7Lww2inivyNcESG5BPWnmKMez4Sd8ZhljZgIbTH6GYLGw/NYl0T2O?=
- =?iso-8859-1?Q?brb5ObjcdC4b8IapgtkRBL1bgK4kGuu7jYAwzbPbVa19fSavjezxBEo1CO?=
- =?iso-8859-1?Q?YEFOFfynaltueSp0DNZnKy23nMxbWSdU4LrC3HFFz7v2m8UQGukfKAH1KP?=
- =?iso-8859-1?Q?FrOINgzlsakr2PSl1kjSH9Gxr7IjbF/3bEMcpZU4/vm4PC2L70KPntNgBb?=
- =?iso-8859-1?Q?I4Gy3eFWjsIw7XP0164TFLstzYGHUCACLorIs+F2DOZOnYMlv+sjm3SVOV?=
- =?iso-8859-1?Q?bz7YLVdttVxzCcOEpG9PDRrfRa5oKVdfOus2tJP7Hq7DF9g4A29FjYwQKp?=
- =?iso-8859-1?Q?ZCx4FpI8Bw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8fccd6a2-2e3a-4f8f-85c7-08da4d58049a
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6311.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 16:16:05.7292
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t8gtuFI0cEQ/shvEQjiniZ0Nd1G0z8PEagSxK+RMc/oQAf2GtOlXxmoxtep+jlmPAq0hC3gTVMAbsBmZYT2ibw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4762
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <98a4c2603bf9e4b776e219f5b8541d23aa24e854.1654930308.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -155,54 +73,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave
- Hansen <dave.hansen@linux.intel.com>, "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Sohil
- Mehta <sohil.mehta@intel.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 13, 2022 at 09:17:06AM +0000, Christophe Leroy wrote:
+On Sat, Jun 11, 2022 at 08:51:57AM +0200, Christophe Leroy wrote:
+> Commit f9b3cd245784 ("Kconfig.debug: make DEBUG_INFO selectable from a
+> choice") broke the selection of CONFIG_DEBUG_INFO by powerpc defconfigs.
 > 
+> It is now necessary to select one of the three DEBUG_INFO_DWARF*
+> options to get DEBUG_INFO enabled.
 > 
-> Le 11/06/2022 à 01:35, ira.weiny@intel.com a écrit :
-> > From: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > Now that the pkey arch support is no longer checked in mm_pkey_free()
-> > there is no reason to have it return int.
+> Replace DEBUG_INFO=y by DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y in all
+> defconfigs using the following command:
 > 
-> Right, I see this is doing what I commented in previous patch.
+> sed -i s/DEBUG_INFO=y/DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y/g `git grep -l DEBUG_INFO arch/powerpc/configs/`
+> 
+> Fixes: f9b3cd245784 ("Kconfig.debug: make DEBUG_INFO selectable from a choice")
+> Cc: stable@vger.kernel.org
+> Cc: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Yes because it was suggested by Sohil I decided to make it a separate patch to
-make the credit easier.
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-> > diff --git a/mm/mprotect.c b/mm/mprotect.c
-> > index 41458e729c27..e872bdd2e228 100644
-> > --- a/mm/mprotect.c
-> > +++ b/mm/mprotect.c
-> > @@ -809,8 +809,10 @@ SYSCALL_DEFINE1(pkey_free, int, pkey)
-> >   		return ret;
-> >   
-> >   	mmap_write_lock(current->mm);
-> > -	if (mm_pkey_is_allocated(current->mm, pkey))
-> > -		ret = mm_pkey_free(current->mm, pkey);
-> > +	if (mm_pkey_is_allocated(current->mm, pkey)) {
-> > +		mm_pkey_free(current->mm, pkey);
-> > +		ret = 0;
-> > +	}
-> 
-> Or you could have ret = 0 by default and do
-> 
-> 	if (mm_pkey_is_allocated(current->mm, pkey))
-> 		mm_pkey_free(current->mm, pkey);
-> 	else
-> 		ret = -EINVAL;
-
-Yes that fits the kernel style better.
-
-Thanks for the review!
-Ira
-
-> 
-> >   	mmap_write_unlock(current->mm);
-> >   
-> >   	/*
+-- 
+Kees Cook
