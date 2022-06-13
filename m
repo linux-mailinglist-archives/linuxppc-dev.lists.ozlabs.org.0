@@ -1,58 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5CA354BA69
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 21:18:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C160654BD35
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:02:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMys81hR0z3cf7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 05:18:36 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EScb7iSo;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2Tl5WRXz3cjF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:02:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:40e1:4800::1; helo=sin.source.kernel.org; envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EScb7iSo;
-	dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csail.mit.edu (client-ip=128.30.2.210; helo=outgoing-stata.csail.mit.edu; envelope-from=srivatsa@csail.mit.edu; receiver=<UNKNOWN>)
+X-Greylist: delayed 1964 seconds by postgrey-1.36 at boromir; Tue, 14 Jun 2022 05:23:11 AEST
+Received: from outgoing-stata.csail.mit.edu (outgoing-stata.csail.mit.edu [128.30.2.210])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMyrY0pDNz3bs9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 05:18:04 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by sin.source.kernel.org (Postfix) with ESMTPS id 42C71CE1C48;
-	Tue, 14 Jun 2022 19:18:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5739FC3411B;
-	Tue, 14 Jun 2022 19:18:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655234280;
-	bh=FkZw6H17yuD8ClRcK7e3hgSjktksESJzVPAsVJ1/HuY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EScb7iSo/mjlIrpaIh5zTTlMrt1P6IP7AFjsm9wiZTiolgrSUycrndaAWgl2NLywV
-	 rb/+8hK2eHSXGBiHjpou1uvgPWKi8bt9fiJpZ8l1ATT7qcv5XtT8HuD3FHq7U0LBlD
-	 FShuAs8p83pTalZ9e/AL8CJKvD6ihMJnuq5inBHW2JG1i+prN8CWxhOTva1PXAGG6w
-	 Y0A4dRq0xBxla/ohPqOtpUx/GAAUxTfxupgCU095rTBsDufp/LZhP64NrQaYl7XDih
-	 Hk4YSwLKO2JNXLur+bwChuPEehAsg0XUCX/3BcAVQjbgk/Yl++uumc5WNHL+sJ6Wn1
-	 Js+ggLkoZjnOw==
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-	id 0FD974096F; Tue, 14 Jun 2022 16:17:58 -0300 (-03)
-Date: Tue, 14 Jun 2022 16:17:58 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Ian Rogers <irogers@google.com>
-Subject: Re: [PATCH] tools/perf/tests: Fix session topology test comparison
- check
-Message-ID: <Yqje5nUpPdkyvfuQ@kernel.org>
-References: <20220610135939.63361-1-atrajeev@linux.vnet.ibm.com>
- <CAP-5=fV6sPUtSqPBmJ0dmeUK+wuuXgyq-GQRV_g_B5uC4y5oGA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMM0v3D8Kz2ywl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 05:23:09 +1000 (AEST)
+Received: from [77.23.249.31] (helo=srivatsab-a02.vmware.com)
+	by outgoing-stata.csail.mit.edu with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82)
+	(envelope-from <srivatsa@csail.mit.edu>)
+	id 1o0p7j-0002lx-0j; Mon, 13 Jun 2022 14:49:15 -0400
+Subject: Re: [PATCH 29/36] cpuidle,xenpv: Make more PARAVIRT_XXL noinstr clean
+To: Peter Zijlstra <peterz@infradead.org>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144517.759631860@infradead.org>
+From: "Srivatsa S. Bhat" <srivatsa@csail.mit.edu>
+Message-ID: <510b9b68-7d53-7d4d-5a05-37fbd199eb4b@csail.mit.edu>
+Date: Mon, 13 Jun 2022 20:48:49 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAP-5=fV6sPUtSqPBmJ0dmeUK+wuuXgyq-GQRV_g_B5uC4y5oGA@mail.gmail.com>
-X-Url: http://acmel.wordpress.com
+In-Reply-To: <20220608144517.759631860@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,56 +47,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, rnsastry@linux.ibm.com, tmricht@linux.ibm.com, linux-perf-users@vger.kernel.org, maddy@linux.ibm.com, jolsa@kernel.org, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, linux-clk@vger.kernel.org, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, rth@twiddle.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualiza
+ tion@lists.linux-foundation.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infra
+ dead.org, mgorman@suse.de, jacob.jun.pan@linux.intel.
+
+com, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfaul
+ t.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Em Tue, Jun 14, 2022 at 07:38:55AM -0700, Ian Rogers escreveu:
-> On Fri, Jun 10, 2022 at 7:00 AM Athira Rajeev
-> <atrajeev@linux.vnet.ibm.com> wrote:
-> >
-> > commit cfd7092c31ae ("perf test session topology: Fix test to
-> > skip the test in guest environment") added check to skip the
-> > testcase if the socket_id can't be fetched from topology info.
-> > But the condition check uses strncmp which should be changed to
-> > !strncmp and to correctly match platform. Patch fixes this
-> > condition check.
-> >
-> > Fixes: cfd7092c31ae ("perf test session topology: Fix test to skip the test in guest environment")
-> > Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+On 6/8/22 4:27 PM, Peter Zijlstra wrote:
+> vmlinux.o: warning: objtool: acpi_idle_enter_s2idle+0xde: call to wbinvd() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: default_idle+0x4: call to arch_safe_halt() leaves .noinstr.text section
+> vmlinux.o: warning: objtool: xen_safe_halt+0xa: call to HYPERVISOR_sched_op.constprop.0() leaves .noinstr.text section
 > 
-> Acked-by: Ian Rogers <irogers@google.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-Thanks, applied.
+Reviewed-by: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
 
-- Arnaldo
 
- 
-> Thanks,
-> Ian
+Regards,
+Srivatsa
+VMware Photon OS
+
+> ---
+>  arch/x86/include/asm/paravirt.h      |    6 ++++--
+>  arch/x86/include/asm/special_insns.h |    4 ++--
+>  arch/x86/include/asm/xen/hypercall.h |    2 +-
+>  arch/x86/kernel/paravirt.c           |   14 ++++++++++++--
+>  arch/x86/xen/enlighten_pv.c          |    2 +-
+>  arch/x86/xen/irq.c                   |    2 +-
+>  6 files changed, 21 insertions(+), 9 deletions(-)
 > 
-> > ---
-> >  tools/perf/tests/topology.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/tools/perf/tests/topology.c b/tools/perf/tests/topology.c
-> > index d23a9e322ff5..0b4f61b6cc6b 100644
-> > --- a/tools/perf/tests/topology.c
-> > +++ b/tools/perf/tests/topology.c
-> > @@ -115,7 +115,7 @@ static int check_cpu_topology(char *path, struct perf_cpu_map *map)
-> >          * physical_package_id will be set to -1. Hence skip this
-> >          * test if physical_package_id returns -1 for cpu from perf_cpu_map.
-> >          */
-> > -       if (strncmp(session->header.env.arch, "powerpc", 7)) {
-> > +       if (!strncmp(session->header.env.arch, "ppc64le", 7)) {
-> >                 if (cpu__get_socket_id(perf_cpu_map__cpu(map, 0)) == -1)
-> >                         return TEST_SKIP;
-> >         }
-> > --
-> > 2.35.1
-> >
-
--- 
-
-- Arnaldo
+> --- a/arch/x86/include/asm/paravirt.h
+> +++ b/arch/x86/include/asm/paravirt.h
+> @@ -168,7 +168,7 @@ static inline void __write_cr4(unsigned
+>  	PVOP_VCALL1(cpu.write_cr4, x);
+>  }
+>  
+> -static inline void arch_safe_halt(void)
+> +static __always_inline void arch_safe_halt(void)
+>  {
+>  	PVOP_VCALL0(irq.safe_halt);
+>  }
+> @@ -178,7 +178,9 @@ static inline void halt(void)
+>  	PVOP_VCALL0(irq.halt);
+>  }
+>  
+> -static inline void wbinvd(void)
+> +extern noinstr void pv_native_wbinvd(void);
+> +
+> +static __always_inline void wbinvd(void)
+>  {
+>  	PVOP_ALT_VCALL0(cpu.wbinvd, "wbinvd", ALT_NOT(X86_FEATURE_XENPV));
+>  }
+> --- a/arch/x86/include/asm/special_insns.h
+> +++ b/arch/x86/include/asm/special_insns.h
+> @@ -115,7 +115,7 @@ static inline void wrpkru(u32 pkru)
+>  }
+>  #endif
+>  
+> -static inline void native_wbinvd(void)
+> +static __always_inline void native_wbinvd(void)
+>  {
+>  	asm volatile("wbinvd": : :"memory");
+>  }
+> @@ -179,7 +179,7 @@ static inline void __write_cr4(unsigned
+>  	native_write_cr4(x);
+>  }
+>  
+> -static inline void wbinvd(void)
+> +static __always_inline void wbinvd(void)
+>  {
+>  	native_wbinvd();
+>  }
+> --- a/arch/x86/include/asm/xen/hypercall.h
+> +++ b/arch/x86/include/asm/xen/hypercall.h
+> @@ -382,7 +382,7 @@ MULTI_stack_switch(struct multicall_entr
+>  }
+>  #endif
+>  
+> -static inline int
+> +static __always_inline int
+>  HYPERVISOR_sched_op(int cmd, void *arg)
+>  {
+>  	return _hypercall2(int, sched_op, cmd, arg);
+> --- a/arch/x86/kernel/paravirt.c
+> +++ b/arch/x86/kernel/paravirt.c
+> @@ -233,6 +233,11 @@ static noinstr void pv_native_set_debugr
+>  	native_set_debugreg(regno, val);
+>  }
+>  
+> +noinstr void pv_native_wbinvd(void)
+> +{
+> +	native_wbinvd();
+> +}
+> +
+>  static noinstr void pv_native_irq_enable(void)
+>  {
+>  	native_irq_enable();
+> @@ -242,6 +247,11 @@ static noinstr void pv_native_irq_disabl
+>  {
+>  	native_irq_disable();
+>  }
+> +
+> +static noinstr void pv_native_safe_halt(void)
+> +{
+> +	native_safe_halt();
+> +}
+>  #endif
+>  
+>  enum paravirt_lazy_mode paravirt_get_lazy_mode(void)
+> @@ -273,7 +283,7 @@ struct paravirt_patch_template pv_ops =
+>  	.cpu.read_cr0		= native_read_cr0,
+>  	.cpu.write_cr0		= native_write_cr0,
+>  	.cpu.write_cr4		= native_write_cr4,
+> -	.cpu.wbinvd		= native_wbinvd,
+> +	.cpu.wbinvd		= pv_native_wbinvd,
+>  	.cpu.read_msr		= native_read_msr,
+>  	.cpu.write_msr		= native_write_msr,
+>  	.cpu.read_msr_safe	= native_read_msr_safe,
+> @@ -307,7 +317,7 @@ struct paravirt_patch_template pv_ops =
+>  	.irq.save_fl		= __PV_IS_CALLEE_SAVE(native_save_fl),
+>  	.irq.irq_disable	= __PV_IS_CALLEE_SAVE(pv_native_irq_disable),
+>  	.irq.irq_enable		= __PV_IS_CALLEE_SAVE(pv_native_irq_enable),
+> -	.irq.safe_halt		= native_safe_halt,
+> +	.irq.safe_halt		= pv_native_safe_halt,
+>  	.irq.halt		= native_halt,
+>  #endif /* CONFIG_PARAVIRT_XXL */
+>  
+> --- a/arch/x86/xen/enlighten_pv.c
+> +++ b/arch/x86/xen/enlighten_pv.c
+> @@ -1019,7 +1019,7 @@ static const typeof(pv_ops) xen_cpu_ops
+>  
+>  		.write_cr4 = xen_write_cr4,
+>  
+> -		.wbinvd = native_wbinvd,
+> +		.wbinvd = pv_native_wbinvd,
+>  
+>  		.read_msr = xen_read_msr,
+>  		.write_msr = xen_write_msr,
+> --- a/arch/x86/xen/irq.c
+> +++ b/arch/x86/xen/irq.c
+> @@ -24,7 +24,7 @@ noinstr void xen_force_evtchn_callback(v
+>  	(void)HYPERVISOR_xen_version(0, NULL);
+>  }
+>  
+> -static void xen_safe_halt(void)
+> +static noinstr void xen_safe_halt(void)
+>  {
+>  	/* Blocking includes an implicit local_irq_enable(). */
+>  	if (HYPERVISOR_sched_op(SCHEDOP_block, NULL) != 0)
+> 
+> 
