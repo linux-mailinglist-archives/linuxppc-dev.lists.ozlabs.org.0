@@ -1,66 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807C15484D3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 13:32:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DE95484D5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 13:32:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LM8YS2z2Mz3brp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 21:32:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LM8Z707Zcz3fHS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 21:32:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hln/7KIU;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=AYS6grJV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::334; helo=mail-wm1-x334.google.com; envelope-from=jiangshanlai@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hln/7KIU;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=AYS6grJV;
 	dkim-atps=neutral
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LM4R20X5tz308C
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 18:26:21 +1000 (AEST)
-Received: by mail-wm1-x334.google.com with SMTP id x6-20020a1c7c06000000b003972dfca96cso2625473wmc.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 01:26:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
-        b=hln/7KIUboOODQa9/Iv7zWAXFI8kFLhiLL+AWnA7ZL0itAJaB93eguKFQupB8Lv94a
-         mnMuLqlfVsMy6aSBFmNweaacWKXWw7aT6TScazfBGhspJqqH/PMOPWdnnnaxNLaf842d
-         D+3NPCattkXMe8VyippSy6AVlz1Q90Igxi/lQII1yr2hkIK0YZRpsj0TKs2Px7tXlVgY
-         915w6r1r+N9IHNGMPf7O4C6rOlcjLzR4xSEqc3Zfq8tMbY0ayFsU19Cug+0HkT25Saig
-         zkxTdXbzsbpEfsV6HhW0WtRME3JJZVdyKx57BtFZ0WE2gh0TSNH76QSkgUTVIoEuHNxT
-         f/gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3JSggHLDbkXyuZCKaU+uQ7H5KVpBjE3ZWWl/F0t3JyI=;
-        b=lIV6THk+L6WMesHoiSKWEMvnMifUEEyCh0NZ177rO55i/NEVINe8XGciIYDdAQ2rIX
-         uBBAxhiu9RL4Rqmn7AfYwmFS8HrDU8WWDZpzbFnSIgn/lS7a5u8eVM+409kmZHurcKX1
-         9WwdGodjRT4w4Ume7jXDx9YCOfmHd+r1sPYZJFLTXWxP8/42zr/3Ot4WfGZsf60Pj+Fv
-         BbewE8FnhG4nP0k84sJ6Y9OcFe1rUatM8QzQ/tE6NtDDBP7fyEIRJA/36hi+A3uGg1+S
-         sZCV0Knapo1TKDB+mB5kefCSmzXbDUOxNuH6pvtBJAo8wo00o6T1h5Bf0OF3XwCBlrVt
-         +H5w==
-X-Gm-Message-State: AOAM530rajDWOdyizk1/V2tKPPPhOLjBMNWEzcfvelS6MM1zr1Lw37cA
-	ByTvjc1Qxp5VsyoLtqnYNQrv74UxyCY7ymoSfAc=
-X-Google-Smtp-Source: ABdhPJxgJ3qlsWHXb4q5Q9LeHOXh1hQWbFNdZBk/6atfvyd1YyWRPGtuhT6/ZUDmb0vG1CLuyzfEgHlG2xi/itwptM8=
-X-Received: by 2002:a05:600c:1c9a:b0:39c:7db4:90c3 with SMTP id
- k26-20020a05600c1c9a00b0039c7db490c3mr13053942wms.161.1655108772491; Mon, 13
- Jun 2022 01:26:12 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144517.251109029@infradead.org>
-In-Reply-To: <20220608144517.251109029@infradead.org>
-From: Lai Jiangshan <jiangshanlai@gmail.com>
-Date: Mon, 13 Jun 2022 16:26:01 +0800
-Message-ID: <CAJhGHyCnu_BsKf5STMMJKMWm0NVZ8qXT8Qh=BhhCjSSgwchL3Q@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LM4nd4vySz2xKf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 18:42:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TBu1hM1Fbte1hrb329bc3ivTNLPSxYZoE9gYu5eRiHg=; b=AYS6grJVD8NMmpEvSXoRmqR/m5
+	NEo85wVpnYAfEDlJuO/EUebdXwmtGi7E1hfXWnzD4xJRKZ83szCruTMmPOs7xBMJ6Aw1UFgllIdA2
+	DrNCgkjyxwSlCkaYvmrnpeyVHjsekjBUo+W+kPzFmB2XaZh0Vpc97VCHNs1UCeL3PGYHI9qxJxVu/
+	DaFylVxmC0fZNsBkd3ExUz+u7t35uoUT8AamFGd6WJIWdTb36E6JQrKM1QWtIzoeKjuNFK4QcGaGj
+	jl+nLLuCaTmbWLVhpIZJqu3xqI2+WRMTvXP48+Wg/el92i2X48vydvI85ds5VF4NfA6ZUW+2+coel
+	hUXUv0FQ==;
+Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1o0fdb-00Gf1z-43; Mon, 13 Jun 2022 08:41:31 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 600BB300472;
+	Mon, 13 Jun 2022 10:41:27 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 42FA02849859B; Mon, 13 Jun 2022 10:41:27 +0200 (CEST)
+Date: Mon, 13 Jun 2022 10:41:27 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Lai Jiangshan <jiangshanlai@gmail.com>
 Subject: Re: [PATCH 21/36] x86/tdx: Remove TDX_HCALL_ISSUE_STI
-To: Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <Yqb4N3iwh1X7378o@hirez.programming.kicks-ass.net>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144517.251109029@infradead.org>
+ <CAJhGHyCnu_BsKf5STMMJKMWm0NVZ8qXT8Qh=BhhCjSSgwchL3Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJhGHyCnu_BsKf5STMMJKMWm0NVZ8qXT8Qh=BhhCjSSgwchL3Q@mail.gmail.com>
 X-Mailman-Approved-At: Mon, 13 Jun 2022 21:27:22 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -82,34 +76,38 @@ kernel.org, VMware Inc <pv-drivers@vmware.com>, linux-snps-arc@lists.infradead.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 8, 2022 at 10:48 PM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> Now that arch_cpu_idle() is expected to return with IRQs disabled,
-> avoid the useless STI/CLI dance.
->
-> Per the specs this is supposed to work, but nobody has yet relied up
-> this behaviour so broken implementations are possible.
+On Mon, Jun 13, 2022 at 04:26:01PM +0800, Lai Jiangshan wrote:
+> On Wed, Jun 8, 2022 at 10:48 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> >
+> > Now that arch_cpu_idle() is expected to return with IRQs disabled,
+> > avoid the useless STI/CLI dance.
+> >
+> > Per the specs this is supposed to work, but nobody has yet relied up
+> > this behaviour so broken implementations are possible.
+> 
+> I'm totally newbie here.
+> 
+> The point of safe_halt() is that STI must be used and be used
+> directly before HLT to enable IRQ during the halting and stop
+> the halting if there is any IRQ.
 
-I'm totally newbie here.
+Correct; on real hardware. But this is virt...
 
-The point of safe_halt() is that STI must be used and be used
-directly before HLT to enable IRQ during the halting and stop
-the halting if there is any IRQ.
+> In TDX case, STI must be used directly before the hypercall.
+> Otherwise, no IRQ can come and the vcpu would be stalled forever.
+> 
+> Although the hypercall has an "irq_disabled" argument.
+> But the hypervisor doesn't (and can't) touch the IRQ flags no matter
+> what the "irq_disabled" argument is.  The IRQ is not enabled during
+> the halting if the IRQ is disabled before the hypercall even if
+> irq_disabled=false.
 
-In TDX case, STI must be used directly before the hypercall.
-Otherwise, no IRQ can come and the vcpu would be stalled forever.
+All we need the VMM to do is wake the vCPU, and it can do that,
+irrespective of the guest's IF.
 
-Although the hypercall has an "irq_disabled" argument.
-But the hypervisor doesn't (and can't) touch the IRQ flags no matter
-what the "irq_disabled" argument is.  The IRQ is not enabled during
-the halting if the IRQ is disabled before the hypercall even if
-irq_disabled=false.
+So the VMM can (and does) know if there's an interrupt pending, and
+that's all that's needed to wake from this hypercall. Once the vCPU is
+back up and running again, we'll eventually set IF again and the pending
+interrupt will get delivered and all's well.
 
-The "irq_disabled" argument is used for workaround purposes:
-https://lore.kernel.org/kvm/c020ee0b90c424a7010e979c9b32a28e9c488a51.1651774251.git.isaku.yamahata@intel.com/
-
-Hope my immature/incorrect reply elicits a real response from
-others.
-
-Thanks
-Lai
+Think of this like MWAIT with ECX[0] set if you will.
