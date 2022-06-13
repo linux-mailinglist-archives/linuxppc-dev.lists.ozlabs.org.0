@@ -2,67 +2,148 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81674548701
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 17:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F38548E6A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 18:18:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMGSL172jz3chH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 01:58:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMGvm4d5Vz3bry
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 02:18:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h74NZSz5;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SmjljTAk;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h74NZSz5;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SmjljTAk;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMGRm1MWXz2ypZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 01:57:40 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 65963614D3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 15:57:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6585C3411B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 15:57:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655135856;
-	bh=5LELPMlZgORWGS0Q/Me0zEuAVidBHgnRbjk9vI39cfQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=h74NZSz5rKiy8TrTzuSGNok1JSS6cTl5S3pG5pZV/JDEgJlQMXNgoM2o9P+PALX96
-	 6PR5nW5vWqf2CVgxJOKl/Q8dXppoS60prGy27yZleiRazVqWVgf4zft7CDHcofVe5u
-	 CspmwLmTJ5SB9F0jpJtsye3Xbar7e3JDoek7xY2pqi8fMWrqI/ir2EH32+fypU/Sl9
-	 E4EtzrNQ5+cYA6FqSl3M+4zxDjt8iG+548XEKqsh2upUwz/v9XMBRz/U2uBVXVrj0M
-	 afpmTOJ9HgybiiMzKlB9O7phju+gOpZGoBFSRVJ+FBMcR9RLMAdHXg6hWX0Z6AYpNQ
-	 k+7t5BFN32elw==
-Received: by mail-vs1-f42.google.com with SMTP id q14so6266819vsr.12
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 08:57:36 -0700 (PDT)
-X-Gm-Message-State: AJIora897U3MXNeRiodITCfUuKIeHGORV2r2ITkNpEHyUCt+YAZwF04o
-	LZgRJJqkQYOACyBgz5HsGu3LJpIDSW9Tayrobw==
-X-Google-Smtp-Source: AGRyM1t3jLOgtxbVuzrwkWRxD9MWJNJ+55PsG/fZgG/UWx+gik+oXEQl0q4pmZ5+kqFTdV7k5YdUzm+XUQ34KZttq4I=
-X-Received: by 2002:a05:6102:3117:b0:34b:ea03:5664 with SMTP id
- e23-20020a056102311700b0034bea035664mr325472vsh.53.1655135855811; Mon, 13 Jun
- 2022 08:57:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMGtv0DD0z2yj3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 02:17:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655137063; x=1686673063;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=Q03VEoc5MNS4PxJVkJNGtQifuU3RXSsSLPUiX8TLnHc=;
+  b=SmjljTAkSbRV8JHEF1CfbyNvzIegNvv8mtrjjy6EgVKlO+xFt3eDhfsb
+   J+Md6Cb4B+S6lginaNqlhZupxb7ljIidUrJqWvRDJUPj4v4LtTkpP2pMM
+   BN+Syn/FsAIxrWumjmit7PXSuOO4etELMbVoFY+PRjlpHwkgFYwvStkhd
+   RCKN0YpHguWqhBxNf4KWnXbzuUHuCsPe+6uzlmE3083hjF1PE8PO3Etr1
+   bGhfmguHomA3n7Q5dKh+H8/DTpR2SajZnUm2uJCb/j5Ou75XBU3uT18xv
+   D3W5RnjazReuEvlWLVxHZP4vud0TppUOjOE5zPrWC3URndlU4FablXSDU
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="364662835"
+X-IronPort-AV: E=Sophos;i="5.91,297,1647327600"; 
+   d="scan'208";a="364662835"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2022 09:16:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,297,1647327600"; 
+   d="scan'208";a="568098463"
+Received: from orsmsx606.amr.corp.intel.com ([10.22.229.19])
+  by orsmga002.jf.intel.com with ESMTP; 13 Jun 2022 09:16:08 -0700
+Received: from orsmsx604.amr.corp.intel.com (10.22.229.17) by
+ ORSMSX606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 13 Jun 2022 09:16:08 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27 via Frontend Transport; Mon, 13 Jun 2022 09:16:08 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.176)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.27; Mon, 13 Jun 2022 09:16:07 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WpEdCQg1llJC1d+dpRSM3OHVoFrzQ/O8FENRDrIKCOVHj0XyYO2WYvzIHPFuybP9AEiMfYDiUbdkrGdBxabXaVRIr4DTGjI/nreUqLm+CooSUAvu5EAawzOL+DCfBv6M/rd4doO+VIPT9opDIGqKC0+QicznJ2qyJ8ReWfFHRE6cYBl82Akj+4Z+EievAF5vKUJd3+kiFpXBOIlZLbgHzltw10kASuPbG+vJfADZJKX73qAXtA2vUTQekNN4NU1y0rOe3506wI6h1ZYcu32ZqlmQUTZ/q3DCTdLkeJEpK6oaTFbG2VM0W9uyPkJl4c90Lt7a6XH1xrpqoShpbCKBeQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FaKKrPF5MtbKacJrZJxKpvigdXx5rxsoodWNbzvU2Gs=;
+ b=Yehsx50H4H+ehvGRCgJYKrEHZ90k1vyNCh+tocOaZZ8NipZsGXTdixnF/QQNRPF6WOgvnnKE6dIS+VcGS6P3FD5PMxqdADEuSW3PnDyZ76SOXgTWw4FvlLsPrERB6JXl+6tJDcLlzzx/+UMq4TJ+kcQshP3AgG4tdvI+mG4ZH+CCBSIY3OuTNJ0qjaOneHOK69Etd7JbSZy5PFUkJMXo3FGZuKZP0Nqx/cC3ugvdJl8UcX+pmrTdCoL8YerkC/bETOUgJjAh3PPB0BPRMyxu66a2Yf7YBTxiHkex9u1PSOxfPLcMohcHeapw7wnIZM0/SpXKLZKOh/A63zSro9ud2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6311.namprd11.prod.outlook.com (2603:10b6:8:a6::21) by
+ MW3PR11MB4762.namprd11.prod.outlook.com (2603:10b6:303:5d::21) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5332.12; Mon, 13 Jun 2022 16:16:05 +0000
+Received: from DM4PR11MB6311.namprd11.prod.outlook.com
+ ([fe80::d4e9:9ae1:29b2:90c]) by DM4PR11MB6311.namprd11.prod.outlook.com
+ ([fe80::d4e9:9ae1:29b2:90c%5]) with mapi id 15.20.5332.020; Mon, 13 Jun 2022
+ 16:16:05 +0000
+Date: Mon, 13 Jun 2022 09:16:01 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH 6/6] pkeys: Change mm_pkey_free() to void
+Message-ID: <YqdiwVQE9jzf++jQ@iweiny-desk3>
+References: <20220610233533.3649584-1-ira.weiny@intel.com>
+ <20220610233533.3649584-7-ira.weiny@intel.com>
+ <af035c24-36f6-7d55-5be7-b52cfe26e2c6@csgroup.eu>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <af035c24-36f6-7d55-5be7-b52cfe26e2c6@csgroup.eu>
+X-ClientProxiedBy: SJ0PR13CA0183.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::8) To DM4PR11MB6311.namprd11.prod.outlook.com
+ (2603:10b6:8:a6::21)
 MIME-Version: 1.0
-References: <283c811b-27f7-64a8-8a67-11cf6c3a79cf@xenosoft.de>
- <2e1b72bd-ae44-19d1-5981-09f5c69759dc@csgroup.eu> <OSZPR01MB7019C5EC6E5CF5230600B283AAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
- <8a2aa8a5-55b3-93e9-7428-867311f568e2@xenosoft.de> <OSZPR01MB7019313DCB5A79F91BE6D91CAAD89@OSZPR01MB7019.jpnprd01.prod.outlook.com>
- <9e8dd323-4a36-abb2-568d-fe1384b1579c@xenosoft.de> <CAL_JsqLN6bT=YhyRTVWU2WmG-htCujtCROQuK+gdMUHMSHVeaQ@mail.gmail.com>
- <CAL_JsqJs17p-hw-U3WAkT69y3V4kuc_-O8tU=Sr8KWHPvbWJpA@mail.gmail.com>
- <1e5fd88f-80dc-d48a-0812-4724765db489@xenosoft.de> <CAL_JsqJXXGBcuO+921DNf1yYCbUX4Mv19kQds1rkFM8q8kwxSg@mail.gmail.com>
- <229b38b6-1a79-259a-e571-2551d80f334d@xenosoft.de>
-In-Reply-To: <229b38b6-1a79-259a-e571-2551d80f334d@xenosoft.de>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 13 Jun 2022 09:57:24 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKUwFrck58vfnqOyOkQxJ1SRySj15ytMQPLvr2fg_V-uA@mail.gmail.com>
-Message-ID: <CAL_JsqKUwFrck58vfnqOyOkQxJ1SRySj15ytMQPLvr2fg_V-uA@mail.gmail.com>
-Subject: Re: [FSL P50x0] Keyboard and mouse don't work anymore after the
- devicetree updates for 5.19
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 8fccd6a2-2e3a-4f8f-85c7-08da4d58049a
+X-MS-TrafficTypeDiagnostic: MW3PR11MB4762:EE_
+X-Microsoft-Antispam-PRVS: <MW3PR11MB47624F6C776982BE43C87852F7AB9@MW3PR11MB4762.namprd11.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: jzHV700DCwVcve2+B/cjOh19o7+eb4GGsAJRvDDosWPBgs8UH/+c+/Hwv7jP50cVwRmpzT3XjGIHFrgCuUwBVAKsMYcyGxSxrxNN8l6GW4GgJc+4dQBwvvRZa4BNvLIQioMKUNLnzzA2L/jNtMrOz8IwmYoM7Hh/8/RUZaVUL7zQCqLRuR7Y3tyVPK4nRp/khjLrL2uC7lKeaNBMqtknN2xmIxPWVzBvU7GwLcA48ekI9sXW+Cu0cSqX43+hgdEiMctCitxlPfplgq/OetOuR5Y94TmWWu4ZrbgcT3qgk4rvvFPjwOeuILlLk5Q7NJqDk58urmsG1FGkDrQgu20CXF859RaY+LDBH+51qmxS/tqUB29Rec3HIQcKWPtW8HXhcrzGHxSfMdpMB77CTVTvbyb6By5N1LprLEnGUl7RaDPhqEBrt+s9NdlViOWt1wXT+1MIj+R3FvED4pBoIsCALm22FWGZBvn44Mb+hE8bNB7L3JRDUBnHA5/ju73O2i6eWOYG+sUC4taPA8gCaoGCsDWKPG7Aa8XSMFRsoczEZGuMc7zb//8DqJSSP9g6ZlUOD0Q049fsWpefN7DkNc7Qpw6JyZJ7AqInDBB3tm/gMejAauf1sV3+Na/QxPABhHn2Cu0Y8O335RRBdKLznwsvHg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6311.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(366004)(26005)(86362001)(6506007)(6916009)(6666004)(6486002)(33716001)(8936002)(2906002)(8676002)(38100700002)(66556008)(66476007)(54906003)(4326008)(66946007)(66574015)(82960400001)(316002)(44832011)(6512007)(9686003)(186003)(83380400001)(508600001)(5660300002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?J5o6WREwYcXVpo0ra4wv4TX7gWep/6nRK6KlvonYFK1zUPSaWh7sBw7Ou6?=
+ =?iso-8859-1?Q?UaR0JHAEO6nAZAOo5U5mlD+CwXHQkXwac92rkiopygUlo8m14oEr/Oja1o?=
+ =?iso-8859-1?Q?QivF9abJbRfG5h3a/tzNHqpdvsNeyVtFo+3eVEpu8ztoOseCPR/h4sMgpW?=
+ =?iso-8859-1?Q?K0G7fzk4xY7WNPvBFNLEmiT0b5UZ7+XDhJv+evF85DaxFnGSBU4I6I1igL?=
+ =?iso-8859-1?Q?wCJABMtO5zPpukwevrPxAEDjcrdlr6IXIjkCTHAoFkkH7awILTfuoq2IdP?=
+ =?iso-8859-1?Q?lFBas2QoydNc3Jx/oQN5aukU0AFvv+qi4tDqRIyWFz/BX/rUHYrOcN74Fk?=
+ =?iso-8859-1?Q?ewIJCP4XX5hq60pZv8BWYYySWmQlZKqACDetr0Xim4LlhPNb81VD1vMs+3?=
+ =?iso-8859-1?Q?bAfj4THUM1dcFfO5DcRH50ucfVvJXjk3fKspOj478pEkEIa944SJnCceAq?=
+ =?iso-8859-1?Q?dK7igC1eNkU5H4s+fhXScwD+Mt9OkqyHY8cEuWkE6cubKou0LtNa19rh+W?=
+ =?iso-8859-1?Q?VNSUdaMuPs73GNuA3Ujy3gzn/fjCmQGfL3fIE9xqhbqv+daWuJ20f4hQxh?=
+ =?iso-8859-1?Q?/XRgjOoavkdrzOxJWOvSTjBtmogoC77EGU9PjfYSBvHocnlCsl0pZwLoDg?=
+ =?iso-8859-1?Q?Sop8fIT02oWWOw2raCW3a7hqdD0EDjam+k6/K+ur77ThQ4qmnV5D8nfGXo?=
+ =?iso-8859-1?Q?EC+4OakN6In69DLosTiJ7bVeyvaD7FzaA+/dHjY3vzvdmqRHFRHFUbDHC9?=
+ =?iso-8859-1?Q?1IAmRi9dCs1XUEbpI7x5U/UCbjWrE2LsGZ2EkRgFP9ApfrwvEb0JWBF5gL?=
+ =?iso-8859-1?Q?5M6SW5H6wGJEdjqXRZ3AGMYSRUs3ZY+J0VRVWkas7l6xYSK8nFvioBIPTX?=
+ =?iso-8859-1?Q?5tHbuIa827/kRY02imoxXyDHSYLfM1kHYlAyKDysUQwgLHhQ7M7M07ejtK?=
+ =?iso-8859-1?Q?tVcpegLm3DXQFc0UDa5CnnhJfrrdZszMWRJYMAisc1Dm5jzSOUXlWCcyGw?=
+ =?iso-8859-1?Q?nfOY3MWnmhRUtAcNVUoCJr0lJItVijO0bkWILPYchGjDsocQEkFMRh0zeH?=
+ =?iso-8859-1?Q?nvFhS+THpTEYZkjor8Tj2XKnWxwGCNJGi8csEN+0OtY4bnairTUCJY/Tvj?=
+ =?iso-8859-1?Q?wIop42kuXjxG6QXDVgHHGfNMPGx1en6dq/Geo7sik/C3vBJilBo1GGLm18?=
+ =?iso-8859-1?Q?+xExeAYyphQPqoMITVfhn41p2m2ColvJvVSfvC3c6O1BNqGRPAatUOHuMs?=
+ =?iso-8859-1?Q?/CqLe14qPsoyTT+xSnSlytgBMqWtBYsQKVFfP5FmRIXnXU0um+2YPAfrS1?=
+ =?iso-8859-1?Q?siYc4fMwTeDc9ycQCY4YwHKWCTQa/Gz6O6eMLEydAQ2+s53eAbLwMniP7m?=
+ =?iso-8859-1?Q?kTHkDRV6eA27qLgJ/Fp1En5PwYdOxNneEgWhbZnSGGKAlsUpXZgz7GIGNp?=
+ =?iso-8859-1?Q?Fy8Kv7Lww2inivyNcESG5BPWnmKMez4Sd8ZhljZgIbTH6GYLGw/NYl0T2O?=
+ =?iso-8859-1?Q?brb5ObjcdC4b8IapgtkRBL1bgK4kGuu7jYAwzbPbVa19fSavjezxBEo1CO?=
+ =?iso-8859-1?Q?YEFOFfynaltueSp0DNZnKy23nMxbWSdU4LrC3HFFz7v2m8UQGukfKAH1KP?=
+ =?iso-8859-1?Q?FrOINgzlsakr2PSl1kjSH9Gxr7IjbF/3bEMcpZU4/vm4PC2L70KPntNgBb?=
+ =?iso-8859-1?Q?I4Gy3eFWjsIw7XP0164TFLstzYGHUCACLorIs+F2DOZOnYMlv+sjm3SVOV?=
+ =?iso-8859-1?Q?bz7YLVdttVxzCcOEpG9PDRrfRa5oKVdfOus2tJP7Hq7DF9g4A29FjYwQKp?=
+ =?iso-8859-1?Q?ZCx4FpI8Bw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fccd6a2-2e3a-4f8f-85c7-08da4d58049a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6311.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 16:16:05.7292
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: t8gtuFI0cEQ/shvEQjiniZ0Nd1G0z8PEagSxK+RMc/oQAf2GtOlXxmoxtep+jlmPAq0hC3gTVMAbsBmZYT2ibw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4762
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,121 +155,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, mad skateman <madskateman@gmail.com>, Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christian Zigotzky <info@xenosoft.de>
+Cc: Dave
+ Hansen <dave.hansen@linux.intel.com>, "linux-api@vger.kernel.org" <linux-api@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Sohil
+ Mehta <sohil.mehta@intel.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 9, 2022 at 12:03 PM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
->
-> On 06 June 2022 at 07:06 pm, Rob Herring wrote:
-> > On Mon, Jun 6, 2022 at 11:14 AM Christian Zigotzky
-> > <chzigotzky@xenosoft.de> wrote:
-> >> On 06 June 2022 at 04:58 pm, Rob Herring wrote:
-> >>> On Fri, May 27, 2022 at 9:23 AM Rob Herring <robh@kernel.org> wrote:
-> >>>> On Fri, May 27, 2022 at 3:33 AM Christian Zigotzky
-> >>>> <chzigotzky@xenosoft.de> wrote:
-> >>>>> On 27 May 2022 at 10:14 am, Prabhakar Mahadev Lad wrote:
-> >>>>>> Hi,
-> >>>>>>
-> >>>>>>> -----Original Message-----
-> >>>>>>> From: Christian Zigotzky <chzigotzky@xenosoft.de>
-> >>>>>>>
-> >>>>>>> On 27 May 2022 at 09:56 am, Prabhakar Mahadev Lad wrote:
-> >>>>>>>> Hi,
-> >>>>>>>>
-> >>>>>>>>> -----Original Message-----
-> >>>>>>>>> From: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >>> [...]
-> >>>
-> >>>>>>>> Looks like the driver which you are using has not been converted to use
-> >>>>>>> platform_get_irq(), could you please check that.
-> >>>>>>>> Cheers,
-> >>>>>>>> Prabhakar
-> >>>>>>> Do you mean the mouse and keyboard driver?
-> >>>>>>>
-> >>>>>> No it could be your gpio/pinctrl driver assuming the keyboard/mouse are using GPIO's. If you are using interrupts then it might be some hierarchal irqc driver in drivers/irqchip/.
-> >>>>>>
-> >>>>>> Cheers,
-> >>>>>> Prabhakar
-> >>>>> Good to know. I only use unmodified drivers from the official Linux
-> >>>>> kernel so it's not an issue of the Cyrus+ board.
-> >>>> The issue is in drivers/usb/host/fsl-mph-dr-of.c which copies the
-> >>>> resources to a child platform device. Can you try the following
-> >>>> change:
-> >>>>
-> >>>> diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
-> >>>> index 44a7e58a26e3..47d9b7be60da 100644
-> >>>> --- a/drivers/usb/host/fsl-mph-dr-of.c
-> >>>> +++ b/drivers/usb/host/fsl-mph-dr-of.c
-> >>>> @@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
-> >>>>                                           const char *name, int id)
-> >>>>    {
-> >>>>           struct platform_device *pdev;
-> >>>> -       const struct resource *res = ofdev->resource;
-> >>>> -       unsigned int num = ofdev->num_resources;
-> >>>>           int retval;
-> >>>>
-> >>>>           pdev = platform_device_alloc(name, id);
-> >>>> @@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_device_register(
-> >>>>           if (retval)
-> >>>>                   goto error;
-> >>>>
-> >>>> -       if (num) {
-> >>>> -               retval = platform_device_add_resources(pdev, res, num);
-> >>>> -               if (retval)
-> >>>> -                       goto error;
-> >>>> -       }
-> >>>> +       pdev->dev.of_node = ofdev->dev.of_node;
-> >>> >From the log, I think you also need to add this line:
-> >>>
-> >>> pdev->dev.of_node_reused = true;
-> >>>
-> >>>>           retval = platform_device_add(pdev);
-> >>>>           if (retval)
-> >> Hello Rob,
-> >>
-> >> Thanks a lot for your answer.
-> >>
-> >> Is the following patch correct?
-> > Yes
-> >
-> >> --- a/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:10:26.797688422
-> >> +0200
-> >> +++ b/drivers/usb/host/fsl-mph-dr-of.c    2022-05-28 09:15:01.668594809
-> >> +0200
-> >> @@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_
-> >>                        const char *name, int id)
-> >>    {
-> >>        struct platform_device *pdev;
-> >> -    const struct resource *res = ofdev->resource;
-> >> -    unsigned int num = ofdev->num_resources;
-> >>        int retval;
-> >>
-> >>        pdev = platform_device_alloc(name, id);
-> >> @@ -106,11 +104,7 @@ static struct platform_device *fsl_usb2_
-> >>        if (retval)
-> >>            goto error;
-> >>
-> >> -    if (num) {
-> >> -        retval = platform_device_add_resources(pdev, res, num);
-> >> -        if (retval)
-> >> -            goto error;
-> >> -    }
-> >> +    pdev->dev.of_node = ofdev->dev.of_node;
-> >> +    pdev->dev.of_node_reused = true;
-> >>
-> >>        retval = platform_device_add(pdev);
-> >>        if (retval)
-> >>
-> >> ---
-> >>
-> >> Thanks,
-> >> Christian
-> Hello Rob,
->
-> I tested this patch today and unfortunately the issue still exists.
+On Mon, Jun 13, 2022 at 09:17:06AM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 11/06/2022 à 01:35, ira.weiny@intel.com a écrit :
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > Now that the pkey arch support is no longer checked in mm_pkey_free()
+> > there is no reason to have it return int.
+> 
+> Right, I see this is doing what I commented in previous patch.
 
-The log is the same?
+Yes because it was suggested by Sohil I decided to make it a separate patch to
+make the credit easier.
 
-Rob
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index 41458e729c27..e872bdd2e228 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -809,8 +809,10 @@ SYSCALL_DEFINE1(pkey_free, int, pkey)
+> >   		return ret;
+> >   
+> >   	mmap_write_lock(current->mm);
+> > -	if (mm_pkey_is_allocated(current->mm, pkey))
+> > -		ret = mm_pkey_free(current->mm, pkey);
+> > +	if (mm_pkey_is_allocated(current->mm, pkey)) {
+> > +		mm_pkey_free(current->mm, pkey);
+> > +		ret = 0;
+> > +	}
+> 
+> Or you could have ret = 0 by default and do
+> 
+> 	if (mm_pkey_is_allocated(current->mm, pkey))
+> 		mm_pkey_free(current->mm, pkey);
+> 	else
+> 		ret = -EINVAL;
+
+Yes that fits the kernel style better.
+
+Thanks for the review!
+Ira
+
+> 
+> >   	mmap_write_unlock(current->mm);
+> >   
+> >   	/*
