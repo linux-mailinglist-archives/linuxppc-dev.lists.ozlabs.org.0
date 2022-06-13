@@ -2,56 +2,146 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E5954A00E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 22:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1908954A2D8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 01:42:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMNvN5gc7z3cgQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 06:48:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMSmB0Jg5z3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 09:42:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TV5flzWm;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.180; helo=mail-il1-f180.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TV5flzWm;
+	dkim-atps=neutral
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMNtz4y8hz2yL2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 06:48:11 +1000 (AEST)
-Received: by mail-il1-f180.google.com with SMTP id y17so5148002ilj.11
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 13:48:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=/dzRBMIn98y05EN99Sgq5WDsEwo7wpH66xTE6XCo/M4=;
-        b=iflkaZVxmeu6wWuL2KwDrhBFclUUwlK4vq7wujuru7msUdVVULiioaa2AOWXwJ4wZ5
-         mNkbvIKxB04jRuPxBEJp9e+844s4NwbOiN9/bSyOJOenZuWTtRwJ6+rii4iR6i+0EnhA
-         GHV6jB8WZoGq8cU59LX5gUBanIhz6jbieBWOolnigC75cTglejwLuD0/M5Su0ErOrIz9
-         iHmuWmTvTk7pYSaqB2qpwkRP04mfAFnbq3b8/aJJf9bhYoGzXDKNWbBdqECMHxAF38co
-         hYiH0CBt3TRAaBgiOcY9vp9h13R+fax39G5LtpFyKVYZRoCSx3y6C8EMgS8YWasRq88S
-         y7EA==
-X-Gm-Message-State: AJIora9KUqK415szP9S9BUyRw3rzH77Yn7Rx95e8jxQH6xu3MQu5bXSR
-	Jf6lCG7gj8sKa+HeIiYq6A==
-X-Google-Smtp-Source: AGRyM1uVO/KYjaDwGOXreGf4KGdEqy/t353ouqbFZgp5s/y6kuWD2fxXl3ut4zPLn500QHJwX/rd6w==
-X-Received: by 2002:a92:ca45:0:b0:2d1:b7cf:26a9 with SMTP id q5-20020a92ca45000000b002d1b7cf26a9mr962751ilo.52.1655153288816;
-        Mon, 13 Jun 2022 13:48:08 -0700 (PDT)
-Received: from robh.at.kernel.org ([69.39.28.171])
-        by smtp.gmail.com with ESMTPSA id c2-20020a92c8c2000000b002d11397f4f9sm4380280ilq.74.2022.06.13.13.48.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 13:48:08 -0700 (PDT)
-Received: (nullmailer pid 56167 invoked by uid 1000);
-	Mon, 13 Jun 2022 20:48:06 -0000
-Date: Mon, 13 Jun 2022 14:48:06 -0600
-From: Rob Herring <robh@kernel.org>
-To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Subject: Re: [PATCH v4 15/18] PCI: dwc: Add dw_ prefix to the pcie_port
- structure name
-Message-ID: <20220613204806.GA55629-robh@kernel.org>
-References: <20220610082535.12802-1-Sergey.Semin@baikalelectronics.ru>
- <20220610082535.12802-16-Sergey.Semin@baikalelectronics.ru>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMSlN3fdPz303k
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 09:41:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655163712; x=1686699712;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=dahoyOZG5/ZmSCjvnRXG/F2LkR+typ8rF7AGzP/X7Xk=;
+  b=TV5flzWm5PHjpuyEfVemg1D7A5MewTjrLHrIAOhfc4lIBbBnaTteVIgl
+   fznLeiZhBDOBO7/8C32i/DaDPPhCe4j36vLtRW3AfwFyOoPCNd2EohhAL
+   XmtawfonxK1af1EUNAeqR96qGQiRsBX0h4m1LDHv1tS/6mpoc4IAcIL77
+   Q4PzipNxJJ2i421ZsFrgNqm4NFhf58b7+qlOyIRV4nx3VHpRnkoL6rZWM
+   q/zDtX4zvH4FYqtnzkOT/qvyz4lmE33AdQ5nxglQRx1XVr1+EfK/l7bkz
+   ipRAvJ7AAQMGodfSy9HookVPCRKaZz6RjsYLhclpuaTxlLviDI1K3s1vk
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="261481103"
+X-IronPort-AV: E=Sophos;i="5.91,298,1647327600"; 
+   d="scan'208";a="261481103"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2022 16:41:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,298,1647327600"; 
+   d="scan'208";a="651683809"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmsmga004.fm.intel.com with ESMTP; 13 Jun 2022 16:41:41 -0700
+Received: from orsmsx606.amr.corp.intel.com (10.22.229.19) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Mon, 13 Jun 2022 16:41:40 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27 via Frontend Transport; Mon, 13 Jun 2022 16:41:40 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.106)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2308.27; Mon, 13 Jun 2022 16:41:40 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VWgr6L+jd69B81/GnAnsv9cqMETDXgI2GcK2TZqBHQG0BM9/xjrJJo+q7hi6ICGCf/ZtkGV0m/yk/Pn5V9/cVDIrJU1kEmJtHgzDiC/e1sE8u5ZvQG6GlXE113zfF/ih8r+mg/ziPKbtvQkVWkExphZEaMYiqQwRNGtOGJasd+J88njsepjrXUFlu3+ErpEM0Dpuxt6BaLaQbpcsf8z3kgNW4tBuVzF8ty78JTYrYzcy0TOmiyYOgNVj/apg+DfV2CpIaiMlj1AxXMqo8OjsJcPkx5kyma1D0Lqyr2QLydgCXLFv92ya5RYRiK+TRdYiRLpR6ziBHITijDJvyWngTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FEUD36kV6lGCiEyGPKVfpQxFdehmSh5FPH5H8l6WNeY=;
+ b=MSHCa3KpOXlHnfv10XVrjU4xo+GMt+iZZdr0w8MyPIL8mtFWPUQFY7WdfUvZcnAn/ifeKaF7yvA6fJoOAgc8zoH94LJjJtdgwPhJ7ylT67GWoyAzJin0dogrYb8enY3wZP32zzp5eOhfqBNJMRaDDezByaQd57lvITZGz85cwNLoLnpTUiV8hGIsVqARHwlDpFZPQY6jwOAUL495Feu195MNXfyrwO8qrgr+e0lSgLiIdhhpvmLAkCjS9tDNmcIfDsVlr5CAFY4Yz1g87eP186fWeH5cH2d2CET2rCY+N0jxFdHIO5QibMvOAin2IK7MOvguGXXxPlHk5RtD9KKnNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6311.namprd11.prod.outlook.com (2603:10b6:8:a6::21) by
+ MW3PR11MB4587.namprd11.prod.outlook.com (2603:10b6:303:58::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5332.13; Mon, 13 Jun 2022 23:41:39 +0000
+Received: from DM4PR11MB6311.namprd11.prod.outlook.com
+ ([fe80::d4e9:9ae1:29b2:90c]) by DM4PR11MB6311.namprd11.prod.outlook.com
+ ([fe80::d4e9:9ae1:29b2:90c%5]) with mapi id 15.20.5332.020; Mon, 13 Jun 2022
+ 23:41:39 +0000
+Date: Mon, 13 Jun 2022 16:41:35 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Sohil Mehta <sohil.mehta@intel.com>
+Subject: Re: [RFC PATCH 1/6] testing/pkeys: Add command line options
+Message-ID: <YqfLL2IyMWWWkvQd@iweiny-desk3>
+References: <20220610233533.3649584-1-ira.weiny@intel.com>
+ <20220610233533.3649584-2-ira.weiny@intel.com>
+ <951dc92e-b4fe-71fb-4601-d9df1319a9ca@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20220610082535.12802-16-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <951dc92e-b4fe-71fb-4601-d9df1319a9ca@intel.com>
+X-ClientProxiedBy: BY5PR03CA0029.namprd03.prod.outlook.com
+ (2603:10b6:a03:1e0::39) To DM4PR11MB6311.namprd11.prod.outlook.com
+ (2603:10b6:8:a6::21)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 5c46df0c-c38f-4678-3004-08da4d964322
+X-MS-TrafficTypeDiagnostic: MW3PR11MB4587:EE_
+X-Microsoft-Antispam-PRVS: <MW3PR11MB4587EE4389B9DF1B1D2F6879F7AB9@MW3PR11MB4587.namprd11.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: zy3rXr7AKLywkDTNwPquLyOeGVYgWjBLIUMBDlFOg5EnyK8MrQdrP5Jh6GUUEtgru3+acDhoYp/j0BZg+0h5dwb4umd6gzdjTP3AsupT7OtEedYts60BYJb3efWw1+Pv2H3KwGQbS6XOBRKSbDcSsksXEn2pgrVXwJJMJHVEot2qxKgRwNvdKIIo6hD3mqcXBpJCneuaAK9Ha+JfLtESoOGmqPJSkVGji2VLglb8Bdk4NUE5nAtj/k6N/zKsMiB7ENdar79Il/fH1GdmciCRQ0/9KfXPhgILAYlbNKPJ2RuhZI8NuihtHFi7uCShmHCIeVqr4md6tBACNn4YwdeS/k94h0EKN0iF8vlILAWntHwm44eGNzxrXMqqcyitLTr7XWa1MpwefOCEbcAyar1PW3iya7L0GUJAxthS2Uvgr7X/X81hpFvEKHpNZ8HljyuihZmYDLxsZ0gpjKikGu1g4/Tkm7PbM6jzNzMre2eyjujijYNkRFf0FKKknIILDbIl7RVBd/QQPmys+fjt+jGWTq3E8Hz6igoi6bYBWReT8qlV/q/A25RxYpbLJim7cF/odpFF9DW+tODIkp3kURNmHTCxP0DzMIQRJRbpcu1Dqgg26YfTlV89cysIXF4J3aeNnkRyvgJV+o2e9j0ebn/tf6KrmfrQSSjXffAQfoz0xuSS4APj36FuoWl/5u/rFAAP6mndWbZgvc1bvOVISmMbFV05UNrMvjiXweZUreQ6Lkk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6311.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(366004)(9686003)(26005)(53546011)(6512007)(4326008)(6636002)(66946007)(54906003)(38100700002)(66476007)(6666004)(33716001)(316002)(66556008)(8676002)(82960400001)(86362001)(44832011)(5660300002)(8936002)(6862004)(2906002)(186003)(966005)(6486002)(6506007)(508600001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wNzB1b82465olZpga5YftUpxF8cRreyTY6fTSwU3DKktdb7gpc1hzmiFLl0E?=
+ =?us-ascii?Q?Voh52F+z2SWwm3Mf9Wyu3RGrtu+m2oRXtVWTWvUe7eAb0Wttol17lblIT8oY?=
+ =?us-ascii?Q?ppO/8CQaOj3GULMkHsyctfoMEviXBBhnuhCDn+M7FM7djx+lhtZFVm4oFfpd?=
+ =?us-ascii?Q?BeVkjiESA/kLUBT4+DHBy7vsLN4TfaL3du7dqA2kVq7dPTJFaPhgf4rmCu2e?=
+ =?us-ascii?Q?NZgIoSWQUC+DJMt+JI8thI+szjaM2eaBSgY8SPhduxEXmkozvtgZVOM0EtR+?=
+ =?us-ascii?Q?SRLm28c4fex+Snymt6gcx5XvlRb05p/HtfOnONqqVuumecmpO/po66isCpRJ?=
+ =?us-ascii?Q?PE+WIscgyGHPGHWiySckqNwesJEqjKeimWp2yHIEmZKHpj6Cij6ucrq035JD?=
+ =?us-ascii?Q?RPxRAlFofaUwYnLI6NV6EGcMeqGQaJpnC4Dvc2TUyupj0rrwco1Za8H62onX?=
+ =?us-ascii?Q?3BKE0jsbtUr7KV19vB61+TWuBDvDTMRkiPrUTi5ZMYBKC7W6BCnTKnT1JSlG?=
+ =?us-ascii?Q?jv942dBlsZE0uqC7xCI2l5Lo0iakoaflWs+MHV6VLNFv8Ykmj0z2XHshP778?=
+ =?us-ascii?Q?TfPFWTnGAe3lWEogns10V+DTWvzIXGpU8qx4OKYNdgFmV9chmmEbK/+dBNtL?=
+ =?us-ascii?Q?Tykg4gDdbe6Rh+LPUuR5Ufu9yr+pt5syGw0M7dNWDS8zkPllRw7ucoBJwRAT?=
+ =?us-ascii?Q?8qBwQcQxqHV/8YwH/9KyREbWRyE4rwPa/pMVIYfFtUKd0BN+JUK6CsL96TlV?=
+ =?us-ascii?Q?PRlTiYGmqx1/wA1zzPVT+sFIH6ru5mZQKBQHSeBHKD/7sRpoJJpiwdVTison?=
+ =?us-ascii?Q?iK8PEAVMkqbqiMZ0p6yly70G8tZ5DvBrq8yIJPlNxnDGl8dAyzNhWbmf4u7d?=
+ =?us-ascii?Q?jZsf873845gxJ8E3flJcTMe2wsrB1acfErJzp2WtN8YlEk/We7jNvD6CmJ7a?=
+ =?us-ascii?Q?enn9X4mj1DMdzugG/hzw9Euwa/TPn0p137T+/e8tgf4MTU+flSnlsJWsNU1j?=
+ =?us-ascii?Q?06V/htgcgrsfCZLGzjSy9dRuKdPgQvwQOBZ4YHO1q5l8k45cowTdUzekQWrB?=
+ =?us-ascii?Q?t8h55qgvIbt4VjoogSl58HL9TiIc8crjN4wwQQO5gUFWOmyET9U5SIzXo9h7?=
+ =?us-ascii?Q?14WJCum0dOI6BUoiZMjYmbDClBf/AvYmkbuiedNQRUQh7jbjNZAUvO7g11qc?=
+ =?us-ascii?Q?k8/0sdgI3jKl168XxLOkum2q4gjdnesKMNb+CNtYzuUEnSuKkj/aQpZnRzGf?=
+ =?us-ascii?Q?mOaepg7qWn++4eWAFpQY8ivqdWLHyk758i/g8FU4AJPL8bldctmFilNPokDM?=
+ =?us-ascii?Q?n4yigBvtm4RJdzHuf9FO3LiLNgxbo4XBKNm+cQpJpmRFnvSQTBvZvbbvMCHc?=
+ =?us-ascii?Q?MKbaPGzyvccfMpL5F3fc26zIT9aB25RLhnxm1bYDZ3J7dgjCLTkYne3GA8jc?=
+ =?us-ascii?Q?p62rSAn7Ft2pRGtk6bITEzuQaLuNHmrl/nn81cWKMimvuWW4Oh4g9L3gWJtS?=
+ =?us-ascii?Q?PJN/o223cytj+4r0tAfbij5lhbJtD/HSKRxId1o8nwuzyEE37TX1gjYNQE7l?=
+ =?us-ascii?Q?dk/7QH4bSxaSzxboaMg04bLVEnOhl0azOrBm5sVcl1cWK+ukmOCJBgIplpHM?=
+ =?us-ascii?Q?2+l3sEKnoY623q+eay8CS7ajdrtCLf/3ONg9CpwjQxJq4QsOMBt3eq1F1sB/?=
+ =?us-ascii?Q?urVObm7hsbjgs0Fy2v4xxbLdbAv4a99rWwO+51j6oG2nZioUrVCsTvwPi1fu?=
+ =?us-ascii?Q?Dv5Cb2NbLA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c46df0c-c38f-4678-3004-08da4d964322
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6311.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 23:41:39.4187
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y3qwfGQ2zySBhbsY4XBIcweIurCNVdQ8nmgc+VxoQMuqRHlOE1dnb9atkzEn+odDOlbPGacfydLlgCvaxRlmEA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4587
+X-OriginatorOrg: intel.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,57 +153,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, Neil Armstrong <narmstrong@baylibre.com>, linux-pci@vger.kernel.org, Binghui Wang <wangbinghui@hisilicon.com>, Frank Li <Frank.Li@nxp.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, Minghuan Lian <minghuan.Lian@nxp.com>, Thierry Reding <thierry.reding@gmail.com>, Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>, Alim Akhtar <alim.akhtar@samsung.com>, Jonathan Chocron <jonnyc@amazon.com>, Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>, Jonathan Hunter <jonathanh@nvidia.com>, Fabio Estevam <festevam@gmail.com>, Jerome Brunet <jbrunet@baylibre.com>, Srikanth Thokala <srikanth.thokala@intel.com>, Jesper Nilsson <jesper.nilsson@axis.com>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Kevin Hilman <khilman@baylibre.com>, Pratyush Anand <pratyush.anand@gmail.com>, linux-tegra@vger.kernel.org, linux-arm-kernel@axis.
- com, Kishon Vijay Abraham I <kishon@ti.com>, linux-rockchip@lists.infradead.org, Rahul Tanwar <rtanwar@maxlinear.com>, Andy Gross <agross@kernel.org>, NXP Linux Team <linux-imx@nxp.com>, Xiaowei Song <songxiaowei@hisilicon.com>, Greentime Hu <greentime.hu@sifive.com>, Richard Zhu <hongxing.zhu@nxp.com>, linux-omap@vger.kernel.org, Martin Blumenstingl <martin.blumenstingl@googlemail.com>, linux-arm-msm@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Yue Wang <yue.wang@amlogic.com>, linux-samsung-soc@vger.kernel.org, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-amlogic@lists.infradead.org, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Mingkai Hu <mingkai.hu@nxp.com>, linux-arm-kernel@lists.infradead.org, Roy Zang <roy.zang@nxp.com>, Jingoo Han <jingoohan1@gmail.com>, linuxppc-dev@lists.ozlabs.org, Heiko Stuebner <heiko@sntech.de>, linux-kernel@vger.kernel.org, Serge Semin 
- <fancer.lancer@gmail.com>, Stanimir Varbanov <svarban
-
-ov@mm-sol.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Shawn Guo <shawnguo@kernel.org>, Lucas Stach <l.stach@pengutronix.de>
+Cc: x86@kernel.org, linux-api@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 10, 2022 at 11:25:31AM +0300, Serge Semin wrote:
-> All of the DW PCIe core driver entities have names with the dw_ prefix in
-> order to easily distinguish local and common PCIe name spaces. All except
-> the pcie_port structure which contains the DW PCIe Root Port descriptor.
-> For historical reason the structure has retained the original name since
-> commit 340cba6092c2 ("pci: Add PCIe driver for Samsung Exynos") when
-> the DW PCIe IP-core support was added to the kernel. Let's finally fix
-> that by adding the dw_ prefix to the structure name and by adding the _rp
-> suffix to be similar to the EP counterpart. Thus the name will be coherent
-> with the common driver naming policy. It shall make the driver code more
-> readable eliminating visual confusion between the local and generic PCI
-> name spaces.
+On Mon, Jun 13, 2022 at 03:31:02PM -0700, Mehta, Sohil wrote:
+> On 6/10/2022 4:35 PM, ira.weiny@intel.com wrote:
 > 
-> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> > Add command line options for debug level and number of iterations.
+> > 
+> > $ ./protection_keys_64 -h
+> > Usage: ./protection_keys_64 [-h,-d,-i <iter>]
+> >          --help,-h   This help
+> > 	--debug,-d  Increase debug level for each -d
 > 
-> ---
-> 
-> Changelog v4:
-> - This is a new patch created on the v4 lap of the series.
-> ---
->  drivers/pci/controller/dwc/pci-dra7xx.c       | 12 +++----
->  drivers/pci/controller/dwc/pci-exynos.c       |  6 ++--
->  drivers/pci/controller/dwc/pci-imx6.c         |  6 ++--
->  drivers/pci/controller/dwc/pci-keystone.c     | 20 +++++------
->  drivers/pci/controller/dwc/pci-layerscape.c   |  2 +-
->  drivers/pci/controller/dwc/pci-meson.c        |  2 +-
->  drivers/pci/controller/dwc/pcie-al.c          |  6 ++--
->  drivers/pci/controller/dwc/pcie-armada8k.c    |  4 +--
->  drivers/pci/controller/dwc/pcie-artpec6.c     |  4 +--
->  .../pci/controller/dwc/pcie-designware-host.c | 36 +++++++++----------
->  .../pci/controller/dwc/pcie-designware-plat.c |  2 +-
->  drivers/pci/controller/dwc/pcie-designware.h  | 30 ++++++++--------
->  drivers/pci/controller/dwc/pcie-dw-rockchip.c |  4 +--
->  drivers/pci/controller/dwc/pcie-fu740.c       |  2 +-
->  drivers/pci/controller/dwc/pcie-histb.c       | 10 +++---
->  drivers/pci/controller/dwc/pcie-intel-gw.c    |  6 ++--
->  drivers/pci/controller/dwc/pcie-keembay.c     |  4 +--
->  drivers/pci/controller/dwc/pcie-kirin.c       |  2 +-
->  drivers/pci/controller/dwc/pcie-qcom.c        |  4 +--
->  drivers/pci/controller/dwc/pcie-spear13xx.c   |  6 ++--
->  drivers/pci/controller/dwc/pcie-tegra194.c    | 22 ++++++------
->  drivers/pci/controller/dwc/pcie-uniphier.c    | 10 +++---
->  drivers/pci/controller/dwc/pcie-visconti.c    |  6 ++--
->  23 files changed, 103 insertions(+), 103 deletions(-)
+> Is this mechanism (of counting d's) commonplace in other selftests as well?
+> Looking at the test code for pkeys the debug levels run from 1-5. That feels
+> like quite a few d's to input :)
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+I've seen (and used) it before yes.  See ibnetdiscover.
+
+...
+# Debugging flags
+-d raise the IB debugging level. May be used several times (-ddd or -d -d -d).
+...
+-v increase the application verbosity level. May be used several times (-vv or -v -v -v)
+...
+	- https://linux.die.net/man/8/ibnetdiscover
+
+But a much more mainstream example I can think of is verbosity level with
+lspci.
+
+16:29:12 > lspci -h
+...
+Display options:
+-v              Be verbose (-vv or -vvv for higher verbosity)
+...
+
+> 
+> Would it be easier to input the number in the command line directly?
+> 
+> Either way it would be useful to know the debug range in the help.
+> Maybe something like:
+> 	--debug,-d  Increase debug level for each -d (1-5)
+
+I'm inclined not to do this because it would encode the max debug level.  On
+the other hand I'm not sure why there are 5 levels now.  ;-)
+
+Having the multiple options specified was an easy way to maintain the large
+number of levels.
+
+Ira
+
+> 
+> The patch seems fine to me otherwise.
+> 
+> > 	--iterations,-i <iter>  repeate test <iter> times
+> > 		default: 22
+> > 
+> 
+> Thanks,
+> Sohil
