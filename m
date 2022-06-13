@@ -2,63 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32859547D42
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 03:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B749F547F55
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 08:05:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LLtvF13F7z3cC1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 11:16:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LM1Jj4RZtz3cfc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jun 2022 16:05:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PxWK/9l6;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=asqORLv9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=guoren@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+6ef1cfbcd5439e194ca7+6868+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PxWK/9l6;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=asqORLv9;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LLttZ3Sbnz3bm0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 11:16:06 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 019D4611FC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 01:16:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAE0C3411F
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 01:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655082960;
-	bh=T/oPYXJvfTUUTAn3CsqoozPh9/pXSGnZmlhYNE8gbWs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=PxWK/9l6TdsQa77yV2AJPnGPvbYWhjRLP+wFfrNAXLjgtstoiHZXCMoo8B2IqcL7y
-	 rJYzFIT+mHg3ZKrHvaheUxROxBUNvqFs2qlykv4MpcQSZOCcE5InVYzVY9gAedqrzl
-	 FnuwwSzIfvkZHuyrFJ7SxGf5qezL+KsNEXhVx5VKfPjeumd7apyl49oYKlxtRU1zpg
-	 GDBh5Hgh8YUFAxR7RJZPuea54fZ5P93OWebgMT4J8xA0g1zF/FoCx8KzlVZ5id19aY
-	 dSaS71/WhW/0o+WHBrRP1zFeukLpZRbthXoRShYwKaOPOzZU843Ve5m0UWJoV8qtRs
-	 VsQDIkfPoli1Q==
-Received: by mail-ua1-f53.google.com with SMTP id v19so1673584uae.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jun 2022 18:16:00 -0700 (PDT)
-X-Gm-Message-State: AOAM533IylUj6m0lKNhJj2G8I37TLnzUcqaHd2ffSuS19zNCMwB5fC2O
-	7vzKTSCojLGA0riCVo35dCIqgQJfHmCOP9Jerqw=
-X-Google-Smtp-Source: ABdhPJy022BVkvpX4bwvrgAxTSG7Jz6gfQIdan6W4shKCc4lN35Y4ktHFEjUhhT0WI19MsTm4e13W+ximSNeINXMAlQ=
-X-Received: by 2002:ab0:3459:0:b0:378:ec81:4a8b with SMTP id
- a25-20020ab03459000000b00378ec814a8bmr14374212uaq.83.1655082959409; Sun, 12
- Jun 2022 18:15:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LM1J22pYnz3bls
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 16:04:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=b1PoY1uKlcNqy2edTiTsVL/coyRDE9FCOo38ncps/ZM=; b=asqORLv9fFtRmH0mbdAsX62PEY
+	2oM2wjfo4NwjYVsp3GvIcXnsJO9DKRj8XCXW1E4suTxpr2g8LP73vdRMEKnbzqlgoyXVfnbMS54bD
+	FBTwd3vKQ1myxZku0vIkaOTi9LwMJKMefz6tfktugd6A88h7XFJ8zVDM64ozYM6Q5rABwX6AKb2fa
+	8zxSLwNzq9CLLB7mjw/mVXMIKzM5UZnMYu4GyUGLrYpMbVB2c2wQRdURbri0g+CmKZJ4dWe95IH7X
+	ApNaap56yK/FeNrP1odSM3lUI36xBVvmY3EYL/xIb/6e2D8T1L0tLE8e0+gIuJwvSLdsxahG1pSYz
+	SAgdlhuA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1o0dBu-001aZ9-At; Mon, 13 Jun 2022 06:04:46 +0000
+Date: Sun, 12 Jun 2022 23:04:46 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Subject: Re: [PATCH RFC v1 4/7] swiotlb: to implement io_tlb_high_mem
+Message-ID: <YqbTfi/h2P24ynQZ@infradead.org>
+References: <20220609005553.30954-1-dongli.zhang@oracle.com>
+ <20220609005553.30954-5-dongli.zhang@oracle.com>
+ <YqF/sphJj6n+22Si@infradead.org>
+ <e6345c27-78fd-be72-9551-1d1fd5db37a4@oracle.com>
 MIME-Version: 1.0
-References: <20220405071314.3225832-1-guoren@kernel.org> <20220405071314.3225832-3-guoren@kernel.org>
- <20220608094108.GA18122@asgard.redhat.com>
-In-Reply-To: <20220608094108.GA18122@asgard.redhat.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Mon, 13 Jun 2022 09:15:48 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTQhFbN3mK0jco=NAKZr4qCgvX4zkw3h6jdffr66Rz7REQ@mail.gmail.com>
-Message-ID: <CAJF2gTQhFbN3mK0jco=NAKZr4qCgvX4zkw3h6jdffr66Rz7REQ@mail.gmail.com>
-Subject: Re: [PATCH V12 02/20] uapi: always define F_GETLK64/F_SETLK64/F_SETLKW64
- in fcntl.h
-To: Eugene Syromiatnikov <esyr@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e6345c27-78fd-be72-9551-1d1fd5db37a4@oracle.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,45 +60,17 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, the arch/x86 maintainers <x86@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Nathan Chancellor <nathan@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, sparclinux <sparclinux@vger.kernel.org>, linux-riscv <linux-riscv@lists.infradead.org>, ldv@strace.io, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>, Linux ARM <linux-arm-kernel@lists.infradead.org>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
+Cc: jgross@suse.com, dave.hansen@linux.intel.com, mst@redhat.com, konrad.wilk@oracle.com, jasowang@redhat.com, x86@kernel.org, joe.jin@oracle.com, linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, mingo@redhat.com, bp@alien8.de, sstabellini@kernel.org, xen-devel@lists.xenproject.org, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, m.szyprowski@samsung.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 8, 2022 at 5:41 PM Eugene Syromiatnikov <esyr@redhat.com> wrote=
-:
->
-> On Tue, Apr 05, 2022 at 03:12:56PM +0800, guoren@kernel.org wrote:
-> > From: Christoph Hellwig <hch@lst.de>
-> >
-> > Note that before this change they were never visible to userspace due
-> > to the fact that CONFIG_64BIT is only set for kernel builds.
->
-> > -#ifndef CONFIG_64BIT
-> > +#if __BITS_PER_LONG =3D=3D 32 || defined(__KERNEL__)
->
-> Actually, it's quite the opposite: "ifndef" usage made it vailable at all=
- times
-> to the userspace, and this change has actually broken building strace
-> with the latest kernel headers[1][2].  There could be some debate
-> whether having these F_*64 definitions exposed to the user space 64-bit
-> applications, but it seems that were no harm (as they were exposed alread=
-y
-> for quite some time), and they are useful at least for strace for compat
-> application tracing purposes.
->
-> [1] https://github.com/strace/strace/runs/6779763146?check_suite_focus=3D=
-true#step:4:3222
-> [2] https://pipelines.actions.githubusercontent.com/serviceHosts/e5309ebd=
--8a2f-43f4-a212-b52080275b5d/_apis/pipelines/1/runs/1473/signedlogcontent/1=
-2?urlExpires=3D2022-06-08T09%3A37%3A13.9248496Z&urlSigningMethod=3DHMACV1&u=
-rlSignature=3DfIT7vd0O4NNRwzwKWLXY4UVZBIIF3XiVI9skAsGvV0I%3D
->
-Yes, there is no CONFIG_64BIT in userspace, we shouldn't limit it with
-(__BITS_PER_LONG =3D=3D 32 || defined(__KERNEL__)) to break the
-compatibility. Just export F_*64 definitions permanently.
+On Fri, Jun 10, 2022 at 02:56:08PM -0700, Dongli Zhang wrote:
+> Since this patch file has 200+ lines, would you please help clarify what does
+> 'this' indicate?
 
---=20
-Best Regards
- Guo Ren
-
-ML: https://lore.kernel.org/linux-csky/
+This indicates that any choice of a different swiotlb pools needs to
+be hidden inside of ѕwiotlb.  The dma mapping API already provides
+swiotlb the addressability requirement for the device.  Similarly we
+already have a SWIOTLB_ANY flag that switches to a 64-bit buffer
+by default, which we can change to, or replace with a flag that
+allocates an additional buffer that is not addressing limited.
