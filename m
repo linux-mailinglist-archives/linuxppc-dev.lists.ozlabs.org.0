@@ -2,32 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CB854BD3C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 141A254BD3F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:04:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2Wj0kzCz3f43
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:03:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2X7089Sz3f73
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:04:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=atomide.com (client-ip=72.249.23.125; helo=muru.com; envelope-from=tony@atomide.com; receiver=<UNKNOWN>)
 Received: from muru.com (muru.com [72.249.23.125])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LM9yF4wGKz3bd4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 22:35:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LM9zL6CpRz3bkh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jun 2022 22:36:14 +1000 (AEST)
 Received: from localhost (localhost [127.0.0.1])
-	by muru.com (Postfix) with ESMTPS id 5285681CC;
-	Mon, 13 Jun 2022 12:30:34 +0000 (UTC)
-Date: Mon, 13 Jun 2022 15:35:14 +0300
+	by muru.com (Postfix) with ESMTPS id 87B6681D6;
+	Mon, 13 Jun 2022 12:31:31 +0000 (UTC)
+Date: Mon, 13 Jun 2022 15:36:11 +0300
 From: Tony Lindgren <tony@atomide.com>
 To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 34/36] cpuidle,omap3: Push RCU-idle into omap_sram_idle()
-Message-ID: <YqcvAmiDSOAOAdA9@atomide.com>
+Subject: Re: [PATCH 33/36] cpuidle,omap3: Use WFI for omap3_pm_idle()
+Message-ID: <YqcvO0xSmlEVMef3@atomide.com>
 References: <20220608142723.103523089@infradead.org>
- <20220608144518.073801916@infradead.org>
- <YqC6iJx4ygSmry0G@hirez.programming.kicks-ass.net>
+ <20220608144518.010587032@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YqC6iJx4ygSmry0G@hirez.programming.kicks-ass.net>
+In-Reply-To: <20220608144518.010587032@infradead.org>
 X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,27 +48,13 @@ rndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.or
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Peter Zijlstra <peterz@infradead.org> [220608 15:00]:
-> On Wed, Jun 08, 2022 at 04:27:57PM +0200, Peter Zijlstra wrote:
-> > @@ -254,11 +255,18 @@ void omap_sram_idle(void)
-> >  	 */
-> >  	if (save_state)
-> >  		omap34xx_save_context(omap3_arm_context);
-> > +
-> > +	if (rcuidle)
-> > +		cpuidle_rcu_enter();
-> > +
-> >  	if (save_state == 1 || save_state == 3)
-> >  		cpu_suspend(save_state, omap34xx_do_sram_idle);
-> >  	else
-> >  		omap34xx_do_sram_idle(save_state);
-> >  
-> > +	if (rcuidle)
-> > +		rcuidle_rcu_exit();
+* Peter Zijlstra <peterz@infradead.org> [220608 14:52]:
+> arch_cpu_idle() is a very simple idle interface and exposes only a
+> single idle state and is expected to not require RCU and not do any
+> tracing/instrumentation.
 > 
-> *sigh* so much for this having been exposed to the robots for >2 days :/
+> As such, omap_sram_idle() is not a valid implementation. Replace it
+> with the simple (shallow) omap3_do_wfi() call. Leaving the more
+> complicated idle states for the cpuidle driver.
 
-I tested your git branch of these patches, so:
-
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
+Acked-by: Tony Lindgren <tony@atomide.com>
