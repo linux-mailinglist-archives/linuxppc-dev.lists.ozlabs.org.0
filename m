@@ -1,80 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F73754B6C3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 18:52:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C758954B870
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 20:18:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMvd32Kq5z3chC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 02:52:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMxXH4dJvz3cgT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 04:18:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UuV9Ster;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=bdOWxOcY;
+	dkim=fail reason="signature verification failed" header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=xTHjXNhp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UuV9Ster;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=bdOWxOcY;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=xTHjXNhp;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 17553 seconds by postgrey-1.36 at boromir; Wed, 15 Jun 2022 04:18:24 AEST
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMvcK2KGHz3brM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 02:52:17 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25EGa9rw013125;
-	Tue, 14 Jun 2022 16:52:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=0eAsSNUYSiefScn/pnbMFbEAuCEU7PTyAzwa9GMdCOo=;
- b=UuV9SterCJ7+62hGRyExUpFXHu7KvwKQz3cG779P5T9js0xqpkcQ89GT+QrUtNeie16g
- jeW3w9ab/wE531kgmgytYELj7OjWZQDE8VSqMc91mmBcOfbQNAGY/KYGwr9Oh2VVEzOr
- 3al442xNy/eUMA07no5id8zeKYhwyLCK8jNVVeGUj5EYK7D2UCcSS7y+twkePwb1aWFb
- 2ozZF7PjxEkJh57sQnLiRveZ6tYOw7KFVSTAwtPxkDDEPB+WZ0EWTHDOac7ld+spjR72
- kw3eo6HJMPzVArgYvMKLv19OaWv3Ccyvqb+xVYpxbOMvEPho/4wS05AFwCHzv4Cy4nVs KQ== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gppa67qxs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jun 2022 16:52:09 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25EGZ20j021916;
-	Tue, 14 Jun 2022 16:52:08 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
-	by ppma01dal.us.ibm.com with ESMTP id 3gmjp9txy1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jun 2022 16:52:08 +0000
-Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25EGq7l017367462
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Jun 2022 16:52:07 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 92D3FBE061;
-	Tue, 14 Jun 2022 16:52:07 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 70A4CBE05D;
-	Tue, 14 Jun 2022 16:52:06 +0000 (GMT)
-Received: from li-4707e44c-227d-11b2-a85c-f336a85283d9.ibm.com.com (unknown [9.160.61.78])
-	by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Jun 2022 16:52:06 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] KVM: PPC: Book3S HV: tracing: Add missing hcall names
-Date: Tue, 14 Jun 2022 13:52:04 -0300
-Message-Id: <20220614165204.549229-1-farosas@linux.ibm.com>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMxWh175tz2ywN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 04:18:24 +1000 (AEST)
+Date: Tue, 14 Jun 2022 20:18:14 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1655230696;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=glKtlzrdgS42FUCeVSzwN4g68eQlfOzE5nkkDj9Hmbo=;
+	b=bdOWxOcYLa1MqIDMGml1p3YAa+XuOEhBnRnAIoDvIzOoOBnLKkuT0WmGM+GhFRcb2f73ds
+	q06UZPG2KI6Q/2WCjvU91DDQey2tlZOP8I9x99QFDBgtnCHm3RZciXHiNK3p+4ZS4YRw8q
+	JaY523zT9e6y0T1b33h64fvnQ1cJIarN4kPLYgKKLz07N1QNteLZ+qULdMTTqzrFkQrWeD
+	gx4NOOS1VjWgk7yJzaW9uHe6Vtc3BrBt6VC7pYB1ufcbKzsz0oTwvXZezknB13L/uDJgdh
+	FUFbNwY7b1wffxieh0zy1moi3CApldOhWe+i2qDH7UVqOzvbJONNa7mxuqfR5A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1655230696;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=glKtlzrdgS42FUCeVSzwN4g68eQlfOzE5nkkDj9Hmbo=;
+	b=xTHjXNhpcCR8SakGE0xHmIzkgkPPHrYipvdxi4xgUsrXIkGeJ97y9f+lUhxwstj5DToUol
+	xtiZ47mMHrxI8+DQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org
+Subject: [PATCH] arch/*: Disable softirq stacks on PREEMPT_RT.
+Message-ID: <YqjQ5kso7czrmYPW@linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ncJ5-otZoWPNn5W8c4qjwcYYVRWeEa32
-X-Proofpoint-ORIG-GUID: ncJ5-otZoWPNn5W8c4qjwcYYVRWeEa32
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-14_06,2022-06-13_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
- suspectscore=0 impostorscore=0 phishscore=0 malwarescore=0 adultscore=0
- mlxscore=0 spamscore=0 mlxlogscore=999 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206140063
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,80 +64,177 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm-ppc@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>, Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, Russell King <linux@armlinux.org.uk>, Yoshinori Sato <ysato@users.sourceforge.jp>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Paul Mackerras <paulus@samba.org>, Helge Deller <deller@gmx.de>, Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, Sven Schnelle <svens@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The kvm_trace_symbol_hcall macro is missing several of the hypercalls
-defined in hvcall.h.
+PREEMPT_RT preempts softirqs and the current implementation avoids
+do_softirq_own_stack() and only uses __do_softirq().
 
-Add the most common ones that are issued during guest lifetime,
-including the ones that are only used by QEMU and SLOF.
+Disable the unused softirqs stacks on PREEMPT_RT to safe some memory and
+ensure that do_softirq_own_stack() is not used bwcause it is not
+expected.
 
-Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- arch/powerpc/include/asm/hvcall.h |  8 ++++++++
- arch/powerpc/kvm/trace_hv.h       | 21 ++++++++++++++++++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-index d92a20a85395..1d454c70e7c6 100644
---- a/arch/powerpc/include/asm/hvcall.h
-+++ b/arch/powerpc/include/asm/hvcall.h
-@@ -350,6 +350,14 @@
- /* Platform specific hcalls, used by KVM */
- #define H_RTAS			0xf000
+Initially I aimed only for the asm-generic bits and arm since I have
+most bits of the port ready. Arnd then suggested to do all arches at
+once and here it is.
+I tried to keep it minimal in sense that I didn't remove the dedicated
+softirq-stacks on parisc or powerpc for instance. That would add another
+few ifdefs and I don't know if we manage to get it up and running on
+parisc. I do have the missing bits for powerpc however ;)
+
+ arch/arm/kernel/irq.c                 | 3 ++-
+ arch/parisc/kernel/irq.c              | 2 ++
+ arch/powerpc/kernel/irq.c             | 4 ++++
+ arch/s390/include/asm/softirq_stack.h | 3 ++-
+ arch/sh/kernel/irq.c                  | 2 ++
+ arch/sparc/kernel/irq_64.c            | 2 ++
+ include/asm-generic/softirq_stack.h   | 2 +-
+ 7 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/kernel/irq.c b/arch/arm/kernel/irq.c
+index 5c6f8d11a3ce5..034cb48c9eeb8 100644
+--- a/arch/arm/kernel/irq.c
++++ b/arch/arm/kernel/irq.c
+@@ -70,6 +70,7 @@ static void __init init_irq_stacks(void)
+ 	}
+ }
  
-+/*
-+ * Platform specific hcalls, used by QEMU/SLOF. These are ignored by
-+ * KVM and only kept here so we can identify them during tracing.
-+ */
-+#define H_LOGICAL_MEMOP  0xF001
-+#define H_CAS            0XF002
-+#define H_UPDATE_DT      0XF003
-+
- /* "Platform specific hcalls", provided by PHYP */
- #define H_GET_24X7_CATALOG_PAGE	0xF078
- #define H_GET_24X7_DATA		0xF07C
-diff --git a/arch/powerpc/kvm/trace_hv.h b/arch/powerpc/kvm/trace_hv.h
-index 32e2cb5811cc..8d57c8428531 100644
---- a/arch/powerpc/kvm/trace_hv.h
-+++ b/arch/powerpc/kvm/trace_hv.h
-@@ -94,6 +94,7 @@
- 	{H_GET_HCA_INFO,		"H_GET_HCA_INFO"}, \
- 	{H_GET_PERF_COUNT,		"H_GET_PERF_COUNT"}, \
- 	{H_MANAGE_TRACE,		"H_MANAGE_TRACE"}, \
-+	{H_GET_CPU_CHARACTERISTICS,	"H_GET_CPU_CHARACTERISTICS"}, \
- 	{H_FREE_LOGICAL_LAN_BUFFER,	"H_FREE_LOGICAL_LAN_BUFFER"}, \
- 	{H_QUERY_INT_STATE,		"H_QUERY_INT_STATE"}, \
- 	{H_POLL_PENDING,		"H_POLL_PENDING"}, \
-@@ -125,7 +126,25 @@
- 	{H_COP,				"H_COP"}, \
- 	{H_GET_MPP_X,			"H_GET_MPP_X"}, \
- 	{H_SET_MODE,			"H_SET_MODE"}, \
--	{H_RTAS,			"H_RTAS"}
-+	{H_REGISTER_PROC_TBL,		"H_REGISTER_PROC_TBL"}, \
-+	{H_QUERY_VAS_CAPABILITIES,	"H_QUERY_VAS_CAPABILITIES"}, \
-+	{H_INT_GET_SOURCE_INFO,		"H_INT_GET_SOURCE_INFO"}, \
-+	{H_INT_SET_SOURCE_CONFIG,	"H_INT_SET_SOURCE_CONFIG"}, \
-+	{H_INT_GET_QUEUE_INFO,		"H_INT_GET_QUEUE_INFO"}, \
-+	{H_INT_SET_QUEUE_CONFIG,	"H_INT_SET_QUEUE_CONFIG"}, \
-+	{H_INT_ESB,			"H_INT_ESB"}, \
-+	{H_INT_RESET,			"H_INT_RESET"}, \
-+	{H_RPT_INVALIDATE,		"H_RPT_INVALIDATE"}, \
-+	{H_RTAS,			"H_RTAS"}, \
-+	{H_LOGICAL_MEMOP,		"H_LOGICAL_MEMOP"}, \
-+	{H_CAS,				"H_CAS"}, \
-+	{H_UPDATE_DT,			"H_UPDATE_DT"}, \
-+	{H_GET_PERF_COUNTER_INFO,	"H_GET_PERF_COUNTER_INFO"}, \
-+	{H_SET_PARTITION_TABLE,		"H_SET_PARTITION_TABLE"}, \
-+	{H_ENTER_NESTED,		"H_ENTER_NESTED"}, \
-+	{H_TLB_INVALIDATE,		"H_TLB_INVALIDATE"}, \
-+	{H_COPY_TOFROM_GUEST,		"H_COPY_TOFROM_GUEST"}
-+
++#ifndef CONFIG_PREEMPT_RT
+ static void ____do_softirq(void *arg)
+ {
+ 	__do_softirq();
+@@ -80,7 +81,7 @@ void do_softirq_own_stack(void)
+ 	call_with_stack(____do_softirq, NULL,
+ 			__this_cpu_read(irq_stack_ptr));
+ }
+-
++#endif
+ #endif
  
- #define kvm_trace_symbol_kvmret \
- 	{RESUME_GUEST,			"RESUME_GUEST"}, \
+ int arch_show_interrupts(struct seq_file *p, int prec)
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index 0fe2d79fb123f..eba193bcdab1b 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -480,10 +480,12 @@ static void execute_on_irq_stack(void *func, unsigned long param1)
+ 	*irq_stack_in_use = 1;
+ }
+ 
++#ifndef CONFIG_PREEMPT_RT
+ void do_softirq_own_stack(void)
+ {
+ 	execute_on_irq_stack(__do_softirq, 0);
+ }
++#endif
+ #endif /* CONFIG_IRQSTACKS */
+ 
+ /* ONLY called from entry.S:intr_extint() */
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index dd09919c3c668..0822a274a549c 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -611,6 +611,7 @@ static inline void check_stack_overflow(void)
+ 	}
+ }
+ 
++#ifndef CONFIG_PREEMPT_RT
+ static __always_inline void call_do_softirq(const void *sp)
+ {
+ 	/* Temporarily switch r1 to sp, call __do_softirq() then restore r1. */
+@@ -629,6 +630,7 @@ static __always_inline void call_do_softirq(const void *sp)
+ 		   "r11", "r12"
+ 	);
+ }
++#endif
+ 
+ static __always_inline void call_do_irq(struct pt_regs *regs, void *sp)
+ {
+@@ -747,10 +749,12 @@ void *mcheckirq_ctx[NR_CPUS] __read_mostly;
+ void *softirq_ctx[NR_CPUS] __read_mostly;
+ void *hardirq_ctx[NR_CPUS] __read_mostly;
+ 
++#ifndef CONFIG_PREEMPT_RT
+ void do_softirq_own_stack(void)
+ {
+ 	call_do_softirq(softirq_ctx[smp_processor_id()]);
+ }
++#endif
+ 
+ irq_hw_number_t virq_to_hw(unsigned int virq)
+ {
+diff --git a/arch/s390/include/asm/softirq_stack.h b/arch/s390/include/asm/softirq_stack.h
+index fd17f25704bd5..af68d6c1d5840 100644
+--- a/arch/s390/include/asm/softirq_stack.h
++++ b/arch/s390/include/asm/softirq_stack.h
+@@ -5,9 +5,10 @@
+ #include <asm/lowcore.h>
+ #include <asm/stacktrace.h>
+ 
++#ifndef CONFIG_PREEMPT_RT
+ static inline void do_softirq_own_stack(void)
+ {
+ 	call_on_stack(0, S390_lowcore.async_stack, void, __do_softirq);
+ }
+-
++#endif
+ #endif /* __ASM_S390_SOFTIRQ_STACK_H */
+diff --git a/arch/sh/kernel/irq.c b/arch/sh/kernel/irq.c
+index ef0f0827cf575..2d3eca8fee011 100644
+--- a/arch/sh/kernel/irq.c
++++ b/arch/sh/kernel/irq.c
+@@ -149,6 +149,7 @@ void irq_ctx_exit(int cpu)
+ 	hardirq_ctx[cpu] = NULL;
+ }
+ 
++#ifndef CONFIG_PREEMPT_RT
+ void do_softirq_own_stack(void)
+ {
+ 	struct thread_info *curctx;
+@@ -176,6 +177,7 @@ void do_softirq_own_stack(void)
+ 		  "r5", "r6", "r7", "r8", "r9", "r15", "t", "pr"
+ 	);
+ }
++#endif
+ #else
+ static inline void handle_one_irq(unsigned int irq)
+ {
+diff --git a/arch/sparc/kernel/irq_64.c b/arch/sparc/kernel/irq_64.c
+index c8848bb681a11..41fa1be980a33 100644
+--- a/arch/sparc/kernel/irq_64.c
++++ b/arch/sparc/kernel/irq_64.c
+@@ -855,6 +855,7 @@ void __irq_entry handler_irq(int pil, struct pt_regs *regs)
+ 	set_irq_regs(old_regs);
+ }
+ 
++#ifndef CONFIG_PREEMPT_RT
+ void do_softirq_own_stack(void)
+ {
+ 	void *orig_sp, *sp = softirq_stack[smp_processor_id()];
+@@ -869,6 +870,7 @@ void do_softirq_own_stack(void)
+ 	__asm__ __volatile__("mov %0, %%sp"
+ 			     : : "r" (orig_sp));
+ }
++#endif
+ 
+ #ifdef CONFIG_HOTPLUG_CPU
+ void fixup_irqs(void)
+diff --git a/include/asm-generic/softirq_stack.h b/include/asm-generic/softirq_stack.h
+index eceeecf6a5bd8..d3e2d81656e04 100644
+--- a/include/asm-generic/softirq_stack.h
++++ b/include/asm-generic/softirq_stack.h
+@@ -2,7 +2,7 @@
+ #ifndef __ASM_GENERIC_SOFTIRQ_STACK_H
+ #define __ASM_GENERIC_SOFTIRQ_STACK_H
+ 
+-#ifdef CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK
++#if defined(CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK) && !defined(CONFIG_PREEMPT_RT)
+ void do_softirq_own_stack(void);
+ #else
+ static inline void do_softirq_own_stack(void)
 -- 
-2.35.3
+2.36.1
 
