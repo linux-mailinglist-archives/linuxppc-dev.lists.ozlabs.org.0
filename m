@@ -1,73 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3152D54A782
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 05:21:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1C554A814
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 06:26:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMYcP13FKz303k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 13:21:09 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bVQerjGJ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMb3x1xYbz3dtj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 14:26:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bVQerjGJ;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMYbd5wcTz303k
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 13:20:29 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 126C0615BD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 03:20:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 79FE9C3411B
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 03:20:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655176826;
-	bh=ux+b6vefVy0L1zPe9/XKHo9Yu4T2T2h6oe6+sIkfZfw=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=bVQerjGJAAsA1dzerRNTnO9K2efK0A/KZb9bZT/jzNGTX3cVHgoVWpzlcbZrW1fiE
-	 9F/FXSnAJYFx7TUdonNsl3+OWZlvD8vg38OscM6khiQ/WtSxFcQ7krG0n5iR0FgvT/
-	 2UxeFGJ9S2/pf7h1A2THFWGp31FFMDzGZtZ5UeTtMyGTDcsmXejJCxCvjIxPm5arSD
-	 0FgYXuElVZgK777E12cGM0l1T1J5nU+Tt2yYrX2HmSy7imrbMYRaGcqguJsM7cvr86
-	 C3t9Bij8C4o721GKpqfpkhPjPDT5EE/+SR1J8ezCOzU3ipw5dKs8UoRRjzPIKqmE2P
-	 KBesr7Vy6oHbA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 5673EC05FF5; Tue, 14 Jun 2022 03:20:26 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 203699] Kernel 5.2-rc1 fails to boot on a Mac Mini G4:
- dt_headr_start=0x01501000
-Date: Tue, 14 Jun 2022 03:20:26 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: blocking
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: CLOSED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-203699-206035-6Lty9bG8nt@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-203699-206035@https.bugzilla.kernel.org/>
-References: <bug-203699-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMb2k3ZLRz3bdK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 14:25:32 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 107AD1A126F;
+	Tue, 14 Jun 2022 06:25:29 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id BB2011A2664;
+	Tue, 14 Jun 2022 06:25:28 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id CAEAA180222A;
+	Tue, 14 Jun 2022 12:25:26 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: nicoleotsuka@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	shengjiu.wang@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	robh+dt@kernel.org,
+	krzk+dt@kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH 0/7] Add PDM/DSD/dataline configuration support
+Date: Tue, 14 Jun 2022 12:11:17 +0800
+Message-Id: <1655179884-12278-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,25 +53,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D203699
+Support PDM format and DSD format.
+Add new dts property to configure dataline. The SAI has multiple
+successive FIFO registers, but in some use
+case the required dataline/FIFOs are not successive.
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+Shengjiu Wang (7):
+  ASoC: fsl_sai: Add PDM daifmt support
+  ASoC: fsl_sai: Add DSD bit format support
+  ASoC: fsl_sai: Add support for more sample rates
+  ASoc: fsl_sai: Add pinctrl operation for PDM and DSD
+  ASoC: fsl_sai: Move res variable to be global
+  ASoC: dt-bindings: fsl-sai: Add new property to configure dataline
+  ASoC: fsl_sai: Configure dataline/FIFO information from dts property
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|NEEDINFO                    |CLOSED
-         Resolution|---                         |CODE_FIX
+ .../devicetree/bindings/sound/fsl-sai.txt     |   8 +
+ sound/soc/fsl/fsl_sai.c                       | 260 ++++++++++++++++--
+ sound/soc/fsl/fsl_sai.h                       |  26 +-
+ 3 files changed, 272 insertions(+), 22 deletions(-)
 
---- Comment #3 from Michael Ellerman (michael@ellerman.id.au) ---
-v5.19-rc2 is booting on my mac mini with KASAN enabled, so I'm going to clo=
-se
-this as fixed.
+-- 
+2.17.1
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
