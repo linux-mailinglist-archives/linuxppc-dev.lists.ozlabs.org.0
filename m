@@ -1,56 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8388454B346
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 16:36:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0690454B36B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 16:39:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMrbt47jzz3cGf
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:36:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMrgN6WXnz3cd1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:39:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=B9wTA4hA;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LhfEscu4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=B9wTA4hA;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LhfEscu4;
 	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMrbD6M9cz2yyS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 00:36:07 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 8286121B97;
-	Tue, 14 Jun 2022 14:36:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1655217363; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7h6hH0gYTond1cgiS/uMW2G4mVmL8aIozW74ouv+gK4=;
-	b=B9wTA4hA6Qxez4dhaQq2jaLjcRQqv8/C1d0oKbtJxHWYl3duIpfM3QjZ2J2ZIG1jByzjIk
-	ObTWFZbyZcppMylTomPCNwhynw9TlYQGEMrmiuv4k8IcEezBoIE3JYy9Oiijt3mtdocbSR
-	YntR36rSYs/Otfz0SDXm/BOtVHJZFAE=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id 0C0ED2C142;
-	Tue, 14 Jun 2022 14:36:01 +0000 (UTC)
-Date: Tue, 14 Jun 2022 16:36:01 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Subject: Re: [PATCH 24/30] panic: Refactor the panic path
-Message-ID: <Yqic0R8/UFqTbbMD@alley>
-References: <20220427224924.592546-1-gpiccoli@igalia.com>
- <20220427224924.592546-25-gpiccoli@igalia.com>
- <87fskzuh11.fsf@email.froward.int.ebiederm.org>
- <0d084eed-4781-c815-29c7-ac62c498e216@igalia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMrfp19W9z306l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 00:39:12 +1000 (AEST)
+Received: by mail-wr1-x42a.google.com with SMTP id o16so11592350wra.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 07:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=P5SSmOpxaieAxhBhqLWRq50g/jaHGZ+k1H6+ZODiYts=;
+        b=LhfEscu4SL/74tSj97prUIfgT825d4K7enMooSY9LuVRkpG/9fKkilfDhaXyGaRK+X
+         6WjpPY20DgafAmrFzGmZnHZzPgqJr20pxhwzByrKfmX9Y8RJs+nxCVpFIapqDO7m771z
+         Rsa3ALsO9dINWlsHpfnd9yuqMLd1ZebR6EnOkn7g4CN5Set3VhlUJsGajH2xi8RG0ypt
+         XlDWGze1rayefwh/p4q1wsorWjrIm1AhI+aQ/WCmP+mnv3W3cGC9SrjCDVG6m+5ySmVm
+         ISYCLkP1w4Nza0VGGbpFYZOsxZBEDg7Rq0SfWMT86p8sNPg6b0hYdAlfOWmsPQOe5jGN
+         RsgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=P5SSmOpxaieAxhBhqLWRq50g/jaHGZ+k1H6+ZODiYts=;
+        b=qvY4KfzKx8NomAzMVEmJSdcNVJxwfJU8Nji6Dx6R7a41TUh3i5CiqlEEupAc8MnkOa
+         +vpIichKQSXgWniCFxE71myemNfZJtWGwysz3+rcEbnTGHnr68L3iCs1rzGJpUNmxmzY
+         mipBanLWWP/7PQLbvVj13hcUrydQuuQGo1/Z7TUG+B3jWRdTugv6QY6phf01lZM57GGA
+         I/zpd45F0TS0NkDcBUoQbAITUS6/a4mI30O1ec61OKT7GMlKIbuhiul3vwkqUQpxvMf5
+         NhsxiEMfXkfPyMeFjApFUisb4E/P+vVEeVNJk2CNHKM6qz+R3Wi+8pZVTSkrZyWJTOCk
+         Lq3A==
+X-Gm-Message-State: AJIora9V/O9eqS+DFqZuuZJzlyeuBGz1AdGo1xs88YmKgH8ImUzqrls6
+	/09ok9RLQ7Qy/+Uz1JpobApjEXsyZPxq48UxV4VPWQ==
+X-Google-Smtp-Source: AGRyM1s7gwiJFhXq3CTNcQ+tU3H7yju67V8T7j+VRz7Qx3Yg4u1r1anNz4VqC0dMSQxjIrAWVcrJ0JBnWeZG2x80nHU=
+X-Received: by 2002:a05:6000:1a8d:b0:219:e3f2:c092 with SMTP id
+ f13-20020a0560001a8d00b00219e3f2c092mr5456547wry.375.1655217547516; Tue, 14
+ Jun 2022 07:39:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0d084eed-4781-c815-29c7-ac62c498e216@igalia.com>
+References: <20220610135939.63361-1-atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20220610135939.63361-1-atrajeev@linux.vnet.ibm.com>
+From: Ian Rogers <irogers@google.com>
+Date: Tue, 14 Jun 2022 07:38:55 -0700
+Message-ID: <CAP-5=fV6sPUtSqPBmJ0dmeUK+wuuXgyq-GQRV_g_B5uC4y5oGA@mail.gmail.com>
+Subject: Re: [PATCH] tools/perf/tests: Fix session topology test comparison check
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,76 +72,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-hyperv@vger.kernel.org, halves@canonical.com, gregkh@linuxfoundation.org, peterz@infradead.org, alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org, feng.tang@intel.com, mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com, sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org, linux-mips@vger.kernel.org, dyoung@redhat.com, vgoyal@redhat.com, mhiramat@kernel.org, linux-xtensa@linux-xtensa.org, dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net, 
- andriy.shevchenko@linux.intel.com, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, "Eric W. Biederman" <ebiederm@xmission.com>, kernel-dev@igalia.com, linux-alpha@vger.kernel.org, vkuznets@redhat.com, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, rnsastry@linux.ibm.com, tmricht@linux.ibm.com, acme@kernel.org, linux-perf-users@vger.kernel.org, jolsa@kernel.org, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 2022-05-26 13:25:57, Guilherme G. Piccoli wrote:
-> OK, so it seems we have some points in which agreement exists, and some
-> points that there is no agreement and instead, we have antagonistic /
-> opposite views and needs. Let's start with the easier part heh
+On Fri, Jun 10, 2022 at 7:00 AM Athira Rajeev
+<atrajeev@linux.vnet.ibm.com> wrote:
 >
-> It seems everybody agrees that *we shouldn't over-engineer things*, and
-> as per Eric good words: making the panic path more feature-full or
-> increasing flexibility isn't a good idea. So, as a "corollary": the
-> panic level approach I'm proposing is not a good fit, I'll drop it and
-> let's go with something simpler.
+> commit cfd7092c31ae ("perf test session topology: Fix test to
+> skip the test in guest environment") added check to skip the
+> testcase if the socket_id can't be fetched from topology info.
+> But the condition check uses strncmp which should be changed to
+> !strncmp and to correctly match platform. Patch fixes this
+> condition check.
+>
+> Fixes: cfd7092c31ae ("perf test session topology: Fix test to skip the test in guest environment")
+> Reported-by: Thomas Richter <tmricht@linux.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Makes sense.
+Acked-by: Ian Rogers <irogers@google.com>
 
-> Another point of agreement seems to be that _notifier lists in the panic
-> path are dangerous_, for *2 different reasons*:
-> 
-> (a) We cannot guarantee that people won't add crazy callbacks there, we
-> can plan and document things the best as possible - it'll never be
-> enough, somebody eventually would slip a nonsense callback that would
-> break things and defeat the planned purpose of such a list;
+Thanks,
+Ian
 
-It is true that notifier lists might allow to add crazy stuff
-without proper review more easily. Things added into the core
-code would most likely get better review.
-
-But nothing is error-proof. And bugs will happen with any approach.
-
-
-> (b) As per Eric point, in a panic/crash situation we might have memory
-> corruption exactly in the list code / pointers, etc, so the notifier
-> lists are, by nature, a bit fragile. But I think we shouldn't consider
-> it completely "bollocks", since this approach has been used for a while
-> with a good success rate. So, lists aren't perfect at all, but at the
-> same time, they aren't completely useless.
-
-I am not able to judge this. Of course, any extra step increases
-the risk. I am just not sure how much more complicated it would
-be to hardcode the calls. Most of them are architecture
-and/or feature specific. And such code is often hard to
-review and maintain.
-
-> To avoid using a 4th list,
-
-4th or 5th? We already have "hypervisor", "info", "pre-reboot", and "pre-loop".
-The 5th might be pre-crash-exec.
-
-> especially given the list nature is a bit
-> fragile, I'd suggest one of the 3 following approaches - I *really
-> appreciate feedbacks* on that so I can implement the best solution and
-> avoid wasting time in some poor/disliked solution:
-
-Honestly, I am not able to decide what might be better without seeing
-the code.
-
-Most things fits pretty well into the 4 proposed lists:
-"hypervisor", "info", "pre-reboot", and "pre-loop". IMHO, the
-only question is the code that needs to be always called
-even before crash_dump.
-
-I suggest that you solve the crash_dump callbacks the way that
-looks best to you. Ideally do it in a separate patch so it can be
-reviewed and reworked more easily.
-
-I believe that a fresh code with an updated split and simplified
-logic would help us to move forward.
-
-Best Regards,
-Petr
+> ---
+>  tools/perf/tests/topology.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/perf/tests/topology.c b/tools/perf/tests/topology.c
+> index d23a9e322ff5..0b4f61b6cc6b 100644
+> --- a/tools/perf/tests/topology.c
+> +++ b/tools/perf/tests/topology.c
+> @@ -115,7 +115,7 @@ static int check_cpu_topology(char *path, struct perf_cpu_map *map)
+>          * physical_package_id will be set to -1. Hence skip this
+>          * test if physical_package_id returns -1 for cpu from perf_cpu_map.
+>          */
+> -       if (strncmp(session->header.env.arch, "powerpc", 7)) {
+> +       if (!strncmp(session->header.env.arch, "ppc64le", 7)) {
+>                 if (cpu__get_socket_id(perf_cpu_map__cpu(map, 0)) == -1)
+>                         return TEST_SKIP;
+>         }
+> --
+> 2.35.1
+>
