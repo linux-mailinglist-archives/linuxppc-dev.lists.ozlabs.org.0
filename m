@@ -2,163 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0A154BD4B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E65E054BD4C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:07:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2bq3kw4z3fN7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:07:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2cT6Czsz3fQg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:07:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AzE47z98;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GJ95osrV;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=sohil.mehta@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AzE47z98;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GJ95osrV;
 	dkim-atps=neutral
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMRZg3rS2z2ywc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 08:49:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655160555; x=1686696555;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=c0Nu7zmbgOfZ6os748hsNHhjt7hWIrwvsvJvi+oScNo=;
-  b=AzE47z98zwoU6KvBPN7ywradaD6EUDxJRoJS/5q0i1GWJ9bVMiZqTJjP
-   5v0oLhxRdMOA7omu72jD0VedyzGFj5uhfkaPmWFJhYK9V+4HvyiNk8Wr0
-   h1VS6Y+bjl0kZKu5GdTIGAz9C/InON2fCyGEjdtQjEIhps91iSMGfHOBP
-   gx72fAHdPN8PAQxAlORcImJA5+1+4l2Umjs4S0o/DtO3flEVAABd8ILKj
-   xAmS2R7Y8lfmLTvOE075i7tVJ+MbLLyIzE8v80hSMEI7xelx/YGQwM59+
-   j9zAgF52thi4S8zTM+KOLCjjX4w8zfqwD7nGmMFyLOkcGjYYF8Lq9rWwQ
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10377"; a="267125246"
-X-IronPort-AV: E=Sophos;i="5.91,298,1647327600"; 
-   d="scan'208";a="267125246"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2022 15:49:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,298,1647327600"; 
-   d="scan'208";a="712215590"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga004.jf.intel.com with ESMTP; 13 Jun 2022 15:49:05 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 13 Jun 2022 15:49:04 -0700
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27; Mon, 13 Jun 2022 15:49:04 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.27 via Frontend Transport; Mon, 13 Jun 2022 15:49:04 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.172)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2308.27; Mon, 13 Jun 2022 15:49:04 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GeGQifwoxsj3kZx2pLei0IZetFsVGu30m8XnvvHBUokjQXVKKnXnz2veLdOwUxNdyHz91BkjbtFewlpysTGg+1cjTNUy62IDbF7ZOpWDmqrPpp2A10ApvAi6eGiIPgLM2xw4+kqjFdvgBJOF+pTtT7QUx/5jxrfb122uTjyfml/PfA3m/uoskK5AeWWdC0AyPkYM9j6F/ELWk2/++uCQtThyfLNlB8lRb/xPBzEvp3X4YaRa7+ZKuXiXbEFCkSVAF6wYZK7+vmtk/lSghUiu5iVGJAyQoryTXfU6GPMt/QB1XO5XlhVzncxLisQLWh545vT0JWYYLRdRCwSppspwug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NV7OtwJOcryd6HENj2hlm4j6DsoF1nF9iQADpf5kNT8=;
- b=URoBuiMA3s6u56mlJsgLIvfI+sl60UQRKtHIDAl9BHCpiJiPGUlAKSF+c6rwJaoo490R4wRUMoks1QNH+qLH34Fe3SGiAZ5mzAMM2wqJIbvei86Yqjjr0nXXrJdEro7vJj3SqqLraAuxHXT31pNMqsKirRzqwUO99ggSvu/vB37Y5v1sCzuQlAKudPu/cf3u0mWYJsSB++JrCiL2yX+NZCnP3f1qsMgD/+ywXnMa9yvyVkstg9OV0SoV4DL15UiMphYCk46fYPZ/YldomOEfCo0vIlA8TdIkcZOQq7d8SYbyOYpsEeTYyvxvrCLqJzbqt6GNLDELRFMbeLivG7Lrkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BYAPR11MB3320.namprd11.prod.outlook.com (2603:10b6:a03:18::25)
- by SN6PR11MB2944.namprd11.prod.outlook.com (2603:10b6:805:cd::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.20; Mon, 13 Jun
- 2022 22:48:58 +0000
-Received: from BYAPR11MB3320.namprd11.prod.outlook.com
- ([fe80::a4e0:2e7e:45de:a62]) by BYAPR11MB3320.namprd11.prod.outlook.com
- ([fe80::a4e0:2e7e:45de:a62%6]) with mapi id 15.20.5332.020; Mon, 13 Jun 2022
- 22:48:58 +0000
-Message-ID: <86c1b1fe-0dca-ce26-874e-aa83e3c77e6e@intel.com>
-Date: Mon, 13 Jun 2022 15:48:56 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [RFC PATCH 2/6] testing/pkeys: Don't use uninitialized variable
-Content-Language: en-US
-To: <ira.weiny@intel.com>, <linux-api@vger.kernel.org>
-References: <20220610233533.3649584-1-ira.weiny@intel.com>
- <20220610233533.3649584-3-ira.weiny@intel.com>
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <20220610233533.3649584-3-ira.weiny@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY3PR05CA0038.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::13) To BYAPR11MB3320.namprd11.prod.outlook.com
- (2603:10b6:a03:18::25)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMljj1xljz3bdX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 20:56:25 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 8361F60C68;
+	Tue, 14 Jun 2022 10:56:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684A4C3411B;
+	Tue, 14 Jun 2022 10:56:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1655204181;
+	bh=00Prm+cUcZ84XpftD1dN/FsJdtVgLrlVbBRu1vY0N5M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GJ95osrVTc29XfAfsEoUU7WX2toadBvY3p7QFX5tpiu1BguwysX9r9TxGtw8aYY9n
+	 7dlCDWef80SO6YKztD5/KX6n7Y63tLpHsHD4tZLe39NPNprDEuYJ4QV3OB37cZGvAj
+	 IaIu2GguR8oHWbINnEHCM3cx9QcpbJSvuqjzsrMfDYUfocAyaRNr0Pt1A51rT53dh9
+	 rDPotEBWirI+Y2P11VJvRfmmoENEdUlYds3MF8ovi7JJoImaYhf0YnPNPIDSD1X1Qu
+	 u+E1S/fX8sdfiEnKYnQt3gWGX8HCuLdUK3Dn9KpHAkPUmWIlOW27FtAzM7KU1xfWdH
+	 fGJYQOPmMLlqw==
+Date: Tue, 14 Jun 2022 13:54:18 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH] kprobes: Enable tracing for mololithic kernel images
+Message-ID: <Yqho2hu5q/n10D7g@iki.fi>
+References: <20220608000014.3054333-1-jarkko@profian.com>
+ <CAJF2gTQgCn2CyZ4+VBqEEBT2b4+1KxoEXxrd+Ritk=58+U8EFA@mail.gmail.com>
+ <YqAy0qjI4Lktk/uJ@iki.fi>
+ <20220608232115.ccd4399f4a1d133e9b65c2a9@kernel.org>
+ <CAPhsuW6iUieQvA6KqzSLgtxmjkVSWCuVwNA338DATb_myHxo7w@mail.gmail.com>
+ <YqHx1d+MwRLLzGQe@iki.fi>
+ <CAMj1kXGGyO-DL9hjKYKR2sp87s4KExiQybES8pp4JgqJcHkfLA@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 62fffc41-0e53-43ef-8062-08da4d8ee6c4
-X-MS-TrafficTypeDiagnostic: SN6PR11MB2944:EE_
-X-Microsoft-Antispam-PRVS: <SN6PR11MB29441FB84FE1EB693A696D6DE5AB9@SN6PR11MB2944.namprd11.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: NWBeoKqMXCJLDNBZNJ1dqNPHYvPmhjvVHgs8mLmypr2jbmIeP2o2vtE/up3SeSSeu8/028ahIPpXY9YmE3j4tlRT0zrchRWTr12R2qVdm/WveH9zp9l8uyvm7zhamepppUseqAiYGvUCb26m4zaGZL8dzshSKm57R1C3etGLXdi5ueryTAqTf6COivOlMqEOwuUDUUXeR8VOI0KEZ4U41DBqjD8GjCxIZtmSZS4sS9p3U0x9HkUW5nUO70y0eXl2mRhHJy/FUpZRdxRUL/gyJ/3DKiJa13F3aTeEiKlaEKpe3erQYzVXh8hz/b6rw/cwFM6eCBiYTlUojAVWqgh6kDIqqNSSnyaWpKeJA7K/gDjb2WUJx6UdmuHE3KwAbLOX1rQYwaZtmrRqm8WBAPQjL5G2VqR+rqkS1GvVdAEqhL+xM9hPDnyRh8Xv0xMPo4k+dBjsdy9tu7yXhlCCR+ri6+e7sBi7I1Vg++Sg6oT+nJ6xN9UF9DtRkYmzpGo7M9CkhUITg/bVzo3Vqu6GApXo3uuNEC9tJNb/Bh/4Mwrb0Ox23DosuN3ZptPJrNsqfeyGMwRFwptWL3TWHMQWmdrcsDNhdzK1Wv6WLzJxJWjx7whf7FAbfzGT5tWRGNzS0ULrPCOuK5yvTVjIe7Ui1EGZVVPT5V+kuELk8HJh7o+cSoQVCmf0jrKUSuhPIaP6V3P1v/SlMttZFtsJOhD0C3IwUfQrpsoDF0w91HBQd/9HWtxzTyzcHXo5j4LSHt44t/6D
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3320.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(366004)(8936002)(5660300002)(2906002)(86362001)(82960400001)(38100700002)(316002)(6506007)(54906003)(53546011)(26005)(6512007)(44832011)(6486002)(4326008)(66476007)(8676002)(66556008)(66946007)(2616005)(186003)(31696002)(508600001)(36756003)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UTZSaVZUcmFFUWtSeXlFQXVMbVNXcGx4UU14akNNWnd2RXNzVFdiYlp5WE0z?=
- =?utf-8?B?ZWw3ZzkvaTVRZ1p4WnhWSE56WUVrcnpvSHNKdEFVQnYyQ2NZQnBzTjhBRVh1?=
- =?utf-8?B?a1Q5ejZKRXBEc3E5QnhpSXg3TFpHNVRqeGQ2b3JucUNyKzFGSlNtTFp6WldD?=
- =?utf-8?B?UnZVTmEwWjk3bm5NelVPZjFoYU1sZFF2VENCRUg2YlpaZE9kQURCbEd1dHQx?=
- =?utf-8?B?dHZXbk5kQmMwMm84WFkrb0Z6bENKTFk3QVpzNzc3OXFPcHJHclJnaEZvekxJ?=
- =?utf-8?B?ai9tUXJsZkRPdGIxdHBHSVNIVndTQ0NLK0h5UHVCQWx3SEVaL2grR1ZNVU8v?=
- =?utf-8?B?d3RxZFI0UVcvT3BPay9NZjdyV25UZmNkQ24rRktXakYwd0REVi9iQ0t3VnMr?=
- =?utf-8?B?QjlXSkR4Tk5qRnJXWm9KRHpOZWNTOG1YL2NFdE4vYzZldXVJNUU3ZHdleVF6?=
- =?utf-8?B?Q3VmczFzTmFpUldyRmhVYW5SZVZjdnJ1WjJ2Y3RjWUdESDRNbUtoMVQ4VlBL?=
- =?utf-8?B?cXYvbmhPMENsNC8zRDlRRnFOMjdSNGxqV0xOSUpGeXZRdUJqU2I4TjUya2tp?=
- =?utf-8?B?WjMzZ2hvMmExOFB3dEdBSzZ5VmJhUXRUT0liRjhRMmtDVDhRZm5FQTlHQ2dL?=
- =?utf-8?B?aDJzT21kVjFPYWlzZ3d3QmE0MUV5eW1jdGJyK1lhOGJGeWdzekJJWDFPSHdB?=
- =?utf-8?B?R2piYkNZMnAvN2p1SG5OeFhXQTVtSDFocE1nNE9RMEtDcEJySnNFbkU2VzFD?=
- =?utf-8?B?TWI2NGNaajMrOEtJYU9BSzhFRHh0M3piaFZkVmg1ZHgxVUxYWDJxYjVyOW1m?=
- =?utf-8?B?UEF2Y1dDbEJmMEs0VDh5UVFybUdTSzVidUYvQldFNFJyemI2NUtjWTN1VXM0?=
- =?utf-8?B?UE1RM0JwZGVETzNBZXQ0TjFOdW16R0w2NGJUQUJ5M0N5RVIvRFBadmU3enl4?=
- =?utf-8?B?U3BScm5OTmdKcWZOMVZQMFN2d2RpeWl6VjdvWm1mMXg4a0RsR2taUDVpaXZS?=
- =?utf-8?B?UVdyQ3JtRzB1bUZiQlNtS1JuSXd2eDhnZGlEbnJzdWZCVWxoQkp3QWlNa3Nh?=
- =?utf-8?B?MzJmdVQrVXpKNXJxYm9DYTFjeUpkLzBTYmNpVlpDaFRwODBWUjRmWERmVHN3?=
- =?utf-8?B?eUhKNlNaV1ZLU1l5bGpMMk5DcUZ3ZFdmM1dwUVZiK3h6MzJaTlEwZGFXekhJ?=
- =?utf-8?B?d0lFeHdqUzNra1J0TXZZQzBBRzBZQUNHUjN2WVRqYmJJRE9jWm81eGdpSHAv?=
- =?utf-8?B?dlVWd0FTSFE3MThja3lNdEhSZkR5eW1vQU11VEEwMnVTTjFGRFZmRDNsOEt3?=
- =?utf-8?B?Qk5vbVZhTXlxWnhUNzZNcks1N3Vkcm84eU03TEhnZW9oWVVhR1dKNUlYYVJ3?=
- =?utf-8?B?VDdlRy9ISTFtbTQxTXU2WTZRNi9qeTVLWVJaR3RVckUxVTRLaDVUb2xGQUY2?=
- =?utf-8?B?QklFdVZld3FYNk94MUVjS29rbnVlRUhYUU5tc0dQVXZadHJTSTB2VXRLVkdo?=
- =?utf-8?B?a2JKR212RVc2Ly8yR0picURKQTdVUytjcHNYY2luUVpPT0dXdlZPVFEzRnpL?=
- =?utf-8?B?a2ZnQklqS3VNNm9iS0NhZElZSDZvQ2xJMGErdFRzb1BoZ0haU3Q0RVQwQkg3?=
- =?utf-8?B?eFBRbXAzU3J2Nk82NjIvQldITUl5U1JMYktQUi8vV3NCY1Vxc2lwUkZHV25H?=
- =?utf-8?B?ZXUveFhSN2Rud1VZN0JVSVVTa245TUx1MHdJRGU4NEo2ZlNTcDBwVmV5VEoy?=
- =?utf-8?B?YndZQXN0ZUZKQjdHaUFxdTdrRkY3bDJ5eFFFNVJLTnI5YzBpSjlyc1MvSmJQ?=
- =?utf-8?B?TlRQd3V1ZnplVWtJelg3M1pwTGFETnFudFZ1SVpKOXlwQ1FFN21wRk5PNHcz?=
- =?utf-8?B?d2JTQXllajh0MmdNd1Y4YXBzV1FqcklFdGtQR3B1TEx4cm1MRnkwNXdFVFZ2?=
- =?utf-8?B?K1NoSDhkYk5kMUlCYlh6aUZpcjBWU1I0R3ROK25tRmxaWlpHTnAzMzc0d0wz?=
- =?utf-8?B?V3dJSk9uelFYOUZEb20vNXFJRGNnK09rZ0tpTzBac0FwdGxuVk45MzI4ZTRv?=
- =?utf-8?B?a2NzOHhVaEVLMXExSnNHTzhjMDdFWTBQMzg2YWNMWDErUWttam10ZVMzb25S?=
- =?utf-8?B?M2ZEZ0tJZFVHSkJIcXVYY3RrUFJEQzVWbnRReitxczZZUHZyakZiemNBaGk0?=
- =?utf-8?B?am85SXZQUG5FcE5VN1BQOWIxN0lvY01oaHZKRUFFa015amIzNjJTS1V6OFow?=
- =?utf-8?B?L0xjMzJ0WmRyNFQ5dmJVV2czekJvQkJSbTRHYktBcEtScDFvSUtIRkNZWmt4?=
- =?utf-8?B?Ry9RRExwSHhNNzhSNVdQL2RsQ0VyMkZ6b0lONFpoWUNLOFZwVWhxS0l2NThM?=
- =?utf-8?Q?NHDwXg6jAwJ7isaE=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 62fffc41-0e53-43ef-8062-08da4d8ee6c4
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3320.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2022 22:48:58.0085
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JtomSMUwSO+jHBtFyjqj9HySN7Vl/n4ymb2oPVbx3CYGmXzLBPbEIZb+tvpu0H23RnaKtXkMut2hVXcs+8BOBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB2944
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXGGyO-DL9hjKYKR2sp87s4KExiQybES8pp4JgqJcHkfLA@mail.gmail.com>
 X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -171,34 +66,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Dan Li <ashimida@linux.alibaba.com>, Heiko Stuebner <heiko@sntech.de>, Linus Walleij <linus.walleij@linaro.org>, Guo Ren <guoren@kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Javier Martinez Canillas <javierm@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Guenter Roeck <linux@roeck-us.net>, =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>, Michael Roth <michael.roth@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Andrey Konovalov <andreyknvl@gmail.com>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>, Wu Caize <zepan@sipeed.com>, Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, Luis Machado <luis.machado@linaro.org>, Atsushi Nemoto 
+ <anemo@mba.ocn.ne.jp>, Dave Hansen <dave.hansen@linux.intel.com>, Joey Gouly <joey.gouly@arm.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Song Liu <song@kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Ilya Leoshkevich <iii@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Helge Deller <deller@gmx.de>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Masami Hiramatsu <mhiramat@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, Vasily Gorbik <gor@linux.ibm.com>, Philipp Tomsich <philipp.tomsich@vrull.eu>, Dave Anglin <dave.anglin@bell.net>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Daniel Axtens <dja@axtens.net>, Nicolas Pitre <nico@fluxnic.net>, "Eric W. Biederman" <ebiederm@xmission.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Daniel Bristot de Oliveira <bristot@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, Emil Renner Berthing <kernel@esmil.dk>, Jordan Niethe <jniethe5@gmail.com>, Atish Patra <atishp@atishpatra.org>,
+  Alexei Starovoitov <ast@kernel.org>, Will Deacon <wi
+
+ll@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, Jarkko Sakkinen <jarkko@profian.com>, Sami Tolvanen <samitolvanen@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Alexander Egorenkov <egorenar@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Nathaniel McCallum <nathaniel@profian.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tobias Huschle <huschle@linux.ibm.com>, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@
+ suse.cz>, Chen Zhongjin <chenzhongjin@huawei.com>, linux-riscv <linux-riscv@lists.infradead.org>, the arch/x86 maintainers <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Aaron Tomlin <atomlin@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, Liao Chang <liaochang1@huawei.com>, Paul Walmsley <paul.walmsley@sifive.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Richter <tmricht@linux.ibm.com>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Changbin Du <changbin.du@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/10/2022 4:35 PM, ira.weiny@intel.com wrote:
-> diff --git a/tools/testing/selftests/vm/protection_keys.c b/tools/testing/selftests/vm/protection_keys.c
-> index d0183c381859..43e47de19c0d 100644
-> --- a/tools/testing/selftests/vm/protection_keys.c
-> +++ b/tools/testing/selftests/vm/protection_keys.c
-> @@ -1225,9 +1225,9 @@ void test_pkey_alloc_exhaust(int *ptr, u16 pkey)
->   		int new_pkey;
->   		dprintf1("%s() alloc loop: %d\n", __func__, i);
->   		new_pkey = alloc_pkey();
-> -		dprintf4("%s()::%d, err: %d pkey_reg: 0x%016llx"
-> +		dprintf4("%s()::%d, errno: %d pkey_reg: 0x%016llx"
+On Thu, Jun 09, 2022 at 03:23:16PM +0200, Ard Biesheuvel wrote:
+> On Thu, 9 Jun 2022 at 15:14, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> > On Wed, Jun 08, 2022 at 09:12:34AM -0700, Song Liu wrote:
+> > > On Wed, Jun 8, 2022 at 7:21 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
+> > > >
+> > > > Hi Jarkko,
+> > > >
+> > > > On Wed, 8 Jun 2022 08:25:38 +0300
+> > > > Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > >
+> > > > > On Wed, Jun 08, 2022 at 10:35:42AM +0800, Guo Ren wrote:
+> > > > > > .
+> > > > > >
+> > > > > > On Wed, Jun 8, 2022 at 8:02 AM Jarkko Sakkinen <jarkko@profian.com> wrote:
+> > > > > > >
+> > > > > > > Tracing with kprobes while running a monolithic kernel is currently
+> > > > > > > impossible because CONFIG_KPROBES is dependent of CONFIG_MODULES.  This
+> > > > > > > dependency is a result of kprobes code using the module allocator for the
+> > > > > > > trampoline code.
+> > > > > > >
+> > > > > > > Detaching kprobes from modules helps to squeeze down the user space,
+> > > > > > > e.g. when developing new core kernel features, while still having all
+> > > > > > > the nice tracing capabilities.
+> > > > > > >
+> > > > > > > For kernel/ and arch/*, move module_alloc() and module_memfree() to
+> > > > > > > module_alloc.c, and compile as part of vmlinux when either CONFIG_MODULES
+> > > > > > > or CONFIG_KPROBES is enabled.  In addition, flag kernel module specific
+> > > > > > > code with CONFIG_MODULES.
+> > > > > > >
+> > > > > > > As the result, kprobes can be used with a monolithic kernel.
+> > > > > > It's strange when MODULES is n, but vmlinux still obtains module_alloc.
+> > > > > >
+> > > > > > Maybe we need a kprobe_alloc, right?
+> > > > >
+> > > > > Perhaps not the best name but at least it documents the fact that
+> > > > > they use the same allocator.
+> > > > >
+> > > > > Few years ago I carved up something "half-way there" for kprobes,
+> > > > > and I used the name text_alloc() [*].
+> > > > >
+> > > > > [*] https://lore.kernel.org/all/20200724050553.1724168-1-jarkko.sakkinen@linux.intel.com/
+> > > >
+> > > > Yeah, I remember that. Thank you for updating your patch!
+> > > > I think the idea (split module_alloc() from CONFIG_MODULE) is good to me.
+> > > > If module support maintainers think this name is not good, you may be
+> > > > able to rename it as text_alloc() and make the module_alloc() as a
+> > > > wrapper of it.
+> > >
+> > > IIUC, most users of module_alloc() use it to allocate memory for text, except
+> > > that module code uses it for both text and data. Therefore, I guess calling it
+> > > text_alloc() is not 100% accurate until we change the module code (to use
+> > > a different API to allocate memory for data).
+> >
+> > After reading the feedback, I'd stay on using module_alloc() because
+> > it has arch-specific quirks baked in. Easier to deal with them in one
+> > place.
+> >
+> 
+> In that case, please ensure that you enable this only on architectures
+> where it is needed. arm64 implements alloc_insn_page() without relying
+> on module_alloc() so I would not expect to see any changes there.
 
-What is errno referring to over here? There are a few things happening 
-in alloc_pkey(). I guess it would show the latest error that happened. 
-Does errno need to be set to 0 before the call?
+Right, got it, thanks for remark.
 
-Also, would it be useful to print the return value (new_pkey) from 
-alloc_pkey() here?
-
->   				" shadow: 0x%016llx\n",
-> -				__func__, __LINE__, err, __read_pkey_reg(),
-> +				__func__, __LINE__, errno, __read_pkey_reg(),
->   				shadow_pkey_reg);
->   		read_pkey_reg(); /* for shadow checking */
->   		dprintf2("%s() errno: %d ENOSPC: %d\n", __func__, errno, ENOSPC);
-
-Sohil
+BR, Jarkko
