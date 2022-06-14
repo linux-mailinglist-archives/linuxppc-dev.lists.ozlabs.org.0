@@ -2,35 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BF854BD56
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C3554BD5B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:12:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2hv2LgSz3fwJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:11:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2jK665Tz3fHJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:12:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMtmQ1rnXz2ywr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 02:14:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMtpJ2pFTz2y8Q
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 02:15:51 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D6151684;
-	Tue, 14 Jun 2022 09:13:38 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F0F61692;
+	Tue, 14 Jun 2022 09:15:19 -0700 (PDT)
 Received: from FVFF77S0Q05N (unknown [10.57.41.154])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4946B3F66F;
-	Tue, 14 Jun 2022 09:13:20 -0700 (PDT)
-Date: Tue, 14 Jun 2022 17:13:16 +0100
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D37FC3F66F;
+	Tue, 14 Jun 2022 09:15:01 -0700 (PDT)
+Date: Tue, 14 Jun 2022 17:14:57 +0100
 From: Mark Rutland <mark.rutland@arm.com>
 To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 15/36] cpuidle,cpu_pm: Remove RCU fiddling from
- cpu_pm_{enter,exit}()
-Message-ID: <YqiznJL7qB9uSQ9c@FVFF77S0Q05N>
+Subject: Re: [PATCH 16/36] rcu: Fix rcu_idle_exit()
+Message-ID: <Yqi0AVZmI5GyVpNa@FVFF77S0Q05N>
 References: <20220608142723.103523089@infradead.org>
- <20220608144516.871305980@infradead.org>
+ <20220608144516.935970247@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220608144516.871305980@infradead.org>
+In-Reply-To: <20220608144516.935970247@infradead.org>
 X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -52,65 +51,50 @@ arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 08, 2022 at 04:27:38PM +0200, Peter Zijlstra wrote:
-> All callers should still have RCU enabled.
-
-IIUC with that true we should be able to drop the RCU_NONIDLE() from
-drivers/perf/arm_pmu.c, as we only needed that for an invocation via a pm
-notifier.
-
-I should be able to give that a spin on some hardware.
-
+On Wed, Jun 08, 2022 at 04:27:39PM +0200, Peter Zijlstra wrote:
+> Current rcu_idle_exit() is terminally broken because it uses
+> local_irq_{save,restore}(), which are traced which uses RCU.
+> 
+> However, now that all the callers are sure to have IRQs disabled, we
+> can remove these calls.
 > 
 > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ---
->  kernel/cpu_pm.c |    9 ---------
->  1 file changed, 9 deletions(-)
-> 
-> --- a/kernel/cpu_pm.c
-> +++ b/kernel/cpu_pm.c
-> @@ -30,16 +30,9 @@ static int cpu_pm_notify(enum cpu_pm_eve
->  {
->  	int ret;
->  
-> -	/*
-> -	 * This introduces a RCU read critical section, which could be
-> -	 * disfunctional in cpu idle. Copy RCU_NONIDLE code to let RCU know
-> -	 * this.
-> -	 */
-> -	rcu_irq_enter_irqson();
->  	rcu_read_lock();
->  	ret = raw_notifier_call_chain(&cpu_pm_notifier.chain, event, NULL);
->  	rcu_read_unlock();
-> -	rcu_irq_exit_irqson();
+> Acked-by: Paul E. McKenney <paulmck@kernel.org>
 
-To make this easier to debug, is it worth adding an assertion that RCU is
-watching here? e.g.
+Acked-by: Mark Rutland <mark.rutland@arm.com>
 
-	RCU_LOCKDEP_WARN(!rcu_is_watching(),
-			 "cpu_pm_notify() used illegally from EQS");
-
->  
->  	return notifier_to_errno(ret);
->  }
-> @@ -49,11 +42,9 @@ static int cpu_pm_notify_robust(enum cpu
->  	unsigned long flags;
->  	int ret;
->  
-> -	rcu_irq_enter_irqson();
->  	raw_spin_lock_irqsave(&cpu_pm_notifier.lock, flags);
->  	ret = raw_notifier_call_chain_robust(&cpu_pm_notifier.chain, event_up, event_down, NULL);
->  	raw_spin_unlock_irqrestore(&cpu_pm_notifier.lock, flags);
-> -	rcu_irq_exit_irqson();
-
-
-... and likewise here?
-
-Thanks,
 Mark.
 
->  
->  	return notifier_to_errno(ret);
+> ---
+>  kernel/rcu/tree.c |    9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> --- a/kernel/rcu/tree.c
+> +++ b/kernel/rcu/tree.c
+> @@ -659,7 +659,7 @@ static noinstr void rcu_eqs_enter(bool u
+>   * If you add or remove a call to rcu_idle_enter(), be sure to test with
+>   * CONFIG_RCU_EQS_DEBUG=y.
+>   */
+> -void rcu_idle_enter(void)
+> +void noinstr rcu_idle_enter(void)
+>  {
+>  	lockdep_assert_irqs_disabled();
+>  	rcu_eqs_enter(false);
+> @@ -896,13 +896,10 @@ static void noinstr rcu_eqs_exit(bool us
+>   * If you add or remove a call to rcu_idle_exit(), be sure to test with
+>   * CONFIG_RCU_EQS_DEBUG=y.
+>   */
+> -void rcu_idle_exit(void)
+> +void noinstr rcu_idle_exit(void)
+>  {
+> -	unsigned long flags;
+> -
+> -	local_irq_save(flags);
+> +	lockdep_assert_irqs_disabled();
+>  	rcu_eqs_exit(false);
+> -	local_irq_restore(flags);
 >  }
+>  EXPORT_SYMBOL_GPL(rcu_idle_exit);
+>  
 > 
 > 
