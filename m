@@ -1,84 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179ED54B286
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 15:51:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF34C54B291
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 15:55:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMqbJ6xXJz3cf9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 23:51:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMqgt6LF7z3cdn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 23:55:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kZLNJknp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iRDBBJ/S;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kZLNJknp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iRDBBJ/S;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMqZb6GLPz3bpb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 23:50:31 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25EDBHub017763;
-	Tue, 14 Jun 2022 13:50:28 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMqgC19d4z3bpb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 23:54:30 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25EDBm50007127;
+	Tue, 14 Jun 2022 13:54:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=OwrOFbTRYEoqZ12i7zkJKWkeRWNGUgDeifO3rN+XfME=;
- b=kZLNJknp3xvtJx/Vz9aKfb3CNOT0crsyp4mg3r1ZA11/Sc4OrFOX7sTfrbkDZR0v6YeF
- FjDebauehk5PZaAOKscXYA0v7FygoNyCoWbeaQTN0WgJV8VDdrBRwu1YHhumPEDtg0Bw
- tWlcia6YgoHI7pdvZMbthYsQp+tjVmXMr3NdAC3ATHset8g+pkg1aNLf0X6VdcM4jZy4
- 0bQ8aajREtLtpFMloM9jsjSQ14GKjBjnjeinnBwmYdZmfWSG0zey7xeMElKABtUX1iwZ
- w9ckwqzH8wbkqEswh6DNdCfTyBtqm8avpIAHqu8/h3szf5/fBbStS/WsVlMgAe5QgWKI jg== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gpq77052a-1
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=91KbsJhgd5Z7wAIVHBdXOXopYNH6NERzRpoqR9TzenU=;
+ b=iRDBBJ/SeO1gfxcZsOj2Q9g72nU6Vyz7FYirToCjfcas91dLRAOnsXlKvTtEG0ql+EfF
+ +2NPRoWXdWOcjLyddrYp7nz123GpQ8VL6ec7pc26oXnAm6Ncj8PRAi4lbCB298CSkcR9
+ cNkuu5nHHDQHgVtVL8MUDg3mEjAeDwfbqsWcyy/ksX+jB4rzpQObJ74niR+YX0WOQTs0
+ vVmkY6INV0kjEOH48Z6ZtxJ27LBPUBgJvw1+5jFqP7EU7GztU8XW9/LuAnPD4FKaG6sF
+ ZfMUf7uKRTO8UxQF8z0JSQwU9MvyaU43XHrsv4cZAlS7l3NYJ7U21R182FIA1xUmwVea hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gppbr1kkf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jun 2022 13:50:28 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25EDZpWw011190;
-	Tue, 14 Jun 2022 13:50:25 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma06fra.de.ibm.com with ESMTP id 3gmjahuf9u-1
+	Tue, 14 Jun 2022 13:54:22 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25EDsLuf027193;
+	Tue, 14 Jun 2022 13:54:21 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gppbr1kg4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 Jun 2022 13:50:25 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25EDnrh422413724
+	Tue, 14 Jun 2022 13:54:21 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25EDpP1v007434;
+	Tue, 14 Jun 2022 13:54:20 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 3gmjp94dju-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jun 2022 13:54:19 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25EDsKwY20381972
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 14 Jun 2022 13:49:53 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7E0C94C040;
-	Tue, 14 Jun 2022 13:50:23 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2935E4C046;
-	Tue, 14 Jun 2022 13:50:23 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 14 Jun 2022 13:50:23 +0000 (GMT)
-Received: from intelligence.ibm.com (unknown [9.43.195.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id BC0D160236;
-	Tue, 14 Jun 2022 23:50:13 +1000 (AEST)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/rtas: Allow ibm,platform-dump RTAS call with null buffer address
-Date: Tue, 14 Jun 2022 23:49:52 +1000
-Message-Id: <20220614134952.156010-1-ajd@linux.ibm.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	Tue, 14 Jun 2022 13:54:20 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9BB7CAE053;
+	Tue, 14 Jun 2022 13:54:16 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 38A6CAE04D;
+	Tue, 14 Jun 2022 13:54:16 +0000 (GMT)
+Received: from pomme.tlslab.ibm.com (unknown [9.101.4.33])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Jun 2022 13:54:16 +0000 (GMT)
+From: Laurent Dufour <ldufour@linux.ibm.com>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        nathanl@linux.ibm.com, haren@linux.vnet.ibm.com, npiggin@gmail.com
+Subject: [PATCH v2 0/4] Extending NMI watchdog during LPM
+Date: Tue, 14 Jun 2022 15:54:10 +0200
+Message-Id: <20220614135414.37746-1-ldufour@linux.ibm.com>
+X-Mailer: git-send-email 2.36.1
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: sqBBWRbQqqH7wIo_2GyRCKaNdEu57fEX
-X-Proofpoint-GUID: sqBBWRbQqqH7wIo_2GyRCKaNdEu57fEX
+X-Proofpoint-GUID: aUtiuafk094ucdMJIB0556ynfm-IMZI4
+X-Proofpoint-ORIG-GUID: VsppHNCKw4X-KboyXicfKRuxFlHtOfXo
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
  definitions=2022-06-14_04,2022-06-13_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 suspectscore=0 phishscore=0
- priorityscore=1501 adultscore=0 clxscore=1011 spamscore=0 bulkscore=0
- lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=947
+ priorityscore=1501 suspectscore=0 impostorscore=0 adultscore=0
+ phishscore=0 bulkscore=0 mlxscore=0 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2204290000 definitions=main-2206140054
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,58 +95,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Sathvika Vasireddy <sathvika@linux.ibm.com>, stable@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a special case to block_rtas_call() to allow the ibm,platform-dump RTAS
-call through the RTAS filter if the buffer address is 0.
+When a partition is transferred, once it arrives at the destination node,
+the partition is active but much of its memory must be transferred from the
+start node.
 
-According to PAPR, ibm,platform-dump is called with a null buffer address
-to notify the platform firmware that processing of a particular dump is
-finished.
+It depends on the activity in the partition, but the more CPU the partition
+has, the more memory to be transferred is likely to be. This causes latency
+when accessing pages that need to be transferred, and often, for large
+partitions, it triggers the NMI watchdog.
 
-Without this, on a pseries machine with CONFIG_PPC_RTAS_FILTER enabled, an
-application such as rtas_errd that is attempting to retrieve a dump will
-encounter an error at the end of the retrieval process.
+The NMI watchdog causes the CPU stack to dump where it appears to be
+stuck. In this case, it does not bring much information since it can happen
+during any memory access of the kernel.
 
-Fixes: bd59380c5ba4 ("powerpc/rtas: Restrict RTAS requests from userspace")
-Cc: stable@vger.kernel.org
-Reported-by: Sathvika Vasireddy <sathvika@linux.ibm.com>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- arch/powerpc/kernel/rtas.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+In addition, the NMI interrupt mechanism is not secure and can generate a
+dump system in the event that the interruption is taken while MSR[RI]=0.
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index a6fce3106e02..693133972294 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -1071,7 +1071,7 @@ static struct rtas_filter rtas_filters[] __ro_after_init = {
- 	{ "get-time-of-day", -1, -1, -1, -1, -1 },
- 	{ "ibm,get-vpd", -1, 0, -1, 1, 2 },
- 	{ "ibm,lpar-perftools", -1, 2, 3, -1, -1 },
--	{ "ibm,platform-dump", -1, 4, 5, -1, -1 },
-+	{ "ibm,platform-dump", -1, 4, 5, -1, -1 },		/* Special cased */
- 	{ "ibm,read-slot-reset-state", -1, -1, -1, -1, -1 },
- 	{ "ibm,scan-log-dump", -1, 0, 1, -1, -1 },
- 	{ "ibm,set-dynamic-indicator", -1, 2, -1, -1, -1 },
-@@ -1120,6 +1120,15 @@ static bool block_rtas_call(int token, int nargs,
- 				size = 1;
- 
- 			end = base + size - 1;
-+
-+			/*
-+			 * Special case for ibm,platform-dump - NULL buffer
-+			 * address is used to indicate end of dump processing
-+			 */
-+			if (!strcmp(f->name, "ibm,platform-dump") &&
-+			    base == 0)
-+				return false;
-+
- 			if (!in_rmo_buf(base, end))
- 				goto err;
- 		}
+Depending on the LPAR size and load, it may be interesting to extend the
+NMI watchdog timer during the LPM.
+
+That's configurable through sysctl with the new introduced variable
+(specific to powerpc) lpm_nmi_watchdog_factor. This value represents the
+percentage added to watchdog_tresh to set the NMI watchdog timeout during a
+LPM.
+
+Changes in v2:
+ - introduce a timer factor.
+
+v1:
+[PATCH 0/2] Disabling NMI watchdog during LPM's memory transfer
+https://lore.kernel.org/linuxppc-dev/20220601155315.35109-1-ldufour@linux.ibm.com/#r
+
+Laurent Dufour (4):
+  powerpc/mobility: Wait for memory transfer to complete
+  watchdog: export watchdog_mutex and lockup_detector_reconfigure
+  powerpc/watchdog: introduce a LPM factor
+  pseries/mobility: Set NMI watchdog factor during LPM
+
+ Documentation/admin-guide/sysctl/kernel.rst | 12 +++
+ arch/powerpc/include/asm/nmi.h              |  2 +
+ arch/powerpc/kernel/watchdog.c              | 22 ++++-
+ arch/powerpc/platforms/pseries/mobility.c   | 90 ++++++++++++++++++++-
+ include/linux/nmi.h                         |  3 +
+ kernel/watchdog.c                           |  6 +-
+ 6 files changed, 129 insertions(+), 6 deletions(-)
+
 -- 
-2.30.2
+2.36.1
 
