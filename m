@@ -1,56 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06EE54BD51
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:09:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C155954BD52
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:09:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2f93n2Wz3f8h
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:09:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2fp5CXDz3f9Z
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:09:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=me5b3Hfl;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RnGKuF+/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=me5b3Hfl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RnGKuF+/;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMnrS1Smcz3bm7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 22:32:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMnvC1J9Nz3bgC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 22:34:47 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 8CCDD61323;
-	Tue, 14 Jun 2022 12:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006F7C3411E;
-	Tue, 14 Jun 2022 12:32:19 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 5367D615D3;
+	Tue, 14 Jun 2022 12:34:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9871EC3411E;
+	Tue, 14 Jun 2022 12:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655209940;
-	bh=W2sdPNt5QO+c07eblDbvqWaVVydbhsc88fMjavxRvLc=;
+	s=k20201202; t=1655210085;
+	bh=S7mRYBt8dKQ302Phsd6Akm5kJqqFOUkmEA1v3KsTPWU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=me5b3HflgfNPbzThidZLk/NpjxYMr1MIV58YPR12wvSBdHzsLaMlV/NtSyN3Mvxzy
-	 q/GQ27TdyekMRI85J0EPo25NyzBYG/7DXsgJqqx53V0yZLugeCXbvHchBgy+aWmDgJ
-	 zq3bm685/JwRx2pfzDZjuQbP0P2UMWZgEu7IQTpQLmc55Rpow6KKCSosEaWb9Q2lt4
-	 VAevK8pEYMsSMSej4B6ggZ6VDFKyabVWyDrAE2n+hj2Y7uPJitwqbNTfs2uxIM/kJ1
-	 dI9UAk45zfY7wpqElhs1CMY3pn+itMY3aqhl+K0F9W8r6YJeEeRsD9vrexqZwsnBnl
-	 cllYjiYrXM3UA==
-Date: Tue, 14 Jun 2022 15:30:14 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Masami Hiramatsu <mhiramat@kernel.org>
+	b=RnGKuF+/Y/3maKreiqaBVGd5HuZNeDQoPMRXQEpiMn/f8SIJpRly6PX6lIVouvSRe
+	 xRFy4EGBk0z6QKt+Lz8vk6SzVZNTytJsNMc59tX/IUD7KSvHaKZebzDN6GiCttUHep
+	 wXb4Tjb7kuj6K751aGII97hYZlNWKbGQyTiy30ylzeLfPk8aM7eYe2aDaylZCNoeQR
+	 ATclZjOy43jDWkMIsNXUmPF4JLxmfzu7IwS+MDaUS4slOfQg5l4B5Bz1S20GP1bc6b
+	 sBMsCSdmiWO4qBNgMSuBqkfY0qDHqU9XbdztWs0lH8KCt5CzSbvS7jQB/nQOXFnOd8
+	 zwJhPQWCFHDxw==
+Date: Tue, 14 Jun 2022 15:32:38 +0300
+From: "jarkko@kernel.org" <jarkko@kernel.org>
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
 Subject: Re: [PATCH] kprobes: Enable tracing for mololithic kernel images
-Message-ID: <Yqh/Vp7d0/kqfJGc@iki.fi>
+Message-ID: <Yqh/5nn0AhdwaCm8@iki.fi>
 References: <20220608000014.3054333-1-jarkko@profian.com>
- <CAMj1kXFsdEq6XZ6eOuf8Ks-F4qgneVxFeLYNN_S4JaPy8koEyw@mail.gmail.com>
- <CAPhsuW7NZXepczZGyV2Ti4hNSupLBoKgA64K=zJN4uVBTxN37g@mail.gmail.com>
- <20220612213041.b1ec5d1ec3426e90e669c495@kernel.org>
+ <CAJF2gTQgCn2CyZ4+VBqEEBT2b4+1KxoEXxrd+Ritk=58+U8EFA@mail.gmail.com>
+ <YqAy0qjI4Lktk/uJ@iki.fi>
+ <20220608232115.ccd4399f4a1d133e9b65c2a9@kernel.org>
+ <CAPhsuW6iUieQvA6KqzSLgtxmjkVSWCuVwNA338DATb_myHxo7w@mail.gmail.com>
+ <CAPhsuW6BzUtqnjvaGJScXRpghs0_V_phpdyd4_oAKhvmkX-GFw@mail.gmail.com>
+ <YqEF6+YKqCHsWZJW@bombadil.infradead.org>
+ <20220609034852.GA30873@lst.de>
+ <YqH0iEgsi6+bwS3x@bombadil.infradead.org>
+ <e7dedb9086193ca7682edc10fabc4195894e5146.camel@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220612213041.b1ec5d1ec3426e90e669c495@kernel.org>
+In-Reply-To: <e7dedb9086193ca7682edc10fabc4195894e5146.camel@intel.com>
 X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -63,71 +69,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dan Li <ashimida@linux.alibaba.com>, Heiko Stuebner <heiko@sntech.de>, Linus Walleij <linus.walleij@linaro.org>, Paul Mackerras <paulus@samba.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Javier Martinez Canillas <javierm@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, Guenter Roeck <linux@roeck-us.net>, =?iso-8859-1?Q?Andr=E9?= Almeida <andrealmeid@igalia.com>, Michael Roth <michael.roth@amd.com>, Nicholas Piggin <npiggin@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, Andrey Konovalov <andreyknvl@gmail.com>, Nick Desaulniers <ndesaulniers@google.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Sven Schnelle <svens@linux.ibm.com>, Wu Caize <zepan@sipeed.com>, Guo Ren <guoren@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Mark Rutland <mark.rutland@arm.com>, Luis Machado <luis.machado@linaro.org>, Atsushi Nemoto 
- <anemo@mba.ocn.ne.jp>, Dave Hansen <dave.hansen@linux.intel.com>, Joey Gouly <joey.gouly@arm.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Song Liu <song@kernel.org>, linux-s390@vger.kernel.org, Ilya Leoshkevich <iii@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Helge Deller <deller@gmx.de>, Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, Vasily Gorbik <gor@linux.ibm.com>, Philipp Tomsich <philipp.tomsich@vrull.eu>, Dave Anglin <dave.anglin@bell.net>, linux-arm-kernel@lists.infradead.org, Daniel Axtens <dja@axtens.net>, Nicolas Pitre <nico@fluxnic.net>, "Eric W. Biederman" <ebiederm@xmission.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Daniel Bristot de Oliveira <bristot@redhat.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, Emil Renner Berthing <kernel@esmil.dk>, Jordan Niethe <jniethe5@gmail.com>, Atish Patra <atishp@atishpatra.org>, Alexei Starovoitov <ast@kernel.org>, Will Deacon <will@kernel.or
- g>, Masahiro Yamada <masahiroy@kernel.org>, Jarkko Sa
+Cc: "ashimida@linux.alibaba.com" <ashimida@linux.alibaba.com>, "heiko@sntech.de" <heiko@sntech.de>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, "linus.walleij@linaro.org" <linus.walleij@linaro.org>, "paulus@samba.org" <paulus@samba.org>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>, "hch@lst.de" <hch@lst.de>, "javierm@redhat.com" <javierm@redhat.com>, "geert@linux-m68k.org" <geert@linux-m68k.org>, "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>, "linux@roeck-us.net" <linux@roeck-us.net>, "andrealmeid@igalia.com" <andrealmeid@igalia.com>, "michael.roth@amd.com" <michael.roth@amd.com>, "npiggin@gmail.com" <npiggin@gmail.com>, "tglx@linutronix.de" <tglx@linutronix.de>, "andreyknvl@gmail.com" <andreyknvl@gmail.com>, "ndesaulniers@google.com" <ndesaulniers@google.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mcgrof@kernel.org" <mcgrof@kernel.org>, "svens@linux.ibm.com" <svens@linux.ibm.com>, "zepan@sipeed.com" <zepan@sipeed.com>, "guoren@kerne
+ l.org" <guoren@kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "mark.rutland@arm.com" <mark.rutland@arm.com>, "luis.machado@linaro.org" <luis.machado@linaro.org>, "anemo@mba.ocn.ne.jp" <anemo@mba.ocn.ne.jp>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "joey.gouly@arm.com" <joey.gouly@arm.com>, "James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>, "song@kernel.org" <song@kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "iii@linux.ibm.com" <iii@linux.ibm.com>, "anup@brainfault.org" <anup@brainfault.org>, "deller@gmx.de" <deller@gmx.de>, "Keshavamurthy, Anil S" <anil.s.keshavamurthy@intel.com>, "mhiramat@kernel.org" <mhiramat@kernel.org>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "gor@linux.ibm.com" <gor@linux.ibm.com>, "philipp.tomsich@vrull.eu" <philipp.tomsich@vrull.eu>, "dave.anglin@bell.net" <dave.anglin@bell.net>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infra
+ dead.org>, "dja@axtens.net" <dja@axtens.net>, "nico@f
 
-kkinen <jarkko@profian.com>, Sami Tolvanen <samitolvanen@google.com>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Steven Rostedt <rostedt@goodmis.org>, Nathan Chancellor <nathan@kernel.org>, "Russell King \(Oracle\)" <rmk+kernel@armlinux.org.uk>, Mark Brown <broonie@kernel.org>, Borislav Petkov <bp@alien8.de>, Alexander Egorenkov <egorenar@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Nathaniel McCallum <nathaniel@profian.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, Tobias Huschle <huschle@linux.ibm.com>, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Tiezhu Yang <yangtiezhu@loongson.cn>, Miroslav Benes <mbenes@suse.cz>, Chen Zhongjin <chenzhongjin@huawei.com>, Ard Biesheuvel <ardb@kernel.org>, X86 ML 
- <x86@kernel.org>, Russell King <linux@armlinux.org.uk>, linux-riscv@lists.infradead.org, Ingo Molnar <mingo@redhat.com>, Aaron Tomlin <atomlin@redhat.com>, Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>, Liao Chang <liaochang1@huawei.com>, Paul Walmsley <paul.walmsley@sifive.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Richter <tmricht@linux.ibm.com>, linux-mips@vger.kernel.org, Changbin Du <changbin.du@intel.com>, Palmer Dabbelt <palmer@dabbelt.com>, linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+luxnic.net" <nico@fluxnic.net>, "ebiederm@xmission.com" <ebiederm@xmission.com>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "bristot@redhat.com" <bristot@redhat.com>, "wangkefeng.wang@huawei.com" <wangkefeng.wang@huawei.com>, "kernel@esmil.dk" <kernel@esmil.dk>, "jniethe5@gmail.com" <jniethe5@gmail.com>, "paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "ast@kernel.org" <ast@kernel.org>, "will@kernel.org" <will@kernel.org>, "masahiroy@kernel.org" <masahiroy@kernel.org>, "Sakkinen, Jarkko" <jarkko@profian.com>, "samitolvanen@google.com" <samitolvanen@google.com>, "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>, "elver@google.com" <elver@google.com>, "keescook@chromium.org" <keescook@chromium.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "nathan@kernel.org" <nathan@kernel.org>, "rmk+kernel@armlinux.org.uk" <rmk+kernel@armlinux.org.uk>, "broonie@kernel.org" <broonie@kernel.org>, "bp@alien8.de" <bp@alien8.de>, "egorenar@linux.ibm.com" <egorenar@linux.i
+ bm.com>, "tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "nathaniel@profian.com" <nathaniel@profian.com>, "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>, "davem@davemloft.net" <davem@davemloft.net>, "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>, "huschle@linux.ibm.com" <huschle@linux.ibm.com>, "peterz@infradead.org" <peterz@infradead.org>, "hpa@zytor.com" <hpa@zytor.com>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "yangtiezhu@loongson.cn" <yangtiezhu@loongson.cn>, "mbenes@suse.cz" <mbenes@suse.cz>, "chenzhongjin@huawei.com" <chenzhongjin@huawei.com>, "ardb@kernel.org" <ardb@kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, "atomlin@redhat.com" <atomlin@redhat.com>, "aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>, 
+ "hca@linux.ibm.com" <hca@linux.ibm.com>, "liaochang1@
+huawei.com" <liaochang1@huawei.com>, "atishp@atishpatra.org" <atishp@atishpatra.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>, "tmricht@linux.ibm.com" <tmricht@linux.ibm.com>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "changbin.du@intel.com" <changbin.du@intel.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jun 12, 2022 at 09:30:41PM +0900, Masami Hiramatsu wrote:
-> On Wed, 8 Jun 2022 11:19:19 -0700
-> Song Liu <song@kernel.org> wrote:
-> 
-> > On Wed, Jun 8, 2022 at 9:28 AM Ard Biesheuvel <ardb@kernel.org> wrote:
-> > >
-> > > Hello Jarkko,
-> > >
-> > > On Wed, 8 Jun 2022 at 02:02, Jarkko Sakkinen <jarkko@profian.com> wrote:
-> > > >
-> > > > Tracing with kprobes while running a monolithic kernel is currently
-> > > > impossible because CONFIG_KPROBES is dependent of CONFIG_MODULES.  This
-> > > > dependency is a result of kprobes code using the module allocator for the
-> > > > trampoline code.
-> > > >
-> > > > Detaching kprobes from modules helps to squeeze down the user space,
-> > > > e.g. when developing new core kernel features, while still having all
-> > > > the nice tracing capabilities.
-> > > >
-> > > > For kernel/ and arch/*, move module_alloc() and module_memfree() to
-> > > > module_alloc.c, and compile as part of vmlinux when either CONFIG_MODULES
-> > > > or CONFIG_KPROBES is enabled.  In addition, flag kernel module specific
-> > > > code with CONFIG_MODULES.
-> > > >
-> > > > As the result, kprobes can be used with a monolithic kernel.
-> > >
-> > > I think I may have mentioned this the previous time as well, but I
-> > > don't think this is the right approach.
-> > >
-> > > Kprobes uses alloc_insn_page() to allocate executable memory, but the
-> > > requirements for this memory are radically different compared to
-> > > loadable modules, which need to be within an arch-specific distance of
-> > > the core kernel, need KASAN backing etc etc.
+On Thu, Jun 09, 2022 at 06:41:36PM +0000, Edgecombe, Rick P wrote:
+> On Thu, 2022-06-09 at 06:24 -0700, Luis Chamberlain wrote:
+> > On Thu, Jun 09, 2022 at 05:48:52AM +0200, Christoph Hellwig wrote:
+> > > On Wed, Jun 08, 2022 at 01:26:19PM -0700, Luis Chamberlain wrote:
+> > > > No, that was removed because it has only one user.
+> > > 
+> > > That is only part of the story.  The other part is that the overall
+> > > kernel simply does not have any business allocating exutable
+> > > memory.
+> > > Executable memory is a very special concept for modules or module-
+> > > like
+> > > code like kprobes, and should not be exposed as a general concept.
 > > 
-> > I think the distance of core kernel requirement is the same for kprobe
-> > alloc_insn_page and modules, no?
+> > It is not just modules and kprobes, it is also ftrace and bpf too
+> > now.
+> > So while it should not be used everywhere calling it module_alloc()
+> > is just confusing at this point. Likewise, module_alloc_huge() is
+> > being proposed too and I'd rather we deal with this properly in
+> > aligment
+> > of taking care of the rename as well.
+> > 
+> > If the concern is to restrict access we can use the module namespace
+> > stuff
+> > so to ensure only intended users get access to it.
 > 
-> This strongly depends on how kprobes (software breakpoint and
-> single-step) is implemented on the arch. For example, x86 implements
-> the so-called "kprobe-booster" which jumps back from the single
-> stepping trampoline buffer. Then the buffer address must be within
-> the range where it can jump to the original address.
-> However, if the arch implements single-step as an instruction
-> emulation, it has no such limitation. As far as I know, arm64
-> will do emulation for the instructions which change PC register
-> and will do direct execution with another software breakpoint
-> for other instructions.
+> BPF even has multiple uses for text allocation. It has its own
+> trampoline feature that puts different type of text in the allocation,
+> with its own allocation routine. I looks like there are even more
+> little allocators in there.
 > 
-> Why I'm using module_alloc() for a generic function, is that
-> can cover the limitation most widely.
-> Thus, if we have CONFIG_ARCH_HAVE_ALLOC_INSN_PAGE flag and
-> kprobes can check it instead of using __weak function, the
-> kprobes may not need to depend on module_alloc() in general.
+> So yea, there seems to be a lot of the kernel in the business of
+> dynamically generated text, for better or worse. I agree that it needs
+> to be done carefully. However, these usages always seem to have the
+> same problems (W^X, arch eccentricities, etc). So I don't think we
+> should hide away the pieces. Instead we should have something with
+> guard rails on it, so they can't get the allocation part wrong.
+> 
+> But I guess the question here is: what should we do in the meantime? It
+> is kind of similar to the questions that came up around the bpf prog
+> pack allocator. Should we hold up allocator related work until
+> underlying problems are resolved and there is some mature core
+> solution?
+> 
+> Personally I had thought we would need to do some clean switch to a
+> much different interface. I still think someday it will be required,
+> but it seems to be evolving naturally for the time being.
+> 
+> Like say for a next step we moved prog pack out of bpf into core code,
+> gave it it's own copy of module_alloc(), and then made kprobes use it.
+> Then we would have something with improved W^X guard rails, and kprobes
+> would not depend on modules anymore. I think maybe it's a step in the
+> right direction, even if it's not perfect.
 
-OK, I guess this is what Luis meant. 
-
-I'll try to carve up something based on this.
+So you're saying that I should (as a first step) basically clone
+module_alloc() implementation for kprobes, and future for BPF 
+use, in order to get a clean starting point?
 
 BR, Jarkko
