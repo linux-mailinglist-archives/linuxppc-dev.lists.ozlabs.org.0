@@ -2,53 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF0554A4B2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 04:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3152D54A782
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 05:21:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMX2w66Xvz3dpD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 12:10:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMYcP13FKz303k
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 13:21:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p3kv65/s;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bVQerjGJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p3kv65/s;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bVQerjGJ;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMX2H0Xcnz3bgC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 12:09:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMYbd5wcTz303k
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 13:20:29 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 9BDF3B8169D;
-	Tue, 14 Jun 2022 02:09:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268D2C34114;
-	Tue, 14 Jun 2022 02:09:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 126C0615BD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 03:20:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 79FE9C3411B
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 03:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655172594;
-	bh=R/DU5ussio9VSKRaz4p16oSabeAx7muJAL9aw2UUGzQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=p3kv65/sGCfvp+lWIhyNs7qXEUFpLRnA9eTBye/+FDomA/o9MrI3aU8kHC3aT/aq4
-	 oyMv9o+6R/qXovf/cOclFpKaBgAiezt8lRYjH4Q6NKdbs5pRUXyTxbbfImuKcAvVuM
-	 vEnMO4gScWyN3CNmqfKYgG4lu+KxWTy+Ez4u+7O3w9N5liI70vU1+s2p7Ev9HwM3TA
-	 g6YCrFK3ZepB0uR5T1MEaP13XBeuUA3cwQSB7JSNrPRY770ZJob/Z/bnIOL3CM7n2W
-	 nsQqLBVhnMl9FyBTz+qke1KhZtUpgYO4kEsoImAmO4Y6kRyAunfSQ4RTF6DsLoJgxK
-	 wCvlWNJBCE2Fw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 01/18] powerpc/kasan: Silence KASAN warnings in __get_wchan()
-Date: Mon, 13 Jun 2022 22:09:24 -0400
-Message-Id: <20220614020941.1100702-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.35.1
+	s=k20201202; t=1655176826;
+	bh=ux+b6vefVy0L1zPe9/XKHo9Yu4T2T2h6oe6+sIkfZfw=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=bVQerjGJAAsA1dzerRNTnO9K2efK0A/KZb9bZT/jzNGTX3cVHgoVWpzlcbZrW1fiE
+	 9F/FXSnAJYFx7TUdonNsl3+OWZlvD8vg38OscM6khiQ/WtSxFcQ7krG0n5iR0FgvT/
+	 2UxeFGJ9S2/pf7h1A2THFWGp31FFMDzGZtZ5UeTtMyGTDcsmXejJCxCvjIxPm5arSD
+	 0FgYXuElVZgK777E12cGM0l1T1J5nU+Tt2yYrX2HmSy7imrbMYRaGcqguJsM7cvr86
+	 C3t9Bij8C4o721GKpqfpkhPjPDT5EE/+SR1J8ezCOzU3ipw5dKs8UoRRjzPIKqmE2P
+	 KBesr7Vy6oHbA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 5673EC05FF5; Tue, 14 Jun 2022 03:20:26 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 203699] Kernel 5.2-rc1 fails to boot on a Mac Mini G4:
+ dt_headr_start=0x01501000
+Date: Tue, 14 Jun 2022 03:20:26 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: blocking
+X-Bugzilla-Who: michael@ellerman.id.au
+X-Bugzilla-Status: CLOSED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-203699-206035-6Lty9bG8nt@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-203699-206035@https.bugzilla.kernel.org/>
+References: <bug-203699-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,93 +79,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Kees Cook <keescook@chromium.org>, Chen Jingwen <chenjingwen6@huawei.com>, paulus@samba.org, Wanming Hu <huwanming@huaweil.com>, linuxppc-dev@lists.ozlabs.org, He Ying <heying24@huawei.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: He Ying <heying24@huawei.com>
+https://bugzilla.kernel.org/show_bug.cgi?id=3D203699
 
-[ Upstream commit a1b29ba2f2c171b9bea73be993bfdf0a62d37d15 ]
+Michael Ellerman (michael@ellerman.id.au) changed:
 
-The following KASAN warning was reported in our kernel.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEEDINFO                    |CLOSED
+         Resolution|---                         |CODE_FIX
 
-  BUG: KASAN: stack-out-of-bounds in get_wchan+0x188/0x250
-  Read of size 4 at addr d216f958 by task ps/14437
+--- Comment #3 from Michael Ellerman (michael@ellerman.id.au) ---
+v5.19-rc2 is booting on my mac mini with KASAN enabled, so I'm going to clo=
+se
+this as fixed.
 
-  CPU: 3 PID: 14437 Comm: ps Tainted: G           O      5.10.0 #1
-  Call Trace:
-  [daa63858] [c0654348] dump_stack+0x9c/0xe4 (unreliable)
-  [daa63888] [c035cf0c] print_address_description.constprop.3+0x8c/0x570
-  [daa63908] [c035d6bc] kasan_report+0x1ac/0x218
-  [daa63948] [c00496e8] get_wchan+0x188/0x250
-  [daa63978] [c0461ec8] do_task_stat+0xce8/0xe60
-  [daa63b98] [c0455ac8] proc_single_show+0x98/0x170
-  [daa63bc8] [c03cab8c] seq_read_iter+0x1ec/0x900
-  [daa63c38] [c03cb47c] seq_read+0x1dc/0x290
-  [daa63d68] [c037fc94] vfs_read+0x164/0x510
-  [daa63ea8] [c03808e4] ksys_read+0x144/0x1d0
-  [daa63f38] [c005b1dc] ret_from_syscall+0x0/0x38
-  --- interrupt: c00 at 0x8fa8f4
-      LR = 0x8fa8cc
+--=20
+You may reply to this email to add a comment.
 
-  The buggy address belongs to the page:
-  page:98ebcdd2 refcount:0 mapcount:0 mapping:00000000 index:0x2 pfn:0x1216f
-  flags: 0x0()
-  raw: 00000000 00000000 01010122 00000000 00000002 00000000 ffffffff 00000000
-  raw: 00000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   d216f800: 00 00 00 00 00 f1 f1 f1 f1 00 00 00 00 00 00 00
-   d216f880: f2 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >d216f900: 00 00 00 00 00 00 00 00 00 00 00 f1 f1 f1 f1 00
-                                            ^
-   d216f980: f2 f2 f2 f2 f2 f2 f2 00 00 00 00 00 00 00 00 00
-   d216fa00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-
-After looking into this issue, I find the buggy address belongs
-to the task stack region. It seems KASAN has something wrong.
-I look into the code of __get_wchan in x86 architecture and
-find the same issue has been resolved by the commit
-f7d27c35ddff ("x86/mm, kasan: Silence KASAN warnings in get_wchan()").
-The solution could be applied to powerpc architecture too.
-
-As Andrey Ryabinin said, get_wchan() is racy by design, it may
-access volatile stack of running task, thus it may access
-redzone in a stack frame and cause KASAN to warn about this.
-
-Use READ_ONCE_NOCHECK() to silence these warnings.
-
-Reported-by: Wanming Hu <huwanming@huaweil.com>
-Signed-off-by: He Ying <heying24@huawei.com>
-Signed-off-by: Chen Jingwen <chenjingwen6@huawei.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220121014418.155675-1-heying24@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/kernel/process.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 02b69a68139c..56c33285b1df 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2017,12 +2017,12 @@ unsigned long get_wchan(struct task_struct *p)
- 		return 0;
- 
- 	do {
--		sp = *(unsigned long *)sp;
-+		sp = READ_ONCE_NOCHECK(*(unsigned long *)sp);
- 		if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD) ||
- 		    p->state == TASK_RUNNING)
- 			return 0;
- 		if (count > 0) {
--			ip = ((unsigned long *)sp)[STACK_FRAME_LR_SAVE];
-+			ip = READ_ONCE_NOCHECK(((unsigned long *)sp)[STACK_FRAME_LR_SAVE]);
- 			if (!in_sched_functions(ip))
- 				return ip;
- 		}
--- 
-2.35.1
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
