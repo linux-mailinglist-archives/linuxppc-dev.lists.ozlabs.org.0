@@ -1,61 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C5F54CE60
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 18:16:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4FC54D789
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 03:55:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LNVmH3rgnz3chD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 02:16:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LNlc238yvz3000
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 11:54:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OliYmJSi;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=OliYmJSi;
+	dkim-atps=neutral
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNVlq2XyVz3blh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jun 2022 02:15:49 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4LNVlj0ys5z9t9B;
-	Wed, 15 Jun 2022 18:15:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id m8iRP6BVB3VD; Wed, 15 Jun 2022 18:15:45 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4LNVlj017Cz9t97;
-	Wed, 15 Jun 2022 18:15:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E4E128B781;
-	Wed, 15 Jun 2022 18:15:44 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id cUVnCcrq-hje; Wed, 15 Jun 2022 18:15:44 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.102])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9E5AC8B763;
-	Wed, 15 Jun 2022 18:15:44 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 25FGFMtW366790
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 15 Jun 2022 18:15:22 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 25FGFIr9366775;
-	Wed, 15 Jun 2022 18:15:18 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Merge hardirq stack and softirq stack
-Date: Wed, 15 Jun 2022 18:15:09 +0200
-Message-Id: <b684cd5c9a6f98f8ab9a2ca3431d9a4065e07f38.1655309696.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.36.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LN2k34Dsjz3g6r
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 08:12:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ieYeEcrodnP9d8uMI6KazQ9YDccjAyjy/+PGF5Ov/Sc=; b=OliYmJSibamFQ0oRl2XkG2+oLG
+	eUVxb3PF2WQS3d9O+63gY5P/Th5g3W0k/p07zjSFtfSstgpe5sY3UKPuYKK8U3d61xav16z47xA5h
+	tkNVX1vBm9t+GM0XpJtkUArdAr+6C0D6QPwa3LyJL5W3wePUH4pa4u9UPo+aiZ0VxHDbCXoe4qfJ4
+	E8Y2M6s9A8SopwISJUuliIWAcL2CXospZ4jCBSi0ba1Zs/HL4wyLHhGRHBuILPFIW3paG1eAzYhHw
+	AXd8m8CPomKQfchnKb7uAGftq4wK1SsdTGzKQsjqacjeCk0RsPVRrEJUUy3okfnQk1gM5l81agP/h
+	arzWLEHQ==;
+Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=worktop.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1o1Elc-000Y9d-O5; Tue, 14 Jun 2022 22:12:08 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+	id ED8F2981518; Wed, 15 Jun 2022 00:12:06 +0200 (CEST)
+Date: Wed, 15 Jun 2022 00:12:06 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH 34.5/36] cpuidle,omap4: Push RCU-idle into
+ omap4_enter_lowpower()
+Message-ID: <YqkHto+zgAPs4kQI@worktop.programming.kicks-ass.net>
+References: <20220608142723.103523089@infradead.org>
+ <20220608144518.073801916@infradead.org>
+ <Yqcv6crSNKuSWoTu@atomide.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1655309708; l=4828; s=20211009; h=from:subject:message-id; bh=IxZGcSZLaOsSuMMfNuONYPIsJXKwVaC5dmV8z+ZWEWU=; b=Fg3n8XdaxBDwLeCOfuoCMm3CiFNqlLuMm8iWw3vMFevBGm0gvsYZw2IL2gV1iJKRQSRqWs+vc0FW Sb4UR0r2DWCstTflycqj9MWD7ofBwBdA438QP34IQxkClZ5Mfp58
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Yqcv6crSNKuSWoTu@atomide.com>
+X-Mailman-Approved-At: Thu, 16 Jun 2022 11:54:30 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,152 +62,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, rth@twiddle.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualizatio
+ n@lists.linux-foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, linux-snps-arc@lists.infradead.org, mgorman@suse.de,
+  jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@a
+
+rndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, pv-drivers@vmware.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@bra
+ infault.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-__do_IRQ() doesn't switch on hardirq stack if we are on softirq stack.
+On Mon, Jun 13, 2022 at 03:39:05PM +0300, Tony Lindgren wrote:
+> OMAP4 uses full SoC suspend modes as idle states, as such it needs the
+> whole power-domain and clock-domain code from the idle path.
+> 
+> All that code is not suitable to run with RCU disabled, as such push
+> RCU-idle deeper still.
+> 
+> Signed-off-by: Tony Lindgren <tony@atomide.com>
+> ---
+> 
+> Peter here's one more for your series, looks like this is needed to avoid
+> warnings similar to what you did for omap3.
 
-do_softirq() bail out early without doing anything when already in
-an interrupt.
+Thanks Tony!
 
-invoke_softirq() is on task_stack when it calls do_softirq_own_stack().
+I've had a brief look at omap2_pm_idle() and do I understand it right
+that something like the below patch would reduce it to a simple 'WFI'?
 
-So there are neither situation where we switch from hardirq stack to
-softirq stack nor from softirq stack to hardirq stack.
+What do I do with the rest of that code, because I don't think this
+thing has a cpuidle driver to take over, effectively turning it into
+dead code.
 
-It is therefore not necessary to have two stacks because they are
-never used at the same time.
-
-Merge both stacks into a new one called normirq_ctx.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/irq.h |  3 +--
- arch/powerpc/kernel/irq.c      | 18 +++++++-----------
- arch/powerpc/kernel/process.c  |  6 +-----
- arch/powerpc/kernel/setup_32.c |  6 ++----
- arch/powerpc/kernel/setup_64.c |  6 ++----
- 5 files changed, 13 insertions(+), 26 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/irq.h b/arch/powerpc/include/asm/irq.h
-index 13f0409dd617..03de3fe3488c 100644
---- a/arch/powerpc/include/asm/irq.h
-+++ b/arch/powerpc/include/asm/irq.h
-@@ -49,8 +49,7 @@ extern void *mcheckirq_ctx[NR_CPUS];
- /*
-  * Per-cpu stacks for handling hard and soft interrupts.
-  */
--extern void *hardirq_ctx[NR_CPUS];
--extern void *softirq_ctx[NR_CPUS];
-+extern void *normirq_ctx[NR_CPUS];
+--- a/arch/arm/mach-omap2/pm24xx.c
++++ b/arch/arm/mach-omap2/pm24xx.c
+@@ -126,10 +126,20 @@ static int omap2_allow_mpu_retention(voi
+ 	return 1;
+ }
  
- void __do_IRQ(struct pt_regs *regs);
- extern void __init init_IRQ(void);
-diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
-index dd09919c3c66..7c0455cd7aae 100644
---- a/arch/powerpc/kernel/irq.c
-+++ b/arch/powerpc/kernel/irq.c
-@@ -683,17 +683,16 @@ void __do_irq(struct pt_regs *regs)
- void __do_IRQ(struct pt_regs *regs)
+-static void omap2_enter_mpu_retention(void)
++static void omap2_do_wfi(void)
  {
- 	struct pt_regs *old_regs = set_irq_regs(regs);
--	void *cursp, *irqsp, *sirqsp;
-+	void *cursp, *irqsp;
+ 	const int zero = 0;
  
- 	/* Switch to the irq stack to handle this */
- 	cursp = (void *)(current_stack_pointer & ~(THREAD_SIZE - 1));
--	irqsp = hardirq_ctx[raw_smp_processor_id()];
--	sirqsp = softirq_ctx[raw_smp_processor_id()];
-+	irqsp = normirq_ctx[raw_smp_processor_id()];
++	/* WFI */
++	asm("mcr p15, 0, %0, c7, c0, 4" : : "r" (zero) : "memory", "cc");
++}
++
++#if 0
++/*
++ * possible cpuidle implementation between WFI and full_retention above
++ */
++static void omap2_enter_mpu_retention(void)
++{
+ 	/* The peripherals seem not to be able to wake up the MPU when
+ 	 * it is in retention mode. */
+ 	if (omap2_allow_mpu_retention()) {
+@@ -146,8 +157,7 @@ static void omap2_enter_mpu_retention(vo
+ 		pwrdm_set_next_pwrst(mpu_pwrdm, PWRDM_POWER_ON);
+ 	}
  
- 	check_stack_overflow();
+-	/* WFI */
+-	asm("mcr p15, 0, %0, c7, c0, 4" : : "r" (zero) : "memory", "cc");
++	omap2_do_wfi();
  
- 	/* Already there ? */
--	if (unlikely(cursp == irqsp || cursp == sirqsp)) {
-+	if (unlikely(cursp == irqsp)) {
- 		__do_irq(regs);
- 		set_irq_regs(old_regs);
+ 	pwrdm_set_next_pwrst(mpu_pwrdm, PWRDM_POWER_ON);
+ }
+@@ -161,6 +171,7 @@ static int omap2_can_sleep(void)
+ 
+ 	return 1;
+ }
++#endif
+ 
+ static void omap2_pm_idle(void)
+ {
+@@ -169,6 +180,7 @@ static void omap2_pm_idle(void)
+ 	if (omap_irq_pending())
  		return;
-@@ -719,10 +718,8 @@ static void __init vmap_irqstack_init(void)
- {
- 	int i;
  
--	for_each_possible_cpu(i) {
--		softirq_ctx[i] = alloc_vm_stack();
--		hardirq_ctx[i] = alloc_vm_stack();
--	}
-+	for_each_possible_cpu(i)
-+		normirq_ctx[i] = alloc_vm_stack();
++#if 0
+ 	error = cpu_cluster_pm_enter();
+ 	if (error || !omap2_can_sleep()) {
+ 		omap2_enter_mpu_retention();
+@@ -179,6 +191,9 @@ static void omap2_pm_idle(void)
+ 
+ out_cpu_cluster_pm:
+ 	cpu_cluster_pm_exit();
++#else
++	omap2_do_wfi();
++#endif
  }
  
- 
-@@ -744,12 +741,11 @@ void    *dbgirq_ctx[NR_CPUS] __read_mostly;
- void *mcheckirq_ctx[NR_CPUS] __read_mostly;
- #endif
- 
--void *softirq_ctx[NR_CPUS] __read_mostly;
--void *hardirq_ctx[NR_CPUS] __read_mostly;
-+void *normirq_ctx[NR_CPUS] __read_mostly;
- 
- void do_softirq_own_stack(void)
- {
--	call_do_softirq(softirq_ctx[smp_processor_id()]);
-+	call_do_softirq(normirq_ctx[smp_processor_id()]);
- }
- 
- irq_hw_number_t virq_to_hw(unsigned int virq)
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index ee0433809621..4b724d86ed9d 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2089,11 +2089,7 @@ static inline int valid_irq_stack(unsigned long sp, struct task_struct *p,
- 	unsigned long stack_page;
- 	unsigned long cpu = task_cpu(p);
- 
--	stack_page = (unsigned long)hardirq_ctx[cpu];
--	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
--		return 1;
--
--	stack_page = (unsigned long)softirq_ctx[cpu];
-+	stack_page = (unsigned long)normirq_ctx[cpu];
- 	if (sp >= stack_page && sp <= stack_page + THREAD_SIZE - nbytes)
- 		return 1;
- 
-diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
-index 813261789303..cad0e4fbdd4b 100644
---- a/arch/powerpc/kernel/setup_32.c
-+++ b/arch/powerpc/kernel/setup_32.c
-@@ -158,10 +158,8 @@ void __init irqstack_early_init(void)
- 
- 	/* interrupt stacks must be in lowmem, we get that for free on ppc32
- 	 * as the memblock is limited to lowmem by default */
--	for_each_possible_cpu(i) {
--		softirq_ctx[i] = alloc_stack();
--		hardirq_ctx[i] = alloc_stack();
--	}
-+	for_each_possible_cpu(i)
-+		normirq_ctx[i] = alloc_stack();
- }
- 
- #ifdef CONFIG_VMAP_STACK
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 5761f08dae95..70ba227d13fc 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -718,10 +718,8 @@ void __init irqstack_early_init(void)
- 	 * cannot afford to take SLB misses on them. They are not
- 	 * accessed in realmode.
- 	 */
--	for_each_possible_cpu(i) {
--		softirq_ctx[i] = alloc_stack(limit, i);
--		hardirq_ctx[i] = alloc_stack(limit, i);
--	}
-+	for_each_possible_cpu(i)
-+		normirq_ctx[i] = alloc_stack(limit, i);
- }
- 
- #ifdef CONFIG_PPC_BOOK3E
--- 
-2.36.1
-
+ static void __init prcm_setup_regs(void)
