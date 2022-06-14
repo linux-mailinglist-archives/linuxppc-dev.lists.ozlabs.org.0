@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9DA54A460
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 04:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0AB54A468
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 04:09:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMWzj3vQRz3cDD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 12:07:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMX104wl6z3cdb
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 12:08:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cXC8XmkI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sM/XUZR9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cXC8XmkI;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sM/XUZR9;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMWz6039rz30JK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 12:07:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMX0P31q5z3bbv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 12:08:21 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 88DFF60B6C;
-	Tue, 14 Jun 2022 02:07:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C543C34114;
-	Tue, 14 Jun 2022 02:07:08 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 84B5560F13;
+	Tue, 14 Jun 2022 02:08:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5CDC34114;
+	Tue, 14 Jun 2022 02:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655172430;
-	bh=01mawIc35r+gK++qej0uz5FbVWHFWwVOkaENnGgcWhE=;
+	s=k20201202; t=1655172498;
+	bh=/vjGhyLueArMtEbakrva+JGX2QQuO3e9IE4CZatHnM4=;
 	h=From:To:Cc:Subject:Date:From;
-	b=cXC8XmkIsOb2gairFOdJBekbJUQuvp7pTEqZDzAkFkKFFEH1Ggn72b8e+v+g89K6/
-	 7slygTUCOU2xQYXsNUJeXlX/UsgPQn9Ez2lD9HSiqBHnfGTHYLxWURz6Bbly487b4Y
-	 G7FAHszP5RjXSaNtqO5fYBQfX4EXyikVbtfE1TN3mCjanDopmJb2lyiSc886x2qMqg
-	 u3Sorb/jqqYZbpMAEewgDE6zCA6OXCsXcF4cdNLYI31j9op2MLfclwqE4wd56XGKjF
-	 OkW7yDHv0KaGjR+iZtxOEH/E61eBvC/au0knO9g9J+bsymD2k2/gtxC2GmB6Ylh/Nt
-	 NwqQNFgGPvAcg==
+	b=sM/XUZR9nPFVYzhEOIsZzIin8UWYEpz6Wy8W0fU5oj99731CKlmyJgJgpbWdwdqEI
+	 QwKkEtXiHOsgWdTjyLFSmHdWeTbEkg/5JQjxmWPRHL5WZxRD81ZzLKIfkHAOXCCX9q
+	 3UxdUKkLtB2PbalG9w+OZSFQtm4Q194LEZZumQP41WYHEBG5JuNuqqE8URx6oX5q3P
+	 O7/wtJiVaXsCIZAyecG2iLWtbKKo08QhNhMFjHDiVj9oFMqOvFdboT0zCZlhDd51xl
+	 EUYMdJRrOBwdayO6QD+3kW+DlPVQsVYtmndbf0ewNgS4n3GR+F/d/LnhbTpw/iyHh2
+	 Uq7XInqN3vU7g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 01/41] powerpc/kasan: Silence KASAN warnings in __get_wchan()
-Date: Mon, 13 Jun 2022 22:06:26 -0400
-Message-Id: <20220614020707.1099487-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 01/29] powerpc/kasan: Silence KASAN warnings in __get_wchan()
+Date: Mon, 13 Jun 2022 22:07:47 -0400
+Message-Id: <20220614020815.1099999-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 X-stable: review
@@ -129,17 +129,17 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 50436b52c213..39a0a13a3a27 100644
+index 3064694afea1..cfb8fd76afb4 100644
 --- a/arch/powerpc/kernel/process.c
 +++ b/arch/powerpc/kernel/process.c
-@@ -2124,12 +2124,12 @@ static unsigned long __get_wchan(struct task_struct *p)
+@@ -2108,12 +2108,12 @@ static unsigned long __get_wchan(struct task_struct *p)
  		return 0;
  
  	do {
 -		sp = *(unsigned long *)sp;
 +		sp = READ_ONCE_NOCHECK(*(unsigned long *)sp);
  		if (!validate_sp(sp, p, STACK_FRAME_OVERHEAD) ||
- 		    task_is_running(p))
+ 		    p->state == TASK_RUNNING)
  			return 0;
  		if (count > 0) {
 -			ip = ((unsigned long *)sp)[STACK_FRAME_LR_SAVE];
