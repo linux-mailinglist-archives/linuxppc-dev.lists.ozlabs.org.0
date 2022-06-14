@@ -1,63 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC8F54AE74
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 12:35:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5E454AEAE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 12:46:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMlFT18N4z3dx2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 20:35:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMlTn3Q7tz3cMr
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jun 2022 20:46:05 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KJBgz7Bt;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMlDp59Zgz3ch3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 20:34:50 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4LMlDm11l5z9tNV;
-	Tue, 14 Jun 2022 12:34:48 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id EUnX0ObVE5zA; Tue, 14 Jun 2022 12:34:48 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4LMlDl70gHz9tNR;
-	Tue, 14 Jun 2022 12:34:47 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E0E088B766;
-	Tue, 14 Jun 2022 12:34:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id NGWFE1zE5us5; Tue, 14 Jun 2022 12:34:47 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.204.246])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8FB958B763;
-	Tue, 14 Jun 2022 12:34:47 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 25EAYbs4198174
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 14 Jun 2022 12:34:38 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 25EAYWPZ198172;
-	Tue, 14 Jun 2022 12:34:32 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 2/2] powerpc/32: Set an IBAT covering up to _einittext during init
-Date: Tue, 14 Jun 2022 12:34:09 +0200
-Message-Id: <ce7f04a39593934d9b1ee68c69144ccd3d4da4a1.1655202804.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <db3fc14f3bfa6215b0786ef58a6e2bc1e1f964d7.1655202804.git.christophe.leroy@csgroup.eu>
-References: <db3fc14f3bfa6215b0786ef58a6e2bc1e1f964d7.1655202804.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMlTB46skz3bk5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jun 2022 20:45:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=KJBgz7Bt;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LMlT5550Dz4xYC;
+	Tue, 14 Jun 2022 20:45:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1655203529;
+	bh=RBj66p9m4fPiE+NiL5b1xNhjr+ADnO+uqrgDmOY6ZfU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KJBgz7Bti+zcSg0e6LuxnE3Y5fRvZA76Y4/AtP0VgEmK7oAUFmGkI6+3GGZPGNy9f
+	 YPxzzLCr5nBrazEUeqTH2NDUL2+blZa+/+pis7e4Ai9fFUnn663h3hTCMlqt0+JWka
+	 1Ti6vNKngXZVyDw+ZPoC+aXcs4UnmEuHXI5SvDcr+DgHINxJpi83CKXyLp8Ztvt+lW
+	 TgtIhkmNKOc3pSTdt8ah4pBRRV5caZb1ROCRuR1fbdCfY7EamMhY11TXyyFmG5FpJR
+	 fsuwA0f3mlWzMjBQjhgtwZMxaV6h8QfXv0st6Q6sK5+pap3mPTLIOvZlj3vWsofwX/
+	 h59qHks79R3fw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Wang Wenhu <wenhu.wang@hotmail.com>, gregkh@linuxfoundation.org,
+ christophe.leroy@csgroup.eu
+Subject: Re: [PATCH 1/2] powerpc:mm: export symbol ioremap_coherent
+In-Reply-To: <SG2PR01MB2951EBFD4C4EB2A2519FF4199FA79@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+References: <20220609102855.272270-1-wenhu.wang@hotmail.com>
+ <SG2PR01MB2951EBFD4C4EB2A2519FF4199FA79@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+Date: Tue, 14 Jun 2022 20:45:25 +1000
+Message-ID: <8735g7cym2.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1655202848; l=3101; s=20211009; h=from:subject:message-id; bh=tycdwvBGgDGk37LlXhd93JhsbTtrffdtuzPgsGXITfM=; b=e3XvWSqyGJyTPGOB1K+RAuG7Lapbf9zPsBD40X/CmWeocMVTUARXWa4iUjhI5fUKMN8e5KgEmfBS evHd6T8XCbGQZ0Wr8lwUol5tbEe9/Rbwt1UEOqyp8f7iOSEZVnQM
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,86 +59,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Maxime Bizon <mbizon@freebox.fr>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Wang Wenhu <wenhu.wang@hotmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Always set an IBAT covering up to _einittext during init because when
-CONFIG_MODULES is not selected there is no reason to have an exception
-handler for kernel instruction TLB misses.
+Wang Wenhu <wenhu.wang@hotmail.com> writes:
+> The function ioremap_coherent may be called by modules such as
+> fsl_85xx_cache_sram. So export it for access in other modules.
 
-It implies DBAT and IBAT are now totaly independent, IBATs are set
-by setibat() and DBAT by setbat().
+ioremap_coherent() is powerpc specific, and only has one other caller,
+I'd like to remove it.
 
-This allows to revert commit 9bb162fa26ed ("powerpc/603: Fix
-boot failure with DEBUG_PAGEALLOC and KFENCE")
+Does ioremap_cache() work for you?
 
-Reported-by: Maxime Bizon <mbizon@freebox.fr>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/head_book3s_32.S |  4 ++--
- arch/powerpc/mm/book3s32/mmu.c       | 10 ++++------
- 2 files changed, 6 insertions(+), 8 deletions(-)
+cheers
 
-diff --git a/arch/powerpc/kernel/head_book3s_32.S b/arch/powerpc/kernel/head_book3s_32.S
-index 6c739beb938c..519b60695167 100644
---- a/arch/powerpc/kernel/head_book3s_32.S
-+++ b/arch/powerpc/kernel/head_book3s_32.S
-@@ -418,14 +418,14 @@ InstructionTLBMiss:
-  */
- 	/* Get PTE (linux-style) and check access */
- 	mfspr	r3,SPRN_IMISS
--#if defined(CONFIG_MODULES) || defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_KFENCE)
-+#ifdef CONFIG_MODULES
- 	lis	r1, TASK_SIZE@h		/* check if kernel address */
- 	cmplw	0,r1,r3
- #endif
- 	mfspr	r2, SPRN_SDR1
- 	li	r1,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC | _PAGE_USER
- 	rlwinm	r2, r2, 28, 0xfffff000
--#if defined(CONFIG_MODULES) || defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_KFENCE)
-+#ifdef CONFIG_MODULES
- 	bgt-	112f
- 	lis	r2, (swapper_pg_dir - PAGE_OFFSET)@ha	/* if kernel address, use */
- 	li	r1,_PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_EXEC
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index 49a737fbbd18..40029280c320 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -159,7 +159,10 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
- {
- 	unsigned long done;
- 	unsigned long border = (unsigned long)__init_begin - PAGE_OFFSET;
-+	unsigned long size;
- 
-+	size = roundup_pow_of_two((unsigned long)_einittext - PAGE_OFFSET);
-+	setibat(0, PAGE_OFFSET, 0, size, PAGE_KERNEL_X);
- 
- 	if (debug_pagealloc_enabled_or_kfence() || __map_without_bats) {
- 		pr_debug_once("Read-Write memory mapped without BATs\n");
-@@ -245,10 +248,9 @@ void mmu_mark_rodata_ro(void)
- }
- 
- /*
-- * Set up one of the I/D BAT (block address translation) register pairs.
-+ * Set up one of the D BAT (block address translation) register pairs.
-  * The parameters are not checked; in particular size must be a power
-  * of 2 between 128k and 256M.
-- * On 603+, only set IBAT when _PAGE_EXEC is set
-  */
- void __init setbat(int index, unsigned long virt, phys_addr_t phys,
- 		   unsigned int size, pgprot_t prot)
-@@ -284,10 +286,6 @@ void __init setbat(int index, unsigned long virt, phys_addr_t phys,
- 		/* G bit must be zero in IBATs */
- 		flags &= ~_PAGE_EXEC;
- 	}
--	if (flags & _PAGE_EXEC)
--		bat[0] = bat[1];
--	else
--		bat[0].batu = bat[0].batl = 0;
- 
- 	bat_addrs[index].start = virt;
- 	bat_addrs[index].limit = virt + ((bl + 1) << 17) - 1;
--- 
-2.36.1
-
+> diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+> index 4f12504fb405..08a00dacef0b 100644
+> --- a/arch/powerpc/mm/ioremap.c
+> +++ b/arch/powerpc/mm/ioremap.c
+> @@ -40,6 +40,7 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
+>  		return iowa_ioremap(addr, size, prot, caller);
+>  	return __ioremap_caller(addr, size, prot, caller);
+>  }
+> +EXPORT_SYMBOL(ioremap_coherent);
+>  
+>  void __iomem *ioremap_prot(phys_addr_t addr, unsigned long size, unsigned long flags)
+>  {
+> -- 
+> 2.25.1
