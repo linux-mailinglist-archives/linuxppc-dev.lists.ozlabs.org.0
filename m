@@ -1,43 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3037554BD55
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:11:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63BF854BD56
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:11:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2hT0V1Kz3fqv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:11:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2hv2LgSz3fwJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:11:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=70go=wv=goodmis.org=rostedt@kernel.org; receiver=<UNKNOWN>)
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LMrdD41Kbz2ypV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 00:37:52 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 2E406B81865;
-	Tue, 14 Jun 2022 14:37:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D478C3411C;
-	Tue, 14 Jun 2022 14:37:34 +0000 (UTC)
-Date: Tue, 14 Jun 2022 10:37:32 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
-Message-ID: <20220614103732.489ba62b@gandalf.local.home>
-In-Reply-To: <YqHvXFdIJfvUDI6e@alley>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LMtmQ1rnXz2ywr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 02:14:11 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0D6151684;
+	Tue, 14 Jun 2022 09:13:38 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.41.154])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4946B3F66F;
+	Tue, 14 Jun 2022 09:13:20 -0700 (PDT)
+Date: Tue, 14 Jun 2022 17:13:16 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 15/36] cpuidle,cpu_pm: Remove RCU fiddling from
+ cpu_pm_{enter,exit}()
+Message-ID: <YqiznJL7qB9uSQ9c@FVFF77S0Q05N>
 References: <20220608142723.103523089@infradead.org>
-	<20220608144517.444659212@infradead.org>
-	<YqG6URbihTNCk9YR@alley>
-	<YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net>
-	<CA+_sPaoJGrXhNPCs2dKf2J7u07y1xYrRFZBUtkKwzK9GqcHSuQ@mail.gmail.com>
-	<YqHvXFdIJfvUDI6e@alley>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+ <20220608144516.871305980@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220608144516.871305980@infradead.org>
 X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -50,28 +43,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualization@lists.linux-
- foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, josh@joshtriplett.org, khilman@kernel.org, linux-csky@vger.kernel.org, tony@atomide.com, linux-snps-arc@lists.infr
- adead.org, mgorman@suse.de, jacob.jun.pan@linux.intel
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, rth@twiddle.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualization@lists.linux-foundati
+ on.org, James.Bottomley@HansenPartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de
+ , jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@
 
-.com, yury.norov@gmail.com, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, monstr@monstr.eu, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, Peter Zijlstra <peterz@infradead.org>, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, Arnd Bergmann <arnd@arndb.de>, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, pv-drivers@vmware.com, linux-mips@vger.kernel.org, palmer
- @dabbelt.com, anup@brainfault.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfa
+ ult.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 9 Jun 2022 15:02:20 +0200
-Petr Mladek <pmladek@suse.com> wrote:
+On Wed, Jun 08, 2022 at 04:27:38PM +0200, Peter Zijlstra wrote:
+> All callers should still have RCU enabled.
 
-> > I'm somewhat curious whether we can actually remove that trace event.  
+IIUC with that true we should be able to drop the RCU_NONIDLE() from
+drivers/perf/arm_pmu.c, as we only needed that for an invocation via a pm
+notifier.
+
+I should be able to give that a spin on some hardware.
+
 > 
-> Good question.
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ---
+>  kernel/cpu_pm.c |    9 ---------
+>  1 file changed, 9 deletions(-)
 > 
-> Well, I think that it might be useful. It allows to see trace and
-> printk messages together.
+> --- a/kernel/cpu_pm.c
+> +++ b/kernel/cpu_pm.c
+> @@ -30,16 +30,9 @@ static int cpu_pm_notify(enum cpu_pm_eve
+>  {
+>  	int ret;
+>  
+> -	/*
+> -	 * This introduces a RCU read critical section, which could be
+> -	 * disfunctional in cpu idle. Copy RCU_NONIDLE code to let RCU know
+> -	 * this.
+> -	 */
+> -	rcu_irq_enter_irqson();
+>  	rcu_read_lock();
+>  	ret = raw_notifier_call_chain(&cpu_pm_notifier.chain, event, NULL);
+>  	rcu_read_unlock();
+> -	rcu_irq_exit_irqson();
 
-Yes people still use it. I was just asked about it at Kernel Recipes. That
-is, someone wanted printk mixed in with the tracing, and I told them about
-this event (which they didn't know about but was happy to hear that it
-existed).
+To make this easier to debug, is it worth adding an assertion that RCU is
+watching here? e.g.
 
--- Steve
+	RCU_LOCKDEP_WARN(!rcu_is_watching(),
+			 "cpu_pm_notify() used illegally from EQS");
+
+>  
+>  	return notifier_to_errno(ret);
+>  }
+> @@ -49,11 +42,9 @@ static int cpu_pm_notify_robust(enum cpu
+>  	unsigned long flags;
+>  	int ret;
+>  
+> -	rcu_irq_enter_irqson();
+>  	raw_spin_lock_irqsave(&cpu_pm_notifier.lock, flags);
+>  	ret = raw_notifier_call_chain_robust(&cpu_pm_notifier.chain, event_up, event_down, NULL);
+>  	raw_spin_unlock_irqrestore(&cpu_pm_notifier.lock, flags);
+> -	rcu_irq_exit_irqson();
+
+
+... and likewise here?
+
+Thanks,
+Mark.
+
+>  
+>  	return notifier_to_errno(ret);
+>  }
+> 
+> 
