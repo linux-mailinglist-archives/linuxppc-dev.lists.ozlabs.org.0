@@ -2,55 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C9754C30A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 10:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF6F54C5A4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 12:14:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LNHpk0c7jz3ch2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 18:02:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qRtiw/Ew;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LNLlF1HNDz3dQ6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 20:14:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qRtiw/Ew;
-	dkim-atps=neutral
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=212.227.126.135; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNHp52wwYz2xKh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 18:02:04 +1000 (AEST)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-	by smtp-out1.suse.de (Postfix) with ESMTP id EB64B21B27;
-	Wed, 15 Jun 2022 08:01:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1655280119; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DaM9M2rnjrvdQGQ7RvZB3kRvN0KL8OK3uY7jsfFlhwM=;
-	b=qRtiw/EwzIsZzY7D7oh0BeOfU6iIQ38xDbUtfQXTtdaPPWK3B2vJeEb6IIHEt7MxZ3zKcC
-	dfyx4Mc4tIb/eF0FliF28q8hNk+hU2TEYFUekYuM8cDMqgo0Awx7lmNgOzPGeK/9Q2qhBN
-	CjKBFgcYgu+XVY7XBl81AW22w0F/oCg=
-Received: from suse.cz (unknown [10.100.201.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by relay2.suse.de (Postfix) with ESMTPS id E39D82C142;
-	Wed, 15 Jun 2022 08:01:57 +0000 (UTC)
-Date: Wed, 15 Jun 2022 10:01:57 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH 0/5] kallsyms: make kallsym APIs more safe with scnprintf
-Message-ID: <YqmR9ZeiwMQLyKDu@alley>
-References: <CGME20220520083715epcas5p400b11adef4d540756c985feb20ba29bc@epcas5p4.samsung.com>
- <20220520083701.2610975-1-maninder1.s@samsung.com>
- <YonTOL4zC4CytVrn@infradead.org>
- <202205231238.FAF6D28@keescook>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNLkm2Mp8z302S
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 20:14:22 +1000 (AEST)
+Received: from mail-yw1-f171.google.com ([209.85.128.171]) by
+ mrelayeu.kundenserver.de (mreue011 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N3bjH-1nbC8p3qD5-010boy for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun
+ 2022 12:14:17 +0200
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-31756c8143aso7519207b3.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 03:14:16 -0700 (PDT)
+X-Gm-Message-State: AJIora8C6nPk192HcraqL1H8IfjjNjM4WvswjNhDIRbcS2xb6abBqE7p
+	qWKJRNvBt7KB8YWFK+l9kl7vJQs/naEhOWQGtrw=
+X-Google-Smtp-Source: AGRyM1tc1CD3T/V75mltml1RV/EGtx7dMWBJywlVPeKFkpX86eLC6Kc+nnj6VAXLovfPFbFMwM4QIhFnRV8Dvewvij8=
+X-Received: by 2002:a81:6ac5:0:b0:317:5299:523d with SMTP id
+ f188-20020a816ac5000000b003175299523dmr2197082ywc.249.1655288055350; Wed, 15
+ Jun 2022 03:14:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202205231238.FAF6D28@keescook>
+References: <20220601054850.250287-1-rmclure@linux.ibm.com>
+ <20220601054850.250287-2-rmclure@linux.ibm.com> <CAK8P3a3jm=02geTcJcfLNpshx1bR1jAnLTzimaaAhB=mGHfJzg@mail.gmail.com>
+ <494F2A0A-1C03-4A5A-8BC1-92ACCE34AFE4@linux.ibm.com>
+In-Reply-To: <494F2A0A-1C03-4A5A-8BC1-92ACCE34AFE4@linux.ibm.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 15 Jun 2022 12:13:58 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a29aV9NNHqhv2n6DP=nwT-M0yoVMzQyCnxOBMhxePfFSQ@mail.gmail.com>
+Message-ID: <CAK8P3a29aV9NNHqhv2n6DP=nwT-M0yoVMzQyCnxOBMhxePfFSQ@mail.gmail.com>
+Subject: Re: [PATCH 2/6] powerpc: Provide syscall wrapper
+To: Rohan McLure <rmclure@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:WKvxUTnjNieDPc9zuP7IiW1krNW8txDOaSC4km0nyzxbmR+kYo6
+ QzGEfjphf7r0ccaz2Lt3MBtdaK3aTMN+Q74k2XEGD2LTo5yrMTUyMSURlVai9m9jEjVOxRW
+ pV3rqUgmdZWbl2CT4Dw33ceK5jQF7IMnANMq54YujlD7snB6Pcs9PGdsjw01npbzrJ3+Ckn
+ +VSccJ2YAD1Kjxt3lWXsg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:F9qImbYIZgE=:9ygXqbC+dlI1L9OASL1v13
+ B07HeoMSOLAJWL+5DshMVFt6AnxmpYWolPo8o+IlK9dBAUTgfYBtpslY9fp9tZH/SE/W5zK8f
+ EHX73NLfrpg4eD041OBq374NMbINUQfrGUZmQ+Ghj5IGTUUz2WEh7NJWvaRESN2/os7itxuC2
+ LDQRso62/bOnVmbl6xbOFXV8SneQsmGfNrOqWZReEl9YXph8kDF9/EOLJ2kKqtsrnserCwBNu
+ icMZdlvo2EmCM09z20Gu4IifTuGpM9Y04XbM9DnNR3mwErflP8vZcUOAB3XVySqiasDau/3n2
+ A6myS7kRSjPlejJr83LCtewJ8945wSLSQl4miMAjcpzSQ2FcCZO7HUGtk9HpidACBDS0njlDJ
+ W4yGZePWRrGfeMxvz0S9+Awi034+OS+KjBbOjvUtCOkQt7cMBxk+i8CIL6BWL4LDoInksk/N8
+ FEf23+FsemM8AHiXc09vP9hfZqS5SqN8DKT+Ofi5jM2z+d89/3B5Rjvo7pv//pDLAeFsm0+bo
+ BlilSk14G+usN2B3Q6+LEgtbEXQVEPhAmhNjgPoNDeV3s2XdUsUTL5qjjj7pbEiNhAnANs+Mb
+ pRAOF4z7ccCICRdmWkKExNRkm3an8q5VL34fKT5pUAf5Znw5UPW/C+rUWIkXb+ddOCaNnvTMF
+ mN/H+23jTg3AJZTXPxV3oUpR/qq+w9YWFqjGPSygUMJkYuR3VP+A3JmakoPevnV1x6Zy3wQZD
+ IR2kVtvtwq6SizTpRnyaN6uAyFJ/kA1pSILnlQ==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,45 +68,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: peterz@infradead.org, linux@rasmusvillemoes.dk, linux-kernel@vger.kernel.org, paulus@samba.org, linux-hexagon@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, linux-s390@vger.kernel.org, daniel.thompson@linaro.org, arnd@arndb.de, linux-scsi@vger.kernel.org, onkarnath.1@samsung.com, anil.s.keshavamurthy@intel.com, Christoph Hellwig <hch@infradead.org>, kartilak@cisco.com, kgdb-bugreport@lists.sourceforge.net, naveen.n.rao@linux.ibm.com, longman@redhat.com, borntraeger@linux.ibm.com, jejb@linux.ibm.com, mhiramat@kernel.org, v.narang@samsung.com, satishkh@cisco.com, boqun.feng@gmail.com, gor@linux.ibm.com, hca@linux.ibm.com, rostedt@goodmis.org, linux-fsdevel@vger.kernel.org, andriy.shevchenko@linux.intel.com, mingo@redhat.com, bcain@quicinc.com, martin.petersen@oracle.com, dianders@chromium.org, sebaddel@cisco.com, senozhatsky@chromium.org, mcgrof@kernel.org, svens@linux.ibm.com, jason.wessel@windriver.com, Maninder Singh <maninder1.s@samsung.com>, akpm@linux-foundation.or
- g, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, linux-modules@vger.kernel.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 2022-05-23 12:39:12, Kees Cook wrote:
-> On Sat, May 21, 2022 at 11:07:52PM -0700, Christoph Hellwig wrote:
-> > On Fri, May 20, 2022 at 02:06:56PM +0530, Maninder Singh wrote:
-> > > kallsyms functionality depends on KSYM_NAME_LEN directly.
-> > > but if user passed array length lesser than it, sprintf
-> > > can cause issues of buffer overflow attack.
-> > > 
-> > > So changing *sprint* and *lookup* APIs in this patch set
-> > > to have buffer size as an argument and replacing sprintf with
-> > > scnprintf.
-> > 
-> > This is still a pretty horrible API.  Passing something like
-> > a struct seq_buf seems like the much better API here.  Also with
-> > the amount of arguments and by reference passing it might be worth
-> > to pass them as a structure while you're at it.
-> 
-> Yeah, I agree. It really seems like seq_buf would be nicer.
+On Wed, Jun 15, 2022 at 3:47 AM Rohan McLure <rmclure@linux.ibm.com> wrote:
+> > On 3 Jun 2022, at 7:04 pm, Arnd Bergmann <arnd@arndb.de> wrote:
+> > On Wed, Jun 1, 2022 at 7:48 AM Rohan McLure <rmclure@linux.ibm.com> wrote:
 
-There is a new patchset that is trying to use this kind of buffer
-in vsprintf.
+> > What is the benefit of having a separate set of macros for this? I think that
+> > adds more complexity than it saves in the end.
+>
+> I was unsure whether the exact return types needed to be respected for syscall
+> handlers or not. I realise that under the existing behaviour,
+> system_call_exception performs an indirect call, the return type of which is
+> interpreted as a long, so the return type should be irrelevant. On inspection
+> PPC_SYSCALL_DEFINE is readily replacable with COMPAT_SYSCALL_DEFINE as you
+> have suggested.
+>
+> Before resubmitting this series, I will try for a patch series which modernises
+> syscall handlers in arch/powerpc, and inspect where powerpc private versions
+> are strictly necessary, using __ARCH_WANT_... wherever possible.
 
-It introduces another buffer struct because vsprintf() needs a bit
-different semantic than the one used in seq_buf. But it actually
-replaces seq_buf() in the end. I am not sure if this is the right
-approach.
+Ok, great! The parameter ordering is a bit tricky for some of them. I think
+in most cases the version used by risc-v now should be the same as what
+you need for powerpc (with the appropriate compat_arg_u64_dual()).
+If some don't work, I would suggest modifying the common code so it can
+handle both riscv and powerpc instead of keeping a private copy.
 
-Anyway, the initial API is very simple, see
-https://lore.kernel.org/r/20220604193042.1674951-2-kent.overstreet@gmail.com
-
-And it makes the internal vsprintf() API more sane, see
-https://lore.kernel.org/r/20220604193042.1674951-4-kent.overstreet@gmail.com
-
-It would eventually solve also concerns about the kallsysms API.
-Any comments on the new printbuf API are much appreaciated.
-
-Best Regards,
-Petr
+       Arnd
