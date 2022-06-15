@@ -2,49 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C39354C247
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:58:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C9754C30A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 10:02:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LNGN900bGz3bsB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 16:58:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LNHpk0c7jz3ch2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 18:02:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SUzqfrnD;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qRtiw/Ew;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+cd04db8a85bff7cd13dc+6870+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=SUzqfrnD;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=qRtiw/Ew;
 	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNGMZ6ssWz2xZB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 16:57:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=qNXVqmxSpUOvgxRgQ5LFOcNQ8o56Uupm2hxFNDJ6o4A=; b=SUzqfrnDPOqROLEVY4dilVwjsT
-	s9dP7gDfSz1s87ZFKwdNfBnEewrk82sE2kWW7HUPeBdmZD7XbyasqPcpEYzajrJBLt68yaVxCDfBu
-	UNem7+Sxy8d99R6ehfS/E6jHiusjLHaURpRKNfXf5kIA//DAh+Gto+PBjdDVl6ji8fn/89/M5NgWl
-	3X0Sy1Tj0NYy26foekGpjmpddeZF7GqsS+PMyZW8F1rJbbyhlfI9GfqsfcJaIewJe+VYjImM2MIor
-	ytGxwg4TKaKAj9wJIEfIf1F0+q3bG6igtjekGb7zpOkUNgpd53WvF/HcJXKP3H8rfkrCXq8YzeYkW
-	T67SvWwg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1Mxx-00CxiS-1O; Wed, 15 Jun 2022 06:57:25 +0000
-Date: Tue, 14 Jun 2022 23:57:25 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH] arch/*: Disable softirq stacks on PREEMPT_RT.
-Message-ID: <YqmC1aAm+O7RD2IH@infradead.org>
-References: <YqjQ5kso7czrmYPW@linutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNHp52wwYz2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 18:02:04 +1000 (AEST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id EB64B21B27;
+	Wed, 15 Jun 2022 08:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1655280119; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DaM9M2rnjrvdQGQ7RvZB3kRvN0KL8OK3uY7jsfFlhwM=;
+	b=qRtiw/EwzIsZzY7D7oh0BeOfU6iIQ38xDbUtfQXTtdaPPWK3B2vJeEb6IIHEt7MxZ3zKcC
+	dfyx4Mc4tIb/eF0FliF28q8hNk+hU2TEYFUekYuM8cDMqgo0Awx7lmNgOzPGeK/9Q2qhBN
+	CjKBFgcYgu+XVY7XBl81AW22w0F/oCg=
+Received: from suse.cz (unknown [10.100.201.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id E39D82C142;
+	Wed, 15 Jun 2022 08:01:57 +0000 (UTC)
+Date: Wed, 15 Jun 2022 10:01:57 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 0/5] kallsyms: make kallsym APIs more safe with scnprintf
+Message-ID: <YqmR9ZeiwMQLyKDu@alley>
+References: <CGME20220520083715epcas5p400b11adef4d540756c985feb20ba29bc@epcas5p4.samsung.com>
+ <20220520083701.2610975-1-maninder1.s@samsung.com>
+ <YonTOL4zC4CytVrn@infradead.org>
+ <202205231238.FAF6D28@keescook>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YqjQ5kso7czrmYPW@linutronix.de>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <202205231238.FAF6D28@keescook>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,11 +62,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>, Russell King <linux@armlinux.org.uk>, Christian Borntraeger <borntraeger@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Heiko Carstens <hca@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: peterz@infradead.org, linux@rasmusvillemoes.dk, linux-kernel@vger.kernel.org, paulus@samba.org, linux-hexagon@vger.kernel.org, agordeev@linux.ibm.com, will@kernel.org, linux-s390@vger.kernel.org, daniel.thompson@linaro.org, arnd@arndb.de, linux-scsi@vger.kernel.org, onkarnath.1@samsung.com, anil.s.keshavamurthy@intel.com, Christoph Hellwig <hch@infradead.org>, kartilak@cisco.com, kgdb-bugreport@lists.sourceforge.net, naveen.n.rao@linux.ibm.com, longman@redhat.com, borntraeger@linux.ibm.com, jejb@linux.ibm.com, mhiramat@kernel.org, v.narang@samsung.com, satishkh@cisco.com, boqun.feng@gmail.com, gor@linux.ibm.com, hca@linux.ibm.com, rostedt@goodmis.org, linux-fsdevel@vger.kernel.org, andriy.shevchenko@linux.intel.com, mingo@redhat.com, bcain@quicinc.com, martin.petersen@oracle.com, dianders@chromium.org, sebaddel@cisco.com, senozhatsky@chromium.org, mcgrof@kernel.org, svens@linux.ibm.com, jason.wessel@windriver.com, Maninder Singh <maninder1.s@samsung.com>, akpm@linux-foundation.or
+ g, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, linux-modules@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 14, 2022 at 08:18:14PM +0200, Sebastian Andrzej Siewior wrote:
-> Disable the unused softirqs stacks on PREEMPT_RT to safe some memory and
+On Mon 2022-05-23 12:39:12, Kees Cook wrote:
+> On Sat, May 21, 2022 at 11:07:52PM -0700, Christoph Hellwig wrote:
+> > On Fri, May 20, 2022 at 02:06:56PM +0530, Maninder Singh wrote:
+> > > kallsyms functionality depends on KSYM_NAME_LEN directly.
+> > > but if user passed array length lesser than it, sprintf
+> > > can cause issues of buffer overflow attack.
+> > > 
+> > > So changing *sprint* and *lookup* APIs in this patch set
+> > > to have buffer size as an argument and replacing sprintf with
+> > > scnprintf.
+> > 
+> > This is still a pretty horrible API.  Passing something like
+> > a struct seq_buf seems like the much better API here.  Also with
+> > the amount of arguments and by reference passing it might be worth
+> > to pass them as a structure while you're at it.
+> 
+> Yeah, I agree. It really seems like seq_buf would be nicer.
 
-s/safe/save/
+There is a new patchset that is trying to use this kind of buffer
+in vsprintf.
+
+It introduces another buffer struct because vsprintf() needs a bit
+different semantic than the one used in seq_buf. But it actually
+replaces seq_buf() in the end. I am not sure if this is the right
+approach.
+
+Anyway, the initial API is very simple, see
+https://lore.kernel.org/r/20220604193042.1674951-2-kent.overstreet@gmail.com
+
+And it makes the internal vsprintf() API more sane, see
+https://lore.kernel.org/r/20220604193042.1674951-4-kent.overstreet@gmail.com
+
+It would eventually solve also concerns about the kallsysms API.
+Any comments on the new printbuf API are much appreaciated.
+
+Best Regards,
+Petr
