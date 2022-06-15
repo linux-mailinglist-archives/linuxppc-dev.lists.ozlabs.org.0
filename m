@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707E854C169
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:00:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FE054C16A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:00:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LNF5W0yGwz3bwk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 16:00:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LNF6K0NSTz3cCP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 16:00:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=sQYMIO/C;
+	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=KAmO7Udz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hotmail.com (client-ip=2a01:111:f400:feab::813; helo=apc01-sg2-obe.outbound.protection.outlook.com; envelope-from=wenhu.wang@hotmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=sQYMIO/C;
+	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=KAmO7Udz;
 	dkim-atps=neutral
 Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01olkn20813.outbound.protection.outlook.com [IPv6:2a01:111:f400:feab::813])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNF4J0R2Pz3bqg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 15:59:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNF4K64Bpz3bvZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 15:59:13 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TbsY0NLWfSjDzwUeJaeLwj7TjXiu5Xo4BuTHK0Xgij62RjRE96i0kB7IaNsrqN+HHtWcHiOc1r4RgC4Oq4AJ4bn1jZLY9b3DFAKHMYQsdt8WgM4Kjr2tAsiNwsKOWNV/42HjxAwDhwYhWu68zr1isEZj1brRkA4eZfFTJrgHlijPYJruWaETHQVXToFpkYRakdd42euUwJsBeOY5CHyHfUK3aCcon2g3U0LCIzjiS5ldQJW8Hkvy2nZ1HFVg5NoLBAn5T0p+j5g8Sf/tBYu19GppsF00Wpie2umOE/QEI1BnH2uEYveBoQyP27pQBdAMMmBuqP7q6FVOfCKgaSOzqg==
+ b=niz950VfSqAzoSS0x6hEnvRUm5TYVppwx9X/JswCH/g910vURhOBNKKQn+OaU2MwByIxFBXIJvp51BJVTjYn9pA7QYcP88TSEUjCPdI55PQD9yyUlnMUwuj3Iy+Oeh3KUi+56vQ93S3wySqC1a1Mq7qHCtbMNPprBGjEle5Q06CO4TuJY3Ld4u52/d+fMLVNc8xgAzcvf53IEYCEU/HPeNI/Q/AFvgJUD2sJZazk3/w1AJ3Uts9pcNuxgcvC1TWRaADfaVd2fvToIK8AD41Zp03Qsa2ooD3iPuU3f2vWpW/VAB48wmgtKnueTBtt6ht1IdVThW2LBsSbjc/NbctHgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kA8/IuLqP59nQUuH48k/jN1J40Mwg2cPNtoPi2uNK0U=;
- b=ZmAe+cHy2W78s9O3a3uF66OfGyK0sdR3AUgDTWY7ooYfA86KfxzdoEM8snWzYtOLJOQV5/jsyaOFJDxMKS6rqIqeVauq1Je7frI7K/bQHOeK/0Xd8bvGMUBzns/8kX3iVsA5iWd2Q/hdAwy1K+AB/BkCtYrs1d2tO0XS4/Q0Vn6DW1jSX4pXkrn7Re2Vx9vsmef1t7E9T4UsrqM6h7+r3p5bYNL2A6+S0aKfe9EaF9EnzbyUAfD2zYLBY2rolNHmOrmaYtSqes91IJF8tkuwb/TrHMgW/m8nn6fL00p6kC92+KoNirai7tDT8+m71NFQo01TZeOzwtE2IaHROOdHZw==
+ bh=eoWTgHqQWDed18GGHbmGrw3lfbNF/TG1jvipXAb8rQU=;
+ b=jqvEh4wr8wzc5CFRqFOMIzv2/kp6mFdPtKS8Nyn0rhjlr0ebn58fcSvkkTB8+TdmjEadWsccFwPJy79xozyy09R2haylpdQTBwGUiM0hSghTXO5Cj9OQHXvI0qQTT5szvdGwDLWfMk4zsjhjzwqGCuvX1Tq9AAjuNK4aoevrpcmD+duDbwtATXAoiRgTtr714qYCzw+aBU+d7Q/HoUAobubWQy0ncT0HQbGrJ8dNvoAiINq0VC2XCSCONkm6+x88pPaCr0Jh3YaDTiQg45SWIlri4nxw4AM1+vnpE4kWHHpYoqK8v3WoZS+fXKRFTBN15CfrYcJODmuRfCdEQ2gsyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kA8/IuLqP59nQUuH48k/jN1J40Mwg2cPNtoPi2uNK0U=;
- b=sQYMIO/C3XGNsk834jB9aqTHSxq5AOi0vcHSVr0bxlq7IyMthxfuaURloBVkeu/449i+tMPuMgFXiE8N9zf1k6jGJIeekiSydQfpMkDi3ZvniF9QGeNGh/TshoiukEb53GZ8bWrb0mYdYZIVy0+1rLU2LAYeuUzRvmv4IFQ+UlokyDx7DIJ4dkD7ypiapf5mfR/y+A9yby27O4UAYtvE1ZdJyso2BawrkgJ1Sjx8PNDHG973VVdhd46d4mo/6D4zRn/bbopiuOn3ye/rOjSnjH9uMjdvCi/UotBsLE1Cpv26AK38xG0hzFxcJWNtdE/nhyYrarxwhfhZiFvm0sKJ2Q==
+ bh=eoWTgHqQWDed18GGHbmGrw3lfbNF/TG1jvipXAb8rQU=;
+ b=KAmO7Udz+hiSeLytfU5w8Nysniag94+j2HwV/tREY5F/OlPeFXWwEpKM8N6dmc92w0+9DmVeRs4LhVukTEVNUCDv0txvgCQP1gLB8NYVV1DCUVShqmapPY1dMnP2jOqvWDvGGOgM4Et7aS0PdhymwDtQPLfHiTjPhUpv9Srpaqw67MLyut4FHcXVYZMpqFSLuFBynqiZ+avgPDW7fH83QdInCYh8cr3SRcNXfypF4stYTF4l8jon+mKfSWoc8EK/JGJDBRjTlnQvrp9okM2P6O3sk5esxfrv+RLelanLi2C0Uz/bawh0JICSr6zIo74X+i3pyMKgZ6VPeoofgDmziA==
 Received: from SG2PR01MB2951.apcprd01.prod.exchangelabs.com
  (2603:1096:4:76::15) by PU1PR01MB1947.apcprd01.prod.exchangelabs.com
  (2603:1096:803:19::20) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.22; Wed, 15 Jun
- 2022 05:58:47 +0000
+ 2022 05:58:52 +0000
 Received: from SG2PR01MB2951.apcprd01.prod.exchangelabs.com
  ([fe80::a1f7:b32:baa1:3d12]) by SG2PR01MB2951.apcprd01.prod.exchangelabs.com
  ([fe80::a1f7:b32:baa1:3d12%7]) with mapi id 15.20.5332.022; Wed, 15 Jun 2022
- 05:58:47 +0000
+ 05:58:52 +0000
 From: Wang Wenhu <wenhu.wang@hotmail.com>
 To: gregkh@linuxfoundation.org,
 	arnd@arndb.de,
@@ -56,57 +56,58 @@ To: gregkh@linuxfoundation.org,
 	linux-fpga@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCHv2 0/2] uio:powerpc:mpc85xx: l2-cache-sram uio driver
-Date: Tue, 14 Jun 2022 22:57:33 -0700
-Message-ID:  <SG2PR01MB29510049C49D4D9281E88A6D9FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+Subject: [PATCHv2 1/2] mm: eliminate ifdef of HAVE_IOREMAP_PROT in .c files
+Date: Tue, 14 Jun 2022 22:57:34 -0700
+Message-ID:  <SG2PR01MB295111ED8F547B9F99DB9FA99FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <YqHy1uXwCLlJmftr@kroah.com>
+In-Reply-To: <20220615055735.53585-1-wenhu.wang@hotmail.com>
 References: <YqHy1uXwCLlJmftr@kroah.com>
+ <20220615055735.53585-1-wenhu.wang@hotmail.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-TMN: [e/ivNtV7/ONGGlruoE+moSA28uoP/vXX]
+X-TMN: [7E9NYvd8mRfjcrI2nMEDA6xwFWiiOlo1]
 X-ClientProxiedBy: SG2P153CA0018.APCP153.PROD.OUTLOOK.COM (2603:1096::28) To
  SG2PR01MB2951.apcprd01.prod.exchangelabs.com (2603:1096:4:76::15)
-X-Microsoft-Original-Message-ID:  <20220615055735.53585-1-wenhu.wang@hotmail.com>
+X-Microsoft-Original-Message-ID:  <20220615055735.53585-2-wenhu.wang@hotmail.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: dddb7be2-678e-4b38-7c9a-08da4e941c6a
-X-MS-Exchange-SLBlob-MailProps: 	6rN1YWC+iUWsRh032Lw5Z0CQAJRF/Q/XDJSy/jzflduZU80Cop7TOrOo59C/7QUFHkq8K7NTP6pH1/boQ9M3sIKe3zdtNTt0WT3tpUbmPeLWJzGBIxx3dEeJIewLbO2P5Dh7HxtupqgAmrUWSt7b2ODONiGMQK3C2I2MUoXOtql79+mFD6lxfQLREpTmBJnry2KL5IyZ/eF13OESl1KksEsm8RZh3gjzfkVtqWm8fZ8fQds9E8zPsLGAdZcI16iox2eCsQtKUs44L7XnMGeaNGG3HlqkjE+/9HkAuJO3t2FyBzcaHbxREqsGwWj4m8XIFTiPcwRlF2vc0ykUMWLuTaeAEPAF8SXKgZXTDTGS18tqKqnu0DRXYSqxqsI5bxVIuns5YjP8HP7pMK2yKOtq8M26RaLcG2nDwMN8YWjYdmoR719/ECYpqE1MqTXybBmAr5Qm5h+/Ggc5OeWow5a0pzsDUcOOXCqPiPH+2cSLSzfL6beZkaQTw0ylpRlLSQs6mS95CRBs22/CTyeKWc7hN9QORX1XQrNfCPNtwhYNFNDOzCfAZxls86sjOR4xfDH6c9sfQGePOEmyQmum5P+/aB3BBrElgpH1cXV94Ei3EkgYWLBGxQ/7JbR/GSM6Q0/Fbz9+LcceRUOVK+KHTq7cuPIvUqtG9uAe8WKgz47zRNecfsIoti4M8usfCSNQ1EHhBqk64Qu9tug75FgzYsDomEsDBR8/eTPD4cYP+t0uKS5ISFcaCMus0iSTmSaVjJIdAMWLCa1A+IxSC8s2/2yC1g2R7x1Sf6aJV3/NsKWmViGPJ2t4Fuadqt/u2rXj3wM4
+X-MS-Office365-Filtering-Correlation-Id: 84e58221-e413-4278-e2f6-08da4e941fac
+X-MS-Exchange-SLBlob-MailProps: 	AsidyrAlbSQZHKAyKdVUDqca3EJTCyiEi2anrgjSN7Q434rtpcb9uwn/MSx6xPgMSvLQllnpSq05GfWD3FQfeIAZTe3ahriHZC/8895TRKi033C/90t2ImAGdLmvYwP6qCaWzzGT+m3aPJpmQ7S59mo8e3I8Csw3w1P61Zjbh4cL+8pgareJQfuXGmpuXZsLilUqF517QdJBb/dxhSOnGtMGuYoSbr/AC31MYwJj9dJTHkdk4rQmCtZCyYGBYgDkN56qvfgQ7/tmcebQKmYotI0SgSAVAmQ23hlbi7tVJfc8QCIggEXrNFTFMLMmI4CkaaLouKdbuJOH8/OeF1pvzBg43nvR+nFxd0c18eDAbMOTMvOuNT9Z7U1YjOtIgvB6bOSI1OHr09moomwiz/m8/FVg6UTSXDykZPqFybxneVBPZOLD8tagDVhCRBcXAFm64E88B1zmZZdwVvEy1MJnBpCgXrir/1ksK6q+KIpAkFunmAen8KLAvBb1amamin4Je9v1zpsmGtPNu5N6a/No26oTmH13j1yUL8jVp57ugecj19O5m5KB9CagH5ChmLAwMXn+nTCo8ApqrxEbfPJH95gcMCj9Ss3layj2T2CWPFpZwULIpT9pyX8TGwZVygmyEPRRVDzgWJ0ZjA4hXqm4nDDKik+FykWdMdQiqjSoe7IfxMAgrMEsg2ys2jDKW9cvKGej5k2m8cfuJo/dOX4HvXvaA/7jWEVL862S2BB+vSEV/fyVwHHaJFdy3Nvas2x7wJ+Rm7Qk/WZfjagNIoZTxY7+9orvN1JF0OhzHEjzk0WT8ZkGcJ8En2RySROXgt2MJaQ0aB9k3Lq/m/vbDryuVA/OSD+f6cV+
 X-MS-TrafficTypeDiagnostic: PU1PR01MB1947:EE_
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	5tUrzGmbSxTNw6hUVOHJy0XTbHXLVpY8cBJ1p4dQKbBnxN3ibiqEd7m8eCEAywMGRDTiwdFljKV/fp4uHcDYAO89VrWj6xWUaZHc7QMbgg/t609T80LenPEpnHf8KvtRhfgvu45m+C3mRxs+f2XExEZck6bMDW3P7ycCRHGHlyf4Q/fkT/v8pZfIwwZ7EAII/RXI7Rp15QyS0FAQL0HfgX+ZALupmjBNpHPKyG8qb8FE2sBGeLg4a+XZ11lanRTmBgnkGuuJFNlT0r7PcLl3zGjc+NQqXrJ5a6mLkC0nGaOFsw38usCBdgjPvfIf4e2zI6cN89u0PgBftiqmn6qmlj5odC01Z6t3DEM083y8Y8qZ6fOaBpMEyy5UV+KUaABcd+N4Pndd0OM+HZwGvjnonP7SxVEEaeBLWO82x6QgoOdLfsWTyPdRynGQX/HU2jz9Ry1ORKyZjGkZN8EDznU4SHHmRtPpqUBL0N9PZqhdAnVBnB32X92Ephm44RpPOMr5pnNxZd05TPSVNw3r0JzyQ/S8ObIy+9FiO2ACPp/vs1YNUE6dKXrBGtMIW70jj+tAU/hIzIF1b+jIs2/bLG0eHpplfaPzx8IKloIX9X60LTpCXnHL+vtpFJoODqTxMwc++hLSLBt3KQHOvP+QtrQjcg==
+X-Microsoft-Antispam-Message-Info: 	QG0rkDp+OsNsqSoW3zKboFUWatdBiEi9B+4weg/4H7wMiRJQRqshf7fF6yDtIB4tjuHJkqJOsvJ6SuNWru1y3qN1qcAEA3/kpGAOM/xrU28ulpV5o7P/JNx0eGWtlxlOZ8nJTEgfroSTAcrpH+63SB231zYFgptaOXRyAYbrcftobnfYytvPQRgGDBuzQqfsEi+I75tKxn3YpjG4c929bYU5IfzTIRUs5dG8c5XzO5OyyLimV8I06zxQHi2k7WWD65/Yc7vnLmcm5e8TeTqyEKbC/U57C2ufPApny7MPA2aQ5zXltnwPMbCS7ZABZ24UUbQ+YcbytTdsODfVwSv9iCCkypSprcPIUYrPoWRbFOInMuaijNmmKA1SX9ldSj8/qbavOl7KUpyXoLi7s3zxpnAmc2R8E2aPbO9paD5bksWLaTj7byGIqcDePfTfxC1lAniUUYBEwFTNY/EmEyYIUjGA+hTjCH5pUXI7QIRQ3Qzp/i46CRlyQCb3W3/TUpzy94AL5HmTKhVKvTOinmrWR81qDC9EnzjeC+YQ0YKxCPFMGmZTc6imTwzyY0Pc6L+IDWQ9PMd5msYE72KnfSBtFC+cNB6WlWptKUG58rpvZ6SAz2Wxe43Qs5GlooaqLlmf
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?8wE41USK1psQ3F6xQvSzu5mIBITuJGUPnTSzPELENKgZH701ZVpuwcD3Lo9j?=
- =?us-ascii?Q?qBybjQ+vpoKRtOrXwIfqsVGoIsyhqpK985FcN+f3s0m/KFGigh+qyBLZsGvk?=
- =?us-ascii?Q?LYABjCCL48nXOTXl3YQSdKONspanEMy/RO443DJLdbooZkflmrK8N614S8vo?=
- =?us-ascii?Q?rafG4ydzOyanIVWzhZzcYbQG3+as1kwJE6M93GAhl3Rlh5x7ElF0EghwMDXM?=
- =?us-ascii?Q?KhQ9W1mHzP4lTjarf6wZ1ljfZtxlS7WEgm0cQeDSKf2C33yJmqO7jSEj7cvG?=
- =?us-ascii?Q?JYcS5XfKcFam6OL/0VxN5cCfoZ5l2NMJyndSBYP1dBUlv5XqeuV+nKStjrU9?=
- =?us-ascii?Q?sutgYEgtWKiGIzB4m4ufEplQcj2jN345C+XF1OByTQp6UoWY/qe93GY5uAIG?=
- =?us-ascii?Q?P2KZq8Z3MTy0WLONcEcbqBlA1tYVooLQpGWCtqEMRWyAkZ91t9IRpNWaOW87?=
- =?us-ascii?Q?xQak82VGm6uHhuBP3lMzJ6e5vSJMrXpMg5QMZawUpgq7K8gmZjv/z9Imyb44?=
- =?us-ascii?Q?MdP+furceZA7kPi5YIZxrIjFeQ5p+YjULRJRXegmSW6ByDCVkN8vIQ9bTQgR?=
- =?us-ascii?Q?HH79gR0jp91EJYBogzFGrpEAlpOCXnxxz1s2hL/iSmy74tuBYcmyx0ogNBhR?=
- =?us-ascii?Q?eqXZeHpmukubAdYjeiXbX6C2VDSRq4CsftHC0rke10NfySAEQvyWrlRcCrKr?=
- =?us-ascii?Q?PgoUMdt13aYfY1r+8BDaTkyey8j9tGjsFmkLLmuHVlZ4Or2++VIn4RVvC6Ee?=
- =?us-ascii?Q?FuN9kbf2meRj2x3YXuI+LO+gfbJpIfwZm/RdB5rN/PL8I4qXkZoEd26DCkQr?=
- =?us-ascii?Q?ph1HFVSsj5rwrHCiyvcgwWuFwhoM6fh6Dpu3V0QadYzR+75cHPeXJzbUUZxc?=
- =?us-ascii?Q?1TEbfC75sDGV0bD9AhtADSN/nwZPzyl+Xsph3qaJ2XhQKMP6VGMOKX4mA4DT?=
- =?us-ascii?Q?JbU306sT5XK6tO+7qlyaE3VYA3gWR5nLPOQWCiGj0v5YfuJ4qwp1cMY+LYrI?=
- =?us-ascii?Q?Hv6yZlKwTRbHSxOrbL/acOL87H58YFUfD2+iIGnkYomOWWs1BgC1Gl4wU2Ws?=
- =?us-ascii?Q?i0D+LvaewIEDvfASu36vXOJ3fPIW/iaBtDdD/ugIW5Ou1CLK7gRtBSf+QYvL?=
- =?us-ascii?Q?IopMtF0f+24Q3+BrBPplUMqcpz58ZyTN6Q+t7WJ1t86f26FkxNX6R94mmX2g?=
- =?us-ascii?Q?6xK66rPTAF5DOoIc4H26pKUn6LVxtFYVMoZ+TT+4LRPel9cK25PVe8ooQxup?=
- =?us-ascii?Q?b6u4WXyhGcSrU2twA7ilwbVA2+hlJ33gdId9OCebHn35m5J/7QKt09xk1qQ2?=
- =?us-ascii?Q?PJe9NdwXu8VAY7G/iErgK7eSn2D86JSu2iuFA6r+vmdtFn+JajOrRsjV3lj7?=
- =?us-ascii?Q?8N7chiBAuvnIpEdjLkzqmwnQ1m2Jmy/+O0Bwo+oK5Y25EGOsehnIY0UtgZ9m?=
- =?us-ascii?Q?V3+o2Wyapd0=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ixZWEh6+LhNB42+fp36hD2ALGQHmmndFk5pOmTqKXJ+l+ITbaCh4fYxPRZAR?=
+ =?us-ascii?Q?5VV4CA9NetC/2Ni24SN818FFkOrRrx+QcC3zNuNyBMlvROiM9wwehkVecMtR?=
+ =?us-ascii?Q?1+FnTN/VJ4NYOmIbZ6cZAgV/sF1N5KDhu/CPo4U49Vkslj8k98qrp5ZE3anz?=
+ =?us-ascii?Q?wi1EdP5i2zszds8ymKNFFpvYUS7Czt28R04HTkRORuEXl6/OT1Br8hR+9LrS?=
+ =?us-ascii?Q?swfJ2y1/f2ISweiZESxQNEcTrGmAcAScB5dFmEM36o7EwAT3jFRuuvqjGZXp?=
+ =?us-ascii?Q?IaAMkbi3kn/y57gPG8oQcmpxtyBZ7FrvSouwVTwtS/RyiXJE5gYum2NECPJz?=
+ =?us-ascii?Q?wAmpP+9p0mbBCok5zRrcV5W79+6LQWil5u5HqjTx6Q6CpwQAF8Uwc5njyaZr?=
+ =?us-ascii?Q?1oDSPUrvWySqeGhsR6CCc8lBa2fmp4m+iYWFTbBsmEclI7CMkxSnc2PobwY8?=
+ =?us-ascii?Q?m3nSh1qswnTW/uHDWkgSnPy7+ZplEs7KoyED1kxsqWVJ9VIDazAQuYDn409k?=
+ =?us-ascii?Q?YHg32FiLs/Sp/uibj0/JtUexNbTOUtjrW2DWVwHvA4IOiuROSRqShBb8DJoy?=
+ =?us-ascii?Q?5yyIWbvsfyZPs59sl6b7xLdeswNbMNkUE/dsEZ4+CV41K6uzrBN9dK9ZlqRv?=
+ =?us-ascii?Q?7NRzw7FahlYtxJiOiEAKtm1tc6Mt87dGos/70hA6Ryp8P/ck/TcgBkOUI5WE?=
+ =?us-ascii?Q?8nRNMu5d6zmTvukhX60f+ORe+lt15p6Jpb/o3lEEzHa+QpIR2bp5HkRp22Ha?=
+ =?us-ascii?Q?uosTbVKTo6WIDsPlCISGAfF9xQW2bMHgl0u9Uk/IDhU1nah6ITwSyhGFXeBK?=
+ =?us-ascii?Q?9RSYL+kxcTIgWnQqordeI4BC8jFVJTPw+o+rgAyuuYjKsqk/5qF7XoEPpgUw?=
+ =?us-ascii?Q?vyPM8xoIr1DDb/ZIfi+5co6J5xLuiNlyR9/XYVpd/yeZRnCRKapzdsckI7wj?=
+ =?us-ascii?Q?/IcSVAAcZ682N+PBIl0McItARaHhaUR9AfUblWVMrRQRa3anG4t5IJXJt1y+?=
+ =?us-ascii?Q?aHoQwVFojp9LUZYj6V5Nz+/zSD6SJgQHgozXZIY/cJcKBjShNlSmV0F6ZmJw?=
+ =?us-ascii?Q?y3wRej+CuVufAacyNdYyafn5GuaSlaP+qjeHecBX0xM62oVxmmCId1IsNOoO?=
+ =?us-ascii?Q?5MiKZP/gaOt7EsEeQSv012Istnit7W0UJ3wkh5TfTTHD7+I83GMN1UwMSXxO?=
+ =?us-ascii?Q?jtMZkbRItXzX/p35TIuq+N4GAODCjjzx15B2K7seDBB8uQG9LI0e8zsrw2dD?=
+ =?us-ascii?Q?lG3o3B6Up6+OB75Gh59YCtz7aJZBoA4yL231pR8Xf6ZXFE3pXG+4nl8rgLyx?=
+ =?us-ascii?Q?CqaXpYeecb45CTektP4/nAH+JQ1tVhu2FEYwqTZX/lpq98bFQdKPKD5sHUpj?=
+ =?us-ascii?Q?GAATlNVH8S2A6kn9PC6v0q/H1uZ0znycb34MmrtDRhWxO/l/7rVOwLbDbTAq?=
+ =?us-ascii?Q?4ic8FMZgOkU=3D?=
 X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-d8e84.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: dddb7be2-678e-4b38-7c9a-08da4e941c6a
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84e58221-e413-4278-e2f6-08da4e941fac
 X-MS-Exchange-CrossTenant-AuthSource: SG2PR01MB2951.apcprd01.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2022 05:58:47.1931
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2022 05:58:52.2084
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -127,38 +128,127 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, wenhu.wang@hotm
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series try to push an uio driver which works on freescale mpc85xx
-to configure its l2-cache-sram as a block of SRAM and enable user level
-application access of the SRAM.
+It is recommended in the "Conditional Compilation" chapter of kernel
+coding-style documentation that preprocessor conditionals should not
+be used in .c files wherever possible.
 
-1/2: For coding-style consideration of macro CONFIG_HAVE_IOREMAP_PORT;
-2/2: Implementation of the uio driver.
+As for the macro CONFIG_HAVE_IOREMAP_PROT, now it's a proper chance
+to eliminate it in .c files which are referencers. We constrict its usage
+only to mm/memory.c.
+HAVE_IOREMAP_PROT is supported by part of archectures such as powerpc and
+x86, but not supported by some others such as arm. So for some functions,
+a no-op version should be available. Currently it's generic_access_phys,
+which is referenced by some other modules.
 
-This is the second version, which addressed some commets:
-1. Use __be32 instead of u32 for the big-endian data declarations;
-2. Remove "static inline" version of generic_access_phys definition in .h file
-and give a version of no-op definition in mm/memory.c;
-3. Use generic ioremap_cache instead of ioremap_coherent
+Signed-off-by: Wang Wenhu <wenhu.wang@hotmail.com>
+---
+v2:
+ - Added IS_ENABLED(CONFIG_HAVE_IOREMAP_PROT) condition in __access_remote_vm
+ - Added generic_access_phys() function with no-op in mm/memory.c instead of the 
+ former one of "static inline" in include/linux/mm.h
+Former: https://lore.kernel.org/linux-mm/YqMRtWAH5fIWsLQB@kroah.com/T/
+---
+ drivers/char/mem.c          |  2 --
+ drivers/fpga/dfl-afu-main.c |  2 --
+ drivers/pci/mmap.c          |  2 --
+ drivers/uio/uio.c           |  2 --
+ mm/memory.c                 | 13 +++++++++----
+ 5 files changed, 9 insertions(+), 12 deletions(-)
 
-For v1, see:
-1/2: https://lore.kernel.org/all/20220610144348.GA595923@bhelgaas/T/
-2/2: https://lore.kernel.org/lkml/YqHy1uXwCLlJmftr@kroah.com/
-
-Wang Wenhu (2):
-  mm: eliminate ifdef of HAVE_IOREMAP_PROT in .c files
-  uio:powerpc:mpc85xx: l2-cache-sram uio driver implementation
-
- drivers/char/mem.c                    |   2 -
- drivers/fpga/dfl-afu-main.c           |   2 -
- drivers/pci/mmap.c                    |   2 -
- drivers/uio/Kconfig                   |  14 ++
- drivers/uio/Makefile                  |   1 +
- drivers/uio/uio.c                     |   2 -
- drivers/uio/uio_fsl_85xx_cache_sram.c | 288 ++++++++++++++++++++++++++
- mm/memory.c                           |  13 +-
- 8 files changed, 312 insertions(+), 12 deletions(-)
- create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
-
+diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+index 84ca98ed1dad..40186a441e38 100644
+--- a/drivers/char/mem.c
++++ b/drivers/char/mem.c
+@@ -354,9 +354,7 @@ static inline int private_mapping_ok(struct vm_area_struct *vma)
+ #endif
+ 
+ static const struct vm_operations_struct mmap_mem_ops = {
+-#ifdef CONFIG_HAVE_IOREMAP_PROT
+ 	.access = generic_access_phys
+-#endif
+ };
+ 
+ static int mmap_mem(struct file *file, struct vm_area_struct *vma)
+diff --git a/drivers/fpga/dfl-afu-main.c b/drivers/fpga/dfl-afu-main.c
+index 7f621e96d3b8..833e14806c7a 100644
+--- a/drivers/fpga/dfl-afu-main.c
++++ b/drivers/fpga/dfl-afu-main.c
+@@ -797,9 +797,7 @@ static long afu_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ }
+ 
+ static const struct vm_operations_struct afu_vma_ops = {
+-#ifdef CONFIG_HAVE_IOREMAP_PROT
+ 	.access = generic_access_phys,
+-#endif
+ };
+ 
+ static int afu_mmap(struct file *filp, struct vm_area_struct *vma)
+diff --git a/drivers/pci/mmap.c b/drivers/pci/mmap.c
+index b8c9011987f4..1dcfabf80453 100644
+--- a/drivers/pci/mmap.c
++++ b/drivers/pci/mmap.c
+@@ -35,9 +35,7 @@ int pci_mmap_page_range(struct pci_dev *pdev, int bar,
+ #endif
+ 
+ static const struct vm_operations_struct pci_phys_vm_ops = {
+-#ifdef CONFIG_HAVE_IOREMAP_PROT
+ 	.access = generic_access_phys,
+-#endif
+ };
+ 
+ int pci_mmap_resource_range(struct pci_dev *pdev, int bar,
+diff --git a/drivers/uio/uio.c b/drivers/uio/uio.c
+index 43afbb7c5ab9..c9205a121007 100644
+--- a/drivers/uio/uio.c
++++ b/drivers/uio/uio.c
+@@ -719,9 +719,7 @@ static int uio_mmap_logical(struct vm_area_struct *vma)
+ }
+ 
+ static const struct vm_operations_struct uio_physical_vm_ops = {
+-#ifdef CONFIG_HAVE_IOREMAP_PROT
+ 	.access = generic_access_phys,
+-#endif
+ };
+ 
+ static int uio_mmap_physical(struct vm_area_struct *vma)
+diff --git a/mm/memory.c b/mm/memory.c
+index 7a089145cad4..7c0e59085456 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5413,6 +5413,13 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(generic_access_phys);
++#else
++int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
++			void *buf, int len, int write)
++{
++	return 0;
++}
++EXPORT_SYMBOL_GPL(generic_access_phys);
+ #endif
+ 
+ /*
+@@ -5437,9 +5444,8 @@ int __access_remote_vm(struct mm_struct *mm, unsigned long addr, void *buf,
+ 		ret = get_user_pages_remote(mm, addr, 1,
+ 				gup_flags, &page, &vma, NULL);
+ 		if (ret <= 0) {
+-#ifndef CONFIG_HAVE_IOREMAP_PROT
+-			break;
+-#else
++			if (!IS_ENABLED(CONFIG_HAVE_IOREMAP_PROT))
++				break;
+ 			/*
+ 			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
+ 			 * we can access using slightly different code.
+@@ -5453,7 +5459,6 @@ int __access_remote_vm(struct mm_struct *mm, unsigned long addr, void *buf,
+ 			if (ret <= 0)
+ 				break;
+ 			bytes = ret;
+-#endif
+ 		} else {
+ 			bytes = len;
+ 			offset = addr & (PAGE_SIZE-1);
 -- 
 2.25.1
 
