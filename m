@@ -2,59 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D778954C794
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 13:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C9D54CB84
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 16:38:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LNNYd4J7Mz3cgg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 21:36:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LNSbf72NHz3cfC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 00:38:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=Mhjp7FPY;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=kAIWl67V;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com; envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=Mhjp7FPY;
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=kAIWl67V;
 	dkim-atps=neutral
-X-Greylist: delayed 453 seconds by postgrey-1.36 at boromir; Wed, 15 Jun 2022 21:36:02 AEST
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNNXy2cDbz3bqg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 21:36:02 +1000 (AEST)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4LNNN34jqmz9sRK;
-	Wed, 15 Jun 2022 13:28:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1655292499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8jwqW10cqVS6fTjfeUNcmemKbh/h4CrxEgSPdPMGt+Y=;
-	b=Mhjp7FPYrGu+fRre/e3oZuLVkbqMaG/lhC3jwo9PhGKMsxjtCfaqkmasXAJxAu4/acIX4Q
-	NImi/m6yDUnlQC4oGgBrYt5RrOvyI5+L5Jz7bn/9mY9avzSS53wLIy1akVmmiDUdzvfH/r
-	Nlt5fCbg2OFbzn9FV/NW1Sz3eiFhLXVpwUjKuzFVKSiMX3j6+QV155gHh5tZkN/116gpf7
-	uFh30bKnYmf4vFAg3CJjO+47GlRuYpyc1wT/OnuDRkKersjuN6AOazhcfAEka56J3X7Cwq
-	g7ajAwWDORGAA5xuCUxO+DuiwPS3SRtwe0ub2Z3+pCWDQTzjlOc8MNUUdkZflA==
-Date: Wed, 15 Jun 2022 13:28:16 +0200
-From: "Erhard F." <erhard_f@mailbox.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [Bug 216095] New: sysfs: cannot create duplicate filename
- '/devices/platform/of-display'
-Message-ID: <20220615132816.197c6657@yea>
-In-Reply-To: <87zgifbazm.fsf@mpe.ellerman.id.au>
-References: <bug-216095-206035@https.bugzilla.kernel.org/>
-	<87zgifbazm.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNSb16wCcz306l
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jun 2022 00:38:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=75kgVCcqOPOLeu4JBiLLFab/dM4uNZ1dcLuvpDx9ZCg=; b=kAIWl67VuUe8cBDkmFOZTh4b+J
+	Uy6PgE2+CwIEzhFEfsXCTAadcMkk5TefuTIBHvgzxNrjmUz+/r/f3fMBR5i8mMC7UweLMh9MkeJoD
+	97gkOJRUGibA77qDy9s4vL7NkQkS1Sv+TX4WpruLFHmbGvImVgE9LeYadgdIraA8AGxMlB+PxaWy/
+	1adKvJuvvpCbTsZosCqi5SMDlMupfKEgEY7JpKMS8HhvbF7gyowCTheRqW0YX0S9D05qpW9G1fKLt
+	DJUWQ6k8Tz/HxaHb6kuJRSWnDBXrsJA/DQco3hh/lFSm8XLWvSeNFNfH2bKr+ugXM0hH/Gw2zl2s+
+	laFslj7w==;
+Received: from 179.red-81-39-194.dynamicip.rima-tde.net ([81.39.194.179] helo=[192.168.15.167])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1o1U8m-002LYs-SW; Wed, 15 Jun 2022 16:37:04 +0200
+Message-ID: <362f6520-8209-1721-823c-11928338f57d@igalia.com>
+Date: Wed, 15 Jun 2022 11:36:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH 24/30] panic: Refactor the panic path
+Content-Language: en-US
+To: Petr Mladek <pmladek@suse.com>
+References: <20220427224924.592546-1-gpiccoli@igalia.com>
+ <20220427224924.592546-25-gpiccoli@igalia.com>
+ <87fskzuh11.fsf@email.froward.int.ebiederm.org>
+ <0d084eed-4781-c815-29c7-ac62c498e216@igalia.com> <Yqic0R8/UFqTbbMD@alley>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <Yqic0R8/UFqTbbMD@alley>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: gymutrjp8wffnxg5xmut7jqwme339p35
-X-MBO-RS-ID: 032f32d6927706a612c
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,52 +65,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, tzimmermann@suse.de
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-hyperv@vger.kernel.org, halves@canonical.com, gregkh@linuxfoundation.org, peterz@infradead.org, alejandro.j.jimenez@oracle.com, linux-remoteproc@vger.kernel.org, feng.tang@intel.com, mikelley@microsoft.com, hidehiro.kawai.ez@hitachi.com, sparclinux@vger.kernel.org, will@kernel.org, tglx@linutronix.de, linux-leds@vger.kernel.org, linux-s390@vger.kernel.org, john.ogness@linutronix.de, bhe@redhat.com, corbet@lwn.net, paulmck@kernel.org, fabiomirmar@gmail.com, x86@kernel.org, mingo@redhat.com, bcm-kernel-feedback-list@broadcom.com, xen-devel@lists.xenproject.org, linux-mips@vger.kernel.org, dyoung@redhat.com, vgoyal@redhat.com, mhiramat@kernel.org, linux-xtensa@linux-xtensa.org, dave.hansen@linux.intel.com, keescook@chromium.org, arnd@arndb.de, linux-pm@vger.kernel.org, linux-um@lists.infradead.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, luto@kernel.org, linux-tegra@vger.kernel.org, openipmi-developer@lists.sourceforge.net, 
+ andriy.shevchenko@linux.intel.com, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org, jgross@suse.com, linux-parisc@vger.kernel.org, netdev@vger.kernel.org, kernel@gpiccoli.net, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, stern@rowland.harvard.edu, senozhatsky@chromium.org, d.hatayama@jp.fujitsu.com, "Eric W. Biederman" <ebiederm@xmission.com>, kernel-dev@igalia.com, linux-alpha@vger.kernel.org, vkuznets@redhat.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 15 Jun 2022 00:01:01 +1000
-Michael Ellerman <mpe@ellerman.id.au> wrote:
+Perfect Petr, thanks for your feedback!
 
-> Hi Erhard,
-> 
-> This is presumably caused by:
-> 
->   52b1b46c39ae ("of: Create platform devices for OF framebuffers")
-> 
-> Can you try the patch below?
-> 
-> cheers
-> 
-> 
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 3507095a69f6..a70ff9df5cb9 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -556,7 +556,7 @@ static int __init of_platform_default_populate_init(void)
->  			if (!of_get_property(node, "linux,opened", NULL) ||
->  			    !of_get_property(node, "linux,boot-display", NULL))
->  				continue;
-> -			dev = of_platform_device_create(node, "of-display", NULL);
-> +			dev = of_platform_device_create(node, NULL, NULL);
->  			if (WARN_ON(!dev))
->  				return -ENOMEM;
->  			boot_display = node;
-> @@ -565,7 +565,7 @@ static int __init of_platform_default_populate_init(void)
->  		for_each_node_by_type(node, "display") {
->  			if (!of_get_property(node, "linux,opened", NULL) || node == boot_display)
->  				continue;
-> -			of_platform_device_create(node, "of-display", NULL);
-> +			of_platform_device_create(node, NULL, NULL);
->  		}
->  
->  	} else {
-> 
+I'll be out for some weeks, but after that what I'm doing is to split
+the series in 2 parts:
 
-Hi Michael!
+(a) The general fixes, which should be reviewed by subsystem maintainers
+and even merged individually by them.
 
-Applied your patch on top of v5.19-rc2 and can confirm it works, thanks!
+(b) The proper panic refactor, which includes the notifiers list split,
+etc. I'll think about what I consider the best solution for the
+crash_dump required ones, and will try to split in very simple patches
+to make it easier to review.
 
-Also the "Using unsupported 1920x1080 (null) at a0008000, depth=8, pitch=2048" later on is gone in the dmesg.
+Cheers,
 
-Cheers
+
+Guilherme
