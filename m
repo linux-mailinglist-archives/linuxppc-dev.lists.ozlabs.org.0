@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FE054C16A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:00:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A6754C16C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:01:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LNF6K0NSTz3cCP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 16:00:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LNF772X4cz3dqT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 16:01:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=KAmO7Udz;
+	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=etCNwQnw;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hotmail.com (client-ip=2a01:111:f400:feab::813; helo=apc01-sg2-obe.outbound.protection.outlook.com; envelope-from=wenhu.wang@hotmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=KAmO7Udz;
+	dkim=pass (2048-bit key; unprotected) header.d=hotmail.com header.i=@hotmail.com header.a=rsa-sha256 header.s=selector1 header.b=etCNwQnw;
 	dkim-atps=neutral
 Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01olkn20813.outbound.protection.outlook.com [IPv6:2a01:111:f400:feab::813])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNF4K64Bpz3bvZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 15:59:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNF4L1Qwlz3c2B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 15:59:14 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=niz950VfSqAzoSS0x6hEnvRUm5TYVppwx9X/JswCH/g910vURhOBNKKQn+OaU2MwByIxFBXIJvp51BJVTjYn9pA7QYcP88TSEUjCPdI55PQD9yyUlnMUwuj3Iy+Oeh3KUi+56vQ93S3wySqC1a1Mq7qHCtbMNPprBGjEle5Q06CO4TuJY3Ld4u52/d+fMLVNc8xgAzcvf53IEYCEU/HPeNI/Q/AFvgJUD2sJZazk3/w1AJ3Uts9pcNuxgcvC1TWRaADfaVd2fvToIK8AD41Zp03Qsa2ooD3iPuU3f2vWpW/VAB48wmgtKnueTBtt6ht1IdVThW2LBsSbjc/NbctHgg==
+ b=j106HbZMF6/nhjjP7QBqrJQvd+fZxNu941UgO5b1XE+R+ht4O+KLQHEEySIArzywdHfYql4HP77Or9CqR6OxGfKlmiXjOIwyLdIjXoDf/g6qD0uCfuFbd78ISkwvH3jS7wi/LkdG8PjazuERCDFOze1DD9ZwJn8f+6T+oeKl7oDFwnrqOixtAsoKMwU1UcFMktksQSTSMaNPXYSNeUhTEwvLpzN+uZHOgv0Jp1PcZdo+B1lj8U9w9DAUsUkVg3mb71pb6TJ9WBACBCkGQvFAZzkdrZzEPRahIE7JBlygOnYalF5CL0ReQlv6U+YITySXYlGLLoND57LF+8pAG++lZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eoWTgHqQWDed18GGHbmGrw3lfbNF/TG1jvipXAb8rQU=;
- b=jqvEh4wr8wzc5CFRqFOMIzv2/kp6mFdPtKS8Nyn0rhjlr0ebn58fcSvkkTB8+TdmjEadWsccFwPJy79xozyy09R2haylpdQTBwGUiM0hSghTXO5Cj9OQHXvI0qQTT5szvdGwDLWfMk4zsjhjzwqGCuvX1Tq9AAjuNK4aoevrpcmD+duDbwtATXAoiRgTtr714qYCzw+aBU+d7Q/HoUAobubWQy0ncT0HQbGrJ8dNvoAiINq0VC2XCSCONkm6+x88pPaCr0Jh3YaDTiQg45SWIlri4nxw4AM1+vnpE4kWHHpYoqK8v3WoZS+fXKRFTBN15CfrYcJODmuRfCdEQ2gsyg==
+ bh=tMgsA7ake/UqYeJWf7GEEORpMukkOfANMPh6nm+womA=;
+ b=Mdr6XxRnmppquQB8nZwBZhoPZWoLw+WEIvLK7prxX/+rW0TxK/TweidYXB0qDNCXJm7MQ9PW8wwgCPzBUWpcjp1tt4SJ8dqyAZo2b1tINL4+4+UmiFvqGas/Ei787s7uTC1DJhtt+dXqWDbvkFlXCcfdZ/DHWxi7jq92T4lMzdWYHXtsw/sk//YHCJqDRnZFBLoqf9Ik6Q3wGYHSwto5+HYUmbiJPqiAPIr7V69kNrW9pEJ2rAdhsXGEhyDS4YW9UMXvHCO8vHIdnTs60UkIv4/8iAi2HBOh8+Vl5q+n91wvvwU908POdfaxg6kOa6/lMytO1ikPF25ghwlQ1pnJEA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eoWTgHqQWDed18GGHbmGrw3lfbNF/TG1jvipXAb8rQU=;
- b=KAmO7Udz+hiSeLytfU5w8Nysniag94+j2HwV/tREY5F/OlPeFXWwEpKM8N6dmc92w0+9DmVeRs4LhVukTEVNUCDv0txvgCQP1gLB8NYVV1DCUVShqmapPY1dMnP2jOqvWDvGGOgM4Et7aS0PdhymwDtQPLfHiTjPhUpv9Srpaqw67MLyut4FHcXVYZMpqFSLuFBynqiZ+avgPDW7fH83QdInCYh8cr3SRcNXfypF4stYTF4l8jon+mKfSWoc8EK/JGJDBRjTlnQvrp9okM2P6O3sk5esxfrv+RLelanLi2C0Uz/bawh0JICSr6zIo74X+i3pyMKgZ6VPeoofgDmziA==
+ bh=tMgsA7ake/UqYeJWf7GEEORpMukkOfANMPh6nm+womA=;
+ b=etCNwQnwCLpPsubYpYyQa3y73HudZkANcvV/6IkzPY2Sims0jySk+WmZZERDQLZTNliJdaT1NY1zRni+b8AhV2F9evE4HP/PIej6IaVoSofXjqf81pTAMLDyCD442znfXsOvzX3aL+pwib6NmHfhL2uma49bwTBJDb8Qj9WMvCyyssKZH2vktrNDKRsGEoH74yoTugygqUlTCLuZkVfamPrjmREpSQsUJYOhioq7CGrNKSglCVFS76PBiAp9Nl5Wp8qgXw/OHz1ihbecOL6MfEIGO6GklPIYASMF69wiIyWIjXMv72l03d84d7Ea6oQfqJE7F2e3TkzRt4mb1dcy3Q==
 Received: from SG2PR01MB2951.apcprd01.prod.exchangelabs.com
  (2603:1096:4:76::15) by PU1PR01MB1947.apcprd01.prod.exchangelabs.com
  (2603:1096:803:19::20) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5332.22; Wed, 15 Jun
- 2022 05:58:52 +0000
+ 2022 05:58:57 +0000
 Received: from SG2PR01MB2951.apcprd01.prod.exchangelabs.com
  ([fe80::a1f7:b32:baa1:3d12]) by SG2PR01MB2951.apcprd01.prod.exchangelabs.com
  ([fe80::a1f7:b32:baa1:3d12%7]) with mapi id 15.20.5332.022; Wed, 15 Jun 2022
- 05:58:52 +0000
+ 05:58:57 +0000
 From: Wang Wenhu <wenhu.wang@hotmail.com>
 To: gregkh@linuxfoundation.org,
 	arnd@arndb.de,
@@ -56,58 +56,58 @@ To: gregkh@linuxfoundation.org,
 	linux-fpga@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCHv2 1/2] mm: eliminate ifdef of HAVE_IOREMAP_PROT in .c files
-Date: Tue, 14 Jun 2022 22:57:34 -0700
-Message-ID:  <SG2PR01MB295111ED8F547B9F99DB9FA99FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+Subject: [PATCHv2 2/2] uio:powerpc:mpc85xx: l2-cache-sram uio driver implementation
+Date: Tue, 14 Jun 2022 22:57:35 -0700
+Message-ID:  <SG2PR01MB29513533A1EA32DCB00D10309FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220615055735.53585-1-wenhu.wang@hotmail.com>
 References: <YqHy1uXwCLlJmftr@kroah.com>
  <20220615055735.53585-1-wenhu.wang@hotmail.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-TMN: [7E9NYvd8mRfjcrI2nMEDA6xwFWiiOlo1]
+X-TMN: [Eo8sx1YNeFhz/7rmnJ2jPouTT0t29+JE]
 X-ClientProxiedBy: SG2P153CA0018.APCP153.PROD.OUTLOOK.COM (2603:1096::28) To
  SG2PR01MB2951.apcprd01.prod.exchangelabs.com (2603:1096:4:76::15)
-X-Microsoft-Original-Message-ID:  <20220615055735.53585-2-wenhu.wang@hotmail.com>
+X-Microsoft-Original-Message-ID:  <20220615055735.53585-3-wenhu.wang@hotmail.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 84e58221-e413-4278-e2f6-08da4e941fac
-X-MS-Exchange-SLBlob-MailProps: 	AsidyrAlbSQZHKAyKdVUDqca3EJTCyiEi2anrgjSN7Q434rtpcb9uwn/MSx6xPgMSvLQllnpSq05GfWD3FQfeIAZTe3ahriHZC/8895TRKi033C/90t2ImAGdLmvYwP6qCaWzzGT+m3aPJpmQ7S59mo8e3I8Csw3w1P61Zjbh4cL+8pgareJQfuXGmpuXZsLilUqF517QdJBb/dxhSOnGtMGuYoSbr/AC31MYwJj9dJTHkdk4rQmCtZCyYGBYgDkN56qvfgQ7/tmcebQKmYotI0SgSAVAmQ23hlbi7tVJfc8QCIggEXrNFTFMLMmI4CkaaLouKdbuJOH8/OeF1pvzBg43nvR+nFxd0c18eDAbMOTMvOuNT9Z7U1YjOtIgvB6bOSI1OHr09moomwiz/m8/FVg6UTSXDykZPqFybxneVBPZOLD8tagDVhCRBcXAFm64E88B1zmZZdwVvEy1MJnBpCgXrir/1ksK6q+KIpAkFunmAen8KLAvBb1amamin4Je9v1zpsmGtPNu5N6a/No26oTmH13j1yUL8jVp57ugecj19O5m5KB9CagH5ChmLAwMXn+nTCo8ApqrxEbfPJH95gcMCj9Ss3layj2T2CWPFpZwULIpT9pyX8TGwZVygmyEPRRVDzgWJ0ZjA4hXqm4nDDKik+FykWdMdQiqjSoe7IfxMAgrMEsg2ys2jDKW9cvKGej5k2m8cfuJo/dOX4HvXvaA/7jWEVL862S2BB+vSEV/fyVwHHaJFdy3Nvas2x7wJ+Rm7Qk/WZfjagNIoZTxY7+9orvN1JF0OhzHEjzk0WT8ZkGcJ8En2RySROXgt2MJaQ0aB9k3Lq/m/vbDryuVA/OSD+f6cV+
+X-MS-Office365-Filtering-Correlation-Id: 72d383c5-cd4a-415a-121f-08da4e9422b6
+X-MS-Exchange-SLBlob-MailProps: 	6rN1YWC+iUWsRh032Lw5Z0CQAJRF/Q/XDOIqlCS1VES3CQNWx1uzTB/DbDeaSlYXrTahZZa8/nt7oxf/vl6SXCHLAcMcL3v4SVQQYLkKQXsMemZ2BzinhJ+OtRpfD9IGvOXkFd4Pz6domT0HZ884WIo8DAHqjxIsMiMtgisctkX1KuHbWrobaVnKvV7KvxOTbbUv/JkIDj12BrtIyDvlKJmYsCzRl3Y5W70j8rM5YkCYuA2H3TUthSp0j0N6dFtI7kwRb7bq5dWwy7u5Mj//JBmnFwW1EAWl/kI2nr63hmZsNFxQs3OTD81GamZ2qXKGmvvuHljMNf45C96u5MijNqh7a6fEt5sxrPulJV4LKJQmr9vrjQjbtDrr865LDo5GDrhu1dfrPN6gk3ys6CCyt6zvMYMnvC2IO4/VMS09WDAX82Maxsr/DufPzbvva5JMOo+fSDZvrO9EEuZ+07BYOOABln+RNKlLK6MioU1ODYJH++R6EmvtexFYpxWVFYmof5qTxRJpDpm1L54MytG1jPFel2aJ8ZWqESPkV9LGoqH1X9et6K2cteeV+MuBl5cF8paQX6ZNb7zc7WyJNVy7kURIv0dZnsvbQ57xqb5JaRtrKS4Wmd59Dt9/FghVdIZtAp5YkXDN86dMqzWZtzLVqIt97G5pZQFTVJHigv/0f3JQ3larl5voRLPYM96/d2Qxg6QQqQoJry5m+sDTQ8dQADhy1Codr0pLIymdjCfF0GdTOm35mC007juyPfvvouv/ptZJ5DHXbzWy+GalB70ijCuI7jRGfFt7MXETd++XuO1vscq2C/nJm/brmNgjbtra
 X-MS-TrafficTypeDiagnostic: PU1PR01MB1947:EE_
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	QG0rkDp+OsNsqSoW3zKboFUWatdBiEi9B+4weg/4H7wMiRJQRqshf7fF6yDtIB4tjuHJkqJOsvJ6SuNWru1y3qN1qcAEA3/kpGAOM/xrU28ulpV5o7P/JNx0eGWtlxlOZ8nJTEgfroSTAcrpH+63SB231zYFgptaOXRyAYbrcftobnfYytvPQRgGDBuzQqfsEi+I75tKxn3YpjG4c929bYU5IfzTIRUs5dG8c5XzO5OyyLimV8I06zxQHi2k7WWD65/Yc7vnLmcm5e8TeTqyEKbC/U57C2ufPApny7MPA2aQ5zXltnwPMbCS7ZABZ24UUbQ+YcbytTdsODfVwSv9iCCkypSprcPIUYrPoWRbFOInMuaijNmmKA1SX9ldSj8/qbavOl7KUpyXoLi7s3zxpnAmc2R8E2aPbO9paD5bksWLaTj7byGIqcDePfTfxC1lAniUUYBEwFTNY/EmEyYIUjGA+hTjCH5pUXI7QIRQ3Qzp/i46CRlyQCb3W3/TUpzy94AL5HmTKhVKvTOinmrWR81qDC9EnzjeC+YQ0YKxCPFMGmZTc6imTwzyY0Pc6L+IDWQ9PMd5msYE72KnfSBtFC+cNB6WlWptKUG58rpvZ6SAz2Wxe43Qs5GlooaqLlmf
+X-Microsoft-Antispam-Message-Info: 	cBjW0t1UfQFLCZSxSHvzO3EEyp63/5LDZyMio+KxeNTafh2fxDHhM/xbHlKXheO0uydVe9YmbqoG359kX34mGwOtmm9Gr9Y/p68No5ur6527suPnZsMPQsJHW5/CdItUxpNeJltZGkW+ll2gzsHqukSya/t3N1pYF3uzRCv6ffPzf2BvtsQfnsLSIGvV3QoWaXufOeRAdjJJczMrhzEyJfZf0SHCDAEw7KmVxLdbGLTbxhZoulgjKD32Uzhi0hZncUvVCwYvxdKPaSxgObAXb+tTKgr28f5Pu3y6JjyGO5+Ge0zhpu833d7qTthSBpOXw+2eqlguRALnpDacGanIPwdnPGHeY31gtA+eg1atC+7w6jL7KDMJ7PuVdNF3jUPD5hGewMf+2aaoGuW3d6zpiHl1Qb24KrTCk9mRagyjQ4ocDPvYkg7KeeN9b9xvshLWHIuZaimFKHGlflDoN4HewLtUvmInZWiswrjqCLJsqyTIYCZ4Nul44nz+sOsqSjAiLAz1inNqh1NM2j1Cjw71eG5nI3zLQEQ4Z5Gp4eUopAbTRu/NIPrkZWmXM84py5alo9R3Dzt920htyzehIANJrw9Dclm08bSCIOxAmZD/CHHxCs7X7xHBjQOy4la9BCwc
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ixZWEh6+LhNB42+fp36hD2ALGQHmmndFk5pOmTqKXJ+l+ITbaCh4fYxPRZAR?=
- =?us-ascii?Q?5VV4CA9NetC/2Ni24SN818FFkOrRrx+QcC3zNuNyBMlvROiM9wwehkVecMtR?=
- =?us-ascii?Q?1+FnTN/VJ4NYOmIbZ6cZAgV/sF1N5KDhu/CPo4U49Vkslj8k98qrp5ZE3anz?=
- =?us-ascii?Q?wi1EdP5i2zszds8ymKNFFpvYUS7Czt28R04HTkRORuEXl6/OT1Br8hR+9LrS?=
- =?us-ascii?Q?swfJ2y1/f2ISweiZESxQNEcTrGmAcAScB5dFmEM36o7EwAT3jFRuuvqjGZXp?=
- =?us-ascii?Q?IaAMkbi3kn/y57gPG8oQcmpxtyBZ7FrvSouwVTwtS/RyiXJE5gYum2NECPJz?=
- =?us-ascii?Q?wAmpP+9p0mbBCok5zRrcV5W79+6LQWil5u5HqjTx6Q6CpwQAF8Uwc5njyaZr?=
- =?us-ascii?Q?1oDSPUrvWySqeGhsR6CCc8lBa2fmp4m+iYWFTbBsmEclI7CMkxSnc2PobwY8?=
- =?us-ascii?Q?m3nSh1qswnTW/uHDWkgSnPy7+ZplEs7KoyED1kxsqWVJ9VIDazAQuYDn409k?=
- =?us-ascii?Q?YHg32FiLs/Sp/uibj0/JtUexNbTOUtjrW2DWVwHvA4IOiuROSRqShBb8DJoy?=
- =?us-ascii?Q?5yyIWbvsfyZPs59sl6b7xLdeswNbMNkUE/dsEZ4+CV41K6uzrBN9dK9ZlqRv?=
- =?us-ascii?Q?7NRzw7FahlYtxJiOiEAKtm1tc6Mt87dGos/70hA6Ryp8P/ck/TcgBkOUI5WE?=
- =?us-ascii?Q?8nRNMu5d6zmTvukhX60f+ORe+lt15p6Jpb/o3lEEzHa+QpIR2bp5HkRp22Ha?=
- =?us-ascii?Q?uosTbVKTo6WIDsPlCISGAfF9xQW2bMHgl0u9Uk/IDhU1nah6ITwSyhGFXeBK?=
- =?us-ascii?Q?9RSYL+kxcTIgWnQqordeI4BC8jFVJTPw+o+rgAyuuYjKsqk/5qF7XoEPpgUw?=
- =?us-ascii?Q?vyPM8xoIr1DDb/ZIfi+5co6J5xLuiNlyR9/XYVpd/yeZRnCRKapzdsckI7wj?=
- =?us-ascii?Q?/IcSVAAcZ682N+PBIl0McItARaHhaUR9AfUblWVMrRQRa3anG4t5IJXJt1y+?=
- =?us-ascii?Q?aHoQwVFojp9LUZYj6V5Nz+/zSD6SJgQHgozXZIY/cJcKBjShNlSmV0F6ZmJw?=
- =?us-ascii?Q?y3wRej+CuVufAacyNdYyafn5GuaSlaP+qjeHecBX0xM62oVxmmCId1IsNOoO?=
- =?us-ascii?Q?5MiKZP/gaOt7EsEeQSv012Istnit7W0UJ3wkh5TfTTHD7+I83GMN1UwMSXxO?=
- =?us-ascii?Q?jtMZkbRItXzX/p35TIuq+N4GAODCjjzx15B2K7seDBB8uQG9LI0e8zsrw2dD?=
- =?us-ascii?Q?lG3o3B6Up6+OB75Gh59YCtz7aJZBoA4yL231pR8Xf6ZXFE3pXG+4nl8rgLyx?=
- =?us-ascii?Q?CqaXpYeecb45CTektP4/nAH+JQ1tVhu2FEYwqTZX/lpq98bFQdKPKD5sHUpj?=
- =?us-ascii?Q?GAATlNVH8S2A6kn9PC6v0q/H1uZ0znycb34MmrtDRhWxO/l/7rVOwLbDbTAq?=
- =?us-ascii?Q?4ic8FMZgOkU=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ztxtYOKmHH7EVmEWRP2pMtr50CDB1HWL9+uiyosZRXU0/xOnVeJww3NGMuEC?=
+ =?us-ascii?Q?vB+iHP8EZff3QTD3cNJ7Q5JoM3ftByZi0sRINEBMl2iwqQMcK0Y28IDZJ5mn?=
+ =?us-ascii?Q?+C7dEOcNgq52MovLJzhm8RKaEHradHdB9KG5P5gYR73OPGsARKcppP3j3Cxk?=
+ =?us-ascii?Q?BtIfYCaE7xgEHsdboY8qlXXK3hX7aOsqwYS8vBAckTJF1iWYGFoxTKEv6089?=
+ =?us-ascii?Q?8BrPD47jEzQz1OK72yIRlmdkNgd0ycOxeYmoxM7ovlYVNrU4awk+v6ZcreS4?=
+ =?us-ascii?Q?OXKMwxfSTcjCVxkd4h27GhF91tiC7yJobBL+FeaZXM9bCRpjX82sZsoP4CY/?=
+ =?us-ascii?Q?NngfxqwTr6HrA88ACYa5ijmjoi8I7YWx2DJvVe6BDTsfXmkbF6i1SU4mrUyN?=
+ =?us-ascii?Q?OtmR9KYk7CBLN4obwlQrNNtXIYl6rJpgdBu3EeuMrRZNLGHlO8gURSnTmqTZ?=
+ =?us-ascii?Q?SxqW8waWm4lqryXhd5KzljZUwI2RxrJwPsabhcYa4r9U4BpCP1bStdpyRC0m?=
+ =?us-ascii?Q?Y5z0DRvlHSixauaF4U6XvJyn3oQsLX9crpi9tv8HtbIYH1QEhWVgrPqgRhB/?=
+ =?us-ascii?Q?wPDaYbsj8iHzC3bnAIi7Amo7cJ2MQI6ZyqPum/xlQkXVWpjIJXBFYzXFHyJR?=
+ =?us-ascii?Q?OYGULJ5gB8KrwhCKv1uM+1JZeKxikMBcVTnSC2VJlY9GXPzlfND+cba4bcls?=
+ =?us-ascii?Q?ypsCKNidLgJbayKBIeMt8udqFKewKiNbTGy7Qo+dF4pAR1bO6ZJghaj+tGAB?=
+ =?us-ascii?Q?vuEMiBvR88tkqDLxh/uKMhYdt6qVz3EiQRBXPiPrEdeoDh/A7WhXMnJ4I4+t?=
+ =?us-ascii?Q?Z6V8nP8TizYv0W46bSGdyfYOGAk+tCQmt45ULH6JDIFusJoJcpwU2076HPn0?=
+ =?us-ascii?Q?7AJWTTkycyYbX52JMLVOoeqJm+6vsMsuNbo9CuFgnN+A4HEnlicVHCVS6lys?=
+ =?us-ascii?Q?HuUfeAwT/dCDZuMuqSXHAN9bsbVZ8YnbTfa8ogo5URHkf1lafp9VvVmWkUve?=
+ =?us-ascii?Q?NbdkVqdP1FFREN7JoupcOEtSLGJCaT3VxDaujB1wBs3wSx98s40gLagUIEYZ?=
+ =?us-ascii?Q?J0psh0TAf0BoVejkxVEqoWl9CP+zus1+sAKzty+tuiqovA0/CRAFjX1FYsfd?=
+ =?us-ascii?Q?8qhjJlDgn9t6+RNhb4j5Ryp+PJ7WuYoTkdCXauduyPOt8KvnQ87DryqodX6j?=
+ =?us-ascii?Q?G1/pnE0p1wz0hjWTjgrA7QLY6nbsE8G4FwZ/nE84nYTGtNafIoQgPgxQImk0?=
+ =?us-ascii?Q?b0mImimLVuKJ77Yw7gdYfnAIzkHmWBZQoX3bKbkSooiI7P6bFH05D6CAXdQO?=
+ =?us-ascii?Q?PWIZyVjwoRyB8F2luj/t/Wupj4IwXYGK2sVxdpYG+mszavF/3kuS2V6KAl4S?=
+ =?us-ascii?Q?sdB7VnkCCp/nchlPafM3bdv/EGG8Xtsh78vYJT2bIZ0Bjz4KIt623MQ+DHYs?=
+ =?us-ascii?Q?Sry59/89vbE=3D?=
 X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-d8e84.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84e58221-e413-4278-e2f6-08da4e941fac
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72d383c5-cd4a-415a-121f-08da4e9422b6
 X-MS-Exchange-CrossTenant-AuthSource: SG2PR01MB2951.apcprd01.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2022 05:58:52.2084
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2022 05:58:57.3017
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -128,127 +128,358 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, wenhu.wang@hotm
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It is recommended in the "Conditional Compilation" chapter of kernel
-coding-style documentation that preprocessor conditionals should not
-be used in .c files wherever possible.
+Freescale mpc85xx l2-cache could be optionally configured as SRAM partly
+or fully. Users can make use of it as a block of independent memory that
+offers special usage, such as for debuging or other critical status info
+storage, which keeps consistently even when the whole system crashed.
+Applications can make use of UIO driver to access the SRAM from user level.
 
-As for the macro CONFIG_HAVE_IOREMAP_PROT, now it's a proper chance
-to eliminate it in .c files which are referencers. We constrict its usage
-only to mm/memory.c.
-HAVE_IOREMAP_PROT is supported by part of archectures such as powerpc and
-x86, but not supported by some others such as arm. So for some functions,
-a no-op version should be available. Currently it's generic_access_phys,
-which is referenced by some other modules.
+Once there was another driver version for the l2-cache-sram for SRAM access
+in kernel space. It had been removed recently.
+See: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=dc21ed2aef4150fc2fcf58227a4ff24502015c03
 
 Signed-off-by: Wang Wenhu <wenhu.wang@hotmail.com>
 ---
 v2:
- - Added IS_ENABLED(CONFIG_HAVE_IOREMAP_PROT) condition in __access_remote_vm
- - Added generic_access_phys() function with no-op in mm/memory.c instead of the 
- former one of "static inline" in include/linux/mm.h
-Former: https://lore.kernel.org/linux-mm/YqMRtWAH5fIWsLQB@kroah.com/T/
+ - Use __be32 instead of u32 for big-endian data declarations;
+ - Use generic ioremap_cache instead of ioremap_coherent;
+ - Physical address support both 32 and 64 bits;
+ - Addressed some other comments from Greg.
 ---
- drivers/char/mem.c          |  2 --
- drivers/fpga/dfl-afu-main.c |  2 --
- drivers/pci/mmap.c          |  2 --
- drivers/uio/uio.c           |  2 --
- mm/memory.c                 | 13 +++++++++----
- 5 files changed, 9 insertions(+), 12 deletions(-)
+ drivers/uio/Kconfig                   |  14 ++
+ drivers/uio/Makefile                  |   1 +
+ drivers/uio/uio_fsl_85xx_cache_sram.c | 288 ++++++++++++++++++++++++++
+ 3 files changed, 303 insertions(+)
+ create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
 
-diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-index 84ca98ed1dad..40186a441e38 100644
---- a/drivers/char/mem.c
-+++ b/drivers/char/mem.c
-@@ -354,9 +354,7 @@ static inline int private_mapping_ok(struct vm_area_struct *vma)
- #endif
+diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
+index 2e16c5338e5b..f7604584a12c 100644
+--- a/drivers/uio/Kconfig
++++ b/drivers/uio/Kconfig
+@@ -105,6 +105,20 @@ config UIO_NETX
+ 	  To compile this driver as a module, choose M here; the module
+ 	  will be called uio_netx.
  
- static const struct vm_operations_struct mmap_mem_ops = {
--#ifdef CONFIG_HAVE_IOREMAP_PROT
- 	.access = generic_access_phys
--#endif
- };
- 
- static int mmap_mem(struct file *file, struct vm_area_struct *vma)
-diff --git a/drivers/fpga/dfl-afu-main.c b/drivers/fpga/dfl-afu-main.c
-index 7f621e96d3b8..833e14806c7a 100644
---- a/drivers/fpga/dfl-afu-main.c
-+++ b/drivers/fpga/dfl-afu-main.c
-@@ -797,9 +797,7 @@ static long afu_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- }
- 
- static const struct vm_operations_struct afu_vma_ops = {
--#ifdef CONFIG_HAVE_IOREMAP_PROT
- 	.access = generic_access_phys,
--#endif
- };
- 
- static int afu_mmap(struct file *filp, struct vm_area_struct *vma)
-diff --git a/drivers/pci/mmap.c b/drivers/pci/mmap.c
-index b8c9011987f4..1dcfabf80453 100644
---- a/drivers/pci/mmap.c
-+++ b/drivers/pci/mmap.c
-@@ -35,9 +35,7 @@ int pci_mmap_page_range(struct pci_dev *pdev, int bar,
- #endif
- 
- static const struct vm_operations_struct pci_phys_vm_ops = {
--#ifdef CONFIG_HAVE_IOREMAP_PROT
- 	.access = generic_access_phys,
--#endif
- };
- 
- int pci_mmap_resource_range(struct pci_dev *pdev, int bar,
-diff --git a/drivers/uio/uio.c b/drivers/uio/uio.c
-index 43afbb7c5ab9..c9205a121007 100644
---- a/drivers/uio/uio.c
-+++ b/drivers/uio/uio.c
-@@ -719,9 +719,7 @@ static int uio_mmap_logical(struct vm_area_struct *vma)
- }
- 
- static const struct vm_operations_struct uio_physical_vm_ops = {
--#ifdef CONFIG_HAVE_IOREMAP_PROT
- 	.access = generic_access_phys,
--#endif
- };
- 
- static int uio_mmap_physical(struct vm_area_struct *vma)
-diff --git a/mm/memory.c b/mm/memory.c
-index 7a089145cad4..7c0e59085456 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5413,6 +5413,13 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(generic_access_phys);
-+#else
-+int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
-+			void *buf, int len, int write)
++config UIO_FSL_85XX_CACHE_SRAM
++	tristate "Freescale 85xx L2-Cache-SRAM UIO driver"
++	depends on FSL_SOC_BOOKE && PPC32
++	help
++	  Driver for user level access of freescale mpc85xx l2-cache-sram.
++
++	  Freescale's mpc85xx provides an option of configuring a part of
++	  (or full) cache memory as SRAM. The driver does this configuring
++	  work and exports SRAM to user-space for access form user level.
++	  This is extremely helpful for user applications that require
++	  high performance memory accesses.
++
++	  If you don't know what to do here, say N.
++
+ config UIO_FSL_ELBC_GPCM
+ 	tristate "eLBC/GPCM driver"
+ 	depends on FSL_LBC
+diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
+index f2f416a14228..1ba07d92a1b1 100644
+--- a/drivers/uio/Makefile
++++ b/drivers/uio/Makefile
+@@ -12,3 +12,4 @@ obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
+ obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
+ obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
+ obj-$(CONFIG_UIO_DFL)	+= uio_dfl.o
++obj-$(CONFIG_UIO_FSL_85XX_CACHE_SRAM)	+= uio_fsl_85xx_cache_sram.o
+diff --git a/drivers/uio/uio_fsl_85xx_cache_sram.c b/drivers/uio/uio_fsl_85xx_cache_sram.c
+new file mode 100644
+index 000000000000..6f91b0aa946b
+--- /dev/null
++++ b/drivers/uio/uio_fsl_85xx_cache_sram.c
+@@ -0,0 +1,288 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2022 Wang Wenhu <wenhu.wang@hotmail.com>
++ * All rights reserved.
++ */
++
++#include <linux/platform_device.h>
++#include <linux/uio_driver.h>
++#include <linux/stringify.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/of_address.h>
++#include <linux/io.h>
++
++#define DRIVER_NAME	"uio_mpc85xx_cache_sram"
++#define UIO_INFO_VER	"0.0.1"
++#define UIO_NAME	"uio_cache_sram"
++
++#define L2CR_L2FI		0x40000000	/* L2 flash invalidate */
++#define L2CR_L2IO		0x00200000	/* L2 instruction only */
++#define L2CR_SRAM_ZERO		0x00000000	/* L2SRAM zero size */
++#define L2CR_SRAM_FULL		0x00010000	/* L2SRAM full size */
++#define L2CR_SRAM_HALF		0x00020000	/* L2SRAM half size */
++#define L2CR_SRAM_TWO_HALFS	0x00030000	/* L2SRAM two half sizes */
++#define L2CR_SRAM_QUART		0x00040000	/* L2SRAM one quarter size */
++#define L2CR_SRAM_TWO_QUARTS	0x00050000	/* L2SRAM two quarter size */
++#define L2CR_SRAM_EIGHTH	0x00060000	/* L2SRAM one eighth size */
++#define L2CR_SRAM_TWO_EIGHTH	0x00070000	/* L2SRAM two eighth size */
++
++#define L2SRAM_OPTIMAL_SZ_SHIFT	0x00000003	/* Optimum size for L2SRAM */
++
++#define L2SRAM_BAR_MSK_LO18	0xFFFFC000	/* Lower 18 bits */
++#define L2SRAM_BARE_MSK_HI4	0x0000000F	/* Upper 4 bits */
++
++enum cache_sram_lock_ways {
++	LOCK_WAYS_ZERO		= 0,
++	LOCK_WAYS_EIGHTH	= 1,
++	LOCK_WAYS_TWO_EIGHTH	= 2,
++	LOCK_WAYS_HALF		= 4,
++	LOCK_WAYS_FULL		= 8,
++};
++
++struct mpc85xx_l2ctlr {
++	__be32	ctl;		/* 0x000 - L2 control */
++	u8	res1[0xC];
++	__be32	ewar0;		/* 0x010 - External write address 0 */
++	__be32	ewarea0;	/* 0x014 - External write address extended 0 */
++	__be32	ewcr0;		/* 0x018 - External write ctrl */
++	u8	res2[4];
++	__be32	ewar1;		/* 0x020 - External write address 1 */
++	__be32	ewarea1;	/* 0x024 - External write address extended 1 */
++	__be32	ewcr1;		/* 0x028 - External write ctrl 1 */
++	u8	res3[4];
++	__be32	ewar2;		/* 0x030 - External write address 2 */
++	__be32	ewarea2;	/* 0x034 - External write address extended 2 */
++	__be32	ewcr2;		/* 0x038 - External write ctrl 2 */
++	u8	res4[4];
++	__be32	ewar3;		/* 0x040 - External write address 3 */
++	__be32	ewarea3;	/* 0x044 - External write address extended 3 */
++	__be32	ewcr3;		/* 0x048 - External write ctrl 3 */
++	u8	res5[0xB4];
++	__be32	srbar0;		/* 0x100 - SRAM base address 0 */
++	__be32	srbarea0;	/* 0x104 - SRAM base addr reg ext address 0 */
++	__be32	srbar1;		/* 0x108 - SRAM base address 1 */
++	__be32	srbarea1;	/* 0x10C - SRAM base addr reg ext address 1 */
++	u8	res6[0xCF0];
++	__be32	errinjhi;	/* 0xE00 - Error injection mask high */
++	__be32	errinjlo;	/* 0xE04 - Error injection mask low */
++	__be32	errinjctl;	/* 0xE08 - Error injection tag/ecc control */
++	u8	res7[0x14];
++	__be32	captdatahi;	/* 0xE20 - Error data high capture */
++	__be32	captdatalo;	/* 0xE24 - Error data low capture */
++	__be32	captecc;	/* 0xE28 - Error syndrome */
++	u8	res8[0x14];
++	__be32	errdet;		/* 0xE40 - Error detect */
++	__be32	errdis;		/* 0xE44 - Error disable */
++	__be32	errinten;	/* 0xE48 - Error interrupt enable */
++	__be32	errattr;	/* 0xE4c - Error attribute capture */
++	__be32	erradrrl;	/* 0xE50 - Error address capture low */
++	__be32	erradrrh;	/* 0xE54 - Error address capture high */
++	__be32	errctl;		/* 0xE58 - Error control */
++	u8	res9[0x1A4];
++};
++
++static int uio_cache_sram_setup(struct platform_device *pdev,
++				phys_addr_t base, u8 ways)
 +{
++	struct mpc85xx_l2ctlr __iomem *l2ctlr = of_iomap(pdev->dev.of_node, 0);
++
++	if (!l2ctlr) {
++		dev_err(&pdev->dev, "can not map l2 controller\n");
++		return -EINVAL;
++	}
++
++	/* write bits[0-17] to srbar0 */
++	out_be32(&l2ctlr->srbar0, lower_32_bits(base) & L2SRAM_BAR_MSK_LO18);
++
++	/* write bits[18-21] to srbare0 */
++	if (IS_ENABLED(CONFIG_PHYS_64BIT))
++		out_be32(&l2ctlr->srbarea0, upper_32_bits(base) & L2SRAM_BARE_MSK_HI4);
++
++	clrsetbits_be32(&l2ctlr->ctl, L2CR_L2E, L2CR_L2FI);
++
++	switch (ways) {
++	case LOCK_WAYS_EIGHTH:
++		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_EIGHTH);
++		break;
++
++	case LOCK_WAYS_TWO_EIGHTH:
++		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_QUART);
++		break;
++
++	case LOCK_WAYS_HALF:
++		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_HALF);
++		break;
++
++	case LOCK_WAYS_FULL:
++	default:
++		setbits32(&l2ctlr->ctl, L2CR_L2E | L2CR_L2FI | L2CR_SRAM_FULL);
++		break;
++	}
++	eieio();
++
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(generic_access_phys);
- #endif
- 
- /*
-@@ -5437,9 +5444,8 @@ int __access_remote_vm(struct mm_struct *mm, unsigned long addr, void *buf,
- 		ret = get_user_pages_remote(mm, addr, 1,
- 				gup_flags, &page, &vma, NULL);
- 		if (ret <= 0) {
--#ifndef CONFIG_HAVE_IOREMAP_PROT
--			break;
--#else
-+			if (!IS_ENABLED(CONFIG_HAVE_IOREMAP_PROT))
-+				break;
- 			/*
- 			 * Check if this is a VM_IO | VM_PFNMAP VMA, which
- 			 * we can access using slightly different code.
-@@ -5453,7 +5459,6 @@ int __access_remote_vm(struct mm_struct *mm, unsigned long addr, void *buf,
- 			if (ret <= 0)
- 				break;
- 			bytes = ret;
--#endif
- 		} else {
- 			bytes = len;
- 			offset = addr & (PAGE_SIZE-1);
++
++static const struct vm_operations_struct uio_cache_sram_vm_ops = {
++	.access = generic_access_phys,
++};
++
++static int uio_cache_sram_mmap(struct uio_info *info,
++			       struct vm_area_struct *vma)
++{
++	struct uio_mem *mem = info->mem;
++
++	if (mem->addr & ~PAGE_MASK)
++		return -ENODEV;
++
++	if ((vma->vm_end - vma->vm_start > mem->size) ||
++	    (mem->size == 0) ||
++	    (mem->memtype != UIO_MEM_PHYS))
++		return -EINVAL;
++
++	vma->vm_ops = &uio_cache_sram_vm_ops;
++	vma->vm_page_prot = pgprot_cached(vma->vm_page_prot);
++
++	return remap_pfn_range(vma,
++			       vma->vm_start,
++			       mem->addr >> PAGE_SHIFT,
++			       vma->vm_end - vma->vm_start,
++			       vma->vm_page_prot);
++}
++
++static int uio_cache_sram_probe(struct platform_device *pdev)
++{
++	struct device_node *node = pdev->dev.of_node;
++	struct uio_info *info;
++	struct uio_mem *uiomem;
++	const char *dt_name;
++	u32 mem_base_32;
++	u64 mem_base_64;
++	phys_addr_t mem_base;
++	u32 l2cache_size;
++	u32 mem_size;
++	u32 rem;
++	u8 ways;
++	int ret;
++
++	/* alloc uio_info for one device */
++	info = devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
++	if (!info)
++		return -ENOMEM;
++
++	/* get optional uio name */
++	if (of_property_read_string(node, "uio_name", &dt_name))
++		dt_name = UIO_NAME;
++
++	info->name = devm_kstrdup(&pdev->dev, dt_name, GFP_KERNEL);
++	if (!info->name)
++		return -ENOMEM;
++
++	ret = of_property_read_u32(node, "cache-mem-size", &mem_size);
++	if (ret) {
++		dev_err(&pdev->dev, "missing cache-mem-size\n");
++		return -EINVAL;
++	}
++
++
++	if (IS_ENABLED(CONFIG_PHYS_64BIT)) {
++		ret = of_property_read_u64(node, "cache-mem-base", &mem_base_64);
++		mem_base = mem_base_64;
++	} else {
++		ret = of_property_read_u32(node, "cache-mem-base", &mem_base_32);
++		mem_base = mem_base_32;
++	}
++
++	if (ret) {
++		dev_err(&pdev->dev, "missing cache-mem-base\n");
++		return -EINVAL;
++	}
++
++	if (mem_size == 0) {
++		dev_err(&pdev->dev, "cache-mem-size should not be 0\n");
++		return -EINVAL;
++	}
++
++	ret = of_property_read_u32(node, "cache-size", &l2cache_size);
++	if (ret) {
++		dev_err(&pdev->dev, "missing l2cache-size\n");
++		return -EINVAL;
++	}
++
++	rem = l2cache_size % mem_size;
++	ways = LOCK_WAYS_FULL * mem_size / l2cache_size;
++	if (rem || (ways & (ways - 1))) {
++		dev_err(&pdev->dev, "illegal cache-sram-size parameter\n");
++		return -EINVAL;
++	}
++
++	ret = uio_cache_sram_setup(pdev, mem_base, ways);
++	if (ret)
++		return ret;
++
++	if (!request_mem_region(mem_base, mem_size, "fsl_85xx_cache_sram")) {
++		dev_err(&pdev->dev, "uio_cache_sram request memory failed\n");
++		ret = -ENXIO;
++	}
++
++	info->irq = UIO_IRQ_NONE;
++	info->version = UIO_INFO_VER;
++	info->mmap = uio_cache_sram_mmap;
++	uiomem = info->mem;
++	uiomem->memtype = UIO_MEM_PHYS;
++	uiomem->addr = mem_base;
++	uiomem->size = mem_size;
++	uiomem->name = devm_kstrdup(&pdev->dev, node->name, GFP_KERNEL);
++	uiomem->internal_addr = ioremap_cache(mem_base, mem_size);
++	if (!uiomem->internal_addr) {
++		dev_err(&pdev->dev, "cache ioremap failed\n");
++		ret = -ENOMEM;
++	}
++
++	/* register uio device */
++	if (uio_register_device(&pdev->dev, info)) {
++		dev_err(&pdev->dev, "error uio,cache-sram registration failed\n");
++		ret = -ENODEV;
++		goto err_out;
++	}
++
++	platform_set_drvdata(pdev, info);
++	return 0;
++
++err_out:
++	iounmap(info->mem[0].internal_addr);
++	return ret;
++}
++
++static int uio_cache_sram_remove(struct platform_device *pdev)
++{
++	struct uio_info *info = platform_get_drvdata(pdev);
++
++	uio_unregister_device(info);
++	iounmap(info->mem[0].internal_addr);
++
++	return 0;
++}
++
++static const struct of_device_id uio_cache_sram_of_match[] = {
++	{ .compatible = "fsl,p2020-l2-cache-sram-uio", },
++	{}
++};
++MODULE_DEVICE_TABLE(of, uio_cache_sram_of_match);
++
++static struct platform_driver uio_fsl_85xx_cache_sram = {
++	.probe = uio_cache_sram_probe,
++	.remove = uio_cache_sram_remove,
++	.driver = {
++		.name = DRIVER_NAME,
++		.of_match_table	= uio_cache_sram_of_match,
++	},
++};
++
++module_platform_driver(uio_fsl_85xx_cache_sram);
++
++MODULE_AUTHOR("Wang Wenhu <wenhu.wang@hotmail.com>");
++MODULE_DESCRIPTION("Freescale MPC85xx Cache-SRAM UIO Platform Driver");
++MODULE_ALIAS("platform:" DRIVER_NAME);
++MODULE_LICENSE("GPL");
 -- 
 2.25.1
 
