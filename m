@@ -1,37 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C30354BD84
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 00:16:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE77054BF66
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 03:48:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LN2pS2y2Cz3gpC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 08:16:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LN7W86Fsqz3cdn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jun 2022 11:48:36 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UAwhROCz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LMwXS1YdNz3bnP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 03:33:56 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CB3DE175A;
-	Tue, 14 Jun 2022 10:33:22 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.41.154])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C0913F66F;
-	Tue, 14 Jun 2022 10:33:04 -0700 (PDT)
-Date: Tue, 14 Jun 2022 18:33:00 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 00/36] cpuidle,rcu: Cleanup the mess
-Message-ID: <YqjGTFEWSJGGOjNA@FVFF77S0Q05N>
-References: <20220608142723.103523089@infradead.org>
- <YqhuwQjmZyOVSiLI@FVFF77S0Q05N>
- <Yqi+Nqz1J8wI5GcX@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Yqi+Nqz1J8wI5GcX@hirez.programming.kicks-ass.net>
-X-Mailman-Approved-At: Wed, 15 Jun 2022 08:01:46 +1000
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=rmclure@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UAwhROCz;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LN7VP4Bjyz3bm5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jun 2022 11:47:56 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25F09bEd015403;
+	Wed, 15 Jun 2022 01:47:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=AvB6z0pX/ML68WVK1mUyVq/qy5lExESPnp3K5RUkCSI=;
+ b=UAwhROCzLLX1Lfs1s7f+TMbd0WwRcZb8gHrYCnpyylE5T4rQediN2GCOJnj6y81nVz8T
+ PNYRnopIl74hIzWPHpJZE8lSI92qe9ZTjUAA49OWR9sUpnVgz1Tslb70sSwqADS8Ierf
+ /bJJwrRFs90zgLk8zdCmT6Q1HOXjYV+BveW9+kfCATiQz65L3slgeLKDOmysZq47CBpR
+ 4wpvshdl9w8Hj0nBPzopfqnoTaZgnp/QJpw1lsClAfCFlUTceqyytjrpRVlUF6TPMIka
+ kmNQcngbP2mykTMFkqvk9ZmUtTvXC/4RZ5nVFLrDTOAlOEm45p8TpoFDVhxaahhpxBLc Nw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gpqmw8sq6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jun 2022 01:47:50 +0000
+Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25F1eOUU003338;
+	Wed, 15 Jun 2022 01:47:50 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gpqmw8spp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jun 2022 01:47:50 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25F1aG2q007455;
+	Wed, 15 Jun 2022 01:47:48 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma05fra.de.ibm.com with ESMTP id 3gmjp93wxg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jun 2022 01:47:48 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25F1lnEC14549502
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 15 Jun 2022 01:47:49 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B879B42041;
+	Wed, 15 Jun 2022 01:47:45 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 27F954203F;
+	Wed, 15 Jun 2022 01:47:44 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.192.255.94])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+	Wed, 15 Jun 2022 01:47:43 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
+Subject: Re: [PATCH 2/6] powerpc: Provide syscall wrapper
+From: Rohan McLure <rmclure@linux.ibm.com>
+In-Reply-To: <CAK8P3a3jm=02geTcJcfLNpshx1bR1jAnLTzimaaAhB=mGHfJzg@mail.gmail.com>
+Date: Wed, 15 Jun 2022 11:47:41 +1000
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <494F2A0A-1C03-4A5A-8BC1-92ACCE34AFE4@linux.ibm.com>
+References: <20220601054850.250287-1-rmclure@linux.ibm.com>
+ <20220601054850.250287-2-rmclure@linux.ibm.com>
+ <CAK8P3a3jm=02geTcJcfLNpshx1bR1jAnLTzimaaAhB=mGHfJzg@mail.gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>
+X-Mailer: Apple Mail (2.3696.100.31)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IaznAoPWEkZiq-lxV0spF1_hpO_7YdGk
+X-Proofpoint-ORIG-GUID: vvg-51kGnbXC3SSxaWosPMma7dVc1lB4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.874,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-14_10,2022-06-13_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=814 spamscore=0
+ adultscore=0 impostorscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206150002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,128 +100,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, rth@twiddle.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualization@lists.linux-foundati
- on.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, mgorman@suse.de
- , jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@
-
-arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dabbelt.com, anup@brainfa
- ult.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Andrew Donnellan <ajd@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 14, 2022 at 06:58:30PM +0200, Peter Zijlstra wrote:
-> On Tue, Jun 14, 2022 at 12:19:29PM +0100, Mark Rutland wrote:
-> > On Wed, Jun 08, 2022 at 04:27:23PM +0200, Peter Zijlstra wrote:
-> > > Hi All! (omg so many)
-> > 
-> > Hi Peter,
-> > 
-> > Sorry for the delay; my plate has also been rather full recently. I'm beginning
-> > to page this in now.
-> 
-> No worries; we all have too much to do ;-)
-> 
-> > > These here few patches mostly clear out the utter mess that is cpuidle vs rcuidle.
-> > > 
-> > > At the end of the ride there's only 2 real RCU_NONIDLE() users left
-> > > 
-> > >   arch/arm64/kernel/suspend.c:            RCU_NONIDLE(__cpu_suspend_exit());
-> > >   drivers/perf/arm_pmu.c:                 RCU_NONIDLE(armpmu_start(event, PERF_EF_RELOAD));
-> > 
-> > The latter of these is necessary because apparently PM notifiers are called
-> > with RCU not watching. Is that still the case today (or at the end of this
-> > series)? If so, that feels like fertile land for more issues (yaey...). If not,
-> > we should be able to drop this.
-> 
-> That should be fixed; fingers crossed :-)
+> On 3 Jun 2022, at 7:04 pm, Arnd Bergmann <arnd@arndb.de> wrote:
+>=20
+> On Wed, Jun 1, 2022 at 7:48 AM Rohan McLure <rmclure@linux.ibm.com> =
+wrote:
+>>=20
+>> Syscall wrapper implemented as per s390, x86, arm64, providing the
+>> option for gprs to be cleared on entry to the kernel, reducing caller
+>> influence influence on speculation within syscall routine. The =
+wrapper
+>> is a macro that emits syscall handler implementations with parameters
+>> passed by stack pointer.
+>>=20
+>> For platforms supporting this syscall wrapper, emit symbols with =
+usual
+>> in-register parameters (`sys...`) to support calls to syscall =
+handlers
+>> from within the kernel.
+>=20
+> Nice work!
+>=20
+>> Syscalls are wrapped on all platforms except Cell processor. SPUs =
+require
+>> access syscall prototypes which are omitted with =
+ARCH_HAS_SYSCALL_WRAPPER
+>> enabled.
+>=20
+> Right, I think it's ok to leave out the SPU side. In the long run, I
+> would like to
+> go back to requiring the prototypes for everything on all =
+architectures, to
+> enforce type checking, but that's a separate piece of work.
+>=20
+>> +/*
+>> + * For PowerPC specific syscall implementations, wrapper takes exact =
+name and
+>> + * return type for a given function.
+>> + */
+>> +
+>> +#ifdef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
+>> +#define PPC_SYSCALL_DEFINE(x, type, name, ...)                       =
+          \
+>> +       asmlinkage type __powerpc_##name(const struct pt_regs *regs); =
+          \
+>> +       ALLOW_ERROR_INJECTION(__powerpc_##name, ERRNO);               =
+          \
+>> +       type sys_##name(__MAP(x,__SC_DECL,__VA_ARGS__));              =
+          \
+>> +       static type __se_##name(__MAP(x,__SC_LONG,__VA_ARGS__));      =
+          \
+>> +       static inline type =
+__do_##name(__MAP(x,__SC_DECL,__VA_ARGS__));         \
+>=20
+> What is the benefit of having a separate set of macros for this? I =
+think that
+> adds more complexity than it saves in the end.
+>=20
+>> @@ -68,52 +69,63 @@ unsigned long compat_sys_mmap2(unsigned long =
+addr, size_t len,
+>> #define merge_64(high, low) ((u64)high << 32) | low
+>> #endif
+>>=20
+>> -compat_ssize_t compat_sys_pread64(unsigned int fd, char __user =
+*ubuf, compat_size_t count,
+>> -                            u32 reg6, u32 pos1, u32 pos2)
+>> +PPC_SYSCALL_DEFINE(6, compat_ssize_t, compat_sys_pread64,
+>> +                  unsigned int, fd,
+>> +                  char __user *, ubuf, compat_size_t, count,
+>> +                  u32, reg6, u32, pos1, u32, pos2)
+>> {
+>>       return ksys_pread64(fd, ubuf, count, merge_64(pos1, pos2));
+>> }
+>=20
+> We now have generalized versions of most of these system calls, as of =
+5.19-rc1
+> with the addition of the riscv compat support. I think it would be
+> best to try removing
+> the powerpc private versions wherever possible and use the common =
+version,
+> modifying it further where necessary.
+>=20
+> If this doesn't work for some of the syscalls, can you use the
+> COMPAT_SYSCALL_DEFINE for those in place of PPC_SYSCALL_DEFINE?
+>=20
+>    Arnd
 
-Cool; I'll try to give that a spin when I'm sat next to some relevant hardware. :)
+Hi Arnd,
 
-> > >   kernel/cfi.c:   RCU_NONIDLE({
-> > > 
-> > > (the CFI one is likely dead in the kCFI rewrite) and there's only a hand full
-> > > of trace_.*_rcuidle() left:
-> > > 
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, CALLER_ADDR1);
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_enable_rcuidle(CALLER_ADDR0, caller_addr);
-> > >   kernel/trace/trace_preemptirq.c:                        trace_irq_disable_rcuidle(CALLER_ADDR0, caller_addr);
-> > >   kernel/trace/trace_preemptirq.c:                trace_preempt_enable_rcuidle(a0, a1);
-> > >   kernel/trace/trace_preemptirq.c:                trace_preempt_disable_rcuidle(a0, a1);
-> > > 
-> > > All of them are in 'deprecated' code that is unused for GENERIC_ENTRY.
-> > I think those are also unused on arm64 too?
-> > 
-> > If not, I can go attack that.
-> 
-> My grep spots:
-> 
-> arch/arm64/kernel/entry-common.c:               trace_hardirqs_on();
-> arch/arm64/include/asm/daifflags.h:     trace_hardirqs_off();
-> arch/arm64/include/asm/daifflags.h:             trace_hardirqs_off();
+Thanks for your comments.=20
 
-Ah; I hadn't realised those used trace_.*_rcuidle() behind the scenes.
+> What is the benefit of having a separate set of macros for this? I =
+think that
+> adds more complexity than it saves in the end.
 
-That affects local_irq_{enable,disable,restore}() too (which is what the
-daifflags.h bits are emulating), and also the generic entry code's
-irqentry_exit().
+I was unsure whether the exact return types needed to be respected for =
+syscall
+handlers or not. I realise that under the existing behaviour,
+system_call_exception performs an indirect call, the return type of =
+which is
+interpreted as a long, so the return type should be irrelevant. On =
+inspection
+PPC_SYSCALL_DEFINE is readily replacable with COMPAT_SYSCALL_DEFINE as =
+you
+have suggested.
 
-So it feels to me like we should be fixing those more generally? e.g. say that
-with a new STRICT_ENTRY[_RCU], we can only call trace_hardirqs_{on,off}() with
-RCU watching, and alter the definition of those?
+Before resubmitting this series, I will try for a patch series which =
+modernises
+syscall handlers in arch/powerpc, and inspect where powerpc private =
+versions
+are strictly necessary, using __ARCH_WANT_... wherever possible.
 
-> The _on thing should be replaced with something like:
-> 
-> 	trace_hardirqs_on_prepare();
-> 	lockdep_hardirqs_on_prepare();
-> 	instrumentation_end();
-> 	rcu_irq_exit();
-> 	lockdep_hardirqs_on(CALLER_ADDR0);
-> 
-> (as I think you know, since you have some of that already). And
-> something similar for the _off thing, but with _off_finish().
-
-Sure; I knew that was necessary for the outermost parts of entry (and I think
-that's all handled), I just hadn't realised that trace_hardirqs_{on,off} did
-the rcuidle thing in the middle.
-
-It'd be nice to not have to open-code the whole sequence everywhere for the
-portions which run after entry and are instrumentable, so (as above) I reckon
-we want to make trace_hardirqs_{on,off}() not do the rcuidle part
-unnecessarily (which IIUC is an end-goal anyway)?
-
-> > > I've touched a _lot_ of code that I can't test and likely broken some of it :/
-> > > In particular, the whole ARM cpuidle stuff was quite involved with OMAP being
-> > > the absolute 'winner'.
-> > > 
-> > > I'm hoping Mark can help me sort the remaining ARM64 bits as he moves that to
-> > > GENERIC_ENTRY.
-> > 
-> > Moving to GENERIC_ENTRY as a whole is going to take a tonne of work
-> > (refactoring both arm64 and the generic portion to be more amenable to each
-> > other), but we can certainly move closer to that for the bits that matter here.
-> 
-> I know ... been there etc.. :-)
-> 
-> > Maybe we want a STRICT_ENTRY option to get rid of all the deprecated stuff that
-> > we can select regardless of GENERIC_ENTRY to make that easier.
-> 
-> Possible yeah.
-> 
-> > > I've also got a note that says ARM64 can probably do a WFE based
-> > > idle state and employ TIF_POLLING_NRFLAG to avoid some IPIs.
-> > 
-> > Possibly; I'm not sure how much of a win that'll be given that by default we'll
-> > have a ~10KHz WFE wakeup from the timer, but we could take a peek.
-> 
-> Ohh.. I didn't know it woke up *that* often. I just know Will made use
-> of it in things like smp_cond_load_relaxed() which would be somewhat
-> similar to a very shallow idle state that looks at the TIF word.
-
-We'll get some saving, I'm just not sure where that falls on the curve of idle
-states. FWIW the wakeup *can* be disabled (and it'd be nice to when we have
-WFxT instructions which take a timeout), it jsut happens to be on by default
-for reasons.
-
-Thanks,
-Mark.
+Rohan=
