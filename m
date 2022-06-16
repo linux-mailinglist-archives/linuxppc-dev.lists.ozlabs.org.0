@@ -2,51 +2,96 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637D454E64B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 17:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A2354E7FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 18:45:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LP60d26Gmz3bqL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 01:44:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LP7My5s9bz3bmV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 02:45:50 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=RwOw51Mg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pTgOotLz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.3; helo=mail-m963.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=RwOw51Mg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pTgOotLz;
 	dkim-atps=neutral
-Received: from mail-m963.mail.126.com (mail-m963.mail.126.com [123.126.96.3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LP6006d84z3bkV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 01:43:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=3SyGV
-	GPAl6RCeoR6/3GY66rPKd6XLustmDizqKaNl8Y=; b=RwOw51MgK71kHeJ0Qekqq
-	RN7adtZBwVvPmvKYxLmvLvrDIiYYpSjwiEboWze5XbCspqeQeiCIyHCGfGxkEDRt
-	Pdd20rs0iemeL6zUKqT3XjCjGfRrXLcVeOVuQUPY/TQ/nDNKzGhwkbR0u/J0NuN9
-	7P/adUvdXX+wiz2qSaKfBo=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-	by smtp8 (Coremail) with SMTP id NORpCgA37ZEwT6titcAYFw--.50981S2;
-	Thu, 16 Jun 2022 23:41:37 +0800 (CST)
-From: Liang He <windhl@126.com>
-To: mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	clg@kaod.org,
-	nick.child@ibm.com
-Subject: [PATCH] powerpc: sysdev: xive: Fix refcount leak in native.c
-Date: Thu, 16 Jun 2022 23:41:35 +0800
-Message-Id: <20220616154135.3989769-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LP7MB5VtMz3bkH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 02:45:10 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25GGU9te028670;
+	Thu, 16 Jun 2022 16:45:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=hmhAJDvbUnN56qdBjb6q51rrHEMp0FhSmyk8wyC+8JY=;
+ b=pTgOotLzUd/+SNQXpdCiFa8kzVbPTXBde6mzlOf7O0BOfJmlCtVrwDMGwwO9A446PYP/
+ Y8JCVCk/VBE8hJE4rT7dv2te/uLSgrOaF2t9gEOPXlaHq5XN5T/j8NbCjWaBBNXTt63Y
+ H55DE+ULOYxmo1+0Of73qCtMhb3N8TwD548Zopw9ET5X6gXb56EVZGpD3ZZgpVEclkgn
+ s0N7wCx7nNVRKk060QYWrRvPtk1yxGuVyQjoX+74oPAmR2lCl9czj5Y4waGhhadv8Hxu
+ tHxsVuCfCHrZ2oh1myqkDYxFarrR+4/arqOOpAMThaHT6yzK5duVHAHLrBrYVnaoPLqv Ww== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gqxe2gqxq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jun 2022 16:45:02 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25GGfGs3006317;
+	Thu, 16 Jun 2022 16:45:02 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gqxe2gqx7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jun 2022 16:45:02 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25GGbusG009236;
+	Thu, 16 Jun 2022 16:45:01 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+	by ppma02dal.us.ibm.com with ESMTP id 3gmjpakqg6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Jun 2022 16:45:01 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
+	by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25GGj0Oi32178482
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Jun 2022 16:45:00 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0886EAC05E;
+	Thu, 16 Jun 2022 16:45:00 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ADF2FAC05B;
+	Thu, 16 Jun 2022 16:44:57 +0000 (GMT)
+Received: from [9.160.59.133] (unknown [9.160.59.133])
+	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Jun 2022 16:44:57 +0000 (GMT)
+Message-ID: <e5d65186-8247-ac6e-d785-e560f380014a@linux.ibm.com>
+Date: Thu, 16 Jun 2022 09:44:56 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v2 0/4] pseries-wdt: initial support for H_WATCHDOG-based
+ watchdog timers
+Content-Language: en-US
+To: Daniel Henrique Barboza <danielhb413@gmail.com>,
+        Scott Cheloha <cheloha@linux.ibm.com>, linux-watchdog@vger.kernel.org
+References: <20220602175353.68942-1-cheloha@linux.ibm.com>
+ <74ac21a1-d56f-50fb-71c2-e800e943f340@gmail.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+In-Reply-To: <74ac21a1-d56f-50fb-71c2-e800e943f340@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RSgseW4hDF64XfyI88HQbIg7F0eSAcW7
+X-Proofpoint-ORIG-GUID: tt7LCTADttLQqYolu5Ghu21bZGVnzI_U
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: NORpCgA37ZEwT6titcAYFw--.50981S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uFyfZFy5ur4xZw47GFW7urg_yoW8CFW5pF
-	Z7GFyjya1S9w18KrWSyF10vF4DCr1ktayrXa97GwnrAw4q9w4ktr45KryFqrW5GrWku3Wr
-	tF1fCr1UJFsrWaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziZa9DUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2hEiF1uwMN39YwAAsm
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-16_12,2022-06-16_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 spamscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
+ adultscore=0 mlxscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206160068
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,73 +103,147 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com, linux-kernel@vger.kernel.org
+Cc: nathanl@linux.ibm.com, wvoigt@us.ibm.com, aik@ozlabs.ru, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In xive_native_init(), of_find_compatible_node() will return a
-node pointer with refcount incremented. We should use of_node_put()
-in each fail path or when it is not used anymore.
+On 6/15/22 18:43, Daniel Henrique Barboza wrote:
+> Hi,
+> 
+> I tried this series out with mainline QEMU built with Alexey's patch [1]
+> and I wasn't able to get it to work. I'm using a simple QEMU command line
+> booting a fedora36 guest in a Power9 boston host:
 
-Signed-off-by: Liang He <windhl@126.com>
----
- arch/powerpc/sysdev/xive/native.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+I would assume the H_WATCHDOG hypercall is not implemented by the qemu pseries
+machine type. It is a very new hypercall.
 
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index d25d8c692909..3925825954bc 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -579,12 +579,12 @@ bool __init xive_native_init(void)
- 	/* Resource 1 is HV window */
- 	if (of_address_to_resource(np, 1, &r)) {
- 		pr_err("Failed to get thread mgmnt area resource\n");
--		return false;
-+		goto err_put;
- 	}
- 	tima = ioremap(r.start, resource_size(&r));
- 	if (!tima) {
- 		pr_err("Failed to map thread mgmnt area\n");
--		return false;
-+		goto err_put;
- 	}
- 
- 	/* Read number of priorities */
-@@ -612,7 +612,7 @@ bool __init xive_native_init(void)
- 	/* Resource 2 is OS window */
- 	if (of_address_to_resource(np, 2, &r)) {
- 		pr_err("Failed to get thread mgmnt area resource\n");
--		return false;
-+		goto err_put;
- 	}
- 
- 	xive_tima_os = r.start;
-@@ -624,7 +624,7 @@ bool __init xive_native_init(void)
- 	rc = opal_xive_reset(OPAL_XIVE_MODE_EXPL);
- 	if (rc) {
- 		pr_err("Switch to exploitation mode failed with error %lld\n", rc);
--		return false;
-+		goto err_put;
- 	}
- 
- 	/* Setup some dummy HV pool VPs */
-@@ -634,10 +634,15 @@ bool __init xive_native_init(void)
- 	if (!xive_core_init(np, &xive_native_ops, tima, TM_QW3_HV_PHYS,
- 			    max_prio)) {
- 		opal_xive_reset(OPAL_XIVE_MODE_EMU);
--		return false;
-+		goto err_put;
- 	}
-+	of_node_put(np);
- 	pr_info("Using %dkB queues\n", 1 << (xive_queue_shift - 10));
- 	return true;
-+
-+err_put:
-+	of_node_put(np);
-+	return false;
- }
- 
- static bool xive_native_provision_pages(void)
--- 
-2.25.1
+-Tyrel
+
+> 
+> sudo  ./qemu-system-ppc64 \
+> -M
+> pseries,cap-cfpc=broken,cap-sbbc=broken,cap-ibs=broken,cap-ccf-assist=off,ic-mode=dual
+> \
+> -m 4G -accel kvm -cpu POWER9 -smp 1,maxcpus=1,threads=1,cores=1,sockets=1 \
+> -device virtio-scsi-pci,id=scsi0,bus=pci.0,addr=0x2 \
+> -drive
+> file=/home/danielhb/fedora36.qcow2,if=none,id=drive-scsi0-0-0-0,format=qcow2,cache=none
+> \
+> -device
+> scsi-hd,bus=scsi0.0,channel=0,scsi-id=0,lun=0,drive=drive-scsi0-0-0-0,id=scsi0-0-0-0,bootindex=2
+> \
+> -device qemu-xhci,id=usb,bus=pci.0,addr=0x4 -nographic -display none
+> 
+> 
+> Guest is running v5.19-rc2 with this series applied. Kernel config consists of
+> 'pseries_le_defconfig' plus the following 'watchdog' related changes:
+> 
+> [root@fedora ~]# cat linux/.config | grep PSERIES_WDT
+> CONFIG_PSERIES_WDT=y
+> 
+> [root@fedora ~]# cat linux/.config | grep -i watchdog
+> CONFIG_PPC_WATCHDOG=y
+> CONFIG_HAVE_NMI_WATCHDOG=y
+> CONFIG_WATCHDOG=y
+> CONFIG_WATCHDOG_CORE=y
+> CONFIG_WATCHDOG_NOWAYOUT=y
+> CONFIG_WATCHDOG_HANDLE_BOOT_ENABLED=y
+> CONFIG_WATCHDOG_OPEN_TIMEOUT=0
+> # CONFIG_WATCHDOG_SYSFS is not set
+> # CONFIG_WATCHDOG_HRTIMER_PRETIMEOUT is not set
+> # Watchdog Pretimeout Governors
+> # CONFIG_WATCHDOG_PRETIMEOUT_GOV is not set
+> # Watchdog Device Drivers
+> # CONFIG_SOFT_WATCHDOG is not set
+> # CONFIG_XILINX_WATCHDOG is not set
+> # CONFIG_ZIIRAVE_WATCHDOG is not set
+> # CONFIG_CADENCE_WATCHDOG is not set
+> # CONFIG_DW_WATCHDOG is not set
+> # CONFIG_MAX63XX_WATCHDOG is not set
+> CONFIG_WATCHDOG_RTAS=y
+> # PCI-based Watchdog Cards
+> # CONFIG_PCIPCWATCHDOG is not set
+> # USB-based Watchdog Cards
+> # CONFIG_USBPCWATCHDOG is not set
+> # CONFIG_WQ_WATCHDOG is not set
+> [root@fedora ~]#
+> 
+> 
+> 
+> Kernel command line:
+> 
+> [root@fedora ~]# cat /proc/cmdline
+> BOOT_IMAGE=(ieee1275/disk,msdos2)/vmlinuz-5.19.0-rc2-00054-g12ede8ffb103 \
+> root=/dev/mapper/fedora_fedora-root ro rd.lvm.lv=fedora_fedora/root \
+> pseries-wdt.timeout=60 pseries-wdt.nowayout=1 pseries-wdt.action=2
+> 
+> 
+> With all that, executing
+> 
+> echo V > /dev/watchdog0
+> 
+> Does nothing. dmesg is clean and the guest doesn't reboot after the 60 sec
+> timeout.  I also tried with PSERIES_WDT being compiled as a module instead
+> of built-in. Same results.
+> 
+> 
+> What am I missing?
+> 
+> 
+> [1]
+> https://patchwork.ozlabs.org/project/qemu-ppc/patch/20220608030153.1862335-1-aik@ozlabs.ru/
+> 
+> 
+> 
+> 
+> Thanks,
+> 
+> 
+> Daniel
+> 
+> 
+> 
+> 
+> On 6/2/22 14:53, Scott Cheloha wrote:
+>> PAPR v2.12 defines a new hypercall, H_WATCHDOG.  This patch series
+>> adds support for this hypercall to powerpc/pseries kernels and
+>> introduces a new watchdog driver, "pseries-wdt", for the virtual
+>> timers exposed by the hypercall.
+>>
+>> This series is preceded by the following:
+>>
+>> RFC v1:
+>> https://lore.kernel.org/linux-watchdog/20220413165104.179144-1-cheloha@linux.ibm.com/
+>>
+>> RFC v2:
+>> https://lore.kernel.org/linux-watchdog/20220509174357.5448-1-cheloha@linux.ibm.com/
+>>
+>> PATCH v1:
+>> https://lore.kernel.org/linux-watchdog/20220520183552.33426-1-cheloha@linux.ibm.com/
+>>
+>>
+>> Changes of note from PATCH v1:
+>>
+>> - Trim down the large comment documenting the H_WATCHDOG hypercall.
+>>    The comment is likely to rot, so remove anything we aren't using
+>>    and anything overly obvious.
+>>
+>> - Remove any preprocessor definitions not actually used in the module
+>>    right now.  If we want to use other features offered by the hypercall
+>>    we can add them in later.  They're just clutter until then.
+>>
+>> - Simplify the "action" module parameter.  The value is now an index
+>>    into an array of possible timeoutAction values.  This design removes
+>>    the need for the custom get/set methods used in PATCH v1.
+>>
+>>    Now we merely need to check that the "action" value is a valid
+>>    index during pseries_wdt_probe().  Easy.
+>>
+>> - Make the timeoutAction a member of pseries_wdt, "action".  This
+>>    eliminates the use of a global variable during pseries_wdt_start().
+>>
+>> - Use watchdog_init_timeout() idiomatically.  Check its return value
+>>    and error out of pseries_wdt_probe() if it fails.
+>>
+>>
 
