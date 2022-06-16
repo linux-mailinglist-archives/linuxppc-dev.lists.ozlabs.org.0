@@ -1,67 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE3A54F872
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 15:46:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4788754F87B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 15:46:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPgKz2fffz3c7D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 23:45:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPgLd5HgYz3cDs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 23:46:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AJ0HPsBU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y1GXD3WW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=jacob.jun.pan@linux.intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=AJ0HPsBU;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y1GXD3WW;
 	dkim-atps=neutral
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LNvZD3zg8z30LC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jun 2022 17:53:55 +1000 (AEST)
-Received: by mail-lj1-x235.google.com with SMTP id v8so617029ljj.8
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jun 2022 00:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mUkmS4Z0DyeMmdjuxEPlq2pjLfUlOJ3MsLFFXv5JaTo=;
-        b=AJ0HPsBU8qRppWXekaLXqODE0k+TJQdXqyZ4pGuUPYeiOddOYh2XZhCAwrMbz8NFOL
-         ICj1KXYBgBcBaO1skv/60dOkIEczwKqJaDVowVrwoFsIN3wttnQL8th/swp7YhbARB9l
-         4F5GWAhr+TvBmBc/yyn2FaOWkGZVVrkwqZBO8GQMS0WPpurg+34ROUb0k4COJA6mskEW
-         vC+QwlUAe0LTp5usxgXo3OqtdixoiGIo+XAhakmyhvIk+IdXE+0melSObnpVd5WUdvS9
-         HT/oAZPmTcKD4NymwXssgGzOmLphfHiBd5QaxD2pQspGSFkyvAPAc3WQl3iCOPHgaQO9
-         qOoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mUkmS4Z0DyeMmdjuxEPlq2pjLfUlOJ3MsLFFXv5JaTo=;
-        b=Vfdo1O2gL9v8sW3mErOH1gspSuI3PFVWxo8A4C0DE72gSezg5VTsS4zp5/cySBtFbx
-         I5CK31ZWkD5rkHdzQkNTPQm122ThJaDMsMpSIiQ5CDbG6XvtH3MXG0/4mAhQM0WatvCV
-         G3a//4SMklWZwVqxGzetz1jax8hAlJGkpYvwqw3/9U2gRdvofviIA1gE/W5GnIThYJqP
-         sU5OJdrEp10XeyA0S/hT3/3RjVdBqnXxhh6TzkiTXp4FsUidWPkpJoMV84jG6CG75Sb6
-         pnxnB45tm43C8B/N7s8pQBqFgQjDcq0hPGoXfa3r7KeHqwKDUiqHjjt/5wcl3l5P211R
-         O9ZA==
-X-Gm-Message-State: AJIora9KR+L0VMKN9PM0geRAUCjDl1bGPYFPuWH73N1K23oo4FvNpeVx
-	vV7MkorxxIccAU/AedQwmt3NiW69kG0gMr0nDqU=
-X-Google-Smtp-Source: AGRyM1sXa5MxZmMaYrthL9kddZQqDV6TP6OLiTEaCHASD/FfC4TEVlRpHCks6gjOsu6xXcc1trg0BfrUAfD/aoatOUc=
-X-Received: by 2002:a2e:9113:0:b0:255:a3e6:93cb with SMTP id
- m19-20020a2e9113000000b00255a3e693cbmr1948076ljg.312.1655366030089; Thu, 16
- Jun 2022 00:53:50 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPFWh6l3vz2ywc
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 07:22:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655414577; x=1686950577;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=eIVB2Wcg0d4KNkOlM5BOJs0iOIDhUm5jxxQVobMAAIM=;
+  b=Y1GXD3WWR6fcp3/eCpz94SudXsMJn0b0VlCOOzHzLTdRbjSbq9AhireY
+   TZjD0FjSoTQETPBeQrHzfqt4L20q64ccVd9qEUhMUMdcMAz6MyMFJQc8p
+   O81ArSjk8a3AQSGZhFbbA2T0Mp1Lzj05aDGJJ3/zMCL6lQ3pv9J+l2GvH
+   BMM5teejQ8ZQlAk5ootQFYq/UWlzHeuold7XzfFuEMp1dw00ChDkE7XP0
+   Htye3nQzy/4WBwlV4U3L6c4ALELunvdlhiafMG1aRwIeVPy6/NwtY9tum
+   0ObLbNpB+Ptdp5UU9Xf9q2jb7GDrWQeRvSvJMBc46yT9Adtxku5P3ZwJC
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="304803259"
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="304803259"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 14:22:52 -0700
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="560027674"
+Received: from jacob-builder.jf.intel.com (HELO jacob-builder) ([10.7.198.157])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 14:22:51 -0700
+Date: Thu, 16 Jun 2022 14:26:56 -0700
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH 04/36] cpuidle,intel_idle: Fix CPUIDLE_FLAG_IRQ_ENABLE
+Message-ID: <20220616142656.4b1acc4a@jacob-builder>
+In-Reply-To: <Yqb45vclY2KVL0wZ@hirez.programming.kicks-ass.net>
+References: <20220608142723.103523089@infradead.org>
+	<20220608144516.172460444@infradead.org>
+	<20220609164921.5e61711d@jacob-builder>
+	<Yqb45vclY2KVL0wZ@hirez.programming.kicks-ass.net>
+Organization: OTC
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <1655179884-12278-1-git-send-email-shengjiu.wang@nxp.com>
- <1655179884-12278-6-git-send-email-shengjiu.wang@nxp.com> <CAOMZO5BRVBawK2PRvTazkQf-wExOuni9qD76Ha3FYmZZQyPRsg@mail.gmail.com>
-In-Reply-To: <CAOMZO5BRVBawK2PRvTazkQf-wExOuni9qD76Ha3FYmZZQyPRsg@mail.gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 16 Jun 2022 15:53:38 +0800
-Message-ID: <CAA+D8APKt+_JbbuQ=WaK7v8FM7SFCACif-Qx=gwuaLL=fGwLQw@mail.gmail.com>
-Subject: Re: [PATCH 5/7] ASoC: fsl_sai: Move res variable to be global
-To: Fabio Estevam <festevam@gmail.com>
-Content-Type: multipart/alternative; boundary="00000000000032619b05e18bf01c"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Mailman-Approved-At: Fri, 17 Jun 2022 23:45:29 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,70 +70,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>, Xiubo Li <Xiubo.Lee@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Rob Herring <robh+dt@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: juri.lelli@redhat.com, rafael@kernel.org, linus.walleij@linaro.org, bsegall@google.com, guoren@kernel.org, pavel@ucw.cz, agordeev@linux.ibm.com, srivatsa@csail.mit.edu, linux-arch@vger.kernel.org, vincent.guittot@linaro.org, chenhuacai@kernel.org, linux-acpi@vger.kernel.org, agross@kernel.org, geert@linux-m68k.org, linux-imx@nxp.com, catalin.marinas@arm.com, xen-devel@lists.xenproject.org, mattst88@gmail.com, borntraeger@linux.ibm.com, mturquette@baylibre.com, sammy@sammy.net, pmladek@suse.com, linux-pm@vger.kernel.org, jiangshanlai@gmail.com, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, tglx@linutronix.de, linux-omap@vger.kernel.org, dietmar.eggemann@arm.com, rth@twiddle.net, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, svens@linux.ibm.com, jolsa@kernel.org, paulus@samba.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org, dave.hansen@linux.intel.com, virtualizatio
+ n@lists.linux-foundation.org, James.Bottomley@hansenpartnership.com, jcmvbkbc@gmail.com, thierry.reding@gmail.com, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, john.ogness@linutronix.de, ysato@users.sourceforge.jp, linux-sh@vger.kernel.org, festevam@gmail.com, deller@gmx.de, daniel.lezcano@linaro.org, jonathanh@nvidia.com, mathieu.desnoyers@efficios.com, frederic@kernel.org, lenb@kernel.org, linux-xtensa@linux-xtensa.org, kernel@pengutronix.de, gor@linux.ibm.com, linux-arm-msm@vger.kernel.org, linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org, shorne@gmail.com, linux-arm-kernel@lists.infradead.org, chris@zankel.net, sboyd@kernel.org, dinguyen@kernel.org, bristot@redhat.com, alexander.shishkin@linux.intel.com, lpieralisi@kernel.org, linux@rasmusvillemoes.dk, joel@joelfernandes.org, will@kernel.org, boris.ostrovsky@oracle.com, khilman@kernel.org, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradea
+ d.org, mgorman@suse.de, jacob.jun.pan@linux.intel.com
+
+, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk@vger.kernel.org, josh@joshtriplett.org, rostedt@goodmis.org, rcu@vger.kernel.org, bp@alien8.de, bcain@quicinc.com, tsbogend@alpha.franken.de, linux-parisc@vger.kernel.org, sudeep.holla@arm.com, shawnguo@kernel.org, davem@davemloft.net, dalias@libc.org, tony@atomide.com, amakhalov@vmware.com, bjorn.andersson@linaro.org, hpa@zytor.com, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org, anton.ivanov@cambridgegreys.com, jonas@southpole.se, yury.norov@gmail.com, richard@nod.at, x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com, aou@eecs.berkeley.edu, paulmck@kernel.org, hca@linux.ibm.com, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, paul.walmsley@sifive.com, linux-tegra@vger.kernel.org, namhyung@kernel.org, andriy.shevchenko@linux.intel.com, jpoimboe@kernel.org, jgross@suse.com, monstr@monstr.eu, linux-mips@vger.kernel.org, palmer@dab
+ belt.com, anup@brainfault.org, ink@jurassic.park.msu.ru, johannes@sipsolutions.net, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---00000000000032619b05e18bf01c
-Content-Type: text/plain; charset="UTF-8"
+Hi Peter,
 
-On Wed, Jun 15, 2022 at 10:22 PM Fabio Estevam <festevam@gmail.com> wrote:
+On Mon, 13 Jun 2022 10:44:22 +0200, Peter Zijlstra <peterz@infradead.org>
+wrote:
 
-> Hi Shengjiu,
->
-> On Tue, Jun 14, 2022 at 1:25 AM Shengjiu Wang <shengjiu.wang@nxp.com>
-> wrote:
-> >
-> > The resource info need to be accessed by hw_params()
-> > function for multi fifo case, the start address may
-> > be not the FIFO0. So move it to be global first.
->
-> Actually, it is not global. It is being added as a member of struct
-> fsl_sai.
->
-> Please rephrase the Subject to:
->
-> ASoC: fsl_sai: Make res a member of struct fsl_sai
->
-> and then in the commit log:
->
-> "So move it to be a member of struct fsl_sai."
->
+> On Thu, Jun 09, 2022 at 04:49:21PM -0700, Jacob Pan wrote:
+> > Hi Peter,
+> > 
+> > On Wed, 08 Jun 2022 16:27:27 +0200, Peter Zijlstra
+> > <peterz@infradead.org> wrote:
+> >   
+> > > Commit c227233ad64c ("intel_idle: enable interrupts before C1 on
+> > > Xeons") wrecked intel_idle in two ways:
+> > > 
+> > >  - must not have tracing in idle functions
+> > >  - must return with IRQs disabled
+> > > 
+> > > Additionally, it added a branch for no good reason.
+> > > 
+> > > Fixes: c227233ad64c ("intel_idle: enable interrupts before C1 on
+> > > Xeons") Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > > ---
+> > >  drivers/idle/intel_idle.c |   48
+> > > +++++++++++++++++++++++++++++++++++----------- 1 file changed, 37
+> > > insertions(+), 11 deletions(-)
+> > > 
+> > > --- a/drivers/idle/intel_idle.c
+> > > +++ b/drivers/idle/intel_idle.c
+> > > @@ -129,21 +137,37 @@ static unsigned int mwait_substates __in
+> > >   *
+> > >   * Must be called under local_irq_disable().
+> > >   */  
+> > nit: this comment is no long true, right?  
+> 
+> It still is, all the idle routines are called with interrupts disabled,
+> but must also exit with interrupts disabled.
+> 
+> If the idle method requires interrupts to be enabled, it must be sure to
+> disable them again before returning. Given all the RCU/tracing concerns
+> it must use raw_local_irq_*() for this though.
+Makes sense, it is just little confusing when the immediate caller does
+raw_local_irq_enable() which does not cancel out local_irq_disable().
 
-Thanks, I will update them.
+Thanks,
 
-best regards
-wang shengjiu
-
---00000000000032619b05e18bf01c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jun 15, 2022 at 10:22 PM Fabi=
-o Estevam &lt;<a href=3D"mailto:festevam@gmail.com">festevam@gmail.com</a>&=
-gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Sh=
-engjiu,<br>
-<br>
-On Tue, Jun 14, 2022 at 1:25 AM Shengjiu Wang &lt;<a href=3D"mailto:shengji=
-u.wang@nxp.com" target=3D"_blank">shengjiu.wang@nxp.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; The resource info need to be accessed by hw_params()<br>
-&gt; function for multi fifo case, the start address may<br>
-&gt; be not the FIFO0. So move it to be global first.<br>
-<br>
-Actually, it is not global. It is being added as a member of struct fsl_sai=
-.<br>
-<br>
-Please rephrase the Subject to:<br>
-<br>
-ASoC: fsl_sai: Make res a member of struct fsl_sai<br>
-<br>
-and then in the commit log:<br>
-<br>
-&quot;So move it to be a member of struct fsl_sai.&quot;<br></blockquote><d=
-iv><br></div><div>Thanks, I will update them.=C2=A0</div><div><br></div><di=
-v>best regards</div><div>wang shengjiu</div></div></div>
-
---00000000000032619b05e18bf01c--
+Jacob
