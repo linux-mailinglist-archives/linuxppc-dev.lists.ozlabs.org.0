@@ -2,66 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFD154E2AF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 15:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D27F354E2D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 16:02:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LP3gB0Xtpz3brl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jun 2022 23:58:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LP3lH50lsz3cBF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 00:02:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=nGXEooab;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=XDNa0blq;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.5; helo=mail-m965.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=nGXEooab;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=XDNa0blq;
 	dkim-atps=neutral
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LP3fY0Pcsz3bhq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jun 2022 23:58:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=C8HUoWbkEZfFi5Ww+b/aIrWTUO0EXGNVkEGEo9LVJjo=; b=nGXEooabTbb0KLw5oHlgpsPeqx
-	fPen/6rTxyKZGwJnQ0odoQUTMevOda2oR5cGjcV/WHjZ2cU/vnLk0Pu4ebiiZ0/Ypknuk2hdNVhNt
-	igkit05wkwuyzfIBeeldUwXMzhFeoXk+gvHB8+U8bRfoct1HrVD6NsZXWHypy2pT3ShcPi2rKvDFP
-	+xaiMXmZLXwOGyuqCH41y1mL7M+6bqy79sCWKcEXWtd04gnqfqu5QiXy2TV2w/F/6yAmVzvJXqml1
-	SMjsMCswQo9c2WHhlfjZwM3EC8d0zQ7scoomQ8TU2hFZPpJuXXrmbLvLsEbbV9kmJKzs2Ghnekx2X
-	zR+c3IGA==;
-Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o1q0R-008QMy-3Z; Thu, 16 Jun 2022 13:57:55 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C474F300372;
-	Thu, 16 Jun 2022 15:57:51 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id B17BF2029FD42; Thu, 16 Jun 2022 15:57:51 +0200 (CEST)
-Date: Thu, 16 Jun 2022 15:57:51 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH 4/4] objtool/powerpc: Add --mcount specific
- implementation
-Message-ID: <Yqs235037JrOOhBA@hirez.programming.kicks-ass.net>
-References: <20220523175548.922671-1-sv@linux.ibm.com>
- <20220523175548.922671-5-sv@linux.ibm.com>
- <6be5c941-07b0-64d5-7f36-fe5770fb5244@csgroup.eu>
- <59170f18-1356-1140-70e3-30cb627f00bc@linux.vnet.ibm.com>
- <578ec055-0d63-e579-0caa-ad57846b8995@csgroup.eu>
- <f1decbb7-b441-a241-469a-4ba118e08212@csgroup.eu>
- <c1e2cf35-2a8d-87e6-3a7e-7f144392db23@csgroup.eu>
- <1655386289.uh0k7sgl1r.naveen@linux.ibm.com>
- <30f3791c-0fdd-e635-4a85-ec457f990fae@csgroup.eu>
+X-Greylist: delayed 1880 seconds by postgrey-1.36 at boromir; Fri, 17 Jun 2022 00:01:43 AEST
+Received: from mail-m965.mail.126.com (mail-m965.mail.126.com [123.126.96.5])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LP3kb0R1sz308V
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 00:01:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=lt4cZ
+	XCiaVcjGvhuT4ufqgA61fK3nl/LsSYLL/GBPXI=; b=XDNa0blq5lRe7Gk3wyjyI
+	Sefm5EB7e9LHXt3544UvMIyDR3cALbRtuhodZtrvlBk7DQQ/r+NRa3COXXrSr0zy
+	WH3oYsio2xoCpPhOC9b9w2eU6exS3e78wtpCPETyk4wH7TNo7Q06opgzxRVaUNHP
+	mgRwif0MnZ4KoyAMYw8O/g=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+	by smtp10 (Coremail) with SMTP id NuRpCgCH51szMKtitIMkEw--.42762S2;
+	Thu, 16 Jun 2022 21:29:25 +0800 (CST)
+From: Liang He <windhl@126.com>
+To: oss@buserror.net,
+	mpe@ellerman.id.au,
+	benh@kernel.crashing.org,
+	paulus@samba.org,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH] arch: powerpc: platforms: 85xx: Fix refcount leak bug in ksi8560.c
+Date: Thu, 16 Jun 2022 21:29:22 +0800
+Message-Id: <20220616132922.3987053-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <30f3791c-0fdd-e635-4a85-ec457f990fae@csgroup.eu>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: NuRpCgCH51szMKtitIMkEw--.42762S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtF4UXry8JryrKryfGFWDXFb_yoW3CrgEkw
+	n3Aa1UCrs5Cr4ktF4qyr1rKr1jq3yrWFWUGr1Ig3W7JFy5ZanxGwsrXF4xu3W5Xr4IkrWa
+	qFZrG3s8CasakjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRMa9-UUUUUU==
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/xtbBGg0iF1-HZT6SiQAAs6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,18 +59,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Sathvika Vasireddy <sv@linux.vnet.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, Sathvika Vasireddy <sv@linux.ibm.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>, Chen Zhongjin <chenzhongjin@huawei.com>
+Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 16, 2022 at 01:40:34PM +0000, Christophe Leroy wrote:
-> sizeof(u64) is always 8 by definition.
-> 
-> So if size is 8 we are working on a binary file for a 64 bits target, if 
-> not it means we are working for a 32 bits target.
+In ksi8560_setup_arch(), of_find_compatible_node() will return a
+node pointer with refcount incremented. We should use of_node_put()
+when it is not used anymore.
 
-Cross-builds invalidate this I think. Best to look at something like:
+Signed-off-by: Liang He <windhl@126.com>
+---
+ arch/powerpc/platforms/85xx/ksi8560.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  elf->ehdr.e_ident[EI_CLASS] == ELFCLASS32
-
+diff --git a/arch/powerpc/platforms/85xx/ksi8560.c b/arch/powerpc/platforms/85xx/ksi8560.c
+index bdf9d42f8521..a22f02b0fc77 100644
+--- a/arch/powerpc/platforms/85xx/ksi8560.c
++++ b/arch/powerpc/platforms/85xx/ksi8560.c
+@@ -133,6 +133,8 @@ static void __init ksi8560_setup_arch(void)
+ 	else
+ 		printk(KERN_ERR "Can't find CPLD in device tree\n");
+ 
++	of_node_put(cpld);
++
+ 	if (ppc_md.progress)
+ 		ppc_md.progress("ksi8560_setup_arch()", 0);
+ 
+-- 
+2.25.1
 
