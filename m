@@ -2,55 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B3854EDF3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 01:37:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E96DC54EE91
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 02:53:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPJWC1xnPz3cFW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 09:37:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPLBJ0dGzz3c98
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 10:53:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=e+FtTJHd;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MWKeCMtD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPJVZ32cbz3bm1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 09:37:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=e+FtTJHd;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MWKeCMtD;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LPJVX2vwnz4xYC;
-	Fri, 17 Jun 2022 09:37:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1655422629;
-	bh=5ZijR6qhFWh0lRMpvzqsTTnbgZItQhaW+1KLIE/u2wI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=e+FtTJHdDti39wtJq9ITPB9zrxjfh5agOaV73vFdXYjyub2PNJy7K3h84ileNQrsU
-	 VF0EYukCElU6zzhizqVlHUA0NhQ2EOqMhpqzID2DSqQbIetjUeGMshLohNpTbMxwg3
-	 pIhyr992cx1vYgNvwRYTQlDYMTEnHn4+ArgixcamUwMs6kbdrwVm9fi/4TPDZfvTv8
-	 FYfVMWb6ymNLGj5qsiLVMIL3czDzlrTF49XaAaUIjg5m2b3DaZRKmlFjuK3dE67HZ1
-	 CiNyic4V/ZpwZ7JZuKr7SG1VjAg/UulvpLHcTYJ2giajTX5IyAs2ijafC+aj2cBz7a
-	 +4GHrqo6+gw3A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>, Liang He
- <windhl@126.com>, oss@buserror.net, paulus@samba.org,
- christophe.leroy@csgroup.eu, nixiaoming@huawei.com
-Subject: Re: [PATCH v2] arch: powerpc: platforms: 85xx: Add missing
- of_node_put in sgy_cts1000.c
-In-Reply-To: <bc6eaf7e-ff88-9b82-eae7-7e6902c33a10@wanadoo.fr>
-References: <20220616151901.3989078-1-windhl@126.com>
- <bc6eaf7e-ff88-9b82-eae7-7e6902c33a10@wanadoo.fr>
-Date: Fri, 17 Jun 2022 09:37:06 +1000
-Message-ID: <87o7ysb2ot.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPL9d3vXPz2ywl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 10:52:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655427157; x=1686963157;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0tAzkEOYWVJSUHPTIkY83TK5IiJ8bjs+KVG2IKCmbUk=;
+  b=MWKeCMtDeOFODCAzEXOiQDBQZnef4sZbXKhWg5+gd4Cys9js9nNu7Dod
+   Irnq2M+NlEROwAZxMdJlfljyOgRKpkXeQxeJqzUEdvNx6Q3QgtH9lC9Q1
+   U1u/p+P5UXbrOJbG1yMKraWLo8mPj88smb67+pSzigcvI4E20l1j9E2+r
+   DLss6tZ5NL1hhiSNjUvyzI9rwQ4/z9XweLdHlVDWpxdFIDd3FDWmjF0CQ
+   muV6HKcdJrNqAc800+psEEgE2sBALxUqUjlJb3aY0L3DcNWH1vC5k4VdK
+   rng3BBFE/jWLIP0TI4uPsaBYxsFWOjU+PsO8z6+AFNuY/j47s9HUjZMH7
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="262407638"
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="262407638"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jun 2022 17:52:23 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="653405200"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 16 Jun 2022 17:52:22 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o20Dl-000Ow5-OO;
+	Fri, 17 Jun 2022 00:52:21 +0000
+Date: Fri, 17 Jun 2022 08:52:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 294958ca9dd4be4204d6cf1ece8f403801dad2b2
+Message-ID: <62abd034.PCOSgOvVnWXAVqmU%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,78 +69,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
-> Le 16/06/2022 =C3=A0 17:19, Liang He a =C3=A9crit=C2=A0:
->> In gpio_halt_probe(), of_find_matching_node() will return a node pointer=
- with
->> refcount incremented. We should use of_node_put() in each fail path or w=
-hen it
->> is not used anymore.
->>=20
->> Signed-off-by: Liang He <windhl@126.com>
->> ---
->>   changelog:
->>=20
->>   v2: use goto-label patch style advised by Christophe.
->>   v1: add of_node_put() before each exit.
->>=20
->>   arch/powerpc/platforms/85xx/sgy_cts1000.c | 27 +++++++++++++++--------
->>   1 file changed, 18 insertions(+), 9 deletions(-)
->>=20
->> diff --git a/arch/powerpc/platforms/85xx/sgy_cts1000.c b/arch/powerpc/pl=
-atforms/85xx/sgy_cts1000.c
->> index 98ae64075193..e280f963d88c 100644
->> --- a/arch/powerpc/platforms/85xx/sgy_cts1000.c
->> +++ b/arch/powerpc/platforms/85xx/sgy_cts1000.c
->> @@ -73,6 +73,7 @@ static int gpio_halt_probe(struct platform_device *pde=
-v)
-...
->> @@ -122,8 +127,12 @@ static int gpio_halt_probe(struct platform_device *=
-pdev)
->>=20=20=20
->>   	printk(KERN_INFO "gpio-halt: registered GPIO %d (%d trigger, %d"
->>   	       " irq).\n", gpio, trigger, irq);
->> +	ret =3D 0;
->>=20=20=20
->> -	return 0;
->> +err_put:
->> +	of_node_put(halt_node);
->> +	halt_node =3D NULL;
->
-> Hi,
-> so now we set 'halt_node' to NULL even in the normal case.
-> This is really spurious.
->
-> Look at gpio_halt_cb(), but I think that this is just wrong and badly=20
-> breaks this driver.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 294958ca9dd4be4204d6cf1ece8f403801dad2b2  powerpc/pseries: wire up rng during setup_arch()
 
-I agree, thanks for reviewing.
+elapsed time: 735m
 
-I think the cleanest solution is to use a local variable for the node in
-the body of gpio_halt_probe(), and only assign to halt_node once all the
-checks have passed.
+configs tested: 124
+configs skipped: 93
 
-So something like:
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-        struct device_node *child_node;
+gcc tested configs:
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm64                               defconfig
+i386                          randconfig-c001
+powerpc                 mpc85xx_cds_defconfig
+s390                          debug_defconfig
+m68k                          amiga_defconfig
+mips                  maltasmvp_eva_defconfig
+sh                   secureedge5410_defconfig
+arm                         lubbock_defconfig
+powerpc                         ps3_defconfig
+arm                             pxa_defconfig
+sh                ecovec24-romimage_defconfig
+mips                            ar7_defconfig
+xtensa                generic_kc705_defconfig
+sh                  sh7785lcr_32bit_defconfig
+arm                           sama5_defconfig
+m68k                        stmark2_defconfig
+sh                          landisk_defconfig
+sh                             shx3_defconfig
+xtensa                    xip_kc705_defconfig
+powerpc                     tqm8548_defconfig
+xtensa                         virt_defconfig
+arm                        clps711x_defconfig
+arm                           sunxi_defconfig
+mips                       capcella_defconfig
+nios2                         10m50_defconfig
+arc                 nsimosci_hs_smp_defconfig
+sh                   sh7770_generic_defconfig
+mips                         cobalt_defconfig
+sh                          urquell_defconfig
+sparc                               defconfig
+m68k                          hp300_defconfig
+s390                                defconfig
+arc                        vdk_hs38_defconfig
+powerpc                      pcm030_defconfig
+powerpc                    klondike_defconfig
+sh                           se7780_defconfig
+powerpc                      tqm8xx_defconfig
+mips                            gpr_defconfig
+arm                      integrator_defconfig
+powerpc                     pq2fads_defconfig
+arm                        mvebu_v7_defconfig
+arc                            hsdk_defconfig
+ia64                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+nios2                               defconfig
+arc                              allyesconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+i386                                defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+x86_64                        randconfig-a011
+x86_64                        randconfig-a013
+x86_64                        randconfig-a015
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                             allnoconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+um                           x86_64_defconfig
+um                             i386_defconfig
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
 
-	child_node =3D of_find_matching_node(node, child_match);
-        ...
+clang tested configs:
+mips                          ath79_defconfig
+arm                        multi_v5_defconfig
+arm                          ep93xx_defconfig
+arm                        mvebu_v5_defconfig
+arm                          collie_defconfig
+powerpc                     tqm5200_defconfig
+mips                           ip22_defconfig
+x86_64                        randconfig-k001
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+i386                          randconfig-a011
+i386                          randconfig-a013
+i386                          randconfig-a015
+riscv                randconfig-r042-20220616
+hexagon              randconfig-r041-20220616
+hexagon              randconfig-r045-20220616
+s390                 randconfig-r044-20220616
 
-	printk(KERN_INFO "gpio-halt: registered GPIO %d (%d trigger, %d"
-	       " irq).\n", gpio, trigger, irq);
-        ret =3D 0;
-        halt_node =3D of_node_get(child_node);
-
-out_put:
-        of_node_put(child_node);
-=20=20=20=20=20=20=20=20
-	return ret;
-}
-
-
-cheers
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
