@@ -2,51 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B657054F92A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 16:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C930154F93F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 16:35:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPhJq3tDXz3cdc
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 00:30:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPhQm4pj4z3btp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 00:35:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=qQfoEhcS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VIxono7Y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=qQfoEhcS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VIxono7Y;
 	dkim-atps=neutral
-Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPhJ62Dzcz3blx
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 00:29:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=SC/nP
-	K4iH9WBD2tA7Pn4U3gtjCZsgXNfpKEqFy5vRXg=; b=qQfoEhcSJwmZ36hVTsR2p
-	h+QJKZ5Wya1JL5DIN0f+1pez+BapxHuAaSv1e3IADzeilsuvNdKdQRVeCRVI/VJD
-	YY6U8rfp+scg7ZiFWRVgN8M1kbaqO/GTO+OYQA3nwrTM6U/Wo0c3GPmbZbHYwOMq
-	Cia1HnYGIDRBnXVh6tPsNg=
-Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr50
- (Coremail) ; Fri, 17 Jun 2022 22:29:01 +0800 (CST)
-X-Originating-IP: [124.16.139.61]
-Date: Fri, 17 Jun 2022 22:29:01 +0800 (CST)
-From: "Liang He" <windhl@126.com>
-To: "Christophe JAILLET" <christophe.jaillet@wanadoo.fr>
-Subject: Re:Re: [PATCH] powerpc: powernv: Fix refcount leak bug in
- opal-powercap
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <0ca5ee14-a382-0935-66be-820975501f45@wanadoo.fr>
-References: <20220617042038.4003704-1-windhl@126.com>
- <0ca5ee14-a382-0935-66be-820975501f45@wanadoo.fr>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPhQ56rhYz3bl5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 00:34:37 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25HEGLsU013788;
+	Fri, 17 Jun 2022 14:34:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=11/7WVhePdiAUod4P0hDDDAUuVYmrH+ISXkj25QkLQk=;
+ b=VIxono7Y+V1nDYl15usemNszbxICgvBZPuLcOutib2k1mYbI8kvuP1cVFXNd1abOq4MV
+ xT0cV7CNrvSa29st5IXaOXbxaeypgXNLPIo8YJUFMb4LM6DzPfjdn0vVVaS6+WRn2Zfc
+ 84AjcnZI0ZSKA4cVmeY3fyIXn0u5LsXuuejudnpvpFYHS2sH8Sly8YG1rG/z+yRxk2na
+ lJQknFLBaxMVoNDMQgrDwtj7gnFPH0UUAkwa529APNDhjp2WS1R1WRG9cOG9oB9KTYSl
+ hEckWMfRKcicFJkHsYLghWk46zTUCox9DDobZdYWjTcaR3R5/W7rT/Ji8OuUZkuhF/X4 Vg== 
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3grtjdsnra-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jun 2022 14:34:30 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25HEJevu005926;
+	Fri, 17 Jun 2022 14:34:28 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03fra.de.ibm.com with ESMTP id 3gmjp8xyhm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jun 2022 14:34:28 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25HEYQxk19333392
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Jun 2022 14:34:26 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 19F1DAE045;
+	Fri, 17 Jun 2022 14:34:26 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC6F6AE051;
+	Fri, 17 Jun 2022 14:34:24 +0000 (GMT)
+Received: from li-NotSettable.ibm.com.com (unknown [9.43.107.233])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Jun 2022 14:34:24 +0000 (GMT)
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH powerpc] powerpc/bpf: Fix use of user_pt_regs in uapi
+Date: Fri, 17 Jun 2022 20:04:04 +0530
+Message-Id: <20220617143404.158097-1-naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Message-ID: <69e7e81b.8204.18172113f39.Coremail.windhl@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: MsqowAA3jPCuj6xi57k4AA--.61809W
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuA0jF2JVj6h7ygAAsg
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Qfumgx9qVeoKTBlWrN3-GWKpJg8rN7qg
+X-Proofpoint-ORIG-GUID: Qfumgx9qVeoKTBlWrN3-GWKpJg8rN7qg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-17_08,2022-06-17_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 suspectscore=0
+ adultscore=0 bulkscore=0 impostorscore=0 malwarescore=0 clxscore=1011
+ mlxscore=0 mlxlogscore=877 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206170061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,52 +88,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nick.child@ibm.com, linux-kernel@vger.kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CgoKQXQgMjAyMi0wNi0xNyAxMzowMToyNywgIkNocmlzdG9waGUgSkFJTExFVCIgPGNocmlzdG9w
-aGUuamFpbGxldEB3YW5hZG9vLmZyPiB3cm90ZToKPkxlIDE3LzA2LzIwMjIgw6AgMDY6MjAsIExp
-YW5nIEhlIGEgw6ljcml0wqA6Cj4+IEluIG9wYWxfcG93ZXJjYXBfaW5pdCgpLCBvZl9maW5kX2Nv
-bXBhdGlibGVfbm9kZSgpIHdpbGwgcmV0dXJuCj4+IGEgbm9kZSBwb2ludGVyIHdpdGggcmVmY291
-bnQgaW5jcmVtZW50ZWQuIFdlIHNob3VsZCB1c2Ugb2Zfbm9kZV9wdXQoKQo+PiBpbiBmYWlsIHBh
-dGggb3Igd2hlbiBpdCBpcyBub3QgdXNlZCBhbnltb3JlLgo+PiAKPj4gQmVzaWRlcywgZm9yX2Vh
-Y2hfY2hpbGRfb2Zfbm9kZSgpIHdpbGwgYXV0b21hdGljYWxseSAqaW5jKiBhbmQgKmRlYyoKPj4g
-cmVmY291bnQgZHVyaW5nIGl0ZXJhdGlvbi4gSG93ZXZlciwgd2Ugc2hvdWxkIGFkZCB0aGUgb2Zf
-bm9kZV9wdXQoKQo+PiBpZiB0aGVyZSBpcyBhIGJyZWFrLgo+Cj5IaSwKPgo+SSdtIG5vdCBzdXJl
-IHRoYXQgeW91ciBwYXRjaCBpcyByaWdodCBoZXJlLiBCZWNhdXNlIG9mIHRoaXMgKmluYyogYW5k
-IAo+KmRlYyogdGhpbmdzLCBkbyB3ZSBzdGlsbCBuZWVkIHRvIG9mX25vZGVfcHV0KHBvd2VyY2Fw
-KSBvbmNlIHdlIGhhdmUgCj5lbnRlcmVkIGZvcl9lYWNoX2NoaWxkX29mX25vZGU/Cj4KPkkgdGhp
-bmsgdGhhdCB0aGlzIHJlZmVyZW5jZSB3aWxsIGJlIHJlbGVhc2VkIG9uIHRoZSBmaXJzdCBpdGVy
-YXRpb24gb2YgCj50aGUgbG9vcC4KPgo+Cj5NYXliZSBvZl9ub2RlX3B1dChwb3dlcmNhcCkgc2hv
-dWxkIGJlIGR1cGxpY2F0ZWQgZXZlcnl3aGVyZSBpdCBpcyAKPnJlbGV2YW50IGFuZCByZW1vdmVk
-IGZyb20gdGhlIGVycm9yIGhhbmRsaW5nIHBhdGg/Cj5PciBhbiBhZGRpdGlvbmFsIHJlZmVyZW5j
-ZSBzaG91bGQgYmUgdGFrZW4gYmVmb3JlIHRoZSBsb29wPwo+T3IgYWRkaW5nIGEgbmV3IGxhYmVs
-IHdpdGggInBvd2VyY2FwID0gTlVMTCIgYW5kIGJyYW5jaGluZyB0aGVyZSB3aGVuIAo+bmVlZGVk
-Pwo+Cj5DSgo+Cj4+IAo+PiBTaWduZWQtb2ZmLWJ5OiBMaWFuZyBIZSA8d2luZGhsQDEyNi5jb20+
-Cj4+IC0tLQo+PiAgIGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFsLXBvd2VyY2Fw
-LmMgfCA1ICsrKystCj4+ICAgMSBmaWxlIGNoYW5nZWQsIDQgaW5zZXJ0aW9ucygrKSwgMSBkZWxl
-dGlvbigtKQo+PiAKPj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJu
-di9vcGFsLXBvd2VyY2FwLmMgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvb3BhbC1w
-b3dlcmNhcC5jCj4+IGluZGV4IDY0NTA2YjQ2ZTc3Yi4uYjEwMjQ3N2QzZjk1IDEwMDY0NAo+PiAt
-LS0gYS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvb3BhbC1wb3dlcmNhcC5jCj4+ICsr
-KyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9vcGFsLXBvd2VyY2FwLmMKPj4gQEAg
-LTE1Myw3ICsxNTMsNyBAQCB2b2lkIF9faW5pdCBvcGFsX3Bvd2VyY2FwX2luaXQodm9pZCkKPj4g
-ICAJcGNhcHMgPSBrY2FsbG9jKG9mX2dldF9jaGlsZF9jb3VudChwb3dlcmNhcCksIHNpemVvZigq
-cGNhcHMpLAo+PiAgIAkJCUdGUF9LRVJORUwpOwo+PiAgIAlpZiAoIXBjYXBzKQo+PiAtCQlyZXR1
-cm47Cj4+ICsJCWdvdG8gb3V0X3Bvd2VyY2FwOwo+PiAgIAo+PiAgIAlwb3dlcmNhcF9rb2JqID0g
-a29iamVjdF9jcmVhdGVfYW5kX2FkZCgicG93ZXJjYXAiLCBvcGFsX2tvYmopOwo+PiAgIAlpZiAo
-IXBvd2VyY2FwX2tvYmopIHsKPj4gQEAgLTIzNiw2ICsyMzYsOSBAQCB2b2lkIF9faW5pdCBvcGFs
-X3Bvd2VyY2FwX2luaXQodm9pZCkKPj4gICAJCWtmcmVlKHBjYXBzW2ldLnBnLm5hbWUpOwo+PiAg
-IAl9Cj4+ICAgCWtvYmplY3RfcHV0KHBvd2VyY2FwX2tvYmopOwo+PiArCW9mX25vZGVfcHV0KG5v
-ZGUpOwo+PiAgIG91dF9wY2FwczoKPj4gICAJa2ZyZWUocGNhcHMpOwo+PiArb3V0X3Bvd2VyY2Fw
-Ogo+PiArCW9mX25vZGVfcHV0KHBvd2VyY2FwKTsKPj4gICB9CgpIaSwgQ0ouCgpJIHRoaW5rIG15
-IHBhdGNoIGlzIGNvcnJlY3QgYmFzZWQgb24gdGhlIG9sZCBjb21taXQ6IApodHRwczovL2dpdC5r
-ZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC90b3J2YWxkcy9saW51eC5naXQvY29t
-bWl0Lz9oPXY1LjE5LXJjMiZpZD0wOTcwMGM1MDRkOGU2M2ZhZmZkMmEyMjM1MDc0ZThjNWQxMzBj
-YjhmCgpCdWdzIGFuZCBmaXggc29sdXRpb25zIGluIHRoaXMgMDk3MDBjNTA0ZDhlNjMtY29tbWl0
-IGFyZSB2ZXJ5IHNpbWlsYXIgd2l0aCBtaW5lLgoKQmVzaWRlcywgSSBhbHNvIGZpbmQgc2ltaWxh
-ciBuZXcgYnVncyBpbiBvdGhlciB0d28gZmlsZXMgaW4gdGhlIHNhbWUgZGlyZWN0b3J5ICdwb3dl
-cm52JywgCnNvIEkgaGF2ZSBtZXJnZWQgYWxsIHRocmVlIGZpbGVzJyBwYXRjaGVzIGludG8gb25l
-IGNvbW1pdC4gICdbUEFUQ0ggdjJdIHBvd2VycGM6IHBvd2VybnY6IEZpeCByZWZjb3VudCBsZWFr
-IGJ1ZycuCgpUaGFua3MuCgpMaWFuZw==
+This is a partial revert of commit a6460b03f945ee ("powerpc/bpf: Fix
+broken uapi for BPF_PROG_TYPE_PERF_EVENT").
+
+Unlike x86, powerpc has both pt_regs and user_pt_regs structures. As
+such, we still need to override perf_arch_bpf_user_pt_regs() so that the
+correct user_regs structure is used.
+
+However, unlike arm64 and s390, we expose user_pt_regs to userspace as
+just 'pt_regs'. Due to this, trying to #include <linux/bpf_perf_event.h>
+throws the below error:
+  /usr/include/linux/bpf_perf_event.h:14:28: error: field ‘regs’ has incomplete type
+     14 |         bpf_user_pt_regs_t regs;
+	|                            ^~~~
+
+Note that this was not showing up with the bpf selftest build since
+tools/include/uapi/asm/bpf_perf_event.h didn't include the powerpc
+variant.
+
+Fix this by removing arch/powerpc/include/uapi/asm/bpf_perf_event.h,
+allowing fallback to the asm-generic version.
+
+Fixes: a6460b03f945ee ("powerpc/bpf: Fix broken uapi for BPF_PROG_TYPE_PERF_EVENT")
+Cc: stable@vger.kernel.org # v4.20+
+Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+---
+ arch/powerpc/include/uapi/asm/bpf_perf_event.h | 9 ---------
+ 1 file changed, 9 deletions(-)
+ delete mode 100644 arch/powerpc/include/uapi/asm/bpf_perf_event.h
+
+diff --git a/arch/powerpc/include/uapi/asm/bpf_perf_event.h b/arch/powerpc/include/uapi/asm/bpf_perf_event.h
+deleted file mode 100644
+index 5e1e648aeec4c8..00000000000000
+--- a/arch/powerpc/include/uapi/asm/bpf_perf_event.h
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
+-#ifndef _UAPI__ASM_BPF_PERF_EVENT_H__
+-#define _UAPI__ASM_BPF_PERF_EVENT_H__
+-
+-#include <asm/ptrace.h>
+-
+-typedef struct user_pt_regs bpf_user_pt_regs_t;
+-
+-#endif /* _UAPI__ASM_BPF_PERF_EVENT_H__ */
+
+base-commit: bcd1c02813b8ab4ae019c65ffb716c9f579868e7
+-- 
+2.36.1
+
