@@ -1,56 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCBA54F5ED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 12:48:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3570B54F5FE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 12:53:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPbP74gczz3cDs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 20:48:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPbW11F8bz3bwb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 20:53:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fSnH9xiD;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=kHjwl+p3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.112; helo=m15112.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fSnH9xiD;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=kHjwl+p3;
 	dkim-atps=neutral
-Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPbNR1rKZz3bl5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 20:47:43 +1000 (AEST)
+Received: from m15112.mail.126.com (m15112.mail.126.com [220.181.15.112])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPbVN1RvXz3bpH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 20:52:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=SolyN
-	v96M4vIIPzd3NHPQjhr5VsZjM5jEwHxfRVf6zU=; b=fSnH9xiDnCCH2c5YNvLtQ
-	/PAeEkipaZVyUsAnFDdmMdylvkv1XKS1WopUm9LYDbDkcgcEGp0iFF2gJi5b+WRz
-	92X7UYg3m6I32dTAoZpu8dFu1iieGTBHRudePBjIh7tCedytxS/gPl/fW4slfDhX
-	kqL3ygs1sWuCd4TSvtR/2M=
-Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr50
- (Coremail) ; Fri, 17 Jun 2022 18:47:01 +0800 (CST)
-X-Originating-IP: [124.16.139.61]
-Date: Fri, 17 Jun 2022 18:47:01 +0800 (CST)
-From: "Liang He" <windhl@126.com>
-To: Conor.Dooley@microchip.com
-Subject: Re:Re: [PATCH v4] powerpc:85xx: Add missing of_node_put() in
- sgy_cst1000
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <33668b61-4ae7-f625-0eb3-e15d2119623c@microchip.com>
-References: <20220617060827.4004795-1-windhl@126.com>
- <eb72976a-9ca3-b894-b2d5-8283a4cf486d@csgroup.eu>
- <16f9a971.44e5.1817068ee3c.Coremail.windhl@126.com>
- <f79ebcc1-c060-f861-231d-85c377e2e885@csgroup.eu>
- <64ac3dc9.5bd1.18170bcb6a6.Coremail.windhl@126.com>
- <33668b61-4ae7-f625-0eb3-e15d2119623c@microchip.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=TBVpT
+	Xi3mOGroTRFtYnS2jF3N9afbBUgGy+vsR5qfSA=; b=kHjwl+p3FRM3LWROajx8p
+	B3PCa9VMs4dEAt1MfUAIk1mN/6SLkv9dENRbifemO3CLOt34K9jVC9iwr9QS2u2c
+	4DchzsaXwMOltmFCcbUrsobZLdsZk2d1Q/Eng4nfXYujRazUFo8TbNHTyn3KOhU3
+	vaW4RQ7P4JmwVU2242zu50=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+	by smtp2 (Coremail) with SMTP id DMmowAA3oPxkXKxipQEODg--.20553S2;
+	Fri, 17 Jun 2022 18:50:12 +0800 (CST)
+From: Liang He <windhl@126.com>
+To: mpe@ellerman.id.au,
+	benh@kernel.crashing.org,
+	paulus@samba.org,
+	christophe.leroy@csgroup.eu,
+	nixiaoming@huawei.com
+Subject: [PATCH v5] powerpc:85xx: Add missing of_node_put() in sgy_cst1000
+Date: Fri, 17 Jun 2022 18:50:11 +0800
+Message-Id: <20220617105011.4041123-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Message-ID: <71b517f4.7854.1817145ff77.Coremail.windhl@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: MsqowABHnfGmW6xiIKs4AA--.57876W
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi3AUjF1pEDvT03AADsi
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DMmowAA3oPxkXKxipQEODg--.20553S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZFWDtF4DCFW5Jw4fKw18AFb_yoW5uw17pF
+	Z8CrZakrWkGw1xGas3tayDuFy2yw18t3yxJ34fGan7C34UX34qqry0yFyrWrnIgrW8C3yr
+	Jr1aya40kFZrAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR-J5cUUUUU=
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi7QUjF1pEAN95NwAAsT
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,115 +58,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, oss@buserror.net, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CgoKQXQgMjAyMi0wNi0xNyAxNjoyNzowMywgQ29ub3IuRG9vbGV5QG1pY3JvY2hpcC5jb20gd3Jv
-dGU6Cj5PbiAxNy8wNi8yMDIyIDA5OjE3LCBMaWFuZyBIZSB3cm90ZToKPj4gCj4+IAo+PiAKPj4g
-QXQgMjAyMi0wNi0xNyAxNDo1MzoxMywgIkNocmlzdG9waGUgTGVyb3kiIDxjaHJpc3RvcGhlLmxl
-cm95QGNzZ3JvdXAuZXU+IHdyb3RlOgo+Pj4KPj4+Cj4+PiBMZSAxNy8wNi8yMDIyIMOgIDA4OjQ1
-LCBMaWFuZyBIZSBhIMOpY3JpdMKgOgo+Pj4+Cj4+Pj4KPj4+Pgo+Pj4+IEF0IDIwMjItMDYtMTcg
-MTQ6Mjg6NTYsICJDaHJpc3RvcGhlIExlcm95IiA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1
-PiB3cm90ZToKPj4+Pj4KPj4+Pj4KPj4+Pj4gTGUgMTcvMDYvMjAyMiDDoCAwODowOCwgTGlhbmcg
-SGUgYSDDqWNyaXTCoDoKPj4+Pj4+IEluIGdwaW9faGFsdF9wcm9iZSgpLCBvZl9maW5kX21hdGNo
-aW5nX25vZGUoKSB3aWxsIHJldHVybiBhIG5vZGUKPj4+Pj4+IHBvaW50ZXIgd2l0aCByZWZjb3Vu
-dCBpbmNyZW1lbnRlZC4gV2Ugc2hvdWxkIHVzZSBvZl9ub2RlX3B1dCgpIGluCj4+Pj4+PiBmYWls
-IHBhdGggb3Igd2hlbiBpdCBpcyBub3QgdXNlZCBhbnltb3JlLgo+Pj4+Pj4KPj4+Pj4+IFNpZ25l
-ZC1vZmYtYnk6IExpYW5nIEhlIDx3aW5kaGxAMTI2LmNvbT4KPj4+Pj4+IC0tLQo+Pj4+Pj4gICAg
-IGNoYW5nZWxvZzoKPj4+Pj4+ICAgICB2NDogcmV1c2UgZXhpc3QgJ2VycicgYW5kIHVzZSBhIHNp
-bXBsZSBjb2RlIHN0eWxlLCBhZHZpc2VkIGJ5IENKCj4+Pj4+PiAgICAgdjM6IHVzZSBsb2NhbCAn
-Y2hpbGRfbm9kZScgYWR2aXNlZCBieSBNaWNoYWVsLgo+Pj4+Pj4gICAgIHYyOiB1c2UgZ290by1s
-YWJlbCBwYXRjaCBzdHlsZSBhZHZpc2VkIGJ5IENocmlzdG9waGUgTGVyb3kuCj4+Pj4+PiAgICAg
-djE6IGFkZCBvZl9ub2RlX3B1dCgpIGJlZm9yZSBlYWNoIGV4aXQuCj4+Pj4+Pgo+Pj4+Pj4gICAg
-IGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvODV4eC9zZ3lfY3RzMTAwMC5jIHwgMzUgKysrKysrKysr
-KysrKystLS0tLS0tLS0KPj4+Pj4+ICAgICAxIGZpbGUgY2hhbmdlZCwgMjIgaW5zZXJ0aW9ucygr
-KSwgMTMgZGVsZXRpb25zKC0pCj4+Pj4+Pgo+Pj4+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJw
-Yy9wbGF0Zm9ybXMvODV4eC9zZ3lfY3RzMTAwMC5jIGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy84
-NXh4L3NneV9jdHMxMDAwLmMKPj4+Pj4+IGluZGV4IDk4YWU2NDA3NTE5My4uZTQ1ODg5NDNmZTdl
-IDEwMDY0NAo+Pj4+Pj4gLS0tIGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy84NXh4L3NneV9jdHMx
-MDAwLmMKPj4+Pj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvODV4eC9zZ3lfY3RzMTAw
-MC5jCj4+Pj4+PiBAQCAtNzEsNiArNzEsNyBAQCBzdGF0aWMgaW50IGdwaW9faGFsdF9wcm9iZShz
-dHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQo+Pj4+Pj4gICAgIHsKPj4+Pj4+ICAgICAJZW51
-bSBvZl9ncGlvX2ZsYWdzIGZsYWdzOwo+Pj4+Pj4gICAgIAlzdHJ1Y3QgZGV2aWNlX25vZGUgKm5v
-ZGUgPSBwZGV2LT5kZXYub2Zfbm9kZTsKPj4+Pj4+ICsJc3RydWN0IGRldmljZV9ub2RlICpjaGls
-ZF9ub2RlOwo+Pj4+Pj4gICAgIAlpbnQgZ3BpbywgZXJyLCBpcnE7Cj4+Pj4+PiAgICAgCWludCB0
-cmlnZ2VyOwo+Pj4+Pj4gICAgIAo+Pj4+Pj4gQEAgLTc4LDI2ICs3OSwyOSBAQCBzdGF0aWMgaW50
-IGdwaW9faGFsdF9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpwZGV2KQo+Pj4+Pj4gICAg
-IAkJcmV0dXJuIC1FTk9ERVY7Cj4+Pj4+PiAgICAgCj4+Pj4+PiAgICAgCS8qIElmIHRoZXJlJ3Mg
-bm8gbWF0Y2hpbmcgY2hpbGQsIHRoaXMgaXNuJ3QgcmVhbGx5IGFuIGVycm9yICovCj4+Pj4+PiAt
-CWhhbHRfbm9kZSA9IG9mX2ZpbmRfbWF0Y2hpbmdfbm9kZShub2RlLCBjaGlsZF9tYXRjaCk7Cj4+
-Pj4+PiAtCWlmICghaGFsdF9ub2RlKQo+Pj4+Pj4gKwljaGlsZF9ub2RlID0gb2ZfZmluZF9tYXRj
-aGluZ19ub2RlKG5vZGUsIGNoaWxkX21hdGNoKTsKPj4+Pj4+ICsJaWYgKCFjaGlsZF9ub2RlKQo+
-Pj4+Pj4gICAgIAkJcmV0dXJuIDA7Cj4+Pj4+PiAgICAgCj4+Pj4+PiAgICAgCS8qIFRlY2huaWNh
-bGx5IHdlIGNvdWxkIGp1c3QgcmVhZCB0aGUgZmlyc3Qgb25lLCBidXQgcHVuaXNoCj4+Pj4+PiAg
-ICAgCSAqIERUIHdyaXRlcnMgZm9yIGludmFsaWQgZm9ybS4gKi8KPj4+Pj4+IC0JaWYgKG9mX2dw
-aW9fY291bnQoaGFsdF9ub2RlKSAhPSAxKQo+Pj4+Pj4gLQkJcmV0dXJuIC1FSU5WQUw7Cj4+Pj4+
-PiArCWlmIChvZl9ncGlvX2NvdW50KGNoaWxkX25vZGUpICE9IDEpIHsKPj4+Pj4+ICsJCWVyciA9
-IC1FSU5WQUw7Cj4+Pj4+PiArCQlnb3RvIGVycl9wdXQ7Cj4+Pj4+PiArCX0KPj4+Pj4+ICAgICAK
-Pj4+Pj4+ICAgICAJLyogR2V0IHRoZSBncGlvIG51bWJlciByZWxhdGl2ZSB0byB0aGUgZHluYW1p
-YyBiYXNlLiAqLwo+Pj4+Pj4gLQlncGlvID0gb2ZfZ2V0X2dwaW9fZmxhZ3MoaGFsdF9ub2RlLCAw
-LCAmZmxhZ3MpOwo+Pj4+Pj4gLQlpZiAoIWdwaW9faXNfdmFsaWQoZ3BpbykpCj4+Pj4+PiAtCQly
-ZXR1cm4gLUVJTlZBTDsKPj4+Pj4+ICsJZ3BpbyA9IG9mX2dldF9ncGlvX2ZsYWdzKGNoaWxkX25v
-ZGUsIDAsICZmbGFncyk7Cj4+Pj4+PiArCWlmICghZ3Bpb19pc192YWxpZChncGlvKSkgewo+Pj4+
-Pj4gKwkJZXJyID0gLUVJTlZBTDsKPj4+Pj4+ICsJCWdvdG90IGVycl9wdXQ7Cj4+Pj4+Cj4+Pj4+
-IERpZCB5b3UgdGVzdCB0aGUgYnVpbGQgPwo+Pj4+Cj4+Pj4gU29ycnkgZm9yIHRoaXMgZmF1bHQu
-Cj4+Pj4KPj4+PiBJbiBmYWN0LCBJIGFtIHN0aWxsIGZpbmRpbmcgYW4gZWZmaWNpZW50IHdheSB0
-byBidWlsZGluZyBkaWZmZXJlbnQgYXJjaCBzb3VyY2UgY29kZSBhcyBJIG9ubHkgaGF2ZSB4ODYt
-NjQuCj4+Pj4KPj4+PiBOb3cgSSBhbSB0cnkgdXNpbmcgUUVNVS4KPj4+Pgo+Pj4+IEFueXdheSwg
-c29ycnkgZm9yIHRoaXMgZmF1bHQuCj4+Pgo+Pj4gWW91IGNhbiBmaW5kIGNyb3NzIGNvbXBpbGVy
-cyBmb3IgbW9zdCBhcmNoaXRlY3R1cmVzIGZvciB4ODYtNjQgaGVyZSA6Cj4+PiBodHRwczovL21p
-cnJvcnMuZWRnZS5rZXJuZWwub3JnL3B1Yi90b29scy9jcm9zc3Rvb2wvCj4+Pgo+Pj4gQ2hyaXN0
-b3BoZQo+PiAKPj4gSGksIENocmlzdG9waGUgYW5kIENvbm9yLgo+PiAKPj4gU29ycnkgdG8gdHJv
-dWJsZSB5b3UgYWdhaW4uCj4+IAo+PiBOb3cgSSBvbmx5IGtub3cgaG93IHRvIHF1aWNrbHkgaWRl
-bnRpZnkgdGhlIHJlZmNvdW50aW5nIGJ1Z3MsIGJ1dCBJIGNhbm5vdCBlZmZpY2llbnRseSBnaXZl
-IGEgYnVpbGQgdGVzdC4KPj4gCj4+IEZvciBleGFtcGxlLCBJIHVzZSB0aGUgY3Jvc3MgY29tcGls
-ZXJzICdwb3dlcnBjLWxpbnV4LWdudS1nY2MnIHRvIGNvbXBpbGUgJ2FyY2gvcG93ZXJwYy9wbGF0
-Zm9ybXMvODV4eC9zZ3lfY3RzMTAwMC5jJyB3aXRoIC1mc3ludGF4LW9ubHkgZmxhZy4KPj4gQnV0
-IEkgbWVldCB0b28gbWFueSBoZWFkZXIgZmlsZSBtaXNzaW5nIGVycm9ycy4gRXZlbiBpZiBJIGFk
-ZCBzb21lICdpbmNsdWRlJyBwYXRoZXMsIGUuZy4sIC4vYXJjaC9wb3dlcnBjL2luY2x1ZGUsIC4v
-aW5jbHVkZSwKPj4gdGhlcmUgYXJlIHN0aWxsIHRvbyBtYW55IG90aGVyIGVycm9ycy4KPj4gCj4+
-IFNvIGlmIHRoZXJlIGlzIGFueSBlZmZpY2llbnQgd2F5IHRvIGNoZWNrIG15IHBhdGNoIGNvZGUg
-dG8gYXZvaWQgJ2dvdG90JyBlcnJvciBhZ2Fpbi4KPgo+aWRrIGFueXRoaW5nIGFib3V0IHBvd2Vy
-cGMsIGJ1dCB3aGF0IEkgZmluZCBpcyBhIG5pY2Ugd2F5IHRvIGdldCBhIGNvbXBpbGVyCj5mb3Ig
-YW4gYXJjaCBJIGRvbid0IHVzZSBpcyB0byBzZWFyY2ggb24gbG9yZS5rZXJuZWwub3JnIGZvciBh
-IDBkYXkgcm9ib3QKPmJ1aWxkIGVycm9yIHNpbmNlIGl0IGdpdmVzIGluc3RydWN0aW9ucyBmb3Ig
-YnVpbGRpbmcgb24gdGhhdCBhcmNoLgo+Rm9yIGV4YW1wbGU6Cj5odHRwczovL2xvcmUua2VybmVs
-Lm9yZy9saW51eHBwYy1kZXYvMjAyMjA2MDYwOTEwLnJZTlRGcWRJLWxrcEBpbnRlbC5jb20vCj4K
-Pgo+SW4gdGhpcyBjYXNlLCB5b3VyIGJ1ZyBzZWVtcyBvYnZpb3VzPyBZb3UgdHlwZWQgImdvdG90
-IiBpbnN0ZWFkIG9mICJnb3RvIi4KPgo+SG9wZSB0aGF0IGhlbHBzLAo+Q29ub3IuCj4KPj4gCj4+
-IFRoYW5rcyBhZ2FpbiwgQ2hyaXN0b3BoZSBhbmQgQ29ub3IuCj4+IAo+PiBMaWFuZwoKVGhhbmtz
-LCBDb25vciBhbmQgQ2hyaXN0b3BoZS4KCkkgZmluYWxseSBmaWd1cmUgb3V0IGFuIGVmZmljaWVu
-dCB3YXkgaW4gd2hpY2ggSSBjYW4gdXNlIGNyb3NzLWNvbXBpbGVyIHRvIGNoZWNrIG15IHNpbmds
-ZSBwYXRjaGVkIGZpbGUgYXMgZm9sbG93OgoKcG93ZXJwYzY0bGUtbGludXgtZ251LWdjYyAtV3As
-LU1NRCxhcmNoL3Bvd2VycGMva2VybmVsLy5pby5vLmQgIC1ub3N0ZGluYyAtSS4vYXJjaC9wb3dl
-cnBjL2luY2x1ZGUgLUkuL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2dlbmVyYXRlZCAgLUkuL2luY2x1
-ZGUgLUkuL2FyY2gvcG93ZXJwYy9pbmNsdWRlL3VhcGkgLUkuL2FyY2gvcG93ZXJwYy9pbmNsdWRl
-L2dlbmVyYXRlZC91YXBpIC1JLi9pbmNsdWRlL3VhcGkgLUkuL2luY2x1ZGUvZ2VuZXJhdGVkL3Vh
-cGkgLWluY2x1ZGUgLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLXZlcnNpb24uaCAtaW5jbHVkZSAu
-L2luY2x1ZGUvbGludXgva2NvbmZpZy5oIC1pbmNsdWRlIC4vaW5jbHVkZS9saW51eC9jb21waWxl
-cl90eXBlcy5oIC1EX19LRVJORUxfXyAtSSAuL2FyY2gvcG93ZXJwYyAtZm1hY3JvLXByZWZpeC1t
-YXA9Li89IC1XYWxsIC1XdW5kZWYgLVdlcnJvcj1zdHJpY3QtcHJvdG90eXBlcyAtV25vLXRyaWdy
-YXBocyAtZm5vLXN0cmljdC1hbGlhc2luZyAtZm5vLWNvbW1vbiAtZnNob3J0LXdjaGFyIC1mbm8t
-UElFIC1XZXJyb3I9aW1wbGljaXQtZnVuY3Rpb24tZGVjbGFyYXRpb24gLVdlcnJvcj1pbXBsaWNp
-dC1pbnQgLVdlcnJvcj1yZXR1cm4tdHlwZSAtV25vLWZvcm1hdC1zZWN1cml0eSAtc3RkPWdudTEx
-IC1tY3B1PXBvd2VycGMgLW1jcHU9cG93ZXJwYyAtbTMyIC1tc29mdC1mbG9hdCAtcGlwZSAtZmZp
-eGVkLXIyIC1tbm8tcmVhZG9ubHktaW4tc2RhdGEgLW1uby1hbHRpdmVjIC1tbm8tdnN4IC1mbm8t
-YXN5bmNocm9ub3VzLXVud2luZC10YWJsZXMgLW1uby1zdHJpbmcgLW1iaWctZW5kaWFuIC1tc3Rh
-Y2stcHJvdGVjdG9yLWd1YXJkPXRscyAtbXN0YWNrLXByb3RlY3Rvci1ndWFyZC1yZWc9cjIgLWZu
-by1kZWxldGUtbnVsbC1wb2ludGVyLWNoZWNrcyAtV25vLWZyYW1lLWFkZHJlc3MgLVduby1mb3Jt
-YXQtdHJ1bmNhdGlvbiAtV25vLWZvcm1hdC1vdmVyZmxvdyAtV25vLWFkZHJlc3Mtb2YtcGFja2Vk
-LW1lbWJlciAtTzIgLS1wYXJhbT1hbGxvdy1zdG9yZS1kYXRhLXJhY2VzPTAgLVdmcmFtZS1sYXJn
-ZXItdGhhbj0xMDI0IC1mc3RhY2stcHJvdGVjdG9yLXN0cm9uZyAtV2ltcGxpY2l0LWZhbGx0aHJv
-dWdoPTUgLVduby1tYWluIC1Xbm8tdW51c2VkLWJ1dC1zZXQtdmFyaWFibGUgLVduby11bnVzZWQt
-Y29uc3QtdmFyaWFibGUgLWZvbWl0LWZyYW1lLXBvaW50ZXIgLWZuby1zdGFjay1jbGFzaC1wcm90
-ZWN0aW9uIC1XZGVjbGFyYXRpb24tYWZ0ZXItc3RhdGVtZW50IC1XdmxhIC1Xbm8tcG9pbnRlci1z
-aWduIC1XY2FzdC1mdW5jdGlvbi10eXBlIC1Xbm8tc3RyaW5nb3AtdHJ1bmNhdGlvbiAtV25vLXN0
-cmluZ29wLW92ZXJmbG93IC1Xbm8tcmVzdHJpY3QgLVduby1tYXliZS11bmluaXRpYWxpemVkIC1X
-bm8tYWxsb2Mtc2l6ZS1sYXJnZXItdGhhbiAtZm5vLXN0cmljdC1vdmVyZmxvdyAtZm5vLXN0YWNr
-LWNoZWNrIC1mY29uc2VydmUtc3RhY2sgLVdlcnJvcj1kYXRlLXRpbWUgLVdlcnJvcj1pbmNvbXBh
-dGlibGUtcG9pbnRlci10eXBlcyAtV2Vycm9yPWRlc2lnbmF0ZWQtaW5pdCAtV25vLXBhY2tlZC1u
-b3QtYWxpZ25lZCAtbXN0YWNrLXByb3RlY3Rvci1ndWFyZC1vZmZzZXQ9NTc2IC1XZXJyb3IgLURL
-QlVJTERfTU9ETkFNRT0nIjg1eHgiJyAtREtCVUlMRF9NT0RGSUxFPSciYXJjaC9wb3dlcnBjL3Bs
-YXRmb3Jtcy84NXh4L3NneV9jdHMxMDAwLmMiJyAtZnN5bnRheC1vbmx5IC4vYXJjaC9wb3dlcnBj
-L3BsYXRmb3Jtcy84NXh4L3NneV9jdHMxMDAwLmMKClRoYW5rcyBhZ2Fpbi4KCkxpYW5nCgo=
+In gpio_halt_probe(), of_find_matching_node() will return a node
+pointer with refcount incremented. We should use of_node_put() in
+fail path or when it is not used anymore.
+
+Signed-off-by: Liang He <windhl@126.com>
+---
+ changelog:
+ v5: fix 'gotot' error introduced by v4 and use cross-compiler to test 
+ v4: reuse exist 'err' and use a simple code style, advised by CJ
+ v3: use local 'child_node' advised by Michael.
+ v2: use goto-label patch style advised by Christophe Leroy.
+ v1: add of_node_put() before each exit.
+
+ arch/powerpc/platforms/85xx/sgy_cts1000.c | 35 ++++++++++++++---------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
+
+diff --git a/arch/powerpc/platforms/85xx/sgy_cts1000.c b/arch/powerpc/platforms/85xx/sgy_cts1000.c
+index 98ae64075193..e14d1b74d4e4 100644
+--- a/arch/powerpc/platforms/85xx/sgy_cts1000.c
++++ b/arch/powerpc/platforms/85xx/sgy_cts1000.c
+@@ -71,6 +71,7 @@ static int gpio_halt_probe(struct platform_device *pdev)
+ {
+ 	enum of_gpio_flags flags;
+ 	struct device_node *node = pdev->dev.of_node;
++	struct device_node *child_node;
+ 	int gpio, err, irq;
+ 	int trigger;
+ 
+@@ -78,26 +79,29 @@ static int gpio_halt_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 
+ 	/* If there's no matching child, this isn't really an error */
+-	halt_node = of_find_matching_node(node, child_match);
+-	if (!halt_node)
++	child_node = of_find_matching_node(node, child_match);
++	if (!child_node)
+ 		return 0;
+ 
+ 	/* Technically we could just read the first one, but punish
+ 	 * DT writers for invalid form. */
+-	if (of_gpio_count(halt_node) != 1)
+-		return -EINVAL;
++	if (of_gpio_count(child_node) != 1) {
++		err = -EINVAL;
++		goto err_put;
++	}
+ 
+ 	/* Get the gpio number relative to the dynamic base. */
+-	gpio = of_get_gpio_flags(halt_node, 0, &flags);
+-	if (!gpio_is_valid(gpio))
+-		return -EINVAL;
++	gpio = of_get_gpio_flags(child_node, 0, &flags);
++	if (!gpio_is_valid(gpio)) {
++		err = -EINVAL;
++		goto err_put;
++	}
+ 
+ 	err = gpio_request(gpio, "gpio-halt");
+ 	if (err) {
+ 		printk(KERN_ERR "gpio-halt: error requesting GPIO %d.\n",
+ 		       gpio);
+-		halt_node = NULL;
+-		return err;
++		goto err_put;
+ 	}
+ 
+ 	trigger = (flags == OF_GPIO_ACTIVE_LOW);
+@@ -105,15 +109,14 @@ static int gpio_halt_probe(struct platform_device *pdev)
+ 	gpio_direction_output(gpio, !trigger);
+ 
+ 	/* Now get the IRQ which tells us when the power button is hit */
+-	irq = irq_of_parse_and_map(halt_node, 0);
++	irq = irq_of_parse_and_map(child_node, 0);
+ 	err = request_irq(irq, gpio_halt_irq, IRQF_TRIGGER_RISING |
+-			  IRQF_TRIGGER_FALLING, "gpio-halt", halt_node);
++			  IRQF_TRIGGER_FALLING, "gpio-halt", child_node);
+ 	if (err) {
+ 		printk(KERN_ERR "gpio-halt: error requesting IRQ %d for "
+ 		       "GPIO %d.\n", irq, gpio);
+ 		gpio_free(gpio);
+-		halt_node = NULL;
+-		return err;
++		goto err_put;
+ 	}
+ 
+ 	/* Register our halt function */
+@@ -123,7 +126,12 @@ static int gpio_halt_probe(struct platform_device *pdev)
+ 	printk(KERN_INFO "gpio-halt: registered GPIO %d (%d trigger, %d"
+ 	       " irq).\n", gpio, trigger, irq);
+ 
++	halt_node = child_node;
+ 	return 0;
++
++err_put:
++	of_node_put(child_node);
++	return err;
+ }
+ 
+ static int gpio_halt_remove(struct platform_device *pdev)
+@@ -139,6 +147,7 @@ static int gpio_halt_remove(struct platform_device *pdev)
+ 
+ 		gpio_free(gpio);
+ 
++		of_node_put(halt_node);
+ 		halt_node = NULL;
+ 	}
+ 
+-- 
+2.25.1
+
