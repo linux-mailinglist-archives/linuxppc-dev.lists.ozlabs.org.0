@@ -1,92 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329E554F041
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 06:29:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C4854F042
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 06:29:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPQzl3BxYz3c98
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 14:29:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPR0P3Xvxz3cgb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 14:29:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BEiRqgQW;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EQKkqpQ2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rashmica@linux.ibm.com; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPQzP6nx5z3btp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 14:29:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BEiRqgQW;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EQKkqpQ2;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPQz201HFz3bdy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 14:28:44 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25H1s0Wt040480;
-	Fri, 17 Jun 2022 04:28:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=BvnabSvfpjA3d/bLDZ0BNQbO6/F4LrHX5rn7h5D7Qsw=;
- b=BEiRqgQWzNec55s6xxRCDUFmIFV41A11fZHvQJ9xnQpymOZYTvFiPbOFqFnD7PW1Ephb
- 1EfCD51VILTwOPoLJm0R49YSd+c+kGtYJGhtHD9q50IVLax6OVoD0qVqcrCYNgcraLf3
- TaBietHKxJJHi5kHPJOfDbs8bO4wdH0Fg2FxllEM1USg4Gld0D/5/y/lcIMwYdAvn+0f
- 5TfkPb0u/FOU06nrxP98/DqUduzWmCEf1og7uWvV9VhVJd9/w9QjYQUQT/4rpOLdkOtv
- QFA+LguOUaGcR5WFdilmJpkfzkw0rt2oQ3hdaseMI4yhoigGeDO+zdH4dGTY/pZJ+92t zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gqr2q5g4c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jun 2022 04:28:37 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25H4KU55026162;
-	Fri, 17 Jun 2022 04:28:37 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gqr2q5g3x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jun 2022 04:28:36 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25H4Kb1T002177;
-	Fri, 17 Jun 2022 04:28:35 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma02fra.de.ibm.com with ESMTP id 3gmjp96c50-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jun 2022 04:28:34 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25H4RvG921496208
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jun 2022 04:27:57 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B2A5AA405C;
-	Fri, 17 Jun 2022 04:28:32 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C409A405B;
-	Fri, 17 Jun 2022 04:28:32 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 17 Jun 2022 04:28:32 +0000 (GMT)
-Received: from rashmica.home.majoof.com (unknown [9.43.162.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 5F0E160100;
-	Fri, 17 Jun 2022 14:28:27 +1000 (AEST)
-From: Rashmica Gupta <rashmica@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: make facility_unavailable_exception 64s
-Date: Fri, 17 Jun 2022 14:28:05 +1000
-Message-Id: <20220617042805.426231-1-rashmica@linux.ibm.com>
-X-Mailer: git-send-email 2.35.3
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LPQzM4nZmz4xYY;
+	Fri, 17 Jun 2022 14:29:03 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1655440145;
+	bh=lP6N1TsPiYTYOxkSYd2WUCrvJTyVTHU9T746fkYXgbE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EQKkqpQ2DaafVrQ3kwoNK9C0ey0d8exJsQ2v9MjkKl5n8y8PFnAgMViqN6othvPKE
+	 27RmgCbkGmwpicXuqQeysgkEBK89K6aupDRabOyNQVGwenQxiFTfdFcSGCt63Hqk8e
+	 IGlNRtuXLI/sUvTwlSX1uy+/HBMt/xtuUyS+C0aYlx5iJZf9Xyvnmgv2eBIweFKzMT
+	 I9um+KVNa/13qXITXudfeI5qcdsb7l96WV5w0ajNN5W2dMJHH7qb3XEIQ2ZajBCavk
+	 gi9N9nwjhUWUc+nJJHIb1MLWdPiuJEv9eCnJNOvKuLyrLbtURxCRYJtvau3Rd4T03q
+	 ecIaHufYn51Tw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Liang He <windhl@126.com>
+Subject: Re:Re: [PATCH v2] arch: powerpc: platforms: 85xx: Add missing
+ of_node_put in sgy_cts1000.c
+In-Reply-To: <6af17369.1d3d.1816f7a9707.Coremail.windhl@126.com>
+References: <20220616151901.3989078-1-windhl@126.com>
+ <bc6eaf7e-ff88-9b82-eae7-7e6902c33a10@wanadoo.fr>
+ <87o7ysb2ot.fsf@mpe.ellerman.id.au>
+ <6af17369.1d3d.1816f7a9707.Coremail.windhl@126.com>
+Date: Fri, 17 Jun 2022 14:29:02 +1000
+Message-ID: <87ilozc3qp.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: upV-4beDw7sPeEy2DGyvBgNasSRW7sqX
-X-Proofpoint-ORIG-GUID: yt_ATKbsZ0FMYULaA40R-gakmD_edLyQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-17_02,2022-06-16_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
- malwarescore=0 mlxlogscore=810 phishscore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2206170018
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,33 +62,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, npiggin@gmail.com
+Cc: nixiaoming@huawei.com, linux-kernel@vger.kernel.org, oss@buserror.net, paulus@samba.org, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The facility unavailable exception is only available on ppc book3s
-machines so use CONFIG_PPC_BOOK3S_64 rather than CONFIG_PPC64.
-tm_unavailable is only called from facility_unavailable_exception so can
-also be under this Kconfig symbol.
+"Liang He" <windhl@126.com> writes:
+> At 2022-06-17 07:37:06, "Michael Ellerman" <mpe@ellerman.id.au> wrote:
+>>Christophe JAILLET <christophe.jaillet@wanadoo.fr> writes:
+>>> Le 16/06/2022 =C3=A0 17:19, Liang He a =C3=A9crit=C2=A0:
+>>>> In gpio_halt_probe(), of_find_matching_node() will return a node point=
+er with
+>>>> refcount incremented. We should use of_node_put() in each fail path or=
+ when it
+>>>> is not used anymore.
+>>>>=20
+>>>> Signed-off-by: Liang He <windhl@126.com>
+>>>> ---
+>>>>   changelog:
+>>>>=20
+>>>>   v2: use goto-label patch style advised by Christophe.
+>>>>   v1: add of_node_put() before each exit.
+>>>>=20
+>>>>   arch/powerpc/platforms/85xx/sgy_cts1000.c | 27 +++++++++++++++------=
+--
+>>>>   1 file changed, 18 insertions(+), 9 deletions(-)
+>>>>=20
+>>>> diff --git a/arch/powerpc/platforms/85xx/sgy_cts1000.c b/arch/powerpc/=
+platforms/85xx/sgy_cts1000.c
+>>>> index 98ae64075193..e280f963d88c 100644
+>>>> --- a/arch/powerpc/platforms/85xx/sgy_cts1000.c
+>>>> +++ b/arch/powerpc/platforms/85xx/sgy_cts1000.c
+>>>> @@ -73,6 +73,7 @@ static int gpio_halt_probe(struct platform_device *p=
+dev)
+>>...
+>>>> @@ -122,8 +127,12 @@ static int gpio_halt_probe(struct platform_device=
+ *pdev)
+>>>>=20=20=20
+>>>>   	printk(KERN_INFO "gpio-halt: registered GPIO %d (%d trigger, %d"
+>>>>   	       " irq).\n", gpio, trigger, irq);
+>>>> +	ret =3D 0;
+>>>>=20=20=20
+>>>> -	return 0;
+>>>> +err_put:
+>>>> +	of_node_put(halt_node);
+>>>> +	halt_node =3D NULL;
+>>>
+>>> Hi,
+>>> so now we set 'halt_node' to NULL even in the normal case.
+>>> This is really spurious.
+>>>
+>>> Look at gpio_halt_cb(), but I think that this is just wrong and badly=20
+>>> breaks this driver.
+>>
+>>I agree, thanks for reviewing.
+>>
+>>I think the cleanest solution is to use a local variable for the node in
+>>the body of gpio_halt_probe(), and only assign to halt_node once all the
+>>checks have passed.
+>>
+>>So something like:
+>>
+>>        struct device_node *child_node;
+>>
+>>	child_node =3D of_find_matching_node(node, child_match);
+>>        ...
+>>
+>>	printk(KERN_INFO "gpio-halt: registered GPIO %d (%d trigger, %d"
+>>	       " irq).\n", gpio, trigger, irq);
+>>        ret =3D 0;
+>>        halt_node =3D of_node_get(child_node);
+>>
+>>out_put:
+>>        of_node_put(child_node);
+>>=20=20=20=20=20=20=20=20
+>>	return ret;
+>>}
+>>
+>>
+>>cheers
+>
+> Hi, Michael and Christophe,
+>
+> I am writing the new patch based on Michael's advice. However, I wonder i=
+f there is
+> any place to call of_node_put(halt_node)?  As I do not exactly know if gp=
+io_halt_remove()
+> or anyother place can correctly release this global reference=EF=BC=9F
+> If not, it is correct that I add a of_node_put(halt_node) in gpio_halt_re=
+move(), right?
 
-Signed-off-by: Rashmica Gupta <rashmica@linux.ibm.com>
----
- arch/powerpc/kernel/traps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yes I think so, just before it's set to NULL, eg:
 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 3aaa50e5c72f..dadfcef5d6db 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -1676,7 +1676,7 @@ DEFINE_INTERRUPT_HANDLER(vsx_unavailable_exception)
- 	die("Unrecoverable VSX Unavailable Exception", regs, SIGABRT);
- }
- 
--#ifdef CONFIG_PPC64
-+#ifdef CONFIG_PPC_BOOK3S_64
- static void tm_unavailable(struct pt_regs *regs)
- {
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
--- 
-2.35.3
+diff --git a/arch/powerpc/platforms/85xx/sgy_cts1000.c b/arch/powerpc/platf=
+orms/85xx/sgy_cts1000.c
+index 98ae64075193..7beb3cd420ba 100644
+--- a/arch/powerpc/platforms/85xx/sgy_cts1000.c
++++ b/arch/powerpc/platforms/85xx/sgy_cts1000.c
+@@ -139,6 +139,7 @@ static int gpio_halt_remove(struct platform_device *pde=
+v)
+=20
+ 		gpio_free(gpio);
+=20
++		of_node_put(halt_node);
+ 		halt_node =3D NULL;
+ 	}
+=20
 
+cheers
