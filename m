@@ -2,49 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6E454F277
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 10:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA83D54F27E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 10:06:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPWkk0Mfvz3dpG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 18:03:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPWnf52K2z3dx3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 18:05:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NV2fwnti;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=Z6soNT8y;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPWk673xdz2xvw
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 18:02:54 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.113; helo=m15113.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NV2fwnti;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=Z6soNT8y;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LPWk23BNQz4xXJ;
-	Fri, 17 Jun 2022 18:02:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1655452970;
-	bh=vvQQ9dW7uySr9c9qitB9W/WMS/96KEoCF1rruuPFuYk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NV2fwntifasu6TQjhK0+Vw8tWYoGXfhMNQY3uSbArkin9t5HQpZgV+ngcvyKjg+21
-	 FFci1Ui8RskrWs7ZgbJPty32xfeaM7q0Q+CWLTO53vWd3EQIpUEsoYTh+Q1n9q/QRk
-	 Fbo9Y+YAOi6HauKYd2FMXx/agqkJqqZjmFrBDpRtWKoZr2yo2VRV3x8OhDIAVJQ61W
-	 XHa//0A9d4y+QqMu48/vQSovwwK0Wk6n56VgiGW56m6cbSoV6xV124/f7WZyZtwooH
-	 frD+E0vxR6kE/9tS2rtFmm8Kjoe1pLnNhidsA48hpwp7DKiqOGGCifdoLIL5nnnAYC
-	 moDl4hpmkvbdw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerc: Update asm-prototypes.h comment
-Date: Fri, 17 Jun 2022 18:02:43 +1000
-Message-Id: <20220617080243.2177583-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.35.3
+Received: from m15113.mail.126.com (m15113.mail.126.com [220.181.15.113])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPWmz0CsCz3bpF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 18:05:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=6hHSq
+	JJtvj2gXC96rqDa7qDMN11c7zQ1mP+RJraEK9o=; b=Z6soNT8ycgZZEqp9j5xAu
+	3qSelUpbBFUjwYHL8Lq50VOFX8zGklRg5jIQTVV7dlmMy6odEz9+nJcIWzbwheCa
+	6gvoshjgX/XbLM2RdxBbjPNnDrcOLaZrq8UfoeUaGDgTRIzOEwLYb0cvSq8xgEWy
+	8npL4v72GUVzGBMp3nrQJ0=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+	by smtp3 (Coremail) with SMTP id DcmowACXMJKYNaxic+FcDg--.36620S2;
+	Fri, 17 Jun 2022 16:04:41 +0800 (CST)
+From: Liang He <windhl@126.com>
+To: mpe@ellerman.id.au,
+	benh@kernel.crashing.org,
+	paulus@samba.org,
+	nick.child@ibm.com,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu
+Subject: [PATCH] powerpc: powernv: Fix refcount leak in opal
+Date: Fri, 17 Jun 2022 16:04:39 +0800
+Message-Id: <20220617080439.4010786-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DcmowACXMJKYNaxic+FcDg--.36620S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7Xw43XFW7Wry8ZF1ruw48WFg_yoW3Zrg_tw
+	n7XayDur4rJr4vy3yDZw4fGFnrC3sxWF4DXr12q3W2kw13ta9xG39rtrW7G3WUurWjyrW3
+	GFWDJrWDZaySvjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRM3kuJUUUUU==
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi3BkjF1pEDvTRHwAAsb
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,34 +59,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This header was recently cleaned up in commit 76222808fc25 ("powerpc:
-Move C prototypes out of asm-prototypes.h"), update the comment to
-reflect it's proper purpose.
+In opal_imc_init_dev(), of_find_compatible_node() will return a
+node pointer with refcount incremented. We should use of_node_put()
+when it is not used anymore.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/asm-prototypes.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Signed-off-by: Liang He <windhl@126.com>
+--- 
 
-diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
-index d995c65d18ab..eda6dba9378f 100644
---- a/arch/powerpc/include/asm/asm-prototypes.h
-+++ b/arch/powerpc/include/asm/asm-prototypes.h
-@@ -2,8 +2,9 @@
- #ifndef _ASM_POWERPC_ASM_PROTOTYPES_H
- #define _ASM_POWERPC_ASM_PROTOTYPES_H
- /*
-- * This file is for prototypes of C functions that are only called
-- * from asm, and any associated variables.
-+ * This file is for C prototypes of asm symbols that are EXPORTed.
-+ * It allows the modversions logic to see their prototype and
-+ * generate proper CRCs for them.
-  *
-  * Copyright 2016, Daniel Axtens, IBM Corporation.
-  */
+ arch/powerpc/platforms/powernv/opal.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index 55a8fbfdb5b2..d86cc48a10aa 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -952,6 +952,7 @@ static void __init opal_imc_init_dev(void)
+ 	np = of_find_compatible_node(NULL, NULL, IMC_DTB_COMPAT);
+ 	if (np)
+ 		of_platform_device_create(np, NULL, NULL);
++	of_node_put(np);
+ }
+ 
+ static int kopald(void *unused)
 -- 
-2.35.3
+2.25.1
 
