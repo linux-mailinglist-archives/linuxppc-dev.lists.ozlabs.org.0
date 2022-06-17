@@ -2,41 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0286154FAAD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 17:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB15C54FBDD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 19:07:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPkFt6Ztlz3ch8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 01:57:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPlp255Swz3cdT
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 03:07:06 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nqND4K85;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Unknown mechanism found: ipv4:218.92.28.120) smtp.mailfrom=jari.cn (client-ip=218.92.28.120; helo=jari.cn; envelope-from=chenxuebing@jari.cn; receiver=<UNKNOWN>)
-Received: from jari.cn (unknown [218.92.28.120])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPkFR2BJ6z3brx
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 01:57:10 +1000 (AEST)
-Received: by ajax-webmail-localhost.localdomain (Coremail) ; Fri, 17 Jun
- 2022 23:50:19 +0800 (GMT+08:00)
-X-Originating-IP: [182.148.14.60]
-Date: Fri, 17 Jun 2022 23:50:19 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: "XueBing Chen" <chenxuebing@jari.cn>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org, 
-	seanjc@google.com, clg@kaod.org, aik@ozlabs.ru
-Subject: [PATCH] KVM: PPC: use __func__ to get funcion's name in an output
- message
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT6.0.1 build 20210329(c53f3fee)
- Copyright (c) 2002-2022 www.mailtech.cn
- mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nqND4K85;
+	dkim-atps=neutral
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPlnM5dKYz3bXn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 03:06:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655485592; x=1687021592;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=O0OzaZWt5JBpgO+HWeUig13mrHT0bkF4JZGnMqUmzAI=;
+  b=nqND4K85z1kojFg4OmhvYN++Df1g5VQeyyWxbfA3psB9b7a7uceihPhw
+   TmAyuq629gZW47GLVGi48XfhpRKpNB2OSLcsDk6VYv8/bEU1JlpAPKeK0
+   XRL3LHL29CxWiL/GgUS1DbkOLxeb+XzMDpL6CBUGTEL4Pe9u3y9TNMDj5
+   2943wBc3gYAXYBSQuq24MXPqA32y9mTNhvxV2IcCbatvoG1vvMFgGwnXo
+   ldyj983qTO9nzxY7YYbeqs67y6LhDl+Sr3ES9q9CJPD6Is/owiU6NY+oR
+   GucM+qQSjrsT7I1lY+Ny1uwFEXZsI73cL5cWCbM7G0eyPc3qPH9Kdgx3n
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="259328832"
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="259328832"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2022 04:26:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="675457992"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by FMSMGA003.fm.intel.com with ESMTP; 17 Jun 2022 04:26:40 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o2A7b-000PP9-Vz;
+	Fri, 17 Jun 2022 11:26:39 +0000
+Date: Fri, 17 Jun 2022 19:26:21 +0800
+From: kernel test robot <lkp@intel.com>
+To: Mike Kravetz <mike.kravetz@oracle.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/4] hugetlb: skip to end of PT page mapping when pte not
+ present
+Message-ID: <202206171929.ZIUrNg6p-lkp@intel.com>
+References: <20220616210518.125287-2-mike.kravetz@oracle.com>
 MIME-Version: 1.0
-Message-ID: <13b2c857.beb.181725bad35.Coremail.chenxuebing@jari.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: AQAAfwD3AG+8oqxiEL9BAA--.788W
-X-CM-SenderInfo: hfkh05pxhex0nj6mt2flof0/1tbiAQAACmFEYxssuAAGsE
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-	daVFxhVjvjDU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220616210518.125287-2-mike.kravetz@oracle.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,34 +75,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, Michal Hocko <mhocko@suse.com>, kbuild-all@lists.01.org, will@kernel.org, Anshuman Khandual <anshuman.khandual@arm.com>, catalin.marinas@arm.com, llvm@lists.linux.dev, Peter Xu <peterx@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>, Linux Memory Management List <linux-mm@kvack.org>, James Houghton <jthoughton@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Muchun Song <songmuchun@bytedance.com>, Andrew Morton <akpm@linux-foundation.org>, Christian Borntraeger <borntraeger@linux.ibm.com>, Naoya Horiguchi <naoya.horiguchi@linux.dev>, Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ClByZWZlciB1c2luZyAnIiVzLi4uIiwgX19mdW5jX18nIHRvIGdldCBjdXJyZW50IGZ1bmN0aW9u
-J3MgbmFtZSBpbgphbiBvdXRwdXQgbWVzc2FnZS4KClNpZ25lZC1vZmYtYnk6IFh1ZUJpbmcgQ2hl
-biA8Y2hlbnh1ZWJpbmdAamFyaS5jbj4KLS0tCiBhcmNoL3Bvd2VycGMva3ZtL2Jvb2szc182NF9t
-bXVfaHYuYyB8IDcgKysrLS0tLQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgNCBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMva3ZtL2Jvb2szc182NF9tbXVf
-aHYuYyBiL2FyY2gvcG93ZXJwYy9rdm0vYm9vazNzXzY0X21tdV9odi5jCmluZGV4IDBhZWI1MTcz
-OGNhOS4uZTc5NWVkM2QxMzQ2IDEwMDY0NAotLS0gYS9hcmNoL3Bvd2VycGMva3ZtL2Jvb2szc182
-NF9tbXVfaHYuYworKysgYi9hcmNoL3Bvd2VycGMva3ZtL2Jvb2szc182NF9tbXVfaHYuYwpAQCAt
-MTE5NCw3ICsxMTk0LDcgQEAgc3RhdGljIGludCByZXNpemVfaHB0X2FsbG9jYXRlKHN0cnVjdCBr
-dm1fcmVzaXplX2hwdCAqcmVzaXplKQogCWlmIChyYyA8IDApCiAJCXJldHVybiByYzsKIAotCXJl
-c2l6ZV9ocHRfZGVidWcocmVzaXplLCAicmVzaXplX2hwdF9hbGxvY2F0ZSgpOiBIUFQgQCAweCVs
-eFxuIiwKKwlyZXNpemVfaHB0X2RlYnVnKHJlc2l6ZSwgIiVzKCk6IEhQVCBAIDB4JWx4XG4iLCBf
-X2Z1bmNfXywKIAkJCSByZXNpemUtPmhwdC52aXJ0KTsKIAogCXJldHVybiAwOwpAQCAtMTQzNSw3
-ICsxNDM1LDcgQEAgc3RhdGljIHZvaWQgcmVzaXplX2hwdF9wcmVwYXJlX3dvcmsoc3RydWN0IHdv
-cmtfc3RydWN0ICp3b3JrKQogCQkgKi8KIAkJbXV0ZXhfdW5sb2NrKCZrdm0tPmFyY2gubW11X3Nl
-dHVwX2xvY2spOwogCi0JCXJlc2l6ZV9ocHRfZGVidWcocmVzaXplLCAicmVzaXplX2hwdF9wcmVw
-YXJlX3dvcmsoKTogb3JkZXIgPSAlZFxuIiwKKwkJcmVzaXplX2hwdF9kZWJ1ZyhyZXNpemUsICIl
-cygpOiBvcmRlciA9ICVkXG4iLCBfX2Z1bmNfXywKIAkJCQkgcmVzaXplLT5vcmRlcik7CiAKIAkJ
-ZXJyID0gcmVzaXplX2hwdF9hbGxvY2F0ZShyZXNpemUpOwpAQCAtMTg3OSw4ICsxODc5LDcgQEAg
-c3RhdGljIHNzaXplX3Qga3ZtX2h0YWJfd3JpdGUoc3RydWN0IGZpbGUgKmZpbGUsIGNvbnN0IGNo
-YXIgX191c2VyICpidWYsCiAJCQlyZXQgPSBrdm1wcGNfdmlydG1vZGVfZG9faF9lbnRlcihrdm0s
-IEhfRVhBQ1QsIGksIHYsIHIsCiAJCQkJCQkJIHRtcCk7CiAJCQlpZiAocmV0ICE9IEhfU1VDQ0VT
-UykgewotCQkJCXByX2Vycigia3ZtX2h0YWJfd3JpdGUgcmV0ICVsZCBpPSVsZCB2PSVseCAiCi0J
-CQkJICAgICAgICJyPSVseFxuIiwgcmV0LCBpLCB2LCByKTsKKwkJCQlwcl9lcnIoIiVzIHJldCAl
-bGQgaT0lbGQgdj0lbHggcj0lbHhcbiIsIF9fZnVuY19fLCByZXQsIGksIHYsIHIpOwogCQkJCWdv
-dG8gb3V0OwogCQkJfQogCQkJaWYgKCFtbXVfcmVhZHkgJiYgaXNfdnJtYV9ocHRlKHYpKSB7Ci0t
-IAoyLjM2LjEK
+Hi Mike,
+
+I love your patch! Yet something to improve:
+
+[auto build test ERROR on soc/for-next]
+[also build test ERROR on linus/master v5.19-rc2 next-20220617]
+[cannot apply to arm64/for-next/core arm/for-next kvmarm/next xilinx-xlnx/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Mike-Kravetz/hugetlb-speed-up-linear-address-scanning/20220617-050726
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/soc/soc.git for-next
+config: i386-randconfig-a002 (https://download.01.org/0day-ci/archive/20220617/202206171929.ZIUrNg6p-lkp@intel.com/config)
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project f0e608de27b3d568000046eebf3712ab542979d6)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/4c647687607f10fece04967b8180c0dadaf765e6
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Mike-Kravetz/hugetlb-speed-up-linear-address-scanning/20220617-050726
+        git checkout 4c647687607f10fece04967b8180c0dadaf765e6
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=i386 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+>> mm/hugetlb.c:6901:7: error: duplicate case value '4194304'
+           case PUD_SIZE:
+                ^
+   include/asm-generic/pgtable-nopud.h:20:20: note: expanded from macro 'PUD_SIZE'
+   #define PUD_SIZE        (1UL << PUD_SHIFT)
+                           ^
+   mm/hugetlb.c:6899:7: note: previous case defined here
+           case P4D_SIZE:
+                ^
+   include/asm-generic/pgtable-nop4d.h:13:19: note: expanded from macro 'P4D_SIZE'
+   #define P4D_SIZE                (1UL << P4D_SHIFT)
+                                   ^
+   mm/hugetlb.c:6903:7: error: duplicate case value '4194304'
+           case PMD_SIZE:
+                ^
+   include/asm-generic/pgtable-nopmd.h:22:20: note: expanded from macro 'PMD_SIZE'
+   #define PMD_SIZE        (1UL << PMD_SHIFT)
+                           ^
+   mm/hugetlb.c:6901:7: note: previous case defined here
+           case PUD_SIZE:
+                ^
+   include/asm-generic/pgtable-nopud.h:20:20: note: expanded from macro 'PUD_SIZE'
+   #define PUD_SIZE        (1UL << PUD_SHIFT)
+                           ^
+   2 errors generated.
+
+
+vim +/4194304 +6901 mm/hugetlb.c
+
+  6886	
+  6887	/*
+  6888	 * Return a mask that can be used to update an address to the last huge
+  6889	 * page in a page table page mapping size.  Used to skip non-present
+  6890	 * page table entries when linearly scanning address ranges.  Architectures
+  6891	 * with unique huge page to page table relationships can define their own
+  6892	 * version of this routine.
+  6893	 */
+  6894	unsigned long hugetlb_mask_last_page(struct hstate *h)
+  6895	{
+  6896		unsigned long hp_size = huge_page_size(h);
+  6897	
+  6898		switch (hp_size) {
+  6899		case P4D_SIZE:
+  6900			return PGDIR_SIZE - P4D_SIZE;
+> 6901		case PUD_SIZE:
+  6902			return P4D_SIZE - PUD_SIZE;
+  6903		case PMD_SIZE:
+  6904			return PUD_SIZE - PMD_SIZE;
+  6905		default:
+  6906			break; /* Should never happen */
+  6907		}
+  6908	
+  6909		return ~(0UL);
+  6910	}
+  6911	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
