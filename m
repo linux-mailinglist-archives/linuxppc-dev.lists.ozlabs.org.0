@@ -1,55 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C98A54F2A5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 10:18:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D55D54F2C9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 10:25:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPX3r0Q0Dz3cFr
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 18:18:16 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=PqykP6FQ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPXCd0Qm9z3cfy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 18:25:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=PqykP6FQ;
-	dkim-atps=neutral
-Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPX374FdGz3bkh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 18:17:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=e0kyO
-	4KlNjj8d++Nv1d4HGe6KQ6GirYGzF18XyU/4L0=; b=PqykP6FQgyEdJ9o1OsCzk
-	8T/C0Vg3XWGYSf3xytcKUPQwyTtId5RpJJCXjWWAekQq1EmpJa6edyWJ2AtAuk4i
-	xdpR8Ww07yYA/vXoKPwYxws2BFX7esYbFTl92LNOl/ohDbaxpQLxcuA5Ds69ykQU
-	pzEAGwMnGYDQBr4EldbB/I=
-Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr50
- (Coremail) ; Fri, 17 Jun 2022 16:17:04 +0800 (CST)
-X-Originating-IP: [124.16.139.61]
-Date: Fri, 17 Jun 2022 16:17:04 +0800 (CST)
-From: "Liang He" <windhl@126.com>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>, 
-	"Conor.Dooley" <conor.dooley@microchip.com>
-Subject: Re:Re: [PATCH v4] powerpc:85xx: Add missing of_node_put() in
- sgy_cst1000
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <f79ebcc1-c060-f861-231d-85c377e2e885@csgroup.eu>
-References: <20220617060827.4004795-1-windhl@126.com>
- <eb72976a-9ca3-b894-b2d5-8283a4cf486d@csgroup.eu>
- <16f9a971.44e5.1817068ee3c.Coremail.windhl@126.com>
- <f79ebcc1-c060-f861-231d-85c377e2e885@csgroup.eu>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPXC83FNbz3bkP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 18:24:34 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0A3DD12FC;
+	Fri, 17 Jun 2022 01:24:02 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.39.168])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 78B383F792;
+	Fri, 17 Jun 2022 01:23:58 -0700 (PDT)
+Date: Fri, 17 Jun 2022 09:23:50 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Tong Tiangen <tongtiangen@huawei.com>
+Subject: Re: [PATCH -next v5 1/8] arm64: extable: add new extable type
+ EX_TYPE_KACCESS_ERR_ZERO support
+Message-ID: <Yqw6Fh+b9hBx9VbB@FVFF77S0Q05N>
+References: <20220528065056.1034168-1-tongtiangen@huawei.com>
+ <20220528065056.1034168-2-tongtiangen@huawei.com>
 MIME-Version: 1.0
-Message-ID: <64ac3dc9.5bd1.18170bcb6a6.Coremail.windhl@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: MsqowADHHPGBOKxiQ4A4AA--.56318W
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuAEjF2JVj6Z50QAAs7
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220528065056.1034168-2-tongtiangen@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,68 +42,241 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "oss@buserror.net" <oss@buserror.net>, "paulus@samba.org" <paulus@samba.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>, Will Deacon <will@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Xie XiuQi <xiexiuqi@huawei.com>, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CgoKQXQgMjAyMi0wNi0xNyAxNDo1MzoxMywgIkNocmlzdG9waGUgTGVyb3kiIDxjaHJpc3RvcGhl
-Lmxlcm95QGNzZ3JvdXAuZXU+IHdyb3RlOgo+Cj4KPkxlIDE3LzA2LzIwMjIgw6AgMDg6NDUsIExp
-YW5nIEhlIGEgw6ljcml0wqA6Cj4+IAo+PiAKPj4gCj4+IEF0IDIwMjItMDYtMTcgMTQ6Mjg6NTYs
-ICJDaHJpc3RvcGhlIExlcm95IiA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiB3cm90ZToK
-Pj4+Cj4+Pgo+Pj4gTGUgMTcvMDYvMjAyMiDDoCAwODowOCwgTGlhbmcgSGUgYSDDqWNyaXTCoDoK
-Pj4+PiBJbiBncGlvX2hhbHRfcHJvYmUoKSwgb2ZfZmluZF9tYXRjaGluZ19ub2RlKCkgd2lsbCBy
-ZXR1cm4gYSBub2RlCj4+Pj4gcG9pbnRlciB3aXRoIHJlZmNvdW50IGluY3JlbWVudGVkLiBXZSBz
-aG91bGQgdXNlIG9mX25vZGVfcHV0KCkgaW4KPj4+PiBmYWlsIHBhdGggb3Igd2hlbiBpdCBpcyBu
-b3QgdXNlZCBhbnltb3JlLgo+Pj4+Cj4+Pj4gU2lnbmVkLW9mZi1ieTogTGlhbmcgSGUgPHdpbmRo
-bEAxMjYuY29tPgo+Pj4+IC0tLQo+Pj4+ICAgIGNoYW5nZWxvZzoKPj4+PiAgICB2NDogcmV1c2Ug
-ZXhpc3QgJ2VycicgYW5kIHVzZSBhIHNpbXBsZSBjb2RlIHN0eWxlLCBhZHZpc2VkIGJ5IENKCj4+
-Pj4gICAgdjM6IHVzZSBsb2NhbCAnY2hpbGRfbm9kZScgYWR2aXNlZCBieSBNaWNoYWVsLgo+Pj4+
-ICAgIHYyOiB1c2UgZ290by1sYWJlbCBwYXRjaCBzdHlsZSBhZHZpc2VkIGJ5IENocmlzdG9waGUg
-TGVyb3kuCj4+Pj4gICAgdjE6IGFkZCBvZl9ub2RlX3B1dCgpIGJlZm9yZSBlYWNoIGV4aXQuCj4+
-Pj4KPj4+PiAgICBhcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvc2d5X2N0czEwMDAuYyB8IDM1
-ICsrKysrKysrKysrKysrLS0tLS0tLS0tCj4+Pj4gICAgMSBmaWxlIGNoYW5nZWQsIDIyIGluc2Vy
-dGlvbnMoKyksIDEzIGRlbGV0aW9ucygtKQo+Pj4+Cj4+Pj4gZGlmZiAtLWdpdCBhL2FyY2gvcG93
-ZXJwYy9wbGF0Zm9ybXMvODV4eC9zZ3lfY3RzMTAwMC5jIGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jt
-cy84NXh4L3NneV9jdHMxMDAwLmMKPj4+PiBpbmRleCA5OGFlNjQwNzUxOTMuLmU0NTg4OTQzZmU3
-ZSAxMDA2NDQKPj4+PiAtLS0gYS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvc2d5X2N0czEw
-MDAuYwo+Pj4+ICsrKyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvODV4eC9zZ3lfY3RzMTAwMC5j
-Cj4+Pj4gQEAgLTcxLDYgKzcxLDcgQEAgc3RhdGljIGludCBncGlvX2hhbHRfcHJvYmUoc3RydWN0
-IHBsYXRmb3JtX2RldmljZSAqcGRldikKPj4+PiAgICB7Cj4+Pj4gICAgCWVudW0gb2ZfZ3Bpb19m
-bGFncyBmbGFnczsKPj4+PiAgICAJc3RydWN0IGRldmljZV9ub2RlICpub2RlID0gcGRldi0+ZGV2
-Lm9mX25vZGU7Cj4+Pj4gKwlzdHJ1Y3QgZGV2aWNlX25vZGUgKmNoaWxkX25vZGU7Cj4+Pj4gICAg
-CWludCBncGlvLCBlcnIsIGlycTsKPj4+PiAgICAJaW50IHRyaWdnZXI7Cj4+Pj4gICAgCj4+Pj4g
-QEAgLTc4LDI2ICs3OSwyOSBAQCBzdGF0aWMgaW50IGdwaW9faGFsdF9wcm9iZShzdHJ1Y3QgcGxh
-dGZvcm1fZGV2aWNlICpwZGV2KQo+Pj4+ICAgIAkJcmV0dXJuIC1FTk9ERVY7Cj4+Pj4gICAgCj4+
-Pj4gICAgCS8qIElmIHRoZXJlJ3Mgbm8gbWF0Y2hpbmcgY2hpbGQsIHRoaXMgaXNuJ3QgcmVhbGx5
-IGFuIGVycm9yICovCj4+Pj4gLQloYWx0X25vZGUgPSBvZl9maW5kX21hdGNoaW5nX25vZGUobm9k
-ZSwgY2hpbGRfbWF0Y2gpOwo+Pj4+IC0JaWYgKCFoYWx0X25vZGUpCj4+Pj4gKwljaGlsZF9ub2Rl
-ID0gb2ZfZmluZF9tYXRjaGluZ19ub2RlKG5vZGUsIGNoaWxkX21hdGNoKTsKPj4+PiArCWlmICgh
-Y2hpbGRfbm9kZSkKPj4+PiAgICAJCXJldHVybiAwOwo+Pj4+ICAgIAo+Pj4+ICAgIAkvKiBUZWNo
-bmljYWxseSB3ZSBjb3VsZCBqdXN0IHJlYWQgdGhlIGZpcnN0IG9uZSwgYnV0IHB1bmlzaAo+Pj4+
-ICAgIAkgKiBEVCB3cml0ZXJzIGZvciBpbnZhbGlkIGZvcm0uICovCj4+Pj4gLQlpZiAob2ZfZ3Bp
-b19jb3VudChoYWx0X25vZGUpICE9IDEpCj4+Pj4gLQkJcmV0dXJuIC1FSU5WQUw7Cj4+Pj4gKwlp
-ZiAob2ZfZ3Bpb19jb3VudChjaGlsZF9ub2RlKSAhPSAxKSB7Cj4+Pj4gKwkJZXJyID0gLUVJTlZB
-TDsKPj4+PiArCQlnb3RvIGVycl9wdXQ7Cj4+Pj4gKwl9Cj4+Pj4gICAgCj4+Pj4gICAgCS8qIEdl
-dCB0aGUgZ3BpbyBudW1iZXIgcmVsYXRpdmUgdG8gdGhlIGR5bmFtaWMgYmFzZS4gKi8KPj4+PiAt
-CWdwaW8gPSBvZl9nZXRfZ3Bpb19mbGFncyhoYWx0X25vZGUsIDAsICZmbGFncyk7Cj4+Pj4gLQlp
-ZiAoIWdwaW9faXNfdmFsaWQoZ3BpbykpCj4+Pj4gLQkJcmV0dXJuIC1FSU5WQUw7Cj4+Pj4gKwln
-cGlvID0gb2ZfZ2V0X2dwaW9fZmxhZ3MoY2hpbGRfbm9kZSwgMCwgJmZsYWdzKTsKPj4+PiArCWlm
-ICghZ3Bpb19pc192YWxpZChncGlvKSkgewo+Pj4+ICsJCWVyciA9IC1FSU5WQUw7Cj4+Pj4gKwkJ
-Z290b3QgZXJyX3B1dDsKPj4+Cj4+PiBEaWQgeW91IHRlc3QgdGhlIGJ1aWxkID8KPj4gCj4+IFNv
-cnJ5IGZvciB0aGlzIGZhdWx0Lgo+PiAKPj4gSW4gZmFjdCwgSSBhbSBzdGlsbCBmaW5kaW5nIGFu
-IGVmZmljaWVudCB3YXkgdG8gYnVpbGRpbmcgZGlmZmVyZW50IGFyY2ggc291cmNlIGNvZGUgYXMg
-SSBvbmx5IGhhdmUgeDg2LTY0Lgo+PiAKPj4gTm93IEkgYW0gdHJ5IHVzaW5nIFFFTVUuCj4+IAo+
-PiBBbnl3YXksIHNvcnJ5IGZvciB0aGlzIGZhdWx0Lgo+Cj5Zb3UgY2FuIGZpbmQgY3Jvc3MgY29t
-cGlsZXJzIGZvciBtb3N0IGFyY2hpdGVjdHVyZXMgZm9yIHg4Ni02NCBoZXJlIDogCj5odHRwczov
-L21pcnJvcnMuZWRnZS5rZXJuZWwub3JnL3B1Yi90b29scy9jcm9zc3Rvb2wvCj4KPkNocmlzdG9w
-aGUKCkhpLCBDaHJpc3RvcGhlIGFuZCBDb25vci4KClNvcnJ5IHRvIHRyb3VibGUgeW91IGFnYWlu
-LgoKTm93IEkgb25seSBrbm93IGhvdyB0byBxdWlja2x5IGlkZW50aWZ5IHRoZSByZWZjb3VudGlu
-ZyBidWdzLCBidXQgSSBjYW5ub3QgZWZmaWNpZW50bHkgZ2l2ZSBhIGJ1aWxkIHRlc3QuCgpGb3Ig
-ZXhhbXBsZSwgSSB1c2UgdGhlIGNyb3NzIGNvbXBpbGVycyAncG93ZXJwYy1saW51eC1nbnUtZ2Nj
-JyB0byBjb21waWxlICdhcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvc2d5X2N0czEwMDAuYycg
-d2l0aCAtZnN5bnRheC1vbmx5IGZsYWcuCkJ1dCBJIG1lZXQgdG9vIG1hbnkgaGVhZGVyIGZpbGUg
-bWlzc2luZyBlcnJvcnMuIEV2ZW4gaWYgSSBhZGQgc29tZSAnaW5jbHVkZScgcGF0aGVzLCBlLmcu
-LCAuL2FyY2gvcG93ZXJwYy9pbmNsdWRlLCAuL2luY2x1ZGUsIAp0aGVyZSBhcmUgc3RpbGwgdG9v
-IG1hbnkgb3RoZXIgZXJyb3JzLgoKU28gaWYgdGhlcmUgaXMgYW55IGVmZmljaWVudCB3YXkgdG8g
-Y2hlY2sgbXkgcGF0Y2ggY29kZSB0byBhdm9pZCAnZ290b3QnIGVycm9yIGFnYWluLgoKVGhhbmtz
-IGFnYWluLCBDaHJpc3RvcGhlIGFuZCBDb25vci4KCkxpYW5n
+On Sat, May 28, 2022 at 06:50:49AM +0000, Tong Tiangen wrote:
+> Currently, The extable type EX_TYPE_UACCESS_ERR_ZERO is used by
+> __get/put_kernel_nofault(), but those helpers are not uaccess type, so we
+> add a new extable type EX_TYPE_KACCESS_ERR_ZERO which can be used by
+> __get/put_kernel_no_fault().
+> 
+> This is also to prepare for distinguishing the two types in machine check
+> safe process.
+> 
+> Suggested-by: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+
+This looks good to me, so modulo one nit below:
+
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+
+> ---
+>  arch/arm64/include/asm/asm-extable.h | 13 ++++
+>  arch/arm64/include/asm/uaccess.h     | 94 ++++++++++++++--------------
+>  arch/arm64/mm/extable.c              |  1 +
+>  3 files changed, 61 insertions(+), 47 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
+> index c39f2437e08e..56ebe183e78b 100644
+> --- a/arch/arm64/include/asm/asm-extable.h
+> +++ b/arch/arm64/include/asm/asm-extable.h
+> @@ -7,6 +7,7 @@
+>  #define EX_TYPE_BPF			2
+>  #define EX_TYPE_UACCESS_ERR_ZERO	3
+>  #define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
+> +#define EX_TYPE_KACCESS_ERR_ZERO	5
+
+Could we please renumber this so the UACCESS and KACCESS definitions are next
+to one another, i.e.
+
+#define EX_TYPE_BPF			2
+#define EX_TYPE_UACCESS_ERR_ZERO	3
+#define EX_TYPE_KACCESS_ERR_ZERO	4
+#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	5
+
+Thanks,
+Mark.
+
+>  
+>  #ifdef __ASSEMBLY__
+>  
+> @@ -73,9 +74,21 @@
+>  			    EX_DATA_REG(ZERO, zero)			\
+>  			  ")")
+>  
+> +#define _ASM_EXTABLE_KACCESS_ERR_ZERO(insn, fixup, err, zero)		\
+> +	__DEFINE_ASM_GPR_NUMS						\
+> +	__ASM_EXTABLE_RAW(#insn, #fixup, 				\
+> +			  __stringify(EX_TYPE_KACCESS_ERR_ZERO),	\
+> +			  "("						\
+> +			    EX_DATA_REG(ERR, err) " | "			\
+> +			    EX_DATA_REG(ZERO, zero)			\
+> +			  ")")
+> +
+>  #define _ASM_EXTABLE_UACCESS_ERR(insn, fixup, err)			\
+>  	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, err, wzr)
+>  
+> +#define _ASM_EXTABLE_KACCESS_ERR(insn, fixup, err)			\
+> +	_ASM_EXTABLE_KACCESS_ERR_ZERO(insn, fixup, err, wzr)
+> +
+>  #define EX_DATA_REG_DATA_SHIFT	0
+>  #define EX_DATA_REG_DATA	GENMASK(4, 0)
+>  #define EX_DATA_REG_ADDR_SHIFT	5
+> diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
+> index 63f9c828f1a7..2fc9f0861769 100644
+> --- a/arch/arm64/include/asm/uaccess.h
+> +++ b/arch/arm64/include/asm/uaccess.h
+> @@ -232,34 +232,34 @@ static inline void __user *__uaccess_mask_ptr(const void __user *ptr)
+>   * The "__xxx_error" versions set the third argument to -EFAULT if an error
+>   * occurs, and leave it unchanged on success.
+>   */
+> -#define __get_mem_asm(load, reg, x, addr, err)				\
+> +#define __get_mem_asm(load, reg, x, addr, err, type)			\
+>  	asm volatile(							\
+>  	"1:	" load "	" reg "1, [%2]\n"			\
+>  	"2:\n"								\
+> -	_ASM_EXTABLE_UACCESS_ERR_ZERO(1b, 2b, %w0, %w1)			\
+> +	_ASM_EXTABLE_##type##ACCESS_ERR_ZERO(1b, 2b, %w0, %w1)		\
+>  	: "+r" (err), "=&r" (x)						\
+>  	: "r" (addr))
+>  
+> -#define __raw_get_mem(ldr, x, ptr, err)					\
+> -do {									\
+> -	unsigned long __gu_val;						\
+> -	switch (sizeof(*(ptr))) {					\
+> -	case 1:								\
+> -		__get_mem_asm(ldr "b", "%w", __gu_val, (ptr), (err));	\
+> -		break;							\
+> -	case 2:								\
+> -		__get_mem_asm(ldr "h", "%w", __gu_val, (ptr), (err));	\
+> -		break;							\
+> -	case 4:								\
+> -		__get_mem_asm(ldr, "%w", __gu_val, (ptr), (err));	\
+> -		break;							\
+> -	case 8:								\
+> -		__get_mem_asm(ldr, "%x",  __gu_val, (ptr), (err));	\
+> -		break;							\
+> -	default:							\
+> -		BUILD_BUG();						\
+> -	}								\
+> -	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
+> +#define __raw_get_mem(ldr, x, ptr, err, type)					\
+> +do {										\
+> +	unsigned long __gu_val;							\
+> +	switch (sizeof(*(ptr))) {						\
+> +	case 1:									\
+> +		__get_mem_asm(ldr "b", "%w", __gu_val, (ptr), (err), type);	\
+> +		break;								\
+> +	case 2:									\
+> +		__get_mem_asm(ldr "h", "%w", __gu_val, (ptr), (err), type);	\
+> +		break;								\
+> +	case 4:									\
+> +		__get_mem_asm(ldr, "%w", __gu_val, (ptr), (err), type);		\
+> +		break;								\
+> +	case 8:									\
+> +		__get_mem_asm(ldr, "%x",  __gu_val, (ptr), (err), type);	\
+> +		break;								\
+> +	default:								\
+> +		BUILD_BUG();							\
+> +	}									\
+> +	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
+>  } while (0)
+>  
+>  /*
+> @@ -274,7 +274,7 @@ do {									\
+>  	__chk_user_ptr(ptr);						\
+>  									\
+>  	uaccess_ttbr0_enable();						\
+> -	__raw_get_mem("ldtr", __rgu_val, __rgu_ptr, err);		\
+> +	__raw_get_mem("ldtr", __rgu_val, __rgu_ptr, err, U);		\
+>  	uaccess_ttbr0_disable();					\
+>  									\
+>  	(x) = __rgu_val;						\
+> @@ -314,40 +314,40 @@ do {									\
+>  									\
+>  	__uaccess_enable_tco_async();					\
+>  	__raw_get_mem("ldr", *((type *)(__gkn_dst)),			\
+> -		      (__force type *)(__gkn_src), __gkn_err);		\
+> +		      (__force type *)(__gkn_src), __gkn_err, K);	\
+>  	__uaccess_disable_tco_async();					\
+>  									\
+>  	if (unlikely(__gkn_err))					\
+>  		goto err_label;						\
+>  } while (0)
+>  
+> -#define __put_mem_asm(store, reg, x, addr, err)				\
+> +#define __put_mem_asm(store, reg, x, addr, err, type)			\
+>  	asm volatile(							\
+>  	"1:	" store "	" reg "1, [%2]\n"			\
+>  	"2:\n"								\
+> -	_ASM_EXTABLE_UACCESS_ERR(1b, 2b, %w0)				\
+> +	_ASM_EXTABLE_##type##ACCESS_ERR(1b, 2b, %w0)			\
+>  	: "+r" (err)							\
+>  	: "r" (x), "r" (addr))
+>  
+> -#define __raw_put_mem(str, x, ptr, err)					\
+> -do {									\
+> -	__typeof__(*(ptr)) __pu_val = (x);				\
+> -	switch (sizeof(*(ptr))) {					\
+> -	case 1:								\
+> -		__put_mem_asm(str "b", "%w", __pu_val, (ptr), (err));	\
+> -		break;							\
+> -	case 2:								\
+> -		__put_mem_asm(str "h", "%w", __pu_val, (ptr), (err));	\
+> -		break;							\
+> -	case 4:								\
+> -		__put_mem_asm(str, "%w", __pu_val, (ptr), (err));	\
+> -		break;							\
+> -	case 8:								\
+> -		__put_mem_asm(str, "%x", __pu_val, (ptr), (err));	\
+> -		break;							\
+> -	default:							\
+> -		BUILD_BUG();						\
+> -	}								\
+> +#define __raw_put_mem(str, x, ptr, err, type)					\
+> +do {										\
+> +	__typeof__(*(ptr)) __pu_val = (x);					\
+> +	switch (sizeof(*(ptr))) {						\
+> +	case 1:									\
+> +		__put_mem_asm(str "b", "%w", __pu_val, (ptr), (err), type);	\
+> +		break;								\
+> +	case 2:									\
+> +		__put_mem_asm(str "h", "%w", __pu_val, (ptr), (err), type);	\
+> +		break;								\
+> +	case 4:									\
+> +		__put_mem_asm(str, "%w", __pu_val, (ptr), (err), type);		\
+> +		break;								\
+> +	case 8:									\
+> +		__put_mem_asm(str, "%x", __pu_val, (ptr), (err), type);		\
+> +		break;								\
+> +	default:								\
+> +		BUILD_BUG();							\
+> +	}									\
+>  } while (0)
+>  
+>  /*
+> @@ -362,7 +362,7 @@ do {									\
+>  	__chk_user_ptr(__rpu_ptr);					\
+>  									\
+>  	uaccess_ttbr0_enable();						\
+> -	__raw_put_mem("sttr", __rpu_val, __rpu_ptr, err);		\
+> +	__raw_put_mem("sttr", __rpu_val, __rpu_ptr, err, U);		\
+>  	uaccess_ttbr0_disable();					\
+>  } while (0)
+>  
+> @@ -400,7 +400,7 @@ do {									\
+>  									\
+>  	__uaccess_enable_tco_async();					\
+>  	__raw_put_mem("str", *((type *)(__pkn_src)),			\
+> -		      (__force type *)(__pkn_dst), __pkn_err);		\
+> +		      (__force type *)(__pkn_dst), __pkn_err, K);	\
+>  	__uaccess_disable_tco_async();					\
+>  									\
+>  	if (unlikely(__pkn_err))					\
+> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+> index 489455309695..056591e5ca80 100644
+> --- a/arch/arm64/mm/extable.c
+> +++ b/arch/arm64/mm/extable.c
+> @@ -77,6 +77,7 @@ bool fixup_exception(struct pt_regs *regs)
+>  	case EX_TYPE_BPF:
+>  		return ex_handler_bpf(ex, regs);
+>  	case EX_TYPE_UACCESS_ERR_ZERO:
+> +	case EX_TYPE_KACCESS_ERR_ZERO:
+>  		return ex_handler_uaccess_err_zero(ex, regs);
+>  	case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
+>  		return ex_handler_load_unaligned_zeropad(ex, regs);
+> -- 
+> 2.25.1
+> 
