@@ -1,105 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534DD54F8E0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 16:06:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBF954F900
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 16:16:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPgn31qMkz3cCP
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 00:05:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPh166Db7z3cfH
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 00:16:26 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aretrqeS;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yx70f3IZ;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yx70f3IZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=peterx@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aretrqeS;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yx70f3IZ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yx70f3IZ;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPgmH0d7Jz2ywc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 00:05:18 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25HDuhhw013449;
-	Fri, 17 Jun 2022 14:04:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
- to : cc : references : in-reply-to : message-id : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=cQ/SwfImF0iKXyQ+vRdYEwPl1VNj0ID776cob3LAmOE=;
- b=aretrqeSZKp7wgWEOxg50nRj4FBz3vcj4gT3dTNu/bTdtDt/5hMETEBTP7QbfQ3ePjz4
- 8tWTS9QCOeEz6SVkqGaN/+sPybp4WOxcvf4hvIOfEUgA3gHhkM253pMFZ8iU48Cz4MaD
- N/ng8smAimVmFYhdmqelNxSfvBlsKDcJH4j3mrlEiee0nLEkygx3EFGAivB5s+K/SX1m
- u6R1PqxNmwbNAF+PB3VRAdeb/EQTI6DSQX3GoT18q62kkck7yL8UqyMKodGZuWnMzt/P
- /yJNwALFezrgSpPRqYuEkgrGl3FBgZ4DrZ84fnrHL3hocVovJUycZSzmNGWd2wtffcUM cw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3grtxnr61r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jun 2022 14:04:55 +0000
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25HDvHiV018747;
-	Fri, 17 Jun 2022 14:04:55 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3grtxnr614-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jun 2022 14:04:55 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25HDov0X007041;
-	Fri, 17 Jun 2022 14:04:53 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma01fra.de.ibm.com with ESMTP id 3gmjp8xxrs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 17 Jun 2022 14:04:53 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25HE4o4E19071304
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jun 2022 14:04:50 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A48B4C046;
-	Fri, 17 Jun 2022 14:04:50 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 327204C040;
-	Fri, 17 Jun 2022 14:04:50 +0000 (GMT)
-Received: from localhost (unknown [9.43.107.233])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 17 Jun 2022 14:04:50 +0000 (GMT)
-Date: Fri, 17 Jun 2022 19:34:48 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [RFC PATCH 4/4] objtool/powerpc: Add --mcount specific
- implementation
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Peter Zijlstra
-	<peterz@infradead.org>
-References: <20220523175548.922671-1-sv@linux.ibm.com>
-	<20220523175548.922671-5-sv@linux.ibm.com>
-	<6be5c941-07b0-64d5-7f36-fe5770fb5244@csgroup.eu>
-	<59170f18-1356-1140-70e3-30cb627f00bc@linux.vnet.ibm.com>
-	<578ec055-0d63-e579-0caa-ad57846b8995@csgroup.eu>
-	<f1decbb7-b441-a241-469a-4ba118e08212@csgroup.eu>
-	<c1e2cf35-2a8d-87e6-3a7e-7f144392db23@csgroup.eu>
-	<1655386289.uh0k7sgl1r.naveen@linux.ibm.com>
-	<30f3791c-0fdd-e635-4a85-ec457f990fae@csgroup.eu>
-	<Yqs235037JrOOhBA@hirez.programming.kicks-ass.net>
-	<d095fe9d-e713-def1-6096-540c0d0da298@csgroup.eu>
-In-Reply-To: <d095fe9d-e713-def1-6096-540c0d0da298@csgroup.eu>
-User-Agent: astroid/4d6b06ad (https://github.com/astroidmail/astroid)
-Message-Id: <1655474054.lvnbqfz64f.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _eAZPF0wTyF7jvfU_B1dMSxze1-sffUC
-X-Proofpoint-ORIG-GUID: MZdaLXiAsAdUOPu_g21V41VhfRtfUdST
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPh0M3rrcz3bfH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 00:15:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1655475340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=45WsYeBZBgVP+tO+Yp5wRnejBKTYaIp3okpekaDuC30=;
+	b=Yx70f3IZl3hchqt9SNW5eda6c6igfIqTwXKF1IQX8MZJeWwbTSbufptwtKQNY/xL/jb+Co
+	F1U4ccllBU/kTN5QyJwv79G0KH6FVQgesX1pCP+cs0+vMrZGVsEWhV/R8B/0iuTduuJSuU
+	ViyIcMWbjiOfDPM0LQ7kcuh3SNVwYO4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1655475340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=45WsYeBZBgVP+tO+Yp5wRnejBKTYaIp3okpekaDuC30=;
+	b=Yx70f3IZl3hchqt9SNW5eda6c6igfIqTwXKF1IQX8MZJeWwbTSbufptwtKQNY/xL/jb+Co
+	F1U4ccllBU/kTN5QyJwv79G0KH6FVQgesX1pCP+cs0+vMrZGVsEWhV/R8B/0iuTduuJSuU
+	ViyIcMWbjiOfDPM0LQ7kcuh3SNVwYO4=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-597-2xiCX0ZuM2O2h4IvVV2CJw-1; Fri, 17 Jun 2022 10:15:38 -0400
+X-MC-Unique: 2xiCX0ZuM2O2h4IvVV2CJw-1
+Received: by mail-il1-f199.google.com with SMTP id a2-20020a923302000000b002d1ad5053feso2720509ilf.17
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 07:15:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=45WsYeBZBgVP+tO+Yp5wRnejBKTYaIp3okpekaDuC30=;
+        b=fz4JonxinsalL+qLVcvi5NWEZmrCBLv+OHnSG01CWh7B/UYpwEks/D8slLc7NXLnw/
+         Hv7SIsMA21ymhAhV2AthRzC8r8Cp8yHkSErHClz/KWOPDL2BTslpKpRA/wAoHU14NgeF
+         HJ2lhYGVZ+C0Sr55KXrNiRCLcZMb+06PDVY0/JeUe+YoqJjkuLqW4V7/vBZZS6/IoJ5/
+         b2RVleXlNZj+qB9f8RPEF4IyYsgOOAHoUPnZI4YnvfUrLc+8BSktgym+/TQlMdyO6cEZ
+         zdCf2LrchC4LDqlepU5OJXDbx04vIe5KNg7HbYBCSrZCVsuCP7ZzemGhtrGcbvqOJ3A7
+         ZddQ==
+X-Gm-Message-State: AJIora+HB7KazVR1lZ/PUwf/SEc6K75snHZIjQIkEnPcyBFYkktUGDlb
+	koYj+NqNMdmsV28pr7tszlqVi+svW5n9RJXi0Df1I9nl3D1LVu8NUbnqFHxIMlXqw9LHdjuYSPF
+	a1r8aMO66cCM0XeU8JGzThB4QXw==
+X-Received: by 2002:a92:da4c:0:b0:2d5:4942:151c with SMTP id p12-20020a92da4c000000b002d54942151cmr5595295ilq.54.1655475337979;
+        Fri, 17 Jun 2022 07:15:37 -0700 (PDT)
+X-Google-Smtp-Source: AGRyM1t5+pBPw8qcp/W9vVk3R5y0UpR770R+5zi051+5lmo73AcdTcYx/JcpFCItROcYKy2t53b2mA==
+X-Received: by 2002:a92:da4c:0:b0:2d5:4942:151c with SMTP id p12-20020a92da4c000000b002d54942151cmr5595259ilq.54.1655475337682;
+        Fri, 17 Jun 2022 07:15:37 -0700 (PDT)
+Received: from xz-m1.local (cpec09435e3e0ee-cmc09435e3e0ec.cpe.net.cable.rogers.com. [99.241.198.116])
+        by smtp.gmail.com with ESMTPSA id h22-20020a02c736000000b0033792143bf5sm649986jao.67.2022.06.17.07.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Jun 2022 07:15:36 -0700 (PDT)
+Date: Fri, 17 Jun 2022 10:15:34 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH 1/4] hugetlb: skip to end of PT page mapping when pte not
+ present
+Message-ID: <YqyMhmAjrQ4C+EyA@xz-m1.local>
+References: <20220616210518.125287-1-mike.kravetz@oracle.com>
+ <20220616210518.125287-2-mike.kravetz@oracle.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-17_08,2022-06-17_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 phishscore=0 malwarescore=0 mlxlogscore=999 lowpriorityscore=0
- clxscore=1015 impostorscore=0 suspectscore=0 adultscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206170060
+In-Reply-To: <20220616210518.125287-2-mike.kravetz@oracle.com>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=peterx@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,47 +98,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, Chen Zhongjin <chenzhongjin@huawei.com>, Sathvika Vasireddy <sv@linux.vnet.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, Sathvika Vasireddy <sv@linux.ibm.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, catalin.marinas@arm.com, Muchun Song <songmuchun@bytedance.com>, linux-mips@vger.kernel.org, linux-mm@kvack.org, James Houghton <jthoughton@google.com>, sparclinux@vger.kernel.org, will@kernel.org, Mina Almasry <almasrymina@google.com>, linux-s390@vger.kernel.org, Christian Borntraeger <borntraeger@linux.ibm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Paul Walmsley <paul.walmsley@sifive.com>, Naoya Horiguchi <naoya.horiguchi@linux.dev>, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
->=20
-> Le 16/06/2022 =C3=A0 15:57, Peter Zijlstra a =C3=A9crit=C2=A0:
->> On Thu, Jun 16, 2022 at 01:40:34PM +0000, Christophe Leroy wrote:
->>> sizeof(u64) is always 8 by definition.
->>>
->>> So if size is 8 we are working on a binary file for a 64 bits target, if
->>> not it means we are working for a 32 bits target.
->>=20
->> Cross-builds invalidate this I think. Best to look at something like:
->>=20
->>    elf->ehdr.e_ident[EI_CLASS] =3D=3D ELFCLASS32
->>=20
->>=20
->=20
-> Yes that's what it does indirectly:
->=20
-> 	int size =3D elf_class_size(elf);
->=20
->=20
-> With
->=20
-> static inline int elf_class_size(struct elf *elf)
-> {
-> 	if (elf->ehdr.e_ident[EI_CLASS] =3D=3D ELFCLASS32)
-> 		return sizeof(u32);
-> 	else
-> 		return sizeof(u64);
-> }
+Hi, Mike,
 
-Ok, those come from the below patch:
-https://lore.kernel.org/all/c4b06b5b314183d85615765a5ce421a057674bd8.165339=
-8233.git.christophe.leroy@csgroup.eu/T/#u
+On Thu, Jun 16, 2022 at 02:05:15PM -0700, Mike Kravetz wrote:
+> @@ -6877,6 +6896,39 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+>  	return (pte_t *)pmd;
+>  }
+>  
+> +/*
+> + * Return a mask that can be used to update an address to the last huge
+> + * page in a page table page mapping size.  Used to skip non-present
+> + * page table entries when linearly scanning address ranges.  Architectures
+> + * with unique huge page to page table relationships can define their own
+> + * version of this routine.
+> + */
+> +unsigned long hugetlb_mask_last_page(struct hstate *h)
+> +{
+> +	unsigned long hp_size = huge_page_size(h);
+> +
+> +	switch (hp_size) {
+> +	case P4D_SIZE:
+> +		return PGDIR_SIZE - P4D_SIZE;
+> +	case PUD_SIZE:
+> +		return P4D_SIZE - PUD_SIZE;
+> +	case PMD_SIZE:
+> +		return PUD_SIZE - PMD_SIZE;
+> +	default:
 
-I guess it would have been clearer if 'size' was named differently:=20
-'addr_size' perhaps?
+Should we add a WARN_ON_ONCE() if it should never trigger?
 
+> +		break; /* Should never happen */
+> +	}
+> +
+> +	return ~(0UL);
+> +}
+> +
+> +#else
+> +
+> +/* See description above.  Architectures can provide their own version. */
+> +__weak unsigned long hugetlb_mask_last_page(struct hstate *h)
+> +{
+> +	return ~(0UL);
 
-- Naveen
+I'm wondering whether it's better to return 0 rather than ~0 by default.
+Could an arch with !CONFIG_ARCH_WANT_GENERAL_HUGETLB wrongly skip some
+valid address ranges with ~0, or perhaps I misread?
+
+Thanks,
+
+-- 
+Peter Xu
+
