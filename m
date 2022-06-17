@@ -2,68 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A777654EF32
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 04:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD22854EF4E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 04:26:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LPN7s4nHvz3cDb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 12:21:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPNFl56zhz3c9g
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jun 2022 12:26:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=Mvkwvafx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=UuBaepJ3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=Mvkwvafx;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=UuBaepJ3;
 	dkim-atps=neutral
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LPN782xw5z3bl5
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 12:20:30 +1000 (AEST)
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25GNmtGY026652;
-	Fri, 17 Jun 2022 02:20:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2021-07-09;
- bh=46rOZ/wy2QC/SFSw6K3GXEKJrcwnyZZKW/7s1adV2nc=;
- b=MvkwvafxEMVDCyLIsz6OrlBizHz21zmaqPz6x378oG+VSjgwTxJRI8hk+NWvLQA9R3Hw
- RX3hMvE83wJHpsAiOQ2I4YmOGwIVCXT0HndK+rnIDctAe6ME8yT+TvQAwXx8/d633z2J
- LH2kyY8Yk5B0foVU9a7Uo/2TTv2Zl9/y1vRr7rrM3TFBc0L/k2e5pSgbVNupFR1txux0
- AuvbmW2STqk6i5eInX8kOgSo+AbQS4mdFJa4M0I7usFSEDjQtzfXFNT1Vw04dZEHlTvv
- qk4q3flv58mys4dUgaSMIWNBm2EmBc6n3jPoaVPf/i2nzLPtaXHwgfm0C1XMoE+Cyvlq Dg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3gmhn0mt29-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jun 2022 02:20:26 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 25H2GGrF038459;
-	Fri, 17 Jun 2022 02:20:26 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3gpqq327fn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 17 Jun 2022 02:20:26 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 25H2KMSe006844;
-	Fri, 17 Jun 2022 02:20:25 GMT
-Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3gpqq327d4-3;
-	Fri, 17 Jun 2022 02:20:25 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Tyrel Datwyler <tyreld@linux.ibm.com>,
-        james.bottomley@hansenpartnership.com
-Subject: Re: [PATCH] ibmvfc: multiqueue bug fixes
-Date: Thu, 16 Jun 2022 22:20:20 -0400
-Message-Id: <165543238454.26073.9657501808078382036.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.35.2
-In-Reply-To: <20220616191126.1281259-1-tyreld@linux.ibm.com>
-References: <20220616191126.1281259-1-tyreld@linux.ibm.com>
+Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LPNF55h7Xz3bZN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jun 2022 12:25:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=E/Bxr
+	7nAznkQj+DCO3QB/VqKusk+F6VTDI22OGiDTOw=; b=UuBaepJ31a+wMyWG+yXea
+	TfY7D+wxgaC3TGDJGW+xjYxfTXFsqzBLnrDiQhk0oAjbVY3M+X+6eYSsCWvBlpmI
+	qoaA7qUE8flADaH8TWBw6cq6yngcjvDzJG9SfUWtLIeDic+GM0+D93WhLVH9Tkgp
+	W91Owe/xgXspcNT9Jq4cbA=
+Received: from windhl$126.com ( [124.16.139.61] ) by ajax-webmail-wmsvr50
+ (Coremail) ; Fri, 17 Jun 2022 10:25:13 +0800 (CST)
+X-Originating-IP: [124.16.139.61]
+Date: Fri, 17 Jun 2022 10:25:13 +0800 (CST)
+From: "Liang He" <windhl@126.com>
+To: "Michael Ellerman" <mpe@ellerman.id.au>
+Subject: Re:Re: [PATCH v2] arch: powerpc: platforms: 85xx: Add missing
+ of_node_put in sgy_cts1000.c
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
+ Copyright (c) 2002-2022 www.mailtech.cn 126com
+In-Reply-To: <87o7ysb2ot.fsf@mpe.ellerman.id.au>
+References: <20220616151901.3989078-1-windhl@126.com>
+ <bc6eaf7e-ff88-9b82-eae7-7e6902c33a10@wanadoo.fr>
+ <87o7ysb2ot.fsf@mpe.ellerman.id.au>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: FWL63DJf5ixlJBt2S8RfBBQ72Y2_qn9K
-X-Proofpoint-ORIG-GUID: FWL63DJf5ixlJBt2S8RfBBQ72Y2_qn9K
+Message-ID: <6af17369.1d3d.1816f7a9707.Coremail.windhl@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: MsqowADnPPEL5qtigyQ4AA--.54201W
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuBkjF2JVj6QNfQACs7
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,28 +59,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>, linux-kernel@vger.kernel.org
+Cc: nixiaoming@huawei.com, linux-kernel@vger.kernel.org, oss@buserror.net, paulus@samba.org, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 16 Jun 2022 12:11:24 -0700, Tyrel Datwyler wrote:
-
-> Fixes for a couple observed crashes of the ibmvfc driver when in MQ mode.
-> 
-> Tyrel Datwyler (2):
->   ibmvfc: store vhost pointer during subcrq allocation
->   ibmvfc: alloc/free queue resource only during probe/remove
-> 
-> drivers/scsi/ibmvscsi/ibmvfc.c | 82 ++++++++++++++++++++++++++--------
->  drivers/scsi/ibmvscsi/ibmvfc.h |  2 +-
->  2 files changed, 65 insertions(+), 19 deletions(-)
-> 
-> [...]
-
-Applied to 5.19/scsi-fixes, thanks!
-
-[1/1] ibmvfc: store vhost pointer during subcrq allocation
-      https://git.kernel.org/mkp/scsi/c/aeaadcde1a60
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+CgoKQXQgMjAyMi0wNi0xNyAwNzozNzowNiwgIk1pY2hhZWwgRWxsZXJtYW4iIDxtcGVAZWxsZXJt
+YW4uaWQuYXU+IHdyb3RlOgo+Q2hyaXN0b3BoZSBKQUlMTEVUIDxjaHJpc3RvcGhlLmphaWxsZXRA
+d2FuYWRvby5mcj4gd3JpdGVzOgo+PiBMZSAxNi8wNi8yMDIyIMOgIDE3OjE5LCBMaWFuZyBIZSBh
+IMOpY3JpdMKgOgo+Pj4gSW4gZ3Bpb19oYWx0X3Byb2JlKCksIG9mX2ZpbmRfbWF0Y2hpbmdfbm9k
+ZSgpIHdpbGwgcmV0dXJuIGEgbm9kZSBwb2ludGVyIHdpdGgKPj4+IHJlZmNvdW50IGluY3JlbWVu
+dGVkLiBXZSBzaG91bGQgdXNlIG9mX25vZGVfcHV0KCkgaW4gZWFjaCBmYWlsIHBhdGggb3Igd2hl
+biBpdAo+Pj4gaXMgbm90IHVzZWQgYW55bW9yZS4KPj4+IAo+Pj4gU2lnbmVkLW9mZi1ieTogTGlh
+bmcgSGUgPHdpbmRobEAxMjYuY29tPgo+Pj4gLS0tCj4+PiAgIGNoYW5nZWxvZzoKPj4+IAo+Pj4g
+ICB2MjogdXNlIGdvdG8tbGFiZWwgcGF0Y2ggc3R5bGUgYWR2aXNlZCBieSBDaHJpc3RvcGhlLgo+
+Pj4gICB2MTogYWRkIG9mX25vZGVfcHV0KCkgYmVmb3JlIGVhY2ggZXhpdC4KPj4+IAo+Pj4gICBh
+cmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvc2d5X2N0czEwMDAuYyB8IDI3ICsrKysrKysrKysr
+KysrKy0tLS0tLS0tCj4+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCA5IGRl
+bGV0aW9ucygtKQo+Pj4gCj4+PiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy84
+NXh4L3NneV9jdHMxMDAwLmMgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvc2d5X2N0czEw
+MDAuYwo+Pj4gaW5kZXggOThhZTY0MDc1MTkzLi5lMjgwZjk2M2Q4OGMgMTAwNjQ0Cj4+PiAtLS0g
+YS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvc2d5X2N0czEwMDAuYwo+Pj4gKysrIGIvYXJj
+aC9wb3dlcnBjL3BsYXRmb3Jtcy84NXh4L3NneV9jdHMxMDAwLmMKPj4+IEBAIC03Myw2ICs3Myw3
+IEBAIHN0YXRpYyBpbnQgZ3Bpb19oYWx0X3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBk
+ZXYpCj4uLi4KPj4+IEBAIC0xMjIsOCArMTI3LDEyIEBAIHN0YXRpYyBpbnQgZ3Bpb19oYWx0X3By
+b2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpCj4+PiAgIAo+Pj4gICAJcHJpbnRrKEtF
+Uk5fSU5GTyAiZ3Bpby1oYWx0OiByZWdpc3RlcmVkIEdQSU8gJWQgKCVkIHRyaWdnZXIsICVkIgo+
+Pj4gICAJICAgICAgICIgaXJxKS5cbiIsIGdwaW8sIHRyaWdnZXIsIGlycSk7Cj4+PiArCXJldCA9
+IDA7Cj4+PiAgIAo+Pj4gLQlyZXR1cm4gMDsKPj4+ICtlcnJfcHV0Ogo+Pj4gKwlvZl9ub2RlX3B1
+dChoYWx0X25vZGUpOwo+Pj4gKwloYWx0X25vZGUgPSBOVUxMOwo+Pgo+PiBIaSwKPj4gc28gbm93
+IHdlIHNldCAnaGFsdF9ub2RlJyB0byBOVUxMIGV2ZW4gaW4gdGhlIG5vcm1hbCBjYXNlLgo+PiBU
+aGlzIGlzIHJlYWxseSBzcHVyaW91cy4KPj4KPj4gTG9vayBhdCBncGlvX2hhbHRfY2IoKSwgYnV0
+IEkgdGhpbmsgdGhhdCB0aGlzIGlzIGp1c3Qgd3JvbmcgYW5kIGJhZGx5IAo+PiBicmVha3MgdGhp
+cyBkcml2ZXIuCj4KPkkgYWdyZWUsIHRoYW5rcyBmb3IgcmV2aWV3aW5nLgo+Cj5JIHRoaW5rIHRo
+ZSBjbGVhbmVzdCBzb2x1dGlvbiBpcyB0byB1c2UgYSBsb2NhbCB2YXJpYWJsZSBmb3IgdGhlIG5v
+ZGUgaW4KPnRoZSBib2R5IG9mIGdwaW9faGFsdF9wcm9iZSgpLCBhbmQgb25seSBhc3NpZ24gdG8g
+aGFsdF9ub2RlIG9uY2UgYWxsIHRoZQo+Y2hlY2tzIGhhdmUgcGFzc2VkLgo+Cj5TbyBzb21ldGhp
+bmcgbGlrZToKPgo+ICAgICAgICBzdHJ1Y3QgZGV2aWNlX25vZGUgKmNoaWxkX25vZGU7Cj4KPglj
+aGlsZF9ub2RlID0gb2ZfZmluZF9tYXRjaGluZ19ub2RlKG5vZGUsIGNoaWxkX21hdGNoKTsKPiAg
+ICAgICAgLi4uCj4KPglwcmludGsoS0VSTl9JTkZPICJncGlvLWhhbHQ6IHJlZ2lzdGVyZWQgR1BJ
+TyAlZCAoJWQgdHJpZ2dlciwgJWQiCj4JICAgICAgICIgaXJxKS5cbiIsIGdwaW8sIHRyaWdnZXIs
+IGlycSk7Cj4gICAgICAgIHJldCA9IDA7Cj4gICAgICAgIGhhbHRfbm9kZSA9IG9mX25vZGVfZ2V0
+KGNoaWxkX25vZGUpOwo+Cj5vdXRfcHV0Ogo+ICAgICAgICBvZl9ub2RlX3B1dChjaGlsZF9ub2Rl
+KTsKPiAgICAgICAgCj4JcmV0dXJuIHJldDsKPn0KPgo+Cj5jaGVlcnMKCkhpLCBNaWNoYWVsIGFu
+ZCBDaHJpc3RvcGhlLAoKSSBhbSB3cml0aW5nIHRoZSBuZXcgcGF0Y2ggYmFzZWQgb24gTWljaGFl
+bCdzIGFkdmljZS4gSG93ZXZlciwgSSB3b25kZXIgaWYgdGhlcmUgaXMKYW55IHBsYWNlIHRvIGNh
+bGwgb2Zfbm9kZV9wdXQoaGFsdF9ub2RlKT8gIEFzIEkgZG8gbm90IGV4YWN0bHkga25vdyBpZiBn
+cGlvX2hhbHRfcmVtb3ZlKCkKb3IgYW55b3RoZXIgcGxhY2UgY2FuIGNvcnJlY3RseSByZWxlYXNl
+IHRoaXMgZ2xvYmFsIHJlZmVyZW5jZe+8nwpJZiBub3QsIGl0IGlzIGNvcnJlY3QgdGhhdCBJIGFk
+ZCBhIG9mX25vZGVfcHV0KGhhbHRfbm9kZSkgaW4gZ3Bpb19oYWx0X3JlbW92ZSgpLCByaWdodD8K
+ClRoYW5rcyBhbmQgd2FpdCBmb3IgeW91ciByZXBsaWVzLgoKTGlhbmcK
