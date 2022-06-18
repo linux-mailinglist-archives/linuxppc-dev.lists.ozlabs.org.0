@@ -2,60 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8A0550641
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 19:08:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FAB55075D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Jun 2022 00:46:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LQMn05CdSz3cCC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Jun 2022 03:08:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LQWH44r5Zz3cgx
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Jun 2022 08:46:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ELooSgG/;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cG3T0mbZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=timur@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ELooSgG/;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cG3T0mbZ;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LQMmL1dDyz30LC
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jun 2022 03:07:46 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D86C260D36
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 17:07:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9CAC3411A
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 17:07:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655572062;
-	bh=KqmNordb+QHA2ZI4oQIWOsfJ2gjxU8YjcD2HdXlvMzs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ELooSgG/KSJ7yFrax/Y2UJqiGNJlBJKaVV3AuacAx8foXpCJ/x7LCblKOywfWoUDy
-	 t1Z7NFEOPotYx1Hhg9GHWUolRA2LiruJX6MjwGIbbu82G1uaw+pdulwYSDtxR1A8fs
-	 KuqAiSJsHBPijwOK7EEH1jtX+1NXbPNcY0md992sI5ZzDvHTkGziZ4EDjSDitVd/Qr
-	 DQ6WIywLeZ2m/TmIcwWzj3sAxUKXOQKf3OWVcvLGbO+1kzTTH65miHIQGIdFmlNPkg
-	 xqCeLTqnELDuiZN3jglByq9zDhbV2HyUC2SCXvV7M9+NW9lZ35iCoyljjVIeFfrEDP
-	 43tMXCXxdowWA==
-Received: by mail-pj1-f48.google.com with SMTP id m4so3441994pjv.5
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 10:07:42 -0700 (PDT)
-X-Gm-Message-State: AJIora9lnFk/AiZr7FisIri5MRhEg9SFnh9Aq7aRpyA2M9SViLs1wpJi
-	G5OUmeaEQW2tH0H51J/8hGX0FgBKL414shM7y0o=
-X-Google-Smtp-Source: AGRyM1sNRZu0x7H3Y0OO0426x3Ze9/v/FHGS+rQpIQqiGzcKpJfW9zzE6W7AVtBlMKAfJLfQm+5wy2fo5G+EVxxh0I8=
-X-Received: by 2002:a17:903:1c5:b0:167:71bd:462f with SMTP id
- e5-20020a17090301c500b0016771bd462fmr15669728plh.65.1655572061950; Sat, 18
- Jun 2022 10:07:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LQWGN3Tccz3bbQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jun 2022 08:45:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655592348; x=1687128348;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=k3Mv+UYatiajtFHnbkm2F8jBvD7Bv76orJVWKdZWCcU=;
+  b=cG3T0mbZekv2O/XB0hR4o3qr2dUFcK9NZGowhkxdfIkSgCG9wYqFpFO/
+   gDj9BP5aQoXZlJOEbRuD1Fh+9/kzt66sQ8r4fMtdpYah5MwXqijQF2ebj
+   kTBUSb6syeY/PJo/T64dFNNk7poPGLVvZlbjbU4FfA3UHH8uyMPMX0BQc
+   z7s81Jcv+fDvWEpXT95eow3oH6AwDrWGDOOwkWcKEnBFRkkQlf0PWdwBM
+   eMnKrRfy4CbxKMkQq61sY+ZL7XEs1wiyJ8F/10uboH48O+YMDOlL6q397
+   gYpz/if9YnRhQD86HieWJ1BmIQpOyWPd/ibh2veill3uogibJSdWawj8O
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10380"; a="305116297"
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="305116297"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2022 15:45:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,306,1650956400"; 
+   d="scan'208";a="654122785"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by fmsmga004.fm.intel.com with ESMTP; 18 Jun 2022 15:45:35 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o2hCB-000Qfb-1t;
+	Sat, 18 Jun 2022 22:45:35 +0000
+Date: Sun, 19 Jun 2022 06:44:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 7bc08056a6dabc3a1442216daf527edf61ac24b6
+Message-ID: <62ae5563.D4ooV9oWmlU/NYOE%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-References: <20220618060850.4058525-1-windhl@126.com>
-In-Reply-To: <20220618060850.4058525-1-windhl@126.com>
-From: Timur Tabi <timur@kernel.org>
-Date: Sat, 18 Jun 2022 12:07:05 -0500
-X-Gmail-Original-Message-ID: <CAOZdJXU6R1wma8VXwfPYzq6eSkT84DiXb+3eQCEVanLZC2LQ3w@mail.gmail.com>
-Message-ID: <CAOZdJXU6R1wma8VXwfPYzq6eSkT84DiXb+3eQCEVanLZC2LQ3w@mail.gmail.com>
-Subject: Re: [PATCH] tty: serial: Fix refcount leak bug in ucc_uart.c
-To: Liang He <windhl@126.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,16 +69,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Timur Tabi <timur@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, PowerPC Mailing List <linuxppc-dev@lists.ozlabs.org>, lkml <linux-kernel@vger.kernel.org>, linux-serial@vger.kernel.org, jirislaby@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Jun 18, 2022 at 1:09 AM Liang He <windhl@126.com> wrote:
->
-> In soc_info(), of_find_node_by_type() will return a node pointer
-> with refcount incremented. We should use of_node_put() when it is
-> not used anymore.
->
-> Signed-off-by: Liang He <windhl@126.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 7bc08056a6dabc3a1442216daf527edf61ac24b6  powerpc/rtas: Allow ibm,platform-dump RTAS call with null buffer address
 
-Acked-by: Timur Tabi <timur@kernel.org>
+elapsed time: 723m
+
+configs tested: 114
+configs skipped: 94
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+gcc tested configs:
+arm64                               defconfig
+arm64                            allyesconfig
+arm                              allmodconfig
+arm                                 defconfig
+arm                              allyesconfig
+i386                          randconfig-c001
+s390                       zfcpdump_defconfig
+sh                           se7751_defconfig
+sh                            migor_defconfig
+mips                            gpr_defconfig
+arm                         axm55xx_defconfig
+powerpc                  storcenter_defconfig
+mips                           xway_defconfig
+openrisc                  or1klitex_defconfig
+powerpc                         ps3_defconfig
+sh                          r7780mp_defconfig
+sh                           sh2007_defconfig
+arm                         assabet_defconfig
+alpha                            alldefconfig
+arm                          pxa910_defconfig
+arm                            mps2_defconfig
+parisc                generic-64bit_defconfig
+powerpc                         wii_defconfig
+sh                              ul2_defconfig
+nios2                            alldefconfig
+arm                           sunxi_defconfig
+sh                          r7785rp_defconfig
+mips                         tb0226_defconfig
+arm                            qcom_defconfig
+arm                      jornada720_defconfig
+m68k                        mvme147_defconfig
+sh                   rts7751r2dplus_defconfig
+powerpc                       maple_defconfig
+mips                     decstation_defconfig
+arm                        trizeps4_defconfig
+powerpc                  iss476-smp_defconfig
+xtensa                  cadence_csp_defconfig
+powerpc                        warp_defconfig
+xtensa                  audio_kc705_defconfig
+m68k                           sun3_defconfig
+sh                               alldefconfig
+openrisc                            defconfig
+arc                      axs103_smp_defconfig
+arc                        nsimosci_defconfig
+sh                             shx3_defconfig
+csky                             alldefconfig
+sh                        sh7763rdp_defconfig
+m68k                       m5249evb_defconfig
+m68k                             alldefconfig
+ia64                            zx1_defconfig
+ia64                                defconfig
+riscv                             allnoconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+m68k                                defconfig
+csky                                defconfig
+nios2                            allyesconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+arc                                 defconfig
+sh                               allmodconfig
+s390                                defconfig
+s390                             allmodconfig
+parisc                              defconfig
+parisc64                            defconfig
+parisc                           allyesconfig
+s390                             allyesconfig
+mips                             allyesconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+i386                          randconfig-a012
+i386                          randconfig-a014
+i386                          randconfig-a016
+x86_64                        randconfig-a006
+x86_64                        randconfig-a004
+x86_64                        randconfig-a002
+riscv                               defconfig
+riscv                    nommu_virt_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_k210_defconfig
+riscv                            allmodconfig
+riscv                            allyesconfig
+x86_64                    rhel-8.3-kselftests
+x86_64                                  kexec
+x86_64                              defconfig
+x86_64                           allyesconfig
+x86_64                               rhel-8.3
+x86_64                          rhel-8.3-func
+x86_64                           rhel-8.3-syz
+x86_64                         rhel-8.3-kunit
+
+clang tested configs:
+arm                          pcm027_defconfig
+powerpc                    gamecube_defconfig
+arm                       spear13xx_defconfig
+powerpc                     tqm8560_defconfig
+mips                       rbtx49xx_defconfig
+powerpc                 mpc8272_ads_defconfig
+arm                                 defconfig
+s390                             alldefconfig
+mips                   sb1250_swarm_defconfig
+arm                         shannon_defconfig
+arm                         s3c2410_defconfig
+powerpc                 mpc8313_rdb_defconfig
+powerpc                          allmodconfig
+x86_64                        randconfig-k001
+x86_64                        randconfig-a005
+x86_64                        randconfig-a003
+x86_64                        randconfig-a001
+i386                          randconfig-a002
+i386                          randconfig-a006
+i386                          randconfig-a004
+x86_64                        randconfig-a012
+x86_64                        randconfig-a014
+x86_64                        randconfig-a016
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
