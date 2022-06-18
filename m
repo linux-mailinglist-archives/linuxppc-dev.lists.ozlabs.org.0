@@ -1,98 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1B75502DF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 06:57:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A61355031D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 08:10:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LQ3YX4P12z3cd9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 14:57:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LQ5BK4sLrz3cdt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jun 2022 16:10:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZ5iaaEh;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=BDwaWrtJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.112; helo=m15112.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZ5iaaEh;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=BDwaWrtJ;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LQ3Xn6W5Zz308C
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 14:56:40 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25I1wrNT013867;
-	Sat, 18 Jun 2022 04:56:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=rzAaIToneCB+BWv66tZQPX85QKk0kaZ7ejfpnjMCx7o=;
- b=TZ5iaaEhvS4/JSePoh7KmgpwaVoe17g3c4f/scYI5s+WJG2MaVypSPgOm1B8yATUgd9X
- ehUFsq2M7B81dSzZYW8vTfGXgBSUef1HigubW9wkghL4fSJ84bJ4bE2Lgf9BrpR0i1/w
- KLD6zGFmkMfPCXbvylL9/gtH4ohyTeW9M5GWo5BiYbgMW6HxRUgkfPtG3nAM5Vh7zfSC
- g/qhOLtgTNL47sUz6SzL3Mb2ZaMHz2yh0aNjmK995WvyVbazSpoN5+OD6rzFGOKiCHQJ
- t2jMQE1lij4yabp+b/dwHMEqBhrUP6d0Do5gPso2qoQ2Mj7TPxGB8o1QPfEm4fNVQtdx 8g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gs4wyawce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Jun 2022 04:56:23 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25I4lopm032441;
-	Sat, 18 Jun 2022 04:56:22 GMT
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gs4wyawc0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Jun 2022 04:56:22 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25I4orKN010326;
-	Sat, 18 Jun 2022 04:56:20 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma02fra.de.ibm.com with ESMTP id 3gs6b8r2pr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 Jun 2022 04:56:20 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25I4uHiY18481428
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 18 Jun 2022 04:56:17 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5F714C04A;
-	Sat, 18 Jun 2022 04:56:17 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB7314C040;
-	Sat, 18 Jun 2022 04:56:13 +0000 (GMT)
-Received: from [9.43.41.206] (unknown [9.43.41.206])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Sat, 18 Jun 2022 04:56:13 +0000 (GMT)
-Message-ID: <863b068d-e534-b377-c5d7-2f16fbb11977@linux.vnet.ibm.com>
-Date: Sat, 18 Jun 2022 10:26:12 +0530
+Received: from m15112.mail.126.com (m15112.mail.126.com [220.181.15.112])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LQ59g0kspz3bl7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jun 2022 16:10:07 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=fZqfk
+	Q6nMqZ+XNOx3ols19yCmb0V1DuDOmxfZXOmwfo=; b=BDwaWrtJfj5EhZlQAA/Jy
+	segFSLTbJ8wSH5LEEzprTkOmmHqXpz5BrUVM5T009iytcFSwlFsJJ5689E2lj+lw
+	fNfhqlldlwALEDQRYLLGqWs+5HyZOingZ/UbS6cPaGalnVHvg2CkZpuGTeS/LQw9
+	/oAWTdGk2HFVXrV1Z86SQU=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+	by smtp2 (Coremail) with SMTP id DMmowAC3wgXza61iZ1BsDg--.24049S2;
+	Sat, 18 Jun 2022 14:08:52 +0800 (CST)
+From: Liang He <windhl@126.com>
+To: timur@kernel.org,
+	gregkh@linuxfoundation.org,
+	jirislaby@kernel.org
+Subject: [PATCH] tty: serial: Fix refcount leak bug in ucc_uart.c
+Date: Sat, 18 Jun 2022 14:08:50 +0800
+Message-Id: <20220618060850.4058525-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [RFC PATCH v2 0/7] objtool: Enable and implement --mcount option
- on powerpc
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <cover.1653398233.git.christophe.leroy@csgroup.eu>
- <ac4e3ceb-7de8-2c3f-4689-1730d811bf3d@linux.vnet.ibm.com>
- <ea64b232-e002-9317-dca1-c5933fb94e03@csgroup.eu>
- <0d2a6ea3-71cc-a8e1-22eb-7b66f533b3bf@linux.vnet.ibm.com>
- <18d05edc-6669-0308-7e6a-acd1cccd4f20@csgroup.eu>
-From: Sathvika Vasireddy <sv@linux.vnet.ibm.com>
-In-Reply-To: <18d05edc-6669-0308-7e6a-acd1cccd4f20@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: o_gKlnWooEete_IYXwfWaVbnswCZMbBN
-X-Proofpoint-ORIG-GUID: XhhseLmO8ObLsSwEkGkpV0hjb-T1OYOj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-18_02,2022-06-17_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- impostorscore=0 suspectscore=0 mlxlogscore=715 malwarescore=0 mlxscore=0
- clxscore=1011 bulkscore=0 lowpriorityscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206180021
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: DMmowAC3wgXza61iZ1BsDg--.24049S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtF4UXry8JryrKry3tw4kXrb_yoW3urX_CF
+	97WwnrCr1UZF40gFZxZryY9ayav34UuF48u3Z7t3s5XrW5ZF4rXFyqvr97Wr9rC3yjyF9x
+	Crn7Wry0kr4v9jkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRMFAp7UUUUU==
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi3AQkF1pEDvpQjQABsd
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,19 +56,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "peterz@infradead.org" <peterz@infradead.org>, Paul Mackerras <paulus@samba.org>, Sathvika Vasireddy <sv@linux.ibm.com>, "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com, linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+In soc_info(), of_find_node_by_type() will return a node pointer
+with refcount incremented. We should use of_node_put() when it is
+not used anymore.
 
-On 15/06/22 21:33, Christophe Leroy wrote:
-> Do you have any idea when you plan to send next revision ?
->
-> I'm really looking forward to submitting the inline static calls on top
-> of your series.
+Signed-off-by: Liang He <windhl@126.com>
+---
+ drivers/tty/serial/ucc_uart.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I'm planning to send RFC v3 next week.
-
-- Sathvika
+diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
+index 6000853973c1..3cc9ef08455c 100644
+--- a/drivers/tty/serial/ucc_uart.c
++++ b/drivers/tty/serial/ucc_uart.c
+@@ -1137,6 +1137,8 @@ static unsigned int soc_info(unsigned int *rev_h, unsigned int *rev_l)
+ 		/* No compatible property, so try the name. */
+ 		soc_string = np->name;
+ 
++	of_node_put(np);
++
+ 	/* Extract the SOC number from the "PowerPC," string */
+ 	if ((sscanf(soc_string, "PowerPC,%u", &soc) != 1) || !soc)
+ 		return 0;
+-- 
+2.25.1
 
