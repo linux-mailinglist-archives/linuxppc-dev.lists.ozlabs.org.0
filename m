@@ -2,65 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD17E550CF7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Jun 2022 22:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38671550D98
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 01:31:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LR4Gh5Gwwz3cdT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 06:33:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LR8Dw13KXz3cdt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 09:31:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=GqC6I5Te;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qf5/yJrH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=srs0=4s8v=w2=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LR8DH2KQkz307g
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 09:31:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=GqC6I5Te;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qf5/yJrH;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LR4G25T7Lz3bZc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 06:32:26 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id A930861274
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jun 2022 20:32:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6727C3411D
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jun 2022 20:32:21 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="GqC6I5Te"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1655670738;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=E43yYKQ93Nj8ZBsO2wdXwId/ptjpjzHFd5icsbHgVck=;
-	b=GqC6I5TerNfh9l2Mcco256Fmef6HflorZBDQ0NDeoojcq/i8GEPcoS17TNYd8LL4kkFkzf
-	slNAYwQY65wwc87Bo4QEkItaLLXchOLYKbatW4DhYm7Pgf7V5QpaqVZBRBQBdwYknSDYMa
-	HCM2mSVrkR2dXiW7PMnwjZ5HaAN6mJ8=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 34cc8f0e (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO)
-	for <linuxppc-dev@lists.ozlabs.org>;
-	Sun, 19 Jun 2022 20:32:18 +0000 (UTC)
-Received: by mail-yb1-f172.google.com with SMTP id l66so14279238ybl.10
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jun 2022 13:32:17 -0700 (PDT)
-X-Gm-Message-State: AJIora/UKeFceo+CXHauW7iuDLo3xXgbC4tcrZ/I53lngKZJd/9LG7Op
-	zSNvk6qZgwIDpiRBF0K5QI0gfpFVso30MFfHMUA=
-X-Google-Smtp-Source: AGRyM1tZ32bZ28frjHDR0YYsFFJW4/YL3Si9ca7cVn+cWmRP8nzQzoDRZHpvCijN6G+esDqpLb1Q0ccATdsA4PgL8nU=
-X-Received: by 2002:a5b:dcf:0:b0:64a:6923:bbba with SMTP id
- t15-20020a5b0dcf000000b0064a6923bbbamr22761168ybr.398.1655670737153; Sun, 19
- Jun 2022 13:32:17 -0700 (PDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LR8DF1c12z4xL4;
+	Mon, 20 Jun 2022 09:31:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1655681469;
+	bh=DfFYSplzCGpw1G5j40S++Z74it3zuvgSDqazPUPVhoU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qf5/yJrHWCr76MD59gqYCqsP2H4jhu1X1FSGUYhzw7RqNYnCjUNCYeEXnetHxMI0t
+	 INbwFD8AyCyMid1nwKqrNVP7noxmpHudRWHoKygjdeyKGdMEE4UrhMMOVEYZD7P+77
+	 HmUKqXP4Nb8xSPmv+2lQCJPrdyv+fA/x1nRWbnqZLHMuYlImp3yuZxaJTZlBTQbKN+
+	 EoxJHDlZrc2yjOvIwTmhYKW4m6XKqtngLpcFiKpu9tuJ07OfKlL9Wwtg6qruxsvr/a
+	 L2wP2fkbUbTL7vWVw/mBTbczG9A/dwu/eXm0LNe55BkZMHTbmTjTtph28odIaC/67I
+	 yd1riAKDXnc5Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH] selftests/powerpc: Skip energy_scale_info test on older firmware
+Date: Mon, 20 Jun 2022 09:31:03 +1000
+Message-Id: <20220619233103.2666171-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-References: <20220611151015.548325-1-Jason@zx2c4.com> <20220611151015.548325-3-Jason@zx2c4.com>
- <87czf4c1q1.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87czf4c1q1.fsf@mpe.ellerman.id.au>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Sun, 19 Jun 2022 22:32:06 +0200
-X-Gmail-Original-Message-ID: <CAHmME9rWkvDDYHPi-TJR-ATts6pLPY6D8LUaYDJ-=7w7qsFCvg@mail.gmail.com>
-Message-ID: <CAHmME9rWkvDDYHPi-TJR-ATts6pLPY6D8LUaYDJ-=7w7qsFCvg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] powerpc/powernv: wire up rng during setup_arch
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,19 +56,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>
+Cc: psampat@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
+Older machines don't have the firmware feature that enables the code
+this test is testing. Skip the test if the sysfs directory doesn't
+exist. Also use the FAIL_IF() macro to provide more verbose error
+reporting if an error is encountered.
 
-On Sun, Jun 19, 2022 at 1:49 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
-> This crashes on power8 because it's too early to call kzalloc() in
-> rng_create(), and it's also too early to setup the percpu variables in
-> there.
->
-> I'll rework it and post a v4.
+Fixes: 57201d657eb7 ("selftest/powerpc: Add PAPR sysfs attributes sniff test")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ .../powerpc/papr_attributes/attr_test.c       | 30 +++++++++++--------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-Oh, darn. Sorry about that. Thanks for reworking it.
+diff --git a/tools/testing/selftests/powerpc/papr_attributes/attr_test.c b/tools/testing/selftests/powerpc/papr_attributes/attr_test.c
+index bab0dc06e90b..9b655be641c9 100644
+--- a/tools/testing/selftests/powerpc/papr_attributes/attr_test.c
++++ b/tools/testing/selftests/powerpc/papr_attributes/attr_test.c
+@@ -7,6 +7,7 @@
+  * Copyright 2022, Pratik Rajesh Sampat, IBM Corp.
+  */
+ 
++#include <errno.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <dirent.h>
+@@ -32,7 +33,7 @@ enum type {
+ 	NUM_VAL
+ };
+ 
+-int value_type(int id)
++static int value_type(int id)
+ {
+ 	int val_type;
+ 
+@@ -54,15 +55,21 @@ int value_type(int id)
+ 	return val_type;
+ }
+ 
+-int verify_energy_info(void)
++static int verify_energy_info(void)
+ {
+ 	const char *path = "/sys/firmware/papr/energy_scale_info";
+ 	struct dirent *entry;
+ 	struct stat s;
+ 	DIR *dirp;
+ 
+-	if (stat(path, &s) || !S_ISDIR(s.st_mode))
+-		return -1;
++	errno = 0;
++	if (stat(path, &s)) {
++		SKIP_IF(errno == ENOENT);
++		FAIL_IF(errno);
++	}
++
++	FAIL_IF(!S_ISDIR(s.st_mode));
++
+ 	dirp = opendir(path);
+ 
+ 	while ((entry = readdir(dirp)) != NULL) {
+@@ -76,25 +83,24 @@ int verify_energy_info(void)
+ 
+ 		id = atoi(entry->d_name);
+ 		attr_type = value_type(id);
+-		if (attr_type == INVALID)
+-			return -1;
++		FAIL_IF(attr_type == INVALID);
+ 
+ 		/* Check if the files exist and have data in them */
+ 		sprintf(file_name, "%s/%d/desc", path, id);
+ 		f = fopen(file_name, "r");
+-		if (!f || fgetc(f) == EOF)
+-			return -1;
++		FAIL_IF(!f);
++		FAIL_IF(fgetc(f) == EOF);
+ 
+ 		sprintf(file_name, "%s/%d/value", path, id);
+ 		f = fopen(file_name, "r");
+-		if (!f || fgetc(f) == EOF)
+-			return -1;
++		FAIL_IF(!f);
++		FAIL_IF(fgetc(f) == EOF);
+ 
+ 		if (attr_type == STR_VAL) {
+ 			sprintf(file_name, "%s/%d/value_desc", path, id);
+ 			f = fopen(file_name, "r");
+-			if (!f || fgetc(f) == EOF)
+-				return -1;
++			FAIL_IF(!f);
++			FAIL_IF(fgetc(f) == EOF);
+ 		}
+ 	}
+ 
+-- 
+2.35.3
 
-Jason
