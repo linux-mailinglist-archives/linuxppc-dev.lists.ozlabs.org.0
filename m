@@ -2,51 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4AB552016
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 17:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E1A552012
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 17:13:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRY884zfgz3cd5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 01:14:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRY7T0LVCz3cgC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 01:13:25 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fvhvw7BS;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b15okAyb;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.113; helo=m15113.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fvhvw7BS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b15okAyb;
 	dkim-atps=neutral
-Received: from m15113.mail.126.com (m15113.mail.126.com [220.181.15.113])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRY7T1nYyz3cgJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 01:13:21 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=FzbEm
-	dFdPL73KnSUrc2WOTvSmbGHmx084UiTS3b2xYw=; b=fvhvw7BSyi5V3Q6YO6IDw
-	uI7VmE/xGn8ZUgXJxDtmNHo/PJ+Bhw/UHnR6VkHMfJNdgnp+/zWYiWXIt/jM6ez/
-	/SK4iXEp83pWZKLQngO9cRvQVhR05jHm39iAwNOmZ8ntSDzC0CH+WqTk4l5P8k0f
-	yiHjZckWFv2avhsuhFWXyQ=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-	by smtp3 (Coremail) with SMTP id DcmowAA305RCjrBiduIVDw--.52838S2;
-	Mon, 20 Jun 2022 23:12:02 +0800 (CST)
-From: Liang He <windhl@126.com>
-To: mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	clg@kaod.org,
-	christophe.leroy@csgroup.eu
-Subject: [PATCH] powerpc/pasemi: Fix refcount leak bug
-Date: Mon, 20 Jun 2022 23:12:02 +0800
-Message-Id: <20220620151202.4075170-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRY6q1J7kz2yxj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 01:12:51 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 61C2F6116C;
+	Mon, 20 Jun 2022 15:12:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B6FC3411B;
+	Mon, 20 Jun 2022 15:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1655737967;
+	bh=SHOEIrF38xPmyZAQNJywwdY8NAEVju9HZycyF5Sbvrk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b15okAyblhXu4iVfaa7hz2TNmmGhHGJbkDcf9sEW+gPd0t7paF88tUZ2vUcyqhknM
+	 PRp1o3RxhakQ+KhIl0zgeTaCncv7uuBal+/v8fTKdhLEQPJqMudlqIcwdvtfbBinYE
+	 qFU95Fj31xTnFK3WZhdExhXLpWMRLGO5cXjVBzSzuXSI44aqZ0ltYBeC6kZ/NDv4tm
+	 Sxy7k9rWSMpEzJ8kYt08MtIEq/3dnMFM/Zpc7eNVVfSiELM32qKK79Cf3fN0ffNHAF
+	 w64p5HnEtO2D8gJBYOYdQnxv1X3CCjbcbwTmjDaRSGt+4igbmDmnIjg2Kvi6DPViO7
+	 7m3RY7OWzODTw==
+Date: Mon, 20 Jun 2022 16:12:41 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Pierluigi Passaro <pierluigi.p@variscite.com>
+Subject: Re: [PATCH 3/4] ASoC: wm8904: extend device tree support
+Message-ID: <YrCOaW/K6muNnyRf@sirena.org.uk>
+References: <AM6PR08MB437675AD04D20721769B08A3FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DcmowAA305RCjrBiduIVDw--.52838S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrKr48WF15Cry7ur4DKF15urg_yoW3JrbEy3
-	97uan7AayfGrsrJa9Fva1rGr1UC395Wr4UKr1I93W2v3W3Aay7KFnxJrW8G3y5ury2vrW3
-	Can3JayDZa4SyjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjjg4PUUUUU==
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuAMmF2JVj813ngAAsW
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/IGE4rk+pMEElHo5"
+Content-Disposition: inline
+In-Reply-To: <AM6PR08MB437675AD04D20721769B08A3FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
+X-Cookie: Good day to avoid cops.  Crawl to work.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,30 +61,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>, "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "shengjiu.wang@gmail.com" <shengjiu.wang@gmail.com>, "tiwai@suse.com" <tiwai@suse.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>, Eran Matityahu <eran.m@variscite.com>, "robh+dt@kernel.org" <robh+dt@kernel.org>, Alifer Willians de Moraes <alifer.m@variscite.com>, "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>, "perex@perex.cz" <perex@perex.cz>, "festevam@gmail.com" <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In pas_pci_init(), we need one of_node_put() for of_find_node_by_path()
-to keep refcount balance.
 
-Signed-off-by: Liang He <windhl@126.com>
----
- arch/powerpc/platforms/pasemi/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+--/IGE4rk+pMEElHo5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/powerpc/platforms/pasemi/pci.c b/arch/powerpc/platforms/pasemi/pci.c
-index 55f0160910bf..4b371fb0d9aa 100644
---- a/arch/powerpc/platforms/pasemi/pci.c
-+++ b/arch/powerpc/platforms/pasemi/pci.c
-@@ -282,6 +282,7 @@ void __init pas_pci_init(void)
- 	pci_set_flags(PCI_SCAN_ALL_PCIE_DEVS);
- 
- 	np = of_find_compatible_node(root, NULL, "pasemi,rootbus");
-+	of_node_put(root);
- 	if (np) {
- 		res = pas_add_bridge(np);
- 		of_node_put(np);
--- 
-2.25.1
+On Mon, Jun 20, 2022 at 02:32:17PM +0000, Pierluigi Passaro wrote:
 
+> > > +=A0 - drc-cfg-regs: Default registers value for R40/41/42/43 (DRC)
+> > > +=A0=A0=A0 The list must be (4 x num-drc-cfgs) entries long.
+> > > +=A0=A0=A0 If absent or incomplete, DRC is disabled.
+
+> > What is the purpose of having num-drc-cfgs?=A0 We can tell how large
+> > drc-cfg-regs is so it just seems redundant.
+
+> Can you please point me to any reference implementation doing this ?
+
+of_property_read_variable_uX_array() should do what you want, you can
+also use of_property_count_elems_of_size().  The main DT API header is
+linux/of.h.
+
+--/IGE4rk+pMEElHo5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKwjmgACgkQJNaLcl1U
+h9AyNwf/SOmx1DddaNrhkB/9+jvoQAmDXpEJJAEanUhwzkSxLo4UmEeOQflNn9qA
+2PY0VObRD2/nzISwUccumqGAJzzx+nwIcAgRAd//JeIG/8Z69a4VEtZMxzjuiwMo
+QDPEWcIoP3Zal1K59ZbXoNdf5ZZuAGsrPg3o9EQRuawrwVBQdanQrGVn2ECfCwi8
+1l4G/8Xz3K8/F4/qtWHUHCiSH0aG/t+dzUCUmMgjejm8qslMjQnTzzYQC9/cml/D
+QoZBU2l6Gn+/e07dqQsXd95nogtd78aJNnIN9a0NxMNmYMz6hluR4Al0u+hXL3Ne
+DRMA8B/6nCzGQb7JkQA3heJjObYa9w==
+=NZIk
+-----END PGP SIGNATURE-----
+
+--/IGE4rk+pMEElHo5--
