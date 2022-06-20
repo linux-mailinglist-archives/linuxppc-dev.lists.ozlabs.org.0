@@ -1,44 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74C8551EB4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 16:27:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ECF551F76
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 16:57:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRX6m4zkrz3cHD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 00:27:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRXmt5TRkz3cdJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 00:57:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Maa4UXxT;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRX6J1sgSz3bqr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 00:27:17 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C925E1596;
-	Mon, 20 Jun 2022 07:26:44 -0700 (PDT)
-Received: from FVFF77S0Q05N (unknown [10.57.70.167])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 63A803F534;
-	Mon, 20 Jun 2022 07:26:41 -0700 (PDT)
-Date: Mon, 20 Jun 2022 15:26:37 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Subject: Re: [PATCH -next v5 2/8] arm64: extable: make uaaccess helper use
- extable type EX_TYPE_UACCESS_ERR_ZERO
-Message-ID: <YrCDnc8ZjgbHAhGU@FVFF77S0Q05N>
-References: <20220528065056.1034168-1-tongtiangen@huawei.com>
- <20220528065056.1034168-3-tongtiangen@huawei.com>
- <Yqw6TP3MhEqnQ+2o@FVFF77S0Q05N>
- <4371a7c9-8766-9fee-2558-e6f43f06ad19@huawei.com>
- <0da734f3-5743-3df3-3f90-d92e5bd585ce@huawei.com>
- <Yq3HoUyEcnKKk1AY@FVFF77S0Q05N>
- <684f0362-6e58-753d-32e1-112c6ffe6d12@huawei.com>
- <YrA5f44hySky8v5g@FVFF77S0Q05N>
- <908f4c14-b9cb-71f8-7a3c-7569f7c89033@huawei.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Maa4UXxT;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRXmD1HTxz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 00:56:44 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id C13A0B811D7;
+	Mon, 20 Jun 2022 14:56:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01640C3411B;
+	Mon, 20 Jun 2022 14:56:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1655736998;
+	bh=iuHCJsCWRrFc8xRE1pPf353DnYJkGMJluzCFMW+Nr6Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Maa4UXxTdt3KZpgrG3Bdx+W/MPuQawr5e4TNJJ861YViGUrJ0N5wel/7n6wsgIZ+g
+	 tyve74E9CTe/JKawsgozk5sAZfqVl+m9dsj9540Z2Pk9PYPSs5N96jM6yw/0Pe+5up
+	 OuZUE3yFNLH9+2PHOOjek94zMLsKyEejQEJyNFhwBOArVeI2YsY3FtieoN0W3VlY/Q
+	 t21P/3MIqx2FNfrkU7U/0+x90M3A4gAXtFQBemeNpRHXWUzOhzCfDvmM+OqmEYu7m5
+	 XuoHD19cmutNfSdAPAdklL31pj7efFk1CWj0YORIyMzkVpwMpBAgpkThMdut9k67m7
+	 30DSA9rk+tzYQ==
+Date: Mon, 20 Jun 2022 15:56:31 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Pierluigi Passaro <pierluigi.p@variscite.com>
+Subject: Re: [PATCH 4/4] ASoC: wm8904: add DMIC support
+Message-ID: <YrCKn6UgvdwOQqAu@sirena.org.uk>
+References: <AM6PR08MB437614D88A0F44746C2B88BAFFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="AbQUs8uU3Zo5uRnw"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <908f4c14-b9cb-71f8-7a3c-7569f7c89033@huawei.com>
+In-Reply-To: <AM6PR08MB437614D88A0F44746C2B88BAFFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
+X-Cookie: Good day to avoid cops.  Crawl to work.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,34 +61,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>, Will Deacon <will@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Xie XiuQi <xiexiuqi@huawei.com>, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>, "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "shengjiu.wang@gmail.com" <shengjiu.wang@gmail.com>, "tiwai@suse.com" <tiwai@suse.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>, Eran Matityahu <eran.m@variscite.com>, "robh+dt@kernel.org" <robh+dt@kernel.org>, Alifer Willians de Moraes <alifer.m@variscite.com>, "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>, "perex@perex.cz" <perex@perex.cz>, "festevam@gmail.com" <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 20, 2022 at 10:13:41PM +0800, Tong Tiangen wrote:
-> 
-> 
-> 在 2022/6/20 17:10, Mark Rutland 写道:
-> > On Mon, Jun 20, 2022 at 10:59:12AM +0800, Tong Tiangen wrote:
-> > > 在 2022/6/18 20:40, Mark Rutland 写道:
-> > > The following errors are reported during compilation:
-> > > [...]
-> > > arch/arm64/lib/clear_user.S:45: Error: invalid operands (*ABS* and *UND*
-> > > sections) for `<<'
-> > > [...]
-> > 
-> > As above, I'm not seeing this.
-> > 
-> > This suggests that the EX_DATA_REG() macro is going wrong somehow. Assuming the
-> > operand types correspond to the LHS and RHS of the expression, this would mean
-> > the GPR number is defined, but the REG value is not, and I can't currently see
-> > how that can happen.
- 
-> Now I can compile success, both versions 9.4.0 and 11.2.0.
-> 
-> I should have made a mistake. There is no problem using your implementation.
-> I will send a new version these days.
 
-No problem; thanks for confirming!
+--AbQUs8uU3Zo5uRnw
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Mark.
+On Mon, Jun 20, 2022 at 02:49:51PM +0000, Pierluigi Passaro wrote:
+
+> > > +static const char *cin_text[] =3D {
+> > > +=A0=A0=A0=A0 "ADC", "DMIC"
+> > > +};
+
+> > > +static SOC_ENUM_SINGLE_DECL(cin_enum,
+> > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0 WM8904_DIGITAL_MICROPHONE_0, 12, cin_text);
+
+> > Why would this be runtime selectable?=A0 I'd expect the decision to use
+> > an analogue or digital microphone to be made in the hardware design.
+
+> I agree that dedicated HW is required, but currently SW side there's no s=
+upport at all.
+> This patch is aiming to provide a way to enable DMIC on boards using it.
+> Is this supposed to be managed in a different way ?
+
+Via firmware description.
+
+--AbQUs8uU3Zo5uRnw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKwip4ACgkQJNaLcl1U
+h9COyQf/e1DSNnLS5C1cVLwYjiESEN2bZYjPBZvXZ/Nil+AvbRsE6mebr8M1RLAW
+2Hhd0EnevkPtZygo8C0zz92XHbocSuNy15oYDIhYb7M3cG7VEOhqK8i2izZcs7CY
+pR4TpxfAncFHht0NaOPWauJOlapDytWDmSNKtmi0Y1EXbJi86winalwy//S7Q3nO
+Q/87q+YM253/joHhJK/cHMbz6ONqF1VodXrPX3SIJC40T3hW3mSqeNV/UFWkejdG
+ROH4DIdG6ydfG+Kiwsy6aAVVr9Fg2XqkoEQPZzHUv3Laujd6U2Z3HgRI4eDgsOJC
+hBOpo+Aw3wIT6Hjw5v4VY2YpcsD0YQ==
+=elfJ
+-----END PGP SIGNATURE-----
+
+--AbQUs8uU3Zo5uRnw--
