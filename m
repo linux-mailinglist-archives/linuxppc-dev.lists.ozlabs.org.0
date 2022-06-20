@@ -1,54 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E65A85522D0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 19:39:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED3C552382
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 20:05:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRcN74Rc9z3cgB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 03:39:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRcxq3qSyz3cfv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 04:05:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a2q2bkio;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PDbsfohM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a2q2bkio;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PDbsfohM;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRcMT06b8z3bkQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 03:39:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRcxB6lJgz3brS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 04:04:46 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 22CD0B812A8;
-	Mon, 20 Jun 2022 17:38:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FF1C3411B;
-	Mon, 20 Jun 2022 17:38:51 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id A33F961586;
+	Mon, 20 Jun 2022 18:04:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8716C3411B;
+	Mon, 20 Jun 2022 18:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655746734;
-	bh=jCwwSbElt83m1PQ7z2IHVu8qIm0sTyIZfWwdyaDXEQY=;
+	s=k20201202; t=1655748282;
+	bh=w6vacAfaqohw95S+mHKQgM+EKeWnz+yRbKl9pZAYgT4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a2q2bkioPo6HKogBWHFyliQxaUyYq4YadB4+we/O/kmjDp2ubf8jEByZzv2C1QZeg
-	 hrO8b1Tzg74CpGc68N9s8iDq6ieZyCQT1QkyAMjcBQZ4Y3DAKcu7akqiN6I+fn/U86
-	 NTHNCRCwRQwl8V9dLT2oQ0VoUib8vhdriDganxqrsl10KvsvypFY4QO1+j1AurQ62U
-	 56raSyAcpfFlQk4E7TbEJSGMydpmzHHI68czU4V/IoOWkyuupgdgnBVNShYSda2idy
-	 Gqum8+7O+1hv8lzELpb3UQQ+2fMw9sWBn0h5KgZEnHECBVoIldbeAxre/5y3xmJKUu
-	 OrcId64AICnaw==
-Date: Mon, 20 Jun 2022 18:38:48 +0100
+	b=PDbsfohMbYv3MffqWofo0S7UAM3OWif/Gh/rKbWiB5wStzqG5O9JTSUqCxbcdE0QC
+	 R/gf2j1b5t9kZBUtQHuHnZCby4kToF6ZQz8v25NCzG35JTNUA9cascUN+S073vlodc
+	 747BGINyYhkum55MlnQPY8NgidJYQETduCBfJE5A9qcQLGtD/NX5B3SDxToS08R8zW
+	 QczCMm7/qmod4Dj1zd4PhHwZxjs0ft4iu8z/zXspS/6BzPCOojI/0tjp4NrGKMyer5
+	 Yn4WJ/mWub0Pq9N6Cf4r5eu01pjH3Bh2o/AVSJBcJ8HwigExQEsdjrModduyoJzPRf
+	 7e8dlrFn6tAOQ==
+Date: Mon, 20 Jun 2022 19:04:36 +0100
 From: Mark Brown <broonie@kernel.org>
 To: Pierluigi Passaro <pierluigi.p@variscite.com>
 Subject: Re: [PATCH 4/4] ASoC: wm8904: add DMIC support
-Message-ID: <YrCwqKeHQJe/Tzzi@sirena.org.uk>
-References: <AM6PR08MB437600972B26E3A56E1190C0FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
+Message-ID: <YrC2tLI+nUxOGsIX@sirena.org.uk>
+References: <AM6PR08MB43760A5F78137DAE68FE99C7FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fom1qi4IkRF41iWN"
+	protocol="application/pgp-signature"; boundary="VOCVAPjBvueWLvm9"
 Content-Disposition: inline
-In-Reply-To: <AM6PR08MB437600972B26E3A56E1190C0FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
+In-Reply-To: <AM6PR08MB43760A5F78137DAE68FE99C7FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
 X-Cookie: Good day to avoid cops.  Crawl to work.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,41 +66,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---fom1qi4IkRF41iWN
+--VOCVAPjBvueWLvm9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Jun 20, 2022 at 03:30:45PM +0000, Pierluigi Passaro wrote:
+On Mon, Jun 20, 2022 at 05:52:43PM +0000, Pierluigi Passaro wrote:
+> > > Just for my understanding, are you suggesting to set a device tree
+> > > property to force a fixed behavior in the driver ?
 
-> Just for my understanding, are you suggesting to set a device tree property to force a fixed behavior in the driver ?
+> > Yes.
 
-Yes.
+> Why should we use a fixed behavior ?
 
-> WM8904 allows using both a DMIC and LINEIN, switching between one or the other and this is how we currently use it.
-> Why the user should not be allowed to switch between DMIC and LINEIN ?
+The things that are fixed by the design should be fixed.
 
-The device shares pins between the line inputs and the DMIC inputs so at
-least some of the configuration is going to be determinted at system
-design time, that will fix the usable values of at least one of the
-controls which ought to be reflected in the runtime behaviour.
+> > The device shares pins between the line inputs and the DMIC inputs so at
+> > least some of the configuration is going to be determinted at system
+> > design time, that will fix the usable values of at least one of the
+> > controls which ought to be reflected in the runtime behaviour.
 
-Please fix your mail client to word wrap within paragraphs at something
-substantially less than 80 columns.  Doing this makes your messages much
-easier to read and reply to.
+> In our design we use:
+> - pin 1: DMIC_CLK
+> - pin 24: LINEIN2R
+> - pin 26: LINEIN2L
+> - pin 27: DMIC_DATA
 
---fom1qi4IkRF41iWN
+> we have no pins shared among DMIC and LINEIN.
+
+This means that DMICDAT2 is not usefully selectable at runtime, you've
+got IN1 as digital and IN2 as analogue, so while the DMIC/ADC switch is
+useful the DMIC1/2 switch is not.
+
+--VOCVAPjBvueWLvm9
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKwsKcACgkQJNaLcl1U
-h9CUdwf+JtglBbVYwWNdDwBJD3f6LDH+Nl/J2ZnnHyJ6UdOmqtk7L+sj0nDb4Q/U
-2syrbcHJ/dHoJMRrdT/UXGhbeWCeZ4eQIbkY8hR8cRZQUteNZI73B9ccXbhMDAhf
-GHiJAE4dQWqj0ziFIGLbR9uhsOL26AYd65dgKRDOnSvA1kyWM6f+UwvGH3Xs2Rfd
-I8Ni+NwD2VBKJCzINFsEFqecPl7885vtD95jTnqu2eeDysBbEQ/Iuyh8h2G407gv
-gSy6lMRRQUAHu8lX5vOOWKgAXi/5rv9jy+gI89b8iehRkMreEZ78kBHtIU6FnCMf
-RPkRUcBSL7sTTTErsDGRhSUDVJmYBw==
-=1FAH
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKwtrMACgkQJNaLcl1U
+h9AVVAf8CNJ1pKU5n40o+hAHDCPrpMkjTpft6KOXuI6XY7ImplHB1hCdT7Q6WATf
+aBd0+QPrVbh1F8JPhUXGwsovT2NTqxO3mnuv8rf3W6/q+sBvebRFd6JFtqPixkRx
+it74je2CMTZXE5dCFp/IC6RfN1A73ommQqkSbMHv/ISFBDJXFwCtBXCkip3sHmIu
+ogp7fB7pZYgfsxh24nHeREBI+HAiwbqefgu7wDTBQ3DEIbWYq3xRffqucidYnUwp
+yenPU0ysSpOEBZXcU9QxvKxlh+H3dPNF4xNKNHXzqIt3IPWJF2WFF4JLdxKGzvoF
+pAKrexCNszAQZt19PrBca61dzOHDeg==
+=G8Fe
 -----END PGP SIGNATURE-----
 
---fom1qi4IkRF41iWN--
+--VOCVAPjBvueWLvm9--
