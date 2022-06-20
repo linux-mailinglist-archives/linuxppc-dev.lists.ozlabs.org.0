@@ -1,60 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A9D55193A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 14:46:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0854551973
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 15:03:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRTsr4dQDz3cg0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 22:46:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRVFz4GKRz3cgB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 23:03:51 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Bd10BB7n;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=MfiQ6KjY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=ylcv=w3=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.5; helo=mail-m965.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Bd10BB7n;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=MfiQ6KjY;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRTs852yQz3bkv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 22:45:48 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 84678B8119E;
-	Mon, 20 Jun 2022 12:45:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A902FC3411B;
-	Mon, 20 Jun 2022 12:45:41 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Bd10BB7n"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1655729140;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2IX05eBKqb4vnKKc2MkH1ad0v14O9oH9GsjOTm7oDzk=;
-	b=Bd10BB7nPPAr46mIN//9Vx0qcZnResZwi0ahy4t9BLnm/DiUy7ga6Ezgsc/3ObcfPcuN1r
-	kbwMaJIoSnEpP7sw5f2xDEBMj1hBx9fTIQnwIoKjIKU7boA5tWYPRiZLn+1zi0kCI3Cox2
-	YlV8J5L+NoHiD+1M3ZfIRE/AWb32s30=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 956417d4 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-	Mon, 20 Jun 2022 12:45:39 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	stable <stable@vger.kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v4] powerpc/powernv: wire up rng during setup_arch
-Date: Mon, 20 Jun 2022 14:45:31 +0200
-Message-Id: <20220620124531.78075-1-Jason@zx2c4.com>
-In-Reply-To: <CAHmME9rWkvDDYHPi-TJR-ATts6pLPY6D8LUaYDJ-=7w7qsFCvg@mail.gmail.com>
-References: <CAHmME9rWkvDDYHPi-TJR-ATts6pLPY6D8LUaYDJ-=7w7qsFCvg@mail.gmail.com>
+Received: from mail-m965.mail.126.com (mail-m965.mail.126.com [123.126.96.5])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRVFN67T4z3br0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 23:03:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=xQcnq
+	FKzRLBCZwDBdcAaOo7ny52OP4pLcchze/ooadM=; b=MfiQ6KjY/HDcSL+lwB2lz
+	AXYAUpGhu+XQJStwIttltU4576/dGTxh6Qrr9LsWlW5w/bF5YntOrgfLCQQJvvCu
+	cGC7arQ/f3Y+7N0YpsWDV1MPfBoS/TEhqa9Ee0L7WzYVqflR9rlQsAYCq7JYH1fb
+	thtzVsNmHE8dFdOpoD/BY0=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+	by smtp10 (Coremail) with SMTP id NuRpCgAnZojfb7Bibv0PFA--.5104S2;
+	Mon, 20 Jun 2022 21:02:24 +0800 (CST)
+From: Liang He <windhl@126.com>
+To: mpe@ellerman.id.au,
+	benh@kernel.crashing.org,
+	paulus@samba.org,
+	clg@kaod.org,
+	christophe.leroy@csgroup.eu,
+	tglx@linutronix.de
+Subject: [PATCH v2] powerpc/sysdev: Fix refcount leak bugs
+Date: Mon, 20 Jun 2022 21:02:21 +0800
+Message-Id: <20220620130221.4073228-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: NuRpCgAnZojfb7Bibv0PFA--.5104S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJw1DJw4DXw1DCrWDGw48WFg_yoWrCw4fpF
+	ZFkFZxtF1Igr1xWrWIvF1IvrnIgF1qkFWYq39Fk397ArnrZ3s5Jr1vyryYqFy5JrWku3Wr
+	tF15ur4j9FsxG3JanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUkuxUUUUU=
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2hkmF1uwMPrXgQACsH
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,177 +59,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The platform's RNG must be available before random_init() in order to be
-useful for initial seeding, which in turn means that it needs to be
-called from setup_arch(), rather than from an init call. Fortunately,
-each platform already has a setup_arch function pointer, which means we
-can wire it up that way. Complicating things, however, is that POWER8
-systems need some per-cpu state and kmalloc, which isn't available at
-this stage. So we split things into an early phase and a late phase,
-with the early phase working well enough to seed the RNG with a
-spinlock, before later getting fast per-cpu allocations. This commit
-also removes some noisy log messages that don't add much.
+We need add corresponding of_node_put() to keep refcount balance
+in sysdev.
 
-Cc: stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Fixes: a4da0d50b2a0 ("powerpc: Implement arch_get_random_long/int() for powernv")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Liang He <windhl@126.com>
 ---
- arch/powerpc/platforms/powernv/powernv.h |  2 +
- arch/powerpc/platforms/powernv/rng.c     | 68 ++++++++++++++++++------
- arch/powerpc/platforms/powernv/setup.c   |  2 +
- 3 files changed, 55 insertions(+), 17 deletions(-)
+ changelog:
 
-diff --git a/arch/powerpc/platforms/powernv/powernv.h b/arch/powerpc/platforms/powernv/powernv.h
-index e297bf4abfcb..fd3f5e1eb10b 100644
---- a/arch/powerpc/platforms/powernv/powernv.h
-+++ b/arch/powerpc/platforms/powernv/powernv.h
-@@ -42,4 +42,6 @@ ssize_t memcons_copy(struct memcons *mc, char *to, loff_t pos, size_t count);
- u32 __init memcons_get_size(struct memcons *mc);
- struct memcons *__init memcons_init(struct device_node *node, const char *mc_prop_name);
- 
-+void powernv_rng_init(void);
-+
- #endif /* _POWERNV_H */
-diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
-index e3d44b36ae98..c1beced9c32c 100644
---- a/arch/powerpc/platforms/powernv/rng.c
-+++ b/arch/powerpc/platforms/powernv/rng.c
-@@ -17,6 +17,7 @@
- #include <asm/prom.h>
- #include <asm/machdep.h>
- #include <asm/smp.h>
-+#include "powernv.h"
- 
- #define DARN_ERR 0xFFFFFFFFFFFFFFFFul
- 
-@@ -28,6 +29,12 @@ struct powernv_rng {
- 
- static DEFINE_PER_CPU(struct powernv_rng *, powernv_rng);
- 
-+static struct {
-+	struct powernv_rng rng;
-+	spinlock_t lock;
-+} early_state __initdata = {
-+	.lock = __SPIN_LOCK_UNLOCKED(powernv_early_rng)
-+};
- 
- int powernv_hwrng_present(void)
+ v2: (1) merge all sysdev related bug into one commit
+     (2) find new bugs in spapr.c and mpic_msgr.c
+ v1: find missing of_node_put() in each file
+
+
+ arch/powerpc/sysdev/fsl_pci.c     |  6 +++++-
+ arch/powerpc/sysdev/mpic_msgr.c   | 10 +++++++++-
+ arch/powerpc/sysdev/xive/native.c | 15 ++++++++++-----
+ arch/powerpc/sysdev/xive/spapr.c  |  1 +
+ 4 files changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/arch/powerpc/sysdev/fsl_pci.c b/arch/powerpc/sysdev/fsl_pci.c
+index 1011cfea2e32..4c986c955951 100644
+--- a/arch/powerpc/sysdev/fsl_pci.c
++++ b/arch/powerpc/sysdev/fsl_pci.c
+@@ -180,6 +180,7 @@ static int setup_one_atmu(struct ccsr_pci __iomem *pci,
+ static bool is_kdump(void)
  {
-@@ -84,7 +91,7 @@ static int powernv_get_random_darn(unsigned long *v)
- 	return 1;
+ 	struct device_node *node;
++	bool ret;
+ 
+ 	node = of_find_node_by_type(NULL, "memory");
+ 	if (!node) {
+@@ -187,7 +188,10 @@ static bool is_kdump(void)
+ 		return false;
+ 	}
+ 
+-	return of_property_read_bool(node, "linux,usable-memory");
++	ret = of_property_read_bool(node, "linux,usable-memory");
++	of_node_put(node);
++
++	return ret;
  }
  
--static int __init initialise_darn(void)
-+static int __init initialize_darn(void)
- {
- 	unsigned long val;
- 	int i;
-@@ -98,10 +105,18 @@ static int __init initialise_darn(void)
- 			return 0;
+ /* atmu setup for fsl pci/pcie controller */
+diff --git a/arch/powerpc/sysdev/mpic_msgr.c b/arch/powerpc/sysdev/mpic_msgr.c
+index 698fefaaa6dd..2ff3a0a0cf3f 100644
+--- a/arch/powerpc/sysdev/mpic_msgr.c
++++ b/arch/powerpc/sysdev/mpic_msgr.c
+@@ -121,11 +121,13 @@ static unsigned int mpic_msgr_number_of_blocks(void)
+ 
+ 			count += 1;
  		}
++		of_node_put(aliases);
  	}
-+	return -EIO;
-+}
  
--	pr_warn("Unable to use DARN for get_random_seed()\n");
-+static int __init powernv_get_random_long_early(unsigned long *v)
-+{
-+	unsigned long flags;
- 
--	return -EIO;
-+	spin_lock_irqsave(&early_state.lock, flags);
-+	*v = rng_whiten(&early_state.rng, in_be64(early_state.rng.regs));
-+	spin_unlock_irqrestore(&early_state.lock, flags);
-+
-+	return 1;
+ 	return count;
  }
  
- int powernv_get_random_long(unsigned long *v)
-@@ -163,32 +178,51 @@ static __init int rng_create(struct device_node *dn)
- 
- 	rng_init_per_cpu(rng, dn);
- 
--	pr_info_once("Registering arch random hook.\n");
--
- 	ppc_md.get_random_seed = powernv_get_random_long;
- 
- 	return 0;
- }
- 
--static __init int rng_init(void)
-+void __init powernv_rng_init(void)
-+{
-+	struct device_node *dn;
-+	struct resource res;
 +
-+	/* Prefer darn over the rest. */
-+	if (!initialize_darn())
-+		return;
-+
-+	dn = of_find_compatible_node(NULL, NULL, "ibm,power-rng");
-+	if (!dn)
-+		return;
-+	if (of_address_to_resource(dn, 0, &res))
-+		return;
-+	early_state.rng.regs_real = (void __iomem *)res.start;
-+	early_state.rng.regs = of_iomap(dn, 0);
-+	if (!early_state.rng.regs)
-+		return;
-+	early_state.rng.mask = in_be64(early_state.rng.regs);
-+	ppc_md.get_random_seed = powernv_get_random_long_early;
-+}
-+
-+static __init int powernv_rng_late_init(void)
+ static unsigned int mpic_msgr_number_of_registers(void)
  {
- 	struct device_node *dn;
--	int rc;
-+
-+	/*
-+	 * If this didn't get initialized early on, then we're using darn,
-+	 * or this isn't available at all, so return early.
-+	 */
-+	if (ppc_md.get_random_seed != powernv_get_random_long_early)
-+		return 0;
-+	ppc_md.get_random_seed = NULL;
+ 	return mpic_msgr_number_of_blocks() * MPIC_MSGR_REGISTERS_PER_BLOCK;
+@@ -144,12 +146,18 @@ static int mpic_msgr_block_number(struct device_node *node)
  
- 	for_each_compatible_node(dn, NULL, "ibm,power-rng") {
--		rc = rng_create(dn);
--		if (rc) {
--			pr_err("Failed creating rng for %pOF (%d).\n",
--				dn, rc);
-+		if (rng_create(dn))
- 			continue;
--		}
--
- 		/* Create devices for hwrng driver */
- 		of_platform_device_create(dn, NULL, NULL);
+ 	for (index = 0; index < number_of_blocks; ++index) {
+ 		struct property *prop;
++		struct device_node *tn;
+ 
+ 		snprintf(buf, sizeof(buf), "mpic-msgr-block%d", index);
+ 		prop = of_find_property(aliases, buf, NULL);
+-		if (node == of_find_node_by_path(prop->value))
++		tn = of_find_node_by_path(prop->value);
++		if (node == tn) {
++			of_node_put(tn);
+ 			break;
++		}
++		of_node_put(tn);
  	}
--
--	initialise_darn();
--
- 	return 0;
- }
--machine_subsys_initcall(powernv, rng_init);
-+machine_subsys_initcall(powernv, powernv_rng_late_init);
-diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
-index 824c3ad7a0fa..a5fcb6796b22 100644
---- a/arch/powerpc/platforms/powernv/setup.c
-+++ b/arch/powerpc/platforms/powernv/setup.c
-@@ -203,6 +203,8 @@ static void __init pnv_setup_arch(void)
- 	pnv_check_guarded_cores();
++	of_node_put(aliases);
  
- 	/* XXX PMCS */
+ 	return index == number_of_blocks ? -1 : index;
+ }
+diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
+index d25d8c692909..3925825954bc 100644
+--- a/arch/powerpc/sysdev/xive/native.c
++++ b/arch/powerpc/sysdev/xive/native.c
+@@ -579,12 +579,12 @@ bool __init xive_native_init(void)
+ 	/* Resource 1 is HV window */
+ 	if (of_address_to_resource(np, 1, &r)) {
+ 		pr_err("Failed to get thread mgmnt area resource\n");
+-		return false;
++		goto err_put;
+ 	}
+ 	tima = ioremap(r.start, resource_size(&r));
+ 	if (!tima) {
+ 		pr_err("Failed to map thread mgmnt area\n");
+-		return false;
++		goto err_put;
+ 	}
+ 
+ 	/* Read number of priorities */
+@@ -612,7 +612,7 @@ bool __init xive_native_init(void)
+ 	/* Resource 2 is OS window */
+ 	if (of_address_to_resource(np, 2, &r)) {
+ 		pr_err("Failed to get thread mgmnt area resource\n");
+-		return false;
++		goto err_put;
+ 	}
+ 
+ 	xive_tima_os = r.start;
+@@ -624,7 +624,7 @@ bool __init xive_native_init(void)
+ 	rc = opal_xive_reset(OPAL_XIVE_MODE_EXPL);
+ 	if (rc) {
+ 		pr_err("Switch to exploitation mode failed with error %lld\n", rc);
+-		return false;
++		goto err_put;
+ 	}
+ 
+ 	/* Setup some dummy HV pool VPs */
+@@ -634,10 +634,15 @@ bool __init xive_native_init(void)
+ 	if (!xive_core_init(np, &xive_native_ops, tima, TM_QW3_HV_PHYS,
+ 			    max_prio)) {
+ 		opal_xive_reset(OPAL_XIVE_MODE_EMU);
+-		return false;
++		goto err_put;
+ 	}
++	of_node_put(np);
+ 	pr_info("Using %dkB queues\n", 1 << (xive_queue_shift - 10));
+ 	return true;
 +
-+	powernv_rng_init();
++err_put:
++	of_node_put(np);
++	return false;
  }
  
- static void __init pnv_init(void)
+ static bool xive_native_provision_pages(void)
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index 7d5128676e83..d398823d138e 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -717,6 +717,7 @@ static bool __init xive_get_max_prio(u8 *max_prio)
+ 	}
+ 
+ 	reg = of_get_property(rootdn, "ibm,plat-res-int-priorities", &len);
++	of_node_put(rootdn);
+ 	if (!reg) {
+ 		pr_err("Failed to read 'ibm,plat-res-int-priorities' property\n");
+ 		return false;
 -- 
-2.35.1
+2.25.1
 
