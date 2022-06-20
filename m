@@ -2,104 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4825510F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 09:05:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 484995513C2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 11:11:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRLJd2YzLz3dyS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 17:05:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVt7vfFp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRP5y4J8fz3cf8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 19:11:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRLD32hsDz3bxt
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 17:01:39 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVt7vfFp;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4LRLD32Zqrz4xZG
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 17:01:39 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4LRLD32XGZz4xZZ; Mon, 20 Jun 2022 17:01:39 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TVt7vfFp;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4LRLD26dFgz4xZG
-	for <linuxppc-dev@ozlabs.org>; Mon, 20 Jun 2022 17:01:38 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25K51ogI022738;
-	Mon, 20 Jun 2022 07:01:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=CvWZ3PajcfKopraRcXPzIMHbKK7uQcUw2xmW8pvp/uc=;
- b=TVt7vfFpu6BxgGmbELCBah9J+boehgy5Celn+JN8a8E6TgF3OUfAZz+AUTGDAmbHzwMU
- jZWG5DQ8dI8C2sXpSqUmIbmLhItQGh9Hq3qbB8/Sc2a7KImNxXoBDo8EXlQbBMPidhEN
- zV3FZNGIeo5lyA/yYmiyXqLqMUqatgD7Tax+/cgtUWC+JusherW2L8XzZfvuHXnLVi0L
- TVzKM8aY7+G1ZnDyZO7mURliDHFxsiWWUP2zq/KwfieDrhjNqESgZi3l+ndPIQHr7+fA
- 0li4V1OgKZJ7L1/2UfiU4rcIK4d8wES9sgUoXNU6D4gtfIOCqJoN81FqEUaXO6p6hWto nw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gsrs78hwh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jun 2022 07:01:30 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25K6J0Op012619;
-	Mon, 20 Jun 2022 07:01:30 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gsrs78hvr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jun 2022 07:01:30 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25K6pgfO015474;
-	Mon, 20 Jun 2022 07:01:28 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3gs6b92213-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jun 2022 07:01:28 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25K71PXk21758282
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Jun 2022 07:01:25 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6EED6A4040;
-	Mon, 20 Jun 2022 07:01:25 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1AD98A4051;
-	Mon, 20 Jun 2022 07:01:23 +0000 (GMT)
-Received: from sjain014.ibmuc.com (unknown [9.43.109.136])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Jun 2022 07:01:22 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v5 5/5] powerpc/crash hp: add crash page helper functions
-Date: Mon, 20 Jun 2022 12:31:06 +0530
-Message-Id: <20220620070106.93141-6-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220620070106.93141-1-sourabhjain@linux.ibm.com>
-References: <20220620070106.93141-1-sourabhjain@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: nukIKnCn3mNVHLBsmtRKzcEA84kDLeoN
-X-Proofpoint-ORIG-GUID: gtPalnjuF1zQAaVygnwnHvw6Emg0ScDv
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRP5T1fxQz304r
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 19:11:06 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF0A1113E;
+	Mon, 20 Jun 2022 02:10:33 -0700 (PDT)
+Received: from FVFF77S0Q05N (unknown [10.57.70.167])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B72B3F7D7;
+	Mon, 20 Jun 2022 02:10:30 -0700 (PDT)
+Date: Mon, 20 Jun 2022 10:10:23 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Tong Tiangen <tongtiangen@huawei.com>
+Subject: Re: [PATCH -next v5 2/8] arm64: extable: make uaaccess helper use
+ extable type EX_TYPE_UACCESS_ERR_ZERO
+Message-ID: <YrA5f44hySky8v5g@FVFF77S0Q05N>
+References: <20220528065056.1034168-1-tongtiangen@huawei.com>
+ <20220528065056.1034168-3-tongtiangen@huawei.com>
+ <Yqw6TP3MhEqnQ+2o@FVFF77S0Q05N>
+ <4371a7c9-8766-9fee-2558-e6f43f06ad19@huawei.com>
+ <0da734f3-5743-3df3-3f90-d92e5bd585ce@huawei.com>
+ <Yq3HoUyEcnKKk1AY@FVFF77S0Q05N>
+ <684f0362-6e58-753d-32e1-112c6ffe6d12@huawei.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-20_04,2022-06-17_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- bulkscore=0 impostorscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206200030
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <684f0362-6e58-753d-32e1-112c6ffe6d12@huawei.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,42 +48,151 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: eric.devolder@oracle.com, bhe@redhat.com, mahesh@linux.vnet.ibm.com, kexec@lists.infradead.org, ldufour@linux.ibm.com, hbathini@linux.ibm.com
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>, Will Deacon <will@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Xie XiuQi <xiexiuqi@huawei.com>, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Define arch_[un]map_crash_pages functions to avoid build issues due to
-undefined arch specific function to access crash memory pages.
+On Mon, Jun 20, 2022 at 10:59:12AM +0800, Tong Tiangen wrote:
+> 在 2022/6/18 20:40, Mark Rutland 写道:
+> > On Sat, Jun 18, 2022 at 04:42:06PM +0800, Tong Tiangen wrote:
+> > > > > > diff --git a/arch/arm64/include/asm/asm-extable.h
+> > > > > > b/arch/arm64/include/asm/asm-extable.h
+> > > > > > index 56ebe183e78b..9c94ac1f082c 100644
+> > > > > > --- a/arch/arm64/include/asm/asm-extable.h
+> > > > > > +++ b/arch/arm64/include/asm/asm-extable.h
+> > > > > > @@ -28,6 +28,14 @@
+> > > > > >        __ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_FIXUP, 0)
+> > > > > >        .endm
+> > > > > > +/*
+> > > > > > + * Create an exception table entry for uaccess `insn`, which
+> > > > > > will branch to `fixup`
+> > > > > > + * when an unhandled fault is taken.
+> > > > > > + * ex->data = ~0 means both reg_err and reg_zero is set to wzr(x31).
+> > > > > > + */
+> > > > > > +    .macro          _asm_extable_uaccess, insn, fixup
+> > > > > > +    __ASM_EXTABLE_RAW(\insn, \fixup, EX_TYPE_UACCESS_ERR_ZERO, ~0)
+> > > > > > +    .endm
+> > > > > 
+> > > > > I'm not too keen on using `~0` here, since that also sets other bits
+> > > > > in the
+> > > > > data field, and its somewhat opaque.
+> > > > > 
+> > > > > How painful is it to generate the data fields as with the C version
+> > > > > of this
+> > > > > macro, so that we can pass in wzr explciitly for the two sub-fields?
+> > > > > 
+> > > > > Other than that, this looks good to me.
+> > > > > 
+> > > > > Thanks,
+> > > > > Mark.
+> > > > 
+> > > > ok, will fix next version.
+> > > > 
+> > > > Thanks,
+> > > > Tong.
+> > > 
+> > > I tried to using data filelds as with C version, but here assembly code we
+> > > can not using operator such as << and |, if we use lsl and orr instructions,
+> > > the gpr will be occupied.
+> > > 
+> > > So how about using 0x3ff directly here? it means err register and zero
+> > > register both set to x31.
+> > 
+> > I had a go at implementing this, and it seems simple enough. Please see:
+> > 
+> >    https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=arm64/extable/asm-uaccess
+> > 
+> 
+> I made the following modifications, and the other parts are based on your
+> implementation:
+> 
+> arch/arm64/include/asm/asm-extable.h
+> [...]
+> .macro          _asm_extable_uaccess, insn, fixup
+> _ASM_EXTABLE_UACCESS(\insn, \fixup)
+> .endm
+> [...]
 
-A temporary patch to avoid build issues may need some changes in
-generic code to avoid this.
+I also made this same change locally when testing, and building with GCC 11.1.0
+or LLVM 14.0.0 I am not seeing any problem when building, and the result is as
+expected:
 
-The issue is under discussion:
-https://lkml.org/lkml/2022/6/20/22
+| [mark@lakrids:~/src/linux]% usekorg 11.1.0 make ARCH=arm64 CROSS_COMPILE=aarch64-linux- defconfig
+| *** Default configuration is based on 'defconfig'
+| #
+| # No change to .config
+| #
+| [mark@lakrids:~/src/linux]% usekorg 11.1.0 make ARCH=arm64 CROSS_COMPILE=aarch64-linux- -j50 arch/arm64/lib/
+|   CALL    scripts/atomic/check-atomics.sh
+|   CC      arch/arm64/kernel/asm-offsets.s
+|   CALL    scripts/checksyscalls.sh
+|   AS      arch/arm64/kernel/vdso/note.o
+|   AS      arch/arm64/kernel/vdso/sigreturn.o
+|   LD      arch/arm64/kernel/vdso/vdso.so.dbg
+|   VDSOSYM include/generated/vdso-offsets.h
+|   OBJCOPY arch/arm64/kernel/vdso/vdso.so
+| make[2]: Nothing to be done for 'arch/arm64/lib/'.
+|   AS      arch/arm64/lib/clear_page.o
+|   AS      arch/arm64/lib/clear_user.o
+|   AS      arch/arm64/lib/copy_from_user.o
+|   AS      arch/arm64/lib/copy_page.o
+|   AS      arch/arm64/lib/copy_to_user.o
+|   CC      arch/arm64/lib/csum.o
+|   CC      arch/arm64/lib/delay.o
+|   AS      arch/arm64/lib/memchr.o
+|   AS      arch/arm64/lib/memcmp.o
+|   AS      arch/arm64/lib/memcpy.o
+|   AS      arch/arm64/lib/memset.o
+|   AS      arch/arm64/lib/strchr.o
+|   AS      arch/arm64/lib/strcmp.o
+|   AS      arch/arm64/lib/strlen.o
+|   AS      arch/arm64/lib/strncmp.o
+|   AS      arch/arm64/lib/strnlen.o
+|   AS      arch/arm64/lib/strrchr.o
+|   AS      arch/arm64/lib/tishift.o
+|   AS      arch/arm64/lib/crc32.o
+|   AS      arch/arm64/lib/mte.o
+|   CC [M]  arch/arm64/lib/xor-neon.o
+|   AR      arch/arm64/lib/built-in.a
+|   AR      arch/arm64/lib/lib.a
+| [mark@lakrids:~/src/linux]% usekorg 12.1.0 aarch64-linux-objdump -j __ex_table -D arch/arm64/lib/clear_user.o
+| 
+| arch/arm64/lib/clear_user.o:     file format elf64-littleaarch64
+| 
+| 
+| Disassembly of section __ex_table:
+| 
+| 0000000000000000 <__ex_table>:
+|         ...
+|    8:   03ff0003        .inst   0x03ff0003 ; undefined
+|         ...
+|   14:   03ff0003        .inst   0x03ff0003 ; undefined
+|         ...
+|   20:   03ff0003        .inst   0x03ff0003 ; undefined
+|         ...
+|   2c:   03ff0003        .inst   0x03ff0003 ; undefined
+|         ...
+|   38:   03ff0003        .inst   0x03ff0003 ; undefined
+|         ...
+|   44:   03ff0003        .inst   0x03ff0003 ; undefined
 
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- arch/powerpc/kexec/core_64.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+> The following errors are reported during compilation:
+> [...]
+> arch/arm64/lib/clear_user.S:45: Error: invalid operands (*ABS* and *UND*
+> sections) for `<<'
+> [...]
 
-diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-index 373cb46bcc0e..d833fa96dcfa 100644
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -492,6 +492,13 @@ int update_cpus_node(void *fdt)
- 
- #if defined(CONFIG_HOTPLUG_CPU)
- 
-+void *arch_map_crash_pages(unsigned long paddr, unsigned long size)
-+{
-+	return __va(paddr);
-+}
-+
-+void arch_unmap_crash_pages(void **ptr) { }
-+
- int crash_hotplug_support(void) { return 1; }
- 
- /**
--- 
-2.36.1
+As above, I'm not seeing this.
 
+This suggests that the EX_DATA_REG() macro is going wrong somehow. Assuming the
+operand types correspond to the LHS and RHS of the expression, this would mean
+the GPR number is defined, but the REG value is not, and I can't currently see
+how that can happen.
+
+> "<<" is invalid operands in assembly, is there something wrong with me?
+
+At the moment I can only assume there is a local problem. I'd suspect a typo
+somewhere, but maybe you have a toolchain which behaves differently?
+
+Thanks,
+Mark.
