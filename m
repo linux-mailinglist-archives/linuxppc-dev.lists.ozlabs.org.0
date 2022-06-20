@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2AB551AC3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 15:33:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11F8551D81
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 16:15:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRVvk2n6dz3cgX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 23:33:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRWrV6w74z3cgK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 00:15:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRVvK1wxhz3bmV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 23:32:44 +1000 (AEST)
-Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.57])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LRVtX61X4zDqq3;
-	Mon, 20 Jun 2022 21:32:04 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRWr22RrXz3bpJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 00:14:54 +1000 (AEST)
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LRWnv2SCKzkWbJ;
+	Mon, 20 Jun 2022 22:13:07 +0800 (CST)
 Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
  dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 20 Jun 2022 21:32:36 +0800
+ 15.1.2375.24; Mon, 20 Jun 2022 22:13:44 +0800
 Received: from [10.174.179.234] (10.174.179.234) by
  kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 20 Jun 2022 21:32:34 +0800
-Message-ID: <09c8f2ce-7cfb-6653-6e44-c509d588bdc1@huawei.com>
-Date: Mon, 20 Jun 2022 21:32:33 +0800
+ 15.1.2375.24; Mon, 20 Jun 2022 22:13:42 +0800
+Message-ID: <908f4c14-b9cb-71f8-7a3c-7569f7c89033@huawei.com>
+Date: Mon, 20 Jun 2022 22:13:41 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
@@ -47,7 +47,7 @@ In-Reply-To: <YrA5f44hySky8v5g@FVFF77S0Q05N>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemm600017.china.huawei.com (7.193.23.234)
 X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -215,9 +215,13 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 > 
 > Thanks,
 > Mark.
-
-My gcc version is 9.4.0, let me try your gcc version first.
-
-Thanks,
-Tong.
 > .
+
+Now I can compile success, both versions 9.4.0 and 11.2.0.
+
+I should have made a mistake. There is no problem using your 
+implementation. I will send a new version these days.
+
+
+Thans,
+Tong.
