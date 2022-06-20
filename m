@@ -2,60 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BCD55103B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 08:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8E655107B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 08:39:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRKLR0Nnjz3cgs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 16:22:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRKkq3lkmz3cdq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 16:39:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=KVUqPtEr;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRKL02jk5z3bdK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 16:21:41 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4LRKKt2WVzz9tbp;
-	Mon, 20 Jun 2022 08:21:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id cb3Nm-abgv7T; Mon, 20 Jun 2022 08:21:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4LRKKt1myVz9slY;
-	Mon, 20 Jun 2022 08:21:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2DD468B767;
-	Mon, 20 Jun 2022 08:21:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id LTTpEnEITGGK; Mon, 20 Jun 2022 08:21:38 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0B7088B763;
-	Mon, 20 Jun 2022 08:21:38 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 25K6LRJF357174
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 20 Jun 2022 08:21:27 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 25K6LQkf357165;
-	Mon, 20 Jun 2022 08:21:26 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc: Remove _PAGE_SAO stub for book3e/64
-Date: Mon, 20 Jun 2022 08:21:22 +0200
-Message-Id: <715e644fb3c7d992c0b71f6165ab6cf8c682055a.1655706069.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.36.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.3; helo=mail-m963.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=KVUqPtEr;
+	dkim-atps=neutral
+Received: from mail-m963.mail.126.com (mail-m963.mail.126.com [123.126.96.3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRKk82DYdz3bkw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 16:39:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=WJBzb
+	HRlXaelhf6WYq5EqxXNcKDu4K0cCNo3xnmHQh4=; b=KVUqPtEr8dp+c0IxsGsdc
+	5K7TSDb5ryI34yqnubunUkc8+qMl17zXgo4vOkIjlF5hnDL9TeH7cAhGklBx6HuB
+	sQEQoQxVwTEX1/F22GlmbxL7NEpjQxVOConuosjdMuxW7uHhbkkmwSe16R+0HEc4
+	KUga4eByiG15fxl4ibnbnM=
+Received: from localhost.localdomain (unknown [124.16.139.61])
+	by smtp8 (Coremail) with SMTP id NORpCgBHlnLoFbBiabAcGA--.4866S2;
+	Mon, 20 Jun 2022 14:38:33 +0800 (CST)
+From: Liang He <windhl@126.com>
+To: mpe@ellerman.id.au,
+	benh@kernel.crashing.org,
+	paulus@samb.org
+Subject: [PATCH] powerpc/powernv: Fix refcount leak bug in idle.c
+Date: Mon, 20 Jun 2022 14:38:30 +0800
+Message-Id: <20220620063830.4071401-1-windhl@126.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1655706081; l=781; s=20211009; h=from:subject:message-id; bh=Q4l8G+KeG8Eo3hZSvGh5+jy4Bdlec5M0i0lmsFXFY/M=; b=EzEdBiWJiz0REjGWLb1rfu2y7+ersGWAamYa61rTK7Xa2HYwXV76KH1H2rif8e5rdp2Fr/8nVCg6 avEmtRZoDqky/F5YXJ24JBSUc2+BYAfx/NmDh9Z26UcYgEi0xRqZ
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: NORpCgBHlnLoFbBiabAcGA--.4866S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtF1kKw45Wr15JF4UKFy8Krg_yoW3GrcE93
+	s7Jayqkrs3Xr4qv3yqvr1fWrnrCwnxWFWrKr1Iqa12ya45J3ZxG3y7trWfGa1DXrWSvrW3
+	GFs5tr97A3WSyjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRWE__7UUUUU==
+X-Originating-IP: [124.16.139.61]
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuAkmF2JVj8hasQAAsb
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,34 +56,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, windhl@126.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 634093c59a12 ("powerpc/mm: enable
-ARCH_HAS_VM_GET_PAGE_PROT"), _PAGE_SAO is used only in
-arch/powerpc/mm/book3s64/pgtable.c
+In pnv_parse_cpuidle_dt(), of_find_node_by_path() will return a node
+pointer with refcount incremented. We should use of_node_put() in fail
+path or when it is not used anymore.
 
-The _PAGE_SAO stub defined as 0 for book3e/64 can be removed.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Liang He <windhl@126.com>
 ---
- arch/powerpc/include/asm/nohash/64/pgtable.h | 2 --
- 1 file changed, 2 deletions(-)
+ arch/powerpc/platforms/powernv/idle.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
-index 57083f95e82b..25b72b2b30ce 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -83,8 +83,6 @@
-  */
- #include <asm/nohash/pte-book3e.h>
+diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
+index 6f94b808dd39..c1b369c7f507 100644
+--- a/arch/powerpc/platforms/powernv/idle.c
++++ b/arch/powerpc/platforms/powernv/idle.c
+@@ -1419,6 +1419,7 @@ static int __init pnv_parse_cpuidle_dt(void)
+ 	kfree(temp_u32);
+ 	kfree(temp_u64);
+ 	kfree(temp_string);
++	of_node_put(np);
+ 	return rc;
+ }
  
--#define _PAGE_SAO	0
--
- #define PTE_RPN_MASK	(~((1UL << PTE_RPN_SHIFT) - 1))
- 
- /*
 -- 
-2.36.1
+2.25.1
 
