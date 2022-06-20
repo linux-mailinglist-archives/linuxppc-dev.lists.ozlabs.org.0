@@ -2,49 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD08550E6E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 03:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA547550E7D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 04:05:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRCPD61ggz3cD7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 11:54:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRCfC3tKsz3cgS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jun 2022 12:05:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRCNl0Pdgz30BP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 11:53:37 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.57])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LRCLb5QCdzkWMc;
-	Mon, 20 Jun 2022 09:51:51 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRCdp0x2Mz308w
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jun 2022 12:05:00 +1000 (AEST)
+Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.55])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LRCYm60vHz922d;
+	Mon, 20 Jun 2022 10:01:32 +0800 (CST)
 Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
  dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 20 Jun 2022 09:53:29 +0800
+ 15.1.2375.24; Mon, 20 Jun 2022 10:04:44 +0800
 Received: from [10.174.179.234] (10.174.179.234) by
  kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 20 Jun 2022 09:53:27 +0800
-Message-ID: <95ae5d1a-fcfd-9106-4b13-9978de1a3d23@huawei.com>
-Date: Mon, 20 Jun 2022 09:53:26 +0800
+ 15.1.2375.24; Mon, 20 Jun 2022 10:04:43 +0800
+Message-ID: <7d50dcb8-8a7c-5735-cd49-ad814fecf641@huawei.com>
+Date: Mon, 20 Jun 2022 10:04:42 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [PATCH -next v5 6/8] arm64: add support for machine check error
- safe
+Subject: Re: [PATCH -next v5 7/8] arm64: add uaccess to machine check safe
 To: Mark Rutland <mark.rutland@arm.com>
 References: <20220528065056.1034168-1-tongtiangen@huawei.com>
- <20220528065056.1034168-7-tongtiangen@huawei.com>
- <YqxBd9GfUHLWZWoh@FVFF77S0Q05N>
- <4aa8b109-c79b-8da0-db89-85ca128f1049@huawei.com>
- <Yq3KiDN87pd6mg+m@FVFF77S0Q05N>
+ <20220528065056.1034168-8-tongtiangen@huawei.com>
+ <YqxELtYkqQNibHaX@FVFF77S0Q05N>
+ <a26c74eb-76c2-570a-2f82-503c812dc0f0@huawei.com>
+ <Yq24TSpZK+3/86Pj@FVFF77S0Q05N>
 From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <Yq3KiDN87pd6mg+m@FVFF77S0Q05N>
+In-Reply-To: <Yq24TSpZK+3/86Pj@FVFF77S0Q05N>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemm600017.china.huawei.com (7.193.23.234)
 X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,127 +66,104 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 
 
-在 2022/6/18 20:52, Mark Rutland 写道:
-> On Sat, Jun 18, 2022 at 05:18:55PM +0800, Tong Tiangen wrote:
->> 在 2022/6/17 16:55, Mark Rutland 写道:
->>> On Sat, May 28, 2022 at 06:50:54AM +0000, Tong Tiangen wrote:
->>>> +static bool arm64_do_kernel_sea(unsigned long addr, unsigned int esr,
->>>> +				     struct pt_regs *regs, int sig, int code)
->>>> +{
->>>> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_COPY_MC))
->>>> +		return false;
->>>> +
->>>> +	if (user_mode(regs) || !current->mm)
->>>> +		return false;
+在 2022/6/18 19:35, Mark Rutland 写道:
+> On Sat, Jun 18, 2022 at 05:27:45PM +0800, Tong Tiangen wrote:
+>>
+>>
+>> 在 2022/6/17 17:06, Mark Rutland 写道:
+>>> On Sat, May 28, 2022 at 06:50:55AM +0000, Tong Tiangen wrote:
+>>>> If user access fail due to hardware memory error, only the relevant
+>>>> processes are affected, so killing the user process and isolate the
+>>>> error page with hardware memory errors is a more reasonable choice
+>>>> than kernel panic.
+>>>>
+>>>> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
 >>>
->>> What's the `!current->mm` check for? >>
->> At first, I considered that only user processes have the opportunity to
->> recover when they trigger memory error.
+>>>> ---
+>>>>    arch/arm64/lib/copy_from_user.S | 8 ++++----
+>>>>    arch/arm64/lib/copy_to_user.S   | 8 ++++----
+>>>
+>>> All of these changes are to the *kernel* accesses performed as part of copy
+>>> to/from user, and have nothing to do with userspace, so it does not make sense
+>>> to mark these as UACCESS.
 >>
->> But it seems that this restriction is unreasonable. When the kernel thread
->> triggers memory error, it can also be recovered. for instance:
->>
->> https://lore.kernel.org/linux-mm/20220527190731.322722-1-jiaqiyan@google.com/
->>
->> And i think if(!current->mm) shoud be added below:
->>
->> if(!current->mm) {
->> 	set_thread_esr(0, esr);
->> 	arm64_force_sig_fault(...);
->> }
->> return true;
+>> You have a point. so there is no need to modify copy_from/to_user.S in this
+>> patch set.
 > 
-> Why does 'current->mm' have anything to do with this, though?
-
-Sorry, typo, my original logic was:
-if(current->mm) {
-	[...]
-}
-
+> Cool, thanks. If this patch just has the extable change, that's fine by me.
 > 
-> There can be kernel threads with `current->mm` set in unusual circumstances
-> (and there's a lot of kernel code out there which handles that wrong), so if
-> you want to treat user tasks differently, we should be doing something like
-> checking PF_KTHREAD, or adding something like an is_user_task() helper.
+>>> Do we *actually* need to recover from failues on these accesses? Looking at
+>>> _copy_from_user(), the kernel will immediately follow this up with a memset()
+>>> to the same address which will be fatal anyway, so this is only punting the
+>>> failure for a few instructions.
+>>
+>> If recovery success, The task will be killed and there will be no subsequent
+>> memset().
+> 
+> I don't think that's true.
+> 
+> IIUC per the last patch, in the exception handler we'll apply the fixup then
+> force a signal. That doesn't kill the task immediately, and we'll return from
+> the exception handler back into the original context (with the fixup applied).
 > 
 
-OK, i do want to treat user tasks differently here and didn't take into 
-account what you said. will be fixed next version according to your 
-suggestiong.
+correct.
 
-As follows:
-if (!(current->flags & PF_KTHREAD)) {
-   set_thread_esr(0, esr);
-   arm64_force_sig_fault(...);
-}
-return true;
+> The structure of copy_from_user() is
+> 
+> 	copy_from_user(to, from, n) {
+> 		_copy_from_user(to, from, n) {
+> 			res = n;
+> 			res = raw_copy_from_user(to, from, n);
+> 			if (res)
+> 				memset(to + (n - res), 0, res);
+> 		}
+> 	}
+> 
+> So when the fixup is applied and res indicates that the copy terminated early,
+> there is an unconditinal memset() before the fatal signal is handled in the
+> return to userspace path.
 
+correct in this scenario.
 
+My idea is also valuable in many other scenarios.
+
+> 
+>>> If we really need to recover from certain accesses to kernel memory we should
+>>> add a new EX_TYPE_KACCESS_ERR_ZERO_MC or similar, but we need a strong
+>>> rationale as to why that's useful. As things stand I do not beleive it makes
+>>> sense for copy to/from user specifically.
+> 
 > [...]
 > 
->>>> +
->>>> +	if (apei_claim_sea(regs) < 0)
->>>> +		return false;
->>>> +
->>>> +	if (!fixup_exception_mc(regs))
->>>> +		return false;
+>>>> diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+>>>> index c301dcf6335f..8ca8d9639f9f 100644
+>>>> --- a/arch/arm64/mm/extable.c
+>>>> +++ b/arch/arm64/mm/extable.c
+>>>> @@ -86,10 +86,10 @@ bool fixup_exception_mc(struct pt_regs *regs)
+>>>>    	if (!ex)
+>>>>    		return false;
+>>>> -	/*
+>>>> -	 * This is not complete, More Machine check safe extable type can
+>>>> -	 * be processed here.
+>>>> -	 */
+>>>> +	switch (ex->type) {
+>>>> +	case EX_TYPE_UACCESS_ERR_ZERO:
+>>>> +		return ex_handler_uaccess_err_zero(ex, regs);
+>>>> +	}
 >>>
->>> I thought we still wanted to signal the task in this case? Or do you expect to
->>> add that into `fixup_exception_mc()` ?
+>>> This addition specifically makes sense to me, so can you split this into a separate patch?
 >>
->> Yeah, here return false and will signal to task in do_sea() ->
->> arm64_notify_die().
-> 
-> I mean when we do the fixup.
-> 
-> I thought the idea was to apply the fixup (to stop the kernel from crashing),
-> but still to deliver a fatal signal to the user task since we can't do what the
-> user task asked us to.
-> 
-
-Yes, that's what i mean. :)
-
->>>> +
->>>> +	set_thread_esr(0, esr);
->>>
->>> Why are we not setting the address? Is that deliberate, or an oversight?
+>> According to my understanding of the above, only the modification of
+>> extable.c is retained.
 >>
->> Here set fault_address to 0, i refer to the logic of arm64_notify_die().
->>
->> void arm64_notify_die(...)
->> {
->>           if (user_mode(regs)) {
->>                   WARN_ON(regs != current_pt_regs());
->>                   current->thread.fault_address = 0;
->>                   current->thread.fault_code = err;
->>
->>                   arm64_force_sig_fault(signo, sicode, far, str);
->>           } else {
->>                   die(str, regs, err);
->>           }
->> }
->>
->> I don't know exactly why and do you know why arm64_notify_die() did this? :)
+>> So what do you mean which part is made into a separate patch?
 > 
-> To be honest, I don't know, and that looks equally suspicious to me.
-> 
-> Looking at the git history, that was added in commit:
-> 
->    9141300a5884b57c ("arm64: Provide read/write fault information in compat signal handlers")
-> 
-> ... so maybe Catalin recalls why.
-> 
-> Perhaps the assumption is just that this will be fatal and so unimportant? ...
-> but in that case the same logic would apply to the ESR value, so it's not clear
-> to me.
-
-OK, let's proceed as set to 0, if there is any change later, the two 
-positions shall be changed together.
+> As above, if you just retain the extable.c changes, that's fine by me.
 
 Thanks,
 Tong.
-
 > 
+> Thanks,
 > Mark.
-> 
 > .
