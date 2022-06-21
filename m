@@ -1,53 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02523552CA2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 10:10:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0A1552D42
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 10:43:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRzjH2j5Qz3brk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 18:10:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LS0RQ2BDyz3cdK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 18:43:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=p/YlJmXW;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=K0/rxxRx;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=4sGC2Zpc;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.4; helo=mail-m964.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=hare@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=p/YlJmXW;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=K0/rxxRx;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=4sGC2Zpc;
 	dkim-atps=neutral
-Received: from mail-m964.mail.126.com (mail-m964.mail.126.com [123.126.96.4])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRzhb6Krjz304r
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 18:10:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=IQQw/
-	FdUobZK6onapgarIDDbxG4poDkZyzCID4+6AYU=; b=p/YlJmXW7Cdrngp6ssJ0d
-	atE0N5STZVKl2gWVRIsBXOEORPYZSnl/GgoeKa+zjUhhvT+pDjd3JWxcfSi5adQ9
-	Rv5rzuvYPimKq/pdEfZP9jNx5/6ae1WwJaK8YmWEAJECQ9HTXi2823GK98lMSjPK
-	+Vs6D2NA0z1zvGH2rK7kuk=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-	by smtp9 (Coremail) with SMTP id NeRpCgCXnLG9fLFi4HSjFA--.37069S2;
-	Tue, 21 Jun 2022 16:09:33 +0800 (CST)
-From: Liang He <windhl@126.com>
-To: oss@buserror.net,
-	mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	linuxppc-dev@lists.ozlabs.org,
-	windhl@126.com
-Subject: [PATCH] powerpc/83xx: Hold the reference returned by of_find_compatible_node
-Date: Tue, 21 Jun 2022 16:09:32 +0800
-Message-Id: <20220621080932.4081935-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LS0Qj50vxz3bXG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 18:43:08 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3BCAA1F8DE;
+	Tue, 21 Jun 2022 08:43:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1655800985; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RrjsV6j2GxgikRLfvlQrNeSRen6nfTOp6oxrH6LHqfA=;
+	b=K0/rxxRxD+aiJWdzNoDa+0SoXPF1IC6BQYG8KRz+uLlaLWZurLtKhY6UYOEfPLCmqSRC/w
+	Y1D5KwymXhBqhBR9crYjVykXd3bn4B3i3+h43/ukFTQ8zjpwPQ13XzqCAo01A3ELViJzf6
+	uSLq81TeqOgtKl81+nNvuE01bTKb9wU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1655800985;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RrjsV6j2GxgikRLfvlQrNeSRen6nfTOp6oxrH6LHqfA=;
+	b=4sGC2ZpcdwRXnQXA0/sC53dBVT8LwJN6GZh0t4vK8khlBh7SaMpQztL5XFMRTpAKtvDoDF
+	+22dtf7sd6JD1TDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DB47813A88;
+	Tue, 21 Jun 2022 08:43:04 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id A00dM5iEsWLADgAAMHmgww
+	(envelope-from <hare@suse.de>); Tue, 21 Jun 2022 08:43:04 +0000
+Message-ID: <361336a6-f3be-c7d9-7bdb-20c30c9a72df@suse.de>
+Date: Tue, 21 Jun 2022 10:43:04 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Content-Language: en-US
+To: Arnd Bergmann <arnd@kernel.org>, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-2-arnd@kernel.org>
+From: Hannes Reinecke <hare@suse.de>
+Subject: Re: [PATCH v2 1/3] scsi: dpt_i2o: drop stale VIRT_TO_BUS dependency
+In-Reply-To: <20220617125750.728590-2-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: NeRpCgCXnLG9fLFi4HSjFA--.37069S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw47CrWrGw17GryfAr48Xrb_yoW8Jw17pF
-	sF93y3CF1kW3s5G3WIqFy8Cr4UArs5urW8tw4UCas7Aw4DWFZ8ZrZ0vF1Fvr1kGFZYyFyr
-	JrZ7Ka1rtFn7ur7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U5WrZUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2h0nF1uwMQFAzAAAsg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,42 +84,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-arch@vger.kernel.org, Miquel van Smoorenburg <mikevs@xs4all.net>, linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, "Maciej W . Rozycki" <macro@orcam.me.uk>, linux-m68k@lists.linux-m68k.org, Denis Efremov <efremov@linux.com>, Mark Salyzyn <salyzyn@android.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, Matt Wang <wwentao@vmware.com>, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In mpc832x_spi_init(), we should hold the reference returned by
-of_find_compatible_node() and use it to call of_node_put() for
-refcount balance.
+On 6/17/22 14:57, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> The dpt_i2o driver was fixed to stop using virt_to_bus() in 2008, but
+> it still has a stale reference in an error handling code path that could
+> never work.
+> 
+> Fix it up to build without VIRT_TO_BUS and remove the Kconfig dependency.
+> 
+> The alternative to this would be to just remove the driver, as it is
+> clearly obsolete. The i2o driver layer was removed in 2015 with commit
+> 4a72a7af462d ("staging: remove i2o subsystem"), but the even older
+> dpt_i2o scsi driver stayed around.
+> 
+> The last non-cleanup patches I could find were from Miquel van Smoorenburg
+> and Mark Salyzyn back in 2008, they might know if there is any chance
+> of the hardware still being used anywhere.
+> 
+> Fixes: 67af2b060e02 ("[SCSI] dpt_i2o: move from virt_to_bus/bus_to_virt to dma_alloc_coherent")
+> Cc: Miquel van Smoorenburg <mikevs@xs4all.net>
+> Cc: Mark Salyzyn <salyzyn@android.com>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>   drivers/scsi/Kconfig   | 2 +-
+>   drivers/scsi/dpt_i2o.c | 4 ++--
+>   2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
+> index a9fe5152addd..cf75588a2587 100644
+> --- a/drivers/scsi/Kconfig
+> +++ b/drivers/scsi/Kconfig
+> @@ -460,7 +460,7 @@ config SCSI_MVUMI
+>   
+>   config SCSI_DPT_I2O
+>   	tristate "Adaptec I2O RAID support "
+> -	depends on SCSI && PCI && VIRT_TO_BUS
+> +	depends on SCSI && PCI
+>   	help
+>   	  This driver supports all of Adaptec's I2O based RAID controllers as
+>   	  well as the DPT SmartRaid V cards.  This is an Adaptec maintained
+> diff --git a/drivers/scsi/dpt_i2o.c b/drivers/scsi/dpt_i2o.c
+> index 2e9155ba7408..55dfe7011912 100644
+> --- a/drivers/scsi/dpt_i2o.c
+> +++ b/drivers/scsi/dpt_i2o.c
+> @@ -52,11 +52,11 @@ MODULE_DESCRIPTION("Adaptec I2O RAID Driver");
+>   
+>   #include <linux/timer.h>
+>   #include <linux/string.h>
+> +#include <linux/io.h>
+>   #include <linux/ioport.h>
+>   #include <linux/mutex.h>
+>   
+>   #include <asm/processor.h>	/* for boot_cpu_data */
+> -#include <asm/io.h>		/* for virt_to_bus, etc. */
+>   
+>   #include <scsi/scsi.h>
+>   #include <scsi/scsi_cmnd.h>
+> @@ -2112,7 +2112,7 @@ static irqreturn_t adpt_isr(int irq, void *dev_id)
+>   		} else {
+>   			/* Ick, we should *never* be here */
+>   			printk(KERN_ERR "dpti: reply frame not from pool\n");
+> -			reply = (u8 *)bus_to_virt(m);
+> +			goto out;
+>   		}
+>   
+>   		if (readl(reply) & MSG_FAIL) {
 
-Signed-off-by: Liang He <windhl@126.com>
----
- arch/powerpc/platforms/83xx/mpc832x_rdb.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-diff --git a/arch/powerpc/platforms/83xx/mpc832x_rdb.c b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-index bb8caa5071f8..e12cb44e717f 100644
---- a/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-+++ b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-@@ -162,6 +162,8 @@ static struct spi_board_info mpc832x_spi_boardinfo = {
- 
- static int __init mpc832x_spi_init(void)
- {
-+	struct device_node *np;
-+
- 	par_io_config_pin(3,  0, 3, 0, 1, 0); /* SPI1 MOSI, I/O */
- 	par_io_config_pin(3,  1, 3, 0, 1, 0); /* SPI1 MISO, I/O */
- 	par_io_config_pin(3,  2, 3, 0, 1, 0); /* SPI1 CLK,  I/O */
-@@ -175,7 +177,9 @@ static int __init mpc832x_spi_init(void)
- 	 * Don't bother with legacy stuff when device tree contains
- 	 * mmc-spi-slot node.
- 	 */
--	if (of_find_compatible_node(NULL, NULL, "mmc-spi-slot"))
-+	np = of_find_compatible_node(NULL, NULL, "mmc-spi-slot");
-+	of_node_put(np);
-+	if (np)
- 		return 0;
- 	return fsl_spi_init(&mpc832x_spi_boardinfo, 1, mpc83xx_spi_cs_control);
- }
+Personally I wouldn't mind to see this driver gone, as it's being built 
+upon the (long-defunct) I2O specification. We already deleted the i2o 
+subsystem years ago, so maybe it's time to consign this driver to 
+history, too.
+
+Cheers,
+
+Hannes
 -- 
-2.25.1
-
+Dr. Hannes Reinecke		           Kernel Storage Architect
+hare@suse.de			                  +49 911 74053 688
+SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), GF: Felix Imendörffer
