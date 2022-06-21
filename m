@@ -1,31 +1,31 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C10D552C07
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 09:30:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239ED552C11
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 09:31:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRypQ2gzkz3fHq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 17:30:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRyqP1r1gz3dvs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 17:30:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRym53zHCz3drf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 17:28:05 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.56])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LRyk16LVSzkWj6;
-	Tue, 21 Jun 2022 15:26:17 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRymc02wYz3dyd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 17:28:32 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.55])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LRyhc61h7zSh3j;
+	Tue, 21 Jun 2022 15:25:04 +0800 (CST)
 Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 21 Jun 2022 15:26:58 +0800
+ 15.1.2375.24; Tue, 21 Jun 2022 15:27:00 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 21 Jun 2022 15:26:56 +0800
+ 15.1.2375.24; Tue, 21 Jun 2022 15:26:58 +0800
 From: Tong Tiangen <tongtiangen@huawei.com>
 To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
@@ -36,9 +36,9 @@ To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
 	<benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
 	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH -next v6 06/10] arm64: extable: cleanup redundant extable type EX_TYPE_FIXUP
-Date: Tue, 21 Jun 2022 07:26:34 +0000
-Message-ID: <20220621072638.1273594-7-tongtiangen@huawei.com>
+Subject: [PATCH -next v6 07/10] Add generic fallback version of copy_mc_to_user()
+Date: Tue, 21 Jun 2022 07:26:35 +0000
+Message-ID: <20220621072638.1273594-8-tongtiangen@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20220621072638.1273594-1-tongtiangen@huawei.com>
 References: <20220621072638.1273594-1-tongtiangen@huawei.com>
@@ -64,99 +64,62 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>, l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, extable type EX_TYPE_FIXUP is no place to use, We can safely
-remove it.
+x86/powerpc has it's implementation of copy_mc_to_user(), we add generic
+fallback in include/linux/uaccess.h prepare for other architechures to
+enable CONFIG_ARCH_HAS_COPY_MC.
 
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/arm64/include/asm/asm-extable.h | 23 ++++-------------------
- arch/arm64/mm/extable.c              |  9 ---------
- 2 files changed, 4 insertions(+), 28 deletions(-)
+ arch/powerpc/include/asm/uaccess.h | 1 +
+ arch/x86/include/asm/uaccess.h     | 1 +
+ include/linux/uaccess.h            | 9 +++++++++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
-index b97213d292ce..980d1dd8e1a3 100644
---- a/arch/arm64/include/asm/asm-extable.h
-+++ b/arch/arm64/include/asm/asm-extable.h
-@@ -6,11 +6,10 @@
- #include <asm/gpr-num.h>
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 9b82b38ff867..58dbe8e2e318 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -358,6 +358,7 @@ copy_mc_to_user(void __user *to, const void *from, unsigned long n)
  
- #define EX_TYPE_NONE			0
--#define EX_TYPE_FIXUP			1
--#define EX_TYPE_BPF			2
--#define EX_TYPE_UACCESS_ERR_ZERO	3
--#define EX_TYPE_KACCESS_ERR_ZERO	4
--#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	5
-+#define EX_TYPE_BPF			1
-+#define EX_TYPE_UACCESS_ERR_ZERO	2
-+#define EX_TYPE_KACCESS_ERR_ZERO	3
-+#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
- 
- /* Data fields for EX_TYPE_UACCESS_ERR_ZERO */
- #define EX_DATA_REG_ERR_SHIFT	0
-@@ -35,9 +34,6 @@
- 	.short		(data);				\
- 	.popsection;
- 
--#define _ASM_EXTABLE(insn, fixup)	\
--	__ASM_EXTABLE_RAW(insn, fixup, EX_TYPE_FIXUP, 0)
--
- #define EX_DATA_REG(reg, gpr)	\
- 	(.L__gpr_num_##gpr << EX_DATA_REG_##reg##_SHIFT)
- 
-@@ -55,14 +51,6 @@
- #define _ASM_EXTABLE_UACCESS(insn, fixup)				\
- 	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, wzr, wzr)
- 
--/*
-- * Create an exception table entry for `insn`, which will branch to `fixup`
-- * when an unhandled fault is taken.
-- */
--	.macro		_asm_extable, insn, fixup
--	_ASM_EXTABLE(\insn, \fixup)
--	.endm
--
- /*
-  * Create an exception table entry for uaccess `insn`, which will branch to `fixup`
-  * when an unhandled fault is taken.
-@@ -94,9 +82,6 @@
- 	".short		(" data ")\n"			\
- 	".popsection\n"
- 
--#define _ASM_EXTABLE(insn, fixup) \
--	__ASM_EXTABLE_RAW(#insn, #fixup, __stringify(EX_TYPE_FIXUP), "0")
--
- #define EX_DATA_REG(reg, gpr)						\
- 	"((.L__gpr_num_" #gpr ") << " __stringify(EX_DATA_REG_##reg##_SHIFT) ")"
- 
-diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
-index 056591e5ca80..228d681a8715 100644
---- a/arch/arm64/mm/extable.c
-+++ b/arch/arm64/mm/extable.c
-@@ -16,13 +16,6 @@ get_ex_fixup(const struct exception_table_entry *ex)
- 	return ((unsigned long)&ex->fixup + ex->fixup);
+ 	return n;
  }
++#define copy_mc_to_user copy_mc_to_user
+ #endif
  
--static bool ex_handler_fixup(const struct exception_table_entry *ex,
--			     struct pt_regs *regs)
--{
--	regs->pc = get_ex_fixup(ex);
--	return true;
--}
--
- static bool ex_handler_uaccess_err_zero(const struct exception_table_entry *ex,
- 					struct pt_regs *regs)
+ extern long __copy_from_user_flushcache(void *dst, const void __user *src,
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 913e593a3b45..64ba7f723ddf 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -512,6 +512,7 @@ copy_mc_to_kernel(void *to, const void *from, unsigned len);
+ 
+ unsigned long __must_check
+ copy_mc_to_user(void *to, const void *from, unsigned len);
++#define copy_mc_to_user copy_mc_to_user
+ #endif
+ 
+ /*
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 5a328cf02b75..07e9faeb14b5 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -174,6 +174,15 @@ copy_mc_to_kernel(void *dst, const void *src, size_t cnt)
+ }
+ #endif
+ 
++#ifndef copy_mc_to_user
++static inline unsigned long __must_check
++copy_mc_to_user(void *dst, const void *src, size_t cnt)
++{
++	check_object_size(src, cnt, true);
++	return raw_copy_to_user(dst, src, cnt);
++}
++#endif
++
+ static __always_inline void pagefault_disabled_inc(void)
  {
-@@ -72,8 +65,6 @@ bool fixup_exception(struct pt_regs *regs)
- 		return false;
- 
- 	switch (ex->type) {
--	case EX_TYPE_FIXUP:
--		return ex_handler_fixup(ex, regs);
- 	case EX_TYPE_BPF:
- 		return ex_handler_bpf(ex, regs);
- 	case EX_TYPE_UACCESS_ERR_ZERO:
+ 	current->pagefault_disabled++;
 -- 
 2.25.1
 
