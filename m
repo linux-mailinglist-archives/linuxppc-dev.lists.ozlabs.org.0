@@ -1,53 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD665538A9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 19:16:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321035538F2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 19:34:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSCpQ1rGlz3c8X
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 03:15:58 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lxmPLgun;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSDD11BW3z3cD9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 03:34:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lxmPLgun;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSCnn4gYrz2xs1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 03:15:25 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0C93C615AD;
-	Tue, 21 Jun 2022 17:15:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E560EC3411C;
-	Tue, 21 Jun 2022 17:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1655831721;
-	bh=Cv2jhgl2RqU9z4AA4Ivxf+DUW488m0ULCBWrVcbwDiM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=lxmPLgunPScWcwtiTFiaI3zOIlYOWfRJNyNTRdfPyLFg7/qqH9kEva0rDNddbq4Pj
-	 KlQ5+vJy4cTXaytSWr/DYHyL7OV7e7QeyuCrzHgpGxhqSIi4eyyN+Hy6hJmpEVN5XJ
-	 EO36wT4AR1V4QMUuu5IgIuETQ0/+kkCLnTy2uAhcRkIyAEtH+1HKNUhoTrK7V5vbD5
-	 nz/DBnrwdJiTlwluscrrp82feWIRMAVVyEBjRT72yOsoWgOM0rSK7p2Z6HCiieSZBW
-	 XYVRYcQ/j5MdrJ5MXc6S1xc6ehy0ME1dAhXGEArsQ417gH4aeroD6tuRCC5UsDGLyT
-	 ydcU7/H36xtqA==
-Date: Tue, 21 Jun 2022 12:15:17 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>
-Subject: Re: [PATCH v3 2/5] of: remove __of_node_dup() allocflags parameter
-Message-ID: <20220621171517.GA1315139@bhelgaas>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSDCc1wsfz2xsr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 03:34:19 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 25LHVvY1008537;
+	Tue, 21 Jun 2022 12:31:57 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 25LHVtN5008531;
+	Tue, 21 Jun 2022 12:31:55 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Tue, 21 Jun 2022 12:31:55 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nathan Lynch <nathanl@linux.ibm.com>
+Subject: Re: [PATCH v2 1/4] powerpc/pseries: hvcall.h: add H_WATCHDOG opcode, H_NOOP return code
+Message-ID: <20220621173155.GQ25951@gate.crashing.org>
+References: <20220602175353.68942-1-cheloha@linux.ibm.com> <20220602175353.68942-2-cheloha@linux.ibm.com> <87a6a6nkit.fsf@linux.ibm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220620104123.341054-3-clement.leger@bootlin.com>
+In-Reply-To: <87a6a6nkit.fsf@linux.ibm.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,15 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Paul Mackerras <paulus@samba.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ohhoon Kwon <ohoono.kwon@samsung.com>, Frank Rowand <frowand.list@gmail.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund <steen.hegelund@microchip.com>, Daniel Henrique Barboza <danielhb413@gmail.com>, YueHaibing <yuehaibing@huawei.com>, Nathan Lynch <nathanl@linux.ibm.com>, devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>, Allan Nielsen <allan.nielsen@microchip.com>, Laurent Dufour <ldufour@linux.ibm.com>, David Gibson <david@gibson.dropbear.id.au>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Lizhi Hou <lizhi.hou@xilinx.com>
+Cc: wvoigt@us.ibm.com, linux-watchdog@vger.kernel.org, aik@ozlabs.ru, Scott Cheloha <cheloha@linux.ibm.com>, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 20, 2022 at 12:41:20PM +0200, Clément Léger wrote:
-> The alloclags are always set to GFP_KERNEL so remove this specific flag.
-> Moreover, this function is going to be based on one that does not
-> provides passing gfp flags, so be prepared for this.
+Hi!
 
-s/alloclags/allocflags/
+On Tue, Jun 21, 2022 at 09:44:42AM -0500, Nathan Lynch wrote:
+> Not a problem to fix in your series, but I guess these should be
+> parenthesized i.e.
+> 
+> #define H_P7		(-60)
+> #define H_P8		(-61)
+> #define H_P9		(-62)
+> #define H_NOOP		(-63)
 
-s/provides passing/supports passing/
+Why?  It does not change the semantics of any correct code.  For what
+incorrect code will it make the diagnostics clearer?
+
+
+Segher
