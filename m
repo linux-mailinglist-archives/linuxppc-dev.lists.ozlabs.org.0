@@ -2,53 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750A055308B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 13:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C0A553305
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 15:12:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LS3sW2tQgz3bsH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 21:18:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LS6PL6vx8z3cd5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 23:12:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=FVViAhny;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eUVPXq0o;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.5; helo=mail-m965.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=FVViAhny;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eUVPXq0o;
 	dkim-atps=neutral
-Received: from mail-m965.mail.126.com (mail-m965.mail.126.com [123.126.96.5])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LS3rs4jBVz3059
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 21:17:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=ckdE2
-	t6xgT2fZFZu6JUyHh1s/liJ/TRFKfbZ2cUkH8I=; b=FVViAhny7QB8PJf25HnTX
-	a7leOWbdKj+DqGdH7SKqKyE64MMnYFWt1NN7sNO+QAgKClMFb1ajvqS7z4vfgOd/
-	MG+3S8VCY8y0i+TtiYfvjY4y8x5Je7tmNmfAH+LiQyxnrgcFiVuHcMoEvM17aOh7
-	aCM4kzCFUE9EzWbRTKEZ8E=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-	by smtp10 (Coremail) with SMTP id NuRpCgBHlWmuqLFihxk+FA--.21137S2;
-	Tue, 21 Jun 2022 19:17:03 +0800 (CST)
-From: Liang He <windhl@126.com>
-To: mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	osalvador@suse.de,
-	npiggin@gmail.com,
-	linuxppc-dev@lists.ozlabs.org,
-	windhl@126.com
-Subject: [PATCH] powerpc/pseries: Hold reference and fix refcount leak bugs
-Date: Tue, 21 Jun 2022 19:17:01 +0800
-Message-Id: <20220621111701.4082889-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LS6Nj2n0lz3000
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 23:11:49 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 6E9C9B817F4;
+	Tue, 21 Jun 2022 13:11:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA18C341C4;
+	Tue, 21 Jun 2022 13:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1655817102;
+	bh=4xEME0PJkdFrWYpmGq18CjMHFdjMkxkM8iVMwtol8e0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eUVPXq0oGf0ynQ+mmppKszQbX0ExCvwwwyzClTkcVE2WThQMGV7mvgtdtLwZi9kpe
+	 dDtkTM9jnjSnDNtlRJewWC2apC09nfHB0duGnIXX0vqBCDd2TgvrAQUuRzZP/zIVMI
+	 Qpxjuj6zkn5CTumFR0+GSS6TqhPfsPduG/ILTsZ028IBm564m0B90BDHOesyPEfIDJ
+	 lgcjqomPUoKP17Xs6KIlERtTK2y7LLH3NVb06Zrn7GoO6wqzZKmX5zptHYXZ/71NYW
+	 AIei+ef2lro1GS4HLIqKo7DmO+D52U9EVKbAKnLXvmtcoi3VNenn9OmHeZRQM95nvV
+	 l6dTKpR7L08qQ==
+Date: Tue, 21 Jun 2022 14:11:35 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Pierluigi Passaro <pierluigi.p@variscite.com>
+Subject: Re: [PATCH 4/4] ASoC: wm8904: add DMIC support
+Message-ID: <YrHDh6lzdZXj7HcQ@sirena.org.uk>
+References: <20220307141041.27538-1-alifer.m@variscite.com>
+ <20220307141041.27538-4-alifer.m@variscite.com>
+ <AM6PR08MB4376411B180D8860E2AD3AE0FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: NuRpCgBHlWmuqLFihxk+FA--.21137S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uF1UtrWfWrWfuw4Dtw47Jwb_yoW8Ar4kpr
-	9rKa9xtF48Wr1xK3yIvFyDJr43X3yYkFW8Wa1Ut3ZxC3WDZrn5Aw12qw15XryrCryfur1f
-	XrsYg3W5Z3WqqaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziGg4kUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbizg8nF18RPV4zrgAAsB
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="zPDn0Yp+KJI2UZco"
+Content-Disposition: inline
+In-Reply-To: <AM6PR08MB4376411B180D8860E2AD3AE0FFB09@AM6PR08MB4376.eurprd08.prod.outlook.com>
+X-Cookie: Edited for television.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,63 +63,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "nicoleotsuka@gmail.com" <nicoleotsuka@gmail.com>, "Xiubo.Lee@gmail.com" <Xiubo.Lee@gmail.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "shengjiu.wang@gmail.com" <shengjiu.wang@gmail.com>, "tiwai@suse.com" <tiwai@suse.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "lgirdwood@gmail.com" <lgirdwood@gmail.com>, Eran Matityahu <eran.m@variscite.com>, "robh+dt@kernel.org" <robh+dt@kernel.org>, Alifer Willians de Moraes <alifer.m@variscite.com>, "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>, "perex@perex.cz" <perex@perex.cz>, "festevam@gmail.com" <festevam@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In pseries_cpuhp_cache_use_count() and pseries_cpuhp_detach_nodes(),
-we need carefully hold the reference returned by
-of_find_next_cache_node() and use it to call of_node_put() to keep
-refcount balance.
 
-Signed-off-by: Liang He <windhl@126.com>
----
- arch/powerpc/platforms/pseries/hotplug-cpu.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+--zPDn0Yp+KJI2UZco
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index 0f8cd8b06432..e0a7ac5db15d 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -619,17 +619,21 @@ static ssize_t dlpar_cpu_add(u32 drc_index)
- static unsigned int pseries_cpuhp_cache_use_count(const struct device_node *cachedn)
- {
- 	unsigned int use_count = 0;
--	struct device_node *dn;
-+	struct device_node *dn, *tn;
- 
- 	WARN_ON(!of_node_is_type(cachedn, "cache"));
- 
- 	for_each_of_cpu_node(dn) {
--		if (of_find_next_cache_node(dn) == cachedn)
-+		tn = of_find_next_cache_node(dn);
-+		of_node_put(tn);
-+		if (tn == cachedn)
- 			use_count++;
- 	}
- 
- 	for_each_node_by_type(dn, "cache") {
--		if (of_find_next_cache_node(dn) == cachedn)
-+		tn = of_find_next_cache_node(dn);
-+		of_node_put(tn);
-+		if (tn == cachedn)
- 			use_count++;
- 	}
- 
-@@ -649,10 +653,13 @@ static int pseries_cpuhp_detach_nodes(struct device_node *cpudn)
- 
- 	dn = cpudn;
- 	while ((dn = of_find_next_cache_node(dn))) {
--		if (pseries_cpuhp_cache_use_count(dn) > 1)
-+		if (pseries_cpuhp_cache_use_count(dn) > 1) {
-+			of_node_put(dn);
- 			break;
-+		}
- 
- 		ret = of_changeset_detach_node(&cs, dn);
-+		of_node_put(dn);
- 		if (ret)
- 			goto out;
- 	}
--- 
-2.25.1
+On Mon, Jun 20, 2022 at 07:53:56PM +0000, Pierluigi Passaro wrote:
 
+> > This means that DMICDAT2 is not usefully selectable at runtime, you've
+> > got IN1 as digital and IN2 as analogue, so while the DMIC/ADC switch is
+> > useful the DMIC1/2 switch is not.
+
+> A customer could have the following working configuration
+> - pin 1: DMIC_CLK
+> - pin 24: LINEIN2R
+> - pin 25: DMICDAT2
+> - pin 26: LINEIN2L
+> - pin 27: DMICDAT1
+
+> with no shared pins: here there's the chance to select DMIC1, DMIC2 and
+> LINEIN2 at runtime: I can't find a reason for a fixed behavior.
+> Can you please elaborate ?
+
+So in that case the driver should offer the DMIC1/2 selection.  The
+driver should be looking at which pins are wired up as DMICs and only
+registering controls that can actually be used in the system based on
+the pins that are wired up.
+
+--zPDn0Yp+KJI2UZco
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmKxw4YACgkQJNaLcl1U
+h9BfeAf/UZDQPNisaKHZIdpACSlbsSETLopyOjBB/groSLMQsNWcxbfkFhXkhdZS
+mASQEVcOrYDiXD7yh6dcIeBAys+tfFZkrbX5YVBy+3sMm9jufXa7k3gbcJ6fA5rx
+ARo7N0DMY9I2YqAkQ6dtTOxIicnYMxWJibPLagGEc6WiGGbi1CfnlZJ8UmHKTy7T
+CFIAQes0bK4R26y7dZW7ogoSAClxlwImn9pLvrkwEh9VppUsP7XR/SauygBUsl3g
+8gR9o1PjcVI3heKldnX1mQrzN13oJfBm2Vjd+7VGl8cLs3ZaQ8cx4dAgt+zj1JTF
+7EXAU2zpt9gbnFQhQXfk+PuFpldzwA==
+=5L+0
+-----END PGP SIGNATURE-----
+
+--zPDn0Yp+KJI2UZco--
