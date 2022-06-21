@@ -2,51 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221A5553E63
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 00:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EAA553E55
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 00:12:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSLST74yfz3cht
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 08:15:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSLN72Svhz3cg4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 08:12:07 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cVDjiEOX;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.135; helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net; receiver=<UNKNOWN>)
-X-Greylist: delayed 325 seconds by postgrey-1.36 at boromir; Wed, 22 Jun 2022 08:15:30 AEST
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cVDjiEOX;
+	dkim-atps=neutral
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSLS24nldz30F8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 08:15:30 +1000 (AEST)
-Received: from Cyrus.lan ([86.151.31.128]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.163]) with ESMTPA (Nemesis) id
- 1MjPYI-1nNbob2D6I-00kywU; Wed, 22 Jun 2022 00:09:43 +0200
-Date: Tue, 21 Jun 2022 23:09:41 +0100
-From: Darren Stevens <darren@stevens-zone.net>
-To: linuxppc-dev@lists.ozlabs.org, oss@buserror.net, chzigotzky@xenosoft.de,
- robh@kernel.org, stern@rowland.harvard.edu, linux-usb@vger.kernel.org
-Subject: [PATCH RFC] drivers/usb/ehci-fsl: Fix interrupt setup in host mode.
-Message-ID: <20220621230941.381f9791@Cyrus.lan>
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; powerpc-unknown-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSLMR6Sbwz30F8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 08:11:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655849492; x=1687385492;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=9NbVKjA2l2L/qGvXTLnS4RyFyYSq0q4alQPvEo9eP1A=;
+  b=cVDjiEOXh5c5iX1RQK1N1bfdJUbRx1XEpsqLgbNIFAp/PZ8OlLI6gwLX
+   ScTsRpnzhO6nolVynRjt2M+prCn0czlm0omoZuqIyzsEnstOrxCxlBjEF
+   nt2fuc5YTmG59PKv0kD/bAhrK/+UcaO2Olq6ArKLe++8gQ+qgorz8W1wG
+   yIKLz3lu/8r0kLbfEQO1yRRhz4YgMb/JkdI1T7PhyAiY1IyZ6aGIs3L5q
+   rrLLWHcpXRIMvRCLknvrZcD+EgZmeOReOsHOqdTVqM2NQXsQhYhzy7XFF
+   f9bpjaEKhCxCJMTqtcoSugd75LX2MqKQ1oxAtsdcm8Oc5GFdpKPAFUnHV
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="280296939"
+X-IronPort-AV: E=Sophos;i="5.92,210,1650956400"; 
+   d="scan'208";a="280296939"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 15:11:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,210,1650956400"; 
+   d="scan'208";a="730031253"
+Received: from lkp-server02.sh.intel.com (HELO a67cc04a5eeb) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 21 Jun 2022 15:11:17 -0700
+Received: from kbuild by a67cc04a5eeb with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o3m5c-0000UT-By;
+	Tue, 21 Jun 2022 22:11:16 +0000
+Date: Wed, 22 Jun 2022 06:10:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 34d1d36073ea4d4c532e8c8345627a9702be799e
+Message-ID: <62b241d3.CmOrZi26Vac8nqGm%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:Ayh/DqLZxuxcGgHIen4KcjIrEaWKLYpKbbcFNXeXDHKnIN4LIhE
- LoPxWSqYHIBM+lXCwQnMGYrG9Cl2yX59H3BM0D3LNC26aEVlBB3y28DK/dYIwLgSdOYhBlf
- hARpHRQBBR4M9Vn6h0fJA8fZnK5FeGAm/aQONu9m1qtBGzA5SZK+kD65RZFqEgpAcycKPl8
- UOxfJCfE4DwFM5JaiscoA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:rdKK4xW06Ok=:defuqoNgRShfAs+owD3Z7e
- aYduI0Q23X/+0KYVgOQcffkzd/8hpm9UNiYAmXtlEuZgx4mE7DsJxml06Suh66etqNAlSFnXO
- Rs7KKy6EkLuOdGUAJpv4MBKHXnkFqVIKvNSa2W9UeOOQ/QMJO/lZlcnp7pSL5xiFUjMA6DhLL
- rEkqtyHLXpRS/rDy9C3VNVssUCujNW8x5l8j6DE2MqgrnOeKK7keb1D6JXYrcZVENxRtTnWfD
- RjnWgef9Nr4irVLt91Fl66lFO2NLeujuzsj16WMIG8Hbd//Jncq9Mp/357qYhS+B9CbzqbXdQ
- M6tsRyq2AFjGq7+p0WLPjHbgYvwTbEjGP9rGi6KKmOWlcNA4UuYcEXEQfutRRukXjm1J3sZLn
- /H5yetxrFVe9UPBqLvCvIl7WU+hxSL3dm70M9rDU1BJYEHTpY5XBdm/I7glSsO8ySUTKXriv4
- zgR1Ynk2+Hc5qmwAav8pWm8+6upIa+AY61H6ThZDDtOsQF33ayr7gh3LGW65HI9Bvl1y0CRgj
- YiQdM2/QEd6l5zzLklvlGNy7yl0J66kBNQX0RvaCAHQzpNeDD9yO3CSEoga2ElR2GFpcs+lHR
- VvKdRYbJC5WHlo2ZV/N9DjUOhdskBCka3mr+4GRaY5qhkC83+qfQi2zY/yS6kn+vmX4Y0eyiL
- 0PZn9Xh6GjrQ8VAt3nHgwQbol4z3Og5rb813RbjWI9uGWAagADV1Pa7q3GdOOOWsO3ycaNc0T
- zxxLN94u9t0392noSHUTvtdrAwvcGaORw+4m/9iy0Gl7hhNRo7csmpMvcCU=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,114 +69,434 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-perf-users@vger.kernel.org, kvm@vger.kernel.org, netdev@vger.kernel.org, linux-staging@lists.linux.dev, dri-devel@lists.freedesktop.org, linux-xfs@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, ntb@lists.linux.dev, amd-gfx@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In patch a1a2b7125e1079 (Drop static setup of IRQ resource from DT
-core) we stopped platform_get_resource() from returning the IRQ, as all
-drivers were supposed to have switched to platform_get_irq()
-Unfortunately the Freescale EHCI driver in host mode got missed. Fix
-it. Also fix allocation of resources to work with current kernel.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 34d1d36073ea4d4c532e8c8345627a9702be799e  Add linux-next specific files for 20220621
 
-Fixes:a1a2b7125e1079 (Drop static setup of IRQ resource from DT core)
-Reported-by Christian Zigotzky <chzigotzky@xenosoft.de>
-Signed-off-by Darren Stevens <darren@stevens-zone.net>
----
-Tested on AmigaOne X5000/20 and X5000/40 not sure if this is entirely
-correct fix though. Contains code by Rob Herring (in fsl-mph-dr-of.c)
+Error/Warning reports:
 
-diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
-index 385be30..d0bf7fb 100644
---- a/drivers/usb/host/ehci-fsl.c
-+++ b/drivers/usb/host/ehci-fsl.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/fsl_devices.h>
- #include <linux/of_platform.h>
-+#include <linux/of_address.h>
- #include <linux/io.h>
- 
- #include "ehci.h"
-@@ -46,9 +47,10 @@ static struct hc_driver __read_mostly
-fsl_ehci_hc_driver; */
- static int fsl_ehci_drv_probe(struct platform_device *pdev)
- {
-+	struct device_node *dn = pdev->dev.of_node;
- 	struct fsl_usb2_platform_data *pdata;
- 	struct usb_hcd *hcd;
--	struct resource *res;
-+	struct resource res;
- 	int irq;
- 	int retval;
- 	u32 tmp;
-@@ -76,14 +78,10 @@ static int fsl_ehci_drv_probe(struct
-platform_device *pdev) return -ENODEV;
- 	}
- 
--	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!res) {
--		dev_err(&pdev->dev,
--			"Found HC with no IRQ. Check %s setup!\n",
--			dev_name(&pdev->dev));
--		return -ENODEV;
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		return irq;
- 	}
--	irq = res->start;
- 
- 	hcd = __usb_create_hcd(&fsl_ehci_hc_driver, pdev->dev.parent,
- 			       &pdev->dev, dev_name(&pdev->dev), NULL);
-@@ -92,15 +90,21 @@ static int fsl_ehci_drv_probe(struct
-platform_device *pdev) goto err1;
- 	}
- 
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	hcd->regs = devm_ioremap_resource(&pdev->dev, res);
-+	platform_set_drvdata(pdev, hcd);
-+	pdev->dev.platform_data = pdata;
-+
-+	tmp = of_address_to_resource(dn, 0, &res);
-+	if (tmp)
-+		return tmp;
-+
-+	hcd->regs = devm_ioremap_resource(&pdev->dev, &res);
- 	if (IS_ERR(hcd->regs)) {
- 		retval = PTR_ERR(hcd->regs);
- 		goto err2;
- 	}
- 
--	hcd->rsrc_start = res->start;
--	hcd->rsrc_len = resource_size(res);
-+	hcd->rsrc_start = res.start;
-+	hcd->rsrc_len = resource_size(&res);
- 
- 	pdata->regs = hcd->regs;
- 
-diff --git a/drivers/usb/host/fsl-mph-dr-of.c
-b/drivers/usb/host/fsl-mph-dr-of.c index 44a7e58..766e4ab 100644
---- a/drivers/usb/host/fsl-mph-dr-of.c
-+++ b/drivers/usb/host/fsl-mph-dr-of.c
-@@ -80,8 +80,6 @@ static struct platform_device
-*fsl_usb2_device_register( const char *name, int id)
- {
- 	struct platform_device *pdev;
--	const struct resource *res = ofdev->resource;
--	unsigned int num = ofdev->num_resources;
- 	int retval;
- 
- 	pdev = platform_device_alloc(name, id);
-@@ -106,11 +104,8 @@ static struct platform_device
-*fsl_usb2_device_register( if (retval)
- 		goto error;
- 
--	if (num) {
--		retval = platform_device_add_resources(pdev, res, num);
--		if (retval)
--			goto error;
--	}
-+	pdev->dev.of_node = ofdev->dev.of_node;
-+	pdev->dev.of_node_reused = true;
- 
- 	retval = platform_device_add(pdev);
- 	if (retval)
+https://lore.kernel.org/linux-mm/202206212029.Yr5m7Cd3-lkp@intel.com
+https://lore.kernel.org/linux-mm/202206212033.3lgl72Fw-lkp@intel.com
+https://lore.kernel.org/lkml/202206071511.FI7WLdZo-lkp@intel.com
+
+Error/Warning: (recently discovered and may have been fixed)
+
+ERROR: modpost: "acpi_dev_for_each_child" [drivers/mfd/mfd-core.ko] undefined!
+arch/powerpc/kernel/interrupt.c:542:55: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
+drivers/ntb/test/ntb_perf.c:1067: undefined reference to `__umoddi3'
+irq-xilinx-intc.c:(.init.text+0x8c): undefined reference to `of_iomap'
+microblaze-linux-ld: drivers/ntb/test/ntb_perf.c:1095: undefined reference to `__umoddi3'
+net/ipv6/raw.c:335:25: warning: variable 'saddr' set but not used [-Wunused-but-set-variable]
+net/ipv6/raw.c:335:32: warning: variable 'saddr' set but not used [-Wunused-but-set-variable]
+net/ipv6/raw.c:335:33: warning: variable 'daddr' set but not used [-Wunused-but-set-variable]
+net/ipv6/raw.c:335:40: warning: variable 'daddr' set but not used [-Wunused-but-set-variable]
+net/ipv6/raw.c:338:25: warning: variable 'saddr' set but not used [-Wunused-but-set-variable]
+net/ipv6/raw.c:338:32: warning: variable 'saddr' set but not used [-Wunused-but-set-variable]
+net/ipv6/raw.c:338:33: warning: variable 'daddr' set but not used [-Wunused-but-set-variable]
+net/ipv6/raw.c:338:40: warning: variable 'daddr' set but not used [-Wunused-but-set-variable]
+s390-linux-ld: irq-xilinx-intc.c:(.init.text+0x3ba): undefined reference to `iounmap'
+
+Unverified Error/Warning (likely false positive, please contact us if interested):
+
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:9143:27: warning: variable 'abo' set but not used [-Wunused-but-set-variable]
+
+Error/Warning ids grouped by kconfigs:
+
+gcc_recent_errors
+|-- alpha-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- alpha-buildonly-randconfig-r001-20220620
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|-- alpha-buildonly-randconfig-r006-20220621
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- arc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   `-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|-- arm-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- arm-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- arm-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- arm-randconfig-r022-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- arm-randconfig-r031-20220619
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- arm64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- arm64-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- i386-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   `-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|-- i386-debian-10.3-kselftests
+|   `-- ERROR:acpi_dev_for_each_child-drivers-mfd-mfd-core.ko-undefined
+|-- i386-randconfig-a001
+|   `-- ntb_perf.c:(.text):undefined-reference-to-__umoddi3
+|-- i386-randconfig-a004-20220620
+|   `-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|-- i386-randconfig-c021
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- i386-randconfig-m021
+|   |-- arch-x86-events-core.c-init_hw_perf_events()-warn:missing-error-code-err
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- i386-randconfig-s001
+|   |-- drivers-vfio-pci-vfio_pci_config.c:sparse:sparse:restricted-pci_power_t-degrades-to-integer
+|   |-- kernel-signal.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-lockdep_map-const-lock-got-struct-lockdep_map-noderef-__rcu
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- i386-randconfig-s002
+|   |-- fs-xfs-xfs_file.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-vm_fault_t-usertype-ret-got-int
+|   |-- kernel-signal.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-lockdep_map-const-lock-got-struct-lockdep_map-noderef-__rcu
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- ia64-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- ia64-randconfig-r021-20220620
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|-- ia64-randconfig-r023-20220619
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- m68k-allmodconfig
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- m68k-allyesconfig
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- m68k-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- m68k-randconfig-r026-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- m68k-virt_defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- microblaze-buildonly-randconfig-r001-20220622
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- microblaze-randconfig-r005-20220620
+|   |-- microblaze-linux-ld:drivers-ntb-test-ntb_perf.c:undefined-reference-to-__umoddi3
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- microblaze-randconfig-r024-20220619
+|   `-- drivers-ntb-test-ntb_perf.c:undefined-reference-to-__umoddi3
+|-- mips-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- mips-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- mips-buildonly-randconfig-r005-20220621
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- nios2-allyesconfig
+|   `-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|-- nios2-randconfig-s032-20220622
+|   |-- fs-xfs-xfs_file.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-vm_fault_t-usertype-ret-got-int
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- parisc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- parisc-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- parisc-randconfig-m031-20220622
+|   |-- drivers-gpu-drm-amd-amdgpu-amdgpu_discovery.c-amdgpu_discovery_reg_base_init()-error:testing-array-offset-adev-vcn.num_vcn_inst-after-use.
+|   |-- drivers-gpu-drm-vc4-vc4_perfmon.c-vc4_perfmon_get()-warn:variable-dereferenced-before-check-perfmon-(see-line-)
+|   |-- drivers-gpu-drm-vc4-vc4_perfmon.c-vc4_perfmon_get_values_ioctl()-warn:variable-dereferenced-before-check-perfmon-(see-line-)
+|   `-- drivers-gpu-drm-vc4-vc4_validate.c-vc4_check_tex_size()-warn:signedness-bug-returning
+|-- parisc-randconfig-r036-20220619
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|-- parisc64-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- powerpc-allmodconfig
+|   |-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- powerpc-allyesconfig
+|   |-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- riscv-allmodconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- riscv-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- riscv-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- riscv-rv32_defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- s390-allmodconfig
+|   |-- irq-xilinx-intc.c:(.init.text):undefined-reference-to-of_iomap
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|   `-- s390-linux-ld:irq-xilinx-intc.c:(.init.text):undefined-reference-to-iounmap
+|-- s390-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- s390-buildonly-randconfig-r004-20220621
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- s390-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- sh-allmodconfig
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- sparc-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- sparc-buildonly-randconfig-r006-20220622
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- sparc-defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- sparc-randconfig-r021-20220619
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- sparc-sparc64_defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- sparc64-randconfig-r024-20220619
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-allyesconfig
+|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-a001-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-a005-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-a006-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-c022
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-m001
+|   |-- arch-x86-events-core.c-init_hw_perf_events()-warn:missing-error-code-err
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-rhel-8.3
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-rhel-8.3-func
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-rhel-8.3-kselftests
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-rhel-8.3-kunit
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-rhel-8.3-syz
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+`-- xtensa-allyesconfig
+    |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
+    `-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
+
+clang_recent_errors
+|-- arm-multi_v5_defconfig
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- hexagon-randconfig-r041-20220619
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- i386-randconfig-a012-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-a011-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-a012-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-a014-20220620
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+|-- x86_64-randconfig-a015-20220620
+|   |-- drivers-ufs-host-tc-dwc-g210-pltfrm.c:warning:unused-variable-tc_dwc_g210_pltfm_match
+|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+`-- x86_64-randconfig-a016-20220620
+    |-- drivers-ufs-host-tc-dwc-g210-pltfrm.c:warning:unused-variable-tc_dwc_g210_pltfm_match
+    |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
+    `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+
+elapsed time: 725m
+
+configs tested: 108
+configs skipped: 3
+
+gcc tested configs:
+arm                              allmodconfig
+arm                              allyesconfig
+arm64                            allyesconfig
+arm                                 defconfig
+arm64                               defconfig
+arc                              alldefconfig
+mips                         rt305x_defconfig
+arc                     haps_hs_smp_defconfig
+sparc                       sparc64_defconfig
+sh                          rsk7203_defconfig
+arm                        realview_defconfig
+powerpc                 mpc837x_rdb_defconfig
+powerpc                     redwood_defconfig
+sh                           se7724_defconfig
+m68k                           virt_defconfig
+sh                         apsh4a3a_defconfig
+powerpc                 mpc837x_mds_defconfig
+arm                           h3600_defconfig
+arm                         cm_x300_defconfig
+sh                 kfr2r09-romimage_defconfig
+powerpc                       holly_defconfig
+xtensa                generic_kc705_defconfig
+ia64                                defconfig
+ia64                             allmodconfig
+m68k                                defconfig
+m68k                             allyesconfig
+m68k                             allmodconfig
+nios2                               defconfig
+arc                              allyesconfig
+alpha                               defconfig
+csky                                defconfig
+alpha                            allyesconfig
+nios2                            allyesconfig
+sh                               allmodconfig
+arc                                 defconfig
+xtensa                           allyesconfig
+powerpc                           allnoconfig
+powerpc                          allmodconfig
+mips                             allyesconfig
+parisc                              defconfig
+s390                             allmodconfig
+parisc                           allyesconfig
+s390                                defconfig
+s390                             allyesconfig
+parisc64                            defconfig
+i386                   debian-10.3-kselftests
+i386                              debian-10.3
+i386                                defconfig
+i386                             allyesconfig
+sparc                            allyesconfig
+sparc                               defconfig
+mips                             allmodconfig
+powerpc                          allyesconfig
+x86_64               randconfig-a003-20220620
+x86_64               randconfig-a004-20220620
+x86_64               randconfig-a002-20220620
+x86_64               randconfig-a001-20220620
+x86_64               randconfig-a005-20220620
+x86_64               randconfig-a006-20220620
+i386                 randconfig-a003-20220620
+i386                 randconfig-a001-20220620
+i386                 randconfig-a002-20220620
+i386                 randconfig-a004-20220620
+i386                 randconfig-a005-20220620
+i386                 randconfig-a006-20220620
+arc                  randconfig-r043-20220619
+riscv                randconfig-r042-20220619
+arc                  randconfig-r043-20220620
+s390                 randconfig-r044-20220619
+riscv                             allnoconfig
+riscv                            allyesconfig
+riscv                            allmodconfig
+riscv                    nommu_k210_defconfig
+riscv                          rv32_defconfig
+riscv                    nommu_virt_defconfig
+riscv                               defconfig
+um                             i386_defconfig
+um                           x86_64_defconfig
+x86_64                           rhel-8.3-syz
+x86_64                          rhel-8.3-func
+x86_64                         rhel-8.3-kunit
+x86_64                    rhel-8.3-kselftests
+x86_64                              defconfig
+x86_64                                  kexec
+x86_64                               rhel-8.3
+x86_64                           allyesconfig
+
+clang tested configs:
+arm                        multi_v5_defconfig
+mips                           ip27_defconfig
+mips                      bmips_stb_defconfig
+arm                              alldefconfig
+x86_64               randconfig-a013-20220620
+x86_64               randconfig-a012-20220620
+x86_64               randconfig-a015-20220620
+x86_64               randconfig-a016-20220620
+x86_64               randconfig-a011-20220620
+x86_64               randconfig-a014-20220620
+i386                 randconfig-a012-20220620
+i386                 randconfig-a013-20220620
+i386                 randconfig-a011-20220620
+i386                 randconfig-a016-20220620
+i386                 randconfig-a014-20220620
+i386                 randconfig-a015-20220620
+hexagon              randconfig-r045-20220619
+hexagon              randconfig-r045-20220620
+riscv                randconfig-r042-20220620
+hexagon              randconfig-r041-20220619
+hexagon              randconfig-r041-20220620
+s390                 randconfig-r044-20220620
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
