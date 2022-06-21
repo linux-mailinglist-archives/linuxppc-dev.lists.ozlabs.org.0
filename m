@@ -1,49 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1198553E38
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 23:57:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221A5553E63
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 00:15:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSL3G6Bq3z3cgV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 07:57:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSLST74yfz3cht
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 08:15:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gonehiking.org (client-ip=64.68.200.34; helo=mailout.easymail.ca; envelope-from=khalid@gonehiking.org; receiver=<UNKNOWN>)
-Received: from mailout.easymail.ca (mailout.easymail.ca [64.68.200.34])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.135; helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 325 seconds by postgrey-1.36 at boromir; Wed, 22 Jun 2022 08:15:30 AEST
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSL2p2YXlz3bhB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 07:57:05 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by mailout.easymail.ca (Postfix) with ESMTP id C97F261DF6;
-	Tue, 21 Jun 2022 21:56:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at emo09-pco.easydns.vpn
-Received: from mailout.easymail.ca ([127.0.0.1])
-	by localhost (emo09-pco.easydns.vpn [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id FLc2uL2Ic0RZ; Tue, 21 Jun 2022 21:56:59 +0000 (UTC)
-Received: from mail.gonehiking.org (unknown [38.15.45.1])
-	by mailout.easymail.ca (Postfix) with ESMTPA id 45ED161DF5;
-	Tue, 21 Jun 2022 21:56:59 +0000 (UTC)
-Received: from [192.168.1.4] (internal [192.168.1.4])
-	by mail.gonehiking.org (Postfix) with ESMTP id C716D3EF14;
-	Tue, 21 Jun 2022 15:56:58 -0600 (MDT)
-Message-ID: <7a6df2da-95e8-b2fd-7565-e4b7a51c5b63@gonehiking.org>
-Date: Tue, 21 Jun 2022 15:56:58 -0600
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSLS24nldz30F8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 08:15:30 +1000 (AEST)
+Received: from Cyrus.lan ([86.151.31.128]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.163]) with ESMTPA (Nemesis) id
+ 1MjPYI-1nNbob2D6I-00kywU; Wed, 22 Jun 2022 00:09:43 +0200
+Date: Tue, 21 Jun 2022 23:09:41 +0100
+From: Darren Stevens <darren@stevens-zone.net>
+To: linuxppc-dev@lists.ozlabs.org, oss@buserror.net, chzigotzky@xenosoft.de,
+ robh@kernel.org, stern@rowland.harvard.edu, linux-usb@vger.kernel.org
+Subject: [PATCH RFC] drivers/usb/ehci-fsl: Fix interrupt setup in host mode.
+Message-ID: <20220621230941.381f9791@Cyrus.lan>
+X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; powerpc-unknown-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v2 2/3] scsi: BusLogic remove bus_to_virt
-Content-Language: en-US
-To: Arnd Bergmann <arnd@kernel.org>, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20220617125750.728590-1-arnd@kernel.org>
- <20220617125750.728590-3-arnd@kernel.org>
-From: Khalid Aziz <khalid@gonehiking.org>
-In-Reply-To: <20220617125750.728590-3-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Ayh/DqLZxuxcGgHIen4KcjIrEaWKLYpKbbcFNXeXDHKnIN4LIhE
+ LoPxWSqYHIBM+lXCwQnMGYrG9Cl2yX59H3BM0D3LNC26aEVlBB3y28DK/dYIwLgSdOYhBlf
+ hARpHRQBBR4M9Vn6h0fJA8fZnK5FeGAm/aQONu9m1qtBGzA5SZK+kD65RZFqEgpAcycKPl8
+ UOxfJCfE4DwFM5JaiscoA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rdKK4xW06Ok=:defuqoNgRShfAs+owD3Z7e
+ aYduI0Q23X/+0KYVgOQcffkzd/8hpm9UNiYAmXtlEuZgx4mE7DsJxml06Suh66etqNAlSFnXO
+ Rs7KKy6EkLuOdGUAJpv4MBKHXnkFqVIKvNSa2W9UeOOQ/QMJO/lZlcnp7pSL5xiFUjMA6DhLL
+ rEkqtyHLXpRS/rDy9C3VNVssUCujNW8x5l8j6DE2MqgrnOeKK7keb1D6JXYrcZVENxRtTnWfD
+ RjnWgef9Nr4irVLt91Fl66lFO2NLeujuzsj16WMIG8Hbd//Jncq9Mp/357qYhS+B9CbzqbXdQ
+ M6tsRyq2AFjGq7+p0WLPjHbgYvwTbEjGP9rGi6KKmOWlcNA4UuYcEXEQfutRRukXjm1J3sZLn
+ /H5yetxrFVe9UPBqLvCvIl7WU+hxSL3dm70M9rDU1BJYEHTpY5XBdm/I7glSsO8ySUTKXriv4
+ zgR1Ynk2+Hc5qmwAav8pWm8+6upIa+AY61H6ThZDDtOsQF33ayr7gh3LGW65HI9Bvl1y0CRgj
+ YiQdM2/QEd6l5zzLklvlGNy7yl0J66kBNQX0RvaCAHQzpNeDD9yO3CSEoga2ElR2GFpcs+lHR
+ VvKdRYbJC5WHlo2ZV/N9DjUOhdskBCka3mr+4GRaY5qhkC83+qfQi2zY/yS6kn+vmX4Y0eyiL
+ 0PZn9Xh6GjrQ8VAt3nHgwQbol4z3Og5rb813RbjWI9uGWAagADV1Pa7q3GdOOOWsO3ycaNc0T
+ zxxLN94u9t0392noSHUTvtdrAwvcGaORw+4m/9iy0Gl7hhNRo7csmpMvcCU=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,151 +58,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: khalid@gonehiking.org
-Cc: linux-arch@vger.kernel.org, Miquel van Smoorenburg <mikevs@xs4all.net>, linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org, Denis Efremov <efremov@linux.com>, Mark Salyzyn <salyzyn@android.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, Matt Wang <wwentao@vmware.com>, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/17/22 06:57, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> The BusLogic driver is the last remaining driver that relies on the
-> deprecated bus_to_virt() function, which in turn only works on a few
-> architectures, and is incompatible with both swiotlb and iommu support.
-> 
-> Before commit 391e2f25601e ("[SCSI] BusLogic: Port driver to 64-bit."),
-> the driver had a dependency on x86-32, presumably because of this
-> problem. However, the change introduced another bug that made it still
-> impossible to use the driver on any 64-bit machine.
-> 
-> This was in turn fixed in commit 56f396146af2 ("scsi: BusLogic: Fix
-> 64-bit system enumeration error for Buslogic"), 8 years later, which
-> shows that there are not a lot of users.
-> 
-> Maciej is still using the driver on 32-bit hardware, and Khalid mentioned
-> that the driver works with the device emulation used in VirtualBox
-> and VMware. Both of those only emulate it for Windows 2000 and older
-> operating systems that did not ship with the better LSI logic driver.
-> 
-> Do a minimum fix that searches through the list of descriptors to find
-> one that matches the bus address. This is clearly as inefficient as
-> was indicated in the code comment about the lack of a bus_to_virt()
-> replacement. A better fix would likely involve changing out the entire
-> descriptor allocation for a simpler one, but that would be much
-> more invasive.
-> 
-> Cc: Maciej W. Rozycki <macro@orcam.me.uk>
-> Cc: Matt Wang <wwentao@vmware.com>
-> Cc: Khalid Aziz <khalid@gonehiking.org>
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->   drivers/scsi/BusLogic.c | 27 ++++++++++++++++-----------
->   drivers/scsi/Kconfig    |  2 +-
->   2 files changed, 17 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/scsi/BusLogic.c b/drivers/scsi/BusLogic.c
-> index a897c8f914cf..d057abfcdd5c 100644
-> --- a/drivers/scsi/BusLogic.c
-> +++ b/drivers/scsi/BusLogic.c
-> @@ -2515,12 +2515,26 @@ static int blogic_resultcode(struct blogic_adapter *adapter,
->   	return (hoststatus << 16) | tgt_status;
->   }
->   
-> +/*
-> + * turn the dma address from an inbox into a ccb pointer
-> + * This is rather inefficient.
-> + */
-> +static struct blogic_ccb *
-> +blogic_inbox_to_ccb(struct blogic_adapter *adapter, struct blogic_inbox *inbox)
-> +{
-> +	struct blogic_ccb *ccb;
-> +
-> +	for (ccb = adapter->all_ccbs; ccb; ccb = ccb->next_all)
-> +		if (inbox->ccb == ccb->dma_handle)
-> +			break;
-> +
-> +	return ccb;
-> +}
->   
->   /*
->     blogic_scan_inbox scans the Incoming Mailboxes saving any
->     Incoming Mailbox entries for completion processing.
->   */
-> -
->   static void blogic_scan_inbox(struct blogic_adapter *adapter)
->   {
->   	/*
-> @@ -2540,16 +2554,7 @@ static void blogic_scan_inbox(struct blogic_adapter *adapter)
->   	enum blogic_cmplt_code comp_code;
->   
->   	while ((comp_code = next_inbox->comp_code) != BLOGIC_INBOX_FREE) {
-> -		/*
-> -		   We are only allowed to do this because we limit our
-> -		   architectures we run on to machines where bus_to_virt(
-> -		   actually works.  There *needs* to be a dma_addr_to_virt()
-> -		   in the new PCI DMA mapping interface to replace
-> -		   bus_to_virt() or else this code is going to become very
-> -		   innefficient.
-> -		 */
-> -		struct blogic_ccb *ccb =
-> -			(struct blogic_ccb *) bus_to_virt(next_inbox->ccb);
-> +		struct blogic_ccb *ccb = blogic_inbox_to_ccb(adapter, adapter->next_inbox);
+In patch a1a2b7125e1079 (Drop static setup of IRQ resource from DT
+core) we stopped platform_get_resource() from returning the IRQ, as all
+drivers were supposed to have switched to platform_get_irq()
+Unfortunately the Freescale EHCI driver in host mode got missed. Fix
+it. Also fix allocation of resources to work with current kernel.
 
-This change looks good enough as workaround to not use bus_to_virt() for 
-now. There are two problems I see though. One, I do worry about 
-blogic_inbox_to_ccb() returning NULL for ccb which should not happen 
-unless the mailbox pointer was corrupted which would indicate a bigger 
-problem. Nevertheless a NULL pointer causing kernel panic concerns me. 
-How about adding a check before we dereference ccb?
+Fixes:a1a2b7125e1079 (Drop static setup of IRQ resource from DT core)
+Reported-by Christian Zigotzky <chzigotzky@xenosoft.de>
+Signed-off-by Darren Stevens <darren@stevens-zone.net>
+---
+Tested on AmigaOne X5000/20 and X5000/40 not sure if this is entirely
+correct fix though. Contains code by Rob Herring (in fsl-mph-dr-of.c)
 
-Second, with this patch applied, I am seeing errors from the driver:
-
-=====================
-[ 1623.902685]  sdb: sdb1 sdb2
-[ 1623.903245] sd 2:0:0:0: [sdb] Attached SCSI disk
-[ 1623.911000] scsi2: Illegal CCB #76 status 2 in Incoming Mailbox
-[ 1623.911005] scsi2: Illegal CCB #76 status 2 in Incoming Mailbox
-[ 1623.911070] scsi2: Illegal CCB #79 status 2 in Incoming Mailbox
-[ 1651.458008] scsi2: Warning: Partition Table appears to have Geometry 
-256/63 which is
-[ 1651.458013] scsi2: not compatible with current BusLogic Host Adapter 
-Geometry 255/63
-[ 1658.797609] scsi2: Resetting BusLogic BT-958D Failed
-[ 1659.533208] sd 2:0:0:0: Device offlined - not ready after error recovery
-[ 1659.533331] sd 2:0:0:0: Device offlined - not ready after error recovery
-[ 1659.533333] sd 2:0:0:0: Device offlined - not ready after error recovery
-[ 1659.533342] sd 2:0:0:0: [sdb] tag#101 FAILED Result: 
-hostbyte=DID_TIME_OUT driverbyte=DRIVER_OK cmd_age=35s
-[ 1659.533345] sd 2:0:0:0: [sdb] tag#101 CDB: Read(10) 28 00 00 00 00 28 
-00 00 10 00
-[ 1659.533346] I/O error, dev sdb, sector 40 op 0x0:(READ) flags 0x80700 
-phys_seg 1 prio class 0
-
-=================
-
-This is on VirtualBox using emulated BusLogic adapter.
-
-This patch needs more refinement.
-
-Thanks,
-Khalid
-
-
-
->   		if (comp_code != BLOGIC_Cn erroneousMD_NOTFOUND) {
->   			if (ccb->status == BLOGIC_CCB_ACTIVE ||
->   					ccb->status == BLOGIC_CCB_RESET) {
-> diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
-> index cf75588a2587..56bdc08d0b77 100644
-> --- a/drivers/scsi/Kconfig
-> +++ b/drivers/scsi/Kconfig
-> @@ -513,7 +513,7 @@ config SCSI_HPTIOP
->   
->   config SCSI_BUSLOGIC
->   	tristate "BusLogic SCSI support"
-> -	depends on PCI && SCSI && VIRT_TO_BUS
-> +	depends on PCI && SCSI
->   	help
->   	  This is support for BusLogic MultiMaster and FlashPoint SCSI Host
->   	  Adapters. Consult the SCSI-HOWTO, available from
-
+diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
+index 385be30..d0bf7fb 100644
+--- a/drivers/usb/host/ehci-fsl.c
++++ b/drivers/usb/host/ehci-fsl.c
+@@ -23,6 +23,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/fsl_devices.h>
+ #include <linux/of_platform.h>
++#include <linux/of_address.h>
+ #include <linux/io.h>
+ 
+ #include "ehci.h"
+@@ -46,9 +47,10 @@ static struct hc_driver __read_mostly
+fsl_ehci_hc_driver; */
+ static int fsl_ehci_drv_probe(struct platform_device *pdev)
+ {
++	struct device_node *dn = pdev->dev.of_node;
+ 	struct fsl_usb2_platform_data *pdata;
+ 	struct usb_hcd *hcd;
+-	struct resource *res;
++	struct resource res;
+ 	int irq;
+ 	int retval;
+ 	u32 tmp;
+@@ -76,14 +78,10 @@ static int fsl_ehci_drv_probe(struct
+platform_device *pdev) return -ENODEV;
+ 	}
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (!res) {
+-		dev_err(&pdev->dev,
+-			"Found HC with no IRQ. Check %s setup!\n",
+-			dev_name(&pdev->dev));
+-		return -ENODEV;
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		return irq;
+ 	}
+-	irq = res->start;
+ 
+ 	hcd = __usb_create_hcd(&fsl_ehci_hc_driver, pdev->dev.parent,
+ 			       &pdev->dev, dev_name(&pdev->dev), NULL);
+@@ -92,15 +90,21 @@ static int fsl_ehci_drv_probe(struct
+platform_device *pdev) goto err1;
+ 	}
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	hcd->regs = devm_ioremap_resource(&pdev->dev, res);
++	platform_set_drvdata(pdev, hcd);
++	pdev->dev.platform_data = pdata;
++
++	tmp = of_address_to_resource(dn, 0, &res);
++	if (tmp)
++		return tmp;
++
++	hcd->regs = devm_ioremap_resource(&pdev->dev, &res);
+ 	if (IS_ERR(hcd->regs)) {
+ 		retval = PTR_ERR(hcd->regs);
+ 		goto err2;
+ 	}
+ 
+-	hcd->rsrc_start = res->start;
+-	hcd->rsrc_len = resource_size(res);
++	hcd->rsrc_start = res.start;
++	hcd->rsrc_len = resource_size(&res);
+ 
+ 	pdata->regs = hcd->regs;
+ 
+diff --git a/drivers/usb/host/fsl-mph-dr-of.c
+b/drivers/usb/host/fsl-mph-dr-of.c index 44a7e58..766e4ab 100644
+--- a/drivers/usb/host/fsl-mph-dr-of.c
++++ b/drivers/usb/host/fsl-mph-dr-of.c
+@@ -80,8 +80,6 @@ static struct platform_device
+*fsl_usb2_device_register( const char *name, int id)
+ {
+ 	struct platform_device *pdev;
+-	const struct resource *res = ofdev->resource;
+-	unsigned int num = ofdev->num_resources;
+ 	int retval;
+ 
+ 	pdev = platform_device_alloc(name, id);
+@@ -106,11 +104,8 @@ static struct platform_device
+*fsl_usb2_device_register( if (retval)
+ 		goto error;
+ 
+-	if (num) {
+-		retval = platform_device_add_resources(pdev, res, num);
+-		if (retval)
+-			goto error;
+-	}
++	pdev->dev.of_node = ofdev->dev.of_node;
++	pdev->dev.of_node_reused = true;
+ 
+ 	retval = platform_device_add(pdev);
+ 	if (retval)
