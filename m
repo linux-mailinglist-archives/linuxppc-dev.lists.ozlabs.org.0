@@ -2,30 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4643F552BE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 09:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5B0552BE8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 09:27:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LRylM1Zkdz3cgS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 17:27:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LRyln2zLNz3dpk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jun 2022 17:27:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRykv2fBPz2xB1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 17:26:59 +1000 (AEST)
-Received: from dggemv703-chm.china.huawei.com (unknown [172.30.72.54])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LRyk33r4tzDsL6;
-	Tue, 21 Jun 2022 15:26:19 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LRykw0YGBz3073
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jun 2022 17:27:03 +1000 (AEST)
+Received: from dggemv711-chm.china.huawei.com (unknown [172.30.72.56])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LRyfs24HszSh67;
+	Tue, 21 Jun 2022 15:23:33 +0800 (CST)
 Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- dggemv703-chm.china.huawei.com (10.3.19.46) with Microsoft SMTP Server
+ dggemv711-chm.china.huawei.com (10.1.198.66) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 21 Jun 2022 15:26:48 +0800
+ 15.1.2375.24; Tue, 21 Jun 2022 15:26:50 +0800
 Received: from localhost.localdomain (10.175.112.125) by
  kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Tue, 21 Jun 2022 15:26:47 +0800
+ 15.1.2375.24; Tue, 21 Jun 2022 15:26:48 +0800
 From: Tong Tiangen <tongtiangen@huawei.com>
 To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner
@@ -36,10 +36,12 @@ To: Mark Rutland <mark.rutland@arm.com>, James Morse <james.morse@arm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
 	<benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>,
 	<x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH -next v6 00/10]arm64: add machine check safe support
-Date: Tue, 21 Jun 2022 07:26:28 +0000
-Message-ID: <20220621072638.1273594-1-tongtiangen@huawei.com>
+Subject: [PATCH -next v6 01/10] arm64: extable: add new extable type EX_TYPE_KACCESS_ERR_ZERO support
+Date: Tue, 21 Jun 2022 07:26:29 +0000
+Message-ID: <20220621072638.1273594-2-tongtiangen@huawei.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220621072638.1273594-1-tongtiangen@huawei.com>
+References: <20220621072638.1273594-1-tongtiangen@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -62,111 +64,222 @@ Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, Xie XiuQi <xiexiuqi@huawei.com>, l
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With the increase of memory capacity and density, the probability of
-memory error increases. The increasing size and density of server RAM
-in the data center and cloud have shown increased uncorrectable memory
-errors.
+Currently, The extable type EX_TYPE_UACCESS_ERR_ZERO is used by
+__get/put_kernel_nofault(), but those helpers are not uaccess type, so we
+add a new extable type EX_TYPE_KACCESS_ERR_ZERO which can be used by
+__get/put_kernel_no_fault().
 
-Currently, the kernel has a mechanism to recover from hardware memory
-errors. This patchset provides an new recovery mechanism.
+This is also to prepare for distinguishing the two types in machine check
+safe process.
 
-For arm64, the hardware memory error handling is do_sea() which divided
-into two cases:
- 1. The user state consumed the memory errors, the solution is kill the
-    user process and isolate the error page.
- 2. The kernel state consumed the memory errors, the solution is panic.
-
-For case 2, Undifferentiated panic maybe not the optimal choice, it can be
-handled better, in some scenarios, we can avoid panic, such as uaccess, if the
-uaccess fails due to memory error, only the user process will be affected,
-kill the user process and isolate the user page with hardware memory errors
-is a better choice.
-
-This patchset can be divided into two parts:
- 1. Patch 1~6    - do some restructuring to arm64 extable.
- 2. Patch 7~10   - arm64 add support for machine check safe framework,
- then ,add two specific scenarios(uaccess/cow) to machine check safe.
-
-Since V5:
- 1. Add patch2/3 to add uaccess assembly helpers.
- 2. Optimize the implementation logic of arm64_do_kernel_sea() in patch8.
- 3. Remove kernel access fixup in patch9.
- All suggestion are from Mark. 
-
-Since V4:
- 1. According Michael's suggestion, add patch5.
- 2. According Mark's suggestiog, do some restructuring to arm64
- extable, then a new adaptation of machine check safe support is made based
- on this.
- 3. According Mark's suggestion, support machine check safe in do_mte() in
- cow scene.
- 4. In V4, two patches have been merged into -next, so V5 not send these
- two patches.
-
-Since V3:
- 1. According to Robin's suggestion, direct modify user_ldst and
- user_ldp in asm-uaccess.h and modify mte.S.
- 2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
- and copy_to_user.S.
- 3. According to Robin's suggestion, using micro in copy_page_mc.S to
- simplify code.
- 4. According to KeFeng's suggestion, modify powerpc code in patch1.
- 5. According to KeFeng's suggestion, modify mm/extable.c and some code
- optimization.
-
-Since V2:
- 1. According to Mark's suggestion, all uaccess can be recovered due to
-    memory error.
- 2. Scenario pagecache reading is also supported as part of uaccess
-    (copy_to_user()) and duplication code problem is also solved. 
-    Thanks for Robin's suggestion.
- 3. According Mark's suggestion, update commit message of patch 2/5.
- 4. According Borisllav's suggestion, update commit message of patch 1/5.
-
-Since V1:
- 1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
-   ARM64_UCE_KERNEL_RECOVERY.
- 2.Add two new scenes, cow and pagecache reading.
- 3.Fix two small bug(the first two patch).
-
-V1 in here:
-https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
-
-Tong Tiangen (10):
-  arm64: extable: add new extable type EX_TYPE_KACCESS_ERR_ZERO support
-  arm64: asm-extable: move data fields
-  arm64: asm-extable: add asm uacess helpers
-  arm64: extable: make uaaccess helper use extable type
-    EX_TYPE_UACCESS_ERR_ZERO
-  arm64: extable: move _cond_extable to _cond_uaccess_extable
-  arm64: extable: cleanup redundant extable type EX_TYPE_FIXUP
-  Add generic fallback version of copy_mc_to_user()
-  arm64: add support for machine check error safe
-  arm64: add uaccess to machine check safe
-  arm64: add cow to machine check safe
-
- arch/arm64/Kconfig                   |  1 +
- arch/arm64/include/asm/asm-extable.h | 84 ++++++++++++++++++-------
- arch/arm64/include/asm/asm-uaccess.h | 12 ++--
- arch/arm64/include/asm/assembler.h   |  8 ++-
- arch/arm64/include/asm/extable.h     |  1 +
- arch/arm64/include/asm/mte.h         |  4 ++
- arch/arm64/include/asm/page.h        | 10 +++
+Suggested-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+---
+ arch/arm64/include/asm/asm-extable.h | 15 ++++-
  arch/arm64/include/asm/uaccess.h     | 94 ++++++++++++++--------------
- arch/arm64/lib/Makefile              |  2 +
- arch/arm64/lib/copy_page_mc.S        | 82 ++++++++++++++++++++++++
- arch/arm64/lib/mte.S                 | 19 ++++++
- arch/arm64/mm/copypage.c             | 41 +++++++++---
- arch/arm64/mm/extable.c              | 21 ++++++-
- arch/arm64/mm/fault.c                | 29 ++++++++-
- arch/powerpc/include/asm/uaccess.h   |  1 +
- arch/x86/include/asm/uaccess.h       |  1 +
- include/linux/highmem.h              |  8 +++
- include/linux/uaccess.h              |  9 +++
- mm/memory.c                          |  2 +-
- 19 files changed, 339 insertions(+), 90 deletions(-)
- create mode 100644 arch/arm64/lib/copy_page_mc.S
+ arch/arm64/mm/extable.c              |  1 +
+ 3 files changed, 62 insertions(+), 48 deletions(-)
 
+diff --git a/arch/arm64/include/asm/asm-extable.h b/arch/arm64/include/asm/asm-extable.h
+index c39f2437e08e..1717fc4cfeb5 100644
+--- a/arch/arm64/include/asm/asm-extable.h
++++ b/arch/arm64/include/asm/asm-extable.h
+@@ -6,7 +6,8 @@
+ #define EX_TYPE_FIXUP			1
+ #define EX_TYPE_BPF			2
+ #define EX_TYPE_UACCESS_ERR_ZERO	3
+-#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	4
++#define EX_TYPE_KACCESS_ERR_ZERO	4
++#define EX_TYPE_LOAD_UNALIGNED_ZEROPAD	5
+ 
+ #ifdef __ASSEMBLY__
+ 
+@@ -73,9 +74,21 @@
+ 			    EX_DATA_REG(ZERO, zero)			\
+ 			  ")")
+ 
++#define _ASM_EXTABLE_KACCESS_ERR_ZERO(insn, fixup, err, zero)		\
++	__DEFINE_ASM_GPR_NUMS						\
++	__ASM_EXTABLE_RAW(#insn, #fixup, 				\
++			  __stringify(EX_TYPE_KACCESS_ERR_ZERO),	\
++			  "("						\
++			    EX_DATA_REG(ERR, err) " | "			\
++			    EX_DATA_REG(ZERO, zero)			\
++			  ")")
++
+ #define _ASM_EXTABLE_UACCESS_ERR(insn, fixup, err)			\
+ 	_ASM_EXTABLE_UACCESS_ERR_ZERO(insn, fixup, err, wzr)
+ 
++#define _ASM_EXTABLE_KACCESS_ERR(insn, fixup, err)			\
++	_ASM_EXTABLE_KACCESS_ERR_ZERO(insn, fixup, err, wzr)
++
+ #define EX_DATA_REG_DATA_SHIFT	0
+ #define EX_DATA_REG_DATA	GENMASK(4, 0)
+ #define EX_DATA_REG_ADDR_SHIFT	5
+diff --git a/arch/arm64/include/asm/uaccess.h b/arch/arm64/include/asm/uaccess.h
+index 63f9c828f1a7..2fc9f0861769 100644
+--- a/arch/arm64/include/asm/uaccess.h
++++ b/arch/arm64/include/asm/uaccess.h
+@@ -232,34 +232,34 @@ static inline void __user *__uaccess_mask_ptr(const void __user *ptr)
+  * The "__xxx_error" versions set the third argument to -EFAULT if an error
+  * occurs, and leave it unchanged on success.
+  */
+-#define __get_mem_asm(load, reg, x, addr, err)				\
++#define __get_mem_asm(load, reg, x, addr, err, type)			\
+ 	asm volatile(							\
+ 	"1:	" load "	" reg "1, [%2]\n"			\
+ 	"2:\n"								\
+-	_ASM_EXTABLE_UACCESS_ERR_ZERO(1b, 2b, %w0, %w1)			\
++	_ASM_EXTABLE_##type##ACCESS_ERR_ZERO(1b, 2b, %w0, %w1)		\
+ 	: "+r" (err), "=&r" (x)						\
+ 	: "r" (addr))
+ 
+-#define __raw_get_mem(ldr, x, ptr, err)					\
+-do {									\
+-	unsigned long __gu_val;						\
+-	switch (sizeof(*(ptr))) {					\
+-	case 1:								\
+-		__get_mem_asm(ldr "b", "%w", __gu_val, (ptr), (err));	\
+-		break;							\
+-	case 2:								\
+-		__get_mem_asm(ldr "h", "%w", __gu_val, (ptr), (err));	\
+-		break;							\
+-	case 4:								\
+-		__get_mem_asm(ldr, "%w", __gu_val, (ptr), (err));	\
+-		break;							\
+-	case 8:								\
+-		__get_mem_asm(ldr, "%x",  __gu_val, (ptr), (err));	\
+-		break;							\
+-	default:							\
+-		BUILD_BUG();						\
+-	}								\
+-	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
++#define __raw_get_mem(ldr, x, ptr, err, type)					\
++do {										\
++	unsigned long __gu_val;							\
++	switch (sizeof(*(ptr))) {						\
++	case 1:									\
++		__get_mem_asm(ldr "b", "%w", __gu_val, (ptr), (err), type);	\
++		break;								\
++	case 2:									\
++		__get_mem_asm(ldr "h", "%w", __gu_val, (ptr), (err), type);	\
++		break;								\
++	case 4:									\
++		__get_mem_asm(ldr, "%w", __gu_val, (ptr), (err), type);		\
++		break;								\
++	case 8:									\
++		__get_mem_asm(ldr, "%x",  __gu_val, (ptr), (err), type);	\
++		break;								\
++	default:								\
++		BUILD_BUG();							\
++	}									\
++	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
+ } while (0)
+ 
+ /*
+@@ -274,7 +274,7 @@ do {									\
+ 	__chk_user_ptr(ptr);						\
+ 									\
+ 	uaccess_ttbr0_enable();						\
+-	__raw_get_mem("ldtr", __rgu_val, __rgu_ptr, err);		\
++	__raw_get_mem("ldtr", __rgu_val, __rgu_ptr, err, U);		\
+ 	uaccess_ttbr0_disable();					\
+ 									\
+ 	(x) = __rgu_val;						\
+@@ -314,40 +314,40 @@ do {									\
+ 									\
+ 	__uaccess_enable_tco_async();					\
+ 	__raw_get_mem("ldr", *((type *)(__gkn_dst)),			\
+-		      (__force type *)(__gkn_src), __gkn_err);		\
++		      (__force type *)(__gkn_src), __gkn_err, K);	\
+ 	__uaccess_disable_tco_async();					\
+ 									\
+ 	if (unlikely(__gkn_err))					\
+ 		goto err_label;						\
+ } while (0)
+ 
+-#define __put_mem_asm(store, reg, x, addr, err)				\
++#define __put_mem_asm(store, reg, x, addr, err, type)			\
+ 	asm volatile(							\
+ 	"1:	" store "	" reg "1, [%2]\n"			\
+ 	"2:\n"								\
+-	_ASM_EXTABLE_UACCESS_ERR(1b, 2b, %w0)				\
++	_ASM_EXTABLE_##type##ACCESS_ERR(1b, 2b, %w0)			\
+ 	: "+r" (err)							\
+ 	: "r" (x), "r" (addr))
+ 
+-#define __raw_put_mem(str, x, ptr, err)					\
+-do {									\
+-	__typeof__(*(ptr)) __pu_val = (x);				\
+-	switch (sizeof(*(ptr))) {					\
+-	case 1:								\
+-		__put_mem_asm(str "b", "%w", __pu_val, (ptr), (err));	\
+-		break;							\
+-	case 2:								\
+-		__put_mem_asm(str "h", "%w", __pu_val, (ptr), (err));	\
+-		break;							\
+-	case 4:								\
+-		__put_mem_asm(str, "%w", __pu_val, (ptr), (err));	\
+-		break;							\
+-	case 8:								\
+-		__put_mem_asm(str, "%x", __pu_val, (ptr), (err));	\
+-		break;							\
+-	default:							\
+-		BUILD_BUG();						\
+-	}								\
++#define __raw_put_mem(str, x, ptr, err, type)					\
++do {										\
++	__typeof__(*(ptr)) __pu_val = (x);					\
++	switch (sizeof(*(ptr))) {						\
++	case 1:									\
++		__put_mem_asm(str "b", "%w", __pu_val, (ptr), (err), type);	\
++		break;								\
++	case 2:									\
++		__put_mem_asm(str "h", "%w", __pu_val, (ptr), (err), type);	\
++		break;								\
++	case 4:									\
++		__put_mem_asm(str, "%w", __pu_val, (ptr), (err), type);		\
++		break;								\
++	case 8:									\
++		__put_mem_asm(str, "%x", __pu_val, (ptr), (err), type);		\
++		break;								\
++	default:								\
++		BUILD_BUG();							\
++	}									\
+ } while (0)
+ 
+ /*
+@@ -362,7 +362,7 @@ do {									\
+ 	__chk_user_ptr(__rpu_ptr);					\
+ 									\
+ 	uaccess_ttbr0_enable();						\
+-	__raw_put_mem("sttr", __rpu_val, __rpu_ptr, err);		\
++	__raw_put_mem("sttr", __rpu_val, __rpu_ptr, err, U);		\
+ 	uaccess_ttbr0_disable();					\
+ } while (0)
+ 
+@@ -400,7 +400,7 @@ do {									\
+ 									\
+ 	__uaccess_enable_tco_async();					\
+ 	__raw_put_mem("str", *((type *)(__pkn_src)),			\
+-		      (__force type *)(__pkn_dst), __pkn_err);		\
++		      (__force type *)(__pkn_dst), __pkn_err, K);	\
+ 	__uaccess_disable_tco_async();					\
+ 									\
+ 	if (unlikely(__pkn_err))					\
+diff --git a/arch/arm64/mm/extable.c b/arch/arm64/mm/extable.c
+index 489455309695..056591e5ca80 100644
+--- a/arch/arm64/mm/extable.c
++++ b/arch/arm64/mm/extable.c
+@@ -77,6 +77,7 @@ bool fixup_exception(struct pt_regs *regs)
+ 	case EX_TYPE_BPF:
+ 		return ex_handler_bpf(ex, regs);
+ 	case EX_TYPE_UACCESS_ERR_ZERO:
++	case EX_TYPE_KACCESS_ERR_ZERO:
+ 		return ex_handler_uaccess_err_zero(ex, regs);
+ 	case EX_TYPE_LOAD_UNALIGNED_ZEROPAD:
+ 		return ex_handler_load_unaligned_zeropad(ex, regs);
 -- 
 2.25.1
 
