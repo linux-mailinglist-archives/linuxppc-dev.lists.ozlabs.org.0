@@ -2,67 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0515B55407D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 04:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 104F2554088
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 04:27:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSRxr0Twlz3cdT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 12:23:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSS3J6fZ2z2yJQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 12:27:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ffSZQxqH;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n41Lv86J;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ffSZQxqH;
-	dkim-atps=neutral
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSRx95G1Hz2xB1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 12:22:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655864557; x=1687400557;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QSywI1O13gdKLcRQ8txL+vbe2gWSenpDSQ+axalbyU4=;
-  b=ffSZQxqHAM7vCvLtkm+k+MeaqTna/lXT3Mccjd2JW98SsngWcSquZYlN
-   XYY+i2oHvMsLToyEFrUptX1IzQu3ENkTdySOeoSRUULHoqL5/gKtMaXHG
-   u/uhfYJespAQtiPNCfR7va7k5Ux3UH5Q2/7Ta6QGwR4RHkMpKVoxlFzfM
-   rlKY2FAuh4TUz7mtVUoryA5sQDsky59C6os0sdfNi6f7nOlmZhGP77JGD
-   L5bbt3ByucJXXUeuBB9vZayPG4iAfpoNb11BbIfOvSWOK6kJlQj1D6o4Q
-   8ij/cmH+J32inZbB+1enjjPqQYTq8IQ1S35Qh9eWh/1sk+MUfNMB79G9d
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="305741506"
-X-IronPort-AV: E=Sophos;i="5.92,211,1650956400"; 
-   d="scan'208";a="305741506"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 19:22:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,211,1650956400"; 
-   d="scan'208";a="655422205"
-Received: from lkp-server02.sh.intel.com (HELO a67cc04a5eeb) ([10.239.97.151])
-  by fmsmga004.fm.intel.com with ESMTP; 21 Jun 2022 19:22:25 -0700
-Received: from kbuild by a67cc04a5eeb with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1o3q0e-0000iW-HJ;
-	Wed, 22 Jun 2022 02:22:24 +0000
-Date: Wed, 22 Jun 2022 10:22:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wang Wenhu <wenhu.wang@hotmail.com>, gregkh@linuxfoundation.org,
-	arnd@arndb.de, hao.wu@intel.com, trix@redhat.com, mdf@kernel.org,
-	yilun.xu@intel.com, bhelgaas@google.com, akpm@linux-foundation.org,
-	linux-fpga@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCHv2 1/2] mm: eliminate ifdef of HAVE_IOREMAP_PROT in .c
- files
-Message-ID: <202206221053.GV7BYwqL-lkp@intel.com>
-References: <SG2PR01MB295111ED8F547B9F99DB9FA99FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSS2h28zrz2xKf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 12:27:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=n41Lv86J;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LSS2d4vzDz4xYD;
+	Wed, 22 Jun 2022 12:27:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1655864842;
+	bh=7wPtZzilp6XrJMCgGLGRvDuLvLC6U9nqxWFY5hLeiBI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=n41Lv86JCLLl20DlEOzBjcnAn1OC1vElApH2qZCKvox+q4g7enU6aF6epC4RabuDS
+	 Rf80qAlUnXvfmOUTHpW159oRvnK5yYKSiEYqEP/UobHU9cltf1AIcdbbu2gzssFLhx
+	 5WPIGJrMz9jMf5ahU23TzAw8NruEH0OHAWbSKtZsigbudrhTroTdqCyx5qrjOkU6HB
+	 EkAOlRCrXq29ZIRZwOTxOMJraMOmnWXl3GHfadOtpo+MX0IE9N6cBdc9jmyVzn3+zy
+	 nwXMBQHfXL6UGvYnU49sXOCCjyo/iu3jKfi/7Rc+3TTG6mG/rCVMBDynuOFF9Pe2uy
+	 60TkysKix9/Eg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, "Jason A. Donenfeld"
+ <Jason@zx2c4.com>
+Subject: Re: [PATCH v5] powerpc/powernv: wire up rng during setup_arch
+In-Reply-To: <a354de5e-1d07-3759-a55e-a9179890cfaa@csgroup.eu>
+References: <20220620124531.78075-1-Jason@zx2c4.com>
+ <20220621140849.127227-1-Jason@zx2c4.com>
+ <246d8bf0-2bee-7e1b-e0af-408920ece309@csgroup.eu>
+ <YrISWLwm8m7OPFom@zx2c4.com>
+ <a354de5e-1d07-3759-a55e-a9179890cfaa@csgroup.eu>
+Date: Wed, 22 Jun 2022 12:27:20 +1000
+Message-ID: <87bkulzb3r.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SG2PR01MB295111ED8F547B9F99DB9FA99FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,40 +63,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, wenhu.wang@hotmail.com, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, LKML <linux-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Wang,
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 21/06/2022 =C3=A0 20:47, Jason A. Donenfeld a =C3=A9crit=C2=A0:
+>> On Tue, Jun 21, 2022 at 06:33:11PM +0000, Christophe Leroy wrote:
+>>> Le 21/06/2022 =C3=A0 16:08, Jason A. Donenfeld a =C3=A9crit=C2=A0:
+>>>> The platform's RNG must be available before random_init() in order to =
+be
+>>>> useful for initial seeding, which in turn means that it needs to be
+>>>> called from setup_arch(), rather than from an init call. Fortunately,
+>>>> each platform already has a setup_arch function pointer, which means we
+>>>> can wire it up that way. Complicating things, however, is that POWER8
+>>>> systems need some per-cpu state and kmalloc, which isn't available at
+>>>> this stage. So we split things up into an early phase and a later
+>>>> opportunistic phase. This commit also removes some noisy log messages
+>>>> that don't add much.
+>>>
+>>> Regarding the kmalloc(), I have not looked at it in details, but usually
+>>> you can use memblock_alloc() when kmalloc is not available yet.
+>>=20
+>> That seems a bit excessive, especially as those allocations are long
+>> lived. And we don't even *need* it that early, but just before
+>> random_init(). Michael is running this v5 on the test rig overnight, so
+>> we'll learn in the Australian morning whether this finally did the trick
+>> (I hope).
+>
+> The fact that they are long lived make them a good candidate for=20
+> memblock_alloc().
+>
+> But fair enough, if they are not required that early then just do it late=
+r.
 
-Thank you for the patch! Yet something to improve:
+memblock works but then we trip on ioremap vs early_ioremap.
 
-[auto build test ERROR on akpm-mm/mm-everything]
+Fixing that is a bit of a pain as we'd have to stop using of_iomap() and
+we'd also need to switch the mappings to ioremap() later in boot.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wang-Wenhu/mm-eliminate-ifdef-of-HAVE_IOREMAP_PROT-in-c-files/20220615-140135
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-config: arm-randconfig-s032-20220622 (https://download.01.org/0day-ci/archive/20220622/202206221053.GV7BYwqL-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 11.3.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # apt-get install sparse
-        # sparse version: v0.6.4-31-g4880bd19-dirty
-        # https://github.com/intel-lab-lkp/linux/commit/b20efcc877829b6f416cf111bd5ad2b13a0cd08e
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Wang-Wenhu/mm-eliminate-ifdef-of-HAVE_IOREMAP_PROT-in-c-files/20220615-140135
-        git checkout b20efcc877829b6f416cf111bd5ad2b13a0cd08e
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=arm SHELL=/bin/bash
+We'd also have to defer the percpu initialisation.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+So it's all just a bit of a pain when we actually only need to get the
+hook ready before random_init() which is called much later in boot when
+slab/ioremap/percpu are all ready.
 
-All errors (new ones prefixed by >>):
-
->> arm-linux-gnueabi-ld: drivers/char/mem.o:(.rodata+0x144): undefined reference to `generic_access_phys'
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+cheers
