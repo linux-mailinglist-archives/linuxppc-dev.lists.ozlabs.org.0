@@ -1,89 +1,111 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8795544AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 10:41:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC155544B1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 10:42:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LScLK5d9Xz3cL8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 18:41:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LScM54qZVz3chb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 18:42:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=LA+Upf0K;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=C9ry61oO;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/MyRn6Q;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=russell.cc (client-ip=64.147.123.24; helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256 header.s=fm3 header.b=LA+Upf0K;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=C9ry61oO;
-	dkim-atps=neutral
-X-Greylist: delayed 513 seconds by postgrey-1.36 at boromir; Wed, 22 Jun 2022 18:40:50 AEST
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LScKZ4WLRz3blF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 18:40:50 +1000 (AEST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 78E2932006F5;
-	Wed, 22 Jun 2022 04:32:11 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 22 Jun 2022 04:32:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=cc
-	:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm3; t=1655886730; x=
-	1655973130; bh=iAGqNLqvxLqcehmdAuvFnP4Q8RBBYLJJbA7BHIYW2w4=; b=L
-	A+Upf0Kyuz4TXGbKm+T8z7RKrk5HuD+LoNxXFqLUfXNX1corGhkeoosEX6QYnaza
-	tHo53cuPYOscqNgbSMecRTZDHGlphevG8+kNNcX57XuVgoLhe7hcfPCBDJ0o8j7x
-	OgH+IQDJIYrMNu6sNYTjKQWEmXEENy0O0UM8NUo5XPef4yzl//MNZVzgqgIfJLgH
-	TZN0oJVMsTgelNNJIf6GH0U8vnhzDAsE8lp9aX/yostWqW257cCqc34X1lEmm4B+
-	YUajlEOGaBGN30/s6ZCVkIMmwLcyTL8ITzPuvsRt9PANNF/lS2rmpL/4XhoQFQcK
-	rgeitH/J8wa42voNkIZNw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-transfer-encoding:content-type
-	:date:date:feedback-id:feedback-id:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm2; t=1655886730; x=1655973130; bh=i
-	AGqNLqvxLqcehmdAuvFnP4Q8RBBYLJJbA7BHIYW2w4=; b=C9ry61oO/gfJFkMsH
-	cL9m6sNEtovOvV0wFcNe1ezKR57sJsr5Bb5DKSl1ZkCXO29k9f9IESAE8kRmkdZI
-	x6TjzhkufeZN+/HMUNIYeAyhZiOD58lGN73pyMJkzIrli8Vo5FUyH2sScE0OqSMk
-	2EvdtOEelM9yF/+fGlhr28RYtfhvuB6W0R+xT0dpH6jJFPOf9kgcHpqYtPjQ36hD
-	3yyjdzZH7pphZHv8+kQ7YPt8gPEzmg5FDwmCNn5qIEqUgQBvqfG+pqM+piBz8y6K
-	M4yLku/uulQHR5aIitQVj9P6XSp3MljXbF0tX7tdBeDw5D5+HiNDgZPgNHEhBcf3
-	ObY7Q==
-X-ME-Sender: <xms:itOyYsDaHmgZBJHV839pscbX1QRzS8Jy5U5DDd5jpJNEaysT_wBgaA>
-    <xme:itOyYui_oX6t7KOZevJUkl_E-JTtGx0lAKsjOWJmT93jjGH7KMU81Hhl2XFlIHTER
-    2nWsMDppcqKwm2L4g>
-X-ME-Received: <xmr:itOyYvl9iU4KS4Y8J_vPTHJoGiDl4cS7WpXZck47_K0udubRP74U1hau2oOpqdtFXJoZdbE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrudefhedgtdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenucfjughrpefkuf
-    fhvfffjghftgfgfgggsehtqhertddtreejnecuhfhrohhmpeftuhhsshgvlhhlucevuhhr
-    rhgvhicuoehruhhstghurhesrhhushhsvghllhdrtggtqeenucggtffrrghtthgvrhhnpe
-    evhfehieeijeeiheegueehgfffudduveeukedujeefhffggfegtdeiveeuhefgtdenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurh
-    esrhhushhsvghllhdrtggt
-X-ME-Proxy: <xmx:itOyYizFJ0z5v0lj3x_B3Nz-Eoo8BtcoXRY7XGjfwLXu3tZP-YHVYw>
-    <xmx:itOyYhRA6FBQfe6RO-Mi9PMMpQz6X73vuzwTI0YXRqorG-NG6djYfQ>
-    <xmx:itOyYtbcywdxIDMy1o5ZAfWrgFo4rEKl40sXzYqgG6qNqJ8JBlSGEg>
-    <xmx:itOyYi4BQYkpPN8iijo0DDs6kq7ZpySv_0sy8DrS5q50UUFtC0DNAw>
-Feedback-ID: i4421424f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Jun 2022 04:32:09 -0400 (EDT)
-Message-ID: <da25a411031208310b63dd652a9ae5a2e65c037a.camel@russell.cc>
-Subject: Re: [PATCH] powerc: Update asm-prototypes.h comment
-From: Russell Currey <ruscur@russell.cc>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Date: Wed, 22 Jun 2022 18:32:04 +1000
-In-Reply-To: <20220617080243.2177583-1-mpe@ellerman.id.au>
-References: <20220617080243.2177583-1-mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.2 (3.44.2-1.fc36) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LScKj03xJz3blF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 18:40:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/MyRn6Q;
+	dkim-atps=neutral
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	by gandalf.ozlabs.org (Postfix) with ESMTP id 4LScKd19Ltz4xZb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 18:40:53 +1000 (AEST)
+Received: by gandalf.ozlabs.org (Postfix)
+	id 4LScKd15ybz4xZj; Wed, 22 Jun 2022 18:40:53 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: gandalf.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/MyRn6Q;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4LScKc61H9z4xZb
+	for <linuxppc-dev@ozlabs.org>; Wed, 22 Jun 2022 18:40:52 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25M8NmcQ011003;
+	Wed, 22 Jun 2022 08:40:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=ZQ+dEbpWJFMETnununWmQP43T3T8Azzd7hTNqrMT9JU=;
+ b=R/MyRn6Q1dW4BCS2tj4NMXx6dRPSAQC/gRO3DToF0k0pG7ndz8K3CPbAXOXoBtXt2Q/U
+ EtVz8Csw+LikPVXcBYSAkYuElrt84gV4vPLWln5za2UPrsneKX71e+aVFX6nxV43VCW2
+ 6QUzeN8KXpS/W2Vx5bYQViF/sxfMmAyUAitPEk2L87fizt/xKC4x3Nu4vRx8QOHbxcy4
+ l3/yWnmoIBkVeSp7aL/yxaau/Iznix/Kn/GC1v+6AVoE+dEHxJRXsAIaQZPG6JxSho3j
+ 304BUsmvoa8kUCbd5CshOVCIxWc1Gh0U0wa9bsjbYh7LL2B6s9ybpnnz8Pp5GAFVrMQz JQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3guyhm0fru-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jun 2022 08:40:41 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25M8RNSB028228;
+	Wed, 22 Jun 2022 08:40:41 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3guyhm0fq6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jun 2022 08:40:41 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25M8avtA016975;
+	Wed, 22 Jun 2022 08:40:38 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma06ams.nl.ibm.com with ESMTP id 3gs5yhnax7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jun 2022 08:40:38 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25M8eZAK21233962
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Jun 2022 08:40:35 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ADC3B11C050;
+	Wed, 22 Jun 2022 08:40:35 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E4B311C04A;
+	Wed, 22 Jun 2022 08:40:33 +0000 (GMT)
+Received: from [9.43.27.116] (unknown [9.43.27.116])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Jun 2022 08:40:33 +0000 (GMT)
+Message-ID: <bc8f37cb-006a-0c33-2de8-1481b4201be1@linux.ibm.com>
+Date: Wed, 22 Jun 2022 14:10:32 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v5 1/5] powerpc/kexec: make update_cpus_node non-static
+Content-Language: en-US
+To: Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+        mpe@ellerman.id.au
+References: <20220620070106.93141-1-sourabhjain@linux.ibm.com>
+ <20220620070106.93141-2-sourabhjain@linux.ibm.com>
+ <2df3da07-9384-d8b2-15f5-b124538b93c2@linux.ibm.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <2df3da07-9384-d8b2-15f5-b124538b93c2@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rq3qBF01Xbcu7F1WoKukn5-Yxxb0rMFT
+X-Proofpoint-ORIG-GUID: CNYtTFeCdoWLtxJtMB1lF2Lntx1H000b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-21_11,2022-06-22_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206220041
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,16 +117,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2022-06-17 at 18:02 +1000, Michael Ellerman wrote:
-> This header was recently cleaned up in commit 76222808fc25 ("powerpc:
-> Move C prototypes out of asm-prototypes.h"), update the comment to
-> reflect it's proper purpose.
->=20
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Hi Michael, subject says "powerc" instead of "powerpc".
+On 21/06/22 14:29, Laurent Dufour wrote:
+> On 20/06/2022, 09:01:02, Sourabh Jain wrote:
+>> Make the update_cpus_node function non-static and export it for
+>> usage in other kexec components.
+>>
+>> The update_cpus_node definition is moved to core_64.c so that it
+>> can be used with both kexec_load and kexec_file_load system calls.
+>>
+>> No functional change intended.
+> And FWIW
+> Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
+Thank you!
 
-- clippy
+- Sourabh Jain
