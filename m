@@ -1,32 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D11554AA8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 15:12:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7CE554AAE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 15:13:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSkM66VrXz3f0G
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 23:12:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSkMX70tJz3f3l
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 23:12:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=heyquark.com (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=ash@heyquark.com; receiver=<UNKNOWN>)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSkKZ4vMJz3brX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 23:11:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSkKj1hkZz3bnn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 23:11:20 +1000 (AEST)
 Received: (Authenticated sender: ash@heyquark.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id F02D1FF804;
-	Wed, 22 Jun 2022 13:11:05 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id E94F1FF808;
+	Wed, 22 Jun 2022 13:11:12 +0000 (UTC)
 From: Ash Logan <ash@heyquark.com>
 To: paulus@samba.org,
 	mpe@ellerman.id.au,
 	christophe.leroy@csgroup.eu,
 	robh+dt@kernel.org,
 	benh@kernel.crashing.org
-Subject: [PATCH v2 03/12] powerpc: wiiu: bootwrapper support
-Date: Wed, 22 Jun 2022 23:10:28 +1000
-Message-Id: <20220622131037.57604-4-ash@heyquark.com>
+Subject: [PATCH v2 04/12] powerpc: wiiu: introduce wiiu platform
+Date: Wed, 22 Jun 2022 23:10:29 +1000
+Message-Id: <20220622131037.57604-5-ash@heyquark.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220622131037.57604-1-ash@heyquark.com>
 References: <20220302044406.63401-1-ash@heyquark.com>
@@ -48,246 +48,57 @@ Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for the Nintendo Wii U game console to the powerpc
-bootwrapper.
+Adds empty platforms/wiiu for Nintendo Wii U console
 
 Signed-off-by: Ash Logan <ash@heyquark.com>
-Co-developed-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 ---
- arch/powerpc/boot/Makefile    |   4 ++
- arch/powerpc/boot/wiiu-head.S | 103 ++++++++++++++++++++++++++++++++++
- arch/powerpc/boot/wiiu.c      |  73 ++++++++++++++++++++++++
- arch/powerpc/boot/wrapper     |   4 ++
- 4 files changed, 184 insertions(+)
- create mode 100644 arch/powerpc/boot/wiiu-head.S
- create mode 100644 arch/powerpc/boot/wiiu.c
+ arch/powerpc/platforms/Kconfig       | 1 +
+ arch/powerpc/platforms/Makefile      | 1 +
+ arch/powerpc/platforms/wiiu/Kconfig  | 5 +++++
+ arch/powerpc/platforms/wiiu/Makefile | 1 +
+ 4 files changed, 8 insertions(+)
+ create mode 100644 arch/powerpc/platforms/wiiu/Kconfig
+ create mode 100644 arch/powerpc/platforms/wiiu/Makefile
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 4b4827c475c6..74e77f072e35 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -155,6 +155,7 @@ src-plat-$(CONFIG_EMBEDDED6xx) += cuboot-pq2.c cuboot-mpc7448hpc2.c \
- 					gamecube-head.S gamecube.c \
- 					wii-head.S wii.c holly.c \
- 					fixed-head.S mvme5100.c
-+src-plat-$(CONFIG_WIIU) += wiiu-head.S wiiu.c
- src-plat-$(CONFIG_AMIGAONE) += cuboot-amigaone.c
- src-plat-$(CONFIG_PPC_PS3) += ps3-head.S ps3-hvcall.S ps3.c
- src-plat-$(CONFIG_EPAPR_BOOT) += epapr.c epapr-wrapper.c
-@@ -353,6 +354,9 @@ image-$(CONFIG_GAMECUBE)		+= dtbImage.gamecube
- image-$(CONFIG_WII)			+= dtbImage.wii
- image-$(CONFIG_MVME5100)		+= dtbImage.mvme5100
+diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
+index d41dad227de8..c4a9c3c0b409 100644
+--- a/arch/powerpc/platforms/Kconfig
++++ b/arch/powerpc/platforms/Kconfig
+@@ -22,6 +22,7 @@ source "arch/powerpc/platforms/40x/Kconfig"
+ source "arch/powerpc/platforms/amigaone/Kconfig"
+ source "arch/powerpc/platforms/book3s/Kconfig"
+ source "arch/powerpc/platforms/microwatt/Kconfig"
++source "arch/powerpc/platforms/wiiu/Kconfig"
  
-+# Board port in arch/powerpc/platform/wiiu/Kconfig
-+image-$(CONFIG_WIIU)			+= dtbImage.wiiu
-+
- # Board port in arch/powerpc/platform/amigaone/Kconfig
- image-$(CONFIG_AMIGAONE)		+= cuImage.amigaone
- 
-diff --git a/arch/powerpc/boot/wiiu-head.S b/arch/powerpc/boot/wiiu-head.S
+ config KVM_GUEST
+ 	bool "KVM Guest support"
+diff --git a/arch/powerpc/platforms/Makefile b/arch/powerpc/platforms/Makefile
+index 94470fb27c99..944ddd938711 100644
+--- a/arch/powerpc/platforms/Makefile
++++ b/arch/powerpc/platforms/Makefile
+@@ -24,3 +24,4 @@ obj-$(CONFIG_EMBEDDED6xx)	+= embedded6xx/
+ obj-$(CONFIG_AMIGAONE)		+= amigaone/
+ obj-$(CONFIG_PPC_BOOK3S)	+= book3s/
+ obj-$(CONFIG_PPC_MICROWATT)	+= microwatt/
++obj-$(CONFIG_WIIU)		+= wiiu/
+diff --git a/arch/powerpc/platforms/wiiu/Kconfig b/arch/powerpc/platforms/wiiu/Kconfig
 new file mode 100644
-index 000000000000..8586e2e992d5
+index 000000000000..e5513205da3c
 --- /dev/null
-+++ b/arch/powerpc/boot/wiiu-head.S
-@@ -0,0 +1,103 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Entrypoint head asm
-+ * This code expects to be called directly after the Espresso BootROM, which implies certain MSR
-+ * states.
-+ *
-+ * Nintendo Wii U bootwrapper support
-+ * Copyright (C) 2022 The linux-wiiu Team
-+ */
++++ b/arch/powerpc/platforms/wiiu/Kconfig
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0
 +
-+#include "ppc_asm.h"
-+
-+.text
-+.global _zimage_start
-+_zimage_start:
-+	/* Clear out all BATs. MMU is already off. */
-+	li r8, 0
-+
-+	mtspr 0x210, r8 /* IBAT0U */
-+	mtspr 0x212, r8 /* IBAT1U */
-+	mtspr 0x214, r8 /* IBAT2U */
-+	mtspr 0x216, r8 /* IBAT3U */
-+	mtspr 0x218, r8 /* DBAT0U */
-+	mtspr 0x21a, r8 /* DBAT1U */
-+	mtspr 0x21c, r8 /* DBAT2U */
-+	mtspr 0x21e, r8 /* DBAT3U */
-+
-+	mtspr 0x230, r8 /* IBAT4U */
-+	mtspr 0x232, r8 /* IBAT5U */
-+	mtspr 0x234, r8 /* IBAT6U */
-+	mtspr 0x236, r8 /* IBAT7U */
-+	mtspr 0x238, r8 /* DBAT4U */
-+	mtspr 0x23a, r8 /* DBAT5U */
-+	mtspr 0x23c, r8 /* DBAT6U */
-+	mtspr 0x23e, r8 /* DBAT7U */
-+
-+	/* MEM1 */
-+	/* 32MB, starting at 0x00000000... */
-+	li r8, 0x000003ff@l
-+	mtspr 0x21a, r8 /* DBAT1U */
-+	mtspr 0x212, r8 /* IBAT1U */
-+
-+	/* mapped into phys 0x00000000; read-write; normal caching. */
-+	li r8, 0x00000002@l
-+	mtspr 0x21b, r8 /* DBAT1L */
-+	mtspr 0x213, r8 /* IBAT1L */
-+
-+	/* Latte MMIO area */
-+	/* 64MB, starting at 0x0d800000... */
-+	lis r8, 0x0d8007ff@h
-+	ori r8, r8,0x0d800007ff@l
-+	mtspr 0x21c, r8 /* DBAT2U */
-+
-+	/* mapped into phys 0x0d800000; read-write; writethrough/nocache/guard*/
-+	lis r8, 0x0d80006A@h
-+	ori r8, r8,0x0d80006A@l
-+	mtspr 0x21d, r8 /* DBAT2L */
-+
-+	/* Bootloader comms area (actually 0x89200000) */
-+	/* 128MiB, starting at 0x88000000... */
-+	lis r8, 0x88000fff@h
-+	ori r8, r8, 0x88000fff@l
-+	mtspr 0x21e, r8 /* DBAT3U */
-+
-+	/* mapped into phys 0x88000000; read-write; normal caching. */
-+	lis r8, 0x88000002@h
-+	ori r8, r8, 0x88000002@l
-+	mtspr 0x21f, r8 /* DBAT3L */
-+
-+	/* Turn on BAT 4 through 7, configure CPU */
-+	mfspr r8, 0x3f3 /* HID4 */
-+	oris r8, r8, 0x3200 /* L2FM: 64-byte fetch, BPD: max depth is 4, SBE */
-+	mtspr 0x3f3, r8
-+
-+	/* Turn on and invalidate caches */
-+	mfspr r8, 0x3f0 /* HID0 */
-+	/* HID0_ICE | HID0_ICFI | HID0_DCE | HID0_DCFI */
-+	ori r8, r8, (1 << 15) | (1 << 11) | (1 << 14) | (1 << 10)
-+	mtspr 0x3f0, r8
-+	isync
-+
-+	li r3, 0
-+	li r4, 0
-+	li r5, 0
-+
-+	bl get_lr
-+get_lr:
-+	mflr r8
-+	/* Get absolute address of done */
-+	addi r8, r8, done - get_lr
-+
-+	/* Set up MSR */
-+	/* MSR_DR | MSR_IR | MSR_FP */
-+	/* Data/instruction MMUs, FPU because why not */
-+	ori r9, r3, (1 << 4) | (1 << 5) | (1 << 13)
-+
-+	/* Apply our new MSR, starting execution at "done" */
-+	mtsrr0 r8
-+	mtsrr1 r9
-+	sync
-+	rfi
-+done:
-+	b _zimage_start_lib
-diff --git a/arch/powerpc/boot/wiiu.c b/arch/powerpc/boot/wiiu.c
++config WIIU
++	bool "Nintendo Wii U"
++	depends on PPC_BOOK3S_32
+diff --git a/arch/powerpc/platforms/wiiu/Makefile b/arch/powerpc/platforms/wiiu/Makefile
 new file mode 100644
-index 000000000000..fe88eb2c42ae
+index 000000000000..f66554cd5c45
 --- /dev/null
-+++ b/arch/powerpc/boot/wiiu.c
-@@ -0,0 +1,73 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Platform support and IPC debug console to linux-loader (on Starbuck)
-+ *
-+ * Nintendo Wii U bootwrapper support
-+ * Copyright (C) 2022 The linux-wiiu Team
-+ */
-+
-+#include <stddef.h>
-+#include "string.h"
-+#include "stdio.h"
-+#include "types.h"
-+#include "io.h"
-+#include "ops.h"
-+
-+BSS_STACK(8192);
-+
-+// Volatile is used here since the io.h routines require it
-+#define LT_IPC_PPCMSG ((volatile u32 *)0x0d800000)
-+#define LT_IPC_PPCCTRL ((volatile u32 *)0x0d800004)
-+#define LT_IPC_PPCCTRL_X1 0x1
-+
-+#define WIIU_LOADER_CMD_PRINT 0x01000000
-+
-+static void wiiu_ipc_sendmsg(int msg)
-+{
-+	out_be32(LT_IPC_PPCMSG, msg);
-+	out_be32(LT_IPC_PPCCTRL, LT_IPC_PPCCTRL_X1);
-+	while (in_be32(LT_IPC_PPCCTRL) & LT_IPC_PPCCTRL_X1)
-+		barrier();
-+}
-+
-+/*
-+ * Send logging string out over IPC to linux-loader for early printing.
-+ * Packs 3 chars at a time where possible.
-+ */
-+static void wiiu_write_ipc(const char *buf, int len)
-+{
-+	int i = 0;
-+
-+	for (i = 0; i + 2 < len; i += 3) {
-+		int msg = WIIU_LOADER_CMD_PRINT | (buf[i + 0] << 16) |
-+			  (buf[i + 1] << 8) | buf[i + 2];
-+
-+		wiiu_ipc_sendmsg(msg);
-+	}
-+
-+	if (i < len) {
-+		for (; i < len; i++) {
-+			int msg = WIIU_LOADER_CMD_PRINT | (buf[i] << 16);
-+
-+			wiiu_ipc_sendmsg(msg);
-+		}
-+	}
-+}
-+
-+/*
-+ * Note 32MiB heap - not ideal but seems fine for the bootwrapper
-+ */
-+void platform_init(unsigned int r3, unsigned int r4, unsigned int r5)
-+{
-+	u32 heapsize;
-+
-+	console_ops.write = wiiu_write_ipc;
-+	printf("wiiu: bootwrapper ok\n");
-+
-+	heapsize = 32 * 1024 * 1024 - (u32)_end;
-+	simple_alloc_init(_end, heapsize, 32, 64);
-+	printf("wiiu: heap ok\n");
-+
-+	fdt_init(_dtb_start);
-+	printf("wiiu: dtb ok\n");
-+}
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 9184eda780fd..f42abe4ebde2 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -344,6 +344,10 @@ gamecube|wii)
-     link_address='0x600000'
-     platformo="$object/$platform-head.o $object/$platform.o"
-     ;;
-+wiiu)
-+    link_address='0x600000'
-+    platformo="$object/wiiu-head.o $object/$platform.o"
-+    ;;
- microwatt)
-     link_address='0x500000'
-     platformo="$object/fixed-head.o $object/$platform.o"
++++ b/arch/powerpc/platforms/wiiu/Makefile
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0
 -- 
 2.36.1
 
