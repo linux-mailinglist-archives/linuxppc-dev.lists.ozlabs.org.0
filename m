@@ -1,68 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6E8554158
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 06:14:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E0B554272
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 07:53:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSVQ91QTVz3c8C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 14:14:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FLpLbNG2;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSXc66h4xz3bxZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 15:53:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FLpLbNG2;
-	dkim-atps=neutral
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSVPW2DQJz302d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 14:13:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655871231; x=1687407231;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=B/bYItcHLvNJYHpcF6HLJkuCKPwbVggAy5q3voJHv0A=;
-  b=FLpLbNG2ggRQlY5xpecgLeBLbdVg0+kxlc54Y4qyWC4hXPOMf2vVTZDQ
-   hCIrQaE5xIV8JxmPDc6Ho1jFuhWPOmen/p4H0ECpKo83Pj72hoApvI+5c
-   MXZvvfJfjr2TSypK2YhpuU3esGqUOMSYaDPRHpH2hO7fGLoLOkXzHjyxx
-   +efCGt1YEYgRny6uBgrprVOEXeldvQT8AjImoaO51DQj/RYOtP1kJ083Z
-   UfRhJKb/oVrMxndyviJUWFslsp6kl7RhckeWY7AQyEVj2pbjLJcb/F5re
-   sZluv1DayXIXcVSnOWo4kpSMNbS5B1a2+TBh8ZMANw53Dqi5A0rdFd021
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="281381143"
-X-IronPort-AV: E=Sophos;i="5.92,211,1650956400"; 
-   d="scan'208";a="281381143"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jun 2022 21:13:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,211,1650956400"; 
-   d="scan'208";a="715230316"
-Received: from lkp-server02.sh.intel.com (HELO a67cc04a5eeb) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 21 Jun 2022 21:13:35 -0700
-Received: from kbuild by a67cc04a5eeb with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1o3rkA-0000on-5h;
-	Wed, 22 Jun 2022 04:13:30 +0000
-Date: Wed, 22 Jun 2022 12:13:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wang Wenhu <wenhu.wang@hotmail.com>, gregkh@linuxfoundation.org,
-	arnd@arndb.de, hao.wu@intel.com, trix@redhat.com, mdf@kernel.org,
-	yilun.xu@intel.com, bhelgaas@google.com, akpm@linux-foundation.org,
-	linux-fpga@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCHv2 1/2] mm: eliminate ifdef of HAVE_IOREMAP_PROT in .c
- files
-Message-ID: <202206221102.w7hylFXN-lkp@intel.com>
-References: <SG2PR01MB295111ED8F547B9F99DB9FA99FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSXbg4NLwz30Qt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 15:52:45 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+	by ozlabs.ru (Postfix) with ESMTP id 7F7478218B;
+	Wed, 22 Jun 2022 01:52:37 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] KVM: PPC: Book3s: Fix warning about xics_rm_h_xirr_x
+Date: Wed, 22 Jun 2022 15:52:35 +1000
+Message-Id: <20220622055235.1139204-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SG2PR01MB295111ED8F547B9F99DB9FA99FAD9@SG2PR01MB2951.apcprd01.prod.exchangelabs.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,38 +35,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, wenhu.wang@hotmail.com, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Wang,
+This fixes "no previous prototype":
 
-Thank you for the patch! Yet something to improve:
+arch/powerpc/kvm/book3s_hv_rm_xics.c:482:15:
+warning: no previous prototype for 'xics_rm_h_xirr_x' [-Wmissing-prototypes]
 
-[auto build test ERROR on akpm-mm/mm-everything]
+Reported by the kernel test robot.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wang-Wenhu/mm-eliminate-ifdef-of-HAVE_IOREMAP_PROT-in-c-files/20220615-140135
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-config: m68k-buildonly-randconfig-r001-20220622 (https://download.01.org/0day-ci/archive/20220622/202206221102.w7hylFXN-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 11.3.0
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/b20efcc877829b6f416cf111bd5ad2b13a0cd08e
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Wang-Wenhu/mm-eliminate-ifdef-of-HAVE_IOREMAP_PROT-in-c-files/20220615-140135
-        git checkout b20efcc877829b6f416cf111bd5ad2b13a0cd08e
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash
+Fixes: b22af9041927 ("KVM: PPC: Book3s: Remove real mode interrupt controller hcalls handlers")
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
+ arch/powerpc/kvm/book3s_xics.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
->> m68k-linux-ld: drivers/char/mem.o:(.rodata+0x37c): undefined reference to `generic_access_phys'
-
+diff --git a/arch/powerpc/kvm/book3s_xics.h b/arch/powerpc/kvm/book3s_xics.h
+index 8e4c79e2fcd8..08fb0843faf5 100644
+--- a/arch/powerpc/kvm/book3s_xics.h
++++ b/arch/powerpc/kvm/book3s_xics.h
+@@ -143,6 +143,7 @@ static inline struct kvmppc_ics *kvmppc_xics_find_ics(struct kvmppc_xics *xics,
+ }
+ 
+ extern unsigned long xics_rm_h_xirr(struct kvm_vcpu *vcpu);
++extern unsigned long xics_rm_h_xirr_x(struct kvm_vcpu *vcpu);
+ extern int xics_rm_h_ipi(struct kvm_vcpu *vcpu, unsigned long server,
+ 			 unsigned long mfrr);
+ extern int xics_rm_h_cppr(struct kvm_vcpu *vcpu, unsigned long cppr);
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.30.2
+
