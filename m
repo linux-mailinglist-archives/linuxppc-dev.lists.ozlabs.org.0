@@ -2,24 +2,24 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE6A555000
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 17:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD4C555073
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 17:56:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSnwR39vhz3bqN
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 01:53:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSp0V45y8z3fTm
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 01:56:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSnw35jlYz307g
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 01:52:49 +1000 (AEST)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.53])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LSnsz1NGzzkWNw;
-	Wed, 22 Jun 2022 23:51:03 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSnw460dsz3brV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 01:52:52 +1000 (AEST)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.56])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4LSnsT3M3Fz1KC4b;
+	Wed, 22 Jun 2022 23:50:37 +0800 (CST)
 Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2375.24; Wed, 22 Jun 2022 23:52:44 +0800
 Received: from ubuntu1804.huawei.com (10.67.175.36) by
@@ -30,9 +30,9 @@ From: Chen Zhongjin <chenzhongjin@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
 	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kbuild@vger.kernel.org>, <live-patching@vger.kernel.org>
-Subject: [PATCH v5 14/33] objtool: arm64: Add annotate_reachable() for objtools
-Date: Wed, 22 Jun 2022 23:49:01 +0800
-Message-ID: <20220622154920.95075-15-chenzhongjin@huawei.com>
+Subject: [PATCH v5 15/33] arm64: bug: Add reachable annotation to warning macros
+Date: Wed, 22 Jun 2022 23:49:02 +0800
+Message-ID: <20220622154920.95075-16-chenzhongjin@huawei.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220622154920.95075-1-chenzhongjin@huawei.com>
 References: <20220622154920.95075-1-chenzhongjin@huawei.com>
@@ -57,44 +57,35 @@ Cc: mark.rutland@arm.com, madvenka@linux.microsoft.com, michal.lkml@markovi.net,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-x86 removed annotate_reachable and replaced it with ASM_REACHABLE
-which is not suitable for arm64 micro because there are some cases
-GCC will merge duplicate inline asm.
+WARN* and BUG* both use brk #0x800 opcodes and the distinction is
+provided by the contents of the bug table. This table is not accessible
+to objtool, so add an annotation to WARN* macros to let objtool know
+that brk handler will return an resume the execution of the instructions
+following the WARN's brk.
 
-Re-add annotation_reachable() for arm64.
-
+Signed-off-by: Julien Thierry <jthierry@redhat.com>
 Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
 ---
- include/linux/compiler.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/include/asm/bug.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 01ce94b58b42..c8bce9421fa7 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -117,6 +117,14 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
-  */
- #define __stringify_label(n) #n
+diff --git a/arch/arm64/include/asm/bug.h b/arch/arm64/include/asm/bug.h
+index 28be048db3f6..9917429971d4 100644
+--- a/arch/arm64/include/asm/bug.h
++++ b/arch/arm64/include/asm/bug.h
+@@ -19,7 +19,11 @@
+ 	unreachable();					\
+ } while (0)
  
-+#define __annotate_reachable(c) ({					\
-+	asm volatile(__stringify_label(c) ":\n\t"			\
-+			".pushsection .discard.reachable\n\t"		\
-+			".long " __stringify_label(c) "b - .\n\t"		\
-+			".popsection\n\t");				\
-+})
-+#define annotate_reachable() __annotate_reachable(__COUNTER__)
-+
- #define __annotate_unreachable(c) ({					\
- 	asm volatile(__stringify_label(c) ":\n\t"			\
- 		     ".pushsection .discard.unreachable\n\t"		\
-@@ -129,6 +137,7 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
- #define __annotate_jump_table __section(".rodata..c_jump_table")
+-#define __WARN_FLAGS(flags) __BUG_FLAGS(BUGFLAG_WARNING|(flags))
++#define __WARN_FLAGS(flags)			\
++do {						\
++	__BUG_FLAGS(BUGFLAG_WARNING|(flags));	\
++	annotate_reachable();			\
++} while (0)
  
- #else /* !CONFIG_OBJTOOL */
-+#define annotate_reachable()
- #define annotate_unreachable()
- #define __annotate_jump_table
- #endif /* CONFIG_OBJTOOL */
+ #define HAVE_ARCH_BUG
+ 
 -- 
 2.17.1
 
