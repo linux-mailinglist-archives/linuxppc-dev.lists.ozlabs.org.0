@@ -2,110 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC155544B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 10:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6875544DD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 11:28:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LScM54qZVz3chb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 18:42:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSdNk0Jdrz3bnr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 19:28:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/MyRn6Q;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N4r3hEGp;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LScKj03xJz3blF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 18:40:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/MyRn6Q;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N4r3hEGp;
 	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4LScKd19Ltz4xZb
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 18:40:53 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4LScKd15ybz4xZj; Wed, 22 Jun 2022 18:40:53 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R/MyRn6Q;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4LScKc61H9z4xZb
-	for <linuxppc-dev@ozlabs.org>; Wed, 22 Jun 2022 18:40:52 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25M8NmcQ011003;
-	Wed, 22 Jun 2022 08:40:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=ZQ+dEbpWJFMETnununWmQP43T3T8Azzd7hTNqrMT9JU=;
- b=R/MyRn6Q1dW4BCS2tj4NMXx6dRPSAQC/gRO3DToF0k0pG7ndz8K3CPbAXOXoBtXt2Q/U
- EtVz8Csw+LikPVXcBYSAkYuElrt84gV4vPLWln5za2UPrsneKX71e+aVFX6nxV43VCW2
- 6QUzeN8KXpS/W2Vx5bYQViF/sxfMmAyUAitPEk2L87fizt/xKC4x3Nu4vRx8QOHbxcy4
- l3/yWnmoIBkVeSp7aL/yxaau/Iznix/Kn/GC1v+6AVoE+dEHxJRXsAIaQZPG6JxSho3j
- 304BUsmvoa8kUCbd5CshOVCIxWc1Gh0U0wa9bsjbYh7LL2B6s9ybpnnz8Pp5GAFVrMQz JQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3guyhm0fru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jun 2022 08:40:41 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25M8RNSB028228;
-	Wed, 22 Jun 2022 08:40:41 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3guyhm0fq6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jun 2022 08:40:41 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25M8avtA016975;
-	Wed, 22 Jun 2022 08:40:38 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma06ams.nl.ibm.com with ESMTP id 3gs5yhnax7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jun 2022 08:40:38 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25M8eZAK21233962
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Jun 2022 08:40:35 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADC3B11C050;
-	Wed, 22 Jun 2022 08:40:35 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7E4B311C04A;
-	Wed, 22 Jun 2022 08:40:33 +0000 (GMT)
-Received: from [9.43.27.116] (unknown [9.43.27.116])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 22 Jun 2022 08:40:33 +0000 (GMT)
-Message-ID: <bc8f37cb-006a-0c33-2de8-1481b4201be1@linux.ibm.com>
-Date: Wed, 22 Jun 2022 14:10:32 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSdN40R22z306Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 19:27:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1655890084; x=1687426084;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=iiFLOMxIIm5NPds5E0AcgENCgnumF65jA2ZbRysJsY0=;
+  b=N4r3hEGpcPY3cWQGgrHaTpnV8F3DV5YaN2yDrZe/jVzTJBkwYbOXXNda
+   Xa2xMgvtPtkETTLASFWPMOt2gyIZ0VqCGADkxDnEWPX5TwI2nPFNEGmxm
+   bfIrEmxREFfszStLXCnJDQ8gByLYOBl4DPZgsNJsOthUtCfWgBUroHAmf
+   St4nKj1tREaTBdwOSMmEXqdIB4LxIcr+T5rW8cjSGYIHlxgxwCFpoC3GQ
+   sTzu2KYQI5Y9BGEva65koo5nAwYm8AzObfSX0CloH2CRtZUsnv7tJcamH
+   fOzU5qQ0CjqkpdtcundO+u0rWTA75sAz5MGdvh29A0cmpMPiWpHzqMOjm
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10385"; a="280413709"
+X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
+   d="scan'208";a="280413709"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 02:27:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
+   d="scan'208";a="620835546"
+Received: from lkp-server02.sh.intel.com (HELO a67cc04a5eeb) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 22 Jun 2022 02:27:41 -0700
+Received: from kbuild by a67cc04a5eeb with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o3weC-00015d-Ot;
+	Wed, 22 Jun 2022 09:27:40 +0000
+Date: Wed, 22 Jun 2022 17:26:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>, mpe@ellerman.id.au,
+	benh@kernel.crashing.org, paulus@samba.org, nathanl@linux.ibm.com,
+	haren@linux.vnet.ibm.com, npiggin@gmail.com
+Subject: Re: [PATCH v2 3/4] powerpc/watchdog: introduce a LPM factor
+Message-ID: <202206221732.AujJ8kWm-lkp@intel.com>
+References: <20220614135414.37746-4-ldufour@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v5 1/5] powerpc/kexec: make update_cpus_node non-static
-Content-Language: en-US
-To: Laurent Dufour <ldufour@linux.ibm.com>, linuxppc-dev@ozlabs.org,
-        mpe@ellerman.id.au
-References: <20220620070106.93141-1-sourabhjain@linux.ibm.com>
- <20220620070106.93141-2-sourabhjain@linux.ibm.com>
- <2df3da07-9384-d8b2-15f5-b124538b93c2@linux.ibm.com>
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <2df3da07-9384-d8b2-15f5-b124538b93c2@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: rq3qBF01Xbcu7F1WoKukn5-Yxxb0rMFT
-X-Proofpoint-ORIG-GUID: CNYtTFeCdoWLtxJtMB1lF2Lntx1H000b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
- definitions=2022-06-21_11,2022-06-22_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 phishscore=0 adultscore=0 bulkscore=0 impostorscore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206220041
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220614135414.37746-4-ldufour@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,22 +71,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Laurent,
 
-On 21/06/22 14:29, Laurent Dufour wrote:
-> On 20/06/2022, 09:01:02, Sourabh Jain wrote:
->> Make the update_cpus_node function non-static and export it for
->> usage in other kexec components.
->>
->> The update_cpus_node definition is moved to core_64.c so that it
->> can be used with both kexec_load and kexec_file_load system calls.
->>
->> No functional change intended.
-> And FWIW
-> Reviewed-by: Laurent Dufour <laurent.dufour@fr.ibm.com>
-Thank you!
+Thank you for the patch! Yet something to improve:
 
-- Sourabh Jain
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on linus/master v5.19-rc3 next-20220621]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Laurent-Dufour/Extending-NMI-watchdog-during-LPM/20220614-215716
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-mgcoge_defconfig (https://download.01.org/0day-ci/archive/20220622/202206221732.AujJ8kWm-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/368bca30c0737461c2ed32a788293018c25fc9c7
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Laurent-Dufour/Extending-NMI-watchdog-during-LPM/20220614-215716
+        git checkout 368bca30c0737461c2ed32a788293018c25fc9c7
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/kernel/
+
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   In file included from arch/powerpc/kernel/traps.c:69:
+>> arch/powerpc/include/asm/nmi.h:11:13: error: 'watchdog_nmi_set_lpm_factor' defined but not used [-Werror=unused-function]
+      11 | static void watchdog_nmi_set_lpm_factor(u64 factor) {}
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: all warnings being treated as errors
+
+
+vim +/watchdog_nmi_set_lpm_factor +11 arch/powerpc/include/asm/nmi.h
+
+     4	
+     5	#ifdef CONFIG_PPC_WATCHDOG
+     6	extern void arch_touch_nmi_watchdog(void);
+     7	long soft_nmi_interrupt(struct pt_regs *regs);
+     8	void watchdog_nmi_set_lpm_factor(u64 factor);
+     9	#else
+    10	static inline void arch_touch_nmi_watchdog(void) {}
+  > 11	static void watchdog_nmi_set_lpm_factor(u64 factor) {}
+    12	#endif
+    13	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
