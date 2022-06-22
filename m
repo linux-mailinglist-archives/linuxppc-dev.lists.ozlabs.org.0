@@ -2,62 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB5C555569
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 22:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D0E556E15
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 23:58:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSw3b4J7Hz3btB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 06:29:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSy23445sz3dQl
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 07:58:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dRCNeGoc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G2u+N0Og;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dRCNeGoc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G2u+N0Og;
 	dkim-atps=neutral
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSw2t0ktCz307F
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 06:29:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655929750; x=1687465750;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=wtXFMufxCWVD5DmXOj9UG9b0T/0VDxVMk2w7kwJpn/I=;
-  b=dRCNeGocMN8AKhpnHBqIA17/h4LIRe3lCFH35X0AuPfo2L25meQFPgT7
-   UJKUgMjFLk4gA/5CwTE2ofDxZzOTXLILYC3/uKbcceTRACXaZamXbeDiD
-   vjURjFkKcHmY+nYP2kmnrTC8mp6fJLaDH4YKcSLPNkQClPLm3hVgjkiHL
-   p7i2UDiI5njTIF4qcnzjBTzbKNKTReUJnDLv9P6kje4zwkhXqq1FmdX2e
-   JpO3NcGGc5NJX1sqr2qNN/MhMXK91b7BclFTOlNTJasFGWkncic9mmbjY
-   ik+NUXEJPspjoL01aOVVZvUUs5End1ujBq1ikb+NFV44rVcw7xf2wN6NZ
-   A==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="260971963"
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="260971963"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 13:29:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="585880553"
-Received: from lkp-server02.sh.intel.com (HELO a67cc04a5eeb) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 22 Jun 2022 13:29:00 -0700
-Received: from kbuild by a67cc04a5eeb with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1o46yC-0001ex-2X;
-	Wed, 22 Jun 2022 20:29:00 +0000
-Date: Thu, 23 Jun 2022 04:28:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [linux-next:master] BUILD REGRESSION
- ac0ba5454ca85162c08dc429fef1999e077ca976
-Message-ID: <62b37b61.eTQ6lg/K9qBRuTOQ%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSy0b651Sz3bnM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 07:57:19 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25MLPvrW013871;
+	Wed, 22 Jun 2022 21:57:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=wNrQVEVaFcDMWmqDST9SZuYibDEqKfSUZp7T+Wo55Ac=;
+ b=G2u+N0OgeVVS8kzXrD4OajoJy1zGHoZg8PXfuSlx38UTYBP1e83uWZmCjNA4Is4j/5Nu
+ cZSQ9Ft7AkyrVfLZe1uWpdQ7PT0zDv+ILR0dQYjKEopnetCS7Jw3WygGTEEGxdzVxKMx
+ bW0sYVM5LEYXLEi6zhrDxPBDmBMZGnJ5QgRi1co0/b4J5G0URJAe/ruSPONt4j5B+uJL
+ xFtvpASaNBQso0snWI2t83Z2IzARV0k6V0YJy3C61BfSX4c6A7juaLALGtMm+b4+hFoa
+ ohXsKsOo8SXl4h4caRJM8RGorZ2Ihq6ClYS+KtRMegSTJkKnIk50WmzyaIDzUOetVBZ/ JA== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvb08gsc1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jun 2022 21:57:07 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25MLqKwm002781;
+	Wed, 22 Jun 2022 21:57:05 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03ams.nl.ibm.com with ESMTP id 3gs6b8x8h1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jun 2022 21:57:05 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25MLuEX912714340
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Jun 2022 21:56:14 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B8240A4040;
+	Wed, 22 Jun 2022 21:57:01 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4158EA404D;
+	Wed, 22 Jun 2022 21:56:58 +0000 (GMT)
+Received: from li-4b5937cc-25c4-11b2-a85c-cea3a66903e4.ibm.com.com (unknown [9.211.125.38])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Jun 2022 21:56:58 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org
+Subject: [RFC PATCH v2 0/3] powerpc/pseries: add support for local secure storage called Platform KeyStore(PKS) 
+Date: Wed, 22 Jun 2022 17:56:45 -0400
+Message-Id: <20220622215648.96723-1-nayna@linux.ibm.com>
+X-Mailer: git-send-email 2.27.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ie8oPpULTEbPRXGCYP4_7THoM8DyvL3m
+X-Proofpoint-GUID: ie8oPpULTEbPRXGCYP4_7THoM8DyvL3m
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-22_08,2022-06-22_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 clxscore=1011 mlxlogscore=999 spamscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
+ definitions=main-2206220097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,364 +87,124 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-perf-users@vger.kernel.org, kvm@vger.kernel.org, linux-scsi@vger.kernel.org, netdev@vger.kernel.org, linux-staging@lists.linux.dev, amd-gfx@lists.freedesktop.org, linux-xfs@vger.kernel.org, Linux Memory Management List <linux-mm@kvack.org>, linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, George Wilson <gcwilson@linux.ibm.com>, gjoyce@ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: ac0ba5454ca85162c08dc429fef1999e077ca976  Add linux-next specific files for 20220622
+PowerVM provides an isolated Platform KeyStore(PKS)[1] storage allocation
+for each partition(LPAR) with individually managed access controls to store
+sensitive information securely. Linux Kernel can access this storage by
+interfacing with hypervisor using a new set of hypervisor calls. 
 
-Error/Warning reports:
+PowerVM guest secure boot feature intend to use Platform KeyStore for
+the purpose of storing public keys. Secure boot requires public keys to
+be able to verify the grub and boot kernel. To allow authenticated
+ manipulation of keys, it supports variables to store key authorities
+- PK/KEK. Other variables are used to store code signing keys - db/grubdb.
+It also supports denied list to disallow booting even if signed with
+valid key. This is done via denied list database - dbx or sbat. These
+variables would be stored in PKS, and are managed and controlled by
+firmware.
 
-https://lore.kernel.org/linux-mm/202206212029.Yr5m7Cd3-lkp@intel.com
-https://lore.kernel.org/linux-mm/202206212033.3lgl72Fw-lkp@intel.com
-https://lore.kernel.org/lkml/202206071511.FI7WLdZo-lkp@intel.com
-https://lore.kernel.org/llvm/202206221813.Dn1s6uuh-lkp@intel.com
+The purpose of this patchset is to add userspace interface to manage
+these variables.
 
-Error/Warning: (recently discovered and may have been fixed)
+For v1[2] version, we received following feedback
+"Ok, this is like the 3rd or 4th different platform-specific proposal for
+this type of functionality.  I think we need to give up on
+platform-specific user/kernel apis on this (random sysfs/securityfs
+files scattered around the tree), and come up with a standard place for
+all of this."
 
-ERROR: modpost: "acpi_dev_for_each_child" [drivers/mfd/mfd-core.ko] undefined!
-arch/powerpc/kernel/interrupt.c:542:55: warning: suggest braces around empty body in an 'if' statement [-Wempty-body]
-drivers/pci/endpoint/functions/pci-epf-vntb.c:975:5: warning: no previous prototype for function 'pci_read' [-Wmissing-prototypes]
-drivers/pci/endpoint/functions/pci-epf-vntb.c:984:5: warning: no previous prototype for function 'pci_write' [-Wmissing-prototypes]
-net/ipv6/raw.c:335:25: warning: variable 'saddr' set but not used [-Wunused-but-set-variable]
-net/ipv6/raw.c:335:32: warning: variable 'saddr' set but not used [-Wunused-but-set-variable]
-net/ipv6/raw.c:335:33: warning: variable 'daddr' set but not used [-Wunused-but-set-variable]
-net/ipv6/raw.c:335:40: warning: variable 'daddr' set but not used [-Wunused-but-set-variable]
+Currently, OpenPOWER exposes variables via sysfs, while EFI platforms
+have used sysfs and then moved to their own efivarfs filesystem.
+Recently, coco feature is using securityfs to expose their
+secrets. All of these environments are different both syntactically and
+semantically.
 
-Unverified Error/Warning (likely false positive, please contact us if interested):
+securityfs is meant for linux security subsystems to expose policies/logs
+or any other information, and do not interact with firmware for managing
+these variables. However, there are various firmware security
+features which expose their variables for user management via kernel as
+discussed above. There is currently no single place to expose these
+variables. Different platforms use sysfs/platform specific
+filesystem(efivarfs)/securityfs interface as find appropriate. This has
+resulted in interfaces scattered around the tree.
 
-ERROR: modpost: "phylink_mii_c22_pcs_decode_state" [drivers/net/pcs/pcs_xpcs.ko] undefined!
-ERROR: modpost: "phylink_mii_c22_pcs_encode_advertisement" [drivers/net/pcs/pcs_xpcs.ko] undefined!
-drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:9143:27: warning: variable 'abo' set but not used [-Wunused-but-set-variable]
-drivers/net/pcs/pcs-xpcs.c:(.text.xpcs_config_aneg_c37_1000basex+0xa8): undefined reference to `phylink_mii_c22_pcs_encode_advertisement'
-drivers/net/pcs/pcs-xpcs.c:(.text.xpcs_get_state+0x1e8): undefined reference to `phylink_mii_c22_pcs_decode_state'
-drivers/net/pcs/pcs-xpcs.c:1031: undefined reference to `phylink_mii_c22_pcs_decode_state'
-drivers/net/pcs/pcs-xpcs.c:832: undefined reference to `phylink_mii_c22_pcs_encode_advertisement'
-drivers/ufs/host/ufs-mediatek.c:1391:5: sparse: sparse: symbol 'ufs_mtk_runtime_suspend' was not declared. Should it be static?
-drivers/ufs/host/ufs-mediatek.c:1405:5: sparse: sparse: symbol 'ufs_mtk_runtime_resume' was not declared. Should it be static?
+This resulted in demand of a need for a common single place for new
+platform interfaces to expose their variables for firmware security
+features. This would simplify the interface for users of these platforms.
+This patchset proposes firmware security filesystem(fwsecurityfs). Any
+platform can expose the variables which are required by firmware security
+features via this interface. Going forward, this would give a common place
+for exposing variables managed by firmware while still allowing platforms
+to implement their own underlying semantics.
 
-Error/Warning ids grouped by kconfigs:
+This design consists of two parts:
+1. firmware security filesystem(fwsecurityfs) that provides platforms with
+APIs to create their own underlying directory and file structure. It is
+recommended to establish a well known mount point:
+i.e. /sys/firmware/security/
 
-gcc_recent_errors
-|-- alpha-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- arc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- arm-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- arm-defconfig
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- arm-shmobile_defconfig
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- arm64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- arm64-randconfig-s031-20220622
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-misc-lkdtm-cfi.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
-|   |-- drivers-ufs-host-ufs-mediatek.c:sparse:sparse:symbol-ufs_mtk_runtime_resume-was-not-declared.-Should-it-be-static
-|   |-- drivers-ufs-host-ufs-mediatek.c:sparse:sparse:symbol-ufs_mtk_runtime_suspend-was-not-declared.-Should-it-be-static
-|   |-- drivers-vfio-pci-vfio_pci_config.c:sparse:sparse:restricted-pci_power_t-degrades-to-integer
-|   |-- fs-xfs-xfs_file.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-vm_fault_t-usertype-ret-got-int
-|   |-- fs-xfs-xfs_file.c:sparse:sparse:incorrect-type-in-return-expression-(different-base-types)-expected-int-got-restricted-vm_fault_t
-|   `-- kernel-signal.c:sparse:sparse:incorrect-type-in-argument-(different-address-spaces)-expected-struct-lockdep_map-const-lock-got-struct-lockdep_map-noderef-__rcu
-|-- csky-randconfig-r034-20220622
-|   |-- drivers-net-pcs-pcs-xpcs.c:undefined-reference-to-phylink_mii_c22_pcs_decode_state
-|   `-- drivers-net-pcs-pcs-xpcs.c:undefined-reference-to-phylink_mii_c22_pcs_encode_advertisement
-|-- i386-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|   `-- ntb_perf.c:(.text):undefined-reference-to-__umoddi3
-|-- i386-debian-10.3
-|   |-- ERROR:acpi_dev_for_each_child-drivers-mfd-mfd-core.ko-undefined
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-debian-10.3-kselftests
-|   |-- ERROR:acpi_dev_for_each_child-drivers-mfd-mfd-core.ko-undefined
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-defconfig
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a001
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|   `-- ntb_perf.c:(.text):undefined-reference-to-__umoddi3
-|-- i386-randconfig-a003
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a003-20220620
-|   `-- ERROR:__umoddi3-drivers-ntb-test-ntb_perf.ko-undefined
-|-- i386-randconfig-a005
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a012
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a014
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a016
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-m021
-|   |-- arch-x86-events-core.c-init_hw_perf_events()-warn:missing-error-code-err
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- ia64-allmodconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- m68k-allmodconfig
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- m68k-allyesconfig
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- m68k-randconfig-r026-20220622
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- microblaze-buildonly-randconfig-r001-20220622
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- microblaze-randconfig-r013-20220622
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- mips-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- mips-bmips_be_defconfig
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- mips-randconfig-r015-20220622
-|   |-- drivers-net-pcs-pcs-xpcs.c:(.text.xpcs_config_aneg_c37_1000basex):undefined-reference-to-phylink_mii_c22_pcs_encode_advertisement
-|   `-- drivers-net-pcs-pcs-xpcs.c:(.text.xpcs_get_state):undefined-reference-to-phylink_mii_c22_pcs_decode_state
-|-- mips-randconfig-r025-20220622
-|   |-- ERROR:phylink_mii_c22_pcs_decode_state-drivers-net-pcs-pcs_xpcs.ko-undefined
-|   `-- ERROR:phylink_mii_c22_pcs_encode_advertisement-drivers-net-pcs-pcs_xpcs.ko-undefined
-|-- openrisc-randconfig-r001-20220622
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- openrisc-randconfig-r021-20220622
-|   |-- pcs-xpcs.c:(.text):undefined-reference-to-phylink_mii_c22_pcs_decode_state
-|   `-- pcs-xpcs.c:(.text):undefined-reference-to-phylink_mii_c22_pcs_encode_advertisement
-|-- powerpc-allmodconfig
-|   |-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- powerpc-randconfig-r005-20220622
-|   `-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
-|-- powerpc-randconfig-r036-20220622
-|   `-- arch-powerpc-kernel-interrupt.c:warning:suggest-braces-around-empty-body-in-an-if-statement
-|-- riscv-rv32_defconfig
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- sh-allmodconfig
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- sparc-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- sparc-buildonly-randconfig-r006-20220622
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-allyesconfig
-|   |-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c:warning:variable-abo-set-but-not-used
-|   |-- drivers-staging-rtl8723bs-hal-hal_btcoex.c:warning:variable-pHalData-set-but-not-used
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-defconfig
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a002
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a004
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a006
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a011
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a013
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-m001
-|   |-- arch-x86-events-core.c-init_hw_perf_events()-warn:missing-error-code-err
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-rhel-8.3
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-rhel-8.3-func
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-rhel-8.3-kselftests
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-rhel-8.3-kunit
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-`-- x86_64-rhel-8.3-syz
-    |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-    `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+2. platform specific implementation for these variables which implements
+underlying semantics. Platforms can expose their variables as files
+allowing read/write/add/delete operations by defining their own inode and
+file operations.
 
-clang_recent_errors
-|-- arm64-allyesconfig
-|   |-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-function-pci_read
-|   `-- drivers-pci-endpoint-functions-pci-epf-vntb.c:warning:no-previous-prototype-for-function-pci_write
-|-- hexagon-randconfig-r045-20220622
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a002
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a004
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a011
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- i386-randconfig-a013
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a001
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a003
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a012
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-|-- x86_64-randconfig-a014
-|   |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-|   `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
-`-- x86_64-randconfig-a016
-    |-- net-ipv6-raw.c:warning:variable-daddr-set-but-not-used
-    `-- net-ipv6-raw.c:warning:variable-saddr-set-but-not-used
+This patchset defines:
+1. pseries driver to access LPAR Platform Key Store(PLPKS)
+2. firmware security filesystem named fwsecurityfs
+3. Interface to expose secure variables stored in LPAR PKS via fwsecurityfs
 
-elapsed time: 721m
+[1] https://community.ibm.com/community/user/power/blogs/chris-engel1/2020/11/20/powervm-introduces-the-platform-keystore
+[2] https://lore.kernel.org/linuxppc-dev/20220122005637.28199-1-nayna@linux.ibm.com/
 
-configs tested: 83
-configs skipped: 3
+Changelog:
 
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-powerpc                     mpc83xx_defconfig
-sh                           se7780_defconfig
-sh                          urquell_defconfig
-powerpc                 mpc8540_ads_defconfig
-m68k                       m5249evb_defconfig
-ia64                         bigsur_defconfig
-openrisc                 simple_smp_defconfig
-powerpc                    klondike_defconfig
-mips                       bmips_be_defconfig
-arm                        shmobile_defconfig
-arc                          axs103_defconfig
-powerpc                      mgcoge_defconfig
-arm                         lubbock_defconfig
-sh                        dreamcast_defconfig
-xtensa                  nommu_kc705_defconfig
-mips                           ci20_defconfig
-m68k                             allyesconfig
-arm                      integrator_defconfig
-arm                         vf610m4_defconfig
-powerpc                      pasemi_defconfig
-ia64                             allmodconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-powerpc                           allnoconfig
-alpha                            allyesconfig
-arc                              allyesconfig
-m68k                             allmodconfig
-i386                              debian-10.3
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                             allyesconfig
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a015
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-i386                          randconfig-a014
-i386                          randconfig-a012
-i386                          randconfig-a016
-x86_64                        randconfig-a004
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-arc                  randconfig-r043-20220622
-riscv                             allnoconfig
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                               rhel-8.3
-x86_64                           allyesconfig
-x86_64                          rhel-8.3-func
-x86_64                         rhel-8.3-kunit
-x86_64                    rhel-8.3-kselftests
-x86_64                           rhel-8.3-syz
+v1:
 
-clang tested configs:
-arm                         orion5x_defconfig
-arm                       cns3420vb_defconfig
-s390                             alldefconfig
-arm                      pxa255-idp_defconfig
-powerpc                     ksi8560_defconfig
-powerpc                        icon_defconfig
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-hexagon              randconfig-r041-20220622
-hexagon              randconfig-r045-20220622
-riscv                randconfig-r042-20220622
-s390                 randconfig-r044-20220622
+* Defined unified interface(firmware security filesystem) for all platforms
+to expose their variables used for security features. 
+* Expose secvars using firmware security fileystem.
+* Renamed PKS driver to PLPKS to avoid naming conflict as mentioned by
+Dave Hanson.
+
+Nayna Jain (3):
+  powerpc/pseries: define driver for Platform KeyStore
+  fs: define a firmware security filesystem named fwsecurityfs
+  powerpc/pseries: expose authenticated variables stored in LPAR PKS
+
+ arch/powerpc/include/asm/hvcall.h             |  12 +-
+ arch/powerpc/include/asm/plpks.h              |  92 ++++
+ arch/powerpc/platforms/pseries/Kconfig        |  27 +
+ arch/powerpc/platforms/pseries/Makefile       |   2 +
+ arch/powerpc/platforms/pseries/plpks/Makefile |   9 +
+ .../pseries/plpks/fwsecurityfs_arch.c         |  16 +
+ .../platforms/pseries/plpks/internal.h        |  18 +
+ arch/powerpc/platforms/pseries/plpks/plpks.c  | 517 ++++++++++++++++++
+ .../powerpc/platforms/pseries/plpks/secvars.c | 239 ++++++++
+ fs/Kconfig                                    |   1 +
+ fs/Makefile                                   |   1 +
+ fs/fwsecurityfs/Kconfig                       |  14 +
+ fs/fwsecurityfs/Makefile                      |  10 +
+ fs/fwsecurityfs/inode.c                       | 159 ++++++
+ fs/fwsecurityfs/internal.h                    |  13 +
+ fs/fwsecurityfs/super.c                       | 154 ++++++
+ include/linux/fwsecurityfs.h                  |  33 ++
+ include/uapi/linux/magic.h                    |   1 +
+ 18 files changed, 1317 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/include/asm/plpks.h
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/Makefile
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/fwsecurityfs_arch.c
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/internal.h
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/plpks.c
+ create mode 100644 arch/powerpc/platforms/pseries/plpks/secvars.c
+ create mode 100644 fs/fwsecurityfs/Kconfig
+ create mode 100644 fs/fwsecurityfs/Makefile
+ create mode 100644 fs/fwsecurityfs/inode.c
+ create mode 100644 fs/fwsecurityfs/internal.h
+ create mode 100644 fs/fwsecurityfs/super.c
+ create mode 100644 include/linux/fwsecurityfs.h
 
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.27.0
