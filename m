@@ -2,51 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3149D554519
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 12:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DEB55452D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 12:17:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSfGD1H9nz3bpg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 20:08:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lnPWueoR;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSfSl5BkFz3dw5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 20:17:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSfFf29Bzz2xKf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 20:07:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=lnPWueoR;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LSfFf18HYz4xYD;
-	Wed, 22 Jun 2022 20:07:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1655892454;
-	bh=l+iD2EE6xQv33e0wnmJmpDsfWmvcHiLJ9x1/wjMu/js=;
-	h=From:To:Subject:In-Reply-To:References:Date:From;
-	b=lnPWueoRRMEnfgsD/pfCyaT7aiyyg2E/r0KEy9aIqpx9Dk0uuu0CPzTb7fSFEsljX
-	 etLMMS0UV6jB3go6dIeMeP0Rcl6zx2VFO+4WImVDrFWE7lPjQBZtq9o66ebc5/fVk2
-	 T0dojbYhZo/TkB068Q3sAjJceOJ6gdwSUTQ4rNSJ2pURHk9O+PiHHEPie+fHvLh41O
-	 PY0gPtUltJIbdES1Yon6c5WUJtAZCaZ5uN3scpSzX5d0RYySEvtjbmA+oX3CDtrmvy
-	 PJtevsQBVvIsoz2oEZvKMMgcEWtKfrNGAox7C9aWsauNCz2ZjBLC9Rmqi23xvcdxNY
-	 aC+oJMIHQj1Fw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerc: Update asm-prototypes.h comment
-In-Reply-To: <da25a411031208310b63dd652a9ae5a2e65c037a.camel@russell.cc>
-References: <20220617080243.2177583-1-mpe@ellerman.id.au>
- <da25a411031208310b63dd652a9ae5a2e65c037a.camel@russell.cc>
-Date: Wed, 22 Jun 2022 20:07:32 +1000
-Message-ID: <875yktypsr.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSfRW5s9Mz30Qc
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 20:16:07 +1000 (AEST)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LSfMV2w5KzSh96;
+	Wed, 22 Jun 2022 18:12:38 +0800 (CST)
+Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 22 Jun 2022 18:15:56 +0800
+Received: from ubuntu1804.huawei.com (10.67.175.36) by
+ dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 22 Jun 2022 18:15:56 +0800
+From: Chen Zhongjin <chenzhongjin@huawei.com>
+To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
+	<jpoimboe@kernel.org>, <peterz@infradead.org>
+Subject: [PATCH v2 0/5] objtool: Reorganize x86 arch-specific code
+Date: Wed, 22 Jun 2022 18:13:39 +0800
+Message-ID: <20220622101344.38002-1-chenzhongjin@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [10.67.175.36]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500013.china.huawei.com (7.185.36.172)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,22 +51,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: x86@kernel.org, arnd@arndb.de, dave.hansen@linux.intel.com, mingo@redhat.com, hpa@zytor.com, tglx@linutronix.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Russell Currey <ruscur@russell.cc> writes:
-> On Fri, 2022-06-17 at 18:02 +1000, Michael Ellerman wrote:
->> This header was recently cleaned up in commit 76222808fc25 ("powerpc:
->> Move C prototypes out of asm-prototypes.h"), update the comment to
->> reflect it's proper purpose.
->> 
->> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
->
-> Hi Michael, subject says "powerc" instead of "powerpc".
+This patch set reorganize current x86 related code in objtool, [1-3] move
+arch-specific to arch files and extract some common codes, [4] fixes a
+cross-compile problem and [5] fixes a call destination search bug.
 
-Thanks.
+It make objtool more arch-generic, which makes other patches on different
+architectures easier to be reviewed and merged.
 
-I actually do have a script that checks for that, although I don't
-always remember to run it :}
+Tested on x86 with unwind on kernel and module context.
 
-cheers
+---
+v2 Change:
+[5/5] objtool: use arch_jump_destination in read_intra_function_calls
+---
+Chen Zhongjin (3):
+  objtool: Add generic symbol for relocation type
+  objtool: Specify host-arch for making LIBSUBCMD
+  objtool: use arch_jump_destination in read_intra_function_calls
+
+Madhavan T. Venkataraman (2):
+  objtool: Make ORC type code arch-specific
+  objtool: Make ORC init and lookup code arch-generic
+
+ arch/x86/include/asm/unwind.h                 |   5 -
+ arch/x86/kernel/module.c                      |   7 +-
+ arch/x86/kernel/unwind_orc.c                  | 256 +----------------
+ arch/x86/kernel/vmlinux.lds.S                 |   2 +-
+ .../asm => include/asm-generic}/orc_lookup.h  |  42 +++
+ kernel/Makefile                               |   2 +
+ kernel/orc_lookup.c                           | 261 ++++++++++++++++++
+ tools/objtool/Makefile                        |   2 +-
+ tools/objtool/arch/x86/Build                  |   1 +
+ tools/objtool/arch/x86/include/arch/elf.h     |   5 +-
+ tools/objtool/arch/x86/orc.c                  | 137 +++++++++
+ tools/objtool/arch/x86/special.c              |   5 +-
+ tools/objtool/check.c                         |  14 +-
+ tools/objtool/include/objtool/orc.h           |  17 ++
+ tools/objtool/orc_dump.c                      |  59 +---
+ tools/objtool/orc_gen.c                       |  79 +-----
+ 16 files changed, 492 insertions(+), 402 deletions(-)
+ rename {arch/x86/include/asm => include/asm-generic}/orc_lookup.h (51%)
+ create mode 100644 kernel/orc_lookup.c
+ create mode 100644 tools/objtool/arch/x86/orc.c
+ create mode 100644 tools/objtool/include/objtool/orc.h
+
+-- 
+2.17.1
+
