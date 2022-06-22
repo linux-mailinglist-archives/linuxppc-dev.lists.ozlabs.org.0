@@ -1,108 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A36554F67
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 17:34:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865DC555082
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 17:58:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSnWF1Mydz3cCy
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 01:34:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cH4t9swp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSp2D2qmQz3f3H
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 01:58:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSnVX5WtTz30QW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 01:34:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cH4t9swp;
-	dkim-atps=neutral
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4LSnVX3WrTz4xZl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 01:34:12 +1000 (AEST)
-Received: by gandalf.ozlabs.org (Postfix)
-	id 4LSnVX3RwLz4xZp; Thu, 23 Jun 2022 01:34:12 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: gandalf.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: gandalf.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cH4t9swp;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by gandalf.ozlabs.org (Postfix) with ESMTPS id 4LSnVX1CHJz4xZl
-	for <linuxppc-dev@ozlabs.org>; Thu, 23 Jun 2022 01:34:12 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25MEpKDF018624;
-	Wed, 22 Jun 2022 15:34:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=fXnI9BJ+eT4kh1Bl1pOj1MQY0/BIJ1rTZJngWBFMbjw=;
- b=cH4t9swpy0/cajQ9OIUQmbYcxrxG6GedvGGEccZuMucM8Hh6VbpfynEOIO9RFEuMscyp
- qcW8EI/2p6Z/ZmF3UhTspCoNqNBaeNN3I3EXgC9dBrVvXZFHHsalUkta5o6LLb80n8rx
- p4Tx+jLu9u72ujF89JIFf0PXH1lJJPU9/h1GB0P6JdOZ6P9e8ZmLx/750v18IhnmQtWH
- vA9rC4F4ll8GcKLYf0VDnIxuq5CuO6c8Uwu5iCy3Jkxnin+CbXA+rn0lXsKtZ+L+tS82
- AzqkbNGjJx6BIegb2hkfoRD5XrwWtwlfIMEt23PMfjybdYRXgM0+lOJNhoLBLXtEYOVw SA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gv56x98e2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jun 2022 15:34:04 +0000
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25MEptuh020382;
-	Wed, 22 Jun 2022 15:34:03 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gv56x98cv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jun 2022 15:34:03 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25MFM6L2009056;
-	Wed, 22 Jun 2022 15:34:01 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma04fra.de.ibm.com with ESMTP id 3gs6b8vk8t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 Jun 2022 15:34:01 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25MFXwNB19005880
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 22 Jun 2022 15:33:58 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D5815204F;
-	Wed, 22 Jun 2022 15:33:58 +0000 (GMT)
-Received: from [9.145.21.142] (unknown [9.145.21.142])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B93245204E;
-	Wed, 22 Jun 2022 15:33:57 +0000 (GMT)
-Message-ID: <ca1f9857-e3f6-6beb-2419-91a5865f2953@linux.ibm.com>
-Date: Wed, 22 Jun 2022 17:33:57 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.10.0
-Subject: Re: [PATCH v5 5/5] powerpc/crash hp: add crash page helper functions
-Content-Language: fr
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@ozlabs.org,
-        mpe@ellerman.id.au
-References: <20220620070106.93141-1-sourabhjain@linux.ibm.com>
- <20220620070106.93141-6-sourabhjain@linux.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <20220620070106.93141-6-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lhuxE-aTjfBmZgMQ9nmcC_cNHdFP4Tv_
-X-Proofpoint-GUID: 7bEHyUCfQKV93meI1lJGZzZz1DGdyoxA
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSnw51Fjfz3br0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 01:52:53 +1000 (AEST)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LSnvD2wrwzDqqv;
+	Wed, 22 Jun 2022 23:52:08 +0800 (CST)
+Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 22 Jun 2022 23:52:41 +0800
+Received: from ubuntu1804.huawei.com (10.67.175.36) by
+ dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 22 Jun 2022 23:52:41 +0800
+From: Chen Zhongjin <chenzhongjin@huawei.com>
+To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kbuild@vger.kernel.org>, <live-patching@vger.kernel.org>
+Subject: [PATCH v5 00/33] objtool: add base support for arm64
+Date: Wed, 22 Jun 2022 23:48:47 +0800
+Message-ID: <20220622154920.95075-1-chenzhongjin@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-22_04,2022-06-22_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 clxscore=1015 impostorscore=0 mlxlogscore=999 bulkscore=0
- lowpriorityscore=0 adultscore=0 mlxscore=0 phishscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206220077
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.36]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500013.china.huawei.com (7.185.36.172)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,47 +51,221 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, eric.devolder@oracle.com, kexec@lists.infradead.org, bhe@redhat.com, hbathini@linux.ibm.com
+Cc: mark.rutland@arm.com, madvenka@linux.microsoft.com, michal.lkml@markovi.net, pasha.tatashin@soleen.com, peterz@infradead.org, catalin.marinas@arm.com, masahiroy@kernel.org, ndesaulniers@google.com, chenzhongjin@huawei.com, rmk+kernel@armlinux.org.uk, broonie@kernel.org, will@kernel.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/06/2022, 09:01:06, Sourabh Jain wrote:
-> Define arch_[un]map_crash_pages functions to avoid build issues due to
-> undefined arch specific function to access crash memory pages.
-> 
-> A temporary patch to avoid build issues may need some changes in
-> generic code to avoid this.
-> 
-> The issue is under discussion:
-> https://lkml.org/lkml/2022/6/20/22
-> 
-> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> ---
->  arch/powerpc/kexec/core_64.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
-> index 373cb46bcc0e..d833fa96dcfa 100644
-> --- a/arch/powerpc/kexec/core_64.c
-> +++ b/arch/powerpc/kexec/core_64.c
-> @@ -492,6 +492,13 @@ int update_cpus_node(void *fdt)
->  
->  #if defined(CONFIG_HOTPLUG_CPU)
->  
-> +void *arch_map_crash_pages(unsigned long paddr, unsigned long size)
-> +{
-> +	return __va(paddr);
-> +}
+This series enables objtool to start doing stack validation and orc
+generation on arm64 kernel builds.
 
-Why not define this as an inline in the appropriate PowerPC header file?
+Based on Julien's previous work(1)(2), Now I have finished most of work
+for objtool enable on arm64. This series includes objtool part [1-13]
+and arm64 support part [14-33], the second part is to make objtool run
+correctly with no warning on arm64 so if necessary it can be taken apart
+as two series.
 
-> +
-> +void arch_unmap_crash_pages(void **ptr) { }
+ORC generation feature is implemented but not used because we don't have
+an unwinder_orc on arm64, now it only be used to check whether objtool
+has correct validation.
 
-same here
+This series depends on (https://lkml.org/lkml/2022/6/22/463)
+I moved some changes which work for all architectures to that series
+because this one becomes too big now.
+And it is rebased to tip/objtool/core branch.
 
-> +
->  int crash_hotplug_support(void) { return 1; }
->  
->  /**
+I think the series is complete enough so I removed the RFC.
+However now there are still (maybe only) two unsolved problems:
+
+1. the switch optimization and dynamic jump
+Although this problem has been troubling us for a long time and
+temporarily resolved by -no-jump-table. Hopefully we have chance
+to fix it. I'm trying for that and it will be updated in next version.
+
+2. alternative_cb
+alternative_cb in arm64 is an dynamic patch mechanism on arm64 which is
+similiar to alternative instruction but doesn't give instructions explicitly.
+It cause trouble when there is a jump instructions inside it and causes some
+branch that objtool can't reach.
+I have solved some of them by adding UNWIND_HINT one macro
+"mitigate_spectre_bhb_loop" can't be fixed because it is used in
+different assembly files.
+
+(1) https://lkml.org/lkml/2021/3/3/1135
+(2) https://github.com/julien-thierry/linux.git
+---
+v5 Changes:
+Compare to last RFC v4 series, this series does a lot of changes, including
+code rebase, refactoring and solution for several warning in last series.
+After refactoring and moving some patches out, the number of lines in this
+series decrease a thousand.
+
+Here are changes for each patch.
+
+[1] Removed unnecessary part from insn.h and insn.c to avoid extra
+dependencies and wired hack. So the patch to add head files also be removed.
+
+[2] Rebase Makefile, clear sync-check for insn.h/c and add arm64 elf
+relocation types in elf.h.
+Remove other callee saved registers tracking except FP and LR. Beacause
+in arm64 there are lots of branches store these CSRs in different order
+or positions, tracking them will cause some false stack state mismatch
+warnings.
+
+[3-6] Refactor code. Add some macros to make code more clean.
+For instructions load/store on stack, Simplifies the logic of moving SP
+and accessing data because the order of ops makes no differences.
+
+[7-8] Remove delete in record_invalid_insn because now we don't need to
+handle special undecoded instructions.
+
+[13] New patch to enable ORC generation.
+
+[12, 14, 17] Rebase to current branch.
+
+[19-21] Add annotations for trans_pgd-asm.S and some unreachable
+branches.
+
+[29] Moves kuser32.S and sigreturn32.S to rodata because they are VDSO.
+
+[31] Remove ignores for hibernate.c.
+
+[33] New patch to fix a fallthrough problem.
+
+---
+v4 Changes:
+- fix EX_ENTRY_SIZE from 8 to 12.
+- modify arm64 for supporting objtool, including annotation,
+	asm code modification, ignoring some validation, to make objtool
+	be enable to pass arm64 builds.
+
+v3 Changes:
+- rebase Julien's version to mainstream and solve conflicts.
+- Merge dumplicate "*type = INSN_OTHER".
+- When meeting unrecognized instructions such as datas
+	in .text code or 0x0 padding insns, last version used
+	"loc->ignorable" to mark and remove them from objtool insn list.
+
+	However there are two problems to do so:
+	1. when meeting insns can't be decoded or excluded, objtool will
+	just stop.
+	
+	2. deleting every insn can cause problems in fellow procedure.
+
+	So I changed "record_invalid_insn" that we can delete one insn or
+	just set it ignored. Now check will throw an error and going on when
+	meeting undecodable instructions.
+
+	Also, to prevent the confusion between "loc->ignorable" and
+	"insn->ignore" I changed "ignore" to "delete".
+
+v2 Changes:
+	- Drop gcc plugin in favor of -fno-jump-tables
+	- miscelaneous fixes and cleanups
+___
+Chen Zhongjin (33):
+  tools: arm64: Make aarch64 instruction decoder available to tools
+  objtool: arm64: Add base definition for arm64 backend
+  objtool: arm64: Decode add/sub instructions
+  objtool: arm64: Decode jump and call related instructions
+  objtool: arm64: Decode other system instructions
+  objtool: arm64: Decode load/store instructions
+  objtool: arm64: Decode LDR instructions
+  objtool: arm64: Accept non-instruction data in code sections
+  objtool: check: Support data in text section
+  objtool: arm64: Handle supported relocations in alternatives
+  objtool: arm64: Ignore replacement section for alternative callback
+  objtool: arm64: Enable stack validation for arm64
+  objtool: arm64: Enable ORC for arm64
+  objtool: arm64: Add annotate_reachable() for objtools
+  arm64: bug: Add reachable annotation to warning macros
+  arm64: kgdb: Add reachable annotation after kgdb brk
+  objtool: arm64: Add unwind_hint support
+  arm64: Change symbol type annotations
+  arm64: Annotate unwind_hint for symbols with empty stack
+  arm64: entry: Annotate unwind_hint for entry
+  arm64: kvm: Annotate unwind_hint for hyp entry
+  arm64: efi-header: Mark efi header as data
+  arm64: head: Mark constants as data
+  arm64: proc: Mark constant as data
+  arm64: crypto: Mark constant as data
+  arm64: crypto: Remove unnecessary stackframe
+  arm64: Set intra-function call annotations
+  arm64: sleep: Properly set frame pointer before call
+  arm64: compat: Move VDSO code to .rodata section
+  arm64: entry: Align stack size for alternative
+  arm64: kernel: Skip validation of proton-pack.c
+  arm64: irq-gic: Replace unreachable() with -EINVAL
+  objtool: revert c_file fallthrough detection for arm64
+
+ arch/arm64/Kconfig                            |   2 +
+ arch/arm64/Kconfig.debug                      |  31 ++
+ arch/arm64/Makefile                           |   4 +
+ arch/arm64/crypto/aes-neonbs-core.S           |  14 +-
+ arch/arm64/crypto/crct10dif-ce-core.S         |   5 +
+ arch/arm64/crypto/poly1305-armv8.pl           |   4 +
+ arch/arm64/crypto/sha512-armv8.pl             |  29 +-
+ arch/arm64/include/asm/assembler.h            |   2 +
+ arch/arm64/include/asm/bug.h                  |   6 +-
+ arch/arm64/include/asm/kgdb.h                 |   1 +
+ arch/arm64/include/asm/module.h               |   7 +
+ arch/arm64/include/asm/orc_types.h            |  68 +++
+ arch/arm64/include/asm/unwind_hints.h         |  26 +
+ arch/arm64/kernel/cpu-reset.S                 |   2 +
+ arch/arm64/kernel/efi-entry.S                 |   2 +
+ arch/arm64/kernel/efi-header.S                |   2 +
+ arch/arm64/kernel/entry.S                     |  30 +-
+ arch/arm64/kernel/head.S                      |  76 +--
+ arch/arm64/kernel/hibernate-asm.S             |   2 +
+ arch/arm64/kernel/kuser32.S                   |   1 +
+ arch/arm64/kernel/proton-pack.c               |   2 +
+ arch/arm64/kernel/relocate_kernel.S           |   2 +
+ arch/arm64/kernel/sigreturn32.S               |   1 +
+ arch/arm64/kernel/sleep.S                     |   8 +-
+ arch/arm64/kernel/vmlinux.lds.S               |   3 +
+ arch/arm64/kvm/hyp/entry.S                    |   9 +-
+ arch/arm64/kvm/hyp/hyp-entry.S                |   4 +
+ arch/arm64/kvm/hyp/vgic-v3-sr.c               |   7 +-
+ arch/arm64/mm/proc.S                          |   4 +-
+ arch/arm64/mm/trans_pgd-asm.S                 |   3 +
+ drivers/irqchip/irq-gic-v3.c                  |   2 +-
+ include/linux/compiler.h                      |   9 +
+ scripts/Makefile                              |   6 +-
+ tools/arch/arm64/include/asm/insn.h           | 458 +++++++++++++++++
+ tools/arch/arm64/include/asm/orc_types.h      |  68 +++
+ tools/arch/arm64/include/asm/unwind_hints.h   |  26 +
+ tools/arch/arm64/lib/insn.c                   | 335 +++++++++++++
+ tools/objtool/Makefile                        |   5 +
+ tools/objtool/arch/arm64/Build                |   9 +
+ tools/objtool/arch/arm64/decode.c             | 466 ++++++++++++++++++
+ .../arch/arm64/include/arch/cfi_regs.h        |  14 +
+ tools/objtool/arch/arm64/include/arch/elf.h   |  12 +
+ .../arch/arm64/include/arch/endianness.h      |   9 +
+ .../objtool/arch/arm64/include/arch/special.h |  22 +
+ tools/objtool/arch/arm64/orc.c                | 117 +++++
+ tools/objtool/arch/arm64/special.c            |  36 ++
+ tools/objtool/arch/x86/decode.c               |   5 +
+ tools/objtool/check.c                         |  22 +-
+ tools/objtool/elf.c                           |  14 +
+ tools/objtool/include/objtool/arch.h          |   2 +
+ tools/objtool/include/objtool/elf.h           |   1 +
+ tools/objtool/include/objtool/objtool.h       |   2 +-
+ tools/objtool/objtool.c                       |   1 +
+ 53 files changed, 1925 insertions(+), 73 deletions(-)
+ create mode 100644 arch/arm64/include/asm/orc_types.h
+ create mode 100644 arch/arm64/include/asm/unwind_hints.h
+ create mode 100644 tools/arch/arm64/include/asm/insn.h
+ create mode 100644 tools/arch/arm64/include/asm/orc_types.h
+ create mode 100644 tools/arch/arm64/include/asm/unwind_hints.h
+ create mode 100644 tools/arch/arm64/lib/insn.c
+ create mode 100644 tools/objtool/arch/arm64/Build
+ create mode 100644 tools/objtool/arch/arm64/decode.c
+ create mode 100644 tools/objtool/arch/arm64/include/arch/cfi_regs.h
+ create mode 100644 tools/objtool/arch/arm64/include/arch/elf.h
+ create mode 100644 tools/objtool/arch/arm64/include/arch/endianness.h
+ create mode 100644 tools/objtool/arch/arm64/include/arch/special.h
+ create mode 100644 tools/objtool/arch/arm64/orc.c
+ create mode 100644 tools/objtool/arch/arm64/special.c
+
+-- 
+2.17.1
 
