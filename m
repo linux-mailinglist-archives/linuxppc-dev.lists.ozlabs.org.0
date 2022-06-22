@@ -2,31 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3708554ABD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 15:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7F7554ABE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 15:15:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LSkQZ6yp7z3fYr
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 23:15:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LSkQz69qmz3dy3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jun 2022 23:15:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=heyquark.com (client-ip=2001:4b98:dc4:8::229; helo=relay9-d.mail.gandi.net; envelope-from=ash@heyquark.com; receiver=<UNKNOWN>)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=heyquark.com (client-ip=217.70.183.199; helo=relay9-d.mail.gandi.net; envelope-from=ash@heyquark.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 79 seconds by postgrey-1.36 at boromir; Wed, 22 Jun 2022 23:12:22 AEST
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSkLl04Ssz3dvg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 23:12:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LSkLt2G2Gz3dxD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jun 2022 23:12:22 +1000 (AEST)
 Received: (Authenticated sender: ash@heyquark.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 4445DFF810;
-	Wed, 22 Jun 2022 13:12:02 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 4A521FF806;
+	Wed, 22 Jun 2022 13:12:12 +0000 (UTC)
 From: Ash Logan <ash@heyquark.com>
 To: paulus@samba.org,
 	mpe@ellerman.id.au,
 	christophe.leroy@csgroup.eu,
 	robh+dt@kernel.org,
 	benh@kernel.crashing.org
-Subject: [PATCH v2 11/12] powerpc: wiiu: don't enforce flat memory
-Date: Wed, 22 Jun 2022 23:10:36 +1000
-Message-Id: <20220622131037.57604-12-ash@heyquark.com>
+Subject: [PATCH v2 12/12] powerpc: wiiu: Add minimal default config
+Date: Wed, 22 Jun 2022 23:10:37 +1000
+Message-Id: <20220622131037.57604-13-ash@heyquark.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220622131037.57604-1-ash@heyquark.com>
 References: <20220302044406.63401-1-ash@heyquark.com>
@@ -48,31 +49,28 @@ Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pgtable_32.c:mapin_ram loops over each valid memory range, which means
-non-contiguous memory just works.
+Adds a bare-minimum config to get a kernel compiled. Will need some more
+interesting options once a storage device to boot from is added.
 
 Signed-off-by: Ash Logan <ash@heyquark.com>
 ---
- arch/powerpc/mm/init_32.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/configs/wiiu_defconfig | 7 +++++++
+ 1 file changed, 7 insertions(+)
+ create mode 100644 arch/powerpc/configs/wiiu_defconfig
 
-diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
-index 3d690be48e84..59a84629d9a0 100644
---- a/arch/powerpc/mm/init_32.c
-+++ b/arch/powerpc/mm/init_32.c
-@@ -125,10 +125,10 @@ void __init MMU_init(void)
- 	 * lowmem_end_addr is initialized below.
- 	 */
- 	if (memblock.memory.cnt > 1) {
--#ifndef CONFIG_WII
-+#if !defined(CONFIG_WII) && !defined(CONFIG_WIIU)
- 		memblock_enforce_memory_limit(memblock.memory.regions[0].size);
- 		pr_warn("Only using first contiguous memory region\n");
--#else
-+#elif defined(CONFIG_WII)
- 		wii_memory_fixups();
- #endif
- 	}
+diff --git a/arch/powerpc/configs/wiiu_defconfig b/arch/powerpc/configs/wiiu_defconfig
+new file mode 100644
+index 000000000000..a761ebcdd9f2
+--- /dev/null
++++ b/arch/powerpc/configs/wiiu_defconfig
+@@ -0,0 +1,7 @@
++# CONFIG_PPC_CHRP is not set
++# CONFIG_PPC_PMAC is not set
++CONFIG_WIIU=y
++# CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
++CONFIG_HIGHMEM=y
++CONFIG_STRICT_KERNEL_RWX=y
++CONFIG_PPC_EARLY_DEBUG=y
 -- 
 2.36.1
 
