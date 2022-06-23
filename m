@@ -1,47 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9285570BE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 03:59:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D26C55701B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 03:51:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3MR2Tmlz3g52
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 11:58:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3C10m60z3bqg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 11:51:41 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bY4gNorD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bY4gNorD;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3CJ0lPWz3cgc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:51:56 +1000 (AEST)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LT37J1xxkzShCC;
-	Thu, 23 Jun 2022 09:48:28 +0800 (CST)
-Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 23 Jun 2022 09:51:53 +0800
-Received: from ubuntu1804.huawei.com (10.67.175.36) by
- dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 23 Jun 2022 09:51:52 +0800
-From: Chen Zhongjin <chenzhongjin@huawei.com>
-To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kbuild@vger.kernel.org>, <live-patching@vger.kernel.org>
-Subject: [PATCH v6 32/33] arm64: irq-gic: Replace unreachable() with -EINVAL
-Date: Thu, 23 Jun 2022 09:49:16 +0800
-Message-ID: <20220623014917.199563-33-chenzhongjin@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220623014917.199563-1-chenzhongjin@huawei.com>
-References: <20220623014917.199563-1-chenzhongjin@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3BF6Bxzz3bk8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:51:01 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25N1FPnN029418;
+	Thu, 23 Jun 2022 01:50:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=TsI+ILPUKVz3yg7piZ6IP0m7tWX8TJEnXWgNEGMDWNc=;
+ b=bY4gNorDsHYNJG2Bf7vLFZ9c7LcQJRlzLlHQz6IP10ZnGAfNcqnbh0O1IuDT8cLTS7Lt
+ 1nYfP7kdHEM1Lw4ozSdfDo3PWjcfmwa2pobiTI7dFCJciaHxLFjnx6U6CDeCEB1Nu/tk
+ VrVoa4J39NN56aQOFrgcjqvsJH45Lhz7wkMMdcK+W6Ya3+SD+xpQvil4WsOCUn8Ac8cP
+ gBdgo+Ie6cD9STH9X2471OYHcYpaYBAUsSb5HMaeQa8kYqsrbjmNBeF24EnqX24Uxr08
+ PC5z8qPq6ekKDxxDQGQyGsBXEfU3yFv9cPy6N43LUd3l4K2d3SQ4IhVlctaPb5TKZZcW QA== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvebm0q3u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jun 2022 01:50:48 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25N1aPW6003841;
+	Thu, 23 Jun 2022 01:50:47 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+	by ppma01dal.us.ibm.com with ESMTP id 3guk92kbnh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jun 2022 01:50:47 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25N1okmM35651890
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jun 2022 01:50:46 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 54C0AC605A;
+	Thu, 23 Jun 2022 01:50:46 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7AAF7C6057;
+	Thu, 23 Jun 2022 01:50:45 +0000 (GMT)
+Received: from [9.211.125.38] (unknown [9.211.125.38])
+	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jun 2022 01:50:45 +0000 (GMT)
+Message-ID: <e200854b-116a-cbf3-256d-92a9c490b9bc@linux.vnet.ibm.com>
+Date: Wed, 22 Jun 2022 21:50:45 -0400
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.175.36]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [RFC PATCH v2 2/3] fs: define a firmware security filesystem
+ named fwsecurityfs
+Content-Language: en-US
+To: Casey Schaufler <casey@schaufler-ca.com>,
+        Nayna Jain
+ <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-fsdevel@vger.kernel.org
+References: <20220622215648.96723-1-nayna@linux.ibm.com>
+ <20220622215648.96723-3-nayna@linux.ibm.com>
+ <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
+From: Nayna <nayna@linux.vnet.ibm.com>
+In-Reply-To: <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: xCCZ1rp5CwqPjADRXKVg0nEJScoazKR5
+X-Proofpoint-GUID: xCCZ1rp5CwqPjADRXKVg0nEJScoazKR5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-22_08,2022-06-22_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=835 priorityscore=1501 spamscore=0 suspectscore=0
+ impostorscore=0 clxscore=1011 adultscore=0 mlxscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2204290000 definitions=main-2206230004
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,78 +98,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, madvenka@linux.microsoft.com, daniel.thompson@linaro.org, michal.lkml@markovi.net, pasha.tatashin@soleen.com, peterz@infradead.org, catalin.marinas@arm.com, masahiroy@kernel.org, ndesaulniers@google.com, chenzhongjin@huawei.com, rmk+kernel@armlinux.org.uk, broonie@kernel.org, will@kernel.org, jpoimboe@kernel.org
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, George Wilson <gcwilson@linux.ibm.com>, gjoyce@ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Using unreachable() at default of switch generates an extra branch at
-end of the function, and compiler won't generate a ret to close this
-branch because it knows it's unreachable.
 
-If there's no instruction in this branch, compiler will generate a NOP,
-And it will confuse objtool to warn this NOP as a fall through branch.
+On 6/22/22 18:29, Casey Schaufler wrote:
+> On 6/22/2022 2:56 PM, Nayna Jain wrote:
+>> securityfs is meant for linux security subsystems to expose 
+>> policies/logs
+>> or any other information. However, there are various firmware security
+>> features which expose their variables for user management via kernel.
+>> There is currently no single place to expose these variables. Different
+>> platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
+>> interface as find appropriate. Thus, there is a gap in kernel interfaces
+>> to expose variables for security features.
+>
+> Why not put the firmware entries under /sys/kernel/security/firmware?
 
-In fact these branches are actually unreachable, so we can replace
-unreachable() with returning a -EINVAL value.
+ From man 5 sysfs page:
 
-Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
----
- arch/arm64/kvm/hyp/vgic-v3-sr.c | 7 +++----
- drivers/irqchip/irq-gic-v3.c    | 2 +-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+/sys/firmware: This subdirectory contains interfaces for viewing and 
+manipulating firmware-specific objects and attributes.
 
-diff --git a/arch/arm64/kvm/hyp/vgic-v3-sr.c b/arch/arm64/kvm/hyp/vgic-v3-sr.c
-index 4fb419f7b8b6..f3cee92c3038 100644
---- a/arch/arm64/kvm/hyp/vgic-v3-sr.c
-+++ b/arch/arm64/kvm/hyp/vgic-v3-sr.c
-@@ -6,7 +6,6 @@
- 
- #include <hyp/adjust_pc.h>
- 
--#include <linux/compiler.h>
- #include <linux/irqchip/arm-gic-v3.h>
- #include <linux/kvm_host.h>
- 
-@@ -55,7 +54,7 @@ static u64 __gic_v3_get_lr(unsigned int lr)
- 		return read_gicreg(ICH_LR15_EL2);
- 	}
- 
--	unreachable();
-+	return -EINVAL;
- }
- 
- static void __gic_v3_set_lr(u64 val, int lr)
-@@ -166,7 +165,7 @@ static u32 __vgic_v3_read_ap0rn(int n)
- 		val = read_gicreg(ICH_AP0R3_EL2);
- 		break;
- 	default:
--		unreachable();
-+		val = -EINVAL;
- 	}
- 
- 	return val;
-@@ -190,7 +189,7 @@ static u32 __vgic_v3_read_ap1rn(int n)
- 		val = read_gicreg(ICH_AP1R3_EL2);
- 		break;
- 	default:
--		unreachable();
-+		val = -EINVAL;
- 	}
- 
- 	return val;
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index b252d5534547..2ef98e32d257 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -475,7 +475,7 @@ static u32 __gic_get_ppi_index(irq_hw_number_t hwirq)
- 	case EPPI_RANGE:
- 		return hwirq - EPPI_BASE_INTID + 16;
- 	default:
--		unreachable();
-+		return -EINVAL;
- 	}
- }
- 
--- 
-2.17.1
+/sys/kernel: This subdirectory contains various files and subdirectories 
+that provide information about the running kernel.
+
+The security variables which are supposed to be exposed via fwsecurityfs 
+are managed by firmware, stored in firmware managed space and also often 
+consumed by firmware for enabling various security features.
+
+ From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose 
+of securityfs(/sys/kernel/security) is to provide a common place for all 
+kernel LSMs to use a common place. The idea of 
+fwsecurityfs(/sys/firmware/security) is to similarly provide a common 
+place for all firmware security objects.
+
+By having another firmware directory within /sys/kernel/security would 
+mean scattering firmware objects at multiple places and confusing the 
+purpose of /sys/kernel and /sys/firmware.
+
+Thanks & Regards,
+
+      - Nayna
 
