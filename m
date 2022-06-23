@@ -2,46 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26565570DD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 04:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2683557122
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 04:37:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3V96H2hz3hLl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 12:04:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LT4Cz3f30z3bl8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 12:37:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=qaKWc0Ic;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3DP10YRz3chH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:52:53 +1000 (AEST)
-Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.56])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LT39q6k6hzkWkG;
-	Thu, 23 Jun 2022 09:50:39 +0800 (CST)
-Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 23 Jun 2022 09:51:53 +0800
-Received: from ubuntu1804.huawei.com (10.67.175.36) by
- dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 23 Jun 2022 09:51:52 +0800
-From: Chen Zhongjin <chenzhongjin@huawei.com>
-To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kbuild@vger.kernel.org>, <live-patching@vger.kernel.org>
-Subject: [PATCH v6 33/33] objtool: revert c_file fallthrough detection for arm64
-Date: Thu, 23 Jun 2022 09:49:17 +0800
-Message-ID: <20220623014917.199563-34-chenzhongjin@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20220623014917.199563-1-chenzhongjin@huawei.com>
-References: <20220623014917.199563-1-chenzhongjin@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT4CH1wWNz305g
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 12:36:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=db7NnTeCjfS9BKlQ0hulk5gOY3mV9QEguoXPLgKe2zw=; b=qaKWc0IcE5h2mxvXPnQZRK30zN
+	wx/5x3BCCv1RW+DT/F+qaQExUVIZzt9lq1t5f8yhmO/Qc2smO4fvI1zOtXDJvtNLDNNK0Kx+ZfxUi
+	ggZXoGIGZ08R+0+isyhtks8bLUmm6gEZQUOVB19SMxmOaHjHaHmJNt987S+pVdj7Msi3rSC2b5FJB
+	E/NTG/RPjNKiqXv0VpgDjUNJ2LZcAe7ByLQt0qsQmQK8VMEOWVfTJv83DUcWoBmf5kBJwBo6iBfiO
+	k4Vdz0PMWoXkc9mw67p7y+eA/kNZoUTiI+r57Yzop572GZ7qBvUq3RpgitNrPKe61BpPZl5YndSmO
+	f5t0Db0A==;
+Received: from [2601:1c0:6280:3f0::aa0b]
+	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1o4Ci2-007XGJ-Sd; Thu, 23 Jun 2022 02:36:43 +0000
+Message-ID: <b769c0f6-76a8-2e80-f68b-4ada036c789a@infradead.org>
+Date: Wed, 22 Jun 2022 19:36:36 -0700
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.175.36]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemm500013.china.huawei.com (7.185.36.172)
-X-CFilter-Loop: Reflected
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [RFC PATCH v2 3/3] powerpc/pseries: expose authenticated
+ variables stored in LPAR PKS
+Content-Language: en-US
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-fsdevel@vger.kernel.org
+References: <20220622215648.96723-1-nayna@linux.ibm.com>
+ <20220622215648.96723-4-nayna@linux.ibm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220622215648.96723-4-nayna@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,72 +59,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, madvenka@linux.microsoft.com, daniel.thompson@linaro.org, michal.lkml@markovi.net, pasha.tatashin@soleen.com, peterz@infradead.org, catalin.marinas@arm.com, masahiroy@kernel.org, ndesaulniers@google.com, chenzhongjin@huawei.com, rmk+kernel@armlinux.org.uk, broonie@kernel.org, will@kernel.org, jpoimboe@kernel.org
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, George Wilson <gcwilson@linux.ibm.com>, gjoyce@ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-'commit 08feafe8d195 ("objtool: Fix function fallthrough detection for vmlinux")'
-This commit canceled c_file which used to make fallthrough detection
-only works on C objects.
 
-However in arm64/crypto/aes-mods.S, there are cases that JUMP at the
-end of function which make objtool wrongly detected them as fall through.
 
-Revert c_file before this is fixed.
+On 6/22/22 14:56, Nayna Jain wrote:
+> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+> index 6c1ca487103f..9c52095e20c4 100644
+> --- a/arch/powerpc/platforms/pseries/Kconfig
+> +++ b/arch/powerpc/platforms/pseries/Kconfig
+> @@ -152,6 +152,23 @@ config PSERIES_PLPKS
+>  	  config to enable operating system interface to hypervisor to
+>  	  access this space.
+>  
+> +config PSERIES_FWSECURITYFS_ARCH
+> +	depends on FWSECURITYFS
+> +	bool "Support fwsecurityfs for pseries"
+> +	help
+> +	  Enable fwsecuirtyfs arch specific code. This would initialize
 
-Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
----
- tools/objtool/check.c                   | 3 +--
- tools/objtool/include/objtool/objtool.h | 2 +-
- tools/objtool/objtool.c                 | 1 +
- 3 files changed, 3 insertions(+), 3 deletions(-)
+	         fwsecurityfs                   . This initializes
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 8ff7c30df513..95cb88da4ed5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -541,7 +541,6 @@ static struct instruction *find_last_insn(struct objtool_file *file,
- 	struct instruction *insn = NULL;
- 	unsigned int offset;
- 	unsigned int end = (sec->sh.sh_size > 10) ? sec->sh.sh_size - 10 : 0;
--
- 	for (offset = sec->sh.sh_size - 1; offset >= end && !insn; offset--)
- 		insn = find_insn(file, sec, offset);
- 
-@@ -3220,7 +3219,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 	while (1) {
- 		next_insn = next_insn_to_validate(file, insn);
- 
--		if (func && insn->func && func != insn->func->pfunc) {
-+		if (file->c_file && func && insn->func && func != insn->func->pfunc) {
- 			WARN("%s() falls through to next function %s()",
- 			     func->name, insn->func->name);
- 			return 1;
-diff --git a/tools/objtool/include/objtool/objtool.h b/tools/objtool/include/objtool/objtool.h
-index a6e72d916807..7a5c13a78f87 100644
---- a/tools/objtool/include/objtool/objtool.h
-+++ b/tools/objtool/include/objtool/objtool.h
-@@ -27,7 +27,7 @@ struct objtool_file {
- 	struct list_head static_call_list;
- 	struct list_head mcount_loc_list;
- 	struct list_head endbr_list;
--	bool ignore_unreachables, hints, rodata;
-+	bool ignore_unreachables, c_file, hints, rodata;
- 
- 	unsigned int nr_endbr;
- 	unsigned int nr_endbr_int;
-diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
-index 512669ce064c..d33620b1392d 100644
---- a/tools/objtool/objtool.c
-+++ b/tools/objtool/objtool.c
-@@ -105,6 +105,7 @@ struct objtool_file *objtool_open_read(const char *_objname)
- 	INIT_LIST_HEAD(&file.static_call_list);
- 	INIT_LIST_HEAD(&file.mcount_loc_list);
- 	INIT_LIST_HEAD(&file.endbr_list);
-+	file.c_file = !opts.link && find_section_by_name(file.elf, ".comment");
- 	file.ignore_unreachables = opts.no_unreachable;
- 	file.hints = false;
- 
+> +	  the firmware security filesystem with initial platform specific
+> +	  structure.
+> +
+> +config PSERIES_PLPKS_SECVARS
+> +	depends on PSERIES_PLPKS
+> +	select PSERIES_FWSECURITYFS_ARCH
+> +	tristate "Support for secvars"
+> +	help
+> +	  This interface exposes authenticated variables stored in the LPAR
+> +	  Platform KeyStore using fwsecurityfs interface.
+> +	  If you are unsure how to use it, say N.
+
 -- 
-2.17.1
-
+~Randy
