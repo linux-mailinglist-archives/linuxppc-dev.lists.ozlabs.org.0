@@ -1,38 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F3C5570B1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 03:56:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5D75570BF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 03:59:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3Jr5tkQz3f2V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 11:56:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3Ms3K8Nz3fBP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 11:59:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3CG2SBfz3cdc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:51:54 +1000 (AEST)
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LT39F19rvzkWVh;
-	Thu, 23 Jun 2022 09:50:09 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3CJ5bL9z3cgw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:51:56 +1000 (AEST)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.57])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4LT38l4zSQz1KC95;
+	Thu, 23 Jun 2022 09:49:43 +0800 (CST)
 Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2375.24; Thu, 23 Jun 2022 09:51:51 +0800
 Received: from ubuntu1804.huawei.com (10.67.175.36) by
  dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 23 Jun 2022 09:51:50 +0800
+ 15.1.2375.24; Thu, 23 Jun 2022 09:51:51 +0800
 From: Chen Zhongjin <chenzhongjin@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
 	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kbuild@vger.kernel.org>, <live-patching@vger.kernel.org>
-Subject: [PATCH v6 26/33] arm64: crypto: Remove unnecessary stackframe
-Date: Thu, 23 Jun 2022 09:49:10 +0800
-Message-ID: <20220623014917.199563-27-chenzhongjin@huawei.com>
+Subject: [PATCH v6 28/33] arm64: sleep: Properly set frame pointer before call
+Date: Thu, 23 Jun 2022 09:49:12 +0800
+Message-ID: <20220623014917.199563-29-chenzhongjin@huawei.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220623014917.199563-1-chenzhongjin@huawei.com>
 References: <20220623014917.199563-1-chenzhongjin@huawei.com>
@@ -57,41 +57,29 @@ Cc: mark.rutland@arm.com, madvenka@linux.microsoft.com, daniel.thompson@linaro.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The way sha256_block_neon restore the stackframe confuses objtool.
-But it turns out this function is a leaf function and does not use
-FP nor LR as scratch register.
+In __cpu_suspend_enter, the FP and LR are properly saved on the stack to
+form a stack frame, but the frame pointer is not set afterwards.
 
-Do not create a stackframe in this function as it is not necessary.
+Have the frame pointer point to the new frame.
 
 Signed-off-by: Julien Thierry <jthierry@redhat.com>
 Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
 ---
- arch/arm64/crypto/sha512-armv8.pl | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm64/kernel/sleep.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/crypto/sha512-armv8.pl b/arch/arm64/crypto/sha512-armv8.pl
-index 1882c4110026..6e2a96e05c5a 100644
---- a/arch/arm64/crypto/sha512-armv8.pl
-+++ b/arch/arm64/crypto/sha512-armv8.pl
-@@ -648,8 +648,6 @@ $code.=<<___;
- .align	4
- sha256_block_neon:
- .Lneon_entry:
--	stp	x29, x30, [sp, #-16]!
--	mov	x29, sp
- 	sub	sp,sp,#16*4
- 
- 	adr	$Ktbl,K256
-@@ -736,8 +734,7 @@ $code.=<<___;
- 	 mov	$Xfer,sp
- 	b.ne	.L_00_48
- 
--	ldr	x29,[x29]
--	add	sp,sp,#16*4+16
-+	add	sp,sp,#16*4
- 	ret
- .size	sha256_block_neon,.-sha256_block_neon
- ___
+diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
+index 799ec01b0649..7fd276f3c532 100644
+--- a/arch/arm64/kernel/sleep.S
++++ b/arch/arm64/kernel/sleep.S
+@@ -92,6 +92,7 @@ SYM_FUNC_START(__cpu_suspend_enter)
+ 	str	x0, [x1]
+ 	add	x0, x0, #SLEEP_STACK_DATA_SYSTEM_REGS
+ 	stp	x29, lr, [sp, #-16]!
++	mov	x29, sp
+ 	bl	cpu_do_suspend
+ 	ldp	x29, lr, [sp], #16
+ 	mov	x0, #1
 -- 
 2.17.1
 
