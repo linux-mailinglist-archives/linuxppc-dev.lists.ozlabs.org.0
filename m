@@ -2,81 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D51D557A56
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 14:30:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1491557A5E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 14:31:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTKN01pMmz3cff
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 22:30:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTKPY4NSTz3drh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 22:31:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q1gl5buX;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=otjtix2p;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=q1gl5buX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=otjtix2p;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTKML4Trlz3bk7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 22:29:50 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25NAQYEA027943;
-	Thu, 23 Jun 2022 12:29:42 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTKMZ6XSRz3c9D
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 22:30:02 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25NBogOS003688;
+	Thu, 23 Jun 2022 12:29:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=Qj3YNZEYqlTD/obmc7ResKquiY/z5yJ+P0dEzb2i7Cg=;
- b=q1gl5buXMVaxxsHqdY3Ym9rlpLP6rgMoOeYXApIXYZ9IODId3HlkoHZCgct6ADyfo014
- lOvH6zGHcn3JX48ajmlV1PsAfBiMSnunIc8FDtJgJxbvIxJys88zvUpzb7a5bdW2R1Kc
- rPy9qX8aGZiMv0KF2HgrUEQ8tCsi2PgN0DQtkBpHJu9FtG0riUjCc7spKQIt9dJZkY0+
- ve0NTK++q8k5/PK/3Q35IKvwD5WzzkYdc1p6UwVSNs9/7PdBt9VVJUAI64QTHdRdaCGD
- O0SWbTpzeBgBLrjlvznsl3ywAuPHwoHogf0WdANg5UrLR0K+Uyvdv1ZiBZXwYQ/IbES9 0Q== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvmfhpqxp-1
+ bh=I0XDoqGAyD9wFQlqMc8lxz6HDUp5LOCjaeVn1njh074=;
+ b=otjtix2pSjz9u7VmbEFDcM8gMhYNWciWNnmg21J9JA04jPwbH43QSwjpSKwhPPGdjMTC
+ ipXE8k1FTHGKBzn37KqZ76onVX4DJdZQ49uZRA00ZYfghTHdkkOIrBrPGqJQjs/fP285
+ 4Qre1wT74JUKMsWTQhMpWMiP708WE5yla+40+zbVFEK4GBDysuMeoWfAaznJt/LU8Od8
+ gLytjCV9Zo6J/+iALdyyNYcYn7iD63fRD2AVS864w7ApQZ/pEo9tUZuBJGNDXn9OsUax
+ CMCKKzEpjUvh/3rwRbNlyRdwNxX5ZBrzCcegDBbm5t4XKb7edzwoTcJBmT2f2Lpw+VLa Pg== 
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvqnj1327-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jun 2022 12:29:42 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25NCKT23028658;
-	Thu, 23 Jun 2022 12:29:41 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-	by ppma01dal.us.ibm.com with ESMTP id 3guk92mjub-1
+	Thu, 23 Jun 2022 12:29:45 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25NCKcXa003896;
+	Thu, 23 Jun 2022 12:29:44 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
+	by ppma01wdc.us.ibm.com with ESMTP id 3gv5cjwxtr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jun 2022 12:29:41 +0000
+	Thu, 23 Jun 2022 12:29:44 +0000
 Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
-	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25NCTelF39911920
+	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25NCThKB18415966
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jun 2022 12:29:40 GMT
+	Thu, 23 Jun 2022 12:29:43 GMT
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E3AD2805E;
-	Thu, 23 Jun 2022 12:29:40 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id BADF628058;
+	Thu, 23 Jun 2022 12:29:43 +0000 (GMT)
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7B57728059;
-	Thu, 23 Jun 2022 12:29:38 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2393F28059;
+	Thu, 23 Jun 2022 12:29:41 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.43.18.68])
 	by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Jun 2022 12:29:38 +0000 (GMT)
+	Thu, 23 Jun 2022 12:29:40 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH 2/3] powerpc/mm: Update max/min_low_pfn in the same function
-Date: Thu, 23 Jun 2022 17:59:21 +0530
-Message-Id: <20220623122922.640980-2-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH 3/3] powerpc/mm: Use VMALLOC_START to validate addr
+Date: Thu, 23 Jun 2022 17:59:22 +0530
+Message-Id: <20220623122922.640980-3-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220623122922.640980-1-aneesh.kumar@linux.ibm.com>
 References: <20220623122922.640980-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: W38rCs6DVUqOFs3BtnxNiVpGY2-S6j3Z
-X-Proofpoint-ORIG-GUID: W38rCs6DVUqOFs3BtnxNiVpGY2-S6j3Z
+X-Proofpoint-GUID: lqFXGDskXzs26GTPeZJKCdYL15mWLfZt
+X-Proofpoint-ORIG-GUID: lqFXGDskXzs26GTPeZJKCdYL15mWLfZt
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-06-23_05,2022-06-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- priorityscore=1501 spamscore=0 mlxlogscore=935 suspectscore=0
- lowpriorityscore=0 mlxscore=0 impostorscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0 adultscore=0
+ malwarescore=0 spamscore=0 phishscore=0 mlxscore=0 mlxlogscore=870
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2204290000 definitions=main-2206230049
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -89,45 +89,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linux-mm@kvack.org, Kefeng Wang <wangkefeng.wang@huawei.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For both CONFIG_NUMA enabled/disabled use mem_topology_setup to
-update max/min_low_pfn.
+Instead of high_memory use VMALLOC_START to validate that the address is
+not in the vmalloc range.
 
-This also add min_low_pfn update to CONFIG_NUMA which was initialized
-to zero before.
-
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/mm/numa.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/page.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index 0801b2ce9b7d..b44ce71917d7 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -1160,6 +1160,9 @@ void __init mem_topology_setup(void)
- {
- 	int cpu;
+diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
+index e5f75c70eda8..256cad69e42e 100644
+--- a/arch/powerpc/include/asm/page.h
++++ b/arch/powerpc/include/asm/page.h
+@@ -134,7 +134,7 @@ static inline bool pfn_valid(unsigned long pfn)
  
-+	max_low_pfn = max_pfn = memblock_end_of_DRAM() >> PAGE_SHIFT;
-+	min_low_pfn = MEMORY_START >> PAGE_SHIFT;
-+
- 	/*
- 	 * Linux/mm assumes node 0 to be online at boot. However this is not
- 	 * true on PowerPC, where node 0 is similar to any other node, it
-@@ -1204,9 +1207,6 @@ void __init initmem_init(void)
- {
- 	int nid;
+ #define virt_addr_valid(vaddr)	({					\
+ 	unsigned long _addr = (unsigned long)vaddr;			\
+-	_addr >= PAGE_OFFSET && _addr < (unsigned long)high_memory &&	\
++	_addr >= PAGE_OFFSET && _addr < (unsigned long)VMALLOC_START &&	\
+ 	pfn_valid(virt_to_pfn(_addr));					\
+ })
  
--	max_low_pfn = memblock_end_of_DRAM() >> PAGE_SHIFT;
--	max_pfn = max_low_pfn;
--
- 	memblock_dump_all();
- 
- 	for_each_online_node(nid) {
 -- 
 2.36.1
 
