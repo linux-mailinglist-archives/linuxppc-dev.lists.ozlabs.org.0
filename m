@@ -2,41 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4FA558B72
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 00:58:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55212558B75
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 00:59:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTbJt6JDHz3f43
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 08:58:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTbKJ1zPCz3dQt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 08:59:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=106.55.201.188; helo=smtpbg.qq.com; envelope-from=jiangjian@cdjrlc.com; receiver=<UNKNOWN>)
-Received: from smtpbg.qq.com (smtpbg136.qq.com [106.55.201.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTG2H6JwWz3brF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 19:59:34 +1000 (AEST)
-X-QQ-mid: bizesmtp91t1655978228tqb17klu
-Received: from ubuntu.localdomain ( [106.117.99.68])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 23 Jun 2022 17:57:03 +0800 (CST)
-X-QQ-SSF: 01000000008000B0C000B00A0000000
-X-QQ-FEAT: NTY7odTD9S9nCPdv+3vL0Gg+1KjSGIxoPdpjh7t49ebhhJ/8X5zrfgheFucMM
-	YIKm4tFSbTqZx2eVWhTj5pKBB9tbWruizozlMjj7HvKiBSm5q1VcZF5bwqFQAsSt5EOO429
-	Glhwp7jaTuxSg2Dr1DpxZPtZZsf89OsHuItivqv0cS3ZNSdjieE6IaZDv7NDYydofv+U1uV
-	rq3MFsXquO05s4EpYxQ6uwj8+GxP9LM0+b6Yg2hEKEHY790ZELH2JrHorUkgclHVjqDfZi+
-	Difawq9PrmCdYkVr8WOhq5Zs6MvGn4L+LfU3YvNB5diTwg0i8T9KHte/01zWYlYACt/vUrH
-	J/kjEjdPxTxt4CGNuKZl9Idrkc0bbJE1ThoS/eo
-X-QQ-GoodBg: 0
-From: Jiang Jian <jiangjian@cdjrlc.com>
-To: ruscur@russell.cc,
-	oohall@gmail.com,
-	mpe@ellerman.id.au
-Subject: [PATCH] powerpc/eeh: drop unexpected word 'for' in comments
-Date: Thu, 23 Jun 2022 17:57:01 +0800
-Message-Id: <20220623095701.22931-1-jiangjian@cdjrlc.com>
-X-Mailer: git-send-email 2.17.1
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam7
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=nfschina.com (client-ip=2400:dd01:100f:2:72e2:84ff:fe10:5f45; helo=mail.nfschina.com; envelope-from=jiaming@nfschina.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 308 seconds by postgrey-1.36 at boromir; Thu, 23 Jun 2022 20:25:52 AEST
+Received: from mail.nfschina.com (unknown [IPv6:2400:dd01:100f:2:72e2:84ff:fe10:5f45])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTGcJ2rslz3bqR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 20:25:52 +1000 (AEST)
+Received: from localhost (unknown [127.0.0.1])
+	by mail.nfschina.com (Postfix) with ESMTP id 5F23D1E80C7D;
+	Thu, 23 Jun 2022 18:20:19 +0800 (CST)
+X-Virus-Scanned: amavisd-new at test.com
+Received: from mail.nfschina.com ([127.0.0.1])
+	by localhost (mail.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id It6xpm0snNTk; Thu, 23 Jun 2022 18:20:16 +0800 (CST)
+Received: from localhost.localdomain (unknown [112.64.61.33])
+	(Authenticated sender: jiaming@nfschina.com)
+	by mail.nfschina.com (Postfix) with ESMTPA id C822F1E80CCC;
+	Thu, 23 Jun 2022 18:20:15 +0800 (CST)
+From: Zhang Jiaming <jiaming@nfschina.com>
+To: mpe@ellerman.id.au,
+	benh@kernel.crashing.org,
+	paulus@samba.org
+Subject: [PATCH] KVM: Fix spelling mistake
+Date: Thu, 23 Jun 2022 18:20:31 +0800
+Message-Id: <20220623102031.15359-1-jiaming@nfschina.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Fri, 24 Jun 2022 08:56:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -49,39 +47,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiang Jian <jiangjian@cdjrlc.com>, paulus@samba.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: liqiong@nfschina.com, renyu@nfschina.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Zhang Jiaming <jiaming@nfschina.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-there is an unexpected word 'for' in the comments that need to be dropped
+Change 'subsquent' to 'subsequent'.
+Change 'accross' to 'across'.
 
-file - arch/powerpc/kernel/eeh_driver.c
-line - 753
-
-* presence state. This might happen for for PCIe slots if the PE containing
-
-changed to:
-
-* presence state. This might happen for PCIe slots if the PE containing
-
-Signed-off-by: Jiang Jian <jiangjian@cdjrlc.com>
+Signed-off-by: Zhang Jiaming <jiaming@nfschina.com>
 ---
- arch/powerpc/kernel/eeh_driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_xive.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index 260273e56431..f279295179bd 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -750,7 +750,7 @@ static void eeh_pe_cleanup(struct eeh_pe *pe)
-  * @pdev: pci_dev to check
-  *
-  * This function may return a false positive if we can't determine the slot's
-- * presence state. This might happen for for PCIe slots if the PE containing
-+ * presence state. This might happen for PCIe slots if the PE containing
-  * the upstream bridge is also frozen, or the bridge is part of the same PE
-  * as the device.
-  *
+diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
+index 4ca23644f752..b4b680f2d853 100644
+--- a/arch/powerpc/kvm/book3s_xive.c
++++ b/arch/powerpc/kvm/book3s_xive.c
+@@ -539,7 +539,7 @@ static int xive_vm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr)
+ 	if (irq == XICS_IPI || irq == 0) {
+ 		/*
+ 		 * This barrier orders the setting of xc->cppr vs.
+-		 * subsquent test of xc->mfrr done inside
++		 * subsequent test of xc->mfrr done inside
+ 		 * scan_interrupts and push_pending_to_hw
+ 		 */
+ 		smp_mb();
+@@ -563,7 +563,7 @@ static int xive_vm_h_eoi(struct kvm_vcpu *vcpu, unsigned long xirr)
+ 	/*
+ 	 * This barrier orders both setting of in_eoi above vs,
+ 	 * subsequent test of guest_priority, and the setting
+-	 * of xc->cppr vs. subsquent test of xc->mfrr done inside
++	 * of xc->cppr vs. subsequent test of xc->mfrr done inside
+ 	 * scan_interrupts and push_pending_to_hw
+ 	 */
+ 	smp_mb();
+@@ -2392,7 +2392,7 @@ static int xive_set_source(struct kvmppc_xive *xive, long irq, u64 addr)
+ 	/*
+ 	 * Now, we select a target if we have one. If we don't we
+ 	 * leave the interrupt untargetted. It means that an interrupt
+-	 * can become "untargetted" accross migration if it was masked
++	 * can become "untargetted" across migration if it was masked
+ 	 * by set_xive() but there is little we can do about it.
+ 	 */
+ 
 -- 
-2.17.1
+2.25.1
 
