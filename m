@@ -2,37 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A9B5570B6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 03:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9285570BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 03:59:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3L74FcNz3fvK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 11:57:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3MR2Tmlz3g52
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 11:58:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3CH020mz3cDR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:51:55 +1000 (AEST)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.57])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LT3BY65tHzDsMk;
-	Thu, 23 Jun 2022 09:51:17 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3CJ0lPWz3cgc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:51:56 +1000 (AEST)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LT37J1xxkzShCC;
+	Thu, 23 Jun 2022 09:48:28 +0800 (CST)
 Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 23 Jun 2022 09:51:51 +0800
+ 15.1.2375.24; Thu, 23 Jun 2022 09:51:53 +0800
 Received: from ubuntu1804.huawei.com (10.67.175.36) by
  dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 23 Jun 2022 09:51:51 +0800
+ 15.1.2375.24; Thu, 23 Jun 2022 09:51:52 +0800
 From: Chen Zhongjin <chenzhongjin@huawei.com>
 To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
 	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kbuild@vger.kernel.org>, <live-patching@vger.kernel.org>
-Subject: [PATCH v6 29/33] arm64: compat: Move VDSO code to .rodata section
-Date: Thu, 23 Jun 2022 09:49:13 +0800
-Message-ID: <20220623014917.199563-30-chenzhongjin@huawei.com>
+Subject: [PATCH v6 32/33] arm64: irq-gic: Replace unreachable() with -EINVAL
+Date: Thu, 23 Jun 2022 09:49:16 +0800
+Message-ID: <20220623014917.199563-33-chenzhongjin@huawei.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20220623014917.199563-1-chenzhongjin@huawei.com>
 References: <20220623014917.199563-1-chenzhongjin@huawei.com>
@@ -57,41 +57,73 @@ Cc: mark.rutland@arm.com, madvenka@linux.microsoft.com, daniel.thompson@linaro.o
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-VDSO code should be inside .rodata.
+Using unreachable() at default of switch generates an extra branch at
+end of the function, and compiler won't generate a ret to close this
+branch because it knows it's unreachable.
 
-Now code in kuser32.S and sigreturn32.S are inside .text section and never
-executed.
-Move them to .rodata.
+If there's no instruction in this branch, compiler will generate a NOP,
+And it will confuse objtool to warn this NOP as a fall through branch.
+
+In fact these branches are actually unreachable, so we can replace
+unreachable() with returning a -EINVAL value.
 
 Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
 ---
- arch/arm64/kernel/kuser32.S     | 1 +
- arch/arm64/kernel/sigreturn32.S | 1 +
- 2 files changed, 2 insertions(+)
+ arch/arm64/kvm/hyp/vgic-v3-sr.c | 7 +++----
+ drivers/irqchip/irq-gic-v3.c    | 2 +-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/kernel/kuser32.S b/arch/arm64/kernel/kuser32.S
-index 42bd8c0c60e0..692e9d2e31e5 100644
---- a/arch/arm64/kernel/kuser32.S
-+++ b/arch/arm64/kernel/kuser32.S
-@@ -15,6 +15,7 @@
+diff --git a/arch/arm64/kvm/hyp/vgic-v3-sr.c b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+index 4fb419f7b8b6..f3cee92c3038 100644
+--- a/arch/arm64/kvm/hyp/vgic-v3-sr.c
++++ b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+@@ -6,7 +6,6 @@
  
- #include <asm/unistd.h>
+ #include <hyp/adjust_pc.h>
  
-+	.section .rodata
- 	.align	5
- 	.globl	__kuser_helper_start
- __kuser_helper_start:
-diff --git a/arch/arm64/kernel/sigreturn32.S b/arch/arm64/kernel/sigreturn32.S
-index 475d30d471ac..ccbd4aab4ba4 100644
---- a/arch/arm64/kernel/sigreturn32.S
-+++ b/arch/arm64/kernel/sigreturn32.S
-@@ -15,6 +15,7 @@
+-#include <linux/compiler.h>
+ #include <linux/irqchip/arm-gic-v3.h>
+ #include <linux/kvm_host.h>
  
- #include <asm/unistd.h>
+@@ -55,7 +54,7 @@ static u64 __gic_v3_get_lr(unsigned int lr)
+ 		return read_gicreg(ICH_LR15_EL2);
+ 	}
  
-+	.section .rodata
- 	.globl __aarch32_sigret_code_start
- __aarch32_sigret_code_start:
+-	unreachable();
++	return -EINVAL;
+ }
+ 
+ static void __gic_v3_set_lr(u64 val, int lr)
+@@ -166,7 +165,7 @@ static u32 __vgic_v3_read_ap0rn(int n)
+ 		val = read_gicreg(ICH_AP0R3_EL2);
+ 		break;
+ 	default:
+-		unreachable();
++		val = -EINVAL;
+ 	}
+ 
+ 	return val;
+@@ -190,7 +189,7 @@ static u32 __vgic_v3_read_ap1rn(int n)
+ 		val = read_gicreg(ICH_AP1R3_EL2);
+ 		break;
+ 	default:
+-		unreachable();
++		val = -EINVAL;
+ 	}
+ 
+ 	return val;
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index b252d5534547..2ef98e32d257 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -475,7 +475,7 @@ static u32 __gic_get_ppi_index(irq_hw_number_t hwirq)
+ 	case EPPI_RANGE:
+ 		return hwirq - EPPI_BASE_INTID + 16;
+ 	default:
+-		unreachable();
++		return -EINVAL;
+ 	}
+ }
  
 -- 
 2.17.1
