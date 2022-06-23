@@ -2,62 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE04855713A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 04:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A96F557522
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 10:13:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LT4hW46xqz3cJC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 12:58:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTCh31MKYz3cdv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 18:13:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=U0raqMCb;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TElwhEpm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=maz@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=U0raqMCb;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TElwhEpm;
 	dkim-atps=neutral
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT4gr221Pz2yQH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 12:58:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655953096; x=1687489096;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gjdmsibT2XOVnKUpWeGhWcT365a5t8iOLAfkcKdWJHQ=;
-  b=U0raqMCb5EhKkwdJM8geHBrCG+hdDUK1HLeA90aa75tajSBiSgZ3nawp
-   MmFC1IL4QfouluE1fzcbbYUU5KadUyUnDr5xw+Coa+qaYfwyD87DQSodn
-   0idPzdONlhpfpWChSS0nGa9ujovQFcUwUu1/7pf0Nx9aG72Se4pzFLTDn
-   hY1Duv9SAK9vGObY1QekhG+1CMj0FpdmjEGExSuq/jv6Ydx2iippd6DR0
-   whrIBg4qsT26p9PlWH2xXcFyFK2KX7CLl0ume7bQlj1FOFcbBR2YBhxw9
-   t7C7rq8mFgLf3xGWsVV5q5ek5tqx/U7iIg0cxTHVPs+xAhL3Im0JHSQda
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="281335911"
-X-IronPort-AV: E=Sophos;i="5.92,215,1650956400"; 
-   d="scan'208";a="281335911"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 19:58:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,215,1650956400"; 
-   d="scan'208";a="914990669"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga005.fm.intel.com with ESMTP; 22 Jun 2022 19:58:10 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1o4D2n-0000ap-Po;
-	Thu, 23 Jun 2022 02:58:09 +0000
-Date: Thu, 23 Jun 2022 10:57:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS WITH WARNING
- 612d6fddf359556217a89c3e42a6c3a6475e2e1d
-Message-ID: <62b3d6b3.A51Rpgx+RFAJmRYB%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTCgK6rqYz3bqY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 18:13:17 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id ABEA6B8220A;
+	Thu, 23 Jun 2022 08:13:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55683C3411B;
+	Thu, 23 Jun 2022 08:13:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1655971991;
+	bh=93/MTc5vO/nyRHGUbLO4hJYIXCO0SdlKGcjgsyj/v0U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TElwhEpmTWVUyAHmXlDKIQesLpLn2W/YBd3iSa3zRv0wTczabb6/S8uggaBI52ZF3
+	 ep73EhM6rYn8N0UpLBPXRNSfL0cNJqo4OIMAL2JFW+5tL3Pg7POjkQgCksF6ikLLtT
+	 FEbu5CueGPzYQjBNf78BGjLdCJGMZpEiGKRLwQVlmgsmiSQwmjFLNgyn4AA2tb9Qnd
+	 j41cpCsvMJkeMGYmVaTD5P3I731ZqUVspZ7ppJeYhQZMapyr6UvPrkop3s0i64upL2
+	 A8Nu9W9ZHSl3y1iFTtcMEh6pnnYSpXhxftQj+0k28juu44KWAQfJ/72EcCJcF8op59
+	 VDbA6N4xk31Kw==
+Received: from disco-boy.misterjones.org ([51.254.78.96] helo=www.loen.fr)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1o4Hxd-002Wmo-2E;
+	Thu, 23 Jun 2022 09:13:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Date: Thu, 23 Jun 2022 09:13:08 +0100
+From: Marc Zyngier <maz@kernel.org>
+To: Chen Zhongjin <chenzhongjin@huawei.com>
+Subject: Re: [PATCH v6 32/33] arm64: irq-gic: Replace unreachable() with
+ -EINVAL
+In-Reply-To: <20220623014917.199563-33-chenzhongjin@huawei.com>
+References: <20220623014917.199563-1-chenzhongjin@huawei.com>
+ <20220623014917.199563-33-chenzhongjin@huawei.com>
+User-Agent: Roundcube Webmail/1.4.13
+Message-ID: <7d26e36686495866e0752e12c38f170e@kernel.org>
+X-Sender: maz@kernel.org
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 51.254.78.96
+X-SA-Exim-Rcpt-To: chenzhongjin@huawei.com, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org, live-patching@vger.kernel.org, jpoimboe@kernel.org, peterz@infradead.org, catalin.marinas@arm.com, will@kernel.org, masahiroy@kernel.org, michal.lkml@markovi.net, ndesaulniers@google.com, mark.rutland@arm.com, pasha.tatashin@soleen.com, broonie@kernel.org, rmk+kernel@armlinux.org.uk, madvenka@linux.microsoft.com, christophe.leroy@csgroup.eu, daniel.thompson@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,119 +74,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, mark.rutland@arm.com, daniel.thompson@linaro.org, michal.lkml@markovi.net, pasha.tatashin@soleen.com, will@kernel.org, linux-kbuild@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, masahiroy@kernel.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, madvenka@linux.microsoft.com, rmk+kernel@armlinux.org.uk, broonie@kernel.org, live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 612d6fddf359556217a89c3e42a6c3a6475e2e1d  powerpc: Update asm-prototypes.h comment
+On 2022-06-23 02:49, Chen Zhongjin wrote:
+> Using unreachable() at default of switch generates an extra branch at
+> end of the function, and compiler won't generate a ret to close this
+> branch because it knows it's unreachable.
+> 
+> If there's no instruction in this branch, compiler will generate a NOP,
+> And it will confuse objtool to warn this NOP as a fall through branch.
+> 
+> In fact these branches are actually unreachable, so we can replace
+> unreachable() with returning a -EINVAL value.
+> 
+> Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+> ---
+>  arch/arm64/kvm/hyp/vgic-v3-sr.c | 7 +++----
+>  drivers/irqchip/irq-gic-v3.c    | 2 +-
+>  2 files changed, 4 insertions(+), 5 deletions(-)
 
-Warning reports:
+Basic courtesy would have been to Cc the maintainers of this code.
 
-https://lore.kernel.org/lkml/202206230832.VJx0qePJ-lkp@intel.com
+> 
+> diff --git a/arch/arm64/kvm/hyp/vgic-v3-sr.c 
+> b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+> index 4fb419f7b8b6..f3cee92c3038 100644
+> --- a/arch/arm64/kvm/hyp/vgic-v3-sr.c
+> +++ b/arch/arm64/kvm/hyp/vgic-v3-sr.c
+> @@ -6,7 +6,6 @@
+> 
+>  #include <hyp/adjust_pc.h>
+> 
+> -#include <linux/compiler.h>
+>  #include <linux/irqchip/arm-gic-v3.h>
+>  #include <linux/kvm_host.h>
+> 
+> @@ -55,7 +54,7 @@ static u64 __gic_v3_get_lr(unsigned int lr)
+>  		return read_gicreg(ICH_LR15_EL2);
+>  	}
+> 
+> -	unreachable();
+> +	return -EINVAL;
 
-Warning: (recently discovered and may have been fixed)
+NAK. That's absolutely *wrong*, and will hide future bugs.
+Nothing checks for -EINVAL, and we *never* expect to
+reach this, hence the perfectly valid annotation.
 
-arch/powerpc/platforms/powermac/setup.c:324:6: warning: no previous prototype for 'note_scsi_host' [-Wmissing-prototypes]
+If something needs fixing, it probably is your tooling.
 
-Warning ids grouped by kconfigs:
-
-gcc_recent_errors
-`-- powerpc-randconfig-r016-20220623
-    `-- arch-powerpc-platforms-powermac-setup.c:warning:no-previous-prototype-for-note_scsi_host
-
-elapsed time: 726m
-
-configs tested: 82
-configs skipped: 2
-
-gcc tested configs:
-arm                                 defconfig
-arm                              allyesconfig
-arm64                            allyesconfig
-i386                          randconfig-c001
-m68k                          atari_defconfig
-sh                             espt_defconfig
-arc                    vdk_hs38_smp_defconfig
-s390                          debug_defconfig
-m68k                        mvme16x_defconfig
-arm                            xcep_defconfig
-arc                              alldefconfig
-sh                           se7343_defconfig
-parisc                generic-32bit_defconfig
-arm                        oxnas_v6_defconfig
-sh                             sh03_defconfig
-openrisc                         alldefconfig
-arm                           u8500_defconfig
-arm                       aspeed_g5_defconfig
-xtensa                              defconfig
-x86_64                        randconfig-c001
-arm                  randconfig-c002-20220622
-ia64                             allmodconfig
-riscv                             allnoconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-x86_64                        randconfig-a002
-x86_64                        randconfig-a006
-x86_64                        randconfig-a004
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a013
-x86_64                        randconfig-a011
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-arc                  randconfig-r043-20220622
-riscv                    nommu_k210_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
-
-clang tested configs:
-powerpc                 mpc8315_rdb_defconfig
-arm                          ixp4xx_defconfig
-arm                         hackkit_defconfig
-riscv                             allnoconfig
-x86_64                        randconfig-k001
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-x86_64                        randconfig-a005
-i386                          randconfig-a002
-i386                          randconfig-a004
-i386                          randconfig-a006
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r041-20220622
-riscv                randconfig-r042-20220622
-hexagon              randconfig-r045-20220622
-s390                 randconfig-r044-20220622
-hexagon              randconfig-r041-20220623
-hexagon              randconfig-r045-20220623
-
+         M.
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Jazz is not dead. It just smells funny...
