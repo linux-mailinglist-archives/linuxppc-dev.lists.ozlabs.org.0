@@ -1,92 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D26C55701B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 03:51:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C056C5570D2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 04:02:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3C10m60z3bqg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 11:51:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bY4gNorD;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LT3Qy4c3gz3fKg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jun 2022 12:02:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.vnet.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bY4gNorD;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=chenzhongjin@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3BF6Bxzz3bk8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:51:01 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25N1FPnN029418;
-	Thu, 23 Jun 2022 01:50:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=TsI+ILPUKVz3yg7piZ6IP0m7tWX8TJEnXWgNEGMDWNc=;
- b=bY4gNorDsHYNJG2Bf7vLFZ9c7LcQJRlzLlHQz6IP10ZnGAfNcqnbh0O1IuDT8cLTS7Lt
- 1nYfP7kdHEM1Lw4ozSdfDo3PWjcfmwa2pobiTI7dFCJciaHxLFjnx6U6CDeCEB1Nu/tk
- VrVoa4J39NN56aQOFrgcjqvsJH45Lhz7wkMMdcK+W6Ya3+SD+xpQvil4WsOCUn8Ac8cP
- gBdgo+Ie6cD9STH9X2471OYHcYpaYBAUsSb5HMaeQa8kYqsrbjmNBeF24EnqX24Uxr08
- PC5z8qPq6ekKDxxDQGQyGsBXEfU3yFv9cPy6N43LUd3l4K2d3SQ4IhVlctaPb5TKZZcW QA== 
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3gvebm0q3u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jun 2022 01:50:48 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25N1aPW6003841;
-	Thu, 23 Jun 2022 01:50:47 GMT
-Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
-	by ppma01dal.us.ibm.com with ESMTP id 3guk92kbnh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jun 2022 01:50:47 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25N1okmM35651890
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jun 2022 01:50:46 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54C0AC605A;
-	Thu, 23 Jun 2022 01:50:46 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7AAF7C6057;
-	Thu, 23 Jun 2022 01:50:45 +0000 (GMT)
-Received: from [9.211.125.38] (unknown [9.211.125.38])
-	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Jun 2022 01:50:45 +0000 (GMT)
-Message-ID: <e200854b-116a-cbf3-256d-92a9c490b9bc@linux.vnet.ibm.com>
-Date: Wed, 22 Jun 2022 21:50:45 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LT3Cn1YDWz3br0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 11:52:21 +1000 (AEST)
+Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.54])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LT38h05zRzhYg3;
+	Thu, 23 Jun 2022 09:49:40 +0800 (CST)
+Received: from dggpemm500013.china.huawei.com (7.185.36.172) by
+ dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 23 Jun 2022 09:51:48 +0800
+Received: from ubuntu1804.huawei.com (10.67.175.36) by
+ dggpemm500013.china.huawei.com (7.185.36.172) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 23 Jun 2022 09:51:48 +0800
+From: Chen Zhongjin <chenzhongjin@huawei.com>
+To: <linux-kernel@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kbuild@vger.kernel.org>, <live-patching@vger.kernel.org>
+Subject: [PATCH v6 12/33] objtool: arm64: Enable stack validation for arm64
+Date: Thu, 23 Jun 2022 09:48:56 +0800
+Message-ID: <20220623014917.199563-13-chenzhongjin@huawei.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20220623014917.199563-1-chenzhongjin@huawei.com>
+References: <20220623014917.199563-1-chenzhongjin@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.0
-Subject: Re: [RFC PATCH v2 2/3] fs: define a firmware security filesystem
- named fwsecurityfs
-Content-Language: en-US
-To: Casey Schaufler <casey@schaufler-ca.com>,
-        Nayna Jain
- <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-fsdevel@vger.kernel.org
-References: <20220622215648.96723-1-nayna@linux.ibm.com>
- <20220622215648.96723-3-nayna@linux.ibm.com>
- <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
-From: Nayna <nayna@linux.vnet.ibm.com>
-In-Reply-To: <e5399b47-5382-99e6-9a79-c0947a696917@schaufler-ca.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: xCCZ1rp5CwqPjADRXKVg0nEJScoazKR5
-X-Proofpoint-GUID: xCCZ1rp5CwqPjADRXKVg0nEJScoazKR5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-22_08,2022-06-22_03,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=835 priorityscore=1501 spamscore=0 suspectscore=0
- impostorscore=0 clxscore=1011 adultscore=0 mlxscore=0 bulkscore=0
- phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2204290000 definitions=main-2206230004
+Content-Type: text/plain
+X-Originating-IP: [10.67.175.36]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemm500013.china.huawei.com (7.185.36.172)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,47 +53,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>, Dave Hansen <dave.hansen@intel.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, George Wilson <gcwilson@linux.ibm.com>, gjoyce@ibm.com
+Cc: mark.rutland@arm.com, madvenka@linux.microsoft.com, daniel.thompson@linaro.org, michal.lkml@markovi.net, pasha.tatashin@soleen.com, peterz@infradead.org, catalin.marinas@arm.com, masahiroy@kernel.org, ndesaulniers@google.com, chenzhongjin@huawei.com, rmk+kernel@armlinux.org.uk, broonie@kernel.org, will@kernel.org, jpoimboe@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Add build option to run stack validation at compile time.
 
-On 6/22/22 18:29, Casey Schaufler wrote:
-> On 6/22/2022 2:56 PM, Nayna Jain wrote:
->> securityfs is meant for linux security subsystems to expose 
->> policies/logs
->> or any other information. However, there are various firmware security
->> features which expose their variables for user management via kernel.
->> There is currently no single place to expose these variables. Different
->> platforms use sysfs/platform specific filesystem(efivarfs)/securityfs
->> interface as find appropriate. Thus, there is a gap in kernel interfaces
->> to expose variables for security features.
->
-> Why not put the firmware entries under /sys/kernel/security/firmware?
+When requiring stack validation, jump tables are disabled as it
+simplifies objtool analysis (without having to introduce unreliable
+artifacs). In local testing, this does not appear to significaly
+affect final binary size nor system performance.
 
- From man 5 sysfs page:
+Signed-off-by: Raphael Gault <raphael.gault@arm.com>
+Signed-off-by: Julien Thierry <jthierry@redhat.com>
+Signed-off-by: Chen Zhongjin <chenzhongjin@huawei.com>
+---
+ arch/arm64/Kconfig       |  2 ++
+ arch/arm64/Kconfig.debug | 21 +++++++++++++++++++++
+ arch/arm64/Makefile      |  4 ++++
+ 3 files changed, 27 insertions(+)
 
-/sys/firmware: This subdirectory contains interfaces for viewing and 
-manipulating firmware-specific objects and attributes.
-
-/sys/kernel: This subdirectory contains various files and subdirectories 
-that provide information about the running kernel.
-
-The security variables which are supposed to be exposed via fwsecurityfs 
-are managed by firmware, stored in firmware managed space and also often 
-consumed by firmware for enabling various security features.
-
- From git commit b67dbf9d4c1987c370fd18fdc4cf9d8aaea604c2, the purpose 
-of securityfs(/sys/kernel/security) is to provide a common place for all 
-kernel LSMs to use a common place. The idea of 
-fwsecurityfs(/sys/firmware/security) is to similarly provide a common 
-place for all firmware security objects.
-
-By having another firmware directory within /sys/kernel/security would 
-mean scattering firmware objects at multiple places and confusing the 
-purpose of /sys/kernel and /sys/firmware.
-
-Thanks & Regards,
-
-      - Nayna
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 57c4c995965f..30d3d549160f 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -201,6 +201,8 @@ config ARM64
+ 	select MMU_GATHER_RCU_TABLE_FREE
+ 	select HAVE_RSEQ
+ 	select HAVE_STACKPROTECTOR
++	select HAVE_OBJTOOL
++	select HAVE_STACK_VALIDATION
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HAVE_KPROBES
+ 	select HAVE_KRETPROBES
+diff --git a/arch/arm64/Kconfig.debug b/arch/arm64/Kconfig.debug
+index 265c4461031f..c2c68c6f7557 100644
+--- a/arch/arm64/Kconfig.debug
++++ b/arch/arm64/Kconfig.debug
+@@ -20,4 +20,25 @@ config ARM64_RELOC_TEST
+ 	depends on m
+ 	tristate "Relocation testing module"
+ 
++choice
++    prompt "Choose kernel unwinder"
++    default UNWINDER_FRAME_POINTER
++    help
++      This determines which method will be used for unwinding kernel stack
++      traces for panics, oopses, bugs, warnings, perf, /proc/<pid>/stack,
++      livepatch, lockdep, and more.
++
++config UNWINDER_FRAME_POINTER
++    bool "Frame pointer unwinder"
++    select FRAME_POINTER
++    help
++      This option enables the frame pointer unwinder for unwinding kernel
++      stack traces.
++
++      The unwinder itself is fast and it uses less RAM than the ORC
++      unwinder, but the kernel text size will grow by ~3% and the kernel's
++      overall performance will degrade by roughly 5-10%.
++
++endchoice
++
+ source "drivers/hwtracing/coresight/Kconfig"
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 2f1de88651e6..ad2f4a5e8f6c 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -133,6 +133,10 @@ ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_REGS),y)
+   CC_FLAGS_FTRACE := -fpatchable-function-entry=2
+ endif
+ 
++ifeq ($(CONFIG_STACK_VALIDATION),y)
++KBUILD_CFLAGS	+= -fno-jump-tables
++endif
++
+ # Default value
+ head-y		:= arch/arm64/kernel/head.o
+ 
+-- 
+2.17.1
 
