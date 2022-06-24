@@ -1,86 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2717E55A0D6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 20:35:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054DF55A0D8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 20:36:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LV5Qy0MfKz3f1y
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 04:35:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LV5Rn6jXHz3dpD
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 04:36:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Is2wHavM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HM+JYQYd;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Is2wHavM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HM+JYQYd;
 	dkim-atps=neutral
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LV5Ng13Ppz3cg7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 04:33:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LV5Nl3rhbz3ch6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 04:33:43 +1000 (AEST)
 Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25OHjUwV022150;
-	Fri, 24 Jun 2022 18:33:28 GMT
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25OHjTD1022112;
+	Fri, 24 Jun 2022 18:33:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=NzHBotMACtPxvgxmObHX5vHdxoBGGuZmZpyUzQETn9s=;
- b=Is2wHavMF9AnVuCfGTjkMOR+NVhcQoFiNtvUd9sr2/v8vH6t1Kv4aDUI0IK3kis0wyz8
- MQ4wQAyr5P/DG+fhoLtYgh18wdvH83FFnKMaEnh8y63/wGJuDfGpEbzaazZGlIL6Zjpu
- LBjVmmnb9NYTgnoV45DPCvQQ5o0WgPVPaGUbqJVZetBscooM+DmWjS83pGLWExecRDcm
- G2PQHve2tiHPRConu/DDcN+gkpUsJS1/nyYqtMTJ2rJhb/K1PQ8cOWRtZGmDbipoSiIU
- 9VHS3dCKlPgp4TZgId0mjMiIdR4WkihYbnClX45HxD8adcZrRFGJKhcfDsRkLggB5E56 iw== 
+ bh=Voy85s9P4soixwoMp+qPwn2RY0UdvZ2XIEXI+LueRYc=;
+ b=HM+JYQYdJZJosVKttNSJZmiq8aTm9oEVfAwqYjC34z3DiLgANO/ZhfY+QtY1Px5F6oLc
+ TNaayOZNmjvqDdKGUCEcgn7Hv0XBY+5V8aGNU4n2BbZR/kTghs2bT2SPhqfM3EOxhTOc
+ wkIyfwBsb+MTUZ/KFQYYFOYW/OWpP7rleGC28g6zNZqjT3AbRY1Z3WO2lLBBlguhKaGD
+ iuwUxuQYAhxCSrKMQLIeSura1lCjX4ocsKb86rxShSwoC5hbg6cMxN+SPHAklmIf/RI1
+ fpQags5cmnrA++oN1WxTsNfvt6ZWQlDAqkpgOK+digJY2OvzLO1SQjK6JZEE+CIUrzhY 2A== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwhxx18m9-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwhxx18pe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jun 2022 18:33:27 +0000
+	Fri, 24 Jun 2022 18:33:33 +0000
 Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25OIUcWI025790;
-	Fri, 24 Jun 2022 18:33:27 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25OIFDdG030515;
+	Fri, 24 Jun 2022 18:33:32 GMT
 Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwhxx18kg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwhxx18nu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jun 2022 18:33:27 +0000
+	Fri, 24 Jun 2022 18:33:32 +0000
 Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25OILd0x017347;
-	Fri, 24 Jun 2022 18:33:25 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma04fra.de.ibm.com with ESMTP id 3gs6b8ycuv-1
+	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25OILf2M017361;
+	Fri, 24 Jun 2022 18:33:30 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04fra.de.ibm.com with ESMTP id 3gs6b8ycux-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jun 2022 18:33:25 +0000
+	Fri, 24 Jun 2022 18:33:30 +0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25OIXNVA19923386
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25OIXShV17433082
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Jun 2022 18:33:23 GMT
+	Fri, 24 Jun 2022 18:33:28 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 06D6D5204F;
-	Fri, 24 Jun 2022 18:33:23 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2F97C5204E;
+	Fri, 24 Jun 2022 18:33:28 +0000 (GMT)
 Received: from li-c3569c4c-1ef8-11b2-a85c-ee139cda3133.ibm.com.com (unknown [9.43.0.85])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 218B452054;
-	Fri, 24 Jun 2022 18:33:18 +0000 (GMT)
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 615165204F;
+	Fri, 24 Jun 2022 18:33:24 +0000 (GMT)
 From: Sathvika Vasireddy <sv@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v3 03/12] objtool: Use target file class size instead of a compiled constant
-Date: Sat, 25 Jun 2022 00:02:29 +0530
-Message-Id: <20220624183238.388144-4-sv@linux.ibm.com>
+Subject: [RFC PATCH v3 04/12] objtool: Add --mnop as an option to --mcount
+Date: Sat, 25 Jun 2022 00:02:30 +0530
+Message-Id: <20220624183238.388144-5-sv@linux.ibm.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20220624183238.388144-1-sv@linux.ibm.com>
 References: <20220624183238.388144-1-sv@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: inRIedWEvOdzWxskrDtme6_N0bzh4qr_
-X-Proofpoint-GUID: q0kqo_w1PkVsU2_jK5YHsP1C2Z_0SHH0
+X-Proofpoint-ORIG-GUID: x4ZR4LpZZt6ZEc-bSWDn1cuk5DXqCzaQ
+X-Proofpoint-GUID: iQ1odCOqgAlQEFIGb3pHuk2Djysc5gqJ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-06-24_08,2022-06-23_01,2022-06-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
  priorityscore=1501 spamscore=0 impostorscore=0 adultscore=0
  lowpriorityscore=0 malwarescore=0 clxscore=1015 bulkscore=0 mlxscore=0
- mlxlogscore=969 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2204290000 definitions=main-2206240072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -97,120 +97,146 @@ Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, aik@ozlabs.ru, mingo@red
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Architectures can select HAVE_NOP_MCOUNT if they choose
+to nop out mcount call sites. If that config option is
+selected, then --mnop is passed as an option to objtool,
+along with --mcount.
 
-In order to allow using objtool on cross-built kernels,
-determine size of long from elf data instead of using
-sizeof(long) at build time.
+Also, make sure that --mnop can be passed as an option
+to objtool only when --mcount is passed.
 
-For the time being this covers only mcount.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
 ---
- tools/objtool/check.c               | 16 +++++++++-------
- tools/objtool/elf.c                 |  8 ++++++--
- tools/objtool/include/objtool/elf.h |  8 ++++++++
- 3 files changed, 23 insertions(+), 9 deletions(-)
+ Makefile                                |  4 +++-
+ arch/x86/Kconfig                        |  1 +
+ scripts/Makefile.build                  |  1 +
+ tools/objtool/builtin-check.c           | 14 ++++++++++++++
+ tools/objtool/check.c                   | 19 ++++++++++---------
+ tools/objtool/include/objtool/builtin.h |  1 +
+ 6 files changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index cef1dd54d505..fabc0ea88747 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -802,9 +802,9 @@ static int create_ibt_endbr_seal_sections(struct objtool_file *file)
- static int create_mcount_loc_sections(struct objtool_file *file)
- {
- 	struct section *sec;
--	unsigned long *loc;
- 	struct instruction *insn;
- 	int idx;
-+	int size = elf_class_size(file->elf);
- 
- 	sec = find_section_by_name(file->elf, "__mcount_loc");
- 	if (sec) {
-@@ -820,23 +820,25 @@ static int create_mcount_loc_sections(struct objtool_file *file)
- 	list_for_each_entry(insn, &file->mcount_loc_list, call_node)
- 		idx++;
- 
--	sec = elf_create_section(file->elf, "__mcount_loc", 0, sizeof(unsigned long), idx);
-+	sec = elf_create_section(file->elf, "__mcount_loc", 0, size, idx);
- 	if (!sec)
- 		return -1;
- 
-+	sec->sh.sh_addralign = size;
-+
- 	idx = 0;
- 	list_for_each_entry(insn, &file->mcount_loc_list, call_node) {
-+		void *loc;
- 
--		loc = (unsigned long *)sec->data->d_buf + idx;
--		memset(loc, 0, sizeof(unsigned long));
-+		loc = sec->data->d_buf + idx;
-+		memset(loc, 0, size);
- 
--		if (elf_add_reloc_to_insn(file->elf, sec,
--					  idx * sizeof(unsigned long),
-+		if (elf_add_reloc_to_insn(file->elf, sec, idx,
- 					  R_X86_64_64,
- 					  insn->sec, insn->offset))
- 			return -1;
- 
--		idx++;
-+		idx += size;
- 	}
- 
- 	return 0;
-diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
-index c25e957c1e52..63218f5799c2 100644
---- a/tools/objtool/elf.c
-+++ b/tools/objtool/elf.c
-@@ -1124,6 +1124,7 @@ static struct section *elf_create_rela_reloc_section(struct elf *elf, struct sec
- {
- 	char *relocname;
- 	struct section *sec;
-+	int size = elf_class_size(elf);
- 
- 	relocname = malloc(strlen(base->name) + strlen(".rela") + 1);
- 	if (!relocname) {
-@@ -1133,7 +1134,10 @@ static struct section *elf_create_rela_reloc_section(struct elf *elf, struct sec
- 	strcpy(relocname, ".rela");
- 	strcat(relocname, base->name);
- 
--	sec = elf_create_section(elf, relocname, 0, sizeof(GElf_Rela), 0);
-+	if (size == sizeof(u32))
-+		sec = elf_create_section(elf, relocname, 0, sizeof(Elf32_Rela), 0);
-+	else
-+		sec = elf_create_section(elf, relocname, 0, sizeof(GElf_Rela), 0);
- 	free(relocname);
- 	if (!sec)
- 		return NULL;
-@@ -1142,7 +1146,7 @@ static struct section *elf_create_rela_reloc_section(struct elf *elf, struct sec
- 	sec->base = base;
- 
- 	sec->sh.sh_type = SHT_RELA;
--	sec->sh.sh_addralign = 8;
-+	sec->sh.sh_addralign = size;
- 	sec->sh.sh_link = find_section_by_name(elf, ".symtab")->idx;
- 	sec->sh.sh_info = base->idx;
- 	sec->sh.sh_flags = SHF_INFO_LINK;
-diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index adebfbc2b518..c720c4476828 100644
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -141,6 +141,14 @@ static inline bool has_multiple_files(struct elf *elf)
- 	return elf->num_files > 1;
+diff --git a/Makefile b/Makefile
+index 250707647359..acaf88e3c694 100644
+--- a/Makefile
++++ b/Makefile
+@@ -851,7 +851,9 @@ ifdef CONFIG_FTRACE_MCOUNT_USE_CC
+   endif
+ endif
+ ifdef CONFIG_FTRACE_MCOUNT_USE_OBJTOOL
+-  CC_FLAGS_USING	+= -DCC_USING_NOP_MCOUNT
++  ifdef CONFIG_HAVE_NOP_MCOUNT
++    CC_FLAGS_USING	+= -DCC_USING_NOP_MCOUNT
++  endif
+ endif
+ ifdef CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT
+   ifdef CONFIG_HAVE_C_RECORDMCOUNT
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 1847d6e974a1..4a41bfb644f0 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -189,6 +189,7 @@ config X86
+ 	select HAVE_CONTEXT_TRACKING_OFFSTACK	if HAVE_CONTEXT_TRACKING
+ 	select HAVE_C_RECORDMCOUNT
+ 	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
++	select HAVE_NOP_MCOUNT			if HAVE_OBJTOOL_MCOUNT
+ 	select HAVE_BUILDTIME_MCOUNT_SORT
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DMA_CONTIGUOUS
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index ac8167227bc0..2e0c3f9c1459 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -231,6 +231,7 @@ objtool_args =								\
+ 	$(if $(CONFIG_HAVE_NOINSTR_HACK), --hacks=noinstr)		\
+ 	$(if $(CONFIG_X86_KERNEL_IBT), --ibt)				\
+ 	$(if $(CONFIG_FTRACE_MCOUNT_USE_OBJTOOL), --mcount)		\
++	$(if $(CONFIG_HAVE_NOP_MCOUNT), --mnop)				\
+ 	$(if $(CONFIG_UNWINDER_ORC), --orc)				\
+ 	$(if $(CONFIG_RETPOLINE), --retpoline)				\
+ 	$(if $(CONFIG_SLS), --sls)					\
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index f4c3a5091737..b05e2108c0c3 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -80,6 +80,7 @@ const struct option check_options[] = {
+ 	OPT_BOOLEAN(0, "dry-run", &opts.dryrun, "don't write modifications"),
+ 	OPT_BOOLEAN(0, "link", &opts.link, "object is a linked object"),
+ 	OPT_BOOLEAN(0, "module", &opts.module, "object is part of a kernel module"),
++	OPT_BOOLEAN(0, "mnop", &opts.mnop, "nop out mcount call sites"),
+ 	OPT_BOOLEAN(0, "no-unreachable", &opts.no_unreachable, "skip 'unreachable instruction' warnings"),
+ 	OPT_BOOLEAN(0, "sec-address", &opts.sec_address, "print section addresses in warnings"),
+ 	OPT_BOOLEAN(0, "stats", &opts.stats, "print statistics"),
+@@ -142,6 +143,16 @@ static bool opts_valid(void)
+ 	return false;
  }
  
-+static inline int elf_class_size(struct elf *elf)
++static bool mnop_opts_valid(void)
 +{
-+	if (elf->ehdr.e_ident[EI_CLASS] == ELFCLASS32)
-+		return sizeof(u32);
-+	else
-+		return sizeof(u64);
++	if (opts.mnop && !opts.mcount) {
++		ERROR("--mnop requires --mcount");
++		return false;
++	}
++
++	return true;
 +}
 +
- struct elf *elf_open_read(const char *name, int flags);
- struct section *elf_create_section(struct elf *elf, const char *name, unsigned int sh_flags, size_t entsize, int nr);
+ static bool link_opts_valid(struct objtool_file *file)
+ {
+ 	if (opts.link)
+@@ -185,6 +196,9 @@ int objtool_run(int argc, const char **argv)
+ 	if (!file)
+ 		return 1;
  
++	if (!mnop_opts_valid())
++		return 1;
++
+ 	if (!link_opts_valid(file))
+ 		return 1;
+ 
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index fabc0ea88747..7f0dc504dd92 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1177,17 +1177,18 @@ static void annotate_call_site(struct objtool_file *file,
+ 	if (opts.mcount && sym->fentry) {
+ 		if (sibling)
+ 			WARN_FUNC("Tail call to __fentry__ !?!?", insn->sec, insn->offset);
++		if (opts.mnop) {
++			if (reloc) {
++				reloc->type = R_NONE;
++				elf_write_reloc(file->elf, reloc);
++			}
+ 
+-		if (reloc) {
+-			reloc->type = R_NONE;
+-			elf_write_reloc(file->elf, reloc);
+-		}
+-
+-		elf_write_insn(file->elf, insn->sec,
+-			       insn->offset, insn->len,
+-			       arch_nop_insn(insn->len));
++			elf_write_insn(file->elf, insn->sec,
++				       insn->offset, insn->len,
++				       arch_nop_insn(insn->len));
+ 
+-		insn->type = INSN_NOP;
++			insn->type = INSN_NOP;
++		}
+ 
+ 		list_add_tail(&insn->call_node, &file->mcount_loc_list);
+ 		return;
+diff --git a/tools/objtool/include/objtool/builtin.h b/tools/objtool/include/objtool/builtin.h
+index 280ea18b7f2b..71ed3152a18e 100644
+--- a/tools/objtool/include/objtool/builtin.h
++++ b/tools/objtool/include/objtool/builtin.h
+@@ -29,6 +29,7 @@ struct opts {
+ 	bool backup;
+ 	bool dryrun;
+ 	bool link;
++	bool mnop;
+ 	bool module;
+ 	bool no_unreachable;
+ 	bool sec_address;
 -- 
 2.25.1
 
