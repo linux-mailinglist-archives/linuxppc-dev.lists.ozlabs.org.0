@@ -2,56 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118D7559685
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 11:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BFE559621
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 11:11:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTsHn6wRFz3cHD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 19:28:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTrwH5lSpz3cg2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 19:11:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hWGToQua;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DujAp35g;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.73.55; helo=sin.source.kernel.org; envelope-from=arnd@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hWGToQua;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DujAp35g;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTsH85tZcz3bmr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 19:28:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTrvg4FBkz3bl8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 19:11:11 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D26BA620D9;
-	Fri, 24 Jun 2022 09:28:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3154C34114;
-	Fri, 24 Jun 2022 09:27:59 +0000 (UTC)
+	by sin.source.kernel.org (Postfix) with ESMTPS id 010A5CE2903
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 09:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708DCC341CC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 09:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656062880;
-	bh=C0uYnFRgGGrjy3PiU3f/Ru/C6QDqECnHj7AGp9a1S88=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWGToQuaB2rQD34YC2A6dAfLblFKm/FEZ580TsHD8vmVbKJmKopHauqZXl0mFI//7
-	 1NGGIqAOIhnx0yGEzpK404Ynt+ZW3YhU+2oomxbCGfN0obNRRdoiPjImv4H5EZazkg
-	 UbGXCuZoJiYKiDUJO7NE4pzjmTOH7O5pOoo68NJCwp3NmpdxXol/R0tdMpJKXe3kPs
-	 h8as7XgVF4eIZcIblVrBoFqVJbqfEL0+IM7k+DjJwtFg4vTTQD/gZxObjfbkAj82by
-	 So8KwBMEJ1aMESkheTbPQxgfg6fsOTkXpuVbXLdqMlC6cMg4pC7fnNyVaNfulK2bkj
-	 v6aqobazT7ECQ==
-Received: by pali.im (Postfix)
-	id BB5CD711; Fri, 24 Jun 2022 11:27:56 +0200 (CEST)
-From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Rob Herring <robh+dt@kernel.org>
-Subject: [PATCH v2] powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers
-Date: Fri, 24 Jun 2022 10:55:50 +0200
-Message-Id: <20220624085550.20570-1-pali@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20220511143712.22550-1-pali@kernel.org>
-References: <20220511143712.22550-1-pali@kernel.org>
+	s=k20201202; t=1656061867;
+	bh=QZAJaXcIRADU/xKJ+9ztqTuLJLuzfPWx4kL+CXKUusE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=DujAp35gBkJI0ojh8Z4cz2WNMnPVa8X09AjvGzpyvg1W3zpRtikVU8S1p5YzkeFQn
+	 lyqUI2IK/TRwsZ6Fphm5Gnrx8o8G+PE51sAvsFnYOkkSigRwkL7Ti34QY5mgrVlD4K
+	 q87W/nor5rNmj3N+qIRXTKGiC0CtdvN0KmhO4zeDIsbYYD8QC1BFTaduxwig96j3Pp
+	 tKSojB4iYnI/xdxLhYubiYytYTgX6J2RKt1/59qilMZK37CJaHmf49rGGpZzrmzm5C
+	 vXPE3OAWpxbhgHGBmdLEkg9vKAPO5+PD+s0ZO+euAV2nmh7i/+PPY0rPFj46LXVDDi
+	 0tE0Cc0wwED0w==
+Received: by mail-yb1-f173.google.com with SMTP id o79so3487963ybc.4
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 02:11:07 -0700 (PDT)
+X-Gm-Message-State: AJIora8rc6ky/mXhyPh/qPZpkZGNwJtHnGV8WCAafEjQDnZlPgjbUOIS
+	L/8il5rzn5D1wM/pPyVs6bfRKANLyRRiFK3NFPg=
+X-Google-Smtp-Source: AGRyM1thOWm6xvviAmnNqulTm+G1aNh8sMElBL34hFaSX/cB93p4OtnA8uz/osirQ5xn1zAs3G7Hy/thW2fsxExc9gs=
+X-Received: by 2002:a05:6902:120f:b0:668:2228:9627 with SMTP id
+ s15-20020a056902120f00b0066822289627mr14111407ybu.134.1656061866469; Fri, 24
+ Jun 2022 02:11:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20220617125750.728590-1-arnd@kernel.org> <20220617125750.728590-4-arnd@kernel.org>
+ <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+In-Reply-To: <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+From: Arnd Bergmann <arnd@kernel.org>
+Date: Fri, 24 Jun 2022 11:10:49 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1XfwkTOV7qOs1fTxf4vthNBRXKNu8A5V7TWnHT081NGA@mail.gmail.com>
+Message-ID: <CAK8P3a1XfwkTOV7qOs1fTxf4vthNBRXKNu8A5V7TWnHT081NGA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+To: Michael Schmitz <schmitzmic@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,509 +68,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Josef Schlehofer <josef.schlehofer@nic.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Marek Behun <marek.behun@nic.cz>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Miquel van Smoorenburg <mikevs@xs4all.net>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-scsi <linux-scsi@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, linux-m68k <linux-m68k@lists.linux-m68k.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Denis Efremov <efremov@linux.com>, Mark Salyzyn <salyzyn@android.com>, Christoph Hellwig <hch@infradead.org>, "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>, Matt Wang <wwentao@vmware.com>, Parisc List <linux-parisc@vger.kernel.org>, alpha <linux-alpha@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CZ.NIC Turris 1.0 and 1.1 are open source routers, they have dual-core
-PowerPC Freescale P2020 CPU and are based on Freescale P2020RDB-PC-A board.
-Hardware design is fully open source, all firmware and hardware design
-files are available at Turris project website:
+On Sat, Jun 18, 2022 at 3:06 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+> Am 18.06.2022 um 00:57 schrieb Arnd Bergmann:
+> >
+> > All architecture-independent users of virt_to_bus() and bus_to_virt()
+> > have been fixed to use the dma mapping interfaces or have been
+> > removed now.  This means the definitions on most architectures, and the
+> > CONFIG_VIRT_TO_BUS symbol are now obsolete and can be removed.
+> >
+> > The only exceptions to this are a few network and scsi drivers for m68k
+> > Amiga and VME machines and ppc32 Macintosh. These drivers work correctly
+> > with the old interfaces and are probably not worth changing.
+>
+> The Amiga SCSI drivers are all old WD33C93 ones, and replacing
+> virt_to_bus by virt_to_phys in the dma_setup() function there would
+> cause no functional change at all.
 
-https://docs.turris.cz/hw/turris-1x/turris-1x/
-https://project.turris.cz/en/hardware.html
+Ok, thanks for taking a look here.
 
-Signed-off-by: Pali Rohár <pali@kernel.org>
----
-Changes in v2:
-* Sort all nodes by addresses
-* Fix i2c address for MCU and SPD/EEPROM PSWP
----
- arch/powerpc/boot/dts/turris1x.dts | 475 +++++++++++++++++++++++++++++
- 1 file changed, 475 insertions(+)
- create mode 100644 arch/powerpc/boot/dts/turris1x.dts
+> drivers/vme/bridges/vme_ca91cx42.c hasn't been used at all on m68k (it
+> is a PCI-to-VME bridge chipset driver that would be needed on
+> architectures that natively use a PCI bus). I haven't found anything
+> that selects that driver, so not sure it is even still in use??
 
-diff --git a/arch/powerpc/boot/dts/turris1x.dts b/arch/powerpc/boot/dts/turris1x.dts
-new file mode 100644
-index 000000000000..c76b628cf026
---- /dev/null
-+++ b/arch/powerpc/boot/dts/turris1x.dts
-@@ -0,0 +1,475 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Turris 1.x Device Tree Source
-+ *
-+ * Copyright 2013 - 2022 CZ.NIC z.s.p.o. (http://www.nic.cz/)
-+ *
-+ * Pinout, Schematics and Altium hardware design files are open source
-+ * and available at: https://docs.turris.cz/hw/turris-1x/turris-1x/
-+ */
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/interrupt-controller/irq.h>
-+#include <dt-bindings/leds/common.h>
-+/include/ "fsl/p2020si-pre.dtsi"
-+
-+/ {
-+	model = "Turris 1.x";
-+	compatible = "cznic,turris1x", "fsl,P2020RDB-PC"; /* fsl,P2020RDB-PC is required for booting Linux */
-+
-+	aliases {
-+		ethernet0 = &enet0;
-+		ethernet1 = &enet1;
-+		ethernet2 = &enet2;
-+		serial0 = &serial0;
-+		serial1 = &serial1;
-+		pci0 = &pci0;
-+		pci1 = &pci1;
-+		pci2 = &pci2;
-+		spi0 = &spi0;
-+	};
-+
-+	memory {
-+		device_type = "memory";
-+	};
-+
-+	soc: soc@ffe00000 {
-+		ranges = <0x0 0x0 0xffe00000 0x00100000>;
-+
-+		i2c@3000 {
-+			/* PCA9557PW GPIO controller for boot config */
-+			gpio-controller@18 {
-+				compatible = "nxp,pca9557";
-+				label = "bootcfg";
-+				reg = <0x18>;
-+				#gpio-cells = <2>;
-+				gpio-controller;
-+				polarity = <0x00>;
-+			};
-+
-+			/* STM32F030R8T6 MCU for power control */
-+			power-control@2a {
-+				/*
-+				 * Turris Power Control firmware runs on STM32F0 MCU.
-+				 * This firmware is open source and available at:
-+				 * https://gitlab.nic.cz/turris/hw/turris_power_control
-+				 */
-+				reg = <0x2a>;
-+			};
-+
-+			/* DDR3 SPD/EEPROM PSWP instruction */
-+			eeprom@32 {
-+				reg = <0x32>;
-+			};
-+
-+			/* SA56004ED temperature control */
-+			temperature-sensor@4c {
-+				compatible = "nxp,sa56004";
-+				reg = <0x4c>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <12 IRQ_TYPE_LEVEL_LOW>, /* GPIO12 - ALERT pin */
-+					     <13 IRQ_TYPE_LEVEL_LOW>; /* GPIO13 - CRIT pin */
-+			};
-+
-+			/* DDR3 SPD/EEPROM */
-+			eeprom@52 {
-+				compatible = "atmel,spd";
-+				reg = <0x52>;
-+			};
-+
-+			/* MCP79402-I/ST Protected EEPROM */
-+			eeprom@57 {
-+				reg = <0x57>;
-+			};
-+
-+			/* ATSHA204-TH-DA-T crypto module */
-+			crypto@64 {
-+				compatible = "atmel,atsha204";
-+				reg = <0x64>;
-+			};
-+
-+			/* IDT6V49205BNLGI clock generator */
-+			clock-generator@69 {
-+				compatible = "idt,6v49205b";
-+				reg = <0x69>;
-+			};
-+
-+			/* MCP79402-I/ST RTC */
-+			rtc@6f {
-+				compatible = "microchip,mcp7940x";
-+				reg = <0x6f>;
-+				interrupt-parent = <&gpio>;
-+				interrupts = <14 0>; /* GPIO14 - MFP pin */
-+			};
-+		};
-+
-+		/* SPI on connector P1 */
-+		spi0: spi@7000 {
-+		};
-+
-+		gpio: gpio-controller@fc00 {
-+			#interrupt-cells = <2>;
-+			interrupt-controller;
-+		};
-+
-+		/* Connected to SMSC USB2412-DZK 2-Port USB 2.0 Hub Controller */
-+		usb@22000 {
-+			phy_type = "ulpi";
-+			dr_mode = "host";
-+		};
-+
-+		enet0: ethernet@24000 {
-+			/* Connected to port 6 of QCA8337N-AL3C switch */
-+			phy-connection-type = "rgmii-id";
-+
-+			fixed-link {
-+				speed = <1000>;
-+				full-duplex;
-+			};
-+		};
-+
-+		mdio@24520 {
-+			/* KSZ9031RNXCA ethernet phy for WAN port */
-+			phy: ethernet-phy@7 {
-+				interrupts = <3 1 0 0>;
-+				reg = <0x7>;
-+			};
-+
-+			/* QCA8337N-AL3C switch with integrated ethernet PHYs for LAN ports */
-+			switch@10 {
-+				compatible = "qca,qca8337";
-+				interrupts = <2 1 0 0>;
-+				reg = <0x10>;
-+
-+				ports {
-+					#address-cells = <1>;
-+					#size-cells = <0>;
-+
-+					port@0 {
-+						reg = <0>;
-+						label = "cpu1";
-+						ethernet = <&enet1>;
-+						phy-mode = "rgmii-id";
-+
-+						fixed-link {
-+							speed = <1000>;
-+							full-duplex;
-+						};
-+					};
-+
-+					port@1 {
-+						reg = <1>;
-+						label = "lan5";
-+					};
-+
-+					port@2 {
-+						reg = <2>;
-+						label = "lan4";
-+					};
-+
-+					port@3 {
-+						reg = <3>;
-+						label = "lan3";
-+					};
-+
-+					port@4 {
-+						reg = <4>;
-+						label = "lan2";
-+					};
-+
-+					port@5 {
-+						reg = <5>;
-+						label = "lan1";
-+					};
-+
-+					port@6 {
-+						reg = <6>;
-+						label = "cpu0";
-+						ethernet = <&enet0>;
-+						phy-mode = "rgmii-id";
-+
-+						fixed-link {
-+							speed = <1000>;
-+							full-duplex;
-+						};
-+					};
-+				};
-+			};
-+		};
-+
-+		ptp_clock@24e00 {
-+			fsl,tclk-period = <5>;
-+			fsl,tmr-prsc = <200>;
-+			fsl,tmr-add = <0xcccccccd>;
-+			fsl,tmr-fiper1 = <0x3b9ac9fb>;
-+			fsl,tmr-fiper2 = <0x0001869b>;
-+			fsl,max-adj = <249999999>;
-+		};
-+
-+		enet1: ethernet@25000 {
-+			/* Connected to port 0 of QCA8337N-AL3C switch */
-+			phy-connection-type = "rgmii-id";
-+
-+			fixed-link {
-+				speed = <1000>;
-+				full-duplex;
-+			};
-+		};
-+
-+		mdio@25520 {
-+			status = "disabled";
-+		};
-+
-+		enet2: ethernet@26000 {
-+			/* Connected to KSZ9031RNXCA ethernet phy (WAN port) */
-+			label = "wan";
-+			phy-handle = <&phy>;
-+			phy-connection-type = "rgmii-id";
-+		};
-+
-+		mdio@26520 {
-+			status = "disabled";
-+		};
-+
-+		sdhc@2e000 {
-+			bus-width = <4>;
-+			cd-gpios = <&gpio 8 GPIO_ACTIVE_LOW>;
-+		};
-+	};
-+
-+	lbc: localbus@ffe05000 {
-+		reg = <0 0xffe05000 0 0x1000>;
-+
-+		ranges = <0x0 0x0 0x0 0xef000000 0x01000000>, /* NOR */
-+			 <0x1 0x0 0x0 0xff800000 0x00040000>, /* NAND */
-+			 <0x3 0x0 0x0 0xffa00000 0x00020000>; /* CPLD */
-+
-+		/* S29GL128P90TFIR10 NOR */
-+		nor@0,0 {
-+			compatible = "cfi-flash";
-+			reg = <0x0 0x0 0x01000000>;
-+			bank-width = <2>;
-+			device-width = <1>;
-+
-+			partitions {
-+				compatible = "fixed-partitions";
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				partition@0 {
-+					/* 128 kB for Device Tree Blob */
-+					reg = <0x00000000 0x00020000>;
-+					label = "dtb";
-+				};
-+
-+				partition@20000 {
-+					/* 1.7 MB for Rescue Linux Kernel Image */
-+					reg = <0x00020000 0x001a0000>;
-+					label = "rescue-kernel";
-+				};
-+
-+				partition@1c0000 {
-+					/* 1.5 MB for Rescue JFFS2 Root File System */
-+					reg = <0x001c0000 0x00180000>;
-+					label = "rescue-rootfs";
-+				};
-+
-+				partition@340000 {
-+					/* 11 MB for TAR.XZ Backup with content of NAND Root File System */
-+					reg = <0x00340000 0x00b00000>;
-+					label = "backup-rootfs";
-+				};
-+
-+				partition@e40000 {
-+					/* 768 kB for Certificates JFFS2 File System */
-+					reg = <0x00e40000 0x000c0000>;
-+					label = "certificates";
-+				};
-+
-+				/* free unused space 0x00f00000-0x00f20000 */
-+
-+				partition@f20000 {
-+					/* 128 kB for U-Boot Environment Variables */
-+					reg = <0x00f20000 0x00020000>;
-+					label = "u-boot-env";
-+				};
-+
-+				partition@f40000 {
-+					/* 768 kB for U-Boot Bootloader Image */
-+					reg = <0x00f40000 0x000c0000>;
-+					label = "u-boot";
-+				};
-+			};
-+		};
-+
-+		/* MT29F2G08ABAEAWP:E NAND */
-+		nand@1,0 {
-+			compatible = "fsl,p2020-fcm-nand", "fsl,elbc-fcm-nand";
-+			reg = <0x1 0x0 0x00040000>;
-+			nand-ecc-mode = "soft";
-+			nand-ecc-algo = "bch";
-+
-+			partitions {
-+				compatible = "fixed-partitions";
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+
-+				partition@0 {
-+					/* 256 MB for UBI with one volume: UBIFS Root File System */
-+					reg = <0x00000000 0x10000000>;
-+					label = "rootfs";
-+				};
-+			};
-+		};
-+
-+		/* LCMXO1200C-3FTN256C FPGA */
-+		cpld@3,0 {
-+			/*
-+			 * Turris CPLD firmware which runs on this Lattice FPGA,
-+			 * is extended version of P1021RDB-PC CPLD v4.1 firmware.
-+			 * It is backward compatible with its original version
-+			 * and the only extension is support for Turris LEDs.
-+			 * Turris CPLD firmware is open source and available at:
-+			 * https://gitlab.nic.cz/turris/hw/turris_cpld/-/blob/master/CZ_NIC_Router_CPLD.v
-+			 */
-+			compatible = "cznic,turris1x-cpld", "fsl,p1021rdb-pc-cpld", "simple-bus";
-+			reg = <0x3 0x0 0x30>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			ranges = <0x0 0x3 0x0 0x00020000>;
-+
-+			/* MAX6370KA+T watchdog */
-+			watchdog@2 {
-+				/*
-+				 * CPLD firmware maps SET0, SET1 and SET2
-+				 * input logic of MAX6370KA+T chip to CPLD
-+				 * memory space at byte offset 0x2. WDI
-+				 * input logic is outside of the CPLD and
-+				 * connected via external GPIO.
-+				 */
-+				compatible = "maxim,max6370";
-+				reg = <0x02 0x01>;
-+				gpios = <&gpio 11 GPIO_ACTIVE_LOW>;
-+			};
-+
-+			led-controller@13 {
-+				/*
-+				 * LEDs are controlled by CPLD firmware.
-+				 * All five LAN LEDs share common RGB settings
-+				 * and so it is not possible to set different
-+				 * colors on different LAN ports.
-+				 */
-+				compatible = "cznic,turris1x-leds";
-+				reg = <0x13 0x1d>;
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				multi-led@0 {
-+					reg = <0x0>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_WAN;
-+				};
-+
-+				multi-led@1 {
-+					reg = <0x1>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_LAN;
-+					function-enumerator = <5>;
-+				};
-+
-+				multi-led@2 {
-+					reg = <0x2>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_LAN;
-+					function-enumerator = <4>;
-+				};
-+
-+				multi-led@3 {
-+					reg = <0x3>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_LAN;
-+					function-enumerator = <3>;
-+				};
-+
-+				multi-led@4 {
-+					reg = <0x4>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_LAN;
-+					function-enumerator = <2>;
-+				};
-+
-+				multi-led@5 {
-+					reg = <0x5>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_LAN;
-+					function-enumerator = <1>;
-+				};
-+
-+				multi-led@6 {
-+					reg = <0x6>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_WLAN;
-+				};
-+
-+				multi-led@7 {
-+					reg = <0x7>;
-+					color = <LED_COLOR_ID_RGB>;
-+					function = LED_FUNCTION_POWER;
-+				};
-+			};
-+		};
-+	};
-+
-+	pci2: pcie@ffe08000 {
-+		/*
-+		 * PCIe bus for on-board TUSB7340RKM USB 3.0 xHCI controller.
-+		 * This xHCI controller is available only on Turris 1.1 boards.
-+		 * Turris 1.0 boards have nothing connected to this PCIe bus,
-+		 * so system would see only PCIe Root Port of this PCIe Root
-+		 * Complex. TUSB7340RKM xHCI controller has four SuperSpeed
-+		 * channels. Channel 0 is connected to the front USB 3.0 port,
-+		 * channel 1 (but only USB 2.0 subset) to USB 2.0 pins on mPCIe
-+		 * slot 1 (CN5), channels 2 and 3 to connector P600.
-+		 *
-+		 * P2020 PCIe Root Port uses 1MB of PCIe MEM and xHCI controller
-+		 * uses 64kB + 8kB of PCIe MEM. No PCIe IO is used or required.
-+		 * So allocate 2MB of PCIe MEM for this PCIe bus.
-+		 */
-+		reg = <0 0xffe08000 0 0x1000>;
-+		ranges = <0x02000000 0x0 0xc0000000 0 0xc0000000 0x0 0x00200000>, /* MEM */
-+			 <0x01000000 0x0 0x00000000 0 0xffc20000 0x0 0x00010000>; /* IO */
-+
-+		pcie@0 {
-+			ranges;
-+		};
-+	};
-+
-+	pci1: pcie@ffe09000 {
-+		/* PCIe bus on mPCIe slot 2 (CN6) for expansion mPCIe card */
-+		reg = <0 0xffe09000 0 0x1000>;
-+		ranges = <0x02000000 0x0 0xa0000000 0 0xa0000000 0x0 0x20000000>, /* MEM */
-+			 <0x01000000 0x0 0x00000000 0 0xffc10000 0x0 0x00010000>; /* IO */
-+
-+		pcie@0 {
-+			ranges;
-+		};
-+	};
-+
-+	pci0: pcie@ffe0a000 {
-+		/*
-+		 * PCIe bus on mPCIe slot 1 (CN5) for expansion mPCIe card.
-+		 * Turris 1.1 boards have in this mPCIe slot additional USB 2.0
-+		 * pins via channel 1 of TUSB7340RKM xHCI controller and also
-+		 * additional SIM card slot, both for USB-based WWAN cards.
-+		 */
-+		reg = <0 0xffe0a000 0 0x1000>;
-+		ranges = <0x02000000 0x0 0x80000000 0 0x80000000 0x0 0x20000000>, /* MEM */
-+			 <0x01000000 0x0 0x00000000 0 0xffc00000 0x0 0x00010000>; /* IO */
-+
-+		pcie@0 {
-+			ranges;
-+		};
-+	};
-+};
-+
-+/include/ "fsl/p2020si-post.dtsi"
--- 
-2.20.1
+It's gone now, Greg has already taken my patches for this through
+the staging tree.
 
+> That would allow you to drop the remaining virt_to_bus define from
+> arch/m68k/include/asm/virtconvert.h.
+>
+> I could submit a patch to convert the Amiga SCSI drivers to use
+> virt_to_phys if Geert and the SCSI maintainers think it's worth the churn.
+
+I don't think using virt_to_phys() is an improvement here, as
+virt_to_bus() was originally meant as a better abstraction to
+replace the use of virt_to_phys() to make drivers portable, before
+it got replaced by the dma-mapping interface in turn.
+
+It looks like the Amiga SCSI drivers have an open-coded version of
+what dma_map_single() does, to do bounce buffering and cache
+management. The ideal solution would be to convert the drivers
+actually use the appropriate dma-mapping interfaces and remove
+this custom code.
+
+The same could be done for the two vme drivers (scsi/mvme147.c
+and ethernet/82596.c), which do the cache management but
+apparently don't need swiotlb bounce buffering.
+
+Rewriting the drivers to modern APIs is of course non-trivial,
+and if you want a shortcut here, I would suggest introducing
+platform specific helpers similar to isa_virt_to_bus() and call
+them amiga_virt_to_bus() and vme_virt_to_bus, respectively.
+
+Putting these into a platform specific header file at least helps
+clarify that both the helper functions and the drivers using them
+are non-portable.
+
+> 32bit powerpc is a different matter though.
+
+It's similar, but unrelated. The two apple ethernet drivers
+(bmac and mace) can again either get changed to use the
+dma-mapping interfaces, or get a custom pmac_virt_to_bus()/
+pmac_bus_to_virt() helper.
+
+There is also drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c,
+which I think just needs a trivial change, but I'm not sure
+how to do it correctly.
+
+      Arnd
