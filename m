@@ -1,59 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F20559B78
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 16:25:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E21F559B7F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 16:28:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTzt633vFz3bnh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 00:25:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTzxG16L6z3cgf
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 00:28:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=QsgtejW0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Yi8Tg6uX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=w98e=w7=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=QsgtejW0;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Yi8Tg6uX;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTzrF5TDhz3blV
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 00:23:41 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 5E843B8269B;
-	Fri, 24 Jun 2022 14:23:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86855C34114;
-	Fri, 24 Jun 2022 14:23:37 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="QsgtejW0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1656080616;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ysi4JdQvNZMCj4pc6gtKX3vFcf+fL/Uqup65oCETDo4=;
-	b=QsgtejW0CQq7ggop0eSEJg+l5u+P/hz084z191p3L5T3XMN7sQxqRSE10pZSYqohM01tTA
-	FOMOFpL/v+D/5IFtE4AI0cQ70NwuOYDsfRhl83xQyjGqVsUTG1EoQ3SViiaM6Yhxh4dISV
-	aWLEd3jyRui2dJm8UPHC5Kps620lH2c=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 2d632f11 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-	Fri, 24 Jun 2022 14:23:36 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Fabiano Rosas <farosas@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2 2/2] powerpc/kvm: don't crash on missing rng, and use darn
-Date: Fri, 24 Jun 2022 16:23:22 +0200
-Message-Id: <20220624142322.2049826-3-Jason@zx2c4.com>
-In-Reply-To: <20220624142322.2049826-1-Jason@zx2c4.com>
-References: <20220624142322.2049826-1-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTzwX67JDz2xXw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 00:27:24 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25ODhtS0032116;
+	Fri, 24 Jun 2022 14:27:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=3s2werSzBpyD9ixvIprRXla0SDNajBSOl191TnrWcrE=;
+ b=Yi8Tg6uX/RkPJj+iRBBdMYppWIWkdA5iziXMQ8EpUa2lioNLRbkDRlVBOdtCDdD4aCmk
+ KGoAHPQFy1dY07p13QXeXPUwkbU5sbLufjHWD9JWfSgTKPr0VNV/T2L1JKrt74e4kAoZ
+ wsKE/yO24IUsAjz1RY0jW9R3FTVnPBI/rvD2F5HuGSQ5j2J7s/IT0NFJXSyKoiovTNO9
+ 0CBtwL3YW7aANR/RypYMDukErcnxGc2YnMUrXoA8sKuKkz4XyZDK0sdplbOhL5Mls30L
+ wpPClkV98wHpCY0KOE0aOpcdTk3dEk2OBvzppAN7uA7qUBAbZxHHwj+h4uIsCmdhiKwE Zw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwedes4d2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jun 2022 14:27:18 +0000
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25ODkVQb013540;
+	Fri, 24 Jun 2022 14:27:18 GMT
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwedes4cq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jun 2022 14:27:18 +0000
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25OEKlj5014734;
+	Fri, 24 Jun 2022 14:27:17 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
+	by ppma01wdc.us.ibm.com with ESMTP id 3gv5ck73cg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jun 2022 14:27:17 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
+	by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25OERHn423593404
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jun 2022 14:27:17 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 022CEAC05E;
+	Fri, 24 Jun 2022 14:27:17 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8BCCDAC059;
+	Fri, 24 Jun 2022 14:27:15 +0000 (GMT)
+Received: from li-4707e44c-227d-11b2-a85c-f336a85283d9.ibm.com.com (unknown [9.65.252.72])
+	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jun 2022 14:27:15 +0000 (GMT)
+From: Fabiano Rosas <farosas@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] KVM: PPC: Align pt_regs in kvm_vcpu_arch structure
+Date: Fri, 24 Jun 2022 11:27:12 -0300
+Message-Id: <20220624142712.790491-1-farosas@linux.ibm.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: QS_1CdzuygmIBxckVtfve2bveW3ZaZuo
+X-Proofpoint-GUID: nckPdKUv9osNJfC6N2M2fjAnFf6NrDXs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-24_07,2022-06-23_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ mlxlogscore=999 spamscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206240055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,133 +95,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org
+Cc: npiggin@gmail.com, kvm-ppc@vger.kernel.org, muriloo@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On POWER8 systems that don't have ibm,power-rng available, a guest that
-ignores the KVM_CAP_PPC_HWRNG flag and calls H_RANDOM anyway will
-dereference a NULL pointer. And on machines with darn instead of
-ibm,power-rng, H_RANDOM won't work at all.
+The H_ENTER_NESTED hypercall receives as second parameter the address
+of a region of memory containing the values for the nested guest
+privileged registers. We currently use the pt_regs structure contained
+within kvm_vcpu_arch for that end.
 
-This patch kills two birds with one stone, by routing H_RANDOM calls to
-ppc_md.get_random_seed, and doing the real mode check inside of it.
+Most hypercalls that receive a memory address expect that region to
+not cross a 4K page boundary. We would want H_ENTER_NESTED to follow
+the same pattern so this patch ensures the pt_regs structure sits
+within a page.
 
-Cc: stable@vger.kernel.org # v4.1+
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: e928e9cb3601 ("KVM: PPC: Book3S HV: Add fast real-mode H_RANDOM implementation.")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Note: the pt_regs structure is currently 384 bytes in size, so
+aligning to 512 is sufficient to ensure it will not cross a 4K page
+and avoids punching too big a hole in struct kvm_vcpu_arch.
+
+Signed-off-by: Fabiano Rosas <farosas@linux.ibm.com>
+Signed-off-by: Murilo Opsfelder Araújo <muriloo@linux.ibm.com>
 ---
- arch/powerpc/include/asm/archrandom.h |  5 ----
- arch/powerpc/kvm/book3s_hv_builtin.c  |  7 +++---
- arch/powerpc/platforms/powernv/rng.c  | 33 +++++++--------------------
- 3 files changed, 12 insertions(+), 33 deletions(-)
+v2:
+ - updated commit message to inform the rationale for aligning to 512;
 
-diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
-index 11d4815841ab..3af27bb84a3d 100644
---- a/arch/powerpc/include/asm/archrandom.h
-+++ b/arch/powerpc/include/asm/archrandom.h
-@@ -38,12 +38,7 @@ static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
- #endif /* CONFIG_ARCH_RANDOM */
- 
- #ifdef CONFIG_PPC_POWERNV
--int pnv_hwrng_present(void);
- int pnv_get_random_long(unsigned long *v);
--int pnv_get_random_real_mode(unsigned long *v);
--#else
--static inline int pnv_hwrng_present(void) { return 0; }
--static inline int pnv_get_random_real_mode(unsigned long *v) { return 0; }
+ - added Murilo's sign-off which I had forgotten, we worked on this
+   together.
+---
+ arch/powerpc/include/asm/kvm_host.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+index 2909a88acd16..2c7219cef4ec 100644
+--- a/arch/powerpc/include/asm/kvm_host.h
++++ b/arch/powerpc/include/asm/kvm_host.h
+@@ -523,7 +523,11 @@ struct kvm_vcpu_arch {
+ 	struct kvmppc_book3s_shadow_vcpu *shadow_vcpu;
  #endif
  
- #endif /* _ASM_POWERPC_ARCHRANDOM_H */
-diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-index 799d40c2ab4f..3abaef5f9ac2 100644
---- a/arch/powerpc/kvm/book3s_hv_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-@@ -19,7 +19,7 @@
- #include <asm/interrupt.h>
- #include <asm/kvm_ppc.h>
- #include <asm/kvm_book3s.h>
--#include <asm/archrandom.h>
-+#include <asm/machdep.h>
- #include <asm/xics.h>
- #include <asm/xive.h>
- #include <asm/dbell.h>
-@@ -176,13 +176,14 @@ EXPORT_SYMBOL_GPL(kvmppc_hcall_impl_hv_realmode);
+-	struct pt_regs regs;
++	/*
++	 * This is passed along to the HV via H_ENTER_NESTED. Align to
++	 * prevent it crossing a real 4K page.
++	 */
++	struct pt_regs regs __aligned(512);
  
- int kvmppc_hwrng_present(void)
- {
--	return pnv_hwrng_present();
-+	return ppc_md.get_random_seed != NULL;
- }
- EXPORT_SYMBOL_GPL(kvmppc_hwrng_present);
+ 	struct thread_fp_state fp;
  
- long kvmppc_rm_h_random(struct kvm_vcpu *vcpu)
- {
--	if (pnv_get_random_real_mode(&vcpu->arch.regs.gpr[4]))
-+	if (ppc_md.get_random_seed &&
-+	    ppc_md.get_random_seed(&vcpu->arch.regs.gpr[4]))
- 		return H_SUCCESS;
- 
- 	return H_HARDWARE;
-diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
-index 868bb9777425..c748567cd47e 100644
---- a/arch/powerpc/platforms/powernv/rng.c
-+++ b/arch/powerpc/platforms/powernv/rng.c
-@@ -29,15 +29,6 @@ struct pnv_rng {
- 
- static DEFINE_PER_CPU(struct pnv_rng *, pnv_rng);
- 
--int pnv_hwrng_present(void)
--{
--	struct pnv_rng *rng;
--
--	rng = get_cpu_var(pnv_rng);
--	put_cpu_var(rng);
--	return rng != NULL;
--}
--
- static unsigned long rng_whiten(struct pnv_rng *rng, unsigned long val)
- {
- 	unsigned long parity;
-@@ -58,17 +49,6 @@ static unsigned long rng_whiten(struct pnv_rng *rng, unsigned long val)
- 	return val;
- }
- 
--int pnv_get_random_real_mode(unsigned long *v)
--{
--	struct pnv_rng *rng;
--
--	rng = raw_cpu_read(pnv_rng);
--
--	*v = rng_whiten(rng, __raw_rm_readq(rng->regs_real));
--
--	return 1;
--}
--
- static int pnv_get_random_darn(unsigned long *v)
- {
- 	unsigned long val;
-@@ -105,11 +85,14 @@ int pnv_get_random_long(unsigned long *v)
- {
- 	struct pnv_rng *rng;
- 
--	rng = get_cpu_var(pnv_rng);
--
--	*v = rng_whiten(rng, in_be64(rng->regs));
--
--	put_cpu_var(rng);
-+	if (mfmsr() & MSR_DR) {
-+		rng = raw_cpu_read(pnv_rng);
-+		*v = rng_whiten(rng, __raw_rm_readq(rng->regs_real));
-+	} else {
-+		rng = get_cpu_var(pnv_rng);
-+		*v = rng_whiten(rng, in_be64(rng->regs));
-+		put_cpu_var(rng);
-+	}
- 
- 	return 1;
- }
 -- 
-2.35.1
+2.35.3
 
