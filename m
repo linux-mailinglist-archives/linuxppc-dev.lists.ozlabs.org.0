@@ -2,71 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE58B55A45F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 00:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB85955A517
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 01:52:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LVBcN4yBmz3cgM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 08:29:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LVDSh4b28z3cFY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 09:52:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bgx80xNd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IQVcBgOf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22f; helo=mail-lj1-x22f.google.com; envelope-from=fancer.lancer@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Bgx80xNd;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IQVcBgOf;
 	dkim-atps=neutral
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVBbj6VvJz3bqd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 08:28:31 +1000 (AEST)
-Received: by mail-lj1-x22f.google.com with SMTP id j22so4356212ljg.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 15:28:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=M6TdAKBeetFQMmcnXoWXDBN9CpxYrPuj3DRX2P2Szoo=;
-        b=Bgx80xNdrOeU9JzOMlCo3jmGu3eQEekyMqjaaQaYKMst/DnrKcGb0EE1upc7kKT8P4
-         K54FHhsRXWGYw/bc1J8YMZjeG/8AiSgtYmwnI6mfwkpdX3qvy9niezyBABlqVlTdDv03
-         SA+kUOtNjI2FmmvlsZORBRGSAkWAETIKpgqcYPA5tGdwxtl10+UD0RHwwxbFI3oVsb8c
-         liFraUMYDWhxgIHIm7mhId9Ea+cmAHr8yUX5fRN0NMwOQNKBipnBwBpuM10qkVNClQKS
-         oDA3vxhA6o1tuWr+qxufLUEBgxvZ5J1mdjVi5AQATam+lJabiaASH8u48UBhCA164Kip
-         pjkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=M6TdAKBeetFQMmcnXoWXDBN9CpxYrPuj3DRX2P2Szoo=;
-        b=3Rlg2//Y95II1088q0z9B4VMnznXFFlIPOLR+XERSTI89PfZQFdiXZ1uMZ/+F5uC+k
-         ga3NyKjOZaXt6H22IMs6y5cVGG6atbCe80PJl7EL6YG4m1y4DopLNkWHw4rRoY8+wzNY
-         fSVJNEiGKtEHWMd1fem2tByuMNT6swupmn0yzdNAfXIoQ5k3ZWTRwWbxzWc5ntv9Urmz
-         Jipz09LVDUa+TlhkYT7gjo2zVPRjZYqlpYcxJL3kAp2Q4Vi0DVAgC8z9DKhM0zR8iRp7
-         m7PyIQs6jzY9cPKauK7INrzHTiEDBiTv/U0r+LyapFoRslie7qLYT1zkQ4WJo/Ox7K9I
-         fLxA==
-X-Gm-Message-State: AJIora9F6F5tLG27z/5zwHM85maRKQc0HL7VRk62hJKoDQOjdaqRPdvy
-	WfveaSd7B3Hy5VOYB84kJHY=
-X-Google-Smtp-Source: AGRyM1ve4VS6aD8h/ThKo8NNZipID8rOImhCMDMlHauNTgrARt80UIm1/HNQbY9Ll1kMIrgffG9rkQ==
-X-Received: by 2002:a2e:91c4:0:b0:25a:7256:a7aa with SMTP id u4-20020a2e91c4000000b0025a7256a7aamr559661ljg.344.1656109704289;
-        Fri, 24 Jun 2022 15:28:24 -0700 (PDT)
-Received: from mobilestation ([95.79.189.214])
-        by smtp.gmail.com with ESMTPSA id o23-20020a05651205d700b0047f62762100sm553545lfo.138.2022.06.24.15.28.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jun 2022 15:28:23 -0700 (PDT)
-Date: Sat, 25 Jun 2022 01:28:21 +0300
-From: Serge Semin <fancer.lancer@gmail.com>
-To: Vineet Gupta <vgupta@kernel.org>
-Subject: Re: [PATCH RESEND v9 1/5] arc: dts: Harmonize EHCI/OHCI DT nodes name
-Message-ID: <20220624222821.552zhh5yqqhdzmca@mobilestation>
-References: <20220624141622.7149-1-Sergey.Semin@baikalelectronics.ru>
- <20220624141622.7149-2-Sergey.Semin@baikalelectronics.ru>
- <53402d57-ee3f-59b9-a8dc-59fa659f3662@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVDRs5ZnTz3bs4
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 09:51:53 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25OMUALD015703;
+	Fri, 24 Jun 2022 23:51:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : in-reply-to : references : date : message-id : content-type :
+ mime-version; s=pp1; bh=l1owu+QJK7QDB/LMpGuaR7ZzvRgW4C27GWY2msSc/VI=;
+ b=IQVcBgOfMrMFTlt4lDe6P0So1sFd6MCLAfRr8CQvP2QQh1SeElXKf+DZwwPaJCLkIrKN
+ 6mc2UrlAKsf4VLNvyIhlFxDaxCiAnd0J5XG1RyGTxzBXM3yu+qpdzsrZSNL7mnMPCHwS
+ UyBYUZ6Ey5QpTeSdDemXMsRnkilXOUqeYnt107hhlnH/cKLd8+yLj9UV7hkdZ5mwoo9h
+ 4NQ3zxv+/fHneCRCfeu7CraCxM3jo79t+1zdbOULB7HCLc61WC6tY4sYY1vUFT604wBg
+ GVnHoogwIsg/QZ8r4uz9C6Qd3Kq6QIHg0VCGZy0A3ykJeUbHFZNEVumjfXmsRWFWNkg5 Lw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwp491hev-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jun 2022 23:51:48 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25ONj9Ei015840;
+	Fri, 24 Jun 2022 23:51:48 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwp491hej-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jun 2022 23:51:48 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ONa7MN015558;
+	Fri, 24 Jun 2022 23:51:47 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
+	by ppma02dal.us.ibm.com with ESMTP id 3gt00a6pb2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jun 2022 23:51:47 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
+	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ONpks039780770
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jun 2022 23:51:46 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A034AAE060;
+	Fri, 24 Jun 2022 23:51:46 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C304AE05C;
+	Fri, 24 Jun 2022 23:51:46 +0000 (GMT)
+Received: from localhost (unknown [9.211.152.104])
+	by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jun 2022 23:51:46 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: Liam Howlett <liam.howlett@oracle.com>
+Subject: Re: power9 slab-out-of-bounds in _find_First_zero_bit
+In-Reply-To: <20220624210400.gic4akzlwwdqkxym@revolver>
+References: <20220624210400.gic4akzlwwdqkxym@revolver>
+Date: Fri, 24 Jun 2022 18:51:45 -0500
+Message-ID: <87pmixmxgu.fsf@linux.ibm.com>
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: vsW7K57hDmU6khpOyfcmUpPbqW_7lu3f
+X-Proofpoint-ORIG-GUID: 1nv4zAIvaBtnlZLbIKxySDWgV47WG5VP
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53402d57-ee3f-59b9-a8dc-59fa659f3662@kernel.org>
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-24_10,2022-06-24_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ adultscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 mlxlogscore=979 phishscore=0 malwarescore=0
+ impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206240090
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,30 +95,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Bjorn Andersson <bjorn.andersson@linaro.org>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Rob Herring <robh@kernel.org>, Khuong Dinh <khuong@os.amperecomputing.com>, Alexey Brodkin <abrodkin@synopsys.com>, Krzysztof Kozlowski <krzk@kernel.org>, Andy Gross <agross@kernel.org>, linux-snps-arc@lists.infradead.org, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Felipe Balbi <balbi@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Patrice Chotard <patrice.chotard@st.com>, linux-kernel@vger.kernel.org, Serge Semin <Sergey.Semin@baikalelectronics.ru>, Vineet Gupta <vgupta@synopsys.com>, linuxppc-dev@lists.ozlabs.org
+Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yury Norov <yury.norov@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 24, 2022 at 03:11:43PM -0700, Vineet Gupta wrote:
-> 
-> On 6/24/22 07:16, Serge Semin wrote:
-> > In accordance with the Generic EHCI/OHCI bindings the corresponding node
-> > name is suppose to comply with the Generic USB HCD DT schema, which
-> > requires the USB nodes to have the name acceptable by the regexp:
-> > "^usb(@.*)?"  . Make sure the "generic-ehci" and "generic-ohci"-compatible
-> > nodes are correctly named.
-> > 
-> > Signed-off-by: Serge Semin<Sergey.Semin@baikalelectronics.ru>
-> > Acked-by: Alexey Brodkin<abrodkin@synopsys.com>
-> > Acked-by: Krzysztof Kozlowski<krzk@kernel.org>
-> 
+Hi Liam,
 
-> This slipped thru cracks. Now on for-curr.
+Liam Howlett <liam.howlett@oracle.com> writes:
+>
+> When trying v5.19-rc3 on my ppc64 VM with KASANs enabled, I get the
+> following on boot:
+>
+> [    0.174621] ==================================================================
+> [    0.175501] BUG: KASAN: slab-out-of-bounds in _find_first_zero_bit+0x40/0x140
+> [    0.176132] Read of size 8 at addr c00000000f7f0410 by task swapper/0/1
+> [    0.176900] 
+> [    0.177844] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W         5.19.0-rc3+ #8
+> [    0.179461] Call Trace:
+> [    0.179907] [c0000000119677d0] [c0000000075af350] dump_stack_lvl+0x74/0xa8 (unreliable)
+> [    0.181107] [c000000011967810] [c000000000632220] print_report+0x330/0x740
+> [    0.181977] [c0000000119678e0] [c000000000632980] kasan_report+0x100/0x1f0
+> [    0.182788] [c0000000119679c0] [c000000000634de4] __asan_load8+0xa4/0xe0
+> [    0.183560] [c0000000119679e0] [c0000000018b92b0] _find_first_zero_bit+0x40/0x140
+> [    0.184119] [c000000011967a20] [c0000000000c5f7c] xive_spapr_get_ipi+0xcc/0x220
+> [    0.184689] [c000000011967ad0] [c0000000000c1adc] xive_setup_cpu_ipi+0x1ec/0x420
+> [    0.185231] [c000000011967b90] [c00000000a033b3c] pSeries_smp_probe+0x44/0xd4
+> [    0.185825] [c000000011967bc0] [c00000000a01c77c] smp_prepare_cpus+0x62c/0x688
+> [    0.186359] [c000000011967cb0] [c00000000a00ea94] kernel_init_freeable+0x24c/0x520
+> [    0.186893] [c000000011967d90] [c000000000012b00] kernel_init+0x30/0x1c0
+> [    0.187395] [c000000011967e10] [c00000000000ce54] ret_from_kernel_thread+0x5c/0x64
 
-Great! Thanks.
+[...]
 
--Sergey
+Please try "powerpc/xive/spapr: correct bitmap allocation size", posted yesterday:
 
-> 
-> Thx,
-> -Vineet
+https://lore.kernel.org/linuxppc-dev/20220623182509.3985625-1-nathanl@linux.ibm.com/
