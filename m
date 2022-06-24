@@ -2,83 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C088A558F72
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 06:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC984559002
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 06:44:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTk405B3Mz3cfF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 14:02:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=L8Dq1Fdr;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTl0M52w9z3cgx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 14:44:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::33; helo=mail-oa1-x33.google.com; envelope-from=frowand.list@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=L8Dq1Fdr;
-	dkim-atps=neutral
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTk3L4Ylfz3bkb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 14:02:21 +1000 (AEST)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-101ec2d6087so2224423fac.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jun 2022 21:02:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=C38bDs4A1JfWnOqmeYv1BTYo2A48cLLwdXZTR1jlAA0=;
-        b=L8Dq1FdrKjrt2f3l9xNpRgivDT0iEZF2jKKlVhypq6/jyWdJZBKRHLkcEjI7nujJ0z
-         RbPakAI00kU0HoXSksL29V5uU+OUHrYEeHt13nzKvqjpkfVj0bNVzmaFpbD21vD7/qm3
-         UpP7ouJO5jmt38uinYPE+7fQXzRJBz6hbCXgpH/PIzlBDmPiuoy7I1W6M6KUVe8HPRJ8
-         ulMhnTjMEwSeMnRn9SbNkWWjaaDMrJ3QOpa8KFAvoA9kc/OtgWS1VuN5PVrKWXmbOVks
-         5vkK/l1T/Q6c4jC30zLoFYAxZ6MVDhYflfNRyqGeF6rIujLD2nejHeZeIZA2zC/FlxQn
-         Zjew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=C38bDs4A1JfWnOqmeYv1BTYo2A48cLLwdXZTR1jlAA0=;
-        b=m6Z9QRdWnm1JFbWZMWYGA3emJNqKi/TbQ8sX9SMtAIzyXrmnFy+x3N9cKapLK5sZ+1
-         nxGPiwMPWxAvY8a5vEICp12jMbSnunzIS4fGgIxjqpzxgEkLE/vV0Zlr+lliUwZG923j
-         j85F8x7meibJ2h2hlZEEd8b6vldOwUsSXzFluFsplgF0JXd8nF0MrwjJE+hRZID3IAvT
-         tMQZoaD0XPstL7/kEB/iSO18FKPmS9Wv8aw4CrDH5xcLuTMWSaKm3Nmqa5P6FCit42Hs
-         3hZeKzVW04hlB43q75XURRDzNzJHZZFAxppKJkRRMGm95NcYI+2hAdxrqZLUT7ucbpgu
-         1prw==
-X-Gm-Message-State: AJIora/fETnxQg9M3iJjmywTtGaxDMyFG8iKAhS1t3Vt+asSBRZFwmOa
-	klgRkqNwl0m5gjMpJ7aOtW0=
-X-Google-Smtp-Source: AGRyM1uun8x0X75mHWSZsw5pqOFbPlSawWvIGWizmZFosmSrSxO1YfFuABH899fP3OhK9Cw5i1rnjg==
-X-Received: by 2002:a05:6870:ea01:b0:f1:e631:ed6f with SMTP id g1-20020a056870ea0100b000f1e631ed6fmr819106oap.89.1656043339416;
-        Thu, 23 Jun 2022 21:02:19 -0700 (PDT)
-Received: from ?IPV6:2600:1700:2442:6db0:742c:47ee:54c0:bcc7? ([2600:1700:2442:6db0:742c:47ee:54c0:bcc7])
-        by smtp.gmail.com with ESMTPSA id 14-20020a9d080e000000b0061691239049sm848171oty.60.2022.06.23.21.02.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Jun 2022 21:02:18 -0700 (PDT)
-Message-ID: <fc6ff5a8-75c3-fcc9-5809-ffbea058d4c7@gmail.com>
-Date: Thu, 23 Jun 2022 23:02:17 -0500
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTkzz2D0bz3bkb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 14:44:27 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4787612FC;
+	Thu, 23 Jun 2022 21:43:55 -0700 (PDT)
+Received: from a077893.blr.arm.com (unknown [10.162.41.7])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 961313F66F;
+	Thu, 23 Jun 2022 21:43:47 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V4 00/26] mm/mmap: Drop __SXXX/__PXXX macros from across platforms
+Date: Fri, 24 Jun 2022 10:13:13 +0530
+Message-Id: <20220624044339.1533882-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v3 0/5] of: add of_property_alloc/free() and
- of_node_alloc()
-Content-Language: en-US
-To: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Rob Herring <robh+dt@kernel.org>,
- Nathan Lynch <nathanl@linux.ibm.com>, Laurent Dufour
- <ldufour@linux.ibm.com>, Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>, Ohhoon Kwon <ohoono.kwon@samsung.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- YueHaibing <yuehaibing@huawei.com>
-References: <20220620104123.341054-1-clement.leger@bootlin.com>
-From: Frank Rowand <frowand.list@gmail.com>
-In-Reply-To: <20220620104123.341054-1-clement.leger@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,64 +38,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Steen Hegelund <steen.hegelund@microchip.com>, linux-kernel@vger.kernel.org, Lizhi Hou <lizhi.hou@xilinx.com>, Allan Nielsen <allan.nielsen@microchip.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Bjorn Helgaas <helgaas@kernel.org>, linuxppc-dev@lists.ozlabs.org, Horatiu Vultur <horatiu.vultur@microchip.com>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, hch@infradead.org, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Anshuman Khandual <anshuman.khandual@arm.com>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sorry for the lack of response, it's been a busy week.  I will get to this
-soon.
+__SXXX/__PXXX macros is an unnecessary abstraction layer in creating the
+generic protection_map[] array which is used for vm_get_page_prot(). This
+abstraction layer can be avoided, if the platforms just define the array
+protection_map[] for all possible vm_flags access permission combinations
+and also export vm_get_page_prot() implementation.
 
--Frank
+This series drops __SXXX/__PXXX macros from across platforms in the tree.
+First it build protects generic protection_map[] array with '#ifdef __P000'
+and moves it inside platforms which enable ARCH_HAS_VM_GET_PAGE_PROT. Later
+this build protects same array with '#ifdef ARCH_HAS_VM_GET_PAGE_PROT' and
+moves inside remaining platforms while enabling ARCH_HAS_VM_GET_PAGE_PROT.
+This adds a new macro DECLARE_VM_GET_PAGE_PROT defining the current generic
+vm_get_page_prot(), in order for it to be reused on platforms that do not
+require custom implementation. Finally, ARCH_HAS_VM_GET_PAGE_PROT can just
+be dropped, as all platforms now define and export vm_get_page_prot(), via
+looking up a private and static protection_map[] array. protection_map[]
+data type is the following for all platforms without deviation (except the
+powerpc one which is shared between 32 and 64 bit platforms), keeping it
+unchanged for now.
 
-On 6/20/22 06:41, Clément Léger wrote:
-> In order to be able to create new nodes and properties dynamically from
-> drivers, add of_property_alloc/free() and of_node_alloc(). These
-> functions can be used to create new nodes and properties flagged with
-> OF_DYNAMIC and to free them.
-> 
-> Some powerpc code was already doing such operations and thus, these
-> functions have been used to replace the manual creation of nodes and
-> properties. This code has been more than simply replaced to allow using
-> of_node_put() rather than a manual deletion of the properties.
-> Unfortunately, as I don't own a powerpc platform, it would need to be
-> tested.
-> 
-> ---
-> 
-> Changes in V3:
-> - Remove gfpflag attribute from of_node_alloc() and of_property_alloc().
-> - Removed allocflags from __of_node_dup().
-> - Rework powerpc code to only use of_node_put().
-> - Fix properties free using of_node_property in OF unittests.
-> 
-> Changes in V2:
-> - Remove of_node_free()
-> - Rework property allocation to allocate both property and value with
->   1 allocation
-> - Rework node allocation to allocate name at the same time the node is
->   allocated
-> - Remove extern from definitions
-> - Remove of_property_alloc() value_len parameter and add more
->   explanation for the arguments
-> - Add a check in of_property_free to check OF_DYNAMIC flag
-> - Add a commit which constify the property argument of
->   of_property_check_flags()
-> 
-> Clément Léger (5):
->   of: constify of_property_check_flags() prop argument
->   of: remove __of_node_dup() allocflags parameter
->   of: dynamic: add of_property_alloc() and of_property_free()
->   of: dynamic: add of_node_alloc()
->   powerpc/pseries: use of_property_alloc/free() and of_node_alloc()
-> 
->  arch/powerpc/platforms/pseries/dlpar.c        |  62 +-------
->  .../platforms/pseries/hotplug-memory.c        |  21 +--
->  arch/powerpc/platforms/pseries/reconfig.c     | 123 ++++++----------
->  drivers/of/dynamic.c                          | 137 ++++++++++++------
->  drivers/of/of_private.h                       |  19 ++-
->  drivers/of/overlay.c                          |   2 +-
->  drivers/of/unittest.c                         |  24 ++-
->  include/linux/of.h                            |  24 ++-
->  8 files changed, 191 insertions(+), 221 deletions(-)
-> 
+static pgprot_t protection_map[16] __ro_after_init
+
+This series applies on v5.19-rc3 and has been build tested for multiple
+platforms. While here it has dropped off all previous tags from folks after
+the current restructuring. Series common CC list has been expanded to cover
+all impacted platforms for wider reach.
+
+- Anshuman
+
+Changes in V4:
+
+- Both protection_map[] and vm_get_page_prot() moves inside all platforms
+- Split patches to create modular changes for individual platforms
+- Add macro DECLARE_VM_GET_PAGE_PROT defining generic vm_get_page_prot()
+- Drop ARCH_HAS_VM_GET_PAGE_PROT
+
+Changes in V3:
+
+https://lore.kernel.org/all/20220616040924.1022607-1-anshuman.khandual@arm.com/
+
+- Fix build issues on powerpc and riscv
+
+Changes in V2:
+
+https://lore.kernel.org/all/20220613053354.553579-1-anshuman.khandual@arm.com/
+
+- Add 'const' identifier to protection_map[] on powerpc
+- Dropped #ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT check from sparc 32
+- Dropped protection_map[] init from sparc 64
+- Dropped all new platform changes subscribing ARCH_HAS_VM_GET_PAGE_PROT
+- Added a second patch which moves generic protection_map[] array into
+  all remaining platforms (!ARCH_HAS_VM_GET_PAGE_PROT)
+
+Changes in V1:
+
+https://lore.kernel.org/all/20220603101411.488970-1-anshuman.khandual@arm.com/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: openrisc@lists.librecores.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (26):
+  mm/mmap: Build protect protection_map[] with __P000
+  mm/mmap: Define DECLARE_VM_GET_PAGE_PROT
+  powerpc/mm: Move protection_map[] inside the platform
+  sparc/mm: Move protection_map[] inside the platform
+  arm64/mm: Move protection_map[] inside the platform
+  x86/mm: Move protection_map[] inside the platform
+  mm/mmap: Build protect protection_map[] with ARCH_HAS_VM_GET_PAGE_PROT
+  microblaze/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  loongarch/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  openrisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  extensa/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  hexagon/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  alpha/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  nios2/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  riscv/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  csky/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  s390/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  ia64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mips/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  m68k/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arm/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  um/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  sh/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mm/mmap: Drop ARCH_HAS_VM_GET_PAGE_PROT
+
+ arch/alpha/include/asm/pgtable.h          | 17 -------
+ arch/alpha/mm/init.c                      | 22 +++++++++
+ arch/arc/include/asm/pgtable-bits-arcv2.h | 18 --------
+ arch/arc/mm/mmap.c                        | 20 +++++++++
+ arch/arm/include/asm/pgtable.h            | 17 -------
+ arch/arm/lib/uaccess_with_memcpy.c        |  2 +-
+ arch/arm/mm/mmu.c                         | 20 +++++++++
+ arch/arm64/Kconfig                        |  1 -
+ arch/arm64/include/asm/pgtable-prot.h     | 18 --------
+ arch/arm64/mm/mmap.c                      | 21 +++++++++
+ arch/csky/include/asm/pgtable.h           | 18 --------
+ arch/csky/mm/init.c                       | 20 +++++++++
+ arch/hexagon/include/asm/pgtable.h        | 27 -----------
+ arch/hexagon/mm/init.c                    | 42 +++++++++++++++++
+ arch/ia64/include/asm/pgtable.h           | 18 --------
+ arch/ia64/mm/init.c                       | 28 +++++++++++-
+ arch/loongarch/include/asm/pgtable-bits.h | 19 --------
+ arch/loongarch/mm/cache.c                 | 46 +++++++++++++++++++
+ arch/m68k/include/asm/mcf_pgtable.h       | 54 ----------------------
+ arch/m68k/include/asm/motorola_pgtable.h  | 22 ---------
+ arch/m68k/include/asm/sun3_pgtable.h      | 17 -------
+ arch/m68k/mm/mcfmmu.c                     | 55 +++++++++++++++++++++++
+ arch/m68k/mm/motorola.c                   | 20 +++++++++
+ arch/m68k/mm/sun3mmu.c                    | 20 +++++++++
+ arch/microblaze/include/asm/pgtable.h     | 17 -------
+ arch/microblaze/mm/init.c                 | 20 +++++++++
+ arch/mips/include/asm/pgtable.h           | 22 ---------
+ arch/mips/mm/cache.c                      |  3 ++
+ arch/nios2/include/asm/pgtable.h          | 16 -------
+ arch/nios2/mm/init.c                      | 20 +++++++++
+ arch/openrisc/include/asm/pgtable.h       | 18 --------
+ arch/openrisc/mm/init.c                   | 20 +++++++++
+ arch/parisc/include/asm/pgtable.h         | 18 --------
+ arch/parisc/mm/init.c                     | 20 +++++++++
+ arch/powerpc/Kconfig                      |  1 -
+ arch/powerpc/include/asm/pgtable.h        | 20 +--------
+ arch/powerpc/mm/pgtable.c                 | 24 ++++++++++
+ arch/riscv/include/asm/pgtable.h          | 20 ---------
+ arch/riscv/mm/init.c                      | 20 +++++++++
+ arch/s390/include/asm/pgtable.h           | 17 -------
+ arch/s390/mm/mmap.c                       | 20 +++++++++
+ arch/sh/include/asm/pgtable.h             | 17 -------
+ arch/sh/mm/mmap.c                         | 20 +++++++++
+ arch/sparc/Kconfig                        |  1 -
+ arch/sparc/include/asm/pgtable_32.h       | 19 --------
+ arch/sparc/include/asm/pgtable_64.h       | 19 --------
+ arch/sparc/mm/init_32.c                   | 20 +++++++++
+ arch/sparc/mm/init_64.c                   |  3 ++
+ arch/um/include/asm/pgtable.h             | 17 -------
+ arch/um/kernel/mem.c                      | 20 +++++++++
+ arch/x86/Kconfig                          |  1 -
+ arch/x86/include/asm/pgtable_types.h      | 19 --------
+ arch/x86/mm/mem_encrypt_amd.c             |  7 ++-
+ arch/x86/mm/pgprot.c                      | 27 +++++++++++
+ arch/x86/um/mem_32.c                      |  2 +-
+ arch/xtensa/include/asm/pgtable.h         | 18 --------
+ arch/xtensa/mm/init.c                     | 20 +++++++++
+ include/linux/mm.h                        |  9 +++-
+ mm/Kconfig                                |  3 --
+ mm/mmap.c                                 | 27 -----------
+ 60 files changed, 584 insertions(+), 543 deletions(-)
+
+-- 
+2.25.1
 
