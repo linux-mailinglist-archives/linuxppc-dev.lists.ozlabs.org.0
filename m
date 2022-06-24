@@ -2,55 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D82559B57
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 16:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C639559B71
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 16:24:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTzlR3hGpz3f6S
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 00:19:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTzrr2SzGz3cgQ
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 00:24:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=baikalelectronics.ru header.i=@baikalelectronics.ru header.a=rsa-sha256 header.s=mail header.b=KeUXpB9b;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=odhF0LyJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baikalelectronics.ru (client-ip=87.245.175.230; helo=mail.baikalelectronics.com; envelope-from=sergey.semin@baikalelectronics.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=w98e=w7=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=baikalelectronics.ru header.i=@baikalelectronics.ru header.a=rsa-sha256 header.s=mail header.b=KeUXpB9b;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=odhF0LyJ;
 	dkim-atps=neutral
-Received: from mail.baikalelectronics.com (mail.baikalelectronics.com [87.245.175.230])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTzhP0wfJz3c87
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 00:16:53 +1000 (AEST)
-Received: from mail (mail.baikal.int [192.168.51.25])
-	by mail.baikalelectronics.com (Postfix) with ESMTP id E54E616C6;
-	Fri, 24 Jun 2022 17:17:48 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.baikalelectronics.com E54E616C6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=baikalelectronics.ru; s=mail; t=1656080268;
-	bh=dQq5OIsnVRth+sqzHkFlLdBrOb42QdxbS+CEp9Nsxcw=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=KeUXpB9bEA0u9yM7Z2Ev9snyCvK8y8lKnsRCFAiWur9+aSzfP+/uMp/3F131g9uAe
-	 XVxjrqtrh9QIemz8UmkQzuU1Me9/FA1UrMTniWYthPE9bA32Rz8BOvbJd1r5dPwOI4
-	 fT7ClKUUCylTGTFzMfmnQ+QUFVJ9Fdlh0dDLEdpM=
-Received: from localhost (192.168.53.207) by mail (192.168.51.25) with
- Microsoft SMTP Server (TLS) id 15.0.1395.4; Fri, 24 Jun 2022 17:16:29 +0300
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To: Andy Gross <agross@kernel.org>, Bjorn Andersson
-	<bjorn.andersson@linaro.org>, Felipe Balbi <balbi@kernel.org>, Michael
- Ellerman <mpe@ellerman.id.au>, Vladimir Zapolskiy <vz@mleia.com>, Alexey
- Brodkin <abrodkin@synopsys.com>, Vineet Gupta <vgupta@synopsys.com>, Rob
- Herring <robh+dt@kernel.org>, Rob Herring <robh@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Krzysztof Kozlowski
-	<krzk@kernel.org>, <linux-usb@vger.kernel.org>, Khuong Dinh
-	<khuong@os.amperecomputing.com>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>
-Subject: [PATCH RESEND v9 5/5] arm64: dts: apm: Harmonize DWC USB3 DT nodes name
-Date: Fri, 24 Jun 2022 17:16:21 +0300
-Message-ID: <20220624141622.7149-6-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20220624141622.7149-1-Sergey.Semin@baikalelectronics.ru>
-References: <20220624141622.7149-1-Sergey.Semin@baikalelectronics.ru>
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTzrB6jjlz2xXw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 00:23:38 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id BF3ADB8269B;
+	Fri, 24 Jun 2022 14:23:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0459BC34114;
+	Fri, 24 Jun 2022 14:23:32 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="odhF0LyJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1656080611;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DDHqAmqsZ4bloLWJ5SSgC0PVJ41EyjROF8QxHskmM0g=;
+	b=odhF0LyJPkU94nBENBOG8XASoqmfAfDlY7Ad5w1YoA4Uea+cLNHo7dVlY9YILvLUzi3kXc
+	LYssvyQbaIxMw7mCRLWYbHXMc9GqYOXAxp6oItn3aq425b/2TkENK/HUVa+BQru7/G95Ut
+	6KCt5J59Fs/qbRr7Oq4wTdsa99goVdo=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 8c97580c (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+	Fri, 24 Jun 2022 14:23:31 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Fabiano Rosas <farosas@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2 0/2] powerpc rng cleanups
+Date: Fri, 24 Jun 2022 16:23:20 +0200
+Message-Id: <20220624142322.2049826-1-Jason@zx2c4.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,63 +62,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Patrice Chotard <patrice.chotard@st.com>, Serge Semin <fancer.lancer@gmail.com>, linux-kernel@vger.kernel.org, Serge Semin <Sergey.Semin@baikalelectronics.ru>, Paul Mackerras <paulus@samba.org>, linux-arm-msm@vger.kernel.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In accordance with the DWC USB3 bindings the corresponding node
-name is suppose to comply with the Generic USB HCD DT schema, which
-requires the USB nodes to have the name acceptable by the regexp:
-"^usb(@.*)?" . Make sure the "snps,dwc3"-compatible nodes are correctly
-named despite of the warning comment about possible backward
-compatibility issues.
+These are two small cleanups for -next.
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/arm64/boot/dts/apm/apm-shadowcat.dtsi | 4 ++--
- arch/arm64/boot/dts/apm/apm-storm.dtsi     | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+Jason A. Donenfeld (2):
+  powerpc/powernv: rename remaining rng powernv_ functions to pnv_
+  powerpc/kvm: don't crash on missing rng, and use darn
 
-diff --git a/arch/arm64/boot/dts/apm/apm-shadowcat.dtsi b/arch/arm64/boot/dts/apm/apm-shadowcat.dtsi
-index a83c82c50e29..832dd85b00bd 100644
---- a/arch/arm64/boot/dts/apm/apm-shadowcat.dtsi
-+++ b/arch/arm64/boot/dts/apm/apm-shadowcat.dtsi
-@@ -597,8 +597,8 @@ serial0: serial@10600000 {
- 			interrupts = <0x0 0x4c 0x4>;
- 		};
- 
--		/* Do not change dwusb name, coded for backward compatibility */
--		usb0: dwusb@19000000 {
-+		/* Node-name might need to be coded as dwusb for backward compatibility */
-+		usb0: usb@19000000 {
- 			status = "disabled";
- 			compatible = "snps,dwc3";
- 			reg =  <0x0 0x19000000 0x0 0x100000>;
-diff --git a/arch/arm64/boot/dts/apm/apm-storm.dtsi b/arch/arm64/boot/dts/apm/apm-storm.dtsi
-index 0f37e77f5459..1520a945b7f9 100644
---- a/arch/arm64/boot/dts/apm/apm-storm.dtsi
-+++ b/arch/arm64/boot/dts/apm/apm-storm.dtsi
-@@ -923,8 +923,8 @@ sata3: sata@1a800000 {
- 			phy-names = "sata-phy";
- 		};
- 
--		/* Do not change dwusb name, coded for backward compatibility */
--		usb0: dwusb@19000000 {
-+		/* Node-name might need to be coded as dwusb for backward compatibility */
-+		usb0: usb@19000000 {
- 			status = "disabled";
- 			compatible = "snps,dwc3";
- 			reg =  <0x0 0x19000000 0x0 0x100000>;
-@@ -933,7 +933,7 @@ usb0: dwusb@19000000 {
- 			dr_mode = "host";
- 		};
- 
--		usb1: dwusb@19800000 {
-+		usb1: usb@19800000 {
- 			status = "disabled";
- 			compatible = "snps,dwc3";
- 			reg =  <0x0 0x19800000 0x0 0x100000>;
+ arch/powerpc/include/asm/archrandom.h |  7 +--
+ arch/powerpc/kvm/book3s_hv_builtin.c  |  7 +--
+ arch/powerpc/platforms/powernv/rng.c  | 63 ++++++++++-----------------
+ drivers/char/hw_random/powernv-rng.c  |  2 +-
+ 4 files changed, 29 insertions(+), 50 deletions(-)
+
 -- 
 2.35.1
 
