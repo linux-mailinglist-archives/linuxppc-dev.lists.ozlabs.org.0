@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1BA558D5E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 04:46:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 562B3558EC1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 05:09:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LThMH1s5Jz3cdK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 12:46:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LThtN1mHYz3cdv
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 13:09:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WyfAml4N;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JHX2Ao+4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LThLk3s0jz3blX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 12:45:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LThsp0v1Bz3bZC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 13:09:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=WyfAml4N;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JHX2Ao+4;
 	dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LThLd09Mpz4xDK;
-	Fri, 24 Jun 2022 12:45:28 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LThsm5TPjz4xLT;
+	Fri, 24 Jun 2022 13:09:00 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1656038729;
-	bh=FsNPhLyLQp+amgbFWjLHPt/TWXWo4hOyqccddO50Dxg=;
+	s=201909; t=1656040142;
+	bh=K++hI2FDkjV3G5478DzfpzmGcEObLlrEm0qg0VKmAH4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=WyfAml4Niz8W3LAIUYtA3TTVSHHKZOsJJJu5kLv4FtmDCD1eYxS+W4sEcCet1QKHj
-	 0IMrTzdYHLZGaCGCRZRTzn4pxrV4fV/3/6M1lVzlJdYTu+jjalxzCTY+2i3+eWKUzV
-	 xO+/aq/1RKTo5wBveuVudeVekc1sx7NizVAbYz2xtDCU/0KcHwrtKcEqQ31ZNxLcCS
-	 jRsbzVNbIrDEAfOsy2MeQCb+/ZYsb3EBxlGdItXwiAKTMjRQ7iBJLsc16ATQxaogMb
-	 u+JKXyXS8U6W6ahPkXtSkanQFfcRa6CQ0yT3iPv/0C/AnD+wGZG35hkyPYQ9Pc0Xot
-	 36vN0bG94jESA==
+	b=JHX2Ao+4jSwUp4Lj3ajWxHaaPO+OTH7kx/LBQVq9vuerTA4WfbzY9j1VeA0zTZGbv
+	 gcWkiP8DEDI6VrW7PNNv7SmUrjOTBHcGIoIKzsLffPV4aq49KcTKjF1roSxxvzMKok
+	 tiRC1n0QTPGF7Bzel47PCPX+J+KSGmVd+Ui9HJ9soXKau2mD1hHEjSNxiyVVXLTlpF
+	 lWYq24g9zZHP87qx2D4YMG9CXWdExUBszaJL74+t+p7QKOCh3XK7byz3HiuelNGnza
+	 q1+9XMBDq6/VqO8NipT1I3rObNZs3VaiOK6VHqpdduGeZxQWDhaEsMY8ks7q4Vzsoi
+	 lnyvRUex8xctA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 3/3] powerpc/mm: Use VMALLOC_START to validate addr
-In-Reply-To: <20220623122922.640980-3-aneesh.kumar@linux.ibm.com>
-References: <20220623122922.640980-1-aneesh.kumar@linux.ibm.com>
- <20220623122922.640980-3-aneesh.kumar@linux.ibm.com>
-Date: Fri, 24 Jun 2022 12:45:24 +1000
-Message-ID: <87bkui6apn.fsf@mpe.ellerman.id.au>
+To: Pali =?utf-8?Q?Roh=C3=A1r?= <pali@kernel.org>, Rob Herring
+ <robh+dt@kernel.org>
+Subject: Re: [PATCH] powerpc: dts: Add DTS file for CZ.NIC Turris 1.x routers
+In-Reply-To: <20220511143712.22550-1-pali@kernel.org>
+References: <20220511143712.22550-1-pali@kernel.org>
+Date: Fri, 24 Jun 2022 13:08:59 +1000
+Message-ID: <877d5669mc.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,35 +59,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Kefeng Wang <wangkefeng.wang@huawei.com>, Michal Hocko <mhocko@suse.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: devicetree@vger.kernel.org, Josef Schlehofer <josef.schlehofer@nic.cz>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Marek Behun <marek.behun@nic.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> Instead of high_memory use VMALLOC_START to validate that the address is
-> not in the vmalloc range.
+Pali Roh=C3=A1r <pali@kernel.org> writes:
+> CZ.NIC Turris 1.0 and 1.1 are open source routers, they have dual-core
+> PowerPC Freescale P2020 CPU and are based on Freescale P2020RDB-PC-A boar=
+d.
+> Hardware design is fully open source, all firmware and hardware design
+> files are available at Turris project website:
 >
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> https://docs.turris.cz/hw/turris-1x/turris-1x/
+> https://project.turris.cz/en/hardware.html
+>
+> Signed-off-by: Pali Roh=C3=A1r <pali@kernel.org>
+> ---
+>  arch/powerpc/boot/dts/turris1x.dts | 470 +++++++++++++++++++++++++++++
+>  1 file changed, 470 insertions(+)
+>  create mode 100644 arch/powerpc/boot/dts/turris1x.dts
 
-Isn't this really the fix for ffa0b64e3be5 ("powerpc: Fix
-virt_addr_valid() for 64-bit Book3E & 32-bit") ?
+The headers say you Cc'ed this to the devicetree list, but I don't see
+it in the devicetree patchwork:
+
+  https://patchwork.ozlabs.org/project/devicetree-bindings/list/?state=3D*&=
+q=3Dturris&archive=3Dboth
+
+Which means it hasn't been run through Rob's CI scripts.
+
+Maybe try a resend?
 
 cheers
-
-> diff --git a/arch/powerpc/include/asm/page.h b/arch/powerpc/include/asm/page.h
-> index e5f75c70eda8..256cad69e42e 100644
-> --- a/arch/powerpc/include/asm/page.h
-> +++ b/arch/powerpc/include/asm/page.h
-> @@ -134,7 +134,7 @@ static inline bool pfn_valid(unsigned long pfn)
->  
->  #define virt_addr_valid(vaddr)	({					\
->  	unsigned long _addr = (unsigned long)vaddr;			\
-> -	_addr >= PAGE_OFFSET && _addr < (unsigned long)high_memory &&	\
-> +	_addr >= PAGE_OFFSET && _addr < (unsigned long)VMALLOC_START &&	\
->  	pfn_valid(virt_to_pfn(_addr));					\
->  })
->  
-> -- 
-> 2.36.1
