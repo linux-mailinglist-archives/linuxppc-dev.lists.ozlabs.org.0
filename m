@@ -2,39 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F2955932D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 08:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C869559378
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 08:32:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTmxY6yPRz3c8B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 16:12:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTnNb4LN6z3cgc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 16:32:31 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TnhK007p;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTmx85wjYz304J
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 16:12:11 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F88B19F0;
-	Thu, 23 Jun 2022 23:11:40 -0700 (PDT)
-Received: from [10.162.41.7] (unknown [10.162.41.7])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE6293F66F;
-	Thu, 23 Jun 2022 23:11:32 -0700 (PDT)
-Message-ID: <378e124f-914a-36b1-ff2f-9f4ea3b946a5@arm.com>
-Date: Fri, 24 Jun 2022 11:41:30 +0530
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTnN22fNMz3brX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 16:32:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TnhK007p;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LTnN159zNz4xZj;
+	Fri, 24 Jun 2022 16:32:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1656052322;
+	bh=P/l9k24ueAGNrZN2eX9B52ADsu9gsrUuIWkIUWXutKk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=TnhK007pd8/cxruAnH3n4r2z/szHgOCDRslEwn9VVdQ/+X+Is7Ln62BxoIAYZeC7T
+	 Kg9l4Bdaq8UMZIQ3PDMxleL6NmeT3aBA20xUGEMUS/tK1tO0ZceChn6AYglus+RxBm
+	 lW0n5syTWPaz/huNhuPhx7SGnH9LBxpF96H5F8Nm/OV7m9eDqRUTMxvRRqCk6H7AGw
+	 K3svGvxdFvMtnlxEZkJDBgvwENR0PVgaxGgSCnqU+1kjdTlAV68e0oK7aHZ+vcw1li
+	 BccZkpc3KOuEX7AnEc1dMaVuFYGv+f/mYY9+oCor8mzfPBFiBnTzppFz6zEV0bfN/+
+	 E/mrugwXeO7eg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Laurent Dufour <ldufour@linux.ibm.com>, benh@kernel.crashing.org,
+ paulus@samba.org, nathanl@linux.ibm.com, haren@linux.vnet.ibm.com,
+ npiggin@gmail.com
+Subject: Re: [PATCH v2 2/4] watchdog: export watchdog_mutex and
+ lockup_detector_reconfigure
+In-Reply-To: <20220614135414.37746-3-ldufour@linux.ibm.com>
+References: <20220614135414.37746-1-ldufour@linux.ibm.com>
+ <20220614135414.37746-3-ldufour@linux.ibm.com>
+Date: Fri, 24 Jun 2022 16:31:55 +1000
+Message-ID: <871qve6084.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH V4 02/26] mm/mmap: Define DECLARE_VM_GET_PAGE_PROT
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>
-References: <20220624044339.1533882-1-anshuman.khandual@arm.com>
- <20220624044339.1533882-3-anshuman.khandual@arm.com>
- <d3676fce-2dc7-6331-66f5-7009ac45f605@csgroup.eu>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <d3676fce-2dc7-6331-66f5-7009ac45f605@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,40 +61,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>, "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "hch@infradead.org" <hch@infradead.org>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linux-snps
- -arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> In some cricunstances it may be interesting to reconfigure the watchdog
+> from inside the kernel.
+>
+> On PowerPC, this may helpful before and after a LPAR migration (LPM) is
+> initiated, because it implies some latencies, watchdog, and especially NMI
+> watchdog is expected to be triggered during this operation. Reconfiguring
+> the watchdog, would prevent it to happen too frequently during LPM.
+>
+> The watchdog_mutex is exported to allow some variable to be changed under
+> its protection and prevent any conflict.
+> The lockup_detector_reconfigure() function is exported and is expected to
+> be called under the protection of watchdog_mutex.
+>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>  include/linux/nmi.h | 3 +++
+>  kernel/watchdog.c   | 6 +++---
+>  2 files changed, 6 insertions(+), 3 deletions(-)
+
+Is there a maintainer for kernel/watchdog.c ?
+
+There's Wim & Guenter at linux-watchdog@vger but I think that's only for
+drivers/watchdog?
+
+Maybe we should Cc that list anyway?
 
 
-On 6/24/22 10:58, Christophe Leroy wrote:
-> 
-> Le 24/06/2022 à 06:43, Anshuman Khandual a écrit :
->> This just converts the generic vm_get_page_prot() implementation into a new
->> macro i.e DECLARE_VM_GET_PAGE_PROT which later can be used across platforms
->> when enabling them with ARCH_HAS_VM_GET_PAGE_PROT. This does not create any
->> functional change.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: linux-mm@kvack.org
->> Cc: linux-kernel@vger.kernel.org
->> Suggested-by: Christoph Hellwig <hch@infradead.org>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   include/linux/mm.h | 8 ++++++++
->>   mm/mmap.c          | 6 +-----
->>   2 files changed, 9 insertions(+), 5 deletions(-)
->>
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 47bfe038d46e..237828c2bae2 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -428,6 +428,14 @@ extern unsigned int kobjsize(const void *objp);
->>   extern pgprot_t protection_map[16];
->>   #endif
->>   
-> I think the comment above protection_map[16] in mm/mmap.c should be 
-> moved here.
+> diff --git a/include/linux/nmi.h b/include/linux/nmi.h
+> index 750c7f395ca9..84300fb0f90a 100644
+> --- a/include/linux/nmi.h
+> +++ b/include/linux/nmi.h
+> @@ -122,6 +122,9 @@ int watchdog_nmi_probe(void);
+>  int watchdog_nmi_enable(unsigned int cpu);
+>  void watchdog_nmi_disable(unsigned int cpu);
+>  
+> +extern struct mutex watchdog_mutex;
+> +void lockup_detector_reconfigure(void);
 
-Sure, makes sense. Will move.
+It would be preferable if we didn't export the mutex.
+
+I think you could arrange that by ...
+
+Renaming lockup_detector_configure() to __lockup_detector_configure()
+and then adding a new lockup_detector_configure() that is non-static and
+takes the lock around __lockup_detector_configure().
+
+cheers
