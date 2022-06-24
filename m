@@ -1,83 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096F4559A9A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 15:44:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321A0559AAD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 15:51:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LTyyQ6lGLz3cg2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 23:43:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LTz7B0Mtdz3cgZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jun 2022 23:51:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jA6fBaJg;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Jb0pkru7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=farosas@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jA6fBaJg;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTyxk1zjSz30QW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 23:43:21 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25OC1k0f003805;
-	Fri, 24 Jun 2022 13:43:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : content-type :
- mime-version; s=pp1; bh=jWmk6Q4yoc3qgqL/zIyiBnZCRlRwQayVV5PigidaIrI=;
- b=jA6fBaJg9XV9+yAvch6KxbD38dzAE+H1Q1+TevLN22+jGBLBYfu7o9xKKCphn8fU8lBV
- 48UYXpKhjWAH7wwSwetdHhKf2TIKvv2wbG2gg/n74ySwDOok1Y0GMA1DIxEZMq9nNBk5
- BQNV7yQD9gRoAElrBLyqtrlZU/CzxsED1DknwS501bcbE+YbzqdBNcNRd/f63NDMhZyi
- r3ZyKZKu1/cDKFg+YquEYlGPnF/HmbMeeD1z8mJQKmjX+1JFcZrRIyOBr0v0Q8yuwzQL
- 78UYHIcYTXiQkPDoeXBxpZeTMI+jEoJpn07vmaj4Slmp4muY8xous7cxW2dT1PHT5f8e Mw== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gwajc642s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jun 2022 13:43:19 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25ODLif5029956;
-	Fri, 24 Jun 2022 13:43:19 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com [9.57.198.23])
-	by ppma03dal.us.ibm.com with ESMTP id 3gs6baj71k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 24 Jun 2022 13:43:19 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-	by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25ODhIta34210160
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Jun 2022 13:43:18 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 33B9EAC059;
-	Fri, 24 Jun 2022 13:43:18 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 79986AC05B;
-	Fri, 24 Jun 2022 13:43:17 +0000 (GMT)
-Received: from localhost (unknown [9.65.252.72])
-	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
-	Fri, 24 Jun 2022 13:43:17 +0000 (GMT)
-From: Fabiano Rosas <farosas@linux.ibm.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/kvm: don't crash on missing rng, and use darn
-In-Reply-To: <20220622105435.203922-1-Jason@zx2c4.com>
-References: <20220622105435.203922-1-Jason@zx2c4.com>
-Date: Fri, 24 Jun 2022 10:43:15 -0300
-Message-ID: <87a6a2qirw.fsf@linux.ibm.com>
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lacKIRLlCWTPdIChVCI36vbKBWbY1VOg
-X-Proofpoint-GUID: lacKIRLlCWTPdIChVCI36vbKBWbY1VOg
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LTz6Z6V50z30QW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jun 2022 23:51:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Jb0pkru7;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LTz6Z3qClz4xYN;
+	Fri, 24 Jun 2022 23:51:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1656078662;
+	bh=oTQkrMVJjt9EFA7jY/+HvD1PmcUsgMzdT0WBxm7qFlY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Jb0pkru7qVZfM+PMt4Dfr8VurMJOHeRAvPY/uMveLTYz8umtAmiPooaZ4r6A4t75D
+	 HA64ybK+kKyblBE7WWPVNNU8oO69dShg+HZmwBX88SZK0eTE4V03DM21hgiQYeSI5i
+	 8paJdPjkhd9KLJZLsgtGXsIPJ/WYnYqU+sd5yQSyzA38UasOgElq4HYg5ttJpfVzvs
+	 Q7T449bRU7TCc02MfCzoAVeALni7QZ789IHre0E73JZpxNDuJRzZC6dqqOnXlevzLS
+	 x4gpDvbdkYfnFurJix/orIJSY6U7F+ikDR8sw/ejL2vgkxPoJCjsMzdeuH4MDd8PFG
+	 hhnvXFVEnHjCQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Scott Cheloha <cheloha@linux.ibm.com>, linux-watchdog@vger.kernel.org
+Subject: Re: [PATCH v2 4/4] watchdog/pseries-wdt: initial support for
+ H_WATCHDOG-based watchdog timers
+In-Reply-To: <20220602175353.68942-5-cheloha@linux.ibm.com>
+References: <20220602175353.68942-1-cheloha@linux.ibm.com>
+ <20220602175353.68942-5-cheloha@linux.ibm.com>
+Date: Fri, 24 Jun 2022 23:51:01 +1000
+Message-ID: <87sfnu41bu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-24_07,2022-06-23_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 suspectscore=0 phishscore=0 bulkscore=0 impostorscore=0
- mlxlogscore=819 malwarescore=0 clxscore=1011 mlxscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206240052
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,136 +59,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org
+Cc: nathanl@linux.ibm.com, wvoigt@us.ibm.com, aik@ozlabs.ru, Scott Cheloha <cheloha@linux.ibm.com>, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+Scott Cheloha <cheloha@linux.ibm.com> writes:
+...
+> +
+> +static struct platform_driver pseries_wdt_driver = {
+> +	.driver = {
+> +		.name = DRV_NAME,
+> +		.owner = THIS_MODULE,
 
-> On POWER8 systems that don't have ibm,power-rng available, a guest that
-> ignores the KVM_CAP_PPC_HWRNG flag and calls H_RANDOM anyway will
-> dereference a NULL pointer. And on machines with darn instead of
-> ibm,power-rng, H_RANDOM won't work at all.
->
-> This patch kills two birds with one stone, by routing H_RANDOM calls to
-> ppc_md.get_random_seed, and doing the real mode check inside of it.
->
-> Cc: stable@vger.kernel.org # v4.1+
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Fixes: e928e9cb3601 ("KVM: PPC: Book3S HV: Add fast real-mode H_RANDOM implementation.")
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> ---
->
-> This patch must be applied ontop of:
-> 1) https://github.com/linuxppc/linux/commit/f3eac426657d985b97c92fa5f7ae1d43f04721f3
-> 2) https://lore.kernel.org/all/20220622102532.173393-1-Jason@zx2c4.com/
->
->
->  arch/powerpc/include/asm/archrandom.h |  5 ----
->  arch/powerpc/kvm/book3s_hv_builtin.c  |  5 ++--
->  arch/powerpc/platforms/powernv/rng.c  | 33 +++++++--------------------
->  3 files changed, 11 insertions(+), 32 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
-> index 11d4815841ab..3af27bb84a3d 100644
-> --- a/arch/powerpc/include/asm/archrandom.h
-> +++ b/arch/powerpc/include/asm/archrandom.h
-> @@ -38,12 +38,7 @@ static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
->  #endif /* CONFIG_ARCH_RANDOM */
->
->  #ifdef CONFIG_PPC_POWERNV
-> -int pnv_hwrng_present(void);
->  int pnv_get_random_long(unsigned long *v);
-> -int pnv_get_random_real_mode(unsigned long *v);
-> -#else
-> -static inline int pnv_hwrng_present(void) { return 0; }
-> -static inline int pnv_get_random_real_mode(unsigned long *v) { return 0; }
->  #endif
->
->  #endif /* _ASM_POWERPC_ARCHRANDOM_H */
-> diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-> index 799d40c2ab4f..1c6672826db5 100644
-> --- a/arch/powerpc/kvm/book3s_hv_builtin.c
-> +++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-> @@ -176,13 +176,14 @@ EXPORT_SYMBOL_GPL(kvmppc_hcall_impl_hv_realmode);
->
->  int kvmppc_hwrng_present(void)
->  {
-> -	return pnv_hwrng_present();
-> +	return ppc_md.get_random_seed != NULL;
->  }
->  EXPORT_SYMBOL_GPL(kvmppc_hwrng_present);
->
->  long kvmppc_rm_h_random(struct kvm_vcpu *vcpu)
->  {
-> -	if (pnv_get_random_real_mode(&vcpu->arch.regs.gpr[4]))
-> +	if (ppc_md.get_random_seed &&
-> +	    ppc_md.get_random_seed(&vcpu->arch.regs.gpr[4]))
->  		return H_SUCCESS;
+That owner assignment is not required.
 
-This is the same as arch_get_random_seed_long, perhaps you could use it
-instead.
+It's set for you by platform_driver_register() via
+module_platform_driver().
 
-Otherwise, the archrandom.h include is not needed anymore and could be
-replaced with #include <asm/machdep.h> for ppc_md.
-
->
->  	return H_HARDWARE;
-> diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
-> index 868bb9777425..c748567cd47e 100644
-> --- a/arch/powerpc/platforms/powernv/rng.c
-> +++ b/arch/powerpc/platforms/powernv/rng.c
-> @@ -29,15 +29,6 @@ struct pnv_rng {
->
->  static DEFINE_PER_CPU(struct pnv_rng *, pnv_rng);
->
-> -int pnv_hwrng_present(void)
-> -{
-> -	struct pnv_rng *rng;
-> -
-> -	rng = get_cpu_var(pnv_rng);
-> -	put_cpu_var(rng);
-> -	return rng != NULL;
-> -}
-> -
->  static unsigned long rng_whiten(struct pnv_rng *rng, unsigned long val)
->  {
->  	unsigned long parity;
-> @@ -58,17 +49,6 @@ static unsigned long rng_whiten(struct pnv_rng *rng, unsigned long val)
->  	return val;
->  }
->
-> -int pnv_get_random_real_mode(unsigned long *v)
-> -{
-> -	struct pnv_rng *rng;
-> -
-> -	rng = raw_cpu_read(pnv_rng);
-> -
-> -	*v = rng_whiten(rng, __raw_rm_readq(rng->regs_real));
-> -
-> -	return 1;
-> -}
-> -
->  static int pnv_get_random_darn(unsigned long *v)
->  {
->  	unsigned long val;
-> @@ -105,11 +85,14 @@ int pnv_get_random_long(unsigned long *v)
->  {
->  	struct pnv_rng *rng;
->
-> -	rng = get_cpu_var(pnv_rng);
-> -
-> -	*v = rng_whiten(rng, in_be64(rng->regs));
-> -
-> -	put_cpu_var(rng);
-> +	if (mfmsr() & MSR_DR) {
-> +		rng = raw_cpu_read(pnv_rng);
-> +		*v = rng_whiten(rng, __raw_rm_readq(rng->regs_real));
-> +	} else {
-> +		rng = get_cpu_var(pnv_rng);
-> +		*v = rng_whiten(rng, in_be64(rng->regs));
-> +		put_cpu_var(rng);
-> +	}
->
->  	return 1;
->  }
+cheers
