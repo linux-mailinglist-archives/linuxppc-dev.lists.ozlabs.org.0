@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF20955ACB0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jun 2022 22:56:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F78255ACFA
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 00:42:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LVmW65Rhbz3dQc
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 06:56:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LVprp3rdyz3c7H
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 08:42:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=WTxsGGx1;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=stevens-zone.net (client-ip=212.227.17.13; helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net; receiver=<UNKNOWN>)
-X-Greylist: delayed 498 seconds by postgrey-1.36 at boromir; Sun, 26 Jun 2022 06:56:10 AEST
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.78; helo=conuserg-11.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=WTxsGGx1;
+	dkim-atps=neutral
+Received: from conuserg-11.nifty.com (conuserg-11.nifty.com [210.131.2.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVmVf6yQ1z3bm7
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 06:56:09 +1000 (AEST)
-Received: from Cyrus.lan ([86.151.31.128]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.179]) with ESMTPA (Nemesis) id
- 1MfHIb-1nT6cq3OcV-00grLW; Sat, 25 Jun 2022 22:41:56 +0200
-Date: Sat, 25 Jun 2022 21:41:51 +0100
-From: Darren Stevens <darren@stevens-zone.net>
-To: linuxppc-dev@lists.ozlabs.org, oss@buserror.net, chzigotzky@xenosoft.de,
- robh@kernel.org, stern@rowland.harvard.edu, linux-usb@vger.kernel.org
-Subject: [PATCH v2 RFC] drivers/usb/host/ehci-fsl: Fix interrupt setup in
- host mode.
-Message-ID: <20220625214151.547b3570@Cyrus.lan>
-X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; powerpc-unknown-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVpr82Nrgz3bk8
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 08:41:28 +1000 (AEST)
+Received: from grover.sesame (133-32-177-133.west.xps.vectant.ne.jp [133.32.177.133]) (authenticated)
+	by conuserg-11.nifty.com with ESMTP id 25PMerMh019129;
+	Sun, 26 Jun 2022 07:40:54 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com 25PMerMh019129
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+	s=dec2015msa; t=1656196854;
+	bh=M6XKoxM1fH8dvA/Rs6ZMfRo/Ll+YO4R4MVhOpXPtwPU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WTxsGGx1sCF+o028uCGBfC4EScYONFfoSuazAYENVm1DSIDmGJImrsfEVpcoLPDR6
+	 WFruDgFchfgYFbL9wTYzMdxhk6iG2napUlzPwUu0EjcOE9dq93si4SnAiz6+giHlhG
+	 HIMeGgcsmlWx9cJn3Tsv23A83lK2T2fqCdGpd9tTbvOD874l7xZ2ETcEkEkvWprBTr
+	 tUWZd9HiOvF8NWUJUVC2OZ+Uy8K4vXxRoVB1U5wHMo4UP+mQELeZEdlpO3KRTdpz/s
+	 A+AgouwuZUE4it3cnfj9aXZmtve2zsbvTLia5EkGuGQX6kbq7GMopZ+QM5NdF8qb8c
+	 u1zR8ifEmVHUA==
+X-Nifty-SrcIP: [133.32.177.133]
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/purgatory: Omit use of bin2c
+Date: Sun, 26 Jun 2022 07:40:37 +0900
+Message-Id: <20220625224037.836581-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:B16Y/Qez7m1NJOC3FAa/ivJ01TlYQP4wgq+TPKy6fg8yCxoCBP+
- GA9saqxlT1Yn+QeEI55Dn5hnFDszUJDqQSb5VTMas7sIOJg6kGgf7IDGBdnUSPXJyWVoZt3
- 9pQJ6qZDVKKB5mQMPCmpywJkp9Hji6/s/tbK0Kytc2vnLvC4RbNdDIHwO2hwsePGUfKkoR5
- T8Vb4ReP8QRexTOZP1baw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:E2VWmeWROnk=:4q1FBNEqN42AE4eJVrwjYs
- wb07jE7PltEBczoCdZvYx7YVHSzz7+mZzAbLYBxRk+vTDa4/JnN4mHKeNF5CuKXNUaGfpX8Rc
- yFspNhjFSZsNXUx0HrJ0yXqPSPWybrOw8MPgyGPMtsBmhDBZg5a5iEY7nPCoMnC/No/gspi/7
- syxRE8V6oIk7tB0NGcJb83nmWaoV8lC3DRgHxtOD4DrmQS1Bw+JK2UC73mofgAX9AA2KZ5L7Z
- mMxQhcARrlR+WawkSW5VyERMUFHmES2To2urfd0xTZx4359yzGcM97mAMJJFKbYle7GPd9Dpn
- UOPKULIUpFDqhSKIwqptzmDv+iD0taRBkDMG41G/3/QjvOMWlTtNB+IB8l1U7ismBK6XOgUBm
- 1u2sbRW+m9TxPktynnLx1j1GkgXVjUW/av7teBxjJ6XwuUxn6yOCAT1g4F+jiAALnM0cQ5wmh
- 3arJvL4L/fv82R8mu+nRIAMeOt1Se4PAFaxeGKK2xEiNPDIAUAbCHhbgdM975NJeUFEqrQeSv
- Pj4rxjTX7oeA5c/1xhRufYeZlDSMwhN2Q1sAFhmGzzQiM8j+lbkaZ17bjVhpJdmUmGI5zHxVG
- twi8t7TteX1YuZrIiJDkLerdfdX7f465fYkHOZLMOJrL2YOISin06hokDoDVJPHyRHvv0g3qZ
- 91t/39Hn59bGwids0GfRt+G+cub0pDa3LASMGuJQ+Ejc6Es5no+u6WtfpDRjjs7QsDPtWjRuC
- LioxegcidOeZY1+xTAd0rlB/GKgoqdPyGM3Gj1frKCib7Mcaz8+yj7z+mBk=
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,115 +57,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shawnguo@kernel.org, leoyang.li@nxp.com
+Cc: Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
-core) we stopped platform_get_resource() from returning the IRQ, as all
-drivers were supposed to have switched to platform_get_irq()
-Unfortunately the Freescale EHCI driver in host mode got missed. Fix
-it. Also fix allocation of resources to work with current kernel.
+The .incbin assembler directive is much faster than bin2c + $(CC).
 
-Fixes: a1a2b7125e10 (Drop static setup of IRQ resource from DT core)
-Reported-by Christian Zigotzky <chzigotzky@xenosoft.de>
-Signed-off-by Darren Stevens <darren@stevens-zone.net>
+Do similar refactoring as in commit 4c0f032d4963 ("s390/purgatory:
+Omit use of bin2c").
+
+Please note the .quad directive matches to size_t in C (both 8 byte)
+because the purgatory is compiled only for the 64-bit kernel.
+(KEXEC_FILE depends on PPC64).
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 ---
- v2 - Fixed coding style, removed a couple of unneeded initializations,
-      cc'd Layerscape maintainers.
 
-Tested on AmigaOne X5000/20 and X5000/40 not sure if this is entirely
-correct fix though. Contains code by Rob Herring (in fsl-mph-dr-of.c)
+ arch/powerpc/Kconfig                     |  1 -
+ arch/powerpc/purgatory/.gitignore        |  1 -
+ arch/powerpc/purgatory/Makefile          |  8 ++------
+ arch/powerpc/purgatory/kexec-purgatory.S | 14 ++++++++++++++
+ scripts/remove-stale-files               |  2 ++
+ 5 files changed, 18 insertions(+), 8 deletions(-)
+ create mode 100644 arch/powerpc/purgatory/kexec-purgatory.S
 
-diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
-index 385be30..8bd258a 100644
---- a/drivers/usb/host/ehci-fsl.c
-+++ b/drivers/usb/host/ehci-fsl.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/fsl_devices.h>
- #include <linux/of_platform.h>
-+#include <linux/of_address.h>
- #include <linux/io.h>
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index c2ce2e60c8f0..1cb684ee3519 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -547,7 +547,6 @@ config KEXEC_FILE
+ 	bool "kexec file based system call"
+ 	select KEXEC_CORE
+ 	select HAVE_IMA_KEXEC if IMA
+-	select BUILD_BIN2C
+ 	select KEXEC_ELF
+ 	depends on PPC64
+ 	depends on CRYPTO=y
+diff --git a/arch/powerpc/purgatory/.gitignore b/arch/powerpc/purgatory/.gitignore
+index b8dc6ff34254..5e40575c1f2b 100644
+--- a/arch/powerpc/purgatory/.gitignore
++++ b/arch/powerpc/purgatory/.gitignore
+@@ -1,3 +1,2 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-kexec-purgatory.c
+ purgatory.ro
+diff --git a/arch/powerpc/purgatory/Makefile b/arch/powerpc/purgatory/Makefile
+index 348f59581052..a81d155b89ae 100644
+--- a/arch/powerpc/purgatory/Makefile
++++ b/arch/powerpc/purgatory/Makefile
+@@ -2,17 +2,13 @@
  
- #include "ehci.h"
-@@ -46,9 +47,10 @@ static struct hc_driver __read_mostly fsl_ehci_hc_driver;
-  */
- static int fsl_ehci_drv_probe(struct platform_device *pdev)
- {
-+	struct device_node *dn = pdev->dev.of_node;
- 	struct fsl_usb2_platform_data *pdata;
- 	struct usb_hcd *hcd;
--	struct resource *res;
-+	struct resource res;
- 	int irq;
- 	int retval;
- 	u32 tmp;
-@@ -76,14 +78,9 @@ static int fsl_ehci_drv_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
+ KASAN_SANITIZE := n
  
--	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!res) {
--		dev_err(&pdev->dev,
--			"Found HC with no IRQ. Check %s setup!\n",
--			dev_name(&pdev->dev));
--		return -ENODEV;
--	}
--	irq = res->start;
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return irq;
+-targets += trampoline_$(BITS).o purgatory.ro kexec-purgatory.c
++targets += trampoline_$(BITS).o purgatory.ro
  
- 	hcd = __usb_create_hcd(&fsl_ehci_hc_driver, pdev->dev.parent,
- 			       &pdev->dev, dev_name(&pdev->dev), NULL);
-@@ -92,15 +89,18 @@ static int fsl_ehci_drv_probe(struct platform_device *pdev)
- 		goto err1;
- 	}
+ LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	hcd->regs = devm_ioremap_resource(&pdev->dev, res);
-+	tmp = of_address_to_resource(dn, 0, &res);
-+	if (tmp)
-+		return tmp;
+ $(obj)/purgatory.ro: $(obj)/trampoline_$(BITS).o FORCE
+ 		$(call if_changed,ld)
+ 
+-quiet_cmd_bin2c = BIN2C   $@
+-      cmd_bin2c = $(objtree)/scripts/bin2c kexec_purgatory < $< > $@
+-
+-$(obj)/kexec-purgatory.c: $(obj)/purgatory.ro FORCE
+-	$(call if_changed,bin2c)
++$(obj)/kexec-purgatory.o: $(obj)/purgatory.ro
+ 
+ obj-y	+= kexec-purgatory.o
+diff --git a/arch/powerpc/purgatory/kexec-purgatory.S b/arch/powerpc/purgatory/kexec-purgatory.S
+new file mode 100644
+index 000000000000..4e5f64a0bf4a
+--- /dev/null
++++ b/arch/powerpc/purgatory/kexec-purgatory.S
+@@ -0,0 +1,14 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
-+	hcd->regs = devm_ioremap_resource(&pdev->dev, &res);
- 	if (IS_ERR(hcd->regs)) {
- 		retval = PTR_ERR(hcd->regs);
- 		goto err2;
- 	}
++	.section .rodata, "a"
++
++	.align	8
++kexec_purgatory:
++	.globl	kexec_purgatory
++	.incbin	"arch/powerpc/purgatory/purgatory.ro"
++.Lkexec_purgatroy_end:
++
++	.align	8
++kexec_purgatory_size:
++	.globl	kexec_purgatory_size
++	.quad	.Lkexec_purgatroy_end - kexec_purgatory
+diff --git a/scripts/remove-stale-files b/scripts/remove-stale-files
+index 7adab4618035..5a7543469698 100755
+--- a/scripts/remove-stale-files
++++ b/scripts/remove-stale-files
+@@ -20,6 +20,8 @@ set -e
+ # yard. Stale files stay in this file for a while (for some release cycles?),
+ # then will be really dead and removed from the code base entirely.
  
--	hcd->rsrc_start = res->start;
--	hcd->rsrc_len = resource_size(res);
-+	hcd->rsrc_start = res.start;
-+	hcd->rsrc_len = resource_size(&res);
- 
- 	pdata->regs = hcd->regs;
- 
-diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
-index 44a7e58..766e4ab 100644
---- a/drivers/usb/host/fsl-mph-dr-of.c
-+++ b/drivers/usb/host/fsl-mph-dr-of.c
-@@ -80,8 +80,6 @@ static struct platform_device *fsl_usb2_device_register(
- 					const char *name, int id)
- {
- 	struct platform_device *pdev;
--	const struct resource *res = ofdev->resource;
--	unsigned int num = ofdev->num_resources;
- 	int retval;
- 
- 	pdev = platform_device_alloc(name, id);
-@@ -106,11 +104,8 @@ static struct platform_device *fsl_usb2_device_register(
- 	if (retval)
- 		goto error;
- 
--	if (num) {
--		retval = platform_device_add_resources(pdev, res, num);
--		if (retval)
--			goto error;
--	}
-+	pdev->dev.of_node = ofdev->dev.of_node;
-+	pdev->dev.of_node_reused = true;
- 
- 	retval = platform_device_add(pdev);
- 	if (retval)
++rm -f arch/powerpc/purgatory/kexec-purgatory.c
++
+ # These were previously generated source files. When you are building the kernel
+ # with O=, make sure to remove the stale files in the output tree. Otherwise,
+ # the build system wrongly compiles the stale ones.
+-- 
+2.32.0
+
