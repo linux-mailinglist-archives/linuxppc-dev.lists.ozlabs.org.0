@@ -1,33 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C426C55ADC5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 02:29:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01EC255ADC6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 02:29:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LVsDS568Gz3cj8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 10:29:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LVsDt4P4Fz3dsW
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 10:29:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVsD26xJ3z3bYG
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 10:28:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVsD66LSTz3bYG
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 10:28:54 +1000 (AEST)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LVsD22mHNz4xZB;
-	Sun, 26 Jun 2022 10:28:50 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LVsD336rPz4xZj;
+	Sun, 26 Jun 2022 10:28:51 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, stable <stable@vger.kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20220621140849.127227-1-Jason@zx2c4.com>
-References: <20220620124531.78075-1-Jason@zx2c4.com> <20220621140849.127227-1-Jason@zx2c4.com>
-Subject: Re: [PATCH v5] powerpc/powernv: wire up rng during setup_arch
-Message-Id: <165620330450.1934578.17474382204617879607.b4-ty@ellerman.id.au>
-Date: Sun, 26 Jun 2022 10:28:24 +1000
+To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <20220616120033.1976732-1-mpe@ellerman.id.au>
+References: <20220616120033.1976732-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/mm: Move CMA reservations after initmem_init()
+Message-Id: <165620330544.1934578.7070887522186510241.b4-ty@ellerman.id.au>
+Date: Sun, 26 Jun 2022 10:28:25 +1000
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -42,25 +42,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: aneesh.kumar@linux.ibm.com, ziy@nvidia.com, linux-mm@kvack.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 21 Jun 2022 16:08:49 +0200, Jason A. Donenfeld wrote:
-> The platform's RNG must be available before random_init() in order to be
-> useful for initial seeding, which in turn means that it needs to be
-> called from setup_arch(), rather than from an init call. Fortunately,
-> each platform already has a setup_arch function pointer, which means we
-> can wire it up that way. Complicating things, however, is that POWER8
-> systems need some per-cpu state and kmalloc, which isn't available at
-> this stage. So we split things up into an early phase and a later
-> opportunistic phase. This commit also removes some noisy log messages
-> that don't add much.
+On Thu, 16 Jun 2022 22:00:33 +1000, Michael Ellerman wrote:
+> After commit 11ac3e87ce09 ("mm: cma: use pageblock_order as the single
+> alignment") there is an error at boot about the KVM CMA reservation
+> failing, eg:
+> 
+>   kvm_cma_reserve: reserving 6553 MiB for global area
+>   cma: Failed to reserve 6553 MiB
 > 
 > [...]
 
 Applied to powerpc/fixes.
 
-[1/1] powerpc/powernv: wire up rng during setup_arch
-      https://git.kernel.org/powerpc/c/f3eac426657d985b97c92fa5f7ae1d43f04721f3
+[1/1] powerpc/mm: Move CMA reservations after initmem_init()
+      https://git.kernel.org/powerpc/c/6cf06c17e94f26c290fd3370a5c36514ae15ac43
 
 cheers
