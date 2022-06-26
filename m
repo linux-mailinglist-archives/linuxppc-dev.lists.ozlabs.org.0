@@ -2,48 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538E155ADD6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 02:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C3A55AF4E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 07:21:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LVsk31G0Gz3cgy
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 10:51:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LVzk96c08z3cdc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 15:21:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NaTLgayt;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hBenD693;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVsjS1lGLz3bkH
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 10:50:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=schmitzmic@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NaTLgayt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hBenD693;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LVsjR1qpZz4xXD;
-	Sun, 26 Jun 2022 10:50:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1656204651;
-	bh=OB5tn+I2GIG329HuwGDVgM1HpRDegLtdTaJsILlADQk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=NaTLgayttFGRvh7kXgESiyIXYFRWRVtB6FOcTLGo1kG7PJ1V14o195WBXoHCj53Qb
-	 F1rLvIPaYpYtt26XF2G1rr0cyuWFPhAdoTuYk1QQo0DaFG4dg2Us48f6pnAEgJc35j
-	 YKGX/f1gVHQw+ZQnQmFMiLxeOZ0hLPWgeiUDnQsAQmqx6on2EOWYQTxm+S6pphKGZx
-	 bir61Y61I5wA5eVFekEDvzOoCoDUAovkv5RxrBhruPagJWZ7xBwrLvPqYMz8oKQ7HC
-	 fch6d9jhKyCd0WGseR4e2qQ9y6Y3oVr1U8qE8c2ety43Ah/YuANWcYUZfuksgaUglk
-	 2O3OvgxB1QCgA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.19-3 tag
-Date: Sun, 26 Jun 2022 10:50:49 +1000
-Message-ID: <87pmiw4592.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LVzjW57hTz3bkM
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 15:21:18 +1000 (AEST)
+Received: by mail-pj1-x1036.google.com with SMTP id g10-20020a17090a708a00b001ea8aadd42bso6479106pjk.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jun 2022 22:21:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=FyhqfSxVNsjhzX9WxR80RFXqe2zcrAY7cm8JcsXFPog=;
+        b=hBenD693M5G/Q6eFcNTFzS4SnqsJJrltg/unkzqdkXjt1KZuJOowmubr8N6pLoDaKD
+         fVFiOpC8iAD7EGIlliBp9rs3u8PN97EiT1+qNvS41+MZgPOCJTjoQyeiIIs3aN/S65Mk
+         ROLoo90QARopRA/G16LXEfV3XzWV2cbm6BSPsXLWjrONfwr4KFBEPylDD+dVHgwCbYpH
+         Nln7DI28nZLcldKdK/hMm8jAMkLlh8JImCgANRilyPgE9ECSv7Kfb/sBQgpFGEXAGxKo
+         nt7BB5Uz/MHiajgMyFwmvhtRiUdUohrDkZhxMV7UvAUfaWc1n/g20OMg10VWWb/yD+Eh
+         bEKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=FyhqfSxVNsjhzX9WxR80RFXqe2zcrAY7cm8JcsXFPog=;
+        b=LdLuQO4vcMSqUD/L65d8DYHRqKYkHyQI/AP+gmueOcmJfkBvCp4iexyLA/Dv8mVGUy
+         HN1huiBK9gNyjw7/ry8/yx8PayP1IBhA4lxXb5sSF5GbvHHQp6O2X1ErvYxA94taZ1uV
+         Lwq5Qj+FPB6o7/lZTSkUPZg7EfTUG+GJYDHzckouKaexQTX1U64sqvQqrbgwPWWrtCLG
+         Wgp4FY9s4Dnad0XM5XwY9N5+vssOMm2lB8b6IvRNB8f48jd5bR/TiJqochKYDrkeZeVG
+         0F3y5ABANpbSaXiKLYwryaPCg+jltJ49Kl1oNGnUFfQAQxg+g+XNdcJ/m9I+JjUVfVla
+         v7BA==
+X-Gm-Message-State: AJIora+I1ZPchj9QcMUH/lC3BKkbSkKrmnE987fKqAld2GvIiKReaH/5
+	zumsFOzdF/3P06spjGipE/kDuYoT6oJZRg==
+X-Google-Smtp-Source: AGRyM1vu+xqOXfmR3FCthMvvOLmEwQYO6Fqr3qEmZORzf9ji8yNUeLLR6T09iITPOsTmJm0q6+GBiw==
+X-Received: by 2002:a17:902:8a91:b0:168:e74b:1056 with SMTP id p17-20020a1709028a9100b00168e74b1056mr7540306plo.16.1656220874223;
+        Sat, 25 Jun 2022 22:21:14 -0700 (PDT)
+Received: from [10.1.1.24] (222-155-0-244-adsl.sparkbb.co.nz. [222.155.0.244])
+        by smtp.gmail.com with ESMTPSA id p9-20020a1709026b8900b0016372486febsm4482864plk.297.2022.06.25.22.21.03
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 25 Jun 2022 22:21:13 -0700 (PDT)
+Subject: Re: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+To: Arnd Bergmann <arnd@kernel.org>
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-4-arnd@kernel.org>
+ <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+ <CAK8P3a1XfwkTOV7qOs1fTxf4vthNBRXKNu8A5V7TWnHT081NGA@mail.gmail.com>
+From: Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <6d1d88ee-1cf6-c735-1e6d-bafd2096e322@gmail.com>
+Date: Sun, 26 Jun 2022 17:21:01 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CAK8P3a1XfwkTOV7qOs1fTxf4vthNBRXKNu8A5V7TWnHT081NGA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,93 +81,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jason@zx2c4.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch <linux-arch@vger.kernel.org>, Miquel van Smoorenburg <mikevs@xs4all.net>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-scsi <linux-scsi@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, linux-m68k <linux-m68k@lists.linux-m68k.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Denis Efremov <efremov@linux.com>, Mark Salyzyn <salyzyn@android.com>, Christoph Hellwig <hch@infradead.org>, "open list:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>, Matt Wang <wwentao@vmware.com>, Parisc List <linux-parisc@vger.kernel.org>, alpha <linux-alpha@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Arnd,
 
-Hi Linus,
+Am 24.06.2022 um 21:10 schrieb Arnd Bergmann:
+> On Sat, Jun 18, 2022 at 3:06 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>> Am 18.06.2022 um 00:57 schrieb Arnd Bergmann:
+>>>
+>>> All architecture-independent users of virt_to_bus() and bus_to_virt()
+>>> have been fixed to use the dma mapping interfaces or have been
+>>> removed now.  This means the definitions on most architectures, and the
+>>> CONFIG_VIRT_TO_BUS symbol are now obsolete and can be removed.
+>>>
+>>> The only exceptions to this are a few network and scsi drivers for m68k
+>>> Amiga and VME machines and ppc32 Macintosh. These drivers work correctly
+>>> with the old interfaces and are probably not worth changing.
+>>
+>> The Amiga SCSI drivers are all old WD33C93 ones, and replacing
+>> virt_to_bus by virt_to_phys in the dma_setup() function there would
+>> cause no functional change at all.
+>
+> Ok, thanks for taking a look here.
+>
+>> drivers/vme/bridges/vme_ca91cx42.c hasn't been used at all on m68k (it
+>> is a PCI-to-VME bridge chipset driver that would be needed on
+>> architectures that natively use a PCI bus). I haven't found anything
+>> that selects that driver, so not sure it is even still in use??
+>
+> It's gone now, Greg has already taken my patches for this through
+> the staging tree.
 
-Please pull some more powerpc fixes for 5.19:
+One less to worry about, thanks.
 
-The following changes since commit b13baccc3850ca8b8cccbf8ed9912dbaa0fdf7f3:
+>> That would allow you to drop the remaining virt_to_bus define from
+>> arch/m68k/include/asm/virtconvert.h.
+>>
+>> I could submit a patch to convert the Amiga SCSI drivers to use
+>> virt_to_phys if Geert and the SCSI maintainers think it's worth the churn.
+>
+> I don't think using virt_to_phys() is an improvement here, as
+> virt_to_bus() was originally meant as a better abstraction to
+> replace the use of virt_to_phys() to make drivers portable, before
+> it got replaced by the dma-mapping interface in turn.
+>
+> It looks like the Amiga SCSI drivers have an open-coded version of
+> what dma_map_single() does, to do bounce buffering and cache
+> management. The ideal solution would be to convert the drivers
+> actually use the appropriate dma-mapping interfaces and remove
+> this custom code.
 
-  Linux 5.19-rc2 (2022-06-12 16:11:37 -0700)
+I've taken another look at these drivers' dma_setup() functions and they 
+all look much more complex than the Amiga ESP drivers (which do use the 
+dma-mapping interface for parts of the DMA setup). From my limited 
+understanding, the difference between the ESP and WD33C93 drivers is 
+that the former are used on 040/060 accelerator boards only (where the 
+processor does do bus snooping and DMA can access all of RAM). The 
+latter ones would need cache management, could only use non-coherent 
+mappings and would require special case handling for DMA-inaccessible 
+RAM inside a device-specific dma ops' map_page() function.
 
-are available in the git repository at:
+That's several bridges too far for me ... I have no Amiga hardware 
+whatsoever, and know no one who could test changes to WD33C93 drivers 
+for me.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.19-3
+What I have is a NCR5380 with the proverbial 'pathological DMA' 
+integration example (and its driver was never changed to even use 
+virt_to_bus()!). I might learn enough about using the dma-mapping API on 
+that one eventually (though the requirement for at least 1 MB swiotlb 
+bounce buffers looks hard to meet), and use that to convert the WD33C93 
+drivers, but it would still remain untested.
 
-for you to fetch changes up to f3eac426657d985b97c92fa5f7ae1d43f04721f3:
+ > The same could be done for the two vme drivers (scsi/mvme147.c
+> and ethernet/82596.c), which do the cache management but
+> apparently don't need swiotlb bounce buffering.
+>
+> Rewriting the drivers to modern APIs is of course non-trivial,
+> and if you want a shortcut here, I would suggest introducing
+> platform specific helpers similar to isa_virt_to_bus() and call
+> them amiga_virt_to_bus() and vme_virt_to_bus, respectively.
 
-  powerpc/powernv: wire up rng during setup_arch (2022-06-22 19:47:22 +1000)
+I don't think Amiga and m68k VME differ at all in that respect, so might 
+just call it m68k_virt_to_bus() for now.
 
-- ------------------------------------------------------------------
-powerpc fixes for 5.19 #3
+> Putting these into a platform specific header file at least helps
+> clarify that both the helper functions and the drivers using them
+> are non-portable.
 
- - A fix for a CMA change that broke booting guests with > 2G RAM on Power8 hosts.
+There are no platform specific header files other than asm/amigahw.h and 
+asm/mvme147hw.h, currently only holding register address definitions. 
+Would it be OK to add m68k_virt_to_bus() in there if it can't remain in 
+asm/virtconvert.h, Geert?
 
- - Fix the RTAS call filter to allow a special case that applications rely on.
+>
+>> 32bit powerpc is a different matter though.
+>
+> It's similar, but unrelated. The two apple ethernet drivers
+> (bmac and mace) can again either get changed to use the
+> dma-mapping interfaces, or get a custom pmac_virt_to_bus()/
+> pmac_bus_to_virt() helper.
 
- - A change to our execve path, to make the execve syscall exit tracepoint work.
+Hmmm - I see Finn had done the DMA API conversion on macmace.c which 
+might give some hints on what to do about mace.c ... no idea about 
+bmac.c though. And again, haven't got hardware to test, so custom 
+helpers is it, then.
 
- - Three fixes to wire up our various RNGs earlier in boot so they're available for use in
-   the initial seeding in random_init().
+Cheers,
 
- - A build fix for when KASAN is enabled along with STRUCTLEAK_BYREF_ALL.
+	Michael
 
-Thanks to: Andrew Donnellan, Aneesh Kumar K.V, Christophe Leroy, Jason A. Donenfeld,
-Nathan Lynch, Naveen N. Rao, Sathvika Vasireddy, Sumit Dubey2, Tyrel Datwyler, Zi Yan.
-
-- ------------------------------------------------------------------
-Andrew Donnellan (1):
-      powerpc/rtas: Allow ibm,platform-dump RTAS call with null buffer address
-
-Christophe Leroy (1):
-      powerpc/prom_init: Fix build failure with GCC_PLUGIN_STRUCTLEAK_BYREF_ALL and KASAN
-
-Jason A. Donenfeld (3):
-      powerpc/microwatt: wire up rng during setup_arch()
-      powerpc/pseries: wire up rng during setup_arch()
-      powerpc/powernv: wire up rng during setup_arch
-
-Michael Ellerman (1):
-      powerpc/mm: Move CMA reservations after initmem_init()
-
-Naveen N. Rao (1):
-      powerpc: Enable execve syscall exit tracepoint
-
-
- arch/powerpc/kernel/process.c                |  2 +-
- arch/powerpc/kernel/prom_init.c              |  2 +-
- arch/powerpc/kernel/rtas.c                   | 11 ++++-
- arch/powerpc/kernel/setup-common.c           | 13 ++---
- arch/powerpc/platforms/microwatt/microwatt.h |  7 +++
- arch/powerpc/platforms/microwatt/rng.c       | 10 ++--
- arch/powerpc/platforms/microwatt/setup.c     |  8 +++
- arch/powerpc/platforms/powernv/powernv.h     |  2 +
- arch/powerpc/platforms/powernv/rng.c         | 52 ++++++++++++++------
- arch/powerpc/platforms/powernv/setup.c       |  2 +
- arch/powerpc/platforms/pseries/pseries.h     |  2 +
- arch/powerpc/platforms/pseries/rng.c         | 11 ++---
- arch/powerpc/platforms/pseries/setup.c       |  1 +
- 13 files changed, 83 insertions(+), 40 deletions(-)
- create mode 100644 arch/powerpc/platforms/microwatt/microwatt.h
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmK3rQsACgkQUevqPMjh
-pYBy9hAAqTgh+EzA0L2c8u8jps+xDrkzlx1yc3uRGGPJr+q/HoV6daZnN1gTDolF
-ryK98wDeBIy/2+3TZj18+ok86/jXHSXpQd8w2sT9o1fMfmMUGrxe2qWrvxTUOUCr
-eRgZNzOE0u7kANppuEpwEtT1oQu1Tmcta2Fen7EBxJ5FZaOkrQrF6oOee5vRSRlA
-O0cIzYBu6Wd/KYpJCVmixcywIrz1U3mdPFzzPbG/G+/jvUxvp5jJudJf40QSpEbl
-7zg7Ilxga+LHL8yJSnKHV9GTx8MlDqBM/e4+BDC0eNL4GGNkFjQmVXpD13ovVsMe
-tXF/oM+6/7emHDpP21Dzx6+TFXYTOeIu07k2z1R/WkOzZZkYE1/7RCvltX/h8/9W
-XwAwGRTi1xvMDmWGlNEV116v9si+WXzDWRBCe4P5TNcb8d1Y+I3cLVvrJa6QtqIj
-S/QroyB+Z6dLWxZbBQBm35muOqdHm91HQWV8EdHmePAwhntji/Hkghjfr2+4mi9J
-ZVnWyVeYhhhSMzVva3MuEcZNu0kXLdslW4mNkwkIJTcqg9K8KxFCfZK/6VdK6ask
-6hLP/fitGCpZ9YVpB40CTPvwLxO93ShrtRmGu8qoQSX1YmlbvIReA7jDuBnU2u6T
-f1UHagFzWKePmPXUHFXJWzHjb9IBUGWRat9jFlerL+5sRLoLkes=
-=+YP6
------END PGP SIGNATURE-----
+> There is also drivers/tty/serial/cpm_uart/cpm_uart_cpm2.c,
+> which I think just needs a trivial change, but I'm not sure
+> how to do it correctly.
+>
+>       Arnd
+>
