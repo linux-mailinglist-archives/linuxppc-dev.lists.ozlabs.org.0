@@ -1,60 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C156155B32C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 19:36:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041E655B3EA
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 22:03:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LWJ2D6ZcTz3cgM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 03:36:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=axSGuYa/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LWMHR6rnKz3chX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 06:03:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=axSGuYa/;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.130; helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWJ1Z1Xzzz3bhq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 03:36:18 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 56E0F60EF8;
-	Sun, 26 Jun 2022 17:36:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id BAE58C385A5;
-	Sun, 26 Jun 2022 17:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656264973;
-	bh=4eVfnsUZoSyF5LXwFiqWxJLLxFU06Qjwb2aa/9fyguM=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=axSGuYa/qav1ieIlkLofyIWzFym95pOaNc+fyys6lZH9oHR2n6xOlc/LuEcyjh5j9
-	 Ld/5h4qnLR3dLa3/YmkT5nrCditHh6dnaKDFvsXXDX7w2j5z17/O+d3zKx2X/IlKs/
-	 LIQ/WWDrPKUNYzt4YlguF2VxxPbchoHUyncgMaVm3PFocg79CAlJmd4ABAyW6OA8iS
-	 XKck6be5FNUINBeAexg2PcwfbQwzuOplERVBNqF4KH9Yhoehh+vhZ6Ch1O/LhCptRa
-	 UzEV87F6Nz+A4rTr1CpJ95IwTN/5NkEp7rxhUxbtsykD5bkx7Y3DZiROr9ZT/sVfvt
-	 Uf/1r5hQv354A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A9873FD99FF;
-	Sun, 26 Jun 2022 17:36:13 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.19-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87pmiw4592.fsf@mpe.ellerman.id.au>
-References: <87pmiw4592.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87pmiw4592.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.19-3
-X-PR-Tracked-Commit-Id: f3eac426657d985b97c92fa5f7ae1d43f04721f3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 8100775d59a6789c3c6c309de26fac52f129cba8
-Message-Id: <165626497369.22456.13163681330452248984.pr-tracker-bot@kernel.org>
-Date: Sun, 26 Jun 2022 17:36:13 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWMH043c7z3bhK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 06:03:06 +1000 (AEST)
+Received: from [127.0.0.1] ([86.151.31.128]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.163]) with ESMTPA (Nemesis) id
+ 1M2OEw-1o4zyB1Diw-003yEi; Sun, 26 Jun 2022 22:02:49 +0200
+From: Darren Stevens <darren@stevens-zone.net>
+To: Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Date: Sun, 26 Jun 2022 20:49:11 +0100 (BST)
+Message-ID: <53ac873c23e.3ae9df00@auth.smtp.1and1.co.uk>
+In-Reply-To: <947e4583-fe0b-b8af-61b3-2d120357727c@gmail.com>
+References: <20220625214151.547b3570@Cyrus.lan>
+ <947e4583-fe0b-b8af-61b3-2d120357727c@gmail.com>
+User-Agent: YAM/2.9p1 (AmigaOS4; PPC; rv:20140418r7798)
+Subject: Re: drivers/usb/host/ehci-fsl: Fix interrupt setup in host mode.
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Provags-ID: V03:K1:SfjM5pV+pCrwIfqqWLt5BucTGFsV7UlQ9sOJsi9ctwNRtha6p6J
+ jzxbYOU7vl8B+GSK6glrIIwUq3zjjXVSab/KFFYaOXKS2X6JyDR2WCFkygAguW6+ZE/EHxw
+ Hb6lpr/xPB1M0B1X37T7YeSt7dSxZvoeMVaj5Pqku6YJfp7k+NJRL++sYrMV+Es5BnjKiV6
+ NhmjV7uHikGIfOL43TjMg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0HwNF0z0VZ0=:VXyehQB/rnX0e7HElsbuyk
+ WRuGiGxVWf7JU0F9UjAU6whPCj0cC6NDWqUOBsOUZPRx3S7QE5bL9yWuVTYybzRfc2oICqDBW
+ PWiJOU1xZcYxuDvbH3+7oMJQqnLhSUXAZ9BDFaVyXnG3ObfLQI+DjdoCecOhpuxBf9SglCyZs
+ PmA0YQsBQrNgfZTh/ubxw5cOB+0J18aPPxW3qmy3pu1Vy/OZM3VO0EqSlCjKbksVMeSlBiNuW
+ PluFD77fPAXp2dGHabqAXBzl0906B5fOTv9dnSO6KwbQ9XmXsBrWTCuUaqH+sQnt9hQqwaHRB
+ dinM+Dg2ZxxXoHC2ui0wWHUFcdV4JsCjT6TU4ptOLkuIJFPhxp7vnpEiAghuHxsSMkFaPuXkF
+ bVLoN3BJxrr+JDxT8Kd739ZgvgK7f+9rh+QSvg3JvpAEgc8GS4yfll7CDh2Q9TY+IoKxMOiCA
+ 4FSeZXX9kGZU35Ej29oT3CSjgRYlD2WPu2MsK5PF0z6oQz3oi2aJcWbmLEgyisK1Ta2smOJk3
+ DMcsbTew8KD0QUdkRqn9CnAG68c+89z+BUNhgAjzqFb1w/glyQPyAQ+fs4978RgFaage8feIf
+ fTEblJVAbL6esH0lY9XKOMAe6QFlXFQQVKqY2aTfgoEOF8BGvo+OS/Mpcn+81ejHZZQc9l+yS
+ ioRxL/Jnfv2lRt727FGHMi8s6zi4X8mo7YHBhW9Q1KUFaJn30zu3zaIaWPhfiazrS9qWejFaT
+ gX+ikblbHoBS8E8SZShQIN9t5plEg9oseWJDWTRH5W4dIOEJMfPtdO93tPk=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,19 +58,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jason@zx2c4.com, ajd@linux.ibm.com, Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: robh@kernel.org, shawnguo@kernel.org, linux-usb@vger.kernel.org, leoyang.li@nxp.com, oss@buserror.net, stern@rowland.harvard.edu, chzigotzky@xenosoft.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sun, 26 Jun 2022 10:50:49 +1000:
+Hello Sergei
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.19-3
+On 26/06/2022, Sergei Shtylyov wrote:
+> Hello!
+>
+> On 6/25/22 11:41 PM, Darren Stevens wrote:
+>
+>> In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
+>> core) we stopped platform_get_resource() from returning the IRQ, as all
+>
+> In commit a1a2b7125e10 ("Drop static setup of IRQ resource from DT core")
+>
+>> drivers were supposed to have switched to platform_get_irq()
+>> Unfortunately the Freescale EHCI driver in host mode got missed. Fix
+>> it. Also fix allocation of resources to work with current kernel.
+>
+>    The basic rule (especially for the fixes) is "do one thing per patch".
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/8100775d59a6789c3c6c309de26fac52f129cba8
+I thought I'd done that, this is the minimum amount of changes that fix what changed in the specified commit. 
 
-Thank you!
+> [...]
+>> @@ -92,15 +89,18 @@ static int fsl_ehci_drv_probe(struct platform_device *pdev)
+>>          goto err1;
+>>      }
+>>  
+>> -    res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> -    hcd->regs = devm_ioremap_resource(&pdev->dev, res);
+>> +    tmp = of_address_to_resource(dn, 0, &res);
+>
+>    Hm, why? What does this fix?
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+With baseline the mouse and keyboard on our machines don't work - dmesg reports no interrupt. Fixing the interrupt detection throws a 'invalid resoure' error instead (No idea why), which these lines fix. Both problems disappear if we revert the 'fixes' patch.
+
+Hmmm, perhaps title shoud be 'fix resource detection in host mode'?
+
+Regards
+Darren
+
