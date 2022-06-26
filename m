@@ -1,76 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5119455B06A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 10:50:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7990B55B143
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 12:43:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LW4Lw1h6mz3c8x
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 18:50:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LW6sF4c4Bz3cfc
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 20:43:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LtVmvH0s;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=s6B+CpTs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=sergei.shtylyov@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=LtVmvH0s;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=s6B+CpTs;
 	dkim-atps=neutral
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LW4LF74mCz3bkC
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 18:49:56 +1000 (AEST)
-Received: by mail-lf1-x131.google.com with SMTP id g4so11614860lfv.9
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 01:49:56 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LW6rd1Gv5z3bf9
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 20:42:54 +1000 (AEST)
+Received: by mail-ed1-x534.google.com with SMTP id eo8so9351824edb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jun 2022 03:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yEGDBxIrxLnZhZc+wkclIQTRrLXd7F46K6vXNtU2YDc=;
-        b=LtVmvH0sEbW7l7lbVsQJUVz6qFVlvSIdjlWRhR6MDBzyRwCeecj0RK0ipdewP4yJ1H
-         7mgcf1d5B8io8PMujQ6eU7b4DPW5oiuWfvQc37jby/FSbmOzemLaZLvQyp03ew6Ap+2W
-         1c1f1HrcIEmaiYnW0HKwbNClAzIk1mXhMGaZ7SuCeaJG6boZKu2fNskWdHe7GBxPGyk6
-         UlYWjb/FwL7S8mfD6YzQuEerjjft9hffZdEw+MOHVyUoG1KjcO0gjP2w8KbEmaTJ5NGb
-         WqXOi74OaQDgRMUVuNo0xoCPhvCjJzAdtROdm6sAot2DpioRIurBLvcQIhip1I8ca3OJ
-         eijw==
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=+7oDvDolVgyiWCBP1kGvDhx2VojLawcjdaZLLC+Q36w=;
+        b=s6B+CpTs4RD/gcT1faaJi6ASL1l5+sjwqAltmmk46YurGaSsYbCZr16lzlZNTYBFtb
+         CiBnpSMUKdq0DlYTvdb5vsrU1gMOwRt5vsSFFr3TKOMJFbaYyA6TBoktOa+Bn4A5BGiI
+         KahyH4DScCPH6S/oe8Tz6vPR7r9Ewip0HtLcEUKs/mv2CkwDDgL6r5Fa0gpbJ9jJdAQ6
+         YY9DOOdDGKWldDluxU0eVDBwbqLZ1hQ209Pl8DX7SnKoqJy34VLuSqnBYS43673oKJ5Q
+         2ni2cU2cYyt/aoo32PmMZy1ewJOURm6AfBUtUScTZrdsZtx9+kAceYdpH5VwQR+im1ih
+         bATA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=yEGDBxIrxLnZhZc+wkclIQTRrLXd7F46K6vXNtU2YDc=;
-        b=inB4qI7DdJNQCzlyjLKbjW+a7z6iXG4QDHAxuMqrbKl+vB7LRkT9HB8mp8Zz78ctbE
-         epy+sonXVtk+HVm4F4Mh3b39AwiHXyKIpmvw8b1+Ez8M1HUboxWR9EmOI+xNABLvEtH/
-         xM5JyAjZhmU28BE7v/b7pmQIWv14nw2bRzBtEiJ5ofVOOe9SRk6hvS0byqtJapjQ47BC
-         02lf99sjc7SxHaVOiBlSutot3zcO1sMZVu9MxDKcz/0z4EOkzXbLV9gEQLYyZNOMcLrL
-         FwiocfF3zG/1f4E3DDRNmtlsSmXwkprzzfoCVdJdyvShc+SCH8iHc3YPYMZpXHC41Miu
-         13Jg==
-X-Gm-Message-State: AJIora9ChGBev1TD6ewjuUwiSrYsNVNYceFZVTq/u0j4WNUZb42GG/HK
-	BkXkzAOEiC8bnUhXDizIGCw=
-X-Google-Smtp-Source: AGRyM1vV+NgxcIUouLKwJqKqWew25IGPhu9Nm7WUJ8BJKaKrGf9eCzzh2qLf+oVaL/i611FO9BcMFA==
-X-Received: by 2002:a05:6512:475:b0:47f:a44c:e481 with SMTP id x21-20020a056512047500b0047fa44ce481mr5180849lfd.670.1656233387984;
-        Sun, 26 Jun 2022 01:49:47 -0700 (PDT)
-Received: from [192.168.1.103] ([178.176.72.32])
-        by smtp.gmail.com with ESMTPSA id r23-20020a2e8e37000000b0025a72ee37cdsm920370ljk.24.2022.06.26.01.49.46
+        bh=+7oDvDolVgyiWCBP1kGvDhx2VojLawcjdaZLLC+Q36w=;
+        b=XktpRhzHDhkamrhjkUvcYKKDkAheLTsJx3RE14ACI8DNe+qaMUjFqlEUVXnLh23IFt
+         JjY54ve/6PtyYdpEJT+ezAzcJ0zbUAkI3y42zwW4B102NmGDuGlVMsvywvt4aVSWOnOk
+         cxPJ8DiKHfC38KueoxlzbG42GLrtlw4hCxtU8QbSpR4O+OqCgD4KBrmuW/B+VDke9cWW
+         SHmqu80Kt4i/oB4H22G/qqcOoUOufEZqqRxxQC1uWNGhzehTXsM1j4edyAeS5udXz9XV
+         HOC1xiZ4Bcvwu2z3fE1lWfxcqGIlhfO9uPLIlbRlgEpKzvA8AS+DjPAQ8sTlCPEDAXGt
+         Gcng==
+X-Gm-Message-State: AJIora9THg1ImSo4Q4CqjiDd3TtxsNkZnQaC40ZzBZ+JrnDZ0Vh/8Mks
+	zGXmfWcS5DBqz4rCWO2wb/Njfg==
+X-Google-Smtp-Source: AGRyM1u1d/DmBwJzEStyDHpQojeLaBFX8PgoTatK6v58i5U80IJg6lCXoo9PZ/Lil9R60f4Yaccg6A==
+X-Received: by 2002:a05:6402:2929:b0:435:6dfc:c4f2 with SMTP id ee41-20020a056402292900b004356dfcc4f2mr10120571edb.284.1656240170903;
+        Sun, 26 Jun 2022 03:42:50 -0700 (PDT)
+Received: from [192.168.0.239] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id p22-20020a170906839600b00711d5bc20d5sm3561921ejx.221.2022.06.26.03.42.49
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jun 2022 01:49:47 -0700 (PDT)
-Subject: Re: [PATCH v2 RFC] drivers/usb/host/ehci-fsl: Fix interrupt setup in
- host mode.
-To: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org,
- oss@buserror.net, chzigotzky@xenosoft.de, robh@kernel.org,
- stern@rowland.harvard.edu, linux-usb@vger.kernel.org
-References: <20220625214151.547b3570@Cyrus.lan>
-From: Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Message-ID: <947e4583-fe0b-b8af-61b3-2d120357727c@gmail.com>
-Date: Sun, 26 Jun 2022 11:49:46 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Sun, 26 Jun 2022 03:42:50 -0700 (PDT)
+Message-ID: <8b384f4e-7114-7afb-98d6-af71709525d6@linaro.org>
+Date: Sun, 26 Jun 2022 12:42:48 +0200
 MIME-Version: 1.0
-In-Reply-To: <20220625214151.547b3570@Cyrus.lan>
-Content-Type: text/plain; charset=utf-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH RESEND v9 4/5] arm: dts: stih407-family: Harmonize DWC
+ USB3 DT nodes name
 Content-Language: en-US
+To: Serge Semin <fancer.lancer@gmail.com>
+References: <20220624141622.7149-1-Sergey.Semin@baikalelectronics.ru>
+ <20220624141622.7149-5-Sergey.Semin@baikalelectronics.ru>
+ <59d8a34a-a211-d00a-2243-6ad51cfa4204@linaro.org>
+ <20220624204524.nveittak6ruksuvq@mobilestation>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220624204524.nveittak6ruksuvq@mobilestation>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -83,50 +84,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shawnguo@kernel.org, leoyang.li@nxp.com
+Cc: Bjorn Andersson <bjorn.andersson@linaro.org>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Rob Herring <robh@kernel.org>, Khuong Dinh <khuong@os.amperecomputing.com>, Alexey Brodkin <abrodkin@synopsys.com>, Krzysztof Kozlowski <krzk@kernel.org>, Andy Gross <agross@kernel.org>, linux-snps-arc@lists.infradead.org, Patrice Chotard <patrice.chotard@foss.st.com>, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org, Vladimir Zapolskiy <vz@mleia.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, Felipe Balbi <balbi@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Patrice Chotard <patrice.chotard@st.com>, linux-kernel@vger.kernel.org, Serge Semin <Sergey.Semin@baikalelectronics.ru>, Vineet Gupta <vgupta@synopsys.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello!
-
-On 6/25/22 11:41 PM, Darren Stevens wrote:
-
-> In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
-> core) we stopped platform_get_resource() from returning the IRQ, as all
-
-In commit a1a2b7125e10 ("Drop static setup of IRQ resource from DT core")
-
-> drivers were supposed to have switched to platform_get_irq()
-> Unfortunately the Freescale EHCI driver in host mode got missed. Fix
-> it. Also fix allocation of resources to work with current kernel.
-
-   The basic rule (especially for the fixes) is "do one thing per patch".
-
-> Fixes: a1a2b7125e10 (Drop static setup of IRQ resource from DT core)
-> Reported-by Christian Zigotzky <chzigotzky@xenosoft.de>
-> Signed-off-by Darren Stevens <darren@stevens-zone.net>
-> ---
->  v2 - Fixed coding style, removed a couple of unneeded initializations,
->       cc'd Layerscape maintainers.
+On 24/06/2022 22:45, Serge Semin wrote:
+> On Fri, Jun 24, 2022 at 07:18:57PM +0200, Krzysztof Kozlowski wrote:
+>> On 24/06/2022 16:16, Serge Semin wrote:
+>>> In accordance with the DWC USB3 bindings the corresponding node
+>>> name is suppose to comply with the Generic USB HCD DT schema, which
+>>> requires the USB nodes to have the name acceptable by the regexp:
+>>> "^usb(@.*)?" . Make sure the "snps,dwc3"-compatible nodes are correctly
+>>> named.
+>>>
+>>> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+>>> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+>>> Reviewed-by: Patrice Chotard <patrice.chotard@st.com>
+>>> ---
+>>>  arch/arm/boot/dts/stih407-family.dtsi | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/arm/boot/dts/stih407-family.dtsi b/arch/arm/boot/dts/stih407-family.dtsi
+>>> index 1713f7878117..7ba528315dbe 100644
+>>> --- a/arch/arm/boot/dts/stih407-family.dtsi
+>>> +++ b/arch/arm/boot/dts/stih407-family.dtsi
+>>> @@ -725,7 +725,7 @@ st_dwc3: dwc3@8f94000 {
+>>>  
+>>>  			status = "disabled";
+>>>  
+>>> -			dwc3: dwc3@9900000 {
+>>> +			dwc3: usb@9900000 {
+>>
 > 
-> Tested on AmigaOne X5000/20 and X5000/40 not sure if this is entirely
-> correct fix though. Contains code by Rob Herring (in fsl-mph-dr-of.c)
+>> This does not apply. What tree is it based on?
 > 
-> diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
-> index 385be30..8bd258a 100644
-> --- a/drivers/usb/host/ehci-fsl.c
-> +++ b/drivers/usb/host/ehci-fsl.c
-[...]
-> @@ -92,15 +89,18 @@ static int fsl_ehci_drv_probe(struct platform_device *pdev)
->  		goto err1;
->  	}
->  
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	hcd->regs = devm_ioremap_resource(&pdev->dev, res);
-> +	tmp = of_address_to_resource(dn, 0, &res);
+> That's weird. The series has been rebased onto the mainline kernel v5.19-rc3.
+> Do you have the stih407 dtsi fixed on your local repo?
 
-   Hm, why? What does this fix?
+It conflicts with my change:
+https://lore.kernel.org/all/20220526203632.831039-1-krzysztof.kozlowski@linaro.org/
 
-[...]
+I'll apply with local fixups.
 
-MBR, Sergey
+
+Best regards,
+Krzysztof
