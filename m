@@ -2,98 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4E055BCB8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 02:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFBF55BCB9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 02:32:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LX5BH5lKCz3dwG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 10:31:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LX5C06sPDz3drD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 10:32:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gA7/ftYY;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=Ps3wGEfs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amazon.co.jp (client-ip=99.78.197.218; helo=smtp-fw-80007.amazon.com; envelope-from=prvs=170e7b5d7=kuniyu@amazon.co.jp; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gA7/ftYY;
+	dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=Ps3wGEfs;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWrzl6cJ6z3bqK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 01:21:39 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25RFDsM0014209;
-	Mon, 27 Jun 2022 15:21:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- message-id : date : mime-version : subject : to : cc : references : from :
- in-reply-to; s=pp1; bh=kxMhDRM6nTAU/Ag3SBn+tnze8UKdeSZaBcZ/TLdATDk=;
- b=gA7/ftYYlj/UCoN1s+3MOggJLQOfVZBJRAjH3qHjc06iRKJGCKuoaQIitO9WIy+wXwhn
- f18240lHb48GUFD8KpNz1YeWBua1TSMVMbUyErnf8qxB+tuea8sLxA/rwneecIrDOklI
- cxeihiH4dXfbL9x00L+e3SM7W5C+7DaGp2vry3BRzZc5i7lQQ3ByxgAp7fMmNNex02St
- gi4d5z7lK+ixmFGqA45u3IXl6/Jnu2uEOSsdXc7Rr2rAQ7VV0kP49ZHgDIZxJr73TLyd
- FhhE9J3N2Hot1fvaCZiSD/Vzd6cREY0hx09TJDSfPjWhfO6dshSGqd7Ud6TFootdmWDs mg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gyf0k07ua-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 15:21:18 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25RFE6em015410;
-	Mon, 27 Jun 2022 15:21:18 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gyf0k07t3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 15:21:17 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25RF6eAf020377;
-	Mon, 27 Jun 2022 15:21:15 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma04ams.nl.ibm.com with ESMTP id 3gwt08u4s9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 15:21:15 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25RFLDj818481508
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jun 2022 15:21:13 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4EAC6A405B;
-	Mon, 27 Jun 2022 15:21:13 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C4343A4054;
-	Mon, 27 Jun 2022 15:21:08 +0000 (GMT)
-Received: from [9.43.63.124] (unknown [9.43.63.124])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jun 2022 15:21:08 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------d9XJW9h4ePxCRrHZwBFaD0Ci"
-Message-ID: <03154518-216a-e050-033b-314eb9240c56@linux.vnet.ibm.com>
-Date: Mon, 27 Jun 2022 20:51:07 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWv794TFnz3bfc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 02:58:12 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1656349093; x=1687885093;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Y6XvG9/U51igKius4IaKDqx8Gy6lPi0Xal5PaG7hwgI=;
+  b=Ps3wGEfsMotlnYCdBNy1p4HuqqVp8zdWff7hUvzf2Sg22GMaUt1fvi1I
+   USE4t+ua2LX4zDp3Ujqs3InpiJLXLpvp83wY0rS/Qyc0hj5Sm01Z3p7F5
+   a7DKLqO9lk2URTeXhn/v5Jox4YBXg65HC2jb27bKBJHP7FzdshLgDJGll
+   M=;
+X-IronPort-AV: E=Sophos;i="5.92,226,1650931200"; 
+   d="scan'208";a="102367407"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-pdx-2a-2dbf0206.us-west-2.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP; 27 Jun 2022 16:36:54 +0000
+Received: from EX13MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+	by email-inbound-relay-pdx-2a-2dbf0206.us-west-2.amazon.com (Postfix) with ESMTPS id 7A9C4A2BB3;
+	Mon, 27 Jun 2022 16:36:52 +0000 (UTC)
+Received: from EX13D04ANC001.ant.amazon.com (10.43.157.89) by
+ EX13MTAUWB001.ant.amazon.com (10.43.161.207) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.36; Mon, 27 Jun 2022 16:36:51 +0000
+Received: from 88665a182662.ant.amazon.com.com (10.43.160.124) by
+ EX13D04ANC001.ant.amazon.com (10.43.157.89) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.36; Mon, 27 Jun 2022 16:36:49 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <sachinp@linux.ibm.com>
+Subject: Re: [powerpc] Fingerprint systemd service fails to start (next-20220624)
+Date: Mon, 27 Jun 2022 09:36:40 -0700
+Message-ID: <20220627163640.74890-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <B2AA3091-796D-475E-9A11-0021996E1C00@linux.ibm.com>
+References: <B2AA3091-796D-475E-9A11-0021996E1C00@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [RFC PATCH v3 11/12] powerpc: Remove unreachable() from WARN_ON()
-Content-Language: en-US
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <20220624183238.388144-1-sv@linux.ibm.com>
- <20220624183238.388144-12-sv@linux.ibm.com>
- <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu>
-From: Sathvika Vasireddy <sv@linux.vnet.ibm.com>
-In-Reply-To: <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kHMrqOGz3AHoJ-wISinUL9IwxcEHPDPZ
-X-Proofpoint-ORIG-GUID: gWvqWB4k_fLC3V6NjsIIkwkvqBXC20sp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-27_06,2022-06-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 impostorscore=0
- mlxlogscore=983 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206270065
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.43.160.124]
+X-ClientProxiedBy: EX13D07UWB001.ant.amazon.com (10.43.161.238) To
+ EX13D04ANC001.ant.amazon.com (10.43.157.89)
+Precedence: Bulk
 X-Mailman-Approved-At: Tue, 28 Jun 2022 10:29:05 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -102,168 +70,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "peterz@infradead.org" <peterz@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>, "mingo@redhat.com" <mingo@redhat.com>, "paulus@samba.org" <paulus@samba.org>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>
+Cc: linux-next@vger.kernel.org, kuniyu@amazon.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, netdev@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------d9XJW9h4ePxCRrHZwBFaD0Ci
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi Sachin,
+Thanks for the report.
+
+From:   Sachin Sant <sachinp@linux.ibm.com>
+Date:   Mon, 27 Jun 2022 10:28:27 +0530
+> With the latest -next I have observed a peculiar issue on IBM Power
+> server running -next(5.19.0-rc3-next-20220624) .
+> 
+> Fingerprint authentication systemd service (fprintd) fails to start while
+> attempting OS login after kernel boot. There is a visible delay of 18-20
+> seconds before being prompted for OS login password.
+> 
+> Kernel 5.19.0-rc3-next-20220624 on an ppc64le
+> 
+> ltcden8-lp6 login: root
+> <<=======.  delay of 18-20 seconds
+> Password: 
+> 
+> Following messages(fprintd service) are seen in /var/log/messages:
+> 
+> systemd[1]: Startup finished in 1.842s (kernel) + 1.466s (initrd) + 29.230s (userspace) = 32.540s.
+
+It seems the kernel finishes its job immediately but userspace takes more
+time on retrying or something.  The service_start_timeout seems to be the
+timeout period.
 
 
-On 25/06/22 12:16, Christophe Leroy wrote:
->
-> Le 24/06/2022 à 20:32, Sathvika Vasireddy a écrit :
->> objtool is throwing *unannotated intra-function call*
->> warnings with a few instructions that are marked
->> unreachable. Remove unreachable() from WARN_ON()
->> to fix these warnings, as the codegen remains same
->> with and without unreachable() in WARN_ON().
-> Did you try the two exemples described in commit 1e688dd2a3d6
-> ("powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with
-> asm goto") ?
->
-> Without your patch:
->
-> 00000640 <test>:
->    640:	81 23 00 84 	lwz     r9,132(r3)
->    644:	71 29 40 00 	andi.   r9,r9,16384
->    648:	40 82 00 0c 	bne     654 <test+0x14>
->    64c:	80 63 00 0c 	lwz     r3,12(r3)
->    650:	4e 80 00 20 	blr
->    654:	0f e0 00 00 	twui    r0,0
->
-> 00000658 <test9w>:
->    658:	2c 04 00 00 	cmpwi   r4,0
->    65c:	41 82 00 0c 	beq     668 <test9w+0x10>
->    660:	7c 63 23 96 	divwu   r3,r3,r4
->    664:	4e 80 00 20 	blr
->    668:	0f e0 00 00 	twui    r0,0
->    66c:	38 60 00 00 	li      r3,0
->    670:	4e 80 00 20 	blr
->
->
-> With your patch:
->
-> 00000640 <test>:
->    640:	81 23 00 84 	lwz     r9,132(r3)
->    644:	71 29 40 00 	andi.   r9,r9,16384
->    648:	40 82 00 0c 	bne     654 <test+0x14>
->    64c:	80 63 00 0c 	lwz     r3,12(r3)
->    650:	4e 80 00 20 	blr
->    654:	0f e0 00 00 	twui    r0,0
->    658:	4b ff ff f4 	b       64c <test+0xc>		<==
->
-> 0000065c <test9w>:
->    65c:	2c 04 00 00 	cmpwi   r4,0
->    660:	41 82 00 0c 	beq     66c <test9w+0x10>
->    664:	7c 63 23 96 	divwu   r3,r3,r4
->    668:	4e 80 00 20 	blr
->    66c:	0f e0 00 00 	twui    r0,0
->    670:	38 60 00 00 	li      r3,0			<==
->    674:	4e 80 00 20 	blr				<==
->    678:	38 60 00 00 	li      r3,0
->    67c:	4e 80 00 20 	blr
->
-The builtin variant of unreachable (__builtin_unreachable()) works,
-and the codegen remains the same.
+> NetworkManager[1100]: <info>  [1656304146.6686] manager: startup complete
+> dbus-daemon[1027]: [system] Activating via systemd: service name='net.reactivated.Fprint' unit='fprintd.service' requested by ':1.21' (uid=0 pid=1502 comm="/bin/login -p --      ")
+> systemd[1]: Starting Fingerprint Authentication Daemon...
+> fprintd[2521]: (fprintd:2521): fprintd-WARNING **: 00:29:08.568: Failed to open connection to bus: Could not connect: Connection refused
 
-How about using that instead of unreachable() ?
+I think this message comes from here.
+https://github.com/freedesktop/libfprint-fprintd/blob/master/src/main.c#L183-L189
+
+I'm not sure what the program does though, I guess it failed to find a peer
+socket in the hash table while calling connect()/sendmsg() syscalls and got
+-ECONNREFUSED in unix_find_bsd() or unix_find_abstract().
 
 
-- Sathvika
+> systemd[1]: fprintd.service: Main process exited, code=exited, status=1/FAILURE
+> systemd[1]: fprintd.service: Failed with result 'exit-code'.
+> systemd[1]: Failed to start Fingerprint Authentication Daemon.
+> dbus-daemon[1027]: [system] Failed to activate service 'net.reactivated.Fprint': timed out (service_start_timeout=25000ms)
+> 
+> Mainline (5.19.0-rc3) or older -next does not have this problem.
+> 
+> Git bisect between mainline & -next points to the following patch:
+> 
+> # git bisect bad
+> cf2f225e2653734e66e91c09e1cbe004bfd3d4a7 is the first bad commit
+> commit cf2f225e2653734e66e91c09e1cbe004bfd3d4a7
+> 
+> Date:   Tue Jun 21 10:19:12 2022 -0700
+> 
+>     af_unix: Put a socket into a per-netns hash table.
+> 
+> I don’t know how the above identified patch is related to the failure,
+> but given that I can consistently recreate the issue assume the bisect
+> result can be trusted.
 
---------------d9XJW9h4ePxCRrHZwBFaD0Ci
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix"><font face="monospace">On 25/06/22
-        12:16, Christophe Leroy wrote:</font><br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu">
-      <pre class="moz-quote-pre" wrap="">
-
-Le 24/06/2022 à 20:32, Sathvika Vasireddy a écrit :
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">objtool is throwing *unannotated intra-function call*
-warnings with a few instructions that are marked
-unreachable. Remove unreachable() from WARN_ON()
-to fix these warnings, as the codegen remains same
-with and without unreachable() in WARN_ON().
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Did you try the two exemples described in commit 1e688dd2a3d6 
-("powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with 
-asm goto") ?
-
-Without your patch:
-
-00000640 &lt;test&gt;:
-  640:	81 23 00 84 	lwz     r9,132(r3)
-  644:	71 29 40 00 	andi.   r9,r9,16384
-  648:	40 82 00 0c 	bne     654 &lt;test+0x14&gt;
-  64c:	80 63 00 0c 	lwz     r3,12(r3)
-  650:	4e 80 00 20 	blr
-  654:	0f e0 00 00 	twui    r0,0
-
-00000658 &lt;test9w&gt;:
-  658:	2c 04 00 00 	cmpwi   r4,0
-  65c:	41 82 00 0c 	beq     668 &lt;test9w+0x10&gt;
-  660:	7c 63 23 96 	divwu   r3,r3,r4
-  664:	4e 80 00 20 	blr
-  668:	0f e0 00 00 	twui    r0,0
-  66c:	38 60 00 00 	li      r3,0
-  670:	4e 80 00 20 	blr
+Before the commit, all of sockets on the host are linked in a global hash
+table, and after the commit, they are linked in their network namespace's
+hash table.  So, I believe there is no change visible to userspace.
 
 
-With your patch:
+> I have attached dmesg log for reference. Let me know if any additional
+> Information is required.
 
-00000640 &lt;test&gt;:
-  640:	81 23 00 84 	lwz     r9,132(r3)
-  644:	71 29 40 00 	andi.   r9,r9,16384
-  648:	40 82 00 0c 	bne     654 &lt;test+0x14&gt;
-  64c:	80 63 00 0c 	lwz     r3,12(r3)
-  650:	4e 80 00 20 	blr
-  654:	0f e0 00 00 	twui    r0,0
-  658:	4b ff ff f4 	b       64c &lt;test+0xc&gt;		&lt;==
+* Could you provide
+  * dmesg and /var/log/messages on a successful case? (without the commit)
+  * Unit file
+  * repro steps
 
-0000065c &lt;test9w&gt;:
-  65c:	2c 04 00 00 	cmpwi   r4,0
-  660:	41 82 00 0c 	beq     66c &lt;test9w+0x10&gt;
-  664:	7c 63 23 96 	divwu   r3,r3,r4
-  668:	4e 80 00 20 	blr
-  66c:	0f e0 00 00 	twui    r0,0
-  670:	38 60 00 00 	li      r3,0			&lt;==
-  674:	4e 80 00 20 	blr				&lt;==
-  678:	38 60 00 00 	li      r3,0
-  67c:	4e 80 00 20 	blr
+* Is it reproducible after login? (e.g. systemctl restart)
+  * If so, please provide
+    * the result of strace -t -ff
 
-</pre>
-    </blockquote>
-    <font face="monospace">The builtin variant of unreachable (<font
-        color="#151415"><span style="font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: left; text-indent: 0px; text-transform: none; white-space: pre-wrap; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">__builtin_unreachable()</span></font>)
-      works,</font><br>
-    <font face="monospace">and the codegen remains the same. <br>
-    </font>
-    <p><font face="monospace">How about using that instead of
-        unreachable() ?</font></p>
-    <p><font face="monospace"><br>
-      </font></p>
-    <p><font face="monospace">- Sathvika<br>
-      </font></p>
-  </body>
-</html>
+* Does it happen on only powerpc? How about x86 or arm64?
 
---------------d9XJW9h4ePxCRrHZwBFaD0Ci--
+* What does the service does?
+  * connect() or sendmsg()
+  * protocol family
+  * abstract or BSD socket
+
+Best regards,
+Kuniyuki
 
