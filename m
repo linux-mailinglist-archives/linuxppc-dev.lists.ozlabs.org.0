@@ -1,63 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD5055BADE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 17:53:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A638255BB4B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 19:19:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LWsh80Z6Jz3chL
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 01:53:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IbsyGbkP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LWvbq5bkGz3cj4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 03:19:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IbsyGbkP;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.41; helo=mail-io1-f41.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWsgV6dzjz2yjS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 01:52:38 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 05904616A3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 15:52:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49D3C341CC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 15:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656345154;
-	bh=gQ/8rpTLJoHf5hQ/J7Tim5kyblxVTDM3oOXl5+ou4X8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IbsyGbkPTtqeePxaq5vuQk6Ht9AerYj0BNdaIJeaP2yIG4mWUvLkdgXT8Edp2ohY7
-	 nzPSwVaENUOq3xv4oKUyhKgAs0ak4sniH6vMOI9UqqfMKtPYoltLcJBkRkvNWugATA
-	 WpHq+crwQUruG8rRlTTZaRkJIo0F2SXec9xqPCwZPZYnPpY1iRRrfvaPHQ0vfaGL6P
-	 KnEFJ2a8LKiPE5L1X7ryDbtrE09FJuwK4pLr8fEvvAj/g+IBAWr/HUQOCRZPHs1S23
-	 d8QvdDm0CVWq8Tno6vdGnev1gtzAOPuqy05cd2fo/wNcAbR3jB1bH3PQLRLdynNkkg
-	 2obC0cGmD2mOA==
-Received: by mail-vs1-f52.google.com with SMTP id w187so9394765vsb.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 08:52:34 -0700 (PDT)
-X-Gm-Message-State: AJIora/s7umjDMnGbeyG89vL23VvROvU0bk7xXNgjknEwqL4vjdjzT4n
-	qXWzFrXC3/HMFBldz8ht2D+Zn82b2fT/tW2RsQ==
-X-Google-Smtp-Source: AGRyM1spI4V2i5L3miuavcwk5M71oji9JvRZrCj9WaP3J+qZiNMHshh0zQhnC3gDnlZgRs+sJkzpms/ovm9XpOnk2fk=
-X-Received: by 2002:a67:1787:0:b0:354:6490:437f with SMTP id
- 129-20020a671787000000b003546490437fmr4876195vsx.26.1656345153833; Mon, 27
- Jun 2022 08:52:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220625214151.547b3570@Cyrus.lan> <947e4583-fe0b-b8af-61b3-2d120357727c@gmail.com>
- <53ac873c23e.3ae9df00@auth.smtp.1and1.co.uk>
-In-Reply-To: <53ac873c23e.3ae9df00@auth.smtp.1and1.co.uk>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWvbM0Xk7z3bkP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 03:19:10 +1000 (AEST)
+Received: by mail-io1-f41.google.com with SMTP id a10so10243554ioe.9
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 10:19:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=ZbXCZRn2tkLFwe+xZcXJJfs/8AzyxZ5b05h2ymqyzKo=;
+        b=SfqP4dHVvNzNYWNC1ZCd/LnMs7KF1GnUNb0cwNbE/x+pyWgjXrYJwzu5d7HYGoqvHN
+         m+8212r1VDFiHBOQfMajbiIEHXekW3gW6BvojxuvJBzPmuaXehtPGT4IKg0cMwR9PELx
+         0TMBp2+y4/TVP7YkiLh6QQs450mBYmjbLss8brwqljClwxetMkCkAoE5oTRUyYs54Wti
+         k5C2T1bEQka1xp2tmEK4rOO58Ge40he0N/8t9TpXrN+nnYd0YzmnZ2LTLszGTmt7lEpd
+         0c//qWbZme8QFIprPvzSU/eyBTihFnD1mAUEo14lpDp6Hsqzskh9xaVMmgf3gORjKZ0n
+         2l/A==
+X-Gm-Message-State: AJIora9cCnYZt/JoRJ82TpUBSFw9vxNws1FJ/NUz+OU/gv0OgzlloVbl
+	Zy/5eSlAwZ1RfG1vh2zuOA==
+X-Google-Smtp-Source: AGRyM1tu45zAsL+jIjvM+WaRtbHInJM639b0nwxc8mz53mtK5ZKqGi9kXi5EUH4/ZuQxDwX/kohBUQ==
+X-Received: by 2002:a6b:7711:0:b0:674:fcb2:1256 with SMTP id n17-20020a6b7711000000b00674fcb21256mr7103853iom.32.1656350347617;
+        Mon, 27 Jun 2022 10:19:07 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.253])
+        by smtp.gmail.com with ESMTPSA id bm13-20020a05663842cd00b0032ead96ee5csm4863972jab.165.2022.06.27.10.19.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jun 2022 10:19:07 -0700 (PDT)
+Received: (nullmailer pid 2614372 invoked by uid 1000);
+	Mon, 27 Jun 2022 17:19:05 -0000
+Date: Mon, 27 Jun 2022 11:19:05 -0600
 From: Rob Herring <robh@kernel.org>
-Date: Mon, 27 Jun 2022 09:52:22 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqKd2QaoPH16JqKrx0_XNmyUgKqsiOD56QHO1C0r1rCp7g@mail.gmail.com>
-Message-ID: <CAL_JsqKd2QaoPH16JqKrx0_XNmyUgKqsiOD56QHO1C0r1rCp7g@mail.gmail.com>
-Subject: Re: drivers/usb/host/ehci-fsl: Fix interrupt setup in host mode.
-To: Darren Stevens <darren@stevens-zone.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>
+Subject: Re: [PATCH v3 1/5] of: constify of_property_check_flags() prop
+ argument
+Message-ID: <20220627171905.GA2612959-robh@kernel.org>
+References: <20220620104123.341054-1-clement.leger@bootlin.com>
+ <20220620104123.341054-2-clement.leger@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220620104123.341054-2-clement.leger@bootlin.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,57 +65,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Shawn Guo <shawnguo@kernel.org>, Linux USB List <linux-usb@vger.kernel.org>, Yang-Leo Li <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Sergei Shtylyov <sergei.shtylyov@gmail.com>, Alan Stern <stern@rowland.harvard.edu>, Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: David Hildenbrand <david@redhat.com>, Paul Mackerras <paulus@samba.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ohhoon Kwon <ohoono.kwon@samsung.com>, Frank Rowand <frowand.list@gmail.com>, Horatiu Vultur <horatiu.vultur@microchip.com>, Steen Hegelund <steen.hegelund@microchip.com>, Daniel Henrique Barboza <danielhb413@gmail.com>, YueHaibing <yuehaibing@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>, Nathan Lynch <nathanl@linux.ibm.com>, devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, Laurent Dufour <ldufour@linux.ibm.com>, David Gibson <david@gibson.dropbear.id.au>, linux-kernel@vger.kernel.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, Lizhi Hou <lizhi.hou@xilinx.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Jun 26, 2022 at 2:03 PM Darren Stevens <darren@stevens-zone.net> wr=
-ote:
->
-> Hello Sergei
->
-> On 26/06/2022, Sergei Shtylyov wrote:
-> > Hello!
-> >
-> > On 6/25/22 11:41 PM, Darren Stevens wrote:
-> >
-> >> In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
-> >> core) we stopped platform_get_resource() from returning the IRQ, as al=
-l
-> >
-> > In commit a1a2b7125e10 ("Drop static setup of IRQ resource from DT core=
-")
-> >
-> >> drivers were supposed to have switched to platform_get_irq()
-> >> Unfortunately the Freescale EHCI driver in host mode got missed. Fix
-> >> it. Also fix allocation of resources to work with current kernel.
-> >
-> >    The basic rule (especially for the fixes) is "do one thing per patch=
-".
->
-> I thought I'd done that, this is the minimum amount of changes that fix w=
-hat changed in the specified commit.
->
-> > [...]
-> >> @@ -92,15 +89,18 @@ static int fsl_ehci_drv_probe(struct platform_devi=
-ce *pdev)
-> >>          goto err1;
-> >>      }
-> >>
-> >> -    res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> >> -    hcd->regs =3D devm_ioremap_resource(&pdev->dev, res);
-> >> +    tmp =3D of_address_to_resource(dn, 0, &res);
-> >
-> >    Hm, why? What does this fix?
->
-> With baseline the mouse and keyboard on our machines don't work - dmesg r=
-eports no interrupt. Fixing the interrupt detection throws a 'invalid resou=
-re' error instead (No idea why), which these lines fix. Both problems disap=
-pear if we revert the 'fixes' patch.
->
+On Mon, Jun 20, 2022 at 12:41:19PM +0200, Clément Léger wrote:
+> This argument is not modified and thus can be set as const.
+> 
+> Signed-off-by: Clément Léger <clement.leger@bootlin.com>
+> ---
+>  include/linux/of.h | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
 
-I see the problem. You need to keep the
-platform_device_add_resources() call in fsl-mph-dr-of.c so that the
-memory resource is copied from the parent to the child device.
+I already applied this patch, don't resend it.
 
 Rob
