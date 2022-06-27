@@ -1,52 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041E655B3EA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jun 2022 22:03:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A37955B492
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 02:17:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LWMHR6rnKz3chX
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 06:03:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LWSvy2l3yz3cf1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 10:17:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DgZxf4yA;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.130; helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DgZxf4yA;
+	dkim-atps=neutral
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWMH043c7z3bhK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 06:03:06 +1000 (AEST)
-Received: from [127.0.0.1] ([86.151.31.128]) by mrelayeu.kundenserver.de
- (mreue009 [212.227.15.163]) with ESMTPA (Nemesis) id
- 1M2OEw-1o4zyB1Diw-003yEi; Sun, 26 Jun 2022 22:02:49 +0200
-From: Darren Stevens <darren@stevens-zone.net>
-To: Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Date: Sun, 26 Jun 2022 20:49:11 +0100 (BST)
-Message-ID: <53ac873c23e.3ae9df00@auth.smtp.1and1.co.uk>
-In-Reply-To: <947e4583-fe0b-b8af-61b3-2d120357727c@gmail.com>
-References: <20220625214151.547b3570@Cyrus.lan>
- <947e4583-fe0b-b8af-61b3-2d120357727c@gmail.com>
-User-Agent: YAM/2.9p1 (AmigaOS4; PPC; rv:20140418r7798)
-Subject: Re: drivers/usb/host/ehci-fsl: Fix interrupt setup in host mode.
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWSvF0Mn2z3bkC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 10:16:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656288985; x=1687824985;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ETjJrKM7EKk6qTo3Ymv4caPFnW5n+rV1F7mfJnOmGRw=;
+  b=DgZxf4yATaeZFdCtxc7SNTepg/wQJQ9dtYeAGYgQ2lldjBFrqoTDxI/9
+   1yFgFPkGnPuj7YAu2Sl3+Lvq9ETzxKtLw6V7VzTkZ7RgogtkMEFQ8/+/e
+   8JEMcPk0HhMoh576kr/KS7u7FRFWjph9R96W8Di4/ecNFuLPlzp8uxvUd
+   zU3pyq7tjraLmORboSXAnw/ssJRlJqY4n0UseurnpNWmpuB/4NPEpD8fs
+   IHbZ9m2eXL1W3AFqa4J/gcJtQAD0Z1dL5ZBFvBr1yNnEfH+trkVMiXapD
+   N6GBUE1z9A/Ik+CxdVMqO4bgIs3NoYtLd4gmSzo7j08/UflKF2dBI9QFg
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10390"; a="282058717"
+X-IronPort-AV: E=Sophos;i="5.92,225,1650956400"; 
+   d="scan'208";a="282058717"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2022 17:16:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,225,1650956400"; 
+   d="scan'208";a="732083282"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 26 Jun 2022 17:16:11 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o5cQF-0007zZ-6B;
+	Mon, 27 Jun 2022 00:16:11 +0000
+Date: Mon, 27 Jun 2022 08:15:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ash Logan <ash@heyquark.com>, paulus@samba.org, mpe@ellerman.id.au,
+	christophe.leroy@csgroup.eu, robh+dt@kernel.org,
+	benh@kernel.crashing.org
+Subject: Re: [PATCH v2 06/12] powerpc: wiiu: udbg support for latteipc
+Message-ID: <202206270817.dnXU7wge-lkp@intel.com>
+References: <20220622131037.57604-7-ash@heyquark.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Provags-ID: V03:K1:SfjM5pV+pCrwIfqqWLt5BucTGFsV7UlQ9sOJsi9ctwNRtha6p6J
- jzxbYOU7vl8B+GSK6glrIIwUq3zjjXVSab/KFFYaOXKS2X6JyDR2WCFkygAguW6+ZE/EHxw
- Hb6lpr/xPB1M0B1X37T7YeSt7dSxZvoeMVaj5Pqku6YJfp7k+NJRL++sYrMV+Es5BnjKiV6
- NhmjV7uHikGIfOL43TjMg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0HwNF0z0VZ0=:VXyehQB/rnX0e7HElsbuyk
- WRuGiGxVWf7JU0F9UjAU6whPCj0cC6NDWqUOBsOUZPRx3S7QE5bL9yWuVTYybzRfc2oICqDBW
- PWiJOU1xZcYxuDvbH3+7oMJQqnLhSUXAZ9BDFaVyXnG3ObfLQI+DjdoCecOhpuxBf9SglCyZs
- PmA0YQsBQrNgfZTh/ubxw5cOB+0J18aPPxW3qmy3pu1Vy/OZM3VO0EqSlCjKbksVMeSlBiNuW
- PluFD77fPAXp2dGHabqAXBzl0906B5fOTv9dnSO6KwbQ9XmXsBrWTCuUaqH+sQnt9hQqwaHRB
- dinM+Dg2ZxxXoHC2ui0wWHUFcdV4JsCjT6TU4ptOLkuIJFPhxp7vnpEiAghuHxsSMkFaPuXkF
- bVLoN3BJxrr+JDxT8Kd739ZgvgK7f+9rh+QSvg3JvpAEgc8GS4yfll7CDh2Q9TY+IoKxMOiCA
- 4FSeZXX9kGZU35Ej29oT3CSjgRYlD2WPu2MsK5PF0z6oQz3oi2aJcWbmLEgyisK1Ta2smOJk3
- DMcsbTew8KD0QUdkRqn9CnAG68c+89z+BUNhgAjzqFb1w/glyQPyAQ+fs4978RgFaage8feIf
- fTEblJVAbL6esH0lY9XKOMAe6QFlXFQQVKqY2aTfgoEOF8BGvo+OS/Mpcn+81ejHZZQc9l+yS
- ioRxL/Jnfv2lRt727FGHMi8s6zi4X8mo7YHBhW9Q1KUFaJn30zu3zaIaWPhfiazrS9qWejFaT
- gX+ikblbHoBS8E8SZShQIN9t5plEg9oseWJDWTRH5W4dIOEJMfPtdO93tPk=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220622131037.57604-7-ash@heyquark.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,45 +71,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh@kernel.org, shawnguo@kernel.org, linux-usb@vger.kernel.org, leoyang.li@nxp.com, oss@buserror.net, stern@rowland.harvard.edu, chzigotzky@xenosoft.de, linuxppc-dev@lists.ozlabs.org
+Cc: devicetree@vger.kernel.org, kbuild-all@lists.01.org, linkmauve@linkmauve.fr, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, rw-r-r-0644@protonmail.com, linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Sergei
+Hi Ash,
 
-On 26/06/2022, Sergei Shtylyov wrote:
-> Hello!
->
-> On 6/25/22 11:41 PM, Darren Stevens wrote:
->
->> In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
->> core) we stopped platform_get_resource() from returning the IRQ, as all
->
-> In commit a1a2b7125e10 ("Drop static setup of IRQ resource from DT core")
->
->> drivers were supposed to have switched to platform_get_irq()
->> Unfortunately the Freescale EHCI driver in host mode got missed. Fix
->> it. Also fix allocation of resources to work with current kernel.
->
->    The basic rule (especially for the fixes) is "do one thing per patch".
+Thank you for the patch! Perhaps something to improve:
 
-I thought I'd done that, this is the minimum amount of changes that fix what changed in the specified commit. 
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on robh/for-next linus/master v5.19-rc4 next-20220624]
+[cannot apply to mpe/next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> [...]
->> @@ -92,15 +89,18 @@ static int fsl_ehci_drv_probe(struct platform_device *pdev)
->>          goto err1;
->>      }
->>  
->> -    res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> -    hcd->regs = devm_ioremap_resource(&pdev->dev, res);
->> +    tmp = of_address_to_resource(dn, 0, &res);
->
->    Hm, why? What does this fix?
+url:    https://github.com/intel-lab-lkp/linux/commits/Ash-Logan/dt-bindings-wiiu-Document-the-Nintendo-Wii-U-devicetree/20220622-221056
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-randconfig-c003-20220626
+compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project b0d6dd3905db145853c7c744ac92d49b00b1fa20)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install powerpc cross compiling tool for clang build
+        # apt-get install binutils-powerpc-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/acc3ab8f224a93f1a41267aeb09dee3d2ec810fb
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Ash-Logan/dt-bindings-wiiu-Document-the-Nintendo-Wii-U-devicetree/20220622-221056
+        git checkout acc3ab8f224a93f1a41267aeb09dee3d2ec810fb
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash arch/powerpc/platforms/wiiu/ drivers/usb/misc/
 
-With baseline the mouse and keyboard on our machines don't work - dmesg reports no interrupt. Fixing the interrupt detection throws a 'invalid resoure' error instead (No idea why), which these lines fix. Both problems disappear if we revert the 'fixes' patch.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-Hmmm, perhaps title shoud be 'fix resource detection in host mode'?
+All warnings (new ones prefixed by >>):
 
-Regards
-Darren
+>> arch/powerpc/platforms/wiiu/udbg_latteipc.c:65:13: warning: no previous prototype for function 'latteipc_udbg_init' [-Wmissing-prototypes]
+   void __init latteipc_udbg_init(void)
+               ^
+   arch/powerpc/platforms/wiiu/udbg_latteipc.c:65:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+   void __init latteipc_udbg_init(void)
+   ^
+   static 
+   1 warning generated.
 
+
+vim +/latteipc_udbg_init +65 arch/powerpc/platforms/wiiu/udbg_latteipc.c
+
+    61	
+    62	/*
+    63	 * Latte IPC udbg support initialization.
+    64	 */
+  > 65	void __init latteipc_udbg_init(void)
+    66	{
+    67		struct device_node *np;
+    68		void __iomem *ipc_io_base;
+    69	
+    70		if (latteipc_io_base)
+    71			udbg_printf("%s: early -> final\n", __func__);
+    72	
+    73		np = of_find_compatible_node(NULL, NULL, "nintendo,latte-ipc");
+    74		if (!np) {
+    75			udbg_printf("%s: IPC node not found\n", __func__);
+    76			goto out;
+    77		}
+    78	
+    79		ipc_io_base = latteipc_udbg_setup_ipc_io_base(np);
+    80		if (!ipc_io_base) {
+    81			udbg_printf("%s: failed to setup IPC io base\n", __func__);
+    82			goto done;
+    83		}
+    84	
+    85		udbg_putc = latteipc_udbg_putc;
+    86		udbg_printf("latteipc_udbg: ready\n");
+    87	
+    88	done:
+    89		of_node_put(np);
+    90	out:
+    91		return;
+    92	}
+    93	
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
