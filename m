@@ -2,82 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF66455BB5C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 19:42:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE7955BB9E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 20:32:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LWw6L4kyPz3c7K
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 03:42:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LWxCM0qRQz3c7s
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 04:31:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ioRdbm58;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=DnMKzuyW;
+	dkim=fail reason="signature verification failed" header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=0c4FfNqt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mailrelay4-1.pub.mailoutpod1-cph3.one.com (client-ip=46.30.210.185; helo=mailrelay4-1.pub.mailoutpod1-cph3.one.com; envelope-from=sam@ravnborg.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ioRdbm58;
+	dkim=pass (2048-bit key; unprotected) header.d=ravnborg.org header.i=@ravnborg.org header.a=rsa-sha256 header.s=rsa1 header.b=DnMKzuyW;
+	dkim=pass header.d=ravnborg.org header.i=@ravnborg.org header.a=ed25519-sha256 header.s=ed1 header.b=0c4FfNqt;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 4510 seconds by postgrey-1.36 at boromir; Tue, 28 Jun 2022 04:31:18 AEST
+Received: from mailrelay4-1.pub.mailoutpod1-cph3.one.com (mailrelay4-1.pub.mailoutpod1-cph3.one.com [46.30.210.185])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWw3W4J7Mz3bls
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 03:40:07 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25RHJiNA028219;
-	Mon, 27 Jun 2022 17:40:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=JNUGPCruFKdZCUCFVbVCf/FrTWxRNz6Yzv3LN4X2W0A=;
- b=ioRdbm583BWwsSh01VjdJLFQmJD3Tekf1DG0dPEwqauZxofgml2ZM0ozWQkI4XqGCvHH
- PYwn4pVAUoD4SQBAMGqlrRB9kFhLB0OtgJOy84MM9WmxOyMluy6l0VxoJ9p4LTlF84Dr
- A2xTPOgHqjxrZoeaVRtiSU86MP6Ye5OSG0ttzoI6g1fjbyalpiPLDazLKO7fkM4YV4Vm
- fM1OjfgJlAW90Sk8VW2+9a+iwzxkE2dIJR5+EsnCkjbdhNwLiPvyrf6gBM9qGWiM3+ht
- Uavnn0T/fzuuJcnb9m6Tp6OjzvhSqieZ3srNiwwFuIYGm9ejJlB3D1NGfho6lq+GIxCq 0w== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gygur8j1k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 17:40:02 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25RHZ5ul003345;
-	Mon, 27 Jun 2022 17:40:00 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma06ams.nl.ibm.com with ESMTP id 3gwsmj3ae3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 17:40:00 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25RHdwBh25100704
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jun 2022 17:39:58 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 24CE94C040;
-	Mon, 27 Jun 2022 17:39:58 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B2C8D4C044;
-	Mon, 27 Jun 2022 17:39:56 +0000 (GMT)
-Received: from li-NotSettable.ibm.com.com (unknown [9.43.62.161])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jun 2022 17:39:56 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Subject: [PATCH v5.4] powerpc/ftrace: Remove ftrace init tramp once kernel init is complete
-Date: Mon, 27 Jun 2022 23:09:30 +0530
-Message-Id: <20220627173930.133620-4-naveen.n.rao@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220627173930.133620-1-naveen.n.rao@linux.vnet.ibm.com>
-References: <20220627173930.133620-1-naveen.n.rao@linux.vnet.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cpCWhQVBQTB_7lhR4nZH4kFpM6-fsMAA
-X-Proofpoint-ORIG-GUID: cpCWhQVBQTB_7lhR4nZH4kFpM6-fsMAA
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWxBZ3CFgz3blH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 04:31:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=rsa1;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=7lcoTIguoCU25UtATqw0zpenNexDp4klBKBcas47lUI=;
+	b=DnMKzuyWChdqVj0eyu9qk+S12hDc5E1lpoUVu+RwnrA66JDBO9VVaJjjgy7iZh0CwjBX0Tb2UW9eA
+	 IDL3blt0HWe+7nCJ6LBbtgtWCdYTIJf7JxMi5tEKyk04dMJhxQKgJhN19n7gZmip7ExOCH60av6Zc+
+	 fpOnPKVrkcE6dB7IpmBBA5V/48B5nOCXs0dWxrIHUJoi6B5gDTxnps7C32yW7RQiRmwMZofOskZtJ1
+	 g5yggk+VyjJho8A1QsSz/r/K9taqv0SWrqNZr//W7DugrtnSjHFKtDOi/ahsacud1GZwml0SRslSij
+	 +WBGlPijIt3aAxUmrpMXX3P747L7FOQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed1;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=7lcoTIguoCU25UtATqw0zpenNexDp4klBKBcas47lUI=;
+	b=0c4FfNqt1mwTyFHOd20j3eJXx+yZAcz5xOVj+2VVBhkRNfl+lcYaMnmV/txPP7q97nUwiERp2Rz/D
+	 LTtF3EvDA==
+X-HalOne-Cookie: be347a0a6f76c63821867329f3b288b192d004df
+X-HalOne-ID: ab689703-f63c-11ec-8236-d0431ea8bb10
+Received: from mailproxy2.cst.dirpod3-cph3.one.com (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
+	by mailrelay4.pub.mailoutpod1-cph3.one.com (Halon) with ESMTPSA
+	id ab689703-f63c-11ec-8236-d0431ea8bb10;
+	Mon, 27 Jun 2022 17:14:58 +0000 (UTC)
+Date: Mon, 27 Jun 2022 19:14:56 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V5 04/26] sparc/mm: Move protection_map[] inside the
+ platform
+Message-ID: <YrnlkLbyYSbI0EQw@ravnborg.org>
+References: <20220627045833.1590055-1-anshuman.khandual@arm.com>
+ <20220627045833.1590055-5-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-27_06,2022-06-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
- priorityscore=1501 spamscore=0 clxscore=1015 impostorscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2206270071
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220627045833.1590055-5-anshuman.khandual@arm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,107 +71,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, hch@infradead.org, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-commit 84ade0a6655bee803d176525ef457175cbf4df22 upstream.
+Hi Anshuman,
 
-Stop using the ftrace trampoline for init section once kernel init is
-complete.
+On Mon, Jun 27, 2022 at 10:28:11AM +0530, Anshuman Khandual wrote:
+> This moves protection_map[] inside the platform and while here, also enable
+> ARCH_HAS_VM_GET_PAGE_PROT on 32 bit platforms via DECLARE_VM_GET_PAGE_PROT.
+> 
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/sparc/Kconfig                  |  2 +-
+>  arch/sparc/include/asm/pgtable_32.h | 19 -------------------
+>  arch/sparc/include/asm/pgtable_64.h | 19 -------------------
+>  arch/sparc/mm/init_32.c             | 20 ++++++++++++++++++++
+>  arch/sparc/mm/init_64.c             |  3 +++
+>  5 files changed, 24 insertions(+), 39 deletions(-)
+> 
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index ba449c47effd..09f868613a4d 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -13,6 +13,7 @@ config 64BIT
+>  config SPARC
+>  	bool
+>  	default y
+> +	select ARCH_HAS_VM_GET_PAGE_PROT
+>  	select ARCH_MIGHT_HAVE_PC_PARPORT if SPARC64 && PCI
+>  	select ARCH_MIGHT_HAVE_PC_SERIO
+>  	select DMA_OPS
+> @@ -84,7 +85,6 @@ config SPARC64
+>  	select PERF_USE_VMALLOC
+>  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+>  	select HAVE_C_RECORDMCOUNT
+> -	select ARCH_HAS_VM_GET_PAGE_PROT
+>  	select HAVE_ARCH_AUDITSYSCALL
+>  	select ARCH_SUPPORTS_ATOMIC_RMW
+>  	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
+> diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
+> index 4866625da314..8ff549004fac 100644
+> --- a/arch/sparc/include/asm/pgtable_32.h
+> +++ b/arch/sparc/include/asm/pgtable_32.h
+> @@ -64,25 +64,6 @@ void paging_init(void);
+>  
+>  extern unsigned long ptr_in_current_pgd;
+>  
+> -/*         xwr */
+> -#define __P000  PAGE_NONE
+> -#define __P001  PAGE_READONLY
+> -#define __P010  PAGE_COPY
+> -#define __P011  PAGE_COPY
+> -#define __P100  PAGE_READONLY
+> -#define __P101  PAGE_READONLY
+> -#define __P110  PAGE_COPY
+> -#define __P111  PAGE_COPY
+> -
+> -#define __S000	PAGE_NONE
+> -#define __S001	PAGE_READONLY
+> -#define __S010	PAGE_SHARED
+> -#define __S011	PAGE_SHARED
+> -#define __S100	PAGE_READONLY
+> -#define __S101	PAGE_READONLY
+> -#define __S110	PAGE_SHARED
+> -#define __S111	PAGE_SHARED
+> -
+>  /* First physical page can be anywhere, the following is needed so that
+>   * va-->pa and vice versa conversions work properly without performance
+>   * hit for all __pa()/__va() operations.
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 4679e45c8348..a779418ceba9 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -187,25 +187,6 @@ bool kern_addr_valid(unsigned long addr);
+>  #define _PAGE_SZHUGE_4U	_PAGE_SZ4MB_4U
+>  #define _PAGE_SZHUGE_4V	_PAGE_SZ4MB_4V
+>  
+> -/* These are actually filled in at boot time by sun4{u,v}_pgprot_init() */
+> -#define __P000	__pgprot(0)
+> -#define __P001	__pgprot(0)
+> -#define __P010	__pgprot(0)
+> -#define __P011	__pgprot(0)
+> -#define __P100	__pgprot(0)
+> -#define __P101	__pgprot(0)
+> -#define __P110	__pgprot(0)
+> -#define __P111	__pgprot(0)
+> -
+> -#define __S000	__pgprot(0)
+> -#define __S001	__pgprot(0)
+> -#define __S010	__pgprot(0)
+> -#define __S011	__pgprot(0)
+> -#define __S100	__pgprot(0)
+> -#define __S101	__pgprot(0)
+> -#define __S110	__pgprot(0)
+> -#define __S111	__pgprot(0)
+> -
+>  #ifndef __ASSEMBLY__
+>  
+>  pte_t mk_pte_io(unsigned long, pgprot_t, int, unsigned long);
+> diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
+> index 1e9f577f084d..8693e4e28b86 100644
+> --- a/arch/sparc/mm/init_32.c
+> +++ b/arch/sparc/mm/init_32.c
+> @@ -302,3 +302,23 @@ void sparc_flush_page_to_ram(struct page *page)
+>  		__flush_page_to_ram(vaddr);
+>  }
+>  EXPORT_SYMBOL(sparc_flush_page_to_ram);
+> +
+> +static pgprot_t protection_map[16] __ro_after_init = {
+This can be const - like done for powerpc and others.
+sparc32 and sparc64 uses each their own - and I do not see sparc32 do
+any modifications to protection_map.
 
-Fixes: 67361cf8071286 ("powerpc/ftrace: Handle large kernel configs")
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220516071422.463738-1-naveen.n.rao@linux.vnet.ibm.com
----
- arch/powerpc/include/asm/ftrace.h  |  5 ++++-
- arch/powerpc/kernel/trace/ftrace.c | 15 ++++++++++++---
- arch/powerpc/mm/mem.c              |  2 ++
- 3 files changed, 18 insertions(+), 4 deletions(-)
+With this change:
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index f54a08a2cd7092..017336f2b0864a 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -96,7 +96,7 @@ static inline bool arch_syscall_match_sym_name(const char *sym, const char *name
- #endif /* PPC64_ELF_ABI_v1 */
- #endif /* CONFIG_FTRACE_SYSCALLS */
- 
--#ifdef CONFIG_PPC64
-+#if defined(CONFIG_PPC64) && defined(CONFIG_FUNCTION_TRACER)
- #include <asm/paca.h>
- 
- static inline void this_cpu_disable_ftrace(void)
-@@ -108,9 +108,12 @@ static inline void this_cpu_enable_ftrace(void)
- {
- 	get_paca()->ftrace_enabled = 1;
- }
-+
-+void ftrace_free_init_tramp(void);
- #else /* CONFIG_PPC64 */
- static inline void this_cpu_disable_ftrace(void) { }
- static inline void this_cpu_enable_ftrace(void) { }
-+static inline void ftrace_free_init_tramp(void) { }
- #endif /* CONFIG_PPC64 */
- #endif /* !__ASSEMBLY__ */
- 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 7ea0ca044b6500..d816e714f2f489 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -328,9 +328,7 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
- 
- 	/* Is this a known long jump tramp? */
- 	for (i = 0; i < NUM_FTRACE_TRAMPS; i++)
--		if (!ftrace_tramps[i])
--			break;
--		else if (ftrace_tramps[i] == tramp)
-+		if (ftrace_tramps[i] == tramp)
- 			return 0;
- 
- 	/* Is this a known plt tramp? */
-@@ -868,6 +866,17 @@ void arch_ftrace_update_code(int command)
- 
- extern unsigned int ftrace_tramp_text[], ftrace_tramp_init[];
- 
-+void ftrace_free_init_tramp(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < NUM_FTRACE_TRAMPS && ftrace_tramps[i]; i++)
-+		if (ftrace_tramps[i] == (unsigned long)ftrace_tramp_init) {
-+			ftrace_tramps[i] = 0;
-+			return;
-+		}
-+}
-+
- int __init ftrace_dyn_arch_init(void)
- {
- 	int i;
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index c48705c726ac6d..d427f70556eab5 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -48,6 +48,7 @@
- #include <asm/fixmap.h>
- #include <asm/swiotlb.h>
- #include <asm/rtas.h>
-+#include <asm/ftrace.h>
- 
- #include <mm/mmu_decl.h>
- 
-@@ -346,6 +347,7 @@ void free_initmem(void)
- 	mark_initmem_nx();
- 	init_mem_is_free = true;
- 	free_initmem_default(POISON_FREE_INITMEM);
-+	ftrace_free_init_tramp();
- }
- 
- /**
-
-base-commit: 23db944f754e99abf814a79a2273b0191d35e4ff
--- 
-2.36.1
-
+> +	[VM_NONE]					= PAGE_NONE,
+> +	[VM_READ]					= PAGE_READONLY,
+> +	[VM_WRITE]					= PAGE_COPY,
+> +	[VM_WRITE | VM_READ]				= PAGE_COPY,
+> +	[VM_EXEC]					= PAGE_READONLY,
+> +	[VM_EXEC | VM_READ]				= PAGE_READONLY,
+> +	[VM_EXEC | VM_WRITE]				= PAGE_COPY,
+> +	[VM_EXEC | VM_WRITE | VM_READ]			= PAGE_COPY,
+> +	[VM_SHARED]					= PAGE_NONE,
+> +	[VM_SHARED | VM_READ]				= PAGE_READONLY,
+> +	[VM_SHARED | VM_WRITE]				= PAGE_SHARED,
+> +	[VM_SHARED | VM_WRITE | VM_READ]		= PAGE_SHARED,
+> +	[VM_SHARED | VM_EXEC]				= PAGE_READONLY,
+> +	[VM_SHARED | VM_EXEC | VM_READ]			= PAGE_READONLY,
+> +	[VM_SHARED | VM_EXEC | VM_WRITE]		= PAGE_SHARED,
+> +	[VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]	= PAGE_SHARED
+> +};
+> +DECLARE_VM_GET_PAGE_PROT
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index f6174df2d5af..d6faee23c77d 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -2634,6 +2634,9 @@ void vmemmap_free(unsigned long start, unsigned long end,
+>  }
+>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>  
+> +/* These are actually filled in at boot time by sun4{u,v}_pgprot_init() */
+> +static pgprot_t protection_map[16] __ro_after_init;
+> +
+>  static void prot_init_common(unsigned long page_none,
+>  			     unsigned long page_shared,
+>  			     unsigned long page_copy,
+> -- 
+> 2.25.1
