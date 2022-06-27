@@ -1,125 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 859A255BCB7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 02:30:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4E055BCB8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 02:31:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LX59W3LdYz3bqN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 10:30:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LX5BH5lKCz3dwG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 10:31:35 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qccesdkim1 header.b=gWVql1TE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gA7/ftYY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=quicinc.com (client-ip=216.71.142.165; helo=esa.hc3962-90.iphmx.com; envelope-from=bcain@quicinc.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.vnet.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.a=rsa-sha256 header.s=qccesdkim1 header.b=gWVql1TE;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gA7/ftYY;
 	dkim-atps=neutral
-X-Greylist: delayed 64 seconds by postgrey-1.36 at boromir; Tue, 28 Jun 2022 00:33:49 AEST
-Received: from esa.hc3962-90.iphmx.com (esa.hc3962-90.iphmx.com [216.71.142.165])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWqwY48Zmz3bhf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 00:33:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=quicinc.com; i=@quicinc.com; q=dns/txt; s=qccesdkim1;
-  t=1656340429; x=1656945229;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=eYXH/ctB6v6XAcg42LM5ozEFN2HdhzgzZ+oK7wTjzCM=;
-  b=gWVql1TEj4RO2BWs+7qcoGqClWACNI1nXWVUzc+8t3i3M45kPhEh/Yln
-   FlnaW4Ez94dJgeZegO3Mm900+pflRl2wJgQLRc4aVVXU+HvIlPZ9glzb3
-   1k+J0ozN8IXtGGiXybUVdIRSiSE97jjw+C78/1hk7PQAkgDjQY4uNkPl8
-   0=;
-Received: from mail-bn8nam11lp2168.outbound.protection.outlook.com (HELO NAM11-BN8-obe.outbound.protection.outlook.com) ([104.47.58.168])
-  by ob1.hc3962-90.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 14:32:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cGOW8HUQIVaBTKpLWO+C4aPx6X9Xj3tooAfUWy+sPob781xwBfm+C7JsnAksVL3znA9fm8u9Q75Yeyd1o3Tge/tgaB1QffUppb747SaJw7lnJLJEB2Xolc+JaNjb7JGObqPkaNoXE5DSopsiW9Mz+IgZg7Q6LgK8dem1EfY/Dom8edgAwsjSPNiacB+Hm2wzLwIUdwES/SUxe7yPv5rnwHaMz/wspCxkPKRIaycwdqM2wHSk9mY5u492fZdBRANCSJlUmUMbcg8VJ4szN2By0Hj7ofjbjGE+lD1M2HU+LUA6MB3sN16m1uRBbHyqicSMhC2JSQuKZ7BagnmJAqeNhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eYXH/ctB6v6XAcg42LM5ozEFN2HdhzgzZ+oK7wTjzCM=;
- b=NZV31S8FY6LC+g0g4cS2e7+2EXToeuvX68UC8oiP7n15GL6EZoAyZ1Mk1LHHX6fJX7VbAv+uimUrpPyQNsAC0kPaga/El4ds1wJy/cUhoO9f/AUWI9p0aAw7xE0g616srjc8/TO5zPLlR3p3S5f1GWXxGuJrdLgScP+KM8s9alFA7vwQIrE/EWOEIOGH6W24mSg5e2A4jrxGMnrxSVeZBY3/bdNKpW6zIyQUWeApbFkcPIz5rVzVthWopVzFqCLjm8u8BWNFFMjxBwObIj6EtyDtdfBdxIB5F+UnczM9fuBx4/wn2aVBgcNsgo2gZa+FV5t69Qn33EI2GYHVUGr4hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=quicinc.com; dmarc=pass action=none header.from=quicinc.com;
- dkim=pass header.d=quicinc.com; arc=none
-Received: from SN6PR02MB4205.namprd02.prod.outlook.com (2603:10b6:805:35::17)
- by DM6PR02MB6138.namprd02.prod.outlook.com (2603:10b6:5:1fd::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5373.18; Mon, 27 Jun
- 2022 14:32:29 +0000
-Received: from SN6PR02MB4205.namprd02.prod.outlook.com
- ([fe80::f4c0:89e2:789d:ceb1]) by SN6PR02MB4205.namprd02.prod.outlook.com
- ([fe80::f4c0:89e2:789d:ceb1%7]) with mapi id 15.20.5373.016; Mon, 27 Jun 2022
- 14:32:29 +0000
-From: Brian Cain <bcain@quicinc.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>, "linux-mm@kvack.org"
-	<linux-mm@kvack.org>
-Subject: RE: [PATCH V5 12/26] hexagon/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Thread-Topic: [PATCH V5 12/26] hexagon/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Thread-Index: AQHYieNaF68nviM9AEWMdUsq7TAcg61jUU0Q
-Date: Mon, 27 Jun 2022 14:32:29 +0000
-Message-ID:  <SN6PR02MB4205D2460F6DB1F3C82999BDB8B99@SN6PR02MB4205.namprd02.prod.outlook.com>
-References: <20220627045833.1590055-1-anshuman.khandual@arm.com>
- <20220627045833.1590055-13-anshuman.khandual@arm.com>
-In-Reply-To: <20220627045833.1590055-13-anshuman.khandual@arm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=quicinc.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: d4ab36eb-bfe6-4b73-98a3-08da5849dd6d
-x-ms-traffictypediagnostic: DM6PR02MB6138:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  6LCBwa4CDTnSlgl6CnuvSHylK43fGHMLoBG839b+bXfVd5N7nYAqXddIKZqfMqXLDn6rdkMCP1/tZanVPeTPStEENKwpoEwvg8a0U6B/0/Ru8PHLp8EMwwlxlorNMwaAPhooSIHXe7nn8Z1ShjJ0dbEY2E3yX75YVCgoONo8/wT4Yp6zLqRil2kKMbKONi36XpqRJ62+CwUUA0rs8EYeg183Y/Nnzo8iYxACJkCAvv6uMW4GQlZO+IT8CgIrtpAaFh8vh4oq3k8339e0GqYlzOjkOwDqIfJDV4g3950HVCaF7gJRK8W/YV4c/M2sTtKAnZAzAp8OJnCivz55DqELuL+WRsKJOQvqZmwJdVdEcUS6HnSuyQZEjzX5c2CuBF6vVaMKBpkmRnBRlZn7mQhLMmQIGEtZhKClBhltEqaQAUMuE6h2rHsyU/HNe6/zj7Pniiyg77NtFG695+ENaEfPLLX8eBmdMPen7Wsl95DYcmW5egsFZmfXQ3rmNkz7xZxIotgUiku9DQAVGXvhGg6rFa8TTWNy7DcQXB5Hq57Qi/2nig5m7DruO8mx/x339XgDAo+wpIhkdysR0Xb3viQDLPnLEFX/NFqwRO8f6S1hJLGrZtxw3nCBuS7djTB/OYrEh0bRQbCS+XpS+5u74i+LLi89/GWkJbV0rSokF7YMuKyr2wfVZbnYPBfFLPEMyl/NZ8/npwsOHL3S22bC/riomYaiHfFjkhVIB3H8V/MO4W1u+CO6mrQ6oqQ+S6hzCuM98onf4SChF/QNMNhu2JlgX6H5pEuPIykBm/FLc1PIeTw=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR02MB4205.namprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(346002)(136003)(376002)(396003)(366004)(39860400002)(7696005)(64756008)(7416002)(66556008)(83380400001)(76116006)(71200400001)(66946007)(41300700001)(110136005)(8676002)(38100700002)(122000001)(316002)(5660300002)(26005)(54906003)(9686003)(86362001)(186003)(55016003)(2906002)(33656002)(4326008)(66446008)(66476007)(38070700005)(52536014)(6506007)(478600001)(8936002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?fjdQUrKtASc2PpuHSL32JID+E3A8OdplJEurfWMCyWe1Ev0UAJb0kdJj2NuG?=
- =?us-ascii?Q?TlHv362lWxFoa5ALdsalq6xQWXSkO1YHoSJZY1k/rgx3J9dRCpUpxJtleWXj?=
- =?us-ascii?Q?ODdcjBHLqnp8WDg5wZVvpSO+GL8oXGAHwTr/ZjunTHyCIIEI/9QixrMCTsHp?=
- =?us-ascii?Q?7c5StcktmyuahjQeoeWVM/YQY8NsrQovteH2B/LvMZ6KGp024b0F7uUisWfq?=
- =?us-ascii?Q?+qQB1c1bIgNNH1WqYoZcu5gHJp337FDnuLe4nTqkDp3+cY42e2lP7jx6P9YY?=
- =?us-ascii?Q?GhUh5g+n8x8YRQt8Mpul/tlamczbwc/Dwh4pMotReDzXA8otSpw7fHIgqXj+?=
- =?us-ascii?Q?P7RlC0kVsZ7z5Az84FNGanwqy/bzikZoZYizroHVA/rmaC8EOzC2Rk4CkyXv?=
- =?us-ascii?Q?bZ8kSJGpToeh8O0GmHov5z2+/y3o2y0WWRvHOajDZXYB/5DpQZml+CgrN7Hs?=
- =?us-ascii?Q?Ou7iPMNFH+llQl3dtFofdGRcVZgRRKlKlNZvlTdLRUHpOwDGNi0x4k1zyEWN?=
- =?us-ascii?Q?TF6mzhZU4b3NFyGD/uG4/FWlbwgB4dV/IAL5MjjYug+4Z6P3IHUynKxDFbKz?=
- =?us-ascii?Q?ld/E9TkW1XZdKvkO805FstbIC4WtHsR0/erVsqP5MBSsRIJ7vfXLHYU284GL?=
- =?us-ascii?Q?kdVdT4aFiZsFORwOYvCuACAo9COWGeNV3AvFy+QxZwnsExzUgKcqqFc/wnRS?=
- =?us-ascii?Q?GQV6446YR4t9ooSnxQksthTEWeRWBNqkPTXe030jVc4yT5zeAXe5X6aGyEBN?=
- =?us-ascii?Q?VI6sPh+1rOEjS2/J4/GyFcbxW36qPqW4WWtKI1CL5lCH8A2N764ShZOKmoJx?=
- =?us-ascii?Q?IT0TMj8HZaeNiFuU5jCbUTJZPm6ARtU4eRp8rJdPWp0mCzU48npI4j0ga/bT?=
- =?us-ascii?Q?ns61D7TIBY98KX+NRDwu9anufHWBA8F45bVSPmvVsqouV9T0cN2z8tRtILcN?=
- =?us-ascii?Q?YBWCpGRq6B53gAqpAP6ERpRWDnbmS3zzNz4gElNUQsUiiyE62DhXwx4eoerU?=
- =?us-ascii?Q?3tClec7saJePlwbyuI+e7R5ysSR0cNnqLnHZtSU5Oa6iJpykIqtef0MYYRvE?=
- =?us-ascii?Q?p/wuhHMG5ys9bOxu3CpQudb2iDo7EvXruu0mrNxQVkF0f3sSBvgIRwQZH/3S?=
- =?us-ascii?Q?4eGoZhjEfrowgTio9EVAdKZ9FsSLrTfax+q5bW6C3PSaZB5F3Qv6ki+OZD9a?=
- =?us-ascii?Q?cnSVWsU72bjIXvLVSmM8lepIJhvSBbsCMXg1MaBU86su0Ipiqyzwh0IoO+SU?=
- =?us-ascii?Q?hm0J0op3lWe/SWrxgDhzur+2KBstLAH5JpBTlQ6tlwaY1xSc4UbI1eslgG6Y?=
- =?us-ascii?Q?WQEZ8lV1EFXR1uWVEJVZCI+SE98u4nI7h1aEw2t8DqveVLGyxF19c9SCNhJD?=
- =?us-ascii?Q?Oeflzg69bdYlLrdLheBQyDg5nnoRfnNJneD0CpPbrXYWggRXTSRPXggodcn3?=
- =?us-ascii?Q?N9RgBCFjUkp8ohtO/cnQgW1IdvFSX31rCJuDpOsg3nf7aFjqVYxX8wYadu2Q?=
- =?us-ascii?Q?XngHluuV8mZbArW9Q+q6i7T3IuXo9L920bB2loJhgUKHY6vu6HLBscmSIbM+?=
- =?us-ascii?Q?uA7yYrM07LaCL9dzQfTN1fZctgrOxlZODvGqAb+s?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWrzl6cJ6z3bqK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 01:21:39 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25RFDsM0014209;
+	Mon, 27 Jun 2022 15:21:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ message-id : date : mime-version : subject : to : cc : references : from :
+ in-reply-to; s=pp1; bh=kxMhDRM6nTAU/Ag3SBn+tnze8UKdeSZaBcZ/TLdATDk=;
+ b=gA7/ftYYlj/UCoN1s+3MOggJLQOfVZBJRAjH3qHjc06iRKJGCKuoaQIitO9WIy+wXwhn
+ f18240lHb48GUFD8KpNz1YeWBua1TSMVMbUyErnf8qxB+tuea8sLxA/rwneecIrDOklI
+ cxeihiH4dXfbL9x00L+e3SM7W5C+7DaGp2vry3BRzZc5i7lQQ3ByxgAp7fMmNNex02St
+ gi4d5z7lK+ixmFGqA45u3IXl6/Jnu2uEOSsdXc7Rr2rAQ7VV0kP49ZHgDIZxJr73TLyd
+ FhhE9J3N2Hot1fvaCZiSD/Vzd6cREY0hx09TJDSfPjWhfO6dshSGqd7Ud6TFootdmWDs mg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gyf0k07ua-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jun 2022 15:21:18 +0000
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25RFE6em015410;
+	Mon, 27 Jun 2022 15:21:18 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gyf0k07t3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jun 2022 15:21:17 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25RF6eAf020377;
+	Mon, 27 Jun 2022 15:21:15 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma04ams.nl.ibm.com with ESMTP id 3gwt08u4s9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jun 2022 15:21:15 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25RFLDj818481508
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jun 2022 15:21:13 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4EAC6A405B;
+	Mon, 27 Jun 2022 15:21:13 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C4343A4054;
+	Mon, 27 Jun 2022 15:21:08 +0000 (GMT)
+Received: from [9.43.63.124] (unknown [9.43.63.124])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 27 Jun 2022 15:21:08 +0000 (GMT)
+Content-Type: multipart/alternative;
+ boundary="------------d9XJW9h4ePxCRrHZwBFaD0Ci"
+Message-ID: <03154518-216a-e050-033b-314eb9240c56@linux.vnet.ibm.com>
+Date: Mon, 27 Jun 2022 20:51:07 +0530
 MIME-Version: 1.0
-X-OriginatorOrg: quicinc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4205.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4ab36eb-bfe6-4b73-98a3-08da5849dd6d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jun 2022 14:32:29.6681
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yz3IG0XM+MN1EUq2d+bRK8OLWKZV1yEnYf/4cni8BG9mK0RhLJTaLfTZn2doXORgMtR06QceXTPWnrNZpZNkrw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6138
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [RFC PATCH v3 11/12] powerpc: Remove unreachable() from WARN_ON()
+Content-Language: en-US
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+References: <20220624183238.388144-1-sv@linux.ibm.com>
+ <20220624183238.388144-12-sv@linux.ibm.com>
+ <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu>
+From: Sathvika Vasireddy <sv@linux.vnet.ibm.com>
+In-Reply-To: <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: kHMrqOGz3AHoJ-wISinUL9IwxcEHPDPZ
+X-Proofpoint-ORIG-GUID: gWvqWB4k_fLC3V6NjsIIkwkvqBXC20sp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-27_06,2022-06-24_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 impostorscore=0
+ mlxlogscore=983 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206270065
 X-Mailman-Approved-At: Tue, 28 Jun 2022 10:29:05 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -132,190 +102,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Brian Cain <bcain@codeaurora.org>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "hch@infradead.org" <hch@infradead.org>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@l
- ists.infradead.org>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: "peterz@infradead.org" <peterz@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>, "mingo@redhat.com" <mingo@redhat.com>, "paulus@samba.org" <paulus@samba.org>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> -----Original Message-----
-> From: Anshuman Khandual <anshuman.khandual@arm.com>
-...
-> WARNING: This email originated from outside of Qualcomm. Please be wary
-> of any links or attachments, and do not enable macros.
->=20
-> This enables ARCH_HAS_VM_GET_PAGE_PROT on the platform and exports
-> standard
-> vm_get_page_prot() implementation via DECLARE_VM_GET_PAGE_PROT,
-> which looks
-> up a private and static protection_map[] array. Subsequently all __SXXX a=
-nd
-> __PXXX macros can be dropped which are no longer needed.
->=20
-> Cc: Brian Cain <bcain@codeaurora.org>
-> Cc: linux-hexagon@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/hexagon/Kconfig               |  1 +
->  arch/hexagon/include/asm/pgtable.h | 27 -------------------
->  arch/hexagon/mm/init.c             | 42 ++++++++++++++++++++++++++++++
->  3 files changed, 43 insertions(+), 27 deletions(-)
->=20
-> diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
-> index 54eadf265178..bc4ceecd0588 100644
-> --- a/arch/hexagon/Kconfig
-> +++ b/arch/hexagon/Kconfig
-> @@ -6,6 +6,7 @@ config HEXAGON
->         def_bool y
->         select ARCH_32BIT_OFF_T
->         select ARCH_HAS_SYNC_DMA_FOR_DEVICE
-> +       select ARCH_HAS_VM_GET_PAGE_PROT
->         select ARCH_NO_PREEMPT
->         select DMA_GLOBAL_POOL
->         # Other pending projects/to-do items.
-> diff --git a/arch/hexagon/include/asm/pgtable.h
-> b/arch/hexagon/include/asm/pgtable.h
-> index 0610724d6a28..f7048c18b6f9 100644
-> --- a/arch/hexagon/include/asm/pgtable.h
-> +++ b/arch/hexagon/include/asm/pgtable.h
-> @@ -126,33 +126,6 @@ extern unsigned long _dflt_cache_att;
->   */
->  #define CACHEDEF       (CACHE_DEFAULT << 6)
->=20
-> -/* Private (copy-on-write) page protections. */
-> -#define __P000 __pgprot(_PAGE_PRESENT | _PAGE_USER | CACHEDEF)
-> -#define __P001 __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_READ |
-> CACHEDEF)
-> -#define __P010 __P000  /* Write-only copy-on-write */
-> -#define __P011 __P001  /* Read/Write copy-on-write */
-> -#define __P100 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
-> -                       _PAGE_EXECUTE | CACHEDEF)
-> -#define __P101 __pgprot(_PAGE_PRESENT | _PAGE_USER |
-> _PAGE_EXECUTE | \
-> -                       _PAGE_READ | CACHEDEF)
-> -#define __P110 __P100  /* Write/execute copy-on-write */
-> -#define __P111 __P101  /* Read/Write/Execute, copy-on-write */
-> -
-> -/* Shared page protections. */
-> -#define __S000 __P000
-> -#define __S001 __P001
-> -#define __S010 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
-> -                       _PAGE_WRITE | CACHEDEF)
-> -#define __S011 __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_READ |
-> \
-> -                       _PAGE_WRITE | CACHEDEF)
-> -#define __S100 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
-> -                       _PAGE_EXECUTE | CACHEDEF)
-> -#define __S101 __P101
-> -#define __S110 __pgprot(_PAGE_PRESENT | _PAGE_USER | \
-> -                       _PAGE_EXECUTE | _PAGE_WRITE | CACHEDEF)
-> -#define __S111 __pgprot(_PAGE_PRESENT | _PAGE_USER | _PAGE_READ |
-> \
-> -                       _PAGE_EXECUTE | _PAGE_WRITE | CACHEDEF)
-> -
->  extern pgd_t swapper_pg_dir[PTRS_PER_PGD];  /* located in head.S */
->=20
->  /*  HUGETLB not working currently  */
-> diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
-> index 3167a3b5c97b..146115c9de61 100644
-> --- a/arch/hexagon/mm/init.c
-> +++ b/arch/hexagon/mm/init.c
-> @@ -234,3 +234,45 @@ void __init setup_arch_memory(void)
->          *  which is called by start_kernel() later on in the process
->          */
->  }
-> +
-> +static const pgprot_t protection_map[16] =3D {
-> +       [VM_NONE]                                       =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  CACHED=
-EF),
-> +       [VM_READ]                                       =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-READ | CACHEDEF),
-> +       [VM_WRITE]                                      =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  CACHED=
-EF),
-> +       [VM_WRITE | VM_READ]                            =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-READ | CACHEDEF),
-> +       [VM_EXEC]                                       =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-EXECUTE | CACHEDEF),
-> +       [VM_EXEC | VM_READ]                             =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-EXECUTE | _PAGE_READ |
-> +                                                                  CACHED=
-EF),
-> +       [VM_EXEC | VM_WRITE]                            =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-EXECUTE | CACHEDEF),
-> +       [VM_EXEC | VM_WRITE | VM_READ]                  =3D
-> __pgprot(_PAGE_PRESENT | _PAGE_USER |
-> +                                                                  _PAGE_=
-EXECUTE | _PAGE_READ |
-> +                                                                  CACHED=
-EF),
-> +       [VM_SHARED]                                     =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  CACHED=
-EF),
-> +       [VM_SHARED | VM_READ]                           =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-READ | CACHEDEF),
-> +       [VM_SHARED | VM_WRITE]                          =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-WRITE | CACHEDEF),
-> +       [VM_SHARED | VM_WRITE | VM_READ]                =3D
-> __pgprot(_PAGE_PRESENT | _PAGE_USER |
-> +                                                                  _PAGE_=
-READ | _PAGE_WRITE |
-> +                                                                  CACHED=
-EF),
-> +       [VM_SHARED | VM_EXEC]                           =3D __pgprot(_PAG=
-E_PRESENT |
-> _PAGE_USER |
-> +                                                                  _PAGE_=
-EXECUTE | CACHEDEF),
-> +       [VM_SHARED | VM_EXEC | VM_READ]                 =3D
-> __pgprot(_PAGE_PRESENT | _PAGE_USER |
-> +                                                                  _PAGE_=
-EXECUTE | _PAGE_READ |
-> +                                                                  CACHED=
-EF),
-> +       [VM_SHARED | VM_EXEC | VM_WRITE]                =3D
-> __pgprot(_PAGE_PRESENT | _PAGE_USER |
-> +                                                                  _PAGE_=
-EXECUTE | _PAGE_WRITE |
-> +                                                                  CACHED=
-EF),
-> +       [VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]      =3D
-> __pgprot(_PAGE_PRESENT | _PAGE_USER |
-> +                                                                  _PAGE_=
-READ | _PAGE_EXECUTE |
-> +                                                                  _PAGE_=
-WRITE | CACHEDEF)
-> +};
-> +DECLARE_VM_GET_PAGE_PROT
-> --
-> 2.25.1
+This is a multi-part message in MIME format.
+--------------d9XJW9h4ePxCRrHZwBFaD0Ci
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Acked-by: Brian Cain <bcain@quicinc.com>
+
+On 25/06/22 12:16, Christophe Leroy wrote:
+>
+> Le 24/06/2022 à 20:32, Sathvika Vasireddy a écrit :
+>> objtool is throwing *unannotated intra-function call*
+>> warnings with a few instructions that are marked
+>> unreachable. Remove unreachable() from WARN_ON()
+>> to fix these warnings, as the codegen remains same
+>> with and without unreachable() in WARN_ON().
+> Did you try the two exemples described in commit 1e688dd2a3d6
+> ("powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with
+> asm goto") ?
+>
+> Without your patch:
+>
+> 00000640 <test>:
+>    640:	81 23 00 84 	lwz     r9,132(r3)
+>    644:	71 29 40 00 	andi.   r9,r9,16384
+>    648:	40 82 00 0c 	bne     654 <test+0x14>
+>    64c:	80 63 00 0c 	lwz     r3,12(r3)
+>    650:	4e 80 00 20 	blr
+>    654:	0f e0 00 00 	twui    r0,0
+>
+> 00000658 <test9w>:
+>    658:	2c 04 00 00 	cmpwi   r4,0
+>    65c:	41 82 00 0c 	beq     668 <test9w+0x10>
+>    660:	7c 63 23 96 	divwu   r3,r3,r4
+>    664:	4e 80 00 20 	blr
+>    668:	0f e0 00 00 	twui    r0,0
+>    66c:	38 60 00 00 	li      r3,0
+>    670:	4e 80 00 20 	blr
+>
+>
+> With your patch:
+>
+> 00000640 <test>:
+>    640:	81 23 00 84 	lwz     r9,132(r3)
+>    644:	71 29 40 00 	andi.   r9,r9,16384
+>    648:	40 82 00 0c 	bne     654 <test+0x14>
+>    64c:	80 63 00 0c 	lwz     r3,12(r3)
+>    650:	4e 80 00 20 	blr
+>    654:	0f e0 00 00 	twui    r0,0
+>    658:	4b ff ff f4 	b       64c <test+0xc>		<==
+>
+> 0000065c <test9w>:
+>    65c:	2c 04 00 00 	cmpwi   r4,0
+>    660:	41 82 00 0c 	beq     66c <test9w+0x10>
+>    664:	7c 63 23 96 	divwu   r3,r3,r4
+>    668:	4e 80 00 20 	blr
+>    66c:	0f e0 00 00 	twui    r0,0
+>    670:	38 60 00 00 	li      r3,0			<==
+>    674:	4e 80 00 20 	blr				<==
+>    678:	38 60 00 00 	li      r3,0
+>    67c:	4e 80 00 20 	blr
+>
+The builtin variant of unreachable (__builtin_unreachable()) works,
+and the codegen remains the same.
+
+How about using that instead of unreachable() ?
+
+
+- Sathvika
+
+--------------d9XJW9h4ePxCRrHZwBFaD0Ci
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix"><font face="monospace">On 25/06/22
+        12:16, Christophe Leroy wrote:</font><br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu">
+      <pre class="moz-quote-pre" wrap="">
+
+Le 24/06/2022 à 20:32, Sathvika Vasireddy a écrit :
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">objtool is throwing *unannotated intra-function call*
+warnings with a few instructions that are marked
+unreachable. Remove unreachable() from WARN_ON()
+to fix these warnings, as the codegen remains same
+with and without unreachable() in WARN_ON().
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Did you try the two exemples described in commit 1e688dd2a3d6 
+("powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with 
+asm goto") ?
+
+Without your patch:
+
+00000640 &lt;test&gt;:
+  640:	81 23 00 84 	lwz     r9,132(r3)
+  644:	71 29 40 00 	andi.   r9,r9,16384
+  648:	40 82 00 0c 	bne     654 &lt;test+0x14&gt;
+  64c:	80 63 00 0c 	lwz     r3,12(r3)
+  650:	4e 80 00 20 	blr
+  654:	0f e0 00 00 	twui    r0,0
+
+00000658 &lt;test9w&gt;:
+  658:	2c 04 00 00 	cmpwi   r4,0
+  65c:	41 82 00 0c 	beq     668 &lt;test9w+0x10&gt;
+  660:	7c 63 23 96 	divwu   r3,r3,r4
+  664:	4e 80 00 20 	blr
+  668:	0f e0 00 00 	twui    r0,0
+  66c:	38 60 00 00 	li      r3,0
+  670:	4e 80 00 20 	blr
+
+
+With your patch:
+
+00000640 &lt;test&gt;:
+  640:	81 23 00 84 	lwz     r9,132(r3)
+  644:	71 29 40 00 	andi.   r9,r9,16384
+  648:	40 82 00 0c 	bne     654 &lt;test+0x14&gt;
+  64c:	80 63 00 0c 	lwz     r3,12(r3)
+  650:	4e 80 00 20 	blr
+  654:	0f e0 00 00 	twui    r0,0
+  658:	4b ff ff f4 	b       64c &lt;test+0xc&gt;		&lt;==
+
+0000065c &lt;test9w&gt;:
+  65c:	2c 04 00 00 	cmpwi   r4,0
+  660:	41 82 00 0c 	beq     66c &lt;test9w+0x10&gt;
+  664:	7c 63 23 96 	divwu   r3,r3,r4
+  668:	4e 80 00 20 	blr
+  66c:	0f e0 00 00 	twui    r0,0
+  670:	38 60 00 00 	li      r3,0			&lt;==
+  674:	4e 80 00 20 	blr				&lt;==
+  678:	38 60 00 00 	li      r3,0
+  67c:	4e 80 00 20 	blr
+
+</pre>
+    </blockquote>
+    <font face="monospace">The builtin variant of unreachable (<font
+        color="#151415"><span style="font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; text-align: left; text-indent: 0px; text-transform: none; white-space: pre-wrap; word-spacing: 0px; -webkit-text-stroke-width: 0px; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">__builtin_unreachable()</span></font>)
+      works,</font><br>
+    <font face="monospace">and the codegen remains the same. <br>
+    </font>
+    <p><font face="monospace">How about using that instead of
+        unreachable() ?</font></p>
+    <p><font face="monospace"><br>
+      </font></p>
+    <p><font face="monospace">- Sathvika<br>
+      </font></p>
+  </body>
+</html>
+
+--------------d9XJW9h4ePxCRrHZwBFaD0Ci--
+
