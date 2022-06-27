@@ -1,92 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4304955B8D4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 11:01:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5809E55B95E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 13:41:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LWhXY1KFxz3c00
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 19:01:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LWm60165yz3cgT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 21:41:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gdKXSh5A;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=uuWR2vCG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gdKXSh5A;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=uuWR2vCG;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWhWq155lz30F8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 19:00:22 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25R8BuKP028114;
-	Mon, 27 Jun 2022 09:00:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=7ybi4uuv2UsSkdNGFKxhBjHg13ZgnNx2vnAcPa0TLDk=;
- b=gdKXSh5AJCNeUzLE0CSE5iWcQPI64C3VDbZiwrpqBpJGuFwwJvLCZYrR+Y7q+gv3p2R2
- LKlTZUl89FO7mn9AQZ4We2m8xm4QyFsuk4Me72pFYIKsARAZe96errc9ued2KKT4+91B
- PPKBViYQl/GZ0p/0m9t/o0NwOKmKnLmE3Qbds/6+s+sBNomRl+o1V/hyYQvxpekOCGpy
- FxqkndyKVTRzjtulkdTSPDiSO4ZxydCZVUfo5/aio1+j0osWBdy3n0uqoXlkfPAugVUy
- zghRE7I2LhqYe7MDiHsY1Dbn5l/6kGuXDd2uIc3bGT8ksLb5JRxM5yNeleWZta2Pnp28 QQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gy8tx1a0x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 09:00:11 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25R8EYFm016389;
-	Mon, 27 Jun 2022 09:00:10 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gy8tx19y3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 09:00:10 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25R8opZ9019411;
-	Mon, 27 Jun 2022 09:00:08 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma03ams.nl.ibm.com with ESMTP id 3gwt08tkch-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jun 2022 09:00:08 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25R905Qb23003460
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jun 2022 09:00:06 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2F464C04E;
-	Mon, 27 Jun 2022 09:00:05 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B30C4C046;
-	Mon, 27 Jun 2022 09:00:04 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.15.159])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Mon, 27 Jun 2022 09:00:04 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
-Subject: Re: [PATCH] powerpc: perf: Fix refcount leak bug in imc-pmu.c
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20220618071353.4059000-1-windhl@126.com>
-Date: Mon, 27 Jun 2022 14:30:01 +0530
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5B61320C-C37F-4B60-BE2B-461722D44742@linux.vnet.ibm.com>
-References: <20220618071353.4059000-1-windhl@126.com>
-To: Liang He <windhl@126.com>
-X-Mailer: Apple Mail (2.3696.100.31)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zXsXuV6a2jBqMgCfbfqhXcrLvpQo9LTl
-X-Proofpoint-ORIG-GUID: gSeTZLwweVeVvJgGXu_YjN97T9abW9_b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-27_06,2022-06-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 phishscore=0 adultscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=999 clxscore=1011 bulkscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206270036
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWm5L6FDGz3bnV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 21:41:09 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id B60CBB8112E;
+	Mon, 27 Jun 2022 11:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5186C3411D;
+	Mon, 27 Jun 2022 11:41:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1656330063;
+	bh=n1kN6QUvuP5FKMu+ird+MiX9I1OOaASG6N4jrNYqVUQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uuWR2vCGy7n/zFCUklVk6qnSipATzZX3AKhQxOMf3BOHWyc66D7jP1QRIo9y4h+3J
+	 gthcJVJJI6vRNF+Z0RpTa01yU9Uw+i0RgVbQqqohNuLS2Zh+cJEvoMZccUc6TPLGQv
+	 1AiIrWjwa5dgjWmvL76RNJuHa113O2v8BbVn2iHc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 5.18 071/181] perf test topology: Use !strncmp(right platform) to fix guest PPC comparision check
+Date: Mon, 27 Jun 2022 13:20:44 +0200
+Message-Id: <20220627111946.622947848@linuxfoundation.org>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220627111944.553492442@linuxfoundation.org>
+References: <20220627111944.553492442@linuxfoundation.org>
+User-Agent: quilt/0.66
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,67 +58,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Ian Rogers <irogers@google.com>, Athira Jajeev <atrajeev@linux.vnet.ibm.com>, Nageswara R Sastry <rnsastry@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Thomas Richter <tmricht@linux.ibm.com>, stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Jiri Olsa <jolsa@kernel.org>, Kajol Jain <kjain@linux.ibm.com>, Disha Goel <disgoel@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+
+[ Upstream commit b236371421df57b93fc49c4b9d0e53bd1aab2b2e ]
+
+commit cfd7092c31aed728 ("perf test session topology: Fix test to skip
+the test in guest environment") added check to skip the testcase if the
+socket_id can't be fetched from topology info.
+
+But the condition check uses strncmp which should be changed to !strncmp
+and to correctly match platform.
+
+Fix this condition check.
+
+Fixes: cfd7092c31aed728 ("perf test session topology: Fix test to skip the test in guest environment")
+Reported-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nageswara R Sastry <rnsastry@linux.ibm.com>
+Link: https://lore.kernel.org/r/20220610135939.63361-1-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/perf/tests/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/perf/tests/topology.c b/tools/perf/tests/topology.c
+index d23a9e322ff5..0b4f61b6cc6b 100644
+--- a/tools/perf/tests/topology.c
++++ b/tools/perf/tests/topology.c
+@@ -115,7 +115,7 @@ static int check_cpu_topology(char *path, struct perf_cpu_map *map)
+ 	 * physical_package_id will be set to -1. Hence skip this
+ 	 * test if physical_package_id returns -1 for cpu from perf_cpu_map.
+ 	 */
+-	if (strncmp(session->header.env.arch, "powerpc", 7)) {
++	if (!strncmp(session->header.env.arch, "ppc64le", 7)) {
+ 		if (cpu__get_socket_id(perf_cpu_map__cpu(map, 0)) == -1)
+ 			return TEST_SKIP;
+ 	}
+-- 
+2.35.1
 
 
-> On 18-Jun-2022, at 12:43 PM, Liang He <windhl@126.com> wrote:
->=20
-> In update_events_in_group(), of_find_node_by_phandle() will return
-> a node pointer with refcount incremented. We should use of_node_put()
-> in fail path or when it is not used anymore.
->=20
-> Signed-off-by: Liang He <windhl@126.com>
-
-Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
-> arch/powerpc/perf/imc-pmu.c | 10 ++++++++--
-> 1 file changed, 8 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-> index d7976ab40d38..d517aba94d1b 100644
-> --- a/arch/powerpc/perf/imc-pmu.c
-> +++ b/arch/powerpc/perf/imc-pmu.c
-> @@ -240,8 +240,10 @@ static int update_events_in_group(struct =
-device_node *node, struct imc_pmu *pmu)
-> 	ct =3D of_get_child_count(pmu_events);
->=20
-> 	/* Get the event prefix */
-> -	if (of_property_read_string(node, "events-prefix", &prefix))
-> +	if (of_property_read_string(node, "events-prefix", &prefix)) {
-> +		of_node_put(pmu_events);
-> 		return 0;
-> +	}
->=20
-> 	/* Get a global unit and scale data if available */
-> 	if (of_property_read_string(node, "scale", &g_scale))
-> @@ -255,8 +257,10 @@ static int update_events_in_group(struct =
-device_node *node, struct imc_pmu *pmu)
->=20
-> 	/* Allocate memory for the events */
-> 	pmu->events =3D kcalloc(ct, sizeof(struct imc_events), =
-GFP_KERNEL);
-> -	if (!pmu->events)
-> +	if (!pmu->events) {
-> +		of_node_put(pmu_events);
-> 		return -ENOMEM;
-> +	}
->=20
-> 	ct =3D 0;
-> 	/* Parse the events and update the struct */
-> @@ -266,6 +270,8 @@ static int update_events_in_group(struct =
-device_node *node, struct imc_pmu *pmu)
-> 			ct++;
-> 	}
->=20
-> +	of_node_put(pmu_events);
-> +
-> 	/* Allocate memory for attribute group */
-> 	attr_group =3D kzalloc(sizeof(*attr_group), GFP_KERNEL);
-> 	if (!attr_group) {
-> --=20
-> 2.25.1
->=20
 
