@@ -2,52 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AAE55BBFF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 22:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7835455BC13
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 23:12:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LWzvy2cLKz3cgW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 06:33:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LX0md2PmXz3cDR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 07:12:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FqX5yoDL;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=boSSFRYv;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FqX5yoDL;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=boSSFRYv;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWzvK1ZkBz3bll
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 06:33:17 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id D7ACF61780
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 20:33:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0A4C341CC;
-	Mon, 27 Jun 2022 20:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656361992;
-	bh=PpGb9nzERWRd0fU4h3E+hTdsSoxXS9SYCNSRtsuUbto=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=FqX5yoDLM7sKVevDtlWXafjla7YHDufIDLPwILIga11TsCX441Iywq8rSWSXOFiK6
-	 88+/ZFvdvKxF/ruP4+NqCbJlSymWw2Ppa3kzD3TXBMKdvVcGeLfNhIxnBisGclLMLg
-	 8jSiznA5Y3djbos/UTTNYJV4Z5MYkDDjU+Vezufarj7keUttKiPHStnOYNJeLW2KW7
-	 MGGn7ruzlaARAABC7e4Uf93lUbBChGrbNPS6E67NDmo6cYuzOLZWHgNbqVtBEv/+xp
-	 z16A4oimU6yDu00QP9vSfNBTLd+FZPz10AcAmiN9VmBpuDT84EGLipdWDtwtm9ROld
-	 uUd48taxwhBag==
-From: Mark Brown <broonie@kernel.org>
-To: linux-spi@vger.kernel.org, broonie@kernel.org, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20220613121946.136193-1-broonie@kernel.org>
-References: <20220613121946.136193-1-broonie@kernel.org>
-Subject: Re: [PATCH] spi: mpc52xx-psc: Switch to using core message queue
-Message-Id: <165636199122.4094756.6914973829832652160.b4-ty@kernel.org>
-Date: Mon, 27 Jun 2022 21:33:11 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LX0m10hltz2ywr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 07:11:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656364321; x=1687900321;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UY4ciCF2PfXCTOF3LZITbZsRaQFQCfpZuDqHJ3No5q8=;
+  b=boSSFRYvoouRDfMrCciH7m/SiyZmFjLwoXfRLNHYWm65dHH4Myi+FSY2
+   84JMM4LGdFKZcbRzPd6EBWlM2hgwKa3IZcPrpt3tLu6f9GHWDnnxsgVtw
+   5V0MFeEsNFDWe3gFKp92GJhgvVXV7wr5zg/A/Pp59Ijy7bhcqrYJ+hBt8
+   WmsfeHzAo6nOKFQJ1hs0yGvJqa7YJlw/ClM2QUTBaFEIYLWVVycNkHZzd
+   /Bo7bKFQJqQCH3bltcjjNNdo53AAnaeWi0ckhOFFjZYVf/+ICKjIBLE52
+   YaXS9ZUNmELMbHZzRU+HETD2wEikjiQU+dnxi4QdqmPMdEInEyPHkv43L
+   w==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10391"; a="280324385"
+X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
+   d="scan'208";a="280324385"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 14:11:52 -0700
+X-IronPort-AV: E=Sophos;i="5.92,227,1650956400"; 
+   d="scan'208";a="732480739"
+Received: from jsagoe-mobl1.amr.corp.intel.com (HELO [10.209.12.66]) ([10.209.12.66])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2022 14:11:52 -0700
+Message-ID: <7abba0a4-2480-18a1-4d9c-5973bb97b059@intel.com>
+Date: Mon, 27 Jun 2022 14:10:53 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [RFC PATCH v2 0/3] powerpc/pseries: add support for local secure
+ storage called Platform KeyStore(PKS)
+Content-Language: en-US
+To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-fsdevel@vger.kernel.org
+References: <20220622215648.96723-1-nayna@linux.ibm.com>
+From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <20220622215648.96723-1-nayna@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,43 +69,13 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Matthew Garrett <mjg59@srcf.ucam.org>, linux-efi@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Dov Murik <dovmurik@linux.ibm.com>, linux-security-module <linux-security-module@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, George Wilson <gcwilson@linux.ibm.com>, gjoyce@ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 13 Jun 2022 13:19:46 +0100, Mark Brown wrote:
-> We deprecated open coding of the transfer queue back in 2017 so it's high
-> time we finished up converting drivers to use the standard message queue
-> code. The mpc52xx-psc driver is fairly straightforward so convert to use
-> transfer_one_message(), it looks like the driver would be a good fit for
-> transfer_one() with a little bit of updating but this smaller change seems
-> safer.
-> 
-> [...]
+On 6/22/22 14:56, Nayna Jain wrote:
+> * Renamed PKS driver to PLPKS to avoid naming conflict as mentioned by
+> Dave Hanson.
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
-Thanks!
-
-[1/1] spi: mpc52xx-psc: Switch to using core message queue
-      commit: 145cfc3840e5931a789a8e2e76af841ab4cad44b
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Thank you for doing this!  The new naming looks much less likely to
+cause confusion.
