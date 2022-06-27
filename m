@@ -1,60 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC9B55B897
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 10:27:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4304955B8D4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 11:01:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LWgnh0Ccfz3c95
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 18:27:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LWhXY1KFxz3c00
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jun 2022 19:01:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gdKXSh5A;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.41; helo=mail-qv1-f41.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gdKXSh5A;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWgnC6Hyqz3bls
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 18:26:55 +1000 (AEST)
-Received: by mail-qv1-f41.google.com with SMTP id 89so13833119qvc.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 01:26:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ir7A3VG3rQ4e3U1bE1FV/pPr5VS7k4YiEaqfUpRXgys=;
-        b=g1vTrqyH3AdsQ3K5arpm8ZluXOZZjiNhJubb3MGXy1JZKs+IbC4GPl4hbIqK3L1NI7
-         YrO8dOiyGZtSZNrpLn0uYuDuuFW7ejbO1ySeBAmQ8Ykzm8KYRLGrHsbs58qKa2P0gY22
-         3VnQi9WmOdMp8ufLqaDJ8ErqmMivX7NMq+bJ5B5LCvmZyyYKU/N05BBY9ZZUCTEyN3tW
-         XRh6qS9YGw3bqrZCzUg7wxYw4imGQB6f1zBN2UvNHXvUazEP6d+CCy/vjie3nR5YHKiR
-         Z4oSDu4mupY/hKZQppKFcpfxnsMB4OxRM8hwjXVsE5SrGnFKrRTAIs3MhtyKNOe6NqE3
-         /kug==
-X-Gm-Message-State: AJIora87nlm3yW8nr4fxWV0CYTQDXAw2MaLL5gvAEiCxVmgfQ3QmCwBZ
-	b5k878QUm+oZwXG9MnB8nxfrcgmShfoWfg==
-X-Google-Smtp-Source: AGRyM1thEWyNqrYC279prxFc2u9p7VdRCzqFuh2U8zQwq/xxNV91KgnVhOtSrCmiiN/8P7QAuAP1dg==
-X-Received: by 2002:ac8:5e4e:0:b0:306:773f:b747 with SMTP id i14-20020ac85e4e000000b00306773fb747mr8179927qtx.499.1656318411982;
-        Mon, 27 Jun 2022 01:26:51 -0700 (PDT)
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com. [209.85.128.173])
-        by smtp.gmail.com with ESMTPSA id 194-20020a370acb000000b006a8b6848556sm8049001qkk.7.2022.06.27.01.26.50
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jun 2022 01:26:51 -0700 (PDT)
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-3176d94c236so78078637b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 01:26:50 -0700 (PDT)
-X-Received: by 2002:a81:a092:0:b0:318:5c89:a935 with SMTP id
- x140-20020a81a092000000b003185c89a935mr14193176ywg.383.1656318410280; Mon, 27
- Jun 2022 01:26:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220617125750.728590-1-arnd@kernel.org> <20220617125750.728590-4-arnd@kernel.org>
- <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
-In-Reply-To: <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 27 Jun 2022 10:26:37 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVewn0OYA9oJfStk0-+vCKAUou+4Mvd5H2kmrSks1p5jg@mail.gmail.com>
-Message-ID: <CAMuHMdVewn0OYA9oJfStk0-+vCKAUou+4Mvd5H2kmrSks1p5jg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
-To: Michael Schmitz <schmitzmic@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LWhWq155lz30F8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 19:00:22 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25R8BuKP028114;
+	Mon, 27 Jun 2022 09:00:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to; s=pp1;
+ bh=7ybi4uuv2UsSkdNGFKxhBjHg13ZgnNx2vnAcPa0TLDk=;
+ b=gdKXSh5AJCNeUzLE0CSE5iWcQPI64C3VDbZiwrpqBpJGuFwwJvLCZYrR+Y7q+gv3p2R2
+ LKlTZUl89FO7mn9AQZ4We2m8xm4QyFsuk4Me72pFYIKsARAZe96errc9ued2KKT4+91B
+ PPKBViYQl/GZ0p/0m9t/o0NwOKmKnLmE3Qbds/6+s+sBNomRl+o1V/hyYQvxpekOCGpy
+ FxqkndyKVTRzjtulkdTSPDiSO4ZxydCZVUfo5/aio1+j0osWBdy3n0uqoXlkfPAugVUy
+ zghRE7I2LhqYe7MDiHsY1Dbn5l/6kGuXDd2uIc3bGT8ksLb5JRxM5yNeleWZta2Pnp28 QQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gy8tx1a0x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jun 2022 09:00:11 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25R8EYFm016389;
+	Mon, 27 Jun 2022 09:00:10 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gy8tx19y3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jun 2022 09:00:10 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25R8opZ9019411;
+	Mon, 27 Jun 2022 09:00:08 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma03ams.nl.ibm.com with ESMTP id 3gwt08tkch-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jun 2022 09:00:08 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25R905Qb23003460
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jun 2022 09:00:06 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2F464C04E;
+	Mon, 27 Jun 2022 09:00:05 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3B30C4C046;
+	Mon, 27 Jun 2022 09:00:04 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.15.159])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+	Mon, 27 Jun 2022 09:00:04 +0000 (GMT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
+Subject: Re: [PATCH] powerpc: perf: Fix refcount leak bug in imc-pmu.c
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20220618071353.4059000-1-windhl@126.com>
+Date: Mon, 27 Jun 2022 14:30:01 +0530
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5B61320C-C37F-4B60-BE2B-461722D44742@linux.vnet.ibm.com>
+References: <20220618071353.4059000-1-windhl@126.com>
+To: Liang He <windhl@126.com>
+X-Mailer: Apple Mail (2.3696.100.31)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zXsXuV6a2jBqMgCfbfqhXcrLvpQo9LTl
+X-Proofpoint-ORIG-GUID: gSeTZLwweVeVvJgGXu_YjN97T9abW9_b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-27_06,2022-06-24_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 phishscore=0 adultscore=0 mlxscore=0 suspectscore=0
+ mlxlogscore=999 clxscore=1011 bulkscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206270036
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,38 +98,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>, Arnd Bergmann <arnd@kernel.org>, scsi <linux-scsi@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, Miquel van Smoorenburg <mikevs@xs4all.net>, linux-m68k <linux-m68k@lists.linux-m68k.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Denis Efremov <efremov@linux.com>, Mark Salyzyn <salyzyn@android.com>, Christoph Hellwig <hch@infradead.org>, Linux IOMMU <iommu@lists.linux-foundation.org>, Matt Wang <wwentao@vmware.com>, Parisc List <linux-parisc@vger.kernel.org>, alpha <linux-alpha@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-kernel@vger.kernel.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
 
-On Sat, Jun 18, 2022 at 3:06 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> Am 18.06.2022 um 00:57 schrieb Arnd Bergmann:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > All architecture-independent users of virt_to_bus() and bus_to_virt()
-> > have been fixed to use the dma mapping interfaces or have been
-> > removed now.  This means the definitions on most architectures, and the
-> > CONFIG_VIRT_TO_BUS symbol are now obsolete and can be removed.
-> >
-> > The only exceptions to this are a few network and scsi drivers for m68k
-> > Amiga and VME machines and ppc32 Macintosh. These drivers work correctly
-> > with the old interfaces and are probably not worth changing.
->
-> The Amiga SCSI drivers are all old WD33C93 ones, and replacing
-> virt_to_bus by virt_to_phys in the dma_setup() function there would
-> cause no functional change at all.
 
-FTR, the sgiwd93 driver use dma_map_single().
+> On 18-Jun-2022, at 12:43 PM, Liang He <windhl@126.com> wrote:
+>=20
+> In update_events_in_group(), of_find_node_by_phandle() will return
+> a node pointer with refcount incremented. We should use of_node_put()
+> in fail path or when it is not used anymore.
+>=20
+> Signed-off-by: Liang He <windhl@126.com>
 
-Gr{oetje,eeting}s,
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+> arch/powerpc/perf/imc-pmu.c | 10 ++++++++--
+> 1 file changed, 8 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+> index d7976ab40d38..d517aba94d1b 100644
+> --- a/arch/powerpc/perf/imc-pmu.c
+> +++ b/arch/powerpc/perf/imc-pmu.c
+> @@ -240,8 +240,10 @@ static int update_events_in_group(struct =
+device_node *node, struct imc_pmu *pmu)
+> 	ct =3D of_get_child_count(pmu_events);
+>=20
+> 	/* Get the event prefix */
+> -	if (of_property_read_string(node, "events-prefix", &prefix))
+> +	if (of_property_read_string(node, "events-prefix", &prefix)) {
+> +		of_node_put(pmu_events);
+> 		return 0;
+> +	}
+>=20
+> 	/* Get a global unit and scale data if available */
+> 	if (of_property_read_string(node, "scale", &g_scale))
+> @@ -255,8 +257,10 @@ static int update_events_in_group(struct =
+device_node *node, struct imc_pmu *pmu)
+>=20
+> 	/* Allocate memory for the events */
+> 	pmu->events =3D kcalloc(ct, sizeof(struct imc_events), =
+GFP_KERNEL);
+> -	if (!pmu->events)
+> +	if (!pmu->events) {
+> +		of_node_put(pmu_events);
+> 		return -ENOMEM;
+> +	}
+>=20
+> 	ct =3D 0;
+> 	/* Parse the events and update the struct */
+> @@ -266,6 +270,8 @@ static int update_events_in_group(struct =
+device_node *node, struct imc_pmu *pmu)
+> 			ct++;
+> 	}
+>=20
+> +	of_node_put(pmu_events);
+> +
+> 	/* Allocate memory for attribute group */
+> 	attr_group =3D kzalloc(sizeof(*attr_group), GFP_KERNEL);
+> 	if (!attr_group) {
+> --=20
+> 2.25.1
+>=20
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
