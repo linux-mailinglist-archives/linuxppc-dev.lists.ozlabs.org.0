@@ -1,55 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7602955C098
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 13:16:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB80A55C09B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 13:18:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXMTr2vpzz3chr
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 21:16:00 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N70eu5en;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXMXW64cSz3cjJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 21:18:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N70eu5en;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXMTF688kz3bq2
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 21:15:29 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id C53AB61A78;
-	Tue, 28 Jun 2022 11:15:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E243BC36AE2;
-	Tue, 28 Jun 2022 11:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656414927;
-	bh=mvtI/btKWfnTj6WXNoVCJqoXnRiwk3z7k27yaBrHk6c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N70eu5enrxm4OiBTiSAzky1+jssaY1i3TRwY+QbOROq19VdriskmFaEvqP85ZzqfP
-	 6qq/4zdDHuwpse8fQj+G22hgEoNyy+zmmFrhKeIUq6rS2LSzwiewGVn6u0EQWMHAHc
-	 lQv0de9YCL/4tlYXZnL/5ty4nBMsWSiCPjoLT5NevrNiaC9KcXrZsAeuEeqdCMsMtg
-	 4nHXglGzIHK2evVEkRuYL9a4ZKsoMckT9CdYW0rohjKedWtBAsZ3xdFu5IN6+EsnF6
-	 0PrD1rJAs6gNPi9tz+I0vwpVnXTojbzLDaRO/bS+rdTiW5LGU3b9/kZGxu/9Q3gp2Q
-	 FQJK6B45L/mXg==
-Date: Tue, 28 Jun 2022 12:15:15 +0100
-From: Will Deacon <will@kernel.org>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Subject: Re: [PATCH -next v6 02/10] arm64: asm-extable: move data fields
-Message-ID: <20220628111514.GB23703@willie-the-truck>
-References: <20220621072638.1273594-1-tongtiangen@huawei.com>
- <20220621072638.1273594-3-tongtiangen@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXMX40TZ8z3brR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 21:17:55 +1000 (AEST)
+Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.55])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LXMTp2KqRzkWfG;
+	Tue, 28 Jun 2022 19:15:58 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 28 Jun 2022 19:17:17 +0800
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Tue, 28 Jun 2022 19:17:16 +0800
+Message-ID: <88e574b4-3191-8c0f-1dc3-7c54c426142c@huawei.com>
+Date: Tue, 28 Jun 2022 19:17:15 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220621072638.1273594-3-tongtiangen@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH -next v6 00/10]arm64: add machine check safe support
+Content-Language: en-US
+To: Tong Tiangen <tongtiangen@huawei.com>, Mark Rutland
+	<mark.rutland@arm.com>, James Morse <james.morse@arm.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, "Ingo
+ Molnar" <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Robin Murphy
+	<robin.murphy@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, Michael Ellerman <mpe@ellerman.id.au>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+	<paulus@samba.org>, <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>
+References: <20220621072638.1273594-1-tongtiangen@huawei.com>
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20220621072638.1273594-1-tongtiangen@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.243]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,30 +62,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Kefeng Wang <wangkefeng.wang@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, Guohanjun <guohanjun@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Ingo Molnar <mingo@redhat.com>, Catalin Marinas <catalin.marinas@arm.com>, Xie XiuQi <xiexiuqi@huawei.com>, Borislav Petkov <bp@alien8.de>, Alexander Viro <viro@zeniv.linux.org.uk>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Xie XiuQi <xiexiuqi@huawei.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Guohanjun <guohanjun@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 21, 2022 at 07:26:30AM +0000, Tong Tiangen wrote:
-> In subsequent patches we'll need to fill in extable data fields in
-> regular assembly files. In preparation for this, move the definitions of
-> the extable data fields earlier in asm-extable.h so that they are
-> defined for both assembly and C files.
-> 
-> There should be no functional change as a result of this patch.
-> 
-> Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-> Signed-off-by: Tong Tiangen <tongtiangen@huawei.com>
-> ---
->  arch/arm64/include/asm/asm-extable.h | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
 
-This (and the following) patch should retain Mark's authorship information
-as they are taken from his git tree:
+On 2022/6/21 15:26, Tong Tiangen wrote:
+> With the increase of memory capacity and density, the probability of
+> memory error increases. The increasing size and density of server RAM
+> in the data center and cloud have shown increased uncorrectable memory
+> errors.
+>
+> Currently, the kernel has a mechanism to recover from hardware memory
+> errors. This patchset provides an new recovery mechanism.
+>
+> For arm64, the hardware memory error handling is do_sea() which divided
+> into two cases:
+>   1. The user state consumed the memory errors, the solution is kill the
+>      user process and isolate the error page.
+>   2. The kernel state consumed the memory errors, the solution is panic.
+>
+> For case 2, Undifferentiated panic maybe not the optimal choice, it can be
+> handled better, in some scenarios, we can avoid panic, such as uaccess, if the
+> uaccess fails due to memory error, only the user process will be affected,
+> kill the user process and isolate the user page with hardware memory errors
+> is a better choice.
+>
+> This patchset can be divided into two parts:
+>   1. Patch 1~6    - do some restructuring to arm64 extable.
+>   2. Patch 7~10   - arm64 add support for machine check safe framework,
+>   then ,add two specific scenarios(uaccess/cow) to machine check safe.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/mark/linux.git/log/?h=arm64/extable/asm-uaccess
+It's a good to see more RAS feature on arm64, and we do meet some panic
 
-I plan to apply the first six patches for now, so I'll fix that up at the
-same time.
+during copy_from/to_user and CoW processing in our production, for series，
 
-Will
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+
+>
+> Since V5:
+>   1. Add patch2/3 to add uaccess assembly helpers.
+>   2. Optimize the implementation logic of arm64_do_kernel_sea() in patch8.
+>   3. Remove kernel access fixup in patch9.
+>   All suggestion are from Mark.
+>
+> Since V4:
+>   1. According Michael's suggestion, add patch5.
+>   2. According Mark's suggestiog, do some restructuring to arm64
+>   extable, then a new adaptation of machine check safe support is made based
+>   on this.
+>   3. According Mark's suggestion, support machine check safe in do_mte() in
+>   cow scene.
+>   4. In V4, two patches have been merged into -next, so V5 not send these
+>   two patches.
+>
+> Since V3:
+>   1. According to Robin's suggestion, direct modify user_ldst and
+>   user_ldp in asm-uaccess.h and modify mte.S.
+>   2. Add new macro USER_MC in asm-uaccess.h, used in copy_from_user.S
+>   and copy_to_user.S.
+>   3. According to Robin's suggestion, using micro in copy_page_mc.S to
+>   simplify code.
+>   4. According to KeFeng's suggestion, modify powerpc code in patch1.
+>   5. According to KeFeng's suggestion, modify mm/extable.c and some code
+>   optimization.
+>
+> Since V2:
+>   1. According to Mark's suggestion, all uaccess can be recovered due to
+>      memory error.
+>   2. Scenario pagecache reading is also supported as part of uaccess
+>      (copy_to_user()) and duplication code problem is also solved.
+>      Thanks for Robin's suggestion.
+>   3. According Mark's suggestion, update commit message of patch 2/5.
+>   4. According Borisllav's suggestion, update commit message of patch 1/5.
+>
+> Since V1:
+>   1.Consistent with PPC/x86, Using CONFIG_ARCH_HAS_COPY_MC instead of
+>     ARM64_UCE_KERNEL_RECOVERY.
+>   2.Add two new scenes, cow and pagecache reading.
+>   3.Fix two small bug(the first two patch).
+>
+> V1 in here:
+> https://lore.kernel.org/lkml/20220323033705.3966643-1-tongtiangen@huawei.com/
+>
+> Tong Tiangen (10):
+>    arm64: extable: add new extable type EX_TYPE_KACCESS_ERR_ZERO support
+>    arm64: asm-extable: move data fields
+>    arm64: asm-extable: add asm uacess helpers
+>    arm64: extable: make uaaccess helper use extable type
+>      EX_TYPE_UACCESS_ERR_ZERO
+>    arm64: extable: move _cond_extable to _cond_uaccess_extable
+>    arm64: extable: cleanup redundant extable type EX_TYPE_FIXUP
+>    Add generic fallback version of copy_mc_to_user()
+>    arm64: add support for machine check error safe
+>    arm64: add uaccess to machine check safe
+>    arm64: add cow to machine check safe
+>
+>   arch/arm64/Kconfig                   |  1 +
+>   arch/arm64/include/asm/asm-extable.h | 84 ++++++++++++++++++-------
+>   arch/arm64/include/asm/asm-uaccess.h | 12 ++--
+>   arch/arm64/include/asm/assembler.h   |  8 ++-
+>   arch/arm64/include/asm/extable.h     |  1 +
+>   arch/arm64/include/asm/mte.h         |  4 ++
+>   arch/arm64/include/asm/page.h        | 10 +++
+>   arch/arm64/include/asm/uaccess.h     | 94 ++++++++++++++--------------
+>   arch/arm64/lib/Makefile              |  2 +
+>   arch/arm64/lib/copy_page_mc.S        | 82 ++++++++++++++++++++++++
+>   arch/arm64/lib/mte.S                 | 19 ++++++
+>   arch/arm64/mm/copypage.c             | 41 +++++++++---
+>   arch/arm64/mm/extable.c              | 21 ++++++-
+>   arch/arm64/mm/fault.c                | 29 ++++++++-
+>   arch/powerpc/include/asm/uaccess.h   |  1 +
+>   arch/x86/include/asm/uaccess.h       |  1 +
+>   include/linux/highmem.h              |  8 +++
+>   include/linux/uaccess.h              |  9 +++
+>   mm/memory.c                          |  2 +-
+>   19 files changed, 339 insertions(+), 90 deletions(-)
+>   create mode 100644 arch/arm64/lib/copy_page_mc.S
+>
