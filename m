@@ -1,23 +1,23 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6202B55E184
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 15:34:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A433255E1C2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 15:34:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXQY61zsFz3dt0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 23:34:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXQYW4MVtz3fNH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 23:34:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=heyquark.com (client-ip=2001:4b98:dc4:8::232; helo=relay12.mail.gandi.net; envelope-from=ash@heyquark.com; receiver=<UNKNOWN>)
 Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [IPv6:2001:4b98:dc4:8::232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXQWL59ryz3dpB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 23:32:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXQWQ1Zkcz3drV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 23:32:33 +1000 (AEST)
 Received: (Authenticated sender: ash@heyquark.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id DA81920000A;
-	Tue, 28 Jun 2022 13:32:18 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id BBED820000E;
+	Tue, 28 Jun 2022 13:32:25 +0000 (UTC)
 From: Ash Logan <ash@heyquark.com>
 To: krzysztof.kozlowski+dt@linaro.org,
 	paulus@samba.org,
@@ -25,9 +25,9 @@ To: krzysztof.kozlowski+dt@linaro.org,
 	christophe.leroy@csgroup.eu,
 	robh+dt@kernel.org,
 	benh@kernel.crashing.org
-Subject: [PATCH v3 04/12] powerpc: wiiu: introduce wiiu platform
-Date: Tue, 28 Jun 2022 23:31:36 +1000
-Message-Id: <20220628133144.142185-5-ash@heyquark.com>
+Subject: [PATCH v3 05/12] powerpc: wiiu: declare as non-coherent
+Date: Tue, 28 Jun 2022 23:31:37 +1000
+Message-Id: <20220628133144.142185-6-ash@heyquark.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220628133144.142185-1-ash@heyquark.com>
 References: <20220622131037.57604-1-ash@heyquark.com>
@@ -49,62 +49,27 @@ Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Adds empty platforms/wiiu for Nintendo Wii U console
+The Nintendo Wii U requires explicit cache handling when interfacing
+with DMA devices.
 
 Signed-off-by: Ash Logan <ash@heyquark.com>
 ---
-v2->v3: Add help text for CONFIG_WIIU.
+ arch/powerpc/platforms/Kconfig.cputype | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/powerpc/platforms/Kconfig       | 1 +
- arch/powerpc/platforms/Makefile      | 1 +
- arch/powerpc/platforms/wiiu/Kconfig  | 8 ++++++++
- arch/powerpc/platforms/wiiu/Makefile | 1 +
- 4 files changed, 11 insertions(+)
- create mode 100644 arch/powerpc/platforms/wiiu/Kconfig
- create mode 100644 arch/powerpc/platforms/wiiu/Makefile
-
-diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-index d41dad227de8..c4a9c3c0b409 100644
---- a/arch/powerpc/platforms/Kconfig
-+++ b/arch/powerpc/platforms/Kconfig
-@@ -22,6 +22,7 @@ source "arch/powerpc/platforms/40x/Kconfig"
- source "arch/powerpc/platforms/amigaone/Kconfig"
- source "arch/powerpc/platforms/book3s/Kconfig"
- source "arch/powerpc/platforms/microwatt/Kconfig"
-+source "arch/powerpc/platforms/wiiu/Kconfig"
- 
- config KVM_GUEST
- 	bool "KVM Guest support"
-diff --git a/arch/powerpc/platforms/Makefile b/arch/powerpc/platforms/Makefile
-index 94470fb27c99..944ddd938711 100644
---- a/arch/powerpc/platforms/Makefile
-+++ b/arch/powerpc/platforms/Makefile
-@@ -24,3 +24,4 @@ obj-$(CONFIG_EMBEDDED6xx)	+= embedded6xx/
- obj-$(CONFIG_AMIGAONE)		+= amigaone/
- obj-$(CONFIG_PPC_BOOK3S)	+= book3s/
- obj-$(CONFIG_PPC_MICROWATT)	+= microwatt/
-+obj-$(CONFIG_WIIU)		+= wiiu/
-diff --git a/arch/powerpc/platforms/wiiu/Kconfig b/arch/powerpc/platforms/wiiu/Kconfig
-new file mode 100644
-index 000000000000..3834834c6bd7
---- /dev/null
-+++ b/arch/powerpc/platforms/wiiu/Kconfig
-@@ -0,0 +1,8 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+config WIIU
-+	bool "Nintendo Wii U"
-+	depends on PPC_BOOK3S_32
-+	help
-+	  Select WIIU if configuring for the Nintendo Wii U.
-+	  More information at: <https://linux-wiiu.org/>
-diff --git a/arch/powerpc/platforms/wiiu/Makefile b/arch/powerpc/platforms/wiiu/Makefile
-new file mode 100644
-index 000000000000..f66554cd5c45
---- /dev/null
-+++ b/arch/powerpc/platforms/wiiu/Makefile
-@@ -0,0 +1 @@
-+# SPDX-License-Identifier: GPL-2.0
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 9e2df4b66478..20eef6595a60 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -501,7 +501,7 @@ config NR_CPUS
+ config NOT_COHERENT_CACHE
+ 	bool
+ 	depends on 4xx || PPC_8xx || PPC_MPC512x || \
+-		GAMECUBE_COMMON || AMIGAONE
++		GAMECUBE_COMMON || AMIGAONE || WIIU
+ 	select ARCH_HAS_DMA_PREP_COHERENT
+ 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+ 	select ARCH_HAS_SYNC_DMA_FOR_CPU
 -- 
 2.36.1
 
