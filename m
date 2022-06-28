@@ -2,63 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE64155D6FA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 15:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2073555D83C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 15:19:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXQBC58vPz3cNM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 23:17:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXQDX0Yslz3cDf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 23:19:40 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=AT2t+rTr;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=R8forfur;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::131; helo=mail-lf1-x131.google.com; envelope-from=dvyukov@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::236; helo=mail-lj1-x236.google.com; envelope-from=dvyukov@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=AT2t+rTr;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=R8forfur;
 	dkim-atps=neutral
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXQ9Z2Tztz2xgX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 23:17:05 +1000 (AEST)
-Received: by mail-lf1-x131.google.com with SMTP id x3so22273016lfd.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 06:17:04 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXQCt0RXhz304r
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 23:19:05 +1000 (AEST)
+Received: by mail-lj1-x236.google.com with SMTP id q9so14896567ljp.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 06:19:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=X57uwopXnuwAGxBJfo3nXt3MJLIDmWTaNVtJmoGBIrs=;
-        b=AT2t+rTr3KgCX8AA8eDt3WrbxtMhylo4g1A8Gxq1VecJhw5AD9vpsoz/2xq2XcDZUW
-         tptAB4ig8ybMBqdwhS7/u5onHQdA/cUFgW1Ek02/2U2+Gtw3+8M6eRTac5lfoAAsHvgz
-         sF7cUuFbFVDR3quRsL6I5+94M/OE/UypLaxuAlAgRuKl+84iwY2kdjwtNwj/SnloBiO8
-         kk/odc9q3zUdO+qVSQVt5Aex46qwxbLOO+ypHzWbk1RNAm1y5U8i4UZ6aSNKoLhC42Tu
-         3hKZMpRbPk9Y7KC45eeLp7Q6lCepZHZhMUNxP/XCOKqwWXygnxUMKaLuCS5aiD3/K6PE
-         Yaeg==
+        bh=7CgIFPap6ypTTXSUzce/TyUpcucDj1PHP0T/IiacRoQ=;
+        b=R8forfurDLJ8yEQgrK1Gb8Cki0g4DIuH6+lLE3aUUOOdS/aY/oXjNGR0fzVW9mLNjJ
+         XcfLSibgmOBtdLOH/eN5bD1zWDVQq34FCmc7r1gYS6vGTTQG9EgADIrv3nOm2BaiYJvR
+         1W4prJNUBjLUZB5Jvrt9DFKOmCKZ+U+0oDN9cagMPv4KmjvX1HmYR7w5byLWFnfBhiYV
+         poW6VnkixBeyNVgz2/5UVaxhnaCjkNhgB/9+oChXvfat6z6Pvp6lL1+NW5ikOzf6URfN
+         JRluS+dz6OmwTzJZN9K49xuyyV9loFwNp4XGsGbnrHsUkR8kDLo8TWrzjaNOxdIRj2RT
+         HJHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=X57uwopXnuwAGxBJfo3nXt3MJLIDmWTaNVtJmoGBIrs=;
-        b=rA4Gu+W2oNV5VVPyXNyXq8/ZoJpxnjdTKifirrc2iclgg4HOR55zvHc7i1SKfSgAbb
-         vPr0DSYwKU+zIBbZnaiEvpliDNK0rLilsXRvofEGAUlzpoGEPClVILUycE80pZgLeH3a
-         d3e5LZVMpUVItUWC6mEDl5EDceViWxCy26ALkDvFtyYsHJ2AMIFp9IKAaIcssg3KPagL
-         8ZLiOKHnKrLWz514q1t6anOjfApDIhHjYC1tLGT19Gah9kmZhOjRnKLMy4CxjL5gzBEv
-         RTDwIKWoaXrt+gG8GxbxpnbbV3ivNfT4rCka7oWPbW6KaNGtWyldg9U6AptcjANSrdBh
-         5ejQ==
-X-Gm-Message-State: AJIora9DQ0LN8Ix7tlwcEX2ME7jgwNjaABwofdH0TBv6p8j6M6H6NbGh
-	8K+dqq3asbI8SvgQMkg+8xj1coF/oxm5wNBwwIUz9A==
-X-Google-Smtp-Source: AGRyM1tG67YPf8p5Qp1qLNRMlMNTKwh2CzvgbvnW3zyfeM/E1CTmSMCbEimuXozCm7RVAzd+EXswJxcxpkMBCM0PW6s=
-X-Received: by 2002:a05:6512:39ce:b0:481:31e4:1e06 with SMTP id
- k14-20020a05651239ce00b0048131e41e06mr1777836lfu.376.1656422220502; Tue, 28
- Jun 2022 06:17:00 -0700 (PDT)
+        bh=7CgIFPap6ypTTXSUzce/TyUpcucDj1PHP0T/IiacRoQ=;
+        b=XQLha5HxkTUY5OGU45e5r161YgAElCIm9o5sARpAPjXHInpIGyAORLGXBiyl6EtwUr
+         cRiDPT71XwV00RTX9H6iE5YrZKAksqJUlOtfaxkZ0Z+bHQLOa8DpJNzlJsQ9YS3aum+l
+         hJsso5neOECNMDsmU7ZL4K5gGXLs6YVa2W84jkiTIcQrlyn7iwPlYcaUD/PQJNwtBRr8
+         lFzkmacY+jFiIn5CslDEWNSYDK5hMWMybEnMu/rDKHRHIrtFi3u6ExgnoaWwtuafiGDv
+         IdMN1NUOhL2bYeEqncdqzeZmApvmU+bYY+ILMTEEjhB8/OnJhOgoDoWU5jy9pdOELkWk
+         LvbA==
+X-Gm-Message-State: AJIora//w0u2lOM07kRvYlvtggJhfm4ZGBj6QrlIvuCdKHjDKHTbp8mn
+	y9Ys5WMOSaoHsIofYgQo35yYr28UsW1QZG3ziYUsAg==
+X-Google-Smtp-Source: AGRyM1toA86paItas3f13uK/yq9WZLgGB0nO/w6rvEGOTkkNC1CL8Nyv0K6R1K9zXSkuslE6c4fhWr9A82lz4OkaLP4=
+X-Received: by 2002:a2e:9004:0:b0:25a:6dee:4ae2 with SMTP id
+ h4-20020a2e9004000000b0025a6dee4ae2mr9881452ljg.33.1656422341451; Tue, 28 Jun
+ 2022 06:19:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220628095833.2579903-1-elver@google.com> <20220628095833.2579903-7-elver@google.com>
-In-Reply-To: <20220628095833.2579903-7-elver@google.com>
+References: <20220628095833.2579903-1-elver@google.com> <20220628095833.2579903-8-elver@google.com>
+In-Reply-To: <20220628095833.2579903-8-elver@google.com>
 From: Dmitry Vyukov <dvyukov@google.com>
-Date: Tue, 28 Jun 2022 15:16:49 +0200
-Message-ID: <CACT4Y+bkQNci3gOyvBAkcfJjqE9h2kPJ2nKjrD7XjQ+sg1L4kg@mail.gmail.com>
-Subject: Re: [PATCH v2 06/13] perf/hw_breakpoint: Make hw_breakpoint_weight() inlinable
+Date: Tue, 28 Jun 2022 15:18:49 +0200
+Message-ID: <CACT4Y+aqRgBpuah8Ab3E134cCBimAmW2kUpJ7rR-e95HpS4aFg@mail.gmail.com>
+Subject: Re: [PATCH v2 07/13] perf/hw_breakpoint: Remove useless code related
+ to flexible breakpoints
 To: Marco Elver <elver@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,64 +79,147 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Tue, 28 Jun 2022 at 11:59, Marco Elver <elver@google.com> wrote:
 >
-> Due to being a __weak function, hw_breakpoint_weight() will cause the
-> compiler to always emit a call to it. This generates unnecessarily bad
-> code (register spills etc.) for no good reason; in fact it appears in
-> profiles of `perf bench -r 100 breakpoint thread -b 4 -p 128 -t 512`:
+> Flexible breakpoints have never been implemented, with
+> bp_cpuinfo::flexible always being 0. Unfortunately, they still occupy 4
+> bytes in each bp_cpuinfo and bp_busy_slots, as well as computing the max
+> flexible count in fetch_bp_busy_slots().
 >
->     ...
->     0.70%  [kernel]       [k] hw_breakpoint_weight
->     ...
+> This again causes suboptimal code generation, when we always know that
+> `!!slots.flexible` will be 0.
 >
-> While a small percentage, no architecture defines its own
-> hw_breakpoint_weight() nor are there users outside hw_breakpoint.c,
-> which makes the fact it is currently __weak a poor choice.
->
-> Change hw_breakpoint_weight()'s definition to follow a similar protocol
-> to hw_breakpoint_slots(), such that if <asm/hw_breakpoint.h> defines
-> hw_breakpoint_weight(), we'll use it instead.
->
-> The result is that it is inlined and no longer shows up in profiles.
+> Just get rid of the flexible "placeholder" and remove all real code
+> related to it. Make a note in the comment related to the constraints
+> algorithm but don't remove them from the algorithm, so that if in future
+> flexible breakpoints need supporting, it should be trivial to revive
+> them (along with reverting this change).
 >
 > Signed-off-by: Marco Elver <elver@google.com>
 
 Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 
 > ---
->  include/linux/hw_breakpoint.h | 1 -
->  kernel/events/hw_breakpoint.c | 4 +++-
->  2 files changed, 3 insertions(+), 2 deletions(-)
+> v2:
+> * Also remove struct bp_busy_slots, and simplify functions.
+> ---
+>  kernel/events/hw_breakpoint.c | 57 +++++++++++------------------------
+>  1 file changed, 17 insertions(+), 40 deletions(-)
 >
-> diff --git a/include/linux/hw_breakpoint.h b/include/linux/hw_breakpoint.h
-> index 78dd7035d1e5..9fa3547acd87 100644
-> --- a/include/linux/hw_breakpoint.h
-> +++ b/include/linux/hw_breakpoint.h
-> @@ -79,7 +79,6 @@ extern int dbg_reserve_bp_slot(struct perf_event *bp);
->  extern int dbg_release_bp_slot(struct perf_event *bp);
->  extern int reserve_bp_slot(struct perf_event *bp);
->  extern void release_bp_slot(struct perf_event *bp);
-> -int hw_breakpoint_weight(struct perf_event *bp);
->  int arch_reserve_bp_slot(struct perf_event *bp);
->  void arch_release_bp_slot(struct perf_event *bp);
->  void arch_unregister_hw_breakpoint(struct perf_event *bp);
 > diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
-> index a089302ddf59..a124786e3ade 100644
+> index a124786e3ade..63e39dc836bd 100644
 > --- a/kernel/events/hw_breakpoint.c
 > +++ b/kernel/events/hw_breakpoint.c
-> @@ -124,10 +124,12 @@ static __init int init_breakpoint_slots(void)
->  }
+> @@ -45,8 +45,6 @@ struct bp_cpuinfo {
+>  #else
+>         unsigned int    *tsk_pinned;
 >  #endif
+> -       /* Number of non-pinned cpu/task breakpoints in a cpu */
+> -       unsigned int    flexible; /* XXX: placeholder, see fetch_this_slot() */
+>  };
 >
-> -__weak int hw_breakpoint_weight(struct perf_event *bp)
-> +#ifndef hw_breakpoint_weight
-> +static inline int hw_breakpoint_weight(struct perf_event *bp)
->  {
->         return 1;
+>  static DEFINE_PER_CPU(struct bp_cpuinfo, bp_cpuinfo[TYPE_MAX]);
+> @@ -67,12 +65,6 @@ static const struct rhashtable_params task_bps_ht_params = {
+>
+>  static bool constraints_initialized __ro_after_init;
+>
+> -/* Gather the number of total pinned and un-pinned bp in a cpuset */
+> -struct bp_busy_slots {
+> -       unsigned int pinned;
+> -       unsigned int flexible;
+> -};
+> -
+>  /* Serialize accesses to the above constraints */
+>  static DEFINE_MUTEX(nr_bp_mutex);
+>
+> @@ -190,14 +182,14 @@ static const struct cpumask *cpumask_of_bp(struct perf_event *bp)
 >  }
-> +#endif
 >
->  static inline enum bp_type_idx find_slot_idx(u64 bp_type)
+>  /*
+> - * Report the number of pinned/un-pinned breakpoints we have in
+> - * a given cpu (cpu > -1) or in all of them (cpu = -1).
+> + * Returns the max pinned breakpoint slots in a given
+> + * CPU (cpu > -1) or across all of them (cpu = -1).
+>   */
+> -static void
+> -fetch_bp_busy_slots(struct bp_busy_slots *slots, struct perf_event *bp,
+> -                   enum bp_type_idx type)
+> +static int
+> +max_bp_pinned_slots(struct perf_event *bp, enum bp_type_idx type)
 >  {
+>         const struct cpumask *cpumask = cpumask_of_bp(bp);
+> +       int pinned_slots = 0;
+>         int cpu;
+>
+>         for_each_cpu(cpu, cpumask) {
+> @@ -210,24 +202,10 @@ fetch_bp_busy_slots(struct bp_busy_slots *slots, struct perf_event *bp,
+>                 else
+>                         nr += task_bp_pinned(cpu, bp, type);
+>
+> -               if (nr > slots->pinned)
+> -                       slots->pinned = nr;
+> -
+> -               nr = info->flexible;
+> -               if (nr > slots->flexible)
+> -                       slots->flexible = nr;
+> +               pinned_slots = max(nr, pinned_slots);
+>         }
+> -}
+>
+> -/*
+> - * For now, continue to consider flexible as pinned, until we can
+> - * ensure no flexible event can ever be scheduled before a pinned event
+> - * in a same cpu.
+> - */
+> -static void
+> -fetch_this_slot(struct bp_busy_slots *slots, int weight)
+> -{
+> -       slots->pinned += weight;
+> +       return pinned_slots;
+>  }
+>
+>  /*
+> @@ -298,7 +276,12 @@ __weak void arch_unregister_hw_breakpoint(struct perf_event *bp)
+>  }
+>
+>  /*
+> - * Constraints to check before allowing this new breakpoint counter:
+> + * Constraints to check before allowing this new breakpoint counter.
+> + *
+> + * Note: Flexible breakpoints are currently unimplemented, but outlined in the
+> + * below algorithm for completeness.  The implementation treats flexible as
+> + * pinned due to no guarantee that we currently always schedule flexible events
+> + * before a pinned event in a same CPU.
+>   *
+>   *  == Non-pinned counter == (Considered as pinned for now)
+>   *
+> @@ -340,8 +323,8 @@ __weak void arch_unregister_hw_breakpoint(struct perf_event *bp)
+>   */
+>  static int __reserve_bp_slot(struct perf_event *bp, u64 bp_type)
+>  {
+> -       struct bp_busy_slots slots = {0};
+>         enum bp_type_idx type;
+> +       int max_pinned_slots;
+>         int weight;
+>         int ret;
+>
+> @@ -357,15 +340,9 @@ static int __reserve_bp_slot(struct perf_event *bp, u64 bp_type)
+>         type = find_slot_idx(bp_type);
+>         weight = hw_breakpoint_weight(bp);
+>
+> -       fetch_bp_busy_slots(&slots, bp, type);
+> -       /*
+> -        * Simulate the addition of this breakpoint to the constraints
+> -        * and see the result.
+> -        */
+> -       fetch_this_slot(&slots, weight);
+> -
+> -       /* Flexible counters need to keep at least one slot */
+> -       if (slots.pinned + (!!slots.flexible) > hw_breakpoint_slots_cached(type))
+> +       /* Check if this new breakpoint can be satisfied across all CPUs. */
+> +       max_pinned_slots = max_bp_pinned_slots(bp, type) + weight;
+> +       if (max_pinned_slots > hw_breakpoint_slots_cached(type))
+>                 return -ENOSPC;
+>
+>         ret = arch_reserve_bp_slot(bp);
 > --
 > 2.37.0.rc0.161.g10f37bed90-goog
 >
