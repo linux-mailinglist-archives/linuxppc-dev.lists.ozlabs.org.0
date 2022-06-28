@@ -2,51 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9682155C9B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 14:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECDE55D12A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 15:09:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXPkl2t0dz3cf4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 22:57:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXQ0G24qGz3cj6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 23:09:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MDq4ifSu;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Dyb0kRO5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=dvyukov@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Dyb0kRO5;
+	dkim-atps=neutral
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXPk94r8nz3brm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 22:56:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=MDq4ifSu;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LXPk46wX9z4xXF;
-	Tue, 28 Jun 2022 22:56:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1656421007;
-	bh=k5WbTKh0IYEEK0n0TkrO0MnVkcIiC1k08BT2h5qHrWo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=MDq4ifSulJSEw/eE68hXVMaI4YoM6Qypa/96kwCcwD2HCQMBJbbSyfYZZHC9refIC
-	 EYPrVjJENOEh1Z8G/7YRvjYme4zfiI7pp1LmmtewdP1T7Zqf2DGmFgPP8z2zVO1t4t
-	 fnL7a9+6nnn0kQAZE+/+4uOXZlrh/rCGwB1PJIKVf/KRCGhtv8XkhAwr+2v3md3zUC
-	 7kV5asjz+I/bGSkq1FQ3VPBhYJF5kgC1Fg75dOm0LYE37NBEpevHdV/dpYgwCDSvGw
-	 divyCzvz/xPRcjSIe/Ce0MKFA1KXsJ0OdXcdtFXBogS/w/Gm9+uBhrmgUjNalMom/r
-	 7klcL29wv/a/A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH V2] powerpc/memhotplug: Add add_pages override for PPC
-In-Reply-To: <20220627072708.75662-1-aneesh.kumar@linux.ibm.com>
-References: <20220627072708.75662-1-aneesh.kumar@linux.ibm.com>
-Date: Tue, 28 Jun 2022 22:56:40 +1000
-Message-ID: <87a69x3q0n.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXPzZ261lz3bmg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 23:08:25 +1000 (AEST)
+Received: by mail-lj1-x22e.google.com with SMTP id by38so14813786ljb.10
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 06:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aeUiRngewZvVOC/Ws+kiYpWX0PNqIg9bWynr1VvD7h0=;
+        b=Dyb0kRO5lv6/jlkR7UH+AIG4MayAFkpnXQual6TJkVwNXD96DRjWuzuV9N+HHZOSEL
+         1SkcnMjb3o4ZYF7t/CZ5cbeZtJunU860Suf2JYWemXvsB+QKvZPplCsnosLlVg5rMy76
+         SPJ9rcG4iTMIkrpi6gj+DI/6RnV4hTtZ831gM+wK8o/OWIbH6DaC+w0q0XUap1HYr8Ug
+         7hB6nyY81sR+ByS7Wtg1if49gU/3T4dQ9ntUs1w5hDGp+AK7tPp6H3LZ183LrrC/2IRr
+         5aFP2iCQJqaIGiK8/mALMglRqSdI44wI1vHUCbleKi49mAF/Ca5jDyXF43Phe1ystGGv
+         WK7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aeUiRngewZvVOC/Ws+kiYpWX0PNqIg9bWynr1VvD7h0=;
+        b=lUG7B1V9nbZjdPEH0Yq39AKQit5+SyxYfCG9MNdVQZd7p4Q7nLmnE0cwL6u1y8SSny
+         abUhK+Wk5mC44V9txVvsYUfcALi6ECh0KHqJ3Orv3W35G2dmZytSr+oQbYW2fjbX77x8
+         Ztm2oXbDV21qNf1+tHUj04Vm+xA16ZHEVLm8PpY7H8omoq1liO1WENgeriYP8lwQRyqb
+         Rn81KE3iBQ7lJim/77DRenjgTsBGlc5sZy03S6XFXaoPyloxBYyrje2L1X2dZ026iYIZ
+         Qe3VaJJoPJxJUT4D7XiyIOBLBolz3O4br7Ak1gJNTp3vL3FvJ0CUn3fj9T4B4TS+98dX
+         GvOQ==
+X-Gm-Message-State: AJIora//Pu9Dzltz6Zppc3Y4cXXjV0ndoXzvxuPu3m98gCAf8Z2y2c08
+	9Ezer1l6yj5hxgCOcBtijBPjA7iXDcrG+GcH/e8IPpTKM8Z4CA==
+X-Google-Smtp-Source: AGRyM1sIp24eDfklLPo+VT8blJwDkVsgXy0uoPYjCHN9Zi1nuRVrWFQ0qS2jaDOiyMxveKSldXRxZZGEBL0qL09Afnc=
+X-Received: by 2002:a2e:9f42:0:b0:25b:5649:1331 with SMTP id
+ v2-20020a2e9f42000000b0025b56491331mr9293742ljk.268.1656421700299; Tue, 28
+ Jun 2022 06:08:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20220628095833.2579903-1-elver@google.com> <20220628095833.2579903-4-elver@google.com>
+In-Reply-To: <20220628095833.2579903-4-elver@google.com>
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Tue, 28 Jun 2022 15:08:08 +0200
+Message-ID: <CACT4Y+bh06ZF5s4Mfq+CJ8RJ+Fm41NeXt=C8Kkx11t9hgABpYQ@mail.gmail.com>
+Subject: Re: [PATCH v2 03/13] perf/hw_breakpoint: Optimize list of per-task breakpoints
+To: Marco Elver <elver@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,91 +72,256 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Kefeng Wang <wangkefeng.wang@huawei.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> With commit ffa0b64e3be5 ("powerpc: Fix virt_addr_valid() for 64-bit Book3E & 32-bit")
-> the kernel now validate the addr against high_memory value. This results
-> in the below BUG_ON with dax pfns.
+ On Tue, 28 Jun 2022 at 11:59, Marco Elver <elver@google.com> wrote:
 >
-> [  635.798741][T26531] kernel BUG at mm/page_alloc.c:5521!
-> 1:mon> e
-> cpu 0x1: Vector: 700 (Program Check) at [c000000007287630]
->     pc: c00000000055ed48: free_pages.part.0+0x48/0x110
->     lr: c00000000053ca70: tlb_finish_mmu+0x80/0xd0
->     sp: c0000000072878d0
->    msr: 800000000282b033
->   current = 0xc00000000afabe00
->   paca    = 0xc00000037ffff300   irqmask: 0x03   irq_happened: 0x05
->     pid   = 26531, comm = 50-landscape-sy
-> kernel BUG at :5521!
-> Linux version 5.19.0-rc3-14659-g4ec05be7c2e1 (kvaneesh@ltc-boston8) (gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #625 SMP Thu Jun 23 00:35:43 CDT 2022
-> 1:mon> t
-> [link register   ] c00000000053ca70 tlb_finish_mmu+0x80/0xd0
-> [c0000000072878d0] c00000000053ca54 tlb_finish_mmu+0x64/0xd0 (unreliable)
-> [c000000007287900] c000000000539424 exit_mmap+0xe4/0x2a0
-> [c0000000072879e0] c00000000019fc1c mmput+0xcc/0x210
-> [c000000007287a20] c000000000629230 begin_new_exec+0x5e0/0xf40
-> [c000000007287ae0] c00000000070b3cc load_elf_binary+0x3ac/0x1e00
-> [c000000007287c10] c000000000627af0 bprm_execve+0x3b0/0xaf0
-> [c000000007287cd0] c000000000628414 do_execveat_common.isra.0+0x1e4/0x310
-> [c000000007287d80] c00000000062858c sys_execve+0x4c/0x60
-> [c000000007287db0] c00000000002c1b0 system_call_exception+0x160/0x2c0
-> [c000000007287e10] c00000000000c53c system_call_common+0xec/0x250
+> On a machine with 256 CPUs, running the recently added perf breakpoint
+> benchmark results in:
 >
-> The fix is to make sure we update high_memory on memory hotplug.
-> This is similar to what x86 does in commit 3072e413e305 ("mm/memory_hotplug: introduce add_pages")
+>  | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
+>  | # Running 'breakpoint/thread' benchmark:
+>  | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
+>  |      Total time: 236.418 [sec]
+>  |
+>  |   123134.794271 usecs/op
+>  |  7880626.833333 usecs/op/cpu
 >
-> Fixes: ffa0b64e3be5 ("powerpc: Fix virt_addr_valid() for 64-bit Book3E & 32-bit")
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
- 
-...
-
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 52b77684acda..2a63920c369d 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -105,6 +105,36 @@ void __ref arch_remove_linear_mapping(u64 start, u64 size)
->  	vm_unmap_aliases();
+> The benchmark tests inherited breakpoint perf events across many
+> threads.
+>
+> Looking at a perf profile, we can see that the majority of the time is
+> spent in various hw_breakpoint.c functions, which execute within the
+> 'nr_bp_mutex' critical sections which then results in contention on that
+> mutex as well:
+>
+>     37.27%  [kernel]       [k] osq_lock
+>     34.92%  [kernel]       [k] mutex_spin_on_owner
+>     12.15%  [kernel]       [k] toggle_bp_slot
+>     11.90%  [kernel]       [k] __reserve_bp_slot
+>
+> The culprit here is task_bp_pinned(), which has a runtime complexity of
+> O(#tasks) due to storing all task breakpoints in the same list and
+> iterating through that list looking for a matching task. Clearly, this
+> does not scale to thousands of tasks.
+>
+> Instead, make use of the "rhashtable" variant "rhltable" which stores
+> multiple items with the same key in a list. This results in average
+> runtime complexity of O(1) for task_bp_pinned().
+>
+> With the optimization, the benchmark shows:
+>
+>  | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
+>  | # Running 'breakpoint/thread' benchmark:
+>  | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
+>  |      Total time: 0.208 [sec]
+>  |
+>  |      108.422396 usecs/op
+>  |     6939.033333 usecs/op/cpu
+>
+> On this particular setup that's a speedup of ~1135x.
+>
+> While one option would be to make task_struct a breakpoint list node,
+> this would only further bloat task_struct for infrequently used data.
+> Furthermore, after all optimizations in this series, there's no evidence
+> it would result in better performance: later optimizations make the time
+> spent looking up entries in the hash table negligible (we'll reach the
+> theoretical ideal performance i.e. no constraints).
+>
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+> v2:
+> * Commit message tweaks.
+> ---
+>  include/linux/perf_event.h    |  3 +-
+>  kernel/events/hw_breakpoint.c | 56 ++++++++++++++++++++++-------------
+>  2 files changed, 37 insertions(+), 22 deletions(-)
+>
+> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+> index 01231f1d976c..e27360436dc6 100644
+> --- a/include/linux/perf_event.h
+> +++ b/include/linux/perf_event.h
+> @@ -36,6 +36,7 @@ struct perf_guest_info_callbacks {
+>  };
+>
+>  #ifdef CONFIG_HAVE_HW_BREAKPOINT
+> +#include <linux/rhashtable-types.h>
+>  #include <asm/hw_breakpoint.h>
+>  #endif
+>
+> @@ -178,7 +179,7 @@ struct hw_perf_event {
+>                          * creation and event initalization.
+>                          */
+>                         struct arch_hw_breakpoint       info;
+> -                       struct list_head                bp_list;
+> +                       struct rhlist_head              bp_list;
+>                 };
+>  #endif
+>                 struct { /* amd_iommu */
+> diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+> index 1b013968b395..add1b9c59631 100644
+> --- a/kernel/events/hw_breakpoint.c
+> +++ b/kernel/events/hw_breakpoint.c
+> @@ -26,10 +26,10 @@
+>  #include <linux/irqflags.h>
+>  #include <linux/kdebug.h>
+>  #include <linux/kernel.h>
+> -#include <linux/list.h>
+>  #include <linux/mutex.h>
+>  #include <linux/notifier.h>
+>  #include <linux/percpu.h>
+> +#include <linux/rhashtable.h>
+>  #include <linux/sched.h>
+>  #include <linux/slab.h>
+>
+> @@ -54,7 +54,13 @@ static struct bp_cpuinfo *get_bp_info(int cpu, enum bp_type_idx type)
 >  }
->  
-> +/*
-> + * After memory hotplug the variables max_pfn, max_low_pfn and high_memory need
-> + * updating.
-> + */
-> +static void update_end_of_memory_vars(u64 start, u64 size)
-> +{
-> +	unsigned long end_pfn = PFN_UP(start + size);
+>
+>  /* Keep track of the breakpoints attached to tasks */
+> -static LIST_HEAD(bp_task_head);
+> +static struct rhltable task_bps_ht;
+> +static const struct rhashtable_params task_bps_ht_params = {
+> +       .head_offset = offsetof(struct hw_perf_event, bp_list),
+> +       .key_offset = offsetof(struct hw_perf_event, target),
+> +       .key_len = sizeof_field(struct hw_perf_event, target),
+> +       .automatic_shrinking = true,
+> +};
+>
+>  static int constraints_initialized;
+>
+> @@ -103,17 +109,23 @@ static unsigned int max_task_bp_pinned(int cpu, enum bp_type_idx type)
+>   */
+>  static int task_bp_pinned(int cpu, struct perf_event *bp, enum bp_type_idx type)
+>  {
+> -       struct task_struct *tsk = bp->hw.target;
+> +       struct rhlist_head *head, *pos;
+>         struct perf_event *iter;
+>         int count = 0;
+>
+> -       list_for_each_entry(iter, &bp_task_head, hw.bp_list) {
+> -               if (iter->hw.target == tsk &&
+> -                   find_slot_idx(iter->attr.bp_type) == type &&
+> +       rcu_read_lock();
+> +       head = rhltable_lookup(&task_bps_ht, &bp->hw.target, task_bps_ht_params);
+> +       if (!head)
+> +               goto out;
 > +
-> +	if (end_pfn > max_pfn) {
-> +		max_pfn = end_pfn;
-> +		max_low_pfn = end_pfn;
-> +		high_memory = (void *)__va(max_pfn * PAGE_SIZE - 1) + 1;
-> +	}
-> +}
+> +       rhl_for_each_entry_rcu(iter, pos, head, hw.bp_list) {
+> +               if (find_slot_idx(iter->attr.bp_type) == type &&
+>                     (iter->cpu < 0 || cpu == iter->cpu))
+>                         count += hw_breakpoint_weight(iter);
+>         }
+>
+> +out:
+> +       rcu_read_unlock();
+>         return count;
+>  }
+>
+> @@ -186,7 +198,7 @@ static void toggle_bp_task_slot(struct perf_event *bp, int cpu,
+>  /*
+>   * Add/remove the given breakpoint in our constraint table
+>   */
+> -static void
+> +static int
+>  toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
+>                int weight)
+>  {
+> @@ -199,7 +211,7 @@ toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
+>         /* Pinned counter cpu profiling */
+>         if (!bp->hw.target) {
+>                 get_bp_info(bp->cpu, type)->cpu_pinned += weight;
+> -               return;
+> +               return 0;
+>         }
+>
+>         /* Pinned counter task profiling */
+> @@ -207,9 +219,9 @@ toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
+>                 toggle_bp_task_slot(bp, cpu, type, weight);
+>
+>         if (enable)
+> -               list_add_tail(&bp->hw.bp_list, &bp_task_head);
+> +               return rhltable_insert(&task_bps_ht, &bp->hw.bp_list, task_bps_ht_params);
+>         else
+> -               list_del(&bp->hw.bp_list);
+> +               return rhltable_remove(&task_bps_ht, &bp->hw.bp_list, task_bps_ht_params);
+>  }
+>
+>  __weak int arch_reserve_bp_slot(struct perf_event *bp)
+> @@ -307,9 +319,7 @@ static int __reserve_bp_slot(struct perf_event *bp, u64 bp_type)
+>         if (ret)
+>                 return ret;
+>
+> -       toggle_bp_slot(bp, true, type, weight);
+> -
+> -       return 0;
+> +       return toggle_bp_slot(bp, true, type, weight);
+>  }
+>
+>  int reserve_bp_slot(struct perf_event *bp)
+> @@ -334,7 +344,7 @@ static void __release_bp_slot(struct perf_event *bp, u64 bp_type)
+>
+>         type = find_slot_idx(bp_type);
+>         weight = hw_breakpoint_weight(bp);
+> -       toggle_bp_slot(bp, false, type, weight);
+> +       WARN_ON(toggle_bp_slot(bp, false, type, weight));
+>  }
+>
+>  void release_bp_slot(struct perf_event *bp)
+> @@ -678,7 +688,7 @@ static struct pmu perf_breakpoint = {
+>  int __init init_hw_breakpoint(void)
+>  {
+>         int cpu, err_cpu;
+> -       int i;
+> +       int i, ret;
+>
+>         for (i = 0; i < TYPE_MAX; i++)
+>                 nr_slots[i] = hw_breakpoint_slots(i);
+> @@ -689,18 +699,24 @@ int __init init_hw_breakpoint(void)
+>
+>                         info->tsk_pinned = kcalloc(nr_slots[i], sizeof(int),
+>                                                         GFP_KERNEL);
+> -                       if (!info->tsk_pinned)
+> -                               goto err_alloc;
+> +                       if (!info->tsk_pinned) {
+> +                               ret = -ENOMEM;
+> +                               goto err;
+> +                       }
+>                 }
+>         }
+>
+> +       ret = rhltable_init(&task_bps_ht, &task_bps_ht_params);
+> +       if (ret)
+> +               goto err;
 > +
-> +int __ref add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
-> +		    struct mhp_params *params)
-> +{
-> +	int ret;
-> +
-> +	ret = __add_pages(nid, start_pfn, nr_pages, params);
-> +	WARN_ON_ONCE(ret);
+>         constraints_initialized = 1;
+>
+>         perf_pmu_register(&perf_breakpoint, "breakpoint", PERF_TYPE_BREAKPOINT);
+>
+>         return register_die_notifier(&hw_breakpoint_exceptions_nb);
 
-What's the justification for making this a WARN_ON_ONCE(), and then
-continuing to update the variables anyway?
+It seems there is a latent bug here:
+if register_die_notifier() fails we also need to execute the err: label code.
 
-I realise that's what x86 does, but it seems kind of wrong.
+Otherwise the patch looks good.
 
-cheers
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 
-> +	/* update max_pfn, max_low_pfn and high_memory */
-> +	update_end_of_memory_vars(start_pfn << PAGE_SHIFT,
-> +				  nr_pages << PAGE_SHIFT);
-> +
-> +	return ret;
-> +}
+> - err_alloc:
+> +err:
+>         for_each_possible_cpu(err_cpu) {
+>                 for (i = 0; i < TYPE_MAX; i++)
+>                         kfree(get_bp_info(err_cpu, i)->tsk_pinned);
+> @@ -708,7 +724,5 @@ int __init init_hw_breakpoint(void)
+>                         break;
+>         }
+>
+> -       return -ENOMEM;
+> +       return ret;
+>  }
+> -
+> -
+> --
+> 2.37.0.rc0.161.g10f37bed90-goog
+>
