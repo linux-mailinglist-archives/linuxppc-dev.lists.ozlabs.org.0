@@ -2,22 +2,23 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4467255E2AE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 15:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6EB55E2EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 15:36:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXQbK15gPz3f29
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 23:35:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXQbk5BBsz3frk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 23:36:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=heyquark.com (client-ip=2001:4b98:dc4:8::232; helo=relay12.mail.gandi.net; envelope-from=ash@heyquark.com; receiver=<UNKNOWN>)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [IPv6:2001:4b98:dc4:8::232])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=heyquark.com (client-ip=217.70.178.232; helo=relay12.mail.gandi.net; envelope-from=ash@heyquark.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 65 seconds by postgrey-1.36 at boromir; Tue, 28 Jun 2022 23:33:10 AEST
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXQX23kLhz3cdm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 23:33:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXQX62HzBz3f3Q
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 23:33:10 +1000 (AEST)
 Received: (Authenticated sender: ash@heyquark.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 9D04C200014;
-	Tue, 28 Jun 2022 13:32:53 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 802A2200004;
+	Tue, 28 Jun 2022 13:33:00 +0000 (UTC)
 From: Ash Logan <ash@heyquark.com>
 To: krzysztof.kozlowski+dt@linaro.org,
 	paulus@samba.org,
@@ -25,9 +26,9 @@ To: krzysztof.kozlowski+dt@linaro.org,
 	christophe.leroy@csgroup.eu,
 	robh+dt@kernel.org,
 	benh@kernel.crashing.org
-Subject: [PATCH v3 09/12] powerpc: espresso processor support
-Date: Tue, 28 Jun 2022 23:31:41 +1000
-Message-Id: <20220628133144.142185-10-ash@heyquark.com>
+Subject: [PATCH v3 10/12] powerpc: wiiu: platform support
+Date: Tue, 28 Jun 2022 23:31:42 +1000
+Message-Id: <20220628133144.142185-11-ash@heyquark.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220628133144.142185-1-ash@heyquark.com>
 References: <20220622131037.57604-1-ash@heyquark.com>
@@ -49,43 +50,97 @@ Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Adds a cputable entry for the "Espresso" processor found on the Nintendo
-Wii U, which has a PVR unrelated to other 750CL-like chips.
-Only this revision has been seen in the wild.
+Add platform support for the Nintendo Wii U console.
 
-Signed-off-by: Roberto Van Eeden <rw-r-r-0644@protonmail.com>
 Signed-off-by: Ash Logan <ash@heyquark.com>
+Co-developed-by: Roberto Van Eeden <rw-r-r-0644@protonmail.com>
+Signed-off-by: Roberto Van Eeden <rw-r-r-0644@protonmail.com>
+Co-developed-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 ---
- arch/powerpc/kernel/cputable.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+v2->v3: Use of_platform_default_populate instead of a custom match table.
 
-diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
-index a5dbfccd2047..3a4e84d1f674 100644
---- a/arch/powerpc/kernel/cputable.c
-+++ b/arch/powerpc/kernel/cputable.c
-@@ -736,6 +736,22 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.platform		= "ppc750",
- 		.oprofile_cpu_type      = "ppc/750",
- 	},
-+	{	/* "Espresso" (750CL-like) */
-+		.pvr_mask		= 0xffffffff,
-+		.pvr_value		= 0x70010201,
-+		.cpu_name		= "Espresso",
-+		.cpu_features		= CPU_FTRS_750CL,
-+		.cpu_user_features	= COMMON_USER | PPC_FEATURE_PPC_LE,
-+		.mmu_features		= MMU_FTR_HPTE_TABLE | MMU_FTR_USE_HIGH_BATS,
-+		.icache_bsize		= 32,
-+		.dcache_bsize		= 32,
-+		.num_pmcs		= 4,
-+		.pmc_type		= PPC_PMC_IBM,
-+		.cpu_setup		= __setup_cpu_750,
-+		.machine_check		= machine_check_generic,
-+		.platform		= "ppc750",
-+		.oprofile_cpu_type      = "ppc/750",
-+	},
- 	{	/* 745/755 */
- 		.pvr_mask		= 0xfffff000,
- 		.pvr_value		= 0x00083000,
+ arch/powerpc/platforms/wiiu/Makefile |  2 +-
+ arch/powerpc/platforms/wiiu/setup.c  | 60 ++++++++++++++++++++++++++++
+ 2 files changed, 61 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/platforms/wiiu/setup.c
+
+diff --git a/arch/powerpc/platforms/wiiu/Makefile b/arch/powerpc/platforms/wiiu/Makefile
+index fa16c60261e6..abcb7a1beebf 100644
+--- a/arch/powerpc/platforms/wiiu/Makefile
++++ b/arch/powerpc/platforms/wiiu/Makefile
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-obj-$(CONFIG_WIIU) += espresso-pic.o latte-pic.o
++obj-$(CONFIG_WIIU) += setup.o espresso-pic.o latte-pic.o
+ obj-$(CONFIG_LATTEIPC_UDBG) += udbg_latteipc.o
+diff --git a/arch/powerpc/platforms/wiiu/setup.c b/arch/powerpc/platforms/wiiu/setup.c
+new file mode 100644
+index 000000000000..e3f07ce65cad
+--- /dev/null
++++ b/arch/powerpc/platforms/wiiu/setup.c
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Nintendo Wii U board-specific support
++ *
++ * Copyright (C) 2022 The linux-wiiu Team
++ */
++#define DRV_MODULE_NAME "wiiu"
++#define pr_fmt(fmt) DRV_MODULE_NAME ": " fmt
++
++#include <linux/kernel.h>
++#include <linux/of_platform.h>
++
++#include <asm/machdep.h>
++#include <asm/udbg.h>
++
++#include "espresso-pic.h"
++#include "latte-pic.h"
++#include "udbg_latteipc.h"
++
++static int __init wiiu_probe(void)
++{
++	if (!of_machine_is_compatible("nintendo,wiiu"))
++		return 0;
++
++	latteipc_udbg_init();
++
++	return 1;
++}
++
++static void __noreturn wiiu_halt(void)
++{
++	for (;;)
++		cpu_relax();
++}
++
++static void __init wiiu_init_irq(void)
++{
++	espresso_pic_init();
++	latte_pic_init();
++}
++
++static int __init wiiu_device_probe(void)
++{
++	if (!machine_is(wiiu))
++		return 0;
++
++	of_platform_default_populate(NULL, NULL, NULL);
++	return 0;
++}
++device_initcall(wiiu_device_probe);
++
++define_machine(wiiu) {
++	.name = "wiiu",
++	.probe = wiiu_probe,
++	.halt = wiiu_halt,
++	.progress = udbg_progress,
++	.calibrate_decr = generic_calibrate_decr,
++	.init_IRQ = wiiu_init_irq,
++	.get_irq = espresso_pic_get_irq,
++};
 -- 
 2.36.1
 
