@@ -2,66 +2,97 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2824055E58C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 16:54:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 739EA55E5B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 17:33:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXSL40RSWz3f1R
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 00:54:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXTCH2ryCz3dQM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 01:33:47 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hr+LOJOC;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=kK5YSzrs;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=elver@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=stgolabs.net (client-ip=23.83.209.151; helo=quail.birch.relay.mailchannels.net; envelope-from=dave@stgolabs.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=hr+LOJOC;
+	dkim=pass (2048-bit key; unprotected) header.d=stgolabs.net header.i=@stgolabs.net header.a=rsa-sha256 header.s=dreamhost header.b=kK5YSzrs;
 	dkim-atps=neutral
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from quail.birch.relay.mailchannels.net (quail.birch.relay.mailchannels.net [23.83.209.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXSKQ3jbQz3c1b
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 00:54:02 +1000 (AEST)
-Received: by mail-yb1-xb31.google.com with SMTP id v185so13119455ybe.8
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 07:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vsLZ4itLb8yCme9zL9SXTWJXCTaMaHUvxCRr4pVmzPo=;
-        b=hr+LOJOCejSbhs13LtB4ad2iVHUb+RAG9UvlGywImgCuWnbv9Uz0CuXpr7kdL2EXyM
-         Zl3qZVecs/jCPbL36y5mfL0HhG/kKAAg5CMELOsO8zieEy+pumtY6i3i9lUzK6EDUaJc
-         ij34SuQoLj/NiOxDwRIPbpShAuux9rUl4DMeRDPsX6BzEAEbfgiBkZR8fpdCYwEniTFB
-         rUqH8uIe91EnJHMjEePoJ34++jQzFYkaVhwsw6SpYElF68QAdJJOFJ35ZmrerpdmqSoc
-         KvqV3wMzW9sxWtFKFxX5f0P0Jvv4ZBX10XEVhIHB536OA3Q6fXumnmTBqPHUsHo1ZiVe
-         4+eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vsLZ4itLb8yCme9zL9SXTWJXCTaMaHUvxCRr4pVmzPo=;
-        b=hEAWQ3tvVA9aTUKKeExsbF1iq7ncR7H+TQ9xrFG13umYbNnRZ8psu6hEBa+MamvAVN
-         7y6LYD/eJX6YFcTlTtbBlHtZOOXpGOlohmC+2ihuUl0Y0gvkb1AQ3uIfRjRUSNdii8Ev
-         Yl9A6cHT2Lt5q2EP04mVl5GiaNUBxMeeyJMpQwtfSHhX4bHy4veK03MNgbUYfNa2sM01
-         PQTo4uEN7QYfw/eBtvTCV28xSw+rnbbnogNo/jcP8/XdtzkLNO3TBPN/L/kkzGTEOawa
-         QIpp5wxEh5mkgOmmYSMiC2Zl3JFkC+YAz4B/Ky0VCAa8UpXuqOI5nLIbzhlED8k5pOML
-         ZM8Q==
-X-Gm-Message-State: AJIora8YPH4NNQM69er5Et4M8398kwx0RGbv7q7aOqE08W+jnmivOu6q
-	1SbTKCYYLgkYvVxdEN5JlcM3lzUaDkRSn5IcNCNyxw==
-X-Google-Smtp-Source: AGRyM1vqDPdKqBHAN5BWgtuoqgS2YkXMiHwIjI7rhq0LUMqvW//SUblW3opNkhuDW9IWNxEP1SI0g+pLXiP+fSqQZuA=
-X-Received: by 2002:a5b:74e:0:b0:66c:df8d:12f6 with SMTP id
- s14-20020a5b074e000000b0066cdf8d12f6mr9546552ybq.609.1656428038960; Tue, 28
- Jun 2022 07:53:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXTBX5kQVz3bnR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 01:33:06 +1000 (AEST)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 50FBA1224C9;
+	Tue, 28 Jun 2022 15:33:01 +0000 (UTC)
+Received: from pdx1-sub0-mail-a228.dreamhost.com (unknown [127.0.0.6])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 8E89212159D;
+	Tue, 28 Jun 2022 15:33:00 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1656430380; a=rsa-sha256;
+	cv=none;
+	b=yKBrzsWJ5dPoyqUvCFyC4mfxLsZdHCe6PzQfeJMTmbYRxL04gVJO2jRgACRXDCIOhsk1hT
+	quq3hAZEM8KV9cL4fRdMVgwPeJVJrEMeRUqi9pNvcaB52PJI+m7GZfIB+sD7kO61zUFCH1
+	DBHXMaxa6oXbFyRLpb+10WjUlDe4eSEcAQa15hL9cPSbvLmH4Lt085G77O3d2Ev2RUremv
+	sMaM6S+vdj1uHrEepmtblz4ZWFRU7pL3sVf73KPpBUgy9V1MQOuObNpBFajQRPj+CgO1Gi
+	KGcDLJpwczwZxjDh7eSY0IrRCE2vWqR5WHIH6iQEzMIPilBycGTJHW4WHkQCjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1656430380;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6PaLg0zce8LMNs1lHt4RTUDAxY3qsfhOcGADLKrynS8=;
+	b=NSSOgRu8sh0Wyzm784OxYgEUjtabMPRwkzOam8zhEpghfUZ/kGLvuct4FRCk2B1XmH8Sdo
+	Xk2YlLMCyXgNV+un6S3z3ISGc1O1fnD4pLcuw7ggZBCIprpzA4eg7D3MOXTv01fJc/D9bY
+	Ss8uYiKw0uK2jLb4SwXpK2VvjOfr0cDh+aHlHUMaKBPeqiIgeO9QxS1lUwfdVS3MS4L1wl
+	A9mroy7Iy/tQxGa93Q73+nWWrXXDDVNkKTAOKmFiRLbIttIjVuwYjFcSkJj9WuAFip9JVk
+	gL6vpsAn8T+76TvkMnfuvkXQFlgzY2CSzJsChFUBd6umfrLRk6DkBwO9dQkegQ==
+ARC-Authentication-Results: i=1;
+	rspamd-674ffb986c-zqpf8;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Wide-Eyed-Decisive: 3880163f225d940e_1656430380886_3243346417
+X-MC-Loop-Signature: 1656430380886:3079928529
+X-MC-Ingress-Time: 1656430380885
+Received: from pdx1-sub0-mail-a228.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.124.238.92 (trex/6.7.1);
+	Tue, 28 Jun 2022 15:33:00 +0000
+Received: from offworld (unknown [104.36.31.105])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a228.dreamhost.com (Postfix) with ESMTPSA id 4LXTBM5vx0zLL;
+	Tue, 28 Jun 2022 08:32:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1656430380;
+	bh=6PaLg0zce8LMNs1lHt4RTUDAxY3qsfhOcGADLKrynS8=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=kK5YSzrsWQ9cQbjKuxowUWgzzeGmgepLWF5PgQj7/M2xckOLlma1s4hsLATiRxyrA
+	 3uXY1P/avJhWWsSgnuxM6ElADUMdhadVAOqEFRVi6bKzgHmtsUdWjm0LGEUHra//FM
+	 5LIDXTHkgb1GsxBvVj0giWrkqOa6I5QwP1tOf1cCEdY6DfYfZjtXK6yfoflKF3miVz
+	 IBzgq3yZjY+lqULPPh1WNR1kdv21xlV98o7Pd4NLmyO6qjvvNb05q5xu6GeLKJmFt9
+	 NeI0pG/PyV3lEKB2we3YcXjK08kYyjoohxicdQohG/t4Z0yrcYTaGh4pxcfkrZKgvw
+	 iPwZ1QKp5LLQg==
+Date: Tue, 28 Jun 2022 08:18:07 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: [PATCH 08/10] scsi/ibmvfc: Replace tasklet with work
+Message-ID: <20220628151807.trtkagucvdmywisx@offworld>
+References: <20220530231512.9729-1-dave@stgolabs.net>
+ <20220530231512.9729-9-dave@stgolabs.net>
+ <YqHn2Rn5nePSJ0PG@linutronix.de>
 MIME-Version: 1.0
-References: <20220628095833.2579903-1-elver@google.com> <20220628095833.2579903-4-elver@google.com>
- <CACT4Y+bh06ZF5s4Mfq+CJ8RJ+Fm41NeXt=C8Kkx11t9hgABpYQ@mail.gmail.com>
-In-Reply-To: <CACT4Y+bh06ZF5s4Mfq+CJ8RJ+Fm41NeXt=C8Kkx11t9hgABpYQ@mail.gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Tue, 28 Jun 2022 16:53:22 +0200
-Message-ID: <CANpmjNOT=npm9Bu9QGNO=SgCJVB2fr8ojO4-u-Ffgw4gmRuSfw@mail.gmail.com>
-Subject: Re: [PATCH v2 03/13] perf/hw_breakpoint: Optimize list of per-task breakpoints
-To: Dmitry Vyukov <dvyukov@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <YqHn2Rn5nePSJ0PG@linutronix.de>
+User-Agent: NeoMutt/20220429
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,248 +104,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, ejb@linux.ibm.com, linux-scsi@vger.kernel.org, martin.petersen@oracle.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 28 Jun 2022 at 15:08, Dmitry Vyukov <dvyukov@google.com> wrote:
->
->  On Tue, 28 Jun 2022 at 11:59, Marco Elver <elver@google.com> wrote:
-> >
-> > On a machine with 256 CPUs, running the recently added perf breakpoint
-> > benchmark results in:
-> >
-> >  | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
-> >  | # Running 'breakpoint/thread' benchmark:
-> >  | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
-> >  |      Total time: 236.418 [sec]
-> >  |
-> >  |   123134.794271 usecs/op
-> >  |  7880626.833333 usecs/op/cpu
-> >
-> > The benchmark tests inherited breakpoint perf events across many
-> > threads.
-> >
-> > Looking at a perf profile, we can see that the majority of the time is
-> > spent in various hw_breakpoint.c functions, which execute within the
-> > 'nr_bp_mutex' critical sections which then results in contention on that
-> > mutex as well:
-> >
-> >     37.27%  [kernel]       [k] osq_lock
-> >     34.92%  [kernel]       [k] mutex_spin_on_owner
-> >     12.15%  [kernel]       [k] toggle_bp_slot
-> >     11.90%  [kernel]       [k] __reserve_bp_slot
-> >
-> > The culprit here is task_bp_pinned(), which has a runtime complexity of
-> > O(#tasks) due to storing all task breakpoints in the same list and
-> > iterating through that list looking for a matching task. Clearly, this
-> > does not scale to thousands of tasks.
-> >
-> > Instead, make use of the "rhashtable" variant "rhltable" which stores
-> > multiple items with the same key in a list. This results in average
-> > runtime complexity of O(1) for task_bp_pinned().
-> >
-> > With the optimization, the benchmark shows:
-> >
-> >  | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
-> >  | # Running 'breakpoint/thread' benchmark:
-> >  | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
-> >  |      Total time: 0.208 [sec]
-> >  |
-> >  |      108.422396 usecs/op
-> >  |     6939.033333 usecs/op/cpu
-> >
-> > On this particular setup that's a speedup of ~1135x.
-> >
-> > While one option would be to make task_struct a breakpoint list node,
-> > this would only further bloat task_struct for infrequently used data.
-> > Furthermore, after all optimizations in this series, there's no evidence
-> > it would result in better performance: later optimizations make the time
-> > spent looking up entries in the hash table negligible (we'll reach the
-> > theoretical ideal performance i.e. no constraints).
-> >
-> > Signed-off-by: Marco Elver <elver@google.com>
-> > ---
-> > v2:
-> > * Commit message tweaks.
-> > ---
-> >  include/linux/perf_event.h    |  3 +-
-> >  kernel/events/hw_breakpoint.c | 56 ++++++++++++++++++++++-------------
-> >  2 files changed, 37 insertions(+), 22 deletions(-)
-> >
-> > diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-> > index 01231f1d976c..e27360436dc6 100644
-> > --- a/include/linux/perf_event.h
-> > +++ b/include/linux/perf_event.h
-> > @@ -36,6 +36,7 @@ struct perf_guest_info_callbacks {
-> >  };
-> >
-> >  #ifdef CONFIG_HAVE_HW_BREAKPOINT
-> > +#include <linux/rhashtable-types.h>
-> >  #include <asm/hw_breakpoint.h>
-> >  #endif
-> >
-> > @@ -178,7 +179,7 @@ struct hw_perf_event {
-> >                          * creation and event initalization.
-> >                          */
-> >                         struct arch_hw_breakpoint       info;
-> > -                       struct list_head                bp_list;
-> > +                       struct rhlist_head              bp_list;
-> >                 };
-> >  #endif
-> >                 struct { /* amd_iommu */
-> > diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
-> > index 1b013968b395..add1b9c59631 100644
-> > --- a/kernel/events/hw_breakpoint.c
-> > +++ b/kernel/events/hw_breakpoint.c
-> > @@ -26,10 +26,10 @@
-> >  #include <linux/irqflags.h>
-> >  #include <linux/kdebug.h>
-> >  #include <linux/kernel.h>
-> > -#include <linux/list.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/notifier.h>
-> >  #include <linux/percpu.h>
-> > +#include <linux/rhashtable.h>
-> >  #include <linux/sched.h>
-> >  #include <linux/slab.h>
-> >
-> > @@ -54,7 +54,13 @@ static struct bp_cpuinfo *get_bp_info(int cpu, enum bp_type_idx type)
-> >  }
-> >
-> >  /* Keep track of the breakpoints attached to tasks */
-> > -static LIST_HEAD(bp_task_head);
-> > +static struct rhltable task_bps_ht;
-> > +static const struct rhashtable_params task_bps_ht_params = {
-> > +       .head_offset = offsetof(struct hw_perf_event, bp_list),
-> > +       .key_offset = offsetof(struct hw_perf_event, target),
-> > +       .key_len = sizeof_field(struct hw_perf_event, target),
-> > +       .automatic_shrinking = true,
-> > +};
-> >
-> >  static int constraints_initialized;
-> >
-> > @@ -103,17 +109,23 @@ static unsigned int max_task_bp_pinned(int cpu, enum bp_type_idx type)
-> >   */
-> >  static int task_bp_pinned(int cpu, struct perf_event *bp, enum bp_type_idx type)
-> >  {
-> > -       struct task_struct *tsk = bp->hw.target;
-> > +       struct rhlist_head *head, *pos;
-> >         struct perf_event *iter;
-> >         int count = 0;
-> >
-> > -       list_for_each_entry(iter, &bp_task_head, hw.bp_list) {
-> > -               if (iter->hw.target == tsk &&
-> > -                   find_slot_idx(iter->attr.bp_type) == type &&
-> > +       rcu_read_lock();
-> > +       head = rhltable_lookup(&task_bps_ht, &bp->hw.target, task_bps_ht_params);
-> > +       if (!head)
-> > +               goto out;
-> > +
-> > +       rhl_for_each_entry_rcu(iter, pos, head, hw.bp_list) {
-> > +               if (find_slot_idx(iter->attr.bp_type) == type &&
-> >                     (iter->cpu < 0 || cpu == iter->cpu))
-> >                         count += hw_breakpoint_weight(iter);
-> >         }
-> >
-> > +out:
-> > +       rcu_read_unlock();
-> >         return count;
-> >  }
-> >
-> > @@ -186,7 +198,7 @@ static void toggle_bp_task_slot(struct perf_event *bp, int cpu,
-> >  /*
-> >   * Add/remove the given breakpoint in our constraint table
-> >   */
-> > -static void
-> > +static int
-> >  toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
-> >                int weight)
-> >  {
-> > @@ -199,7 +211,7 @@ toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
-> >         /* Pinned counter cpu profiling */
-> >         if (!bp->hw.target) {
-> >                 get_bp_info(bp->cpu, type)->cpu_pinned += weight;
-> > -               return;
-> > +               return 0;
-> >         }
-> >
-> >         /* Pinned counter task profiling */
-> > @@ -207,9 +219,9 @@ toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
-> >                 toggle_bp_task_slot(bp, cpu, type, weight);
-> >
-> >         if (enable)
-> > -               list_add_tail(&bp->hw.bp_list, &bp_task_head);
-> > +               return rhltable_insert(&task_bps_ht, &bp->hw.bp_list, task_bps_ht_params);
-> >         else
-> > -               list_del(&bp->hw.bp_list);
-> > +               return rhltable_remove(&task_bps_ht, &bp->hw.bp_list, task_bps_ht_params);
-> >  }
-> >
-> >  __weak int arch_reserve_bp_slot(struct perf_event *bp)
-> > @@ -307,9 +319,7 @@ static int __reserve_bp_slot(struct perf_event *bp, u64 bp_type)
-> >         if (ret)
-> >                 return ret;
-> >
-> > -       toggle_bp_slot(bp, true, type, weight);
-> > -
-> > -       return 0;
-> > +       return toggle_bp_slot(bp, true, type, weight);
-> >  }
-> >
-> >  int reserve_bp_slot(struct perf_event *bp)
-> > @@ -334,7 +344,7 @@ static void __release_bp_slot(struct perf_event *bp, u64 bp_type)
-> >
-> >         type = find_slot_idx(bp_type);
-> >         weight = hw_breakpoint_weight(bp);
-> > -       toggle_bp_slot(bp, false, type, weight);
-> > +       WARN_ON(toggle_bp_slot(bp, false, type, weight));
-> >  }
-> >
-> >  void release_bp_slot(struct perf_event *bp)
-> > @@ -678,7 +688,7 @@ static struct pmu perf_breakpoint = {
-> >  int __init init_hw_breakpoint(void)
-> >  {
-> >         int cpu, err_cpu;
-> > -       int i;
-> > +       int i, ret;
-> >
-> >         for (i = 0; i < TYPE_MAX; i++)
-> >                 nr_slots[i] = hw_breakpoint_slots(i);
-> > @@ -689,18 +699,24 @@ int __init init_hw_breakpoint(void)
-> >
-> >                         info->tsk_pinned = kcalloc(nr_slots[i], sizeof(int),
-> >                                                         GFP_KERNEL);
-> > -                       if (!info->tsk_pinned)
-> > -                               goto err_alloc;
-> > +                       if (!info->tsk_pinned) {
-> > +                               ret = -ENOMEM;
-> > +                               goto err;
-> > +                       }
-> >                 }
-> >         }
-> >
-> > +       ret = rhltable_init(&task_bps_ht, &task_bps_ht_params);
-> > +       if (ret)
-> > +               goto err;
-> > +
-> >         constraints_initialized = 1;
-> >
-> >         perf_pmu_register(&perf_breakpoint, "breakpoint", PERF_TYPE_BREAKPOINT);
-> >
-> >         return register_die_notifier(&hw_breakpoint_exceptions_nb);
->
-> It seems there is a latent bug here:
-> if register_die_notifier() fails we also need to execute the err: label code.
+On Thu, 09 Jun 2022, Sebastian Andrzej Siewior wrote:
 
-I think we should ignore it, because it's just a notifier when the
-kernel dies. I'd rather have working breakpoints (which we have if we
-made it to this point) when the kernel is live, and sacrifice some bad
-behaviour when the kernel dies.
-
-> Otherwise the patch looks good.
+>On 2022-05-30 16:15:10 [-0700], Davidlohr Bueso wrote:
+>> diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> index d0eab5700dc5..31b1900489e7 100644
+>> --- a/drivers/scsi/ibmvscsi/ibmvfc.c
+>> +++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+>> @@ -891,7 +891,7 @@ static void ibmvfc_release_crq_queue(struct ibmvfc_host *vhost)
+>>
+>>	ibmvfc_dbg(vhost, "Releasing CRQ\n");
+>>	free_irq(vdev->irq, vhost);
+>> -	tasklet_kill(&vhost->tasklet);
+>> +        cancel_work_sync(&vhost->work);
+>s/ {8}/\t/
 >
-> Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+>is there a reason not to use threaded interrupts?
+
+I went with a workqueue here because the resume from suspend also schedules
+async processing, so threaded irqs didn't seem like a good fit. This is also
+similar to patch 2 (but in that case I overlooked the resume caller which you
+pointed out).
 
 Thanks,
--- Marco
+Davidlohr
