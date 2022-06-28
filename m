@@ -1,68 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9DA55BEEB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 09:01:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4C755BD80
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 04:25:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXFrQ2pvnz3f3T
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 17:01:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LX7jL2QQQz3cgH
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 12:25:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HI/Mpzhe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EffcpxaM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::133; helo=mail-lf1-x133.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HI/Mpzhe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EffcpxaM;
 	dkim-atps=neutral
-Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LX7gy6dXDz3c7H
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 12:23:58 +1000 (AEST)
-Received: by mail-lf1-x133.google.com with SMTP id y32so19785500lfa.6
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 19:23:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dB8dhmVX1CwoFsrikItOoVuCqHYJQooSwxGeDKLgNT8=;
-        b=HI/MpzheOO9DP7JyzGl+a3bFkcCKHo9eJPYaBisaK2S3Fn1+vKOWsg3egyhpj4t+X9
-         Ly8V293IFYftR/AAlBeN8H9KAD9y6KCgtQMAUnYUe28Dc8vM6igE7FXTlTi9PVRbVRHY
-         /OZO5DXqKIXo6Cyn6fQuvi35s3H9dzGaAASC0c/sKd5x7BR9GBn8chU7pAwDGDTwFUb/
-         JSRO8+fqFxOOhRDy03Uz/Un3n5q9iY7e7pmnkB4KUqqzZnNgnKxbsDd0DnSXAXgQkGZB
-         1SD405ytXODk1lf1KctejXodNqpiGHftSF4wPsmPnr+kAWBCE+p3az2KFA6I2/8Ea6hz
-         Ir9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dB8dhmVX1CwoFsrikItOoVuCqHYJQooSwxGeDKLgNT8=;
-        b=1/b6LgG/cfZjtWzOs8FFq5CO7coBzV6Yt4dRK2MEkxj1IX8kOh3g7bBN0idYGgFBeg
-         a593RBt9OhX5FFtR8rYLtJSZjkztBX48nHy8cJgOIeEFqEynpeU2Pw2bOjzvEkzw03Qr
-         1iM1VpCO3MygIr6glq+WY7fSJN7ah+mQF8J4tkSiIxKS1BIWRPraypVW8f6xHzet9FC+
-         6YTdsIZCQyJugxDVtU0YTznTMk5bnO39Ljp1kMxtyt97Tt52Gg0qGCZWDm7VWFe+txZi
-         bbNC3ewo5JmMftI2WMg+pwlLJqo20cmMKeFlHkuKHW6evzYnvqyy65Wn7FeTbpXTKQNe
-         LrPQ==
-X-Gm-Message-State: AJIora9k24Un5o10VecWNneyB8tkEu6OB7g6GhbfYu01V47hlaIyIANH
-	b9BbBSTgtmxdPedZoMfJE4sOiNIHuI1cE14rtqI=
-X-Google-Smtp-Source: AGRyM1syY2dmaaVRNUkd92rc/WKV+t3bEdWPEIjpTq4DEE+vBn3CEoNLNHFJUDvccvB2BWZBas+iOknsVfcuCT6oFQY=
-X-Received: by 2002:ac2:4e0f:0:b0:481:df0:94a with SMTP id e15-20020ac24e0f000000b004810df0094amr7365079lfr.655.1656383035352;
- Mon, 27 Jun 2022 19:23:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LX7hp0lBqz3bc9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 12:24:42 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 3CE6A618EE;
+	Tue, 28 Jun 2022 02:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166C7C341CC;
+	Tue, 28 Jun 2022 02:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656383079;
+	bh=TFlHdgNdgdIB6wbPqInLVg9UzcNtIiE8X/fdYpv3fmA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EffcpxaM5tQc8s4K8Ep4g5WsBP+OLA93iC2ISHGZrcrTMYPzNX3uWQeX61gkn+1g0
+	 suVKInzdCXsI16bu0oKTD+M6nEPvc9pG6A87H3hE/EWDaZRzeLJ3rxiUq7uFuG72yw
+	 Ms3zAalA78NQzG3v3UDkkgLf+I8jNfiSdKj2MkGO/d4XmAInYxVFKojw+gN3Snv4dR
+	 T97vm8QkZLs/MlVogQFxC37kq+EMHPag4rGwHyH1v2TYSMVZSUhlGcD+yCxbbMBec3
+	 eIk1PjJPFgZHRIjUIAKjruSdiGoiFmfnuCKyqH2+MxipJgmW6anMs149uFTbdcb3iG
+	 bfYzDVyuqS/cA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 10/27] powerpc/prom_init: Fix build failure with GCC_PLUGIN_STRUCTLEAK_BYREF_ALL and KASAN
+Date: Mon, 27 Jun 2022 22:23:56 -0400
+Message-Id: <20220628022413.596341-10-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220628022413.596341-1-sashal@kernel.org>
+References: <20220628022413.596341-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <1655451877-16382-1-git-send-email-shengjiu.wang@nxp.com>
- <1655451877-16382-7-git-send-email-shengjiu.wang@nxp.com> <20220627230012.GA3122063-robh@kernel.org>
-In-Reply-To: <20220627230012.GA3122063-robh@kernel.org>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 28 Jun 2022 10:23:43 +0800
-Message-ID: <CAA+D8AOHu4Wvt4gkUCu7NaT_aNcwWbp1c2KNy7WTLnKvtzZ4jA@mail.gmail.com>
-Subject: Re: [PATCH v2 6/7] ASoC: dt-bindings: fsl-sai: Add new property to
- configure dataline
-To: Rob Herring <robh@kernel.org>
-Content-Type: multipart/alternative; boundary="0000000000006f2a6a05e278bafa"
-X-Mailman-Approved-At: Tue, 28 Jun 2022 16:58:59 +1000
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,136 +62,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>, alsa-devel@alsa-project.org, Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Fabio Estevam <festevam@gmail.com>, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, nick.child@ibm.com, rafael.j.wysocki@intel.com, jlu.hpw@foxmail.com, Julia.Lawall@inria.fr, aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, adobriyan@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---0000000000006f2a6a05e278bafa
-Content-Type: text/plain; charset="UTF-8"
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-On Tue, Jun 28, 2022 at 7:00 AM Rob Herring <robh@kernel.org> wrote:
+[ Upstream commit ca5dabcff1df6bc8c413922b5fa63cc602858803 ]
 
-> On Fri, Jun 17, 2022 at 03:44:36PM +0800, Shengjiu Wang wrote:
-> > "fsl,dataline" is added to configure the dataline of SAI.
-> > It has 3 value for each configuration, first one means the type:
-> > I2S(1) or PDM(2), second one is dataline mask for 'rx', third one is
-> > dataline mask for 'tx'. for example:
-> >
-> > fsl,dataline = <1 0xff 0xff 2 0xff 0x11>,
-> >
-> > it means I2S type rx mask is 0xff, tx mask is 0xff, PDM type
-> > rx mask is 0xff, tx mask is 0x11 (dataline 1 and 4 enabled).
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/sound/fsl-sai.txt | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/sound/fsl-sai.txt
-> b/Documentation/devicetree/bindings/sound/fsl-sai.txt
-> > index c71c5861d787..4c66e6a1a533 100644
-> > --- a/Documentation/devicetree/bindings/sound/fsl-sai.txt
-> > +++ b/Documentation/devicetree/bindings/sound/fsl-sai.txt
-> > @@ -49,6 +49,14 @@ Required properties:
-> >                         receive data by following their own bit clocks
-> and
-> >                         frame sync clocks separately.
-> >
-> > +  - fsl,dataline        : configure the dataline. it has 3 value for
-> each configuration
-> > +                          first one means the type: I2S(1) or PDM(2)
-> > +                          second one is dataline mask for 'rx'
-> > +                          third one is dataline mask for 'tx'.
-> > +                          for example: fsl,dataline = <1 0xff 0xff 2
-> 0xff 0x11>;
-> > +                          it means I2S type rx mask is 0xff, tx mask is
-> 0xff, PDM type
-> > +                          rx mask is 0xff, tx mask is 0x11 (dataline 1
-> and 4 enabled).
->
-> You mean 0 and 4 enabled? Or 1 and 4?
->
+When CONFIG_KASAN is selected, we expect prom_init to use __memset()
+because it is too early to use memset().
 
-Should be 'dataline 1 and 5 enabled, index start from 1'.  I will fix it.
+But with CONFIG_GCC_PLUGIN_STRUCTLEAK_BYREF_ALL, the compiler adds calls
+to memset() to clear objects on stack, hence the following failure:
 
->
-> How many 3 cell entries can you have?
->
+	  PROMCHK arch/powerpc/kernel/prom_init_check
+	Error: External symbol 'memset' referenced from prom_init.c
+	make[2]: *** [arch/powerpc/kernel/Makefile:204 : arch/powerpc/kernel/prom_init_check] Erreur 1
 
-There is no limitation for entries,  the code in the driver will query the
-length first
-by of_property_count_u32_elems() then read the values.
+prom_find_machine_type() is called from prom_init() and is called only
+once, so lets put compat[] in BSS instead of stack to avoid that.
 
-best regards
-wang shengjiu
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/3802811f7cf94f730be44688539c01bba3a3b5c0.1654875808.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/prom_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---0000000000006f2a6a05e278bafa
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 7f4e2c031a9a..0391b3225970 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2237,7 +2237,7 @@ static void __init prom_init_stdout(void)
+ 
+ static int __init prom_find_machine_type(void)
+ {
+-	char compat[256];
++	static char compat[256] __prombss;
+ 	int len, i = 0;
+ #ifdef CONFIG_PPC64
+ 	phandle rtas;
+-- 
+2.35.1
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jun 28, 2022 at 7:00 AM Rob H=
-erring &lt;<a href=3D"mailto:robh@kernel.org">robh@kernel.org</a>&gt; wrote=
-:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
-8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Fri, Jun 17=
-, 2022 at 03:44:36PM +0800, Shengjiu Wang wrote:<br>
-&gt; &quot;fsl,dataline&quot; is added to configure the dataline of SAI.<br=
->
-&gt; It has 3 value for each configuration, first one means the type:<br>
-&gt; I2S(1) or PDM(2), second one is dataline mask for &#39;rx&#39;, third =
-one is<br>
-&gt; dataline mask for &#39;tx&#39;. for example:<br>
-&gt; <br>
-&gt; fsl,dataline =3D &lt;1 0xff 0xff 2 0xff 0x11&gt;,<br>
-&gt; <br>
-&gt; it means I2S type rx mask is 0xff, tx mask is 0xff, PDM type<br>
-&gt; rx mask is 0xff, tx mask is 0x11 (dataline 1 and 4 enabled).<br>
-&gt; <br>
-&gt; Signed-off-by: Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@nxp.c=
-om" target=3D"_blank">shengjiu.wang@nxp.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 Documentation/devicetree/bindings/sound/fsl-sai.txt | 8 ++++++++=
-<br>
-&gt;=C2=A0 1 file changed, 8 insertions(+)<br>
-&gt; <br>
-&gt; diff --git a/Documentation/devicetree/bindings/sound/fsl-sai.txt b/Doc=
-umentation/devicetree/bindings/sound/fsl-sai.txt<br>
-&gt; index c71c5861d787..4c66e6a1a533 100644<br>
-&gt; --- a/Documentation/devicetree/bindings/sound/fsl-sai.txt<br>
-&gt; +++ b/Documentation/devicetree/bindings/sound/fsl-sai.txt<br>
-&gt; @@ -49,6 +49,14 @@ Required properties:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0receive data by following their own bit clocks and<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0frame sync clocks separately.<br>
-&gt;=C2=A0 <br>
-&gt; +=C2=A0 - fsl,dataline=C2=A0 =C2=A0 =C2=A0 =C2=A0 : configure the data=
-line. it has 3 value for each configuration<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 first one means the type: I2S(1) or PDM(2)<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 second one is dataline mask for &#39;rx&#39;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 third one is dataline mask for &#39;tx&#39;.<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 for example: fsl,dataline =3D &lt;1 0xff 0xff 2 0xff =
-0x11&gt;;<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 it means I2S type rx mask is 0xff, tx mask is 0xff, P=
-DM type<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 rx mask is 0xff, tx mask is 0x11 (dataline 1 and 4 en=
-abled).<br>
-<br>
-You mean 0 and 4 enabled? Or 1 and 4?<br></blockquote><div><br></div><div>S=
-hould be &#39;dataline 1 and 5 enabled, index start from 1&#39;.=C2=A0 I wi=
-ll fix it.=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px=
- 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-How many 3 cell entries can you have?<br></blockquote><div>=C2=A0<br></div>=
-<div>There is no limitation for entries,=C2=A0 the code in the driver will =
-query the length first</div><div>by of_property_count_u32_elems() then read=
- the values.</div><div><br></div><div>best regards</div><div>wang shengjiu<=
-/div></div></div>
-
---0000000000006f2a6a05e278bafa--
