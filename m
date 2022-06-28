@@ -2,84 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530B755BE96
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 08:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C3B55BED9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 08:44:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXDc42PGsz3cgJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 16:05:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXFRy1QDMz3c8Z
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 16:43:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SE7XVZ+b;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=k1iqEHVE;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SE7XVZ+b;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=k1iqEHVE;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXDbK69Mmz3bmY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 16:05:17 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25S42J4p025426;
-	Tue, 28 Jun 2022 06:05:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=btd8R9oRMPb9pJvSLJyk+oQpLfazHe8IJbIKxcZp1PY=;
- b=SE7XVZ+bKcs1F3bw9mwUKO2I1ZPm1F79vAXNuSKtjmn8iOQvlgH0BKIDx90KgAczbD5U
- 7e822Klh3Dpfq/Sm33KyISg59RM8Cz7t+kt70tVNJmHAeo5qgfNBiaSb3Ljy0ZKHbEIZ
- YMYBCzLHicCwAFI1fP/zIVcUS2Tt9HlnYLIKvgNpIh5k24kNmD4RBi+pjkQwk6k4kELY
- 4rqZtVNwsShy4Vrxy6ERYxq+KMwd3+Y0OWKJXX/qJlrIVL4peqmxSuF8zyDyM/bIkIV6
- JGAVHmdAxep0wKwJQ6qfuGb5jpgXKLk2Cj+6cdcx01DunAmfKXHFoi3s6OpoYO1y9tUt Fg== 
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gyt92jt1c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jun 2022 06:05:00 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25S5q3au026558;
-	Tue, 28 Jun 2022 06:04:58 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma01fra.de.ibm.com with ESMTP id 3gwt08u6r6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jun 2022 06:04:58 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25S652Ma24248824
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jun 2022 06:05:02 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26FFA5204E;
-	Tue, 28 Jun 2022 06:04:55 +0000 (GMT)
-Received: from [9.43.16.94] (unknown [9.43.16.94])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 6F25752051;
-	Tue, 28 Jun 2022 06:04:52 +0000 (GMT)
-Message-ID: <13aff5a0-fb64-8393-7800-d65cbfbc3125@linux.ibm.com>
-Date: Tue, 28 Jun 2022 11:34:51 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXFRJ2KtLz30F8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 16:43:21 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id w19-20020a17090a8a1300b001ec79064d8dso14869226pjn.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jun 2022 23:43:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=s9TUIBPvRcRxZmOZ/UKmL2STsX4RkuAASajSfCd6Jwo=;
+        b=k1iqEHVEnLSQedel9PTf1jmE6vwsF2fufvd423d/FatBfr62j4GLx9uTphZocJsD2X
+         t9swjbnwfX2TYX27zr3ExGrxMmK6Yvst1YES64DfOUgIubs/+txIaKhbyqxG04K4FF32
+         10unYr7lRp3R7tg3DDTOtumvwvuyZbRNtksC4lFzOTu0xPWjZqRYTS2KfjTK9CjrIGVW
+         uA/9lK6N0wmW0pEi7MOamzht9CHaRTqaerW6wnyLSGMdmjRzZVzf6eB6UYFvHffKP214
+         QELFv2nXLIvPtMH6YFSUzGXvLnbXg8285mEbfXLR7Sb4QuxDCXYTf1q9QBcKe+46I1zx
+         CLBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=s9TUIBPvRcRxZmOZ/UKmL2STsX4RkuAASajSfCd6Jwo=;
+        b=mYM1qUtAnQnFLa+rBhiRisdgKxdAeppKQhZLK2iPyNx5X3d55OdsfpLxuFbj/XhwXJ
+         JHU+xH0opoNYgdoEX85n86TAsaESPan6Qg1wkVjieyMcpgvlX7UXJI497LG7NU5W8oJt
+         lKUlcFzB4a4JaqpMF8nadHIny3v84fpQ/jUu228Bhj+zPcW7UgKz5ISibBaI5+RFmHO8
+         nasmrmtTvTkkMEVLPzSNNrNcLFMZW3FYCmGBT0kk9M50vHV6FCfsKEMNMP/jxFi/uxxM
+         fgs4K9zWmDVSnlbeIjudekmIspGttinYw9IG3dKKipsKnQQZtHr1vDOR6QZyp3f0KqXY
+         dQvw==
+X-Gm-Message-State: AJIora+c5lF8zhp9FqcLKudLSxariOO5HoZjhtAyIBpnqFOHvKZ35yEr
+	+3tET7a6t2aLknT7Ft6IOMvq
+X-Google-Smtp-Source: AGRyM1vZCMBeqIqeJwz0Z/dkETp7U0TOTadYMxdCF6m7UB503Afk9laZJZeM1ax4GiQzFjSdh7PBsg==
+X-Received: by 2002:a17:902:f543:b0:16a:54c6:78d0 with SMTP id h3-20020a170902f54300b0016a54c678d0mr2183859plf.28.1656398599724;
+        Mon, 27 Jun 2022 23:43:19 -0700 (PDT)
+Received: from thinkpad ([27.111.75.159])
+        by smtp.gmail.com with ESMTPSA id u2-20020a170902714200b0016a522915e5sm8376804plm.83.2022.06.27.23.43.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jun 2022 23:43:19 -0700 (PDT)
+Date: Tue, 28 Jun 2022 12:13:13 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Subject: Re: [PATCH RESEND v5 13/18] PCI: dwc: Add start_link/stop_link
+ inliners
+Message-ID: <20220628064313.GF23601@thinkpad>
+References: <20220624143428.8334-1-Sergey.Semin@baikalelectronics.ru>
+ <20220624143428.8334-14-Sergey.Semin@baikalelectronics.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] powerpc/papr_scm: Fix nvdimm event mappings
-Content-Language: en-US
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
-        vaibhav@linux.ibm.com
-References: <20220610133431.410514-1-kjain@linux.ibm.com>
- <87ilom4nr6.fsf@mpe.ellerman.id.au>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <87ilom4nr6.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OQS9dtU7tKEi8L7xWLk6Lx6sLHRB076Q
-X-Proofpoint-GUID: OQS9dtU7tKEi8L7xWLk6Lx6sLHRB076Q
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-27_09,2022-06-24_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
- phishscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
- clxscore=1015 suspectscore=0 priorityscore=1501 mlxscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2206280025
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220624143428.8334-14-Sergey.Semin@baikalelectronics.ru>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,184 +80,203 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, maddy@linux.ibm.com, dan.j.williams@intel.com, disgoel@linux.vnet.ibm.com
+Cc: linux-arm-kernel@lists.infradead.org, Rob Herring <robh@kernel.org>, Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>, Roy Zang <roy.zang@nxp.com>, linux-pci@vger.kernel.org, Jingoo Han <jingoohan1@gmail.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, linux-kernel@vger.kernel.org, Serge Semin <fancer.lancer@gmail.com>, Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>, Minghuan Lian <minghuan.Lian@nxp.com>, Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>, Frank Li <Frank.Li@nxp.com>, Gustavo Pimentel <gustavo.pimentel@synopsys.com>, Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org, Mingkai Hu <mingkai.hu@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 6/27/22 12:05, Michael Ellerman wrote:
-> Hi Kajol,
+On Fri, Jun 24, 2022 at 05:34:23PM +0300, Serge Semin wrote:
+> There are several places in the generic DW PCIe code where the
+> platform-specific PCIe link start/stop methods are called after making
+> sure the ops handler and the callbacks are specified. Instead of repeating
+> the same pattern over and over let's define the static-inline methods in
+> the DW PCIe header file and use them in the relevant parts of the driver.
 > 
-> A few comments below ...
+> Note returning a negative error from the EP link start procedure if the
+> start_link pointer isn't specified doesn't really make much sense since
+> it's perfectly normal to have such a platform. Moreover even
+> pci_epc_start() doesn't fail if no epc->ops->start callback is spotted. As
+> a side-effect of this modification we can set the generic DW PCIe and
+> Layerscape EP platform drivers free from the empty start_link callbacks
+> and as such entirely dummy dw_pcie_ops instances.
+> 
+> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
 
-Hi Michael,
-   Thanks for reviewing the patch. I will make the changes suggested by
-you and send version 2 of this patch.
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
 Thanks,
-Kajol Jain
-> 
-> Kajol Jain <kjain@linux.ibm.com> writes:
->> Commit 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
->> adds performance monitoring support for papr-scm nvdimm devices via
->   ^ 
-> We're talking about a commit that's already happened so we should use
-> past tense, so "added".
-> 
->> perf interface. It also adds one array in papr_scm_priv
->                          "added" 
->> structure called "nvdimm_events_map", to dynamically save the stat_id
->> for events specified in nvdimm driver code "nd_perf.c".
->>
->> Right now the mapping is done based on the result of 
->> H_SCM_PERFORMANCE_STATS hcall, when all the stats are
->> requested. Currently there is an assumption, that a
->> certain stat will always be found at a specific offset
->> in the stat buffer.
->                     ^
->                     "returned by the hypervisor."
-> 
-> To make it clear where the stat buffer comes from, and that it's out of
-> our control.
-> 
->> The assumption may not be true or documented as part of PAPR
->> documentation.
-> 
-> That reads as the assumption "may not be documented as part of PAPR". I
-> think what you mean is the assumption *is not* documented by PAPR, and
-> although it happens to be true on current systems it may not be true in
-> future.
-> 
->> Fixing it, by adding a static mapping for nvdimm events to
->   Fix  it
->> corresponding stat-id, and removing the map from
->> papr_scm_priv structure.
->>
->> Fixes: 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
->> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
->> ---
->>  arch/powerpc/platforms/pseries/papr_scm.c | 59 ++++++++++-------------
->>  1 file changed, 25 insertions(+), 34 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->> index 181b855b3050..5434c654a797 100644
->> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->> @@ -350,6 +347,26 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
->>  #ifdef CONFIG_PERF_EVENTS
->>  #define to_nvdimm_pmu(_pmu)	container_of(_pmu, struct nvdimm_pmu, pmu)
->>
->> +static const char * const nvdimm_events_map[] = {
->> +	"N/A",
->> +	"CtlResCt",
->> +	"CtlResTm",
->> +	"PonSecs ",
->> +	"MemLife ",
->> +	"CritRscU",
->> +	"HostLCnt",
->> +	"HostSCnt",
->> +	"HostSDur",
->> +	"HostLDur",
->> +	"MedRCnt ",
->> +	"MedWCnt ",
->> +	"MedRDur ",
->> +	"MedWDur ",
->> +	"CchRHCnt",
->> +	"CchWHCnt",
->> +	"FastWCnt",
->> +};
->   
-> The order of the strings in that array becomes ABI. Because it defines
-> the mapping from perf_event.attr.config (perf user ABI) to the actual
-> event we request from the hypervisor.
-> 
-> So I'd like that made more explicit by using designated initialisers, eg:
-> 
-> static const char * const nvdimm_events_map[] = {
-> 	[1] = "CtlResCt",
-> 	[2] = "CtlResTm",
->         ...
-> 
-> That way an accidental reordering of the array won't break anything.
+Mani
 
-Yes make sense. Will do update it.
+> Reviewed-by: Rob Herring <robh@kernel.org>
 > 
-> You shouldn't need to specify 0 either as it's not used.
+> ---
 > 
->> @@ -370,7 +387,7 @@ static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev,
->>  
->>  	stat = &stats->scm_statistic[0];
->>  	memcpy(&stat->stat_id,
->> -	       &p->nvdimm_events_map[event->attr.config * sizeof(stat->stat_id)],
->> +	       nvdimm_events_map[event->attr.config],
->>  		sizeof(stat->stat_id));
+> Changelog v4:
+> - This is a new patch created on the v4 lap of the series.
+> ---
+>  drivers/pci/controller/dwc/pci-layerscape-ep.c    | 12 ------------
+>  drivers/pci/controller/dwc/pcie-designware-ep.c   |  8 ++------
+>  drivers/pci/controller/dwc/pcie-designware-host.c | 10 ++++------
+>  drivers/pci/controller/dwc/pcie-designware-plat.c | 10 ----------
+>  drivers/pci/controller/dwc/pcie-designware.h      | 14 ++++++++++++++
+>  5 files changed, 20 insertions(+), 34 deletions(-)
 > 
-> It's not clear that this won't index off the end of the array.
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> index 39f4664bd84c..ad99707b3b99 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+> @@ -32,15 +32,6 @@ struct ls_pcie_ep {
+>  	const struct ls_pcie_ep_drvdata *drvdata;
+>  };
+>  
+> -static int ls_pcie_establish_link(struct dw_pcie *pci)
+> -{
+> -	return 0;
+> -}
+> -
+> -static const struct dw_pcie_ops dw_ls_pcie_ep_ops = {
+> -	.start_link = ls_pcie_establish_link,
+> -};
+> -
+>  static const struct pci_epc_features*
+>  ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+>  {
+> @@ -106,19 +97,16 @@ static const struct dw_pcie_ep_ops ls_pcie_ep_ops = {
+>  
+>  static const struct ls_pcie_ep_drvdata ls1_ep_drvdata = {
+>  	.ops = &ls_pcie_ep_ops,
+> -	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
+>  };
+>  
+>  static const struct ls_pcie_ep_drvdata ls2_ep_drvdata = {
+>  	.func_offset = 0x20000,
+>  	.ops = &ls_pcie_ep_ops,
+> -	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
+>  };
+>  
+>  static const struct ls_pcie_ep_drvdata lx2_ep_drvdata = {
+>  	.func_offset = 0x8000,
+>  	.ops = &ls_pcie_ep_ops,
+> -	.dw_pcie_ops = &dw_ls_pcie_ep_ops,
+>  };
+>  
+>  static const struct of_device_id ls_pcie_ep_of_match[] = {
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> index 7ad349c32082..15b8059544e3 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-ep.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+> @@ -435,8 +435,7 @@ static void dw_pcie_ep_stop(struct pci_epc *epc)
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  
+> -	if (pci->ops && pci->ops->stop_link)
+> -		pci->ops->stop_link(pci);
+> +	dw_pcie_stop_link(pci);
+>  }
+>  
+>  static int dw_pcie_ep_start(struct pci_epc *epc)
+> @@ -444,10 +443,7 @@ static int dw_pcie_ep_start(struct pci_epc *epc)
+>  	struct dw_pcie_ep *ep = epc_get_drvdata(epc);
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+>  
+> -	if (!pci->ops || !pci->ops->start_link)
+> -		return -EINVAL;
+> -
+> -	return pci->ops->start_link(pci);
+> +	return dw_pcie_start_link(pci);
+>  }
+>  
+>  static const struct pci_epc_features*
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index 2f13eec4812d..c49a3bde7a2a 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -409,8 +409,8 @@ int dw_pcie_host_init(struct pcie_port *pp)
+>  
+>  	dw_pcie_setup_rc(pp);
+>  
+> -	if (!dw_pcie_link_up(pci) && pci->ops && pci->ops->start_link) {
+> -		ret = pci->ops->start_link(pci);
+> +	if (!dw_pcie_link_up(pci)) {
+> +		ret = dw_pcie_start_link(pci);
+>  		if (ret)
+>  			goto err_free_msi;
+>  	}
+> @@ -427,8 +427,7 @@ int dw_pcie_host_init(struct pcie_port *pp)
+>  	return 0;
+>  
+>  err_stop_link:
+> -	if (pci->ops && pci->ops->stop_link)
+> -		pci->ops->stop_link(pci);
+> +	dw_pcie_stop_link(pci);
+>  
+>  err_free_msi:
+>  	if (pp->has_msi_ctrl)
+> @@ -444,8 +443,7 @@ void dw_pcie_host_deinit(struct pcie_port *pp)
+>  	pci_stop_root_bus(pp->bridge->bus);
+>  	pci_remove_root_bus(pp->bridge->bus);
+>  
+> -	if (pci->ops && pci->ops->stop_link)
+> -		pci->ops->stop_link(pci);
+> +	dw_pcie_stop_link(pci);
+>  
+>  	if (pp->has_msi_ctrl)
+>  		dw_pcie_free_msi(pp);
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-plat.c b/drivers/pci/controller/dwc/pcie-designware-plat.c
+> index 0c5de87d3cc6..abf1afac6064 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-plat.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-plat.c
+> @@ -36,15 +36,6 @@ static const struct of_device_id dw_plat_pcie_of_match[];
+>  static const struct dw_pcie_host_ops dw_plat_pcie_host_ops = {
+>  };
+>  
+> -static int dw_plat_pcie_establish_link(struct dw_pcie *pci)
+> -{
+> -	return 0;
+> -}
+> -
+> -static const struct dw_pcie_ops dw_pcie_ops = {
+> -	.start_link = dw_plat_pcie_establish_link,
+> -};
+> -
+>  static void dw_plat_pcie_ep_init(struct dw_pcie_ep *ep)
+>  {
+>  	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+> @@ -140,7 +131,6 @@ static int dw_plat_pcie_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  
+>  	pci->dev = dev;
+> -	pci->ops = &dw_pcie_ops;
+>  
+>  	dw_plat_pcie->pci = pci;
+>  	dw_plat_pcie->mode = mode;
+> diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
+> index 7d6e9b7576be..8ba239292634 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware.h
+> +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> @@ -365,6 +365,20 @@ static inline void dw_pcie_dbi_ro_wr_dis(struct dw_pcie *pci)
+>  	dw_pcie_writel_dbi(pci, reg, val);
+>  }
+>  
+> +static inline int dw_pcie_start_link(struct dw_pcie *pci)
+> +{
+> +	if (pci->ops && pci->ops->start_link)
+> +		return pci->ops->start_link(pci);
+> +
+> +	return 0;
+> +}
+> +
+> +static inline void dw_pcie_stop_link(struct dw_pcie *pci)
+> +{
+> +	if (pci->ops && pci->ops->stop_link)
+> +		pci->ops->stop_link(pci);
+> +}
+> +
+>  #ifdef CONFIG_PCIE_DW_HOST
+>  irqreturn_t dw_handle_msi_irq(struct pcie_port *pp);
+>  void dw_pcie_setup_rc(struct pcie_port *pp);
+> -- 
+> 2.35.1
 > 
-> There is a check in papr_scm_pmu_event_init(), but I'd probably be
-> happier if we did an explicit check in here as well, eg:
-> 
-> 	if (event->attr.config >= ARRAY_SIZE(nvdimm_events_map))
-> 		return -EINVAL;
-> 
-> 
->>  	stat->stat_val = 0;
->>  
->> @@ -460,10 +477,9 @@ static void papr_scm_pmu_del(struct perf_event *event, int flags)
->>  
->>  static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu *nd_pmu)
->>  {
->> -	struct papr_scm_perf_stat *stat;
->>  	struct papr_scm_perf_stats *stats;
->>  	u32 available_events;
->> -	int index, rc = 0;
->> +	int rc = 0;
-> 
-> You shouldn't need to initialise rc here. It's not used until the call
-> to drc_pmem_query_stats() below.
 
-Ok sure.
-
-> 
->>  	available_events = (p->stat_buffer_len  - sizeof(struct papr_scm_perf_stats))
->>  			/ sizeof(struct papr_scm_perf_stat);
->> @@ -473,34 +489,12 @@ static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu
->>  	/* Allocate the buffer for phyp where stats are written */
->>  	stats = kzalloc(p->stat_buffer_len, GFP_KERNEL);
->>  	if (!stats) {
->> -		rc = -ENOMEM;
->> -		return rc;
->> +		return -ENOMEM;
->>  	}
->>  
->>  	/* Called to get list of events supported */
->>  	rc = drc_pmem_query_stats(p, stats, 0);
->> -	if (rc)
->> -		goto out;
->>  
->> -	/*
->> -	 * Allocate memory and populate nvdimm_event_map.
->> -	 * Allocate an extra element for NULL entry
->> -	 */
->> -	p->nvdimm_events_map = kcalloc(available_events + 1,
->> -				       sizeof(stat->stat_id),
->> -				       GFP_KERNEL);
->> -	if (!p->nvdimm_events_map) {
->> -		rc = -ENOMEM;
->> -		goto out;
->> -	}
->> -
->> -	/* Copy all stat_ids to event map */
->> -	for (index = 0, stat = stats->scm_statistic;
->> -	     index < available_events; index++, ++stat) {
->> -		memcpy(&p->nvdimm_events_map[index * sizeof(stat->stat_id)],
->> -		       &stat->stat_id, sizeof(stat->stat_id));
->> -	}
->> -out:
->>  	kfree(stats);
->>  	return rc;
->>  }
-> 
-> cheers
+-- 
+மணிவண்ணன் சதாசிவம்
