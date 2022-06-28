@@ -2,144 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04F755BDBB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 05:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E3455BDC7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 05:13:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LX8V16hRQz3cdN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 13:00:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=jYq/aY1s;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=I9XQ0jhF;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LX8n70NJNz3cgJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jun 2022 13:13:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2021-07-09 header.b=jYq/aY1s;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=I9XQ0jhF;
-	dkim-atps=neutral
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LX8TG3bkRz305M
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 12:59:37 +1000 (AEST)
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25S1p8pw020672;
-	Tue, 28 Jun 2022 02:59:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : message-id : references : date : in-reply-to : content-type :
- mime-version; s=corp-2021-07-09;
- bh=wMamLpDb+BRSMzdaF++yecs649QCHZ3DOgROwQe3Bpc=;
- b=jYq/aY1sqUjt53/It8QrvnGHbksfYg0vkY27bXmC2aouAPvdZPMFYotmYsvQA3HwaTM0
- nOGwnY6e2YmQLwwm1Os56Fyt9OiMzDhqgMyd5CP1TttXBjSva1+SudstztZvZpiRiiWf
- NQeYDvz35LLmRqkpxCvys4KaOBPqMs7CK0UZhD1NUcc4d86VeCxxetSzimF9by7EsK9D
- c4Dmb5bv+xU37YZ700HFacoQ3QKnAgu1EOLTrfsdG7NM8p4nIR/oWAVhf+KuMtQe3nNX
- 1RtmiR8urxRP7d74RwhP1KlFeHgS8vpjuyEQ+97mZf4ZGad6T50Nict57F8nqlAG+HIR pQ== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3gwt89vrbe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jun 2022 02:59:17 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 25S2t1HG032517;
-	Tue, 28 Jun 2022 02:59:15 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2047.outbound.protection.outlook.com [104.47.66.47])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com with ESMTP id 3gwrt7j601-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jun 2022 02:59:15 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GvtE1IluxXRxNRAdXj+qFrHZoAM3IRtNbDnRYlNUxSSv1k4ltXnN24SJG+3iKrA2WdUu8YSn5nPUzubHkcf29mgsNiIbjnx0QSUdqcOB0ZDvgeSN4s5HIPxtb3CjF7D4dceObk+Xi2o6L//+aA6fjYaalrcg7QVI9/zavvbi/K7ygetsmUigDJo18ztgBb91OcqrRgHXKbzgb8x2gVEg6CX2nxoxBc3RCMNYcyfnM1N6YMnzjS8sXmghZnc5Vv3fVbMWyr2dei1vQm6XkwF+tr9f6Xzl3Wj1oSEjQEjn2sGvaj7p9ipueXDhSILYmccHRGBhCKVfOZWPH/wcGJ3NwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wMamLpDb+BRSMzdaF++yecs649QCHZ3DOgROwQe3Bpc=;
- b=InUGp7rGX1unmBFP0RxlfGt5G8DzuZTxAOjDKSztS0X3yu1sEQXRuks4vys4S6ywdQxOZMIlzQDcVusM3XCeN77/pnNOipp9wPDWPtMRnlxnf20vanF1BBn5xPfrQE4cX1YU3N9kTspFTMhdy4NentGl4ag0eN9Oa7RH82ApocKautzIEBL3XbaiTB+lnryjW6DleJk3rWol2GnMZEMvlv5H/PwvacVnhj9wzx5st2Vuh8OoMXmWLb2Ah38X6m6EsCogQCts29qeoPw2aPRE6iPxGUCXWk5tdVQwkO9AskoM7zM9UjLGw9oZW6DEt2KLLSZSM2tuf+T7FVvKRBSI/w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wMamLpDb+BRSMzdaF++yecs649QCHZ3DOgROwQe3Bpc=;
- b=I9XQ0jhF1X4CeHVVFET+PdKQLm9Namx8Svditd958QPAlpc3pKSMK6eaFJqbv2Rfa0xi09qDZRc5v3LPKhphrZdC9/0gqWQ95AaolsH8WHCHU+E8qwEuJ1QHRHh6+2QG2uijrpfgqAnm+zOWuqHIZiEF1GweR0OtnGZVXv1WSlQ=
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
- by PH0PR10MB4790.namprd10.prod.outlook.com (2603:10b6:510:3f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5373.16; Tue, 28 Jun
- 2022 02:59:13 +0000
-Received: from PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::6516:e908:d2bd:ca45]) by PH0PR10MB4759.namprd10.prod.outlook.com
- ([fe80::6516:e908:d2bd:ca45%5]) with mapi id 15.20.5373.018; Tue, 28 Jun 2022
- 02:59:13 +0000
-To: Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v3 0/3] phase out CONFIG_VIRT_TO_BUS
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <yq1bkudh4va.fsf@ca-mkp.ca.oracle.com>
-References: <20220624155226.2889613-1-arnd@kernel.org>
-Date: Mon, 27 Jun 2022 22:59:08 -0400
-In-Reply-To: <20220624155226.2889613-1-arnd@kernel.org> (Arnd Bergmann's
-	message of "Fri, 24 Jun 2022 17:52:23 +0200")
-Content-Type: text/plain
-X-ClientProxiedBy: DM6PR11CA0005.namprd11.prod.outlook.com
- (2603:10b6:5:190::18) To PH0PR10MB4759.namprd10.prod.outlook.com
- (2603:10b6:510:3d::12)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LX8mj5btFz30Bl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jun 2022 13:13:07 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 71983150C;
+	Mon, 27 Jun 2022 20:12:34 -0700 (PDT)
+Received: from [10.162.42.7] (unknown [10.162.42.7])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0D7AC3F792;
+	Mon, 27 Jun 2022 20:12:26 -0700 (PDT)
+Message-ID: <f26804cf-e342-5826-8f01-4b087a7baa63@arm.com>
+Date: Tue, 28 Jun 2022 08:42:24 +0530
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: b0eddaa0-0a3c-49d6-e44b-08da58b22e24
-X-MS-TrafficTypeDiagnostic: PH0PR10MB4790:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	p4KHyljA+8Z4xiHfUb5lVwRtPt8Osb39c4XVCLviyhjlN0h7hl0nYUd4peL01XITkHdahCs0KSLb9nJEYrMlh14sVy5eGncN2fe6iPcfZ2yreMrp2E/uMdW+d+Pah2QvgDcujX2XZkXzSZZvsWHBjHX5/US4IZstRVFWXaFJ37zIvWwoiTLWRvO5yloORDND/DAISk7xk1E4bPdrzYf7FB8IeGHww8bzCSwiJkh8O2Jh3CIuRKbVMDxkCzwsIywhYtcssT82I3vuaHbK6QfSdzqVqjE1wTJ2rVvEiX60SZ7uxtEzfGj9gcKBvf1rH0enF/Kz0ebXmaOVZRIU593AiFatCQbcDDGm6wiMBAfjDq6bfLY0WRogDUSFXbcqtLBeP3tl7wTRgb2N0Q4BFjYJdIffHfcMsDJlWylfJYmjJ8EZEvlet+Byrh6Uh9D+YmLD0L4fwXjM604RA8lfJLi0ubjccNt+cF0HqLIHimsq9MfCuuXPUZdDJSPDrv04/vU6veJt5MKe9m7SFdxSQx1M7rB3bxkRSJ8sj2mJ3Ps8Bn0p5OVzrg2qxdAQrJn2Zy4iUEQt8BUPJoIE33CrwfEVWie+MLZEqGL8x4AhqhiCzKPWxoLLzcvK0L6csvKumdj4iE1nYqds1creOSKYOVHUcW01NvwwLFiFgzl5IHQPBSDoauIDJ3lvhd1Ud01cIsXiwAToaOehlPeZGiLmXHR/GCqWyus3ZrG/x+TLrmqiV0b03qTg7r0MZrraK12hbh4criYxXRcO8iF8QUdYH4YpnjgsxyShBXeu6bRMpmQDz48=
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(136003)(396003)(346002)(39860400002)(366004)(376002)(6512007)(38100700002)(41300700001)(8936002)(86362001)(2906002)(26005)(7416002)(38350700002)(4744005)(316002)(6506007)(6486002)(66946007)(8676002)(478600001)(66476007)(52116002)(5660300002)(4326008)(54906003)(66556008)(6916009)(186003)(36916002)(6666004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?Ogi8FfaCr20aXP5D0AeBliPkBoOfl3e5M2wOGI0c4ztz/AvyEfzVnHcH5rRp?=
- =?us-ascii?Q?dyXRZiG2D0FOwmCCh4q5a2/xl4GYGtTvv12cw5s02p/6tgGOkNNgBkvSt1c0?=
- =?us-ascii?Q?5wB1v7fdkezPG9iElRMEIJdjUwksmLFLX1r4slXo28/SSlJPpD9j5IpZ+jXH?=
- =?us-ascii?Q?vvx/OUcnmQEhXxDOtC/3pXzbQEG57qj9z9MRZ+PjTGShfCmdF12KAHweMM6K?=
- =?us-ascii?Q?ZRGkLhkDu4T6PrWSEdgmoj6UUTsEYdNzF61Ifi7pcJtD02G2eibMy5lbcJo3?=
- =?us-ascii?Q?ya5EY9GRclL1w5opXZVDzL2h69sUvCaLieYk91yQuv47Yy4lWDUOr60oZfsI?=
- =?us-ascii?Q?u6w6vmnmiXv3MPwOjMCJ5/d5iaShV0a94hpDESFENw+hAMkJelrNm+B3x62p?=
- =?us-ascii?Q?X9p/HwV/HgX9V13dpmmxcypOTZTDXlof93BC2BBKS83A+QTly6pAfA9G5dAZ?=
- =?us-ascii?Q?jNiK0alRsCN2Zxwa3+2BRYq6YDAUKkOvq8pntEpb5fQYN07fTyPz79yFVcgx?=
- =?us-ascii?Q?oA24FSRpqK/45LrrEyDS0oUeMqqeKsOQU/NZWRFRBVAHN/ZvlRZsE3d1xBVG?=
- =?us-ascii?Q?80Qc5CZ9gVol1VRtqI3262yS2HLYfhdMoqyIi2UH6RsGZlFrztqernXnhSBZ?=
- =?us-ascii?Q?xT7yMVK4XSiLqDa0VHa/d6Ps7ogo1gPJb9SH5VrTqRndeXZ8phk1pkHHrizR?=
- =?us-ascii?Q?1lj2Ozw+SRPpbKg87+EZX3A0kTl4bJXiw9MGPrrlWMJt413eSC3b63CZMVa2?=
- =?us-ascii?Q?lO4tCKmszDzNVT3UoRfZD5qZMYy5T/9JwgEG8Tf73ikG7rd+7Ic2fquhU2xA?=
- =?us-ascii?Q?WGmyHpVKUZqEbhrFt29cMFkQpnQn/2eW0QMbGCcVE7a0NyDrvaNSkANZ4lB4?=
- =?us-ascii?Q?xb2Fi+ElxAEKxf8Yc/TmuqlRSibCXDHas83O4OCNL9BreDeMxkPPo8CvbPyd?=
- =?us-ascii?Q?0ww3ZKpWJndL03XBIRr2deB3XpuPVzqoZ0kYwuWfwnc84HQKFQunoNDb7jEQ?=
- =?us-ascii?Q?nL7/LFrlA0AvDWgTj4UQUI1yVIIGDgF8Eq8okPHHVEusY6ksl1IU8ZZWyXND?=
- =?us-ascii?Q?ZqjfGsMWcv1wBSh3i3YEPTFjvDziQIr/AcXPBrMKW+jGWPfmCrWMip1v0E21?=
- =?us-ascii?Q?FG4H90dS1paXvHufqLxPsmFhCrj0smTDTqZHA+ApCTDTF+zL7GMh80pBv4Rk?=
- =?us-ascii?Q?8/Pp1FYI7kLdizN5t6WQddApPMKBwDWb/3fhhsLNY14nWN2spBn4zCwfNxU0?=
- =?us-ascii?Q?HRqzWrFAk0gu0ra8taFagqJoJm+GbmXe4qPET9hT6jqHNCpVJayg4N/dAOxg?=
- =?us-ascii?Q?QeuE6LB6B2ed37RkPzs4OoKjJQtBl07Q/qBK14FlhlTcZ9rjKNGnfvqoXzpC?=
- =?us-ascii?Q?Tl3Ckr2/mBUe3O7mcvrmEZdeCyc2/K66s7Jc2Rp8QvHEEfX/0vgO61HeWKSU?=
- =?us-ascii?Q?QbDkr7WnovC/Vo/daWD64mYv7brLLZVfcUfPEgd3uaXzVZRDN6HlFQLMrXxW?=
- =?us-ascii?Q?dj0YEqzB3WHLg3hrhTzOUDlUz/FIwvkW6PGgVhv7sIhVCxgz4ghOC55nnXeB?=
- =?us-ascii?Q?JyQ9PLyP0yEgU4QfMBiNzKhi7YZCWlcrZDvd0EidUVbmpkxBHKe55GwEW65Y?=
- =?us-ascii?Q?iA=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0eddaa0-0a3c-49d6-e44b-08da58b22e24
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2022 02:59:13.1219
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zrNNVYlCJEUe2GlQS/SUgboR0K7cd1A8xqCcC9y4F5e/LCSlzQFxkr5DuOQ0MkXbxw4vCXPVIyE+apv27xcBVKtOOhhIFzXrpckfB0DR/ZI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4790
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.517,18.0.883
- definitions=2022-06-27_06:2022-06-24,2022-06-27 signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=879 suspectscore=0
- mlxscore=0 phishscore=0 malwarescore=0 adultscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2206280011
-X-Proofpoint-ORIG-GUID: 1dFk_RKS9mTueJWMTx8745vB7FgPTCzA
-X-Proofpoint-GUID: 1dFk_RKS9mTueJWMTx8745vB7FgPTCzA
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH V5 04/26] sparc/mm: Move protection_map[] inside the
+ platform
+Content-Language: en-US
+To: Sam Ravnborg <sam@ravnborg.org>
+References: <20220627045833.1590055-1-anshuman.khandual@arm.com>
+ <20220627045833.1590055-5-anshuman.khandual@arm.com>
+ <YrnlkLbyYSbI0EQw@ravnborg.org>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <YrnlkLbyYSbI0EQw@ravnborg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -151,18 +46,130 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Miquel van Smoorenburg <mikevs@xs4all.net>, linux-scsi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org, "Maciej W . Rozycki" <macro@orcam.me.uk>, linux-m68k@lists.linux-m68k.org, Denis Efremov <efremov@linux.com>, Mark Salyzyn <salyzyn@android.com>, Christoph Hellwig <hch@infradead.org>, iommu@lists.linux-foundation.org, Matt Wang <wwentao@vmware.com>, linux-parisc@vger.kernel.org, linux-alpha@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Khalid Aziz <khalid@gonehiking.org>, Robin Murphy <robin.murphy@arm.com>, Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, hch@infradead.org, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Hi Arnd!
 
-> If there are no more issues identified with this series, I'll merge it
-> through the asm-generic tree. The SCSI patches can also get merged
-> separately through the SCSI maintainers' tree if they prefer.
+On 6/27/22 22:44, Sam Ravnborg wrote:
+> Hi Anshuman,
+> 
+> On Mon, Jun 27, 2022 at 10:28:11AM +0530, Anshuman Khandual wrote:
+>> This moves protection_map[] inside the platform and while here, also enable
+>> ARCH_HAS_VM_GET_PAGE_PROT on 32 bit platforms via DECLARE_VM_GET_PAGE_PROT.
+>>
+>> Cc: "David S. Miller" <davem@davemloft.net>
+>> Cc: sparclinux@vger.kernel.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>>  arch/sparc/Kconfig                  |  2 +-
+>>  arch/sparc/include/asm/pgtable_32.h | 19 -------------------
+>>  arch/sparc/include/asm/pgtable_64.h | 19 -------------------
+>>  arch/sparc/mm/init_32.c             | 20 ++++++++++++++++++++
+>>  arch/sparc/mm/init_64.c             |  3 +++
+>>  5 files changed, 24 insertions(+), 39 deletions(-)
+>>
+>> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+>> index ba449c47effd..09f868613a4d 100644
+>> --- a/arch/sparc/Kconfig
+>> +++ b/arch/sparc/Kconfig
+>> @@ -13,6 +13,7 @@ config 64BIT
+>>  config SPARC
+>>  	bool
+>>  	default y
+>> +	select ARCH_HAS_VM_GET_PAGE_PROT
+>>  	select ARCH_MIGHT_HAVE_PC_PARPORT if SPARC64 && PCI
+>>  	select ARCH_MIGHT_HAVE_PC_SERIO
+>>  	select DMA_OPS
+>> @@ -84,7 +85,6 @@ config SPARC64
+>>  	select PERF_USE_VMALLOC
+>>  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+>>  	select HAVE_C_RECORDMCOUNT
+>> -	select ARCH_HAS_VM_GET_PAGE_PROT
+>>  	select HAVE_ARCH_AUDITSYSCALL
+>>  	select ARCH_SUPPORTS_ATOMIC_RMW
+>>  	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
+>> diff --git a/arch/sparc/include/asm/pgtable_32.h b/arch/sparc/include/asm/pgtable_32.h
+>> index 4866625da314..8ff549004fac 100644
+>> --- a/arch/sparc/include/asm/pgtable_32.h
+>> +++ b/arch/sparc/include/asm/pgtable_32.h
+>> @@ -64,25 +64,6 @@ void paging_init(void);
+>>  
+>>  extern unsigned long ptr_in_current_pgd;
+>>  
+>> -/*         xwr */
+>> -#define __P000  PAGE_NONE
+>> -#define __P001  PAGE_READONLY
+>> -#define __P010  PAGE_COPY
+>> -#define __P011  PAGE_COPY
+>> -#define __P100  PAGE_READONLY
+>> -#define __P101  PAGE_READONLY
+>> -#define __P110  PAGE_COPY
+>> -#define __P111  PAGE_COPY
+>> -
+>> -#define __S000	PAGE_NONE
+>> -#define __S001	PAGE_READONLY
+>> -#define __S010	PAGE_SHARED
+>> -#define __S011	PAGE_SHARED
+>> -#define __S100	PAGE_READONLY
+>> -#define __S101	PAGE_READONLY
+>> -#define __S110	PAGE_SHARED
+>> -#define __S111	PAGE_SHARED
+>> -
+>>  /* First physical page can be anywhere, the following is needed so that
+>>   * va-->pa and vice versa conversions work properly without performance
+>>   * hit for all __pa()/__va() operations.
+>> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+>> index 4679e45c8348..a779418ceba9 100644
+>> --- a/arch/sparc/include/asm/pgtable_64.h
+>> +++ b/arch/sparc/include/asm/pgtable_64.h
+>> @@ -187,25 +187,6 @@ bool kern_addr_valid(unsigned long addr);
+>>  #define _PAGE_SZHUGE_4U	_PAGE_SZ4MB_4U
+>>  #define _PAGE_SZHUGE_4V	_PAGE_SZ4MB_4V
+>>  
+>> -/* These are actually filled in at boot time by sun4{u,v}_pgprot_init() */
+>> -#define __P000	__pgprot(0)
+>> -#define __P001	__pgprot(0)
+>> -#define __P010	__pgprot(0)
+>> -#define __P011	__pgprot(0)
+>> -#define __P100	__pgprot(0)
+>> -#define __P101	__pgprot(0)
+>> -#define __P110	__pgprot(0)
+>> -#define __P111	__pgprot(0)
+>> -
+>> -#define __S000	__pgprot(0)
+>> -#define __S001	__pgprot(0)
+>> -#define __S010	__pgprot(0)
+>> -#define __S011	__pgprot(0)
+>> -#define __S100	__pgprot(0)
+>> -#define __S101	__pgprot(0)
+>> -#define __S110	__pgprot(0)
+>> -#define __S111	__pgprot(0)
+>> -
+>>  #ifndef __ASSEMBLY__
+>>  
+>>  pte_t mk_pte_io(unsigned long, pgprot_t, int, unsigned long);
+>> diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
+>> index 1e9f577f084d..8693e4e28b86 100644
+>> --- a/arch/sparc/mm/init_32.c
+>> +++ b/arch/sparc/mm/init_32.c
+>> @@ -302,3 +302,23 @@ void sparc_flush_page_to_ram(struct page *page)
+>>  		__flush_page_to_ram(vaddr);
+>>  }
+>>  EXPORT_SYMBOL(sparc_flush_page_to_ram);
+>> +
+>> +static pgprot_t protection_map[16] __ro_after_init = {
+> This can be const - like done for powerpc and others.
+> sparc32 and sparc64 uses each their own - and I do not see sparc32 do
+> any modifications to protection_map.
 
-I put patches 1 and 2 in scsi-staging to see if anything breaks...
+Indeed protection_map[] arrays are independent both for sparc32 and spacr64.
+sparc32 platform never changes the protection_map[] array during boot. Sure,
+will make it into a const instead. Thanks for pointing this out.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+> 
+> With this change:
+> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+> 
