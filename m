@@ -1,36 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8565560B15
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 22:33:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C40560B4F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 22:59:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYCp64lvLz3drn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 06:33:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYDNp4NNTz3dqL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 06:59:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tNYkjQLT;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYCng0x0Bz2xXV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 06:32:37 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 25TKS467028346;
-	Wed, 29 Jun 2022 15:28:04 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 25TKS1wF028345;
-	Wed, 29 Jun 2022 15:28:01 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Wed, 29 Jun 2022 15:28:01 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 02/12] powerpc: wiiu: device tree
-Message-ID: <20220629202800.GJ25951@gate.crashing.org>
-References: <20220622131037.57604-1-ash@heyquark.com> <20220628133144.142185-1-ash@heyquark.com> <20220628133144.142185-3-ash@heyquark.com> <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org> <20220629161302.GG25951@gate.crashing.org> <908e7555-0090-84fe-4227-d6b349de1394@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <908e7555-0090-84fe-4227-d6b349de1394@linaro.org>
-User-Agent: Mutt/1.4.2.3i
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tNYkjQLT;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYDN34ZlNz3blZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 06:58:58 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25TKVXlg013651
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 20:58:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=x9J2VHv6MjL0w4kRkiMNu0VrF3aG6yCWv4M4Cy/Fcl4=;
+ b=tNYkjQLTGp/3psTg+82KENpf/DSF9chsTS3yNph3zEhXA1SORDR7/imNjjB3vFoQcUry
+ +C7970LxD3HzQz7m455OMbGTW0bt6ixOy5AUWkGI2Yv9bQNo4NVHyu3s95TUJcDvS0KN
+ xVy9ndhJ2lpmanI37pQl3kIjNaydUiGPM8pAaZS8lh0q6+JU2K0Ymv51R50pgtqQFxc9
+ /mKbY5WdN93KTJ2IYQHoQdXlQR4Wik7bKHuiSkgRNKS6PGTjkakh2e5nPT9Z091wu+vg
+ 6V9NDbtc6rEw4JmQoDEXdQtNu+AfBvQHS/fvfOK5SxzV4f6Es+xctMECMF7yNAdtwSIJ aA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h0wuq10rg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 20:58:55 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25TKVavl014126
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 20:58:55 GMT
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h0wuq10qy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jun 2022 20:58:55 +0000
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+	by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25TKa3DJ014785;
+	Wed, 29 Jun 2022 20:58:54 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+	by ppma03wdc.us.ibm.com with ESMTP id 3gwt09us0a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jun 2022 20:58:54 +0000
+Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
+	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25TKwrra65732902
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Jun 2022 20:58:53 GMT
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 92150112062;
+	Wed, 29 Jun 2022 20:58:53 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 68226112063;
+	Wed, 29 Jun 2022 20:58:53 +0000 (GMT)
+Received: from localhost (unknown [9.211.129.69])
+	by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Jun 2022 20:58:53 +0000 (GMT)
+From: Nathan Lynch <nathanl@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/smp: poll cpu_callin_map more aggressively in __cpu_up()
+Date: Wed, 29 Jun 2022 15:58:52 -0500
+Message-Id: <20220629205852.4172212-1-nathanl@linux.ibm.com>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: H8a4QH6EZjm8dQz858qjv5J8B_4M7TLJ
+X-Proofpoint-ORIG-GUID: hmK1wEFvKuHLxbPtaH3BrF01rJ51KFjm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-29_21,2022-06-28_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 impostorscore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=955 adultscore=0 clxscore=1015
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206290071
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,46 +93,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel.org, rw-r-r-0644@protonmail.com, robh+dt@kernel.org, paulus@samba.org, Ash Logan <ash@heyquark.com>, krzysztof.kozlowski+dt@linaro.org, j.ne@posteo.net, linuxppc-dev@lists.ozlabs.org, joel@jms.id.au
+Cc: brking@linux.ibm.com, srikar@linux.vnet.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 29, 2022 at 08:13:13PM +0200, Krzysztof Kozlowski wrote:
-> On 29/06/2022 18:13, Segher Boessenkool wrote:
-> > On Wed, Jun 29, 2022 at 11:58:18AM +0200, Krzysztof Kozlowski wrote:
-> >>> +		/* TODO: Add SMP */
-> >>> +		PowerPC,espresso@0 {
-> >>
-> >> Node name should be generic, so "cpu". Unless something needs the
-> >> specific node name?
-> > 
-> > This is how most other PowerPC firmwares do it.  The PowerPC processor
-> > binding is older than the generic naming practice, so CPU nodes have
-> > device_type "cpu" instead.  
-> 
-> ePAPR 1.0 from 2008 explicitly asks for generic node names. So 4 years
-> before Nintento Wii U. Maybe earlier ePAPR-s were also asking for this,
-> no clue, don't have them.
+It is not necessary to delay or sleep between polls of cpu_callin_map when
+waiting for a kicked CPU to come up. We can use spin_until_cond(),
+combining the boot and hotplug paths while preserving the intended timeout.
 
-The majority of PowerPC 750 systems long predate that.  Many *current*
-systems implement the PowerPC Processor Binding, too (not the epapr
-thing, which is incompatible with the older standards!)
+Without the msleep(1) in the hotplug path, the time it takes to online a
+CPU on a P9 PowerVM LPAR goes from roughly 30ms to 4ms or less when
+exercised via thaw_secondary_cpus().
 
-> > There is no added value in generic naming for CPU nodes anyway, since
-> > you just find them as the children of the "/cpus" node :-)
-> 
-> There is because you might have there caches. It also makes code easier
-> to read.
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+---
 
-In the processor binding the cache nodes were subnodes of cpu nodes or
-other cache nodes.  But in some server products you can have cache that
-is enabled while the corresponding core is disabled; and also, not all
-cache belongs to only one higher level anyway.  This was modelled pretty
-uncleanly, yup (cleaner would have been to have a /caches node as well
-as /cpus, for example).
+Notes:
+    Changes since v1:
+    * Do not poll indefinitely; restore the original 5sec timeout
+    
+    "Benchmark" method, on a LPAR with 24 CPUs:
+    $ echo processors > /sys/power/pm_test
+    $ echo mem > /sys/power/state
+    $ dmesg --reltime | grep -A23 'Enabling non-boot CPUs'
+    
+    Before:
+    [  +5.000003] Enabling non-boot CPUs ...
+    [  +0.047537] CPU1 is up
+    [  +0.030177] CPU2 is up
+    [  +0.030082] CPU3 is up
+    [  +0.030146] CPU4 is up
+    [  +0.030114] CPU5 is up
+    [  +0.030108] CPU6 is up
+    [  +0.030134] CPU7 is up
+    [  +0.040272] CPU8 is up
+    [  +0.030352] CPU9 is up
+    [  +0.030169] CPU10 is up
+    [  +0.040224] CPU11 is up
+    [  +0.030186] CPU12 is up
+    [  +0.030173] CPU13 is up
+    [  +0.030181] CPU14 is up
+    [  +0.030179] CPU15 is up
+    [  +0.030236] CPU16 is up
+    [  +0.030012] CPU17 is up
+    [  +0.030188] CPU18 is up
+    [  +0.030233] CPU19 is up
+    [  +0.030182] CPU20 is up
+    [  +0.030160] CPU21 is up
+    [  +0.030226] CPU22 is up
+    [  +0.030125] CPU23 is up
+    
+    After:
+    [  +5.000004] Enabling non-boot CPUs ...
+    [  +0.000956] CPU1 is up
+    [  +0.000568] CPU2 is up
+    [  +0.000682] CPU3 is up
+    [  +0.000836] CPU4 is up
+    [  +0.000914] CPU5 is up
+    [  +0.001054] CPU6 is up
+    [  +0.001184] CPU7 is up
+    [  +0.001533] CPU8 is up
+    [  +0.001779] CPU9 is up
+    [  +0.001935] CPU10 is up
+    [  +0.002151] CPU11 is up
+    [  +0.002358] CPU12 is up
+    [  +0.002597] CPU13 is up
+    [  +0.002713] CPU14 is up
+    [  +0.002891] CPU15 is up
+    [  +0.003209] CPU16 is up
+    [  +0.003149] CPU17 is up
+    [  +0.003337] CPU18 is up
+    [  +0.003552] CPU19 is up
+    [  +0.003765] CPU20 is up
+    [  +0.003922] CPU21 is up
+    [  +0.004104] CPU22 is up
+    [  +0.004266] CPU23 is up
 
-But on 750 you just have "l2-cache" subnodes, and all nodes in /cpus are
-CPUs :-)
+ arch/powerpc/kernel/smp.c | 23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
 
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index bcefab484ea6..c8431074d590 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -23,6 +23,7 @@
+ #include <linux/delay.h>
+ #include <linux/init.h>
+ #include <linux/spinlock.h>
++#include <linux/jiffies.h>
+ #include <linux/cache.h>
+ #include <linux/err.h>
+ #include <linux/device.h>
+@@ -1268,7 +1269,8 @@ static void cpu_idle_thread_init(unsigned int cpu, struct task_struct *idle)
+ 
+ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ {
+-	int rc, c;
++	unsigned long deadline;
++	int rc;
+ 
+ 	/*
+ 	 * Don't allow secondary threads to come online if inhibited
+@@ -1313,23 +1315,10 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ 	}
+ 
+ 	/*
+-	 * wait to see if the cpu made a callin (is actually up).
+-	 * use this value that I found through experimentation.
+-	 * -- Cort
++	 * Give the remote CPU five seconds to enter the kernel.
+ 	 */
+-	if (system_state < SYSTEM_RUNNING)
+-		for (c = 50000; c && !cpu_callin_map[cpu]; c--)
+-			udelay(100);
+-#ifdef CONFIG_HOTPLUG_CPU
+-	else
+-		/*
+-		 * CPUs can take much longer to come up in the
+-		 * hotplug case.  Wait five seconds.
+-		 */
+-		for (c = 5000; c && !cpu_callin_map[cpu]; c--)
+-			msleep(1);
+-#endif
+-
++	deadline = jiffies + msecs_to_jiffies(5000);
++	spin_until_cond(cpu_callin_map[cpu] != 0 || time_after(jiffies, deadline));
+ 	if (!cpu_callin_map[cpu]) {
+ 		printk(KERN_ERR "Processor %u is stuck.\n", cpu);
+ 		return -ENOENT;
+-- 
+2.36.1
 
-Segher
