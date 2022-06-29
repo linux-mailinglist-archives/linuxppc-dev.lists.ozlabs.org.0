@@ -1,36 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BA855FF9D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 14:17:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B213A560C1E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 00:13:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LY0p84LsKz3dqc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 22:17:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYG1p4mc0z3dsP
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 08:13:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.154.54.12; helo=smtpbg.qq.com; envelope-from=yuanjilin@cdjrlc.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 315 seconds by postgrey-1.36 at boromir; Wed, 29 Jun 2022 23:01:02 AEST
+Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY0n40Yrnz3cht
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 22:16:24 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LY0n35MwDz4xDH;
-	Wed, 29 Jun 2022 22:16:23 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>, Paul Mackerras <paulus@samba.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>
-In-Reply-To: <26f8b72a4276c0bd8ed63860c7316f6361c351b4.1655978907.git.christophe.leroy@csgroup.eu>
-References: <26f8b72a4276c0bd8ed63860c7316f6361c351b4.1655978907.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc/powermac: Remove empty function note_scsi_host()
-Message-Id: <165650493014.3004956.6600560027462595950.b4-ty@ellerman.id.au>
-Date: Wed, 29 Jun 2022 22:15:30 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY1mZ6xp1z3bqN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 23:01:00 +1000 (AEST)
+X-QQ-mid: bizesmtp63t1656507291tfsra6c3
+Received: from localhost.localdomain ( [182.148.13.66])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 29 Jun 2022 20:54:48 +0800 (CST)
+X-QQ-SSF: 0100000000200060C000C00A0000000
+X-QQ-FEAT: xoS364mEyr00dFkTgfgNEjTaoF4BmwMd0CJyYGBO7nG8ghAnd04j3/n2cv+cO
+	+wrHSkmNl3aNXNDMUN9e99ldFJgDUvmcmwIum6NyP7X+i7FA2jTKQgYpOj1j2xucTNyzgq9
+	vJ+a+sqnYHuHkHuVwBM+t0a84XnxTAmTKfj5HULnf06+gYoYZcSdnwY4mNWYeRGnM8A8GCc
+	vh/IbEXoGhH0LRkuVKYm3yPADPKbfXfhn0qV5DS6pd0H9QfkVKG8lMCOfIoAJLxSsgiXlAs
+	zymwHrzeUglHsXnFQiGDwlavaWfVsO1+oTK+ZcFZZc+n+R+qtGp6p4X6mipXeSaZV2tMPN1
+	npWneCq5Y4KttdBBdg=
+X-QQ-GoodBg: 0
+From: Jilin Yuan <yuanjilin@cdjrlc.com>
+To: pantelis.antoniou@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Subject: [PATCH] freescale/fs_enet:fix repeated words in comments
+Date: Wed, 29 Jun 2022 20:54:41 +0800
+Message-Id: <20220629125441.62420-1-yuanjilin@cdjrlc.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr4
+X-Mailman-Approved-At: Thu, 30 Jun 2022 08:13:02 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,23 +54,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>, linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org, Jilin Yuan <yuanjilin@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 23 Jun 2022 12:08:36 +0200, Christophe Leroy wrote:
-> note_scsi_host() has been an empty function since
-> commit 6ee0d9f744d4 ("[POWERPC] Remove unused old code
-> from powermac setup code").
-> 
-> Remove it.
-> 
-> 
-> [...]
+Delete the redundant word 'a'.
 
-Applied to powerpc/next.
+Signed-off-by: Jilin Yuan <yuanjilin@cdjrlc.com>
+---
+ drivers/net/ethernet/freescale/fs_enet/fs_enet.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[1/1] powerpc/powermac: Remove empty function note_scsi_host()
-      https://git.kernel.org/powerpc/c/d7f396461518c766b2436d64b6d3ba6a4c418dcf
+diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet.h b/drivers/net/ethernet/freescale/fs_enet/fs_enet.h
+index 5ff2634bee2f..cb419aef8d1b 100644
+--- a/drivers/net/ethernet/freescale/fs_enet/fs_enet.h
++++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet.h
+@@ -201,7 +201,7 @@ void fs_enet_platform_cleanup(void);
+ 
+ /* access macros */
+ #if defined(CONFIG_CPM1)
+-/* for a a CPM1 __raw_xxx's are sufficient */
++/* for a CPM1 __raw_xxx's are sufficient */
+ #define __cbd_out32(addr, x)	__raw_writel(x, addr)
+ #define __cbd_out16(addr, x)	__raw_writew(x, addr)
+ #define __cbd_in32(addr)	__raw_readl(addr)
+-- 
+2.36.1
 
-cheers
