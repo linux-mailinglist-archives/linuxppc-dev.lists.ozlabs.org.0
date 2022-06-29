@@ -2,70 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8940756022C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 16:14:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D2C560C28
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 00:14:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LY3P73DWwz3dq3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 00:14:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYG3S6Hdhz3dq7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 08:14:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=roM/kd9A;
-	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EsEYDWjc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=S2dVib/e;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.29; helo=smtp-out2.suse.de; envelope-from=osalvador@suse.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62c; helo=mail-ej1-x62c.google.com; envelope-from=luzmaximilian@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=roM/kd9A;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EsEYDWjc;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=S2dVib/e;
 	dkim-atps=neutral
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY3NT3P73z3byL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 00:13:44 +1000 (AEST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A3E781F99E;
-	Wed, 29 Jun 2022 14:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1656512021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jKldONLQsm5TpGIOEiwcoH9PdnFhtyV9FEeNbLVAR2w=;
-	b=roM/kd9AboZkL15oeqkFweYxi72V9jNpte4Gf2Ewiv2xh/AGpMjdalgLFtZlHXHnU6t5dk
-	HF7WVgLgDorkOrndFxZeW4+c7DCqcaXFu3BVgMOWBO+NISdxw/58mqHDI8mA94y5L95bp5
-	2uSaPHcI3aPh0I2PcQjZ6o20ccD58eA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1656512021;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jKldONLQsm5TpGIOEiwcoH9PdnFhtyV9FEeNbLVAR2w=;
-	b=EsEYDWjckY41r8L9CL3emd4z7xRjv/KgHx0nXDz3J/2z8McnaC/lAROhCdDeyKVdcurjcp
-	Ors/d++164thC0BA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-	(No client certificate requested)
-	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 367BC133D1;
-	Wed, 29 Jun 2022 14:13:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-	by imap2.suse-dmz.suse.de with ESMTPSA
-	id E9mFChVevGIFBAAAMHmgww
-	(envelope-from <osalvador@suse.de>); Wed, 29 Jun 2022 14:13:41 +0000
-Date: Wed, 29 Jun 2022 16:13:39 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH v3] powerpc/memhotplug: Add add_pages override for PPC
-Message-ID: <Yrxd8+hNlbj5/Lbu@localhost.localdomain>
-References: <20220629050925.31447-1-aneesh.kumar@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY3fn40mNz3cD9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 00:26:08 +1000 (AEST)
+Received: by mail-ej1-x62c.google.com with SMTP id h23so32878909ejj.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 07:26:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=nzVAkjUIXnSmifmZO/KNuTW33GCGTCzsi9aX026XXeg=;
+        b=S2dVib/eYmAFl827WdIoCLllzfbxALRjIjzfRRwuBWpdbVEMsjXdf1fQZ0QK1n2n0J
+         7Rc0uKmDUlj06sv7gme85B+3fLmze+mOouy0tIsuBDVpy1nD4eEh9k2i1LyAyfo/z7Zj
+         KDlk5RBwfb1T/0o1rVzuZORFiKZsCvSsNfve9fNt60vuT8XdzQWLTwkS/9FAhK69nmEs
+         mEzSIHBFyIvznhb3ZYEmWznM5HxrpFTwi8PXn2kSF7LDJWEQQU2316sTZ03OvudAaN+G
+         thYeRK11RnXT7zItby/QP43/O2E1Z4EfVZv3Nyn7dRrR7zoEuvKZKKrx+f9P5pfvx3Rg
+         uLHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=nzVAkjUIXnSmifmZO/KNuTW33GCGTCzsi9aX026XXeg=;
+        b=OBbKECVh5iXCRjjJ2/42rDZSTjKtWslkKY9pBlF8FuaLV7gOKrHX4sUDIvBnOqFYKK
+         ATZ4wHwDNuyIoGTBDZWwrAzW9TwwauLTw5FVDt89y3MyPIfoF3+y8YCNHkDlhBaWMs4z
+         ien9dyGZoI2zDrM/edCEK+gAKHBZaDK8qXm5y9Gzqic6GK9rlvRGcRvGm992VT728YM2
+         +xSsnDQH343XyitD+Z8w+5bAmjSemKvD70mQfZdmwDMTa6utqFQaV6kUEIduCCCb8ZHs
+         zhkk3mDNeidxz5yolliIE35MF76KH6y//hq6khYIUiRpptq/xVAOixwTfjzLV4rFK2x3
+         wk6w==
+X-Gm-Message-State: AJIora8hoeyRcXXOJJd5ksSb5oJmcOXQIqf9DXfDJHGmiUNP2umcv0it
+	+HA+AWq/CO188NhiiyxZGhs=
+X-Google-Smtp-Source: AGRyM1vLxTFMIxeh0MQDJmw094z51hmalDIKhKM+71jelG0gY6NpuuzQXDALY4ZT1iSuYjMs9++euw==
+X-Received: by 2002:a17:906:58cf:b0:722:e4e1:c174 with SMTP id e15-20020a17090658cf00b00722e4e1c174mr3593366ejs.85.1656512758310;
+        Wed, 29 Jun 2022 07:25:58 -0700 (PDT)
+Received: from [10.29.0.16] ([37.120.217.82])
+        by smtp.gmail.com with ESMTPSA id jy19-20020a170907763300b007263713cfe9sm7220580ejc.169.2022.06.29.07.25.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jun 2022 07:25:57 -0700 (PDT)
+Message-ID: <80117936-6869-19b2-45a6-96a4562c6cd2@gmail.com>
+Date: Wed, 29 Jun 2022 16:25:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220629050925.31447-1-aneesh.kumar@linux.ibm.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH 6/6] i2c: Make remove callback return void
+Content-Language: en-US
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+ Wolfram Sang <wsa@kernel.org>
+References: <20220628140313.74984-1-u.kleine-koenig@pengutronix.de>
+ <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
+From: Maximilian Luz <luzmaximilian@gmail.com>
+In-Reply-To: <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 30 Jun 2022 08:13:02 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,130 +83,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+Cc: alsa-devel@alsa-project.org, linux-staging@lists.linux.dev, devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, Bjorn Andersson <bjorn.andersson@linaro.org>, Benjamin Tissoires <benjamin.tissoires@redhat.com>, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, netdev@vger.kernel.org, kasan-dev@googlegroups.com, linux-clk@vger.kernel.org, linux-leds@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-omap@vger.kernel.org, Luka Perkov <luka.perkov@sartura.hr>, Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, Bastien Nocera <hadess@hadess.net>, linux-input@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Jakub Kicinski <kuba@kernel.org>, linux-usb@vger.kernel.org, linux-media@vger.kernel.org, Shawn Tu <shawnx.tu@intel.com>, linux-hwmon@v
+ ger.kernel.org, acpi4asus-user@lists.sourceforge.net, linux-serial@vger.kernel.org, =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <uwe@kleine-koenig.org>, Manivannan Sadhasivam <mani@kernel.org>, Jiri Kosina <jikos@kernel.org>, linuxppc-dev@lists.ozlabs.org, Mark Gross <markgross@kernel.org>, Hans de Goede <hdegoede@redhat.com>, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, openipmi-developer@lists.sourceforge.net, Mauro Carvalho Chehab <mchehab@kernel.org>, linux-arm-kernel@lists.infradead.org, Andy Shevchenko <andy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, linux-gpio@vger.kernel.org, Stephen Boyd <sboyd@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, platform-driver-x86@vger.kernel.org, Kyungmin Park <kyungmin.park@samsung.com>, Mark Brown <broonie@kernel.org>, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, patches@opensource.cirrus
+ .com, linux-integrity@vger.kernel.org, =?UTF-8?Q?Pali
+
+_Roh=c3=a1r?= <pali@kernel.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 29, 2022 at 10:39:25AM +0530, Aneesh Kumar K.V wrote:
-> With commit ffa0b64e3be5 ("powerpc: Fix virt_addr_valid() for 64-bit Book3E & 32-bit")
-> the kernel now validate the addr against high_memory value. This results
-> in the below BUG_ON with dax pfns.
+On 6/28/22 16:03, Uwe Kleine-König wrote:
+> From: Uwe Kleine-König <uwe@kleine-koenig.org>
 > 
-> [  635.798741][T26531] kernel BUG at mm/page_alloc.c:5521!
-> 1:mon> e
-> cpu 0x1: Vector: 700 (Program Check) at [c000000007287630]
->     pc: c00000000055ed48: free_pages.part.0+0x48/0x110
->     lr: c00000000053ca70: tlb_finish_mmu+0x80/0xd0
->     sp: c0000000072878d0
->    msr: 800000000282b033
->   current = 0xc00000000afabe00
->   paca    = 0xc00000037ffff300   irqmask: 0x03   irq_happened: 0x05
->     pid   = 26531, comm = 50-landscape-sy
-> kernel BUG at :5521!
-> Linux version 5.19.0-rc3-14659-g4ec05be7c2e1 (kvaneesh@ltc-boston8) (gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #625 SMP Thu Jun 23 00:35:43 CDT 2022
-> 1:mon> t
-> [link register   ] c00000000053ca70 tlb_finish_mmu+0x80/0xd0
-> [c0000000072878d0] c00000000053ca54 tlb_finish_mmu+0x64/0xd0 (unreliable)
-> [c000000007287900] c000000000539424 exit_mmap+0xe4/0x2a0
-> [c0000000072879e0] c00000000019fc1c mmput+0xcc/0x210
-> [c000000007287a20] c000000000629230 begin_new_exec+0x5e0/0xf40
-> [c000000007287ae0] c00000000070b3cc load_elf_binary+0x3ac/0x1e00
-> [c000000007287c10] c000000000627af0 bprm_execve+0x3b0/0xaf0
-> [c000000007287cd0] c000000000628414 do_execveat_common.isra.0+0x1e4/0x310
-> [c000000007287d80] c00000000062858c sys_execve+0x4c/0x60
-> [c000000007287db0] c00000000002c1b0 system_call_exception+0x160/0x2c0
-> [c000000007287e10] c00000000000c53c system_call_common+0xec/0x250
+> The value returned by an i2c driver's remove function is mostly ignored.
+> (Only an error message is printed if the value is non-zero that the
+> error is ignored.)
 > 
-> The fix is to make sure we update high_memory on memory hotplug.
-> This is similar to what x86 does in commit 3072e413e305 ("mm/memory_hotplug: introduce add_pages")
+> So change the prototype of the remove function to return no value. This
+> way driver authors are not tempted to assume that passing an error to
+> the upper layer is a good idea. All drivers are adapted accordingly.
+> There is no intended change of behaviour, all callbacks were prepared to
+> return 0 before.
 > 
-> Fixes: ffa0b64e3be5 ("powerpc: Fix virt_addr_valid() for 64-bit Book3E & 32-bit")
-> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+[...]
+>   drivers/platform/surface/surface3_power.c                 | 4 +---
 
-> ---
-> Changes from v2:
-> * drop WARN_ON_ONCE
-> * check for error from __add_pages
-> 
->  arch/powerpc/Kconfig  |  4 ++++
->  arch/powerpc/mm/mem.c | 33 ++++++++++++++++++++++++++++++++-
->  2 files changed, 36 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index c2ce2e60c8f0..7aa12e88c580 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -358,6 +358,10 @@ config ARCH_SUSPEND_NONZERO_CPU
->  	def_bool y
->  	depends on PPC_POWERNV || PPC_PSERIES
->  
-> +config ARCH_HAS_ADD_PAGES
-> +	def_bool y
-> +	depends on ARCH_ENABLE_MEMORY_HOTPLUG
-> +
->  config PPC_DCR_NATIVE
->  	bool
->  
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 52b77684acda..a97128a48817 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -105,6 +105,37 @@ void __ref arch_remove_linear_mapping(u64 start, u64 size)
->  	vm_unmap_aliases();
->  }
->  
-> +/*
-> + * After memory hotplug the variables max_pfn, max_low_pfn and high_memory need
-> + * updating.
-> + */
-> +static void update_end_of_memory_vars(u64 start, u64 size)
-> +{
-> +	unsigned long end_pfn = PFN_UP(start + size);
-> +
-> +	if (end_pfn > max_pfn) {
-> +		max_pfn = end_pfn;
-> +		max_low_pfn = end_pfn;
-> +		high_memory = (void *)__va(max_pfn * PAGE_SIZE - 1) + 1;
-> +	}
-> +}
-> +
-> +int __ref add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
-> +		    struct mhp_params *params)
-> +{
-> +	int ret;
-> +
-> +	ret = __add_pages(nid, start_pfn, nr_pages, params);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* update max_pfn, max_low_pfn and high_memory */
-> +	update_end_of_memory_vars(start_pfn << PAGE_SHIFT,
-> +				  nr_pages << PAGE_SHIFT);
-> +
-> +	return ret;
-> +}
-> +
->  int __ref arch_add_memory(int nid, u64 start, u64 size,
->  			  struct mhp_params *params)
->  {
-> @@ -115,7 +146,7 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
->  	rc = arch_create_linear_mapping(nid, start, size, params);
->  	if (rc)
->  		return rc;
-> -	rc = __add_pages(nid, start_pfn, nr_pages, params);
-> +	rc = add_pages(nid, start_pfn, nr_pages, params);
->  	if (rc)
->  		arch_remove_linear_mapping(start, size);
->  	return rc;
-> -- 
-> 2.36.1
-> 
-> 
+[...]
 
--- 
-Oscar Salvador
-SUSE Labs
+> diff --git a/drivers/platform/surface/surface3_power.c b/drivers/platform/surface/surface3_power.c
+> index 444ec81ba02d..3b20dddeb815 100644
+> --- a/drivers/platform/surface/surface3_power.c
+> +++ b/drivers/platform/surface/surface3_power.c
+> @@ -554,7 +554,7 @@ static int mshw0011_probe(struct i2c_client *client)
+>   	return error;
+>   }
+>   
+> -static int mshw0011_remove(struct i2c_client *client)
+> +static void mshw0011_remove(struct i2c_client *client)
+>   {
+>   	struct mshw0011_data *cdata = i2c_get_clientdata(client);
+>   
+> @@ -564,8 +564,6 @@ static int mshw0011_remove(struct i2c_client *client)
+>   		kthread_stop(cdata->poll_task);
+>   
+>   	i2c_unregister_device(cdata->bat0);
+> -
+> -	return 0;
+>   }
+>   
+>   static const struct acpi_device_id mshw0011_acpi_match[] = {
+
+For the quoted above:
+
+Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
