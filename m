@@ -1,54 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28245603C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 17:03:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FEA56059E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 18:18:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LY4Tn1QtYz3cg3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 01:03:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Bxwxfdki;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LY6815lXSz3dsM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 02:18:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=Bxwxfdki;
-	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY4T41DwHz3bw4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 01:02:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=Yj19dHn+0JPxtmJoU7+beQ32yhgR5L1tVwNWJFwVA+k=; b=BxwxfdkiTSsmAbf43BF+dePH/x
-	xWOxxBLrYRgVSUvSmy9/AMgOP+9jcWTbXAkv9tKtxNsKPQhwjhAPlbuNa9YxR/Pl6DSafRhJBKv4L
-	SzBCCzjlqsnguL1roqjsm5C2dJoZG7ShGhTqNW5JpfLsT9kcUgHEqyJhgde8+cacCojLycA7rlzM5
-	N9BA627gjB/z+/jSAqNoFrNZ+HEuPWtnDkUpO76+cMn0XLhd0GCQdCybNF0b0K5B6mTnbnFRSB5pI
-	UmzuX+Zn/EysKRf4tGngaONOMnhQnPM8oanQWkn8P6NwU/mtwmVpsrj3I78ufye5AEqt99Ivofl0n
-	abyiZ/kw==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o6ZDC-00Ccys-4v; Wed, 29 Jun 2022 15:02:38 +0000
-Message-ID: <b42c5d4f-5e9c-8f35-798e-b5ac2ad730a6@infradead.org>
-Date: Wed, 29 Jun 2022 08:02:36 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] UAPI: fix a spelling mistake
-Content-Language: en-US
-To: Zhang Jiaming <jiaming@nfschina.com>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org
-References: <20220629062717.23027-1-jiaming@nfschina.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20220629062717.23027-1-jiaming@nfschina.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LY67Y2Tfyz3bvb
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 02:17:43 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 25TGD56V017150;
+	Wed, 29 Jun 2022 11:13:05 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 25TGD3U2017144;
+	Wed, 29 Jun 2022 11:13:03 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 29 Jun 2022 11:13:03 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 02/12] powerpc: wiiu: device tree
+Message-ID: <20220629161302.GG25951@gate.crashing.org>
+References: <20220622131037.57604-1-ash@heyquark.com> <20220628133144.142185-1-ash@heyquark.com> <20220628133144.142185-3-ash@heyquark.com> <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,40 +43,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: liqiong@nfschina.com, renyu@nfschina.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel.org, rw-r-r-0644@protonmail.com, robh+dt@kernel.org, paulus@samba.org, Ash Logan <ash@heyquark.com>, krzysztof.kozlowski+dt@linaro.org, j.ne@posteo.net, linuxppc-dev@lists.ozlabs.org, joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi--
-
-On 6/28/22 23:27, Zhang Jiaming wrote:
-> Change 'informations' to 'information'.
+On Wed, Jun 29, 2022 at 11:58:18AM +0200, Krzysztof Kozlowski wrote:
+> On 28/06/2022 15:31, Ash Logan wrote:
+> > +	model = "nintendo,wiiu";
 > 
-> Signed-off-by: Zhang Jiaming <jiaming@nfschina.com>
-> ---
->  arch/powerpc/include/uapi/asm/bootx.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> It's not compatible, but user-visible string, e.g. "Nintendo Wii U"
+
+The "model" property in OF is documented as:
+
+---
+“model”                                                                S
+Standard property name to define a manufacturer’s model number.
+
+prop-encoded-array:
+  Text string, encoded with encode-string.
+A manufacturer-dependent string that generally specifies the model name
+and number (including revision level) for this device. The format of the
+text string is arbitrary, although in conventional usage the string
+begins with the name of the device’s manufacturer as with the “name”
+property.
+Although there is no standard interpretation for the value of the
+“model” property, a specific device driver might use it to learn, for
+instance, the revision level of its particular device.
+
+See also: property, model.
+
+Used as: " XYZCO,1416-02" encode-string " model" property
+---
+
+> > +	cpus {
+> > +		#address-cells = <1>;
+> > +		#size-cells = <0>;
+> > +
+> > +		/* TODO: Add SMP */
+> > +		PowerPC,espresso@0 {
 > 
-> diff --git a/arch/powerpc/include/uapi/asm/bootx.h b/arch/powerpc/include/uapi/asm/bootx.h
-> index 6728c7e24e58..eb0769e50e93 100644
-> --- a/arch/powerpc/include/uapi/asm/bootx.h
-> +++ b/arch/powerpc/include/uapi/asm/bootx.h
-> @@ -60,7 +60,7 @@ typedef struct boot_info_map_entry
->  } boot_info_map_entry_t;
->  
->  
-> -/* Here are the boot informations that are passed to the bootstrap
-> +/* Here are the boot information that are passed to the bootstrap
+> Node name should be generic, so "cpu". Unless something needs the
+> specific node name?
 
-I would say:
+This is how most other PowerPC firmwares do it.  The PowerPC processor
+binding is older than the generic naming practice, so CPU nodes have
+device_type "cpu" instead.  This is a required property btw, with that
+value.  (There is no requirement on the names of the CPU nodes).
 
-/* Here is the boot information that is passed to the bootstrap.
+There is no added value in generic naming for CPU nodes anyway, since
+you just find them as the children of the "/cpus" node :-)
 
-I.e., use "is" instead of "are" and add a period at the end.
 
->   * Note that the kernel arguments and the device tree are appended
->   * at the end of this structure. */
->  typedef struct boot_infos
-
--- 
-~Randy
+Segher
