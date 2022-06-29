@@ -2,55 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C5055FD16
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 12:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FA955FC67
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 11:52:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXyJp5jDVz3dx9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 20:25:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXxbV0k28z3drP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 19:52:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KDGJ+ZX0;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wpGThOR7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kabel@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KDGJ+ZX0;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wpGThOR7;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXwvg5XW4z3cFp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 19:21:51 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id DA2E161E2A;
-	Wed, 29 Jun 2022 09:21:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6A5C34114;
-	Wed, 29 Jun 2022 09:20:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656494506;
-	bh=HQ25Ow2lpsqgoUrUW/nG+URV4v3uVvi69tP+dqJVwS8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KDGJ+ZX0QDwKOanqLEHq4R3Rgk4gw7YBpXQ1tp5J2PbFlN9SFFfxpykmheKoDEBKH
-	 GZdb6/Vu19P209bnRNGK3ZFDu4CTBf7M/1tGbAgk0qvALDE6m6bUxa1i55igZp5mYn
-	 M9nKXnXHahfEJ1/gD9uIZsD8u8SACyrjQAA5RstBhscMb/v3jVsSe8amKh8qkDuMrS
-	 GSpJXwgYiOg6nUIYiiXl948rxcrWW3Rc1By0vwkqaGsbNa0kxgo7uX8LQpEE5EFJvC
-	 lXPBmC+HFU37tkvSye7TN5YXt1OC7tohvK8VYqANalwO76xOIXwCRjtMw86pXFhld/
-	 h03Us4Elobz6g==
-Date: Wed, 29 Jun 2022 11:20:42 +0200
-From: Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
-Subject: Re: [PATCH 6/6] i2c: Make remove callback return void
-Message-ID: <20220629112042.221af80b@thinkpad>
-In-Reply-To: <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
-References: <20220628140313.74984-1-u.kleine-koenig@pengutronix.de>
-	<20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
-X-Mailer: Claws Mail 3.18.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXxZt4rNDz3c81
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 19:52:19 +1000 (AEST)
+Received: by mail-ej1-x633.google.com with SMTP id cw10so31479128ejb.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 02:52:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=6tZawx/9KvgNGCX+RaVKaFvJ//Nr2mQ3IUwBnbuxxrE=;
+        b=wpGThOR7zN3wwT1G2udwoIdQi3m58vQp7umRdMIx588ZgebigGNDUD/zA11XpwQTV6
+         oBuXQgAqo2ZGDl3YOO1FTBClcdj2VeDsGwQ41Ki+NLYlXK3p17N/w0sgXowVLAz6gj9G
+         mHqfzGyVdq/ksdFMf/+szPdeY/H4L7rx6kpx/B8ViMwvPKTiEUZHc288fxH8aSLGsVQ0
+         hqgDJvcDhDQCIuu398z7aVpp/Rt4/He4PF31L12FbgJYzzVoxUpNDXXU48Q4/Oz09EAA
+         Wx2mPuE5Z6H1RtdjjjvWyhYtwSnzXUd96bjq6z/426dI02NIxRbNzHLe1uU61m1HYwHM
+         VCVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=6tZawx/9KvgNGCX+RaVKaFvJ//Nr2mQ3IUwBnbuxxrE=;
+        b=YhoS6HDgHO54WaC6BznFmD/hLsEzsidsH/klhoZY1vegIFI9bbaSpbcFX6BIVeL0U6
+         JnfZ8P/ZczeAducsqcidaShldbUNZMiPZRz3UuhdurmLiNav4Of45vqwUbXKO7zaQliZ
+         V692gmRpspXf+/UXVzT+iZnJWf4jDTlZ3Fw/EPJ0pUNzK5INzxcI2dQJuf8bO2Egd+az
+         Ri06Kop+fcTkccgFZfkxjPiaRVEIdEk/LZYKOT4bVaML2v92BPp9sfrHF2tg/O9On65J
+         fPwzELFXRv7u2A1xyzt/nNWcXqFG4YsDS+6GKTECYFxV+tOz076kavTOk3dKMy/QyZwu
+         i29w==
+X-Gm-Message-State: AJIora99uJZKb+l4iRG/Gf+MefCKYd2V9cRa1ozTCaH0ydfaev5Dbcnf
+	jVACSXcrKZhjBPP0RUVRHiKzQA==
+X-Google-Smtp-Source: AGRyM1sHNVbuwC4B5+16VAXfgwwzgpSOVD1kaQyMjso1TU2vM8rQdVwy+kmEX8zb8+gkUaUloHag4w==
+X-Received: by 2002:a17:906:7a0b:b0:722:dac6:a8ff with SMTP id d11-20020a1709067a0b00b00722dac6a8ffmr2390293ejo.593.1656496329142;
+        Wed, 29 Jun 2022 02:52:09 -0700 (PDT)
+Received: from [192.168.0.183] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
+        by smtp.gmail.com with ESMTPSA id c20-20020a056402101400b004358cec9ce1sm11009012edu.65.2022.06.29.02.52.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jun 2022 02:52:08 -0700 (PDT)
+Message-ID: <86a4814f-e881-d8dd-f338-48583363af53@linaro.org>
+Date: Wed, 29 Jun 2022 11:52:07 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3 01/12] dt-bindings: wiiu: Document the Nintendo Wii U
+ devicetree
+Content-Language: en-US
+To: Ash Logan <ash@heyquark.com>, krzysztof.kozlowski+dt@linaro.org,
+ paulus@samba.org, mpe@ellerman.id.au, christophe.leroy@csgroup.eu,
+ robh+dt@kernel.org, benh@kernel.crashing.org
+References: <20220622131037.57604-1-ash@heyquark.com>
+ <20220628133144.142185-1-ash@heyquark.com>
+ <20220628133144.142185-2-ash@heyquark.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20220628133144.142185-2-ash@heyquark.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Wed, 29 Jun 2022 20:19:09 +1000
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,48 +85,406 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Ricardo Ribalda <ribalda@kernel.org>, Jimmy Su <jimmy.su@intel.com>, Linus Walleij <linus.walleij@linaro.org>, Sekhar Nori <nsekhar@ti.com>, Gwendal Grignou <gwendal@chromium.org>, dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>, Benjamin Tissoires <benjamin.tissoires@redhat.com>, Paul Mackerras <paulus@samba.org>, Moses Christopher Bollavarapu <mosescb.dev@gmail.com>, Pavel Machek <pavel@ucw.cz>, Miquel Raynal <miquel.raynal@bootlin.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Evgeniy Polyakov <zbr@ioremap.net>, Matt Johnston <matt@codeconstruct.com.au>, Olli Salonen <olli.salonen@iki.fi>, Angela Czubak <acz@semihalf.com>, Robert Marko <robert.marko@sartura.hr>, Luka Perkov <luka.perkov@sartura.hr>, Sean Young <sean@mess.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>, Zheyu Ma <zheyuma97@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, Chanwoo Choi <cw00.choi@samsung.com>, linux-omap@vger.kernel.org, An
- tti Palosaari <crope@iki.fi>, Wenyou Yang <wenyou.yang@microchip.com>, Dongchun Zhu <dongchun.zhu@mediatek.com>, Miaoqian Lin <linmq006@gmail.com>, Steve Longerbeam <slongerbeam@gmail.com>, Bingbu Cao <bingbu.cao@intel.com>, Shunqian Zheng <zhengsq@rock-chips.com>, lijian <lijian@yulong.com>, Dan Carpenter <dan.carpenter@oracle.com>, Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>, Viorel Suman <viorel.suman@nxp.com>, Petr Machata <petrm@nvidia.com>, Guido =?UTF-8?B?R8O8bnRoZXI=?= <agx@sigxcpu.org>, Jean Delvare <jdelvare@suse.com>, linux-serial@vger.kernel.org, linux-pm@vger.kernel.org, Eddie James <eajames@linux.ibm.com>, Riku Voipio <riku.voipio@iki.fi>, James Schulman <james.schulman@cirrus.com>, Scott Wood <oss@buserror.net>, Cai Huoqing <cai.huoqing@linux.dev>, Jonas Malaco <jonas@protocubo.io>, Hsin-Yi Wang <hsinyi@chromium.org>, Haibo Chen <haibo.chen@nxp.com>, Petr Cvek <petrcvekcz@gmail.com>, linux-leds@vger.kernel.org, Joe Tessler <jrt@google.com>, Andrey Konovalov <
- andreyknvl@gmail.com>, Andy Shevchenko <andy@kernel.o
-
-rg>, Robert Jones <rjones@gateworks.com>, George Joseph <george.joseph@fairview5.com>, Vincent Knecht <vincent.knecht@mailoo.org>, Robin van der Gracht <robin@protonic.nl>, Randy Dunlap <rdunlap@infradead.org>, linux-stm32@st-md-mailman.stormreply.com, Michael Tretter <m.tretter@pengutronix.de>, Geert Uytterhoeven <geert@linux-m68k.org>, Phong LE <ple@baylibre.com>, Daniel Beer <daniel.beer@igorinstitute.com>, Krzysztof Opasiak <k.opasiak@samsung.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Heungjun Kim <riverful.kim@samsung.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, David Lin <CTLIN0@nuvoton.com>, Vladimir Oltean <olteanv@gmail.com>, David Rhodes <david.rhodes@cirrus.com>, Claudiu Beznea <claudiu.beznea@microchip.com>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Dan Robertson <dan@dlrobertson.com>, Martyn Welch <martyn.welch@collab
- ora.co.uk>, Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org, David Airlie <airlied@linux.ie>, Jon Nettleton <jon.nettleton@gmail.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Marco Felsch <m.felsch@pengutronix.de>, Wim Van Sebroeck <wim@linux-watchdog.org>, Sebastian Reichel <sre@kernel.org>, Max Filippov <jcmvbkbc@gmail.com>, "Lad, Prabhakar" <prabhakar.csengg@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, linux-i2c@vger.kernel.org, Martiros Shakhzadyan <vrzh@vrzh.net>, Guenter Roeck <groeck@chromium.org>, Matthias Schwarzott <zzam@gentoo.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Eric Dumazet <edumazet@google.com>, Leon Luo <leonl@leopardimaging.com>, Saranya Gopal <saranya.gopal@intel.com>, Lars-Peter Clausen <lars@metafoo.de>, Corey Minyard <minyard@acm.org>, Evgeny Novikov <novikov@ispras.ru>, Frank Rowand <frowand.list@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, Manivannan Sadhasivam <mani@kernel.org>, Pierre-Louis Bossart 
- <pierre-louis.bossart@linux.intel.com>, Minghao Chi <
-chi.minghao@zte.com.cn>, linux-clk@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>, Charles Gorand <charles.gorand@effinnov.com>, Jagan Teki <jagan@amarulasolutions.com>, Vijendar Mukunda <Vijendar.Mukunda@amd.com>, Miguel Ojeda <ojeda@kernel.org>, Kyungmin Park <kyungmin.park@samsung.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, Martin Donnelly <martin.donnelly@ge.com>, Woojung Huh <woojung.huh@microchip.com>, Rudolf Marek <r.marek@assembler.cz>, Charles Keepax <ckeepax@opensource.cirrus.com>, linux-watchdog@vger.kernel.org, Michael Hennerich <michael.hennerich@analog.com>, Ido Schimmel <idosch@nvidia.com>, acpi4asus-user@lists.sourceforge.net, Simon Trimmer <simont@opensource.cirrus.com>, Ricard Wanderlof <ricardw@axis.com>, Rikard Falkeborn <rikard.falkeborn@gmail.com>, Alex Deucher <alexander.deucher@amd.com>, Jiri Valek - 2N <valek@2n.cz>, linux-rpi-kernel@lists.infradead.org, Biju Das <biju.das.jz@bp.renesas.com>, Wayne Chang <wayne
- c@nvidia.com>, Chen-Yu Tsai <wens@csie.org>, Sing-Han Chen <singhanc@nvidia.com>, linux-arm-kernel@lists.infradead.org, Niklas =?UTF-8?B?U8O2ZGVybHVuZA==?= <niklas.soderlund+renesas@ragnatech.se>, Hans de Goede <hdegoede@redhat.com>, Stephen Boyd <sboyd@kernel.org>, Maslov Dmitry <maslovdmitry@seeed.cc>, linux-gpio@vger.kernel.org, Jens Frederich <jfrederich@gmail.com>, Douglas Anderson <dianders@chromium.org>, "David S. Miller" <davem@davemloft.net>, Wolfram Sang <wsa@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, linux-usb@vger.kernel.org, Jacopo Mondi <jacopo+renesas@jmondi.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, CGEL ZTE <cgel.zte@gmail.com>, Colin Leroy <colin@colino.net>, platform-driver-x86@vger.kernel.org, linux-integrity@vger.kernel.org, Kevin Tsai <ktsai@capellamicro.com>, Pali =?UTF-8?B?Um9ow6Fy?= <pali@kernel.org>, Jonathan Cameron <jic23@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Daniel Palmer <daniel@0x0f.com>, Arec Kao <arec.kao@intel.com>, Crt
-  Mori <cmo@melexis.com>, Jose Cazarin <joseespiriki@g
-mail.com>, Neil Armstrong <narmstrong@baylibre.com>, linux-iio@vger.kernel.org, Tom Rix <trix@redhat.com>, Michael Turquette <mturquette@baylibre.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Benjamin Mugnier <benjamin.mugnier@foss.st.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Jan-Simon Moeller <jansimon.moeller@gmx.de>, Wei Yongjun <weiyongjun1@huawei.com>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Andrzej Hajda <andrzej.hajda@intel.com>, Nikita Travkin <nikita@trvn.ru>, Jeremy Kerr <jk@codeconstruct.com.au>, Jasmin Jessich <jasmin@anw.at>, Sam Ravnborg <sam@ravnborg.org>, Kevin Cernekee <cernekee@chromium.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, linux-rtc@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>, Florian Fainelli <f.fainelli@gmail.com>, Lucas Tanure <tanureal@opensource.cirrus.com>, Stefan Mavrodiev <stefan@olimex.com>, Masahiro Yamada <masahiroy@kernel.org>, Sylvain Petinot <sylvain.petinot@foss.st.com>, netdev@vger.kernel.org, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Xin Ji <xji@analogixsemi.com>, Seven Lee <wtli@nuvoton.com>, Matt Ranostay <matt.ranostay@konsulko.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Adrien Grassein <adrien.grassein@gmail.com>, Yang Yingliang <yangyingliang@huawei.com>, chrome-platform@lists.linux.dev, Mats Randgaard <matrandg@cisco.com>, Paolo Abeni <pabeni@redhat.com>, Alexey Dobriyan <adobriyan@gmail.com>, Joel Stanley <joel@jms.id.au>, linux-input@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Lyude Paul <lyude@redhat.com>, Kees Cook <keescook@chromium.org>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <uwe@kleine-koenig.org>, Jonas Karlman <jonas@kwiboo.se>, Yang Li <yang.lee@linux.alibaba.com>, Tim Harvey <tharvey@gateworks.com>, Jiri Kosina <jikos@kernel.org>, Akinobu Mita <akinobu.mita@gmail.com>, Mark Gross <markgross@kernel.org>, Richard Fitzgerald <rf@opensource.cirrus.com>, Mark Brown <
- broonie@kernel.org>, wengjianfeng <wengjianfeng@yulon
-g.com>, Maxime Ripard <maxime@cerno.tech>, Sven Peter <sven@svenpeter.dev>, Martin Kepplinger <martink@posteo.de>, openipmi-developer@lists.sourceforge.net, Mauro Carvalho Chehab <mchehab@kernel.org>, Benson Leung <bleung@chromium.org>, "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>, Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>, Alessandro Zummo <a.zummo@towertech.it>, linux-hwmon@vger.kernel.org, Felipe Balbi <balbi@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Support Opensource <support.opensource@diasemi.com>, Alexandru Ardelean <ardeleanalex@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Marc Hulsman <m.hulsman@tudelft.nl>, Corentin Chary <corentin.chary@gmail.com>, Stephen Kitt <steve@sk2.org>, Daniel Scally <djrscally@gmail.com>, linux-fbdev@vger.kernel.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Kirill Shilimanov <kirill.shilimanov@huawei.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, patches@opensource.cirrus.com, Zh
- eng Yongjun <zhengyongjun3@huawei.com>, Alejandro Tafalla <atafalla@dnyon.com>, Peter Rosin <peda@axentia.se>, Arnaud Ferraris <arnaud.ferraris@collabora.com>, Hector Martin <marcan@marcan.st>, Vignesh Raghavendra <vigneshr@ti.com>, Nick Dyer <nick@shmanahar.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tony Lindgren <tony@atomide.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Takashi Iwai <tiwai@suse.com>, Paul Cercueil <paul@crapouillou.net>, George McCollister <george.mccollister@gmail.com>, Mac Chiang <mac.chiang@intel.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, Alexander Potapenko <glider@google.com>, linux-staging@lists.linux.dev, Adam Ford <aford173@gmail.com>, Peter Huewe <peterhuewe@gmx.de>, UNGLinuxDriver@microchip.com, Lee Jones <lee.jones@linaro.org>, linux-mtd@lists.infradead.org, Alexey Khoroshilov <khoroshilov@ispras.ru>, Marek Vasut <marex@denx.de>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, alsa-devel@alsa-project.org, Vincenzo Frasc
- ino <vincenzo.frascino@arm.com>, Eric Piel <eric.piel
-@tremplin-utc.net>, Herbert Xu <herbert@gondor.apana.org.au>, Tobias Schrammm <t.schramm@manjaro.org>, Richard Weinberger <richard@nod.at>, Tomasz Duszynski <tduszyns@gmail.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, linux-pwm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Thomas Zimmermann <tzimmermann@suse.de>, Bastien Nocera <hadess@hadess.net>, Jingoo Han <jingoohan1@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>, Yizhuo <yzhai003@ucr.edu>, Shawn Tu <shawnx.tu@intel.com>, linux-media@vger.kernel.org, Yan Lei <yan_lei@dahuatech.com>, Akihiro Tsukada <tskd08@gmail.com>, Tudor Ambarus <tudor.ambarus@microchip.com>, Dmitry Rokosov <DDRokosov@sberdevices.ru>, Oliver Graute <oliver.graute@kococonnector.com>, Alistair Francis <alistair@alistair23.me>, Dongliang Mu <mudongliangabcd@gmail.com>, Jonathan =?UTF-8?B?TmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, Eduardo Valentin <edubezval@gmail.com>, Rui Migue
- l Silva <rmfrfs@gmail.com>, Michael Srba <Michael.Srba@seznam.cz>, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, kasan-dev@googlegroups.com, "Paul J. Murphy" <paul.j.murphy@intel.com>, Nicola Lunghi <nick83ola@gmail.com>, Daniele Alessandrelli <daniele.alessandrelli@intel.com>, Dmitry Vyukov <dvyukov@google.com>, Ramesh Shanmugasundaram <rashanmu@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Juerg Haefliger <juergh@gmail.com>, Oder Chiou <oder_chiou@realtek.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, Robert Foss <robert.foss@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Daniel Vetter <daniel@ffwll.ch>, Alvin =?UTF-8?B?xaBpcHJhZ2E=?= <alsi@bang-olufsen.dk>, Luca Ceresoli <luca@lucaceresoli.net>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, Colin Ian King 
- <colin.king@intel.com>, Maximilian Luz <luzmaximilian
-@gmail.com>, Helge Deller <deller@gmx.de>, Lucas Stach <l.stach@pengutronix.de>
+Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel.org, rw-r-r-0644@protonmail.com, joel@jms.id.au, linuxppc-dev@lists.ozlabs.org, j.ne@posteo.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 28 Jun 2022 16:03:12 +0200
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+On 28/06/2022 15:31, Ash Logan wrote:
+> Adds schema for the various Wii U devicetree nodes used.
+> 
+> Signed-off-by: Ash Logan <ash@heyquark.com>
+> ---
+>  .../bindings/powerpc/nintendo/wiiu.yaml       | 28 +++++++++++
+>  .../powerpc/nintendo/wiiu/espresso-pic.yaml   | 42 +++++++++++++++++
+>  .../bindings/powerpc/nintendo/wiiu/gpu7.yaml  | 41 +++++++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-ahci.yaml     | 43 +++++++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-dsp.yaml      | 35 ++++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-pic.yaml      | 46 +++++++++++++++++++
+>  .../powerpc/nintendo/wiiu/latte-sdhci.yaml    | 40 ++++++++++++++++
+>  .../bindings/powerpc/nintendo/wiiu/latte.yaml | 25 ++++++++++
+>  8 files changed, 300 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
+>  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
+> new file mode 100644
+> index 000000000000..5824b07928f5
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
+> @@ -0,0 +1,28 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +%YAML 1.2
+> +---
+> +
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U bindings
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Nintendo Wii U video game console binding.
+> +
+> +properties:
+> +  $nodename:
+> +    const: "/"
+> +  compatible:
+> +    oneOf:
+> +      - description: Nintendo Wii U video game console
+> +        items:
+> +          - const: nintendo,wiiu
+> +
+> +additionalProperties: true
+> +
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
+> new file mode 100644
+> index 000000000000..878a81595f5f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
+> @@ -0,0 +1,42 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/espresso-pic.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U "Espresso" interrupt controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Interrupt controller found on the Nintendo Wii U for the "Espresso" processor.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
 
-> From: Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org>
->=20
-> The value returned by an i2c driver's remove function is mostly ignored.
-> (Only an error message is printed if the value is non-zero that the
-> error is ignored.)
->=20
-> So change the prototype of the remove function to return no value. This
-> way driver authors are not tempted to assume that passing an error to
-> the upper layer is a good idea. All drivers are adapted accordingly.
-> There is no intended change of behaviour, all callbacks were prepared to
-> return 0 before.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+No need for oneOf, just const.
 
-For
+> +      - description: Nintendo Wii U "Espresso" interrupt controller
 
->  drivers/leds/leds-turris-omnia.c                          | 4 +---
+No need for description.
 
-Acked-by: Marek Beh=C3=BAn <kabel@kernel.org>
+> +        items:
+> +          - const: nintendo,espresso-pic
+> +  '#interrupt-cells':
+> +    # Interrupt numbers 0-32 in one cell
+> +    const: 1
+
+Blank line between each property.
+
+> +  interrupt-controller: true
+> +  reg:
+> +    items:
+> +      - description: Core registers
+
+Just maxItems:1. Description is not helpful.
+
+Missing required properties.
+
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    espresso_pic: pic@c000078 {
+
+Generic node name, so "interrupt-controller"
+
+> +            #interrupt-cells = <1>;
+> +            interrupt-controller;
+> +
+> +            compatible = "nintendo,espresso-pic";
+> +            reg = <0x0c000078 0x18>;
+
+compatible and reg by convention go first in list of properties. This
+applies everywhere, also to your DTS.
+
+> +    };
+> +
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
+> new file mode 100644
+> index 000000000000..e54d49015f36
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
+> @@ -0,0 +1,41 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/gpu7.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte "GPU7" graphics processor
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  GPU7 graphics processor, also known as "GX2", found in the Latte multifunction chip of the
+> +  Nintendo Wii U.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - description: Nintendo Wii U Latte "GPU7" graphics processor
+> +        items:
+> +          - const: nintendo,latte-gpu7
+> +  reg:
+> +    items:
+> +      - description: GpuF0MMReg registers
+> +  interrupts:
+> +    items:
+> +      - description: Main interrupt, connected via Espresso PIC
+
+Same comments as your interrupt controller patch. I guess these comments
+apply everywhere here.
+
+Missing required properties.
+
+> +
+> +# This will likely get bound to the Radeon driver one day, which will neccesitate extra properties
+> +additionalProperties: true
+
+No, it must be false. It's okay to extend the binding later.
+
+> +
+> +examples:
+> +  - |
+> +    gpu7@c200000 {
+
+Generic node name, so "gpu".
+
+> +            compatible = "nintendo,latte-gpu7";
+
+Wrong indentation. Use four spaces for DTS example.
+
+> +            reg = <0x0c200000 0x80000>;
+> +            interrupts = <2>;
+> +            interrupt-parent = <&espresso_pic>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
+> new file mode 100644
+> index 000000000000..7b9de4effcb0
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
+> @@ -0,0 +1,43 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-ahci.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte AHCI controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Nintendo Wii U AHCI SATA controller, as found in the Latte chip.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - description: Nintendo Wii U Latte AHCI controller
+> +        items:
+> +          - const: nintendo,latte-ahci
+> +  reg:
+> +    items:
+> +      - description: |
+> +          HBA memory registers. Note that unlike the spec, space for only 6 ports exist, with 2 vendor
+> +          registers afterwards, thus register space should be 0x408 long (0x100+0x80*6+0x8).
+
+Here description can stay, so no need for maxItems.
+
+
+> +  interrupts:
+> +    items:
+> +      - description: Main HBA interrupt
+> +      - description: Vendor debugging interrupt
+> +
+
+This should also reference ahci schema (I think it is ready).
+
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    sata: ahci@d160400 {
+> +          compatible = "nintendo,latte-ahci";
+> +          reg = <0x0d160400 0x408>;
+
+Fix indentation.
+
+> +
+> +          interrupt-parent = <&latte_pic>;
+> +          interrupts = <38>, <28>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
+> new file mode 100644
+> index 000000000000..ed0b4c28ce48
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
+> @@ -0,0 +1,35 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-dsp.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte DSP
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Nintendo Wii U digital signal processor, as found in the Latte chip.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - description: Nintendo Wii U Latte DSP
+> +        items:
+> +          - const: nintendo,latte-dsp
+> +  reg:
+> +    items:
+> +      - description: DSP registers
+> +
+> +# Once more is known about this device more properties will likely be added
+> +additionalProperties: true
+
+Again, no. All other comments also apply.
+
+> +
+> +examples:
+> +  - |
+> +    latte_dsp: dsp@c005000 {
+> +         compatible = "nintendo,latte-dsp";
+> +         reg = <0x0c005000 0x200>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
+> new file mode 100644
+> index 000000000000..a2df71fb9964
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
+> @@ -0,0 +1,46 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-pic.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte interrupt controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  Interrupt controller found on the Nintendo Wii U for the "Latte" devices.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - description: Nintendo Wii U Latte interrupt controller
+> +        items:
+> +          - const: nintendo,latte-pic
+> +  '#interrupt-cells':
+> +    # Interrupt numbers 0-64 in one cell.
+> +    const: 1
+> +  interrupt-controller: true
+> +  reg:
+> +    items:
+> +      - description: Core registers
+> +  interrupts:
+> +    items:
+> +      - description: Cascade interrupt for Espresso PIC
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    latte_pic: pic@d800440 {
+
+interrupt-controller.
+
+All other comments apply.
+
+> +         #interrupt-cells = <1>;
+> +         interrupt-controller;
+> +
+> +         compatible = "nintendo,latte-pic";
+> +         reg = <0x0d800440 0x30>;
+> +         interrupt-parent = <&espresso_pic>;
+> +         interrupts = <24>;
+> +    };
+> +...
+> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
+> new file mode 100644
+> index 000000000000..4b9b0820edc1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
+> @@ -0,0 +1,40 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-sdhci.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Nintendo Wii U Latte SD Host controller
+> +
+> +maintainers:
+> +  - Ash Logan <ash@heyquark.com>
+> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> +
+> +description: |
+> +  SDHCI hosts found on the Nintendo Wii U's Latte SoC for SD cards and SDIO devices.
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - description: Nintendo Wii U Latte SDHCI
+> +        items:
+> +          - const: nintendo,latte-sdhci
+> +          - const: sdhci
+> +  reg:
+> +    items:
+> +      - description: Core registers
+> +  interrupts:
+> +    items:
+> +      - description: SDHCI interrupt
+
+You need to reference mmc-controller bindings in allOf.
+
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    sdcard_0: sdhci@d070000 {
+
+Node name: mmc
+
+The bindings look poor, several easy to fix mistakes. I suggest to open
+example-schema.yaml and start from there.
+
+Best regards,
+Krzysztof
