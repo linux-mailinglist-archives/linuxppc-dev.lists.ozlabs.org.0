@@ -2,87 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7DE155F885
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 09:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E62955FD10
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 12:23:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXt655BgSz3dpF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 17:15:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXyGW2yGQz3fFj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 20:23:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ldVW1wkI;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=foss.st.com header.i=@foss.st.com header.a=rsa-sha256 header.s=selector1 header.b=3VFKgTf/;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=foss.st.com (client-ip=91.207.212.93; helo=mx07-00178001.pphosted.com; envelope-from=prvs=3179ce0c97=benjamin.mugnier@foss.st.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ldVW1wkI;
+	dkim=pass (2048-bit key; unprotected) header.d=foss.st.com header.i=@foss.st.com header.a=rsa-sha256 header.s=selector1 header.b=3VFKgTf/;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+X-Greylist: delayed 1267 seconds by postgrey-1.36 at boromir; Wed, 29 Jun 2022 17:43:46 AEST
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXt5K4DtZz3bq3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 17:15:00 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25T6SasW005200;
-	Wed, 29 Jun 2022 07:14:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=UziCeHcMRD0P53A+CXFXz8VfUMc14AZxgo6s1nkzPvI=;
- b=ldVW1wkIRTJmOr5Qhi3HXG6iLG7DimR0vBfPPEcIWKXLML8/TjSI0ARrKnBuEH3of/yh
- dCxI1CnSYFnLt8YYuiISoUuyIUrIA7wJengCLBoZJwJOmBDEZEYoK1WR8oaZrGhYsD8G
- 5lDyrGYZXAyGHNFhslHgLWEtnUyUczTmxZ9aHc+QsyAu++3lKBH6PvWFzhzyvcszkyTd
- UcDVi0w+ns4Oz9h+ArcJSrfprJsY+eJd0ZCOld0tuK46XP4bTzXbZ4Qr+BKw2ChtNrmW
- 4AyTwltLoNDpqKPTQqGEY8/rud+d15f3Hh4wLqIKzYSqK+ITrOpYL+OTqUjYLW5OxCjV Ew== 
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h0gyrayg7-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXtkV052gz2ynh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 17:43:40 +1000 (AEST)
+Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25T722S1031902;
+	Wed, 29 Jun 2022 09:22:17 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=selector1;
+ bh=UD4IN9gRHJreA7opqpLKSzn8bQhDjxY56nGlMezzYAU=;
+ b=3VFKgTf/p8RG5IZvh1DK1LiTPiqTjZEzy2HU+BASYzs9XugYt/QCyJqzlHi4rvxNEFin
+ 1u82NoSLK/tiVm5hi53ykM8580NZSudJINz416VbqZfneu8ZKYyakZXqR98aLOkdVemV
+ hDC1I9UQmS/aF9BuT1TK8wzQgMfdl3WvYrmSDCFK+yVmMcTSmddD7IIxnkn1yzWCgBaL
+ 0ggV4MHbTO9FQuOY0bxxfBASpeHEndobXcPc8dxUeQbwIwyOqr/6TqEDNV2XgMikRgSM
+ udpw3duI72UOtKPakdjkVDUR/WXyo/Qu1xYkOSid/V2EPNWqlIQxAtaBIu772x8sgmRH zA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3gywry7cfe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Jun 2022 07:14:43 +0000
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25T76ctS013043;
-	Wed, 29 Jun 2022 07:14:41 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma06fra.de.ibm.com with ESMTP id 3gwsmhvh2q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Jun 2022 07:14:40 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25T7Eceu20775236
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Jun 2022 07:14:38 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B68D042045;
-	Wed, 29 Jun 2022 07:14:38 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D62B42047;
-	Wed, 29 Jun 2022 07:14:34 +0000 (GMT)
-Received: from [9.43.16.234] (unknown [9.43.16.234])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 29 Jun 2022 07:14:34 +0000 (GMT)
-Message-ID: <956f8032-0afe-bfa5-dfde-bad5a805f5b9@linux.ibm.com>
-Date: Wed, 29 Jun 2022 12:44:32 +0530
+	Wed, 29 Jun 2022 09:22:17 +0200
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id AD10310003A;
+	Wed, 29 Jun 2022 09:22:07 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4612221231F;
+	Wed, 29 Jun 2022 09:22:07 +0200 (CEST)
+Received: from [10.0.2.15] (10.75.127.50) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2308.20; Wed, 29 Jun
+ 2022 09:22:02 +0200
+Subject: Re: [PATCH 6/6] i2c: Make remove callback return void
+To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Wolfram Sang <wsa@kernel.org>
+References: <20220628140313.74984-1-u.kleine-koenig@pengutronix.de>
+ <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
+From: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Message-ID: <13e5c267-f0ef-d715-45f4-b4f9bf934028@foss.st.com>
+Date: Wed, 29 Jun 2022 09:21:55 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3] powerpc/memhotplug: Add add_pages override for PPC
+In-Reply-To: <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-To: Kefeng Wang <wangkefeng.wang@huawei.com>, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au
-References: <20220629050925.31447-1-aneesh.kumar@linux.ibm.com>
- <9b850fd9-f3a1-265e-7de9-4f6d1e217a0c@huawei.com>
-From: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-In-Reply-To: <9b850fd9-f3a1-265e-7de9-4f6d1e217a0c@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Y15W8wKIenma8bRVfujG4WLzQGOucXuk
-X-Proofpoint-GUID: Y15W8wKIenma8bRVfujG4WLzQGOucXuk
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.75.127.50]
+X-ClientProxiedBy: SFHDAG2NODE3.st.com (10.75.127.6) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-06-28_11,2022-06-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 adultscore=0 impostorscore=0 suspectscore=0
- phishscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 bulkscore=0
- priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2204290000 definitions=main-2206290024
+X-Mailman-Approved-At: Wed, 29 Jun 2022 20:19:09 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,163 +81,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-mm@kvack.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Ricardo Ribalda <ribalda@kernel.org>, Jimmy Su <jimmy.su@intel.com>, Linus Walleij <linus.walleij@linaro.org>, Sekhar Nori <nsekhar@ti.com>, Gwendal Grignou <gwendal@chromium.org>, dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>, Benjamin Tissoires <benjamin.tissoires@redhat.com>, Paul Mackerras <paulus@samba.org>, Moses Christopher Bollavarapu <mosescb.dev@gmail.com>, Pavel Machek <pavel@ucw.cz>, Miquel Raynal <miquel.raynal@bootlin.com>, Heikki Krogerus <heikki.krogerus@linux.intel.com>, Evgeniy Polyakov <zbr@ioremap.net>, Matt Johnston <matt@codeconstruct.com.au>, Olli Salonen <olli.salonen@iki.fi>, Angela Czubak <acz@semihalf.com>, Robert Marko <robert.marko@sartura.hr>, Luka Perkov <luka.perkov@sartura.hr>, Sean Young <sean@mess.org>, Dave Stevenson <dave.stevenson@raspberrypi.com>, Zheyu Ma <zheyuma97@gmail.com>, Javier Martinez Canillas <javierm@redhat.com>, Chanwoo Choi <cw00.choi@samsung.com>, linux-omap@vger.kernel.org, An
+ tti Palosaari <crope@iki.fi>, Wenyou Yang <wenyou.yang@microchip.com>, Dongchun Zhu <dongchun.zhu@mediatek.com>, Viorel Suman <viorel.suman@nxp.com>, Steve Longerbeam <slongerbeam@gmail.com>, Bingbu Cao <bingbu.cao@intel.com>, Shunqian Zheng <zhengsq@rock-chips.com>, lijian <lijian@yulong.com>, Dan Carpenter <dan.carpenter@oracle.com>, Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>, alsa-devel@alsa-project.org, Petr Machata <petrm@nvidia.com>, =?UTF-8?Q?Guido_G=c3=bcnther?= <agx@sigxcpu.org>, Jean Delvare <jdelvare@suse.com>, linux-serial@vger.kernel.org, linux-pm@vger.kernel.org, Eddie James <eajames@linux.ibm.com>, Riku Voipio <riku.voipio@iki.fi>, James Schulman <james.schulman@cirrus.com>, Scott Wood <oss@buserror.net>, Cai Huoqing <cai.huoqing@linux.dev>, Jonas Malaco <jonas@protocubo.io>, Hsin-Yi Wang <hsinyi@chromium.org>, Haibo Chen <haibo.chen@nxp.com>, Petr Cvek <petrcvekcz@gmail.com>, linux-leds@vger.kernel.org, Joe Tessler <jrt@google.com>, Andrey Konovalov <andrey
+ knvl@gmail.com>, Andy Shevchenko <andy@kernel.org>, R
+
+obert Jones <rjones@gateworks.com>, George Joseph <george.joseph@fairview5.com>, Vincent Knecht <vincent.knecht@mailoo.org>, Robin van der Gracht <robin@protonic.nl>, Randy Dunlap <rdunlap@infradead.org>, linux-stm32@st-md-mailman.stormreply.com, Michael Tretter <m.tretter@pengutronix.de>, Geert Uytterhoeven <geert@linux-m68k.org>, Phong LE <ple@baylibre.com>, Daniel Beer <daniel.beer@igorinstitute.com>, Krzysztof Opasiak <k.opasiak@samsung.com>, Bjorn Andersson <bjorn.andersson@linaro.org>, linux-crypto@vger.kernel.org, Pengutronix Kernel Team <kernel@pengutronix.de>, Heungjun Kim <riverful.kim@samsung.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, David Lin <CTLIN0@nuvoton.com>, Vladimir Oltean <olteanv@gmail.com>, David Rhodes <david.rhodes@cirrus.com>, Claudiu Beznea <claudiu.beznea@microchip.com>, Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Dan Robertson <dan@dlrobertson.com>, Martyn Welch <martyn.welch@collabora.co
+ .uk>, Jiri Slaby <jirislaby@kernel.org>, devicetree@vger.kernel.org, David Airlie <airlied@linux.ie>, Jon Nettleton <jon.nettleton@gmail.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Marco Felsch <m.felsch@pengutronix.de>, Wim Van Sebroeck <wim@linux-watchdog.org>, Sebastian Reichel <sre@kernel.org>, Max Filippov <jcmvbkbc@gmail.com>, "Lad, Prabhakar" <prabhakar.csengg@gmail.com>, Thierry Reding <thierry.reding@gmail.com>, linux-i2c@vger.kernel.org, Martiros Shakhzadyan <vrzh@vrzh.net>, Guenter Roeck <groeck@chromium.org>, Matthias Schwarzott <zzam@gentoo.org>, Sylwester Nawrocki <s.nawrocki@samsung.com>, Eric Dumazet <edumazet@google.com>, =?UTF-8?Q?Marek_Beh=c3=ban?= <kabel@kernel.org>, Saranya Gopal <saranya.gopal@intel.com>, Lars-Peter Clausen <lars@metafoo.de>, Corey Minyard <minyard@acm.org>, Evgeny Novikov <novikov@ispras.ru>, Frank Rowand <frowand.list@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, Manivannan Sadhasivam <mani@kernel.org>, Pierre-Louis Bo
+ ssart <pierre-louis.bossart@linux.intel.com>, Minghao
+ Chi <chi.minghao@zte.com.cn>, linux-clk@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, MyungJoo Ham <myungjoo.ham@samsung.com>, Charles Gorand <charles.gorand@effinnov.com>, Jagan Teki <jagan@amarulasolutions.com>, Vijendar Mukunda <Vijendar.Mukunda@amd.com>, Miguel Ojeda <ojeda@kernel.org>, Kyungmin Park <kyungmin.park@samsung.com>, Tianshu Qiu <tian.shu.qiu@intel.com>, Martin Donnelly <martin.donnelly@ge.com>, Woojung Huh <woojung.huh@microchip.com>, Rudolf Marek <r.marek@assembler.cz>, Charles Keepax <ckeepax@opensource.cirrus.com>, linux-watchdog@vger.kernel.org, Michael Hennerich <michael.hennerich@analog.com>, Ido Schimmel <idosch@nvidia.com>, acpi4asus-user@lists.sourceforge.net, Simon Trimmer <simont@opensource.cirrus.com>, Ricard Wanderlof <ricardw@axis.com>, Rikard Falkeborn <rikard.falkeborn@gmail.com>, Alex Deucher <alexander.deucher@amd.com>, Jiri Valek - 2N <valek@2n.cz>, linux-rpi-kernel@lists.infradead.org, Biju Das <biju.das.jz@bp.renesas.com>, Wayne Chang 
+ <waynec@nvidia.com>, Chen-Yu Tsai <wens@csie.org>, Sing-Han Chen <singhanc@nvidia.com>, linux-arm-kernel@lists.infradead.org, =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Hans de Goede <hdegoede@redhat.com>, Stephen Boyd <sboyd@kernel.org>, Maslov Dmitry <maslovdmitry@seeed.cc>, linux-gpio@vger.kernel.org, Jens Frederich <jfrederich@gmail.com>, Douglas Anderson <dianders@chromium.org>, linux-media@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Paul Kocialkowski <paul.kocialkowski@bootlin.com>, Jarkko Sakkinen <jarkko@kernel.org>, linux-usb@vger.kernel.org, Jacopo Mondi <jacopo+renesas@jmondi.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, CGEL ZTE <cgel.zte@gmail.com>, Colin Leroy <colin@colino.net>, platform-driver-x86@vger.kernel.org, linux-integrity@vger.kernel.org, Kevin Tsai <ktsai@capellamicro.com>, =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>, Jonathan Cameron <jic23@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Daniel Palme
+ r <daniel@0x0f.com>, Arec Kao <arec.kao@intel.com>, C
+rt Mori <cmo@melexis.com>, Jose Cazarin <joseespiriki@gmail.com>, Neil Armstrong <narmstrong@baylibre.com>, linux-iio@vger.kernel.org, Tom Rix <trix@redhat.com>, Michael Turquette <mturquette@baylibre.com>, Peter Senna Tschudin <peter.senna@gmail.com>, Miaoqian Lin <linmq006@gmail.com>, =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>, Jan-Simon Moeller <jansimon.moeller@gmx.de>, Wei Yongjun <weiyongjun1@huawei.com>, Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Andrzej Hajda <andrzej.hajda@intel.com>, Nikita Travkin <nikita@trvn.ru>, Jeremy Kerr <jk@codeconstruct.com.au>, Jasmin Jessich <jasmin@anw.at>, Sam Ravnborg <sam@ravnborg.org>, Kevin Cernekee <cernekee@chromium.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, linux-rtc@vger.kernel.org, Daniel Thompson <daniel.thompson@linaro.org>, Florian Fainelli <f.fainelli@gmail.com>, Lucas Tanure <tanureal@opensource.cirrus.com>, Stefan Mavrodiev <stefan@olimex.com>, Masahiro Yamada <masahiroy@kernel.org>, Sylvain Petinot <sylvain.pe
+ tinot@foss.st.com>, netdev@vger.kernel.org, Kieran Bingham <kieran.bingham@ideasonboard.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, Xin Ji <xji@analogixsemi.com>, Seven Lee <wtli@nuvoton.com>, Matt Ranostay <matt.ranostay@konsulko.com>, Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Adrien Grassein <adrien.grassein@gmail.com>, Yang Yingliang <yangyingliang@huawei.com>, chrome-platform@lists.linux.dev, Mats Randgaard <matrandg@cisco.com>, Paolo Abeni <pabeni@redhat.com>, Alexey Dobriyan <adobriyan@gmail.com>, Joel Stanley <joel@jms.id.au>, linux-input@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Lyude Paul <lyude@redhat.com>, Kees Cook <keescook@chromium.org>, =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <uwe@kleine-koenig.org>, Jonas Karlman <jonas@kwiboo.se>, Yang Li <yang.lee@linux.alibaba.com>, Tim Harvey <tharvey@gateworks.com>, Jiri Kosina <jikos@kernel.org>, Akinobu Mita <akinobu.mita@gmail.com>, Mark Gross <markgross@kernel.org>, Richard Fitzgerald
+  <rf@opensource.cirrus.com>, Mark Brown <broonie@kern
+el.org>, wengjianfeng <wengjianfeng@yulong.com>, Maxime Ripard <maxime@cerno.tech>, Sven Peter <sven@svenpeter.dev>, Martin Kepplinger <martink@posteo.de>, openipmi-developer@lists.sourceforge.net, Mauro Carvalho Chehab <mchehab@kernel.org>, Benson Leung <bleung@chromium.org>, "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>, Chiranjeevi Rapolu <chiranjeevi.rapolu@intel.com>, Alessandro Zummo <a.zummo@towertech.it>, linux-hwmon@vger.kernel.org, Felipe Balbi <balbi@kernel.org>, Stephan Gerhold <stephan@gerhold.net>, Support Opensource <support.opensource@diasemi.com>, Alexandru Ardelean <ardeleanalex@gmail.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, Marc Hulsman <m.hulsman@tudelft.nl>, Corentin Chary <corentin.chary@gmail.com>, Stephen Kitt <steve@sk2.org>, Daniel Scally <djrscally@gmail.com>, linux-fbdev@vger.kernel.org, Andrey Ryabinin <ryabinin.a.a@gmail.com>, Arnd Bergmann <arnd@arndb.de>, Kirill Shilimanov <kirill.shilimanov@huawei.com>, Sakari Ailus <sakari.ailus@linux.inte
+ l.com>, patches@opensource.cirrus.com, Zheng Yongjun <zhengyongjun3@huawei.com>, Alejandro Tafalla <atafalla@dnyon.com>, Peter Rosin <peda@axentia.se>, Arnaud Ferraris <arnaud.ferraris@collabora.com>, Hector Martin <marcan@marcan.st>, Vignesh Raghavendra <vigneshr@ti.com>, Nick Dyer <nick@shmanahar.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tony Lindgren <tony@atomide.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Takashi Iwai <tiwai@suse.com>, Paul Cercueil <paul@crapouillou.net>, George McCollister <george.mccollister@gmail.com>, Mac Chiang <mac.chiang@intel.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, Alexander Potapenko <glider@google.com>, linux-staging@lists.linux.dev, Adam Ford <aford173@gmail.com>, Peter Huewe <peterhuewe@gmx.de>, UNGLinuxDriver@microchip.com, Lee Jones <lee.jones@linaro.org>, linux-mtd@lists.infradead.org, Alexey Khoroshilov <khoroshilov@ispras.ru>, Marek Vasut <marex@denx.de>, Yizhuo <yzhai003@ucr.edu>, Vincenzo Frascino <vincenz
+ o.frascino@arm.com>, Eric Piel <eric.piel@tremplin-ut
+c.net>, Herbert Xu <herbert@gondor.apana.org.au>, Tobias Schrammm <t.schramm@manjaro.org>, Richard Weinberger <richard@nod.at>, Tomasz Duszynski <tduszyns@gmail.com>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, Russell King <linux@armlinux.org.uk>, linux-pwm@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Thomas Zimmermann <tzimmermann@suse.de>, Bastien Nocera <hadess@hadess.net>, Jingoo Han <jingoohan1@gmail.com>, Jakub Kicinski <kuba@kernel.org>, Vivien Didelot <vivien.didelot@gmail.com>, Shawn Tu <shawnx.tu@intel.com>, Leon Luo <leonl@leopardimaging.com>, Yan Lei <yan_lei@dahuatech.com>, Akihiro Tsukada <tskd08@gmail.com>, Tudor Ambarus <tudor.ambarus@microchip.com>, Dmitry Rokosov <DDRokosov@sberdevices.ru>, Oliver Graute <oliver.graute@kococonnector.com>, Alistair Francis <alistair@alistair23.me>, Dongliang Mu <mudongliangabcd@gmail.com>, =?UTF-8?Q?Jonathan_Neusch=c3=a4fer?= <j.neuschaefer@gmx.net>, Eduardo Valentin <edubezval@gmail.com>, Rui Miguel Silva <rmfrfs@gmail.com>, Mich
+ ael Srba <Michael.Srba@seznam.cz>, Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org, Fabio Estevam <festevam@gmail.com>, Matthias Brugger <matthias.bgg@gmail.com>, kasan-dev@googlegroups.com, "Paul J. Murphy" <paul.j.murphy@intel.com>, Nicola Lunghi <nick83ola@gmail.com>, Daniele Alessandrelli <daniele.alessandrelli@intel.com>, Dmitry Vyukov <dvyukov@google.com>, Ramesh Shanmugasundaram <rashanmu@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, Juerg Haefliger <juergh@gmail.com>, Oder Chiou <oder_chiou@realtek.com>, Shengjiu Wang <shengjiu.wang@nxp.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, Robert Foss <robert.foss@linaro.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Daniel Vetter <daniel@ffwll.ch>, =?UTF-8?Q?Alvin_=c5=a0ipraga?= <alsi@bang-olufsen.dk>, Luca Ceresoli <luca@lucaceresoli.net>, =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, Colin Ian King <colin.king@intel.com>, Maximili
+ an Luz <luzmaximilian@gmail.com>, Helge Deller <delle
+r@gmx.de>, Lucas Stach <l.stach@pengutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/29/22 12:00 PM, Kefeng Wang wrote:
-> Hi,
-> 
-> On 2022/6/29 13:09, Aneesh Kumar K.V wrote:
->> With commit ffa0b64e3be5 ("powerpc: Fix virt_addr_valid() for 64-bit Book3E & 32-bit")
->> the kernel now validate the addr against high_memory value. This results
->> in the below BUG_ON with dax pfns.
->>
->> [  635.798741][T26531] kernel BUG at mm/page_alloc.c:5521!
->> 1:mon> e
->> cpu 0x1: Vector: 700 (Program Check) at [c000000007287630]
->>      pc: c00000000055ed48: free_pages.part.0+0x48/0x110
->>      lr: c00000000053ca70: tlb_finish_mmu+0x80/0xd0
->>      sp: c0000000072878d0
->>     msr: 800000000282b033
->>    current = 0xc00000000afabe00
->>    paca    = 0xc00000037ffff300   irqmask: 0x03   irq_happened: 0x05
->>      pid   = 26531, comm = 50-landscape-sy
->> kernel BUG at :5521!
->> Linux version 5.19.0-rc3-14659-g4ec05be7c2e1 (kvaneesh@ltc-boston8) (gcc (Ubuntu 9.4.0-1ubuntu1~20.04.1) 9.4.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #625 SMP Thu Jun 23 00:35:43 CDT 2022
->> 1:mon> t
->> [link register   ] c00000000053ca70 tlb_finish_mmu+0x80/0xd0
->> [c0000000072878d0] c00000000053ca54 tlb_finish_mmu+0x64/0xd0 (unreliable)
->> [c000000007287900] c000000000539424 exit_mmap+0xe4/0x2a0
->> [c0000000072879e0] c00000000019fc1c mmput+0xcc/0x210
->> [c000000007287a20] c000000000629230 begin_new_exec+0x5e0/0xf40
->> [c000000007287ae0] c00000000070b3cc load_elf_binary+0x3ac/0x1e00
->> [c000000007287c10] c000000000627af0 bprm_execve+0x3b0/0xaf0
->> [c000000007287cd0] c000000000628414 do_execveat_common.isra.0+0x1e4/0x310
->> [c000000007287d80] c00000000062858c sys_execve+0x4c/0x60
->> [c000000007287db0] c00000000002c1b0 system_call_exception+0x160/0x2c0
->> [c000000007287e10] c00000000000c53c system_call_common+0xec/0x250
->>
->> The fix is to make sure we update high_memory on memory hotplug.
->> This is similar to what x86 does in commit 3072e413e305 ("mm/memory_hotplug: introduce add_pages")
->>
->> Fixes: ffa0b64e3be5 ("powerpc: Fix virt_addr_valid() for 64-bit Book3E & 32-bit")
->> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
->> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->> Changes from v2:
->> * drop WARN_ON_ONCE
->> * check for error from __add_pages
->>
->>   arch/powerpc/Kconfig  |  4 ++++
->>   arch/powerpc/mm/mem.c | 33 ++++++++++++++++++++++++++++++++-
->>   2 files changed, 36 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index c2ce2e60c8f0..7aa12e88c580 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -358,6 +358,10 @@ config ARCH_SUSPEND_NONZERO_CPU
->>       def_bool y
->>       depends on PPC_POWERNV || PPC_PSERIES
->>   +config ARCH_HAS_ADD_PAGES
->> +    def_bool y
->> +    depends on ARCH_ENABLE_MEMORY_HOTPLUG
->> +
->>   config PPC_DCR_NATIVE
->>       bool
->>   diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
->> index 52b77684acda..a97128a48817 100644
->> --- a/arch/powerpc/mm/mem.c
->> +++ b/arch/powerpc/mm/mem.c
->> @@ -105,6 +105,37 @@ void __ref arch_remove_linear_mapping(u64 start, u64 size)
->>       vm_unmap_aliases();
->>   }
->>   +/*
->> + * After memory hotplug the variables max_pfn, max_low_pfn and high_memory need
->> + * updating.
->> + */
->> +static void update_end_of_memory_vars(u64 start, u64 size)
->> +{
->> +    unsigned long end_pfn = PFN_UP(start + size);
->> +
->> +    if (end_pfn > max_pfn) {
->> +        max_pfn = end_pfn;
->> +        max_low_pfn = end_pfn;
->> +        high_memory = (void *)__va(max_pfn * PAGE_SIZE - 1) + 1;
->> +    }
->> +}
->> +
->> +int __ref add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
->> +            struct mhp_params *params)
->> +{
->> +    int ret;
->                 int ret = -EINVAL;
->> +
->> +    ret = __add_pages(nid, start_pfn, nr_pages, params);
->> +    if (ret)
->> +        return ret;
->> +
+Hi Uwe,
 
-considering we are updating ret immediately why should we initialize that to EINVAL?
+> diff --git a/drivers/media/i2c/st-mipid02.c b/drivers/media/i2c/st-mipid02.c
+> index ef976d085d72..0389223a61f7 100644
+> --- a/drivers/media/i2c/st-mipid02.c
+> +++ b/drivers/media/i2c/st-mipid02.c
+> @@ -1041,7 +1041,7 @@ static int mipid02_probe(struct i2c_client *client)
+>  	return ret;
+>  }
+>  
+> -static int mipid02_remove(struct i2c_client *client)
+> +static void mipid02_remove(struct i2c_client *client)
+>  {
+>  	struct v4l2_subdev *sd = i2c_get_clientdata(client);
+>  	struct mipid02_dev *bridge = to_mipid02_dev(sd);
+> @@ -1052,8 +1052,6 @@ static int mipid02_remove(struct i2c_client *client)
+>  	mipid02_set_power_off(bridge);
+>  	media_entity_cleanup(&bridge->sd.entity);
+>  	mutex_destroy(&bridge->lock);
+> -
+> -	return 0;
+>  }
+>  
+>  static const struct of_device_id mipid02_dt_ids[] = {
 
-	int ret = -EINVAL;
-	ret = __add_pages(nid, start_pfn, nr_pages, params);
-	
+Thank you. All good for me.
+
+Reviewed-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+
+Cheers,
 
 
->> +    /* update max_pfn, max_low_pfn and high_memory */
->> +    update_end_of_memory_vars(start_pfn << PAGE_SHIFT,
->> +                  nr_pages << PAGE_SHIFT);
->> +
->> +    return ret;
->> +}
->> +
-> and could we only call update_end_of_memory_vars() in arch_add_memory()?
->>   int __ref arch_add_memory(int nid, u64 start, u64 size,
->>                 struct mhp_params *params)
->>   {
->> @@ -115,7 +146,7 @@ int __ref arch_add_memory(int nid, u64 start, u64 size,
->>       rc = arch_create_linear_mapping(nid, start, size, params);
->>       if (rc)
->>           return rc;
->> -    rc = __add_pages(nid, start_pfn, nr_pages, params);
->> +    rc = add_pages(nid, start_pfn, nr_pages, params);
->>       if (rc)
->>           arch_remove_linear_mapping(start, size);
-> 
-> if (!rc)
-> 
->     update_end_of_memory_vars(start_pfn << PAGE_SHIFT, nr_pages << PAGE_SHIFT);
-> 
-> else
-> 
->     arch_remove_linear_mapping(start, size);
-> 
-> Thanks
-> 
-
-commit 3072e413e305 goes into the details of why it is done in add_pages
-
-mm/memory_hotplug: introduce add_pages
-
-There are new users of memory hotplug emerging.  Some of them require
-different subset of arch_add_memory.  There are some which only require
-allocation of struct pages without mapping those pages to the kernel
-address space.  We currently have __add_pages for that purpose.  But this
-is rather lowlevel and not very suitable for the code outside of the
-memory hotplug.  E.g.  x86_64 wants to update max_pfn which should be done
-by the caller.  Introduce add_pages() which should care about those
-details if they are needed.  Each architecture should define its
-implementation and select CONFIG_ARCH_HAS_ADD_PAGES.  All others use the
-currently existing __add_pages.
-
-We could debate whether max_pfn/high_memory should encompass device private memory too.
-But the current code on x86 does that and I would also expect virt_addr_valid to return
-true for the address mapping private device memory. 
-
-
-
->>       return rc;
-
+Benjamin
