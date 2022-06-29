@@ -1,40 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FEA56059E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 18:18:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C6C5607B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 19:49:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LY6815lXSz3dsM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 02:18:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LY89Y5F4kz3dsV
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 03:49:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=D+k/1aYC;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LY67Y2Tfyz3bvb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 02:17:43 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 25TGD56V017150;
-	Wed, 29 Jun 2022 11:13:05 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 25TGD3U2017144;
-	Wed, 29 Jun 2022 11:13:03 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Wed, 29 Jun 2022 11:13:03 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 02/12] powerpc: wiiu: device tree
-Message-ID: <20220629161302.GG25951@gate.crashing.org>
-References: <20220622131037.57604-1-ash@heyquark.com> <20220628133144.142185-1-ash@heyquark.com> <20220628133144.142185-3-ash@heyquark.com> <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amazon.co.jp (client-ip=207.171.190.10; helo=smtp-fw-33001.amazon.com; envelope-from=prvs=172ca6553=kuniyu@amazon.co.jp; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=D+k/1aYC;
+	dkim-atps=neutral
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY88s6CS4z308w
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 03:49:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1656524942; x=1688060942;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZQt8BrZncvEXonYqD8ln2HEUss6QJGKaiw+Ny1S0QT4=;
+  b=D+k/1aYCsgR0fX+reSQr5qgjcOaAvaLnxO9S3DRkpc4RbDa13iVvHs+o
+   unYQe1phXbLpFhQm1DC6TMsha7jZqDTPUADm2AlYkb/bxezVMHHnrCFio
+   VuxfA5sfs3unzO4A9HGV+QHkjXvV/ROH7hZx6eHk8qBXRFQlgPEl4MOpg
+   M=;
+X-IronPort-AV: E=Sophos;i="5.92,231,1650931200"; 
+   d="scan'208";a="206136409"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2a-5bed4ba5.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP; 29 Jun 2022 17:47:42 +0000
+Received: from EX13MTAUWB001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
+	by email-inbound-relay-pdx-2a-5bed4ba5.us-west-2.amazon.com (Postfix) with ESMTPS id 37F4B91D4A;
+	Wed, 29 Jun 2022 17:47:40 +0000 (UTC)
+Received: from EX13D04ANC001.ant.amazon.com (10.43.157.89) by
+ EX13MTAUWB001.ant.amazon.com (10.43.161.249) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.36; Wed, 29 Jun 2022 17:47:39 +0000
+Received: from 88665a182662.ant.amazon.com (10.43.160.95) by
+ EX13D04ANC001.ant.amazon.com (10.43.157.89) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.36; Wed, 29 Jun 2022 17:47:37 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <sachinp@linux.ibm.com>
+Subject: Re: [powerpc] Fingerprint systemd service fails to start (next-20220624)
+Date: Wed, 29 Jun 2022 10:47:29 -0700
+Message-ID: <20220629174729.6744-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <FAA64E21-B3FE-442A-BA6B-D865006CBE3E@linux.ibm.com>
+References: <FAA64E21-B3FE-442A-BA6B-D865006CBE3E@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org>
-User-Agent: Mutt/1.4.2.3i
+X-Originating-IP: [10.43.160.95]
+X-ClientProxiedBy: EX13D48UWA001.ant.amazon.com (10.43.163.52) To
+ EX13D04ANC001.ant.amazon.com (10.43.157.89)
+Precedence: Bulk
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -43,55 +69,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel.org, rw-r-r-0644@protonmail.com, robh+dt@kernel.org, paulus@samba.org, Ash Logan <ash@heyquark.com>, krzysztof.kozlowski+dt@linaro.org, j.ne@posteo.net, linuxppc-dev@lists.ozlabs.org, joel@jms.id.au
+Cc: linux-next@vger.kernel.org, kuniyu@amazon.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, netdev@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 29, 2022 at 11:58:18AM +0200, Krzysztof Kozlowski wrote:
-> On 28/06/2022 15:31, Ash Logan wrote:
-> > +	model = "nintendo,wiiu";
+From:   Sachin Sant <sachinp@linux.ibm.com>
+Date:   Tue, 28 Jun 2022 12:41:35 +0530
+>>> I have attached dmesg log for reference. Let me know if any additional
+>>> Information is required.
+>> 
+>> * Could you provide
+>> * dmesg and /var/log/messages on a successful case? (without the commit)
+>> * Unit file
+>> * repro steps
 > 
-> It's not compatible, but user-visible string, e.g. "Nintendo Wii U"
+> I have attached the relevant log files. The attached tarball contains
+> dmesg, /var/log/messages and strace o/p for fprintd service collected
+> for working case and failure case.
 
-The "model" property in OF is documented as:
-
----
-“model”                                                                S
-Standard property name to define a manufacturer’s model number.
-
-prop-encoded-array:
-  Text string, encoded with encode-string.
-A manufacturer-dependent string that generally specifies the model name
-and number (including revision level) for this device. The format of the
-text string is arbitrary, although in conventional usage the string
-begins with the name of the device’s manufacturer as with the “name”
-property.
-Although there is no standard interpretation for the value of the
-“model” property, a specific device driver might use it to learn, for
-instance, the revision level of its particular device.
-
-See also: property, model.
-
-Used as: " XYZCO,1416-02" encode-string " model" property
----
-
-> > +	cpus {
-> > +		#address-cells = <1>;
-> > +		#size-cells = <0>;
-> > +
-> > +		/* TODO: Add SMP */
-> > +		PowerPC,espresso@0 {
-> 
-> Node name should be generic, so "cpu". Unless something needs the
-> specific node name?
-
-This is how most other PowerPC firmwares do it.  The PowerPC processor
-binding is older than the generic naming practice, so CPU nodes have
-device_type "cpu" instead.  This is a required property btw, with that
-value.  (There is no requirement on the names of the CPU nodes).
-
-There is no added value in generic naming for CPU nodes anyway, since
-you just find them as the children of the "/cpus" node :-)
+Thanks for your help!
 
 
-Segher
+>> * Is it reproducible after login? (e.g. systemctl restart)
+>> * If so, please provide
+>> * the result of strace -t -ff
+>> 
+> Yes, the problem can be recreated after login. I have collected the strace
+> logs.
+
+I confirmed fprintd failed to launch with this message on failure case.
+
+===
+ltcden8-lp6 fprintd[2516]: (fprintd:2516): fprintd-WARNING **: 01:56:45.705: Failed to open connection to bus: Could not connect: Connection refused
+===
+
+
+But in the strace log of both cases, only one socket is created and
+following connect() completes without an error.  And the peer socket
+does not seem to be d-bus one.
+
+===
+$ cat working-case/strace-fprintd-service.log | grep "socket("
+01:52:08 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+$ cat working-case/strace-fprintd-service.log | grep "socket(" -A 10
+01:52:08 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+...
+01:52:08 connect(3, {sa_family=AF_UNIX, sun_path="/run/systemd/private"}, 22) = 0
+...
+$ cat not-working-case/strace-fprintd-service.log | grep "socket("
+01:58:14 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+$ cat not-working-case/strace-fprintd-service.log | grep "socket(" -A 10
+01:58:14 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+...
+01:58:14 connect(3, {sa_family=AF_UNIX, sun_path="/run/systemd/private"}, 22) = 0
+===
+
+So I think the error message part is not traced well.
+Could you try to strace directly for the command in ExecStart section of
+its unit file?
+
+
+>> * Does it happen on only powerpc? How about x86 or arm64?
+>> 
+> I have attempted this only on powerpc. Don’t have access to arm or x86
+> setup to attempt it.
+
+I tried on my machine but fprintd launched successfully in both cases.
+And few minutes later, it exited because there was no dedicated device for
+fprintd, I think.
+
+===
+$ sudo systemctl status fprintd
+● fprintd.service - Fingerprint Authentication Daemon
+   Loaded: loaded (/usr/lib/systemd/system/fprintd.service; static; vendor preset: disabled)
+   Active: inactive (dead)
+     Docs: man:fprintd(1)
+
+Jun 29 05:46:22 ip-10-0-0-163.ap-northeast-1.compute.internal systemd[1]: Starting Fingerprint Authentication Daemon...
+Jun 29 05:46:22 ip-10-0-0-163.ap-northeast-1.compute.internal systemd[1]: Started Fingerprint Authentication Daemon.
+Jun 29 05:46:22 ip-10-0-0-163.ap-northeast-1.compute.internal fprintd[1291]: Launching FprintObject
+Jun 29 05:46:22 ip-10-0-0-163.ap-northeast-1.compute.internal fprintd[1291]: D-Bus service launched with name: net.reactivated.Fprint
+Jun 29 05:46:22 ip-10-0-0-163.ap-northeast-1.compute.internal fprintd[1291]: entering main loop
+Jun 29 05:46:52 ip-10-0-0-163.ap-northeast-1.compute.internal fprintd[1291]: No devices in use, exit
+===
