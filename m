@@ -1,73 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA99560AE1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 22:06:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8565560B15
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 22:33:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYCBx5yPkz3dst
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 06:06:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JYhkj+48;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYCp64lvLz3drn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 06:33:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JYhkj+48;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYCBD0l5Nz3bls
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 06:05:24 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 5FA95620D1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 20:05:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C15E2C34114
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 20:05:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656533120;
-	bh=+ZOIFtsTqWJ/yv87B6INOX9j+TMPLlTXJD89Xj2JPHw=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=JYhkj+480iQifyVhyppRflMXoKq2iUSKO/DJwNBPpdweUFbBQ0d0ywt7g6yLtKJ9g
-	 VcDwqkNtlffXdEm1HzGh9rfH3JXxSotf35L2gUWed/nuggmbp3M3Q13gWv4DmuK3Ei
-	 St7vA27j9gcrV7Asv9NCeHWAwHvuL1kzoZLBQtvbUISRwr+vNfz9LnUu8OEc2rN1yM
-	 ikKwZbO7m1Xm+FCGAJdhUE//BlCIK7SJBcnNuQLdl/ObbGXp6YN068z3mLKgd5ltm8
-	 cGTbqFcnqFz+qeMUV5+eltgQRcW9IGhkvzIlMffjFslya1/GtcByX4OXJTcgjHWzqD
-	 nGC64tK+TcbPA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id AD1DBC05FD2; Wed, 29 Jun 2022 20:05:20 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216190] 5.19-rc4 kernel + KASAN fails to boot at very early
- stage when CONFIG_SMP=y is selected (PowerMac G4 3,6)
-Date: Wed, 29 Jun 2022 20:05:20 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-216190-206035-GYTAa4UKcq@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216190-206035@https.bugzilla.kernel.org/>
-References: <bug-216190-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
-MIME-Version: 1.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYCng0x0Bz2xXV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 06:32:37 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 25TKS467028346;
+	Wed, 29 Jun 2022 15:28:04 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 25TKS1wF028345;
+	Wed, 29 Jun 2022 15:28:01 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 29 Jun 2022 15:28:01 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 02/12] powerpc: wiiu: device tree
+Message-ID: <20220629202800.GJ25951@gate.crashing.org>
+References: <20220622131037.57604-1-ash@heyquark.com> <20220628133144.142185-1-ash@heyquark.com> <20220628133144.142185-3-ash@heyquark.com> <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org> <20220629161302.GG25951@gate.crashing.org> <908e7555-0090-84fe-4227-d6b349de1394@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <908e7555-0090-84fe-4227-d6b349de1394@linaro.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,18 +42,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel.org, rw-r-r-0644@protonmail.com, robh+dt@kernel.org, paulus@samba.org, Ash Logan <ash@heyquark.com>, krzysztof.kozlowski+dt@linaro.org, j.ne@posteo.net, linuxppc-dev@lists.ozlabs.org, joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216190
+On Wed, Jun 29, 2022 at 08:13:13PM +0200, Krzysztof Kozlowski wrote:
+> On 29/06/2022 18:13, Segher Boessenkool wrote:
+> > On Wed, Jun 29, 2022 at 11:58:18AM +0200, Krzysztof Kozlowski wrote:
+> >>> +		/* TODO: Add SMP */
+> >>> +		PowerPC,espresso@0 {
+> >>
+> >> Node name should be generic, so "cpu". Unless something needs the
+> >> specific node name?
+> > 
+> > This is how most other PowerPC firmwares do it.  The PowerPC processor
+> > binding is older than the generic naming practice, so CPU nodes have
+> > device_type "cpu" instead.  
+> 
+> ePAPR 1.0 from 2008 explicitly asks for generic node names. So 4 years
+> before Nintento Wii U. Maybe earlier ePAPR-s were also asking for this,
+> no clue, don't have them.
 
---- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 301308
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D301308&action=3Dedit
-dmesg (5.19-rc4, outline KASAN, without SMP, PowerMac G4 DP)
+The majority of PowerPC 750 systems long predate that.  Many *current*
+systems implement the PowerPC Processor Binding, too (not the epapr
+thing, which is incompatible with the older standards!)
 
---=20
-You may reply to this email to add a comment.
+> > There is no added value in generic naming for CPU nodes anyway, since
+> > you just find them as the children of the "/cpus" node :-)
+> 
+> There is because you might have there caches. It also makes code easier
+> to read.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+In the processor binding the cache nodes were subnodes of cpu nodes or
+other cache nodes.  But in some server products you can have cache that
+is enabled while the corresponding core is disabled; and also, not all
+cache belongs to only one higher level anyway.  This was modelled pretty
+uncleanly, yup (cleaner would have been to have a /caches node as well
+as /cpus, for example).
+
+But on 750 you just have "l2-cache" subnodes, and all nodes in /cpus are
+CPUs :-)
+
+
+Segher
