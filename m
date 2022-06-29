@@ -1,78 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0255608CA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 20:14:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112FA5608F8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 20:21:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LY8jg6LS1z3dQs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 04:13:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LY8t16s1Pz3cgS
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 04:21:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WNrFF9D7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lzO9y7zH;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WNrFF9D7;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lzO9y7zH;
 	dkim-atps=neutral
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY8j16zDSz3bm8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 04:13:23 +1000 (AEST)
-Received: by mail-ed1-x532.google.com with SMTP id e40so23361804eda.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 11:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=NQV1i59mi4tYuil98CU1c0W6/nHmMnM5HHghJrHgau4=;
-        b=WNrFF9D7t/NeKPR2o263ccrZ4Kz2RDLA8sOsIoouM761+1rrT4cof++hldliKQiACV
-         hX3LySXE+ZSE33jC5CfHMcwYfym4jCLhPhtxseUmO7PgYE32cye9xBIOUfkh8pGoVVn2
-         krpgMJIqN+nxTOwpLj81I/uVydhVfoX2aSdell54CqeaGcqlDF7JPRWUBeC3hljz4Mzd
-         Ht+WZST6eV3cstYTNkXHep5D2gHL69WuPvHk2fRl1vThyAY5dF/d4mdQi0ISy7btrG2t
-         vfUnzuE/CkJ9gA6SA9GS0tu5tEBmTYfo0nwwsAHxEmXl+mGMkzStu+7B4CnpxDDtoTEl
-         UCTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=NQV1i59mi4tYuil98CU1c0W6/nHmMnM5HHghJrHgau4=;
-        b=VmoAcPeZxAA16wzy3fd8I8RY+3RVq5jBR+dx84/74i9wAIBYXmotNlVNSM9N1t5+DT
-         rJYoEQvNUcO6P0i26QMtxW70K0s+dBLNlEvzLzacWnU85gGjXYgqJ+PcbtsIuoSTgrNc
-         p3ZieLrxvJj6hlZk7puyUWRr45WV0N5Ax1B32GjArHUJML4Q6C2clGrrlLqc0BJJX96j
-         jHCtvoRsJDvb+eEepVB1N/JAJkr8xpBEww9ePza29ZFzm2X5qYdRfCBI6FHv6U/e0izP
-         i+/H+zOWV65EfThsGYGVeY2SGoq15PkDTX6H0WjYIKpoYJhDdgfuXHIL95aBGRXRC6qV
-         3clw==
-X-Gm-Message-State: AJIora/dmpMajKVwKKkiOEe1fPovUn9h/KzDIxFxvp/aleayJmrXt+CA
-	tlSIKLQoPw1nPQN4GLeRNM0ixA==
-X-Google-Smtp-Source: AGRyM1vDnN5C5nuEB9Dh4LeQO94kOMTOgN6sZ3SPGH517QZb1tU5e/c3+vjlciBP8Wf5FDroAz1iKQ==
-X-Received: by 2002:a05:6402:5384:b0:431:6d84:b451 with SMTP id ew4-20020a056402538400b004316d84b451mr5899111edb.46.1656526395107;
-        Wed, 29 Jun 2022 11:13:15 -0700 (PDT)
-Received: from [192.168.0.187] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id zm9-20020a170906994900b006fee7b5dff2sm8127702ejb.143.2022.06.29.11.13.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jun 2022 11:13:14 -0700 (PDT)
-Message-ID: <908e7555-0090-84fe-4227-d6b349de1394@linaro.org>
-Date: Wed, 29 Jun 2022 20:13:13 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LY8sR4wPJz308b
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 04:20:43 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 34A3961F72;
+	Wed, 29 Jun 2022 18:20:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF68C341C8;
+	Wed, 29 Jun 2022 18:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656526840;
+	bh=nqSjfUA+dAlFCv0ZmKlAaLfQaMfV+8ezW1LJols1QmI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lzO9y7zH2weaXPqzPTfVxv9v/dgk8YFAbETnafA7dcsvYugkUndxTfWbimV4oJ9Q4
+	 IVs3Hei0d9svIuhhcp5Y4StutrXxYbqWPC4Dz35Fu4miJxY+W3rvdMumwhjRtdEZiY
+	 IQlAIPz7x+aoJodUIY1hGLKJ7WpCPq6jnNY1J5gM+4cmKrhRQphxbId50N3EpCMpOi
+	 Zx3etyFzG2e3dOQZhaPFO1FID9+jzKMdpUJIUQE7VJMrNUoCbjJOlNU65xkLsGsFs2
+	 iUpzvtZMX7PRST2eHbNwM8E0mnOqoBVH7/DM7a3CdEzME4DD/2W00igPsPBDS5ZViJ
+	 rJzII8ANN6wGw==
+Date: Wed, 29 Jun 2022 19:20:33 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Chen Zhongjin <chenzhongjin@huawei.com>
+Subject: Re: [PATCH v6 25/33] arm64: crypto: Mark constant as data
+Message-ID: <YryX8YuklTNOxHLQ@sirena.org.uk>
+References: <20220623014917.199563-1-chenzhongjin@huawei.com>
+ <20220623014917.199563-26-chenzhongjin@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH v3 02/12] powerpc: wiiu: device tree
-Content-Language: en-US
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20220622131037.57604-1-ash@heyquark.com>
- <20220628133144.142185-1-ash@heyquark.com>
- <20220628133144.142185-3-ash@heyquark.com>
- <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org>
- <20220629161302.GG25951@gate.crashing.org>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220629161302.GG25951@gate.crashing.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="u/A/Sno6bNlTKyUB"
+Content-Disposition: inline
+In-Reply-To: <20220623014917.199563-26-chenzhongjin@huawei.com>
+X-Cookie: Booths for two or more.
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,70 +62,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, linkmauve@linkmauve.fr, linux-kernel@vger.kernel.org, rw-r-r-0644@protonmail.com, robh+dt@kernel.org, paulus@samba.org, Ash Logan <ash@heyquark.com>, krzysztof.kozlowski+dt@linaro.org, j.ne@posteo.net, linuxppc-dev@lists.ozlabs.org, joel@jms.id.au
+Cc: linux-arch@vger.kernel.org, mark.rutland@arm.com, daniel.thompson@linaro.org, michal.lkml@markovi.net, pasha.tatashin@soleen.com, will@kernel.org, linux-kbuild@vger.kernel.org, peterz@infradead.org, catalin.marinas@arm.com, masahiroy@kernel.org, ndesaulniers@google.com, linux-kernel@vger.kernel.org, madvenka@linux.microsoft.com, rmk+kernel@armlinux.org.uk, live-patching@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, jpoimboe@kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29/06/2022 18:13, Segher Boessenkool wrote:
-> On Wed, Jun 29, 2022 at 11:58:18AM +0200, Krzysztof Kozlowski wrote:
->> On 28/06/2022 15:31, Ash Logan wrote:
->>> +	model = "nintendo,wiiu";
->>
->> It's not compatible, but user-visible string, e.g. "Nintendo Wii U"
-> 
-> The "model" property in OF is documented as:
-> 
-> ---
-> “model”                                                                S
-> Standard property name to define a manufacturer’s model number.
-> 
-> prop-encoded-array:
->   Text string, encoded with encode-string.
-> A manufacturer-dependent string that generally specifies the model name
-> and number (including revision level) for this device. The format of the
-> text string is arbitrary, although in conventional usage the string
-> begins with the name of the device’s manufacturer as with the “name”
-> property.
-> Although there is no standard interpretation for the value of the
-> “model” property, a specific device driver might use it to learn, for
-> instance, the revision level of its particular device.
-> 
-> See also: property, model.
-> 
-> Used as: " XYZCO,1416-02" encode-string " model" property
 
-Hm, surprising to duplicate the compatible, but OK.
+--u/A/Sno6bNlTKyUB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> ---
-> 
->>> +	cpus {
->>> +		#address-cells = <1>;
->>> +		#size-cells = <0>;
->>> +
->>> +		/* TODO: Add SMP */
->>> +		PowerPC,espresso@0 {
->>
->> Node name should be generic, so "cpu". Unless something needs the
->> specific node name?
-> 
-> This is how most other PowerPC firmwares do it.  The PowerPC processor
-> binding is older than the generic naming practice, so CPU nodes have
-> device_type "cpu" instead.  
+On Thu, Jun 23, 2022 at 09:49:09AM +0800, Chen Zhongjin wrote:
+> Use SYM_DATA_* macros to annotate data bytes in the middle of .text
+> sections.
+>=20
+> For local symbols, ".L" prefix needs to be dropped as the assembler
+> exclude the symbols from the .o symbol table, making objtool unable
+> to see them.
 
-ePAPR 1.0 from 2008 explicitly asks for generic node names. So 4 years
-before Nintento Wii U. Maybe earlier ePAPR-s were also asking for this,
-no clue, don't have them.
+Reviewed-by: Mark Brown <broonie@kernel.org>
 
-> This is a required property btw, with that
-> value.  (There is no requirement on the names of the CPU nodes).
+--u/A/Sno6bNlTKyUB
+Content-Type: application/pgp-signature; name="signature.asc"
 
-That's fine, I am not talking about property.
+-----BEGIN PGP SIGNATURE-----
 
-> There is no added value in generic naming for CPU nodes anyway, since
-> you just find them as the children of the "/cpus" node :-)
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmK8l/AACgkQJNaLcl1U
+h9D5Pgf7B/qfGxLr9uSqDv8qyhbmyiDLJ2+YriTI2XDfxjIfIzQQ4Lt2OJ9Dl5G7
+pVJbkoLdC55nSb6tJLEfo6tYc5I0G2w0td71/S6QdS/wzF5YnV1ozxIlGKtfYrCp
+TPIJdmEKMS4pRfQ7y7sZ8avQutX0FqBek8SmXq/3/3mEmIFugCksFJ9hcrEwEyfS
+1TN9uG3QFIsLzGbBPk79XVgaZtXJYKpzaI+TfVDhed+JDLH+dgrZ5OcTZALUGkE3
+Ce+IRnLuLOAem14V32LufZG4/Hoaiguxtq2UoY2dAb1fUff9kaGZmSFmTjyQPakJ
+6C5y+X+n2vyUP503CA6vUVnKgIV52Q==
+=BxDC
+-----END PGP SIGNATURE-----
 
-There is because you might have there caches. It also makes code easier
-to read.
-
-Best regards,
-Krzysztof
+--u/A/Sno6bNlTKyUB--
