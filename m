@@ -1,77 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40FA955FC67
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 11:52:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5958455FCA7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 11:59:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LXxbV0k28z3drP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 19:52:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LXxkZ222fz3dqb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 19:59:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wpGThOR7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=LKpu2yHF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=wpGThOR7;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=LKpu2yHF;
 	dkim-atps=neutral
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXxZt4rNDz3c81
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 19:52:19 +1000 (AEST)
-Received: by mail-ej1-x633.google.com with SMTP id cw10so31479128ejb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 02:52:19 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LXxjt6lRjz3byL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 19:58:24 +1000 (AEST)
+Received: by mail-ed1-x531.google.com with SMTP id c65so21442919edf.4
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jun 2022 02:58:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=6tZawx/9KvgNGCX+RaVKaFvJ//Nr2mQ3IUwBnbuxxrE=;
-        b=wpGThOR7zN3wwT1G2udwoIdQi3m58vQp7umRdMIx588ZgebigGNDUD/zA11XpwQTV6
-         oBuXQgAqo2ZGDl3YOO1FTBClcdj2VeDsGwQ41Ki+NLYlXK3p17N/w0sgXowVLAz6gj9G
-         mHqfzGyVdq/ksdFMf/+szPdeY/H4L7rx6kpx/B8ViMwvPKTiEUZHc288fxH8aSLGsVQ0
-         hqgDJvcDhDQCIuu398z7aVpp/Rt4/He4PF31L12FbgJYzzVoxUpNDXXU48Q4/Oz09EAA
-         Wx2mPuE5Z6H1RtdjjjvWyhYtwSnzXUd96bjq6z/426dI02NIxRbNzHLe1uU61m1HYwHM
-         VCVA==
+        bh=Q0hXybwVYyJJtShG3s2e1VSFC83nd6szT4kAIob75Sw=;
+        b=LKpu2yHFiRvrEnZapYQSuYenvUNEBYE3I1cR5EA3rgm9hglZyMvJ2I+iHMm/PhP0Jn
+         NF8t4zrVn1tBf8/mkBD7WOjeHSM1LrfnkU4BiRuem1bpFhUFi744B39AWsK3ybNGMW5o
+         QO+sCKPxdOZB3VpSRGEzVDAHW3v6OIfWz37Q/eHzpzP6upnr/DT1yvKGkeWB8Q3s10Um
+         IKUNcZw9x40xqPKU5mRRJ80+pDuRmcRnIaUJfjdHUDZV3VuVts19cR0fBlvduoWTmWAD
+         6G8VwYYWnRf7gzgpDWPHcu86rkhGicnTXJYWL+/Mu1of3JzOsFQVWkNF7RlePzYY/Y2c
+         9tJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:cc:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=6tZawx/9KvgNGCX+RaVKaFvJ//Nr2mQ3IUwBnbuxxrE=;
-        b=YhoS6HDgHO54WaC6BznFmD/hLsEzsidsH/klhoZY1vegIFI9bbaSpbcFX6BIVeL0U6
-         JnfZ8P/ZczeAducsqcidaShldbUNZMiPZRz3UuhdurmLiNav4Of45vqwUbXKO7zaQliZ
-         V692gmRpspXf+/UXVzT+iZnJWf4jDTlZ3Fw/EPJ0pUNzK5INzxcI2dQJuf8bO2Egd+az
-         Ri06Kop+fcTkccgFZfkxjPiaRVEIdEk/LZYKOT4bVaML2v92BPp9sfrHF2tg/O9On65J
-         fPwzELFXRv7u2A1xyzt/nNWcXqFG4YsDS+6GKTECYFxV+tOz076kavTOk3dKMy/QyZwu
-         i29w==
-X-Gm-Message-State: AJIora99uJZKb+l4iRG/Gf+MefCKYd2V9cRa1ozTCaH0ydfaev5Dbcnf
-	jVACSXcrKZhjBPP0RUVRHiKzQA==
-X-Google-Smtp-Source: AGRyM1sHNVbuwC4B5+16VAXfgwwzgpSOVD1kaQyMjso1TU2vM8rQdVwy+kmEX8zb8+gkUaUloHag4w==
-X-Received: by 2002:a17:906:7a0b:b0:722:dac6:a8ff with SMTP id d11-20020a1709067a0b00b00722dac6a8ffmr2390293ejo.593.1656496329142;
-        Wed, 29 Jun 2022 02:52:09 -0700 (PDT)
+        bh=Q0hXybwVYyJJtShG3s2e1VSFC83nd6szT4kAIob75Sw=;
+        b=LOsK914IuegFsCg4jNCLa4sU+UY8Efa/P59VawaKXyQGYFpSk++fK5ztk6wWCe6dCx
+         nOMtMPOWTalKHj8UpGaGNHjbx0woqC+7Dq92mqIt8Xg2lvAenyC4q4szcP5FaSzEZrNB
+         xaLQku5orcp/1Fn6Jm996HQeOsojGXl55jIuox7BJ3NEQ8GZvkc/Q+hf9LVf5SHZBOU0
+         J2OlRgAfY+foFKmJJ3J8YLyltMQoGX+Jn1IcW5v9s4FNLtNRML7G+wy7MV7/6TX4GGBD
+         fj+q9tG/yXGszdyVeut1uE0rqq0czTLaHxgESfApyKNvsmUbvkck14DrnHK8zUFkmkR6
+         Oelg==
+X-Gm-Message-State: AJIora+7VyVcHS7eTGoTyrCWIJSGPqSArprfnGVZ47S/XaapDOtC7xkH
+	mEl+n+a5hE0mc3pSFAmo2b9oDA==
+X-Google-Smtp-Source: AGRyM1vuENth8+BVV6epDv21UB66lX7OsmfGpsefU+XZem8sycJawvinAvmNj+V+ISVAa2nGTddMkw==
+X-Received: by 2002:aa7:c38d:0:b0:435:9257:99a5 with SMTP id k13-20020aa7c38d000000b00435925799a5mr3063222edq.204.1656496700585;
+        Wed, 29 Jun 2022 02:58:20 -0700 (PDT)
 Received: from [192.168.0.183] (xdsl-188-155-176-92.adslplus.ch. [188.155.176.92])
-        by smtp.gmail.com with ESMTPSA id c20-20020a056402101400b004358cec9ce1sm11009012edu.65.2022.06.29.02.52.07
+        by smtp.gmail.com with ESMTPSA id s22-20020a170906a19600b0071cef8bafc3sm7570775ejy.1.2022.06.29.02.58.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Jun 2022 02:52:08 -0700 (PDT)
-Message-ID: <86a4814f-e881-d8dd-f338-48583363af53@linaro.org>
-Date: Wed, 29 Jun 2022 11:52:07 +0200
+        Wed, 29 Jun 2022 02:58:20 -0700 (PDT)
+Message-ID: <c760e444-57c3-0e1a-0e4d-f79d6ae9867a@linaro.org>
+Date: Wed, 29 Jun 2022 11:58:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.10.0
-Subject: Re: [PATCH v3 01/12] dt-bindings: wiiu: Document the Nintendo Wii U
- devicetree
+Subject: Re: [PATCH v3 02/12] powerpc: wiiu: device tree
 Content-Language: en-US
 To: Ash Logan <ash@heyquark.com>, krzysztof.kozlowski+dt@linaro.org,
  paulus@samba.org, mpe@ellerman.id.au, christophe.leroy@csgroup.eu,
  robh+dt@kernel.org, benh@kernel.crashing.org
 References: <20220622131037.57604-1-ash@heyquark.com>
  <20220628133144.142185-1-ash@heyquark.com>
- <20220628133144.142185-2-ash@heyquark.com>
+ <20220628133144.142185-3-ash@heyquark.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20220628133144.142185-2-ash@heyquark.com>
+In-Reply-To: <20220628133144.142185-3-ash@heyquark.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -90,401 +89,392 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 28/06/2022 15:31, Ash Logan wrote:
-> Adds schema for the various Wii U devicetree nodes used.
+> Add a device tree source file for the Nintendo Wii U video game console.
 > 
 > Signed-off-by: Ash Logan <ash@heyquark.com>
+> Co-developed-by: Roberto Van Eeden <rw-r-r-0644@protonmail.com>
+> Signed-off-by: Roberto Van Eeden <rw-r-r-0644@protonmail.com>
+> Co-developed-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
+> Signed-off-by: Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
 > ---
->  .../bindings/powerpc/nintendo/wiiu.yaml       | 28 +++++++++++
->  .../powerpc/nintendo/wiiu/espresso-pic.yaml   | 42 +++++++++++++++++
->  .../bindings/powerpc/nintendo/wiiu/gpu7.yaml  | 41 +++++++++++++++++
->  .../powerpc/nintendo/wiiu/latte-ahci.yaml     | 43 +++++++++++++++++
->  .../powerpc/nintendo/wiiu/latte-dsp.yaml      | 35 ++++++++++++++
->  .../powerpc/nintendo/wiiu/latte-pic.yaml      | 46 +++++++++++++++++++
->  .../powerpc/nintendo/wiiu/latte-sdhci.yaml    | 40 ++++++++++++++++
->  .../bindings/powerpc/nintendo/wiiu/latte.yaml | 25 ++++++++++
->  8 files changed, 300 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
->  create mode 100644 Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte.yaml
+> v1->v2: Style and formatting changes suggested by Rob Herring.
+>  License remains GPL-2.0 as the other powerpc dtses are the same, happy
+>  to change if there is a different preferred default.
+> v2->v3: Re-added address-cells accidentally removed in v2.
+>  Marked latte as a simple-bus, since it is.
+
+Thank you for your patch. There is something to discuss/improve.
+
 > 
-> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
+>  arch/powerpc/boot/dts/wiiu.dts | 326 +++++++++++++++++++++++++++++++++
+>  1 file changed, 326 insertions(+)
+>  create mode 100644 arch/powerpc/boot/dts/wiiu.dts
+> 
+> diff --git a/arch/powerpc/boot/dts/wiiu.dts b/arch/powerpc/boot/dts/wiiu.dts
 > new file mode 100644
-> index 000000000000..5824b07928f5
+> index 000000000000..44a5a1469095
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu.yaml
-> @@ -0,0 +1,28 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
+> +++ b/arch/powerpc/boot/dts/wiiu.dts
+> @@ -0,0 +1,326 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Nintendo Wii U Device Tree Source
+> + *
+> + * Copyright (C) 2022 The linux-wiiu Team
+> + */
 > +
-> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +/dts-v1/;
+> +#include <dt-bindings/gpio/gpio.h>
+> +#include <dt-bindings/input/input.h>
 > +
-> +title: Nintendo Wii U bindings
-> +
-> +maintainers:
-> +  - Ash Logan <ash@heyquark.com>
-> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-> +
-> +description: |
-> +  Nintendo Wii U video game console binding.
-> +
-> +properties:
-> +  $nodename:
-> +    const: "/"
-> +  compatible:
-> +    oneOf:
-> +      - description: Nintendo Wii U video game console
-> +        items:
-> +          - const: nintendo,wiiu
-> +
-> +additionalProperties: true
-> +
-> +...
-> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
-> new file mode 100644
-> index 000000000000..878a81595f5f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/espresso-pic.yaml
-> @@ -0,0 +1,42 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/espresso-pic.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nintendo Wii U "Espresso" interrupt controller
-> +
-> +maintainers:
-> +  - Ash Logan <ash@heyquark.com>
-> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-> +
-> +description: |
-> +  Interrupt controller found on the Nintendo Wii U for the "Espresso" processor.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
+> +/ {
+> +	model = "nintendo,wiiu";
 
-No need for oneOf, just const.
+It's not compatible, but user-visible string, e.g. "Nintendo Wii U"
 
-> +      - description: Nintendo Wii U "Espresso" interrupt controller
-
-No need for description.
-
-> +        items:
-> +          - const: nintendo,espresso-pic
-> +  '#interrupt-cells':
-> +    # Interrupt numbers 0-32 in one cell
-> +    const: 1
-
-Blank line between each property.
-
-> +  interrupt-controller: true
-> +  reg:
-> +    items:
-> +      - description: Core registers
-
-Just maxItems:1. Description is not helpful.
-
-Missing required properties.
-
+> +	compatible = "nintendo,wiiu";
 > +
-> +additionalProperties: false
+> +	#address-cells = <1>;
+> +	#size-cells = <1>;
 > +
-> +examples:
-> +  - |
-> +    espresso_pic: pic@c000078 {
+> +	chosen {
+> +		bootargs = "root=/dev/sda1 rootwait";
 
-Generic node name, so "interrupt-controller"
+This does not belong to shared DTS. No bootargs.
 
-> +            #interrupt-cells = <1>;
-> +            interrupt-controller;
+> +	};
 > +
-> +            compatible = "nintendo,espresso-pic";
-> +            reg = <0x0c000078 0x18>;
+> +	memory {
+> +		device_type = "memory";
+> +		reg = <0x00000000 0x02000000	/* MEM1 - 32MiB */
+> +		       0x08000000 0x00300000	/* MEM0 - 3MiB  */
+> +		       0x10000000 0x80000000>;	/* MEM2 - 2GiB  */
+> +	};
+> +
+> +	cpus {
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		/* TODO: Add SMP */
+> +		PowerPC,espresso@0 {
 
-compatible and reg by convention go first in list of properties. This
-applies everywhere, also to your DTS.
+Node name should be generic, so "cpu". Unless something needs the
+specific node name?
 
-> +    };
+> +			device_type = "cpu";
+> +			reg = <0>;
+> +			clock-frequency = <1243125000>;		/* 1.243125GHz */
+> +			bus-frequency = <248625000>;		/* 248.625MHz core-to-bus 5x */
+> +			timebase-frequency = <62156250>;	/* 1/4 of the bus clock */
+> +			i-cache-size = <32768>; /* 32K icache */
+> +			i-cache-line-size = <32>;
+> +			i-cache-block-size = <32>;
+> +			i-cache-sets = <128>;
+> +			d-cache-size = <32768>; /* 32K dcache */
+> +			d-cache-line-size = <32>;
+> +			d-cache-block-size = <32>;
+> +			d-cache-sets = <128>;
+> +			next-level-cache = <&L2_0>;
+> +			L2_0:l2-cache {
+> +				compatible = "cache";
+> +				cache-level = <2>;
+> +				cache-unified;
+> +				cache-size = <0x80000>; /* 512KB L2 */
+> +				cache-line-size = <64>;
+> +				cache-block-size = <32>;
+> +				cache-sets = <2048>;
+> +			};
+> +		};
+> +	};
 > +
-> +...
-> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
-> new file mode 100644
-> index 000000000000..e54d49015f36
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/gpu7.yaml
-> @@ -0,0 +1,41 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/gpu7.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nintendo Wii U Latte "GPU7" graphics processor
-> +
-> +maintainers:
-> +  - Ash Logan <ash@heyquark.com>
-> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-> +
-> +description: |
-> +  GPU7 graphics processor, also known as "GX2", found in the Latte multifunction chip of the
-> +  Nintendo Wii U.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - description: Nintendo Wii U Latte "GPU7" graphics processor
-> +        items:
-> +          - const: nintendo,latte-gpu7
-> +  reg:
-> +    items:
-> +      - description: GpuF0MMReg registers
-> +  interrupts:
-> +    items:
-> +      - description: Main interrupt, connected via Espresso PIC
+> +	latte {
 
-Same comments as your interrupt controller patch. I guess these comments
-apply everywhere here.
+Generic node names.
 
-Missing required properties.
+> +		#address-cells = <1>;
+> +		#size-cells = <1>;
+> +		compatible = "nintendo,latte", "simple-bus";
+> +		ranges = <0x0c000000 0x0c000000 0x00400000	/* Espresso-only registers */
+> +			  0x0d000000 0x0d000000 0x00200000	/* Latte AHB deivces */
+> +			  0x0d800000 0x0d800000 0x00800000>;	/* Latte SoC registers */
+> +
+> +		latte_gpu: gpu@c200000 {
+> +			compatible = "nintendo,latte-gpu7";
+> +			reg = <0x0c200000 0x80000>;
+> +			interrupts = <2>;
+> +			interrupt-parent = <&espresso_pic>;
+> +		};
+> +
+> +		espresso_pic: pic@c000078 {
 
-> +
-> +# This will likely get bound to the Radeon driver one day, which will neccesitate extra properties
-> +additionalProperties: true
+interrupt-controller
 
-No, it must be false. It's okay to extend the binding later.
+> +			#interrupt-cells = <1>;
+> +			interrupt-controller;
+> +
+> +			compatible = "nintendo,espresso-pic";
+> +			reg = <0x0c000078 0x18>;
+> +		};
+> +
+> +		latte_dsp: dsp@c005000 {
+> +			compatible = "nintendo,latte-dsp";
+> +			reg = <0x0c005000 0x200>;
+> +		};
+> +
+> +		ehci_0: usb@d040000 {
+> +			compatible = "nintendo,latte-usb-ehci", "usb-ehci";
+> +			reg = <0x0d040000 0x100>;
+> +			interrupts = <4>;
+> +			interrupt-parent = <&latte_pic>;
+> +			big-endian-regs;
+> +		};
+> +
+> +		ohci_0_0: usb@d050000 {
+> +			compatible = "nintendo,latte-usb-ohci";
+> +			reg = <0x0d050000 0x100>;
+> +			interrupts = <5>;
+> +			interrupt-parent = <&latte_pic>;
+> +
+> +			big-endian-regs;
+> +		};
+> +
+> +		ohci_0_1: usb@d060000 {
+> +			compatible = "nintendo,latte-usb-ohci";
+> +			reg = <0x0d060000 0x100>;
+> +			interrupts = <6>;
+> +			interrupt-parent = <&latte_pic>;
+> +
+> +			big-endian-regs;
+> +		};
+> +
+> +		ehci_1: usb@d120000 {
+> +			compatible = "nintendo,latte-usb-ehci", "usb-ehci";
+> +			reg = <0x0d120000 0x100>;
+> +			interrupts = <16>;
+> +			interrupt-parent = <&latte_pic>;
+> +			big-endian-regs;
+> +		};
+> +
+> +		ohci_1_0: usb@d130000 {
+> +			compatible = "nintendo,latte-usb-ohci";
+> +			reg = <0x0d130000 0x100>;
+> +			interrupts = <35>;
+> +			interrupt-parent = <&latte_pic>;
+> +
+> +			big-endian-regs;
+> +		};
+> +
+> +		ehci_2: usb@d140000 {
+> +			compatible = "nintendo,latte-usb-ehci", "usb-ehci";
+> +			reg = <0x0d140000 0x100>;
+> +			interrupts = <36>;
+> +			interrupt-parent = <&latte_pic>;
+> +			big-endian-regs;
+> +		};
+> +
+> +		ohci_2_0: usb@d150000 {
+> +			compatible = "nintendo,latte-usb-ohci";
+> +			reg = <0x0d150000 0x100>;
+> +			interrupts = <37>;
+> +			interrupt-parent = <&latte_pic>;
+> +
+> +			big-endian-regs;
+> +		};
+> +
+> +		sdcard_0: sdhci@d070000 {
 
-> +
-> +examples:
-> +  - |
-> +    gpu7@c200000 {
+mmc
 
-Generic node name, so "gpu".
+> +			compatible = "nintendo,latte-sdhci","sdhci";
+> +			reg = <0x0d070000 0x200>;
+> +			interrupts = <7>;
+> +			interrupt-parent = <&latte_pic>;
+> +		};
+> +
+> +		wifi_0: sdhci@d080000 {
 
-> +            compatible = "nintendo,latte-gpu7";
+mmc
 
-Wrong indentation. Use four spaces for DTS example.
+> +			compatible = "nintendo,latte-sdhci","sdhci";
+> +			reg = <0x0d080000 0x200>;
+> +			interrupts = <8>;
+> +			interrupt-parent = <&latte_pic>;
+> +		};
+> +
+> +		legacy_ipc: ipc@d800000 {
+> +			compatible = "nintendo,latte-ipc", "nintendo,hollywood-ipc";
+> +			reg = <0x0d800000 0x10>;
+> +			interrupts = <30 31>;
+> +			interrupt-parent = <&latte_pic>;
+> +		};
+> +
+> +		latte_otp: otp@d8001ec {
+> +			compatible = "nintendo,latte-otp";
+> +			reg = <0x0d8001ec 0x8>;
+> +		};
+> +
+> +		sata: ahci@d160400 {
+> +			compatible = "nintendo,latte-ahci";
+> +			reg = <0x0d160400 0x808>;
+> +
+> +			interrupt-parent = <&latte_pic>;
+> +			interrupts = <38 28>;
+> +		};
+> +
+> +		latte_pic: pic@d800440 {
 
-> +            reg = <0x0c200000 0x80000>;
-> +            interrupts = <2>;
-> +            interrupt-parent = <&espresso_pic>;
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
-> new file mode 100644
-> index 000000000000..7b9de4effcb0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-ahci.yaml
-> @@ -0,0 +1,43 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-ahci.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nintendo Wii U Latte AHCI controller
-> +
-> +maintainers:
-> +  - Ash Logan <ash@heyquark.com>
-> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-> +
-> +description: |
-> +  Nintendo Wii U AHCI SATA controller, as found in the Latte chip.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - description: Nintendo Wii U Latte AHCI controller
-> +        items:
-> +          - const: nintendo,latte-ahci
-> +  reg:
-> +    items:
-> +      - description: |
-> +          HBA memory registers. Note that unlike the spec, space for only 6 ports exist, with 2 vendor
-> +          registers afterwards, thus register space should be 0x408 long (0x100+0x80*6+0x8).
+interrupt-controller
 
-Here description can stay, so no need for maxItems.
+> +			#interrupt-cells = <1>;
+> +			interrupt-controller;
+> +
+> +			compatible = "nintendo,latte-pic";
+> +			reg = <0x0d800440 0x30>;
+> +			interrupt-parent = <&espresso_pic>;
+> +			interrupts = <24>;
+> +		};
+> +
+> +		gpio: gpio@d8000c0 {
+> +			#gpio-cells = <2>;
+> +			compatible = "nintendo,latte-gpio", "nintendo,hollywood-gpio";
+> +
+> +			reg = <0x0d8000c0 0x40>;
+> +			gpio-controller;
+> +			/* TODO: There are actually 31 AHBALL GPIOs */
+> +			ngpios = <24>;
+> +
+> +			gpio-line-names =
+> +				"POWER", "DWIFI", "FAN", "DC_DC",
+> +				"", "Esp10WorkAround", "", "",
+> +				"PADPD", "", "EEP_CS", "EEP_CLK",
+> +				"EEP_MOSI", "EEP_MISO", "AVE_SCL", "AVE_SDA",
+> +				"DEBUG0", "DEBUG1", "DEBUG2", "DEBUG3",
+> +				"DEBUG4", "DEBUG5", "DEBUG6", "DEBUG7";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +			interrupts = <10>;
+> +			interrupt-parent = <&latte_pic>;
+> +		};
+> +
+> +		gpio2: gpio@d800520 {
+> +			#gpio-cells = <2>;
+> +			compatible = "nintendo,latte-gpio", "nintendo,hollywood-gpio";
+> +
+> +			reg = <0x0d800520 0x40>;
+> +			gpio-controller;
+> +			ngpios = <7>;
+> +
+> +			gpio-line-names =
+> +				"FANSPEED", "SMC_SCL", "SMC_SDA", "DC_DC2",
+> +				"AVE_INT", "", "AVE_RESET";
+> +
+> +			interrupt-controller;
+> +			#interrupt-cells = <2>;
+> +			interrupts = <10>;
+> +			interrupt-parent = <&latte_pic>;
+> +		};
+> +	};
+> +
+> +	spi_gpio: spi-gpio {
+> +		compatible = "spi-gpio";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		cs-gpios = <&gpio 10 GPIO_ACTIVE_HIGH>;
+> +		gpio-sck = <&gpio 11 GPIO_ACTIVE_HIGH>;
+> +		gpio-mosi = <&gpio 12 GPIO_ACTIVE_HIGH>;
+> +		gpio-miso = <&gpio 13 GPIO_ACTIVE_HIGH>;
+> +		num-chipselects = <1>;
+> +
+> +		eeprom@0 {
+> +			compatible = "atmel,at93c66";
+> +			reg = <0>;
+> +			spi-max-frequency = <1000000>;
+> +			spi-cs-high;
+> +			/* TODO: wiiubrew says this is 16-bit, but I only get the correct
+> +			 * values in 8-bit...
+> +			 */
+> +			data-size = <8>;
+> +			read-only;
+> +
+> +			#address-cells = <1>;
+> +			#size-cells = <1>;
+> +
+> +			/* https://wiiubrew.org/wiki/Hardware/SEEPROM */
+> +			rng_seed: rng@12 { reg = <0x012 8>; };
+> +			ppc_pvr: pvr@20 { reg = <0x020 4>; };
+> +			seeprom_ver_str: sver-str@24 { reg = <0x024 6>; };
+> +			seeprom_ver: sver@2a { reg = <0x02A 2>; };
+> +			otp_ver: over@2c { reg = <0x02C 2>; };
+> +			otp_rev: orev@2e { reg = <0x02E 2>; };
+> +			otp_ver_str: over-str@30 { reg = <0x030 8>; };
+> +
+> +			bc_crc: bc-crc@38 { reg = <0x038 4>; };
+> +			bc_sz: bc-sz@3c { reg = <0x03C 2>; };
+> +			bc_ver: bc-ver@3e { reg = <0x03E 2>; };
+> +			bc_boardtype: boardtype@42 { reg = <0x042 2>; };
+> +			bc_boardrev: boardrev@44 { reg = <0x044 2>; };
+> +			bc_bootsource: bootsource@46 { reg = <0x046 2>; };
+> +			bc_ddr3size: ddr3size@48 { reg = <0x048 2>; };
+> +			bc_ddr3speed: ddr3speed@4a { reg = <0x04A 2>; };
+> +			bc_ppcclockmul: ppcclockmul@4c { reg = <0x04C 2>; };
+> +			bc_iopclockmul: iopclockmul@46 { reg = <0x04E 2>; };
+> +			bc_video1080p: video1080p@50 { reg = <0x050 2>; };
+> +			bc_ddr3vendor: ddr3vendor@52 { reg = <0x052 2>; };
+> +			bc_movpassivereset: movpassivereset@54 { reg = <0x054 2>; };
+> +			bc_syspllspd: syspllspd@56 { reg = <0x056 2>; };
+> +			bc_satadevice: satadevice@58 { reg = <0x058 2>; };
+> +			bc_consoletype: consoletype@5a { reg = <0x05A 2>; };
+> +			bc_deviceprescence: deviceprescence@5c { reg = <0x05C 2>; };
+> +
+> +			drive_key: drvkey@80 { reg = <0x080 16>; };
+> +			factory_key: fackey@90 { reg = <0x090 16>; };
+> +			shdd_key: shddkey@a0 { reg = <0x0A0 16>; };
+> +			usb_key_seed: usbkeyseed@b0 { reg = <0x0B0 16>; };
+> +			drive_key_flag: drvkeyf@c0 { reg = <0x0C0 2>; };
+> +			usb_key_flag: udbkeyf@c2 { reg = <0x0C2 2>; };
+> +			shdd_key_flag: shddkeyf@c4 { reg = <0x0C4 2>; };
+> +
+> +			sysprod_version: sp_ver@140 { reg = <0x140 4>; };
+> +			sysprod_eeprom_version: sp_ee_ver@144 { reg = <0x144 4>; };
+> +			sysprod_product_area: sp_parea@148 { reg = <0x148 4>; };
+> +			sysprod_game_region: sp_region@14c { reg = <0x14C 4>; };
+> +			sysprod_ntsc_pal: sp_ntscpal@150 { reg = <0x150 4>; };
+> +			sysprod_5ghz_country: sp_5ghz_c@154 { reg = <0x154 2>; };
+> +			sysprod_5ghz_country_rev: sp_5ghz_crev@156 { reg = <0x156 2>; };
+> +			sysprod_code: sp_code@158 { reg = <0x158 8>; };
+> +			sysprod_serial: sp_serial@160 { reg = <0x160 16>; };
+> +			sysprod_model: sp_model@170 { reg = <0x170 16>; };
+> +
+> +			prod_year: pyear@188 { reg = <0x188 2>; };
+> +			prod_date: pdate@18a { reg = <0x18A 2>; };
+> +			prod_time: ptime@18c { reg = <0x18C 2>; };
+> +
+> +			boot_params: boot_params@1c0 { reg = <0x1C0 48>; };
+> +		};
+> +	};
+> +
+> +	/* TODO make this gpio-keyed once hollywood-gpio supports interrupts */
+> +	gpio-keys-polled {
 
+gpio-keys
 
-> +  interrupts:
-> +    items:
-> +      - description: Main HBA interrupt
-> +      - description: Vendor debugging interrupt
+> +		poll-interval = <50>;
+> +		compatible = "gpio-keys-polled";
 > +
+> +		power {
 
-This should also reference ahci schema (I think it is ready).
+key-power
+(will be enforced by schema)
 
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    sata: ahci@d160400 {
-> +          compatible = "nintendo,latte-ahci";
-> +          reg = <0x0d160400 0x408>;
+> +			label = "Power Button";
+> +			gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
+> +			linux,code = <KEY_POWER>;
+> +		};
+> +	};
+> +};
 
-Fix indentation.
-
-> +
-> +          interrupt-parent = <&latte_pic>;
-> +          interrupts = <38>, <28>;
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
-> new file mode 100644
-> index 000000000000..ed0b4c28ce48
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-dsp.yaml
-> @@ -0,0 +1,35 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-dsp.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nintendo Wii U Latte DSP
-> +
-> +maintainers:
-> +  - Ash Logan <ash@heyquark.com>
-> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-> +
-> +description: |
-> +  Nintendo Wii U digital signal processor, as found in the Latte chip.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - description: Nintendo Wii U Latte DSP
-> +        items:
-> +          - const: nintendo,latte-dsp
-> +  reg:
-> +    items:
-> +      - description: DSP registers
-> +
-> +# Once more is known about this device more properties will likely be added
-> +additionalProperties: true
-
-Again, no. All other comments also apply.
-
-> +
-> +examples:
-> +  - |
-> +    latte_dsp: dsp@c005000 {
-> +         compatible = "nintendo,latte-dsp";
-> +         reg = <0x0c005000 0x200>;
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
-> new file mode 100644
-> index 000000000000..a2df71fb9964
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-pic.yaml
-> @@ -0,0 +1,46 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-pic.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nintendo Wii U Latte interrupt controller
-> +
-> +maintainers:
-> +  - Ash Logan <ash@heyquark.com>
-> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-> +
-> +description: |
-> +  Interrupt controller found on the Nintendo Wii U for the "Latte" devices.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - description: Nintendo Wii U Latte interrupt controller
-> +        items:
-> +          - const: nintendo,latte-pic
-> +  '#interrupt-cells':
-> +    # Interrupt numbers 0-64 in one cell.
-> +    const: 1
-> +  interrupt-controller: true
-> +  reg:
-> +    items:
-> +      - description: Core registers
-> +  interrupts:
-> +    items:
-> +      - description: Cascade interrupt for Espresso PIC
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    latte_pic: pic@d800440 {
-
-interrupt-controller.
-
-All other comments apply.
-
-> +         #interrupt-cells = <1>;
-> +         interrupt-controller;
-> +
-> +         compatible = "nintendo,latte-pic";
-> +         reg = <0x0d800440 0x30>;
-> +         interrupt-parent = <&espresso_pic>;
-> +         interrupts = <24>;
-> +    };
-> +...
-> diff --git a/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
-> new file mode 100644
-> index 000000000000..4b9b0820edc1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/nintendo/wiiu/latte-sdhci.yaml
-> @@ -0,0 +1,40 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/powerpc/nintendo/wiiu/latte-sdhci.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nintendo Wii U Latte SD Host controller
-> +
-> +maintainers:
-> +  - Ash Logan <ash@heyquark.com>
-> +  - Emmanuel Gil Peyrot <linkmauve@linkmauve.fr>
-> +
-> +description: |
-> +  SDHCI hosts found on the Nintendo Wii U's Latte SoC for SD cards and SDIO devices.
-> +
-> +properties:
-> +  compatible:
-> +    oneOf:
-> +      - description: Nintendo Wii U Latte SDHCI
-> +        items:
-> +          - const: nintendo,latte-sdhci
-> +          - const: sdhci
-> +  reg:
-> +    items:
-> +      - description: Core registers
-> +  interrupts:
-> +    items:
-> +      - description: SDHCI interrupt
-
-You need to reference mmc-controller bindings in allOf.
-
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    sdcard_0: sdhci@d070000 {
-
-Node name: mmc
-
-The bindings look poor, several easy to fix mistakes. I suggest to open
-example-schema.yaml and start from there.
 
 Best regards,
 Krzysztof
