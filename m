@@ -1,87 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F155612BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 08:50:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D966561422
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 10:05:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYTVy5tnjz3dpj
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 16:50:50 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=di89F0xw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYW8w300Gz3dQK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 18:05:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=di89F0xw;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYTVG0X6Dz3blT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 16:50:13 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25U6keI8030292;
-	Thu, 30 Jun 2022 06:50:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=lNWZPARNDVEWEQCNktzsmFa2uUqDis0qttuXEz6ZC80=;
- b=di89F0xw543VoJxdwsNawN6Oy14w9xqNXBcnY6ChGriuQo+5wDIZN2Nmvil0UAsm6Jiq
- kkhl3IOzKr1fyR5zszyucgtEQk0gmPK1s/Ch1hfz8tRr/6jQgpA4pgheDroyFzwqtOa0
- xwEo73QD00Hy9Q3P/gRJgXaeL4NhLSJo351hgxsLrYdcHoNi3KTqtcjL10V4OnELejGe
- A74Eg/RVKA8u7IkTTzSeqwxl9PNg8mdNb5Uvb1ITQXb3lMe4KIhoiq1QKbIwrmRv6kfK
- VZXyfZlfoS184CVW1mdwhYmUmu1f2jcF3ZVg+oUUAPsufTDBZDJUx3Vb42AeesxM7cuq Og== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h16v202u0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jun 2022 06:50:07 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25U6llg1001177;
-	Thu, 30 Jun 2022 06:50:07 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h16v202sy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jun 2022 06:50:07 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25U6Zh5R024176;
-	Thu, 30 Jun 2022 06:50:05 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma01fra.de.ibm.com with ESMTP id 3gwt08wpmg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Jun 2022 06:50:05 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25U6o1uC23069112
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Jun 2022 06:50:02 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D895B42041;
-	Thu, 30 Jun 2022 06:50:01 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 30F7642042;
-	Thu, 30 Jun 2022 06:49:59 +0000 (GMT)
-Received: from hbathini-workstation.ibm.com.com (unknown [9.211.95.189])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Jun 2022 06:49:58 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/crash: save cpu register data in crash_smp_send_stop()
-Date: Thu, 30 Jun 2022 12:19:42 +0530
-Message-Id: <20220630064942.192283-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.35.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYW8Q66b3z3blT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 18:04:52 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-214-9jXG4kaVPcae5B0FitiCbQ-1; Thu, 30 Jun 2022 09:04:45 +0100
+X-MC-Unique: 9jXG4kaVPcae5B0FitiCbQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.36; Thu, 30 Jun 2022 09:04:43 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.036; Thu, 30 Jun 2022 09:04:43 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Michael Schmitz' <schmitzmic@gmail.com>, Arnd Bergmann <arnd@kernel.org>
+Subject: RE: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+Thread-Topic: [PATCH v2 3/3] arch/*/: remove CONFIG_VIRT_TO_BUS
+Thread-Index: AQHYi0Qnhtr21GMXN0qgKN5inTL9yK1nmAnQ
+Date: Thu, 30 Jun 2022 08:04:43 +0000
+Message-ID: <26852797d822462abc1c9f96def7fa42@AcuMS.aculab.com>
+References: <20220617125750.728590-1-arnd@kernel.org>
+ <20220617125750.728590-4-arnd@kernel.org>
+ <6ba86afe-bf9f-1aca-7af1-d0d348d75ffc@gmail.com>
+ <CAMuHMdVewn0OYA9oJfStk0-+vCKAUou+4Mvd5H2kmrSks1p5jg@mail.gmail.com>
+ <b4e5a1c9-e375-63fb-ec7c-abb7384a6d59@gmail.com>
+ <9289fd82-285c-035f-5355-4d70ce4f87b0@gmail.com>
+ <CAMuHMdXUihTPD9A9hs__Xr2ErfOqkZ5KgCHqm+9HvRf39uS5kA@mail.gmail.com>
+ <c30bc9b6-6ccd-8856-dc6b-4e16450dad6f@gmail.com>
+ <CAK8P3a1rxEVwVF5U-PO6pQkfURU5Tro1Qp8SPUfHEV9jjWOmCQ@mail.gmail.com>
+ <9f812d3d-0fcd-46e6-6d7e-6d4bf66f24ab@gmail.com>
+In-Reply-To: <9f812d3d-0fcd-46e6-6d7e-6d4bf66f24ab@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jqOfX4z9M2dFOJq_TIOjA7rYahtkUDox
-X-Proofpoint-ORIG-GUID: X2G-z6YrmTmxhTEgVf2rpb2MJdaRhkRX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-06-30_03,2022-06-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- mlxlogscore=999 spamscore=0 suspectscore=0 bulkscore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2206300023
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,229 +68,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Linux-Arch <linux-arch@vger.kernel.org>, scsi <linux-scsi@vger.kernel.org>, Christoph Hellwig <hch@infradead.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Jakub Kicinski <kuba@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Denis Efremov <efremov@linux.com>, linux-m68k <linux-m68k@lists.linux-m68k.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Khalid Aziz <khalid@gonehiking.org>, Miquel van Smoorenburg <mikevs@xs4all.net>, Parisc List <linux-parisc@vger.kernel.org>, Robin Murphy <robin.murphy@arm.com>, Matt Wang <wwentao@vmware.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Mark Salyzyn <salyzyn@android.com>, Linux IOMMU <iommu@lists.linux-foundation.org>, alpha <linux-alpha@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "Maciej W . Rozycki" <macro@orcam.me.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-During kdump, two set of NMI IPIs are sent to secondary CPUs, if
-'crash_kexec_post_notifiers' option is set. The first set of NMI IPIs
-to stop the CPUs and the other set to collect register data. Instead,
-capture register data for secondary CPUs while stopping them itself.
-Also, fallback to smp_send_stop() in case the function gets called
-without kdump configured.
-
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
-
-Changes in v2:
-* For INTERRUPT_SYSTEM_RESET case, stopped sending IPIs again to
-  secondary CPUs via crash_kexec_prepare_cpus().
-* Added comments where appropriate.
-
-
- arch/powerpc/include/asm/kexec.h |  1 +
- arch/powerpc/kernel/smp.c        | 29 ++++--------
- arch/powerpc/kexec/crash.c       | 77 +++++++++++++++++++-------------
- 3 files changed, 57 insertions(+), 50 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index 2aefe14e1442..cce69101205e 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -83,6 +83,7 @@ extern void default_machine_crash_shutdown(struct pt_regs *regs);
- extern int crash_shutdown_register(crash_shutdown_t handler);
- extern int crash_shutdown_unregister(crash_shutdown_t handler);
- 
-+extern void crash_kexec_prepare(void);
- extern void crash_kexec_secondary(struct pt_regs *regs);
- int __init overlaps_crashkernel(unsigned long start, unsigned long size);
- extern void reserve_crashkernel(void);
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index bcefab484ea6..6b850c157a62 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -35,6 +35,7 @@
- #include <linux/stackprotector.h>
- #include <linux/pgtable.h>
- #include <linux/clockchips.h>
-+#include <linux/kexec.h>
- 
- #include <asm/ptrace.h>
- #include <linux/atomic.h>
-@@ -55,7 +56,6 @@
- #endif
- #include <asm/vdso.h>
- #include <asm/debug.h>
--#include <asm/kexec.h>
- #include <asm/cpu_has_feature.h>
- #include <asm/ftrace.h>
- #include <asm/kup.h>
-@@ -619,20 +619,6 @@ void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *))
- }
- #endif
- 
--#ifdef CONFIG_NMI_IPI
--static void crash_stop_this_cpu(struct pt_regs *regs)
--#else
--static void crash_stop_this_cpu(void *dummy)
--#endif
--{
--	/*
--	 * Just busy wait here and avoid marking CPU as offline to ensure
--	 * register data is captured appropriately.
--	 */
--	while (1)
--		cpu_relax();
--}
--
- void crash_smp_send_stop(void)
- {
- 	static bool stopped = false;
-@@ -651,11 +637,14 @@ void crash_smp_send_stop(void)
- 
- 	stopped = true;
- 
--#ifdef CONFIG_NMI_IPI
--	smp_send_nmi_ipi(NMI_IPI_ALL_OTHERS, crash_stop_this_cpu, 1000000);
--#else
--	smp_call_function(crash_stop_this_cpu, NULL, 0);
--#endif /* CONFIG_NMI_IPI */
-+#ifdef CONFIG_KEXEC_CORE
-+	if (kexec_crash_image) {
-+		crash_kexec_prepare();
-+		return;
-+	}
-+#endif
-+
-+	smp_send_stop();
- }
- 
- #ifdef CONFIG_NMI_IPI
-diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-index 80f54723cf6d..252724ed666a 100644
---- a/arch/powerpc/kexec/crash.c
-+++ b/arch/powerpc/kexec/crash.c
-@@ -40,6 +40,14 @@
- #define REAL_MODE_TIMEOUT	10000
- 
- static int time_to_dump;
-+
-+/*
-+ * In case of system reset, secondary CPUs enter crash_kexec_secondary with out
-+ * having to send an IPI explicitly. So, indicate if the crash is via
-+ * system reset to avoid sending another IPI.
-+ */
-+static int is_via_system_reset;
-+
- /*
-  * crash_wake_offline should be set to 1 by platforms that intend to wake
-  * up offline cpus prior to jumping to a kdump kernel. Currently powernv
-@@ -101,7 +109,7 @@ void crash_ipi_callback(struct pt_regs *regs)
- 	/* NOTREACHED */
- }
- 
--static void crash_kexec_prepare_cpus(int cpu)
-+static void crash_kexec_prepare_cpus(void)
- {
- 	unsigned int msecs;
- 	volatile unsigned int ncpus = num_online_cpus() - 1;/* Excluding the panic cpu */
-@@ -113,7 +121,15 @@ static void crash_kexec_prepare_cpus(int cpu)
- 	if (crash_wake_offline)
- 		ncpus = num_present_cpus() - 1;
- 
--	crash_send_ipi(crash_ipi_callback);
-+	/*
-+	 * If we came in via system reset, secondaries enter via crash_kexec_secondary().
-+	 * So, wait a while for the secondary CPUs to enter for that case.
-+	 * Else, send IPI to all other CPUs.
-+	 */
-+	if (is_via_system_reset)
-+		mdelay(PRIMARY_TIMEOUT);
-+	else
-+		crash_send_ipi(crash_ipi_callback);
- 	smp_wmb();
- 
- again:
-@@ -202,7 +218,7 @@ void crash_kexec_secondary(struct pt_regs *regs)
- 
- #else	/* ! CONFIG_SMP */
- 
--static void crash_kexec_prepare_cpus(int cpu)
-+static void crash_kexec_prepare_cpus(void)
- {
- 	/*
- 	 * move the secondaries to us so that we can copy
-@@ -248,6 +264,32 @@ noinstr static void __maybe_unused crash_kexec_wait_realmode(int cpu)
- static inline void crash_kexec_wait_realmode(int cpu) {}
- #endif	/* CONFIG_SMP && CONFIG_PPC64 */
- 
-+void crash_kexec_prepare(void)
-+{
-+	/* Avoid hardlocking with irresponsive CPU holding logbuf_lock */
-+	printk_deferred_enter();
-+
-+	/*
-+	 * This function is only called after the system
-+	 * has panicked or is otherwise in a critical state.
-+	 * The minimum amount of code to allow a kexec'd kernel
-+	 * to run successfully needs to happen here.
-+	 *
-+	 * In practice this means stopping other cpus in
-+	 * an SMP system.
-+	 * The kernel is broken so disable interrupts.
-+	 */
-+	hard_irq_disable();
-+
-+	/*
-+	 * Make a note of crashing cpu. Will be used in machine_kexec
-+	 * such that another IPI will not be sent.
-+	 */
-+	crashing_cpu = smp_processor_id();
-+
-+	crash_kexec_prepare_cpus();
-+}
-+
- /*
-  * Register a function to be called on shutdown.  Only use this if you
-  * can't reset your device in the second kernel.
-@@ -311,35 +353,10 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
- 	unsigned int i;
- 	int (*old_handler)(struct pt_regs *regs);
- 
--	/* Avoid hardlocking with irresponsive CPU holding logbuf_lock */
--	printk_deferred_enter();
--
--	/*
--	 * This function is only called after the system
--	 * has panicked or is otherwise in a critical state.
--	 * The minimum amount of code to allow a kexec'd kernel
--	 * to run successfully needs to happen here.
--	 *
--	 * In practice this means stopping other cpus in
--	 * an SMP system.
--	 * The kernel is broken so disable interrupts.
--	 */
--	hard_irq_disable();
--
--	/*
--	 * Make a note of crashing cpu. Will be used in machine_kexec
--	 * such that another IPI will not be sent.
--	 */
--	crashing_cpu = smp_processor_id();
--
--	/*
--	 * If we came in via system reset, wait a while for the secondary
--	 * CPUs to enter.
--	 */
- 	if (TRAP(regs) == INTERRUPT_SYSTEM_RESET)
--		mdelay(PRIMARY_TIMEOUT);
-+		is_via_system_reset = 1;
- 
--	crash_kexec_prepare_cpus(crashing_cpu);
-+	crash_smp_send_stop();
- 
- 	crash_save_cpu(regs, crashing_cpu);
- 
--- 
-2.35.3
+RnJvbTogTWljaGFlbCBTY2htaXR6DQo+IFNlbnQ6IDI5IEp1bmUgMjAyMiAwMDowOQ0KPiANCj4g
+SGkgQXJuZCwNCj4gDQo+IE9uIDI5LzA2LzIyIDA5OjUwLCBBcm5kIEJlcmdtYW5uIHdyb3RlOg0K
+PiA+IE9uIFR1ZSwgSnVuIDI4LCAyMDIyIGF0IDExOjAzIFBNIE1pY2hhZWwgU2NobWl0eiA8c2No
+bWl0em1pY0BnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBPbiAyOC8wNi8yMiAxOTowMywgR2VlcnQg
+VXl0dGVyaG9ldmVuIHdyb3RlOg0KPiA+Pj4+IFRoZSBkcml2ZXIgYWxsb2NhdGVzIGJvdW5jZSBi
+dWZmZXJzIHVzaW5nIGttYWxsb2MgaWYgaXQgaGl0cyBhbg0KPiA+Pj4+IHVuYWxpZ25lZCBkYXRh
+IGJ1ZmZlciAtIGNhbiBzdWNoIGJ1ZmZlcnMgc3RpbGwgZXZlbiBoYXBwZW4gdGhlc2UgZGF5cz8N
+Cj4gPj4+IE5vIGlkZWEuDQo+ID4+IEhtbW0gLSBJIHRoaW5rIEknbGwgc3RpY2sgYSBXQVJOX09O
+Q0UoKSBpbiB0aGVyZSBzbyB3ZSBrbm93IHdoZXRoZXIgdGhpcw0KPiA+PiBjb2RlIHBhdGggaXMg
+c3RpbGwgYmVpbmcgdXNlZC4NCj4gPiBrbWFsbG9jKCkgZ3VhcmFudGVlcyBhbGlnbm1lbnQgdG8g
+dGhlIG5leHQgcG93ZXItb2YtdHdvIHNpemUgb3INCj4gPiBLTUFMTE9DX01JTl9BTElHTiwgd2hp
+Y2hldmVyIGlzIGJpZ2dlci4gT24gbTY4ayB0aGlzIG1lYW5zIGl0DQo+ID4gaXMgY2FjaGVsaW5l
+IGFsaWduZWQuDQo+IA0KPiBBbmQgYWxsIFNDU0kgYnVmZmVycyBhcmUgYWxsb2NhdGVkIHVzaW5n
+IGttYWxsb2M/IE5vIHdheSBhdCBhbGwgZm9yIHVzZXINCj4gc3BhY2UgdG8gcGFzcyB1bmFsaWdu
+ZWQgZGF0YT8NCg0KSSBkaWRuJ3QgdGhpbmsga21hbGxvYygpIGdhdmUgYW55IHN1Y2ggZ3VhcmFu
+dGVlIGFib3V0IGFsaWdubWVudC4NClRoZXJlIGFyZSBjYWNoZS1saW5lIGFsaWdubWVudCByZXF1
+aXJlbWVudHMgb24gc3lzdGVtcyB3aXRoIG5vbi1jb2hlcmVudA0KZG1hLCBidXQgb3RoZXJ3aXNl
+IHRoZSBhbGlnbm1lbnQgY2FuIGJlIG11Y2ggc21hbGxlci4NCg0KT25lIG9mIHRoZSBhbGxvY2F0
+b3JzIGFkZHMgYSBoZWFkZXIgdG8gZWFjaCBpdGVtLCBJSVJDIHRoYXQgY2FuDQpsZWFkIHRvICd1
+bmV4cGVjdGVkJyBhbGlnbm1lbnRzIC0gZXNwZWNpYWxseSBvbiBtNjhrLg0KDQpkbWFfYWxsb2Nf
+Y29oZXJlbnQoKSBkb2VzIGFsaWduIHRvIG5leHQgJ3Bvd2VyIG9mIDInLg0KQW5kIHNvbWV0aW1l
+cyB5b3UgbmVlZCAoZWcpIDE2ayBhbGxvY2F0ZXMgdGhhdCBhcmUgMTZrIGFsaWduZWQuDQoNCglE
+YXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91
+bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5
+NzM4NiAoV2FsZXMpDQo=
 
