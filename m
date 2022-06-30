@@ -2,34 +2,86 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B215611CD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 07:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A90915611D1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 07:31:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYRg55JPjz2xsm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 15:27:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYRlG49W6z3fTG
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 15:31:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PcMBiimC;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYRWM2tpsz3fYb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 15:21:02 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 532E71BC0;
-	Wed, 29 Jun 2022 22:20:32 -0700 (PDT)
-Received: from a077893.blr.arm.com (unknown [10.162.41.8])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D96BE3F66F;
-	Wed, 29 Jun 2022 22:20:23 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Subject: [PATCH V6 26/26] mm/mmap: Drop ARCH_HAS_VM_GET_PAGE_PROT
-Date: Thu, 30 Jun 2022 10:46:30 +0530
-Message-Id: <20220630051630.1718927-27-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220630051630.1718927-1-anshuman.khandual@arm.com>
-References: <20220630051630.1718927-1-anshuman.khandual@arm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PcMBiimC;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYRkX5gx8z2xXw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 15:30:44 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25U5Hfff031778;
+	Thu, 30 Jun 2022 05:30:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=DT81z4wBYXTTZ24U10aUSxTR2YyCg5UGmy//b7CNHmE=;
+ b=PcMBiimC3rVSaAMHp/iEjjKN5QaD4/M5HZqpSumgsm5dKzHiymNIXvUuN2QrgN2GTALu
+ +qZD02DI2wvlef4Hl6ER74xzaq7VNzUYVImqbGM4Zet/VRrYSPZqlftNUNK6K6NmBK4w
+ VgHE79Ftd0SFp8yS3FH5eqRKKHjJLqT4tFY8qOT9BNPFIEIeJNA0BdLe0APi6rtoVRPM
+ /Ta2o+NuUzP2gDIEq5WldQf3SGGOxOJ1qzwCT2hvwINjXAOUHH3TFmx9MCgHCeqrpyaT
+ FUP9ZfY8qxE0dHFMGUm96o/vLHj+C1UVlFoU07lh/Eku5M4U3NiXZ78jWPPhRmVaZ+va AQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h15jcg7nv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jun 2022 05:30:34 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25U5JP2q007399;
+	Thu, 30 Jun 2022 05:30:34 GMT
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h15jcg7n0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jun 2022 05:30:34 +0000
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25U5KCVD004238;
+	Thu, 30 Jun 2022 05:30:32 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma03fra.de.ibm.com with ESMTP id 3gwt08wmqn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jun 2022 05:30:31 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25U5USTb21365138
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Jun 2022 05:30:28 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3C78DAE051;
+	Thu, 30 Jun 2022 05:30:28 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5CADEAE04D;
+	Thu, 30 Jun 2022 05:30:25 +0000 (GMT)
+Received: from hbathini-workstation.ibm.com.com (unknown [9.211.95.189])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Jun 2022 05:30:24 +0000 (GMT)
+From: Hari Bathini <hbathini@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/crash: save cpu register data in crash_smp_send_stop()
+Date: Thu, 30 Jun 2022 11:00:23 +0530
+Message-Id: <20220630053023.181991-1-hbathini@linux.ibm.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: X2ikIPB3Sx4RvtUcpO_IanJOrQaDseQF
+X-Proofpoint-ORIG-GUID: T_fQo4u07ssW_f5jRf9FW8jxAQ6JSGLh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-30_01,2022-06-28_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ mlxlogscore=999 clxscore=1011 impostorscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206300018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,374 +93,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, Christoph Hellwig <hch@lst.de>, linux-s390@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, hch@infradead.org, linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org, Anshuman Khandual <anshuman.khandual@arm.com>, linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org, linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now all the platforms enable ARCH_HAS_GET_PAGE_PROT. They define and export
-own vm_get_page_prot() whether custom or standard DECLARE_VM_GET_PAGE_PROT.
-Hence there is no need for default generic fallback for vm_get_page_prot().
-Just drop this fallback and also ARCH_HAS_GET_PAGE_PROT mechanism.
+During kdump, two set of NMI IPIs are sent to secondary CPUs, if
+'crash_kexec_post_notifiers' option is set. The first set of NMI IPIs
+to stop the CPUs and the other set to collect register data. Instead,
+capture register data for secondary CPUs while stopping them itself.
+Also, fallback to smp_send_stop() in case the function gets called
+without kdump configured.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 ---
- arch/alpha/Kconfig      |  1 -
- arch/arc/Kconfig        |  1 -
- arch/arm/Kconfig        |  1 -
- arch/arm64/Kconfig      |  1 -
- arch/csky/Kconfig       |  1 -
- arch/hexagon/Kconfig    |  1 -
- arch/ia64/Kconfig       |  1 -
- arch/loongarch/Kconfig  |  1 -
- arch/m68k/Kconfig       |  1 -
- arch/microblaze/Kconfig |  1 -
- arch/mips/Kconfig       |  1 -
- arch/nios2/Kconfig      |  1 -
- arch/openrisc/Kconfig   |  1 -
- arch/parisc/Kconfig     |  1 -
- arch/powerpc/Kconfig    |  1 -
- arch/riscv/Kconfig      |  1 -
- arch/s390/Kconfig       |  1 -
- arch/sh/Kconfig         |  1 -
- arch/sparc/Kconfig      |  1 -
- arch/um/Kconfig         |  1 -
- arch/x86/Kconfig        |  1 -
- arch/xtensa/Kconfig     |  1 -
- include/linux/mm.h      |  3 ---
- mm/Kconfig              |  3 ---
- mm/mmap.c               | 22 ----------------------
- 25 files changed, 50 deletions(-)
+ arch/powerpc/include/asm/kexec.h |  1 +
+ arch/powerpc/kernel/smp.c        | 29 ++++--------
+ arch/powerpc/kexec/crash.c       | 77 +++++++++++++++++++-------------
+ 3 files changed, 57 insertions(+), 50 deletions(-)
 
-diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-index db1c8b329461..7d0d26b5b3f5 100644
---- a/arch/alpha/Kconfig
-+++ b/arch/alpha/Kconfig
-@@ -2,7 +2,6 @@
- config ALPHA
- 	bool
- 	default y
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_32BIT_USTAT_F_TINODE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
-diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
-index 8be56a5d8a9b..9e3653253ef2 100644
---- a/arch/arc/Kconfig
-+++ b/arch/arc/Kconfig
-@@ -13,7 +13,6 @@ config ARC
- 	select ARCH_HAS_SETUP_DMA_OPS
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_SUPPORTS_ATOMIC_RMW if ARC_HAS_LLSC
- 	select ARCH_32BIT_OFF_T
- 	select BUILDTIME_TABLE_SORT
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e153b6d4fc5b..7630ba9cb6cc 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -24,7 +24,6 @@ config ARM
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU if SWIOTLB || !MMU
- 	select ARCH_HAS_TEARDOWN_DMA_OPS if MMU
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAVE_CUSTOM_GPIO_H
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if CPU_V7 || CPU_V7M || CPU_V6K
- 	select ARCH_HAS_GCOV_PROFILE_ALL
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1652a9800ebe..7030bf3f8d6f 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -45,7 +45,6 @@ config ARM64
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_TEARDOWN_DMA_OPS if IOMMU_SUPPORT
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAS_ZONE_DMA_SET if EXPERT
- 	select ARCH_HAVE_ELF_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
-index 588b8a9c68ed..21d72b078eef 100644
---- a/arch/csky/Kconfig
-+++ b/arch/csky/Kconfig
-@@ -6,7 +6,6 @@ config CSKY
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_QUEUED_RWLOCKS
- 	select ARCH_WANT_FRAME_POINTERS if !CPU_CK610 && $(cc-option,-mbacktrace)
-diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
-index bc4ceecd0588..54eadf265178 100644
---- a/arch/hexagon/Kconfig
-+++ b/arch/hexagon/Kconfig
-@@ -6,7 +6,6 @@ config HEXAGON
- 	def_bool y
- 	select ARCH_32BIT_OFF_T
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_NO_PREEMPT
- 	select DMA_GLOBAL_POOL
- 	# Other pending projects/to-do items.
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 0510a5737711..cb93769a9f2a 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -12,7 +12,6 @@ config IA64
- 	select ARCH_HAS_DMA_MARK_CLEAN
- 	select ARCH_HAS_STRNCPY_FROM_USER
- 	select ARCH_HAS_STRNLEN_USER
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select ACPI
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index fd07b8e760ee..1920d52653b4 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -9,7 +9,6 @@ config LOONGARCH
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_PHYS_TO_DMA
- 	select ARCH_HAS_PTE_SPECIAL
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_INLINE_READ_LOCK if !PREEMPTION
- 	select ARCH_INLINE_READ_LOCK_BH if !PREEMPTION
-diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-index 49aa0cf13e96..936cce42ae9a 100644
---- a/arch/m68k/Kconfig
-+++ b/arch/m68k/Kconfig
-@@ -7,7 +7,6 @@ config M68K
- 	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_DMA_PREP_COHERENT if HAS_DMA && MMU && !COLDFIRE
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE if HAS_DMA
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if RMW_INSNS
- 	select ARCH_MIGHT_HAVE_PC_PARPORT if ISA
- 	select ARCH_NO_PREEMPT if !COLDFIRE
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index 15f91ba8a0c4..8cf429ad1c84 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -7,7 +7,6 @@ config MICROBLAZE
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_WANT_IPC_PARSE_VERSION
- 	select BUILDTIME_TABLE_SORT
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index d0b7eb11ec81..db09d45d59ec 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -14,7 +14,6 @@ config MIPS
- 	select ARCH_HAS_STRNLEN_USER
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_SUPPORTS_UPROBES
-diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
-index e0459dffd218..4167f1eb4cd8 100644
---- a/arch/nios2/Kconfig
-+++ b/arch/nios2/Kconfig
-@@ -6,7 +6,6 @@ config NIOS2
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
- 	select ARCH_HAS_DMA_SET_UNCACHED
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_NO_SWAP
- 	select COMMON_CLK
- 	select TIMER_OF
-diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
-index fe0dfb50eb86..e814df4c483c 100644
---- a/arch/openrisc/Kconfig
-+++ b/arch/openrisc/Kconfig
-@@ -10,7 +10,6 @@ config OPENRISC
- 	select ARCH_HAS_DMA_SET_UNCACHED
- 	select ARCH_HAS_DMA_CLEAR_UNCACHED
- 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select COMMON_CLK
- 	select OF
- 	select OF_EARLY_FLATTREE
-diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
-index 891d82393957..fa400055b2d5 100644
---- a/arch/parisc/Kconfig
-+++ b/arch/parisc/Kconfig
-@@ -12,7 +12,6 @@ config PARISC
- 	select ARCH_HAS_STRICT_KERNEL_RWX
- 	select ARCH_HAS_STRICT_MODULE_RWX
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_NO_SG_CHAIN
- 	select ARCH_SUPPORTS_HUGETLBFS if PA20
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1035d172c7dd..250b8658b2d4 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -140,7 +140,6 @@ config PPC
- 	select ARCH_HAS_TICK_BROADCAST		if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UACCESS_FLUSHCACHE
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_KEEP_MEMBLOCK
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 583389d4e43a..32ffef9f6e5b 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -32,7 +32,6 @@ config RISCV
- 	select ARCH_HAS_STRICT_MODULE_RWX if MMU && !XIP_KERNEL
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
- 	select ARCH_OPTIONAL_KERNEL_RWX_DEFAULT
- 	select ARCH_STACKWALK
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index c4481377ca83..91c0b80a8bf0 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -81,7 +81,6 @@ config S390
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
- 	select ARCH_HAS_VDSO_DATA
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_INLINE_READ_LOCK
- 	select ARCH_INLINE_READ_LOCK_BH
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index 91f3ea325388..5f220e903e5a 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -12,7 +12,6 @@ config SUPERH
- 	select ARCH_HAS_GCOV_PROFILE_ALL
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HIBERNATION_POSSIBLE if MMU
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_WANT_IPC_PARSE_VERSION
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 09f868613a4d..9c1cce74953a 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -13,7 +13,6 @@ config 64BIT
- config SPARC
- 	bool
- 	default y
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_MIGHT_HAVE_PC_PARPORT if SPARC64 && PCI
- 	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select DMA_OPS
-diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-index 7fb43654e5b5..4ec22e156a2e 100644
---- a/arch/um/Kconfig
-+++ b/arch/um/Kconfig
-@@ -10,7 +10,6 @@ config UML
- 	select ARCH_HAS_KCOV
- 	select ARCH_HAS_STRNCPY_FROM_USER
- 	select ARCH_HAS_STRNLEN_USER
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_NO_PREEMPT
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_SECCOMP_FILTER
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index be0b95e51df6..841e4843d0c4 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -94,7 +94,6 @@ config X86
- 	select ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_UBSAN_SANITIZE_ALL
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_HAS_DEBUG_WX
- 	select ARCH_HAS_ZONE_DMA_SET if EXPERT
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-index 4c0d83520ff1..0b0f0172cced 100644
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -11,7 +11,6 @@ config XTENSA
- 	select ARCH_HAS_DMA_SET_UNCACHED if MMU
- 	select ARCH_HAS_STRNCPY_FROM_USER if !KASAN
- 	select ARCH_HAS_STRNLEN_USER
--	select ARCH_HAS_VM_GET_PAGE_PROT
- 	select ARCH_USE_MEMTEST
- 	select ARCH_USE_QUEUED_RWLOCKS
- 	select ARCH_USE_QUEUED_SPINLOCKS
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 07b56995e0fe..4ccd29f6828f 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -424,9 +424,6 @@ extern unsigned int kobjsize(const void *objp);
-  * mapping from the currently active vm_flags protection bits (the
-  * low four bits) to a page protection mask..
-  */
--#ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT
--extern pgprot_t protection_map[16];
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index 2aefe14e1442..cce69101205e 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -83,6 +83,7 @@ extern void default_machine_crash_shutdown(struct pt_regs *regs);
+ extern int crash_shutdown_register(crash_shutdown_t handler);
+ extern int crash_shutdown_unregister(crash_shutdown_t handler);
+ 
++extern void crash_kexec_prepare(void);
+ extern void crash_kexec_secondary(struct pt_regs *regs);
+ int __init overlaps_crashkernel(unsigned long start, unsigned long size);
+ extern void reserve_crashkernel(void);
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index bcefab484ea6..6b850c157a62 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -35,6 +35,7 @@
+ #include <linux/stackprotector.h>
+ #include <linux/pgtable.h>
+ #include <linux/clockchips.h>
++#include <linux/kexec.h>
+ 
+ #include <asm/ptrace.h>
+ #include <linux/atomic.h>
+@@ -55,7 +56,6 @@
+ #endif
+ #include <asm/vdso.h>
+ #include <asm/debug.h>
+-#include <asm/kexec.h>
+ #include <asm/cpu_has_feature.h>
+ #include <asm/ftrace.h>
+ #include <asm/kup.h>
+@@ -619,20 +619,6 @@ void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *))
+ }
+ #endif
+ 
+-#ifdef CONFIG_NMI_IPI
+-static void crash_stop_this_cpu(struct pt_regs *regs)
+-#else
+-static void crash_stop_this_cpu(void *dummy)
 -#endif
- 
- /*
-  * The default fault flags that should be used by most of the
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 169e64192e48..f47d257a053b 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -951,9 +951,6 @@ config ARCH_HAS_CURRENT_STACK_POINTER
- 	  register alias named "current_stack_pointer", this config can be
- 	  selected.
- 
--config ARCH_HAS_VM_GET_PAGE_PROT
--	bool
+-{
+-	/*
+-	 * Just busy wait here and avoid marking CPU as offline to ensure
+-	 * register data is captured appropriately.
+-	 */
+-	while (1)
+-		cpu_relax();
+-}
 -
- config ARCH_HAS_PTE_DEVMAP
- 	bool
- 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 2cc722e162fa..02d6889f0ef6 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -81,28 +81,6 @@ static void unmap_region(struct mm_struct *mm,
- 		struct vm_area_struct *vma, struct vm_area_struct *prev,
- 		unsigned long start, unsigned long end);
- 
--#ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT
--pgprot_t protection_map[16] __ro_after_init = {
--	[VM_NONE]					= __P000,
--	[VM_READ]					= __P001,
--	[VM_WRITE]					= __P010,
--	[VM_WRITE | VM_READ]				= __P011,
--	[VM_EXEC]					= __P100,
--	[VM_EXEC | VM_READ]				= __P101,
--	[VM_EXEC | VM_WRITE]				= __P110,
--	[VM_EXEC | VM_WRITE | VM_READ]			= __P111,
--	[VM_SHARED]					= __S000,
--	[VM_SHARED | VM_READ]				= __S001,
--	[VM_SHARED | VM_WRITE]				= __S010,
--	[VM_SHARED | VM_WRITE | VM_READ]		= __S011,
--	[VM_SHARED | VM_EXEC]				= __S100,
--	[VM_SHARED | VM_EXEC | VM_READ]			= __S101,
--	[VM_SHARED | VM_EXEC | VM_WRITE]		= __S110,
--	[VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]	= __S111
--};
--DECLARE_VM_GET_PAGE_PROT
--#endif	/* CONFIG_ARCH_HAS_VM_GET_PAGE_PROT */
--
- static pgprot_t vm_pgprot_modify(pgprot_t oldprot, unsigned long vm_flags)
+ void crash_smp_send_stop(void)
  {
- 	return pgprot_modify(oldprot, vm_get_page_prot(vm_flags));
+ 	static bool stopped = false;
+@@ -651,11 +637,14 @@ void crash_smp_send_stop(void)
+ 
+ 	stopped = true;
+ 
+-#ifdef CONFIG_NMI_IPI
+-	smp_send_nmi_ipi(NMI_IPI_ALL_OTHERS, crash_stop_this_cpu, 1000000);
+-#else
+-	smp_call_function(crash_stop_this_cpu, NULL, 0);
+-#endif /* CONFIG_NMI_IPI */
++#ifdef CONFIG_KEXEC_CORE
++	if (kexec_crash_image) {
++		crash_kexec_prepare();
++		return;
++	}
++#endif
++
++	smp_send_stop();
+ }
+ 
+ #ifdef CONFIG_NMI_IPI
+diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+index 80f54723cf6d..252724ed666a 100644
+--- a/arch/powerpc/kexec/crash.c
++++ b/arch/powerpc/kexec/crash.c
+@@ -40,6 +40,14 @@
+ #define REAL_MODE_TIMEOUT	10000
+ 
+ static int time_to_dump;
++
++/*
++ * In case of system reset, secondary CPUs enter crash_kexec_secondary with out
++ * having to send an IPI explicitly. So, indicate if the crash is via
++ * system reset to avoid sending another IPI.
++ */
++static int is_via_system_reset;
++
+ /*
+  * crash_wake_offline should be set to 1 by platforms that intend to wake
+  * up offline cpus prior to jumping to a kdump kernel. Currently powernv
+@@ -101,7 +109,7 @@ void crash_ipi_callback(struct pt_regs *regs)
+ 	/* NOTREACHED */
+ }
+ 
+-static void crash_kexec_prepare_cpus(int cpu)
++static void crash_kexec_prepare_cpus(void)
+ {
+ 	unsigned int msecs;
+ 	volatile unsigned int ncpus = num_online_cpus() - 1;/* Excluding the panic cpu */
+@@ -113,7 +121,15 @@ static void crash_kexec_prepare_cpus(int cpu)
+ 	if (crash_wake_offline)
+ 		ncpus = num_present_cpus() - 1;
+ 
+-	crash_send_ipi(crash_ipi_callback);
++	/*
++	 * If we came in via system reset, secondaries enter via crash_kexec_secondary().
++	 * So, wait a while for the secondary CPUs to enter for that case.
++	 * Else, send IPI to all other CPUs.
++	 */
++	if (is_via_system_reset)
++		mdelay(PRIMARY_TIMEOUT);
++	else
++		crash_send_ipi(crash_ipi_callback);
+ 	smp_wmb();
+ 
+ again:
+@@ -202,7 +218,7 @@ void crash_kexec_secondary(struct pt_regs *regs)
+ 
+ #else	/* ! CONFIG_SMP */
+ 
+-static void crash_kexec_prepare_cpus(int cpu)
++static void crash_kexec_prepare_cpus(void)
+ {
+ 	/*
+ 	 * move the secondaries to us so that we can copy
+@@ -248,6 +264,32 @@ noinstr static void __maybe_unused crash_kexec_wait_realmode(int cpu)
+ static inline void crash_kexec_wait_realmode(int cpu) {}
+ #endif	/* CONFIG_SMP && CONFIG_PPC64 */
+ 
++void crash_kexec_prepare(void)
++{
++	/* Avoid hardlocking with irresponsive CPU holding logbuf_lock */
++	printk_deferred_enter();
++
++	/*
++	 * This function is only called after the system
++	 * has panicked or is otherwise in a critical state.
++	 * The minimum amount of code to allow a kexec'd kernel
++	 * to run successfully needs to happen here.
++	 *
++	 * In practice this means stopping other cpus in
++	 * an SMP system.
++	 * The kernel is broken so disable interrupts.
++	 */
++	hard_irq_disable();
++
++	/*
++	 * Make a note of crashing cpu. Will be used in machine_kexec
++	 * such that another IPI will not be sent.
++	 */
++	crashing_cpu = smp_processor_id();
++
++	crash_kexec_prepare_cpus();
++}
++
+ /*
+  * Register a function to be called on shutdown.  Only use this if you
+  * can't reset your device in the second kernel.
+@@ -311,35 +353,10 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
+ 	unsigned int i;
+ 	int (*old_handler)(struct pt_regs *regs);
+ 
+-	/* Avoid hardlocking with irresponsive CPU holding logbuf_lock */
+-	printk_deferred_enter();
+-
+-	/*
+-	 * This function is only called after the system
+-	 * has panicked or is otherwise in a critical state.
+-	 * The minimum amount of code to allow a kexec'd kernel
+-	 * to run successfully needs to happen here.
+-	 *
+-	 * In practice this means stopping other cpus in
+-	 * an SMP system.
+-	 * The kernel is broken so disable interrupts.
+-	 */
+-	hard_irq_disable();
+-
+-	/*
+-	 * Make a note of crashing cpu. Will be used in machine_kexec
+-	 * such that another IPI will not be sent.
+-	 */
+-	crashing_cpu = smp_processor_id();
+-
+-	/*
+-	 * If we came in via system reset, wait a while for the secondary
+-	 * CPUs to enter.
+-	 */
+ 	if (TRAP(regs) == INTERRUPT_SYSTEM_RESET)
+-		mdelay(PRIMARY_TIMEOUT);
++		is_via_system_reset = 1;
+ 
+-	crash_kexec_prepare_cpus(crashing_cpu);
++	crash_smp_send_stop();
+ 
+ 	crash_save_cpu(regs, crashing_cpu);
+ 
 -- 
-2.25.1
+2.35.3
 
