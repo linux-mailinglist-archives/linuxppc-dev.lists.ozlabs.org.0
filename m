@@ -2,51 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50D8560BFC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jun 2022 23:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702D6560E85
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 03:04:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYFfK57Z5z3dr3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 07:56:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYKpy3qT8z3dpL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 11:04:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GLoTVF3A;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lucaceresoli.net (client-ip=89.40.174.40; helo=hostingweb31-40.netsons.net; envelope-from=luca@lucaceresoli.net; receiver=<UNKNOWN>)
-X-Greylist: delayed 2130 seconds by postgrey-1.36 at boromir; Thu, 30 Jun 2022 07:56:01 AEST
-Received: from hostingweb31-40.netsons.net (hostingweb31-40.netsons.net [89.40.174.40])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GLoTVF3A;
+	dkim-atps=neutral
+Received: from mga06.intel.com (mga06b.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYFds0TMdz3cBy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 07:55:59 +1000 (AEST)
-Received: from [37.161.29.0] (port=43545 helo=[192.168.131.30])
-	by hostingweb31.netsons.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.95)
-	(envelope-from <luca@lucaceresoli.net>)
-	id 1o6f6m-000BzC-Qd;
-	Wed, 29 Jun 2022 23:20:25 +0200
-Message-ID: <d682fb60-c254-f89e-5d6d-cdf7aa752939@lucaceresoli.net>
-Date: Wed, 29 Jun 2022 23:20:04 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYKpF5KSrz3blt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jun 2022 11:03:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1656551014; x=1688087014;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZgWvdu3Ao/+d5jIADvpPCwoXU16mvZlYR+Bqe08h72k=;
+  b=GLoTVF3Az9WwcEjqjAGHVqvpR5M5Rxw9N4WNHq9cUDj9Nu6rU7TJm/dm
+   oFVHwB1mqo43S2SFVYAAoRB/zNwEkcWQCAJ9PTsRaLAJDOY2/mujHMQV0
+   XQ24M6x5KRgaP74D2AmQDv/e9OowemVQ2KC0p8BwNK6q6ktZjerd8mNSY
+   vI1g81txJFNSGY2SakQVuk2elfq1pqju7pUg+4leULa0TCLx2xqkxA3o3
+   Xs3KQwVwlXPfyH0ggQQoRPv+Z9O01dQ+N0shP191jr0HpsZd00HIX22NJ
+   uzBJl6LmvB7DNzoW+lxSBlk4o3jEsKuMNu3cacpfAHiTDpX38lAJCJzcs
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10393"; a="343895667"
+X-IronPort-AV: E=Sophos;i="5.92,232,1650956400"; 
+   d="scan'208";a="343895667"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2022 18:03:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,232,1650956400"; 
+   d="scan'208";a="917833820"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 29 Jun 2022 18:03:19 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o6iaV-000C0E-1j;
+	Thu, 30 Jun 2022 01:03:19 +0000
+Date: Thu, 30 Jun 2022 09:02:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ ac790d09885d36143076e7e02825c541e8eee899
+Message-ID: <62bcf63e.IBeBmjIOFy4L9jdT%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-From: Luca Ceresoli <luca@lucaceresoli.net>
-Subject: Re: [PATCH 6/6] i2c: Make remove callback return void
-To: =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
- Wolfram Sang <wsa@kernel.org>
-References: <20220628140313.74984-1-u.kleine-koenig@pengutronix.de>
- <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hostingweb31.netsons.net
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lucaceresoli.net
-X-Get-Message-Sender-Via: hostingweb31.netsons.net: authenticated_id: luca@lucaceresoli.net
-X-Authenticated-Sender: hostingweb31.netsons.net: luca@lucaceresoli.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,61 +69,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-staging@lists.linux.dev, kasan-dev@googlegroups.com, linux-clk@vger.kernel.org, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org, acpi4asus-user@lists.sourceforge.net, linux-gpio@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org, patches@opensource.cirrus.com, linux-usb@vger.kernel.org, linux-crypto@vger.kernel.org,
-  netdev@vger.kernel.org, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: ac790d09885d36143076e7e02825c541e8eee899  powerpc/memhotplug: Add add_pages override for PPC
 
-[keeping only individuals and lists in Cc to avoid bounces]
+elapsed time: 723m
 
-On 28/06/22 16:03, Uwe Kleine-K=C3=B6nig wrote:
-> From: Uwe Kleine-K=C3=B6nig <uwe@kleine-koenig.org>
->=20
-> The value returned by an i2c driver's remove function is mostly ignored=
-=2E
-> (Only an error message is printed if the value is non-zero that the
-> error is ignored.)
->=20
-> So change the prototype of the remove function to return no value. This=
+configs tested: 2
+configs skipped: 102
 
-> way driver authors are not tempted to assume that passing an error to
-> the upper layer is a good idea. All drivers are adapted accordingly.
-> There is no intended change of behaviour, all callbacks were prepared t=
-o
-> return 0 before.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-For versaclock:
+gcc tested configs:
+powerpc                           allnoconfig
+powerpc                          allmodconfig
 
-> diff --git a/drivers/clk/clk-versaclock5.c b/drivers/clk/clk-versaclock=
-5.c
-> index e7be3e54b9be..657493ecce4c 100644
-> --- a/drivers/clk/clk-versaclock5.c
-> +++ b/drivers/clk/clk-versaclock5.c
-> @@ -1138,7 +1138,7 @@ static int vc5_probe(struct i2c_client *client)
->  	return ret;
->  }
-> =20
-> -static int vc5_remove(struct i2c_client *client)
-> +static void vc5_remove(struct i2c_client *client)
->  {
->  	struct vc5_driver_data *vc5 =3D i2c_get_clientdata(client);
-> =20
-> @@ -1146,8 +1146,6 @@ static int vc5_remove(struct i2c_client *client)
-> =20
->  	if (vc5->chip_info->flags & VC5_HAS_INTERNAL_XTAL)
->  		clk_unregister_fixed_rate(vc5->pin_xin);
-> -
-> -	return 0;
->  }
-> =20
->  static int __maybe_unused vc5_suspend(struct device *dev)
-
-Reviewed-by: Luca Ceresoli <luca@lucaceresoli.net>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-
---=20
-Luca
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
