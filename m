@@ -1,66 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581D056209A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 18:53:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 999B35621BD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 20:11:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYktm17z6z3ds6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 02:53:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYmcc47DLz3dp1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 04:11:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=L9ITzqRq;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ee74leaS;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amazon.co.jp (client-ip=72.21.196.25; helo=smtp-fw-2101.amazon.com; envelope-from=prvs=1735bfab6=kuniyu@amazon.co.jp; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazon201209 header.b=L9ITzqRq;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ee74leaS;
 	dkim-atps=neutral
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYkt42TFbz3cFp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Jul 2022 02:53:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1656607997; x=1688143997;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KsElMMV1bJlVwGHQ/Mjz0xvQEu4xL3MMNuHw+BIVMuM=;
-  b=L9ITzqRq1lD2VwkPESr+10lURM4su1wps/FvchbjHsV9MuUIN8CHrE77
-   Qqdjv/YwmE1n63f5kbyJA9sF46F0e6AEbHqGrTnVV38hyGVjephAgzv8+
-   irbwy0wysB9UgryTzrlGsVyjmqxK7mdU6A0W+BmDlYDvrNJO1bcOPCENX
-   s=;
-X-IronPort-AV: E=Sophos;i="5.92,234,1650931200"; 
-   d="scan'208";a="213555444"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-26daedd8.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP; 30 Jun 2022 16:52:01 +0000
-Received: from EX13MTAUWB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-	by email-inbound-relay-iad-1e-26daedd8.us-east-1.amazon.com (Postfix) with ESMTPS id 2E34981585;
-	Thu, 30 Jun 2022 16:51:59 +0000 (UTC)
-Received: from EX13D04ANC001.ant.amazon.com (10.43.157.89) by
- EX13MTAUWB001.ant.amazon.com (10.43.161.207) with Microsoft SMTP Server (TLS)
- id 15.0.1497.36; Thu, 30 Jun 2022 16:51:59 +0000
-Received: from 88665a182662.ant.amazon.com (10.43.160.124) by
- EX13D04ANC001.ant.amazon.com (10.43.157.89) with Microsoft SMTP Server (TLS)
- id 15.0.1497.36; Thu, 30 Jun 2022 16:51:57 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <sachinp@linux.ibm.com>
-Subject: Re: [powerpc] Fingerprint systemd service fails to start (next-20220624)
-Date: Thu, 30 Jun 2022 09:51:49 -0700
-Message-ID: <20220630165149.55265-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <DC7D445E-8A04-4104-AF90-6A530CB5FF93@linux.ibm.com>
-References: <DC7D445E-8A04-4104-AF90-6A530CB5FF93@linux.ibm.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.43.160.124]
-X-ClientProxiedBy: EX13D28UWC001.ant.amazon.com (10.43.162.166) To
- EX13D04ANC001.ant.amazon.com (10.43.157.89)
-Precedence: Bulk
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYmbt6zFXz3blb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Jul 2022 04:11:06 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25UHhnid032979;
+	Thu, 30 Jun 2022 18:11:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : content-type :
+ content-transfer-encoding : mime-version : subject : message-id : date :
+ cc : to; s=pp1; bh=88WZx86HudOPmlmqtdxMaUGdFLqWwn/ZdU9TIZdzHfw=;
+ b=ee74leaSvYnIQz2UIsvogJTQw92ctL4gKmh/u/mRG149J6OgFi9XvzefSgZhALk3IBJX
+ HaG72UGW2mG5hNjVX9fqdOo8BWr2IvfEOGQunihEHWsqFPDnEqmqf14juvfnspNBkGEj
+ ErY7pT4eWuS5WHD//KCCLJGBoP2yDaCNmtK0yKzRoMnaKkR9lCgaNxp9/zvQTwCrHn+l
+ wohnNWMTOJtIpEiytBwEacUtWJH+3nq2prXLOn/6sNuqdF8JhLvGlQKxkAxbKxhmy1tY
+ U1JJPE9DHz1YrgVHGw4pEn26AA+CIUzwQpEqMvMY0m23FCKbi668+fUIwI3eewx7lRf4 xg== 
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h1gg10qyn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jun 2022 18:11:02 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25UI5BSm018370;
+	Thu, 30 Jun 2022 18:11:00 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma03ams.nl.ibm.com with ESMTP id 3gwt090h8c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jun 2022 18:11:00 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25UIAvNK22675890
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Jun 2022 18:10:57 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BA008AE055;
+	Thu, 30 Jun 2022 18:10:57 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B8056AE051;
+	Thu, 30 Jun 2022 18:10:56 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.43.9.111])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 30 Jun 2022 18:10:56 +0000 (GMT)
+From: Sachin Sant <sachinp@linux.ibm.com>
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
+Subject: WARN at crypto/testmgr.c:5774 (next)
+Message-Id: <74179C93-0D19-4A8A-81EB-07BD836A3BD3@linux.ibm.com>
+Date: Thu, 30 Jun 2022 23:40:55 +0530
+To: linux-crypto@vger.kernel.org, ignat@cloudflare.com
+X-Mailer: Apple Mail (2.3696.100.31)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dH9DkQw1GlHuk-TbHhjTCU6LWfgClaTS
+X-Proofpoint-GUID: dH9DkQw1GlHuk-TbHhjTCU6LWfgClaTS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-06-30_12,2022-06-28_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 mlxlogscore=634 adultscore=0
+ phishscore=0 clxscore=1011 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206300070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -69,72 +88,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-next@vger.kernel.org, kuniyu@amazon.com, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net, netdev@vger.kernel.org
+Cc: linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From:   Sachin Sant <sachinp@linux.ibm.com>
-Date:   Thu, 30 Jun 2022 16:07:06 +0530
->>> Yes, the problem can be recreated after login. I have collected the strace
->>> logs.
->> 
->> I confirmed fprintd failed to launch with this message on failure case.
->> 
->> ===
->> ltcden8-lp6 fprintd[2516]: (fprintd:2516): fprintd-WARNING **: 01:56:45.705: Failed to open connection to bus: Could not connect: Connection refused
->> ===
->> 
->> 
->> But in the strace log of both cases, only one socket is created and
->> following connect() completes without an error.  And the peer socket
->> does not seem to be d-bus one.
->> 
->> ===
->> $ cat working-case/strace-fprintd-service.log | grep "socket("
->> 01:52:08 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
->> $ cat working-case/strace-fprintd-service.log | grep "socket(" -A 10
->> 01:52:08 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
->> ...
->> 01:52:08 connect(3, {sa_family=AF_UNIX, sun_path="/run/systemd/private"}, 22) = 0
->> ...
->> $ cat not-working-case/strace-fprintd-service.log | grep "socket("
->> 01:58:14 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
->> $ cat not-working-case/strace-fprintd-service.log | grep "socket(" -A 10
->> 01:58:14 socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
->> ...
->> 01:58:14 connect(3, {sa_family=AF_UNIX, sun_path="/run/systemd/private"}, 22) = 0
->> ===
->> 
->> So I think the error message part is not traced well.
->> Could you try to strace directly for the command in ExecStart section of
->> its unit file?
->> 
-> 
-> Thank you for your inputs. This is what I did, changed the ExecStart
-> line in /usr/lib/systemd/system/fprintd.service to
-> 
-> ExecStart=strace -t -ff /usr/libexec/fprintd
-> 
-> Captured the logs after recreating the problem.
-> fprintd-pass-strace.log (working case) and
-> fprintd-strace-fail.log (failing case).
-> 
-> In case of failure I see following:
-> 
-> Jun 30 05:52:41 ltcden8-lp6 strace[5595]: [pid  5599] 05:52:41 connect(5, {sa_family=AF_UNIX, sun_path="/var/run/dbus/system_bus_socket"}, 110) = -1 ECONNREFUSED (Connection refused)
-> fprintd-fail-strace.log:Jun 30 05:52:41 ltcden8-lp6 strace[5595]: [pid  5599] 05:52:41 sendmsg(5, {msg_name={sa_family=AF_UNIX, sun_path="/run/systemd/journal/socket"}, msg_namelen=29, msg_iov=[{iov_base="GLIB_OLD_LOG_API", iov_len=16}, {iov_base="=", iov_len=1}, {iov_base="1", iov_len=1}, {iov_base="\n", iov_len=1}, {iov_base="MESSAGE", iov_len=7}, {iov_base="=", iov_len=1}, {iov_base="Failed to open connection to bus"..., iov_len=71}, {iov_base="\n", iov_len=1}, {iov_base="PRIORITY", iov_len=8}, {iov_base="=", iov_len=1}, {iov_base="4", iov_len=1}, {iov_base="\n", iov_len=1}, {iov_base="GLIB_DOMAIN", iov_len=11}, {iov_base="=", iov_len=1}, {iov_base="fprintd", iov_len=7}, {iov_base="\n", iov_len=1}], msg_iovlen=16, msg_controllen=0, msg_flags=0}, MSG_NOSIGNAL) = -1 ECONNREFUSED (Connection refused)
-> 
-> For working case connect works
-> 
-> fprintd-pass-strace.log:Jun 30 05:58:18 ltcden8-lp6 strace[2585]: [pid  2658] 05:58:18 connect(5, {sa_family=AF_UNIX, sun_path="/var/run/dbus/system_bus_socket"}, 110) = 0
+Following warning is seen while booting recent -next kernel on IBM Power =
+server.
 
-Thank you for collecting logs!
-I will take a look today.
+[    1.544420] ------------[ cut here ]------------
+[    1.544422] alg: self-tests for rsa-generic (rsa) failed (rc=3D-22)
+[    1.544429] WARNING: CPU: 18 PID: 512 at crypto/testmgr.c:5774 =
+alg_test+0x42c/0x850
+[    1.544437] Modules linked in:
+[    1.544441] CPU: 18 PID: 512 Comm: cryptomgr_test Not tainted =
+5.19.0-rc4-next-20220627 #2
+[    1.544446] NIP:  c0000000006fa76c LR: c0000000006fa768 CTR: =
+c0000000008552e0
+[    1.544448] REGS: c000000008a27980 TRAP: 0700   Not tainted  =
+(5.19.0-rc4-next-20220627)
+[    1.544451] MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: =
+28008822  XER: 20040005
+[    1.544458] CFAR: c000000000154114 IRQMASK: 0=20
+[    1.544458] GPR00: c0000000006fa768 c000000008a27c20 c000000002a8ff00 =
+0000000000000035=20
+[    1.544458] GPR04: 00000000ffff7fff c000000008a279e0 c000000008a279d8 =
+0000000000000000=20
+[    1.544458] GPR08: 00000000ffff7fff 0000000000000000 c0000000025c6ff8 =
+c000000002947160=20
+[    1.544458] GPR12: 0000000000008000 c0000009afff3f00 c00000000018c6f8 =
+c0000000070c5180=20
+[    1.544458] GPR16: 0000000000000000 0000000000000000 0000000000000000 =
+0000000000000000=20
+[    1.544458] GPR20: 0000000000000000 0000000000000000 0000000000000000 =
+c000000000f1c230=20
+[    1.544458] GPR24: 0000000000000000 c00000000e679080 0000000000000400 =
+ffffffffffffffff=20
+[    1.544458] GPR28: c00000000e679000 000000000000000d c000000002d814a8 =
+ffffffffffffffea=20
+[    1.544491] NIP [c0000000006fa76c] alg_test+0x42c/0x850
+[    1.544495] LR [c0000000006fa768] alg_test+0x428/0x850
+[    1.544499] Call Trace:
+[    1.544500] [c000000008a27c20] [c0000000006fa768] =
+alg_test+0x428/0x850 (unreliable)
+[    1.544505] [c000000008a27d90] [c0000000006f8df0] =
+cryptomgr_test+0x40/0x70
+[    1.544510] [c000000008a27dc0] [c00000000018c814] kthread+0x124/0x130
+[    1.544514] [c000000008a27e10] [c00000000000cdf4] =
+ret_from_kernel_thread+0x5c/0x64
+[    1.544518] Instruction dump:
+[    1.544520] 409e02e0 3d22002f 892915d1 2f890000 409e02d0 3c62fe77 =
+7f25cb78 7f84e378=20
+[    1.544526] 7fe6fb78 3863ac78 4ba59949 60000000 <0fe00000> fa2100f8 =
+fa410100 fa610108=20
+[    1.544532] ---[ end trace 0000000000000000 ]=E2=80=94
 
-Best regards,
-Kuniyuki
+Git bisect points to the following patch.
 
+# git bisect bad
+f145d411a67efacc0731fc3f9c7b2d89fb62523a is the first bad commit
+commit f145d411a67efacc0731fc3f9c7b2d89fb62523a
+    crypto: rsa - implement Chinese Remainder Theorem for faster private =
+key operations
 
-> 
-> 
-> - Sachin
+Reverting the patch helps avoid this boot time warning.
+
+- Sachin=
