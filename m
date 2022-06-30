@@ -2,57 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84365561CAA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 16:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D90E4561FDA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jun 2022 18:02:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LYg5X3Q4yz3dqb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 00:02:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=g5Mgw2a3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYjl75x7hz3dsX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 02:02:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=bce9=xf=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=g5Mgw2a3;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LYg3k1vFBz3bc9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Jul 2022 00:01:22 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id CFA8EB82AF3;
-	Thu, 30 Jun 2022 14:01:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE85C34115;
-	Thu, 30 Jun 2022 14:01:18 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="g5Mgw2a3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1656597678;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uZdyHA6eQ+MUdW3aXxGbaOtskaVoXz1M9yYVxlwzRSM=;
-	b=g5Mgw2a3L81HgacYfDmcbS71T7X+CPG5nbR75F6YrA8fwIiERRclLdjKV/kAEHxwn3QC5V
-	t91IsvQtOUs+khu+PPx+BmM1I7yHlzcxR02m9SywwzJ6EP44hlDriYV6VEVMFE9hdA4sAN
-	DKHP45dIbcArW2ynhlttajJhuyw1xX8=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 17439ad5 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-	Thu, 30 Jun 2022 14:01:18 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	mpe@ellerman.id.au,
-	sachinp@linux.ibm.com
-Subject: [PATCH v3 2/2] powerpc/kvm: don't crash on missing rng, and use darn
-Date: Thu, 30 Jun 2022 16:01:08 +0200
-Message-Id: <20220630140108.129434-3-Jason@zx2c4.com>
-In-Reply-To: <20220630140108.129434-1-Jason@zx2c4.com>
-References: <20220630140108.129434-1-Jason@zx2c4.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LYjkh3vWMz3blX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Jul 2022 02:01:47 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 25UFwEc4007186;
+	Thu, 30 Jun 2022 10:58:14 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 25UFwBWR007180;
+	Thu, 30 Jun 2022 10:58:11 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Thu, 30 Jun 2022 10:58:11 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [RFC PATCH v3 11/12] powerpc: Remove unreachable() from WARN_ON()
+Message-ID: <20220630155811.GK25951@gate.crashing.org>
+References: <20220624183238.388144-1-sv@linux.ibm.com> <20220624183238.388144-12-sv@linux.ibm.com> <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu> <92eae2ef-f9b6-019a-5a8e-728cdd9bbbc0@linux.vnet.ibm.com> <cce19b1c-449a-f306-533a-9edc855049aa@csgroup.eu> <1656572413.pbaqjnrrcl.naveen@linux.ibm.com> <da86c612-186d-364f-cc36-bcf942a97083@csgroup.eu> <1656583960.0nqsj977sr.naveen@linux.ibm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1656583960.0nqsj977sr.naveen@linux.ibm.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,133 +42,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org
+Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, Marc Zyngier <maz@kernel.org>, Sathvika Vasireddy <sv@linux.vnet.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Chen Zhongjin <chenzhongjin@huawei.com>, "peterz@infradead.org" <peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "paulus@samba.org" <paulus@samba.org>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On POWER8 systems that don't have ibm,power-rng available, a guest that
-ignores the KVM_CAP_PPC_HWRNG flag and calls H_RANDOM anyway will
-dereference a NULL pointer. And on machines with darn instead of
-ibm,power-rng, H_RANDOM won't work at all.
+On Thu, Jun 30, 2022 at 04:07:47PM +0530, Naveen N. Rao wrote:
+> Objtool classifies 'ud2' as INSN_BUG, and 'int3' as INSN_TRAP. In x86 
+> BUG(), there is no need for an annotation since objtool assumes that 
+> 'ud2' terminates control flow. But, for __WARN_FLAGS(), since 'ud2' is 
+> used, an explicit annotate_reachable() is needed. That's _reachable_, to 
+> indicate that the control flow can continue with the next instruction.
+> 
+> On powerpc, we should (eventually) classify all trap variants as 
+> INSN_TRAP. Even in the absence of that classification today, objtool 
+> assumes that control flow continues with the next instruction. With your 
+> work to utilize asm goto for __WARN_FLAGS(), with no extra instructions 
+> being generated, I think it is appropriate to just use 
+> __builtin_unreachable() and to not use the annotation.
+> 
+> In any case, we are only hitting this since gcc is generating a 'bl' due 
+> to that annotation. We are not yet enabling full objtool validation on 
+> powerpc, so I think we can revisit this at that point.
 
-This patch kills two birds with one stone, by routing H_RANDOM calls to
-ppc_md.get_random_seed, and doing the real mode check inside of it.
+See also <https://gcc.gnu.org/PR99299> that asks for a __builtin_trap()
+variant that does not terminate control flow ("that is recoverable").
 
-Cc: stable@vger.kernel.org # v4.1+
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: e928e9cb3601 ("KVM: PPC: Book3S HV: Add fast real-mode H_RANDOM implementation.")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
- arch/powerpc/include/asm/archrandom.h |  5 ----
- arch/powerpc/kvm/book3s_hv_builtin.c  |  7 +++---
- arch/powerpc/platforms/powernv/rng.c  | 33 +++++++--------------------
- 3 files changed, 12 insertions(+), 33 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
-index 11d4815841ab..3af27bb84a3d 100644
---- a/arch/powerpc/include/asm/archrandom.h
-+++ b/arch/powerpc/include/asm/archrandom.h
-@@ -38,12 +38,7 @@ static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
- #endif /* CONFIG_ARCH_RANDOM */
- 
- #ifdef CONFIG_PPC_POWERNV
--int pnv_hwrng_present(void);
- int pnv_get_random_long(unsigned long *v);
--int pnv_get_random_real_mode(unsigned long *v);
--#else
--static inline int pnv_hwrng_present(void) { return 0; }
--static inline int pnv_get_random_real_mode(unsigned long *v) { return 0; }
- #endif
- 
- #endif /* _ASM_POWERPC_ARCHRANDOM_H */
-diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-index 799d40c2ab4f..3abaef5f9ac2 100644
---- a/arch/powerpc/kvm/book3s_hv_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-@@ -19,7 +19,7 @@
- #include <asm/interrupt.h>
- #include <asm/kvm_ppc.h>
- #include <asm/kvm_book3s.h>
--#include <asm/archrandom.h>
-+#include <asm/machdep.h>
- #include <asm/xics.h>
- #include <asm/xive.h>
- #include <asm/dbell.h>
-@@ -176,13 +176,14 @@ EXPORT_SYMBOL_GPL(kvmppc_hcall_impl_hv_realmode);
- 
- int kvmppc_hwrng_present(void)
- {
--	return pnv_hwrng_present();
-+	return ppc_md.get_random_seed != NULL;
- }
- EXPORT_SYMBOL_GPL(kvmppc_hwrng_present);
- 
- long kvmppc_rm_h_random(struct kvm_vcpu *vcpu)
- {
--	if (pnv_get_random_real_mode(&vcpu->arch.regs.gpr[4]))
-+	if (ppc_md.get_random_seed &&
-+	    ppc_md.get_random_seed(&vcpu->arch.regs.gpr[4]))
- 		return H_SUCCESS;
- 
- 	return H_HARDWARE;
-diff --git a/arch/powerpc/platforms/powernv/rng.c b/arch/powerpc/platforms/powernv/rng.c
-index 386b44660e76..4a48566528c0 100644
---- a/arch/powerpc/platforms/powernv/rng.c
-+++ b/arch/powerpc/platforms/powernv/rng.c
-@@ -29,15 +29,6 @@ struct pnv_rng {
- 
- static DEFINE_PER_CPU(struct pnv_rng *, pnv_rng);
- 
--int pnv_hwrng_present(void)
--{
--	struct pnv_rng *rng;
--
--	rng = get_cpu_var(pnv_rng);
--	put_cpu_var(rng);
--	return rng != NULL;
--}
--
- static unsigned long rng_whiten(struct pnv_rng *rng, unsigned long val)
- {
- 	unsigned long parity;
-@@ -58,17 +49,6 @@ static unsigned long rng_whiten(struct pnv_rng *rng, unsigned long val)
- 	return val;
- }
- 
--int pnv_get_random_real_mode(unsigned long *v)
--{
--	struct pnv_rng *rng;
--
--	rng = raw_cpu_read(pnv_rng);
--
--	*v = rng_whiten(rng, __raw_rm_readq(rng->regs_real));
--
--	return 1;
--}
--
- static int pnv_get_random_darn(unsigned long *v)
- {
- 	unsigned long val;
-@@ -105,11 +85,14 @@ int pnv_get_random_long(unsigned long *v)
- {
- 	struct pnv_rng *rng;
- 
--	rng = get_cpu_var(pnv_rng);
--
--	*v = rng_whiten(rng, in_be64(rng->regs));
--
--	put_cpu_var(rng);
-+	if (mfmsr() & MSR_DR) {
-+		rng = raw_cpu_read(pnv_rng);
-+		*v = rng_whiten(rng, __raw_rm_readq(rng->regs_real));
-+	} else {
-+		rng = get_cpu_var(pnv_rng);
-+		*v = rng_whiten(rng, in_be64(rng->regs));
-+		put_cpu_var(rng);
-+	}
- 
- 	return 1;
- }
--- 
-2.35.1
-
+Segher
