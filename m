@@ -2,56 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA85563B49
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 22:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 505A4563BD1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 23:37:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZSCD5Lvbz3dtv
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 06:55:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LZT801ZQxz3dsY
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 07:37:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=PhETJKRZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.182; helo=mail-il1-f182.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZSBT5Qzlz3cdX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 06:54:57 +1000 (AEST)
-Received: by mail-il1-f182.google.com with SMTP id w10so2132228ilj.4
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Jul 2022 13:54:57 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=3LPZ1DizPYBScxcXuGY/3z+PsYKOTpV0UZkb5MuqFe0=;
-        b=6HyRlfDkR+6uEnxs+YWfUvYxBzWLTu42YVl7cWlGjBOK9JbazkfmA5T0CqRzN8XBYL
-         9IywcE1fdJ0jXo6Z861b+Qp7QdRcP/Db8iQtzMIbnK5C9Mely5fFUCJaC754FrFGtZGC
-         6797V9QxNIcadyyOTfPdKC8tDf5YROko/eNQvabLqIG9s4o864JuG2YyGbIR1fMP9th3
-         v/tqBJQSdZypnLWV1eNOR6CJFNrIv74sDD/AJC5qnM5/0GzGoTvtK7M3WzMLdR3epW5w
-         jG5sOGAu10Sr4DtV6CIZkYyooJeMM0pqduOhittlkS9K1u2PbAW92DUj7gJRNwSxPmZI
-         gFMw==
-X-Gm-Message-State: AJIora9aJG1FDzm5jXef+H9kDv9skBdmwpey9eQA8ka0CI67MjHriGU8
-	FPsDmf5ZXlP62S664GDkMiVi09XN4A==
-X-Google-Smtp-Source: AGRyM1vTE3uUzjOrJeeGSTgJ/tO4QiastKGHmlTULq10GRjmMlObeExibr8KirXpiJJiC7qDmehj1Q==
-X-Received: by 2002:a05:6e02:1187:b0:2da:97e5:6609 with SMTP id y7-20020a056e02118700b002da97e56609mr9630603ili.274.1656708895013;
-        Fri, 01 Jul 2022 13:54:55 -0700 (PDT)
-Received: from robh.at.kernel.org ([64.188.179.248])
-        by smtp.gmail.com with ESMTPSA id u6-20020a056e02080600b002dbf4c67b1fsm295715ilm.46.2022.07.01.13.54.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Jul 2022 13:54:54 -0700 (PDT)
-Received: (nullmailer pid 1511647 invoked by uid 1000);
-	Fri, 01 Jul 2022 20:54:52 -0000
-Date: Fri, 1 Jul 2022 14:54:52 -0600
-From: Rob Herring <robh@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2 6/6] ASoC: dt-bindings: fsl-sai: Add two PLL clock
- source
-Message-ID: <20220701205452.GA1511590-robh@kernel.org>
-References: <1656667961-1799-1-git-send-email-shengjiu.wang@nxp.com>
- <1656667961-1799-7-git-send-email-shengjiu.wang@nxp.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=PhETJKRZ;
+	dkim-atps=neutral
+Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LZT7K4SFFz3cgc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 07:37:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=KVwcY
+	n70yPecgm4x4XTKyRe6bSXgdCansfMlHWkNAjs=; b=PhETJKRZ0L5NUlZRobLBc
+	Hk+uefsvDJdoRumG1XoMp5Qtk80tcvrpbOlGPYEmWS6HhYo1WmnO37efPMixV1/+
+	n0b6R5HWZXw9/BPBxQ115PkM6EJN9PKBukEOAWj0o/g9TYbCoxaXOxKb6LHdp0tM
+	LHJVSJOoS7lDYz62qpK6Ro=
+Received: from windhl$126.com ( [123.112.71.157] ) by ajax-webmail-wmsvr50
+ (Coremail) ; Sat, 2 Jul 2022 05:36:50 +0800 (CST)
+X-Originating-IP: [123.112.71.157]
+Date: Sat, 2 Jul 2022 05:36:50 +0800 (CST)
+From: "Liang He" <windhl@126.com>
+To: "Tyrel Datwyler" <tyreld@linux.ibm.com>
+Subject: Re:Re: [PATCH] powerpc: kernel: pci_dn: Add missing of_node_put()
+ for of_get_xx API
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
+ Copyright (c) 2002-2022 www.mailtech.cn 126com
+In-Reply-To: <09bcb7d7-5c27-04cc-6796-cbeb3d0abb14@linux.ibm.com>
+References: <20220701131750.240170-1-windhl@126.com>
+ <09bcb7d7-5c27-04cc-6796-cbeb3d0abb14@linux.ibm.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=GBK
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1656667961-1799-7-git-send-email-shengjiu.wang@nxp.com>
+Message-ID: <45bdd1ef.cf.181bbb1f1e9.Coremail.windhl@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: MsqowADXLPHzaL9is8BBAA--.35257W
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi3BMxF1pED15m1wAAsX
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,20 +58,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org, Xiubo.Lee@gmail.com, festevam@gmail.com, broonie@kernel.org, tiwai@suse.com, lgirdwood@gmail.com, perex@perex.cz, nicoleotsuka@gmail.com, robh+dt@kernel.org, krzk+dt@kernel.org, shengjiu.wang@gmail.com, linux-kernel@vger.kernel.org
+Cc: linmq006@gmail.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 01 Jul 2022 17:32:41 +0800, Shengjiu Wang wrote:
-> Add two PLL clock source, they are the parent clocks of root clock
-> one is for 8kHz series rates, another one is for 11kHz series rates.
-> They are optional clocks, if there are such clocks, then driver
-> can switch between them for supporting more accurate rates.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  Documentation/devicetree/bindings/sound/fsl-sai.txt | 3 +++
->  1 file changed, 3 insertions(+)
-> 
+CkF0IDIwMjItMDctMDIgMDM6NDc6MjIsICJUeXJlbCBEYXR3eWxlciIgPHR5cmVsZEBsaW51eC5p
+Ym0uY29tPiB3cm90ZToKPk9uIDcvMS8yMiAwNjoxNywgTGlhbmcgSGUgd3JvdGU6Cj4+IEluIHBj
+aV9hZGRfZGV2aWNlX25vZGVfaW5mbygpLCB3ZSBzaG91bGQgdXNlIG9mX25vZGVfcHV0KCkgZm9y
+IHRoZQo+PiByZWZlcmVuY2UgJ3BhcmVudCcgcmV0dXJuZWQgYnkgb2ZfZ2V0X3BhcmVudCgpIHRv
+IGtlZXAgcmVmY291bnQKPj4gYmFsYW5jZS4KPj4gCj4+IEZpeGVzOiBjY2E4N2QzMDNjODUgKCJw
+b3dlcnBjL3BjaTogUmVmYWN0b3IgcGNpX2RuIikKPj4gQ28tYXV0aG9yZWQtYnk6IE1pYW9xaWFu
+IExpbiA8bGlubXEwMDZAZ21haWwuY29tPgo+PiBTaWduZWQtb2ZmLWJ5OiBMaWFuZyBIZSA8d2lu
+ZGhsQDEyNi5jb20+Cj4+IC0tLQo+PiAgYXJjaC9wb3dlcnBjL2tlcm5lbC9wY2lfZG4uYyB8IDEg
+Kwo+PiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCj4+IAo+PiBkaWZmIC0tZ2l0IGEv
+YXJjaC9wb3dlcnBjL2tlcm5lbC9wY2lfZG4uYyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvcGNpX2Ru
+LmMKPj4gaW5kZXggOTM4YWI4ODM4YWI1Li5hYTIyMTk1ODAwN2UgMTAwNjQ0Cj4+IC0tLSBhL2Fy
+Y2gvcG93ZXJwYy9rZXJuZWwvcGNpX2RuLmMKPj4gKysrIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9w
+Y2lfZG4uYwo+PiBAQCAtMzMwLDYgKzMzMCw3IEBAIHN0cnVjdCBwY2lfZG4gKnBjaV9hZGRfZGV2
+aWNlX25vZGVfaW5mbyhzdHJ1Y3QgcGNpX2NvbnRyb2xsZXIgKmhvc2UsCj4+ICAJSU5JVF9MSVNU
+X0hFQUQoJnBkbi0+bGlzdCk7Cj4+ICAJcGFyZW50ID0gb2ZfZ2V0X3BhcmVudChkbik7Cj4+ICAJ
+cGRuLT5wYXJlbnQgPSBwYXJlbnQgPyBQQ0lfRE4ocGFyZW50KSA6IE5VTEw7Cj5OQUNLCj4KPnBk
+bi0+cGFyZW50IGlzIG5vdyBhIGxvbmcgdGVybSByZWZlcmVuY2Ugc28gd2Ugc2hvdWxkIG5vdCBk
+byBhIHB1dCBvbiBwYXJlbnQKPnVudGlsIHdlIHBkbi0+cGFyZW50IGlzIG5vIGxvbmdlciB2YWxp
+ZC4KPgo+LVR5cmVsCgpIaSwgVHlyZWwKClRoYW5rcyBmb3IgcmV2aWV3aW5nIHRoaXMgY29kZS4K
+CkJ1dCBJIHRoaW5rIHRoZXJlIGlzIHNvbWUgY29uZnVzaW9uIGFib3V0IHRoZSBvZl9nZXRfcGFy
+ZW50KCkgYW5kIEkgY2FuIGNvbmZpcm0KbXkgcG9pbnQgd2hlbiBJIGNoZWNrIHRoZSAncGNpX3Jl
+bW92ZV9kZXZpY2Vfbm9kZV9pbmZvJyBmdW5jdGlvbiwgd2hpY2ggbWF5IGJlCmEgc2Vjb25kIGJ1
+Zy4KCkluIHBjaV9yZW1vdmVfZGV2aWNlX25vZGVfaW5mbygpLCBJIG5vdGljZSB0aGUgY29tbWVu
+dCwgJ0Ryb3AgdGhlIHBhcmVudCBwY2lfZG4ncyByZWYgLi4uJy4KSG93ZXZlciwgb2ZfZ2V0X3Bh
+cmVudCgpIHdpbGwgaW5jcmVhc2UgdGhlIHJlZmNvdW50IG9mIHRoZSBwYXJlbnQsIGFuZCB0aGVu
+IHRoZQpmb2xsb3dpbmcgb2Zfbm9kZV9wdXQoKSB3aWxsIGRlY3JlYXNlIHRoZSByZWZjb3VudCwg
+c28sIGZpbmFsbHksIHRoZXJlIGlzIG5vIGFueSBjaGFuZ2UuCgpCYWNrIHRvIHRoaXMgY2FzZSwg
+YXMgdGhlICdwZG4tPnBhcmVudCcgaXMgbm90IHRoZSByZWZlcmVuY2Ugb2YgcGFyZW50IGRldmlj
+ZV9ub2RlLCBpdCBpcwpkZXZpY2Vfbm9kZSdzIGRhdGEsIHNvIEkgdGhpbmsgaXQgaXMgYmV0dGVy
+IHRvIGtlZXAgdGhlIG9yaWdpbmFsIG1lYW5pbmcgb2YgcmVmY291bnRpbmcsIGkuZSwKYWRkIGEg
+b2Zfbm9kZV9wdXQoKSB0byBrZWVwIHRoZSByZWZjb3VudCBiYWxhbmNlLgoKSWYgSSBoYXZlIHNv
+bWUgbWlzLXVuZGVyc3RhbmRpbmcsIHBsZWFzZSBjb3JyZWN0IG1lLgoKVGhhbmtzLAoKTGlhbmcK
+Cj4KPj4gKwlvZl9ub2RlX3B1dChwYXJlbnQpOwo+PiAgCWlmIChwZG4tPnBhcmVudCkKPj4gIAkJ
+bGlzdF9hZGRfdGFpbCgmcGRuLT5saXN0LCAmcGRuLT5wYXJlbnQtPmNoaWxkX2xpc3QpOwo+PiAK
 
-Acked-by: Rob Herring <robh@kernel.org>
