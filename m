@@ -2,43 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFD956304A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 11:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97B55630C2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 11:55:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZ98D747nz3dw5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 19:37:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LZ9YR4mpQz3dw1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 19:55:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyingliang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inspur.com (client-ip=210.51.26.146; helo=unicom146.biz-email.net; envelope-from=wangdeming@inspur.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 517 seconds by postgrey-1.36 at boromir; Fri, 01 Jul 2022 19:54:59 AEST
+Received: from unicom146.biz-email.net (unicom146.biz-email.net [210.51.26.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZ97m2b43z3cBy
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Jul 2022 19:36:31 +1000 (AEST)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.57])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4LZ94H1cDpzhYgW;
-	Fri,  1 Jul 2022 17:33:35 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 1 Jul 2022 17:35:54 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.24; Fri, 1 Jul
- 2022 17:35:54 +0800
-From: Yang Yingliang <yangyingliang@huawei.com>
-To: <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] powerpc/83xx/mpc832x_rdb: call platform_device_put() in error case in of_fsl_spi_probe()
-Date: Fri, 1 Jul 2022 17:45:43 +0800
-Message-ID: <20220701094543.2326927-1-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZ9Xz1RKhz2xB1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Jul 2022 19:54:55 +1000 (AEST)
+Received: from ([60.208.111.195])
+        by unicom146.biz-email.net ((D)) with ASMTP (SSL) id WIW00101;
+        Fri, 01 Jul 2022 17:46:01 +0800
+Received: from localhost.localdomain (10.200.104.82) by
+ jtjnmail201602.home.langchao.com (10.100.2.2) with Microsoft SMTP Server id
+ 15.1.2507.9; Fri, 1 Jul 2022 17:46:05 +0800
+From: Deming Wang <wangdeming@inspur.com>
+To: <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc: Fix formatting problems to make code look more beautiful
+Date: Fri, 1 Jul 2022 05:45:53 -0400
+Message-ID: <20220701094553.1722-1-wangdeming@inspur.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
+X-Originating-IP: [10.200.104.82]
+tUid: 20227011746015071030bb3701dfeb457290dce6ab190
+X-Abuse-Reports-To: service@corp-email.com
+Abuse-Reports-To: service@corp-email.com
+X-Complaints-To: service@corp-email.com
+X-Report-Abuse-To: service@corp-email.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,33 +48,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: oss@buserror.net
+Cc: Deming Wang <wangdeming@inspur.com>, paulus@samba.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If platform_device_add() is not called or failed, it should call
-platform_device_put() in error case.
+Operators should be separated by spaces in tce_buildmulti_pSeriesLP
 
-Fixes: e2801806de1c ("powerpc/fsl_soc: isolate legacy fsl_spi support to mpc832x_rdb boards")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Deming Wang <wangdeming@inspur.com>
 ---
- arch/powerpc/platforms/83xx/mpc832x_rdb.c | 2 +-
+ arch/powerpc/platforms/pseries/iommu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/83xx/mpc832x_rdb.c b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-index bb8caa5071f8..dddb5c6f8120 100644
---- a/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-+++ b/arch/powerpc/platforms/83xx/mpc832x_rdb.c
-@@ -107,7 +107,7 @@ static int __init of_fsl_spi_probe(char *type, char *compatible, u32 sysclk,
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index fba64304e859..d09c8bb06e5b 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -248,7 +248,7 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
+ 		 * Set up the page with TCE data, looping through and setting
+ 		 * the values.
+ 		 */
+-		limit = min_t(long, npages, 4096/TCE_ENTRY_SIZE);
++		limit = min_t(long, npages, 4096 / TCE_ENTRY_SIZE);
  
- 		goto next;
- unreg:
--		platform_device_del(pdev);
-+		platform_device_put(pdev);
- err:
- 		pr_err("%pOF: registration failed\n", np);
- next:
+ 		for (l = 0; l < limit; l++) {
+ 			tcep[l] = cpu_to_be64(proto_tce | rpn << tceshift);
 -- 
-2.25.1
+2.27.0
 
