@@ -2,51 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505A4563BD1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 23:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E9E563C43
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 00:19:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZT801ZQxz3dsY
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 07:37:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LZV4L3JBdz3dtW
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 08:19:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=PhETJKRZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NrxLtmx4;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.50; helo=m1550.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=PhETJKRZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NrxLtmx4;
 	dkim-atps=neutral
-Received: from m1550.mail.126.com (m1550.mail.126.com [220.181.15.50])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZT7K4SFFz3cgc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 07:37:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Date:From:Subject:MIME-Version:Message-ID; bh=KVwcY
-	n70yPecgm4x4XTKyRe6bSXgdCansfMlHWkNAjs=; b=PhETJKRZ0L5NUlZRobLBc
-	Hk+uefsvDJdoRumG1XoMp5Qtk80tcvrpbOlGPYEmWS6HhYo1WmnO37efPMixV1/+
-	n0b6R5HWZXw9/BPBxQ115PkM6EJN9PKBukEOAWj0o/g9TYbCoxaXOxKb6LHdp0tM
-	LHJVSJOoS7lDYz62qpK6Ro=
-Received: from windhl$126.com ( [123.112.71.157] ) by ajax-webmail-wmsvr50
- (Coremail) ; Sat, 2 Jul 2022 05:36:50 +0800 (CST)
-X-Originating-IP: [123.112.71.157]
-Date: Sat, 2 Jul 2022 05:36:50 +0800 (CST)
-From: "Liang He" <windhl@126.com>
-To: "Tyrel Datwyler" <tyreld@linux.ibm.com>
-Subject: Re:Re: [PATCH] powerpc: kernel: pci_dn: Add missing of_node_put()
- for of_get_xx API
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.13 build 20220113(9671e152)
- Copyright (c) 2002-2022 www.mailtech.cn 126com
-In-Reply-To: <09bcb7d7-5c27-04cc-6796-cbeb3d0abb14@linux.ibm.com>
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZV3Z6NlCz3bll
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 08:19:06 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 261IkgDS001983;
+	Fri, 1 Jul 2022 22:18:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : from : to : references : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=rTXd/Nfx35q1CVJpaEMB7ynWyiCtAwlTQmj3Li7FGgM=;
+ b=NrxLtmx4uVPseTS0vBhF+SMIuCtEg1fVN12oKkwsH+EdzSJoIQnIVZW5LQWeBMwrs5uE
+ MtVMMrnotfDHJfOd3ZKxGPzf+Vt4n9PaDo/LqhqY7r1T0vyTTCEwLuEXA/DQn5ZVm+oq
+ XO22cR9Vk02aWnX02vVKjkc1fgztkIgBQDEqSeFocnBzAa5AITtiXh3W0o5KfthS0Zwm
+ 6rE4g/BKRcEiZ9L/jzRQ2wkFnkFTmaB2/OyTt2qHXIMmYKbFvhoytHzPbhKMqET6QdPz
+ jUXctc5tWgJbxfEACRkZC7NbUESRLTIlv2glQLT4GPvEjqtyuptx979w77bN2WRAA9Dz zQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h26gk55an-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Jul 2022 22:18:55 +0000
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 261MItXO037731;
+	Fri, 1 Jul 2022 22:18:55 GMT
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h26gk55a5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Jul 2022 22:18:55 +0000
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 261M54LD027157;
+	Fri, 1 Jul 2022 22:18:54 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+	by ppma02wdc.us.ibm.com with ESMTP id 3gwt0ameeu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Jul 2022 22:18:54 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 261MIr2h65012018
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 1 Jul 2022 22:18:53 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8B3CF12405C;
+	Fri,  1 Jul 2022 22:18:53 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BF77D124058;
+	Fri,  1 Jul 2022 22:18:52 +0000 (GMT)
+Received: from [9.160.117.63] (unknown [9.160.117.63])
+	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+	Fri,  1 Jul 2022 22:18:52 +0000 (GMT)
+Message-ID: <81fa33cc-32ea-4132-6b26-013d19f899c2@linux.ibm.com>
+Date: Fri, 1 Jul 2022 15:18:52 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH] powerpc: kernel: pci_dn: Add missing of_node_put() for
+ of_get_xx API
+Content-Language: en-US
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+To: Liang He <windhl@126.com>, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, linuxppc-dev@lists.ozlabs.org, linmq006@gmail.com
 References: <20220701131750.240170-1-windhl@126.com>
  <09bcb7d7-5c27-04cc-6796-cbeb3d0abb14@linux.ibm.com>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
-MIME-Version: 1.0
-Message-ID: <45bdd1ef.cf.181bbb1f1e9.Coremail.windhl@126.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: MsqowADXLPHzaL9is8BBAA--.35257W
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi3BMxF1pED15m1wAAsX
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+In-Reply-To: <09bcb7d7-5c27-04cc-6796-cbeb3d0abb14@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: IKdlsnwSUKdFh3dZYH_1jTHeaDILN1ib
+X-Proofpoint-GUID: OQq20TtbJkMqQ18PdbBFbmGKURRuHyOu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-01_14,2022-06-28_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ mlxscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 suspectscore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2207010088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,42 +102,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linmq006@gmail.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-CkF0IDIwMjItMDctMDIgMDM6NDc6MjIsICJUeXJlbCBEYXR3eWxlciIgPHR5cmVsZEBsaW51eC5p
-Ym0uY29tPiB3cm90ZToKPk9uIDcvMS8yMiAwNjoxNywgTGlhbmcgSGUgd3JvdGU6Cj4+IEluIHBj
-aV9hZGRfZGV2aWNlX25vZGVfaW5mbygpLCB3ZSBzaG91bGQgdXNlIG9mX25vZGVfcHV0KCkgZm9y
-IHRoZQo+PiByZWZlcmVuY2UgJ3BhcmVudCcgcmV0dXJuZWQgYnkgb2ZfZ2V0X3BhcmVudCgpIHRv
-IGtlZXAgcmVmY291bnQKPj4gYmFsYW5jZS4KPj4gCj4+IEZpeGVzOiBjY2E4N2QzMDNjODUgKCJw
-b3dlcnBjL3BjaTogUmVmYWN0b3IgcGNpX2RuIikKPj4gQ28tYXV0aG9yZWQtYnk6IE1pYW9xaWFu
-IExpbiA8bGlubXEwMDZAZ21haWwuY29tPgo+PiBTaWduZWQtb2ZmLWJ5OiBMaWFuZyBIZSA8d2lu
-ZGhsQDEyNi5jb20+Cj4+IC0tLQo+PiAgYXJjaC9wb3dlcnBjL2tlcm5lbC9wY2lfZG4uYyB8IDEg
-Kwo+PiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCj4+IAo+PiBkaWZmIC0tZ2l0IGEv
-YXJjaC9wb3dlcnBjL2tlcm5lbC9wY2lfZG4uYyBiL2FyY2gvcG93ZXJwYy9rZXJuZWwvcGNpX2Ru
-LmMKPj4gaW5kZXggOTM4YWI4ODM4YWI1Li5hYTIyMTk1ODAwN2UgMTAwNjQ0Cj4+IC0tLSBhL2Fy
-Y2gvcG93ZXJwYy9rZXJuZWwvcGNpX2RuLmMKPj4gKysrIGIvYXJjaC9wb3dlcnBjL2tlcm5lbC9w
-Y2lfZG4uYwo+PiBAQCAtMzMwLDYgKzMzMCw3IEBAIHN0cnVjdCBwY2lfZG4gKnBjaV9hZGRfZGV2
-aWNlX25vZGVfaW5mbyhzdHJ1Y3QgcGNpX2NvbnRyb2xsZXIgKmhvc2UsCj4+ICAJSU5JVF9MSVNU
-X0hFQUQoJnBkbi0+bGlzdCk7Cj4+ICAJcGFyZW50ID0gb2ZfZ2V0X3BhcmVudChkbik7Cj4+ICAJ
-cGRuLT5wYXJlbnQgPSBwYXJlbnQgPyBQQ0lfRE4ocGFyZW50KSA6IE5VTEw7Cj5OQUNLCj4KPnBk
-bi0+cGFyZW50IGlzIG5vdyBhIGxvbmcgdGVybSByZWZlcmVuY2Ugc28gd2Ugc2hvdWxkIG5vdCBk
-byBhIHB1dCBvbiBwYXJlbnQKPnVudGlsIHdlIHBkbi0+cGFyZW50IGlzIG5vIGxvbmdlciB2YWxp
-ZC4KPgo+LVR5cmVsCgpIaSwgVHlyZWwKClRoYW5rcyBmb3IgcmV2aWV3aW5nIHRoaXMgY29kZS4K
-CkJ1dCBJIHRoaW5rIHRoZXJlIGlzIHNvbWUgY29uZnVzaW9uIGFib3V0IHRoZSBvZl9nZXRfcGFy
-ZW50KCkgYW5kIEkgY2FuIGNvbmZpcm0KbXkgcG9pbnQgd2hlbiBJIGNoZWNrIHRoZSAncGNpX3Jl
-bW92ZV9kZXZpY2Vfbm9kZV9pbmZvJyBmdW5jdGlvbiwgd2hpY2ggbWF5IGJlCmEgc2Vjb25kIGJ1
-Zy4KCkluIHBjaV9yZW1vdmVfZGV2aWNlX25vZGVfaW5mbygpLCBJIG5vdGljZSB0aGUgY29tbWVu
-dCwgJ0Ryb3AgdGhlIHBhcmVudCBwY2lfZG4ncyByZWYgLi4uJy4KSG93ZXZlciwgb2ZfZ2V0X3Bh
-cmVudCgpIHdpbGwgaW5jcmVhc2UgdGhlIHJlZmNvdW50IG9mIHRoZSBwYXJlbnQsIGFuZCB0aGVu
-IHRoZQpmb2xsb3dpbmcgb2Zfbm9kZV9wdXQoKSB3aWxsIGRlY3JlYXNlIHRoZSByZWZjb3VudCwg
-c28sIGZpbmFsbHksIHRoZXJlIGlzIG5vIGFueSBjaGFuZ2UuCgpCYWNrIHRvIHRoaXMgY2FzZSwg
-YXMgdGhlICdwZG4tPnBhcmVudCcgaXMgbm90IHRoZSByZWZlcmVuY2Ugb2YgcGFyZW50IGRldmlj
-ZV9ub2RlLCBpdCBpcwpkZXZpY2Vfbm9kZSdzIGRhdGEsIHNvIEkgdGhpbmsgaXQgaXMgYmV0dGVy
-IHRvIGtlZXAgdGhlIG9yaWdpbmFsIG1lYW5pbmcgb2YgcmVmY291bnRpbmcsIGkuZSwKYWRkIGEg
-b2Zfbm9kZV9wdXQoKSB0byBrZWVwIHRoZSByZWZjb3VudCBiYWxhbmNlLgoKSWYgSSBoYXZlIHNv
-bWUgbWlzLXVuZGVyc3RhbmRpbmcsIHBsZWFzZSBjb3JyZWN0IG1lLgoKVGhhbmtzLAoKTGlhbmcK
-Cj4KPj4gKwlvZl9ub2RlX3B1dChwYXJlbnQpOwo+PiAgCWlmIChwZG4tPnBhcmVudCkKPj4gIAkJ
-bGlzdF9hZGRfdGFpbCgmcGRuLT5saXN0LCAmcGRuLT5wYXJlbnQtPmNoaWxkX2xpc3QpOwo+PiAK
+On 7/1/22 12:47, Tyrel Datwyler wrote:
+> On 7/1/22 06:17, Liang He wrote:
+>> In pci_add_device_node_info(), we should use of_node_put() for the
+>> reference 'parent' returned by of_get_parent() to keep refcount
+>> balance.
+>>
+>> Fixes: cca87d303c85 ("powerpc/pci: Refactor pci_dn")
+>> Co-authored-by: Miaoqian Lin <linmq006@gmail.com>
+>> Signed-off-by: Liang He <windhl@126.com>
+>> ---
+>>  arch/powerpc/kernel/pci_dn.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
+>> index 938ab8838ab5..aa221958007e 100644
+>> --- a/arch/powerpc/kernel/pci_dn.c
+>> +++ b/arch/powerpc/kernel/pci_dn.c
+>> @@ -330,6 +330,7 @@ struct pci_dn *pci_add_device_node_info(struct pci_controller *hose,
+>>  	INIT_LIST_HEAD(&pdn->list);
+>>  	parent = of_get_parent(dn);
+>>  	pdn->parent = parent ? PCI_DN(parent) : NULL;
+> NACK
+> 
+> pdn->parent is now a long term reference so we should not do a put on parent
+> until we pdn->parent is no longer valid.
+
+I withdraw my NACK. On closer inspection pdn->parent is a reference to the
+parent struct pci_dn and not a reference to a parent struct device_node.
+
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+
+> 
+> -Tyrel
+> 
+>> +	of_node_put(parent);
+>>  	if (pdn->parent)
+>>  		list_add_tail(&pdn->list, &pdn->parent->child_list);
+>>
+> 
 
