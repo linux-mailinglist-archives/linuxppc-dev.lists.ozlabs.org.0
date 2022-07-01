@@ -2,94 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC092563A16
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 21:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BB9563B48
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Jul 2022 22:55:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZQjW580Rz3dtn
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 05:48:15 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BGvGnBAM;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LZSBq5f9Jz3chY
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 06:55:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BGvGnBAM;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.173; helo=mail-il1-f173.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-il1-f173.google.com (mail-il1-f173.google.com [209.85.166.173])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZQhm1tngz2xKj
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 05:47:35 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 261Jhxxs022046;
-	Fri, 1 Jul 2022 19:47:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=rpJIgcxrXJyFVleOs0ys6j0/2RJM2l/wZIiKdeq1+ew=;
- b=BGvGnBAMvkcDP8Xu/dDhj9k8CBpML5WgPiABeMJnNyXEzRjtfuSRrslqlFWo/ujtqlWE
- ecr9HvY6GecwFYKxUQfmPrtG3SkosPz3ZMUT8xuRxAFsotsjX1Oa7oezgdzwD0Kzck6Z
- 3R8OqG8RLCXYybipqr5HLfpV98N+PSk+Yw8L3TgCA/X++c52Ix5vMyMjWTtM9ArOHqPS
- AY9NPCcCWxXHdCZv+pLpn5cUkeKtEq2K36L0T+ASmJGrmsboSCSRvtiah8NZspC9A2tf
- e/AbiYo9GTEFeY43pUVa/ccI60UM2OAcjmBZ9hJ8PfpuM36TYf4tzrVwnVAi6475dZyM MA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h27bc02k6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Jul 2022 19:47:26 +0000
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 261JlQJC003572;
-	Fri, 1 Jul 2022 19:47:26 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h27bc02jr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Jul 2022 19:47:26 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 261Ja3MJ021413;
-	Fri, 1 Jul 2022 19:47:25 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
-	by ppma03dal.us.ibm.com with ESMTP id 3gwt0bem0r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Jul 2022 19:47:25 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-	by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 261JlOWf28639698
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Jul 2022 19:47:24 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E1E5124052;
-	Fri,  1 Jul 2022 19:47:24 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 810DD124055;
-	Fri,  1 Jul 2022 19:47:23 +0000 (GMT)
-Received: from [9.160.117.63] (unknown [9.160.117.63])
-	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Jul 2022 19:47:23 +0000 (GMT)
-Message-ID: <09bcb7d7-5c27-04cc-6796-cbeb3d0abb14@linux.ibm.com>
-Date: Fri, 1 Jul 2022 12:47:22 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZSBM3Dylz3cdX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 06:54:50 +1000 (AEST)
+Received: by mail-il1-f173.google.com with SMTP id i17so2106123ils.12
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Jul 2022 13:54:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=HrTG0yud13UmQCFPBZCzpXGEK9vy1R8RoOTRKyUValo=;
+        b=AHPJPb+467ANa/WGAQBILIae9911qtwMoW6sU8LUVbcH/vHRs2WxMU/yRoFyQg++jN
+         FKLwD0tWQcfUTySOk0o68EnIlX+KJoKxIsquTDIswDbNVt4VPi+jI6DDlY15aSvXLTF4
+         Mjp59wGEdEfZhbNWgGRIU29LPliis8exFP29GJ5+baLIofVRbAGIghnWZRiZ5omJVF8o
+         LdfUDbssosOD0I/KF0nojEjp2EhPUxzfuHjZLzF4M88ZzoCck2/J5bVgTXf3fkrTdf64
+         5zw5TphYPXh/dngGWi3gFx4Jg/0gzLcp3AoARpjOZ5NqydnI5NE3P3eMQWZiplPglK6w
+         mhsg==
+X-Gm-Message-State: AJIora8FdOYzer96OVFEsWPw7dFSMAzQYl8e5UQ38ZrEuCJVSMbbT4lE
+	aZ2MgDF9EgAEJhO8BODVdA==
+X-Google-Smtp-Source: AGRyM1tN03ajV9JtjOBB9YmRsmAfhh0DZ3pRb8uoazawRe++MW5uDTrgKNun8JIBUIZsI2Usu7M1NQ==
+X-Received: by 2002:a92:ddd1:0:b0:2d5:4877:65c8 with SMTP id d17-20020a92ddd1000000b002d5487765c8mr9847783ilr.267.1656708886842;
+        Fri, 01 Jul 2022 13:54:46 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id f65-20020a0284c7000000b00339ddd8adddsm10257382jai.98.2022.07.01.13.54.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Jul 2022 13:54:46 -0700 (PDT)
+Received: (nullmailer pid 1511267 invoked by uid 1000);
+	Fri, 01 Jul 2022 20:54:44 -0000
+Date: Fri, 1 Jul 2022 14:54:44 -0600
+From: Rob Herring <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 5/6] ASoC: dt-bindings: fsl_spdif: Add two PLL clock
+ source
+Message-ID: <20220701205444.GA1511232-robh@kernel.org>
+References: <1656667961-1799-1-git-send-email-shengjiu.wang@nxp.com>
+ <1656667961-1799-6-git-send-email-shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] powerpc: kernel: pci_dn: Add missing of_node_put() for
- of_get_xx API
-Content-Language: en-US
-To: Liang He <windhl@126.com>, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, linuxppc-dev@lists.ozlabs.org, linmq006@gmail.com
-References: <20220701131750.240170-1-windhl@126.com>
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-In-Reply-To: <20220701131750.240170-1-windhl@126.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Au8w_NzGliYl_YtPtVH5E6zVLI7__sDf
-X-Proofpoint-ORIG-GUID: fPGV-xsRiv3wVhz-2Iwiks9IQJdKIxei
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-01_12,2022-06-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- bulkscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
- clxscore=1015 spamscore=0 adultscore=0 impostorscore=0 mlxlogscore=990
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2204290000 definitions=main-2207010078
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1656667961-1799-6-git-send-email-shengjiu.wang@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,38 +63,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, lgirdwood@gmail.com, robh+dt@kernel.org, tiwai@suse.com, nicoleotsuka@gmail.com, broonie@kernel.org, festevam@gmail.com, krzk+dt@kernel.org, perex@perex.cz, shengjiu.wang@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/1/22 06:17, Liang He wrote:
-> In pci_add_device_node_info(), we should use of_node_put() for the
-> reference 'parent' returned by of_get_parent() to keep refcount
-> balance.
+On Fri, 01 Jul 2022 17:32:40 +0800, Shengjiu Wang wrote:
+> Add two PLL clock source, they are the parent clocks of root clock
+> one is for 8kHz series rates, another one is for 11kHz series rates.
+> They are optional clocks, if there are such clocks, then driver
+> can switch between them for supporting more accurate rates.
 > 
-> Fixes: cca87d303c85 ("powerpc/pci: Refactor pci_dn")
-> Co-authored-by: Miaoqian Lin <linmq006@gmail.com>
-> Signed-off-by: Liang He <windhl@126.com>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 > ---
->  arch/powerpc/kernel/pci_dn.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/powerpc/kernel/pci_dn.c b/arch/powerpc/kernel/pci_dn.c
-> index 938ab8838ab5..aa221958007e 100644
-> --- a/arch/powerpc/kernel/pci_dn.c
-> +++ b/arch/powerpc/kernel/pci_dn.c
-> @@ -330,6 +330,7 @@ struct pci_dn *pci_add_device_node_info(struct pci_controller *hose,
->  	INIT_LIST_HEAD(&pdn->list);
->  	parent = of_get_parent(dn);
->  	pdn->parent = parent ? PCI_DN(parent) : NULL;
-NACK
-
-pdn->parent is now a long term reference so we should not do a put on parent
-until we pdn->parent is no longer valid.
-
--Tyrel
-
-> +	of_node_put(parent);
->  	if (pdn->parent)
->  		list_add_tail(&pdn->list, &pdn->parent->child_list);
+>  Documentation/devicetree/bindings/sound/fsl,spdif.yaml | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
 
+Acked-by: Rob Herring <robh@kernel.org>
