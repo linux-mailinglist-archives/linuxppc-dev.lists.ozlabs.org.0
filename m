@@ -1,86 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B00563F7C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 12:31:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB308563F81
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 12:42:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZpJ31Qz3z3by0
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 20:30:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LZpYd6l2Fz3c1L
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 20:42:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RDEbvNZe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NGPoe/gD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RDEbvNZe;
-	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZpHK4LjXz3bl6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 20:30:20 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 262AGE83035395;
-	Sat, 2 Jul 2022 10:30:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type : subject :
- from : in-reply-to : date : cc : message-id : references : to :
- content-transfer-encoding : mime-version; s=pp1;
- bh=dnEvjX0KQuqOLbGfA8yQPZbkSiYGyhbteB3kV0I4+mQ=;
- b=RDEbvNZeQao6+vqahdlzRhsWbwjrrDHXsLjwlu9C4eHHqZnDRjAhBrirBB/igsFQbcOO
- qqhH/HK6GmEUkyqs3Raz+t6ONI/rbmyIh4u3IFlmDe2+6gG4yAI+PUOU501/68G9l/hI
- AySudk/Bv6sW7svFkHN3iIfkqab5T/mTNh7wkqcG65B1c8S5nTtxhKM+IXozmThPE5x3
- XaVD/VDFldpPEbSYTMmtWr8UM0KflDgN1qoZi00TQaXB6p2N0g99djNKmJmmaT6e3dRV
- FwWqbiFAv2P0ksIB1GhCjtFnBHvmHOvGNu8j826B8cMS6NyQBBJLdgml5YXLhOprQ56n mw== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h2m48r75u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 02 Jul 2022 10:30:10 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 262ANHT2026288;
-	Sat, 2 Jul 2022 10:30:08 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma04ams.nl.ibm.com with ESMTP id 3h2dn90cq5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 02 Jul 2022 10:30:08 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 262AU65L15139088
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 2 Jul 2022 10:30:06 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1EA4C11C050;
-	Sat,  2 Jul 2022 10:30:06 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 19FCF11C052;
-	Sat,  2 Jul 2022 10:30:05 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.72.209])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Sat,  2 Jul 2022 10:30:04 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Subject: Re: [PATCH v4 0/2] powerpc rng cleanups
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <20220701084946.225357-1-Jason@zx2c4.com>
-Date: Sat, 2 Jul 2022 16:00:03 +0530
-Message-Id: <50CA4404-F30D-4503-918E-30464DC9DCF1@linux.ibm.com>
-References: <20220701084946.225357-1-Jason@zx2c4.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-X-Mailer: Apple Mail (2.3696.100.31)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9kd8tqms1kX-_7nchhV8SqB-i-PB2nxT
-X-Proofpoint-GUID: 9kd8tqms1kX-_7nchhV8SqB-i-PB2nxT
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZpY140BSz3bdy
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 20:42:13 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=NGPoe/gD;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LZpXx5yZBz4xQt;
+	Sat,  2 Jul 2022 20:42:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1656758530;
+	bh=mtoQ5D5XEbg5B1GVfViQaQ2HWBc4g/DvKpz019fGU90=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NGPoe/gDsHFiLyMWgLjgkqJlTWxkHK25Ocr42e2n5Yh5FsFRAF+oYcaqGGM9sEzsS
+	 y6uy6MK2/exHEo+uaOV5rLmE2MSrge4TsQCtW2TatJUv8zSeJgVXLdUxEu+YuSH5EX
+	 VDfFMXNNti0OEKZMio9hEce7Al6qCf4cphFM3Yj9Zr6ttkfPxuYKzNiM6emqTY4tdh
+	 /DqLD6WlB9hgUaxZ4JVzuw1epYZGeAWkajHGEf7UuPRDlSWhVchitH4o7ZGG3vRqnu
+	 lIUxUN9052+PvkyJV2fXTYsPYvJpjjYzAsvKfgp+Mexc8CYgFEo/q1H7cw/WdNpiWY
+	 K0ZhiCMq0A5Zg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.19-4 tag
+Date: Sat, 02 Jul 2022 20:42:04 +1000
+Message-ID: <87edz3aj9f.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-02_05,2022-06-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- suspectscore=0 clxscore=1011 priorityscore=1501 impostorscore=0 mlxscore=0
- malwarescore=0 adultscore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=781
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2204290000
- definitions=main-2207020045
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,29 +56,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: nathanl@linux.ibm.com, aneesh.kumar@linux.ibm.com, linux-kernel@vger.kernel.org, liam.howlett@oracle.com, rppt@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Hi Linus,
+
+Please pull some more powerpc fixes for 5.19:
+
+The following changes since commit f3eac426657d985b97c92fa5f7ae1d43f04721f3:
+
+  powerpc/powernv: wire up rng during setup_arch (2022-06-22 19:47:22 +1000)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
+werpc-5.19-4
+
+for you to fetch changes up to ac790d09885d36143076e7e02825c541e8eee899:
+
+  powerpc/memhotplug: Add add_pages override for PPC (2022-06-29 20:43:16 +=
+1000)
+
+- ------------------------------------------------------------------
+powerpc fixes for 5.19 #4
+
+ - Fix BPF uapi confusion about the correct type of bpf_user_pt_regs_t.
+
+ - Fix virt_addr_valid() when memory is hotplugged above the boot-time high=
+_memory value.
+
+ - Fix a bug in 64-bit Book3E map_kernel_page() which would incorrectly all=
+ocate a PMD
+   page at PUD level.
+
+ - Fix a couple of minor issues found since we enabled KASAN for 64-bit Boo=
+k3S.
+
+Thanks to: Aneesh Kumar K.V, C=C3=A9dric Le Goater, Christophe Leroy, Kefen=
+g Wang, Liam
+Howlett, Nathan Lynch, Naveen N. Rao.
+
+- ------------------------------------------------------------------
+Aneesh Kumar K.V (1):
+      powerpc/memhotplug: Add add_pages override for PPC
+
+Christophe Leroy (1):
+      powerpc/book3e: Fix PUD allocation size in map_kernel_page()
+
+Liam Howlett (1):
+      powerpc/prom_init: Fix kernel config grep
+
+Nathan Lynch (1):
+      powerpc/xive/spapr: correct bitmap allocation size
+
+Naveen N. Rao (1):
+      powerpc/bpf: Fix use of user_pt_regs in uapi
 
 
-> On 01-Jul-2022, at 2:19 PM, Jason A. Donenfeld <Jason@zx2c4.com> wrote:
-> 
-> These are two small cleanups for -next.
-> 
-> This is meant to be atop
-> https://lore.kernel.org/all/20220630121654.1939181-1-Jason@zx2c4.com/
-> which is expected to land first.
-> 
-> v4 fixes up an inversion of thr DR flag.
-> 
-> Jason A. Donenfeld (2):
->  powerpc/powernv: rename remaining rng powernv_ functions to pnv_
->  powerpc/kvm: don't crash on missing rng, and use darn
-> 
+ arch/powerpc/Kconfig                           |  4 +++
+ arch/powerpc/include/asm/bpf_perf_event.h      |  9 ++++++
+ arch/powerpc/include/uapi/asm/bpf_perf_event.h |  9 ------
+ arch/powerpc/kernel/prom_init_check.sh         |  2 +-
+ arch/powerpc/mm/mem.c                          | 33 +++++++++++++++++++-
+ arch/powerpc/mm/nohash/book3e_pgtable.c        |  6 ++--
+ arch/powerpc/sysdev/xive/spapr.c               |  5 +--
+ 7 files changed, 52 insertions(+), 16 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/bpf_perf_event.h
+ delete mode 100644 arch/powerpc/include/uapi/asm/bpf_perf_event.h
+-----BEGIN PGP SIGNATURE-----
 
-Boot tested this series and can successfully boot a Power8 server.
-
-fwiw Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-
-- Sachin
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAmLAIMMACgkQUevqPMjh
+pYBFzxAAt/LfbgVSWPGNv+JvqomiuokgbTd2zKP8PBsRiQg5Jh5i8ANNtIu3UGMt
+Nl1/ht6FOZ6Eb76KnmfQni7I5JrIdfVa5zEMDe8GtA5fXPxnEg+lME56SSR6w6ed
+2b31BuIB+1wzP6ZDjEV7fHmG4liQSVbTgWKsTjpWdPSuIqpYj5jPlgoimh4l7a2r
+YY4Bz7PRFevrbiG5ME10+ZckjG7b13SnROg4JOjZO3leJCqGLHhT9SjHUZvYmot5
+MjeObrZ7p4xO3MtBMWi2rDGXhLrHJAqYI+jrC1Z4P2jFAVVKm4l2cFjPQ5MHCqYy
+9Di93hT1QrhCKxGr+FzDQSVCSENxPxktheqWz5IyBexwxvkH0tUkSwugmOhyHwq6
+69uFxi9CLAtnv+8YXvqsLSwg8+n5DeYQ7mEVXsCyPIXKbZe+ZJE2r6XoYb0a3ags
+nTwkiSnaBLvHBQtjBLh4Bd3dI5STL9LZsz1cUXFBlriCs3rP5enPF/vWOcc8tEix
+F2iZPiXldpiep1g3zHDRuAAcACGWHrqxfVOPJfC/pLrqpzbmtFPJejmeE3WVC3uy
+dkjjkXGBfrTAlFjVfdJgJVv+vyr9ShIrFrpsMjlFcsoktoDXUd2zkcJj+zdwIqrG
+sRLRcHtNGQs6X0CltPs22qjtj66tLZja+Kj1eRDrFk896sJNsaA=3D
+=3DYeKn
+-----END PGP SIGNATURE-----
