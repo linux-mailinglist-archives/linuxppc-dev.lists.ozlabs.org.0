@@ -2,59 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B105641E6
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 19:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E14CC5642D2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 23:10:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZzpT1pV7z3c2s
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jul 2022 03:39:29 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bSVrLBmQ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lb4Tm5M0yz3c1J
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jul 2022 07:10:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bSVrLBmQ;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=stevens-zone.net (client-ip=217.72.192.73; helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net; receiver=<UNKNOWN>)
+X-Greylist: delayed 332 seconds by postgrey-1.36 at boromir; Sun, 03 Jul 2022 07:09:56 AEST
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZznr0qLfz3bkW
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jul 2022 03:38:55 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id B5B8BB80684;
-	Sat,  2 Jul 2022 17:38:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7A8CCC34114;
-	Sat,  2 Jul 2022 17:38:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656783529;
-	bh=iNbDC+O4df97kCA0R2yVWyePRF78hqPgYZFS+GXLCZE=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=bSVrLBmQLd/PiM75ZCKeAaP5AE4K5j7IFC5XeqC3SCI63FBO4ToE2e7LQmNPUoOc2
-	 6w9QkgwlL7MbzZCepTQDLqKdl4poRocySXkBwzXujnx6pUn1jREDZe6sUdjXomNycf
-	 9Qz9gXGkTGtvF1WiZ4r9gZ7r3Vlww9MtAZVOVcmfL92FeWsFDT3vvLOgcbfLLc0iiS
-	 3XaBi4nUDmJx8hZrLZRDGRjyRx+V+osB1dscFgymeluaLWUj5LPP7g4V0OqjZ6EieB
-	 ljVSiBJcW01XEf4DUiLhqj42k6fZAKwWq06Uo/wUup9bHA8+DoMTyxGoifJjqblgRM
-	 DvfZLi134gmDg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 68FBDE49BBC;
-	Sat,  2 Jul 2022 17:38:49 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.19-4 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87edz3aj9f.fsf@mpe.ellerman.id.au>
-References: <87edz3aj9f.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <87edz3aj9f.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.19-4
-X-PR-Tracked-Commit-Id: ac790d09885d36143076e7e02825c541e8eee899
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 5411de073362300d99bb35d46d77d656760e4606
-Message-Id: <165678352942.3400.15836912019951685406.pr-tracker-bot@kernel.org>
-Date: Sat, 02 Jul 2022 17:38:49 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lb4TJ2vCpz3bdy
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jul 2022 07:09:56 +1000 (AEST)
+Received: from Cyrus.lan ([86.151.31.128]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.179]) with ESMTPA (Nemesis) id
+ 1Mqrjz-1nlpiW0UXx-00mqvZ; Sat, 02 Jul 2022 23:03:57 +0200
+Date: Sat, 2 Jul 2022 22:03:55 +0100
+From: Darren Stevens <darren@stevens-zone.net>
+To: linuxppc-dev@lists.ozlabs.org, oss@buserror.net, chzigotzky@xenosoft.de,
+ robh@kernel.org, stern@rowland.harvard.edu, linux-usb@vger.kernel.org
+Subject: [PATCH v3] drivers/usb/host/ehci-fsl: Fix interrupt setup in host
+ mode.
+Message-ID: <20220702220355.63b36fb8@Cyrus.lan>
+X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; powerpc-unknown-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:7dP2sXcx+tU1+/TK79yzyTjl/O/pWtJa8WSayWZhp5S7eX3nEwZ
+ afTpN6tXjGqRooJMr+bEZLB1jXf7XbtJdJUVXUK3CsI78xgvFzsAkIy1K/wSjWbMTKCOahn
+ i1S+CpXI25tmplwOGpNqWt+lC6JWA5SSQ9ihdu+1dhKqHD8JAJPVhgT9caMizZkUGa+zGmc
+ TsJ+CfUxgzkQtOoHvGbPA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1Uoxm6hO9yk=:SF8yDt+syLc9dNQ8MKFiJJ
+ CVRJg+0LPKhFHd/1QphF0JTnx45WcwDP9Imw5llosDQ8h6jLOR7sVwBEes1Dl9kWn3wZP8bDU
+ ggPo82ITUzQL9u5IZScbnTUnbr0U4ZearbeAGAGuVXrXx1IEfmA6ZmIBNALDGR1+QyjHMUt8j
+ OfBeF7m7hh06GQkV+a1ikV3C2eW24ukE1mhxh/Yl8tOqPY6q3yIzXaIhx9YXTSPLYuRagZCQP
+ OKQ469RkNrYI3DVESFnTXGULamTBw0RQ1rbA3WOsPqupMFbXUvVA2Z1KFc4O1dlX76xRmIzDU
+ h1NFLO0/YFRMPoVfEgR/HdnXILT60gd8nONKjsjP/xHUFT/uNJLshDa4kmvngmMok81Gpxsak
+ kwl16wR7bxt61NsXZ9ErwKm6GHlFrYZjp6R4aXz/VpJd65w5om9jV7BOgyO17Phbp105vEP1B
+ FavqY9+JTTBEZTAAh5SIx0TtLTRUu2W5P+KKEqnhP1BV5nSylnBZQHtXN3cZL2Tc7Ge6GNd+l
+ KdqPjPFOaElVYev97SM1Jihtgs6AphOncn88fsUO8GotZf/tx/n+RG/CG+Nu7GCNHBEJHANK7
+ woTIooSbQUXnSqxah4QPJ2I1uoN8RQ5m7HId01/GUAk2ap3OGsHopw1NohCXPgEXJ9pQXh+bo
+ VcY6MI/7FbLCKUj1tdIXD5A77VGnpCGhHq0AuPvE7Qd/K9PS4vtW66G+LLr7H79z5SpeLYWsJ
+ L2CgtfzHPVqRo4vqn20QBsOILmINwWVERKjXc1h7EAbtIN4pQDm1pOJWcxM=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,19 +59,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nathanl@linux.ibm.com, aneesh.kumar@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, liam.howlett@oracle.com, rppt@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com, Linus Torvalds <torvalds@linux-foundation.org>
+Cc: shawnguo@kernel.org, leoyang.li@nxp.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sat, 02 Jul 2022 20:42:04 +1000:
+In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
+core) we stopped platform_get_resource() from returning the IRQ, as all
+drivers were supposed to have switched to platform_get_irq()
+Unfortunately the Freescale EHCI driver in host mode got missed. Fix
+it.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.19-4
+Fixes: a1a2b7125e10 (Drop static setup of IRQ resource from DT core)
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Suggested-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Darren Stevens <darren@stevens-zone.net>
+---
+ v3 - Corrected resource allocation in fsl-mph-dr-of.c
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/5411de073362300d99bb35d46d77d656760e4606
+ v2 - Fixed coding style, removed a couple of unneeded initializations,
+      cc'd Layerscape maintainers.
 
-Thank you!
+Tested on AmigaOne X5000/20 and X5000/40 Contains code by Rob Herring 
+(in fsl-mph-dr-of.c)
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
+index 385be30..896c0d1 100644
+--- a/drivers/usb/host/ehci-fsl.c
++++ b/drivers/usb/host/ehci-fsl.c
+@@ -76,14 +76,9 @@ static int fsl_ehci_drv_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (!res) {
+-		dev_err(&pdev->dev,
+-			"Found HC with no IRQ. Check %s setup!\n",
+-			dev_name(&pdev->dev));
+-		return -ENODEV;
+-	}
+-	irq = res->start;
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return irq;
+ 
+ 	hcd = __usb_create_hcd(&fsl_ehci_hc_driver, pdev->dev.parent,
+ 			       &pdev->dev, dev_name(&pdev->dev), NULL);
+diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
+index 44a7e58..e5df175 100644
+--- a/drivers/usb/host/fsl-mph-dr-of.c
++++ b/drivers/usb/host/fsl-mph-dr-of.c
+@@ -112,6 +112,9 @@ static struct platform_device *fsl_usb2_device_register(
+ 			goto error;
+ 	}
+ 
++	pdev->dev.of_node = ofdev->dev.of_node;
++	pdev->dev.of_node_reused = true;
++
+ 	retval = platform_device_add(pdev);
+ 	if (retval)
+ 		goto error;
