@@ -2,51 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C14B563DC2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 04:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2F7563F48
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 11:40:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZbfD4V0Zz3c1w
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 12:31:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LZn9z0dj8z3bsk
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 Jul 2022 19:40:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fhLZ14zg;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qjVlZJuY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.3; helo=mail-m963.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=fhLZ14zg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qjVlZJuY;
 	dkim-atps=neutral
-Received: from mail-m963.mail.126.com (mail-m963.mail.126.com [123.126.96.3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LZbdc1GnCz3bd3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 12:30:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=LQ3fT
-	mUC3tPCdS9PAPkBSdYV0nG0JYJ5jFe6PDldyV4=; b=fhLZ14zgxclwZxoJnqzPr
-	fQi2MdXK7yPUerqU1EBIL1WpIrEvNzyGhk8CXxS+OtH62ptcnlgrZXPYyVLHQ/ly
-	PW2wE4i8Yv+bumXnwjElKta4/N+DQOnJO9l8/qh+1qKtkvhYPPjIsbSYwguWqo+o
-	W3gN7nJfcPP3ZJSaSnBiIc=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-	by smtp8 (Coremail) with SMTP id NORpCgCnK5iRrb9iunEXHA--.14519S2;
-	Sat, 02 Jul 2022 10:29:38 +0800 (CST)
-From: Liang He <windhl@126.com>
-To: mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	linuxppc-dev@lists.ozlabs.org,
-	windhl@126.com
-Subject: [PATCH] powerpc: kernel: pci-common: Fix refcount bug for 'phb->dn'
-Date: Sat,  2 Jul 2022 10:29:36 +0800
-Message-Id: <20220702022936.266146-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LZn9G01Z0z3bdM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Jul 2022 19:40:01 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 6C99460AF8;
+	Sat,  2 Jul 2022 09:39:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6E6C34114;
+	Sat,  2 Jul 2022 09:39:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656754795;
+	bh=sNB4SSev9GGBp702mzMS6UGh+tOd6kOa4UDTbCW0xXc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qjVlZJuYdsPcA+gR+qKyRz4Ssc0rWw008xgaxYEVorFvWUrm+DAuEIHyRIAeoC4rT
+	 rosc5GYX2ScJtXc5LspG8095kJSZeU3xXF2EYclkSgI5TY5kXlr+7gNzZzuclbb7BD
+	 e4rr3mxXLExQrFO2xa1Jxm9F4/GiC+lWliXhf5rXFA27qvxJbvp581Cvob6ocCI0Tt
+	 /XF4Vix2yitYy8XZldPmKjuqjopiKh61D0WWb+Lq3j6fmcMUhzBVWfZaFq1f0SD/lI
+	 xMoz3B+ORU6oJY5+LfT+cf8wdFpuquf4uuAXdEeMCYkhiVpfSVUea+/qUwz/3ZOe0j
+	 US4sd0E3DRoYA==
+Received: by pali.im (Postfix)
+	id 833EC777; Sat,  2 Jul 2022 11:39:52 +0200 (CEST)
+Date: Sat, 2 Jul 2022 11:39:52 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
+Message-ID: <20220702093952.ir7ctqsianztocik@pali>
+References: <20220524093939.30927-1-pali@kernel.org>
+ <20220524175955.GI25951@gate.crashing.org>
+ <20220524181255.bmszzxmbwzv7zed7@pali>
+ <20220524185247.GK25951@gate.crashing.org>
+ <20220524191610.hnodzz2j7mlgthey@pali>
+ <20220524195216.GL25951@gate.crashing.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: NORpCgCnK5iRrb9iunEXHA--.14519S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr4Uuw13AFy7tr13trWUJwb_yoW8Wr13pa
-	90ka43Ar10gFWv9a90yF18WFy2q3WkJr43J390kF9YkFsaqryqyF1kZry2gr15Ja1xJasY
-	vF4vqw12ya1Uu3JanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UY_MfUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/xtbBGgIyF1-HZa8UbgAAsV
+In-Reply-To: <20220524195216.GL25951@gate.crashing.org>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,49 +68,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In pcibios_alloc_controller(), 'phb' is allocated and escaped into
-global 'hose_list'. So we should call of_node_get() when a new reference
-created into 'phb->dn'. And when phb is freed, we should call
-of_node_put() on it.
+On Tuesday 24 May 2022 14:52:16 Segher Boessenkool wrote:
+> On Tue, May 24, 2022 at 09:16:10PM +0200, Pali Rohár wrote:
+> > On Tuesday 24 May 2022 13:52:47 Segher Boessenkool wrote:
+> > > Aha.  Right, because this config forces -mspe it requires one of these
+> > > CPUs.
+> > > 
+> > > You can use a powerpc-linux compiler instead, and everything will just
+> > > work.  These CPUs are still supported, in all of GCC 9 .. GCC 12 :-)
+> > 
+> > Ok. I can use different "generic" powerpc compiler (It should work fine
+> > as you said, as it has also -mcpu=8540 option). But I think that
+> > compilation of kernel should be supported also by that gcc 8.5.0 e500
+> > compiler.
+> 
+> That linuxspe compiler you mean.  Sure, why not, the more the merrier,
+> as long as it doesn't get in the way of other stuff, I won't protest.
+> 
+> But please don't confuse people: you are talking about a
+> powerpc-linuxspe compiler, not e500, which is supported just fine by
+> current GCC trunk still, and does not have such limitations :-)
+> 
+> 
+> Segher
 
-NOTE: This function is called in the iteration of for_each_xx in
-chrp_find_bridges() function. If there is no of_node_get(), the object
-maybe prematurely freed.
+I think the confusion is the calling "generic" or "stripped" compiler
+without SPE support as e500 compiler.
 
-Signed-off-by: Liang He <windhl@126.com>
----
-
- I do not know if we should insert the of_node_put() in or out of the
-spin_lock/spin_unlock. Please check it carefully.
-
- arch/powerpc/kernel/pci-common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 068410cd54a3..f58dcf3a92bb 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -117,7 +117,7 @@ struct pci_controller *pcibios_alloc_controller(struct device_node *dev)
- 	phb->global_number = get_phb_number(dev);
- 	list_add_tail(&phb->list_node, &hose_list);
- 	spin_unlock(&hose_spinlock);
--	phb->dn = dev;
-+	phb->dn = of_node_get(dev);
- 	phb->is_dynamic = slab_is_available();
- #ifdef CONFIG_PPC64
- 	if (dev) {
-@@ -140,7 +140,7 @@ void pcibios_free_controller(struct pci_controller *phb)
- 	/* Clear bit of phb_bitmap to allow reuse of this PHB number. */
- 	if (phb->global_number < MAX_PHBS)
- 		clear_bit(phb->global_number, phb_bitmap);
--
-+	of_node_put(phb->dn);
- 	list_del(&phb->list_node);
- 	spin_unlock(&hose_spinlock);
- 
--- 
-2.25.1
-
+The "true" e500 compiler has support for both both integer and floating
+point ISA and not just subset or just one type.
