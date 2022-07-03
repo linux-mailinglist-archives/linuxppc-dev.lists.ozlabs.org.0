@@ -2,40 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC51E569E79
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 11:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EA65649EC
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Jul 2022 23:25:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdrVZ1mLTz3c6K
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 19:20:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lbhmh03hyz3c15
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 07:25:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tpEk31p9;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inspur.com (client-ip=210.51.61.248; helo=ssh248.corpemail.net; envelope-from=wangdeming@inspur.com; receiver=<UNKNOWN>)
-Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tpEk31p9;
+	dkim-atps=neutral
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdrV64n8Sz3c01
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 19:20:00 +1000 (AEST)
-Received: from ([60.208.111.195])
-        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id CIB00150;
-        Thu, 07 Jul 2022 17:19:50 +0800
-Received: from localhost.localdomain (10.200.104.82) by
- jtjnmail201611.home.langchao.com (10.100.2.11) with Microsoft SMTP Server id
- 15.1.2507.9; Thu, 7 Jul 2022 17:19:51 +0800
-From: Deming Wang <wangdeming@inspur.com>
-To: <mpe@ellerman.id.au>
-Subject: [PATCH] KVM: PPC: Use the arg->size directly for kvm_vm_ioctl_create_spapr_tce
-Date: Sun, 3 Jul 2022 13:29:32 -0400
-Message-ID: <20220703172932.11329-1-wangdeming@inspur.com>
-X-Mailer: git-send-email 2.31.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lbhlv47Pxz2ypV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 07:24:43 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 35795611D0
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jul 2022 21:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8129FC341C6
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 Jul 2022 21:24:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656883479;
+	bh=WLyqRtbI+VYZPb1jjLztmnmMkwQwPzY1kmon1EVbfcw=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=tpEk31p9VMeJUeeT6KjPsFG9jYtr02CeXapidhFF8gznWuEcdkL0CWhczsRP3slHC
+	 kv5ygC/di9mpcZa6/LqZSi7os3C/2RJyAX3T3TFBGT2WrtnD9pC13svaRdWVZ5hUQS
+	 ai35a3A9BbmuDUy76BwVhmOTBgweFTfEetUyYemqTzhKY/dJwnUa49pfTf4Hx0v7SU
+	 NyGRsdqNLXPSs8QO7kGLevlT6pKqgqHZipIviH5g+PZ/2hpKk7VtoZCtX7dz9dB/d9
+	 WKLjMVfSMsXOHVoJBAokmpW73n/TVqO0XJEpipeaWP4oCLXOuNhlpaf9xZh6WKJvt7
+	 5adbv/W5P/6hA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 662BCC05FD6; Sun,  3 Jul 2022 21:24:39 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 216190] 5.19-rc4 kernel + KASAN fails to boot at very early
+ stage when CONFIG_SMP=y is selected (PowerMac G4 3,6)
+Date: Sun, 03 Jul 2022 21:24:39 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-216190-206035-JVZ7ym8CZG@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-216190-206035@https.bugzilla.kernel.org/>
+References: <bug-216190-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.200.104.82]
-tUid: 20227071719503b43df983e69e9535cfd506721407631
-X-Abuse-Reports-To: service@corp-email.com
-Abuse-Reports-To: service@corp-email.com
-X-Complaints-To: service@corp-email.com
-X-Report-Abuse-To: service@corp-email.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,49 +79,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Deming Wang <wangdeming@inspur.com>, paulus@samba.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use arg->size directly may be better for code readability.Because, the
-variable of size has not been found for special purpose  at present.
-Also,We can reduce the use of a variable.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D216190
 
-Signed-off-by: Deming Wang <wangdeming@inspur.com>
----
- arch/powerpc/kvm/book3s_64_vio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+--- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
+(In reply to Christophe Leroy from comment #2)
+> Problem is likely due to commit 4291d085b0b0 ("powerpc/32s: Make
+> pte_update() non atomic on 603 core")
+>=20
+> kasan_early_init() calls __set_pte_at(), which calls pte_update() if
+> CONFIG_SMP, and pte_update() calls mmu_has_feature() since above commit, =
+but
+> that's too early for calling mmu_has_feature() so mmu_has_feature() tries=
+ to
+> warn using printk(), but that cannot work because the KASAN shadow is not
+> set.
+>=20
+> Can you try with the change below ?
+Applied your patch on top of 5.19-rc4 and can confirm it works. Thanks!
 
-diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index d6589c4fe889..5f74ffb88e82 100644
---- a/arch/powerpc/kvm/book3s_64_vio.c
-+++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -294,14 +294,14 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
- 	struct kvmppc_spapr_tce_table *stt = NULL;
- 	struct kvmppc_spapr_tce_table *siter;
- 	struct mm_struct *mm = kvm->mm;
--	unsigned long npages, size = args->size;
-+	unsigned long npages;
- 	int ret;
- 
- 	if (!args->size || args->page_shift < 12 || args->page_shift > 34 ||
- 		(args->offset + args->size > (ULLONG_MAX >> args->page_shift)))
- 		return -EINVAL;
- 
--	npages = kvmppc_tce_pages(size);
-+	npages = kvmppc_tce_pages(args->size);
- 	ret = account_locked_vm(mm, kvmppc_stt_pages(npages), true);
- 	if (ret)
- 		return ret;
-@@ -314,7 +314,7 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
- 	stt->liobn = args->liobn;
- 	stt->page_shift = args->page_shift;
- 	stt->offset = args->offset;
--	stt->size = size;
-+	stt->size = args->size;
- 	stt->kvm = kvm;
- 	mutex_init(&stt->alloc_lock);
- 	INIT_LIST_HEAD_RCU(&stt->iommu_tables);
--- 
-2.27.0
+I'll close here as soon it is in the -rcs.
 
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
