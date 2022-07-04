@@ -1,67 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1828356579C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 15:44:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096C756587E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 16:20:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc6VH6yQRz3c48
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 23:44:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc7JR6x5rz3c0g
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 00:20:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Bt1weozM;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=212.227.126.131; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=Bt1weozM;
+	dkim-atps=neutral
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc6Tq14KFz303t
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 23:43:57 +1000 (AEST)
-Received: from mail-yb1-f175.google.com ([209.85.219.175]) by
- mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1M7Jj2-1oG3zp3a2e-007hbI for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jul
- 2022 15:43:54 +0200
-Received: by mail-yb1-f175.google.com with SMTP id g4so16983804ybg.9
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jul 2022 06:43:52 -0700 (PDT)
-X-Gm-Message-State: AJIora+u6XNWUF6pEsy0mErWPf2iMBJttjKRJCbOrmjWC/aaVgr72xKC
-	0XMqLv25H3YwkaUxOT/ht14Baa8tNR0pH/iR/Yg=
-X-Google-Smtp-Source: AGRyM1sl7ZhrdyDlr2pScNIVgZG3D4DXePFqgUbPtO3R2pdcjKLgl0+jlEAndq8SOJ1A5ZwWwducTiOPZWJ7gVrp92s=
-X-Received: by 2002:a25:8b8b:0:b0:669:b37d:f9cd with SMTP id
- j11-20020a258b8b000000b00669b37df9cdmr31378860ybl.394.1656942231974; Mon, 04
- Jul 2022 06:43:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc7Hm43drz30DX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 00:20:19 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=jc10IQJyl7R9z2Pi3/7y2+bfFKI3NYUFP6i+uQTAp2Y=; b=Bt1weozMWS50R4n+lfqxMxazHF
+	TveNDLTmiJEHKNHvQREVGPIKfrQGk3q9doqq/ABlctXEH2yoTOZr4BVCQ86p+X6CoJLJIhig2O5iZ
+	OeOaV1ZastaIdZ+ZIAKQji7p1zTeulZ35laz2ctdBLRr/zVAfIbZWSNQUarTzPe5y+SZC1yYTqW73
+	0ORHHqoORwfPsQ1r28ZMFDDIQxxpsec0odV3wyLtsOF7/DViK/0wpzxfxhnmnO4bdGVDc1T9u8E0Y
+	zN4W2azWNbDIpI4ERMla+djJ3+o1Il+7ALvE/YlMp9zKcFeoD+MRSCuL2hdE4REvqBjXRWhJYou7H
+	RcCHYwLw==;
+Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=worktop.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1o8MvM-00H9iI-Rf; Mon, 04 Jul 2022 14:19:41 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 0FDEF980057; Mon,  4 Jul 2022 16:19:43 +0200 (CEST)
+Date: Mon, 4 Jul 2022 16:19:42 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v3 11/12] powerpc: Remove unreachable() from WARN_ON()
+Message-ID: <YsL2/uwU6j8jbzpP@worktop.programming.kicks-ass.net>
+References: <20220624183238.388144-1-sv@linux.ibm.com>
+ <20220624183238.388144-12-sv@linux.ibm.com>
+ <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu>
+ <YsLXkCMtQpxmDhVM@hirez.programming.kicks-ass.net>
+ <1d0c5ebc-3f66-f6cb-998f-072bceb41c5c@csgroup.eu>
 MIME-Version: 1.0
-References: <20220524093939.30927-1-pali@kernel.org> <20220702094405.tp7eo4df7fjvn2ng@pali>
- <8D562851-304F-4153-9194-426CC22B7FF2@ellerman.id.au> <20220704103951.nm4m4kpgnus3ucqo@pali>
- <CAK8P3a2tdny8SA7jcqhUZT13iq1mYqjFueC-gnTUZA1JKCtfgg@mail.gmail.com>
- <20220704131358.fy3z7tjcmk2m6pfh@pali> <CAK8P3a2hfnt+tHiqHrHAVyagSm73LJe4OV8ig=CKFcycfk4Zag@mail.gmail.com>
- <20220704132904.irvs4xefu4esgw6c@pali>
-In-Reply-To: <20220704132904.irvs4xefu4esgw6c@pali>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 4 Jul 2022 15:43:34 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a30ecxG-A0_YDSBJAaGjcXXVwSnc7z4k-nreO+0UfJJ3w@mail.gmail.com>
-Message-ID: <CAK8P3a30ecxG-A0_YDSBJAaGjcXXVwSnc7z4k-nreO+0UfJJ3w@mail.gmail.com>
-Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
-To: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Pz06/J48RjC5Q3yPPT3IM8BqROXUTAmWlZaQb/WmRpqoqbFHcLy
- AWs0u7DhpfY17+7nvQEZ2RhPtUnPRftNx76e4BACD75u5gP95ZBJzHFBzzyyXumNtfof0bk
- 0T5vWWdNroSw3b+SEp4eTJCE7KmNtdG3ajSzUzIRsi71jjyHjZxHrwPqBBHcLbOsYI79xtO
- 8EjrsX363gKwNWbNOVLxg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mVW3uV7wnAk=:0H9xxXHxwTl0ZLaBsFFjeL
- hw7tVE+EgjQ0xurlX5PXbXdzod1/lr1ggi1+su+t54ifF0n0jy/QZYWZ42suLAbYjpVNh4JTV
- 5MEyaObDt8egRpGUaVXyP5tmuRzL/F8bCYomWiDy/0rx40dW32iahFuWbmQ++afNlZwJUlg2C
- t1YuxtoivdcLlFvTJ1lmhhNTXQJF+dettKk0FpSYjUZXDAIv0zy1Fs0cO5T1kzLCmw2t4Aq+l
- 4ahn9F6+gnSHf5kv8U6SL3T6c+jL2A4PjDK3xtqNTwwEoQD2CV8r7l3B1k+qtjMZsrzQcIzFO
- ndQ6xcpUeNQw1elnNRB3T0Zc3mR7VbRZh/aeuja+agd3GGHREkX/sPQ+f3c0swi/MGVEOldwT
- ZEJo7I/v4PDEOK7kd5dXAN49HriYJtPkwzIMNcQGnjkeCSq0rqCCXGJVbEX5V8jHMqZTPAljr
- F4OVdKvn4ofa+Xv3nHX6+6Knh3u7UzZN9O18ZMX0bqi//ZXjGgzLa7KuF0IQuMjF0wi6ZIftL
- aIhWtSLraGlItlK5tUAzHJgbKxaKskBC+v6u9cZoRlbgyJDaGRXu8K14t7pmMmYhnygQOIwuA
- SGXA0+Y/ykbmtGEKgdoeV+B7bK6H2GxYkGYyDs/TVRfY6mQxX8xANHurIVuCqjggB8VXg0/EL
- Uk78Pddl2Co7NHXgchiM+Y88JkQc20NPxt8b4U4ZIU1ks3+kpHtccbw0kF1pIQ/A0Tl4iudKW
- EJVkFJk3pOIlaPweHl1GpV48f2cl0AowIS2gNmj2MRSPYK9X3nUV+0zfP3Z1fbrHaw4jEx4Pt
- KNRSAliSvF2MRAZhz2zeAThgEVBFrA+kkLaNfnoMq5xiolF0HhkgNvyfjLqC6ay9jIzSDABlY
- Vmr4FHLgBAXtllvnPpit++8LH7GQirolDhPGQIs/w=
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1d0c5ebc-3f66-f6cb-998f-072bceb41c5c@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,18 +63,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: "aik@ozlabs.ru" <aik@ozlabs.ru>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "mingo@redhat.com" <mingo@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "paulus@samba.org" <paulus@samba.org>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 4, 2022 at 3:29 PM Pali Roh=C3=A1r <pali@kernel.org> wrote:
->
-> And still what to do with 4bf4f42a2feb ("powerpc/kbuild: Set default
-> generic machine type for 32-bit compile")? I'm somehow lost there...
+On Mon, Jul 04, 2022 at 12:44:30PM +0000, Christophe Leroy wrote:
+> 
+> 
+> Le 04/07/2022 à 14:05, Peter Zijlstra a écrit :
+> > On Sat, Jun 25, 2022 at 06:46:54AM +0000, Christophe Leroy wrote:
+> >>
+> >>
+> >> Le 24/06/2022 à 20:32, Sathvika Vasireddy a écrit :
+> >>> objtool is throwing *unannotated intra-function call*
+> >>> warnings with a few instructions that are marked
+> >>> unreachable. Remove unreachable() from WARN_ON()
+> >>> to fix these warnings, as the codegen remains same
+> >>> with and without unreachable() in WARN_ON().
+> >>
+> >> Did you try the two exemples described in commit 1e688dd2a3d6
+> >> ("powerpc/bug: Provide better flexibility to WARN_ON/__WARN_FLAGS() with
+> >> asm goto") ?
+> >>
+> >> Without your patch:
+> >>
+> >> 00000640 <test>:
+> >>    640:	81 23 00 84 	lwz     r9,132(r3)
+> >>    644:	71 29 40 00 	andi.   r9,r9,16384
+> >>    648:	40 82 00 0c 	bne     654 <test+0x14>
+> >>    64c:	80 63 00 0c 	lwz     r3,12(r3)
+> >>    650:	4e 80 00 20 	blr
+> >>    654:	0f e0 00 00 	twui    r0,0
+> >>
+> >> 00000658 <test9w>:
+> >>    658:	2c 04 00 00 	cmpwi   r4,0
+> >>    65c:	41 82 00 0c 	beq     668 <test9w+0x10>
+> >>    660:	7c 63 23 96 	divwu   r3,r3,r4
+> >>    664:	4e 80 00 20 	blr
+> >>    668:	0f e0 00 00 	twui    r0,0
+> >>    66c:	38 60 00 00 	li      r3,0
+> >>    670:	4e 80 00 20 	blr
+> > 
+> > Per this construct you should do as x86 does and assume twui terminates
+> > control flow and explicitly annotate the WARN case. That is, given the
+> > fact that BUG as no instructions following it, you can't very well
+> > annotate that.
+> 
+> That exactly the problem I guess. I'm fine with replacing the 
+> unreachable() by __builtin_unreachable() with our __WARN_FLAGS() and 
+> BUG() but we will still have a problem with some of the unrachable() 
+> that are in core parts of the kernel.
+> 
+> Even the ones in arch/powerpc/, they are valid and should remain. The 
+> point seems that the generic annotate_unreachable() is wrong for powerpc 
+> as is, and activating CONFIG_OBJTOOL lead to bad code generation.
 
-As far as I can tell, that is not needed, as long as every configuration
-sets a specific -mcpu=3D option, the only reason it was required is that
-there were some configs that relied on the compiler default, which
-ended up being -mcpu=3Dpower8 or similar.
+Right; I'm not against making that depend on yet-another OBJTOOL_$config
+thing.
 
-       Arnd
+> By the way, for which functionnalities of objtool is that analysis 
+> necessary ? I understand it is not necessary to mcount accounting, so 
+> maybe the not empty annotate_unreachable() should be limited to those 
+> those functionnalities ?
+
+For all the things where it needs to follow control flow, so stack
+validation, ORC generation, unreachable instruction validation etc..
+
+I'd need to double check code-gen on x86, but the way
+__builtin_unreachable() makes code-gen stop dead, I'm not entirely sure
+it's right for us either.
+
+> > Alternatively, you can teach objtool to look at __bug_table to
+> > distinguish these cases.
+> 
+> Isn't it enough to tell objtool that execution never go past twui, using 
+> INSN_BUG ?
+
+That should work I suppose.
+
+> By the way, for __WARN_FLAGS, we use the __extable for the continuation. 
+> Is objtools able to follow __extable ?
+
+Yes.
