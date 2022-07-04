@@ -2,56 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E24565B87
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 18:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE41565E94
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 22:37:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc9x91DZrz3btl
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 02:19:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LcHgJ0L5bz3brj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 06:37:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=J3Tm7zzG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NMU/eX/3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=J3Tm7zzG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NMU/eX/3;
 	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc9wS5yhhz3bdM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 02:18:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=OaIZbZS8eO4iPkPnlV7Z9+YRb+HEbmihdIPppzUqvgk=; b=J3Tm7zzGSClf8m6gOOHtw7x93I
-	A1fHFYCKRhM3rDchyS++ZoN+DKWaQuq2Z4CoeKJaOn7A3EkguPXZ5FJJfzjNwppctjo3OmjuCVG75
-	HNi0lK/z87M/ApfSMa9E/L6rJoHqv7u6JbUFpWHZouJgOwsu4SEKkMxR+j7hSRmgmtQ6HkcrfDchg
-	06DoAliSmz0EbHRAmtD/gAaYRM9+MZ1JzRT4TtAYKPZIxFCYoMPAPVZWADxKVBNNezpkp1jplIbnu
-	IAGC+AmQZreOfKgzWf5r1eupZEcfXd5xqQF4YT2Gn9XjjfByMxOeJ2U7Iw/P9YyGsj8ckwKqpiWih
-	+LGZIybA==;
-Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=worktop.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o8OmR-00HQIz-3E; Mon, 04 Jul 2022 16:18:35 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 140C798005D; Mon,  4 Jul 2022 18:18:33 +0200 (CEST)
-Date: Mon, 4 Jul 2022 18:18:32 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH v3 07/12] objtool: Use macros to define arch specific
- reloc types
-Message-ID: <YsMS2BImeTG4LrQC@worktop.programming.kicks-ass.net>
-References: <20220624183238.388144-1-sv@linux.ibm.com>
- <20220624183238.388144-8-sv@linux.ibm.com>
- <YsLLsE2oajICIYmq@hirez.programming.kicks-ass.net>
- <47f7a3db-7b34-1991-11df-f0f7e1317614@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LcHfX5f1Pz3bXw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 06:37:08 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 73CA0616F8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 20:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D7977C341CE
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 20:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1656967024;
+	bh=5U+PrR1MDWVfWAhgbieOgVSr8KORdHwT34UMh4ky7MQ=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=NMU/eX/3nShdd1CjrC6NnpwRflg1rahnB+Jny6GFZVd+6pJ4Wg21NDNN0IKZ+rRQW
+	 m4cZdej2gAZ/umAWBkO7R5QtANfvtH6YR2ObI3Nu9LUHCWzb2f3moZ7JmSWiPL23F3
+	 8ij+nqqZPnDRGhslEuPs9hIdv7hcGmjb3M1ca952nnTPWY98UoORUPASEY3WNcMhzw
+	 D76MA+AUKQB5GOTQ/r9FI94AbmVo20oSPCUm42wAvl3ANbPZS+1QIA2m48TeI8Wx6u
+	 jl3f+1lHWzXJHqltjQhJWBRl/t2egqtZjD3mxBKf2Ep7rIGwYfXv+ZuF0bwJ51OQcH
+	 BhTl5Q53+SFMw==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id B6E02C05FD2; Mon,  4 Jul 2022 20:37:04 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 213733] Kernel NULL pointer dereference on read (Oops: Kernel
+ access of bad area, sig: 7 [#1]) at systemctl poweroff
+Date: Mon, 04 Jul 2022 20:37:04 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: OBSOLETE
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-213733-206035-nQEH4Rk3ot@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-213733-206035@https.bugzilla.kernel.org/>
+References: <bug-213733-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <47f7a3db-7b34-1991-11df-f0f7e1317614@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,56 +79,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "mbenes@suse.cz" <mbenes@suse.cz>, "aik@ozlabs.ru" <aik@ozlabs.ru>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "mingo@redhat.com" <mingo@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "paulus@samba.org" <paulus@samba.org>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "g@hirez.programming.kicks-ass.net" <g@hirez.programming.kicks-ass.net>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 04, 2022 at 03:53:50PM +0000, Christophe Leroy wrote:
-> 
-> 
-> Le 04/07/2022 à 13:14, Peter Zijlstra a écrit :
-> > On Sat, Jun 25, 2022 at 12:02:33AM +0530, Sathvika Vasireddy wrote:
-> >> Make relocation types architecture specific.
-> >>
-> >> Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
-> >> ---
-> >>   tools/objtool/arch/x86/include/arch/elf.h | 2 ++
-> >>   tools/objtool/check.c                     | 2 +-
-> >>   2 files changed, 3 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/tools/objtool/arch/x86/include/arch/elf.h b/tools/objtool/arch/x86/include/arch/elf.h
-> >> index 69cc4264b28a..ac14987cf687 100644
-> >> --- a/tools/objtool/arch/x86/include/arch/elf.h
-> >> +++ b/tools/objtool/arch/x86/include/arch/elf.h
-> >> @@ -2,5 +2,7 @@
-> >>   #define _OBJTOOL_ARCH_ELF
-> >>   
-> >>   #define R_NONE R_X86_64_NONE
-> >> +#define R_ABS64 R_X86_64_64
-> >> +#define R_ABS32 R_X86_64_32
-> >>   
-> >>   #endif /* _OBJTOOL_ARCH_ELF */
-> >> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-> >> index 98e869721bc4..88f68269860e 100644
-> >> --- a/tools/objtool/check.c
-> >> +++ b/tools/objtool/check.c
-> >> @@ -834,7 +834,7 @@ static int create_mcount_loc_sections(struct objtool_file *file)
-> >>   		memset(loc, 0, size);
-> >>   
-> >>   		if (elf_add_reloc_to_insn(file->elf, sec, idx,
-> >> -					  R_X86_64_64,
-> >> +					  size == sizeof(u64) ? R_ABS64 : R_ABS32,
-> >>   					  insn->sec, insn->offset))
-> >>   			return -1;
-> >>   
-> > 
-> > Given cross compiles, should this not also be elf dependent?
-> 
-> size is elf dependent (From the same series [RFC PATCH v3 03/12] 
-> objtool: Use target file class size instead of a compiled constant)
-> 
-> R_ABS64 and R_ABS32 are defined in the architecture elf.h, and this is 
-> the architecture for which you are building your kernel, not the 
-> architecture you cross compile on.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D213733
 
-Duh. Thanks!
+Erhard F. (erhard_f@mailbox.org) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |OBSOLETE
+
+--- Comment #2 from Erhard F. (erhard_f@mailbox.org) ---
+Have not seen this since quite some stable releases, nor on 5.19-rcs.
+
+Closing for now as obsolete.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
