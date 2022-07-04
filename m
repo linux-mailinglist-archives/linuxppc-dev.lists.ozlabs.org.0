@@ -2,50 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC41565007
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 10:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9AA565221
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 12:23:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LbzyM2YMJz3bqR
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 18:49:47 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=VPkQ8OxP;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc22x1NGbz3c3Z
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 20:23:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.114; helo=m15114.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=VPkQ8OxP;
-	dkim-atps=neutral
-Received: from m15114.mail.126.com (m15114.mail.126.com [220.181.15.114])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lbzxh14RSz3062
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 18:49:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=+sTBm
-	45qb9tY8Tvoanhh3f/+xnzFQuBTY8zMr/2jRvw=; b=VPkQ8OxPdiuN2m53j+aEs
-	h/OBV2pqtXJzFEFirZBQx/S0RzfI39kv3dUO3Tnm4morr/SxC11eHZzsX8b284co
-	ALTiWgdMrjxkXGl1MPGbCIQ2tAt2/nRe/wMR1LHLLbj9OL4ZeDlGCCnjBK9HmVan
-	QIvlWcUQskRfPEeEvIIbD8=
-Received: from localhost.localdomain (unknown [124.16.139.61])
-	by smtp7 (Coremail) with SMTP id DsmowAC3hfFzqcJi_IadEQ--.18572S2;
-	Mon, 04 Jul 2022 16:48:52 +0800 (CST)
-From: Liang He <windhl@126.com>
-To: leoyang.li@nxp.com,
-	linuxppc-dev@lists.ozlabs.org,
-	windhl@126.com,
-	linmq006@gmail.com
-Subject: [PATCH] soc: fsl: qbman: Fix missing of_node_put() in qbman_init_private_mem()
-Date: Mon,  4 Jul 2022 16:48:50 +0800
-Message-Id: <20220704084850.277122-1-windhl@126.com>
-X-Mailer: git-send-email 2.25.1
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc22X0qpZz30DX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 20:23:32 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Lc22W5T6qz4xYN;
+	Mon,  4 Jul 2022 20:23:31 +1000 (AEST)
+Date: Mon, 04 Jul 2022 20:23:29 +1000
+From: Michael Ellerman <michael@ellerman.id.au>
+To: =?ISO-8859-1?Q?Pali_Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20220702094405.tp7eo4df7fjvn2ng@pali>
+References: <20220524093939.30927-1-pali@kernel.org> <20220702094405.tp7eo4df7fjvn2ng@pali>
+Message-ID: <8D562851-304F-4153-9194-426CC22B7FF2@ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DsmowAC3hfFzqcJi_IadEQ--.18572S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW3XrWfJr4fGr18Jr4xJFb_yoW8ur47pF
-	4rA3yYk348tr47Wr12ya1DZa4Yyw48tay8K3Z2k3W09r13Jw1vqw4aqryFqasaqryku3WU
-	JayUJF15Ca15X3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRbBMiUUUUU=
-X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbiuBQ0F2JVkLyLEgAAsN
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,76 +44,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We should call of_node_put() for the reference returned by
-of_parse_phandle() which will increase the refcount.
 
-Fixes: 42d0349784c7 ("soc/fsl/qbman: Add common routine for QBMan private allocations")
-Co-authored-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Liang He <windhl@126.com>
----
- drivers/soc/fsl/qbman/dpaa_sys.c | 28 ++++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soc/fsl/qbman/dpaa_sys.c b/drivers/soc/fsl/qbman/dpaa_sys.c
-index 9dd8bb571dbc..6138a68ea699 100644
---- a/drivers/soc/fsl/qbman/dpaa_sys.c
-+++ b/drivers/soc/fsl/qbman/dpaa_sys.c
-@@ -52,7 +52,8 @@ int qbman_init_private_mem(struct device *dev, int idx, dma_addr_t *addr,
- 	rmem = of_reserved_mem_lookup(mem_node);
- 	if (!rmem) {
- 		dev_err(dev, "of_reserved_mem_lookup() returned NULL\n");
--		return -ENODEV;
-+		err = -ENODEV;
-+		goto out_of_put;
- 	}
- 	*addr = rmem->base;
- 	*size = rmem->size;
-@@ -66,24 +67,35 @@ int qbman_init_private_mem(struct device *dev, int idx, dma_addr_t *addr,
- 	prop = of_find_property(mem_node, "reg", &len);
- 	if (!prop) {
- 		prop = devm_kzalloc(dev, sizeof(*prop), GFP_KERNEL);
--		if (!prop)
--			return -ENOMEM;
-+		if (!prop) {
-+			err = -ENOMEM;
-+			goto out_of_put;
-+		}
- 		prop->value = res_array = devm_kzalloc(dev, sizeof(__be32) * 4,
- 						       GFP_KERNEL);
--		if (!prop->value)
--			return -ENOMEM;
-+		if (!prop->value) {
-+			err = -ENOMEM;
-+			goto out_of_put;
-+		}
- 		res_array[0] = cpu_to_be32(upper_32_bits(*addr));
- 		res_array[1] = cpu_to_be32(lower_32_bits(*addr));
- 		res_array[2] = cpu_to_be32(upper_32_bits(*size));
- 		res_array[3] = cpu_to_be32(lower_32_bits(*size));
- 		prop->length = sizeof(__be32) * 4;
- 		prop->name = devm_kstrdup(dev, "reg", GFP_KERNEL);
--		if (!prop->name)
--			return -ENOMEM;
-+		if (!prop->name) {
-+			err = -ENOMEM;
-+			goto out_of_put;
-+		}
- 		err = of_add_property(mem_node, prop);
- 		if (err)
--			return err;
-+			goto out_of_put;
- 	}
-+	of_node_put(mem_node);
- 
- 	return 0;
-+
-+out_of_put:
-+	of_node_put(mem_node);
-+	return err;
- }
--- 
-2.25.1
+On 2 July 2022 7:44:05 pm AEST, "Pali Roh=C3=A1r" <pali@kernel=2Eorg> wrot=
+e:
+>On Tuesday 24 May 2022 11:39:39 Pali Roh=C3=A1r wrote:
+>> gcc e500 compiler does not support -mcpu=3Dpowerpc option=2E When it is
+>> specified then gcc throws compile error:
+>>=20
+>>   gcc: error: unrecognized argument in option =E2=80=98-mcpu=3Dpowerpc=
+=E2=80=99
+>>   gcc: note: valid arguments to =E2=80=98-mcpu=3D=E2=80=99 are: 8540 85=
+48 native
+>>=20
+>> So do not set -mcpu=3Dpowerpc option when CONFIG_E500 is set=2E Correct=
+ option
+>> -mcpu=3D8540 for CONFIG_E500 is set few lines below in that Makefile=2E
+>>=20
+>> Signed-off-by: Pali Roh=C3=A1r <pali@kernel=2Eorg>
+>> Cc: stable@vger=2Ekernel=2Eorg
+>
+>Michael, do you have any objections about this patch?
 
+I don't particularly like it :)
+
+From=20the discussion with Segher, it sounds like this is a problem with a s=
+pecific build of gcc that you're using, not a general problem with gcc buil=
+t with e500 support=2E
+
+Keying it off CONFIG_E500 means it will fix your problem, but not anyone e=
+lse who has a different non-e500 compiler that also doesn't support -mcpu=
+=3Dpowerpc (for whatever reason)=2E
+
+So I wonder if a better fix is to use cc-option when setting -mcpu=3Dpower=
+pc=2E
+
+cheers
