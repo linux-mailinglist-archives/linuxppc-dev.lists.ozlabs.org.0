@@ -2,62 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA40565724
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 15:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1828356579C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 15:44:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc69P4RQKz3c1n
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 23:29:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iNI+7Qkp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc6VH6yQRz3c48
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 23:44:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iNI+7Qkp;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=212.227.126.131; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc68n537Yz2yLT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 23:29:13 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id E4448B80F00;
-	Mon,  4 Jul 2022 13:29:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67378C3411E;
-	Mon,  4 Jul 2022 13:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1656941347;
-	bh=LxOgaJ9LSgEjVEuMAJUhVF/q8JAFuDeLHwegeV8kA+4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iNI+7QkpC3aLbGataolyMpLPtKEu8CKuclbUHURo1BxSe9EZvBggWafe9cc7MntHS
-	 EMXFp45e3B0esnlKzSsBiW3ed0jhCGDmo3KCthIzh61k9EzvgMF0OAu3TBirp9WDzv
-	 qKmmMeyZzkMcPqWemgD4B+BO3qIKEt7fKKtPENF+zmLJhQG4oGayeg93wrcaylA8Px
-	 1s3SsNTho80QD/W9+MGqts9ub7DIDaBszIxuTfzX2IUDAKP3sRq6EzHdUwopwLOh7W
-	 HxtreIXlyRUprjsnBINdTS60JYEuFsXqpSybaqjCWyRVvTCba314q8tTWzLy4hES8w
-	 ZticA7DiamrvA==
-Received: by pali.im (Postfix)
-	id BBEE46E8; Mon,  4 Jul 2022 15:29:04 +0200 (CEST)
-Date: Mon, 4 Jul 2022 15:29:04 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
-Message-ID: <20220704132904.irvs4xefu4esgw6c@pali>
-References: <20220524093939.30927-1-pali@kernel.org>
- <20220702094405.tp7eo4df7fjvn2ng@pali>
- <8D562851-304F-4153-9194-426CC22B7FF2@ellerman.id.au>
- <20220704103951.nm4m4kpgnus3ucqo@pali>
- <CAK8P3a2tdny8SA7jcqhUZT13iq1mYqjFueC-gnTUZA1JKCtfgg@mail.gmail.com>
- <20220704131358.fy3z7tjcmk2m6pfh@pali>
- <CAK8P3a2hfnt+tHiqHrHAVyagSm73LJe4OV8ig=CKFcycfk4Zag@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc6Tq14KFz303t
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 23:43:57 +1000 (AEST)
+Received: from mail-yb1-f175.google.com ([209.85.219.175]) by
+ mrelayeu.kundenserver.de (mreue010 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1M7Jj2-1oG3zp3a2e-007hbI for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jul
+ 2022 15:43:54 +0200
+Received: by mail-yb1-f175.google.com with SMTP id g4so16983804ybg.9
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jul 2022 06:43:52 -0700 (PDT)
+X-Gm-Message-State: AJIora+u6XNWUF6pEsy0mErWPf2iMBJttjKRJCbOrmjWC/aaVgr72xKC
+	0XMqLv25H3YwkaUxOT/ht14Baa8tNR0pH/iR/Yg=
+X-Google-Smtp-Source: AGRyM1sl7ZhrdyDlr2pScNIVgZG3D4DXePFqgUbPtO3R2pdcjKLgl0+jlEAndq8SOJ1A5ZwWwducTiOPZWJ7gVrp92s=
+X-Received: by 2002:a25:8b8b:0:b0:669:b37d:f9cd with SMTP id
+ j11-20020a258b8b000000b00669b37df9cdmr31378860ybl.394.1656942231974; Mon, 04
+ Jul 2022 06:43:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a2hfnt+tHiqHrHAVyagSm73LJe4OV8ig=CKFcycfk4Zag@mail.gmail.com>
-User-Agent: NeoMutt/20180716
+References: <20220524093939.30927-1-pali@kernel.org> <20220702094405.tp7eo4df7fjvn2ng@pali>
+ <8D562851-304F-4153-9194-426CC22B7FF2@ellerman.id.au> <20220704103951.nm4m4kpgnus3ucqo@pali>
+ <CAK8P3a2tdny8SA7jcqhUZT13iq1mYqjFueC-gnTUZA1JKCtfgg@mail.gmail.com>
+ <20220704131358.fy3z7tjcmk2m6pfh@pali> <CAK8P3a2hfnt+tHiqHrHAVyagSm73LJe4OV8ig=CKFcycfk4Zag@mail.gmail.com>
+ <20220704132904.irvs4xefu4esgw6c@pali>
+In-Reply-To: <20220704132904.irvs4xefu4esgw6c@pali>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 4 Jul 2022 15:43:34 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a30ecxG-A0_YDSBJAaGjcXXVwSnc7z4k-nreO+0UfJJ3w@mail.gmail.com>
+Message-ID: <CAK8P3a30ecxG-A0_YDSBJAaGjcXXVwSnc7z4k-nreO+0UfJJ3w@mail.gmail.com>
+Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
+To: =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Pz06/J48RjC5Q3yPPT3IM8BqROXUTAmWlZaQb/WmRpqoqbFHcLy
+ AWs0u7DhpfY17+7nvQEZ2RhPtUnPRftNx76e4BACD75u5gP95ZBJzHFBzzyyXumNtfof0bk
+ 0T5vWWdNroSw3b+SEp4eTJCE7KmNtdG3ajSzUzIRsi71jjyHjZxHrwPqBBHcLbOsYI79xtO
+ 8EjrsX363gKwNWbNOVLxg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:mVW3uV7wnAk=:0H9xxXHxwTl0ZLaBsFFjeL
+ hw7tVE+EgjQ0xurlX5PXbXdzod1/lr1ggi1+su+t54ifF0n0jy/QZYWZ42suLAbYjpVNh4JTV
+ 5MEyaObDt8egRpGUaVXyP5tmuRzL/F8bCYomWiDy/0rx40dW32iahFuWbmQ++afNlZwJUlg2C
+ t1YuxtoivdcLlFvTJ1lmhhNTXQJF+dettKk0FpSYjUZXDAIv0zy1Fs0cO5T1kzLCmw2t4Aq+l
+ 4ahn9F6+gnSHf5kv8U6SL3T6c+jL2A4PjDK3xtqNTwwEoQD2CV8r7l3B1k+qtjMZsrzQcIzFO
+ ndQ6xcpUeNQw1elnNRB3T0Zc3mR7VbRZh/aeuja+agd3GGHREkX/sPQ+f3c0swi/MGVEOldwT
+ ZEJo7I/v4PDEOK7kd5dXAN49HriYJtPkwzIMNcQGnjkeCSq0rqCCXGJVbEX5V8jHMqZTPAljr
+ F4OVdKvn4ofa+Xv3nHX6+6Knh3u7UzZN9O18ZMX0bqi//ZXjGgzLa7KuF0IQuMjF0wi6ZIftL
+ aIhWtSLraGlItlK5tUAzHJgbKxaKskBC+v6u9cZoRlbgyJDaGRXu8K14t7pmMmYhnygQOIwuA
+ SGXA0+Y/ykbmtGEKgdoeV+B7bK6H2GxYkGYyDs/TVRfY6mQxX8xANHurIVuCqjggB8VXg0/EL
+ Uk78Pddl2Co7NHXgchiM+Y88JkQc20NPxt8b4U4ZIU1ks3+kpHtccbw0kF1pIQ/A0Tl4iudKW
+ EJVkFJk3pOIlaPweHl1GpV48f2cl0AowIS2gNmj2MRSPYK9X3nUV+0zfP3Z1fbrHaw4jEx4Pt
+ KNRSAliSvF2MRAZhz2zeAThgEVBFrA+kkLaNfnoMq5xiolF0HhkgNvyfjLqC6ay9jIzSDABlY
+ Vmr4FHLgBAXtllvnPpit++8LH7GQirolDhPGQIs/w=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,37 +73,18 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Monday 04 July 2022 15:22:03 Arnd Bergmann wrote:
-> On Mon, Jul 4, 2022 at 3:13 PM Pali Rohár <pali@kernel.org> wrote:
-> > On Monday 04 July 2022 14:07:10 Arnd Bergmann wrote:
-> 
-> > > CFLAGS_CPU-$(CONFIG_PPC_BOOK3S_32) := -mcpu=powerpc
-> > > CFLAGS_CPU-$(CONFIG_PPC_85xx) := -mcpu=8540
-> > > CFLAGS_CPU-$(CONFIG_PPC8xx) := -mcpu=860
-> > > CFLAGS_CPU-$(CONFIG_PPC44x) := -mcpu=440
-> > > CFLAGS_CPU-$(CONFIG_PPC40x) := -mcpu=405
-> > > ifdef CONFIG_CPU_LITTLE_ENDIAN
-> > > CFLAGS_CPU-$(CONFIG_BOOK3S_64) := -mcpu=power8
-> > > else
-> > > CFLAGS_CPU-$(CONFIG_BOOK3S_64) := -mcpu=power5
-> > > endif
-> > > CFLAGS_CPU-$(CONFIG_BOOK3E_64) := -mcpu=powerpc64
-> >
-> > Yes, this is something I would expect that in Makefile should be.
-> >
-> > But what to do with fallback value?
-> 
-> Most of the fallback values can just be removed because we don't support
-> building with gcc versions older than 5.1.0 any more. The only one
-> that I think still needs a fallback is mtune=power9, which requires gcc-6.1
-> or higher. CONFIG_POWER9_CPU could similarly use a
-> "depends on GCC_VERSION > 60100".
-> 
->         Arnd
+On Mon, Jul 4, 2022 at 3:29 PM Pali Roh=C3=A1r <pali@kernel.org> wrote:
+>
+> And still what to do with 4bf4f42a2feb ("powerpc/kbuild: Set default
+> generic machine type for 32-bit compile")? I'm somehow lost there...
 
-And still what to do with 4bf4f42a2feb ("powerpc/kbuild: Set default
-generic machine type for 32-bit compile")? I'm somehow lost there...
+As far as I can tell, that is not needed, as long as every configuration
+sets a specific -mcpu=3D option, the only reason it was required is that
+there were some configs that relied on the compiler default, which
+ended up being -mcpu=3Dpower8 or similar.
+
+       Arnd
