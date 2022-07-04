@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDAA556598B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 17:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC9F56598F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 17:13:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc8Rx5WgCz3fPK
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 01:12:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc8Sc4xqrz3fSZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 01:13:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ph8b8+BR;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=K6CNs/JC;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--elver.bounces.google.com (client-ip=2a00:1450:4864:20::649; helo=mail-ej1-x649.google.com; envelope-from=37whdygukdbw6dn6j8gg8d6.4gedafmphh4-56ndaklk.grd23k.gj8@flex--elver.bounces.google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--elver.bounces.google.com (client-ip=2a00:1450:4864:20::64a; helo=mail-ej1-x64a.google.com; envelope-from=38ghdygukdb89gq9mbjjbg9.7jhgdipskk7-89qgdnon.jug56n.jmb@flex--elver.bounces.google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=Ph8b8+BR;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=K6CNs/JC;
 	dkim-atps=neutral
-Received: from mail-ej1-x649.google.com (mail-ej1-x649.google.com [IPv6:2a00:1450:4864:20::649])
+Received: from mail-ej1-x64a.google.com (mail-ej1-x64a.google.com [IPv6:2a00:1450:4864:20::64a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc8Jy5chZz3byv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 01:06:26 +1000 (AEST)
-Received: by mail-ej1-x649.google.com with SMTP id l2-20020a170906078200b006fed42bfeacso2141491ejc.16
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jul 2022 08:06:26 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc8K10Stgz3bv4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 01:06:28 +1000 (AEST)
+Received: by mail-ej1-x64a.google.com with SMTP id e20-20020a170906315400b007262bd0111eso2124002eje.9
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Jul 2022 08:06:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=yKHd4+xECY7NKN85fGWY0KF6Qb94v9CyhlLOvS2S1lk=;
-        b=Ph8b8+BRp8UF3q45WaVGDpzOGcKX1K7SLbLqBqrclyh0nxPSG/KuoHKe/VDxiTer8b
-         IAi6O8suVd0rgt8XGC+GNaJU9hpUIaIuxsrPq4Ejzd12Sdz0m1067DxPyqs30B1zylVm
-         dxRzGzK+3MBE0hpfoZCp4zDUAoyD6Cvs2Qttkwp4sLzEhVmC/Xoy66reRveUzPOZldla
-         raHJWM4L2eR0mSPU8+xiOwXka2jQoK1EKz9G9ufnUNccA9gRdrgor5rE483oWbIB1+WE
-         PcECJ6azBnTzgr4PZadkahxGdwjtpRSR1zK+pD/HQv9uiFgVEPVu0fgeg3AR4VP9ftti
-         zlBw==
+        bh=F+y0VjUOf/KQ8kMAUmr6wHVQBOr1d3IzfRi1YZ7mk8I=;
+        b=K6CNs/JCyvRwiInYtC1WtsGOTe6k0tCF+MDSxwYeRSOzgFWxXtpy2OmBOsYEHdVoW/
+         gClwyyno0ON0l7wO+c41CaC+PRZ6EN1vXN/O7lLX3p3B2d4fjRdpAdRQIbU/Rx3iQtnY
+         jlDSUFXjQCIKgr3cTIOGv+DMGujMQrQizDZOxFZr739HtF0JQEVU3bbcQqfJNi4gEcJh
+         U68viHegZnvTGT9DfnrorGOJoIGOM9h620JYohrK1PRJwcM0zQuGT6josY9J+m7JMMyX
+         ig3Ql7uPvEM+jBZTGNlNlepq2/Q88fky0lyBZQZG32rPE4jkn0h/yM6iu0KGhTcYQm7g
+         HsEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=yKHd4+xECY7NKN85fGWY0KF6Qb94v9CyhlLOvS2S1lk=;
-        b=I/A5hO2P9XhCbqQFSsaLQIxT9yTqkZUROEpnHpuBCEXcFkl3HSKx5Q4vqq/t9PJcBR
-         Q0ahZ3gc2+IwSXiwWL9i5iqUo9akAAzu04mxfq/IrRIy5MsFCudIc0ANU+qJe0RPf0h4
-         d+E+VX4yNpWo7unMEcPfNbywgwstx7gT+qKDOpYE51YM0eKpaEJ+hm7q323gPvjQb/HR
-         iWOltKy4vnTXqFVlhwTCxQPXuWayTyuWWkPMS91+50jfh+VkA5hctvC0HRQiIRvUXDA7
-         ciUbreIfHGCzxA9k5aBP1VLDdUd5PwpeV6srfJpTq7l4Ud1TJE6zVNNajn3jVdXlWl0O
-         GTnA==
-X-Gm-Message-State: AJIora86sprJ5Yxl+zSAD+fzoaYuH6yqYY5B/FfQXFI2HDVWj3KHtf/J
-	uTpR3ByvGtzPvG60fVilfp8/cd1HtA==
-X-Google-Smtp-Source: AGRyM1v1bp4fmM3Ia8wxOfKnNbYa+SkAtF2yk0BBky/nBRaoOYmthev0cidUeNONuJ9a0TQ32GuetMcAbg==
+        bh=F+y0VjUOf/KQ8kMAUmr6wHVQBOr1d3IzfRi1YZ7mk8I=;
+        b=07I8qtLvJ4aHSsQ+DvJJk1IwMKr7/pDHD1EKQdn2qdV8HD2VX44I9T986hiogwrD1+
+         nrq8eeYbaAzVVwPrUulBoZT+mSXbVmXEwYhJqJ6jnR6i8gJWiF8ZJRShT/sH/LmM0utD
+         BiNXru46VZqcDiw6P33uRXMhKhXFhECxJMh6OP2m9XmROMOwWQcR28CizbrZzy5xQJbS
+         IjifAfOjeIhViKxMjMFOG8aspFoMGJMteeFevQT2Kg6KtMjpqr9Fh+RCVo971exkWZSA
+         K9Lf8Jg/vX8PxU6s2jDb9fiofTEO5bj6sqhHGJ1Is01ue15CGJM4a0HZBqx4+Wx9FNle
+         FaVA==
+X-Gm-Message-State: AJIora+EvTRsq7XRIpZ/OSe127+Mlvy9Levvwr6nKUDSN4Xf0F7XCIbb
+	MtaDmBmK01SosUyA9PUZCYoxgyHyAg==
+X-Google-Smtp-Source: AGRyM1v7+XFU2itM8feW+AgGn7caRoBbW+cQjtZLpTnUqIOjc2eB9k2szR6SAEhnJO512p7hkVty8E/gVA==
 X-Received: from elver.muc.corp.google.com ([2a00:79e0:9c:201:6edf:e1bc:9a92:4ad0])
- (user=elver job=sendgmr) by 2002:a17:907:6ea7:b0:726:41de:78ac with SMTP id
- sh39-20020a1709076ea700b0072641de78acmr30061092ejc.452.1656947183301; Mon, 04
- Jul 2022 08:06:23 -0700 (PDT)
-Date: Mon,  4 Jul 2022 17:05:10 +0200
+ (user=elver job=sendgmr) by 2002:a05:6402:1e88:b0:435:bf05:f0f with SMTP id
+ f8-20020a0564021e8800b00435bf050f0fmr39736606edf.2.1656947186068; Mon, 04 Jul
+ 2022 08:06:26 -0700 (PDT)
+Date: Mon,  4 Jul 2022 17:05:11 +0200
 In-Reply-To: <20220704150514.48816-1-elver@google.com>
-Message-Id: <20220704150514.48816-11-elver@google.com>
+Message-Id: <20220704150514.48816-12-elver@google.com>
 Mime-Version: 1.0
 References: <20220704150514.48816-1-elver@google.com>
 X-Mailer: git-send-email 2.37.0.rc0.161.g10f37bed90-goog
-Subject: [PATCH v3 10/14] locking/percpu-rwsem: Add percpu_is_write_locked()
- and percpu_is_read_locked()
+Subject: [PATCH v3 11/14] perf/hw_breakpoint: Reduce contention with large
+ number of tasks
 From: Marco Elver <elver@google.com>
 To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
 	Frederic Weisbecker <frederic@kernel.org>, Ingo Molnar <mingo@kernel.org>
@@ -80,56 +80,421 @@ Cc: Mark Rutland <mark.rutland@arm.com>, linux-sh@vger.kernel.org, Alexander Shi
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement simple accessors to probe percpu-rwsem's locked state:
-percpu_is_write_locked(), percpu_is_read_locked().
+While optimizing task_bp_pinned()'s runtime complexity to O(1) on
+average helps reduce time spent in the critical section, we still suffer
+due to serializing everything via 'nr_bp_mutex'. Indeed, a profile shows
+that now contention is the biggest issue:
+
+    95.93%  [kernel]       [k] osq_lock
+     0.70%  [kernel]       [k] mutex_spin_on_owner
+     0.22%  [kernel]       [k] smp_cfm_core_cond
+     0.18%  [kernel]       [k] task_bp_pinned
+     0.18%  [kernel]       [k] rhashtable_jhash2
+     0.15%  [kernel]       [k] queued_spin_lock_slowpath
+
+when running the breakpoint benchmark with (system with 256 CPUs):
+
+ | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
+ | # Running 'breakpoint/thread' benchmark:
+ | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
+ |      Total time: 0.207 [sec]
+ |
+ |      108.267188 usecs/op
+ |     6929.100000 usecs/op/cpu
+
+The main concern for synchronizing the breakpoint constraints data is
+that a consistent snapshot of the per-CPU and per-task data is observed.
+
+The access pattern is as follows:
+
+ 1. If the target is a task: the task's pinned breakpoints are counted,
+    checked for space, and then appended to; only bp_cpuinfo::cpu_pinned
+    is used to check for conflicts with CPU-only breakpoints;
+    bp_cpuinfo::tsk_pinned are incremented/decremented, but otherwise
+    unused.
+
+ 2. If the target is a CPU: bp_cpuinfo::cpu_pinned are counted, along
+    with bp_cpuinfo::tsk_pinned; after a successful check, cpu_pinned is
+    incremented. No per-task breakpoints are checked.
+
+Since rhltable safely synchronizes insertions/deletions, we can allow
+concurrency as follows:
+
+ 1. If the target is a task: independent tasks may update and check the
+    constraints concurrently, but same-task target calls need to be
+    serialized; since bp_cpuinfo::tsk_pinned is only updated, but not
+    checked, these modifications can happen concurrently by switching
+    tsk_pinned to atomic_t.
+
+ 2. If the target is a CPU: access to the per-CPU constraints needs to
+    be serialized with other CPU-target and task-target callers (to
+    stabilize the bp_cpuinfo::tsk_pinned snapshot).
+
+We can allow the above concurrency by introducing a per-CPU constraints
+data reader-writer lock (bp_cpuinfo_sem), and per-task mutexes (reuses
+task_struct::perf_event_mutex):
+
+  1. If the target is a task: acquires perf_event_mutex, and acquires
+     bp_cpuinfo_sem as a reader. The choice of percpu-rwsem minimizes
+     contention in the presence of many read-lock but few write-lock
+     acquisitions: we assume many orders of magnitude more task target
+     breakpoints creations/destructions than CPU target breakpoints.
+
+  2. If the target is a CPU: acquires bp_cpuinfo_sem as a writer.
+
+With these changes, contention with thousands of tasks is reduced to the
+point where waiting on locking no longer dominates the profile:
+
+ | $> perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
+ | # Running 'breakpoint/thread' benchmark:
+ | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
+ |      Total time: 0.077 [sec]
+ |
+ |       40.201563 usecs/op
+ |     2572.900000 usecs/op/cpu
+
+    21.54%  [kernel]       [k] task_bp_pinned
+    20.18%  [kernel]       [k] rhashtable_jhash2
+     6.81%  [kernel]       [k] toggle_bp_slot
+     5.47%  [kernel]       [k] queued_spin_lock_slowpath
+     3.75%  [kernel]       [k] smp_cfm_core_cond
+     3.48%  [kernel]       [k] bcmp
+
+On this particular setup that's a speedup of 2.7x.
+
+We're also getting closer to the theoretical ideal performance through
+optimizations in hw_breakpoint.c -- constraints accounting disabled:
+
+ | perf bench -r 30 breakpoint thread -b 4 -p 64 -t 64
+ | # Running 'breakpoint/thread' benchmark:
+ | # Created/joined 30 threads with 4 breakpoints and 64 parallelism
+ |      Total time: 0.067 [sec]
+ |
+ |       35.286458 usecs/op
+ |     2258.333333 usecs/op/cpu
+
+Which means the current implementation is ~12% slower than the
+theoretical ideal.
+
+For reference, performance without any breakpoints:
+
+ | $> bench -r 30 breakpoint thread -b 0 -p 64 -t 64
+ | # Running 'breakpoint/thread' benchmark:
+ | # Created/joined 30 threads with 0 breakpoints and 64 parallelism
+ |      Total time: 0.060 [sec]
+ |
+ |       31.365625 usecs/op
+ |     2007.400000 usecs/op/cpu
+
+On a system with 256 CPUs, the theoretical ideal is only ~12% slower
+than no breakpoints at all; the current implementation is ~28% slower.
 
 Signed-off-by: Marco Elver <elver@google.com>
 Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 ---
 v2:
-* New patch.
+* Use percpu-rwsem instead of rwlock.
+* Use task_struct::perf_event_mutex. See code comment for reasoning.
+==> Speedup of 2.7x (vs 2.5x in v1).
 ---
- include/linux/percpu-rwsem.h  | 6 ++++++
- kernel/locking/percpu-rwsem.c | 6 ++++++
- 2 files changed, 12 insertions(+)
+ kernel/events/hw_breakpoint.c | 161 ++++++++++++++++++++++++++++------
+ 1 file changed, 133 insertions(+), 28 deletions(-)
 
-diff --git a/include/linux/percpu-rwsem.h b/include/linux/percpu-rwsem.h
-index 5fda40f97fe9..36b942b67b7d 100644
---- a/include/linux/percpu-rwsem.h
-+++ b/include/linux/percpu-rwsem.h
-@@ -121,9 +121,15 @@ static inline void percpu_up_read(struct percpu_rw_semaphore *sem)
- 	preempt_enable();
+diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
+index 8b40fca1a063..229c6f4fae75 100644
+--- a/kernel/events/hw_breakpoint.c
++++ b/kernel/events/hw_breakpoint.c
+@@ -19,6 +19,7 @@
+ 
+ #include <linux/hw_breakpoint.h>
+ 
++#include <linux/atomic.h>
+ #include <linux/bug.h>
+ #include <linux/cpu.h>
+ #include <linux/export.h>
+@@ -28,6 +29,7 @@
+ #include <linux/kernel.h>
+ #include <linux/mutex.h>
+ #include <linux/notifier.h>
++#include <linux/percpu-rwsem.h>
+ #include <linux/percpu.h>
+ #include <linux/rhashtable.h>
+ #include <linux/sched.h>
+@@ -41,9 +43,9 @@ struct bp_cpuinfo {
+ 	unsigned int	cpu_pinned;
+ 	/* tsk_pinned[n] is the number of tasks having n+1 breakpoints */
+ #ifdef hw_breakpoint_slots
+-	unsigned int	tsk_pinned[hw_breakpoint_slots(0)];
++	atomic_t	tsk_pinned[hw_breakpoint_slots(0)];
+ #else
+-	unsigned int	*tsk_pinned;
++	atomic_t	*tsk_pinned;
+ #endif
+ };
+ 
+@@ -65,8 +67,79 @@ static const struct rhashtable_params task_bps_ht_params = {
+ 
+ static bool constraints_initialized __ro_after_init;
+ 
+-/* Serialize accesses to the above constraints */
+-static DEFINE_MUTEX(nr_bp_mutex);
++/*
++ * Synchronizes accesses to the per-CPU constraints; the locking rules are:
++ *
++ *  1. Atomic updates to bp_cpuinfo::tsk_pinned only require a held read-lock
++ *     (due to bp_slots_histogram::count being atomic, no update are lost).
++ *
++ *  2. Holding a write-lock is required for computations that require a
++ *     stable snapshot of all bp_cpuinfo::tsk_pinned.
++ *
++ *  3. In all other cases, non-atomic accesses require the appropriately held
++ *     lock (read-lock for read-only accesses; write-lock for reads/writes).
++ */
++DEFINE_STATIC_PERCPU_RWSEM(bp_cpuinfo_sem);
++
++/*
++ * Return mutex to serialize accesses to per-task lists in task_bps_ht. Since
++ * rhltable synchronizes concurrent insertions/deletions, independent tasks may
++ * insert/delete concurrently; therefore, a mutex per task is sufficient.
++ *
++ * Uses task_struct::perf_event_mutex, to avoid extending task_struct with a
++ * hw_breakpoint-only mutex, which may be infrequently used. The caveat here is
++ * that hw_breakpoint may contend with per-task perf event list management. The
++ * assumption is that perf usecases involving hw_breakpoints are very unlikely
++ * to result in unnecessary contention.
++ */
++static inline struct mutex *get_task_bps_mutex(struct perf_event *bp)
++{
++	struct task_struct *tsk = bp->hw.target;
++
++	return tsk ? &tsk->perf_event_mutex : NULL;
++}
++
++static struct mutex *bp_constraints_lock(struct perf_event *bp)
++{
++	struct mutex *tsk_mtx = get_task_bps_mutex(bp);
++
++	if (tsk_mtx) {
++		mutex_lock(tsk_mtx);
++		percpu_down_read(&bp_cpuinfo_sem);
++	} else {
++		percpu_down_write(&bp_cpuinfo_sem);
++	}
++
++	return tsk_mtx;
++}
++
++static void bp_constraints_unlock(struct mutex *tsk_mtx)
++{
++	if (tsk_mtx) {
++		percpu_up_read(&bp_cpuinfo_sem);
++		mutex_unlock(tsk_mtx);
++	} else {
++		percpu_up_write(&bp_cpuinfo_sem);
++	}
++}
++
++static bool bp_constraints_is_locked(struct perf_event *bp)
++{
++	struct mutex *tsk_mtx = get_task_bps_mutex(bp);
++
++	return percpu_is_write_locked(&bp_cpuinfo_sem) ||
++	       (tsk_mtx ? mutex_is_locked(tsk_mtx) :
++			  percpu_is_read_locked(&bp_cpuinfo_sem));
++}
++
++static inline void assert_bp_constraints_lock_held(struct perf_event *bp)
++{
++	struct mutex *tsk_mtx = get_task_bps_mutex(bp);
++
++	if (tsk_mtx)
++		lockdep_assert_held(tsk_mtx);
++	lockdep_assert_held(&bp_cpuinfo_sem);
++}
+ 
+ #ifdef hw_breakpoint_slots
+ /*
+@@ -97,7 +170,7 @@ static __init int init_breakpoint_slots(void)
+ 		for (i = 0; i < TYPE_MAX; i++) {
+ 			struct bp_cpuinfo *info = get_bp_info(cpu, i);
+ 
+-			info->tsk_pinned = kcalloc(__nr_bp_slots[i], sizeof(int), GFP_KERNEL);
++			info->tsk_pinned = kcalloc(__nr_bp_slots[i], sizeof(atomic_t), GFP_KERNEL);
+ 			if (!info->tsk_pinned)
+ 				goto err;
+ 		}
+@@ -137,11 +210,19 @@ static inline enum bp_type_idx find_slot_idx(u64 bp_type)
+  */
+ static unsigned int max_task_bp_pinned(int cpu, enum bp_type_idx type)
+ {
+-	unsigned int *tsk_pinned = get_bp_info(cpu, type)->tsk_pinned;
++	atomic_t *tsk_pinned = get_bp_info(cpu, type)->tsk_pinned;
+ 	int i;
+ 
++	/*
++	 * At this point we want to have acquired the bp_cpuinfo_sem as a
++	 * writer to ensure that there are no concurrent writers in
++	 * toggle_bp_task_slot() to tsk_pinned, and we get a stable snapshot.
++	 */
++	lockdep_assert_held_write(&bp_cpuinfo_sem);
++
+ 	for (i = hw_breakpoint_slots_cached(type) - 1; i >= 0; i--) {
+-		if (tsk_pinned[i] > 0)
++		ASSERT_EXCLUSIVE_WRITER(tsk_pinned[i]); /* Catch unexpected writers. */
++		if (atomic_read(&tsk_pinned[i]) > 0)
+ 			return i + 1;
+ 	}
+ 
+@@ -158,6 +239,11 @@ static int task_bp_pinned(int cpu, struct perf_event *bp, enum bp_type_idx type)
+ 	struct perf_event *iter;
+ 	int count = 0;
+ 
++	/*
++	 * We need a stable snapshot of the per-task breakpoint list.
++	 */
++	assert_bp_constraints_lock_held(bp);
++
+ 	rcu_read_lock();
+ 	head = rhltable_lookup(&task_bps_ht, &bp->hw.target, task_bps_ht_params);
+ 	if (!head)
+@@ -214,16 +300,25 @@ max_bp_pinned_slots(struct perf_event *bp, enum bp_type_idx type)
+ static void toggle_bp_task_slot(struct perf_event *bp, int cpu,
+ 				enum bp_type_idx type, int weight)
+ {
+-	unsigned int *tsk_pinned = get_bp_info(cpu, type)->tsk_pinned;
++	atomic_t *tsk_pinned = get_bp_info(cpu, type)->tsk_pinned;
+ 	int old_idx, new_idx;
+ 
++	/*
++	 * If bp->hw.target, tsk_pinned is only modified, but not used
++	 * otherwise. We can permit concurrent updates as long as there are no
++	 * other uses: having acquired bp_cpuinfo_sem as a reader allows
++	 * concurrent updates here. Uses of tsk_pinned will require acquiring
++	 * bp_cpuinfo_sem as a writer to stabilize tsk_pinned's value.
++	 */
++	lockdep_assert_held_read(&bp_cpuinfo_sem);
++
+ 	old_idx = task_bp_pinned(cpu, bp, type) - 1;
+ 	new_idx = old_idx + weight;
+ 
+ 	if (old_idx >= 0)
+-		tsk_pinned[old_idx]--;
++		atomic_dec(&tsk_pinned[old_idx]);
+ 	if (new_idx >= 0)
+-		tsk_pinned[new_idx]++;
++		atomic_inc(&tsk_pinned[new_idx]);
  }
  
-+extern bool percpu_is_read_locked(struct percpu_rw_semaphore *);
- extern void percpu_down_write(struct percpu_rw_semaphore *);
- extern void percpu_up_write(struct percpu_rw_semaphore *);
- 
-+static inline bool percpu_is_write_locked(struct percpu_rw_semaphore *sem)
-+{
-+	return atomic_read(&sem->block);
-+}
-+
- extern int __percpu_init_rwsem(struct percpu_rw_semaphore *,
- 				const char *, struct lock_class_key *);
- 
-diff --git a/kernel/locking/percpu-rwsem.c b/kernel/locking/percpu-rwsem.c
-index 5fe4c5495ba3..213d114fb025 100644
---- a/kernel/locking/percpu-rwsem.c
-+++ b/kernel/locking/percpu-rwsem.c
-@@ -192,6 +192,12 @@ EXPORT_SYMBOL_GPL(__percpu_down_read);
- 	__sum;								\
- })
- 
-+bool percpu_is_read_locked(struct percpu_rw_semaphore *sem)
-+{
-+	return per_cpu_sum(*sem->read_count) != 0;
-+}
-+EXPORT_SYMBOL_GPL(percpu_is_read_locked);
-+
  /*
-  * Return true if the modular sum of the sem->read_count per-CPU variable is
-  * zero.  If this sum is zero, then it is stable due to the fact that if any
+@@ -241,6 +336,7 @@ toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
+ 
+ 	/* Pinned counter cpu profiling */
+ 	if (!bp->hw.target) {
++		lockdep_assert_held_write(&bp_cpuinfo_sem);
+ 		get_bp_info(bp->cpu, type)->cpu_pinned += weight;
+ 		return 0;
+ 	}
+@@ -249,6 +345,11 @@ toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
+ 	for_each_cpu(cpu, cpumask)
+ 		toggle_bp_task_slot(bp, cpu, type, weight);
+ 
++	/*
++	 * Readers want a stable snapshot of the per-task breakpoint list.
++	 */
++	assert_bp_constraints_lock_held(bp);
++
+ 	if (enable)
+ 		return rhltable_insert(&task_bps_ht, &bp->hw.bp_list, task_bps_ht_params);
+ 	else
+@@ -354,14 +455,10 @@ static int __reserve_bp_slot(struct perf_event *bp, u64 bp_type)
+ 
+ int reserve_bp_slot(struct perf_event *bp)
+ {
+-	int ret;
+-
+-	mutex_lock(&nr_bp_mutex);
+-
+-	ret = __reserve_bp_slot(bp, bp->attr.bp_type);
+-
+-	mutex_unlock(&nr_bp_mutex);
++	struct mutex *mtx = bp_constraints_lock(bp);
++	int ret = __reserve_bp_slot(bp, bp->attr.bp_type);
+ 
++	bp_constraints_unlock(mtx);
+ 	return ret;
+ }
+ 
+@@ -379,12 +476,11 @@ static void __release_bp_slot(struct perf_event *bp, u64 bp_type)
+ 
+ void release_bp_slot(struct perf_event *bp)
+ {
+-	mutex_lock(&nr_bp_mutex);
++	struct mutex *mtx = bp_constraints_lock(bp);
+ 
+ 	arch_unregister_hw_breakpoint(bp);
+ 	__release_bp_slot(bp, bp->attr.bp_type);
+-
+-	mutex_unlock(&nr_bp_mutex);
++	bp_constraints_unlock(mtx);
+ }
+ 
+ static int __modify_bp_slot(struct perf_event *bp, u64 old_type, u64 new_type)
+@@ -411,11 +507,10 @@ static int __modify_bp_slot(struct perf_event *bp, u64 old_type, u64 new_type)
+ 
+ static int modify_bp_slot(struct perf_event *bp, u64 old_type, u64 new_type)
+ {
+-	int ret;
++	struct mutex *mtx = bp_constraints_lock(bp);
++	int ret = __modify_bp_slot(bp, old_type, new_type);
+ 
+-	mutex_lock(&nr_bp_mutex);
+-	ret = __modify_bp_slot(bp, old_type, new_type);
+-	mutex_unlock(&nr_bp_mutex);
++	bp_constraints_unlock(mtx);
+ 	return ret;
+ }
+ 
+@@ -426,18 +521,28 @@ static int modify_bp_slot(struct perf_event *bp, u64 old_type, u64 new_type)
+  */
+ int dbg_reserve_bp_slot(struct perf_event *bp)
+ {
+-	if (mutex_is_locked(&nr_bp_mutex))
++	int ret;
++
++	if (bp_constraints_is_locked(bp))
+ 		return -1;
+ 
+-	return __reserve_bp_slot(bp, bp->attr.bp_type);
++	/* Locks aren't held; disable lockdep assert checking. */
++	lockdep_off();
++	ret = __reserve_bp_slot(bp, bp->attr.bp_type);
++	lockdep_on();
++
++	return ret;
+ }
+ 
+ int dbg_release_bp_slot(struct perf_event *bp)
+ {
+-	if (mutex_is_locked(&nr_bp_mutex))
++	if (bp_constraints_is_locked(bp))
+ 		return -1;
+ 
++	/* Locks aren't held; disable lockdep assert checking. */
++	lockdep_off();
+ 	__release_bp_slot(bp, bp->attr.bp_type);
++	lockdep_on();
+ 
+ 	return 0;
+ }
+@@ -663,7 +768,7 @@ bool hw_breakpoint_is_used(void)
+ 				return true;
+ 
+ 			for (int slot = 0; slot < hw_breakpoint_slots_cached(type); ++slot) {
+-				if (info->tsk_pinned[slot])
++				if (atomic_read(&info->tsk_pinned[slot]))
+ 					return true;
+ 			}
+ 		}
 -- 
 2.37.0.rc0.161.g10f37bed90-goog
 
