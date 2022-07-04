@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E465658E9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 16:48:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4B85658FB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 16:53:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc7w62SF1z3c2Q
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 00:48:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc8296fRDz3bkH
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 00:53:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=RgYkusPx;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=GxMiFbAL;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=220.181.15.112; helo=m15112.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.3; helo=mail-m963.mail.126.com; envelope-from=windhl@126.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=RgYkusPx;
+	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=GxMiFbAL;
 	dkim-atps=neutral
-Received: from m15112.mail.126.com (m15112.mail.126.com [220.181.15.112])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc7vN3K6vz2yJQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 00:47:32 +1000 (AEST)
+Received: from mail-m963.mail.126.com (mail-m963.mail.126.com [123.126.96.3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc81X74yKz2ywJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 00:53:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=LoDgg
-	WBPq1p0hm9kmOvqW003/tbfQuwyqZOi9JgwzWE=; b=RgYkusPxkXqOfakQ+V/yT
-	xUYhpv4paqHDgEMLLb6ha+7xBemnZWfuvyb8Cpdle4OVjO9RQlM++F6SWkRwXB8h
-	g/Q7/P1wq9DmWHScgMidM8Znmj9y2oZ5DT3DI8DHNt4xFuJ6D9NejFnkD/cu4GuV
-	Ovvsa2E11jSLxnLwxnU7Ak=
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=xT7hX
+	8rnhUkoYm1cCSs0PcxKO1+TWyDDq30ShnXKxVM=; b=GxMiFbAL58JqpgYrzgwWT
+	Un/C4LrFUQNAIeSpYbBAMxDiFF4rsxlwcY+Iv8ScsVxK5QXvUlCg3DCaTGbdWHoy
+	TFHwSFltWMeFKaZpPmKLfpJzv5zJoP4bbb9aBUC1ooV/0SDM4n034tFdgPf2TQhJ
+	oAjDyfYdbYsAd1HzalfldA=
 Received: from localhost.localdomain (unknown [124.16.139.61])
-	by smtp2 (Coremail) with SMTP id DMmowACH8v5L_cJiCIFrEQ--.21616S2;
-	Mon, 04 Jul 2022 22:46:37 +0800 (CST)
+	by smtp8 (Coremail) with SMTP id NORpCgAXdXGy_sJiCs7cHA--.24990S2;
+	Mon, 04 Jul 2022 22:52:34 +0800 (CST)
 From: Liang He <windhl@126.com>
 To: mpe@ellerman.id.au,
 	benh@kernel.crashing.org,
 	paulus@samba.org,
 	linuxppc-dev@lists.ozlabs.org,
-	windhl@126.com
-Subject: [PATCH] powerpc: fsl: gtm: Remove of_node_get() in fsl_gtm_init()
-Date: Mon,  4 Jul 2022 22:46:35 +0800
-Message-Id: <20220704144635.278394-1-windhl@126.com>
+	windhl@126.com,
+	linmq006@gmail.com
+Subject: [PATCH] powerpc: sysdev: fsl_msi: Add missing of_node_put() for of_parse_phandle()
+Date: Mon,  4 Jul 2022 22:52:33 +0800
+Message-Id: <20220704145233.278539-1-windhl@126.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: DMmowACH8v5L_cJiCIFrEQ--.21616S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7JrykGw4Duw48JFyDAFW7twb_yoWfZrX_Ga
-	97ZFyDZrs5Jr4Ikas3Can5Gw15Ww4xXrWxKr1kZw1xJa45t398trWkWr4UJr1UXr4vyrW5
-	GrZ5ta9ak3yFkjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRtqXHDUUUUU==
+X-CM-TRANSID: NORpCgAXdXGy_sJiCs7cHA--.24990S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWruFy5GF15XFyDArWxKFyxAFb_yoWkCrXEy3
+	4fuFnrZF4kGw48uFZ3CFZxGwnxWw4jqrWagwnFqa9Fga4YvryDJFsrX3y5Xry5ZrW0krZ5
+	GFn8ArsYyw409jkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_znQ7UUUUU==
 X-Originating-IP: [124.16.139.61]
-X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbi2g00F1uwMVxUMAAAsW
+X-CM-SenderInfo: hzlqvxbo6rjloofrz/1tbizhI0F18RPbfxxQAAsP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,33 +62,38 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-for_each_compatible_node() will automaitically increase and decrease
-the refcount of the device_node object. There is no need to call
-additional of_node_get(). It is better to keep the original meaning
-of refcounting as there is no any new reference created.
+In fsl_setup_msi_irqs(), we should use of_node_put() for the
+refernece 'np' returned by of_parse_phandle() which increases
+the refcount.
 
+Fixes: 895d603f945ba ("powerpc/fsl_msi: add support for the fsl, msi property in PCI nodes")
+Co-authored-by: Miaoqian Lin <linmq006@gmail.com>
 Signed-off-by: Liang He <windhl@126.com>
 ---
- I do not understand the whole story of the gtm, so maybe we want to
-keep the object always alive by using additional refcounting. Please
-check it carefully.
 
+ There is an incomplete fix: 
+ https://lore.kernel.org/all/20220526010935.32138-1-zhengyongjun3@huawei.com/
 
- arch/powerpc/sysdev/fsl_gtm.c | 1 -
- 1 file changed, 1 deletion(-)
+ We should call of_node_put() both in fail path and normal path.
 
-diff --git a/arch/powerpc/sysdev/fsl_gtm.c b/arch/powerpc/sysdev/fsl_gtm.c
-index 39186ad6b3c3..e13ebd2be416 100644
---- a/arch/powerpc/sysdev/fsl_gtm.c
-+++ b/arch/powerpc/sysdev/fsl_gtm.c
-@@ -423,7 +423,6 @@ static int __init fsl_gtm_init(void)
+ arch/powerpc/sysdev/fsl_msi.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
+index ef9a5999fa93..73c2d70706c0 100644
+--- a/arch/powerpc/sysdev/fsl_msi.c
++++ b/arch/powerpc/sysdev/fsl_msi.c
+@@ -209,8 +209,10 @@ static int fsl_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 			dev_err(&pdev->dev,
+ 				"node %pOF has an invalid fsl,msi phandle %u\n",
+ 				hose->dn, np->phandle);
++			of_node_put(np);
+ 			return -EINVAL;
+ 		}
++		of_node_put(np);
+ 	}
  
- 		/* We don't want to lose the node and its ->data */
- 		np->data = gtm;
--		of_node_get(np);
- 
- 		continue;
- err:
+ 	msi_for_each_desc(entry, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
 -- 
 2.25.1
 
