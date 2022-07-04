@@ -1,62 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F90565405
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 13:46:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84235565434
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 13:57:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc3sy6FTYz3fR1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 21:46:14 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=mSbUiv1/;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lc47R3PWtz3c7V
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 21:57:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=mSbUiv1/;
-	dkim-atps=neutral
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc3sM6F0Gz304x
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 21:45:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4HrRuXuVA+Twe3QAd56nGmntiiPmbvBTaKZ1l1jeChc=; b=mSbUiv1/DRUA3lQIT0bPc7zWbu
-	hYIsn/1ueg4pM4xgnObmk/HNo4XDuGhlHlQoQ3FijYv1D9Wz9sF4JRv8sECoVcNbUoBrI2j5nNB16
-	Nhx3So2SdSRT4PWxWEpL2hOZzyZNk22odC2seMX4jYd+jvOgH/c0vjC3LF/dt3DR3Xv/BfU5vsdqn
-	TMjFNJjQueSZWfe9JcXAOWc4raiUkoEAM8TaUSzi204T5B/T7Et2DyFHWWuTHxZMZcg2Hs6xGrbWI
-	BQDraL1c4hIdfIa2nXqgvznU58iRnhuL+MNmPW8cqFSOa/haIukRZJtioNqImk/hZRwFqOBq+njBw
-	4VnrMlyg==;
-Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1o8KW5-00HE6L-Ke; Mon, 04 Jul 2022 11:45:25 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lc4731mHjz2ypW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 21:57:35 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id D81D8300362;
-	Mon,  4 Jul 2022 13:45:23 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id BE0B42028F029; Mon,  4 Jul 2022 13:45:23 +0200 (CEST)
-Date: Mon, 4 Jul 2022 13:45:23 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [RFC PATCH v3 11/12] powerpc: Remove unreachable() from WARN_ON()
-Message-ID: <YsLS02T6TAxN/HcL@hirez.programming.kicks-ass.net>
-References: <20220624183238.388144-1-sv@linux.ibm.com>
- <20220624183238.388144-12-sv@linux.ibm.com>
- <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu>
- <92eae2ef-f9b6-019a-5a8e-728cdd9bbbc0@linux.vnet.ibm.com>
- <cce19b1c-449a-f306-533a-9edc855049aa@csgroup.eu>
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Lc47309wXz4xRC;
+	Mon,  4 Jul 2022 21:57:34 +1000 (AEST)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: sachinp@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, "Jason A. Donenfeld" <Jason@zx2c4.com>
+In-Reply-To: <20220630121654.1939181-1-Jason@zx2c4.com>
+References: <Yr2PQSZWVtr+Y7a2@zx2c4.com> <20220630121654.1939181-1-Jason@zx2c4.com>
+Subject: Re: [PATCH] powerpc/powernv: delay rng of node creation until later in boot
+Message-Id: <165693584227.28268.7476594313726679089.b4-ty@ellerman.id.au>
+Date: Mon, 04 Jul 2022 21:57:22 +1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cce19b1c-449a-f306-533a-9edc855049aa@csgroup.eu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,17 +42,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Marc Zyngier <maz@kernel.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>, Sathvika Vasireddy <sv@linux.vnet.ibm.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, Chen Zhongjin <chenzhongjin@huawei.com>, "mingo@redhat.com" <mingo@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "paulus@samba.org" <paulus@samba.org>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 29, 2022 at 06:30:23PM +0000, Christophe Leroy wrote:
-
-
-> The problem is that that function has size 0:
+On Thu, 30 Jun 2022 14:16:54 +0200, Jason A. Donenfeld wrote:
+> The of node for the rng must be created much later in boot. Otherwise it
+> tries to connect to a parent that doesn't yet exist, resulting on this
+> splat:
 > 
-> 00000000000003d0 l     F .text	0000000000000000 
-> qdisc_root_sleeping_lock.part.0
+> [    0.000478] kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_get() is being called.
+> [    0.002925] [c000000002a0fb30] [c00000000073b0bc] kobject_get+0x8c/0x100 (unreliable)
+> [    0.003071] [c000000002a0fba0] [c00000000087e464] device_add+0xf4/0xb00
+> [    0.003194] [c000000002a0fc80] [c000000000a7f6e4] of_device_add+0x64/0x80
+> [    0.003321] [c000000002a0fcb0] [c000000000a800d0] of_platform_device_create_pdata+0xd0/0x1b0
+> [    0.003476] [c000000002a0fd00] [c00000000201fa44] pnv_get_random_long_early+0x240/0x2e4
+> [    0.003623] [c000000002a0fe20] [c000000002060c38] random_init+0xc0/0x214
+> 
+> [...]
 
-I'm somewhat confused; how is an empty STT_FUNC a valid construct on
-Power?
+Applied to powerpc/fixes.
+
+[1/1] powerpc/powernv: delay rng of node creation until later in boot
+      https://git.kernel.org/powerpc/c/887502826549caa7e4215fd9e628f48f14c0825a
+
+cheers
