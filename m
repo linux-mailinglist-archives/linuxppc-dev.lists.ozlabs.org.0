@@ -1,46 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111A1564B79
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 04:05:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9658564DC7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 08:39:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lbq0N0TTPz3c2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 12:05:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lbx4N4X2Dz3btH
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Jul 2022 16:39:48 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BcUT/29y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BcUT/29y;
+	dkim-atps=neutral
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LbpzV6wqvz3bpZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 12:05:10 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 74DFB202CC0;
-	Mon,  4 Jul 2022 04:05:07 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2C1AF202CBA;
-	Mon,  4 Jul 2022 04:05:07 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id E98A9180222D;
-	Mon,  4 Jul 2022 10:05:05 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	shengjiu.wang@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH 2/2] ASoC: fsl_asrc_dma: Add legacy_dai_naming flag
-Date: Mon,  4 Jul 2022 09:50:17 +0800
-Message-Id: <1656899417-4775-2-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1656899417-4775-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1656899417-4775-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lbx3h15YDz30LS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Jul 2022 16:39:11 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2646G3C6005074;
+	Mon, 4 Jul 2022 06:39:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Qj3YNZEYqlTD/obmc7ResKquiY/z5yJ+P0dEzb2i7Cg=;
+ b=BcUT/29y+JLJa8tUDBukWKV1K7ch2wLhWoO2beeWFN+WgtgHq9zL/FVQfUBWjTOKzeCy
+ W6bqGhtk3rc5vRyBgQ05RRltHfSJPiZl0EbL7JQFSDTN+mlE6hFFsaHwdGDAc03rbDmL
+ 8LLVT1COMSWZWmiX1nikoYRX/rla9597Hx/hz1Nf5POVsbbhdiFUGj9mOgBgnXtjyJCl
+ UCrfKiCLNpr4IfLx6mTxigOWk3e9xOyuY1x+ZEG5iJlcm/pcHU7ecX43zbELXVDQwRjq
+ UgYi1f30TWR/lHEg8gi4lFOHrq0ciRw/rzFvu7zmFyB7wdzWfJgbHY8QcRA4VNAqbVmy qQ== 
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h3tsr0d3m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Jul 2022 06:39:03 +0000
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2646LiLk020398;
+	Mon, 4 Jul 2022 06:39:02 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+	by ppma01dal.us.ibm.com with ESMTP id 3h2dn9kjjp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Jul 2022 06:39:02 +0000
+Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2646d15n12321338
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 Jul 2022 06:39:01 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F27167805E;
+	Mon,  4 Jul 2022 06:39:00 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E0C77805C;
+	Mon,  4 Jul 2022 06:38:59 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.43.74.198])
+	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Mon,  4 Jul 2022 06:38:58 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2] powerpc/mm: Update max/min_low_pfn in the same function
+Date: Mon,  4 Jul 2022 12:08:51 +0530
+Message-Id: <20220704063851.295482-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 7SzGodVjt5w1WDWLs2TvbVsI0yyVDaiA
+X-Proofpoint-GUID: 7SzGodVjt5w1WDWLs2TvbVsI0yyVDaiA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-04_05,2022-06-28_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 spamscore=0
+ mlxscore=0 priorityscore=1501 phishscore=0 mlxlogscore=946 malwarescore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2207040027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,31 +86,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Need to add legacy_dai_naming flag otherwise there
-will be issue when registerring component, that cause
-the probe failure.
+For both CONFIG_NUMA enabled/disabled use mem_topology_setup to
+update max/min_low_pfn.
 
-Fixes: 1e63fcc74ace ("ASoC: fsl: Migrate to new style legacy DAI naming flag")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+This also add min_low_pfn update to CONFIG_NUMA which was initialized
+to zero before.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- sound/soc/fsl/fsl_asrc_dma.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/mm/numa.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index 33eabb96340e..12ddf2320f2d 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -455,5 +455,6 @@ struct snd_soc_component_driver fsl_asrc_component = {
- 	.close		= fsl_asrc_dma_shutdown,
- 	.pointer	= fsl_asrc_dma_pcm_pointer,
- 	.pcm_construct	= fsl_asrc_dma_pcm_new,
-+	.legacy_dai_naming = 1,
- };
- EXPORT_SYMBOL_GPL(fsl_asrc_component);
+diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+index 0801b2ce9b7d..b44ce71917d7 100644
+--- a/arch/powerpc/mm/numa.c
++++ b/arch/powerpc/mm/numa.c
+@@ -1160,6 +1160,9 @@ void __init mem_topology_setup(void)
+ {
+ 	int cpu;
+ 
++	max_low_pfn = max_pfn = memblock_end_of_DRAM() >> PAGE_SHIFT;
++	min_low_pfn = MEMORY_START >> PAGE_SHIFT;
++
+ 	/*
+ 	 * Linux/mm assumes node 0 to be online at boot. However this is not
+ 	 * true on PowerPC, where node 0 is similar to any other node, it
+@@ -1204,9 +1207,6 @@ void __init initmem_init(void)
+ {
+ 	int nid;
+ 
+-	max_low_pfn = memblock_end_of_DRAM() >> PAGE_SHIFT;
+-	max_pfn = max_low_pfn;
+-
+ 	memblock_dump_all();
+ 
+ 	for_each_online_node(nid) {
 -- 
-2.17.1
+2.36.1
 
