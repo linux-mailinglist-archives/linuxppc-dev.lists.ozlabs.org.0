@@ -1,63 +1,29 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03002566022
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 02:50:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB7F566309
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 08:23:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LcPGS6gM5z3c60
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 10:50:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZLfYQQlZ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LcXfl1Pr0z3c0g
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 16:23:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZLfYQQlZ;
-	dkim-atps=neutral
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LcPFr5y6jz305c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 10:49:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1656982177; x=1688518177;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xw+xL7fnLqiU/cqX+1jSrstZborZV4SfOqkMoTVwO4Q=;
-  b=ZLfYQQlZTL7hbhlfBSQeiOfdvYFfPKXek5QJSbRvRVTwGjEgjHBvBAX2
-   aNHiG6ibaO9P9uFiyybSMCGCfxHBDM9Z/JvVrxqVvxnllXJlJh6kl/KQc
-   De2L6ENK0FAQAJizPNJ3QxuQpS9x4hBZjT4aOysLfyxqf8HfOyEVszdDb
-   gotTMaougS9vTY9yJlrrv4fZB/889effM1HuV+jHasjIna80MocgqOIt2
-   /okxv4GffD1F4l/fyxcvR/tdKNiZaorS/eV0Uk0hOg7IPGbr7eEC8vsL/
-   NoqrL29dbPUgRpflzDIrZtcgWwUTJV2E26HuidKT1wfHf5DeFpirREtlz
-   Q==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10398"; a="263010386"
-X-IronPort-AV: E=Sophos;i="5.92,245,1650956400"; 
-   d="scan'208";a="263010386"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2022 17:49:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,245,1650956400"; 
-   d="scan'208";a="719537521"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by orsmga004.jf.intel.com with ESMTP; 04 Jul 2022 17:49:33 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1o8Wku-000IWW-Ag;
-	Tue, 05 Jul 2022 00:49:32 +0000
-Date: Tue, 05 Jul 2022 08:49:06 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- 054994d9eef39921bcb8924ca15913174fe37f8a
-Message-ID: <62c38a82.WM/0dpXv2osIZsHc%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LcXfH2F30z2yWr
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 16:22:45 +1000 (AEST)
+Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
+	by ozlabs.ru (Postfix) with ESMTP id 31B65804D3;
+	Tue,  5 Jul 2022 02:22:37 -0400 (EDT)
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH kernel] powerpc/iommu: Add simple iommu_ops to report capabilities
+Date: Tue,  5 Jul 2022 16:22:35 +1000
+Message-Id: <20220705062235.2276125-1-aik@ozlabs.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,118 +35,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Kevin Tian <kevin.tian@intel.com>, Joerg Roedel <jroedel@suse.de>, kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Daniel Henrique Barboza <danielhb413@gmail.com>, iommu@lists.linux-foundation.org, kvm-ppc@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson <alex.williamson@redhat.com>, Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 054994d9eef39921bcb8924ca15913174fe37f8a  Merge branch 'topic/ppc-kvm' into next-test
+Historically PPC64 managed to avoid using iommu_ops. The VFIO driver
+uses a SPAPR TCE sub-driver and all iommu_ops uses were kept in
+the Type1 VFIO driver. Recent development though has added a coherency
+capability check to the generic part of VFIO and essentially disabled
+VFIO on PPC64.
 
-elapsed time: 752m
+This adds a simple iommu_ops stub which reports support for cache
+coherency. Because bus_set_iommu() triggers IOMMU probing of PCI devices,
+this provides minimum code for the probing to not crash.
 
-configs tested: 92
-configs skipped: 3
+The previous discussion is here:
+https://patchwork.ozlabs.org/project/kvm-ppc/patch/20220701061751.1955857-1-aik@ozlabs.ru/
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fixes: e8ae0e140c05 ("vfio: Require that devices support DMA cache coherence")
+Fixes: 70693f470848 ("vfio: Set DMA ownership for VFIO devices")
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+---
 
-gcc tested configs:
-arm                                 defconfig
-arm64                            allyesconfig
-arm                              allyesconfig
-i386                          randconfig-c001
-sparc                               defconfig
-arm                          pxa3xx_defconfig
-arc                              alldefconfig
-arm                            xcep_defconfig
-mips                       bmips_be_defconfig
-m68k                         apollo_defconfig
-s390                                defconfig
-powerpc                      ep88xc_defconfig
-sh                      rts7751r2d1_defconfig
-sh                        dreamcast_defconfig
-powerpc                 mpc834x_mds_defconfig
-sh                   secureedge5410_defconfig
-arm                      integrator_defconfig
-sh                   rts7751r2dplus_defconfig
-arm                         cm_x300_defconfig
-m68k                        stmark2_defconfig
-xtensa                         virt_defconfig
-powerpc                 mpc834x_itx_defconfig
-m68k                       bvme6000_defconfig
-sh                           se7722_defconfig
-powerpc                     asp8347_defconfig
-arm                            mps2_defconfig
-powerpc                       ppc64_defconfig
-powerpc                 linkstation_defconfig
-powerpc                     tqm8548_defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-riscv                    nommu_k210_defconfig
-riscv                             allnoconfig
-i386                   debian-10.3-kselftests
-i386                              debian-10.3
-ia64                             allmodconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-arc                              allyesconfig
-alpha                            allyesconfig
-powerpc                           allnoconfig
-mips                             allyesconfig
-powerpc                          allmodconfig
-sh                               allmodconfig
-i386                             allyesconfig
-i386                                defconfig
-x86_64                        randconfig-a002
-x86_64                        randconfig-a004
-x86_64                        randconfig-a006
-i386                          randconfig-a001
-i386                          randconfig-a003
-i386                          randconfig-a005
-x86_64                        randconfig-a011
-x86_64                        randconfig-a013
-x86_64                        randconfig-a015
-i386                          randconfig-a012
-i386                          randconfig-a014
-i386                          randconfig-a016
-riscv                randconfig-r042-20220703
-arc                  randconfig-r043-20220703
-s390                 randconfig-r044-20220703
-x86_64                    rhel-8.3-kselftests
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                              defconfig
-x86_64                           allyesconfig
-x86_64                               rhel-8.3
-x86_64                          rhel-8.3-func
-x86_64                           rhel-8.3-syz
-x86_64                         rhel-8.3-kunit
+I have not looked into the domains for ages, what is missing here? With this
+on top of 5.19-rc1 VFIO works again on my POWER9 box. Thanks,
 
-clang tested configs:
-i386                             allyesconfig
-arm                       cns3420vb_defconfig
-powerpc                 mpc832x_rdb_defconfig
-arm                              alldefconfig
-mips                          ath25_defconfig
-arm                         orion5x_defconfig
-mips                         tb0287_defconfig
-mips                     loongson2k_defconfig
-x86_64                        randconfig-k001
-x86_64                        randconfig-a005
-x86_64                        randconfig-a001
-x86_64                        randconfig-a003
-i386                          randconfig-a002
-i386                          randconfig-a006
-i386                          randconfig-a004
-x86_64                        randconfig-a012
-x86_64                        randconfig-a014
-x86_64                        randconfig-a016
-i386                          randconfig-a013
-i386                          randconfig-a011
-i386                          randconfig-a015
-hexagon              randconfig-r045-20220703
-hexagon              randconfig-r041-20220703
+---
+ arch/powerpc/include/asm/iommu.h |  2 +
+ arch/powerpc/kernel/iommu.c      | 70 ++++++++++++++++++++++++++++++++
+ arch/powerpc/kernel/pci_64.c     |  3 ++
+ 3 files changed, 75 insertions(+)
 
+diff --git a/arch/powerpc/include/asm/iommu.h b/arch/powerpc/include/asm/iommu.h
+index 7e29c73e3dd4..4bdae0ee29d0 100644
+--- a/arch/powerpc/include/asm/iommu.h
++++ b/arch/powerpc/include/asm/iommu.h
+@@ -215,6 +215,8 @@ extern long iommu_tce_xchg_no_kill(struct mm_struct *mm,
+ 		enum dma_data_direction *direction);
+ extern void iommu_tce_kill(struct iommu_table *tbl,
+ 		unsigned long entry, unsigned long pages);
++
++extern const struct iommu_ops spapr_tce_iommu_ops;
+ #else
+ static inline void iommu_register_group(struct iommu_table_group *table_group,
+ 					int pci_domain_number,
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index 7e56ddb3e0b9..2205b448f7d5 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -1176,4 +1176,74 @@ void iommu_del_device(struct device *dev)
+ 	iommu_group_remove_device(dev);
+ }
+ EXPORT_SYMBOL_GPL(iommu_del_device);
++
++/*
++ * A simple iommu_ops to allow less cruft in generic VFIO code.
++ */
++static bool spapr_tce_iommu_capable(enum iommu_cap cap)
++{
++	switch (cap) {
++	case IOMMU_CAP_CACHE_COHERENCY:
++		return true;
++	default:
++		break;
++	}
++
++	return false;
++}
++
++static struct iommu_domain *spapr_tce_iommu_domain_alloc(unsigned int type)
++{
++	struct iommu_domain *domain = kzalloc(sizeof(*domain), GFP_KERNEL);
++
++	if (!domain)
++		return NULL;
++
++	domain->geometry.aperture_start = 0;
++	domain->geometry.aperture_end = ~0ULL;
++	domain->geometry.force_aperture = true;
++
++	return domain;
++}
++
++static struct iommu_device *spapr_tce_iommu_probe_device(struct device *dev)
++{
++	struct iommu_device *iommu_dev = kzalloc(sizeof(struct iommu_device), GFP_KERNEL);
++
++	iommu_dev->dev = dev;
++	iommu_dev->ops = &spapr_tce_iommu_ops;
++
++	return iommu_dev;
++}
++
++static void spapr_tce_iommu_release_device(struct device *dev)
++{
++}
++
++static int spapr_tce_iommu_attach_dev(struct iommu_domain *dom,
++				      struct device *dev)
++{
++	return 0;
++}
++
++static struct iommu_group *spapr_tce_iommu_device_group(struct device *dev)
++{
++	struct iommu_group *grp = dev->iommu_group;
++
++	if (!grp)
++		grp = ERR_PTR(-ENODEV);
++	return grp;
++}
++
++const struct iommu_ops spapr_tce_iommu_ops = {
++	.capable = spapr_tce_iommu_capable,
++	.domain_alloc = spapr_tce_iommu_domain_alloc,
++	.probe_device = spapr_tce_iommu_probe_device,
++	.release_device = spapr_tce_iommu_release_device,
++	.device_group = spapr_tce_iommu_device_group,
++	.default_domain_ops = &(const struct iommu_domain_ops) {
++		.attach_dev = spapr_tce_iommu_attach_dev,
++	}
++};
++
+ #endif /* CONFIG_IOMMU_API */
+diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
+index 19b03ddf5631..04bc0c52e45c 100644
+--- a/arch/powerpc/kernel/pci_64.c
++++ b/arch/powerpc/kernel/pci_64.c
+@@ -20,6 +20,7 @@
+ #include <linux/irq.h>
+ #include <linux/vmalloc.h>
+ #include <linux/of.h>
++#include <linux/iommu.h>
+ 
+ #include <asm/processor.h>
+ #include <asm/io.h>
+@@ -27,6 +28,7 @@
+ #include <asm/byteorder.h>
+ #include <asm/machdep.h>
+ #include <asm/ppc-pci.h>
++#include <asm/iommu.h>
+ 
+ /* pci_io_base -- the base address from which io bars are offsets.
+  * This is the lowest I/O base address (so bar values are always positive),
+@@ -69,6 +71,7 @@ static int __init pcibios_init(void)
+ 		ppc_md.pcibios_fixup();
+ 
+ 	printk(KERN_DEBUG "PCI: Probing PCI hardware done\n");
++	bus_set_iommu(&pci_bus_type, &spapr_tce_iommu_ops);
+ 
+ 	return 0;
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.30.2
+
