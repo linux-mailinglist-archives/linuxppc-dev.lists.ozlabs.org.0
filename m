@@ -1,64 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FC65672DB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 17:41:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD22567379
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 17:52:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lcn3R6MWqz3c55
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 01:41:55 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jNn+5tgw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LcnJ44Mx2z3c6t
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 01:52:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jNn+5tgw;
-	dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lcn2k3md7z3blD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 01:41:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1657035636;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=tsHhud5sfQVz9Np8da35W2zVQWtwjMLPWbpgLRPf9Sc=;
-    b=jNn+5tgwv2Mwz2d7c/+ymHOlS5zOTOE5jgBBL36leTJZgzdNUHD8DaIT1f7vYyVKxA
-    WKINEFN0bQEB4yZc9/ZpcurIKQv7HtauvZXp85y1LSjJdUMCBgkbY7zL9FK4RDDYHRMW
-    tIiAtDz4ruj4iKNRhsYQuqWfp+7CNt1l0KVi8o1uiNbFSd8dxWwxwdmjXsoRbmuBz6sK
-    AYaJCjGeT1N5f0WrMfCXKuZyrUoKvR3zgLHqGV8sAFiHFi5DvbX3qIFegnOso7s4DgyM
-    +hGAFky15Su1DIa8Vbu8bCD/1+3whQqLXitpA5ddM9CcfLH98JW8veD7jAmMrXY5MOVL
-    E8tA==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwjW4dqgkobcHPYDc/BNBepImPPJ"
-X-RZG-CLASS-ID: mo00
-Received: from [IPV6:2a02:8109:8980:4474:3840:b132:e6ea:146]
-    by smtp.strato.de (RZmta 47.46.1 AUTH)
-    with ESMTPSA id icdf6dy65FeYK21
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 5 Jul 2022 17:40:34 +0200 (CEST)
-Message-ID: <cee04f80-9131-5ab3-7382-50cb5a01fd08@xenosoft.de>
-Date: Tue, 5 Jul 2022 17:40:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.11.0
-Subject: Re: [PATCH v3] drivers/usb/host/ehci-fsl: Fix interrupt setup in host
- mode.
-Content-Language: de-DE
-To: Darren Stevens <darren@stevens-zone.net>, linuxppc-dev@lists.ozlabs.org,
- oss@buserror.net, robh@kernel.org, stern@rowland.harvard.edu,
- linux-usb@vger.kernel.org
-References: <20220702220355.63b36fb8@Cyrus.lan>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <20220702220355.63b36fb8@Cyrus.lan>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LcnHg5301z3000
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 01:52:31 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 265Fmsn6029167;
+	Tue, 5 Jul 2022 10:48:55 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 265FmqXx029161;
+	Tue, 5 Jul 2022 10:48:52 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Tue, 5 Jul 2022 10:48:52 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [RFC PATCH v3 11/12] powerpc: Remove unreachable() from WARN_ON()
+Message-ID: <20220705154852.GR25951@gate.crashing.org>
+References: <20220624183238.388144-1-sv@linux.ibm.com> <20220624183238.388144-12-sv@linux.ibm.com> <70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu> <92eae2ef-f9b6-019a-5a8e-728cdd9bbbc0@linux.vnet.ibm.com> <cce19b1c-449a-f306-533a-9edc855049aa@csgroup.eu> <YsLS02T6TAxN/HcL@hirez.programming.kicks-ass.net> <6ab46ef2-6bbd-e758-a7ff-5f62fdf1ca96@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6ab46ef2-6bbd-e758-a7ff-5f62fdf1ca96@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,74 +43,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christian Zigotzky <info@xenosoft.de>, shawnguo@kernel.org, mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, leoyang.li@nxp.com
+Cc: Peter Zijlstra <peterz@infradead.org>, Marc Zyngier <maz@kernel.org>, Sathvika Vasireddy <sv@linux.vnet.ibm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rostedt@goodmis.org" <rostedt@goodmis.org>, "aik@ozlabs.ru" <aik@ozlabs.ru>, "mingo@redhat.com" <mingo@redhat.com>, Sathvika Vasireddy <sv@linux.ibm.com>, "jpoimboe@redhat.com" <jpoimboe@redhat.com>, "paulus@samba.org" <paulus@samba.org>, "naveen.n.rao@linux.vnet.ibm.com" <naveen.n.rao@linux.vnet.ibm.com>, "mbenes@suse.cz" <mbenes@suse.cz>, Chen Zhongjin <chenzhongjin@huawei.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 02 July 2022 at 11:03 pm, Darren Stevens wrote:
-> In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
-> core) we stopped platform_get_resource() from returning the IRQ, as all
-> drivers were supposed to have switched to platform_get_irq()
-> Unfortunately the Freescale EHCI driver in host mode got missed. Fix
-> it.
->
-> Fixes: a1a2b7125e10 (Drop static setup of IRQ resource from DT core)
-> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-> Suggested-by: Rob Herring <robh@kernel.org>
-> Signed-off-by: Darren Stevens <darren@stevens-zone.net>
-> ---
->   v3 - Corrected resource allocation in fsl-mph-dr-of.c
->
->   v2 - Fixed coding style, removed a couple of unneeded initializations,
->        cc'd Layerscape maintainers.
->
-> Tested on AmigaOne X5000/20 and X5000/40 Contains code by Rob Herring
-> (in fsl-mph-dr-of.c)
->
-> diff --git a/drivers/usb/host/ehci-fsl.c b/drivers/usb/host/ehci-fsl.c
-> index 385be30..896c0d1 100644
-> --- a/drivers/usb/host/ehci-fsl.c
-> +++ b/drivers/usb/host/ehci-fsl.c
-> @@ -76,14 +76,9 @@ static int fsl_ehci_drv_probe(struct platform_device *pdev)
->   		return -ENODEV;
->   	}
->   
-> -	res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-> -	if (!res) {
-> -		dev_err(&pdev->dev,
-> -			"Found HC with no IRQ. Check %s setup!\n",
-> -			dev_name(&pdev->dev));
-> -		return -ENODEV;
-> -	}
-> -	irq = res->start;
-> +	irq = platform_get_irq(pdev, 0);
-> +	if (irq < 0)
-> +		return irq;
->   
->   	hcd = __usb_create_hcd(&fsl_ehci_hc_driver, pdev->dev.parent,
->   			       &pdev->dev, dev_name(&pdev->dev), NULL);
-> diff --git a/drivers/usb/host/fsl-mph-dr-of.c b/drivers/usb/host/fsl-mph-dr-of.c
-> index 44a7e58..e5df175 100644
-> --- a/drivers/usb/host/fsl-mph-dr-of.c
-> +++ b/drivers/usb/host/fsl-mph-dr-of.c
-> @@ -112,6 +112,9 @@ static struct platform_device *fsl_usb2_device_register(
->   			goto error;
->   	}
->   
-> +	pdev->dev.of_node = ofdev->dev.of_node;
-> +	pdev->dev.of_node_reused = true;
-> +
->   	retval = platform_device_add(pdev);
->   	if (retval)
->   		goto error;
-Hello,
+On Mon, Jul 04, 2022 at 12:34:08PM +0000, Christophe Leroy wrote:
+> Le 04/07/2022 à 13:45, Peter Zijlstra a écrit :
+> > I'm somewhat confused; how is an empty STT_FUNC a valid construct on
+> > Power?
+> 
+> So am I. It is likely not a valid construct, but that's what GCC seems 
+> to generate when you call annotate_unreachable().
 
-I patched the RC5 of kernel 5.19 with this patch and I can confirm, that 
-my keyboard and mouse work without any problems.
+It is a valid construct on (almost) all targets.  If the user chooses to
+have executable code terminate in limbo, that is what the compiler will
+do (and this can result in a code symbol with size 0).  Compare this to
+data symbols with no size, the situation is quite similar.
 
-Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
 
-Please accept this patch.
-
-Thanks,
-Christian
+Segher
