@@ -1,61 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336525673E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 18:11:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E80F567458
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Jul 2022 18:30:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LcnjF0M9Lz3c5D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 02:11:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lcp7k3cFHz3btr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 02:30:42 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=RBfOBOXz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQZeK+KO;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.81; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=robh@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=RBfOBOXz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQZeK+KO;
 	dkim-atps=neutral
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lcnhd1s3Gz2yn5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 02:10:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1657037239;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=PtHy6OokJPrFtoDS0Whqy3V68GshIBOfC24cNcVepSk=;
-    b=RBfOBOXzrCI63W9Rvbhf5BanvIUqHt/d3ZmxcpQi0btZObe9VDQ4qLRQatssvXPhxn
-    V+UCMvezi0yUYjf4cSxB4rfa1hsm26ImuJzoIvJ7z+u0z9DX46bty7ZdpaxTG2L7cn/F
-    CFh/hAygHC0+JkceAg0Elcw8W66VUsYAsgzJFoPBMkqB4Cfb8e37L5lUu+Hbyg+5gnYE
-    QTaODKOKflh3J4Ipd6TQCGCAUX0uYiBOK3IbY3AVDxSHE/JZds7B5MX9HGUgIFNXPUho
-    3MeKiOUah1xoxTXXQ06fptaDeHybL7e5Kz4VOixx9EANdMULh6UUw5jggXTGLPFNbYJ+
-    kvlg==
-Authentication-Results: strato.com;
-    dkim=none
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBfio0GngadwjW4dqgkobcHPYDc/BNBepImPPJ"
-X-RZG-CLASS-ID: mo00
-Received: from [IPV6:2a02:8109:8980:4474:3840:b132:e6ea:146]
-    by smtp.strato.de (RZmta 47.46.1 AUTH)
-    with ESMTPSA id icdf6dy65G7HK68
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 5 Jul 2022 18:07:17 +0200 (CEST)
-Message-ID: <76d0db0f-57fe-2985-4916-175d913d99e4@xenosoft.de>
-Date: Tue, 5 Jul 2022 18:07:17 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lcp761fpPz2yn5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 02:30:10 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 642A5B8188D
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 16:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CF0C341CF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Jul 2022 16:30:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1657038606;
+	bh=aQRQTfK/Rd6YeI/kH1ApJs/gjWfPr8CLVdRZp1kXOGw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=VQZeK+KODTw132J4xGK8D9JxfXIfKOuuQ9lN+NaqQRcAwu+enUUO5uLG3bYHdh0wE
+	 J+2oPh/BODb+NlJ5tNXav4xNcU6qWZc9GWveKj+7AZn+nMaZrQQKDojz2+KV/HkFit
+	 3pLYo3C2Y53+YrUW9+pwMQX2IdaTv5fCbnzQgMzWxPc85QCAnzPT5LaDD6xW9JGeN0
+	 X60GtlRxV+1dxD+iNB1CIKmZX6G4p+xBCA6GSBqr+IULI4xj4A5kUR3zj3TPh7NHWy
+	 w7PbhAYGhh3hCFCm1OOeMpQbuhlVTUzAu6mIiZm8gnJHeOacTWedNpz1ZlkRGTS9nw
+	 Se2PIFwQ1atkg==
+Received: by mail-vs1-f50.google.com with SMTP id d187so12406163vsd.10
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Jul 2022 09:30:06 -0700 (PDT)
+X-Gm-Message-State: AJIora+yPeQsFB5FRUj323JAG+zHtLoESbyFBg9lFW4KTKoEOzxKp+ot
+	ylz5w26zkuJJgJcwdxuyG4hhzcEdZ7Mgkxv0bw==
+X-Google-Smtp-Source: AGRyM1sVtLtjcERxRubM7SzrfUKl6HHgPc94yiLBKPDEt0d6NiAQMFMB2d4xg2djNBPEW9awrYMdYnyf4N/lw/t+Nq8=
+X-Received: by 2002:a67:d194:0:b0:357:8ea:5554 with SMTP id
+ w20-20020a67d194000000b0035708ea5554mr175401vsi.0.1657038605004; Tue, 05 Jul
+ 2022 09:30:05 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.11.0
-Subject: Re: [PATCH 2/2] kvm: rename KVM_MAX_VCPU_ID to, KVM_MAX_VCPU_IDS
-Content-Language: de-DE
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Juergen Gross <jgross@suse.com>
-References: <6d3333b1-05cc-103b-4bdb-88bec5e3e9fd@xenosoft.de>
-In-Reply-To: <6d3333b1-05cc-103b-4bdb-88bec5e3e9fd@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20220702220355.63b36fb8@Cyrus.lan>
+In-Reply-To: <20220702220355.63b36fb8@Cyrus.lan>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 5 Jul 2022 10:29:53 -0600
+X-Gmail-Original-Message-ID: <CAL_Jsq+K7MN6kzMshNtBXYsM=1AKyJFL7OQpsevba2xmKz0=sg@mail.gmail.com>
+Message-ID: <CAL_Jsq+K7MN6kzMshNtBXYsM=1AKyJFL7OQpsevba2xmKz0=sg@mail.gmail.com>
+Subject: Re: [PATCH v3] drivers/usb/host/ehci-fsl: Fix interrupt setup in host mode.
+To: Darren Stevens <darren@stevens-zone.net>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,52 +67,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: x86@kernel.org, Wanpeng Li <wanpengli@tencent.com>, mad skateman <madskateman@gmail.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Darren Stevens <darren@stevens-zone.net>, Paul Mackerras <paulus@samba.org>, linux-kselftest@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Joerg Roedel <joro@8bytes.org>, "Huacai Chen," <chenhuacai@kernel.org>, "Aleksandar Markovic," <aleksandar.qemu.devel@gmail.com>, Ingo Molnar <mingo@redhat.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>, kvm-ppc@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@linutronix.de>, Jim Mattson <jmattson@google.com>, "Thomas Bogendoerfer," <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>, "Vitaly, Kuznetsov" <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Shawn Guo <shawnguo@kernel.org>, Linux USB List <linux-usb@vger.kernel.org>, Yang-Leo Li <leoyang.li@nxp.com>, Scott Wood <oss@buserror.net>, Alan Stern <stern@rowland.harvard.edu>, Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 14 September 2021 at 05:59 pm, Christian Zigotzky wrote:
-> Hello Juergen,
-> Hello All,
+On Sat, Jul 2, 2022 at 3:04 PM Darren Stevens <darren@stevens-zone.net> wrote:
 >
-> Since the RC1 of kernel 5.13, -smp 2 and -smp 4 don't work with a 
-> virtual e5500 QEMU KVM-HV machine anymore. [1]
-> I see in the serial console, that the uImage doesn't load. I use the 
-> following QEMU command for booting:
+> In patch a1a2b7125e10 (Drop static setup of IRQ resource from DT
+> core) we stopped platform_get_resource() from returning the IRQ, as all
+> drivers were supposed to have switched to platform_get_irq()
+> Unfortunately the Freescale EHCI driver in host mode got missed. Fix
+> it.
 >
-> qemu-system-ppc64 -M ppce500 -cpu e5500 -enable-kvm -m 1024 -kernel 
-> uImage -drive format=raw,file=MintPPC32-X5000.img,index=0,if=virtio 
-> -netdev user,id=mynet0 -device virtio-net,netdev=mynet0 -append "rw 
-> root=/dev/vda" -device virtio-vga -device virtio-mouse-pci -device 
-> virtio-keyboard-pci -device pci-ohci,id=newusb -device 
-> usb-audio,bus=newusb.0 -smp 4
+> Fixes: a1a2b7125e10 (Drop static setup of IRQ resource from DT core)
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Suggested-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Darren Stevens <darren@stevens-zone.net>
+> ---
+>  v3 - Corrected resource allocation in fsl-mph-dr-of.c
 >
-> The kernels boot without KVM-HV.
+>  v2 - Fixed coding style, removed a couple of unneeded initializations,
+>       cc'd Layerscape maintainers.
 >
-> Summary for KVM-HV:
->
-> -smp 1 -> works
-> -smp 2 -> doesn't work
-> -smp 3 -> works
-> -smp 4 -> doesn't work
->
-> I used -smp 4 before the RC1 of kernel 5.13 because my FSL P5040 BookE 
-> machine [2] has 4 cores.
->
-> Does this patch solve this issue? [3]
->
-> Thanks,
-> Christian
->
-> [1] https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-May/229103.html
-> [2] http://wiki.amiga.org/index.php?title=X5000
-> [3] 
-> https://lists.ozlabs.org/pipermail/linuxppc-dev/2021-September/234152.html
-Hello,
+> Tested on AmigaOne X5000/20 and X5000/40 Contains code by Rob Herring
+> (in fsl-mph-dr-of.c)
 
-Since the RC5 of kernel 5.19, -smp 2 and -smp 4 work again. I don't know 
-which patch has solved the issue.
+Thanks for fixing.
 
-Cheers,
-Christian
-
+Acked-by: Rob Herring <robh@kernel.org>
