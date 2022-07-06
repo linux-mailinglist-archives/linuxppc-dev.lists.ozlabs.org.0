@@ -1,53 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24005684C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 12:11:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86846568563
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 12:22:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdFgx3xPgz3c6S
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 20:11:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdFwt2kctz3c08
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 20:22:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SDJHfaBi;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txmb5oAo;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SDJHfaBi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txmb5oAo;
 	dkim-atps=neutral
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdFgH4GKwz2xXw
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 20:11:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdFwH5chzz3bl3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 20:22:23 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id E877AB81BAB;
-	Wed,  6 Jul 2022 10:11:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D29C3411C;
-	Wed,  6 Jul 2022 10:11:01 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 0BA21B81BD2;
+	Wed,  6 Jul 2022 10:22:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56115C3411C;
+	Wed,  6 Jul 2022 10:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657102261;
-	bh=dKEeKNqJpoL5hH00p3yVGSgJ+P+GEsFV9D+wcQU4tt0=;
+	s=k20201202; t=1657102939;
+	bh=SMQcYq8ni/D8jrt39kIE8+5UERyv9ocsQz7ZXYAUkIc=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SDJHfaBi68ceMUFS0St1t1mYWHA4SAQ26COFTBXCh1zmzWCp6lq52k1WPvY1BzJkd
-	 zIIzGFlW6lgV6TMaLhGW4GfaDrLNnrSJt9Jj3NpW5Z+F7tYH4iu8Ze2mvUoA8+bcAm
-	 uHF2/AjnvuRuX5V61+/DdvxZAhH25mEL+aSUyD2VpB1jzu+G+XnuMqgJRUiVe4FFK4
-	 p8i6Gp8BMq/LXqT7x0mpgOgwySVh8SaPAhdcp2SA2Ws2EuJgfuJfOAK1W5Qfivbg7o
-	 RSYdsz9ApTWn6kCsh6UJLLYI+LUg4HBEyIlbObLF4qikTOE1luuNGfHkrn6dY2i9ZC
-	 /cBorrxLjUJww==
+	b=txmb5oAobChslywtvbJ+gpAXqasBVWhd6fmlE51OsCkOYpAIPcblocnnezSWIrZCA
+	 LmFXulu9mSy9W6fxEZTIiFiBYLAxpx4VQTG5BG7N++VYgmAPWq499lxsP2E+gadJg/
+	 U7VJVjLZ2p2yylClQFtvinkB3mYF8fukQ9TAgp0aTPChyscJ9YH0F+o/LiayPDyhRS
+	 7sDelXC3ceihiXBqc4dnA4Ex6lutvhNvKcuZ+l+FFhXDh1+HhlAxmBnoVdOCU92Yq0
+	 ZdTRaEPN1YoAvu9tyl3Fp0KTwR3e1s/DRFbdr3mIHDOabZ6HbAg2nP5fR3CIyose/3
+	 uecTIOhge4t3g==
 Received: by pali.im (Postfix)
-	id 911F37BA; Wed,  6 Jul 2022 12:10:58 +0200 (CEST)
+	id D5CD77BA; Wed,  6 Jul 2022 12:22:16 +0200 (CEST)
 From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
 	Paul Mackerras <paulus@samba.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH] powerpc/fsl-pci: Fix Class Code of PCIe Root Port
-Date: Wed,  6 Jul 2022 12:10:43 +0200
-Message-Id: <20220706101043.4867-1-pali@kernel.org>
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Guowen Shan <gshan@redhat.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: [PATCH v2 1/2] powerpc/pci: Add config option for using OF 'reg' for PCI domain
+Date: Wed,  6 Jul 2022 12:21:47 +0200
+Message-Id: <20220706102148.5060-1-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -67,81 +70,96 @@ Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-By default old pre-3.0 Freescale PCIe controllers reports invalid PCI Class
-Code 0x0b20 for PCIe Root Port. It can be seen by lspci -b output on P2020
-board which has this pre-3.0 controller:
+Since commit 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on
+device-tree properties"), powerpc kernel always fallback to PCI domain
+assignment from OF / Device Tree 'reg' property of the PCI controller.
 
-  $ lspci -bvnn
-  00:00.0 Power PC [0b20]: Freescale Semiconductor Inc P2020E [1957:0070] (rev 21)
-          !!! Invalid class 0b20 for header type 01
-          Capabilities: [4c] Express Root Port (Slot-), MSI 00
+In most cases 'reg' property is not zero and therefore there it cause that
+PCI domain zero is not present in system anymore.
 
-Fix this issue by programming correct PCI Class Code 0x0604 for PCIe Root
-Port to the Freescale specific PCIe register 0x474.
+PCI code for other Linux architectures use increasing assignment of the PCI
+domain for individual controllers (assign the first free number), like it
+was also for powerpc prior mentioned commit. Also it starts numbering
+domains from zero.
 
-With this change lspci -b output is:
+Upgrading powerpc kernels from LTS 4.4 version (which does not contain
+mentioned commit) to new LTS versions brings a change in domain assignment.
 
-  $ lspci -bvnn
-  00:00.0 PCI bridge [0604]: Freescale Semiconductor Inc P2020E [1957:0070] (rev 21) (prog-if 00 [Normal decode])
-          Capabilities: [4c] Express Root Port (Slot-), MSI 00
+It can be problematic for embedded machines with single PCIe controller
+where it is expected that PCIe card is connected on the domain zero.
+Also it can be problematic as that commit changes PCIe domains in
+multi-controller setup with fixed number of controller (without hotplug
+support).
 
-Without any "Invalid class" error. So class code was properly reflected
-into standard (read-only) PCI register 0x08.
+Originally that change was intended for powernv and pservers and specially
+server machines with more PCI domains or hot plug support.
 
-Same fix is already implemented in U-Boot pcie_fsl.c driver in commit:
-http://source.denx.de/u-boot/u-boot/-/commit/d18d06ac35229345a0af80977a408cfbe1d1015b
+Fix this issue and introduce a new option CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG.
+When this option is disabled then powerpc kernel would assign PCI domains
+in the similar way like it is doing kernel for other architectures,
+starting from zero and also how it was done prior that commit.
 
-Fix activated by U-Boot stay active also after booting Linux kernel.
-But boards which use older U-Boot version without that fix are affected and
-still require this fix.
+This option is by default enabled for powernv and pseries platform for which
+was that commit originally intended.
 
-So implement this class code fix also in kernel fsl_pci.c driver.
+With this change upgrading kernels from LTS 4.4 version does not change PCI
+domain on smaller embedded platforms with fixed number of PCIe controllers.
+And also ensure that PCI domain zero is present as before that commit.
 
-Cc: stable@vger.kernel.org
+Fixes: 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on device-tree properties")
 Signed-off-by: Pali Rohár <pali@kernel.org>
 ---
- arch/powerpc/sysdev/fsl_pci.c | 8 ++++++++
- arch/powerpc/sysdev/fsl_pci.h | 1 +
- 2 files changed, 9 insertions(+)
+Changes in v2:
+* Enable CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG by default on powernv and pseries
+---
+ arch/powerpc/Kconfig             | 11 +++++++++++
+ arch/powerpc/kernel/pci-common.c |  4 ++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/fsl_pci.c b/arch/powerpc/sysdev/fsl_pci.c
-index 1011cfea2e32..bfbb8c8fc9aa 100644
---- a/arch/powerpc/sysdev/fsl_pci.c
-+++ b/arch/powerpc/sysdev/fsl_pci.c
-@@ -521,6 +521,7 @@ int fsl_add_bridge(struct platform_device *pdev, int is_primary)
- 	struct resource rsrc;
- 	const int *bus_range;
- 	u8 hdr_type, progif;
-+	u32 class_code;
- 	struct device_node *dev;
- 	struct ccsr_pci __iomem *pci;
- 	u16 temp;
-@@ -594,6 +595,13 @@ int fsl_add_bridge(struct platform_device *pdev, int is_primary)
- 			PPC_INDIRECT_TYPE_SURPRESS_PRIMARY_BUS;
- 		if (fsl_pcie_check_link(hose))
- 			hose->indirect_type |= PPC_INDIRECT_TYPE_NO_PCIE_LINK;
-+		/* Fix Class Code to PCI_CLASS_BRIDGE_PCI_NORMAL for pre-3.0 controller */
-+		if (in_be32(&pci->block_rev1) < PCIE_IP_REV_3_0) {
-+			early_read_config_dword(hose, 0, 0, PCIE_FSL_CSR_CLASSCODE, &class_code);
-+			class_code &= 0xff;
-+			class_code |= PCI_CLASS_BRIDGE_PCI_NORMAL << 8;
-+			early_write_config_dword(hose, 0, 0, PCIE_FSL_CSR_CLASSCODE, class_code);
-+		}
- 	} else {
- 		/*
- 		 * Set PBFR(PCI Bus Function Register)[10] = 1 to
-diff --git a/arch/powerpc/sysdev/fsl_pci.h b/arch/powerpc/sysdev/fsl_pci.h
-index cdbde2e0c96e..093a875d7d1e 100644
---- a/arch/powerpc/sysdev/fsl_pci.h
-+++ b/arch/powerpc/sysdev/fsl_pci.h
-@@ -18,6 +18,7 @@ struct platform_device;
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f66084bc1dfe..053a88e84049 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -386,6 +386,17 @@ config PPC_OF_PLATFORM_PCI
+ 	depends on PCI
+ 	depends on PPC64 # not supported on 32 bits yet
  
- #define PCIE_LTSSM	0x0404		/* PCIE Link Training and Status */
- #define PCIE_LTSSM_L0	0x16		/* L0 state */
-+#define PCIE_FSL_CSR_CLASSCODE	0x474	/* FSL GPEX CSR */
- #define PCIE_IP_REV_2_2		0x02080202 /* PCIE IP block version Rev2.2 */
- #define PCIE_IP_REV_3_0		0x02080300 /* PCIE IP block version Rev3.0 */
- #define PIWAR_EN		0x80000000	/* Enable */
++config PPC_PCI_DOMAIN_FROM_OF_REG
++	bool "Use OF reg property for PCI domain"
++	depends on PCI
++	default y if PPC_PSERIES || PPC_POWERNV
++	help
++	  By default PCI domain for host bridge during its registration is
++	  chosen as the lowest unused PCI domain number.
++
++	  When this option is enabled then PCI domain can be determined
++	  also from lower bits of the OF / Device Tree 'reg' property.
++
+ config ARCH_SUPPORTS_UPROBES
+ 	def_bool y
+ 
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index 068410cd54a3..7f959df34833 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -74,7 +74,6 @@ void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops)
+ static int get_phb_number(struct device_node *dn)
+ {
+ 	int ret, phb_id = -1;
+-	u32 prop_32;
+ 	u64 prop;
+ 
+ 	/*
+@@ -83,7 +82,8 @@ static int get_phb_number(struct device_node *dn)
+ 	 * reading "ibm,opal-phbid", only present in OPAL environment.
+ 	 */
+ 	ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
+-	if (ret) {
++	if (ret && IS_ENABLED(CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG)) {
++		u32 prop_32;
+ 		ret = of_property_read_u32_index(dn, "reg", 1, &prop_32);
+ 		prop = prop_32;
+ 	}
 -- 
 2.20.1
 
