@@ -1,52 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4030568D4A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 17:35:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55195568D4B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 17:36:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdNsV3wgrz3fW9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 01:35:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdNtG15Z3z3fZq
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 01:36:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qZ1xOlob;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hG+qz9x2;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qZ1xOlob;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hG+qz9x2;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdNqr4bdnz3fB7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 01:34:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdNr86FcQz3fNF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 01:34:16 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id BC1AF61FFA;
-	Wed,  6 Jul 2022 15:33:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48623C341CD;
-	Wed,  6 Jul 2022 15:33:57 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 4C7B8B81D93;
+	Wed,  6 Jul 2022 15:34:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194A1C341C8;
+	Wed,  6 Jul 2022 15:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657121638;
-	bh=86GZffUJNDdRz1Q8/xH57X1zgjufQMhaT9F2jEs4Lh8=;
+	s=k20201202; t=1657121653;
+	bh=BN3QKHWBFOVmDNAdkhEZg41UokDP2Y1qURVWKR6ME3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZ1xOlobG7BOY7YIncGk/NvavX4yMirMLq0NcBbbvLHPd6dg02l9PzUeC7kqMkQWM
-	 nWsxlSUZ0QJZ3ulINZOEEHHl4uEiYEV7xCmHr4t/25nIkgcK60qc4m3BdhC0DBqZ6F
-	 zkmybmuloR5HvW00xPKdOJJ4tJsk8jSvwSbQT55To+pOFxTDqOwDWvAPacpNJCHsRb
-	 Ob2JaCGIFHACRR+VS7VFPgcufzMy7fY0gKSQEU1wW7g9vNcw4B3TcmN/l1lj2pRGVY
-	 zY7CJcL8E5DW1NUc8zYAwQO8ZhgLQT+RPtq+jCtS5bFfEInxUAy9mYsUJs2lqGpS8X
-	 babchvxNa9gEA==
+	b=hG+qz9x2+NafUyuuOm9V8JTXDpjKiVFhCczobHnEl1IWIYsUzspB27G2PkuYfSTGo
+	 TPD7Af/1XhC98QNSlWLRlsFowSwm6eAbiuqcYaUsTsfUqOhy16KuOmOh6dqr2XyFT8
+	 yCAH5MhLmnzBfYBr4QXEHh3jCEAvRYclC3fNmSPU31drhLk0KJYSM+yZCfy8CkleGU
+	 OOfh0+ebquYquUjZC2KBMFHd8n1T+lu+eEKckOQpq3VE8NGToOaVjs0sknQsAKtI3P
+	 7Uvi8CO9rCDBhDTxko6Nl1NbbdLIDN5UvD4WU5QgeJad5HMcR3nP4oIugT9qo3cQK6
+	 KNKjYbqhhQtNw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 4/8] cpufreq: pmac32-cpufreq: Fix refcount leak bug
-Date: Wed,  6 Jul 2022 11:33:46 -0400
-Message-Id: <20220706153351.1598805-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 3/5] cpufreq: pmac32-cpufreq: Fix refcount leak bug
+Date: Wed,  6 Jul 2022 11:34:05 -0400
+Message-Id: <20220706153407.1598915-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220706153351.1598805-1-sashal@kernel.org>
-References: <20220706153351.1598805-1-sashal@kernel.org>
+In-Reply-To: <20220706153407.1598915-1-sashal@kernel.org>
+References: <20220706153407.1598915-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -82,10 +82,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/drivers/cpufreq/pmac32-cpufreq.c b/drivers/cpufreq/pmac32-cpufreq.c
-index e225edb5c359..ce0dda1a4241 100644
+index 641f8021855a..62e86f7ca04a 100644
 --- a/drivers/cpufreq/pmac32-cpufreq.c
 +++ b/drivers/cpufreq/pmac32-cpufreq.c
-@@ -474,6 +474,10 @@ static int pmac_cpufreq_init_MacRISC3(struct device_node *cpunode)
+@@ -473,6 +473,10 @@ static int pmac_cpufreq_init_MacRISC3(struct device_node *cpunode)
  	if (slew_done_gpio_np)
  		slew_done_gpio = read_gpio(slew_done_gpio_np);
  
