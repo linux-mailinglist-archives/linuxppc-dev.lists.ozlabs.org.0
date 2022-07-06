@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89FDF568CD6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 17:31:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB615568CD9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 17:32:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdNmr3R2Tz3cC4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 01:31:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdNnc4sCQz3cgs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 01:32:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MREddTO4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFxHdrRZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MREddTO4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qFxHdrRZ;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdNmD0swsz3bd6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 01:30:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdNmh1nT9z3cgT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 01:31:16 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 49A0361F5F;
-	Wed,  6 Jul 2022 15:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73932C3411C;
-	Wed,  6 Jul 2022 15:30:47 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id E13D4B81D93;
+	Wed,  6 Jul 2022 15:31:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59C3C385A5;
+	Wed,  6 Jul 2022 15:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657121448;
-	bh=5R47J+25WoueaSlU5nmfgfSL3DFATGk0c8nOn/Bo6FM=;
+	s=k20201202; t=1657121471;
+	bh=2tvJ+fipO4VZmFYhZ9As3c1NcfOg4s2bZwVEwvLpA6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MREddTO4NueBRoNPNkMCObwRyA0o91QtPgIGSjI5r6GbVqIz9ixdB/nZrMgzthmGi
-	 wP3UC7C5AdNjhYOfBzSyQn3p9bVP4GYwa0f2VlmJcLvPsCdQO5VB2BXEaFgAtgQJoT
-	 SqXo6lcvIBkKsfAerDgqq9G6trFjp9ythIAkJ0r+f6C2prqzo7ASo4NKXrfw6kH2ow
-	 kkhTbf/USkltE8NX9z7WowCQGKz1wuTEMNO+s7GvLzDpk/x25aQCZHXBifkaRtdFTh
-	 m73PkmLpvBkzQG0NFZNuK3BJZFGbHuVZ/EMp8LkHtiiIcu8OpdGCd3Yk2VzdF2yd77
-	 IxWv/zKtEpQ9A==
+	b=qFxHdrRZMTfbnk3vLHK1ITM0WmYGo5JMm8fnANLO0H22Jia3fVF5U67mg78lBTsRZ
+	 6q/1TKLFOtsNCGjR+vETadTxHRX+dy6nBqTxeztzIAtOQrGM4r2sqJUwZNhz1mISO+
+	 erLbZHTMxQ1HoIC+XQhjnjD5NGPdghIdv3RJe0fjIOU+Qw/R+5NHzoYXpTbovZufDx
+	 BYyb1uv6kQFfFOqE6WnkYsqdae0Fk4sU6PajrQAmJHloCTQHx8ur9GspQl0lo2voZC
+	 ei9BdSrqc13gyL94oPgbawdY5mUtlu6pv/tlyb0565GRN0MQbvGa+pH/WXW57R5XOK
+	 cyJA/TZ/jgWfw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.18 02/22] powerpc/xive/spapr: correct bitmap allocation size
-Date: Wed,  6 Jul 2022 11:30:20 -0400
-Message-Id: <20220706153041.1597639-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.18 11/22] cpufreq: pmac32-cpufreq: Fix refcount leak bug
+Date: Wed,  6 Jul 2022 11:30:29 -0400
+Message-Id: <20220706153041.1597639-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220706153041.1597639-1-sashal@kernel.org>
 References: <20220706153041.1597639-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
@@ -63,111 +62,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Sasha Levin <sashal@kernel.org>, linmq006@gmail.com, nick.child@ibm.com, ammarfaizi2@gmail.com, christophe.jaillet@wanadoo.fr, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linux-pm@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>, rafael@kernel.org, linuxppc-dev@lists.ozlabs.org, Liang He <windhl@126.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Liang He <windhl@126.com>
 
-[ Upstream commit 19fc5bb93c6bbdce8292b4d7eed04e2fa118d2fe ]
+[ Upstream commit ccd7567d4b6cf187fdfa55f003a9e461ee629e36 ]
 
-kasan detects access beyond the end of the xibm->bitmap allocation:
+In pmac_cpufreq_init_MacRISC3(), we need to add corresponding
+of_node_put() for the three node pointers whose refcount have
+been incremented by of_find_node_by_name().
 
-BUG: KASAN: slab-out-of-bounds in _find_first_zero_bit+0x40/0x140
-Read of size 8 at addr c00000001d1d0118 by task swapper/0/1
-
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.19.0-rc2-00001-g90df023b36dd #28
-Call Trace:
-[c00000001d98f770] [c0000000012baab8] dump_stack_lvl+0xac/0x108 (unreliable)
-[c00000001d98f7b0] [c00000000068faac] print_report+0x37c/0x710
-[c00000001d98f880] [c0000000006902c0] kasan_report+0x110/0x354
-[c00000001d98f950] [c000000000692324] __asan_load8+0xa4/0xe0
-[c00000001d98f970] [c0000000011c6ed0] _find_first_zero_bit+0x40/0x140
-[c00000001d98f9b0] [c0000000000dbfbc] xive_spapr_get_ipi+0xcc/0x260
-[c00000001d98fa70] [c0000000000d6d28] xive_setup_cpu_ipi+0x1e8/0x450
-[c00000001d98fb30] [c000000004032a20] pSeries_smp_probe+0x5c/0x118
-[c00000001d98fb60] [c000000004018b44] smp_prepare_cpus+0x944/0x9ac
-[c00000001d98fc90] [c000000004009f9c] kernel_init_freeable+0x2d4/0x640
-[c00000001d98fd90] [c0000000000131e8] kernel_init+0x28/0x1d0
-[c00000001d98fe10] [c00000000000cd54] ret_from_kernel_thread+0x5c/0x64
-
-Allocated by task 0:
- kasan_save_stack+0x34/0x70
- __kasan_kmalloc+0xb4/0xf0
- __kmalloc+0x268/0x540
- xive_spapr_init+0x4d0/0x77c
- pseries_init_irq+0x40/0x27c
- init_IRQ+0x44/0x84
- start_kernel+0x2a4/0x538
- start_here_common+0x1c/0x20
-
-The buggy address belongs to the object at c00000001d1d0118
- which belongs to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes inside of
- 8-byte region [c00000001d1d0118, c00000001d1d0120)
-
-The buggy address belongs to the physical page:
-page:c00c000000074740 refcount:1 mapcount:0 mapping:0000000000000000 index:0xc00000001d1d0558 pfn:0x1d1d
-flags: 0x7ffff000000200(slab|node=0|zone=0|lastcpupid=0x7ffff)
-raw: 007ffff000000200 c00000001d0003c8 c00000001d0003c8 c00000001d010480
-raw: c00000001d1d0558 0000000001e1000a 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- c00000001d1d0000: fc 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- c00000001d1d0080: fc fc 00 fc fc fc fc fc fc fc fc fc fc fc fc fc
->c00000001d1d0100: fc fc fc 02 fc fc fc fc fc fc fc fc fc fc fc fc
-                            ^
- c00000001d1d0180: fc fc fc fc 04 fc fc fc fc fc fc fc fc fc fc fc
- c00000001d1d0200: fc fc fc fc fc 04 fc fc fc fc fc fc fc fc fc fc
-
-This happens because the allocation uses the wrong unit (bits) when it
-should pass (BITS_TO_LONGS(count) * sizeof(long)) or equivalent. With small
-numbers of bits, the allocated object can be smaller than sizeof(long),
-which results in invalid accesses.
-
-Use bitmap_zalloc() to allocate and initialize the irq bitmap, paired with
-bitmap_free() for consistency.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20220623182509.3985625-1-nathanl@linux.ibm.com
+Signed-off-by: Liang He <windhl@126.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/xive/spapr.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/pmac32-cpufreq.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-index 503f544d28e2..b0d36e430dbc 100644
---- a/arch/powerpc/sysdev/xive/spapr.c
-+++ b/arch/powerpc/sysdev/xive/spapr.c
-@@ -13,6 +13,7 @@
- #include <linux/of.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/bitmap.h>
- #include <linux/cpumask.h>
- #include <linux/mm.h>
- #include <linux/delay.h>
-@@ -55,7 +56,7 @@ static int __init xive_irq_bitmap_add(int base, int count)
- 	spin_lock_init(&xibm->lock);
- 	xibm->base = base;
- 	xibm->count = count;
--	xibm->bitmap = kzalloc(xibm->count, GFP_KERNEL);
-+	xibm->bitmap = bitmap_zalloc(xibm->count, GFP_KERNEL);
- 	if (!xibm->bitmap) {
- 		kfree(xibm);
- 		return -ENOMEM;
-@@ -73,7 +74,7 @@ static void xive_irq_bitmap_remove_all(void)
+diff --git a/drivers/cpufreq/pmac32-cpufreq.c b/drivers/cpufreq/pmac32-cpufreq.c
+index 4f20c6a9108d..8e41fe9ee870 100644
+--- a/drivers/cpufreq/pmac32-cpufreq.c
++++ b/drivers/cpufreq/pmac32-cpufreq.c
+@@ -470,6 +470,10 @@ static int pmac_cpufreq_init_MacRISC3(struct device_node *cpunode)
+ 	if (slew_done_gpio_np)
+ 		slew_done_gpio = read_gpio(slew_done_gpio_np);
  
- 	list_for_each_entry_safe(xibm, tmp, &xive_irq_bitmaps, list) {
- 		list_del(&xibm->list);
--		kfree(xibm->bitmap);
-+		bitmap_free(xibm->bitmap);
- 		kfree(xibm);
- 	}
- }
++	of_node_put(volt_gpio_np);
++	of_node_put(freq_gpio_np);
++	of_node_put(slew_done_gpio_np);
++
+ 	/* If we use the frequency GPIOs, calculate the min/max speeds based
+ 	 * on the bus frequencies
+ 	 */
 -- 
 2.35.1
 
