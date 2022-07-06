@@ -1,59 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18C25688AD
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 14:50:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9CF569529
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 00:19:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdKCW5VGfz3c6N
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 22:50:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdYqM0pzJz3cgr
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 08:19:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.170; helo=mail-yw1-f170.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdKC344YRz3bd6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 22:50:17 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4LdKBr4B1gz9tWm;
-	Wed,  6 Jul 2022 14:50:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3b1Tk15YVX3m; Wed,  6 Jul 2022 14:50:12 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4LdKBr3R4fz9sfl;
-	Wed,  6 Jul 2022 14:50:12 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 664748B790;
-	Wed,  6 Jul 2022 14:50:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id sDQLrrIO2R3b; Wed,  6 Jul 2022 14:50:12 +0200 (CEST)
-Received: from [172.25.230.108] (unknown [172.25.230.108])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 456B28B764;
-	Wed,  6 Jul 2022 14:50:12 +0200 (CEST)
-Message-ID: <fe96f510-4a4e-f044-c815-489b8f6d0564@csgroup.eu>
-Date: Wed, 6 Jul 2022 14:50:12 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdLYT4m8Gz2yWr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 23:51:23 +1000 (AEST)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-31c89111f23so90367287b3.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Jul 2022 06:51:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5SiPC3jj492VC8TfaG5lxiX62rjLNKysidcQlbSYqow=;
+        b=GkgM3wSDVaqQMbY2uPhp8EFo5D79YxjDyxsj9rIClM3ufsVfsTVIMaLucw09U0Xr2m
+         SRFs0WLvE60kJHmV7u6U1WfZqO2qEbDuJeXEo+FBKRVyR36mAUYwTn8prNJKbUeEYEzZ
+         coJOhyIqqAgPlrXuUDCbEXlchX87jm/snLmr6YL/ddqNQkM+Cd9gf0Dd0ooA2FPcQ1Vw
+         /UPNG/rncjfjEVOAjs9Oa7k7Z6Lcf3P/YFuwQWTVn/rUJScSr/x8cq6n0+olWjdFdxdk
+         3YZnm7uWrtgwaEFoUVjSEVtwE3ktqN9D3Hg6cHXnavN0LLkml7ZmEN/vl1VA2WYVmFYF
+         91qA==
+X-Gm-Message-State: AJIora+NUkyQn0dG1PCxQ6kiCab5eYYa0oTFUf0tcFyXGGXs+IqC1eH1
+	jTdZC0obSJ5/Pt0rIN2YKrcBwGalLXHZQaT8TRg=
+X-Google-Smtp-Source: AGRyM1t2zFLeLAi3TOz/3FKNOaozLIghzMJavy2698E42fvxt6d4SsTob1/anQx1a1kTDZPSEUZEInHEN/JL2sa2rXc=
+X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
+ b145-20020a811b97000000b002db640f49d8mr45075306ywb.326.1657115480888; Wed, 06
+ Jul 2022 06:51:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2] powerpc/mm: Use is_vmalloc_addr to validate addr
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>
-References: <20220704063909.295546-1-aneesh.kumar@linux.ibm.com>
- <2daa07c5-db5f-a6c9-82a7-7b6f1524135b@csgroup.eu>
- <91684e3f-c60c-e70f-4c04-fab40c2214b7@linux.ibm.com>
- <d42e1e82-ffc3-7cf8-7de0-52a24f3f2d83@csgroup.eu>
-In-Reply-To: <d42e1e82-ffc3-7cf8-7de0-52a24f3f2d83@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20220608142723.103523089@infradead.org> <20220608144516.109792837@infradead.org>
+In-Reply-To: <20220608144516.109792837@infradead.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 6 Jul 2022 15:51:09 +0200
+Message-ID: <CAJZ5v0jO9+jRSm3d58K15JaO3=kgM2Ueo7W+Smi3WCBPR_VM5Q@mail.gmail.com>
+Subject: Re: [PATCH 03/36] cpuidle/poll: Ensure IRQ state is invariant
+To: Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Thu, 07 Jul 2022 08:18:29 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,73 +56,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Benjamin Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, srivatsa@csail.mit.edu, linux-arch <linux-arch@vger.kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Andy Gross <agross@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, dl-linux-imx <linux-imx@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org, mattst88@gmail.com, Christian Borntraeger <borntraeger@linux.ibm.com>, Michael Turquette <mturquette@baylibre.com>, sammy@sammy.net, Petr Mladek <pmladek@suse.com>, Linux PM <linux-pm@vger.kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, Thomas Gleixner <tglx@
+ linutronix.de>, Linux OMAP Mailing List <linux-omap@vger.kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, rth@twiddle.net, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, Sven Schnelle <svens@linux.ibm.com>, jolsa@kernel.org, Paul Mackerras <paulus@samba.org>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, virtualization@lists.linux-foundation.org, James Bottomley <James.Bottomley@hansenpartnership.com>, jcmvbkbc@gmail.com, Thierry Reding <thierry.reding@gmail.com>, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, John Ogness <john.ogness@linutronix.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>, Jon H
+ unter <jonathanh@nvidia.com>, Mathieu Desnoyers <math
+
+ieu.desnoyers@efficios.com>, Frederic Weisbecker <frederic@kernel.org>, Len Brown <lenb@kernel.org>, linux-xtensa@linux-xtensa.org, Sascha Hauer <kernel@pengutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, linux-alpha@vger.kernel.org, linux-m68k <linux-m68k@lists.linux-m68k.org>, Stafford Horne <shorne@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Chris Zankel <chris@zankel.net>, Stephen Boyd <sboyd@kernel.org>, dinguyen@kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Kevin Hilman <khilman@kernel.org>, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, Mel Gorman <mgorman@suse.de>, Jacob Pan <jacob.jun.pan@linux.inte
+ l.com>, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk <linux-clk@vger.kernel.org>, Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, bcain@quicinc.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, David Miller <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Tony Lindgren <tony@atomide.com>, amakhalov@vmware.com, Bjorn Andersson <bjorn.andersson@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv <linux-riscv@lists.infradead.org>, anton.ivanov@cambridgegreys.com, jonas@southpole.se, Yury Norov <yury.norov@gmail.com>, Richard Weinberger <richard@nod.at>, the arch/x86 maintainers <x86@kernel.org>, Russell King - ARM Linux <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Al
+ bert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <
+paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra <linux-tegra@vger.kernel.org>, namhyung@kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jpoimboe@kernel.org, Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, ink@jurassic.park.msu.ru, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Wed, Jun 8, 2022 at 4:47 PM Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> cpuidle_state::enter() methods should be IRQ invariant
+>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-Le 04/07/2022 à 09:55, Christophe Leroy a écrit :
-> 
-> 
-> Le 04/07/2022 à 09:45, Aneesh Kumar K V a écrit :
->> On 7/4/22 12:43 PM, Christophe Leroy wrote:
->>>
->>>
->>> Le 04/07/2022 à 08:39, Aneesh Kumar K.V a écrit :
->>>> Instead of high_memory use is_vmalloc_addr to validate that the 
->>>> address is
->>>> not in the vmalloc range.
->>>
->>>
->>> Do we really need even more extra checks, and a function that is not
->>> inlined anymore ?
->>>
->>> virt_addr_valid() used to be pretty simple. Some extra tests were added
->>> by commit ffa0b64e3be5 ("powerpc: Fix virt_addr_valid() for 64-bit
->>> Book3E & 32-bit") in order to work around some corner cases, and the
->>> commit message say they are temporary.
->>>
->>> virt_addr_valid() is there to check that an address is a valid linear
->>> mapping, not that an address IS NOT a vmalloc address. What will happen
->>> with your check if you pass an address that is from an ioremap done
->>> prior to the start of the vmalloc system ?
->>>
->>
->> I was expecting the io range to be handled by pfn_valid(). IS there a 
->> memory layout
->> ascii diagram of book3e/64 like asm/book3s/64/radix.h:51 ? My goal 
->> with the
->> change was to make it more explicit what is it being validated.
-> 
-> 
-> Yes you are right it should be handled by pfn_valid(), just like the 
-> entire VMALLOC range indeed. But on PPC32 a valid pfn might hit above 
-> vmalloc space as well.
-> 
-> You can find the new layout here : 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=c7b9ed7c34a9f5dbf8222d63e3e313cef9f3150b 
-> 
-> 
-> The only problem we have with pfn_valid() is for PPC32 because 
-> pfn_valid() also include highmem memory. That's the reason why we need 
-> to check that the address is below high_memory in addition.
-> 
-> For everything else, pfn_valid() should be enough.
-> 
-> For PPC64, we may want to add a verification that we are in the 0xc.... 
-> range, because of the way __pa/__va work. On PPC32 that's not needed.
-> 
-
-So, I would do something like that:
-
-static __always_inline bool __virt_addr_valid(unsigned long addr)
-{
-	if (IS_ENABLED(CONFIG_PPC64) && lm_alias(addr) != addr)
-		return false;
-	if (IS_ENABLED(CONFIG_HIGHMEM) && addr >= (unsigned long)high_memory)
-		return false;
-	return pfn_valid(virt_to_pfn(addr));
-}
-
-#define virt_addr_valid(kaddr)	__virt_addr_valid((unsigned long) (kaddr))
+> ---
+>  drivers/cpuidle/poll_state.c |    4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> --- a/drivers/cpuidle/poll_state.c
+> +++ b/drivers/cpuidle/poll_state.c
+> @@ -17,7 +17,7 @@ static int __cpuidle poll_idle(struct cp
+>
+>         dev->poll_time_limit = false;
+>
+> -       local_irq_enable();
+> +       raw_local_irq_enable();
+>         if (!current_set_polling_and_test()) {
+>                 unsigned int loop_count = 0;
+>                 u64 limit;
+> @@ -36,6 +36,8 @@ static int __cpuidle poll_idle(struct cp
+>                         }
+>                 }
+>         }
+> +       raw_local_irq_disable();
+> +
+>         current_clr_polling();
+>
+>         return index;
+>
+>
