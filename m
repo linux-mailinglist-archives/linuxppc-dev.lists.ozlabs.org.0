@@ -2,134 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF95569536
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 00:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437C3569530
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 00:20:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdYtH4SPVz3dpK
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 08:21:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=fb.com header.i=@fb.com header.a=rsa-sha256 header.s=facebook header.b=PcXqSsfz;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdYs617PYz3blX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 08:20:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fb.com (client-ip=67.231.153.30; helo=mx0a-00082601.pphosted.com; envelope-from=prvs=81867f175b=noodles@fb.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=fb.com header.i=@fb.com header.a=rsa-sha256 header.s=facebook header.b=PcXqSsfz;
-	dkim-atps=neutral
-X-Greylist: delayed 3211 seconds by postgrey-1.36 at boromir; Thu, 07 Jul 2022 00:54:51 AEST
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.176; helo=mail-yw1-f176.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdMyg2WV7z3bdk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 00:54:50 +1000 (AEST)
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.17.1.5/8.17.1.5) with ESMTP id 266AMhMW021477;
-	Wed, 6 Jul 2022 07:00:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=facebook;
- bh=z1x45iQd+SZqL4x6pqAuXViwc0hx/t4lmefz+z2TmBM=;
- b=PcXqSsfzQQHk1WsfQFQw2Z0lhWzCiqN7hpFOsfBxwfrs/u2o+E3pjbHLs09AHFpElX44
- pSnKqFDHZNzvYaexTsBfdyJC+5WWa0sZ5Fsly08SvMMV2ghxKkVpxneWXvOr/b581ah9
- p9bDW8NNMK9HfGfKKb+gBrL2KEcy00JdntU= 
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2177.outbound.protection.outlook.com [104.47.59.177])
-	by m0089730.ppops.net (PPS) with ESMTPS id 3h4ucjncrv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Jul 2022 07:00:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TRI4PMJzscQxya/t9mxGkGT4vy8n3e2yTXZhyfynjJPXz6TPT6cWDfuv+TG8w3mg/lhTG8Z7C+XHUjLqzNFrCPlzbRvPxuSEX6RzEIwCsvs0dY4mGYvNHfxzF+gc5sQhcSoiw+wJErHb6VMXVDCUUtQF7YYmUqnqCVrktrBQXz7H1shaGYsOWAoJBAuZH5skm312rOnWHTE1wWns39lY0VOgCgqYJ32ejUx0geu2Kuxc9QILQduDLyPNyvC7V3+fe42Vtuszv8VyDtScG71+D8IuHYw+17fKGmnddsBfM7+g4aA7mgep42z7UFden/+yTyPkRi/PiQ++WA1OfaLKCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ARXk1Y1Vuqu64i9LHwb+SL/jsef6JXVXaFOQStyCtHM=;
- b=GfpwrvsMBt5ECkhflvVL7Wdxl3ZnzXALKniiG1hQ8p35TlfRN3BUrJO0IqXF8baXchRi28hMQO3aOoMmycj8IHWcgUmRUEk3Tu4AfMUFHO53fYYyUv2qnfMANbAlVjv2kQDzkmTulAJ3SYX1yJG/ry/FpyFlie2DslfiO/nMUvqWPpv/+uGSxO6VCtoFxvM9DNXg1W3H01mOTy9UCuUfl9HLA0JBDD2vG5nbztN+3xCaQT9iVNFLrGJFwF5DaBEADd5C9+w3yX1VTKwpTQprzb54iBh7x1qA0+NCFbZ4QdTh2xUr90OjHi2UvPGs5G7L4gPz5qgLbTihd1i6riOKaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fb.com; dmarc=pass action=none header.from=fb.com; dkim=pass
- header.d=fb.com; arc=none
-Received: from SJ0PR15MB4552.namprd15.prod.outlook.com (2603:10b6:a03:379::12)
- by PH0PR15MB5071.namprd15.prod.outlook.com (2603:10b6:510:c7::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5417.16; Wed, 6 Jul
- 2022 14:00:45 +0000
-Received: from SJ0PR15MB4552.namprd15.prod.outlook.com
- ([fe80::81f9:c21c:c5bf:e174]) by SJ0PR15MB4552.namprd15.prod.outlook.com
- ([fe80::81f9:c21c:c5bf:e174%8]) with mapi id 15.20.5417.016; Wed, 6 Jul 2022
- 14:00:44 +0000
-From: Jonathan McDowell <noodles@fb.com>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v4 4/5] of: kexec: Refactor IMA buffer related functions
- to make them reusable
-Thread-Topic: [PATCH v4 4/5] of: kexec: Refactor IMA buffer related functions
- to make them reusable
-Thread-Index: AQHYkMErYgOTAJp330m4YH5UOsaqI61xX/2A
-Date: Wed, 6 Jul 2022 14:00:44 +0000
-Message-ID: <YsWVfbMu85Cmwdgm@noodles-fedora.dhcp.thefacebook.com>
-References: <20220701022603.31076-1-stefanb@linux.ibm.com>
- <20220701022603.31076-5-stefanb@linux.ibm.com>
- <47256afac54d68c23f0bdec257ffa26ddf1eb25d.camel@linux.ibm.com>
-In-Reply-To: <47256afac54d68c23f0bdec257ffa26ddf1eb25d.camel@linux.ibm.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2eeb2b21-33ec-4b47-df1a-08da5f57eb6f
-x-ms-traffictypediagnostic: PH0PR15MB5071:EE_
-x-fb-source: Internal
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  umWSkseHLQwQ6Ccn8zIWDtn5YDuOsNky3F6H2GfGlCgdinASBDzVRFJoJxvJfDmGmkMH6sTPedTY2Ksq3NFn2MLoVEdlkGe6w/tcOTdMcd4fBi5t/9dHKN8z5eN1ZmY7+C4Zi9vpdn2tc0CiXtAgC4znx8Em3vYJQXhhd7WnibUjOSe4KyZI1bBrQwO6yCrsG9eJllJyRQ0ZzzpZDGt7lq6PhxGMP3Z0qVba1RyXKfGd+8MfrsnFYTZ/2zVBRZFuXla7cpiEfCsmj1wJhNviO0J7gwv4Yo0bcy4or7EAT3os1VDf2DMwU8avQrKVXULtFqh7se6lf6jzr4JQLWEGZwuuJXAiomcpZjScxC4/C+byQjxWtJksU9XW5Jv0dXme3KNDq/Ghvq1l0lvGOUTUZhpGFNwEXl8I3AUNTnh46Uyld1GmI8f8mwx47mfjPAW1IHwT0J5yGdF2dH9rfyFlD9AG+f6F7uGSHz9nDsnr0WVdn3spAo3edccbORilG98cPUt7o+P+CovDUVrUOgkWfqFlRJXCp04V7jGXEdyGlKbbvqXAi/2CVxyV6TPMEP83A+bwg2CkM9dMOeufYyJV3KfAJQ2hzwUpMj2foqr9Jjjv8O9SE7um2FNIF3gOk2+NcYX/C3CMZQ2OdGrC8NI3pVB5mykSF1p5gUnv7Sr3dAIVQM+rQfd3n5oFq5dNZPLKhUEP743TFp6WGDqye+giADdtXgLhbbBLpBw42OUyxrphDOjgs9I+0YF/ti6Dud4Dryd+LBccGk/b9ba/8+BJrA9+q5BJQK2da4HCWyzVifxtinNB5NZ6NzjanPdPSnI3ekp5hvo+o4AXDzvp8xDb2SiJtZdCvZSxy9kWqCpb1z4=
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR15MB4552.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(346002)(376002)(396003)(39860400002)(366004)(8936002)(9686003)(6512007)(26005)(4326008)(8676002)(64756008)(66446008)(66476007)(66556008)(66946007)(71200400001)(478600001)(76116006)(91956017)(7416002)(86362001)(6916009)(54906003)(5660300002)(316002)(2906002)(41300700001)(6506007)(186003)(6486002)(966005)(83380400001)(122000001)(38070700005)(38100700002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?/UdPMDwGKEYkMNA7yigW0x8DH+47RrCl0eKjmIptLcSjyyv+ez2DhBp1nOam?=
- =?us-ascii?Q?puBbbDGDdlz5lP6BKJMeuwbJa4YDYohwgUCRntkysFLLb55ELexK1Yj/0Rx5?=
- =?us-ascii?Q?7CFu1e9c1fnSrsOkc+5LxPevKcB3fZi8T+R8jOgTa7VYtcA1bpoqCMZQgq4e?=
- =?us-ascii?Q?YXOzd/fvuZE6D/udCG83ppg4WGxyg/kw5BO9TYgo7dLwxAhq9fUQ+9hgqZRH?=
- =?us-ascii?Q?O3sY0cq1Mg7fzGtLexFzt6nYH+U1sJrJX9E23Q/jY2xUZi92S/PLqemnOHW2?=
- =?us-ascii?Q?JD4kZsEVthJgLMDpjK9JqQaqh6MKb3HfhzIpmMv9NvdT43KSRKDXIycHE8q9?=
- =?us-ascii?Q?Wcj6NsAKHW38uNcgbRrTcDms/43HDCStr3o7sesSkRY0a244Kjkp4ZrzUuJZ?=
- =?us-ascii?Q?hpMMwMRpAUGvUOLT5jezUKFFloeIOUJIiQMo2baLYcGL4usubFik/E/cWnzf?=
- =?us-ascii?Q?RmHSlSy8qNYezu1MxGGGMz+CxSidvFFSQ4a7v1br4ksCVHHdYZ50e4sPDBGy?=
- =?us-ascii?Q?DE9eDdmU3/x7VcORQNcdFVGg7ZLwcrDh/ZQHHWx5impZPNRgvaZlK/XaTKii?=
- =?us-ascii?Q?9GO1r4dPkJjkWkSQy9tEmPLc/G6VHXdL5qmaqp5Ckh3XMNrk+gl9+mN9YbYJ?=
- =?us-ascii?Q?pXEquMRGLpy5kjw+THT7SOBBj2IyLTPXavJNodd3R7fCYqtNJdvXSvRqlvKB?=
- =?us-ascii?Q?y/TxNlnw7+pmvP0UoKk3Vb1Q3o1PipMiY+sZ8kGs4FRyJzZUiXVHqL9Kau7Z?=
- =?us-ascii?Q?AJ1YB9cv+4nV82tolaCcAr2KOQSRzFIrifXPsZlqvRcArZwhxwDzuWlnAkha?=
- =?us-ascii?Q?ig4euM0RaBeMt7S2dsd/ju24d8fuupcxVs4zqOPBPFZB/urhMGUDz0Ld2jtm?=
- =?us-ascii?Q?VjAA3ZfuvwwSL3husN5+6/fL4bWF90zVLhxS0fYxfaOodWTB4eYVykM3UxJd?=
- =?us-ascii?Q?R8T0p4dlaLgG6jvzdK7MpqFU3D64JMl2M8FIZ4Vke00y5cuXamcUZAidzrw9?=
- =?us-ascii?Q?ojCDu/VNvelYeqfN492zf3VMTjpGj8lGz3l9nF+Uc2u3MNYR4F98boXKV8KK?=
- =?us-ascii?Q?vNpdXMrebgxqNIxtl8QBsxxBvXrJnQ5YPm/5PVSAXqzYLgc6+wfmLqjtSZhb?=
- =?us-ascii?Q?IX+hLuXBwH5nrkuGQL6nk1/Rph0/4rMlr33vhSHTUhPAHXVXgv8o/mhcE/Y+?=
- =?us-ascii?Q?VCDALnYekvFuaBd51T127AonI2aor18lKBK7bWqx+hiH1nOqJDXKIEp3aJcn?=
- =?us-ascii?Q?BWXL5lMXhKYXFehy6vOvZSRTEyQB59A6vUGGuNhOYgZO2dfHpsFSn020Lk02?=
- =?us-ascii?Q?2Qhj+ZMOMuSzKMf8ERdHmXYmNlgVjO0UVZfGTPj8qix5ga3rzMiuqqbPYAD/?=
- =?us-ascii?Q?BCp0LRAoa6ZuiO6x7F2TMiA7p+j9UTuVGYll+BURkW4tPK9wVeuAQU9GQnBE?=
- =?us-ascii?Q?lGIpPm3Ndd4jIt1JbtmeH1eTzeTd+PTsqv2Gl21H41ziVwDYhzuWoU0nkcq/?=
- =?us-ascii?Q?gfIrvYVzpE2ALAoAxSv0JiJ4tPdmpi+ONpGrEu4BsUPw253HcSgTDO9ivaUd?=
- =?us-ascii?Q?AGlem5+/D54Mm8rzKVogXiC8L/5jR71Vm2yWKfkx?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3DCCC94782084E419D9F1409E28AFED5@namprd15.prod.outlook.com>
-X-OriginatorOrg: fb.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR15MB4552.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2eeb2b21-33ec-4b47-df1a-08da5f57eb6f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jul 2022 14:00:44.2492
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4DGpyowW2tvBdg578hLVwdqsJLWHVFveRKo1gL4GfKt/PSNelpiFTOAXcQxJaEBT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR15MB5071
-X-Proofpoint-GUID: I9DaYvd6LKX_P8-q3vpa3gnJ2EQN8N29
-X-Proofpoint-ORIG-GUID: I9DaYvd6LKX_P8-q3vpa3gnJ2EQN8N29
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdLpy36xJz3bk0
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 00:03:06 +1000 (AEST)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-317a66d62dfso141052987b3.7
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Jul 2022 07:03:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WBBLwGm3VvIAnm4uSuSyiWShri4w+bgQrIyP7HIMtP0=;
+        b=Yz7O2Nley7/vcb9PiICW4XhYqMEjP0I/ZL4B2LNUzaMNFxKVAJeZ5G9Exv/kA4ZUYb
+         X6F7bQFjBvFHa7mnPn9GSsGJ5IqPJqP0qIz8Jkl0+l5z/aaeZAjwCkapwz1hO70abNjx
+         oj5R9RRDSPpsqyVD/WfZLpBlzWZhlyh6gzUe9NZEJiltSI3J7WOmgojf9O70ldyhK5Dn
+         O5k6shZA6KBD//Xnvs4jaGjlx+xY4mNR7/7M0jvlHSnoYQv15HsBQvYY+PI5V0J6embU
+         wKTLPSKJD/steLbv9aX2ZX/LS49+d8bM8OlPn7aLMWaIWbclG+7lYp2sblhXIUetOiYI
+         uYJw==
+X-Gm-Message-State: AJIora+eVKMTwvFX1E7FsBDMg/ArJIPxl8cDwq5fH8+AHcpbeWibK9yH
+	boMoSqUmIbJMSzgJO5yDKKmy3Td/AjQ55bzgcZo=
+X-Google-Smtp-Source: AGRyM1shXjwii2Xu/qgQ1B1HadHYSMjqitGmbFlHxf4P7RndZwyBhPC2CaCRixiXqBuDMvjO7JXHYGnoD2iVhXDPhek=
+X-Received: by 2002:a81:a184:0:b0:31c:b00e:b5c4 with SMTP id
+ y126-20020a81a184000000b0031cb00eb5c4mr15058481ywg.149.1657116183677; Wed, 06
+ Jul 2022 07:03:03 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-06_08,2022-06-28_01,2022-06-22_01
+References: <20220608142723.103523089@infradead.org> <20220608144517.188449351@infradead.org>
+In-Reply-To: <20220608144517.188449351@infradead.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 6 Jul 2022 16:02:52 +0200
+Message-ID: <CAJZ5v0i4xX75TK=Qg_PUk93aghJgpi0AR0gsa3Repw8G4XyDuw@mail.gmail.com>
+Subject: Re: [PATCH 20/36] arch/idle: Change arch_cpu_idle() IRQ behaviour
+To: Peter Zijlstra <peterz@infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Thu, 07 Jul 2022 08:18:29 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -142,251 +56,436 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, Rob Herring <robh+dt@kernel.org>, "nasastry@in.ibm.com" <nasastry@in.ibm.com>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, Borislav Petkov <bp@suse.de>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>, "Rafael J. Wysocki" <rafael@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Benjamin Segall <bsegall@google.com>, Guo Ren <guoren@kernel.org>, Pavel Machek <pavel@ucw.cz>, Alexander Gordeev <agordeev@linux.ibm.com>, srivatsa@csail.mit.edu, linux-arch <linux-arch@vger.kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, Huacai Chen <chenhuacai@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Andy Gross <agross@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, dl-linux-imx <linux-imx@nxp.com>, Catalin Marinas <catalin.marinas@arm.com>, xen-devel@lists.xenproject.org, mattst88@gmail.com, Christian Borntraeger <borntraeger@linux.ibm.com>, Michael Turquette <mturquette@baylibre.com>, sammy@sammy.net, Petr Mladek <pmladek@suse.com>, Linux PM <linux-pm@vger.kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>, Sascha Hauer <s.hauer@pengutronix.de>, linux-um@lists.infradead.org, acme@kernel.org, Thomas Gleixner <tglx@
+ linutronix.de>, Linux OMAP Mailing List <linux-omap@vger.kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, rth@twiddle.net, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, senozhatsky@chromium.org, Sven Schnelle <svens@linux.ibm.com>, jolsa@kernel.org, Paul Mackerras <paulus@samba.org>, Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, virtualization@lists.linux-foundation.org, James Bottomley <James.Bottomley@hansenpartnership.com>, jcmvbkbc@gmail.com, Thierry Reding <thierry.reding@gmail.com>, kernel@xen0n.name, quic_neeraju@quicinc.com, linux-s390@vger.kernel.org, vschneid@redhat.com, John Ogness <john.ogness@linutronix.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, Linux-sh list <linux-sh@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, Helge Deller <deller@gmx.de>, Daniel Lezcano <daniel.lezcano@linaro.org>, Jon H
+ unter <jonathanh@nvidia.com>, Mathieu Desnoyers <math
+
+ieu.desnoyers@efficios.com>, Frederic Weisbecker <frederic@kernel.org>, Len Brown <lenb@kernel.org>, linux-xtensa@linux-xtensa.org, Sascha Hauer <kernel@pengutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, linux-arm-msm <linux-arm-msm@vger.kernel.org>, linux-alpha@vger.kernel.org, linux-m68k <linux-m68k@lists.linux-m68k.org>, Stafford Horne <shorne@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Chris Zankel <chris@zankel.net>, Stephen Boyd <sboyd@kernel.org>, dinguyen@kernel.org, Daniel Bristot de Oliveira <bristot@redhat.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Joel Fernandes <joel@joelfernandes.org>, Will Deacon <will@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Kevin Hilman <khilman@kernel.org>, linux-csky@vger.kernel.org, pv-drivers@vmware.com, linux-snps-arc@lists.infradead.org, Mel Gorman <mgorman@suse.de>, Jacob Pan <jacob.jun.pan@linux.inte
+ l.com>, Arnd Bergmann <arnd@arndb.de>, ulli.kroll@googlemail.com, vgupta@kernel.org, linux-clk <linux-clk@vger.kernel.org>, Josh Triplett <josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org, Borislav Petkov <bp@alien8.de>, bcain@quicinc.com, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Parisc List <linux-parisc@vger.kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Shawn Guo <shawnguo@kernel.org>, David Miller <davem@davemloft.net>, Rich Felker <dalias@libc.org>, Tony Lindgren <tony@atomide.com>, amakhalov@vmware.com, Bjorn Andersson <bjorn.andersson@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-riscv <linux-riscv@lists.infradead.org>, anton.ivanov@cambridgegreys.com, jonas@southpole.se, Yury Norov <yury.norov@gmail.com>, Richard Weinberger <richard@nod.at>, the arch/x86 maintainers <x86@kernel.org>, Russell King - ARM Linux <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, Al
+ bert Ou <aou@eecs.berkeley.edu>, "Paul E. McKenney" <
+paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, stefan.kristiansson@saunalahti.fi, openrisc@lists.librecores.org, Paul Walmsley <paul.walmsley@sifive.com>, linux-tegra <linux-tegra@vger.kernel.org>, namhyung@kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jpoimboe@kernel.org, Juergen Gross <jgross@suse.com>, Michal Simek <monstr@monstr.eu>, "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Anup Patel <anup@brainfault.org>, ink@jurassic.park.msu.ru, Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 05, 2022 at 06:46:54PM -0400, Mimi Zohar wrote:
-> [Cc'ing Borislav Petkov <bp@suse.de>, Jonathan McDowell <noodles@fb.com
-> >]
->=20
-> Hi Stefan,
->=20
-> On Thu, 2022-06-30 at 22:26 -0400, Stefan Berger wrote:
-> > Refactor IMA buffer related functions to make them reusable for carrying
-> > TPM logs across kexec.
-> >=20
-> > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> > Cc: Rob Herring <robh+dt@kernel.org>
-> > Cc: Frank Rowand <frowand.list@gmail.com>
-> > Cc: Mimi Zohar <zohar@linux.ibm.com>
->=20
-> Refactoring the ima_get_kexec_buffer sounds good, but there's a merge
-> conflict with Jonathan McDowell's commit "b69a2afd5afc x86/kexec: Carry
-> forward IMA measurement log on kexec".
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/=
-drivers/of/kexec.c
+On Wed, Jun 8, 2022 at 4:46 PM Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> Current arch_cpu_idle() is called with IRQs disabled, but will return
+> with IRQs enabled.
+>
+> However, the very first thing the generic code does after calling
+> arch_cpu_idle() is raw_local_irq_disable(). This means that
+> architectures that can idle with IRQs disabled end up doing a
+> pointless 'enable-disable' dance.
+>
+> Therefore, push this IRQ disabling into the idle function, meaning
+> that those architectures can avoid the pointless IRQ state flipping.
+>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-None of this looks difficult to re-do on top of my changes that are in
--next; the only thing to watch out for is a couple of functions have
-moved into the __init section but that looks appropriate for your TPM
-log carry-over too.
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-> > ---
-> > v4:
-> >  - Move debug output into setup_buffer()
-> > ---
-> >  drivers/of/kexec.c | 131 ++++++++++++++++++++++++++-------------------
-> >  1 file changed, 76 insertions(+), 55 deletions(-)
-> >=20
-> > diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
-> > index c4f9b6655a2e..0710703acfb0 100644
-> > --- a/drivers/of/kexec.c
-> > +++ b/drivers/of/kexec.c
-> > @@ -115,48 +115,59 @@ static int do_get_kexec_buffer(const void *prop, =
-int len, unsigned long *addr,
-> >  	return 0;
-> >  }
-> >=20=20
-> > -/**
-> > - * ima_get_kexec_buffer - get IMA buffer from the previous kernel
-> > - * @addr:	On successful return, set to point to the buffer contents.
-> > - * @size:	On successful return, set to the buffer size.
-> > - *
-> > - * Return: 0 on success, negative errno on error.
-> > - */
-> > -int ima_get_kexec_buffer(void **addr, size_t *size)
-> > +static int get_kexec_buffer(const char *name, unsigned long *addr, siz=
-e_t *size)
-> >  {
-> >  	int ret, len;
-> > -	unsigned long tmp_addr;
-> >  	unsigned long start_pfn, end_pfn;
-> > -	size_t tmp_size;
-> >  	const void *prop;
-> >=20=20
-> > -	if (!IS_ENABLED(CONFIG_HAVE_IMA_KEXEC))
-> > -		return -ENOTSUPP;
-> > -
-> > -	prop =3D of_get_property(of_chosen, "linux,ima-kexec-buffer", &len);
-> > +	prop =3D of_get_property(of_chosen, name, &len);
-> >  	if (!prop)
-> >  		return -ENOENT;
-> >=20=20
-> > -	ret =3D do_get_kexec_buffer(prop, len, &tmp_addr, &tmp_size);
-> > +	ret =3D do_get_kexec_buffer(prop, len, addr, size);
-> >  	if (ret)
-> >  		return ret;
-> >=20=20
-> > -	/* Do some sanity on the returned size for the ima-kexec buffer */
-> > -	if (!tmp_size)
-> > +	/* Do some sanity on the returned size for the kexec buffer */
-> > +	if (!*size)
-> >  		return -ENOENT;
-> >=20=20
-> >  	/*
-> >  	 * Calculate the PFNs for the buffer and ensure
-> >  	 * they are with in addressable memory.
-> >  	 */
-> > -	start_pfn =3D PHYS_PFN(tmp_addr);
-> > -	end_pfn =3D PHYS_PFN(tmp_addr + tmp_size - 1);
-> > +	start_pfn =3D PHYS_PFN(*addr);
-> > +	end_pfn =3D PHYS_PFN(*addr + *size - 1);
-> >  	if (!page_is_ram(start_pfn) || !page_is_ram(end_pfn)) {
-> > -		pr_warn("IMA buffer at 0x%lx, size =3D 0x%zx beyond memory\n",
-> > -			tmp_addr, tmp_size);
-> > +		pr_warn("%s buffer at 0x%lx, size =3D 0x%zx beyond memory\n",
-> > +			name, *addr, *size);
-> >  		return -EINVAL;
-> >  	}
-> >=20=20
-> > +	return 0;
-> > +}
-> > +
-> > +/**
-> > + * ima_get_kexec_buffer - get IMA buffer from the previous kernel
-> > + * @addr:	On successful return, set to point to the buffer contents.
-> > + * @size:	On successful return, set to the buffer size.
-> > + *
-> > + * Return: 0 on success, negative errno on error.
-> > + */
-> > +int ima_get_kexec_buffer(void **addr, size_t *size)
-> > +{
-> > +	int ret;
-> > +	unsigned long tmp_addr;
-> > +	size_t tmp_size;
-> > +
-> > +	if (!IS_ENABLED(CONFIG_HAVE_IMA_KEXEC))
-> > +		return -ENOTSUPP;
-> > +
-> > +	ret =3D get_kexec_buffer("linux,ima-kexec-buffer", &tmp_addr, &tmp_si=
-ze);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> >  	*addr =3D __va(tmp_addr);
-> >  	*size =3D tmp_size;
-> >=20=20
-> > @@ -191,72 +202,82 @@ int ima_free_kexec_buffer(void)
-> >  	return memblock_phys_free(addr, size);
-> >  }
-> >=20=20
-> > -/**
-> > - * remove_ima_buffer - remove the IMA buffer property and reservation =
-from @fdt
-> > - *
-> > - * @fdt: Flattened Device Tree to update
-> > - * @chosen_node: Offset to the chosen node in the device tree
-> > - *
-> > - * The IMA measurement buffer is of no use to a subsequent kernel, so =
-we always
-> > - * remove it from the device tree.
-> > - */
-> > -static void remove_ima_buffer(void *fdt, int chosen_node)
-> > +static int remove_buffer(void *fdt, int chosen_node, const char *name)
-> >  {
-> >  	int ret, len;
-> >  	unsigned long addr;
-> >  	size_t size;
-> >  	const void *prop;
-> >=20=20
-> > -	if (!IS_ENABLED(CONFIG_HAVE_IMA_KEXEC))
-> > -		return;
-> > -
-> > -	prop =3D fdt_getprop(fdt, chosen_node, "linux,ima-kexec-buffer", &len=
-);
-> > +	prop =3D fdt_getprop(fdt, chosen_node, name, &len);
-> >  	if (!prop)
-> > -		return;
-> > +		return -ENOENT;
-> >=20=20
-> >  	ret =3D do_get_kexec_buffer(prop, len, &addr, &size);
-> > -	fdt_delprop(fdt, chosen_node, "linux,ima-kexec-buffer");
-> > +	fdt_delprop(fdt, chosen_node, name);
-> >  	if (ret)
-> > -		return;
-> > +		return ret;
-> >=20=20
-> >  	ret =3D fdt_find_and_del_mem_rsv(fdt, addr, size);
-> >  	if (!ret)
-> > -		pr_debug("Removed old IMA buffer reservation.\n");
-> > +		pr_debug("Remove old %s buffer reserveration", name);
-> > +	return ret;
-> >  }
-> >=20=20
-> > -#ifdef CONFIG_IMA_KEXEC
-> >  /**
-> > - * setup_ima_buffer - add IMA buffer information to the fdt
-> > - * @image:		kexec image being loaded.
-> > - * @fdt:		Flattened device tree for the next kernel.
-> > - * @chosen_node:	Offset to the chosen node.
-> > + * remove_ima_buffer - remove the IMA buffer property and reservation =
-from @fdt
-> >   *
-> > - * Return: 0 on success, or negative errno on error.
-> > + * @fdt: Flattened Device Tree to update
-> > + * @chosen_node: Offset to the chosen node in the device tree
-> > + *
-> > + * The IMA measurement buffer is of no use to a subsequent kernel, so =
-we always
-> > + * remove it from the device tree.
-> >   */
-> > -static int setup_ima_buffer(const struct kimage *image, void *fdt,
-> > -			    int chosen_node)
-> > +static void remove_ima_buffer(void *fdt, int chosen_node)
-> > +{
-> > +	if (!IS_ENABLED(CONFIG_HAVE_IMA_KEXEC))
-> > +		return;
-> > +
-> > +	remove_buffer(fdt, chosen_node, "linux,ima-kexec-buffer");
-> > +}
-> > +
-> > +#ifdef CONFIG_IMA_KEXEC
-> > +static int setup_buffer(void *fdt, int chosen_node, const char *name,
-> > +			phys_addr_t addr, size_t size)
-> >  {
-> >  	int ret;
-> >=20=20
-> > -	if (!image->ima_buffer_size)
-> > +	if (!size)
-> >  		return 0;
-> >=20=20
-> >  	ret =3D fdt_appendprop_addrrange(fdt, 0, chosen_node,
-> > -				       "linux,ima-kexec-buffer",
-> > -				       image->ima_buffer_addr,
-> > -				       image->ima_buffer_size);
-> > +				       name, addr, size);
-> >  	if (ret < 0)
-> >  		return -EINVAL;
-> >=20=20
-> > -	ret =3D fdt_add_mem_rsv(fdt, image->ima_buffer_addr,
-> > -			      image->ima_buffer_size);
-> > +	ret =3D fdt_add_mem_rsv(fdt, addr, size);
-> >  	if (ret)
-> >  		return -EINVAL;
-> >=20=20
-> > -	pr_debug("IMA buffer at 0x%pa, size =3D 0x%zx\n",
-> > -		 &image->ima_buffer_addr, image->ima_buffer_size);
-> > +	pr_debug("%s at 0x%pa, size =3D 0x%zx\n", name, &addr, size);
-> >=20=20
-> >  	return 0;
-> > +
-> > +}
-> > +
-> > +/**
-> > + * setup_ima_buffer - add IMA buffer information to the fdt
-> > + * @image:		kexec image being loaded.
-> > + * @fdt:		Flattened device tree for the next kernel.
-> > + * @chosen_node:	Offset to the chosen node.
-> > + *
-> > + * Return: 0 on success, or negative errno on error.
-> > + */
-> > +static int setup_ima_buffer(const struct kimage *image, void *fdt,
-> > +			    int chosen_node)
-> > +{
-> > +	return setup_buffer(fdt, chosen_node, "linux,ima-kexec-buffer",
-> > +			    image->ima_buffer_addr, image->ima_buffer_size);
-> >  }
-> >  #else /* CONFIG_IMA_KEXEC */
-> >  static inline int setup_ima_buffer(const struct kimage *image, void *f=
-dt,=
+> ---
+>  arch/alpha/kernel/process.c      |    1 -
+>  arch/arc/kernel/process.c        |    3 +++
+>  arch/arm/kernel/process.c        |    1 -
+>  arch/arm/mach-gemini/board-dt.c  |    3 ++-
+>  arch/arm64/kernel/idle.c         |    1 -
+>  arch/csky/kernel/process.c       |    1 -
+>  arch/csky/kernel/smp.c           |    2 +-
+>  arch/hexagon/kernel/process.c    |    1 -
+>  arch/ia64/kernel/process.c       |    1 +
+>  arch/microblaze/kernel/process.c |    1 -
+>  arch/mips/kernel/idle.c          |    8 +++-----
+>  arch/nios2/kernel/process.c      |    1 -
+>  arch/openrisc/kernel/process.c   |    1 +
+>  arch/parisc/kernel/process.c     |    2 --
+>  arch/powerpc/kernel/idle.c       |    5 ++---
+>  arch/riscv/kernel/process.c      |    1 -
+>  arch/s390/kernel/idle.c          |    1 -
+>  arch/sh/kernel/idle.c            |    1 +
+>  arch/sparc/kernel/leon_pmc.c     |    4 ++++
+>  arch/sparc/kernel/process_32.c   |    1 -
+>  arch/sparc/kernel/process_64.c   |    3 ++-
+>  arch/um/kernel/process.c         |    1 -
+>  arch/x86/coco/tdx/tdx.c          |    3 +++
+>  arch/x86/kernel/process.c        |   15 ++++-----------
+>  arch/xtensa/kernel/process.c     |    1 +
+>  kernel/sched/idle.c              |    2 --
+>  26 files changed, 28 insertions(+), 37 deletions(-)
+>
+> --- a/arch/alpha/kernel/process.c
+> +++ b/arch/alpha/kernel/process.c
+> @@ -57,7 +57,6 @@ EXPORT_SYMBOL(pm_power_off);
+>  void arch_cpu_idle(void)
+>  {
+>         wtint(0);
+> -       raw_local_irq_enable();
+>  }
+>
+>  void arch_cpu_idle_dead(void)
+> --- a/arch/arc/kernel/process.c
+> +++ b/arch/arc/kernel/process.c
+> @@ -114,6 +114,8 @@ void arch_cpu_idle(void)
+>                 "sleep %0       \n"
+>                 :
+>                 :"I"(arg)); /* can't be "r" has to be embedded const */
+> +
+> +       raw_local_irq_disable();
+>  }
+>
+>  #else  /* ARC700 */
+> @@ -122,6 +124,7 @@ void arch_cpu_idle(void)
+>  {
+>         /* sleep, but enable both set E1/E2 (levels of interrupts) before committing */
+>         __asm__ __volatile__("sleep 0x3 \n");
+> +       raw_local_irq_disable();
+>  }
+>
+>  #endif
+> --- a/arch/arm/kernel/process.c
+> +++ b/arch/arm/kernel/process.c
+> @@ -78,7 +78,6 @@ void arch_cpu_idle(void)
+>                 arm_pm_idle();
+>         else
+>                 cpu_do_idle();
+> -       raw_local_irq_enable();
+>  }
+>
+>  void arch_cpu_idle_prepare(void)
+> --- a/arch/arm/mach-gemini/board-dt.c
+> +++ b/arch/arm/mach-gemini/board-dt.c
+> @@ -42,8 +42,9 @@ static void gemini_idle(void)
+>          */
+>
+>         /* FIXME: Enabling interrupts here is racy! */
+> -       local_irq_enable();
+> +       raw_local_irq_enable();
+>         cpu_do_idle();
+> +       raw_local_irq_disable();
+>  }
+>
+>  static void __init gemini_init_machine(void)
+> --- a/arch/arm64/kernel/idle.c
+> +++ b/arch/arm64/kernel/idle.c
+> @@ -42,5 +42,4 @@ void noinstr arch_cpu_idle(void)
+>          * tricks
+>          */
+>         cpu_do_idle();
+> -       raw_local_irq_enable();
+>  }
+> --- a/arch/csky/kernel/process.c
+> +++ b/arch/csky/kernel/process.c
+> @@ -101,6 +101,5 @@ void arch_cpu_idle(void)
+>  #ifdef CONFIG_CPU_PM_STOP
+>         asm volatile("stop\n");
+>  #endif
+> -       raw_local_irq_enable();
+>  }
+>  #endif
+> --- a/arch/csky/kernel/smp.c
+> +++ b/arch/csky/kernel/smp.c
+> @@ -314,7 +314,7 @@ void arch_cpu_idle_dead(void)
+>         while (!secondary_stack)
+>                 arch_cpu_idle();
+>
+> -       local_irq_disable();
+> +       raw_local_irq_disable();
+>
+>         asm volatile(
+>                 "mov    sp, %0\n"
+> --- a/arch/hexagon/kernel/process.c
+> +++ b/arch/hexagon/kernel/process.c
+> @@ -44,7 +44,6 @@ void arch_cpu_idle(void)
+>  {
+>         __vmwait();
+>         /*  interrupts wake us up, but irqs are still disabled */
+> -       raw_local_irq_enable();
+>  }
+>
+>  /*
+> --- a/arch/ia64/kernel/process.c
+> +++ b/arch/ia64/kernel/process.c
+> @@ -241,6 +241,7 @@ void arch_cpu_idle(void)
+>                 (*mark_idle)(1);
+>
+>         raw_safe_halt();
+> +       raw_local_irq_disable();
+>
+>         if (mark_idle)
+>                 (*mark_idle)(0);
+> --- a/arch/microblaze/kernel/process.c
+> +++ b/arch/microblaze/kernel/process.c
+> @@ -138,5 +138,4 @@ int dump_fpu(struct pt_regs *regs, elf_f
+>
+>  void arch_cpu_idle(void)
+>  {
+> -       raw_local_irq_enable();
+>  }
+> --- a/arch/mips/kernel/idle.c
+> +++ b/arch/mips/kernel/idle.c
+> @@ -33,13 +33,13 @@ static void __cpuidle r3081_wait(void)
+>  {
+>         unsigned long cfg = read_c0_conf();
+>         write_c0_conf(cfg | R30XX_CONF_HALT);
+> -       raw_local_irq_enable();
+>  }
+>
+>  void __cpuidle r4k_wait(void)
+>  {
+>         raw_local_irq_enable();
+>         __r4k_wait();
+> +       raw_local_irq_disable();
+>  }
+>
+>  /*
+> @@ -57,7 +57,6 @@ void __cpuidle r4k_wait_irqoff(void)
+>                 "       .set    arch=r4000      \n"
+>                 "       wait                    \n"
+>                 "       .set    pop             \n");
+> -       raw_local_irq_enable();
+>  }
+>
+>  /*
+> @@ -77,7 +76,6 @@ static void __cpuidle rm7k_wait_irqoff(v
+>                 "       wait                                            \n"
+>                 "       mtc0    $1, $12         # stalls until W stage  \n"
+>                 "       .set    pop                                     \n");
+> -       raw_local_irq_enable();
+>  }
+>
+>  /*
+> @@ -103,6 +101,8 @@ static void __cpuidle au1k_wait(void)
+>         "       nop                             \n"
+>         "       .set    pop                     \n"
+>         : : "r" (au1k_wait), "r" (c0status));
+> +
+> +       raw_local_irq_disable();
+>  }
+>
+>  static int __initdata nowait;
+> @@ -245,8 +245,6 @@ void arch_cpu_idle(void)
+>  {
+>         if (cpu_wait)
+>                 cpu_wait();
+> -       else
+> -               raw_local_irq_enable();
+>  }
+>
+>  #ifdef CONFIG_CPU_IDLE
+> --- a/arch/nios2/kernel/process.c
+> +++ b/arch/nios2/kernel/process.c
+> @@ -33,7 +33,6 @@ EXPORT_SYMBOL(pm_power_off);
+>
+>  void arch_cpu_idle(void)
+>  {
+> -       raw_local_irq_enable();
+>  }
+>
+>  /*
+> --- a/arch/openrisc/kernel/process.c
+> +++ b/arch/openrisc/kernel/process.c
+> @@ -102,6 +102,7 @@ void arch_cpu_idle(void)
+>         raw_local_irq_enable();
+>         if (mfspr(SPR_UPR) & SPR_UPR_PMP)
+>                 mtspr(SPR_PMR, mfspr(SPR_PMR) | SPR_PMR_DME);
+> +       raw_local_irq_disable();
+>  }
+>
+>  void (*pm_power_off)(void) = NULL;
+> --- a/arch/parisc/kernel/process.c
+> +++ b/arch/parisc/kernel/process.c
+> @@ -187,8 +187,6 @@ void arch_cpu_idle_dead(void)
+>
+>  void __cpuidle arch_cpu_idle(void)
+>  {
+> -       raw_local_irq_enable();
+> -
+>         /* nop on real hardware, qemu will idle sleep. */
+>         asm volatile("or %%r10,%%r10,%%r10\n":::);
+>  }
+> --- a/arch/powerpc/kernel/idle.c
+> +++ b/arch/powerpc/kernel/idle.c
+> @@ -51,10 +51,9 @@ void arch_cpu_idle(void)
+>                  * Some power_save functions return with
+>                  * interrupts enabled, some don't.
+>                  */
+> -               if (irqs_disabled())
+> -                       raw_local_irq_enable();
+> +               if (!irqs_disabled())
+> +                       raw_local_irq_disable();
+>         } else {
+> -               raw_local_irq_enable();
+>                 /*
+>                  * Go into low thread priority and possibly
+>                  * low power mode.
+> --- a/arch/riscv/kernel/process.c
+> +++ b/arch/riscv/kernel/process.c
+> @@ -39,7 +39,6 @@ extern asmlinkage void ret_from_kernel_t
+>  void arch_cpu_idle(void)
+>  {
+>         cpu_do_idle();
+> -       raw_local_irq_enable();
+>  }
+>
+>  void __show_regs(struct pt_regs *regs)
+> --- a/arch/s390/kernel/idle.c
+> +++ b/arch/s390/kernel/idle.c
+> @@ -66,7 +66,6 @@ void arch_cpu_idle(void)
+>         idle->idle_count++;
+>         account_idle_time(cputime_to_nsecs(idle_time));
+>         raw_write_seqcount_end(&idle->seqcount);
+> -       raw_local_irq_enable();
+>  }
+>
+>  static ssize_t show_idle_count(struct device *dev,
+> --- a/arch/sh/kernel/idle.c
+> +++ b/arch/sh/kernel/idle.c
+> @@ -25,6 +25,7 @@ void default_idle(void)
+>         raw_local_irq_enable();
+>         /* Isn't this racy ? */
+>         cpu_sleep();
+> +       raw_local_irq_disable();
+>         clear_bl_bit();
+>  }
+>
+> --- a/arch/sparc/kernel/leon_pmc.c
+> +++ b/arch/sparc/kernel/leon_pmc.c
+> @@ -57,6 +57,8 @@ static void pmc_leon_idle_fixup(void)
+>                 "lda    [%0] %1, %%g0\n"
+>                 :
+>                 : "r"(address), "i"(ASI_LEON_BYPASS));
+> +
+> +       raw_local_irq_disable();
+>  }
+>
+>  /*
+> @@ -70,6 +72,8 @@ static void pmc_leon_idle(void)
+>
+>         /* For systems without power-down, this will be no-op */
+>         __asm__ __volatile__ ("wr       %g0, %asr19\n\t");
+> +
+> +       raw_local_irq_disable();
+>  }
+>
+>  /* Install LEON Power Down function */
+> --- a/arch/sparc/kernel/process_32.c
+> +++ b/arch/sparc/kernel/process_32.c
+> @@ -71,7 +71,6 @@ void arch_cpu_idle(void)
+>  {
+>         if (sparc_idle)
+>                 (*sparc_idle)();
+> -       raw_local_irq_enable();
+>  }
+>
+>  /* XXX cli/sti -> local_irq_xxx here, check this works once SMP is fixed. */
+> --- a/arch/sparc/kernel/process_64.c
+> +++ b/arch/sparc/kernel/process_64.c
+> @@ -59,7 +59,6 @@ void arch_cpu_idle(void)
+>  {
+>         if (tlb_type != hypervisor) {
+>                 touch_nmi_watchdog();
+> -               raw_local_irq_enable();
+>         } else {
+>                 unsigned long pstate;
+>
+> @@ -90,6 +89,8 @@ void arch_cpu_idle(void)
+>                         "wrpr %0, %%g0, %%pstate"
+>                         : "=&r" (pstate)
+>                         : "i" (PSTATE_IE));
+> +
+> +               raw_local_irq_disable();
+>         }
+>  }
+>
+> --- a/arch/um/kernel/process.c
+> +++ b/arch/um/kernel/process.c
+> @@ -216,7 +216,6 @@ void arch_cpu_idle(void)
+>  {
+>         cpu_tasks[current_thread_info()->cpu].pid = os_getpid();
+>         um_idle_sleep();
+> -       raw_local_irq_enable();
+>  }
+>
+>  int __cant_sleep(void) {
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -178,6 +178,9 @@ void __cpuidle tdx_safe_halt(void)
+>          */
+>         if (__halt(irq_disabled, do_sti))
+>                 WARN_ONCE(1, "HLT instruction emulation failed\n");
+> +
+> +       /* XXX I can't make sense of what @do_sti actually does */
+> +       raw_local_irq_disable();
+>  }
+>
+>  static bool read_msr(struct pt_regs *regs)
+> --- a/arch/x86/kernel/process.c
+> +++ b/arch/x86/kernel/process.c
+> @@ -699,6 +699,7 @@ EXPORT_SYMBOL(boot_option_idle_override)
+>  void __cpuidle default_idle(void)
+>  {
+>         raw_safe_halt();
+> +       raw_local_irq_disable();
+>  }
+>  #if defined(CONFIG_APM_MODULE) || defined(CONFIG_HALTPOLL_CPUIDLE_MODULE)
+>  EXPORT_SYMBOL(default_idle);
+> @@ -804,13 +805,7 @@ static void amd_e400_idle(void)
+>
+>         default_idle();
+>
+> -       /*
+> -        * The switch back from broadcast mode needs to be called with
+> -        * interrupts disabled.
+> -        */
+> -       raw_local_irq_disable();
+>         tick_broadcast_exit();
+> -       raw_local_irq_enable();
+>  }
+>
+>  /*
+> @@ -849,12 +844,10 @@ static __cpuidle void mwait_idle(void)
+>                 }
+>
+>                 __monitor((void *)&current_thread_info()->flags, 0, 0);
+> -               if (!need_resched())
+> +               if (!need_resched()) {
+>                         __sti_mwait(0, 0);
+> -               else
+> -                       raw_local_irq_enable();
+> -       } else {
+> -               raw_local_irq_enable();
+> +                       raw_local_irq_disable();
+> +               }
+>         }
+>         __current_clr_polling();
+>  }
+> --- a/arch/xtensa/kernel/process.c
+> +++ b/arch/xtensa/kernel/process.c
+> @@ -183,6 +183,7 @@ void coprocessor_flush_release_all(struc
+>  void arch_cpu_idle(void)
+>  {
+>         platform_idle();
+> +       raw_local_irq_disable();
+>  }
+>
+>  /*
+> --- a/kernel/sched/idle.c
+> +++ b/kernel/sched/idle.c
+> @@ -79,7 +79,6 @@ void __weak arch_cpu_idle_dead(void) { }
+>  void __weak arch_cpu_idle(void)
+>  {
+>         cpu_idle_force_poll = 1;
+> -       raw_local_irq_enable();
+>  }
+>
+>  /**
+> @@ -96,7 +95,6 @@ void __cpuidle default_idle_call(void)
+>
+>                 cpuidle_rcu_enter();
+>                 arch_cpu_idle();
+> -               raw_local_irq_disable();
+>                 cpuidle_rcu_exit();
+>
+>                 start_critical_timings();
+>
+>
