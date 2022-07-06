@@ -1,51 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F58567ED5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 08:41:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393B9567F94
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 09:10:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ld91s62tlz3c5N
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 16:41:53 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=UmBMB+TJ;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ld9gK5KF6z3c7N
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 17:10:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=UmBMB+TJ;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=212.227.126.130; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ld91H1ZkNz2yZc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 16:41:21 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 79AEEB81AEC;
-	Wed,  6 Jul 2022 06:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4558C3411C;
-	Wed,  6 Jul 2022 06:41:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1657089676;
-	bh=yRGgIJUHXkz2TXJ4J6jNOpjIOkNNlk8+GJwy5fMiZ+E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UmBMB+TJVrq4Gw9/pfOPUH8FVR53qIvRVpi+/2bZ4Tl0ovU3eWwkhUstZr8i7ntPH
-	 sWDra3CbZPk7FcieK4NosMw8F7902e+ydwYQXfv07XZQthiCA/VjT5a1qR9aUOe2LN
-	 7Q6owf5BOUsMUFDooZhriCtR5IVyOMFojtZRxed8=
-Date: Wed, 6 Jul 2022 08:41:13 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v2] random: remove CONFIG_ARCH_RANDOM
-Message-ID: <YsUuiSP1VW1ok69g@kroah.com>
-References: <YsTXI3J+ptkN/vb4@zx2c4.com>
- <20220706003225.335768-1-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ld9fs2QK3z3bc3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 17:10:27 +1000 (AEST)
+Received: from mail-yw1-f175.google.com ([209.85.128.175]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1N7QM9-1nWNAO2psj-017pK0 for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Jul
+ 2022 09:05:17 +0200
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-317a66d62dfso130865057b3.7
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Jul 2022 00:05:15 -0700 (PDT)
+X-Gm-Message-State: AJIora/zLH/6st01M222OT9+g6kIToYULr513PJf+zHDBp+SQYY+eued
+	/xDq0zT5KCKjeZmhpG0BORomt2pJNPezBUyII3s=
+X-Google-Smtp-Source: AGRyM1sFkLoTiaaVIBkcDzO6lGV11chQSm3x6oRhEtv1xOtqIu5uDObFEe7OPQNG4jMZlSfDIkbGiGD4cv9otOB20XA=
+X-Received: by 2002:a81:f8f:0:b0:31c:bd9f:31ce with SMTP id
+ 137-20020a810f8f000000b0031cbd9f31cemr10731679ywp.347.1657091114041; Wed, 06
+ Jul 2022 00:05:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220706003225.335768-1-Jason@zx2c4.com>
+References: <20220630051630.1718927-1-anshuman.khandual@arm.com>
+ <8a6ccbae-7d7c-6e08-cc28-eeb649f86112@arm.com> <85fff3f6-373f-3e6a-325e-0fa8ad46273a@csgroup.eu>
+In-Reply-To: <85fff3f6-373f-3e6a-325e-0fa8ad46273a@csgroup.eu>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Wed, 6 Jul 2022 09:04:56 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1gb1Xrg4AGnncFpN=aDxVKfjkt1TmSvZXXADZTv7eE-g@mail.gmail.com>
+Message-ID: <CAK8P3a1gb1Xrg4AGnncFpN=aDxVKfjkt1TmSvZXXADZTv7eE-g@mail.gmail.com>
+Subject: Re: [PATCH V6 00/26] mm/mmap: Drop __SXXX/__PXXX macros from across platforms
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:a1fcpxRi8ABClXb4v0b/gmQqtScsOyfb2ZAP4IUJPHj7qfWBzSE
+ 7zTWVtr4u/foBY0A4aAfLX7eUFS5H0AJpntbv94qV5B2T1xc9bn1Q+9TM5826dSyjQs31+N
+ 9pocq54I4dmZQMKDq0BSur9RMljp1Y7a2xfSbggN5Sd7+0I8m4GJaqQMFT/cMAOH8ZNsFVM
+ Qzn2k+QgGhPHco3fYj05w==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:IZ2ym38PUrw=:fQHdpH/N71pIfAsYmgCPWv
+ J3V80BDKkYVeDZ3gok9TC/8XaFlFwM916gZqbYz7rGnIZJWGvP/qHhQlwZdfqiHiXR9UX5VSG
+ pJXcqcjIeMmJDHuQiidrOeN65dBFDBUigZe17dPTiR34LsKjKl3APd9w4bJN1/BnGUuAYDudH
+ 7vr6KjWt3nrIao9nvfVLroc6T5RVWZJF8g2RDBBj+P3q1fACEhlqKRa2w07Tl/vWO0x7UvVqn
+ 267f7M0z+xfGt0odZBOY6r/Y043zrX/ugbec8nNPM/kDmdmxuMRiPS0kvLCru2JpI/MM//Noc
+ QZC6+B86ktOSmblY0DhBk//F4UnqnwjbrbRocsTUgZXqIERqvS14nYBzX91u4peYYLeB1K6Jv
+ GLjBKcRQq2FE9Nvi8SnDxe5Mwp3Qz+ZcK2zICLUbRMurONnWvNbVdHK80wmG3/ZPICyyXzoGe
+ AhOdTbSmI2vsgXmfYIoKpRiCsEFqCi3MIEiboOIjpHNq/YSW16EzyF3H4xvxROeKkMUg89tAd
+ kUpxc+lnJa/k0JjS7QzK8/LDYzrIf9CfZwlKH/lIuMaNeypV5tme21lOSCWmk2c+zxvlF7/y/
+ kPKWA60rsBCQqLR664eaVogBhz12Sl87j/GVPpfYT077JxFD6FOc3q7kWA739Mev7G8cCHbtr
+ zSMlMBQPh49lJTzgiFTTvXpacfMeQVGbPx183N4Bw8I77XUdwg12WsWv1nMBCyK+QZBBJXy9y
+ ggez1idymNkJo+udVnt1ZgG/PvUosb4uDmqFVoB9bbb8AjeMN+qEoY3o/N2tyngYgygUXHDty
+ bEBsQXIUSmA3FjIROEHgmWg58JZOq1/6D4PmsbQsD2chFQC9Dh+0Omzr2iqDxKuY4IKtOkEAj
+ GEabaef+rjSkI2+Z5GKw==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,69 +69,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>, "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>, "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>, "hch@infradead.org" <hch@infradead.org>, "linux-snps-arc@lists.infradead.org" <linux-snps-arc@lists.infradead.org>, "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>, Anshuman Khandual <anshuman.khandual@arm.com>, "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>, "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>, "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>, "li
+ nux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>, "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 06, 2022 at 02:32:25AM +0200, Jason A. Donenfeld wrote:
-> When RDRAND was introduced, there was much discussion on whether it
-> should be trusted and how the kernel should handle that. Initially, two
-> mechanisms cropped up, CONFIG_ARCH_RANDOM, a compile time switch, and
-> "nordrand", a boot-time switch.
-> 
-> Later the thinking evolved. With a properly designed RNG, using RDRAND
-> values alone won't harm anything, even if the outputs are malicious.
-> Rather, the issue is whether those values are being *trusted* to be good
-> or not. And so a new set of options were introduced as the real
-> ones that people use -- CONFIG_RANDOM_TRUST_CPU and "random.trust_cpu".
-> With these options, RDRAND is used, but it's not always credited. So in
-> the worst case, it does nothing, and in the best case, maybe it helps.
-> 
-> Along the way, CONFIG_ARCH_RANDOM's meaning got sort of pulled into the
-> center and became something certain platforms force-select.
-> 
-> The old options don't really help with much, and it's a bit odd to have
-> special handling for these instructions when the kernel can deal fine
-> with the existence or untrusted existence or broken existence or
-> non-existence of that CPU capability.
-> 
-> So this commit simplifies things down to the two options that are
-> actually used, and removes the confusing old ones that aren't used or
-> useful. It leaves "nordrand" for now, as the removal of that will take a
-> different route.
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: H. Peter Anvin <hpa@zytor.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> ---
->  arch/arm64/Kconfig                                |  8 --------
->  arch/arm64/include/asm/archrandom.h               | 10 ----------
->  arch/arm64/kernel/cpufeature.c                    |  2 --
->  arch/powerpc/Kconfig                              |  3 ---
->  arch/powerpc/include/asm/archrandom.h             |  3 ---
->  arch/powerpc/include/asm/machdep.h                |  2 --
->  arch/powerpc/platforms/microwatt/Kconfig          |  1 -
->  arch/powerpc/platforms/powernv/Kconfig            |  1 -
->  arch/powerpc/platforms/pseries/Kconfig            |  1 -
->  arch/s390/Kconfig                                 | 15 ---------------
->  arch/s390/configs/zfcpdump_defconfig              |  1 -
->  arch/s390/crypto/Makefile                         |  2 +-
->  arch/s390/include/asm/archrandom.h                |  3 ---
->  arch/x86/Kconfig                                  |  9 ---------
->  arch/x86/include/asm/archrandom.h                 | 10 +---------
->  arch/x86/kernel/cpu/rdrand.c                      |  2 --
->  drivers/char/Kconfig                              |  1 -
->  drivers/char/hw_random/s390-trng.c                |  9 ---------
->  include/linux/random.h                            |  9 +--------
->  .../selftests/wireguard/qemu/kernel.config        |  1 -
->  20 files changed, 3 insertions(+), 90 deletions(-)
+On Wed, Jul 6, 2022 at 8:33 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 
+> As far as I can see in Kconfig, CONFIG_MMU is user selectable on the
+> following architectures:
+> - ARM
+> - M68K
+> - RISCV
+> - SH
+>
+> And is disabled by default on XTENSA.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Right, the list is complete, though it's also default-enabled for
+every CPU core on xtensa, and you can only disable it for
+"custom" CPU cores.
+
+        Arnd
