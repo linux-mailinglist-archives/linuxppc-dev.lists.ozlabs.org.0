@@ -2,82 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B532C568209
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 10:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C89568311
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 11:14:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdCp93kMNz3c56
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 18:46:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdDPS2wRLz3c63
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 19:14:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FcX6Xkk9;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UyINPEp8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=olteanv@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FcX6Xkk9;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UyINPEp8;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdCnS6tn7z3bjX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 18:46:20 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2667M8ap008613;
-	Wed, 6 Jul 2022 08:40:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=l3MWD8hQIFQ9/QpMm4hWA643ZTU/ttNO44gzzOp1c0I=;
- b=FcX6Xkk9BOXtgPmP1vshPATskdTvovXszmeyKuA0wboYvwPry/qJ79c4xv/AqDEqcRVr
- CYmRcfoeq0kdiz+g7RCCjmASed334JPMeNOQMvrrt/uDrRpa1iSaee5lXlUh8/uwudxV
- OHC3UfGfKgSaLNbdwruBnpmhgL36cOfosVuU416wdon8q61VIr3dA2Mu3JAgK45GUrKr
- WO+5XYroJ5xLVSnLYZIFfmqdaF+EoFD7T28RvTijkvsnTW63BaonWS30JhmKwdnr+Enb
- hL223wqlOkHIe2auLqGipfzTXBMIDMxFhfP+wtfs7TvY01bDYw0bOV8GQwpJP6db4ANf NQ== 
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h55xfhm71-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Jul 2022 08:40:44 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2668LiCJ025027;
-	Wed, 6 Jul 2022 08:40:41 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma03ams.nl.ibm.com with ESMTP id 3h4ujsgpxk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Jul 2022 08:40:41 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2668ed9M23593384
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 6 Jul 2022 08:40:39 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EA9411C04C;
-	Wed,  6 Jul 2022 08:40:39 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9903211C04A;
-	Wed,  6 Jul 2022 08:40:38 +0000 (GMT)
-Received: from osiris (unknown [9.145.44.193])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Wed,  6 Jul 2022 08:40:38 +0000 (GMT)
-Date: Wed, 6 Jul 2022 10:40:37 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v2] random: remove CONFIG_ARCH_RANDOM
-Message-ID: <YsVKhbiKyuc+vgNO@osiris>
-References: <YsTXI3J+ptkN/vb4@zx2c4.com>
- <20220706003225.335768-1-Jason@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdDNp5Tyhz3bl8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 19:13:28 +1000 (AEST)
+Received: by mail-ed1-x530.google.com with SMTP id r6so7012283edd.7
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Jul 2022 02:13:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=WKlacHhWVR2IblvCAgYMcCw7cvtmo7gBzlhxFpijOWM=;
+        b=UyINPEp8aUU7+iO4UvYReAysG8acJi4s0lW7fYS990hIHuI2KgReqshlPjlC0FcdQX
+         RWLEJ1iagzj5JHTLAwg1Tfl34CjKErUg06qCwRi5FpbuqXpIfRK0B8kuUc2l5x+40o+8
+         2YldATzAdsq2GhIZIL2D0cZi8oKOkVG5Y5xLvvP4kajNiX5yCXAJSyEYBx1RvA9W9SdO
+         piij5Lfa0VXVwqnHofYdHxRPOmYTBO/NXTATLm6C9JRKYr2iRvgzlsZTZRGqO8gtc9pI
+         zkPBxco6Fa5B8qkZy3WblPhpXY+1PsQ3ol/zLxC+L8wAov5SdI1JA4byrn/VHyXJavbs
+         ZPkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=WKlacHhWVR2IblvCAgYMcCw7cvtmo7gBzlhxFpijOWM=;
+        b=bRXPX+Wn1VZs0ATKJshsytf/RBnmpT7KdD1rRl+eoUWeqzx+3APyUgJohSH5AE0CAO
+         4Zas/jv8aHwfLvjKHg74ALSniZEm3DjURil7X18GLb8n3LOoHsGM4EDEasHAAxbMW0Tz
+         IM4ImFGq+KeOjRvH5i7IDcHCRe02dR6HyZZLoGDE5lcx7PsBoZijIx3WPhNI5Z8fjOlv
+         ZOsXdUY7Mm88ZlzvGKqqUU1gFhae/Bj/V346t1nfglIE6TekMDqrhvV48MdjM9j1YHfW
+         a0T/z8Lg5YOSa+9piRMWut5bZA66eThmJdvRWgVquJQS5dGzKSjAm5pwxI6XLzflxYtE
+         zryw==
+X-Gm-Message-State: AJIora9bLED8pTcnQx7rkVOXHG38BPI/zic11EWlxLa4MpyJkb92r9zS
+	6WwyK67H4MlCcQI5+SXoKgA=
+X-Google-Smtp-Source: AGRyM1tgzHocOxIjG9HexS+g9z9ap2nsem/HblqVyMjIbl5ZbLhG8nAvflW5PCvUObUWjIPHfLadCA==
+X-Received: by 2002:a05:6402:350a:b0:435:df44:30aa with SMTP id b10-20020a056402350a00b00435df4430aamr51209856edd.403.1657098799156;
+        Wed, 06 Jul 2022 02:13:19 -0700 (PDT)
+Received: from skbuf ([188.26.185.61])
+        by smtp.gmail.com with ESMTPSA id er13-20020a056402448d00b0043a5bcf80a2sm6350790edb.60.2022.07.06.02.13.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Jul 2022 02:13:18 -0700 (PDT)
+Date: Wed, 6 Jul 2022 12:13:15 +0300
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 6/6] i2c: Make remove callback return void
+Message-ID: <20220706091315.p5k2jck3rmyjhvqw@skbuf>
+References: <20220628140313.74984-1-u.kleine-koenig@pengutronix.de>
+ <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20220706003225.335768-1-Jason@zx2c4.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: jMZP3hl2mP4unmTL5_U5VeAn3puFmrFQ
-X-Proofpoint-ORIG-GUID: jMZP3hl2mP4unmTL5_U5VeAn3puFmrFQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-06_04,2022-06-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- impostorscore=0 mlxlogscore=973 mlxscore=0 suspectscore=0 bulkscore=0
- lowpriorityscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207060031
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220628140313.74984-7-u.kleine-koenig@pengutronix.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,52 +79,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Will Deacon <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org
+Cc: alsa-devel@alsa-project.org, linux-pwm@vger.kernel.org, linux-iio@vger.kernel.org, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, platform-driver-x86@vger.kernel.org, linux-mtd@lists.infradead.org, linux-i2c@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-leds@vger.kernel.org, linux-rtc@vger.kernel.org, chrome-platform@lists.linux.dev, linux-staging@lists.linux.dev, kasan-dev@googlegroups.com, linux-clk@vger.kernel.org, linux-serial@vger.kernel.org, linux-input@vger.kernel.org, linux-media@vger.kernel.org, devicetree@vger.kernel.org, linux-watchdog@vger.kernel.org, Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>, linux-pm@vger.kernel.org, acpi4asus-user@lists.sourceforge.net, linux-gpio@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, openipmi-developer@lists.sourceforge.net, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-hwmon@vger.kernel.org, patches@opensource.cirrus.co
+ m, linux-usb@vger.kernel.org, Wolfram Sang <wsa@kernel.org>, linux-crypto@vger.kernel.org, netdev@vger.kernel.org, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 06, 2022 at 02:32:25AM +0200, Jason A. Donenfeld wrote:
-> When RDRAND was introduced, there was much discussion on whether it
-> should be trusted and how the kernel should handle that. Initially, two
-> mechanisms cropped up, CONFIG_ARCH_RANDOM, a compile time switch, and
-> "nordrand", a boot-time switch.
+On Tue, Jun 28, 2022 at 04:03:12PM +0200, Uwe Kleine-König wrote:
+> From: Uwe Kleine-König <uwe@kleine-koenig.org>
 > 
-> Later the thinking evolved. With a properly designed RNG, using RDRAND
-> values alone won't harm anything, even if the outputs are malicious.
-> Rather, the issue is whether those values are being *trusted* to be good
-> or not. And so a new set of options were introduced as the real
-> ones that people use -- CONFIG_RANDOM_TRUST_CPU and "random.trust_cpu".
-> With these options, RDRAND is used, but it's not always credited. So in
-> the worst case, it does nothing, and in the best case, maybe it helps.
+> The value returned by an i2c driver's remove function is mostly ignored.
+> (Only an error message is printed if the value is non-zero that the
+> error is ignored.)
 > 
-> Along the way, CONFIG_ARCH_RANDOM's meaning got sort of pulled into the
-> center and became something certain platforms force-select.
+> So change the prototype of the remove function to return no value. This
+> way driver authors are not tempted to assume that passing an error to
+> the upper layer is a good idea. All drivers are adapted accordingly.
+> There is no intended change of behaviour, all callbacks were prepared to
+> return 0 before.
 > 
-> The old options don't really help with much, and it's a bit odd to have
-> special handling for these instructions when the kernel can deal fine
-> with the existence or untrusted existence or broken existence or
-> non-existence of that CPU capability.
-> 
-> So this commit simplifies things down to the two options that are
-> actually used, and removes the confusing old ones that aren't used or
-> useful. It leaves "nordrand" for now, as the removal of that will take a
-> different route.
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: H. Peter Anvin <hpa@zytor.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-...
->  arch/s390/Kconfig                                 | 15 ---------------
->  arch/s390/configs/zfcpdump_defconfig              |  1 -
->  arch/s390/crypto/Makefile                         |  2 +-
->  arch/s390/include/asm/archrandom.h                |  3 ---
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
 
-For s390:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Assuming you remove the spurious kasan change:
+
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
