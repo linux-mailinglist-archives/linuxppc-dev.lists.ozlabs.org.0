@@ -2,44 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FE05685F2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 12:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66CB55685F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 12:44:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdGP35HZ1z3c5D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 20:43:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdGPh2XY7z3cMr
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 20:44:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nh8cmyXU;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TZJK5VfY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nh8cmyXU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TZJK5VfY;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdGNW3Vxqz3bjX
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdGNW51nxz3blS
 	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 20:43:23 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 0FB0761E4A;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 7E59A61E4E;
 	Wed,  6 Jul 2022 10:43:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452CDC3411C;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45D9C341CB;
 	Wed,  6 Jul 2022 10:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1657104200;
-	bh=ZJU7+A8sh/C/YCWpWSHDj402O/F82gQIyYiqc8Vq+qE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nh8cmyXUfOvYI6WT/AqaEO7/btmBNWEvYeHfvCxNxPIErrpWyhHpKR+fhDtiBlvfa
-	 kT8ArZVV+1VD/6vlI01haiBNIlM+IlQtrAb/N+NaUp7z93wJLoENFaSD3my3yn0tS4
-	 wMDuaZjjAlgQ5ROrTtALTzAF0Up4SJbomsO3rV4MVqdNQyCAOWd1wD1FYRlvNbTvUw
-	 ydBkCWCUX67FXFmcmfwJ/lcrXbeEDhV9s7IxPHyhwMhgdb0IGACmK27xw9oNsNdbMV
-	 If7giLMUEZpHlF1AReLsG27w2cYIcAr+1bDlGCJD8k46sn0/tXu5mq3V0+KBw4JBbJ
-	 KJyiIeWlt7FYQ==
+	bh=2i4XkrOKAvEY4kt51QJGqvVCb9gTrdzZN17RM/W6jF8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TZJK5VfYPdeR1Bn+XOMd6WXnxO+p3Wr5Bkgn4nhjE12pygsUgOZm9OQPMRFZ89lRz
+	 /ANQlCA3A0g0e5heGDCD8RPkJWPGRetnO6riSnQJsZrPrS5d0VcPpv0ajMBul6+uXT
+	 NXrs7B/+KIgl2mtB1Q0MQNHiSsoddXThcz21pCrxjUOqzBbXK/ijF5TkASq7HCCjPz
+	 5LRww1QlBmHfiXnoJC8+Q+ij/jH0AVXusYUwQZKOsW/uHC4dcJwKblCnpUUHd88J8e
+	 x8XiPQwwj4RpiL/X9meTKljxp0ZjR+/OayZ8BBT6Sb0KRW4lBU06os1I0e2mWKNobu
+	 xJJLkaQS+12kQ==
 Received: by pali.im (Postfix)
-	id 41DC57BA; Wed,  6 Jul 2022 12:43:17 +0200 (CEST)
+	id 3BFC07F1; Wed,  6 Jul 2022 12:43:18 +0200 (CEST)
 From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -48,10 +48,12 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 	=?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
 	Nick Child <nick.child@ibm.com>,
 	Bjorn Helgaas <helgaas@kernel.org>
-Subject: [PATCH 0/5] powerpc/pci: Cleanup unused code and enable 256 PCI buses
-Date: Wed,  6 Jul 2022 12:43:03 +0200
-Message-Id: <20220706104308.5390-1-pali@kernel.org>
+Subject: [PATCH 1/5] powerpc/pci: Hide pci_device_from_OF_node() for non-powermac code
+Date: Wed,  6 Jul 2022 12:43:04 +0200
+Message-Id: <20220706104308.5390-2-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20220706104308.5390-1-pali@kernel.org>
+References: <20220706104308.5390-1-pali@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,51 +72,68 @@ Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch series cleanup unused code by eliminating it at compile time
-and then enable usage of all 256 PCI buses per every PCI domain as
-currently PCI bus numbers have to be unique across all PCI domains.
-So first bus number of each PCI domain would be zero and not the bus
-number of the previous domain plus one. As such bus assignment changes
-BDF address of every PCI device on multi-domain system, this new
-"feature" is configurable by config option to prevent regressions.
+Function pci_device_from_OF_node() is used only in powermac code.
+So hide it from all other platforms as it is unsed.
 
-Tested on Freescale P2020 board. Before this patch lspci reports:
+Signed-off-by: Pali Rohár <pali@kernel.org>
+---
+ arch/powerpc/include/asm/pci-bridge.h | 2 ++
+ arch/powerpc/kernel/pci_32.c          | 2 ++
+ arch/powerpc/kernel/pci_64.c          | 2 ++
+ 3 files changed, 6 insertions(+)
 
-8000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
-8000:01:00.0 USB controller: Texas Instruments TUSB73x0 SuperSpeed USB 3.0 xHCI Host Controller (rev 02)
-9000:02:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
-9000:03:00.0 Network controller: Qualcomm Atheros AR93xx Wireless Network Adapter (rev 01)
-a000:04:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
-a000:05:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac Wireless Network Adapter
-
-With these patches and enabled config option it reports:
-
-8000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
-8000:01:00.0 USB controller: Texas Instruments TUSB73x0 SuperSpeed USB 3.0 xHCI Host Controller (rev 02)
-9000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
-9000:01:00.0 Network controller: Qualcomm Atheros AR93xx Wireless Network Adapter (rev 01)
-a000:00:00.0 PCI bridge: Freescale Semiconductor Inc P2020E (rev 21)
-a000:01:00.0 Network controller: Qualcomm Atheros QCA986x/988x 802.11ac Wireless Network Adapter
-
-Now every PCIe Root Port is on bus zero and theoretically with enough
-multiport PCIe switches connected to every PCIe Root Port, it should be
-possible to have 256 PCI buses on every PCIe controller (as each is in
-own PCI domain) and therefore connect more PCIe cards as without these
-patches.
-
-Pali Rohár (5):
-  powerpc/pci: Hide pci_device_from_OF_node() for non-powermac code
-  powerpc/pci: Make pcibios_make_OF_bus_map() static
-  powerpc/pci: Hide pci_create_OF_bus_map() for non-chrp code
-  powerpc/pci: Disable filling pci-OF-bus-map for non-chrp/powermac
-  powerpc/pci: Add config option for using all 256 PCI buses
-
- arch/powerpc/Kconfig                  | 11 +++++++++++
- arch/powerpc/include/asm/pci-bridge.h |  4 ++++
- arch/powerpc/kernel/pci_32.c          | 27 +++++++++++++++++++++------
- arch/powerpc/kernel/pci_64.c          |  2 ++
- 4 files changed, 38 insertions(+), 6 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+index c85f901227c9..98156932a1f5 100644
+--- a/arch/powerpc/include/asm/pci-bridge.h
++++ b/arch/powerpc/include/asm/pci-bridge.h
+@@ -170,8 +170,10 @@ static inline struct pci_controller *pci_bus_to_host(const struct pci_bus *bus)
+ 	return bus->sysdata;
+ }
+ 
++#ifdef CONFIG_PPC_PMAC
+ extern int pci_device_from_OF_node(struct device_node *node,
+ 				   u8 *bus, u8 *devfn);
++#endif
+ #ifndef CONFIG_PPC64
+ 
+ extern void pci_create_OF_bus_map(void);
+diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
+index 5a174936c9a0..c3b91fb62a71 100644
+--- a/arch/powerpc/kernel/pci_32.c
++++ b/arch/powerpc/kernel/pci_32.c
+@@ -154,6 +154,7 @@ pcibios_make_OF_bus_map(void)
+ }
+ 
+ 
++#ifdef CONFIG_PPC_PMAC
+ /*
+  * Returns the PCI device matching a given OF node
+  */
+@@ -193,6 +194,7 @@ int pci_device_from_OF_node(struct device_node *node, u8 *bus, u8 *devfn)
+ 	return -ENODEV;
+ }
+ EXPORT_SYMBOL(pci_device_from_OF_node);
++#endif
+ 
+ /* We create the "pci-OF-bus-map" property now so it appears in the
+  * /proc device tree
+diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
+index 19b03ddf5631..0c7cfb9fab04 100644
+--- a/arch/powerpc/kernel/pci_64.c
++++ b/arch/powerpc/kernel/pci_64.c
+@@ -286,6 +286,7 @@ int pcibus_to_node(struct pci_bus *bus)
+ EXPORT_SYMBOL(pcibus_to_node);
+ #endif
+ 
++#ifdef CONFIG_PPC_PMAC
+ int pci_device_from_OF_node(struct device_node *np, u8 *bus, u8 *devfn)
+ {
+ 	if (!PCI_DN(np))
+@@ -294,3 +295,4 @@ int pci_device_from_OF_node(struct device_node *np, u8 *bus, u8 *devfn)
+ 	*devfn = PCI_DN(np)->devfn;
+ 	return 0;
+ }
++#endif
 -- 
 2.20.1
 
