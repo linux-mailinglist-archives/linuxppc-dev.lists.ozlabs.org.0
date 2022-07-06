@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C0B56952D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 00:19:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A9F56952F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 00:20:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdYrD4Cq3z3cDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 08:19:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdYrg0Vm2z3f8g
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 08:20:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.128.177; helo=mail-yw1-f177.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.178; helo=mail-yb1-f178.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdLkv2xCQz2xSN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 23:59:34 +1000 (AEST)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-31c86fe1dddso93337537b3.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Jul 2022 06:59:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdLmB2GqWz3035
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 00:00:42 +1000 (AEST)
+Received: by mail-yb1-f178.google.com with SMTP id r3so27471550ybr.6
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 Jul 2022 07:00:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Onduqp6mjVbUTy8onn0jWt/mqpI9kGBQEYh+QUeZcBU=;
-        b=c9i0dJbH0r4ZDTgSiYIwowUP1VSHeOpCPFt67t3gGTS1xoLf/4Waf3VYNBNHTRJAON
-         fLKzAampd1HE2WKGMlfaZD7InKml9W70taSLjvz1wEDKASnK+fSK224V+Fu6TyJnU4go
-         ky0KYOFIxQRB/pXg+yGwPkD5MWVxrt30QixgpMgvkp+8F9dKP5lp3BFRcGs3bKa1B6Zk
-         CestSH7bep8O8d6/6QS/A9LTMppYPJfKiiYVO9oukwFZNRdN3MdNTzd1PDlxCnL4YeEA
-         xnMBm7qaDd7bKNosTTfTwztxdCErMG/dYPO5xeyNzlrZvCQQTQOhl2Wg70hYVoSXlkWR
-         g2Gw==
-X-Gm-Message-State: AJIora9ySdHiRy/AR+9xfWdtPgjxfIIxGNg1ji3/uSpbjxH0Y0GzCeyz
-	fK775rs6czDKfNjoqlF4Jo77Qku28ufwSJdABC4=
-X-Google-Smtp-Source: AGRyM1tNbC/Hml4tsQcA7xFkjwPTBe4V9sculTi4g4WqVg8ltnNA+flCFfg0CHpb2ZdV5OvqewQ30xyxgoEo0qXCWHo=
-X-Received: by 2002:a81:1b97:0:b0:2db:640f:49d8 with SMTP id
- b145-20020a811b97000000b002db640f49d8mr45117410ywb.326.1657115972382; Wed, 06
- Jul 2022 06:59:32 -0700 (PDT)
+        bh=Lln/3deL7qOtLziJcXYPqqy6CqnXU6Vj8A13Rxsyfck=;
+        b=8MhsKkV5lBsxGDAk65cgkNkFmt/13dthkD4w+t3HP9pUJ9sAmh7Ofiu/AGZ8VBdR0i
+         K4Ennqq+G+S9lnJsZtOEGyrXEABZUfNHzHOweEni5KJMROCP+AEvHJOVJFfyK4CUNAT6
+         yrmEi68lYOnfgace2cRDxCYavh+TaAfrwksrw50LxzVpnLTbFgTqqWhsikai3xkYn2Md
+         6scKHKihKW6EOR7Is1MOQJ8hWRUZQfAwO3KSZicxcxQ5656cuI5sJezwWH9ms59rGu4O
+         goXhCEsv/41jdVE7PgsZld+bZphyBR6zxgRoIkLsQlr00RT+q0i1l0hSQR9+1OVX3Dn4
+         hLFQ==
+X-Gm-Message-State: AJIora8lj42uVNimFQieupcusSbY7/9UskBGqAD2ZOrC0IPTyTn8MjUk
+	c13jF3lumX7s0ZwqA6REJfWBoS3U02Ck4I7SX2U=
+X-Google-Smtp-Source: AGRyM1vGBIO6ejUezqbzrzuaUC5etUaxh8lxWDh293Sam2Jc/zFfeBj4g08hdYpvSA8zzuIj5u2PxdHOfRWqZSWT82c=
+X-Received: by 2002:a05:6902:50e:b0:66e:7f55:7a66 with SMTP id
+ x14-20020a056902050e00b0066e7f557a66mr7763507ybs.365.1657116039561; Wed, 06
+ Jul 2022 07:00:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220608142723.103523089@infradead.org> <20220608144516.998681585@infradead.org>
-In-Reply-To: <20220608144516.998681585@infradead.org>
+References: <20220608142723.103523089@infradead.org> <20220608144517.061583457@infradead.org>
+In-Reply-To: <20220608144517.061583457@infradead.org>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 6 Jul 2022 15:59:21 +0200
-Message-ID: <CAJZ5v0jSfvUoReFHjA5A+brExnnEKidak-GnjTbY0CKoaWpGVQ@mail.gmail.com>
-Subject: Re: [PATCH 17/36] acpi_idle: Remove tracing
+Date: Wed, 6 Jul 2022 16:00:28 +0200
+Message-ID: <CAJZ5v0iBAt7xyBzrFwgVSOk7dLx017X_naLZAjnDuwi=oUmREg@mail.gmail.com>
+Subject: Re: [PATCH 18/36] cpuidle: Annotate poll_idle()
 To: Peter Zijlstra <peterz@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Thu, 07 Jul 2022 08:18:29 +1000
@@ -67,82 +67,40 @@ paulmck@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, stefan.kristiansson@sau
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 8, 2022 at 4:47 PM Peter Zijlstra <peterz@infradead.org> wrote:
+On Wed, Jun 8, 2022 at 4:46 PM Peter Zijlstra <peterz@infradead.org> wrote:
 >
-> All the idle routines are called with RCU disabled, as such there must
-> not be any tracing inside.
+> The __cpuidle functions will become a noinstr class, as such they need
+> explicit annotations.
 >
 > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 
-This actually does some additional code duplication cleanup which
-would be good to mention in the changelog.  Or even move to a separate
-patch for that matter.
-
-Otherwise LGTM.
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
 > ---
->  drivers/acpi/processor_idle.c |   24 +++++++++++++-----------
->  1 file changed, 13 insertions(+), 11 deletions(-)
+>  drivers/cpuidle/poll_state.c |    6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 >
-> --- a/drivers/acpi/processor_idle.c
-> +++ b/drivers/acpi/processor_idle.c
-> @@ -108,8 +108,8 @@ static const struct dmi_system_id proces
->  static void __cpuidle acpi_safe_halt(void)
+> --- a/drivers/cpuidle/poll_state.c
+> +++ b/drivers/cpuidle/poll_state.c
+> @@ -13,7 +13,10 @@
+>  static int __cpuidle poll_idle(struct cpuidle_device *dev,
+>                                struct cpuidle_driver *drv, int index)
 >  {
->         if (!tif_need_resched()) {
-> -               safe_halt();
-> -               local_irq_disable();
-> +               raw_safe_halt();
-> +               raw_local_irq_disable();
->         }
->  }
->
-> @@ -524,16 +524,21 @@ static int acpi_idle_bm_check(void)
->         return bm_status;
->  }
->
-> -static void wait_for_freeze(void)
-> +static __cpuidle void io_idle(unsigned long addr)
->  {
-> +       /* IO port based C-state */
-> +       inb(addr);
+> -       u64 time_start = local_clock();
+> +       u64 time_start;
 > +
->  #ifdef CONFIG_X86
->         /* No delay is needed if we are in guest */
->         if (boot_cpu_has(X86_FEATURE_HYPERVISOR))
->                 return;
->  #endif
-> -       /* Dummy wait op - must do something useless after P_LVL2 read
-> -          because chipsets cannot guarantee that STPCLK# signal
-> -          gets asserted in time to freeze execution properly. */
-> +       /*
-> +        * Dummy wait op - must do something useless after P_LVL2 read
-> +        * because chipsets cannot guarantee that STPCLK# signal
-> +        * gets asserted in time to freeze execution properly.
-> +        */
->         inl(acpi_gbl_FADT.xpm_timer_block.address);
+> +       instrumentation_begin();
+> +       time_start = local_clock();
+>
+>         dev->poll_time_limit = false;
+>
+> @@ -39,6 +42,7 @@ static int __cpuidle poll_idle(struct cp
+>         raw_local_irq_disable();
+>
+>         current_clr_polling();
+> +       instrumentation_end();
+>
+>         return index;
 >  }
->
-> @@ -553,9 +558,7 @@ static void __cpuidle acpi_idle_do_entry
->         } else if (cx->entry_method == ACPI_CSTATE_HALT) {
->                 acpi_safe_halt();
->         } else {
-> -               /* IO port based C-state */
-> -               inb(cx->address);
-> -               wait_for_freeze();
-> +               io_idle(cx->address);
->         }
->
->         perf_lopwr_cb(false);
-> @@ -577,8 +580,7 @@ static int acpi_idle_play_dead(struct cp
->                 if (cx->entry_method == ACPI_CSTATE_HALT)
->                         safe_halt();
->                 else if (cx->entry_method == ACPI_CSTATE_SYSTEMIO) {
-> -                       inb(cx->address);
-> -                       wait_for_freeze();
-> +                       io_idle(cx->address);
->                 } else
->                         return -ENODEV;
->
 >
 >
