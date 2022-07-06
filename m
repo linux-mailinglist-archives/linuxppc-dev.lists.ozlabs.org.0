@@ -1,45 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86846568563
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 12:22:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A826568569
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 12:23:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdFwt2kctz3c08
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 20:22:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdFxX3rXJz3c5b
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Jul 2022 20:23:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txmb5oAo;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TIRgolfA;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=txmb5oAo;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TIRgolfA;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdFwH5chzz3bl3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 20:22:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdFwJ4Z0Cz3bl3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Jul 2022 20:22:24 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 0BA21B81BD2;
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0FF4861E1C;
 	Wed,  6 Jul 2022 10:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56115C3411C;
-	Wed,  6 Jul 2022 10:22:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B26C341C0;
+	Wed,  6 Jul 2022 10:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657102939;
-	bh=SMQcYq8ni/D8jrt39kIE8+5UERyv9ocsQz7ZXYAUkIc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=txmb5oAobChslywtvbJ+gpAXqasBVWhd6fmlE51OsCkOYpAIPcblocnnezSWIrZCA
-	 LmFXulu9mSy9W6fxEZTIiFiBYLAxpx4VQTG5BG7N++VYgmAPWq499lxsP2E+gadJg/
-	 U7VJVjLZ2p2yylClQFtvinkB3mYF8fukQ9TAgp0aTPChyscJ9YH0F+o/LiayPDyhRS
-	 7sDelXC3ceihiXBqc4dnA4Ex6lutvhNvKcuZ+l+FFhXDh1+HhlAxmBnoVdOCU92Yq0
-	 ZdTRaEPN1YoAvu9tyl3Fp0KTwR3e1s/DRFbdr3mIHDOabZ6HbAg2nP5fR3CIyose/3
-	 uecTIOhge4t3g==
+	s=k20201202; t=1657102940;
+	bh=5RJNNFRIVghvmdUSW6GuwgiuwsPcvqMprUl9pG2CXAs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TIRgolfAO2xEEw7akxf7//984YrubOnA0R8bW1OE6XDQJxiyw+77sZBa1fj+WlZv/
+	 d/URcRVv6rQHA/wtyn33AP0T/phtAXwwyN7ngWhcLsFwIEGav9gYP8NfrevZb7BoBL
+	 UWgm3BUAAFRH4nTqmYvQN8DuJZiq0Vc+L1t4fgQT/ygCtrvDZT7+zYgocVUtPRcA/v
+	 JgDC1x558eTV5Nxj+9PGYjGyAGRiZYI/2K3QP9PJ3g3uDJh7sdJwKatBBqd+tItnaG
+	 p0vJmPNOcCj2d0DU2FijgNMNRafXxWCVTQyoNfiP8Kd9+MHrdm8e4zJNXUbY4mG5a8
+	 oxIF+7fqD69zg==
 Received: by pali.im (Postfix)
-	id D5CD77BA; Wed,  6 Jul 2022 12:22:16 +0200 (CEST)
+	id C570A7F1; Wed,  6 Jul 2022 12:22:17 +0200 (CEST)
 From: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -48,10 +48,12 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 	Bjorn Helgaas <helgaas@kernel.org>,
 	Guowen Shan <gshan@redhat.com>,
 	Tyrel Datwyler <tyreld@linux.ibm.com>
-Subject: [PATCH v2 1/2] powerpc/pci: Add config option for using OF 'reg' for PCI domain
-Date: Wed,  6 Jul 2022 12:21:47 +0200
-Message-Id: <20220706102148.5060-1-pali@kernel.org>
+Subject: [PATCH v2 2/2] powerpc/pci: Prefer PCI domain assignment via DT 'linux,pci-domain' and alias
+Date: Wed,  6 Jul 2022 12:21:48 +0200
+Message-Id: <20220706102148.5060-2-pali@kernel.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20220706102148.5060-1-pali@kernel.org>
+References: <20220706102148.5060-1-pali@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -70,96 +72,71 @@ Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on
-device-tree properties"), powerpc kernel always fallback to PCI domain
-assignment from OF / Device Tree 'reg' property of the PCI controller.
+Other Linux architectures use DT property 'linux,pci-domain' for specifying
+fixed PCI domain of PCI controller specified in Device-Tree.
 
-In most cases 'reg' property is not zero and therefore there it cause that
-PCI domain zero is not present in system anymore.
+And lot of Freescale powerpc boards have defined numbered pci alias in
+Device-Tree for every PCIe controller which number specify preferred PCI
+domain.
 
-PCI code for other Linux architectures use increasing assignment of the PCI
-domain for individual controllers (assign the first free number), like it
-was also for powerpc prior mentioned commit. Also it starts numbering
-domains from zero.
-
-Upgrading powerpc kernels from LTS 4.4 version (which does not contain
-mentioned commit) to new LTS versions brings a change in domain assignment.
-
-It can be problematic for embedded machines with single PCIe controller
-where it is expected that PCIe card is connected on the domain zero.
-Also it can be problematic as that commit changes PCIe domains in
-multi-controller setup with fixed number of controller (without hotplug
-support).
-
-Originally that change was intended for powernv and pservers and specially
-server machines with more PCI domains or hot plug support.
-
-Fix this issue and introduce a new option CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG.
-When this option is disabled then powerpc kernel would assign PCI domains
-in the similar way like it is doing kernel for other architectures,
-starting from zero and also how it was done prior that commit.
-
-This option is by default enabled for powernv and pseries platform for which
-was that commit originally intended.
-
-With this change upgrading kernels from LTS 4.4 version does not change PCI
-domain on smaller embedded platforms with fixed number of PCIe controllers.
-And also ensure that PCI domain zero is present as before that commit.
+So prefer usage of DT property 'linux,pci-domain' (via function
+of_get_pci_domain_nr()) and DT pci alias (via function of_alias_get_id())
+on powerpc architecture for assigning PCI domain to PCI controller.
 
 Fixes: 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on device-tree properties")
 Signed-off-by: Pali Rohár <pali@kernel.org>
 ---
 Changes in v2:
-* Enable CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG by default on powernv and pseries
+* New patch
 ---
- arch/powerpc/Kconfig             | 11 +++++++++++
- arch/powerpc/kernel/pci-common.c |  4 ++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/pci-common.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index f66084bc1dfe..053a88e84049 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -386,6 +386,17 @@ config PPC_OF_PLATFORM_PCI
- 	depends on PCI
- 	depends on PPC64 # not supported on 32 bits yet
- 
-+config PPC_PCI_DOMAIN_FROM_OF_REG
-+	bool "Use OF reg property for PCI domain"
-+	depends on PCI
-+	default y if PPC_PSERIES || PPC_POWERNV
-+	help
-+	  By default PCI domain for host bridge during its registration is
-+	  chosen as the lowest unused PCI domain number.
-+
-+	  When this option is enabled then PCI domain can be determined
-+	  also from lower bits of the OF / Device Tree 'reg' property.
-+
- config ARCH_SUPPORTS_UPROBES
- 	def_bool y
- 
 diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index 068410cd54a3..7f959df34833 100644
+index 7f959df34833..0715d74855b3 100644
 --- a/arch/powerpc/kernel/pci-common.c
 +++ b/arch/powerpc/kernel/pci-common.c
-@@ -74,7 +74,6 @@ void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops)
- static int get_phb_number(struct device_node *dn)
- {
- 	int ret, phb_id = -1;
--	u32 prop_32;
- 	u64 prop;
+@@ -78,10 +78,25 @@ static int get_phb_number(struct device_node *dn)
  
  	/*
-@@ -83,7 +82,8 @@ static int get_phb_number(struct device_node *dn)
- 	 * reading "ibm,opal-phbid", only present in OPAL environment.
+ 	 * Try fixed PHB numbering first, by checking archs and reading
+-	 * the respective device-tree properties. Firstly, try powernv by
+-	 * reading "ibm,opal-phbid", only present in OPAL environment.
++	 * the respective device-tree properties. Firstly, try reading
++	 * standard "linux,pci-domain", then try reading "ibm,opal-phbid"
++	 * (only present in powernv OPAL environment), then try device-tree
++	 * alias and as the last try to use lower bits of "reg" property
++	 * (only if CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG is enabled).
  	 */
- 	ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
--	if (ret) {
-+	if (ret && IS_ENABLED(CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG)) {
-+		u32 prop_32;
+-	ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
++	ret = of_get_pci_domain_nr(dn);
++	if (ret >= 0) {
++		prop = ret;
++		ret = 0;
++	}
++	if (ret)
++		ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
++	if (ret)
++		ret = of_alias_get_id(dn, "pci");
++	if (ret >= 0) {
++		prop = ret;
++		ret = 0;
++	}
+ 	if (ret && IS_ENABLED(CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG)) {
+ 		u32 prop_32;
  		ret = of_property_read_u32_index(dn, "reg", 1, &prop_32);
- 		prop = prop_32;
- 	}
+@@ -95,10 +110,7 @@ static int get_phb_number(struct device_node *dn)
+ 	if ((phb_id >= 0) && !test_and_set_bit(phb_id, phb_bitmap))
+ 		return phb_id;
+ 
+-	/*
+-	 * If not pseries nor powernv, or if fixed PHB numbering tried to add
+-	 * the same PHB number twice, then fallback to dynamic PHB numbering.
+-	 */
++	/* If everything fails then fallback to dynamic PHB numbering. */
+ 	phb_id = find_first_zero_bit(phb_bitmap, MAX_PHBS);
+ 	BUG_ON(phb_id >= MAX_PHBS);
+ 	set_bit(phb_id, phb_bitmap);
 -- 
 2.20.1
 
