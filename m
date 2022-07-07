@@ -2,43 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D951D56A119
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 13:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA2156A1BA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 14:04:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdvVM68Pxz3c4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 21:35:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ldw7V5ZzFz3c9p
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 22:04:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=gGLCNrRD;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.13; helo=inva020.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdvTv6jV1z3c12
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 21:35:14 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A66EE1A1437;
-	Thu,  7 Jul 2022 13:35:10 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6F0861A1432;
-	Thu,  7 Jul 2022 13:35:10 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id DA0F51802204;
-	Thu,  7 Jul 2022 19:35:08 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	shengjiu.wang@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH] ASoC: fsl_utils: Don't use plain integer as NULL pointer
-Date: Thu,  7 Jul 2022 19:20:06 +0800
-Message-Id: <1657192806-10569-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ldw6t1Wtgz3byv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 22:03:50 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=gGLCNrRD;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Ldw6l1QM9z4xDB;
+	Thu,  7 Jul 2022 22:03:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1657195423;
+	bh=YC/2OozYTGWuIXVFqvGcKXNJFtQMKiJOfOeSbGoL3v8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gGLCNrRD3X/IqnbeA4V+qfCrmER7TsrFOnupgQEOQHzkeiDXoKKDCkU9POUatYYLP
+	 WpSIOUR4Yhj3nLF0tqJtp7TkFYxk7HoS3rQgNP5iaYSkRz+mfMQJ4M1/AgkrOlJEg2
+	 dvGs0qRBjD4RLCaBjiC+zODI6fQi8cQYEUttnz4uXfmFmre7YiL+P/wKM7nJQduNt+
+	 DvkJ4AEOO414rh9aml/Z+h40gqwnwBEFzAf1bH5sPtjtAoy1nEbWBPEgomhGQRPQkI
+	 wbFQknKEO9+VmZ+qFycokRUUkmVKStze0jBIjvxVxPi3x2IO3bcwunuLPf2KqlwfMa
+	 BOAXsopphNDYg==
+Date: Thu, 7 Jul 2022 22:03:35 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: Re: linux-next: manual merge of the random tree with the powerpc
+ tree
+Message-ID: <20220707220335.36087d5e@canb.auug.org.au>
+In-Reply-To: <CAHmME9qCTZpRKrvXVDhCGTD6z15BwDFupX0Z5QwhoWCCT2w2Fw@mail.gmail.com>
+References: <20220707173252.5fff21f2@canb.auug.org.au>
+	<CAHmME9qCTZpRKrvXVDhCGTD6z15BwDFupX0Z5QwhoWCCT2w2Fw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/RZw/=ITfff_AmIDTe9mkTMr";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,34 +60,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Juerg Haefliger <juerg.haefliger@canonical.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix sparse warning:
-sound/soc/fsl/fsl_utils.c:125:31: sparse: warning: Using plain integer as NULL pointer
-sound/soc/fsl/fsl_utils.c:125:42: sparse: warning: Using plain integer as NULL pointer
+--Sig_/RZw/=ITfff_AmIDTe9mkTMr
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 7bad8125549c ("ASoC: fsl_utils: Add function to handle PLL clock source")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Jason,
 
-diff --git a/sound/soc/fsl/fsl_utils.c b/sound/soc/fsl/fsl_utils.c
-index b75843e31f00..3e969c7bc1c5 100644
---- a/sound/soc/fsl/fsl_utils.c
-+++ b/sound/soc/fsl/fsl_utils.c
-@@ -122,7 +122,7 @@ void fsl_asoc_reparent_pll_clocks(struct device *dev, struct clk *clk,
- 				  struct clk *pll8k_clk,
- 				  struct clk *pll11k_clk, u64 ratio)
- {
--	struct clk *p, *pll = 0, *npll = 0;
-+	struct clk *p, *pll = NULL, *npll = NULL;
- 	bool reparent = false;
- 	int ret = 0;
- 
--- 
-2.34.1
+On Thu, 7 Jul 2022 12:52:54 +0200 "Jason A. Donenfeld" <Jason@zx2c4.com> wr=
+ote:
+>
+> Oh darn. Any clever tricks to prevent the merge conflict from
+> happening? Or is this trivial enough that we'll let Linus deal with
+> it?
 
+Just leave it for Linus, its pretty trivial.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/RZw/=ITfff_AmIDTe9mkTMr
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmLGy5cACgkQAVBC80lX
+0Gxswgf+P5svBBU4WZUfNjPdqEFVlotiBELcLj9aQQOVg43ggtrYWXuMUPEZmgw3
+3mhRaBpjQ9uTbNw7+rLZhDmhe/FNN5kol/KKwLS29AM2zvLRM0sexabHmSdKjsDM
+tc/Z++3JKRah5n/RGNt+WQVZjDrxSQozsvhNsmQ2w8kbkWHNDXewy0+shkdDE5sL
+CVAWw/XHYKWWNfBqkryf63tPy3Dlxe38Mxg7CpBFO+S32XmUnmemGRm244aYqnkW
+p0B4T+QUkW2st0siclSvWnA/xTNoZdj0HrYjZgK617mlJEYuVmGu0T1n1BpjEIIq
+pEeE/QK8EMkdhepSJ+zr9aP9CBQ+Mw==
+=nulz
+-----END PGP SIGNATURE-----
+
+--Sig_/RZw/=ITfff_AmIDTe9mkTMr--
