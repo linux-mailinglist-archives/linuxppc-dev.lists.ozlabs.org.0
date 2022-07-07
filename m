@@ -1,92 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A3E56A74A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 17:55:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2B756A78C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 18:11:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lf1Fd0KRBz3cfj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 01:55:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lf1ch59l4z3c7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 02:11:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h4aBVIbH;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HVp6oxP9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=cheloha@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h4aBVIbH;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HVp6oxP9;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lf1DQ3MFjz3c68
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jul 2022 01:53:57 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 267Fk42M017782;
-	Thu, 7 Jul 2022 15:53:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=HsXhzMbsl58YXp9Hf56vlQISL9eW3bx0Z7mQpkenJ4k=;
- b=h4aBVIbHi+MwSmpecgkYhXEdv84JnVXP1AYQ7PYOLFPb4txwY2+hvOAFOVx5/hOMVHO4
- T7heGyc1eol+B99s3CK1R+3XtJ/s4+veOREvkcfD3Z4qdgNpumA+FUVNYiBGjLZLaHRp
- SZGM7/2/yUvfTRwrnxkLSSXhv7v7Tw4MpDDo1UVoK9eIWi0WxVTOxYw1tTKvsbeokrsB
- PmZcTApgUbx3LmLnJwy/IT7xcf5K6Igv4r/SSmIWjtfR4mkFkydFZ82RLq+RyATzBBoB
- 1w2fJgTi0YzHMXjJMbQ4p+J3wdfbJ21RXH2k4UkSDrmZ0TsZ/fyMD2tcShrr7hI5nZ8S iQ== 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lf1bx0S0Jz3btt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jul 2022 02:10:52 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 267Fpb0X019270;
+	Thu, 7 Jul 2022 16:10:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=k2FbwF9n2WlYsbyJT6u8wd+x1qkusCWll51c/T/HkIg=;
+ b=HVp6oxP9r52mmrtl2+FUSAvdoYlihvjsRlt27n6DESdPoWQHYJ4lAdzZ88Wi4m9UAfeN
+ oyC7HOBFYKzsKUvUhjWmoxBQtLgfY4BXBMZq+u2+NHXOcgLVxkhY3F40+2VtMU8mCZ3i
+ MqPm9PWb7e4y5RKpwWG5zWmnPpLJIuPuFsg9vLLqpSG6Kli+I4FtHke8EWairzbKIbiY
+ wzx9aC0dO1EhDOvJqYgVdk/UP6iiHI5HXSSdsa9z0VD/yopbBJtxSKHGR4b4tS0O9GQZ
+ LC6sUvoc1GbecoJEKxnDgjWMzl2vKJwdaLG2V5zcv6n631PQz5ux4yE9LK9xh355uLg5 oQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h62dx85xf-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h62ge8mns-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Jul 2022 15:53:51 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 267Fkwpm019523;
-	Thu, 7 Jul 2022 15:53:50 GMT
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h62dx85x3-1
+	Thu, 07 Jul 2022 16:10:36 +0000
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 267FqNKI021028;
+	Thu, 7 Jul 2022 16:10:35 GMT
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h62ge8mms-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Jul 2022 15:53:50 +0000
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 267Fpnei020455;
-	Thu, 7 Jul 2022 15:53:49 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com [9.57.198.27])
-	by ppma01dal.us.ibm.com with ESMTP id 3h4ud7qbkj-1
+	Thu, 07 Jul 2022 16:10:35 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+	by ppma05wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 267G6WYQ001499;
+	Thu, 7 Jul 2022 16:10:34 GMT
+Received: from b03cxnp07027.gho.boulder.ibm.com (b03cxnp07027.gho.boulder.ibm.com [9.17.130.14])
+	by ppma05wdc.us.ibm.com with ESMTP id 3h4v50466j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Jul 2022 15:53:49 +0000
-Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com [9.57.199.106])
-	by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 267Frmkn21430552
+	Thu, 07 Jul 2022 16:10:34 +0000
+Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+	by b03cxnp07027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 267GAXeL19202458
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Jul 2022 15:53:48 GMT
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 944C528060;
-	Thu,  7 Jul 2022 15:53:48 +0000 (GMT)
-Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7197E2805C;
-	Thu,  7 Jul 2022 15:53:48 +0000 (GMT)
-Received: from localhost (unknown [9.41.178.126])
-	by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu,  7 Jul 2022 15:53:48 +0000 (GMT)
-Date: Thu, 7 Jul 2022 10:53:48 -0500
-From: Scott Cheloha <cheloha@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 3/4] powerpc/pseries: register pseries-wdt device with
- platform bus
-Message-ID: <YscBjN2DCjTbq4Dk@rascal-austin-ibm-com>
-References: <20220602175353.68942-1-cheloha@linux.ibm.com>
- <20220602175353.68942-4-cheloha@linux.ibm.com>
- <874k0enied.fsf@linux.ibm.com>
- <87v8sq42ev.fsf@mpe.ellerman.id.au>
+	Thu, 7 Jul 2022 16:10:33 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F0163BE04F;
+	Thu,  7 Jul 2022 16:10:32 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44C5FBE05A;
+	Thu,  7 Jul 2022 16:10:32 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Thu,  7 Jul 2022 16:10:32 +0000 (GMT)
+Message-ID: <985a1b8b-5c1c-ba9c-ce6c-4968239448a2@linux.ibm.com>
+Date: Thu, 7 Jul 2022 12:10:31 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87v8sq42ev.fsf@mpe.ellerman.id.au>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v5 5/6] of: kexec: Refactor IMA buffer related functions
+ to make them reusable
+Content-Language: en-US
+To: Jonathan McDowell <noodles@fb.com>
+References: <20220706152329.665636-1-stefanb@linux.ibm.com>
+ <20220706152329.665636-6-stefanb@linux.ibm.com>
+ <YsbyENo0bOLljuI8@noodles-fedora.dhcp.thefacebook.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <YsbyENo0bOLljuI8@noodles-fedora.dhcp.thefacebook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aCPfHfI9MZtSeFsVTbj139i8gUPvG_vF
-X-Proofpoint-ORIG-GUID: sTnJ6KQ8fKS9wsz78_SZ58hFqZEMMYJh
+X-Proofpoint-ORIG-GUID: _OaNNuDjz8Hd459zm8GiKq_DyNZHoUcS
+X-Proofpoint-GUID: U-3ZkHWU9gvO6dxrVjnbK-s6nuslBSZu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-07-07_12,2022-06-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- impostorscore=0 clxscore=1015 adultscore=0 bulkscore=0 spamscore=0
- phishscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ mlxscore=0 adultscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1015 malwarescore=0 mlxlogscore=999 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2206140000 definitions=main-2207070061
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -99,20 +102,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, wvoigt@us.ibm.com, linux-watchdog@vger.kernel.org, aik@ozlabs.ru, vaishnavi@linux.ibm.com, npiggin@gmail.com, tzungbi@kernel.org, brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, linux@roeck-us.net
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, Frank Rowand <frowand.list@gmail.com>, "nayna@linux.ibm.com" <nayna@linux.ibm.com>, "kexec@lists.infradead.org" <kexec@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, Rob Herring <robh+dt@kernel.org>, "nasastry@in.ibm.com" <nasastry@in.ibm.com>, "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 24, 2022 at 11:27:36PM +1000, Michael Ellerman wrote:
-> Nathan Lynch <nathanl@linux.ibm.com> writes:
-> > Scott Cheloha <cheloha@linux.ibm.com> writes:
-> >> PAPR v2.12 defines a new hypercall, H_WATCHDOG.  The hypercall permits
-> >> guest control of one or more virtual watchdog timers.
-> ...
-> >
-> > Seems like we don't need pseries_wdt_pdev as it's unused elsewhere? But
-> > that's quite minor.
-> 
-> It's minor but please drop it in the next version.
 
-Dropped.
+
+On 7/7/22 10:47, Jonathan McDowell wrote:
+> On Wed, Jul 06, 2022 at 11:23:28AM -0400, Stefan Berger wrote:
+>> Refactor IMA buffer related functions to make them reusable for carrying
+>> TPM logs across kexec.
+>>
+>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+>> Cc: Rob Herring <robh+dt@kernel.org>
+>> Cc: Frank Rowand <frowand.list@gmail.com>
+>> Cc: Mimi Zohar <zohar@linux.ibm.com>
+>>
+>> ---
+>> v5:
+>>   - Rebased on Jonathan McDowell's commit "b69a2afd5afc x86/kexec: Carry
+>>     forward IMA measurement log on kexec"
+>> v4:
+>>   - Move debug output into setup_buffer()
+>> ---
+>>   drivers/of/kexec.c | 125 ++++++++++++++++++++++++++-------------------
+>>   1 file changed, 73 insertions(+), 52 deletions(-)
+>>
+>> diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+>> index 548dd5b1b5c1..404a86bb3978 100644
+>> --- a/drivers/of/kexec.c
+>> +++ b/drivers/of/kexec.c
+>> @@ -117,45 +117,56 @@ static int do_get_kexec_buffer(const void *prop, int len, unsigned long *addr,
+>>   }
+>>   
+>>   #ifdef CONFIG_HAVE_IMA_KEXEC
+>> -/**
+>> - * ima_get_kexec_buffer - get IMA buffer from the previous kernel
+>> - * @addr:	On successful return, set to point to the buffer contents.
+>> - * @size:	On successful return, set to the buffer size.
+>> - *
+>> - * Return: 0 on success, negative errno on error.
+>> - */
+>> -int __init ima_get_kexec_buffer(void **addr, size_t *size)
+>> +static int get_kexec_buffer(const char *name, unsigned long *addr, size_t *size)
+> 
+> I think this new function can + should be marked __init as well; it's
+> only called from the existing IMA functions and your new
+> tpm_get_kexec_buffer which is already __init.
+
+Yes, right. Thanks.
+    Stefan
