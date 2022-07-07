@@ -1,65 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B80E56A07C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 12:53:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D5F56A0C4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 13:03:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LdtZ52Qpqz3c9C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 20:53:49 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Kuo/M9df;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LdtnT2mGfz3cd4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 21:03:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=ow6x=xm=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Kuo/M9df;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdtYQ3CVQz30Bl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 20:53:14 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 5D33BB8213C
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 10:53:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD01C341C6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 10:53:09 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Kuo/M9df"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1657191186;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z0hiP75bywalq4wJilKlgvi8A6ckY7G9OfIHBXYukrA=;
-	b=Kuo/M9dfJqc4ZchaoFkxvgAKDC6qHrotNcISSxGj8w/TAIjLGVbjHYVB9tng1J858d5/u7
-	xTOgzzWFfIG/1JhP/Qj/E2mboSq0H4eMiO7v8S72hddr0+zvGlgoUAz3o0lGZhqGCmJ4dR
-	Ybtcc05oJ0w2SETQHQLKSrey07t/Prs=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id cacf7492 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO)
-	for <linuxppc-dev@lists.ozlabs.org>;
-	Thu, 7 Jul 2022 10:53:06 +0000 (UTC)
-Received: by mail-il1-f169.google.com with SMTP id v1so7577213ilg.11
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Jul 2022 03:53:06 -0700 (PDT)
-X-Gm-Message-State: AJIora/BkD5LW1uFV5amj21BfCkMxBYw+dxpovUXjGor9I/42m4GqwLa
-	ROgOVEJoKt/g9k1BcdKHEFK/WuilF4c+UOJOL9M=
-X-Google-Smtp-Source: AGRyM1uPG2aPUQGnUtUd1utWCbj/p/OG8HUm8NCM64ilDZ1INtOsvBMn+v+G15oROID8oYLRYjIM7z8FWS+ahoTmFss=
-X-Received: by 2002:a05:6e02:20cb:b0:2dc:28d0:b8a5 with SMTP id
- 11-20020a056e0220cb00b002dc28d0b8a5mr7727958ilq.160.1657191185406; Thu, 07
- Jul 2022 03:53:05 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ldtn304kRz3blG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 21:03:16 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Ldtmx1Fpdz9tCd;
+	Thu,  7 Jul 2022 13:03:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id efQ1yoNuCuig; Thu,  7 Jul 2022 13:03:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Ldtmx0P46z9tCW;
+	Thu,  7 Jul 2022 13:03:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F288D8B79F;
+	Thu,  7 Jul 2022 13:03:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 0jiyn1_nHucC; Thu,  7 Jul 2022 13:03:12 +0200 (CEST)
+Received: from [192.168.233.174] (unknown [192.168.233.174])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 89E5E8B768;
+	Thu,  7 Jul 2022 13:03:12 +0200 (CEST)
+Message-ID: <95f35287-3d66-1788-e54c-7275fdba16ac@csgroup.eu>
+Date: Thu, 7 Jul 2022 13:03:11 +0200
 MIME-Version: 1.0
-References: <20220707173252.5fff21f2@canb.auug.org.au>
-In-Reply-To: <20220707173252.5fff21f2@canb.auug.org.au>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Thu, 7 Jul 2022 12:52:54 +0200
-X-Gmail-Original-Message-ID: <CAHmME9qCTZpRKrvXVDhCGTD6z15BwDFupX0Z5QwhoWCCT2w2Fw@mail.gmail.com>
-Message-ID: <CAHmME9qCTZpRKrvXVDhCGTD6z15BwDFupX0Z5QwhoWCCT2w2Fw@mail.gmail.com>
-Subject: Re: linux-next: manual merge of the random tree with the powerpc tree
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH/RFC] powerpc/module_64: allow .init_array constructors to
+ run
+Content-Language: fr-FR
+To: Jan Stancek <jstancek@redhat.com>, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
+ Wedson Almeida Filho <wedsonaf@google.com>
+References: <920acea9aa18e4f2956581a8e158bdaa376fdf63.1629203945.git.jstancek@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <920acea9aa18e4f2956581a8e158bdaa376fdf63.1629203945.git.jstancek@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,39 +63,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>, PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Juerg Haefliger <juerg.haefliger@canonical.com>
+Cc: linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Stephen,
 
-On Thu, Jul 7, 2022 at 9:36 AM Stephen Rothwell <sfr@canb.auug.org.au> wrote:
->
-> Hi all,
->
-> Today's linux-next merge of the random tree got a conflict in:
->
->   arch/powerpc/Kconfig
->
-> between commit:
->
->   cea9d62b64c9 ("powerpc: Kconfig: Replace tabs with whitespaces")
->
-> from the powerpc tree and commit:
->
->   a2ff4b7600cd ("random: remove CONFIG_ARCH_RANDOM")
->
-> from the random tree.
->
-> I fixed it up (the latter removed some lines updated by the former) and
-> can carry the fix as necessary. This is now fixed as far as linux-next
-> is concerned, but any non trivial conflicts should be mentioned to your
-> upstream maintainer when your tree is submitted for merging.  You may
-> also want to consider cooperating with the maintainer of the conflicting
-> tree to minimise any particularly complex conflicts.
 
-Oh darn. Any clever tricks to prevent the merge conflict from
-happening? Or is this trivial enough that we'll let Linus deal with
-it?
+Le 17/08/2021 à 15:02, Jan Stancek a écrit :
+> gcov and kasan rely on compiler generated constructor code.
+> For modules, gcc-8 with gcov enabled generates .init_array section,
+> but on ppc64le it doesn't get executed. find_module_sections() never
+> finds .init_array section, because module_frob_arch_sections() renames
+> it to _init_array.
+> 
+> Avoid renaming .init_array section, so do_mod_ctors() can use it.
+> 
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Jan Stancek <jstancek@redhat.com>
 
-Jason
+Does commit d4be60fe66b7 ("powerpc/module_64: use module_init_section 
+instead of patching names") fixes your issue ?
+
+If not, please rebase and resubmit.
+
+Thanks
+Christophe
+
+
+> ---
+> I wasn't able to trace the comment:
+>    "We don't handle .init for the moment: rename to _init"
+> to original patch (it pre-dates .git). I'm not sure if it
+> still applies today, so I limited patch to .init_array. This
+> fixes gcov for modules for me on ppc64le 5.14.0-rc6.
+> 
+> Renaming issue is also mentioned in kasan patches here:
+>    https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20210319144058.772525-1-dja@axtens
+> 
+>   arch/powerpc/kernel/module_64.c | 10 +++++++++-
+>   1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+> index 6baa676e7cb6..c604b13ea6bf 100644
+> --- a/arch/powerpc/kernel/module_64.c
+> +++ b/arch/powerpc/kernel/module_64.c
+> @@ -299,8 +299,16 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
+>   					  sechdrs[i].sh_size);
+>   
+>   		/* We don't handle .init for the moment: rename to _init */
+> -		while ((p = strstr(secstrings + sechdrs[i].sh_name, ".init")))
+> +		while ((p = strstr(secstrings + sechdrs[i].sh_name, ".init"))) {
+> +#ifdef CONFIG_CONSTRUCTORS
+> +			/* find_module_sections() needs .init_array intact */
+> +			if (strstr(secstrings + sechdrs[i].sh_name,
+> +				".init_array")) {
+> +				break;
+> +			}
+> +#endif
+>   			p[0] = '_';
+> +		}
+>   
+>   		if (sechdrs[i].sh_type == SHT_SYMTAB)
+>   			dedotify((void *)hdr + sechdrs[i].sh_offset,
