@@ -1,61 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10022569C70
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 10:07:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309BA569F98
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 12:23:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ldpsx00LGz3c6X
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 18:07:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ldstz0W50z3c5j
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Jul 2022 20:23:23 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o8T0RPLH;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o8T0RPLH;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdpsT3rlmz2ywV
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 18:06:49 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4LdpsH64xtz9tCS;
-	Thu,  7 Jul 2022 10:06:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 5Li-Xwk3QDtB; Thu,  7 Jul 2022 10:06:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4LdpsH5Gkpz9tCP;
-	Thu,  7 Jul 2022 10:06:43 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A3CFE8B79F;
-	Thu,  7 Jul 2022 10:06:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id m_jbEc0-QBnx; Thu,  7 Jul 2022 10:06:43 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (po20309.idsi0.si.c-s.fr [192.168.233.123])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5E8528B768;
-	Thu,  7 Jul 2022 10:06:43 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 26786Th0478042
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 7 Jul 2022 10:06:29 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 26786RM0478030;
-	Thu, 7 Jul 2022 10:06:27 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/code-patching: Speed up page mapping/unmapping on PPC32
-Date: Thu,  7 Jul 2022 10:06:18 +0200
-Message-Id: <1feabfad5952631acc033d671fad722706c4dd59.1657181170.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.36.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LdpvY5dR8z307C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Jul 2022 18:08:41 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id B2D21B81ADA;
+	Thu,  7 Jul 2022 08:08:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8D2C3411E;
+	Thu,  7 Jul 2022 08:08:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1657181316;
+	bh=Mzw+guaGxcvS7S4YlQr9bq/AYy4U/puT8v9DMSRjm+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o8T0RPLH1+QXuxRGiOx0iOcZa4PNW1RYnmq0rwqP4JlY+PYLChMX98BzUOmDLYQt5
+	 WHtgniPDP3fJS/IKoiVXIaVBC8g4rRYZFs4Es7HO3CMez5153+NrgRKDzbP84fxvsI
+	 PrLKzhYgkU2Ze+gIXne4sqvbIkFu3tT1lxy0BeOk=
+Date: Thu, 7 Jul 2022 10:08:33 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [linux-next:master] BUILD REGRESSION
+ 088b9c375534d905a4d337c78db3b3bfbb52c4a0
+Message-ID: <YsaUgfPbOg7WuBuB@kroah.com>
+References: <62c683a2.g1VSVt6BrQC6ZzOz%lkp@intel.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1657181176; l=3182; s=20211009; h=from:subject:message-id; bh=qwhrSHeqOdSBuhjAZ7n0ZaDDCNODjbH+IoPBYXh8TLE=; b=Eu+muKObPx2nnetst4eRQIP8D4t+eSz6fBgEcqfF5o0mUE1vt7zXPiTNXqKOa1Z/wr6+ErHJsz1H X4OFI5j7BJVzJ1P6BhJ4/vSElRORJQwxcEh1webfYjxJFl93mA/K
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <62c683a2.g1VSVt6BrQC6ZzOz%lkp@intel.com>
+X-Mailman-Approved-At: Thu, 07 Jul 2022 20:22:15 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,102 +58,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: nvdimm@lists.linux.dev, legousb-devel@lists.sourceforge.net, dri-devel@lists.freedesktop.org, linux-sctp@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, linux-samsung-soc@vger.kernel.org, ceph-devel@vger.kernel.org, linux-pm@vger.kernel.org, usbb2k-api-dev@nongnu.org, linux-omap@vger.kernel.org, megaraidlinux.pdl@broadcom.com, linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, linux-perf-users@vger.kernel.org, netfilter-devel@vger.kernel.org, linux-crypto@vger.kernel.org, linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-wpan@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-parport@lists.infradead.org, linux-doc@vger.kernel.org, samba-technical@lists.samba.org, linux-cxl@vger.kernel.org, virtualization@lists.linux-foundation.org, dm-devel@redhat.com, target-devel@vger.kernel.org, dev@openvswitch.org, linux-cifs@vger.kernel.org, linux-clk@vger.kernel.org, linux-rockchip@lists.infradead.org, iommu@lists.linux.dev, coreteam@netfilt
+ er.org, linux-media@vger.kernel.org, linux-watchdog@vger.kernel.org, linux-arm-msm@vger.kernel.org, linaro-mm-sig@lists.linaro.org, greybus-dev@lists.linaro.org, linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org, linux-renesas-soc@vger.kernel.org, linux-integrity@vger.kernel.org, linux-efi@vger.kernel.org, linux-iio@vger.kernel.org, linux-pci@vger.kernel.org, linux-fpga@vger.kernel.org, alsa-devel@alsa-project.org, linux-mtd@lists.infradead.org, cgroups@vger.kernel.org, linux-phy@lists.infradead.org, sound-open-firmware@alsa-project.org, linux-rdma@vger.kernel.org, linux-staging@lists.linux.dev, amd-gfx@lists.freedesktop.org, isdn4linux@listserv.isdn4linux.de, linux-input@vger.kernel.org, linux-ext4@vger.kernel.org, ath11k@lists.infradead.org, mjpeg-users@lists.sourceforge.net, openipmi-developer@lists.sourceforge.net, linux-hwmon@vger.kernel.org, linux-parisc@vger.kernel.org, linux-ide@vger.kernel.org, linux-mmc@vger.kernel.org, io
+ mmu@lists.linux-foundation.org, keyrings@vger.kernel.
+
+org, netdev@vger.kernel.org, kvm@vger.kernel.org, damon@lists.linux.dev, linux-mm@kvack.org, accessrunner-general@lists.sourceforge.net, linux1394-devel@lists.sourceforge.net, linux-leds@vger.kernel.org, rds-devel@oss.oracle.com, linux-x25@vger.kernel.org, dccp@vger.kernel.org, intel-wired-lan@lists.osuosl.org, linux-serial@vger.kernel.org, devicetree@vger.kernel.org, linux-nfc@lists.01.org, osmocom-net-gprs@lists.osmocom.org, apparmor@lists.ubuntu.com, linux-raid@vger.kernel.org, linux-bcache@vger.kernel.org, linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, linux-scsi@vger.kernel.org, patches@opensource.cirrus.com, linux-unionfs@vger.kernel.org, linux-bluetooth@vger.kernel.org, ntb@lists.linux.dev, tipc-discussion@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org, linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since commit 591b4b268435 ("powerpc/code-patching: Pre-map patch area")
-the patch area is premapped so intermediate page tables are already
-allocated.
+On Thu, Jul 07, 2022 at 02:56:34PM +0800, kernel test robot wrote:
+> tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> branch HEAD: 088b9c375534d905a4d337c78db3b3bfbb52c4a0  Add linux-next specific files for 20220706
+> 
+> Error/Warning reports:
+> 
+> https://lore.kernel.org/linux-doc/202207070644.x48XOOvs-lkp@intel.com
+> 
+> Error/Warning: (recently discovered and may have been fixed)
+> 
+> Documentation/arm/google/chromebook-boot-flow.rst: WARNING: document isn't included in any toctree
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1108): undefined reference to `__aeabi_ddiv'
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1124): undefined reference to `__aeabi_ui2d'
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1164): undefined reference to `__aeabi_dmul'
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1170): undefined reference to `__aeabi_dadd'
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1180): undefined reference to `__aeabi_dsub'
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x1190): undefined reference to `__aeabi_d2uiz'
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x162c): undefined reference to `__aeabi_d2iz'
+> arm-linux-gnueabi-ld: dc_dmub_srv.c:(.text+0x16b0): undefined reference to `__aeabi_i2d'
+> dc_dmub_srv.c:(.text+0x10f8): undefined reference to `__aeabi_ui2d'
+> dc_dmub_srv.c:(.text+0x464): undefined reference to `__floatunsidf'
+> dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x33c): undefined reference to `__floatunsidf'
+> drivers/pci/endpoint/functions/pci-epf-vntb.c:975:5: warning: no previous prototype for 'pci_read' [-Wmissing-prototypes]
+> drivers/pci/endpoint/functions/pci-epf-vntb.c:984:5: warning: no previous prototype for 'pci_write' [-Wmissing-prototypes]
+> drivers/vfio/vfio_iommu_type1.c:2141:35: warning: cast to smaller integer type 'enum iommu_cap' from 'void *' [-Wvoid-pointer-to-enum-cast]
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x34c): undefined reference to `__floatunsidf'
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x378): undefined reference to `__divdf3'
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x38c): undefined reference to `__muldf3'
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x3a0): undefined reference to `__adddf3'
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x3b4): undefined reference to `__subdf3'
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x3d4): undefined reference to `__fixunsdfsi'
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x750): undefined reference to `__fixdfsi'
+> mips-linux-ld: dc_dmub_srv.c:(.text.dc_dmub_setup_subvp_dmub_command+0x7c0): undefined reference to `__floatsidf'
+> powerpc-linux-ld: drivers/pci/endpoint/functions/pci-epf-vntb.c:174: undefined reference to `ntb_link_event'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x468): undefined reference to `__divdf3'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x46c): undefined reference to `__muldf3'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x470): undefined reference to `__adddf3'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x474): undefined reference to `__subdf3'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x478): undefined reference to `__fixunsdfsi'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x47c): undefined reference to `__fixdfsi'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x480): undefined reference to `__floatsidf'
+> xtensa-linux-ld: dc_dmub_srv.c:(.text+0x60c): undefined reference to `__floatunsidf'
+> 
+> Unverified Error/Warning (likely false positive, please contact us if interested):
+> 
+> arch/x86/events/core.c:2114 init_hw_perf_events() warn: missing error code 'err'
+> drivers/android/binder.c:1481:19-23: ERROR: from is NULL but dereferenced.
+> drivers/android/binder.c:2920:29-33: ERROR: target_thread is NULL but dereferenced.
+> drivers/android/binder.c:353:25-35: ERROR: node -> proc is NULL but dereferenced.
+> drivers/android/binder.c:4888:16-20: ERROR: t is NULL but dereferenced.
+> drivers/base/regmap/regmap.c:1996:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> drivers/char/random.c:869:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> drivers/firmware/arm_scmi/clock.c:394:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> drivers/firmware/arm_scmi/powercap.c:376:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> drivers/gpu/drm/amd/amdgpu/../pm/powerplay/hwmgr/vega10_powertune.c:1214:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> drivers/gpu/drm/amd/display/dc/os_types.h: drm/drm_print.h is included more than once.
+> drivers/gpu/drm/bridge/ite-it66121.c:1398:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
+> drivers/greybus/operation.c:617:1: internal compiler error: in arc_ifcvt, at config/arc/arc.c:9637
 
-Use __set_pte_at() directly instead of the heavy map_kernel_page(),
-at for unmapping just do a pte_clear() followed by a flush.
+<snip>
 
-__set_pte_at() can be used directly without the filters in
-set_pte_at() because we are mapping a normal page non executable.
+When the compiler crashes, why are you blaming all of these different
+mailing lists?  Perhaps you need to fix your compiler :)
 
-Make sure gcc knows text_poke_area is page aligned in order to
-optimise the flush.
+thanks,
 
-This change reduces by 66% the time needed to activate ftrace on
-an 8xx (588000 tb ticks instead of 1744000).
-
-Don't perform the change on PPC64 for now, as it is problematic for
-the time being.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2: Only do it on PPC32 for now, mpe reported a problem on PPC64, see https://lore.kernel.org/lkml/165261053687.1047019.4165741740473209888.b4-ty@ellerman.id.au/T/#m9d91e820c43ebe56a72ad89403dac9eb270f5bb6
----
- arch/powerpc/lib/code-patching.c | 37 ++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
-
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 6edf0697a526..01b9f5dc79d6 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -94,17 +94,20 @@ void __init poking_init(void)
- 	static_branch_enable(&poking_init_done);
- }
- 
-+static unsigned long get_patch_pfn(void *addr)
-+{
-+	if (IS_ENABLED(CONFIG_MODULES) && is_vmalloc_or_module_addr(addr))
-+		return vmalloc_to_pfn(addr);
-+	else
-+		return __pa_symbol(addr) >> PAGE_SHIFT;
-+}
-+
- /*
-  * This can be called for kernel text or a module.
-  */
- static int map_patch_area(void *addr, unsigned long text_poke_addr)
- {
--	unsigned long pfn;
--
--	if (IS_ENABLED(CONFIG_MODULES) && is_vmalloc_or_module_addr(addr))
--		pfn = vmalloc_to_pfn(addr);
--	else
--		pfn = __pa_symbol(addr) >> PAGE_SHIFT;
-+	unsigned long pfn = get_patch_pfn(addr);
- 
- 	return map_kernel_page(text_poke_addr, (pfn << PAGE_SHIFT), PAGE_KERNEL);
- }
-@@ -149,17 +152,29 @@ static int __do_patch_instruction(u32 *addr, ppc_inst_t instr)
- 	int err;
- 	u32 *patch_addr;
- 	unsigned long text_poke_addr;
-+	pte_t *pte;
-+	unsigned long pfn = get_patch_pfn(addr);
- 
--	text_poke_addr = (unsigned long)__this_cpu_read(text_poke_area)->addr;
-+	text_poke_addr = (unsigned long)__this_cpu_read(text_poke_area)->addr & PAGE_MASK;
- 	patch_addr = (u32 *)(text_poke_addr + offset_in_page(addr));
- 
--	err = map_patch_area(addr, text_poke_addr);
--	if (err)
--		return err;
-+	if (IS_ENABLED(CONFIG_PPC32)) {
-+		pte = virt_to_kpte(text_poke_addr);
-+		__set_pte_at(&init_mm, text_poke_addr, pte, pfn_pte(pfn, PAGE_KERNEL), 0);
-+	} else {
-+		err = map_patch_area(addr, text_poke_addr);
-+		if (err)
-+			return err;
-+	}
- 
- 	err = __patch_instruction(addr, instr, patch_addr);
- 
--	unmap_patch_area(text_poke_addr);
-+	if (IS_ENABLED(CONFIG_PPC32)) {
-+		pte_clear(&init_mm, text_poke_addr, pte);
-+		flush_tlb_kernel_range(text_poke_addr, text_poke_addr + PAGE_SIZE);
-+	} else {
-+		unmap_patch_area(text_poke_addr);
-+	}
- 
- 	return err;
- }
--- 
-2.36.1
-
+greg k-h
