@@ -1,118 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66ACD56BA87
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 15:20:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B233156BA97
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 15:24:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LfYmY2dj0z3cGC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 23:20:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LfYsl4Lx0z3cS8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 23:24:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZBl3znQZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=id/hCxM5;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=40.107.244.48; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=ZBl3znQZ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=id/hCxM5;
 	dkim-atps=neutral
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2048.outbound.protection.outlook.com [40.107.244.48])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LfYlp0nsCz3c1y
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jul 2022 23:19:31 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JL5glnukQ+ABmz5B7WVMyhP8pVccCA1g+aQijbT5YMrB1lmIWCof+2xjcj4BaLBCebQgnukGhfn1Ej3f6c4YlfVb69UxlRq2nRoZAM1K8MJMs+uGkKoS7xj9Sq17zVUstKuSsEIZduAEy1vWeGVrVkhQ/uUJg9SfKXAHugqvCKvxNv4Awp1SpfHata1OpJcTNPD/6HHxT4sEvZHVvWTq6ip1020jyKIBZZIlJOSB6AIoUMzoVS7HtSgtglXAXjGzfgZ9BDgy1CIVnZx/hxJTY14tEt3HUfIhaPLKntK+D+X62QgTNsKtAUvH+7WVyd2+dBMlsg46T/SBuaKOqKAKfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QtAxvfdM4x/ead6Dc22XuBCqjpy37X6oVwpa6hgmiTY=;
- b=ij39DG4CQO+zTTg7V1fKGgNB2fAHRS/h+BqmGAf7f4t/KzTw/43XBQRdXjkcu+deYSr1Syv11T7I0Oy1mR1D8khyKxojkyvOfcoCOGUcwatA89XXUwcXwMxDXUF0nK1WnK71glAlVDg5DppVVb/gdVpi6j3/HBY1hfwnD378wR3HqQ7G61U/rYNkFziAqdJuCR5XqV1ijkUeV1SbVer3tfOETNbTvyKDsoVkmT335K4+5UvzPDOfJnguwMfP1ljmGYcfcJBSeSjZ8i8WwkviRo7564eiPfdhqIW04dAACmstQba1P2Xo5nldJZ6TvYjXFHI6+EgsXguXcXndJ/bALQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QtAxvfdM4x/ead6Dc22XuBCqjpy37X6oVwpa6hgmiTY=;
- b=ZBl3znQZHdCGJU4h80cBMN5ybWgi1Z3yja8Zzs+UznG7IddeMCtXbGXt/War/ByC9xmrGw5y/XONuGEObnHyzEVoycFwApHJIU8XaVeoYYCGiHL2bAa4UuTLtFj/B140SvAqbNr+8mS6NTJb5BDlqAUU942GZwcZBei8Hm7dhLXojbhkuY7zODUMqQuDMQJhwA/aYjAoFWW8rY6RoxBKu94oN3/dFwrZFy7R37n+lSsoSWvQCFkLy6P0I22TtJBilLbmBC5oV66i+nTs/oly9sRSXgxuyP5qnhLzSJvtsRl5UYH2qQFTCsA17RcjcJeuOL0fVai8Be7M2dmGECPgxA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MN2PR12MB4192.namprd12.prod.outlook.com (2603:10b6:208:1d5::15)
- by PH0PR12MB5433.namprd12.prod.outlook.com (2603:10b6:510:e1::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5417.20; Fri, 8 Jul
- 2022 13:19:12 +0000
-Received: from MN2PR12MB4192.namprd12.prod.outlook.com
- ([fe80::ac35:7c4b:3282:abfb]) by MN2PR12MB4192.namprd12.prod.outlook.com
- ([fe80::ac35:7c4b:3282:abfb%3]) with mapi id 15.20.5417.016; Fri, 8 Jul 2022
- 13:19:12 +0000
-Date: Fri, 8 Jul 2022 10:19:10 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH kernel] powerpc/iommu: Add iommu_ops to report
- capabilities and allow blocking domains
-Message-ID: <20220708131910.GA3744@nvidia.com>
-References: <20220707135552.3688927-1-aik@ozlabs.ru>
- <20220707151002.GB1705032@nvidia.com>
- <bb8f4c93-6cbc-0106-d4c1-1f3c0751fbba@ozlabs.ru>
- <bbe29694-66a3-275b-5a79-71237ad7388f@ozlabs.ru>
- <20220708115522.GD1705032@nvidia.com>
- <e24d91fb-3da9-d60a-3792-bca0fe550cc7@ozlabs.ru>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LfYs34z8kz3c2H
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jul 2022 23:24:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1657286647; x=1688822647;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oYhBSaiW1UBg6AWLFa9PNoYfdaB2PrXd0fUmsivGyyY=;
+  b=id/hCxM5sOUBaZyRLnpBT2NCJ1MDcftfzxb/TV19bq31NWxWfGf/+bug
+   0a3Dta7maeuGejHy1fcatzg76wCwd9nnl6WAFELTrlzGREpI7dwV1C9el
+   oV6BL1HTxEKGPzcIqDM+HigBaCanqzhtKypD5Mtqgk4Uy37M7B9rkjTC8
+   0BwoHrdIvHB0N+nkE3jIrXNOHBeR/ZgI636ZJ72iiD5QPzQVSk0+wkY00
+   1/x7Key0OG+EQ/vA1gwIZ9BLgx9BPhegI9jcX4aTjXtL0HPlL/MkljXDF
+   oFh5lN2UNnIvSkF+hb9/G8usieHsJiKMBM0uCeEKKdz6IDTcN4rCnzNNC
+   A==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10401"; a="370591722"
+X-IronPort-AV: E=Sophos;i="5.92,255,1650956400"; 
+   d="scan'208";a="370591722"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jul 2022 06:23:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.92,255,1650956400"; 
+   d="scan'208";a="594118872"
+Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 08 Jul 2022 06:23:50 -0700
+Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
+	(envelope-from <lkp@intel.com>)
+	id 1o9nxV-000NWE-Rw;
+	Fri, 08 Jul 2022 13:23:49 +0000
+Date: Fri, 8 Jul 2022 21:23:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>, deller@gmx.de,
+	manoj@linux.ibm.com, mrochs@linux.ibm.com, ukrishn@linux.ibm.com,
+	jejb@linux.ibm.com, martin.petersen@oracle.com, tzimmermann@suse.de
+Subject: Re: [PATCH v3 3/4] powerpc: Remove asm/prom.h from asm/mpc52xx.h and
+ asm/pci.h
+Message-ID: <202207082135.sstYWd2x-lkp@intel.com>
+References: <cf5243343e2364c2b40f22ee5ad9a6e2453d1121.1657264228.git.christophe.leroy@csgroup.eu>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e24d91fb-3da9-d60a-3792-bca0fe550cc7@ozlabs.ru>
-X-ClientProxiedBy: YQBPR01CA0051.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:2::23) To MN2PR12MB4192.namprd12.prod.outlook.com
- (2603:10b6:208:1d5::15)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: e84d6c88-0aca-4228-695b-08da60e472cf
-X-MS-TrafficTypeDiagnostic: PH0PR12MB5433:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	NwvDPPIWzG86Iakcwmxu0ojOBucThTWhLCz3cBTTon9MZrZEGqhFqZgNvf24GtZ2g2L4NWFtYQterXU5Nd7Nsbvjm0vKpP7+6wUmu/taWbWYKILM0/+DXOlBs2Ay/gAqHm/NMZsaEIJgsJPyV/y90hP7PZqLGAjMugsEmsYmcTX3Lu917Y5cIM8bsrH0OZebiv72s0Nf33Z8BNcojNc4RIiYjmYxELUc11mOT5qtVCLLdW2ZNgJOshoXDItPj4nBHx7bK/CEFXq/iQlkljhIyCEnJ1shxZRXsoIWYnkEbvSOZAz+73Fb8IyQjlOuzewGbXaoyrvUgM7tIket3dokAIX/eAlr0rrHhegQ7tZitHvzYHjz/G3x1w6SnlzcwZ9j2DNCz51AI6JGr720KqNJM7qeElAJNKaoCHNUc/DT8KAFxEeYeEUVz1UashdpoxLYZ0DcvQRzG3tWH/K+f/HWn2xiSwqFugbPtysa9z4zJS3pDWWEWjjdFhmUS4+H6OVujM7ek8SdS4K9RQ2iUP1F2bkbjQscbOMSz44HCZViFQ3NEHOsGQgF9AOt6lqMGYbhuki8n5rktIhXvPDTB41pCyKELm3GRK5wi1EWEmabjCeVLAgU/bEL9quehuOmftcNF4ITw7SDvZ75xQC1mMzCSbgcxq18CVVd5lPJLsMpu1R9BFl860fMmsATIKmiulv2AiGIztEw0zczUGv6wF0EIDFh1AY3ifj3F5kBkV36DVhEU9ExKBEDSzbViW0o6S2L
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR12MB4192.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(376002)(396003)(346002)(39860400002)(366004)(478600001)(2906002)(33656002)(6916009)(316002)(2616005)(38100700002)(54906003)(7416002)(5660300002)(36756003)(83380400001)(8936002)(26005)(6512007)(53546011)(66946007)(66476007)(8676002)(66556008)(4326008)(86362001)(186003)(6486002)(41300700001)(1076003)(6506007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?dbW+neyTeHv0d+otoaiMKdEFzeGjQu6Hba6ngAa6tgrwepyB0HpfoOsp6nLc?=
- =?us-ascii?Q?J4Rfsce6Eg4zJvg1VFr38zgNnSY1SBD/QYTV4aI/Z78n/f2m8fIt/oBE1d+X?=
- =?us-ascii?Q?9nUFvoorkoyiGy02YzqLfBJRe06zWUvvblPz5qadIzSYzhMfVSl5VX1BiXKb?=
- =?us-ascii?Q?9RSzvOa+ucxXCABf6QfbNTaeAzne9vwvRDdDWCF7dhryp0WJE4M2F9CpMlpz?=
- =?us-ascii?Q?B85YFBrYv6YzlmTU4IeBTdF5L04UeNN2Yy7PdaFrnREg96YvonMAkzYgya8K?=
- =?us-ascii?Q?e2dXsDKiR5jpL0sJnvTAjWTJif/bXmlNlMLHikLTIuQ4CrM7i1r8OvLufDAE?=
- =?us-ascii?Q?QNUizwf+3I+48tXyX+V8Ypnd4HJqVRCeU2fRtDHwspxxwDWwvpe5yrfnjDhx?=
- =?us-ascii?Q?+SKc1mDzc1cbtu2kikrWPN+/WylksiDuVsJTQnvn44vUW96+Gf36vrqy7MEY?=
- =?us-ascii?Q?eGHfjNGFXTcpAejp/JxN5qIQQpJyoesf2aRFZ5k73aWvQy1zdEZPXULuk99U?=
- =?us-ascii?Q?4dwwAFn/Gt0qLDjzF7S+Xx4fNqSc0NY9gBBHj7SZZEUjF51/pAem4bW3XUmv?=
- =?us-ascii?Q?E7ALpr7R+DZ+aC6sSuuhMuE0t23srQASPul8FLTBsMccEAt1zP6+Om0tpZpJ?=
- =?us-ascii?Q?pNWgB9WlhDQw12VjuZiGBreFBaFDWUmpF9Kw3L6smxhgbbyKKA/Utas6dLIM?=
- =?us-ascii?Q?/S0zWu8u+lEHsUBtm9coQIZWeiDm0+ty1lzu9gPiNsu3j/m0QeVUXhOpEGOf?=
- =?us-ascii?Q?FiWQBgs6BHMe64IiSX/AQ0abwGkWY3kOvD7Zni56uY8SN2ZDNUyCbrPwW7xO?=
- =?us-ascii?Q?vcmVEX3WBWaNR8DUoDhn16g7XG8Ghyc3sek0DbWfxalRBFCh7z8lSvJyMkj8?=
- =?us-ascii?Q?MouKktl+Rj8MCdfeL1gDMqcDZ+fmzVWoZJZ9YS0FVS5qWbOYYJnR14vg3Stu?=
- =?us-ascii?Q?XvUr8MVIluuD1Oc8/3VGS8SC8l/CGSYNzdNk9UyO4qkHXOtKvRLenYjpDkcF?=
- =?us-ascii?Q?0JBUpoeY8+E7B7vg5fNnPrun7qo+p1dZ3buoz2saRX3bTh1+LXj0BwtZOOra?=
- =?us-ascii?Q?MiF/NivEyRIihAvgvCt4GJLaxRgAn0XMhcWR589FCRhXRiQCazyhgiaFdDoy?=
- =?us-ascii?Q?e5tpQLr057ttDnrweryZiW+zMjdsW/OZgSgTtbbkiaWEoAZmhukU4u7mryWz?=
- =?us-ascii?Q?rs5Vv5vFaHaFFfNhr5iEDuPe28wf9FuJzAfQdLosbQlo/uGawtSX9nBUP72x?=
- =?us-ascii?Q?ta2QNlwiEW6Lxbz+hb7befXKO5aRHPU6ycikB0Hynoe4EsL9AsWdkcBt3S96?=
- =?us-ascii?Q?v6ykO6iNQlLdU7/gc3I/30UQsLTGFJzLdPMzrrGUCiaWlEbKEqSpURm5VE4z?=
- =?us-ascii?Q?tsFWh1DYKrEC3vNADYKJY+6SIOBzRWI9h6PuGVIrkayrYtBaziEOya8B+ivD?=
- =?us-ascii?Q?onhQeVbdbSOlZ5n4Bjv7oF1kb9ImTcqEzGPTKkqxepamL/kwHp1N8OpLSgdE?=
- =?us-ascii?Q?GZTYiOKUSjiZpB55vHGljTDgaW1DOIRbbdx1S3Uu2a/kCLgr0CC5nnkf0QyR?=
- =?us-ascii?Q?Yyu1s05Zb/QacupW6x0cfdFL629vfOPy/10gS8Kt?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e84d6c88-0aca-4228-695b-08da60e472cf
-X-MS-Exchange-CrossTenant-AuthSource: MN2PR12MB4192.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2022 13:19:12.2914
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: RupvM1x0oZxfzWrtYrLA5vSj7tcHl7Y9LNA8lMHgWd8wNgMYvgDiVag2BXMNqsdA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5433
+In-Reply-To: <cf5243343e2364c2b40f22ee5ad9a6e2453d1121.1657264228.git.christophe.leroy@csgroup.eu>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,47 +74,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joerg Roedel <jroedel@suse.de>, kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Daniel Henrique Barboza <danielhb413@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>, Oliver O'Halloran <oohall@gmail.com>, Joel Stanley <joel@jms.id.au>, Robin Murphy <robin.murphy@arm.com>
+Cc: linux-fbdev@vger.kernel.org, kbuild-all@lists.01.org, linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jul 08, 2022 at 11:10:07PM +1000, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 08/07/2022 21:55, Jason Gunthorpe wrote:
-> > On Fri, Jul 08, 2022 at 04:34:55PM +1000, Alexey Kardashevskiy wrote:
-> > 
-> > > For now I'll add a comment in spapr_tce_iommu_attach_dev() that it is fine
-> > > to do nothing as tce_iommu_take_ownership() and
-> > > tce_iommu_take_ownership_ddw() take care of not having active DMA mappings.
-> > 
-> > That will still cause a security problem because
-> > tce_iommu_take_ownership()/etc are called too late. This is the moment
-> > in the flow when the ownershift must change away from the DMA API that
-> > power implements and to VFIO, not later.
-> 
-> It is getting better and better :)
-> 
-> On POWERNV, at the boot time the platforms sets up PHBs, enables bypass,
-> creates groups and attaches devices. As for now attaching devices to the
-> default domain (which is BLOCKED) fails the not-being-use check as enabled
-> bypass means "everything is mapped for DMA". So at this point the default
-> domain has to be IOMMU_DOMAIN_IDENTITY or IOMMU_DOMAIN_UNMANAGED so later on
-> VFIO can move devices to IOMMU_DOMAIN_BLOCKED. Am I missing something?
+Hi Christophe,
 
-For power the default domain should be NULL
+I love your patch! Yet something to improve:
 
-NULL means that the platform is using the group to provide its DMA
-ops. IIRC this patch was already setup correctly to do this?
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on mkp-scsi/for-next linus/master v5.19-rc5 next-20220708]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-The transition from NULL to blocking must isolate the group so all DMA
-is blocked. blocking to NULL should re-estbalish platform DMA API
-control.
+url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/video-fbdev-offb-Include-missing-linux-platform_device-h/20220708-151246
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+config: powerpc-randconfig-m031-20220708 (https://download.01.org/0day-ci/archive/20220708/202207082135.sstYWd2x-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/e04280406bcc48b3e940fdd770fa9a7c62185e02
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Christophe-Leroy/video-fbdev-offb-Include-missing-linux-platform_device-h/20220708-151246
+        git checkout e04280406bcc48b3e940fdd770fa9a7c62185e02
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash drivers/edac/
 
-The default domain should be non-NULL when the normal dma-iommu stuff is
-providing the DMA API.
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-So, I think it is already setup properly, it is just the question of
-what to do when entering/leaving blocking mode.
+All errors (new ones prefixed by >>):
 
-Jason
+   drivers/edac/mpc85xx_edac.c: In function 'mpc85xx_l2_err_probe':
+>> drivers/edac/mpc85xx_edac.c:514:15: error: implicit declaration of function 'of_address_to_resource' [-Werror=implicit-function-declaration]
+     514 |         res = of_address_to_resource(op->dev.of_node, 0, &r);
+         |               ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/edac/mpc85xx_edac.c:559:30: error: implicit declaration of function 'irq_of_parse_and_map' [-Werror=implicit-function-declaration]
+     559 |                 pdata->irq = irq_of_parse_and_map(op->dev.of_node, 0);
+         |                              ^~~~~~~~~~~~~~~~~~~~
+>> drivers/edac/mpc85xx_edac.c:566:25: error: implicit declaration of function 'irq_dispose_mapping' [-Werror=implicit-function-declaration]
+     566 |                         irq_dispose_mapping(pdata->irq);
+         |                         ^~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +/of_address_to_resource +514 drivers/edac/mpc85xx_edac.c
+
+a9a753d53204bf Dave Jiang         2008-02-07  488  
+9b3c6e85c2cfa7 Greg Kroah-Hartman 2012-12-21  489  static int mpc85xx_l2_err_probe(struct platform_device *op)
+a9a753d53204bf Dave Jiang         2008-02-07  490  {
+a9a753d53204bf Dave Jiang         2008-02-07  491  	struct edac_device_ctl_info *edac_dev;
+a9a753d53204bf Dave Jiang         2008-02-07  492  	struct mpc85xx_l2_pdata *pdata;
+a9a753d53204bf Dave Jiang         2008-02-07  493  	struct resource r;
+a9a753d53204bf Dave Jiang         2008-02-07  494  	int res;
+a9a753d53204bf Dave Jiang         2008-02-07  495  
+a9a753d53204bf Dave Jiang         2008-02-07  496  	if (!devres_open_group(&op->dev, mpc85xx_l2_err_probe, GFP_KERNEL))
+a9a753d53204bf Dave Jiang         2008-02-07  497  		return -ENOMEM;
+a9a753d53204bf Dave Jiang         2008-02-07  498  
+a9a753d53204bf Dave Jiang         2008-02-07  499  	edac_dev = edac_device_alloc_ctl_info(sizeof(*pdata),
+a9a753d53204bf Dave Jiang         2008-02-07  500  					      "cpu", 1, "L", 1, 2, NULL, 0,
+a9a753d53204bf Dave Jiang         2008-02-07  501  					      edac_dev_idx);
+a9a753d53204bf Dave Jiang         2008-02-07  502  	if (!edac_dev) {
+a9a753d53204bf Dave Jiang         2008-02-07  503  		devres_release_group(&op->dev, mpc85xx_l2_err_probe);
+a9a753d53204bf Dave Jiang         2008-02-07  504  		return -ENOMEM;
+a9a753d53204bf Dave Jiang         2008-02-07  505  	}
+a9a753d53204bf Dave Jiang         2008-02-07  506  
+a9a753d53204bf Dave Jiang         2008-02-07  507  	pdata = edac_dev->pvt_info;
+a9a753d53204bf Dave Jiang         2008-02-07  508  	pdata->name = "mpc85xx_l2_err";
+a9a753d53204bf Dave Jiang         2008-02-07  509  	edac_dev->dev = &op->dev;
+a9a753d53204bf Dave Jiang         2008-02-07  510  	dev_set_drvdata(edac_dev->dev, edac_dev);
+a9a753d53204bf Dave Jiang         2008-02-07  511  	edac_dev->ctl_name = pdata->name;
+a9a753d53204bf Dave Jiang         2008-02-07  512  	edac_dev->dev_name = pdata->name;
+a9a753d53204bf Dave Jiang         2008-02-07  513  
+a26f95fed31d91 Anatolij Gustschin 2010-06-03 @514  	res = of_address_to_resource(op->dev.of_node, 0, &r);
+a9a753d53204bf Dave Jiang         2008-02-07  515  	if (res) {
+88857ebe7116b0 York Sun           2016-08-09  516  		pr_err("%s: Unable to get resource for L2 err regs\n", __func__);
+a9a753d53204bf Dave Jiang         2008-02-07  517  		goto err;
+a9a753d53204bf Dave Jiang         2008-02-07  518  	}
+a9a753d53204bf Dave Jiang         2008-02-07  519  
+a9a753d53204bf Dave Jiang         2008-02-07  520  	/* we only need the error registers */
+a9a753d53204bf Dave Jiang         2008-02-07  521  	r.start += 0xe00;
+a9a753d53204bf Dave Jiang         2008-02-07  522  
+28f65c11f2ffb3 Joe Perches        2011-06-09  523  	if (!devm_request_mem_region(&op->dev, r.start, resource_size(&r),
+28f65c11f2ffb3 Joe Perches        2011-06-09  524  				     pdata->name)) {
+88857ebe7116b0 York Sun           2016-08-09  525  		pr_err("%s: Error while requesting mem region\n", __func__);
+a9a753d53204bf Dave Jiang         2008-02-07  526  		res = -EBUSY;
+a9a753d53204bf Dave Jiang         2008-02-07  527  		goto err;
+a9a753d53204bf Dave Jiang         2008-02-07  528  	}
+a9a753d53204bf Dave Jiang         2008-02-07  529  
+28f65c11f2ffb3 Joe Perches        2011-06-09  530  	pdata->l2_vbase = devm_ioremap(&op->dev, r.start, resource_size(&r));
+a9a753d53204bf Dave Jiang         2008-02-07  531  	if (!pdata->l2_vbase) {
+88857ebe7116b0 York Sun           2016-08-09  532  		pr_err("%s: Unable to setup L2 err regs\n", __func__);
+a9a753d53204bf Dave Jiang         2008-02-07  533  		res = -ENOMEM;
+a9a753d53204bf Dave Jiang         2008-02-07  534  		goto err;
+a9a753d53204bf Dave Jiang         2008-02-07  535  	}
+a9a753d53204bf Dave Jiang         2008-02-07  536  
+a9a753d53204bf Dave Jiang         2008-02-07  537  	out_be32(pdata->l2_vbase + MPC85XX_L2_ERRDET, ~0);
+a9a753d53204bf Dave Jiang         2008-02-07  538  
+a9a753d53204bf Dave Jiang         2008-02-07  539  	orig_l2_err_disable = in_be32(pdata->l2_vbase + MPC85XX_L2_ERRDIS);
+a9a753d53204bf Dave Jiang         2008-02-07  540  
+a9a753d53204bf Dave Jiang         2008-02-07  541  	/* clear the err_dis */
+a9a753d53204bf Dave Jiang         2008-02-07  542  	out_be32(pdata->l2_vbase + MPC85XX_L2_ERRDIS, 0);
+a9a753d53204bf Dave Jiang         2008-02-07  543  
+a9a753d53204bf Dave Jiang         2008-02-07  544  	edac_dev->mod_name = EDAC_MOD_STR;
+a9a753d53204bf Dave Jiang         2008-02-07  545  
+a9a753d53204bf Dave Jiang         2008-02-07  546  	if (edac_op_state == EDAC_OPSTATE_POLL)
+a9a753d53204bf Dave Jiang         2008-02-07  547  		edac_dev->edac_check = mpc85xx_l2_check;
+a9a753d53204bf Dave Jiang         2008-02-07  548  
+a9a753d53204bf Dave Jiang         2008-02-07  549  	mpc85xx_set_l2_sysfs_attributes(edac_dev);
+a9a753d53204bf Dave Jiang         2008-02-07  550  
+a9a753d53204bf Dave Jiang         2008-02-07  551  	pdata->edac_idx = edac_dev_idx++;
+a9a753d53204bf Dave Jiang         2008-02-07  552  
+a9a753d53204bf Dave Jiang         2008-02-07  553  	if (edac_device_add_device(edac_dev) > 0) {
+956b9ba156dbfd Joe Perches        2012-04-29  554  		edac_dbg(3, "failed edac_device_add_device()\n");
+a9a753d53204bf Dave Jiang         2008-02-07  555  		goto err;
+a9a753d53204bf Dave Jiang         2008-02-07  556  	}
+a9a753d53204bf Dave Jiang         2008-02-07  557  
+a9a753d53204bf Dave Jiang         2008-02-07  558  	if (edac_op_state == EDAC_OPSTATE_INT) {
+a26f95fed31d91 Anatolij Gustschin 2010-06-03 @559  		pdata->irq = irq_of_parse_and_map(op->dev.of_node, 0);
+a9a753d53204bf Dave Jiang         2008-02-07  560  		res = devm_request_irq(&op->dev, pdata->irq,
+a18c3f16a907b8 Borislav Petkov    2014-09-30  561  				       mpc85xx_l2_isr, IRQF_SHARED,
+a9a753d53204bf Dave Jiang         2008-02-07  562  				       "[EDAC] L2 err", edac_dev);
+a9a753d53204bf Dave Jiang         2008-02-07  563  		if (res < 0) {
+88857ebe7116b0 York Sun           2016-08-09  564  			pr_err("%s: Unable to request irq %d for MPC85xx L2 err\n",
+88857ebe7116b0 York Sun           2016-08-09  565  				__func__, pdata->irq);
+a9a753d53204bf Dave Jiang         2008-02-07 @566  			irq_dispose_mapping(pdata->irq);
+a9a753d53204bf Dave Jiang         2008-02-07  567  			res = -ENODEV;
+a9a753d53204bf Dave Jiang         2008-02-07  568  			goto err2;
+a9a753d53204bf Dave Jiang         2008-02-07  569  		}
+a9a753d53204bf Dave Jiang         2008-02-07  570  
+88857ebe7116b0 York Sun           2016-08-09  571  		pr_info(EDAC_MOD_STR " acquired irq %d for L2 Err\n", pdata->irq);
+a9a753d53204bf Dave Jiang         2008-02-07  572  
+a9a753d53204bf Dave Jiang         2008-02-07  573  		edac_dev->op_state = OP_RUNNING_INTERRUPT;
+a9a753d53204bf Dave Jiang         2008-02-07  574  
+a9a753d53204bf Dave Jiang         2008-02-07  575  		out_be32(pdata->l2_vbase + MPC85XX_L2_ERRINTEN, L2_EIE_MASK);
+a9a753d53204bf Dave Jiang         2008-02-07  576  	}
+a9a753d53204bf Dave Jiang         2008-02-07  577  
+a9a753d53204bf Dave Jiang         2008-02-07  578  	devres_remove_group(&op->dev, mpc85xx_l2_err_probe);
+a9a753d53204bf Dave Jiang         2008-02-07  579  
+956b9ba156dbfd Joe Perches        2012-04-29  580  	edac_dbg(3, "success\n");
+88857ebe7116b0 York Sun           2016-08-09  581  	pr_info(EDAC_MOD_STR " L2 err registered\n");
+a9a753d53204bf Dave Jiang         2008-02-07  582  
+a9a753d53204bf Dave Jiang         2008-02-07  583  	return 0;
+a9a753d53204bf Dave Jiang         2008-02-07  584  
+a9a753d53204bf Dave Jiang         2008-02-07  585  err2:
+a9a753d53204bf Dave Jiang         2008-02-07  586  	edac_device_del_device(&op->dev);
+a9a753d53204bf Dave Jiang         2008-02-07  587  err:
+a9a753d53204bf Dave Jiang         2008-02-07  588  	devres_release_group(&op->dev, mpc85xx_l2_err_probe);
+a9a753d53204bf Dave Jiang         2008-02-07  589  	edac_device_free_ctl_info(edac_dev);
+a9a753d53204bf Dave Jiang         2008-02-07  590  	return res;
+a9a753d53204bf Dave Jiang         2008-02-07  591  }
+a9a753d53204bf Dave Jiang         2008-02-07  592  
+
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp
