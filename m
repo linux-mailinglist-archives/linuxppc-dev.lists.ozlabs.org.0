@@ -1,67 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CA256AEC0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 00:52:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4626856AF73
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 02:41:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LfBWq4cr0z3bk0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 08:52:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LfDx71kmzz3cFr
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 10:41:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OnDBisd6;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=RclVAwBR;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=srs0=2dmv=xn=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OnDBisd6;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=RclVAwBR;
 	dkim-atps=neutral
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LfBW60Fxfz3bqT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jul 2022 08:52:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1657234338; x=1688770338;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RqOyH4OpElwmJB95WX5zUtiWglFHWEWEhm8kjhWZIyw=;
-  b=OnDBisd6TW1nfn1Z04UQPWOr8tLj0jBfZsE8fsHjiyHlfVopKnv4tq2q
-   Gx6za6vpwlO9W1ebIuBxmMRjzP24EOUMXuvf2G6I3Gyw0RXxKalgCLjp7
-   Rs8bo6AHi91gGUvrWXVrXHwjo4tQM6okHOfNvG8AhVVr32V+1zZYgI+yz
-   5Lnta8VXZI1RAK3Z6DOhCqMlzCl7BCcvuYd+4aMbs++3jGflXdY/2BjTE
-   MDAhvBoXLO2Zi6nmyxjfRWGR3XUOP0ppvjXsLuljXufciS6Yvbl+ZWd/T
-   ALflgtyD0Zug6XrWsdDJnRr53f9i8qO0+2IiIEIoKMEYDKUNORFRvJ05q
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10401"; a="282890482"
-X-IronPort-AV: E=Sophos;i="5.92,253,1650956400"; 
-   d="scan'208";a="282890482"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2022 15:52:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,253,1650956400"; 
-   d="scan'208";a="651320616"
-Received: from lkp-server01.sh.intel.com (HELO 68b931ab7ac1) ([10.239.97.150])
-  by fmsmga008.fm.intel.com with ESMTP; 07 Jul 2022 15:52:08 -0700
-Received: from kbuild by 68b931ab7ac1 with local (Exim 4.95)
-	(envelope-from <lkp@intel.com>)
-	id 1o9aLv-000MZ2-LN;
-	Thu, 07 Jul 2022 22:52:07 +0000
-Date: Fri, 8 Jul 2022 06:51:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 3/4] powerpc: Remove asm/prom.h from asm/mpc52xx.h and
- asm/pci.h
-Message-ID: <202207080653.Rru2i2Nn-lkp@intel.com>
-References: <22ac0b64b6c6ef6cc6a74739eb213a81372835ed.1657204012.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LfDwQ4V3vz3bs0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Jul 2022 10:40:54 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id DBE84B80522;
+	Fri,  8 Jul 2022 00:40:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCA6C3411E;
+	Fri,  8 Jul 2022 00:40:45 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="RclVAwBR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1657240843;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kicI3xe4M/M0q6EBkMRrn7r8qxFKT8ETjSSIWQKtBA4=;
+	b=RclVAwBRhRVR1P6rACDO4iMccm9wSQnuB/BNVEooIzE6Pr7vgH9hJwRc5xIfUuQ4fOOqF5
+	SahGJrMhfGJIddaE9wVroCKPuCwZPRq8lD9hqTAtbSZb3veFmLmwvAHEUaVP6sb8WSsMIR
+	CB4/1h4eXP5GdR5aDCxaJNB3dWlbmKw=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 42ef07a1 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+	Fri, 8 Jul 2022 00:40:42 +0000 (UTC)
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Borislav Petkov <bp@alien8.de>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH v5] random: remove CONFIG_ARCH_RANDOM
+Date: Fri,  8 Jul 2022 02:40:32 +0200
+Message-Id: <20220708004032.733426-1-Jason@zx2c4.com>
+In-Reply-To: <20220706143521.459565-1-Jason@zx2c4.com>
+References: <20220706143521.459565-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <22ac0b64b6c6ef6cc6a74739eb213a81372835ed.1657204012.git.christophe.leroy@csgroup.eu>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,96 +77,497 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev, kbuild-all@lists.01.org, linux-kernel@vger.kernel.org
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+When RDRAND was introduced, there was much discussion on whether it
+should be trusted and how the kernel should handle that. Initially, two
+mechanisms cropped up, CONFIG_ARCH_RANDOM, a compile time switch, and
+"nordrand", a boot-time switch.
 
-I love your patch! Yet something to improve:
+Later the thinking evolved. With a properly designed RNG, using RDRAND
+values alone won't harm anything, even if the outputs are malicious.
+Rather, the issue is whether those values are being *trusted* to be good
+or not. And so a new set of options were introduced as the real
+ones that people use -- CONFIG_RANDOM_TRUST_CPU and "random.trust_cpu".
+With these options, RDRAND is used, but it's not always credited. So in
+the worst case, it does nothing, and in the best case, maybe it helps.
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on mkp-scsi/for-next jejb-scsi/for-next linus/master v5.19-rc5 next-20220707]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Along the way, CONFIG_ARCH_RANDOM's meaning got sort of pulled into the
+center and became something certain platforms force-select.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/video-fbdev-offb-Include-missing-linux-platform_device-h/20220707-222906
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-mpc8313_rdb_defconfig (https://download.01.org/0day-ci/archive/20220708/202207080653.Rru2i2Nn-lkp@intel.com/config)
-compiler: clang version 15.0.0 (https://github.com/llvm/llvm-project 66ae1d60bb278793fd651cece264699d522bab84)
-reproduce (this is a W=1 build):
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # install powerpc cross compiling tool for clang build
-        # apt-get install binutils-powerpc-linux-gnu
-        # https://github.com/intel-lab-lkp/linux/commit/0e553b9abdcfd7c1f63b072e9d9280ce759c0c3c
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Christophe-Leroy/video-fbdev-offb-Include-missing-linux-platform_device-h/20220707-222906
-        git checkout 0e553b9abdcfd7c1f63b072e9d9280ce759c0c3c
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross W=1 O=build_dir ARCH=powerpc SHELL=/bin/bash
+The old options don't really help with much, and it's a bit odd to have
+special handling for these instructions when the kernel can deal fine
+with the existence or untrusted existence or broken existence or
+non-existence of that CPU capability.
 
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
+Simplify the situation by removing CONFIG_ARCH_RANDOM and using the
+ordinary asm-generic fallback pattern instead, keeping the two options
+that are actually used. For now it leaves "nordrand" for now, as the
+removal of that will take a different route.
 
-All errors (new ones prefixed by >>):
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Acked-by: Borislav Petkov <bp@suse.de>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+---
+Changes v4->v5:
+- Squelch warning on ARCH=um.
+- Include asm-generic on arm instead of duplicating code.
+Changes v3->v4:
+- Use asm-generic for fallback.
+Changes v2->v3:
+- Keep compiling on archs with no ARCH_RANDOM.
+Changes v1->v2:
+- Get rid of nordrand change for now.
 
->> arch/powerpc/kernel/prom.c:891:5: error: no previous prototype for function 'of_get_ibm_chip_id' [-Werror,-Wmissing-prototypes]
-   int of_get_ibm_chip_id(struct device_node *np)
-       ^
-   arch/powerpc/kernel/prom.c:891:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
-   int of_get_ibm_chip_id(struct device_node *np)
-   ^
-   static 
-   1 error generated.
+ arch/arm/include/asm/archrandom.h             |  2 ++
+ arch/arm64/Kconfig                            |  8 ------
+ arch/arm64/include/asm/archrandom.h           | 10 --------
+ arch/arm64/kernel/cpufeature.c                |  2 --
+ arch/powerpc/Kconfig                          |  3 ---
+ arch/powerpc/include/asm/archrandom.h         |  3 ---
+ arch/powerpc/include/asm/machdep.h            |  2 --
+ arch/powerpc/platforms/microwatt/Kconfig      |  1 -
+ arch/powerpc/platforms/powernv/Kconfig        |  1 -
+ arch/powerpc/platforms/pseries/Kconfig        |  1 -
+ arch/s390/Kconfig                             | 15 -----------
+ arch/s390/configs/zfcpdump_defconfig          |  1 -
+ arch/s390/crypto/Makefile                     |  2 +-
+ arch/s390/include/asm/archrandom.h            |  3 ---
+ arch/x86/Kconfig                              |  9 -------
+ arch/x86/include/asm/archrandom.h             | 14 +++--------
+ arch/x86/kernel/cpu/rdrand.c                  |  2 --
+ drivers/char/Kconfig                          |  1 -
+ drivers/char/hw_random/s390-trng.c            |  9 -------
+ include/asm-generic/Kbuild                    |  1 +
+ include/asm-generic/archrandom.h              | 25 +++++++++++++++++++
+ include/linux/random.h                        |  9 +------
+ .../selftests/wireguard/qemu/kernel.config    |  1 -
+ 23 files changed, 34 insertions(+), 91 deletions(-)
+ create mode 100644 include/asm-generic/archrandom.h
 
-
-vim +/of_get_ibm_chip_id +891 arch/powerpc/kernel/prom.c
-
-b27652dd2174df1 Kevin Hao              2013-12-24  871  
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  872  /*******
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  873   *
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  874   * New implementation of the OF "find" APIs, return a refcounted
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  875   * object, call of_node_put() when done.  The device tree and list
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  876   * are protected by a rw_lock.
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  877   *
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  878   * Note that property management will need some locking as well,
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  879   * this isn't dealt with yet.
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  880   *
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  881   *******/
-9b6b563c0d2d25e Paul Mackerras         2005-10-06  882  
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  883  /**
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  884   * of_get_ibm_chip_id - Returns the IBM "chip-id" of a device
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  885   * @np: device node of the device
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  886   *
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  887   * This looks for a property "ibm,chip-id" in the node or any
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  888   * of its parents and returns its content, or -1 if it cannot
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  889   * be found.
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  890   */
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15 @891  int of_get_ibm_chip_id(struct device_node *np)
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  892  {
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  893  	of_node_get(np);
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  894  	while (np) {
-1856f50c66dff0a Christophe Jaillet     2015-10-16  895  		u32 chip_id;
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  896  
-1856f50c66dff0a Christophe Jaillet     2015-10-16  897  		/*
-1856f50c66dff0a Christophe Jaillet     2015-10-16  898  		 * Skiboot may produce memory nodes that contain more than one
-1856f50c66dff0a Christophe Jaillet     2015-10-16  899  		 * cell in chip-id, we only read the first one here.
-1856f50c66dff0a Christophe Jaillet     2015-10-16  900  		 */
-1856f50c66dff0a Christophe Jaillet     2015-10-16  901  		if (!of_property_read_u32(np, "ibm,chip-id", &chip_id)) {
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  902  			of_node_put(np);
-1856f50c66dff0a Christophe Jaillet     2015-10-16  903  			return chip_id;
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  904  		}
-16c1d606263ea37 Michael Ellerman       2015-10-26  905  
-16c1d606263ea37 Michael Ellerman       2015-10-26  906  		np = of_get_next_parent(np);
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  907  	}
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  908  	return -1;
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  909  }
-b130e7c04f1130f Dan Streetman          2015-05-07  910  EXPORT_SYMBOL(of_get_ibm_chip_id);
-b37193b71846858 Benjamin Herrenschmidt 2013-07-15  911  
-
+diff --git a/arch/arm/include/asm/archrandom.h b/arch/arm/include/asm/archrandom.h
+index a8e84ca5c2ee..cc4714eb1a75 100644
+--- a/arch/arm/include/asm/archrandom.h
++++ b/arch/arm/include/asm/archrandom.h
+@@ -7,4 +7,6 @@ static inline bool __init smccc_probe_trng(void)
+ 	return false;
+ }
+ 
++#include <asm-generic/archrandom.h>
++
+ #endif /* _ASM_ARCHRANDOM_H */
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 1652a9800ebe..1880f71c2547 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1858,14 +1858,6 @@ config ARM64_E0PD
+ 
+ 	  This option enables E0PD for TTBR1 where available.
+ 
+-config ARCH_RANDOM
+-	bool "Enable support for random number generation"
+-	default y
+-	help
+-	  Random number generation (part of the ARMv8.5 Extensions)
+-	  provides a high bandwidth, cryptographically secure
+-	  hardware random number generator.
+-
+ config ARM64_AS_HAS_MTE
+ 	# Initial support for MTE went in binutils 2.32.0, checked with
+ 	# ".arch armv8.5-a+memtag" below. However, this was incomplete
+diff --git a/arch/arm64/include/asm/archrandom.h b/arch/arm64/include/asm/archrandom.h
+index 3a6b6d38c5b8..c3b9fa56af67 100644
+--- a/arch/arm64/include/asm/archrandom.h
++++ b/arch/arm64/include/asm/archrandom.h
+@@ -2,8 +2,6 @@
+ #ifndef _ASM_ARCHRANDOM_H
+ #define _ASM_ARCHRANDOM_H
+ 
+-#ifdef CONFIG_ARCH_RANDOM
+-
+ #include <linux/arm-smccc.h>
+ #include <linux/bug.h>
+ #include <linux/kernel.h>
+@@ -167,12 +165,4 @@ arch_get_random_seed_long_early(unsigned long *v)
+ }
+ #define arch_get_random_seed_long_early arch_get_random_seed_long_early
+ 
+-#else /* !CONFIG_ARCH_RANDOM */
+-
+-static inline bool __init smccc_probe_trng(void)
+-{
+-	return false;
+-}
+-
+-#endif /* CONFIG_ARCH_RANDOM */
+ #endif /* _ASM_ARCHRANDOM_H */
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 8d88433de81d..0e9462abeb77 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -2416,7 +2416,6 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ 		.cpu_enable = cpu_enable_e0pd,
+ 	},
+ #endif
+-#ifdef CONFIG_ARCH_RANDOM
+ 	{
+ 		.desc = "Random Number Generator",
+ 		.capability = ARM64_HAS_RNG,
+@@ -2428,7 +2427,6 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ 		.sign = FTR_UNSIGNED,
+ 		.min_field_value = 1,
+ 	},
+-#endif
+ #ifdef CONFIG_ARM64_BTI
+ 	{
+ 		.desc = "Branch Target Identification",
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 7aa12e88c580..623deb5bedf6 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -1252,9 +1252,6 @@ config PHYSICAL_START
+ 	default "0x00000000"
+ endif
+ 
+-config	ARCH_RANDOM
+-	def_bool n
+-
+ config PPC_LIB_RHEAP
+ 	bool
+ 
+diff --git a/arch/powerpc/include/asm/archrandom.h b/arch/powerpc/include/asm/archrandom.h
+index 9a53e29680f4..25ba65df6b1a 100644
+--- a/arch/powerpc/include/asm/archrandom.h
++++ b/arch/powerpc/include/asm/archrandom.h
+@@ -2,8 +2,6 @@
+ #ifndef _ASM_POWERPC_ARCHRANDOM_H
+ #define _ASM_POWERPC_ARCHRANDOM_H
+ 
+-#ifdef CONFIG_ARCH_RANDOM
+-
+ #include <asm/machdep.h>
+ 
+ static inline bool __must_check arch_get_random_long(unsigned long *v)
+@@ -35,7 +33,6 @@ static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
+ 
+ 	return rc;
+ }
+-#endif /* CONFIG_ARCH_RANDOM */
+ 
+ #ifdef CONFIG_PPC_POWERNV
+ int powernv_hwrng_present(void);
+diff --git a/arch/powerpc/include/asm/machdep.h b/arch/powerpc/include/asm/machdep.h
+index 358d171ae8e0..6c1002043367 100644
+--- a/arch/powerpc/include/asm/machdep.h
++++ b/arch/powerpc/include/asm/machdep.h
+@@ -200,9 +200,7 @@ struct machdep_calls {
+ 	ssize_t (*cpu_release)(const char *, size_t);
+ #endif
+ 
+-#ifdef CONFIG_ARCH_RANDOM
+ 	int (*get_random_seed)(unsigned long *v);
+-#endif
+ };
+ 
+ extern void e500_idle(void);
+diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/platforms/microwatt/Kconfig
+index 5e320f49583a..6af443a1db99 100644
+--- a/arch/powerpc/platforms/microwatt/Kconfig
++++ b/arch/powerpc/platforms/microwatt/Kconfig
+@@ -6,7 +6,6 @@ config PPC_MICROWATT
+ 	select PPC_ICS_NATIVE
+ 	select PPC_ICP_NATIVE
+ 	select PPC_UDBG_16550
+-	select ARCH_RANDOM
+ 	help
+           This option enables support for FPGA-based Microwatt implementations.
+ 
+diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
+index 161dfe024085..e1a05c5a9004 100644
+--- a/arch/powerpc/platforms/powernv/Kconfig
++++ b/arch/powerpc/platforms/powernv/Kconfig
+@@ -12,7 +12,6 @@ config PPC_POWERNV
+ 	select EPAPR_BOOT
+ 	select PPC_INDIRECT_PIO
+ 	select PPC_UDBG_16550
+-	select ARCH_RANDOM
+ 	select CPU_FREQ
+ 	select PPC_DOORBELL
+ 	select MMU_NOTIFIER
+diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
+index f7fd91d153a4..f4a647c1f0b2 100644
+--- a/arch/powerpc/platforms/pseries/Kconfig
++++ b/arch/powerpc/platforms/pseries/Kconfig
+@@ -19,7 +19,6 @@ config PPC_PSERIES
+ 	select PPC_UDBG_16550
+ 	select PPC_DOORBELL
+ 	select HOTPLUG_CPU
+-	select ARCH_RANDOM
+ 	select FORCE_SMP
+ 	select SWIOTLB
+ 	default y
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 8cd9e56c629b..9b6e4e7cb17b 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -507,21 +507,6 @@ config KEXEC_SIG
+ 	  verification for the corresponding kernel image type being
+ 	  loaded in order for this to work.
+ 
+-config ARCH_RANDOM
+-	def_bool y
+-	prompt "s390 architectural random number generation API"
+-	help
+-	  Enable the s390 architectural random number generation API
+-	  to provide random data for all consumers within the Linux
+-	  kernel.
+-
+-	  When enabled the arch_random_* functions declared in linux/random.h
+-	  are implemented. The implementation is based on the s390 CPACF
+-	  instruction subfunction TRNG which provides a real true random
+-	  number generator.
+-
+-	  If unsure, say Y.
+-
+ config KERNEL_NOBP
+ 	def_bool n
+ 	prompt "Enable modified branch prediction for the kernel by default"
+diff --git a/arch/s390/configs/zfcpdump_defconfig b/arch/s390/configs/zfcpdump_defconfig
+index a87fcc45e307..f4976f611b94 100644
+--- a/arch/s390/configs/zfcpdump_defconfig
++++ b/arch/s390/configs/zfcpdump_defconfig
+@@ -15,7 +15,6 @@ CONFIG_TUNE_ZEC12=y
+ # CONFIG_COMPAT is not set
+ CONFIG_NR_CPUS=2
+ CONFIG_HZ_100=y
+-# CONFIG_ARCH_RANDOM is not set
+ # CONFIG_RELOCATABLE is not set
+ # CONFIG_CHSC_SCH is not set
+ # CONFIG_SCM_BUS is not set
+diff --git a/arch/s390/crypto/Makefile b/arch/s390/crypto/Makefile
+index c63abfeb6d17..1b1cc478fa94 100644
+--- a/arch/s390/crypto/Makefile
++++ b/arch/s390/crypto/Makefile
+@@ -15,7 +15,7 @@ obj-$(CONFIG_CRYPTO_CHACHA_S390) += chacha_s390.o
+ obj-$(CONFIG_S390_PRNG) += prng.o
+ obj-$(CONFIG_CRYPTO_GHASH_S390) += ghash_s390.o
+ obj-$(CONFIG_CRYPTO_CRC32_S390) += crc32-vx_s390.o
+-obj-$(CONFIG_ARCH_RANDOM) += arch_random.o
++obj-y += arch_random.o
+ 
+ crc32-vx_s390-y := crc32-vx.o crc32le-vx.o crc32be-vx.o
+ chacha_s390-y := chacha-glue.o chacha-s390.o
+diff --git a/arch/s390/include/asm/archrandom.h b/arch/s390/include/asm/archrandom.h
+index 2c6e1c6ecbe7..0a1c2e66c709 100644
+--- a/arch/s390/include/asm/archrandom.h
++++ b/arch/s390/include/asm/archrandom.h
+@@ -11,8 +11,6 @@
+ #ifndef _ASM_S390_ARCHRANDOM_H
+ #define _ASM_S390_ARCHRANDOM_H
+ 
+-#ifdef CONFIG_ARCH_RANDOM
+-
+ #include <linux/static_key.h>
+ #include <linux/atomic.h>
+ #include <asm/cpacf.h>
+@@ -50,5 +48,4 @@ static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
+ 	return false;
+ }
+ 
+-#endif /* CONFIG_ARCH_RANDOM */
+ #endif /* _ASM_S390_ARCHRANDOM_H */
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index be0b95e51df6..59b82135c814 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1833,15 +1833,6 @@ config ARCH_USES_PG_UNCACHED
+ 	def_bool y
+ 	depends on X86_PAT
+ 
+-config ARCH_RANDOM
+-	def_bool y
+-	prompt "x86 architectural random number generator" if EXPERT
+-	help
+-	  Enable the x86 architectural RDRAND instruction
+-	  (Intel Bull Mountain technology) to generate random numbers.
+-	  If supported, this is a high bandwidth, cryptographically
+-	  secure hardware random number generator.
+-
+ config X86_UMIP
+ 	def_bool y
+ 	prompt "User Mode Instruction Prevention" if EXPERT
+diff --git a/arch/x86/include/asm/archrandom.h b/arch/x86/include/asm/archrandom.h
+index ebc248e49549..fb235b696175 100644
+--- a/arch/x86/include/asm/archrandom.h
++++ b/arch/x86/include/asm/archrandom.h
+@@ -65,10 +65,8 @@ static inline bool __must_check rdseed_int(unsigned int *v)
+ 
+ /*
+  * These are the generic interfaces; they must not be declared if the
+- * stubs in <linux/random.h> are to be invoked,
+- * i.e. CONFIG_ARCH_RANDOM is not defined.
++ * stubs in <linux/random.h> are to be invoked.
+  */
+-#ifdef CONFIG_ARCH_RANDOM
+ 
+ static inline bool __must_check arch_get_random_long(unsigned long *v)
+ {
+@@ -90,12 +88,8 @@ static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
+ 	return static_cpu_has(X86_FEATURE_RDSEED) ? rdseed_int(v) : false;
+ }
+ 
+-extern void x86_init_rdrand(struct cpuinfo_x86 *c);
+-
+-#else  /* !CONFIG_ARCH_RANDOM */
+-
+-static inline void x86_init_rdrand(struct cpuinfo_x86 *c) { }
+-
+-#endif  /* !CONFIG_ARCH_RANDOM */
++#ifndef CONFIG_UML
++void x86_init_rdrand(struct cpuinfo_x86 *c);
++#endif
+ 
+ #endif /* ASM_X86_ARCHRANDOM_H */
+diff --git a/arch/x86/kernel/cpu/rdrand.c b/arch/x86/kernel/cpu/rdrand.c
+index 23b901cc46df..6f4b196fe97d 100644
+--- a/arch/x86/kernel/cpu/rdrand.c
++++ b/arch/x86/kernel/cpu/rdrand.c
+@@ -20,7 +20,6 @@
+  * If it fails, it is simple to disable RDRAND and RDSEED here.
+  */
+ 
+-#ifdef CONFIG_ARCH_RANDOM
+ void x86_init_rdrand(struct cpuinfo_x86 *c)
+ {
+ 	enum { SAMPLES = 8, MIN_CHANGE = 5 };
+@@ -60,4 +59,3 @@ void x86_init_rdrand(struct cpuinfo_x86 *c)
+ 		pr_emerg("RDRAND and RDSEED are not reliable on this platform; disabling.\n");
+ 	}
+ }
+-#endif
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index 0b6c03643ddc..30192e123e5f 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -431,7 +431,6 @@ config ADI
+ config RANDOM_TRUST_CPU
+ 	bool "Initialize RNG using CPU RNG instructions"
+ 	default y
+-	depends on ARCH_RANDOM
+ 	help
+ 	  Initialize the RNG using random numbers supplied by the CPU's
+ 	  RNG instructions (e.g. RDRAND), if supported and available. These
+diff --git a/drivers/char/hw_random/s390-trng.c b/drivers/char/hw_random/s390-trng.c
+index 2beaa35c0d74..488808dc17a2 100644
+--- a/drivers/char/hw_random/s390-trng.c
++++ b/drivers/char/hw_random/s390-trng.c
+@@ -108,7 +108,6 @@ static ssize_t trng_counter_show(struct device *dev,
+ {
+ 	u64 dev_counter = atomic64_read(&trng_dev_counter);
+ 	u64 hwrng_counter = atomic64_read(&trng_hwrng_counter);
+-#if IS_ENABLED(CONFIG_ARCH_RANDOM)
+ 	u64 arch_counter = atomic64_read(&s390_arch_random_counter);
+ 
+ 	return sysfs_emit(buf,
+@@ -118,14 +117,6 @@ static ssize_t trng_counter_show(struct device *dev,
+ 			"total: %llu\n",
+ 			dev_counter, hwrng_counter, arch_counter,
+ 			dev_counter + hwrng_counter + arch_counter);
+-#else
+-	return sysfs_emit(buf,
+-			"trng:  %llu\n"
+-			"hwrng: %llu\n"
+-			"total: %llu\n",
+-			dev_counter, hwrng_counter,
+-			dev_counter + hwrng_counter);
+-#endif
+ }
+ static DEVICE_ATTR(byte_counter, 0444, trng_counter_show, NULL);
+ 
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 8e47d483b524..36db8b9eb68a 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -5,6 +5,7 @@
+ # asm headers from the host architecutre.)
+ 
+ mandatory-y += atomic.h
++mandatory-y += archrandom.h
+ mandatory-y += barrier.h
+ mandatory-y += bitops.h
+ mandatory-y += bug.h
+diff --git a/include/asm-generic/archrandom.h b/include/asm-generic/archrandom.h
+new file mode 100644
+index 000000000000..3a5ee202dd86
+--- /dev/null
++++ b/include/asm-generic/archrandom.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_GENERIC_ARCHRANDOM_H__
++#define __ASM_GENERIC_ARCHRANDOM_H__
++
++static inline bool __must_check arch_get_random_long(unsigned long *v)
++{
++	return false;
++}
++
++static inline bool __must_check arch_get_random_int(unsigned int *v)
++{
++	return false;
++}
++
++static inline bool __must_check arch_get_random_seed_long(unsigned long *v)
++{
++	return false;
++}
++
++static inline bool __must_check arch_get_random_seed_int(unsigned int *v)
++{
++	return false;
++}
++
++#endif
+diff --git a/include/linux/random.h b/include/linux/random.h
+index 20e389a14e5c..865770e29f3e 100644
+--- a/include/linux/random.h
++++ b/include/linux/random.h
+@@ -106,14 +106,7 @@ declare_get_random_var_wait(long, unsigned long)
+  */
+ #include <linux/prandom.h>
+ 
+-#ifdef CONFIG_ARCH_RANDOM
+-# include <asm/archrandom.h>
+-#else
+-static inline bool __must_check arch_get_random_long(unsigned long *v) { return false; }
+-static inline bool __must_check arch_get_random_int(unsigned int *v) { return false; }
+-static inline bool __must_check arch_get_random_seed_long(unsigned long *v) { return false; }
+-static inline bool __must_check arch_get_random_seed_int(unsigned int *v) { return false; }
+-#endif
++#include <asm/archrandom.h>
+ 
+ /*
+  * Called from the boot CPU during startup; not valid to call once
+diff --git a/tools/testing/selftests/wireguard/qemu/kernel.config b/tools/testing/selftests/wireguard/qemu/kernel.config
+index bad88f4b0a03..e1858ce7003f 100644
+--- a/tools/testing/selftests/wireguard/qemu/kernel.config
++++ b/tools/testing/selftests/wireguard/qemu/kernel.config
+@@ -58,7 +58,6 @@ CONFIG_NO_HZ_IDLE=y
+ CONFIG_NO_HZ_FULL=n
+ CONFIG_HZ_PERIODIC=n
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_ARCH_RANDOM=y
+ CONFIG_FILE_LOCKING=y
+ CONFIG_POSIX_TIMERS=y
+ CONFIG_DEVTMPFS=y
 -- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+2.35.1
+
