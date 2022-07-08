@@ -1,62 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB1A56BE6A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 19:15:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBCD56BE78
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Jul 2022 19:33:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LffzX3tzlz3c72
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jul 2022 03:15:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mIS6t6kb;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LfgND2qm2z3cdd
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jul 2022 03:33:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mIS6t6kb;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lffyt4fc2z30Mr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jul 2022 03:14:30 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 815DC621D1;
-	Fri,  8 Jul 2022 17:14:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9645BC341C0;
-	Fri,  8 Jul 2022 17:14:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657300465;
-	bh=YexxORAIOe6/bznfuqOwteBKlaCjm36wg+GTYyj/hcE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mIS6t6kbGPEAeTQtbbRDMFrnQYTRmlXtaqvpvTt5+T2TPuJzn7VQU9OJpxefZ6giq
-	 3/xMFA9UfGJ6bQTgP8KRLdJKz2t/Nh/PVO1YVb8WDwRPxspgXIWaN+EmHP2CHFMHXS
-	 9QiGJww/PpKx1HbmXbRXosdQC/LXURoXWWeZfufMxX9vCiXpGWtswz+ezPi1vWTubo
-	 +cSmFAzXaKc4gj8WhF/eQrWG1qcRD9ZQBT23znWqLjdKgJwUDs7C4Lhj/uV3gAv+KN
-	 Uh7dbLAjuwP/V2BVi/3SEzgNX+ALLQVU1OhqQlpeSpnmW5wvLd8F98PK2jAVIfhz/v
-	 0j+kt38zyvWGQ==
-Received: by pali.im (Postfix)
-	id DBC7F7D1; Fri,  8 Jul 2022 19:14:22 +0200 (CEST)
-Date: Fri, 8 Jul 2022 19:14:22 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
-Message-ID: <20220708171422.mpbhb4ejarwnce6m@pali>
-References: <20220524093939.30927-1-pali@kernel.org>
- <20220702094405.tp7eo4df7fjvn2ng@pali>
- <8D562851-304F-4153-9194-426CC22B7FF2@ellerman.id.au>
- <20220704103951.nm4m4kpgnus3ucqo@pali>
- <CAK8P3a2tdny8SA7jcqhUZT13iq1mYqjFueC-gnTUZA1JKCtfgg@mail.gmail.com>
- <20220704131358.fy3z7tjcmk2m6pfh@pali>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LfgMR3tBhz3c3N
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jul 2022 03:32:19 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4LfgMF2zTHz9tJt;
+	Fri,  8 Jul 2022 19:32:09 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2Cmxiou12xFy; Fri,  8 Jul 2022 19:32:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4LfgMD3jcbz9tK2;
+	Fri,  8 Jul 2022 19:32:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B89F8B79F;
+	Fri,  8 Jul 2022 19:32:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id yGjfhU1YAOkF; Fri,  8 Jul 2022 19:32:08 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.233.202])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E26E28B76E;
+	Fri,  8 Jul 2022 19:32:07 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.16.1) with ESMTPS id 268HVwDp1000723
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 8 Jul 2022 19:31:58 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.17.1/8.17.1/Submit) id 268HVsT81000717;
+	Fri, 8 Jul 2022 19:31:54 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        sv@linux.ibm.com, agust@denx.de, jpoimboe@kernel.org,
+        peterz@infradead.org, jbaron@akamai.com, rostedt@goodmis.org,
+        ardb@kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, hpa@zytor.com
+Subject: [PATCH v2 0/7] Implement inline static calls on PPC32 - v2
+Date: Fri,  8 Jul 2022 19:31:19 +0200
+Message-Id: <cover.1657301423.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1657301483; l=2522; s=20211009; h=from:subject:message-id; bh=srsHauWpCCSShw+tDnQuCN7IaYeyZicOYbEw8X38M5s=; b=9mXmhioPtuJKOkzJ526lABlrAYvbEtiTLvaEChNbWFTdSz6wSV9box2w6tlvRf+BXOtYmsrmc19/ DeWS0KGEBw0QDl9ftLF4oURG+dwMO/PJq9azqrSDFo2AfSalnNec
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220704131358.fy3z7tjcmk2m6pfh@pali>
-User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,200 +69,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: chenzhongjin@huawei.com, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Monday 04 July 2022 15:13:58 Pali Rohár wrote:
-> On Monday 04 July 2022 14:07:10 Arnd Bergmann wrote:
-> > On Mon, Jul 4, 2022 at 12:39 PM Pali Rohár <pali@kernel.org> wrote:
-> > > On Monday 04 July 2022 20:23:29 Michael Ellerman wrote:
-> > > > On 2 July 2022 7:44:05 pm AEST, "Pali Rohár" <pali@kernel.org> wrote:
-> > > > >On Tuesday 24 May 2022 11:39:39 Pali Rohár wrote:
-> > > > >> gcc e500 compiler does not support -mcpu=powerpc option. When it is
-> > > > >> specified then gcc throws compile error:
-> > > > >>
-> > > > >>   gcc: error: unrecognized argument in option ‘-mcpu=powerpc’
-> > > > >>   gcc: note: valid arguments to ‘-mcpu=’ are: 8540 8548 native
-> > > > >>
-> > > > >> So do not set -mcpu=powerpc option when CONFIG_E500 is set. Correct option
-> > > > >> -mcpu=8540 for CONFIG_E500 is set few lines below in that Makefile.
-> > > > >>
-> > > > >> Signed-off-by: Pali Rohár <pali@kernel.org>
-> > > > >> Cc: stable@vger.kernel.org
-> > > > >
-> > > > >Michael, do you have any objections about this patch?
-> > > >
-> > > > I don't particularly like it :)
-> > > >
-> > > > From the discussion with Segher, it sounds like this is a problem with a specific build of gcc that you're using, not a general problem with gcc built with e500 support.
-> > >
-> > > Well, the "full" build of gcc for e500 cores with SPE does not support
-> > > -mcpu=powerpc option. So I think this is a general problem. I do not
-> > > think that this is "specific build" as this is the correct build of gcc
-> > > for these processors with e500 cores.
-> > >
-> > > "stripped". build of gcc without SPE support for e500 cores does not
-> > > have this problem...
-> > 
-> > I can see a couple of problems with the CPU selection, but I don't think
-> > this is a major one, as nobody should be using those SPE compilers for
-> > building the kernel. Just use a modern powerpc-gcc build.
-> 
-> The point is to use same compiler for building kernel as for the all
-> other parts of the system.
-> 
-> I just do not see reason why for kernel it is needed to build completely
-> different toolchain and compiler.
-> 
-> > > > Keying it off CONFIG_E500 means it will fix your problem, but not anyone else who has a different non-e500 compiler that also doesn't support -mcpu=powerpc (for whatever reason).
-> > > >
-> > > > So I wonder if a better fix is to use cc-option when setting -mcpu=powerpc.
-> > > >
-> > >
-> > > Comment for that code which adds -mpcu=powerpc says:
-> > >
-> > >   they are needed to set a sane 32-bit cpu target for the 64-bit cross
-> > >   compiler which may default to the wrong ISA.
-> > >
-> > > So I'm not sure how to handle this in other way. GCC uses -mpcu=8540
-> > > option for specifying to compile code for e500 cores and seems that
-> > > -mcpu=8540 is supported by all e500 compilers...
-> > >
-> > > Few lines below is code
-> > >
-> > >   CFLAGS-$(CONFIG_E500) += $(call cc-option,-mcpu=8540 -msoft-float,-mcpu=powerpc)
-> > >
-> > > which for e500 kernel builds user either -mcpu=8540 or -mcpu=powerpc
-> > > (probably as a fallback if -mcpu=8540 is not supported).
-> > 
-> > The -mcpu=powerpc fallback can probably be skipped here, that must have been
-> > for compilers predating the addition of -mcpu=8540, and even the oldest ones
-> > support that now.
-> 
-> Ok, makes sense.
-> 
-> > > So for me it looks like that problematic code
-> > >
-> > >   KBUILD_CFLAGS         += -mcpu=powerpc
-> > >   KBUILD_AFLAGS         += -mcpu=powerpc
-> > >
-> > > needs to be somehow skipped when compiling for CONFIG_E500.
-> > >> My change which skips that code base on ifndef CONFIG_E500 should be
-> > > fine as when CONFIG_E500 is disabled it does nothing and when it is
-> > > enabled then code
-> > >
-> > >   CFLAGS-$(CONFIG_E500) += $(call cc-option,-mcpu=8540 -msoft-float,-mcpu=powerpc)
-> > >
-> > > is called which sets -mcpu option suitable for e500.
-> > 
-> > I think this part is indeed fishy, but adding another special case for E500
-> > seems to take it in the wrong direction.
-> > 
-> > Nick added this in 4bf4f42a2feb ("powerpc/kbuild: Set default generic
-> > machine type
-> > for 32-bit compile") as a compile-time fix to prevent the default target from
-> > getting used when the compiler supports both 64-bit and 32-bit. This is the
-> > right idea, but it's inconsistent to pass different flags depending on the type
-> > of toolchain, and it loses the more specific options.
-> > 
-> > Another problem I see is that a kernel that is built for both E500 and E500MC
-> > uses -mcpu=e500mc and may not actually work on the older ones either
-> > (even with your patch).
-> 
-> That is probably truth, -mcpu=8540 should have been chosen. (Anyway it
-> should have been called -mcpu=e500, no idea why gcc still name it 8540.)
-> 
-> > I think what you actually want is to set one option for each of the
-> > possible CPU types:
-> > 
-> > CFLAGS_CPU-$(CONFIG_PPC_BOOK3S_32) := -mcpu=powerpc
-> > CFLAGS_CPU-$(CONFIG_PPC_85xx) := -mcpu=8540
-> > CFLAGS_CPU-$(CONFIG_PPC8xx) := -mcpu=860
-> > CFLAGS_CPU-$(CONFIG_PPC44x) := -mcpu=440
-> > CFLAGS_CPU-$(CONFIG_PPC40x) := -mcpu=405
-> > ifdef CONFIG_CPU_LITTLE_ENDIAN
-> > CFLAGS_CPU-$(CONFIG_BOOK3S_64) := -mcpu=power8
-> > else
-> > CFLAGS_CPU-$(CONFIG_BOOK3S_64) := -mcpu=power5
-> > endif
-> > CFLAGS_CPU-$(CONFIG_BOOK3E_64) := -mcpu=powerpc64
-> 
-> Yes, this is something I would expect that in Makefile should be.
+This series applies on top of the series v3 "objtool: Enable and
+implement --mcount option on powerpc" [1] rebased on powerpc-next branch
 
-So what about this change?
+A few modifications are done to core parts to enable powerpc
+implementation:
+- R_X86_64_PC32 is abstracted to R_REL32 so that it can then be
+redefined as R_PPC_REL32.
+- A call to static_call_init() is added to start_kernel() to avoid
+every architecture to have to call it
+- Trampoline address is provided to arch_static_call_transform() even
+when setting a site to fallback on a call to the trampoline when the
+target is too far.
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index a0cd70712061..74a608b5796a 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -15,22 +15,7 @@ HAS_BIARCH	:= $(call cc-option-yn, -m32)
- # Set default 32 bits cross compilers for vdso and boot wrapper
- CROSS32_COMPILE ?=
- 
--ifeq ($(HAS_BIARCH),y)
--ifeq ($(CROSS32_COMPILE),)
--ifdef CONFIG_PPC32
--# These options will be overridden by any -mcpu option that the CPU
--# or platform code sets later on the command line, but they are needed
--# to set a sane 32-bit cpu target for the 64-bit cross compiler which
--# may default to the wrong ISA.
--KBUILD_CFLAGS		+= -mcpu=powerpc
--KBUILD_AFLAGS		+= -mcpu=powerpc
--endif
--endif
--endif
--
--ifdef CONFIG_PPC_BOOK3S_32
--KBUILD_CFLAGS		+= -mcpu=powerpc
--endif
-+CFLAGS-$(CONFIG_PPC_BOOK3S_32) += -mcpu=powerpc
- 
- # If we're on a ppc/ppc64/ppc64le machine use that defconfig, otherwise just use
- # ppc64_defconfig because we have nothing better to go on.
-@@ -163,17 +148,14 @@ CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option, $(MULTIPLEWORD))
- 
- CFLAGS-$(CONFIG_PPC32)	+= $(call cc-option,-mno-readonly-in-sdata)
- 
--ifdef CONFIG_PPC_BOOK3S_64
- ifdef CONFIG_CPU_LITTLE_ENDIAN
--CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=power8
--CFLAGS-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=power9,-mtune=power8)
-+CFLAGS-$(CONFIG_PPC_BOOK3S_64) += -mcpu=power8
-+CFLAGS-$(CONFIG_PPC_BOOK3S_64) += $(call cc-option,-mtune=power9,-mtune=power8)
- else
--CFLAGS-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mtune=power7,$(call cc-option,-mtune=power5))
--CFLAGS-$(CONFIG_GENERIC_CPU) += $(call cc-option,-mcpu=power5,-mcpu=power4)
--endif
--else ifdef CONFIG_PPC_BOOK3E_64
--CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=powerpc64
-+CFLAGS-$(CONFIG_PPC_BOOK3S_64) += $(call cc-option,-mtune=power7,$(call cc-option,-mtune=power5))
-+CFLAGS-$(CONFIG_PPC_BOOK3S_64) += $(call cc-option,-mcpu=power5,-mcpu=power4)
- endif
-+CFLAGS-$(CONFIG_PPC_BOOK3E_64) += -mcpu=powerpc64
- 
- ifdef CONFIG_FUNCTION_TRACER
- CC_FLAGS_FTRACE := -pg
-@@ -193,13 +175,8 @@ endif
- CFLAGS-$(CONFIG_E5500_CPU) += $(E5500_CPU)
- CFLAGS-$(CONFIG_E6500_CPU) += $(call cc-option,-mcpu=e6500,$(E5500_CPU))
- 
--ifdef CONFIG_PPC32
--ifdef CONFIG_PPC_E500MC
--CFLAGS-y += $(call cc-option,-mcpu=e500mc,-mcpu=powerpc)
--else
-+CFLAGS-$(CONFIG_PPC_E500MC) += $(call cc-option,-mcpu=e500mc,-mcpu=powerpc)
- CFLAGS-$(CONFIG_E500) += $(call cc-option,-mcpu=8540 -msoft-float,-mcpu=powerpc)
--endif
--endif
- 
- asinstr := $(call as-instr,lis 9$(comma)foo@high,-DHAVE_AS_ATHIGH=1)
- 
+[1] https://lore.kernel.org/lkml/70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu/T/#rb3a073c54aba563a135fba891e0c34c46e47beef
 
+Christophe Leroy (7):
+  powerpc: Add missing asm/asm.h for objtool
+  objtool/powerpc: Activate objtool on PPC32
+  objtool: Add architecture specific R_REL32 macro
+  objtool/powerpc: Add necessary support for inline static calls
+  init: Call static_call_init() from start_kernel()
+  static_call_inline: Provide trampoline address when updating sites
+  powerpc/static_call: Implement inline static calls
 
-> But what to do with fallback value?
-> 
-> > For the non-generic CPU types, there is also CONFIG_TARGET_CPU,
-> > and the list above could just get folded into that instead.
-> > 
-> >        Arnd
+ arch/powerpc/Kconfig                          |  3 +-
+ arch/powerpc/include/asm/asm.h                |  7 +++
+ arch/powerpc/include/asm/static_call.h        |  2 +
+ arch/powerpc/kernel/cpu_setup_6xx.S           | 26 ++++++---
+ arch/powerpc/kernel/cpu_setup_fsl_booke.S     |  8 ++-
+ arch/powerpc/kernel/entry_32.S                |  8 ++-
+ arch/powerpc/kernel/head_40x.S                |  5 +-
+ arch/powerpc/kernel/head_8xx.S                |  5 +-
+ arch/powerpc/kernel/head_book3s_32.S          | 29 +++++++---
+ arch/powerpc/kernel/head_fsl_booke.S          |  5 +-
+ arch/powerpc/kernel/static_call.c             | 56 ++++++++++++++-----
+ arch/powerpc/kernel/swsusp_32.S               |  5 +-
+ arch/powerpc/kvm/fpu.S                        | 17 ++++--
+ arch/powerpc/platforms/52xx/lite5200_sleep.S  | 15 +++--
+ arch/x86/kernel/static_call.c                 |  2 +-
+ init/main.c                                   |  1 +
+ kernel/static_call_inline.c                   |  2 +-
+ tools/objtool/arch/powerpc/decode.c           | 16 ++++--
+ tools/objtool/arch/powerpc/include/arch/elf.h |  1 +
+ tools/objtool/arch/x86/include/arch/elf.h     |  1 +
+ tools/objtool/check.c                         | 10 ++--
+ tools/objtool/orc_gen.c                       |  2 +-
+ 22 files changed, 162 insertions(+), 64 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/asm.h
+
+-- 
+2.36.1
+
