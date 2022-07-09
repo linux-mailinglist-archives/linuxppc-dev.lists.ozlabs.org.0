@@ -1,79 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84D3856C61C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jul 2022 04:56:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F86356C79A
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jul 2022 08:53:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lfvtl3ltPz3c8V
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jul 2022 12:56:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lg17l6JBkz3c73
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Jul 2022 16:53:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=4OHZPXkZ;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YXYFt0E8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=4OHZPXkZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YXYFt0E8;
 	dkim-atps=neutral
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lfvt41blPz3bnH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jul 2022 12:56:08 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id a15so589322pjs.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Jul 2022 19:56:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
-        h=message-id:date:mime-version:user-agent:subject:content-language:to
-         :cc:references:from:in-reply-to:content-transfer-encoding;
-        bh=Iu4+SfGnILNyrtOPbZlqTPcN6ioiSauG+G5Viw8UbkE=;
-        b=4OHZPXkZ7ZnQosBhh/5M+GPXDZj6PxbiJq6JyMh4JF5j0T25k04I3XCtO2DGGzdzOM
-         IjtUMhFqx1+X7jM7QYfThlkXu5EuH46KBixGz4l0EcrTXQA3zU550VcPk3174I5shRkT
-         YWetdbuD9iAa9m6dg9yOvt9CuavyH4vxvfTz+IqkLDDh2g5Rn2VszNv9UMocSs0lb9KM
-         4zvYKkiVFijqRWuZpxM8xYQx20ipNLODpr0PZv9HHnvgHR3Jn/kflZZ5HU2qbPzC52Z+
-         jhyP5kWoKIu9dO0gXB95VIwD00G2E25B5yG50CQjIhBLVhe9AgoNrPplYIgxGRGf95RO
-         5imw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=Iu4+SfGnILNyrtOPbZlqTPcN6ioiSauG+G5Viw8UbkE=;
-        b=pnPHfSthlWyttxWnpL4dEgN5jiVCDFYiA5mmZk20KafFVyS0QCHL/gcanMIeWh6+5O
-         UBhW8FBzXR/ikb6MEg3QSzidWLp7dFYvS8HMoc4BCSifzW6giu83fEBPBCmzoLe9XkjI
-         8G5e4MJwzB1SBOrjbqorqQH1IQBsqAOdwK31Tqkq2PQTbChFYIiqnbXcaEwkU+55suh0
-         Qw/5Awx9eR7Wu4VH2SxgeR8X7YZIqg9b07CWqn/bJCTlnPKzN1uQa8rmlgXeuIsyrCFk
-         6AS4tWJ2DV1qmnGI4H8k2YO+DFdWRtgVqZqHfFG1fvydM40mVuO57TdEvFS/9sjkgXFI
-         1mDA==
-X-Gm-Message-State: AJIora/Us/K1CAP+lsNM5SL6f3f17TUduaX33X7qWUM3QwK0GlYCstMR
-	EIGaEXY83jACo530wYPH1/Dd5w==
-X-Google-Smtp-Source: AGRyM1sNAKGtQSl3OJK31+VZwzSz+l9+Khv93qto99rzXrd44U4TeqYhciXpTToLUGk4X2v1dM98ng==
-X-Received: by 2002:a17:90b:3b43:b0:1ef:d89b:3454 with SMTP id ot3-20020a17090b3b4300b001efd89b3454mr3432246pjb.87.1657335365511;
-        Fri, 08 Jul 2022 19:56:05 -0700 (PDT)
-Received: from [192.168.10.153] (203-7-124-83.dyn.iinet.net.au. [203.7.124.83])
-        by smtp.gmail.com with ESMTPSA id z24-20020aa79498000000b0052542cbff9dsm309688pfk.99.2022.07.08.19.55.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Jul 2022 19:56:04 -0700 (PDT)
-Message-ID: <8329c51a-601e-0d93-41b4-2eb8524c9bcb@ozlabs.ru>
-Date: Sat, 9 Jul 2022 12:58:00 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lg175297zz3brp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jul 2022 16:52:49 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9B86260C72
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jul 2022 06:52:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6ABC36AE2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Jul 2022 06:52:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1657349565;
+	bh=OItCzHGXam6f2RpFSde10A15StjZbNKKbQYgGQWL2X8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YXYFt0E8Ij3TgCUsoJLhq07xJOnDEU7zvUw1pDlWBWVtYAeRlTzPo0WnyE6pAWxtS
+	 Wz0OzuoKZtFXMr8oGb0REQjuF1MDG5iVNs69CRGEV7Bow5UEKaQPXR9DV1NU/kDYv4
+	 58yKRd25CSBnsOav4LnMTyDIMCAzREvO3I8lLvTK/U8qQcDPlut4I2biLvyU30UmA4
+	 7eI70hMQNcSP2tS/A/Ga2ou3NVv0CtwI1bYQDXOUazMReVaJxPuYigQtH6QnIAJLo1
+	 5q2PsqSEmMIznJRpTuh0e4tdAK+hDQNZLYIQzDuhWNJJfRwDVAURMOPZFz72X0VgwC
+	 lCRR31TOKW0jQ==
+Received: by mail-ot1-f43.google.com with SMTP id m24-20020a0568301e7800b00616b5c114d4so630195otr.11
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 Jul 2022 23:52:45 -0700 (PDT)
+X-Gm-Message-State: AJIora9re1mKmDbp/9YWFQIikbXnr5Ul9ytlWMlWlftcEBFnlcWp92yd
+	FdhScwM3G9LZkQkBLk3iKSXwBHdnsZYIfQ+8UiY=
+X-Google-Smtp-Source: AGRyM1v/vL19VArStGC5zZnGKw+rHp1LFl+18klaQ+vaUgTkXmX9bHLGmj/xFc/D4rPKBlkGaqozxcRH0jc+EUKYeYo=
+X-Received: by 2002:a05:6830:4420:b0:616:e569:8ae9 with SMTP id
+ q32-20020a056830442000b00616e5698ae9mr2892555otv.265.1657349564339; Fri, 08
+ Jul 2022 23:52:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.0
-Subject: Re: [PATCH kernel] powerpc/iommu: Add iommu_ops to report
- capabilities and allow blocking domains
-Content-Language: en-US
-To: Jason Gunthorpe <jgg@nvidia.com>
-References: <20220707135552.3688927-1-aik@ozlabs.ru>
- <20220707151002.GB1705032@nvidia.com>
- <bb8f4c93-6cbc-0106-d4c1-1f3c0751fbba@ozlabs.ru>
- <bbe29694-66a3-275b-5a79-71237ad7388f@ozlabs.ru>
- <20220708115522.GD1705032@nvidia.com>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-In-Reply-To: <20220708115522.GD1705032@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1657301423.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <cover.1657301423.git.christophe.leroy@csgroup.eu>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sat, 9 Jul 2022 08:52:33 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFqs=YAbTDJOgzpse9ZkggSxPNNJJphEA=J94FQzF55qg@mail.gmail.com>
+Message-ID: <CAMj1kXFqs=YAbTDJOgzpse9ZkggSxPNNJJphEA=J94FQzF55qg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] Implement inline static calls on PPC32 - v2
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,51 +67,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Joerg Roedel <jroedel@suse.de>, kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Daniel Henrique Barboza <danielhb413@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>, Oliver O'Halloran <oohall@gmail.com>, Joel Stanley <joel@jms.id.au>, Robin Murphy <robin.murphy@arm.com>, David Gibson <david@gibson.dropbear.id.au>
+Cc: X86 ML <x86@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Chen Zhongjin <chenzhongjin@huawei.com>, Dave Hansen <dave.hansen@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>, Jason Baron <jbaron@akamai.com>, Ingo Molnar <mingo@redhat.com>, sv@linux.ibm.com, "Steven Rostedt \(VMware\)" <rostedt@goodmis.org>, "H. Peter Anvin" <hpa@zytor.com>, Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>, agust@denx.de, "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)" <linuxppc-dev@lists.ozlabs.org>, Josh Poimboeuf <jpoimboe@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello Christophe,
 
+On Fri, 8 Jul 2022 at 19:32, Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> This series applies on top of the series v3 "objtool: Enable and
+> implement --mcount option on powerpc" [1] rebased on powerpc-next branch
+>
+> A few modifications are done to core parts to enable powerpc
+> implementation:
+> - R_X86_64_PC32 is abstracted to R_REL32 so that it can then be
+> redefined as R_PPC_REL32.
+> - A call to static_call_init() is added to start_kernel() to avoid
+> every architecture to have to call it
+> - Trampoline address is provided to arch_static_call_transform() even
+> when setting a site to fallback on a call to the trampoline when the
+> target is too far.
+>
+> [1] https://lore.kernel.org/lkml/70b6d08d-aced-7f4e-b958-a3c7ae1a9319@csgroup.eu/T/#rb3a073c54aba563a135fba891e0c34c46e47beef
+>
+> Christophe Leroy (7):
+>   powerpc: Add missing asm/asm.h for objtool
+>   objtool/powerpc: Activate objtool on PPC32
+>   objtool: Add architecture specific R_REL32 macro
+>   objtool/powerpc: Add necessary support for inline static calls
+>   init: Call static_call_init() from start_kernel()
+>   static_call_inline: Provide trampoline address when updating sites
+>   powerpc/static_call: Implement inline static calls
+>
 
-On 08/07/2022 21:55, Jason Gunthorpe wrote:
-> On Fri, Jul 08, 2022 at 04:34:55PM +1000, Alexey Kardashevskiy wrote:
-> 
->> For now I'll add a comment in spapr_tce_iommu_attach_dev() that it is fine
->> to do nothing as tce_iommu_take_ownership() and
->> tce_iommu_take_ownership_ddw() take care of not having active DMA mappings.
-> 
-> That will still cause a security problem because
-> tce_iommu_take_ownership()/etc are called too late. This is the moment
-> in the flow when the ownershift must change away from the DMA API that
-> power implements and to VFIO, not later.
-
-Trying to do that.
-
-vfio_group_set_container:
-     iommu_group_claim_dma_owner
-     driver->ops->attach_group
-
-iommu_group_claim_dma_owner sets a domain to a group. Good. But it 
-attaches devices, not groups. Bad.
-
-driver->ops->attach_group on POWER attaches a group so VFIO claims 
-ownership over a group, not devices. Underlying API 
-(pnv_ioda2_take_ownership()) does not need to keep track of the state, 
-it is one group, one ownership transfer, easy.
-
-
-What is exactly the reason why iommu_group_claim_dma_owner() cannot stay 
-inside Type1 (sorry if it was explained, I could have missed)?
-
-
-
-Also, from another mail, you said iommu_alloc_default_domain() should 
-fail on power but at least IOMMU_DOMAIN_BLOCKED must be supported, or 
-the whole iommu_group_claim_dma_owner() thing falls apart.
-And iommu_ops::domain_alloc() is not told if it is asked to create a 
-default domain, it only takes a type.
-
-
-
--- 
-Alexey
+Could you quantify the performance gains of moving from out-of-line,
+patched tail-call branch instructions to full-fledged inline static
+calls? On x86, the retpoline problem makes this glaringly obvious, but
+on other architectures, the complexity of supporting this model may
+outweigh the performance advantages.
