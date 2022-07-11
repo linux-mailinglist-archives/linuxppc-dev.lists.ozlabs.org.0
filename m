@@ -2,90 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8C9570D78
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B14570D96
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:53:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhf1j1Twqz3f3k
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:38:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LhfLT5Qb1z3c56
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:53:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FqeFKQ6Z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ErppBv82;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=muriloo@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FqeFKQ6Z;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ErppBv82;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lhdzc6fcYz2yMf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:37:00 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26BMLKfs028276;
-	Mon, 11 Jul 2022 22:36:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=83AsqHW/hz04+yVhSQAjYvfRnJUYzAK2Nps6/JJhHA0=;
- b=FqeFKQ6Z1eaRT0PxnS9GpjciGulgfhZGiCs9JYGaBq1KJI0KZ9tSjxTAtEhXDETGM/O6
- Z6wJ4KlBenTWh2srckpXBbDeDhPChK3/i2Uij4uJWcsw5hTcILwkROcZcWW7W7LCuJl8
- z3RU32KhnpiXIBBH2e/6AAGagAWNGNRdh/ww9bLQm2ZnbKUPLaRGSi5pbcSFc3Mc8XRj
- J4mlUX3JfDd4Y29iV2IgKgUiFQiLh49MTqCClTq8sOoSmMeYzbmPEXrK4bub/Mt1q3mC
- Z8iNHvMoarFsLL0kt3b6ixiU6kPAc52UyxJzsTixKgegqZ5SWo7/dW4kBpQAfedwDZs6 PQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8vk787gw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Jul 2022 22:36:41 +0000
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26BMW7GS015351;
-	Mon, 11 Jul 2022 22:36:41 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8vk787gd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Jul 2022 22:36:41 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26BMaWUn014312;
-	Mon, 11 Jul 2022 22:36:40 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-	by ppma03dal.us.ibm.com with ESMTP id 3h71a9en7r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Jul 2022 22:36:40 +0000
-Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
-	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26BMacVX10158804
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Jul 2022 22:36:39 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D5E95C606E;
-	Mon, 11 Jul 2022 22:36:38 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F974C606C;
-	Mon, 11 Jul 2022 22:36:38 +0000 (GMT)
-Received: from localhost (unknown [9.163.4.84])
-	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
-	Mon, 11 Jul 2022 22:36:38 +0000 (GMT)
-From: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] KVM: PPC: Book3s HV: Remove unused function kvmppc_bad_interrupt
-Date: Mon, 11 Jul 2022 19:36:17 -0300
-Message-Id: <20220711223617.63625-3-muriloo@linux.ibm.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220711223617.63625-1-muriloo@linux.ibm.com>
-References: <20220711223617.63625-1-muriloo@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhfKq2RL8z2xCB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:52:45 +1000 (AEST)
+Received: by mail-ej1-x629.google.com with SMTP id b11so11258982eju.10
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 15:52:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=i2JP/AK/462flQNf3WkuAKr99hiwoo70NGIBG6Typ3w=;
+        b=ErppBv825hWACq85NgILEoUpFIDS7zhQU4dBsF65NWh9mqK1QibzrTz5JjL/oe9P4P
+         xddf9vJAS5jJevier0WxjtSRTzqNqYMTuFMbLyHy18aT7xPi4oZPjKUXEDf3BhSaLDa4
+         4O3xw1J1KLXUrMcEs66ayBXSRlLIZbC064ewsp5aVZAPGfL0CMXNAFyBX/9qyBVJbAOu
+         xoSUM1m6sng8YQvv6Z+b3Z5XjXwnY/UzydMHSmIOJ28NgRuG0eCkAIYDttY9WOuNkv9g
+         v51CIgVGXO+hyPttpvZ9Y8r1QIuDcwQgPgw5HdmKK2Y4Fsxmh65jR/Qqh4XcEPpMGnwl
+         PGqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=i2JP/AK/462flQNf3WkuAKr99hiwoo70NGIBG6Typ3w=;
+        b=onXHNOBDG+sRZwtP2CEOa6SnlswOm4Yxvc8KsBV/v3OFLNy0DrdwINWULd+F53wsTk
+         mG5mQWNxjyAaBWR/1fdHgdt33BOpz+Xzle0WhCSoqHOn6LgoQuFU2lrYof4feDeMYu+/
+         7s0lagShZQm6YUg5bD3oRB4CQokGICP+E5RcP+kj297dQbv5KWp9GBMijsrWlmu76o7S
+         dUgKGYa6X4lMVr6LhbsVdE5+WcUK4pG3FFDlYlK9o+YUb7GgrdEm+K5VVo5GbbB5BVH+
+         T7OALSIKolFqJ47ALKuIj/pN4LdseZCMlQABwJJ6QWi792jteRNv0Nxg//wj43pY+LS1
+         1S8Q==
+X-Gm-Message-State: AJIora9VOA1xA2bxdgjq1GfYjxCx7uSZ3ClGlovbxlUjHtTFDyTk8aYH
+	LKBoahKlcFPDwSiqXUMSMuIinPgZxqZ/ZK9CJnE=
+X-Google-Smtp-Source: AGRyM1u3B9GaqsJzc2ZnGgAx20N9pPna/H/YyY3hApLIj/mDA7Feo0MOU0K0s1MJSpzYriYuHv0RZqEbB9CZJ8ZQIzU=
+X-Received: by 2002:a17:906:8a45:b0:72b:31d4:d537 with SMTP id
+ gx5-20020a1709068a4500b0072b31d4d537mr17046686ejc.170.1657579957647; Mon, 11
+ Jul 2022 15:52:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1Uxz7iXWTUOaighp92SzCzsb-dk-1nZf
-X-Proofpoint-GUID: V-2XOTwGw2xa7y-qT6mFnoXWeNKeaaul
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-11_25,2022-07-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- bulkscore=0 spamscore=0 mlxlogscore=757 clxscore=1015 mlxscore=0
- suspectscore=0 priorityscore=1501 adultscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207110091
+References: <20220711034615.482895-1-21cnbao@gmail.com> <20220711034615.482895-3-21cnbao@gmail.com>
+ <13b283fe-10f7-376f-9b8e-856e4d1e0ede@huawei.com>
+In-Reply-To: <13b283fe-10f7-376f-9b8e-856e4d1e0ede@huawei.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 12 Jul 2022 10:52:24 +1200
+Message-ID: <CAGsJ_4wW=3xsmB1jzcv=sD9OhhPc0v=+odp=JY80vEbMY6OZ_g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] mm: rmap: Allow platforms without mm_cpumask to
+ defer TLB flush
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,61 +75,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Juergen Gross <jgross@suse.com>, Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Nicholas Piggin <npiggin@gmail.com>, mopsfelder@gmail.com, Paul Mackerras <paulus@samba.org>, Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Yicong Yang <yangyicong@hisilicon.com>, Linux-MM <linux-mm@kvack.org>, =?UTF-8?B?6YOt5YGl?= <guojian@oppo.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, =?UTF-8?B?5byg6K+X5piOKFNpbW9uIFpoYW5nKQ==?= <zhangshiming@oppo.com>, =?UTF-8?B?5p2O5Z+56ZSLKHdpbmsp?= <lipeifeng@oppo.com>, Jonathan Corbet <corbet@lwn.net>, x86 <x86@kernel.org>, linux-mips@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, real mz <realmz6@gmail.com>, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, Darren Hart <darren@os.amperecomputing.com>, LAK <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, huzhanyuan@oppo.com, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The commit fae5c9f3664b ("KVM: PPC: Book3S HV: remove ISA v3.0 and v3.1
-support from P7/8 path") removed the last reference to the function.
+On Tue, Jul 12, 2022 at 1:35 AM Kefeng Wang <wangkefeng.wang@huawei.com> wr=
+ote:
+>
+> Hi Barry=EF=BC=8C
+>
+> On 2022/7/11 11:46, Barry Song wrote:
+> > From: Barry Song <v-songbaohua@oppo.com>
+> >
+> > Platforms like ARM64 have hareware TLB shootdown broadcast. They
+> > don't maintain mm_cpumask but just send tlbi and related sync
+> > instructions for TLB flush. task's mm_cpumask is normally empty
+> > in this case. We also allow deferred TLB flush on this kind of
+> > platforms.
+> >
+> > Signed-off-by: Barry Song <v-songbaohua@oppo.com>>
+> > ---
+> ...
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index 169e64192e48..7bf54f57ca01 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -951,6 +951,9 @@ config ARCH_HAS_CURRENT_STACK_POINTER
+> >         register alias named "current_stack_pointer", this config can b=
+e
+> >         selected.
+> >
+> > +config ARCH_HAS_MM_CPUMASK
+> > +     bool
+> > +
+> >   config ARCH_HAS_VM_GET_PAGE_PROT
+> >       bool
+> >
+> > diff --git a/mm/rmap.c b/mm/rmap.c
+> > index 5bcb334cd6f2..13d4f9a1d4f1 100644
+> > --- a/mm/rmap.c
+> > +++ b/mm/rmap.c
+> > @@ -692,6 +692,10 @@ static bool should_defer_flush(struct mm_struct *m=
+m, enum ttu_flags flags)
+> >       if (!(flags & TTU_BATCH_FLUSH))
+> >               return false;
+> >
+> > +#ifndef CONFIG_ARCH_HAS_MM_CPUMASK
+> > +     return true;
+> > +#endif
+> > +
+>
+> Here is another option to enable arch's tlbbatch defer
+>
 
-Fixes: fae5c9f3664b ("KVM: PPC: Book3S HV: remove ISA v3.0 and v3.1 support from P7/8 path")
-Signed-off-by: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
----
- arch/powerpc/include/asm/kvm_book3s.h |  1 -
- arch/powerpc/kvm/book3s_hv_builtin.c  | 18 ------------------
- 2 files changed, 19 deletions(-)
+This option is even better than simply having ARCH_HAS_MM_CPUMASK
+since arch might make decisions based on specific hardware characters.
+for example,
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2017-November/165468.html
 
-diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
-index ff1336ab4c47..bbf5e2c5fe09 100644
---- a/arch/powerpc/include/asm/kvm_book3s.h
-+++ b/arch/powerpc/include/asm/kvm_book3s.h
-@@ -280,7 +280,6 @@ extern void kvmppc_copy_to_svcpu(struct kvm_vcpu *vcpu);
- extern void kvmppc_copy_from_svcpu(struct kvm_vcpu *vcpu);
- 
- long kvmppc_read_intr(void);
--void kvmppc_bad_interrupt(struct pt_regs *regs);
- void kvmppc_set_msr_hv(struct kvm_vcpu *vcpu, u64 msr);
- void kvmppc_inject_interrupt_hv(struct kvm_vcpu *vcpu, int vec, u64 srr1_flags);
- 
-diff --git a/arch/powerpc/kvm/book3s_hv_builtin.c b/arch/powerpc/kvm/book3s_hv_builtin.c
-index 88a8f6473c4e..c15c6faedce5 100644
---- a/arch/powerpc/kvm/book3s_hv_builtin.c
-+++ b/arch/powerpc/kvm/book3s_hv_builtin.c
-@@ -489,24 +489,6 @@ static long kvmppc_read_one_intr(bool *again)
- 	return kvmppc_check_passthru(xisr, xirr, again);
- }
- 
--void kvmppc_bad_interrupt(struct pt_regs *regs)
--{
--	/*
--	 * 100 could happen at any time, 200 can happen due to invalid real
--	 * address access for example (or any time due to a hardware problem).
--	 */
--	if (TRAP(regs) == 0x100) {
--		get_paca()->in_nmi++;
--		system_reset_exception(regs);
--		get_paca()->in_nmi--;
--	} else if (TRAP(regs) == 0x200) {
--		machine_check_exception(regs);
--	} else {
--		die("Bad interrupt in KVM entry/exit code", regs, SIGABRT);
--	}
--	panic("Bad KVM trap");
--}
--
- static void kvmppc_end_cede(struct kvm_vcpu *vcpu)
- {
- 	vcpu->arch.ceded = 0;
--- 
-2.36.1
++bool arch_tlbbatch_should_defer(struct mm_struct *mm)
++{
++     if (!radix_enabled() || cpu_has_feature(CPU_FTR_POWER9_DD1))
++         return false;
++
++     if (!mm_is_thread_local(mm))
++         return true;
++
++     return false;
++}
 
+In this case, having MM_CPUMASK doesn't necessarily mean tlbbatch is needed=
+.
+
+> [1]
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20171101101735.23=
+18-2-khandual@linux.vnet.ibm.com/
+>
+> >       /* If remote CPUs need to be flushed then defer batch the flush *=
+/
+> >       if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
+> >               should_defer =3D true;
+
+Thanks
+Barry
