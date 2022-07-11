@@ -1,70 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114C056D347
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 05:16:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEDD56D386
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 05:47:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lh8Dk6SlJz3fq1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 13:16:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lh8w32d6Lz3c7h
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 13:47:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X6dVkiqE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UB7vUG4B;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X6dVkiqE;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UB7vUG4B;
 	dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lh86z3vj1z3cMq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 13:11:39 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id f11so3364666plr.4
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Jul 2022 20:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=kbOy68chFo9p31+WmLVIMBNGbtK2PTioaQrCoywan7I=;
-        b=X6dVkiqEGfHqLzxFJIPwTS2faHR51wM5uuBMrwSvpWiaP9BNI6qW/DaqYAnTP/iaQ7
-         NwSJsdimNml8/GYs1aR2VkF8UOqAUNxKsNg5zuSRl/WEfpbYpq6amh1fUtXZMjPEUwBT
-         +1ohv5Z9IfSVIX5qObzCY5C96DWSIAHG4VYEA8I9SzBV2zCQCqsdyY5yRsiLJ+6nrT1u
-         aRExTzJX5v1c5YQLm8H9XyV6VDFJ8x/sbd+rYMlQv2rmkfuM73b++hPEI24Ux+cl3BCQ
-         iRxLchwmzYj63EtsWnKtLc70hDwK7r369Urg25a4VCzJoRSQhreKRYUQ0qgBlrXDsD1M
-         W5ZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=kbOy68chFo9p31+WmLVIMBNGbtK2PTioaQrCoywan7I=;
-        b=SBgCBYYRt8Hfto6uuHeb3kq1vGIKGeksKJmoFGKi5sJ5Sd7LkTFSS04onZnhyuoNtY
-         vbLZddJ9qsmfyGi5ixH5PQKFYYRXYWZNnKcm7MmbEAiS7NAuRt1F5VNsxw8yJNzQNmiS
-         IyYUtzrTRuyuJOvA/+e8dVwARVWhIF7S6lemQfAYmh5sCMrA9ftpA8Ok4LHlmPU/ugQu
-         kQYnggaoTWYwSPGjBvLVEBx9FmwRdNzMWlcASy4e6VaeEclO230aOX8FMNwEVtoMZG9g
-         4DASIZ62MZao7zNhyvKIiA/qr3qS4j/lMWd+UXClxXSqRn3eECbi0pvMSbE0FO3GqmbQ
-         N58w==
-X-Gm-Message-State: AJIora9vgdP+rFucT7KMxTyg0aUuAJoHxWpvGJyG3YwzxcHMynuQoP0I
-	MD+BcDHM9tbxdbWtlZmVUM/Vy9nwfXw=
-X-Google-Smtp-Source: AGRyM1vArxmwhYmJeVHqyKvRM9+4rHrcE2QNdV7+Jo3uy4WvxvD2Frp1nX8vVJgOIh21gk8inmmf6Q==
-X-Received: by 2002:a17:902:8e8b:b0:168:a135:d636 with SMTP id bg11-20020a1709028e8b00b00168a135d636mr15986702plb.140.1657509097175;
-        Sun, 10 Jul 2022 20:11:37 -0700 (PDT)
-Received: from bobo.ibm.com ([203.220.77.143])
-        by smtp.gmail.com with ESMTPSA id s17-20020a632151000000b0041264dec901sm3063236pgm.21.2022.07.10.20.11.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Jul 2022 20:11:36 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/64s: Make POWER10 and later use pause_short in cpu_relax loops
-Date: Mon, 11 Jul 2022 13:11:28 +1000
-Message-Id: <20220711031128.151437-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220711031128.151437-1-npiggin@gmail.com>
-References: <20220711031128.151437-1-npiggin@gmail.com>
-MIME-Version: 1.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lh8vM1BBbz2yJ5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 13:46:38 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26B239oo022799;
+	Mon, 11 Jul 2022 03:46:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=lbnQ8tqSl6pnPEc8bY+nklDKgjDgzlxSpb44T/eMyHw=;
+ b=UB7vUG4BfitMPqt49WBEAVwDA9BzyXF0lZLFIqSUNEipm+Om82kIBvYUwFnE5U70/4LQ
+ xvzAR3LRqNtovIAKcRcI5J88fgxFt3mUgk0BvQJXZJiElg3D5tUxJRRi8IkgHCC9SzXa
+ 2zdNCTd45GTynKIPlklxx5QHQkwBd+4TIaEanT+f4eiU+89EWh5AzlDp6o5LUFFOgjAN
+ mJfB2jDXxjX+UbJZWte9DMEsk7kj8BHCdK7FRMScptzU3A5GE3tec2437E2rExYZS6GQ
+ CON/2wVSAlZrcLnxks4Kf4szlMAz+M+9Z48cdCBQ1AeDL/VbcvUoDuHB88E3Zk5M+QvS 7Q== 
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h7ygdjr7f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 03:46:23 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26B3KBmn018377;
+	Mon, 11 Jul 2022 03:46:21 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 3h71a8j3a8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 03:46:20 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26B3kRAv25559492
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Jul 2022 03:46:27 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81B60A4053;
+	Mon, 11 Jul 2022 03:46:17 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 49E8EA4040;
+	Mon, 11 Jul 2022 03:46:14 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.105.173])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 11 Jul 2022 03:46:14 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, vaibhav@linux.ibm.com
+Subject: [PATCH v2] powerpc/papr_scm: Fix nvdimm event mappings
+Date: Mon, 11 Jul 2022 09:16:05 +0530
+Message-Id: <20220711034605.212683-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: OcbqPDvKQuQ2EvjgPEz-RSgMAszZy71K
+X-Proofpoint-ORIG-GUID: OcbqPDvKQuQ2EvjgPEz-RSgMAszZy71K
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-10_18,2022-07-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207110013
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,89 +87,183 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: nvdimm@lists.linux.dev, atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com, kjain@linux.ibm.com, maddy@linux.ibm.com, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, dan.j.williams@intel.com, disgoel@linux.vnet.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We want to move away from using SMT prioroty updates for cpu_relax, and
-use a 'wait' instruction which is similar to x86. As well as being a
-much better fit for what everybody else uses and tests with, priority
-nops are stateful which is nasty (interrupts have to consider they might
-be taken at a different priority), and they're expensive to execute,
-similar to a mtSPR which can effect other threads in the pipe.
+Commit 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+added performance monitoring support for papr-scm nvdimm devices via
+perf interface. Commit also added an array in papr_scm_priv
+structure called "nvdimm_events_map", which got filled based on the
+result of H_SCM_PERFORMANCE_STATS hcall. 
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Currently there is an assumption that the order of events in the
+stats buffer, returned by the hypervisor is same. And that order also
+matches with the events specified in nvdimm driver code. 
+But this assumption is not documented anywhere in Power Architecture
+Platform Requirements (PAPR) document. Although the order
+of events happens to be same on current systems, but it might
+not be true in future generation systems. Fix the issue, by
+adding a static mapping for nvdimm events to corresponding stat-id,
+and removing the dynamic map from papr_scm_priv structure.
 
-Unfortunately qemu TCG does not emulate pause_short properly and will
-cause hangs. I have a patch for it but not merged yet. But if we tune
-qspinlock code it would be best to do it with this patch.
+Fixes: 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
+Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- arch/powerpc/include/asm/processor.h      | 30 +++++++++++++++++++----
- arch/powerpc/include/asm/vdso/processor.h | 10 +++++++-
- 2 files changed, 34 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/pseries/papr_scm.c | 62 ++++++++++-------------
+ 1 file changed, 28 insertions(+), 34 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index fdfaae194ddd..61f16515cbe0 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -355,11 +355,31 @@ static inline unsigned long __pack_fe01(unsigned int fpmode)
+---
+Changelog:
+v1 -> v2
+- To avoid accidental reordering, explicitly defined index for all
+  the events. Also added valid config check in papr_scm_pmu_event_init
+  function as suggested by Michael Ellerman.
+- Did minor commit message changes and remove initialization of
+  rc variable as suggested by Michael Ellerman  
+- Link to the patch v1: https://patchwork.kernel.org/project/linux-nvdimm/patch/20220610133431.410514-1-kjain@linux.ibm.com/
+---
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 82cae08976bc..139e243c3f49 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -124,9 +124,6 @@ struct papr_scm_priv {
  
- #ifdef CONFIG_PPC64
- 
--#define spin_begin()	HMT_low()
+ 	/* The bits which needs to be overridden */
+ 	u64 health_bitmap_inject_mask;
 -
--#define spin_cpu_relax()	barrier()
+-	/* array to have event_code and stat_id mappings */
+-	u8 *nvdimm_events_map;
+ };
+ 
+ static int papr_scm_pmem_flush(struct nd_region *nd_region,
+@@ -350,6 +347,25 @@ static ssize_t drc_pmem_query_stats(struct papr_scm_priv *p,
+ #ifdef CONFIG_PERF_EVENTS
+ #define to_nvdimm_pmu(_pmu)	container_of(_pmu, struct nvdimm_pmu, pmu)
+ 
++static const char * const nvdimm_events_map[] = {
++	[1] = "CtlResCt",
++	[2] = "CtlResTm",
++	[3] = "PonSecs ",
++	[4] = "MemLife ",
++	[5] = "CritRscU",
++	[6] = "HostLCnt",
++	[7] = "HostSCnt",
++	[8] = "HostSDur",
++	[9] = "HostLDur",
++	[10] = "MedRCnt ",
++	[11] = "MedWCnt ",
++	[12] = "MedRDur ",
++	[13] = "MedWDur ",
++	[14] = "CchRHCnt",
++	[15] = "CchWHCnt",
++	[16] = "FastWCnt",
++};
++
+ static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev, u64 *count)
+ {
+ 	struct papr_scm_perf_stat *stat;
+@@ -357,11 +373,15 @@ static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev,
+ 	struct papr_scm_priv *p = (struct papr_scm_priv *)dev->driver_data;
+ 	int rc, size;
+ 
++	/* Invalid eventcode */
++	if (event->attr.config == 0 || event->attr.config >= ARRAY_SIZE(nvdimm_events_map))
++		return -EINVAL;
++
+ 	/* Allocate request buffer enough to hold single performance stat */
+ 	size = sizeof(struct papr_scm_perf_stats) +
+ 		sizeof(struct papr_scm_perf_stat);
+ 
+-	if (!p || !p->nvdimm_events_map)
++	if (!p)
+ 		return -EINVAL;
+ 
+ 	stats = kzalloc(size, GFP_KERNEL);
+@@ -370,7 +390,7 @@ static int papr_scm_pmu_get_value(struct perf_event *event, struct device *dev,
+ 
+ 	stat = &stats->scm_statistic[0];
+ 	memcpy(&stat->stat_id,
+-	       &p->nvdimm_events_map[event->attr.config * sizeof(stat->stat_id)],
++	       nvdimm_events_map[event->attr.config],
+ 		sizeof(stat->stat_id));
+ 	stat->stat_val = 0;
+ 
+@@ -460,10 +480,9 @@ static void papr_scm_pmu_del(struct perf_event *event, int flags)
+ 
+ static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu *nd_pmu)
+ {
+-	struct papr_scm_perf_stat *stat;
+ 	struct papr_scm_perf_stats *stats;
+ 	u32 available_events;
+-	int index, rc = 0;
++	int rc;
+ 
+ 	if (!p->stat_buffer_len)
+ 		return -ENOENT;
+@@ -476,34 +495,12 @@ static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu
+ 	/* Allocate the buffer for phyp where stats are written */
+ 	stats = kzalloc(p->stat_buffer_len, GFP_KERNEL);
+ 	if (!stats) {
+-		rc = -ENOMEM;
+-		return rc;
++		return -ENOMEM;
+ 	}
+ 
+ 	/* Called to get list of events supported */
+ 	rc = drc_pmem_query_stats(p, stats, 0);
+-	if (rc)
+-		goto out;
 -
--#define spin_end()	HMT_medium()
-+#define spin_begin()							\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		"or 1,1,1", /* HMT_LOW */				\
-+		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
-+
-+#define spin_cpu_relax()						\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		/* Pre-POWER10 uses low ; medium priority nops */	\
-+		"nop",							\
-+		/* POWER10 onward uses pause_short (wait 2,0) */	\
-+		PPC_WAIT_BOOKS(2, 0),					\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
-+
-+#define spin_end()							\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		"or 2,2,2", /* HMT_MEDIUM */				\
-+		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
+-	/*
+-	 * Allocate memory and populate nvdimm_event_map.
+-	 * Allocate an extra element for NULL entry
+-	 */
+-	p->nvdimm_events_map = kcalloc(available_events + 1,
+-				       sizeof(stat->stat_id),
+-				       GFP_KERNEL);
+-	if (!p->nvdimm_events_map) {
+-		rc = -ENOMEM;
+-		goto out;
+-	}
  
- #endif
+-	/* Copy all stat_ids to event map */
+-	for (index = 0, stat = stats->scm_statistic;
+-	     index < available_events; index++, ++stat) {
+-		memcpy(&p->nvdimm_events_map[index * sizeof(stat->stat_id)],
+-		       &stat->stat_id, sizeof(stat->stat_id));
+-	}
+-out:
+ 	kfree(stats);
+ 	return rc;
+ }
+@@ -539,7 +536,7 @@ static void papr_scm_pmu_register(struct papr_scm_priv *p)
  
-diff --git a/arch/powerpc/include/asm/vdso/processor.h b/arch/powerpc/include/asm/vdso/processor.h
-index 8d79f994b4aa..1116230ebb08 100644
---- a/arch/powerpc/include/asm/vdso/processor.h
-+++ b/arch/powerpc/include/asm/vdso/processor.h
-@@ -22,7 +22,15 @@
- #endif
+ 	rc = register_nvdimm_pmu(nd_pmu, p->pdev);
+ 	if (rc)
+-		goto pmu_register_err;
++		goto pmu_check_events_err;
  
- #ifdef CONFIG_PPC64
--#define cpu_relax()	do { HMT_low(); HMT_medium(); barrier(); } while (0)
-+#define cpu_relax()							\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		/* Pre-POWER10 uses low ; medium priority nops */	\
-+		"or 1,1,1 ; or 2,2,2",					\
-+		/* POWER10 onward uses pause_short (wait 2,0) */	\
-+		PPC_WAIT_BOOKS(2, 0),					\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
- #else
- #define cpu_relax()	barrier()
- #endif
+ 	/*
+ 	 * Set archdata.priv value to nvdimm_pmu structure, to handle the
+@@ -548,8 +545,6 @@ static void papr_scm_pmu_register(struct papr_scm_priv *p)
+ 	p->pdev->archdata.priv = nd_pmu;
+ 	return;
+ 
+-pmu_register_err:
+-	kfree(p->nvdimm_events_map);
+ pmu_check_events_err:
+ 	kfree(nd_pmu);
+ pmu_err_print:
+@@ -1560,7 +1555,6 @@ static int papr_scm_remove(struct platform_device *pdev)
+ 		unregister_nvdimm_pmu(pdev->archdata.priv);
+ 
+ 	pdev->archdata.priv = NULL;
+-	kfree(p->nvdimm_events_map);
+ 	kfree(p->bus_desc.provider_name);
+ 	kfree(p);
+ 
 -- 
-2.35.1
+2.31.1
 
