@@ -1,54 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B4E570D70
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:36:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29B9570D74
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:37:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhdz95zHqz3chM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:36:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhf0D5hsDz3cCh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:37:32 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pjlkaOk7;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LjF97rqG;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=muriloo@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pjlkaOk7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LjF97rqG;
 	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhdyV4SXQz2x9J
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:36:02 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 7A374B81205;
-	Mon, 11 Jul 2022 22:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E016BC3411C;
-	Mon, 11 Jul 2022 22:35:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657578957;
-	bh=7G6pKX09/F97v2cQQOGAgqFzqkQnDmYMUvTgW5etn68=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=pjlkaOk7gXsJfMHGs2uR127IsIiny3oS5RupRJ+cnoJubzAyUNhCn5ktZYt+bkkLP
-	 ZbDtX8n7xLsb/Br8Mv1I2wz4XulKqiAEcblcVYQnZpDR2Bp6Maf71Fs6eMaIOIztNp
-	 Ex51UBpuF1hijYOOwxJXM1cqULQdAFk+/v7KxUmgZQ183V7UkdKwISf2LEig3t/bcP
-	 vocLQjmt1VTrQXzg5usCbUQTFHRWOqs7iMETGyzXyCnTzT7wZlsgL51BKRD+3E167Y
-	 oD3SYrSVN9/Lz5z2xJj2RNHPyrHh9LS84MX3Q5NixXad+uW+5T5NxNQJIxJyI0r+6o
-	 /k9ndLEaU+MOQ==
-Date: Mon, 11 Jul 2022 17:35:55 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
-Subject: Re: [PATCH 1/5] powerpc/pci: Hide pci_device_from_OF_node() for
- non-powermac code
-Message-ID: <20220711223555.GA702011@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhdzY5YC8z2yMf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:36:57 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26BMDoib011729;
+	Mon, 11 Jul 2022 22:36:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=Xv634OTH60QX2RztipW8ScWcU8MHAMjaw/sJR/cHONs=;
+ b=LjF97rqGnEJJ4CEsrwPTCdmQBuigp9RFJ7wyeoVU+cYNxOo7x2J04b1Wnfz0RZaXUiq7
+ 7iT6pspY5bZTbGmfxtAWNDNv/unZAX5PbnmIi9Aq47YuOSOmonU0o6i/dfaPLb+4QwZU
+ DP2XX6ZUc8zGacolWLcHDyTcUEr+eXZ6KavFbp42HdkGX0wlM+fkQ8MNsd+QDc9ajPM4
+ 1JCKRwleR/YJ+BqNdPsf3vVdrpHeg1CkhSJAKi/tUg2Fuvf6BWIz+DtmUqVPT5OcDLXp
+ 7qY3CLJSrdyJrY56MZnBlEaPY3iPNouW7q4h8pBRnqUszMvHSYBXdNK7C/gxTQWS7cWh CA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8vfd8bvc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 22:36:34 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26BMXaMA007097;
+	Mon, 11 Jul 2022 22:36:33 GMT
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8vfd8bv0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 22:36:33 +0000
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26BMKon8021115;
+	Mon, 11 Jul 2022 22:36:32 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+	by ppma04dal.us.ibm.com with ESMTP id 3h71a9pkr3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 22:36:32 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26BMaV5D10158792
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Jul 2022 22:36:31 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A449C6072;
+	Mon, 11 Jul 2022 22:36:31 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 78E0EC606C;
+	Mon, 11 Jul 2022 22:36:30 +0000 (GMT)
+Received: from localhost (unknown [9.163.4.84])
+	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+	Mon, 11 Jul 2022 22:36:30 +0000 (GMT)
+From: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/2] KVM: PPC: Book3s HV: Cleanup unused function and declarations
+Date: Mon, 11 Jul 2022 19:36:15 -0300
+Message-Id: <20220711223617.63625-1-muriloo@linux.ibm.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220706104308.5390-2-pali@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BNvzsn6XrWp33fK86lTv5l7gMgFDGNNH
+X-Proofpoint-ORIG-GUID: BM2qsaSrrzlvEP4SMh7fhV3CxFTLVyrX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-11_25,2022-07-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 malwarescore=0
+ adultscore=0 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
+ mlxlogscore=243 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2206140000 definitions=main-2207110091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,77 +95,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nick Child <nick.child@ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Juergen Gross <jgross@suse.com>, Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Nicholas Piggin <npiggin@gmail.com>, mopsfelder@gmail.com, Paul Mackerras <paulus@samba.org>, Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 06, 2022 at 12:43:04PM +0200, Pali Rohár wrote:
-> Function pci_device_from_OF_node() is used only in powermac code.
-> So hide it from all other platforms as it is unsed.
+Minor cleanup to remove unused function and declarations.
 
-s/unsed/unused/ (same typo in 3/5 patch)
+Murilo Opsfelder Araujo (2):
+  KVM: PPC: Book3S HV: Remove kvmhv_p9_[set,restore]_lpcr declarations
+  KVM: PPC: Book3s HV: Remove unused function kvmppc_bad_interrupt
 
-These are for the powerpc folks, so I'm just kibbitzing here.
+ arch/powerpc/include/asm/kvm_book3s.h |  3 ---
+ arch/powerpc/kvm/book3s_hv_builtin.c  | 18 ------------------
+ 2 files changed, 21 deletions(-)
 
-> Signed-off-by: Pali Rohár <pali@kernel.org>
-> ---
->  arch/powerpc/include/asm/pci-bridge.h | 2 ++
->  arch/powerpc/kernel/pci_32.c          | 2 ++
->  arch/powerpc/kernel/pci_64.c          | 2 ++
->  3 files changed, 6 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
-> index c85f901227c9..98156932a1f5 100644
-> --- a/arch/powerpc/include/asm/pci-bridge.h
-> +++ b/arch/powerpc/include/asm/pci-bridge.h
-> @@ -170,8 +170,10 @@ static inline struct pci_controller *pci_bus_to_host(const struct pci_bus *bus)
->  	return bus->sysdata;
->  }
->  
-> +#ifdef CONFIG_PPC_PMAC
->  extern int pci_device_from_OF_node(struct device_node *node,
->  				   u8 *bus, u8 *devfn);
-> +#endif
->  #ifndef CONFIG_PPC64
->  
->  extern void pci_create_OF_bus_map(void);
-> diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
-> index 5a174936c9a0..c3b91fb62a71 100644
-> --- a/arch/powerpc/kernel/pci_32.c
-> +++ b/arch/powerpc/kernel/pci_32.c
-> @@ -154,6 +154,7 @@ pcibios_make_OF_bus_map(void)
->  }
->  
->  
-> +#ifdef CONFIG_PPC_PMAC
->  /*
->   * Returns the PCI device matching a given OF node
->   */
-> @@ -193,6 +194,7 @@ int pci_device_from_OF_node(struct device_node *node, u8 *bus, u8 *devfn)
->  	return -ENODEV;
->  }
->  EXPORT_SYMBOL(pci_device_from_OF_node);
-> +#endif
->  
->  /* We create the "pci-OF-bus-map" property now so it appears in the
->   * /proc device tree
-> diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
-> index 19b03ddf5631..0c7cfb9fab04 100644
-> --- a/arch/powerpc/kernel/pci_64.c
-> +++ b/arch/powerpc/kernel/pci_64.c
-> @@ -286,6 +286,7 @@ int pcibus_to_node(struct pci_bus *bus)
->  EXPORT_SYMBOL(pcibus_to_node);
->  #endif
->  
-> +#ifdef CONFIG_PPC_PMAC
->  int pci_device_from_OF_node(struct device_node *np, u8 *bus, u8 *devfn)
->  {
->  	if (!PCI_DN(np))
-> @@ -294,3 +295,4 @@ int pci_device_from_OF_node(struct device_node *np, u8 *bus, u8 *devfn)
->  	*devfn = PCI_DN(np)->devfn;
->  	return 0;
->  }
-> +#endif
-> -- 
-> 2.20.1
-> 
+-- 
+2.36.1
+
