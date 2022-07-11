@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF72570464
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 15:35:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9FA570489
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 15:43:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LhPz06zzGz3c1M
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 23:35:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LhQ7M3LpMz3c5h
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 23:42:55 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Yh4+12vn;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=wangkefeng.wang@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Yh4+12vn;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhPyZ3Mcbz3by8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 23:35:15 +1000 (AEST)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.53])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4LhPvr4LMyzkWtj;
-	Mon, 11 Jul 2022 21:32:56 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 11 Jul 2022 21:35:05 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Mon, 11 Jul 2022 21:35:04 +0800
-Message-ID: <13b283fe-10f7-376f-9b8e-856e4d1e0ede@huawei.com>
-Date: Mon, 11 Jul 2022 21:35:04 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhQ6m4Myxz3by6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 23:42:24 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id EFF68B80F10;
+	Mon, 11 Jul 2022 13:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1876C3411C;
+	Mon, 11 Jul 2022 13:42:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1657546938;
+	bh=KqT9jXk7gPcHs0OREpA0JbWzkxkbkXw/FOHUWxufhRo=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Yh4+12vnfz/2k7t73GAfVvazukytAqGwPao+x+u63zCaZL4Ed1Et6Pd6qTMkTuVhH
+	 G62ZGbXc5ca1lpNJmS4AHKmiSO1cGZFv7A5Ez/skc2P/E4ib4x6Nm8F1GGYFGmlKUe
+	 jdqg9f8RZ0m5m1jQQn4TwF4Dy/68gsc4RcbQg4J4Ic+yxz5Hx5J14pZeGgSnGZjxwe
+	 YWwtmifKVmuztiw6SJzq4vmtONW1aXJE1mA2qZqstUuVhFqdX//Wv9UNXgKpHB0iNT
+	 Q4se9Xx61BaiigNoUqPFsE09l9Lsp1fQQg3kM5pkv2xy829N7Qnf7uHPzWwq5j0K5t
+	 wDC8Sbj6efthQ==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@nxp.com, perex@perex.cz, festevam@gmail.com, lgirdwood@gmail.com, shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com, alsa-devel@alsa-project.org, tiwai@suse.com
+In-Reply-To: <1657507190-14546-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1657507190-14546-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_utils: Drop usage of __clk_get_name()
+Message-Id: <165754693638.334539.15476852072708408930.b4-ty@kernel.org>
+Date: Mon, 11 Jul 2022 14:42:16 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v2 2/4] mm: rmap: Allow platforms without mm_cpumask to
- defer TLB flush
-Content-Language: en-US
-To: Barry Song <21cnbao@gmail.com>, <akpm@linux-foundation.org>,
-	<linux-mm@kvack.org>, <linux-arm-kernel@lists.infradead.org>,
-	<x86@kernel.org>, <catalin.marinas@arm.com>, <will@kernel.org>,
-	<linux-doc@vger.kernel.org>
-References: <20220711034615.482895-1-21cnbao@gmail.com>
- <20220711034615.482895-3-21cnbao@gmail.com>
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <20220711034615.482895-3-21cnbao@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,56 +59,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, arnd@arndb.de, corbet@lwn.net, realmz6@gmail.com, linux-kernel@vger.kernel.org, yangyicong@hisilicon.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, darren@os.amperecomputing.com, huzhanyuan@oppo.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Barry，
+On Mon, 11 Jul 2022 10:39:50 +0800, Shengjiu Wang wrote:
+> Avoid build errors when CONFIG_COMMON_CLK is not set/enabled.
+> 
+> ERROR: modpost: "__clk_get_name" [sound/soc/fsl/snd-soc-fsl-utils.ko] undefined!
+> 
+> 
 
-On 2022/7/11 11:46, Barry Song wrote:
-> From: Barry Song <v-songbaohua@oppo.com>
->
-> Platforms like ARM64 have hareware TLB shootdown broadcast. They
-> don't maintain mm_cpumask but just send tlbi and related sync
-> instructions for TLB flush. task's mm_cpumask is normally empty
-> in this case. We also allow deferred TLB flush on this kind of
-> platforms.
->
-> Signed-off-by: Barry Song <v-songbaohua@oppo.com>>
-> ---
-...
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 169e64192e48..7bf54f57ca01 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -951,6 +951,9 @@ config ARCH_HAS_CURRENT_STACK_POINTER
->   	  register alias named "current_stack_pointer", this config can be
->   	  selected.
->   
-> +config ARCH_HAS_MM_CPUMASK
-> +	bool
-> +
->   config ARCH_HAS_VM_GET_PAGE_PROT
->   	bool
->   
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 5bcb334cd6f2..13d4f9a1d4f1 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -692,6 +692,10 @@ static bool should_defer_flush(struct mm_struct *mm, enum ttu_flags flags)
->   	if (!(flags & TTU_BATCH_FLUSH))
->   		return false;
->   
-> +#ifndef CONFIG_ARCH_HAS_MM_CPUMASK
-> +	return true;
-> +#endif
-> +
+Applied to
 
-Here is another option to enable arch's tlbbatch defer
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-[1] 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20171101101735.2318-2-khandual@linux.vnet.ibm.com/
+Thanks!
 
->   	/* If remote CPUs need to be flushed then defer batch the flush */
->   	if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
->   		should_defer = true;
+[1/1] ASoC: fsl_utils: Drop usage of __clk_get_name()
+      commit: eaa27e7fe43f16fe587c3e93fd5c25ce86be3c43
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
