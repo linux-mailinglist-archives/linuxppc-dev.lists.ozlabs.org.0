@@ -2,68 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B14570D96
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15236570DA6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:55:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LhfLT5Qb1z3c56
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:53:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LhfNg6bFkz3cB3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:55:15 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ErppBv82;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RO7PsVoX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::629; helo=mail-ej1-x629.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ErppBv82;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RO7PsVoX;
 	dkim-atps=neutral
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhfKq2RL8z2xCB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:52:45 +1000 (AEST)
-Received: by mail-ej1-x629.google.com with SMTP id b11so11258982eju.10
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 15:52:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=i2JP/AK/462flQNf3WkuAKr99hiwoo70NGIBG6Typ3w=;
-        b=ErppBv825hWACq85NgILEoUpFIDS7zhQU4dBsF65NWh9mqK1QibzrTz5JjL/oe9P4P
-         xddf9vJAS5jJevier0WxjtSRTzqNqYMTuFMbLyHy18aT7xPi4oZPjKUXEDf3BhSaLDa4
-         4O3xw1J1KLXUrMcEs66ayBXSRlLIZbC064ewsp5aVZAPGfL0CMXNAFyBX/9qyBVJbAOu
-         xoSUM1m6sng8YQvv6Z+b3Z5XjXwnY/UzydMHSmIOJ28NgRuG0eCkAIYDttY9WOuNkv9g
-         v51CIgVGXO+hyPttpvZ9Y8r1QIuDcwQgPgw5HdmKK2Y4Fsxmh65jR/Qqh4XcEPpMGnwl
-         PGqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=i2JP/AK/462flQNf3WkuAKr99hiwoo70NGIBG6Typ3w=;
-        b=onXHNOBDG+sRZwtP2CEOa6SnlswOm4Yxvc8KsBV/v3OFLNy0DrdwINWULd+F53wsTk
-         mG5mQWNxjyAaBWR/1fdHgdt33BOpz+Xzle0WhCSoqHOn6LgoQuFU2lrYof4feDeMYu+/
-         7s0lagShZQm6YUg5bD3oRB4CQokGICP+E5RcP+kj297dQbv5KWp9GBMijsrWlmu76o7S
-         dUgKGYa6X4lMVr6LhbsVdE5+WcUK4pG3FFDlYlK9o+YUb7GgrdEm+K5VVo5GbbB5BVH+
-         T7OALSIKolFqJ47ALKuIj/pN4LdseZCMlQABwJJ6QWi792jteRNv0Nxg//wj43pY+LS1
-         1S8Q==
-X-Gm-Message-State: AJIora9VOA1xA2bxdgjq1GfYjxCx7uSZ3ClGlovbxlUjHtTFDyTk8aYH
-	LKBoahKlcFPDwSiqXUMSMuIinPgZxqZ/ZK9CJnE=
-X-Google-Smtp-Source: AGRyM1u3B9GaqsJzc2ZnGgAx20N9pPna/H/YyY3hApLIj/mDA7Feo0MOU0K0s1MJSpzYriYuHv0RZqEbB9CZJ8ZQIzU=
-X-Received: by 2002:a17:906:8a45:b0:72b:31d4:d537 with SMTP id
- gx5-20020a1709068a4500b0072b31d4d537mr17046686ejc.170.1657579957647; Mon, 11
- Jul 2022 15:52:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhfN31dJMz2x9J
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:54:43 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 35485612D5;
+	Mon, 11 Jul 2022 22:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA47C34115;
+	Mon, 11 Jul 2022 22:54:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1657580079;
+	bh=xG4WYnt2pDWcAgSjzTQqgeaw1HV6zEbIP5TmSZQv9V4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=RO7PsVoXA2lACTlYaApR1PY+FprRwxwn3Z1jOocown9d/2WeRqXQXyiuNCJ7YA6SL
+	 HgZ7N4arbFKjmQkBdue4doz2FDjQhT3tzZmZ0VNudGvZbAjMVHgIXRXh2rKnlwRH81
+	 Q3YWaGMm3ZTX85M91QhtsbxE9/Z+8pk7gEeVW+GQmzYVGTuJikGn+gn2npZirHQBg5
+	 qvX5ZJ2DrXcT+HH3S2lTYOOg+m163cM7KOX2XLzmlQjSLluBOiz69xKGVNKAEhKEzn
+	 JhHkM+xszcqy0PlwilpnBmdIQ81Ngl6NvOVWsK6NkoJgBIPqo19Zjia47d96dY/M5Q
+	 xmqu/i5M81GOA==
+Date: Mon, 11 Jul 2022 17:54:37 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Mohamed Khalfella <mkhalfella@purestorage.com>
+Subject: Re: [PATCH] PCI/AER: Iterate over error counters instead of error
+ strings
+Message-ID: <20220711225437.GA703490@bhelgaas>
 MIME-Version: 1.0
-References: <20220711034615.482895-1-21cnbao@gmail.com> <20220711034615.482895-3-21cnbao@gmail.com>
- <13b283fe-10f7-376f-9b8e-856e4d1e0ede@huawei.com>
-In-Reply-To: <13b283fe-10f7-376f-9b8e-856e4d1e0ede@huawei.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 12 Jul 2022 10:52:24 +1200
-Message-ID: <CAGsJ_4wW=3xsmB1jzcv=sD9OhhPc0v=+odp=JY80vEbMY6OZ_g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] mm: rmap: Allow platforms without mm_cpumask to
- defer TLB flush
-To: Kefeng Wang <wangkefeng.wang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220509181441.31884-1-mkhalfella@purestorage.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,86 +59,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Yicong Yang <yangyicong@hisilicon.com>, Linux-MM <linux-mm@kvack.org>, =?UTF-8?B?6YOt5YGl?= <guojian@oppo.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, =?UTF-8?B?5byg6K+X5piOKFNpbW9uIFpoYW5nKQ==?= <zhangshiming@oppo.com>, =?UTF-8?B?5p2O5Z+56ZSLKHdpbmsp?= <lipeifeng@oppo.com>, Jonathan Corbet <corbet@lwn.net>, x86 <x86@kernel.org>, linux-mips@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, real mz <realmz6@gmail.com>, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, Darren Hart <darren@os.amperecomputing.com>, LAK <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, huzhanyuan@oppo.com, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, Meeta Saggi <msaggi@purestorage.com>, Eric Badger <ebadger@purestorage.com>, Oliver O'Halloran <oohall@gmail.com>, stable@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, "open list:PCI ENHANCED ERROR HANDLING \(EEH\) FOR POWERPC" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 12, 2022 at 1:35 AM Kefeng Wang <wangkefeng.wang@huawei.com> wr=
-ote:
->
-> Hi Barry=EF=BC=8C
->
-> On 2022/7/11 11:46, Barry Song wrote:
-> > From: Barry Song <v-songbaohua@oppo.com>
-> >
-> > Platforms like ARM64 have hareware TLB shootdown broadcast. They
-> > don't maintain mm_cpumask but just send tlbi and related sync
-> > instructions for TLB flush. task's mm_cpumask is normally empty
-> > in this case. We also allow deferred TLB flush on this kind of
-> > platforms.
-> >
-> > Signed-off-by: Barry Song <v-songbaohua@oppo.com>>
-> > ---
-> ...
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index 169e64192e48..7bf54f57ca01 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -951,6 +951,9 @@ config ARCH_HAS_CURRENT_STACK_POINTER
-> >         register alias named "current_stack_pointer", this config can b=
-e
-> >         selected.
-> >
-> > +config ARCH_HAS_MM_CPUMASK
-> > +     bool
-> > +
-> >   config ARCH_HAS_VM_GET_PAGE_PROT
-> >       bool
-> >
-> > diff --git a/mm/rmap.c b/mm/rmap.c
-> > index 5bcb334cd6f2..13d4f9a1d4f1 100644
-> > --- a/mm/rmap.c
-> > +++ b/mm/rmap.c
-> > @@ -692,6 +692,10 @@ static bool should_defer_flush(struct mm_struct *m=
-m, enum ttu_flags flags)
-> >       if (!(flags & TTU_BATCH_FLUSH))
-> >               return false;
-> >
-> > +#ifndef CONFIG_ARCH_HAS_MM_CPUMASK
-> > +     return true;
-> > +#endif
-> > +
->
-> Here is another option to enable arch's tlbbatch defer
->
+On Mon, May 09, 2022 at 06:14:41PM +0000, Mohamed Khalfella wrote:
+> PCI AER stats counters sysfs attributes need to iterate over
+> stats counters instead of stats names. Also, added a build
+> time check to make sure all counters have entries in strings
+> array.
+> 
+> Fixes: 0678e3109a3c ("PCI/AER: Simplify __aer_print_error()")
+> Cc: stable@vger.kernel.org
+> Reported-by: Meeta Saggi <msaggi@purestorage.com>
+> Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+> Reviewed-by: Meeta Saggi <msaggi@purestorage.com>
+> Reviewed-by: Eric Badger <ebadger@purestorage.com>
 
-This option is even better than simply having ARCH_HAS_MM_CPUMASK
-since arch might make decisions based on specific hardware characters.
-for example,
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2017-November/165468.html
+I added some info about why we need this to the commit log and applied
+to pci/err for v5.20.  Thank you!
 
-+bool arch_tlbbatch_should_defer(struct mm_struct *mm)
-+{
-+     if (!radix_enabled() || cpu_has_feature(CPU_FTR_POWER9_DD1))
-+         return false;
-+
-+     if (!mm_is_thread_local(mm))
-+         return true;
-+
-+     return false;
-+}
-
-In this case, having MM_CPUMASK doesn't necessarily mean tlbbatch is needed=
-.
-
-> [1]
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20171101101735.23=
-18-2-khandual@linux.vnet.ibm.com/
->
-> >       /* If remote CPUs need to be flushed then defer batch the flush *=
-/
-> >       if (cpumask_any_but(mm_cpumask(mm), get_cpu()) < nr_cpu_ids)
-> >               should_defer =3D true;
-
-Thanks
-Barry
+> ---
+>  drivers/pci/pcie/aer.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 9fa1f97e5b27..ce99a6d44786 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -533,7 +533,7 @@ static const char *aer_agent_string[] = {
+>  	u64 *stats = pdev->aer_stats->stats_array;			\
+>  	size_t len = 0;							\
+>  									\
+> -	for (i = 0; i < ARRAY_SIZE(strings_array); i++) {		\
+> +	for (i = 0; i < ARRAY_SIZE(pdev->aer_stats->stats_array); i++) {\
+>  		if (strings_array[i])					\
+>  			len += sysfs_emit_at(buf, len, "%s %llu\n",	\
+>  					     strings_array[i],		\
+> @@ -1342,6 +1342,11 @@ static int aer_probe(struct pcie_device *dev)
+>  	struct device *device = &dev->device;
+>  	struct pci_dev *port = dev->port;
+>  
+> +	BUILD_BUG_ON(ARRAY_SIZE(aer_correctable_error_string) <
+> +		     AER_MAX_TYPEOF_COR_ERRS);
+> +	BUILD_BUG_ON(ARRAY_SIZE(aer_uncorrectable_error_string) <
+> +		     AER_MAX_TYPEOF_UNCOR_ERRS);
+> +
+>  	/* Limit to Root Ports or Root Complex Event Collectors */
+>  	if ((pci_pcie_type(port) != PCI_EXP_TYPE_RC_EC) &&
+>  	    (pci_pcie_type(port) != PCI_EXP_TYPE_ROOT_PORT))
+> -- 
+> 2.29.0
+> 
