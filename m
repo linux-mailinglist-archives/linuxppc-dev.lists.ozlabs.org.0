@@ -1,58 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A2F570C27
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 22:44:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C813570CFE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 23:51:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LhbTt41Rbz3c5v
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 06:44:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aRG3qlu8;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhcz32Cxfz3cdn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 07:51:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=dinguyen@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aRG3qlu8;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhbTB438yz3c1s
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 06:43:58 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id E4E43B81217;
-	Mon, 11 Jul 2022 20:43:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5BBC341C0;
-	Mon, 11 Jul 2022 20:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657572232;
-	bh=cp41t+VP5zpzqWweFhXlDmnM1wrue4Oj0YaNSsnkppo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aRG3qlu8UFv6GCt770R2iC1Nn/k2d2ZZkq8YVXrKOSkRIGx/97W21I2Zdpp2kvQZZ
-	 KuyKHJSCwX7fmQ/aRk1bnlNJ8KyGBKAIf6wfLoaj+ZGY/r7YC8F4ZXLbCSIXay8S3U
-	 KO1cCVQmcGHIuoeCVWpgDm8SLn2+onrydiOidsSYmIF+WPeB57GMcSRa0c2AOerTEx
-	 8wJNGlnRymBpEln9x5KoLhRbmS/nGaKmk+GXs/cnV0NfNmMTv8Jcr5e9ZRfkzStYWA
-	 a4l5nSOt+INBze/1hqe2LjRwOeBcCIZslW2jmgjdP8uyldi4q1iH8r9vF36qh/SNmy
-	 6vhOBCbduXcxQ==
-Message-ID: <88328a82-7275-608e-46f2-4203df9d9fe6@kernel.org>
-Date: Mon, 11 Jul 2022 15:43:45 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH V7 15/26] nios2/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
-Content-Language: en-US
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20220711070600.2378316-1-anshuman.khandual@arm.com>
- <20220711070600.2378316-16-anshuman.khandual@arm.com>
-From: Dinh Nguyen <dinguyen@kernel.org>
-In-Reply-To: <20220711070600.2378316-16-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhcyb3Xrhz3c1n
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 07:51:02 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 26BLmgGA018033;
+	Mon, 11 Jul 2022 16:48:42 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 26BLmeGc018032;
+	Mon, 11 Jul 2022 16:48:40 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Mon, 11 Jul 2022 16:48:40 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
+Message-ID: <20220711214840.GJ25951@gate.crashing.org>
+References: <20220524093939.30927-1-pali@kernel.org> <20220702094405.tp7eo4df7fjvn2ng@pali> <8D562851-304F-4153-9194-426CC22B7FF2@ellerman.id.au> <20220704103951.nm4m4kpgnus3ucqo@pali> <CAK8P3a2tdny8SA7jcqhUZT13iq1mYqjFueC-gnTUZA1JKCtfgg@mail.gmail.com> <20220708171227.74nbcgsk63y4bdna@pali> <CAK8P3a3YMqGEjRr+ZD4Enm4pnuNNZOaeXqpY=PDXAP7w3P7y4A@mail.gmail.com> <d9339bb9-2410-bea5-7502-1c7839707f4e@csgroup.eu> <20220711161442.GD25951@gate.crashing.org> <2552726a-cca4-ecd4-6fca-4f73bbf7942e@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2552726a-cca4-ecd4-6fca-4f73bbf7942e@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,95 +43,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xtensa@linux-xtensa.org, linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org, linux-um@lists.infradead.org, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, hch@infradead.org, linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org, linux-csky@vger.kernel.org, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi!
 
-
-On 7/11/22 02:05, Anshuman Khandual wrote:
-> This enables ARCH_HAS_VM_GET_PAGE_PROT on the platform and exports standard
-> vm_get_page_prot() implementation via DECLARE_VM_GET_PAGE_PROT, which looks
-> up a private and static protection_map[] array. Subsequently all __SXXX and
-> __PXXX macros can be dropped which are no longer needed.
+On Mon, Jul 11, 2022 at 05:32:09PM +0000, Christophe Leroy wrote:
+> Le 11/07/2022 à 18:14, Segher Boessenkool a écrit :
+> >>     CC      arch/powerpc/kernel/irq.o
+> >> {standard input}: Assembler messages:
+> >> {standard input}:3535: Error: unrecognized opcode: `wrteei'
+> >> {standard input}:5608: Error: unrecognized opcode: `wrteei'
+> > 
+> > What -mcpu= did it use here?
 > 
-> Cc: Dinh Nguyen <dinguyen@kernel.org>
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->   arch/nios2/Kconfig               |  1 +
->   arch/nios2/include/asm/pgtable.h | 16 ----------------
->   arch/nios2/mm/init.c             | 20 ++++++++++++++++++++
->   3 files changed, 21 insertions(+), 16 deletions(-)
+> -mcpu=powerpc64
 > 
-> diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
-> index 4167f1eb4cd8..e0459dffd218 100644
-> --- a/arch/nios2/Kconfig
-> +++ b/arch/nios2/Kconfig
-> @@ -6,6 +6,7 @@ config NIOS2
->   	select ARCH_HAS_SYNC_DMA_FOR_CPU
->   	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
->   	select ARCH_HAS_DMA_SET_UNCACHED
-> +	select ARCH_HAS_VM_GET_PAGE_PROT
->   	select ARCH_NO_SWAP
->   	select COMMON_CLK
->   	select TIMER_OF
-> diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-> index 262d0609268c..470516d4555e 100644
-> --- a/arch/nios2/include/asm/pgtable.h
-> +++ b/arch/nios2/include/asm/pgtable.h
-> @@ -40,24 +40,8 @@ struct mm_struct;
->    */
->   
->   /* Remove W bit on private pages for COW support */
-> -#define __P000	MKP(0, 0, 0)
-> -#define __P001	MKP(0, 0, 1)
-> -#define __P010	MKP(0, 0, 0)	/* COW */
-> -#define __P011	MKP(0, 0, 1)	/* COW */
-> -#define __P100	MKP(1, 0, 0)
-> -#define __P101	MKP(1, 0, 1)
-> -#define __P110	MKP(1, 0, 0)	/* COW */
-> -#define __P111	MKP(1, 0, 1)	/* COW */
->   
->   /* Shared pages can have exact HW mapping */
-> -#define __S000	MKP(0, 0, 0)
-> -#define __S001	MKP(0, 0, 1)
-> -#define __S010	MKP(0, 1, 0)
-> -#define __S011	MKP(0, 1, 1)
-> -#define __S100	MKP(1, 0, 0)
-> -#define __S101	MKP(1, 0, 1)
-> -#define __S110	MKP(1, 1, 0)
-> -#define __S111	MKP(1, 1, 1)
->   
->   /* Used all over the kernel */
->   #define PAGE_KERNEL __pgprot(_PAGE_PRESENT | _PAGE_CACHED | _PAGE_READ | \
-> diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
-> index 613fcaa5988a..ae24687d12ad 100644
-> --- a/arch/nios2/mm/init.c
-> +++ b/arch/nios2/mm/init.c
-> @@ -124,3 +124,23 @@ const char *arch_vma_name(struct vm_area_struct *vma)
->   {
->   	return (vma->vm_start == KUSER_BASE) ? "[kuser]" : NULL;
->   }
-> +
-> +static const pgprot_t protection_map[16] = {
-> +	[VM_NONE]					= MKP(0, 0, 0),
-> +	[VM_READ]					= MKP(0, 0, 1),
-> +	[VM_WRITE]					= MKP(0, 0, 0),
-> +	[VM_WRITE | VM_READ]				= MKP(0, 0, 1),
-> +	[VM_EXEC]					= MKP(1, 0, 0),
-> +	[VM_EXEC | VM_READ]				= MKP(1, 0, 1),
-> +	[VM_EXEC | VM_WRITE]				= MKP(1, 0, 0),
-> +	[VM_EXEC | VM_WRITE | VM_READ]			= MKP(1, 0, 1),
-> +	[VM_SHARED]					= MKP(0, 0, 0),
-> +	[VM_SHARED | VM_READ]				= MKP(0, 0, 1),
-> +	[VM_SHARED | VM_WRITE]				= MKP(0, 1, 0),
-> +	[VM_SHARED | VM_WRITE | VM_READ]		= MKP(0, 1, 1),
-> +	[VM_SHARED | VM_EXEC]				= MKP(1, 0, 0),
-> +	[VM_SHARED | VM_EXEC | VM_READ]			= MKP(1, 0, 1),
-> +	[VM_SHARED | VM_EXEC | VM_WRITE]		= MKP(1, 1, 0),
-> +	[VM_SHARED | VM_EXEC | VM_WRITE | VM_READ]	= MKP(1, 1, 1)
-> +};
-> +DECLARE_VM_GET_PAGE_PROT
+> > wrteei is not a PowerPC insn (it is BookE, instead), so it is not
+> > recognised without an appropriate -mcpu=.
+> > 
+> >> If I select the e5500 (without altivec) or e6500 I get:
+> >>
+> >>     CC      arch/powerpc/kernel/io.o
+> >> {standard input}: Assembler messages:
+> >> {standard input}:381: Error: unrecognized opcode: `eieio'
+> > 
+> > Same question.  eieio is a base PowerPC instruction, so this one is
+> > "interesting" :-)
+> 
+> -mcpu=e500mc64 (for e5500)
+> -mcpu=e6500 (for e6500)
+> 
+> I had to replace 'eieio' instruction by 'mbar' instruction.
 
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+I saw some patches fly by...  you have it all fixed with that?
+
+> Seems like binutils added 'eieio' to e500 in 2010 via commit 
+> e01d869a3be, but it seems it is only for the 85xx, not for the others.
+
+I believe the eieio instruction is disabled on some e500 models, because
+it does not work correctly, so EIEIO_EN=1 cannot work, something like
+that?
+
+
+Segher
