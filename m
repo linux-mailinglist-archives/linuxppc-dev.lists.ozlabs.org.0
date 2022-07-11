@@ -1,116 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41528570D6D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:35:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0A5570D27
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:05:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhdxc0vWSz3chK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:35:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LhdHR3YKpz3cCy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:05:39 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=IOkTp+6r;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=boELpH/9;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.22.52; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=IOkTp+6r;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=boELpH/9;
 	dkim-atps=neutral
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2052.outbound.protection.outlook.com [40.107.22.52])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhTJW5ycnz3bl0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 02:06:03 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KEwhWuZDy6gjvPnMsEYHNQT5fcFG4V06fidvuDlLYWrRtImZJQN13nHeBSxUHZqdgxpKEVUVOlPD3KG3Ximc9W1z2hxVMdSr+z21QGimFEUWrWjTyn1VnhFCM3ga7skrjZ9N/YpOegBGXbjbknzsEBFdJQVVW2SxtzeOQ/cuSAxfJTOalZQiv4VtgixgE2Q7Le4y0/euPtG16GUGYsCwA+y99wG53Z75WZNjkEx3dLYInAb2j6yr72GtyocMjXh64NSAZdJp3Wfr7o6t8p/j3/FqxJnVXdCTEJ3ozbqhVMrQoTBcQzP+w3vwUxoA4NGSfjHZX5gGTmzmZ2HkxPmMsw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=37YWCy9jRz6TqCG7bmXi+Z4wefx1d4OKtFt1N83LAtw=;
- b=fOY7JBfxyj+saEwyTFRk6bhH7LLflEFuzCv4avVcJpX/lVI0wt1OaJFTQMW3BgZN7EEffbB/2ngF+xDly729UtYQa0bKGaOtKdExceIpsTuSEnnEWlPMWJiCX1wAdwP/lQ6iYU4LQqg4F+4QIJIfyxbvwmzn0nj3pmwgjju9feoOf6036c7IpHmZfae4pcDwzvpxcHGOAlAF8aJI/EyLhjzXjKTu2uzdjpxPZWFHxKAzPjFMO7JVtOV2L229ZrSHZLUZulQrvR4jtgS2F5SMDYjxVhCEohG73VpyG5EbBsNdsSonvQbZF/vZuA7uL9Y3BsCrdYUfGxXyhFDuzTxlmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=37YWCy9jRz6TqCG7bmXi+Z4wefx1d4OKtFt1N83LAtw=;
- b=IOkTp+6rE1C1uvbf0zZSbE3kwrYKz9HjqHsivjWnBLHoUUixfMf5Tku1Han47G5qweazI+nSDRnBlCpkm4/mLH8AUItjN2xf+DIkOmjIKpO2UkAX04qSgl7FXhBnSBDBLiGVI4nmyfhSwq++F01xjgILOPHV2rgbecdiCK2joKEQpHDR60F6NoNUjRBeutnBlUZTK7PH3BG6+Sih1fe2p7NNY+lR1WYNlck5UNLIQBUrbkERCslcF8Jx/h8dpY5iGv/7nfIn9E1upht3/WTiJkPQmGcdsGNZaE7wZNYq4okTGF5wAxSfgSs+TA9s6XV0OYxxYI9U061y5WVUcPaZ4A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
- by DB7PR03MB5113.eurprd03.prod.outlook.com (2603:10a6:10:77::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5417.26; Mon, 11 Jul
- 2022 16:05:57 +0000
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::757e:b75f:3449:45b1]) by DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::757e:b75f:3449:45b1%6]) with mapi id 15.20.5417.026; Mon, 11 Jul 2022
- 16:05:57 +0000
-From: Sean Anderson <sean.anderson@seco.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org
-Subject: [RFC PATCH net-next 8/9] powerpc: dts: Add compatible strings for Lynx PCSs
-Date: Mon, 11 Jul 2022 12:05:18 -0400
-Message-Id: <20220711160519.741990-9-sean.anderson@seco.com>
-X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
-In-Reply-To: <20220711160519.741990-1-sean.anderson@seco.com>
-References: <20220711160519.741990-1-sean.anderson@seco.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR16CA0056.namprd16.prod.outlook.com
- (2603:10b6:208:234::25) To DB7PR03MB4972.eurprd03.prod.outlook.com
- (2603:10a6:10:7d::22)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2fd540a4-2e76-4156-da14-08da63573d66
-X-MS-TrafficTypeDiagnostic: DB7PR03MB5113:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	azXGz15jR1qmKnoAoA52nufStXxQtE+IHbZ/sJbosAZGIMqEhS0vrU/xLYNZYQTq7IgK6lo4dMC2HOLA6gqePI1w8I7GJSrJ6jBTGbJx3rxgHbHfl71nQvlq4x/s9geb5kkCFcno2R+iqJV6RvS3XxMNQA/ua1vYkAjEkGGTZ7zQeZkeZLT3AZrn5pdbUQ69oz5md2kwKDtdqFzaBrYvjihB0A/ueLzjGakm8qXtpLlC/SarNZ+UvPsSBI2pQ02bsh8QYYCRP5OEWCKSzsS9ZloetqmUn5sNc3JBYDGJJxF/rX3EihQ80963tnwjZX0uuGjvIC5rwJE4Wwwwa/+SxW9ozjwrjb0vONh917BnZJrihc+0XiZbJDYOt+sZI6wU7aiABKUxzgfBT/VGvso++sH6UcppH3uO/n+NUswF8TZDa5tCST4IG3f/Pwui/1pCrY2vvO515siPqcZ6UomxNPZurr66nCJg5iRuqRWZ9953VFCPE2VY4gR1IC6dLLV4o50wYIBZIOl6+OaIud99JuL/1WnYfwfVXe+hWgksiP062ZOa9iSCfTp3VPAdmb8rsjqW8MbEsvmX8MxTEmc0j8GEZx0F8i9GRtqOVgey8rMaNM5DockucpbNkNfOMU1I35be2LoADfXbEEby/je8Gn8o7vLH5HUZAn5OntFmF480Dfd0CTg0IZ2XBJBfdlYBjyYdjhYo6BDGwZoVnRNmME3u5E+FWv6Bs0CxCWFbB7LHfW87mCuIiAYVCILbTG8qt5Acn3bSJDwcavyTT422oRPOE6CFzWIhcLzO9ucbqN8RM6lDugBScVGBdrXb/Afu
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(346002)(136003)(396003)(376002)(39850400004)(366004)(83380400001)(86362001)(38350700002)(66946007)(38100700002)(4326008)(8936002)(66556008)(66476007)(8676002)(36756003)(6512007)(316002)(54906003)(30864003)(5660300002)(44832011)(6666004)(7416002)(2906002)(6506007)(41300700001)(26005)(6486002)(52116002)(478600001)(110136005)(186003)(1076003)(2616005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?tgEVHvCgATT06zsLf1qbIS1iUo6JNzv5SAtCwLxxrt/9ZQN7FrhOjcqOXPWw?=
- =?us-ascii?Q?k/Sp85+6OVp5cgShmTv69UXycvR+MOeXxoCEbOUm4/1wWzTp9aiB27xlH0JE?=
- =?us-ascii?Q?rKebq4kZk0IvtP0AXe0mvCNY9Dk+fWD4VCgdEQ0DKn6kjx0JkK0gFcUJvBHP?=
- =?us-ascii?Q?CI8jhojnsk92IHpdReYOhse2KlOpM0BbFZSItnQGmrpTkEYtwODtpB30WFf7?=
- =?us-ascii?Q?aGvx2V39PxxVXcw6OgUGELg4UPbL4+hTk8RbnAWiZjVzzyndQok6oj1NLgM/?=
- =?us-ascii?Q?J04OcV3aHA8U3p7kXdmTw+msH5bZjYGjF7pIuH0NhNYFoiDFDpRcoQ/7bHLw?=
- =?us-ascii?Q?m2tEiDSkLjfBisnmToK+Qx5rbpFKUguyBuAIMmyc8rhSMV7RRnaCo1dUk6OI?=
- =?us-ascii?Q?Ha8myjgu0lqBaHRYocOh4sfv0Si/Fa471kCqvn8X6ox32vzfoIUkyBA1SGe7?=
- =?us-ascii?Q?IVhCZGIdOCcUoJ4kWJM97O63O1KeLg93ZiVM0JNuGTaimgGHqhZzQYZbgt1f?=
- =?us-ascii?Q?H6C+xgH7yDkRtefiJ+4uJxAhdkT/YYg730tMe7YhU7J+qqwBb5jtqvgneJGB?=
- =?us-ascii?Q?E/uWZrGX0Ti9CmNu4fiDvDkowgOJjCrRYkoAKkgKv0za1vWA9Usy0WMVNR9f?=
- =?us-ascii?Q?64JmWAYZpfD7xctBNDD//nDrkY4WH037I/z/k+8hLm5AyeSTRsQiQfmY5D9d?=
- =?us-ascii?Q?w1goZW8L5aGExhd++cGLOY/1RqxuZ+SqfpiXkx6aOuWw+PGrA+6HcxuQv89G?=
- =?us-ascii?Q?kxmzvgAICbshYh1DPVSN1mKmJ7MTprGgxH630/NrLaCY9uWLaUAEtyCnBuZG?=
- =?us-ascii?Q?EvHzrNoXVYIoYd2G8wa9wFzPsLlvQapRh4ztq/FxjWmWUDiq+jaX3VNyGniq?=
- =?us-ascii?Q?g0iEc3kzP+unzdKeOy7dgtXufdwpNA/Piy+YfrGU8+52iLNLlixCdmaVRsx/?=
- =?us-ascii?Q?kg0/2pXqMWX/e/WxOPs7bron37WgYAGlywd2mIM906NEtNrha8buy8pMT1nf?=
- =?us-ascii?Q?KO4n81IyIJBeHqNsbqrLSiuKaPLUdfYlQjtCLWzS2nNQ+LyhgYSaHfnJ8cdx?=
- =?us-ascii?Q?OmHqJ+Mnz+vZD5OY3wWc9/ajyOKtH6wn255mBdHqvxaw7+c6z/jbgh9qSr40?=
- =?us-ascii?Q?Z79ZM4pejd0lNnB3xI1P6I2HaEGZymexpoLzxDqVojNCmJ4t9rrlbkYR3Drw?=
- =?us-ascii?Q?ruhXhj8WvWa45fz3AHkAGMQvfsbsCVgYNTkXwXks2VMWNaZADSYgQBxZNQsS?=
- =?us-ascii?Q?83mGo34uBEoJGVvu/5tyLIHwuU8YA1fRQZLpumNp401EKF4CjNJq1EIGTr7Q?=
- =?us-ascii?Q?lPcY+BuYYz4CfJ4lLcbzVQkRczHCAsvxbNdlMXlUuytJyrwVy10H6cH8N4y5?=
- =?us-ascii?Q?TmJbWKQICeXV/1py2pyCe0BQhlMAdbxBH+YBLMk8aKI23njeiPrltd+EBgoc?=
- =?us-ascii?Q?hdfP6qDowDsELMe6p51ag0vnulyB2NwKc5VqpiL26UI8axKtHodjWv1jqgKO?=
- =?us-ascii?Q?ua+E5/uOe7rAJ4bKs3dnsNbBJZMrBSJgaN8lhk4rl5wwzvBxcFNNjhVswOhu?=
- =?us-ascii?Q?usDUBx8QA2/LbyPoLi2O9Zvajzt4BI0YWkrZGzRkG8VXWiPwM5qk0Tpce6ua?=
- =?us-ascii?Q?Yw=3D=3D?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fd540a4-2e76-4156-da14-08da63573d66
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2022 16:05:57.1364
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kurvTXOqib125dMSagdWi4qRyZZfhTf+kcd9qihqFoZ/X9RH/EbnfxRPZwcc0HjPdG0yeEg6EXgAYlymZkcQ+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR03MB5113
-X-Mailman-Approved-At: Tue, 12 Jul 2022 08:33:58 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhdGm1CQ1z2yJL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:05:03 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26BL1d99026535;
+	Mon, 11 Jul 2022 22:04:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=NlUTSrATc/Oo6yFV3itCCCQNw/+QGn98bH6P3kymRIk=;
+ b=boELpH/9bESNN5HeGDDTHPAG+7q5AVBcBL9TDZ5wk4D9Onikl9t5Tul22UP+6Ss8fKFy
+ pUIaDOtuKJGROPWVkiqe+YcuyQz8c/iE3bMf/FMEuCEUhlLiKT9C1OnmcocWUIuI0DwA
+ 5JycdxHbsO1tOKV0Zmx6a/EM+slT4Hff02HZRUrUcZizjqGjNqYUZqv4f2oIMCN2cIXQ
+ 0p6t5Lx8q5zrzKqfM9sbluEpxYb9IOAz8u0r5SKnSRorLx4dDWlTfN2N3vgodqEPtch1
+ D+p4sBpG11y2Vs3N8J8t8fQkgn7otMNJQtKAIb+IF7G08a5bdVj0iYIj1C3qrQdZk3WG rQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8udv16eg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 22:04:51 +0000
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26BM0GK0026468;
+	Mon, 11 Jul 2022 22:04:51 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8udv16dc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 22:04:50 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26BLoD9c008894;
+	Mon, 11 Jul 2022 22:04:48 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma03ams.nl.ibm.com with ESMTP id 3h71a8u8qa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 22:04:48 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26BM4j4H24117732
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Jul 2022 22:04:45 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6481C52050;
+	Mon, 11 Jul 2022 22:04:45 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.211.107.19])
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2F05D5204E;
+	Mon, 11 Jul 2022 22:04:41 +0000 (GMT)
+Message-ID: <9fc4f6dc2ee497a4d4998df17392ac73ebdf3d63.camel@linux.ibm.com>
+Subject: Re: [PATCH v6 4/6] tpm: of: Make of-tree specific function commonly
+ available
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, kexec@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Date: Mon, 11 Jul 2022 18:04:41 -0400
+In-Reply-To: <20220707172026.831614-5-stefanb@linux.ibm.com>
+References: <20220707172026.831614-1-stefanb@linux.ibm.com>
+	 <20220707172026.831614-5-stefanb@linux.ibm.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gFV0BXBuvKy5jtRQecH9o9Ts7rE2PizX
+X-Proofpoint-ORIG-GUID: ZYsN1Rxnx9KOvVXOzFIN86sR19W3fJPB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-11_25,2022-07-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 suspectscore=0
+ mlxscore=0 mlxlogscore=850 spamscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2206140000 definitions=main-2207110089
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,289 +98,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>, devicetree@vger.kernel.org
+Cc: nayna@linux.ibm.com, Jason Gunthorpe <jgg@ziepe.ca>, Jarkko Sakkinen <jarkko@kernel.org>, Rob Herring <robh+dt@kernel.org>, nasastry@in.ibm.com, Frank Rowand <frowand.list@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds appropriate compatible strings for Lynx PCSs on PowerPC QorIQ
-platforms. This also changes the node name to avoid warnings from
-ethernet-phy.yaml.
+Hi Stefan,
 
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
----
+On Thu, 2022-07-07 at 13:20 -0400, Stefan Berger wrote:
+> -       /*
+> -        * For both vtpm/tpm, firmware has log addr and log size in big
+> -        * endian format. But in case of vtpm, there is a method called
+> -        * sml-handover which is run during kernel init even before
+> -        * device tree is setup. This sml-handover function takes care
+> -        * of endianness and writes to sml-base and sml-size in little
+> -        * endian format. For this reason, vtpm doesn't need conversion
+> -        * but physical tpm needs the conversion.
+> -        */
 
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0-best-effort.dtsi | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0.dtsi             | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1.dtsi             | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-0.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-1.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-2.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-3.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-5.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-0.dtsi             | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-1.dtsi             | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-0.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-1.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-2.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-3.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-4.dtsi              | 3 ++-
- arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-5.dtsi              | 3 ++-
- 18 files changed, 36 insertions(+), 18 deletions(-)
+This comment is dropped.  Perhaps not in such detail, but shouldn't a
+comment or function description exist in the new function.
 
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0-best-effort.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0-best-effort.dtsi
-index baa0c503e741..b0bb58121440 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0-best-effort.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0-best-effort.dtsi
-@@ -65,7 +65,8 @@ mdio@e1000 {
- 		reg = <0xe1000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy0: ethernet-phy@0 {
-+		pcsphy0: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0.dtsi
-index 93095600e808..67765c49c6dd 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-0.dtsi
-@@ -62,7 +62,8 @@ mdio@f1000 {
- 		reg = <0xf1000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy6: ethernet-phy@0 {
-+		pcsphy6: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi
-index ff4bd38f0645..5b5f1768507f 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1-best-effort.dtsi
-@@ -65,7 +65,8 @@ mdio@e3000 {
- 		reg = <0xe3000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy1: ethernet-phy@0 {
-+		pcsphy1: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1.dtsi
-index 1fa38ed6f59e..c1b4a9cf8435 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-10g-1.dtsi
-@@ -62,7 +62,8 @@ mdio@f3000 {
- 		reg = <0xf3000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy7: ethernet-phy@0 {
-+		pcsphy7: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-0.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-0.dtsi
-index a8cc9780c0c4..f4f7445a261c 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-0.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-0.dtsi
-@@ -61,7 +61,8 @@ mdio@e1000 {
- 		reg = <0xe1000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy0: ethernet-phy@0 {
-+		pcsphy0: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-1.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-1.dtsi
-index 8b8bd70c9382..78bf1c1e09c2 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-1.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-1.dtsi
-@@ -61,7 +61,8 @@ mdio@e3000 {
- 		reg = <0xe3000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy1: ethernet-phy@0 {
-+		pcsphy1: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-2.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-2.dtsi
-index 619c880b54d8..432e3da63584 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-2.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-2.dtsi
-@@ -61,7 +61,8 @@ mdio@e5000 {
- 		reg = <0xe5000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy2: ethernet-phy@0 {
-+		pcsphy2: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-3.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-3.dtsi
-index d7ebb73a400d..a92d88685b91 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-3.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-3.dtsi
-@@ -61,7 +61,8 @@ mdio@e7000 {
- 		reg = <0xe7000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy3: ethernet-phy@0 {
-+		pcsphy3: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi
-index b151d696a069..af70c159d030 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-4.dtsi
-@@ -61,7 +61,8 @@ mdio@e9000 {
- 		reg = <0xe9000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy4: ethernet-phy@0 {
-+		pcsphy4: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-5.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-5.dtsi
-index adc0ae0013a3..da46fd9aab2e 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-5.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-0-1g-5.dtsi
-@@ -61,7 +61,8 @@ mdio@eb000 {
- 		reg = <0xeb000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy5: ethernet-phy@0 {
-+		pcsphy5: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-0.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-0.dtsi
-index 435047e0e250..50c1b75c073f 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-0.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-0.dtsi
-@@ -62,7 +62,8 @@ mdio@f1000 {
- 		reg = <0xf1000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy14: ethernet-phy@0 {
-+		pcsphy14: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-1.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-1.dtsi
-index c098657cca0a..03ed8d83adde 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-1.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-10g-1.dtsi
-@@ -62,7 +62,8 @@ mdio@f3000 {
- 		reg = <0xf3000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy15: ethernet-phy@0 {
-+		pcsphy15: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-0.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-0.dtsi
-index 9d06824815f3..ced05a914e36 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-0.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-0.dtsi
-@@ -61,7 +61,8 @@ mdio@e1000 {
- 		reg = <0xe1000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy8: ethernet-phy@0 {
-+		pcsphy8: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-1.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-1.dtsi
-index 70e947730c4b..de6be3e6db36 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-1.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-1.dtsi
-@@ -61,7 +61,8 @@ mdio@e3000 {
- 		reg = <0xe3000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy9: ethernet-phy@0 {
-+		pcsphy9: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-2.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-2.dtsi
-index ad96e6529595..053cb568529e 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-2.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-2.dtsi
-@@ -61,7 +61,8 @@ mdio@e5000 {
- 		reg = <0xe5000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy10: ethernet-phy@0 {
-+		pcsphy10: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-3.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-3.dtsi
-index 034bc4b71f7a..448a73c24d1c 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-3.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-3.dtsi
-@@ -61,7 +61,8 @@ mdio@e7000 {
- 		reg = <0xe7000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy11: ethernet-phy@0 {
-+		pcsphy11: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-4.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-4.dtsi
-index 93ca23d82b39..5d388ab4268b 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-4.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-4.dtsi
-@@ -61,7 +61,8 @@ mdio@e9000 {
- 		reg = <0xe9000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy12: ethernet-phy@0 {
-+		pcsphy12: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
-diff --git a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-5.dtsi b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-5.dtsi
-index 23b3117a2fd2..fb262d9e0c01 100644
---- a/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-5.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/qoriq-fman3-1-1g-5.dtsi
-@@ -61,7 +61,8 @@ mdio@eb000 {
- 		reg = <0xeb000 0x1000>;
- 		fsl,erratum-a011043; /* must ignore read errors */
- 
--		pcsphy13: ethernet-phy@0 {
-+		pcsphy13: ethernet-pcs@0 {
-+			compatible = "fsl,lynx-pcs";
- 			reg = <0x0>;
- 		};
- 	};
--- 
-2.35.1.1320.gc452695387.dirty
+Otherwise,
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+
+thanks,
+
+Mimi
 
