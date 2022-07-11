@@ -2,64 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEB656D33B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 05:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD71556D33C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 05:11:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lh85g1z29z3fLV
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 13:10:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lh86R5w3cz3f6T
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 13:11:11 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YP9q5qHt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TlbVcN9J;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42a; helo=mail-pf1-x42a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=YP9q5qHt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=TlbVcN9J;
 	dkim-atps=neutral
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lh7zh5c9zz3c1S
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 13:05:20 +1000 (AEST)
-Received: by mail-pf1-x42a.google.com with SMTP id 70so3713704pfx.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Jul 2022 20:05:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lh7zk38xHz3cFW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 13:05:22 +1000 (AEST)
+Received: by mail-pj1-x102a.google.com with SMTP id o31-20020a17090a0a2200b001ef7bd037bbso3744643pjo.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Jul 2022 20:05:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=DK0VgMuz0XNDMCQTRnkUinv7v4fb+yrzyA/f87s3QSU=;
-        b=YP9q5qHtvJ1ykzEel7epeenEm9HHkB1ixeZ3cMVJAjvyGE6pnDc26R6axhvpikNpS9
-         ZHYY9gl/nPzJLGMfrAO+H9PPNH0nXJ/jpeiPcBe16Z4mg0cE9WxyYZGrBbwSNpAN1m/W
-         0gk4sTLthrQWb2AavxT8QbKXk/1Zdr2vY9CiivldTyr/Af+NCaLP8hWfwO7sljWu4ngk
-         1NXFLuvLYGGg5qH4tpMq84vY6sLnH4nO8fWGWnIld/BK6wzE75zvjr5Ktct350Bfkk7g
-         8kxRM873Kk/ftcsu3qxKsZgLdtmpdlTLLYcWnXnGiUD7Z3h/GuVm4mXxg/4cvIsexbRN
-         THBw==
+        bh=pcEsjqfe9z82LNi/h168uZWmWZKxEa/6hhUbZNwifdA=;
+        b=TlbVcN9JpFi1Scas0JcVJTQmKbwvCPDxP3CW0QSas0BLH7TkwZ9i8rIdlc3c6XwEj8
+         wJaCOqnPEUEJjg5SbF/8eB2FODt7iVvr62uZX+uklOWp6TStoAEb6KywOSMFsKyyTewf
+         bYlko2/dYkaFc4CFo+DO4YXg5cu4yNzwP/KCgVbRnrJs+6XUrcZVAIjoArbv+Br0Bx+U
+         38UB6IKBPPHC/y2oGFumAHLc1Bf4n3yJdkZFqN42kqUf8YE1knNQfpoHfpAHC/f0CTRM
+         Iqu0gRbcrK86b+XJNksTdZUb06KiN5Hvz20gXnZXdtsrd+J/cv+e2Vu7vRo/vEmopAYd
+         7Jgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=DK0VgMuz0XNDMCQTRnkUinv7v4fb+yrzyA/f87s3QSU=;
-        b=rAT19eJra+6/aZi+0KZdNW9r0EYNGI61ylqVBKfLMOL6Zwh0neFjEDLVFS0JBShQet
-         8b0WR40yyj0DYQ6XXEshTtr6j1fwrTN0ZFbIPDi4L23L5FKc2wcogq50LQ3C7Ur6C6aG
-         Lr1kUJgvVejm7izMG0X17CiLcRO2LQoYDRrLjDGVcR3cOKEqmGJrURhr4EBx56G+mTD5
-         UmJpu1ORmWZWb6wGiSmLfC+gAru4wkAPM0fidwP0wBSxwSgiJSIaD9JDIsc9/jDuK/Dg
-         tIujkAiYKTY5TUv0PLiltcu3s/7CDsuqHP0HbdM+0lxNAOD4FPDl2aoNaZYFmhjpWuux
-         ZiNw==
-X-Gm-Message-State: AJIora8Jiz89bhZjihe7fW1TmldHOLfjOm19yfrvsuaGx+JEEbnSSdFo
-	mMNehrCLpd0jOsv/HQ6DAiJMczQ5TOM=
-X-Google-Smtp-Source: AGRyM1vKCVQQK9MpuKVkaO9K1nwrAS6aq/zXn9ErMaTAhqojH8z1QXtDL2wKJJjv0jDnqZ0beK0kXg==
-X-Received: by 2002:a05:6a00:168a:b0:4f7:e161:83cd with SMTP id k10-20020a056a00168a00b004f7e16183cdmr16318361pfc.56.1657508718155;
-        Sun, 10 Jul 2022 20:05:18 -0700 (PDT)
+        bh=pcEsjqfe9z82LNi/h168uZWmWZKxEa/6hhUbZNwifdA=;
+        b=EEc0Gu2IaO2P7k3W+Ig4WNVlK0P/ZWIZ0KG4TV2DhDSP54qt2cphco+eOArbC4LQ46
+         wmjIfhIgW5965B5f/ROjyASv1k7d2TEeDnUISz9ZJrosDjp5VjbrC+Q60QLW5DCLKawW
+         05aYGPo5VYTT5adyWHgg/w+Uh1lpZNvIjn3QCgFu91WQDD31upHZUqtOWkD5cQEpZBuX
+         oZjZ8ISyT9sNX7P+/p4uVdpw+XQKBXFRiysWRNLGOg6HCrlLLBvKUTnxxSYrSt1a7niY
+         l/0zzXojDD+X3KbzxqeVDNJe4J7R7H4W61fdmxiyh9/kDacHLQHveCkuxJJA0kB96PJV
+         pXeg==
+X-Gm-Message-State: AJIora83/ARid7+UHrewYBQwAly4FnMdwqy20gqtW9igcLMVzg3CayX0
+	mlIkjhWl3kbqUw1+CWf9BDEQH33sFrc=
+X-Google-Smtp-Source: AGRyM1uSIyAdkqPciYVSXTeuFtM9nmAOLUbAjuZ8cd2foE/Fr+Ov/y1/Z1qXR6CULEoaNoba2/dfCA==
+X-Received: by 2002:a17:903:3011:b0:16c:3d34:fde4 with SMTP id o17-20020a170903301100b0016c3d34fde4mr7183128pla.79.1657508720361;
+        Sun, 10 Jul 2022 20:05:20 -0700 (PDT)
 Received: from bobo.ibm.com ([203.220.77.143])
-        by smtp.gmail.com with ESMTPSA id o4-20020a17090a5b0400b001ef8c81959dsm3562232pji.16.2022.07.10.20.05.16
+        by smtp.gmail.com with ESMTPSA id o4-20020a17090a5b0400b001ef8c81959dsm3562232pji.16.2022.07.10.20.05.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Jul 2022 20:05:17 -0700 (PDT)
+        Sun, 10 Jul 2022 20:05:20 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 08/14] powerpc/qspinlock: paravirt yield to lock owner
-Date: Mon, 11 Jul 2022 13:04:47 +1000
-Message-Id: <20220711030453.150644-9-npiggin@gmail.com>
+Subject: [RFC PATCH 09/14] powerpc/qspinlock: implement option to yield to previous node
+Date: Mon, 11 Jul 2022 13:04:48 +1000
+Message-Id: <20220711030453.150644-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20220711030453.150644-1-npiggin@gmail.com>
 References: <20220711030453.150644-1-npiggin@gmail.com>
@@ -80,185 +80,106 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Waiters spinning on the lock word should yield to the lock owner if the
-vCPU is preempted. This improves performance when the hypervisor has
-oversubscribed physical CPUs.
+Queued waiters which are not at the head of the queue don't spin on
+the lock word but their qnode lock word, waiting for the previous queued
+CPU to release them. Add an option which allows these waiters to yield
+to the previous CPU if its vCPU is preempted.
+
+Disable this option by default for now, i.e., no logical change.
 ---
- arch/powerpc/lib/qspinlock.c | 93 +++++++++++++++++++++++++++++++-----
- 1 file changed, 82 insertions(+), 11 deletions(-)
+ arch/powerpc/lib/qspinlock.c | 46 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 45 insertions(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
-index 3c6554a02de7..ee85198d5e28 100644
+index ee85198d5e28..1a58ed51c060 100644
 --- a/arch/powerpc/lib/qspinlock.c
 +++ b/arch/powerpc/lib/qspinlock.c
-@@ -5,6 +5,7 @@
- #include <linux/percpu.h>
- #include <linux/smp.h>
- #include <asm/qspinlock.h>
-+#include <asm/paravirt.h>
- 
- #define MAX_NODES	4
- 
-@@ -24,6 +25,8 @@ static int STEAL_SPINS __read_mostly = (1<<5);
- static bool MAYBE_STEALERS __read_mostly = true;
+@@ -26,6 +26,7 @@ static bool MAYBE_STEALERS __read_mostly = true;
  static int HEAD_SPINS __read_mostly = (1<<13);
  
-+static bool pv_yield_owner __read_mostly = true;
-+
+ static bool pv_yield_owner __read_mostly = true;
++static bool pv_yield_prev __read_mostly = false;
+ 
  static DEFINE_PER_CPU_ALIGNED(struct qnodes, qnodes);
  
- static inline u32 encode_tail_cpu(void)
-@@ -36,7 +39,11 @@ static inline int get_tail_cpu(u32 val)
- 	return (val >> _Q_TAIL_CPU_OFFSET) - 1;
+@@ -214,6 +215,31 @@ static void yield_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt
+ 	cpu_relax();
  }
  
--/* Take the lock by setting the bit, no other CPUs may concurrently lock it. */
-+static inline int get_owner_cpu(u32 val)
++static void yield_to_prev(struct qspinlock *lock, struct qnode *node, int prev_cpu, bool paravirt)
 +{
-+	return (val & _Q_OWNER_CPU_MASK) >> _Q_OWNER_CPU_OFFSET;
-+}
-+
- /* Take the lock by setting the lock bit, no other CPUs will touch it. */
- static __always_inline void lock_set_locked(struct qspinlock *lock)
- {
-@@ -170,7 +177,45 @@ static inline struct qnode *get_tail_qnode(struct qspinlock *lock, u32 val)
- 	BUG();
- }
- 
--static inline bool try_to_steal_lock(struct qspinlock *lock)
-+static void yield_to_locked_owner(struct qspinlock *lock, u32 val, bool paravirt)
-+{
-+	int owner;
 +	u32 yield_count;
-+
-+	BUG_ON(!(val & _Q_LOCKED_VAL));
 +
 +	if (!paravirt)
 +		goto relax;
 +
-+	if (!pv_yield_owner)
++	if (!pv_yield_prev)
 +		goto relax;
 +
-+	owner = get_owner_cpu(val);
-+	yield_count = yield_count_of(owner);
-+
++	yield_count = yield_count_of(prev_cpu);
 +	if ((yield_count & 1) == 0)
 +		goto relax; /* owner vcpu is running */
 +
-+	/*
-+	 * Read the lock word after sampling the yield count. On the other side
-+	 * there may a wmb because the yield count update is done by the
-+	 * hypervisor preemption and the value update by the OS, however this
-+	 * ordering might reduce the chance of out of order accesses and
-+	 * improve the heuristic.
-+	 */
-+	smp_rmb();
++	smp_rmb(); /* See yield_to_locked_owner comment */
 +
-+	if (READ_ONCE(lock->val) == val) {
-+		yield_to_preempted(owner, yield_count);
-+		/* Don't relax if we yielded. Maybe we should? */
++	if (!node->locked) {
++		yield_to_preempted(prev_cpu, yield_count);
 +		return;
 +	}
++
 +relax:
 +	cpu_relax();
 +}
 +
-+
-+static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool paravirt)
+ 
+ static __always_inline bool try_to_steal_lock(struct qspinlock *lock, bool paravirt)
  {
- 	int iters;
+@@ -276,13 +302,14 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+ 	 */
+ 	if (old & _Q_TAIL_CPU_MASK) {
+ 		struct qnode *prev = get_tail_qnode(lock, old);
++		int prev_cpu = get_tail_cpu(old);
  
-@@ -182,7 +227,7 @@ static inline bool try_to_steal_lock(struct qspinlock *lock)
- 			break;
+ 		/* Link @node into the waitqueue. */
+ 		WRITE_ONCE(prev->next, node);
  
- 		if (val & _Q_LOCKED_VAL) {
+ 		/* Wait for mcs node lock to be released */
+ 		while (!node->locked)
 -			cpu_relax();
-+			yield_to_locked_owner(lock, val, paravirt);
- 			continue;
- 		}
++			yield_to_prev(lock, node, prev_cpu, paravirt);
  
-@@ -193,7 +238,7 @@ static inline bool try_to_steal_lock(struct qspinlock *lock)
- 	return false;
- }
+ 		smp_rmb(); /* acquire barrier for the mcs lock */
+ 	}
+@@ -430,12 +457,29 @@ static int pv_yield_owner_get(void *data, u64 *val)
  
--static inline void queued_spin_lock_mcs_queue(struct qspinlock *lock)
-+static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, bool paravirt)
- {
- 	struct qnodes *qnodesp;
- 	struct qnode *next, *node;
-@@ -245,7 +290,7 @@ static inline void queued_spin_lock_mcs_queue(struct qspinlock *lock)
- 	if (!MAYBE_STEALERS) {
- 		/* We're at the head of the waitqueue, wait for the lock. */
- 		while ((val = READ_ONCE(lock->val)) & _Q_LOCKED_VAL)
--			cpu_relax();
-+			yield_to_locked_owner(lock, val, paravirt);
+ DEFINE_SIMPLE_ATTRIBUTE(fops_pv_yield_owner, pv_yield_owner_get, pv_yield_owner_set, "%llu\n");
  
- 		/* If we're the last queued, must clean up the tail. */
- 		if ((val & _Q_TAIL_CPU_MASK) == tail) {
-@@ -261,9 +306,11 @@ static inline void queued_spin_lock_mcs_queue(struct qspinlock *lock)
- again:
- 		/* We're at the head of the waitqueue, wait for the lock. */
- 		while ((val = READ_ONCE(lock->val)) & _Q_LOCKED_VAL) {
--			if (iters++ == HEAD_SPINS)
-+			if (iters++ == HEAD_SPINS) {
- 				lock_set_mustq(lock);
--			cpu_relax();
-+				val |= _Q_MUST_Q_VAL;
-+			}
-+			yield_to_locked_owner(lock, val, paravirt);
- 		}
- 
- 		/* If we're the last queued, must clean up the tail. */
-@@ -298,10 +345,15 @@ static inline void queued_spin_lock_mcs_queue(struct qspinlock *lock)
- 
- void queued_spin_lock_slowpath(struct qspinlock *lock)
- {
--	if (try_to_steal_lock(lock))
--		return;
--
--	queued_spin_lock_mcs_queue(lock);
-+	if (IS_ENABLED(CONFIG_PARAVIRT_SPINLOCKS) && is_shared_processor()) {
-+		if (try_to_steal_lock(lock, true))
-+			return;
-+		queued_spin_lock_mcs_queue(lock, true);
-+	} else {
-+		if (try_to_steal_lock(lock, false))
-+			return;
-+		queued_spin_lock_mcs_queue(lock, false);
-+	}
- }
- EXPORT_SYMBOL(queued_spin_lock_slowpath);
- 
-@@ -362,10 +414,29 @@ static int head_spins_get(void *data, u64 *val)
- 
- DEFINE_SIMPLE_ATTRIBUTE(fops_head_spins, head_spins_get, head_spins_set, "%llu\n");
- 
-+static int pv_yield_owner_set(void *data, u64 val)
++static int pv_yield_prev_set(void *data, u64 val)
 +{
-+	pv_yield_owner = !!val;
++	pv_yield_prev = !!val;
 +
 +	return 0;
 +}
 +
-+static int pv_yield_owner_get(void *data, u64 *val)
++static int pv_yield_prev_get(void *data, u64 *val)
 +{
-+	*val = pv_yield_owner;
++	*val = pv_yield_prev;
 +
 +	return 0;
 +}
 +
-+DEFINE_SIMPLE_ATTRIBUTE(fops_pv_yield_owner, pv_yield_owner_get, pv_yield_owner_set, "%llu\n");
++DEFINE_SIMPLE_ATTRIBUTE(fops_pv_yield_prev, pv_yield_prev_get, pv_yield_prev_set, "%llu\n");
 +
  static __init int spinlock_debugfs_init(void)
  {
  	debugfs_create_file("qspl_steal_spins", 0600, arch_debugfs_dir, NULL, &fops_steal_spins);
  	debugfs_create_file("qspl_head_spins", 0600, arch_debugfs_dir, NULL, &fops_head_spins);
-+	if (is_shared_processor()) {
-+		debugfs_create_file("qspl_pv_yield_owner", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_owner);
-+	}
+ 	if (is_shared_processor()) {
+ 		debugfs_create_file("qspl_pv_yield_owner", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_owner);
++		debugfs_create_file("qspl_pv_yield_prev", 0600, arch_debugfs_dir, NULL, &fops_pv_yield_prev);
+ 	}
  
  	return 0;
- }
 -- 
 2.35.1
 
