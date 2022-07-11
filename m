@@ -1,95 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA9C570D29
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:06:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B4E570D70
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 00:36:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LhdJB3YYGz3cDt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:06:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhdz95zHqz3chM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 08:36:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H94rq4Wc;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pjlkaOk7;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H94rq4Wc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pjlkaOk7;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhdH21CScz3c3v
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:05:17 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26BL1eOW026600;
-	Mon, 11 Jul 2022 22:05:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=0UYMY/8LSqYL9C1gfOyC9V3xGiHgeAVl6rhJahtce6Q=;
- b=H94rq4WcoObqeBYWGSXJURwJUm5ci5Mc/ycO4GQ/G1sZrqEOYRdO/ShJka+NP6Art3bI
- QN6XBNv7+ii1qKmkEbHaYt2IJz0XIy7TMDLUAjdr2sV/64tlDhSXRIMw+k4D4IecYYfP
- rwscuPYr2NUp1jZgp/qfJGU5bpH6O0Ci3PbO0aNpUGF4KakrVSR5MKQa1uxNueJKUR8Q
- XtHSpO1svbyrVIKvJMEhebHsGsJ+4EX5oAWyQ5DsPjP/XR7bI50clr+O5OP4U5FfpM/w
- tOsRhwKeTlcqmSnnJC2oSoxca5aayfMRgIfKQ8ozEPhqAqdtVOuIEgj1Csy4oA4OrH2O Rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8udv16r8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Jul 2022 22:05:11 +0000
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26BM14qi028560;
-	Mon, 11 Jul 2022 22:05:11 GMT
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h8udv16ps-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Jul 2022 22:05:10 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26BLqFHo008582;
-	Mon, 11 Jul 2022 22:05:08 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma05fra.de.ibm.com with ESMTP id 3h71a8tf37-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Jul 2022 22:05:08 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26BM3bYY18809274
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Jul 2022 22:03:37 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D4452A4053;
-	Mon, 11 Jul 2022 22:05:04 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 19098A4051;
-	Mon, 11 Jul 2022 22:05:02 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.211.107.19])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Mon, 11 Jul 2022 22:05:01 +0000 (GMT)
-Message-ID: <5f205957701fd4927d822221fcb5552134091e1e.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 5/6] of: kexec: Refactor IMA buffer related functions
- to make them reusable
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Stefan Berger <stefanb@linux.ibm.com>, kexec@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Date: Mon, 11 Jul 2022 18:05:00 -0400
-In-Reply-To: <20220707172026.831614-6-stefanb@linux.ibm.com>
-References: <20220707172026.831614-1-stefanb@linux.ibm.com>
-	 <20220707172026.831614-6-stefanb@linux.ibm.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: hqoOL2CMUJUn5qgWL5bRBtIiAkrrg-ZD
-X-Proofpoint-ORIG-GUID: iG-GAhJJtFe1gvh7lTleTLoaSt3-nQll
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-11_25,2022-07-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 priorityscore=1501 phishscore=0 suspectscore=0
- mlxscore=0 mlxlogscore=999 spamscore=0 bulkscore=0 adultscore=0
- malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2206140000 definitions=main-2207110089
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhdyV4SXQz2x9J
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 08:36:02 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 7A374B81205;
+	Mon, 11 Jul 2022 22:35:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E016BC3411C;
+	Mon, 11 Jul 2022 22:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1657578957;
+	bh=7G6pKX09/F97v2cQQOGAgqFzqkQnDmYMUvTgW5etn68=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=pjlkaOk7gXsJfMHGs2uR127IsIiny3oS5RupRJ+cnoJubzAyUNhCn5ktZYt+bkkLP
+	 ZbDtX8n7xLsb/Br8Mv1I2wz4XulKqiAEcblcVYQnZpDR2Bp6Maf71Fs6eMaIOIztNp
+	 Ex51UBpuF1hijYOOwxJXM1cqULQdAFk+/v7KxUmgZQ183V7UkdKwISf2LEig3t/bcP
+	 vocLQjmt1VTrQXzg5usCbUQTFHRWOqs7iMETGyzXyCnTzT7wZlsgL51BKRD+3E167Y
+	 oD3SYrSVN9/Lz5z2xJj2RNHPyrHh9LS84MX3Q5NixXad+uW+5T5NxNQJIxJyI0r+6o
+	 /k9ndLEaU+MOQ==
+Date: Mon, 11 Jul 2022 17:35:55 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>
+Subject: Re: [PATCH 1/5] powerpc/pci: Hide pci_device_from_OF_node() for
+ non-powermac code
+Message-ID: <20220711223555.GA702011@bhelgaas>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220706104308.5390-2-pali@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,18 +60,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, nasastry@in.ibm.com, Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh+dt@kernel.org>
+Cc: Nick Child <nick.child@ibm.com>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2022-07-07 at 13:20 -0400, Stefan Berger wrote:
-> Refactor IMA buffer related functions to make them reusable for carrying
-> TPM logs across kexec.
+On Wed, Jul 06, 2022 at 12:43:04PM +0200, Pali Rohár wrote:
+> Function pci_device_from_OF_node() is used only in powermac code.
+> So hide it from all other platforms as it is unsed.
+
+s/unsed/unused/ (same typo in 3/5 patch)
+
+These are for the powerpc folks, so I'm just kibbitzing here.
+
+> Signed-off-by: Pali Rohár <pali@kernel.org>
+> ---
+>  arch/powerpc/include/asm/pci-bridge.h | 2 ++
+>  arch/powerpc/kernel/pci_32.c          | 2 ++
+>  arch/powerpc/kernel/pci_64.c          | 2 ++
+>  3 files changed, 6 insertions(+)
 > 
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Frank Rowand <frowand.list@gmail.com>
-> Cc: Mimi Zohar <zohar@linux.ibm.com>
-
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-
+> diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+> index c85f901227c9..98156932a1f5 100644
+> --- a/arch/powerpc/include/asm/pci-bridge.h
+> +++ b/arch/powerpc/include/asm/pci-bridge.h
+> @@ -170,8 +170,10 @@ static inline struct pci_controller *pci_bus_to_host(const struct pci_bus *bus)
+>  	return bus->sysdata;
+>  }
+>  
+> +#ifdef CONFIG_PPC_PMAC
+>  extern int pci_device_from_OF_node(struct device_node *node,
+>  				   u8 *bus, u8 *devfn);
+> +#endif
+>  #ifndef CONFIG_PPC64
+>  
+>  extern void pci_create_OF_bus_map(void);
+> diff --git a/arch/powerpc/kernel/pci_32.c b/arch/powerpc/kernel/pci_32.c
+> index 5a174936c9a0..c3b91fb62a71 100644
+> --- a/arch/powerpc/kernel/pci_32.c
+> +++ b/arch/powerpc/kernel/pci_32.c
+> @@ -154,6 +154,7 @@ pcibios_make_OF_bus_map(void)
+>  }
+>  
+>  
+> +#ifdef CONFIG_PPC_PMAC
+>  /*
+>   * Returns the PCI device matching a given OF node
+>   */
+> @@ -193,6 +194,7 @@ int pci_device_from_OF_node(struct device_node *node, u8 *bus, u8 *devfn)
+>  	return -ENODEV;
+>  }
+>  EXPORT_SYMBOL(pci_device_from_OF_node);
+> +#endif
+>  
+>  /* We create the "pci-OF-bus-map" property now so it appears in the
+>   * /proc device tree
+> diff --git a/arch/powerpc/kernel/pci_64.c b/arch/powerpc/kernel/pci_64.c
+> index 19b03ddf5631..0c7cfb9fab04 100644
+> --- a/arch/powerpc/kernel/pci_64.c
+> +++ b/arch/powerpc/kernel/pci_64.c
+> @@ -286,6 +286,7 @@ int pcibus_to_node(struct pci_bus *bus)
+>  EXPORT_SYMBOL(pcibus_to_node);
+>  #endif
+>  
+> +#ifdef CONFIG_PPC_PMAC
+>  int pci_device_from_OF_node(struct device_node *np, u8 *bus, u8 *devfn)
+>  {
+>  	if (!PCI_DN(np))
+> @@ -294,3 +295,4 @@ int pci_device_from_OF_node(struct device_node *np, u8 *bus, u8 *devfn)
+>  	*devfn = PCI_DN(np)->devfn;
+>  	return 0;
+>  }
+> +#endif
+> -- 
+> 2.20.1
+> 
