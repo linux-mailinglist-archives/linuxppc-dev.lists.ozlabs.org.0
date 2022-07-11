@@ -1,76 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7CE56D38F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 05:50:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3D456D390
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 05:50:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lh8zW120sz3cYd
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 13:50:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lh90G3Cjyz3dsT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Jul 2022 13:50:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=htIXMTHV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XfH67vs8;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=htIXMTHV;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XfH67vs8;
 	dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lh8w32Bfqz3c7g
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 13:47:14 +1000 (AEST)
-Received: by mail-pl1-x630.google.com with SMTP id d5so3388430plo.12
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Jul 2022 20:47:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=kX77QQPavnlmqTPJr+cPH2hNKZO7UlqRRz965T9dDrs=;
-        b=htIXMTHV1qfaPfX3l4XZ4hj+VaUJoyeJxf3BRtOKXsqpYicKtvT6e4VttVAI3DicXN
-         9gM6V/tgXsGAqEJx6fyT+PeWPFlSYsi+4M5SHPDGMW/jL34jf6NoLM0kYfBinO8DT1MR
-         DPdLnhEyAt7VslHXHkcl8xE/RUV8tJufwFlQVmtY3LpgfPw7A4qLCzw/q/dCdkea/U/H
-         el05aKwmbkbJfRsPZasOu7jfAx2d4VJiPcyDUNvV41zJXsh6JXPpax8tmfD7C5+a9ygQ
-         wOaqM8gP36qTLyaFt1jXVEk29x4zttAJoOdz3yRBuZA7IPt8psRkaoiAygE7YyPtwQ1Z
-         E2zQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=kX77QQPavnlmqTPJr+cPH2hNKZO7UlqRRz965T9dDrs=;
-        b=QITUw8yNUq7E276P6pWhm1f162jUkdyGYSKv6ohFt3y4Noc7eZRAhGTmgR1bplyotP
-         pWyELds45Okat4D4p3d1h5yXRDAYkJMnPTm6Rl0yCr6Pr32GlsV5yg/MqIMDvGe086rM
-         jUETT/zVWXsKNAizXea9bqRJKclz08g7cv7q0hsOvAsfw73QareogYqqd4KdM9xdxxTf
-         3bi9jpeGINUprj12czQ5ST4kjzKTiOu4qaX9IuRl8AykeyR9UYNuOBOopHXZhaEyWViN
-         Y1dpxy7uYyrpRai6PjLT0Yfn1+3XPHljI4JEVN8ko+/F9jces/+sIfzKscxDS2Muj/5t
-         eO6Q==
-X-Gm-Message-State: AJIora8KlEoiI/xUtEs0VAeqNtGcxhzfcvoDqjGVCW3QUOmq4xXQk0Ga
-	yR20MZJFv4m37fIJKlcw6tI=
-X-Google-Smtp-Source: AGRyM1vLe/YZvbOkUYTH5iAqm8VRsVnu2Afj8VTLOnXJSTfR2PgdfzJzSBQsk0Iq2lETGsM8bxMYpQ==
-X-Received: by 2002:a17:90b:1c90:b0:1ee:d804:d2c1 with SMTP id oo16-20020a17090b1c9000b001eed804d2c1mr15473364pjb.92.1657511233142;
-        Sun, 10 Jul 2022 20:47:13 -0700 (PDT)
-Received: from localhost.localdomain (47-72-206-164.dsl.dyn.ihug.co.nz. [47.72.206.164])
-        by smtp.gmail.com with ESMTPSA id a13-20020a170902eccd00b001664d88aab3sm3447949plh.240.2022.07.10.20.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Jul 2022 20:47:12 -0700 (PDT)
-From: Barry Song <21cnbao@gmail.com>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH v2 4/4] arm64: support batched/deferred tlb shootdown during page reclamation
-Date: Mon, 11 Jul 2022 15:46:15 +1200
-Message-Id: <20220711034615.482895-5-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220711034615.482895-1-21cnbao@gmail.com>
-References: <20220711034615.482895-1-21cnbao@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lh8yz0sjdz3f57
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 13:49:46 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26B1geHO022889;
+	Mon, 11 Jul 2022 03:49:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=ZkNOnMn4hlJh6K+4qH+CMjoPqwKH/+V8mEP37ESohnk=;
+ b=XfH67vs8TBlH6dAiHYDWNCkcBTYPJRVl/mPl/L9LO+frqenPngnTi6dR4/73YfIYE20m
+ qFGu+IxqhjHArIyppuLbyHculnZ+VTba35XSG2gPIQ7itMD6eonluAeF2ScQBoX8Lyvb
+ qxZKGb8Gx21p87vZDf8b6wG0PNVwVfhyldrI3u+Q6Gs9LQzCRakohaxWgljqkiSZmrY6
+ mEW/lKxYtOUJbQNSpppxh98DQBBRn4Pe1D6PTxFqCAY/Ihnp3M1y++iejWkpJR+rs9g7
+ pcBXosgzDxjvaZD4dc/6qOf4YtxhKPbuQ134qaChDaCRMb7vyA6V590fRAkBRcN/E3Pr Aw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h7ygdjsjx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 03:49:43 +0000
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26B3eiZf018487;
+	Mon, 11 Jul 2022 03:49:42 GMT
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h7ygdjsja-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 03:49:42 +0000
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26B3K8nq000970;
+	Mon, 11 Jul 2022 03:49:40 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03ams.nl.ibm.com with ESMTP id 3h71a8t36m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Jul 2022 03:49:39 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26B3mArG22544842
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Jul 2022 03:48:10 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA6044C044;
+	Mon, 11 Jul 2022 03:49:36 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C47C64C040;
+	Mon, 11 Jul 2022 03:49:33 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.105.173])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon, 11 Jul 2022 03:49:33 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Subject: [PATCH 1/2] powerpc/kvm: Move pmu code in kvm folder to separate file for power9 and later platforms
+Date: Mon, 11 Jul 2022 09:19:26 +0530
+Message-Id: <20220711034927.213192-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: w_LZ8D90JsH94-rLravatuUgUgtqL7WH
+X-Proofpoint-ORIG-GUID: t14DDxAavBddbTbWzMmBYfN2uPb9IfeM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-10_18,2022-07-08_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ clxscore=1011 impostorscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 bulkscore=0 mlxlogscore=999
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207110013
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,224 +93,508 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, arnd@arndb.de, corbet@lwn.net, realmz6@gmail.com, linux-kernel@vger.kernel.org, yangyicong@hisilicon.com, Barry Song <v-songbaohua@oppo.com>, openrisc@lists.librecores.org, Nadav Amit <namit@vmware.com>, Mel Gorman <mgorman@suse.de>, darren@os.amperecomputing.com, huzhanyuan@oppo.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: kjain@linux.ibm.com, atrajeev@linux.vnet.ibm.com, maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Barry Song <v-songbaohua@oppo.com>
+File book3s_hv_p9_entry.c in powerpc/kvm folder consists of functions
+like freeze_pmu, switch_pmu_to_guest and switch_pmu_to_host which are
+specific to Performance Monitoring Unit(PMU) for power9 and later
+platforms.
 
-on x86, batched and deferred tlb shootdown has lead to 90%
-performance increase on tlb shootdown. on arm64, HW can do
-tlb shootdown without software IPI. But sync tlbi is still
-quite expensive.
+For better maintenance, moving pmu related code from
+book3s_hv_p9_entry.c to a new file called book3s_hv_p9_perf.c,
+without any logic change.
+Also make corresponding changes in the Makefile to include
+book3s_hv_p9_perf.c during compilation.
 
-Even running a simplest program which requires swapout can
-prove this is true,
- #include <sys/types.h>
- #include <unistd.h>
- #include <sys/mman.h>
- #include <string.h>
-
- int main()
- {
- #define SIZE (1 * 1024 * 1024)
-         volatile unsigned char *p = mmap(NULL, SIZE, PROT_READ | PROT_WRITE,
-                                          MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-
-         memset(p, 0x88, SIZE);
-
-         for (int k = 0; k < 10000; k++) {
-                 /* swap in */
-                 for (int i = 0; i < SIZE; i += 4096) {
-                         (void)p[i];
-                 }
-
-                 /* swap out */
-                 madvise(p, SIZE, MADV_PAGEOUT);
-         }
- }
-
-Perf result on snapdragon 888 with 8 cores by using zRAM
-as the swap block device.
-
- ~ # perf record taskset -c 4 ./a.out
- [ perf record: Woken up 10 times to write data ]
- [ perf record: Captured and wrote 2.297 MB perf.data (60084 samples) ]
- ~ # perf report
- # To display the perf.data header info, please use --header/--header-only options.
- # To display the perf.data header info, please use --header/--header-only options.
- #
- #
- # Total Lost Samples: 0
- #
- # Samples: 60K of event 'cycles'
- # Event count (approx.): 35706225414
- #
- # Overhead  Command  Shared Object      Symbol
- # ........  .......  .................  .............................................................................
- #
-    21.07%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irq
-     8.23%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock_irqrestore
-     6.67%  a.out    [kernel.kallsyms]  [k] filemap_map_pages
-     6.16%  a.out    [kernel.kallsyms]  [k] __zram_bvec_write
-     5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
-     3.71%  a.out    [kernel.kallsyms]  [k] _raw_spin_lock
-     3.49%  a.out    [kernel.kallsyms]  [k] memset64
-     1.63%  a.out    [kernel.kallsyms]  [k] clear_page
-     1.42%  a.out    [kernel.kallsyms]  [k] _raw_spin_unlock
-     1.26%  a.out    [kernel.kallsyms]  [k] mod_zone_state.llvm.8525150236079521930
-     1.23%  a.out    [kernel.kallsyms]  [k] xas_load
-     1.15%  a.out    [kernel.kallsyms]  [k] zram_slot_lock
-
-ptep_clear_flush() takes 5.36% CPU in the micro-benchmark
-swapping in/out a page mapped by only one process. If the
-page is mapped by multiple processes, typically, like more
-than 100 on a phone, the overhead would be much higher as
-we have to run tlb flush 100 times for one single page.
-Plus, tlb flush overhead will increase with the number
-of CPU cores due to the bad scalability of tlb shootdown
-in HW, so those ARM64 servers should expect much higher
-overhead.
-
-Further perf annonate shows 95% cpu time of ptep_clear_flush
-is actually used by the final dsb() to wait for the completion
-of tlb flush. This provides us a very good chance to leverage
-the existing batched tlb in kernel. The minimum modification
-is that we only send async tlbi in the first stage and we send
-dsb while we have to sync in the second stage.
-
-With the above simplest micro benchmark, collapsed time to
-finish the program decreases around 5%.
-
-Typical collapsed time w/o patch:
- ~ # time taskset -c 4 ./a.out
- 0.21user 14.34system 0:14.69elapsed
-w/ patch:
- ~ # time taskset -c 4 ./a.out
- 0.22user 13.45system 0:13.80elapsed
-
-Also, Yicong Yang added the following observation.
-	Tested with benchmark in the commit on Kunpeng920 arm64 server,
-	observed an improvement around 12.5% with command
-	`time ./swap_bench`.
-		w/o		w/
-	real	0m13.460s	0m11.771s
-	user	0m0.248s	0m0.279s
-	sys	0m12.039s	0m11.458s
-
-	Originally it's noticed a 16.99% overhead of ptep_clear_flush()
-	which has been eliminated by this patch:
-
-	[root@localhost yang]# perf record -- ./swap_bench && perf report
-	[...]
-	16.99%  swap_bench  [kernel.kallsyms]  [k] ptep_clear_flush
-
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Nadav Amit <namit@vmware.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Tested-by: Yicong Yang <yangyicong@hisilicon.com>
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 ---
- .../features/vm/TLB/arch-support.txt          |  2 +-
- arch/arm64/Kconfig                            |  1 +
- arch/arm64/include/asm/tlbbatch.h             | 12 ++++++++++
- arch/arm64/include/asm/tlbflush.h             | 23 +++++++++++++++++--
- 4 files changed, 35 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm64/include/asm/tlbbatch.h
+ arch/powerpc/kvm/Makefile             |   1 +
+ arch/powerpc/kvm/book3s_hv_p9_entry.c | 221 -------------------------
+ arch/powerpc/kvm/book3s_hv_p9_perf.c  | 225 ++++++++++++++++++++++++++
+ 3 files changed, 226 insertions(+), 221 deletions(-)
+ create mode 100644 arch/powerpc/kvm/book3s_hv_p9_perf.c
 
-diff --git a/Documentation/features/vm/TLB/arch-support.txt b/Documentation/features/vm/TLB/arch-support.txt
-index 1c009312b9c1..2caf815d7c6c 100644
---- a/Documentation/features/vm/TLB/arch-support.txt
-+++ b/Documentation/features/vm/TLB/arch-support.txt
-@@ -9,7 +9,7 @@
-     |       alpha: | TODO |
-     |         arc: | TODO |
-     |         arm: | TODO |
--    |       arm64: | TODO |
-+    |       arm64: |  ok  |
-     |        csky: | TODO |
-     |     hexagon: | TODO |
-     |        ia64: | TODO |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1652a9800ebe..e94913a0b040 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -93,6 +93,7 @@ config ARM64
- 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
-+	select ARCH_WANT_BATCHED_UNMAP_TLB_FLUSH
- 	select ARCH_WANT_COMPAT_IPC_PARSE_VERSION if COMPAT
- 	select ARCH_WANT_DEFAULT_BPF_JIT
- 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
-diff --git a/arch/arm64/include/asm/tlbbatch.h b/arch/arm64/include/asm/tlbbatch.h
+diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
+index 0cd23ce07d68..5319d889b184 100644
+--- a/arch/powerpc/kvm/Makefile
++++ b/arch/powerpc/kvm/Makefile
+@@ -86,6 +86,7 @@ kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) += \
+ 	book3s_hv_rm_mmu.o \
+ 	book3s_hv_ras.o \
+ 	book3s_hv_builtin.o \
++	book3s_hv_p9_perf.o \
+ 	$(kvm-book3s_64-builtin-tm-objs-y) \
+ 	$(kvm-book3s_64-builtin-xics-objs-y)
+ endif
+diff --git a/arch/powerpc/kvm/book3s_hv_p9_entry.c b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+index 112a09b33328..34d81898bf47 100644
+--- a/arch/powerpc/kvm/book3s_hv_p9_entry.c
++++ b/arch/powerpc/kvm/book3s_hv_p9_entry.c
+@@ -3,231 +3,10 @@
+ #include <linux/kvm_host.h>
+ #include <asm/asm-prototypes.h>
+ #include <asm/dbell.h>
+-#include <asm/kvm_ppc.h>
+-#include <asm/pmc.h>
+ #include <asm/ppc-opcode.h>
+ 
+ #include "book3s_hv.h"
+ 
+-static void freeze_pmu(unsigned long mmcr0, unsigned long mmcra)
+-{
+-	if (!(mmcr0 & MMCR0_FC))
+-		goto do_freeze;
+-	if (mmcra & MMCRA_SAMPLE_ENABLE)
+-		goto do_freeze;
+-	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+-		if (!(mmcr0 & MMCR0_PMCCEXT))
+-			goto do_freeze;
+-		if (!(mmcra & MMCRA_BHRB_DISABLE))
+-			goto do_freeze;
+-	}
+-	return;
+-
+-do_freeze:
+-	mmcr0 = MMCR0_FC;
+-	mmcra = 0;
+-	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+-		mmcr0 |= MMCR0_PMCCEXT;
+-		mmcra = MMCRA_BHRB_DISABLE;
+-	}
+-
+-	mtspr(SPRN_MMCR0, mmcr0);
+-	mtspr(SPRN_MMCRA, mmcra);
+-	isync();
+-}
+-
+-void switch_pmu_to_guest(struct kvm_vcpu *vcpu,
+-			 struct p9_host_os_sprs *host_os_sprs)
+-{
+-	struct lppaca *lp;
+-	int load_pmu = 1;
+-
+-	lp = vcpu->arch.vpa.pinned_addr;
+-	if (lp)
+-		load_pmu = lp->pmcregs_in_use;
+-
+-	/* Save host */
+-	if (ppc_get_pmu_inuse()) {
+-		/*
+-		 * It might be better to put PMU handling (at least for the
+-		 * host) in the perf subsystem because it knows more about what
+-		 * is being used.
+-		 */
+-
+-		/* POWER9, POWER10 do not implement HPMC or SPMC */
+-
+-		host_os_sprs->mmcr0 = mfspr(SPRN_MMCR0);
+-		host_os_sprs->mmcra = mfspr(SPRN_MMCRA);
+-
+-		freeze_pmu(host_os_sprs->mmcr0, host_os_sprs->mmcra);
+-
+-		host_os_sprs->pmc1 = mfspr(SPRN_PMC1);
+-		host_os_sprs->pmc2 = mfspr(SPRN_PMC2);
+-		host_os_sprs->pmc3 = mfspr(SPRN_PMC3);
+-		host_os_sprs->pmc4 = mfspr(SPRN_PMC4);
+-		host_os_sprs->pmc5 = mfspr(SPRN_PMC5);
+-		host_os_sprs->pmc6 = mfspr(SPRN_PMC6);
+-		host_os_sprs->mmcr1 = mfspr(SPRN_MMCR1);
+-		host_os_sprs->mmcr2 = mfspr(SPRN_MMCR2);
+-		host_os_sprs->sdar = mfspr(SPRN_SDAR);
+-		host_os_sprs->siar = mfspr(SPRN_SIAR);
+-		host_os_sprs->sier1 = mfspr(SPRN_SIER);
+-
+-		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+-			host_os_sprs->mmcr3 = mfspr(SPRN_MMCR3);
+-			host_os_sprs->sier2 = mfspr(SPRN_SIER2);
+-			host_os_sprs->sier3 = mfspr(SPRN_SIER3);
+-		}
+-	}
+-
+-#ifdef CONFIG_PPC_PSERIES
+-	/* After saving PMU, before loading guest PMU, flip pmcregs_in_use */
+-	if (kvmhv_on_pseries()) {
+-		barrier();
+-		get_lppaca()->pmcregs_in_use = load_pmu;
+-		barrier();
+-	}
+-#endif
+-
+-	/*
+-	 * Load guest. If the VPA said the PMCs are not in use but the guest
+-	 * tried to access them anyway, HFSCR[PM] will be set by the HFAC
+-	 * fault so we can make forward progress.
+-	 */
+-	if (load_pmu || (vcpu->arch.hfscr & HFSCR_PM)) {
+-		mtspr(SPRN_PMC1, vcpu->arch.pmc[0]);
+-		mtspr(SPRN_PMC2, vcpu->arch.pmc[1]);
+-		mtspr(SPRN_PMC3, vcpu->arch.pmc[2]);
+-		mtspr(SPRN_PMC4, vcpu->arch.pmc[3]);
+-		mtspr(SPRN_PMC5, vcpu->arch.pmc[4]);
+-		mtspr(SPRN_PMC6, vcpu->arch.pmc[5]);
+-		mtspr(SPRN_MMCR1, vcpu->arch.mmcr[1]);
+-		mtspr(SPRN_MMCR2, vcpu->arch.mmcr[2]);
+-		mtspr(SPRN_SDAR, vcpu->arch.sdar);
+-		mtspr(SPRN_SIAR, vcpu->arch.siar);
+-		mtspr(SPRN_SIER, vcpu->arch.sier[0]);
+-
+-		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+-			mtspr(SPRN_MMCR3, vcpu->arch.mmcr[3]);
+-			mtspr(SPRN_SIER2, vcpu->arch.sier[1]);
+-			mtspr(SPRN_SIER3, vcpu->arch.sier[2]);
+-		}
+-
+-		/* Set MMCRA then MMCR0 last */
+-		mtspr(SPRN_MMCRA, vcpu->arch.mmcra);
+-		mtspr(SPRN_MMCR0, vcpu->arch.mmcr[0]);
+-		/* No isync necessary because we're starting counters */
+-
+-		if (!vcpu->arch.nested &&
+-				(vcpu->arch.hfscr_permitted & HFSCR_PM))
+-			vcpu->arch.hfscr |= HFSCR_PM;
+-	}
+-}
+-EXPORT_SYMBOL_GPL(switch_pmu_to_guest);
+-
+-void switch_pmu_to_host(struct kvm_vcpu *vcpu,
+-			struct p9_host_os_sprs *host_os_sprs)
+-{
+-	struct lppaca *lp;
+-	int save_pmu = 1;
+-
+-	lp = vcpu->arch.vpa.pinned_addr;
+-	if (lp)
+-		save_pmu = lp->pmcregs_in_use;
+-	if (IS_ENABLED(CONFIG_KVM_BOOK3S_HV_NESTED_PMU_WORKAROUND)) {
+-		/*
+-		 * Save pmu if this guest is capable of running nested guests.
+-		 * This is option is for old L1s that do not set their
+-		 * lppaca->pmcregs_in_use properly when entering their L2.
+-		 */
+-		save_pmu |= nesting_enabled(vcpu->kvm);
+-	}
+-
+-	if (save_pmu) {
+-		vcpu->arch.mmcr[0] = mfspr(SPRN_MMCR0);
+-		vcpu->arch.mmcra = mfspr(SPRN_MMCRA);
+-
+-		freeze_pmu(vcpu->arch.mmcr[0], vcpu->arch.mmcra);
+-
+-		vcpu->arch.pmc[0] = mfspr(SPRN_PMC1);
+-		vcpu->arch.pmc[1] = mfspr(SPRN_PMC2);
+-		vcpu->arch.pmc[2] = mfspr(SPRN_PMC3);
+-		vcpu->arch.pmc[3] = mfspr(SPRN_PMC4);
+-		vcpu->arch.pmc[4] = mfspr(SPRN_PMC5);
+-		vcpu->arch.pmc[5] = mfspr(SPRN_PMC6);
+-		vcpu->arch.mmcr[1] = mfspr(SPRN_MMCR1);
+-		vcpu->arch.mmcr[2] = mfspr(SPRN_MMCR2);
+-		vcpu->arch.sdar = mfspr(SPRN_SDAR);
+-		vcpu->arch.siar = mfspr(SPRN_SIAR);
+-		vcpu->arch.sier[0] = mfspr(SPRN_SIER);
+-
+-		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+-			vcpu->arch.mmcr[3] = mfspr(SPRN_MMCR3);
+-			vcpu->arch.sier[1] = mfspr(SPRN_SIER2);
+-			vcpu->arch.sier[2] = mfspr(SPRN_SIER3);
+-		}
+-
+-	} else if (vcpu->arch.hfscr & HFSCR_PM) {
+-		/*
+-		 * The guest accessed PMC SPRs without specifying they should
+-		 * be preserved, or it cleared pmcregs_in_use after the last
+-		 * access. Just ensure they are frozen.
+-		 */
+-		freeze_pmu(mfspr(SPRN_MMCR0), mfspr(SPRN_MMCRA));
+-
+-		/*
+-		 * Demand-fault PMU register access in the guest.
+-		 *
+-		 * This is used to grab the guest's VPA pmcregs_in_use value
+-		 * and reflect it into the host's VPA in the case of a nested
+-		 * hypervisor.
+-		 *
+-		 * It also avoids having to zero-out SPRs after each guest
+-		 * exit to avoid side-channels when.
+-		 *
+-		 * This is cleared here when we exit the guest, so later HFSCR
+-		 * interrupt handling can add it back to run the guest with
+-		 * PM enabled next time.
+-		 */
+-		if (!vcpu->arch.nested)
+-			vcpu->arch.hfscr &= ~HFSCR_PM;
+-	} /* otherwise the PMU should still be frozen */
+-
+-#ifdef CONFIG_PPC_PSERIES
+-	if (kvmhv_on_pseries()) {
+-		barrier();
+-		get_lppaca()->pmcregs_in_use = ppc_get_pmu_inuse();
+-		barrier();
+-	}
+-#endif
+-
+-	if (ppc_get_pmu_inuse()) {
+-		mtspr(SPRN_PMC1, host_os_sprs->pmc1);
+-		mtspr(SPRN_PMC2, host_os_sprs->pmc2);
+-		mtspr(SPRN_PMC3, host_os_sprs->pmc3);
+-		mtspr(SPRN_PMC4, host_os_sprs->pmc4);
+-		mtspr(SPRN_PMC5, host_os_sprs->pmc5);
+-		mtspr(SPRN_PMC6, host_os_sprs->pmc6);
+-		mtspr(SPRN_MMCR1, host_os_sprs->mmcr1);
+-		mtspr(SPRN_MMCR2, host_os_sprs->mmcr2);
+-		mtspr(SPRN_SDAR, host_os_sprs->sdar);
+-		mtspr(SPRN_SIAR, host_os_sprs->siar);
+-		mtspr(SPRN_SIER, host_os_sprs->sier1);
+-
+-		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+-			mtspr(SPRN_MMCR3, host_os_sprs->mmcr3);
+-			mtspr(SPRN_SIER2, host_os_sprs->sier2);
+-			mtspr(SPRN_SIER3, host_os_sprs->sier3);
+-		}
+-
+-		/* Set MMCRA then MMCR0 last */
+-		mtspr(SPRN_MMCRA, host_os_sprs->mmcra);
+-		mtspr(SPRN_MMCR0, host_os_sprs->mmcr0);
+-		isync();
+-	}
+-}
+-EXPORT_SYMBOL_GPL(switch_pmu_to_host);
+-
+ static void load_spr_state(struct kvm_vcpu *vcpu,
+ 				struct p9_host_os_sprs *host_os_sprs)
+ {
+diff --git a/arch/powerpc/kvm/book3s_hv_p9_perf.c b/arch/powerpc/kvm/book3s_hv_p9_perf.c
 new file mode 100644
-index 000000000000..fedb0b87b8db
+index 000000000000..da3135cab9ea
 --- /dev/null
-+++ b/arch/arm64/include/asm/tlbbatch.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ARCH_ARM64_TLBBATCH_H
-+#define _ARCH_ARM64_TLBBATCH_H
++++ b/arch/powerpc/kvm/book3s_hv_p9_perf.c
+@@ -0,0 +1,225 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+struct arch_tlbflush_unmap_batch {
++#include <asm/kvm_ppc.h>
++#include <asm/pmc.h>
++
++#include "book3s_hv.h"
++
++static void freeze_pmu(unsigned long mmcr0, unsigned long mmcra)
++{
++	if (!(mmcr0 & MMCR0_FC))
++		goto do_freeze;
++	if (mmcra & MMCRA_SAMPLE_ENABLE)
++		goto do_freeze;
++	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++		if (!(mmcr0 & MMCR0_PMCCEXT))
++			goto do_freeze;
++		if (!(mmcra & MMCRA_BHRB_DISABLE))
++			goto do_freeze;
++	}
++	return;
++
++do_freeze:
++	mmcr0 = MMCR0_FC;
++	mmcra = 0;
++	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++		mmcr0 |= MMCR0_PMCCEXT;
++		mmcra = MMCRA_BHRB_DISABLE;
++	}
++
++	mtspr(SPRN_MMCR0, mmcr0);
++	mtspr(SPRN_MMCRA, mmcra);
++	isync();
++}
++
++void switch_pmu_to_guest(struct kvm_vcpu *vcpu,
++			 struct p9_host_os_sprs *host_os_sprs)
++{
++	struct lppaca *lp;
++	int load_pmu = 1;
++
++	lp = vcpu->arch.vpa.pinned_addr;
++	if (lp)
++		load_pmu = lp->pmcregs_in_use;
++
++	/* Save host */
++	if (ppc_get_pmu_inuse()) {
++		/*
++		 * It might be better to put PMU handling (at least for the
++		 * host) in the perf subsystem because it knows more about what
++		 * is being used.
++		 */
++
++		/* POWER9, POWER10 do not implement HPMC or SPMC */
++
++		host_os_sprs->mmcr0 = mfspr(SPRN_MMCR0);
++		host_os_sprs->mmcra = mfspr(SPRN_MMCRA);
++
++		freeze_pmu(host_os_sprs->mmcr0, host_os_sprs->mmcra);
++
++		host_os_sprs->pmc1 = mfspr(SPRN_PMC1);
++		host_os_sprs->pmc2 = mfspr(SPRN_PMC2);
++		host_os_sprs->pmc3 = mfspr(SPRN_PMC3);
++		host_os_sprs->pmc4 = mfspr(SPRN_PMC4);
++		host_os_sprs->pmc5 = mfspr(SPRN_PMC5);
++		host_os_sprs->pmc6 = mfspr(SPRN_PMC6);
++		host_os_sprs->mmcr1 = mfspr(SPRN_MMCR1);
++		host_os_sprs->mmcr2 = mfspr(SPRN_MMCR2);
++		host_os_sprs->sdar = mfspr(SPRN_SDAR);
++		host_os_sprs->siar = mfspr(SPRN_SIAR);
++		host_os_sprs->sier1 = mfspr(SPRN_SIER);
++
++		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++			host_os_sprs->mmcr3 = mfspr(SPRN_MMCR3);
++			host_os_sprs->sier2 = mfspr(SPRN_SIER2);
++			host_os_sprs->sier3 = mfspr(SPRN_SIER3);
++		}
++	}
++
++#ifdef CONFIG_PPC_PSERIES
++	/* After saving PMU, before loading guest PMU, flip pmcregs_in_use */
++	if (kvmhv_on_pseries()) {
++		barrier();
++		get_lppaca()->pmcregs_in_use = load_pmu;
++		barrier();
++	}
++#endif
++
 +	/*
-+	 * For arm64, HW can do tlb shootdown, so we don't
-+	 * need to record cpumask for sending IPI
++	 * Load guest. If the VPA said the PMCs are not in use but the guest
++	 * tried to access them anyway, HFSCR[PM] will be set by the HFAC
++	 * fault so we can make forward progress.
 +	 */
-+};
++	if (load_pmu || (vcpu->arch.hfscr & HFSCR_PM)) {
++		mtspr(SPRN_PMC1, vcpu->arch.pmc[0]);
++		mtspr(SPRN_PMC2, vcpu->arch.pmc[1]);
++		mtspr(SPRN_PMC3, vcpu->arch.pmc[2]);
++		mtspr(SPRN_PMC4, vcpu->arch.pmc[3]);
++		mtspr(SPRN_PMC5, vcpu->arch.pmc[4]);
++		mtspr(SPRN_PMC6, vcpu->arch.pmc[5]);
++		mtspr(SPRN_MMCR1, vcpu->arch.mmcr[1]);
++		mtspr(SPRN_MMCR2, vcpu->arch.mmcr[2]);
++		mtspr(SPRN_SDAR, vcpu->arch.sdar);
++		mtspr(SPRN_SIAR, vcpu->arch.siar);
++		mtspr(SPRN_SIER, vcpu->arch.sier[0]);
 +
-+#endif /* _ARCH_ARM64_TLBBATCH_H */
-diff --git a/arch/arm64/include/asm/tlbflush.h b/arch/arm64/include/asm/tlbflush.h
-index 412a3b9a3c25..10364cf8451d 100644
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -254,17 +254,24 @@ static inline void flush_tlb_mm(struct mm_struct *mm)
- 	dsb(ish);
- }
- 
--static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
++		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++			mtspr(SPRN_MMCR3, vcpu->arch.mmcr[3]);
++			mtspr(SPRN_SIER2, vcpu->arch.sier[1]);
++			mtspr(SPRN_SIER3, vcpu->arch.sier[2]);
++		}
 +
-+static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
- 					 unsigned long uaddr)
- {
- 	unsigned long addr;
- 
- 	dsb(ishst);
--	addr = __TLBI_VADDR(uaddr, ASID(vma->vm_mm));
-+	addr = __TLBI_VADDR(uaddr, ASID(mm));
- 	__tlbi(vale1is, addr);
- 	__tlbi_user(vale1is, addr);
- }
- 
-+static inline void flush_tlb_page_nosync(struct vm_area_struct *vma,
-+					 unsigned long uaddr)
-+{
-+	return __flush_tlb_page_nosync(vma->vm_mm, uaddr);
++		/* Set MMCRA then MMCR0 last */
++		mtspr(SPRN_MMCRA, vcpu->arch.mmcra);
++		mtspr(SPRN_MMCR0, vcpu->arch.mmcr[0]);
++		/* No isync necessary because we're starting counters */
++
++		if (!vcpu->arch.nested &&
++		    (vcpu->arch.hfscr_permitted & HFSCR_PM))
++			vcpu->arch.hfscr |= HFSCR_PM;
++	}
 +}
++EXPORT_SYMBOL_GPL(switch_pmu_to_guest);
 +
- static inline void flush_tlb_page(struct vm_area_struct *vma,
- 				  unsigned long uaddr)
- {
-@@ -272,6 +279,18 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
- 	dsb(ish);
- }
- 
-+static inline void arch_tlbbatch_add_mm(struct arch_tlbflush_unmap_batch *batch,
-+					struct mm_struct *mm,
-+					unsigned long uaddr)
++void switch_pmu_to_host(struct kvm_vcpu *vcpu,
++			struct p9_host_os_sprs *host_os_sprs)
 +{
-+	__flush_tlb_page_nosync(mm, uaddr);
-+}
++	struct lppaca *lp;
++	int save_pmu = 1;
 +
-+static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
-+{
-+	dsb(ish);
-+}
++	lp = vcpu->arch.vpa.pinned_addr;
++	if (lp)
++		save_pmu = lp->pmcregs_in_use;
++	if (IS_ENABLED(CONFIG_KVM_BOOK3S_HV_NESTED_PMU_WORKAROUND)) {
++		/*
++		 * Save pmu if this guest is capable of running nested guests.
++		 * This is option is for old L1s that do not set their
++		 * lppaca->pmcregs_in_use properly when entering their L2.
++		 */
++		save_pmu |= nesting_enabled(vcpu->kvm);
++	}
 +
- /*
-  * This is meant to avoid soft lock-ups on large TLB flushing ranges and not
-  * necessarily a performance improvement.
++	if (save_pmu) {
++		vcpu->arch.mmcr[0] = mfspr(SPRN_MMCR0);
++		vcpu->arch.mmcra = mfspr(SPRN_MMCRA);
++
++		freeze_pmu(vcpu->arch.mmcr[0], vcpu->arch.mmcra);
++
++		vcpu->arch.pmc[0] = mfspr(SPRN_PMC1);
++		vcpu->arch.pmc[1] = mfspr(SPRN_PMC2);
++		vcpu->arch.pmc[2] = mfspr(SPRN_PMC3);
++		vcpu->arch.pmc[3] = mfspr(SPRN_PMC4);
++		vcpu->arch.pmc[4] = mfspr(SPRN_PMC5);
++		vcpu->arch.pmc[5] = mfspr(SPRN_PMC6);
++		vcpu->arch.mmcr[1] = mfspr(SPRN_MMCR1);
++		vcpu->arch.mmcr[2] = mfspr(SPRN_MMCR2);
++		vcpu->arch.sdar = mfspr(SPRN_SDAR);
++		vcpu->arch.siar = mfspr(SPRN_SIAR);
++		vcpu->arch.sier[0] = mfspr(SPRN_SIER);
++
++		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++			vcpu->arch.mmcr[3] = mfspr(SPRN_MMCR3);
++			vcpu->arch.sier[1] = mfspr(SPRN_SIER2);
++			vcpu->arch.sier[2] = mfspr(SPRN_SIER3);
++		}
++
++	} else if (vcpu->arch.hfscr & HFSCR_PM) {
++		/*
++		 * The guest accessed PMC SPRs without specifying they should
++		 * be preserved, or it cleared pmcregs_in_use after the last
++		 * access. Just ensure they are frozen.
++		 */
++		freeze_pmu(mfspr(SPRN_MMCR0), mfspr(SPRN_MMCRA));
++
++		/*
++		 * Demand-fault PMU register access in the guest.
++		 *
++		 * This is used to grab the guest's VPA pmcregs_in_use value
++		 * and reflect it into the host's VPA in the case of a nested
++		 * hypervisor.
++		 *
++		 * It also avoids having to zero-out SPRs after each guest
++		 * exit to avoid side-channels when.
++		 *
++		 * This is cleared here when we exit the guest, so later HFSCR
++		 * interrupt handling can add it back to run the guest with
++		 * PM enabled next time.
++		 */
++		if (!vcpu->arch.nested)
++			vcpu->arch.hfscr &= ~HFSCR_PM;
++	} /* otherwise the PMU should still be frozen */
++
++#ifdef CONFIG_PPC_PSERIES
++	if (kvmhv_on_pseries()) {
++		barrier();
++		get_lppaca()->pmcregs_in_use = ppc_get_pmu_inuse();
++		barrier();
++	}
++#endif
++
++	if (ppc_get_pmu_inuse()) {
++		mtspr(SPRN_PMC1, host_os_sprs->pmc1);
++		mtspr(SPRN_PMC2, host_os_sprs->pmc2);
++		mtspr(SPRN_PMC3, host_os_sprs->pmc3);
++		mtspr(SPRN_PMC4, host_os_sprs->pmc4);
++		mtspr(SPRN_PMC5, host_os_sprs->pmc5);
++		mtspr(SPRN_PMC6, host_os_sprs->pmc6);
++		mtspr(SPRN_MMCR1, host_os_sprs->mmcr1);
++		mtspr(SPRN_MMCR2, host_os_sprs->mmcr2);
++		mtspr(SPRN_SDAR, host_os_sprs->sdar);
++		mtspr(SPRN_SIAR, host_os_sprs->siar);
++		mtspr(SPRN_SIER, host_os_sprs->sier1);
++
++		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++			mtspr(SPRN_MMCR3, host_os_sprs->mmcr3);
++			mtspr(SPRN_SIER2, host_os_sprs->sier2);
++			mtspr(SPRN_SIER3, host_os_sprs->sier3);
++		}
++
++		/* Set MMCRA then MMCR0 last */
++		mtspr(SPRN_MMCRA, host_os_sprs->mmcra);
++		mtspr(SPRN_MMCR0, host_os_sprs->mmcr0);
++		isync();
++	}
++}
++EXPORT_SYMBOL_GPL(switch_pmu_to_host);
 -- 
-2.25.1
+2.27.0
 
