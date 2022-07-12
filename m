@@ -2,73 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC12570FAD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 03:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF37D57102F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 04:28:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LhkC41Z6rz3cCh
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 11:47:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhl6F5k4Gz3c2D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 12:28:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=H07onmAM;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=FOgGspso;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=H07onmAM;
+	dkim=pass (2048-bit key; unprotected) header.d=ozlabs-ru.20210112.gappssmtp.com header.i=@ozlabs-ru.20210112.gappssmtp.com header.a=rsa-sha256 header.s=20210112 header.b=FOgGspso;
 	dkim-atps=neutral
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhkBT3559z3bsK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 11:46:41 +1000 (AEST)
-Received: by mail-pl1-x62a.google.com with SMTP id r6so3533072plg.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 18:46:41 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lhl5b14pzz3brk
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 12:27:27 +1000 (AEST)
+Received: by mail-pj1-x1030.google.com with SMTP id fz10so6391297pjb.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 19:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :message-id:content-transfer-encoding;
-        bh=5WUpciY67nz9Y+WwyFmNq00Jkjc0+OHPotlv53pIbNg=;
-        b=H07onmAMCuh0h3uRioN4skYiI3WXqG0mgSOsOcbeMXPOagZtwCDD7J2r99ohvufdNX
-         0EyZWD2X+LnOn++zMCL5ybsHIpTrfmKLkLApRjW7yIbtTtW8JK3sfr3zZPYF8l+93Gcg
-         9dxasbu6toefgvV1NjRCdUyEeAEkmCvPy/nQmVb+25+PQZuQdYvvcT7E0jR6oaARPLMI
-         ZZP1F5eQKpGp3n1a8S3VV44YGPlw3k8PmZU7hrWClzhvcAtDpT3bjS0MkhRYzEmw2a+c
-         cNtKtAOyE86KIh6QfSHSQyypweB9om2Vvs+S0W+47WYVHg8Y4g8A/FeVPtuVz3472JeL
-         dJTQ==
+        d=ozlabs-ru.20210112.gappssmtp.com; s=20210112;
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=aZB3UGhgPcDW1xV3kcl8kwXBo405C0t8FD0AZJD9BPE=;
+        b=FOgGspsoBmU9j5Y9NmWK0vgVrEvFYwYk83edHfZHMIXqyKE6c0upC2vWfBw27zveUV
+         vvXAl6YuNf3vYqsn7BtvNOHA5zuIUcwQPHneit6IdDDLOk0QTrVSCXRxXmqp6e0SxO9J
+         qv751qwBjSkkIH9/6zm/NqfhoNjGadD+3c9SToEaa3cnZRlHuiduMRrftxN1Y/KcyLbn
+         Qxs4PQoyuIOfqHYnhZ/cnT56JfJG3nDVmGEikAMJaWR6+74RDOqHombWs7odOl7XmFCm
+         NvB9LWUQj89CwEJOOfVwHQwgaJvgRLOMZVwRzD8ZnsFTVsqbYQfuclB3O07Iu2Mh3rgQ
+         RLbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:message-id:content-transfer-encoding;
-        bh=5WUpciY67nz9Y+WwyFmNq00Jkjc0+OHPotlv53pIbNg=;
-        b=sjBjIZxraVNr8Wj57AtGU/5Tr7gjGXpuBBNg9cuUG1PlYbmi4qu6Fve7HlKV3k+MHh
-         7dUDYGekqXP93F2tp+B4M18Qv3FUOek+j6wbtbwPefvfbRzrFERiCljmh0m5LupS+bJO
-         ygZZEHkkjcqjPzxhMrra6HFGhOobn1J+8rzc0F8IpMfE/Vl6OzeV1TJpPDvBkgAvOs0q
-         KTflXwtUis8M9MwkGrHWnhTJIJS67YMerEvB+SUWID9uT2mIhBiueStc9FOk2CiTJatH
-         8+MYQdczILOozV/rjkMLG/OOMKUUZHEI374azlkRKSppbSDlkImwqekrDscUa6PspE2s
-         EnLg==
-X-Gm-Message-State: AJIora88n1vUB/EljY1Pp2ApFmbwzBeYU93/nGs1P35reEacHnHOpki9
-	zQweW4oxzViQqh8LQMTv1VA=
-X-Google-Smtp-Source: AGRyM1u2wYcmJaBc3iLp3t3fCVKjEPS+WhouJ3dul7UkswiLBWGwaGXfRwfb7gXJV+H/tHZ6FCpCeQ==
-X-Received: by 2002:a17:903:1314:b0:16b:e832:7292 with SMTP id iy20-20020a170903131400b0016be8327292mr21546636plb.56.1657590399323;
-        Mon, 11 Jul 2022 18:46:39 -0700 (PDT)
-Received: from localhost (193-116-203-247.tpgi.com.au. [193.116.203.247])
-        by smtp.gmail.com with ESMTPSA id p123-20020a625b81000000b0052ab5740130sm5383922pfb.37.2022.07.11.18.46.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jul 2022 18:46:38 -0700 (PDT)
-Date: Tue, 12 Jul 2022 11:46:33 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 4/4] pseries/mobility: set NMI watchdog factor during
- LPM
-To: benh@kernel.crashing.org, haren@linux.vnet.ibm.com, Laurent Dufour
-	<ldufour@linux.ibm.com>, linux@roeck-us.net, mpe@ellerman.id.au,
-	nathanl@linux.ibm.com, paulus@samba.org, wim@linux-watchdog.org
-References: <20220627135347.32624-1-ldufour@linux.ibm.com>
-	<20220627135347.32624-5-ldufour@linux.ibm.com>
-In-Reply-To: <20220627135347.32624-5-ldufour@linux.ibm.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=aZB3UGhgPcDW1xV3kcl8kwXBo405C0t8FD0AZJD9BPE=;
+        b=QX2zlg/mJHsVREfrCnAs00d6heCfz/6K1odA6eKA9PsmaakSlpQu2UJAsWXXLg9PN0
+         Ig3YjiRcBF4zWNbMLFeu9CBjnsrQ+ecYKAAJbiUAxhfFI1LbNcqMBOHOEQm0FO1O3IRr
+         d1bDXWMKk7lgWVmmAyhCiamRvl0pD4c4ckli62e9dyJf1KDzYD9e+G3mOD1JuHkZ1k16
+         7+wfXdIhacX328F0lvFUNUek7FjCWU81Ruo+2eKIAMTcbWhGcXdLI9TCWZNSVhkijghF
+         FMjwvmLrFZi6N4HBvVQXRK+etMASXiqwSVFD58tJncws+izJuBplZ1ML0PCEEB3kulYz
+         V+WA==
+X-Gm-Message-State: AJIora/KXFBBvwrD1/RX8xOpsRvmm5gMguWe6HzQyk/gDV2TTLFC2J6/
+	V8t08lS7UiIXaY6IXVqZKuyeUw==
+X-Google-Smtp-Source: AGRyM1sD9tHZyJixe85jL9snzEsUc0wIr1LqiIXQCwAcr3ekxqscZ41QdpY1hOTPrKnVI5X8+XXKrA==
+X-Received: by 2002:a17:902:d48a:b0:16b:f0be:4e15 with SMTP id c10-20020a170902d48a00b0016bf0be4e15mr21573742plg.155.1657592845557;
+        Mon, 11 Jul 2022 19:27:25 -0700 (PDT)
+Received: from [10.61.2.177] (110-175-254-242.static.tpgi.com.au. [110.175.254.242])
+        by smtp.gmail.com with ESMTPSA id mr2-20020a17090b238200b001ef8912f763sm5486466pjb.7.2022.07.11.19.27.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Jul 2022 19:27:24 -0700 (PDT)
+Message-ID: <b39583f2-e054-8fc7-430c-d52bf6ed5016@ozlabs.ru>
+Date: Tue, 12 Jul 2022 12:27:17 +1000
 MIME-Version: 1.0
-Message-Id: <1657590189.b3s2aqv3sj.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101
+ Thunderbird/103.0
+Subject: Re: [PATCH kernel] powerpc/iommu: Add iommu_ops to report
+ capabilities and allow blocking domains
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>
+References: <20220707135552.3688927-1-aik@ozlabs.ru>
+ <20220707151002.GB1705032@nvidia.com>
+ <bb8f4c93-6cbc-0106-d4c1-1f3c0751fbba@ozlabs.ru>
+ <bbe29694-66a3-275b-5a79-71237ad7388f@ozlabs.ru>
+ <20220708115522.GD1705032@nvidia.com>
+ <8329c51a-601e-0d93-41b4-2eb8524c9bcb@ozlabs.ru>
+ <Yspx307fxRXT67XG@nvidia.com>
+ <861e8bd1-9f04-2323-9b39-d1b46bf99711@ozlabs.ru>
+ <64bc8c04-2162-2e4b-6556-03b9dde051e2@ozlabs.ru>
+ <YsxwDTBLxyo5W3uQ@nvidia.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+In-Reply-To: <YsxwDTBLxyo5W3uQ@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,157 +90,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-watchdog@vger.kernel.org
+Cc: Joerg Roedel <jroedel@suse.de>, kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Daniel Henrique Barboza <danielhb413@gmail.com>, Nicholas Piggin <npiggin@gmail.com>, Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>, Oliver O'Halloran <oohall@gmail.com>, Joel Stanley <joel@jms.id.au>, Robin Murphy <robin.murphy@arm.com>, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Laurent Dufour's message of June 27, 2022 11:53 pm:
-> During a LPM, while the memory transfer is in progress on the arrival sid=
-e,
-> some latencies is generated when accessing not yet transferred pages on t=
-he
-> arrival side. Thus, the NMI watchdog may be triggered too frequently, whi=
-ch
-> increases the risk to hit a NMI interrupt in a bad place in the kernel,
-> leading to a kernel panic.
->=20
-> Disabling the Hard Lockup Watchdog until the memory transfer could be a t=
-oo
-> strong work around, some users would want this timeout to be eventually
-> triggered if the system is hanging even during LPM.
->=20
-> Introduce a new sysctl variable nmi_watchdog_factor. It allows to apply
-> a factor to the NMI watchdog timeout during a LPM. Just before the CPU ar=
-e
-> stopped for the switchover sequence, the NMI watchdog timer is set to
->  watchdog_tresh + factor%
->=20
-> A value of 0 has no effect. The default value is 200, meaning that the NM=
-I
-> watchdog is set to 30s during LPM (based on a 10s watchdog_tresh value).
-> Once the memory transfer is achieved, the factor is reset to 0.
->=20
-> Setting this value to a high number is like disabling the NMI watchdog
-> during a LPM.
->=20
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> ---
->  Documentation/admin-guide/sysctl/kernel.rst | 12 ++++++
->  arch/powerpc/platforms/pseries/mobility.c   | 43 +++++++++++++++++++++
->  2 files changed, 55 insertions(+)
->=20
-> diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/=
-admin-guide/sysctl/kernel.rst
-> index ddccd1077462..0bb0b7f27e96 100644
-> --- a/Documentation/admin-guide/sysctl/kernel.rst
-> +++ b/Documentation/admin-guide/sysctl/kernel.rst
-> @@ -592,6 +592,18 @@ to the guest kernel command line (see
->  Documentation/admin-guide/kernel-parameters.rst).
-> =20
-> =20
-> +nmi_watchdog_factor (PPC only)
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Factor apply to to the NMI watchdog timeout (only when ``nmi_watchdog`` =
-is
-> +set to 1). This factor represents the percentage added to
-> +``watchdog_thresh`` when calculating the NMI watchdog timeout during a
-> +LPM. The soft lockup timeout is not impacted.
 
-Could "LPM" or "mobility" be a bit more prominent in the parameter name
-and documentation? Something else might want to add a factor as well,
-one day.
 
-Otherwise the code looks okay.
+On 7/12/22 04:46, Jason Gunthorpe wrote:
+> On Mon, Jul 11, 2022 at 11:24:32PM +1000, Alexey Kardashevskiy wrote:
+> 
+>> I really think that for 5.19 we should really move this blocked domain
+>> business to Type1 like this:
+>>
+>> https://github.com/aik/linux/commit/96f80c8db03b181398ad355f6f90e574c3ada4bf
+> 
+> This creates the same security bug for power we are discussing here. If you
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+How so? attach_dev() on power makes uninitalizes DMA setup for the group 
+on the hardware level, any other DMA user won't be able to initiate DMA.
 
-> +
-> +A value of 0 means no change. The default value is 200 meaning the NMI
-> +watchdog is set to 30s (based on ``watchdog_thresh`` equal to 10).
-> +
-> +
->  numa_balancing
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> =20
-> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/pla=
-tforms/pseries/mobility.c
-> index 907a779074d6..649155faafc2 100644
-> --- a/arch/powerpc/platforms/pseries/mobility.c
-> +++ b/arch/powerpc/platforms/pseries/mobility.c
-> @@ -48,6 +48,39 @@ struct update_props_workarea {
->  #define MIGRATION_SCOPE	(1)
->  #define PRRN_SCOPE -2
-> =20
-> +#ifdef CONFIG_PPC_WATCHDOG
-> +static unsigned int nmi_wd_factor =3D 200;
-> +
-> +#ifdef CONFIG_SYSCTL
-> +static struct ctl_table nmi_wd_factor_ctl_table[] =3D {
-> +	{
-> +		.procname	=3D "nmi_watchdog_factor",
-> +		.data		=3D &nmi_wd_factor,
-> +		.maxlen		=3D sizeof(int),
-> +		.mode		=3D 0644,
-> +		.proc_handler	=3D proc_douintvec_minmax,
-> +	},
-> +	{}
-> +};
-> +static struct ctl_table nmi_wd_factor_sysctl_root[] =3D {
-> +	{
-> +		.procname       =3D "kernel",
-> +		.mode           =3D 0555,
-> +		.child          =3D nmi_wd_factor_ctl_table,
-> +	},
-> +	{}
-> +};
-> +
-> +static int __init register_nmi_wd_factor_sysctl(void)
-> +{
-> +	register_sysctl_table(nmi_wd_factor_sysctl_root);
-> +
-> +	return 0;
-> +}
-> +device_initcall(register_nmi_wd_factor_sysctl);
-> +#endif /* CONFIG_SYSCTL */
-> +#endif /* CONFIG_PPC_WATCHDOG */
-> +
->  static int mobility_rtas_call(int token, char *buf, s32 scope)
->  {
->  	int rc;
-> @@ -702,13 +735,20 @@ static int pseries_suspend(u64 handle)
->  static int pseries_migrate_partition(u64 handle)
->  {
->  	int ret;
-> +	unsigned int factor =3D 0;
-> =20
-> +#ifdef CONFIG_PPC_WATCHDOG
-> +	factor =3D nmi_wd_factor;
-> +#endif
->  	ret =3D wait_for_vasi_session_suspending(handle);
->  	if (ret)
->  		return ret;
-> =20
->  	vas_migration_handler(VAS_SUSPEND);
-> =20
-> +	if (factor)
-> +		watchdog_nmi_set_lpm_factor(factor);
-> +
->  	ret =3D pseries_suspend(handle);
->  	if (ret =3D=3D 0) {
->  		post_mobility_fixup();
-> @@ -716,6 +756,9 @@ static int pseries_migrate_partition(u64 handle)
->  	} else
->  		pseries_cancel_migration(handle, ret);
-> =20
-> +	if (factor)
-> +		watchdog_nmi_set_lpm_factor(0);
-> +
->  	vas_migration_handler(VAS_RESUME);
-> =20
->  	return ret;
-> --=20
-> 2.36.1
->=20
->=20
+
+> don't want to fix it then lets just merge this iommu_ops patch as is rather than
+> mangle the core code.
+
+The core code should not be assuming iommu_ops != NULL, Type1 should, I 
+thought it is the whole point of having Type1, why is not it the case 
+anymore?
+
+
+-- 
+Alexey
