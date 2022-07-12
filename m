@@ -2,98 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F63D571B21
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 15:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C32AF571B84
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 15:41:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lj1jK1Wrkz3c69
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 23:25:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lj22x5L3vz3cF8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 23:41:13 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YQCXjN+z;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LSt+DLU3;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=elver@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YQCXjN+z;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LSt+DLU3;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lj1hc5S2wz3c0H
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 23:25:20 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26CD5GUM002635;
-	Tue, 12 Jul 2022 13:25:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=YAEFtiMD5+u10/+PC1Fc0a9VR8y5YIWCiK8+QDE6278=;
- b=YQCXjN+zxjMWouvwYt0wSGdpTlAOYv62daxUtlavi8c2wXbU4HaE7cXBmXFhhv4neuKj
- IuLiUukqO6HSnQJcXyZKEU21BByKeh3ddRM0qTCnTk6BWuhMEx08/yo1YSvbShIWVLOf
- i6cu52ldc0XWvges4uJ/NiFIyIQh38ka8BZYXbxKQr+vXKv00eLL63v0f5ti14aqGALL
- noGYtkzRNoIoYCxr4/EDbepTFobko8Rb/KCCiB3hdWJPuPCDpDWSUl+r1jwuDfH1/1i8
- WKaHqiDJDLBIsiy7KUX2og7X+y58A1dPphySJKLB0FjapPvl5wBZfvjHrjYTCe8kDooW 4Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h99hh0pma-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Jul 2022 13:25:04 +0000
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26CD6E4V007126;
-	Tue, 12 Jul 2022 13:25:04 GMT
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h99hh0pkw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Jul 2022 13:25:04 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26CDKX5e003548;
-	Tue, 12 Jul 2022 13:25:03 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-	by ppma03dal.us.ibm.com with ESMTP id 3h71a9kae9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Jul 2022 13:25:03 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26CDP19S13042006
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Jul 2022 13:25:01 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A4ADE78060;
-	Tue, 12 Jul 2022 13:25:01 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F31C278063;
-	Tue, 12 Jul 2022 13:25:00 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Jul 2022 13:25:00 +0000 (GMT)
-Message-ID: <3780329f-0197-0e47-81a1-22ceae28fd1c@linux.ibm.com>
-Date: Tue, 12 Jul 2022 09:25:00 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v6 4/6] tpm: of: Make of-tree specific function commonly
- available
-Content-Language: en-US
-To: Mimi Zohar <zohar@linux.ibm.com>, kexec@lists.infradead.org,
-        devicetree@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20220707172026.831614-1-stefanb@linux.ibm.com>
- <20220707172026.831614-5-stefanb@linux.ibm.com>
- <9fc4f6dc2ee497a4d4998df17392ac73ebdf3d63.camel@linux.ibm.com>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <9fc4f6dc2ee497a4d4998df17392ac73ebdf3d63.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zfIXDZutaERNnJii3LMuF_IWJx2l4fhv
-X-Proofpoint-GUID: ywZSBDORtiUmK_Pr09djCcNdU0Gi5d3h
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lj22H44z5z2ywc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 23:40:38 +1000 (AEST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-2ef5380669cso81096357b3.9
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 06:40:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ALyPmALyKUZN850RRfbsMebRjTXHId7O0aEtI7++nZc=;
+        b=LSt+DLU33Q6liALS8BuSSMkfOKSlRWDFuTo7po1O26Fv7bk7ore1ydtL7Hkh54hx5B
+         9uSRjCaDwCvwdfWSzS7lnufwTmWr2b2BeYWR5YFP9ZU8F9VUUXmk6Zu5giNcEj2YbgpC
+         uI4p1/JHiKYlEhx0fK1shW+TiQcG27FxZBVsXr+bZEYrVso0bpBwSBWJ2SnXgjmK3o2a
+         TljCQ3HgMAtH+5k9+nmdR7HTEIpmR3g8H3YU3v/0m4e+3pVXNggO7+TOdghExzxY46ET
+         DIp6u0LHdi2CFsZzjm9ZOB6D+HRRffEUqutrzlU2tzRGZr0L4jryw4F7HNyo/VTj61UD
+         CAVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ALyPmALyKUZN850RRfbsMebRjTXHId7O0aEtI7++nZc=;
+        b=fPtGYsLnl9P17Lw+RudtbS8AUlFsbPmyAfgc+459i4NYkW1ZOHfM5J0+b+QGWMRl6m
+         lALnDRBO1uDeCagIopLMc3OXaav5SdNyxVa+FhBktjLqF7NW+ffSZ/oiSv7z60B70obf
+         8ojxq/2wuq4I98kgxFGKz4nyQajrDpqUbSVNqR7xc4Udr1UF4sNuoyesEfg0vfpV8ybD
+         1aegw6GC57ZlLs5vAL4IG7h67VyQM5i+Ds+B1/ap9+iz6kEXgWsHat3GFQLj3slVUUVw
+         1br4sEtCkgVfZZdMIzHSCr7/BkYW06J6iZfJ8zpstZZCu6QInW4TkbtFbEu39RkoVLuJ
+         I1lw==
+X-Gm-Message-State: AJIora9xb8bcbfwMf4uKL4JMeUxzS+0Hy9wHsKaxctvEjCK4Iij7UHXL
+	4KU9RfGE/4u3UXzIvp/HBqdEWse38qBlIPplNm111Q==
+X-Google-Smtp-Source: AGRyM1vOJbA/kJ593A3ED5ZJMoh4prb03n/Kz2Y5PlZioljval/AgDFA11ABBXVIE5GqjlsCSBB2nghmV/bKBZoaO6Q=
+X-Received: by 2002:a81:98d:0:b0:31c:921c:9783 with SMTP id
+ 135-20020a81098d000000b0031c921c9783mr25237173ywj.316.1657633233606; Tue, 12
+ Jul 2022 06:40:33 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-12_08,2022-07-12_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=953
- priorityscore=1501 clxscore=1015 spamscore=0 mlxscore=0 phishscore=0
- suspectscore=0 bulkscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207120051
+References: <20220704150514.48816-1-elver@google.com>
+In-Reply-To: <20220704150514.48816-1-elver@google.com>
+From: Marco Elver <elver@google.com>
+Date: Tue, 12 Jul 2022 15:39:57 +0200
+Message-ID: <CANpmjNP0hPuhXmZmkX1ytCDh56LOAmxJjf7RyfxOvoaem=2d8Q@mail.gmail.com>
+Subject: Re: [PATCH v3 00/14] perf/hw_breakpoint: Optimize for thousands of tasks
+To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
+	Frederic Weisbecker <frederic@kernel.org>, Ingo Molnar <mingo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,41 +73,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nayna@linux.ibm.com, Jason Gunthorpe <jgg@ziepe.ca>, Jarkko Sakkinen <jarkko@kernel.org>, Rob Herring <robh+dt@kernel.org>, nasastry@in.ibm.com, Frank Rowand <frowand.list@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, linux-sh@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 4 Jul 2022 at 17:05, Marco Elver <elver@google.com> wrote:
+>
+> The hw_breakpoint subsystem's code has seen little change in over 10
+> years. In that time, systems with >100s of CPUs have become common,
+> along with improvements to the perf subsystem: using breakpoints on
+> thousands of concurrent tasks should be a supported usecase.
+[...]
+> Marco Elver (14):
+>   perf/hw_breakpoint: Add KUnit test for constraints accounting
+>   perf/hw_breakpoint: Provide hw_breakpoint_is_used() and use in test
+>   perf/hw_breakpoint: Clean up headers
+>   perf/hw_breakpoint: Optimize list of per-task breakpoints
+>   perf/hw_breakpoint: Mark data __ro_after_init
+>   perf/hw_breakpoint: Optimize constant number of breakpoint slots
+>   perf/hw_breakpoint: Make hw_breakpoint_weight() inlinable
+>   perf/hw_breakpoint: Remove useless code related to flexible
+>     breakpoints
+>   powerpc/hw_breakpoint: Avoid relying on caller synchronization
+>   locking/percpu-rwsem: Add percpu_is_write_locked() and
+>     percpu_is_read_locked()
+>   perf/hw_breakpoint: Reduce contention with large number of tasks
+>   perf/hw_breakpoint: Introduce bp_slots_histogram
+>   perf/hw_breakpoint: Optimize max_bp_pinned_slots() for CPU-independent
+>     task targets
+>   perf/hw_breakpoint: Optimize toggle_bp_slot() for CPU-independent task
+>     targets
+[...]
 
+This is ready from our side, and given the silence, assume it's ready
+to pick up and/or have a maintainer take a look. Since this is mostly
+kernel/events, would -tip/perf/core be appropriate?
 
-On 7/11/22 18:04, Mimi Zohar wrote:
-> Hi Stefan,
-> 
-> On Thu, 2022-07-07 at 13:20 -0400, Stefan Berger wrote:
->> -       /*
->> -        * For both vtpm/tpm, firmware has log addr and log size in big
->> -        * endian format. But in case of vtpm, there is a method called
->> -        * sml-handover which is run during kernel init even before
->> -        * device tree is setup. This sml-handover function takes care
->> -        * of endianness and writes to sml-base and sml-size in little
->> -        * endian format. For this reason, vtpm doesn't need conversion
->> -        * but physical tpm needs the conversion.
->> -        */
-> 
-> This comment is dropped.  Perhaps not in such detail, but shouldn't a
-> comment or function description exist in the new function.
-
-I am adding back the comment in v7.
-
-> 
-> Otherwise,
-> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> 
-> thanks,
-> 
-> Mimi
-> 
-> 
-> _______________________________________________
-> kexec mailing list
-> kexec@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/kexec
+Thanks,
+-- Marco
