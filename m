@@ -1,70 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E3D570F62
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 03:21:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84A1570F8E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 03:33:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhjds5zPLz3c6r
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 11:21:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhjvj6Y3hz3bnY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 11:33:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UuJ2ptTF;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ilWwUWRB;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102c; helo=mail-pj1-x102c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=UuJ2ptTF;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ilWwUWRB;
 	dkim-atps=neutral
-Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhjdG3B0Jz3bmG
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 11:21:21 +1000 (AEST)
-Received: by mail-pj1-x102c.google.com with SMTP id s21so6272798pjq.4
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 18:21:20 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lhjv12G8Jz3bnY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 11:33:16 +1000 (AEST)
+Received: by mail-pj1-x1029.google.com with SMTP id o15so6311214pjh.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 18:33:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:subject:to:cc:references:in-reply-to:mime-version
          :message-id:content-transfer-encoding;
-        bh=TN/xzFsKJy/KrR3D1bB3jSCuV37Mh0yoh89Gfy+4Y04=;
-        b=UuJ2ptTFwc5KV/f4BkJflvNQ2QS1YdV2qiGZM7RgpNhPHKkIKWbXr1x5anUVPj5DDQ
-         5Lue1kQOrq9qDQDj/5OaOZW8/OLJym0ZNtsrbQ2CfUeRTj8E+wZFxF3W2uTfJd8lJdBE
-         xa4qcKzU22Shu1Hdy/PcRGeSnAdL6JKgQuqcq6bGJVBJYaivikCE8O+4m27QPGD8NAZD
-         CeBIEOqRLu9Z8dWqy6HprKt4alxHEYQHdamwxNjGuhNHicXpf214GdT4f1WHDAgfguEw
-         MHCh49H4UFR89TSYfj6v+I7y+vz9q6UrIiui1NsrUzDrsjGX1oDYLId9lg5DgCAvmWlS
-         Pcfw==
+        bh=A7qUftFMsHtAgHz7tg5ybnJxuA39QPif4EqnUQa2+ls=;
+        b=ilWwUWRBr2jcKjIgdGL97r01HtkS3jZpsabezxx1tUPUQ7nwzkvbBQbHRnZjyQHG4a
+         MTQaJauz2iosj/AQx2pFgDEGzCjs6RZtqEpfF4gFACV0PkzxpUgLKQV0r7SkoOS8p+M6
+         dkt68QM01GF7GmRIGvuVT1L4E6RCx066fAv8uES+/UuTbIGmK31aN4iXmUm6tF5eQPB7
+         5cr+316tp2G1/YM/tLLU7xm2kSvI7d4CRF8fGbsy8L1SfQhezD8s3MKooY5XZQOW0peI
+         yfloIeERrassAa9MWw/8ENoGPGt/oQ0X2g97fHelcTTOEjUWFON4xU58FfyK6IAAdjiL
+         f9WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
          :mime-version:message-id:content-transfer-encoding;
-        bh=TN/xzFsKJy/KrR3D1bB3jSCuV37Mh0yoh89Gfy+4Y04=;
-        b=HNdnXcR3o415ZhQlMtoEX5WQ+KiXqhTIu4nP8o0mJZMrkDQ+Skj3S1Z7TpgpJ1D1C9
-         8SwSEptyZ83sl0sanyztzkq39IK6DTx3TvLn4gVOmmob6jURxWLeMxVeVrtXfs/yCz7f
-         Q4/k8j0/3kkcJ0J1stCtOMqIYodQH+Lrm2htx7X+9fBYXSnWQOt89gyHmVy5Vs2qpCgV
-         dUsyxsSsdyNqIPkkDiFpaf70lXyPi4zHisMUUFi0k37yqbtvCxuX8JBW1JDkaanGCQyZ
-         wT5KbjOObeMHEC083LienMR+RAvbxvV0mjnbDeQOCzu1Mx+ij2dvMH+A4me339wOfLaf
-         x+9A==
-X-Gm-Message-State: AJIora/iga7W6cft3ZicN7HEbUfFPCSSyYvXr79JjVl+4XGhFgGM5l3w
-	c16YApe9vK8nDNXjglMwFew=
-X-Google-Smtp-Source: AGRyM1tRDSd4sEIVkkqteP1eS3o3wUOq1DPBZg07rmodSbbB85Hz/iemYQ7Yn+uxpJG/4+1oHjSFAQ==
-X-Received: by 2002:a17:902:b488:b0:16a:7013:69f0 with SMTP id y8-20020a170902b48800b0016a701369f0mr21803286plr.118.1657588878144;
-        Mon, 11 Jul 2022 18:21:18 -0700 (PDT)
+        bh=A7qUftFMsHtAgHz7tg5ybnJxuA39QPif4EqnUQa2+ls=;
+        b=H8emaneTqfVsA+4KXZ+pHk+YI4VKV/Gl6h04BaUOiCQFHmCw/ux/Ta+SXeEZh+TH6F
+         jEDXIz1bCN7eePUTNAp5ZryyetMLmRApn/KHEAURqjOmTA+8JGz08lNVe9dZViHcZB0Z
+         3GfWkP0qUqMLjjATye+dsOJJZBrXBqKr8MC+ost6XFyKuLAQtTTX/ePGKd8DRkF/5zHZ
+         asVpumREPcYLuIkrFBpOYwrgaL3VIkVpnsSTipweveGc9dbXd+VGmkxupQUaseG4yYI5
+         kSP35Imewfc0tCoQillTew5Ccxiq/MB/UagRx8mLgVt8L9+0z1aCdbLNzkD1FfpI7kx6
+         syXw==
+X-Gm-Message-State: AJIora9W1+Co1El0OHMSy6dTCLOUsnqQoG+gTUYWwqiMZmh95hVFWQJT
+	SuF37VYkDz8YO0nnjVj6iYA=
+X-Google-Smtp-Source: AGRyM1vCis+SHHXbUUZKdGWzSbZvOUw5k1uVmPkRtryAVoujeVtXJWzlAcnGlKYgxE8ZNZyVCCoiVA==
+X-Received: by 2002:a17:902:ea09:b0:16c:3f7a:adf7 with SMTP id s9-20020a170902ea0900b0016c3f7aadf7mr11199465plg.103.1657589593546;
+        Mon, 11 Jul 2022 18:33:13 -0700 (PDT)
 Received: from localhost (193-116-203-247.tpgi.com.au. [193.116.203.247])
-        by smtp.gmail.com with ESMTPSA id x15-20020a170902ec8f00b0016bdee4f24asm5412708plg.48.2022.07.11.18.21.16
+        by smtp.gmail.com with ESMTPSA id f8-20020a17090ab94800b001ef42b3c5besm5450818pjw.23.2022.07.11.18.33.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jul 2022 18:21:17 -0700 (PDT)
-Date: Tue, 12 Jul 2022 11:21:12 +1000
+        Mon, 11 Jul 2022 18:33:12 -0700 (PDT)
+Date: Tue, 12 Jul 2022 11:33:07 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 0/4] Extending NMI watchdog during LPM
+Subject: Re: [PATCH v3 1/4] powerpc/mobility: wait for memory transfer to
+ complete
 To: benh@kernel.crashing.org, haren@linux.vnet.ibm.com, Laurent Dufour
 	<ldufour@linux.ibm.com>, linux@roeck-us.net, mpe@ellerman.id.au,
 	nathanl@linux.ibm.com, paulus@samba.org, wim@linux-watchdog.org
 References: <20220627135347.32624-1-ldufour@linux.ibm.com>
-In-Reply-To: <20220627135347.32624-1-ldufour@linux.ibm.com>
+	<20220627135347.32624-2-ldufour@linux.ibm.com>
+In-Reply-To: <20220627135347.32624-2-ldufour@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1657587920.49l4tue93d.astroid@bobo.none>
+Message-Id: <1657588908.mis26ebam4.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,68 +85,100 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Laurent Dufour's message of June 27, 2022 11:53 pm:
-> When a partition is transferred, once it arrives at the destination node,
-> the partition is active but much of its memory must be transferred from t=
-he
-> start node.
+> In pseries_migration_partition(), loop until the memory transfer is
+> complete. This way the calling drmgr process will not exit earlier,
+> allowing callbacks to be run only once the migration is fully completed.
 >=20
-> It depends on the activity in the partition, but the more CPU the partiti=
-on
-> has, the more memory to be transferred is likely to be. This causes laten=
-cy
-> when accessing pages that need to be transferred, and often, for large
-> partitions, it triggers the NMI watchdog.
-
-Importantly, it can require page in of code that runs with irqs=20
-disabled, which is unlike a guest normally runs under PowerVM
-(but it can under KVM) which is why we enabled the watchdog under
-PowerVM but not KVM. So, okay it makes sense to mak an exception
-for this case.
-
-Thanks,
-Nick
-
-> The NMI watchdog causes the CPU stack to dump where it appears to be
-> stuck. In this case, it does not bring much information since it can happ=
-en
-> during any memory access of the kernel.
+> If reading the VASI state is done after the hypervisor has completed the
+> migration, the HCALL is returning H_PARAMETER. We can safely assume that
+> the memory transfer is achieved if this happens.
 >=20
-> In addition, the NMI interrupt mechanism is not secure and can generate a
-> dump system in the event that the interruption is taken while MSR[RI]=3D0=
+> This will also allow to manage the NMI watchdog state in the next commits=
 .
 >=20
-> Depending on the LPAR size and load, it may be interesting to extend the
-> NMI watchdog timer during the LPM.
+> Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/mobility.c | 42 +++++++++++++++++++++--
+>  1 file changed, 40 insertions(+), 2 deletions(-)
 >=20
-> That's configurable through sysctl with the new introduced variable
-> (specific to powerpc) nmi_watchdog_factor. This value represents the
-> percentage added to watchdog_tresh to set the NMI watchdog timeout during=
- a
-> LPM.
->=20
-> Changes in v3:
->  - don't export watchdog_mutex
->  - fix a comment in mobilty.c, wait_for_vasi_session_completed()
->  - fix a build issue when !CONFIG_PPC_WATCHDOG
->  - rework some printk and rename the sysctl variable.
->=20
-> v2:
-> https://lore.kernel.org/all/20220614135414.37746-1-ldufour@linux.ibm.com/
->=20
-> Laurent Dufour (4):
->   powerpc/mobility: wait for memory transfer to complete
->   watchdog: export lockup_detector_reconfigure
->   powerpc/watchdog: introduce a NMI watchdog's factor
->   pseries/mobility: set NMI watchdog factor during LPM
->=20
->  Documentation/admin-guide/sysctl/kernel.rst | 12 +++
->  arch/powerpc/include/asm/nmi.h              |  2 +
->  arch/powerpc/kernel/watchdog.c              | 21 ++++-
->  arch/powerpc/platforms/pseries/mobility.c   | 85 ++++++++++++++++++++-
->  include/linux/nmi.h                         |  2 +
->  kernel/watchdog.c                           | 21 +++--
->  6 files changed, 135 insertions(+), 8 deletions(-)
->=20
+> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/pla=
+tforms/pseries/mobility.c
+> index 78f3f74c7056..907a779074d6 100644
+> --- a/arch/powerpc/platforms/pseries/mobility.c
+> +++ b/arch/powerpc/platforms/pseries/mobility.c
+> @@ -427,6 +427,43 @@ static int wait_for_vasi_session_suspending(u64 hand=
+le)
+>  	return ret;
+>  }
+> =20
+> +static void wait_for_vasi_session_completed(u64 handle)
+> +{
+> +	unsigned long state =3D 0;
+> +	int ret;
+> +
+> +	pr_info("waiting for memory transfert to complete...\n");
+
+                                            ^ extra t (also below)
+> +
+> +	/*
+> +	 * Wait for transition from H_VASI_RESUMED to H_VASI_COMPLETED.
+> +	 */
+> +	while (true) {
+> +		ret =3D poll_vasi_state(handle, &state);
+> +
+> +		/*
+> +		 * If the memory transfer is already complete and the migration
+> +		 * has been cleaned up by the hypervisor, H_PARAMETER is return,
+> +		 * which is translate in EINVAL by poll_vasi_state().
+> +		 */
+> +		if (ret =3D=3D -EINVAL || (!ret && state =3D=3D H_VASI_COMPLETED)) {
+> +			pr_info("memory transfert completed.\n");
+> +			break;
+> +		}
+> +
+> +		if (ret) {
+> +			pr_err("H_VASI_STATE return error (%d)\n", ret);
+> +			break;
+> +		}
+> +
+> +		if (state !=3D H_VASI_RESUMED) {
+> +			pr_err("unexpected H_VASI_STATE result %lu\n", state);
+> +			break;
+> +		}
+> +
+> +		msleep(500);
+
+Is 500 specified anywhere? Another caller uses 1000, and the other one=20
+uses some backoff interval starting at 1ms...
+
+> +	}
+> +}
+> +
+>  static void prod_single(unsigned int target_cpu)
+>  {
+>  	long hvrc;
+> @@ -673,9 +710,10 @@ static int pseries_migrate_partition(u64 handle)
+>  	vas_migration_handler(VAS_SUSPEND);
+> =20
+>  	ret =3D pseries_suspend(handle);
+> -	if (ret =3D=3D 0)
+> +	if (ret =3D=3D 0) {
+>  		post_mobility_fixup();
+> -	else
+> +		wait_for_vasi_session_completed(handle);
+
+If this wasn't required until later patches, maybe a comment about why=20
+it's here? Could call it wait_for_migration() or similar too.
+
+Looks okay though from my basic reading of PAPR.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> +	} else
+>  		pseries_cancel_migration(handle, ret);
+> =20
+>  	vas_migration_handler(VAS_RESUME);
 > --=20
 > 2.36.1
 >=20
