@@ -1,72 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A339F570FA5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 03:43:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC12570FAD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 03:47:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhk6t3DSgz3c8h
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 11:43:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LhkC41Z6rz3cCh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 11:47:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=S0/JcCbh;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=H07onmAM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::535; helo=mail-pg1-x535.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=S0/JcCbh;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=H07onmAM;
 	dkim-atps=neutral
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lhk6G3312z3bsf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 11:43:00 +1000 (AEST)
-Received: by mail-pg1-x535.google.com with SMTP id s206so6271029pgs.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 18:43:00 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhkBT3559z3bsK
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 11:46:41 +1000 (AEST)
+Received: by mail-pl1-x62a.google.com with SMTP id r6so3533072plg.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Jul 2022 18:46:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=date:from:subject:to:cc:references:in-reply-to:mime-version
          :message-id:content-transfer-encoding;
-        bh=efBjI108FNDgrH81mWfuEW+8lOWoiTSn59YlZxopuqo=;
-        b=S0/JcCbhklzJm37yA+X+xY4YciQKLZDOx18f5yXiSPq1kMGboCRhiToigj+Mvrzunm
-         mAfbLqPfOwBakJYmDJ83kMjo+cCxQUiU+0PZ/Vs6jRfHrJ2ll5aRu/NlNkENnE3Bp7oC
-         1uD+lvUh0kdlbOwL8/5BhB9OVRl7qkcdvIn2cnIl0VBzqnNHqX88QjvhrWM0M+jJYwbP
-         UiCvG60QWRRi50X46Oi1OrAK6lkfeoH6k0C1wRelddCBbXKUpzn1dNRPEi2jYqxwOC9P
-         eMAqB8tZzwVqMnqT8yc/kP9cBV5zVdQAWgDQqtzMFTZQtbiNkd9Zl6rl3dfxC9D/ysmi
-         Y5zw==
+        bh=5WUpciY67nz9Y+WwyFmNq00Jkjc0+OHPotlv53pIbNg=;
+        b=H07onmAMCuh0h3uRioN4skYiI3WXqG0mgSOsOcbeMXPOagZtwCDD7J2r99ohvufdNX
+         0EyZWD2X+LnOn++zMCL5ybsHIpTrfmKLkLApRjW7yIbtTtW8JK3sfr3zZPYF8l+93Gcg
+         9dxasbu6toefgvV1NjRCdUyEeAEkmCvPy/nQmVb+25+PQZuQdYvvcT7E0jR6oaARPLMI
+         ZZP1F5eQKpGp3n1a8S3VV44YGPlw3k8PmZU7hrWClzhvcAtDpT3bjS0MkhRYzEmw2a+c
+         cNtKtAOyE86KIh6QfSHSQyypweB9om2Vvs+S0W+47WYVHg8Y4g8A/FeVPtuVz3472JeL
+         dJTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
          :mime-version:message-id:content-transfer-encoding;
-        bh=efBjI108FNDgrH81mWfuEW+8lOWoiTSn59YlZxopuqo=;
-        b=vsfCU8FcRQodjJsjPPzhKG8iclK1kABNG56fF9A3Bjy7XSysm4xtBsDqo3njG9I8tz
-         Ptahlg40+kSANLPrRvoKf3sfGqyRGtbIdLage5gwMEg57clyGHR1PnRzEKWRtNoea6Q7
-         o/KBsmD+VlGq1IHGdgMI/v32dWBik2S9vpteharzqHE+uteYCfGdS+gLzV6fPJbl5W57
-         jmWSH6EOH6l7gYCXhO78D/kKXwE1RCushXO63gTxtRU8ynDmrqc92ZyPW3Qg7cvyP2v7
-         9mKxnbNzv8i36oDFfcyt3DAFW56++YpPnAD0Uz/mT5yXCpxXIGLH7JLzA/Z+tUeO833r
-         FQDg==
-X-Gm-Message-State: AJIora/3sTg1tRU1iY6DonbvuWbS/LMWIpTRYZEBODuhHw4CIbSkCdg/
-	rC6oDd2jLsCbEDL6oUeXoseJDrCzOrQ=
-X-Google-Smtp-Source: AGRyM1uIyDCldsts9kc/4nx1k4tXS/V3m+V4ip+typVuJlP8eqpmkGQF2/k95hww38sxRvIAXxI0xg==
-X-Received: by 2002:a05:6a00:1818:b0:52a:dabd:a232 with SMTP id y24-20020a056a00181800b0052adabda232mr4646574pfa.70.1657590178596;
-        Mon, 11 Jul 2022 18:42:58 -0700 (PDT)
+        bh=5WUpciY67nz9Y+WwyFmNq00Jkjc0+OHPotlv53pIbNg=;
+        b=sjBjIZxraVNr8Wj57AtGU/5Tr7gjGXpuBBNg9cuUG1PlYbmi4qu6Fve7HlKV3k+MHh
+         7dUDYGekqXP93F2tp+B4M18Qv3FUOek+j6wbtbwPefvfbRzrFERiCljmh0m5LupS+bJO
+         ygZZEHkkjcqjPzxhMrra6HFGhOobn1J+8rzc0F8IpMfE/Vl6OzeV1TJpPDvBkgAvOs0q
+         KTflXwtUis8M9MwkGrHWnhTJIJS67YMerEvB+SUWID9uT2mIhBiueStc9FOk2CiTJatH
+         8+MYQdczILOozV/rjkMLG/OOMKUUZHEI374azlkRKSppbSDlkImwqekrDscUa6PspE2s
+         EnLg==
+X-Gm-Message-State: AJIora88n1vUB/EljY1Pp2ApFmbwzBeYU93/nGs1P35reEacHnHOpki9
+	zQweW4oxzViQqh8LQMTv1VA=
+X-Google-Smtp-Source: AGRyM1u2wYcmJaBc3iLp3t3fCVKjEPS+WhouJ3dul7UkswiLBWGwaGXfRwfb7gXJV+H/tHZ6FCpCeQ==
+X-Received: by 2002:a17:903:1314:b0:16b:e832:7292 with SMTP id iy20-20020a170903131400b0016be8327292mr21546636plb.56.1657590399323;
+        Mon, 11 Jul 2022 18:46:39 -0700 (PDT)
 Received: from localhost (193-116-203-247.tpgi.com.au. [193.116.203.247])
-        by smtp.gmail.com with ESMTPSA id m12-20020a170902f64c00b0016bf9437766sm5346915plg.261.2022.07.11.18.42.57
+        by smtp.gmail.com with ESMTPSA id p123-20020a625b81000000b0052ab5740130sm5383922pfb.37.2022.07.11.18.46.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Jul 2022 18:42:57 -0700 (PDT)
-Date: Tue, 12 Jul 2022 11:42:52 +1000
+        Mon, 11 Jul 2022 18:46:38 -0700 (PDT)
+Date: Tue, 12 Jul 2022 11:46:33 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 3/4] powerpc/watchdog: introduce a NMI watchdog's
- factor
+Subject: Re: [PATCH v3 4/4] pseries/mobility: set NMI watchdog factor during
+ LPM
 To: benh@kernel.crashing.org, haren@linux.vnet.ibm.com, Laurent Dufour
 	<ldufour@linux.ibm.com>, linux@roeck-us.net, mpe@ellerman.id.au,
 	nathanl@linux.ibm.com, paulus@samba.org, wim@linux-watchdog.org
 References: <20220627135347.32624-1-ldufour@linux.ibm.com>
-	<20220627135347.32624-4-ldufour@linux.ibm.com>
-In-Reply-To: <20220627135347.32624-4-ldufour@linux.ibm.com>
+	<20220627135347.32624-5-ldufour@linux.ibm.com>
+In-Reply-To: <20220627135347.32624-5-ldufour@linux.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1657589870.vvurapsif3.astroid@bobo.none>
+Message-Id: <1657590189.b3s2aqv3sj.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -85,96 +85,151 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Excerpts from Laurent Dufour's message of June 27, 2022 11:53 pm:
-> Introduce a factor which would apply to the NMI watchdog timeout.
+> During a LPM, while the memory transfer is in progress on the arrival sid=
+e,
+> some latencies is generated when accessing not yet transferred pages on t=
+he
+> arrival side. Thus, the NMI watchdog may be triggered too frequently, whi=
+ch
+> increases the risk to hit a NMI interrupt in a bad place in the kernel,
+> leading to a kernel panic.
 >=20
-> This factor is a percentage added to the watchdog_tresh value. The value =
-is
-> set under the watchdog_mutex protection and lockup_detector_reconfigure()
-> is called to recompute wd_panic_timeout_tb.
+> Disabling the Hard Lockup Watchdog until the memory transfer could be a t=
+oo
+> strong work around, some users would want this timeout to be eventually
+> triggered if the system is hanging even during LPM.
 >=20
-> Once the factor is set, it remains until it is set back to 0, which means
-> no impact.
-
-Looks okay. We could worry about making it more generic or nicer if
-another user came along.
-
-Could you make the naming a bit more self documenting?=20
-watchdog_nmi_set_timeout_pct(), maybe? Does the wd really care
-that it is for LPM in particular?
-
-Variables and parameters could have a _pct suffix too.
-
-Otherwise
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
+> Introduce a new sysctl variable nmi_watchdog_factor. It allows to apply
+> a factor to the NMI watchdog timeout during a LPM. Just before the CPU ar=
+e
+> stopped for the switchover sequence, the NMI watchdog timer is set to
+>  watchdog_tresh + factor%
+>=20
+> A value of 0 has no effect. The default value is 200, meaning that the NM=
+I
+> watchdog is set to 30s during LPM (based on a 10s watchdog_tresh value).
+> Once the memory transfer is achieved, the factor is reset to 0.
+>=20
+> Setting this value to a high number is like disabling the NMI watchdog
+> during a LPM.
 >=20
 > Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/nmi.h |  2 ++
->  arch/powerpc/kernel/watchdog.c | 21 ++++++++++++++++++++-
->  2 files changed, 22 insertions(+), 1 deletion(-)
+>  Documentation/admin-guide/sysctl/kernel.rst | 12 ++++++
+>  arch/powerpc/platforms/pseries/mobility.c   | 43 +++++++++++++++++++++
+>  2 files changed, 55 insertions(+)
 >=20
-> diff --git a/arch/powerpc/include/asm/nmi.h b/arch/powerpc/include/asm/nm=
-i.h
-> index ea0e487f87b1..7d6a8d9b0543 100644
-> --- a/arch/powerpc/include/asm/nmi.h
-> +++ b/arch/powerpc/include/asm/nmi.h
-> @@ -5,8 +5,10 @@
->  #ifdef CONFIG_PPC_WATCHDOG
->  extern void arch_touch_nmi_watchdog(void);
->  long soft_nmi_interrupt(struct pt_regs *regs);
-> +void watchdog_nmi_set_lpm_factor(u64 factor);
->  #else
->  static inline void arch_touch_nmi_watchdog(void) {}
-> +static inline void watchdog_nmi_set_lpm_factor(u64 factor) {}
->  #endif
+> diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/=
+admin-guide/sysctl/kernel.rst
+> index ddccd1077462..0bb0b7f27e96 100644
+> --- a/Documentation/admin-guide/sysctl/kernel.rst
+> +++ b/Documentation/admin-guide/sysctl/kernel.rst
+> @@ -592,6 +592,18 @@ to the guest kernel command line (see
+>  Documentation/admin-guide/kernel-parameters.rst).
 > =20
->  #ifdef CONFIG_NMI_IPI
-> diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdo=
-g.c
-> index 7d28b9553654..80851b228f71 100644
-> --- a/arch/powerpc/kernel/watchdog.c
-> +++ b/arch/powerpc/kernel/watchdog.c
-> @@ -91,6 +91,10 @@ static cpumask_t wd_smp_cpus_pending;
->  static cpumask_t wd_smp_cpus_stuck;
->  static u64 wd_smp_last_reset_tb;
 > =20
-> +#ifdef CONFIG_PPC_PSERIES
-> +static u64 wd_factor;
-> +#endif
+> +nmi_watchdog_factor (PPC only)
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 > +
->  /*
->   * Try to take the exclusive watchdog action / NMI IPI / printing lock.
->   * wd_smp_lock must be held. If this fails, we should return and wait
-> @@ -527,7 +531,13 @@ static int stop_watchdog_on_cpu(unsigned int cpu)
+> +Factor apply to to the NMI watchdog timeout (only when ``nmi_watchdog`` =
+is
+> +set to 1). This factor represents the percentage added to
+> +``watchdog_thresh`` when calculating the NMI watchdog timeout during a
+> +LPM. The soft lockup timeout is not impacted.
+
+Could "LPM" or "mobility" be a bit more prominent in the parameter name
+and documentation? Something else might want to add a factor as well,
+one day.
+
+Otherwise the code looks okay.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+> +
+> +A value of 0 means no change. The default value is 200 meaning the NMI
+> +watchdog is set to 30s (based on ``watchdog_thresh`` equal to 10).
+> +
+> +
+>  numa_balancing
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 > =20
->  static void watchdog_calc_timeouts(void)
->  {
-> -	wd_panic_timeout_tb =3D watchdog_thresh * ppc_tb_freq;
-> +	u64 threshold =3D watchdog_thresh;
-> +
-> +#ifdef CONFIG_PPC_PSERIES
-> +	threshold +=3D (READ_ONCE(wd_factor) * threshold) / 100;
-> +#endif
-> +
-> +	wd_panic_timeout_tb =3D threshold * ppc_tb_freq;
+> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/pla=
+tforms/pseries/mobility.c
+> index 907a779074d6..649155faafc2 100644
+> --- a/arch/powerpc/platforms/pseries/mobility.c
+> +++ b/arch/powerpc/platforms/pseries/mobility.c
+> @@ -48,6 +48,39 @@ struct update_props_workarea {
+>  #define MIGRATION_SCOPE	(1)
+>  #define PRRN_SCOPE -2
 > =20
->  	/* Have the SMP detector trigger a bit later */
->  	wd_smp_panic_timeout_tb =3D wd_panic_timeout_tb * 3 / 2;
-> @@ -570,3 +580,12 @@ int __init watchdog_nmi_probe(void)
->  	}
->  	return 0;
->  }
+> +#ifdef CONFIG_PPC_WATCHDOG
+> +static unsigned int nmi_wd_factor =3D 200;
 > +
-> +#ifdef CONFIG_PPC_PSERIES
-> +void watchdog_nmi_set_lpm_factor(u64 factor)
+> +#ifdef CONFIG_SYSCTL
+> +static struct ctl_table nmi_wd_factor_ctl_table[] =3D {
+> +	{
+> +		.procname	=3D "nmi_watchdog_factor",
+> +		.data		=3D &nmi_wd_factor,
+> +		.maxlen		=3D sizeof(int),
+> +		.mode		=3D 0644,
+> +		.proc_handler	=3D proc_douintvec_minmax,
+> +	},
+> +	{}
+> +};
+> +static struct ctl_table nmi_wd_factor_sysctl_root[] =3D {
+> +	{
+> +		.procname       =3D "kernel",
+> +		.mode           =3D 0555,
+> +		.child          =3D nmi_wd_factor_ctl_table,
+> +	},
+> +	{}
+> +};
+> +
+> +static int __init register_nmi_wd_factor_sysctl(void)
 > +{
-> +	pr_info("Set the NMI watchdog factor to %llu%%\n", factor);
-> +	WRITE_ONCE(wd_factor, factor);
-> +	lockup_detector_reconfigure();
+> +	register_sysctl_table(nmi_wd_factor_sysctl_root);
+> +
+> +	return 0;
 > +}
+> +device_initcall(register_nmi_wd_factor_sysctl);
+> +#endif /* CONFIG_SYSCTL */
+> +#endif /* CONFIG_PPC_WATCHDOG */
+> +
+>  static int mobility_rtas_call(int token, char *buf, s32 scope)
+>  {
+>  	int rc;
+> @@ -702,13 +735,20 @@ static int pseries_suspend(u64 handle)
+>  static int pseries_migrate_partition(u64 handle)
+>  {
+>  	int ret;
+> +	unsigned int factor =3D 0;
+> =20
+> +#ifdef CONFIG_PPC_WATCHDOG
+> +	factor =3D nmi_wd_factor;
 > +#endif
+>  	ret =3D wait_for_vasi_session_suspending(handle);
+>  	if (ret)
+>  		return ret;
+> =20
+>  	vas_migration_handler(VAS_SUSPEND);
+> =20
+> +	if (factor)
+> +		watchdog_nmi_set_lpm_factor(factor);
+> +
+>  	ret =3D pseries_suspend(handle);
+>  	if (ret =3D=3D 0) {
+>  		post_mobility_fixup();
+> @@ -716,6 +756,9 @@ static int pseries_migrate_partition(u64 handle)
+>  	} else
+>  		pseries_cancel_migration(handle, ret);
+> =20
+> +	if (factor)
+> +		watchdog_nmi_set_lpm_factor(0);
+> +
+>  	vas_migration_handler(VAS_RESUME);
+> =20
+>  	return ret;
 > --=20
 > 2.36.1
 >=20
