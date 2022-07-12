@@ -2,66 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32AF571B84
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 15:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AA0571C02
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 16:13:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lj22x5L3vz3cF8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 23:41:13 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LSt+DLU3;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lj2mS3QZyz3cLZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 00:13:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=elver@google.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=LSt+DLU3;
-	dkim-atps=neutral
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lj22H44z5z2ywc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 23:40:38 +1000 (AEST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-2ef5380669cso81096357b3.9
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 06:40:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ALyPmALyKUZN850RRfbsMebRjTXHId7O0aEtI7++nZc=;
-        b=LSt+DLU33Q6liALS8BuSSMkfOKSlRWDFuTo7po1O26Fv7bk7ore1ydtL7Hkh54hx5B
-         9uSRjCaDwCvwdfWSzS7lnufwTmWr2b2BeYWR5YFP9ZU8F9VUUXmk6Zu5giNcEj2YbgpC
-         uI4p1/JHiKYlEhx0fK1shW+TiQcG27FxZBVsXr+bZEYrVso0bpBwSBWJ2SnXgjmK3o2a
-         TljCQ3HgMAtH+5k9+nmdR7HTEIpmR3g8H3YU3v/0m4e+3pVXNggO7+TOdghExzxY46ET
-         DIp6u0LHdi2CFsZzjm9ZOB6D+HRRffEUqutrzlU2tzRGZr0L4jryw4F7HNyo/VTj61UD
-         CAVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ALyPmALyKUZN850RRfbsMebRjTXHId7O0aEtI7++nZc=;
-        b=fPtGYsLnl9P17Lw+RudtbS8AUlFsbPmyAfgc+459i4NYkW1ZOHfM5J0+b+QGWMRl6m
-         lALnDRBO1uDeCagIopLMc3OXaav5SdNyxVa+FhBktjLqF7NW+ffSZ/oiSv7z60B70obf
-         8ojxq/2wuq4I98kgxFGKz4nyQajrDpqUbSVNqR7xc4Udr1UF4sNuoyesEfg0vfpV8ybD
-         1aegw6GC57ZlLs5vAL4IG7h67VyQM5i+Ds+B1/ap9+iz6kEXgWsHat3GFQLj3slVUUVw
-         1br4sEtCkgVfZZdMIzHSCr7/BkYW06J6iZfJ8zpstZZCu6QInW4TkbtFbEu39RkoVLuJ
-         I1lw==
-X-Gm-Message-State: AJIora9xb8bcbfwMf4uKL4JMeUxzS+0Hy9wHsKaxctvEjCK4Iij7UHXL
-	4KU9RfGE/4u3UXzIvp/HBqdEWse38qBlIPplNm111Q==
-X-Google-Smtp-Source: AGRyM1vOJbA/kJ593A3ED5ZJMoh4prb03n/Kz2Y5PlZioljval/AgDFA11ABBXVIE5GqjlsCSBB2nghmV/bKBZoaO6Q=
-X-Received: by 2002:a81:98d:0:b0:31c:921c:9783 with SMTP id
- 135-20020a81098d000000b0031c921c9783mr25237173ywj.316.1657633233606; Tue, 12
- Jul 2022 06:40:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220704150514.48816-1-elver@google.com>
-In-Reply-To: <20220704150514.48816-1-elver@google.com>
-From: Marco Elver <elver@google.com>
-Date: Tue, 12 Jul 2022 15:39:57 +0200
-Message-ID: <CANpmjNP0hPuhXmZmkX1ytCDh56LOAmxJjf7RyfxOvoaem=2d8Q@mail.gmail.com>
-Subject: Re: [PATCH v3 00/14] perf/hw_breakpoint: Optimize for thousands of tasks
-To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, 
-	Frederic Weisbecker <frederic@kernel.org>, Ingo Molnar <mingo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lj2m26BdBz30LR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jul 2022 00:13:22 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 26CEB93o025896;
+	Tue, 12 Jul 2022 09:11:09 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 26CEB7M3025895;
+	Tue, 12 Jul 2022 09:11:07 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Tue, 12 Jul 2022 09:11:07 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc: e500: Fix compilation with gcc e500 compiler
+Message-ID: <20220712141107.GM25951@gate.crashing.org>
+References: <8D562851-304F-4153-9194-426CC22B7FF2@ellerman.id.au> <20220704103951.nm4m4kpgnus3ucqo@pali> <CAK8P3a2tdny8SA7jcqhUZT13iq1mYqjFueC-gnTUZA1JKCtfgg@mail.gmail.com> <20220708171227.74nbcgsk63y4bdna@pali> <CAK8P3a3YMqGEjRr+ZD4Enm4pnuNNZOaeXqpY=PDXAP7w3P7y4A@mail.gmail.com> <d9339bb9-2410-bea5-7502-1c7839707f4e@csgroup.eu> <20220711161442.GD25951@gate.crashing.org> <2552726a-cca4-ecd4-6fca-4f73bbf7942e@csgroup.eu> <20220711214840.GJ25951@gate.crashing.org> <aab87b89-3518-f13e-995a-cbe48892e200@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aab87b89-3518-f13e-995a-cbe48892e200@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,41 +43,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-sh@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Dmitry Vyukov <dvyukov@google.com>
+Cc: Michael Ellerman <michael@ellerman.id.au>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 4 Jul 2022 at 17:05, Marco Elver <elver@google.com> wrote:
->
-> The hw_breakpoint subsystem's code has seen little change in over 10
-> years. In that time, systems with >100s of CPUs have become common,
-> along with improvements to the perf subsystem: using breakpoints on
-> thousands of concurrent tasks should be a supported usecase.
-[...]
-> Marco Elver (14):
->   perf/hw_breakpoint: Add KUnit test for constraints accounting
->   perf/hw_breakpoint: Provide hw_breakpoint_is_used() and use in test
->   perf/hw_breakpoint: Clean up headers
->   perf/hw_breakpoint: Optimize list of per-task breakpoints
->   perf/hw_breakpoint: Mark data __ro_after_init
->   perf/hw_breakpoint: Optimize constant number of breakpoint slots
->   perf/hw_breakpoint: Make hw_breakpoint_weight() inlinable
->   perf/hw_breakpoint: Remove useless code related to flexible
->     breakpoints
->   powerpc/hw_breakpoint: Avoid relying on caller synchronization
->   locking/percpu-rwsem: Add percpu_is_write_locked() and
->     percpu_is_read_locked()
->   perf/hw_breakpoint: Reduce contention with large number of tasks
->   perf/hw_breakpoint: Introduce bp_slots_histogram
->   perf/hw_breakpoint: Optimize max_bp_pinned_slots() for CPU-independent
->     task targets
->   perf/hw_breakpoint: Optimize toggle_bp_slot() for CPU-independent task
->     targets
-[...]
+On Tue, Jul 12, 2022 at 09:22:12AM +0000, Christophe Leroy wrote:
+> Le 11/07/2022 à 23:48, Segher Boessenkool a écrit :
+> > I believe the eieio instruction is disabled on some e500 models, because
+> > it does not work correctly, so EIEIO_EN=1 cannot work, something like
+> > that?
+> 
+> Don't know.
+> 
+> It is also disabled on 405 and 440.
 
-This is ready from our side, and given the silence, assume it's ready
-to pick up and/or have a maintainer take a look. Since this is mostly
-kernel/events, would -tip/perf/core be appropriate?
+BookE does not have the eieio insn.  Instead, it reuses the same opcode
+for mbar, which has similar but different semantics.
 
-Thanks,
--- Marco
+e500 has that EIEIO_EN thing which makes the insn behave like eieio.
+
+> That's new with GCC 12.
+
+Yup.  In the past we used -many, but that just hides problems in the
+best case, and causes more problems itself :-(
+
+There are many mnemonics that cause a different instruction to be
+emitted on different targets, and that causes a lot of wasted time
+trying to find and fix the problems this causes.
+
+If you hit any remaining problems related to this, please let me know!
+
+
+Segher
