@@ -1,97 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F095715CD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 11:33:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C9D5715E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 11:39:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LhwXc57pNz2xD4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 19:33:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lhwh6217jz3cC4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Jul 2022 19:39:34 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gt3X6DN6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W56yctbM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gt3X6DN6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W56yctbM;
 	dkim-atps=neutral
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhwWs3Nnmz3bf5
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 19:32:24 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26C9KNZw025228;
-	Tue, 12 Jul 2022 09:32:13 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LhwgP30CWz30Ly
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Jul 2022 19:38:56 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26C8hwah016743;
+	Tue, 12 Jul 2022 09:38:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=XmYWgqj83kAvB7IYUnhipJfwQjztOHV9qvaI/YFkkY0=;
- b=gt3X6DN66wQJrOMyWURllhnXWSgsm5Ypt2IbGMKX7+lt+2lOoOV3dJNhTbzOUxuRLZc+
- OCpWyL3wnyJ6bnLccMZ/BpdxtNrbj8EhFjaa6yipHBKrlHneXwnLMSg8J46aElvrDjmL
- Nb0eDM70kd5Rzasw7LokEQop6RtGUDbEShl5sni2XNu+YZehS4+eDy7RAOxuqLt3JF+O
- Zr5Y61ryXG85P18MJnRA5bgE4ILr9/yIJTeHat/mZ/mI1Ioxm3Z7mMMiVZFsixnAQ6Vu
- F6AF2X2A7IFRG7S2bM/MEN3FeOLBQ7smMUOd97YDdTiP7SgUgF7shG0C8qyJeM0b+4fZ Zg== 
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=qk1ofYEcashXPyp+CEb/2pdcw933tEZ/rPjXONA7U7I=;
+ b=W56yctbMr+6bZ5eMhwtUPf/zig59CWdqbBkxLn3cp4jNPh+Te+kf/e9hO+3AtAhvFMLM
+ ZeBSMd/EzX12Vj5EKk9iFigCU4jYVGpDAIM1W0HXoN62stbIfzR96FaLMpAHqYOkMjXX
+ bRV30qD/AijJykjcOBACrrq1s4r1f5jyL9D1I33Q8qx7mBf/n4zxa1GmYBDZGyvIwgMf
+ s9c1MHw0+ADdHyCRl4Tl9PQMA/a3OeIxccqU0yfcQ/lz4+VawIUW/YXqAk2dbgjuLGDh
+ rM1hqdaH88NmMn9r2oTRjRKMCidJ0CYQErKz9kfi+ayzURsheNYJEWdyZElTLgCZN1nb 8g== 
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h968587j6-1
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h95puhejt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Jul 2022 09:32:13 +0000
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26C9UERH010094;
-	Tue, 12 Jul 2022 09:32:13 GMT
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h968587hm-1
+	Tue, 12 Jul 2022 09:38:49 +0000
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26C9R3KZ000819;
+	Tue, 12 Jul 2022 09:38:48 GMT
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3h95puheht-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Jul 2022 09:32:12 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26C9LcFx028652;
-	Tue, 12 Jul 2022 09:32:11 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3h8rrn0vgv-1
+	Tue, 12 Jul 2022 09:38:48 +0000
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26C9MYFL019806;
+	Tue, 12 Jul 2022 09:38:46 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma05fra.de.ibm.com with ESMTP id 3h71a8ty46-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Jul 2022 09:32:10 +0000
+	Tue, 12 Jul 2022 09:38:46 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26C9WJtR21627376
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26C9ciqd22741340
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Jul 2022 09:32:19 GMT
+	Tue, 12 Jul 2022 09:38:44 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AA88CAE053;
-	Tue, 12 Jul 2022 09:32:08 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 72533AE051;
+	Tue, 12 Jul 2022 09:38:44 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 37780AE04D;
-	Tue, 12 Jul 2022 09:32:08 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id EBE4FAE045;
+	Tue, 12 Jul 2022 09:38:43 +0000 (GMT)
 Received: from [9.101.4.33] (unknown [9.101.4.33])
 	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Jul 2022 09:32:08 +0000 (GMT)
-Message-ID: <121217bb-6a34-8ccb-9819-f82806d6f47c@linux.ibm.com>
-Date: Tue, 12 Jul 2022 11:32:07 +0200
+	Tue, 12 Jul 2022 09:38:43 +0000 (GMT)
+Message-ID: <b820274e-56fe-501b-0d1d-41703fbe6b48@linux.ibm.com>
+Date: Tue, 12 Jul 2022 11:38:43 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.0.1
-Subject: Re: [PATCH v3 0/4] Extending NMI watchdog during LPM
+Subject: Re: [PATCH v3 1/4] powerpc/mobility: wait for memory transfer to
+ complete
+Content-Language: fr
 To: Nicholas Piggin <npiggin@gmail.com>, benh@kernel.crashing.org,
         haren@linux.vnet.ibm.com, linux@roeck-us.net, mpe@ellerman.id.au,
         nathanl@linux.ibm.com, paulus@samba.org, wim@linux-watchdog.org
 References: <20220627135347.32624-1-ldufour@linux.ibm.com>
- <1657587920.49l4tue93d.astroid@bobo.none>
-Content-Language: fr
+ <20220627135347.32624-2-ldufour@linux.ibm.com>
+ <1657588908.mis26ebam4.astroid@bobo.none>
 From: Laurent Dufour <ldufour@linux.ibm.com>
-In-Reply-To: <1657587920.49l4tue93d.astroid@bobo.none>
+In-Reply-To: <1657588908.mis26ebam4.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: H2EY74HLAyxlLZ-8G_Yo9JC33dcKT-Oa
-X-Proofpoint-ORIG-GUID: HIBY0d4mShO-WnF9wdGQfwRvbloRSyo3
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
-MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gGeqaXoIfANwKkwvyYrnJDbG_fiXd63x
+X-Proofpoint-ORIG-GUID: F_80hR8xTapnMRjaIvF7lke68QdSPRLi
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
  definitions=2022-07-12_05,2022-07-08_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
- suspectscore=0 impostorscore=0 adultscore=0 clxscore=1011 mlxscore=0
- bulkscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207120034
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0 impostorscore=0
+ mlxscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
+ definitions=main-2207120035
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,69 +108,112 @@ Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-watchdog@
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 12/07/2022 à 03:21, Nicholas Piggin a écrit :
+Le 12/07/2022 à 03:33, Nicholas Piggin a écrit :
 > Excerpts from Laurent Dufour's message of June 27, 2022 11:53 pm:
->> When a partition is transferred, once it arrives at the destination node,
->> the partition is active but much of its memory must be transferred from the
->> start node.
+>> In pseries_migration_partition(), loop until the memory transfer is
+>> complete. This way the calling drmgr process will not exit earlier,
+>> allowing callbacks to be run only once the migration is fully completed.
 >>
->> It depends on the activity in the partition, but the more CPU the partition
->> has, the more memory to be transferred is likely to be. This causes latency
->> when accessing pages that need to be transferred, and often, for large
->> partitions, it triggers the NMI watchdog.
+>> If reading the VASI state is done after the hypervisor has completed the
+>> migration, the HCALL is returning H_PARAMETER. We can safely assume that
+>> the memory transfer is achieved if this happens.
+>>
+>> This will also allow to manage the NMI watchdog state in the next commits.
+>>
+>> Reviewed-by: Nathan Lynch <nathanl@linux.ibm.com>
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>  arch/powerpc/platforms/pseries/mobility.c | 42 +++++++++++++++++++++--
+>>  1 file changed, 40 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
+>> index 78f3f74c7056..907a779074d6 100644
+>> --- a/arch/powerpc/platforms/pseries/mobility.c
+>> +++ b/arch/powerpc/platforms/pseries/mobility.c
+>> @@ -427,6 +427,43 @@ static int wait_for_vasi_session_suspending(u64 handle)
+>>  	return ret;
+>>  }
+>>  
+>> +static void wait_for_vasi_session_completed(u64 handle)
+>> +{
+>> +	unsigned long state = 0;
+>> +	int ret;
+>> +
+>> +	pr_info("waiting for memory transfert to complete...\n");
 > 
-> Importantly, it can require page in of code that runs with irqs 
-> disabled, which is unlike a guest normally runs under PowerVM
-> (but it can under KVM) which is why we enabled the watchdog under
-> PowerVM but not KVM. So, okay it makes sense to mak an exception
-> for this case.
+>                                             ^ extra t (also below)
 
-On PowerVM, irqs disabled code may trigger multiple page in of data, which
-is generating latencies too. Furthermore, the hypervisor is currently not
-prioritizing page in operation based on the faulting CPU state. So the
-kernel may have to wait for user page in operations to last.
+I tried to push one French word, but you caught it ;)
+Will fix that and the other ones.
 
-> Thanks,
-> Nick
+>> +
+>> +	/*
+>> +	 * Wait for transition from H_VASI_RESUMED to H_VASI_COMPLETED.
+>> +	 */
+>> +	while (true) {
+>> +		ret = poll_vasi_state(handle, &state);
+>> +
+>> +		/*
+>> +		 * If the memory transfer is already complete and the migration
+>> +		 * has been cleaned up by the hypervisor, H_PARAMETER is return,
+>> +		 * which is translate in EINVAL by poll_vasi_state().
+>> +		 */
+>> +		if (ret == -EINVAL || (!ret && state == H_VASI_COMPLETED)) {
+>> +			pr_info("memory transfert completed.\n");
+>> +			break;
+>> +		}
+>> +
+>> +		if (ret) {
+>> +			pr_err("H_VASI_STATE return error (%d)\n", ret);
+>> +			break;
+>> +		}
+>> +
+>> +		if (state != H_VASI_RESUMED) {
+>> +			pr_err("unexpected H_VASI_STATE result %lu\n", state);
+>> +			break;
+>> +		}
+>> +
+>> +		msleep(500);
 > 
->> The NMI watchdog causes the CPU stack to dump where it appears to be
->> stuck. In this case, it does not bring much information since it can happen
->> during any memory access of the kernel.
->>
->> In addition, the NMI interrupt mechanism is not secure and can generate a
->> dump system in the event that the interruption is taken while MSR[RI]=0.
->>
->> Depending on the LPAR size and load, it may be interesting to extend the
->> NMI watchdog timer during the LPM.
->>
->> That's configurable through sysctl with the new introduced variable
->> (specific to powerpc) nmi_watchdog_factor. This value represents the
->> percentage added to watchdog_tresh to set the NMI watchdog timeout during a
->> LPM.
->>
->> Changes in v3:
->>  - don't export watchdog_mutex
->>  - fix a comment in mobilty.c, wait_for_vasi_session_completed()
->>  - fix a build issue when !CONFIG_PPC_WATCHDOG
->>  - rework some printk and rename the sysctl variable.
->>
->> v2:
->> https://lore.kernel.org/all/20220614135414.37746-1-ldufour@linux.ibm.com/
->>
->> Laurent Dufour (4):
->>   powerpc/mobility: wait for memory transfer to complete
->>   watchdog: export lockup_detector_reconfigure
->>   powerpc/watchdog: introduce a NMI watchdog's factor
->>   pseries/mobility: set NMI watchdog factor during LPM
->>
->>  Documentation/admin-guide/sysctl/kernel.rst | 12 +++
->>  arch/powerpc/include/asm/nmi.h              |  2 +
->>  arch/powerpc/kernel/watchdog.c              | 21 ++++-
->>  arch/powerpc/platforms/pseries/mobility.c   | 85 ++++++++++++++++++++-
->>  include/linux/nmi.h                         |  2 +
->>  kernel/watchdog.c                           | 21 +++--
->>  6 files changed, 135 insertions(+), 8 deletions(-)
->>
+> Is 500 specified anywhere? Another caller uses 1000, and the other one 
+> uses some backoff interval starting at 1ms...
+
+This is a bit empiric, the idea is to wait for the overall memory transfer
+to be done. There is no real need to interact immediately after the
+operation is terminated, so I pick that value to not make too many Hcalls
+just for that. From the test I did, that seems to be a reasonable choice.
+
+> 
+>> +	}
+>> +}
+>> +
+>>  static void prod_single(unsigned int target_cpu)
+>>  {
+>>  	long hvrc;
+>> @@ -673,9 +710,10 @@ static int pseries_migrate_partition(u64 handle)
+>>  	vas_migration_handler(VAS_SUSPEND);
+>>  
+>>  	ret = pseries_suspend(handle);
+>> -	if (ret == 0)
+>> +	if (ret == 0) {
+>>  		post_mobility_fixup();
+>> -	else
+>> +		wait_for_vasi_session_completed(handle);
+> 
+> If this wasn't required until later patches, maybe a comment about why 
+> it's here? Could call it wait_for_migration() or similar too.
+> 
+> Looks okay though from my basic reading of PAPR.
+> 
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+
+Thanks Nick for reviewing this series.
+
+> 
+>> +	} else
+>>  		pseries_cancel_migration(handle, ret);
+>>  
+>>  	vas_migration_handler(VAS_RESUME);
 >> -- 
 >> 2.36.1
 >>
