@@ -2,44 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D34573B6F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 18:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D4C573CCC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 20:54:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ljk3P58f6z3cJC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 02:44:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ljmxm65Nvz3cGC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 04:54:20 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=qMnv4zuy;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fsmkGrkz;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=qMnv4zuy;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fsmkGrkz;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ljk2p3VpTz3c2T
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 02:43:30 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 7A1CF61C1A;
-	Wed, 13 Jul 2022 16:43:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342F5C34114;
-	Wed, 13 Jul 2022 16:43:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1657730607;
-	bh=nMsRYviHgVpR/eEib6JhLatM36YsgmWc+/23uSoN1UI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qMnv4zuyB2PLEp46Dpmnr4L9/j34bKiuM4C6yeIvRMSP8OmDBUncj6WzIFyvm/LHE
-	 Qvw/iDN6OUKnOVjpvOMMeJT5t2ecIeFTnOP1GX7f6YTBwWgDKNkIaxbMSro3Ssq1s1
-	 hfNdJndLCyPw9iQc1wDasVCjD9An+McAZjK+/CCU=
-Date: Wed, 13 Jul 2022 18:43:18 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ljmx63kwjz3blJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 04:53:43 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id a15so10981326pfv.13
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jul 2022 11:53:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=GeV2tFKBcVMa4ZCzocYwtGdNsZHtwglU+ZOuhzOWglM=;
+        b=fsmkGrkzthQjZwIcIwegSlkzJgod4muvky/93KjoZs9q8nfTKRg3mXSQnQTz1w6BbJ
+         iQJRqGUrgZZ2RAAuLBHCIrXvXXMv8QZBXR3QfSMVRbplSYjwMeYFbHu5Ub88grCdCa2A
+         +qcaspBGuWupKXJ0g1t5438TSo0VCs0izOQOw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=GeV2tFKBcVMa4ZCzocYwtGdNsZHtwglU+ZOuhzOWglM=;
+        b=CVmeB1xZzsnSkzwr4fhdl72UOK0c6b+R2w7sD0NpCCseAMpn/Q/FFvhoJoFJFHgt6Y
+         /svCHT+WePfuipQ4vxWEQKggh3ojg2YC93Hw5IeCMOGeE4CWUKhv1Ku93HfaBW9QO2zI
+         DeuY8CfB7c/lzTZDvhcuRjrj+Yq0aDI5JpgAOL1nRX7gfeDDZIoNJLFKwzeVUSp0NmYU
+         PtI1swZY9kvpWpepzSFVxh0wspjTHrv0iyizOUeTKZ3mTy8EXjTlmzlZti++9934VnuK
+         Y5N4H/c6o8GAA44NPEfxig52yxuWzpBqGbIu/BUKytCgLOCufBuzJx17TmNYAPJktuJA
+         8gTQ==
+X-Gm-Message-State: AJIora+dWYrMyRQ4bpWxgHn0vQHLMDuWYSu3mg/Va49j0RHpzefQygXN
+	S2RSUj8wLicM62yyCSxDIHSs/A==
+X-Google-Smtp-Source: AGRyM1tyW/e/Gu78Q+yh5cSQTQQPTE5CBcgxMmQ977sNgJVjqs3mfr5hqoBTeXwo+EBVMBnzgUGfKw==
+X-Received: by 2002:a63:2b85:0:b0:419:7b8c:ac58 with SMTP id r127-20020a632b85000000b004197b8cac58mr4041562pgr.230.1657738420702;
+        Wed, 13 Jul 2022 11:53:40 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 205-20020a6217d6000000b0052af2e8bb9csm2865321pfx.16.2022.07.13.11.53.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Jul 2022 11:53:40 -0700 (PDT)
+Date: Wed, 13 Jul 2022 11:53:39 -0700
+From: Kees Cook <keescook@chromium.org>
 To: Ning Qiang <sohu0106@126.com>
 Subject: Re: [PATCH] macintosh:fix oob read in do_adb_query function
-Message-ID: <Ys72JqcqGQQa12YS@kroah.com>
+Message-ID: <202207131149.606A481BD8@keescook>
 References: <20220713153734.2248-1-sohu0106@126.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -56,7 +73,7 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: security@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: security@kernel.org, linuxppc-dev@lists.ozlabs.org, greg@kroah.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
@@ -69,6 +86,45 @@ On Wed, Jul 13, 2022 at 11:37:34PM +0800, Ning Qiang wrote:
 > 
 > Signed-off-by: Ning Qiang <sohu0106@126.com>
 
-Cc: stable <stable@kernel.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thanks for catching this!
 
+Do you have a reproducer for this? I'd expect CONFIG_UBSAN_BOUNDS=y to
+notice this at runtime, at least.
+
+
+> ---
+>  drivers/macintosh/adb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
+> index 439fab4eaa85..1bbb9ca08d40 100644
+> --- a/drivers/macintosh/adb.c
+> +++ b/drivers/macintosh/adb.c
+> @@ -647,7 +647,7 @@ do_adb_query(struct adb_request *req)
+>  
+>  	switch(req->data[1]) {
+>  	case ADB_QUERY_GETDEVINFO:
+> -		if (req->nbytes < 3)
+> +		if (req->nbytes < 3 || req->data[2] >= 16)
+
+I'd prefer this was:
+
++		if (req->nbytes < 3 || req->data[2] >= ARRAY_SIZE(adb_handler))
+
+so it's tied to the actual variable (if its size ever changes).
+
+With that:
+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+
+-Kees
+
+>  			break;
+>  		mutex_lock(&adb_handler_mutex);
+>  		req->reply[0] = adb_handler[req->data[2]].original_address;
+> -- 
+> 2.25.1
+> 
+
+-- 
+Kees Cook
