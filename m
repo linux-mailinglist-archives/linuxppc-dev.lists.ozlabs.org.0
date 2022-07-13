@@ -2,48 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1530573A53
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 17:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E54573A6C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 17:46:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ljhc54qyvz3cFm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 01:38:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=UFTryoNB;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LjhnQ2MGsz3cMq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 01:46:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=126.com (client-ip=123.126.96.4; helo=mail-m964.mail.126.com; envelope-from=sohu0106@126.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=126.com header.i=@126.com header.a=rsa-sha256 header.s=s110527 header.b=UFTryoNB;
-	dkim-atps=neutral
-Received: from mail-m964.mail.126.com (mail-m964.mail.126.com [123.126.96.4])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LjhbQ0nZRz3c2n
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 01:38:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=7PZSB
-	mt5J6QvWk1lc7xSD00eJmJ0nxNnkNfSNzhvMvM=; b=UFTryoNBkk60drf+Icg0U
-	lgNF90H93pGvKSgA77CJzDc6jwF9jeQILgFQ6fics43KmAWMpsquIUgKBC8foQWs
-	g2hqTfyC5a/4jeCZZQt/uhEbnrwYFSKpFh557mviXdNGApiRC5lsbkENhPBEpmrA
-	2JbxbA1/c0uhNmfWx67NX0=
-Received: from test.pnp.gw (unknown [218.247.43.97])
-	by smtp9 (Coremail) with SMTP id NeRpCgCXidK_5s5iIeV7Gg--.38668S2;
-	Wed, 13 Jul 2022 23:37:36 +0800 (CST)
-From: Ning Qiang <sohu0106@126.com>
-To: benh@kernel.crashing.org,
-	sohu0106@126.com
-Subject: [PATCH] macintosh:fix oob read in do_adb_query function
-Date: Wed, 13 Jul 2022 23:37:34 +0800
-Message-Id: <20220713153734.2248-1-sohu0106@126.com>
-X-Mailer: git-send-email 2.25.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=<UNKNOWN>)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ljhmx5zppz3bwr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 01:46:25 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 0A5816192C;
+	Wed, 13 Jul 2022 15:46:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FD3C3411E;
+	Wed, 13 Jul 2022 15:46:19 +0000 (UTC)
+Date: Wed, 13 Jul 2022 16:46:15 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Subject: Re: [PATCH v5] random: remove CONFIG_ARCH_RANDOM
+Message-ID: <Ys7ox2TNyq36APxD@arm.com>
+References: <20220706143521.459565-1-Jason@zx2c4.com>
+ <20220708004032.733426-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: NeRpCgCXidK_5s5iIeV7Gg--.38668S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZFWxZryUAr1Utw4fKF4Uurg_yoWfZwcE9w
-	4Fgr4Igw45C3s7GrnFkayI9Fy0kF97ur18C3y0grZxCFyDZayxtryvvrnrGFn7Zr4rCFZx
-	JF4UW3s8Aw1qgjkaLaAFLSUrUUUU1b8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUU9mR5UUUUU==
-X-Originating-IP: [218.247.43.97]
-X-CM-SenderInfo: pvrk3iqrqwqiyswou0bp/xtbBGgA9Hl-HZfgwvwAAsz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220708004032.733426-1-Jason@zx2c4.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,34 +44,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: greg@kroah.com, security@kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Will Deacon <will@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Borislav Petkov <bp@suse.de>, linuxppc-dev@lists.ozlabs.org, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In do_adb_query function of drivers/macintosh/adb.c, req->data is copy
-form userland. the  parameter "req->data[2]" is Missing check, the
-array size of adb_handler[] is 16, so "adb_handler[
-req->data[2]].original_address" and "adb_handler[
-req->data[2]].handler_id" will lead to oob read.
+On Fri, Jul 08, 2022 at 02:40:32AM +0200, Jason A. Donenfeld wrote:
+> When RDRAND was introduced, there was much discussion on whether it
+> should be trusted and how the kernel should handle that. Initially, two
+> mechanisms cropped up, CONFIG_ARCH_RANDOM, a compile time switch, and
+> "nordrand", a boot-time switch.
+> 
+> Later the thinking evolved. With a properly designed RNG, using RDRAND
+> values alone won't harm anything, even if the outputs are malicious.
+> Rather, the issue is whether those values are being *trusted* to be good
+> or not. And so a new set of options were introduced as the real
+> ones that people use -- CONFIG_RANDOM_TRUST_CPU and "random.trust_cpu".
+> With these options, RDRAND is used, but it's not always credited. So in
+> the worst case, it does nothing, and in the best case, maybe it helps.
+> 
+> Along the way, CONFIG_ARCH_RANDOM's meaning got sort of pulled into the
+> center and became something certain platforms force-select.
+> 
+> The old options don't really help with much, and it's a bit odd to have
+> special handling for these instructions when the kernel can deal fine
+> with the existence or untrusted existence or broken existence or
+> non-existence of that CPU capability.
+> 
+> Simplify the situation by removing CONFIG_ARCH_RANDOM and using the
+> ordinary asm-generic fallback pattern instead, keeping the two options
+> that are actually used. For now it leaves "nordrand" for now, as the
+> removal of that will take a different route.
+> 
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Acked-by: Borislav Petkov <bp@suse.de>
+> Acked-by: Heiko Carstens <hca@linux.ibm.com>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
 
-Signed-off-by: Ning Qiang <sohu0106@126.com>
----
- drivers/macintosh/adb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+For arm64:
 
-diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
-index 439fab4eaa85..1bbb9ca08d40 100644
---- a/drivers/macintosh/adb.c
-+++ b/drivers/macintosh/adb.c
-@@ -647,7 +647,7 @@ do_adb_query(struct adb_request *req)
- 
- 	switch(req->data[1]) {
- 	case ADB_QUERY_GETDEVINFO:
--		if (req->nbytes < 3)
-+		if (req->nbytes < 3 || req->data[2] >= 16)
- 			break;
- 		mutex_lock(&adb_handler_mutex);
- 		req->reply[0] = adb_handler[req->data[2]].original_address;
--- 
-2.25.1
-
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
