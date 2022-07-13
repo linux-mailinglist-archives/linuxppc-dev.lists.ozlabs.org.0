@@ -2,66 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D4C573CCC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 20:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E5C573DB0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 22:18:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ljmxm65Nvz3cGC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 04:54:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ljpq56q5mz3c81
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 06:18:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fsmkGrkz;
+	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ylKR751N;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=keescook@chromium.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fsmkGrkz;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ylKR751N;
 	dkim-atps=neutral
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ljmx63kwjz3blJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 04:53:43 +1000 (AEST)
-Received: by mail-pf1-x430.google.com with SMTP id a15so10981326pfv.13
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jul 2022 11:53:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=GeV2tFKBcVMa4ZCzocYwtGdNsZHtwglU+ZOuhzOWglM=;
-        b=fsmkGrkzthQjZwIcIwegSlkzJgod4muvky/93KjoZs9q8nfTKRg3mXSQnQTz1w6BbJ
-         iQJRqGUrgZZ2RAAuLBHCIrXvXXMv8QZBXR3QfSMVRbplSYjwMeYFbHu5Ub88grCdCa2A
-         +qcaspBGuWupKXJ0g1t5438TSo0VCs0izOQOw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=GeV2tFKBcVMa4ZCzocYwtGdNsZHtwglU+ZOuhzOWglM=;
-        b=CVmeB1xZzsnSkzwr4fhdl72UOK0c6b+R2w7sD0NpCCseAMpn/Q/FFvhoJoFJFHgt6Y
-         /svCHT+WePfuipQ4vxWEQKggh3ojg2YC93Hw5IeCMOGeE4CWUKhv1Ku93HfaBW9QO2zI
-         DeuY8CfB7c/lzTZDvhcuRjrj+Yq0aDI5JpgAOL1nRX7gfeDDZIoNJLFKwzeVUSp0NmYU
-         PtI1swZY9kvpWpepzSFVxh0wspjTHrv0iyizOUeTKZ3mTy8EXjTlmzlZti++9934VnuK
-         Y5N4H/c6o8GAA44NPEfxig52yxuWzpBqGbIu/BUKytCgLOCufBuzJx17TmNYAPJktuJA
-         8gTQ==
-X-Gm-Message-State: AJIora+dWYrMyRQ4bpWxgHn0vQHLMDuWYSu3mg/Va49j0RHpzefQygXN
-	S2RSUj8wLicM62yyCSxDIHSs/A==
-X-Google-Smtp-Source: AGRyM1tyW/e/Gu78Q+yh5cSQTQQPTE5CBcgxMmQ977sNgJVjqs3mfr5hqoBTeXwo+EBVMBnzgUGfKw==
-X-Received: by 2002:a63:2b85:0:b0:419:7b8c:ac58 with SMTP id r127-20020a632b85000000b004197b8cac58mr4041562pgr.230.1657738420702;
-        Wed, 13 Jul 2022 11:53:40 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id 205-20020a6217d6000000b0052af2e8bb9csm2865321pfx.16.2022.07.13.11.53.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jul 2022 11:53:40 -0700 (PDT)
-Date: Wed, 13 Jul 2022 11:53:39 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Ning Qiang <sohu0106@126.com>
-Subject: Re: [PATCH] macintosh:fix oob read in do_adb_query function
-Message-ID: <202207131149.606A481BD8@keescook>
-References: <20220713153734.2248-1-sohu0106@126.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LjppN3H2tz3bcv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 06:18:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=9Wcc0tnUWuhMwDtUJfA83M3JEIXXsxqrnG5T3WeXGlI=; b=ylKR751Nlw5SlX6sIj0I6X5ioI
+	HNzukDDjfTlW7DjWoeCNySJzXeK0nV7aZAiZfHQUnr1auhkjIKy5fab+SNBYaFJAEOxKuz9cI033Q
+	UW1aYpm/bd+/ne1o1tRnHhIGhZ8KlaIjgbUjg6/P4Oi5pAaRFdw+epCfa61JccCV4Wbrw4kEc/6lk
+	Hn0hax/5fx0xEHLUdl/MOUkOxf1bzYwe0DVOIqKCKK0RRi+HuRKwJ18VPgcuOtXYgUs8V2kwIeLAa
+	/PnApMjXzu6AnJaRoUzfC4wJ4AQ8FTssC6U++sfoF3D4FDKOcpzKBTVAgeZml5O04ID6cvtRm9sF4
+	pwfgBL1g==;
+Received: from [2601:1c0:6280:3f0::a6b3]
+	by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1oBina-007cpf-Sq; Wed, 13 Jul 2022 20:17:30 +0000
+Message-ID: <e6232bb4-a8e5-8f33-e80e-06b1356565b7@infradead.org>
+Date: Wed, 13 Jul 2022 13:17:29 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220713153734.2248-1-sohu0106@126.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v5 4/4] pseries/mobility: set NMI watchdog factor during
+ an LPM
+Content-Language: en-US
+To: Laurent Dufour <ldufour@linux.ibm.com>, mpe@ellerman.id.au,
+ npiggin@gmail.com, christophe.leroy@csgroup.eu, wim@linux-watchdog.org,
+ linux@roeck-us.net, nathanl@linux.ibm.com
+References: <20220713154729.80789-1-ldufour@linux.ibm.com>
+ <20220713154729.80789-5-ldufour@linux.ibm.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20220713154729.80789-5-ldufour@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,58 +63,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: security@kernel.org, linuxppc-dev@lists.ozlabs.org, greg@kroah.com
+Cc: hch@infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, haren@linux.vnet.ibm.com, linux-watchdog@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jul 13, 2022 at 11:37:34PM +0800, Ning Qiang wrote:
-> In do_adb_query function of drivers/macintosh/adb.c, req->data is copy
-> form userland. the  parameter "req->data[2]" is Missing check, the
-> array size of adb_handler[] is 16, so "adb_handler[
-> req->data[2]].original_address" and "adb_handler[
-> req->data[2]].handler_id" will lead to oob read.
-> 
-> Signed-off-by: Ning Qiang <sohu0106@126.com>
+Hi Laurent,
 
-Thanks for catching this!
-
-Do you have a reproducer for this? I'd expect CONFIG_UBSAN_BOUNDS=y to
-notice this at runtime, at least.
-
-
-> ---
->  drivers/macintosh/adb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
-> index 439fab4eaa85..1bbb9ca08d40 100644
-> --- a/drivers/macintosh/adb.c
-> +++ b/drivers/macintosh/adb.c
-> @@ -647,7 +647,7 @@ do_adb_query(struct adb_request *req)
+On 7/13/22 08:47, Laurent Dufour wrote:
+> diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+> index ddccd1077462..d73faa619c15 100644
+> --- a/Documentation/admin-guide/sysctl/kernel.rst
+> +++ b/Documentation/admin-guide/sysctl/kernel.rst
+> @@ -592,6 +592,18 @@ to the guest kernel command line (see
+>  Documentation/admin-guide/kernel-parameters.rst).
 >  
->  	switch(req->data[1]) {
->  	case ADB_QUERY_GETDEVINFO:
-> -		if (req->nbytes < 3)
-> +		if (req->nbytes < 3 || req->data[2] >= 16)
+>  
+> +nmi_wd_lpm_factor (PPC only)
+> +============================
+> +
+> +Factor apply to the NMI watchdog timeout (only when ``nmi_watchdog`` is
 
-I'd prefer this was:
+   Factor to apply to
 
-+		if (req->nbytes < 3 || req->data[2] >= ARRAY_SIZE(adb_handler))
-
-so it's tied to the actual variable (if its size ever changes).
-
-With that:
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-
--Kees
-
->  			break;
->  		mutex_lock(&adb_handler_mutex);
->  		req->reply[0] = adb_handler[req->data[2]].original_address;
-> -- 
-> 2.25.1
-> 
+> +set to 1). This factor represents the percentage added to
+> +``watchdog_thresh`` when calculating the NMI watchdog timeout during an
+> +LPM. The soft lockup timeout is not impacted.
+> +
+> +A value of 0 means no change. The default value is 200 meaning the NMI
+> +watchdog is set to 30s (based on ``watchdog_thresh`` equal to 10).
 
 -- 
-Kees Cook
+~Randy
