@@ -1,88 +1,98 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001D1572DDC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 08:04:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 528315734C5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 12:57:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LjRsC5j87z3cBt
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 16:04:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LjZMS1tSXz3cCY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Jul 2022 20:57:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ar6oUmN6;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Vmwv5ifg;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ar6oUmN6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Vmwv5ifg;
 	dkim-atps=neutral
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LjRrS5GPWz2ywc
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jul 2022 16:03:36 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26D4ap9d020596;
-	Wed, 13 Jul 2022 06:03:00 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LjZLg5b46z3bd6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jul 2022 20:56:43 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26DApDnf002349;
+	Wed, 13 Jul 2022 10:56:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=M2J4hNtr6Jsul4mlKamSAWYoWrN7DMI187VyXpVQvsM=;
- b=Ar6oUmN6tQNULLSkOVfIGsp3Bes1WRszjKkt/gPrD/tLNl1htSglptPx2Y1FbYGmJuq4
- HIX7THL5F8M2fb7om9lyqOYdthoDO/W9nSBTb6gUf7KDlKBGCpHo9Odae3NNhU8Kd/90
- 9+Lb6vq0Jxxyt++8YfdmqlAhtXxKV1cJbu81B6dgx6BcZ5DVRID+QkodKj3elqSJ5uY1
- QIH23lresDcCi1ocgFrOqqqhEqOy0se3qdbshoxf0Yr7Ob3dr9ecfFWkL2fNFY99yZsQ
- gGbmsoJSAKUmHV1aHRDMx65t/cy8uNsOnt74yEVH7xGwKIreLdGH7jFokAKaHYh1NkP8 yQ== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h9pxs9prj-1
+ bh=vBKz24vsY24wRxgj8ZLIKAAwqiimXAeKjx6naAU6jvI=;
+ b=Vmwv5ifg/AGy4KQSihoiH7BDEL+DYfSC5AgjmPE5oGYqLeFBWZ5NoBw2deQFC0vvFGyj
+ bdnVA4FisUEhDFpC0zxvYGln+36pYFWbUyVCNHm0d4m4Qg/ZFeH0yIdLkOTH33A0cMIS
+ Q7/K8+WWle01LXpUfh2OwASiLZNwS9BN2FOqoOBwudccEhEZW0O5MKmB24C4aS4c4Ouk
+ bL5cVQ59V0mFCrVtje3aU6XgVkWoVHEaH6xKOZyiVjvCNSpJoN2x9Jmz+hzk0PzTgYXu
+ q/UIVnlCUMK6MUNFcCcHLJb9t0avAF7UqtK480gyHkZjNc8E62EBkdtUgqIwXszX+v9f +w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h9vneg29s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Jul 2022 06:03:00 +0000
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26D5Zj1g014811;
-	Wed, 13 Jul 2022 06:02:58 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma04ams.nl.ibm.com with ESMTP id 3h8rrn23gc-1
+	Wed, 13 Jul 2022 10:56:27 +0000
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26DAtTZ0026656;
+	Wed, 13 Jul 2022 10:56:27 GMT
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h9vneg294-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 13 Jul 2022 06:02:57 +0000
+	Wed, 13 Jul 2022 10:56:26 +0000
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26DAqBCg024794;
+	Wed, 13 Jul 2022 10:56:24 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma04fra.de.ibm.com with ESMTP id 3h99s78ys2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 Jul 2022 10:56:24 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26D62sx625297338
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26DAuMCn15991270
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 13 Jul 2022 06:02:55 GMT
+	Wed, 13 Jul 2022 10:56:22 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E3C2FAE04D;
-	Wed, 13 Jul 2022 06:02:54 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 53DAFAE04D;
+	Wed, 13 Jul 2022 10:56:22 +0000 (GMT)
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3553AAE045;
-	Wed, 13 Jul 2022 06:02:52 +0000 (GMT)
-Received: from [9.43.78.240] (unknown [9.43.78.240])
+	by IMSVA (Postfix) with ESMTP id DD5E2AE045;
+	Wed, 13 Jul 2022 10:56:21 +0000 (GMT)
+Received: from [9.145.2.121] (unknown [9.145.2.121])
 	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed, 13 Jul 2022 06:02:51 +0000 (GMT)
-Message-ID: <4bbad947-89d2-934d-1030-2c1eef064aaa@linux.ibm.com>
-Date: Wed, 13 Jul 2022 11:32:50 +0530
+	Wed, 13 Jul 2022 10:56:21 +0000 (GMT)
+Message-ID: <d78f65a7-67bb-b5f3-007b-fca5a9f98a69@linux.ibm.com>
+Date: Wed, 13 Jul 2022 12:56:21 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH v2] powerpc/papr_scm: Fix nvdimm event mappings
-Content-Language: en-US
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, mpe@ellerman.id.au,
-        linuxppc-dev@lists.ozlabs.org
-References: <20220711034605.212683-1-kjain@linux.ibm.com>
- <87czeac3no.fsf@vajain21.in.ibm.com>
-From: kajoljain <kjain@linux.ibm.com>
-In-Reply-To: <87czeac3no.fsf@vajain21.in.ibm.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.0.1
+Subject: Re: [PATCH v4 4/4] pseries/mobility: set NMI watchdog factor during
+ LPM
+Content-Language: fr
+To: Randy Dunlap <rdunlap@infradead.org>, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, wim@linux-watchdog.org,
+        linux@roeck-us.net, nathanl@linux.ibm.com
+References: <20220712143202.23144-1-ldufour@linux.ibm.com>
+ <20220712143202.23144-5-ldufour@linux.ibm.com>
+ <a646b2e9-e7a7-3d52-413e-4e2b8c48e383@infradead.org>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+In-Reply-To: <a646b2e9-e7a7-3d52-413e-4e2b8c48e383@infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: CnrDm1tXiM9liGVWPP3cCKaG5baHQhSI
-X-Proofpoint-ORIG-GUID: CnrDm1tXiM9liGVWPP3cCKaG5baHQhSI
+X-Proofpoint-GUID: A9dxdZgGAg81nFs8xBByt43Gc7N6zqAz
+X-Proofpoint-ORIG-GUID: EbrQsNumQJtaBYZCcd5TFFSi_vcfX3sm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-12_14,2022-07-12_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- suspectscore=0 bulkscore=0 priorityscore=1501 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 phishscore=0 impostorscore=0 spamscore=0 clxscore=1011
+ definitions=2022-07-12_14,2022-07-13_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 clxscore=1011 bulkscore=0
+ impostorscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2206140000
- definitions=main-2207130024
+ definitions=main-2207130043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,122 +104,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: nvdimm@lists.linux.dev, atrajeev@linux.vnet.ibm.com, rnsastry@linux.ibm.com, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, maddy@linux.ibm.com, dan.j.williams@intel.com, disgoel@linux.vnet.ibm.com
+Cc: hch@infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, haren@linux.vnet.ibm.com, linux-watchdog@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 7/12/22 10:45, Vaibhav Jain wrote:
-> Hi Kajol,
+Le 12/07/2022 à 18:25, Randy Dunlap a écrit :
+> Hi--
 > 
-> Thanks for the patch. Minor review comment below:
+> On 7/12/22 07:32, Laurent Dufour wrote:
+>> During a LPM, while the memory transfer is in progress on the arrival side,
+>> some latencies is generated when accessing not yet transferred pages on the
 > 
-> Kajol Jain <kjain@linux.ibm.com> writes:
+>                  are
 > 
->> Commit 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
->> added performance monitoring support for papr-scm nvdimm devices via
->> perf interface. Commit also added an array in papr_scm_priv
->> structure called "nvdimm_events_map", which got filled based on the
->> result of H_SCM_PERFORMANCE_STATS hcall. 
+>> arrival side. Thus, the NMI watchdog may be triggered too frequently, which
+>> increases the risk to hit a NMI interrupt in a bad place in the kernel,
+> 
+>                             an NMI
+> 
+>> leading to a kernel panic.
 >>
->> Currently there is an assumption that the order of events in the
->> stats buffer, returned by the hypervisor is same. And that order also
->> matches with the events specified in nvdimm driver code. 
->> But this assumption is not documented anywhere in Power Architecture
->> Platform Requirements (PAPR) document. Although the order
->> of events happens to be same on current systems, but it might
->> not be true in future generation systems. Fix the issue, by
->> adding a static mapping for nvdimm events to corresponding stat-id,
->> and removing the dynamic map from papr_scm_priv structure.
+>> Disabling the Hard Lockup Watchdog until the memory transfer could be a too
+>> strong work around, some users would want this timeout to be eventually
+>> triggered if the system is hanging even during LPM.
 >>
->> Fixes: 4c08d4bbc089 ("powerpc/papr_scm: Add perf interface support")
->> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+>> Introduce a new sysctl variable nmi_watchdog_factor. It allows to apply
+>> a factor to the NMI watchdog timeout during a LPM. Just before the CPU are
 > 
-> <snip>
->> @@ -460,10 +480,9 @@ static void papr_scm_pmu_del(struct perf_event *event, int flags)
->>  
->>  static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu *nd_pmu)
->>  {
->> -	struct papr_scm_perf_stat *stat;
->>  	struct papr_scm_perf_stats *stats;
->>  	u32 available_events;
->> -	int index, rc = 0;
->> +	int rc;
->>  
->>  	if (!p->stat_buffer_len)
->>  		return -ENOENT;
->> @@ -476,34 +495,12 @@ static int papr_scm_pmu_check_events(struct papr_scm_priv *p, struct nvdimm_pmu
->>  	/* Allocate the buffer for phyp where stats are written */
->>  	stats = kzalloc(p->stat_buffer_len, GFP_KERNEL);
->>  	if (!stats) {
->> -		rc = -ENOMEM;
->> -		return rc;
->> +		return -ENOMEM;
->>  	}
->>  
->>  	/* Called to get list of events supported */
->>  	rc = drc_pmem_query_stats(p, stats, 0);
->> -	if (rc)
->> -		goto out;
->> -
->> -	/*
->> -	 * Allocate memory and populate nvdimm_event_map.
->> -	 * Allocate an extra element for NULL entry
->> -	 */
->> -	p->nvdimm_events_map = kcalloc(available_events + 1,
->> -				       sizeof(stat->stat_id),
->> -				       GFP_KERNEL);
->> -	if (!p->nvdimm_events_map) {
->> -		rc = -ENOMEM;
->> -		goto out;
->> -	}
->>  
->> -	/* Copy all stat_ids to event map */
->> -	for (index = 0, stat = stats->scm_statistic;
->> -	     index < available_events; index++, ++stat) {
->> -		memcpy(&p->nvdimm_events_map[index * sizeof(stat->stat_id)],
->> -		       &stat->stat_id, sizeof(stat->stat_id));
->> -	}
->> -out:
->>  	kfree(stats);
->>  	return rc;
->>  }
+>                                               an LPM.            the CPU is
 > 
-> Earlier implementation of papr_scm_pmu_check_events() would copy the
-> contents of returned stat-ids to struct papr_scm_priv->nvdimm_events_map,
-> hence it was needed.
+>> stopped for the switchover sequence, the NMI watchdog timer is set to
+>>  watchdog_tresh + factor%
 > 
-> With static events map you dont really need to call
-> drc_pmem_query_stats() as that would have been already being done once
-> in papr_scm_probe() before papr_scm_pmu_register() is called:
+>    watchdog_thresh
+> 
+>>
+>> A value of 0 has no effect. The default value is 200, meaning that the NMI
+>> watchdog is set to 30s during LPM (based on a 10s watchdog_tresh value).
+> 
+>                                                     watchdog_thresh
+> 
+>> Once the memory transfer is achieved, the factor is reset to 0.
+>>
+>> Setting this value to a high number is like disabling the NMI watchdog
+>> during a LPM.
+> 
+>          an LPM.
+> 
+>>
+>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+>> ---
+>>  Documentation/admin-guide/sysctl/kernel.rst | 12 ++++++
+>>  arch/powerpc/platforms/pseries/mobility.c   | 43 +++++++++++++++++++++
+>>  2 files changed, 55 insertions(+)
+>>
+>> diff --git a/Documentation/admin-guide/sysctl/kernel.rst b/Documentation/admin-guide/sysctl/kernel.rst
+>> index ddccd1077462..0bb0b7f27e96 100644
+>> --- a/Documentation/admin-guide/sysctl/kernel.rst
+>> +++ b/Documentation/admin-guide/sysctl/kernel.rst
+>> @@ -592,6 +592,18 @@ to the guest kernel command line (see
+>>  Documentation/admin-guide/kernel-parameters.rst).
+>>  
+> 
+> This entire block should be in kernel-parameters.txt, not .rst,
+> and it should be formatted like everything else in the .txt file.
+
+Thanks for reviewing this patch.
+
+I'll apply your requests in the next version.
+
+However, regarding the change in kernel-parameters.txt, I'm confused. The
+newly introduced parameter is only exposed through sysctl. Not as a kernel
+boot option. In that case, should it be mentioned in kernel-parameters.txt?
+
+Documentation/process/4.Coding.rst says:
+The file :ref:`Documentation/admin-guide/kernel-parameters.rst
+<kernelparameters>` describes all of the kernel's boot-time parameters.
+Any patch which adds new parameters should add the appropriate entries to
+this file.
+
+And Documentation/process/submit-checklist.rst says:
+16) All new kernel boot parameters are documented in
+    ``Documentation/admin-guide/kernel-parameters.rst``.
+
+What are the rules about editing .txt or .rst files?
+
+>>  
+>> +nmi_watchdog_factor (PPC only)
+>> +==================================
+>> +
+>> +Factor apply to to the NMI watchdog timeout (only when ``nmi_watchdog`` is
+> 
+>    Factor to apply to the NMI
+> 
+>> +set to 1). This factor represents the percentage added to
+>> +``watchdog_thresh`` when calculating the NMI watchdog timeout during a
+> 
+>                                                                  during an
+> 
+>> +LPM. The soft lockup timeout is not impacted.
+>> +
+>> +A value of 0 means no change. The default value is 200 meaning the NMI
+>> +watchdog is set to 30s (based on ``watchdog_thresh`` equal to 10).
+>> +
+>> +
+>>  numa_balancing
+>>  ==============
+>>  
 > 
 > 
 
-Hi Vaibhav,
-    Thanks for reviewing the patch. Yes it make sense, as mainly we want
-to make sure, in case stat buffer is empty we will not register the
-nvdimm pmu. I will do the change and send next version of the patch.
-
-Thanks,
-Kajol Jain
-
-> papr_scm_probe()
-> {
-> ...
-> 	/* Try retrieving the stat buffer and see if its supported */
-> 	stat_size = drc_pmem_query_stats(p, NULL, 0);
-> ...
->         papr_scm_pmu_register(p);
-> ...
-> }
-> 
-> I would suggest replacing single callsite of papr_scm_pmu_check_events()
-> with the check
-> 
->      if (!p->stat_buffer_len)
-> 		goto pmu_check_events_err;
-> 
-> <snip>
-> 
