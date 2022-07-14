@@ -2,25 +2,25 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58714574651
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 10:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD61757465D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 10:12:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk6ZG0jnzz3cdM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 18:08:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk6f73rT2z3cdq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 18:11:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
 Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk6Yp1M3Yz3brm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 18:08:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk6dl3nmBz3bx3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 18:11:39 +1000 (AEST)
 Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
-	by ozlabs.ru (Postfix) with ESMTP id 6C9FD804CB;
-	Thu, 14 Jul 2022 04:08:02 -0400 (EDT)
+	by ozlabs.ru (Postfix) with ESMTP id E5797804CB;
+	Thu, 14 Jul 2022 04:11:34 -0400 (EDT)
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel] powerpc/ioda/iommu/debugfs: Generate unique debugfs entries
-Date: Thu, 14 Jul 2022 18:08:00 +1000
-Message-Id: <20220714080800.3712998-1-aik@ozlabs.ru>
+Subject: [PATCH kernel] powerpc/iommu: Fix iommu_table_in_use for a small default DMA window case
+Date: Thu, 14 Jul 2022 18:11:19 +1000
+Message-Id: <20220714081119.3714605-1-aik@ozlabs.ru>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,43 +35,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Leonardo Bras <leobras.c@gmail.com>, Fabiano Rosas <farosas@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The iommu_table::it_index is a LIOBN which is not initialized on PowerNV
-as it is not used except IOMMU debugfs where it is used for a node name.
+The existing iommu_table_in_use() helper checks if the kernel is using
+any of TCEs. There are some reserved TCEs:
+1) the very first one if DMA window starts from 0 to avoid having a zero
+but still valid DMA handle;
+2) it_reserved_start..it_reserved_end to exclude MMIO32 window in case
+the default window spans across that - this is the default for the first
+DMA window on PowerNV.
 
-This initializes it_index witn a unique number to avoid warnings and
-have a node for every iommu_table.
+When 1) is the case and 2) is not the helper does not skip 1) and returns
+wrong status.
 
-This should not cause any behavioral change without CONFIG_IOMMU_DEBUGFS.
+This only seems occurring when passing through a PCI device to a nested
+guest (not something we support really well) so it has not been seen
+before.
 
+This fixes the bug by adding a special case for no MMIO32 reservation.
+
+Fixes: 3c33066a2190 ("powerpc/kernel/iommu: Add new iommu_table_in_use() helper")
 Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/iommu.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index c8cf2728031a..9de9b2fb163d 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1609,6 +1609,7 @@ static void pnv_pci_ioda1_setup_dma_pe(struct pnv_phb *phb,
- 	tbl->it_ops = &pnv_ioda1_iommu_ops;
- 	pe->table_group.tce32_start = tbl->it_offset << tbl->it_page_shift;
- 	pe->table_group.tce32_size = tbl->it_size << tbl->it_page_shift;
-+	tbl->it_index = (phb->hose->global_number << 16) | pe->pe_number;
- 	if (!iommu_init_table(tbl, phb->hose->node, 0, 0))
- 		panic("Failed to initialize iommu table");
- 
-@@ -1779,6 +1780,7 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
- 		res_end = min(window_size, SZ_4G) >> tbl->it_page_shift;
- 	}
- 
-+	tbl->it_index = (pe->phb->hose->global_number << 16) | pe->pe_number;
- 	if (iommu_init_table(tbl, pe->phb->hose->node, res_start, res_end))
- 		rc = pnv_pci_ioda2_set_window(&pe->table_group, 0, tbl);
- 	else
+diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+index 7e56ddb3e0b9..caebe1431596 100644
+--- a/arch/powerpc/kernel/iommu.c
++++ b/arch/powerpc/kernel/iommu.c
+@@ -775,6 +775,11 @@ bool iommu_table_in_use(struct iommu_table *tbl)
+ 	/* ignore reserved bit0 */
+ 	if (tbl->it_offset == 0)
+ 		start = 1;
++
++	/* Simple case with no reserved MMIO32 region */
++	if (!tbl->it_reserved_start && !tbl->it_reserved_end)
++		return find_next_bit(tbl->it_map, tbl->it_size, start) != tbl->it_size;
++
+ 	end = tbl->it_reserved_start - tbl->it_offset;
+ 	if (find_next_bit(tbl->it_map, end, start) != end)
+ 		return true;
 -- 
 2.30.2
 
