@@ -2,79 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D18D5740F8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 03:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0714C57421C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 06:12:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ljxn50559z3cCk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 11:32:25 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GKRliKCw;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk1KL6v81z3cdx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 14:12:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=zhouzhouyi@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=GKRliKCw;
-	dkim-atps=neutral
-Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130; helo=out30-130.freemail.mail.aliyun.com; envelope-from=xhao@linux.alibaba.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 311 seconds by postgrey-1.36 at boromir; Thu, 14 Jul 2022 13:34:22 AEST
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LjxmR1Rwhz3brl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 11:31:50 +1000 (AEST)
-Received: by mail-pj1-x1030.google.com with SMTP id b8so926172pjo.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jul 2022 18:31:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ilqttwPjepFmD0kTfN75XWGy4SipmcKZuxYQ1eii/xY=;
-        b=GKRliKCwtnaD66A0Ae+OyYbPImmQaG2tNrTZKV1gZ52F3r1bLvcAc3Hr4mw3TrnmLD
-         9gQViN1fPPKUqykFkbr5g84/3mclhW118fP8W9N3SDEakHX8XD0ccUOjfFzMPCcJ2e/Q
-         CD8wWNELZvy37nwwMaUw7ShL16oSQARG6pHoWktW9MtbDvy6XHPHzqXxFmurZ3Slqz5G
-         4IZn3OoVCmF9me5jujxBy6bzz41aA/BFGIkmwEatV76QLX1dbWWHpSOippyHaisKom0U
-         xBezwhqpglnHNTor5kRqsZMg7q18+Qpq1wNmnQZ7rkZICTNRp48kliBXk6OWtxYpKFvz
-         41pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ilqttwPjepFmD0kTfN75XWGy4SipmcKZuxYQ1eii/xY=;
-        b=TrzatLek/BYsK7IE4woBpv/ISdlzTw6ZJaVhzVzB2MW8DzaGBNBAiBzWz+P9W0BP7f
-         yhtfdhOL9mP2xWy2U0Ghmku48e7YFBq4Mh6Nu47gSSRdu5bZAnXF2EfyZ5LkRcmTKH47
-         84lvL9TzvUCZgvdP+yKBR15B8jDog5rFaTyYH3diTXG8y2bZRVC3gN4vmc5p43Ge6oit
-         pdsOEU9gK2o1PeXaBeq1YRAjMieC7Ti1CAZQpucEPaVvdI7RhXklhopvK0jNlhcgwIwo
-         6zSGdJ9SFjxb6fdynLN1/6A/SziKBvCsQprPegv8XqU7yISJjIlyJProiHQ++FV2mgiF
-         5p5w==
-X-Gm-Message-State: AJIora9AgbL2OYsGgHVzJkl3klk+/Sh8Gjdb1wzYuCixc9eP4gHdkoY1
-	M/CluOwBAolGC7ekSx2jKM0=
-X-Google-Smtp-Source: AGRyM1veZQifNlI6HlJ1G5RFvwADsMIqAt4I7Ix+cZ73sqMaCWOau4H+HR4whROaPJKbCpwYRJGREw==
-X-Received: by 2002:a17:90a:2c0d:b0:1ef:c839:c34b with SMTP id m13-20020a17090a2c0d00b001efc839c34bmr13481892pjd.39.1657762306790;
-        Wed, 13 Jul 2022 18:31:46 -0700 (PDT)
-Received: from localhost.localdomain ([85.203.23.27])
-        by smtp.gmail.com with ESMTPSA id r14-20020a63ec4e000000b004150a28a56fsm21912pgj.53.2022.07.13.18.31.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jul 2022 18:31:46 -0700 (PDT)
-From: Zhouyi Zhou <zhouzhouyi@gmail.com>
-To: mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org,
-	npiggin@gmail.com,
-	ldufour@linux.ibm.com,
-	pmladek@suse.com,
-	john.ogness@linutronix.de,
-	Julia.Lawall@inria.fr,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	lance@osuosl.org,
-	paulmck@kernel.org,
-	rcu@vger.kernel.org
-Subject: [PATCH linux-next] powerpc: use raw_smp_processor_id in arch_touch_nmi_watchdog
-Date: Thu, 14 Jul 2022 09:31:31 +0800
-Message-Id: <20220714013131.12648-1-zhouzhouyi@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lk0Tp22Lyz3bmC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 13:34:21 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=xhao@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0VJHMqdX_1657769336;
+Received: from B-X3VXMD6M-2058.local(mailfrom:xhao@linux.alibaba.com fp:SMTPD_---0VJHMqdX_1657769336)
+          by smtp.aliyun-inc.com;
+          Thu, 14 Jul 2022 11:28:59 +0800
+Subject: Re: [PATCH v2 0/4] mm: arm64: bring up BATCHED_UNMAP_TLB_FLUSH
+To: Barry Song <21cnbao@gmail.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+ catalin.marinas@arm.com, will@kernel.org, linux-doc@vger.kernel.org
+References: <20220711034615.482895-1-21cnbao@gmail.com>
+From: Xin Hao <xhao@linux.alibaba.com>
+Message-ID: <24f5e25b-3946-b92a-975b-c34688005398@linux.alibaba.com>
+Date: Thu, 14 Jul 2022 11:28:56 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.14.0
 MIME-Version: 1.0
+In-Reply-To: <20220711034615.482895-1-21cnbao@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 14 Jul 2022 14:11:47 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,59 +47,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Reply-To: xhao@linux.alibaba.com
+Cc: linux-s390@vger.kernel.org, zhangshiming@oppo.com, lipeifeng@oppo.com, arnd@arndb.de, corbet@lwn.net, realmz6@gmail.com, linux-kernel@vger.kernel.org, yangyicong@hisilicon.com, openrisc@lists.librecores.org, darren@os.amperecomputing.com, huzhanyuan@oppo.com, guojian@oppo.com, linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-use raw_smp_processor_id() in arch_touch_nmi_watchdog
-because when called from watchdog, the cpu is preemptible.
+Hi barry.
 
-Signed-off-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
----
-Dear PPC developers
+I do some test on Kunpeng arm64 machine use Unixbench.
 
-I found this bug when trying to do rcutorture tests in ppc VM of
-Open Source Lab of Oregon State University.
+The test  result as below.
 
-qemu-system-ppc64  -nographic -smp cores=4,threads=1 -net none  -M pseries -nodefaults -device spapr-vscsi -serial file:/tmp/console.log -m 2G -kernel /home/ubuntu/linux-next/tools/testing/selftests/rcutorture/res/2022.07.08-22.36.11-torture/results-rcuscale-kvfree/TREE/vmlinux -append "debug_boot_weak_hash panic=-1 console=ttyS0 rcuscale.kfree_rcu_test=1 rcuscale.kfree_nthreads=16 rcuscale.holdoff=20 rcuscale.kfree_loops=10000 torture.disable_onoff_at_boot rcuscale.shutdown=1 rcuscale.verbose=0"
+One core, we can see the performance improvement above +30%.
+./Run -c 1 -i 1 shell1
+w/o
+System Benchmarks Partial Index              BASELINE RESULT INDEX
+Shell Scripts (1 concurrent)                     42.4 5481.0 1292.7
+========
+System Benchmarks Index Score (Partial Only)                         1292.7
 
-tail /tmp/console.log
-[ 1232.433552][   T41] BUG: using smp_processor_id() in preemptible [00000000] code: khungtaskd/41
-[ 1232.439751][   T41] caller is arch_touch_nmi_watchdog+0x34/0xd0
-[ 1232.440934][   T41] CPU: 3 PID: 41 Comm: khungtaskd Not tainted 5.19.0-rc5-next-20220708-dirty #106
-[ 1232.442684][   T41] Call Trace:
-[ 1232.443343][   T41] [c0000000029cbbb0] [c0000000006df360] dump_stack_lvl+0x74/0xa8 (unreliable)
-[ 1232.445237][   T41] [c0000000029cbbf0] [c000000000d04f30] check_preemption_disabled+0x150/0x160
-[ 1232.446926][   T41] [c0000000029cbc80] [c000000000035584] arch_touch_nmi_watchdog+0x34/0xd0
-[ 1232.448532][   T41] [c0000000029cbcb0] [c0000000002068ac] watchdog+0x40c/0x5b0
-[ 1232.451449][   T41] [c0000000029cbdc0] [c000000000139df4] kthread+0x144/0x170
-[ 1232.452896][   T41] [c0000000029cbe10] [c00000000000cd54] ret_from_kernel_thread+0x5c/0x64
+w/
+System Benchmarks Partial Index              BASELINE RESULT INDEX
+Shell Scripts (1 concurrent)                     42.4 6974.6 1645.0
+========
+System Benchmarks Index Score (Partial Only)                         1645.0
 
-After this fix, "BUG: using smp_processor_id() in preemptible [00000000] code: khungtaskd/41" does not
-appear again.
 
-I also examined other places in watchdog.c where smp_processor_id() are used, but they are well protected by preempt
-disable.
+But with whole cores, there have little performance degradation above -5%
 
-Kind Regards
-Zhouyi
---
- arch/powerpc/kernel/watchdog.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+./Run -c 96 -i 1 shell1
+w/o
+Shell Scripts (1 concurrent)                  80765.5 lpm   (60.0 s, 1 
+samples)
+System Benchmarks Partial Index              BASELINE RESULT INDEX
+Shell Scripts (1 concurrent)                     42.4 80765.5 19048.5
+========
+System Benchmarks Index Score (Partial Only)                        19048.5
 
-diff --git a/arch/powerpc/kernel/watchdog.c b/arch/powerpc/kernel/watchdog.c
-index 7d28b9553654..ab6b84e00311 100644
---- a/arch/powerpc/kernel/watchdog.c
-+++ b/arch/powerpc/kernel/watchdog.c
-@@ -450,7 +450,7 @@ static enum hrtimer_restart watchdog_timer_fn(struct hrtimer *hrtimer)
- void arch_touch_nmi_watchdog(void)
- {
- 	unsigned long ticks = tb_ticks_per_usec * wd_timer_period_ms * 1000;
--	int cpu = smp_processor_id();
-+	int cpu = raw_smp_processor_id();
- 	u64 tb;
- 
- 	if (!cpumask_test_cpu(cpu, &watchdog_cpumask))
+w
+Shell Scripts (1 concurrent)                  76333.6 lpm   (60.0 s, 1 
+samples)
+System Benchmarks Partial Index              BASELINE RESULT INDEX
+Shell Scripts (1 concurrent)                     42.4 76333.6 18003.2
+========
+System Benchmarks Index Score (Partial Only)                        18003.2
+
+---------------------------------------------------------------------------------------------- 
+
+
+After discuss with you, and do some changes in the patch.
+
+ndex a52381a680db..1ecba81f1277 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -727,7 +727,11 @@ void flush_tlb_batched_pending(struct mm_struct *mm)
+         int flushed = batch >> TLB_FLUSH_BATCH_FLUSHED_SHIFT;
+
+         if (pending != flushed) {
++#ifdef CONFIG_ARCH_HAS_MM_CPUMASK
+                 flush_tlb_mm(mm);
++#else
++               dsb(ish);
++#endif
+                 /*
+                  * If the new TLB flushing is pending during flushing, leave
+                  * mm->tlb_flush_batched as is, to avoid losing flushing.
+
+there have a performance improvement with whole cores, above +30%
+
+./Run -c 96 -i 1 shell1
+96 CPUs in system; running 96 parallel copies of tests
+
+Shell Scripts (1 concurrent)                 109229.0 lpm   (60.0 s, 1 samples)
+System Benchmarks Partial Index              BASELINE       RESULT    INDEX
+Shell Scripts (1 concurrent)                     42.4     109229.0  25761.6
+                                                                    ========
+System Benchmarks Index Score (Partial Only)                        25761.6
+
+
+Tested-by: Xin Hao<xhao@linux.alibaba.com>
+
+Looking forward to your next version patch.
+
+On 7/11/22 11:46 AM, Barry Song wrote:
+> Though ARM64 has the hardware to do tlb shootdown, the hardware
+> broadcasting is not free.
+> A simplest micro benchmark shows even on snapdragon 888 with only
+> 8 cores, the overhead for ptep_clear_flush is huge even for paging
+> out one page mapped by only one process:
+> 5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
+>
+> While pages are mapped by multiple processes or HW has more CPUs,
+> the cost should become even higher due to the bad scalability of
+> tlb shootdown.
+>
+> The same benchmark can result in 16.99% CPU consumption on ARM64
+> server with around 100 cores according to Yicong's test on patch
+> 4/4.
+>
+> This patchset leverages the existing BATCHED_UNMAP_TLB_FLUSH by
+> 1. only send tlbi instructions in the first stage -
+> 	arch_tlbbatch_add_mm()
+> 2. wait for the completion of tlbi by dsb while doing tlbbatch
+> 	sync in arch_tlbbatch_flush()
+> My testing on snapdragon shows the overhead of ptep_clear_flush
+> is removed by the patchset. The micro benchmark becomes 5% faster
+> even for one page mapped by single process on snapdragon 888.
+>
+>
+> -v2:
+> 1. Collected Yicong's test result on kunpeng920 ARM64 server;
+> 2. Removed the redundant vma parameter in arch_tlbbatch_add_mm()
+>     according to the comments of Peter Zijlstra and Dave Hansen
+> 3. Added ARCH_HAS_MM_CPUMASK rather than checking if mm_cpumask
+>     is empty according to the comments of Nadav Amit
+>
+> Thanks, Yicong, Peter, Dave and Nadav for your testing or reviewing
+> , and comments.
+>
+> -v1:
+> https://lore.kernel.org/lkml/20220707125242.425242-1-21cnbao@gmail.com/
+>
+> Barry Song (4):
+>    Revert "Documentation/features: mark BATCHED_UNMAP_TLB_FLUSH doesn't
+>      apply to ARM64"
+>    mm: rmap: Allow platforms without mm_cpumask to defer TLB flush
+>    mm: rmap: Extend tlbbatch APIs to fit new platforms
+>    arm64: support batched/deferred tlb shootdown during page reclamation
+>
+>   Documentation/features/arch-support.txt       |  1 -
+>   .../features/vm/TLB/arch-support.txt          |  2 +-
+>   arch/arm/Kconfig                              |  1 +
+>   arch/arm64/Kconfig                            |  1 +
+>   arch/arm64/include/asm/tlbbatch.h             | 12 ++++++++++
+>   arch/arm64/include/asm/tlbflush.h             | 23 +++++++++++++++++--
+>   arch/loongarch/Kconfig                        |  1 +
+>   arch/mips/Kconfig                             |  1 +
+>   arch/openrisc/Kconfig                         |  1 +
+>   arch/powerpc/Kconfig                          |  1 +
+>   arch/riscv/Kconfig                            |  1 +
+>   arch/s390/Kconfig                             |  1 +
+>   arch/um/Kconfig                               |  1 +
+>   arch/x86/Kconfig                              |  1 +
+>   arch/x86/include/asm/tlbflush.h               |  3 ++-
+>   mm/Kconfig                                    |  3 +++
+>   mm/rmap.c                                     | 14 +++++++----
+>   17 files changed, 59 insertions(+), 9 deletions(-)
+>   create mode 100644 arch/arm64/include/asm/tlbbatch.h
+>
 -- 
-2.25.1
+Best Regards!
+Xin Hao
 
