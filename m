@@ -1,70 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E644C575735
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 23:48:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C55F5757B7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 00:36:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LkSlr69m1z3cf3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 07:48:08 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Iaq16OJ+;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LkTqF3JHVz3bqx
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 08:36:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=shorne@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Iaq16OJ+;
-	dkim-atps=neutral
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LkSlC41h1z3035
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 07:47:33 +1000 (AEST)
-Received: by mail-pj1-x1033.google.com with SMTP id s21so3978036pjq.4
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 14:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Avm3V7XrbXBWkB/qO5JQFtbIFwNLm/HdohUf7P8zkK0=;
-        b=Iaq16OJ+m9XsKv6I0s9ZPBvLNW7lXXnX4Z3CjPsP1fAwoe/Ib4iQoNfMWi+0siMrW/
-         GSq3DRDaezyXT0yWRXlZmjVsZfEzw62WdDXrUIt09lmZWV4BlMkQ/dU82O4vwnrYHmyn
-         o/7v2rh+q4itcE83QbxrK4117t4HFXOzxm4xIM85bfE+dhRtJpHL/5sxbuBxQiwQ4bWT
-         LstUoWuXf0YhZHT/8jF9DdI778Dcii039dDR0k2519afE8PB6ZMc/Q/BS0nO4YTkHa2q
-         1D44TzeeLcnTGS/HGgAZV230igzGnLNL0g6TyDqsIz5qTuDK/SXq1EHrDrrI/yLv49sj
-         Ww3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Avm3V7XrbXBWkB/qO5JQFtbIFwNLm/HdohUf7P8zkK0=;
-        b=2M7o2WfytXohZshOilSAYoPOyWnuMAK8X5xv5rILGp3Zytft/ZuDWFg52kt5rfXu4Z
-         Gt19leO0M0bR4d+LZdh0jLPKlmvh8ESyptw0WyGb4Gen5VUByBOugG5qNAzNF32h2p1X
-         3sKTyHriC69WVRcb5k+deqoSQ3DTBG9HrsE/udX06Z4d28eKwsZmZgrNPNa4GvuC5aNg
-         s5k99Q/sY+KDiVzpeCuiI1Itcr3vCHGecpvU19xEqTYJu6Q51HLHULlqvyv4wxGJpEcJ
-         yYjDY5c5hXfcDdATudzG+jCLJ5Jq2at0c7Ss8vRTS5c/0LcU11vx0Tf5WPDY9heHeTJw
-         s9bQ==
-X-Gm-Message-State: AJIora/5S+hJxk1xaIbCFPsRfga/oEnIAJfw64FgRfpYtgO9/cJFiYVd
-	Sm8FyTFcinaPK6WNAcLGwBs=
-X-Google-Smtp-Source: AGRyM1u9xSRQV4Gvpyf5VkWOt/x74SDpE1KbsPWlYKaCYfIIrlO2LUPHc/onDI4OYYptIetSW3p0xA==
-X-Received: by 2002:a17:90b:4c91:b0:1ef:f85b:6342 with SMTP id my17-20020a17090b4c9100b001eff85b6342mr18616032pjb.75.1657835247920;
-        Thu, 14 Jul 2022 14:47:27 -0700 (PDT)
-Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
-        by smtp.gmail.com with ESMTPSA id c20-20020a634e14000000b00411b3d2bcadsm1892918pgb.25.2022.07.14.14.47.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Jul 2022 14:47:27 -0700 (PDT)
-From: Stafford Horne <shorne@gmail.com>
-To: LKML <linux-kernel@vger.kernel.org>
-Subject: [RFC PATCH 1/2] asm-generic: Remove pci.h copying code out to architectures
-Date: Fri, 15 Jul 2022 06:46:56 +0900
-Message-Id: <20220714214657.2402250-2-shorne@gmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220714214657.2402250-1-shorne@gmail.com>
-References: <20220714214657.2402250-1-shorne@gmail.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=benh@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LkTpf4hnGz3cDR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 08:35:38 +1000 (AEST)
+Received: from ip6-localhost (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 26EMXI0t022136;
+	Thu, 14 Jul 2022 17:33:19 -0500
+Message-ID: <c890a74032803137d319f5b56f6dbe6190018c40.camel@kernel.crashing.org>
+Subject: Re: [PATCH] macintosh:fix oob read in do_adb_query function
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To: Kees Cook <keescook@chromium.org>, Ning Qiang <sohu0106@126.com>
+Date: Fri, 15 Jul 2022 08:33:18 +1000
+In-Reply-To: <202207131149.606A481BD8@keescook>
+References: <20220713153734.2248-1-sohu0106@126.com>
+	 <202207131149.606A481BD8@keescook>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,188 +39,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Matthew Rosato <mjrosato@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Stafford Horne <shorne@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, linux-riscv@lists.infradead.org, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci@vger.kernel.org, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@goo
- gle.com>, Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>, Pierre Morel <pmorel@linux.ibm.com>, Nick Child <nick.child@ibm.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: greg@kroah.com, security@kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The generic pci.h header provides a definition of pci_get_legacy_ide_irq
-which is used by architectures that use PC-style interrupt numbers.
+On Wed, 2022-07-13 at 11:53 -0700, Kees Cook wrote:
+> On Wed, Jul 13, 2022 at 11:37:34PM +0800, Ning Qiang wrote:
+> > In do_adb_query function of drivers/macintosh/adb.c, req->data is
+> > copy
+> > form userland. the  parameter "req->data[2]" is Missing check, the
+> > array size of adb_handler[] is 16, so "adb_handler[
+> > req->data[2]].original_address" and "adb_handler[
+> > req->data[2]].handler_id" will lead to oob read.
+> > 
+> > Signed-off-by: Ning Qiang <sohu0106@126.com>
+> 
+> Thanks for catching this!
+> 
+> Do you have a reproducer for this? I'd expect CONFIG_UBSAN_BOUNDS=y
+> to notice this at runtime, at least.
 
-This patch removes the old pci.h in order to make room for a new
-pci.h to be used by arm64, riscv, openrisc, etc.
+For that you would need an ancient Mac with an ADB bus which might be
+tricky ... I have some in the basement that could possibly be revived
+if you really insist but I'd rather not waste the time...
 
-The existing code in pci.h is moved out to architectures.
+Cheers,
+Ben.
 
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/lkml/CAK8P3a0JmPeczfmMBE__vn=Jbvf=nkbpVaZCycyv40pZNCJJXQ@mail.gmail.com/
-Signed-off-by: Stafford Horne <shorne@gmail.com>
----
- arch/alpha/include/asm/pci.h   |  1 -
- arch/ia64/include/asm/pci.h    |  1 -
- arch/m68k/include/asm/pci.h    |  7 +++++--
- arch/powerpc/include/asm/pci.h |  1 -
- arch/s390/include/asm/pci.h    |  6 +++++-
- arch/sparc/include/asm/pci.h   |  5 ++++-
- arch/x86/include/asm/pci.h     |  6 ++++--
- arch/xtensa/include/asm/pci.h  |  6 ++++--
- include/asm-generic/pci.h      | 17 -----------------
- 9 files changed, 22 insertions(+), 28 deletions(-)
- delete mode 100644 include/asm-generic/pci.h
-
-diff --git a/arch/alpha/include/asm/pci.h b/arch/alpha/include/asm/pci.h
-index cf6bc1e64d66..8ac5af0fc4da 100644
---- a/arch/alpha/include/asm/pci.h
-+++ b/arch/alpha/include/asm/pci.h
-@@ -56,7 +56,6 @@ struct pci_controller {
- 
- /* IOMMU controls.  */
- 
--/* TODO: integrate with include/asm-generic/pci.h ? */
- static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- {
- 	return channel ? 15 : 14;
-diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
-index 8c163d1d0189..218412d963c2 100644
---- a/arch/ia64/include/asm/pci.h
-+++ b/arch/ia64/include/asm/pci.h
-@@ -63,7 +63,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- 	return (pci_domain_nr(bus) != 0);
- }
- 
--#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
- static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- {
- 	return channel ? isa_irq_to_vector(15) : isa_irq_to_vector(14);
-diff --git a/arch/m68k/include/asm/pci.h b/arch/m68k/include/asm/pci.h
-index 5a4bc223743b..0c272ff515cc 100644
---- a/arch/m68k/include/asm/pci.h
-+++ b/arch/m68k/include/asm/pci.h
-@@ -2,11 +2,14 @@
- #ifndef _ASM_M68K_PCI_H
- #define _ASM_M68K_PCI_H
- 
--#include <asm-generic/pci.h>
--
- #define	pcibios_assign_all_busses()	1
- 
- #define	PCIBIOS_MIN_IO		0x00000100
- #define	PCIBIOS_MIN_MEM		0x02000000
- 
-+static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-+{
-+	return channel ? 15 : 14;
-+}
-+
- #endif /* _ASM_M68K_PCI_H */
-diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
-index 915d6ee4b40a..f9da506751bb 100644
---- a/arch/powerpc/include/asm/pci.h
-+++ b/arch/powerpc/include/asm/pci.h
-@@ -39,7 +39,6 @@
- #define pcibios_assign_all_busses() \
- 	(pci_has_flag(PCI_REASSIGN_ALL_BUS))
- 
--#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
- static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- {
- 	if (ppc_md.pci_get_legacy_ide_irq)
-diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
-index fdb9745ee998..93cd0167f8aa 100644
---- a/arch/s390/include/asm/pci.h
-+++ b/arch/s390/include/asm/pci.h
-@@ -6,7 +6,6 @@
- #include <linux/mutex.h>
- #include <linux/iommu.h>
- #include <linux/pci_hotplug.h>
--#include <asm-generic/pci.h>
- #include <asm/pci_clp.h>
- #include <asm/pci_debug.h>
- #include <asm/sclp.h>
-@@ -233,6 +232,11 @@ int zpci_init_iommu(struct zpci_dev *zdev);
- void zpci_destroy_iommu(struct zpci_dev *zdev);
- 
- #ifdef CONFIG_PCI
-+static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-+{
-+	return channel ? 15 : 14;
-+}
-+
- static inline bool zpci_use_mio(struct zpci_dev *zdev)
- {
- 	return static_branch_likely(&have_mio) && zdev->mio_capable;
-diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
-index 4deddf430e5d..6d283fc7b55b 100644
---- a/arch/sparc/include/asm/pci.h
-+++ b/arch/sparc/include/asm/pci.h
-@@ -46,7 +46,10 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- 	return PCI_IRQ_NONE;
- }
- #else
--#include <asm-generic/pci.h>
-+static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-+{
-+	return channel ? 15 : 14;
-+}
- #endif
- 
- #endif /* ___ASM_SPARC_PCI_H */
-diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index f3fd5928bcbb..7da27f665cfe 100644
---- a/arch/x86/include/asm/pci.h
-+++ b/arch/x86/include/asm/pci.h
-@@ -105,8 +105,10 @@ static inline void early_quirks(void) { }
- 
- extern void pci_iommu_alloc(void);
- 
--/* generic pci stuff */
--#include <asm-generic/pci.h>
-+static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-+{
-+	return channel ? 15 : 14;
-+}
- 
- #ifdef CONFIG_NUMA
- /* Returns the node based on pci bus */
-diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
-index 8e2b48a268db..f57ede61f5db 100644
---- a/arch/xtensa/include/asm/pci.h
-+++ b/arch/xtensa/include/asm/pci.h
-@@ -43,7 +43,9 @@
- #define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
- #define arch_can_pci_mmap_io()		1
- 
--/* Generic PCI */
--#include <asm-generic/pci.h>
-+static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-+{
-+	return channel ? 15 : 14;
-+}
- 
- #endif	/* _XTENSA_PCI_H */
-diff --git a/include/asm-generic/pci.h b/include/asm-generic/pci.h
-deleted file mode 100644
-index 6bb3cd3d695a..000000000000
---- a/include/asm-generic/pci.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * linux/include/asm-generic/pci.h
-- *
-- *  Copyright (C) 2003 Russell King
-- */
--#ifndef _ASM_GENERIC_PCI_H
--#define _ASM_GENERIC_PCI_H
--
--#ifndef HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--#endif /* HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ */
--
--#endif /* _ASM_GENERIC_PCI_H */
--- 
-2.36.1
+> 
+> > ---
+> >  drivers/macintosh/adb.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/macintosh/adb.c b/drivers/macintosh/adb.c
+> > index 439fab4eaa85..1bbb9ca08d40 100644
+> > --- a/drivers/macintosh/adb.c
+> > +++ b/drivers/macintosh/adb.c
+> > @@ -647,7 +647,7 @@ do_adb_query(struct adb_request *req)
+> >  
+> >  	switch(req->data[1]) {
+> >  	case ADB_QUERY_GETDEVINFO:
+> > -		if (req->nbytes < 3)
+> > +		if (req->nbytes < 3 || req->data[2] >= 16)
+> 
+> I'd prefer this was:
+> 
+> +		if (req->nbytes < 3 || req->data[2] >=
+> ARRAY_SIZE(adb_handler))
+> 
+> so it's tied to the actual variable (if its size ever changes).
+> 
+> With that:
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> 
+> -Kees
+> 
+> >  			break;
+> >  		mutex_lock(&adb_handler_mutex);
+> >  		req->reply[0] = adb_handler[req-
+> > >data[2]].original_address;
+> > -- 
+> > 2.25.1
+> > 
 
