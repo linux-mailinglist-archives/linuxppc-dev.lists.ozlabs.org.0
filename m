@@ -2,30 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1DF57469A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 10:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5FC57479D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 10:56:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk6qP6XBzz3f5b
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 18:20:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk7dL70Fbz3c9g
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 18:56:22 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Xuvter0R;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru; envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
-Received: from ozlabs.ru (ozlabs.ru [107.174.27.60])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk6pN3gnqz3chg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 18:19:08 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com. (localhost [IPv6:::1])
-	by ozlabs.ru (Postfix) with ESMTP id EDF4E81BDF;
-	Thu, 14 Jul 2022 04:18:57 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel 3/3] powerpc/iommu: Add iommu_ops to report capabilities and allow blocking domains
-Date: Thu, 14 Jul 2022 18:18:22 +1000
-Message-Id: <20220714081822.3717693-4-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20220714081822.3717693-1-aik@ozlabs.ru>
-References: <20220714081822.3717693-1-aik@ozlabs.ru>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42d; helo=mail-wr1-x42d.google.com; envelope-from=sudipm.mukherjee@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Xuvter0R;
+	dkim-atps=neutral
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lk7cj3pSQz3bnj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 18:55:47 +1000 (AEST)
+Received: by mail-wr1-x42d.google.com with SMTP id r2so603076wrs.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 01:55:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=Pd0s7pfe+tSy6Zgyr/2+hXl9JvN+53ozZq3gL+wyK/M=;
+        b=Xuvter0RBrh9MX3/Pb+Mj7eC1QfF1ydLL9v5qHPRgib4vj+ZdmWEmh2umCkpKJh8SM
+         y8NF4Ki1myo4QkPvgoyORzfGd1SN38VGB2psdRLzp59/VgIgaok29xtIAQ/XQoeKVMu9
+         yL8z4LmxXrH8MTJw28M3Nwo3pXn+TpxtazoomrQTBPeyrGIgphVAIQOTzDD/LLBdNdUV
+         wj5Zvx5TJsBMJTzGX/WlVHV5iDak0nClAYPXY7nACAVOwiC7YxcnZ/gf+OBLa0sanlK3
+         Ii2mMhHlo324/otp/OtGpH7vJKEBAM/6js+a+vPfayyAHZMhoJfNcRzrcj10XJW3EQha
+         AHCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=Pd0s7pfe+tSy6Zgyr/2+hXl9JvN+53ozZq3gL+wyK/M=;
+        b=RRtH5ZcqPCeyrUZ7mTRGM+O5hOv/rQwQuwBLs/c+8SiWEeyKdT5u0btEwfay/EKXiy
+         p+x+BtgmyCa6rTGXgbH8Qag+jpk+0VnMyVeCADbIqUaeefSJEP91RZJtCKibRsjg1Clc
+         peGPmOehxplG4N9gkDrtTD6QfxZQHuvFRtpug6kfEQ6ER8+4lrxLQOWOFiiJ+SH8SFEi
+         PNQ60XmNUtzq88AQRWOZ7+77wcZw5kX6hZ4qWod1iDRNTwW4ddHHP7gDwDDKeRQXmvWB
+         3In3zeLrkr4hF74/gmsgajGwQ1pNwdIXDRnAEPUgjUZTWQE6F9xLzayeHLmVZX4FN0ZL
+         J+Ig==
+X-Gm-Message-State: AJIora8vuJXluXhiHa+XIy9R/qynYdf/tmMJ3IdC2UOK3v723QHzwv9K
+	GlttjfDvUdiuQE/cByoOVuc=
+X-Google-Smtp-Source: AGRyM1utCuahz4E7ykNJPLlcno4icCMBdFOP4g3e7uUfZNXmhAcQ/BHe9adH2rCC0hzyKAM5Eiy37g==
+X-Received: by 2002:a05:6000:1f0b:b0:21d:6dae:7d04 with SMTP id bv11-20020a0560001f0b00b0021d6dae7d04mr7314231wrb.414.1657788943226;
+        Thu, 14 Jul 2022 01:55:43 -0700 (PDT)
+Received: from debian (host-78-150-47-22.as13285.net. [78.150.47.22])
+        by smtp.gmail.com with ESMTPSA id n16-20020a05600c465000b003a03ae64f57sm1173997wmo.8.2022.07.14.01.55.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Jul 2022 01:55:42 -0700 (PDT)
+Date: Thu, 14 Jul 2022 09:55:40 +0100
+From: "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Paul Mackerras <paulus@samba.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: mainline build failure of powerpc allmodconfig for prom_init_check
+Message-ID: <Ys/aDKZNhhsENH9S@debian>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,434 +76,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Daniel Henrique Barboza <danielhb413@gmail.com>, Deming Wang <wangdeming@inspur.com>, kvm-ppc@vger.kernel.org, Alex Williamson <alex.williamson@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Jason Gunthorpe <jgg@nvidia.com>, Murilo Opsfelder Araujo <muriloo@linux.ibm.com>, Robin Murphy <robin.murphy@arm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Up until now PPC64 managed to avoid using iommu_ops. The VFIO driver
-uses a SPAPR TCE sub-driver and all iommu_ops uses were kept in
-the Type1 VFIO driver. Recent development added 2 uses of iommu_ops to
-the generic VFIO which broke POWER:
-- a coherency capability check;
-- blocking IOMMU domain - iommu_group_dma_owner_claimed()/...
+Hi All,
 
-This adds a simple iommu_ops which reports support for cache
-coherency and provides a basic support for blocking domains. No other
-domain types are implemented so the default domain is NULL.
+Not sure if it has been reported before but the latest mainline kernel
+branch fails to build for powerpc allmodconfig with gcc-12 and the error is:
 
-Since now iommu_ops controls the group ownership, this takes it out of
-VFIO.
+Error: External symbol 'memset' referenced from prom_init.c
+make[2]: *** [arch/powerpc/kernel/Makefile:204: arch/powerpc/kernel/prom_init_check] Error 1
 
-This adds an IOMMU device into a pci_controller (=PHB) and registers it
-in the IOMMU subsystem, iommu_ops is registered at this point.
-This setup is done in postcore_initcall_sync.
+The commit ca5dabcff1df ("powerpc/prom_init: Fix build failure with
+GCC_PLUGIN_STRUCTLEAK_BYREF_ALL and KASAN") looks similar but the error
+is still there with gcc-12.
 
-This replaces iommu_group_add_device() with iommu_probe_device() as
-the former misses necessary steps in connecting PCI devices to IOMMU
-devices. This adds a comment about why explicit iommu_probe_device()
-is still needed.
+Note: I don't see this error with gcc-11.
 
-The previous discussion is here:
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20220707135552.3688927-1-aik@ozlabs.ru/
-https://patchwork.ozlabs.org/project/kvm-ppc/patch/20220701061751.1955857-1-aik@ozlabs.ru/
 
-Fixes: e8ae0e140c05 ("vfio: Require that devices support DMA cache coherence")
-Fixes: 70693f470848 ("vfio: Set DMA ownership for VFIO devices")
-Cc: Deming Wang <wangdeming@inspur.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex.williamson@redhat.com>
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>
-Cc: Fabiano Rosas <farosas@linux.ibm.com>
-Cc: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
- arch/powerpc/include/asm/pci-bridge.h     |   7 +
- arch/powerpc/platforms/pseries/pseries.h  |   5 +
- arch/powerpc/kernel/iommu.c               | 159 +++++++++++++++++++++-
- arch/powerpc/platforms/powernv/pci-ioda.c |  30 ++++
- arch/powerpc/platforms/pseries/iommu.c    |  24 ++++
- arch/powerpc/platforms/pseries/setup.c    |   3 +
- drivers/vfio/vfio_iommu_spapr_tce.c       |   8 --
- 7 files changed, 226 insertions(+), 10 deletions(-)
+I will be happy to test any patch or provide any extra log if needed.
 
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
-index c85f901227c9..338a45b410b4 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -8,6 +8,7 @@
- #include <linux/list.h>
- #include <linux/ioport.h>
- #include <linux/numa.h>
-+#include <linux/iommu.h>
- 
- struct device_node;
- 
-@@ -44,6 +45,9 @@ struct pci_controller_ops {
- #endif
- 
- 	void		(*shutdown)(struct pci_controller *hose);
-+
-+	struct iommu_group *(*device_group)(struct pci_controller *hose,
-+					    struct pci_dev *pdev);
- };
- 
- /*
-@@ -131,6 +135,9 @@ struct pci_controller {
- 	struct irq_domain	*dev_domain;
- 	struct irq_domain	*msi_domain;
- 	struct fwnode_handle	*fwnode;
-+
-+	/* iommu_ops support */
-+	struct iommu_device	iommu;
- };
- 
- /* These are used for config access before all the PCI probing
-diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-index f5c916c839c9..9a49a16dd89a 100644
---- a/arch/powerpc/platforms/pseries/pseries.h
-+++ b/arch/powerpc/platforms/pseries/pseries.h
-@@ -122,4 +122,9 @@ void pseries_lpar_read_hblkrm_characteristics(void);
- static inline void pseries_lpar_read_hblkrm_characteristics(void) { }
- #endif
- 
-+#ifdef CONFIG_SPAPR_TCE_IOMMU
-+struct iommu_group *pSeries_pci_device_group(struct pci_controller *hose,
-+					     struct pci_dev *pdev);
-+#endif
-+
- #endif /* _PSERIES_PSERIES_H */
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index d873c123ab49..b5301e289714 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -35,6 +35,7 @@
- #include <asm/vio.h>
- #include <asm/tce.h>
- #include <asm/mmu_context.h>
-+#include <asm/ppc-pci.h>
- 
- #define DBG(...)
- 
-@@ -1158,8 +1159,14 @@ int iommu_add_device(struct iommu_table_group *table_group, struct device *dev)
- 
- 	pr_debug("%s: Adding %s to iommu group %d\n",
- 		 __func__, dev_name(dev),  iommu_group_id(table_group->group));
--
--	return iommu_group_add_device(table_group->group, dev);
-+	/*
-+	 * This is still not adding devices via the IOMMU bus notifier because
-+	 * of pcibios_init() from arch/powerpc/kernel/pci_64.c which calls
-+	 * pcibios_scan_phb() first (and this guy adds devices and triggers
-+	 * the notifier) and only then it calls pci_bus_add_devices() which
-+	 * configures DMA for buses which also creates PEs and IOMMU groups.
-+	 */
-+	return iommu_probe_device(dev);
- }
- EXPORT_SYMBOL_GPL(iommu_add_device);
- 
-@@ -1239,6 +1246,7 @@ static long spapr_tce_take_ownership(struct iommu_table_group *table_group)
- 		rc = iommu_take_ownership(tbl);
- 		if (!rc)
- 			continue;
-+
- 		for (j = 0; j < i; ++j)
- 			iommu_release_ownership(table_group->tables[j]);
- 		return rc;
-@@ -1271,4 +1279,151 @@ struct iommu_table_group_ops spapr_tce_table_group_ops = {
- 	.release_ownership = spapr_tce_release_ownership,
- };
- 
-+/*
-+ * A simple iommu_ops to allow less cruft in generic VFIO code.
-+ */
-+static bool spapr_tce_iommu_capable(enum iommu_cap cap)
-+{
-+	switch (cap) {
-+	case IOMMU_CAP_CACHE_COHERENCY:
-+		return true;
-+	default:
-+		break;
-+	}
-+
-+	return false;
-+}
-+
-+static struct iommu_domain *spapr_tce_iommu_domain_alloc(unsigned int type)
-+{
-+	struct iommu_domain *dom;
-+
-+	if (type != IOMMU_DOMAIN_BLOCKED)
-+		return NULL;
-+
-+	dom = kzalloc(sizeof(*dom), GFP_KERNEL);
-+	if (!dom)
-+		return NULL;
-+
-+	dom->geometry.aperture_start = 0;
-+	dom->geometry.aperture_end = ~0ULL;
-+	dom->geometry.force_aperture = true;
-+
-+	return dom;
-+}
-+
-+static struct iommu_device *spapr_tce_iommu_probe_device(struct device *dev)
-+{
-+	struct pci_dev *pdev;
-+	struct pci_controller *hose;
-+
-+	/* Weirdly iommu_device_register() assigns the same ops to all buses */
-+	if (!dev_is_pci(dev))
-+		return ERR_PTR(-EPERM);
-+
-+	pdev = to_pci_dev(dev);
-+	hose = pdev->bus->sysdata;
-+
-+	return &hose->iommu;
-+}
-+
-+static void spapr_tce_iommu_release_device(struct device *dev)
-+{
-+}
-+
-+static struct iommu_group *spapr_tce_iommu_device_group(struct device *dev)
-+{
-+	struct pci_controller *hose;
-+	struct pci_dev *pdev;
-+
-+	/* Weirdly iommu_device_register() assigns the same ops to all buses */
-+	if (!dev_is_pci(dev))
-+		return ERR_PTR(-EPERM);
-+
-+	pdev = to_pci_dev(dev);
-+	hose = pdev->bus->sysdata;
-+
-+	if (!hose->controller_ops.device_group)
-+		return ERR_PTR(-ENOENT);
-+
-+	return hose->controller_ops.device_group(hose, pdev);
-+}
-+
-+static int spapr_tce_iommu_attach_dev(struct iommu_domain *dom,
-+				      struct device *dev)
-+{
-+	struct iommu_group *grp = iommu_group_get(dev);
-+	struct iommu_table_group *table_group;
-+	int ret = -EINVAL;
-+
-+	if (!grp)
-+		return -ENODEV;
-+
-+	table_group = iommu_group_get_iommudata(grp);
-+
-+	if (dom->type == IOMMU_DOMAIN_BLOCKED)
-+		ret = table_group->ops->take_ownership(table_group);
-+
-+	iommu_group_put(grp);
-+
-+	return ret;
-+}
-+
-+static void spapr_tce_iommu_detach_dev(struct iommu_domain *dom,
-+				       struct device *dev)
-+{
-+	struct iommu_group *grp = iommu_group_get(dev);
-+	struct iommu_table_group *table_group;
-+
-+	table_group = iommu_group_get_iommudata(grp);
-+	WARN_ON(dom->type != IOMMU_DOMAIN_BLOCKED);
-+	table_group->ops->release_ownership(table_group);
-+}
-+
-+static const struct iommu_ops spapr_tce_iommu_ops = {
-+	.capable = spapr_tce_iommu_capable,
-+	.domain_alloc = spapr_tce_iommu_domain_alloc,
-+	.probe_device = spapr_tce_iommu_probe_device,
-+	.release_device = spapr_tce_iommu_release_device,
-+	.device_group = spapr_tce_iommu_device_group,
-+	.default_domain_ops = &(const struct iommu_domain_ops) {
-+		.attach_dev = spapr_tce_iommu_attach_dev,
-+		.detach_dev = spapr_tce_iommu_detach_dev,
-+	}
-+};
-+
-+static struct attribute *spapr_tce_iommu_attrs[] = {
-+	NULL,
-+};
-+
-+static struct attribute_group spapr_tce_iommu_group = {
-+	.name = "spapr-tce-iommu",
-+	.attrs = spapr_tce_iommu_attrs,
-+};
-+
-+static const struct attribute_group *spapr_tce_iommu_groups[] = {
-+	&spapr_tce_iommu_group,
-+	NULL,
-+};
-+
-+/*
-+ * This registers IOMMU devices of PHBs. This needs to happen
-+ * after core_initcall(iommu_init) + postcore_initcall(pci_driver_init) and
-+ * before subsys_initcall(iommu_subsys_init).
-+ */
-+static int __init spapr_tce_setup_phb_iommus_initcall(void)
-+{
-+	struct pci_controller *hose;
-+
-+	list_for_each_entry(hose, &hose_list, list_node) {
-+		iommu_device_sysfs_add(&hose->iommu, hose->parent,
-+				       spapr_tce_iommu_groups, "iommu-phb%04x",
-+				       hose->global_number);
-+		iommu_device_register(&hose->iommu, &spapr_tce_iommu_ops,
-+				      hose->parent);
-+	}
-+	return 0;
-+}
-+postcore_initcall_sync(spapr_tce_setup_phb_iommus_initcall);
-+
- #endif /* CONFIG_IOMMU_API */
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 180965a309b6..683425a77233 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1897,6 +1897,13 @@ static long pnv_ioda2_take_ownership(struct iommu_table_group *table_group)
- 	/* Store @tbl as pnv_pci_ioda2_unset_window() resets it */
- 	struct iommu_table *tbl = pe->table_group.tables[0];
- 
-+	/*
-+	 * iommu_ops transfers the ownership per a device and we mode
-+	 * the group ownership with the first device in the group.
-+	 */
-+	if (!tbl)
-+		return 0;
-+
- 	pnv_pci_ioda2_set_bypass(pe, false);
- 	pnv_pci_ioda2_unset_window(&pe->table_group, 0);
- 	if (pe->pbus)
-@@ -1913,6 +1920,9 @@ static void pnv_ioda2_release_ownership(struct iommu_table_group *table_group)
- 	struct pnv_ioda_pe *pe = container_of(table_group, struct pnv_ioda_pe,
- 						table_group);
- 
-+	/* See the comment about iommu_ops above */
-+	if (pe->table_group.tables[0])
-+		return;
- 	pnv_pci_ioda2_setup_default_config(pe);
- 	if (pe->pbus)
- 		pnv_ioda_setup_bus_dma(pe, pe->pbus);
-@@ -2918,6 +2928,25 @@ static void pnv_pci_ioda_dma_bus_setup(struct pci_bus *bus)
- 	}
- }
- 
-+static struct iommu_group *pnv_pci_device_group(struct pci_controller *hose,
-+						struct pci_dev *pdev)
-+{
-+	struct pnv_phb *phb = hose->private_data;
-+	struct pnv_ioda_pe *pe;
-+
-+	if (WARN_ON(!phb))
-+		return ERR_PTR(-ENODEV);
-+
-+	pe = pnv_pci_bdfn_to_pe(phb, pdev->devfn | (pdev->bus->number << 8));
-+	if (!pe)
-+		return ERR_PTR(-ENODEV);
-+
-+	if (!pe->table_group.group)
-+		return ERR_PTR(-ENODEV);
-+
-+	return iommu_group_ref_get(pe->table_group.group);
-+}
-+
- static const struct pci_controller_ops pnv_pci_ioda_controller_ops = {
- 	.dma_dev_setup		= pnv_pci_ioda_dma_dev_setup,
- 	.dma_bus_setup		= pnv_pci_ioda_dma_bus_setup,
-@@ -2928,6 +2957,7 @@ static const struct pci_controller_ops pnv_pci_ioda_controller_ops = {
- 	.setup_bridge		= pnv_pci_fixup_bridge_resources,
- 	.reset_secondary_bus	= pnv_pci_reset_secondary_bus,
- 	.shutdown		= pnv_pci_ioda_shutdown,
-+	.device_group		= pnv_pci_device_group,
- };
- 
- static const struct pci_controller_ops pnv_npu_ocapi_ioda_controller_ops = {
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index ae05b11c457d..57bebe51a564 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1725,3 +1725,27 @@ static int __init tce_iommu_bus_notifier_init(void)
- 	return 0;
- }
- machine_subsys_initcall_sync(pseries, tce_iommu_bus_notifier_init);
-+
-+#ifdef CONFIG_SPAPR_TCE_IOMMU
-+struct iommu_group *pSeries_pci_device_group(struct pci_controller *hose,
-+					     struct pci_dev *pdev)
-+{
-+	struct device_node *pdn, *dn = pdev->dev.of_node;
-+	struct iommu_group *grp;
-+	struct pci_dn *pci;
-+
-+	pdn = pci_dma_find(dn, NULL);
-+	if (!pdn || !PCI_DN(pdn))
-+		return ERR_PTR(-ENODEV);
-+
-+	pci = PCI_DN(pdn);
-+	if (!pci->table_group)
-+		return ERR_PTR(-ENODEV);
-+
-+	grp = pci->table_group->group;
-+	if (!grp)
-+		return ERR_PTR(-ENODEV);
-+
-+	return iommu_group_ref_get(grp);
-+}
-+#endif
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 233c64f59815..3e3b3f031029 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -1079,6 +1079,9 @@ static int pSeries_pci_probe_mode(struct pci_bus *bus)
- 
- struct pci_controller_ops pseries_pci_controller_ops = {
- 	.probe_mode		= pSeries_pci_probe_mode,
-+#ifdef CONFIG_SPAPR_TCE_IOMMU
-+	.device_group		= pSeries_pci_device_group,
-+#endif
- };
- 
- define_machine(pseries) {
-diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
-index 8a65ea61744c..3b53b466e49b 100644
---- a/drivers/vfio/vfio_iommu_spapr_tce.c
-+++ b/drivers/vfio/vfio_iommu_spapr_tce.c
-@@ -1152,8 +1152,6 @@ static void tce_iommu_release_ownership(struct tce_container *container,
- 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i)
- 		if (container->tables[i])
- 			table_group->ops->unset_window(table_group, i);
--
--	table_group->ops->release_ownership(table_group);
- }
- 
- static long tce_iommu_take_ownership(struct tce_container *container,
-@@ -1161,10 +1159,6 @@ static long tce_iommu_take_ownership(struct tce_container *container,
- {
- 	long i, ret = 0;
- 
--	ret = table_group->ops->take_ownership(table_group);
--	if (ret)
--		return ret;
--
- 	/* Set all windows to the new group */
- 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
- 		struct iommu_table *tbl = container->tables[i];
-@@ -1183,8 +1177,6 @@ static long tce_iommu_take_ownership(struct tce_container *container,
- 	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i)
- 		table_group->ops->unset_window(table_group, i);
- 
--	table_group->ops->release_ownership(table_group);
--
- 	return ret;
- }
- 
--- 
-2.30.2
-
+--
+Regards
+Sudip
