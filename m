@@ -1,73 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F274F574E74
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 14:58:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DC05753F3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 19:22:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LkF0C68jHz3cFr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 22:58:03 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=siPI/B1b;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LkLrx0TzBz3cdH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 03:22:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=siPI/B1b;
-	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.166.51; helo=mail-io1-f51.google.com; envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LkDzW0883z3bsQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 22:57:26 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id BF13961F62
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 12:57:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2BACEC34114
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 12:57:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657803442;
-	bh=c/w3xjFhDhm4mjnCKkHwiM9nc8SOZS6mM0lnRoJhHvQ=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=siPI/B1bsUZs7VAdoHMqxNhKK53bPlyKqVirvhoXgkg6lpF5iMPrChhNyyr4eWE27
-	 vDSiPKNpkD7GYd4f18sfgqBT/2dXT7Khq/HT21CZUpguX9BU8N82oNEnTvaOGNklJb
-	 sg2aKQUk6HMnxYzaAtCsHcaJYvUdF4yp5YK6J7wApgYrArwNqgoLh9MDGA2QbXgs1M
-	 TkcmSFOXgN4YZjht5K1hnoZsc/Rit/FBxON1+bngbK0kq6O2Ttj+eylNXn88ESzc5j
-	 sWk5R1W6kIdnae8Xq9ljWhqID4mn2Ifd6mXRhsiZaPvNKgCvA27xFu5jDSpg6fWGey
-	 D303ZF/kLQKEA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 1997BC05FD2; Thu, 14 Jul 2022 12:57:22 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 216183] [bisected] Kernel 5.19-rc4 boots ok with
- CONFIG_PPC_RADIX_MMU=y but fails to boot with CONFIG_PPC_HASH_MMU_NATIVE=y
-Date: Thu, 14 Jul 2022 12:57:21 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: ASSIGNED
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-216183-206035-7VD7cQX48R@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-216183-206035@https.bugzilla.kernel.org/>
-References: <bug-216183-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LkLrP0zPTz3bdM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 03:21:40 +1000 (AEST)
+Received: by mail-io1-f51.google.com with SMTP id u20so1958287iob.8
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 10:21:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=TwlP1i3DseYJRbHuqOfV0GFqZdryH2G33X6Mm9Jm2CM=;
+        b=yshbJULlbTkVEE4Nom95Ehg2ohDywAK8wT3o8008s9CGFj32njADMLvW0MxC0bvZra
+         rYZ52xdcvEvsiGcGwew7nyZ5baNX/wiGegofPlWMfxwv0lkrEajSEkmOSexasrK6R+wB
+         Z/AFqBk2ukjUgGjZHRnUyd1Y9s0DsYwoOpLQoVsQ8nOp2nqocP6WHK79gN6PULFo48+K
+         JLrhZ+U25W7EH3ypnyqm4M2BzCieAVoFXRDuylnLpyeVwXKYZE8OjSCkS8sb0zFgGKAD
+         qm5rtUTY0QR7dALIJuM0pDpQkmvjh5wOal+qluvPuGkA5p3++TixN8ehA9bz2ZFOKJ/Z
+         4btg==
+X-Gm-Message-State: AJIora/D8PS3Sll4PjVzv/UZ1B5VoL9D/m+WCdifYhTk5oyvYNTKuVUw
+	ITQS5IijYOy7ZtwJevWWdQ==
+X-Google-Smtp-Source: AGRyM1vO9dGrA7Y7SKsg+5554fBaotiNHywW1yLUMUZ53GyvbeVEnUtAvGac2Q1pjgYrrT0HbEWTiw==
+X-Received: by 2002:a05:6602:1682:b0:65d:f539:e30 with SMTP id s2-20020a056602168200b0065df5390e30mr4768576iow.81.1657819297971;
+        Thu, 14 Jul 2022 10:21:37 -0700 (PDT)
+Received: from robh.at.kernel.org ([64.188.179.248])
+        by smtp.gmail.com with ESMTPSA id p32-20020a056638192000b00339da678a7csm970726jal.78.2022.07.14.10.21.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Jul 2022 10:21:37 -0700 (PDT)
+Received: (nullmailer pid 2584872 invoked by uid 1000);
+	Thu, 14 Jul 2022 17:21:36 -0000
+Date: Thu, 14 Jul 2022 11:21:36 -0600
+From: Rob Herring <robh@kernel.org>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v6 5/6] of: kexec: Refactor IMA buffer related functions
+ to make them reusable
+Message-ID: <20220714172136.GA2575969-robh@kernel.org>
+References: <20220707172026.831614-1-stefanb@linux.ibm.com>
+ <20220707172026.831614-6-stefanb@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220707172026.831614-6-stefanb@linux.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,57 +63,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: devicetree@vger.kernel.org, Frank Rowand <frowand.list@gmail.com>, nayna@linux.ibm.com, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, nasastry@in.ibm.com, linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D216183
+On Thu, Jul 07, 2022 at 01:20:25PM -0400, Stefan Berger wrote:
+> Refactor IMA buffer related functions to make them reusable for carrying
+> TPM logs across kexec.
+> 
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: Frank Rowand <frowand.list@gmail.com>
+> Cc: Mimi Zohar <zohar@linux.ibm.com>
+> 
+> ---
+> v6:
+>  - Add __init to get_kexec_buffer as suggested by Jonathan
+> 
+> v5:
+>  - Rebased on Jonathan McDowell's commit "b69a2afd5afc x86/kexec: Carry
+>    forward IMA measurement log on kexec"
+> v4:
+>  - Move debug output into setup_buffer()
+> ---
+>  drivers/of/kexec.c | 126 ++++++++++++++++++++++++++-------------------
+>  1 file changed, 74 insertions(+), 52 deletions(-)
 
---- Comment #8 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 301425
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D301425&action=3Dedit
-bisect.log
-
-Successfully did a bisect which revealed this commit:
-
- # git bisect good
-a008f8f9fd67ffb13d906ef4ea6235a3d62dfdb6 is the first bad commit
-commit a008f8f9fd67ffb13d906ef4ea6235a3d62dfdb6
-Author: Nicholas Piggin <npiggin@gmail.com>
-Date:   Sat Jan 30 23:08:41 2021 +1000
-
-    powerpc/64s/hash: improve context tracking of hash faults
-
-    This moves the 64s/hash context tracking from hash_page_mm() to
-    __do_hash_fault(), so it's no longer called by OCXL / SPU
-    accelerators, which was certainly the wrong thing to be doing,
-    because those callers are not low level interrupt handlers, so
-    should have entered a kernel context tracking already.
-
-    Then remain in kernel context for the duration of the fault,
-    rather than enter/exit for the hash fault then enter/exit for
-    the page fault, which is pointless.
-
-    Even still, calling exception_enter/exit in __do_hash_fault seems
-    questionable because that's touching per-cpu variables, tracing,
-    etc., which might have been interrupted by this hash fault or
-    themselves cause hash faults. But maybe I miss something because
-    hash_page_mm very deliberately calls trace_hash_fault too, for
-    example. So for now go with it, it's no worse than before, in this
-    regard.
-
-    Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-    Link: https://lore.kernel.org/r/20210130130852.2952424-32-npiggin@gmail=
-.com
-
- arch/powerpc/include/asm/bug.h        |  1 +
- arch/powerpc/mm/book3s64/hash_utils.c |  7 ++++---
- arch/powerpc/mm/fault.c               | 39 +++++++++++++++++++++++++------=
-----
- 3 files changed, 33 insertions(+), 14 deletions(-)
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Reviewed-by: Rob Herring <robh@kernel.org>
