@@ -2,65 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03815743F3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 06:52:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D07A0574637
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 09:55:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk2D66WQvz3c6V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 14:52:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lk6H65cCYz3cFK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Jul 2022 17:55:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ixpskF3e;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pm4wbMWX;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=ixpskF3e;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pm4wbMWX;
 	dkim-atps=neutral
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lk2CR6syVz3bc5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 14:52:03 +1000 (AEST)
-Received: by mail-ed1-x532.google.com with SMTP id y4so930199edc.4
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Jul 2022 21:52:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hW7IbWPmYdn2d1NNnyMMYZo7sUWhfXMc3EeZopJnd9s=;
-        b=ixpskF3es1ZmyzgNugOOlVGXEXU01wH8x+O+9c0Hn53VnayTkfg7B02WDNC5tIrO7l
-         iEwg3ca5x42mE2uIM8nqQUrXVwXLpT6ULvvEDEhDoQovcbWbHLnoAwOv78ubyxnHhjrc
-         b+F58wCwdRfZkdz4PEAGwhDlQaXN17a/dAqjH7lRr9IZR6Oxl15yDJPqx5DZqhd1LDca
-         m3K9L9Ce8HJHQ3yTYC00bD8m8HCeZVO9kN8Rn4LXDKPCB1TSqsZxNf0zJQAMyjXyiJ7g
-         cpQu1lJzObpQ/9Off5+y4JJmm1YPuTUAuigqbDyhvyv4ipfIih1IQ2OiwKFqjfHfMEIL
-         9Opw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hW7IbWPmYdn2d1NNnyMMYZo7sUWhfXMc3EeZopJnd9s=;
-        b=duAXMdM6FiIUzcdUTkawiExxQV/WfJjPlpfnT7NMyah4NceKT2GvXo8o8zpeWRo+CW
-         A3n4JH2I/vLTPiyFYgIjbOL2eR1HQBZpeCgCqhQbSvDfUNZJnSo4wL0PTBrMFoMwYf9t
-         5IeGlfA0ppS0xfpf4WGuzOs8t4vo7NbiYpm0xQcZC5jqzxgQgIauyr7gw9aAVF/7brMZ
-         gh7yNTk9LCFA0sgiTO4itz9X9byv7WUZkmd0SrXXhm3IlonioULM6lYkiZJiPoyOwxBS
-         bkRJhtrhfxDzyXKM8rwh7l3dkW3JQ1kKDa+TK52NC1MZi+soqcMMT5AD2r9IhTjGBbL6
-         bJ0g==
-X-Gm-Message-State: AJIora92ke04q1HHnkl2mVO0jMDx1EmOY8imDlmp/CJVVYX3au96dCTI
-	mBrYtNuxeOPrF70UxAkajbyDTUuvz3zR1qiWi/U=
-X-Google-Smtp-Source: AGRyM1sCekI8nbaSkEz0wXp62jC4NmfsPr1d7cEeKiuuhPUbnQAKxU8DeX6rgQmQqaqEEOVW9HUjdoQGawmviSj4Nuo=
-X-Received: by 2002:aa7:db9a:0:b0:43a:76bf:5401 with SMTP id
- u26-20020aa7db9a000000b0043a76bf5401mr9638511edt.244.1657774317014; Wed, 13
- Jul 2022 21:51:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lk6GS07LXz3bdM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 17:54:55 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26E5wEXT013452;
+	Thu, 14 Jul 2022 07:54:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=X1WFQMZyawGiGs7c1v5BImIqJBI5umhwmze0ovLnbsU=;
+ b=Pm4wbMWXgHAHzIF/pl/cxWyD0YVBB14Vzt3bildl7N63LEhxXL2tL549CiRRPJwOHwJB
+ Q6iBi93sO3hzAsNYrld6cgr+kAW23NKWT8VQ2aPIon27f49oIhPyaGU50Fzdarrp+uo8
+ k8Rx7yrcxuCt/mJX7uXUToFo39pb/WUTJO8+kVk6DjgNF6qKOkpW1ASPQoMJTQUqAqSY
+ pJvXBpcOTZdx7TrepIhp5yGLyCjOkndH2aEfh3p6V4jfQdwNcNKfuF8TDkN/ar/bZQwZ
+ BJALA2ROrxT9I2OQgHZtS1KyxAydjaN60EuNhKhJEbfuQZB+w+3lqhL+GnEW3o5fpygb LQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3had8jtxr9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Jul 2022 07:54:48 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26E7UFRg032159;
+	Thu, 14 Jul 2022 07:54:47 GMT
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3had8jtxqt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Jul 2022 07:54:47 +0000
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26E7qNG9032577;
+	Thu, 14 Jul 2022 07:54:45 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma06ams.nl.ibm.com with ESMTP id 3h70xhxrw8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 14 Jul 2022 07:54:45 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26E7sgx019005846
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 14 Jul 2022 07:54:42 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 37ABE42041;
+	Thu, 14 Jul 2022 07:54:42 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6514D4203F;
+	Thu, 14 Jul 2022 07:54:40 +0000 (GMT)
+Received: from [9.43.122.242] (unknown [9.43.122.242])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 14 Jul 2022 07:54:40 +0000 (GMT)
+Message-ID: <ba84b170-07e9-1fd5-731b-926eca8115a2@linux.ibm.com>
+Date: Thu, 14 Jul 2022 13:24:39 +0530
 MIME-Version: 1.0
-References: <20220711034615.482895-1-21cnbao@gmail.com> <24f5e25b-3946-b92a-975b-c34688005398@linux.alibaba.com>
-In-Reply-To: <24f5e25b-3946-b92a-975b-c34688005398@linux.alibaba.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 14 Jul 2022 16:51:45 +1200
-Message-ID: <CAGsJ_4zjnmQV6LT3yo--K-qD-92=hBmgfK121=n-Y0oEFX8RnQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] mm: arm64: bring up BATCHED_UNMAP_TLB_FLUSH
-To: xhao@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH 1/2] powerpc/kvm: Move pmu code in kvm folder to separate
+ file for power9 and later platforms
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, Kajol Jain <kjain@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+References: <20220711034927.213192-1-kjain@linux.ibm.com>
+ <1657690385.27p62dp0u2.astroid@bobo.none>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <1657690385.27p62dp0u2.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HHrA7Ec0f5FpDZA7z5zOBEJl-uGTG_IC
+X-Proofpoint-ORIG-GUID: L_siQjoHkRebbkVKYHqyiiEZEtmbzy9i
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
+ definitions=2022-07-14_04,2022-07-13_03,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 spamscore=0 clxscore=1011
+ priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0 suspectscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2206140000 definitions=main-2207140030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,189 +102,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Yicong Yang <yangyicong@hisilicon.com>, Linux-MM <linux-mm@kvack.org>, =?UTF-8?B?6YOt5YGl?= <guojian@oppo.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, =?UTF-8?B?5byg6K+X5piOKFNpbW9uIFpoYW5nKQ==?= <zhangshiming@oppo.com>, =?UTF-8?B?5p2O5Z+56ZSLKHdpbmsp?= <lipeifeng@oppo.com>, Jonathan Corbet <corbet@lwn.net>, x86 <x86@kernel.org>, linux-mips@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, real mz <realmz6@gmail.com>, openrisc@lists.librecores.org, Darren Hart <darren@os.amperecomputing.com>, LAK <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, huzhanyuan@oppo.com, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: atrajeev@linux.vnet.ibm.com, disgoel@linux.vnet.ibm.com, rnsastry@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 14, 2022 at 3:29 PM Xin Hao <xhao@linux.alibaba.com> wrote:
->
-> Hi barry.
->
-> I do some test on Kunpeng arm64 machine use Unixbench.
->
-> The test  result as below.
->
-> One core, we can see the performance improvement above +30%.
 
-I am really pleased to see the 30%+ improvement on unixbench on single core.
+On 7/13/22 11:11 AM, Nicholas Piggin wrote:
+> Excerpts from Kajol Jain's message of July 11, 2022 1:49 pm:
+>> File book3s_hv_p9_entry.c in powerpc/kvm folder consists of functions
+>> like freeze_pmu, switch_pmu_to_guest and switch_pmu_to_host which are
+>> specific to Performance Monitoring Unit(PMU) for power9 and later
+>> platforms.
+>>
+>> For better maintenance, moving pmu related code from
+>> book3s_hv_p9_entry.c to a new file called book3s_hv_p9_perf.c,
+>> without any logic change.
+>> Also make corresponding changes in the Makefile to include
+>> book3s_hv_p9_perf.c during compilation.
+>
+>> +
+>> +	if (ppc_get_pmu_inuse()) {
+>> +		mtspr(SPRN_PMC1, host_os_sprs->pmc1);
+>> +		mtspr(SPRN_PMC2, host_os_sprs->pmc2);
+>> +		mtspr(SPRN_PMC3, host_os_sprs->pmc3);
+>> +		mtspr(SPRN_PMC4, host_os_sprs->pmc4);
+>> +		mtspr(SPRN_PMC5, host_os_sprs->pmc5);
+>> +		mtspr(SPRN_PMC6, host_os_sprs->pmc6);
+>> +		mtspr(SPRN_MMCR1, host_os_sprs->mmcr1);
+>> +		mtspr(SPRN_MMCR2, host_os_sprs->mmcr2);
+>> +		mtspr(SPRN_SDAR, host_os_sprs->sdar);
+>> +		mtspr(SPRN_SIAR, host_os_sprs->siar);
+>> +		mtspr(SPRN_SIER, host_os_sprs->sier1);
+>> +
+>> +		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+>> +			mtspr(SPRN_MMCR3, host_os_sprs->mmcr3);
+>> +			mtspr(SPRN_SIER2, host_os_sprs->sier2);
+>> +			mtspr(SPRN_SIER3, host_os_sprs->sier3);
+>> +		}
+>> +
+>> +		/* Set MMCRA then MMCR0 last */
+>> +		mtspr(SPRN_MMCRA, host_os_sprs->mmcra);
+>> +		mtspr(SPRN_MMCR0, host_os_sprs->mmcr0);
+>> +		isync();
+>> +	}
+>> +}
+>> +EXPORT_SYMBOL_GPL(switch_pmu_to_host);
+>>
+> I'm still thinking these parts of the code in particular that do the
+> host PMU save/restore could be handled by calls into perf subsystem.  In
+> some cases it doesn't need to save SPRs because it can recreate them or
+> is not using them. Maybe it's not so simple.
+Yes, we looked at this. Concern for me is counter data leak.
+Host application will still have read access to these SPRs
+in power9 and before.So I would recommend to save/restore host values as 
+part of it.
 
-> ./Run -c 1 -i 1 shell1
-> w/o
-> System Benchmarks Partial Index              BASELINE RESULT INDEX
-> Shell Scripts (1 concurrent)                     42.4 5481.0 1292.7
-> ========
-> System Benchmarks Index Score (Partial Only)                         1292.7
+Maddy
 >
-> w/
-> System Benchmarks Partial Index              BASELINE RESULT INDEX
-> Shell Scripts (1 concurrent)                     42.4 6974.6 1645.0
-> ========
-> System Benchmarks Index Score (Partial Only)                         1645.0
+> Either way, I'm fine with this move to stat with.
 >
->
-> But with whole cores, there have little performance degradation above -5%
-
-That is sad as we might get more concurrency between mprotect(), madvise(),
-mremap(), zap_pte_range() and the deferred tlbi.
-
->
-> ./Run -c 96 -i 1 shell1
-> w/o
-> Shell Scripts (1 concurrent)                  80765.5 lpm   (60.0 s, 1
-> samples)
-> System Benchmarks Partial Index              BASELINE RESULT INDEX
-> Shell Scripts (1 concurrent)                     42.4 80765.5 19048.5
-> ========
-> System Benchmarks Index Score (Partial Only)                        19048.5
->
-> w
-> Shell Scripts (1 concurrent)                  76333.6 lpm   (60.0 s, 1
-> samples)
-> System Benchmarks Partial Index              BASELINE RESULT INDEX
-> Shell Scripts (1 concurrent)                     42.4 76333.6 18003.2
-> ========
-> System Benchmarks Index Score (Partial Only)                        18003.2
->
-> ----------------------------------------------------------------------------------------------
->
->
-> After discuss with you, and do some changes in the patch.
->
-> ndex a52381a680db..1ecba81f1277 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -727,7 +727,11 @@ void flush_tlb_batched_pending(struct mm_struct *mm)
->          int flushed = batch >> TLB_FLUSH_BATCH_FLUSHED_SHIFT;
->
->          if (pending != flushed) {
-> +#ifdef CONFIG_ARCH_HAS_MM_CPUMASK
->                  flush_tlb_mm(mm);
-> +#else
-> +               dsb(ish);
-> +#endif
->
-
-i was guessing the problem might be flush_tlb_batched_pending()
-so i asked you to change this to verify my guess.
-
-     /*
->                   * If the new TLB flushing is pending during flushing, leave
->                   * mm->tlb_flush_batched as is, to avoid losing flushing.
->
-> there have a performance improvement with whole cores, above +30%
-
-But I don't think it is a proper patch. There is no guarantee the cpu calling
-flush_tlb_batched_pending is exactly the cpu sending the deferred
-tlbi. so the solution is unsafe. But since this temporary code can bring the
-30%+ performance improvement back for high concurrency, we have huge
-potential to finally make it.
-
-Unfortunately I don't have an arm64 server to debug on this. I only have
-8 cores which are unlikely to reproduce regression which happens in
-high concurrency with 96 parallel tasks.
-
-So I'd ask if @yicong or someone else working on kunpeng or other
-arm64 servers  is able to actually debug and figure out a proper
-patch for this, then add the patch as 5/5 into this series?
-
->
-> ./Run -c 96 -i 1 shell1
-> 96 CPUs in system; running 96 parallel copies of tests
->
-> Shell Scripts (1 concurrent)                 109229.0 lpm   (60.0 s, 1 samples)
-> System Benchmarks Partial Index              BASELINE       RESULT    INDEX
-> Shell Scripts (1 concurrent)                     42.4     109229.0  25761.6
->                                                                     ========
-> System Benchmarks Index Score (Partial Only)                        25761.6
->
->
-> Tested-by: Xin Hao<xhao@linux.alibaba.com>
-
-Thanks for your testing!
-
->
-> Looking forward to your next version patch.
->
-> On 7/11/22 11:46 AM, Barry Song wrote:
-> > Though ARM64 has the hardware to do tlb shootdown, the hardware
-> > broadcasting is not free.
-> > A simplest micro benchmark shows even on snapdragon 888 with only
-> > 8 cores, the overhead for ptep_clear_flush is huge even for paging
-> > out one page mapped by only one process:
-> > 5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
-> >
-> > While pages are mapped by multiple processes or HW has more CPUs,
-> > the cost should become even higher due to the bad scalability of
-> > tlb shootdown.
-> >
-> > The same benchmark can result in 16.99% CPU consumption on ARM64
-> > server with around 100 cores according to Yicong's test on patch
-> > 4/4.
-> >
-> > This patchset leverages the existing BATCHED_UNMAP_TLB_FLUSH by
-> > 1. only send tlbi instructions in the first stage -
-> >       arch_tlbbatch_add_mm()
-> > 2. wait for the completion of tlbi by dsb while doing tlbbatch
-> >       sync in arch_tlbbatch_flush()
-> > My testing on snapdragon shows the overhead of ptep_clear_flush
-> > is removed by the patchset. The micro benchmark becomes 5% faster
-> > even for one page mapped by single process on snapdragon 888.
-> >
-> >
-> > -v2:
-> > 1. Collected Yicong's test result on kunpeng920 ARM64 server;
-> > 2. Removed the redundant vma parameter in arch_tlbbatch_add_mm()
-> >     according to the comments of Peter Zijlstra and Dave Hansen
-> > 3. Added ARCH_HAS_MM_CPUMASK rather than checking if mm_cpumask
-> >     is empty according to the comments of Nadav Amit
-> >
-> > Thanks, Yicong, Peter, Dave and Nadav for your testing or reviewing
-> > , and comments.
-> >
-> > -v1:
-> > https://lore.kernel.org/lkml/20220707125242.425242-1-21cnbao@gmail.com/
-> >
-> > Barry Song (4):
-> >    Revert "Documentation/features: mark BATCHED_UNMAP_TLB_FLUSH doesn't
-> >      apply to ARM64"
-> >    mm: rmap: Allow platforms without mm_cpumask to defer TLB flush
-> >    mm: rmap: Extend tlbbatch APIs to fit new platforms
-> >    arm64: support batched/deferred tlb shootdown during page reclamation
-> >
-> >   Documentation/features/arch-support.txt       |  1 -
-> >   .../features/vm/TLB/arch-support.txt          |  2 +-
-> >   arch/arm/Kconfig                              |  1 +
-> >   arch/arm64/Kconfig                            |  1 +
-> >   arch/arm64/include/asm/tlbbatch.h             | 12 ++++++++++
-> >   arch/arm64/include/asm/tlbflush.h             | 23 +++++++++++++++++--
-> >   arch/loongarch/Kconfig                        |  1 +
-> >   arch/mips/Kconfig                             |  1 +
-> >   arch/openrisc/Kconfig                         |  1 +
-> >   arch/powerpc/Kconfig                          |  1 +
-> >   arch/riscv/Kconfig                            |  1 +
-> >   arch/s390/Kconfig                             |  1 +
-> >   arch/um/Kconfig                               |  1 +
-> >   arch/x86/Kconfig                              |  1 +
-> >   arch/x86/include/asm/tlbflush.h               |  3 ++-
-> >   mm/Kconfig                                    |  3 +++
-> >   mm/rmap.c                                     | 14 +++++++----
-> >   17 files changed, 59 insertions(+), 9 deletions(-)
-> >   create mode 100644 arch/arm64/include/asm/tlbbatch.h
-> >
-> --
-> Best Regards!
-> Xin Hao
->
-
-Thanks
-Barry
+> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
