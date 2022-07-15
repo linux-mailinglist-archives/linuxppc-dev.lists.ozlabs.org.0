@@ -2,45 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF567575A3E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 06:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9A3575C7E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 09:41:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LkdN361jvz3c5G
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 14:16:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lkjw81snqz3cfP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 17:41:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=<UNKNOWN>)
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=arndb.de (client-ip=212.227.17.13; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.13])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LkbPN1s2Rz2xrj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 12:47:33 +1000 (AEST)
-Received: from canpemm500009.china.huawei.com (unknown [172.30.72.55])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4LkbN218m3zFpxV;
-	Fri, 15 Jul 2022 10:46:26 +0800 (CST)
-Received: from [10.67.102.169] (10.67.102.169) by
- canpemm500009.china.huawei.com (7.192.105.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 15 Jul 2022 10:47:23 +0800
-Subject: Re: [PATCH v2 0/4] mm: arm64: bring up BATCHED_UNMAP_TLB_FLUSH
-To: Barry Song <21cnbao@gmail.com>, <xhao@linux.alibaba.com>
-References: <20220711034615.482895-1-21cnbao@gmail.com>
- <24f5e25b-3946-b92a-975b-c34688005398@linux.alibaba.com>
- <CAGsJ_4zjnmQV6LT3yo--K-qD-92=hBmgfK121=n-Y0oEFX8RnQ@mail.gmail.com>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <77e245a3-56b8-d624-187d-d8dacaf8d043@huawei.com>
-Date: Fri, 15 Jul 2022 10:47:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lkjvd2dc1z3c20
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 17:40:43 +1000 (AEST)
+Received: from mail-ot1-f48.google.com ([209.85.210.48]) by
+ mrelayeu.kundenserver.de (mreue106 [213.165.67.113]) with ESMTPSA (Nemesis)
+ id 1N3sNa-1nUUyM3isq-00zppQ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul
+ 2022 09:40:39 +0200
+Received: by mail-ot1-f48.google.com with SMTP id a14-20020a0568300b8e00b0061c4e3eb52aso2976916otv.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 00:40:38 -0700 (PDT)
+X-Gm-Message-State: AJIora9APWYhVVFGtxNctpnK1+W19xAuvXSgXJBMZG4Gc5tmszuL0pkX
+	YTO39SNq+mibM1vFSLhe1bcIjXljyxcRXgu5qzg=
+X-Google-Smtp-Source: AGRyM1uqN7hbJWu1Kc45V1df/TuEhLpRBy0jFrUgJKDcJEoO7ehMJuFR6t3QFdid1eQbrmQCLxECRTpajxA3X2Ob8Ys=
+X-Received: by 2002:a81:1e4d:0:b0:31c:86f1:95b1 with SMTP id
+ e74-20020a811e4d000000b0031c86f195b1mr14141207ywe.42.1657870826723; Fri, 15
+ Jul 2022 00:40:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAGsJ_4zjnmQV6LT3yo--K-qD-92=hBmgfK121=n-Y0oEFX8RnQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.102.169]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- canpemm500009.china.huawei.com (7.192.105.203)
-X-CFilter-Loop: Reflected
-X-Mailman-Approved-At: Fri, 15 Jul 2022 14:16:16 +1000
+References: <20220714214657.2402250-1-shorne@gmail.com> <20220714214657.2402250-2-shorne@gmail.com>
+ <CAMo8BfKkGRHiFq1vu1ZKkURkUqC+Ee7D42yuKrCeDF+578s9cw@mail.gmail.com>
+In-Reply-To: <CAMo8BfKkGRHiFq1vu1ZKkURkUqC+Ee7D42yuKrCeDF+578s9cw@mail.gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Fri, 15 Jul 2022 09:40:10 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3S5crDdUcO0kAgOLVGYgXnkU9D3uo44Wrcu5LdAWCGoQ@mail.gmail.com>
+Message-ID: <CAK8P3a3S5crDdUcO0kAgOLVGYgXnkU9D3uo44Wrcu5LdAWCGoQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/2] asm-generic: Remove pci.h copying code out to architectures
+To: Max Filippov <jcmvbkbc@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:38EswcCyhp9Vx8oxlR5oA51zaxlLnLPiNOSLr9fCsrwf5xnSX6M
+ 9AZB4zKJCZIVNMQ0uef0ROT88heMunTKkni+fnZm7rhEaWl6/wFHqqdwy1UnQMcv+3taF+e
+ 1ca+7xvj3wHK9LAVEfx9vmpu+NA3/O4kL99liaFd/g//TVQuIOF1edV9qH4z4PKMaupZA4u
+ oS/Uuk44sd+xTZ/nawYIA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:i7kSf3DFCr8=:1vIuCFaVDoXM2j50sKkSED
+ brQeeNhU3+8lA0eTV8zHFblxGTXUa8luX1F20+nj9ynUrJEOyClfn0hHbNky1+kLJpN1ZBcNZ
+ nLhLisC6wALFoY19IrwvaKYztE8EqngahICgRg3yjpUY0OVDsXr1xo2TxG3RFHY7ZlN3/ynk0
+ vs6+PjR1F9sqbY8eSPi9lzIThFIrHvGNNBINgLykgEB4qrCn0lSr21s4EtIePs+nTXjkjitxT
+ /mpTBIWEe8U4KVCaBK0rIpHibVis4TYjqmPyapeIkkHwRmwP9mmzjBzNTDZZ1kSB5pPgeetYS
+ 36WNVIGv9OFwejRH/GjHRylSqCjIy8kEl1mUj2rcfb7j8YfyP8IeIgFI73I9XRx6NNuMOSRUS
+ q/G3zBjXb0lSdzBNferfN0Lo882y2fRZ2LYCavuyZj04iuEkFErNTKNWK/Q7IYmNZv3pN402a
+ 122OEI9zINwgCnjzV0LU9GAVGFBmP9th9ncQeFNXeMTE7mwALRcri7ayIDJ6CfiYAQHANusMs
+ /WrcNKs/sQS3b8UTqP2XOJg18r+YD7Qc66xOx26d76nd/fKlivONdKtNM/FwI+V7AqZKHLhwh
+ yo5+ejtoosjcJ+FSBcPT11zLOmE8P9w/SkEzORVFTRRsQlRaLQqzwr6dmpP8wrzV4ongKeU98
+ 9UJWjiRFKdwC5at1JWxntorcoDNN3/mNxITheeTsy8E2ncr6UuO1ZuTCY9EUlAXdCAszEIi8d
+ bgpAv8DqIW7WbUsqrXUfNDonFEBm3HTnpIF2ugVRpxHyeVvcGihzHiQ7/TO7H8gWdIVy+cM3A
+ tgYv8vVfs0emSfHzEzMG9Bosv2tHRZf9yk7IWbmhUfzwmHAf3oGUoESXL2lWq1s2hmJywbi4g
+ uZFoXcsMNZWceIkGLS8g==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,195 +69,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, yangyicong@hisilicon.com, Linux-MM <linux-mm@kvack.org>, =?UTF-8?B?6YOt5YGl?= <guojian@oppo.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, =?UTF-8?B?5byg6K+X5piOKFNpbW9uIFpoYW5nKQ==?= <zhangshiming@oppo.com>, =?UTF-8?B?5p2O5Z+56ZSLKHdpbmsp?= <lipeifeng@oppo.com>, Jonathan Corbet <corbet@lwn.net>, x86 <x86@kernel.org>, linux-mips@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, real mz <realmz6@gmail.com>, openrisc@lists.librecores.org, Darren Hart <darren@os.amperecomputing.com>, LAK <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, huzhanyuan@oppo.com, "tiantao \(H\)" <tiantao6@hisilicon.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "open list:IA64 \(Itanium\) PL..." <linux-ia64@vger.kernel.org>, Matthew Rosato <mjrosato@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, Stafford Horne <shorne@gmail.com>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>, linux-riscv <linux-riscv@lists.infradead.org>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci <linux-pci@vger.kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.
+ com>, Niklas Schnelle <schnelle@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>, Pierre Morel <pmorel@linux.ibm.com>, Nick Child <nick.child@ibm.com>, LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2022/7/14 12:51, Barry Song wrote:
-> On Thu, Jul 14, 2022 at 3:29 PM Xin Hao <xhao@linux.alibaba.com> wrote:
->>
->> Hi barry.
->>
->> I do some test on Kunpeng arm64 machine use Unixbench.
->>
->> The test  result as below.
->>
->> One core, we can see the performance improvement above +30%.
-> 
-> I am really pleased to see the 30%+ improvement on unixbench on single core.
-> 
->> ./Run -c 1 -i 1 shell1
->> w/o
->> System Benchmarks Partial Index              BASELINE RESULT INDEX
->> Shell Scripts (1 concurrent)                     42.4 5481.0 1292.7
->> ========
->> System Benchmarks Index Score (Partial Only)                         1292.7
->>
->> w/
->> System Benchmarks Partial Index              BASELINE RESULT INDEX
->> Shell Scripts (1 concurrent)                     42.4 6974.6 1645.0
->> ========
->> System Benchmarks Index Score (Partial Only)                         1645.0
->>
->>
->> But with whole cores, there have little performance degradation above -5%
-> 
-> That is sad as we might get more concurrency between mprotect(), madvise(),
-> mremap(), zap_pte_range() and the deferred tlbi.
-> 
->>
->> ./Run -c 96 -i 1 shell1
->> w/o
->> Shell Scripts (1 concurrent)                  80765.5 lpm   (60.0 s, 1
->> samples)
->> System Benchmarks Partial Index              BASELINE RESULT INDEX
->> Shell Scripts (1 concurrent)                     42.4 80765.5 19048.5
->> ========
->> System Benchmarks Index Score (Partial Only)                        19048.5
->>
->> w
->> Shell Scripts (1 concurrent)                  76333.6 lpm   (60.0 s, 1
->> samples)
->> System Benchmarks Partial Index              BASELINE RESULT INDEX
->> Shell Scripts (1 concurrent)                     42.4 76333.6 18003.2
->> ========
->> System Benchmarks Index Score (Partial Only)                        18003.2
->>
->> ----------------------------------------------------------------------------------------------
->>
->>
->> After discuss with you, and do some changes in the patch.
->>
->> ndex a52381a680db..1ecba81f1277 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -727,7 +727,11 @@ void flush_tlb_batched_pending(struct mm_struct *mm)
->>          int flushed = batch >> TLB_FLUSH_BATCH_FLUSHED_SHIFT;
->>
->>          if (pending != flushed) {
->> +#ifdef CONFIG_ARCH_HAS_MM_CPUMASK
->>                  flush_tlb_mm(mm);
->> +#else
->> +               dsb(ish);
->> +#endif
->>
-> 
-> i was guessing the problem might be flush_tlb_batched_pending()
-> so i asked you to change this to verify my guess.
-> 
->      /*
->>                   * If the new TLB flushing is pending during flushing, leave
->>                   * mm->tlb_flush_batched as is, to avoid losing flushing.
->>
->> there have a performance improvement with whole cores, above +30%
-> 
-> But I don't think it is a proper patch. There is no guarantee the cpu calling
-> flush_tlb_batched_pending is exactly the cpu sending the deferred
-> tlbi. so the solution is unsafe. But since this temporary code can bring the
-> 30%+ performance improvement back for high concurrency, we have huge
-> potential to finally make it.
-> 
-> Unfortunately I don't have an arm64 server to debug on this. I only have
-> 8 cores which are unlikely to reproduce regression which happens in
-> high concurrency with 96 parallel tasks.
-> 
-> So I'd ask if @yicong or someone else working on kunpeng or other
-> arm64 servers  is able to actually debug and figure out a proper
-> patch for this, then add the patch as 5/5 into this series?
-> 
+On Fri, Jul 15, 2022 at 3:45 AM Max Filippov <jcmvbkbc@gmail.com> wrote:
+> On Thu, Jul 14, 2022 at 2:47 PM Stafford Horne <shorne@gmail.com> wrote:
+>
+> > +static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+> > +{
+> > +       return channel ? 15 : 14;
+> > +}
+>
+> This addition does not make sense for the xtensa as it isn't even possible
+> to enable PNP support (the only user of this function) on xtensa.
 
-sure, Tiantao and I will look into this on Kunpeng 920.
+Nice catch! I had looked at this function earlier and only tried to infer
+which architectures might have this based on who has those interrupt
+numbers reserved for ISA devices, but looking at CONFIG_PNP is clearly
+better here.
 
->>
->> ./Run -c 96 -i 1 shell1
->> 96 CPUs in system; running 96 parallel copies of tests
->>
->> Shell Scripts (1 concurrent)                 109229.0 lpm   (60.0 s, 1 samples)
->> System Benchmarks Partial Index              BASELINE       RESULT    INDEX
->> Shell Scripts (1 concurrent)                     42.4     109229.0  25761.6
->>                                                                     ========
->> System Benchmarks Index Score (Partial Only)                        25761.6
->>
->>
->> Tested-by: Xin Hao<xhao@linux.alibaba.com>
-> 
-> Thanks for your testing!
-> 
->>
->> Looking forward to your next version patch.
->>
->> On 7/11/22 11:46 AM, Barry Song wrote:
->>> Though ARM64 has the hardware to do tlb shootdown, the hardware
->>> broadcasting is not free.
->>> A simplest micro benchmark shows even on snapdragon 888 with only
->>> 8 cores, the overhead for ptep_clear_flush is huge even for paging
->>> out one page mapped by only one process:
->>> 5.36%  a.out    [kernel.kallsyms]  [k] ptep_clear_flush
->>>
->>> While pages are mapped by multiple processes or HW has more CPUs,
->>> the cost should become even higher due to the bad scalability of
->>> tlb shootdown.
->>>
->>> The same benchmark can result in 16.99% CPU consumption on ARM64
->>> server with around 100 cores according to Yicong's test on patch
->>> 4/4.
->>>
->>> This patchset leverages the existing BATCHED_UNMAP_TLB_FLUSH by
->>> 1. only send tlbi instructions in the first stage -
->>>       arch_tlbbatch_add_mm()
->>> 2. wait for the completion of tlbi by dsb while doing tlbbatch
->>>       sync in arch_tlbbatch_flush()
->>> My testing on snapdragon shows the overhead of ptep_clear_flush
->>> is removed by the patchset. The micro benchmark becomes 5% faster
->>> even for one page mapped by single process on snapdragon 888.
->>>
->>>
->>> -v2:
->>> 1. Collected Yicong's test result on kunpeng920 ARM64 server;
->>> 2. Removed the redundant vma parameter in arch_tlbbatch_add_mm()
->>>     according to the comments of Peter Zijlstra and Dave Hansen
->>> 3. Added ARCH_HAS_MM_CPUMASK rather than checking if mm_cpumask
->>>     is empty according to the comments of Nadav Amit
->>>
->>> Thanks, Yicong, Peter, Dave and Nadav for your testing or reviewing
->>> , and comments.
->>>
->>> -v1:
->>> https://lore.kernel.org/lkml/20220707125242.425242-1-21cnbao@gmail.com/
->>>
->>> Barry Song (4):
->>>    Revert "Documentation/features: mark BATCHED_UNMAP_TLB_FLUSH doesn't
->>>      apply to ARM64"
->>>    mm: rmap: Allow platforms without mm_cpumask to defer TLB flush
->>>    mm: rmap: Extend tlbbatch APIs to fit new platforms
->>>    arm64: support batched/deferred tlb shootdown during page reclamation
->>>
->>>   Documentation/features/arch-support.txt       |  1 -
->>>   .../features/vm/TLB/arch-support.txt          |  2 +-
->>>   arch/arm/Kconfig                              |  1 +
->>>   arch/arm64/Kconfig                            |  1 +
->>>   arch/arm64/include/asm/tlbbatch.h             | 12 ++++++++++
->>>   arch/arm64/include/asm/tlbflush.h             | 23 +++++++++++++++++--
->>>   arch/loongarch/Kconfig                        |  1 +
->>>   arch/mips/Kconfig                             |  1 +
->>>   arch/openrisc/Kconfig                         |  1 +
->>>   arch/powerpc/Kconfig                          |  1 +
->>>   arch/riscv/Kconfig                            |  1 +
->>>   arch/s390/Kconfig                             |  1 +
->>>   arch/um/Kconfig                               |  1 +
->>>   arch/x86/Kconfig                              |  1 +
->>>   arch/x86/include/asm/tlbflush.h               |  3 ++-
->>>   mm/Kconfig                                    |  3 +++
->>>   mm/rmap.c                                     | 14 +++++++----
->>>   17 files changed, 59 insertions(+), 9 deletions(-)
->>>   create mode 100644 arch/arm64/include/asm/tlbbatch.h
->>>
->> --
->> Best Regards!
->> Xin Hao
->>
-> 
-> Thanks
-> Barry
-> .
-> 
+PNP depends on "ISA || ACPI", and this already rules out most
+architectures. The remaining ones are:
+
+* x86, ia64, alpha: These clearly use PNP based on-board devices on
+   common machines, and use PC-style interrupts
+
+* arm64, loongarch: These select PNP when ACPI is enabled. I don't
+   think they actually use PNP, but for the moment the function needs to
+  be defined, probably returning 0. Loongarch still lacks PCI support
+  though, so asm/pci.h is not yet there.
+
+* arm, mips, powerpc: Only a few older machines in each of these
+  support ISA devices, and the function is probably machine specific.
+  These all have a custom pci.h already and don't use the asm-generic
+  version.
+
+* m68k: there are two that enable CONFIG_ISA and one that enables
+  CONFIG_PCI, but nothing that has both, so we don't need this
+  function.
+
+In summary, I think only x86 actually uses this function, and it is
+correct there, everything else either has its own implementation
+or does not need it, so the existing asm-generic/pci.h file can
+just be folded into the x86 asm/pci.h. That is a great cleanup.
+
+        Arnd
