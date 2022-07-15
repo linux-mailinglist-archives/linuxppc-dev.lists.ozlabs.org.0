@@ -1,116 +1,114 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D8657695B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 00:02:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817D45769C6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 00:17:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll51v6T0lz3cFW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 08:02:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll5M5396hz3cdY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 08:17:21 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=yRAZSwXr;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=rV00ECzy;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.0.84; helo=eur02-am5-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=203.254.224.34; helo=mailout4.samsung.com; envelope-from=joshi.k@samsung.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=yRAZSwXr;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=rV00ECzy;
 	dkim-atps=neutral
-Received: from EUR02-AM5-obe.outbound.protection.outlook.com (mail-eopbgr00084.outbound.protection.outlook.com [40.107.0.84])
+X-Greylist: delayed 563 seconds by postgrey-1.36 at boromir; Fri, 15 Jul 2022 22:57:12 AEST
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ll51F1L17z3bZs
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 08:01:52 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iAjdUvxFsMirX1shYx6W1B5wWZgDM/RTHfNraPVjRbK0D3cntIQyM4yjYY2TRjfD/X9qZucyWjzZkAMu+llGaFZzOXV/jfvoqnjpySOQIlQbuAexki88lc/KvCqmDXgG2Q0B/P4CifWB0+yOoMA4KpstmjpCu/vN94FeOEU6crSCeM9AEyTuzF4SXt+RDRlwuCIcE9FMCIAFuFTDXkiUx0mqfUTpzdXEq41cun0w5CPB9I+n2Zn+fzEI9iFFVsa3ig9UkSShgiGCM56CfbHOlWquORVQ1HT8dL7yy1bHgJIrYIPKpHodXDgryi8CjsabaLP2dM1o18njZnuh/65j6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hasT6hbSKpYPEJ2OuGoSIn5aDqRn8ixuLqCWErCLeDo=;
- b=g61V41b5o8j7N0u1e439VYWMOV5YroSwsu82cFCnA5+rhcX+csxJKK0/QEKjkG6rGiWsAOdGFSvSx9S6cCBAOAF8IqPuBoab0xutscY9GDpjsNnR8OQaf++IMDlb3SErFS9fpQC/9gfao1vakfmbCNB+ZLU6J6T5qKTQIFsYHiFbRlrsH58bCUW4NttTYRyVVCZk3rcnoa3pb9ft3tGykFSXJaJFUThL5k8LI4M8xon5oxFl19N8iiIG+w9+rRmKa4vzx/ksSTG+xLmdIdqZQi5myoAWFHcAt/slziB4vBHHqhxysxYW4SZW4hJLbKty/JxgKrMt3UfqLCXfRYZTow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hasT6hbSKpYPEJ2OuGoSIn5aDqRn8ixuLqCWErCLeDo=;
- b=yRAZSwXrj+hu1fyu67UtunOwRhTPeiNSxRB2siz/DXKyp3mokQsMQma25pnbBApWCI7dbQpS1xKdeCftObvdBjoVJ14j6YYkI06JtYMRxMTs6S9kC4hingCIlUI82lYclSrwu8HNFWNQuEI2KFe0F3S8g5HwgVsV3QYijhmkB+pNFV6yWKWdEeAEtRvqsan0UxzHBhUj+/KYWplgkzRK/yUrkWpvQpEG3RgbFEuRTBFf8j9TuiY0XMssYWaCOYI8ujzZVt9EAB1XgiBpuc3ngEd+KCwr3tyhNVGvhkJJ1y63dTqFH9TeCKu6jbkWuhLuNhAbYNvrpG1I1OHQ8NEnmg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from VI1PR03MB4973.eurprd03.prod.outlook.com (2603:10a6:803:c5::12)
- by AS4PR03MB8433.eurprd03.prod.outlook.com (2603:10a6:20b:518::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.19; Fri, 15 Jul
- 2022 22:01:34 +0000
-Received: from VI1PR03MB4973.eurprd03.prod.outlook.com
- ([fe80::5c3e:4e46:703b:8558]) by VI1PR03MB4973.eurprd03.prod.outlook.com
- ([fe80::5c3e:4e46:703b:8558%7]) with mapi id 15.20.5438.015; Fri, 15 Jul 2022
- 22:01:34 +0000
-From: Sean Anderson <sean.anderson@seco.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Madalin Bucur <madalin.bucur@nxp.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v3 36/47] soc: fsl: qbman: Add helper for sanity checking cgr ops
-Date: Fri, 15 Jul 2022 17:59:43 -0400
-Message-Id: <20220715215954.1449214-37-sean.anderson@seco.com>
-X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
-In-Reply-To: <20220715215954.1449214-1-sean.anderson@seco.com>
-References: <20220715215954.1449214-1-sean.anderson@seco.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH2PR10CA0009.namprd10.prod.outlook.com
- (2603:10b6:610:4c::19) To VI1PR03MB4973.eurprd03.prod.outlook.com
- (2603:10a6:803:c5::12)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lkrwm5Zjkz3052
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 22:57:11 +1000 (AEST)
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20220715124731epoutp04b38b58b6de9711fc4b3fe6d08d62b906~CAX128OR23267932679epoutp04a
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 12:47:31 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20220715124731epoutp04b38b58b6de9711fc4b3fe6d08d62b906~CAX128OR23267932679epoutp04a
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1657889251;
+	bh=m4z7uUtLkPe+eWeACNWwje/ASBR0VGJAA/fGfwHaCok=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rV00ECzyw+C9NAmNSSR12lRZT2eYOA8l4jtoxGTW86nmgHeEkvDSq07gtf2pmEau4
+	 8uKQvpo/Q8s0Wmr/1kQrQZQk56LqQTX7NL4s52l3xSQYFHonspaupHw3ptCGzfvFHR
+	 BPrgLXQ1bVeh+u1S58mH/2L7CNhM65ei2htNxG0o=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+	20220715124730epcas5p2434080647cf8a6114c300c0c94154d5f~CAX1dgH9W0820508205epcas5p2j;
+	Fri, 15 Jul 2022 12:47:30 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.181]) by
+	epsnrtp1.localdomain (Postfix) with ESMTP id 4LkrjX1Pnhz4x9Pp; Fri, 15 Jul
+	2022 12:47:28 +0000 (GMT)
+Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
+	epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	A7.7B.09566.CD161D26; Fri, 15 Jul 2022 21:47:24 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20220715124723epcas5p3781182051671984415ac50c42f1b4cb8~CAXusgZzI1756217562epcas5p37;
+	Fri, 15 Jul 2022 12:47:23 +0000 (GMT)
+Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20220715124723epsmtrp2ecc6d07bdf61087fd11cbb52914f6e66~CAXuryhi91951219512epsmtrp2u;
+	Fri, 15 Jul 2022 12:47:23 +0000 (GMT)
+X-AuditID: b6c32a4a-ba3ff7000000255e-8a-62d161dc17b6
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
+	B7.17.08802.BD161D26; Fri, 15 Jul 2022 21:47:23 +0900 (KST)
+Received: from test-zns (unknown [107.110.206.5]) by epsmtip2.samsung.com
+	(KnoxPortal) with ESMTPA id
+	20220715124722epsmtip2a84415a4a3753c84173a8c1b3b73d689~CAXtpZbHk0390703907epsmtip2k;
+	Fri, 15 Jul 2022 12:47:22 +0000 (GMT)
+Date: Fri, 15 Jul 2022 18:11:58 +0530
+From: Kanchan Joshi <joshi.k@samsung.com>
+To: Sachin Sant <sachinp@linux.ibm.com>
+Subject: Re: Kernel crash(block/null_blk) while running blktests (block/10)
+Message-ID: <20220715124158.GA25618@test-zns>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: db3bb590-b0e3-45c1-5fe8-08da66ad94d8
-X-MS-TrafficTypeDiagnostic: AS4PR03MB8433:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	PkajheBA/FAfx1ROI5aT5JdX4ta1f518g8x/EBx0Bt/JTFE3A6Vymb43slhJkmKuHgEeXz8TiaXHYgwHVuuLv6PspWZF/bt9omMYOSSLGbFKp6K6/DakxjwYQ+5HOlHd2RJvczmEVAApqMzApISgPSj7Gjff1vz2m6uvr1/JxUAIJnNZ7HsVw5Tyz9oFZilgaP6Ip5ZZ60sskgOez+ruhhf+9kBPYP7/PPorLsWkl+YzdcecCy/Wbs3fOSavTzyzX0vDM9ZYuo16v5kC9QbbwIj1baeQe8kmlpMG8jWaCaa237Fr1wXI2YAITqY+b4qynuTb6nGiyrioxWlIc+DmWKdkT9K7wG3KMh8FL8NVzsQR7a6YAUWDahafRCu0iJLABy/hXBayTCWJWlofsw5L5L99R1F2MuxD+xIbOfr9djKcA7+UeUE2h2VVFH572lfE7EY7pfxQxf2Nw97vJz+pFWithLSiknXGRuttHOTSUOwiQrYBNMoHhlAN+kO3aamRXR7IpbgKMmt1qGa5r92KgRWn8ofl/oYj4pyrXIH4OqrcuO4v5P9RGQrcSh703yHMyMeDGQekEl28/2DQcvGY2DJPZuZa1oLXtkmuxXYuLpjcpHT/Shz5e4NlsoZKpFpgNN8jSD+j9sxFHuNPj1TMqlirTIZaDq0S6xUt1yLzbLWo6Qk0SElZbv0NhuvukilzN6Z1Z6i1OjKD0qev4sAFeLtvBom/AYMj4R3TphH8PKZUeorx6zjSYku4haHCIMLj3YlZ24/F3iTrMwLcJm6wlVSwcoMFuJcqDpTiMg7RrH1YJhTG1QwZKhtVR+q5c4Yr
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR03MB4973.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(376002)(346002)(39850400004)(396003)(366004)(136003)(6486002)(478600001)(86362001)(6506007)(41300700001)(6666004)(52116002)(6512007)(26005)(83380400001)(2616005)(54906003)(1076003)(316002)(186003)(110136005)(66946007)(2906002)(7416002)(66476007)(4326008)(66556008)(44832011)(8676002)(5660300002)(8936002)(38350700002)(36756003)(38100700002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?ldXyVvx9BMmKoG3jpYddFHeF9uJEAw1Mrhnz0fdcEuLXFYJ0ALYczouA1WUq?=
- =?us-ascii?Q?USWiy+ixWYaBn47qud03UCUFmdEuM5yfQqpamSSLGT7qWcYn5hsHhMmtOIrr?=
- =?us-ascii?Q?a7h77gErB8xvszlGPtHze3mFiBS0ibwcqaS9i7leBvxLdtb8yfHv8NAdAEsJ?=
- =?us-ascii?Q?cVY8hXxCtfXPjXQchWcsA+ZQ8GhLrzV3y/XMf6Fzd0SwuMOiqLWQSkyHq7MF?=
- =?us-ascii?Q?qYFd9stPMTQitB1vRbXB08K43zRyjeeMcBLfoBhAmjSUZ0NBInoQ/aPKMsCU?=
- =?us-ascii?Q?O/sd1H/qfgOOjluRn9pFMALtIDPT6ljiP1z8RujqlFRplU3yJ2XvbY4iETYC?=
- =?us-ascii?Q?pzMgOmoknsfPLfxiDr1qr/qE9PemHINvYrQlWC4f5Df6hul09HT4F0RGbvip?=
- =?us-ascii?Q?ugEtSpf69Dykl8ibyGfiJZ+HiULpfZ1hxTgFcONqwrmKf3jm+DiGmHafBBwu?=
- =?us-ascii?Q?8dwZar9kI5O+ZEoRNpr73hYjgLVyLcNgcvt5SngSQftPpFt2Fw/0rzAfiyEx?=
- =?us-ascii?Q?EfBzdPkjhCY/S5env2Y9WTgeyyDt4G24p4YwQAdH64XiLIz0HJKNJU+9jCyb?=
- =?us-ascii?Q?Kf88gVZCUgsmRiUOyyM3enpKER0oNLUvfiFLMvKY2eKALYR2kF2T1pLbwm9W?=
- =?us-ascii?Q?Q3r4/myHfdrz4VAVUK4eiw272LRMxvpIDrR2rQgFe5NuLQb2kG8Q2NdTL2JI?=
- =?us-ascii?Q?hbFeZrSUZJL85GRXE+f9sPvVVqDcra63+BtltV1ThR0c3g0cIRZkgJQm+4sP?=
- =?us-ascii?Q?ixNbcwLVMudCe30GGYKm4gHIz0hpQ/L/oQrtnnbKboywHPqDOki24YCLv5/7?=
- =?us-ascii?Q?8gG+FiezW/MMnB27yv9NjO8No3SVxVqIHbk5Wp7/2I95fYIc9Sj717Wnk2G4?=
- =?us-ascii?Q?CL8mhRkvzVQjW8uQf59c+lXV5RgbeTnIIIrKpLMgZnie5XGr0b427GeZdvjR?=
- =?us-ascii?Q?ro0KbOI/pT010NGobtwMdzt+LhduwuGUSQbaPmqdx6vqsUd43K5tYNF9RF9k?=
- =?us-ascii?Q?Jv61IrOFXx8AuxbF5y9PrLAKZ76uyXMMfusY7Aif1b626AaZvkyOfqfAxHKR?=
- =?us-ascii?Q?HVbWH9HekJim62qhxRjemTm28h23jSmX5mas+Otcm59mWT1OF9oSDKQFi4Nt?=
- =?us-ascii?Q?0TAX8Z9LSzm5UNmyx8xEtO5cugxk3r2kKotaQTucWGUKos8h8t/yJrpEYk6K?=
- =?us-ascii?Q?ldCQOuO+ONO6XqqvWe96yFNAUykCOClAx5o2QIDKOXJ78A1k/a4n5AN3maNj?=
- =?us-ascii?Q?4FrZyGQ4/BAqyvUm8z3fXdZCPKTK85GDGhyTys/ZQ8FF5pzBDOp6abA+1VhQ?=
- =?us-ascii?Q?vMUn137jKPekLg9hOQC1zo0qsD8ps9UnocLfPOWH+wfUQRbwsjbvfM3RXdE6?=
- =?us-ascii?Q?PrvPGpcrpREedEUBqVPNkWPk/mYdObV+IP+KbW5tL0hVsOhRTEB2OSqoHc9y?=
- =?us-ascii?Q?Yy3jAPRnquzMgUGmYP76psavt2TlqHmwujnadsoPQig42ECVSIwdu8854tGV?=
- =?us-ascii?Q?y5uV8Jm/FV7v96TFGCj/2iDA9RG6v/t/m8gLmhLF/5jEJhm+l3JBfEbmg1EQ?=
- =?us-ascii?Q?ZZhM7Qpfc4gs/UjjUinsolJ/6qb7P8V+9uHRzfSycVkCIV+W2NNdYB5j2h26?=
- =?us-ascii?Q?Sg=3D=3D?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: db3bb590-b0e3-45c1-5fe8-08da66ad94d8
-X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB4973.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2022 22:01:34.0023
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7mIyAnRXk7Zbtp4/R6+c63KJj99jXsoWc2ZXg23Ecn+KLvoOsW9tSwpcxKeu1YzPyZe00QUy+abzVhCAU1Wxjw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR03MB8433
+In-Reply-To: <9CCFA12F-603C-4C70-844F-83B5C9580BAB@linux.ibm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNKsWRmVeSWpSXmKPExsWy7bCmlu6dxItJBp23uC323tK2OLiwjdHi
+	9/d/rBa/Xm5gsnjc3cHowOoxYdEBRo/zMxYyevRtWcXo8XmTXABLVLZNRmpiSmqRQmpecn5K
+	Zl66rZJ3cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtBaJYWyxJxSoFBAYnGxkr6dTVF+
+	aUmqQkZ+cYmtUmpBSk6BSYFecWJucWleul5eaomVoYGBkSlQYUJ2xqwTD5gK5rJWHHiwlL2B
+	8QJLFyMHh4SAicSczcJdjFwcQgK7GSVu7bvPDOF8YpS4e+8MG4TzmVHi9pl1jF2MnGAdTQt3
+	sYLYQgK7GCW2vjCGKHrGKHHq3iWwIhYBVYknH/eBrWAT0JS4MLkUJCwioC7xefZ+JpAws0CJ
+	RMuMMJCwsIC3xMv1nSwgNq+ArsSvt4/ZIWxBiZMzn4DFOQUcJe5tOQoWFxVQljiw7TgTyFoJ
+	gUfsEufvPGSBuM1FYkVnIxOELSzx6vgWdghbSuLzu71sEHayxKWZ56BqSiQe7zkIZdtLtJ7q
+	ZwaxmQUyJfrO/WeFsPkken8/YYKEFq9ER5sQRLmixL1JT1khbHGJhzOWsEKUeEjs268FCZEp
+	jBIbT3axTGCUm4XknVlINkDYVhKdH5qAbFCoSEss/8cBYWpKrN+lv4CRdRWjZGpBcW56arFp
+	gVFeajk8gpPzczcxglOhltcOxocPPugdYmTiYDzEKMHBrCTC233oXJIQb0piZVVqUX58UWlO
+	avEhRlNg5ExklhJNzgcm47ySeEMTSwMTMzMzE0tjM0MlcV6vq5uShATSE0tSs1NTC1KLYPqY
+	ODilGpjqHJaqJZofXbH111WRVmaOEospecK7OVfKH6+f+5jx2qNH63fHNz96//z0/i+yotZM
+	74+ffc5/c0Ndwp2SS4HaSUvmB0/TkNbf6/74z/kVuyde01rEyqu13KBisZ/tAwYn2fkmGQwC
+	0gdFflTlhy2c3Lb04hn91Isu09cfPqz3iUtrQ5BXsNeJDO7vBcJrJs9mK/TT2lhzveY1zxuz
+	NLU97zdODGaep6q1vWnJvtt9kx5yz5l9Xv7us7xQVeOTEnvkom0fPMoSPLW9v90gY22S45Xz
+	u6P8pj5eUHjyyuJvDk6RjdPfTTikf/VO7Oo+4xXLLxhcnX62x6NWcmsHXx6vY/LGwNWisR59
+	58WNrWqDlViKMxINtZiLihMBMS7Dpg4EAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNLMWRmVeSWpSXmKPExsWy7bCSvO7txItJBp2/RC323tK2OLiwjdHi
+	9/d/rBa/Xm5gsnjc3cHowOoxYdEBRo/zMxYyevRtWcXo8XmTXABLFJdNSmpOZllqkb5dAlfG
+	gz+rmArOMFWcWv2TqYFxJlMXIyeHhICJRNPCXaxdjFwcQgI7GCXWXuiDSohLNF/7wQ5hC0us
+	/PcczBYSeMIo8WeaAIjNIqAq8eTjPpYuRg4ONgFNiQuTS0HCIgLqEp9n72cCCTMLlEi0zAgD
+	CQsLeEu8XN/JAmLzCuhK/Hr7mB1i7RRGidnzt7JCJAQlTs58AlbELGAmMW/zQ2aIOdISy/9x
+	gIQ5BRwl7m05CnaNqICyxIFtx5kmMArOQtI9C0n3LITuBYzMqxglUwuKc9Nziw0LjPJSy/WK
+	E3OLS/PS9ZLzczcxgsNbS2sH455VH/QOMTJxMB5ilOBgVhLh7T50LkmINyWxsiq1KD++qDQn
+	tfgQozQHi5I474Wuk/FCAumJJanZqakFqUUwWSYOTqkGpo2KSxZtmSK37nWtwmWV5NVVj1+K
+	dv8/tmtXpF7CocqTzQ91ff4c5POby3wtV3D551nXnmyOmZ0XO9Wo4nZjxT1DVZ/3licrek+t
+	rAn4sSZa5Z+BqI3w+grl1d9qd2r2M6j7ev2PVt7wNIpDvakhXv2LzcpvXHk31h8/bx41s3qe
+	ZMLhzye41j/UtgqpvMnkbxejcXzalVSTOUt8r0/6kahREsucpnhszhYtvW7Wr7NnP7F/+3uK
+	6MEND15qi56694Xj7cPpx//G8F7Mj3OPfJvdFH+63IivaULoB7nQmcnvWQ/Nqrwms6k9cH1W
+	sr9F3uz1N5Nyyvmfbs5se+Ail1Hvd++1XIhEaFhNAONaIyWW4oxEQy3mouJEABi4gK3eAgAA
+X-CMS-MailID: 20220715124723epcas5p3781182051671984415ac50c42f1b4cb8
+X-Msg-Generator: CA
+Content-Type: multipart/mixed;
+	boundary="----5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20220715123722epcas5p209d7ab2411e2ca5d63f5e2e42a83a665
+References: <CGME20220715123722epcas5p209d7ab2411e2ca5d63f5e2e42a83a665@epcas5p2.samsung.com>
+	<9CCFA12F-603C-4C70-844F-83B5C9580BAB@linux.ibm.com>
+X-Mailman-Approved-At: Sat, 16 Jul 2022 08:16:46 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -122,80 +120,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Li Yang <leoyang.li@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: linux-block@vger.kernel.org, vincent.fu@samsung.com, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This breaks out/combines get_affine_portal and the cgr sanity check in
-preparation for the next commit. No functional change intended.
+------5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Disposition: inline
 
-Signed-off-by: Sean Anderson <sean.anderson@seco.com>
----
+On Fri, Jul 15, 2022 at 06:07:01PM +0530, Sachin Sant wrote:
+>While running blktests[*] (block/10) on a IBM Power server booted with
+>5.19.0-rc6-next-20220714 following crash is seen:
+Ming has posted a fix , please see if this can be tried -
+https://lore.kernel.org/linux-block/20220715031916.151469-1-ming.lei@redhat.com/
 
-(no changes since v2)
 
-Changes in v2:
-- New
 
- drivers/soc/fsl/qbman/qman.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+------5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_
+Content-Type: text/plain; charset="utf-8"
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index fde4edd83c14..eb6600aab09b 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -2483,13 +2483,8 @@ int qman_create_cgr(struct qman_cgr *cgr, u32 flags,
- }
- EXPORT_SYMBOL(qman_create_cgr);
- 
--int qman_delete_cgr(struct qman_cgr *cgr)
-+static struct qman_portal *qman_cgr_get_affine_portal(struct qman_cgr *cgr)
- {
--	unsigned long irqflags;
--	struct qm_mcr_querycgr cgr_state;
--	struct qm_mcc_initcgr local_opts;
--	int ret = 0;
--	struct qman_cgr *i;
- 	struct qman_portal *p = get_affine_portal();
- 
- 	if (cgr->chan != p->config->channel) {
-@@ -2497,10 +2492,25 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		dev_err(p->config->dev, "CGR not owned by current portal");
- 		dev_dbg(p->config->dev, " create 0x%x, delete 0x%x\n",
- 			cgr->chan, p->config->channel);
--
--		ret = -EINVAL;
--		goto put_portal;
-+		put_affine_portal();
-+		return NULL;
- 	}
-+
-+	return p;
-+}
-+
-+int qman_delete_cgr(struct qman_cgr *cgr)
-+{
-+	unsigned long irqflags;
-+	struct qm_mcr_querycgr cgr_state;
-+	struct qm_mcc_initcgr local_opts;
-+	int ret = 0;
-+	struct qman_cgr *i;
-+	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
-+
-+	if (!p)
-+		return -EINVAL;
-+
- 	memset(&local_opts, 0, sizeof(struct qm_mcc_initcgr));
- 	spin_lock_irqsave(&p->cgr_lock, irqflags);
- 	list_del(&cgr->node);
-@@ -2528,7 +2538,6 @@ int qman_delete_cgr(struct qman_cgr *cgr)
- 		list_add(&cgr->node, &p->cgr_cbs);
- release_lock:
- 	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
--put_portal:
- 	put_affine_portal();
- 	return ret;
- }
--- 
-2.35.1.1320.gc452695387.dirty
 
+------5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_--
