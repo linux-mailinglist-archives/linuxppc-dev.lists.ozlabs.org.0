@@ -2,72 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43402575998
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 04:28:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 858A05759DE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 05:13:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LkZzC32Hvz3cdc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 12:28:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lkbzk4sDKz3cdW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 13:13:54 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IEJMJOhz;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=d6rOttoa;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b; helo=mail-pf1-x42b.google.com; envelope-from=shorne@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=f.fainelli@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=IEJMJOhz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=d6rOttoa;
 	dkim-atps=neutral
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LkZyX1cWSz3bsD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 12:27:46 +1000 (AEST)
-Received: by mail-pf1-x42b.google.com with SMTP id v7so3529275pfb.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 19:27:46 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lkbz255x4z3bmG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 13:13:17 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id c3so2628224pfb.13
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Jul 2022 20:13:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=2PHQEHiPUK5/kMXd0Tiaa/2KkMXqEO7YBVcbpRdWkzU=;
-        b=IEJMJOhzDLt+yfASXyPdeXR1oGGTsGDx3vl/pKDJYU0fM7xGoEYifRYmndgoDBn8V+
-         8KaH2UOTKaWNm2bcmSVrDZgCQRS5bZdc/JErVv0oiKI4D779tqf8qqqo8Y4iLSedLKu6
-         KJvBrd7MyyR0lBJJ++sR+EsLWE8c5/Kb5Z0fTJPJtZS1NwarGIQrRHk8mNKtsfmdVnsk
-         DdHkjkVUI3Go5QJOuWJ7tFYeVZyOTWJ1DVFRKCXBlPEbNV+fVinpn4yVP5n1HJQodgh9
-         gnwtaOMTLLw/5pbt9rN0/tXbYqausx/cGWYNWZ3PmgEiWfJZrxEj2bcNKssaqRx0mKTs
-         9LaA==
+        h=message-id:date:mime-version:user-agent:subject:content-language:to
+         :cc:references:from:in-reply-to:content-transfer-encoding;
+        bh=0kNvzHNczTALecfT9wto6CsS50awskOSoxCbfvaNPgc=;
+        b=d6rOttoave+cYYycQLZVtn7+6/EvvZMoC4KlEKnu5+Iy0CvIZB6RZvM+yDNYgjVsg2
+         zExWP1Kt2mvHL2caS42uLQwLfFdIGT+vt+VNkOv6EFVEz1IJ1Ei1z/SUwomvWvL9yqs/
+         LsfjR3vwcHDm1bfvDdBsjVXVCIzYFoJ6KMcatcAC61WXc2/vMcOjiKCXnv0z+ZYpPW1D
+         29300GYk48m1QvWYlTwrWUJ2ga8Ap1QJw6DN92YdxZnF6aT4PwJr+48L7OzWyifSHnIo
+         bBliGjA2A7iI1JHvd2yG0VTITazqxx3xOm38zhCb9ZIUiYeXEPs2TlvdcILgJvPCljIq
+         R2+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=2PHQEHiPUK5/kMXd0Tiaa/2KkMXqEO7YBVcbpRdWkzU=;
-        b=ju1iIypGX14Xaugy4TEYlJD3q+u3vf/Rw5tjgH6BTfcd3Jjhq0u0isg1Bjr0tB4Rew
-         ub+9dYL559uav8gbzOE+ThUBsbRj/pw+cVwfz3OXyELLo8htiIapr2VaVrNoY+/k0Vuq
-         O6STH9ltJ+PFINcq78tYX14ZkPun/X1ACNwubg1fMLcyLntk6oDKgT0/qo6+NoMX3SVw
-         pYgoZq4ZOe1VR7VMgBffgA131IhZXkX7aiFtCXuNsTGJbuVs6t4L89CkNPEbq4C6VfT1
-         mBkg0SbQw/TCo1Lm+D7pQ/C/8bGSBaLUSRhoZw3p0htBrr1WF08pZzkN1IUMhySbGQzu
-         4kKg==
-X-Gm-Message-State: AJIora+VyVmzKutZJjVT6Eb+08o00fnOiOb80B/ry4pfqVF9Un/H0dau
-	cLAzApRxyr0JbdfdXGZQFew=
-X-Google-Smtp-Source: AGRyM1tFpAPO14ibbARmvlyA7Dm2i3y8ihIra24Y5oG5D9v2V9oCrT80IZwFQQ8AdtfnaIGZOBL3gA==
-X-Received: by 2002:a63:9547:0:b0:408:be53:b599 with SMTP id t7-20020a639547000000b00408be53b599mr10179125pgn.463.1657852063244;
-        Thu, 14 Jul 2022 19:27:43 -0700 (PDT)
-Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
-        by smtp.gmail.com with ESMTPSA id v22-20020a631516000000b0040caab35e5bsm1998257pgl.89.2022.07.14.19.27.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Jul 2022 19:27:42 -0700 (PDT)
-Date: Fri, 15 Jul 2022 11:27:41 +0900
-From: Stafford Horne <shorne@gmail.com>
-To: Max Filippov <jcmvbkbc@gmail.com>
-Subject: Re: [RFC PATCH 1/2] asm-generic: Remove pci.h copying code out to
- architectures
-Message-ID: <YtDQnQOeDF6RID4g@antec>
-References: <20220714214657.2402250-1-shorne@gmail.com>
- <20220714214657.2402250-2-shorne@gmail.com>
- <CAMo8BfKkGRHiFq1vu1ZKkURkUqC+Ee7D42yuKrCeDF+578s9cw@mail.gmail.com>
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=0kNvzHNczTALecfT9wto6CsS50awskOSoxCbfvaNPgc=;
+        b=TBaxr+JEsejNDmLD/vP0eh/6j7NIZQwMc+QmipakqTpnvsbvK/Law256L44s/munC2
+         ur1a/J8JX00NlMkibnd+bmHs8auPcPksBXlqeeCcXVqIBLUjZVYiCFNNfOc20Z2CU7mS
+         LRWUxqHnrjPaCeINRqYxjSkiXzJ1/Dg1TvS9d/06wJFtmqYoAiRDnkBztSt1MKfyJjU4
+         GDrnfP2HCmQBdAxgMnhnV5sZyulQdkMzAwoSuz48Y3KAtycs4tfXJOLBqyI7n+G1TT4l
+         gveMs8Cm0DeMEpAbunQrVhnX36Jb+F2DralMOytfiYE+nK/2D4YbUcPiOnD5zW146bVZ
+         3mpA==
+X-Gm-Message-State: AJIora/uO0A45Dk1g0lqbvg7A1PXkMBp1W7Eucd/UPiMoUcavdpCVPYY
+	w0tAK2kPkd1Dr6l5kamsHMg=
+X-Google-Smtp-Source: AGRyM1vK5uqkhNs5DYoiUnUKiOfj2RRKOpP4xHProAEOYr/w1Br1ZQPpNcitPwDkSe+/qgFCXMCFZg==
+X-Received: by 2002:a63:2051:0:b0:412:6d61:ab0a with SMTP id r17-20020a632051000000b004126d61ab0amr10627004pgm.52.1657854794876;
+        Thu, 14 Jul 2022 20:13:14 -0700 (PDT)
+Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
+        by smtp.gmail.com with ESMTPSA id d12-20020a170903230c00b0016c6a6d8967sm2236563plh.83.2022.07.14.20.13.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Jul 2022 20:13:14 -0700 (PDT)
+Message-ID: <d95d1afe-655c-3526-0c7e-949dfad8c6ba@gmail.com>
+Date: Thu, 14 Jul 2022 20:13:12 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMo8BfKkGRHiFq1vu1ZKkURkUqC+Ee7D42yuKrCeDF+578s9cw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0.2
+Subject: Re: [PATCH V12 01/20] uapi: simplify __ARCH_FLOCK{,64}_PAD a little
+Content-Language: en-US
+To: guoren@kernel.org, palmer@dabbelt.com, arnd@arndb.de,
+ gregkh@linuxfoundation.org, hch@lst.de, nathan@kernel.org,
+ naresh.kamboju@linaro.org
+References: <20220405071314.3225832-1-guoren@kernel.org>
+ <20220405071314.3225832-2-guoren@kernel.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20220405071314.3225832-2-guoren@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,62 +83,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "open list:IA64 \(Itanium\) PL..." <linux-ia64@vger.kernel.org>, Matthew Rosato <mjrosato@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, "open list:SPARC + UltraSPAR..." <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-riscv <linux-riscv@lists.infradead.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, "maintainer:X86 ARCHITECTURE..." <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci@vger.kernel.org, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
-  Heiko Carstens <hca@linux.ibm.com>, "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>, Pierre Morel <pmorel@linux.ibm.com>, Nick Child <nick.child@ibm.com>, LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, heiko@sntech.de, linux-parisc@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jul 14, 2022 at 06:45:27PM -0700, Max Filippov wrote:
-> On Thu, Jul 14, 2022 at 2:47 PM Stafford Horne <shorne@gmail.com> wrote:
-> >
-> > The generic pci.h header provides a definition of pci_get_legacy_ide_irq
-> > which is used by architectures that use PC-style interrupt numbers.
-> >
-> > This patch removes the old pci.h in order to make room for a new
-> > pci.h to be used by arm64, riscv, openrisc, etc.
-> >
-> > The existing code in pci.h is moved out to architectures.
-> >
-> > Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> > Link: https://lore.kernel.org/lkml/CAK8P3a0JmPeczfmMBE__vn=Jbvf=nkbpVaZCycyv40pZNCJJXQ@mail.gmail.com/
-> > Signed-off-by: Stafford Horne <shorne@gmail.com>
-> > ---
-> >  arch/alpha/include/asm/pci.h   |  1 -
-> >  arch/ia64/include/asm/pci.h    |  1 -
-> >  arch/m68k/include/asm/pci.h    |  7 +++++--
-> >  arch/powerpc/include/asm/pci.h |  1 -
-> >  arch/s390/include/asm/pci.h    |  6 +++++-
-> >  arch/sparc/include/asm/pci.h   |  5 ++++-
-> >  arch/x86/include/asm/pci.h     |  6 ++++--
-> >  arch/xtensa/include/asm/pci.h  |  6 ++++--
-> >  include/asm-generic/pci.h      | 17 -----------------
-> >  9 files changed, 22 insertions(+), 28 deletions(-)
-> >  delete mode 100644 include/asm-generic/pci.h
-> 
-> [...]
-> 
-> > diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
-> > index 8e2b48a268db..f57ede61f5db 100644
-> > --- a/arch/xtensa/include/asm/pci.h
-> > +++ b/arch/xtensa/include/asm/pci.h
-> > @@ -43,7 +43,9 @@
-> >  #define ARCH_GENERIC_PCI_MMAP_RESOURCE 1
-> >  #define arch_can_pci_mmap_io()         1
-> >
-> > -/* Generic PCI */
-> > -#include <asm-generic/pci.h>
-> 
-> Ok.
-> 
-> > +static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-> > +{
-> > +       return channel ? 15 : 14;
-> > +}
-> 
-> This addition does not make sense for the xtensa as it isn't even possible
-> to enable PNP support (the only user of this function) on xtensa.
 
-Thanks for your feedback, this is the kind of feedback I was hoping to fish out
-with this patch.  I will look into completely removing this then.
 
--Stafford
+On 4/5/2022 12:12 AM, guoren@kernel.org wrote:
+> From: Christoph Hellwig <hch@lst.de>
+> 
+> Don't bother to define the symbols empty, just don't use them.
+> That makes the intent a little more clear.
+> 
+> Remove the unused HAVE_ARCH_STRUCT_FLOCK64 define and merge the
+> 32-bit mips struct flock into the generic one.
+> 
+> Add a new __ARCH_FLOCK_EXTRA_SYSID macro following the style of
+> __ARCH_FLOCK_PAD to avoid having a separate definition just for
+> one architecture.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Tested-by: Heiko Stuebner <heiko@sntech.de>
+
+Being late to this, but this breaks the perf build for me using a MIPS 
+toolchain with the following:
+
+   CC 
+/home/fainelli/work/buildroot/output/bmips/build/linux-custom/tools/perf/trace/beauty/fcntl.o
+In file included from 
+../../../../host/mipsel-buildroot-linux-gnu/sysroot/usr/include/asm/fcntl.h:77,
+                  from ../include/uapi/linux/fcntl.h:5,
+                  from trace/beauty/fcntl.c:10:
+../include/uapi/asm-generic/fcntl.h:188:8: error: redefinition of 
+'struct flock'
+  struct flock {
+         ^~~~~
+In file included from ../include/uapi/linux/fcntl.h:5,
+                  from trace/beauty/fcntl.c:10:
+../../../../host/mipsel-buildroot-linux-gnu/sysroot/usr/include/asm/fcntl.h:63:8: 
+note: originally defined here
+  struct flock {
+         ^~~~~
+make[6]: *** 
+[/home/fainelli/work/buildroot/output/bmips/build/linux-custom/tools/build/Makefile.build:97: 
+/home/fainelli/work/buildroot/output/bmips/build/linux-custom/tools/perf/trace/beauty/fcntl.o] 
+Error 1
+
+the kernel headers are set to 4.1.31 which is arguably old but 
+toolchains using newer kernel headers do not fare much better either 
+unfortunately as I tried a toolchain with kernel headers 4.9.x.
+
+I will start doing more regular MIPS builds of the perf tools since that 
+seems to escape our testing.
+
+Thanks!
+-- 
+Florian
