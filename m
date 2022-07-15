@@ -1,59 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F305765A8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 19:12:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C3F5766D0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 20:34:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lkyb160yYz3cd2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 03:12:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll0Pq4cCmz3cff
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 04:34:23 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dfN0uPKE;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=T+0xYXeu;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=igalia.com (client-ip=178.60.130.6; helo=fanzine2.igalia.com; envelope-from=gpiccoli@igalia.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dfN0uPKE;
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=T+0xYXeu;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LkyZN5rl9z3bk8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 03:11:40 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 4D9DC62237;
-	Fri, 15 Jul 2022 17:11:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D36AC34115;
-	Fri, 15 Jul 2022 17:11:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657905095;
-	bh=p0+be8P4mJSpNS9w7xRI+Uug5MZvY14f4VbucNXXoio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dfN0uPKEoJHsjrZ16wMRE+U8mUy79Engm2H+j29wl7llvEOh0cZoHz50aSsAi/JSB
-	 Ghd3O1BP3YOdN+7THMTOItFNjrsmlFIUq2zZFUgSdxBmwtYe88iEAVr6OqgwprbKy3
-	 2zG8Z1r/o/9kCxQyDeLjrBIvcmaf9rGihLckb297CFMCQq8Qg97sH3gEgFNzEz51e7
-	 qLWmPKypPxqv9ULkzkU4SN2rCIMjW+5fayPDFCxdqzXgHMZ6+BjhMT/VRgvpLnXWyj
-	 HhJB3IUEjCrvqroaoyaKHsWq8LF+h/s+rZ31KzFsc5I5cr3xor44C4dv8M05Ufwcee
-	 I7dj5LUYfWYaA==
-Received: by pali.im (Postfix)
-	id 47F2DA32; Fri, 15 Jul 2022 19:11:32 +0200 (CEST)
-Date: Fri, 15 Jul 2022 19:11:32 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ll0P72yWzz3c5B
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 04:33:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=eHY8ml2kSNhWyc+Lu2y+Au3hBhDY7pHCci4IztLK7Xc=; b=T+0xYXeuOGrOK3gFQFS+sISKGh
+	SDcLCeRHEaBPMmX4jDC7KMCJofTE7poUJ25T5Hm5Ghl3XGw6nWsSxelviFUhyN/YlhEzgdbj9f5ih
+	olPqVatvSPG5Sc5rZOo06VaWxw6lfj5ZPP2fOAW/5wgVOWaCaY7QSOji3e0Qu1oz+DbUaxNRgKbRX
+	OaOi/f4vU6kiIXqyJ6eCFVFPeLdxxNLk85+O8x5Zq6ixFC3LSE6iIyVwm4PBNS/iq6PyHxOWoKS08
+	78UnOdFJvuZ13GZT2WXs5AF/18wy9kkVeN0xISlEW/m+DNkWZsbGzOvzLmQUtEjf+9+Rawd9DEcgE
+	AMaaI8/w==;
+Received: from 201-42-109-188.dsl.telesp.net.br ([201.42.109.188] helo=[192.168.1.60])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1oCQ7j-000aT2-DH; Fri, 15 Jul 2022 20:33:12 +0200
+Message-ID: <15432ee0-3a33-0b53-b39b-f8b53a7e4345@igalia.com>
+Date: Fri, 15 Jul 2022 15:32:56 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
 Subject: Re: [PATCH v2 1/2] powerpc/pci: Add config option for using OF 'reg'
  for PCI domain
-Message-ID: <20220715171132.ujaexzm4ipad7o4f@pali>
+Content-Language: en-US
+To: =?UTF-8?Q?Pali_Roh=c3=a1r?= <pali@kernel.org>
 References: <20220706102148.5060-1-pali@kernel.org>
  <17fb8d12-60f9-09d5-91fa-09d5a5a9a4fd@igalia.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+ <20220715171132.ujaexzm4ipad7o4f@pali>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+In-Reply-To: <20220715171132.ujaexzm4ipad7o4f@pali>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <17fb8d12-60f9-09d5-91fa-09d5a5a9a4fd@igalia.com>
-User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,88 +69,18 @@ Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Guowen Shan <gshan@redhat.com>, linux
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Friday 15 July 2022 11:55:04 Guilherme G. Piccoli wrote:
-> On 06/07/2022 07:21, Pali Rohár wrote:
-> > [...] 
-> > Fix this issue and introduce a new option CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG.
-> > When this option is disabled then powerpc kernel would assign PCI domains
-> > in the similar way like it is doing kernel for other architectures,
-> > starting from zero and also how it was done prior that commit.
+On 15/07/2022 14:11, Pali Rohár wrote:
+> [...]
+>>
+>> I found this sentence a bit weird, "in the similar way like it is doing
+>> kernel for other architectures", but other than that:
 > 
-> I found this sentence a bit weird, "in the similar way like it is doing
-> kernel for other architectures", but other than that:
+> If you have some idea how to improve commit description, let me know and
+> I can change it.
+> 
 
-If you have some idea how to improve commit description, let me know and
-I can change it.
+Oh, for example: "in similar way the kernel is doing for other
+architectures". The sentence idea is perfectly fine, it's just that it's
+a bit oddly constructed IMHO heh
 
-> Reviewed-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-> 
-> Thanks for the improvement!
-> Cheers,
-> 
-> 
-> Guilherme
-> 
-> 
-> > 
-> > This option is by default enabled for powernv and pseries platform for which
-> > was that commit originally intended.
-> > 
-> > With this change upgrading kernels from LTS 4.4 version does not change PCI
-> > domain on smaller embedded platforms with fixed number of PCIe controllers.
-> > And also ensure that PCI domain zero is present as before that commit.
-> > 
-> > Fixes: 63a72284b159 ("powerpc/pci: Assign fixed PHB number based on device-tree properties")
-> > Signed-off-by: Pali Rohár <pali@kernel.org>
-> > ---
-> > Changes in v2:
-> > * Enable CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG by default on powernv and pseries
-> > ---
-> >  arch/powerpc/Kconfig             | 11 +++++++++++
-> >  arch/powerpc/kernel/pci-common.c |  4 ++--
-> >  2 files changed, 13 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> > index f66084bc1dfe..053a88e84049 100644
-> > --- a/arch/powerpc/Kconfig
-> > +++ b/arch/powerpc/Kconfig
-> > @@ -386,6 +386,17 @@ config PPC_OF_PLATFORM_PCI
-> >  	depends on PCI
-> >  	depends on PPC64 # not supported on 32 bits yet
-> >  
-> > +config PPC_PCI_DOMAIN_FROM_OF_REG
-> > +	bool "Use OF reg property for PCI domain"
-> > +	depends on PCI
-> > +	default y if PPC_PSERIES || PPC_POWERNV
-> > +	help
-> > +	  By default PCI domain for host bridge during its registration is
-> > +	  chosen as the lowest unused PCI domain number.
-> > +
-> > +	  When this option is enabled then PCI domain can be determined
-> > +	  also from lower bits of the OF / Device Tree 'reg' property.
-> > +
-> >  config ARCH_SUPPORTS_UPROBES
-> >  	def_bool y
-> >  
-> > diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-> > index 068410cd54a3..7f959df34833 100644
-> > --- a/arch/powerpc/kernel/pci-common.c
-> > +++ b/arch/powerpc/kernel/pci-common.c
-> > @@ -74,7 +74,6 @@ void __init set_pci_dma_ops(const struct dma_map_ops *dma_ops)
-> >  static int get_phb_number(struct device_node *dn)
-> >  {
-> >  	int ret, phb_id = -1;
-> > -	u32 prop_32;
-> >  	u64 prop;
-> >  
-> >  	/*
-> > @@ -83,7 +82,8 @@ static int get_phb_number(struct device_node *dn)
-> >  	 * reading "ibm,opal-phbid", only present in OPAL environment.
-> >  	 */
-> >  	ret = of_property_read_u64(dn, "ibm,opal-phbid", &prop);
-> > -	if (ret) {
-> > +	if (ret && IS_ENABLED(CONFIG_PPC_PCI_DOMAIN_FROM_OF_REG)) {
-> > +		u32 prop_32;
-> >  		ret = of_property_read_u32_index(dn, "reg", 1, &prop_32);
-> >  		prop = prop_32;
-> >  	}
+Cheers!
