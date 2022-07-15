@@ -2,113 +2,115 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817D45769C6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 00:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4534E57695D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 00:03:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll5M5396hz3cdY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 08:17:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll52k16vqz3dpn
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 08:03:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=rV00ECzy;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=OU+anSSt;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=203.254.224.34; helo=mailout4.samsung.com; envelope-from=joshi.k@samsung.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.0.84; helo=eur02-am5-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=rV00ECzy;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=OU+anSSt;
 	dkim-atps=neutral
-X-Greylist: delayed 563 seconds by postgrey-1.36 at boromir; Fri, 15 Jul 2022 22:57:12 AEST
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com (mail-eopbgr00084.outbound.protection.outlook.com [40.107.0.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lkrwm5Zjkz3052
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 22:57:11 +1000 (AEST)
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20220715124731epoutp04b38b58b6de9711fc4b3fe6d08d62b906~CAX128OR23267932679epoutp04a
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Jul 2022 12:47:31 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20220715124731epoutp04b38b58b6de9711fc4b3fe6d08d62b906~CAX128OR23267932679epoutp04a
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1657889251;
-	bh=m4z7uUtLkPe+eWeACNWwje/ASBR0VGJAA/fGfwHaCok=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rV00ECzyw+C9NAmNSSR12lRZT2eYOA8l4jtoxGTW86nmgHeEkvDSq07gtf2pmEau4
-	 8uKQvpo/Q8s0Wmr/1kQrQZQk56LqQTX7NL4s52l3xSQYFHonspaupHw3ptCGzfvFHR
-	 BPrgLXQ1bVeh+u1S58mH/2L7CNhM65ei2htNxG0o=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTP id
-	20220715124730epcas5p2434080647cf8a6114c300c0c94154d5f~CAX1dgH9W0820508205epcas5p2j;
-	Fri, 15 Jul 2022 12:47:30 +0000 (GMT)
-Received: from epsmges5p2new.samsung.com (unknown [182.195.38.181]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4LkrjX1Pnhz4x9Pp; Fri, 15 Jul
-	2022 12:47:28 +0000 (GMT)
-Received: from epcas5p4.samsung.com ( [182.195.41.42]) by
-	epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	A7.7B.09566.CD161D26; Fri, 15 Jul 2022 21:47:24 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20220715124723epcas5p3781182051671984415ac50c42f1b4cb8~CAXusgZzI1756217562epcas5p37;
-	Fri, 15 Jul 2022 12:47:23 +0000 (GMT)
-Received: from epsmgms1p2.samsung.com (unknown [182.195.42.42]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20220715124723epsmtrp2ecc6d07bdf61087fd11cbb52914f6e66~CAXuryhi91951219512epsmtrp2u;
-	Fri, 15 Jul 2022 12:47:23 +0000 (GMT)
-X-AuditID: b6c32a4a-ba3ff7000000255e-8a-62d161dc17b6
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgms1p2.samsung.com (Symantec Messaging Gateway) with SMTP id
-	B7.17.08802.BD161D26; Fri, 15 Jul 2022 21:47:23 +0900 (KST)
-Received: from test-zns (unknown [107.110.206.5]) by epsmtip2.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20220715124722epsmtip2a84415a4a3753c84173a8c1b3b73d689~CAXtpZbHk0390703907epsmtip2k;
-	Fri, 15 Jul 2022 12:47:22 +0000 (GMT)
-Date: Fri, 15 Jul 2022 18:11:58 +0530
-From: Kanchan Joshi <joshi.k@samsung.com>
-To: Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: Kernel crash(block/null_blk) while running blktests (block/10)
-Message-ID: <20220715124158.GA25618@test-zns>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ll51F56Dcz3bZs
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 08:01:53 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Fuk5QLLn7JFCl8+fEkpvBJZmKOsqW8Mfqj2BBlRessVsEFfq13wHUOzd37EULdd0HJm6UMAZHZnNDP/XSawAfD6mE9F+syhj66pO5KxeY/aOgNr27loeR08QLKY9PiFeeP5AK0/uqsishLwzyuxqtUyOngPx7dNcmA8F7lj6pxoI/ZCsYQjzj4SxzehwpO+sXE6C8pIsybz1z3vB4YzZt1hlZM964TWea8gXwzO8qoVbsdz4gJkxT2wDqSyAdjOSkk2MBOqVqdwYxFbski83f+atu1awQ+pSpe9gzA9xJaTcn/sqXDgYcNi0aWD3H3FYEv+Yy1PusiJrpRJb6gGmWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yPsbQKyAEFveniIQIGzCajxgm6x6C6iIBd0jdZ0YqxI=;
+ b=gKWmh/zlghRzIB0MHABJl2Pfl8K60+avNYCi0udSI/ehRbXEZTs8gqHFtPU2sMYypwfaMqdQ4HeTtIBUyVEHZ6v/3SpZkopa/o+iBfcFmhfjdjDvNxwkMcADaF4mr3PLYMM2jwIUlmAe+/W3iRjunUwqmPsK4Rg2FlyrG59oPD6bIcVmCd0ISzT7qnPj9NGKtmYY2AvrlFOD/teaZXvtPGhTQyCsqjkAnOhGaURnsZUb9Xz9utamAvTwqBHslybqPnXZkXkxdH1AvLmgmb/EiEuWLlr1/09RikuvY7l2/C+3hKTQ4y9TO6etW1PwpoPABGLXemRj+JwcCnbZ6ZLTng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yPsbQKyAEFveniIQIGzCajxgm6x6C6iIBd0jdZ0YqxI=;
+ b=OU+anSSteZa//yr3QMOH7a+wIEKxa/B/7euTw43UdmABwvy2fRVI7XgWabChwRQ1U0OXRe12xbXM35KQ9TA3Bdct4fcn/fZf4VEZyvcKq3v/37ebL9ZMfHHPq4E/9tPkKQp9EufOJy23wdLSZxTq9t1QwrbUv95nmDe3lHnZOyMTtvINLMKsvvQK0Kk0IBxC7P2t2YZjwowQHAzrDhdkTStfg6GxaX/QSzmPB5pYsFYIVfFktJBAaW3MS9CBbK9yR4K+15/Ser5dHpoPNApcl9hAnitXZFHPlW/L2qb4smOWMtivkGgylHpfLk+Mft7miPf3Ej8fUhfOQ5WBw3Mmow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from VI1PR03MB4973.eurprd03.prod.outlook.com (2603:10a6:803:c5::12)
+ by AS4PR03MB8433.eurprd03.prod.outlook.com (2603:10a6:20b:518::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.19; Fri, 15 Jul
+ 2022 22:01:36 +0000
+Received: from VI1PR03MB4973.eurprd03.prod.outlook.com
+ ([fe80::5c3e:4e46:703b:8558]) by VI1PR03MB4973.eurprd03.prod.outlook.com
+ ([fe80::5c3e:4e46:703b:8558%7]) with mapi id 15.20.5438.015; Fri, 15 Jul 2022
+ 22:01:36 +0000
+From: Sean Anderson <sean.anderson@seco.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Madalin Bucur <madalin.bucur@nxp.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v3 37/47] soc: fsl: qbman: Add CGR update function
+Date: Fri, 15 Jul 2022 17:59:44 -0400
+Message-Id: <20220715215954.1449214-38-sean.anderson@seco.com>
+X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
+In-Reply-To: <20220715215954.1449214-1-sean.anderson@seco.com>
+References: <20220715215954.1449214-1-sean.anderson@seco.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH2PR10CA0009.namprd10.prod.outlook.com
+ (2603:10b6:610:4c::19) To VI1PR03MB4973.eurprd03.prod.outlook.com
+ (2603:10a6:803:c5::12)
 MIME-Version: 1.0
-In-Reply-To: <9CCFA12F-603C-4C70-844F-83B5C9580BAB@linux.ibm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrNKsWRmVeSWpSXmKPExsWy7bCmlu6dxItJBp23uC323tK2OLiwjdHi
-	9/d/rBa/Xm5gsnjc3cHowOoxYdEBRo/zMxYyevRtWcXo8XmTXABLVLZNRmpiSmqRQmpecn5K
-	Zl66rZJ3cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtBaJYWyxJxSoFBAYnGxkr6dTVF+
-	aUmqQkZ+cYmtUmpBSk6BSYFecWJucWleul5eaomVoYGBkSlQYUJ2xqwTD5gK5rJWHHiwlL2B
-	8QJLFyMHh4SAicSczcJdjFwcQgK7GSVu7bvPDOF8YpS4e+8MG4TzmVHi9pl1jF2MnGAdTQt3
-	sYLYQgK7GCW2vjCGKHrGKHHq3iWwIhYBVYknH/eBrWAT0JS4MLkUJCwioC7xefZ+JpAws0CJ
-	RMuMMJCwsIC3xMv1nSwgNq+ArsSvt4/ZIWxBiZMzn4DFOQUcJe5tOQoWFxVQljiw7TgTyFoJ
-	gUfsEufvPGSBuM1FYkVnIxOELSzx6vgWdghbSuLzu71sEHayxKWZ56BqSiQe7zkIZdtLtJ7q
-	ZwaxmQUyJfrO/WeFsPkken8/YYKEFq9ER5sQRLmixL1JT1khbHGJhzOWsEKUeEjs268FCZEp
-	jBIbT3axTGCUm4XknVlINkDYVhKdH5qAbFCoSEss/8cBYWpKrN+lv4CRdRWjZGpBcW56arFp
-	gVFeajk8gpPzczcxglOhltcOxocPPugdYmTiYDzEKMHBrCTC233oXJIQb0piZVVqUX58UWlO
-	avEhRlNg5ExklhJNzgcm47ySeEMTSwMTMzMzE0tjM0MlcV6vq5uShATSE0tSs1NTC1KLYPqY
-	ODilGpjqHJaqJZofXbH111WRVmaOEospecK7OVfKH6+f+5jx2qNH63fHNz96//z0/i+yotZM
-	74+ffc5/c0Ndwp2SS4HaSUvmB0/TkNbf6/74z/kVuyde01rEyqu13KBisZ/tAwYn2fkmGQwC
-	0gdFflTlhy2c3Lb04hn91Isu09cfPqz3iUtrQ5BXsNeJDO7vBcJrJs9mK/TT2lhzveY1zxuz
-	NLU97zdODGaep6q1vWnJvtt9kx5yz5l9Xv7us7xQVeOTEnvkom0fPMoSPLW9v90gY22S45Xz
-	u6P8pj5eUHjyyuJvDk6RjdPfTTikf/VO7Oo+4xXLLxhcnX62x6NWcmsHXx6vY/LGwNWisR59
-	58WNrWqDlViKMxINtZiLihMBMS7Dpg4EAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNLMWRmVeSWpSXmKPExsWy7bCSvO7txItJBp2/RC323tK2OLiwjdHi
-	9/d/rBa/Xm5gsnjc3cHowOoxYdEBRo/zMxYyevRtWcXo8XmTXABLFJdNSmpOZllqkb5dAlfG
-	gz+rmArOMFWcWv2TqYFxJlMXIyeHhICJRNPCXaxdjFwcQgI7GCXWXuiDSohLNF/7wQ5hC0us
-	/PcczBYSeMIo8WeaAIjNIqAq8eTjPpYuRg4ONgFNiQuTS0HCIgLqEp9n72cCCTMLlEi0zAgD
-	CQsLeEu8XN/JAmLzCuhK/Hr7mB1i7RRGidnzt7JCJAQlTs58AlbELGAmMW/zQ2aIOdISy/9x
-	gIQ5BRwl7m05CnaNqICyxIFtx5kmMArOQtI9C0n3LITuBYzMqxglUwuKc9Nziw0LjPJSy/WK
-	E3OLS/PS9ZLzczcxgsNbS2sH455VH/QOMTJxMB5ilOBgVhLh7T50LkmINyWxsiq1KD++qDQn
-	tfgQozQHi5I474Wuk/FCAumJJanZqakFqUUwWSYOTqkGpo2KSxZtmSK37nWtwmWV5NVVj1+K
-	dv8/tmtXpF7CocqTzQ91ff4c5POby3wtV3D551nXnmyOmZ0XO9Wo4nZjxT1DVZ/3licrek+t
-	rAn4sSZa5Z+BqI3w+grl1d9qd2r2M6j7ev2PVt7wNIpDvakhXv2LzcpvXHk31h8/bx41s3qe
-	ZMLhzye41j/UtgqpvMnkbxejcXzalVSTOUt8r0/6kahREsucpnhszhYtvW7Wr7NnP7F/+3uK
-	6MEND15qi56694Xj7cPpx//G8F7Mj3OPfJvdFH+63IivaULoB7nQmcnvWQ/Nqrwms6k9cH1W
-	sr9F3uz1N5Nyyvmfbs5se+Ail1Hvd++1XIhEaFhNAONaIyWW4oxEQy3mouJEABi4gK3eAgAA
-X-CMS-MailID: 20220715124723epcas5p3781182051671984415ac50c42f1b4cb8
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-	boundary="----5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20220715123722epcas5p209d7ab2411e2ca5d63f5e2e42a83a665
-References: <CGME20220715123722epcas5p209d7ab2411e2ca5d63f5e2e42a83a665@epcas5p2.samsung.com>
-	<9CCFA12F-603C-4C70-844F-83B5C9580BAB@linux.ibm.com>
-X-Mailman-Approved-At: Sat, 16 Jul 2022 08:16:46 +1000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 6822ba15-bcc2-4d1b-d5b7-08da66ad9636
+X-MS-TrafficTypeDiagnostic: AS4PR03MB8433:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	uCtOErf1Kl2GPkcKb26DcwHzw5CLjaFdLfQkZQ5K8kzWSX9V66FGMqvvaQs5k3NMtLiQIdmPojoTao4aftOZuv7IJ0XzF2PfGfqaDfUqcHyxHsoPpjB1jp2tcajG/WCQ1WUK53IBIKWSGiReQl0/GdC6LA3XVX/oFlDluS1+VkqzCBDII5mnwHLJi0AozQ2HqWI3o+ZAiy7YV9uvhVoqE31EI2YaWcnMcMbiEhmE3i+bUrmG5vo3C//wNEa/H1sgU6eJa+RDuJ5sOS0QTzaq9Z+QQkKPb46FKWPpKx2YVJ5q/PQpc/lrB8vVpyxu/UCR+fP7O3LnAWVxKPDZcAmVRMFYfJpMkZ/m2g3gp5k1JNXrBY2H/Cl/mUVgEcuE4fjccfypjam+H8fHTv2R8KgTyvdXoeTpbnlX0AlGEPeavKgFs53tuXftVACuecG9FZY6uZc0hlT6uuqRczomKNFwecgtUlLMkvZA0VEGmFI6V7wuFgAVxjSeryBkvCMjGBxl2iSesyZSxbA/5bWIYL4aLmrJtqPFlwNbt2SEszJqjY7fMnuIiONu0k+zv/gezlFlmgW0HPSgg96LUFRD9O7NFrjNeLI/wVhNKH6oyR1YOdsQoAGBlMVqZxIpfGboYgJihEmajZNTxdVjDs91V5LnXL6zj9BCYaRMvz3cCp+5aTHa4IUd+TqyYV9wUyFKHZEuxSIhYWL8U/H8up6Q1OiQDsEiYiqlTp8Mnwk2EYcr1wjBjdFjUYCQR1bQiIu6+bGq7Bwa8ojR+hAjjNrMUYGhZdrOqKA3C1VdWLuluD7KwJk=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR03MB4973.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(376002)(346002)(39850400004)(396003)(366004)(136003)(6486002)(478600001)(86362001)(6506007)(41300700001)(6666004)(52116002)(6512007)(26005)(83380400001)(2616005)(54906003)(1076003)(316002)(186003)(110136005)(66946007)(15650500001)(2906002)(7416002)(66476007)(4326008)(66556008)(44832011)(8676002)(5660300002)(8936002)(38350700002)(36756003)(38100700002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?9dqym1mDB2M6tFNK3Chgp/tTI2b924Byn0MkKv2VQ2xdENtU4zlAzn3dQWMN?=
+ =?us-ascii?Q?ldY87uJVfmXkBwohPhFt/GSNK9Lw+ESnl1cp+ZOm9wTpyfnhnLF2LhgQg3pI?=
+ =?us-ascii?Q?RWV3/JhxNOjonyBy4sfshcphkTP5Lq2kEO25ceue2ITa04QtJQ+9TBdpJmDi?=
+ =?us-ascii?Q?NUN6yLHP6M8l/HMCk1AoPNiXLR9r7/1HHFcQcHBLExJ4IDDgd750I0xMNjG2?=
+ =?us-ascii?Q?cdpleTvbAnpxJJQttUrXNUVLvfW1VIei/WQ9T2R2stkQbhgxInj4jQF6ZaEH?=
+ =?us-ascii?Q?GV1c53ZaG3Go/cF+hQI/frlUu+n029qKWmsC1JSWf4y0AfwdjZ+0VzfdHmVJ?=
+ =?us-ascii?Q?mLpTcaxpCK6wt5/BvdvdioYjZYMPrr9Yvyt2hlHGQPiMzmTi3vs0vvZ2gqh1?=
+ =?us-ascii?Q?enmlfsmZJcFs0Rgdbvsf+NTmNqkIiGXb6pEPu10pme6hcnvviIwp+NV+LOW+?=
+ =?us-ascii?Q?nc+z4yZNkkBP1I/+CF/LAa7UXkrAB0OZtX/h2gVX+GuWsnxOaCs+s5pzBh3z?=
+ =?us-ascii?Q?SbaCJU8LGF1aalC2fBg/o1nf9OY04C1NQvrG1YODcssQ3ujzk4J3dglKL91t?=
+ =?us-ascii?Q?7Qk7MxJ2xpYYi5QfFb4GrhwLiDlptWJkUEX+nbhNK+1t/YjFULuVxqJZCtQl?=
+ =?us-ascii?Q?5xSnYMjQtBKGDeFOwm+b2SZ8FRKYgpRhPL3dsGoCqmoIk5oRsFvNtvNgSzb6?=
+ =?us-ascii?Q?9emeQWezBaA9DCJOC/bpQKjNjM4/2OfVam/sMkxOSDMuf3VdQ4tN8n6ae0JQ?=
+ =?us-ascii?Q?nPgDdSyVv6cSl6H4hC1isYH+u+xAgyIpRoX8zts7xoELqheN/XTT+bgKKl9M?=
+ =?us-ascii?Q?TbT2Ww6UxYZLVrvDFpLSNKqUDHRtLM451b2gt1UymK3UfYviWpxD9p4B7NwN?=
+ =?us-ascii?Q?7DLAK6ffxdWc4JlcpJTLGC/b4hnwQkGBJvY0DUaF1TQm5bUSy93sK2Zv8iMg?=
+ =?us-ascii?Q?ksADC8S4SaxOGaxuJrnQqQ52Wp49ri1uiNiWD6EuSpFODaKrTH5IMVL47iWQ?=
+ =?us-ascii?Q?icqMlDkeSGZC5ojHRoVwnSRzsdvbL7yovcf3Ece6c29AyjF42rc2DDE69bsf?=
+ =?us-ascii?Q?TjjIQHGXvS7FBZ1llEpAtVir8cSVuW+5FeJiSgHjzhf/aFrdTBfblNd7JY4N?=
+ =?us-ascii?Q?nBgry0IuOCpc19f586khtHH4uYvrV4M14gVHvXXWCUw28ZXlgMCqR6t90JTo?=
+ =?us-ascii?Q?k8T1Zm82Gp7m+EfiXCTPZX9Xayuhz/TZr+vCtdtlmdDV/7AiPM32G1X1Rnsn?=
+ =?us-ascii?Q?4Cp+WlmYmtRETXqW4M+XjebLvBDDqFc+jWenJUQpUs/anqKNMugRXQs6y5TZ?=
+ =?us-ascii?Q?LLKscyyJZwxwPnunkZH9OEJ9fgD2YY7/0Ltk1iiPlgp3NjHc0FGkDBi0pBIP?=
+ =?us-ascii?Q?9SNIxdP1uo0+jD+9DesWl6UYRpA2scl4MgePCiufAEKz5dZhMrzWSaiLc3Qc?=
+ =?us-ascii?Q?mWsaquQsbNzNf8NaTHX41MJunkmpRLVnwzGrnSNXh4OT/B2pTH90IkMBPhPo?=
+ =?us-ascii?Q?fR5OxlIMyPs131DKYhEYjRciwciAcfmJCPimDoA7+ZwBo5yRRZ+/w1N95OT5?=
+ =?us-ascii?Q?vSUhkyXLYGFZUzBO6pLhQQeWJ51QoHi1NRRpgYD+dGF6gAo2e/qGajokZEtf?=
+ =?us-ascii?Q?jg=3D=3D?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6822ba15-bcc2-4d1b-d5b7-08da66ad9636
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB4973.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jul 2022 22:01:36.4085
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wLOtwNEG8gYy2EOtDVGVn3PZXQCT2pYywdA0lhiIcEJZ+6pQ+xNT6+pq55EmyhvJAzXW9y2Q8blLsPQc+zDDiA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR03MB8433
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,24 +122,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-block@vger.kernel.org, vincent.fu@samsung.com, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Li Yang <leoyang.li@nxp.com>, Sean Anderson <sean.anderson@seco.com>, Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-------5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Disposition: inline
+This adds a function to update a CGR with new parameters.
+qman_cgr_create can almost be used for this (with flags=0), but it's not
+suitable because it also registers the callback function. The _safe
+variant was modeled off of qman_cgr_delete_safe. However, we handle
+multiple arguments and a return value.
 
-On Fri, Jul 15, 2022 at 06:07:01PM +0530, Sachin Sant wrote:
->While running blktests[*] (block/10) on a IBM Power server booted with
->5.19.0-rc6-next-20220714 following crash is seen:
-Ming has posted a fix , please see if this can be tried -
-https://lore.kernel.org/linux-block/20220715031916.151469-1-ming.lei@redhat.com/
+Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+---
 
+(no changes since v2)
 
+Changes in v2:
+- New
 
-------5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_
-Content-Type: text/plain; charset="utf-8"
+ drivers/soc/fsl/qbman/qman.c | 47 ++++++++++++++++++++++++++++++++++++
+ include/soc/fsl/qman.h       |  9 +++++++
+ 2 files changed, 56 insertions(+)
 
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index eb6600aab09b..68b825ea10f1 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -2568,6 +2568,53 @@ void qman_delete_cgr_safe(struct qman_cgr *cgr)
+ }
+ EXPORT_SYMBOL(qman_delete_cgr_safe);
+ 
++static int qman_update_cgr(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
++{
++	int ret;
++	unsigned long irqflags;
++	struct qman_portal *p = qman_cgr_get_affine_portal(cgr);
++
++	if (!p)
++		return -EINVAL;
++
++	spin_lock_irqsave(&p->cgr_lock, irqflags);
++	ret = qm_modify_cgr(cgr, 0, opts);
++	spin_unlock_irqrestore(&p->cgr_lock, irqflags);
++	put_affine_portal();
++	return ret;
++}
++
++struct update_cgr_params {
++	struct qman_cgr *cgr;
++	struct qm_mcc_initcgr *opts;
++	int ret;
++};
++
++static void qman_update_cgr_smp_call(void *p)
++{
++	struct update_cgr_params *params = p;
++
++	params->ret = qman_update_cgr(params->cgr, params->opts);
++}
++
++int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts)
++{
++	struct update_cgr_params params = {
++		.cgr = cgr,
++		.opts = opts,
++	};
++
++	preempt_disable();
++	if (qman_cgr_cpus[cgr->cgrid] != smp_processor_id())
++		smp_call_function_single(qman_cgr_cpus[cgr->cgrid],
++					 qman_update_cgr_smp_call, &params, true);
++	else
++		params.ret = qman_update_cgr(cgr, opts);
++	preempt_enable();
++	return params.ret;
++}
++EXPORT_SYMBOL(qman_update_cgr_safe);
++
+ /* Cleanup FQs */
+ 
+ static int _qm_mr_consume_and_match_verb(struct qm_portal *p, int v)
+diff --git a/include/soc/fsl/qman.h b/include/soc/fsl/qman.h
+index 59eeba31c192..0d3d6beb7fdb 100644
+--- a/include/soc/fsl/qman.h
++++ b/include/soc/fsl/qman.h
+@@ -1171,6 +1171,15 @@ int qman_delete_cgr(struct qman_cgr *cgr);
+  */
+ void qman_delete_cgr_safe(struct qman_cgr *cgr);
+ 
++/**
++ * qman_update_cgr_safe - Modifies a congestion group object from any CPU
++ * @cgr: the 'cgr' object to modify
++ * @opts: state of the CGR settings
++ *
++ * This will select the proper CPU and modify the CGR settings.
++ */
++int qman_update_cgr_safe(struct qman_cgr *cgr, struct qm_mcc_initcgr *opts);
++
+ /**
+  * qman_query_cgr_congested - Queries CGR's congestion status
+  * @cgr: the 'cgr' object to query
+-- 
+2.35.1.1320.gc452695387.dirty
 
-------5z7FhDiNVqIrGinT0BtluOzfBNI2flEmVN09niYgIFJo-6e-=_135144_--
