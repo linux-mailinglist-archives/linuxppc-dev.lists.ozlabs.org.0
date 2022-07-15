@@ -1,54 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F0F5766ED
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 20:47:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6155767F7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Jul 2022 22:03:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll0jR6Hlpz3cg3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 04:47:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll2Nk3lJyz3cCk
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 06:03:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=buserror.net (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-X-Greylist: delayed 108 seconds by postgrey-1.36 at boromir; Sat, 16 Jul 2022 04:47:32 AEST
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ll0j00Tz1z3c6Y
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 04:47:31 +1000 (AEST)
-Received: from [2601:449:8480:af0::c75e]
-	by baldur.buserror.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <oss@buserror.net>)
-	id 1oCQHK-000HM6-99; Fri, 15 Jul 2022 13:43:05 -0500
-Message-ID: <794910a5b6902ec637b3341ad19fc9fde9e2d24a.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Pali =?ISO-8859-1?Q?Roh=E1r?= <pali@kernel.org>, Michael Ellerman
-	 <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
-	Paul Mackerras <paulus@samba.org>
-Date: Fri, 15 Jul 2022 13:43:04 -0500
-In-Reply-To: <20220709124305.17559-1-pali@kernel.org>
-References: <20220709124305.17559-1-pali@kernel.org>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0::c75e
-X-SA-Exim-Rcpt-To: pali@kernel.org, mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
-	autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Report: 	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-	*      [score: 0.0000]
-Subject: Re: [PATCH] powerpc/85xx: Fix description of MPC85xx and P1/P2
- boards options
-X-SA-Exim-Version: 4.2.1 (built Sat, 13 Feb 2021 17:57:42 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ll2NC2b1bz2xrY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 06:03:06 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 26FJxqhD032654;
+	Fri, 15 Jul 2022 14:59:52 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 26FJxp9u032647;
+	Fri, 15 Jul 2022 14:59:51 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Fri, 15 Jul 2022 14:59:51 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Tulio Magno Quites Machado Filho <tuliom@ascii.art.br>
+Subject: Re: [PATCH v2] powerpc: add documentation for HWCAPs
+Message-ID: <20220715195951.GA25951@gate.crashing.org>
+References: <20220715012636.165948-1-npiggin@gmail.com> <877d4euskv.fsf@linux.ibm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877d4euskv.fsf@linux.ibm.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,21 +42,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Florian Weimer <fweimer@redhat.com>, gcc@gcc.gnu.org, libc-alpha@sourceware.org, Nicholas Piggin <npiggin@gmail.com>, Paul E Murphy <murphyp@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2022-07-09 at 14:43 +0200, Pali Rohár wrote:
-> More MPC85xx and P1/P2 boards options have incorrect description. Fix them
-> to include list of all boards for which they enable/disable support.
+On Fri, Jul 15, 2022 at 03:41:20PM -0300, Tulio Magno Quites Machado Filho wrote:
+> Nicholas Piggin <npiggin@gmail.com> writes:
 > 
-> Signed-off-by: Pali Rohár <pali@kernel.org>
-> ---
->  arch/powerpc/platforms/85xx/Kconfig | 18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
+> > +PPC_FEATURE_ARCH_2_05
+> > +    The processor supports the v2.05 userlevel architecture. Processors
+> > +    supporting later architectures also set this feature.
+> 
+> I don't think this bit is enabled when processors support later architectures.
+> In my tests, this behavior started only with v2.06, i.e. processors that
+> support v2.07 enable bit v2.06, but do not enable bit v2.05.
 
-Acked-by: Scott Wood <oss@buserror.net>
+That is a usability problem.  Can it be fixed, or will that create its
+own compatibility problems?  In practice I mean.  If it is, the C
+libraries could fix it up, for new programs, and then after a while the
+kernel can do the sane thing?
 
--Scott
+How big is the problem, anyway?  Is it only 2.05, or also 2.04, 2.03?
 
 
+Segher
