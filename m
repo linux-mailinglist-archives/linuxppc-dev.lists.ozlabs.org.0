@@ -2,61 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A094576D8A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 13:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30520576E3F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 15:37:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LlR4P1PMWz3cBS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 21:35:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LlTmS1CRpz3cBK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 Jul 2022 23:37:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RJe1fSMV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XobnjiTf;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=miguel.ojeda.sandonis@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RJe1fSMV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XobnjiTf;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LlR3l0lN0z3bcv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 21:35:14 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 412C260FB8;
-	Sat, 16 Jul 2022 11:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC54C34115;
-	Sat, 16 Jul 2022 11:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1657971310;
-	bh=1Nv+mrJbMC45A/7YReRl2eFPsTnci26We2C7a/b5Mzc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RJe1fSMV5+cEBdR7OMYrY9fZdu/PpceJZ5o5CTouutuwbhIwfjx/GsNWZV9Q/F823
-	 jXarhqth2tqCOg1ix2FLIYe8Xa4QtKzP3nsiFUHot2EgtLts/UpJ+KxGSy+GK1nbMh
-	 tDMGNI/9q9c7wsR8kw97fKwDrYVc9+I4ljxXII15hZAm05ARyR1szRaPKiMee+19hy
-	 GNbt8w79Oj3n6XiuW4Z/RUg5UI3JWCKINCdPAvzGjGPLF/yzQXk2jf1efl3jBGCCSD
-	 sc50r8NcGNPjzFF760LL0fG+C6/lGvXTiUpjM9GYFwKw0UsfTUC9jaPA0qz30TFiTy
-	 frli5dg1lr9lA==
-Received: by pali.im (Postfix)
-	id 4079EA52; Sat, 16 Jul 2022 13:35:07 +0200 (CEST)
-Date: Sat, 16 Jul 2022 13:35:07 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v2 1/2] powerpc/pci: Add config option for using OF 'reg'
- for PCI domain
-Message-ID: <20220716113507.c6loaltpuaj4hrs5@pali>
-References: <20220706102148.5060-1-pali@kernel.org>
- <17fb8d12-60f9-09d5-91fa-09d5a5a9a4fd@igalia.com>
- <20220715171132.ujaexzm4ipad7o4f@pali>
- <15432ee0-3a33-0b53-b39b-f8b53a7e4345@igalia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LlTlm5mWhz3bk8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 23:36:35 +1000 (AEST)
+Received: by mail-il1-x12c.google.com with SMTP id y12so3810368ilq.10
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Jul 2022 06:36:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5DwIeby9yP04RKpyJxL5PrbdIqogg6yPOhWbo7JHmTA=;
+        b=XobnjiTf7v9nif7ZIlYg6CbjUFX3cB/9L3Hz5e1BulKOtPVn2M/orxn0vsUl/cpKhY
+         dqFf2lJQAMgMO7d98L+pRwuR0kxrQIFhvsuMfZeYqLfiBHZYZCWTEUSA4lkLSVrdAHUr
+         Ix8rI8hyA0tAOhtbM0japKKIgJGjWKbUUtZAcLwcznI3x7/TobbZkwBk11WGmJYEkEcL
+         8QiDsZ6qmsKQg4OwcqnhT1EZm9n34q8SAbthTgCkexcQOgHQg2gIreI8iCBG+J/k4Urx
+         m81j8/RwwDwDhpw8LGZKfNWdJQmkOT/+vxA1G3qnh3GyJA5IWNOdXvpxn5y2BkXYBdpc
+         MX1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5DwIeby9yP04RKpyJxL5PrbdIqogg6yPOhWbo7JHmTA=;
+        b=lPp1pLVBukzW2rkcwDcHpMUfgnKWoCHIolCiJUJykAOsZMcdCsnbrk+Q2HzY4L5uWV
+         u00dKUDqKvEdRGMU8w2j/thRn014iDKZB28PsYqQQxMt3wmUhm9ag7URiP9DNt6V1pM7
+         N11AuM/mHxLmrPscjq/GdotOEWv8nNwQcAgAB/cJglhMPawSORXRsrXeRPTTMrdaQrt2
+         X2Hx/Ax4xy0zFCGalofVTGsn1N6RV2xDyfMsVNcoStTV+znA2u/wyOjJiDowWmHU+aPg
+         OzFvsiJq1Sl60sM6W0V0aGcIND5HgunlidfvqZmqIva9G36i0QN9XgKE3TgK8TyV+9aJ
+         pnQg==
+X-Gm-Message-State: AJIora/5CColxjegzBWrvPf1AYHvxqj78fHbxUqknW8uyjPrq0TxhkCT
+	cLqCBRVFBUSq4V2dazfPjx+8OXPYRnQJ7B6mFwc=
+X-Google-Smtp-Source: AGRyM1tG1YsrvjoLRvogD9K95sp2B6IZvclnFGnFqUdc0M2V7E19ryC7xwimpnUQHvy2WNgV44DytXl4VP+O6mesyIU=
+X-Received: by 2002:a05:6e02:188f:b0:2dc:7291:fd02 with SMTP id
+ o15-20020a056e02188f00b002dc7291fd02mr9120346ilu.321.1657978593469; Sat, 16
+ Jul 2022 06:36:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <15432ee0-3a33-0b53-b39b-f8b53a7e4345@igalia.com>
-User-Agent: NeoMutt/20180716
+References: <20220523020209.11810-1-ojeda@kernel.org> <20220716124214.329949-1-conor@kernel.org>
+In-Reply-To: <20220716124214.329949-1-conor@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 16 Jul 2022 15:36:22 +0200
+Message-ID: <CANiq72nYRkHV6N2bGpTz3td=2Vto21apvZW0igTT-mV8TZtB2g@mail.gmail.com>
+Subject: Re: [PATCH v7 00/25] Rust support
+To: Conor Dooley <conor@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,29 +72,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Guowen Shan <gshan@redhat.com>, linux-kernel@vger.kernel.org, Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: rust-for-linux <rust-for-linux@vger.kernel.org>, Linux Doc Mailing List <linux-doc@vger.kernel.org>, Greg KH <gregkh@linuxfoundation.org>, Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, linux-um@lists.infradead.org, linux-kernel <linux-kernel@vger.kernel.org>, linux-perf-users@vger.kernel.org, "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, live-patching@vger.kernel.org, linux-riscv <linux-riscv@lists.infradead.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, KUnit Development <kunit-dev@googlegroups.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Friday 15 July 2022 15:32:56 Guilherme G. Piccoli wrote:
-> On 15/07/2022 14:11, Pali Rohár wrote:
-> > [...]
-> >>
-> >> I found this sentence a bit weird, "in the similar way like it is doing
-> >> kernel for other architectures", but other than that:
-> > 
-> > If you have some idea how to improve commit description, let me know and
-> > I can change it.
-> > 
-> 
-> Oh, for example: "in similar way the kernel is doing for other
-> architectures". The sentence idea is perfectly fine, it's just that it's
-> a bit oddly constructed IMHO heh
-> 
-> Cheers!
+Hi Conor,
 
-Ou, sorry. English is not my first nor second language.
+On Sat, Jul 16, 2022 at 2:42 PM Conor Dooley <conor@kernel.org> wrote:
+>
+> Maybe I am just missing something blatantly obvious here, but trying
+> to build rust support in -next fails for me. I am using ClangBuiltLinux
+> clang version 15.0.0 5b0788fef86ed7008a11f6ee19b9d86d42b6fcfa and LLD
+> 15.0.0. Is it just expected that building -next with rust support is
+> not a good idea?
 
-Michael, should I resend this patch series with Guilherme's suggestion
-for changing working in commit description? Or will you adjust it
-manually?
+Please see https://github.com/Rust-for-Linux/linux/issues/795 for
+details about the maple tree issue.
+
+I will update the `rust-next` branch next week with the new version of
+the patches; but if you are interested in developing, please use the
+development `rust` branch instead in GitHub for the moment.
+
+Cheers,
+Miguel
