@@ -1,59 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDD657758F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Jul 2022 11:24:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE8D5776C6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Jul 2022 16:45:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lm06815THz3c5m
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Jul 2022 19:24:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lm7Dj3XNwz3cFJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 00:45:25 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=DS8vDfy5;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.219.54; helo=mail-qv1-f54.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=DS8vDfy5;
+	dkim-atps=neutral
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lm05j1wFgz3bc1
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 19:23:51 +1000 (AEST)
-Received: by mail-qv1-f54.google.com with SMTP id l2so6844199qvt.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 02:23:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lm7D40FT9z2xn3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 00:44:49 +1000 (AEST)
+Received: by mail-ed1-x534.google.com with SMTP id m13so2021196edc.5
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 07:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HlrziZZ76Peg4qV5xEsTcKPFlstjpM1SL9BDNiXfu2c=;
+        b=DS8vDfy5PisUHpo8QkxoxfYYXqiO9hj+fmk/WC8pM7VlVfPf4QI7fKq+8iWyFlBosN
+         xOaKReN1tr6gKUlm2poGf/qYOY0t1sShwW+dhRV//mwtfmSuMpaD81F4Kwf9rs0vMp7F
+         xavWty7gfUG6G+PTd+tLOjuyv7MUqoAAUViF4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Wc3nIaC4TGrabTRR6ZU1E+ucBztRvo43HV92KBQYbRU=;
-        b=tgdfCD6pF5VS9d0Y2EJZSJl4TCPg3dDDtHZsaUbWYQtcNVI4IrqjKtHL01I8PCmn5M
-         Oj0w9p0jtG0ESMY1vV6S4S2TGfhoen8x6Q2s4/m1XQcpFBolbkdYpzIHaxOhUII86KEJ
-         l6TjfqLqyhbKTeZlb3/8Z+McVYv5G7TMhuZz21qnPAal54UEE3ZswqgrbgJn5ymSvjc8
-         hxcLqZFJUNZUmaNGgeX7AvIcSp8673n4v9IK2ZyUsLo+7xQFp+F1BWAsRMnE4rxEw5Jt
-         wckR7ogKmr9RaPK2cCMUS1hArke6wffv/+5vkC1WJbWnmEr+8SHUyt4dqdov2AAi6AJY
-         SOQw==
-X-Gm-Message-State: AJIora8nnn7U7CQopw/46v/JrNAOANGWitqjSL/a/LTeH/3pzOHwVR/p
-	qpMJqGaEZ8mgO/nLzPTBJ1G6bFAmqFUJmw==
-X-Google-Smtp-Source: AGRyM1txXdbCXRbgDtwwcyo0M4Ng/TwD3iRhYvz2Wmq6O4MyIrWEQokdQ7V+sgoeIsoGNfu/xpGV2A==
-X-Received: by 2002:a05:6214:766:b0:473:1b4:3fe0 with SMTP id f6-20020a056214076600b0047301b43fe0mr17420439qvz.102.1658049826861;
-        Sun, 17 Jul 2022 02:23:46 -0700 (PDT)
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com. [209.85.219.173])
-        by smtp.gmail.com with ESMTPSA id n123-20020a37bd81000000b006a3325fd985sm8091657qkf.13.2022.07.17.02.23.46
+        bh=HlrziZZ76Peg4qV5xEsTcKPFlstjpM1SL9BDNiXfu2c=;
+        b=S3BNgpZ4w/FnCoBn8SimEgtSbLKU4cn5wyl3evaS0/QHq66Pz19jAWA0xvv9g52VEe
+         2+d1+dxxSed0uLMm/cEJ2i48/uWj6+D4UxUhG9jcH+HOKvbAApKnqJHnslwOmF70KiTt
+         XikMedw9GmuLjvzluOtGjdNB/k15DpU9ZC+CZ1dFf+2R1+efUsFq4uVWDPFRjX5slvAn
+         X5Vn5NalA/sG4V6Q+HpzOMNO4QJiLjzlccMEi5UEiVVDLi7LeD/6iCCaMH2SHDxJGNLV
+         DcjX/Rz5IhHMkVm4yIZC/PB/NVC3mIEPqWlcBqFqKWlCbqlA6Q8fF/lUzH+Wk99Pr6rC
+         6/dA==
+X-Gm-Message-State: AJIora//k8io5OFR23Yb+CyNAMaY1xLYIWwVn/4EhV3aRHBunQRzH0ob
+	2ijXSTFMYj6NQPQel6g2FxOH1FAWUHQjOvde
+X-Google-Smtp-Source: AGRyM1sG4pfV4NrHljShpDJbNCsb8e+7Lkgx2Be4P5A4OR59KaY/znBS0UNngAuMkXKJBCAnu+Q4rQ==
+X-Received: by 2002:aa7:df12:0:b0:43a:4991:1725 with SMTP id c18-20020aa7df12000000b0043a49911725mr32036663edy.55.1658069082050;
+        Sun, 17 Jul 2022 07:44:42 -0700 (PDT)
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com. [209.85.221.46])
+        by smtp.gmail.com with ESMTPSA id i22-20020aa7c716000000b0043a64eee322sm4693810edq.28.2022.07.17.07.44.39
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 17 Jul 2022 02:23:46 -0700 (PDT)
-Received: by mail-yb1-f173.google.com with SMTP id h62so15886940ybb.11
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 02:23:46 -0700 (PDT)
-X-Received: by 2002:a81:af27:0:b0:31c:833f:eda5 with SMTP id
- n39-20020a81af27000000b0031c833feda5mr24448251ywh.358.1658049815479; Sun, 17
- Jul 2022 02:23:35 -0700 (PDT)
+        Sun, 17 Jul 2022 07:44:40 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id h17so13595358wrx.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 07:44:39 -0700 (PDT)
+X-Received: by 2002:a05:6000:1f8c:b0:21d:7e98:51ba with SMTP id
+ bw12-20020a0560001f8c00b0021d7e9851bamr18844596wrb.442.1658069078907; Sun, 17
+ Jul 2022 07:44:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220717033453.2896843-1-shorne@gmail.com> <20220717033453.2896843-2-shorne@gmail.com>
-In-Reply-To: <20220717033453.2896843-2-shorne@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sun, 17 Jul 2022 11:23:24 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUT6nEft8v30sq0WP49RW2qUn+1sunk+ow2_EEyVEieEQ@mail.gmail.com>
-Message-ID: <CAMuHMdUT6nEft8v30sq0WP49RW2qUn+1sunk+ow2_EEyVEieEQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] asm-generic: Remove pci.h copying remaining code
- to x86
-To: Stafford Horne <shorne@gmail.com>
+References: <Ys/aDKZNhhsENH9S@debian> <CADVatmO9XzFnX+N0TuOtr0FYyxKr1oe5RAhCEJjmnvjteT5QNw@mail.gmail.com>
+In-Reply-To: <CADVatmO9XzFnX+N0TuOtr0FYyxKr1oe5RAhCEJjmnvjteT5QNw@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 17 Jul 2022 07:44:22 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whc3Uvhrmrr27xp5=oOhSDjXc5s1ZxC3B7xMYV6oj4WRQ@mail.gmail.com>
+Message-ID: <CAHk-=whc3Uvhrmrr27xp5=oOhSDjXc5s1ZxC3B7xMYV6oj4WRQ@mail.gmail.com>
+Subject: Re: mainline build failure of powerpc allmodconfig for prom_init_check
+To: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -66,58 +79,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, Matthew Rosato <mjrosato@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-riscv <linux-riscv@lists.infradead.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, the arch/x86 maintainers <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>, linux-pci <linux-pci@vger.kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.c
- om>, linux-m68k <linux-m68k@lists.linux-m68k.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>, Pierre Morel <pmorel@linux.ibm.com>, Nick Child <nick.child@ibm.com>, LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, alpha <linux-alpha@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
+Cc: Kees Cook <keescook@chromium.org>, linux-kernel <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-hardening@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Stafford,
-
-On Sun, Jul 17, 2022 at 5:35 AM Stafford Horne <shorne@gmail.com> wrote:
-> The generic pci.h header now only provides a definition of
-> pci_get_legacy_ide_irq which is used by architectures that support PNP.
-> Of the architectures that use asm-generic/pci.h this is only x86.
+On Sun, Jul 17, 2022 at 2:13 AM Sudip Mukherjee
+<sudipm.mukherjee@gmail.com> wrote:
 >
-> This patch removes the old pci.h in order to make room for a new
-> pci.h to be used by arm64, riscv, openrisc, etc.
->
-> The existing code in pci.h is moved out to x86.  On other architectures
-> we clean up any outstanding references.
->
-> Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> Link: https://lore.kernel.org/lkml/CAK8P3a0JmPeczfmMBE__vn=Jbvf=nkbpVaZCycyv40pZNCJJXQ@mail.gmail.com/
-> Signed-off-by: Stafford Horne <shorne@gmail.com>
+> I was trying to check it. With gcc-11 the assembly code generated is
+> not using memset, but using __memset.
+> But with gcc-12, I can see the assembly code is using memset. One
+> example from the assembly:
 
-Thanks for your patch!
+You could try making the 'args' array in 'struct prom_args' be marked
+'volatile'.
 
-> --- a/arch/m68k/include/asm/pci.h
-> +++ b/arch/m68k/include/asm/pci.h
-> @@ -2,11 +2,14 @@
->  #ifndef _ASM_M68K_PCI_H
->  #define _ASM_M68K_PCI_H
->
-> -#include <asm-generic/pci.h>
-> -
->  #define        pcibios_assign_all_busses()     1
->
->  #define        PCIBIOS_MIN_IO          0x00000100
->  #define        PCIBIOS_MIN_MEM         0x02000000
->
-> +static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-> +{
-> +       return channel ? 15 : 14;
-> +}
-> +
+Ie something like this:
 
-I thought you were not going to add this?
+  --- a/arch/powerpc/kernel/prom_init.c
+  +++ b/arch/powerpc/kernel/prom_init.c
+  @@ -115,6 +115,6 @@ struct prom_args {
+           __be32 service;
+           __be32 nargs;
+           __be32 nret;
+  -          __be32 args[10];
+  +        volatile __be32 args[10];
+   };
 
-Gr{oetje,eeting}s,
+because I think it's just the compilers turning the small loop over
+those fields into a "memset()".
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+              Linus
