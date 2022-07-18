@@ -1,40 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C20577D01
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 10:01:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7242F577D6B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 10:23:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LmZDL0y1sz3cfZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 18:01:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LmZj23B8Lz3bls
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 18:23:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mail104.syd.optusnet.com.au (client-ip=211.29.132.246; helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN>)
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au [211.29.132.246])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LmZCw3k0Zz3bl6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 18:01:16 +1000 (AEST)
-Received: from dread.disaster.area (pa49-181-2-147.pa.nsw.optusnet.com.au [49.181.2.147])
-	by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 9D31C62C7A1;
-	Mon, 18 Jul 2022 18:01:14 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92.3)
-	(envelope-from <david@fromorbit.com>)
-	id 1oDLgm-002IGb-SV; Mon, 18 Jul 2022 18:01:12 +1000
-Date: Mon, 18 Jul 2022 18:01:12 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Sachin Sant <sachinp@linux.ibm.com>
-Subject: Re: BUG xfs_buf while running tests/xfs/435 (next-20220715)
-Message-ID: <20220718080112.GS3861211@dread.disaster.area>
-References: <C6CAF8E3-0447-465D-9C83-F55910739BE2@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.161.47; helo=mail-oo1-f47.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmZhd2cv6z3bYs
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 18:22:40 +1000 (AEST)
+Received: by mail-oo1-f47.google.com with SMTP id c203-20020a4a4fd4000000b0043566a4e265so2152292oob.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 01:22:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EQibuB+HRd3lrCPdCHjd5Kptvz7t3wE5RCUTUbzpTH8=;
+        b=Ev2yR5uZwZRONu20haYxyV+zb6pcSfcMCz4zhNjVdFnTmy/ZeYHPPF2QJvgoJD2mLh
+         FKq1f3BkfecumbYSfVEZ7vDYlKfl5qyAsNFA174GgSmrYU+fa2yECLLFF83RL8IuqH9k
+         mVgvWR593+KCP6FH5kpPB6btH9INSl0N/11jiwr5zXRmjBJDsoJ0GB46aH3zICnI+rM4
+         0tWGDrTmjU79p/xgppKdmybC9ROz11cM2rbmBDEZ5pbAB6egeTNrxP5aH9HCI7ry8j1/
+         9G1ZkyJWTiTdQAhqIlEEZ1QZ0wH2irKD71howY/a7HhyippsUiLAKqjQWiZjfyTzQiMq
+         Fmqw==
+X-Gm-Message-State: AJIora+eKAnfKybpnUq5l0DFxctEq+QQwAZJhzCPvtP04Sg6h8ek1zjx
+	sC9Qcyp3d7KdGcpc7mroYl7c/hOQ2zMWaA==
+X-Google-Smtp-Source: AGRyM1uMHDixxyWuXPHL4FWz/edkWuq/6jaJkxPFth36hlHfmzHRMgwWE+cXy6IGq5ildEYsNHmCYQ==
+X-Received: by 2002:a4a:986c:0:b0:40e:94c3:3233 with SMTP id z41-20020a4a986c000000b0040e94c33233mr9012606ooi.2.1658132556086;
+        Mon, 18 Jul 2022 01:22:36 -0700 (PDT)
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com. [209.85.210.41])
+        by smtp.gmail.com with ESMTPSA id t17-20020a056870601100b0010d15f11512sm4124649oaa.4.2022.07.18.01.22.35
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Jul 2022 01:22:35 -0700 (PDT)
+Received: by mail-ot1-f41.google.com with SMTP id g19-20020a9d1293000000b0061c7bfda5dfso8311096otg.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 01:22:35 -0700 (PDT)
+X-Received: by 2002:a81:5404:0:b0:31c:c24d:94b0 with SMTP id
+ i4-20020a815404000000b0031cc24d94b0mr28386378ywb.502.1658132545091; Mon, 18
+ Jul 2022 01:22:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <C6CAF8E3-0447-465D-9C83-F55910739BE2@linux.ibm.com>
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.4 cv=e9dl9Yl/ c=1 sm=1 tr=0 ts=62d5134b
-	a=ivVLWpVy4j68lT4lJFbQgw==:117 a=ivVLWpVy4j68lT4lJFbQgw==:17
-	a=kj9zAlcOel0A:10 a=RgO8CyIxsXoA:10 a=7-415B0cAAAA:8 a=20KFwNOVAAAA:8
-	a=VnNF1IyMAAAA:8 a=HLe1o-Eu0s_4hV-mcYgA:9 a=CjuIK1q_8ugA:10
-	a=biEYGPWJfzWAr4FL6Ov7:22
+References: <20220718004114.3925745-1-shorne@gmail.com> <20220718004114.3925745-2-shorne@gmail.com>
+In-Reply-To: <20220718004114.3925745-2-shorne@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 18 Jul 2022 10:22:13 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdVP=1ovo62oXaOXT4ipA9Qb61XQ1e4XVVi1gEi+s+wtTQ@mail.gmail.com>
+Message-ID: <CAMuHMdVP=1ovo62oXaOXT4ipA9Qb61XQ1e4XVVi1gEi+s+wtTQ@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] asm-generic: Remove pci.h copying remaining code
+ to x86
+To: Stafford Horne <shorne@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,296 +66,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xfs@vger.kernel.org, riteshh@linux.ibm.com, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dchinner@redhat.com
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, Matthew Rosato <mjrosato@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux <sparclinux@vger.kernel.org>, Alexander Gordeev <agordeev@linux.ibm.com>, linux-riscv <linux-riscv@lists.infradead.org>, Linux-Arch <linux-arch@vger.kernel.org>, linux-s390 <linux-s390@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>, the arch/x86 maintainers <x86@kernel.org>, Ingo Molnar <mingo@redhat.com>, linux-pci <linux-pci@vger.kernel.org>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.c
+ om>, linux-m68k <linux-m68k@lists.linux-m68k.org>, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>, Pierre Morel <pmorel@linux.ibm.com>, Nick Child <nick.child@ibm.com>, LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, alpha <linux-alpha@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 18, 2022 at 12:01:53PM +0530, Sachin Sant wrote:
-> While running xfstests (specifically xfs/435) on a IBM Power server booted with
-> 5.19.0-rc6-next-20220715 following warnings are seen:
-> 
-> 
-> [  110.954136] XFS (sdb2): Unmounting Filesystem
-> [  110.968860] XFS (sdb1): Unmounting Filesystem
-> [  111.115807] =============================================================================
-> [  111.115817] BUG xfs_buf (Tainted: G            E     ): Objects remaining in xfs_buf on __kmem_cache_shutdown()
-> [  111.115824] -----------------------------------------------------------------------------
-> [  111.115824] 
-> [  111.115828] Slab 0x0000000074cdc09a objects=170 used=1 fp=0x000000005f24a5e1 flags=0x13ffff800000200(slab|node=1|zone=0|lastcpupid=0x7ffff)
-> [  111.115840] CPU: 26 PID: 4704 Comm: modprobe Tainted: G            E      5.19.0-rc6-next-20220715 #3
-> [  111.115849] Call Trace:
-> [  111.115852] [c00000002985b9a0] [c000000000830bec] dump_stack_lvl+0x70/0xa4 (unreliable)
-> [  111.115867] [c00000002985b9e0] [c0000000004ef6f8] slab_err+0xd8/0xf0
-> [  111.115877] [c00000002985bad0] [c0000000004f6cbc] __kmem_cache_shutdown+0x1fc/0x560
-> [  111.115884] [c00000002985bbf0] [c0000000004534c8] kmem_cache_destroy+0xa8/0x1f0
-> [  111.115893] [c00000002985bc80] [c00800000ccf30e4] xfs_buf_terminate+0x2c/0x48 [xfs]
-> [  111.115977] [c00000002985bca0] [c00800000cd6f55c] exit_xfs_fs+0x90/0x20b34 [xfs]
-> [  111.116045] [c00000002985bcd0] [c00000000023b7e0] sys_delete_module+0x1e0/0x3c0
-> [  111.116053] [c00000002985bdb0] [c00000000003302c] system_call_exception+0x17c/0x350
-> [  111.116062] [c00000002985be10] [c00000000000c53c] system_call_common+0xec/0x270
-> [  111.116070] --- interrupt: c00 at 0x7fff8c158b88
-> [  111.116075] NIP:  00007fff8c158b88 LR: 000000013adb0398 CTR: 0000000000000000
-> [  111.116080] REGS: c00000002985be80 TRAP: 0c00   Tainted: G            E       (5.19.0-rc6-next-20220715)
-> [  111.116086] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24008282  XER: 00000000
-> [  111.116103] IRQMASK: 0 
-> [  111.116103] GPR00: 0000000000000081 00007ffffe17dff0 00007fff8c227300 000001003f2f0c18 
-> [  111.116103] GPR04: 0000000000000800 000000000000000a 1999999999999999 0000000000000000 
-> [  111.116103] GPR08: 00007fff8c1b7830 0000000000000000 0000000000000000 0000000000000000 
-> [  111.116103] GPR12: 0000000000000000 00007fff8c72ca50 000000013adba650 000000013adba648 
-> [  111.116103] GPR16: 0000000000000000 0000000000000001 0000000000000000 000000013adba428 
-> [  111.116103] GPR20: 000000013ade0068 0000000000000000 00007ffffe17f948 000001003f2f02a0 
-> [  111.116103] GPR24: 0000000000000000 00007ffffe17f948 000001003f2f0c18 0000000000000000 
-> [  111.116103] GPR28: 0000000000000000 000001003f2f0bb0 000001003f2f0c18 000001003f2f0bb0 
-> [  111.116162] NIP [00007fff8c158b88] 0x7fff8c158b88
-> [  111.116166] LR [000000013adb0398] 0x13adb0398
-> [  111.116170] --- interrupt: c00
-> [  111.116173] Disabling lock debugging due to kernel taint
-> [  111.116184] Object 0x000000007e079655 @offset=18816
-> [  111.116189] =============================================================================
-> [  111.116193] BUG xfs_buf (Tainted: G    B       E     ): Objects remaining in xfs_buf on __kmem_cache_shutdown()
-> [  111.116198] -----------------------------------------------------------------------------
-> [  111.116198] 
-> [  111.116202] Slab 0x000000008186f78a objects=170 used=12 fp=0x000000008233ac7d flags=0x13ffff800000200(slab|node=1|zone=0|lastcpupid=0x7ffff)
-> [  111.116210] CPU: 26 PID: 4704 Comm: modprobe Tainted: G    B       E      5.19.0-rc6-next-20220715 #3
-> [  111.116216] Call Trace:
-> [  111.116218] [c00000002985b9a0] [c000000000830bec] dump_stack_lvl+0x70/0xa4 (unreliable)
-> [  111.116227] [c00000002985b9e0] [c0000000004ef6f8] slab_err+0xd8/0xf0
-> [  111.116234] [c00000002985bad0] [c0000000004f6cbc] __kmem_cache_shutdown+0x1fc/0x560
-> [  111.116241] [c00000002985bbf0] [c0000000004534c8] kmem_cache_destroy+0xa8/0x1f0
-> [  111.116248] [c00000002985bc80] [c00800000ccf30e4] xfs_buf_terminate+0x2c/0x48 [xfs]
-> [  111.116312] [c00000002985bca0] [c00800000cd6f55c] exit_xfs_fs+0x90/0x20b34 [xfs]
-> [  111.116379] [c00000002985bcd0] [c00000000023b7e0] sys_delete_module+0x1e0/0x3c0
-> [  111.116386] [c00000002985bdb0] [c00000000003302c] system_call_exception+0x17c/0x350
-> [  111.116392] [c00000002985be10] [c00000000000c53c] system_call_common+0xec/0x270
-> [  111.116400] --- interrupt: c00 at 0x7fff8c158b88
-> [  111.116404] NIP:  00007fff8c158b88 LR: 000000013adb0398 CTR: 0000000000000000
-> [  111.116409] REGS: c00000002985be80 TRAP: 0c00   Tainted: G    B       E       (5.19.0-rc6-next-20220715)
-> [  111.116414] MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 24008282  XER: 00000000
-> [  111.116430] IRQMASK: 0 
-> [  111.116430] GPR00: 0000000000000081 00007ffffe17dff0 00007fff8c227300 000001003f2f0c18 
-> [  111.116430] GPR04: 0000000000000800 000000000000000a 1999999999999999 0000000000000000 
-> [  111.116430] GPR08: 00007fff8c1b7830 0000000000000000 0000000000000000 0000000000000000 
-> [  111.116430] GPR12: 0000000000000000 00007fff8c72ca50 000000013adba650 000000013adba648 
-> [  111.116430] GPR16: 0000000000000000 0000000000000001 0000000000000000 000000013adba428 
-> [  111.116430] GPR20: 000000013ade0068 0000000000000000 00007ffffe17f948 000001003f2f02a0 
-> [  111.116430] GPR24: 0000000000000000 00007ffffe17f948 000001003f2f0c18 0000000000000000 
-> [  111.116430] GPR28: 0000000000000000 000001003f2f0bb0 000001003f2f0c18 000001003f2f0bb0 
-> [  111.116488] NIP [00007fff8c158b88] 0x7fff8c158b88
-> [  111.116492] LR [000000013adb0398] 0x13adb0398
-> [  111.116496] --- interrupt: c00
-> [  111.116504] Object 0x000000002b93c535 @offset=5376
-> [  111.116508] Object 0x000000009be4058b @offset=16896
-> [  111.116511] Object 0x00000000c1d5c895 @offset=24960
-> [  111.116515] Object 0x0000000097fb6f84 @offset=30336
-> [  111.116518] Object 0x00000000213fb535 @offset=43008
-> [  111.116521] Object 0x0000000045473fa3 @offset=43392
-> [  111.116525] Object 0x000000006462ef89 @offset=44160
-> [  111.116528] Object 0x000000000c85ce0b @offset=44544
-> [  111.116531] Object 0x0000000059166af4 @offset=45312
-> [  111.116535] Object 0x00000000e7b40b45 @offset=46848
-> [  111.116538] Object 0x00000000bc6ce716 @offset=54528
-> [  111.116541] Object 0x000000005f7be1fa @offset=64512
-> [  111.116546] ------------[ cut here ]------------
+On Mon, Jul 18, 2022 at 2:41 AM Stafford Horne <shorne@gmail.com> wrote:
+> The generic pci.h header now only provides a definition of
+> pci_get_legacy_ide_irq which is used by architectures that support PNP.
+> Of the architectures that use asm-generic/pci.h this is only x86.
+>
+> This patch removes the old pci.h in order to make room for a new
+> pci.h to be used by arm64, riscv, openrisc, etc.
+>
+> The existing code in pci.h is moved out to x86.  On other architectures
+> we clean up any outstanding references.
+>
+> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+> Link: https://lore.kernel.org/lkml/CAK8P3a0JmPeczfmMBE__vn=Jbvf=nkbpVaZCycyv40pZNCJJXQ@mail.gmail.com/
+> Signed-off-by: Stafford Horne <shorne@gmail.com>
+> ---
+> Since v2:
+>  - Remove pci_get_legacy_ide_irq in m68k
+> Since v1:
+>  - Remove pci_get_legacy_ide_irq for most architectures as its not needed.
 
-Yup, Darrick reported this once and couldn't reproduce it. We know
-it's a result of result of converting the xfs_buffer cache to
-rcu-protected lockless lookups and for some reason and the rcu
-callbacks that free these objects seem not to have been processed
-before the module is removed. We have an rcu_barrier() in
-xfs_destroy_caches() to avoid this ......
+>  arch/m68k/include/asm/pci.h    |  2 --
 
-Wait. What is xfs_buf_terminate()? I don't recall that function....
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Yeah, there's the bug.
+Gr{oetje,eeting}s,
 
-exit_xfs_fs(void)
-{
-....
-        xfs_buf_terminate();
-        xfs_mru_cache_uninit();
-        xfs_destroy_workqueues();
-        xfs_destroy_caches();
-....
+                        Geert
 
-xfs_buf_terminate() calls kmem_cache_destroy() before the
-rcu_barrier() call in xfs_destroy_caches().....
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Try the (slightly smoke tested only) patch below.
-
-Cheers,
-
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
-
-xfs: xfs_buf cache destroy isn't RCU safe
-
-From: Dave Chinner <dchinner@redhat.com>
-
-Darrick and Sachin Sant reported that xfs/435 and xfs/436 would
-report an non-empty xfs_buf slab on module remove. This isn't easily
-to reproduce, but is clearly a side effect of converting the buffer
-caceh to RUC freeing and lockless lookups. Sachin bisected and
-Darrick hit it when testing the patchset directly.
-
-Turns out that the xfs_buf slab is not destroyed when all the other
-XFS slab caches are destroyed. Instead, it's got it's own little
-wrapper function that gets called separately, and so it doesn't have
-an rcu_barrier() call in it that is needed to drain all the rcu
-callbacks before the slab is destroyed.
-
-Fix it by removing the xfs_buf_init/terminate wrappers that just
-allocate and destroy the xfs_buf slab, and move them to the same
-place that all the other slab caches are set up and destroyed.
-
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Fixes: 298f34224506 ("xfs: lockless buffer lookup")
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
----
- fs/xfs/xfs_buf.c   | 25 +------------------------
- fs/xfs/xfs_buf.h   |  6 ++----
- fs/xfs/xfs_super.c | 22 +++++++++++++---------
- 3 files changed, 16 insertions(+), 37 deletions(-)
-
-diff --git a/fs/xfs/xfs_buf.c b/fs/xfs/xfs_buf.c
-index 4affba7c6669..f8bdc4698492 100644
---- a/fs/xfs/xfs_buf.c
-+++ b/fs/xfs/xfs_buf.c
-@@ -21,7 +21,7 @@
- #include "xfs_error.h"
- #include "xfs_ag.h"
- 
--static struct kmem_cache *xfs_buf_cache;
-+struct kmem_cache *xfs_buf_cache;
- 
- /*
-  * Locking orders
-@@ -2300,29 +2300,6 @@ xfs_buf_delwri_pushbuf(
- 	return error;
- }
- 
--int __init
--xfs_buf_init(void)
--{
--	xfs_buf_cache = kmem_cache_create("xfs_buf", sizeof(struct xfs_buf), 0,
--					 SLAB_HWCACHE_ALIGN |
--					 SLAB_RECLAIM_ACCOUNT |
--					 SLAB_MEM_SPREAD,
--					 NULL);
--	if (!xfs_buf_cache)
--		goto out;
--
--	return 0;
--
-- out:
--	return -ENOMEM;
--}
--
--void
--xfs_buf_terminate(void)
--{
--	kmem_cache_destroy(xfs_buf_cache);
--}
--
- void xfs_buf_set_ref(struct xfs_buf *bp, int lru_ref)
- {
- 	/*
-diff --git a/fs/xfs/xfs_buf.h b/fs/xfs/xfs_buf.h
-index f65ef4d34ff7..04ff86a8eeef 100644
---- a/fs/xfs/xfs_buf.h
-+++ b/fs/xfs/xfs_buf.h
-@@ -15,6 +15,8 @@
- #include <linux/uio.h>
- #include <linux/list_lru.h>
- 
-+extern struct kmem_cache *xfs_buf_cache;
-+
- /*
-  *	Base types
-  */
-@@ -307,10 +309,6 @@ extern int xfs_buf_delwri_submit(struct list_head *);
- extern int xfs_buf_delwri_submit_nowait(struct list_head *);
- extern int xfs_buf_delwri_pushbuf(struct xfs_buf *, struct list_head *);
- 
--/* Buffer Daemon Setup Routines */
--extern int xfs_buf_init(void);
--extern void xfs_buf_terminate(void);
--
- static inline xfs_daddr_t xfs_buf_daddr(struct xfs_buf *bp)
- {
- 	return bp->b_maps[0].bm_bn;
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index 4edee1d3784a..3d27ba1295c9 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1967,11 +1967,19 @@ xfs_init_caches(void)
- {
- 	int		error;
- 
-+	xfs_buf_cache = kmem_cache_create("xfs_buf", sizeof(struct xfs_buf), 0,
-+					 SLAB_HWCACHE_ALIGN |
-+					 SLAB_RECLAIM_ACCOUNT |
-+					 SLAB_MEM_SPREAD,
-+					 NULL);
-+	if (!xfs_buf_cache)
-+		goto out;
-+
- 	xfs_log_ticket_cache = kmem_cache_create("xfs_log_ticket",
- 						sizeof(struct xlog_ticket),
- 						0, 0, NULL);
- 	if (!xfs_log_ticket_cache)
--		goto out;
-+		goto out_destroy_buf_cache;
- 
- 	error = xfs_btree_init_cur_caches();
- 	if (error)
-@@ -2145,6 +2153,8 @@ xfs_init_caches(void)
- 	xfs_btree_destroy_cur_caches();
-  out_destroy_log_ticket_cache:
- 	kmem_cache_destroy(xfs_log_ticket_cache);
-+ out_destroy_buf_cache:
-+	kmem_cache_destroy(xfs_buf_cache);
-  out:
- 	return -ENOMEM;
- }
-@@ -2178,6 +2188,7 @@ xfs_destroy_caches(void)
- 	xfs_defer_destroy_item_caches();
- 	xfs_btree_destroy_cur_caches();
- 	kmem_cache_destroy(xfs_log_ticket_cache);
-+	kmem_cache_destroy(xfs_buf_cache);
- }
- 
- STATIC int __init
-@@ -2283,13 +2294,9 @@ init_xfs_fs(void)
- 	if (error)
- 		goto out_destroy_wq;
- 
--	error = xfs_buf_init();
--	if (error)
--		goto out_mru_cache_uninit;
--
- 	error = xfs_init_procfs();
- 	if (error)
--		goto out_buf_terminate;
-+		goto out_mru_cache_uninit;
- 
- 	error = xfs_sysctl_register();
- 	if (error)
-@@ -2346,8 +2353,6 @@ init_xfs_fs(void)
- 	xfs_sysctl_unregister();
-  out_cleanup_procfs:
- 	xfs_cleanup_procfs();
-- out_buf_terminate:
--	xfs_buf_terminate();
-  out_mru_cache_uninit:
- 	xfs_mru_cache_uninit();
-  out_destroy_wq:
-@@ -2373,7 +2378,6 @@ exit_xfs_fs(void)
- 	kset_unregister(xfs_kset);
- 	xfs_sysctl_unregister();
- 	xfs_cleanup_procfs();
--	xfs_buf_terminate();
- 	xfs_mru_cache_uninit();
- 	xfs_destroy_workqueues();
- 	xfs_destroy_caches();
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
