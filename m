@@ -2,89 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F417D578284
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 14:41:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4D95782D0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 14:54:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LmhR26rpPz3bxS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 22:41:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lmhk173jdz3c1P
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 22:54:17 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Iv+zlpU9;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rYUSYTCm;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sachinp@linux.ibm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Iv+zlpU9;
-	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmhQK5wyDz2ywV
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 22:40:41 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26ICax3G012712;
-	Mon, 18 Jul 2022 12:40:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=content-type :
- mime-version : subject : from : in-reply-to : date : cc :
- content-transfer-encoding : message-id : references : to; s=pp1;
- bh=JaG6Jg1iP6JRc4hKh1yNH9brztMAziIq7oii+Ehcmso=;
- b=Iv+zlpU9nKnXtVAlosoF3tmHH3RXqF1vWchRY5RK8JIsKv3LrMxZWCYarhe99tD8QGzc
- HySx33eDaeUsYZLOLEnPOiSSWDsh0BpuSMiMx/P1w/2443tJy9mA5xUv76C9GvCoaDtW
- iyUB2u9srF8Q7lYj+l2i1IWeA6y8VevxrXiRwZAVc+pUkFGyXr9sj8CGsffkjZ+VaRzz
- KGYpxaphtLhnrd+ZkZU/H8slXH0fdkZCVeNa3yR6R3jgm9qa5YHuZWtH69asNjFTZ+zv
- JozqQV1yJee9TC1amETHh6cb2W3ehNKsTTcG8hLK3ZiQ1Axhwa26F+zRAC49djC72exL Bw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hd7e9g8wy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Jul 2022 12:40:38 +0000
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 26ICbAjw014622;
-	Mon, 18 Jul 2022 12:40:38 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3hd7e9g8vy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Jul 2022 12:40:38 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-	by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26ICag54005548;
-	Mon, 18 Jul 2022 12:40:35 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma01fra.de.ibm.com with ESMTP id 3hbmy8tnq1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Jul 2022 12:40:35 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26ICeXI424314162
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Jul 2022 12:40:33 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EDD35204E;
-	Mon, 18 Jul 2022 12:40:33 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.43.36.77])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id B6B7852054;
-	Mon, 18 Jul 2022 12:40:31 +0000 (GMT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.100.31\))
-Subject: Re: BUG xfs_buf while running tests/xfs/435 (next-20220715)
-From: Sachin Sant <sachinp@linux.ibm.com>
-In-Reply-To: <20220718080112.GS3861211@dread.disaster.area>
-Date: Mon, 18 Jul 2022 18:10:30 +0530
-Content-Transfer-Encoding: 7bit
-Message-Id: <E1661B4B-D2BF-465F-8C65-935909A2E527@linux.ibm.com>
-References: <C6CAF8E3-0447-465D-9C83-F55910739BE2@linux.ibm.com>
- <20220718080112.GS3861211@dread.disaster.area>
-To: Dave Chinner <david@fromorbit.com>
-X-Mailer: Apple Mail (2.3696.100.31)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: eCQpeuJwX6uModo8laEmqGSYPLva-8U0
-X-Proofpoint-GUID: -CNcpwPBoqeeOP1paBfubOvzUqzKa_1v
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-18_11,2022-07-18_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- mlxlogscore=999 clxscore=1011 priorityscore=1501 phishscore=0
- impostorscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207180054
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmhjR6sVcz2xTj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 22:53:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rYUSYTCm;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LmhjM6Tyvz4xL4;
+	Mon, 18 Jul 2022 22:53:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1658148826;
+	bh=SgPxyBJcHGr81rN/PCtKiWXwYtSKRO2w9sb5M0yS/pU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rYUSYTCmldp3zN6k/ysHQC4QOd4JlL88muNz4v08jJK1s2WGTd3Mzi3YvFcU0K1vn
+	 W9DjCRjYAUlAqCOsgnj9C2L03vYDPzdtzucwIqSf9LlRFHwnOxDjFTzYnRJ7sF7Qh7
+	 s7WWq+PLlyqwqYFgoflfRl2VvnXJyrMtwl/lsuIfyzK3l1gMB3Crb5m0jy6Mxv5+Dh
+	 aGLrf18lWzXpBPZggcYl8BALR0j3fUTopMtowWx4R5DdSKPEOSU5EIjA0QWTpE5Yrx
+	 TOB8RIY3sLW94KzeZkoH+eaXTCtIMN8zUbNlcSlD+ryvYxI0pWTlI+XB/pQMZmjzg0
+	 n4k9AuAcZSRYQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Heiko Carstens
+ <hca@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Borislav
+ Petkov <bp@suse.de>
+Subject: Re: [PATCH v5] random: remove CONFIG_ARCH_RANDOM
+In-Reply-To: <20220708004032.733426-1-Jason@zx2c4.com>
+References: <20220706143521.459565-1-Jason@zx2c4.com>
+ <20220708004032.733426-1-Jason@zx2c4.com>
+Date: Mon, 18 Jul 2022 22:53:38 +1000
+Message-ID: <877d4aeg4t.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,22 +66,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-xfs@vger.kernel.org, riteshh@linux.ibm.com, linux-next@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dchinner@redhat.com
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
+> When RDRAND was introduced, there was much discussion on whether it
+> should be trusted and how the kernel should handle that. Initially, two
+> mechanisms cropped up, CONFIG_ARCH_RANDOM, a compile time switch, and
+> "nordrand", a boot-time switch.
+...
+>
+>  arch/arm/include/asm/archrandom.h             |  2 ++
+>  arch/arm64/Kconfig                            |  8 ------
+>  arch/arm64/include/asm/archrandom.h           | 10 --------
+>  arch/arm64/kernel/cpufeature.c                |  2 --
+>  arch/powerpc/Kconfig                          |  3 ---
+>  arch/powerpc/include/asm/archrandom.h         |  3 ---
+>  arch/powerpc/include/asm/machdep.h            |  2 --
+>  arch/powerpc/platforms/microwatt/Kconfig      |  1 -
+>  arch/powerpc/platforms/powernv/Kconfig        |  1 -
+>  arch/powerpc/platforms/pseries/Kconfig        |  1 -
 
-> Fix it by removing the xfs_buf_init/terminate wrappers that just
-> allocate and destroy the xfs_buf slab, and move them to the same
-> place that all the other slab caches are set up and destroyed.
-> 
-> Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-> Fixes: 298f34224506 ("xfs: lockless buffer lookup")
-> Signed-off-by: Dave Chinner <dchinner@redhat.com>
-> ---
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Thanks. The patch fixes the reported problem for me.
-
-Tested-by: Sachin Sant <sachinp@linux.ibm.com>
-
-- Sachin
+cheers
