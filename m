@@ -2,36 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCFA577F3A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 12:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9448F577F55
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 12:06:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LmcwH35pQz3c28
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 20:02:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lmd0S4SRvz3c5f
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 20:06:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.155.67.158; helo=smtpbg.qq.com; envelope-from=wangborong@cdjrlc.com; receiver=<UNKNOWN>)
 Received: from smtpbg.qq.com (unknown [43.155.67.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lmcvq6GRmz2yZc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 20:02:18 +1000 (AEST)
-X-QQ-mid: bizesmtp86t1658138355tjhkudby
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lmd04102rz2yJL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 20:06:11 +1000 (AEST)
+X-QQ-mid: bizesmtp66t1658138720t60o43yy
 Received: from localhost.localdomain ( [182.148.15.157])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 18 Jul 2022 17:59:14 +0800 (CST)
+	id ; Mon, 18 Jul 2022 18:05:19 +0800 (CST)
 X-QQ-SSF: 01000000002000E0U000B00A0000000
-X-QQ-FEAT: lO87fmWkX3E5qms+Os8ereri50t437h26GU7cDy3ex2Skf9XW9+uSBUipAcSm
-	qMEYHbNj41fDVsieOjodvTtxJFu/K7JA+Qstq5KpnNqsMmElR9CNJrLezLBh9E98jc/fGza
-	xHKcW4P2RNMEuFd/NxVK9ZZvIfTWD3WzGnr0HaEfMCAKxB7+uGw9cChv5stMEqqgNlAiokc
-	POgY/m3NqqWgVV8yyJYeTCSYlk+p+7a+x5PZQMgD8t9ods/GVX94/3p+t38dV0O75Ss7HNg
-	Z7QSmpF/NyxBQwnmNRdstTfckgW69Bxc8+LPKCd3pyy+hZXclmPnHyxR2uMsgeXvNAPysVJ
-	J5BaKcViLkbKVKsg10OrhPGt4KOleSl20zHHp7hdyN7QcVDXiLnmY5+WX/1YpzaL8rPmnMX
+X-QQ-FEAT: J5JfekO1WsjnFRCaIrI9KYX73TsBVSpDrxrZytBTXGuBm4FsKT62YRtbKmS2l
+	ybcFzHccw/BfsvUGYuYAjnVklOzxREmvfcNDfxMnPzZT3LSEcAC+gxSlvsfjXzFS413OitG
+	iQJ14cE+YGQBGiLG8V8XxxcruMDZeY6GVOdT3T4mRGEJxnQI9eNZnlrPri8HZxfDTYO4Itf
+	cDtbLjQ032MaZ9QKK0eqYU+xy98zgF4TmVrzpqPJ9cbooyd6Arn8rjcFhxEYdw5LxhnZdaY
+	3f9la0Hb2HAYeWOoaaPDEa/ZJUqNAAECW8MtTRXcP48lxYjgc4fJ/cj31Ip+/Y7ztUji8A4
+	QYGD1dUK0UaoTqmNkEkI7/ztp4Wv4xW63DLsXFJlnZ9j2iIMyg0vCsorDC02dlie+0/8PJ1
 X-QQ-GoodBg: 0
 From: Jason Wang <wangborong@cdjrlc.com>
 To: paulus@samba.org
-Subject: [PATCH] Merge: Fix comment typo
-Date: Mon, 18 Jul 2022 17:59:10 +0800
-Message-Id: <20220718095910.188312-1-wangborong@cdjrlc.com>
+Subject: [PATCH] KVM: PPC: Book3S HV: Fix comment typo
+Date: Mon, 18 Jul 2022 18:05:04 +0800
+Message-Id: <20220718100504.194167-1-wangborong@cdjrlc.com>
 X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
