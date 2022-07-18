@@ -2,59 +2,56 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4D95782D0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 14:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DBE578337
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 15:09:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lmhk173jdz3c1P
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 22:54:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lmj3q322Lz3c36
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 23:09:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rYUSYTCm;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=HAYepAxM;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmhjR6sVcz2xTj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 22:53:47 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=srs0=p9lr=xx=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=rYUSYTCm;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=HAYepAxM;
 	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LmhjM6Tyvz4xL4;
-	Mon, 18 Jul 2022 22:53:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1658148826;
-	bh=SgPxyBJcHGr81rN/PCtKiWXwYtSKRO2w9sb5M0yS/pU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rYUSYTCmldp3zN6k/ysHQC4QOd4JlL88muNz4v08jJK1s2WGTd3Mzi3YvFcU0K1vn
-	 W9DjCRjYAUlAqCOsgnj9C2L03vYDPzdtzucwIqSf9LlRFHwnOxDjFTzYnRJ7sF7Qh7
-	 s7WWq+PLlyqwqYFgoflfRl2VvnXJyrMtwl/lsuIfyzK3l1gMB3Crb5m0jy6Mxv5+Dh
-	 aGLrf18lWzXpBPZggcYl8BALR0j3fUTopMtowWx4R5DdSKPEOSU5EIjA0QWTpE5Yrx
-	 TOB8RIY3sLW94KzeZkoH+eaXTCtIMN8zUbNlcSlD+ryvYxI0pWTlI+XB/pQMZmjzg0
-	 n4k9AuAcZSRYQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Heiko Carstens
- <hca@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Thomas
- Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Borislav
- Petkov <bp@suse.de>
-Subject: Re: [PATCH v5] random: remove CONFIG_ARCH_RANDOM
-In-Reply-To: <20220708004032.733426-1-Jason@zx2c4.com>
-References: <20220706143521.459565-1-Jason@zx2c4.com>
- <20220708004032.733426-1-Jason@zx2c4.com>
-Date: Mon, 18 Jul 2022 22:53:38 +1000
-Message-ID: <877d4aeg4t.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lmj383RVDz2ywV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 23:09:08 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 9AE0B6159D;
+	Mon, 18 Jul 2022 13:09:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6738EC341C0;
+	Mon, 18 Jul 2022 13:09:04 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="HAYepAxM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1658149742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N7QlNK74ybwRYfzHI8TBP3B7VtPI78+Og9U+7B0YR44=;
+	b=HAYepAxMlmZJztlmTWH49hY3/hDdlc+XMv8oBROFi7vjUqOiXNfm3X5k2ibtbnCnOfeAWw
+	+gWYnD2ZcIAw8ondAmKUpoALBxjS6O7VZ/NnB1jEZulYYuKMpSPj8+MvXHnZRVrtFGh32Y
+	T0nCK1ypSrkG4t9I2xiIcP9zvBJtwvk=
+Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id dd83422f (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
+	Mon, 18 Jul 2022 13:09:02 +0000 (UTC)
+Date: Mon, 18 Jul 2022 15:09:00 +0200
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+	sachinp@linux.ibm.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 0/2] powerpc rng cleanups
+Message-ID: <YtVbbMpRbfCWEIFn@zx2c4.com>
+References: <20220711232448.136765-1-Jason@zx2c4.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220711232448.136765-1-Jason@zx2c4.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,28 +63,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Jason A. Donenfeld" <Jason@zx2c4.com> writes:
-> When RDRAND was introduced, there was much discussion on whether it
-> should be trusted and how the kernel should handle that. Initially, two
-> mechanisms cropped up, CONFIG_ARCH_RANDOM, a compile time switch, and
-> "nordrand", a boot-time switch.
-...
->
->  arch/arm/include/asm/archrandom.h             |  2 ++
->  arch/arm64/Kconfig                            |  8 ------
->  arch/arm64/include/asm/archrandom.h           | 10 --------
->  arch/arm64/kernel/cpufeature.c                |  2 --
->  arch/powerpc/Kconfig                          |  3 ---
->  arch/powerpc/include/asm/archrandom.h         |  3 ---
->  arch/powerpc/include/asm/machdep.h            |  2 --
->  arch/powerpc/platforms/microwatt/Kconfig      |  1 -
->  arch/powerpc/platforms/powernv/Kconfig        |  1 -
->  arch/powerpc/platforms/pseries/Kconfig        |  1 -
+Hey again,
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+On Tue, Jul 12, 2022 at 01:24:46AM +0200, Jason A. Donenfeld wrote:
+> These are two small cleanups for -next. This v5 rebases on the latest
+> git master, as some whitespace was added that made v4 no longer apply.
+> 
+> Jason A. Donenfeld (2):
+>   powerpc/powernv: rename remaining rng powernv_ functions to pnv_
+>   powerpc/kvm: don't crash on missing rng, and use darn
+> 
+>  arch/powerpc/include/asm/archrandom.h |  7 +--
+>  arch/powerpc/kvm/book3s_hv_builtin.c  |  7 +--
+>  arch/powerpc/platforms/powernv/rng.c  | 66 ++++++++++-----------------
+>  drivers/char/hw_random/powernv-rng.c  |  2 +-
+>  4 files changed, 30 insertions(+), 52 deletions(-)
 
-cheers
+I think v5 has reached a completion point. Could you queue these up in
+some PPC tree for 5.20?
+
+Thanks,
+Jason
