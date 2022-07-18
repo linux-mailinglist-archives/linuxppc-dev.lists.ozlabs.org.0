@@ -2,59 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0A5577CDD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 09:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9960577CF4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 09:59:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LmZ1f3rCfz3cdP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 17:52:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LmZ9P5yM1z3c5d
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 17:59:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.155.67.158; helo=smtpbg.qq.com; envelope-from=wangborong@cdjrlc.com; receiver=<UNKNOWN>)
+Received: from smtpbg.qq.com (unknown [43.155.67.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmZ194Czjz3bl6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 17:51:54 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-252-gbDn5GdWMXeh8y7fCCM7XA-1; Mon, 18 Jul 2022 08:51:48 +0100
-X-MC-Unique: gbDn5GdWMXeh8y7fCCM7XA-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.36; Mon, 18 Jul 2022 08:51:45 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.036; Mon, 18 Jul 2022 08:51:45 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Michael Ellerman' <mpe@ellerman.id.au>, Sudip Mukherjee
-	<sudipm.mukherjee@gmail.com>, Benjamin Herrenschmidt
-	<benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Kees Cook
-	<keescook@chromium.org>
-Subject: RE: mainline build failure of powerpc allmodconfig for
- prom_init_check
-Thread-Topic: mainline build failure of powerpc allmodconfig for
- prom_init_check
-Thread-Index: AQHYmmCqgiI6vbQbKkWuMJXdAKKy2K2Dv4mw
-Date: Mon, 18 Jul 2022 07:51:45 +0000
-Message-ID: <72a95f0949d149d1b07bd161f3d59cc1@AcuMS.aculab.com>
-References: <Ys/aDKZNhhsENH9S@debian>
- <CADVatmO9XzFnX+N0TuOtr0FYyxKr1oe5RAhCEJjmnvjteT5QNw@mail.gmail.com>
- <87cze3docs.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87cze3docs.fsf@mpe.ellerman.id.au>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmZ90497Pz3bl6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 17:58:40 +1000 (AEST)
+X-QQ-mid: bizesmtp90t1658130956t7fduxie
+Received: from localhost.localdomain ( [182.148.15.157])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 18 Jul 2022 15:55:54 +0800 (CST)
+X-QQ-SSF: 01000000002000E0U000B00A0000020
+X-QQ-FEAT: I6umPUGCYXFVJ41OBmTHZCAuvOk0nuyFrkzHbZ8yYJoOROKptEgxbDoCpvPR9
+	H/m0c+9zbgRNGfDO/X7hMqpdcb4va5GYfy/hmVMHVhWSbkjkUvv8Qt5+CiM1TNmZI2OFFvN
+	wfWHF/wSJCGxar3kCDs4Xk+nhc32kr4otZcjYhZrY79pJCYk835bcpIqAax0RMBUVJWGUQ6
+	Ecm9kyMl9m2247XTSBRUhN7jRs++ijF/UKv9K/l3QdT0WtpM/KkotQy4m399oHHI2Ld58Mu
+	quPaPe16EpC6iEjFk+3L+9QQHocK/Iqdawv4IgD3lngTVdLswAWgkLB+dwBXjeERLxHZxYt
+	1AgnKLhEziE3VyMTF7jC1cP7HgBbAAAkfpCn7iIsfzD/Fn/JxrgF7AhPK6btNnFSoUpLQeq
+X-QQ-GoodBg: 0
+From: Jason Wang <wangborong@cdjrlc.com>
+To: paulus@samba.org
+Subject: [PATCH] powerpc/pseries/vas: Fix comment typo
+Date: Mon, 18 Jul 2022 15:55:53 +0800
+Message-Id: <20220718075553.70897-1-wangborong@cdjrlc.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr6
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,39 +48,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linus
- Torvalds <torvalds@linux-foundation.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, linux-kernel <linux-kernel@vger.kernel.org>, "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
+Cc: nick.child@ibm.com, haren@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com, Julia.Lawall@inria.fr, clg@kaod.org, Jason Wang <wangborong@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman
-> Sent: 18 July 2022 05:41
-...
-> So we're memsetting all of args to 254, not zero.
->=20
-> That's happening because allmodconfig with gcc 12 enables
-> CONFIG_INIT_STACK_ALL_PATTERN, whereas gcc 11 doesn't.
+The double `the' in line 807 is duplicated, remove one.
 
-I can't help feeling it would be better if that generated
-a call to a memset64() function.
-Saving loads of tests at the top of the function,
-and (most of?) the constant expansion to 64bit.
+Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+---
+ arch/powerpc/platforms/pseries/vas.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Although and explicit 'stack clear' function would be better
-for the kernel - since it would give the option of patching
-it away at startup.
-
-I really can't help feeling that initialising on-stack
-arrays will kill performance.
-While kernel stack frames have to be relatively small,
-in userspace very large on-stack arrays can be allocated
-(and correctly bound checked) knowing that the cost is
-minimal (maybe a TLB miss).
-
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/arch/powerpc/platforms/pseries/vas.c b/arch/powerpc/platforms/pseries/vas.c
+index 91e7eda0606c..7e6e6dd2e33e 100644
+--- a/arch/powerpc/platforms/pseries/vas.c
++++ b/arch/powerpc/platforms/pseries/vas.c
+@@ -804,7 +804,7 @@ int vas_reconfig_capabilties(u8 type, int new_nr_creds)
+ 	 * The total number of available credits may be decreased or
+ 	 * increased with DLPAR operation. Means some windows have to be
+ 	 * closed / reopened. Hold the vas_pseries_mutex so that the
+-	 * the user space can not open new windows.
++	 * user space can not open new windows.
+ 	 */
+ 	if (old_nr_creds <  new_nr_creds) {
+ 		/*
+-- 
+2.35.1
 
