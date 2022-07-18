@@ -2,69 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780A5577917
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 02:42:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3176757794E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 03:40:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LmNTM2m8tz3c6X
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 10:42:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LmPlz123Pz3cC4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Jul 2022 11:39:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XlL7j+of;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=f5lTMFAF;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=shorne@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::634; helo=mail-ej1-x634.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=XlL7j+of;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=f5lTMFAF;
 	dkim-atps=neutral
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmNSg46Qbz2ypW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 10:41:38 +1000 (AEST)
-Received: by mail-pj1-x102a.google.com with SMTP id i8-20020a17090a4b8800b001ef8a65bfbdso11162547pjh.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 17:41:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LmPlK1d4rz3bcv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Jul 2022 11:39:22 +1000 (AEST)
+Received: by mail-ej1-x634.google.com with SMTP id va17so18812408ejb.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 18:39:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=2ammbXsHcP3tWmE1bo2lscC7tMxAXFUqa+a6c6SXoUs=;
-        b=XlL7j+ofgRpHIKsUs04GtWLYodF+lKuYMBsvcAw2DEzzuBdXpY1aaTpWdflDI64UMp
-         BrV1C7k93ATepyvAgDAqtyNE8yT9qcyuJHDN5anFxU8TJmgsCbift9GA7RXqGKlNTE9t
-         TJDLlBAnVx1KGPhr1idWyCRv/UajTrQIJPSI+oy/y1QNKYnzhYc8k5ZSVytEMA33dUt4
-         AyiUTEPP8WaRAwWcysCyDmB1Nz7Ie3LGn1tLQA7EPXMWm8PqMJQlJ889E7aiL42qTQXm
-         VO3OXnv9nt35V6lIpdnteV1YTJiA08ICLABR23UcKd7ObytfOS7igpyPAl0tgnCb0OLG
-         LjRQ==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=S/uRnOSKXyMWXM6+egeORsxqIKlGjg8aotruYwUMQgQ=;
+        b=f5lTMFAF9RgIRQCSACSOIOb6q62I+EN6h5/4yHht7d4KaQAPe6bswqW9WMWrHQGVkU
+         t+MSmD2LZgUzfWUj/wRsQ3Q5bOlPSG7+EuHqu9plMDF8YmyFNJsl9cp/5Hijy6a55Auk
+         ZF1pR/Ej+pYtQjpkLKl8KKH/AvqFf69lZyZwE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=2ammbXsHcP3tWmE1bo2lscC7tMxAXFUqa+a6c6SXoUs=;
-        b=q2cx4pDsLdOY+5gzyYPkUucBAVaSzJXwsKCsn4GRe8d5JHjlaXI81x9hdbnIkr3phx
-         JEGXC9HPkZQuGf4asCuDnTpLxW5WPywkAG89M/I1mpS2c9RPZxuvQ9Jed9ckqgKb6nHJ
-         5zz4Ip8gayhRVE+gZI/bbzxKwo46MgVJsZEQiOXw6HbymmPM5a3Xj6vlUIHdp54wjU2s
-         UVkH6K7/Bs/9my5Ce29nV9LFdO7nO9AnuPuDUPx/jnrFTFVfbDmx6+3OKm9RpIEhhJTH
-         wca1IipiicfVqB45IpUZmidKxXX7XBdMKGMDMd6p23C+9RuAmbLSjAjuk+2PhYMxfcof
-         5PCQ==
-X-Gm-Message-State: AJIora9Y5vGlcWxANYpoFRf5ybStbSOqBGIsR+3HtF1Hzit21crmGuQ5
-	P4O1aeJrb4Z4mAmWJPyMUn4=
-X-Google-Smtp-Source: AGRyM1uapu5cGrPkCB03jidstIjc8/DJ9LmK0R0KcLXKMQpb7dIrZA9mBr3YUK3kksA0G/pYIuk4fg==
-X-Received: by 2002:a17:902:d4ce:b0:16c:3d9a:e25d with SMTP id o14-20020a170902d4ce00b0016c3d9ae25dmr25263675plg.15.1658104894106;
-        Sun, 17 Jul 2022 17:41:34 -0700 (PDT)
-Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
-        by smtp.gmail.com with ESMTPSA id gk2-20020a17090b118200b001f121421893sm5757787pjb.53.2022.07.17.17.41.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Jul 2022 17:41:33 -0700 (PDT)
-From: Stafford Horne <shorne@gmail.com>
-To: LKML <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 1/2] asm-generic: Remove pci.h copying remaining code to x86
-Date: Mon, 18 Jul 2022 09:41:13 +0900
-Message-Id: <20220718004114.3925745-2-shorne@gmail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220718004114.3925745-1-shorne@gmail.com>
-References: <20220718004114.3925745-1-shorne@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=S/uRnOSKXyMWXM6+egeORsxqIKlGjg8aotruYwUMQgQ=;
+        b=O/qcJtidcs3e/t8JC264OzEVECJNy8L2TYQwK3ewyQe4+wgymQdhATvRlSUwYtbOlW
+         TXUPuMUuJgp6Zt5PeBzP3fiTkdQLawjOwGoBuCl6Qr44L2EjoloJUSNMPIG9uMqAMksZ
+         GaDDEpTA6SFbWtqFkL8iXCc+O3OUNv0MXL7nqa+3bifChrtaH7IEeaNliBBKmcgaeSj/
+         /P7SO7IxMNRTWqQmDYFFOqdZCCo8U5cX1IyOQsPfkskd1C7r6sv54iRLOP4NIKqtNyzW
+         szPooy0TI1jQX65LuaiN/A8D6solcvbrvtyznvPNqUP+14At2gxg1VCY3423jHXSdyWq
+         XooQ==
+X-Gm-Message-State: AJIora8XzCVy8z8miZ1FOFjkd2uPCZ9TOSvGlOOLTAWFGY0fA1gV2KuR
+	Z38SMSvKQtJFZ9V2p/RUc7Fz9S6hmlrHo9UeDR0=
+X-Google-Smtp-Source: AGRyM1vSutp6QMoiAof/sDKdrtdwz6/fI84mh0n4WpP4Vy732X/mSlLS+Nsj3tuEyBXUh1LCKOffVQ==
+X-Received: by 2002:a17:907:6295:b0:703:92b8:e113 with SMTP id nd21-20020a170907629500b0070392b8e113mr24027801ejc.594.1658108355997;
+        Sun, 17 Jul 2022 18:39:15 -0700 (PDT)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com. [209.85.128.54])
+        by smtp.gmail.com with ESMTPSA id 17-20020a170906311100b0072b7d76211dsm1947436ejx.107.2022.07.17.18.39.13
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 17 Jul 2022 18:39:14 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id c18so1366294wmh.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Jul 2022 18:39:13 -0700 (PDT)
+X-Received: by 2002:a05:600c:34c9:b0:3a0:5072:9abe with SMTP id
+ d9-20020a05600c34c900b003a050729abemr23937555wmq.8.1658108352995; Sun, 17 Jul
+ 2022 18:39:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <Ys/aDKZNhhsENH9S@debian> <CADVatmO9XzFnX+N0TuOtr0FYyxKr1oe5RAhCEJjmnvjteT5QNw@mail.gmail.com>
+ <CAHk-=whc3Uvhrmrr27xp5=oOhSDjXc5s1ZxC3B7xMYV6oj4WRQ@mail.gmail.com>
+ <CADVatmO1V8DiAgWMW9EFHwt+ghwfHhueigXh214tUa_=tVxiug@mail.gmail.com>
+ <CAHk-=whjWyoognKy4QUUwf95L6qvPg7MGdp0CxqD2fpvZo7DLw@mail.gmail.com>
+ <20220717205615.GC25951@gate.crashing.org> <CAHk-=wg-6b_=XQbwKqEwuAbQCOcXx7_mw78-GopQ5==_TuTPLQ@mail.gmail.com>
+ <20220717214508.GD25951@gate.crashing.org>
+In-Reply-To: <20220717214508.GD25951@gate.crashing.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 17 Jul 2022 18:38:56 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg1LeRWPmA-2pit+aH0LKZoBbhnGzmwWrPz6bbchMkCzw@mail.gmail.com>
+Message-ID: <CAHk-=wg1LeRWPmA-2pit+aH0LKZoBbhnGzmwWrPz6bbchMkCzw@mail.gmail.com>
+Subject: Re: mainline build failure of powerpc allmodconfig for prom_init_check
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,173 +84,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, Matthew Rosato <mjrosato@linux.ibm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Stafford Horne <shorne@gmail.com>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, linux-riscv@lists.infradead.org, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, linux-pci@vger.kernel.org, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-xtensa@linux-xtensa.org, Albert Ou <aou@eecs.berkeley.edu>, Kees Cook <keescook@chromium.org>, Vasily Gorbik <gor@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>, Bjorn Helgaas <bhelgaas@goo
- gle.com>, Thomas Gleixner <tglx@linutronix.de>, Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>, Pierre Morel <pmorel@linux.ibm.com>, Nick Child <nick.child@ibm.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: Kees Cook <keescook@chromium.org>, linux-kernel <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linux-hardening@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The generic pci.h header now only provides a definition of
-pci_get_legacy_ide_irq which is used by architectures that support PNP.
-Of the architectures that use asm-generic/pci.h this is only x86.
+On Sun, Jul 17, 2022 at 2:49 PM Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
+>
+> > I can *kind of* see the logic that when you do a whole struct
+> > assignment, it turns into a "memcpy" without regard for volatile
+> > members. You're not actually accessing the volatile members in some
+> > particular order, so the struct assignment arguably does not really
+> > have an access ordering that needs to be preserved.
+>
+> The order is not defined, correct.  But a "volatile int" can only be
+> accessed as an int, and an external memcpy will typically use different
+> size accesses, and can even access some fields more than once (or
+> partially); all not okay for a volatile object.
 
-This patch removes the old pci.h in order to make room for a new
-pci.h to be used by arm64, riscv, openrisc, etc.
+That is not actually a valid or realistic argument in the general case.
 
-The existing code in pci.h is moved out to x86.  On other architectures
-we clean up any outstanding references.
+The thing is, an operation on an aggregate type in C is fundamentally
+different from the "do the same operation on the individual parts of
+the struct".
 
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/lkml/CAK8P3a0JmPeczfmMBE__vn=Jbvf=nkbpVaZCycyv40pZNCJJXQ@mail.gmail.com/
-Signed-off-by: Stafford Horne <shorne@gmail.com>
----
-Since v2:
- - Remove pci_get_legacy_ide_irq in m68k
-Since v1:
- - Remove pci_get_legacy_ide_irq for most architectures as its not needed.
+Just to make a very concrete example of that, it's not at all
+unreasonable to have a struct like this:
 
- arch/alpha/include/asm/pci.h   |  1 -
- arch/ia64/include/asm/pci.h    |  1 -
- arch/m68k/include/asm/pci.h    |  2 --
- arch/powerpc/include/asm/pci.h |  1 -
- arch/s390/include/asm/pci.h    |  1 -
- arch/sparc/include/asm/pci.h   |  9 ---------
- arch/x86/include/asm/pci.h     |  6 ++++--
- arch/xtensa/include/asm/pci.h  |  3 ---
- include/asm-generic/pci.h      | 17 -----------------
- 9 files changed, 4 insertions(+), 37 deletions(-)
- delete mode 100644 include/asm-generic/pci.h
+    struct io_accessor {
+        union {
+            volatile unsigned char byte[8];
+            volatile unsigned short word[4];
+        ...
 
-diff --git a/arch/alpha/include/asm/pci.h b/arch/alpha/include/asm/pci.h
-index cf6bc1e64d66..8ac5af0fc4da 100644
---- a/arch/alpha/include/asm/pci.h
-+++ b/arch/alpha/include/asm/pci.h
-@@ -56,7 +56,6 @@ struct pci_controller {
- 
- /* IOMMU controls.  */
- 
--/* TODO: integrate with include/asm-generic/pci.h ? */
- static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- {
- 	return channel ? 15 : 14;
-diff --git a/arch/ia64/include/asm/pci.h b/arch/ia64/include/asm/pci.h
-index 8c163d1d0189..218412d963c2 100644
---- a/arch/ia64/include/asm/pci.h
-+++ b/arch/ia64/include/asm/pci.h
-@@ -63,7 +63,6 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- 	return (pci_domain_nr(bus) != 0);
- }
- 
--#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
- static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- {
- 	return channel ? isa_irq_to_vector(15) : isa_irq_to_vector(14);
-diff --git a/arch/m68k/include/asm/pci.h b/arch/m68k/include/asm/pci.h
-index 5a4bc223743b..ccdfa0dc8413 100644
---- a/arch/m68k/include/asm/pci.h
-+++ b/arch/m68k/include/asm/pci.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_M68K_PCI_H
- #define _ASM_M68K_PCI_H
- 
--#include <asm-generic/pci.h>
--
- #define	pcibios_assign_all_busses()	1
- 
- #define	PCIBIOS_MIN_IO		0x00000100
-diff --git a/arch/powerpc/include/asm/pci.h b/arch/powerpc/include/asm/pci.h
-index 915d6ee4b40a..f9da506751bb 100644
---- a/arch/powerpc/include/asm/pci.h
-+++ b/arch/powerpc/include/asm/pci.h
-@@ -39,7 +39,6 @@
- #define pcibios_assign_all_busses() \
- 	(pci_has_flag(PCI_REASSIGN_ALL_BUS))
- 
--#define HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
- static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
- {
- 	if (ppc_md.pci_get_legacy_ide_irq)
-diff --git a/arch/s390/include/asm/pci.h b/arch/s390/include/asm/pci.h
-index fdb9745ee998..5889ddcbc374 100644
---- a/arch/s390/include/asm/pci.h
-+++ b/arch/s390/include/asm/pci.h
-@@ -6,7 +6,6 @@
- #include <linux/mutex.h>
- #include <linux/iommu.h>
- #include <linux/pci_hotplug.h>
--#include <asm-generic/pci.h>
- #include <asm/pci_clp.h>
- #include <asm/pci_debug.h>
- #include <asm/sclp.h>
-diff --git a/arch/sparc/include/asm/pci.h b/arch/sparc/include/asm/pci.h
-index 4deddf430e5d..0c58f65bd172 100644
---- a/arch/sparc/include/asm/pci.h
-+++ b/arch/sparc/include/asm/pci.h
-@@ -40,13 +40,4 @@ static inline int pci_proc_domain(struct pci_bus *bus)
- #define get_pci_unmapped_area get_fb_unmapped_area
- #endif /* CONFIG_SPARC64 */
- 
--#if defined(CONFIG_SPARC64) || defined(CONFIG_LEON_PCI)
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return PCI_IRQ_NONE;
--}
--#else
--#include <asm-generic/pci.h>
--#endif
--
- #endif /* ___ASM_SPARC_PCI_H */
-diff --git a/arch/x86/include/asm/pci.h b/arch/x86/include/asm/pci.h
-index f3fd5928bcbb..7da27f665cfe 100644
---- a/arch/x86/include/asm/pci.h
-+++ b/arch/x86/include/asm/pci.h
-@@ -105,8 +105,10 @@ static inline void early_quirks(void) { }
- 
- extern void pci_iommu_alloc(void);
- 
--/* generic pci stuff */
--#include <asm-generic/pci.h>
-+static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
-+{
-+	return channel ? 15 : 14;
-+}
- 
- #ifdef CONFIG_NUMA
- /* Returns the node based on pci bus */
-diff --git a/arch/xtensa/include/asm/pci.h b/arch/xtensa/include/asm/pci.h
-index 8e2b48a268db..b56de9635b6c 100644
---- a/arch/xtensa/include/asm/pci.h
-+++ b/arch/xtensa/include/asm/pci.h
-@@ -43,7 +43,4 @@
- #define ARCH_GENERIC_PCI_MMAP_RESOURCE	1
- #define arch_can_pci_mmap_io()		1
- 
--/* Generic PCI */
--#include <asm-generic/pci.h>
--
- #endif	/* _XTENSA_PCI_H */
-diff --git a/include/asm-generic/pci.h b/include/asm-generic/pci.h
-deleted file mode 100644
-index 6bb3cd3d695a..000000000000
---- a/include/asm-generic/pci.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--/*
-- * linux/include/asm-generic/pci.h
-- *
-- *  Copyright (C) 2003 Russell King
-- */
--#ifndef _ASM_GENERIC_PCI_H
--#define _ASM_GENERIC_PCI_H
--
--#ifndef HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
--static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
--{
--	return channel ? 15 : 14;
--}
--#endif /* HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ */
--
--#endif /* _ASM_GENERIC_PCI_H */
--- 
-2.36.1
+and while that wasn't the example here, it's not completely insane as
+a concept to use as a helper type so that you can do volatile accesses
+of different sizes.
 
+And while you'd be right to say that "assigning that kind of struct is
+probably insane", and I wouldn't argue against it, I also think that
+basically *any* union member is basically an argument that a structure
+assignment is *NOT* about "assign all the individual members", and
+never really can be.
+
+In the above union, make one union member be a non-volatile type, and
+suddenly it actually *can* be ok to copy the struct. Even though it
+also has volatile bytes.
+
+So once you start doing structure assignments but argue about
+individual fields being volatile, I think you're on very shaky ground.
+
+And I think "memcpy" is a reasonable way to say "we don't care - and
+in the general case we CANNOT know - what the individual members are,
+so we'll just copy it as one thing".
+
+So the compiler emitting a "memcpy()" to assign a structure sounds
+fine. Even in theory. Because the "but individual fields.." argument
+just cannot work in general.
+
+In contrast, when you access the members individually (like the kernel
+does in this powerpc case), there is no such ambiguity.
+
+There is no way in hell that it is ever ok to do a "memcpy()" when the
+user has done the assignments one volatile member at a time.
+
+So that's why I don't think your test-case with the struct assignment
+is very good. I think it's very reasonable for a compiler person to
+say "you assigned the whole struct, you get what you asked for, you
+get a memcpy".
+
+But when you do a loop that assigns individual volatile fields? No
+such problem. Completely unambiguous that you need to do them one at a
+time as individual accesses.
+
+                Linus
