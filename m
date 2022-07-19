@@ -1,87 +1,130 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E55157A6F4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jul 2022 21:10:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BCC957A74A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jul 2022 21:35:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LnT1C33W4z3dBJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 05:10:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LnTb11gxwz30Mr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 05:35:57 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QL+ECp1g;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=WLYoWo5X;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=erichte@linux.ibm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.6.46; helo=eur04-db3-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QL+ECp1g;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=WLYoWo5X;
 	dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-eopbgr60046.outbound.protection.outlook.com [40.107.6.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnT0W4Y1Pz2yQj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 05:09:30 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 26JIu5m4027771;
-	Tue, 19 Jul 2022 19:09:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=hauMh6ypNwxwQwvjBt+AMlNitGE/fH59g5GbW/HDYpE=;
- b=QL+ECp1gKBmiJWs3VwsP6FwhEuEySedbDzjjjMz5liwWdY5y2fE8lgiRLuXMXrhjtqpg
- iBeCYh1kRBsvjsWZl4KP2XbZoxvss6q1PIVVwRRstTffBlVoB+SgekPqRTv4ybPJhHss
- rWTWK1p9fE9mXAM/QSeAHfFR1Y4dp58piP8UYjXxQTcrhqo8usQg9bSPXNBkW609UyfU
- ySjJmiYcMClTJRl1TxrZAW9tUeESy7Rhm4JXBqUhkR7J8nEHAnvoExmycxHOhobzjE4h
- 1IvF+irpKBCmegFNXKJN0//eOSP+6NtaztyfyNE0k55v45I9Gv6gGzodjWLlog7Gjfff UQ== 
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0b-001b2d01.pphosted.com (PPS) with ESMTPS id 3he2ayrf7g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Jul 2022 19:09:25 +0000
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 26JJ9LAR006238;
-	Tue, 19 Jul 2022 19:09:23 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma05fra.de.ibm.com with ESMTP id 3hbmy8uexh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Jul 2022 19:09:23 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 26JJ9WDT22348246
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 Jul 2022 19:09:32 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B4BB4C040;
-	Tue, 19 Jul 2022 19:09:20 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0CBF84C046;
-	Tue, 19 Jul 2022 19:09:19 +0000 (GMT)
-Received: from [9.160.101.12] (unknown [9.160.101.12])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 19 Jul 2022 19:09:18 +0000 (GMT)
-Message-ID: <60820d8d-f608-1c4b-d8c9-48b876c3fec4@linux.ibm.com>
-Date: Tue, 19 Jul 2022 14:09:18 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 1/2] powerpc/pseries: define driver for Platform KeyStore
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnTZC15TCz2xtt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 05:35:11 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=F+Azxr6OZKWhAr/ECazV1oQOUiStIiHSa1URupPK0fF+MdZqFCB6PLJzUNypNuUytYizDh7l46nUlb9yGy7ExArZ/vW3NQe3Dv29oL5ow53v8eY4kuvMO2eVthiYQA4lh9/kb7qaMRcnB0RoGYDhbSNw7/oBA0TFHP1CHzdYKaF1k+D005xJR5MA1UFA+lQurPX/DXaC/AMq3ZYq/8h6nfdg56UrjMG38ENZihDdvX3voGCa4SL5KAicOnE1MMkuqkPRPXk/IB59Eez4EHuGBnIIIcpa2p0Eti7T/60xzyiQlI57swixWzrDRN58ZJA1T5kb5aldATh/jV6GxMI/9g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=41uLQjxB7W7WUrs9yR4TDE9pwHiSGEtbHX0FQTN4Ti8=;
+ b=ntS6oesvTrv1gJBfPYmMQmVtBC93c8+3Q9CxqslLjCnshCwLrsd56oPCpeSc4Prptcfe5Q9kRjrWVn+rPnF8BEeFNK9JdYSLWo8SHBNjOb+ixZCWlfJy/4uqLPIDG8+BYPK9plM9L2PcibYlG2jEnDJaoC6uHD4AtEPuQ/4XQKizpcXQX4yjQEome2WFp9oL8PUGQA11xFjYH0RwXQo0Zt84kYtYdsW40DB1khoKawDLexQ5E16LyUp5B+C+PhMt3FNml6f4TDh/RYTnMccafSorH/er5TjpzOQr+CfP9EKYiyyu0NaPGqfW9tkUfsKyFHiBE7SoLrbz8XTzffosVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=41uLQjxB7W7WUrs9yR4TDE9pwHiSGEtbHX0FQTN4Ti8=;
+ b=WLYoWo5XY9zV9cNdgqoKN6CXo7dq52OIyQ0vAqcPlfQt2iAIhsVKOrMbif33r1E/1GgMZOWP95kaoCpcKZNDhVZjQqWpZzRwiKc8lIuoKdbgK04c72utHE3LvvF+h4brePdPovLhjhV6jyZiS+8h1yvRMG8419fWkqgPAxtMnW0iKrRYyUrhHY8U9dMek/out3It6Bh3ji75oPHhvbW8wTSLXKmZq5e+6Aw7siRHrc9iOongSfa7tZ5fO6j+j2TH0fz4i3CmVbzsVbbEUWOXcvpBL60Q09qXNT9suhfTvJ3NzHyljoJa8S9AwpgSxuKQYeKcne1GAM7yA7S1hpSs/w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by DB7PR03MB3916.eurprd03.prod.outlook.com (2603:10a6:5:3a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.23; Tue, 19 Jul
+ 2022 19:34:51 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::757e:b75f:3449:45b1]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::757e:b75f:3449:45b1%6]) with mapi id 15.20.5438.023; Tue, 19 Jul 2022
+ 19:34:51 +0000
+Subject: Re: [RFC PATCH net-next 0/9] net: pcs: Add support for devices probed
+ in the "usual" manner
+To: Vladimir Oltean <olteanv@gmail.com>
+References: <20220711160519.741990-1-sean.anderson@seco.com>
+ <20220719152539.i43kdp7nolbp2vnp@skbuf>
+ <bec4c9c3-e51b-5623-3cae-6df1a8ce898f@seco.com>
+ <20220719153811.izue2q7qff7fjyru@skbuf>
+ <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
+ <20220719181113.q5jf7mpr7ygeioqw@skbuf>
+From: Sean Anderson <sean.anderson@seco.com>
+Message-ID: <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
+Date: Tue, 19 Jul 2022 15:34:45 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <20220719181113.q5jf7mpr7ygeioqw@skbuf>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-To: Nayna Jain <nayna@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20220713005947.459967-1-nayna@linux.ibm.com>
- <20220713005947.459967-2-nayna@linux.ibm.com>
-From: Eric Richter <erichte@linux.ibm.com>
-In-Reply-To: <20220713005947.459967-2-nayna@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: KpfgdDjE21MOI16oC0kdJ1ivzVvyI3dg
-X-Proofpoint-GUID: KpfgdDjE21MOI16oC0kdJ1ivzVvyI3dg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-19_06,2022-07-19_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- malwarescore=0 phishscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 spamscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2206140000 definitions=main-2207190078
+X-ClientProxiedBy: BLAPR03CA0119.namprd03.prod.outlook.com
+ (2603:10b6:208:32a::34) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 9ffa2d4d-75c7-448f-bf9d-08da69bdbfa6
+X-MS-TrafficTypeDiagnostic: DB7PR03MB3916:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	NrE7xZ5SSHtW04kRoeAbEzrRur6RuzdD5o5io2pOSDWLiyC6bPAT4jjPT5LpL70Zrd9ojAoeqXSnzuJHejKtJgBAZfVC3okQ0OfOsf8N5HA7qUeyZwhG+vBDtuuCs+oe93UkXyzasEeB3yIMOispYfAFrBKvvnkq0ws6UfIjMMKHeZG+gvO+PmACm3a2UrmKKBrO4JKt1V9q+oN9/nkfTopz04py8Gn7/J1816ijFfTB/uLifz2MwmGWvRtllDNdG/o7TzakCJ3qY54iPfMRX46ZfAcinfuHmCFL0BsLAgosjvBM4NPhBw8wb1vJ8OWT8xXPEU3bmspntv5VXvBj/q0U83rrdk/mUu25p9TKzty33vj7HS7PWug/VZuQqCTjQnFMNVH8Ywm0eHkLq8rOi0Qwg6yq2CfzWkCV/SFgAFm8eB+7O42rBWbrfnixnfRawDYd+vdHy2BMSKluFzBX1t3yrckNTB/ljFrvaLVTvsylg56hoJrhiJlspuof18oM6Ue9omzxAiL1RbHVtvqtSp7g+VW4KBCabHKOzpI45VQcLqFBqZVqrXWR4zagtbzZYlCWwHV5wbrBKDDHd5yTcaYZmTLhYFtitk0MvVA04LCZET4eG/P0Z3ipSoL7e3d8i2jW3lMxCQxjPEPvef+ydVHCWvA7Xlc7AB/ymC99Q1QJcsx1AlodSO5yxGRDuB9oK2LCoD10ISYPnQ/QJunC4Xart06/q4sSZVBwsO+2m6gBVA1mont64+Nc1OGwV2iRlXfKbKQfDzP7jSdFkVuJWA8y0krN55NdqEkjVkNUM4Q4K1pqncIvfQuIED7252+0+Yg8R0ATRxDz22kj+3t9FjQSK3OzMhd7u/YvTI3nKAc=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(346002)(366004)(376002)(39850400004)(396003)(136003)(38350700002)(31696002)(38100700002)(36756003)(86362001)(31686004)(2616005)(186003)(52116002)(26005)(6666004)(478600001)(6486002)(53546011)(6512007)(41300700001)(2906002)(316002)(66556008)(8936002)(6916009)(4326008)(5660300002)(66476007)(6506007)(7406005)(7416002)(54906003)(83380400001)(66946007)(30864003)(44832011)(8676002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?RFQxdVdpWDhITGRBVEdzY3A1Njk0a1F4UUpJOVlzUWhWeW9GUzdtaDdjSmRu?=
+ =?utf-8?B?dFpWY0c0aWJOdUJQU3oxSDRHL25EeitnTXJHWG9iU3NFeXpaS0ZBRUxhSnN1?=
+ =?utf-8?B?bFdKTmVJUGUvMjZsd2ZQRDZOQVg3T1dwRDdJSjFoTzV0RlBvWlp1MHh1Ykhs?=
+ =?utf-8?B?Y1U3eldEL3dqZ0lHOUNaakhRREMwMGlWcHRQZUJ2b2hJUHRaMlZzN1VOalQ2?=
+ =?utf-8?B?aTh5MEZZOW4vUGFpcGNDTHpWOWZFL2c2ZWFNcVJVUnh6KzJyc3pzbFR2dUhH?=
+ =?utf-8?B?M2d5OFV5ZVFyWVVVanpzWTFncWRaSFZKZE5QVk8yZW1IVGlpdEU0ZWlEazZR?=
+ =?utf-8?B?NGZ3K0R5NDdFYWJJa1FxVit6aFFWelRoUHNzR3VJbC9SeEpCeFBYdFlaVVJD?=
+ =?utf-8?B?Mkg2K1hpMnE0bTA3NHJDd01aUC9YektmN2dHbnBWQ3AvRnlLc0dqYUozNlRF?=
+ =?utf-8?B?cFNRc2w1SFlSVXdtM3RvWWdhV0c5eVZUK1JyNkd1emlNYm43ejFVV2F2QUxT?=
+ =?utf-8?B?SjJLMWRDaVRTMUQ3VmR3OGxSdnpXYzAyN24vVC9ubDVlL3hjamcrczNDSndi?=
+ =?utf-8?B?NkdVdityWU15RVZRc3U5bmtyZkpHWXZWcFRQWlJsUnZLNVE2T1k2aS9tSndM?=
+ =?utf-8?B?ZGtuNnp1b1duc0h1aHFLakh6bHlCT0hMRGt4bE1qQ0JzTmtOVjI2K1hBd2JB?=
+ =?utf-8?B?cnRSUnVmaEtoUHEvV3dUSDZJSkM3TGJPTkFyd0RHYlhPZTJNUmRMeWpTMklj?=
+ =?utf-8?B?Qm91Y3lGb3R3UVAyQXB4V3VQMWwvZkNFMDJyUVIrb3VQQ05Od1JXOWpkQVps?=
+ =?utf-8?B?c1lEU1phc29ySjE1U1hJbUlTTU9ZNXJtTzdMbDFTWUJYTFNPUEV1Vk5peUtx?=
+ =?utf-8?B?L1ZNaFo1bStycE9wK09QMmtRZWl1Vnl3ZGpVK0x3bXF5eE91RkNFN2hOZWtj?=
+ =?utf-8?B?dFZ5Y2hRWDRDYklUamRyUHUxMVMxc1MxSEZNNEt1ZkJ5ZTdoSzRmNHdLMlFB?=
+ =?utf-8?B?NlN0ZTU3L0dGbUg4SEg5MFVLUytqRmNDTXZ2ZllxR0VnMXI1Vjh0aktBZXlC?=
+ =?utf-8?B?MlY1NVZnTHRXblJENlA3SkNZWXlhY2dKbm1NVklUdys0VlZhdWN4UXFEcU5n?=
+ =?utf-8?B?dExTNWdLSkQ1QWFDVTU5eko0ZURLOHZQay93V1dsSWNuVW1oVjREUFF3a0pj?=
+ =?utf-8?B?NmpXRFp4SVJicm84aHBORDlFcjF1TVB6dVlYY2ljRHpaZURmY3VxSitCeE9w?=
+ =?utf-8?B?MWhUa2NQYi9QdEhQcXV4bG5FRnFEM2l2cHhoNm9GVUtGUmNpZmYzY3NTVWpO?=
+ =?utf-8?B?RnVVcU5uT0EzTmE0bWhNbnpCdkJDQ1VrRVFWVkE2SHNadFc3N2IrN1FNQVRQ?=
+ =?utf-8?B?T1Z4MS83WGlFUmpoUnd6cnFQMGt3OG5zOXdVMTR5LythK1JrUG8xdno5UUxo?=
+ =?utf-8?B?MmkydkFoSWdtb2NRZ1NmcGloekNrcGtHa3puaWVhcWprUnBhclY0ZmIyTmRr?=
+ =?utf-8?B?azBYYkpBTWdoUmhwMVo0VXBrc0F0SzVjb0FxNS8xYjdURTg3blVqeEJlTVhq?=
+ =?utf-8?B?VFJuRWZjWUZwbGdoYm1oYlZRMWFiQzRxQWZ2dDYzV3cxVHlRamdHbkpHdmZ3?=
+ =?utf-8?B?NnhZWGhUZlhSNHlrdTZCRE1SaUZrZmNTdHhGLytQckNraFRaZWpFWWlGQ1hz?=
+ =?utf-8?B?UTNDaHVBNDY2V2JuT2RjUEdWZGJkWXVIbXAvcGlOd0lQQjkvTUxLd1FsV1A0?=
+ =?utf-8?B?WXZzNWtEUUV3WWhNdHo2OUE2dTF4YWI3akE4S1BJeG9pejhtanlGZGwxYy9D?=
+ =?utf-8?B?ZEpMODM4cmhSWi9tQlFmUUtKeXlHSTYwalVXMi85Y0tpSkN1MWFPTWN5L0xT?=
+ =?utf-8?B?ZEY1aUFQVEMrRi9OaEswL1RrUFlWd2NNQytCTXlxSnVEMWVnbGlGRkNFM1A1?=
+ =?utf-8?B?MzN1aFZDZGVkOUswU3E3T2ZzOHY4QTFRclM3aFlMS2lrK3dYN1JGa2FUT0lT?=
+ =?utf-8?B?NDVwMWZDQWxodEVWY3hpVi8rcDkrZzhQWmFVMVhXTnlqV0w5NVVIcGVsRHox?=
+ =?utf-8?B?VE4wdzhuUFpwb0s0c0lIemNyWVdJZGc4US9tRFBYUWE5U2p6Zis4UkU5K3JK?=
+ =?utf-8?B?TmFuckRSSWRxUU5GZ0g2L1RQYVlaT1YyS2E3cE5UblM3UTRWQllDeVMxN1hh?=
+ =?utf-8?B?U2c9PQ==?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ffa2d4d-75c7-448f-bf9d-08da69bdbfa6
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2022 19:34:51.3489
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fnbzer3TktpsNBmwEw5WF2djkN44t6QFkwr3IWPkV//9XIvGioyv8DxscRt9eJJiEBQe04z1ywN6a5HJAKnERg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB7PR03MB3916
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,729 +136,380 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: George Wilson <gcwilson@linux.ibm.com>, Paul Mackerras <paulus@samba.org>, gjoyce@ibm.com
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, UNGLinuxDriver@microchip.com, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.c
+ om>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/12/22 7:59 PM, Nayna Jain wrote:
-> PowerVM provides an isolated Platform Keystore(PKS) storage allocation
-> for each LPAR with individually managed access controls to store
-> sensitive information securely. It provides a new set of hypervisor
-> calls for Linux kernel to access PKS storage.
+
+
+On 7/19/22 2:11 PM, Vladimir Oltean wrote:
+> On Tue, Jul 19, 2022 at 11:46:23AM -0400, Sean Anderson wrote:
+>> I'm saying that patches 4 and 5 [1] provide "...a working migration
+>> path to [my] PCS driver model." Since enetc/ocelot do not use
+>> devicetree for the PCS, patch 9 should have no effect.
+>> 
+>> That said, if you've tested this on actual hardware, I'm interested
+>> in your results. I do not have access to enetc/ocelot hardware, so
+>> I was unable to test whether my proposed migration would work.
+>> 
+>> --Sean
+>> 
+>> [1] I listed 6 but it seems like it just has some small hunks which should have been in 5 instead
 > 
-> Define PLPKS driver using H_CALL interface to access PKS storage.
+> Got it, thanks. So things actually work up until the end, after fixing
+> the compilation errors and warnings and applying my phy_mask patch first.
+> However, as mentioned by Russell King, this patch set now gives us the
+> possibility of doing this, which happily kills the system:
 > 
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/hvcall.h             |   9 +
->  arch/powerpc/include/asm/plpks.h              |  90 ++++
->  arch/powerpc/platforms/pseries/Kconfig        |  13 +
->  arch/powerpc/platforms/pseries/Makefile       |   2 +
->  arch/powerpc/platforms/pseries/plpks/Makefile |   7 +
->  arch/powerpc/platforms/pseries/plpks/plpks.c  | 509 ++++++++++++++++++
->  6 files changed, 630 insertions(+)
->  create mode 100644 arch/powerpc/include/asm/plpks.h
->  create mode 100644 arch/powerpc/platforms/pseries/plpks/Makefile
->  create mode 100644 arch/powerpc/platforms/pseries/plpks/plpks.c
+> echo "0000:00:00.5-imdio:03" > /sys/bus/mdio_bus/drivers/lynx-pcs/unbind
 > 
-> diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
-> index d92a20a85395..24b661b0717c 100644
-> --- a/arch/powerpc/include/asm/hvcall.h
-> +++ b/arch/powerpc/include/asm/hvcall.h
-> @@ -97,6 +97,7 @@
->  #define H_OP_MODE	-73
->  #define H_COP_HW	-74
->  #define H_STATE		-75
-> +#define H_IN_USE	-77
->  #define H_UNSUPPORTED_FLAG_START	-256
->  #define H_UNSUPPORTED_FLAG_END		-511
->  #define H_MULTI_THREADS_ACTIVE	-9005
-> @@ -321,6 +322,14 @@
->  #define H_SCM_UNBIND_ALL        0x3FC
->  #define H_SCM_HEALTH            0x400
->  #define H_SCM_PERFORMANCE_STATS 0x418
-> +#define H_PKS_GET_CONFIG	0x41C
-> +#define H_PKS_SET_PASSWORD	0x420
-> +#define H_PKS_GEN_PASSWORD	0x424
-> +#define H_PKS_WRITE_OBJECT	0x42C
-> +#define H_PKS_GEN_KEY		0x430
-> +#define H_PKS_READ_OBJECT	0x434
-> +#define H_PKS_REMOVE_OBJECT	0x438
-> +#define H_PKS_CONFIRM_OBJECT_FLUSHED	0x43C
->  #define H_RPT_INVALIDATE	0x448
->  #define H_SCM_FLUSH		0x44C
->  #define H_GET_ENERGY_SCALE_INFO	0x450
-> diff --git a/arch/powerpc/include/asm/plpks.h b/arch/powerpc/include/asm/plpks.h
-> new file mode 100644
-> index 000000000000..cf60e53e1f15
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/plpks.h
-> @@ -0,0 +1,90 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Copyright (C) 2022 IBM Corporation
-> + * Author: Nayna Jain <nayna@linux.ibm.com>
-> + *
-> + * Platform keystore for pseries LPAR(PLPKS).
-> + */
-> +
-> +#ifndef _PSERIES_PLPKS_H
-> +#define _PSERIES_PLPKS_H
-> +
-> +#include <linux/types.h>
-> +#include <linux/list.h>
-> +
-> +#define OSSECBOOTAUDIT 0x40000000
-> +#define OSSECBOOTENFORCE 0x20000000
-> +#define WORLDREADABLE 0x08000000
-> +#define SIGNEDUPDATE 0x01000000
-> +
-> +#define PLPKS_VAR_LINUX	0x01
-> +#define PLPKS_VAR_COMMON	0x04
-> +
-> +struct plpks_var {
-> +	char *component;
-> +	u8 os;
-> +	u8 *name;
-> +	u16 namelen;
-> +	u32 policy;
-> +	u16 datalen;
-> +	u8 *data;
-> +};
-> +
-> +struct plpks_var_name {
-> +	u16 namelen;
-> +	u8  *name;
-> +};
-> +
-> +struct plpks_var_name_list {
-> +	u32 varcount;
-> +	struct plpks_var_name varlist[];
-> +};
-> +
-> +struct plpks_config {
-> +	u8 version;
-> +	u8 flags;
-> +	u32 rsvd0;
-> +	u16 maxpwsize;
-> +	u16 maxobjlabelsize;
-> +	u16 maxobjsize;
-> +	u32 totalsize;
-> +	u32 usedspace;
-> +	u32 supportedpolicies;
-> +	u64 rsvd1;
-> +} __packed;
-> +
-> +/**
-> + * Successful return from this API  implies PKS is available.
-> + * This is used to initialize kernel driver and user interfaces.
-> + */
-> +struct plpks_config *plpks_get_config(void);
-> +
-> +/**
-> + * Writes the specified var and its data to PKS.
-> + * Any caller of PKS driver should present a valid component type for
-> + * their variable.
-> + */
-> +int plpks_write_var(struct plpks_var var);
-> +
-> +/**
-> + * Removes the specified var and its data from PKS.
-> + */
-> +int plpks_remove_var(char *component, u8 varos,
-> +		     struct plpks_var_name vname);
-> +
-> +/**
-> + * Returns the data for the specified os variable.
-> + */
-> +int plpks_read_os_var(struct plpks_var *var);
-> +
-> +/**
-> + * Returns the data for the specified firmware variable.
-> + */
-> +int plpks_read_fw_var(struct plpks_var *var);
-> +
-> +/**
-> + * Returns the data for the specified bootloader variable.
-> + */
-> +int plpks_read_bootloader_var(struct plpks_var *var);
-> +
-> +#endif
-> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-> index f7fd91d153a4..de6efe5d18c2 100644
-> --- a/arch/powerpc/platforms/pseries/Kconfig
-> +++ b/arch/powerpc/platforms/pseries/Kconfig
-> @@ -142,6 +142,19 @@ config IBMEBUS
->  	help
->  	  Bus device driver for GX bus based adapters.
-> 
-> +config PSERIES_PLPKS
-> +	depends on PPC_PSERIES
-> +	tristate "Support for the Platform Key Storage"
-> +	help
-> +	  PowerVM provides an isolated Platform Keystore(PKS) storage
-> +	  allocation for each LPAR with individually managed access
-> +	  controls to store sensitive information securely. It can be
-> +	  used to store asymmetric public keys or secrets as required
-> +	  by different usecases. Select this config to enable
-> +	  operating system interface to hypervisor to access this space.
-> +
-> +	  If unsure, select N.
-> +
->  config PAPR_SCM
->  	depends on PPC_PSERIES && MEMORY_HOTPLUG && LIBNVDIMM
->  	tristate "Support for the PAPR Storage Class Memory interface"
-> diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-> index 7aaff5323544..d6a9209e08c0 100644
-> --- a/arch/powerpc/platforms/pseries/Makefile
-> +++ b/arch/powerpc/platforms/pseries/Makefile
-> @@ -37,3 +37,5 @@ obj-$(CONFIG_ARCH_HAS_CC_PLATFORM)	+= cc_platform.o
->  # nothing that operates in real mode is safe for KASAN
->  KASAN_SANITIZE_ras.o := n
->  KASAN_SANITIZE_kexec.o := n
-> +
-> +obj-$(CONFIG_PSERIES_PLPKS)      += plpks/
-> diff --git a/arch/powerpc/platforms/pseries/plpks/Makefile b/arch/powerpc/platforms/pseries/plpks/Makefile
-> new file mode 100644
-> index 000000000000..e651ace920db
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/pseries/plpks/Makefile
-> @@ -0,0 +1,7 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# Copyright (C) 2022 IBM Corporation
-> +# Author: Nayna Jain <nayna@linux.ibm.com>
-> +#
-> +
-> +obj-$(CONFIG_PSERIES_PLPKS)  += plpks.o
-> diff --git a/arch/powerpc/platforms/pseries/plpks/plpks.c b/arch/powerpc/platforms/pseries/plpks/plpks.c
-> new file mode 100644
-> index 000000000000..463ce93f9066
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/pseries/plpks/plpks.c
-> @@ -0,0 +1,509 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * POWER LPAR Platform KeyStore (PLPKS)
-> + * Copyright (C) 2022 IBM Corporation
-> + * Author: Nayna Jain <nayna@linux.ibm.com>
-> + *
-> + * Provides access to variables stored in Power LPAR Platform KeyStore(PLPKS).
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/types.h>
-> +#include <linux/errno.h>
-> +#include <linux/string.h>
-> +#include <linux/slab.h>
-> +#include <linux/delay.h>
-> +#include <asm/hvcall.h>
-> +#include <asm/plpks.h>
-> +#include <asm/unaligned.h>
-> +#include <asm/machdep.h>
-> +
-> +#define MODULE_VERS "1.0"
-> +#define MODULE_NAME "pseries-plpks"
-> +
-> +#define PKS_FW_OWNER   0x1
-> +#define PKS_BOOTLOADER_OWNER   0x2
-> +#define PKS_OS_OWNER   0x3
-> +
-> +#define MAX_LABEL_ATTR_SIZE 16
-> +#define MAX_NAME_SIZE 239
-> +#define MAX_DATA_SIZE 4000
-> +
-> +#define PKS_FLUSH_MAX_TIMEOUT	5000	//msec
-> +#define PKS_FLUSH_SLEEP		10	//msec
-> +#define PKS_FLUSH_SLEEP_RANGE	400
-> +
-> +static bool configset;
-> +static struct plpks_config *config;
-> +static u8 *ospassword;
-> +static u16 ospasswordlength;
-> +
-> +struct plpks_auth {
-> +	u8 version;
-> +	u8 consumer;
-> +	__be64 rsvd0;
-> +	__be32 rsvd1;
-> +	__be16 passwordlength;
-> +	u8 password[];
-> +} __packed __aligned(16);
-> +
-> +struct label_attr {
-> +	u8 prefix[8];
-> +	u8 version;
-> +	u8 os;
-> +	u8 length;
-> +	u8 reserved[5];
-> +};
-> +
-> +struct label {
-> +	struct label_attr attr;
-> +	u8 name[MAX_NAME_SIZE];
-> +};
-> +
-> +static int pseries_status_to_err(int rc)
-> +{
-> +	int err;
-> +
-> +	switch (rc) {
-> +	case H_SUCCESS:
-> +		err = 0;
-> +		break;
-> +	case H_FUNCTION:
-> +		err = -ENXIO;
-> +		break;
-> +	case H_P2:
-> +	case H_P3:
-> +	case H_P4:
-> +	case H_P5:
-> +	case H_P6:
-> +		err = -EINVAL;
-> +		break;
-> +	case H_NOT_FOUND:
-> +		err = -ENOENT;
-> +		break;
-> +	case H_BUSY:
-> +		err = -EBUSY;
-> +		break;
-> +	case H_AUTHORITY:
-> +		err = -EPERM;
-> +		break;
-> +	case H_NO_MEM:
-> +		err = -ENOMEM;
-> +		break;
-> +	case H_RESOURCE:
-> +		err = -EEXIST;
-> +		break;
-> +	case H_TOO_BIG:
-> +		err = -EFBIG;
-> +		break;
-> +	default:
-> +		err = -EINVAL;
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +static int plpks_gen_password(void)
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = {0};
-> +	u8 consumer = PKS_OS_OWNER;
-> +	int rc;
-> +
-> +	ospassword = kzalloc(config->maxpwsize, GFP_KERNEL);
+> For your information, pcs-rzn1-miic.c already has a device_link_add()
+> call to its consumer, and it does avoid the unbinding problem. It is a
+> bit of a heavy hammer as Russell points out (a DSA switch is a single
+> struct device, but has multiple net_devices and phylink instances, and
+> the switch device would be unregistered in its entirety), but on the
+> other hand, this is one of the simpler things we can do, until we have
+> something more fine-grained. I, for one, am perfectly happy with a
+> device link. The alternative would be reworking phylink to react on PCS
+> devices coming and going. I don't even know what the implications are
+> upon mac_select_pcs() and such...
 
-This unconditionally allocates over ospassword -- while this function shouldn't
-be called twice, it might be a good idea to place a check here anyway.
+We could do it, but it'd be a pretty big hack. Something like the
+following. Phylink would need to be modified to grab the lock before
+every op and check if the PCS is dead or not. This is of course still
+not optimal, since there's no way to re-attach a PCS once it goes away.
 
-> +	if (!ospassword)
-> +		return -ENOMEM;
-> +
-> +	ospasswordlength = config->maxpwsize;
-> +	rc = plpar_hcall(H_PKS_GEN_PASSWORD,
-> +			 retbuf,
-> +			 consumer,
-> +			 0,
-> +			 virt_to_phys(ospassword),
-> +			 config->maxpwsize);
+IMO a better solution is to use devlink and submit a patch to add
+notifications which the MAC driver can register for. That way it can
+find out when the PCS goes away and potentially do something about it
+(or just let itself get removed).
 
-Since this hcall can return an error (as we discussed off-list, returns H_IN_USE
-if it is called again without a reboot), perhaps move the assignment to ospassword
-after this call succeeds.
+---
+ drivers/net/pcs/core.c     | 115 +++++++++++++++++++++++++++----------
+ drivers/net/pcs/pcs-lynx.c |  20 +++----
+ include/linux/pcs.h        |  23 +++++++-
+ include/linux/phylink.h    |  19 +-----
+ 4 files changed, 117 insertions(+), 60 deletions(-)
 
-> +
-> +	return pseries_status_to_err(rc);
-> +}
-> +
-> +static int construct_auth(u8 consumer, struct plpks_auth **auth)
-> +{
-> +	pr_debug("max password size is %u\n", config->maxpwsize);
-> +
-> +	if (!auth || consumer > 3)
-> +		return -EINVAL;
-> +
-> +	*auth = kmalloc(struct_size(*auth, password, config->maxpwsize),
-> +			GFP_KERNEL);
-> +	if (!*auth)
-> +		return -ENOMEM;
-> +
-> +	(*auth)->version = 1;
-> +	(*auth)->consumer = consumer;
-> +	(*auth)->rsvd0 = 0;
-> +	(*auth)->rsvd1 = 0;
-> +	if (consumer == PKS_FW_OWNER || consumer == PKS_BOOTLOADER_OWNER) {
-> +		pr_debug("consumer is bootloader or firmware\n");
-> +		(*auth)->passwordlength = 0;
-> +		return 0;
-> +	}
-> +
-> +	(*auth)->passwordlength = (__force __be16)ospasswordlength;
-> +
-> +	memcpy((*auth)->password, ospassword,
-> +	       flex_array_size(*auth, password,
-> +	       (__force u16)((*auth)->passwordlength)));
-> +	(*auth)->passwordlength = cpu_to_be16((__force u16)((*auth)->passwordlength));
-> +
-> +	return 0;
-> +}
-> +
-> +/**
-> + * Label is combination of label attributes + name.
-> + * Label attributes are used internally by kernel and not exposed to the user.
-> + */
-> +static int construct_label(char *component, u8 varos, u8 *name, u16 namelen, u8 **label)
-> +{
-> +	int varlen;
-> +	int len = 0;
-> +	int llen = 0;
-> +	int i;
-> +	int rc = 0;
-> +	u8 labellength = MAX_LABEL_ATTR_SIZE;
-> +
-> +	if (!label)
-> +		return -EINVAL;
-> +
-> +	varlen = namelen + sizeof(struct label_attr);
-> +	*label = kzalloc(varlen, GFP_KERNEL);
-> +
-> +	if (!*label)
-> +		return -ENOMEM;
-> +
-> +	if (component) {
-> +		len = strlen(component);
-> +		memcpy(*label, component, len);
-
-Is component a known size, or checked elsewhere to know this won't overrun?
-
-> +	}
-> +	llen = len;
-> +
-> +	if (component)
-> +		len = 8 - strlen(component);
-> +	else
-> +		len = 8;
-> +
-> +	memset(*label + llen, 0, len);
-> +	llen = llen + len;
-> +
-> +	((*label)[llen]) = 0;
-> +	llen = llen + 1;
-> +
-> +	memcpy(*label + llen, &varos, 1);
-> +	llen = llen + 1;
-> +
-> +	memcpy(*label + llen, &labellength, 1);
-> +	llen = llen + 1;
-> +
-> +	memset(*label + llen, 0, 5);
-> +	llen = llen + 5;
-> +
-> +	memcpy(*label + llen, name, namelen);
-> +	llen = llen + namelen;
-> +
-> +	for (i = 0; i < llen; i++)
-> +		pr_debug("%c", (*label)[i]);
-> +
-> +	rc = llen;
-> +	return rc;
-> +}
-> +
-> +static int _plpks_get_config(void)
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = {0};
-> +	int rc;
-> +	size_t size = sizeof(struct plpks_config);
-> +
-> +	config = kzalloc(size, GFP_KERNEL);
-> +	if (!config)
-> +		return -ENOMEM;
-> +
-> +	rc = plpar_hcall(H_PKS_GET_CONFIG,
-> +			 retbuf,
-> +			 virt_to_phys(config),
-> +			 size);
-> +
-> +	if (rc != H_SUCCESS)
-> +		return pseries_status_to_err(rc);
-> +
-> +	config->rsvd0 = be32_to_cpu((__force __be32)config->rsvd0);
-> +	config->maxpwsize = be16_to_cpu((__force __be16)config->maxpwsize);
-> +	config->maxobjlabelsize = be16_to_cpu((__force __be16)config->maxobjlabelsize);
-> +	config->maxobjsize = be16_to_cpu((__force __be16)config->maxobjsize);
-> +	config->totalsize = be32_to_cpu((__force __be32)config->totalsize);
-> +	config->usedspace = be32_to_cpu((__force __be32)config->usedspace);
-> +	config->supportedpolicies = be32_to_cpu((__force __be32)config->supportedpolicies);
-> +	config->rsvd1 = be64_to_cpu((__force __be64)config->rsvd1);
-> +
-> +	configset = true;
-> +
-> +	return 0;
-> +}
-> +
-> +static int plpks_confirm_object_flushed(u8 *label, u16 labellen)
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = {0};
-> +	int rc;
-> +	u64 timeout = 0;
-> +	struct plpks_auth *auth;
-> +	u8 status;
-> +	int i;
-> +
-> +	rc = construct_auth(PKS_OS_OWNER, &auth);
-> +	if (rc)
-> +		return rc;
-> +
-> +	for (i = 0; i < labellen; i++)
-> +		pr_debug("%02x ", label[i]);
-> +
-> +	do {
-> +		rc = plpar_hcall(H_PKS_CONFIRM_OBJECT_FLUSHED,
-> +				 retbuf,
-> +				 virt_to_phys(auth),
-> +				 virt_to_phys(label),
-> +				 labellen);
-> +
-> +		status = retbuf[0];
-> +		if (rc) {
-> +			pr_info("rc is %d, status is %d\n", rc, status);
-> +			if (rc == H_NOT_FOUND && status == 1)
-> +				rc = 0;
-> +			break;
-> +		}
-> +
-> +		pr_debug("rc is %d, status is %d\n", rc, status);
-> +
-> +		if (!rc && status == 1)
-> +			break;
-> +
-> +		usleep_range(PKS_FLUSH_SLEEP, PKS_FLUSH_SLEEP + PKS_FLUSH_SLEEP_RANGE);
-> +		timeout = timeout + PKS_FLUSH_SLEEP;
-> +		pr_debug("timeout is %llu\n", timeout);
-> +
-> +	} while (timeout < PKS_FLUSH_MAX_TIMEOUT);
-> +
-> +	rc = pseries_status_to_err(rc);
-> +
-> +	kfree(auth);
-> +
-> +	return rc;
-> +}
-> +
-> +int plpks_write_var(struct plpks_var var)
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = {0};
-> +	int rc;
-> +	u8 *label;
-> +	u16 varlen;
-> +	u8 *data = var.data;
-> +	struct plpks_auth *auth;
-> +
-> +	if (!var.component || !data || var.datalen <= 0 ||
-> +	    var.namelen > MAX_NAME_SIZE ||
-> +	    var.datalen > MAX_DATA_SIZE)
-> +		return -EINVAL;
-> +
-> +	if (var.policy & SIGNEDUPDATE)
-> +		return -EINVAL;
-> +
-> +	rc = construct_auth(PKS_OS_OWNER, &auth);
-> +	if (rc)
-> +		return rc;
-> +
-> +	rc = construct_label(var.component, var.os, var.name, var.namelen,
-> +			     &label);
-> +	if (rc <= 0)
-> +		goto out;
-> +
-> +	varlen =  rc;
-> +	pr_debug("Name to be written is of label size %d\n", varlen);
-> +	rc = plpar_hcall(H_PKS_WRITE_OBJECT,
-> +			 retbuf,
-> +			 virt_to_phys(auth),
-> +			 virt_to_phys(label),
-> +			 varlen,
-> +			 var.policy,
-> +			 virt_to_phys(data),
-> +			 var.datalen);
-> +
-> +	if (!rc)
-> +		rc = plpks_confirm_object_flushed(label, varlen);
-> +
-> +	rc = pseries_status_to_err(rc);
-> +	kfree(label);
-> +
-> +out:
-> +	kfree(auth);
-> +
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL(plpks_write_var);
-> +
-> +int plpks_remove_var(char *component, u8 varos, struct plpks_var_name vname)
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = {0};
-> +	int rc;
-> +	u8 *label;
-> +	u16 varlen;
-> +	struct plpks_auth *auth;
-> +
-> +	if (!component || vname.namelen > MAX_NAME_SIZE)
-> +		return -EINVAL;
-> +
-> +	rc = construct_auth(PKS_OS_OWNER, &auth);
-> +	if (rc)
-> +		return rc;
-> +
-> +	rc = construct_label(component, varos, vname.name, vname.namelen, &label);
-> +	if (rc <= 0)
-> +		goto out;
-> +
-> +	varlen = rc;
-> +	pr_debug("Name to be written is of label size %d\n", varlen);
-> +	rc = plpar_hcall(H_PKS_REMOVE_OBJECT,
-> +			 retbuf,
-> +			 virt_to_phys(auth),
-> +			 virt_to_phys(label),
-> +			 varlen);
-> +
-> +	if (!rc)
-> +		rc = plpks_confirm_object_flushed(label, varlen);
-> +
-> +	rc = pseries_status_to_err(rc);
-> +	kfree(label);
-> +
-> +out:
-> +	kfree(auth);
-> +
-> +	return rc;
-> +}
-> +EXPORT_SYMBOL(plpks_remove_var);
-> +
-> +static int plpks_read_var(u8 consumer, struct plpks_var *var)
-> +{
-> +	unsigned long retbuf[PLPAR_HCALL_BUFSIZE] = {0};
-> +	int rc;
-> +	u16 outlen = config->maxobjsize;
-> +	u8 *label;
-> +	u8 *out;
-
-Minor nit: there are three labels in this function with the name "out",
-might be clearer to rename this variable to something like "output" instead.
-
-> +	u16 varlen;
-> +	struct plpks_auth *auth;
-> +
-> +	if (var->namelen > MAX_NAME_SIZE)
-> +		return -EINVAL;
-> +
-> +	rc = construct_auth(PKS_OS_OWNER, &auth);
-> +	if (rc)
-> +		return rc;
-> +
-> +	rc = construct_label(var->component, var->os, var->name, var->namelen,
-> +			     &label);
-> +	if (rc <= 0)
-> +		goto out;
-> +
-> +	varlen = rc;
-> +	pr_debug("Name to be written is of label size %d\n", varlen);
-> +	out = kzalloc(outlen, GFP_KERNEL);
-> +	if (!out)
-> +		goto out1;
-> +
-> +	rc = plpar_hcall(H_PKS_READ_OBJECT,
-> +			 retbuf,
-> +			 virt_to_phys(auth),
-> +			 virt_to_phys(label),
-> +			 varlen,
-> +			 virt_to_phys(out),
-> +			 outlen);
-> +
-> +	if (rc != H_SUCCESS) {
-> +		pr_err("Failed to read %d\n", rc);
-> +		rc = pseries_status_to_err(rc);
-> +		goto out2;
-> +	}
-> +
-> +	if (var->datalen == 0 || var->datalen > retbuf[0])
-> +		var->datalen = retbuf[0];
-> +
-> +	var->data = kzalloc(var->datalen, GFP_KERNEL);
-> +	if (!var->data) {
-> +		rc = -ENOMEM;
-> +		goto out2;
-> +	}
-> +	var->policy = retbuf[1];
-> +
-> +	memcpy(var->data, out, var->datalen);
-> +
-> +out2:
-> +	kfree(out);
-> +
-> +out1:
-> +	kfree(label);
-> +
-> +out:
-> +	kfree(auth);
-> +
-> +	return rc;
-> +}
-> +
-> +int plpks_read_os_var(struct plpks_var *var)
-> +{
-> +	return plpks_read_var(PKS_OS_OWNER, var);
-> +}
-> +EXPORT_SYMBOL(plpks_read_os_var);
-> +
-> +int plpks_read_fw_var(struct plpks_var *var)
-> +{
-> +	return plpks_read_var(PKS_FW_OWNER, var);
-> +}
-> +EXPORT_SYMBOL(plpks_read_fw_var);
-> +
-> +int plpks_read_bootloader_var(struct plpks_var *var)
-> +{
-> +	return plpks_read_var(PKS_BOOTLOADER_OWNER, var);
-> +}
-> +EXPORT_SYMBOL(plpks_read_bootloader_var);
-> +
-> +struct plpks_config *plpks_get_config(void)
-> +{
-> +	if (!configset) {
-> +		if (_plpks_get_config())
-> +			return NULL;
-> +	}
-> +
-> +	return config;
-> +}
-> +EXPORT_SYMBOL(plpks_get_config);
-> +
-> +static __init int pseries_plpks_init(void)
-> +{
-> +	int rc = 0;
-> +
-> +	rc = _plpks_get_config();
-> +
-> +	if (rc) {
-> +		pr_err("Error initializing plpks\n");
-> +		return rc;
-> +	}
-> +
-> +	rc = plpks_gen_password();
-> +	if (rc) {
-> +		if (rc == H_IN_USE) {
-> +			rc = 0;
-> +		} else {
-> +			pr_err("Failed setting password %d\n", rc);
-> +			rc = pseries_status_to_err(rc);
-> +			return rc;
-> +		}
-> +	}
-> +
-> +	pr_info("POWER LPAR Platform Keystore initialized successfully\n");
-> +
-> +	return rc;
-> +}
-> +arch_initcall(pseries_plpks_init);
+diff --git a/drivers/net/pcs/core.c b/drivers/net/pcs/core.c
+index 782a4cdd19b2..46e4168802db 100644
+--- a/drivers/net/pcs/core.c
++++ b/drivers/net/pcs/core.c
+@@ -10,42 +10,83 @@
+ #include <linux/phylink.h>
+ #include <linux/property.h>
+ 
++struct phylink_pcs {
++	struct mutex lock;
++	struct list_head list;
++	struct device *dev;
++	void *priv;
++	const struct phylink_pcs_ops *ops;
++	int refs;
++	bool dead;
++	bool poll;
++};
++
+ static LIST_HEAD(pcs_devices);
+ static DEFINE_MUTEX(pcs_mutex);
+ 
+ /**
+  * pcs_register() - register a new PCS
+- * @pcs: the PCS to register
++ * @init: Initialization data for a new PCS
+  *
+  * Registers a new PCS which can be automatically attached to a phylink.
+  *
+- * Return: 0 on success, or -errno on error
++ * Return: A new PCS, or an error pointer
+  */
+-int pcs_register(struct phylink_pcs *pcs)
++struct phylink_pcs *pcs_register(struct device *dev,
++				 struct pcs_init *init)
+ {
+-	if (!pcs->dev || !pcs->ops)
+-		return -EINVAL;
+-	if (!pcs->ops->pcs_an_restart || !pcs->ops->pcs_config ||
+-	    !pcs->ops->pcs_get_state)
+-		return -EINVAL;
++	struct phylink_pcs *pcs;
+ 
++	if (!init->ops)
++		return ERR_PTR(-EINVAL);
++	if (!init->ops->pcs_an_restart || !init->ops->pcs_config ||
++	    !init->ops->pcs_get_state)
++		return ERR_PTR(-EINVAL);
++
++	pcs = kzalloc(sizeof(*pcs), GFP_KERNEL);
++	if (!pcs)
++		return ERR_PTR(-ENOMEM);
++
++	pcs->dev = dev;
++	pcs->priv = init->priv;
++	pcs->ops = init->ops;
++	pcs->poll = init->poll;
++	pcs->refs = 1;
++	mutex_init(&pcs->lock);
+ 	INIT_LIST_HEAD(&pcs->list);
++
+ 	mutex_lock(&pcs_mutex);
+ 	list_add(&pcs->list, &pcs_devices);
+ 	mutex_unlock(&pcs_mutex);
+-	return 0;
++	return pcs;
+ }
+ EXPORT_SYMBOL_GPL(pcs_register);
+ 
++static void pcs_free(struct phylink_pcs *pcs)
++{
++	int refs;
++
++	refs = --pcs->refs;
++	mutex_unlock(&pcs->lock);
++	if (refs)
++		return;
++
++	WARN_ON(!pcs->dead);
++	mutex_lock(&pcs_mutex);
++	list_del(&pcs->list);
++	mutex_unlock(&pcs_mutex);
++	kfree(pcs);
++}
++
+ /**
+  * pcs_unregister() - unregister a PCS
+  * @pcs: a PCS previously registered with pcs_register()
+  */
+ void pcs_unregister(struct phylink_pcs *pcs)
+ {
+-	mutex_lock(&pcs_mutex);
+-	list_del(&pcs->list);
+-	mutex_unlock(&pcs_mutex);
++	mutex_lock(&pcs->lock);
++	pcs->dead = true;
++	pcs_free(pcs);
+ }
+ EXPORT_SYMBOL_GPL(pcs_unregister);
+ 
+@@ -65,26 +106,25 @@ static void devm_pcs_release(struct device *dev, void *res)
+  *
+  * Return: 0 on success, or -errno on failure
+  */
+-int devm_pcs_register(struct device *dev, struct phylink_pcs *pcs)
++struct phylink_pcs *devm_pcs_register(struct device *dev,
++				      struct pcs_init *init)
+ {
+ 	struct phylink_pcs **pcsp;
+-	int ret;
++	struct phylink_pcs *pcs;
+ 
+ 	pcsp = devres_alloc(devm_pcs_release, sizeof(*pcsp),
+ 			    GFP_KERNEL);
+ 	if (!pcsp)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+-	ret = pcs_register(pcs);
+-	if (ret) {
++	pcs = pcs_register(dev, init);
++	if (IS_ERR(pcs)) {
+ 		devres_free(pcsp);
+-		return ret;
++	} else {
++		*pcsp = pcs;
++		devres_add(dev, pcsp);
+ 	}
+-
+-	*pcsp = pcs;
+-	devres_add(dev, pcsp);
+-
+-	return ret;
++	return pcs;
+ }
+ EXPORT_SYMBOL_GPL(devm_pcs_register);
+ 
+@@ -106,16 +146,20 @@ static struct phylink_pcs *pcs_find(const struct fwnode_handle *fwnode,
+ 
+ 	mutex_lock(&pcs_mutex);
+ 	list_for_each_entry(pcs, &pcs_devices, list) {
+-		if (dev && pcs->dev == dev)
+-			goto out;
+-		if (fwnode && pcs->dev->fwnode == fwnode)
+-			goto out;
++		mutex_lock(&pcs->lock);
++		if (!pcs->dead) {
++			if (dev && pcs->dev == dev)
++				goto out;
++			if (fwnode && pcs->dev->fwnode == fwnode)
++				goto out;
++		}
++		mutex_unlock(&pcs->lock);
+ 	}
+ 	pcs = NULL;
+ 
+ out:
+ 	mutex_unlock(&pcs_mutex);
+-	pr_devel("%s: looking for %pfwf or %s %s...%s found\n", __func__,
++	pr_debug("%s: looking for %pfwf or %s %s...%s found\n", __func__,
+ 		 fwnode, dev ? dev_driver_string(dev) : "(null)",
+ 		 dev ? dev_name(dev) : "(null)", pcs ? " not" : "");
+ 	return pcs;
+@@ -132,10 +176,15 @@ static struct phylink_pcs *pcs_find(const struct fwnode_handle *fwnode,
+  */
+ static struct phylink_pcs *pcs_get_tail(struct phylink_pcs *pcs)
+ {
++	bool got_module;
++
+ 	if (!pcs)
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 
+-	if (!try_module_get(pcs->ops->owner))
++	got_module = try_module_get(pcs->ops->owner);
++	pcs->refs += got_module;
++	mutex_unlock(&pcs->lock);
++	if (!got_module)
+ 		return ERR_PTR(-ENODEV);
+ 	get_device(pcs->dev);
+ 
+@@ -222,5 +271,13 @@ void pcs_put(struct phylink_pcs *pcs)
+ 
+ 	put_device(pcs->dev);
+ 	module_put(pcs->ops->owner);
++	mutex_lock(&pcs->lock);
++	pcs_free(pcs);
+ }
+ EXPORT_SYMBOL_GPL(pcs_put);
++
++void *pcs_get_priv(struct phylink_pcs *pcs)
++{
++	return pcs->priv;
++}
++EXPORT_SYMBOL_GPL(pcs_get_priv);
+diff --git a/drivers/net/pcs/pcs-lynx.c b/drivers/net/pcs/pcs-lynx.c
+index c3e2c4a6fab6..f792f2a7cdf2 100644
+--- a/drivers/net/pcs/pcs-lynx.c
++++ b/drivers/net/pcs/pcs-lynx.c
+@@ -26,7 +26,6 @@
+ #define IF_MODE_HALF_DUPLEX		BIT(4)
+ 
+ struct lynx_pcs {
+-	struct phylink_pcs pcs;
+ 	struct mdio_device *mdio;
+ };
+ 
+@@ -37,8 +36,7 @@ enum sgmii_speed {
+ 	SGMII_SPEED_2500	= 2,
+ };
+ 
+-#define phylink_pcs_to_lynx(pl_pcs) container_of((pl_pcs), struct lynx_pcs, pcs)
+-#define lynx_to_phylink_pcs(lynx) (&(lynx)->pcs)
++#define phylink_pcs_to_lynx(pl_pcs) pcs_get_priv(pl_pcs)
+ 
+ static void lynx_pcs_get_state_usxgmii(struct mdio_device *pcs,
+ 				       struct phylink_link_state *state)
+@@ -318,21 +316,23 @@ static const struct phylink_pcs_ops lynx_pcs_phylink_ops = {
+ static int lynx_pcs_probe(struct mdio_device *mdio)
+ {
+ 	struct device *dev = &mdio->dev;
++	struct phylink_pcs *pcs;
+ 	struct lynx_pcs *lynx;
+-	int ret;
++	struct pcs_init init;
+ 
+ 	lynx = devm_kzalloc(dev, sizeof(*lynx), GFP_KERNEL);
+ 	if (!lynx)
+ 		return -ENOMEM;
+ 
+ 	lynx->mdio = mdio;
+-	lynx->pcs.dev = dev;
+-	lynx->pcs.ops = &lynx_pcs_phylink_ops;
+-	lynx->pcs.poll = true;
++	init.priv = lynx;
++	init.ops = &lynx_pcs_phylink_ops;
++	init.poll = true;
+ 
+-	ret = devm_pcs_register(dev, &lynx->pcs);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "could not register PCS\n");
++	pcs = devm_pcs_register(dev, &init);
++	if (IS_ERR(pcs))
++		return dev_err_probe(dev, PTR_ERR(pcs),
++				     "could not register PCS\n");
+ 	dev_info(dev, "probed\n");
+ 	return 0;
+ }
+diff --git a/include/linux/pcs.h b/include/linux/pcs.h
+index 00e76594e03c..2605603149ec 100644
+--- a/include/linux/pcs.h
++++ b/include/linux/pcs.h
+@@ -6,12 +6,27 @@
+ #ifndef _PCS_H
+ #define _PCS_H
+ 
+-struct phylink_pcs;
+ struct fwnode;
++struct phylink_pcs;
++struct phylink_pcs_ops;
+ 
+-int pcs_register(struct phylink_pcs *pcs);
++/**
++ * struct pcs_init - PCS initialization data
++ * @priv: the device's private data
++ * @ops: a pointer to the &struct phylink_pcs_ops structure
++ * @poll: poll the PCS for link changes
++ */
++struct pcs_init {
++	void *priv;
++	const struct phylink_pcs_ops *ops;
++	bool poll;
++};
++
++struct phylink_pcs *pcs_register(struct device *dev,
++				 struct pcs_init *init);
+ void pcs_unregister(struct phylink_pcs *pcs);
+-int devm_pcs_register(struct device *dev, struct phylink_pcs *pcs);
++struct phylink_pcs *devm_pcs_register(struct device *dev,
++				      struct pcs_init *init);
+ struct phylink_pcs *_pcs_get_by_fwnode(const struct fwnode_handle *fwnode,
+ 				       const char *id, bool optional);
+ struct phylink_pcs *pcs_get_by_provider(const struct device *dev);
+@@ -30,4 +45,6 @@ static inline struct phylink_pcs
+ 	return _pcs_get_by_fwnode(fwnode, id, true);
+ }
+ 
++void *pcs_get_priv(struct phylink_pcs *pcs);
++
+ #endif /* PCS_H */
+diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+index a713e70108a1..864536d1b293 100644
+--- a/include/linux/phylink.h
++++ b/include/linux/phylink.h
+@@ -392,24 +392,7 @@ void mac_link_up(struct phylink_config *config, struct phy_device *phy,
+ 		 int speed, int duplex, bool tx_pause, bool rx_pause);
+ #endif
+ 
+-struct phylink_pcs_ops;
+-
+-/**
+- * struct phylink_pcs - PHYLINK PCS instance
+- * @dev: the device associated with this PCS
+- * @ops: a pointer to the &struct phylink_pcs_ops structure
+- * @list: internal list of PCS devices
+- * @poll: poll the PCS for link changes
+- *
+- * This structure is designed to be embedded within the PCS private data,
+- * and will be passed between phylink and the PCS.
+- */
+-struct phylink_pcs {
+-	struct device *dev;
+-	const struct phylink_pcs_ops *ops;
+-	struct list_head list;
+-	bool poll;
+-};
++struct phylink_pcs;
+ 
+ /**
+  * struct phylink_pcs_ops - MAC PCS operations structure.
+-- 
+2.35.1.1320.gc452695387.dirty
