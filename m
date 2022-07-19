@@ -1,59 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02C857AC24
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 03:22:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15DC57AC25
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 03:22:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LndGZ4b6Tz3drq
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 11:22:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LndHF47Tmz3dwS
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 11:22:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Fuq436nZ;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22b; helo=mail-lj1-x22b.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Fuq436nZ;
+	dkim-atps=neutral
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnJLv6BnQz2xkC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jul 2022 22:39:49 +1000 (AEST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-314-LGKyWH96MHuXfDktH0oilQ-1; Tue, 19 Jul 2022 13:39:43 +0100
-X-MC-Unique: LGKyWH96MHuXfDktH0oilQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.36; Tue, 19 Jul 2022 13:39:42 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.036; Tue, 19 Jul 2022 13:39:42 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Shengjiu Wang' <shengjiu.wang@gmail.com>
-Subject: RE: [PATCH -next 2/5] ASoC: fsl_asrc: force cast the asrc_format type
-Thread-Topic: [PATCH -next 2/5] ASoC: fsl_asrc: force cast the asrc_format
- type
-Thread-Index: AQHYm1RF9VBLG0gK5ky/ItlmeeUnS62FdfSA///0CICAABRvQP//+YgAgAAnNdA=
-Date: Tue, 19 Jul 2022 12:39:42 +0000
-Message-ID: <c9231becb2cd4e2999ec631f9d2171c3@AcuMS.aculab.com>
-References: <1658222864-25378-1-git-send-email-shengjiu.wang@nxp.com>
- <1658222864-25378-3-git-send-email-shengjiu.wang@nxp.com>
- <f2609401c8834e8bbe926200bfc87971@AcuMS.aculab.com>
- <YtaEpf6Cd7KH7wH4@sirena.org.uk>
- <20cfcc8e59a74166846cff028cd2c4e8@AcuMS.aculab.com>
- <CAA+D8AO6P2AcOJ+E97Y1=P72Qa1wjtMGMneWnsP+VcdnCzzYuw@mail.gmail.com>
-In-Reply-To: <CAA+D8AO6P2AcOJ+E97Y1=P72Qa1wjtMGMneWnsP+VcdnCzzYuw@mail.gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnKbW0Gclz3bkQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jul 2022 23:35:50 +1000 (AEST)
+Received: by mail-lj1-x22b.google.com with SMTP id 19so17421042ljz.4
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jul 2022 06:35:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EYhNiV6rjAGveB6cgLaFxeAyijGwg5dPmG8gWNP28+Q=;
+        b=Fuq436nZlp7dZAoFB3v943h3EJy4gkCFmW+Rs+eAk+c1ryPOUgP6YHKDmnmv2i/ekW
+         UmRlgWZigwd5giVcpV7eMeWMaR1EXwJN9LMm2JxpP7SP6X0qQxwT5sdChZzkwJcf4/U8
+         ICppFLw5ZYu7B7+922qgn5i2CwTLyrivcKy7uwUdpXeO6SJ7SJqQlcxr1HLFljhZVHLa
+         u/I3CiGNBCEy0pSEsy7gpwTRk1Qg0//ywOtwLW8LpPd+nLotOzkBDvmzVrl0Crw5+ocg
+         MF8+sNCqu6o8QbEISnNxk/WMBWKXNLbV23sI/D89zLqyL8OX/H+bzxyWc1V5ctB5wMW+
+         c7gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EYhNiV6rjAGveB6cgLaFxeAyijGwg5dPmG8gWNP28+Q=;
+        b=qdi6XZU2pbA82bhj/BPao+dAaQJMxz6qjbNERtkOd/l+YsKYaESJ+u8FUg1mk0sPDa
+         qMZOxBHy8DHkkl2I8vP1BmP3Zb3jgGoGGWo+hEtsTPCn7HPCnX5Da53YwtjUd2dYtEVb
+         5IvY3jnIcWsEfg9w7dQCj9Ae/S08C3//oLPKSW61N4xE8vdymBR1ctKay72sfr8pO/9s
+         mdJod6qMqbulecMzDsPcJrcZd4XlERf8BXrqylaPwRcl9BcV7RonBnpwIyQqNB58S+6I
+         UpxbrLst2pISK5TcevNZ78CzCkzgBAt9L8ANXGREvj4nMR1f6ODRcHj1V5cIopGVLpvs
+         EzWQ==
+X-Gm-Message-State: AJIora9l1cXgBpl0J9FLzDIkoArAp7t4SigHYgiAJ2Z324RI7tLu/TgQ
+	mTdrXes+YJSUtHzUg8IntMsNhbrgeRCvV2XvSEw=
+X-Google-Smtp-Source: AGRyM1vmXYrnAUoLeBfjgLhOeD/rlORVWUN4WB6Qb74COXtswRcn1mUJowJ338W41KearXy+WM031Zyg46JbD2NF9h0=
+X-Received: by 2002:a2e:9941:0:b0:247:dce8:b0ec with SMTP id
+ r1-20020a2e9941000000b00247dce8b0ecmr15228738ljj.404.1658237746962; Tue, 19
+ Jul 2022 06:35:46 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: multipart/alternative;
-	boundary="_000_c9231becb2cd4e2999ec631f9d2171c3AcuMSaculabcom_"
+References: <1658222864-25378-1-git-send-email-shengjiu.wang@nxp.com>
+ <1658222864-25378-3-git-send-email-shengjiu.wang@nxp.com> <f2609401c8834e8bbe926200bfc87971@AcuMS.aculab.com>
+ <YtaEpf6Cd7KH7wH4@sirena.org.uk> <20cfcc8e59a74166846cff028cd2c4e8@AcuMS.aculab.com>
+ <CAA+D8AO6P2AcOJ+E97Y1=P72Qa1wjtMGMneWnsP+VcdnCzzYuw@mail.gmail.com> <c9231becb2cd4e2999ec631f9d2171c3@AcuMS.aculab.com>
+In-Reply-To: <c9231becb2cd4e2999ec631f9d2171c3@AcuMS.aculab.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Tue, 19 Jul 2022 21:35:34 +0800
+Message-ID: <CAA+D8AMTrp3KXpDEtyJbqgbA8feYCvEcWc4CMYY8zYSMgrvW6w@mail.gmail.com>
+Subject: Re: [PATCH -next 2/5] ASoC: fsl_asrc: force cast the asrc_format type
+To: David Laight <David.Laight@aculab.com>
+Content-Type: multipart/alternative; boundary="000000000000dc64d105e4288f7f"
 X-Mailman-Approved-At: Wed, 20 Jul 2022 11:21:17 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,254 +80,405 @@ Cc: "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>, "Xiubo.Lee@gmai
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---_000_c9231becb2cd4e2999ec631f9d2171c3AcuMSaculabcom_
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+--000000000000dc64d105e4288f7f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Z3Jyci4uLiB0b3AtcG9zdGluZyBiZWNhdXNlIG91dGx1Y2sgaXMgcmVhbGx5IHN0dXBpZCA6LSgN
-Cg0KVGhlIGRlZmluaXRpb24gc2VlbXMgdG8gYmU6DQp0eXBlZGVmIGludCBfX2JpdHdpc2U8aHR0
-cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjUuMTktcmM3L0MvaWRlbnQvX19iaXR3aXNl
-PiBzbmRfcGNtX2Zvcm1hdF90PGh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1LjE5
-LXJjNy9DL2lkZW50L3NuZF9wY21fZm9ybWF0X3Q+Ow0KI2RlZmluZSBTTkRSVl9QQ01fRk9STUFU
-X1M4PGh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1LjE5LXJjNy9DL2lkZW50L1NO
-RFJWX1BDTV9GT1JNQVRfUzg+ICAgICgoX19mb3JjZTxodHRwczovL2VsaXhpci5ib290bGluLmNv
-bS9saW51eC92NS4xOS1yYzcvQy9pZGVudC9fX2ZvcmNlPiBzbmRfcGNtX2Zvcm1hdF90PGh0dHBz
-Oi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1LjE5LXJjNy9DL2lkZW50L3NuZF9wY21fZm9y
-bWF0X3Q+KSAwKQ0KI2RlZmluZSBTTkRSVl9QQ01fRk9STUFUX1U4PGh0dHBzOi8vZWxpeGlyLmJv
-b3RsaW4uY29tL2xpbnV4L3Y1LjE5LXJjNy9DL2lkZW50L1NORFJWX1BDTV9GT1JNQVRfVTg+ICAg
-ICgoX19mb3JjZTxodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92NS4xOS1yYzcvQy9p
-ZGVudC9fX2ZvcmNlPiBzbmRfcGNtX2Zvcm1hdF90PGh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29t
-L2xpbnV4L3Y1LjE5LXJjNy9DL2lkZW50L3NuZF9wY21fZm9ybWF0X3Q+KSAxKQ0KI2RlZmluZSBT
-TkRSVl9QQ01fRk9STUFUX1MxNl9MRTxodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92
-NS4xOS1yYzcvQy9pZGVudC9TTkRSVl9QQ01fRk9STUFUX1MxNl9MRT4gICAgICAgICgoX19mb3Jj
-ZTxodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92NS4xOS1yYzcvQy9pZGVudC9fX2Zv
-cmNlPiBzbmRfcGNtX2Zvcm1hdF90PGh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1
-LjE5LXJjNy9DL2lkZW50L3NuZF9wY21fZm9ybWF0X3Q+KSAyKQ0KLi4uDQooZ29lcyBhd2F5IGFu
-ZCBsb29rcyB1cCBfX2JpdHdJc2UpDQoNCkkgdGhpbmsgSeKAmWQgYWRkOg0KI2RlZmluZSBzbmRf
-cGNtX2Zvcm1hdCh2YWwpICgoX19mb3JjZSBzbmRfcGNtX2Zvcm1hdF90KSh2YWwpKQ0KYW5kIHVz
-ZSB0aGF0IHRvIHJlbW92ZSBtb3N0IG9mIHRoZSBjYXN0cy4NCkJ1dCB0aGUgb25lcyB3aGVyZSB5
-b3UgaGF2ZSAodTMyICopJnh4eCBhcmUgb25seSB2YWxpZCBiZWNhdXNlIHUzMiBhbmQgaW50IGFy
-ZSB0aGUgc2FtZSBzaXplLg0KVGhhdCBkb2VzIHNvcnQgb2YgaGFwcGVuIHRvIGJlIHRydWUsIGJ1
-dCBzb21lb25lIG1pZ2h0IGxvb2sgYXQgYWxsIHRoZSB2YWx1ZXMgYW5kDQpkZWNpZGUgdGhhdCB1
-OCBpcyBiaWcgZW5vdWdoLg0KQWZ0ZXIgd2hpY2ggdGhlIGNvZGUgd2lsbCBzdGlsbCBjb21waWxl
-LCBidXQgdGhlIGRhdGEgYXJlYXMgZ2V0IGNvcnJ1cHRlZC4NClNvIHlvdSByZWFsbHkgbmVlZCB0
-byB1c2UgYSB1MzIg4oCYdGVtcOKAmSB2YXJpYWJsZS4NCg0KSXQgd291bGQgYWxsIGJlIHNsaWdo
-dGx5IGxlc3MgcHJvYmxlbWF0aWMgaWYgdGhlIOKAmGZvcmNl4oCZIGNhc3RzIGNvdWxkIGJlIHNw
-YXJzZSBvbmx5DQooaWUgbm90IHNlZW4gYnkgdGhlIGNvbXBpbGVyKSDigJMgc28gdGhlIGNvbXBp
-bGVyIHdvdWxkIGRvIHRoZSB0eXBlIGNoZWNraW5nLg0KDQogICAgICAgICAgICAgICAgRGF2aWQN
-Cg0KRnJvbTogU2hlbmdqaXUgV2FuZyA8c2hlbmdqaXUud2FuZ0BnbWFpbC5jb20+DQpTZW50OiAx
-OSBKdWx5IDIwMjIgMTI6MDcNClRvOiBEYXZpZCBMYWlnaHQgPERhdmlkLkxhaWdodEBBQ1VMQUIu
-Q09NPg0KQ2M6IE1hcmsgQnJvd24gPGJyb29uaWVAa2VybmVsLm9yZz47IFNoZW5naml1IFdhbmcg
-PHNoZW5naml1LndhbmdAbnhwLmNvbT47IFhpdWJvLkxlZUBnbWFpbC5jb207IGZlc3RldmFtQGdt
-YWlsLmNvbTsgbmljb2xlb3RzdWthQGdtYWlsLmNvbTsgbGdpcmR3b29kQGdtYWlsLmNvbTsgcGVy
-ZXhAcGVyZXguY3o7IHRpd2FpQHN1c2UuY29tOyBhbHNhLWRldmVsQGFsc2EtcHJvamVjdC5vcmc7
-IGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
-b3JnDQpTdWJqZWN0OiBSZTogW1BBVENIIC1uZXh0IDIvNV0gQVNvQzogZnNsX2FzcmM6IGZvcmNl
-IGNhc3QgdGhlIGFzcmNfZm9ybWF0IHR5cGUNCg0KDQoNCk9uIFR1ZSwgSnVsIDE5LCAyMDIyIGF0
-IDY6MzQgUE0gRGF2aWQgTGFpZ2h0IDxEYXZpZC5MYWlnaHRAYWN1bGFiLmNvbTxtYWlsdG86RGF2
-aWQuTGFpZ2h0QGFjdWxhYi5jb20+PiB3cm90ZToNCkZyb206IE1hcmsgQnJvd24NCj4gU2VudDog
-MTkgSnVseSAyMDIyIDExOjE3DQo+DQo+IE9uIFR1ZSwgSnVsIDE5LCAyMDIyIGF0IDEwOjAxOjU0
-QU0gKzAwMDAsIERhdmlkIExhaWdodCB3cm90ZToNCj4gPiBGcm9tOiBTaGVuZ2ppdSBXYW5nDQo+
-DQo+ID4gPiAtIHJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5wLCAiZnNsLGFzcmMtZm9ybWF0
-IiwgJmFzcmMtPmFzcmNfZm9ybWF0KTsNCj4gPiA+ICsgcmV0ID0gb2ZfcHJvcGVydHlfcmVhZF91
-MzIobnAsICJmc2wsYXNyYy1mb3JtYXQiLCAodTMyICopJmFzcmMtPmFzcmNfZm9ybWF0KTsNCj4N
-Cj4gPiBVZ2csIHlvdSByZWFsbHkgc2hvdWxkbid0IG5lZWQgdG8gZG8gdGhhdC4NCj4gPiBJdCBt
-ZWFucyB0aGF0IHNvbWV0aGluZyBpcyBiYWRseSB3cm9uZyBzb21ld2hlcmUuDQo+ID4gQ2FzdGlu
-ZyBwb2ludGVycyB0byBpbnRlZ2VyIHR5cGVzIGlzIGp1c3QgYXNraW5nIGZvciBhIGJ1Zy4NCj4N
-Cj4gVGhhdCdzIGNhc3Rpbmcgb25lIHBvaW50ZXIgdHlwZSB0byBhbm90aGVyIHBvaW50ZXIgdHlw
-ZS4NCg0KSXQgaXMgY2FzdGluZyB0aGUgYWRkcmVzcyBvZiBzb21lIHR5cGUgdG8gYSAndTMyICon
-Lg0KVGhpcyB3aWxsIHRoZW4gYmUgZGVyZWZlcmVuY2VkIGJ5IHRoZSBjYWxsZWQgZnVuY3Rpb24u
-DQpTbyB0aGUgb3JpZ2luYWwgdHlwZSBiZXR0ZXIgYmUgMzIgYml0cy4NCg0KSSdtIGFsc28gZ3Vl
-c3NpbmcgdGhhdCBzcGFyc2Ugd2FzIGNvbXBsYWluaW5nIGFib3V0IGVuZGlhbm5lc3M/DQpJdCBp
-c24ndCBhdCBhbGwgY2xlYXIgdGhhdCB0aGVzZSBjYXN0cyBhY3R1YWxseSBmaXggaXQuDQpUaGUg
-c3BhcnNlIGlzIGNvbXBsYWluaW5nIGFib3V0IHRoZSBzbmRfcGNtX2Zvcm1hdF90IGNhc3QgdG8g
-dTMyL2ludCB0eXBlLg0KDQpUaGUgY29kZSBpbiBpbmNsdWRlL3NvdW5kL3BjbS5oIGFsc28gZG9l
-cyBzdWNoIF9fZm9yY2UgY2FzdC4NCiNkZWZpbmUgX1NORFJWX1BDTV9GTVRCSVQoZm10KSAgICAg
-ICAgICAoMVVMTCA8PCAoX19mb3JjZSBpbnQpU05EUlZfUENNX0ZPUk1BVF8jI2ZtdCkNCg0KVGhl
-IGNoYW5nZSBJIGhhdmUgbWFkZSBkb2VzIG5vdCBjYXVzZSBhbiBpc3N1ZS4NCg0KQmVzdCByZWdh
-cmRzDQpXYW5nIHNoZW5naml1DQoNCihNYXJrOiBZb3UnbGwgYmUgZ2xhZCB0byBoZWFyIHRoYXQg
-dGhlIG9mZmljZSBhaXJjb24gaXMNCmJyb2tlbiBhZ2FpbiAtIHR3byB3ZWVrcyBsZWFkIHRpbWUg
-b24gdGhlIHNwYXJlIHBhcnQuKQ0KDQogICAgICAgIERhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRk
-cmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBN
-SzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg0KLQ0KUmVnaXN0
-ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBL
-ZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKQ0K
---_000_c9231becb2cd4e2999ec631f9d2171c3AcuMSaculabcom_
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: base64
+On Tue, Jul 19, 2022 at 8:39 PM David Laight <David.Laight@aculab.com>
+wrote:
 
-PGh0bWw+PGhlYWQ+DQo8bWV0YSBodHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRl
-eHQvaHRtbDsgY2hhcnNldD11dGYtOCI+DQo8bWV0YSBuYW1lPSJHZW5lcmF0b3IiIGNvbnRlbnQ9
-Ik1pY3Jvc29mdCBXb3JkIDE1IChmaWx0ZXJlZCBtZWRpdW0pIj4NCjxzdHlsZT48IS0tDQovKiBG
-b250IERlZmluaXRpb25zICovDQpAZm9udC1mYWNlDQoJe2ZvbnQtZmFtaWx5OiJDYW1icmlhIE1h
-dGgiOw0KCXBhbm9zZS0xOjIgNCA1IDMgNSA0IDYgMyAyIDQ7fQ0KQGZvbnQtZmFjZQ0KCXtmb250
-LWZhbWlseTpDYWxpYnJpOw0KCXBhbm9zZS0xOjIgMTUgNSAyIDIgMiA0IDMgMiA0O30NCi8qIFN0
-eWxlIERlZmluaXRpb25zICovDQpwLk1zb05vcm1hbCwgbGkuTXNvTm9ybWFsLCBkaXYuTXNvTm9y
-bWFsDQoJe21hcmdpbjowY207DQoJZm9udC1zaXplOjExLjBwdDsNCglmb250LWZhbWlseToiQ2Fs
-aWJyaSIsc2Fucy1zZXJpZjt9DQphOmxpbmssIHNwYW4uTXNvSHlwZXJsaW5rDQoJe21zby1zdHls
-ZS1wcmlvcml0eTo5OTsNCgljb2xvcjpibHVlOw0KCXRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7
-fQ0Kc3Bhbi5FbWFpbFN0eWxlMTgNCgl7bXNvLXN0eWxlLXR5cGU6cGVyc29uYWwtcmVwbHk7DQoJ
-Zm9udC1mYW1pbHk6IkNhbGlicmkiLHNhbnMtc2VyaWY7DQoJY29sb3I6d2luZG93dGV4dDt9DQou
-TXNvQ2hwRGVmYXVsdA0KCXttc28tc3R5bGUtdHlwZTpleHBvcnQtb25seTsNCglmb250LWZhbWls
-eToiQ2FsaWJyaSIsc2Fucy1zZXJpZjsNCgltc28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUzt9DQpA
-cGFnZSBXb3JkU2VjdGlvbjENCgl7c2l6ZTo2MTIuMHB0IDc5Mi4wcHQ7DQoJbWFyZ2luOjcyLjBw
-dCA3Mi4wcHQgNzIuMHB0IDcyLjBwdDt9DQpkaXYuV29yZFNlY3Rpb24xDQoJe3BhZ2U6V29yZFNl
-Y3Rpb24xO30NCi0tPjwvc3R5bGU+PCEtLVtpZiBndGUgbXNvIDldPjx4bWw+DQo8bzpzaGFwZWRl
-ZmF1bHRzIHY6ZXh0PSJlZGl0IiBzcGlkbWF4PSIxMDI2IiAvPg0KPC94bWw+PCFbZW5kaWZdLS0+
-PCEtLVtpZiBndGUgbXNvIDldPjx4bWw+DQo8bzpzaGFwZWxheW91dCB2OmV4dD0iZWRpdCI+DQo8
-bzppZG1hcCB2OmV4dD0iZWRpdCIgZGF0YT0iMSIgLz4NCjwvbzpzaGFwZWxheW91dD48L3htbD48
-IVtlbmRpZl0tLT4NCjwvaGVhZD48Ym9keSBsYW5nPSJFTi1HQiIgbGluaz0iYmx1ZSIgdmxpbms9
-InB1cnBsZSIgc3R5bGU9IndvcmQtd3JhcDpicmVhay13b3JkIj4NCjxkaXYgY2xhc3M9IldvcmRT
-ZWN0aW9uMSI+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWZhcmVhc3Qt
-bGFuZ3VhZ2U6RU4tVVMiPmdycnIuLi4gdG9wLXBvc3RpbmcgYmVjYXVzZSBvdXRsdWNrIGlzIHJl
-YWxseSBzdHVwaWQgOi0oPG86cD48L286cD48L3NwYW4+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1h
-bCI+PHNwYW4gc3R5bGU9Im1zby1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj48bzpwPiZuYnNwOzwv
-bzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWZh
-cmVhc3QtbGFuZ3VhZ2U6RU4tVVMiPlRoZSBkZWZpbml0aW9uIHNlZW1zIHRvIGJlOjxvOnA+PC9v
-OnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJmb250LXNp
-emU6MTAuMHB0O2ZvbnQtZmFtaWx5OiZxdW90O0NvdXJpZXIgTmV3JnF1b3Q7Ij50eXBlZGVmIGlu
-dA0KPGEgaHJlZj0iaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjUuMTktcmM3L0Mv
-aWRlbnQvX19iaXR3aXNlIj5fX2JpdHdpc2U8L2E+DQo8YSBocmVmPSJodHRwczovL2VsaXhpci5i
-b290bGluLmNvbS9saW51eC92NS4xOS1yYzcvQy9pZGVudC9zbmRfcGNtX2Zvcm1hdF90Ij5zbmRf
-cGNtX2Zvcm1hdF90PC9hPjs8bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9y
-bWFsIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOjEwLjBwdDtmb250LWZhbWlseTomcXVvdDtDb3Vy
-aWVyIE5ldyZxdW90OyI+I2RlZmluZQ0KPGEgaHJlZj0iaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5j
-b20vbGludXgvdjUuMTktcmM3L0MvaWRlbnQvU05EUlZfUENNX0ZPUk1BVF9TOCI+DQpTTkRSVl9Q
-Q01fRk9STUFUX1M4PC9hPiZuYnNwOyZuYnNwOyZuYnNwOyAoKDxhIGhyZWY9Imh0dHBzOi8vZWxp
-eGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1LjE5LXJjNy9DL2lkZW50L19fZm9yY2UiPl9fZm9yY2U8
-L2E+DQo8YSBocmVmPSJodHRwczovL2VsaXhpci5ib290bGluLmNvbS9saW51eC92NS4xOS1yYzcv
-Qy9pZGVudC9zbmRfcGNtX2Zvcm1hdF90Ij5zbmRfcGNtX2Zvcm1hdF90PC9hPikgMCk8bzpwPjwv
-bzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0iZm9udC1z
-aXplOjEwLjBwdDtmb250LWZhbWlseTomcXVvdDtDb3VyaWVyIE5ldyZxdW90OyI+I2RlZmluZQ0K
-PGEgaHJlZj0iaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20vbGludXgvdjUuMTktcmM3L0MvaWRl
-bnQvU05EUlZfUENNX0ZPUk1BVF9VOCI+DQpTTkRSVl9QQ01fRk9STUFUX1U4PC9hPiZuYnNwOyZu
-YnNwOyZuYnNwOyAoKDxhIGhyZWY9Imh0dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1
-LjE5LXJjNy9DL2lkZW50L19fZm9yY2UiPl9fZm9yY2U8L2E+DQo8YSBocmVmPSJodHRwczovL2Vs
-aXhpci5ib290bGluLmNvbS9saW51eC92NS4xOS1yYzcvQy9pZGVudC9zbmRfcGNtX2Zvcm1hdF90
-Ij5zbmRfcGNtX2Zvcm1hdF90PC9hPikgMSk8bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFz
-cz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOjEwLjBwdDtmb250LWZhbWlseTom
-cXVvdDtDb3VyaWVyIE5ldyZxdW90OyI+I2RlZmluZQ0KPGEgaHJlZj0iaHR0cHM6Ly9lbGl4aXIu
-Ym9vdGxpbi5jb20vbGludXgvdjUuMTktcmM3L0MvaWRlbnQvU05EUlZfUENNX0ZPUk1BVF9TMTZf
-TEUiPg0KU05EUlZfUENNX0ZPUk1BVF9TMTZfTEU8L2E+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7ICgoPGEgaHJlZj0iaHR0cHM6Ly9lbGl4aXIuYm9vdGxpbi5jb20v
-bGludXgvdjUuMTktcmM3L0MvaWRlbnQvX19mb3JjZSI+X19mb3JjZTwvYT4NCjxhIGhyZWY9Imh0
-dHBzOi8vZWxpeGlyLmJvb3RsaW4uY29tL2xpbnV4L3Y1LjE5LXJjNy9DL2lkZW50L3NuZF9wY21f
-Zm9ybWF0X3QiPnNuZF9wY21fZm9ybWF0X3Q8L2E+KSAyKTxvOnA+PC9vOnA+PC9zcGFuPjwvcD4N
-CjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6MTAuMHB0O2ZvbnQt
-ZmFtaWx5OiZxdW90O0NvdXJpZXIgTmV3JnF1b3Q7Ij4uLi48bzpwPjwvbzpwPjwvc3Bhbj48L3A+
-DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWZhcmVhc3QtbGFuZ3VhZ2U6
-RU4tVVMiPihnb2VzIGF3YXkgYW5kIGxvb2tzIHVwIF9fYml0d0lzZSk8bzpwPjwvbzpwPjwvc3Bh
-bj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWZhcmVhc3QtbGFu
-Z3VhZ2U6RU4tVVMiPjxvOnA+Jm5ic3A7PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29O
-b3JtYWwiPjxzcGFuIHN0eWxlPSJtc28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+SSB0aGluayBJ
-4oCZZCBhZGQ6PG86cD48L286cD48L3NwYW4+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNw
-YW4gc3R5bGU9Im1zby1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj4jZGVmaW5lIHNuZF9wY21fZm9y
-bWF0KHZhbCkgKChfX2ZvcmNlIHNuZF9wY21fZm9ybWF0X3QpKHZhbCkpPG86cD48L286cD48L3Nw
-YW4+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9Im1zby1mYXJlYXN0LWxh
-bmd1YWdlOkVOLVVTIj5hbmQgdXNlIHRoYXQgdG8gcmVtb3ZlIG1vc3Qgb2YgdGhlIGNhc3RzLjxv
-OnA+PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJt
-c28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+QnV0IHRoZSBvbmVzIHdoZXJlIHlvdSBoYXZlICh1
-MzIgKikmYW1wO3h4eCBhcmUgb25seSB2YWxpZCBiZWNhdXNlIHUzMiBhbmQgaW50IGFyZSB0aGUg
-c2FtZSBzaXplLjxvOnA+PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxz
-cGFuIHN0eWxlPSJtc28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+VGhhdCBkb2VzIHNvcnQgb2Yg
-aGFwcGVuIHRvIGJlIHRydWUsIGJ1dCBzb21lb25lIG1pZ2h0IGxvb2sgYXQgYWxsIHRoZSB2YWx1
-ZXMgYW5kPG86cD48L286cD48L3NwYW4+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4g
-c3R5bGU9Im1zby1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj5kZWNpZGUgdGhhdCB1OCBpcyBiaWcg
-ZW5vdWdoLjxvOnA+PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFu
-IHN0eWxlPSJtc28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+QWZ0ZXIgd2hpY2ggdGhlIGNvZGUg
-d2lsbCBzdGlsbCBjb21waWxlLCBidXQgdGhlIGRhdGEgYXJlYXMgZ2V0IGNvcnJ1cHRlZC48bzpw
-PjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNv
-LWZhcmVhc3QtbGFuZ3VhZ2U6RU4tVVMiPlNvIHlvdSByZWFsbHkgbmVlZCB0byB1c2UgYSB1MzIg
-4oCYdGVtcOKAmSB2YXJpYWJsZS48bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNv
-Tm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWZhcmVhc3QtbGFuZ3VhZ2U6RU4tVVMiPjxvOnA+Jm5i
-c3A7PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJt
-c28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+SXQgd291bGQgYWxsIGJlIHNsaWdodGx5IGxlc3Mg
-cHJvYmxlbWF0aWMgaWYgdGhlIOKAmGZvcmNl4oCZIGNhc3RzIGNvdWxkIGJlIHNwYXJzZSBvbmx5
-PG86cD48L286cD48L3NwYW4+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9
-Im1zby1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj4oaWUgbm90IHNlZW4gYnkgdGhlIGNvbXBpbGVy
-KSDigJMgc28gdGhlIGNvbXBpbGVyIHdvdWxkIGRvIHRoZSB0eXBlIGNoZWNraW5nLjxvOnA+PC9v
-OnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJtc28tZmFy
-ZWFzdC1sYW5ndWFnZTpFTi1VUyI+PG86cD4mbmJzcDs8L286cD48L3NwYW4+PC9wPg0KPHAgY2xh
-c3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9Im1zby1mYXJlYXN0LWxhbmd1YWdlOkVOLVVTIj4m
-bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
-cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgRGF2aWQ8bzpwPjwvbzpwPjwvc3Bhbj48
-L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0ibXNvLWZhcmVhc3QtbGFuZ3Vh
-Z2U6RU4tVVMiPjxvOnA+Jm5ic3A7PC9vOnA+PC9zcGFuPjwvcD4NCjxkaXYgc3R5bGU9ImJvcmRl
-cjpub25lO2JvcmRlci1sZWZ0OnNvbGlkIGJsdWUgMS41cHQ7cGFkZGluZzowY20gMGNtIDBjbSA0
-LjBwdCI+DQo8ZGl2Pg0KPGRpdiBzdHlsZT0iYm9yZGVyOm5vbmU7Ym9yZGVyLXRvcDpzb2xpZCAj
-RTFFMUUxIDEuMHB0O3BhZGRpbmc6My4wcHQgMGNtIDBjbSAwY20iPg0KPHAgY2xhc3M9Ik1zb05v
-cm1hbCI+PGI+PHNwYW4gbGFuZz0iRU4tVVMiPkZyb206PC9zcGFuPjwvYj48c3BhbiBsYW5nPSJF
-Ti1VUyI+IFNoZW5naml1IFdhbmcgJmx0O3NoZW5naml1LndhbmdAZ21haWwuY29tJmd0Ow0KPGJy
-Pg0KPGI+U2VudDo8L2I+IDE5IEp1bHkgMjAyMiAxMjowNzxicj4NCjxiPlRvOjwvYj4gRGF2aWQg
-TGFpZ2h0ICZsdDtEYXZpZC5MYWlnaHRAQUNVTEFCLkNPTSZndDs8YnI+DQo8Yj5DYzo8L2I+IE1h
-cmsgQnJvd24gJmx0O2Jyb29uaWVAa2VybmVsLm9yZyZndDs7IFNoZW5naml1IFdhbmcgJmx0O3No
-ZW5naml1LndhbmdAbnhwLmNvbSZndDs7IFhpdWJvLkxlZUBnbWFpbC5jb207IGZlc3RldmFtQGdt
-YWlsLmNvbTsgbmljb2xlb3RzdWthQGdtYWlsLmNvbTsgbGdpcmR3b29kQGdtYWlsLmNvbTsgcGVy
-ZXhAcGVyZXguY3o7IHRpd2FpQHN1c2UuY29tOyBhbHNhLWRldmVsQGFsc2EtcHJvamVjdC5vcmc7
-IGxpbnV4cHBjLWRldkBsaXN0cy5vemxhYnMub3JnOw0KIGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5l
-bC5vcmc8YnI+DQo8Yj5TdWJqZWN0OjwvYj4gUmU6IFtQQVRDSCAtbmV4dCAyLzVdIEFTb0M6IGZz
-bF9hc3JjOiBmb3JjZSBjYXN0IHRoZSBhc3JjX2Zvcm1hdCB0eXBlPG86cD48L286cD48L3NwYW4+
-PC9wPg0KPC9kaXY+DQo8L2Rpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxvOnA+Jm5ic3A7PC9v
-OnA+PC9wPg0KPGRpdj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48bzpwPiZuYnNwOzwv
-bzpwPjwvcD4NCjwvZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PG86cD4mbmJzcDs8L286cD48
-L3A+DQo8ZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPk9uIFR1ZSwgSnVsIDE5LCAy
-MDIyIGF0IDY6MzQgUE0gRGF2aWQgTGFpZ2h0ICZsdDs8YSBocmVmPSJtYWlsdG86RGF2aWQuTGFp
-Z2h0QGFjdWxhYi5jb20iPkRhdmlkLkxhaWdodEBhY3VsYWIuY29tPC9hPiZndDsgd3JvdGU6PG86
-cD48L286cD48L3A+DQo8L2Rpdj4NCjxibG9ja3F1b3RlIHN0eWxlPSJib3JkZXI6bm9uZTtib3Jk
-ZXItbGVmdDpzb2xpZCAjQ0NDQ0NDIDEuMHB0O3BhZGRpbmc6MGNtIDBjbSAwY20gNi4wcHQ7bWFy
-Z2luLWxlZnQ6NC44cHQ7bWFyZ2luLXJpZ2h0OjBjbSI+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIiBz
-dHlsZT0ibWFyZ2luLWJvdHRvbToxMi4wcHQiPkZyb206IE1hcmsgQnJvd248YnI+DQomZ3Q7IFNl
-bnQ6IDE5IEp1bHkgMjAyMiAxMToxNzxicj4NCiZndDsgPGJyPg0KJmd0OyBPbiBUdWUsIEp1bCAx
-OSwgMjAyMiBhdCAxMDowMTo1NEFNICYjNDM7MDAwMCwgRGF2aWQgTGFpZ2h0IHdyb3RlOjxicj4N
-CiZndDsgJmd0OyBGcm9tOiBTaGVuZ2ppdSBXYW5nPGJyPg0KJmd0OyA8YnI+DQomZ3Q7ICZndDsg
-Jmd0OyAtIHJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5wLCAmcXVvdDtmc2wsYXNyYy1mb3Jt
-YXQmcXVvdDssICZhbXA7YXNyYy0mZ3Q7YXNyY19mb3JtYXQpOzxicj4NCiZndDsgJmd0OyAmZ3Q7
-ICYjNDM7IHJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5wLCAmcXVvdDtmc2wsYXNyYy1mb3Jt
-YXQmcXVvdDssICh1MzIgKikmYW1wO2FzcmMtJmd0O2FzcmNfZm9ybWF0KTs8YnI+DQomZ3Q7IDxi
-cj4NCiZndDsgJmd0OyBVZ2csIHlvdSByZWFsbHkgc2hvdWxkbid0IG5lZWQgdG8gZG8gdGhhdC48
-YnI+DQomZ3Q7ICZndDsgSXQgbWVhbnMgdGhhdCBzb21ldGhpbmcgaXMgYmFkbHkgd3Jvbmcgc29t
-ZXdoZXJlLjxicj4NCiZndDsgJmd0OyBDYXN0aW5nIHBvaW50ZXJzIHRvIGludGVnZXIgdHlwZXMg
-aXMganVzdCBhc2tpbmcgZm9yIGEgYnVnLjxicj4NCiZndDsgPGJyPg0KJmd0OyBUaGF0J3MgY2Fz
-dGluZyBvbmUgcG9pbnRlciB0eXBlIHRvIGFub3RoZXIgcG9pbnRlciB0eXBlLjxicj4NCjxicj4N
-Ckl0IGlzIGNhc3RpbmcgdGhlIGFkZHJlc3Mgb2Ygc29tZSB0eXBlIHRvIGEgJ3UzMiAqJy48YnI+
-DQpUaGlzIHdpbGwgdGhlbiBiZSBkZXJlZmVyZW5jZWQgYnkgdGhlIGNhbGxlZCBmdW5jdGlvbi48
-YnI+DQpTbyB0aGUgb3JpZ2luYWwgdHlwZSBiZXR0ZXIgYmUgMzIgYml0cy48YnI+DQo8YnI+DQpJ
-J20gYWxzbyBndWVzc2luZyB0aGF0IHNwYXJzZSB3YXMgY29tcGxhaW5pbmcgYWJvdXQgZW5kaWFu
-bmVzcz88YnI+DQpJdCBpc24ndCBhdCBhbGwgY2xlYXIgdGhhdCB0aGVzZSBjYXN0cyBhY3R1YWxs
-eSBmaXggaXQuPG86cD48L286cD48L3A+DQo8L2Jsb2NrcXVvdGU+DQo8ZGl2Pg0KPHAgY2xhc3M9
-Ik1zb05vcm1hbCI+VGhlIHNwYXJzZSBpcyBjb21wbGFpbmluZyBhYm91dCB0aGUmbmJzcDtzbmRf
-cGNtX2Zvcm1hdF90IGNhc3QgdG8gdTMyL2ludCB0eXBlLjxvOnA+PC9vOnA+PC9wPg0KPC9kaXY+
-DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PG86cD4mbmJzcDs8L286cD48L3A+DQo8L2Rp
-dj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj5UaGUgY29kZSBpbiZuYnNwO2luY2x1ZGUv
-c291bmQvcGNtLmggYWxzbyBkb2VzIHN1Y2ggX19mb3JjZSBjYXN0LjxvOnA+PC9vOnA+PC9wPg0K
-PC9kaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+I2RlZmluZSBfU05EUlZfUENNX0ZN
-VEJJVChmbXQpICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsoMVVMTCAmbHQ7Jmx0
-OyAoX19mb3JjZSBpbnQpU05EUlZfUENNX0ZPUk1BVF8jI2ZtdCk8bzpwPjwvbzpwPjwvcD4NCjwv
-ZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxvOnA+Jm5ic3A7PC9vOnA+PC9wPg0K
-PC9kaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+VGhlIGNoYW5nZSBJIGhhdmUgbWFk
-ZSBkb2VzIG5vdCBjYXVzZSBhbiBpc3N1ZS4mbmJzcDsmbmJzcDs8bzpwPjwvbzpwPjwvcD4NCjwv
-ZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPiZuYnNwOzxvOnA+PC9vOnA+PC9wPg0K
-PC9kaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+QmVzdCByZWdhcmRzPG86cD48L286
-cD48L3A+DQo8L2Rpdj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj5XYW5nIHNoZW5naml1
-PG86cD48L286cD48L3A+DQo8L2Rpdj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj4mbmJz
-cDs8bzpwPjwvbzpwPjwvcD4NCjwvZGl2Pg0KPGJsb2NrcXVvdGUgc3R5bGU9ImJvcmRlcjpub25l
-O2JvcmRlci1sZWZ0OnNvbGlkICNDQ0NDQ0MgMS4wcHQ7cGFkZGluZzowY20gMGNtIDBjbSA2LjBw
-dDttYXJnaW4tbGVmdDo0LjhwdDttYXJnaW4tcmlnaHQ6MGNtIj4NCjxwIGNsYXNzPSJNc29Ob3Jt
-YWwiIHN0eWxlPSJtYXJnaW4tYm90dG9tOjEyLjBwdCI+KE1hcms6IFlvdSdsbCBiZSBnbGFkIHRv
-IGhlYXIgdGhhdCB0aGUgb2ZmaWNlIGFpcmNvbiBpczxicj4NCmJyb2tlbiBhZ2FpbiAtIHR3byB3
-ZWVrcyBsZWFkIHRpbWUgb24gdGhlIHNwYXJlIHBhcnQuKTxicj4NCjxicj4NCiZuYnNwOyAmbmJz
-cDsgJm5ic3A7ICZuYnNwOyBEYXZpZDxicj4NCjxicj4NCi08YnI+DQpSZWdpc3RlcmVkIEFkZHJl
-c3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsx
-IDFQVCwgVUs8YnI+DQpSZWdpc3RyYXRpb24gTm86IDEzOTczODYgKFdhbGVzKTxvOnA+PC9vOnA+
-PC9wPg0KPC9ibG9ja3F1b3RlPg0KPC9kaXY+DQo8L2Rpdj4NCjwvZGl2Pg0KPC9kaXY+DQoNCg0K
-PGJyPjxicj48ZGl2PjxzcGFuIHN0eWxlPSJjb2xvcjojNDg0ODMwO2ZvbnQtZmFtaWx5OlRhaG9t
-YTtmb250LXNpemU6eHgtc21hbGwiPlJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxl
-eSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSzxicj5SZWdpc3Ry
-YXRpb24gTm86IDEzOTczODYgKFdhbGVzKTwvc3Bhbj48L2Rpdj4NCjxkaXY+DQo8cD48c3BhbiBz
-dHlsZT0iY29sb3I6IzAwODAwMDtmb250LWZhbWlseTpBcmlhbCI+PHNwYW4gc3R5bGU9ImZvbnQt
-c2l6ZTp4eC1zbWFsbCI+PHNwYW4gc3R5bGU9ImZvbnQtZmFtaWx5OldlYmRpbmdzIj5QIDwvc3Bh
-bj48c3Ryb25nPlBsZWFzZSBjb25zaWRlciB0aGUgZW52aXJvbm1lbnQgYW5kIGRvbid0IHByaW50
-IHRoaXMgZS1tYWlsIHVubGVzcyB5b3UgcmVhbGx5IG5lZWQgdG88L3N0cm9uZz48L3NwYW4+PC9z
-cGFuPjwvcD4NCjwvZGl2PjwvYm9keT48L2h0bWw+DQo=
---_000_c9231becb2cd4e2999ec631f9d2171c3AcuMSaculabcom_--
+> grrr... top-posting because outluck is really stupid :-(
+>
+>
+>
+> The definition seems to be:
+>
+> typedef int __bitwise
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/__bitwise>
+> snd_pcm_format_t
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_format_t>;
+>
+> #define SNDRV_PCM_FORMAT_S8
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/SNDRV_PCM_FORMAT_S8>
+> ((__force <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/__force>
+> snd_pcm_format_t
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_format_t>) 0)
+>
+> #define SNDRV_PCM_FORMAT_U8
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/SNDRV_PCM_FORMAT_U8>
+> ((__force <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/__force>
+> snd_pcm_format_t
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_format_t>) 1)
+>
+> #define SNDRV_PCM_FORMAT_S16_LE
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/SNDRV_PCM_FORMAT_S16_=
+LE>
+> ((__force <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/__force>
+> snd_pcm_format_t
+> <https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_format_t>) 2)
+>
+> ...
+>
+> (goes away and looks up __bitwIse)
+>
+>
+>
+> I think I=E2=80=99d add:
+>
+> #define snd_pcm_format(val) ((__force snd_pcm_format_t)(val))
+>
 
+Where is this definition? Which header file?
+Thanks.
+
+Best regards
+Wang Shengjiu
+
+> and use that to remove most of the casts.
+>
+But the ones where you have (u32 *)&xxx are only valid because u32 and int
+> are the same size.
+>
+> That does sort of happen to be true, but someone might look at all the
+> values and
+>
+> decide that u8 is big enough.
+>
+> After which the code will still compile, but the data areas get corrupted=
+.
+>
+> So you really need to use a u32 =E2=80=98temp=E2=80=99 variable.
+>
+>
+>
+> It would all be slightly less problematic if the =E2=80=98force=E2=80=99 =
+casts could be
+> sparse only
+>
+> (ie not seen by the compiler) =E2=80=93 so the compiler would do the type=
+ checking.
+>
+>
+>
+>                 David
+>
+>
+>
+> *From:* Shengjiu Wang <shengjiu.wang@gmail.com>
+> *Sent:* 19 July 2022 12:07
+> *To:* David Laight <David.Laight@ACULAB.COM>
+> *Cc:* Mark Brown <broonie@kernel.org>; Shengjiu Wang <
+> shengjiu.wang@nxp.com>; Xiubo.Lee@gmail.com; festevam@gmail.com;
+> nicoleotsuka@gmail.com; lgirdwood@gmail.com; perex@perex.cz;
+> tiwai@suse.com; alsa-devel@alsa-project.org; linuxppc-dev@lists.ozlabs.or=
+g;
+> linux-kernel@vger.kernel.org
+> *Subject:* Re: [PATCH -next 2/5] ASoC: fsl_asrc: force cast the
+> asrc_format type
+>
+>
+>
+>
+>
+>
+>
+> On Tue, Jul 19, 2022 at 6:34 PM David Laight <David.Laight@aculab.com>
+> wrote:
+>
+> From: Mark Brown
+> > Sent: 19 July 2022 11:17
+> >
+> > On Tue, Jul 19, 2022 at 10:01:54AM +0000, David Laight wrote:
+> > > From: Shengjiu Wang
+> >
+> > > > - ret =3D of_property_read_u32(np, "fsl,asrc-format",
+> &asrc->asrc_format);
+> > > > + ret =3D of_property_read_u32(np, "fsl,asrc-format", (u32
+> *)&asrc->asrc_format);
+> >
+> > > Ugg, you really shouldn't need to do that.
+> > > It means that something is badly wrong somewhere.
+> > > Casting pointers to integer types is just asking for a bug.
+> >
+> > That's casting one pointer type to another pointer type.
+>
+> It is casting the address of some type to a 'u32 *'.
+> This will then be dereferenced by the called function.
+> So the original type better be 32 bits.
+>
+> I'm also guessing that sparse was complaining about endianness?
+> It isn't at all clear that these casts actually fix it.
+>
+> The sparse is complaining about the snd_pcm_format_t cast to u32/int type=
+.
+>
+>
+>
+> The code in include/sound/pcm.h also does such __force cast.
+>
+> #define _SNDRV_PCM_FMTBIT(fmt)          (1ULL << (__force
+> int)SNDRV_PCM_FORMAT_##fmt)
+>
+>
+>
+> The change I have made does not cause an issue.
+>
+>
+>
+> Best regards
+>
+> Wang shengjiu
+>
+>
+>
+> (Mark: You'll be glad to hear that the office aircon is
+> broken again - two weeks lead time on the spare part.)
+>
+>         David
+>
+> -
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1
+> 1PT, UK
+> Registration No: 1397386 (Wales)
+>
+>
+>
+> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1
+> 1PT, UK
+> Registration No: 1397386 (Wales)
+>
+> P *Please consider the environment and don't print this e-mail unless you
+> really need to*
+>
+
+--000000000000dc64d105e4288f7f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Jul 19, 2022 at 8:39 PM David=
+ Laight &lt;<a href=3D"mailto:David.Laight@aculab.com">David.Laight@aculab.=
+com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x">
+
+
+
+<div lang=3D"EN-GB" style=3D"overflow-wrap: break-word;">
+<div class=3D"gmail-m_3615319770514432570WordSection1">
+<p class=3D"MsoNormal"><span>grrr... top-posting because outluck is really =
+stupid :-(<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span><u></u>=C2=A0<u></u></span></p>
+<p class=3D"MsoNormal"><span>The definition seems to be:<u></u><u></u></spa=
+n></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;font-family:&quot;Cour=
+ier New&quot;">typedef int
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/__bitwise" ta=
+rget=3D"_blank">__bitwise</a>
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_forma=
+t_t" target=3D"_blank">snd_pcm_format_t</a>;<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;font-family:&quot;Cour=
+ier New&quot;">#define
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/SNDRV_PCM_FOR=
+MAT_S8" target=3D"_blank">
+SNDRV_PCM_FORMAT_S8</a>=C2=A0=C2=A0=C2=A0 ((<a href=3D"https://elixir.bootl=
+in.com/linux/v5.19-rc7/C/ident/__force" target=3D"_blank">__force</a>
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_forma=
+t_t" target=3D"_blank">snd_pcm_format_t</a>) 0)<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;font-family:&quot;Cour=
+ier New&quot;">#define
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/SNDRV_PCM_FOR=
+MAT_U8" target=3D"_blank">
+SNDRV_PCM_FORMAT_U8</a>=C2=A0=C2=A0=C2=A0 ((<a href=3D"https://elixir.bootl=
+in.com/linux/v5.19-rc7/C/ident/__force" target=3D"_blank">__force</a>
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_forma=
+t_t" target=3D"_blank">snd_pcm_format_t</a>) 1)<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;font-family:&quot;Cour=
+ier New&quot;">#define
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/SNDRV_PCM_FOR=
+MAT_S16_LE" target=3D"_blank">
+SNDRV_PCM_FORMAT_S16_LE</a>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ((<a =
+href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/__force" target=
+=3D"_blank">__force</a>
+<a href=3D"https://elixir.bootlin.com/linux/v5.19-rc7/C/ident/snd_pcm_forma=
+t_t" target=3D"_blank">snd_pcm_format_t</a>) 2)<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10pt;font-family:&quot;Cour=
+ier New&quot;">...<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span>(goes away and looks up __bitwIse)<u></u><u></=
+u></span></p>
+<p class=3D"MsoNormal"><span><u></u>=C2=A0<u></u></span></p>
+<p class=3D"MsoNormal"><span>I think I=E2=80=99d add:<u></u><u></u></span><=
+/p>
+<p class=3D"MsoNormal"><span>#define snd_pcm_format(val) ((__force snd_pcm_=
+format_t)(val))</span></p></div></div></blockquote><div><br></div><div>Wher=
+e is this definition? Which header file?</div><div>Thanks.</div><div><br></=
+div><div>Best regards</div><div>Wang Shengjiu</div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex"><div lang=3D"EN-GB" style=3D"overflow-wrap: break=
+-word;"><div class=3D"gmail-m_3615319770514432570WordSection1"><p class=3D"=
+MsoNormal"><span><u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span>and use that to remove most of the casts.</spa=
+n>=C2=A0</p></div></div></blockquote><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
+g-left:1ex"><div lang=3D"EN-GB" style=3D"overflow-wrap: break-word;"><div c=
+lass=3D"gmail-m_3615319770514432570WordSection1"><p class=3D"MsoNormal"><sp=
+an><u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span>But the ones where you have (u32 *)&amp;xxx ar=
+e only valid because u32 and int are the same size.<u></u><u></u></span></p=
+>
+<p class=3D"MsoNormal"><span>That does sort of happen to be true, but someo=
+ne might look at all the values and<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span>decide that u8 is big enough.<u></u><u></u></s=
+pan></p>
+<p class=3D"MsoNormal"><span>After which the code will still compile, but t=
+he data areas get corrupted.<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span>So you really need to use a u32 =E2=80=98temp=
+=E2=80=99 variable.<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span><u></u>=C2=A0<u></u></span></p>
+<p class=3D"MsoNormal"><span>It would all be slightly less problematic if t=
+he =E2=80=98force=E2=80=99 casts could be sparse only<u></u><u></u></span><=
+/p>
+<p class=3D"MsoNormal"><span>(ie not seen by the compiler) =E2=80=93 so the=
+ compiler would do the type checking.<u></u><u></u></span></p>
+<p class=3D"MsoNormal"><span><u></u>=C2=A0<u></u></span></p>
+<p class=3D"MsoNormal"><span>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 David<u></u><u></u></span></p=
+>
+<p class=3D"MsoNormal"><span><u></u>=C2=A0<u></u></span></p>
+<div style=3D"border-top:none;border-right:none;border-bottom:none;border-l=
+eft:1.5pt solid blue;padding:0cm 0cm 0cm 4pt">
+<div>
+<div style=3D"border-right:none;border-bottom:none;border-left:none;border-=
+top:1pt solid rgb(225,225,225);padding:3pt 0cm 0cm">
+<p class=3D"MsoNormal"><b><span lang=3D"EN-US">From:</span></b><span lang=
+=3D"EN-US"> Shengjiu Wang &lt;<a href=3D"mailto:shengjiu.wang@gmail.com" ta=
+rget=3D"_blank">shengjiu.wang@gmail.com</a>&gt;
+<br>
+<b>Sent:</b> 19 July 2022 12:07<br>
+<b>To:</b> David Laight &lt;<a href=3D"mailto:David.Laight@ACULAB.COM" targ=
+et=3D"_blank">David.Laight@ACULAB.COM</a>&gt;<br>
+<b>Cc:</b> Mark Brown &lt;<a href=3D"mailto:broonie@kernel.org" target=3D"_=
+blank">broonie@kernel.org</a>&gt;; Shengjiu Wang &lt;<a href=3D"mailto:shen=
+gjiu.wang@nxp.com" target=3D"_blank">shengjiu.wang@nxp.com</a>&gt;; <a href=
+=3D"mailto:Xiubo.Lee@gmail.com" target=3D"_blank">Xiubo.Lee@gmail.com</a>; =
+<a href=3D"mailto:festevam@gmail.com" target=3D"_blank">festevam@gmail.com<=
+/a>; <a href=3D"mailto:nicoleotsuka@gmail.com" target=3D"_blank">nicoleotsu=
+ka@gmail.com</a>; <a href=3D"mailto:lgirdwood@gmail.com" target=3D"_blank">=
+lgirdwood@gmail.com</a>; <a href=3D"mailto:perex@perex.cz" target=3D"_blank=
+">perex@perex.cz</a>; <a href=3D"mailto:tiwai@suse.com" target=3D"_blank">t=
+iwai@suse.com</a>; <a href=3D"mailto:alsa-devel@alsa-project.org" target=3D=
+"_blank">alsa-devel@alsa-project.org</a>; <a href=3D"mailto:linuxppc-dev@li=
+sts.ozlabs.org" target=3D"_blank">linuxppc-dev@lists.ozlabs.org</a>;
+ <a href=3D"mailto:linux-kernel@vger.kernel.org" target=3D"_blank">linux-ke=
+rnel@vger.kernel.org</a><br>
+<b>Subject:</b> Re: [PATCH -next 2/5] ASoC: fsl_asrc: force cast the asrc_f=
+ormat type<u></u><u></u></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+<div>
+<div>
+<p class=3D"MsoNormal">On Tue, Jul 19, 2022 at 6:34 PM David Laight &lt;<a =
+href=3D"mailto:David.Laight@aculab.com" target=3D"_blank">David.Laight@acul=
+ab.com</a>&gt; wrote:<u></u><u></u></p>
+</div>
+<blockquote style=3D"border-top:none;border-right:none;border-bottom:none;b=
+order-left:1pt solid rgb(204,204,204);padding:0cm 0cm 0cm 6pt;margin-left:4=
+.8pt;margin-right:0cm">
+<p class=3D"MsoNormal" style=3D"margin-bottom:12pt">From: Mark Brown<br>
+&gt; Sent: 19 July 2022 11:17<br>
+&gt; <br>
+&gt; On Tue, Jul 19, 2022 at 10:01:54AM +0000, David Laight wrote:<br>
+&gt; &gt; From: Shengjiu Wang<br>
+&gt; <br>
+&gt; &gt; &gt; - ret =3D of_property_read_u32(np, &quot;fsl,asrc-format&quo=
+t;, &amp;asrc-&gt;asrc_format);<br>
+&gt; &gt; &gt; + ret =3D of_property_read_u32(np, &quot;fsl,asrc-format&quo=
+t;, (u32 *)&amp;asrc-&gt;asrc_format);<br>
+&gt; <br>
+&gt; &gt; Ugg, you really shouldn&#39;t need to do that.<br>
+&gt; &gt; It means that something is badly wrong somewhere.<br>
+&gt; &gt; Casting pointers to integer types is just asking for a bug.<br>
+&gt; <br>
+&gt; That&#39;s casting one pointer type to another pointer type.<br>
+<br>
+It is casting the address of some type to a &#39;u32 *&#39;.<br>
+This will then be dereferenced by the called function.<br>
+So the original type better be 32 bits.<br>
+<br>
+I&#39;m also guessing that sparse was complaining about endianness?<br>
+It isn&#39;t at all clear that these casts actually fix it.<u></u><u></u></=
+p>
+</blockquote>
+<div>
+<p class=3D"MsoNormal">The sparse is complaining about the=C2=A0snd_pcm_for=
+mat_t cast to u32/int type.<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">The code in=C2=A0include/sound/pcm.h also does such =
+__force cast.<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">#define _SNDRV_PCM_FMTBIT(fmt) =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0(1ULL &lt;&lt; (__force int)SNDRV_PCM_FORMAT_##fmt)<u></u><u><=
+/u></p>
+</div>
+<div>
+<p class=3D"MsoNormal"><u></u>=C2=A0<u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">The change I have made does not cause an issue.=C2=
+=A0=C2=A0<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">=C2=A0<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Best regards<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">Wang shengjiu<u></u><u></u></p>
+</div>
+<div>
+<p class=3D"MsoNormal">=C2=A0<u></u><u></u></p>
+</div>
+<blockquote style=3D"border-top:none;border-right:none;border-bottom:none;b=
+order-left:1pt solid rgb(204,204,204);padding:0cm 0cm 0cm 6pt;margin-left:4=
+.8pt;margin-right:0cm">
+<p class=3D"MsoNormal" style=3D"margin-bottom:12pt">(Mark: You&#39;ll be gl=
+ad to hear that the office aircon is<br>
+broken again - two weeks lead time on the spare part.)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 David<br>
+<br>
+-<br>
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK<br>
+Registration No: 1397386 (Wales)<u></u><u></u></p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+
+
+<br><br><div><span style=3D"color:rgb(72,72,48);font-family:Tahoma;font-siz=
+e:xx-small">Registered Address Lakeside, Bramley Road, Mount Farm, Milton K=
+eynes, MK1 1PT, UK<br>Registration No: 1397386 (Wales)</span></div>
+<div>
+<p><span style=3D"color:rgb(0,128,0);font-family:Arial"><span style=3D"font=
+-size:xx-small"><span style=3D"font-family:Webdings">P </span><strong>Pleas=
+e consider the environment and don&#39;t print this e-mail unless you reall=
+y need to</strong></span></span></p>
+</div></div>
+</blockquote></div></div>
+
+--000000000000dc64d105e4288f7f--
