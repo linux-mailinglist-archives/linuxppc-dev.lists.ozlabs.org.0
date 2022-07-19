@@ -1,59 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757855795C0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jul 2022 11:06:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41302579688
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jul 2022 11:44:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LnCcZ2xxtz3cjG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jul 2022 19:06:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LnDSq3BrLz3bl6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Jul 2022 19:44:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.160.174; helo=mail-qt1-f174.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnCc33wg2z2xkn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jul 2022 19:05:53 +1000 (AEST)
-Received: by mail-qt1-f174.google.com with SMTP id r2so10578444qta.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jul 2022 02:05:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4BTG+GIfVp80pynNmMgDJXtQXBY7HIBCNVIJqyKZSZY=;
-        b=jshOKr91SRe8fC0wED+GXsi323nIxQBaGgvhlux9D4aNcViZWzFSYf01KJO1c6WHYh
-         3Ex4Werr0SktUy2NO87OY+QSsc88StdLRNuXqxZ2ecCtXVspFent7aMhZJOmmMyBD0Wv
-         2JHbDMXj0P57XtDwGE8/aX0dEa/c0n4a/tT8elY/YbSE1qMIl2mH21pIA91mb13KOsqv
-         y8bseqZWQ4AaI8l5od5xZBQV/Fajm8janqk9f2LgohrLa4uOJaVzCKZk4anMLa3UsBFv
-         OfNP2o2+nkhK7E1BtaFQO+WWSfT2kYF7EpC/wBhI/rGuFdDLVCvNA1drPsP3a5SA6Y8w
-         5r2w==
-X-Gm-Message-State: AJIora99J0DI5q2eg+tHMcDXrh3HWlyWJY2Cm3nlieydKrM35EV4MLSv
-	fxabUzz7LRJqBIvvUjdXTVfcnsoDirXAwA==
-X-Google-Smtp-Source: AGRyM1v9Ms7abpHV9fjOUxMhbtFLWcE31faes9Q6Rk2xjUwqH9QOGjt/Rq6CFoij7KOhGt9rni76Qw==
-X-Received: by 2002:a05:622a:1391:b0:31e:f6b2:d3aa with SMTP id o17-20020a05622a139100b0031ef6b2d3aamr3905927qtk.523.1658221549892;
-        Tue, 19 Jul 2022 02:05:49 -0700 (PDT)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id u7-20020a05620a430700b006af50b6f10csm13669628qko.61.2022.07.19.02.05.49
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Jul 2022 02:05:49 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-31d7db3e6e5so133662327b3.11
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jul 2022 02:05:49 -0700 (PDT)
-X-Received: by 2002:a81:168f:0:b0:31e:6128:247d with SMTP id
- 137-20020a81168f000000b0031e6128247dmr494511yww.383.1658221549285; Tue, 19
- Jul 2022 02:05:49 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220715054224.6583-1-wangborong@cdjrlc.com>
-In-Reply-To: <20220715054224.6583-1-wangborong@cdjrlc.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 19 Jul 2022 11:05:37 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVOF4PTEteRZr4OHYt5ZubUhXCdV=E85pyVr1h=avPkSg@mail.gmail.com>
-Message-ID: <CAMuHMdVOF4PTEteRZr4OHYt5ZubUhXCdV=E85pyVr1h=avPkSg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/ps3: Fix comment typo
-To: Jason Wang <wangborong@cdjrlc.com>
-Content-Type: text/plain; charset="UTF-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnDST6dl7z2xjm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Jul 2022 19:44:23 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9BEF0200C16;
+	Tue, 19 Jul 2022 11:44:19 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 54E22200BFE;
+	Tue, 19 Jul 2022 11:44:19 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 9F8971802204;
+	Tue, 19 Jul 2022 17:44:17 +0800 (+08)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH -next 0/5] ASoC: fsl: Fix sparse warning
+Date: Tue, 19 Jul 2022 17:27:39 +0800
+Message-Id: <1658222864-25378-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,24 +52,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geoff Levand <geoff@infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 18, 2022 at 3:48 PM Jason Wang <wangborong@cdjrlc.com> wrote:
-> The double `when' is duplicated in line 1069, remove one.
->
-> Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+Fix sparse warning
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Shengjiu Wang (5):
+  ASoC: fsl_sai: Don't use plain integer as NULL pointer
+  ASoC: fsl_asrc: force cast the asrc_format type
+  ASoC: fsl-asoc-card: force cast the asrc_format type
+  ASoC: fsl_easrc: use snd_pcm_format_t type for sample_format
+  ASoC: imx-card: use snd_pcm_format_t type for asrc_format
 
-Gr{oetje,eeting}s,
+ sound/soc/fsl/fsl-asoc-card.c | 2 +-
+ sound/soc/fsl/fsl_asrc.c      | 4 ++--
+ sound/soc/fsl/fsl_easrc.c     | 7 ++++---
+ sound/soc/fsl/fsl_easrc.h     | 2 +-
+ sound/soc/fsl/fsl_sai.c       | 2 +-
+ sound/soc/fsl/imx-card.c      | 7 ++++---
+ 6 files changed, 13 insertions(+), 11 deletions(-)
 
-                        Geert
+-- 
+2.34.1
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
