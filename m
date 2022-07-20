@@ -1,64 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA0657BAA2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 17:40:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49CB857BAAF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 17:43:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lp0KN1d5sz3c8X
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 01:40:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lp0NJ1sW6z3dB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 01:43:28 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=fL48WuRK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=iXpffLiJ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::336; helo=mail-wm1-x336.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=irogers@google.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=fL48WuRK;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20210112 header.b=iXpffLiJ;
 	dkim-atps=neutral
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lp0Jf07T2z3cgh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 01:40:17 +1000 (AEST)
-Received: by mail-wm1-x336.google.com with SMTP id c22so2924842wmr.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 08:40:17 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lp0Mh4BD1z2xjm
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 01:42:56 +1000 (AEST)
+Received: by mail-wm1-x32e.google.com with SMTP id x23-20020a05600c179700b003a30e3e7989so1544371wmo.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 08:42:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=BfOYEoaq+RNfeRfiK+P7IRpz2zKNnjNtUDOpewE84TE=;
-        b=fL48WuRKJ2IAhCBtWiy5p2C8r3qQewRFiArnauAI98D5hB9oELk9rDgTgRMJXNni1X
-         OQehJnk9lncoGeR+rFFvsxe2DTAvbcUqvuYq/wb/BDn1pqoz6vP57BCn+SC0MaARCQC5
-         PDGJTin/egktoOc5erIw4qwU3r0Ptad+4yooIygkNlKbfhokV/KFryOp683rc/s+GLKO
-         rrGQQS2HHIAkyMjH89wO5IKNCBVtFpfjjqGk269fH7GnWfooXC73pcy51/kxfZZlsIM4
-         nb5xbJwRbNYrqA3Oi19cgbnPFGL8aeB4D7y3WNY1zlWuPtSsiIKvGbK/kJMHA2U7Wmop
-         S7dQ==
+        bh=iA6H9FbTpi/aYLA06konbtgAlr2/KT50OkDviEcMLbs=;
+        b=iXpffLiJVtdCttiGIiGR476FbgEvncJynZYRRFaKtNnC14Ee9o1jfns2LKphXmangZ
+         EWnyeyPG/xn69I0jb4fcDYQ6YQvz4wlMQ4CzzCaEJdcvlwz6pi2mc6h81eG90tgr88lz
+         /oPzNIOkMX0oapWfl9thXpEQWQRklgF9vE94O74BEc4lqET8GwMOe5xIspX/SG1G81f/
+         7XfOoCBv/Rvt6NXKRXaTE97WV7eUjlcGKl4Nu7YBbXjeSGJaay5eSqAeGCbTSeW5x7YL
+         3Gv7tYShmCX8xv9E6zpZgj/gN9gyStIsWLrBGWi1UigHS002MJ7/oglO2c7XTMT4Ur5M
+         /s1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BfOYEoaq+RNfeRfiK+P7IRpz2zKNnjNtUDOpewE84TE=;
-        b=5AHWeKBXunM8xCUt9GyArzFqxN6JiQRXGEdxsNQ1DpKzvNzWXS4cEx3Mbd5HPTMnft
-         UvgbXw2raXDdzbr2zO8Z2eIZp0fIlaqAaQhe8lCgRNyrWcUXgENmB+DlgFghxHj8+VW2
-         3w3f1SQxaC3HjJV9MCO+dHMbU+y7dE3tCnTpY3ufMKeuKQlWZRGPmTaxNRXa83PLq4G+
-         DRctdqPA1SYT1pxV/hR6d5BHpG58Nauj/uZ27x61pd7bjJTZ31bofYZjSZEpSsoxQdi9
-         QfNVctM+6cVxijBf1A/PfA5b/o4cPBlaGfBwH/S4SQ1QQaT/shkvlyeoekC9Dmx8WQxd
-         Gfyw==
-X-Gm-Message-State: AJIora9bDMUItuMkCPLC8W17AyWEACd9HOLH7XRtHN2X54V+y9+FuPbI
-	ZrMTpPsyY2FS+3NV6QlAy519zJNt35NlXMyIYTHNLA==
-X-Google-Smtp-Source: AGRyM1uhhGBhmz3KpJ9bteLNGojXSu5yv+8KEZtSNw29wVTyF/IXrzAs2AbrAjRpbLI9MKrcihbVTALivoYFVkvde7s=
-X-Received: by 2002:a7b:ce13:0:b0:3a3:102c:23d3 with SMTP id
- m19-20020a7bce13000000b003a3102c23d3mr4361425wmc.67.1658331612893; Wed, 20
- Jul 2022 08:40:12 -0700 (PDT)
+        bh=iA6H9FbTpi/aYLA06konbtgAlr2/KT50OkDviEcMLbs=;
+        b=ldcZls9nXTuV5mh3FEKY6d9YwqRlXSm5Ktaw0DTnFyO77kkaYWNEW39pl+VOqk7BVg
+         RzF3njuozfe+1bX9SjuMabM1vitE34UwhWpXJniWoe/ZtWhoQgXE7KJbMDgy8birqzJ6
+         lmzxxiJEwIEIla5OzNqQNmbfrt7zUxqERKf3WW9NPkOrtDyqt/3ESwlL4g+bNCySQ21t
+         tEKZDcZAwf3BWwo67TC3ttpvVNIgyaRTapk5+v5TJ04PuxNc8VGLesI4qFcSvWLLKWcM
+         BPUa+oixUjzfELmJofz58muedQYS/7Sjb1FEIMI3BqWELsgN/mEGnE9JNvh0kgcPAz5N
+         a6pg==
+X-Gm-Message-State: AJIora+pdZHYW11zKp6UaDTrGLY/7HOBz8uOym/qJEWrSmGMmym06vK9
+	XVG6oEvJIDDFtZjmZaLdrySzBiv/olve8doyfIM/7g==
+X-Google-Smtp-Source: AGRyM1tC/2QEwTNFQazHf5jpM6MANjmu2PBS3k8EZUWqAOG0aiuCYQuwyfqeLE68lKXUayZ2hy32LTejKodIDCILDK0=
+X-Received: by 2002:a7b:c8d3:0:b0:3a2:fe0d:ba2e with SMTP id
+ f19-20020a7bc8d3000000b003a2fe0dba2emr4552680wml.115.1658331771692; Wed, 20
+ Jul 2022 08:42:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220704150514.48816-1-elver@google.com> <20220704150514.48816-13-elver@google.com>
-In-Reply-To: <20220704150514.48816-13-elver@google.com>
+References: <20220704150514.48816-1-elver@google.com> <20220704150514.48816-14-elver@google.com>
+In-Reply-To: <20220704150514.48816-14-elver@google.com>
 From: Ian Rogers <irogers@google.com>
-Date: Wed, 20 Jul 2022 08:40:00 -0700
-Message-ID: <CAP-5=fUK6HfWPLLHtFszEdkv_EVuoxgW88jj7xtpRHM8OGSBmg@mail.gmail.com>
-Subject: Re: [PATCH v3 12/14] perf/hw_breakpoint: Introduce bp_slots_histogram
+Date: Wed, 20 Jul 2022 08:42:39 -0700
+Message-ID: <CAP-5=fX3Ba8pOrnyehzJPfDBMEb-qf0ybj40na0nb4k_KyzeQA@mail.gmail.com>
+Subject: Re: [PATCH v3 13/14] perf/hw_breakpoint: Optimize max_bp_pinned_slots()
+ for CPU-independent task targets
 To: Marco Elver <elver@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,13 +79,64 @@ Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.oz
 
 On Mon, Jul 4, 2022 at 8:07 AM Marco Elver <elver@google.com> wrote:
 >
-> Factor out the existing `atomic_t count[N]` into its own struct called
-> 'bp_slots_histogram', to generalize and make its intent clearer in
-> preparation of reusing elsewhere. The basic idea of bucketing "total
-> uses of N slots" resembles a histogram, so calling it such seems most
-> intuitive.
+> Running the perf benchmark with (note: more aggressive parameters vs.
+> preceding changes, but same 256 CPUs host):
 >
-> No functional change.
+>  | $> perf bench -r 100 breakpoint thread -b 4 -p 128 -t 512
+>  | # Running 'breakpoint/thread' benchmark:
+>  | # Created/joined 100 threads with 4 breakpoints and 128 parallelism
+>  |      Total time: 1.989 [sec]
+>  |
+>  |       38.854160 usecs/op
+>  |     4973.332500 usecs/op/cpu
+>
+>     20.43%  [kernel]       [k] queued_spin_lock_slowpath
+>     18.75%  [kernel]       [k] osq_lock
+>     16.98%  [kernel]       [k] rhashtable_jhash2
+>      8.34%  [kernel]       [k] task_bp_pinned
+>      4.23%  [kernel]       [k] smp_cfm_core_cond
+>      3.65%  [kernel]       [k] bcmp
+>      2.83%  [kernel]       [k] toggle_bp_slot
+>      1.87%  [kernel]       [k] find_next_bit
+>      1.49%  [kernel]       [k] __reserve_bp_slot
+>
+> We can see that a majority of the time is now spent hashing task
+> pointers to index into task_bps_ht in task_bp_pinned().
+>
+> Obtaining the max_bp_pinned_slots() for CPU-independent task targets
+> currently is O(#cpus), and calls task_bp_pinned() for each CPU, even if
+> the result of task_bp_pinned() is CPU-independent.
+>
+> The loop in max_bp_pinned_slots() wants to compute the maximum slots
+> across all CPUs. If task_bp_pinned() is CPU-independent, we can do so by
+> obtaining the max slots across all CPUs and adding task_bp_pinned().
+>
+> To do so in O(1), use a bp_slots_histogram for CPU-pinned slots.
+>
+> After this optimization:
+>
+>  | $> perf bench -r 100 breakpoint thread -b 4 -p 128 -t 512
+>  | # Running 'breakpoint/thread' benchmark:
+>  | # Created/joined 100 threads with 4 breakpoints and 128 parallelism
+>  |      Total time: 1.930 [sec]
+>  |
+>  |       37.697832 usecs/op
+>  |     4825.322500 usecs/op/cpu
+>
+>     19.13%  [kernel]       [k] queued_spin_lock_slowpath
+>     18.21%  [kernel]       [k] rhashtable_jhash2
+>     15.46%  [kernel]       [k] osq_lock
+>      6.27%  [kernel]       [k] toggle_bp_slot
+>      5.91%  [kernel]       [k] task_bp_pinned
+>      5.05%  [kernel]       [k] smp_cfm_core_cond
+>      1.78%  [kernel]       [k] update_sg_lb_stats
+>      1.36%  [kernel]       [k] llist_reverse_order
+>      1.34%  [kernel]       [k] find_next_bit
+>      1.19%  [kernel]       [k] bcmp
+>
+> Suggesting that time spent in task_bp_pinned() has been reduced.
+> However, we're still hashing too much, which will be addressed in the
+> subsequent change.
 >
 > Signed-off-by: Marco Elver <elver@google.com>
 > Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
@@ -96,193 +148,132 @@ Ian
 
 > ---
 > v3:
-> * Also warn in bp_slots_histogram_add() if count goes below 0.
+> * Update hw_breakpoint_is_used() to include global cpu_pinned.
 >
 > v2:
 > * New patch.
 > ---
->  kernel/events/hw_breakpoint.c | 96 +++++++++++++++++++++++------------
->  1 file changed, 63 insertions(+), 33 deletions(-)
+>  kernel/events/hw_breakpoint.c | 57 ++++++++++++++++++++++++++++++++---
+>  1 file changed, 53 insertions(+), 4 deletions(-)
 >
 > diff --git a/kernel/events/hw_breakpoint.c b/kernel/events/hw_breakpoint.c
-> index 229c6f4fae75..03ebecf048c0 100644
+> index 03ebecf048c0..a489f31fe147 100644
 > --- a/kernel/events/hw_breakpoint.c
 > +++ b/kernel/events/hw_breakpoint.c
-> @@ -36,19 +36,27 @@
->  #include <linux/slab.h>
->
->  /*
-> - * Constraints data
-> + * Datastructure to track the total uses of N slots across tasks or CPUs;
-> + * bp_slots_histogram::count[N] is the number of assigned N+1 breakpoint slots.
->   */
-> -struct bp_cpuinfo {
-> -       /* Number of pinned cpu breakpoints in a cpu */
-> -       unsigned int    cpu_pinned;
-> -       /* tsk_pinned[n] is the number of tasks having n+1 breakpoints */
-> +struct bp_slots_histogram {
->  #ifdef hw_breakpoint_slots
-> -       atomic_t        tsk_pinned[hw_breakpoint_slots(0)];
-> +       atomic_t count[hw_breakpoint_slots(0)];
->  #else
-> -       atomic_t        *tsk_pinned;
-> +       atomic_t *count;
->  #endif
->  };
->
-> +/*
-> + * Per-CPU constraints data.
-> + */
-> +struct bp_cpuinfo {
-> +       /* Number of pinned CPU breakpoints in a CPU. */
-> +       unsigned int                    cpu_pinned;
-> +       /* Histogram of pinned task breakpoints in a CPU. */
-> +       struct bp_slots_histogram       tsk_pinned;
-> +};
-> +
->  static DEFINE_PER_CPU(struct bp_cpuinfo, bp_cpuinfo[TYPE_MAX]);
->
->  static struct bp_cpuinfo *get_bp_info(int cpu, enum bp_type_idx type)
-> @@ -159,6 +167,18 @@ static inline int hw_breakpoint_slots_cached(int type)
->         return __nr_bp_slots[type];
+> @@ -64,6 +64,9 @@ static struct bp_cpuinfo *get_bp_info(int cpu, enum bp_type_idx type)
+>         return per_cpu_ptr(bp_cpuinfo + type, cpu);
 >  }
 >
-> +static __init bool
-> +bp_slots_histogram_alloc(struct bp_slots_histogram *hist, enum bp_type_idx type)
-> +{
-> +       hist->count = kcalloc(hw_breakpoint_slots_cached(type), sizeof(*hist->count), GFP_KERNEL);
-> +       return hist->count;
-> +}
+> +/* Number of pinned CPU breakpoints globally. */
+> +static struct bp_slots_histogram cpu_pinned[TYPE_MAX];
 > +
-> +static __init void bp_slots_histogram_free(struct bp_slots_histogram *hist)
-> +{
-> +       kfree(hist->count);
-> +}
-> +
->  static __init int init_breakpoint_slots(void)
->  {
->         int i, cpu, err_cpu;
-> @@ -170,8 +190,7 @@ static __init int init_breakpoint_slots(void)
->                 for (i = 0; i < TYPE_MAX; i++) {
->                         struct bp_cpuinfo *info = get_bp_info(cpu, i);
->
-> -                       info->tsk_pinned = kcalloc(__nr_bp_slots[i], sizeof(atomic_t), GFP_KERNEL);
-> -                       if (!info->tsk_pinned)
-> +                       if (!bp_slots_histogram_alloc(&info->tsk_pinned, i))
+>  /* Keep track of the breakpoints attached to tasks */
+>  static struct rhltable task_bps_ht;
+>  static const struct rhashtable_params task_bps_ht_params = {
+> @@ -194,6 +197,10 @@ static __init int init_breakpoint_slots(void)
 >                                 goto err;
 >                 }
 >         }
-> @@ -180,7 +199,7 @@ static __init int init_breakpoint_slots(void)
+> +       for (i = 0; i < TYPE_MAX; i++) {
+> +               if (!bp_slots_histogram_alloc(&cpu_pinned[i], i))
+> +                       goto err;
+> +       }
+>
+>         return 0;
 >  err:
->         for_each_possible_cpu(err_cpu) {
->                 for (i = 0; i < TYPE_MAX; i++)
-> -                       kfree(get_bp_info(err_cpu, i)->tsk_pinned);
-> +                       bp_slots_histogram_free(&get_bp_info(err_cpu, i)->tsk_pinned);
+> @@ -203,6 +210,8 @@ static __init int init_breakpoint_slots(void)
 >                 if (err_cpu == cpu)
 >                         break;
 >         }
-> @@ -189,6 +208,34 @@ static __init int init_breakpoint_slots(void)
->  }
->  #endif
+> +       for (i = 0; i < TYPE_MAX; i++)
+> +               bp_slots_histogram_free(&cpu_pinned[i]);
 >
-> +static inline void
-> +bp_slots_histogram_add(struct bp_slots_histogram *hist, int old, int val)
-> +{
-> +       const int old_idx = old - 1;
-> +       const int new_idx = old_idx + val;
+>         return -ENOMEM;
+>  }
+> @@ -270,6 +279,9 @@ static unsigned int max_task_bp_pinned(int cpu, enum bp_type_idx type)
+>  /*
+>   * Count the number of breakpoints of the same type and same task.
+>   * The given event must be not on the list.
+> + *
+> + * If @cpu is -1, but the result of task_bp_pinned() is not CPU-independent,
+> + * returns a negative value.
+>   */
+>  static int task_bp_pinned(int cpu, struct perf_event *bp, enum bp_type_idx type)
+>  {
+> @@ -288,9 +300,18 @@ static int task_bp_pinned(int cpu, struct perf_event *bp, enum bp_type_idx type)
+>                 goto out;
+>
+>         rhl_for_each_entry_rcu(iter, pos, head, hw.bp_list) {
+> -               if (find_slot_idx(iter->attr.bp_type) == type &&
+> -                   (iter->cpu < 0 || cpu == iter->cpu))
+> -                       count += hw_breakpoint_weight(iter);
+> +               if (find_slot_idx(iter->attr.bp_type) != type)
+> +                       continue;
 > +
-> +       if (old_idx >= 0)
-> +               WARN_ON(atomic_dec_return_relaxed(&hist->count[old_idx]) < 0);
-> +       if (new_idx >= 0)
-> +               WARN_ON(atomic_inc_return_relaxed(&hist->count[new_idx]) < 0);
-> +}
+> +               if (iter->cpu >= 0) {
+> +                       if (cpu == -1) {
+> +                               count = -1;
+> +                               goto out;
+> +                       } else if (cpu != iter->cpu)
+> +                               continue;
+> +               }
 > +
-> +static int
-> +bp_slots_histogram_max(struct bp_slots_histogram *hist, enum bp_type_idx type)
-> +{
-> +       for (int i = hw_breakpoint_slots_cached(type) - 1; i >= 0; i--) {
-> +               const int count = atomic_read(&hist->count[i]);
+> +               count += hw_breakpoint_weight(iter);
+>         }
+>
+>  out:
+> @@ -316,6 +337,19 @@ max_bp_pinned_slots(struct perf_event *bp, enum bp_type_idx type)
+>         int pinned_slots = 0;
+>         int cpu;
+>
+> +       if (bp->hw.target && bp->cpu < 0) {
+> +               int max_pinned = task_bp_pinned(-1, bp, type);
 > +
-> +               /* Catch unexpected writers; we want a stable snapshot. */
-> +               ASSERT_EXCLUSIVE_WRITER(hist->count[i]);
-> +               if (count > 0)
-> +                       return i + 1;
-> +               WARN(count < 0, "inconsistent breakpoint slots histogram");
+> +               if (max_pinned >= 0) {
+> +                       /*
+> +                        * Fast path: task_bp_pinned() is CPU-independent and
+> +                        * returns the same value for any CPU.
+> +                        */
+> +                       max_pinned += bp_slots_histogram_max(&cpu_pinned[type], type);
+> +                       return max_pinned;
+> +               }
 > +       }
 > +
-> +       return 0;
-> +}
+>         for_each_cpu(cpu, cpumask) {
+>                 struct bp_cpuinfo *info = get_bp_info(cpu, type);
+>                 int nr;
+> @@ -366,8 +400,11 @@ toggle_bp_slot(struct perf_event *bp, bool enable, enum bp_type_idx type,
+>
+>         /* Pinned counter cpu profiling */
+>         if (!bp->hw.target) {
+> +               struct bp_cpuinfo *info = get_bp_info(bp->cpu, type);
 > +
->  #ifndef hw_breakpoint_weight
->  static inline int hw_breakpoint_weight(struct perf_event *bp)
->  {
-> @@ -205,13 +252,11 @@ static inline enum bp_type_idx find_slot_idx(u64 bp_type)
->  }
+>                 lockdep_assert_held_write(&bp_cpuinfo_sem);
+> -               get_bp_info(bp->cpu, type)->cpu_pinned += weight;
+> +               bp_slots_histogram_add(&cpu_pinned[type], info->cpu_pinned, weight);
+> +               info->cpu_pinned += weight;
+>                 return 0;
+>         }
 >
->  /*
-> - * Report the maximum number of pinned breakpoints a task
-> - * have in this cpu
-> + * Return the maximum number of pinned breakpoints a task has in this CPU.
->   */
->  static unsigned int max_task_bp_pinned(int cpu, enum bp_type_idx type)
->  {
-> -       atomic_t *tsk_pinned = get_bp_info(cpu, type)->tsk_pinned;
-> -       int i;
-> +       struct bp_slots_histogram *tsk_pinned = &get_bp_info(cpu, type)->tsk_pinned;
->
->         /*
->          * At this point we want to have acquired the bp_cpuinfo_sem as a
-> @@ -219,14 +264,7 @@ static unsigned int max_task_bp_pinned(int cpu, enum bp_type_idx type)
->          * toggle_bp_task_slot() to tsk_pinned, and we get a stable snapshot.
->          */
->         lockdep_assert_held_write(&bp_cpuinfo_sem);
-> -
-> -       for (i = hw_breakpoint_slots_cached(type) - 1; i >= 0; i--) {
-> -               ASSERT_EXCLUSIVE_WRITER(tsk_pinned[i]); /* Catch unexpected writers. */
-> -               if (atomic_read(&tsk_pinned[i]) > 0)
-> -                       return i + 1;
-> -       }
-> -
-> -       return 0;
-> +       return bp_slots_histogram_max(tsk_pinned, type);
->  }
->
->  /*
-> @@ -300,8 +338,7 @@ max_bp_pinned_slots(struct perf_event *bp, enum bp_type_idx type)
->  static void toggle_bp_task_slot(struct perf_event *bp, int cpu,
->                                 enum bp_type_idx type, int weight)
->  {
-> -       atomic_t *tsk_pinned = get_bp_info(cpu, type)->tsk_pinned;
-> -       int old_idx, new_idx;
-> +       struct bp_slots_histogram *tsk_pinned = &get_bp_info(cpu, type)->tsk_pinned;
->
->         /*
->          * If bp->hw.target, tsk_pinned is only modified, but not used
-> @@ -311,14 +348,7 @@ static void toggle_bp_task_slot(struct perf_event *bp, int cpu,
->          * bp_cpuinfo_sem as a writer to stabilize tsk_pinned's value.
->          */
->         lockdep_assert_held_read(&bp_cpuinfo_sem);
-> -
-> -       old_idx = task_bp_pinned(cpu, bp, type) - 1;
-> -       new_idx = old_idx + weight;
-> -
-> -       if (old_idx >= 0)
-> -               atomic_dec(&tsk_pinned[old_idx]);
-> -       if (new_idx >= 0)
-> -               atomic_inc(&tsk_pinned[new_idx]);
-> +       bp_slots_histogram_add(tsk_pinned, task_bp_pinned(cpu, bp, type), weight);
->  }
->
->  /*
-> @@ -768,7 +798,7 @@ bool hw_breakpoint_is_used(void)
->                                 return true;
->
->                         for (int slot = 0; slot < hw_breakpoint_slots_cached(type); ++slot) {
-> -                               if (atomic_read(&info->tsk_pinned[slot]))
-> +                               if (atomic_read(&info->tsk_pinned.count[slot]))
->                                         return true;
->                         }
+> @@ -804,6 +841,18 @@ bool hw_breakpoint_is_used(void)
 >                 }
+>         }
+>
+> +       for (int type = 0; type < TYPE_MAX; ++type) {
+> +               for (int slot = 0; slot < hw_breakpoint_slots_cached(type); ++slot) {
+> +                       /*
+> +                        * Warn, because if there are CPU pinned counters,
+> +                        * should never get here; bp_cpuinfo::cpu_pinned should
+> +                        * be consistent with the global cpu_pinned histogram.
+> +                        */
+> +                       if (WARN_ON(atomic_read(&cpu_pinned[type].count[slot])))
+> +                               return true;
+> +               }
+> +       }
+> +
+>         return false;
+>  }
+>
 > --
 > 2.37.0.rc0.161.g10f37bed90-goog
 >
