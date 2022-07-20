@@ -1,52 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E75557BD1D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 19:44:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A863057BF6A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 23:05:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lp34L47V9z3drr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 03:44:50 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ud/J0sBp;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lp7WS4rPFz3dqF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 07:05:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+59bb276a4702f876c99d+6905+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=ud/J0sBp;
-	dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lp33l23Glz3chT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 03:44:19 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=ud/J0sBp4WvQan86X0B396DoWt
-	XvbxlyIGi6vo1wobokFAbidmtnnQXU3j4yAeDtrOCqpZDngaD3xxJne84/OLuZMOtBI0r005mQgBF
-	DdDoVC5HgChuuAAO3sHGynh14NoOKiIXm5t4DibPm3oayQgekE25NDF4xtLigZVAQ2Njmwu6gkyaD
-	ssVbjhn4nAlypq0C8lkV1MklYFoQpTLbUOn+KYhwQIXcY5hTwGw5P1T2C4zFcwIb0qYTG1Z/huXhI
-	/1f+UUyIDqcHLc6IqDrlkwhdcR12z7SKJVqNISeIURQkOu0X4aX5a2XpiIid7z7MciA801M2r2MIv
-	83a/10RA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1oEDjJ-008nHG-0T; Wed, 20 Jul 2022 17:43:25 +0000
-Date: Wed, 20 Jul 2022 10:43:24 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Stafford Horne <shorne@gmail.com>
-Subject: Re: [PATCH v4 1/3] PCI: Remove pci_get_legacy_ide_irq and
- asm-generic/pci.h
-Message-ID: <Ytg+vPSl+oBGtSRZ@infradead.org>
-References: <20220720131934.373932-1-shorne@gmail.com>
- <20220720131934.373932-2-shorne@gmail.com>
-MIME-Version: 1.0
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lp7W25ccbz2xk4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 07:04:46 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 26KL2fG7012311;
+	Wed, 20 Jul 2022 16:02:41 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 26KL2fv6012310;
+	Wed, 20 Jul 2022 16:02:41 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Wed, 20 Jul 2022 16:02:41 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 2/2] powerpc/64s: Make POWER10 and later use pause_short in cpu_relax loops
+Message-ID: <20220720210241.GG25951@gate.crashing.org>
+References: <20220720132132.903462-1-npiggin@gmail.com> <20220720132132.903462-2-npiggin@gmail.com>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220720131934.373932-2-shorne@gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20220720132132.903462-2-npiggin@gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,11 +42,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org, Matthew Rosato <mjrosato@linux.ibm.com>, linux-sh@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, linux-pci@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Tiezhu Yang <yangtiezhu@loongson.cn>, Kees Cook <keescook@chromium.org>, linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, Yoshinori Sato <ysato@users.sourceforge.jp>, linux-acpi@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org, Russell King <linux@armlinux.org.uk>, Sergio Paracuellos <sergio.paracuellos@gmail.com>, Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>, Catalin Marinas <catalin.marinas@arm.
- com>, Matt Turner <mattst88@gmail.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, linux-xtensa@linux-xtensa.org, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Vasily Gorbik <gor@linux.ibm.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org, Ivan Kokshaysky <ink@jurassic.park.msu.ru>, Bjorn Helgaas <bhelgaas@google.com>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org, Richard Henderson <rth@twiddle.net>, Chris Zankel <chris@zankel.net>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org, Pierre Morel <pmorel@linux.ibm.com>, Nick Child <nick.child@ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, LKML <linux-kernel@vger.kernel.org>, Sven Schnelle <svens@linux.ibm.com>, linux-alpha@vger.kernel.org, Borislav Petkov <bp@alien8.de>, linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Looks good:
+Hi!
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+On Wed, Jul 20, 2022 at 11:21:32PM +1000, Nicholas Piggin wrote:
+> We want to move away from using SMT prioroty updates for cpu_relax, and
+
+(typo, "priority")
+
+> +#define spin_begin()							\
+> +do {									\
+> +	asm volatile(ASM_FTR_IFCLR(					\
+> +		"or 1,1,1", /* HMT_LOW */				\
+> +		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
+> +		%0) :: "i" (CPU_FTR_ARCH_31) : "memory");		\
+> +} while (0)
+
+Is that nop patched later?  Or should you change the comment, maybe?
+
+> +#define spin_cpu_relax()						\
+> +do {									\
+> +	asm volatile(ASM_FTR_IFCLR(					\
+> +		/* Pre-POWER10 uses low / medium priority nops */	\
+> +		"nop",							\
+
+"nop" aka "or 0,0,0" does not change program priority?  Medium low would
+be "or 6,6,6", not sure if that is the ppr you wanted here?
+
+> +		/* POWER10 onward uses pause_short (wait 2,0) */	\
+> +		PPC_WAIT(2, 0),						\
+> +		%0) :: "i" (CPU_FTR_ARCH_31) : "memory");		\
+> +} while (0)
+> +
+> +#define spin_end()							\
+> +do {									\
+> +	asm volatile(ASM_FTR_IFCLR(					\
+> +		"or 2,2,2", /* HMT_MEDIUM */				\
+> +		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
+> +		%0) :: "i" (CPU_FTR_ARCH_31) : "memory");		\
+> +} while (0)
+
+Same comment as for spin_begin.
+
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+
+Segher
