@@ -2,52 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F3D57AE41
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 05:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A750557B3CD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 11:29:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LngWy5LSZz3cjK
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 13:03:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lnr4P4Bfpz3cjK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 19:29:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VBUywPF7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mohAGQxW;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=mohAGQxW;
+	dkim-atps=neutral
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LngWJ3vlFz2xkg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 13:03:24 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=VBUywPF7;
-	dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LngWD5dzkz4x7X;
-	Wed, 20 Jul 2022 13:03:20 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1658286203;
-	bh=07a5cjF0e9SE4ghrWPN59Y1xcS8Op+XIj+zd97Y/sD4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VBUywPF7BJl/iHXB6z0aZcik5dkO6ISMryTwHHBOfdsHO/F7DusRlENuecPpb0ocU
-	 h0aptq1KpohsSf3IbkKyI8f/yuYSR1zSllHmHraP+a2MZhaIo0+7L6e50EE+01F76G
-	 phcNILJZ/UkLOwibUep6WX+/H3wRxrGPwmLv8gGFpgLZV+3zJCq9ePTtD4Z+2l0JX6
-	 qTSYLwY1fVjmsG5ebVAceqlzLnx4mIDtEmy+qrMvPYMF6f58UUhgep38kjZhOXRySi
-	 5zet7uxpBCKVR+InMq55C9PgjnZUsRY+/vkd5H1wFqmQ6FjMy34sVQ45g1LvS6H0Ty
-	 Ff7032tCwAY/Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Gabriel Paubert <paubert@iram.es>
-Subject: Re: [PATCH v2] random: handle archrandom in plural words
-In-Reply-To: <YtUB3Iola9R0OwN6@lt-gp.iram.es>
-References: <YtP1+MJ1tNdJA60l@zx2c4.com>
- <20220717200356.75060-1-Jason@zx2c4.com>
- <87a697dj9s.fsf@mpe.ellerman.id.au> <YtUB3Iola9R0OwN6@lt-gp.iram.es>
-Date: Wed, 20 Jul 2022 13:03:19 +1000
-Message-ID: <87y1wocwp4.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lnr3l4GHnz2xkX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 19:28:34 +1000 (AEST)
+Received: by mail-pj1-x102e.google.com with SMTP id x24-20020a17090ab01800b001f21556cf48so1476857pjq.4
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 02:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:subject:to:cc:references:in-reply-to:mime-version
+         :message-id:content-transfer-encoding;
+        bh=rb9P/bz3magoPBz9rSV9YQ0nw+tPZ+BpcmY2cUSPaWs=;
+        b=mohAGQxW89e/Qfqm9PpQ1gi6GShET7vt65lDuLjgx6lHD85o3mH5mHR27D9GmU4X5g
+         0aNPsfjBMl+FSSrmkfSqoldLtoqYEFIkKynyDZR/8ls++dIZQcVmLbjgyZJvaIlHP2U5
+         QMj6nQWZbfIErF9jmb/My0N3w1Uw/Z+xwd3nyogBPbHv4xMKuFwzoQH93NKboh46Wad7
+         UkeqvC4uorHA1HHuSyOmqDvFOdrnNlTt8RM3kNmQTCXEgfBHujyQ9LmuMKbiegMq4Ht+
+         akcb09HTy2OTsG02U4Gr4FL9KcmkmQVIbB9i92pJdkKTwQff1sQeKsJJpOCZCDUXmOQP
+         /FDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+         :mime-version:message-id:content-transfer-encoding;
+        bh=rb9P/bz3magoPBz9rSV9YQ0nw+tPZ+BpcmY2cUSPaWs=;
+        b=hXXBaCHE/ufDKyHLe3on8fOD1eJRJcoF2xdgCmxU0frJaSxyxlUYBv1YwyWOB4ftNP
+         8a93Fpc+HEALz3pb4qM294OtL9AS8JGfYYoPa0esyK8U8OpDZ2uyktLFBu4tPfY9ZyxK
+         JxLfNBGeOfiJv9MCuAOz5b/Az6pIkSXxkaDVQgC8yDYbP93fEkKi5SHDCbkKbhn9rfol
+         MHbct9ixeONJHXqyluzbsHT0dyWn1DHmm7x1qCNc7amYztSRF34oIM3u2LOBc9z92I3M
+         I/jXlekWSuV5ycVbdfOu0GIg6jSz/9ZA4mkzl3SVMeiPRymaBu7hIyUnjjyH/oTF6+g2
+         wFdg==
+X-Gm-Message-State: AJIora8Qd2BMkhmLSzSjxBVAxDPd9sp5Nqwz7r8GAisBUDku2qJWOJAn
+	9lpa9p/APcG54tPMGqm+lJ8=
+X-Google-Smtp-Source: AGRyM1so+H7RaaVYtfVQHQZKH5ID2oM1J0FRQGgfQutBk9v3MO/kJSnvyPn/w0D27FyvWtNljGKs5g==
+X-Received: by 2002:a17:902:b488:b0:16a:7013:69f0 with SMTP id y8-20020a170902b48800b0016a701369f0mr38109772plr.118.1658309309808;
+        Wed, 20 Jul 2022 02:28:29 -0700 (PDT)
+Received: from localhost (27-33-251-27.static.tpgi.com.au. [27.33.251.27])
+        by smtp.gmail.com with ESMTPSA id z16-20020aa79490000000b0052512fdaa43sm13045456pfk.163.2022.07.20.02.28.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Jul 2022 02:28:29 -0700 (PDT)
+Date: Wed, 20 Jul 2022 19:28:23 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2] powerpc: add documentation for HWCAPs
+To: Segher Boessenkool <segher@kernel.crashing.org>,
+	Tulio Magno Quites Machado Filho <tuliom@ascii.art.br>
+References: <20220715012636.165948-1-npiggin@gmail.com>
+	<877d4euskv.fsf@linux.ibm.com> <20220715195951.GA25951@gate.crashing.org>
+	<874jziuo49.fsf@linux.ibm.com>
+In-Reply-To: <874jziuo49.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-Id: <1658309165.qvjv58f7ui.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,40 +79,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, "Jason A. Donenfeld" <Jason@zx2c4.com>, Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Harald Freudenberger <freude@linux.ibm.com>, "H . Peter Anvin" <hpa@zytor.com>, Johannes Berg <johannes@sipsolutions.net>, Borislav Petkov <bp@suse.de>, linuxppc-dev@lists.ozlabs.org, Alexander Gordeev <agordeev@linux.ibm.com>, linux-arm-kernel@lists.infradead.org
+Cc: Florian Weimer <fweimer@redhat.com>, gcc@gcc.gnu.org, libc-alpha@sourceware.org, linuxppc-dev@lists.ozlabs.org, Paul E Murphy <murphyp@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gabriel Paubert <paubert@iram.es> writes:
-> On Mon, Jul 18, 2022 at 04:31:11PM +1000, Michael Ellerman wrote:
->> "Jason A. Donenfeld" <Jason@zx2c4.com> writes:
->> > The archrandom interface was originally designed for x86, which supplies
->> > RDRAND/RDSEED for receiving random words into registers, resulting in
->> > one function to generate an int and another to generate a long. However,
->> > other architectures don't follow this.
->> >
->> > On arm64, the SMCCC TRNG interface can return between 1 and 3 words. On
->> > s390, the CPACF TRNG interface can return between 1 and 32 words for the
->> > same cost as for one word. On UML, the os_getrandom() interface can return
->> > arbitrary amounts.
->> >
->> > So change the api signature to take a "words" parameter designating the
->> > maximum number of words requested, and then return the number of words
->> > generated.
->> 
->> On powerpc a word is 32-bits and a doubleword is 64-bits (at least
->> according to the ISA). I think that's also true on other 64-bit
->> architectures.
->
-> IIRC, this is (or was) not the case on Alpha, where word was defined as
-> 16 bits. All assembly mnemonics had w for 16 bits, l for 32 bits, and q
-> for 64 bits.
+Excerpts from Tulio Magno Quites Machado Filho's message of July 16, 2022 6=
+:17 am:
+> Segher Boessenkool <segher@kernel.crashing.org> writes:
+>=20
+>> That is a usability problem.  Can it be fixed, or will that create its
+>> own compatibility problems?  In practice I mean.  If it is, the C
+>> libraries could fix it up, for new programs, and then after a while the
+>> kernel can do the sane thing?
+>>
+>> How big is the problem, anyway?  Is it only 2.05, or also 2.04, 2.03?
+>=20
+> PPC_FEATURE_ARCH_2_05 is the first bit referring to an ISA level.
+> Before that, AT_HWCAP used to have bits for specific processors, e.g.
+> PPC_FEATURE_CELL and PPC_FEATURE_POWER4.
+>=20
+> Notice that glibc creates its own hwcap-based information that is used by
+> __builtin_cpu_supports().  In this case bits PPC_FEATURE_ARCH_2_05,
+> PPC_FEATURE_POWER5_PLUS, PPC_FEATURE_POWER5 and PPC_FEATURE_POWER4 are en=
+abled
+> whenever if the processor is compatible with the features provided by any=
+ of
+> the previous processors [1].
+> AT_HWCAP and AT_HWCAP2 are kept intact, though.
+>=20
+> [1] https://sourceware.org/git/?p=3Dglibc.git;a=3Dblob;f=3Dsysdeps/powerp=
+c/hwcapinfo.c;h=3Dafde05f86382413ce1f0c38e33c9bdd38d6b7e9d;hb=3DHEAD#l45
 
-Yeah I should have said on *some* other 64-bit arches.
+Hmm, this doesn't seem very nice. That said, before possibly changing=20
+that in the kernel, documenting existing unexpected behaviour is=20
+probably a good idea. Good catch, I obviously wasn't careful enough
+reviewing these bits.
 
-Seems to be a common feature/hack on arches that have evolved over time,
-or been inspired by earlier arches.
+I'll send out a final patch with this adjustment in a week or so in
+case any more comments come in the meantime.
 
-The latest Power ISA has octwords :)
-
-cheers
+Thanks,
+Nick
