@@ -1,70 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA74C57B508
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 13:04:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224D657B53E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 13:19:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LntBM4cNNz3chy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 21:04:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LntWV0LrNz3cj9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 21:19:18 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kwwnuXXd;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HN0PHqtD;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=21cnbao@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=kwwnuXXd;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=HN0PHqtD;
 	dkim-atps=neutral
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lnt9200gGz2xjm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 21:03:17 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id 70so16220491pfx.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 04:03:17 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LntVt16z9z2xt3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 21:18:45 +1000 (AEST)
+Received: by mail-ed1-x534.google.com with SMTP id x91so23359967ede.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 04:18:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=kBi+NdAzq7wuL4GEH5aN8bOZ61bpd6rksyx869TB+hI=;
-        b=kwwnuXXdiUEkd9KzV9z9mS6fmmSYKdYN+eKzxLYyXtII9bokEQ19SP1S+wnu8R3noJ
-         4SZVwi1DDKPyDwreHnouvgJF1euKfiOlMVHm8VO2NEk/I1CG/c1trr7DdzD+Ik7/2oQ1
-         V0/r3OT50LSJwFpIQHYfnOCuNeBX3sI7TlVRNoMxMRwlQA2S3eaBqJcLBcnQPLREvron
-         Fq1JQIDKql9CsRPgW6TQ+Sykl316r4Ge8oLU0g92kVAzfIUHIK9YVRWXVKbxJH2lOGXk
-         tMrGpBmtfUr8mC01ysXzvyJ2dArJ7FUGxja9TqPzYgW4rv1ZLMOi1ST2U4XuP1pWtDln
-         U44A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=SCL8okDV1rxEb5OCfF/iJQrOA6O3ijjSdt2qrtLkaoY=;
+        b=HN0PHqtDTEFErT55MLznU/7DJVnNowu7VaLykhAMfAnLWk/VT8gi4qzgtp9RJcbF/o
+         xOfjgYsWFeyQ24aNVQEst955WXhe8zBFER8rT59BUViD3iVFwkhtDVrovfrWMl32Ty7G
+         IfhTsvQqiZxJpeCFF3n7PV77bWy6eo/eBTWQ8uhCaQE0Li7hApTkwmqB+0welO+95tS2
+         i7FBYJuKNtB+pIaYfppPtkOXE3ASK9lYlO6FrRrvflKOTDVaChFa3IpawV0QNs4c7EKZ
+         otHf7eboGEVPuIYN7dagTcCnNVB2Zp2oJoMN+Tla5kEs2Lyrow5l0oXsFex3oKiLQhNm
+         +7Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=kBi+NdAzq7wuL4GEH5aN8bOZ61bpd6rksyx869TB+hI=;
-        b=qw0Ghd9LhVPvZZFHw3VxjrjOl5y4dZ8bpQAVAJT3lUC1kBKpUrXly/ORGhWmx1Mnb3
-         tTAmMnBQC0XflpjawHAP/EPJUtRjXP2CaBzx/BVH0pEfmUGdonLYvYpcemjp4Bufo3Uh
-         k0Bza3EMXpH7fPL4uuVl5hiG+8AOQ9Qegwutenb4lj0kuq8pPIavnfV7u+0MyI85VoPE
-         qJn5dbboFq42l6FAPvhNX0HIphxE1ZCFQ4PhypFkxoWk2pBoMfGz/3gx7Ur/lHdaUELK
-         jBihtUsTGt+23ydPzfS9mJ9Ba5lnsEkajQI5qu8pIi/HL6qG3GsxtJ/wf8XCz1t3U4Z6
-         AmQg==
-X-Gm-Message-State: AJIora+HeR8dgQJLOtcHsSEMdvSBjuL6pU5pa2OjDKgK0QeUKFnMoHDW
-	fJNpxsvxwxSTOqEigKI/UFcOO0cqqI4=
-X-Google-Smtp-Source: AGRyM1svqswZGmnXH7rfjn++mkftbOmkTg8N3JAH2sjhrEEE0zY+tAeR7j1GCgoo6lOKPQ/LspR6MQ==
-X-Received: by 2002:aa7:80d3:0:b0:52b:9237:a355 with SMTP id a19-20020aa780d3000000b0052b9237a355mr6196528pfn.73.1658314994724;
-        Wed, 20 Jul 2022 04:03:14 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (27-33-251-27.static.tpgi.com.au. [27.33.251.27])
-        by smtp.gmail.com with ESMTPSA id p9-20020aa79e89000000b00528a097aeffsm13238652pfq.118.2022.07.20.04.03.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 04:03:14 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 2/2] powerpc/64s: Make POWER10 and later use pause_short in cpu_relax loops
-Date: Wed, 20 Jul 2022 21:03:02 +1000
-Message-Id: <20220720110302.684113-2-npiggin@gmail.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220720110302.684113-1-npiggin@gmail.com>
-References: <20220720110302.684113-1-npiggin@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=SCL8okDV1rxEb5OCfF/iJQrOA6O3ijjSdt2qrtLkaoY=;
+        b=YCCXv9eYicP1RzosT6wMWqnTBHeBSKr2PfeZsa6RIw1vVWZ/mAnWNLVCevGVKPmh2e
+         nhh5qHYkv/94n8mop4mo+fZXIUT8207kVsTefu9webBt8VwC1T4ZokZMMJ9gRhk5NOUI
+         spxDQdOTehiWTXq9Ryuzbup+mYTQVoa9+bcM6TMkxKyYU8GG3JTuTB3su41DgaQgADft
+         3de8rOXoa1yc8nlDDHyeuBrzqmZwPCMEiIatn81Q6zbEU5mi0UHOTwOUtVAMz0WNONbR
+         hXAskOkBfpOPzE4DtrBrxw/ugGrbHrjzefBTFaOlfFAWzsqgQd1UK4OwGGSFrclNY6Fw
+         sacw==
+X-Gm-Message-State: AJIora+1LXYO+tJdEL+u0IjhYRnG7usD7woEufDWDCLqKw63qPqobwEM
+	6KH63JrQe7rv5B4S+BtHpH+Nmqc6llxSM6lBmwI=
+X-Google-Smtp-Source: AGRyM1ss32678rw5+Nj7lJWknUm7P5YwIjqTzH08oVGiKCY3rvlOfMOyXALe2jVxcbqf5uWwnqbhiqF3URmzQ/t+nDw=
+X-Received: by 2002:a05:6402:d53:b0:43b:a0cf:d970 with SMTP id
+ ec19-20020a0564020d5300b0043ba0cfd970mr8335292edb.277.1658315920799; Wed, 20
+ Jul 2022 04:18:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220711034615.482895-1-21cnbao@gmail.com> <24f5e25b-3946-b92a-975b-c34688005398@linux.alibaba.com>
+ <CAGsJ_4zjnmQV6LT3yo--K-qD-92=hBmgfK121=n-Y0oEFX8RnQ@mail.gmail.com> <8e603deb-7023-5de5-c958-8911971aec24@huawei.com>
+In-Reply-To: <8e603deb-7023-5de5-c958-8911971aec24@huawei.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 20 Jul 2022 23:18:29 +1200
+Message-ID: <CAGsJ_4x9hLbXGMU737SShZGS89_4zywyhvkcRfz3W5s_p7O1PA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] mm: arm64: bring up BATCHED_UNMAP_TLB_FLUSH
+To: Yicong Yang <yangyicong@huawei.com>, xhao@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,92 +73,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Yicong Yang <yangyicong@hisilicon.com>, Linux-MM <linux-mm@kvack.org>, =?UTF-8?B?6YOt5YGl?= <guojian@oppo.com>, linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>, linux-s390@vger.kernel.org, =?UTF-8?B?5byg6K+X5piOKFNpbW9uIFpoYW5nKQ==?= <zhangshiming@oppo.com>, =?UTF-8?B?5p2O5Z+56ZSLKHdpbmsp?= <lipeifeng@oppo.com>, Jonathan Corbet <corbet@lwn.net>, x86 <x86@kernel.org>, linux-mips@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, real mz <realmz6@gmail.com>, openrisc@lists.librecores.org, Darren Hart <darren@os.amperecomputing.com>, LAK <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, huzhanyuan@oppo.com, "tiantao \(H\)" <tiantao6@hisilicon.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We want to move away from using SMT prioroty updates for cpu_relax, and
-use a 'wait' instruction which is similar to x86. As well as being a
-much better fit for what everybody else uses and tests with, priority
-nops are stateful which is nasty (interrupts have to consider they might
-be taken at a different priority), and they're expensive to execute,
-similar to a mtSPR which can effect other threads in the pipe.
+On Tue, Jul 19, 2022 at 1:28 AM Yicong Yang <yangyicong@huawei.com> wrote:
+>
+> On 2022/7/14 12:51, Barry Song wrote:
+> > On Thu, Jul 14, 2022 at 3:29 PM Xin Hao <xhao@linux.alibaba.com> wrote:
+> >>
+> >> Hi barry.
+> >>
+> >> I do some test on Kunpeng arm64 machine use Unixbench.
+> >>
+> >> The test  result as below.
+> >>
+> >> One core, we can see the performance improvement above +30%.
+> >
+> > I am really pleased to see the 30%+ improvement on unixbench on single core.
+> >
+> >> ./Run -c 1 -i 1 shell1
+> >> w/o
+> >> System Benchmarks Partial Index              BASELINE RESULT INDEX
+> >> Shell Scripts (1 concurrent)                     42.4 5481.0 1292.7
+> >> ========
+> >> System Benchmarks Index Score (Partial Only)                         1292.7
+> >>
+> >> w/
+> >> System Benchmarks Partial Index              BASELINE RESULT INDEX
+> >> Shell Scripts (1 concurrent)                     42.4 6974.6 1645.0
+> >> ========
+> >> System Benchmarks Index Score (Partial Only)                         1645.0
+> >>
+> >>
+> >> But with whole cores, there have little performance degradation above -5%
+> >
+> > That is sad as we might get more concurrency between mprotect(), madvise(),
+> > mremap(), zap_pte_range() and the deferred tlbi.
+> >
+> >>
+> >> ./Run -c 96 -i 1 shell1
+> >> w/o
+> >> Shell Scripts (1 concurrent)                  80765.5 lpm   (60.0 s, 1
+> >> samples)
+> >> System Benchmarks Partial Index              BASELINE RESULT INDEX
+> >> Shell Scripts (1 concurrent)                     42.4 80765.5 19048.5
+> >> ========
+> >> System Benchmarks Index Score (Partial Only)                        19048.5
+> >>
+> >> w
+> >> Shell Scripts (1 concurrent)                  76333.6 lpm   (60.0 s, 1
+> >> samples)
+> >> System Benchmarks Partial Index              BASELINE RESULT INDEX
+> >> Shell Scripts (1 concurrent)                     42.4 76333.6 18003.2
+> >> ========
+> >> System Benchmarks Index Score (Partial Only)                        18003.2
+> >>
+> >> ----------------------------------------------------------------------------------------------
+> >>
+> >>
+> >> After discuss with you, and do some changes in the patch.
+> >>
+> >> ndex a52381a680db..1ecba81f1277 100644
+> >> --- a/mm/rmap.c
+> >> +++ b/mm/rmap.c
+> >> @@ -727,7 +727,11 @@ void flush_tlb_batched_pending(struct mm_struct *mm)
+> >>          int flushed = batch >> TLB_FLUSH_BATCH_FLUSHED_SHIFT;
+> >>
+> >>          if (pending != flushed) {
+> >> +#ifdef CONFIG_ARCH_HAS_MM_CPUMASK
+> >>                  flush_tlb_mm(mm);
+> >> +#else
+> >> +               dsb(ish);
+> >> +#endif
+> >>
+> >
+> > i was guessing the problem might be flush_tlb_batched_pending()
+> > so i asked you to change this to verify my guess.
+> >
+>
+> flush_tlb_batched_pending() looks like the critical path for this issue then the code
+> above can mitigate this.
+>
+> I cannot reproduce this on a 2P 128C Kunpeng920 server. The kernel is based on the
+> v5.19-rc6 and unixbench of version 5.1.3. The result of `./Run -c 128 -i 1 shell1` is:
+>       iter-1      iter-2     iter-3
+> w/o  17708.1     17637.1    17630.1
+> w    17766.0     17752.3    17861.7
+>
+> And flush_tlb_batched_pending()isn't the hot spot with the patch:
+>    7.00%  sh        [kernel.kallsyms]      [k] ptep_clear_flush
+>    4.17%  sh        [kernel.kallsyms]      [k] ptep_set_access_flags
+>    2.43%  multi.sh  [kernel.kallsyms]      [k] ptep_clear_flush
+>    1.98%  sh        [kernel.kallsyms]      [k] _raw_spin_unlock_irqrestore
+>    1.69%  sh        [kernel.kallsyms]      [k] next_uptodate_page
+>    1.66%  sort      [kernel.kallsyms]      [k] ptep_clear_flush
+>    1.56%  multi.sh  [kernel.kallsyms]      [k] ptep_set_access_flags
+>    1.27%  sh        [kernel.kallsyms]      [k] page_counter_cancel
+>    1.11%  sh        [kernel.kallsyms]      [k] page_remove_rmap
+>    1.06%  sh        [kernel.kallsyms]      [k] perf_event_alloc
+>
+> Hi Xin Hao,
+>
+> I'm not sure the test setup as well as the config is same with yours. (96C vs 128C
+> should not be the reason I think). Did you check that the 5% is a fluctuation or
+> not? It'll be helpful if more information provided for reproducing this issue.
+>
+> Thanks.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Unfortunately qemu TCG does not emulate pause_short properly and will
-cause hangs. I have a patch for it but not merged yet. But if we tune
-qspinlock code it would be best to do it with this patch.
+I guess that is because  "./Run -c 1 -i 1 shell1" isn't an application
+stressed on
+memory. Hi Xin, in what kinds of configurations can we reproduce your test
+result?
 
-Thanks,
-Nick
+As I suppose tlbbatch will mainly affect the performance of user scenarios
+which require memory page-out/page-in like reclaiming file/anon pages.
+"./Run -c 1 -i 1 shell1" on a system with sufficient free memory won't be
+affected by tlbbatch at all, I believe.
 
- arch/powerpc/include/asm/processor.h      | 30 +++++++++++++++++++----
- arch/powerpc/include/asm/vdso/processor.h | 10 +++++++-
- 2 files changed, 34 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index fdfaae194ddd..61f16515cbe0 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -355,11 +355,31 @@ static inline unsigned long __pack_fe01(unsigned int fpmode)
- 
- #ifdef CONFIG_PPC64
- 
--#define spin_begin()	HMT_low()
--
--#define spin_cpu_relax()	barrier()
--
--#define spin_end()	HMT_medium()
-+#define spin_begin()							\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		"or 1,1,1", /* HMT_LOW */				\
-+		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
-+
-+#define spin_cpu_relax()						\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		/* Pre-POWER10 uses low ; medium priority nops */	\
-+		"nop",							\
-+		/* POWER10 onward uses pause_short (wait 2,0) */	\
-+		PPC_WAIT_BOOKS(2, 0),					\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
-+
-+#define spin_end()							\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		"or 2,2,2", /* HMT_MEDIUM */				\
-+		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
- 
- #endif
- 
-diff --git a/arch/powerpc/include/asm/vdso/processor.h b/arch/powerpc/include/asm/vdso/processor.h
-index 8d79f994b4aa..1116230ebb08 100644
---- a/arch/powerpc/include/asm/vdso/processor.h
-+++ b/arch/powerpc/include/asm/vdso/processor.h
-@@ -22,7 +22,15 @@
- #endif
- 
- #ifdef CONFIG_PPC64
--#define cpu_relax()	do { HMT_low(); HMT_medium(); barrier(); } while (0)
-+#define cpu_relax()							\
-+do {									\
-+	asm volatile(ASM_FTR_IFCLR(					\
-+		/* Pre-POWER10 uses low ; medium priority nops */	\
-+		"or 1,1,1 ; or 2,2,2",					\
-+		/* POWER10 onward uses pause_short (wait 2,0) */	\
-+		PPC_WAIT_BOOKS(2, 0),					\
-+				%0) :: "i" (CPU_FTR_ARCH_31) : "memory"); \
-+} while (0)
- #else
- #define cpu_relax()	barrier()
- #endif
--- 
-2.35.1
-
+Thanks
+Barry
