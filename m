@@ -1,66 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1856B57B756
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 15:22:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4650857B759
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 15:22:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LnxFN74pXz3dr2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 23:22:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LnxG40nwRz3bnr
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 23:22:52 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DO2zyHVV;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QV1+QIYY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=DO2zyHVV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=QV1+QIYY;
 	dkim-atps=neutral
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnxDn08DHz308B
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 23:21:44 +1000 (AEST)
-Received: by mail-pj1-x1031.google.com with SMTP id l14-20020a17090a72ce00b001f20ed3c55dso2162183pjk.5
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 06:21:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnxDq3WHzz3bdK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 23:21:47 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id c139so10182724pfc.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 06:21:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TEhkD+pFWNbAsQt6uA2wSoH3zPBoGc42YXi5AX8LhUo=;
-        b=DO2zyHVVp07FzsEKV17aJmls59vwOXmFJq1XW/mlZZ5xAnrwr2p/qauZ8ti5Ns5jYx
-         vwa0VnAHBGA36idPLOFQXGORO16D2CJ6EmQL6Cxd6y4ecFIHFd/EhkpNWFbWbZBuOAqj
-         hKWinejdlyzHX6DKG44tycdLkDXkdYk0wVNNNL5aloK0l79+Cws4K+X8O03qhwTJ9nHZ
-         wrup3nNrXgiu7apNtFZwS5lu8ZnHTSSMyrqIG2iIVFlR2U8qVGMbhaT1Ysz/iAP6mGP7
-         6rV22l3ymbTjJscwgkVzS/O+KGc+E3RYPh3NDr7Q/Zw4NFSMSlrgZLLQb44mDBVMDA6k
-         Mxtg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=iF0XtDM1kBRIHnzGAPWEr56f7/FO/M8Tb5gfp2NVC8w=;
+        b=QV1+QIYY0wNXWxQCyAmkb/UV2csHxk3MqRpMGNe9ZnvsVhZn9fUVVb1RURcfdu1DNO
+         bHKIOrb9pAsi/oJYs7l4Qo6ReDX5ilcjlpao2wBGjPauINmkJ7m0aYuxW/fDgDb4n18X
+         KRbquRhCIXjXCQJXBhH9pR7BajHz3Uxc7xKN2y/e4xFmN18YNn6jhepP6GeX5LLXwp56
+         LXJu4KUbPVxLghq3D4PtdH5COHus6tRsJiKn8su2uT67A4X3kX30U4J13x+zPb58f5Jm
+         EIUWW2aOGypwwu6Bq580gQWW0ht4JlOVPK0KoAKqjy/jYDCdcp9boUQ1LR2HoiMf/mat
+         L+DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TEhkD+pFWNbAsQt6uA2wSoH3zPBoGc42YXi5AX8LhUo=;
-        b=1MWdN+3QHYEGdHl13NDNR+ikgIdALwXsumBmahcqXcmu9tiGOQLWLCOsxGNgXd8TY1
-         jblegI6VxEeyeT8cDnMmbU9FFKnLMhJnmMil5BDfXAJ7m19QZ5f3GfFQixbbLojhtgGU
-         4yw3VJWZIOZjCXaB6e762p8R5b/MxjxuPXohGROQDw50IhTElEOs11JDBX1LCkGOEaKU
-         EnEXxPEqXsQ5CUlFn+mdOLIhJVOEGsVUb6hzuOnw3E3nPCLzWNJjYMdsp6ZGoqGJIURK
-         SYNGqS4ucDtqEX+zsApi6+/REYHo5xg86KWkSf0XxQyR4Eb4Lqy11KzIqBphtkY71DqG
-         dncA==
-X-Gm-Message-State: AJIora+U5qC182UYWXCghCsNFdSD5gFabUHwIkv+NsYUNsTxp/Zv2lBj
-	FcagsWGEiqnIy2q+urjx8/8xxiizwSk=
-X-Google-Smtp-Source: AGRyM1tZPmybfFbOBlT5QmMpjZ/3RJGg4LarjgZQmPx0CYcaH5kUgjMxRvq009hnhwYLnFG+vzwWIQ==
-X-Received: by 2002:a17:90b:1c08:b0:1f2:19da:aa04 with SMTP id oc8-20020a17090b1c0800b001f219daaa04mr4726267pjb.90.1658323302635;
-        Wed, 20 Jul 2022 06:21:42 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=iF0XtDM1kBRIHnzGAPWEr56f7/FO/M8Tb5gfp2NVC8w=;
+        b=2waPyuJymHrFtraJrNHPWOjx0grFMp97Zjta29RNh7b6Vnq9qsDWyS7XxXU9uIWsP5
+         TTUKf9TFHP509oqOI0BcvO99JSlo8EwJJUnNtmeN+Zv6eqKttP/cRqkg0yDUFu3I/+Ip
+         w1/xJXAx3B9cuICVbGSaBqOp2BXEWbbeVF6IL/tWHxokSlC4/jJ7FlaB3FDRI0c0TffQ
+         o0rRZRrpg59AhIoN34FtIeY+Grst5bVaJmyZM3oIUU8LuDuWRrOCVWk2JlQFHyRSVSiU
+         A7Hq3LzZ6G1AIMUlApDKo8dKi+uO39avmXShyyyQnZYG8obhd8uc3Yh2KeoWV99ycdph
+         YDAg==
+X-Gm-Message-State: AJIora8EnSKoFrOXimlcxHS/dcOmUMkKGOcijmEqHpSP4oWu7YFarZMM
+	zCyUs4dAKr9DGnoJrH8C6p+YnYtGsOA=
+X-Google-Smtp-Source: AGRyM1vY0GgL1NG2GD4PjGiDWIZhQcV1qxdjls9ETlMLUECDyDABGUCLrqiABNGtboNDou06MencDg==
+X-Received: by 2002:a63:541:0:b0:419:aea5:eff9 with SMTP id 62-20020a630541000000b00419aea5eff9mr29829427pgf.291.1658323305139;
+        Wed, 20 Jul 2022 06:21:45 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (27-33-251-27.static.tpgi.com.au. [27.33.251.27])
-        by smtp.gmail.com with ESMTPSA id t9-20020a1709027fc900b0016bf4428586sm13827504plb.208.2022.07.20.06.21.40
+        by smtp.gmail.com with ESMTPSA id t9-20020a1709027fc900b0016bf4428586sm13827504plb.208.2022.07.20.06.21.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 06:21:42 -0700 (PDT)
+        Wed, 20 Jul 2022 06:21:44 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 1/2] powerpc: add ISA v3.0 / v3.1 wait opcode macro
-Date: Wed, 20 Jul 2022 23:21:31 +1000
-Message-Id: <20220720132132.903462-1-npiggin@gmail.com>
+Subject: [PATCH v3 2/2] powerpc/64s: Make POWER10 and later use pause_short in cpu_relax loops
+Date: Wed, 20 Jul 2022 23:21:32 +1000
+Message-Id: <20220720132132.903462-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220720132132.903462-1-npiggin@gmail.com>
+References: <20220720132132.903462-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,67 +80,85 @@ Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The wait instruction encoding changed between ISA v2.07 and ISA v3.0.
-In v3.1 the instruction gained a new field.
-
-Update the PPC_WAIT macro to the current encoding. Rename the older
-incompatible one with a _v203 suffix as it was introduced in v2.03
-(the WC field was introduced in v2.07 but the kernel only uses WC=0).
+We want to move away from using SMT prioroty updates for cpu_relax, and
+use a 'wait' instruction which is similar to x86. As well as being a
+much better fit for what everybody else uses and tests with, priority
+nops are stateful which is nasty (interrupts have to consider they might
+be taken at a different priority), and they're expensive to execute,
+similar to a mtSPR which can effect other threads in the pipe.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-v2: Update naming, patch changelog and title.
-v3: v2 sent incorrect patches, sorry. 
+Unfortunately qemu TCG does not emulate pause_short properly and will
+cause hangs. I have a patch for it but not merged yet. But if we tune
+qspinlock code it would be best to do it with this patch.
 
- arch/powerpc/include/asm/ppc-opcode.h | 7 +++++--
- arch/powerpc/kernel/idle_book3e.S     | 2 +-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/processor.h      | 30 +++++++++++++++++++----
+ arch/powerpc/include/asm/vdso/processor.h | 10 +++++++-
+ 2 files changed, 34 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 89beabf5325c..e6fc3b26c145 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -331,6 +331,7 @@
- #define __PPC_XSP(s)	((((s) & 0x1e) | (((s) >> 5) & 0x1)) << 21)
- #define __PPC_XTP(s)	__PPC_XSP(s)
- #define __PPC_T_TLB(t)	(((t) & 0x3) << 21)
-+#define __PPC_PL(p)	(((p) & 0x3) << 16)
- #define __PPC_WC(w)	(((w) & 0x3) << 21)
- #define __PPC_WS(w)	(((w) & 0x1f) << 11)
- #define __PPC_SH(s)	__PPC_WS(s)
-@@ -398,7 +399,8 @@
- #define PPC_RAW_RFDI			(0x4c00004e)
- #define PPC_RAW_RFMCI			(0x4c00004c)
- #define PPC_RAW_TLBILX(t, a, b)		(0x7c000024 | __PPC_T_TLB(t) | 	__PPC_RA0(a) | __PPC_RB(b))
--#define PPC_RAW_WAIT(w)			(0x7c00007c | __PPC_WC(w))
-+#define PPC_RAW_WAIT_v203		(0x7c00007c)
-+#define PPC_RAW_WAIT(w, p)		(0x7c00003c | __PPC_WC(w) | __PPC_PL(p))
- #define PPC_RAW_TLBIE(lp, a)		(0x7c000264 | ___PPC_RB(a) | ___PPC_RS(lp))
- #define PPC_RAW_TLBIE_5(rb, rs, ric, prs, r) \
- 	(0x7c000264 | ___PPC_RB(rb) | ___PPC_RS(rs) | ___PPC_RIC(ric) | ___PPC_PRS(prs) | ___PPC_R(r))
-@@ -613,7 +615,8 @@
- #define PPC_TLBILX_ALL(a, b)	PPC_TLBILX(0, a, b)
- #define PPC_TLBILX_PID(a, b)	PPC_TLBILX(1, a, b)
- #define PPC_TLBILX_VA(a, b)	PPC_TLBILX(3, a, b)
--#define PPC_WAIT(w)		stringify_in_c(.long PPC_RAW_WAIT(w))
-+#define PPC_WAIT_v203		stringify_in_c(.long PPC_RAW_WAIT_v203)
-+#define PPC_WAIT(w, p)		stringify_in_c(.long PPC_RAW_WAIT(w, p))
- #define PPC_TLBIE(lp, a) 	stringify_in_c(.long PPC_RAW_TLBIE(lp, a))
- #define	PPC_TLBIE_5(rb, rs, ric, prs, r) \
- 				stringify_in_c(.long PPC_RAW_TLBIE_5(rb, rs, ric, prs, r))
-diff --git a/arch/powerpc/kernel/idle_book3e.S b/arch/powerpc/kernel/idle_book3e.S
-index cc008de58b05..6447de51ea71 100644
---- a/arch/powerpc/kernel/idle_book3e.S
-+++ b/arch/powerpc/kernel/idle_book3e.S
-@@ -77,7 +77,7 @@ _GLOBAL(\name)
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index fdfaae194ddd..d926e59f9d1b 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -355,11 +355,31 @@ static inline unsigned long __pack_fe01(unsigned int fpmode)
  
- .macro BOOK3E_IDLE_LOOP
- 1:
--	PPC_WAIT(0)
-+	PPC_WAIT_v203
- 	b	1b
- .endm
+ #ifdef CONFIG_PPC64
  
+-#define spin_begin()	HMT_low()
+-
+-#define spin_cpu_relax()	barrier()
+-
+-#define spin_end()	HMT_medium()
++#define spin_begin()							\
++do {									\
++	asm volatile(ASM_FTR_IFCLR(					\
++		"or 1,1,1", /* HMT_LOW */				\
++		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
++		%0) :: "i" (CPU_FTR_ARCH_31) : "memory");		\
++} while (0)
++
++#define spin_cpu_relax()						\
++do {									\
++	asm volatile(ASM_FTR_IFCLR(					\
++		/* Pre-POWER10 uses low / medium priority nops */	\
++		"nop",							\
++		/* POWER10 onward uses pause_short (wait 2,0) */	\
++		PPC_WAIT(2, 0),						\
++		%0) :: "i" (CPU_FTR_ARCH_31) : "memory");		\
++} while (0)
++
++#define spin_end()							\
++do {									\
++	asm volatile(ASM_FTR_IFCLR(					\
++		"or 2,2,2", /* HMT_MEDIUM */				\
++		"nop",/* POWER10 onward uses pause_short (wait 2,0) */	\
++		%0) :: "i" (CPU_FTR_ARCH_31) : "memory");		\
++} while (0)
+ 
+ #endif
+ 
+diff --git a/arch/powerpc/include/asm/vdso/processor.h b/arch/powerpc/include/asm/vdso/processor.h
+index 8d79f994b4aa..778d2b53041b 100644
+--- a/arch/powerpc/include/asm/vdso/processor.h
++++ b/arch/powerpc/include/asm/vdso/processor.h
+@@ -22,7 +22,15 @@
+ #endif
+ 
+ #ifdef CONFIG_PPC64
+-#define cpu_relax()	do { HMT_low(); HMT_medium(); barrier(); } while (0)
++#define cpu_relax()							\
++do {									\
++	asm volatile(ASM_FTR_IFCLR(					\
++		/* Pre-POWER10 uses low ; medium priority nops */	\
++		"or 1,1,1 ; or 2,2,2",					\
++		/* POWER10 onward uses pause_short (wait 2,0) */	\
++		PPC_WAIT(2, 0),						\
++		%0) :: "i" (CPU_FTR_ARCH_31) : "memory");		\
++} while (0)
+ #else
+ #define cpu_relax()	barrier()
+ #endif
 -- 
 2.35.1
 
