@@ -2,80 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2150457B7F9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 15:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F73C57B885
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 16:28:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lnxxx14tVz3c9Z
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 23:53:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lnyk40XfSz3dY6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 00:28:44 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Nmbr0Ft+;
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=foVbmkvs;
+	dkim=fail reason="signature verification failed" header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pZY0KCww;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=olteanv@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.220.28; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=Nmbr0Ft+;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=foVbmkvs;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pZY0KCww;
 	dkim-atps=neutral
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnxxK1nFyz2xjS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 23:53:24 +1000 (AEST)
-Received: by mail-ed1-x532.google.com with SMTP id g1so23815107edb.12
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 06:53:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=v7Ua7Pjztqwug82UBS8PZqoIQdh5WrByyVymA7qNXfY=;
-        b=Nmbr0Ft+AJ1qLYlMHWEXMpaR4XELHNyQAwZbdBWe8fGQhHqGPd1gD6d1KCMogKEBpz
-         Bm7n5gTDnNsGpTpIkaOZ/zXnhVIirBjmDIiHPfE54B8fs3L0ulH52s18KafGlgDihKqD
-         PaL3yw6KG6rnj0ZvTD+0rKFVYgv6JFRs8QlaCeMNV8thMquMeGmS7cdhhzAbqDi04V1y
-         bqXgezBmXgeiTzanu4P8w270e0fjtnEJ0Rdb5mMCD7nIRDUxtqJ86WODqq6wl3rOeexs
-         MpaGTPLcOKjG1JGubt82XE2ZHtNLyqAR7dQDQ01s94CBo8rkf6vBBE6N47hf84cFcPIX
-         X2rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=v7Ua7Pjztqwug82UBS8PZqoIQdh5WrByyVymA7qNXfY=;
-        b=SW69QH/RbpvNz4EYT41CrgFTo+VdxOBNlk6QPQK7iRMlfu1JdSvXJhCp+paXagtgsn
-         GCE2Qed65uCnD/qATJjSqH1wVrTU1MTosHC/6P43YzbRDZmJDAE7laxeREnBxEjb5P9x
-         DzkzS0zyv0F8DDFPZHWX+V0Udvlytw17UCBeQ/G4TeFOodXadMUJUzCWbJm+t/ceWrh/
-         rYfXTWwZU2g+Py2Oacm8PnaHqUhryvpiJFi5B4P26hXg7ZXFlvEOuo8URIzUMLX+Yzu6
-         J8hKw3jZuBeXybfV2AbK5IqESC0vkyUnuKrGLDpjVkl66EcEF8COREH9ZL53VGO/yCFg
-         O88w==
-X-Gm-Message-State: AJIora/8S64HmgqcqFObmKMVuGY6NdgVmVcuWztw5sUaweN4yRFAkVRd
-	BwXQs81djWkiy8B+LWSnKRE=
-X-Google-Smtp-Source: AGRyM1tM9Guy5xL3TVWbHbE/7jg1cpe+wU1P3TJ2yS6onGuYZEUFHUh9quYHkm8PmlmdDbV86wGfEA==
-X-Received: by 2002:aa7:d788:0:b0:43b:bcbe:64d3 with SMTP id s8-20020aa7d788000000b0043bbcbe64d3mr1108303edq.15.1658325198189;
-        Wed, 20 Jul 2022 06:53:18 -0700 (PDT)
-Received: from skbuf ([188.25.231.115])
-        by smtp.gmail.com with ESMTPSA id h10-20020a170906718a00b00718e4e64b7bsm7934599ejk.79.2022.07.20.06.53.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 06:53:17 -0700 (PDT)
-Date: Wed, 20 Jul 2022 16:53:14 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Sean Anderson <sean.anderson@seco.com>
-Subject: Re: [RFC PATCH net-next 0/9] net: pcs: Add support for devices
- probed in the "usual" manner
-Message-ID: <20220720135314.5cjxiifrq5ig4vjb@skbuf>
-References: <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
- <20220719181113.q5jf7mpr7ygeioqw@skbuf>
- <20220711160519.741990-1-sean.anderson@seco.com>
- <20220719152539.i43kdp7nolbp2vnp@skbuf>
- <bec4c9c3-e51b-5623-3cae-6df1a8ce898f@seco.com>
- <20220719153811.izue2q7qff7fjyru@skbuf>
- <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
- <20220719181113.q5jf7mpr7ygeioqw@skbuf>
- <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
- <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lnyht1Hm5z2xt3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 00:27:41 +1000 (AEST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2C9DC34851;
+	Wed, 20 Jul 2022 14:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1658327254; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ndyTqgDHrwAnRGiKTFcM0pUlQ6zCKyLMtSPcv3dUEvI=;
+	b=foVbmkvsWdvUGChCCXU0jXpKoN76BNS/M252S4BtEOB1pY19WzLPmvlFbJOXL1sSHiPyWZ
+	L9e1sqdkz/rLs5qOCErxAUzERLr/F7uq/xe13EwhmJ4L8TJchu+iJ4Pi/dNHO8jKc98wIe
+	DTEoLyxLyAqusSbMDN0zt65CwhuCDWg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1658327254;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ndyTqgDHrwAnRGiKTFcM0pUlQ6zCKyLMtSPcv3dUEvI=;
+	b=pZY0KCwwddwZRf0uPX+Z3MZHcVpvAbibSGhx3s4tDi0jFFZfclFKR8NaYAA8TxWpTBKQyn
+	mF2LoWhv56JVVECg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+	(No client certificate requested)
+	by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D75A713AAD;
+	Wed, 20 Jul 2022 14:27:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+	by imap2.suse-dmz.suse.de with ESMTPSA
+	id mvSsM9UQ2GLfHgAAMHmgww
+	(envelope-from <tzimmermann@suse.de>); Wed, 20 Jul 2022 14:27:33 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	airlied@linux.ie,
+	daniel@ffwll.ch,
+	deller@gmx.de,
+	maxime@cerno.tech,
+	sam@ravnborg.org,
+	msuchanek@suse.de,
+	mpe@ellerman.id.au,
+	benh@kernel.crashing.org,
+	paulus@samba.org,
+	geert@linux-m68k.org,
+	mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v2 00/10] drm: Add driver for PowerPC OF displays
+Date: Wed, 20 Jul 2022 16:27:22 +0200
+Message-Id: <20220720142732.32041-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
- <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,42 +84,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, UNGLinuxDriver@microchip.com, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.c
- om>
+Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jul 19, 2022 at 03:34:45PM -0400, Sean Anderson wrote:
-> We could do it, but it'd be a pretty big hack. Something like the
-> following. Phylink would need to be modified to grab the lock before
-> every op and check if the PCS is dead or not. This is of course still
-> not optimal, since there's no way to re-attach a PCS once it goes away.
+(was: drm: Add driverof PowerPC OF displays)
 
-You assume it's just phylink who operates on a PCS structure, but if you
-include your search pool to also cover include/linux/pcs/pcs-xpcs.h,
-you'll see a bunch of exported functions which are called directly by
-the client drivers (stmmac, sja1105). At this stage it gets pretty hard
-to validate that drivers won't attempt from any code path to do
-something stupid with a dead PCS. All in all it creates an environment
-with insanely weak guarantees; that's pretty hard to get behind IMO.
+PowerPC's Open Firmware offers a simple display buffer for graphics
+output. Add ofdrm, a DRM driver for the device. As with the existing
+simpledrm driver, the graphics hardware is pre-initialized by the
+firmware. The driver only provides blitting, no actual DRM modesetting
+is possible.
 
-> IMO a better solution is to use devlink and submit a patch to add
-> notifications which the MAC driver can register for. That way it can
-> find out when the PCS goes away and potentially do something about it
-> (or just let itself get removed).
+Version 2 of this patchset starts by cleaning up and refactoring
+simpledrm, and moving some of the code in a helper library. These
+functions are useful for ofdrm as well.
 
-Not sure I understand what connection there is between devlink (device
-links) and PCS {de}registration notifications. We could probably add those
-notifications without any intervention from the device core: we would
-just need to make this new PCS "core" to register an blocking_notifier_call_chain
-to which interested drivers could add their notifier blocks. How a
-certain phylink user is going to determine that "hey, this PCS is
-definitely mine and I can use it" is an open question. In any case, my
-expectation is that we have a notifier chain, we can at least continue
-operating (avoid unbinding the struct device), but essentially move our
-phylink_create/phylink_destroy calls to within those notifier blocks.
+Patch 7 adds ofdrm, which has been significantly reworked since v1.
+PCI is now optional and COMPILE_TEST is supported.
 
-Again, retrofitting this model to existing drivers, phylink API (and
-maybe even its internal structure) is something that's hard to hop on
-board of; I think it's a solution waiting for a problem, and I don't
-have an interest to develop or even review it.
+Patches 8 to 10 add support for color management. The code has been
+taken from fbdev's offb. I have no hardware available for testing the
+functionality. Qemu's stdvga apparently does not support gamma tables
+in RGB modes. I verified that the color management code is executed
+by running Gnome's night-mode settings, but the display's color tone
+does not change.
+
+Thomas Zimmermann (10):
+  drm/simpledrm: Remove mem field from device structure
+  drm/simpledrm: Inline device-init helpers
+  drm/simpledrm: Remove pdev field from device structure
+  drm/simpledrm: Compute framebuffer stride if not set
+  drm/simpledrm: Convert to atomic helpers
+  drm/simpledrm: Move some functionality into fwfb helper library
+  drm/ofdrm: Add ofdrm for Open Firmware framebuffers
+  drm/ofdrm: Add CRTC state
+  drm/ofdrm: Add per-model device function
+  drm/ofdrm: Support color management
+
+ Documentation/gpu/drm-kms-helpers.rst |   12 +
+ MAINTAINERS                           |    3 +
+ drivers/gpu/drm/Kconfig               |    6 +
+ drivers/gpu/drm/Makefile              |    3 +-
+ drivers/gpu/drm/drm_fwfb_helper.c     |  301 ++++++
+ drivers/gpu/drm/tiny/Kconfig          |   15 +
+ drivers/gpu/drm/tiny/Makefile         |    1 +
+ drivers/gpu/drm/tiny/ofdrm.c          | 1301 +++++++++++++++++++++++++
+ drivers/gpu/drm/tiny/simpledrm.c      |  588 +++++------
+ drivers/video/fbdev/Kconfig           |    1 +
+ include/drm/drm_fwfb_helper.h         |   51 +
+ 11 files changed, 1949 insertions(+), 333 deletions(-)
+ create mode 100644 drivers/gpu/drm/drm_fwfb_helper.c
+ create mode 100644 drivers/gpu/drm/tiny/ofdrm.c
+ create mode 100644 include/drm/drm_fwfb_helper.h
+
+-- 
+2.36.1
+
