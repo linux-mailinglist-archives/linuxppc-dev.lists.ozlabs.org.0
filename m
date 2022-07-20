@@ -2,70 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506D357B435
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 11:55:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC0D57B4FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 13:03:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lnrg02kd1z3bnV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 19:55:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lnt9j2Zhhz3chm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Jul 2022 21:03:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X1c633oe;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oZZgfFOU;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::531; helo=mail-pg1-x531.google.com; envelope-from=npiggin@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=X1c633oe;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=oZZgfFOU;
 	dkim-atps=neutral
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LnrfK18R5z2xkY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 19:55:03 +1000 (AEST)
-Received: by mail-pl1-x630.google.com with SMTP id c6so14500861pla.6
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 02:55:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lnt916KQgz2xjg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 21:03:15 +1000 (AEST)
+Received: by mail-pg1-x531.google.com with SMTP id f65so16055599pgc.12
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Jul 2022 04:03:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :message-id:content-transfer-encoding;
-        bh=xNGrrxee7AVgjLLgGUO/8Ejr4tO3Q9/xUyQPY0kXPR8=;
-        b=X1c633oeiqq4s6i3eQC2s2IidwaCciB1pXTRCvmk3ZDTFz+NHOtu4zLyv02qe3wj1A
-         vqNIOrnJk9OZowfjsIdhGw118IsEbJYRU8I5QyzWyN9m7LbHHA7NXW/26xtp98WSbPf2
-         PkF5vBugwo/ZgudhDOEbb2mx+4KVgjdQMuUyRKpIhD6cMIDR6Bf5ooSICckJzAX2Se7Z
-         D0InlwoL0vK3M27srv8VdNr36Ir7Q1h5ZI1YjyDtUn6z1s/9yxAaDBC/ORJvQs3q0HTr
-         pjh9w24c2RnTG1vpPM/zHCMttRqmJ2jj8w4JKCtQfWlXd8Kb8l7J3ca98z+XI9QpRnLq
-         jaCw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OS9YmbIgBAwgeLHvR4rL+gxtjmJopxjNVCtZdsYgwCI=;
+        b=oZZgfFOUfvkuPB6a6jHw97HxL9AMcYyNS3yrt4NH7H1xmCbut9nOq1EHrO+XasSvVj
+         nIj5fB4ui2w8Js098ZjYC6ERDjckQASpmcAHAvzZmfL/YDENGN5qWZjDBq34h1KJx5Fz
+         nNeQHiRMFgj9/sPwn0i+lJkCQmDYo+0rT9XqXAz2TIAiXeyXQXmUjzLQe+nzxULNtIUT
+         tvNoiypIufbnougnLMclsuJy7SqLHbOIeJYfhFqlS6kZp5kPzc1ZiAHZ8bWNNRNCdxLu
+         nPHINSPUUJAMztbncDvMPjREcYe0A5VjbAJfg9z5bLEm/WRA/DUm3Ij6J1BCYc8MPjJp
+         IIaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:message-id:content-transfer-encoding;
-        bh=xNGrrxee7AVgjLLgGUO/8Ejr4tO3Q9/xUyQPY0kXPR8=;
-        b=WuT1yjY2DSYldtyInItUUncaUFHLE3kXf9mNFFta8+cTHG4rTlJ/QJeFm6eCLfdAQ2
-         vgZyGbvr+nzbm9WIfDsX0tBBx6AK6TWr88aqFP7w2vGCapUm6jnPjMFyUaLWMP5A7Ivr
-         1wWFQLapnKzilG4QNM6glKUKugA3ucR+rlgVLRxaV7BdmLhb24G1ZlGiFZyeIr+Yiiid
-         jEP8rmZuC35QAJNkOpewtG38ncLKOgcQTMI+6h/eOrjlMUNbE/M3ywh9bls5MZKxXJzX
-         txdMT3XD8c7egy4epLTVPRO79wUa5lp2TiwjpCN2OB7ppY1QTr6LxlCNL+ZkqUR+wiZ4
-         pQYg==
-X-Gm-Message-State: AJIora8k2hSTZEtcV0+qSqvKRENbSQoXABTC6mrMr0Swv/LJRxM7YkC+
-	224+cRjwmyI6tqkAgIqtd/kWlK9XTO8=
-X-Google-Smtp-Source: AGRyM1sFWi8Im64/LemnzoUMOP9UPN0cgj5W6hpgdfw1Ddhz+1pYOB1fglfkOA06y1rdFgBvODxR/A==
-X-Received: by 2002:a17:90a:d50d:b0:1ef:9130:f96b with SMTP id t13-20020a17090ad50d00b001ef9130f96bmr4387112pju.235.1658310899868;
-        Wed, 20 Jul 2022 02:54:59 -0700 (PDT)
-Received: from localhost (27-33-251-27.static.tpgi.com.au. [27.33.251.27])
-        by smtp.gmail.com with ESMTPSA id t126-20020a628184000000b0050dc7628148sm13203333pfd.34.2022.07.20.02.54.58
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=OS9YmbIgBAwgeLHvR4rL+gxtjmJopxjNVCtZdsYgwCI=;
+        b=ftwzAXFCN2Gh49fDU7fmm+NXiGQ5lOJRnsSJt0wYgZbMjWC+S0tAmD+Becn3Uz0tNy
+         yUHlmQYOkhkK8bXusj4hHZzMzKbT3qQ50/3D0NEBHOnCLu/tuF+2C+x1r1aalR90Ygq+
+         LoPB9obF9xBSBf2xL5wcSpKSZcErBQhI7IPZoKxqPMRypb+xs9RYc4Alvr0AldhdcNQi
+         zPV0wG2s2P9I+454PGzmq09HqaP7+PXP5rf7K5mOFBkW3zFAHoFvpymm3qpqx4q9Hxbp
+         DPAhFk048VToYVTv8KPNS1d8qomkJ7z/SoxiJmLBmkaYcHvSJ3qWH4dpns1/BrQeukkk
+         ZMUA==
+X-Gm-Message-State: AJIora/gKvTu9RJwjtCIaxvOEKabtKL1W1EmScnv65WujWZx+RMYJxEQ
+	WrBH9rKXQJZbls3Gp3BT2pPduGvjpSE=
+X-Google-Smtp-Source: AGRyM1uqfwREkhXKh6353Py0ljXpNsFyvKnNmrOY7qqAYW/jvtgx7CBmnps4WAXIaRj87yxNVacXkg==
+X-Received: by 2002:a63:87:0:b0:40c:b1f6:a879 with SMTP id 129-20020a630087000000b0040cb1f6a879mr33261947pga.236.1658314992194;
+        Wed, 20 Jul 2022 04:03:12 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (27-33-251-27.static.tpgi.com.au. [27.33.251.27])
+        by smtp.gmail.com with ESMTPSA id p9-20020aa79e89000000b00528a097aeffsm13238652pfq.118.2022.07.20.04.03.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Jul 2022 02:54:59 -0700 (PDT)
-Date: Wed, 20 Jul 2022 19:54:54 +1000
+        Wed, 20 Jul 2022 04:03:11 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 1/2] powerpc: add BookS wait opcode macro
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20220711031128.151437-1-npiggin@gmail.com>
-	<20220712162903.GO25951@gate.crashing.org>
-In-Reply-To: <20220712162903.GO25951@gate.crashing.org>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 1/2] powerpc: add ISA v3.0 / v3.1 wait opcode macro
+Date: Wed, 20 Jul 2022 21:03:01 +1000
+Message-Id: <20220720110302.684113-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Message-Id: <1658310023.4smrdizxcf.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,41 +74,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Segher Boessenkool's message of July 13, 2022 2:29 am:
-> Hi!
->=20
-> On Mon, Jul 11, 2022 at 01:11:27PM +1000, Nicholas Piggin wrote:
->> The wait instruction has a different encoding between BookE and BookS.
->> Add the BookS variant.
->=20
->>  #define PPC_RAW_WAIT(w)			(0x7c00007c | __PPC_WC(w))
->> +#define PPC_RAW_WAIT_BOOKS(w, p)	(0x7c00003c | __PPC_WC(w) | __PPC_PL(p=
-))
->=20
-> The embedded extensions are no longer part of the PowerPC architecture,
-> so wouldn't it be a better way forward to rename the existing one,
-> instead?  A bit more work now, but less in the future :-)
+The wait instruction encoding changed between ISA v2.07 and ISA v3.0.
+In v3.1 the instruction gained a new field.
 
-And I actually misremembered this too, was off digging and asking
-about it, but the change isn't strictly BookE vs BookS, but rather
-the wait opcode was changed in ISA v3.0, which is a bit of an
-unfortunate landmine.
+Update the PPC_WAIT macro to the current encoding. Rename the older
+incompatible one with a _v203 suffix as it was introduced in v2.03
+(the WC field was introduced in v2.07 but the kernel only uses WC=0).
 
-It seems apparently POWER8 implemented a non-architected instruction
-'waitasec' that uses this opcode, then I suppose it was decided to
-continue with that opcode in v3.0 when BookE was dropped, for reasons.
-Maybe it was more widely used?
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+v2: Update naming, patch changelog and title.
 
-In any case, I will rename it. Precedent is divided. We have
-PPC_RAW_TLBIEL_v205 for older tlbiel, and PPC_ISA_3_0_INVALIDATE_ERAT
-for a new ERAT invalidation instruction. I guess making the older
-instruction the exceptional case ends up being better in the long
-term.
+ arch/powerpc/include/asm/ppc-opcode.h | 7 +++++--
+ arch/powerpc/kernel/idle_book3e.S     | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-Thanks,
-Nick
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index 89beabf5325c..856555d69d93 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -331,6 +331,7 @@
+ #define __PPC_XSP(s)	((((s) & 0x1e) | (((s) >> 5) & 0x1)) << 21)
+ #define __PPC_XTP(s)	__PPC_XSP(s)
+ #define __PPC_T_TLB(t)	(((t) & 0x3) << 21)
++#define __PPC_PL(p)	(((p) & 0x3) << 16)
+ #define __PPC_WC(w)	(((w) & 0x3) << 21)
+ #define __PPC_WS(w)	(((w) & 0x1f) << 11)
+ #define __PPC_SH(s)	__PPC_WS(s)
+@@ -398,7 +399,8 @@
+ #define PPC_RAW_RFDI			(0x4c00004e)
+ #define PPC_RAW_RFMCI			(0x4c00004c)
+ #define PPC_RAW_TLBILX(t, a, b)		(0x7c000024 | __PPC_T_TLB(t) | 	__PPC_RA0(a) | __PPC_RB(b))
+-#define PPC_RAW_WAIT(w)			(0x7c00007c | __PPC_WC(w))
++#define PPC_RAW_WAIT_v203		(0x7c00007c)
++#define PPC_RAW_WAIT(w, p)		(0x7c00003c | __PPC_WC(w) | __PPC_PL(p))
+ #define PPC_RAW_TLBIE(lp, a)		(0x7c000264 | ___PPC_RB(a) | ___PPC_RS(lp))
+ #define PPC_RAW_TLBIE_5(rb, rs, ric, prs, r) \
+ 	(0x7c000264 | ___PPC_RB(rb) | ___PPC_RS(rs) | ___PPC_RIC(ric) | ___PPC_PRS(prs) | ___PPC_R(r))
+@@ -613,7 +615,8 @@
+ #define PPC_TLBILX_ALL(a, b)	PPC_TLBILX(0, a, b)
+ #define PPC_TLBILX_PID(a, b)	PPC_TLBILX(1, a, b)
+ #define PPC_TLBILX_VA(a, b)	PPC_TLBILX(3, a, b)
+-#define PPC_WAIT(w)		stringify_in_c(.long PPC_RAW_WAIT(w))
++#define PPC_WAIT_v203(w)	stringify_in_c(.long PPC_RAW_WAIT_v203)
++#define PPC_WAIT(w, p)		stringify_in_c(.long PPC_RAW_WAIT(w, p))
+ #define PPC_TLBIE(lp, a) 	stringify_in_c(.long PPC_RAW_TLBIE(lp, a))
+ #define	PPC_TLBIE_5(rb, rs, ric, prs, r) \
+ 				stringify_in_c(.long PPC_RAW_TLBIE_5(rb, rs, ric, prs, r))
+diff --git a/arch/powerpc/kernel/idle_book3e.S b/arch/powerpc/kernel/idle_book3e.S
+index cc008de58b05..6447de51ea71 100644
+--- a/arch/powerpc/kernel/idle_book3e.S
++++ b/arch/powerpc/kernel/idle_book3e.S
+@@ -77,7 +77,7 @@ _GLOBAL(\name)
+ 
+ .macro BOOK3E_IDLE_LOOP
+ 1:
+-	PPC_WAIT(0)
++	PPC_WAIT_v203
+ 	b	1b
+ .endm
+ 
+-- 
+2.35.1
 
