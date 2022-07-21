@@ -1,135 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD48157D637
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 23:43:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C0D57D6C4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 00:19:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LpmJt53Dwz3cj0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 07:43:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lpn6S5nrDz3dqM
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 08:19:12 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=SSCqPJrK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UuulMPQZ;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.13.89; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=SSCqPJrK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UuulMPQZ;
 	dkim-atps=neutral
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-eopbgr130089.outbound.protection.outlook.com [40.107.13.89])
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LpmJ45dXYz3c6s
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 07:42:26 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k0PeJ2+fYe185hEZTnSs1KY4lk6gsIQYMLK2zIdc7e9VcSf8s71/SdqTsHyzKPHQzcpweTXXKNkygUZNrvnHRpNe7AazU4wSP7/9TC0/nAU3hWM7mF1nZDED49PwgdQ1h5rY/++FROBdS3yeOB7j9tp2vJFig2ILrdZQBlxWZWq0YE4cRvJE0oJJ1qSnbXuKSULlaAu+yz1/Y3QmxY1Ucp36bLjEghVx4q7ynlKc+CwAcl17efvG4v+EM8tBHH4FYZRg4bjGWR3VGankFErSTggEcL45L+8XNbUhZQ2Xs4D23/O5D3LkWk4ootg+H1NyKarfQQy848npJXLRSQMM4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7qAQGzw+4hg5GUHDmsZA7N8RrZtma3gzz71viTwPHSo=;
- b=mexUO5buAcL9ScxgbVlIuEmftDKREujnqQYhY9ErQnCvrcvTCujeovLa6Zon0xWxLKL10mjWCTDzTuRwkgDsA5GaZ/6iaLJYZjeE3MHBU3KLieDoqXwhE4nEkB6qBmODgNcoU7YLU/DXwD3ufEj46eMXgmwOE7GegQqG7SKgnhScQxlyfTghEOPrncqVHDkftKUGG4HDbOceUuk3wDYHTSlC5HFPRbju59e0NcrSEly+2scGsSvvcMP02fCyLLNFcHuyc8MAqPkKdfVqRiLKDAo+733DVn3v/cwlpE2XkAclYtRoSmDjf7asFQjr7JGq0mXTA7sWFsLK61xVWJe+Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
- dkim=pass header.d=seco.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7qAQGzw+4hg5GUHDmsZA7N8RrZtma3gzz71viTwPHSo=;
- b=SSCqPJrKT4YJd5imnVRsIqCxMGpi1zroRLGaGgVfXm8EUkaUNl+0b7OXWb5CgrJyqBFH83TwRcdLdslPmnwt0s7FKSL4Hptr3lVxm+jyExkXLw1rD5va4GpeXgLFC8z3aRM295LrtJqTP2/CLe5y6srF09VB3b8Iub7TTiSoMj5U/k+x6qc0FH4Tc/AYge7riPW+rOqNYNg3vOghaHmyUDJ+G6eUb0+VCVI4LZwaQOh+WwIzrnt9b/wAkpNVmXTMxGvtRfE1VCLZGBz9bqOTZ2idVs8zKqJmRkPwIpSqDDtYOLamKWcz87ixZSq3lm93+TEA495Sk+jNra2Js4ZczQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=seco.com;
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
- by AS8PR03MB6839.eurprd03.prod.outlook.com (2603:10a6:20b:29a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.19; Thu, 21 Jul
- 2022 21:42:06 +0000
-Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::59ef:35d2:2f27:e98b]) by DB7PR03MB4972.eurprd03.prod.outlook.com
- ([fe80::59ef:35d2:2f27:e98b%4]) with mapi id 15.20.5458.018; Thu, 21 Jul 2022
- 21:42:05 +0000
-Subject: Re: [RFC PATCH net-next 0/9] net: pcs: Add support for devices probed
- in the "usual" manner
-To: Vladimir Oltean <olteanv@gmail.com>
-References: <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
- <20220719181113.q5jf7mpr7ygeioqw@skbuf>
- <20220711160519.741990-1-sean.anderson@seco.com>
- <20220719152539.i43kdp7nolbp2vnp@skbuf>
- <bec4c9c3-e51b-5623-3cae-6df1a8ce898f@seco.com>
- <20220719153811.izue2q7qff7fjyru@skbuf>
- <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
- <20220719181113.q5jf7mpr7ygeioqw@skbuf>
- <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
- <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
- <20220720135314.5cjxiifrq5ig4vjb@skbuf>
-From: Sean Anderson <sean.anderson@seco.com>
-Message-ID: <075c5ced-1185-2003-a265-12bce5a82076@seco.com>
-Date: Thu, 21 Jul 2022 17:42:00 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <20220720135314.5cjxiifrq5ig4vjb@skbuf>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN2PR12CA0003.namprd12.prod.outlook.com
- (2603:10b6:208:a8::16) To DB7PR03MB4972.eurprd03.prod.outlook.com
- (2603:10a6:10:7d::22)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lpn5q53SFz2yQg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 08:18:39 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id A2459B823A0;
+	Thu, 21 Jul 2022 22:18:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15352C3411E;
+	Thu, 21 Jul 2022 22:18:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1658441913;
+	bh=OJi+z9qqPj6IFenYIhxZJ8HTqaeEtifwY78sUa9C01g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UuulMPQZ0Q1acIjWMIt0ZWNnOYFmGyCmGCZbuC6Ri6S+vPHJf3uodol68GDZopJPJ
+	 s2uW7gJ5QcSctUYY6pU9SbWuiE7/z991gx+MZBdHtIz5v3nHwH18YX9tm5Bticg6Bj
+	 RpRePvIEgWlYwa8c6gkXbQu6036hF5zbXl49LSgxhLxNrKwxJbJu900lW0XUemm/n6
+	 e0kVdCUc9KV5IkGcJ/i1dmkGBfmTwmIxEdv1IsoHE6v9aZkBzFhzjU94/SHML2gqNU
+	 3qV0ulyi5jcwIlMRSK5n465MRaFmLa/nlyaVOckYM8KzQ7/BgPnNaUIDhTTIqRGUIT
+	 dF+Db1k4SMBRQ==
+Received: by pali.im (Postfix)
+	id E977722EF; Fri, 22 Jul 2022 00:18:29 +0200 (CEST)
+Date: Fri, 22 Jul 2022 00:18:29 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Paul Mackerras <paulus@samba.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH] powerpc/fsl-pci: Fix Class Code of PCIe Root Port
+Message-ID: <20220721221829.4iq47kazcb757l2s@pali>
+References: <20220706101043.4867-1-pali@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0848227a-f20f-4a43-33a9-08da6b61dafb
-X-MS-TrafficTypeDiagnostic: AS8PR03MB6839:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 	z+Ia1XkMSZSk8WLnKZTGLac4L8xdzFZa5uZ+tZGAP/NjflbduKBYGMdUs/3ge6VdjHlpVMeEZFTzYcqxqgz5pjyHJPwItvcTbRmdCFqaB805LwG7qEJvWLcgagTxzKcB93WIahm0+8repoARdNJH9BIHQf2mCRl4suf0tU/K+3Vcav3mA96ZE3c2LeIewpHKnG1GuVHIT8KS08aW4FmIdDt4IIGTauuuouuP/xJzQAhPRs5UbNwRxZDMv3HWIGZ+Q9J9BktCYQuEM83qLMs0J+mbKdoBj+JL6V50tcBQ6Cvu1MorMAPVuiUb0qtMnYvTsK/42X2++TXFO0oLTpH+2V8cjWBykQvb6E57PoRCuo2vfsvhtkFl7N5uVb55k4wAkRmuNxVETpprKEecgSwID+Jf/be1LIuWw2oFZmu16T+LBOEcob7VL8Yb2bK8ziJhqwA67eG2vGOm19RwsVHjlORqw2wS3zNr6p7R9bVhrR+aG2VhOtHyce+UUM5UeEQvi8NSaTRLg0kzx4r5SiNkRxfUD6uLJpHJnCCTc3qxDa2UttjxwGgGHdTOuh1HkZMGoJ2F1o2LJ/3fBhWcGT39zEqrPa1g6x6p3aHnBZMG5hVYS/HCZKgBjjH4Lm0+DaKL6a2dTO1gi6X5p5XJA2FXZegi7Wrnrm4haRxfwQThWlRjyy7kJHBpfrIqCo2Y7mV0utsuX+6Snrw8Q3KG6smSzq5V0H2ruW2O76q+vbqzcLUaa7Id0/91exOgLt488naWoCHz1dd22J1xHmOrzIA4HgE2R0kfoeUXoC4os8D+9yyssUrf3RzDIE0BVpMFrLy9mtMtWB4gLNH71PSFV/ZAZGQr5Hogd/RFB4qmwXa5ztCrNxvWCosgtjav8mUVzTz5
-X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(136003)(39850400004)(346002)(376002)(396003)(366004)(38350700002)(2616005)(36756003)(6916009)(38100700002)(54906003)(31686004)(316002)(186003)(83380400001)(478600001)(2906002)(8676002)(7406005)(6486002)(8936002)(5660300002)(4326008)(66946007)(66476007)(66556008)(41300700001)(7416002)(44832011)(6666004)(31696002)(53546011)(26005)(52116002)(6506007)(6512007)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?VVpNcmM2VjAyUzVmZlVVWE5VQ0JLekgwS1lCKzBhbVRXc1FJOUxjV09kWlhV?=
- =?utf-8?B?Y2wyZ1JvMTVubWx6R0Jqdnh2eFlJaSsyMGQzbHJFQ1VmcTdwRG5DLzNjS0gw?=
- =?utf-8?B?MkZ6M0pBWWpNUGdtcmZXRG55Q1htTnBvNS9DWXk0VEVva2dGN0x2c3VDdjRO?=
- =?utf-8?B?RWFST3RXdHJuM292VVhYNWdLYjNKR2NMNDBUZEsxQzVTSkdyU3R5cFc2QWJr?=
- =?utf-8?B?UTlmR29QMy9BWkl2cDhhdEsvZjNuN0xwQml2VngyQk1WZVltejlkVUJsdDAy?=
- =?utf-8?B?aHhBRVN4eHZBYWFxSmdwNXN3eWcxMWJ3bnJqUjJlVGhkUi9QYnpYK3dxcERM?=
- =?utf-8?B?bys1b25FdU9sNjROdFQzdGlJcjJzNnNTSVE2czlJTnBXMkNKeStsNTlGbzRk?=
- =?utf-8?B?Z3MyKzFDb3ptTEI3ZHlpU2FZNS9WVkhnZ3YxUXNKWGkrZXJzcGQwNmNJUkZZ?=
- =?utf-8?B?ZUg2ZSs3b2I5dWQ3UDBBMVQvZ0UyUVFzRW9oV3h5bUZtbmhHOGxuMnlRb0dD?=
- =?utf-8?B?WmJHTDR3c29hSHhobnNzSFdSMDBLQUVVaVhpU0VFOXRBVWpFQ0djWENkL2VC?=
- =?utf-8?B?UFBUcVlIQ3dBaWV5Y1paNTBNOWF6dmh2TW8vRlNkUlN4SE5RbWVEZzdIdkNB?=
- =?utf-8?B?UE9iWHkyMkx6eGZRSG11K1Y1UE9MeCtJYzFVcVd2eTZQaEozM2w0cmNWN0xM?=
- =?utf-8?B?dlBYTEIzaUJqdmNGelRhcmxLNjFQeURqYWJkZEtETlhnbk5ld0lWVENCeGVD?=
- =?utf-8?B?YjJ0Y2pUdjlnQ2E0WGNyNFA2cnd4bnJWMTBFMHVwUWZvUU9WdUJlMnJ6VVpY?=
- =?utf-8?B?YTVmekczdENSU3EraTNtQklGUGYwZDZHVFBsSzVuRXdaOHFXSDFIbFdYZk0z?=
- =?utf-8?B?Tmh2QTFlUlhDZkc4K3AwVzJFcGRndERuRzZHYVhlYzkyQnlyaXE5QXdlaWxr?=
- =?utf-8?B?RmU0d3UrR1RmT3FlRDFLR2F3cnNWSjV2OVJPVVd1ZmJYMExsVGFKdVZuME9w?=
- =?utf-8?B?c1JFZ1JjdkkzUm1icStpV2kxeWtLUWNOUS9BVlhFZElBSktwM2k5eG1tc3c1?=
- =?utf-8?B?aE1sTTltOGxOS2JGczFnWUJaZStvRzM5RlJzRytrUVIwd1pveHFOWGF4MGNp?=
- =?utf-8?B?TGUyK2QyREdnRHArVVJOQkZ1MmNyZXZodm50TVlia3lhNWloK1Vqb0ZPYnZz?=
- =?utf-8?B?bnI5VG04QmxCa3hKbkxwcXcvZXZYbGdmTEsxK3NnQmNoWmswYTV2TDVGMU96?=
- =?utf-8?B?a1l4cmlIWms3cld5ZC9PSTlmUnNoaXRoMEc4dXBQUlBqd1RPL1UzNlY2WjFJ?=
- =?utf-8?B?L2lGR0IyTTQ2TlhMZUZjNkQrRk5EVjd6Mk5kd1h0QjVNaytwQ0RFNS9oZFky?=
- =?utf-8?B?ZTlHcUNCaFEyU24rcXpiL05RKzdVc1FlNXJwMENIUnQvQktXT2pOMVJkUzhJ?=
- =?utf-8?B?NDNqYVFRbUVJeTlIZ3I4V2MxNjNMZEltK1pDN3BaTWdsano1dDdoWUZpV2o3?=
- =?utf-8?B?ZHpranRiOS81RDRaQmwxODdhNjBuQkdOUjVkK1BnS3FkNzJnWkk1ZFRaV25Z?=
- =?utf-8?B?cG9VcHQzVWIrUG54cEEzL3M0L1J5cXZyRDJORFVXSTFUUitxZFR2L2laUTI5?=
- =?utf-8?B?ZCsvM2J6Qi83Z3h2Q1JZc1BVRFpWWFNzYTEyU0U0SUdWWFRqcDBSYTkyOERW?=
- =?utf-8?B?QnJwZmlLa0gyaG1rMmlaZkRNSmpaTmVvMm1aVUNicGtwbkVOQWhBbzM4WGg4?=
- =?utf-8?B?T2JILzE0RnBoa1lxbmlsVlIvZEx4Um5tMElKaHFKQk1WRGIxT3NMZGp6amFV?=
- =?utf-8?B?T0dhYWNNNWZhUnViSEV0azZZS3Y3NTBkMFZ0K091aE5BbFRHRGtaaG5GUDlM?=
- =?utf-8?B?bHhJQ1BkNzFMNGRIemQ5bHVFUEUzdEpmZHJ6TmZMY2NscWJhOTJDaHd6WEc3?=
- =?utf-8?B?R3pxQ2duRFFHYWVld1ZMeEprU0MreU9pMlJpRnNUNnRDcGk3T2xNc3M5cy9k?=
- =?utf-8?B?ZGVmOUFLQXpHNkRZWk95NFFjbXVrQ3h1UTlNbWdFcFdkcnRhaE5neDdpV3pD?=
- =?utf-8?B?SjhZVEg0TUFuN2xqbVRRY2duU1lnOUF1K2x4ano1SEhCbDRidVpJUmVXM0Rm?=
- =?utf-8?B?d3RiV2dwUlQyRVkvRHkzSlNvODRIVHRBZExvTDJNc1JnYXNLSDhta1hxQlhI?=
- =?utf-8?B?elE9PQ==?=
-X-OriginatorOrg: seco.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0848227a-f20f-4a43-33a9-08da6b61dafb
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2022 21:42:05.8273
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1FfjKhaxoOAi2Ol/pfivKCXeW/WNRPgJt61YQGshnt651JPSSYsq7CSXKK9CHYPY5y/3/Zo6l5itCADNFh6B1g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB6839
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20220706101043.4867-1-pali@kernel.org>
+User-Agent: NeoMutt/20180716
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -141,65 +66,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, UNGLinuxDriver@microchip.com, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.c
- om>
+Cc: linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+PING?
 
-
-On 7/20/22 9:53 AM, Vladimir Oltean wrote:
-> On Tue, Jul 19, 2022 at 03:34:45PM -0400, Sean Anderson wrote:
->> We could do it, but it'd be a pretty big hack. Something like the
->> following. Phylink would need to be modified to grab the lock before
->> every op and check if the PCS is dead or not. This is of course still
->> not optimal, since there's no way to re-attach a PCS once it goes away.
+On Wednesday 06 July 2022 12:10:43 Pali Rohár wrote:
+> By default old pre-3.0 Freescale PCIe controllers reports invalid PCI Class
+> Code 0x0b20 for PCIe Root Port. It can be seen by lspci -b output on P2020
+> board which has this pre-3.0 controller:
 > 
-> You assume it's just phylink who operates on a PCS structure, but if you
-> include your search pool to also cover include/linux/pcs/pcs-xpcs.h,
-> you'll see a bunch of exported functions which are called directly by
-> the client drivers (stmmac, sja1105). At this stage it gets pretty hard
-> to validate that drivers won't attempt from any code path to do
-> something stupid with a dead PCS. All in all it creates an environment
-> with insanely weak guarantees; that's pretty hard to get behind IMO.
-
-Right. To do this properly, we'd need wrapper functions for all the PCS
-operations. And the super-weak guarantees is why I referred to this as a
-"hack". But we could certainly make it so that removing a PCS might not
-bring down the MAC.
-
->> IMO a better solution is to use devlink and submit a patch to add
->> notifications which the MAC driver can register for. That way it can
->> find out when the PCS goes away and potentially do something about it
->> (or just let itself get removed).
+>   $ lspci -bvnn
+>   00:00.0 Power PC [0b20]: Freescale Semiconductor Inc P2020E [1957:0070] (rev 21)
+>           !!! Invalid class 0b20 for header type 01
+>           Capabilities: [4c] Express Root Port (Slot-), MSI 00
 > 
-> Not sure I understand what connection there is between devlink (device
-> links) and PCS {de}registration notifications. 
-
-The default action when a supplier is going to be removed is to remove
-the consumers. However, it'd be nice to notify the consumer beforehand.
-If we used device links, this would need to be integrated (since otherwise
-we'd only find out that a PCS was gone after the MAC was gone too).
-
-> We could probably add those
-> notifications without any intervention from the device core: we would
-> just need to make this new PCS "core" to register an blocking_notifier_call_chain
-> to which interested drivers could add their notifier blocks. How a> certain phylink user is going to determine that "hey, this PCS is
-> definitely mine and I can use it" is an open question. In any case, my
-> expectation is that we have a notifier chain, we can at least continue
-> operating (avoid unbinding the struct device), but essentially move our
-> phylink_create/phylink_destroy calls to within those notifier blocks.
-> Again, retrofitting this model to existing drivers, phylink API (and
-> maybe even its internal structure) is something that's hard to hop on
-> board of; I think it's a solution waiting for a problem, and I don't
-> have an interest to develop or even review it.
-
-I don't either. I'd much rather just bring down the whole MAC when any
-PCS gets removed. Whatever we decide on doing here should also be done
-for (serdes) phys as well, since they have all the same pitfalls. For
-that reason I'd rather use a generic, non-intrusive solution like device
-links. I know Russell mentioned composite devices, but I think those
-would have similar advantages/drawbacks as a device-link-based solution
-(unbinding of one device unbinds the rest).
-
---Sean
+> Fix this issue by programming correct PCI Class Code 0x0604 for PCIe Root
+> Port to the Freescale specific PCIe register 0x474.
+> 
+> With this change lspci -b output is:
+> 
+>   $ lspci -bvnn
+>   00:00.0 PCI bridge [0604]: Freescale Semiconductor Inc P2020E [1957:0070] (rev 21) (prog-if 00 [Normal decode])
+>           Capabilities: [4c] Express Root Port (Slot-), MSI 00
+> 
+> Without any "Invalid class" error. So class code was properly reflected
+> into standard (read-only) PCI register 0x08.
+> 
+> Same fix is already implemented in U-Boot pcie_fsl.c driver in commit:
+> http://source.denx.de/u-boot/u-boot/-/commit/d18d06ac35229345a0af80977a408cfbe1d1015b
+> 
+> Fix activated by U-Boot stay active also after booting Linux kernel.
+> But boards which use older U-Boot version without that fix are affected and
+> still require this fix.
+> 
+> So implement this class code fix also in kernel fsl_pci.c driver.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pali Rohár <pali@kernel.org>
+> ---
+>  arch/powerpc/sysdev/fsl_pci.c | 8 ++++++++
+>  arch/powerpc/sysdev/fsl_pci.h | 1 +
+>  2 files changed, 9 insertions(+)
+> 
+> diff --git a/arch/powerpc/sysdev/fsl_pci.c b/arch/powerpc/sysdev/fsl_pci.c
+> index 1011cfea2e32..bfbb8c8fc9aa 100644
+> --- a/arch/powerpc/sysdev/fsl_pci.c
+> +++ b/arch/powerpc/sysdev/fsl_pci.c
+> @@ -521,6 +521,7 @@ int fsl_add_bridge(struct platform_device *pdev, int is_primary)
+>  	struct resource rsrc;
+>  	const int *bus_range;
+>  	u8 hdr_type, progif;
+> +	u32 class_code;
+>  	struct device_node *dev;
+>  	struct ccsr_pci __iomem *pci;
+>  	u16 temp;
+> @@ -594,6 +595,13 @@ int fsl_add_bridge(struct platform_device *pdev, int is_primary)
+>  			PPC_INDIRECT_TYPE_SURPRESS_PRIMARY_BUS;
+>  		if (fsl_pcie_check_link(hose))
+>  			hose->indirect_type |= PPC_INDIRECT_TYPE_NO_PCIE_LINK;
+> +		/* Fix Class Code to PCI_CLASS_BRIDGE_PCI_NORMAL for pre-3.0 controller */
+> +		if (in_be32(&pci->block_rev1) < PCIE_IP_REV_3_0) {
+> +			early_read_config_dword(hose, 0, 0, PCIE_FSL_CSR_CLASSCODE, &class_code);
+> +			class_code &= 0xff;
+> +			class_code |= PCI_CLASS_BRIDGE_PCI_NORMAL << 8;
+> +			early_write_config_dword(hose, 0, 0, PCIE_FSL_CSR_CLASSCODE, class_code);
+> +		}
+>  	} else {
+>  		/*
+>  		 * Set PBFR(PCI Bus Function Register)[10] = 1 to
+> diff --git a/arch/powerpc/sysdev/fsl_pci.h b/arch/powerpc/sysdev/fsl_pci.h
+> index cdbde2e0c96e..093a875d7d1e 100644
+> --- a/arch/powerpc/sysdev/fsl_pci.h
+> +++ b/arch/powerpc/sysdev/fsl_pci.h
+> @@ -18,6 +18,7 @@ struct platform_device;
+>  
+>  #define PCIE_LTSSM	0x0404		/* PCIE Link Training and Status */
+>  #define PCIE_LTSSM_L0	0x16		/* L0 state */
+> +#define PCIE_FSL_CSR_CLASSCODE	0x474	/* FSL GPEX CSR */
+>  #define PCIE_IP_REV_2_2		0x02080202 /* PCIE IP block version Rev2.2 */
+>  #define PCIE_IP_REV_3_0		0x02080300 /* PCIE IP block version Rev3.0 */
+>  #define PIWAR_EN		0x80000000	/* Enable */
+> -- 
+> 2.20.1
+> 
