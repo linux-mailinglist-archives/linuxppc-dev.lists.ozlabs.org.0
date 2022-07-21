@@ -1,34 +1,135 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6236A57D4B4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 22:16:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD48157D637
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 23:43:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LpkNc1bpzz3c79
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 06:16:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LpmJt53Dwz3cj0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 07:43:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=SSCqPJrK;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=luna.fluff.org (client-ip=86.15.83.122; helo=luna; envelope-from=ben@luna.fluff.org; receiver=<UNKNOWN>)
-X-Greylist: delayed 1228 seconds by postgrey-1.36 at boromir; Fri, 22 Jul 2022 06:15:52 AEST
-Received: from luna (cpc152649-stkp13-2-0-cust121.10-2.cable.virginm.net [86.15.83.122])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.13.89; helo=eur01-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=SSCqPJrK;
+	dkim-atps=neutral
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (mail-eopbgr130089.outbound.protection.outlook.com [40.107.13.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LpkN86nZBz3c6g
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 06:15:51 +1000 (AEST)
-Received: from ben by luna with local (Exim 4.96)
-	(envelope-from <ben@luna.fluff.org>)
-	id 1oEcGM-001knS-0y;
-	Thu, 21 Jul 2022 20:55:10 +0100
-From: Ben Dooks <ben-linux@fluff.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] profile: setup_profiling_timer() is moslty not implemented
-Date: Thu, 21 Jul 2022 20:55:09 +0100
-Message-Id: <20220721195509.418205-1-ben-linux@fluff.org>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LpmJ45dXYz3c6s
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 07:42:26 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=k0PeJ2+fYe185hEZTnSs1KY4lk6gsIQYMLK2zIdc7e9VcSf8s71/SdqTsHyzKPHQzcpweTXXKNkygUZNrvnHRpNe7AazU4wSP7/9TC0/nAU3hWM7mF1nZDED49PwgdQ1h5rY/++FROBdS3yeOB7j9tp2vJFig2ILrdZQBlxWZWq0YE4cRvJE0oJJ1qSnbXuKSULlaAu+yz1/Y3QmxY1Ucp36bLjEghVx4q7ynlKc+CwAcl17efvG4v+EM8tBHH4FYZRg4bjGWR3VGankFErSTggEcL45L+8XNbUhZQ2Xs4D23/O5D3LkWk4ootg+H1NyKarfQQy848npJXLRSQMM4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7qAQGzw+4hg5GUHDmsZA7N8RrZtma3gzz71viTwPHSo=;
+ b=mexUO5buAcL9ScxgbVlIuEmftDKREujnqQYhY9ErQnCvrcvTCujeovLa6Zon0xWxLKL10mjWCTDzTuRwkgDsA5GaZ/6iaLJYZjeE3MHBU3KLieDoqXwhE4nEkB6qBmODgNcoU7YLU/DXwD3ufEj46eMXgmwOE7GegQqG7SKgnhScQxlyfTghEOPrncqVHDkftKUGG4HDbOceUuk3wDYHTSlC5HFPRbju59e0NcrSEly+2scGsSvvcMP02fCyLLNFcHuyc8MAqPkKdfVqRiLKDAo+733DVn3v/cwlpE2XkAclYtRoSmDjf7asFQjr7JGq0mXTA7sWFsLK61xVWJe+Cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7qAQGzw+4hg5GUHDmsZA7N8RrZtma3gzz71viTwPHSo=;
+ b=SSCqPJrKT4YJd5imnVRsIqCxMGpi1zroRLGaGgVfXm8EUkaUNl+0b7OXWb5CgrJyqBFH83TwRcdLdslPmnwt0s7FKSL4Hptr3lVxm+jyExkXLw1rD5va4GpeXgLFC8z3aRM295LrtJqTP2/CLe5y6srF09VB3b8Iub7TTiSoMj5U/k+x6qc0FH4Tc/AYge7riPW+rOqNYNg3vOghaHmyUDJ+G6eUb0+VCVI4LZwaQOh+WwIzrnt9b/wAkpNVmXTMxGvtRfE1VCLZGBz9bqOTZ2idVs8zKqJmRkPwIpSqDDtYOLamKWcz87ixZSq3lm93+TEA495Sk+jNra2Js4ZczQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by AS8PR03MB6839.eurprd03.prod.outlook.com (2603:10a6:20b:29a::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.19; Thu, 21 Jul
+ 2022 21:42:06 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::59ef:35d2:2f27:e98b]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::59ef:35d2:2f27:e98b%4]) with mapi id 15.20.5458.018; Thu, 21 Jul 2022
+ 21:42:05 +0000
+Subject: Re: [RFC PATCH net-next 0/9] net: pcs: Add support for devices probed
+ in the "usual" manner
+To: Vladimir Oltean <olteanv@gmail.com>
+References: <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
+ <20220719181113.q5jf7mpr7ygeioqw@skbuf>
+ <20220711160519.741990-1-sean.anderson@seco.com>
+ <20220719152539.i43kdp7nolbp2vnp@skbuf>
+ <bec4c9c3-e51b-5623-3cae-6df1a8ce898f@seco.com>
+ <20220719153811.izue2q7qff7fjyru@skbuf>
+ <2d028102-dd6a-c9f6-9e18-5abf84eb37a1@seco.com>
+ <20220719181113.q5jf7mpr7ygeioqw@skbuf>
+ <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
+ <c0a11900-5a31-ca90-220f-74e3380cef8c@seco.com>
+ <20220720135314.5cjxiifrq5ig4vjb@skbuf>
+From: Sean Anderson <sean.anderson@seco.com>
+Message-ID: <075c5ced-1185-2003-a265-12bce5a82076@seco.com>
+Date: Thu, 21 Jul 2022 17:42:00 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <20220720135314.5cjxiifrq5ig4vjb@skbuf>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MN2PR12CA0003.namprd12.prod.outlook.com
+ (2603:10b6:208:a8::16) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0848227a-f20f-4a43-33a9-08da6b61dafb
+X-MS-TrafficTypeDiagnostic: AS8PR03MB6839:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	z+Ia1XkMSZSk8WLnKZTGLac4L8xdzFZa5uZ+tZGAP/NjflbduKBYGMdUs/3ge6VdjHlpVMeEZFTzYcqxqgz5pjyHJPwItvcTbRmdCFqaB805LwG7qEJvWLcgagTxzKcB93WIahm0+8repoARdNJH9BIHQf2mCRl4suf0tU/K+3Vcav3mA96ZE3c2LeIewpHKnG1GuVHIT8KS08aW4FmIdDt4IIGTauuuouuP/xJzQAhPRs5UbNwRxZDMv3HWIGZ+Q9J9BktCYQuEM83qLMs0J+mbKdoBj+JL6V50tcBQ6Cvu1MorMAPVuiUb0qtMnYvTsK/42X2++TXFO0oLTpH+2V8cjWBykQvb6E57PoRCuo2vfsvhtkFl7N5uVb55k4wAkRmuNxVETpprKEecgSwID+Jf/be1LIuWw2oFZmu16T+LBOEcob7VL8Yb2bK8ziJhqwA67eG2vGOm19RwsVHjlORqw2wS3zNr6p7R9bVhrR+aG2VhOtHyce+UUM5UeEQvi8NSaTRLg0kzx4r5SiNkRxfUD6uLJpHJnCCTc3qxDa2UttjxwGgGHdTOuh1HkZMGoJ2F1o2LJ/3fBhWcGT39zEqrPa1g6x6p3aHnBZMG5hVYS/HCZKgBjjH4Lm0+DaKL6a2dTO1gi6X5p5XJA2FXZegi7Wrnrm4haRxfwQThWlRjyy7kJHBpfrIqCo2Y7mV0utsuX+6Snrw8Q3KG6smSzq5V0H2ruW2O76q+vbqzcLUaa7Id0/91exOgLt488naWoCHz1dd22J1xHmOrzIA4HgE2R0kfoeUXoC4os8D+9yyssUrf3RzDIE0BVpMFrLy9mtMtWB4gLNH71PSFV/ZAZGQr5Hogd/RFB4qmwXa5ztCrNxvWCosgtjav8mUVzTz5
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(136003)(39850400004)(346002)(376002)(396003)(366004)(38350700002)(2616005)(36756003)(6916009)(38100700002)(54906003)(31686004)(316002)(186003)(83380400001)(478600001)(2906002)(8676002)(7406005)(6486002)(8936002)(5660300002)(4326008)(66946007)(66476007)(66556008)(41300700001)(7416002)(44832011)(6666004)(31696002)(53546011)(26005)(52116002)(6506007)(6512007)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?VVpNcmM2VjAyUzVmZlVVWE5VQ0JLekgwS1lCKzBhbVRXc1FJOUxjV09kWlhV?=
+ =?utf-8?B?Y2wyZ1JvMTVubWx6R0Jqdnh2eFlJaSsyMGQzbHJFQ1VmcTdwRG5DLzNjS0gw?=
+ =?utf-8?B?MkZ6M0pBWWpNUGdtcmZXRG55Q1htTnBvNS9DWXk0VEVva2dGN0x2c3VDdjRO?=
+ =?utf-8?B?RWFST3RXdHJuM292VVhYNWdLYjNKR2NMNDBUZEsxQzVTSkdyU3R5cFc2QWJr?=
+ =?utf-8?B?UTlmR29QMy9BWkl2cDhhdEsvZjNuN0xwQml2VngyQk1WZVltejlkVUJsdDAy?=
+ =?utf-8?B?aHhBRVN4eHZBYWFxSmdwNXN3eWcxMWJ3bnJqUjJlVGhkUi9QYnpYK3dxcERM?=
+ =?utf-8?B?bys1b25FdU9sNjROdFQzdGlJcjJzNnNTSVE2czlJTnBXMkNKeStsNTlGbzRk?=
+ =?utf-8?B?Z3MyKzFDb3ptTEI3ZHlpU2FZNS9WVkhnZ3YxUXNKWGkrZXJzcGQwNmNJUkZZ?=
+ =?utf-8?B?ZUg2ZSs3b2I5dWQ3UDBBMVQvZ0UyUVFzRW9oV3h5bUZtbmhHOGxuMnlRb0dD?=
+ =?utf-8?B?WmJHTDR3c29hSHhobnNzSFdSMDBLQUVVaVhpU0VFOXRBVWpFQ0djWENkL2VC?=
+ =?utf-8?B?UFBUcVlIQ3dBaWV5Y1paNTBNOWF6dmh2TW8vRlNkUlN4SE5RbWVEZzdIdkNB?=
+ =?utf-8?B?UE9iWHkyMkx6eGZRSG11K1Y1UE9MeCtJYzFVcVd2eTZQaEozM2w0cmNWN0xM?=
+ =?utf-8?B?dlBYTEIzaUJqdmNGelRhcmxLNjFQeURqYWJkZEtETlhnbk5ld0lWVENCeGVD?=
+ =?utf-8?B?YjJ0Y2pUdjlnQ2E0WGNyNFA2cnd4bnJWMTBFMHVwUWZvUU9WdUJlMnJ6VVpY?=
+ =?utf-8?B?YTVmekczdENSU3EraTNtQklGUGYwZDZHVFBsSzVuRXdaOHFXSDFIbFdYZk0z?=
+ =?utf-8?B?Tmh2QTFlUlhDZkc4K3AwVzJFcGRndERuRzZHYVhlYzkyQnlyaXE5QXdlaWxr?=
+ =?utf-8?B?RmU0d3UrR1RmT3FlRDFLR2F3cnNWSjV2OVJPVVd1ZmJYMExsVGFKdVZuME9w?=
+ =?utf-8?B?c1JFZ1JjdkkzUm1icStpV2kxeWtLUWNOUS9BVlhFZElBSktwM2k5eG1tc3c1?=
+ =?utf-8?B?aE1sTTltOGxOS2JGczFnWUJaZStvRzM5RlJzRytrUVIwd1pveHFOWGF4MGNp?=
+ =?utf-8?B?TGUyK2QyREdnRHArVVJOQkZ1MmNyZXZodm50TVlia3lhNWloK1Vqb0ZPYnZz?=
+ =?utf-8?B?bnI5VG04QmxCa3hKbkxwcXcvZXZYbGdmTEsxK3NnQmNoWmswYTV2TDVGMU96?=
+ =?utf-8?B?a1l4cmlIWms3cld5ZC9PSTlmUnNoaXRoMEc4dXBQUlBqd1RPL1UzNlY2WjFJ?=
+ =?utf-8?B?L2lGR0IyTTQ2TlhMZUZjNkQrRk5EVjd6Mk5kd1h0QjVNaytwQ0RFNS9oZFky?=
+ =?utf-8?B?ZTlHcUNCaFEyU24rcXpiL05RKzdVc1FlNXJwMENIUnQvQktXT2pOMVJkUzhJ?=
+ =?utf-8?B?NDNqYVFRbUVJeTlIZ3I4V2MxNjNMZEltK1pDN3BaTWdsano1dDdoWUZpV2o3?=
+ =?utf-8?B?ZHpranRiOS81RDRaQmwxODdhNjBuQkdOUjVkK1BnS3FkNzJnWkk1ZFRaV25Z?=
+ =?utf-8?B?cG9VcHQzVWIrUG54cEEzL3M0L1J5cXZyRDJORFVXSTFUUitxZFR2L2laUTI5?=
+ =?utf-8?B?ZCsvM2J6Qi83Z3h2Q1JZc1BVRFpWWFNzYTEyU0U0SUdWWFRqcDBSYTkyOERW?=
+ =?utf-8?B?QnJwZmlLa0gyaG1rMmlaZkRNSmpaTmVvMm1aVUNicGtwbkVOQWhBbzM4WGg4?=
+ =?utf-8?B?T2JILzE0RnBoa1lxbmlsVlIvZEx4Um5tMElKaHFKQk1WRGIxT3NMZGp6amFV?=
+ =?utf-8?B?T0dhYWNNNWZhUnViSEV0azZZS3Y3NTBkMFZ0K091aE5BbFRHRGtaaG5GUDlM?=
+ =?utf-8?B?bHhJQ1BkNzFMNGRIemQ5bHVFUEUzdEpmZHJ6TmZMY2NscWJhOTJDaHd6WEc3?=
+ =?utf-8?B?R3pxQ2duRFFHYWVld1ZMeEprU0MreU9pMlJpRnNUNnRDcGk3T2xNc3M5cy9k?=
+ =?utf-8?B?ZGVmOUFLQXpHNkRZWk95NFFjbXVrQ3h1UTlNbWdFcFdkcnRhaE5neDdpV3pD?=
+ =?utf-8?B?SjhZVEg0TUFuN2xqbVRRY2duU1lnOUF1K2x4ano1SEhCbDRidVpJUmVXM0Rm?=
+ =?utf-8?B?d3RiV2dwUlQyRVkvRHkzSlNvODRIVHRBZExvTDJNc1JnYXNLSDhta1hxQlhI?=
+ =?utf-8?B?elE9PQ==?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0848227a-f20f-4a43-33a9-08da6b61dafb
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2022 21:42:05.8273
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1FfjKhaxoOAi2Ol/pfivKCXeW/WNRPgJt61YQGshnt651JPSSYsq7CSXKK9CHYPY5y/3/Zo6l5itCADNFh6B1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR03MB6839
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,319 +141,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org, linux-hexagon@vger.kernel.org, linux-csky@vger.kernel.org, openrisc@lists.librecores.org, Ben Dooks <ben-linux@fluff.org>, linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Belloni <alexandre.belloni@bootlin.com>, Madalin Bucur <madalin.bucur@nxp.com>, Eric Dumazet <edumazet@google.com>, Paul Mackerras <paulus@samba.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, UNGLinuxDriver@microchip.com, Frank Rowand <frowand.list@gmail.com>, Florian Fainelli <f.fainelli@gmail.com>, Saravana Kannan <saravanak@google.com>, Russell King <linux@armlinux.org.uk>, Vladimir Oltean <vladimir.oltean@nxp.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vivien Didelot <vivien.didelot@gmail.com>, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Claudiu Manoil <claudiu.manoil@nxp.com>, Rob Herring <robh+dt@kernel.org>, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Li Yang <leoyang.li@nxp.com>, Shawn Guo <shawnguo@kernel.org>, "David S . Miller" <davem@davemloft.net>, Heiner Kallweit <hkallweit1@gmail.c
+ om>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The setup_profiling_timer() is mostly un-implemented by many
-architectures. In many places it isn't guarded by CONFIG_PROFILE
-which is needed for it to be used. Make it a weak symbol in
-kernel/profile.c and remove the 'return -EINVAL' implementations
-from the kenrel.
 
-There are a couple of architectures which do return 0 from
-the setup_profiling_timer() function but they don't seem to
-do anything else with it. To keep the /proc compatibility for
-now, leave these for a future update or removal.
 
-On ARM, this fixes the following sparse warning:
-arch/arm/kernel/smp.c:793:5: warning: symbol 'setup_profiling_timer' was not declared. Should it be static?
+On 7/20/22 9:53 AM, Vladimir Oltean wrote:
+> On Tue, Jul 19, 2022 at 03:34:45PM -0400, Sean Anderson wrote:
+>> We could do it, but it'd be a pretty big hack. Something like the
+>> following. Phylink would need to be modified to grab the lock before
+>> every op and check if the PCS is dead or not. This is of course still
+>> not optimal, since there's no way to re-attach a PCS once it goes away.
+> 
+> You assume it's just phylink who operates on a PCS structure, but if you
+> include your search pool to also cover include/linux/pcs/pcs-xpcs.h,
+> you'll see a bunch of exported functions which are called directly by
+> the client drivers (stmmac, sja1105). At this stage it gets pretty hard
+> to validate that drivers won't attempt from any code path to do
+> something stupid with a dead PCS. All in all it creates an environment
+> with insanely weak guarantees; that's pretty hard to get behind IMO.
 
-Signed-off-by: Ben Dooks <ben-linux@fluff.org>
----
- arch/alpha/kernel/smp.c     | 6 ------
- arch/arc/kernel/smp.c       | 8 --------
- arch/arm/kernel/smp.c       | 8 --------
- arch/arm64/kernel/smp.c     | 8 --------
- arch/csky/kernel/smp.c      | 5 -----
- arch/hexagon/kernel/smp.c   | 5 -----
- arch/ia64/kernel/smp.c      | 6 ------
- arch/openrisc/kernel/smp.c  | 6 ------
- arch/parisc/kernel/smp.c    | 7 -------
- arch/powerpc/kernel/smp.c   | 7 -------
- arch/riscv/kernel/smp.c     | 6 ------
- arch/sparc/kernel/smp_32.c  | 5 -----
- arch/sparc/kernel/smp_64.c  | 6 ------
- arch/x86/include/asm/apic.h | 2 --
- arch/x86/kernel/apic/apic.c | 5 -----
- kernel/profile.c            | 8 ++++++--
- 16 files changed, 6 insertions(+), 92 deletions(-)
+Right. To do this properly, we'd need wrapper functions for all the PCS
+operations. And the super-weak guarantees is why I referred to this as a
+"hack". But we could certainly make it so that removing a PCS might not
+bring down the MAC.
 
-diff --git a/arch/alpha/kernel/smp.c b/arch/alpha/kernel/smp.c
-index cb64e4797d2a..f4e20f75438f 100644
---- a/arch/alpha/kernel/smp.c
-+++ b/arch/alpha/kernel/smp.c
-@@ -497,12 +497,6 @@ smp_cpus_done(unsigned int max_cpus)
- 	       ((bogosum + 2500) / (5000/HZ)) % 100);
- }
- 
--int
--setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- static void
- send_ipi_message(const struct cpumask *to_whom, enum ipi_message_type operation)
- {
-diff --git a/arch/arc/kernel/smp.c b/arch/arc/kernel/smp.c
-index d947473f1e6d..ab9e75e90f72 100644
---- a/arch/arc/kernel/smp.c
-+++ b/arch/arc/kernel/smp.c
-@@ -232,14 +232,6 @@ int __cpu_up(unsigned int cpu, struct task_struct *idle)
- 	return 0;
- }
- 
--/*
-- * not supported here
-- */
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- /*****************************************************************************/
- /*              Inter Processor Interrupt Handling                           */
- /*****************************************************************************/
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index 73fc645fc4c7..978db2d96b44 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -787,14 +787,6 @@ void panic_smp_self_stop(void)
- 		cpu_relax();
- }
- 
--/*
-- * not supported here
-- */
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- #ifdef CONFIG_CPU_FREQ
- 
- static DEFINE_PER_CPU(unsigned long, l_p_j_ref);
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index 62ed361a4376..ffc5d76cf695 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -1078,14 +1078,6 @@ bool smp_crash_stop_failed(void)
- }
- #endif
- 
--/*
-- * not supported here
-- */
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- static bool have_cpu_die(void)
- {
- #ifdef CONFIG_HOTPLUG_CPU
-diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
-index 6bb38bc2f39b..4b605aa2e1d6 100644
---- a/arch/csky/kernel/smp.c
-+++ b/arch/csky/kernel/smp.c
-@@ -243,11 +243,6 @@ void __init smp_cpus_done(unsigned int max_cpus)
- {
- }
- 
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- void csky_start_secondary(void)
- {
- 	struct mm_struct *mm = &init_mm;
-diff --git a/arch/hexagon/kernel/smp.c b/arch/hexagon/kernel/smp.c
-index 619c56420aa0..4ba93e59370c 100644
---- a/arch/hexagon/kernel/smp.c
-+++ b/arch/hexagon/kernel/smp.c
-@@ -240,11 +240,6 @@ void arch_send_call_function_ipi_mask(const struct cpumask *mask)
- 	send_ipi(mask, IPI_CALL_FUNC);
- }
- 
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- void smp_start_cpus(void)
- {
- 	int i;
-diff --git a/arch/ia64/kernel/smp.c b/arch/ia64/kernel/smp.c
-index 7b7b64eb3129..e2cc59db86bc 100644
---- a/arch/ia64/kernel/smp.c
-+++ b/arch/ia64/kernel/smp.c
-@@ -333,9 +333,3 @@ smp_send_stop (void)
- {
- 	send_IPI_allbutself(IPI_CPU_STOP);
- }
--
--int
--setup_profiling_timer (unsigned int multiplier)
--{
--	return -EINVAL;
--}
-diff --git a/arch/openrisc/kernel/smp.c b/arch/openrisc/kernel/smp.c
-index 27041db2c8b0..e1419095a6f0 100644
---- a/arch/openrisc/kernel/smp.c
-+++ b/arch/openrisc/kernel/smp.c
-@@ -197,12 +197,6 @@ void smp_send_stop(void)
- 	smp_call_function(stop_this_cpu, NULL, 0);
- }
- 
--/* not supported, yet */
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- void __init set_smp_cross_call(void (*fn)(const struct cpumask *, unsigned int))
- {
- 	smp_cross_call = fn;
-diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-index 24d0744c3b3a..7dbd92cafae3 100644
---- a/arch/parisc/kernel/smp.c
-+++ b/arch/parisc/kernel/smp.c
-@@ -513,10 +513,3 @@ void __cpu_die(unsigned int cpu)
- 
- 	pdc_cpu_rendezvous_unlock();
- }
--
--#ifdef CONFIG_PROC_FS
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--#endif
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index bcefab484ea6..c037c26540dd 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1674,13 +1674,6 @@ void start_secondary(void *unused)
- 	BUG();
- }
- 
--#ifdef CONFIG_PROFILING
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return 0;
--}
--#endif
--
- static void __init fixup_topology(void)
- {
- 	int i;
-diff --git a/arch/riscv/kernel/smp.c b/arch/riscv/kernel/smp.c
-index b5d30ea92292..441d0ceb80ad 100644
---- a/arch/riscv/kernel/smp.c
-+++ b/arch/riscv/kernel/smp.c
-@@ -64,12 +64,6 @@ bool arch_match_cpu_phys_id(int cpu, u64 phys_id)
- 	return phys_id == cpuid_to_hartid_map(cpu);
- }
- 
--/* Unsupported */
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- static void ipi_stop(void)
- {
- 	set_cpu_online(smp_processor_id(), false);
-diff --git a/arch/sparc/kernel/smp_32.c b/arch/sparc/kernel/smp_32.c
-index 22b148e5a5f8..ad8094d955eb 100644
---- a/arch/sparc/kernel/smp_32.c
-+++ b/arch/sparc/kernel/smp_32.c
-@@ -174,11 +174,6 @@ void smp_call_function_interrupt(void)
- 	irq_exit();
- }
- 
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- void __init smp_prepare_cpus(unsigned int max_cpus)
- {
- 	int i, cpuid, extra;
-diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-index a1f78e9ddaf3..a55295d1b924 100644
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -1186,12 +1186,6 @@ void __irq_entry smp_penguin_jailcell(int irq, struct pt_regs *regs)
- 	preempt_enable();
- }
- 
--/* /proc/profile writes can call this, don't __init it please. */
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- void __init smp_prepare_cpus(unsigned int max_cpus)
- {
- }
-diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
-index bd8ae0a7010a..3415321c8240 100644
---- a/arch/x86/include/asm/apic.h
-+++ b/arch/x86/include/asm/apic.h
-@@ -98,8 +98,6 @@ static inline bool apic_from_smp_config(void)
- #include <asm/paravirt.h>
- #endif
- 
--extern int setup_profiling_timer(unsigned int);
--
- static inline void native_apic_mem_write(u32 reg, u32 v)
- {
- 	volatile u32 *addr = (volatile u32 *)(APIC_BASE + reg);
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 189d3a5e471a..df764ceac2c8 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1115,11 +1115,6 @@ DEFINE_IDTENTRY_SYSVEC(sysvec_apic_timer_interrupt)
- 	set_irq_regs(old_regs);
- }
- 
--int setup_profiling_timer(unsigned int multiplier)
--{
--	return -EINVAL;
--}
--
- /*
-  * Local APIC start and shutdown
-  */
-diff --git a/kernel/profile.c b/kernel/profile.c
-index 37640a0bd8a3..244aa255c488 100644
---- a/kernel/profile.c
-+++ b/kernel/profile.c
-@@ -418,6 +418,12 @@ read_profile(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 	return read;
- }
- 
-+/* default is to not implement this call */
-+int __weak setup_profiling_timer(unsigned mult)
-+{
-+	return -EINVAL;
-+}
-+
- /*
-  * Writing to /proc/profile resets the counters
-  *
-@@ -428,8 +434,6 @@ static ssize_t write_profile(struct file *file, const char __user *buf,
- 			     size_t count, loff_t *ppos)
- {
- #ifdef CONFIG_SMP
--	extern int setup_profiling_timer(unsigned int multiplier);
--
- 	if (count == sizeof(int)) {
- 		unsigned int multiplier;
- 
--- 
-2.35.1
+>> IMO a better solution is to use devlink and submit a patch to add
+>> notifications which the MAC driver can register for. That way it can
+>> find out when the PCS goes away and potentially do something about it
+>> (or just let itself get removed).
+> 
+> Not sure I understand what connection there is between devlink (device
+> links) and PCS {de}registration notifications. 
 
+The default action when a supplier is going to be removed is to remove
+the consumers. However, it'd be nice to notify the consumer beforehand.
+If we used device links, this would need to be integrated (since otherwise
+we'd only find out that a PCS was gone after the MAC was gone too).
+
+> We could probably add those
+> notifications without any intervention from the device core: we would
+> just need to make this new PCS "core" to register an blocking_notifier_call_chain
+> to which interested drivers could add their notifier blocks. How a> certain phylink user is going to determine that "hey, this PCS is
+> definitely mine and I can use it" is an open question. In any case, my
+> expectation is that we have a notifier chain, we can at least continue
+> operating (avoid unbinding the struct device), but essentially move our
+> phylink_create/phylink_destroy calls to within those notifier blocks.
+> Again, retrofitting this model to existing drivers, phylink API (and
+> maybe even its internal structure) is something that's hard to hop on
+> board of; I think it's a solution waiting for a problem, and I don't
+> have an interest to develop or even review it.
+
+I don't either. I'd much rather just bring down the whole MAC when any
+PCS gets removed. Whatever we decide on doing here should also be done
+for (serdes) phys as well, since they have all the same pitfalls. For
+that reason I'd rather use a generic, non-intrusive solution like device
+links. I know Russell mentioned composite devices, but I think those
+would have similar advantages/drawbacks as a device-link-based solution
+(unbinding of one device unbinds the rest).
+
+--Sean
