@@ -1,46 +1,120 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183DA57C959
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 12:48:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3AF57CBB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 15:18:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LpTmv0Xvpz3fCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 20:47:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LpY6w68Ffz3cj2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 23:18:48 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=mXNkO9Wz;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com; envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com (client-ip=40.107.20.56; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=camelia.groza@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector2 header.b=mXNkO9Wz;
+	dkim-atps=neutral
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2056.outbound.protection.outlook.com [40.107.20.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LpTkN2tGkz3bls
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 20:45:48 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id B2615203901;
-	Thu, 21 Jul 2022 12:45:45 +0200 (CEST)
-Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 7B4C52038FA;
-	Thu, 21 Jul 2022 12:45:45 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
-	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 090BC1800318;
-	Thu, 21 Jul 2022 18:45:43 +0800 (+08)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: nicoleotsuka@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	shengjiu.wang@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	alsa-devel@alsa-project.org
-Subject: [PATCH v2 -next 5/5] ASoC: imx-card: use snd_pcm_format_t type for asrc_format
-Date: Thu, 21 Jul 2022 18:29:53 +0800
-Message-Id: <1658399393-28777-6-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1658399393-28777-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1658399393-28777-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LpY696qpFz2ypV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 23:18:08 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=nwFGUYUsa32h8IGHYt4HKi5dcT7G+UH5+CR35fF/HiXKSRwwjJvgxNuiLmJDhRb4UrKfzZT4BPsHOyyIYCm8UyqciFUJTSm3+csoVeKlmFBy/nk/PaU/Ryn/6Fu5btxDOocBEEmpHm1AE7R4F5Gz0OIV8ggtTI9rwi65wnIbRG7/VPBKrOxsKLKZd8+GqQExFH0v+HQt53mp8mo2esAikhEfPMtYYrfDBbtapPU1H8sUVI+8/V2qjp+yYFWrtABp84iFazdoqDIlDRPmo9jSPbwkYI3TiiCufyVoaps8yw6LOxEqEgFYkmW8raA4GzXGqAXs+n7hFFepuUXmmtnPtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fhQLhs1z0s1XidQAUNJHH4bzc1s/8lYH0Oyjuu1Nok4=;
+ b=IqEneIuN2ApCbI8KEbZOEq3WQec1b/u/1nfiYPcgoIzdXuaqEjWzS0XYdOHX37mdW7OvT6hrwZePDEHpr/eIWgmULqUPD7j3RmmBIay0tmMbvI4/IyZirq2JyzkCi2lXRpcuSL8K8WvOF9uupM1kQ9kQ3Lp27th8xqMg1vNhHbvZ32nuPPnLu3KMBeqgRRiFvaPYdXFJtn/7ov8sjSbdLXQ+0/jCSrEgRP+OlX8W80V+O32SxECdLtYjrrIRJRyGB/pfFZr1uBvTXleysGbIw1I8B9CRRnQ3nAql3sfcqNWcKjgNypeyS+/dRnwr8UGVFm7JZCrRHXZrZwQgrkLXeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fhQLhs1z0s1XidQAUNJHH4bzc1s/8lYH0Oyjuu1Nok4=;
+ b=mXNkO9WzJPhyw4qlCrlMQU+Z1xi45iRFDsGoMGJTg/nY3T39ZK/7i9Pyi7avx9ksj1Xhkww5m0d/VjJ4Sp1okp5PnTM0BzaiO3soQXTIbmIMaYcOAfwWZO0Nn8VVvRdzcBcVbje2DijbkoaBimLjtKcYSLgNylpETHYdav5RgTc=
+Received: from VI1PR04MB5807.eurprd04.prod.outlook.com (2603:10a6:803:ec::21)
+ by VI1PR04MB6191.eurprd04.prod.outlook.com (2603:10a6:803:f8::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.19; Thu, 21 Jul
+ 2022 13:16:48 +0000
+Received: from VI1PR04MB5807.eurprd04.prod.outlook.com
+ ([fe80::1df3:3463:6004:6e27]) by VI1PR04MB5807.eurprd04.prod.outlook.com
+ ([fe80::1df3:3463:6004:6e27%4]) with mapi id 15.20.5458.018; Thu, 21 Jul 2022
+ 13:16:48 +0000
+From: Camelia Alexandra Groza <camelia.groza@nxp.com>
+To: Sean Anderson <sean.anderson@seco.com>, "David S . Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Madalin Bucur
+	<madalin.bucur@nxp.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH net-next v3 36/47] soc: fsl: qbman: Add helper for sanity
+ checking cgr ops
+Thread-Topic: [PATCH net-next v3 36/47] soc: fsl: qbman: Add helper for sanity
+ checking cgr ops
+Thread-Index: AQHYmJaOEx1tphkrB0GI3O9tJcJWba2I1wUw
+Date: Thu, 21 Jul 2022 13:16:48 +0000
+Message-ID:  <VI1PR04MB58074AF835F113AE6EF6541FF2919@VI1PR04MB5807.eurprd04.prod.outlook.com>
+References: <20220715215954.1449214-1-sean.anderson@seco.com>
+ <20220715215954.1449214-37-sean.anderson@seco.com>
+In-Reply-To: <20220715215954.1449214-37-sean.anderson@seco.com>
+Accept-Language: en-GB, ro-RO, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 049596ed-6301-485a-6554-08da6b1b44a7
+x-ms-traffictypediagnostic: VI1PR04MB6191:EE_
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  Vx9yws7Q+tirwlHKYjQNBeCsyNtXRzsZUf5jUVrC/Trdoe3AVrc/zMQM1Zf4DM+X3c4i1AFS52DteeTnQ8TKfWiB79hQYKcp9RC1JbW7tLaJyNc5Eq9roe13NP+FA6zWvMmjxmkJ64sSmk+yslG1m+3s1H05Zuj6yfP6vARLeATUhvxFO++sNQDgSX2l+ZlXIN8XBMV05mnCkvCykdRf1PCDRu4i8TxLKUOnOcBL8d7MkQTd8tEY4Gnnrf5XE4hIxO5kB1DYi4zDhq6QZgj/JIDl+CXYOkzcDoBYR17H3O81Ee1IUVZqGYvKe5QNbNSYsYuY93OgNQJZg/SnbyYg2qzZVvacxyxcJs1EGtAqkhxL5T5vBJ/sMJW8MxmmvfkXxYK1R7l/rzeWhgbmKUH3blkLHQnyYcN85Xx0XWLB7KPWMF6TvCMOUX5HPZ7+wTph8DzkU4lKb7H4NmLuXGeRg9Gh/5DptWhhDU+JBACzXAi+ZP9Pekc/xH3yagCjLTJmsKuw+Z5FloG7FKJd0UO759T0fpSAxganvT7aqS3QIPwGKH4wgBaHLvtEQuxnx4mQ93OEpzqTZ+uUzvAmhvDbcHjcFBXCIFb/6/qQ+qHVBFdhCB4Woqfa/Y1u5VWxiHkPaK6jA0XDYjeLaGsm6dZZ5vjprHMIZNRrX6/UU/isDEZ4kG0T06D0HXUQY5qCoRYlLXIM2ZvTBgJp8IaM++bKELPWMFQH3o8UIaK4wDG1DKJIYS9wUk4kzAfCGeHHV+FYHGz/kul8f5XAQMQcgCXZ99CBCDmm9G7RYnvTAT1JYni41u1cJQzj6bHFZgCQEfas
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR04MB5807.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(346002)(39860400002)(376002)(366004)(136003)(396003)(186003)(76116006)(38100700002)(55016003)(66476007)(86362001)(316002)(8676002)(54906003)(122000001)(71200400001)(66446008)(110136005)(66556008)(38070700005)(64756008)(66946007)(4326008)(52536014)(7416002)(33656002)(53546011)(55236004)(4744005)(7696005)(6506007)(8936002)(26005)(83380400001)(41300700001)(2906002)(9686003)(478600001)(5660300002);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?LR/r10Aq3IMulQBqTbavLQCZ5wu94IUhoi6xFP4j2MoQAQ8kbBsvN/ubaDsf?=
+ =?us-ascii?Q?ABBqRgdrKAn4e6iMYP3VkGtUoyYbmMeSA9JQpW7t662tnnvTz/bcZ099gUAN?=
+ =?us-ascii?Q?p1i7WksspKxMAF5XKiIUlHoYgVKg39OKutYt5PY1Vb2nSfT5VBkHXRIR6ATu?=
+ =?us-ascii?Q?eznhqlwpAfZnwMo2j3HzkoBeNKboRWObpqPyRUjPshzUX/uSO8hL37C6fb/r?=
+ =?us-ascii?Q?WTcDekftL80mAjisr1vR4DHJqgxJICVmGcYXYduS/tQX319wxKGK0RpMxW55?=
+ =?us-ascii?Q?DhcaMlBgZrf3iilpa0CspfLWsbrXryg14WAPDHDuBXKu2hEIHphTiHnSczZ5?=
+ =?us-ascii?Q?hlPmF/ZsLs33bt3aKEOl7jqyHPH36dScPLWGO6EoZdiROVvWCTOcUVpCRaHj?=
+ =?us-ascii?Q?pxf76X+5bwAqrHLGqfw7VHXDgn/MXuHxLFaLL++LE+d0cnRfyizR+34qLaZ5?=
+ =?us-ascii?Q?sY93xaHOiL/Oir9PePrVunbVZlrpVzK9tiLnDzQ3pAmb1VPC73LY7x0lmppu?=
+ =?us-ascii?Q?9jhC4LhnnukjwId/UTa3DDe1iXry1B7zV5ZxXO3gMWtFqM2gNWCvcCXzslDD?=
+ =?us-ascii?Q?OPwUNSjFeDdhog+XoG49ugt1bQkEhraamaJI5WhF7q7U9iC35mbz0RlXm3GZ?=
+ =?us-ascii?Q?ElpbNgxgHXOcRVJBL0Pwd244Q/z9DWw0Zhx6aM0lzVMuZFQcRL/x9gT1yUGb?=
+ =?us-ascii?Q?2kqIOkpseCjmfFHN4N83iZk5bCdGweEi9H8DOgjyzcfuOaUK8YCk0ooM7Zhx?=
+ =?us-ascii?Q?Sc6mDPt86DrypgGR0ZRXbBVDrgfWGNJJFw6E/B6a4M86zRE1GNcCWmyYb9wY?=
+ =?us-ascii?Q?fP4sKkJjha/NbGoXq1OWnfVmZz1h7TR6SNJE3TjBhvnMwWjxQnZn2sDFkyap?=
+ =?us-ascii?Q?cPFWTcEackMhr3e3OzJ2Z1WGhgzw4epHHeMsbEC09jRH88X5aWdAloS3thfw?=
+ =?us-ascii?Q?HH79iI3jKuEh+HXG1H80TOGFpON6F4VszyEs6PZHQ5QdTuliRyhAPIEtJWrE?=
+ =?us-ascii?Q?mkS/lR3bgc6qffbnrzovRcxjKutHuEBwm0TTSgZGQPiKo0upC0QAyhgOiTHh?=
+ =?us-ascii?Q?PnCJ7DERIMELBIX3r5I3CyCFO8YPNE9w19KwXtMIJLZJmsuYhOsDmNMaHRJe?=
+ =?us-ascii?Q?UzU+kqNauIZwpkFjHrIG3tn94BNy9JAr8AzuMZR3+dGb/rZfmm1kOsdEKjaQ?=
+ =?us-ascii?Q?HyqxEgOFa1Pg1jRFB2H4lmbz8TL3etx2jsPbIto71BrYReN2h8FXKdJ3UT8x?=
+ =?us-ascii?Q?jS5PJK32Ee1Xf+jkL/Oho4oLE9RKXPOgDSKj8f1yJ9xxsN8AfGbH7lyHX1Xp?=
+ =?us-ascii?Q?EZl/UBld7l8ezZVFtXwl1UNGFO8zuAPw8yxf+yt1JCsjOm7gsxyx/XWfX+2w?=
+ =?us-ascii?Q?0m3KX2lGsy/OHT41e0Ys3yWGOz6Jw6j/mMuqxal0oVMtFR6UE3DHDI1NZGnM?=
+ =?us-ascii?Q?3ZqSEo4Bjmq77ArmTL3lKX71eP3E7wzsXeAA3NQwhYKobtGkBqlljM0k9QG9?=
+ =?us-ascii?Q?ly2p0YO+I43DEyT7vNWDdH2XekbwprLLXxIqcD8bKuTgxE2Y5MDZFcY4S5RZ?=
+ =?us-ascii?Q?rJDbO/8l6JVmvgQFLVSsZlDHdrAlQNFuVVTpgYIB?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR04MB5807.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 049596ed-6301-485a-6554-08da6b1b44a7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jul 2022 13:16:48.6300
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZLVNsNJ6I36riaAG1gmdennLrggmbwme5CNeN6s7z4WKwbeSmS5oJTHErOKC6YI+zXpgczuChUphZrnNIYBroA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6191
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,64 +126,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Leo Li <leoyang.li@nxp.com>, Sean Anderson <sean.anderson@seco.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix sparse warning:
-sound/soc/fsl/imx-card.c:653:59: sparse: warning: incorrect type in assignment (different base types)
-sound/soc/fsl/imx-card.c:653:59: sparse:    expected unsigned int [usertype] asrc_format
-sound/soc/fsl/imx-card.c:653:59: sparse:    got restricted snd_pcm_format_t [usertype]
-sound/soc/fsl/imx-card.c:655:59: sparse: warning: incorrect type in assignment (different base types)
-sound/soc/fsl/imx-card.c:655:59: sparse:    expected unsigned int [usertype] asrc_format
-sound/soc/fsl/imx-card.c:655:59: sparse:    got restricted snd_pcm_format_t [usertype]
+> -----Original Message-----
+> From: Linuxppc-dev <linuxppc-dev-
+> bounces+camelia.groza=3Dnxp.com@lists.ozlabs.org> On Behalf Of Sean
+> Anderson
+> Sent: Saturday, July 16, 2022 1:00
+> To: David S . Miller <davem@davemloft.net>; Jakub Kicinski
+> <kuba@kernel.org>; Madalin Bucur <madalin.bucur@nxp.com>;
+> netdev@vger.kernel.org
+> Cc: Leo Li <leoyang.li@nxp.com>; Sean Anderson
+> <sean.anderson@seco.com>; Russell King <linux@armlinux.org.uk>; linux-
+> kernel@vger.kernel.org; Eric Dumazet <edumazet@google.com>; Paolo
+> Abeni <pabeni@redhat.com>; linuxppc-dev@lists.ozlabs.org; linux-arm-
+> kernel@lists.infradead.org
+> Subject: [PATCH net-next v3 36/47] soc: fsl: qbman: Add helper for sanity
+> checking cgr ops
+>=20
+> This breaks out/combines get_affine_portal and the cgr sanity check in
+> preparation for the next commit. No functional change intended.
+>=20
+> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
 
-Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/imx-card.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-index ccc4194dc5e7..14be29530fb5 100644
---- a/sound/soc/fsl/imx-card.c
-+++ b/sound/soc/fsl/imx-card.c
-@@ -118,7 +118,7 @@ struct imx_card_data {
- 	struct snd_soc_card card;
- 	int num_dapm_routes;
- 	u32 asrc_rate;
--	u32 asrc_format;
-+	snd_pcm_format_t asrc_format;
- };
- 
- static struct imx_akcodec_fs_mul ak4458_fs_mul[] = {
-@@ -474,7 +474,7 @@ static int be_hw_params_fixup(struct snd_soc_pcm_runtime *rtd,
- 
- 	mask = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
- 	snd_mask_none(mask);
--	snd_mask_set(mask, data->asrc_format);
-+	snd_mask_set(mask, (__force unsigned int)data->asrc_format);
- 
- 	return 0;
- }
-@@ -493,6 +493,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 	struct dai_link_data *link_data;
- 	struct of_phandle_args args;
- 	int ret, num_links;
-+	u32 asrc_fmt = 0;
- 	u32 width;
- 
- 	ret = snd_soc_of_parse_card_name(card, "model");
-@@ -639,7 +640,8 @@ static int imx_card_parse_of(struct imx_card_data *data)
- 				goto err;
- 			}
- 
--			ret = of_property_read_u32(args.np, "fsl,asrc-format", &data->asrc_format);
-+			ret = of_property_read_u32(args.np, "fsl,asrc-format", &asrc_fmt);
-+			data->asrc_format = (__force snd_pcm_format_t)asrc_fmt;
- 			if (ret) {
- 				/* Fallback to old binding; translate to asrc_format */
- 				ret = of_property_read_u32(args.np, "fsl,asrc-width", &width);
--- 
-2.34.1
-
+Acked-by: Camelia Groza <camelia.groza@nxp.com>
