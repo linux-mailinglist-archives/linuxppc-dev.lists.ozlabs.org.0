@@ -1,59 +1,130 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D3457CE12
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 16:46:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F8C57CF6A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Jul 2022 17:37:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lpb4c1GCJz3dqZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 00:46:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LpcCD6PtKz3cFL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 01:37:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=pduOn7B4;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.181; helo=mail-qk1-f181.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.7.75; helo=eur04-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=pduOn7B4;
+	dkim-atps=neutral
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-eopbgr70075.outbound.protection.outlook.com [40.107.7.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lpb4B636Qz3blB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 00:46:34 +1000 (AEST)
-Received: by mail-qk1-f181.google.com with SMTP id o21so1419016qkm.10
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 07:46:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uRb/kpCM2Tp3RADIUm8HgY748KiyFCtoEV6JEoibXAk=;
-        b=X2cEfnSzZ0et8hS8AtCoj5l+q53d2QaMa7+L/vq4ZS0MgCq306rkZBZcgMgjOxwntN
-         unFgwhAaJFFJ5tWjLubjSGs8m2cjZnI1ca6BHXMX8kfkCdzK1jnQIGcjFuNN2EW4dH54
-         g5lrdG1y2DMWCI9I/meeirMPDGzW70WjM8VpQXwFHRx1XXbMQq0Vw9VYFXC+1drTdgqb
-         pMwXMpMtsr0Z1DPBDnc7ZBJk7gRN7rBJEk0GK6cdN7Eq/1eJg4LXxFViu5m2X8w4JYak
-         CFZEuTOMYGzncckxiWUUnrgLWAQqBBX3F+q7l8q0FRBrT+YyDlHU99P5EOBimR/bY4FI
-         fTPg==
-X-Gm-Message-State: AJIora+YbPxDa0FtY/roAuzo3IsweaVGzVMmPVtHNOnDwJopxK2GecNr
-	GGONW1NklUC7MCeJIoY5fNayaB25My1j1A==
-X-Google-Smtp-Source: AGRyM1siCYdjBNDSpP7iEEyy8s1R4SinK8JOUlFMtjejt6cym60tPo5s7MyAlSib1v9t6+34s9yXOA==
-X-Received: by 2002:a37:815:0:b0:6b5:ce31:31bf with SMTP id 21-20020a370815000000b006b5ce3131bfmr21295297qki.560.1658414790712;
-        Thu, 21 Jul 2022 07:46:30 -0700 (PDT)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id k20-20020a05622a03d400b0031eb5648b86sm1446546qtx.41.2022.07.21.07.46.29
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Jul 2022 07:46:30 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id f73so3110965yba.10
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Jul 2022 07:46:29 -0700 (PDT)
-X-Received: by 2002:a05:6902:154f:b0:66e:e2d3:ce1 with SMTP id
- r15-20020a056902154f00b0066ee2d30ce1mr38429480ybu.365.1658414789102; Thu, 21
- Jul 2022 07:46:29 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LpcBV1YZlz2xjs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 01:37:03 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NPnaF1WknL9xnXbvDdFq87JedWlazfgPlO4SOqfyu+lrXVWeGD8MPH2oCx6lPZ2nT4mrKXpD99qGgBQD1gU8+InSPUSXp9SWnMm1lMEYPq1OjSvRR7/u65BEpkBULFgrkkonACi9vIPBx628+gfh/E4Wx9ybEYWRVrsj09yU67R4MvjiGElOgCmRYWVOkmW3YniWKHfCIDpdDXAjveGN12P2thoJ7CxxmaeAGzXdVrIKWpI7F+x/dWIRSHg3jrsZNK3DETXtDghzi+NBsPGZgaCt4ZwWGDZGI6BR4S5Qk2Kj/PZLZ0/6gxCVkzxpLr1kn/42U168l9tWnlQinEnVDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9TL1O9+QeW2jGwMWHacTOt0HXzWHwMRtUSW+9bCxxSo=;
+ b=eDil8R1ewxDvGupLuI8J6+COT4QuyVjxnbB8s4Al+JuODs225vOFLTr4ax8B3pVsyTRY0WbQhqE+LR9B4PkDRDQYwAjImFfA3c8Bh8t0ZpjB36Es51eFDuxZa+L1X2oxjCde05yEYQrg4IlTndSTL04ILFHJZgbqHXlJ99xL3daD+gxZHJX6VhaJ/audRN8tkM/R8PQM0YJpuxiP7AF8/WBBA0VeB1PuJ8PuWFTRVLzutI9gT2zkws8x/yrbNZ28DPisO4HfAOly0KahN6L62fiZdCJWn0TOODWy1Dhsi4BSp5I8faPTqfbdiDW35R1CDbNWZqRIGHztvm01e/yPsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9TL1O9+QeW2jGwMWHacTOt0HXzWHwMRtUSW+9bCxxSo=;
+ b=pduOn7B4/nbjsXXV4XTLdx4kQvjtQKFy8nTnxsn6Cy2GpUVMyhmS7MbPd4uvaqYVdjLu/REl4yLnRUB0HOBEyMVq8EvagsugmNyKCz6NrJEnOtb1tVqt9K8CflmufVZrAX9sxiA6PQwrwdECUOn+GoyDHkkGEXOPsqLiOUFmqGTzdGjlhdD8+btmyv4nqH/PV5r5XRFbVfxuDXLU7oao4cLZIC1hRzdsyaaAF5AI24jPu9Y22Ou3BLdfqlu9A2c/+alBJkq7F0/pbfXCkKcEmGVQ8GYqfZs4+JDeMmpp0zAChu/ERmGUf16onsirNL4AXqWA0HD/I8Wa/Xb9tlzeIQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by VI1PR0302MB3280.eurprd03.prod.outlook.com (2603:10a6:803:21::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.19; Thu, 21 Jul
+ 2022 15:36:42 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::59ef:35d2:2f27:e98b]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::59ef:35d2:2f27:e98b%4]) with mapi id 15.20.5458.018; Thu, 21 Jul 2022
+ 15:36:42 +0000
+Subject: Re: [PATCH net-next v3 37/47] soc: fsl: qbman: Add CGR update
+ function
+To: Camelia Alexandra Groza <camelia.groza@nxp.com>,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Madalin Bucur <madalin.bucur@nxp.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20220715215954.1449214-1-sean.anderson@seco.com>
+ <20220715215954.1449214-38-sean.anderson@seco.com>
+ <VI1PR04MB58075DFACE3A36F4FDCF7ED7F2919@VI1PR04MB5807.eurprd04.prod.outlook.com>
+From: Sean Anderson <sean.anderson@seco.com>
+Message-ID: <17e8e50a-efbf-0cfd-e9b3-756f527f1f25@seco.com>
+Date: Thu, 21 Jul 2022 11:36:39 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+In-Reply-To: <VI1PR04MB58075DFACE3A36F4FDCF7ED7F2919@VI1PR04MB5807.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL0PR02CA0035.namprd02.prod.outlook.com
+ (2603:10b6:207:3c::48) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
 MIME-Version: 1.0
-References: <20220720142732.32041-1-tzimmermann@suse.de> <20220720142732.32041-5-tzimmermann@suse.de>
-In-Reply-To: <20220720142732.32041-5-tzimmermann@suse.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 21 Jul 2022 16:46:17 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWEah62Ho4C8NQr-qwz62pKQiJiTi8Fa4KcXNRzo7ySJA@mail.gmail.com>
-Message-ID: <CAMuHMdWEah62Ho4C8NQr-qwz62pKQiJiTi8Fa4KcXNRzo7ySJA@mail.gmail.com>
-Subject: Re: [PATCH v2 04/10] drm/simpledrm: Compute framebuffer stride if not set
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: b93d3fad-2eb8-4c19-eba2-08da6b2ecfdc
+X-MS-TrafficTypeDiagnostic: VI1PR0302MB3280:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	ZOQx9SuYc+vzBFOhAb+GY1oQeCgFsUH6/ryGc3Fa0lUr8EGzCPxS/44U8aTARY7K1WCeN0Na4iYtZsJ48CwPRFS01ZgvktGqYEjhfRZiDgEyKOeNQa9/tRF4DkasYDwD67SsCMdAV1y+dMWikqjc0xh0UWpUflEzCRx4DP73tCbaLpOw7gs3cH62rG+EYS2+inC+z/YzJsELnpFrW4Im1AZk0vkeZImNeTgGbUFejG1jiTV5PkZ/WDN5ljZ4nPgHcz5G/DHGuKCRpSWyFgtGPU4e376HcLRrl8wyvyTJS0DOmIkbk7TNYEHhsXrgeKjGfTtB1TH3dR8dHHOuUTmv3+BLEoXzAY8j4ealRK6aUlHILc8gRUCE611EgsBl2dNkIvxiiORTPGyh0rjkbOPC5P4/ivclwqH5SjrF9fX8O52edo0xmBcDMFOWILYY3Lqq+udymuDi812BWSA7I8NaLpegABG51sUM78vRzjADWZhAkLhlTWElDB7UlGNb1ONoIWd388QJhJy4bGYToyvwcWc/7ImnWca0oPR/uPvskqx0XzH2V23LvbX2yiIkT7WHM+HB9H5ELRXV+tAwET7uss30QlvpB0FInOtgO6Ye+kUjfURuYbcjgCrlBvOHRtWWYbohGQ4PE7HPDqvRQgKG+DCX2BquatDjDnkYdK3MKtt9P1MRgXNxFgYMsfuZ72mdTbsh87GBO/Zoj/60G2CUl3DBxwuBVy080DFf2VRx/1R7bwH9afFY299hZ0uE0NQuz1yKShrpRul9vhftZLPj1dbER3ZVlJWMPB9geECBNC6jD0EwPcEQhNV0SdK8H/V+dZDSN4bpzWEMgJlsMzPAkwFRmbdGlRxrlylMzizMxDs=
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(346002)(366004)(396003)(39850400004)(376002)(136003)(38350700002)(15650500001)(6506007)(52116002)(36756003)(53546011)(8936002)(5660300002)(7416002)(44832011)(6486002)(316002)(26005)(31686004)(478600001)(2616005)(41300700001)(6666004)(6512007)(31696002)(86362001)(83380400001)(186003)(2906002)(110136005)(66556008)(66476007)(8676002)(66946007)(4326008)(38100700002)(54906003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?utf-8?B?S3RTNko4MFlvVzNTdzBxQ0dXS0Y0TDdSeHluQUFjYTA0a3oyZDM5KzhJQXZk?=
+ =?utf-8?B?cVdlZUtoNk5ZeFJYUXZBYm00VXBqSlM2WEJRV1ZaVUhwS1JuTEVWVm5ZM1Jk?=
+ =?utf-8?B?ZzRWdVNTZ2ZCdGZ4VnRZWnYyWkhQd3VkQ25YTmFrN01JeThzZmlmS0hJRU41?=
+ =?utf-8?B?Vm85cDVJcGl2ODNaSVBmMnM1ZTJLVmdNblpnR1pFeW8rOUJYQUhqckRGcXpZ?=
+ =?utf-8?B?TTlidklaWnQwSTQyaTVsK2toT2tlWVZVUG9BMHV5c3M4YTlXNVRQQ3V1aTJX?=
+ =?utf-8?B?a1RYcGFwYXNQTyttMzhsbWZpclR1WldjWXdTeEZNaDJ5K0YrUml6S2lWQlYy?=
+ =?utf-8?B?cG15b21tU3QwNllJcm9PN1VJbThyelJkdEg1cnhrTmNwNHk3cTk5YzE0ejBE?=
+ =?utf-8?B?KzV4TUF0eVM3dEZFNHY2VndVM2tXVzZJa0lEL3ZCNHJpUThqeGNhMmp2bkdH?=
+ =?utf-8?B?Z1dPcHJFbUhQWm85ZXFTNkFKaDV4MGJUMDRrMllybjIrTWxma1hnUmdFSWRz?=
+ =?utf-8?B?Wk5ZUStXRDdBaUdHd0lqOXJGTk45Ni9paUo5dERTQ1pCazBRRjFTVkRqL1Z2?=
+ =?utf-8?B?dkpsMUt1OVFBbzVxQW9OdDdIN29XY2tqQWVaL2dlb3BBZ1JiekdncS9sdEhq?=
+ =?utf-8?B?Mkw1MWF5Si9wMW1RRFA2SWRUOW02RUlYOFE5RzY0UXVtdTBpcWZvSWlUa0Yw?=
+ =?utf-8?B?SFR2L0tualJlOUFxcVlOZDNoTHVBUHVMMWV6RERLMVE3TFA3ZXJFZ1g2NHc4?=
+ =?utf-8?B?bWtxcDEwMDFmQnRDNmRXZWp5bUN2WEt3bU9zMlBmR25tYk5zSEJFVzY2WmVw?=
+ =?utf-8?B?RDFraXh6bzdMQTN2Y05aQVJOY3BqUjFxZEZxNTdNWlBpUWVacmRWbWNNMm5u?=
+ =?utf-8?B?ME12eXltWlQ4V2RsUU12Ui9aQURwOGd3K3QydXE3YUo0MkdMcDhON2VZOUZI?=
+ =?utf-8?B?Z2d6bUMwWEN4QlpnSWlzRVd1VmF5L0QvUjQvckkyMWp1NFN5UHNPQzRiT0Rv?=
+ =?utf-8?B?NzBVczJRcU9xaDZuTE5YSE9QbmIwbEhYaFNwNWRTUVJJdXk4a0lnMVNGbTg2?=
+ =?utf-8?B?K3QxYXFpcVdyeGpHaE5jWmF0ZUNHYXBRY0lpUUVVMFg4NVZTaGpsVTNMaVpk?=
+ =?utf-8?B?ckNGSHR1eER5Y3dkZDhjc3RzYUhONVVxNnozUU5pd1o2YTdobmt1YWR2ajd0?=
+ =?utf-8?B?SlMrUzdJQkxBSEY2enZzeCt0T2dqUGRLNkl5U1ZaV2s4WmtNeXJvRzd4R3VS?=
+ =?utf-8?B?UUQrU0pOSnVoWjJQR3MxeVloU055U3F4ekhTbzVETlNvS0p1dmVLb2IvQWVD?=
+ =?utf-8?B?SS9VckRkWHB4NWQxZDhzUjA5R3M5SGdjUHNNdG9aUk5yTjVSZnZoNSswQjFM?=
+ =?utf-8?B?VlppZFBpVTlUTkFUYVk3emQwaTV6MkZzaU9OZVVwSTVsUDNwT0I5S2xqR2lG?=
+ =?utf-8?B?dUMrNDlNOU1YQm8wM2Q0M3U2WVo2ZmhaU3FiWHhWZUQ2bVVHSlh1aGRQU1RQ?=
+ =?utf-8?B?d0tGN2JZMitxSkwyTC9EY2o4VSt0NTRGMkhpbmd5TzdaQjBhY0U1aldXemxq?=
+ =?utf-8?B?QnNuZmxReHdpRHQ1OG81NkV2YWVwSTBxSEFQajNRRy9ZSDVXdE1ScndGQ1hr?=
+ =?utf-8?B?RXlSVDNJeFhMalZVM0NPVStpbjA1WGNMRGJ5Zlc5OFpTYjFDZmx3QXNEeWZ4?=
+ =?utf-8?B?bEdQN3RFMzZmendpT3dOeFNxd250QnJnUVdXSlllaC96bHZtVFpIdVh3TGtE?=
+ =?utf-8?B?Z1NRbmRHMUdUMUsrSXBSNzVSYXdWNGk0cUlDN2F0TU9vUCsySkkrR0NvNnZ3?=
+ =?utf-8?B?eEV3KzA3ckRJd296dzJGWFB1bUJmT2d2U2xxUWNEYXhueWtxWldWQk9zRk91?=
+ =?utf-8?B?V3Q3azgraXA0S2tHMnpkWWRwNXpDWDJzSEhPR0dRNVBxcWpPQ3llMzNPNE10?=
+ =?utf-8?B?M2VjS3VXZUtCRDZBRWdqRG5vdldKREZzOG12NnNVWXRMcmpRelpwZmlDeEw0?=
+ =?utf-8?B?LzFPZ3FxN2VZVm9SdFpHRGpKdjRiWWlqbmNHL1pDd0N4dVdFTDZ5ckdPbzhW?=
+ =?utf-8?B?Rk1WOFRQcDZxTldkYk9BRUFGVGoyZ1hQV0ppY1ZhYWhzbmlzeFVFQ1FFR3pF?=
+ =?utf-8?B?Z2NvdmVUa3FjYU1HT0swbVE1eUw1K1JQekNMdmV4VUpUaHgveUxLMFVwRlhX?=
+ =?utf-8?B?ekE9PQ==?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b93d3fad-2eb8-4c19-eba2-08da6b2ecfdc
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jul 2022 15:36:42.8094
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RIwY2NE0qtYnLQOtjr7i3ADzv6IVi4QOJvEtQagA069d/Khb648Fzu273fscPVU4Zh/4h17h8F0ITRgfpsImKQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0302MB3280
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,43 +136,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Fbdev development list <linux-fbdev@vger.kernel.org>, David Airlie <airlied@linux.ie>, Helge Deller <deller@gmx.de>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, Javier Martinez Canillas <javierm@redhat.com>, DRI Development <dri-devel@lists.freedesktop.org>, Paul Mackerras <paulus@samba.org>, Maxime Ripard <maxime@cerno.tech>, Daniel Vetter <daniel@ffwll.ch>, Michal Suchanek <msuchanek@suse.de>, Sam Ravnborg <sam@ravnborg.org>
+Cc: Leo Li <leoyang.li@nxp.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Thomas,
 
-On Wed, Jul 20, 2022 at 4:27 PM Thomas Zimmermann <tzimmermann@suse.de> wrote:
-> Compute the framebuffer's scanline stride length if not given by
-> the simplefb data.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-Thanks for your patch!
+On 7/21/22 9:18 AM, Camelia Alexandra Groza wrote:
+>> -----Original Message-----
+>> From: Linuxppc-dev <linuxppc-dev-
+>> bounces+camelia.groza=nxp.com@lists.ozlabs.org> On Behalf Of Sean
+>> Anderson
+>> Sent: Saturday, July 16, 2022 1:00
+>> To: David S . Miller <davem@davemloft.net>; Jakub Kicinski
+>> <kuba@kernel.org>; Madalin Bucur <madalin.bucur@nxp.com>;
+>> netdev@vger.kernel.org
+>> Cc: Leo Li <leoyang.li@nxp.com>; Sean Anderson
+>> <sean.anderson@seco.com>; Russell King <linux@armlinux.org.uk>; linux-
+>> kernel@vger.kernel.org; Eric Dumazet <edumazet@google.com>; Paolo
+>> Abeni <pabeni@redhat.com>; linuxppc-dev@lists.ozlabs.org; linux-arm-
+>> kernel@lists.infradead.org
+>> Subject: [PATCH net-next v3 37/47] soc: fsl: qbman: Add CGR update
+>> function
+>> 
+>> This adds a function to update a CGR with new parameters.
+>> qman_cgr_create can almost be used for this (with flags=0), but it's not
+> 
+> It's qman_create_cgr, not qman_cgr_create.
 
-> --- a/drivers/gpu/drm/tiny/simpledrm.c
-> +++ b/drivers/gpu/drm/tiny/simpledrm.c
-> @@ -743,6 +743,9 @@ static struct simpledrm_device *simpledrm_device_create(struct drm_driver *drv,
->                 drm_err(dev, "no simplefb configuration found\n");
->                 return ERR_PTR(-ENODEV);
->         }
-> +       if (!stride)
-> +               stride = format->cpp[0] * width;
+Thanks, will fix.
 
-DIV_ROUND_UP(drm_format_info_bpp(format) * width, 8)
-
-> +
->         sdev->mode = simpledrm_mode(width, height);
->         sdev->format = format;
->         sdev->pitch = stride;
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+>> suitable because it also registers the callback function. The _safe
+>> variant was modeled off of qman_cgr_delete_safe. However, we handle
+>> multiple arguments and a return value.
+>> 
+>> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
+> 
+> Acked-by: Camelia Groza <camelia.groza@nxp.com>
+> 
