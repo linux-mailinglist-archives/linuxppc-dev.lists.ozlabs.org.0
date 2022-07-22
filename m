@@ -1,56 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B223857DD37
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 11:10:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF8F57DD64
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 11:11:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq3YY4jQBz3cjC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 19:10:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq3b55782z3dp9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 19:11:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FSBam89I;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O6jq7Tg0;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FSBam89I;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O6jq7Tg0;
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lq3Xx3J6Nz304m
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 19:09:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lq3ZT6sBMz30LR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 19:10:57 +1000 (AEST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 6BFDE61EED;
-	Fri, 22 Jul 2022 09:09:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9E2C341CE;
-	Fri, 22 Jul 2022 09:09:32 +0000 (UTC)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 8D767B827BC;
+	Fri, 22 Jul 2022 09:10:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77DEC341C6;
+	Fri, 22 Jul 2022 09:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1658480972;
-	bh=QQARAL8ZRGtJnkmOAlwG2vpBW61GGATrU3fd8wEd2E8=;
-	h=Date:From:To:Subject:From;
-	b=FSBam89IHk8yTHAJd/n7DMeV0qmZaPp4kvWnoB7uNRhSGYYzserkXXqea0tgQ7EIr
-	 orVXe7hHXRnseEA6ygiBE4FeVlBgsKUZEdoXn2Km81wxhWYHh89G3RPyDKdQErt09+
-	 fn1qt+AbPGWO+6pvnpkJWc6XFSJ9bP3xt3/Wqt7QN7hZJbfa2G6VoqaP5eBBjpUtT3
-	 /c8FRieKurNl+ajzEq/43SmyxuHc1nD4EaRrvlN/49LQse4vQRrLskB+h9bdUYtsEH
-	 EU2hOkkdUVNEpE1za3GLh6Zd9LiAhv7VclsJAt+B+M926bd9LXiJIIVWN+GGKE9qAs
-	 OFXmHSLa5SjUQ==
-Received: by pali.im (Postfix)
-	id 99A2920A2; Fri, 22 Jul 2022 11:09:29 +0200 (CEST)
-Date: Fri, 22 Jul 2022 11:09:29 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Regression: Linux v5.15+ does not boot on Freescale P2020
-Message-ID: <20220722090929.mwhmxxdd7yioxqpz@pali>
+	s=k20201202; t=1658481052;
+	bh=OK8LmIuAEgVsEBkiSNzzMiMp+U1+ADxlXeHm7mqZaTk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O6jq7Tg0q/Eyh5XpZi+1zP+fDCj3KuU5UDAW1Ag0JjkZO6LADytvyqolI3M5Ry9LJ
+	 hCGcCabPhjJ4MjZCSRLlp3PrOWzYf8PHjea3ra8LLSwS7QVHk3r61PAB9XgxBnAdHB
+	 EJqVnJ4tLsYyZdUtLioD8mw3Hl952UiFipEYHkWB5aM+kgMra18AG00yGBcpovRvW6
+	 iMntJBfP4kNuYx2/n/l/iDfPq2xgbmG9umL/fQBgjdXJtLVYYyHHHSuxIdsFkEuZ/F
+	 i7px0y0ZYE8xBCXcidwYouibNMVc0kt77QKBeU3J5z5qqAFFiDHyb5yn/0O91DMB7w
+	 nxaLpIimgYyhg==
+Date: Fri, 22 Jul 2022 10:10:45 +0100
+From: Will Deacon <will@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v3 01/14] perf/hw_breakpoint: Add KUnit test for
+ constraints accounting
+Message-ID: <20220722091044.GC18125@willie-the-truck>
+References: <20220704150514.48816-1-elver@google.com>
+ <20220704150514.48816-2-elver@google.com>
+ <Ytl9L0Zn1PVuL1cB@FVFF77S0Q05N.cambridge.arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+In-Reply-To: <Ytl9L0Zn1PVuL1cB@FVFF77S0Q05N.cambridge.arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,42 +63,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Marco Elver <elver@google.com>, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>, Dmitry Vyukov <dvyukov@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello!
+On Thu, Jul 21, 2022 at 05:22:07PM +0100, Mark Rutland wrote:
+> Hi Marco,
+> 
+> [adding Will]
+> 
+> On Mon, Jul 04, 2022 at 05:05:01PM +0200, Marco Elver wrote:
+> > Add KUnit test for hw_breakpoint constraints accounting, with various
+> > interesting mixes of breakpoint targets (some care was taken to catch
+> > interesting corner cases via bug-injection).
+> > 
+> > The test cannot be built as a module because it requires access to
+> > hw_breakpoint_slots(), which is not inlinable or exported on all
+> > architectures.
+> > 
+> > Signed-off-by: Marco Elver <elver@google.com>
+> 
+> As mentioned on IRC, I'm seeing these tests fail on arm64 when applied atop
+> v5.19-rc7:
+> 
+> | TAP version 14
+> | 1..1
+> |     # Subtest: hw_breakpoint
+> |     1..9
+> |     ok 1 - test_one_cpu
+> |     ok 2 - test_many_cpus
+> |     # test_one_task_on_all_cpus: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> |     Expected IS_ERR(bp) to be false, but is true
+> |     not ok 3 - test_one_task_on_all_cpus
+> |     # test_two_tasks_on_all_cpus: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> |     Expected IS_ERR(bp) to be false, but is true
+> |     not ok 4 - test_two_tasks_on_all_cpus
+> |     # test_one_task_on_one_cpu: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> |     Expected IS_ERR(bp) to be false, but is true
+> |     not ok 5 - test_one_task_on_one_cpu
+> |     # test_one_task_mixed: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> |     Expected IS_ERR(bp) to be false, but is true
+> |     not ok 6 - test_one_task_mixed
+> |     # test_two_tasks_on_one_cpu: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> |     Expected IS_ERR(bp) to be false, but is true
+> |     not ok 7 - test_two_tasks_on_one_cpu
+> |     # test_two_tasks_on_one_all_cpus: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> |     Expected IS_ERR(bp) to be false, but is true
+> |     not ok 8 - test_two_tasks_on_one_all_cpus
+> |     # test_task_on_all_and_one_cpu: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> |     Expected IS_ERR(bp) to be false, but is true
+> |     not ok 9 - test_task_on_all_and_one_cpu
+> | # hw_breakpoint: pass:2 fail:7 skip:0 total:9
+> | # Totals: pass:2 fail:7 skip:0 total:9
+> 
+> ... which seems to be becasue arm64 currently forbids per-task
+> breakpoints/watchpoints in hw_breakpoint_arch_parse(), where we have:
+> 
+>         /*
+>          * Disallow per-task kernel breakpoints since these would
+>          * complicate the stepping code.
+>          */
+>         if (hw->ctrl.privilege == AARCH64_BREAKPOINT_EL1 && bp->hw.target)
+>                 return -EINVAL;
+> 
+> ... which has been the case since day one in commit:
+> 
+>   478fcb2cdb2351dc ("arm64: Debugging support")
+> 
+> I'm not immediately sure what would be necessary to support per-task kernel
+> breakpoints, but given a lot of that state is currently per-cpu, I imagine it's
+> invasive.
 
-Trying to boot mainline Linux kernel v5.15+, including current version
-from master branch, on Freescale P2020 does not work. Kernel does not
-print anything to serial console, seems that it does not work and after
-timeout watchdog reset the board.
+I would actually like to remove HW_BREAKPOINT completely for arm64 as it
+doesn't really work and causes problems for other interfaces such as ptrace
+and kgdb.
 
-I run git bisect and it found following commit:
-
-9401f4e46cf6965e23738f70e149172344a01eef is the first bad commit
-commit 9401f4e46cf6965e23738f70e149172344a01eef
-Author: Christophe Leroy <christophe.leroy@csgroup.eu>
-Date:   Tue Mar 2 08:48:11 2021 +0000
-
-    powerpc: Use lwarx/ldarx directly instead of PPC_LWARX/LDARX macros
-
-    Force the eh flag at 0 on PPC32.
-
-    Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-    Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-    Link: https://lore.kernel.org/r/1fc81f07cabebb875b963e295408cc3dd38c8d85.1614674882.git.christophe.leroy@csgroup.eu
-
-:040000 040000 fe6747e45736dfcba74914a9445e5f70f5120600 96358d08b65d3200928a973efb5b969b3d45f2b0 M      arch
-
-
-If I revert this commit then kernel boots correctly. It also boots fine
-if I revert this commit on top of master branch.
-
-Freescale P2020 has two 32-bit e500 powerpc cores.
-
-Any idea why above commit is causing crash of the kernel? And why it is
-needed? Could eh flag set to 0 cause deadlock?
-
-I have looked into e500 Reference Manual for lwarx instruction (page 562)
-https://www.nxp.com/files-static/32bit/doc/ref_manual/EREF_RM.pdf and
-both 0 and 1 values for EH flag should be supported.
+Will
