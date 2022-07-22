@@ -2,51 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0DA757DD7C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 11:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E943A57DF5F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 12:11:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq42Z4HhQz3dpl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 19:31:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq4wY0Shvz3dqG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 20:11:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=X/zFVBe4;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GYwdPrRY;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=123.126.97.2; helo=mail-m972.mail.163.com; envelope-from=williamsukatube@163.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4601:e00::1; helo=ams.source.kernel.org; envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=X/zFVBe4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GYwdPrRY;
 	dkim-atps=neutral
-Received: from mail-m972.mail.163.com (mail-m972.mail.163.com [123.126.97.2])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq41q2k9yz3c1p
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 19:31:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=ziL0e
-	DO+Itprb1jVyXzk432mqBLHi0A8HJSQe35XEnE=; b=X/zFVBe41Y0YfBHGZegYs
-	wYUKRLbDDxZ+9aR6NbLN1mXUlqNtMBUkvw/+FgFFuTCHKflUFKIU3Jc5gVXBQDkX
-	P/ROprVSwK0EpS0rhBTYffeh6nZeK03Zk2nc2At9SIzuLhovr3fcxjvUV1CqulyV
-	hVjkjaNDPaV6lfAKaFMQSM=
-Received: from localhost.localdomain (unknown [123.58.221.99])
-	by smtp2 (Coremail) with SMTP id GtxpCgDHafRNbtpiOJJjQg--.3043S2;
-	Fri, 22 Jul 2022 17:30:54 +0800 (CST)
-From: williamsukatube@163.com
-To: qiang.zhao@nxp.com,
-	leoyang.li@nxp.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] soc: fsl: qe: Add check for platform_driver_register
-Date: Fri, 22 Jul 2022 17:30:51 +0800
-Message-Id: <20220722093051.2939076-1-williamsukatube@163.com>
-X-Mailer: git-send-email 2.25.1
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lq4vw0ZhPz3bls
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 20:11:07 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.source.kernel.org (Postfix) with ESMTPS id 2B3B7B827C2;
+	Fri, 22 Jul 2022 10:11:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138D1C341C6;
+	Fri, 22 Jul 2022 10:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1658484661;
+	bh=XJriq7tTdC1cyZXBj5IiJNgiitzwRUBjtyO0pj7JFl4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GYwdPrRYvSBKEv7G5/kKFJUa2DEKFzex1xLkbvZdsBit2yMR6NrcAJrb68xyJ09vO
+	 ZfB0Jfm3C5/A59OkflqeQ4KeW+FSZ9Ur0O59Sa+Xq519nvirxnMOamJoBY5iHlH77C
+	 +281F5H+7DwYIfisnecFu4qx5i4sySkfKdn/WfX4hRS0NTiMaq/In1ihyDkEmbBXzW
+	 JhnZLAfQsxtxIOB1t2Kqh7e489D4xGjL5pMYJLO92wPHSWpwcSuXDumLBCkTsqQkqq
+	 8GLc2RWRnTDeGQ4lNHZ6OM/8qvWtAjyP97T/VAupUrbCfzmRd1KTtZ2sHb8a6jPKtQ
+	 upgOmuW3V8cPQ==
+Date: Fri, 22 Jul 2022 11:10:54 +0100
+From: Will Deacon <will@kernel.org>
+To: Dmitry Vyukov <dvyukov@google.com>
+Subject: Re: [PATCH v3 01/14] perf/hw_breakpoint: Add KUnit test for
+ constraints accounting
+Message-ID: <20220722101053.GA18284@willie-the-truck>
+References: <20220704150514.48816-1-elver@google.com>
+ <20220704150514.48816-2-elver@google.com>
+ <Ytl9L0Zn1PVuL1cB@FVFF77S0Q05N.cambridge.arm.com>
+ <20220722091044.GC18125@willie-the-truck>
+ <CACT4Y+ZOXXqxhe4U3ZtQPCj2yrf6Qtjg1q0Kfq8+poAOxGgUew@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GtxpCgDHafRNbtpiOJJjQg--.3043S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7Jr4DCF47Gry3ZFyDur15urg_yoWDJrX_Cw
-	4rW3W7Xr4kWF93GF17tw43Z3s29FsYvrnaqa10qasxta4xJw47Xan8ZF43C3WkXrs5XFWD
-	GrnxZrySkw13WjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU5MMKtUUUUU==
-X-Originating-IP: [123.58.221.99]
-X-CM-SenderInfo: xzlozx5dpv3yxdwxuvi6rwjhhfrp/1tbiNw5Gg1WBo2SbIQAAsV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACT4Y+ZOXXqxhe4U3ZtQPCj2yrf6Qtjg1q0Kfq8+poAOxGgUew@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,36 +65,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hacash Robot <hacashRobot@santino.com>, William Dean <williamsukatube@gmail.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, Marco Elver <elver@google.com>, linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>, Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org, linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, Alexander Shishkin <alexander.shishkin@linux.intel.com>, kasan-dev@googlegroups.com, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Jiri Olsa <jolsa@redhat.com>, Ingo Molnar <mingo@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: William Dean <williamsukatube@gmail.com>
+On Fri, Jul 22, 2022 at 11:20:25AM +0200, Dmitry Vyukov wrote:
+> On Fri, 22 Jul 2022 at 11:10, Will Deacon <will@kernel.org> wrote:
+> > > [adding Will]
+> > >
+> > > On Mon, Jul 04, 2022 at 05:05:01PM +0200, Marco Elver wrote:
+> > > > Add KUnit test for hw_breakpoint constraints accounting, with various
+> > > > interesting mixes of breakpoint targets (some care was taken to catch
+> > > > interesting corner cases via bug-injection).
+> > > >
+> > > > The test cannot be built as a module because it requires access to
+> > > > hw_breakpoint_slots(), which is not inlinable or exported on all
+> > > > architectures.
+> > > >
+> > > > Signed-off-by: Marco Elver <elver@google.com>
+> > >
+> > > As mentioned on IRC, I'm seeing these tests fail on arm64 when applied atop
+> > > v5.19-rc7:
+> > >
+> > > | TAP version 14
+> > > | 1..1
+> > > |     # Subtest: hw_breakpoint
+> > > |     1..9
+> > > |     ok 1 - test_one_cpu
+> > > |     ok 2 - test_many_cpus
+> > > |     # test_one_task_on_all_cpus: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> > > |     Expected IS_ERR(bp) to be false, but is true
+> > > |     not ok 3 - test_one_task_on_all_cpus
+> > > |     # test_two_tasks_on_all_cpus: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> > > |     Expected IS_ERR(bp) to be false, but is true
+> > > |     not ok 4 - test_two_tasks_on_all_cpus
+> > > |     # test_one_task_on_one_cpu: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> > > |     Expected IS_ERR(bp) to be false, but is true
+> > > |     not ok 5 - test_one_task_on_one_cpu
+> > > |     # test_one_task_mixed: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> > > |     Expected IS_ERR(bp) to be false, but is true
+> > > |     not ok 6 - test_one_task_mixed
+> > > |     # test_two_tasks_on_one_cpu: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> > > |     Expected IS_ERR(bp) to be false, but is true
+> > > |     not ok 7 - test_two_tasks_on_one_cpu
+> > > |     # test_two_tasks_on_one_all_cpus: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> > > |     Expected IS_ERR(bp) to be false, but is true
+> > > |     not ok 8 - test_two_tasks_on_one_all_cpus
+> > > |     # test_task_on_all_and_one_cpu: ASSERTION FAILED at kernel/events/hw_breakpoint_test.c:70
+> > > |     Expected IS_ERR(bp) to be false, but is true
+> > > |     not ok 9 - test_task_on_all_and_one_cpu
+> > > | # hw_breakpoint: pass:2 fail:7 skip:0 total:9
+> > > | # Totals: pass:2 fail:7 skip:0 total:9
+> > >
+> > > ... which seems to be becasue arm64 currently forbids per-task
+> > > breakpoints/watchpoints in hw_breakpoint_arch_parse(), where we have:
+> > >
+> > >         /*
+> > >          * Disallow per-task kernel breakpoints since these would
+> > >          * complicate the stepping code.
+> > >          */
+> > >         if (hw->ctrl.privilege == AARCH64_BREAKPOINT_EL1 && bp->hw.target)
+> > >                 return -EINVAL;
+> > >
+> > > ... which has been the case since day one in commit:
+> > >
+> > >   478fcb2cdb2351dc ("arm64: Debugging support")
+> > >
+> > > I'm not immediately sure what would be necessary to support per-task kernel
+> > > breakpoints, but given a lot of that state is currently per-cpu, I imagine it's
+> > > invasive.
+> >
+> > I would actually like to remove HW_BREAKPOINT completely for arm64 as it
+> > doesn't really work and causes problems for other interfaces such as ptrace
+> > and kgdb.
+> 
+> Will it be a localized removal of code that will be easy to revert in
+> future? Or will it touch lots of code here and there?
+> Let's say we come up with a very important use case for HW_BREAKPOINT
+> and will need to make it work on arm64 as well in future.
 
-As platform_driver_register() could fail, it should be better
-to deal with the return value in order to maintain the code
-consisitency.
+My (rough) plan is to implement a lower-level abstraction for handling the
+underlying hardware resources, so we can layer consumers on top of that
+instead of funneling through hw_breakpoint. So if we figure out how to make
+bits of hw_breakpoint work on arm64, then it should just go on top.
 
-Fixes: be7ecbd240b2f ("soc: fsl: qe: convert QE interrupt controller to platform_device")
-Reported-by: Hacash Robot <hacashRobot@santino.com>
-Signed-off-by: William Dean <williamsukatube@gmail.com>
----
- drivers/soc/fsl/qe/qe_ic.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+The main pain point for hw_breakpoint is kernel-side {break,watch}points
+and I think there are open design questions about how they should work
+on arm64, particularly when considering the interaction with user
+watchpoints triggering on uaccess routines and the possibility of hitting
+a kernel watchpoint in irq context.
 
-diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
-index bbae3d39c7be..f17de6000ff2 100644
---- a/drivers/soc/fsl/qe/qe_ic.c
-+++ b/drivers/soc/fsl/qe/qe_ic.c
-@@ -481,7 +481,6 @@ static struct platform_driver qe_ic_driver =
- 
- static int __init qe_ic_of_init(void)
- {
--	platform_driver_register(&qe_ic_driver);
--	return 0;
-+	return platform_driver_register(&qe_ic_driver);
- }
- subsys_initcall(qe_ic_of_init);
--- 
-2.25.1
-
+Will
