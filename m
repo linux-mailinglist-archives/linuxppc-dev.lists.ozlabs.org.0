@@ -1,39 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733F257E17B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 14:32:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D306857E19B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 14:48:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq8360rk6z3c46
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 22:32:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq8Pw655Gz3c1Q
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 22:48:52 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RH7urC7y;
+	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RH7urC7y;
+	dkim-atps=neutral
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lq82j0flZz2xh0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 22:32:13 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lq8PG6bNkz2xjr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 22:48:18 +1000 (AEST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Lq82f5Q7Kz4xG6;
-	Fri, 22 Jul 2022 22:32:09 +1000 (AEST)
-From: Michael Ellerman <michael@ellerman.id.au>
-To: Dan =?utf-8?Q?Hor=C3=A1k?= <dan@danny.cz>,
- amd-gfx@lists.freedesktop.org, Linus Torvalds
- <torvalds@linux-foundation.org>, Guenter Roeck <linux@roeck-us.net>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] amdgpu: re-enable DCN for ppc64le
-In-Reply-To: <20220722082122.571974-1-dan@danny.cz>
-References: <20220722082122.571974-1-dan@danny.cz>
-Date: Fri, 22 Jul 2022 22:32:06 +1000
-Message-ID: <87o7xhcoqh.fsf@mpe.ellerman.id.au>
+	by ams.source.kernel.org (Postfix) with ESMTPS id 53F98B828E4;
+	Fri, 22 Jul 2022 12:48:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC56C341C7;
+	Fri, 22 Jul 2022 12:48:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1658494093;
+	bh=sr9TSpthQysYY2JifDw21pcWDlAmyQ036571H/CVHyg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=RH7urC7yBKGTFFfwLG4KbGtTb+z7BhVtkivw7AssselmbptlC5Yg+lmnfM4eU4+zC
+	 e2PusPZfv8iGYtjS3egOVr27kMgOe+ftMkOsI/3r1BiYp8FJtSy7o7A0FoDTHLJapH
+	 iNlxuMI6ZN3eOIw0IblRNSLEILqOMF4ZkpiLv1i15dTZA7e5Wh7irWSLB0kgH/lIi5
+	 kzc8JGV4OdwyewhQlFatR5hiFldBfLMfZqvcV0hjlkUwhnhY2Ce7cSHh/Zxm6TFD9s
+	 esxoKS5/OMxnE4+LfXQ+i4EkpuiVS64Yi/y6aO1x0AoGnVoPC8TY5I2Bd7veZvPLcY
+	 ixIRISZTp05mQ==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, alsa-devel@alsa-project.org, tiwai@suse.com, Xiubo.Lee@gmail.com, lgirdwood@gmail.com,
+ nicoleotsuka@gmail.com, festevam@gmail.com, perex@perex.cz, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <1658399393-28777-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1658399393-28777-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v2 -next 0/5] ASoC: fsl: Fix sparse warning
+Message-Id: <165849408996.139149.2173688518682124551.b4-ty@kernel.org>
+Date: Fri, 22 Jul 2022 13:48:09 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.10.0-dev-d952f
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,67 +61,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alex Deucher <alexdeucher@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Dan,
+On Thu, 21 Jul 2022 18:29:48 +0800, Shengjiu Wang wrote:
+> Fix sparse warning
+> 
+> changes in v2:
+> - use pcm_format_to_bits
+> - use u32 asrc_fmt, then convert it to snd_pcm_format_t
+> 
+> Shengjiu Wang (5):
+>   ASoC: fsl_sai: Don't use plain integer as NULL pointer
+>   ASoC: fsl_asrc: force cast the asrc_format type
+>   ASoC: fsl-asoc-card: force cast the asrc_format type
+>   ASoC: fsl_easrc: use snd_pcm_format_t type for sample_format
+>   ASoC: imx-card: use snd_pcm_format_t type for asrc_format
+> 
+> [...]
 
-[ Cc +=3D linuxppc-dev  ]
+Applied to
 
-Dan Hor=C3=A1k <dan@danny.cz> writes:
-> Commit d11219ad53dc disabled the DCN driver for all platforms that
-> define PPC64 due long build issues during "make allmodconfig" using
-> cross-compilation. Cross-compilation defaults to the ppc64_defconfig
-> and thus big-endian toolchain configuration. The ppc64le platform uses a
-> different ABI and doesn't suffer from the build issues.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Unfortunately it's a bit messier than that.
+Thanks!
 
-The build error occurs when the compiler is built to use a 64-bit long
-double type.
+[1/5] ASoC: fsl_sai: Don't use plain integer as NULL pointer
+      commit: b17079d37fe1570019d7defd9e341d5c18aba8f5
+[2/5] ASoC: fsl_asrc: force cast the asrc_format type
+      commit: c49932726de24405d45516b3f8ad2735714fdf05
+[3/5] ASoC: fsl-asoc-card: force cast the asrc_format type
+      commit: 6c7b077dad62178c33f9a3ae17f90d6b0bf6e2e5
+[4/5] ASoC: fsl_easrc: use snd_pcm_format_t type for sample_format
+      commit: de27216cf2d645c2fd14e513707bdcd54e5b1de4
+[5/5] ASoC: imx-card: use snd_pcm_format_t type for asrc_format
+      commit: 409a8652e909e323c715f3088e6c3133e37c8881
 
-The ppc64le ABI document says that long double should be 128-bits, but
-there are ppc64le compilers out there that are configured to use 64-bit
-long double, notably the kernel.org crosstool compilers.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-So just testing for CPU_LITTLE_ENDIAN means we'll still get build errors
-on those compilers.
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-But I think we can detect the long double size and key off that. Can you
-test the patch below works for you?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-cheers
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 7aa12e88c580..e9f8cd50af99 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -281,6 +281,9 @@ config PPC
- 	# Please keep this list sorted alphabetically.
- 	#
-=20
-+config PCC_LONG_DOUBLE_128
-+	def_bool $(success,test "$(shell,echo __LONG_DOUBLE_128__ | $(CC) -E -P -=
-)" =3D 1)
-+
- config PPC_BARRIER_NOSPEC
- 	bool
- 	default y
-diff --git a/drivers/gpu/drm/amd/display/Kconfig b/drivers/gpu/drm/amd/disp=
-lay/Kconfig
-index b4029c0d5d8c..ec6771e87e73 100644
---- a/drivers/gpu/drm/amd/display/Kconfig
-+++ b/drivers/gpu/drm/amd/display/Kconfig
-@@ -6,7 +6,7 @@ config DRM_AMD_DC
- 	bool "AMD DC - Enable new display engine"
- 	default y
- 	select SND_HDA_COMPONENT if SND_HDA_CORE
--	select DRM_AMD_DC_DCN if (X86 || PPC64) && !(KCOV_INSTRUMENT_ALL && KCOV_=
-ENABLE_COMPARISONS)
-+	select DRM_AMD_DC_DCN if (X86 || PPC_LONG_DOUBLE_128) && !(KCOV_INSTRUMEN=
-T_ALL && KCOV_ENABLE_COMPARISONS)
- 	help
- 	  Choose this option if you want to use the new display engine
- 	  support for AMDGPU. This adds required support for Vega and
+Thanks,
+Mark
