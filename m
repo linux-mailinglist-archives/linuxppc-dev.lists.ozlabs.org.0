@@ -2,31 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0883957E1D6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 15:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB7E57E247
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 15:24:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq8lH2kcgz3c2d
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 23:03:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lq9BT1SFqz3cfV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Jul 2022 23:24:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=danny.cz (client-ip=37.157.195.192; helo=redcrew.org; envelope-from=dan@danny.cz; receiver=<UNKNOWN>)
-X-Greylist: delayed 511 seconds by postgrey-1.36 at boromir; Fri, 22 Jul 2022 23:03:32 AEST
 Received: from redcrew.org (redcrew.org [37.157.195.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lq8kr3HLBz2xk4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 23:03:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lq9B54bS3z2xjk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Jul 2022 23:23:41 +1000 (AEST)
 Received: from server.danny.cz (85-71-161-19.rce.o2.cz [85.71.161.19])
-	by redcrew.org (Postfix) with ESMTP id 5175AA0C;
-	Fri, 22 Jul 2022 14:54:54 +0200 (CEST)
+	by redcrew.org (Postfix) with ESMTP id D7B52A0C;
+	Fri, 22 Jul 2022 15:23:38 +0200 (CEST)
 Received: from talos.danny.cz (unknown [IPv6:2001:470:5c11:160:47df:83f6:718e:218])
-	by server.danny.cz (Postfix) with SMTP id 1E81B11AA6B;
-	Fri, 22 Jul 2022 14:54:54 +0200 (CEST)
-Date: Fri, 22 Jul 2022 14:54:53 +0200
+	by server.danny.cz (Postfix) with SMTP id 4D41A11AA6B;
+	Fri, 22 Jul 2022 15:23:38 +0200 (CEST)
+Date: Fri, 22 Jul 2022 15:23:38 +0200
 From: Dan =?UTF-8?B?SG9yw6Fr?= <dan@danny.cz>
 To: Michael Ellerman <michael@ellerman.id.au>
 Subject: Re: [PATCH] amdgpu: re-enable DCN for ppc64le
-Message-Id: <20220722145453.eb37bd3a99c4b738ed2e26b9@danny.cz>
+Message-Id: <20220722152338.da89f3c445f503ab3b349e78@danny.cz>
 In-Reply-To: <87o7xhcoqh.fsf@mpe.ellerman.id.au>
 References: <20220722082122.571974-1-dan@danny.cz>
 	<87o7xhcoqh.fsf@mpe.ellerman.id.au>
@@ -64,7 +63,9 @@ Michael Ellerman <michael@ellerman.id.au> wrote:
 > > different ABI and doesn't suffer from the build issues.
 > 
 > Unfortunately it's a bit messier than that.
-> 
+
+yes, seems it is :-)
+
 > The build error occurs when the compiler is built to use a 64-bit long
 > double type.
 > 
@@ -77,6 +78,13 @@ Michael Ellerman <michael@ellerman.id.au> wrote:
 > 
 > But I think we can detect the long double size and key off that. Can you
 > test the patch below works for you?
+
+yes, it does work, meaning it defines AMD_DC_DCN on Fedora/ppc64le (and
+build is OK)
+
+
+		Dan
+
 > 
 > cheers
 > 
@@ -91,15 +99,6 @@ Michael Ellerman <michael@ellerman.id.au> wrote:
 >  
 > +config PCC_LONG_DOUBLE_128
 > +	def_bool $(success,test "$(shell,echo __LONG_DOUBLE_128__ | $(CC) -E -P -)" = 1)
-
-^^^ there is a typo s/PCC/PPC/ :-)
-
-with that fixed, it then defines AMD_DC_DCN on Fedora 36 with
-gcc-12.1.1-1.fc36.ppc64le and we should be OK.
-
-
-		Dan
-
 > +
 >  config PPC_BARRIER_NOSPEC
 >  	bool
