@@ -2,39 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F48D57F766
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 00:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9522657F767
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 00:47:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4LrdbF0Wbkz3c52
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 08:47:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrdbg3hFgz3drq
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 08:47:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.155.67.158; helo=smtpbg.qq.com; envelope-from=wangjianli@cdjrlc.com; receiver=<UNKNOWN>)
-X-Greylist: delayed 113 seconds by postgrey-1.36 at boromir; Sun, 24 Jul 2022 15:44:17 AEST
-Received: from smtpbg.qq.com (unknown [43.155.67.158])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.154.54.12; helo=smtpbg.qq.com; envelope-from=wangjianli@cdjrlc.com; receiver=<UNKNOWN>)
+X-Greylist: delayed 113 seconds by postgrey-1.36 at boromir; Sun, 24 Jul 2022 16:31:48 AEST
+Received: from smtpbg.qq.com (biz-43-154-54-12.mail.qq.com [43.154.54.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrBv51YFyz2xKq
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Jul 2022 15:44:16 +1000 (AEST)
-X-QQ-mid: bizesmtp81t1658641306twz9vf55
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrCxw3V1lz305c
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Jul 2022 16:31:43 +1000 (AEST)
+X-QQ-mid: bizesmtp86t1658644169t732hzsm
 Received: from localhost.localdomain ( [125.70.163.183])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 24 Jul 2022 13:41:44 +0800 (CST)
+	id ; Sun, 24 Jul 2022 14:29:27 +0800 (CST)
 X-QQ-SSF: 01000000002000007000B00A0000000
-X-QQ-FEAT: cHidGA2rQwyAyU3ofjyHh1llcWAxjWPyQbM9Hva8mIGipCcfclJB8jIqu/Hc+
-	VBmhw+ioVNQ2yKrwvJsNXFj7lD9A13xTP/vX48qYF+pb6SL3cW2N+faGhPXPzG2FpYTweMm
-	1yrRR2cPiTJdYyv5P7ar/NuaA7JctpI/NumVana7EwQu98raXnzezDP7foQquvECaIfROde
-	7+SegYhfZ8k1oj2e0WDF0teDJjT2NzpeoFydb1rQFmrtZkcCzQotEZyLHzszco6QWF0WvHI
-	sf9S65yxxMWLGWbGhHgxxMY++Wq/k4vXf9DMg8sMOaa88Xo+5JqAct5cxzZaVnp/rLfR4Cy
-	qdZVxoAmXkL1CDKiRw=
+X-QQ-FEAT: jTyhoG5kVjE+IMviPcyFbe8k8mPtdLra19VGuyaVGwYwIg9vuV5EXT6TvFo37
+	MTgs92cNK4oES9V3yo35SOT5nmwPwEFMvqSrKEpPfFO9XZPg4kEM0SBftNl5BeE/K+kkocR
+	gy094Nsxet9LYgRhvVJDqjQV0jTxUNqJnpFw30IEk6Ka25tKExZp3DpP0aqMx/Dm+zUZ3+X
+	pcWXnRuSXzjZUCNZJLNHKzbCHZRFZNd0y5VwEtzVEaZhBSyYVpD5YeLsby9QtLIQ4YxU2P3
+	u5E/F5FZ1XTRCZCcoGGRIKRvGtBSt667gyWfavwAq1c6XjgzspsxPmQxuylpcytVBeoIpek
+	dv7rNduC27jQkLtABwq4LfP3/FAQA4aIrn01MQw
 X-QQ-GoodBg: 0
 From: wangjianli <wangjianli@cdjrlc.com>
 To: mpe@ellerman.id.au,
 	benh@kernel.crashing.org,
-	paulus@samba.org
-Subject: [PATCH] KVM: PPC: Book3S HV:fix repeated words in comments
-Date: Sun, 24 Jul 2022 13:41:37 +0800
-Message-Id: <20220724054137.58504-1-wangjianli@cdjrlc.com>
+	paulus@samba.org,
+	Julia.Lawall@inria.fr,
+	liubo03@inspur.com
+Subject: [PATCH] powerpc/kvm: fix repeated words in comments Delete the redundant word 'that'.
+Date: Sun, 24 Jul 2022 14:29:20 +0800
+Message-Id: <20220724062920.1551-1-wangjianli@cdjrlc.com>
 X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -52,32 +54,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jianli Wang <wangjianli@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: wangjianli <wangjianli@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Jianli Wang <wangjianli@cdjrlc.com>
-
-Delete the redundant word 'do'.
-
-Signed-off-by: Jianli Wang <wangjianli@cdjrlc.com>
+Signed-off-by: wangjianli <wangjianli@cdjrlc.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 2 +-
+ arch/powerpc/kvm/book3s_64_mmu_hv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index e08fb3124dca..17d79be6077d 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -5643,7 +5643,7 @@ static int kvmppc_clr_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
- 	else
- 		kvmppc_xics_clr_mapped(kvm, guest_gsi, pimap->mapped[i].r_hwirq);
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+index 514fd45c1994..73c6db20cd8a 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
+@@ -1601,7 +1601,7 @@ long kvm_vm_ioctl_resize_hpt_commit(struct kvm *kvm,
+  * is valid, it is written to the HPT as if an H_ENTER with the
+  * exact flag set was done.  When the invalid count is non-zero
+  * in the header written to the stream, the kernel will make
+- * sure that that many HPTEs are invalid, and invalidate them
++ * sure that many HPTEs are invalid, and invalidate them
+  * if not.
+  */
  
--	/* invalidate the entry (what do do on error from the above ?) */
-+	/* invalidate the entry (what do on error from the above ?) */
- 	pimap->mapped[i].r_hwirq = 0;
- 
- 	/*
 -- 
-2.25.1
+2.36.1
 
