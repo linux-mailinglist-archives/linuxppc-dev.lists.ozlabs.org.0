@@ -2,57 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 800D357FC62
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 11:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EDB57FC8D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 11:37:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrvnr3Tpnz3c9p
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 19:27:12 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=LZX4uVNM;
-	dkim-atps=neutral
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrw1N307Mz3cd9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 19:37:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=145.40.68.75; helo=ams.source.kernel.org; envelope-from=srs0=5dt6=x6=zx2c4.com=jason@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=LZX4uVNM;
-	dkim-atps=neutral
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aculab.com (client-ip=185.58.85.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN>)
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrvnD2pXkz2xKk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 19:26:40 +1000 (AEST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 04006B80E1A;
-	Mon, 25 Jul 2022 09:26:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF553C341D2;
-	Mon, 25 Jul 2022 09:26:32 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="LZX4uVNM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1658741191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zvNrHbTIYzgB0tkOGhVVxAdAHnHebTQeizi3weVIsK0=;
-	b=LZX4uVNMACi/jB4HVvKJPq0/mnjxBgfqakoAfLysChDi3HgisD6QaHOYw75ZyyrX1xLahm
-	XBKjHTCSVOHHHqTDjtlokbIDkMCdeoLQsma7KWe93PAIV8RSzydcGwPf7ehG3FWP89FhMN
-	/bS3mQsDtxO03rpH0kQYPGkVIqqeD5I=
-Received: 	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id d5a3a065 (TLSv1.3:AEAD-AES256-GCM-SHA384:256:NO);
-	Mon, 25 Jul 2022 09:26:30 +0000 (UTC)
-Date: Mon, 25 Jul 2022 11:26:27 +0200
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Borislav Petkov <bp@suse.de>
-Subject: Re: [PATCH v3] random: handle archrandom with multiple longs
-Message-ID: <Yt5hwxC1xgvA8Asw@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lrw0v096dz2xjm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 19:36:44 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-172-GO85KoGYOjODgFAl2lFN8g-1; Mon, 25 Jul 2022 10:36:37 +0100
+X-MC-Unique: GO85KoGYOjODgFAl2lFN8g-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.36; Mon, 25 Jul 2022 10:36:34 +0100
+Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
+ AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
+ 15.00.1497.036; Mon, 25 Jul 2022 10:36:34 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: "'Jason A. Donenfeld'" <Jason@zx2c4.com>, Borislav Petkov <bp@suse.de>
+Subject: RE: [PATCH v3] random: handle archrandom with multiple longs
+Thread-Topic: [PATCH v3] random: handle archrandom with multiple longs
+Thread-Index: AQHYoAilymPUWo/DTE6/vTfbMGZrFK2O06Jg
+Date: Mon, 25 Jul 2022 09:36:34 +0000
+Message-ID: <10561a841a7342c882aabb0fbdbfc762@AcuMS.aculab.com>
 References: <CAHmME9qTA90=GEr6h1GZh0CjS+6tpe5uuqkYoJVv79h0zd0w1w@mail.gmail.com>
- <20220719130207.147536-1-Jason@zx2c4.com>
- <Yt5gBZe9F1BE0MVF@zn.tnic>
+ <20220719130207.147536-1-Jason@zx2c4.com> <Yt5gBZe9F1BE0MVF@zn.tnic>
+ <Yt5hwxC1xgvA8Asw@zx2c4.com>
+In-Reply-To: <Yt5hwxC1xgvA8Asw@zx2c4.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Yt5gBZe9F1BE0MVF@zn.tnic>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,60 +61,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, linux-s390@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>, linuxppc-dev@lists.ozlabs.org, Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org, linux-kernel@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, Harald Freudenberger <freude@linux.ibm.com>, "H . Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Heiko Carstens <hca@linux.ibm.com>, "x86@kernel.org" <x86@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Johannes Berg <johannes@sipsolutions.net>, Harald Freudenberger <freude@linux.ibm.com>, "H . Peter Anvin" <hpa@zytor.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Will Deacon <will@kernel.org>, Thomas
+ Gleixner <tglx@linutronix.de>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Boris,
+Li4uDQo+IE1vcmUgZGlyZWN0bHksIHRoZSByZWFzb24gd2UgZG9uJ3Qgd2FudCB0byBlcnJvciBp
+cyBiZWNhdXNlIHRoZSB1c2UgY2FzZQ0KPiBoYXMgZmFsbGJhY2tzIG1lYW50IHRvIGhhbmRsZSBl
+cnJvcnMuIFRoZSBjYXNjYWRlIGxvb2tzIGxpa2UgdGhpcw0KPiAocXVvdGluZyBmcm9tIHRoZSBv
+dGhlciBlbWFpbCk6DQo+IA0KPiAgICAgdW5zaWduZWQgbG9uZyBhcnJheVt3aGF0ZXZlcl07DQo+
+ICAgICBmb3IgKGkgPSAwOyBpIDwgQVJSQVlfU0laRShhcnJheSk7KSB7DQo+ICAgICAgICAgbG9u
+Z3MgPSBhcmNoX2dldF9yYW5kb21fc2VlZF9sb25ncygmYXJyYXlbaV0sIEFSUkFZX1NJWkUoYXJy
+YXkpIC0gaSk7DQo+ICAgICAgICAgaWYgKGxvbmdzKSB7DQo+ICAgICAgICAgICAgIGkgKz0gbG9u
+Z3M7DQo+ICAgICAgICAgICAgIGNvbnRpbnVlOw0KPiAgICAgICAgIH0NCj4gICAgICAgICBsb25n
+cyA9IGFyY2hfZ2V0X3JhbmRvbV9sb25ncygmYXJyYXlbaV0sIEFSUkFZX1NJWkUoYXJyYXkpIC0g
+aSk7DQo+ICAgICAgICAgaWYgKGxvbmdzKSB7DQo+ICAgICAgICAgICAgIGkgKz0gbG9uZ3M7DQo+
+ICAgICAgICAgICAgIGNvbnRpbnVlOw0KPiAgICAgICAgIH0NCj4gICAgICAgICBhcnJheVtpKytd
+ID0gcmFuZG9tX2dldF9lbnRyb3B5KCk7DQo+ICAgICB9DQo+IA0KPiBJdCB0cmllcyB0byBnZXQg
+dGhlIGJlc3QgdGhhdCBpdCBjYW4gYXMgbXVjaCBhcyBpdCBjYW4sIGJ1dCBpc24ndCBnb2luZw0K
+PiB0byBibG9jayBvciBkbyBhbnl0aGluZyB0b28gbnV0cyBmb3IgdGhhdC4NCg0KRG8geW91IHJl
+YWxseSB3YW50IHRvIHJldHJ5IHRoZSBlYXJsaWVyIGNhbGxzIHRoYXQgcmV0dXJuZWQgbm8gZGF0
+YT8NCg0KCURhdmlkDQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBS
+b2FkLCBNb3VudCBGYXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9u
+IE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
-On Mon, Jul 25, 2022 at 11:19:01AM +0200, Borislav Petkov wrote:
-> On Tue, Jul 19, 2022 at 03:02:07PM +0200, Jason A. Donenfeld wrote:
-> > Since callers need to check this return value and loop anyway, each arch
-> > implementation does not bother implementing its own loop to try again to
-> > fill the maximum number of longs. Additionally, all existing callers
-> > pass in a constant max_longs parameter.
-> 
-> Hmm, maybe this has come up already but it reads weird.
-> 
-> If I have a function arch_get_random_longs(), I'd expect it to give me
-> the number of longs I requested or say, error.
-> 
-> Why do the callers need to loop?
-> 
-> If I have to loop, I'd call the "get me one long" function and loop N
-> times.
-
-Answered partially in the commit message you quoted and partially here:
-https://lore.kernel.org/lkml/YtqIbrds53EuyqPE@zx2c4.com/
-
-Note that arch_get_random_longs() is not a general purpose function. For
-that there used to be get_random_bytes_arch(), but that no longer exists
-as people shouldn't be using this stuff directly. arch_get_random_longs()
-is a special purpose function mainly intended for use by the RNG itself.
-
-More directly, the reason we don't want to error is because the use case
-has fallbacks meant to handle errors. The cascade looks like this
-(quoting from the other email):
-
-    unsigned long array[whatever];
-    for (i = 0; i < ARRAY_SIZE(array);) {
-        longs = arch_get_random_seed_longs(&array[i], ARRAY_SIZE(array) - i);
-        if (longs) {
-            i += longs;
-            continue;
-        }
-        longs = arch_get_random_longs(&array[i], ARRAY_SIZE(array) - i);
-        if (longs) {
-            i += longs;
-            continue;
-        }
-        array[i++] = random_get_entropy();
-    }
-
-It tries to get the best that it can as much as it can, but isn't going
-to block or do anything too nuts for that.
-
-Anyway, from an x86 perspective, I can't imagine you object to this
-change, right? Codegen is the same.
-
-Jason
