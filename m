@@ -1,45 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9F957F768
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 00:47:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE68A57F7FA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 03:43:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrdc53Njkz3bnP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 08:47:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LrjWD314Pz3c1Q
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 11:43:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=cdjrlc.com (client-ip=43.155.67.158; helo=smtpbg.qq.com; envelope-from=wangjianli@cdjrlc.com; receiver=<UNKNOWN>)
-Received: from smtpbg.qq.com (unknown [43.155.67.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrD3q1F3yz2xt3
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Jul 2022 16:36:54 +1000 (AEST)
-X-QQ-mid: bizesmtp67t1658644601tkl5cgze
-Received: from localhost.localdomain ( [125.70.163.183])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Sun, 24 Jul 2022 14:36:39 +0800 (CST)
-X-QQ-SSF: 01000000002000007000B00A0000000
-X-QQ-FEAT: pMuUV8CkajyAwxb04UR3teIl64cORv4dI27JtmKUzGBNHrZxAwSQdtHocO9Rz
-	g7ICb4BEKkgo0J9uxL0Qbi1rImRGnmz0t7S0VlDrg7g5JGYnmLqGulkr5OW0LEau2wDBjfY
-	Bz4Ji+Onp0E+lUDCXdNsSfKiPFLlRA+0MJLEDi4oyRb7WsJLGdKjRPKpP1/qJz9DI/pRdB2
-	J/X52hzmykvV/g8UYMQsi2RSAk448IGQztjeJnOB4mw7ilN96BROndtbBWLEJoFfJYz8nCy
-	cQEtpu6DZcvsARV1IHmvfc5F+epzBmyVOIMvrI9hA0evitptnGpCj1Yyo0Y01OZ9U0rFk84
-	4K7ViZ2ZsvI8YDyedYioN9pVk0qZPdAJ1r+NMaH
-X-QQ-GoodBg: 0
-From: wangjianli <wangjianli@cdjrlc.com>
-To: mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	paulus@samba.org
-Subject: [PATCH] powerpc/mm: fix repeated words in comments
-Date: Sun, 24 Jul 2022 14:36:22 +0800
-Message-Id: <20220724063622.3205-1-wangjianli@cdjrlc.com>
-X-Mailer: git-send-email 2.36.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybglogicsvr:qybglogicsvr7
-X-Mailman-Approved-At: Mon, 25 Jul 2022 08:46:47 +1000
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LrjVn1qndz3bZs
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 11:43:28 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 26P1f2gP023146;
+	Sun, 24 Jul 2022 20:41:02 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 26P1f1YV023145;
+	Sun, 24 Jul 2022 20:41:01 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Sun, 24 Jul 2022 20:41:01 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] powerpc/purgatory: Omit use of bin2c
+Message-ID: <20220725014100.GQ25951@gate.crashing.org>
+References: <20220625224037.836581-1-masahiroy@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220625224037.836581-1-masahiroy@kernel.org>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,30 +42,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wangjianli <wangjianli@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
- Delete the redundant word 'so'.
+On Sun, Jun 26, 2022 at 07:40:37AM +0900, Masahiro Yamada wrote:
+> The .incbin assembler directive is much faster than bin2c + $(CC).
 
-Signed-off-by: wangjianli <wangjianli@cdjrlc.com>
----
- arch/powerpc/mm/init-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+And perhaps more importantly it is simpler and less clumsy.
 
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index 119ef491f797..acf5d7ba79d1 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -130,7 +130,7 @@ void pgtable_cache_add(unsigned int shift)
- 
- 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
- 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
--	 * constant expression, so so much for that. */
-+	 * constant expression, so much for that. */
- 	BUG_ON(!is_power_of_2(minalign));
- 	BUG_ON(shift > MAX_PGTABLE_INDEX_SIZE);
- 
--- 
-2.36.1
+> --- /dev/null
+> +++ b/arch/powerpc/purgatory/kexec-purgatory.S
+> @@ -0,0 +1,14 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +	.section .rodata, "a"
+> +
+> +	.align	8
+> +kexec_purgatory:
+> +	.globl	kexec_purgatory
+> +	.incbin	"arch/powerpc/purgatory/purgatory.ro"
+> +.Lkexec_purgatroy_end:
 
+Typo here (s/ro/or/)
+
+> +
+> +	.align	8
+> +kexec_purgatory_size:
+> +	.globl	kexec_purgatory_size
+> +	.quad	.Lkexec_purgatroy_end - kexec_purgatory
+
+And here again ofc.
+
+Looks good to me otherwise, nice cleanup :-)
+
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+
+Segher
