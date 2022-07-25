@@ -2,52 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7830657F9FE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 09:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BE657FA44
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 09:29:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrrv23B6Hz3c1b
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 17:16:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4LrsB24sHGz3cBw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 17:29:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=aKKl4kYK;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hq5GgIgK;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=inria.fr (client-ip=192.134.164.104; helo=mail3-relais-sop.national.inria.fr; envelope-from=julia.lawall@inria.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=andy.shevchenko@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=inria.fr header.i=@inria.fr header.a=rsa-sha256 header.s=dc header.b=aKKl4kYK;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20210112 header.b=hq5GgIgK;
 	dkim-atps=neutral
-X-Greylist: delayed 65 seconds by postgrey-1.36 at boromir; Mon, 25 Jul 2022 17:15:54 AEST
-Received: from mail3-relais-sop.national.inria.fr (mail3-relais-sop.national.inria.fr [192.134.164.104])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrrtL1Rblz30Qc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 17:15:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Lrs9P4qgYz3bcZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 17:28:55 +1000 (AEST)
+Received: by mail-ed1-x532.google.com with SMTP id i13so3610145edj.11
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 00:28:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=kG1YFRKxcbq+zSs5VKV9a0lQuS4b8911u6IYa7dyiHw=;
-  b=aKKl4kYK8n9zjT/c1/cJvvic1NAhsKv0FOIN5j3RC+V/+fWiI7v/dPwZ
-   Ca4UHnD0aHeNsfSoWctcyarLicKm2J2sr+8Ydk0IZwX2RJH8oJW/vjplE
-   /7LoxvrdS+zYQktwNaL5TeV9WbvH+FONXwMFmMaJL2xu8JepDCbDBpbyo
-   E=;
-Authentication-Results: mail3-relais-sop.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=julia.lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="5.93,192,1654552800"; 
-   d="scan'208";a="20053995"
-Received: from dt-lawall.paris.inria.fr ([128.93.67.65])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jul 2022 09:14:44 +0200
-Date: Mon, 25 Jul 2022 09:14:39 +0200 (CEST)
-From: Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: julia@hadrien
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/kvm: fix repeated words in comments Delete the
- redundant word 'that'.
-In-Reply-To: <87bktdd6s8.fsf@mpe.ellerman.id.au>
-Message-ID: <alpine.DEB.2.22.394.2207250913290.2424@hadrien>
-References: <20220724062920.1551-1-wangjianli@cdjrlc.com> <87bktdd6s8.fsf@mpe.ellerman.id.au>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vMEnrGB4HYdP/eTvNNcIwLpDOuUcAudKRal9PHh2i7k=;
+        b=hq5GgIgKeCBfU14aRy/moRxb86DWt6ZbGJn/vYeSSUv00MJguhXNpZ7RQ6rVHvg4DQ
+         /mlok3N0gF2bs+nPxCC7EcDSY4d/n+G+DJUF8cVWzbimrmXVQdhz6TZZ1uKPjY1cpG7V
+         Eci2TpATgrR0EdSrzys5pQIZbqoJltVSdt4mrjLiRsdmLS2DpXCkqJCVHxNGTFMXL6QE
+         N8yJvqDHsH8s56sggqrtjgpMc5h9JECZqx++CZ48s3kAzHdz8KWEYP6SGBkuMDa+9XFu
+         zFaO1tFyCkbcBDPvWwwATJAhesMYynG7ffKWtyTxiuZfA8om/x3MXXmbdIdDX3nZ7KMU
+         eNOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vMEnrGB4HYdP/eTvNNcIwLpDOuUcAudKRal9PHh2i7k=;
+        b=yrhKxYq9dmfJtV279Wug9E+if2ewbyjociTJYIyMdcUUuY/9r7R9v0twn8tm286lsZ
+         yZivDPjEnFM4j8YgQQDoXyj4nB32cOn5PFXnBVK1jtmPSfWFW3M+xGiQltZK6/mqqsd8
+         gK3hp8nhNKIQShN0eKSdaxpmsnllm1TYXhVXm/KLcbFVgIx5GziHXq+HUw1gKmvUeuaX
+         Eggjls4QKQxDj78x2vf4yQ4Rl7QryyHAClqWMTBgKE764830XM6YZN8fAJhnygj1kw9w
+         g2UhBDaa3/RFI/l3aGhzZ3Ii99G58H09W8H2YpSiFK03INMSssv3z8aG33nSseauQinw
+         o4zw==
+X-Gm-Message-State: AJIora9SgdKLxo+UIVE4aZrnywmaan2KzvzAF+283QL3oRl9AalvuxmR
+	a8OHquCO4B6jZTgKgdRAz6oBiK/954xoj4t/VvU=
+X-Google-Smtp-Source: AGRyM1vdcAIHTjS02QftTovrDwGv8zlIcrR9fl04Bm4gKAIHUl3rgnkBKb7VLEoYIUbwOj6oZjkCrW9gXNf8bkHM6o4=
+X-Received: by 2002:a05:6402:1768:b0:43b:c4b0:ffd3 with SMTP id
+ da8-20020a056402176800b0043bc4b0ffd3mr11443522edb.163.1658734129332; Mon, 25
+ Jul 2022 00:28:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20220723214537.2054208-1-yury.norov@gmail.com> <20220723214537.2054208-2-yury.norov@gmail.com>
+In-Reply-To: <20220723214537.2054208-2-yury.norov@gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 25 Jul 2022 09:28:12 +0200
+Message-ID: <CAHp75VfOmN=cTEs7gbwxZ7W3hXjBo67N4AmHHiDfcVfFzHkMLA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] powerpc: drop dependency on <asm/machdep.h> in archrandom.h
+To: Yury Norov <yury.norov@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,37 +72,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Julia.Lawall@inria.fr, paulus@samba.org, liubo03@inspur.com, wangjianli <wangjianli@cdjrlc.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Paul Mackerras <paulus@samba.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On Mon, 25 Jul 2022, Michael Ellerman wrote:
-
-> wangjianli <wangjianli@cdjrlc.com> writes:
-> > Signed-off-by: wangjianli <wangjianli@cdjrlc.com>
-> > ---
-> >  arch/powerpc/kvm/book3s_64_mmu_hv.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > index 514fd45c1994..73c6db20cd8a 100644
-> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > @@ -1601,7 +1601,7 @@ long kvm_vm_ioctl_resize_hpt_commit(struct kvm *kvm,
-> >   * is valid, it is written to the HPT as if an H_ENTER with the
-> >   * exact flag set was done.  When the invalid count is non-zero
-> >   * in the header written to the stream, the kernel will make
-> > - * sure that that many HPTEs are invalid, and invalidate them
-> > + * sure that many HPTEs are invalid, and invalidate them
-> >   * if not.
+On Sun, Jul 24, 2022 at 12:19 AM Yury Norov <yury.norov@gmail.com> wrote:
 >
-> The existing wording is correct:
+> archrandom.h includes <asm/machdep.h> to refer ppc_md. This causes
+> circular header dependency, if generic nodemask.h  includes random.h:
 >
->  "the kernel will make sure that ... that many HPTEs are invalid"
+> In file included from include/linux/cred.h:16,
+>                  from include/linux/seq_file.h:13,
+>                  from arch/powerpc/include/asm/machdep.h:6,
+>                  from arch/powerpc/include/asm/archrandom.h:5,
+>                  from include/linux/random.h:109,
+>                  from include/linux/nodemask.h:97,
+>                  from include/linux/list_lru.h:12,
+>                  from include/linux/fs.h:13,
+>                  from include/linux/compat.h:17,
+>                  from arch/powerpc/kernel/asm-offsets.c:12:
+> include/linux/sched.h:1203:9: error: unknown type name 'nodemask_t'
+>  1203 |         nodemask_t                      mems_allowed;
+>       |         ^~~~~~~~~~
+>
+> Fix it by removing <asm/machdep.h> dependency from archrandom.h
 
-Maybe it would be better as "that the number of invalid HPTEs is the same
-as the invalid count"?
+...
 
-julia
+>  EXPORT_SYMBOL_GPL(pm_power_off);
+
+^^^ (Note this and read below)
+
+...
+
+> +EXPORT_SYMBOL(arch_get_random_seed_long);
+
+It can't be like this. Brief browsing of the callees shows that.
+
+-- 
+With Best Regards,
+Andy Shevchenko
