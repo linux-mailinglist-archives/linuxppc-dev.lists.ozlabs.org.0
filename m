@@ -1,59 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB0557F81A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 04:00:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4686F57F877
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 05:28:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrjt921qzz3c9C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 12:00:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Lrlr40R8mz3cFj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 13:28:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=Pc/sWxVj;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Qli62PWl;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=210.131.2.90; helo=conssluserg-05.nifty.com; envelope-from=masahiroy@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256 header.s=dec2015msa header.b=Pc/sWxVj;
-	dkim-atps=neutral
-Received: from conssluserg-05.nifty.com (conssluserg-05.nifty.com [210.131.2.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrjsX0LQKz30Qc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 11:59:43 +1000 (AEST)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52]) (authenticated)
-	by conssluserg-05.nifty.com with ESMTP id 26P1x9gQ011817
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 10:59:10 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-05.nifty.com 26P1x9gQ011817
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-	s=dec2015msa; t=1658714351;
-	bh=HVu+KaNVwvREcYnTWHIbGMhdQS80Phpv0XKr84P25VM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Pc/sWxVjSjQ8XOdnwSZ7INJ72O7E7Kv/aLMlu90fMJSH1BWhuDlIK91j2vIBUj17Q
-	 kaIrk1cusBO23FAWq8eQ2TkqVXQSLrSdj3dTe9Jc3SLhHuOoMgvXnIeDCfqqJ2tmCZ
-	 4FF4CRlMuFClYGQMOiWq/FeVovJGofX4GSF4I2xAvBWvDsMXTyZgB3OO/EbRInmz3h
-	 FhPnwEFsC9MR6pAKYaFuN/QTfMlP37lVo4noj7wedf89uSMLKu2ZVn998qk+flZmCU
-	 0sdg+QDFzaghOzURKe8tXYex4zqiPwWjHg5tnv0CbZr+KupLwUFPM7yVB8fwO0JDQj
-	 EwI4C5Yo8yrXw==
-X-Nifty-SrcIP: [209.85.128.52]
-Received: by mail-wm1-f52.google.com with SMTP id f24-20020a1cc918000000b003a30178c022so8473689wmb.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Jul 2022 18:59:10 -0700 (PDT)
-X-Gm-Message-State: AJIora/bZQRYcDll+m861r6JzPK6+Q0FUlIIUnV1wQcy7hsbmVp1MfnT
-	BrgQ6RpA1Dev/CxjXigQe8sAc2b5K3883MAppGw=
-X-Google-Smtp-Source: AGRyM1vivR05y2jgl4+ym0sl+fjMjQbBEUj0AOZjOmvOpxjP/5cSIlaorKkje5gZwtyeN7RnyVJuYRVi0J7bgCmZcPs=
-X-Received: by 2002:a05:600c:a42:b0:39c:9086:8a34 with SMTP id
- c2-20020a05600c0a4200b0039c90868a34mr19832895wmq.169.1658714349182; Sun, 24
- Jul 2022 18:59:09 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4LrlqS33VCz2xrj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 13:28:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Qli62PWl;
+	dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4LrlqJ4JqJz4x2c;
+	Mon, 25 Jul 2022 13:27:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1658719679;
+	bh=A3dlRpormEhO28f6h4590b/Lcp+iomzysnEq+1J3zUI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Qli62PWlLtfkcruNXsG+1tXJVDfSdJ9RoE7TOymCZkkfXrOZ88+xe9q4ltmmke0Bx
+	 MNoJueQXngwN2gBbxS8Jplqn6WjAn2MMFDWRZvGvdVhTgJeB6G7rHk9KGvlPdFlr+/
+	 VzJ12EHGgqwXUnmJrXCrTjJUArBz8C8OtU7Lm8IbIchR7cuAnZSFZ/WmAyZLkNoguB
+	 Qn1HyOWZYQu3PoPolFSVERizYUX7wao9m9UM1/nT590VRpTaI0G2bK5Y4LeYoLS+C/
+	 MrarpZE3UUxmLOZaHSCMrFsoQRjTi0vokj0qGMbMLsL4wFKSGPzNrP7rv50EzKMznt
+	 AWlbGlh1tJf4Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>, Michal =?utf-8?Q?Such?=
+ =?utf-8?Q?=C3=A1nek?=
+ <msuchanek@suse.de>
+Subject: Re: [PATCH] powerpc: Remove the static variable initialisations to 0
+In-Reply-To: <20220723192211.GP25951@gate.crashing.org>
+References: <20220723092436.7149-1-wangborong@cdjrlc.com>
+ <20220723133405.GF17705@kitsune.suse.cz>
+ <20220723192211.GP25951@gate.crashing.org>
+Date: Mon, 25 Jul 2022 13:27:52 +1000
+Message-ID: <87fsipdg7b.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20220625224037.836581-1-masahiroy@kernel.org> <20220725014100.GQ25951@gate.crashing.org>
-In-Reply-To: <20220725014100.GQ25951@gate.crashing.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Mon, 25 Jul 2022 10:58:10 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATFT3YFz-VUu1PQWNNfCL6k4EFokxcMGq3guJo9MhmydQ@mail.gmail.com>
-Message-ID: <CAK7LNATFT3YFz-VUu1PQWNNfCL6k4EFokxcMGq3guJo9MhmydQ@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/purgatory: Omit use of bin2c
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,58 +62,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: lkp@intel.com, linux-kernel@vger.kernel.org, Jason Wang <wangborong@cdjrlc.com>, Julia.Lawall@inria.fr, paulus@samba.org, npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org, hbathini@linux.ibm.com, joel@jms.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jul 25, 2022 at 10:42 AM Segher Boessenkool
-<segher@kernel.crashing.org> wrote:
+Segher Boessenkool <segher@kernel.crashing.org> writes:
+> On Sat, Jul 23, 2022 at 03:34:05PM +0200, Michal Such=C3=A1nek wrote:
+>> Hello,
+>>=20
+>> On Sat, Jul 23, 2022 at 05:24:36PM +0800, Jason Wang wrote:
+>> > Initialise global and static variable to 0 is always unnecessary.
+>> > Remove the unnecessary initialisations.
+>>=20
+>> Isn't this change also unnecessary?
+>>=20
+>> Initializing to 0 does not affect correctness, or even any kind of
+>> semantics in any way.
 >
-> On Sun, Jun 26, 2022 at 07:40:37AM +0900, Masahiro Yamada wrote:
-> > The .incbin assembler directive is much faster than bin2c + $(CC).
->
-> And perhaps more importantly it is simpler and less clumsy.
->
-> > --- /dev/null
-> > +++ b/arch/powerpc/purgatory/kexec-purgatory.S
-> > @@ -0,0 +1,14 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +
-> > +     .section .rodata, "a"
-> > +
-> > +     .align  8
-> > +kexec_purgatory:
-> > +     .globl  kexec_purgatory
-> > +     .incbin "arch/powerpc/purgatory/purgatory.ro"
-> > +.Lkexec_purgatroy_end:
->
-> Typo here (s/ro/or/)
+> It did make a difference when the kernel was still compiled with
+> -fcommon (which used to be the GCC default on most configurations, it is
+> traditional on Unix).  No explicit initialiser puts an object in .bss if
+> you use -fcommon.  This matters a bit for data layout.
 
+The kernel has built with -fno-common since ~2002.
 
-Nice catch. Thanks.
+I think the belief is that an explicit initialiser of 0 forces the
+variable into .data, but AFAICS that is not true with any compiler we
+support.
 
-I've sent v2.
-
-
-
->
-> > +
-> > +     .align  8
-> > +kexec_purgatory_size:
-> > +     .globl  kexec_purgatory_size
-> > +     .quad   .Lkexec_purgatroy_end - kexec_purgatory
->
-> And here again ofc.
->
-> Looks good to me otherwise, nice cleanup :-)
->
-> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
->
->
-> Segher
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+cheers
