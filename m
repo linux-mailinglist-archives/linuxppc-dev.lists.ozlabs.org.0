@@ -2,100 +2,114 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B11058011A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 17:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47902580142
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Jul 2022 17:11:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [IPv6:::1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ls3FZ1CLcz3dpb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 01:03:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ls3RT0vz6z3c21
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Jul 2022 01:11:49 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F5KaVJZE;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GuvSgrGb;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=OeWFqG5F;
 	dkim-atps=neutral
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=javierm@redhat.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=seco.com (client-ip=40.107.1.46; helo=eur02-he1-obe.outbound.protection.outlook.com; envelope-from=sean.anderson@seco.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=F5KaVJZE;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GuvSgrGb;
+	dkim=pass (2048-bit key; unprotected) header.d=seco.com header.i=@seco.com header.a=rsa-sha256 header.s=selector1 header.b=OeWFqG5F;
 	dkim-atps=neutral
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from EUR02-HE1-obe.outbound.protection.outlook.com (mail-eopbgr10046.outbound.protection.outlook.com [40.107.1.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ls3Dv5B3qz3c74
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 01:02:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658761356;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vHZGGE+UaT0lsujpHFYRwMapEZrOG0uqXxvqP8vp3jo=;
-	b=F5KaVJZEY73JeqT73YTM0l/EPqs7PFJBEFOBrXDmGTP4ilJCDaRcW9kEIpi7d284meB/Ou
-	U1RKOH0NfAODySBiwDR/Jli/Q8+/y49EoHOjTjtpVeBovn8Bp0SSQ9wewUQq66vgu2VnxZ
-	aUMZ4UgVT4qVlQ7Bxie6lGXaKEOCVSA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1658761357;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vHZGGE+UaT0lsujpHFYRwMapEZrOG0uqXxvqP8vp3jo=;
-	b=GuvSgrGb5hYzZdz433UTXHO6rMonZw/5z9p0rTPC03wi4dB1BuYRkqnEmPuWEb24syNYEH
-	YKR/iMGwq6i5ngd+vMdlYxVN9s/GqBJ626wKR4DPGkbmBnP7YhJ5Tdjugx7IUIIx0z/vcZ
-	UZOTyhZJsZRkYVpAVzY7/alozYejP+M=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-42-bg9RbzB1Piy8mdpdaKq4jQ-1; Mon, 25 Jul 2022 11:02:35 -0400
-X-MC-Unique: bg9RbzB1Piy8mdpdaKq4jQ-1
-Received: by mail-wm1-f71.google.com with SMTP id az39-20020a05600c602700b003a321d33238so6316473wmb.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Jul 2022 08:02:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=vHZGGE+UaT0lsujpHFYRwMapEZrOG0uqXxvqP8vp3jo=;
-        b=aC+kZ5RkakolkQ5reocWSHCTt5zVv9R1kJ1qSm2ykodh+pQmK586ykm7TxoEDafx6t
-         pQLdZvypzZenboca9hZH2ibm6TWcy3+4MIOusX/P022eQ015pHSdXpB50cZl95pm3iX0
-         VjoH/1lRflsh5eTyPGWOiCxci+rbXQCk0o7hoqsAOlpfk55qnlSlJkvPzLWBVoOPQZzn
-         Uh9ZFDSKaOmlZGWbTWCzjLbZEK4He3gKfV8cM09AanQPDDAZg9IaLkO/ihmQN3x32Af9
-         igj3RZnnUNyNiJ0G0l1LqnKjcKjxf9POJC2o4jKoQ6I0iOk2iUPGpmT+Ju2VUpAasSap
-         cj5w==
-X-Gm-Message-State: AJIora8KYGNcHup8IKr0jqzFt82ffARCChroUIUhxrUZaOSCTGqq5pMf
-	IDGpdgJwseAlhA4rEf2AQWsjsoNmE774uxRzmD3K2J8asSv7z8DazAY/acHVr3TdmMI4GalOkaL
-	vLs2CUMmtudfsGHAKlFodfHj4BQ==
-X-Received: by 2002:adf:fd42:0:b0:21e:4357:3f38 with SMTP id h2-20020adffd42000000b0021e43573f38mr7802990wrs.620.1658761354386;
-        Mon, 25 Jul 2022 08:02:34 -0700 (PDT)
-X-Google-Smtp-Source: AGRyM1up2wqjTlCDkbuerUzqw3y4Lua29GD9rdcA18jLXX1pQ9fCVhFmF2mw6dWG6b5ahUovhc3P7w==
-X-Received: by 2002:adf:fd42:0:b0:21e:4357:3f38 with SMTP id h2-20020adffd42000000b0021e43573f38mr7802975wrs.620.1658761354219;
-        Mon, 25 Jul 2022 08:02:34 -0700 (PDT)
-Received: from [192.168.1.130] (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id o27-20020a5d58db000000b0021d80f53324sm11992170wrf.7.2022.07.25.08.02.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Jul 2022 08:02:33 -0700 (PDT)
-Message-ID: <307f7551-aa47-ea36-ea58-ab4c552dca38@redhat.com>
-Date: Mon, 25 Jul 2022 17:02:32 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ls3Qw22J5z2xjm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Jul 2022 01:11:17 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KZ3vg6y5e1RXn3GIEUlZmLzy3/69Agq4QTAf75a1E1M5umFuo1lZoT16vF0993hJf6jxzGzlULqu8QOnlj720bxNir3OivgeF1C4FXP6wB00Td5e4Yaj1mnK1VaGpg1lsNjQYCMh8NATfBD9GzyvZ3TFC8m5GnnVKpAI6EWftY8fv9BFO/4QEqT5xR93Ii7RYPbkmgilzCw45eiWlTnb1HTrLL8lM+dfY2FqSPFK03iHV4XIVXjwHG369wVcVEphu5RM4kCnOY9AoFs42HPo79eC6+4l7EQHu8FPAhn2ATL1OcE5kKdEhRc3scDGqlIiIFDIcg8stCxKwwQelowh7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iO8ROTcaT90018JtrQ0xpZyawquVtsOjOiokopmXpXU=;
+ b=AwAcK3CLManywtGNsSyXxAi3gSwTySPRbW1dqJ9EOink2XTr8UimgKy6cepSZgHiePEd/hsnlYTpXsDOnTtdRuPrVSDNAJfrXwfTiwton8l00BzEpRiz1kFGHJxkjG4PviSqnnVNfGvMkvEvcxGNwwQplsLafTfh5L1FKfJ6Gq3VquFG0fmYMwk7+lWTBh4D+lqZDEO6ETjtLff5gKSwGI6D6G64rswhqyDFsJCLID2DmuP+VHbZbehIRjoAFZ794ZOJmPCDSU4DU8fZ2cEVxltyp4QOHee+pwcrzL0bp5lFjCGfFydJTLFq6uFIKwHSgmuOMUxlVZGo7qbnT0unNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=seco.com; dmarc=pass action=none header.from=seco.com;
+ dkim=pass header.d=seco.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seco.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iO8ROTcaT90018JtrQ0xpZyawquVtsOjOiokopmXpXU=;
+ b=OeWFqG5FuAJnfxYuW3aD55YZkRlyiOxRbo0SJtBcOcV0n5CPMBgxKRGP0LQhiUUocJpiKtjvZJyLQExXldqoCnH7bvSmum21P+e5ATC4feskcWMNTBgaQP3TgGrWiKmKPH3XtJNZ0vCNWe9mRXjfkVlFnelONbO4vVFrtrXNE8LV9f1Z5KDGH7bZb65M+TyTNUFGRRuOsoXZgGptm786CbbOS+i72BExcsfyQ8pSFsSYJIPusMuvdLRcWOUX1pqK8PhFt4iwriWR6QspiY8zfchyFERofwMYnHFTN6l44TBIL6yZTLpHEHFPuQ/bT9gO/mhvt/+UC/zQRa6DOTUtcg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=seco.com;
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com (2603:10a6:10:7d::22)
+ by AM9PR03MB7817.eurprd03.prod.outlook.com (2603:10a6:20b:415::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5458.24; Mon, 25 Jul
+ 2022 15:10:57 +0000
+Received: from DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::59ef:35d2:2f27:e98b]) by DB7PR03MB4972.eurprd03.prod.outlook.com
+ ([fe80::59ef:35d2:2f27:e98b%4]) with mapi id 15.20.5458.018; Mon, 25 Jul 2022
+ 15:10:57 +0000
+From: Sean Anderson <sean.anderson@seco.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH v4 00/25] net: dpaa: Cleanups in preparation for phylink conversion
+Date: Mon, 25 Jul 2022 11:10:14 -0400
+Message-Id: <20220725151039.2581576-1-sean.anderson@seco.com>
+X-Mailer: git-send-email 2.35.1.1320.gc452695387.dirty
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CH0PR03CA0229.namprd03.prod.outlook.com
+ (2603:10b6:610:e7::24) To DB7PR03MB4972.eurprd03.prod.outlook.com
+ (2603:10a6:10:7d::22)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2 03/10] drm/simpledrm: Remove pdev field from device
- structure
-To: Thomas Zimmermann <tzimmermann@suse.de>, airlied@linux.ie,
- daniel@ffwll.ch, deller@gmx.de, maxime@cerno.tech, sam@ravnborg.org,
- msuchanek@suse.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
- paulus@samba.org, geert@linux-m68k.org, mark.cave-ayland@ilande.co.uk
-References: <20220720142732.32041-1-tzimmermann@suse.de>
- <20220720142732.32041-4-tzimmermann@suse.de>
-From: Javier Martinez Canillas <javierm@redhat.com>
-In-Reply-To: <20220720142732.32041-4-tzimmermann@suse.de>
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=javierm@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a05e8b60-d2b6-43d8-8a71-08da6e4fe022
+X-MS-TrafficTypeDiagnostic: AM9PR03MB7817:EE_
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 	zH0OB7Ox0cRDGGRKxFMJ+1lkqBMArlhoi2Msg/GHBiD2V1BSjwfpu6+Oy4HurtdczbwXvbCFNTJ7TDgpk46e6Mmk6ryCfv2h0km6uJJx+yIBUZwFFElPNbBkQawBB4ejrRQG3flsxitsDtnzcO7bQWcq7OsWO83mla6IJEKwWuadbYPmhSlPc3+aBOb0C0OFUbWndNtgf/b+SM28pDPWrLmnXfNI1sYTbs+fKpl9C94nbCj9yjJOC3+GPL/bYpHCYBdebAFI/HOq6EZ4I1tj0KRbF8ZA4ulJVeXCN7b3vPc3QcQ/vGln1UB9FQiEgTa2W9NvXr/OV6cPRpzYJ++8z62ew5nJTqovaWe2K9vC8AodpvVl/mYZRhd/PTSnmmSN1Nuq7/ZRHUUQiYok8l6X2h1dAFnzVlKOQpt2xbtXY0tI97ele1FawmFtOasWFjUPCJRZdJlJ+5NbIEPzAlhiNjCaBReIMhzzhVjhHQmpC9XvybYMdpT6UCOHfSdpjWMoJPoMWXWEttCkwQRp7JEMukOY5rWUSnAkVKy98Ih919lfSjMoGydeqe01rkar8qwuRd+o+v8NXyjBqkXRBBzpsP4llZ/wNQddU3ioNCpvwd0QGMT0oxMaUIrF8LKfpLxXXmwNnXfDXiWz58dOFlr5ezmfA6XQD/7rqoyGD5Uv7y4dOl9MgCrRrR0c5ZK+neVlv2o2u033HZ92oJhDo3cJPqJyRCQHFhvZJtxJvXGg8+LLFTzzyV0/90Daz71OUfZBzA6Y7n7awl++bjMndhFubNTPhiear4iMIHJpBggi0qOR2580nGFXGGZRJxLMB4Wtoing/Rl9d6Yk9wF4Jpu8GA==
+X-Forefront-Antispam-Report: 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB7PR03MB4972.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(39850400004)(136003)(396003)(346002)(366004)(376002)(36756003)(110136005)(54906003)(186003)(38350700002)(8676002)(66556008)(66946007)(316002)(66476007)(38100700002)(8936002)(86362001)(2616005)(478600001)(4326008)(5660300002)(6666004)(966005)(83380400001)(7416002)(6506007)(41300700001)(6486002)(44832011)(26005)(6512007)(52116002)(1076003)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 	=?us-ascii?Q?nlHho3iVAttAEkzoGaIlYUQ4oE8GR4AsVid/+Df+1AVolIyZdbsdRRt6YNuF?=
+ =?us-ascii?Q?Nw8K+k0S5pRYC73RQFdOnoL9/RPYDNoCIKbYGz3iNoBsZu6lAMPudMJmP0XO?=
+ =?us-ascii?Q?0REHfPPGM/e95t8WgFbqHHj20y2/L6RSygERqsJWi832ap3945siQFuyJ/AH?=
+ =?us-ascii?Q?bgaaIJbwbdMNfUDpul6KoLlY9L8yGgm7Fp3VnTPWlTA3sPx8hL4JpVrl1rER?=
+ =?us-ascii?Q?fCa9R5ekgebBX5UaYCkC0HkXLZA5Ew9+WehdN40sghUsEiAzRsYroUmf++Vl?=
+ =?us-ascii?Q?iTs2nu6sOaE+biwsyXlilscCocLzGmvC6+OtwfFKMRJSpBsYNyU0ttVu1qoY?=
+ =?us-ascii?Q?bcwgh9zHeVbp5lvtuKOAHqdtltca3w8g9mhAl6kVgw+sfRqSwOApdyk7HUN6?=
+ =?us-ascii?Q?7YK/Wx9S2z6Oc8EsRr/gYeDa5JzaJ9MjdRTcwRCOWJLIPtGWFpINJIaVnG8Z?=
+ =?us-ascii?Q?W9nHSei1bvkdnBAXk88C/gtHNi8qNSyZcd2j7Z09J4SqPbx0pNbYXIX2Sjta?=
+ =?us-ascii?Q?sVnVMoHhl8kjqgrEeI0sOciTQJA97kZMIC1eZa/6AyMiPBkpvNnEvOtxhyYU?=
+ =?us-ascii?Q?kXFenaVzWy+7vzXioQboKpie3DbRYLgooXhDs4rAmEjGcVFiCcWJ0Z7BkDc4?=
+ =?us-ascii?Q?ECk3e5aUBpQJtEIC7gJhfi44ufOxTuCM2bUWmLFawRDq/R8mvxr2zguJgTYT?=
+ =?us-ascii?Q?+sT3MskOU8SyyezUDDAb/+w/bd5Ar9z6+zvZzivL7hYzkQCDUTwyje4L1bro?=
+ =?us-ascii?Q?uHbGr1qPTuwBLeANmwmEa/8/c90ShtrNPJoWGON+Nqna0zHoQa5qT1G+ltsT?=
+ =?us-ascii?Q?yyPNOaVez+ABC7Z/m/j+z7PRyJgFapNH9vO/T0Q0WGbh6RpwKkxbaabqabTi?=
+ =?us-ascii?Q?/ewx/RtgjUxG5Irvf8a6Wtx0JWhLBkFd/fgcw92Mg3DFnikMsZQryDg/HnyZ?=
+ =?us-ascii?Q?maaDB88QnzTtaqoBA02T5sb1L+9adMDvomydRTy7oG+2sEnWeMvnpPvwamqm?=
+ =?us-ascii?Q?FZfNpkrN0g5uXTPT++mnlcWVYZON3M/ysWu3HY2NyK74UrHf1ce2eJBKdyWg?=
+ =?us-ascii?Q?ELxEcxjQ3kiD1ZKn8Sz1d0bjzj8VoQlou/RodBrPYdPUt50BMPyESwM5jA+B?=
+ =?us-ascii?Q?KW0/y5uf72IQCuI+OSdDo74YPdnSrqd3H0UgxbiAWnxcYZAF3rIi4WZFBu1S?=
+ =?us-ascii?Q?F2LWPB4tH2jMmRB2bKOr7KPRzbNz12UvV3pzAA70Uzjr0bKe24NgYiw1Vwzx?=
+ =?us-ascii?Q?60MIe/cXAQUzEK54P+JSdzGpMx3j/4cK4DRbTVVb0BZW4GWDfvwEZrrmDlPN?=
+ =?us-ascii?Q?M8WQXDirf7Nmn54SqnkmmkB2YOdInViRMgA2RXmTuONdIQzzCM43cO7kX/nN?=
+ =?us-ascii?Q?DTodPbsYOQPIObDyJYRwAPudVdgHLoUrXDMC26HgFFYzrI5DdWsEfDXs/0sG?=
+ =?us-ascii?Q?g1SqH9plinvgbS+IZPRgbEg5GuxGR2bYQqAyH+eJ9LLBU0PlWVfKocR0MbK5?=
+ =?us-ascii?Q?EjzG6AKTpPPn/S5u9gk6Kd8tcYGERW7PdCaA52mcol4iUxJba9v5zbISWumN?=
+ =?us-ascii?Q?+MkrIpUtsl1R043bmFg7tNy1xQ0m4E1makvVnvwi/kBh0aSwNC5P/8cRgMMK?=
+ =?us-ascii?Q?+w=3D=3D?=
+X-OriginatorOrg: seco.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a05e8b60-d2b6-43d8-8a71-08da6e4fe022
+X-MS-Exchange-CrossTenant-AuthSource: DB7PR03MB4972.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2022 15:10:57.0365
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bebe97c3-6438-442e-ade3-ff17aa50e733
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HL06Kivjum387nkqWsmfV6zcckEmZVX7WNdQJrI57YkjlJ4AYx3aP9xkd2GVoow65R4vqIMGs+AnWdK8IPlNyg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR03MB7817
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,24 +121,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org
+Cc: devicetree@vger.kernel.org, Madalin Bucur <madalin.bucur@nxp.com>, Sean Anderson <sean.anderson@seco.com>, open list <linux-kernel@vger.kernel.org>, Li Yang <leoyang.li@nxp.com>, Rob Herring <robh+dt@kernel.org>, Camelia Groza <camelia.groza@nxp.com>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev" <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/20/22 16:27, Thomas Zimmermann wrote:
-> Replace the remaining uses of the field pdev by upcasts from the Linux
-> device and remove the field.
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+This series contains several cleanup patches for dpaa/fman. While they
+are intended to prepare for a phylink conversion, they stand on their
+own. This series was originally submitted as part of [1].
 
-Much better indeed.
+[1] https://lore.kernel.org/netdev/20220715215954.1449214-1-sean.anderson@seco.com
 
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Changes in v4:
+- Clarify commit message
+- weer -> were
+- tricy -> tricky
+- Use mac_dev for calling change_addr
+- qman_cgr_create -> qman_create_cgr
+
+Changes in v3:
+- Incorperate some minor changes into the first FMan binding commit
+
+Changes in v2:
+- Convert FMan MAC bindings to yaml
+- Remove some unused variables
+- Fix prototype for dtsec_initialization
+- Fix warning if sizeof(void *) != sizeof(resource_size_t)
+- Specify type of mac_dev for exception_cb
+- Add helper for sanity checking cgr ops
+- Add CGR update function
+- Adjust queue depth on rate change
+
+Sean Anderson (25):
+  dt-bindings: net: Convert FMan MAC bindings to yaml
+  net: fman: Convert to SPDX identifiers
+  net: fman: Don't pass comm_mode to enable/disable
+  net: fman: Store en/disable in mac_device instead of mac_priv_s
+  net: fman: dtsec: Always gracefully stop/start
+  net: fman: Get PCS node in per-mac init
+  net: fman: Store initialization function in match data
+  net: fman: Move struct dev to mac_device
+  net: fman: Configure fixed link in memac_initialization
+  net: fman: Export/rename some common functions
+  net: fman: memac: Use params instead of priv for max_speed
+  net: fman: Move initialization to mac-specific files
+  net: fman: Mark mac methods static
+  net: fman: Inline several functions into initialization
+  net: fman: Remove internal_phy_node from params
+  net: fman: Map the base address once
+  net: fman: Pass params directly to mac init
+  net: fman: Use mac_dev for some params
+  net: fman: Specify type of mac_dev for exception_cb
+  net: fman: Clean up error handling
+  net: fman: Change return type of disable to void
+  net: dpaa: Use mac_dev variable in dpaa_netdev_init
+  soc: fsl: qbman: Add helper for sanity checking cgr ops
+  soc: fsl: qbman: Add CGR update function
+  net: dpaa: Adjust queue depth on rate change
+
+ .../bindings/net/fsl,fman-dtsec.yaml          | 145 +++++
+ .../devicetree/bindings/net/fsl-fman.txt      | 128 +----
+ .../net/ethernet/freescale/dpaa/dpaa_eth.c    |  59 ++-
+ .../ethernet/freescale/dpaa/dpaa_eth_sysfs.c  |   2 +-
+ drivers/net/ethernet/freescale/fman/fman.c    |  31 +-
+ drivers/net/ethernet/freescale/fman/fman.h    |  31 +-
+ .../net/ethernet/freescale/fman/fman_dtsec.c  | 325 ++++++------
+ .../net/ethernet/freescale/fman/fman_dtsec.h  |  58 +-
+ .../net/ethernet/freescale/fman/fman_keygen.c |  29 +-
+ .../net/ethernet/freescale/fman/fman_keygen.h |  29 +-
+ .../net/ethernet/freescale/fman/fman_mac.h    |  24 +-
+ .../net/ethernet/freescale/fman/fman_memac.c  | 240 +++++----
+ .../net/ethernet/freescale/fman/fman_memac.h  |  57 +-
+ .../net/ethernet/freescale/fman/fman_muram.c  |  31 +-
+ .../net/ethernet/freescale/fman/fman_muram.h  |  32 +-
+ .../net/ethernet/freescale/fman/fman_port.c   |  29 +-
+ .../net/ethernet/freescale/fman/fman_port.h   |  29 +-
+ drivers/net/ethernet/freescale/fman/fman_sp.c |  29 +-
+ drivers/net/ethernet/freescale/fman/fman_sp.h |  28 +-
+ .../net/ethernet/freescale/fman/fman_tgec.c   | 163 +++---
+ .../net/ethernet/freescale/fman/fman_tgec.h   |  54 +-
+ drivers/net/ethernet/freescale/fman/mac.c     | 497 ++----------------
+ drivers/net/ethernet/freescale/fman/mac.h     |  45 +-
+ drivers/soc/fsl/qbman/qman.c                  |  76 ++-
+ include/soc/fsl/qman.h                        |   9 +
+ 25 files changed, 739 insertions(+), 1441 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/fsl,fman-dtsec.yaml
 
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Linux Engineering
-Red Hat
+2.35.1.1320.gc452695387.dirty
 
